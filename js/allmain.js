@@ -20,13 +20,16 @@ import { u_init_inventory, u_init_skills_discoveries } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
 import { com_pager } from './pager.js';
+
+// include/you.h:441-442
+const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
 import { mcalcmove, mcalcdistress, movemon } from './mon.js';
 import { dosounds } from './sounds.js';
 import { gethungry } from './eat.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { depth } from './dungeon.js';
 import { rnd } from './rng.js';
-import { fastforward_pre_mklev, fastforward_post_mklev } from './fastforward.js';
+import { fastforward_post_mklev } from './fastforward.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
@@ -91,11 +94,13 @@ export async function newgame() {
             abuse: 0,
         };
         g.u.uhave = {};
+
+        // src/u_init.c:1028 — the last call u_init_misc() makes, and the last
+        // thing js/fastforward.js was replaying before mklev(). ^X reports it
+        // as "You are left-handed", so it is directly visible in a frame.
+        g.u.uhandedness = rn2(10) ? RIGHT_HANDED : LEFT_HANDED;
     }
 
-    // Fast-forward through what is still replayed: u_init_misc.
-    // Must run AFTER the dungeon init, matching C's order in the stream.
-    fastforward_pre_mklev();
 
     // src/mklev.c:376 nhl_init() — mklev creates a SECOND Lua state for
     // themerooms, which loads dat/nhlib.lua again and so re-runs its

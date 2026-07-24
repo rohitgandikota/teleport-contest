@@ -14,29 +14,15 @@
 //   u_init_role + ini_inv            -> js/u_init.js         (87 calls)
 //   init_attr + vary_init_attr       -> js/attrib.js         (37 calls)
 //   the per-turn move loop           -> js/allmain.js       (127 calls)
+//   u_init_misc's handedness roll    -> js/allmain.js          (1 call)
 //
 // Remaining, in the order they should go:
 //   fastforward_post_mklev    2 calls  <- allmain.c moveloop_preamble
-//   fastforward_pre_mklev     1 call   <- the tail of u_init_misc
 //
 // Generated from: seed8000-tourist-starter.session.json
 
 import { rn2, rnd, d, rne, rnz } from "./rng.js";
 
-// Pre-mklev startup: o_init shuffles, dungeon init, u_init_misc
-// 303 leaf RNG calls (session indices 0-308)
-export function fastforward_pre_mklev() {
-    // randomize_gem_colors, shuffle and init_objects used to be replayed
-    // here. They are now produced by the real port in js/o_init.js, which
-    // reproduces all 199 calls on 37 of the 44 public sessions. The other 7
-    // differ only because role.c's pick_role/pick_gend/pick_align run first.
-    // The nhlib.lua align shuffle and the whole dungeon.c initialisation
-    // used to be replayed here. They are now produced by the real ports in
-    // js/mklev.js (l_nhcore_init) and js/dungeon.js (init_dungeons), which
-    // reproduce them on 27 of the 44 public sessions.
-    // u_init_misc
-    rn2(10);
-}
 
 // Post-mklev startup: allmain.c moveloop_preamble() only.
 //

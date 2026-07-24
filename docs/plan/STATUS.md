@@ -38,24 +38,39 @@ consumer in every single session.
 
 ### The exact next action
 
-**40 of 44 sessions now reproduce their entire startup PRNG prefix.** The
-remaining 4 (`seed0006`, `seed0007`, `seed0014`, `seed0077`) are blocked on the
-chargen menu flow, not on more porting of `role.c`.
+**Port `src/dungeon.c`'s initialisation**, driven by a generated
+`js/dungeon_data.js`. This is the next block in the stream after `o_init` and
+the `nhlib.lua` align shuffle — C's calls 201 onward for every session.
 
-So the next unit is a choice between two, and **M9a is the better one**:
+Two steps:
 
-1. **M9a — the Lua core.** C's very next call after `o_init` is
-   `@ random src=nhlib.lua:8`, so Lua is literally the next thing in the stream
-   for all 40 sessions that now match. Start with `js/lua/lmathlib.js` (spec and
-   a verified reference vector are in
-   [09-lua-and-special-levels.md](09-lua-and-special-levels.md), "Decision D1"),
-   then the interpreter core. Only `nhlib.lua` and `themerms.lua` ever draw
-   randomness, so the RNG-critical surface is two scripts.
+1. **Generate `js/dungeon_data.js` from `dat/dungeon.lua`.** Unlike the level
+   scripts, `dungeon.lua` is 333 lines of *pure declarative data* — nested
+   tables of `name =`, `base =`, `range =`, `branches = {...}`, with no
+   functions and no control flow. It converts to a JS object literal
+   mechanically, so this does **not** need the Lua interpreter. Write
+   `tools/gen-dungeon.mjs`; a small Lua-table-literal parser is enough.
+2. **Port the `dungeon.c` functions that draw.** Measured call volumes across
+   the corpus:
 
-2. M2.6 — `player_selection()` and the chargen menus. Unblocks the last 4
-   sessions, but it needs the tty menu code from M3, so it is really an M3 task.
+   ```
+   2037  place_level(dungeon.c:687)
+   1480  init_level(dungeon.c:572)
+   1304  induced_align(dungeon.c:2012)
+    385  parent_dlevel(dungeon.c:426)
+    360  init_dungeon_dungeons(dungeon.c:1022)
+    275  init_castle_tune(dungeon.c:1116)
+    220  init_dungeon_dungeons(dungeon.c:1074)
+    125  induced_align(dungeon.c:2005)
+   ```
 
-Take M9a first: it advances all 40 matching sessions, where M2.6 advances 4.
+**Success signal:** the `// init_dungeon_dungeons`, `// init_level`,
+`// place_level` and `// parent_dlevel` blocks can be deleted from
+`js/fastforward.js`, and the seed8000 stream stays identical through them.
+
+**Do this before the Lua interpreter.** The interpreter is still needed for
+level *building* (M9a proper), but dungeon topology does not require it, and
+this block sits earlier in the stream.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

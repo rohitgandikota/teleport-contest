@@ -539,6 +539,12 @@ async function makelevel() {
         if (fillable)
             --bonus_item_room_countdown;
     }
+
+    /* src/mklev.c:1415 — fill all special rooms now, regardless of whether
+       this is a special level, a proto level or an ordinary one. This is a
+       SECOND fill_special_room() call site; the vault above is the first. */
+    for (let i = 0; i < g.level.nroom; i++)
+        fill_special_room(g.level.rooms[i]);
 }
 
 // src/mklev.c:929 ROOM_IS_FILLABLE

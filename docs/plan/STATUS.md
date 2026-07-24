@@ -44,29 +44,51 @@ inventory instead of replaying it.
 
 ### The exact next action — READ THIS FIRST
 
-**seed8000 draws all 23 of its frames.** The window layer, object naming,
-inventory, discoveries and attributes are all done and verified against a real
-recording. That session still does not "pass" because passing needs the PRNG
-stream too, and it diverges at call 2985 in `m_move` — the monster pathfinder.
+**Port the chargen menu flow (`genl_player_setup`, src/role.c:2206).** Seven
+sessions diverge at **call 0** on `pick_role` / `pick_align` / `pick_gend` and
+so contribute nothing at all today:
 
-Two ways forward, and the choice is a real one:
+`seed0002`, `seed0004`, `seed0006`, `seed0007`, `seed0009`, `seed0014`,
+`seed0077`.
 
-**1. `m_move` (src/monmove.c:1900-2000).** Finishes seed8000 outright: it is the
-only thing between the current 2985 and 3130. The draws are
-`rn2(4 * (cnt - j))` for the mtrack backtrack check and `rn2(++chcnt)` for the
-tie-break among equally good squares, so it needs the candidate-square
-enumeration to be exact. One session, but it completes it.
+Their rc files pin nothing, so NetHack runs the interactive selection and the
+session's own keystrokes drive it. The analysis is done — this is the flow, and
+it is much more mechanical than the 524-line function suggests.
 
-**2. Breadth.** 43 sessions have never drawn a correct frame, and most fail long
-before any window opens. The blockers are flat — `lspo_map` (6, Lua), the
-chargen menus (6), then 2-or-fewer each. The chargen menus are the better bet
-of those two, because the window layer they need is now proven and because
-`pick_role`/`pick_align` divergences happen at call 0, so fixing them shifts
-whole sessions rather than a few frames.
+**seed0077's moves decode exactly:** `"Shade\rnrhmy  ni jaeji\x1b+\x1b"`
 
-**Recommendation: chargen menus.** The frame machinery that just landed is
-exactly what they need, and a session that diverges at call 0 currently
-contributes nothing at all.
+| Keys | What C is doing |
+|---|---|
+| `Shade` `\r` | `tty_askname()` — the player name. No draw. |
+| `n` | "Shall I pick a character for you? [ynaq]" — 'n' means pick manually |
+| `r` | role menu: **R**ogue |
+| `h` | race menu: **h**uman |
+| `m` | gender menu: **m**ale |
+| `y` | "Is this ok? [ynq]" |
+
+Alignment is never asked, because a Rogue has only one. That is where the
+single recorded draw comes from: `pick_align(..., PICK_RIGID)` finds exactly one
+valid alignment and returns `set[rn2(1)]` — **`rn2(1)` still draws**. It is the
+whole of seed0077's pre-`o_init` stream.
+
+**What has to be built.** The decisions are keystroke-driven, so the menus need
+real selector letters, which `js/tty/wintty.js` does not have yet — it renders
+text but has no `select_menu`:
+
+| Piece | C ref | Notes |
+|---|---|---|
+| `tty_askname` | win/tty/wintty.c:651 | reads the name up to Enter |
+| the `[ynaq]` prompt | role.c:2245-2286 | a yn_function, not a menu |
+| `setup_rolemenu` | role.c:2193 | letter is `lowc(*roles[i].name.m)` — 'a'rcheologist, 'b'arbarian, ... 'r'ogue |
+| `setup_racemenu` / gender / align | role.c | same shape |
+| `select_menu(win, PICK_ONE)` | win/tty/wintty.c | map a typed letter back to its entry |
+| the PICK_RIGID auto-fills | role.c:1269-1279 | **these are the draws** |
+
+`rigid_role_checks()` (role.c:1247) runs BEFORE the menus and draws nothing when
+nothing is pinned, so it can be a no-op initially.
+
+**Verify against seed0077 first** — it is the shortest of the seven and its
+whole pre-`o_init` stream is one `rn2(1)`.
 
 ### What the window layer now provides
 

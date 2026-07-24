@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after the M2.4 commit
+Last updated: **2026-07-24** · after the M2.3 (calendar) commit
 
 ---
 
@@ -50,11 +50,6 @@ of chargen.
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
 generated level, vision, and a windowport to draw it. Judge progress by the
 `tools/diverge.mjs` first-divergence index moving later, not by screens.
-
-M9a can be worked in parallel by a second agent — it touches `js/lua/**` and
-nothing M2 touches. Its first deliverable is `js/lua/lmathlib.js`; the spec and a
-verified reference vector are in
-[09-lua-and-special-levels.md](09-lua-and-special-levels.md) under "Decision D1".
 
 M9a can be worked in parallel by a second agent — it touches `js/lua/**` and
 nothing M2 touches. Its first deliverable is `js/lua/lmathlib.js`; the spec and a

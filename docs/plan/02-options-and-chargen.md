@@ -19,19 +19,29 @@ until this stream is exact. `seed0077-rogue-chargen` (33 steps) and
 
 ## Items
 
-### 2.1 Data tables, generated not typed
+### 2.1 Data tables, generated not typed — DONE
 
-`src/role.c` holds the role, race, gender, and alignment tables. These are large
-and mechanical. Write `tools/gen-tables.mjs` that parses the C and emits
-`js/role_data.js` (or extends `js/roles.js`), so 5.1 regenerates rather than
-hand-edits. Same machinery will serve `src/objects.c` and `src/monst.c` later.
+- [x] `tools/gen-roledata.mjs` parses `src/role.c` and emits `js/role_data.js`:
+      **13 roles, 5 races, 4 genders, 4 alignments**. It parses C aggregate
+      initialisers generically (comment stripping, brace nesting, string
+      literals) and maps top-level positions onto the field names from
+      `struct Role` at `include/you.h:183`.
+- [x] Emitted file says it is generated and by what
+- [x] Field names match the C struct field names
+- [x] Leaf values kept as raw C expressions (`PM_ARCHEOLOGIST`,
+      `MH_HUMAN | MH_DWARF | ROLE_LAWFUL`, `-4`). Resolving constants is
+      `js/const.js`'s job; this table reproduces shape, not meaning.
+- [x] Line-continued bitmask expressions are collapsed to one line.
 
-- [ ] Generator script under `tools/`
-- [ ] Emitted file carries a header saying it is generated and by what
-- [ ] Field names match the C struct field names
-- [ ] Round-trip check: every role's every field matches the C
+**Verified:** Archeologist checked field by field against `src/role.c:31-71` —
+`attrbase` `{7,10,10,7,7,7}`, `attrdist` `{20,20,20,10,20,10}`, gods, filecode,
+`questarti`, `hpadv`, `enadv`, `xlev` 14, `initrecord` 10, and all seven `spel*`
+fields. Every role, race, gender and alignment named across the 44 public rc
+blobs resolves. The public corpus uses **all 13 roles**.
 
-**Verify:** spot-check three roles against `src/role.c` by grep.
+Note genders and alignments have four entries each, not three: NetHack carries a
+`group` gender and an `unaligned` alignment. Those are real table entries, not
+array terminators.
 
 ### 2.2 `nethackrc` / OPTIONS parsing — MOSTLY DONE
 

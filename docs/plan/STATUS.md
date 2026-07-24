@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **all three fake-RNG stubs gone**; seed8000 3103/3130 calls, corpus RNG 9.4%
+Last updated: **2026-07-24** · **startup is fully ported**; Lua now blocks **24 of 44** sessions
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,47 +38,59 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **M9a — the Lua core.** It now blocks 18 of the 44 sessions |
-| **Also open** | `collect_coords` (5), chargen menus (6), `pet_type` (3) |
+| **Also open** | chargen menus (6), `somey`/`makelevel`/`choose_trapnote` (2 each) |
 | **Blocked on** | nothing |
-| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **74,351/792,838 (9.4%)** |
+| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **77,675/792,838 (9.8%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Start M9a, the Lua core.** It is now blocking **18 of the 44 sessions** —
-`fill_special_room` in 12 and `lspo_map` in 6 — which is more than every other
-blocker combined. Nothing else unblocks it and no other single piece of work
-comes close in value.
+**M9a, the Lua core. Nothing else is close.** It is now the first divergence in
+**24 of the 44 sessions** — 55% of the corpus — across three call sites:
 
-The scoping is already done and D1 is decided: build a small Lua interpreter in
-JS rather than hand-porting 131 scripts. First deliverable is
-`js/lua/lmathlib.js`; the spec and a verified reference vector are in
+| Site | Sessions |
+|---|---:|
+| `fill_special_room(sp_lev.c:2763)` | 12 |
+| `lspo_map(sp_lev.c:6154)` | 6 |
+| `shuffle()` in `dat/nhlib.lua` | 6 |
+
+That share went *up* as the port improved, because every non-Lua blocker ahead
+of the wall has now cleared and those sessions ran on until they hit it. Every
+remaining non-Lua item is worth 2 sessions or fewer.
+
+D1 is already decided: build a small Lua interpreter in JS rather than
+hand-porting 131 scripts. First deliverable is `js/lua/lmathlib.js`; the spec
+and a verified reference vector are in
 [09-lua-and-special-levels.md](09-lua-and-special-levels.md) under "Decision D1".
-Remember the measured finding in [NOTES.md](NOTES.md): **exactly one Lua binding
-draws randomness, `nh.rn2`**, so the interpreter's PRNG surface is one function
-wide.
+The measured finding in [NOTES.md](NOTES.md) still holds and makes this far
+smaller than it sounds: **exactly one Lua binding draws randomness, `nh.rn2`**.
 
-If you want a smaller warm-up first, `collect_coords` (src/teleport.c:578) is
-the largest non-Lua blocker at 5 sessions. Its draw count is one `rn2(n)` per
-remaining entry while shuffling each ring, so it depends on how many map spots
-pass the filters — it needs real terrain state, not a formula.
+### The startup sequence is now fully ported
+
+`js/fastforward.js` is down to 63 lines. Nothing between the first PRNG call and
+the first keystroke is replayed any more except `moveloop_preamble`'s two calls:
+
+```
+o_init -> role_init -> nhlib align shuffle -> init_dungeons -> newhp/newpw
+  -> mklev (rooms, corridors, traps, objects, monsters, engravings, mineralize)
+  -> u_on_upstairs -> makedog -> u_init_role/ini_inv -> init_attr/vary_init_attr
+```
+
+seed8000 reproduces **3103 of its 3130** calls; what remains is the monster move
+loop, and `fastforward_step` still replays 127 calls of it.
 
 ### Blocker histogram (44 sessions, current)
 
 | Blocker | Sessions | Notes |
 |---|---:|---|
-| `fill_special_room(sp_lev.c:2763)` | 12 | **Lua** — needs M9a |
-| `lspo_map(sp_lev.c:6154)` | 6 | **Lua** — needs M9a |
-| `collect_coords(teleport.c:578)` | 5 | largest non-Lua item |
-| `pick_role` / `pick_align` / `pick_gend` | 6 | chargen menus, needs M3 wiring |
-| `pet_type(dog.c:100)` | 3 | the starting pet |
-| `somey`, `makelevel` | 2 each | |
-| `rnd_rect`, `nh.rn2` and others | 1 each | |
+| `fill_special_room(sp_lev.c:2763)` | 12 | **Lua** |
+| `lspo_map(sp_lev.c:6154)` | 6 | **Lua** |
+| `shuffle()` in `dat/nhlib.lua` | 6 | **Lua** |
+| `pick_role` / `pick_align` | 6 | chargen menus, needs M3 wiring |
+| `somey`, `makelevel`, `choose_trapnote` | 2 each | |
+| everything else | 1 each | |
 
-**18 of 44 are Lua-blocked** — up from 11, because the non-Lua blockers ahead of
-them cleared and those sessions advanced to their Lua wall. M9a is now more than
-half the remaining corpus.
-
-Sessions past call 1000: **23**, from 18 at the start of the day.
+**24 of 44 are Lua-blocked.** Every non-Lua item left is worth 2 sessions or
+fewer.
 
 ### Fake-RNG stubs: two of three cleared, one remains
 

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · `mksobj_init` ported; `rndmonnum` is the blocker
+Last updated: **2026-07-24** · `rndmonst_adj` ported and exact; ready to wire mkobj
 
 ---
 
@@ -38,27 +38,27 @@ consumer in every single session.
 
 ### The exact next action
 
-**Port `rndmonnum()` and enough of `src/makemon.c` to support it.** It is the
-one thing standing between a finished `js/mkobj.js` and wiring it in.
+**Wire `js/mkobj.js` in — the dependency is now built.** `js/makemon.js` has
+`rndmonst_adj`, `rndmonst`, `rndmonnum`, `rndmonnum_adj` and `monsndx`, and
+`rndmonst_adj` is **verified exact** against C: for seed4500 at dungeon level 1
+it emits the same 9 draws with the same accumulating weights,
+`3 4 5 7 8 11 15 16 21`. That validates the monster table, the difficulty
+filters, `uncommon()`, `align_shift` and the reservoir sampling together.
 
-`js/mkobj.js` now has a complete `mksobj_init` for WEAPON, ARMOR, TOOL, GEM,
-AMULET, POTION, SCROLL, SPBOOK, WAND, RING, COIN, VENOM, CHAIN and BALL. The
-only gaps are the paths that set `corpsenm` from a random monster:
+Steps, in order:
 
-```
-FOOD_CLASS   CORPSE, EGG, TIN
-ROCK_CLASS   STATUE
-TOOL_CLASS   FIGURINE
-```
+1. Fill the `rndmonnum()` gaps in `js/mkobj.js`'s `mksobj_init` — FOOD_CLASS
+   corpse/egg/tin, ROCK_CLASS statue, TOOL_CLASS figurine. They need
+   `undead_to_corpse`, `can_be_hatched` and `set_tin_variety`; check whether
+   the corpse/tin retry loops draw before assuming they do not.
+2. Replace `js/mklev.js`'s local object-creation stubs with `js/mkobj.js`, and
+   its `rndmonnum`/`makemon` stubs with `js/makemon.js`.
+3. **Guard with the screen count.** Two previous wiring attempts each took
+   seed8000 from 19 screens to 0. Run `node tools/scoreboard.mjs --fast` before
+   committing, not after.
 
-**Wiring it in has been tried twice and reverted twice** — both times seed8000
-went 19 screens → 0, because `mklev` calls `mksobj` during the *structural*
-phase and those otyps come up there. Do not attempt a third wiring until
-`rndmonnum` exists.
-
-`rndmonst_adj(makemon.c:1716)` is also the highest-volume function in the whole
-corpus at 204,394 calls and is already 5 sessions' first divergence, so this
-work pays twice. `js/monst_data.js` is generated and ready.
+`rndmonst_adj` is 204,394 calls across the corpus and already 5 sessions' first
+divergence, so this should move several sessions at once.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

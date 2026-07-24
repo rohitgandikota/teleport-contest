@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · dungeon.c port spec written, code not yet
+Last updated: **2026-07-24** · `dungeon.c` ported and verified
 
 ---
 
@@ -31,25 +31,35 @@ consumer in every single session.
 
 | | |
 |---|---|
-| **Current milestone** | M2 — **2.1, 2.2, 2.3, 2.4, 2.7, 2.8 done**; 2.5, 2.6 open |
+| **Current milestone** | M4.0 `dungeon.c` **done**; M2 items 2.5, 2.6 open |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-**Write `js/dungeon.js`.** Everything needed is now mapped: the data is
-generated (`js/dungeon_data.js`) and the complete porting spec — observed call
-order, every function with its line number and draw behaviour, `level_range`
-verbatim, the `place_level` backtracking trap, and the `!wizard` guards — is in
-[04-level-generation.md](04-level-generation.md) section **4.0**.
+**Port `role_init` (src/role.c:2060 and the pantheon `randrole` loop).** It is
+the single largest remaining blocker: **13 of 44** sessions diverge there, and
+it sits at call 199 — before everything else we have working.
 
-This is a single mechanical porting session against that spec. Do not re-derive
-the call graph; it is written down.
+It draws in two places:
+- `role.c:2060` — `quest_status.nemgend = ... : (rn2(100) < 50)`, only when the
+  role's quest nemesis monster has no fixed gender.
+- the pantheon fixup — `while (!roles[flags.pantheon].lgod && ++trycnt < 100)
+  flags.pantheon = randrole(FALSE);`
 
-Port in this order: `level_range`, `init_level`, `possible_places`,
-`pick_level`, `place_level`, then the `init_dungeons` driver that assembles
-`proto_dungeon` from `js/dungeon_data.js`, then `parent_dlevel`.
+**It needs the monster table**, because the nemesis test is
+`is_neuter(pm) / is_female(pm) / is_male(pm)` on `mons[roles[i].neminum]`.
+So generate `js/monst_data.js` first, using the same C-preprocessor technique as
+`tools/gen-objects.mjs` (run `clang -E` over `src/monst.c`, parse the expansion,
+read field names from the preprocessed `struct permonst`). That table is needed
+by M7 regardless, so it is not detour work.
+
+After that, the remaining 4 sessions need the chargen menu flow (M2.6 + M3).
+
+**Current divergence for seed8000 is at call 301** — a second `nhlib.lua` align
+shuffle from the themeroom Lua state (`mklev.c:376`) is now handled, and the
+stream is a **zero-divergence prefix** of C's for 2,975 calls.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -100,6 +110,19 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**M4.0 — `dungeon.c` initialisation.** `js/dungeon.js` ports `level_range`,
+`init_level`, `possible_places`, `pick_level`, `place_level` (recursive with
+backtracking), `init_dungeon_levels`, `init_dungeon_branches`, `find_branch`,
+`parent_dnum`, `parent_dlevel`, `correct_branch_type`, `insert_branch`,
+`add_branch`, `init_dungeon_set_entry`, `init_dungeon_set_depth`,
+`init_castle_tune`, `add_level` and the `init_dungeons` driver.
+**27 of 44 sessions reproduce the full o_init + nhcore + dungeon prefix**
+(7,836 calls). 100 more replayed calls deleted from `js/fastforward.js`.
+
+Two seed-specific stubs in `js/allmain.js` were removed as part of this: a
+hardcoded `g.dungeons` and a hardcoded `g.branches` that would have silently
+overwritten what `init_dungeons()` builds.
 
 **Dungeon topology data.** `tools/gen-dungeon.mjs` → `js/dungeon_data.js`,
 9 dungeons / 7 branches / 37 named levels, parsed from `dat/dungeon.lua` without

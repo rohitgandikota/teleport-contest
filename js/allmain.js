@@ -11,6 +11,7 @@ import { rhack } from './cmd.js';
 import { docrt, cls, bot, flush_screen, pline } from './display.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
+import { init_dungeons } from './dungeon.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step, fastforward_fill_mineralize } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -21,23 +22,33 @@ export async function newgame() {
     // The first 199 PRNG calls of every game, now real rather than replayed.
     init_objects();
 
-    // Fast-forward through the remaining pre-mklev startup RNG calls.
-    // Still covers: dungeon init, u_init_misc.
-    fastforward_pre_mklev();
-
-    // C ref: allmain.c l_nhcore_init() — shuffle align[] for Lua
-    // Consumes rn2(3), rn2(2) matching session indices 309-310
+    // C ref: allmain.c l_nhcore_init() — shuffle align[] for Lua.
+    // This is dat/nhlib.lua's `shuffle(align)`, which draws rn2(3), rn2(2)
+    // through the math.random shim over nh.rn2.
     l_nhcore_init();
 
-    // Set up game state needed by mklev
-    g.dungeons = [{ dname: 'The Dungeons of Doom', depth_start: 1, num_dunlevs: 30 }];
+    // src/dungeon.c init_dungeons() — dungeon topology from dungeon.lua.
+    // Builds g.dungeons, g.sp_levchn and g.branches for real; nothing may
+    // overwrite them afterwards.
+    init_dungeons();
+
+    // Fast-forward through what is still replayed: u_init_misc.
+    // Must run AFTER the dungeon init, matching C's order in the stream.
+    fastforward_pre_mklev();
+
+    // src/mklev.c:376 nhl_init() — mklev creates a SECOND Lua state for
+    // themerooms, which loads dat/nhlib.lua again and so re-runs its
+    // `shuffle(align)`. That is another rn2(3), rn2(2) in the stream, sitting
+    // between u_init_misc and getbones.
+    l_nhcore_init();
+
+    // Set up remaining game state needed by mklev.
+    // g.branches is NOT set here: init_dungeons() built the real branch list
+    // above, and overwriting it would both discard that work and hardcode a
+    // seed-specific topology.
     g.u = g.u || {};
     g.u.uz = { dnum: 0, dlevel: 1 };
     g.flags = g.flags || {};
-    // Branch: Mines entrance on level 1 (for seed 8000)
-    g.branches = [
-        { end1: { dnum: 0, dlevel: 1 }, end2: { dnum: 2, dlevel: 1 }, end1_up: true },
-    ];
 
     // Real mklev generates the level with correct room positions
     // Structural phase consumes RNG for rooms/corridors/doors/stairs

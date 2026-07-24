@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { rank } from './botl.js';
 import { cansee } from './vision.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -184,7 +185,10 @@ function _statusLine1() {
     const u = game.u;
     if (!u) return '';
     const name = game.plname || 'Hero';
-    const role = game.urole?.rank?.m || game.urole?.name?.m || 'Adventurer';
+    /* src/botl.c rank() — the status line shows the RANK for the hero's
+       experience level, not the role name. This read urole.rank.m, which only
+       worked against the stub role record that used to be installed here. */
+    const role = rank();
     const title = `${name} the ${role}`;
     /* src/botl.c:87 — u.acurr.a[] is indexed by the include/attrib.h enum
        (A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA), which is NOT the order the

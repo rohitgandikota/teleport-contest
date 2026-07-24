@@ -24,7 +24,14 @@ import { PMNAMES } from './monst_data.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
-import { OBJ_DESCR } from './objnam.js';
+import {
+    OBJ_DESCR, ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
+    ARM_CLOAK, ARM_SHIRT,
+} from './objnam.js';
+
+// include/prop.h:101-107 — worn-equipment slot masks.
+const W_ARM = 0x01, W_ARMC = 0x02, W_ARMH = 0x04, W_ARMS = 0x08,
+      W_ARMG = 0x10, W_ARMF = 0x20, W_ARMU = 0x40;
 
 const {
     WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS, TOOL_CLASS, GEM_CLASS,
@@ -358,7 +365,27 @@ export function ini_inv_use_obj(obj) {
         discover_object(obj.otyp, true, true, false);
     if (obj.otyp === ONAMES.OIL_LAMP)
         discover_object(ONAMES.POT_OIL, true, true, false);
-    /* the setworn() armour branch needs the worn-equipment subsystem */
+    /* src/u_init.c:1264 — the hero puts on what they can. No draw, but it is
+       directly visible: ^X reports "You are not wearing any armor" when every
+       slot is empty, and a Tourist's Hawaiian shirt is what suppresses it. */
+    if (obj.oclass === ARMOR_CLASS) {
+        const cat = game.objects[obj.otyp].oc_subtyp;
+        const slot =
+            cat === ARM_SHIELD ? W_ARMS : cat === ARM_HELM ? W_ARMH
+          : cat === ARM_GLOVES ? W_ARMG : cat === ARM_SHIRT ? W_ARMU
+          : cat === ARM_CLOAK ? W_ARMC : cat === ARM_BOOTS ? W_ARMF
+          : cat === ARM_SUIT ? W_ARM : 0;
+        if (slot && !(worn_slots() & slot))
+            obj.owornmask = slot;
+    }
+}
+
+// src/worn.c — which slots are currently filled.
+function worn_slots() {
+    let mask = 0;
+    for (const o of game.invent || [])
+        mask |= (o.owornmask || 0);
+    return mask;
 }
 
 // src/u_init.c:1246 u_init_skills_discoveries()

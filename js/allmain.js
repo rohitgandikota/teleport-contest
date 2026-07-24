@@ -12,7 +12,7 @@ import { docrt, cls, bot, flush_screen, pline } from './display.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
-import { role_init, str2role, str2align, str2race, roles, races } from './role.js';
+import { role_init, str2role, str2align, str2race, str2gend, roles, races } from './role.js';
 import { aligns } from './role_data.js';
 import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
@@ -159,18 +159,21 @@ export async function newgame() {
     // Fast-forward what is still replayed: allmain.c moveloop_preamble().
     fastforward_post_mklev();
 
-    // Hardcoded player state for seed8000 Tourist.
-    // Contestants: port u_init to compute these from game PRNG.
-    g._goldCount = 757;
-    g.u.ulevel = 1;
-    g.u.uhp = 10; g.u.uhpmax = 10;
+    // Remaining hardcoded player state. u_init now computes the inventory,
+    // gold, attributes, alignment and handedness for real; what is left is
+    // the derived stats that need subsystems this port does not have.
+    //
+    // urole/urace used to be overwritten here with stub objects, and
+    // u.ualign with { type: 0 } — which silently reset a chaotic hero to
+    // neutral AFTER u_init had computed the right value. Both are gone; the
+    // real records from js/role_data.js carry name, rank, noun, adj and the
+    // attrmin/attrmax the ^X window needs.
+    g._goldCount = g.u.umoney0;
+    g.u.uhp = 10; g.u.uhpmax = 10;      /* newhp() needs the role hp tables */
     g.u.uen = 2; g.u.uenmax = 2;
-    g.u.uac = 10; g.u.uexp = 0;
-    g.u.ualign = { type: 0, record: 0 };
-    g.moves = 1;
-    g.urole = { name: { m: 'Tourist', f: 'Tourist' }, rank: { m: 'Rambler', f: 'Rambler' } };
-    g.urace = { adj: 'human' };
-    g.flags.female = true;
+    g.u.uac = 10;                       /* find_ac() needs worn armour */
+    g.u.uexp = 0;
+    g.flags.female = (str2gend(g.rc?.opts?.gender) === 1);
     g.plname = g.plname || 'Contestant';
 
     // Initial display

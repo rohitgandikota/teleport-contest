@@ -23,8 +23,9 @@ const {
 export const OBJ_NAME = (ocl) => obj_descr[ocl.oc_name_idx]?.oc_name ?? null;
 export const OBJ_DESCR = (ocl) => obj_descr[ocl.oc_descr_idx]?.oc_descr ?? null;
 
-// include/objclass.h — ARM_GLOVES / ARM_BOOTS live in oc_subtyp for armour.
-const ARM_GLOVES = 5, ARM_BOOTS = 6;
+// include/objclass.h:38-44 — armour category, stored in oc_subtyp.
+export const ARM_SUIT = 0, ARM_SHIELD = 1, ARM_HELM = 2, ARM_GLOVES = 3,
+             ARM_BOOTS = 4, ARM_CLOAK = 5, ARM_SHIRT = 6;
 
 const GemStone = (otyp) =>
     game.objects[otyp].oc_class === GEM_CLASS

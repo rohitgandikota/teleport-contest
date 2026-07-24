@@ -7,9 +7,10 @@
 
 import { game } from './gstate.js';
 import { dodiscovered } from './o_init.js';
+import { enlightenment } from './insight.js';
 import {
-    tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
-    tty_destroy_nhwindow, NHW_TEXT,
+    tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
+    tty_destroy_nhwindow, NHW_TEXT, NHW_MENU, ATR_NONE,
 } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt } from './display.js';
@@ -35,7 +36,6 @@ function isMovementKey(ch) {
 // than hiding behind a catch-all.
 const KNOWN_UNPORTED = new Set([
     'i',      // ddoinv       — inventory menu, needs objnam.c doname()
-    '\x18',   // doattributes — ^X, needs insight.c enlightenment()
     /* ESC and space reach the main prompt only when no window is open — a
        window consumes its own dismissing key inside display_nhwindow(). C
        treats both as no-ops here and prints nothing, so they must NOT fall
@@ -76,6 +76,10 @@ export async function rhack(key) {
     } else if (ch === '+') {
         // src/cmd.c cmdlist — '+' is dovspell.
         game.context.move = (dovspell() === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x18') {
+        // src/cmd.c cmdlist — ^X is doattributes, which returns ECMD_OK.
+        game.context.move = 0;
+        await show_attributes();
     } else if (ch === '\\') {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
@@ -149,4 +153,26 @@ async function show_discoveries() {
 
     tty_destroy_nhwindow(win);
     await docrt();                  /* restore the map underneath */
+}
+
+
+// src/insight.c doattributes() -> enlightenment(BASICENLIGHTENMENT, 0).
+//
+// The window is an NHW_MENU (create_nhwindow(NHW_MENU) with start_menu, so
+// en_via_menu is set and every line goes through add_menu_str). Its 34 lines
+// exceed the screen, which collapses offx to 0 and makes it page: the player
+// gets "(1 of 2)", presses a key, gets "(2 of 2)", presses again.
+async function show_attributes() {
+    const win = tty_create_nhwindow(NHW_MENU);
+    for (const l of enlightenment())
+        tty_putstr(win, ATR_NONE, l);
+    tty_display_nhwindow(win);
+
+    /* dmore() blocks once per page */
+    await nhgetch();
+    while (tty_next_page(win))
+        await nhgetch();
+
+    tty_destroy_nhwindow(win);
+    await docrt();
 }

@@ -200,6 +200,47 @@ edit the `js/` copies — they are overwritten on every scoring run. A quick che
 for f in isaac64 terminal storage; do diff -q frozen/$f.js js/$f.js; done
 ```
 
+## Two RNG metrics, and when they disagree
+
+`tools/scoreboard.mjs` reports **positional matches** — how many indices happen
+to agree. `tools/diverge.mjs` reports the **first divergence index** — how far
+the stream is actually correct. They can move in opposite directions, and when
+they do, the first-divergence index is the one telling the truth.
+
+This happened when the room-fill loop was wired up. Replacing replayed
+`fastforward` values with the real `fill_ordinary_room` loop:
+
+```
+positional matches   49.0% -> 45.9%    (looks like a regression)
+mean first divergence  ~700 -> 908     (actually deeper)
+makelevel(mklev.c:1402) blocker   8 sessions -> 0
+```
+
+The replayed values were seed8000's, replayed into every session; past the
+divergence they realigned by coincidence often enough to inflate the positional
+count. The real code stops sooner but everything it emits is correct.
+
+**Rule of thumb:** a positional-match drop is only acceptable when the mean
+first-divergence index rises and a named blocker disappears from the
+`diverge --all` histogram. Check both before concluding either way. If the
+positional count drops and divergence does *not* get deeper, it is a real
+regression — fix or revert.
+
+## Known fake-RNG stubs that must be replaced
+
+`js/mklev.js` still contains two stubs that **invent RNG draws**, which
+guarantees divergence wherever they are reached:
+
+```js
+function rndmonnum() { rn2(398); return 0; }        // "approximate: rn2(NUMMONS)"
+async function makemon(mdat, x, y, mmflags) { if (!mdat) rn2(398); rnd(8); ... }
+```
+
+These violate the no-placeholder rule and are now the top blocker in the corpus
+(`mkobj` 7 sessions, `rndmonst_adj` 5, `mkclass_aligned` 2). The real ports need
+`js/monst_data.js` and `js/objects_data.js`, both of which are already
+generated, so the data dependency is satisfied — only the code is missing.
+
 ## The RNG log format, precisely
 
 From `nethack-c/patches/003-rng-log-core.patch` and verified against the

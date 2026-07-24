@@ -514,8 +514,36 @@ async function makelevel() {
         place_branch(branchp);
     }
 
-    // Fill rooms + mineralize: consumed by fastforward_fill_mineralize
-    // Called externally from allmain.js after mklev structural phase
+    /* src/mklev.c:1391-1412 — some levels have specially generated items in
+       ordinary rooms; work out which room these will be placed in.
+
+       ROOM_IS_FILLABLE(croom) is
+         (rtype == OROOM || rtype == THEMEROOM) && needfill == FILL_NORMAL   */
+    let fillable_room_count = 0;
+    for (let i = 0; i < g.level.nroom; i++) {
+        const croom = g.level.rooms[i];
+        if (ROOM_IS_FILLABLE(croom)) fillable_room_count++;
+    }
+    /* choose a random fillable room to get the bonus items */
+    let bonus_item_room_countdown = fillable_room_count
+                                    ? rn2(fillable_room_count) : -1;
+
+    /* for each room: put things inside */
+    for (let i = 0; i < g.level.nroom; i++) {
+        const croom = g.level.rooms[i];
+        const fillable = ROOM_IS_FILLABLE(croom);
+
+        await fill_ordinary_room(croom,
+                                 fillable && bonus_item_room_countdown === 0);
+        if (fillable)
+            --bonus_item_room_countdown;
+    }
+}
+
+// src/mklev.c:929 ROOM_IS_FILLABLE
+function ROOM_IS_FILLABLE(croom) {
+    return croom && (croom.rtype === OROOM || croom.rtype === THEMEROOM)
+        && croom.needfill === FILL_NORMAL;
 }
 
 // C ref: mklev.c makerooms()

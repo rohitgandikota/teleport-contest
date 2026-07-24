@@ -79,8 +79,8 @@ export async function newgame() {
     // Structural phase consumes RNG for rooms/corridors/doors/stairs
     await mklev();
 
-    // Fill rooms + mineralize: replayed by fastforward
-    // These create objects/monsters that don't affect terrain display
+    // Room filling now happens inside makelevel(), as it does in C.
+    // mineralize is still replayed.
     fastforward_fill_mineralize();
 
     // Fast-forward through post-mklev startup RNG calls.

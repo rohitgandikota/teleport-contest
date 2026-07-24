@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · window layer built; `newpw` unblocked 17 sessions
+Last updated: **2026-07-24** · fill loop wired; `mkobj`/`makemon` stubs are now the blocker
 
 ---
 
@@ -38,33 +38,28 @@ consumer in every single session.
 
 ### The exact next action
 
-**Use `node tools/diverge.mjs --all` to pick the target every time.** It prints
-one line per session with the C function at the first divergence; the histogram
-of those functions is the work list, ordered by how many sessions each unblocks.
-That is how `newpw` was found — it was blocking 17 of 44 sessions from a single
-15-line function.
+**Replace the fake-RNG stubs in `js/mklev.js` with real ports.** They are now
+the single largest blocker (`mkobj` 7 sessions, `rndmonst_adj` 5,
+`mkclass_aligned` 2 — 14 between them) and they violate the no-placeholder rule:
 
-Current histogram (44 sessions):
-
-```
-8  makelevel(mklev.c:1402)
-7  fill_special_room(sp_lev.c:2763)
-6  lspo_map(sp_lev.c:6154)
-6  pick_role / pick_align / pick_gend  (chargen menus, 5 sessions)
-4  mkobj(mkobj.c:280)
-2  mkclass_aligned(makemon.c:1934)
-2  makelevel(mklev.c:1287)
+```js
+function rndmonnum() { rn2(398); return 0; }        // invents a draw
+async function makemon(mdat, x, y, mmflags) { if (!mdat) rn2(398); rnd(8); ... }
 ```
 
-So the next targets are `makelevel` (mklev.c:1402) and the `sp_lev.c` pair —
-which means **M9a, the Lua core, is now on the critical path for real**:
-`fill_special_room` and `lspo_map` are both Lua-driven, and together they block
-13 sessions.
+Port in this order:
 
-`js/tty/wintty.js` is built and verified but not yet wired to a consumer. Its
-consumers (discoveries, attributes, inventory) each need their own content
-subsystem, so they are lower value per hour than the level-generation work
-above.
+1. **`src/mkobj.c` `mkobj`** (mkobj.c:280 is `rnd(100)` then `rnd(1000)`) and
+   `mksobj`. `js/objects_data.js` is already generated.
+2. **`src/makemon.c` `rndmonst_adj`** — the highest-volume function in the whole
+   corpus at 204,394 calls — then `makemon`, `newmonhp`, `m_initinv`.
+   `js/monst_data.js` is already generated.
+
+**Read [NOTES.md](NOTES.md) "Two RNG metrics" before judging the score.** Wiring
+the fill loop dropped positional matches 49.0% → 45.9% while moving mean
+first-divergence from ~700 to 908 and eliminating the `makelevel:1402` blocker
+from 8 sessions. That trade was accepted deliberately: the replayed values it
+replaced were seed8000's, replayed into every session.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

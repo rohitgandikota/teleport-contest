@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after M2.8 (`role.c` pickers)
+Last updated: **2026-07-24** · after the M9a scoping correction
 
 ---
 
@@ -204,6 +204,14 @@ Small things deliberately left, so nobody wonders whether they were missed.
 - **`SYMBOLS=` and `BIND=` are captured but not applied.** Two public sessions
   use them (`SYMBOLS=S_pool:~,S_fountain:{` and `BIND=v:inventory`). They land in
   `rc.symbols` / `rc.bindings`; M3 (symbols) and M6.2 (bindings) apply them.
+- **Possible double-consume around `l_nhcore_init`.** `js/allmain.js` calls
+  `l_nhcore_init()` (a real port of `nhlib.lua`'s `shuffle(align)`, drawing
+  `rn2(3)`/`rn2(2)`) *after* `fastforward_pre_mklev()`, which also replays
+  `rn2(3); rn2(2)` for the same thing. The stream still matches C at indices
+  199-208, so whatever is happening is not a simple duplicate — but our port
+  emits 3,270 calls against C's 3,130 for seed8000, so ~140 calls are surplus
+  somewhere. Pre-existing, not introduced by the recent work. Worth tracking
+  down when `fastforward.js` shrinks further and the picture is simpler.
 - **Display RNG context is not implemented** (M2.4 left it deliberately). Not
   scored, but worth 751 steps of hallucination screens. Deferred to M10.6 with
   the two gotchas recorded: the context is never seeded, and `js/isaac64.js` has

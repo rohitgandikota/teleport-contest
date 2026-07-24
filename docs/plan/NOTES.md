@@ -238,6 +238,44 @@ object data table first. That table is `include/objects.h` — 1,659 lines, 361+
 macro entries, the same generatable shape as `optlist.h`. Generate it, do not
 transcribe it.
 
+## nhlib.lua overrides math.random — the Lua PRNG may never be used
+
+**This corrects the earlier xoshiro256\*\* finding. Read both.**
+
+`dat/nhlib.lua:5` replaces `math.random` outright:
+
+```lua
+math.random = function(...)
+   local arg = {...};
+   if (#arg == 1) then
+      return 1 + nh.rn2(arg[1]);
+   elseif (#arg == 2) then
+      return nh.random(arg[1], arg[2] + 1 - arg[1]);
+   ...
+```
+
+So once `nhlib.lua` has loaded, every `math.random` in every script routes to
+**NetHack's core RNG**, not Lua's. That is why all 23,671 Lua-context calls in
+the corpus are `nh.*`, and why the annotation on the first one reads
+`@ random src=nhlib.lua:8` — line 8 is literally `return 1 + nh.rn2(arg[1])`.
+
+**What this means for M9a:** the Lua layer's randomness is just `rn2`, which we
+already have. No xoshiro256\*\* implementation is needed for anything the
+public corpus exercises.
+
+**What is still unresolved.** Recorder patch 001 goes out of its way to seed
+Lua's `math.randomseed` from `NETHACK_SEED`, which would be pointless if the
+shim always won. Two possibilities: the patch is simply defensive, or some Lua
+state is created *without* `nhlib.lua` loaded, where `math.random` would still
+be xoshiro. A draw from real xoshiro produces **no log entry at all** (it never
+passes through `nh_rn2`), so its absence from the corpus is not proof.
+
+Do not assume either way. The symptom to watch for is a level layout diverging
+while the RNG log matches perfectly — that is what an unlogged xoshiro draw
+looks like. The verified JS implementation and its reference vector are recorded
+in [09-lua-and-special-levels.md](09-lua-and-special-levels.md) so it can be
+dropped in if that symptom ever appears.
+
 ## Only two Lua scripts draw randomness
 
 Refining the earlier Lua measurement. Across the corpus, 23,671 calls carry an

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · `rndmonst_adj` ported and exact; ready to wire mkobj
+Last updated: **2026-07-24** · wiring blocked on ONE extra draw at call 1265
 
 ---
 
@@ -38,27 +38,32 @@ consumer in every single session.
 
 ### The exact next action
 
-**Wire `js/mkobj.js` in — the dependency is now built.** `js/makemon.js` has
-`rndmonst_adj`, `rndmonst`, `rndmonnum`, `rndmonnum_adj` and `monsndx`, and
-`rndmonst_adj` is **verified exact** against C: for seed4500 at dungeon level 1
-it emits the same 9 draws with the same accumulating weights,
-`3 4 5 7 8 11 15 16 21`. That validates the monster table, the difficulty
-filters, `uncommon()`, `align_shift` and the reservoir sampling together.
+**Find the single extra `rn2(6)` at call 1265.** Everything else is built and
+verified; this one draw is all that stands between the current 19 screens and
+having `js/mkobj.js` + `js/makemon.js` wired in.
 
-Steps, in order:
+With the wiring applied, seed8000 diverges here:
 
-1. Fill the `rndmonnum()` gaps in `js/mkobj.js`'s `mksobj_init` — FOOD_CLASS
-   corpse/egg/tin, ROCK_CLASS statue, TOOL_CLASS figurine. They need
-   `undead_to_corpse`, `can_be_hatched` and `set_tin_variety`; check whether
-   the corpse/tin retry loops draw before assuming they do not.
-2. Replace `js/mklev.js`'s local object-creation stubs with `js/mkobj.js`, and
-   its `rndmonnum`/`makemon` stubs with `js/makemon.js`.
-3. **Guard with the screen count.** Two previous wiring attempts each took
-   seed8000 from 19 screens to 0. Run `node tools/scoreboard.mjs --fast` before
-   committing, not after.
+```
+1264  C rnd(2)=2   ours rnd(2)=2   ok        next_ident(mkobj.c:521)
+1265  C rn2(18)=0  ours rn2(6)=0   MISMATCH  dig_corridor(sp_lev.c:2616)
+1266  C rn2(35)    ours rn2(18)              <- C's stream, shifted by one
+```
 
-`rndmonst_adj` is 204,394 calls across the corpus and already 5 sessions' first
-divergence, so this should move several sessions at once.
+We emit **exactly one extra `rn2(6)`** right after a `next_ident`, during
+`dig_corridor`'s object creation. Tracing shows only 9 `mksobj_init` calls in
+the whole run, all from the fill phase — so whatever `dig_corridor` creates is
+reaching `mksobj_init` when in C it either hits a no-draw class branch or is
+created with `init = FALSE`.
+
+To find it: read `src/sp_lev.c` around line 2616 for the `mksobj` call, check
+its otyp and its `init` argument, and compare with what `js/mklev.js`'s
+`dig_corridor` passes. `rn2(6)` narrows the culprit to GEM_CLASS's
+`otyp != LUCKSTONE && !rn2(6)` branch or FOOD_CLASS's quantity branch.
+
+**Do not re-attempt the wiring before fixing this** — it has been tried and
+reverted three times, each costing seed8000's 19 screens. Guard with
+`node tools/scoreboard.mjs --fast` *before* committing.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

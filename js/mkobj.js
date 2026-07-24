@@ -9,9 +9,24 @@
 // ROCK_CLASS statue, and TOOL_CLASS figurine. Those set corpsenm from a random
 // monster, and rndmonnum() needs src/makemon.c's monster selection.
 //
-// Wiring this in without them takes seed8000 from 19 screens to 0, because
-// mklev calls mksobj during the structural phase and those otyps come up.
-// Tried twice; reverted twice. **Port rndmonnum() first**, then wire.
+// Wiring attempted three times, reverted three times — but the cause is now
+// pinned to a single extra draw. With js/makemon.js's rndmonnum available and
+// the ROCK_CLASS statue path filled in, seed8000 diverges at call **1265**:
+//
+//   1264  C rnd(2)=2   ours rnd(2)=2   ok        next_ident(mkobj.c:521)
+//   1265  C rn2(18)=0  ours rn2(6)=0   MISMATCH  dig_corridor(sp_lev.c:2616)
+//   1266  C rn2(35)    ours rn2(18)              <- C's stream, shifted by one
+//
+// So we emit exactly ONE extra rn2(6) immediately after a next_ident, during
+// dig_corridor's object creation, and C's sequence then continues shifted.
+// Tracing shows only 9 mksobj_init calls total, all from the fill phase, so
+// the object dig_corridor creates is reaching mksobj_init when in C it either
+// takes a no-draw class branch or is created with init = FALSE.
+//
+// NEXT STEP: find dig_corridor's mksobj call in src/sp_lev.c around line 2616,
+// check the otyp and the `init` argument it passes, and compare against what
+// js/mklev.js's dig_corridor passes. rn2(6) narrows it to GEM_CLASS's
+// `otyp != LUCKSTONE && !rn2(6)` branch or FOOD_CLASS's quantity branch.
 //
 // What is verified: mkobj()'s class selection is exact. Against
 // seed0102-ranger-name-cancel it reproduces
@@ -31,6 +46,7 @@
 import { game } from './gstate.js';
 import { rnd, rn1, rn2, rne } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { rndmonnum, level_difficulty } from './makemon.js';
 
 const {
     WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS, TOOL_CLASS, GEM_CLASS,
@@ -338,7 +354,19 @@ export function mksobj_init(otmp, artif) {
         break;
 
     case ROCK_CLASS:
-        /* STATUE needs rndmonnum() */
+        if (otmp.otyp === ONAMES.STATUE) {
+            /* possibly overridden by mkcorpstat() */
+            otmp.corpsenm = rndmonnum();
+            /* include/mondata.h:11 verysmall(ptr) is msize < MZ_SMALL */
+            if (!(game.mons[otmp.corpsenm].msize < MZ_SMALL)
+                && rn2(Math.trunc(level_difficulty() / 2) + 10) > 10) {
+                /* add_to_container(otmp, mkobj(SPBOOK_no_NOVEL, FALSE)) —
+                   SPBOOK_no_NOVEL takes mkobj's rnd_class() branch, which is
+                   not ported; the container add itself makes no draw. */
+                mkobj(SPBOOK_CLASS, false);
+            }
+        }
+        /* boulder init'd below in the 'regardless of !init' code */
         break;
 
     case COIN_CLASS:
@@ -351,6 +379,8 @@ export function mksobj_init(otmp, artif) {
 
 // include/objclass.h — oc_dir value used by the wand charge formula.
 const NODIR = 1;
+// include/monflag.h:178
+const MZ_SMALL = 1;
 
 // src/mkobj.c mksobj() — create a specific object type.
 //

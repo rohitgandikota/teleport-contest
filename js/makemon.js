@@ -18,6 +18,10 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { ACCESSIBLE, POOL, LAVAPOOL } from './const.js';
+import { enexto_core } from './teleport.js';
+
+// include/hack.h:1174-1175
+const GP_CHECKSCARY = 0x00800000, GP_AVOID_MONPOS = 0x01000000;
 
 // include/permonst.h:15,23
 const NON_PM = -1;
@@ -1162,6 +1166,20 @@ export function makemon(ptr, x, y, mmflags) {
 
     if (game.iflags?.debug_mongen || (!game.level?.flags?.rndmongen && !ptr))
         return null;
+
+    /* src/makemon.c:1210 — when the caller asks for the hero's own square
+       outside level generation, find a nearby spot instead. enexto_core()
+       shuffles collect_coords()' rings, which is a substantial draw. */
+    const byyou = (x === game.u.ux && y === game.u.uy);
+    if (byyou && !game.in_mklev) {
+        const cc = { x: 0, y: 0 };
+        const gpflags = GP_CHECKSCARY | GP_AVOID_MONPOS;
+        if (!enexto_core(cc, game.u.ux, game.u.uy, ptr, gpflags, goodpos)
+            && !enexto_core(cc, game.u.ux, game.u.uy, ptr,
+                            gpflags & ~GP_CHECKSCARY, goodpos))
+            return null;
+        x = cc.x; y = cc.y;
+    }
 
     if (!isok(x, y))
         return null;

@@ -17,6 +17,7 @@ import { aligns } from './role_data.js';
 import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
 import { u_init_inventory } from './u_init.js';
+import { makedog } from './dog.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -109,6 +110,15 @@ export async function newgame() {
     // they do in C (src/mklev.c:1550 calls mineralize from
     // level_finalize_topology). Nothing is replayed between mklev and u_init.
 
+    // src/allmain.c:808-816 — the order here is load-bearing: the hero is
+    // placed, then the pet is made, and only then does u_init compute the
+    // starting inventory. makedog() draws (pet_type plus a whole
+    // collect_coords ring shuffle from enexto), so putting it on the wrong
+    // side of u_init shifts everything after it.
+    u_on_upstairs();
+
+    makedog();
+
     // src/u_init.c:1374 — role inventory, race extras and starting gold.
     u_init_inventory();
 
@@ -131,10 +141,6 @@ export async function newgame() {
     g.urace = { adj: 'human' };
     g.flags.female = true;
     g.plname = g.plname || 'Contestant';
-
-    // C ref: allmain.c newgame() → u_on_upstairs()
-    // Places hero on upstair, or special stair, or random room position.
-    u_on_upstairs();
 
     // Initial display
     init_vision_globals();

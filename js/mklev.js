@@ -6,6 +6,52 @@
 // Uses the real game PRNG (not a separate layout PRNG) for bit-exact parity.
 
 import { game } from './gstate.js';
+import { OCLASSES, ONAMES } from './objects_data.js';
+import { mkobj, mksobj, next_ident, blessorcurse } from './mkobj.js';
+import { rndmonnum } from './makemon.js';
+// Object type and object class constants come from js/objects_data.js, which
+// is generated from the C. They used to be hardcoded literals here and 21 of
+// the 23 object constants and 7 of the 8 class constants were wrong — e.g.
+// BOULDER was 465 ("worthless piece of orange glass", a GEM_CLASS object) when
+// the real value is 475, and WEAPON_CLASS was 1, which is ILLOBJ_CLASS. Nothing
+// noticed while object creation was stubbed out; with a real mksobj_init they
+// select the wrong class and draw the wrong RNG.
+const {
+    WEAPON_CLASS,
+    ARMOR_CLASS,
+    RING_CLASS,
+    FOOD_CLASS,
+    SCROLL_CLASS,
+    POTION_CLASS,
+    TOOL_CLASS,
+    GEM_CLASS,
+} = OCLASSES;
+const {
+    BOULDER,
+    GOLD_PIECE,
+    ROCK,
+    KELP_FROND,
+    SCR_TELEPORTATION,
+    BELL,
+    CORPSE,
+    STATUE,
+    POT_HEALING,
+    POT_EXTRA_HEALING,
+    POT_SPEED,
+    POT_GAIN_ENERGY,
+    SCR_ENCHANT_WEAPON,
+    SCR_ENCHANT_ARMOR,
+    SCR_CONFUSE_MONSTER,
+    SCR_SCARE_MONSTER,
+    WAN_DIGGING,
+    SPE_HEALING,
+    LARGE_BOX,
+    CHEST,
+    FOOD_RATION,
+    CRAM_RATION,
+    LEMBAS_WAFER,
+} = ONAMES;
+
 import { GameMap } from './game.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
@@ -27,40 +73,9 @@ import {
 
 // Object/class constants (normally from objects.js, not in contest template)
 const RANDOM_CLASS = 0;
-const WEAPON_CLASS = 1;
-const ARMOR_CLASS = 2;
-const RING_CLASS = 3;
-const FOOD_CLASS = 7;
-const SCROLL_CLASS = 8;
-const POTION_CLASS = 9;
-const TOOL_CLASS = 12;
-const GEM_CLASS = 14;
-const BOULDER = 465;
-const GOLD_PIECE = 466;
-const ROCK = 467;
-const KELP_FROND = 172;
-const SCR_TELEPORTATION = 287;
-const BELL = 358;
-const CORPSE = 471;
-const STATUE = 472;
 const SPBOOK_no_NOVEL = 11;
 
 // Supply chest items
-const POT_HEALING = 235;
-const POT_EXTRA_HEALING = 236;
-const POT_SPEED = 245;
-const POT_GAIN_ENERGY = 250;
-const SCR_ENCHANT_WEAPON = 275;
-const SCR_ENCHANT_ARMOR = 276;
-const SCR_CONFUSE_MONSTER = 278;
-const SCR_SCARE_MONSTER = 279;
-const WAN_DIGGING = 305;
-const SPE_HEALING = 327;
-const LARGE_BOX = 214;
-const CHEST = 215;
-const FOOD_RATION = 143;
-const CRAM_RATION = 145;
-const LEMBAS_WAFER = 146;
 const DUST = 3;
 const MARK = 6;
 
@@ -196,78 +211,14 @@ function level_difficulty() {
 
 let _nextObjId = 1;
 
-// C ref: mkobj.c next_ident — rnd(2) for item identification
-function next_ident() { rnd(2); }
 
-// src/mkobj.c:1846 blessorcurse()
-//
-// Two corrections over the previous version, both of which changed the draw
-// stream: it takes a `chance` argument rather than always drawing rn2(4), and
-// it returns WITHOUT drawing at all when the object is already blessed or
-// cursed. It then draws a second rn2(2) to pick which way.
-function blessorcurse(otmp, chance) {
-    if (otmp.blessed || otmp.cursed)
-        return;
 
-    if (!rn2(chance)) {
-        if (!rn2(2)) {
-            curse(otmp);
-        } else {
-            bless(otmp);
-        }
-    }
-}
 
-// src/mkobj.c bless()
-function bless(otmp) {
-    if (!otmp) return;
-    otmp.cursed = false;
-    otmp.blessed = true;
-}
-
-// C ref: mkobj.c mksobj — create a specific object
-// Minimal stub: consumes RNG for next_ident + type-specific init
-function mksobj(otyp, init, artif) {
-    const otmp = { otyp, ox: 0, oy: 0, quan: 1, owt: 1, cursed: false, blessed: false, olocked: false, spe: 0 };
-    next_ident();
-    if (init) {
-        mksobj_init(otmp, otyp);
-    }
-    return otmp;
-}
-
-// PARTIAL — src/mkobj.c:869 mksobj_init().
-//
-// This dispatches on GUESSED otyp ranges rather than on the real oc_class from
-// js/objects_data.js, so most classes never reach blessorcurse at all.
-// blessorcurse(mkobj.c:1846) is currently the top divergence cause in the
-// corpus at 9 of 44 sessions, and this is why.
-//
-// Replacing it means porting the real 306-line switch (mkobj.c:869-1175),
-// dispatching on objects[otyp].oc_class. Do that as one piece; a partial
-// class dispatch just moves which sessions break.
-function mksobj_init(otmp, otyp) {
-    // For BOULDER, GOLD_PIECE: no extra init RNG
-    // For scrolls: blessorcurse
-    // For potions: blessorcurse
-    // For general objects: varies
-    // We just do blessorcurse for scrolls/potions
-    if (otyp >= 270 && otyp < 300) { // scrolls
-        blessorcurse(otmp, 10);
-    } else if (otyp >= 230 && otyp < 270) { // potions
-        blessorcurse(otmp, 10);
-    }
-}
 
 function mksobj_at(otyp, x, y, init, artif) {
     return mksobj(otyp, init, artif);
 }
 
-function mkobj(oclass, artif) {
-    // Class-based random object creation
-    // For contest, just consume the right RNG
-    return mksobj(0, false, artif);
-}
 
 function mkobj_at(oclass, x, y, artif) {
     return mkobj(oclass, artif);
@@ -308,15 +259,6 @@ function mkcorpstat(objtyp, mtmp, pm, x, y, flags) {
     return otmp;
 }
 
-// rndmonnum stub — consumes rn2 for random monster selection
-function rndmonnum() {
-    // C: picks a random monster class then random within class
-    // For contest, this is called from mkcorpstat when pm=null.
-    // The actual RNG depends on monster database, but for statues
-    // created by fill_ordinary_room, it consumes at least rn2 calls.
-    rn2(398); // approximate: rn2(NUMMONS)
-    return 0;
-}
 
 // makemon stub
 async function makemon(mdat, x, y, mmflags) {

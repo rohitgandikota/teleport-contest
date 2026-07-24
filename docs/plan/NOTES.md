@@ -243,6 +243,30 @@ first-divergence index rises and a named blocker disappears from the
 positional count drops and divergence does *not* get deeper, it is a real
 regression — fix or revert.
 
+## Hardcoded object constants were nearly all wrong
+
+`js/mklev.js` carried its object and object-class constants as hardcoded
+literals. **21 of 23 object constants and 7 of 8 class constants were wrong.**
+
+```
+BOULDER       was 465  -> 475   (465 is "worthless piece of orange glass", GEM_CLASS)
+GOLD_PIECE    was 466  -> 438
+STATUE        was 472  -> 476
+FOOD_RATION   was 143  -> 293
+WEAPON_CLASS  was 1    -> 2     (1 is ILLOBJ_CLASS)
+TOOL_CLASS    was 12   -> 6
+GEM_CLASS     was 14   -> 13
+```
+
+Nothing noticed for a long time because object creation was stubbed: a wrong
+otyp still produced *an* object and the stub drew a fixed pattern regardless.
+The moment a real `mksobj_init` went in, `mksobj_at(BOULDER, ...)` selected a
+GEM_CLASS object and drew `rn2(6)` where C draws nothing — which is exactly the
+single extra draw that defeated three consecutive wiring attempts.
+
+They are now derived from `js/objects_data.js` (`ONAMES` / `OCLASSES`), which is
+generated from the C. **Never hardcode an otyp or an oclass**; import it.
+
 ## Known fake-RNG stubs that must be replaced
 
 `js/mklev.js` still contains two stubs that **invent RNG draws**, which

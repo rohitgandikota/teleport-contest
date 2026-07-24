@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · wiring blocked on ONE extra draw at call 1265
+Last updated: **2026-07-24** · **mkobj + makemon wired in**; next blocker `mkobj_erosions`
 
 ---
 
@@ -38,32 +38,28 @@ consumer in every single session.
 
 ### The exact next action
 
-**Find the single extra `rn2(6)` at call 1265.** Everything else is built and
-verified; this one draw is all that stands between the current 19 screens and
-having `js/mkobj.js` + `js/makemon.js` wired in.
-
-With the wiring applied, seed8000 diverges here:
+**Port `mkobj_erosions` (src/mkobj.c:202).** It is seed8000's first divergence
+now that `js/mkobj.js` and `js/makemon.js` are wired in:
 
 ```
-1264  C rnd(2)=2   ours rnd(2)=2   ok        next_ident(mkobj.c:521)
-1265  C rn2(18)=0  ours rn2(6)=0   MISMATCH  dig_corridor(sp_lev.c:2616)
-1266  C rn2(35)    ours rn2(18)              <- C's stream, shifted by one
+1418  C rn2(10)=2   ours rn2(10)=2   ok        blessorcurse(mkobj.c:1846)
+1419  C rn2(40)=31  ours rn2(40)=31  ok        mksobj_init(mkobj.c:1098)
+1420  C rn2(100)=46 ours rn2(5)=1    MISMATCH  mkobj_erosions(mkobj.c:202)
+1421  C rn2(80)=19  ours rn2(3)=1    differs   mkobj_erosions(mkobj.c:205)
 ```
 
-We emit **exactly one extra `rn2(6)`** right after a `next_ident`, during
-`dig_corridor`'s object creation. Tracing shows only 9 `mksobj_init` calls in
-the whole run, all from the fill phase — so whatever `dig_corridor` creates is
-reaching `mksobj_init` when in C it either hits a no-draw class branch or is
-created with `init = FALSE`.
+`blessorcurse` and `mksobj_init` now match C call for call, so the object
+pipeline is correct up to erosion.
 
-To find it: read `src/sp_lev.c` around line 2616 for the `mksobj` call, check
-its otyp and its `init` argument, and compare with what `js/mklev.js`'s
-`dig_corridor` passes. `rn2(6)` narrows the culprit to GEM_CLASS's
-`otyp != LUCKSTONE && !rn2(6)` branch or FOOD_CLASS's quantity branch.
+Three fake-RNG stubs still remain in `js/mklev.js` and should go next:
 
-**Do not re-attempt the wiring before fixing this** — it has been tried and
-reverted three times, each costing seed8000's 19 screens. Guard with
-`node tools/scoreboard.mjs --fast` *before* committing.
+```
+line  269   rn2(398)                      — makemon
+line  300   rn2(48)  // approximate       — random_engraving
+line 1348   rn2(398) // mkclass(S_HUMAN)  — mkclass
+```
+
+`js/makemon.js` already has `rndmonst_adj`, so the makemon ones are close.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

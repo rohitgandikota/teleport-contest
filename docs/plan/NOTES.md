@@ -46,6 +46,12 @@ optimising prematurely.
 **The scorer writes `.cache/session-results.json`** with the full JSON bundle
 after every run, so tooling can read the last score without re-running.
 
+**The fork's CI overlays only two of the three frozen files.**
+`.github/workflows/score.yml` copies `frozen/isaac64.js` and
+`frozen/terminal.js` over `js/`, but not `frozen/storage.js`, even though
+`docs/API.md` lists all three as frozen and overlaid by the judge. So a local
+edit to `js/storage.js` would pass CI and fail the judge. Do not edit it.
+
 ## The recorder
 
 **`make install` does not install `sysconf`, and without it the recorder exits
@@ -132,6 +138,50 @@ escapes, and `\x0e`/`\x0f` to enter and leave DEC line-drawing mode.
 
 The corpus is 51 MB across 44 files. Never read one whole; query with `node -e`.
 
+## Lua is on the critical path, not a late-game concern
+
+Measured with `tools/coverage-map.mjs` over the 44 public sessions.
+
+- `src/sp_lev.c` executes in **44/44** sessions, 97,479 PRNG calls. Its hottest
+  functions are `create_room` (32,170), `get_location` (26,830), and
+  `dig_corridor` (23,570) — those are *ordinary* level generation, not special
+  levels.
+- **Every** session makes Lua-context PRNG calls, tagged `@ nh.rn2()` by recorder
+  patch 004. The floor is 210 calls, in the shortest 25-step sessions. Total
+  23,671 calls, 3.0% of the corpus.
+- Exactly **one** Lua binding draws randomness: `nh.rn2`. Nothing else. So the
+  randomness surface of the Lua layer is tiny — it is the script *execution
+  order* that has to be reproduced, not a wide API.
+- `lspo_*` opcodes appear (`lspo_replace_terrain` 4,597, `lspo_map` 368,
+  `lspo_gold` 29). Those are called *from* Lua scripts, confirming scripts really
+  are running on ordinary levels.
+- `flip_level_rnd` appears (128 calls), so the 5.0 mirrored-level feature fires
+  in the public corpus.
+
+Conclusion: level 1 of every game runs Lua, almost certainly via themed rooms
+(`themerms.lua`, `nhcore.lua`, `nhlib.lua`). M9 was split into M9a (Lua core,
+prerequisite of M4) and M9b (named special levels and quests) as a result.
+
+## Measured port priority
+
+Top C files by how many sessions execute them, from `coverage-map.md`. All of
+these appear in 44/44 sessions:
+
+```
+makemon.c 233,702 calls   mklev.c 131,517   sp_lev.c 97,479   mkobj.c 42,397
+mon.c      26,200         mkmap.c  20,601   rect.c   17,966   allmain.c 12,743
+mkroom.c   12,304         o_init.c 10,945   dungeon.c 6,186   eat.c      5,448
+```
+
+Hottest individual functions: `rndmonst_adj` (makemon.c, 204,394),
+`mineralize` (mklev.c, 100,206), `distfleeck` (monmove.c, 33,817),
+`create_room` (sp_lev.c, 32,170), `m_move` (monmove.c, 28,208).
+
+**Caveat that matters:** this only sees code that draws random numbers. The tty
+windowport, `botl.c`, and `objnam.c` are invisible here despite producing a large
+share of the actual screen output. Do not read this as "port these and nothing
+else".
+
 ## Baseline measurements
 
 Taken 2026-07-24 against the untouched skeleton.
@@ -140,8 +190,14 @@ Taken 2026-07-24 against the untouched skeleton.
   divergence at call **3103**, in `m_move` (`src/monmove.c:1963`) — we draw
   `rn2(12)` where C draws `rn2(20)`. 3126 positions match by coincidence after
   it, which is exactly the overstatement described above.
-- First screen miss is step **0**, the very first frame, cell grid differs. So
-  the skeleton renders nothing that matches, despite `fastforward.js` faking the
-  RNG prefix. This confirms the README: fake RNG credit does not produce screens.
+- First screen miss is step **0**, the very first frame. The skeleton renders it
+  **completely blank** — 227 of 1920 cells differ and every one is "C has a
+  glyph, we have a space". The cursor, however, is already correct at `[36,7,1]`.
+  So `fastforward.js` fakes RNG well enough to place a cursor and nothing else.
+  This confirms the README: fake RNG credit produces no screens.
+- Whole-corpus baseline: **0/11,405 screens**, 25,429/792,838 RNG positions
+  (3.2%), 0/44 sessions passing. The 3.2% RNG figure is almost entirely
+  coincidental alignment, not real progress.
 - Public corpus: 44 sessions, 56 segments, 11,405 steps by our count (the README
   quotes 11,284 scored steps; the difference is steps with no recorded screen).
+  792,838 annotated PRNG calls in total.

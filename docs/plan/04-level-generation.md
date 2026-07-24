@@ -14,8 +14,16 @@ currently hides the most.
 `src/dig.c` (corridor digging), `src/stairs.c`, `src/trap.c` (trap placement
 only), `src/light.c`, `src/region.c`, `src/extralev.c` (rogue level).
 
-Special levels driven by Lua (`src/sp_lev.c`) are **M9**, not here. This
-milestone covers ordinary procedurally generated levels.
+> **M9a is a hard prerequisite of this milestone.** Measurement (see
+> [coverage-map.md](coverage-map.md)) shows `src/sp_lev.c` running in 44 of 44
+> public sessions, and every session making Lua-context PRNG calls. In NetHack
+> 5.0 ordinary level generation goes through the Lua machinery, mostly via
+> themed rooms. You cannot finish M4 without the Lua core. Do
+> [09-lua-and-special-levels.md](09-lua-and-special-levels.md) §M9a first.
+
+Named special levels (Oracle, Minetown, Sokoban, the Quests) stay in **M9b**.
+This milestone covers ordinary procedurally generated levels — which still means
+`sp_lev.c` and Lua, just not the named-level scripts.
 
 **JS targets:** `js/mklev.js` (exists, 1,888 lines, needs auditing against the C),
 `js/mkroom.js`, `js/mkmaze.js`, `js/mkmap.js`, `js/mkobj.js`, `js/makemon.js`,

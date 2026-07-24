@@ -1,5 +1,21 @@
 # M9 — Lua and special levels
 
+> **Plan correction, 2026-07-24, from measurement.** This milestone was
+> originally scheduled after M6 on the assumption that Lua only builds *special*
+> levels. That is wrong for NetHack 5.0. `tools/coverage-map.mjs` shows
+> `src/sp_lev.c` executing in **44 of 44** public sessions (97,479 PRNG calls),
+> and every session makes Lua-context calls — a minimum of 210 each, tagged
+> `@ nh.rn2()` by recorder patch 004. Ordinary level generation goes through the
+> Lua machinery in 5.0, largely via themed rooms (`themerms.lua`, `nhcore.lua`,
+> `nhlib.lua`).
+>
+> **So this milestone splits.** M9a below is a prerequisite of M4 and must be
+> done inside the M2-M5 block. M9b keeps its original position after M6.
+>
+> The good news: exactly **one** Lua binding draws randomness across the whole
+> corpus — `nh.rn2`. The randomness surface is tiny; it is the script *execution
+> order* that has to be right.
+
 **Goal:** special levels (Oracle, Big Room, Minetown, Sokoban, the Quests,
 Medusa, the Castle) generate identically to C, including their own PRNG context.
 
@@ -48,7 +64,29 @@ generated modules** by a `tools/` script, not read from disk at runtime.
 
 ---
 
-## Items
+## M9a — the Lua core (blocks M4, do it inside the M2-M5 block)
+
+The minimum needed for an ordinary level to generate with the right RNG stream.
+
+- [ ] The scoping step above (enumerate constructs and bindings) — do this first
+      regardless of which option wins, because it sizes everything else
+- [ ] The interpreter, or the hand-port, for just the scripts ordinary level
+      generation touches: `nhcore.lua`, `nhlib.lua`, `themerms.lua`, and
+      `dungeon.lua`
+- [ ] `nh.rn2` wired to the Lua PRNG context, logging in the recorder's format
+- [ ] The `sp_lev.c` entry points ordinary generation uses. Measured call
+      volume across the corpus, in order: `create_room` (32,170),
+      `get_location` (26,830), `dig_corridor` (23,570), `maze1xy` (5,900),
+      `lspo_replace_terrain` (4,597), `check_room` (1,169), `build_room` (891),
+      `find_montype` (713)
+- [ ] `flip_level_rnd` — the 5.0 mirrored-level feature, and it fires on
+      ordinary levels (128 calls in the corpus), so it cannot be deferred
+
+**Verify:** the Lua-context call count for a short session matches C's exactly.
+Every session should show at least 210 such calls; if ours shows zero, the Lua
+layer is not running at all and M4 cannot be finished.
+
+## M9b — special levels and quests (original position, after M6)
 
 ### 9.1 The Lua layer (assuming Option B)
 

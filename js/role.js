@@ -11,8 +11,10 @@
 // `rn2(13) @ pick_role` / `rn2(2) @ pick_race` / `rn2(2) @ pick_gend` /
 // `rn2(1) @ pick_align`.
 
+import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { roles, races, genders, aligns } from './role_data.js';
+import { mons as MONS_INIT, PMNAMES } from './monst_data.js';
 
 // include/you.h
 export const ROLE_NONE = -1;
@@ -277,6 +279,109 @@ export function pick_align(rolenum, racenum, gendnum, pickhow) {
         }
     }
     return ROLE_NONE;
+}
+
+// include/monflag.h:138-140
+const M2_MALE = 0x00010000, M2_FEMALE = 0x00020000, M2_NEUTER = 0x00040000;
+const M2_PEACEFUL = 0x00000002, M2_HOSTILE = 0x00000004, M2_NASTY = 0x00200000;
+const M2_STALK = 0x00000008;
+const M3_CLOSE = 0x0040, M3_WANTSARTI = 0x0400, M3_WAITFORU = 0x0080;
+const NON_PM = -1;
+
+// include/mondata.h — the gender predicates role_init() branches on.
+const is_male   = (pm) => !!(pm.mflags2 & M2_MALE);
+const is_female = (pm) => !!(pm.mflags2 & M2_FEMALE);
+const is_neuter = (pm) => !!(pm.mflags2 & M2_NEUTER);
+
+// role_init() mutates mons[] (msound, mflags2, mflags3, maligntyp) for the
+// quest leader and nemesis, so the table has to be per-game state rather than
+// the shared generated one.
+export function reset_mons() {
+    game.mons = MONS_INIT.map(m => ({ ...m }));
+    return game.mons;
+}
+
+// Resolve a PM_ name from the generated role table into a mons[] index.
+function pmIndex(v) {
+    if (v === 'NON_PM' || v === null || v === undefined) return NON_PM;
+    if (typeof v === 'number') return v;
+    const i = PMNAMES[v];
+    return i === undefined ? NON_PM : i;
+}
+
+// src/role.c:2029 randrole()
+export function randrole() {
+    return rn2(roles.length);
+}
+
+// src/role.c:1980 role_init()
+//
+// Runs after o_init and before the nhlib.lua align shuffle. It draws in three
+// places, and 13 of the 44 public sessions diverge here if it is missing:
+//
+//   - quest leader gender, when the leader monster has no fixed gender
+//   - quest nemesis gender, likewise
+//   - the pantheon fixup loop, which spins randrole() until it finds a role
+//     with a lawful god. Priest has lgod = 0, so Priest games always enter it.
+//
+// The quest guardian block mutates mons[] but makes no draw.
+export function role_init(initrole, initalign) {
+    if (!game.mons) reset_mons();
+    const mons = game.mons;
+    const urole = roles[initrole];
+    const alignmnt = aligns[initalign].value;
+    let pm;
+
+    /* Fix up the quest leader */
+    const ldrnum = pmIndex(urole.ldrnum);
+    if (ldrnum !== NON_PM) {
+        pm = mons[ldrnum];
+        pm.msound = 'MS_LEADER';
+        pm.mflags2 |= M2_PEACEFUL;
+        pm.mflags3 |= M3_CLOSE;
+        pm.maligntyp = alignmnt * 3;
+        /* if gender is random, we choose it now instead of waiting
+           until the leader monster is created */
+        game.quest_ldrgend =
+            is_neuter(pm) ? 2 : is_female(pm) ? 1 : is_male(pm)
+                                                        ? 0
+                                                        : (rn2(100) < 50 ? 1 : 0);
+    }
+
+    /* Fix up the quest guardians — no draw here */
+    const guardnum = pmIndex(urole.guardnum);
+    if (guardnum !== NON_PM) {
+        pm = mons[guardnum];
+        pm.mflags2 |= M2_PEACEFUL;
+        pm.maligntyp = alignmnt * 3;
+    }
+
+    /* Fix up the quest nemesis */
+    const neminum = pmIndex(urole.neminum);
+    if (neminum !== NON_PM) {
+        pm = mons[neminum];
+        pm.msound = 'MS_NEMESIS';
+        pm.mflags2 &= ~M2_PEACEFUL;
+        pm.mflags2 |= (M2_NASTY | M2_STALK | M2_HOSTILE);
+        pm.mflags3 &= ~M3_CLOSE;
+        pm.mflags3 |= (M3_WANTSARTI | M3_WAITFORU);
+        game.quest_nemgend =
+            is_neuter(pm) ? 2 : is_female(pm) ? 1
+                              : is_male(pm) ? 0 : (rn2(100) < 50 ? 1 : 0);
+    }
+
+    /* Fix up the god names */
+    if (game.pantheon === undefined || game.pantheon === -1) { /* new game */
+        let trycnt = 0;
+        game.pantheon = initrole;           /* use own gods */
+        /* unless they're missing */
+        while (!roles[game.pantheon].lgod && ++trycnt < 100)
+            game.pantheon = randrole();
+        if (!roles[game.pantheon].lgod) {
+            for (let i = 0; i < roles.length; i++)
+                if (roles[i].lgod) { game.pantheon = i; break; }
+        }
+    }
 }
 
 // src/role.c:747 str2role() — match a role by name or filecode.

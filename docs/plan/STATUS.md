@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · `dungeon.c` ported and verified
+Last updated: **2026-07-24** · `role_init` + monster table; 39/44 startup prefixes
 
 ---
 
@@ -31,35 +31,33 @@ consumer in every single session.
 
 | | |
 |---|---|
-| **Current milestone** | M4.0 `dungeon.c` **done**; M2 items 2.5, 2.6 open |
+| **Current milestone** | M2.6 chargen menu flow — the **only** remaining startup blocker |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-**Port `role_init` (src/role.c:2060 and the pantheon `randrole` loop).** It is
-the single largest remaining blocker: **13 of 44** sessions diverge there, and
-it sits at call 199 — before everything else we have working.
+**M2.6 — the chargen menu flow (`player_selection()` in `src/role.c:2280`).**
+This is now the *only* thing standing between us and 44/44 on the startup
+prefix. Exactly 5 sessions need it, and they all share one shape: a minimal rc
+(`OPTIONS=symset:DECgraphics` and nothing else), so the player types a character
+name and then drives the role/race/gender/alignment menus by keystroke.
 
-It draws in two places:
-- `role.c:2060` — `quest_status.nemgend = ... : (rn2(100) < 50)`, only when the
-  role's quest nemesis monster has no fixed gender.
-- the pantheon fixup — `while (!roles[flags.pantheon].lgod && ++trycnt < 100)
-  flags.pantheon = randrole(FALSE);`
+```
+seed0006-wizard-water-demon      "Hextrum\rnwofa"   n = pick myself, then letters
+seed0007-rogue-snake-swamp       ...
+seed0012-monk-vault-escort       ...
+seed0014-dequa-fountain-explore  "Dequa\rnvd\r"
+seed0077-rogue-chargen           ...
+```
 
-**It needs the monster table**, because the nemesis test is
-`is_neuter(pm) / is_female(pm) / is_male(pm)` on `mons[roles[i].neminum]`.
-So generate `js/monst_data.js` first, using the same C-preprocessor technique as
-`tools/gen-objects.mjs` (run `clang -E` over `src/monst.c`, parse the expansion,
-read field names from the preprocessed `struct permonst`). That table is needed
-by M7 regardless, so it is not detour work.
+Which pickers run, and in what order, is decided by those keystrokes — so this
+needs `player_selection()` and enough of the tty menu layer (M3) to consume the
+keys. It is genuinely M3 work, not more of `role.c`.
 
-After that, the remaining 4 sessions need the chargen menu flow (M2.6 + M3).
-
-**Current divergence for seed8000 is at call 301** — a second `nhlib.lua` align
-shuffle from the themeroom Lua state (`mklev.c:376`) is now handled, and the
-stream is a **zero-divergence prefix** of C's for 2,975 calls.
+**39 of 44 sessions now reproduce their entire startup prefix** (11,123 calls),
+including **13/13 debug-mode sessions**. 39 + 5 = 44, fully accounted.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -110,6 +108,16 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**`role_init` + the monster table.** `tools/gen-monst.mjs` generates
+`js/monst_data.js` (384 monsters, 389 `PM_` constants) via the C preprocessor,
+verified against the four 5.0-new species. `js/role.js` gains `role_init`,
+`randrole` and `reset_mons`. It draws in three places: quest leader gender,
+quest nemesis gender (both only when the monster has no fixed gender), and the
+pantheon loop, which spins `randrole()` when the role has no lawful god —
+**Priest has `lgod = 0`, so Priest games always enter it.**
+Took startup-prefix reproduction from 27/44 to **39/44**, and debug-mode from
+3/13 to **13/13**.
 
 **M4.0 — `dungeon.c` initialisation.** `js/dungeon.js` ports `level_range`,
 `init_level`, `possible_places`, `pick_level`, `place_level` (recursive with

@@ -12,6 +12,7 @@ import { docrt, cls, bot, flush_screen, pline } from './display.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
+import { role_init, str2role, str2align } from './role.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step, fastforward_fill_mineralize } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -21,6 +22,16 @@ export async function newgame() {
     // src/allmain.c newgame() -> src/o_init.c init_objects().
     // The first 199 PRNG calls of every game, now real rather than replayed.
     init_objects();
+
+    // src/role.c role_init() — quest leader/nemesis fixups and the pantheon
+    // choice. Draws for leader and nemesis gender when the monster has none
+    // fixed, and spins randrole() when the role has no lawful god (Priest).
+    // Runs after o_init and before the nhlib.lua align shuffle.
+    {
+        const ir = str2role(g.rc?.opts?.role);
+        const ia = str2align(g.rc?.opts?.align);
+        role_init(ir < 0 ? 0 : ir, ia < 0 ? 1 : ia);
+    }
 
     // C ref: allmain.c l_nhcore_init() — shuffle align[] for Lua.
     // This is dat/nhlib.lua's `shuffle(align)`, which draws rn2(3), rn2(2)

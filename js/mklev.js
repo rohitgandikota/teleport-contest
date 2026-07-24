@@ -303,14 +303,9 @@ function getbones() {
 }
 
 // C ref: allmain.c l_nhcore_init()
-export function l_nhcore_init() {
-    const align = [0, 0, 0]; // A_LAWFUL, A_NEUTRAL, A_CHAOTIC
-    for (let i = align.length; i > 1; i--) {
-        const j = rn2(i);
-        [align[i - 1], align[j]] = [align[j], align[i - 1]];
-    }
-    game.splev_align = align;
-}
+/* l_nhcore_init() lives in js/nhlua.js now, where src/nhlua.c has it. Re-export
+   so mklev.js's existing callers and importers keep working. */
+export { l_nhcore_init } from './nhlua.js';
 
 // C ref: mklev.c mklev()
 export async function mklev() {

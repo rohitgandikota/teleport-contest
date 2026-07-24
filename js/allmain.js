@@ -19,6 +19,7 @@ import { newhp, newpw } from './exper.js';
 import { u_init_inventory } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr } from './attrib.js';
+import { com_pager } from './pager.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -126,6 +127,13 @@ export async function newgame() {
     // src/u_init.c:1385 — attributes, straight after the inventory.
     init_attr(75);
     vary_init_attr();
+
+    // src/allmain.c:831 — the legacy blurb. It draws because com_pager()
+    // creates its own Lua state, and every Lua state costs nhlib.lua's
+    // shuffle(align). `legacy` is opt_out (initval On), so it fires unless
+    // the rc says `!legacy`.
+    if (g.flags.legacy !== false)
+        com_pager(g.uroleplay?.pauper ? 'pauper_legacy' : 'legacy');
 
     // Fast-forward what is still replayed: allmain.c moveloop_preamble().
     fastforward_post_mklev();

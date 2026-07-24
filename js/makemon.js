@@ -8,12 +8,12 @@
 // changes the number of draws, not just their values.
 
 import { game } from './gstate.js';
-import { rn2, rnd, d } from './rng.js';
+import { rn2, rnd, rn1, d } from './rng.js';
 import {
     mons as MONS_INIT, PMNAMES, NUMMONS, MONSYMS, MSOUND, ATTKS, MFLAGS,
     MMFLAGS, LIMITS, STRAT,
 } from './monst_data.js';
-import { ONAMES, OCLASSES } from './objects_data.js';
+import { ONAMES, OCLASSES, SKILLS } from './objects_data.js';
 import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
@@ -42,7 +42,8 @@ const G_GONE = G_GENOD | G_EXTINCT;
 const { S_GOLEM, S_DRAGON, S_MIMIC, S_SPIDER, S_SNAKE, S_LIGHT, S_ELEMENTAL,
         S_EEL, S_LEPRECHAUN, S_JABBERWOCK, S_NYMPH, S_ORC, S_UNICORN, S_BAT,
         S_HUMAN, S_GIANT, S_WRAITH, S_LICH, S_MUMMY, S_QUANTMECH,
-        S_DEMON, S_GNOME } = MONSYMS;
+        S_DEMON, S_GNOME, S_ANGEL, S_HUMANOID, S_KOP, S_OGRE, S_TROLL,
+        S_KOBOLD, S_CENTAUR, S_ZOMBIE, S_LIZARD } = MONSYMS;
 const { MS_LEADER, MS_GUARDIAN, MS_NEMESIS, MS_PRIEST } = MSOUND;
 const { AT_WEAP, AD_ANY } = ATTKS;
 
@@ -758,7 +759,6 @@ function hideunder(mtmp) {
 // monster that rndmonst() can currently produce. Each records itself rather
 // than inventing a draw, so `game.unported` names the exact next thing to port.
 function set_mimic_sym(mtmp) { note_unported('set_mimic_sym'); }
-function m_initweap(mtmp) { note_unported(`m_initweap mlet=${mtmp.data.mlet}`); }
 function m_initsgrp(mtmp) { note_unported('m_initsgrp'); }
 function m_initlgrp(mtmp) { note_unported('m_initlgrp'); }
 function can_saddle(mtmp) { return mtmp.data.msize >= 2; /* MZ_MEDIUM */ }
@@ -777,6 +777,374 @@ function m_dowear(mtmp, creation) {
     if (!mtmp.minvent || mtmp.minvent.length === 0)
         return;   /* nothing to wear, nothing to draw */
     note_unported('m_dowear with inventory');
+}
+
+// include/mondata.h — the predicates m_initweap() branches on.
+const humanoid = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
+const is_elf = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
+const is_dwarf = (ptr) => (ptr.mflags2 & MFLAGS.M2_DWARF) !== 0;
+const is_mercenary = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;
+const extra_nasty = (ptr) => (ptr.mflags2 & MFLAGS.M2_NASTY) !== 0;
+const strongmonst = (ptr) => (ptr.mflags2 & M2_STRONG) !== 0;
+const is_lord = (ptr) => (ptr.mflags2 & MFLAGS.M2_LORD) !== 0;
+const is_prince = (ptr) => (ptr.mflags2 & MFLAGS.M2_PRINCE) !== 0;
+
+// src/quest.c — true when this monster stands in for the given role's quest
+// guardian. Every such species is G_NOGEN, so rndmonst() cannot produce one.
+const quest_mon_represents_role = () => false;
+
+// src/makemon.c:481 m_initthrow() — a stack of missiles.
+function m_initthrow(mtmp, otyp, oquan) {
+    const otmp = mksobj(otyp, true, false);
+    otmp.quan = rn1(oquan, 3);
+    if (otyp === ONAMES.ORCISH_ARROW)
+        otmp.opoisoned = true;
+    mpickobj(mtmp, otmp);
+}
+
+// src/muse.c rnd_offensive_item() — same gate as the defensive and misc
+// pickers: a monster that cannot use items returns 0 without drawing.
+function rnd_offensive_item(mtmp) {
+    if (!is_mplayer_or_user(mtmp))
+        return 0;
+    note_unported('rnd_offensive_item');
+    return 0;
+}
+
+// src/makemon.c:400 m_initweap() — species-specific weapons and armour.
+//
+// A long switch, but the RNG matters at every arm: the `default` case draws
+// rnd(14 - 2*bias) for ordinary monsters, so `bias` — which is
+// is_lord + 2*is_prince + extra_nasty — changes the argument, not just the
+// branch taken.
+function m_initweap(mtmp) {
+    const ptr = mtmp.data;
+    const mm = monsndx(ptr);
+    const P = PMNAMES, O = ONAMES;
+    let otmp, bias, w1, w2;
+
+    if (game.level?.flags?.is_rogue_level)
+        return;
+
+    switch (ptr.mlet) {
+    case S_GIANT:
+        if (rn2(2))
+            mongets(mtmp, (mm !== P.PM_ETTIN) ? O.BOULDER : O.CLUB);
+        if ((mm !== P.PM_ETTIN) && !rn2(5))
+            mongets(mtmp, rn2(2) ? O.TWO_HANDED_SWORD : O.BATTLE_AXE);
+        break;
+
+    case S_HUMAN:
+        if (is_mercenary(ptr)) {
+            w1 = w2 = 0;
+            switch (mm) {
+            case P.PM_WATCHMAN:
+            case P.PM_SOLDIER:
+                if (!rn2(3)) {
+                    do {
+                        w1 = rn1(O.BEC_DE_CORBIN - O.PARTISAN + 1, O.PARTISAN);
+                    } while (game.objects[w1].oc_subtyp !== SKILLS.P_POLEARMS);
+                    w2 = rn2(2) ? O.DAGGER : O.KNIFE;
+                } else {
+                    w1 = rn2(2) ? O.SPEAR : O.SHORT_SWORD;
+                }
+                break;
+            case P.PM_SERGEANT:
+                w1 = rn2(2) ? O.FLAIL : O.MACE;
+                break;
+            case P.PM_LIEUTENANT:
+                w1 = rn2(2) ? O.BROADSWORD : O.LONG_SWORD;
+                break;
+            case P.PM_CAPTAIN:
+            case P.PM_WATCH_CAPTAIN:
+                w1 = rn2(2) ? O.LONG_SWORD : O.SILVER_SABER;
+                break;
+            default:
+                if (!rn2(4)) w1 = O.DAGGER;
+                if (!rn2(7)) w2 = O.SPEAR;
+                break;
+            }
+            if (w1) mongets(mtmp, w1);
+            if (!w2 && w1 !== O.DAGGER && !rn2(4)) w2 = O.KNIFE;
+            if (w2) mongets(mtmp, w2);
+        } else if (is_elf(ptr)) {
+            if (rn2(2))
+                mongets(mtmp, rn2(2) ? O.ELVEN_MITHRIL_COAT : O.ELVEN_CLOAK);
+            if (rn2(2)) mongets(mtmp, O.ELVEN_LEATHER_HELM);
+            else if (!rn2(4)) mongets(mtmp, O.ELVEN_BOOTS);
+            if (rn2(2)) mongets(mtmp, O.ELVEN_DAGGER);
+            switch (rn2(3)) {
+            case 0:
+                if (!rn2(4)) mongets(mtmp, O.ELVEN_SHIELD);
+                if (rn2(3)) mongets(mtmp, O.ELVEN_SHORT_SWORD);
+                mongets(mtmp, O.ELVEN_BOW);
+                m_initthrow(mtmp, O.ELVEN_ARROW, 12);
+                break;
+            case 1:
+                mongets(mtmp, O.ELVEN_BROADSWORD);
+                if (rn2(2)) mongets(mtmp, O.ELVEN_SHIELD);
+                break;
+            case 2:
+                if (rn2(2)) {
+                    mongets(mtmp, O.ELVEN_SPEAR);
+                    mongets(mtmp, O.ELVEN_SHIELD);
+                }
+                break;
+            default:
+                break;
+            }
+            if (mm === P.PM_ELVEN_MONARCH) {
+                if (rn2(3)) mongets(mtmp, O.PICK_AXE);
+                if (!rn2(50)) mongets(mtmp, O.CRYSTAL_BALL);
+            }
+        } else if (ptr.msound === MS_PRIEST
+                   || quest_mon_represents_role(ptr, P.PM_CLERIC)) {
+            otmp = mksobj(O.MACE, false, false);
+            otmp.spe = rnd(3);
+            if (!rn2(2)) { otmp.cursed = 1; otmp.blessed = 0; }
+            mpickobj(mtmp, otmp);
+        } else if (mm === P.PM_NINJA) {
+            mongets(mtmp, rn2(4) ? O.SHURIKEN : O.DART);
+            mongets(mtmp, rn2(4) ? O.SHORT_SWORD : O.AXE);
+        } else if (ptr.msound === MS_GUARDIAN) {
+            switch (mm) {
+            case P.PM_STUDENT: case P.PM_ATTENDANT: case P.PM_ABBOT:
+            case P.PM_ACOLYTE: case P.PM_GUIDE: case P.PM_APPRENTICE:
+                if (rn2(2)) mongets(mtmp, rn2(3) ? O.DAGGER : O.KNIFE);
+                if (rn2(5))
+                    mongets(mtmp, rn2(3) ? O.LEATHER_JACKET : O.LEATHER_CLOAK);
+                if (rn2(3)) mongets(mtmp, rn2(3) ? O.LOW_BOOTS : O.HIGH_BOOTS);
+                if (rn2(3)) mongets(mtmp, O.POT_HEALING);
+                break;
+            case P.PM_CHIEFTAIN: case P.PM_PAGE: case P.PM_ROSHI:
+            case P.PM_WARRIOR:
+                mongets(mtmp, rn2(3) ? O.LONG_SWORD : O.SHORT_SWORD);
+                mongets(mtmp, rn2(3) ? O.CHAIN_MAIL : O.LEATHER_ARMOR);
+                if (rn2(2)) mongets(mtmp, rn2(2) ? O.LOW_BOOTS : O.HIGH_BOOTS);
+                if (!rn2(3)) mongets(mtmp, O.LEATHER_CLOAK);
+                if (!rn2(3)) {
+                    mongets(mtmp, O.BOW);
+                    m_initthrow(mtmp, O.ARROW, 12);
+                }
+                break;
+            case P.PM_HUNTER:
+                mongets(mtmp, rn2(3) ? O.SHORT_SWORD : O.DAGGER);
+                if (rn2(2))
+                    mongets(mtmp, rn2(2) ? O.LEATHER_JACKET : O.LEATHER_ARMOR);
+                mongets(mtmp, O.BOW);
+                m_initthrow(mtmp, O.ARROW, 12);
+                break;
+            case P.PM_THUG:
+                mongets(mtmp, O.CLUB);
+                mongets(mtmp, rn2(3) ? O.DAGGER : O.KNIFE);
+                if (rn2(2)) mongets(mtmp, O.LEATHER_GLOVES);
+                mongets(mtmp, rn2(2) ? O.LEATHER_JACKET : O.LEATHER_ARMOR);
+                break;
+            case P.PM_NEANDERTHAL:
+                mongets(mtmp, O.CLUB);
+                mongets(mtmp, O.LEATHER_ARMOR);
+                break;
+            default:
+                break;
+            }
+        }
+        break;
+
+    case S_ANGEL:
+        if (humanoid(ptr)) {
+            const typ = rn2(3) ? O.LONG_SWORD : O.SILVER_MACE;
+            otmp = mksobj(typ, false, false);
+            if ((!rn2(20) || is_lord(ptr))
+                && sgn(ptr.maligntyp) === 1 /* A_LAWFUL */)
+                note_unported('oname (Sunsword/Demonbane)');
+            otmp.blessed = 1; otmp.cursed = 0;
+            otmp.oerodeproof = true;
+            otmp.spe = rn2(4);
+            if (typ === O.SILVER_MACE) otmp.spe += 3;
+            mpickobj(mtmp, otmp);
+
+            otmp = mksobj(!rn2(4) || is_lord(ptr) ? O.SHIELD_OF_REFLECTION
+                                                  : O.LARGE_SHIELD,
+                          false, false);
+            otmp.oerodeproof = true;
+            otmp.spe = 0;
+            mpickobj(mtmp, otmp);
+        }
+        break;
+
+    case S_HUMANOID:
+        if (mm === P.PM_HOBBIT) {
+            switch (rn2(3)) {
+            case 0: mongets(mtmp, O.DAGGER); break;
+            case 1: mongets(mtmp, O.ELVEN_DAGGER); break;
+            case 2:
+                mongets(mtmp, O.SLING);
+                m_initthrow(mtmp, !rn2(4) ? O.FLINT : O.ROCK, 6);
+                break;
+            default: break;
+            }
+            if (!rn2(10)) mongets(mtmp, O.ELVEN_MITHRIL_COAT);
+            if (!rn2(10)) mongets(mtmp, O.DWARVISH_CLOAK);
+        } else if (is_dwarf(ptr)) {
+            if (rn2(7)) mongets(mtmp, O.DWARVISH_CLOAK);
+            if (rn2(7)) mongets(mtmp, O.IRON_SHOES);
+            if (!rn2(4)) {
+                mongets(mtmp, O.DWARVISH_SHORT_SWORD);
+                if (rn2(2)) {
+                    mongets(mtmp, O.DWARVISH_MATTOCK);
+                } else {
+                    mongets(mtmp, rn2(2) ? O.AXE : O.DWARVISH_SPEAR);
+                    mongets(mtmp, O.DWARVISH_ROUNDSHIELD);
+                }
+                mongets(mtmp, O.DWARVISH_IRON_HELM);
+                if (!rn2(3)) mongets(mtmp, O.DWARVISH_MITHRIL_COAT);
+            } else {
+                mongets(mtmp, !rn2(3) ? O.PICK_AXE : O.DAGGER);
+            }
+        }
+        break;
+
+    case S_KOP:
+        if (!rn2(4)) m_initthrow(mtmp, O.CREAM_PIE, 2);
+        if (!rn2(3)) mongets(mtmp, rn2(2) ? O.CLUB : O.RUBBER_HOSE);
+        break;
+
+    case S_ORC: {
+        if (rn2(2)) mongets(mtmp, O.ORCISH_HELM);
+        const which = (mm !== P.PM_ORC_CAPTAIN) ? mm
+                    : rn2(2) ? P.PM_MORDOR_ORC : P.PM_URUK_HAI;
+        switch (which) {
+        case P.PM_MORDOR_ORC:
+            if (!rn2(3)) mongets(mtmp, O.SCIMITAR);
+            if (!rn2(3)) mongets(mtmp, O.ORCISH_SHIELD);
+            if (!rn2(3)) mongets(mtmp, O.KNIFE);
+            if (!rn2(3)) mongets(mtmp, O.ORCISH_CHAIN_MAIL);
+            break;
+        case P.PM_URUK_HAI:
+            if (!rn2(3)) mongets(mtmp, O.ORCISH_CLOAK);
+            if (!rn2(3)) mongets(mtmp, O.ORCISH_SHORT_SWORD);
+            if (!rn2(3)) mongets(mtmp, O.IRON_SHOES);
+            if (!rn2(3)) {
+                mongets(mtmp, O.ORCISH_BOW);
+                m_initthrow(mtmp, O.ORCISH_ARROW, 12);
+            }
+            if (!rn2(3)) mongets(mtmp, O.URUK_HAI_SHIELD);
+            break;
+        default:
+            if (mm !== P.PM_ORC_SHAMAN && rn2(2))
+                mongets(mtmp, (mm === P.PM_GOBLIN || rn2(2) === 0)
+                              ? O.ORCISH_DAGGER : O.SCIMITAR);
+            break;
+        }
+        break;
+    }
+
+    case S_OGRE:
+        if (!rn2(mm === P.PM_OGRE_TYRANT ? 3
+                 : mm === P.PM_OGRE_LEADER ? 6 : 12))
+            mongets(mtmp, O.BATTLE_AXE);
+        else
+            mongets(mtmp, O.CLUB);
+        break;
+
+    case S_TROLL:
+        if (!rn2(2))
+            switch (rn2(4)) {
+            case 0: mongets(mtmp, O.RANSEUR); break;
+            case 1: mongets(mtmp, O.PARTISAN); break;
+            case 2: mongets(mtmp, O.GLAIVE); break;
+            case 3: mongets(mtmp, O.SPETUM); break;
+            default: break;
+            }
+        break;
+
+    case S_KOBOLD:
+        if (!rn2(4)) m_initthrow(mtmp, O.DART, 12);
+        break;
+
+    case S_CENTAUR:
+        if (rn2(2)) {
+            if (mm === P.PM_FOREST_CENTAUR) {
+                mongets(mtmp, O.BOW);
+                m_initthrow(mtmp, O.ARROW, 12);
+            } else {
+                mongets(mtmp, O.CROSSBOW);
+                m_initthrow(mtmp, O.CROSSBOW_BOLT, 12);
+            }
+        }
+        break;
+
+    case S_WRAITH:
+        mongets(mtmp, O.KNIFE);
+        mongets(mtmp, O.LONG_SWORD);
+        break;
+
+    case S_ZOMBIE:
+        if (!rn2(4)) mongets(mtmp, O.LEATHER_ARMOR);
+        if (!rn2(4)) mongets(mtmp, rn2(3) ? O.KNIFE : O.SHORT_SWORD);
+        break;
+
+    case S_LIZARD:
+        if (mm === P.PM_SALAMANDER)
+            mongets(mtmp, rn2(7) ? O.SPEAR : rn2(3) ? O.TRIDENT : O.STILETTO);
+        break;
+
+    case S_DEMON:
+        switch (mm) {
+        case P.PM_BALROG:
+            mongets(mtmp, O.BULLWHIP);
+            mongets(mtmp, O.BROADSWORD);
+            break;
+        case P.PM_ORCUS: mongets(mtmp, O.WAN_DEATH); break;
+        case P.PM_HORNED_DEVIL:
+            mongets(mtmp, rn2(4) ? O.TRIDENT : O.BULLWHIP);
+            break;
+        case P.PM_DISPATER: mongets(mtmp, O.WAN_STRIKING); break;
+        case P.PM_YEENOGHU: mongets(mtmp, O.FLAIL); break;
+        default: break;
+        }
+        /* djinn and mail daemons stop here so they leave nothing behind */
+        if (!is_demon(ptr))
+            break;
+        /* FALLTHRU */
+    default:
+        /* the general case: `bias` changes rnd()'s argument, not just the
+           branch, so getting it wrong changes the value as well as the pick */
+        bias = (is_lord(ptr) ? 1 : 0) + (is_prince(ptr) ? 2 : 0)
+             + (extra_nasty(ptr) ? 1 : 0);
+        switch (rnd(14 - (2 * bias))) {
+        case 1:
+            if (strongmonst(ptr)) mongets(mtmp, O.BATTLE_AXE);
+            else m_initthrow(mtmp, O.DART, 12);
+            break;
+        case 2:
+            if (strongmonst(ptr)) {
+                mongets(mtmp, O.TWO_HANDED_SWORD);
+            } else {
+                mongets(mtmp, O.CROSSBOW);
+                m_initthrow(mtmp, O.CROSSBOW_BOLT, 12);
+            }
+            break;
+        case 3:
+            mongets(mtmp, O.BOW);
+            m_initthrow(mtmp, O.ARROW, 12);
+            break;
+        case 4:
+            if (strongmonst(ptr)) mongets(mtmp, O.LONG_SWORD);
+            else m_initthrow(mtmp, O.DAGGER, 3);
+            break;
+        case 5:
+            if (strongmonst(ptr)) mongets(mtmp, O.LUCERN_HAMMER);
+            else mongets(mtmp, O.AKLYS);
+            break;
+        default:
+            break;
+        }
+        break;
+    }
+
+    if (mtmp.m_lev > rn2(75))
+        mongets(mtmp, rnd_offensive_item(mtmp));
 }
 
 // src/makemon.c:1180 makemon()

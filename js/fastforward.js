@@ -36,18 +36,12 @@ export function fastforward_pre_mklev() {
     rn2(10);
 }
 
-// Post-mklev startup: attributes + moveloop_preamble.
+// Post-mklev startup: allmain.c moveloop_preamble() only.
 //
-// u_init_role(), u_init_race() and ini_inv() used to be replayed here; they
-// are now produced by the real port in js/u_init.js. What is left is
-// src/attrib.c init_attr()/rnd_attr()/vary_init_attr() and allmain.c
-// moveloop_preamble() — 37 leaf RNG calls, transcribed from the recording.
+// src/attrib.c init_attr()/rnd_attr()/vary_init_attr() used to be replayed here
+// too; they are now produced by the real port in js/attrib.js. 2 leaf calls
+// left in this block.
 export function fastforward_post_mklev() {
-    /* attrib.c rnd_attr() */
-    rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100);
-    /* attrib.c vary_init_attr() */
-    rn2(20); rn2(20); rn2(20); rn2(7); rn2(20); rn2(20); rn2(20);
-    /* allmain.c moveloop_preamble() */
     rnd(9000); rnd(30);
 }
 

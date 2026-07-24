@@ -18,6 +18,7 @@ import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
 import { u_init_inventory } from './u_init.js';
 import { makedog } from './dog.js';
+import { init_attr, vary_init_attr } from './attrib.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -122,8 +123,11 @@ export async function newgame() {
     // src/u_init.c:1374 — role inventory, race extras and starting gold.
     u_init_inventory();
 
-    // Fast-forward what is still replayed after it: src/attrib.c init_attr()
-    // and allmain.c moveloop_preamble().
+    // src/u_init.c:1385 — attributes, straight after the inventory.
+    init_attr(75);
+    vary_init_attr();
+
+    // Fast-forward what is still replayed: allmain.c moveloop_preamble().
     fastforward_post_mklev();
 
     // Hardcoded player state for seed8000 Tourist.
@@ -134,8 +138,6 @@ export async function newgame() {
     g.u.uen = 2; g.u.uenmax = 2;
     g.u.uac = 10; g.u.uexp = 0;
     g.u.ualign = { type: 0, record: 0 };
-    g.u.acurr = { a: [9, 14, 12, 11, 16, 16] };
-    g.u.amax = { a: [9, 14, 12, 11, 16, 16] };
     g.moves = 1;
     g.urole = { name: { m: 'Tourist', f: 'Tourist' }, rank: { m: 'Rambler', f: 'Rambler' } };
     g.urace = { adj: 'human' };

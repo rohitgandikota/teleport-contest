@@ -274,6 +274,7 @@ The four found so far:
 | Where | Wrong | Effect |
 |---|---|---|
 | `mklev.js` object constants | 21 of 23, plus 7 of 8 classes | see below |
+| `mkobj.js` `P_BOW` / `P_SHURIKEN` | both | were 26 and 31, real values 20 and 24, so `is_multigen()` was false for every dart and arrow and the `rn1(6,6)` stack-size draw never happened |
 | `mklev.js` trap constants | 18 of 25, `BEAR_TRAP` absent | `SQKY_BOARD` was 5, which is really `BEAR_TRAP`, so every bear trap looked like a squeaky board and skipped `mktrap_victim()` — about 25 missing draws per trap |
 | `makemon.js` `G_GENOD`/`G_EXTINCT` | both | wrong G_ family, see next section |
 | `mklev.js` `MM_NOGRP` passed as `2` | — | real value `0x2000`; `2` is `MM_NOWAIT`, so the group-spawn branch fired for every `G_SGROUP`/`G_LGROUP` species |
@@ -342,8 +343,31 @@ the flag families the preprocessor removes: `MFLAGS` (`M1_`/`M2_`/`M3_`/`G_`
 from `monflag.h`), `MMFLAGS` (`MM_` from `hack.h`), `ATTKS` (`AT_`/`AD_` from
 `monattk.h`), `STRAT` (`monst.h`) and `LIMITS` (`MAXMONNO`).
 
-**If you add a generator, resolve its enums, and verify with a check that no
-field came out as a string.**
+Resolution must also handle **negated** identifiers. `oc_skill` (`oc_subtyp`)
+stores thrown-weapon skills as `-P_DART`, and a resolver that only matched bare
+identifiers left that as the string `"-P_DART"` — so no skill comparison could
+ever be true, and the defect looked exactly like the two above.
+
+**If you add a generator, resolve its enums (including negated ones), and
+verify with a check that no field came out as a string.** A one-line assertion
+is enough:
+
+```js
+objects.filter(o => Object.values(o).some(v => typeof v === 'string'
+    && /^-?[A-Z][A-Z0-9_]*$/.test(v)))   // must be empty
+```
+
+## trquan() is called twice per weapon or tool entry
+
+`ini_inv()` (src/u_init.c) draws the quantity once in its own loop and
+`ini_inv_adjust_obj()` draws it *again* for `WEAPON_CLASS` and `TOOL_CLASS`
+before returning "stop". Porting only the first call loses one draw per weapon
+entry and shifts everything after it.
+
+The other easy miss in the same area: `ini_inv(Money)` runs after
+`u_init_race()` when `u.umoney0` is non-zero, contributing an `rn2(1)` from
+`trquan` plus a `next_ident`. Those two look like the head of the attribute
+block that follows and are easy to attribute to the wrong function.
 
 ## Reached-but-unported paths are recorded, not approximated
 

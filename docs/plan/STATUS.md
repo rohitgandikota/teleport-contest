@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **seed8000 level generation is exact**; 3103/3130 calls, 19/23 frames
+Last updated: **2026-07-24** · **seed8000 startup is exact end to end**; 3103/3130 calls, 19/23 frames
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -44,8 +44,36 @@ inventory instead of replaying it.
 
 ### The exact next action — READ THIS FIRST
 
-**Wire `js/tty/wintty.js` to a consumer and port `u_init`'s `ini_inv`.** This is
-the shortest path to the project's first complete session.
+**Port `m_initweap` (src/makemon.c:400-470), then start M9a.** `m_initweap` is
+now the second-largest blocker at 4 sessions and needs nothing that is missing:
+`mongets()` and the object tables are in place, and it is a mechanical switch
+on `mlet`. M9a (the Lua core, 11 sessions) remains the single largest lever.
+
+**`u_init` is done** — `js/u_init.js` computes the starting inventory for real,
+and `js/fastforward.js` is down to 69 lines. The remaining replayed blocks are
+37 calls of `src/attrib.c` `init_attr`/`vary_init_attr` plus
+`moveloop_preamble`, and 127 calls of per-step monster movement.
+
+### The four remaining seed8000 frames need object naming, not inventory
+
+With `ini_inv` real, `game.invent` holds the right 21 items and `game.disco`
+has the discoveries. What steps 11, 15, 17 and 18 still need is:
+
+- `src/objnam.c` `doname()`/`xname()` to render an item as
+  "27 poisoned darts (in quiver pouch)". This is a large subsystem and is the
+  actual gate now.
+- `src/invent.c` `display_inventory` and `src/o_init.c` `dodiscovered` to feed
+  `js/tty/wintty.js`, which already produces the exact geometry those frames
+  want ([38,20] for the inventory menu, [9,23] for attributes).
+- `src/insight.c` `enlightenment()` for the attributes text.
+
+Do not start these expecting a quick win; `doname()` is comparable in size to
+`m_initweap` plus the Lua core.
+
+### The previous next action (done)
+
+**Wire `js/tty/wintty.js` to a consumer and port `u_init`'s `ini_inv`.** The
+`ini_inv` half is complete.
 
 seed8000 now matches **19 of its 23 frames**, and every cell of the other four is
 right except that nothing draws the window. The four are:

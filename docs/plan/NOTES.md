@@ -211,6 +211,33 @@ between them. Two things to know when M10.6 gets there:
   `isaac64_init` takes seed bytes. Building the display context will need a
   zero-state equivalent assembled by hand.
 
+## o_init.c is the first RNG consumer in every session
+
+Measured across all 44 public sessions. **Every session's very first PRNG call
+is `rn2(2) @ randomize_gem_colors(o_init.c:89)`.** Nothing in the stream precedes
+it, so nothing downstream can align until `o_init` is right.
+
+Exact call sites and volumes across the corpus:
+
+```
+10725  shuffle(o_init.c:129)          the bulk — description shuffling
+   55  randomize_gem_colors:89/92/95  rn2(2), rn2(2), rn2(4), once per segment
+   55  init_objects:234               objects[WAN_NOTHING].oc_dir = rn2(2) ? ...
+```
+
+(55 rather than 44 because the corpus has 56 segments, not 44.)
+
+**`options.c` and `cfgfiles.c` never appear in any RNG log.** Option parsing
+consumes zero randomness for these rc files, so the parser has no ordering
+constraint against the stream. `role.c` does appear, in 21/44 sessions but only
+42 calls total — random role/race selection when the rc does not pin them.
+
+**The dependency this creates:** `shuffle()` walks `objects[]` and its draw count
+depends on `oc_name_known` and the class ranges, so porting `o_init` requires the
+object data table first. That table is `include/objects.h` — 1,659 lines, 361+
+macro entries, the same generatable shape as `optlist.h`. Generate it, do not
+transcribe it.
+
 ## Measured port priority
 
 Top C files by how many sessions execute them, from `coverage-map.md`. All of

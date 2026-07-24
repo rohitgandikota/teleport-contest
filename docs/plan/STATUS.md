@@ -29,22 +29,34 @@ is done.
 
 | | |
 |---|---|
-| **Current milestone** | M2 — options, rc parsing, chargen. **2.2, 2.3, 2.4 done**; 2.1, 2.5, 2.6 open |
+| **Current milestone** | M2 — options, rc parsing, chargen. **2.1, 2.2, 2.3, 2.4 done**; 2.7, 2.5, 2.6 open |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-Continue [02-options-and-chargen.md](02-options-and-chargen.md) at item **2.1**,
-the role / race / gender / alignment data tables from `src/role.c`. Generate
-them with a `tools/gen-*.mjs` script — `tools/gen-optlist.mjs` is the working
-pattern to copy, including its two gotchas: skip `#define` lines when scanning
-for macro invocations, and step over string literals when matching balanced
-parens or descriptions containing `)` will swallow the following entries.
+Do [02-options-and-chargen.md](02-options-and-chargen.md) item **2.7**,
+`o_init` — which measurement inserted ahead of `u_init`. Every session's very
+first PRNG call is `randomize_gem_colors(o_init.c:89)`, and `o_init` accounts for
+10,945 calls across 44/44 sessions, so nothing later in the stream can align
+until it does.
 
-Then 2.5 (`u_init`) and 2.6 (chargen prompt flow), which together are the rest
-of chargen.
+Two steps, in order:
+
+1. **Generate the object table.** `tools/gen-objects.mjs` parsing
+   `include/objects.h` (1,659 lines, 361+ macro entries) into
+   `js/objects_data.js`. Copy the `tools/gen-optlist.mjs` pattern, including its
+   two gotchas: skip `#define` lines when scanning for macro invocations, and
+   step over string literals when balancing parens, or a description containing
+   `)` swallows every following entry.
+2. **Port `src/o_init.c`**: `randomize_gem_colors`, `shuffle`,
+   `obj_shuffle_range`, `shuffle_all`, `init_objects`, `init_oclass_probs`.
+
+**Success signal:** `node tools/diverge.mjs <session>` moves its first-divergence
+index from 0 to roughly 200+ on *every* session at once. Screens stay at zero.
+
+Then 2.5 (`u_init`) and 2.6 (chargen prompt flow).
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

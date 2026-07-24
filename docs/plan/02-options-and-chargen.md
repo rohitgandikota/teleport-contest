@@ -77,27 +77,11 @@ array terminators.
 - [ ] Options are parsed and stored but most are not yet *acted on*. That is
       correct for now — behaviour lands with the subsystem that needs it.
 
-### 2.2b Original checklist, for reference
-
-`input.nethackrc` is a multi-line `OPTIONS=` blob. It drives name, role, race,
-gender, alignment, pet type, autopickup, `msg_window`, symset, and more. Only the
-options the sessions actually set need behaviour, but the *parser* must be
-general — a held-out session may set an option no public session does.
-
-- [ ] Enumerate which options appear across all 44 public `nethackrc` blobs
-      (script it; do not read 44 files by hand)
-- [ ] Port the parser from `src/options.c` (`parseoptions` and its dispatch)
-      faithfully, including unknown-option handling and error messages
-- [ ] Port `src/cfgfiles.c` rc-file reading for the entry path used here
-- [ ] Options that are parsed but not yet acted on must be *stored*, never
-      silently dropped
-
-**Verify:** parsing all 44 blobs produces no errors and no unknown-option
-warnings that C would not produce.
-
-**Careful:** option parsing itself can consume RNG in some paths (e.g. random
-role selection). Check the C caller annotations at the head of each session's RNG
-log to see what runs before chargen proper.
+**Still open here.** The parser is general, but option parsing in the C can
+itself consume RNG on some paths (random role selection, for one). Check the C
+caller annotations at the head of each session's RNG log to see exactly what runs
+before chargen proper, and make sure our parse consumes the same draws — or
+none, if C consumes none for these rc files.
 
 ### 2.3 Fixed datetime — DONE
 
@@ -167,6 +151,28 @@ DST transition and compare `hhmmss` against C.
       see [NOTES.md](NOTES.md). It is not scored and needs a zero-initialised
       ISAAC64 context that `js/isaac64.js` has no constructor for.
 - [ ] Lua context — M9a.
+
+### 2.7 `o_init` — the first RNG consumer (DO THIS BEFORE 2.5)
+
+Measurement put this ahead of `u_init` in the stream: every session's first PRNG
+call is `randomize_gem_colors(o_init.c:89)`, and `o_init` accounts for 10,945
+calls across 44/44 sessions. Until it matches, no later call can.
+
+- [ ] Generate the object table: `tools/gen-objects.mjs` parsing
+      `include/objects.h` (1,659 lines, 361+ macro entries) into
+      `js/objects_data.js`. Reuse the `tools/gen-optlist.mjs` pattern — skip
+      `#define` lines, and step over string literals when balancing parens.
+- [ ] Port `src/o_init.c` `randomize_gem_colors` (o_init.c:85), `shuffle`
+      (:113), `obj_shuffle_range` (:269), `shuffle_all` (:322), `init_objects`
+      (:151), `init_oclass_probs` (:240)
+- [ ] `shuffle()`'s draw count depends on `oc_name_known` and the class ranges,
+      so the object table must be faithful before the counts can match
+- [ ] `init_objects` ends with `objects[WAN_NOTHING].oc_dir = rn2(2) ? ...` —
+      one draw, easy to forget, and it shifts everything after it
+
+**Verify:** `node tools/diverge.mjs <session>` should move its first-divergence
+index from 0 to roughly 200+ on *every* session at once. That is the signal this
+milestone is working; the screen score will still be zero.
 
 ### 2.5 `u_init` and attribute rolling
 

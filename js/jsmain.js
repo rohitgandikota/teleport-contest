@@ -87,6 +87,12 @@ export class NethackGame {
 
         // Parse nethackrc. `rc.opts` is keyed by canonical option name, as
         // resolved against the generated table in js/optlist.js.
+        // src/calendar.c getnow() reads this instead of the host clock, the
+        // way patch 001 makes the recorder read NETHACK_FIXED_DATETIME.
+        // Nothing in js/ may call Date.now(): output must not depend on when
+        // it ran.
+        g.fixed_datetime = this._datetime;
+
         const rc = parseNethackrc(this._nethackrc);
         g.rc = rc;
         g.plname = optValue(rc, 'name') || 'Hero';

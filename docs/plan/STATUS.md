@@ -29,23 +29,22 @@ is done.
 
 | | |
 |---|---|
-| **Current milestone** | M2 — options, rc parsing, chargen. **2.4 and 2.2 done**; 2.1, 2.3, 2.5, 2.6 open |
+| **Current milestone** | M2 — options, rc parsing, chargen. **2.2, 2.3, 2.4 done**; 2.1, 2.5, 2.6 open |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-Continue [02-options-and-chargen.md](02-options-and-chargen.md) at item **2.3**,
-the calendar (`src/calendar.c`): `phase_of_the_moon`, `friday_13th`, `night`,
-`midnight`, and the date accessors, all driven from `input.datetime` and never
-from the host clock.
+Continue [02-options-and-chargen.md](02-options-and-chargen.md) at item **2.1**,
+the role / race / gender / alignment data tables from `src/role.c`. Generate
+them with a `tools/gen-*.mjs` script — `tools/gen-optlist.mjs` is the working
+pattern to copy, including its two gotchas: skip `#define` lines when scanning
+for macro invocations, and step over string literals when matching balanced
+parens or descriptions containing `)` will swallow the following entries.
 
-It is small, self-contained, and unblocks two sessions whose behaviour depends on
-it (`seed0013-rogue-friday13-combat`, `seed0016-healer-newmoon-eat-zap`).
-
-Then 2.1 (role/race data tables — reuse `tools/gen-optlist.mjs` as the pattern),
-2.5 (`u_init`), 2.6 (chargen prompt flow).
+Then 2.5 (`u_init`) and 2.6 (chargen prompt flow), which together are the rest
+of chargen.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -90,6 +89,11 @@ hand-porting 131 scripts. Scoping measured, rationale recorded in
 bug in `d(n,x)`, added the missing `rnl(x)`, added `sgn()` to `js/hacklib.js`,
 verified seeding and the full log format against the recordings. First code
 change to `js/` in the project.
+
+**M2.3 — calendar.** `js/calendar.js` ports all of `src/calendar.c`, driven
+from `input.datetime` via `game.fixed_datetime`. Verified against four session
+filenames that assert calendar properties (two Friday-the-13th, one full moon,
+one new moon) — all four reproduce. Audited `js/` for host-clock reads: none.
 
 **M2.2 — options and rc parsing.** `js/optlist.js` is now generated from
 `include/optlist.h` by `tools/gen-optlist.mjs` (255 options, count verified

@@ -89,20 +89,46 @@ warnings that C would not produce.
 role selection). Check the C caller annotations at the head of each session's RNG
 log to see what runs before chargen proper.
 
-### 2.3 Fixed datetime
+### 2.3 Fixed datetime — DONE
 
 `NETHACK_FIXED_DATETIME` pins the clock. C uses it for moon phase, Friday the
 13th luck penalty, hire dates, and shopkeeper greetings.
 
-- [ ] Port `src/calendar.c` (`phase_of_the_moon`, `friday_13th`, `night`,
-      `midnight`, and the date accessors)
-- [ ] `input.datetime` ("YYYYMMDDHHMMSS") feeds all of them
-- [ ] No use of the host clock anywhere in `js/`
+- [x] `js/calendar.js` ports all of `src/calendar.c`: `getnow`, `getlt`,
+      `getyear`, `yyyymmdd`, `hhmmss`, `yyyymmddhhmmss`,
+      `time_from_yyyymmddhhmmss`, `phase_of_the_moon`, `friday_13th`, `night`,
+      `midnight`
+- [x] `input.datetime` feeds all of them via `game.fixed_datetime`, set in
+      `js/jsmain.js` — mirroring how patch 001 makes `getnow()` read the env var
+- [x] `struct tm` field semantics preserved, in particular `tm_year` as
+      (year - 1900). `phase_of_the_moon` uses `tm_year % 19`, so storing a plain
+      year would silently shift the moon.
+- [x] Day-of-week and day-of-year computed in UTC so no host timezone can
+      perturb them
+- [x] `getlt()` throws rather than falling back to the host clock when no
+      datetime is set — a silent fallback would make output depend on run time
+- [x] **Audited: no `Date.now()` / `new Date()` anywhere in `js/`**
 
-**Verify:** `seed0013-rogue-friday13-combat` and
-`seed0016-healer-newmoon-eat-zap` compute the same moon phase and luck penalty as
-C. The second segment of `seed0013-friday13-save-then-fullmoon-restore` changes
-the moon phase across a restore, which is a good end-to-end check later.
+**Verified against the sessions' own names**, which assert calendar properties:
+
+| Session | datetime | result |
+|---|---|---|
+| `seed0013-rogue-friday13-combat` | 20001013090000 | Fri the 13th ✓ |
+| `seed0013-…-save-then-fullmoon-restore` seg 1 | 20001013090000 | Fri the 13th ✓ |
+| `seed0013-…-save-then-fullmoon-restore` seg 2 | 20001111120000 | moon phase 4, **full** ✓ |
+| `seed0016-healer-newmoon-eat-zap` | 20000205090000 | moon phase 0, **new** ✓ |
+
+All four match what the filenames claim, which is independent confirmation the
+arithmetic is right.
+
+**Known risk, not yet exercised.** The C's `time_from_yyyymmddhhmmss` builds a
+`struct tm` by copying the *current* time's `tm_isdst` and then calling
+`mktime()`. If the fixed datetime falls on the other side of a DST boundary from
+the recording machine's clock, `mktime`/`localtime` can round-trip an hour off,
+which would move `hhmmss`, `night`, and `midnight`. Our port sidesteps this by
+treating the string as literal calendar fields. No public session appears to be
+affected. To check: record a session with a datetime an hour either side of a US
+DST transition and compare `hhmmss` against C.
 
 ### 2.4 RNG wrappers — DONE
 

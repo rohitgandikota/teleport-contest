@@ -13,6 +13,7 @@ import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
          IS_WALL, IS_OBSTRUCTED } from './const.js';
 import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME } from './invent.js';
+import { dovspell } from './spell.js';
 
 // Direction deltas: y u k
 //                   h . l
@@ -29,7 +30,6 @@ function isMovementKey(ch) {
 // than hiding behind a catch-all.
 const KNOWN_UNPORTED = new Set([
     'i',      // ddoinv       — inventory menu
-    '+',      // dovspell     — list known spells
     '\\',    // dodiscovered — discoveries
     '\x18',   // doattributes — ^X
     '\x1b',   // ESC          — dismiss / cancel
@@ -65,6 +65,9 @@ export async function rhack(key) {
     } else if (ch === 's') {
         // src/cmd.c cmdlist — 's' is dosearch, which returns ECMD_TIME.
         game.context.move = (dosearch() ? 1 : 0);
+    } else if (ch === '+') {
+        // src/cmd.c cmdlist — '+' is dovspell.
+        game.context.move = (dovspell() === ECMD_TIME ? 1 : 0);
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.

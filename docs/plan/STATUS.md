@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **18 screens**; seed8000 at 18/23
+Last updated: **2026-07-24** · **19 screens**; seed8000 at 19/23
 
 ---
 
@@ -34,29 +34,23 @@ consumer in every single session.
 | **Current milestone** | **M3 tty windowport** — nothing writes to the terminal, so no screen can score |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
-| **Score** | **18/11,405 screens**, 0/44 sessions passing |
+| **Score** | **19/11,405 screens**, 0/44 sessions passing |
 
 ### The exact next action
 
-**seed8000 is at 18/23. All 5 remaining frames need the tty menu system**, so
-that is the next unit — and it is the same machinery the chargen menu flow (5
-other sessions) needs.
+**Build `js/tty/wintty.js`** — the menu/text window machinery. It is shared by
+seed8000's last 4 frames *and* by the chargen menus that 5 other sessions need,
+so it is the highest-leverage remaining piece.
 
-```
-step 11  key "i"     400 cells   ddoinv        — inventory menu
-step 13  key "+"      30 cells   dovspell      — known spells list
-step 15  key "\\"      283 cells   dodiscovered  — discoveries
-step 17  key ^X      617 cells   doattributes  — attributes
-step 18  key " "     332 cells   dismiss the above
-```
+The layout rule is already derived and written up in
+[03-tty-windowport.md](03-tty-windowport.md) §3.0, including why `NHW_TEXT`
+collapses to column 0 while `NHW_MENU` is right-aligned at
+`cols - maxcol - 1`, the `(end)` / `(1 of N)` footers, and the fact that the
+cursor parks on the footer line. Do not re-derive it.
 
-Port `win/tty/wintty.c`'s menu path: `tty_start_menu`, `tty_add_menu`,
-`tty_end_menu`, `tty_select_menu`, plus the `--More--` machinery in
-`win/tty/topl.c`. Then `display_inventory` (`src/invent.c`) on top of it.
-
-Note the cursor is also wrong on every menu frame (C parks it on the `(end)`
-line, we leave it on the hero), so the menu port must set the cursor too — a
-correct grid with a wrong cursor still scores zero.
+Order: window create/putstr/display/dismiss + paging first, then a consumer.
+`dodiscovered` is the cheapest consumer (needs only o_init discovery state);
+`doattributes` needs `enlightenment()` from `src/insight.c`, which is large.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

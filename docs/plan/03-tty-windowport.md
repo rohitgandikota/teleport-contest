@@ -21,6 +21,58 @@ writes into it exactly as C's writes into the patched terminal capture.
 
 ---
 
+## 3.0 Window layout rule — DERIVED, port not written
+
+The single non-obvious thing about `tty_display_nhwindow` for menus and text
+windows is where the window starts horizontally. From
+`win/tty/wintty.c:1898-1940`:
+
+```c
+case NHW_TEXT:
+    cw->maxcol = ttyDisplay->cols;   /* force full-screen mode */
+    FALLTHROUGH;
+case NHW_MENU:
+    s_maxcol = cw->maxcol;
+    cw->offx = max(10, ttyDisplay->cols - s_maxcol - 1);
+    if (cw->offx < 0) cw->offx = 0;
+    if (cw->type == NHW_MENU) cw->offy = 0;
+    ...
+    if (cw->offx == 10 || cw->maxrow >= ttyDisplay->rows || !menu_overlay) {
+        cw->offx = 0;                /* collapse to full screen */
+        ...clear...
+    }
+```
+
+So:
+
+- **`NHW_TEXT` always forces `maxcol = cols`**, which makes
+  `offx = max(10, 80-80-1) = 10`, which then trips the `offx == 10` test and
+  collapses to **full screen at column 0**. That is why `^X` (attributes) and
+  `\` (discoveries) start at the left edge.
+- **`NHW_MENU` keeps `offx = cols - maxcol - 1`**, i.e. the menu is *right
+  aligned*. Verified against seed8000's inventory frame, which starts at column
+  32: `80 - 47 - 1 = 32`, so `maxcol` is 47 for that menu.
+- A menu whose content would put `offx` at 10 or lower, or that is taller than
+  the screen, also collapses to full screen.
+
+Footers observed in the recordings: `(end)` when the window fits, `(1 of 2)`
+when it pages. Both sit on the line after the last content line, and **the
+cursor parks on that footer line** — seed8000 step 11 has the cursor at
+`[38,20,1]`, step 17 at `[9,23,1]`. A correct grid with the cursor left on the
+hero still scores zero, so the cursor is part of this port, not an afterthought.
+
+### What each remaining seed8000 frame needs
+
+| step | key | cells | needs |
+|---|---|---:|---|
+| 11 | `i` | 400 | `display_inventory` — objects + `NHW_MENU` |
+| 15 | `\` | 283 | `dodiscovered` — o_init discovery state + `NHW_TEXT` |
+| 17 | `^X` | 617 | `doattributes` → `enlightenment()` (`src/insight.c`) + paged `NHW_TEXT` |
+| 18 | ` ` | 332 | dismissing whichever window is open |
+
+The window machinery is shared by all four, and by the chargen menus that 5
+other sessions need. Build `js/tty/wintty.js` first, then the content.
+
 ## Items
 
 ### 3.1 Understand the capture boundary first

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **makemon, traps and corpses ported**; next blocker `mksobj_init(mkobj.c:915)`
+Last updated: **2026-07-24** · **seed8000 level generation is exact**; 3103/3130 calls, 19/23 frames
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -17,17 +17,19 @@ it from the same file path after a scoring run to refresh.
 
 ## One-paragraph catch-up
 
-The port has barely started; almost everything so far is infrastructure,
-planning, and measurement. The C recorder now reproduces all 44 public sessions
-byte-for-byte, so we have a trustworthy oracle; four tools exist to localise
-divergences; and the baseline is **0 of 11,405 screens**. Three measurements
-changed the plan: Lua runs during ordinary level generation (M9a became a
-prerequisite of M4), `math.random` uses a second unlogged PRNG that must be
-reproduced separately (solved and verified), and the skeleton's `d(n,x)` was
-logging in a format C never produces (fixed). Four M2 items are done — the RNG
-wrappers, the calendar, rc parsing, and the role tables — and a fourth
-measurement moved `o_init` to the front of M2, because it is the first RNG
-consumer in every single session.
+The C recorder reproduces all 44 public sessions byte-for-byte, so the oracle is
+trustworthy, and four tools localise divergences. Level generation is now real
+rather than replayed: `seed8000` reproduces **3103 of its 3130** PRNG calls and
+**19 of its 23** frames, and the remaining divergence is in the monster move
+loop, past level generation entirely. Getting there meant porting `makemon`, the
+trap and corpse pipelines, `mksobj_init`'s food branch, `random_engraving` with a
+real reader for `dat/rumors`, and `mineralize` — and, more than anything, finding
+that hand-written constant blocks were wrong in bulk (see
+[NOTES.md](NOTES.md)). The score is still **19 of 11,405 screens** because
+frames need content subsystems the port does not have yet, not because the
+generation is wrong. Two things stand between here and the first complete
+session: wiring the finished tty window layer, and computing the hero's starting
+inventory instead of replaying it.
 
 ---
 
@@ -35,79 +37,77 @@ consumer in every single session.
 
 | | |
 |---|---|
-| **Current milestone** | **M3 tty windowport** — nothing writes to the terminal, so no screen can score |
-| **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
+| **Current milestone** | **M3 wiring** — 4 of seed8000's 23 frames need the menu window layer |
+| **Also open** | M9a Lua core (11 sessions), `m_initweap` (4), `mkclass` (2) |
 | **Blocked on** | nothing |
-| **Score** | **19/11,405 screens**, 0/44 sessions passing |
+| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG 61,261/792,838 |
 
 ### The exact next action — READ THIS FIRST
 
-**Port `mksobj_init`'s remaining gaps, starting at `src/mkobj.c:915`.** That is
-seed8000's first divergence (call 1535 of 3130) and, with `mkobj.c:927` and
-`mkobj.c:971`, it is now the most common blocker in the corpus — 5 sessions
-between them.
+**Wire `js/tty/wintty.js` to a consumer and port `u_init`'s `ini_inv`.** This is
+the shortest path to the project's first complete session.
 
-```
-1533  C rnd(2)=1    ours rnd(2)=1    ok        next_ident(mkobj.c:521)
-1534  C rn2(2)=1    ours rn2(2)=1    ok        mksobj_init(mkobj.c:912)
-1535  C rn2(3)=1    ours rn2(30)=13  MISMATCH  mksobj_init(mkobj.c:915)
-```
+seed8000 now matches **19 of its 23 frames**, and every cell of the other four is
+right except that nothing draws the window. The four are:
 
-`game.unported` is **empty** after a seed8000 run, so nothing here is a missing
-subsystem — this is a correctness bug in code that already exists. Read
-`src/mkobj.c` around 900-980 and compare arm for arm with `js/mkobj.js`
-`mksobj_init`.
+| step | key | window | C cursor |
+|---:|---|---|---|
+| 11 | `i` | inventory, `NHW_MENU` | `[38,20]` |
+| 15 | `\` | discoveries, `NHW_TEXT` | `[8,23]` |
+| 17 | `^X` | attributes, paged `NHW_TEXT` | `[9,23]` |
+| 18 | ` ` | dismissing the open window | `[9,11]` |
 
-### Blocker histogram (44 sessions, after the trap/corpse commit)
+`js/tty/wintty.js` already produces `[38,20]` for the inventory geometry and
+`[9,23]` for attributes — it was verified against these exact frames and then
+never connected. What it lacks is *content*: the hero's starting inventory is
+still replayed by `fastforward_post_mklev()` rather than computed, so there is
+nothing to list. Port `src/u_init.c` `u_init_role()` / `ini_inv()` first, then
+`display_inventory` (`src/invent.c`), `dodiscovered` (`src/o_init.c`) and
+`doattributes` → `enlightenment()` (`src/insight.c`).
+
+Doing this also deletes the last large block of `js/fastforward.js`.
+
+### The RNG side is nearly done for seed8000
+
+Divergence is at call **3103 of 3130**, in `m_move(monmove.c:1963)` at step 20 —
+the monster move loop, well past level generation. Level generation for this
+session is exact end to end.
+
+### Blocker histogram (44 sessions, current)
 
 | Blocker | Sessions | Notes |
 |---|---:|---|
 | `fill_special_room(sp_lev.c:2763)` | 8 | **Lua** — needs M9a |
-| `mksobj_init(mkobj.c:915/927/971)` | 5 | correctness bug, no missing subsystem |
+| `m_initweap(makemon.c:411/470)` | 4 | 412 lines of `src/makemon.c`, not ported |
 | `lspo_map(sp_lev.c:6154)` | 3 | **Lua** — needs M9a |
-| `mkclass_aligned(makemon.c:1934)` | 2 | `mkclass` not ported |
+| `mkclass_aligned(makemon.c:1934)` | 2 | the last fake-RNG stub |
 | `mkbox_cnts(mkobj.c:338)` | 2 | container contents |
 | `makelevel(mklev.c:1287)` | 2 | branch not reached |
-| `m_initweap`, `random_engraving`, `mineralize`, `rnd_rect`, `hole_destination`, `pick_align`, `nh.rn2` | 1 each | |
+| `pet_type`, `collect_coords`, `hole_destination`, `rnd_rect`, `somey`, `pick_align`, `nh.rn2` | 1 each | several are now deep in the move loop |
 
-**12 of 44 are Lua-blocked.** M9a is still the single largest lever and nothing
+**11 of 44 are Lua-blocked.** M9a is still the single largest lever and nothing
 else unblocks it.
 
-### The previous next action (done)
+Sessions past call 1000 went from 18 to 26 today.
 
-**Port `mkobj_erosions` (src/mkobj.c:202).** It is seed8000's first divergence
-now that `js/mkobj.js` and `js/makemon.js` are wired in:
+### Fake-RNG stubs: two of three cleared, one remains
 
-```
-1418  C rn2(10)=2   ours rn2(10)=2   ok        blessorcurse(mkobj.c:1846)
-1419  C rn2(40)=31  ours rn2(40)=31  ok        mksobj_init(mkobj.c:1098)
-1420  C rn2(100)=46 ours rn2(5)=1    MISMATCH  mkobj_erosions(mkobj.c:202)
-1421  C rn2(80)=19  ours rn2(3)=1    differs   mkobj_erosions(mkobj.c:205)
-```
-
-`blessorcurse` and `mksobj_init` now match C call for call, so the object
-pipeline is correct up to erosion.
-
-**Fake-RNG stubs: one of three cleared, two remain.** The `makemon` stub is
-gone — `js/makemon.js` now has the real `makemon()`. Still outstanding in
-`js/mklev.js`:
+`makemon` and `random_engraving` are now real. Still outstanding in
+`js/mklev.js`, in the IRONBARS niche branch:
 
 ```
-random_engraving()   rn2(48)  // "approximate: rn2(num_engravings)"
-                              — blocks seed0116 at call 1696
-mkclass(S_HUMAN)     rn2(398) // in the IRONBARS niche branch
-                              — related to the mkclass_aligned blocker (2 sessions)
+rn2(398); // mkclass(S_HUMAN)
 ```
 
-Both invent a draw and so guarantee divergence wherever reached. `random_engraving`
-needs the engraving text table out of `src/engrave.c`; `mkclass` is a
-straightforward port of `src/makemon.c mkclass_aligned()` and would also clear
-seed0103 and seed0700.
+It invents a draw and so guarantees divergence wherever reached. Porting
+`src/makemon.c mkclass_aligned()` clears it and also unblocks seed0103 and
+seed0700.
 
-**Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
-M4, and M5 are all real, because frame 0 of every session needs chargen, a
-generated level, vision, and a windowport to draw it. Judge progress by the
-`tools/diverge.mjs` first-divergence index moving later, not by screens.
+**How to judge progress.** Screens move in steps, not smoothly, because a frame
+scores only when every cell *and* the cursor match. Between steps, use the
+`tools/diverge.mjs` first-divergence index. `tools/scoreboard.mjs`'s positional
+RNG count is advisory and can fall while the port improves — see
+[NOTES.md](NOTES.md), "Two RNG metrics, and when they disagree".
 
 M9a can be worked in parallel by a second agent — it touches `js/lua/**` and
 nothing M2 touches. Its first deliverable is `js/lua/lmathlib.js`; the spec and a

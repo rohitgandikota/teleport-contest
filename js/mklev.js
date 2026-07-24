@@ -199,13 +199,30 @@ let _nextObjId = 1;
 // C ref: mkobj.c next_ident — rnd(2) for item identification
 function next_ident() { rnd(2); }
 
-// C ref: mkobj.c blessorcurse — rn2(4) BUC selection
-function blessorcurse(otmp) {
-    const r = rn2(4);
-    if (otmp) {
-        otmp.cursed = (r === 0);
-        otmp.blessed = false;
+// src/mkobj.c:1846 blessorcurse()
+//
+// Two corrections over the previous version, both of which changed the draw
+// stream: it takes a `chance` argument rather than always drawing rn2(4), and
+// it returns WITHOUT drawing at all when the object is already blessed or
+// cursed. It then draws a second rn2(2) to pick which way.
+function blessorcurse(otmp, chance) {
+    if (otmp.blessed || otmp.cursed)
+        return;
+
+    if (!rn2(chance)) {
+        if (!rn2(2)) {
+            curse(otmp);
+        } else {
+            bless(otmp);
+        }
     }
+}
+
+// src/mkobj.c bless()
+function bless(otmp) {
+    if (!otmp) return;
+    otmp.cursed = false;
+    otmp.blessed = true;
 }
 
 // C ref: mkobj.c mksobj — create a specific object
@@ -219,9 +236,16 @@ function mksobj(otyp, init, artif) {
     return otmp;
 }
 
-// C ref: mkobj.c mksobj initialization RNG consumption
-// This varies by object class. For the contest, we need enough to match
-// the session's RNG pattern for objects created during mklev.
+// PARTIAL — src/mkobj.c:869 mksobj_init().
+//
+// This dispatches on GUESSED otyp ranges rather than on the real oc_class from
+// js/objects_data.js, so most classes never reach blessorcurse at all.
+// blessorcurse(mkobj.c:1846) is currently the top divergence cause in the
+// corpus at 9 of 44 sessions, and this is why.
+//
+// Replacing it means porting the real 306-line switch (mkobj.c:869-1175),
+// dispatching on objects[otyp].oc_class. Do that as one piece; a partial
+// class dispatch just moves which sessions break.
 function mksobj_init(otmp, otyp) {
     // For BOULDER, GOLD_PIECE: no extra init RNG
     // For scrolls: blessorcurse
@@ -229,9 +253,9 @@ function mksobj_init(otmp, otyp) {
     // For general objects: varies
     // We just do blessorcurse for scrolls/potions
     if (otyp >= 270 && otyp < 300) { // scrolls
-        blessorcurse(otmp);
+        blessorcurse(otmp, 10);
     } else if (otyp >= 230 && otyp < 270) { // potions
-        blessorcurse(otmp);
+        blessorcurse(otmp, 10);
     }
 }
 
@@ -540,6 +564,7 @@ async function makelevel() {
     }
 }
 
+// src/mklev.c:929 ROOM_IS_FILLABLE
 // src/mklev.c:929 ROOM_IS_FILLABLE
 function ROOM_IS_FILLABLE(croom) {
     return croom && (croom.rtype === OROOM || croom.rtype === THEMEROOM)

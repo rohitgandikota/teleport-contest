@@ -81,6 +81,7 @@ export async function newgame() {
 
     // Room filling now happens inside makelevel(), as it does in C.
     // mineralize is still replayed.
+    // fill now happens inside makelevel(); mineralize still replayed
     fastforward_fill_mineralize();
 
     // Fast-forward through post-mklev startup RNG calls.

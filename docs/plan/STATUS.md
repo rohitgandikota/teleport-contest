@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · fill loop wired; `mkobj`/`makemon` stubs are now the blocker
+Last updated: **2026-07-24** · fill loop landed; `mksobj_init` is the blocker
 
 ---
 
@@ -38,28 +38,23 @@ consumer in every single session.
 
 ### The exact next action
 
-**Replace the fake-RNG stubs in `js/mklev.js` with real ports.** They are now
-the single largest blocker (`mkobj` 7 sessions, `rndmonst_adj` 5,
-`mkclass_aligned` 2 — 14 between them) and they violate the no-placeholder rule:
+**Port `mksobj_init` (src/mkobj.c:869-1175, 306 lines) as one piece.**
 
-```js
-function rndmonnum() { rn2(398); return 0; }        // invents a draw
-async function makemon(mdat, x, y, mmflags) { if (!mdat) rn2(398); rnd(8); ... }
-```
+`js/mklev.js` has a partial version that dispatches on **guessed otyp ranges**
+(`otyp >= 270 && otyp < 300 // scrolls`) instead of the real
+`objects[otyp].oc_class` from `js/objects_data.js`. Because of that most classes
+never reach `blessorcurse` at all, which is why
+`blessorcurse(mkobj.c:1846)` is the top divergence cause in the corpus at **9 of
+44 sessions** even though `blessorcurse` itself is now correct.
 
-Port in this order:
+Port the whole switch at once — a partial class dispatch just changes which
+sessions break. Then swap `js/mklev.js`'s stubs for `js/mkobj.js` (already
+written and verified, see its header) and re-check **screens**.
 
-1. **`src/mkobj.c` `mkobj`** (mkobj.c:280 is `rnd(100)` then `rnd(1000)`) and
-   `mksobj`. `js/objects_data.js` is already generated.
-2. **`src/makemon.c` `rndmonst_adj`** — the highest-volume function in the whole
-   corpus at 204,394 calls — then `makemon`, `newmonhp`, `m_initinv`.
-   `js/monst_data.js` is already generated.
-
-**Read [NOTES.md](NOTES.md) "Two RNG metrics" before judging the score.** Wiring
-the fill loop dropped positional matches 49.0% → 45.9% while moving mean
-first-divergence from ~700 to 908 and eliminating the `makelevel:1402` blocker
-from 8 sessions. That trade was accepted deliberately: the replayed values it
-replaced were seed8000's, replayed into every session.
+**Guard with the screen count, not RNG parity.** Measured this pass: disabling
+the fill phase entirely leaves seed8000 at 19 screens while RNG drops to 38%.
+The frames we match do not depend on fill, so screens are the signal that
+matters when touching it. See [NOTES.md](NOTES.md).
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

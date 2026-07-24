@@ -200,6 +200,23 @@ edit the `js/` copies — they are overwritten on every scoring run. A quick che
 for f in isaac64 terminal storage; do diff -q frozen/$f.js js/$f.js; done
 ```
 
+## The fill phase does not affect the frames we currently match
+
+Measured directly: disabling the room-fill phase entirely (no
+`fastforward_fill_mineralize`, no real fill) leaves seed8000 at **19 screens**,
+exactly as with the replay. RNG parity drops (45.9% -> 38.0%) but not one frame
+changes.
+
+That means the fill phase can be ported incrementally without risking the
+screens we have — **provided the guard is the screen count, not RNG parity.**
+
+It also corrects an earlier diagnosis. Wiring the real fill loop was blamed for
+taking seed8000 from 19 screens to 0. It was not: that pass changed two things
+at once, and the culprit was replacing `js/mklev.js`'s object-creation stubs
+with `js/mkobj.js` (whose `mksobj` skips `mksobj_init`, and which `mklev` also
+calls during the *structural* phase). The fill loop on its own is neutral on
+screens. Isolate one change at a time before attributing a regression.
+
 ## Two RNG metrics, and when they disagree
 
 `tools/scoreboard.mjs` reports **positional matches** — how many indices happen

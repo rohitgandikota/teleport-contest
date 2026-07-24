@@ -149,8 +149,12 @@ function render_page(cw, page, display) {
 
     lines.forEach((line, n) => {
         const row = cw.offy + n;
-        /* C emits a leading space before the text when the window is inset */
-        let col = cw.offx + (cw.offx ? 1 : 0);
+        /* win/tty/wintty.c: a MENU always emits the leading space before its
+           text, even when the window has collapsed to column 0 — which is why
+           the inventory menu's text starts at 32 when offx is 31, and why the
+           attributes menu's text starts at column 1 when offx is 0. A TEXT
+           window only indents when it is actually inset. */
+        let col = cw.offx + ((cw.type === NHW_MENU) ? 1 : (cw.offx ? 1 : 0));
         const attr = term_attr((cw.attrs || [])[start + n] | 0);
         for (let i = 0; i < line.length && col < COLS; i++, col++)
             display.setCell(col, row, line[i], NO_COLOR, attr);

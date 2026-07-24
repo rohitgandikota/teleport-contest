@@ -95,7 +95,11 @@ export class NethackGame {
 
         const rc = parseNethackrc(this._nethackrc);
         g.rc = rc;
-        g.plname = optValue(rc, 'name') || 'Hero';
+        /* Leave plname EMPTY when the rc does not set it: src/allmain.c calls
+           askname() in that case, and the session's keystrokes supply the name.
+           Defaulting it here made player_selection() skip askname and read the
+           name's letters as answers to the "[ynaq]" prompt instead. */
+        g.plname = optValue(rc, 'name') || '';
         /* src/optlist.h — both are opt_out with initval On, so they are set
            unless the rc negates them. implicit_uncursed decides whether
            doname() prints "uncursed" on a charged, identified item. */

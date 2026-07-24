@@ -20,6 +20,7 @@ import { u_init_inventory, u_init_skills_discoveries } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
 import { com_pager } from './pager.js';
+import { player_selection } from './plselect.js';
 
 // include/you.h:441-442
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
@@ -35,6 +36,22 @@ import { fastforward_post_mklev } from './fastforward.js';
 export async function newgame() {
     const g = game;
 
+    // src/allmain.c — character selection runs BEFORE newgame(), driven by
+    // the session's own keystrokes when the rc pins nothing. It draws only
+    // through plsel_startmenu()'s rigid_role_checks(); see js/plselect.js.
+    {
+        const ir = str2role(g.rc?.opts?.role);
+        const ira = str2race(g.rc?.opts?.race);
+        const ig = str2gend(g.rc?.opts?.gender);
+        const ia = str2align(g.rc?.opts?.align);
+        g.flags.initrole = ir;
+        g.flags.initrace = ira;
+        g.flags.initgend = ig;
+        g.flags.initalign = ia;
+        if (ir < 0 || ira < 0 || ig < 0 || ia < 0)
+            await player_selection();
+    }
+
     // src/allmain.c:780 — seed mvitals from each species' G_NOCORPSE bit,
     // before init_objects(). propagate() and uncommon() both read this.
     reset_mvitals();
@@ -48,14 +65,12 @@ export async function newgame() {
     // fixed, and spins randrole() when the role has no lawful god (Priest).
     // Runs after o_init and before the nhlib.lua align shuffle.
     {
-        const ir = str2role(g.rc?.opts?.role);
-        const ia = str2align(g.rc?.opts?.align);
-        /* C keeps the resolved choice in flags.initalign; u_init_misc() reads
-           it back to set u.ualign.type. Chargen picking (M2.6) will replace the
-           default with pick_align()'s result. */
-        g.flags.initrole = ir < 0 ? 0 : ir;
-        g.flags.initalign = ia < 0 ? 1 : ia;
-        g.flags.initrace = str2race(g.rc?.opts?.race) < 0 ? 0 : str2race(g.rc?.opts?.race);
+        /* flags.init* are resolved above, either from the rc or by
+           player_selection(). Fall back only when neither supplied one. */
+        if (g.flags.initrole < 0) g.flags.initrole = 0;
+        if (g.flags.initrace < 0) g.flags.initrace = 0;
+        if (g.flags.initgend < 0) g.flags.initgend = 0;
+        if (g.flags.initalign < 0) g.flags.initalign = 1;
         role_init(g.flags.initrole, g.flags.initalign);
     }
 
@@ -73,10 +88,8 @@ export async function newgame() {
     // newhp() draws nothing at level 0 because every role and race has
     // hpadv.inrnd == 0; newpw() draws rnd(enadv.inrnd) per role and race.
     {
-        const ir = str2role(g.rc?.opts?.role);
-        const iraces = str2race(g.rc?.opts?.race);
-        g.urole = roles[ir < 0 ? 0 : ir];
-        g.urace = races[iraces < 0 ? 0 : iraces];
+        g.urole = roles[g.flags.initrole];
+        g.urace = races[g.flags.initrace];
         g.u.ulevel = 0;
         g.u.uhp = g.u.uhpmax = newhp();
         g.u.uen = g.u.uenmax = newpw();

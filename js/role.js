@@ -453,3 +453,78 @@ export function str2align(str) {
 }
 
 export { roles, races, genders, aligns };
+
+// ---------------------------------------------------------------------------
+// Character selection
+// ---------------------------------------------------------------------------
+
+// src/role.c:1235 rigid_role_checks()
+//
+// Called before the menus AND again by plsel_startmenu() every time a menu
+// opens. That second call site is where the draws come from: once the role is
+// known, any facet the role forces gets filled by a PICK_RIGID call, and
+// pick_align() with exactly one valid alignment still draws rn2(1).
+export function rigid_role_checks() {
+    const f = game.flags;
+
+    if (f.initrole === ROLE_RANDOM) {
+        f.initrole = pick_role(f.initrace, f.initgend, f.initalign, PICK_RANDOM);
+        if (f.initrole < 0) f.initrole = randrole();
+    }
+    let tmp;
+    if (f.initrace === ROLE_RANDOM
+        && (tmp = pick_race(f.initrole, f.initgend, f.initalign,
+                            PICK_RANDOM)) !== ROLE_NONE)
+        f.initrace = tmp;
+    if (f.initalign === ROLE_RANDOM
+        && (tmp = pick_align(f.initrole, f.initrace, f.initgend,
+                             PICK_RANDOM)) !== ROLE_NONE)
+        f.initalign = tmp;
+    if (f.initgend === ROLE_RANDOM
+        && (tmp = pick_gend(f.initrole, f.initrace, f.initalign,
+                            PICK_RANDOM)) !== ROLE_NONE)
+        f.initgend = tmp;
+
+    if (f.initrole !== ROLE_NONE) {
+        if (f.initrace === ROLE_NONE)
+            f.initrace = pick_race(f.initrole, f.initgend, f.initalign,
+                                   PICK_RIGID);
+        if (f.initalign === ROLE_NONE)
+            f.initalign = pick_align(f.initrole, f.initrace, f.initgend,
+                                     PICK_RIGID);
+        if (f.initgend === ROLE_NONE)
+            f.initgend = pick_gend(f.initrole, f.initrace, f.initalign,
+                                   PICK_RIGID);
+    }
+}
+
+// src/role.c:2246 setup_rolemenu() — the selector letter is the role name's
+// initial, lowercased; a collision takes the next free letter. Rogue precedes
+// Ranger in roles[], so Rogue keeps 'r'.
+function menu_letters(names) {
+    const used = new Set();
+    return names.map((nm) => {
+        let ch = nm[0].toLowerCase();
+        if (used.has(ch)) {
+            for (let c = 'a'.charCodeAt(0); c <= 'z'.charCodeAt(0); c++) {
+                const t = String.fromCharCode(c);
+                if (!used.has(t)) { ch = t; break; }
+            }
+        }
+        used.add(ch);
+        return ch;
+    });
+}
+
+export function rolemenu_letters() {
+    return menu_letters(roles.map(r => r.name.m));
+}
+export function racemenu_letters(rolenum, gendnum, alignnum) {
+    return menu_letters(races.map(r => r.noun));
+}
+export function gendmenu_letters() {
+    return menu_letters(genders.slice(0, ROLE_GENDERS).map(g => g.adj));
+}
+export function algnmenu_letters() {
+    return menu_letters(aligns.slice(0, ROLE_ALIGNS).map(a => a.adj));
+}

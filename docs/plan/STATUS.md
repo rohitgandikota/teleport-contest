@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **seed8000 startup is exact end to end**; 3103/3130 calls, 19/23 frames
+Last updated: **2026-07-24** · **all three fake-RNG stubs gone**; seed8000 3103/3130 calls, corpus RNG 9.4%
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,86 +37,48 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **M3 wiring** — 4 of seed8000's 23 frames need the menu window layer |
-| **Also open** | M9a Lua core (11 sessions), `m_initweap` (4), `mkclass` (2) |
+| **Current milestone** | **M9a — the Lua core.** It now blocks 18 of the 44 sessions |
+| **Also open** | `collect_coords` (5), chargen menus (6), `pet_type` (3) |
 | **Blocked on** | nothing |
-| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG 61,261/792,838 |
+| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **74,351/792,838 (9.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Port `m_initweap` (src/makemon.c:400-470), then start M9a.** `m_initweap` is
-now the second-largest blocker at 4 sessions and needs nothing that is missing:
-`mongets()` and the object tables are in place, and it is a mechanical switch
-on `mlet`. M9a (the Lua core, 11 sessions) remains the single largest lever.
+**Start M9a, the Lua core.** It is now blocking **18 of the 44 sessions** —
+`fill_special_room` in 12 and `lspo_map` in 6 — which is more than every other
+blocker combined. Nothing else unblocks it and no other single piece of work
+comes close in value.
 
-**`u_init` is done** — `js/u_init.js` computes the starting inventory for real,
-and `js/fastforward.js` is down to 69 lines. The remaining replayed blocks are
-37 calls of `src/attrib.c` `init_attr`/`vary_init_attr` plus
-`moveloop_preamble`, and 127 calls of per-step monster movement.
+The scoping is already done and D1 is decided: build a small Lua interpreter in
+JS rather than hand-porting 131 scripts. First deliverable is
+`js/lua/lmathlib.js`; the spec and a verified reference vector are in
+[09-lua-and-special-levels.md](09-lua-and-special-levels.md) under "Decision D1".
+Remember the measured finding in [NOTES.md](NOTES.md): **exactly one Lua binding
+draws randomness, `nh.rn2`**, so the interpreter's PRNG surface is one function
+wide.
 
-### The four remaining seed8000 frames need object naming, not inventory
-
-With `ini_inv` real, `game.invent` holds the right 21 items and `game.disco`
-has the discoveries. What steps 11, 15, 17 and 18 still need is:
-
-- `src/objnam.c` `doname()`/`xname()` to render an item as
-  "27 poisoned darts (in quiver pouch)". This is a large subsystem and is the
-  actual gate now.
-- `src/invent.c` `display_inventory` and `src/o_init.c` `dodiscovered` to feed
-  `js/tty/wintty.js`, which already produces the exact geometry those frames
-  want ([38,20] for the inventory menu, [9,23] for attributes).
-- `src/insight.c` `enlightenment()` for the attributes text.
-
-Do not start these expecting a quick win; `doname()` is comparable in size to
-`m_initweap` plus the Lua core.
-
-### The previous next action (done)
-
-**Wire `js/tty/wintty.js` to a consumer and port `u_init`'s `ini_inv`.** The
-`ini_inv` half is complete.
-
-seed8000 now matches **19 of its 23 frames**, and every cell of the other four is
-right except that nothing draws the window. The four are:
-
-| step | key | window | C cursor |
-|---:|---|---|---|
-| 11 | `i` | inventory, `NHW_MENU` | `[38,20]` |
-| 15 | `\` | discoveries, `NHW_TEXT` | `[8,23]` |
-| 17 | `^X` | attributes, paged `NHW_TEXT` | `[9,23]` |
-| 18 | ` ` | dismissing the open window | `[9,11]` |
-
-`js/tty/wintty.js` already produces `[38,20]` for the inventory geometry and
-`[9,23]` for attributes — it was verified against these exact frames and then
-never connected. What it lacks is *content*: the hero's starting inventory is
-still replayed by `fastforward_post_mklev()` rather than computed, so there is
-nothing to list. Port `src/u_init.c` `u_init_role()` / `ini_inv()` first, then
-`display_inventory` (`src/invent.c`), `dodiscovered` (`src/o_init.c`) and
-`doattributes` → `enlightenment()` (`src/insight.c`).
-
-Doing this also deletes the last large block of `js/fastforward.js`.
-
-### The RNG side is nearly done for seed8000
-
-Divergence is at call **3103 of 3130**, in `m_move(monmove.c:1963)` at step 20 —
-the monster move loop, well past level generation. Level generation for this
-session is exact end to end.
+If you want a smaller warm-up first, `collect_coords` (src/teleport.c:578) is
+the largest non-Lua blocker at 5 sessions. Its draw count is one `rn2(n)` per
+remaining entry while shuffling each ring, so it depends on how many map spots
+pass the filters — it needs real terrain state, not a formula.
 
 ### Blocker histogram (44 sessions, current)
 
 | Blocker | Sessions | Notes |
 |---|---:|---|
-| `fill_special_room(sp_lev.c:2763)` | 8 | **Lua** — needs M9a |
-| `m_initweap(makemon.c:411/470)` | 4 | 412 lines of `src/makemon.c`, not ported |
-| `lspo_map(sp_lev.c:6154)` | 3 | **Lua** — needs M9a |
-| `mkclass_aligned(makemon.c:1934)` | 2 | the last fake-RNG stub |
-| `mkbox_cnts(mkobj.c:338)` | 2 | container contents |
-| `makelevel(mklev.c:1287)` | 2 | branch not reached |
-| `pet_type`, `collect_coords`, `hole_destination`, `rnd_rect`, `somey`, `pick_align`, `nh.rn2` | 1 each | several are now deep in the move loop |
+| `fill_special_room(sp_lev.c:2763)` | 12 | **Lua** — needs M9a |
+| `lspo_map(sp_lev.c:6154)` | 6 | **Lua** — needs M9a |
+| `collect_coords(teleport.c:578)` | 5 | largest non-Lua item |
+| `pick_role` / `pick_align` / `pick_gend` | 6 | chargen menus, needs M3 wiring |
+| `pet_type(dog.c:100)` | 3 | the starting pet |
+| `somey`, `makelevel` | 2 each | |
+| `rnd_rect`, `nh.rn2` and others | 1 each | |
 
-**11 of 44 are Lua-blocked.** M9a is still the single largest lever and nothing
-else unblocks it.
+**18 of 44 are Lua-blocked** — up from 11, because the non-Lua blockers ahead of
+them cleared and those sessions advanced to their Lua wall. M9a is now more than
+half the remaining corpus.
 
-Sessions past call 1000 went from 18 to 26 today.
+Sessions past call 1000: **23**, from 18 at the start of the day.
 
 ### Fake-RNG stubs: two of three cleared, one remains
 

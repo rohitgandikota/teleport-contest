@@ -20,7 +20,13 @@ import { u_init_inventory } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr } from './attrib.js';
 import { com_pager } from './pager.js';
-import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step } from './fastforward.js';
+import { mcalcmove, mcalcdistress, movemon } from './mon.js';
+import { dosounds } from './sounds.js';
+import { gethungry } from './eat.js';
+import { makemon, NO_MM_FLAGS } from './makemon.js';
+import { depth } from './dungeon.js';
+import { rnd } from './rng.js';
+import { fastforward_pre_mklev, fastforward_post_mklev } from './fastforward.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
@@ -167,13 +173,51 @@ export async function newgame() {
     await pline(`Aloha ${g.plname}, welcome to NetHack!  You are a ${alignName} ${genderAdj} human ${g.urole.name.m}.`);
 }
 
+// src/allmain.c:158 maybe_generate_rnd_mon()
+function maybe_generate_rnd_mon() {
+    const stronghold = game.special_levels?.stronghold_level;
+    const deep = stronghold && depth(game.u.uz) > depth(stronghold);
+    if (!rn2(game.u.uevent?.udemigod ? 25 : deep ? 50 : 70))
+        makemon(null, 0, 0, NO_MM_FLAGS);
+}
+
 // C ref: allmain.c moveloop_core()
+//
+// The per-turn PRNG sequence, in C's order:
+//
+//   movemon()                      one distfleeck rn2(5) per waking monster
+//   mcalcdistress()                nothing while no monster is afflicted
+//   mcalcmove(mtmp, TRUE) x N      one rn2(12) per monster, unconditionally
+//   maybe_generate_rnd_mon()       rn2(70) on an ordinary early level
+//   dosounds()                     rn2(400) if fountains, rn2(300) if sinks
+//   gethungry()                    rn2(20)
+//   u_wipe_engr gate               rn2(40 + ACURR(A_DEX) * 3)
+//
+// The last one is a useful self-check: seed8000 records rn2(82), and 82 is
+// 40 + 14 * 3, so it only comes out right if the hero's Dexterity does.
 export async function moveloop_core() {
     const g = game;
 
-    // Fast-forward per-step RNG (monster movement, regen, sounds, hunger)
-    const stepNum = (g.moves || 1) - 1;
-    fastforward_step(stepNum);
+    if (g.context?.move) {
+        /* src/allmain.c:233 — allot movement to every monster */
+        movemon();
+        mcalcdistress();
+        for (const mtmp of g.level?.monsters || [])
+            mtmp.movement = (mtmp.movement || 0) + mcalcmove(mtmp, true);
+
+        /* src/allmain.c:239 — placed after allotment, so a new monster
+           effectively loses its first turn */
+        maybe_generate_rnd_mon();
+
+        g.moves = (g.moves || 1) + 1;
+
+        dosounds();
+        gethungry();
+
+        /* src/allmain.c:360 */
+        if (!rn2(40 + (g.u.acurr.a[3] * 3)))   /* A_DEX */
+            rnd(3);                             /* u_wipe_engr(rnd(3)) */
+    }
 
     // Vision + display
     if (g.vision_full_recalc) {
@@ -189,11 +233,6 @@ export async function moveloop_core() {
     // before dispatching, so each message survives exactly until the frame
     // that displays it has been captured.
     await rhack(0);
-
-    // Advance turn
-    if (g.context?.move) {
-        g.moves = (g.moves || 1) + 1;
-    }
 }
 
 // C ref: allmain.c moveloop()

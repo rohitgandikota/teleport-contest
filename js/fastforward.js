@@ -11,10 +11,12 @@
 //   dungeon.c initialisation         -> js/dungeon.js       (294 calls)
 //   mklev structural phase           -> js/mklev.js
 //   room fill + mineralize           -> js/mklev.js       (1,448 calls)
+//   u_init_role + ini_inv            -> js/u_init.js         (87 calls)
+//   init_attr + vary_init_attr       -> js/attrib.js         (37 calls)
+//   the per-turn move loop           -> js/allmain.js       (127 calls)
 //
 // Remaining, in the order they should go:
-//   fastforward_post_mklev  124 calls  <- src/u_init.c u_init_role + ini_inv
-//   fastforward_step        127 calls  <- the move loop (monster movement)
+//   fastforward_post_mklev    2 calls  <- allmain.c moveloop_preamble
 //   fastforward_pre_mklev     1 call   <- the tail of u_init_misc
 //
 // Generated from: seed8000-tourist-starter.session.json
@@ -45,19 +47,3 @@ export function fastforward_post_mklev() {
     rnd(9000); rnd(30);
 }
 
-// Per-step leaf RNG calls
-export function fastforward_step(stepNum) {
-    const steps = [
-        () => { rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 1
-        () => { rn2(5); rn2(5); rn2(5); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 2
-        () => { rn2(5); rn2(32); rn2(5); rn2(5); rn2(32); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 3
-        () => { rn2(5); rn2(24); rn2(5); rn2(5); rn2(24); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 4
-        () => { rn2(5); rn2(16); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 5
-        () => { rn2(5); rn2(12); rn2(5); rn2(5); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); rn2(31); }, // step 6
-        () => { rn2(5); rn2(16); rn2(5); rn2(5); rn2(16); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 7
-        () => { rn2(5); rn2(12); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 8
-        () => { rn2(5); rn2(20); rn2(5); rn2(5); rn2(8); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(19); rn2(82); }, // step 9
-        () => { rn2(5); rn2(12); rn2(5); rn2(5); rn2(20); rn2(5); rn2(12); rn2(12); rn2(12); rn2(12); rn2(70); rn2(300); rn2(20); rn2(82); }, // step 10
-    ];
-    if (stepNum > 0 && stepNum <= steps.length) steps[stepNum - 1]();
-}

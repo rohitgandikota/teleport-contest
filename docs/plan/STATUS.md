@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **first window frame scores**; screens 19 → 20, seed8000 at 20/23
+Last updated: **2026-07-24** · **screens 20**, seed8000 at 20/23; `fastforward.js` down to 2 calls
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -44,25 +44,52 @@ inventory instead of replaying it.
 
 ### The exact next action — READ THIS FIRST
 
-**Port `enlightenment()` (src/insight.c) for the attributes window.** That is
-seed8000 steps 17 and 18, and the path is now proven end to end: step 15's
-discoveries window scores all 1920 cells and the cursor.
+**Port `enlightenment()` (src/insight.c) for the attributes window** — seed8000
+steps 17 and 18, worth 2 screens. The window path is proven: step 15's
+discoveries window scores all 1920 cells. Read
+[NOTES.md](NOTES.md) "Making a window frame score" first.
 
-The five things that make a window frame match are written up in
-[NOTES.md](NOTES.md), "Making a window frame score". Read that first — two of
-them (the `NHW_TEXT` prompt going on row 23, and NetHack's `ATR_INVERSE` being
-7 while the terminal's inverse bit is 1) cost several rounds to find.
+Every input exists. The analysis is done; this is transcription:
 
-The attributes frame needs `background_enlightenment` (~255 lines),
-`basics_enlightenment` (~96) and `characteristics_enlightenment` (~16), but only
-the branches a level-1 hero takes. Every input already exists: role and rank,
-the gods from `role_data`'s lgod/ngod/cgod, dungeon name and level, turn count,
-HP/Pw/AC, `u.umoney0`, and the attributes from `js/attrib.js`. It pages, so
-`morestr` becomes "(1 of 2)" rather than "--More--".
+**Window.** `create_nhwindow(NHW_MENU)` with `start_menu`, so `en_via_menu` is
+true and every line goes through `add_menu_str`. 34 lines total, and
+`maxrow >= ROWS` collapses `offx` to 0. It pages: `morestr` is "(1 of 2)" then
+"(2 of 2)". Page 1's prompt sits at row 23 (the mid-loop page break in
+`process_text_window`, at row `n`), page 2's at row 11 (right after its
+content). Cursors are `[9,23]` and `[9,11]`.
 
-**Then step 11, the inventory menu.** That one additionally needs
-`objnam.c doname()` — the full name with quantity, enchantment and worn status —
-which is a bigger job than `obj_typename()` was.
+**Line production.** `enlght_line(start, middle, end, ps)` emits
+`" %s%s%s%s."` — one leading space, trailing period — then applies
+contractions (` are not ` → ` aren't `, and five more). `you_are(x)` is
+`enlght_line("You ", "are ", x, "")`; `you_have(x)` the same with "have ".
+`enlght_out(buf)` emits `buf` verbatim. The menu layer adds one more leading
+space on top, which is why body lines show two.
+
+| Frame line | Source |
+|---|---|
+| `Contestant the Tourist's attributes:` | title, `"%s the %s's attributes:"` with `highc(plname)` |
+| `Background:` | `enlght_out` after a `""` separator |
+| `You are a Rambler, a level 1 female human Tourist.` | `"%s, a level %d %s%s %s"` = `an(rank_titl)`, ulevel, gender adj, `urace.adj`, role title |
+| `You are neutral, on a mission for The Lady` | built with `Sprintf(buf, " %s%s%s, %son a mission for %s", ...)` then `enlght_out` — note it bypasses `you_are` to omit the period |
+| `who is opposed by Blind Io (lawful) and Offler (chaotic).` | the two alignments that are not the hero's, via `align_gname()` |
+| `You are left-handed.` | `URIGHTY ? "right" : "left"`; **already computed** — `u.uhandedness` is ported |
+| `You are in the Dungeons of Doom, on level 1.` | `"in %s, on %s"`, dungeon dname with a leading "The " stripped, `"level %d"` from `depth()` |
+| `You entered the dungeon 11 turns ago.` | `enlght_line(You_, "entered ", "the dungeon %ld turn%s ago", "")` |
+| `You have 0 experience points.` | `"%-1ld experience point%s"` |
+| `Basics:` / `Characteristics:` / `Status:` / `Miscellaneous:` | `enlght_out` headings, each after a `""` |
+| `You have all 10 hit points.` | `hp == hpmax && hpmax > 1` → `"all %d hit points"` |
+| `You have both energy points (spell power).` | `pw == pwmax && pwmax == 2` → `"both %s"`; note "not all 2" |
+| `Your armor class is 10.` | `enl_msg("Your armor class ", "is ", "was ", buf, "")` |
+| `Your wallet contains 757 zorkmids.` | `" Your wallet contain%s %ld %s"` |
+| `Autopickup is off.` | `enl_msg("Autopickup ", "is ", "was ", buf, "")` |
+| `Your strength is 9.` and the five others | `characteristics_enlightenment`, 16 lines of C |
+| `You aren't hungry.` | `you_are("not hungry")` plus the ` are not ` → ` aren't ` contraction |
+| `You are unencumbered.` / `bare handed` / `unskilled in bare handed combat` | `status_enlightenment` |
+| `Total elapsed playing time is none.` | the `Miscellaneous:` tail |
+
+**Then step 11, the inventory menu.** It needs `objnam.c doname()` — quantity,
+enchantment, worn/wielded status — which is materially bigger than
+`obj_typename()` was.
 
 ### The startup sequence is now fully ported
 

@@ -17,7 +17,25 @@
 // column 0 with the cursor at [9,23].
 
 import { game } from './../gstate.js';
-import { NO_COLOR } from './../terminal.js';
+import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
+         ATR_UNDERLINE as TERM_UNDERLINE } from './../terminal.js';
+
+// include/wintype.h:128-137 — NetHack's attribute numbers. These are NOT the
+// frozen terminal's bit flags; win/tty/wintty.c term_start_attr() translates
+// between them, and so must we. NetHack ATR_INVERSE is 7 while the terminal's
+// inverse bit is 1, so passing one through unchanged silently renders normal.
+export const ATR_NONE = 0, ATR_BOLD = 1, ATR_DIM = 2, ATR_ITALIC = 3,
+             ATR_ULINE = 4, ATR_BLINK = 5, ATR_INVERSE = 7;
+
+// win/tty/termcap.c term_start_attr()
+function term_attr(nhattr) {
+    switch (nhattr) {
+    case ATR_BOLD:    return TERM_BOLD;
+    case ATR_ULINE:   return TERM_UNDERLINE;
+    case ATR_INVERSE: return TERM_INVERSE;
+    default:          return 0;
+    }
+}
 
 // include/wintype.h
 export const NHW_MESSAGE = 1, NHW_STATUS = 2, NHW_MAP = 3,
@@ -68,6 +86,7 @@ export function tty_clear_nhwindow(window) {
     if (!cw) return;
     if (cw.type === NHW_MENU || cw.type === NHW_TEXT) {
         cw.data = [];
+        cw.attrs = [];
         cw.maxrow = 0;
         cw.maxcol = 0;
     }
@@ -78,7 +97,10 @@ export function tty_putstr(window, attr, str) {
     const cw = windows[window];
     if (!cw) return;
     const s = String(str ?? '');
+    /* C stores the attribute as the first byte of each data line and recovers
+       it as `attr = cw->data[i][0] - 1`. Keeping it parallel is simpler. */
     cw.data.push(s);
+    (cw.attrs ||= []).push(attr | 0);
     cw.maxrow = cw.data.length;
 
     /* win/tty/wintty.c tty_end_menu:
@@ -129,30 +151,39 @@ function render_page(cw, page, display) {
         const row = cw.offy + n;
         /* C emits a leading space before the text when the window is inset */
         let col = cw.offx + (cw.offx ? 1 : 0);
+        const attr = term_attr((cw.attrs || [])[start + n] | 0);
         for (let i = 0; i < line.length && col < COLS; i++, col++)
-            display.setCell(col, row, line[i], NO_COLOR, 0);
+            display.setCell(col, row, line[i], NO_COLOR, attr);
     });
 
-    /* win/tty/wintty.c: "(end) " carries a trailing space, the paging form
-       does not. That one space is the difference between the cursor landing on
-       column 38 and column 37 for seed8000's inventory frame. */
+    /* win/tty/wintty.c dmore(): the prompt is cw->morestr when set, else
+       defmorestr. A window that pages sets morestr to "(N of M)"; a single-page
+       one leaves it null and gets "--More--". */
     cw.morestr = (cw.npages > 1)
         ? `(${page + 1} of ${cw.npages})`
-        : '(end) ';
+        : defmorestr;
 
-    /* win/tty/wintty.c dmore():
-         int offset = (cw->type == NHW_TEXT) ? 1 : 2;
-         tty_curs(BASE_WINDOW, ttyDisplay->curx + offset, ...);
-       curx is offx after the preceding tty_curs(window, 1, n), so the footer
-       starts one column right of the window edge. */
-    const footerRow = cw.offy + lines.length;
-    let col = cw.offx + 1;
+    /* win/tty/wintty.c process_text_window():
+         tty_curs(BASE_WINDOW, cw->offx + 1,
+                  (cw->type == NHW_TEXT) ? ttyDisplay->rows - 1 : n);
+       An NHW_TEXT window puts its prompt on the LAST LINE OF THE SCREEN, not
+       directly under its content — so a six-line discoveries window still has
+       its --More-- on row 23. A menu puts it right after the content. */
+    const footerRow = (cw.type === NHW_TEXT) ? (ROWS - 1)
+                                             : (cw.offy + lines.length);
+
+    /* dmore(): int offset = (cw->type == NHW_TEXT) ? 1 : 2; and tty_curs is
+       1-based, so a text window's prompt starts at column offx and a menu's at
+       offx + 1. */
+    let col = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
     for (let i = 0; i < cw.morestr.length && col < COLS; i++, col++)
         display.setCell(col, footerRow, cw.morestr[i], NO_COLOR, 0);
 
-    /* win/tty/wintty.c:1548 — tty_curs(window, strlen(morestr) + 2, page_lines)
-       and tty_curs offsets x by offx, so the cursor lands here. */
-    display.setCursor(cw.offx + cw.morestr.length + 1, footerRow);
+    /* dmore(): ttyDisplay->curx += strlen(prompt), so the cursor ends just
+       past the prompt. seed8000 records [8,23] for the discoveries window,
+       which is 0 + strlen("--More--"). */
+    const footerCol = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
+    display.setCursor(footerCol + cw.morestr.length, footerRow);
 
     return lines.length;
 }

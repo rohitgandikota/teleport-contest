@@ -6,8 +6,13 @@
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
+import { dodiscovered } from './o_init.js';
+import {
+    tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
+    tty_destroy_nhwindow, NHW_TEXT,
+} from './tty/wintty.js';
 import { nhgetch } from './input.js';
-import { newsym, flush_screen, pline } from './display.js';
+import { newsym, flush_screen, pline, docrt } from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
          IS_WALL, IS_OBSTRUCTED } from './const.js';
@@ -29,11 +34,14 @@ function isMovementKey(ch) {
 // yet. Listed explicitly so the set shrinks visibly as commands land, rather
 // than hiding behind a catch-all.
 const KNOWN_UNPORTED = new Set([
-    'i',      // ddoinv       — inventory menu
-    '\\',    // dodiscovered — discoveries
-    '\x18',   // doattributes — ^X
-    '\x1b',   // ESC          — dismiss / cancel
-    ' ',      // dismiss --More--
+    'i',      // ddoinv       — inventory menu, needs objnam.c doname()
+    '\x18',   // doattributes — ^X, needs insight.c enlightenment()
+    /* ESC and space reach the main prompt only when no window is open — a
+       window consumes its own dismissing key inside display_nhwindow(). C
+       treats both as no-ops here and prints nothing, so they must NOT fall
+       through to the "Unknown command" branch. */
+    '\x1b',
+    ' ',
 ]);
 
 // C ref: hack.c — check if a cell blocks movement
@@ -68,6 +76,10 @@ export async function rhack(key) {
     } else if (ch === '+') {
         // src/cmd.c cmdlist — '+' is dovspell.
         game.context.move = (dovspell() === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\\') {
+        // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
+        game.context.move = 0;
+        await show_discoveries();
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.
@@ -108,4 +120,33 @@ async function domove(dx, dy) {
     newsym(oldx, oldy);
     vision_recalc(1);
     newsym(newx, newy);
+}
+
+
+// src/o_init.c dodiscovered() feeds an NHW_TEXT window, which js/tty/wintty.js
+// lays out. The window stays up until a key dismisses it, so the frame captured
+// at the NEXT nhgetch() is the one showing it.
+let open_window = null;
+
+// C's display_nhwindow(win, TRUE) BLOCKS inside the window: wintty.c's dmore()
+// waits for a key while the window is on screen, so the frame the recorder
+// captures at that nhgetch() is the window itself. Returning to the move loop
+// instead would let its flush_screen() redraw the map over it before the next
+// capture, which is exactly what a first attempt at this did.
+async function show_discoveries() {
+    const lines = dodiscovered();
+    if (!lines) {
+        await pline("You haven't discovered anything yet...");
+        return;
+    }
+    const win = tty_create_nhwindow(NHW_TEXT);
+    for (const [text, attr] of lines)
+        tty_putstr(win, attr, text);
+    tty_display_nhwindow(win);      /* draws the page and parks the cursor */
+
+    /* dmore(): block here until the player dismisses the window */
+    await nhgetch();
+
+    tty_destroy_nhwindow(win);
+    await docrt();                  /* restore the map underneath */
 }

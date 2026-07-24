@@ -16,7 +16,7 @@ import { role_init, str2role, str2align, str2race, roles, races } from './role.j
 import { aligns } from './role_data.js';
 import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
-import { u_init_inventory } from './u_init.js';
+import { u_init_inventory, u_init_skills_discoveries } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
 import { com_pager } from './pager.js';
@@ -139,6 +139,10 @@ export async function newgame() {
     // role's and race's level-1 intrinsics. Draws nothing itself, but Fast
     // makes u_calc_moveamt() draw every turn thereafter.
     adjabil(0, 1);
+
+    // src/allmain.c:824 — u_init_skills_discoveries(): the hero already knows
+    // what came in their own pack. This is what fills the `\\` window.
+    u_init_skills_discoveries();
 
     // src/allmain.c:831 — the legacy blurb. It draws because com_pager()
     // creates its own Lua state, and every Lua state costs nhlib.lua's

@@ -23,6 +23,8 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
+import { discover_object } from './o_init.js';
+import { OBJ_DESCR } from './objnam.js';
 
 const {
     WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS, TOOL_CLASS, GEM_CLASS,
@@ -342,4 +344,25 @@ function raceMnum() {
     const m = game.urace?.mnum;
     if (typeof m === 'number') return m;
     return (m && PMNAMES[m] !== undefined) ? PMNAMES[m] : -1;
+}
+
+// src/u_init.c:1256 ini_inv_use_obj() — the side effects of starting with an
+// item: the hero already knows what it is.
+//
+// The gate is `OBJ_DESCR(objects[otyp]) && obj->known`. Only object types that
+// HAVE a randomised appearance get discovered — a food ration has no
+// description to learn, a scroll of magic mapping does. obj->known is set by
+// ini_inv_adjust_obj() for types whose oc_uses_known is set.
+export function ini_inv_use_obj(obj) {
+    if (OBJ_DESCR(game.objects[obj.otyp]) && obj.known)
+        discover_object(obj.otyp, true, true, false);
+    if (obj.otyp === ONAMES.OIL_LAMP)
+        discover_object(ONAMES.POT_OIL, true, true, false);
+    /* the setworn() armour branch needs the worn-equipment subsystem */
+}
+
+// src/u_init.c:1246 u_init_skills_discoveries()
+export function u_init_skills_discoveries() {
+    for (const otmp of game.invent || [])
+        ini_inv_use_obj(otmp);
 }

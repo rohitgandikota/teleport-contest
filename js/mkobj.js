@@ -578,6 +578,7 @@ export function mksobj(otyp, init, artif) {
         corpsenm: NON_PM,
         o_id: next_ident(),
     };
+    unknow_object(otmp);
 
     /* src/mkobj.c:1197 — mkobj_erosions() is the last statement of
        mksobj_init(), not of mksobj(), so an uninitialised object must not
@@ -837,6 +838,18 @@ const UNDEAD_TO_CORPSE = (() => {
 
 function undead_to_corpse(mndx) {
     return UNDEAD_TO_CORPSE.get(mndx) ?? mndx;
+}
+
+// src/mkobj.c:1090 unknow_object() — "set up dknown and known: non-0 for some
+// things". The last line is the one that matters here: object types that do NOT
+// use the known flag get it set TRUE, which is what makes a starting scroll or
+// potion eligible for discovery in ini_inv_use_obj().
+function unknow_object(obj) {
+    obj.dknown = 0;
+    obj.bknown = obj.rknown = 0;
+    obj.cknown = obj.lknown = 0;
+    obj.tknown = 0;
+    obj.known = game.objects[obj.otyp].oc_uses_known ? 0 : 1;
 }
 
 // src/mkobj.c g_at() — gold already on this square, if any.

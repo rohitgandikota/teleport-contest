@@ -9,7 +9,7 @@
 //
 // pmnames is [male, female, neutral] — a null means "use the neutral form".
 //
-// 384 monsters.
+// 383 monsters.
 
 export const mons = [
  {
@@ -24523,70 +24523,6 @@ export const mons = [
   "mflags3": 512,
   "difficulty": 8,
   "mcolor": 15
- },
- {
-  "pmnames": [
-   null,
-   null,
-   ""
-  ],
-  "pmidx": -1,
-  "mlet": 0,
-  "mlevel": 0,
-  "mmove": 0,
-  "ac": 0,
-  "mr": 0,
-  "maligntyp": 0,
-  "geno": 528,
-  "mattk": [
-   [
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    0,
-    0,
-    0,
-    0
-   ],
-   [
-    0,
-    0,
-    0,
-    0
-   ]
-  ],
-  "cwt": 0,
-  "cnutrit": 0,
-  "msound": 0,
-  "msize": 0,
-  "mresists": 0,
-  "mconveys": 0,
-  "mflags1": 0,
-  "mflags2": 1,
-  "mflags3": 0,
-  "difficulty": 0,
-  "mcolor": 0
  }
 ];
 
@@ -25395,7 +25331,10 @@ export const MMFLAGS = {
 
 // include/global.h — MAXMONNO, the default per-species birth limit.
 export const LIMITS = {
- "MAXMONNO": 120
+ "MAXMONNO": 120,
+ "A_NONE": -128,
+ "MAXMCLASSES": 61,
+ "NUMMONS": 383
 };
 
 // include/monst.h — STRAT_* monster strategy bits.
@@ -25416,7 +25355,7 @@ export const STRAT = {
 // src/mondata.c:1228 grownups[][2] — [baby, adult] monster index pairs.
 export const GROWNUPS = [[9,10],[16,18],[18,19],[25,26],[22,24],[32,33],[33,37],[100,104],[104,105],[59,60],[60,61],[165,166],[166,168],[44,46],[46,47],[48,49],[72,77],[73,77],[74,77],[75,77],[88,89],[94,96],[203,204],[204,205],[264,268],[265,268],[266,268],[267,268],[268,269],[183,184],[184,185],[185,186],[226,227],[126,127],[133,143],[134,144],[135,145]];
 
-export const NUMMONS = 384;
+export const NUMMONS = 383;
 
 // include/monst.h — pmnames indices
 export const MALE = 0, FEMALE = 1, NEUTRAL = 2;

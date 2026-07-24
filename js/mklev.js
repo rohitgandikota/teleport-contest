@@ -11,9 +11,9 @@ import {
     mkobj, mksobj, next_ident, blessorcurse, special_corpse, start_corpse_timeout,
 } from './mkobj.js';
 import {
-    rndmonnum, makemon, level_difficulty, MM_NOGRP, NO_MM_FLAGS,
+    rndmonnum, makemon, mkclass, monsndx, level_difficulty, MM_NOGRP, NO_MM_FLAGS,
 } from './makemon.js';
-import { PMNAMES } from './monst_data.js';
+import { PMNAMES, MONSYMS } from './monst_data.js';
 import { random_engraving, wipeout_text } from './engrave.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
@@ -1319,9 +1319,10 @@ async function makeniche(trap_type) {
                 if (!rn2(5) && loc && IS_WALL(loc.typ)) {
                     loc.typ = IRONBARS;
                     if (rn2(3)) {
-                        // human corpse — consume rn2 for mkclass + mkcorpstat
-                        rn2(398); // mkclass(S_HUMAN)
-                        mkcorpstat(CORPSE, null, 0, xx, yy + dy, 1);
+                        /* src/mklev.c — a dead adventurer behind the bars */
+                        const ptr = mkclass(MONSYMS.S_HUMAN, 0);
+                        mkcorpstat(CORPSE, null, ptr ? monsndx(ptr) : NON_PM,
+                                   xx, yy + dy, CORPSTAT_INIT);
                     }
                 }
                 if (!g.level.flags.noteleport) {

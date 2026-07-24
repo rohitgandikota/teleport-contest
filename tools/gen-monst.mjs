@@ -268,8 +268,12 @@ function main() {
             });
             return m;
         })
-        // The table is NUMMONS+1 with a zeroed terminator; drop entries with no name.
-        .filter(m => Array.isArray(m.pmnames) && m.pmnames.some(n => typeof n === 'string'));
+        // The table is NUMMONS+1 with a zeroed terminator. Its pmnames are
+        // present but empty, so test for a NON-EMPTY name — testing only for
+        // `typeof n === 'string'` let the terminator through and made NUMMONS
+        // one too large.
+        .filter(m => Array.isArray(m.pmnames)
+                  && m.pmnames.some(n => typeof n === 'string' && n.length > 0));
 
     /* The symbol/sound/attack enums, exported so ported C can compare against
        named constants instead of literals. Hardcoding a numeric otyp/mlet is
@@ -281,7 +285,14 @@ function main() {
     const ATTKS = defines('include/monattk.h', ['AT_', 'AD_']);
     const MFLAGS = defines('include/monflag.h', ['M1_', 'M2_', 'M3_', 'G_']);
     const MMFLAGS = defines('include/hack.h', ['MM_', 'NO_MM_FLAGS', 'NO_MINVENT']);
-    const LIMITS = defines('include/global.h', ['MAXMONNO']);
+    /* MAXMCLASSES and A_NONE are enum/#define constants mkclass() needs but
+       that no prefix filter above catches. */
+    const LIMITS = {
+        ...defines('include/global.h', ['MAXMONNO']),
+        ...defines('include/align.h', ['A_NONE']),
+        MAXMCLASSES: ENUMS.MAXMCLASSES,
+        NUMMONS: ENUMS.NUMMONS,
+    };
     const STRAT = defines('include/monst.h', ['STRAT_']);
     /* src/mondata.c:1228 grownups[][2] — baby form to adult form. Drives
        little_to_big()/big_to_little(), which can_be_hatched() and

@@ -31,7 +31,7 @@ const SPECIAL_PM = PMNAMES.PM_LONG_WORM_TAIL;  /* [normal] < ~ < [special] */
 // hand-copied constant from the wrong family reads as a real flag and fails
 // silently. See CLAUDE.md on hardcoded constants.
 const {
-    G_FREQ, G_NOGEN, G_HELL, G_NOHELL, G_UNIQ, G_SGROUP, G_LGROUP,
+    G_FREQ, G_NOGEN, G_HELL, G_NOHELL, G_UNIQ, G_SGROUP, G_LGROUP, G_IGNORE,
     G_GENOD, G_EXTINCT, G_NOCORPSE,
     M2_MALE, M2_FEMALE, M2_NEUTER, M2_HOSTILE, M2_PEACEFUL, M2_MINION,
     M2_GREEDY, M2_DOMESTIC, M2_STRONG,
@@ -52,7 +52,7 @@ const A_NEUTRAL = 0;
 const AM_NONE = 0, AM_LAWFUL = 4, AM_NEUTRAL = 2, AM_CHAOTIC = 1;
 
 // include/global.h — MAXMONNO, the default per-species birth limit.
-const { MAXMONNO } = LIMITS;
+const { MAXMONNO, MAXMCLASSES, A_NONE } = LIMITS;
 
 // include/hack.h — mmflags, makemon()'s behaviour switches. Re-exported so
 // callers name them instead of writing bit literals.
@@ -212,6 +212,131 @@ export function rndmonst_adj(minadj, maxadj) {
 // src/makemon.c:1651 rndmonst()
 export function rndmonst() {
     return rndmonst_adj(0, 0);
+}
+
+// src/makemon.c:1755 mongen_order / mclass_maxf, built once per game.
+//
+// C sorts mongen_order with qsort() on (difficulty | mlet << 8). mons[] is
+// already grouped by class and ascending in difficulty within a class, so the
+// sort is very nearly the identity; JS's sort is stable, which keeps ties in
+// their mons[] order — the same thing an already-sorted input gives qsort.
+let mongen_order = null;
+let mclass_maxf = null;
+
+function init_mongen_order() {
+    if (mongen_order)
+        return;
+    mongen_order = [];
+    mclass_maxf = new Array(MAXMCLASSES).fill(0);
+    for (let i = LOW_PM; i < NUMMONS; i++) {
+        mongen_order[i] = i;
+        const mlet = game.mons[i].mlet;
+        const freq = game.mons[i].geno & G_FREQ;
+        if (freq > mclass_maxf[mlet])
+            mclass_maxf[mlet] = freq;
+    }
+    const key = (i) => (game.mons[i].difficulty | (game.mons[i].mlet << 8));
+    const head = mongen_order.slice(0, SPECIAL_PM).sort((a, b) => key(a) - key(b));
+    for (let i = 0; i < SPECIAL_PM; i++)
+        mongen_order[i] = head[i];
+}
+
+export function reset_mongen_order() {
+    mongen_order = null;
+    mclass_maxf = null;
+}
+
+const MONSi = (i) => mongen_order[i];
+
+// src/makemon.c:1839 mk_gen_ok()
+function mk_gen_ok(mndx, mvflagsmask, genomask) {
+    const ptr = game.mons[mndx];
+    if (game.mvitals[mndx].mvflags & mvflagsmask)
+        return false;
+    if (ptr.geno & genomask)
+        return false;
+    if (is_placeholder(ptr))
+        return false;
+    return true;
+}
+
+// include/mondata.h:147 — corpses of zombies and mummies use these as stand-ins.
+const is_placeholder = (ptr) =>
+    ptr.pmidx === PMNAMES.PM_ORC || ptr.pmidx === PMNAMES.PM_GIANT
+    || ptr.pmidx === PMNAMES.PM_ELF || ptr.pmidx === PMNAMES.PM_HUMAN;
+
+// src/makemon.c:1879 mkclass_aligned() — one of the several types in a class.
+//
+// The rn2(9) inside the candidate loop fires once per candidate considered, so
+// the draw count depends on how many monsters share the class and pass the
+// alignment filter. The rn2(2) early-break and the final rnd(num) are the other
+// two draws.
+export function mkclass_aligned(klass, spc, atyp) {
+    let first, last, num = 0, k;
+    const nums = new Array(SPECIAL_PM + 1).fill(0);
+    const maxmlev = level_difficulty() >> 1;
+    const gehennom = Inhell();
+    let mv_mask, gn_mask;
+
+    if (klass < 1 || klass >= MAXMCLASSES)
+        return null;
+
+    init_mongen_order();
+    const zero_freq_for_entire_class = (mclass_maxf[klass] === 0);
+
+    /* Assumption #1: monsters of a class are contiguous in mons[]. */
+    for (first = LOW_PM; first < SPECIAL_PM; first++)
+        if (game.mons[MONSi(first)].mlet === klass)
+            break;
+    if (first === SPECIAL_PM)
+        return null;
+
+    mv_mask = G_GONE;
+    if ((spc & G_IGNORE) !== 0) {
+        mv_mask = 0;
+        spc &= ~G_IGNORE;
+    }
+
+    /* Assumption #2: they are in ascending order of strength. */
+    for (last = first;
+         last < SPECIAL_PM && game.mons[MONSi(last)].mlet === klass;
+         last++) {
+        if (atyp !== A_NONE && sgn(game.mons[MONSi(last)].maligntyp) !== sgn(atyp))
+            continue;
+
+        gn_mask = (G_NOGEN | G_UNIQ);
+        if (rn2(9) || klass === S_LICH)
+            gn_mask |= (gehennom ? G_NOHELL : G_HELL);
+        gn_mask &= ~spc;
+
+        if (mk_gen_ok(MONSi(last), mv_mask, gn_mask)) {
+            if (num && montoostrong(MONSi(last), maxmlev)
+                && game.mons[MONSi(last)].difficulty
+                   > game.mons[MONSi(last - 1)].difficulty
+                && rn2(2))
+                break;
+            if ((k = (game.mons[MONSi(last)].geno & G_FREQ)) > 0
+                || (k = (zero_freq_for_entire_class ? 1 : 0)) > 0) {
+                /* skew towards lower value monsters at lower exp levels */
+                nums[MONSi(last)] = k + 1
+                    - (adj_lev(game.mons[MONSi(last)]) > (game.u.ulevel * 2) ? 1 : 0);
+                num += nums[MONSi(last)];
+            }
+        }
+    }
+    if (!num)
+        return null;
+
+    for (num = rnd(num); first < last; first++)
+        if ((num -= nums[MONSi(first)]) <= 0)
+            break;
+
+    return nums[MONSi(first)] ? game.mons[MONSi(first)] : null;
+}
+
+// src/makemon.c:1872 mkclass()
+export function mkclass(klass, spc) {
+    return mkclass_aligned(klass, spc, A_NONE);
 }
 
 // src/mkobj.c:395 rndmonnum_adj() — Plan A is a level-appropriate common

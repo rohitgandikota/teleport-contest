@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **seed8000 is at 22 of 23 frames**; only the inventory menu is left
+Last updated: **2026-07-24** · **seed8000 renders all 23 of its frames** — first complete frame set in the corpus
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,48 +37,51 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **M3 content** — one seed8000 frame left; then breadth |
+| **Current milestone** | **Breadth** — seed8000's frames are done; the leverage is now in the other 43 |
 | **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **22/11,405 screens**, 0/44 sessions passing, corpus RNG **82,750/792,838 (10.4%)** |
+| **Score** | **23/11,405 screens**, 0/44 sessions passing, corpus RNG **82,761/792,838 (10.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Port `objnam.c doname()` for the inventory menu** — seed8000 step 11, the last
-frame that session is missing. Steps 15, 17 and 18 all score now, so the window
-machinery is done; this is purely about naming objects.
+**seed8000 draws all 23 of its frames.** The window layer, object naming,
+inventory, discoveries and attributes are all done and verified against a real
+recording. That session still does not "pass" because passing needs the PRNG
+stream too, and it diverges at call 2985 in `m_move` — the monster pathfinder.
 
-It is a real subsystem, not a transcription: `doname_base()` is 529 lines and
-`xname()` is comparable. Budget accordingly. What the frame needs:
+Two ways forward, and the choice is a real one:
 
-```
-$ - 757 gold pieces
-a - 27 +2 darts (at the ready)
-j - an uncursed +0 Hawaiian shirt (being worn)
-b - 6 uncursed food rations
-k - an expensive camera (0:34)
-```
+**1. `m_move` (src/monmove.c:1900-2000).** Finishes seed8000 outright: it is the
+only thing between the current 2985 and 3130. The draws are
+`rn2(4 * (cnt - j))` for the mtrack backtrack check and `rn2(++chcnt)` for the
+tie-break among equally good squares, so it needs the candidate-square
+enumeration to be exact. One session, but it completes it.
 
-so: quantity with `an`/plural, BUC prefix, enchantment, `(being worn)` /
-`(at the ready)` suffixes, and `(0:34)` charge display for tools.
+**2. Breadth.** 43 sessions have never drawn a correct frame, and most fail long
+before any window opens. The blockers are flat — `lspo_map` (6, Lua), the
+chargen menus (6), then 2-or-fewer each. The chargen menus are the better bet
+of those two, because the window layer they need is now proven and because
+`pick_role`/`pick_align` divergences happen at call 0, so fixing them shifts
+whole sessions rather than a few frames.
 
-Three supporting pieces, all in `src/invent.c`:
+**Recommendation: chargen menus.** The frame machinery that just landed is
+exactly what they need, and a session that diverges at call 0 currently
+contributes nothing at all.
 
-| Function | Lines | Why it matters here |
-|---|---:|---|
-| `merged()` | 135 | our 21 inventory objects become 12 lines — five separate FOOD_RATION stacks merge into "6 uncursed food rations" |
-| `assigninvlet()` | 39 | the a/b/c letters, and `$` for gold |
-| `display_inventory()` | 26 | walks `flags.inv_order` and builds the menu |
+### What the window layer now provides
 
-The window is an `NHW_MENU` at `offx` 32 (`80 - 47 - 1`), cursor `[38,20]`,
-footer `(end)`. `js/tty/wintty.js` already produces that geometry — it was
-verified against this exact frame long before it had a consumer.
+`js/tty/wintty.js` with a real consumer, and these rules verified against
+recordings rather than inferred:
 
-### After that, breadth rather than depth
-
-seed8000 is one session of 44. Once it is complete, the leverage is in what
-stops the *other* sessions: `lspo_map` (6, Lua), the chargen menus (6), and a
-long tail of 2-or-fewer. Nothing else is worth more than 6.
+- `display_nhwindow(win, TRUE)` blocks inside the window; the captured frame is
+  the window.
+- `NHW_TEXT` puts its prompt on the last screen line; a menu puts it under its
+  content. Single page: `--More--` for text, `(end) ` (trailing space) for a
+  menu. Paging: `(N of M)`.
+- Menu text and prompt both render at `offx + 1`.
+- An inset menu OVERLAYS the map; only a collapsed one clears the screen.
+- Every row gets `cl_end()`.
+- NetHack's `ATR_INVERSE` is 7; the terminal's inverse bit is 1.
 
 ### The startup sequence is now fully ported
 

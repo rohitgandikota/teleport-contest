@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · fill loop landed; `mksobj_init` is the blocker
+Last updated: **2026-07-24** · `mksobj_init` ported; `rndmonnum` is the blocker
 
 ---
 
@@ -38,23 +38,27 @@ consumer in every single session.
 
 ### The exact next action
 
-**Port `mksobj_init` (src/mkobj.c:869-1175, 306 lines) as one piece.**
+**Port `rndmonnum()` and enough of `src/makemon.c` to support it.** It is the
+one thing standing between a finished `js/mkobj.js` and wiring it in.
 
-`js/mklev.js` has a partial version that dispatches on **guessed otyp ranges**
-(`otyp >= 270 && otyp < 300 // scrolls`) instead of the real
-`objects[otyp].oc_class` from `js/objects_data.js`. Because of that most classes
-never reach `blessorcurse` at all, which is why
-`blessorcurse(mkobj.c:1846)` is the top divergence cause in the corpus at **9 of
-44 sessions** even though `blessorcurse` itself is now correct.
+`js/mkobj.js` now has a complete `mksobj_init` for WEAPON, ARMOR, TOOL, GEM,
+AMULET, POTION, SCROLL, SPBOOK, WAND, RING, COIN, VENOM, CHAIN and BALL. The
+only gaps are the paths that set `corpsenm` from a random monster:
 
-Port the whole switch at once — a partial class dispatch just changes which
-sessions break. Then swap `js/mklev.js`'s stubs for `js/mkobj.js` (already
-written and verified, see its header) and re-check **screens**.
+```
+FOOD_CLASS   CORPSE, EGG, TIN
+ROCK_CLASS   STATUE
+TOOL_CLASS   FIGURINE
+```
 
-**Guard with the screen count, not RNG parity.** Measured this pass: disabling
-the fill phase entirely leaves seed8000 at 19 screens while RNG drops to 38%.
-The frames we match do not depend on fill, so screens are the signal that
-matters when touching it. See [NOTES.md](NOTES.md).
+**Wiring it in has been tried twice and reverted twice** — both times seed8000
+went 19 screens → 0, because `mklev` calls `mksobj` during the *structural*
+phase and those otyps come up there. Do not attempt a third wiring until
+`rndmonnum` exists.
+
+`rndmonst_adj(makemon.c:1716)` is also the highest-volume function in the whole
+corpus at 204,394 calls and is already 5 sessions' first divergence, so this
+work pays twice. `js/monst_data.js` is generated and ready.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

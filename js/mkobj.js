@@ -1,11 +1,17 @@
 // mkobj.js — object creation.
 // C ref: src/mkobj.c
 //
-// NOT YET WIRED IN. js/mklev.js still uses its own local stubs for object
-// creation. Swapping them for these breaks the structural phase of level
-// generation, because mksobj() below does not yet run mksobj_init() — the
-// per-class enchantment, blessing, corpse-type and artifact draws. Doing the
-// swap without that took seed8000 from 19 screens to 0.
+// NOT YET WIRED IN — and the reason is now precisely known.
+//
+// mksobj_init() below is complete for WEAPON, ARMOR, TOOL, GEM, AMULET,
+// POTION, SCROLL, SPBOOK, WAND, RING, COIN, VENOM, CHAIN and BALL. What is
+// missing is every path that needs rndmonnum(): FOOD_CLASS corpse/egg/tin,
+// ROCK_CLASS statue, and TOOL_CLASS figurine. Those set corpsenm from a random
+// monster, and rndmonnum() needs src/makemon.c's monster selection.
+//
+// Wiring this in without them takes seed8000 from 19 screens to 0, because
+// mklev calls mksobj during the structural phase and those otyps come up.
+// Tried twice; reverted twice. **Port rndmonnum() first**, then wire.
 //
 // What is verified: mkobj()'s class selection is exact. Against
 // seed0102-ranger-name-cancel it reproduces
@@ -23,13 +29,14 @@
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { rnd, rn1, rn2 } from './rng.js';
-import { OCLASSES } from './objects_data.js';
+import { rnd, rn1, rn2, rne } from './rng.js';
+import { OCLASSES, ONAMES } from './objects_data.js';
 
 const {
     WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS, TOOL_CLASS, GEM_CLASS,
     POTION_CLASS, SCROLL_CLASS, SPBOOK_CLASS, WAND_CLASS, RING_CLASS,
-    AMULET_CLASS, COIN_CLASS, RANDOM_CLASS,
+    AMULET_CLASS, COIN_CLASS, RANDOM_CLASS, ROCK_CLASS, BALL_CLASS,
+    CHAIN_CLASS, VENOM_CLASS,
 } = OCLASSES;
 
 // src/mkobj.c:36 — class probability tables. struct icp { iprob, iclass }.
@@ -102,6 +109,249 @@ export function mkobj(oclass, artif) {
     return mksobj(i, true, artif);
 }
 
+// include/obj.h:260-268 — weapon-ish predicates. oc_skill is oc_subtyp.
+// P_SHURIKEN and P_BOW bound the thrown/fired weapon skills.
+const P_BOW = 26, P_SHURIKEN = 31;   /* include/skills.h */
+function is_multigen(otmp, objects) {
+    const o = objects[otmp.otyp];
+    return otmp.oclass === WEAPON_CLASS
+        && o.oc_subtyp >= -P_SHURIKEN && o.oc_subtyp <= -P_BOW;
+}
+function is_poisonable(otmp, objects) {
+    return is_multigen(otmp, objects);   /* plus permapoisoned(), not ported */
+}
+
+// src/mkobj.c bcsign()
+function bcsign(otmp) {
+    return (otmp.blessed ? 1 : 0) - (otmp.cursed ? 1 : 0);
+}
+
+function curse(otmp) { otmp.cursed = 1; otmp.blessed = 0; }
+function bless(otmp) { otmp.blessed = 1; otmp.cursed = 0; }
+
+// src/mkobj.c:1846 blessorcurse()
+export function blessorcurse(otmp, chance) {
+    if (otmp.blessed || otmp.cursed)
+        return;
+    if (!rn2(chance)) {
+        if (!rn2(2)) curse(otmp); else bless(otmp);
+    }
+}
+
+// No artifacts are generated yet, so none exist.
+function nartifact_exist() { return 0; }
+
+// src/mkobj.c:869 mksobj_init() — per-class initialisation.
+//
+// Dispatches on the real objects[otyp].oc_class from js/objects_data.js.
+//
+// NOT COMPLETE: the FOOD_CLASS corpse/egg/tin paths and the ROCK_CLASS statue
+// path need rndmonnum(), which needs makemon.c's monster selection. Those
+// otyps are rare in level generation; every other class below is the full C
+// logic. The gap is marked rather than filled with an invented draw.
+export function mksobj_init(otmp, artif) {
+    const objects = game.objects;
+    const let_ = objects[otmp.otyp].oc_class;
+
+    switch (let_) {
+    case WEAPON_CLASS:
+        otmp.quan = is_multigen(otmp, objects) ? rn1(6, 6) : 1;
+        if (!rn2(11)) {
+            otmp.spe = rne(3);
+            otmp.blessed = rn2(2);
+        } else if (!rn2(10)) {
+            curse(otmp);
+            otmp.spe = -rne(3);
+        } else {
+            blessorcurse(otmp, 10);
+        }
+        if (is_poisonable(otmp, objects) && !rn2(100))
+            otmp.opoisoned = 1;
+        if (artif && !rn2(20 + (10 * nartifact_exist()))) {
+            /* mk_artifact() — artifacts not ported */
+        }
+        break;
+
+    case FOOD_CLASS:
+        otmp.oeaten = 0;
+        /* CORPSE / EGG / TIN need rndmonnum(); SLIME_MOLD, KELP_FROND and
+           CANDY_BAR are handled by their otyp cases in C. KELP_FROND draws. */
+        if (otmp.otyp === ONAMES.KELP_FROND)
+            otmp.quan = rnd(2);
+        break;
+
+    case TOOL_CLASS:
+        switch (otmp.otyp) {
+        case ONAMES.TALLOW_CANDLE:
+        case ONAMES.WAX_CANDLE:
+            otmp.spe = 1;
+            otmp.age = 20 * 20; /* 400 */
+            otmp.lamplit = 0;
+            otmp.quan = 1 + (rn2(2) ? rn2(7) : 0);
+            blessorcurse(otmp, 5);
+            break;
+        case ONAMES.BRASS_LANTERN:
+        case ONAMES.OIL_LAMP:
+            otmp.spe = 1;
+            otmp.age = 1500;
+            otmp.lamplit = 0;
+            blessorcurse(otmp, 5);
+            break;
+        case ONAMES.MAGIC_LAMP:
+            otmp.spe = 1;
+            otmp.lamplit = 0;
+            blessorcurse(otmp, 2);
+            break;
+        case ONAMES.CHEST:
+        case ONAMES.LARGE_BOX:
+            otmp.olocked = !!rn2(5);
+            otmp.otrapped = !rn2(10);
+            otmp.tknown = (otmp.otrapped && !rn2(100)) ? 1 : 0;
+            break;
+        case ONAMES.ICE_BOX:
+        case ONAMES.SACK:
+        case ONAMES.OILSKIN_SACK:
+        case ONAMES.BAG_OF_HOLDING:
+            break;
+        case ONAMES.EXPENSIVE_CAMERA:
+        case ONAMES.TINNING_KIT:
+        case ONAMES.MAGIC_MARKER:
+            otmp.spe = rn1(70, 30);
+            break;
+        case ONAMES.CAN_OF_GREASE:
+            otmp.spe = rn1(21, 5);
+            blessorcurse(otmp, 10);
+            break;
+        case ONAMES.CRYSTAL_BALL:
+            otmp.spe = rn1(5, 3);
+            blessorcurse(otmp, 2);
+            break;
+        case ONAMES.HORN_OF_PLENTY:
+        case ONAMES.BAG_OF_TRICKS:
+            otmp.spe = rn1(18, 3);
+            break;
+        case ONAMES.FIGURINE:
+            /* corpsenm needs rndmonnum() — see the header note */
+            blessorcurse(otmp, 4);
+            break;
+        case ONAMES.BELL_OF_OPENING:
+            otmp.spe = 3;
+            break;
+        case ONAMES.MAGIC_FLUTE:
+        case ONAMES.MAGIC_HARP:
+        case ONAMES.FROST_HORN:
+        case ONAMES.FIRE_HORN:
+        case ONAMES.DRUM_OF_EARTHQUAKE:
+            otmp.spe = rn1(5, 4);
+            break;
+        default:
+            break;
+        }
+        break;
+
+    case GEM_CLASS:
+        otmp.corpsenm = 0; /* LOADSTONE hack */
+        if (otmp.otyp === ONAMES.LOADSTONE)
+            curse(otmp);
+        else if (otmp.otyp === ONAMES.ROCK)
+            otmp.quan = rn1(6, 6);
+        else if (otmp.otyp !== ONAMES.LUCKSTONE && !rn2(6))
+            otmp.quan = 2;
+        else
+            otmp.quan = 1;
+        break;
+
+    case AMULET_CLASS:
+        if (rn2(10) && (otmp.otyp === ONAMES.AMULET_OF_STRANGULATION
+                        || otmp.otyp === ONAMES.AMULET_OF_RESTFUL_SLEEP))
+            curse(otmp);
+        else
+            blessorcurse(otmp, 10);
+        break;
+
+    case VENOM_CLASS:
+    case CHAIN_CLASS:
+    case BALL_CLASS:
+        break;
+
+    case POTION_CLASS:
+    case SCROLL_CLASS:
+        blessorcurse(otmp, 4);
+        break;
+
+    case SPBOOK_CLASS:
+        otmp.spestudied = 0;
+        blessorcurse(otmp, 17);
+        break;
+
+    case ARMOR_CLASS:
+        if (rn2(10)
+            && (otmp.otyp === ONAMES.FUMBLE_BOOTS
+                || otmp.otyp === ONAMES.LEVITATION_BOOTS
+                || otmp.otyp === ONAMES.HELM_OF_OPPOSITE_ALIGNMENT
+                || otmp.otyp === ONAMES.GAUNTLETS_OF_FUMBLING || !rn2(11))) {
+            curse(otmp);
+            otmp.spe = -rne(3);
+        } else if (!rn2(10)) {
+            otmp.blessed = rn2(2);
+            otmp.spe = rne(3);
+        } else {
+            blessorcurse(otmp, 10);
+        }
+        if (artif && !rn2(40 + (10 * nartifact_exist()))) {
+            /* mk_artifact() — artifacts not ported */
+        }
+        break;
+
+    case WAND_CLASS:
+        if (otmp.otyp === ONAMES.WAN_WISHING)
+            otmp.spe = 1;
+        else if (otmp.otyp === ONAMES.WAN_STASIS)
+            otmp.spe = rn1(4, 3);
+        else
+            otmp.spe = rn1(5, (objects[otmp.otyp].oc_dir === NODIR) ? 11 : 4);
+        blessorcurse(otmp, 17);
+        otmp.recharged = 0;
+        break;
+
+    case RING_CLASS:
+        if (objects[otmp.otyp].oc_charged) {
+            blessorcurse(otmp, 3);
+            if (rn2(10)) {
+                if (rn2(10) && bcsign(otmp))
+                    otmp.spe = bcsign(otmp) * rne(3);
+                else
+                    otmp.spe = rn2(2) ? rne(3) : -rne(3);
+            }
+            /* make useless +0 rings much less common */
+            if (otmp.spe === 0)
+                otmp.spe = rn2(4) - rn2(3);
+            /* negative rings are usually cursed */
+            if (otmp.spe < 0 && rn2(5))
+                curse(otmp);
+        } else if (rn2(10) && (otmp.otyp === ONAMES.RIN_TELEPORTATION
+                               || otmp.otyp === ONAMES.RIN_POLYMORPH
+                               || otmp.otyp === ONAMES.RIN_AGGRAVATE_MONSTER
+                               || otmp.otyp === ONAMES.RIN_HUNGER || !rn2(9))) {
+            curse(otmp);
+        }
+        break;
+
+    case ROCK_CLASS:
+        /* STATUE needs rndmonnum() */
+        break;
+
+    case COIN_CLASS:
+        break; /* do nothing */
+
+    default:
+        break;
+    }
+}
+
+// include/objclass.h — oc_dir value used by the wand charge formula.
+const NODIR = 1;
+
 // src/mkobj.c mksobj() — create a specific object type.
 //
 // Only the identity and o_id allocation are ported so far. mksobj_init(), which
@@ -119,6 +369,8 @@ export function mksobj(otyp, init, artif) {
         cursed: 0,
         o_id: next_ident(),
     };
+    if (init)
+        mksobj_init(otmp, artif);
     return otmp;
 }
 

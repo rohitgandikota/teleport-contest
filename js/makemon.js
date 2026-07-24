@@ -65,9 +65,9 @@ export const {
 
 // include/mondata.h predicates, one line each as in C.
 const is_golem = (ptr) => ptr.mlet === S_GOLEM;
-const is_male = (ptr) => (ptr.mflags2 & M2_MALE) !== 0;
-const is_female = (ptr) => (ptr.mflags2 & M2_FEMALE) !== 0;
-const is_neuter = (ptr) => (ptr.mflags2 & M2_NEUTER) !== 0;
+export const is_male = (ptr) => (ptr.mflags2 & M2_MALE) !== 0;
+export const is_female = (ptr) => (ptr.mflags2 & M2_FEMALE) !== 0;
+export const is_neuter = (ptr) => (ptr.mflags2 & M2_NEUTER) !== 0;
 const always_hostile = (ptr) => (ptr.mflags2 & M2_HOSTILE) !== 0;
 const always_peaceful = (ptr) => (ptr.mflags2 & M2_PEACEFUL) !== 0;
 const is_minion = (ptr) => (ptr.mflags2 & M2_MINION) !== 0;
@@ -87,7 +87,7 @@ const is_animal = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
 const mindless = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
 const { STRAT_WAITFORU, STRAT_CLOSE, STRAT_APPEARMSG } = STRAT;
 const { M3_WAITMASK } = MFLAGS;
-const is_rider = (ptr) => ptr.pmidx === PMNAMES.PM_DEATH
+export const is_rider = (ptr) => ptr.pmidx === PMNAMES.PM_DEATH
                        || ptr.pmidx === PMNAMES.PM_FAMINE
                        || ptr.pmidx === PMNAMES.PM_PESTILENCE;
 // src/mondata.c attacktype_fordmg() — is_armed(ptr) is attacktype(ptr, AT_WEAP)

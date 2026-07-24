@@ -44,9 +44,28 @@
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { rnd, rn1, rn2, rne } from './rng.js';
+import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { rndmonnum, level_difficulty } from './makemon.js';
+import {
+    rndmonnum, level_difficulty, is_male, is_female, is_neuter, is_rider,
+} from './makemon.js';
+import { PMNAMES, MONSYMS, MFLAGS } from './monst_data.js';
+
+// include/permonst.h
+const NON_PM = -1;
+// include/hack.h:1189-1200 — corpse/statue gender is stored in obj.spe.
+const CORPSTAT_INIT = 0x08;
+const CORPSTAT_FEMALE = 1, CORPSTAT_MALE = 2, CORPSTAT_NEUTER = 3;
+// include/hack.h:1404-1406
+const TAINT_AGE = 50, TROLL_REVIVE_CHANCE = 37, ROT_AGE = 250;
+const { G_NOCORPSE, G_GENOD, G_EXTINCT } = MFLAGS;
+const G_GONE = G_GENOD | G_EXTINCT;
+
+// gu.urole.mnum is a PM_ name in the generated role table.
+function pmIndexOf(name) {
+    if (typeof name === 'number') return name;
+    return (name && PMNAMES[name] !== undefined) ? PMNAMES[name] : NON_PM;
+}
 
 const {
     WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS, TOOL_CLASS, GEM_CLASS,
@@ -375,6 +394,10 @@ export function mksobj_init(otmp, artif) {
     default:
         break;
     }
+
+    /* src/mkobj.c:1172 — the last statement of mksobj_init(), not of mksobj().
+       An object created with init = FALSE must not draw for erosion. */
+    mkobj_erosions(otmp);
 }
 
 // include/objclass.h — oc_dir value used by the wand charge formula.
@@ -500,14 +523,130 @@ export function mksobj(otyp, init, artif) {
         spe: 0,
         blessed: 0,
         cursed: 0,
+        oeaten: 0,
+        age: Math.max(game.moves ?? 1, 1),
+        corpsenm: NON_PM,
         o_id: next_ident(),
     };
+
+    /* src/mkobj.c:1197 — mkobj_erosions() is the last statement of
+       mksobj_init(), not of mksobj(), so an uninitialised object must not
+       draw for erosion. */
     if (init)
         mksobj_init(otmp, artif);
 
-    /* src/mkobj.c:1172 — erosions are applied regardless of `init` */
-    mkobj_erosions(otmp);
+    /* src/mkobj.c:1200-1227 — "some things must get done (corpsenm, timers)
+       even if init = 0". This block is what makes a corpse draw rndmonnum()
+       for its species and rn2(2) for its gender before mkcorpstat() overrides
+       the species; the draws happen either way. */
+    switch (otmp.otyp) {
+    case ONAMES.CORPSE:
+        if (otmp.corpsenm === NON_PM) {
+            otmp.corpsenm = undead_to_corpse(rndmonnum());
+            if (game.mvitals[otmp.corpsenm].mvflags & (G_NOCORPSE | G_GONE))
+                otmp.corpsenm = pmIndexOf(game.urole?.mnum);
+        }
+        /* FALLTHRU */
+    case ONAMES.STATUE:
+    case ONAMES.FIGURINE:
+        if (otmp.corpsenm === NON_PM)
+            otmp.corpsenm = rndmonnum();
+        if (otmp.corpsenm !== NON_PM) {
+            const ptr = game.mons[otmp.corpsenm];
+            otmp.spe = is_neuter(ptr) ? CORPSTAT_NEUTER
+                     : is_female(ptr) ? CORPSTAT_FEMALE
+                     : is_male(ptr) ? CORPSTAT_MALE
+                     : rn2(2) ? CORPSTAT_FEMALE : CORPSTAT_MALE;
+        }
+        /* FALLTHRU */
+    case ONAMES.EGG:
+        set_corpsenm(otmp, otmp.corpsenm);
+        break;
+    case ONAMES.BOULDER:
+        otmp.next_boulder = 0;
+        break;
+    default:
+        break;
+    }
     return otmp;
+}
+
+// src/mon.c:417 undead_to_corpse() — a zombie or mummy leaves its living
+// species' corpse. Pure lookup, no draw.
+const UNDEAD_TO_CORPSE = (() => {
+    const P = PMNAMES, m = new Map();
+    const pairs = [
+        ['KOBOLD', ['KOBOLD_ZOMBIE', 'KOBOLD_MUMMY']],
+        ['DWARF', ['DWARF_ZOMBIE', 'DWARF_MUMMY']],
+        ['GNOME', ['GNOME_ZOMBIE', 'GNOME_MUMMY']],
+        ['ORC', ['ORC_ZOMBIE', 'ORC_MUMMY']],
+        ['ELF', ['ELF_ZOMBIE', 'ELF_MUMMY']],
+        ['HUMAN', ['VAMPIRE', 'VAMPIRE_LEADER', 'HUMAN_ZOMBIE', 'HUMAN_MUMMY']],
+        ['GIANT', ['GIANT_ZOMBIE', 'GIANT_MUMMY']],
+        ['ETTIN', ['ETTIN_ZOMBIE', 'ETTIN_MUMMY']],
+    ];
+    for (const [live, undead] of pairs)
+        for (const u of undead)
+            if (P[`PM_${u}`] !== undefined && P[`PM_${live}`] !== undefined)
+                m.set(P[`PM_${u}`], P[`PM_${live}`]);
+    return m;
+})();
+
+function undead_to_corpse(mndx) {
+    return UNDEAD_TO_CORPSE.get(mndx) ?? mndx;
+}
+
+// src/mkobj.c:2052 special_corpse() — lizards and lichen don't rot, trolls
+// and Riders auto-revive.
+export function special_corpse(num) {
+    if (num === NON_PM) return false;
+    return num === PMNAMES.PM_LIZARD || num === PMNAMES.PM_LICHEN
+        || game.mons[num].mlet === MONSYMS.S_TROLL
+        || is_rider(game.mons[num]);
+}
+
+// src/mkobj.c:1976 set_corpsenm()
+export function set_corpsenm(obj, id) {
+    obj.corpsenm = id;
+    switch (obj.otyp) {
+    case ONAMES.CORPSE:
+        start_corpse_timeout(obj);
+        break;
+    default:
+        /* FIGURINE and EGG attach their own timers; both need the timer
+           subsystem, which is not ported. Neither draws. */
+        break;
+    }
+}
+
+// src/mkobj.c:1391 start_corpse_timeout() — the single rnz() here is five
+// PRNG calls in the log (rn2(1000), rn2(4), rne(4), rn2(2)) recorded under
+// one rnz() entry.
+export function start_corpse_timeout(body) {
+    if (body.corpsenm === PMNAMES.PM_LIZARD
+        || body.corpsenm === PMNAMES.PM_LICHEN)
+        return;
+
+    const rot_adjust = game.in_mklev ? 25 : 10;
+    const age = Math.max(game.moves ?? 1, 1) - body.age;
+    let when = (age > ROT_AGE) ? rot_adjust : (ROT_AGE - age);
+    when += rnz(rot_adjust) - rot_adjust;
+
+    if (is_rider(game.mons[body.corpsenm])) {
+        /* rider_revival_time() draws; no Rider is generatable here */
+        note_unported_obj('rider_revival_time');
+    } else if (game.mons[body.corpsenm].mlet === MONSYMS.S_TROLL) {
+        for (let a = 2; a <= TAINT_AGE; a++)
+            if (!rn2(TROLL_REVIVE_CHANCE)) {
+                when = a;
+                break;
+            }
+    }
+    body.rot_when = when;
+}
+
+function note_unported_obj(what) {
+    (game.unported ||= new Set()).add(what);
 }
 
 // src/dungeon.c Is_rogue_level() / Inhell — neither is reachable on the levels

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **fastforward.js down to 3 replayed calls**; no blocker worth more than 6 sessions
+Last updated: **2026-07-24** · **first window frame scores**; screens 19 → 20, seed8000 at 20/23
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,36 +37,32 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **M9a — the Lua core** (`lspo_map`, 6 sessions); everything else is long-tail |
+| **Current milestone** | **M3 content** — two seed8000 frames left, and the template now exists |
 | **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **82,750/792,838 (10.4%)** |
+| **Score** | **20/11,405 screens**, 0/44 sessions passing, corpus RNG **82,750/792,838 (10.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**`js/fastforward.js` is finished as a problem.** It is 49 lines and 3 replayed
-calls: two for `moveloop_preamble` and one for the tail of `u_init_misc`.
-Nothing else in the game replays a recorded value any more. That was the whole
-generalisation risk for the held-out set, and it is gone.
+**Port `enlightenment()` (src/insight.c) for the attributes window.** That is
+seed8000 steps 17 and 18, and the path is now proven end to end: step 15's
+discoveries window scores all 1920 cells and the cursor.
 
-**No blocker is worth more than 6 sessions now.** The histogram is flat:
+The five things that make a window frame match are written up in
+[NOTES.md](NOTES.md), "Making a window frame score". Read that first — two of
+them (the `NHW_TEXT` prompt going on row 23, and NetHack's `ATR_INVERSE` being
+7 while the terminal's inverse bit is 1) cost several rounds to find.
 
-| Blocker | Sessions |
-|---|---:|
-| `lspo_map(sp_lev.c:6154)` — genuinely Lua | 6 |
-| `pick_role` / `pick_align` — chargen menus | 6 |
-| `obj_resists`, `mkobj` | 3 each |
-| `wipeout_text`, `somey`, `rnd_class`, others | 2 or fewer |
+The attributes frame needs `background_enlightenment` (~255 lines),
+`basics_enlightenment` (~96) and `characteristics_enlightenment` (~16), but only
+the branches a level-1 hero takes. Every input already exists: role and rank,
+the gods from `role_data`'s lgod/ngod/cgod, dungeon name and level, turn count,
+HP/Pw/AC, `u.umoney0`, and the attributes from `js/attrib.js`. It pages, so
+`morestr` becomes "(1 of 2)" rather than "--More--".
 
-Two ways to read that. **M9a (the Lua interpreter)** is the only item with a
-large body of work behind it — clearing `lspo_map` also unblocks whatever those
-6 sessions hit next, and Lua drives all special-level generation. **The chargen
-menus** are the other 6 and need M3's window layer wired, which is also what the
-four remaining seed8000 frames need.
-
-If the goal is screens rather than PRNG parity, the chargen/M3 path is the one
-that ends in frames. `js/tty/wintty.js` is written and verified and still has no
-consumer; `objnam.c doname()` is the missing piece for the inventory window.
+**Then step 11, the inventory menu.** That one additionally needs
+`objnam.c doname()` — the full name with quantity, enchantment and worn status —
+which is a bigger job than `obj_typename()` was.
 
 ### The startup sequence is now fully ported
 

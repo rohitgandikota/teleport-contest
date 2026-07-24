@@ -494,6 +494,54 @@ looks like. The verified JS implementation and its reference vector are recorded
 in [09-lua-and-special-levels.md](09-lua-and-special-levels.md) so it can be
 dropped in if that symptom ever appears.
 
+## Making a window frame score: five things the diff taught us
+
+seed8000 step 15 (the `\\` discoveries window) is the first frame produced by
+the tty window layer. Getting it to match all 1920 cells needed these, and the
+same five will apply to the inventory and attributes windows:
+
+1. **`display_nhwindow(win, TRUE)` BLOCKS inside the window.** `wintty.c`'s
+   `dmore()` waits for a key while the window is on screen, so the frame the
+   recorder captures at that `nhgetch()` is the window itself. Returning to the
+   move loop instead lets its `flush_screen()` redraw the map over the window
+   before the next capture — the first attempt did exactly that and rendered a
+   perfect map where a window belonged.
+
+2. **An `NHW_TEXT` window puts its prompt on the LAST LINE OF THE SCREEN.**
+   `process_text_window()` ends with
+   `tty_curs(BASE_WINDOW, cw->offx + 1, (cw->type == NHW_TEXT) ? ttyDisplay->rows - 1 : n)`.
+   A six-line discoveries window still has its `--More--` on row 23. A menu puts
+   it directly under the content.
+
+3. **Single-page windows say `--More--`, not `(end)`.** `dmore()` uses
+   `cw->morestr ? cw->morestr : defmorestr`, and a window that does not page
+   leaves `morestr` null.
+
+4. **NetHack's attribute numbers are not the terminal's bit flags.**
+   `include/wintype.h` has `ATR_INVERSE = 7`; the frozen `js/terminal.js` uses
+   inverse = bit 1. `term_start_attr()` translates. Passing the number through
+   unchanged renders normal text and costs you every heading cell.
+
+5. **`unknow_object()` is why a starting scroll is discovered.** Its last line is
+   `obj->known = objects[otyp].oc_uses_known ? 0 : 1` — object types that do NOT
+   use the flag get it set TRUE. `ini_inv_use_obj()` then gates discovery on
+   `OBJ_DESCR(...) && obj->known`, so a scroll of magic mapping is learned and a
+   food ration (no randomised appearance) is not. `mksobj()` was skipping
+   `unknow_object()` entirely.
+
+A bonus check falls out of this: the shuffled appearance in the frame
+("ANDOVA BEGARIN", "murky") comes straight from `o_init`'s shuffle of
+`oc_descr_idx`, so a correct label is independent confirmation that the o_init
+port is right.
+
+### Watch the key budget when adding a window
+
+A window consumes its own dismissing key. If you remove ESC or space from
+`cmd.js`'s `KNOWN_UNPORTED` while adding one, the standalone presses that are
+NOT dismissing a window fall through to the "Unknown command" branch, which C
+never prints — that turned one new passing frame into three broken ones before
+it was spotted.
+
 ## `sp_lev.c` is not all Lua — check before blaming the interpreter
 
 `tools/diverge.mjs` names the C function that made the next call, and for a long

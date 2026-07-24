@@ -207,8 +207,49 @@ function extractEnumAt(text, memberName) {
     return evalEnumBody(text.slice(open + 1, end));
 }
 
+// Collect every anonymous/named enum in the preprocessed text into one
+// name -> value map. objects.h leaves material, skill and subtype values as
+// enum identifiers (IRON, ARM_SUIT, P_NONE); without resolving them the
+// emitted table holds strings and every numeric comparison against them
+// silently fails — which is how is_multigen, is_weptool and the whole erosion
+// predicate chain came to be dead code.
+function collectEnums(text) {
+    const values = {};
+    const re = /enum\s+(?:[A-Za-z_][A-Za-z0-9_]*\s*)?\{/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const end = text.indexOf('};', m.index);
+        if (end < 0) continue;
+        const body = text.slice(m.index + m[0].length, end);
+        let next = 0;
+        for (let item of body.split(',')) {
+            item = item.replace(/\s+/g, ' ').trim();
+            if (!item) continue;
+            const eq = item.indexOf('=');
+            if (eq < 0) {
+                if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(item) && !(item in values))
+                    values[item] = next;
+                next++;
+                continue;
+            }
+            const nm = item.slice(0, eq).trim();
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(nm)) continue;
+            const expr = item.slice(eq + 1).trim().replace(
+                /[A-Za-z_][A-Za-z0-9_]*/g,
+                id => (Object.prototype.hasOwnProperty.call(values, id) ? values[id] : id));
+            if (!/^[-+*/()\d\s]+$/.test(expr)) continue;
+            // eslint-disable-next-line no-new-func
+            const v = Function(`"use strict"; return (${expr});`)();
+            if (!(nm in values)) values[nm] = v;
+            next = v + 1;
+        }
+    }
+    return values;
+}
+
 function main() {
     const text = clean(preprocess());
+    const ENUMS = collectEnums(text);
 
     const objFields = structFields(text, 'objclass');
     const descrFields = structFields(text, 'objdescr');
@@ -223,7 +264,14 @@ function main() {
     const objects = objEntries.map((e) => {
         const vals = splitFields(e);
         const o = {};
-        objFields.forEach((f, i) => { o[f] = value(vals[i]); });
+        objFields.forEach((f, i) => {
+            let v = value(vals[i]);
+            /* resolve enum identifiers (IRON, ARM_SUIT, P_NONE) to numbers */
+            if (typeof v === 'string'
+                && Object.prototype.hasOwnProperty.call(ENUMS, v))
+                v = ENUMS[v];
+            o[f] = v;
+        });
         return o;
     });
 

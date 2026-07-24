@@ -382,6 +382,109 @@ const NODIR = 1;
 // include/monflag.h:178
 const MZ_SMALL = 1;
 
+// include/objclass.h:14-32 — object materials.
+const LIQUID = 1, PAPER = 5, LEATHER = 7, WOOD = 8, DRAGON_HIDE = 10,
+      IRON = 11, COPPER = 13, MITHRIL = 17, PLASTIC = 18, GLASS = 19;
+const P_NONE = 0;                 /* include/skills.h */
+const FIRE_RES = 1;               /* include/prop.h:15 */
+
+// include/obj.h:382 Is_candle()
+function Is_candle(otmp) {
+    return otmp.otyp === ONAMES.TALLOW_CANDLE || otmp.otyp === ONAMES.WAX_CANDLE;
+}
+
+// src/mkobj.c is_flammable()
+function is_flammable(otmp, objects) {
+    const o = objects[otmp.otyp];
+    const omat = o.oc_material;
+    /* candles burn but take no fire damage and cannot be fireproofed */
+    if (Is_candle(otmp))
+        return false;
+    if (o.oc_oprop === FIRE_RES || otmp.otyp === ONAMES.WAN_FIRE)
+        return false;
+    return (omat <= WOOD && omat !== LIQUID) || omat === PLASTIC;
+}
+
+// src/mkobj.c is_rottable()
+function is_rottable(otmp, objects) {
+    const omat = objects[otmp.otyp].oc_material;
+    return (omat <= WOOD && omat !== LIQUID) || omat === DRAGON_HIDE;
+}
+
+// include/objclass.h:200-211
+const is_rustprone  = (o, objs) => objs[o.otyp].oc_material === IRON;
+const is_crackable  = (o, objs) => objs[o.otyp].oc_material === GLASS
+                                && o.oclass === ARMOR_CLASS;
+const is_corrodeable = (o, objs) => objs[o.otyp].oc_material === COPPER
+                                 || objs[o.otyp].oc_material === IRON;
+const is_damageable = (o, objs) =>
+    is_rustprone(o, objs) || is_flammable(o, objs) || is_rottable(o, objs)
+    || is_corrodeable(o, objs) || is_crackable(o, objs);
+
+// include/obj.h:249 is_weptool() — oc_skill is oc_subtyp in the generated table
+const is_weptool = (o, objs) =>
+    o.oclass === TOOL_CLASS && objs[o.otyp].oc_subtyp !== P_NONE;
+
+// src/mkobj.c erosion_matters()
+function erosion_matters(otmp, objects) {
+    switch (otmp.oclass) {
+    case TOOL_CLASS:
+        return is_weptool(otmp, objects);
+    case WEAPON_CLASS:
+    case ARMOR_CLASS:
+    case BALL_CLASS:
+    case CHAIN_CLASS:
+        return true;
+    default:
+        return false;
+    }
+}
+
+// src/mkobj.c:175 may_generate_eroded()
+function may_generate_eroded(otmp, objects) {
+    /* initial hero inventory is never eroded; in_mklev exempts level items */
+    if ((game.moves ?? 1) <= 1 && !game.in_mklev)
+        return false;
+    if (otmp.oerodeproof || !erosion_matters(otmp, objects)
+        || !is_damageable(otmp, objects))
+        return false;
+    if (otmp.otyp === ONAMES.WORM_TOOTH || otmp.otyp === ONAMES.UNICORN_HORN)
+        return false;
+    if (otmp.oartifact)
+        return false;
+    return true;
+}
+
+// src/mkobj.c:196 mkobj_erosions() — random chance of erosion or grease.
+export function mkobj_erosions(otmp) {
+    const objects = game.objects;
+
+    if (may_generate_eroded(otmp, objects)) {
+        /* a small fraction generate eroded or possibly erodeproof; an item
+           that generates eroded is never erodeproof, and vice versa */
+        if (!rn2(100)) {
+            otmp.oerodeproof = 1;
+        } else {
+            if (!rn2(80) && (is_flammable(otmp, objects)
+                             || is_rustprone(otmp, objects)
+                             || is_crackable(otmp, objects))) {
+                do {
+                    otmp.oeroded = (otmp.oeroded || 0) + 1;
+                } while (otmp.oeroded < 3 && !rn2(9));
+            }
+            if (!rn2(80) && (is_rottable(otmp, objects)
+                             || is_corrodeable(otmp, objects))) {
+                do {
+                    otmp.oeroded2 = (otmp.oeroded2 || 0) + 1;
+                } while (otmp.oeroded2 < 3 && !rn2(9));
+            }
+        }
+        /* and very rarely, greased */
+        if (!rn2(1000))
+            otmp.greased = 1;
+    }
+}
+
 // src/mkobj.c mksobj() — create a specific object type.
 //
 // Only the identity and o_id allocation are ported so far. mksobj_init(), which
@@ -401,6 +504,9 @@ export function mksobj(otyp, init, artif) {
     };
     if (init)
         mksobj_init(otmp, artif);
+
+    /* src/mkobj.c:1172 — erosions are applied regardless of `init` */
+    mkobj_erosions(otmp);
     return otmp;
 }
 

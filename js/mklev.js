@@ -14,6 +14,33 @@ import {
     rndmonnum, makemon, mkclass, monsndx, level_difficulty, MM_NOGRP, NO_MM_FLAGS,
 } from './makemon.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
+import { fill_special_room } from './sp_lev.js';
+import { mkgold } from './mkobj.js';
+
+function note_unported_lev(what) {
+    (game.unported ||= new Set()).add(what);
+}
+
+// src/mklev.c:821 makevtele()
+async function makevtele() {
+    await makeniche(TELEP_TRAP);
+}
+
+// src/mklev.c mk_knox_portal() — the Fort Ludios branch. The rn2(3) fires
+// whenever the branch's source end has not been placed yet, which on an
+// ordinary early level it has not.
+function mk_knox_portal(x, y) {
+    const br = (game.branches || []).find(b => b.name === 'Fort Ludios');
+    if (!br) return;
+    const knox = game.special_levels?.knox_level;
+    const source = (knox && br.end1.dnum === knox.dnum
+                    && br.end1.dlevel === knox.dlevel) ? br.end2 : br.end1;
+    if (source !== br.end2 && is_branchlev())
+        return;   /* disallow Knox on a level that already has a branch */
+    if (source.dnum < game.n_dgns || rn2(3))
+        return;
+    note_unported_lev('mk_knox_portal placement');
+}
 import { random_engraving, wipeout_text } from './engrave.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
@@ -216,17 +243,7 @@ function mkobj_at(oclass, x, y, artif) {
     return mkobj(oclass, artif);
 }
 
-function mkgold(amount, x, y) {
-    // C ref: mkobj.c mkgold()
-    if (amount <= 0) {
-        // C ref: mkobj.c:2008-2010
-        const depthVal = depth_of_level(game.u?.uz);
-        const mul = rnd(Math.trunc(30 / Math.max(12 - depthVal, 2)));
-        amount = 1 + rnd(level_difficulty() + 2) * mul;
-    }
-    // mksobj_at(GOLD_PIECE) calls next_ident
-    next_ident();
-}
+/* mkgold() lives in js/mkobj.js, where src/mkobj.c has it. */
 
 // src/mkobj.c place_object() / add_to_buried() — neither draws.
 function place_object(otmp, x, y) {
@@ -429,19 +446,27 @@ async function makelevel() {
     makecorridors();
     await make_niches();
 
-    // Vault creation (simplified for contest)
+    // src/mklev.c:1317 — a secret treasure vault, not connected to anything.
     if (g.vault_x !== -1) {
         const vw = { v: 1 }, vh = { v: 1 };
         const vx = { v: g.vault_x }, vy = { v: g.vault_y };
         if (check_room(vx, vw, vy, vh, true)) {
             add_room(vx.v, vy.v, vx.v + vw.v, vy.v + vh.v, true, VAULT, false);
-            g.level.flags.has_vault = true;
+            g.level.flags.has_vault = 1;
             const vaultRoom = g.level.rooms[g.level.nroom - 1];
-            if (vaultRoom) vaultRoom.needfill = FILL_NORMAL;
-            if (!is_branchlev()) rn2(3);
-            if (!rn2(3)) await makeniche(TELEP_TRAP);
+            if (vaultRoom) {
+                vaultRoom.needfill = FILL_NORMAL;
+                /* fills the vault with gold: one rn1(depth*100, 51) and one
+                   next_ident per square */
+                fill_special_room(vaultRoom);
+            }
+            mk_knox_portal(vx.v + vw.v, vy.v + vh.v);
+            if (!g.level.flags.noteleport && !rn2(3))
+                await makevtele();
         } else if (rnd_rect()) {
-            // Fallback vault attempt — simplified
+            /* src/mklev.c:1334 — the create_vault() retry. Not ported;
+               reaching it would mean the first check_room failed. */
+            note_unported_lev('vault create_vault retry');
         }
     }
 

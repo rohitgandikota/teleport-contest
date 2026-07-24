@@ -390,41 +390,66 @@ export function role_init(initrole, initalign) {
 }
 
 // src/role.c:747 str2role() — match a role by name or filecode.
+// src/role.c:747 str2role() / :779 str2race() / :811 str2gend() / :841
+// str2align().
+//
+// All four match a PREFIX of the given name (C uses strncmpi with the caller's
+// string length), or the filecode exactly, and accept "*", "@" or a prefix of
+// "random" as ROLE_RANDOM. Three of these used to index the table objects
+// numerically — `aligns[i][1]` on a `{noun, adj, filecode, allow, value}`
+// record — so they returned ROLE_NONE for every input. The callers' `< 0 ?
+// default` fallbacks hid it: every race silently became human and every
+// alignment neutral, which flips peace_minded()'s early return and so changes
+// whether it draws at all.
+const RANDOMSTR = 'random';
+
+function ci_prefix(str, name) {
+    return !!name && name.toLowerCase().startsWith(str.toLowerCase());
+}
+function ci_equal(str, name) {
+    return !!name && name.toLowerCase() === str.toLowerCase();
+}
+function randomish(str) {
+    return (str.length === 1 && (str === '*' || str === '@'))
+        || ci_prefix(str, RANDOMSTR);
+}
+
 export function str2role(str) {
     if (!str) return ROLE_NONE;
-    const s = String(str).toLowerCase();
     for (let i = 0; i < roles.length; i++) {
-        const r = roles[i];
-        if (r.name.m.toLowerCase() === s
-            || (r.name.f && r.name.f.toLowerCase() === s)
-            || (r.filecode && r.filecode.toLowerCase() === s))
-            return i;
+        if (ci_prefix(str, roles[i].name.m)) return i;
+        if (roles[i].name.f && ci_prefix(str, roles[i].name.f)) return i;
+        if (ci_equal(str, roles[i].filecode)) return i;
     }
-    return ROLE_NONE;
+    return randomish(str) ? ROLE_RANDOM : ROLE_NONE;
 }
 
 export function str2race(str) {
     if (!str) return ROLE_NONE;
-    const s = String(str).toLowerCase();
-    for (let i = 0; i < races.length; i++)
-        if (races[i][0] && String(races[i][0]).toLowerCase() === s) return i;
-    return ROLE_NONE;
+    for (let i = 0; i < races.length; i++) {
+        if (ci_prefix(str, races[i].noun)) return i;
+        if (races[i].adj && ci_prefix(str, races[i].adj)) return i;
+        if (ci_equal(str, races[i].filecode)) return i;
+    }
+    return randomish(str) ? ROLE_RANDOM : ROLE_NONE;
 }
 
 export function str2gend(str) {
     if (!str) return ROLE_NONE;
-    const s = String(str).toLowerCase();
-    for (let i = 0; i < ROLE_GENDERS; i++)
-        if (String(genders[i][0]).toLowerCase() === s) return i;
-    return ROLE_NONE;
+    for (let i = 0; i < ROLE_GENDERS; i++) {
+        if (ci_prefix(str, genders[i].adj)) return i;
+        if (ci_equal(str, genders[i].filecode)) return i;
+    }
+    return randomish(str) ? ROLE_RANDOM : ROLE_NONE;
 }
 
 export function str2align(str) {
     if (!str) return ROLE_NONE;
-    const s = String(str).toLowerCase();
-    for (let i = 0; i < ROLE_ALIGNS; i++)
-        if (String(aligns[i][1]).toLowerCase() === s) return i;
-    return ROLE_NONE;
+    for (let i = 0; i < ROLE_ALIGNS; i++) {
+        if (ci_prefix(str, aligns[i].adj)) return i;
+        if (ci_equal(str, aligns[i].filecode)) return i;
+    }
+    return randomish(str) ? ROLE_RANDOM : ROLE_NONE;
 }
 
 export { roles, races, genders, aligns };

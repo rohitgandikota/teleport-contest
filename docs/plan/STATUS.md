@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **seed8000 renders all 23 of its frames** — first complete frame set in the corpus
+Last updated: **2026-07-24** · **character selection is ported**; no session dies at call 0 any more
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -40,55 +40,30 @@ inventory instead of replaying it.
 | **Current milestone** | **Breadth** — seed8000's frames are done; the leverage is now in the other 43 |
 | **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **23/11,405 screens**, 0/44 sessions passing, corpus RNG **82,761/792,838 (10.4%)** |
+| **Score** | **23/11,405 screens**, 0/44 sessions passing, corpus RNG **87,779/792,838 (11.1%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Port the chargen menu flow (`genl_player_setup`, src/role.c:2206).** Seven
-sessions diverge at **call 0** on `pick_role` / `pick_align` / `pick_gend` and
-so contribute nothing at all today:
+Character selection is ported (`js/plselect.js`) and the seven sessions that
+used to die at call 0 now reach 1465, 2206, 463, 462, 4, 1 and 1. Three of them
+stop almost immediately, so **the next move is to chase those three down**:
 
-`seed0002`, `seed0004`, `seed0006`, `seed0007`, `seed0009`, `seed0014`,
-`seed0077`.
+| Session | Divergence | Note |
+|---|---:|---|
+| `seed0012-monk-vault-escort` | 0 | still at call 0 — its moves are `"Dodeco\rn[l\"m/hmy…"`, and `[`, `\"` and `/` are menu keys this port does not handle |
+| `seed0014` | 1 | one call in |
+| `seed0006` | 1 | shows TWO `rn2(1)` at `pick_align`; we emit one. Its moves include `a` at the confirmation, which is "choose another name" and re-runs `askname()` then loops back to the confirmation menu — a second `plsel_startmenu()` |
+| `seed0007` | 4 | four calls in |
 
-Their rc files pin nothing, so NetHack runs the interactive selection and the
-session's own keystrokes drive it. The analysis is done — this is the flow, and
-it is much more mechanical than the 524-line function suggests.
+These are all the same shape: a menu key or confirmation branch that
+`js/plselect.js` does not implement yet. `seed0006` is the most legible —
+work out why the rename path draws a second `rn2(1)`.
 
-**seed0077's moves decode exactly:** `"Shade\rnrhmy  ni jaeji\x1b+\x1b"`
-
-| Keys | What C is doing |
-|---|---|
-| `Shade` `\r` | `tty_askname()` — the player name. No draw. |
-| `n` | "Shall I pick a character for you? [ynaq]" — 'n' means pick manually |
-| `r` | role menu: **R**ogue |
-| `h` | race menu: **h**uman |
-| `m` | gender menu: **m**ale |
-| `y` | "Is this ok? [ynq]" |
-
-Alignment is never asked, because a Rogue has only one. That is where the
-single recorded draw comes from: `pick_align(..., PICK_RIGID)` finds exactly one
-valid alignment and returns `set[rn2(1)]` — **`rn2(1)` still draws**. It is the
-whole of seed0077's pre-`o_init` stream.
-
-**What has to be built.** The decisions are keystroke-driven, so the menus need
-real selector letters, which `js/tty/wintty.js` does not have yet — it renders
-text but has no `select_menu`:
-
-| Piece | C ref | Notes |
-|---|---|---|
-| `tty_askname` | win/tty/wintty.c:651 | reads the name up to Enter |
-| the `[ynaq]` prompt | role.c:2245-2286 | a yn_function, not a menu |
-| `setup_rolemenu` | role.c:2193 | letter is `lowc(*roles[i].name.m)` — 'a'rcheologist, 'b'arbarian, ... 'r'ogue |
-| `setup_racemenu` / gender / align | role.c | same shape |
-| `select_menu(win, PICK_ONE)` | win/tty/wintty.c | map a typed letter back to its entry |
-| the PICK_RIGID auto-fills | role.c:1269-1279 | **these are the draws** |
-
-`rigid_role_checks()` (role.c:1247) runs BEFORE the menus and draws nothing when
-nothing is pinned, so it can be a no-op initially.
-
-**Verify against seed0077 first** — it is the shortest of the seven and its
-whole pre-`o_init` stream is one `rn2(1)`.
+**After that, the chargen FRAMES.** Those sessions capture a screen at every
+keystroke, and the selection menus are all still blank. `js/tty/wintty.js` now
+has everything needed to draw them (menus, selector letters, headings,
+`(end)`/`--More--`), so this is content, not machinery — and it is worth a lot
+of frames, because a session like `seed0014` has 59,178 calls behind it.
 
 ### What the window layer now provides
 

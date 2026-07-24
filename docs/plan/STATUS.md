@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **every session now reaches call 300+**; mean divergence 1,729
+Last updated: **2026-07-24** · **screens 23 → 85**; the chargen frames are paying out
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -40,34 +40,51 @@ inventory instead of replaying it.
 | **Current milestone** | **Breadth** — seed8000's frames are done; the leverage is now in the other 43 |
 | **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **23/11,405 screens**, 0/44 sessions passing, corpus RNG **87,779/792,838 (11.1%)** |
+| **Score** | **85/11,405 screens**, 0/44 sessions passing, corpus RNG **87,782/792,838 (11.1%)** |
 
 ### The exact next action — READ THIS FIRST
 
-Character selection is complete (`js/plselect.js`), including the `= ? / " [`
-jump keys and the confirmation's rename and start-over branches. **No session
-diverges before call 300 any more**, and the mean first-divergence index is
-**1,729** with **31 of 44** sessions past call 1,000.
+**Draw the chargen MENUS.** The banner, the name prompt and the `[ynaq]` line
+are done and took the score from 23 to 85. The menus are the same job again and
+there are four of them per session (role, race, gender, confirmation), so this
+is worth roughly another 30 frames.
 
-Two candidates, and this time the choice is clear:
+**Start with the role menu.** seed0077 step 7 is the reference:
 
-**1. The chargen FRAMES — probably the biggest screen win available.** Eight
-sessions capture a screen at every chargen keystroke and every one of those
-frames is currently blank. That is roughly 8 sessions x 6-10 keystrokes of
-guaranteed-reachable frames, and `js/tty/wintty.js` already draws menus with
-selector letters, headings and footers. What is missing is only the menu
-*content*: `setup_rolemenu` / `setup_racemenu` / `setup_gendmenu` /
-`setup_algnmenu` (src/role.c:2246 onward) and `role_menu_extra`'s trailing
-entries, plus `tty_askname`'s prompt and the "[ynaq]" line.
+```
+ 0| Pick a role or profession
+ 2| <role> <race> <gender> <alignment>
+ 4| a - an Archeologist        11| r - a Rogue
+ 5| b - a Barbarian            12| R - a Ranger
+ 6| c - a Caveman/Cavewoman    13| s - a Samurai
+ 7| h - a Healer               ...
+ 9| m - a Monk                 17| * * Random
+10| p - a Priest/Priestess     18| / - Pick race first
+                               19| " - Pick gender first
+                               20| [ - Pick alignment first
+                               21| ~ - Set role/race/&c filtering
+                               22| q - Quit
+                               23| (end)      cursor [7,23]
+```
 
-**2. `lspo_map` — 8 sessions, and genuinely Lua.** The only remaining item with
-a large body of work behind it. Everything else in the histogram is worth 3 or
-fewer.
+Three things to work out, none of them large:
 
-**Recommendation: the chargen frames.** They are content against a proven
-renderer, they are the only place where a large number of frames is known to be
-reachable, and the sessions behind them are big — seed0014 alone has 59,178
-calls.
+1. **Ranger's letter is `R`, capital.** `setup_rolemenu` gives each role its
+   name's initial lowercased, and on a collision C moves to the UPPERCASE form,
+   not the next free lowercase — Rogue takes `r`, Ranger takes `R`.
+   `js/role.js menu_letters()` currently picks the next free lowercase and must
+   be corrected; the chargen RNG does not depend on it but the frames do.
+2. **The window renders at column 1, so `offx` collapsed to 0** even though the
+   longest line would put it at 47. Work out which test in
+   `tty_display_nhwindow` fires — probably the entry count once
+   `role_menu_extra`'s six trailing entries and the separators are included.
+3. **Row 0 is the `end_menu` title and row 2 is `plsel_startmenu`'s
+   `"<role> <race> <gender> <alignment>"` summary**, which fills in as facets
+   are chosen. `maybe_skip_seps(screenheight, ...)` decides whether the blank
+   separator rows appear.
+
+After the menus, `lspo_map` (8 sessions, genuinely Lua) is the only remaining
+item with real depth.
 
 ### What the window layer now provides
 

@@ -20,7 +20,7 @@ import { u_init_inventory, u_init_skills_discoveries } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
 import { com_pager } from './pager.js';
-import { player_selection } from './plselect.js';
+import { player_selection, tty_init_nhwindows } from './plselect.js';
 
 // include/you.h:441-442
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
@@ -40,6 +40,8 @@ export async function newgame() {
     // the session's own keystrokes when the rc pins nothing. It draws only
     // through plsel_startmenu()'s rigid_role_checks(); see js/plselect.js.
     {
+        // win/tty/wintty.c tty_init_nhwindows() — the banner, before anything.
+        tty_init_nhwindows();
         const ir = str2role(g.rc?.opts?.role);
         const ira = str2race(g.rc?.opts?.race);
         const ig = str2gend(g.rc?.opts?.gender);

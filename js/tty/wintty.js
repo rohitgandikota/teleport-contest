@@ -40,6 +40,44 @@ function term_attr(nhattr) {
 // include/wintype.h
 export const NHW_MESSAGE = 1, NHW_STATUS = 2, NHW_MAP = 3,
              NHW_MENU = 4, NHW_TEXT = 5;
+export const NHW_BASE = 6;
+
+// win/tty/wintty.c BASE_WINDOW — the raw screen, used before the game windows
+// exist. tty_putstr() writes at its current row and advances; tty_curs() moves
+// the cursor. That pairing is what places the startup banner at rows 4-7 and
+// the "Who are you?" prompt at row 12.
+const base = { curx: 0, cury: 0 };
+
+export function tty_curs_base(x, y) {
+    base.curx = x - 1;          /* tty_curs takes a 1-based column */
+    base.cury = y;
+}
+
+export function tty_putstr_base(str) {
+    const display = game?.nhDisplay;
+    if (!display) return;
+    const s = String(str ?? '');
+    for (let i = 0, col = 0; col < COLS; i++, col++)
+        display.setCell(col, base.cury, i < s.length ? s[i] : ' ', NO_COLOR, 0);
+    base.curx = 0;
+    base.cury++;
+}
+
+// Echo a single character at the base cursor, as tty_askname() does.
+export function tty_putch_base(ch) {
+    const display = game?.nhDisplay;
+    if (!display) return;
+    if (base.curx < COLS)
+        display.setCell(base.curx, base.cury, ch, NO_COLOR, 0);
+    base.curx++;
+}
+
+export function tty_base_cursor() {
+    const display = game?.nhDisplay;
+    if (display) display.setCursor(base.curx, base.cury);
+}
+
+export function tty_base_pos() { return { x: base.curx, y: base.cury }; }
 
 // include/wintty.h — the default --More-- prompt.
 const defmorestr = '--More--';

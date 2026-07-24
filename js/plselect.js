@@ -24,19 +24,69 @@ import {
     randrole, PICK_RANDOM,
 } from './role.js';
 import { roles, races, genders, aligns } from './role_data.js';
+import { COPYRIGHT_BANNER } from './banner_data.js';
+import {
+    tty_curs_base, tty_putstr_base, tty_putch_base, tty_base_cursor,
+    tty_base_pos,
+} from './tty/wintty.js';
 
 const ROLE_GENDERS = 2, ROLE_ALIGNS = 3;
 
-// win/tty/wintty.c:651 tty_askname() — read the hero's name up to Enter.
+// win/tty/wintty.c:545 tty_init_nhwindows() — the startup banner.
+//
+//   tty_curs(BASE_WINDOW, 1, 4);
+//   for (i = 1; i <= 4; ++i) tty_putstr(BASE_WINDOW, 0, banner_line(i));
+//   tty_putstr(BASE_WINDOW, 0, "");
+//   ... tty_curs(BASE_WINDOW, 1, 11);
+//
+// Skipped when the rc turns splash_screen off, which is why seed8000 has no
+// banner and the chargen sessions do.
+export function tty_init_nhwindows() {
+    if (game.flags.splash_screen === false) return;
+    tty_curs_base(1, 4);
+    for (const line of COPYRIGHT_BANNER)
+        tty_putstr_base(line);
+    tty_putstr_base('');
+    tty_curs_base(1, 11);
+}
+
+// win/tty/wintty.c:651 tty_askname()
+//
+//   tty_putstr(BASE_WINDOW, 0, "");
+//   tty_putstr(BASE_WINDOW, 0, "Who are you? ");
+//   tty_curs(BASE_WINDOW, sizeof who_are_you, cury - 1);
+//
+// `sizeof who_are_you` is 14 (13 characters plus the NUL), and tty_curs is
+// 1-based, so the cursor starts at column 13 on row 12. That is exactly what
+// the recordings show for the first captured frame.
+const WHO_ARE_YOU = 'Who are you? ';
+
 async function tty_askname() {
+    tty_putstr_base('');
+    tty_putstr_base(WHO_ARE_YOU);
+    tty_curs_base(WHO_ARE_YOU.length + 1, tty_base_pos().y - 1);
+
     let name = '';
     for (;;) {
+        tty_base_cursor();
         const c = String.fromCharCode(await nhgetch());
-        if (c === '\r' || c === '\n') break;
-        if (c === '\x1b') break;
-        if (c === '\b' || c === '\x7f') { name = name.slice(0, -1); continue; }
+        if (c === '\n' || c === '\r') break;
+        if (c === '\x1b') { name = ''; break; }
+        if (c === '\b' || c === '\x7f') {
+            if (name.length) {
+                name = name.slice(0, -1);
+                tty_curs_base(WHO_ARE_YOU.length + 1 + name.length,
+                              tty_base_pos().y);
+                tty_putch_base(' ');
+                tty_curs_base(WHO_ARE_YOU.length + 1 + name.length,
+                              tty_base_pos().y);
+            }
+            continue;
+        }
         name += c;
+        tty_putch_base(c);
     }
+    tty_base_cursor();
     return name;
 }
 

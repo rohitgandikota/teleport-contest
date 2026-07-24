@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **character selection is ported**; no session dies at call 0 any more
+Last updated: **2026-07-24** · **every session now reaches call 300+**; mean divergence 1,729
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -44,26 +44,30 @@ inventory instead of replaying it.
 
 ### The exact next action — READ THIS FIRST
 
-Character selection is ported (`js/plselect.js`) and the seven sessions that
-used to die at call 0 now reach 1465, 2206, 463, 462, 4, 1 and 1. Three of them
-stop almost immediately, so **the next move is to chase those three down**:
+Character selection is complete (`js/plselect.js`), including the `= ? / " [`
+jump keys and the confirmation's rename and start-over branches. **No session
+diverges before call 300 any more**, and the mean first-divergence index is
+**1,729** with **31 of 44** sessions past call 1,000.
 
-| Session | Divergence | Note |
-|---|---:|---|
-| `seed0012-monk-vault-escort` | 0 | still at call 0 — its moves are `"Dodeco\rn[l\"m/hmy…"`, and `[`, `\"` and `/` are menu keys this port does not handle |
-| `seed0014` | 1 | one call in |
-| `seed0006` | 1 | shows TWO `rn2(1)` at `pick_align`; we emit one. Its moves include `a` at the confirmation, which is "choose another name" and re-runs `askname()` then loops back to the confirmation menu — a second `plsel_startmenu()` |
-| `seed0007` | 4 | four calls in |
+Two candidates, and this time the choice is clear:
 
-These are all the same shape: a menu key or confirmation branch that
-`js/plselect.js` does not implement yet. `seed0006` is the most legible —
-work out why the rename path draws a second `rn2(1)`.
+**1. The chargen FRAMES — probably the biggest screen win available.** Eight
+sessions capture a screen at every chargen keystroke and every one of those
+frames is currently blank. That is roughly 8 sessions x 6-10 keystrokes of
+guaranteed-reachable frames, and `js/tty/wintty.js` already draws menus with
+selector letters, headings and footers. What is missing is only the menu
+*content*: `setup_rolemenu` / `setup_racemenu` / `setup_gendmenu` /
+`setup_algnmenu` (src/role.c:2246 onward) and `role_menu_extra`'s trailing
+entries, plus `tty_askname`'s prompt and the "[ynaq]" line.
 
-**After that, the chargen FRAMES.** Those sessions capture a screen at every
-keystroke, and the selection menus are all still blank. `js/tty/wintty.js` now
-has everything needed to draw them (menus, selector letters, headings,
-`(end)`/`--More--`), so this is content, not machinery — and it is worth a lot
-of frames, because a session like `seed0014` has 59,178 calls behind it.
+**2. `lspo_map` — 8 sessions, and genuinely Lua.** The only remaining item with
+a large body of work behind it. Everything else in the histogram is worth 3 or
+fewer.
+
+**Recommendation: the chargen frames.** They are content against a proven
+renderer, they are the only place where a large number of frames is known to be
+reachable, and the sessions behind them are big — seed0014 alone has 59,178
+calls.
 
 ### What the window layer now provides
 

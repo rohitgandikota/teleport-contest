@@ -14,13 +14,33 @@
 //
 // Usage: node tools/gen-roledata.mjs [--stdout]
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { writeFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const PROJECT_ROOT = fileURLToPath(new URL('..', import.meta.url));
-const SRC = join(PROJECT_ROOT, 'nethack-c/upstream/src/role.c');
+const RECORDER = join(PROJECT_ROOT, 'nethack-c/recorder');
 const OUT = join(PROJECT_ROOT, 'js/role_data.js');
+
+// Run the C preprocessor over role.c so that the `allow` bitmasks arrive as
+// evaluable numbers (0x08L | 0x20L | ...) rather than as ROLE_/MH_/AM_ macro
+// names we would otherwise have to resolve ourselves. Same approach as
+// tools/gen-objects.mjs, and same prerequisite: build-recorder.sh must have run.
+function preprocess() {
+    if (!existsSync(RECORDER)) {
+        throw new Error(
+            'nethack-c/recorder/ not found — run `bash nethack-c/build-recorder.sh` first');
+    }
+    const out = execFileSync('clang', [
+        '-E',
+        '-I', join(RECORDER, 'include'),
+        '-I', join(RECORDER, 'src'),
+        '-DNOTPARMDECL', '-DNO_TIMED_DELAY',
+        join(RECORDER, 'src/role.c'),
+    ], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    return out.split('\n').filter(l => !/^#\s*\d+\s+"/.test(l)).join('\n');
+}
 
 // --- field layouts, from include/you.h ------------------------------------
 
@@ -139,6 +159,20 @@ function leafValue(v) {
     const m = /^"((?:[^"\\]|\\.)*)"$/.exec(t);
     if (m) return m[1].replace(/\\"/g, '"').replace(/\\\\/g, '\\');
     if (/^-?\d+$/.test(t)) return Number(t);
+    // Bitmask expressions the preprocessor reduced to numbers:
+    // "0x00000008L | 0x00000020L | 0x1000". Evaluate them so ok_role() and
+    // friends can test bits directly.
+    const numeric = t.replace(/([0-9a-fA-FxX]+)[UL]+\b/g, '$1');
+    // Accept both a bare literal ("0x1000") and an expression
+    // ("0x08 | 0x20"); require a digit and no bare identifiers.
+    if (/^[-+*/|&^()~\s0-9a-fA-FxX]+$/.test(numeric) && /\d/.test(numeric)
+        && !/\b[g-wyzG-WYZ]\w*/.test(numeric)) {
+        try {
+            // eslint-disable-next-line no-new-func
+            const n = Function(`"use strict"; return (${numeric});`)();
+            if (Number.isFinite(n)) return n;
+        } catch { /* fall through and keep the text */ }
+    }
     return t; // a C constant expression, kept verbatim
 }
 
@@ -167,7 +201,7 @@ function buildRole(entry) {
 }
 
 function main() {
-    const src = stripComments(readFileSync(SRC, 'utf8'));
+    const src = stripComments(preprocess());
 
     const rolesRaw = extractTable(src, /const\s+struct\s+Role\s+roles\s*\[[^\]]*\]\s*=\s*\{/);
     const racesRaw = extractTable(src, /const\s+struct\s+Race\s+races\s*\[[^\]]*\]\s*=\s*\{/);
@@ -180,7 +214,10 @@ function main() {
         .filter(e => Array.isArray(e) && Array.isArray(e[0]) && /^"/.test(String(e[0][0])))
         .map(buildRole);
 
-    const races = racesRaw.filter(e => Array.isArray(e)).map(deepValue);
+    // The C sizes these NUM_RACES+1 etc. and NUL-terminates them; after
+    // preprocessing the terminator shows up as a ((void*)0) noun.
+    const races = racesRaw.filter(e => Array.isArray(e)).map(deepValue)
+        .filter(r => typeof r[0] === 'string' && !/void\s*\*/.test(r[0]));
     const genders = gendersRaw.filter(e => Array.isArray(e)).map(deepValue);
     const aligns = alignsRaw.filter(e => Array.isArray(e)).map(deepValue);
 

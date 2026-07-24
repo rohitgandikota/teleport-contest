@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after M2.7 (`o_init`) landed
+Last updated: **2026-07-24** · after M2.7 (`o_init`) and the role-table mask fix
 
 ---
 
@@ -95,6 +95,12 @@ change to `js/` in the project.
 from `input.datetime` via `game.fixed_datetime`. Verified against four session
 filenames that assert calendar properties (two Friday-the-13th, one full moon,
 one new moon) — all four reproduce. Audited `js/` for host-clock reads: none.
+
+**Role tables now carry numeric masks.** `tools/gen-roledata.mjs` switched to
+the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
+gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
+0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
+now test bits directly, which is what the M2.5 pickers need.
 
 **M2.7 — `o_init`, the first RNG consumer.** `tools/gen-objects.mjs` generates
 `js/objects_data.js` by running the C preprocessor over `src/objects.c` and

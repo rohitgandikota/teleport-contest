@@ -68,7 +68,7 @@ export const roles = [
         "enemy1sym": "S_SNAKE",
         "enemy2sym": "S_MUMMY",
         "questarti": "ART_ORB_OF_DETECTION",
-        "allow": "MH_HUMAN | MH_DWARF | MH_GNOME | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL | ROLE_NEUTRAL",
+        "allow": 12398,
         "attrbase": [
             7,
             10,
@@ -170,7 +170,7 @@ export const roles = [
         "enemy1sym": "S_OGRE",
         "enemy2sym": "S_TROLL",
         "questarti": "ART_HEART_OF_AHRIMAN",
-        "allow": "MH_HUMAN | MH_ORC | ROLE_MALE | ROLE_FEMALE | ROLE_NEUTRAL | ROLE_CHAOTIC",
+        "allow": 12427,
         "attrbase": [
             16,
             7,
@@ -272,7 +272,7 @@ export const roles = [
         "enemy1sym": "S_HUMANOID",
         "enemy2sym": "S_GIANT",
         "questarti": "ART_SCEPTRE_OF_MIGHT",
-        "allow": "MH_HUMAN | MH_DWARF | MH_GNOME | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL | ROLE_NEUTRAL",
+        "allow": 12398,
         "attrbase": [
             10,
             7,
@@ -374,7 +374,7 @@ export const roles = [
         "enemy1sym": "S_RODENT",
         "enemy2sym": "S_YETI",
         "questarti": "ART_STAFF_OF_AESCULAPIUS",
-        "allow": "MH_HUMAN | MH_GNOME | ROLE_MALE | ROLE_FEMALE | ROLE_NEUTRAL",
+        "allow": 12362,
         "attrbase": [
             7,
             7,
@@ -476,7 +476,7 @@ export const roles = [
         "enemy1sym": "S_IMP",
         "enemy2sym": "S_JELLY",
         "questarti": "ART_MAGIC_MIRROR_OF_MERLIN",
-        "allow": "MH_HUMAN | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL",
+        "allow": 12300,
         "attrbase": [
             13,
             7,
@@ -578,7 +578,7 @@ export const roles = [
         "enemy1sym": "S_ELEMENTAL",
         "enemy2sym": "S_XORN",
         "questarti": "ART_EYES_OF_THE_OVERWORLD",
-        "allow": "MH_HUMAN | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL | ROLE_NEUTRAL | ROLE_CHAOTIC",
+        "allow": 12303,
         "attrbase": [
             10,
             7,
@@ -680,7 +680,7 @@ export const roles = [
         "enemy1sym": "S_ZOMBIE",
         "enemy2sym": "S_WRAITH",
         "questarti": "ART_MITRE_OF_HOLINESS",
-        "allow": "MH_HUMAN | MH_ELF | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL | ROLE_NEUTRAL | ROLE_CHAOTIC",
+        "allow": 12319,
         "attrbase": [
             7,
             7,
@@ -782,7 +782,7 @@ export const roles = [
         "enemy1sym": "S_NYMPH",
         "enemy2sym": "S_NAGA",
         "questarti": "ART_MASTER_KEY_OF_THIEVERY",
-        "allow": "MH_HUMAN | MH_ORC | ROLE_MALE | ROLE_FEMALE | ROLE_CHAOTIC",
+        "allow": 12425,
         "attrbase": [
             7,
             7,
@@ -831,54 +831,6 @@ export const roles = [
             "f": null
         },
         "rank": [
-            {
-                "m": "Edhel",
-                "f": "Elleth"
-            },
-            {
-                "m": "Edhel",
-                "f": "Elleth"
-            },
-            {
-                "m": "Ohtar",
-                "f": "Ohtie"
-            },
-            {
-                "m": "Kano",
-                "f": "Kanie"
-            },
-            {
-                "m": "Arandur",
-                "f": " Aranduriel"
-            },
-            {
-                "m": "Hir",
-                "f": "Hiril"
-            },
-            {
-                "m": "Aredhel",
-                "f": "Arwen"
-            },
-            {
-                "m": "Ernil",
-                "f": "Elentariel"
-            },
-            {
-                "m": "Elentar",
-                "f": "Elentari"
-            },
-            {
-                "m": "Solonor Thelandira",
-                "f": null
-            },
-            {
-                "m": "Aerdrie Faenya",
-                "f": null
-            },
-            {
-                "m": "Lolth",
-                "f": null
-            },
             {
                 "m": "Tenderfoot",
                 "f": null
@@ -932,7 +884,7 @@ export const roles = [
         "enemy1sym": "S_CENTAUR",
         "enemy2sym": "S_SPIDER",
         "questarti": "ART_LONGBOW_OF_DIANA",
-        "allow": "MH_HUMAN | MH_ELF | MH_GNOME | MH_ORC | ROLE_MALE | ROLE_FEMALE | ROLE_NEUTRAL | ROLE_CHAOTIC",
+        "allow": 12507,
         "attrbase": [
             13,
             13,
@@ -1034,7 +986,7 @@ export const roles = [
         "enemy1sym": "S_DOG",
         "enemy2sym": "S_ELEMENTAL",
         "questarti": "ART_TSURUGI_OF_MURAMASA",
-        "allow": "MH_HUMAN | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL",
+        "allow": 12300,
         "attrbase": [
             10,
             8,
@@ -1136,7 +1088,7 @@ export const roles = [
         "enemy1sym": "S_SPIDER",
         "enemy2sym": "S_CENTAUR",
         "questarti": "ART_YENDORIAN_EXPRESS_CARD",
-        "allow": "MH_HUMAN | ROLE_MALE | ROLE_FEMALE | ROLE_NEUTRAL",
+        "allow": 12298,
         "attrbase": [
             7,
             10,
@@ -1238,7 +1190,7 @@ export const roles = [
         "enemy1sym": "S_ANT",
         "enemy2sym": "S_GIANT",
         "questarti": "ART_ORB_OF_FATE",
-        "allow": "MH_HUMAN | MH_DWARF | ROLE_FEMALE | ROLE_LAWFUL | ROLE_NEUTRAL",
+        "allow": 8238,
         "attrbase": [
             10,
             7,
@@ -1340,7 +1292,7 @@ export const roles = [
         "enemy1sym": "S_BAT",
         "enemy2sym": "S_WRAITH",
         "questarti": "ART_EYE_OF_THE_AETHIOPICA",
-        "allow": "MH_HUMAN | MH_ELF | MH_GNOME | MH_ORC | ROLE_MALE | ROLE_FEMALE | ROLE_NEUTRAL | ROLE_CHAOTIC",
+        "allow": 12507,
         "attrbase": [
             7,
             10,
@@ -1398,10 +1350,10 @@ export const races = [
         "PM_HUMAN",
         "PM_HUMAN_MUMMY",
         "PM_HUMAN_ZOMBIE",
-        "MH_HUMAN | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL | ROLE_NEUTRAL | ROLE_CHAOTIC",
-        "MH_HUMAN",
+        12303,
+        8,
         0,
-        "MH_GNOME | MH_ORC",
+        192,
         [
             3,
             3,
@@ -1411,7 +1363,7 @@ export const races = [
             3
         ],
         [
-            "STR18(100)",
+            118,
             18,
             18,
             18,
@@ -1447,10 +1399,10 @@ export const races = [
         "PM_ELF",
         "PM_ELF_MUMMY",
         "PM_ELF_ZOMBIE",
-        "MH_ELF | ROLE_MALE | ROLE_FEMALE | ROLE_CHAOTIC",
-        "MH_ELF",
-        "MH_ELF",
-        "MH_ORC",
+        12305,
+        16,
+        16,
+        128,
         [
             3,
             3,
@@ -1496,10 +1448,10 @@ export const races = [
         "PM_DWARF",
         "PM_DWARF_MUMMY",
         "PM_DWARF_ZOMBIE",
-        "MH_DWARF | ROLE_MALE | ROLE_FEMALE | ROLE_LAWFUL",
-        "MH_DWARF",
-        "MH_DWARF | MH_GNOME",
-        "MH_ORC",
+        12324,
+        32,
+        96,
+        128,
         [
             3,
             3,
@@ -1509,7 +1461,7 @@ export const races = [
             3
         ],
         [
-            "STR18(100)",
+            118,
             16,
             16,
             20,
@@ -1545,10 +1497,10 @@ export const races = [
         "PM_GNOME",
         "PM_GNOME_MUMMY",
         "PM_GNOME_ZOMBIE",
-        "MH_GNOME | ROLE_MALE | ROLE_FEMALE | ROLE_NEUTRAL",
-        "MH_GNOME",
-        "MH_DWARF | MH_GNOME",
-        "MH_HUMAN",
+        12354,
+        64,
+        96,
+        8,
         [
             3,
             3,
@@ -1558,7 +1510,7 @@ export const races = [
             3
         ],
         [
-            "STR18(50)",
+            68,
             19,
             18,
             18,
@@ -1594,10 +1546,10 @@ export const races = [
         "PM_ORC",
         "PM_ORC_MUMMY",
         "PM_ORC_ZOMBIE",
-        "MH_ORC | ROLE_MALE | ROLE_FEMALE | ROLE_CHAOTIC",
-        "MH_ORC",
+        12417,
+        128,
         0,
-        "MH_HUMAN | MH_ELF | MH_DWARF",
+        56,
         [
             3,
             3,
@@ -1607,7 +1559,7 @@ export const races = [
             3
         ],
         [
-            "STR18(50)",
+            68,
             16,
             16,
             18,
@@ -1640,7 +1592,7 @@ export const genders = [
         "him",
         "his",
         "Mal",
-        "ROLE_MALE"
+        4096
     ],
     [
         "female",
@@ -1648,7 +1600,7 @@ export const genders = [
         "her",
         "her",
         "Fem",
-        "ROLE_FEMALE"
+        8192
     ],
     [
         "neuter",
@@ -1656,7 +1608,7 @@ export const genders = [
         "it",
         "its",
         "Ntr",
-        "ROLE_NEUTER"
+        16384
     ],
     [
         "group",
@@ -1673,29 +1625,29 @@ export const aligns = [
         "law",
         "lawful",
         "Law",
-        "ROLE_LAWFUL",
-        "A_LAWFUL"
+        4,
+        1
     ],
     [
         "balance",
         "neutral",
         "Neu",
-        "ROLE_NEUTRAL",
-        "A_NEUTRAL"
+        2,
+        0
     ],
     [
         "chaos",
         "chaotic",
         "Cha",
-        "ROLE_CHAOTIC",
-        "A_CHAOTIC"
+        1,
+        -1
     ],
     [
         "evil",
         "unaligned",
         "Una",
         0,
-        "A_NONE"
+        -128
     ]
 ];
 

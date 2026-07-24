@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after the M9a scoping correction
+Last updated: **2026-07-24** · after `js/dungeon_data.js` was generated
 
 ---
 
@@ -38,39 +38,39 @@ consumer in every single session.
 
 ### The exact next action
 
-**Port `src/dungeon.c`'s initialisation**, driven by a generated
-`js/dungeon_data.js`. This is the next block in the stream after `o_init` and
-the `nhlib.lua` align shuffle — C's calls 201 onward for every session.
+**Port `src/dungeon.c`'s initialisation.** The data half is done:
+`js/dungeon_data.js` is generated (9 dungeons, 7 branches, 37 named levels) by
+`tools/gen-dungeon.mjs`, and needs no Lua interpreter. What remains is the code.
 
-Two steps:
+Port these, in this order:
 
-1. **Generate `js/dungeon_data.js` from `dat/dungeon.lua`.** Unlike the level
-   scripts, `dungeon.lua` is 333 lines of *pure declarative data* — nested
-   tables of `name =`, `base =`, `range =`, `branches = {...}`, with no
-   functions and no control flow. It converts to a JS object literal
-   mechanically, so this does **not** need the Lua interpreter. Write
-   `tools/gen-dungeon.mjs`; a small Lua-table-literal parser is enough.
-2. **Port the `dungeon.c` functions that draw.** Measured call volumes across
-   the corpus:
+| C function | line | corpus draws | note |
+|---|---|---|---|
+| `init_dungeons` | ~1000 | — | driver; builds `proto_dungeon` from the data |
+| `init_dungeon_dungeons` | 1022, 1074 | 580 | |
+| `init_level` | 572 | 1480 | `if (!wizard && tlevel->chance <= rn2(100)) return;` |
+| `possible_places` / `pick_level` | — | — | no draws, but decide `place_level`'s range |
+| `place_level` | 687 | 2037 | **recursive with backtracking — see below** |
+| `parent_dlevel` | 426 | 385 | |
+| `induced_align` | 2005, 2012 | 1429 | |
+| `init_castle_tune` | 1116 | 275 | |
 
-   ```
-   2037  place_level(dungeon.c:687)
-   1480  init_level(dungeon.c:572)
-   1304  induced_align(dungeon.c:2012)
-    385  parent_dlevel(dungeon.c:426)
-    360  init_dungeon_dungeons(dungeon.c:1022)
-    275  init_castle_tune(dungeon.c:1116)
-    220  init_dungeon_dungeons(dungeon.c:1074)
-    125  induced_align(dungeon.c:2005)
-   ```
+**The trap in `place_level`.** It is recursive *and* backtracking: it draws
+`rn2(npossible)`, recurses, and on failure decrements `npossible`, clears that
+map slot, and draws again. The number of draws therefore depends on how much
+backtracking happens, not just on how many levels exist. Port the recursion and
+the retry loop exactly as written; an implementation that "picks a valid
+placement" by any other search order will consume a different number of draws
+and desynchronise everything after it.
 
-**Success signal:** the `// init_dungeon_dungeons`, `// init_level`,
-`// place_level` and `// parent_dlevel` blocks can be deleted from
-`js/fastforward.js`, and the seed8000 stream stays identical through them.
+Note `init_level` skips a level entirely when `chance` fails, and 13 of the 44
+sessions run in wizard mode where the `!wizard` guard changes behaviour — check
+`game.rc.opts.playmode` against the debug-mode session list in
+[coverage-map.md](coverage-map.md).
 
-**Do this before the Lua interpreter.** The interpreter is still needed for
-level *building* (M9a proper), but dungeon topology does not require it, and
-this block sits earlier in the stream.
+**Success signal:** delete the `// init_dungeon_dungeons`, `// init_level`,
+`// place_level` and `// parent_dlevel` blocks from `js/fastforward.js` and the
+seed8000 stream stays identical through them.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -121,6 +121,11 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**Dungeon topology data.** `tools/gen-dungeon.mjs` → `js/dungeon_data.js`,
+9 dungeons / 7 branches / 37 named levels, parsed from `dat/dungeon.lua` without
+the Lua interpreter. The generator refuses to run if that file ever gains real
+Lua code.
 
 **M2.8 — `role.c` pickers.** `js/role.js` ports `ok_role`/`ok_race`/`ok_gend`/
 `ok_align` and the four `pick_*` functions. Verified against `seed0002`, whose

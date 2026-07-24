@@ -344,6 +344,43 @@ async function ensureScorefiles(installDir) {
     }
 }
 
+// Between segments we must NOT wipe state (a save/restore pair needs the save
+// file to survive), but an abandoned in-progress game still leaves its lock and
+// level files behind, and the next segment then opens on "There is already a
+// game in progress under your name. Destroy old game? [yn]" instead of the
+// recorded first frame.
+//
+// This happens whenever a segment's `moves` run out mid-death-sequence: the
+// driver SIGTERMs the recorder before NetHack reaches the cleanup that unlinks
+// its lock. It bites hardest in debug mode, where NetHack forces the player
+// name to "wizard" regardless of the rc `name:`, so every debug segment shares
+// one lock file (<uid>wizard.0) no matter what the characters are called.
+//
+// An empty save/ directory means the previous segment did not save, so nothing
+// downstream wants those files and clearing them is safe. Bones (bon*), the
+// scoreboard, and the logs are always preserved — a bones pair depends on them.
+async function clearAbandonedGame(installDir) {
+    const saveDir = path.join(installDir, 'save');
+    try {
+        const saves = await fs.readdir(saveDir);
+        if (saves.length) return; // a real save/restore pair; leave everything
+    } catch { /* no save dir at all — nothing was saved */ }
+
+    let entries = [];
+    try { entries = await fs.readdir(installDir); } catch {}
+    for (const name of entries) {
+        if (name.endsWith('.lua')) continue;
+        if (name.toLowerCase().startsWith('bon')) continue; // bones must survive
+        // Lock and per-level files: "<lockname>.<n>", e.g. 501wizard.0, alock.3
+        if (!/\.\d+$/.test(name)) continue;
+        const full = path.join(installDir, name);
+        try {
+            if (!(await fs.stat(full)).isFile()) continue;
+        } catch { continue; }
+        await fs.unlink(full).catch(() => {});
+    }
+}
+
 async function clearStaleState(installDir) {
     const saveDir = path.join(installDir, 'save');
     try {
@@ -393,6 +430,7 @@ async function recordSegment({
     // <install>/save/.  Clearing between segments would destroy that
     // save file and turn the restore into a fresh game.
     if (isFirstSegment) await clearStaleState(installDir);
+    else await clearAbandonedGame(installDir);
 
     const playerName = parseNethackrcName(seg.nethackrc) ?? '';
     const args = ['-u', playerName];

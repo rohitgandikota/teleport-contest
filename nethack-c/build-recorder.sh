@@ -139,6 +139,37 @@ cd "$RECORDER_DIR"
 export SOURCE_DATE_EPOCH="${TELEPORT_BUILD_EPOCH:-1777723200}"
 make -j"$NPROC" SYSCFLAGS="$LUA_SYSCFLAGS" >/dev/null
 make install >/dev/null
+
+# --- Step 6: install sysconf ---
+#
+# The binary is built with SYSCF enabled (include/config.h defines both
+# SYSCF and SYSCF_FILE="sysconf"), so cfgfiles.c opens "sysconf" relative
+# to HACKDIR at startup and calls exit(EXIT_FAILURE) when it is missing.
+# Upstream's `make install` does not create it: SYSCONFINSTALL is commented
+# out in sys/unix/Makefile.top and no minimal hints file defines it. Without
+# this step every recording silently produces zero steps — the recorder dies
+# before the first frame and the driver reports success.
+#
+# Two edits to the stock template, both required:
+#
+#   GDBPATH/GREPPATH/PANICTRACE_* are dropped. They point at Linux paths, and
+#   NetHack refuses to start when they name files that do not exist ("2 errors
+#   in sysconf." as the first screen). They only affect crash handling.
+#
+#   WIZARDS is widened to "*". Several recorded sessions set playmode:debug in
+#   their nethackrc, and NetHack only honours that for a user listed in
+#   WIZARDS. An unauthorised user is silently demoted to normal play, which
+#   generates a completely different game — different attributes, different
+#   level, every frame wrong — with no error message anywhere.
+#
+# Verified: with this sysconf the recorder reproduces the shipped sessions
+# byte-for-byte, debug-mode sessions included.
+echo "[step 6] Installing sysconf..."
+NETHACKDIR="$INSTALL_PREFIX/games/lib/nethackdir"
+grep -vE '^(GDBPATH|GREPPATH|PANICTRACE_GDB|PANICTRACE_LIBC)=' \
+    "$RECORDER_DIR/sys/unix/sysconf" \
+    | sed 's/^WIZARDS=.*/WIZARDS=*/' > "$NETHACKDIR/sysconf"
+
 echo
 echo "[ok] recorder built: $RECORDER_DIR/src/nethack"
 echo "[ok] installed to:    $INSTALL_PREFIX/games/lib/nethackdir/"

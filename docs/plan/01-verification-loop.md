@@ -31,25 +31,31 @@ NETHACK_SEED=8000 NETHACK_FIXED_DATETIME=20260502143000 NETHACK_RNGLOG=/tmp/rng.
 
 ## Items
 
-### 1.1 Confirm the recorder reproduces a shipped session bit-for-bit
+### 1.1 Confirm the recorder reproduces a shipped session bit-for-bit — DONE
 
-- [ ] Re-record `seed8000-tourist-starter` with
-      `node scripts/record-session.mjs sessions/seed8000-tourist-starter.session.json /tmp/rr.json`
-- [ ] Diff against the shipped file with `node scripts/verify-rerecord.mjs`
-- [ ] Repeat for one long session (`seed0360-wizard-world-tour`) and one
-      multi-segment session (`seed0013-friday13-save-then-fullmoon-restore`)
+- [x] Re-record `seed8000-tourist-starter` and diff against the shipped file
+- [x] Run the whole corpus through `node scripts/verify-rerecord.mjs`
 
-If these do not reproduce byte-for-byte, stop. Our oracle is untrustworthy and
-nothing downstream can be verified. Check clang is the compiler in use and that
-`RERECORD_TZ` matches what the sessions were recorded with.
+**Result: 44/44 pass.** The oracle is verified end to end, including the long
+sessions, the debug-mode sessions, and every multi-segment session.
 
-**Verify:** three sessions re-record identically.
+Three defects had to be fixed to get there; all are written up in
+[NOTES.md](NOTES.md) under "The recorder". In short: `make install` never
+creates the `sysconf` file the binary requires, the stock sysconf template
+breaks on macOS and silently demotes debug-mode sessions to normal play, and an
+abandoned in-progress game leaks its lock file into the next segment. Fixes live
+in `nethack-c/build-recorder.sh` (step 6) and
+`scripts/record-session.mjs` (`clearAbandonedGame`).
 
-### 1.2 Divergence localiser
+**If you ever see a re-record fail, re-read that NOTES.md section first.** All
+three failures presented as "the recorder is non-deterministic", which is not
+what any of them were.
 
-Build `tools/diverge.mjs`. Given a session name, it runs our port, compares the
-RNG log positionally, and prints a window around the first mismatch **with the C
-`@ caller(file:line)` annotations intact**:
+### 1.2 Divergence localiser — DONE
+
+`tools/diverge.mjs` is built and working. Given a session name, it runs our port,
+compares the RNG log positionally, and prints a window around the first mismatch
+**with the C `@ caller(file:line)` annotations intact**:
 
 ```
 $ node tools/diverge.mjs seed0007-rogue-snake-swamp
@@ -66,13 +72,18 @@ Next C function to port: m_initweap (src/makemon.c:431)
 
 The last line is the whole point: the tool names the next thing to port.
 
-- [ ] Reads the session JSON without loading all 51 MB (stream or per-file)
-- [ ] Prints a configurable window (default 8 before, 8 after)
-- [ ] Prints the C caller annotation for the first mismatch
-- [ ] Handles the "ours ran out of calls" and "ours has extra calls" cases
-- [ ] Works on multi-segment sessions, with segment-relative and absolute indices
+- [x] Reads one session file at a time, never the whole 51 MB corpus
+- [x] Configurable window (`-w N`, default 8 either side)
+- [x] Prints the C caller annotation for the first mismatch
+- [x] Handles the "ours ran out of calls" and "ours has extra calls" cases
+- [x] Works on multi-segment sessions, reporting `seg N, step M (key "x")`
+- [x] `--all` mode: one summary line per session, for picking the next target
+- [x] `--screens`: also reports the first screen miss and the exact
+      `tools/screendiff.mjs` command to inspect it
 
-**Verify:** run it on the current skeleton; it names a real C function.
+**Verified** against the untouched skeleton on `seed8000-tourist-starter`: it
+reports divergence at RNG call 3103 and names `m_move (src/monmove.c:1963)`.
+Baseline numbers are in [NOTES.md](NOTES.md).
 
 ### 1.3 Screen differ
 

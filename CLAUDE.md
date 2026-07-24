@@ -112,6 +112,20 @@ produce nothing. Rules:
    before moving on.
 5. Tick the item, commit, push.
 
+## Write down what you learn
+
+`docs/plan/NOTES.md` holds everything discovered by doing the work that is not
+obvious from the contest docs: how the scorer really behaves, traps in the
+tooling, measured baselines. **Add to it whenever you learn something
+non-obvious**, and edit the existing entry rather than appending a duplicate when
+one already covers the ground. Read it before debugging anything that smells
+like infrastructure — three separate "the recorder is non-deterministic"
+failures turned out to be documented one-line fixes.
+
+The same applies to the milestone files: tick items as you finish them, and when
+a milestone's scope turns out to be wrong, correct the file rather than working
+around it silently.
+
 Score is not the only gate. A change that raises the score while violating rule 1
 or 2 is rejected.
 

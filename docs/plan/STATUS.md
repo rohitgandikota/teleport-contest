@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 20**, seed8000 at 20/23; `fastforward.js` down to 2 calls
+Last updated: **2026-07-24** · **seed8000 is at 22 of 23 frames**; only the inventory menu is left
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,59 +37,48 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **M3 content** — two seed8000 frames left, and the template now exists |
+| **Current milestone** | **M3 content** — one seed8000 frame left; then breadth |
 | **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **20/11,405 screens**, 0/44 sessions passing, corpus RNG **82,750/792,838 (10.4%)** |
+| **Score** | **22/11,405 screens**, 0/44 sessions passing, corpus RNG **82,750/792,838 (10.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Port `enlightenment()` (src/insight.c) for the attributes window** — seed8000
-steps 17 and 18, worth 2 screens. The window path is proven: step 15's
-discoveries window scores all 1920 cells. Read
-[NOTES.md](NOTES.md) "Making a window frame score" first.
+**Port `objnam.c doname()` for the inventory menu** — seed8000 step 11, the last
+frame that session is missing. Steps 15, 17 and 18 all score now, so the window
+machinery is done; this is purely about naming objects.
 
-Every input exists. The analysis is done; this is transcription:
+It is a real subsystem, not a transcription: `doname_base()` is 529 lines and
+`xname()` is comparable. Budget accordingly. What the frame needs:
 
-**Window.** `create_nhwindow(NHW_MENU)` with `start_menu`, so `en_via_menu` is
-true and every line goes through `add_menu_str`. 34 lines total, and
-`maxrow >= ROWS` collapses `offx` to 0. It pages: `morestr` is "(1 of 2)" then
-"(2 of 2)". Page 1's prompt sits at row 23 (the mid-loop page break in
-`process_text_window`, at row `n`), page 2's at row 11 (right after its
-content). Cursors are `[9,23]` and `[9,11]`.
+```
+$ - 757 gold pieces
+a - 27 +2 darts (at the ready)
+j - an uncursed +0 Hawaiian shirt (being worn)
+b - 6 uncursed food rations
+k - an expensive camera (0:34)
+```
 
-**Line production.** `enlght_line(start, middle, end, ps)` emits
-`" %s%s%s%s."` — one leading space, trailing period — then applies
-contractions (` are not ` → ` aren't `, and five more). `you_are(x)` is
-`enlght_line("You ", "are ", x, "")`; `you_have(x)` the same with "have ".
-`enlght_out(buf)` emits `buf` verbatim. The menu layer adds one more leading
-space on top, which is why body lines show two.
+so: quantity with `an`/plural, BUC prefix, enchantment, `(being worn)` /
+`(at the ready)` suffixes, and `(0:34)` charge display for tools.
 
-| Frame line | Source |
-|---|---|
-| `Contestant the Tourist's attributes:` | title, `"%s the %s's attributes:"` with `highc(plname)` |
-| `Background:` | `enlght_out` after a `""` separator |
-| `You are a Rambler, a level 1 female human Tourist.` | `"%s, a level %d %s%s %s"` = `an(rank_titl)`, ulevel, gender adj, `urace.adj`, role title |
-| `You are neutral, on a mission for The Lady` | built with `Sprintf(buf, " %s%s%s, %son a mission for %s", ...)` then `enlght_out` — note it bypasses `you_are` to omit the period |
-| `who is opposed by Blind Io (lawful) and Offler (chaotic).` | the two alignments that are not the hero's, via `align_gname()` |
-| `You are left-handed.` | `URIGHTY ? "right" : "left"`; **already computed** — `u.uhandedness` is ported |
-| `You are in the Dungeons of Doom, on level 1.` | `"in %s, on %s"`, dungeon dname with a leading "The " stripped, `"level %d"` from `depth()` |
-| `You entered the dungeon 11 turns ago.` | `enlght_line(You_, "entered ", "the dungeon %ld turn%s ago", "")` |
-| `You have 0 experience points.` | `"%-1ld experience point%s"` |
-| `Basics:` / `Characteristics:` / `Status:` / `Miscellaneous:` | `enlght_out` headings, each after a `""` |
-| `You have all 10 hit points.` | `hp == hpmax && hpmax > 1` → `"all %d hit points"` |
-| `You have both energy points (spell power).` | `pw == pwmax && pwmax == 2` → `"both %s"`; note "not all 2" |
-| `Your armor class is 10.` | `enl_msg("Your armor class ", "is ", "was ", buf, "")` |
-| `Your wallet contains 757 zorkmids.` | `" Your wallet contain%s %ld %s"` |
-| `Autopickup is off.` | `enl_msg("Autopickup ", "is ", "was ", buf, "")` |
-| `Your strength is 9.` and the five others | `characteristics_enlightenment`, 16 lines of C |
-| `You aren't hungry.` | `you_are("not hungry")` plus the ` are not ` → ` aren't ` contraction |
-| `You are unencumbered.` / `bare handed` / `unskilled in bare handed combat` | `status_enlightenment` |
-| `Total elapsed playing time is none.` | the `Miscellaneous:` tail |
+Three supporting pieces, all in `src/invent.c`:
 
-**Then step 11, the inventory menu.** It needs `objnam.c doname()` — quantity,
-enchantment, worn/wielded status — which is materially bigger than
-`obj_typename()` was.
+| Function | Lines | Why it matters here |
+|---|---:|---|
+| `merged()` | 135 | our 21 inventory objects become 12 lines — five separate FOOD_RATION stacks merge into "6 uncursed food rations" |
+| `assigninvlet()` | 39 | the a/b/c letters, and `$` for gold |
+| `display_inventory()` | 26 | walks `flags.inv_order` and builds the menu |
+
+The window is an `NHW_MENU` at `offx` 32 (`80 - 47 - 1`), cursor `[38,20]`,
+footer `(end)`. `js/tty/wintty.js` already produces that geometry — it was
+verified against this exact frame long before it had a consumer.
+
+### After that, breadth rather than depth
+
+seed8000 is one session of 44. Once it is complete, the leverage is in what
+stops the *other* sessions: `lspo_map` (6, Lua), the chargen menus (6), and a
+long tail of 2-or-fewer. Nothing else is worth more than 6.
 
 ### The startup sequence is now fully ported
 

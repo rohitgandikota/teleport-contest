@@ -8,7 +8,7 @@
 import { game } from './gstate.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { mkobj, mksobj, next_ident, blessorcurse } from './mkobj.js';
-import { rndmonnum } from './makemon.js';
+import { rndmonnum, makemon, MM_NOGRP, NO_MM_FLAGS } from './makemon.js';
 // Object type and object class constants come from js/objects_data.js, which
 // is generated from the C. They used to be hardcoded literals here and 21 of
 // the 23 object constants and 7 of the 8 class constants were wrong — e.g.
@@ -259,23 +259,6 @@ function mkcorpstat(objtyp, mtmp, pm, x, y, flags) {
     return otmp;
 }
 
-
-// makemon stub
-async function makemon(mdat, x, y, mmflags) {
-    // C: makemon consumes RNG for monster HP, inventory, etc.
-    // For fill_ordinary_room: makemon(null, ...) = random monster
-    if (mdat === null) {
-        // rndmonst_adj + selection
-        rn2(398);
-    }
-    // newmonhp
-    const hp = rnd(8);
-    // m_initinv — monster inventory
-    // For random monsters this varies widely. Since fill_ordinary_room
-    // and mineralize calls are in fastforward, this stub won't be called
-    // for those. It's only needed if mklev structural code calls makemon.
-    return { mx: x, my: y, mhp: hp, msleeping: 0, mpeaceful: 0 };
-}
 
 // maketrap stub
 async function maketrap(x, y, typ) {
@@ -1646,7 +1629,7 @@ async function fill_ordinary_room(croom, bonus_items) {
     const pos = { x: 0, y: 0 };
     // Sleeping monster (33%)
     if (!rn2(3) && somexyspace(croom, pos)) {
-        await makemon(null, pos.x, pos.y, 2); // MM_NOGRP
+        makemon(null, pos.x, pos.y, MM_NOGRP);
     }
     // Traps
     const u_depth = g.u?.uz?.dlevel ?? 1;

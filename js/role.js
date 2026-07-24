@@ -14,7 +14,12 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { roles, races, genders, aligns } from './role_data.js';
-import { mons as MONS_INIT, PMNAMES } from './monst_data.js';
+import { mons as MONS_INIT, PMNAMES, MSOUND } from './monst_data.js';
+
+// include/monflag.h — msound is a number in the generated table. Assigning the
+// C identifier as a *string* here would make every `ptr.msound === MS_LEADER`
+// test in makemon.c/peace_minded() silently false. See docs/plan/NOTES.md.
+const { MS_LEADER, MS_NEMESIS } = MSOUND;
 
 // include/you.h
 export const ROLE_NONE = -1;
@@ -336,7 +341,7 @@ export function role_init(initrole, initalign) {
     const ldrnum = pmIndex(urole.ldrnum);
     if (ldrnum !== NON_PM) {
         pm = mons[ldrnum];
-        pm.msound = 'MS_LEADER';
+        pm.msound = MS_LEADER;
         pm.mflags2 |= M2_PEACEFUL;
         pm.mflags3 |= M3_CLOSE;
         pm.maligntyp = alignmnt * 3;
@@ -360,7 +365,7 @@ export function role_init(initrole, initalign) {
     const neminum = pmIndex(urole.neminum);
     if (neminum !== NON_PM) {
         pm = mons[neminum];
-        pm.msound = 'MS_NEMESIS';
+        pm.msound = MS_NEMESIS;
         pm.mflags2 &= ~M2_PEACEFUL;
         pm.mflags2 |= (M2_NASTY | M2_STALK | M2_HOSTILE);
         pm.mflags3 &= ~M3_CLOSE;

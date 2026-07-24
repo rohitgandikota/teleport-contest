@@ -13,12 +13,18 @@ import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
 import { role_init, str2role, str2align, str2race, roles, races } from './role.js';
+import { aligns } from './role_data.js';
+import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step, fastforward_fill_mineralize } from './fastforward.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
     const g = game;
+
+    // src/allmain.c:780 — seed mvitals from each species' G_NOCORPSE bit,
+    // before init_objects(). propagate() and uncommon() both read this.
+    reset_mvitals();
 
     // src/allmain.c newgame() -> src/o_init.c init_objects().
     // The first 199 PRNG calls of every game, now real rather than replayed.
@@ -31,7 +37,12 @@ export async function newgame() {
     {
         const ir = str2role(g.rc?.opts?.role);
         const ia = str2align(g.rc?.opts?.align);
-        role_init(ir < 0 ? 0 : ir, ia < 0 ? 1 : ia);
+        /* C keeps the resolved choice in flags.initalign; u_init_misc() reads
+           it back to set u.ualign.type. Chargen picking (M2.6) will replace the
+           default with pick_align()'s result. */
+        g.flags.initrole = ir < 0 ? 0 : ir;
+        g.flags.initalign = ia < 0 ? 1 : ia;
+        role_init(g.flags.initrole, g.flags.initalign);
     }
 
     // C ref: allmain.c l_nhcore_init() — shuffle align[] for Lua.
@@ -55,6 +66,20 @@ export async function newgame() {
         g.u.ulevel = 0;
         g.u.uhp = g.u.uhpmax = newhp();
         g.u.uen = g.u.uenmax = newpw();
+
+        // src/u_init.c:1000-1007 — u_init_misc() finishes by setting ulevel and
+        // alignment, and it runs BEFORE mklev() (src/allmain.c:794 vs :807).
+        // This is not cosmetic: rndmonst_adj()'s monmax_difficulty() is
+        // (depth + u.ulevel) / 2, so leaving ulevel at 0 through level
+        // generation halves the eligible monster set and changes how many
+        // times rndmonst_adj() draws. adj_lev() reads it too.
+        g.u.ulevel = g.u.ulevelmax = 1;
+        g.u.ualign = {
+            type: aligns[g.flags.initalign].value,
+            record: 0,
+            abuse: 0,
+        };
+        g.u.uhave = {};
     }
 
     // Fast-forward through what is still replayed: u_init_misc.

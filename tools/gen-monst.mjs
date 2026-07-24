@@ -10,7 +10,7 @@
 //
 // Usage: node tools/gen-monst.mjs [--stdout]
 
-import { writeFileSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -32,6 +32,30 @@ function preprocess() {
         join(RECORDER, 'src/monst.c'),
     ], { encoding: 'utf8', maxBuffer: 128 * 1024 * 1024 });
     return out.split('\n').filter(l => !/^#\s*\d+\s+"/.test(l)).join('\n');
+}
+
+// Object-like `#define NAME <constant-expression>` from a header, for the flag
+// families the preprocessor eats before we ever see them (M1_/M2_/M3_ in
+// monflag.h, AT_/AD_ in monattk.h). Values are evaluated, not copied as text,
+// so `0x80000000UL` and `(-1)` both come out as numbers.
+function defines(headerRelPath, prefixes) {
+    const text = readFileSync(join(RECORDER, headerRelPath), 'utf8');
+    const out = {};
+    const re = /^[ \t]*#[ \t]*define[ \t]+([A-Za-z_][A-Za-z0-9_]*)[ \t]+(.+)$/gm;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const [, name, rhsRaw] = m;
+        if (!prefixes.some(p => name.startsWith(p))) continue;
+        const rhs = rhsRaw.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/, '').trim();
+        const expr = rhs.replace(/\b(0[xX][0-9a-fA-F]+|\d+)[UL]+\b/g, '$1');
+        if (!/^[-+*/|&^()~<>\s0-9a-fA-FxX]+$/.test(expr) || !/\d/.test(expr)) continue;
+        try {
+            // eslint-disable-next-line no-new-func
+            const v = Function(`"use strict"; return (${expr});`)();
+            if (Number.isFinite(v)) out[name] = v;
+        } catch { /* not a plain constant; skip */ }
+    }
+    return out;
 }
 
 // Field names from the *preprocessed* struct, so config-dependent members match
@@ -121,6 +145,47 @@ function leaf(v) {
     return t; // an enum identifier (S_ANT, MS_SILENT, PM_GIANT_ANT)
 }
 
+// Every enum in the preprocessed text, flattened to name → value.
+//
+// Needed because leaf() deliberately leaves unresolved identifiers as strings
+// (S_ANT, MS_SILENT, PM_GIANT_ANT). If those reach monst_data.js as strings,
+// every numeric comparison against them silently fails — `ptr.mlet === S_NYMPH`
+// is false forever and the makemon() mlet switch never fires. The same defect
+// hid mkobj_erosions for a while via oc_material === "IRON"; see docs/plan/NOTES.md.
+function collectEnums(text) {
+    const values = {};
+    const re = /enum\s+(?:[A-Za-z_][A-Za-z0-9_]*\s*)?\{/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const end = text.indexOf('};', m.index);
+        if (end < 0) continue;
+        const body = text.slice(m.index + m[0].length, end);
+        let next = 0;
+        for (let item of body.split(',')) {
+            item = item.replace(/\s+/g, ' ').trim();
+            if (!item) continue;
+            const eq = item.indexOf('=');
+            if (eq < 0) {
+                if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(item) && !(item in values))
+                    values[item] = next;
+                next++;
+                continue;
+            }
+            const nm = item.slice(0, eq).trim();
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(nm)) continue;
+            const expr = item.slice(eq + 1).trim().replace(
+                /[A-Za-z_][A-Za-z0-9_]*/g,
+                id => (Object.prototype.hasOwnProperty.call(values, id) ? values[id] : id));
+            if (!/^[-+*/()\d\s]+$/.test(expr)) continue;
+            // eslint-disable-next-line no-new-func
+            const v = Function(`"use strict"; return (${expr});`)();
+            if (!(nm in values)) values[nm] = v;
+            next = v + 1;
+        }
+    }
+    return values;
+}
+
 // enum monnums { ... } → { PM_GIANT_ANT: 0, ... }
 function extractEnum(text, name) {
     const m = new RegExp(`enum\\s+${name}\\s*\\{`).exec(text);
@@ -163,17 +228,43 @@ function main() {
 
     const fields = structFields(text, 'permonst');
     const monnums = extractEnum(text, 'monnums');
+    const ENUMS = collectEnums(text);
     const entries = topLevelEntries(text, 'mons_init');
+
+    /* resolve enum identifiers (S_ANT, MS_SILENT, PM_GIANT_ANT) to numbers,
+       at any depth — mattk[] entries carry AT_/AD_ symbols too */
+    const resolve = (v) => {
+        if (Array.isArray(v)) return v.map(resolve);
+        if (typeof v === 'string'
+            && Object.prototype.hasOwnProperty.call(ENUMS, v))
+            return ENUMS[v];
+        return v;
+    };
 
     const mons = entries
         .filter(e => Array.isArray(e))
         .map(e => {
             const m = {};
-            fields.forEach((f, i) => { m[f] = e[i] === undefined ? null : leaf(e[i]); });
+            fields.forEach((f, i) => {
+                m[f] = e[i] === undefined ? null : resolve(leaf(e[i]));
+            });
             return m;
         })
         // The table is NUMMONS+1 with a zeroed terminator; drop entries with no name.
         .filter(m => Array.isArray(m.pmnames) && m.pmnames.some(n => typeof n === 'string'));
+
+    /* The symbol/sound/attack enums, exported so ported C can compare against
+       named constants instead of literals. Hardcoding a numeric otyp/mlet is
+       how BOULDER became "worthless piece of orange glass"; see CLAUDE.md. */
+    const pick = (prefix) => Object.fromEntries(
+        Object.entries(ENUMS).filter(([k]) => k.startsWith(prefix)));
+    const MONSYMS = pick('S_');
+    const MSOUND = pick('MS_');
+    const ATTKS = defines('include/monattk.h', ['AT_', 'AD_']);
+    const MFLAGS = defines('include/monflag.h', ['M1_', 'M2_', 'M3_', 'G_']);
+    const MMFLAGS = defines('include/hack.h', ['MM_', 'NO_MM_FLAGS', 'NO_MINVENT']);
+    const LIMITS = defines('include/global.h', ['MAXMONNO']);
+    const STRAT = defines('include/monst.h', ['STRAT_']);
 
     const out = `// monst_data.js — GENERATED by tools/gen-monst.mjs.
 // Do not edit by hand; re-run the generator.
@@ -181,7 +272,8 @@ function main() {
 // Source: nethack-c/upstream/include/monsters.h, expanded by the C
 // preprocessor via nethack-c/recorder/src/monst.c. Field names come from the
 // preprocessed \`struct permonst\`, so config-dependent members match the built
-// binary. Unresolved leaves stay as C identifiers (S_ANT, MS_SILENT).
+// binary. Enum identifiers (S_ANT, MS_SILENT, AT_WEAP) are resolved to their
+// numeric values — leaving them as strings silently breaks every comparison.
 //
 // pmnames is [male, female, neutral] — a null means "use the neutral form".
 //
@@ -191,6 +283,27 @@ export const mons = ${JSON.stringify(mons, null, 1)};
 
 // enum monnums — PM_* index constants.
 export const PMNAMES = ${JSON.stringify(monnums, null, 1)};
+
+// include/monsym.h — S_* monster class symbols.
+export const MONSYMS = ${JSON.stringify(MONSYMS, null, 1)};
+
+// include/monflag.h — MS_* sounds.
+export const MSOUND = ${JSON.stringify(MSOUND, null, 1)};
+
+// include/monattk.h — AT_* attack types and AD_* damage types.
+export const ATTKS = ${JSON.stringify(ATTKS, null, 1)};
+
+// include/monflag.h — M1_/M2_/M3_ permonst flag bits and G_* generation bits.
+export const MFLAGS = ${JSON.stringify(MFLAGS, null, 1)};
+
+// include/hack.h — MM_* mmflags controlling makemon() behaviour.
+export const MMFLAGS = ${JSON.stringify(MMFLAGS, null, 1)};
+
+// include/global.h — MAXMONNO, the default per-species birth limit.
+export const LIMITS = ${JSON.stringify(LIMITS, null, 1)};
+
+// include/monst.h — STRAT_* monster strategy bits.
+export const STRAT = ${JSON.stringify(STRAT, null, 1)};
 
 export const NUMMONS = ${mons.length};
 

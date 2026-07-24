@@ -29,19 +29,23 @@ is done.
 
 | | |
 |---|---|
-| **Current milestone** | M2 — options, rc parsing, chargen. Item 2.4 done, 2.1/2.2/2.3/2.5/2.6 open |
+| **Current milestone** | M2 — options, rc parsing, chargen. **2.4 and 2.2 done**; 2.1, 2.3, 2.5, 2.6 open |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
-| **Score** | 0/11,405 screens, 0/44 sessions (unchanged — 2.4 fixed paths the skeleton cannot yet reach) |
+| **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-Continue [02-options-and-chargen.md](02-options-and-chargen.md) at item **2.2**,
-the `nethackrc` / OPTIONS parser. Start by scripting an enumeration of which
-options appear across all 44 public rc blobs — do not read 44 files by hand.
+Continue [02-options-and-chargen.md](02-options-and-chargen.md) at item **2.3**,
+the calendar (`src/calendar.c`): `phase_of_the_moon`, `friday_13th`, `night`,
+`midnight`, and the date accessors, all driven from `input.datetime` and never
+from the host clock.
 
-Then 2.3 (calendar), 2.1 (table generator), 2.5 (`u_init`), 2.6 (chargen prompt
-flow).
+It is small, self-contained, and unblocks two sessions whose behaviour depends on
+it (`seed0013-rogue-friday13-combat`, `seed0016-healer-newmoon-eat-zap`).
+
+Then 2.1 (role/race data tables — reuse `tools/gen-optlist.mjs` as the pattern),
+2.5 (`u_init`), 2.6 (chargen prompt flow).
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -86,6 +90,14 @@ hand-porting 131 scripts. Scoping measured, rationale recorded in
 bug in `d(n,x)`, added the missing `rnl(x)`, added `sgn()` to `js/hacklib.js`,
 verified seeding and the full log format against the recordings. First code
 change to `js/` in the project.
+
+**M2.2 — options and rc parsing.** `js/optlist.js` is now generated from
+`include/optlist.h` by `tools/gen-optlist.mjs` (255 options, count verified
+against the header). `js/options.js` rewritten table-driven from
+`src/options.c:489`, including right-to-left list processing and stacking
+negation. All 44 public rc blobs parse with zero errors. `js/jsmain.js` updated
+for the new result shape. **`minmatch` abbreviation matching is not implemented**
+— see open threads.
 
 ---
 
@@ -151,6 +163,16 @@ Small things deliberately left, so nobody wonders whether they were missed.
 - **The judge sandbox may not have the submodule checked out.** So `dat/*.lua`
   must be embedded into `js/` as generated modules, never read from disk at
   runtime. Affects M9a's design.
+- **Option abbreviation is not implemented.** `src/options.c` matches options on
+  a minimum unambiguous prefix computed by `determine_ambiguities()`, so
+  `OPTIONS=col` legally sets `color`. No public session abbreviates, but a
+  held-out one may. This is a concrete generalization gap, not a cosmetic one.
+- **Options are parsed but mostly not acted on.** `js/options.js` stores all 255
+  into `rc.opts`; only `name`, `pettype`, and `tutorial` are consumed so far.
+  Wire each one up in the milestone that owns its behaviour, not before.
+- **`SYMBOLS=` and `BIND=` are captured but not applied.** Two public sessions
+  use them (`SYMBOLS=S_pool:~,S_fountain:{` and `BIND=v:inventory`). They land in
+  `rc.symbols` / `rc.bindings`; M3 (symbols) and M6.2 (bindings) apply them.
 - **Display RNG context is not implemented** (M2.4 left it deliberately). Not
   scored, but worth 751 steps of hallucination screens. Deferred to M10.6 with
   the two gotchas recorded: the context is never seeded, and `js/isaac64.js` has

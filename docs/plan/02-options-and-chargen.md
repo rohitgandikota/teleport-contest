@@ -33,7 +33,41 @@ hand-edits. Same machinery will serve `src/objects.c` and `src/monst.c` later.
 
 **Verify:** spot-check three roles against `src/role.c` by grep.
 
-### 2.2 `nethackrc` / OPTIONS parsing
+### 2.2 `nethackrc` / OPTIONS parsing — MOSTLY DONE
+
+- [x] Enumerated every option across all 44 public rc blobs (scripted). The
+      surface is small: **14 valued options** (`symset` 50, `role`/`race`/
+      `gender`/`align` 48, `name` 47, `suppress_alert` 42, `disclose` 24,
+      `playmode` 17, `msg_window` 4, `pettype` 3, `runmode` 2, `pickup_types` 2,
+      `horsename` 1) and **11 booleans** (`autopickup` 40, `tutorial` 24,
+      `legacy` 17, `showexp`/`time`/`color` 8, `lit_corridor`/`pushweapon` 6,
+      `splash_screen` 3, `verbose` 2, `mention_walls` 1). Two non-OPTIONS
+      directives also appear: `SYMBOLS=` and `BIND=`.
+- [x] **The option table is generated, not hand-typed.** `tools/gen-optlist.mjs`
+      parses `include/optlist.h` and emits `js/optlist.js`: **255 options**
+      (128 boolean, 120 compound, 7 other), 18 with aliases. Count verified
+      against the header (267 macro invocations minus 12 `#define` lines) and
+      fields spot-checked entry by entry. A 5.1 option change is absorbed by
+      re-running the generator.
+- [x] `parseoptions()` ported table-driven from `src/options.c:489`, including
+      the two behaviours that are easy to miss: elements are processed **right
+      to left** (the C splits on the first comma and recurses before handling
+      the current element), and negation accepts `!opt`, `noopt`, and `no-opt`
+      and **stacks**.
+- [x] Unknown options are recorded as errors, never silently dropped.
+      `negateok`/`valok` are enforced from the table.
+- [x] `parse_config_line` dispatch in `parseNethackrc`: `OPTIONS=` parsed;
+      `SYMBOLS=` and `BIND=` captured as pending rather than ignored.
+- [x] **Verified: all 44 public rc blobs parse with zero errors.**
+- [ ] **Option abbreviation (`minmatch`) is not implemented.** The C computes a
+      minimum unambiguous prefix per option in `determine_ambiguities()` and
+      matches on it, so `OPTIONS=col` is legal for `color`. No public session
+      uses an abbreviation, but a held-out one may. Port
+      `determine_ambiguities()` and use it in the match loop.
+- [ ] Options are parsed and stored but most are not yet *acted on*. That is
+      correct for now — behaviour lands with the subsystem that needs it.
+
+### 2.2b Original checklist, for reference
 
 `input.nethackrc` is a multi-line `OPTIONS=` blob. It drives name, role, race,
 gender, alignment, pet type, autopickup, `msg_window`, symset, and more. Only the

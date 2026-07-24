@@ -13,7 +13,7 @@ import { game, resetGame } from './gstate.js';
 import { initRng, enableRngLog, getRngLog } from './rng.js';
 import { pushKey, nhgetch } from './input.js';
 import { newgame, moveloop_core } from './allmain.js';
-import { parseNethackrc } from './options.js';
+import { parseNethackrc, optValue } from './options.js';
 import { flush_screen } from './display.js';
 import { GameDisplay } from './game_display.js';
 
@@ -85,13 +85,16 @@ export class NethackGame {
     async start() {
         const g = resetGame();
 
-        // Parse nethackrc
-        const opts = parseNethackrc(this._nethackrc);
-        g.plname = opts.name || 'Hero';
-        g.flags = { verbose: true, ...opts.flags };
-        g.iflags = { ...opts.iflags };
-        if (opts.preferred_pet) g.preferred_pet = opts.preferred_pet;
-        if (opts.tutorial_set) g.tutorial_set_in_config = true;
+        // Parse nethackrc. `rc.opts` is keyed by canonical option name, as
+        // resolved against the generated table in js/optlist.js.
+        const rc = parseNethackrc(this._nethackrc);
+        g.rc = rc;
+        g.plname = optValue(rc, 'name') || 'Hero';
+        g.flags = { verbose: true, ...rc.opts };
+        g.iflags = {};
+        const pettype = optValue(rc, 'pettype');
+        if (pettype) g.preferred_pet = pettype[0];
+        if ('tutorial' in rc.opts) g.tutorial_set_in_config = true;
 
         // Initialize hero struct
         g.u = { ux: 0, uy: 0, ux0: 0, uy0: 0 };

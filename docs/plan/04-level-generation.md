@@ -47,6 +47,94 @@ level above the Oracle a 2/3 chance of a "supply chest". Both of these are 5.0
 additions, so they will not be in any agent's pretrained memory of NetHack;
 port them from the C, and do not assume 3.6 behaviour anywhere in this milestone.
 
+## 4.0 `dungeon.c` initialisation — SPEC READY, PORT NOT WRITTEN
+
+The data is generated (`js/dungeon_data.js`, 9 dungeons / 7 branches / 37 named
+levels) and the full call graph is mapped below. This is the next block in the
+PRNG stream after `o_init` and the `nhlib.lua` align shuffle — C's call 201
+onward in every session.
+
+### Observed call order (seed8000, calls 201-208)
+
+```
+201  rn2(100)=82  init_dungeon_dungeons(dungeon.c:1022)   per-dungeon chance
+202  rn2(5)=4     init_dungeon_dungeons(dungeon.c:1074)   rn1(range, base)
+203  rn2(100)=91  init_level(dungeon.c:572)               per-level chance
+204  rn2(100)=15  init_level                              (5 levels in the
+205  rn2(100)=53  init_level                               Dungeons of Doom:
+206  rn2(100)=45  init_level                               rogue, oracle,
+207  rn2(100)=38  init_level                               bigrm, medusa, castle)
+208  rn2(4)=0     place_level(dungeon.c:687)
+```
+
+So the loop is **per dungeon**: parse + chance + `num_dunlevs`, then `init_level`
+for that dungeon's levels, then `place_level` over them, then the next dungeon.
+`parent_dlevel` draws appear for dungeons reached by a branch.
+
+### Functions to port, with their exact behaviour
+
+| C function | line | what draws |
+|---|---|---|
+| `init_dungeon_dungeons` | 1022 | `if (!wizard && dgn_chance && (dgn_chance <= rn2(100)))` → skip this dungeon |
+| | 1074 | `if (dgn_range) num_dunlevs = rn1(dgn_range, dgn_base); else = dgn_base;` — `rn1(x,y)` is a macro, logs as `rn2(x)` |
+| `init_level` | 572 | `if (!wizard && tlevel->chance <= rn2(100)) return;` — level skipped entirely, `final_lev[i]` stays null |
+| `level_range` | 380 | none, but decides `place_level`'s range — see below |
+| `possible_places` | 598 | none; builds the boolean map and returns `count` |
+| `pick_level` | 632 | none; returns the nth TRUE entry, 1-based scan |
+| `place_level` | 687 | `rn2(npossible)` **inside a backtracking loop** |
+| `parent_dlevel` | 426 | one draw per branch-entered dungeon |
+| `induced_align` | 2005, 2012 | 1429 draws corpus-wide |
+| `init_castle_tune` | 1116 | 275 draws corpus-wide |
+
+### `level_range` (dungeon.c:380), needed verbatim
+
+```
+lmax = dungeons[dgn].num_dunlevs
+if chain >= 0:  base += final_lev[chain].dlevel.dlevel
+else if base < 0: base = lmax + base + 1        # from end of dungeon
+*adjusted_base = base
+if randc == -1: return lmax - base + 1          # base .. end of dungeon
+if randc:       return (base + randc - 1) > lmax ? lmax - base + 1 : randc
+return 1
+```
+
+Note `base < 0` means "counted from the end" — the castle is `base = -1` and
+medusa is `base = -5` in `dungeon_data.js`, so this branch is exercised on
+dungeon 0 and getting it wrong shifts `place_level`'s range immediately.
+
+### The trap: `place_level` backtracks
+
+```c
+npossible = possible_places(proto_index, map, pd);
+for (; npossible; --npossible) {
+    lev->dlevel.dlevel = pick_level(map, rn2(npossible));
+    if (place_level(proto_index + 1, pd))   /* recurse */
+        return TRUE;
+    map[lev->dlevel.dlevel] = FALSE;        /* that choice failed; try again */
+}
+```
+
+The draw count depends on **how much backtracking happens**, not on how many
+levels exist. Any implementation that finds a valid placement by a different
+search order consumes a different number of draws and desynchronises everything
+downstream. Port the recursion and the retry loop exactly.
+
+### Also required
+
+- `proto_dungeon` assembly from `js/dungeon_data.js`: `tmpdungeon[]`,
+  `tmplevel[]` (flattened across dungeons, with `pd.start` per dungeon),
+  `tmpbranch[]`, and the `chain` index resolved from `chainlevel` names.
+- Flag constants `TOWN`, `HELLISH`, `MAZELIKE`, `ROGUELIKE`, `D_ALIGN_MASK`
+  from `include/dungeon.h`.
+- **The `!wizard` guards matter**: 13 of the 44 sessions run `playmode:debug`,
+  where both chance checks are skipped entirely and those draws never happen.
+  Cross-check against the debug-mode list in [coverage-map.md](coverage-map.md).
+
+**Verify:** delete the `// init_dungeon_dungeons`, `// init_level`,
+`// place_level` and `// parent_dlevel` blocks from `js/fastforward.js`; the
+seed8000 stream must stay identical through them, and `tools/diverge.mjs` must
+not move its first-divergence index earlier.
+
 ## Items
 
 ### 4.1 Audit the existing `js/mklev.js`

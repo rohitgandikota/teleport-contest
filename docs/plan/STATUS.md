@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after `js/dungeon_data.js` was generated
+Last updated: **2026-07-24** · dungeon.c port spec written, code not yet
 
 ---
 
@@ -38,39 +38,18 @@ consumer in every single session.
 
 ### The exact next action
 
-**Port `src/dungeon.c`'s initialisation.** The data half is done:
-`js/dungeon_data.js` is generated (9 dungeons, 7 branches, 37 named levels) by
-`tools/gen-dungeon.mjs`, and needs no Lua interpreter. What remains is the code.
+**Write `js/dungeon.js`.** Everything needed is now mapped: the data is
+generated (`js/dungeon_data.js`) and the complete porting spec — observed call
+order, every function with its line number and draw behaviour, `level_range`
+verbatim, the `place_level` backtracking trap, and the `!wizard` guards — is in
+[04-level-generation.md](04-level-generation.md) section **4.0**.
 
-Port these, in this order:
+This is a single mechanical porting session against that spec. Do not re-derive
+the call graph; it is written down.
 
-| C function | line | corpus draws | note |
-|---|---|---|---|
-| `init_dungeons` | ~1000 | — | driver; builds `proto_dungeon` from the data |
-| `init_dungeon_dungeons` | 1022, 1074 | 580 | |
-| `init_level` | 572 | 1480 | `if (!wizard && tlevel->chance <= rn2(100)) return;` |
-| `possible_places` / `pick_level` | — | — | no draws, but decide `place_level`'s range |
-| `place_level` | 687 | 2037 | **recursive with backtracking — see below** |
-| `parent_dlevel` | 426 | 385 | |
-| `induced_align` | 2005, 2012 | 1429 | |
-| `init_castle_tune` | 1116 | 275 | |
-
-**The trap in `place_level`.** It is recursive *and* backtracking: it draws
-`rn2(npossible)`, recurses, and on failure decrements `npossible`, clears that
-map slot, and draws again. The number of draws therefore depends on how much
-backtracking happens, not just on how many levels exist. Port the recursion and
-the retry loop exactly as written; an implementation that "picks a valid
-placement" by any other search order will consume a different number of draws
-and desynchronise everything after it.
-
-Note `init_level` skips a level entirely when `chance` fails, and 13 of the 44
-sessions run in wizard mode where the `!wizard` guard changes behaviour — check
-`game.rc.opts.playmode` against the debug-mode session list in
-[coverage-map.md](coverage-map.md).
-
-**Success signal:** delete the `// init_dungeon_dungeons`, `// init_level`,
-`// place_level` and `// parent_dlevel` blocks from `js/fastforward.js` and the
-seed8000 stream stays identical through them.
+Port in this order: `level_range`, `init_level`, `possible_places`,
+`pick_level`, `place_level`, then the `init_dungeons` driver that assembles
+`proto_dungeon` from `js/dungeon_data.js`, then `parent_dlevel`.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a

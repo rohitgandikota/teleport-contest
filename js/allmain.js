@@ -18,7 +18,7 @@ import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
 import { u_init_inventory } from './u_init.js';
 import { makedog } from './dog.js';
-import { init_attr, vary_init_attr } from './attrib.js';
+import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
 import { com_pager } from './pager.js';
 import { mcalcmove, mcalcdistress, movemon } from './mon.js';
 import { dosounds } from './sounds.js';
@@ -52,6 +52,7 @@ export async function newgame() {
            default with pick_align()'s result. */
         g.flags.initrole = ir < 0 ? 0 : ir;
         g.flags.initalign = ia < 0 ? 1 : ia;
+        g.flags.initrace = str2race(g.rc?.opts?.race) < 0 ? 0 : str2race(g.rc?.opts?.race);
         role_init(g.flags.initrole, g.flags.initalign);
     }
 
@@ -134,6 +135,11 @@ export async function newgame() {
     init_attr(75);
     vary_init_attr();
 
+    // src/u_init.c — the hero reaches experience level 1, which grants the
+    // role's and race's level-1 intrinsics. Draws nothing itself, but Fast
+    // makes u_calc_moveamt() draw every turn thereafter.
+    adjabil(0, 1);
+
     // src/allmain.c:831 — the legacy blurb. It draws because com_pager()
     // creates its own Lua state, and every Lua state costs nhlib.lua's
     // shuffle(align). `legacy` is opt_out (initval On), so it fires unless
@@ -173,6 +179,24 @@ export async function newgame() {
     await pline(`Aloha ${g.plname}, welcome to NetHack!  You are a ${alignName} ${genderAdj} human ${g.urole.name.m}.`);
 }
 
+// src/allmain.c:118 u_calc_moveamt()
+//
+// The only draw is the free-action roll, and it only happens for a hero with
+// speed. Samurai and Monk have intrinsic Fast from experience level 1, so for
+// them this fires every turn; a Tourist never reaches it.
+function u_calc_moveamt() {
+    let moveamt = 12;                 /* youmonst.data->mmove */
+
+    if (Very_fast()) {
+        if (rn2(3) !== 0) moveamt += 12;
+    } else if (Fast()) {
+        if (rn2(3) === 0) moveamt += 12;
+    }
+    /* the encumbrance switch scales moveamt but draws nothing */
+    game.u.umovement = (game.u.umovement || 0) + moveamt;
+    if (game.u.umovement < 0) game.u.umovement = 0;
+}
+
 // src/allmain.c:158 maybe_generate_rnd_mon()
 function maybe_generate_rnd_mon() {
     const stronghold = game.special_levels?.stronghold_level;
@@ -208,6 +232,8 @@ export async function moveloop_core() {
         /* src/allmain.c:239 — placed after allotment, so a new monster
            effectively loses its first turn */
         maybe_generate_rnd_mon();
+
+        u_calc_moveamt();
 
         g.moves = (g.moves || 1) + 1;
 

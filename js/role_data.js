@@ -1651,6 +1651,217 @@ export const aligns = [
     }
 ];
 
+// src/attrib.c:23 struct innate — [experience level, intrinsic] per role and
+// race. Keys are the C table names (arc_abil, sam_abil, elf_abil, ...).
+export const INNATE = {
+ "arc_abil": [
+  [
+   1,
+   "HSearching"
+  ],
+  [
+   5,
+   "HStealth"
+  ],
+  [
+   10,
+   "HFast"
+  ]
+ ],
+ "bar_abil": [
+  [
+   1,
+   "HPoison_resistance"
+  ],
+  [
+   7,
+   "HFast"
+  ],
+  [
+   15,
+   "HStealth"
+  ]
+ ],
+ "cav_abil": [
+  [
+   7,
+   "HFast"
+  ],
+  [
+   15,
+   "HWarning"
+  ]
+ ],
+ "hea_abil": [
+  [
+   1,
+   "HPoison_resistance"
+  ],
+  [
+   15,
+   "HWarning"
+  ]
+ ],
+ "kni_abil": [
+  [
+   7,
+   "HFast"
+  ]
+ ],
+ "mon_abil": [
+  [
+   1,
+   "HFast"
+  ],
+  [
+   1,
+   "HSleep_resistance"
+  ],
+  [
+   1,
+   "HSee_invisible"
+  ],
+  [
+   3,
+   "HPoison_resistance"
+  ],
+  [
+   5,
+   "HStealth"
+  ],
+  [
+   7,
+   "HWarning"
+  ],
+  [
+   9,
+   "HSearching"
+  ],
+  [
+   11,
+   "HFire_resistance"
+  ],
+  [
+   13,
+   "HCold_resistance"
+  ],
+  [
+   15,
+   "HShock_resistance"
+  ],
+  [
+   17,
+   "HTeleport_control"
+  ]
+ ],
+ "pri_abil": [
+  [
+   15,
+   "HWarning"
+  ],
+  [
+   20,
+   "HFire_resistance"
+  ]
+ ],
+ "ran_abil": [
+  [
+   1,
+   "HSearching"
+  ],
+  [
+   7,
+   "HStealth"
+  ],
+  [
+   15,
+   "HSee_invisible"
+  ]
+ ],
+ "rog_abil": [
+  [
+   1,
+   "HStealth"
+  ],
+  [
+   10,
+   "HSearching"
+  ]
+ ],
+ "sam_abil": [
+  [
+   1,
+   "HFast"
+  ],
+  [
+   15,
+   "HStealth"
+  ]
+ ],
+ "tou_abil": [
+  [
+   10,
+   "HSearching"
+  ],
+  [
+   20,
+   "HPoison_resistance"
+  ]
+ ],
+ "val_abil": [
+  [
+   1,
+   "HCold_resistance"
+  ],
+  [
+   3,
+   "HStealth"
+  ],
+  [
+   7,
+   "HFast"
+  ]
+ ],
+ "wiz_abil": [
+  [
+   15,
+   "HWarning"
+  ],
+  [
+   17,
+   "HTeleport_control"
+  ]
+ ],
+ "dwa_abil": [],
+ "elf_abil": [],
+ "gno_abil": [],
+ "orc_abil": [],
+ "hum_abil": []
+};
+
+// src/attrib.c role_abil() — the table for a role.
+//
+// Keyed by NAME, not by position: roles[] lists Rogue before Ranger, while the
+// abil tables are alphabetical (ran_abil then rog_abil), so an index-based map
+// silently swaps their intrinsics.
+const ROLE_ABIL_BY_NAME = {
+    Archeologist: 'arc_abil', Barbarian: 'bar_abil', Caveman: 'cav_abil',
+    Healer: 'hea_abil', Knight: 'kni_abil', Monk: 'mon_abil',
+    Priest: 'pri_abil', Ranger: 'ran_abil', Rogue: 'rog_abil',
+    Samurai: 'sam_abil', Tourist: 'tou_abil', Valkyrie: 'val_abil',
+    Wizard: 'wiz_abil',
+};
+export function role_abil(rolenum) {
+    const nm = roles[rolenum]?.name?.m;
+    return INNATE[ROLE_ABIL_BY_NAME[nm]] || [];
+}
+
+// src/attrib.c adjabil() — the race table; only elves and orcs have one.
+export function race_abil(racenum) {
+    const noun = races[racenum]?.noun;
+    return INNATE[{ elf: 'elf_abil', orc: 'orc_abil' }[noun]] || [];
+}
+
 // src/role.c str2role() matches on the role name, case-insensitively.
 export function findRole(name) {
     const n = String(name).toLowerCase();

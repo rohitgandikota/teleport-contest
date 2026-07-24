@@ -46,16 +46,30 @@ function plsel_startmenu() {
     rigid_role_checks();
 }
 
-// win/tty/wintty.c select_menu(win, PICK_ONE) — a PICK_ONE menu returns as
-// soon as a selector letter is typed.
+// src/role.c:1729 role_menu_extra() — every selection menu also carries these
+// entries, which JUMP to another category rather than choosing anything:
+//
+//     '='  name      '?'  role      '/'  race      '\"' gender      '['  alignment
+//
+// seed0012 uses three of them: its keys are `n [ l " m / h m y`, which is
+// "pick manually, jump to ALIGNMENT, lawful, jump to GENDER, male, jump to
+// RACE, human", and only then the role menu it started on, Monk.
+const RS_NAME = 0, RS_ROLE = 1, RS_RACE = 2, RS_GENDER = 3, RS_ALGNMNT = 4;
+const RS_MENU_LET = { '=': RS_NAME, '?': RS_ROLE, '/': RS_RACE,
+                      '"': RS_GENDER, '[': RS_ALGNMNT };
+
+// win/tty/wintty.c select_menu(win, PICK_ONE) — returns as soon as a selector
+// letter is typed. Returns {kind:'pick',i} | {kind:'jump',to} |
+// {kind:'random'} | {kind:'quit'}.
 async function select_one(letters, valid) {
     for (;;) {
         const c = String.fromCharCode(await nhgetch());
-        if (c === '\x1b' || c === 'q') return -1;
+        if (c === '\x1b' || c === 'q') return { kind: 'quit' };
+        if (c === '*') return { kind: 'random' };
+        if (c in RS_MENU_LET) return { kind: 'jump', to: RS_MENU_LET[c] };
         const i = letters.indexOf(c);
-        if (i >= 0 && valid(i)) return i;
-        /* '*' is the random entry; anything else is ignored and re-read */
-        if (c === '*') return ROLE_RANDOM;
+        if (i >= 0 && valid(i)) return { kind: 'pick', i };
+        /* anything else is ignored and the menu waits for another key */
     }
 }
 
@@ -67,7 +81,6 @@ export async function player_selection() {
     f.initgend ??= ROLE_NONE;
     f.initalign ??= ROLE_NONE;
 
-    /* src/allmain.c askname() runs before selection when plname is empty */
     if (!game.plname) game.plname = await tty_askname();
 
     rigid_role_checks();
@@ -75,7 +88,6 @@ export async function player_selection() {
     let pick4u = 'n';
     if (f.initrole === ROLE_NONE || f.initrace === ROLE_NONE
         || f.initgend === ROLE_NONE || f.initalign === ROLE_NONE) {
-        /* "Shall I pick a character for you? [ynaq]" */
         for (;;) {
             const c = String.fromCharCode(await nhgetch()).toLowerCase();
             if (c === '\x1b' || c === 'q') return false;
@@ -85,99 +97,147 @@ export async function player_selection() {
         }
     }
 
-    do {
-        if (f.initrole < 0) {
-            if (pick4u === 'y' || pick4u === 'a') {
-                /* src/role.c:2300 — the game picks: rn2(number of ok roles) */
+    let auto = () => (pick4u === 'y' || pick4u === 'a');
+
+    /* One category. Returns false to abort, otherwise sets the facet and
+       possibly redirects `nextpick`. */
+    const doCategory = async (which) => {
+        if (which === RS_ROLE) {
+            if (auto()) {
                 let k = pick_role(f.initrace, f.initgend, f.initalign,
                                   PICK_RANDOM);
                 if (k < 0) k = randrole();
                 f.initrole = k;
-            } else {
+                return RS_RACE;
+            }
+            if (f.initrole >= 0) return RS_RACE;
             plsel_startmenu();
-            if (f.initrole < 0) {
-                const letters = rolemenu_letters();
-                const k = await select_one(letters,
-                    (i) => ok_role(i, f.initrace, f.initgend, f.initalign));
-                if (k === -1) return false;
-                f.initrole = k;
-            }
-            }
+            const r = await select_one(rolemenu_letters(),
+                (i) => ok_role(i, f.initrace, f.initgend, f.initalign));
+            if (r.kind === 'quit') return -1;
+            if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
+            f.initrole = (r.kind === 'random')
+                ? pickOr(pick_role(f.initrace, f.initgend, f.initalign,
+                                   PICK_RANDOM), randrole())
+                : r.i;
+            return RS_RACE;
         }
-        if (f.initrace < 0) {
-            if (pick4u === 'y' || pick4u === 'a') {
+        if (which === RS_RACE) {
+            const after = (f.initrole < 0) ? RS_ROLE : RS_GENDER;
+            if (auto()) {
                 let k = pick_race(f.initrole, f.initgend, f.initalign,
                                   PICK_RANDOM);
-                if (k < 0) k = randrace(f.initrole);
-                f.initrace = k;
-            } else {
+                f.initrace = (k < 0) ? 0 : k;
+                return after;
+            }
+            if (f.initrace >= 0) return after;
             plsel_startmenu();
-            if (f.initrace < 0) {
-                const letters = racemenu_letters();
-                const k = await select_one(letters,
-                    (i) => ok_race(f.initrole, i, f.initgend, f.initalign));
-                if (k === -1) return false;
-                f.initrace = k;
-            }
-            }
+            const r = await select_one(racemenu_letters(),
+                (i) => ok_race(f.initrole, i, f.initgend, f.initalign));
+            if (r.kind === 'quit') return -1;
+            if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
+            f.initrace = (r.kind === 'random')
+                ? pickOr(pick_race(f.initrole, f.initgend, f.initalign,
+                                   PICK_RANDOM), 0)
+                : r.i;
+            return after;
         }
-        if (f.initgend < 0) {
-            if (pick4u === 'y' || pick4u === 'a') {
+        if (which === RS_GENDER) {
+            const after = (f.initrole < 0) ? RS_ROLE
+                        : (f.initrace < 0) ? RS_RACE : RS_ALGNMNT;
+            if (auto()) {
                 let k = pick_gend(f.initrole, f.initrace, f.initalign,
                                   PICK_RANDOM);
-                if (k < 0) k = randgend(f.initrole, f.initrace);
-                f.initgend = k;
-            } else {
+                f.initgend = (k < 0) ? 0 : k;
+                return after;
+            }
+            if (f.initgend >= 0) return after;
             plsel_startmenu();
-            if (f.initgend < 0) {
-                const letters = gendmenu_letters();
-                const k = await select_one(letters,
-                    (i) => ok_gend(f.initrole, f.initrace, i, f.initalign));
-                if (k === -1) return false;
-                f.initgend = k;
-            }
-            }
+            const r = await select_one(gendmenu_letters(),
+                (i) => ok_gend(f.initrole, f.initrace, i, f.initalign));
+            if (r.kind === 'quit') return -1;
+            if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
+            f.initgend = (r.kind === 'random')
+                ? pickOr(pick_gend(f.initrole, f.initrace, f.initalign,
+                                   PICK_RANDOM), 0)
+                : r.i;
+            return after;
         }
-        if (f.initalign < 0) {
-            if (pick4u === 'y' || pick4u === 'a') {
-                let k = pick_align(f.initrole, f.initrace, f.initgend,
-                                   PICK_RANDOM);
-                if (k < 0) k = randalign(f.initrole, f.initrace);
-                f.initalign = k;
-            } else {
+        /* RS_ALGNMNT */
+        const after = (f.initrole < 0) ? RS_ROLE
+                    : (f.initrace < 0) ? RS_RACE : RS_GENDER;
+        if (auto()) {
+            let k = pick_align(f.initrole, f.initrace, f.initgend,
+                               PICK_RANDOM);
+            f.initalign = (k < 0) ? 1 : k;
+            return after;
+        }
+        if (f.initalign >= 0) return after;
+        /* src/role.c:2564 — count first. The menu, and therefore
+           plsel_startmenu()'s rigid_role_checks(), only happens when more than
+           one alignment is valid. Calling it unconditionally makes a facet that
+           C fills silently draw an extra rn2(1). */
+        let n = 0, k = 0;
+        for (let i = 0; i < ROLE_ALIGNS; i++)
+            if (ok_align(f.initrole, f.initrace, f.initgend, i)) { n++; k = i; }
+        if (n > 1) {
             plsel_startmenu();
-            if (f.initalign < 0) {
-                /* src/role.c:2564 — count first; a menu appears only when more
-                   than one alignment is valid, and that path draws nothing */
-                let n = 0, k = 0;
-                for (let i = 0; i < ROLE_ALIGNS; i++)
-                    if (ok_align(f.initrole, f.initrace, f.initgend, i)) {
-                        n++; k = i;
-                    }
-                if (n > 1) {
-                    const letters = algnmenu_letters();
-                    const c = await select_one(letters,
-                        (i) => ok_align(f.initrole, f.initrace, f.initgend, i));
-                    if (c === -1) return false;
-                    k = c;
-                }
-                f.initalign = k;
-            }
-            }
+            const r = await select_one(algnmenu_letters(),
+                (i) => ok_align(f.initrole, f.initrace, f.initgend, i));
+            if (r.kind === 'quit') return -1;
+            if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
+            k = (r.kind === 'random')
+                ? pickOr(pick_align(f.initrole, f.initrace, f.initgend,
+                                    PICK_RANDOM), k)
+                : r.i;
         }
-    } while (f.initrole < 0 || f.initrace < 0
-             || f.initgend < 0 || f.initalign < 0);
+        f.initalign = k;
+        return after;
+    };
 
-    /* "Is this ok? [ynaq]" — a menu, so plsel_startmenu() runs again */
-    plsel_startmenu();
+    const clearFacet = (which) => {
+        if (which === RS_ROLE) f.initrole = ROLE_NONE;
+        else if (which === RS_RACE) f.initrace = ROLE_NONE;
+        else if (which === RS_GENDER) f.initgend = ROLE_NONE;
+        else if (which === RS_ALGNMNT) f.initalign = ROLE_NONE;
+    };
+    const pickOr = (v, fallback) => (v < 0 ? fallback : v);
+
+    /* src/role.c:2288 `makepicks:` — the confirmation's 'n' jumps BACK HERE,
+       not to the start: the name is kept and the "[ynaq]" prompt is not asked
+       again, but pick4u becomes 'n' so the rest is chosen by menu. Restarting
+       the whole function instead re-ran the random picks. */
+    /* makepicks */
     for (;;) {
-        const c = String.fromCharCode(await nhgetch()).toLowerCase();
-        if (c === '\x1b' || c === 'q') return false;
-        if (c === 'y' || c === ' ' || c === '\r' || c === '\n') break;
-        if (c === 'n') {
-            f.initrole = f.initrace = f.initgend = f.initalign = ROLE_NONE;
-            return player_selection();
+        let nextpick = RS_ROLE;
+        do {
+            const r = await doCategory(nextpick);
+            if (r === -1) return false;
+            nextpick = r;
+        } while (f.initrole < 0 || f.initrace < 0
+                 || f.initgend < 0 || f.initalign < 0);
+
+        /* "Is this ok? [ynaq]" is itself a menu */
+        let again = false;
+        while (!again) {
+            plsel_startmenu();
+            const c = String.fromCharCode(await nhgetch()).toLowerCase();
+            if (c === '\x1b' || c === 'q') return false;
+            if (c === 'y' || c === ' ' || c === '\r' || c === '\n') return true;
+            if (c === 'a') {
+                /* src/role.c:2686 "choose another name": the four facets are
+                   saved, plname cleared, askname() run, then restored, and the
+                   confirmation menu shown again. */
+                const save = [f.initrole, f.initrace, f.initgend, f.initalign];
+                game.plname = await tty_askname();
+                [f.initrole, f.initrace, f.initgend, f.initalign] = save;
+                continue;
+            }
+            if (c === 'n') {
+                pick4u = 'n';
+                f.initrole = f.initrace = f.initgend = f.initalign = ROLE_NONE;
+                again = true;
+            }
         }
     }
-    return true;
 }

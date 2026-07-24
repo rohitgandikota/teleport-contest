@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **19 screens**; seed8000 at 19/23
+Last updated: **2026-07-24** · window layer built; `newpw` unblocked 17 sessions
 
 ---
 
@@ -38,19 +38,33 @@ consumer in every single session.
 
 ### The exact next action
 
-**Build `js/tty/wintty.js`** — the menu/text window machinery. It is shared by
-seed8000's last 4 frames *and* by the chargen menus that 5 other sessions need,
-so it is the highest-leverage remaining piece.
+**Use `node tools/diverge.mjs --all` to pick the target every time.** It prints
+one line per session with the C function at the first divergence; the histogram
+of those functions is the work list, ordered by how many sessions each unblocks.
+That is how `newpw` was found — it was blocking 17 of 44 sessions from a single
+15-line function.
 
-The layout rule is already derived and written up in
-[03-tty-windowport.md](03-tty-windowport.md) §3.0, including why `NHW_TEXT`
-collapses to column 0 while `NHW_MENU` is right-aligned at
-`cols - maxcol - 1`, the `(end)` / `(1 of N)` footers, and the fact that the
-cursor parks on the footer line. Do not re-derive it.
+Current histogram (44 sessions):
 
-Order: window create/putstr/display/dismiss + paging first, then a consumer.
-`dodiscovered` is the cheapest consumer (needs only o_init discovery state);
-`doattributes` needs `enlightenment()` from `src/insight.c`, which is large.
+```
+8  makelevel(mklev.c:1402)
+7  fill_special_room(sp_lev.c:2763)
+6  lspo_map(sp_lev.c:6154)
+6  pick_role / pick_align / pick_gend  (chargen menus, 5 sessions)
+4  mkobj(mkobj.c:280)
+2  mkclass_aligned(makemon.c:1934)
+2  makelevel(mklev.c:1287)
+```
+
+So the next targets are `makelevel` (mklev.c:1402) and the `sp_lev.c` pair —
+which means **M9a, the Lua core, is now on the critical path for real**:
+`fill_special_room` and `lspo_map` are both Lua-driven, and together they block
+13 sessions.
+
+`js/tty/wintty.js` is built and verified but not yet wired to a consumer. Its
+consumers (discoveries, attributes, inventory) each need their own content
+subsystem, so they are lower value per hour than the level-generation work
+above.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -101,6 +115,20 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**`newpw` — one function, 17 sessions.** `js/exper.js` ports `newhp` and
+`newpw` from `src/exper.c`. At level 0 `newhp` draws nothing, because every role
+and race in 5.0 has `hpadv.inrnd == 0`; `newpw` draws `rnd(enadv.inrnd)` for
+role and race. This was the single largest blocker in the corpus — 17 of 44
+sessions diverged there — and clearing it moved seed0360 from call 255 to call
+1218, straight through room, corridor and niche generation. Short-corpus RNG
+41.8% → **49.0%**.
+
+**tty window layer.** `js/tty/wintty.js` ports the menu and text window layout
+from `win/tty/wintty.c`, verified by feeding the recordings' own frame content
+through it: the attributes window reproduces with **zero** differing cells and
+the cursor exactly at `[9,23]`, the inventory menu geometry and cursor exactly
+at `[38,20]`.
 
 **Search, look, and message lifetime.** `js/detect.js` (`dosearch`/`dosearch0`)
 and `js/invent.js` (`look_here`/`dolook`) ported; `s` and `:` wired into

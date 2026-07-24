@@ -12,7 +12,8 @@ import { docrt, cls, bot, flush_screen, pline } from './display.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
-import { role_init, str2role, str2align } from './role.js';
+import { role_init, str2role, str2align, str2race, roles, races } from './role.js';
+import { newhp, newpw } from './exper.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step, fastforward_fill_mineralize } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -42,6 +43,19 @@ export async function newgame() {
     // Builds g.dungeons, g.sp_levchn and g.branches for real; nothing may
     // overwrite them afterwards.
     init_dungeons();
+
+    // src/u_init.c:996-997 — u.uhp = newhp(); u.uen = newpw();
+    // newhp() draws nothing at level 0 because every role and race has
+    // hpadv.inrnd == 0; newpw() draws rnd(enadv.inrnd) per role and race.
+    {
+        const ir = str2role(g.rc?.opts?.role);
+        const iraces = str2race(g.rc?.opts?.race);
+        g.urole = roles[ir < 0 ? 0 : ir];
+        g.urace = races[iraces < 0 ? 0 : iraces];
+        g.u.ulevel = 0;
+        g.u.uhp = g.u.uhpmax = newhp();
+        g.u.uen = g.u.uenmax = newpw();
+    }
 
     // Fast-forward through what is still replayed: u_init_misc.
     // Must run AFTER the dungeon init, matching C's order in the stream.

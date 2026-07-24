@@ -287,11 +287,51 @@ function mkcorpstat(objtyp, mtmp, pm, x, y, corpstatflags) {
 
 
 // maketrap stub
+// src/trap.c:3083 choose_trapnote() — a squeaky board picks an unused musical
+// note. The draw's ARGUMENT is the count of notes still free on this level, so
+// it shrinks as boards accumulate: rn2(12), then rn2(11), and so on.
+function choose_trapnote(ttmp) {
+    const tavail = new Array(12).fill(0);
+    for (const t of game.level.traps || [])
+        if (t.ttyp === SQKY_BOARD && t !== ttmp)
+            tavail[t.tnote] = 1;
+    const tpick = [];
+    for (let k = 0; k < 12; ++k)
+        if (tavail[k] === 0)
+            tpick.push(k);
+    return tpick.length > 0 ? tpick[rn2(tpick.length)] : rn2(12);
+}
+
+// src/trap.c:490 maketrap()
 async function maketrap(x, y, typ) {
-    const trap = { ttyp: typ, tx: x, ty: y, tseen: false, once: false, launch: { x: 0, y: 0 } };
+    const trap = {
+        ttyp: typ, tx: x, ty: y,
+        tseen: (typ === HOLE),          /* unhideable_trap() */
+        once: 0, madeby_u: 0,
+        launch: { x: -1, y: -1 },
+        dst: { dnum: -1, dlevel: -1 },
+    };
     if (!game.level) return trap;
     if (!game.level.traps) game.level.traps = [];
     game.level.traps.push(trap);
+
+    switch (typ) {
+    case SQKY_BOARD:
+        trap.tnote = choose_trapnote(trap);
+        break;
+    case STATUE_TRAP:
+        note_unported_lev('mk_trap_statue');
+        break;
+    case ROLLING_BOULDER_TRAP:
+        note_unported_lev('mkroll_launch');
+        break;
+    case HOLE:
+    case TRAPDOOR:
+        note_unported_lev('hole_destination');
+        break;
+    default:
+        break;
+    }
     return trap;
 }
 

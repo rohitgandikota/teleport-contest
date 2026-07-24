@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · `role_init` + monster table; 39/44 startup prefixes
+Last updated: **2026-07-24** · render path localised as the score bottleneck
 
 ---
 
@@ -31,33 +31,38 @@ consumer in every single session.
 
 | | |
 |---|---|
-| **Current milestone** | M2.6 chargen menu flow — the **only** remaining startup blocker |
+| **Current milestone** | **M3 tty windowport** — nothing writes to the terminal, so no screen can score |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-**M2.6 — the chargen menu flow (`player_selection()` in `src/role.c:2280`).**
-This is now the *only* thing standing between us and 44/44 on the startup
-prefix. Exactly 5 sessions need it, and they all share one shape: a minimal rc
-(`OPTIONS=symset:DECgraphics` and nothing else), so the player types a character
-name and then drives the role/race/gender/alignment menus by keystroke.
+**Start M3, the tty windowport.** Measured this pass: the game state is now
+substantially correct but **nothing reaches the terminal**, so every frame is
+empty and no screen can score. That is the whole gap between 41.8% RNG and 0%
+screens.
+
+What was measured on `seed8000` after `newgame()`:
 
 ```
-seed0006-wizard-water-demon      "Hextrum\rnwofa"   n = pick myself, then letters
-seed0007-rogue-snake-swamp       ...
-seed0012-monk-vault-escort       ...
-seed0014-dequa-fountain-explore  "Dequa\rnvd\r"
-seed0077-rogue-chargen           ...
+dungeons built     9            (correct topology from dungeon.lua)
+g.level            built        8 rooms, locations grid present
+hero position      (37, 6)      C draws @ at about col 37, row 7
+terminal.serialize()  ""        <-- empty string. Nothing was ever written.
 ```
 
-Which pickers run, and in what order, is decided by those keystrokes — so this
-needs `player_selection()` and enough of the tty menu layer (M3) to consume the
-keys. It is genuinely M3 work, not more of `role.c`.
+So level generation works and the hero is placed roughly where C puts them. The
+missing piece is purely the write path: `flush_screen` / `docrt` / `newsym` →
+`Terminal`. Nothing in `js/display.js` is putting cells into the frozen
+`js/terminal.js` grid.
 
-**39 of 44 sessions now reproduce their entire startup prefix** (11,123 calls),
-including **13/13 debug-mode sessions**. 39 + 5 = 44, fully accounted.
+Start at [03-tty-windowport.md](03-tty-windowport.md) item **3.1** (establish
+exactly when C captures a frame, from the nomux patches), then 3.3
+`tty_curs`/`tty_putstr`/`tty_print_glyph`, then M5.3's `newsym`/`flush_screen`.
+
+The chargen menu flow (M2.6, 5 sessions) is part of the same windowport work —
+do it once the menu primitives exist, not before.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -203,6 +208,10 @@ first M9a deliverable is to land it as `js/lua/lmathlib.js`.
 
 Small things deliberately left, so nobody wonders whether they were missed.
 
+- **`runSegment` was not passing `datetime` through** — fixed this pass. It
+  destructured only `{seed, nethackrc, storage}`, so `game.fixed_datetime` was
+  undefined and `js/calendar.js` would have thrown the moment anything asked for
+  the moon phase or Friday-the-13th check.
 - **Leaderboard confirmation (M1 item 1.6).** The CI workflow is confirmed to run
   on push. Not yet confirmed that our fork appears at
   [mazesofmenace.ai](https://mazesofmenace.ai/leaderboard/) after a cron cycle.

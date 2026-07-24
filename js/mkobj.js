@@ -49,7 +49,7 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import {
     rndmonnum, level_difficulty, is_male, is_female, is_neuter, is_rider,
 } from './makemon.js';
-import { PMNAMES, MONSYMS, MFLAGS } from './monst_data.js';
+import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 
 // include/permonst.h
 const NON_PM = -1;
@@ -207,13 +207,78 @@ export function mksobj_init(otmp, artif) {
         }
         break;
 
-    case FOOD_CLASS:
+    case FOOD_CLASS: {
         otmp.oeaten = 0;
-        /* CORPSE / EGG / TIN need rndmonnum(); SLIME_MOLD, KELP_FROND and
-           CANDY_BAR are handled by their otyp cases in C. KELP_FROND draws. */
-        if (otmp.otyp === ONAMES.KELP_FROND)
+        let tryct, mndx;
+        switch (otmp.otyp) {
+        case ONAMES.CORPSE:
+            tryct = 50;
+            do
+                otmp.corpsenm = undead_to_corpse(rndmonnum());
+            while ((game.mvitals[otmp.corpsenm].mvflags & G_NOCORPSE)
+                   && (--tryct > 0));
+            if (tryct === 0)
+                otmp.corpsenm = PMNAMES.PM_HUMAN;
+            /* timer set below */
+            break;
+        case ONAMES.EGG:
+            otmp.corpsenm = NON_PM; /* generic egg */
+            if (!rn2(3))
+                for (tryct = 200; tryct > 0; --tryct) {
+                    mndx = can_be_hatched(rndmonnum());
+                    if (mndx !== NON_PM && !dead_species(mndx, true)) {
+                        otmp.corpsenm = mndx; /* typed egg */
+                        break;
+                    }
+                }
+            /* timer set below */
+            break;
+        case ONAMES.TIN:
+            otmp.corpsenm = NON_PM; /* empty (so far) */
+            if (!rn2(6)) {
+                set_tin_variety(otmp, SPINACH_TIN);
+            } else {
+                for (tryct = 200; tryct > 0; --tryct) {
+                    mndx = undead_to_corpse(rndmonnum());
+                    if (game.mons[mndx].cnutrit
+                        && !(game.mvitals[mndx].mvflags & G_NOCORPSE)) {
+                        otmp.corpsenm = mndx;
+                        set_tin_variety(otmp, RANDOM_TIN);
+                        break;
+                    }
+                }
+            }
+            blessorcurse(otmp, 10);
+            break;
+        case ONAMES.SLIME_MOLD:
+            otmp.spe = game.context.current_fruit ?? 1;
+            break;
+        case ONAMES.KELP_FROND:
             otmp.quan = rnd(2);
+            break;
+        case ONAMES.CANDY_BAR:
+            assign_candy_wrapper(otmp);
+            break;
+        default:
+            break;
+        }
+        if (Is_pudding(otmp)) {
+            otmp.globby = 1;
+            otmp.quan = 1;
+            otmp.owt = objects[otmp.otyp].oc_weight;
+            otmp.known = otmp.dknown = 1;
+            otmp.corpsenm = PMNAMES.PM_GRAY_OOZE
+                          + (otmp.otyp - ONAMES.GLOB_OF_GRAY_OOZE);
+            start_glob_timeout(otmp, 0);
+        } else {
+            /* every non-glob food that is not a corpse, meat ring or kelp
+               frond draws here — the branch this port used to be missing */
+            if (otmp.otyp !== ONAMES.CORPSE && otmp.otyp !== ONAMES.MEAT_RING
+                && otmp.otyp !== ONAMES.KELP_FROND && !rn2(6))
+                otmp.quan = 2;
+        }
         break;
+    }
 
     case TOOL_CLASS:
         switch (otmp.otyp) {
@@ -569,6 +634,105 @@ export function mksobj(otyp, init, artif) {
         break;
     }
     return otmp;
+}
+
+// src/mondata.c:1305 little_to_big() / :1318 big_to_little()
+function little_to_big(montype) {
+    const p = GROWNUPS.find(([baby]) => baby === montype);
+    return p ? p[1] : montype;
+}
+function big_to_little(montype) {
+    const p = GROWNUPS.find(([, adult]) => adult === montype);
+    return p ? p[0] : montype;
+}
+
+const lays_eggs = (ptr) => (ptr.mflags1 & MFLAGS.M1_OVIPAROUS) !== 0;
+
+// src/mon.c:5538 — #define BREEDER_EGG (!rn2(77))
+//
+// This is a DRAW inside can_be_hatched(), which the EGG branch of mksobj_init()
+// calls up to 200 times. C's `||` short-circuits, so the draw only happens for
+// an egg-laying species that is not a killer bee or gargoyle; getting that
+// ordering wrong changes the call count, not just the values.
+const BREEDER_EGG = () => !rn2(77);
+
+// src/mkobj.c can_be_hatched()
+function can_be_hatched(mnum) {
+    if (mnum === PMNAMES.PM_SCORPIUS)
+        mnum = PMNAMES.PM_SCORPION;
+
+    mnum = little_to_big(mnum);
+    /* Queen bees lay killer bee eggs (usually), but killer bees don't grow
+       into queen bees. Ditto for [winged-]gargoyles. */
+    if (mnum === PMNAMES.PM_KILLER_BEE || mnum === PMNAMES.PM_GARGOYLE
+        || (lays_eggs(game.mons[mnum])
+            && (BREEDER_EGG()
+                || (mnum !== PMNAMES.PM_QUEEN_BEE
+                    && mnum !== PMNAMES.PM_WINGED_GARGOYLE))))
+        return mnum;
+    return NON_PM;
+}
+
+// src/mon.c dead_species() — genociding either the baby or the adult form
+// kills the eggs of both. Extinction by overpopulation does not.
+function dead_species(m_idx, egg) {
+    if (m_idx < 0)
+        return true;
+    const alt_idx = egg ? big_to_little(m_idx) : m_idx;
+    return (game.mvitals[m_idx].mvflags & G_GENOD) !== 0
+        || (game.mvitals[alt_idx].mvflags & G_GENOD) !== 0;
+}
+
+// src/eat.c:143 tintxts[] has 16 entries including the "" terminator, so
+// TTSZ - 1 is 15. src/read.c:283 candy_wrappers[] has 13.
+const TTSZ = 16;
+const ROTTEN_TIN = 0, HOMEMADE_TIN = 1;
+const SPINACH_TIN = -1, RANDOM_TIN = -2;   /* include/obj.h sentinels */
+const N_CANDY_WRAPPERS = 13;
+
+// src/eat.c set_tin_variety() — only the SPINACH_TIN and RANDOM_TIN paths are
+// reachable from mksobj_init(); HEALTHY_TIN comes from eating code.
+function set_tin_variety(obj, forcetype) {
+    let r;
+    const mnum = obj.corpsenm;
+
+    if (forcetype === SPINACH_TIN) {
+        obj.corpsenm = NON_PM;
+        obj.spe = 1;           /* spinach */
+        return;
+    } else if (forcetype >= 0 && forcetype < TTSZ - 1) {
+        r = forcetype;
+    } else {                   /* RANDOM_TIN */
+        r = rn2(TTSZ - 1);
+        if (r === ROTTEN_TIN && mnum >= 0 && nonrotting_corpse(mnum))
+            r = HOMEMADE_TIN;  /* lizards don't rot */
+    }
+    obj.spe = -(r + 1);
+}
+
+const nonrotting_corpse = (mnum) =>
+    mnum === PMNAMES.PM_LIZARD || mnum === PMNAMES.PM_LICHEN;
+
+// src/read.c assign_candy_wrapper() — skips candy_wrappers[0].
+function assign_candy_wrapper(obj) {
+    if (obj.otyp === ONAMES.CANDY_BAR)
+        obj.spe = 1 + rn2(N_CANDY_WRAPPERS - 1);
+}
+
+// include/obj.h:327 Is_pudding()
+function Is_pudding(o) {
+    return o.otyp === ONAMES.GLOB_OF_GRAY_OOZE
+        || o.otyp === ONAMES.GLOB_OF_BROWN_PUDDING
+        || o.otyp === ONAMES.GLOB_OF_GREEN_SLIME
+        || o.otyp === ONAMES.GLOB_OF_BLACK_PUDDING;
+}
+
+// src/timeout.c start_glob_timeout() — when the caller passes 0, the shrink
+// time is 25 + rn2(5) - 2.
+function start_glob_timeout(obj, when) {
+    if (when < 1)
+        when = 25 + rn2(5) - 2;
+    obj.shrink_when = when;
 }
 
 // src/mon.c:417 undead_to_corpse() — a zombie or mummy leaves its living

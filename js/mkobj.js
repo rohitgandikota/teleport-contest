@@ -45,7 +45,7 @@
 
 import { game } from './gstate.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
-import { OCLASSES, ONAMES } from './objects_data.js';
+import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
 import {
     rndmonnum, level_difficulty, is_male, is_female, is_neuter, is_rider,
 } from './makemon.js';
@@ -66,6 +66,8 @@ function pmIndexOf(name) {
     if (typeof name === 'number') return name;
     return (name && PMNAMES[name] !== undefined) ? PMNAMES[name] : NON_PM;
 }
+
+const { P_BOW, P_SHURIKEN } = SKILLS;
 
 const {
     WEAPON_CLASS, ARMOR_CLASS, FOOD_CLASS, TOOL_CLASS, GEM_CLASS,
@@ -144,9 +146,11 @@ export function mkobj(oclass, artif) {
     return mksobj(i, true, artif);
 }
 
-// include/obj.h:260-268 — weapon-ish predicates. oc_skill is oc_subtyp.
-// P_SHURIKEN and P_BOW bound the thrown/fired weapon skills.
-const P_BOW = 26, P_SHURIKEN = 31;   /* include/skills.h */
+// include/obj.h:260-268 — weapon-ish predicates. oc_skill is oc_subtyp, and
+// thrown weapons carry the *negated* skill, so the test brackets -P_SHURIKEN
+// .. -P_BOW. These were hand-written as 26 and 31; the real values are 20 and
+// 24, which made is_multigen() false for every dart and arrow and silently
+// dropped the rn1(6,6) stack-size draw.
 function is_multigen(otmp, objects) {
     const o = objects[otmp.otyp];
     return otmp.oclass === WEAPON_CLASS

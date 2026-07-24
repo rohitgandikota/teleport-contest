@@ -247,6 +247,20 @@ function collectEnums(text) {
     return values;
 }
 
+// Resolve an enum identifier to its number, including the negated form.
+// oc_skill (oc_subtyp) stores thrown-weapon skills as `-P_DART`, and matching
+// only bare identifiers left those as strings — which made is_multigen() false
+// for every dart and arrow. See docs/plan/NOTES.md on enum-as-string defects.
+function resolveEnum(v, ENUMS) {
+    if (typeof v !== 'string') return v;
+    const t = v.trim();
+    if (Object.prototype.hasOwnProperty.call(ENUMS, t)) return ENUMS[t];
+    const neg = /^-\s*([A-Za-z_][A-Za-z0-9_]*)$/.exec(t);
+    if (neg && Object.prototype.hasOwnProperty.call(ENUMS, neg[1]))
+        return -ENUMS[neg[1]];
+    return v;
+}
+
 function main() {
     const text = clean(preprocess());
     const ENUMS = collectEnums(text);
@@ -265,12 +279,7 @@ function main() {
         const vals = splitFields(e);
         const o = {};
         objFields.forEach((f, i) => {
-            let v = value(vals[i]);
-            /* resolve enum identifiers (IRON, ARM_SUIT, P_NONE) to numbers */
-            if (typeof v === 'string'
-                && Object.prototype.hasOwnProperty.call(ENUMS, v))
-                v = ENUMS[v];
-            o[f] = v;
+            o[f] = resolveEnum(value(vals[i]), ENUMS);
         });
         return o;
     });
@@ -314,6 +323,11 @@ export const ONAMES = ${JSON.stringify(onames, null, 1)};
 
 // Object class constants from include/objclass.h (WEAPON_CLASS .. MAXOCLASSES).
 export const OCLASSES = ${JSON.stringify(oclasses, null, 1)};
+
+// include/skills.h — P_* weapon/spell skill constants. oc_skill (oc_subtyp)
+// holds the negated skill for thrown weapons, which is how is_multigen() and
+// is_poisonable() identify them.
+export const SKILLS = ${JSON.stringify(Object.fromEntries(Object.entries(ENUMS).filter(([k]) => k.startsWith('P_'))), null, 1)};
 `;
 
     if (process.argv.includes('--stdout')) process.stdout.write(out);

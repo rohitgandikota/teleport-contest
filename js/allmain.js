@@ -16,6 +16,7 @@ import { role_init, str2role, str2align, str2race, roles, races } from './role.j
 import { aligns } from './role_data.js';
 import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
+import { u_init_inventory } from './u_init.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step } from './fastforward.js';
 
 // C ref: allmain.c newgame()
@@ -108,8 +109,11 @@ export async function newgame() {
     // they do in C (src/mklev.c:1550 calls mineralize from
     // level_finalize_topology). Nothing is replayed between mklev and u_init.
 
-    // Fast-forward through post-mklev startup RNG calls.
-    // Covers: u_init_role, ini_inv, attributes, moveloop_preamble.
+    // src/u_init.c:1374 — role inventory, race extras and starting gold.
+    u_init_inventory();
+
+    // Fast-forward what is still replayed after it: src/attrib.c init_attr()
+    // and allmain.c moveloop_preamble().
     fastforward_post_mklev();
 
     // Hardcoded player state for seed8000 Tourist.

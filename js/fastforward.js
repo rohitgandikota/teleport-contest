@@ -36,21 +36,18 @@ export function fastforward_pre_mklev() {
     rn2(10);
 }
 
-// Post-mklev startup: u_init_role, ini_inv, attributes, moveloop_preamble
-// 124 leaf RNG calls (regenerated from session data)
+// Post-mklev startup: attributes + moveloop_preamble.
+//
+// u_init_role(), u_init_race() and ini_inv() used to be replayed here; they
+// are now produced by the real port in js/u_init.js. What is left is
+// src/attrib.c init_attr()/rnd_attr()/vary_init_attr() and allmain.c
+// moveloop_preamble() — 37 leaf RNG calls, transcribed from the recording.
 export function fastforward_post_mklev() {
-    rnd(1000); rn2(20); rnd(2); rn2(6); rn2(11); rn2(10); rn2(10); rn2(100); rn2(20); rn2(1);
-    rnd(1000); rnd(2); rn2(6); rnd(1000); rnd(2); rn2(6); rnd(1000); rnd(2); rn2(6); rnd(1000);
-    rnd(2); rn2(6); rnd(1000); rnd(2); rn2(6); rnd(1000); rnd(2); rn2(6); rnd(1000); rnd(2);
-    rn2(6); rnd(1000); rnd(2); rn2(6); rnd(1000); rnd(2); rn2(6); rnd(1000); rnd(2); rn2(6);
-    rn2(3); rn2(4); rn2(5); rn2(7); rn2(8); rn2(11); rn2(15); rn2(16); rn2(21); rn2(15); rn2(10);
-    rn2(6); rn2(1); rnd(2); rn2(4); rn2(2); rnd(2); rn2(4); rn2(2); rn2(1); rnd(2); rn2(4);
-    rnd(2); rn2(4); rnd(2); rn2(4); rnd(2); rn2(4); rn2(1); rnd(2); rn2(10); rn2(11); rn2(10);
-    rn2(10); rn2(1); rnd(2); rn2(70); rn2(1); rn2(1); rnd(2); rn2(1); rn2(25); rn2(25); rn2(25);
-    rn2(20); rn2(1); rnd(2); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100);
-    rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100);
-    rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100);
-    rn2(100); rn2(100); rn2(100); rn2(20); rn2(20); rn2(20); rn2(7); rn2(20); rn2(20); rn2(20);
+    /* attrib.c rnd_attr() */
+    rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100); rn2(100);
+    /* attrib.c vary_init_attr() */
+    rn2(20); rn2(20); rn2(20); rn2(7); rn2(20); rn2(20); rn2(20);
+    /* allmain.c moveloop_preamble() */
     rnd(9000); rnd(30);
 }
 

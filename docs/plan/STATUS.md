@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **startup is fully ported**; Lua now blocks **24 of 44** sessions
+Last updated: **2026-07-24** · **fill_special_room cleared (12 sessions)**; only 6 sessions are genuinely Lua-blocked
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,32 +37,30 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **M9a — the Lua core.** It now blocks 18 of the 44 sessions |
-| **Also open** | chargen menus (6), `somey`/`makelevel`/`choose_trapnote` (2 each) |
+| **Current milestone** | **M9a — the Lua core** (`lspo_map`, 6 sessions) and the move loop |
+| **Also open** | chargen menus (6), `maybe_generate_rnd_mon` (5), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **77,675/792,838 (9.8%)** |
+| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **82,560/792,838 (10.4%)**, mean divergence **1,534** |
 
 ### The exact next action — READ THIS FIRST
 
-**M9a, the Lua core. Nothing else is close.** It is now the first divergence in
-**24 of the 44 sessions** — 55% of the corpus — across three call sites:
+**Correction to the previous entry: Lua is NOT blocking 24 sessions.** It blocks
+**6**, all on `lspo_map`. The earlier count included
+`fill_special_room(sp_lev.c:2763)`, which lives in the Lua loader's file but is
+plain C — see [NOTES.md](NOTES.md), "sp_lev.c is not all Lua". Porting it and
+wiring `makelevel()`'s second call site cleared all 12.
 
-| Site | Sessions |
-|---|---:|
-| `fill_special_room(sp_lev.c:2763)` | 12 |
-| `lspo_map(sp_lev.c:6154)` | 6 |
-| `shuffle()` in `dat/nhlib.lua` | 6 |
+Three candidates now, none dominant:
 
-That share went *up* as the port improved, because every non-Lua blocker ahead
-of the wall has now cleared and those sessions ran on until they hit it. Every
-remaining non-Lua item is worth 2 sessions or fewer.
+| Target | Sessions | Notes |
+|---|---:|---|
+| `maybe_generate_rnd_mon(allmain.c:166)` | 5 | the move loop; `fastforward_step` still replays 127 calls of it |
+| `pick_role` / `pick_align` | 6 | chargen menus, needs the M3 window layer wired |
+| `lspo_map(sp_lev.c:6154)` | 6 | genuinely Lua — this is what M9a is for |
 
-D1 is already decided: build a small Lua interpreter in JS rather than
-hand-porting 131 scripts. First deliverable is `js/lua/lmathlib.js`; the spec
-and a verified reference vector are in
-[09-lua-and-special-levels.md](09-lua-and-special-levels.md) under "Decision D1".
-The measured finding in [NOTES.md](NOTES.md) still holds and makes this far
-smaller than it sounds: **exactly one Lua binding draws randomness, `nh.rn2`**.
+The move loop is probably the best next move: it is the last replayed block in
+`js/fastforward.js`, it is plain C, and 5 sessions sit on it directly with more
+behind them.
 
 ### The startup sequence is now fully ported
 

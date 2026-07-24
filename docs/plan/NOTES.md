@@ -494,6 +494,28 @@ looks like. The verified JS implementation and its reference vector are recorded
 in [09-lua-and-special-levels.md](09-lua-and-special-levels.md) so it can be
 dropped in if that symptom ever appears.
 
+## `sp_lev.c` is not all Lua — check before blaming the interpreter
+
+`tools/diverge.mjs` names the C function that made the next call, and for a long
+stretch the top blocker was `fill_special_room(sp_lev.c:2763)` in 12 sessions.
+It is tempting to read "sp_lev.c" as "the Lua level loader" and file it under
+M9a. **It is plain C**, and so are most of that file's line numbers that show up
+in the histogram. `sp_lev.c` hosts both the Lua opcode handlers (`lspo_*`) and
+ordinary special-room machinery; only the `lspo_` ones need the interpreter.
+
+All 12 were the vault case — `mkgold(rn1(abs(depth) * 100, 51), x, y)` per
+square — and they cleared with two changes, neither of them Lua:
+
+1. `fill_special_room()` had no port at all, so `makelevel()` added the vault
+   room, set `needfill`, and never filled it.
+2. `makelevel()` has **two** `fill_special_room()` call sites: one right after
+   the vault (src/mklev.c:1330) and one walking every room at the end
+   (src/mklev.c:1415). Wiring only the first left every `do_mkroom()` room
+   unfilled.
+
+**Before attributing a blocker to Lua, open the C at that line.** The genuine
+interpreter blockers are the ones tagged `lspo_*` or `nh.rn2 src=<file>.lua`.
+
 ## Lua's math.random is shimmed away — and counting Lua STATES is most of the job
 
 Two findings that together change how to approach M9a.

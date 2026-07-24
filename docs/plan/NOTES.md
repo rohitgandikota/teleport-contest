@@ -238,6 +238,26 @@ object data table first. That table is `include/objects.h` — 1,659 lines, 361+
 macro entries, the same generatable shape as `optlist.h`. Generate it, do not
 transcribe it.
 
+## Only two Lua scripts draw randomness
+
+Refining the earlier Lua measurement. Across the corpus, 23,671 calls carry an
+`@ nh.*` annotation, but only 1,512 also carry the richer
+`src=<file>.lua:<line> parent=<fn>(<file>.lua:<line>)` form — and those name
+just **two** files:
+
+```
+1402  nhlib.lua
+ 110  themerms.lua
+```
+
+So for *RNG parity* the Lua surface is two scripts, not 131. Other scripts still
+have to execute to build levels correctly, but they do not draw. That materially
+shrinks M9a's critical path.
+
+The `src=`/`parent=` annotation gives the exact `.lua` file and line for each
+draw, which is the Lua-side equivalent of the C caller annotation — use it the
+same way `tools/diverge.mjs` uses the C one.
+
 ## Measured port priority
 
 Top C files by how many sessions execute them, from `coverage-map.md`. All of

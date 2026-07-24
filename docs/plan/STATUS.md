@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after the M2 reorder around `o_init`
+Last updated: **2026-07-24** · after M2.7 (`o_init`) landed
 
 ---
 
@@ -31,34 +31,26 @@ consumer in every single session.
 
 | | |
 |---|---|
-| **Current milestone** | M2 — options, rc parsing, chargen. **2.1, 2.2, 2.3, 2.4 done**; 2.7, 2.5, 2.6 open |
+| **Current milestone** | M2 — **2.1, 2.2, 2.3, 2.4, 2.7 done**; 2.5, 2.6 open |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-Do [02-options-and-chargen.md](02-options-and-chargen.md) item **2.7**,
-`o_init` — which measurement inserted ahead of `u_init`. Every session's very
-first PRNG call is `randomize_gem_colors(o_init.c:89)`, and `o_init` accounts for
-10,945 calls across 44/44 sessions, so nothing later in the stream can align
-until it does.
+Port `pick_role` / `pick_race` / `pick_gend` / `pick_align` from `src/role.c`
+(around role.c:1032, :1157, :1222), then the rest of M2.5 (`u_init`).
 
-Two steps, in order:
+This is the exact blocker measurement found: `o_init` now reproduces its full
+199-call prefix on **37 of 44** sessions, and all 7 remaining failures are the
+same cause — when the rc does not pin role/race/gender/alignment, `role.c` picks
+them randomly *before* `init_objects()` runs, so those sessions' streams start
+with `rn2(13) @ pick_role(role.c:1032)` rather than with gem colours.
 
-1. **Generate the object table.** `tools/gen-objects.mjs` parsing
-   `include/objects.h` (1,659 lines, 361+ macro entries) into
-   `js/objects_data.js`. Copy the `tools/gen-optlist.mjs` pattern, including its
-   two gotchas: skip `#define` lines when scanning for macro invocations, and
-   step over string literals when balancing parens, or a description containing
-   `)` swallows every following entry.
-2. **Port `src/o_init.c`**: `randomize_gem_colors`, `shuffle`,
-   `obj_shuffle_range`, `shuffle_all`, `init_objects`, `init_oclass_probs`.
+Fix that and the o_init prefix should reproduce on all 44.
 
-**Success signal:** `node tools/diverge.mjs <session>` moves its first-divergence
-index from 0 to roughly 200+ on *every* session at once. Screens stay at zero.
-
-Then 2.5 (`u_init`) and 2.6 (chargen prompt flow).
+Verify with the snippet pattern already used: run `init_objects()` at each
+session's seed and compare positionally against the recorded log.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -103,6 +95,15 @@ change to `js/` in the project.
 from `input.datetime` via `game.fixed_datetime`. Verified against four session
 filenames that assert calendar properties (two Friday-the-13th, one full moon,
 one new moon) — all four reproduce. Audited `js/` for host-clock reads: none.
+
+**M2.7 — `o_init`, the first RNG consumer.** `tools/gen-objects.mjs` generates
+`js/objects_data.js` by running the C preprocessor over `src/objects.c` and
+parsing the expansion — 482 object entries, 493 object-index constants, the
+object-class enum. `js/o_init.js` ports `init_objects`, `shuffle`, `shuffle_all`,
+`obj_shuffle_range`, `randomize_gem_colors`, `setgemprobs`, `init_oclass_probs`.
+**All 199 o_init calls reproduce exactly on 37 of 44 sessions** (7,363 calls
+total). 199 replayed entries deleted from `js/fastforward.js` — the first real
+reduction of it.
 
 **M2.2 — options and rc parsing.** `js/optlist.js` is now generated from
 `include/optlist.h` by `tools/gen-optlist.mjs` (255 options, count verified

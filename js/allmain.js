@@ -10,14 +10,19 @@ import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack } from './cmd.js';
 import { docrt, cls, bot, flush_screen, pline } from './display.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
+import { init_objects } from './o_init.js';
 import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step, fastforward_fill_mineralize } from './fastforward.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
     const g = game;
 
-    // Fast-forward through pre-mklev startup RNG calls.
-    // Covers: o_init (shuffles), dungeon init, u_init_misc.
+    // src/allmain.c newgame() -> src/o_init.c init_objects().
+    // The first 199 PRNG calls of every game, now real rather than replayed.
+    init_objects();
+
+    // Fast-forward through the remaining pre-mklev startup RNG calls.
+    // Still covers: dungeon init, u_init_misc.
     fastforward_pre_mklev();
 
     // C ref: allmain.c l_nhcore_init() — shuffle align[] for Lua

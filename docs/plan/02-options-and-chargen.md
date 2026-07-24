@@ -77,11 +77,11 @@ array terminators.
 - [ ] Options are parsed and stored but most are not yet *acted on*. That is
       correct for now — behaviour lands with the subsystem that needs it.
 
-**Still open here.** The parser is general, but option parsing in the C can
-itself consume RNG on some paths (random role selection, for one). Check the C
-caller annotations at the head of each session's RNG log to see exactly what runs
-before chargen proper, and make sure our parse consumes the same draws — or
-none, if C consumes none for these rc files.
+**Answered by measurement:** `options.c` and `cfgfiles.c` appear in **no** RNG
+log across the whole corpus, so option parsing consumes zero randomness and has
+no ordering constraint against the stream. `role.c` does appear — 21/44 sessions,
+42 calls total — from random role/race selection when the rc does not pin them,
+which lands in 2.5 rather than here.
 
 ### 2.3 Fixed datetime — DONE
 

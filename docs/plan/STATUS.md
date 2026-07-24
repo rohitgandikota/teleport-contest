@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after the M2.3 (calendar) commit
+Last updated: **2026-07-24** · after the M2 reorder around `o_init`
 
 ---
 
@@ -20,8 +20,10 @@ divergences; and the baseline is **0 of 11,405 screens**. Three measurements
 changed the plan: Lua runs during ordinary level generation (M9a became a
 prerequisite of M4), `math.random` uses a second unlogged PRNG that must be
 reproduced separately (solved and verified), and the skeleton's `d(n,x)` was
-logging in a format C never produces (fixed). The first real porting work, M2.4,
-is done.
+logging in a format C never produces (fixed). Four M2 items are done — the RNG
+wrappers, the calendar, rc parsing, and the role tables — and a fourth
+measurement moved `o_init` to the front of M2, because it is the first RNG
+consumer in every single session.
 
 ---
 

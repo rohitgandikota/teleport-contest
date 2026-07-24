@@ -162,6 +162,55 @@ Conclusion: level 1 of every game runs Lua, almost certainly via themed rooms
 (`themerms.lua`, `nhcore.lua`, `nhlib.lua`). M9 was split into M9a (Lua core,
 prerequisite of M4) and M9b (named special levels and quests) as a result.
 
+## The RNG log format, precisely
+
+From `nethack-c/patches/003-rng-log-core.patch` and verified against the
+recordings. Getting this wrong desynchronises the whole log, so it is worth
+knowing exactly.
+
+- **Six entry types are logged**, each by its own wrapper: `rn2` (749,484 in the
+  public corpus), `rnd` (38,037), `d` (3,393), `rne` (1,062), `rnz` (707),
+  `rnl` (155).
+- **`rn1` is a macro**, `#define rn1(x, y) (rn2(x) + (y))`
+  (`include/hack.h:1535`). It logs as its inner `rn2` and never as `rn1(...)`.
+  There are zero `rn1` entries in the corpus, despite `docs/API.md` listing the
+  format.
+- **`d(n,x)` draws through `RND()` directly**, not through `rnd()`
+  (`src/rnd.c:186`). So it logs exactly one entry and no inner ones:
+  `d(11,8)=49 @ newmonhp(makemon.c:1042)` with nothing before it. A port that
+  implements `d` as a loop over `rnd()` emits n bogus entries and desynchronises
+  everything downstream. The skeleton did exactly this; fixed in M2.4.
+- **`rnl(x)` also draws through `RND()` directly**, then makes a *real* `rn2`
+  call for the Luck adjustment — but only when Luck is non-zero. So `rnl` usually
+  logs one entry, and sometimes an `rn2` immediately before it.
+- **Wrapper functions log after their inner calls.** The macros in the patch do
+  not fire inside `rnd.c`, so inner calls inherit the outer caller's annotation
+  and appear first. Observed for `rnz(350)`: `rn2(1000)`, `rn2(4)`, `rn2(4)`,
+  `rne(4)=2`, `rn2(2)=1`, then `rnz(350)=1065` — all annotated
+  `@ pleased(pray.c:1356)`.
+- **Seeding** is 8 little-endian bytes of the seed (`src/rnd.c:43-58`).
+
+## The display RNG context is not scored
+
+`rn2_on_display_rng` (`src/rnd.c:70`) draws from `rnglist[DISP]`, a second
+ISAAC64 context. Recorder patch 005 logs those calls with a `~d` prefix
+(`~drn2(N) = M`), and only when a separate env var is set.
+
+**There are zero `~d` entries in the public corpus**, and the scorer's
+`isRngCall` predicate (`/^(?:rn2|rnd|rn1|rnl|rne|rnz|d)\(/`) would filter them
+out anyway. So display draws never affect the RNG score.
+
+They do affect *screens*, because hallucination picks glyphs through this stream
+— `seed0383-wizard-hallucinate` and `seed0399-wizard-hallu-actions` are 751 steps
+between them. Two things to know when M10.6 gets there:
+
+- `rnglist[DISP]` has `init: FALSE` and is **never seeded**. It is a
+  zero-initialised `isaac64_ctx` that is drawn from directly, so the display
+  sequence is the same in every game regardless of seed.
+- `js/isaac64.js` (frozen) exports no way to construct a zero-state context —
+  `isaac64_init` takes seed bytes. Building the display context will need a
+  zero-state equivalent assembled by hand.
+
 ## Measured port priority
 
 Top C files by how many sessions execute them, from `coverage-map.md`. All of

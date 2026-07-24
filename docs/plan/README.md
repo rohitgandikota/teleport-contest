@@ -1,7 +1,10 @@
 # Port plan — index and status board
 
-Start here. Read this file, then read the one milestone file you are working on.
-Do not read the others.
+**Read [STATUS.md](STATUS.md) first.** It carries the live handoff state: what is
+in progress, what is half-finished, where the plan has already been corrected,
+and the exact next action. This file is the map; STATUS.md is the "you are here".
+
+Then read the one milestone file you are working on. Do not read the others.
 
 Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 

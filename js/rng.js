@@ -4,6 +4,7 @@
 
 import { isaac64_init, isaac64_next_uint64 } from './isaac64.js';
 import { game } from './gstate.js';
+import { sgn } from './hacklib.js';
 
 let _rngLog = [];
 let _rngLogEnabled = false;
@@ -46,14 +47,55 @@ export function rnd(x) {
     return val;
 }
 
-// C ref: rn1(x, y) — random number y..y+x-1
+// include/hack.h:1535  #define rn1(x, y) (rn2(x) + (y))
+// A macro, not a function: it logs as the inner rn2, never as "rn1(...)".
+// Confirmed against the corpus, which contains zero rn1 entries.
 export function rn1(x, y) { return rn2(x) + y; }
 
-// C ref: d(n, x) — roll n dice of x sides
+// src/rnd.c:175 d(n, x) — d(N,X) == NdX; n <= d(n,x) <= (n*x)
+// Draws through RND() directly, NOT through rnd(), so the log carries one
+// "d(n,x)=tmp" entry and no inner entries. Verified against the recordings:
+// "d(11,8)=49 @ newmonhp(makemon.c:1042)" appears with no rnd() lines before it.
 export function d(n, x) {
-    let sum = 0;
-    for (let i = 0; i < n; i++) sum += rnd(x);
-    return sum;
+    const n_arg = n; /* C logs the original n; the loop below consumes it */
+    let tmp = n;
+
+    while (n--)
+        tmp += RND(x);
+    if (_rngLogEnabled) _rngLog.push(`d(${n_arg},${x})=${tmp}`);
+    return tmp; /* Alea iacta est. -- J.C. */
+}
+
+// src/rnd.c:112 rnl(x) — 0 <= rnl(x) < x, sometimes subtracting Luck;
+// good luck approaches 0, bad luck approaches (x-1).
+// The initial draw is a raw RND(); the adjustment check is a real rn2() and
+// therefore logs its own entry before this one.
+export function rnl(x) {
+    let adjustment = Luck();
+
+    if (x <= 15) {
+        /* for small ranges, use Luck/3 (rounded away from 0);
+           also guard against architecture-specific differences
+           of integer division involving negative values */
+        adjustment = Math.trunc((Math.abs(adjustment) + 1) / 3) * sgn(adjustment);
+    }
+
+    let i = RND(x);
+    if (adjustment && rn2(37 + Math.abs(adjustment))) {
+        i -= adjustment;
+        if (i < 0)
+            i = 0;
+        else if (i >= x)
+            i = x - 1;
+    }
+    if (_rngLogEnabled) _rngLog.push(`rnl(${x})=${i}`);
+    return i;
+}
+
+// include/you.h:464  #define Luck (u.uluck + u.moreluck)
+function Luck() {
+    const u = game.u;
+    return u ? (u.uluck || 0) + (u.moreluck || 0) : 0;
 }
 
 // C ref: rne(x) — exponentially distributed

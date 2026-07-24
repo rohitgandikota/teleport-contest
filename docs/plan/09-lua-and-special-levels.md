@@ -31,7 +31,73 @@ this cannot be approximated.
 
 ---
 
-## Decision D1 — resolve this before writing code
+## Decision D1 — RESOLVED 2026-07-24: build the interpreter
+
+Chosen: **Option B, a small Lua interpreter in JS**, with `dat/*.lua` shipped as
+embedded data. Rationale below; the scoping measurements that back it follow.
+
+### Scoping results (measured, 2026-07-24)
+
+**Corpus:** 131 `.lua` files, 17,223 lines.
+
+**Language subset is small.** Across all 131 files: no `goto`, no coroutines, no
+`setmetatable`/`getmetatable`, no `pcall`, no `tonumber`. Present are functions,
+locals, `if`/`elseif`/`else`, numeric and generic `for`, a little `while` (2
+files) and `repeat`/`until` (3 files), `break` (2 files), `and`/`or`/`not`, table
+constructors, and string literals. Standard library use is thin: `math.*` (90
+call sites, nearly all `math.random`), `table.*` (6), `string.*` (3).
+
+**API surface is ~129 registered functions**, all in four namespaces:
+
+| Namespace | Functions | Registered in |
+|---|---:|---|
+| `des.*` — level building | 36 | `src/sp_lev.c:6379` |
+| `selection.*` | 33 | `src/nhlsel.c:981` |
+| `nh.*` and `u.*` | 44 | `src/nhlua.c:1848`, `:2056` |
+| `obj.*` | 16 | `src/nhlobj.c:629` |
+
+By call volume the scripts are dominated by a handful: `des.monster` (2,111),
+`des.object` (1,420), `des.trap` (794), `des.door` (603), `des.region` (364),
+`selection.area` (356). A working subset is far smaller than 129.
+
+**Conclusion:** the interpreter is bounded and tractable. It is a Lua subset with
+no metatables, no coroutines, and a thin stdlib. Option B also wins on the
+Phase 2 formula: a 5.1 change to a level script becomes a data change with a
+near-zero `js/**` diff, whereas hand-porting leaves 131 translated files to
+re-diff.
+
+### The trap that makes this non-optional: two Lua randomness sources
+
+`src/nhlua.c:1880-1881` registers `nh.rn2` and `nh.random`, which draw from
+NetHack's core RNG and **are** written to the RNG log.
+
+But `math.random` is different. `src/nhlua.c:2946` carries an upstream comment
+saying `math.random` uses **Lua's own xoshiro256\*\* generator regardless of what
+the rest of the game uses**, and that fixing it would mean changing `lmathlib.c`.
+Those draws appear **nowhere in the RNG log**. Recorder patch 001 pins them by
+calling `math.randomseed(NETHACK_SEED)` at state setup.
+
+`math.random` is used 84 times across `dat/`, including **11 times in
+`nhlib.lua` and 6 in `themerms.lua`** — both of which run during ordinary level
+generation. So a port can reach 100% RNG parity and still generate the wrong
+level, with no diagnostic anywhere pointing at why.
+
+**This is solved.** The algorithm is fully specified in
+`lib/lua-5.4.8/src/lmathlib.c`: `nextrand` (line 320), `setseed` (609),
+`project` (549), `math_random` (574). A BigInt implementation in JS was verified
+against the real interpreter and matches exactly, including the raw signed
+64-bit value. Re-verify any implementation with:
+
+```bash
+./nethack-c/recorder/lib/lua-5.4.8/src/lua -e 'math.randomseed(8000)
+for i=1,10 do io.write(math.random(100)," ") end print()'
+# expected: 53 18 65 22 97 86 12 57 83 60
+```
+
+Seeding is `setseed(n1=seed, n2=0)`: state = `[seed, 0xff, 0, 0]`, then 16
+discarded `nextrand` calls. Port it as `js/lua/lmathlib.js`, mirroring the C.
+
+### Original options, for the record
 
 Two ways to do it.
 
@@ -44,17 +110,14 @@ embedded data.** Much more work up front. But a 5.1 change to a level script the
 becomes a *data* change with a near-zero `js/**` diff, and the interpreter itself
 never changes.
 
-**Recommendation: Option B**, on the strength of the Phase 2 formula
-(`parity / diff`). NetHack uses a small, well-defined subset of Lua, and
-`src/nhlua.c` shows exactly which API surface the scripts touch, which bounds the
-interpreter's scope sharply. Confirm that bound before committing:
+**Chosen: Option B**, on the strength of the Phase 2 formula (`parity / diff`)
+and the scoping numbers above.
 
-- [ ] Enumerate every Lua construct used across `dat/*.lua` (script it; do not
-      read 131 files by hand)
-- [ ] Enumerate every C function registered into Lua by `src/nhlua.c`,
-      `src/nhlobj.c`, `src/nhlsel.c`
-- [ ] Estimate interpreter scope from those two lists
-- [ ] Record the decision and its rationale in this file, then proceed
+- [x] Enumerate every Lua construct used across `dat/*.lua`
+- [x] Enumerate every C function registered into Lua by `src/sp_lev.c`,
+      `src/nhlua.c`, `src/nhlobj.c`, `src/nhlsel.c`
+- [x] Estimate interpreter scope from those two lists
+- [x] Record the decision and its rationale in this file
 
 **Sandbox constraint that forces a design detail either way:** the judge runs our
 code with `--allow-fs-read` limited to our fork's tree, and

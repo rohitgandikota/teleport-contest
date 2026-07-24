@@ -70,18 +70,33 @@ log to see what runs before chargen proper.
 C. The second segment of `seed0013-friday13-save-then-fullmoon-restore` changes
 the moon phase across a restore, which is a good end-to-end check later.
 
-### 2.4 RNG wrappers
+### 2.4 RNG wrappers — DONE
 
-`js/rng.js` already wraps `frozen/isaac64.js`. Confirm it against `src/rnd.c`.
+`js/rng.js` wraps `frozen/isaac64.js`. Audited line by line against `src/rnd.c`.
 
-- [ ] `rn2`, `rn2_on_display_rng`, `rnd`, `d`, `rn1`, `rne`, `rnz`, `rnl`
-      all match `src/rnd.c` exactly, including the `rnl` luck adjustment
-- [ ] Three separate contexts (core, display, Lua) are distinguishable and each
-      logs in the format `docs/API.md` specifies
-- [ ] Log entries are emitted for every call, in call order
-
-**Verify:** hand-compare each function against `src/rnd.c` line by line. This is
-30 lines of C and it underpins everything; do not skim it.
+- [x] `rn2`, `rnd`, `rn1`, `rne`, `rnz` verified correct as they stood
+- [x] **`d(n,x)` was wrong and is fixed.** C draws through `RND()` directly
+      (`src/rnd.c:186`), so the log carries one `d(n,x)=tmp` entry. The JS called
+      `rnd()` n times, emitting n bogus `rnd(x)` entries and no `d(...)` entry —
+      which would have desynchronised the whole log the first time any dice roll
+      happened.
+- [x] **`rnl(x)` was missing entirely** and is now ported, with the Luck
+      adjustment. 155 calls in the public corpus.
+- [x] `sgn()` added to `js/hacklib.js` from `src/hacklib.c:650`, since `rnl`
+      needs it.
+- [x] Seeding verified: `init_isaac64` (`src/rnd.c:43-58`) writes the seed as 8
+      little-endian bytes, which is exactly what `initRng` does.
+- [x] Log entry types confirmed against the corpus: `rn2` (749,484), `rnd`
+      (38,037), `d` (3,393), `rne` (1,062), `rnz` (707), `rnl` (155). No `rn1`
+      entries — it is a macro (`include/hack.h:1535`) and logs as its inner
+      `rn2`.
+- [x] Wrapper nesting verified: `rnz` emits its inner `rn2(1000)`, then `rne`'s
+      inner draws, then `rne(4)`, then `rn2(2)`, then `rnz(...)` last. Our output
+      reproduces that exactly.
+- [ ] Display context (`rn2_on_display_rng`) — **deliberately deferred to M10.6**,
+      see [NOTES.md](NOTES.md). It is not scored and needs a zero-initialised
+      ISAAC64 context that `js/isaac64.js` has no constructor for.
+- [ ] Lua context — M9a.
 
 ### 2.5 `u_init` and attribute rolling
 

@@ -50,6 +50,12 @@ Sessions: `seed0398-wizard-wandpoly-pile` (87 steps).
 ### 10.6 Hallucination and the display PRNG
 `src/display.c` hallucination paths, `src/rnd.c` `rn2_on_display_rng`.
 This is the third PRNG context and it must not mix with the core stream.
+**Deferred here from M2.4 deliberately.** Display draws are not scored (zero
+`~d` entries in the corpus, and the scorer filters them), but they decide which
+glyphs hallucination shows, so they are worth 751 steps of screens. Note the
+context is **never seeded** — it draws from a zero-initialised ISAAC64 state, so
+the sequence is seed-independent, and `js/isaac64.js` has no constructor for it.
+Details in [NOTES.md](NOTES.md).
 Sessions: `seed0383-wizard-hallucinate` (219), `seed0399-wizard-hallu-actions`
 (532). Together these are 751 steps, one of the largest single blocks of points
 outside the coverage sessions.

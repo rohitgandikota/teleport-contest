@@ -15,6 +15,11 @@ function await_const() {
     return _const;
 }
 
+// src/hacklib.c:650 sgn() — return the sign of a number: -1, 0, or 1
+export function sgn(n) {
+    return (n < 0) ? -1 : (n !== 0 ? 1 : 0);
+}
+
 export function distmin(x1, y1, x2, y2) {
     return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 }

@@ -4,8 +4,15 @@ This fork is an entry in the **Teleport Coding Challenge**: port NetHack 5.0
 (250k lines of C, plus Lua) to plain JavaScript so that its terminal output is
 byte-identical to the C original.
 
-Read `docs/plan/README.md` before doing anything. It says what is done, what is
-next, and which milestone file to open.
+**Read `docs/plan/STATUS.md` first, before anything else.** It is the live
+handoff state: what the last agent was doing, what they left unfinished, where
+the plan has already been corrected, and the exact next action. Then
+`docs/plan/README.md` for the milestone map.
+
+**Update `STATUS.md` before you stop, compact, or hand off.** This is not
+optional bookkeeping — it is the only thing standing between the next agent and
+re-deriving everything from scratch. Record what you finished, what is half-done,
+and any place you had to diverge from the plan and why.
 
 ---
 

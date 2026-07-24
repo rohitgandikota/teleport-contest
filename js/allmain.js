@@ -16,7 +16,7 @@ import { role_init, str2role, str2align, str2race, roles, races } from './role.j
 import { aligns } from './role_data.js';
 import { reset_mvitals } from './makemon.js';
 import { newhp, newpw } from './exper.js';
-import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step, fastforward_fill_mineralize } from './fastforward.js';
+import { fastforward_pre_mklev, fastforward_post_mklev, fastforward_step } from './fastforward.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
@@ -104,10 +104,9 @@ export async function newgame() {
     // Structural phase consumes RNG for rooms/corridors/doors/stairs
     await mklev();
 
-    // Room filling now happens inside makelevel(), as it does in C.
-    // mineralize is still replayed.
-    // fill now happens inside makelevel(); mineralize still replayed
-    fastforward_fill_mineralize();
+    // Room filling and mineralize both run for real inside mklev() now, as
+    // they do in C (src/mklev.c:1550 calls mineralize from
+    // level_finalize_topology). Nothing is replayed between mklev and u_init.
 
     // Fast-forward through post-mklev startup RNG calls.
     // Covers: u_init_role, ini_inv, attributes, moveloop_preamble.

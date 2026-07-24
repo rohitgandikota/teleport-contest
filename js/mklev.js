@@ -228,7 +228,14 @@ function mkgold(amount, x, y) {
     next_ident();
 }
 
-function place_object(otmp, x, y) { /* stub */ }
+// src/mkobj.c place_object() / add_to_buried() — neither draws.
+function place_object(otmp, x, y) {
+    otmp.ox = x; otmp.oy = y;
+    (game.level.objects ||= []).push(otmp);
+}
+function add_to_buried(otmp) {
+    (game.level.buriedobjs ||= []).push(otmp);
+}
 function dealloc_obj(otmp) { /* stub */ }
 function curse(otmp) { if (otmp) otmp.cursed = true; }
 function weight(otmp) { return otmp?.owt || 1; }
@@ -1783,12 +1790,23 @@ function mineralize(kelp_pool, kelp_moat, goldprob, gemprob, skip_lvl_checks) {
                 && n([1,1]) && n([-1,1])) {
                 if (rn2(1000) < goldprob) {
                     const otmp = mksobj(GOLD_PIECE, false, false);
+                    otmp.ox = x; otmp.oy = y;
                     otmp.quan = 1 + rnd(goldprob * 3);
+                    /* src/mklev.c:1519 — buried or on the floor; the draw
+                       happens either way */
+                    if (!rn2(3)) add_to_buried(otmp);
+                    else place_object(otmp, x, y);
                 }
                 if (rn2(1000) < gemprob) {
                     const cnt = rnd(2 + Math.trunc(dunLevel / 3));
                     for (let i = 0; i < cnt; i++) {
-                        mkobj(GEM_CLASS, false);
+                        const otmp = mkobj(GEM_CLASS, false);
+                        /* a rock is discarded outright and draws nothing more */
+                        if (otmp.otyp === ONAMES.ROCK)
+                            continue;
+                        otmp.ox = x; otmp.oy = y;
+                        if (!rn2(3)) add_to_buried(otmp);
+                        else place_object(otmp, x, y);
                     }
                 }
             }
@@ -1855,7 +1873,8 @@ function set_wall_state() { /* no-op for contest */ }
 
 function level_finalize_topology() {
     bound_digging();
-    // mineralize is consumed by fastforward_fill_mineralize
+    // src/mklev.c:1550 — mineralize() runs here, while in_mklev is still set.
+    mineralize(-1, -1, -1, -1, false);
     game.in_mklev = false;
     if (!game.level?.flags?.is_maze_lev) {
         const nroom = game.level?.nroom ?? 0;

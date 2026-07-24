@@ -494,6 +494,50 @@ looks like. The verified JS implementation and its reference vector are recorded
 in [09-lua-and-special-levels.md](09-lua-and-special-levels.md) so it can be
 dropped in if that symptom ever appears.
 
+## Lua's math.random is shimmed away — and counting Lua STATES is most of the job
+
+Two findings that together change how to approach M9a.
+
+**1. `math.random` never reaches Lua's own PRNG.** `dat/nhlib.lua:5` replaces it
+outright:
+
+```lua
+math.random = function(...)
+   local arg = {...};
+   if (#arg == 1) then return 1 + nh.rn2(arg[1]);
+   elseif (#arg == 2) then return nh.random(arg[1], arg[2] + 1 - arg[1]); end
+end
+```
+
+nhlib.lua is the first thing every Lua state loads, so by the time any script
+calls `math.random` the shim is already installed and the draw goes through
+NetHack's core RNG — and therefore **into the RNG log**. The recordings confirm
+it: `rn2(3)=2 @ random src=nhlib.lua:8 parent=shuffle(nhlib.lua:19)`, and line 8
+is the `nh.rn2` line of the shim.
+
+This resolves the old worry that xoshiro256** draws would be invisible. They are
+not used. `js/lua/lmathlib.js` is still ported and verified (see
+`tools/verify-lmathlib.mjs`) because a script could in principle call
+`math.random` before the shim, but it is not on the critical path.
+
+**2. Each Lua state costs exactly `rn2(3)`, `rn2(2)`.** `nhlib.lua` runs
+`shuffle(align)` at file scope, so *creating* a state draws even if no script
+does anything. Counting states correctly is worth real sessions on its own:
+
+| State | Created by |
+|---|---|
+| core | `newgame()` → `l_nhcore_init()` |
+| level | `mklev()` → `nhl_init()` |
+| themerooms | inside `makelevel()` |
+| **pager** | `com_pager("legacy")` from `src/allmain.c:831` — **only when the `legacy` option is on** |
+
+`legacy` is `opt_out` with `initval On`, so most sessions have the fourth state
+and a session whose rc says `!legacy` does not. That single missing pair was the
+first divergence in three sessions. The correlation across the corpus is exact.
+
+So before building interpreter machinery for a divergence tagged `nhlib.lua`,
+check whether it is simply a state you are not creating.
+
 ## Only two Lua scripts draw randomness
 
 Refining the earlier Lua measurement. Across the corpus, 23,671 calls carry an

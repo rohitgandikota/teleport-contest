@@ -138,6 +138,7 @@ export async function player_selection() {
     let pick4u = 'n';
     if (f.initrole === ROLE_NONE || f.initrace === ROLE_NONE
         || f.initgend === ROLE_NONE || f.initalign === ROLE_NONE) {
+        yn_prompt(build_plselection_prompt(f));
         for (;;) {
             const c = String.fromCharCode(await nhgetch()).toLowerCase();
             if (c === '\x1b' || c === 'q') return false;
@@ -290,4 +291,34 @@ export async function player_selection() {
             }
         }
     }
+}
+
+
+// src/role.c:1590 build_plselection_prompt()
+//
+// Only the nothing-is-pinned case is ported, which is what all eight
+// interactive sessions use and which produces the same sentence in every one:
+//
+//   Shall I pick character's race, role, gender and alignment for you? [ynaq]
+//
+// C builds it as "Shall I pick " + "a " + root_plselection_prompt(...), applies
+// the possessive suffix, then substitutes "pick a character" -> "pick character"
+// because the full form runs past 80 columns. The trailing attribute list is
+// role_post_attribs in BP_RACE, BP_ROLE, BP_GEND, BP_ALIGN order.
+function build_plselection_prompt(f) {
+    if (f.initrole !== ROLE_NONE || f.initrace !== ROLE_NONE
+        || f.initgend !== ROLE_NONE || f.initalign !== ROLE_NONE) {
+        (game.unported ||= new Set()).add('build_plselection_prompt partial');
+    }
+    return "Shall I pick character's race, role, gender and alignment"
+         + ' for you? [ynaq]';
+}
+
+// win/tty/topl.c — a yn_function prompt sits on the message line and parks the
+// cursor just past it.
+function yn_prompt(prompt) {
+    tty_curs_base(1, 0);
+    tty_putstr_base(prompt);
+    tty_curs_base(prompt.length + 2, 0);
+    tty_base_cursor();
 }

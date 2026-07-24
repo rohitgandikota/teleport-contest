@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · render path localised as the score bottleneck
+Last updated: **2026-07-24** · **first screens on the board: 15**
 
 ---
 
@@ -34,35 +34,22 @@ consumer in every single session.
 | **Current milestone** | **M3 tty windowport** — nothing writes to the terminal, so no screen can score |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
-| **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
+| **Score** | **15/11,405 screens**, 0/44 sessions passing |
 
 ### The exact next action
 
-**Start M3, the tty windowport.** Measured this pass: the game state is now
-substantially correct but **nothing reaches the terminal**, so every frame is
-empty and no screen can score. That is the whole gap between 41.8% RNG and 0%
-screens.
+**seed8000 now scores 15/23 screens.** Find out what the other 8 differ on:
 
-What was measured on `seed8000` after `newgame()`:
-
-```
-dungeons built     9            (correct topology from dungeon.lua)
-g.level            built        8 rooms, locations grid present
-hero position      (37, 6)      C draws @ at about col 37, row 7
-terminal.serialize()  ""        <-- empty string. Nothing was ever written.
+```bash
+node tools/screendiff.mjs seed8000 --first
 ```
 
-So level generation works and the hero is placed roughly where C puts them. The
-missing piece is purely the write path: `flush_screen` / `docrt` / `newsym` →
-`Terminal`. Nothing in `js/display.js` is putting cells into the frozen
-`js/terminal.js` grid.
+That is the fastest available feedback loop in the project right now — one
+session, 8 failing frames, a cell-level diff for each. Work them one at a time.
 
-Start at [03-tty-windowport.md](03-tty-windowport.md) item **3.1** (establish
-exactly when C captures a frame, from the nomux patches), then 3.3
-`tty_curs`/`tty_putstr`/`tty_print_glyph`, then M5.3's `newsym`/`flush_screen`.
-
-The chargen menu flow (M2.6, 5 sessions) is part of the same windowport work —
-do it once the menu primitives exist, not before.
+Then widen: every other session still scores 0, because they diverge in the RNG
+stream before any frame can match. The two blockers there are unchanged — the
+chargen menu flow (5 sessions) and everything downstream of level generation.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -113,6 +100,12 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**First screens scored.** `js/terminal.js` was stale and had no `serialize()`,
+so every captured frame was an empty string and local screen score could never
+be non-zero. Synced the three frozen files into `js/` — which is what the judge
+does on every run — and seed8000 went from 0 to **15/23 screens** with no other
+change. Written up in [NOTES.md](NOTES.md).
 
 **`role_init` + the monster table.** `tools/gen-monst.mjs` generates
 `js/monst_data.js` (384 monsters, 389 `PM_` constants) via the C preprocessor,

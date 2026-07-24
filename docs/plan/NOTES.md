@@ -162,6 +162,44 @@ Conclusion: level 1 of every game runs Lua, almost certainly via themed rooms
 (`themerms.lua`, `nhcore.lua`, `nhlib.lua`). M9 was split into M9a (Lua core,
 prerequisite of M4) and M9b (named special levels and quests) as a result.
 
+## js/terminal.js was stale, and it made every local screen score zero
+
+**The single most expensive trap found so far. Check this first if screens are
+inexplicably zero.**
+
+`js/terminal.js` in the fork was 632 lines and had **no `serialize()` method**.
+`frozen/terminal.js` is 713 lines and has one. The judge and
+`.github/workflows/score.yml` both overlay the frozen copies over `js/` before
+scoring, but **`frozen/score.sh` does not** — so local runs used the stale file.
+
+`js/jsmain.js`'s capture hook reads:
+
+```js
+nhGame._screens.push(term?.serialize ? term.serialize() : '');
+```
+
+With no `serialize`, that silently pushes an empty string for every frame. So
+local screen score was **structurally incapable of being non-zero**, no matter
+how correct the port was. Frame 0 looked "blank" in every diagnostic, which
+reads as a rendering bug and sent this project looking in the wrong place for a
+while.
+
+Fixed by syncing all three frozen files into `js/`, which is exactly what the
+judge does:
+
+```bash
+cp frozen/isaac64.js frozen/terminal.js frozen/storage.js js/   # keep in sync
+```
+
+Immediately took seed8000 from 0 to **15/23 screens** with no other change.
+
+**Keep them in sync.** Re-run that copy after any pull from upstream, and never
+edit the `js/` copies — they are overwritten on every scoring run. A quick check:
+
+```bash
+for f in isaac64 terminal storage; do diff -q frozen/$f.js js/$f.js; done
+```
+
 ## The RNG log format, precisely
 
 From `nethack-c/patches/003-rng-log-core.patch` and verified against the

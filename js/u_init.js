@@ -138,9 +138,73 @@ function ini_inv_adjust_obj(trop, obj) {
     return stop;
 }
 
-// src/invent.c addinv() — no draw; the hero's pack is a plain list here.
+// src/invent.c:1268 mergable() — can `obj` be folded into `otmp`?
+//
+// The BUC and enchantment tests matter for the inventory frame: five separate
+// FOOD_RATION objects merge into one "6 uncursed food rations" line, but a
+// blessed and an uncursed stack of the same otyp would not.
+function mergable(otmp, obj) {
+    const ocl = game.objects[obj.otyp];
+    if (obj === otmp || obj.otyp !== otmp.otyp || !ocl.oc_merge)
+        return false;
+    if (obj.oclass === COIN_CLASS)
+        return true;
+    if (!!obj.cursed !== !!otmp.cursed || !!obj.blessed !== !!otmp.blessed)
+        return false;
+    if (obj.spe !== otmp.spe || !!obj.otrapped !== !!otmp.otrapped
+        || !!obj.lamplit !== !!otmp.lamplit)
+        return false;
+    if (obj.oclass === FOOD_CLASS
+        && ((obj.oeaten || 0) !== (otmp.oeaten || 0)))
+        return false;
+    if (!!obj.dknown !== !!otmp.dknown
+        || (obj.oeroded || 0) !== (otmp.oeroded || 0)
+        || (obj.oeroded2 || 0) !== (otmp.oeroded2 || 0)
+        || !!obj.greased !== !!otmp.greased)
+        return false;
+    if (obj.corpsenm !== otmp.corpsenm)
+        return false;
+    return true;
+}
+
+// src/invent.c:230 assigninvlet() — sequential from lastinvnr, gold gets '$'.
+const GOLD_SYM = '$';
+function assigninvlet(otmp) {
+    if (otmp.oclass === COIN_CLASS) {
+        otmp.invlet = GOLD_SYM;
+        return;
+    }
+    const inuse = new Array(52).fill(false);
+    for (const o of game.invent || []) {
+        if (o === otmp) continue;
+        const c = o.invlet;
+        if (c >= 'a' && c <= 'z') inuse[c.charCodeAt(0) - 97] = true;
+        else if (c >= 'A' && c <= 'Z') inuse[c.charCodeAt(0) - 65 + 26] = true;
+    }
+    let i;
+    const last = game.lastinvnr ?? -1;
+    for (i = last + 1; i !== last; i++) {
+        if (i === 52) { i = -1; continue; }
+        if (!inuse[i]) break;
+    }
+    otmp.invlet = inuse[i] ? '#'
+                : (i < 26) ? String.fromCharCode(97 + i)
+                           : String.fromCharCode(65 + i - 26);
+    game.lastinvnr = i;
+}
+
+// src/invent.c:600 addinv() — merge into an existing stack if possible,
+// otherwise take the next inventory letter.
 function addinv(obj) {
-    (game.invent ||= []).push(obj);
+    game.invent ||= [];
+    for (const otmp of game.invent) {
+        if (mergable(otmp, obj)) {
+            otmp.quan += obj.quan;
+            return otmp;
+        }
+    }
+    assigninvlet(obj);
+    game.invent.push(obj);
     return obj;
 }
 
@@ -378,7 +442,26 @@ export function ini_inv_use_obj(obj) {
         if (slot && !(worn_slots() & slot))
             obj.owornmask = slot;
     }
+    obj.owornmask ||= 0;
+    ini_inv_wield(obj);
 }
+
+// src/u_init.c:1281 — a Tourist's darts go into the quiver, which is what
+// makes the inventory line read "(at the ready)".
+function ini_inv_wield(obj) {
+    const ocl = game.objects[obj.otyp];
+    if (obj.oclass !== WEAPON_CLASS) return;
+    /* is_ammo/is_missile: thrown weapons carry a negated skill */
+    const sk = ocl.oc_subtyp;
+    if (sk < 0) {
+        if (!game.u.uquiver) { obj.owornmask |= W_QUIVER; game.u.uquiver = obj; }
+    } else if (!game.u.uwep) {
+        obj.owornmask |= W_WEP; game.u.uwep = obj;
+    }
+}
+
+// include/prop.h — quiver and wielded slots.
+const W_QUIVER = 0x0800, W_WEP = 0x0100;
 
 // src/worn.c — which slots are currently filled.
 function worn_slots() {

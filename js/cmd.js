@@ -18,7 +18,7 @@ import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
          IS_WALL, IS_OBSTRUCTED } from './const.js';
 import { dosearch } from './detect.js';
-import { dolook, ECMD_TIME } from './invent.js';
+import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell } from './spell.js';
 
 // Direction deltas: y u k
@@ -35,7 +35,6 @@ function isMovementKey(ch) {
 // yet. Listed explicitly so the set shrinks visibly as commands land, rather
 // than hiding behind a catch-all.
 const KNOWN_UNPORTED = new Set([
-    'i',      // ddoinv       — inventory menu, needs objnam.c doname()
     /* ESC and space reach the main prompt only when no window is open — a
        window consumes its own dismissing key inside display_nhwindow(). C
        treats both as no-ops here and prints nothing, so they must NOT fall
@@ -76,6 +75,10 @@ export async function rhack(key) {
     } else if (ch === '+') {
         // src/cmd.c cmdlist — '+' is dovspell.
         game.context.move = (dovspell() === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'i') {
+        // src/cmd.c cmdlist — 'i' is ddoinv, which returns ECMD_OK.
+        game.context.move = 0;
+        await show_inventory();
     } else if (ch === '\x18') {
         // src/cmd.c cmdlist — ^X is doattributes, which returns ECMD_OK.
         game.context.move = 0;
@@ -169,6 +172,30 @@ async function show_attributes() {
     tty_display_nhwindow(win);
 
     /* dmore() blocks once per page */
+    await nhgetch();
+    while (tty_next_page(win))
+        await nhgetch();
+
+    tty_destroy_nhwindow(win);
+    await docrt();
+}
+
+
+// src/invent.c display_inventory() -> an NHW_MENU. Its longest line decides
+// offx: 80 - (maxcol) - 1, and js/tty/wintty.js adds the +2 for the leading
+// and trailing space. seed8000 records the window at column 32 with the cursor
+// at [38,20].
+async function show_inventory() {
+    const items = display_inventory();
+    if (!items.length) {
+        await pline('Not carrying anything.');
+        return;
+    }
+    const win = tty_create_nhwindow(NHW_MENU);
+    for (const [text, attr] of items)
+        tty_putstr(win, attr, text);
+    tty_display_nhwindow(win);
+
     await nhgetch();
     while (tty_next_page(win))
         await nhgetch();

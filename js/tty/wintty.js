@@ -145,7 +145,11 @@ function render_page(cw, page, display) {
     const start = page * cap;
     const lines = cw.data.slice(start, start + cap);
 
-    display.clearScreen();
+    /* win/tty/wintty.c only clears when the window has collapsed to full
+       screen; an inset menu OVERLAYS the map and status lines, which is why
+       seed8000's inventory frame still shows both bottom lines. */
+    if (!cw.offx)
+        display.clearScreen();
 
     lines.forEach((line, n) => {
         const row = cw.offy + n;
@@ -158,14 +162,23 @@ function render_page(cw, page, display) {
         const attr = term_attr((cw.attrs || [])[start + n] | 0);
         for (let i = 0; i < line.length && col < COLS; i++, col++)
             display.setCell(col, row, line[i], NO_COLOR, attr);
+        /* win/tty/wintty.c calls cl_end() on every window row, so a short
+           menu line blanks the rest of the row rather than letting the map
+           show through beside it. */
+        for (let c = col; c < COLS; c++)
+            display.setCell(c, row, ' ', NO_COLOR, 0);
     });
 
     /* win/tty/wintty.c dmore(): the prompt is cw->morestr when set, else
        defmorestr. A window that pages sets morestr to "(N of M)"; a single-page
        one leaves it null and gets "--More--". */
+    /* A menu that fits on one page shows "(end) " — WITH a trailing space,
+       which is what puts seed8000's inventory cursor on column 38 rather than
+       37. A text window shows defmorestr. Either kind that pages shows
+       "(N of M)". */
     cw.morestr = (cw.npages > 1)
         ? `(${page + 1} of ${cw.npages})`
-        : defmorestr;
+        : (cw.type === NHW_MENU) ? '(end) ' : defmorestr;
 
     /* win/tty/wintty.c process_text_window():
          tty_curs(BASE_WINDOW, cw->offx + 1,
@@ -182,6 +195,8 @@ function render_page(cw, page, display) {
     let col = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
     for (let i = 0; i < cw.morestr.length && col < COLS; i++, col++)
         display.setCell(col, footerRow, cw.morestr[i], NO_COLOR, 0);
+    for (let c = col; c < COLS; c++)
+        display.setCell(c, footerRow, ' ', NO_COLOR, 0);
 
     /* dmore(): ttyDisplay->curx += strlen(prompt), so the cursor ends just
        past the prompt. seed8000 records [8,23] for the discoveries window,

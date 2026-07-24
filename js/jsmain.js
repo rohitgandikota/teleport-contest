@@ -96,7 +96,11 @@ export class NethackGame {
         const rc = parseNethackrc(this._nethackrc);
         g.rc = rc;
         g.plname = optValue(rc, 'name') || 'Hero';
-        g.flags = { verbose: true, ...rc.opts };
+        /* src/optlist.h — both are opt_out with initval On, so they are set
+           unless the rc negates them. implicit_uncursed decides whether
+           doname() prints "uncursed" on a charged, identified item. */
+        g.flags = { verbose: true, implicit_uncursed: true, legacy: true,
+                    ...rc.opts };
         g.iflags = {};
         const pettype = optValue(rc, 'pettype');
         if (pettype) g.preferred_pet = pettype[0];

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **fill_special_room cleared (12 sessions)**; only 6 sessions are genuinely Lua-blocked
+Last updated: **2026-07-24** · **fastforward.js down to 3 replayed calls**; no blocker worth more than 6 sessions
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,30 +37,36 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **M9a — the Lua core** (`lspo_map`, 6 sessions) and the move loop |
-| **Also open** | chargen menus (6), `maybe_generate_rnd_mon` (5), `mkobj` (3) |
+| **Current milestone** | **M9a — the Lua core** (`lspo_map`, 6 sessions); everything else is long-tail |
+| **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
 | **Blocked on** | nothing |
-| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **82,560/792,838 (10.4%)**, mean divergence **1,534** |
+| **Score** | **19/11,405 screens**, 0/44 sessions passing, corpus RNG **82,750/792,838 (10.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Correction to the previous entry: Lua is NOT blocking 24 sessions.** It blocks
-**6**, all on `lspo_map`. The earlier count included
-`fill_special_room(sp_lev.c:2763)`, which lives in the Lua loader's file but is
-plain C — see [NOTES.md](NOTES.md), "sp_lev.c is not all Lua". Porting it and
-wiring `makelevel()`'s second call site cleared all 12.
+**`js/fastforward.js` is finished as a problem.** It is 49 lines and 3 replayed
+calls: two for `moveloop_preamble` and one for the tail of `u_init_misc`.
+Nothing else in the game replays a recorded value any more. That was the whole
+generalisation risk for the held-out set, and it is gone.
 
-Three candidates now, none dominant:
+**No blocker is worth more than 6 sessions now.** The histogram is flat:
 
-| Target | Sessions | Notes |
-|---|---:|---|
-| `maybe_generate_rnd_mon(allmain.c:166)` | 5 | the move loop; `fastforward_step` still replays 127 calls of it |
-| `pick_role` / `pick_align` | 6 | chargen menus, needs the M3 window layer wired |
-| `lspo_map(sp_lev.c:6154)` | 6 | genuinely Lua — this is what M9a is for |
+| Blocker | Sessions |
+|---|---:|
+| `lspo_map(sp_lev.c:6154)` — genuinely Lua | 6 |
+| `pick_role` / `pick_align` — chargen menus | 6 |
+| `obj_resists`, `mkobj` | 3 each |
+| `wipeout_text`, `somey`, `rnd_class`, others | 2 or fewer |
 
-The move loop is probably the best next move: it is the last replayed block in
-`js/fastforward.js`, it is plain C, and 5 sessions sit on it directly with more
-behind them.
+Two ways to read that. **M9a (the Lua interpreter)** is the only item with a
+large body of work behind it — clearing `lspo_map` also unblocks whatever those
+6 sessions hit next, and Lua drives all special-level generation. **The chargen
+menus** are the other 6 and need M3's window layer wired, which is also what the
+four remaining seed8000 frames need.
+
+If the goal is screens rather than PRNG parity, the chargen/M3 path is the one
+that ends in frames. `js/tty/wintty.js` is written and verified and still has no
+consumer; `objnam.c doname()` is the missing piece for the inventory window.
 
 ### The startup sequence is now fully ported
 

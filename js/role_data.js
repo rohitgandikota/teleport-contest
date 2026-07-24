@@ -1338,23 +1338,23 @@ export const roles = [
 ];
 
 export const races = [
-    [
-        "human",
-        "human",
-        "humanity",
-        "Hum",
-        [
-            "man",
-            "woman"
-        ],
-        "PM_HUMAN",
-        "PM_HUMAN_MUMMY",
-        "PM_HUMAN_ZOMBIE",
-        12303,
-        8,
-        0,
-        192,
-        [
+    {
+        "noun": "human",
+        "adj": "human",
+        "coll": "humanity",
+        "filecode": "Hum",
+        "individual": {
+            "m": "man",
+            "f": "woman"
+        },
+        "mnum": "PM_HUMAN",
+        "mummynum": "PM_HUMAN_MUMMY",
+        "zombienum": "PM_HUMAN_ZOMBIE",
+        "allow": 12303,
+        "selfmask": 8,
+        "lovemask": 0,
+        "hatemask": 192,
+        "attrmin": [
             3,
             3,
             3,
@@ -1362,7 +1362,7 @@ export const races = [
             3,
             3
         ],
-        [
+        "attrmax": [
             118,
             18,
             18,
@@ -1370,7 +1370,7 @@ export const races = [
             18,
             18
         ],
-        [
+        "hpadv": [
             2,
             0,
             0,
@@ -1378,7 +1378,7 @@ export const races = [
             1,
             0
         ],
-        [
+        "enadv": [
             1,
             0,
             2,
@@ -1386,24 +1386,24 @@ export const races = [
             2,
             0
         ]
-    ],
-    [
-        "elf",
-        "elven",
-        "elvenkind",
-        "Elf",
-        [
-            0,
-            0
-        ],
-        "PM_ELF",
-        "PM_ELF_MUMMY",
-        "PM_ELF_ZOMBIE",
-        12305,
-        16,
-        16,
-        128,
-        [
+    },
+    {
+        "noun": "elf",
+        "adj": "elven",
+        "coll": "elvenkind",
+        "filecode": "Elf",
+        "individual": {
+            "m": 0,
+            "f": null
+        },
+        "mnum": "PM_ELF",
+        "mummynum": "PM_ELF_MUMMY",
+        "zombienum": "PM_ELF_ZOMBIE",
+        "allow": 12305,
+        "selfmask": 16,
+        "lovemask": 16,
+        "hatemask": 128,
+        "attrmin": [
             3,
             3,
             3,
@@ -1411,7 +1411,7 @@ export const races = [
             3,
             3
         ],
-        [
+        "attrmax": [
             18,
             20,
             20,
@@ -1419,7 +1419,7 @@ export const races = [
             16,
             18
         ],
-        [
+        "hpadv": [
             1,
             0,
             0,
@@ -1427,7 +1427,7 @@ export const races = [
             1,
             0
         ],
-        [
+        "enadv": [
             2,
             0,
             3,
@@ -1435,24 +1435,24 @@ export const races = [
             3,
             0
         ]
-    ],
-    [
-        "dwarf",
-        "dwarven",
-        "dwarvenkind",
-        "Dwa",
-        [
-            0,
-            0
-        ],
-        "PM_DWARF",
-        "PM_DWARF_MUMMY",
-        "PM_DWARF_ZOMBIE",
-        12324,
-        32,
-        96,
-        128,
-        [
+    },
+    {
+        "noun": "dwarf",
+        "adj": "dwarven",
+        "coll": "dwarvenkind",
+        "filecode": "Dwa",
+        "individual": {
+            "m": 0,
+            "f": null
+        },
+        "mnum": "PM_DWARF",
+        "mummynum": "PM_DWARF_MUMMY",
+        "zombienum": "PM_DWARF_ZOMBIE",
+        "allow": 12324,
+        "selfmask": 32,
+        "lovemask": 96,
+        "hatemask": 128,
+        "attrmin": [
             3,
             3,
             3,
@@ -1460,7 +1460,7 @@ export const races = [
             3,
             3
         ],
-        [
+        "attrmax": [
             118,
             16,
             16,
@@ -1468,7 +1468,7 @@ export const races = [
             20,
             16
         ],
-        [
+        "hpadv": [
             4,
             0,
             0,
@@ -1476,7 +1476,7 @@ export const races = [
             2,
             0
         ],
-        [
+        "enadv": [
             0,
             0,
             0,
@@ -1484,24 +1484,24 @@ export const races = [
             0,
             0
         ]
-    ],
-    [
-        "gnome",
-        "gnomish",
-        "gnomehood",
-        "Gno",
-        [
-            0,
-            0
-        ],
-        "PM_GNOME",
-        "PM_GNOME_MUMMY",
-        "PM_GNOME_ZOMBIE",
-        12354,
-        64,
-        96,
-        8,
-        [
+    },
+    {
+        "noun": "gnome",
+        "adj": "gnomish",
+        "coll": "gnomehood",
+        "filecode": "Gno",
+        "individual": {
+            "m": 0,
+            "f": null
+        },
+        "mnum": "PM_GNOME",
+        "mummynum": "PM_GNOME_MUMMY",
+        "zombienum": "PM_GNOME_ZOMBIE",
+        "allow": 12354,
+        "selfmask": 64,
+        "lovemask": 96,
+        "hatemask": 8,
+        "attrmin": [
             3,
             3,
             3,
@@ -1509,7 +1509,7 @@ export const races = [
             3,
             3
         ],
-        [
+        "attrmax": [
             68,
             19,
             18,
@@ -1517,7 +1517,7 @@ export const races = [
             18,
             18
         ],
-        [
+        "hpadv": [
             1,
             0,
             0,
@@ -1525,7 +1525,7 @@ export const races = [
             0,
             0
         ],
-        [
+        "enadv": [
             2,
             0,
             2,
@@ -1533,24 +1533,24 @@ export const races = [
             2,
             0
         ]
-    ],
-    [
-        "orc",
-        "orcish",
-        "orcdom",
-        "Orc",
-        [
-            0,
-            0
-        ],
-        "PM_ORC",
-        "PM_ORC_MUMMY",
-        "PM_ORC_ZOMBIE",
-        12417,
-        128,
-        0,
-        56,
-        [
+    },
+    {
+        "noun": "orc",
+        "adj": "orcish",
+        "coll": "orcdom",
+        "filecode": "Orc",
+        "individual": {
+            "m": 0,
+            "f": null
+        },
+        "mnum": "PM_ORC",
+        "mummynum": "PM_ORC_MUMMY",
+        "zombienum": "PM_ORC_ZOMBIE",
+        "allow": 12417,
+        "selfmask": 128,
+        "lovemask": 0,
+        "hatemask": 56,
+        "attrmin": [
             3,
             3,
             3,
@@ -1558,7 +1558,7 @@ export const races = [
             3,
             3
         ],
-        [
+        "attrmax": [
             68,
             16,
             16,
@@ -1566,7 +1566,7 @@ export const races = [
             18,
             16
         ],
-        [
+        "hpadv": [
             1,
             0,
             0,
@@ -1574,7 +1574,7 @@ export const races = [
             0,
             0
         ],
-        [
+        "enadv": [
             1,
             0,
             1,
@@ -1582,73 +1582,73 @@ export const races = [
             1,
             0
         ]
-    ]
+    }
 ];
 
 export const genders = [
-    [
-        "male",
-        "he",
-        "him",
-        "his",
-        "Mal",
-        4096
-    ],
-    [
-        "female",
-        "she",
-        "her",
-        "her",
-        "Fem",
-        8192
-    ],
-    [
-        "neuter",
-        "it",
-        "it",
-        "its",
-        "Ntr",
-        16384
-    ],
-    [
-        "group",
-        "they",
-        "them",
-        "their",
-        "Grp",
-        0
-    ]
+    {
+        "adj": "male",
+        "he": "he",
+        "him": "him",
+        "his": "his",
+        "filecode": "Mal",
+        "allow": 4096
+    },
+    {
+        "adj": "female",
+        "he": "she",
+        "him": "her",
+        "his": "her",
+        "filecode": "Fem",
+        "allow": 8192
+    },
+    {
+        "adj": "neuter",
+        "he": "it",
+        "him": "it",
+        "his": "its",
+        "filecode": "Ntr",
+        "allow": 16384
+    },
+    {
+        "adj": "group",
+        "he": "they",
+        "him": "them",
+        "his": "their",
+        "filecode": "Grp",
+        "allow": 0
+    }
 ];
 
 export const aligns = [
-    [
-        "law",
-        "lawful",
-        "Law",
-        4,
-        1
-    ],
-    [
-        "balance",
-        "neutral",
-        "Neu",
-        2,
-        0
-    ],
-    [
-        "chaos",
-        "chaotic",
-        "Cha",
-        1,
-        -1
-    ],
-    [
-        "evil",
-        "unaligned",
-        "Una",
-        0,
-        -128
-    ]
+    {
+        "noun": "law",
+        "adj": "lawful",
+        "filecode": "Law",
+        "allow": 4,
+        "value": 1
+    },
+    {
+        "noun": "balance",
+        "adj": "neutral",
+        "filecode": "Neu",
+        "allow": 2,
+        "value": 0
+    },
+    {
+        "noun": "chaos",
+        "adj": "chaotic",
+        "filecode": "Cha",
+        "allow": 1,
+        "value": -1
+    },
+    {
+        "noun": "evil",
+        "adj": "unaligned",
+        "filecode": "Una",
+        "allow": 0,
+        "value": -128
+    }
 ];
 
 // src/role.c str2role() matches on the role name, case-insensitively.

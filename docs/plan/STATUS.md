@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · after M2.7 (`o_init`) and the role-table mask fix
+Last updated: **2026-07-24** · after M2.8 (`role.c` pickers)
 
 ---
 
@@ -31,26 +31,31 @@ consumer in every single session.
 
 | | |
 |---|---|
-| **Current milestone** | M2 — **2.1, 2.2, 2.3, 2.4, 2.7 done**; 2.5, 2.6 open |
+| **Current milestone** | M2 — **2.1, 2.2, 2.3, 2.4, 2.7, 2.8 done**; 2.5, 2.6 open |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
 | **Score** | 0/11,405 screens, 0/44 sessions (unchanged — M2 work is on paths the skeleton cannot yet reach) |
 
 ### The exact next action
 
-Port `pick_role` / `pick_race` / `pick_gend` / `pick_align` from `src/role.c`
-(around role.c:1032, :1157, :1222), then the rest of M2.5 (`u_init`).
+**40 of 44 sessions now reproduce their entire startup PRNG prefix.** The
+remaining 4 (`seed0006`, `seed0007`, `seed0014`, `seed0077`) are blocked on the
+chargen menu flow, not on more porting of `role.c`.
 
-This is the exact blocker measurement found: `o_init` now reproduces its full
-199-call prefix on **37 of 44** sessions, and all 7 remaining failures are the
-same cause — when the rc does not pin role/race/gender/alignment, `role.c` picks
-them randomly *before* `init_objects()` runs, so those sessions' streams start
-with `rn2(13) @ pick_role(role.c:1032)` rather than with gem colours.
+So the next unit is a choice between two, and **M9a is the better one**:
 
-Fix that and the o_init prefix should reproduce on all 44.
+1. **M9a — the Lua core.** C's very next call after `o_init` is
+   `@ random src=nhlib.lua:8`, so Lua is literally the next thing in the stream
+   for all 40 sessions that now match. Start with `js/lua/lmathlib.js` (spec and
+   a verified reference vector are in
+   [09-lua-and-special-levels.md](09-lua-and-special-levels.md), "Decision D1"),
+   then the interpreter core. Only `nhlib.lua` and `themerms.lua` ever draw
+   randomness, so the RNG-critical surface is two scripts.
 
-Verify with the snippet pattern already used: run `init_objects()` at each
-session's seed and compare positionally against the recorded log.
+2. M2.6 — `player_selection()` and the chargen menus. Unblocks the last 4
+   sessions, but it needs the tty menu code from M3, so it is really an M3 task.
+
+Take M9a first: it advances all 40 matching sessions, where M2.6 advances 4.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -101,6 +106,12 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**M2.8 — `role.c` pickers.** `js/role.js` ports `ok_role`/`ok_race`/`ok_gend`/
+`ok_align` and the four `pick_*` functions. Verified against `seed0002`, whose
+first four calls match exactly and whose picked role is Healer, matching the
+session name. **40/44 sessions now reproduce their whole startup prefix.** The
+dead `js/roles.js` stub is deleted.
 
 **M2.7 — `o_init`, the first RNG consumer.** `tools/gen-objects.mjs` generates
 `js/objects_data.js` by running the C preprocessor over `src/objects.c` and

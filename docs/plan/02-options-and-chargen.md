@@ -174,6 +174,48 @@ calls across 44/44 sessions. Until it matches, no later call can.
 index from 0 to roughly 200+ on *every* session at once. That is the signal this
 milestone is working; the screen score will still be zero.
 
+### 2.8 `role.c` pickers — DONE
+
+`pick_role`/`pick_race`/`pick_gend`/`pick_align` run *before* `o_init` in any
+session whose rc does not pin role/race/gender/alignment.
+
+- [x] `js/role.js` ports `ok_role`, `ok_race`, `ok_gend`, `ok_align`,
+      `pick_role`, `pick_race`, `pick_gend`, `pick_align`, plus `str2role` and
+      friends. Mirrors `src/role.c`; the old hand-written `js/roles.js` stub
+      (which had no C counterpart and nothing imported) is deleted.
+- [x] `tools/gen-roledata.mjs` now maps `races`/`genders`/`aligns` onto named
+      struct fields from `include/you.h` (`struct Race` :257, `struct Gender`
+      :301, `struct Align` :334), so `.allow`/`.selfmask` resolve instead of
+      needing hardcoded array offsets.
+- [x] `ROLE_GENDERS` is 2 and `ROLE_ALIGNS` is 3 — the tables carry a `group`
+      gender and an `unaligned` alignment that players cannot select. Using the
+      table lengths instead would draw `rn2(4)` where C draws `rn2(2)`.
+- [x] `gr.rfilter` role filtering is ported (unused by any public session, but a
+      held-out one may use it).
+
+**Verified** against `seed0002-healer-reflection-drummer`, whose moves are
+`"David\ryy"` — a name, then "pick everything for me":
+
+```
+0  C rn2(13)=3  ours rn2(13)=3  @ pick_role(role.c:1032)
+1  C rn2(2)=0   ours rn2(2)=0   @ pick_race(role.c:1092)
+2  C rn2(2)=0   ours rn2(2)=0   @ pick_gend(role.c:1157)
+3  C rn2(1)=0   ours rn2(1)=0   @ pick_align(role.c:1222)
+```
+
+The picked role is **Healer**, matching the session name. Combined with
+`o_init`, all **203** startup calls reproduce.
+
+**Corpus-wide: 40 of 44 sessions now reproduce their entire startup prefix**
+(37 via `o_init` alone, 3 more via pickers + `o_init`).
+
+**The last 4 need the chargen menu flow (2.6), not more pickers.**
+`seed0006`, `seed0007`, `seed0014` and `seed0077` have a minimal rc and drive
+the role/race/gender/alignment *menus* by keystroke — e.g. `"Hextrum\rnwofa"`
+is a name, then 'n' for "I'll pick", then letters for role/race/gender. Which
+pickers run, and in what order, is decided by those keystrokes, so this is
+blocked on `player_selection()` and the tty menu code in M3.
+
 ### 2.5 `u_init` and attribute rolling
 
 - [ ] Port `src/u_init.c` `u_init()` and its helpers in C order

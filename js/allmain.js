@@ -124,11 +124,12 @@ export async function moveloop_core() {
     await bot();
     await flush_screen(1);
 
-    // Read and execute one command
+    // Read and execute one command. The frame captured inside nhgetch shows
+    // the message produced by the PREVIOUS command, which is why the message
+    // must not be cleared here — rhack() clears it after reading the key and
+    // before dispatching, so each message survives exactly until the frame
+    // that displays it has been captured.
     await rhack(0);
-
-    // Clear message after command is processed
-    g._pending_message = '';
 
     // Advance turn
     if (g.context?.move) {

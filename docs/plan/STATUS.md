@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **first screens on the board: 15**
+Last updated: **2026-07-24** · **18 screens**; seed8000 at 18/23
 
 ---
 
@@ -34,22 +34,29 @@ consumer in every single session.
 | **Current milestone** | **M3 tty windowport** — nothing writes to the terminal, so no screen can score |
 | **Also open** | M9a — Lua core. Scoping done, D1 decided, no code written yet |
 | **Blocked on** | nothing |
-| **Score** | **15/11,405 screens**, 0/44 sessions passing |
+| **Score** | **18/11,405 screens**, 0/44 sessions passing |
 
 ### The exact next action
 
-**seed8000 now scores 15/23 screens.** Find out what the other 8 differ on:
+**seed8000 is at 18/23. All 5 remaining frames need the tty menu system**, so
+that is the next unit — and it is the same machinery the chargen menu flow (5
+other sessions) needs.
 
-```bash
-node tools/screendiff.mjs seed8000 --first
+```
+step 11  key "i"     400 cells   ddoinv        — inventory menu
+step 13  key "+"      30 cells   dovspell      — known spells list
+step 15  key "\\"      283 cells   dodiscovered  — discoveries
+step 17  key ^X      617 cells   doattributes  — attributes
+step 18  key " "     332 cells   dismiss the above
 ```
 
-That is the fastest available feedback loop in the project right now — one
-session, 8 failing frames, a cell-level diff for each. Work them one at a time.
+Port `win/tty/wintty.c`'s menu path: `tty_start_menu`, `tty_add_menu`,
+`tty_end_menu`, `tty_select_menu`, plus the `--More--` machinery in
+`win/tty/topl.c`. Then `display_inventory` (`src/invent.c`) on top of it.
 
-Then widen: every other session still scores 0, because they diverge in the RNG
-stream before any frame can match. The two blockers there are unchanged — the
-chargen menu flow (5 sessions) and everything downstream of level generation.
+Note the cursor is also wrong on every menu frame (C parks it on the `(end)`
+line, we leave it on the hero), so the menu port must set the cursor too — a
+correct grid with a wrong cursor still scores zero.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -100,6 +107,13 @@ the C preprocessor (same approach as `gen-objects.mjs`), so `allow`, race,
 gender and alignment masks arrive as numbers (Archeologist `allow` = 12398 =
 0x306e) instead of macro-name text. `ok_role`/`ok_race`/`ok_gend`/`ok_align` can
 now test bits directly, which is what the M2.5 pickers need.
+
+**Search, look, and message lifetime.** `js/detect.js` (`dosearch`/`dosearch0`)
+and `js/invent.js` (`look_here`/`dolook`) ported; `s` and `:` wired into
+`js/cmd.js` with correct `ECMD_TIME`/`ECMD_OK` turn semantics, which fixed the
+turn counter. Message lifetime corrected: a message must survive until the frame
+that displays it has been captured, so it is cleared after `nhgetch` rather than
+after the command. seed8000 **15 → 18/23**.
 
 **First screens scored.** `js/terminal.js` was stale and had no `serialize()`,
 so every captured frame was an empty string and local screen score could never

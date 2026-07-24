@@ -7,7 +7,11 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **mkobj + makemon wired in**; next blocker `mkobj_erosions`
+Last updated: **2026-07-24** · **makemon, traps and corpses ported**; next blocker `mksobj_init(mkobj.c:915)`
+
+Live dashboard (score, blockers, milestone state):
+<https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
+it from the same file path after a scoring run to refresh.
 
 ---
 
@@ -36,7 +40,40 @@ consumer in every single session.
 | **Blocked on** | nothing |
 | **Score** | **19/11,405 screens**, 0/44 sessions passing |
 
-### The exact next action
+### The exact next action — READ THIS FIRST
+
+**Port `mksobj_init`'s remaining gaps, starting at `src/mkobj.c:915`.** That is
+seed8000's first divergence (call 1535 of 3130) and, with `mkobj.c:927` and
+`mkobj.c:971`, it is now the most common blocker in the corpus — 5 sessions
+between them.
+
+```
+1533  C rnd(2)=1    ours rnd(2)=1    ok        next_ident(mkobj.c:521)
+1534  C rn2(2)=1    ours rn2(2)=1    ok        mksobj_init(mkobj.c:912)
+1535  C rn2(3)=1    ours rn2(30)=13  MISMATCH  mksobj_init(mkobj.c:915)
+```
+
+`game.unported` is **empty** after a seed8000 run, so nothing here is a missing
+subsystem — this is a correctness bug in code that already exists. Read
+`src/mkobj.c` around 900-980 and compare arm for arm with `js/mkobj.js`
+`mksobj_init`.
+
+### Blocker histogram (44 sessions, after the trap/corpse commit)
+
+| Blocker | Sessions | Notes |
+|---|---:|---|
+| `fill_special_room(sp_lev.c:2763)` | 8 | **Lua** — needs M9a |
+| `mksobj_init(mkobj.c:915/927/971)` | 5 | correctness bug, no missing subsystem |
+| `lspo_map(sp_lev.c:6154)` | 3 | **Lua** — needs M9a |
+| `mkclass_aligned(makemon.c:1934)` | 2 | `mkclass` not ported |
+| `mkbox_cnts(mkobj.c:338)` | 2 | container contents |
+| `makelevel(mklev.c:1287)` | 2 | branch not reached |
+| `m_initweap`, `random_engraving`, `mineralize`, `rnd_rect`, `hole_destination`, `pick_align`, `nh.rn2` | 1 each | |
+
+**12 of 44 are Lua-blocked.** M9a is still the single largest lever and nothing
+else unblocks it.
+
+### The previous next action (done)
 
 **Port `mkobj_erosions` (src/mkobj.c:202).** It is seed8000's first divergence
 now that `js/mkobj.js` and `js/makemon.js` are wired in:
@@ -51,15 +88,21 @@ now that `js/mkobj.js` and `js/makemon.js` are wired in:
 `blessorcurse` and `mksobj_init` now match C call for call, so the object
 pipeline is correct up to erosion.
 
-Three fake-RNG stubs still remain in `js/mklev.js` and should go next:
+**Fake-RNG stubs: one of three cleared, two remain.** The `makemon` stub is
+gone — `js/makemon.js` now has the real `makemon()`. Still outstanding in
+`js/mklev.js`:
 
 ```
-line  269   rn2(398)                      — makemon
-line  300   rn2(48)  // approximate       — random_engraving
-line 1348   rn2(398) // mkclass(S_HUMAN)  — mkclass
+random_engraving()   rn2(48)  // "approximate: rn2(num_engravings)"
+                              — blocks seed0116 at call 1696
+mkclass(S_HUMAN)     rn2(398) // in the IRONBARS niche branch
+                              — related to the mkclass_aligned blocker (2 sessions)
 ```
 
-`js/makemon.js` already has `rndmonst_adj`, so the makemon ones are close.
+Both invent a draw and so guarantee divergence wherever reached. `random_engraving`
+needs the engraving text table out of `src/engrave.c`; `mkclass` is a
+straightforward port of `src/makemon.c mkclass_aligned()` and would also clear
+seed0103 and seed0700.
 
 **Do not expect the score to move during M2.** Nothing scores until M2, M9a, M3,
 M4, and M5 are all real, because frame 0 of every session needs chargen, a
@@ -74,6 +117,62 @@ verified reference vector are in
 ---
 
 ## Completed
+
+**M7 (partial) — `makemon()` and the monster pipeline.** `js/makemon.js` now
+ports `makemon`, `newmonhp`, `peace_minded`, `propagate`, `adj_lev`, `golemhp`,
+`mbirth_limit`, `mongets`, `m_initinv`'s generic tail, plus `goodpos` and
+`place_monster`. The full level-generation monster sequence
+(`rndmonst` → `next_ident` → `newmonhp` → gender → `peace_minded` →
+`m_initinv` → saddle) reproduces call for call. `rndmonst_adj` no longer blocks
+any session; it was the blocker in 7.
+
+**M4 (partial) — traps and corpses.** `mktrap_victim` and `mkcorpstat` ported
+faithfully; `mksobj` gained the `src/mkobj.c:1200-1227` corpse block,
+`set_corpsenm`, `start_corpse_timeout`, `undead_to_corpse` and
+`special_corpse`. `init_dungeons()` now resolves the special-level table and
+the hardwired dungeon numbers (`mines_dnum` and friends) as C does.
+
+### Forks taken from the original plan — things a later agent must not redo
+
+1. **Four hardcoded-constant blocks were wrong and are now imports.** Objects,
+   traps, `G_` flags and `MM_` flags. Details and the full table are in
+   [NOTES.md](NOTES.md), "Hardcoded constants are the single biggest bug class".
+   Treat any remaining literal constant in `js/` as suspect.
+2. **Both generated tables were emitting enum identifiers as strings.**
+   `gen-objects.mjs` and `gen-monst.mjs` now resolve them; `gen-monst.mjs`
+   additionally scrapes `#define` families the preprocessor eats. If you write a
+   new generator, do the same and assert no field is a string.
+3. **`u.ulevel` was 0 during `mklev()`; C has it at 1.** `u_init_misc()` sets it
+   before `mklev()` (src/allmain.c:794 vs :807), and `rndmonst_adj`'s
+   `monmax_difficulty` is `(depth + u.ulevel) / 2`, so level generation was
+   selecting from half the eligible monster set. Fixed in `js/allmain.js`; do
+   not move it back.
+4. **`mkobj_erosions()` belongs at the end of `mksobj_init()`, not in
+   `mksobj()`.** Calling it from `mksobj` makes objects created with
+   `init = false` draw when C does not.
+5. **M3 remains built-but-unwired.** `js/tty/wintty.js` is verified correct in
+   isolation and still has no consumer. It is waiting on content subsystems, not
+   on itself.
+6. **Screens dipped 19 → 0 mid-way through the trap fix and came back at 19.**
+   That is expected when a correct fix moves object placement while the fill is
+   still diverging. See NOTES.md, "Screens can regress while the port gets more
+   correct", before reverting anything on a screen dip.
+
+### Still pending, in priority order
+
+| Item | Sessions | Blocked on |
+|---|---:|---|
+| **M9a Lua core** | 12 | nothing — largest single lever, not started |
+| `mksobj_init` gaps (mkobj.c:915/927/971) | 5 | nothing — next action above |
+| `mkclass_aligned` + the `mkclass` stub | 2 | nothing |
+| `mkbox_cnts` container contents | 2 | nothing |
+| `random_engraving` stub | 1 | engraving table from `src/engrave.c` |
+| M2.6 chargen menus | 5 | M3 wiring |
+| `m_initweap` (412 lines) | 1 | nothing; needed for armed monsters |
+| `m_initinv` mlet switch arms | — | `curse()`, `rnd_class()`, containers |
+| `sobj_at` (used by `goodpos`'s boulder test) | — | object-position tracking |
+| Corpse/egg/tin: `can_be_hatched`, `set_tin_variety` | — | nothing |
+| Leaderboard confirmation (M1 item 1.6) | — | unverified |
 
 **M0 — strategy and plan.** All milestone files written. Architecture decision:
 `js/<name>.js` mirrors `src/<name>.c` one to one, C function names verbatim.

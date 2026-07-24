@@ -243,7 +243,59 @@ first-divergence index rises and a named blocker disappears from the
 positional count drops and divergence does *not* get deeper, it is a real
 regression — fix or revert.
 
-## Hardcoded object constants were nearly all wrong
+### Screens can regress while the port gets more correct
+
+The same trap applies one level up. Fixing the trap constants moved seed8000's
+divergence 1451 -> 1522 and simultaneously dropped its screens 19 -> 0: the
+level fill was wrong *before and after*, and the fix changed which square an
+object landed on, so a `?` appeared where C had blank floor.
+
+That is not a reason to revert a fix that is demonstrably right against the C.
+It means the divergence has to be pushed past the point that decides visible
+placement. Two more fixes (the Oracle supply-chest branch condition, and the
+dungeon globals it depends on) took it to 1535 and screens came back to 19.
+
+**Do not revert a verified-correct change because screens dipped. Do not commit
+while they are still down either — carry on to the next divergence and re-check.
+Only revert when the change cannot be justified against the C source.**
+
+## Hardcoded constants are the single biggest bug class in this port
+
+**Rule: never write a numeric game constant in `js/`. Import it.** Four separate
+hand-written constant blocks have now been found, and in every one the majority
+of entries were wrong. Each looked plausible, compiled fine, and failed
+silently. Before adding any constant, check whether the generated tables
+(`js/objects_data.js`, `js/monst_data.js`, `js/role_data.js`,
+`js/dungeon_data.js`) or `js/const.js` already carry it; if not, extend the
+generator rather than typing the number.
+
+The four found so far:
+
+| Where | Wrong | Effect |
+|---|---|---|
+| `mklev.js` object constants | 21 of 23, plus 7 of 8 classes | see below |
+| `mklev.js` trap constants | 18 of 25, `BEAR_TRAP` absent | `SQKY_BOARD` was 5, which is really `BEAR_TRAP`, so every bear trap looked like a squeaky board and skipped `mktrap_victim()` — about 25 missing draws per trap |
+| `makemon.js` `G_GENOD`/`G_EXTINCT` | both | wrong G_ family, see next section |
+| `mklev.js` `MM_NOGRP` passed as `2` | — | real value `0x2000`; `2` is `MM_NOWAIT`, so the group-spawn branch fired for every `G_SGROUP`/`G_LGROUP` species |
+
+`mktrap_victim()` alone had `ARROW = 349` (real 18), `DART = 353` (real 24),
+`PM_ELF = 18` (real 264 — and 18 is `ARROW`), `PM_ARCHEOLOGIST = 305` (real
+331).
+
+### Two disjoint `G_` families that overlap numerically
+
+`include/monflag.h` defines `G_` twice. The `mons[].geno` family is
+`G_UNIQ 0x1000 … G_SGROUP 0x0080, G_LGROUP 0x0040, G_NOCORPSE 0x0010,
+G_FREQ 0x0007`. The `mvitals[].mvflags` family is `G_KNOWN 0x04,
+G_GENOD 0x02, G_EXTINCT 0x01`. `js/makemon.js` had copied `G_GENOD` and
+`G_EXTINCT` from the wrong family as `0x0100`/`0x0080` — and `0x0080` is a
+live flag (`G_SGROUP`) in the other namespace, so the mistake reads as real
+data rather than as nonsense. Nothing had set `mvflags` yet, so the test was
+dead; the moment `propagate()` landed it would have kept every unique monster
+eligible forever and changed `rndmonst_adj()`'s draw count for the rest of the
+game. Both families are now scraped into `MFLAGS`.
+
+### The original case
 
 `js/mklev.js` carried its object and object-class constants as hardcoded
 literals. **21 of 23 object constants and 7 of 8 class constants were wrong.**
@@ -267,20 +319,42 @@ single extra draw that defeated three consecutive wiring attempts.
 They are now derived from `js/objects_data.js` (`ONAMES` / `OCLASSES`), which is
 generated from the C. **Never hardcode an otyp or an oclass**; import it.
 
-## Known fake-RNG stubs that must be replaced
+## Generated tables must resolve enum identifiers to numbers
 
-`js/mklev.js` still contains two stubs that **invent RNG draws**, which
-guarantees divergence wherever they are reached:
+`tools/gen-*.mjs` expand the C with `clang -E`, but the preprocessor leaves
+*enum* identifiers alone (it only eats `#define`s). If the generator writes them
+through as strings, every comparison against them in ported code is silently
+false forever — no error, no warning, just a branch that never runs.
 
-```js
-function rndmonnum() { rn2(398); return 0; }        // "approximate: rn2(NUMMONS)"
-async function makemon(mdat, x, y, mmflags) { if (!mdat) rn2(398); rnd(8); ... }
-```
+This has now bitten twice:
 
-These violate the no-placeholder rule and are now the top blocker in the corpus
-(`mkobj` 7 sessions, `rndmonst_adj` 5, `mkclass_aligned` 2). The real ports need
-`js/monst_data.js` and `js/objects_data.js`, both of which are already
-generated, so the data dependency is satisfied — only the code is missing.
+- `objects_data.js` emitted `oc_material: "IRON"`, `oc_subtyp: "ARM_SUIT"`, so
+  `mkobj_erosions()` never fired.
+- `monst_data.js` emitted `mlet: "S_COCKATRICE"`, `msound: "MS_HISS"`,
+  `pmidx: "PM_COCKATRICE"`, so `makemon()`'s whole `mlet` switch was dead and
+  `peace_minded()`'s `msound === MS_LEADER` tests could never be true.
+  `js/role.js` was *assigning* those strings too (`pm.msound = 'MS_LEADER'`).
+
+Both generators now carry `collectEnums()`, which flattens every `enum` in the
+preprocessed text and resolves leaves at any depth. `gen-monst.mjs` also has
+`defines()`, which scrapes object-like `#define`s straight from the headers for
+the flag families the preprocessor removes: `MFLAGS` (`M1_`/`M2_`/`M3_`/`G_`
+from `monflag.h`), `MMFLAGS` (`MM_` from `hack.h`), `ATTKS` (`AT_`/`AD_` from
+`monattk.h`), `STRAT` (`monst.h`) and `LIMITS` (`MAXMONNO`).
+
+**If you add a generator, resolve its enums, and verify with a check that no
+field came out as a string.**
+
+## Reached-but-unported paths are recorded, not approximated
+
+Ports that cannot yet reach a C branch call `note_unported(what)`, which adds a
+label to `game.unported` (a `Set`). Nothing invents a draw to stand in for
+missing code — an invented draw desynchronises the whole rest of the session,
+whereas a missing one at least stops cleanly at a known point.
+
+After a run, `game.unported` names exactly which C code the session wanted.
+seed8000 currently reaches none of them, so its remaining divergence is a
+correctness bug in ported code rather than a gap.
 
 ## The RNG log format, precisely
 

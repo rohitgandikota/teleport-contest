@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 119**; chargen menus and the legacy pager are drawn
+Last updated: **2026-07-24** · **screens 85 → 133**; chargen menus, the legacy pager and role filtering
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,9 +38,9 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | `reset_role_filtering` (1+), `lspo_map` (8), `rnd_rect` (5) |
+| **Also open** | `create_room`/`rnd_rect` (5), `lspo_map` (8) |
 | **Blocked on** | nothing |
-| **Score** | **119/11,405 screens**, 0/44 sessions passing, corpus RNG **87,780/792,838 (11.1%)** |
+| **Score** | **133/11,405 screens**, 0/44 sessions passing, corpus RNG **90,001/792,838 (11.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
@@ -52,22 +52,22 @@ sessions is the *status line under* the legacy window — its attribute values
 generation by then. So the frame work in chargen is finished; the remaining
 chargen-session frames need RNG parity, not drawing.
 
+**Role filtering is done too** (`reset_role_filtering`, `setrolefilter`,
+`clearrolefilter`, `gotrolefilter`, and the PICK_ANY menu). seed0006 diverged at
+PRNG call **1** because pressing `~` was a no-op; it now reaches call 2510.
+
 **Two candidate next moves, in order:**
 
-1. **`reset_role_filtering()` (src/role.c:2728).** seed0006 diverges at PRNG
-   call **1** — the earliest divergence in the corpus — purely because it presses
-   `~` at the role menu and drives the "Pick all that apply" filter menu
-   (`a b c r R H E D <return>`). We treat `~` as a no-op, so from that point on
-   our role/race set is wrong and every later `rigid_role_checks()` draws a
-   different `rn2`. It needs: `gr.rfilter` state (`roles[]`, `races[]`, `gends[]`,
-   `aligns[]` flags plus a `mask`), `setrolefilter`/`clearrolefilter`/
-   `gotrolefilter`, the PICK_ANY menu built by the `!filtering` half of
-   `setup_rolemenu`/`setup_racemenu`/`setup_gendmenu`/`setup_algnmenu` (already
-   written and taking a `filtering` argument, so only the caller is missing), and
-   the `rfilter` reads already stubbed out in `role_menu_extra`. `ok_role` and
-   friends must consult it. One public session, but any held-out session that
-   presses `~` is in the same boat, and the frame is a full-screen PICK_ANY menu
-   with `+`/`-` selection state that nothing else exercises.
+1. **`create_room()` (src/sp_lev.c) — 5 sessions, the biggest non-Lua item.**
+   seed0077, seed0007, seed0012 and seed0014 all diverge inside a run of
+   `rnd_rect` calls that follows `check_room(sp_lev.c:1455)`. The signature is
+   unmistakable: C draws `rn2(1)` over and over (its free-rectangle list is down
+   to one entry) while we draw `rn2(6)`, `rn2(5)`, `rn2(7)`… — our list still
+   has room in it. `js/rect.js` itself was audited against `src/rect.c` and is
+   faithful, so the bug is in the CALLER: the themed-room path that should be
+   calling `split_rects()` after placing a room is not running. Start at
+   `check_room`/`create_room` in `sp_lev.c` and find which placements never
+   remove their rectangle.
 2. **`lspo_map` (sp_lev.c:6154), 8 sessions.** Genuinely Lua, and the only
    remaining item with real depth.
 
@@ -133,7 +133,6 @@ loop, and `fastforward_step` still replays 127 calls of it.
 | `lspo_map(sp_lev.c:6154)` | 8 | **Lua** |
 | `rnd_rect(rect.c:106)` | 5 | |
 | `next_ident`, `obj_resists`, `somey` | 2 each | |
-| `pick_align(role.c:1222)` | 1 | seed0006, and it is `reset_role_filtering` |
 | everything else | 1 each | |
 
 `fill_special_room` and the `nhlib` shuffle are gone from this table entirely.

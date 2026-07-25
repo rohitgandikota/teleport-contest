@@ -8,6 +8,7 @@
 import { game } from './gstate.js';
 import { sobj_at } from './invent.js';
 import { m_carrying } from './mon.js';
+import { metallivorous, corpse_eater } from './mondata.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
 import {
@@ -353,12 +354,6 @@ function searches_for_item(mon, obj) {
     note_unported('searches_for_item');
     return false;
 }
-
-// include/mondata.h:243 corpse_eater()
-const corpse_eater = (ptr) => ptr.pmidx === PMNAMES.PM_PURPLE_WORM
-                           || ptr.pmidx === PMNAMES.PM_BABY_PURPLE_WORM
-                           || ptr.pmidx === PMNAMES.PM_GHOUL
-                           || ptr.pmidx === PMNAMES.PM_PIRANHA;
 
 // src/monmove.c:1036 mon_would_consume_item() — would this monster eat the
 // object rather than carry it? m_search_items() treats that as a reason to walk
@@ -782,6 +777,35 @@ export function m_move(mtmp, after) {
            square. */
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+    }
+
+    /* src/monmove.c:1660 — everything a monster does AFTER arriving.
+     *
+     * This block was absent entirely, which means no monster has ever eaten
+     * anything off the floor and no monster has ever picked anything up. It is
+     * the first divergence in seed0030 (call 6276): C spends obj_resists'
+     * rn2(100) inside meatmetal() and we go straight on to the next monster.
+     *
+     * The predicates are ported so the gap is recorded per-species on the
+     * reached-unported worklist rather than being invisible; the four
+     * functions themselves are not, and each one draws.
+     */
+    if (mmoved === MMOVE_MOVED || mmoved === MMOVE_DONE) {
+        if (OBJ_AT(mtmp.mx, mtmp.my) && mtmp.mcanmove) {
+            /* Maybe a rock mole just ate some metal object */
+            if (metallivorous(ptr))
+                note_unported('m_move:meatmetal');
+
+            /* Maybe a cube ate just about anything */
+            if (ptr.pmidx === PMNAMES.PM_GELATINOUS_CUBE)
+                note_unported('m_move:meatobj');
+
+            /* Maybe a purple worm ate a corpse */
+            if (corpse_eater(ptr))
+                note_unported('m_move:meatcorpse');
+
+            note_unported('m_move:mpickstuff');
+        }
     }
     return mmoved;
 }

@@ -8,7 +8,7 @@
 //
 // Nothing here draws.
 
-import { MFLAGS, MONSYMS } from './monst_data.js';
+import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 
 export const bigmonst     = (d) => d.msize >= MFLAGS.MZ_LARGE;
 export const amorphous    = (d) => (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0;
@@ -35,3 +35,13 @@ export const strongmonst = (ptr) => (ptr.mflags2 & MFLAGS.M2_STRONG) !== 0;
 
 export const is_covetous = (ptr) => (ptr.mflags3 & MFLAGS.M3_COVETOUS) !== 0;
 
+
+// include/mondata.h:92 metallivorous()
+export const metallivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_METALLIVORE) !== 0;
+
+// include/mondata.h:243 corpse_eater() — an explicit species list, not a flag.
+export const corpse_eater = (ptr) =>
+    ptr.pmidx === PMNAMES.PM_PURPLE_WORM
+    || ptr.pmidx === PMNAMES.PM_BABY_PURPLE_WORM
+    || ptr.pmidx === PMNAMES.PM_GHOUL
+    || ptr.pmidx === PMNAMES.PM_PIRANHA;

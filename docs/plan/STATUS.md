@@ -203,6 +203,13 @@ attempt does not land it, switch to `m_move` and come back with fresh eyes.
 `node tools/leaderboard.mjs` reads `/leaderboard/data.json` directly — the page
 itself renders from JS, so fetching its HTML only ever shows "Loading…".
 
+**Scored 2026-07-25T03:07Z — the level-generation work generalises.**
+Held-out RNG **8.9% -> 10.6%**, public RNG **12.2% -> 13.8%**. Those moved by
+almost the same amount (+1.7 and +1.6), which is the signal worth watching: the
+fixes are faithful rather than tuned to the sessions we can see. Held-out screens
+are still 43, because a screen needs the whole frame right and RNG parity is only
+the precondition.
+
 Standings at 2026-07-25T01:15Z, sorted by **held-out**, which is the half that
 actually decides the contest:
 

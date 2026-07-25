@@ -310,11 +310,26 @@ Checked and ELIMINATED this iteration:
   where C returns FALSE) and is now fixed, but it is neutral because mcalcmove
   only ever grants multiples of NORMAL_SPEED.
 
-Still unlocated. Next: instrument `mtmp.movement` for the PET across a whole
-turn — before allotment, after allotment, and at each movemon_singlemon entry —
-and compare the number of times it clears NORMAL_SPEED against the number of
-dog_move calls. Four dog_move calls were observed on seed0102; establish how
-many C makes by counting its score_targ rnd(5)s in the recorded stream.
+**Counted, and the over-count is confirmed.** Grep the session's recorded RNG
+for the tag:
+
+    C (seed0102, whole session):  score_targ draws = 2,
+                                  dogmove.c:1255 draws = 2,
+                                  distfleeck draws = 8
+    ours:                         score_targ CALLS = 10
+
+best_target scores the HERO (early return at `score -= 3000`, no rnd(5)) plus
+one monster per call, so 10 calls is roughly 4-5 drawing calls against C's 2.
+**Our pet acts about twice as often as C's.**
+
+Note distfleeck is a good cross-check: C spends 8, and dochug calls it twice per
+monster turn, so C has 4 monster turns in the whole session. Count ours the same
+way — if we have more than 4, the extra turns are not pet-specific and the bug
+is in the movement phase for ALL monsters, which would also explain seed4500's
+mfndpos drift. If ours is 4, the pet alone is being over-served.
+
+That single count is the next thing to take, and it decides which of the two
+subsystems to open.
 
 This is the same subsystem that would explain the seed4500 mfndpos 5-vs-7
 drift, so a fix here may resolve both.

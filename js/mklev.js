@@ -12,6 +12,7 @@ import {
 } from './mkobj.js';
 import {
     rndmonnum, makemon, mkclass, monsndx, level_difficulty, MM_NOGRP, NO_MM_FLAGS,
+    Inhell,
 } from './makemon.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room } from './sp_lev.js';
@@ -42,7 +43,7 @@ function mk_knox_portal(x, y) {
     note_unported_lev('mk_knox_portal placement');
 }
 import { random_engraving, wipeout_text } from './engrave.js';
-import { merged, weight } from './invent.js';
+import { merged, weight, sobj_at } from './invent.js';
 import { themeroom_fill_contents } from './themerms.js';
 import { mkroom_table } from './sp_lev.js';
 
@@ -116,6 +117,8 @@ import {
     DIR_N, DIR_S, DIR_E, DIR_W, DIR_180,
     IS_WALL, IS_STWALL, IS_DOOR, IS_OBSTRUCTED, IS_FURNITURE, IS_POOL,
     SPACE_POS, isok, W_NONDIGGABLE, FILL_NORMAL,
+    MKTRAP_NOFLAGS, MKTRAP_SEEN, MKTRAP_MAZEFLAG, MKTRAP_NOSPIDERONWEB,
+    MKTRAP_NOVICTIM,
     ICE, MOAT, POOL, WATER, LAVAPOOL, LAVAWALL, DBWALL,
     A_LAWFUL, Align2amask,
     LR_UPTELE,
@@ -1836,23 +1839,80 @@ function mktrap_victim(trap) {
     otmp.age -= (TAINT_AGE + 1); /* died too long ago to safely eat */
 }
 
-async function mktrap_room(croom) {
+// src/mklev.c:2036 mktrap() — place a trap.
+//
+// This used to be `mktrap_room(croom)`, which called somexyspace ONCE. The C
+// loops until it finds an unoccupied square, spending a somexyspace on every
+// rejected one, so a crowded room diverged by however many retries it needed.
+// That is the shape of every function in this chain: the retry loop IS the
+// draw count.
+async function mktrap(num, mktrapflags, croom, tm) {
     let kind;
-    do { kind = traptype_rnd(); } while (kind === NO_TRAP);
+    const lvl = level_difficulty();
+
+    if (!tm && !croom && !(mktrapflags & MKTRAP_MAZEFLAG))
+        return;                         /* paniclog("mktrap", "args invalid") */
+
+    const m = { x: 0, y: 0 };
+
+    /* no traps in pools */
+    if (tm && (is_pool(tm.x, tm.y) || is_lava(tm.x, tm.y)))
+        return;
+
+    if (num > NO_TRAP && num < TRAPNUM) {
+        kind = num;
+    } else if (Inhell() && !rn2(5)) {
+        /* bias the frequency of fire traps in Gehennom */
+        kind = FIRE_TRAP;
+    } else {
+        do { kind = traptype_rnd(mktrapflags); } while (kind === NO_TRAP);
+    }
+
     const dungeon = game.dungeons?.[game.u?.uz?.dnum ?? 0];
     const canFallThru = (game.u?.uz?.dlevel ?? 1) < (dungeon?.num_dunlevs ?? 1);
-    if (is_hole(kind) && !canFallThru) kind = ROCKTRAP;
-    const pos = { x: 0, y: 0 };
-    if (!somexyspace(croom, pos)) return;
-    const trap = await maketrap(pos.x, pos.y, kind);
+    if (is_hole(kind) && !canFallThru)
+        kind = ROCKTRAP;
+
+    if (tm) {
+        m.x = tm.x;
+        m.y = tm.y;
+    } else {
+        let tryct = 0;
+        const avoid_boulder = (is_pit(kind) || is_hole(kind));
+
+        do {
+            if (++tryct > 200)
+                return;
+            if ((mktrapflags & MKTRAP_MAZEFLAG) !== 0) {
+                note_unported_lev('mktrap:mazexy');
+                return;
+            } else if (croom && !somexyspace(croom, m)) {
+                return;
+            }
+        } while (occupied(m.x, m.y)
+                 || (avoid_boulder && sobj_at(ONAMES.BOULDER, m.x, m.y)));
+    }
+
+    const trap = await maketrap(m.x, m.y, kind);
+    /* we should always get the type we asked for, but be paranoid */
     kind = trap ? trap.ttyp : NO_TRAP;
-    const lvl = game.u?.uz?.dlevel ?? 1;
-    if (game.in_mklev && kind !== NO_TRAP
+
+    if (kind === WEB && !(mktrapflags & MKTRAP_NOSPIDERONWEB))
+        makemon(game.mons[PMNAMES.PM_GIANT_SPIDER], m.x, m.y, NO_MM_FLAGS);
+    if (trap && (mktrapflags & MKTRAP_SEEN))
+        trap.tseen = true;
+
+    if (game.in_mklev && kind !== NO_TRAP && !(mktrapflags & MKTRAP_NOVICTIM)
         && lvl <= rnd(4)
         && kind !== SQKY_BOARD && kind !== RUST_TRAP
-        && !(kind === ROLLING_BOULDER_TRAP && trap.launch?.x === trap.tx && trap.launch?.y === trap.ty)
+        && !(kind === ROLLING_BOULDER_TRAP
+             && trap.launch?.x === trap.tx && trap.launch?.y === trap.ty)
         && !is_pit(kind) && (kind < HOLE || kind === MAGIC_TRAP)) {
-        if (kind === LANDMINE) { trap.ttyp = PIT; trap.tseen = true; }
+        if (kind === LANDMINE) {
+            /* treat as exploded: an unconcealed pit, no scattered objects */
+            trap.ttyp = PIT;
+            trap.tseen = true;
+        }
         mktrap_victim(trap);
     }
 }
@@ -1921,7 +1981,7 @@ async function fill_ordinary_room(croom, bonus_items) {
     if (x <= 1) x = 2;
     let trycnt = 0;
     while (!rn2(x) && ++trycnt < 1000) {
-        await mktrap_room(croom);
+        await mktrap(0, MKTRAP_NOFLAGS, croom, null);
     }
     // Gold
     if (!rn2(3) && somexyspace(croom, pos)) {

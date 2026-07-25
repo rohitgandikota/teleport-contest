@@ -17,6 +17,9 @@ import { is_pool, is_lava } from './mon.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { mkobj_at, mksobj_at } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
+import { MONSYMS } from './monst_data.js';
+import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
+         noncorporeal, likes_fire } from './mondata.js';
 import { def_oc_syms } from './drawing_data.js';
 import { ANY_LOC, SOLID, DRY, SPACELOC, WET, HOT,
          NO_LOC_WARN } from './const.js';
@@ -731,4 +734,41 @@ function def_char_to_objclass(ch) {
         if (def_oc_syms[i] === ch)
             return i;
     return OCLASSES.MAXOCLASSES;
+}
+
+// src/mkroom.c inside_room() — is (x,y) in this room, counting its wall ring?
+//
+// The rectangular arm is deliberately GENEROUS: it accepts lx-1 through hx+1,
+// i.e. the walls as well as the floor. Only an irregular room uses the exact
+// roomno test. create_monster rejects a monster placed outside this, so
+// tightening it to the floor would reject placements C accepts.
+export function inside_room(croom, x, y) {
+    if (croom.irregular) {
+        const i = (croom.roomnoidx ?? -1) + ROOMOFFSET;
+        const loc = game.level?.at(x, y);
+        return !!loc && !loc.edge && loc.roomno === i;
+    }
+    return x >= croom.lx - 1 && x <= croom.hx + 1
+        && y >= croom.ly - 1 && y <= croom.hy + 1;
+}
+
+// src/mon.c pm_to_humidity() — which terrain this species may be placed on.
+//
+// The flags ACCUMULATE: a flying eel is WET from the first test and gains
+// HOT|WET from the second, so the humidity a monster searches with is often
+// several bits, and get_location's is_ok_location accepts any of them.
+export function pm_to_humidity(pm) {
+    let loc = DRY;
+
+    if (!pm)
+        return loc;
+    if (pm.mlet === MONSYMS.S_EEL || amphibious(pm) || is_swimmer(pm))
+        loc = WET;
+    if (is_flyer(pm) || is_floater(pm))
+        loc |= (HOT | WET);
+    if (passes_walls(pm) || noncorporeal(pm))
+        loc |= SOLID;
+    if (likes_fire(pm))
+        loc |= HOT;
+    return loc;
 }

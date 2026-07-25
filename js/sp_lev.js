@@ -13,11 +13,12 @@ import { selection_iterate } from './selvar.js';
 import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 import { sobj_at } from './invent.js';
-import { is_pool, is_lava } from './mon.js';
+import { is_pool, is_lava, m_at } from './mon.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { mkobj_at, mksobj_at } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
-import { MONSYMS } from './monst_data.js';
+import { NON_PM } from './const.js';
+import { MONSYMS, PMNAMES } from './monst_data.js';
 import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
          noncorporeal, likes_fire } from './mondata.js';
 import { def_oc_syms } from './drawing_data.js';
@@ -32,6 +33,8 @@ import { NO_TRAP, VIBRATING_SQUARE,
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
 import { depth } from './dungeon.js';
 import { mkgold } from './mkobj.js';
+import { mkclass, makemon } from './makemon.js';
+import { In_mines } from './const.js';
 import {
     OROOM, THEMEROOM, VAULT, COURT, ZOO, BEEHIVE, ANTHOLE, COCKNEST,
     LEPREHALL, MORGUE, BARRACKS, TEMPLE, SWAMP, SHOPBASE,
@@ -673,11 +676,32 @@ export function create_object(o, croom) {
     if (o.spe !== -127)                 /* -127 means NOT random */
         otmp.spe = o.spe;
 
+    /* src/sp_lev.c create_object() — get_table_buc's seven states.
+       Case 5 is the only one that DRAWS: blessorcurse(otmp, 1) is
+       `if (!rn2(1)) { if (!rn2(2)) curse else bless }`, so it spends two calls
+       unless the object is already blessed or cursed, in which case it returns
+       before drawing at all. */
     switch (o.curse_state) {
-    case 1: otmp.blessed = 1; otmp.cursed = 0; break;   /* bless() */
-    case 2: otmp.blessed = 0; otmp.cursed = 0; break;   /* uncursed */
-    case 3: otmp.blessed = 0; otmp.cursed = 1; break;   /* curse() */
-    default: break;                                     /* leave as rolled */
+    case 1:                                             /* blessed */
+        otmp.blessed = 1; otmp.cursed = 0;
+        break;
+    case 2:                                             /* uncursed */
+        otmp.blessed = 0; otmp.cursed = 0;
+        break;
+    case 3:                                             /* cursed */
+        otmp.blessed = 0; otmp.cursed = 1;
+        break;
+    case 4:                                             /* not cursed */
+        otmp.cursed = 0;
+        break;
+    case 5:                                             /* not uncursed */
+        blessorcurse(otmp, 1);
+        break;
+    case 6:                                             /* not blessed */
+        otmp.blessed = 0;
+        break;
+    default:                                            /* random */
+        break;                                  /* keep what mkobj gave us */
     }
 
     /* quantity, contents, buried, lit, eroded, locked, trapped, name and the
@@ -695,10 +719,19 @@ export function lspo_object(idOrClass, x, y, opts) {
         class: -1, id: STRANGE_OBJECT, spe: -127, curse_state: 0,
         quan: -1, buried: 0, lit: 0, name: opts?.name ?? null,
         contents: opts?.contents ?? null,
-        coord: (x === undefined || x === -1) && (y === undefined || y === -1)
-               ? SP_COORD_PACK_RANDOM(0)
-               : SP_COORD_PACK(x, y),
+        coord: 0,
     };
+
+    /* `coord = {x,y}` in the option table is the same thing as positional x,y */
+    if (opts?.coord) {
+        x = opts.coord.x;
+        y = opts.coord.y;
+    }
+    o.coord = (x === undefined || x === -1) && (y === undefined || y === -1)
+              ? SP_COORD_PACK_RANDOM(0)
+              : SP_COORD_PACK(x, y);
+    if (opts?.buc !== undefined)
+        o.curse_state = get_table_buc(opts.buc);
 
     if (typeof idOrClass === 'string' && idOrClass.length === 1) {
         o.class = idOrClass.charCodeAt(0);
@@ -725,6 +758,28 @@ export function find_objtype(name) {
             return i;
     return STRANGE_OBJECT;
 }
+
+// src/mkobj.c blessorcurse() — maybe bless or curse, one chance in `chance`.
+// Returns WITHOUT drawing if the object already has a BUC state.
+function blessorcurse(otmp, chance) {
+    if (otmp.blessed || otmp.cursed)
+        return;
+
+    if (!rn2(chance)) {
+        if (!rn2(2))
+            otmp.cursed = 1;                            /* curse() */
+        else
+            otmp.blessed = 1;                           /* bless() */
+    }
+}
+
+// src/sp_lev.c get_table_buc() — the buc option's seven states, in C's order.
+const BUC_STATES = ['random', 'blessed', 'uncursed', 'cursed',
+                    'not-cursed', 'not-uncursed', 'not-blessed'];
+export const get_table_buc = (v) => {
+    const i = BUC_STATES.indexOf(String(v));
+    return i < 0 ? 0 : i;
+};
 
 const STRANGE_OBJECT = 0;
 
@@ -796,9 +851,12 @@ export function create_monster(m, croom) {
         /* pm == 0 here means the class was genocided; settle for random */
     }
 
-    if (In_mines(game.u?.uz) && pm && your_race(pm)
-        && (Race_if(PM_DWARF) || Race_if(PM_GNOME)) && rn2(3))
-        pm = null;
+    /* src/sp_lev.c — in the Mines a dwarf or gnome HERO makes every same-race
+       monster spend an rn2(3) that can discard the species. your_race() and
+       Race_if() need the hero's race, which is in u_init; recorded rather than
+       assumed, because guessing false skips a draw C spends. */
+    if (In_mines(game.u?.uz) && pm)
+        note_unported('create_monster:mines_race_check');
 
     let pos;
     if (pm) {

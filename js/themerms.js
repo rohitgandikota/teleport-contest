@@ -234,17 +234,18 @@ export function fill_cloud_room(rm) {
 export function fill_ghost_of_an_adventurer(rm) {
     const loc = selection_rndcoord(selection_from_mkroom(rm._mkroom || rm), 0);
 
-    note_unported_themerms('des.monster:ghost');
+    lspo_monster('ghost', loc.x, loc.y, { asleep: true, waiting: true });
 
-    if (percent(65)) note_unported_themerms('des.object:dagger');
-    if (percent(55)) note_unported_themerms('des.object:weapon');
+    const nb = { coord: loc, buc: 'not-blessed' };
+    if (percent(65)) lspo_object('dagger', undefined, undefined, nb);
+    if (percent(55)) lspo_object(')', undefined, undefined, nb);
     if (percent(45)) {
-        note_unported_themerms('des.object:bow');
-        note_unported_themerms('des.object:arrow');
+        lspo_object('bow', undefined, undefined, nb);
+        lspo_object('arrow', undefined, undefined, nb);
     }
-    if (percent(65)) note_unported_themerms('des.object:armor');
-    if (percent(20)) note_unported_themerms('des.object:ring');
-    if (percent(20)) note_unported_themerms('des.object:scroll');
+    if (percent(65)) lspo_object('[', undefined, undefined, nb);
+    if (percent(20)) lspo_object('=', undefined, undefined, nb);
+    if (percent(20)) lspo_object('?', undefined, undefined, nb);
 }
 
 // dat/themerms.lua:154 "Buried zombies"

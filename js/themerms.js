@@ -19,7 +19,7 @@ import { selection_from_mkroom, selection_iterate, selection_rndcoord,
          selection_filter_mapchar } from './selvar.js';
 import { ROOM } from './const.js';
 import { lspo_terrain, lspo_trap, get_traptype_byname,
-         lspo_object, lspo_monster } from './sp_lev.js';
+         lspo_object, lspo_monster, lspo_altar } from './sp_lev.js';
 
 function note_unported_themerms(what) {
     (game.unported ||= new Set()).add(what);
@@ -159,8 +159,11 @@ export function fill_light_source(rm) {
 // in the order nhlib.lua's shuffled `align` table holds them. The shuffle
 // happened once at nhl_init(); nothing draws here.
 export function fill_temple_of_the_gods(rm) {
-    for (const _ of (game.splev_align || []))
-        note_unported_themerms('des.altar');
+    /* des.altar({ align = align[1..3] }) — nhlib.lua's `align` table, shuffled
+       once at nhl_init(). Nothing draws here: the shuffle already happened and
+       an altar with no `type` has shrine 0, which skips create_altar's rn2(2). */
+    for (const al of (game.splev_align || []))
+        lspo_altar({ align: al });
 }
 
 // dat/themerms.lua:92 "Spider nest"

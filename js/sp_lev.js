@@ -17,7 +17,7 @@ import { is_pool, is_lava, m_at } from './mon.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { mkobj_at, mksobj_at } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
-import { NON_PM } from './const.js';
+import { NON_PM, SPACE_POS, ALTAR } from './const.js';
 import { MONSYMS, PMNAMES } from './monst_data.js';
 import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
          noncorporeal, likes_fire } from './mondata.js';
@@ -1006,3 +1006,72 @@ export function name_to_mon(name) {
 
 const AM_SPLEV_RANDOM = 0x80;
 const G_NOGEN = 0x0200;
+
+// src/sp_lev.c create_altar() — place one altar from a des.altar spec.
+//
+// Its only draw is `if (a->shrine < 0) a->shrine = rn2(2)`, and that fires
+// only for a RANDOM shrine type. lspo_altar's `type` option defaults to
+// "altar" (index 0), so an altar with no type spends nothing -- which is what
+// Temple of the gods does three times.
+export function create_altar(a, croom) {
+    let croom_is_temple = true;
+    let pos;
+
+    if (croom) {
+        pos = get_free_room_loc(-1, -1, croom, a.coord);
+        if (croom.rtype !== TEMPLE)
+            croom_is_temple = false;
+    } else {
+        pos = get_location_coord(-1, -1, DRY, croom, a.coord);
+        /* in_rooms(x, y, TEMPLE) needs the room-type index; without it we
+           cannot tell a temple from an ordinary room here. */
+        croom_is_temple = false;
+    }
+
+    const loc = game.level?.at(pos.x, pos.y);
+    if (!loc)
+        return;
+
+    /* check for existing features — set_levltyp refuses non-SPACE_POS terrain */
+    if (!SPACE_POS(loc.typ))
+        return;
+    loc.typ = ALTAR;
+
+    loc.altarmask = sp_amask_to_amask(a.sp_amask);
+
+    if (a.shrine < 0)
+        a.shrine = rn2(2);              /* handle random case */
+
+    if (!croom_is_temple || !a.shrine)
+        return;
+
+    note_unported('create_altar:shrine');
+}
+
+// src/sp_lev.c sp_amask_to_amask() — the three SPLEV pseudo-alignments resolve
+// against the HERO's original alignment, not the level's.
+function sp_amask_to_amask(sp_amask) {
+    if (sp_amask === AM_SPLEV_CO || sp_amask === AM_SPLEV_NONCO
+        || sp_amask === AM_SPLEV_RANDOM) {
+        note_unported('sp_amask_to_amask:hero_alignment');
+        return 0;
+    }
+    return sp_amask & AM_MASK;
+}
+
+// src/sp_lev.c:4029 lspo_altar() — the des.altar() verb.
+export function lspo_altar(opts) {
+    const SHRINES = ['altar', 'shrine', 'sanctum'];
+    const a = {
+        coord: SP_COORD_PACK_RANDOM(0),
+        sp_amask: opts?.align ?? AM_SPLEV_RANDOM,
+        shrine: Math.max(0, SHRINES.indexOf(opts?.type ?? 'altar')),
+    };
+
+    if (opts?.x !== undefined && opts?.y !== undefined)
+        a.coord = SP_COORD_PACK(opts.x, opts.y);
+
+    return create_altar(a, game.coder?.croom ?? null);
+}
+
+const AM_SPLEV_CO = 0x20, AM_SPLEV_NONCO = 0x40, AM_MASK = 0x07;

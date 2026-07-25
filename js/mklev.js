@@ -713,19 +713,29 @@ async function themerooms_generate(difficulty) {
     if (mf && themeroom_contents(pick, mf))
         return !game.themeroom_failed;
 
-    if (pick.name !== 'default')
-        note_unported_lev(`themeroom ${pick.name}`);
+    let rtype = OROOM, rlit = -1, contents = null;
+    switch (pick.name) {
+    case 'default': break;
+    case 'Default room with themed fill':
+        rtype = THEMEROOM; contents = themeroom_fill; break;
+    case 'Unlit room with themed fill':
+        rtype = THEMEROOM; contents = themeroom_fill; rlit = 0; break;
+    case 'Room with both normal contents and themed fill':
+        rtype = THEMEROOM; contents = themeroom_fill; break;
+    default:
+        note_unported_lev(`themeroom ${pick.name}`); break;
+    }
 
-    /* sp_lev.c:2811 — the rtype chance roll */
     rn2(100);
 
-    const ok = create_room(-1, -1, -1, -1, -1, -1, OROOM, -1);
+    const ok = create_room(-1, -1, -1, -1, -1, -1, rtype, rlit);
     if (ok) {
         // C ref: sp_lev.c:2824 — build_room calls topologize after create_room
         const aroom = game.level.rooms[game.level.nroom - 1];
         if (aroom) {
             topologize(aroom);
             aroom.needfill = FILL_NORMAL;
+            if (contents) contents(aroom);
         }
     }
     return ok;

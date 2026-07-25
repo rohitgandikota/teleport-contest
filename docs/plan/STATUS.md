@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 23 → 85**; the chargen frames are paying out
+Last updated: **2026-07-24** · **screens 85 → 119**; chargen menus and the legacy pager are drawn
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -37,68 +37,79 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **Breadth** — seed8000's frames are done; the leverage is now in the other 43 |
-| **Also open** | chargen menus (6), `obj_resists` (3), `mkobj` (3) |
+| **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
+| **Also open** | `reset_role_filtering` (1+), `lspo_map` (8), `rnd_rect` (5) |
 | **Blocked on** | nothing |
-| **Score** | **85/11,405 screens**, 0/44 sessions passing, corpus RNG **87,782/792,838 (11.1%)** |
+| **Score** | **119/11,405 screens**, 0/44 sessions passing, corpus RNG **87,780/792,838 (11.1%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Draw the chargen MENUS.** The banner, the name prompt and the `[ynaq]` line
-are done and took the score from 23 to 85. The menus are the same job again and
-there are four of them per session (role, race, gender, confirmation), so this
-is worth roughly another 30 frames.
+**Every chargen frame now matches, up to and including the legacy blurb.** The
+role, race, gender and confirmation menus, and the "It is written in the Book of
+<god>" window, are byte-exact in seed0077. What still fails in the chargen
+sessions is the *status line under* the legacy window — its attribute values
+(`St:15` where C says `St:11`), because the PRNG has already diverged in level
+generation by then. So the frame work in chargen is finished; the remaining
+chargen-session frames need RNG parity, not drawing.
 
-**Start with the role menu.** seed0077 step 7 is the reference:
+**Two candidate next moves, in order:**
 
-```
- 0| Pick a role or profession
- 2| <role> <race> <gender> <alignment>
- 4| a - an Archeologist        11| r - a Rogue
- 5| b - a Barbarian            12| R - a Ranger
- 6| c - a Caveman/Cavewoman    13| s - a Samurai
- 7| h - a Healer               ...
- 9| m - a Monk                 17| * * Random
-10| p - a Priest/Priestess     18| / - Pick race first
-                               19| " - Pick gender first
-                               20| [ - Pick alignment first
-                               21| ~ - Set role/race/&c filtering
-                               22| q - Quit
-                               23| (end)      cursor [7,23]
-```
+1. **`reset_role_filtering()` (src/role.c:2728).** seed0006 diverges at PRNG
+   call **1** — the earliest divergence in the corpus — purely because it presses
+   `~` at the role menu and drives the "Pick all that apply" filter menu
+   (`a b c r R H E D <return>`). We treat `~` as a no-op, so from that point on
+   our role/race set is wrong and every later `rigid_role_checks()` draws a
+   different `rn2`. It needs: `gr.rfilter` state (`roles[]`, `races[]`, `gends[]`,
+   `aligns[]` flags plus a `mask`), `setrolefilter`/`clearrolefilter`/
+   `gotrolefilter`, the PICK_ANY menu built by the `!filtering` half of
+   `setup_rolemenu`/`setup_racemenu`/`setup_gendmenu`/`setup_algnmenu` (already
+   written and taking a `filtering` argument, so only the caller is missing), and
+   the `rfilter` reads already stubbed out in `role_menu_extra`. `ok_role` and
+   friends must consult it. One public session, but any held-out session that
+   presses `~` is in the same boat, and the frame is a full-screen PICK_ANY menu
+   with `+`/`-` selection state that nothing else exercises.
+2. **`lspo_map` (sp_lev.c:6154), 8 sessions.** Genuinely Lua, and the only
+   remaining item with real depth.
 
-Three things to work out, none of them large:
-
-1. **Ranger's letter is `R`, capital.** `setup_rolemenu` gives each role its
-   name's initial lowercased, and on a collision C moves to the UPPERCASE form,
-   not the next free lowercase — Rogue takes `r`, Ranger takes `R`.
-   `js/role.js menu_letters()` currently picks the next free lowercase and must
-   be corrected; the chargen RNG does not depend on it but the frames do.
-2. **The window renders at column 1, so `offx` collapsed to 0** even though the
-   longest line would put it at 47. Work out which test in
-   `tty_display_nhwindow` fires — probably the entry count once
-   `role_menu_extra`'s six trailing entries and the separators are included.
-3. **Row 0 is the `end_menu` title and row 2 is `plsel_startmenu`'s
-   `"<role> <race> <gender> <alignment>"` summary**, which fills in as facets
-   are chosen. `maybe_skip_seps(screenheight, ...)` decides whether the blank
-   separator rows appear.
-
-After the menus, `lspo_map` (8 sessions, genuinely Lua) is the only remaining
-item with real depth.
+Then the long tail: `rnd_rect` (5), `next_ident` (2), `obj_resists` (2), `somey`
+(2), `mkobj`, `wipeout_text`, `dog_goal`, `peace_minded`, one each.
 
 ### What the window layer now provides
 
-`js/tty/wintty.js` with a real consumer, and these rules verified against
-recordings rather than inferred:
+`js/tty/wintty.js` has both real C code paths: `tty_start_menu`/`tty_add_menu`/
+`tty_end_menu` building an item list rendered by `process_menu_window`, and
+`tty_putstr` filling `cw.data` rendered by `render_page` (`process_text_window`).
+`tty_display_nhwindow` picks between them exactly as the C does — `if (cw->data
+|| !cw->maxrow)` takes the text renderer — so a window's *type* and its
+*renderer* are independent, which the legacy blurb depends on.
+
+Rules verified against recordings rather than inferred:
 
 - `display_nhwindow(win, TRUE)` blocks inside the window; the captured frame is
   the window.
-- `NHW_TEXT` puts its prompt on the last screen line; a menu puts it under its
-  content. Single page: `--More--` for text, `(end) ` (trailing space) for a
-  menu. Paging: `(N of M)`.
-- Menu text and prompt both render at `offx + 1`.
+- **`wintty.c:13` does `#define H2344_BROKEN` unconditionally.** The branch that
+  looks conditional is the only one that ever compiles: `offx = min(min(82,
+  cols/2), cols - maxcol - 1)`, so a menu is capped at *half the screen width*
+  rather than pushed as far right as it fits, and there is **no `offx == 10`
+  collapse test**. The chargen menus are where it shows: longest line 32 puts
+  them at column 40, not 47. `process_text_window` also does `cl_end()` on every
+  row under this define, not just inset ones.
+- **Two different width rules.** `tty_putstr` uses `strlen + 1`; `tty_end_menu`
+  uses `strlen + 2` per `add_menu` entry. One column decides whether the legacy
+  window sits at 23 or 22.
+- **`morestr` is only ever set by `tty_end_menu`.** A window filled with
+  `putstr` shows `--More--` whatever its type. `(end) ` (trailing space) comes
+  from `end_menu`; `(N of M)` from paging.
+- Menu text and prompt both render at `offx + 1`; an `NHW_TEXT` prompt at `offx`.
 - An inset menu OVERLAYS the map; only a collapsed one clears the screen.
-- Every row gets `cl_end()`.
+  Dismissing one calls `docorner`, which blanks columns `offx..79`; during role
+  selection `program_state.in_role_selection` forces a full clear instead.
+- **`tty_curs(BASE_WINDOW, ...)` inside `docorner` and `dmore` moves the base
+  window's cursor**, and that is where the next `tty_putstr(BASE_WINDOW)` writes.
+  A second "Who are you?" after `a` on the confirmation menu lands on the row
+  below the dismissed menu because of this and nothing else.
+- Menu titles wear `iflags.menu_headings` (ATR_INVERSE) because
+  `init_sound_disp_gamewindows()` runs *before* `player_selection()`.
 - NetHack's `ATR_INVERSE` is 7; the terminal's inverse bit is 1.
 
 ### The startup sequence is now fully ported
@@ -119,15 +130,14 @@ loop, and `fastforward_step` still replays 127 calls of it.
 
 | Blocker | Sessions | Notes |
 |---|---:|---|
-| `fill_special_room(sp_lev.c:2763)` | 12 | **Lua** |
-| `lspo_map(sp_lev.c:6154)` | 6 | **Lua** |
-| `shuffle()` in `dat/nhlib.lua` | 6 | **Lua** |
-| `pick_role` / `pick_align` | 6 | chargen menus, needs M3 wiring |
-| `somey`, `makelevel`, `choose_trapnote` | 2 each | |
+| `lspo_map(sp_lev.c:6154)` | 8 | **Lua** |
+| `rnd_rect(rect.c:106)` | 5 | |
+| `next_ident`, `obj_resists`, `somey` | 2 each | |
+| `pick_align(role.c:1222)` | 1 | seed0006, and it is `reset_role_filtering` |
 | everything else | 1 each | |
 
-**24 of 44 are Lua-blocked.** Every non-Lua item left is worth 2 sessions or
-fewer.
+`fill_special_room` and the `nhlib` shuffle are gone from this table entirely.
+`lspo_map` is the only Lua item left.
 
 ### Fake-RNG stubs: two of three cleared, one remains
 

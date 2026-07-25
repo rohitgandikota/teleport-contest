@@ -348,14 +348,37 @@ stores thrown-weapon skills as `-P_DART`, and a resolver that only matched bare
 identifiers left that as the string `"-P_DART"` — so no skill comparison could
 ever be true, and the defect looked exactly like the two above.
 
-**If you add a generator, resolve its enums (including negated ones), and
-verify with a check that no field came out as a string.** A one-line assertion
-is enough:
+It has now bitten a third and fourth time, found only because `find_ac()` printed
+`AC:NaN`:
+
+- `role_data.js` emitted `mnum: "PM_ROGUE"`, `ldrnum: "PM_MASTER_OF_THIEVES"`,
+  `petnum: "NON_PM"`, `spelstat: "A_INT"` — twelve fields across `roles[]` and
+  `races[]`, every one of them an index into `mons[]`. `mons[urole.mnum]` was
+  `undefined` for every role in the game and nothing said so.
+- `objects_data.js` emitted **arithmetic**, not identifiers: `oc_oc1: "10 - 10"`
+  (that is `a_ac`, the armour class), `oc_cost: "50 + 30"`, `oc_dir: "1|2"`,
+  `oc_tough: "(7 >= 8)"`. 84 armour values, 74 costs. `clang -E` reduces macro
+  names to numbers but does not fold the arithmetic, and the generator only
+  matched *single* literals.
+
+So the check has to be wider than "no bare identifiers". **A generated numeric
+field must never be a string, whatever the string looks like.**
 
 ```js
+// no identifiers AND no unevaluated expressions
 objects.filter(o => Object.values(o).some(v => typeof v === 'string'
-    && /^-?[A-Z][A-Z0-9_]*$/.test(v)))   // must be empty
+    && (/^-?[A-Z][A-Z0-9_]*$/.test(v) || /^[-+*/|&^()~<>=!\d\s]+$/.test(v))))
 ```
+
+`gen-roledata.mjs` now runs `collectEnums()`; `gen-objects.mjs`'s `value()` now
+evaluates any leaf that is pure arithmetic or a pure comparison (a boolean
+result becomes 1/0, matching C).
+
+**The failure mode is what makes this class dangerous.** A string where a number
+belongs does not throw. `"IRON" === IRON` is false, `mons["PM_ROGUE"]` is
+`undefined`, `10 - "10 - 10"` is `NaN` — and `NaN` propagates through the status
+line as the literal text `AC:NaN`, which is how this one was finally caught,
+three subsystems downstream of the generator that produced it.
 
 ## trquan() is called twice per weapon or tool entry
 
@@ -667,3 +690,69 @@ Taken 2026-07-24 against the untouched skeleton.
 - Public corpus: 44 sessions, 56 segments, 11,405 steps by our count (the README
   quotes 11,284 scored steps; the difference is steps with no recorded screen).
   792,838 annotated PRNG calls in total.
+
+## The tty window layer has two renderers, and a window's type does not pick one
+
+`win/tty/wintty.c:1944`:
+
+```c
+if (cw->data || !cw->maxrow)
+    process_text_window(window, cw);
+else
+    process_menu_window(window, cw);
+```
+
+A window built with `add_menu()` has `mlist` and no `data`; one built with
+`putstr()` has `data`. **The `NHW_MENU` / `NHW_TEXT` type decides the geometry,
+the fill method decides the drawing.** The legacy blurb is the case that proves
+it: `dat/quest.lua` says `output = "menu"` for that entry, so `deliver_by_window`
+creates an `NHW_MENU` — and then fills it with `putstr`. It insets like a menu
+(`offx` from `maxcol`, footer under the content) and draws like a text window
+(leading space, `--More--` rather than `(end) `).
+
+Three width and prompt rules that are easy to conflate:
+
+| | `tty_putstr` path | `tty_add_menu` path |
+|---|---|---|
+| width | `strlen + 1` | `strlen + 2` (in `tty_end_menu`) |
+| `maxrow` | `nitems` | `nitems + 1` |
+| `morestr` | never set → `--More--` | `(end) ` or `(N of M)` |
+
+## `#define H2344_BROKEN` is unconditional
+
+`win/tty/wintty.c:13`. Every `#ifdef H2344_BROKEN` in that file is live and every
+`#else` is dead. It changes three things that matter:
+
+- `offx = min(min(82, cols/2), cols - maxcol - 1)` — a menu is capped at half
+  the screen width, not pushed as far right as it fits. The chargen menus have a
+  longest line of 32; the dead branch puts them at column 47, the live one at 40.
+- There is **no `offx == 10` collapse test**. Only `maxrow >= rows` collapses a
+  window to full screen.
+- `NHW_TEXT` gets `offx = 0` directly, and `process_text_window` calls `cl_end()`
+  on *every* row rather than only inset ones.
+
+Reading the `#else` branch because it looks like the portable one costs a day.
+
+## The BASE_WINDOW cursor is real state, and menus move it
+
+`tty_curs(BASE_WINDOW, x, y)` sets `wins[BASE_WINDOW]->cury`, and the next
+`tty_putstr(BASE_WINDOW, ...)` writes *there*. Two places do this without
+looking like they touch the base window at all:
+
+- `dmore()` — `tty_curs(BASE_WINDOW, curx + offset, cury)` before writing the
+  prompt.
+- `docorner()` — one `tty_curs(BASE_WINDOW, xmin, y)` per row it blanks, so it
+  leaves the cursor on the LAST row of the dismissed window.
+
+That is the whole explanation for where the second "Who are you?" appears when a
+player answers `a` ("choose another name") on the confirmation menu: the
+confirmation menu had 8 items, `docorner` walked rows 0..9, and the prompt lands
+on row 10. Nothing in `tty_askname` mentions a row number.
+
+## Options change the status line, and seed8000 hides it
+
+`js/display.js` hardcoded `Xp:%d/%d` and `T:%d`. Those are `flags.showexp` and
+`flags.time`, both **off** by default — seed8000's rc happens to set
+`showexp,time`, so the only session whose frames were passing was the one that
+made the bug invisible. Every other session's status line was wrong by two
+fields. When a field looks unconditional, check `optlist.js` before believing it.

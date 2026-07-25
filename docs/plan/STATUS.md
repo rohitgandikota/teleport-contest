@@ -309,13 +309,29 @@ source — traced on seed0105, its seven rooms roll 1,0,0,2,1,1,2 and place at
 three boulders at <52,6>, <31,11>, <28,3> are dig_corridor ones in unseen
 areas.
 
-**Porting it is not free.** `mkroll_launch` calls
-`find_random_launch_coord()` (58 lines, **2 draws**) to pick where the boulder
-sits. So this is not a silent no-op we can add — it changes the draw sequence,
-and seed0105 currently matches C to call 2479 of 2499 WITHOUT those draws.
-Reconcile that first: either the draws sit inside a loop that runs zero times
-on this level, or the trap is created after the divergence. Trace when
-`ROLLING_BOULDER_TRAP` is created relative to call 2479 before writing code.
+**Reconciled — on an ordinary level it costs NO draws.**
+`find_random_launch_coord()` (src/trap.c, 58 lines) does have two unconditional
+draws, `distance = rn1(5, 4)` and `tmp = rn2(N_DIRS)`. But they sit BELOW an
+early return:
+
+    bcc.x = ttmp->tx + gl.launchplace.x;
+    bcc.y = ttmp->ty + gl.launchplace.y;
+    if (isok(bcc.x, bcc.y) && linedup(ttmp->tx, ttmp->ty, bcc.x, bcc.y, 1)) {
+        cc->x = bcc.x; cc->y = bcc.y; return TRUE;
+    }
+
+`gl.launchplace` is `{0, 0}` in src/decl.c:484 and is only ever written by
+src/sp_lev.c:4441/4452, i.e. by a des-file. On a randomly generated level it
+stays zero, so `bcc` IS the trap's own square and the early return fires with
+no draws — which is exactly why seed0105 matches C to call 2479 of 2499 while
+we skip this entirely.
+
+**Before implementing, verify the one assumption:** that
+`linedup(x, y, x, y, 1)` returns TRUE for a point against itself. If it does,
+the port is `mksobj(BOULDER)` + `place_object()` + `stackobj()` at the trap's
+own coordinates, drawing nothing, and js/mklev.js:346's `note_unported_lev`
+can be replaced by it. If it does not, the two draws are live and the RNG
+match has another explanation.
 
 Do NOT chase `join()` on the strength of this repro; that trail was based on
 the mistaken corridor assumption. `dig_corridor` matching C exactly is still a

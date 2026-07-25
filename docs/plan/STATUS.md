@@ -79,6 +79,35 @@ Both need `des.object` (by id, by class, with `buc` and `buried`) and
 needs anyway. `selection.room():rndcoord()` is `selection_rndcoord`
 (selvar.c:302) over the room's cells — one `rn2(npoints)`.
 
+### Stub sweep — one more found, not yet fixed
+
+`grep -rn "stub" js/` after the `make_engr_at` fix turns up one more that hides
+a real draw:
+
+**`make_grave()` (js/mklev.js:351)** is `loc.typ = GRAVE` and nothing else. The
+C (src/engrave.c:1687) is:
+
+```c
+if ((levl[x][y].typ != ROOM && levl[x][y].typ != GRAVE) || t_at(x, y))
+    return;                       /* our stub places one anyway */
+if (!set_levltyp(x, y, GRAVE)) return;
+del_engr_at(x, y);
+if (!str)
+    str = get_rnd_text(EPITAPHFILE, buf, rn2, MD_PAD_RUMORS);   /* A DRAW */
+make_engr_at(x, y, str, NULL, 0L, HEADSTONE);
+```
+
+Our only caller passes `null` for `str` unless `dobell`, so the `get_rnd_text`
+draw is live. Everything needed is already there — `get_rnd_text` in
+`js/rumors.js`, the epitaph file in `js/dat_files.js`, and `make_engr_at` as of
+this session. **Check first whether any public session reaches it**; it was left
+alone rather than added unverified.
+
+Remaining stubs that draw nothing and can wait: `dealloc_obj`,
+`add_to_container`, `set_corpsenm`, `sobj_at` (returns false — makemon.js:716
+notes the rejection it disables), `in_rooms` (returns [] — mklev.js:1163 uses it
+for a shop-door test).
+
 ### Leads found but not acted on — start here if the fill contents stall
 
 **`playmode:debug` and the wizard extended commands — 3 sessions.**

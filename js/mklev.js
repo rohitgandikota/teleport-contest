@@ -42,7 +42,7 @@ function mk_knox_portal(x, y) {
     note_unported_lev('mk_knox_portal placement');
 }
 import { random_engraving, wipeout_text } from './engrave.js';
-import { merged } from './invent.js';
+import { merged, weight } from './invent.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
 const NON_PM = -1;
@@ -254,7 +254,6 @@ function add_to_buried(otmp) {
 }
 function dealloc_obj(otmp) { /* stub */ }
 function curse(otmp) { if (otmp) otmp.cursed = true; }
-function weight(otmp) { return otmp?.owt || 1; }
 // src/mkobj.c add_to_container() — link the object into the container's cobj
 // chain. C PREPENDS here too. Discarding the object (as the stub did) lost
 // every item the supply chest was filled with; the fill loop's draws were

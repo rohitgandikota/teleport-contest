@@ -55,9 +55,13 @@ function terrain_glyph(loc, x, y) {
     // this keeps the floor glyph: substituting a literal '.' cost 24 screens.
     case DOOR:
         if (loc.doormask & D_ISOPEN)
-            return loc.horizontal
-                ? { ch: '-', color: CLR_BROWN, dec: false }
-                : { ch: '|', color: CLR_BROWN, dec: false };
+            /* dat/symbols, "start: DECgraphics":
+             *     S_vodoor: \xe1   # meta-a, checkerboard
+             *     S_hodoor: \xe1   # meta-a, checkerboard
+             * Both open-door orientations are the SAME DEC glyph, so the
+             * defsym.h '-' / '|' pair never reaches a DECgraphics screen.
+             * horizontal is irrelevant here. */
+            return { ch: 'a', color: CLR_BROWN, dec: true };
         if (loc.doormask & (D_CLOSED | D_LOCKED))
             return { ch: '+', color: CLR_BROWN, dec: false };
         return { ch: '~', color: NO_COLOR, dec: true };  // S_ndoor

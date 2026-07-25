@@ -15,6 +15,7 @@ import { mfndpos, mon_allowflags, is_pool, is_lava, can_carry } from './mon.js';
 import {
     COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL, ALLOW_M, ALLOW_U,
     IS_OBSTRUCTED, IS_DOOR, D_CLOSED, D_LOCKED, isok,
+    IS_STWALL, IS_TREE, W_NONDIGGABLE,
 } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { MFLAGS, MONSYMS, NUMMONS } from './monst_data.js';
@@ -243,12 +244,22 @@ function sobj_at(otyp, x, y) {
         .some(o => o.ox === x && o.oy === y && o.otyp === otyp);
 }
 
-/* src/dig.c may_dig() and src/mon.c m_cansee() are not ported; both only narrow
-   which square is chosen and neither draws. */
+// src/hack.c:922 may_dig() — intended to be called only on ROCKs or TREEs. A
+// non-diggable wall or tree cannot be tunnelled through, which is what stops
+// can_reach_location() routing a pet's path through solid rock.
 function may_dig(x, y) {
-    note_unported('may_dig');
-    return true;
+    const lev = game.level.at(x, y);
+    if (!lev)
+        return false;
+
+    return !((IS_STWALL(lev.typ) || IS_TREE(lev.typ))
+             && (lev.wall_info & W_NONDIGGABLE));
 }
+
+/* src/mon.c m_cansee() is include/vision.h:42's
+   clear_path(mtmp->mx, mtmp->my, x2, y2), and clear_path — the quadrant-path
+   vision walk — is not ported at all. It only narrows which square is chosen
+   and draws nothing. */
 
 function m_cansee(mon, x, y) {
     note_unported('m_cansee');

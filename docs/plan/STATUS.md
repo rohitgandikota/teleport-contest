@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 134**, corpus RNG **11.1% → 13.3%**
+Last updated: **2026-07-24** · **screens 85 → 134**, corpus RNG **11.1% → 13.4%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,9 +38,9 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | `obj_resists` (5), `rnd_class` (4), themeroom fill CONTENTS (3) |
+| **Also open** | **dogmove.c** (5+, and the top three histogram entries), `rnd_class` (4) |
 | **Blocked on** | nothing |
-| **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **105,702/792,838 (13.3%)** |
+| **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **106,223/792,838 (13.4%)** |
 
 ### The exact next action — READ THIS FIRST
 
@@ -79,12 +79,37 @@ Both need `des.object` (by id, by class, with `buc` and `buried`) and
 needs anyway. `selection.room():rndcoord()` is `selection_rndcoord`
 (selvar.c:302) over the room's cells — one `rn2(npoints)`.
 
+### The closest session to a full pass: seed0102 at 99.2%
+
+`seed0102-ranger-name-cancel` matches **4451 of its 4485 PRNG calls**. The 34
+that remain are all one subsystem — the pet.
+
+```
+4448  rn2(5)     distfleeck(monmove.c:538)     <- last match
+4449  rn2(100)   obj_resists(zap.c:1469)       <- the pet weighing an item
+4450  rn2(8)     dog_goal(dogmove.c:554)
+4451  rn2(4)     dog_goal(dogmove.c:575)
+4452  rn2(1)     dog_move(dogmove.c:1255)
+4453  rnd(5)     score_targ(dogmove.c:830)
+```
+
+Our port runs `movemon` but has no `dog_move`, so the turn ends where C's pet
+starts thinking. `dog_goal(dogmove.c:575)` is separately the blocker in three
+more sessions, and `obj_resists` heads the histogram with five — the same
+subsystem showing up under three different names.
+
+`src/dogmove.c` is around 1500 lines and this is the largest coherent gap left,
+but seed0102 is 34 calls from being the first session to pass outright.
+
 ### Stub sweep — one more found, not yet fixed
 
 `grep -rn "stub" js/` after the `make_engr_at` fix turns up one more that hides
 a real draw:
 
-**`make_grave()` (js/mklev.js:351)** is `loc.typ = GRAVE` and nothing else. The
+**FIXED this session.** `make_grave()` is ported, and mkgrave's `dobell`
+initialiser now draws before the room-type test. Left here for the pattern:
+
+**`make_grave()`** used to be `loc.typ = GRAVE` and nothing else. The
 C (src/engrave.c:1687) is:
 
 ```c

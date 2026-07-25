@@ -259,6 +259,28 @@ dungeon globals it depends on) took it to 1535 and screens came back to 19.
 while they are still down either — carry on to the next divergence and re-check.
 Only revert when the change cannot be justified against the C source.**
 
+## getobj's obj_ok_func filter changes how many keys it eats
+
+`getobj(word, obj_ok_func, ctrlflags)` takes a predicate naming which carried
+objects are valid for THIS command. C builds its prompt from that set and, on a
+letter that fails it, prints a refusal and **loops for another key**.
+
+Our port ignores the predicate, so it accepts letters C rejects. When the two
+disagree, C consumes more keys than we do and everything after runs against the
+wrong command.
+
+This is fine for commands whose filter accepts essentially anything carried
+(read, wield, quaff, drop, wear, put on, remove — all wired, all neutral-to-
+positive). It is NOT fine for a restricted one: wiring `doapply` cost a screen
+on seed0077, whose keys include `jaeji` — `a`, then `e` as the object letter,
+which `apply_ok` rejects and C re-prompts for while we accepted it.
+
+**Before wiring any command with a narrow object set** (apply, and anything
+else whose C call passes a real `*_ok` function rather than NULL), port the
+predicate and the refusal loop. Until then such a command is better left
+unhandled: consuming the wrong number of keys is worse than consuming none,
+because the miscount compounds over every later keystroke.
+
 ## screendiff rows are SCREEN rows, and the map starts at screen row 1
 
 `tools/screendiff.mjs` prints raw terminal rows. The tty layout is: row 0 is the

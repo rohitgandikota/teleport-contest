@@ -129,14 +129,26 @@ window when `blocking` is TRUE, and every `display_nhwindow(WIN_MAP, TRUE)` in
 src/ is in detect.c (magic mapping, detection spells). None is on the startup
 path, so that is NOT where seed5002's step-0 `--More--` comes from.
 
-What is left, and where the next attempt should start: the frame the recorder
-captures as step 0 is taken at the first `nhgetch()`, and `more()` calls
-`nhgetch()` itself. So C is most likely already INSIDE `more()` at step 0 — the
-session's first keystroke dismisses the prompt rather than being a command.
-Check what runs between `welcome()` and the first command read in
-src/allmain.c's newgame/moveloop, and whether the recorder's step numbering
-counts that key. If it does, our port is one keystroke ahead of C from frame
-zero on every session that shows a startup `--More--`.
+**CONFIRMED — and the news is good.** For seed5002, `segments[0].steps.length`
+is **124** while `segments[0].moves.length` is **123**, and `steps[0].key` is
+`null`. So step 0 is the frame captured BEFORE any key is consumed, and C is
+sitting inside `more()` when it is taken; `steps[1].key` is `" "`, which is the
+keystroke that dismisses the prompt.
+
+That means **keystroke alignment is already correct and is not at risk.** C
+spends that space dismissing `--More--`; our port spends it as the no-op that
+`KNOWN_UNPORTED` makes of `' '`. One key either way. The bug is display-only:
+at the first `nhgetch()` the top line should already carry the `--More--`
+suffix.
+
+So the third attempt should NOT add a blocking call in the move loop — that is
+what cost 21 screens, because it fired on turns with no pending message. What
+is needed is for the suffix to be PRESENT on the deferred screen whenever
+`_toplin === TOPLINE_NEED_MORE` at the moment a frame is captured, with the
+key consumption left exactly as it is. Look at `_buildScreenOutput()` and the
+`_preNhgetchHook` capture path in js/jsmain.js, not at moveloop_core.
+
+Verify with `node tools/screendiff.mjs seed5002 0` — 8 cells, row 1 col 0.
 
 Two cautions, both learned the hard way:
 

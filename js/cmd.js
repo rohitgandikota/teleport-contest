@@ -16,6 +16,7 @@ import {
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
+import { doeat } from './eat.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -280,6 +281,11 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === 'e') {
+        // src/cmd.c cmdlist — 'e' is doeat, which reaches floorfood() and then
+        // getobj(). 330 keystrokes across the public corpus, the most of any
+        // command we did not handle.
+        game.context.move = (await doeat() === ECMD_TIME ? 1 : 0);
     } else if ('rwqdWPR'.includes(ch)) {
         // src/cmd.c cmdlist — read, wield, quaff, drop, wear, put on, remove.
         // Every one of them starts with getobj(), which reads the inventory

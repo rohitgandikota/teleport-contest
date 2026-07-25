@@ -279,10 +279,26 @@ C's `use_*()` returns ECMD_OK — a failed or no-op apply. Turn accounting, the
 same bug class as the unhandled `.` command, not misalignment.
 
 So the rule is narrower than first written: wiring a getobj command is safe for
-key alignment, but **ECMD_TIME must not be returned unless the C path actually
-takes time.** When the individual effect is unported and its return is unknown,
-return ECMD_OK — an under-counted turn costs less than an invented one, because
-the turn counter feeds monster movement, hunger and the exercise checks.
+key alignment, and the open question is only the RETURN VALUE.
+
+**That question is genuinely unresolved — do not assume either answer.** Both
+choices are wrong by exactly one turn in opposite directions, and the turn
+counter feeds monster movement allotment, hunger and the exercise checks:
+
+- `ECMD_TIME` matches C whenever the action SUCCEEDS, which is the common case
+  for a session that deliberately reads or wields something.
+- `ECMD_OK` matches C when the action fails or is a no-op, and avoids inventing
+  a turn for an effect we never actually performed.
+
+Tried both on the seven wired commands (read, wield, quaff, drop, wear, put on,
+remove): **measured identical** — no per-session screen changes, no divergence
+point moves, only post-divergence RNG noise. So the public corpus cannot decide
+it. Left as ECMD_TIME, which is what shipped.
+
+Resolve it by porting one effect for real (`doread` is the smallest) and seeing
+which return the C actually produces, rather than by reasoning about it — two
+rounds of reasoning here produced two different answers and one wrong NOTES
+entry.
 
 ## screendiff rows are SCREEN rows, and the map starts at screen row 1
 

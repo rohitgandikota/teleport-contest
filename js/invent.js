@@ -5,6 +5,7 @@ import { game } from './gstate.js';
 import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS } from './monst_data.js';
+import { erosion_matters } from './mkobj.js';
 import { is_rider } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
@@ -297,7 +298,7 @@ export function mergable(otmp, obj) {
         || !!obj.greased !== !!otmp.greased)
         return false;
 
-    if (erosion_matters(obj)
+    if (erosion_matters(obj, game.objects)
         && (!!obj.oerodeproof !== !!otmp.oerodeproof
             || (!!obj.rknown !== !!otmp.rknown && (Blind() || Hallucination()))))
         return false;
@@ -474,10 +475,8 @@ const is_reviver = (ptr) => !!ptr && (is_rider(ptr) || ptr.mlet === MONSYMS.S_TR
 function Blind() { return false; }
 function Hallucination() { return false; }
 function Role_if(role) { return false; }
-function erosion_matters(obj) {
-    note_unported_invent('mergable:erosion_matters');
-    return false;
-}
+/* erosion_matters() is fully ported in js/mkobj.js (its C home is
+   src/mkobj.c); it was stubbed here by mistake. */
 const PM_CLERIC = 0;
 
 function note_unported_invent(what) {

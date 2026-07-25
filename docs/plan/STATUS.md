@@ -2,60 +2,82 @@
 
 ## Where the score stands
 
-**276/11,405 screens (2.4%), 1/44 sessions, corpus RNG 113,910/792,838 (14.4%).**
+**351/11,405 screens (3.1%), 1/44 sessions, corpus RNG 113,910/792,838 (14.4%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
-Up from 199 screens at the start of this stretch. The two changes that moved it
-were both display-layer, not gameplay: the CLR_GRAY collapse (+2) and the
-message-row erase after `--More--` (+15), then getlin's prompt painting and
-`#`-completion (+10) and its NEWAUTOCOMP insertion point (+50).
+Up from 199 screens at the start of this stretch — a 76% increase, and every
+point of it came from the **display layer**, not from gameplay. The RNG number
+did not move at all. That is the headline finding: we are further along in game
+logic than in drawing, and the cheapest screens left are still drawing bugs.
 
-Biggest sessions by screens available: seed0030 (1953), seed4500 (1814),
-seed0360 (833, now 17 matching), seed0014 (714), seed0002 (595).
+Per-session: seed0030 6 -> 20, seed0360 1 -> 20, seed0399 3 -> 16,
+seed0014 10, seed0105 0 -> 1.
+
+## The pattern worth internalising
+
+Four of the six fixes were "the state was right, the draw was missing or
+wrong". None of them touched a single RNG call. Symptoms to look for:
+
+- **High RNG agreement, zero screens.** seed0105 matched 2479 of 2499 calls and
+  scored 0 of 30 screens, on one cell of its first frame (an engraving we
+  generated and then painted floor over). Run `screendiff <session> 0` first.
+- **All 1920 cells match, cursor differs.** That was getlin's NEWAUTOCOMP
+  insertion point, worth 50 screens.
+- **A case that does not exist.** `terrain_glyph` had no arm for fountain,
+  altar, pool, lava, tree, bars, ladder, ice, drawbridge, sink, throne or
+  grave; they all drew blank. Worth 12.
 
 ## What landed this stretch
 
-- `js/mondata.js` — new. The mondata.h predicates were module-local consts in
-  mon.js, so other files kept duplicates. It is a header in C; this is it.
-- `js/hack.js` — new. `may_dig`, `may_passwall`, `bad_rock` moved out of
-  mon.js/dog.js to their real C home. `bad_rock` had three of its five terms.
-- `js/worn.js` — new, `which_armor`. Returns nothing for monsters because
-  m_dowear is absent, which is the C's answer for a monster that has donned
-  nothing; it needs no change once m_dowear lands.
-- `js/tty/termcap.js` — new, `term_start_color`. See NOTES.
-- `js/extcmd_data.js` + `tools/gen-extcmd.mjs` — 170 extended commands with
-  their func_tab.h flags, 52 autocompletable.
-- `sobj_at` ported into invent.js (its C home) and both stubs deleted.
-- `can_touch_safely`, `mfndpos`' ALLOW_DIG arm and its obstruction test,
-  `m_carrying` (moved to mon.c's file, now returns the object), `onscary`'s
-  scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`.
+New files, all mirroring a real C file: `js/mondata.js`, `js/hack.js`,
+`js/worn.js`, `js/tty/termcap.js`, `js/wizcmds.js`, `js/extcmd_data.js`
+(+ `tools/gen-extcmd.mjs`, 170 commands, 92 with key bindings, 52
+autocompletable).
+
+Ported or corrected: `sobj_at` (was `return false` in two files),
+`can_touch_safely`, `bad_rock` (had 3 of its 5 terms), `mfndpos`' ALLOW_DIG arm
+and obstruction test, `m_carrying` (was returning a dummy `{}`), `onscary`'s
+scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
+`term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
+terrain glyphs, and space falling through to "Unknown command".
 
 ## The next thing to do
 
-seed0360 is the cheapest big session to advance: it now runs to **step 17 of
-832**, where C prints `To what experience level do you want to be set?` and we
-still show `# levelchange`. That is `wiz_level_change` (src/cmd.c), one getlin
-prompt. Several other extended commands prompt the same way, and the getlin
-plumbing they need is now in place.
+**seed0030 (1953 steps, the biggest session) now fails at step 4 on the pet
+being one square off.** C has the kitten at col 55 and the upstair at 56; we
+have gold at 55 and the kitten at 56. That is `dog_move`, and it is the single
+highest-value remaining target because seed0030 alone is 17% of the public
+screens.
 
-Do not re-derive these; they are measured and recorded in NOTES.md:
-- the step-0 `--More--` figure is **3** sessions, not the 32 an earlier entry
-  claimed. 26 sessions open on the role intro text, which already matches.
-- an RNG "positions match overall" drop is not a regression on its own; check
-  the divergence point with `git stash` + `diverge.mjs` first.
+Then `pluslvl`/`losexp` (src/exper.c), which is what seed0360 waits on at step
+20 — it needs `newhp`, `newpw`, `setuhpmax`, `newuexp`, `xlev_to_rank`, so it
+is a subsystem, not a one-liner.
+
+seed0017 is a separate shape worth one look: its step 0 differs in 737 cells
+because C's first frame has no intro text and ours does.
+
+## Do not re-derive these
+
+All measured, all in NOTES.md:
+- `dat/symbols`' `start: DECgraphics` section **overrides** `include/defsym.h`.
+  Grep it for any `S_*` before hardcoding a map character.
+- the step-0 `--More--` count is **3** sessions, not the 32 an earlier entry
+  claimed.
+- an RNG "positions match overall" drop is not a regression by itself; check the
+  divergence point with `git stash` + `diverge.mjs`.
 
 ## Still queued, unchanged
 
-`merged`/`mergable` (invent.c:814, needs `weight` and `obj_extract_self`),
-`pick_lock`, `set_wear`, `mkroll_launch`, the run loop (`gm.multi` +
-`lookaround` + `end_running`), `throwit`'s trajectory, `mattacku`,
-`goto_level`, `dog_eat`, `pickup(1)`.
+`merged`/`mergable` (needs `weight`, `obj_extract_self`), `pick_lock`,
+`set_wear`, `mkroll_launch`, the run loop (`gm.multi` + `lookaround` +
+`end_running`), `throwit`'s trajectory, `mattacku`, `goto_level`, `dog_eat`,
+`pickup(1)`.
 
-seed0102/seed0105 remain 31 and 20 calls from a full match, both on the
-`score_targ` over-count. The `dog_goal` fix landed after that trace was taken,
-so **re-run the count before tracing further** — it may have shrunk.
+seed0102/seed0105 remain close on RNG; the `score_targ` over-count trace predates
+the `dog_goal` fix, so **re-run the count before tracing further**.
 
 ---
+
 
 
 ## One-paragraph catch-up

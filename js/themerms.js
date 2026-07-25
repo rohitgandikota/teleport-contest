@@ -12,7 +12,7 @@
 
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
-import { percent, lua_shuffle } from './nhlua.js';
+import { percent, lua_shuffle, lua_d, nh_random } from './nhlua.js';
 import { level_difficulty } from './makemon.js';
 import { selection_from_mkroom, selection_iterate,
          selection_filter_percent, selection_numpoints } from './selvar.js';
@@ -99,4 +99,63 @@ export function fill_trap_room(rm) {
     selection_iterate(locs, (x, y) => {
         note_unported_themerms(`des.trap:${traps[0]}`);
     });
+}
+
+// dat/themerms.lua:176 "Statuary"
+//
+//     for i = 1, d(5,5) do des.object({ id = "statue" }); end
+//     for i = 1, d(3) do des.trap("statue"); end
+//
+// Lua evaluates each loop bound ONCE, so d(5,5)'s five draws all happen before
+// any statue is placed, and d(3)'s single draw after the last one.
+export function fill_statuary(rm) {
+    const nstatues = lua_d(5, 5);
+    for (let i = 1; i <= nstatues; i++)
+        note_unported_themerms('des.object:statue');
+
+    const ntraps = lua_d(3);
+    for (let i = 1; i <= ntraps; i++)
+        note_unported_themerms('des.trap:statue');
+}
+
+// dat/themerms.lua:157 "Massacre"
+//
+//     local idx = math.random(#mon);
+//     for i = 1, d(5,5) do
+//        if (percent(10)) then idx = math.random(#mon); end
+//        des.object({ id = "corpse", montype = mon[idx] });
+//     end
+//
+// The first math.random(27) is spent before the count, and the percent(10)
+// inside the loop is spent EVERY iteration whether or not it re-rolls idx.
+export function fill_massacre(rm) {
+    const mon = ['apprentice', 'warrior', 'ninja', 'thug',
+                 'hunter', 'acolyte', 'abbot', 'page',
+                 'attendant', 'neanderthal', 'chieftain',
+                 'student', 'wizard', 'valkyrie', 'tourist',
+                 'samurai', 'rogue', 'ranger', 'priestess',
+                 'priest', 'monk', 'knight', 'healer',
+                 'cavewoman', 'caveman', 'barbarian',
+                 'archeologist'];
+    let idx = nh_random(1, mon.length);     /* math.random(#mon) */
+    const n = lua_d(5, 5);
+
+    for (let i = 1; i <= n; i++) {
+        if (percent(10))
+            idx = nh_random(1, mon.length);
+        note_unported_themerms('des.object:corpse');
+    }
+}
+
+// dat/themerms.lua:191 "Light source" — one unlit-room object, no draws.
+export function fill_light_source(rm) {
+    note_unported_themerms('des.object:oil lamp');
+}
+
+// dat/themerms.lua:199 "Temple of the gods" — three altars, one per alignment,
+// in the order nhlib.lua's shuffled `align` table holds them. The shuffle
+// happened once at nhl_init(); nothing draws here.
+export function fill_temple_of_the_gods(rm) {
+    for (const _ of (game.splev_align || []))
+        note_unported_themerms('des.altar');
 }

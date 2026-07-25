@@ -97,6 +97,7 @@ import { themerooms, themeroom_fills } from './themerms_data.js';
 import { make_engr_at, wipe_engr_at, engr_at, del_engr } from './engrave.js';
 import { get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
 import { DUST, HEADSTONE } from './const.js';
+import { hole_destination } from './trap.js';
 import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire } from './sp_lev.js';
 import { percent } from './nhlua.js';
@@ -332,9 +333,17 @@ async function maketrap(x, y, typ) {
     case ROLLING_BOULDER_TRAP:
         note_unported_lev('mkroll_launch');
         break;
+    case PIT:
+    case SPIKED_PIT:
+        trap.conjoined = 0;
+        /* FALLTHRU */
     case HOLE:
     case TRAPDOOR:
-        note_unported_lev('hole_destination');
+        /* src/trap.c:521 — only a HOLE or TRAPDOOR picks a destination, but
+           the pit cases fall through to here, so the is_hole() test is what
+           gates the draw, not the case label. */
+        if (is_hole(typ))
+            hole_destination(trap.dst);
         break;
     default:
         break;

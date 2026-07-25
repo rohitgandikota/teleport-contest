@@ -5,6 +5,7 @@
 
 import { game } from './gstate.js';
 import { rn2, rn1 } from './rng.js';
+import { exerchk } from './attrib.js';
 import { ask_do_tutorial } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
@@ -352,6 +353,12 @@ export async function moveloop_core() {
 
                 dosounds();
                 gethungry();
+
+                /* src/allmain.c:354 — age_spells() then exerchk(). exerchk
+                   runs exerper(), which every tenth move exercises whichever
+                   attribute the hunger and encumbrance state calls for, and
+                   each of those spends an rn2(19). */
+                exerchk();
 
                 /* src/allmain.c:360 */
                 if (!rn2(40 + (g.u.acurr.a[3] * 3)))   /* A_DEX */

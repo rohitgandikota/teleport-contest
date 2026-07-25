@@ -338,3 +338,28 @@ export function fill_teleportation_hub(rm) {
             note_unported_themerms('postprocess:make_a_trap:teleport');
     }
 }
+
+// dat/themerms.lua themeroom_fills[] — name to contents, in table order.
+//
+// The reservoir sample in themeroom_fill() picks by name; this is the dispatch
+// it picks into. Every entry is present, which is the precondition for wiring
+// the sample at all: with the sample drawing and the contents absent, C keeps
+// drawing where we go quiet and levels diverge EARLIER than with neither
+// ported. That cost 915 RNG positions when tried prematurely.
+export const themeroom_fill_contents = {
+    'Ice room':               fill_ice_room,
+    'Cloud room':             fill_cloud_room,
+    'Boulder room':           fill_boulder_room,
+    'Spider nest':            fill_spider_nest,
+    'Trap room':              fill_trap_room,
+    'Garden':                 fill_garden,
+    'Buried treasure':        fill_buried_treasure,
+    'Buried zombies':         fill_buried_zombies,
+    'Massacre':               fill_massacre,
+    'Statuary':               fill_statuary,
+    'Light source':           fill_light_source,
+    'Temple of the gods':     fill_temple_of_the_gods,
+    'Ghost of an Adventurer': fill_ghost_of_an_adventurer,
+    'Storeroom':              fill_storeroom,
+    'Teleportation hub':      fill_teleportation_hub,
+};

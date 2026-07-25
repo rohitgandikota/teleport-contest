@@ -311,6 +311,37 @@ different answers and one wrong NOTES entry, and thirty seconds of reading the
 function's last line settled it. When a question is "what does C do here",
 read C — do not reason from what would be sensible.
 
+## Instrument the quantity that must differ, don't hypothesise about causes
+
+`a` (apply) resisted four hypothesis-driven attempts — each plausible, each
+reverted, each wrong (obj_ok_func changing key counts, the ECMD_TIME/ECMD_OK
+choice, inventory letters differing, the hero having no inventory). One
+measurement settled it in a single iteration.
+
+The method: identify the ONE quantity that must differ for the symptom to
+exist, print it per keystroke under both conditions, and diff the traces.
+
+    # in the capture hook, per key
+    process.stdout.write('M' + keyIdx + '=' + (game.moves||0) + ' ')
+
+    without the change:  ... M19=2 M20=2 M21=2 ...
+    with the change:     ... M19=2 M20=3 M21=3 ...
+
+That names the exact keystroke, and from there it is a short read of the C to
+find what it does with that key. (Answer here: the rogue's item `e` is a
+LOCK_PICK, `apply_ok` returns GETOBJ_SUGGEST for TOOL_CLASS, and pick_lock
+reaches get_adjacent_loc — so C eats the next key as a DIRECTION where we ran
+it as a move.)
+
+**Why screens could not answer it:** seed0077's rc does not set `time`, so the
+status line has no `T:` field and the turn counter is invisible on every frame
+except the one `^X` enlightenment screen. A screen diff said "step 27 breaks",
+which is true and useless — the turn was spent seven keystrokes earlier.
+
+Generalise: screendiff finds WHERE output differs; per-keystroke state tracing
+finds WHERE STATE diverges. Use the second whenever the symptom is a count, a
+position, or anything the recorded screens do not display.
+
 ## Wiring `a` (apply) costs seed0077 a screen — twice, cause unknown
 
 Two independent attempts, both reverted:

@@ -89,6 +89,30 @@ scrapes only index/name/frequency/mindiff/maxdiff and drops `contents`
 entirely; it needs extending, or the bodies need hand-porting into js/themerms.js
 as the C's own functions.
 
+### One attempt already failed — read this before repeating it
+
+Routing the three "themed fill" entries through the existing default-room path
+in themerooms_generate(), with rtype = THEMEROOM, rlit from `lit`, needfill =
+FILL_NONE when `filled` is absent, and calling themeroom_fill(aroom) after
+topologize(), **cost 915 RNG positions** and was reverted. Screens did not move.
+
+So at least one of these four guesses is wrong, and they are the things to
+settle from the C before trying again:
+
+  1. `filled`'s default in des.room(). I assumed absent means FILL_NONE
+     because "Room with both normal contents and themed fill" sets filled = 1
+     explicitly. Check lspo_room() in sp_lev.c for the actual default -- if it
+     is 1, FILL_NONE suppresses a later fill_special_room() and loses its draws.
+  2. WHERE the contents function runs. I called it right after topologize().
+     build_room() returns the room and the caller runs contents; find that call
+     site and match the order exactly.
+  3. Whether `lit = 0` reaches create_room() as rlit = 0 or as something else.
+  4. Whether THEMEROOM vs OROOM changes anything downstream besides the
+     rn2(100) roll -- js/mklev.js:623 already treats them alike for filling.
+
+Get those from sp_lev.c rather than by trying combinations; the search space is
+16 and only the C says which corner is right.
+
 ## How to pick a target (this is the part that matters)
 
 `tools/generalize.mjs` runs 40 games on seeds NONE of which come from

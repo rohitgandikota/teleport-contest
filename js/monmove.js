@@ -9,8 +9,8 @@ import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { dog_move } from './dog.js';
 import { mfndpos, mon_allowflags } from './mon.js';
-import { MONSYMS, MFLAGS } from './monst_data.js';
-import { ALLOW_U } from './const.js';
+import { MONSYMS, MFLAGS, PMNAMES } from './monst_data.js';
+import { ALLOW_U, COULD_SEE } from './const.js';
 
 // src/monmove.c:532 distfleeck()
 export function distfleeck(mtmp) {
@@ -23,8 +23,11 @@ export function distfleeck(mtmp) {
 
 // src/monmove.c:700 dochug() — one monster's turn.
 export function dochug(mtmp) {
-    if (mtmp.msleeping)
-        return 0;                     /* asleep monsters do not act */
+    /* src/monmove.c:727 — a sleeping monster still gets a chance to be woken,
+       and disturb() DRAWS on the way. Returning early here skipped both the
+       draws and the monster's whole turn when it did wake. */
+    if (mtmp.msleeping && !disturb(mtmp))
+        return 0;
 
     distfleeck(mtmp);
 
@@ -146,4 +149,43 @@ function dist2(x0, y0, x1, y1) {
 
 function note_unported(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/monmove.c:660 disturb() — does the hero's presence wake this monster?
+//
+// Three of the four conditions can draw, and they short-circuit in order, so
+// the draw count depends on what kind of monster it is:
+//   ettin + stealthy hero        -> rn2(10)
+//   nymph, jabberwock, leprechaun-> rn2(50)
+//   anything not a dog or human  -> rn2(7)
+function disturb(mtmp) {
+    const d = mtmp.data;
+
+    if (!(couldsee(mtmp.mx, mtmp.my) && mdistu(mtmp) <= 100))
+        return 0;
+    /* Stealth is an intrinsic the hero does not have yet, so the ettin
+       rn2(10) cannot fire; when Stealth lands, this test comes with it. */
+    if (!(d.mlet !== MONSYMS.S_NYMPH
+          && d.pmidx !== PMNAMES.PM_JABBERWOCK
+          && d.mlet !== MONSYMS.S_LEPRECHAUN) && rn2(50))
+        return 0;
+    if (!((d.mlet === MONSYMS.S_DOG || d.mlet === MONSYMS.S_HUMAN)
+          || !rn2(7)))
+        return 0;
+
+    mtmp.msleeping = 0;
+    return 1;
+}
+
+/* include/vision.h couldsee(x,y) — (viz_array[y][x] & COULD_SEE), which is
+   line of sight from the hero ignoring blindness. js/vision.js maintains the
+   same array, so read it rather than guessing from lit/seenv. */
+function couldsee(x, y) {
+    return !!(game.viz_array?.[y]?.[x] & COULD_SEE);
+}
+
+/* src/mon.c mdistu() — squared distance from the hero to a monster */
+function mdistu(mtmp) {
+    const dx = mtmp.mx - game.u.ux, dy = mtmp.my - game.u.uy;
+    return dx * dx + dy * dy;
 }

@@ -1830,7 +1830,11 @@ function mkaltar(croom) {
     if (!loc) return;
     loc.typ = ALTAR;
     const al = rn2(A_LAWFUL + 2) - 1;
-    loc.flags = Align2amask(al);
+    /* include/rm.h:214 — an altar's alignment lives in altarmask, which is the
+       same storage as flags. Name it as C does so a reader looking for
+       altarmask finds it. */
+    loc.altarmask = Align2amask(al);
+    loc.flags = loc.altarmask;
 }
 
 function mkgrave_room(croom) {

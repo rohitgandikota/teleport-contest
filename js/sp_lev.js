@@ -314,3 +314,23 @@ export function lspo_terrain(sel, mapchr) {
 
     selection_iterate(sel, sel_set_ter, ter);
 }
+
+// src/sp_lev.c:3059 l_push_mkroom_table() — the shape a `contents` function
+// actually receives.
+//
+// The Lua sees a TABLE, not the C mkroom: width and height are derived, the
+// corners come through as a `region`, and rlit arrives as a boolean `lit`. A
+// fill written against the C struct reads undefined for every one of them,
+// which silently changes how many times its loops run.
+export function mkroom_table(tmpr) {
+    return {
+        width: 1 + (tmpr.hx - tmpr.lx),
+        height: 1 + (tmpr.hy - tmpr.ly),
+        region: { x1: tmpr.lx, y1: tmpr.ly, x2: tmpr.hx, y2: tmpr.hy },
+        lit: !!tmpr.rlit,
+        irregular: !!tmpr.irregular,
+        needjoining: !!tmpr.needjoining,
+        /* the C mkroom itself, for selection_from_mkroom() */
+        _mkroom: tmpr,
+    };
+}

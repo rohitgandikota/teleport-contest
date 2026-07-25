@@ -104,7 +104,41 @@ scrapes only index/name/frequency/mindiff/maxdiff and drops `contents`
 entirely; it needs extending, or the bodies need hand-porting into js/themerms.js
 as the C's own functions.
 
-### One attempt already failed — read this before repeating it
+### The des.room() wiring: measured, isolated, still failing
+
+`themeroom_fill` IS wired and gained +9 RNG (113,910 -> 113,919). It is reached
+through `filler_region()`, which every shaped room ends with, so it does not
+need the des.room() option handling at all. All fifteen fills in js/themerms.js
+are transcribed.
+
+Wiring des.room()'s option handling on top of that costs **-915** and has been
+reverted twice. The second attempt ISOLATED it, which the first did not:
+
+    rtype/rlit change only, no contents call     -21
+    contents call (themeroom_fill from des.room) -894
+    needfill FILL_NONE vs FILL_NORMAL              0   <- not the cause
+
+So the earlier "the fills were missing" explanation was WRONG. The fills exist
+now and the number is identical.
+
+**The live lead, unfinished:** src/sp_lev.c:3059 l_push_mkroom_table() shows the
+Lua `contents` function receives a TABLE, not the C mkroom --
+
+    width  = 1 + (hx - lx)      height = 1 + (hy - ly)
+    region = {x1,y1,x2,y2}      lit    = (boolean) rlit
+    irregular, needjoining, type
+
+Our fills read `rm.width`, `rm.height`, `rm.region.x1` and `rm.lit` directly,
+which are ALL undefined on a raw mkroom. fill_buried_zombies' loop bound is
+`(rm.width * rm.height) / 2`, so it is NaN and the loop never runs; that alone
+changes the draw count of every Buried zombies fill.
+
+`mkroom_table()` is ported in js/sp_lev.js ready for this. Applying it at the
+filler_region call site cost -15, so EITHER that site passes something that is
+already table-shaped, OR a fill has a second bug. Check what lspo_region hands
+its contents function before wiring it further -- do not just apply it.
+
+### The earlier attempt, for completeness
 
 Routing the three "themed fill" entries through the existing default-room path
 in themerooms_generate(), with rtype = THEMEROOM, rlit from `lit`, needfill =

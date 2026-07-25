@@ -43,7 +43,38 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: create_object's `coord` and `buc` options
+## The themeroom subsystem is COMPLETE. Four entries remain, all one shape.
+
+`tools/generalize.mjs` is down to:
+
+    3%  themeroom Nesting rooms
+    3%  themeroom Huge room with another room inside
+    3%  themeroom Room in a room
+    3%  themeroom Water-surrounded vault
+
+All four are SHAPED rooms with a `des.map`, so they go through
+themeroom_contents() at js/mklev.js:700 -- a DIFFERENT path from everything
+built in this stretch, which handled the des.room() entries. Their contents are
+nested des.room() calls (Room in a room, Nesting rooms) and des.region /
+des.corridor forms.
+
+Everything else on that list is closed. What went in, bottom-up:
+
+    js/selvar.js        selection primitives, rndcoord, filter_mapchar,
+                        filter_percent, iterate, from_mkroom, not, numpoints
+    js/themerms.js      all 15 fills + the postprocess queue + make_a_trap
+    sp_lev.js           get_location, is_ok_location, get_location_coord,
+                        get_unpacked_coord, get_room_loc, get_free_room_loc,
+                        lspo_terrain, create_trap, lspo_trap,
+                        get_traptype_byname, create_object, lspo_object,
+                        find_objtype, def_char_to_objclass, the class/id fixup,
+                        containment, blessorcurse, get_table_buc,
+                        create_monster, lspo_monster, name_to_mon,
+                        pm_to_humidity, inside_room, create_altar, lspo_altar,
+                        sp_amask_to_amask, bury_an_obj, mkroom_table
+    mklev.js            mktrap generalised from mktrap_room, des.room options
+
+## Reference: earlier target notes
 
 The themeroom subsystem is COMPLETE: des.room() options, all fifteen fills, and
 all four des.* verbs with their chains. The three "themed fill" themerooms are

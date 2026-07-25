@@ -43,7 +43,39 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## pluslvl is DONE (+248 RNG). seed0360's next blocker is the WISH code.
+## The single biggest lever: SEVEN sessions block on level transition.
+
+Tallying the first mismatching function across all 44 sessions:
+
+    7  getbones          <- NOT a bones bug; see below
+    6  obj_resists
+    6  dog_move
+    4  next_ident
+    3  rnd_otyp_by_namedesc   (the wish parser)
+    2  makelevel
+    1  each: u_calc_moveamt, spelleffects_check, somex, mksobj_init, makeniche
+
+**The getbones seven are not a bones bug.** getbones() IS ported and does spend
+its rn2(3). The mismatch is:
+
+    seed0009  3337  C rn2(3)   ours rn2(12)  @ getbones(bones.c:645)
+    seed0116  2978  C rn2(3)   ours rn2(5)   @ getbones(bones.c:645)
+    seed0373  2549  C rn2(3)   ours rn2(12)  @ getbones(bones.c:645)
+
+C is inside mklev() -- generating a NEW LEVEL -- while we are still running
+monster movement (rn2(12) is mcalcmove, rn2(5) is distfleeck). So C has
+descended and we have not. getbones is simply the first draw mklev makes.
+
+**The blocker is goto_level / level change, and it gates seven sessions.**
+That is more than any other single cause, and far more than the wish parser's
+three. It was already on the queued list; this measurement says it is the top
+item, not a middling one.
+
+Do NOT port readobjnam first. The divergence point names what breaks FIRST in
+one session; this tally names what breaks the MOST across all of them, and they
+disagree.
+
+## Reference: the wish chain, measured
 
 After pluslvl, seed0360 diverges at call 2939 instead of 2898, and the first
 mismatch names the next function directly:

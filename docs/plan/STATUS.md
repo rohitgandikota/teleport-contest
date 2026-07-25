@@ -299,13 +299,22 @@ Three cells differ, and they name two distinct bugs:
    and `game.unported` contains no theme/fill entry. So we create NO fountain
    anywhere, while C has one at <31,10>.
 
-   Note what that rules out: `fill_ordinary_room` draws its `rn2(10)` whether
-   or not `mkfount` then runs, so a differing VALUE would not shift the draw
-   count — and the recorded values match. Next: instrument `mkfount` itself and
-   find out whether it is called at all for this level, and if it is, which of
-   its two exits it takes. If it is never called, the room LIST differs (how
-   many rooms reach `fill_ordinary_room`), which is a bigger fish than the
-   fountain.
+   **Instrumented, and mkfount is a dead end.** The level has six rooms and the
+   `rn2(10)` fountain rolls are 3, 7, 5, 1, 3, 7 — never zero, so `mkfount` is
+   never called. Since the RNG matches call for call, **C never calls it
+   either.** The fountain at <31,10> does not come from `mkfount`.
+
+   Also eliminated: the `garden` themeroom, which is the one themeroom that
+   places fountains (`des.feature("fountain")`, dat/themerms.lua:125). Our
+   `game.unported` has no `themeroom ...` entry for this level, meaning
+   `themerooms_generate` picked `default` — so no themed room ran.
+
+   **Check the glyph identity before going further.** screendiff reports C's
+   cell as `'{' color 15`. `{` is the fountain symbol, but 15 is bright white
+   and NetHack draws fountains blue. Confirm what C actually has there — it may
+   not be a fountain at all, in which case several iterations of this hunt were
+   chasing a misread glyph. `js/drawing_data.js` has the class-to-symbol table
+   and `tools/session-viewer/` can show the recorded cell with its colour.
 
 Fix the hero offset first — it is upstream of everything the pet does, and a
 hero one square away changes what every monster targets.

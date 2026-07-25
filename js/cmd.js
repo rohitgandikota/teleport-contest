@@ -282,6 +282,31 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === 'g') {
+        // src/cmd.c:1839 do_rush — a PREFIX that sets context.run = 2, making
+        // the direction that follows RUN until something interesting appears
+        // rather than take one step. It reads no extra key, so this does not
+        // misalign the keystream; it moves the hero a different DISTANCE, which
+        // is a larger positional divergence than the fight prefix causes.
+        if (game.context.run) {
+            /* "Double rush prefix, canceled." */
+            game.context.run = 0;
+        } else {
+            game.context.run = 2;
+        }
+        game.context.move = 0;
+    } else if (ch === 'm') {
+        // src/cmd.c:1829 do_reqmenu — a PREFIX setting iflags.menu_requested.
+        // For a movement command it means "move without picking up", which is
+        // a no-op while every recorded rc sets !autopickup; for others it asks
+        // for a menu. Reads no extra key.
+        if (game.iflags.menu_requested) {
+            /* "Double m prefix, canceled." */
+            game.iflags.menu_requested = false;
+        } else {
+            game.iflags.menu_requested = true;
+        }
+        game.context.move = 0;
     } else if (ch === 'F') {
         // src/cmd.c:1622 do_fight — a PREFIX. It sets context.forcefight and
         // returns WITHOUT reading another key; the direction that follows is a
@@ -355,6 +380,15 @@ async function domove(dx, dy) {
     const u = game.u;
     const newx = u.ux + dx;
     const newy = u.uy + dy;
+
+    /* src/hack.c — with the rush prefix set, domove() repeats until lookaround()
+       finds something interesting, so C travels several squares where a single
+       step is taken here. The run loop needs lookaround() and is not ported;
+       record it so the distance gap is visible rather than silent. */
+    if (game.context.run) {
+        note_unported_cmd('domove:run loop');
+        game.context.run = 0;
+    }
 
     /* src/hack.c:2242 — with the fight prefix set, the hero attacks the target
        square instead of moving onto it, whether or not anything is there. The

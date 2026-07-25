@@ -1115,3 +1115,64 @@ export function lspo_altar(opts) {
 }
 
 const AM_SPLEV_CO = 0x20, AM_SPLEV_NONCO = 0x40, AM_MASK = 0x07;
+
+// src/sp_lev.c:4028 lspo_room() — the des.room() verb, as a real function so it
+// can NEST. The option handling used to live inline in themerooms_generate's
+// switch, which could only ever build the top-level room.
+//
+// Two things at the top of the C that are easy to miss:
+//
+//   if (gi.in_mk_themerooms && gt.themeroom_failed) return 0;
+//
+// a failed themeroom short-circuits EVERY later des.room in the same theme, so
+// the inner rooms of "Room in a room" are skipped wholesale rather than
+// attempted individually; and n_subroom > MAX_NESTED_ROOMS panics, so the
+// depth is bounded.
+//
+// build_room() dispatches on whether a parent room is open: with one it calls
+// create_subroom(), without it create_room(). Using create_room for both makes
+// the inner room a sibling instead of a subroom.
+export function lspo_room(opts, create_room_fn, topologize_fn) {
+    if (game.in_mk_themerooms && game.themeroom_failed)
+        return null;
+
+    const rtype = (opts?.type === 'themed') ? THEMEROOM : OROOM;
+    const rlit = (opts?.lit === undefined) ? -1 : (opts.lit ? 1 : 0);
+    /* "theme rooms default to unfilled" — sp_lev.c:4049 */
+    const needfill = (opts?.filled === undefined)
+                     ? (game.in_mk_themerooms ? FILL_NONE : FILL_NORMAL)
+                     : (opts.filled ? FILL_NORMAL : FILL_NONE);
+
+    /* sp_lev.c:2811 build_room() — chance defaults to 100, so the roll is
+       always spent and always passes. */
+    rn2(100);
+
+    const parent = game.coder?.croom ?? null;
+    if (parent) {
+        /* create_subroom(), not create_room() */
+        note_unported('lspo_room:create_subroom');
+        return null;
+    }
+
+    const ok = create_room_fn(-1, -1, -1, -1, -1, -1, rtype, rlit);
+    if (!ok) {
+        if (game.in_mk_themerooms)
+            game.themeroom_failed = true;
+        return null;
+    }
+
+    const aroom = game.level.rooms[game.level.nroom - 1];
+    if (!aroom)
+        return null;
+
+    topologize_fn(aroom);
+    aroom.needfill = needfill;
+
+    if (opts?.contents) {
+        const saved = game.coder?.croom;
+        if (game.coder) game.coder.croom = aroom;
+        opts.contents(mkroom_table(aroom));
+        if (game.coder) game.coder.croom = saved;
+    }
+    return aroom;
+}

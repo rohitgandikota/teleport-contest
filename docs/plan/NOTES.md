@@ -337,8 +337,18 @@ even though doapply itself returns ECMD_OK. The keys around it are
 
 The invlet hypothesis is DEAD — the rogue's letters are a-f, so `e` matches an
 object and getobj cannot be looping. Something else in that key run costs a
-turn C does not spend. Bisect by wiring apply and diffing the turn counter at
-each of steps 20-27 to find which keystroke introduces it.
+turn C does not spend.
+
+**Do NOT bisect by "which step first differs".** seed0077's rc does not set
+`time`, so the status line carries no `T:` field and the turn counter is
+INVISIBLE on every screen except step 27, whose key is `^X` (the attributes /
+enlightenment display, which prints "You entered the dungeon N turns ago").
+Steps 0-26 matching therefore proves nothing about when the extra turn was
+spent — it may have been spent much earlier and simply never shown.
+
+To localise it, instrument `game.moves` directly per keystroke with apply wired
+and without, and diff the two traces to find the first keystroke where they
+part. Screens cannot answer this question on a session with `time` off.
 
 Until then `a` stays unwired. It is 232 keystrokes across the corpus and worth
 having, but not at the price of a screen on a session that currently matches.

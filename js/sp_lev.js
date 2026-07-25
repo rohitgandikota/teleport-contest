@@ -14,7 +14,10 @@ import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 import { sobj_at } from './invent.js';
 import { is_pool, is_lava } from './mon.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
+import { mkobj_at, mksobj_at } from './mkobj.js';
+import { OBJ_NAME } from './objnam.js';
+import { def_oc_syms } from './drawing_data.js';
 import { ANY_LOC, SOLID, DRY, SPACELOC, WET, HOT,
          NO_LOC_WARN } from './const.js';
 import { NO_TRAP, VIBRATING_SQUARE,
@@ -612,3 +615,120 @@ export function lspo_trap(type, x, y, opts) {
    wire for the same cycle reason as somexy. */
 let mktrap_fn = null;
 export function sp_lev_wire_mktrap(fn) { mktrap_fn = fn; }
+
+// src/sp_lev.c:3662 — the class/id fixup lspo_object applies AFTER parsing all
+// its argument forms, and before create_object ever runs.
+//
+// This is load-bearing and 1,400 lines away from the code it fixes up. Every
+// argument form sets class = -1 for a multi-character name, which would send
+// create_object down its OCLASSES.RANDOM_CLASS arm; this puts the class back from the
+// object's own oc_class so mksobj_at is reached instead. The converse arm
+// forces id to -1 when a class was given without one, which is what routes
+// that case to def_char_to_objclass/mkgold.
+export function lspo_object_fixup(o) {
+    if (o.class === -1 && o.id > STRANGE_OBJECT)
+        o.class = game.objects[o.id].oc_class;
+    else if (o.class > -1 && o.id === STRANGE_OBJECT)
+        o.id = -1;
+    return o;
+}
+
+// src/sp_lev.c:2193 create_object() — place one object from a des.object spec.
+//
+// The three arms draw differently: mkobj_at(OCLASSES.RANDOM_CLASS) picks a class and
+// then an object within it, mkobj_at(oclass) picks only the object, and
+// mksobj_at knows the type and picks neither. Which arm runs is decided by the
+// fixup above, not by what the Lua looks like it asked for.
+export function create_object(o, croom) {
+    const named = !!o.name;
+    const pos = get_location_coord(-1, -1, DRY, croom, o.coord);
+    const x = pos.x, y = pos.y;
+    const c = (o.class >= 0) ? o.class : 0;
+    let otmp;
+
+    if (!c) {
+        otmp = mkobj_at(OCLASSES.RANDOM_CLASS, x, y, !named);
+    } else if (o.id !== -1) {
+        otmp = mksobj_at(o.id, x, y, true, !named);
+    } else {
+        /* the level description carries the default "text" class characters */
+        const oclass = def_char_to_objclass(String.fromCharCode(c));
+
+        if (oclass === OCLASSES.MAXOCLASSES)
+            return null;                /* panic("unexpected object class") */
+
+        /* KMH -- Create piles of gold properly */
+        if (oclass === OCLASSES.COIN_CLASS)
+            otmp = mkgold(0, x, y);
+        else
+            otmp = mkobj_at(oclass, x, y, !named);
+    }
+
+    if (!otmp)
+        return null;
+
+    if (o.spe !== -127)                 /* -127 means NOT random */
+        otmp.spe = o.spe;
+
+    switch (o.curse_state) {
+    case 1: otmp.blessed = 1; otmp.cursed = 0; break;   /* bless() */
+    case 2: otmp.blessed = 0; otmp.cursed = 0; break;   /* uncursed */
+    case 3: otmp.blessed = 0; otmp.cursed = 1; break;   /* curse() */
+    default: break;                                     /* leave as rolled */
+    }
+
+    /* quantity, contents, buried, lit, eroded, locked, trapped, name and the
+       rest need subsystems this port does not have; each is absent rather than
+       approximated. */
+    if (o.quan > 0 || o.buried || o.lit || o.contents)
+        note_unported('create_object:options');
+
+    return otmp;
+}
+
+// src/sp_lev.c:3557 lspo_object() — the des.object() verb, simple forms.
+export function lspo_object(idOrClass, x, y, opts) {
+    const o = {
+        class: -1, id: STRANGE_OBJECT, spe: -127, curse_state: 0,
+        quan: -1, buried: 0, lit: 0, name: opts?.name ?? null,
+        contents: opts?.contents ?? null,
+        coord: (x === undefined || x === -1) && (y === undefined || y === -1)
+               ? SP_COORD_PACK_RANDOM(0)
+               : SP_COORD_PACK(x, y),
+    };
+
+    if (typeof idOrClass === 'string' && idOrClass.length === 1) {
+        o.class = idOrClass.charCodeAt(0);
+        o.id = STRANGE_OBJECT;
+    } else if (idOrClass !== undefined && idOrClass !== null) {
+        o.class = -1;
+        o.id = (typeof idOrClass === 'number') ? idOrClass
+                                               : find_objtype(idOrClass);
+    }
+
+    if (opts?.buried) o.buried = 1;
+    if (opts?.lit)    o.lit = 1;
+
+    lspo_object_fixup(o);
+    return create_object(o, game.coder?.croom ?? null);
+}
+
+// src/sp_lev.c find_objtype() — an object name to its index.
+export function find_objtype(name) {
+    const want = String(name).toLowerCase();
+
+    for (let i = 1; i < game.objects.length; i++)
+        if ((OBJ_NAME(game.objects[i]) || '').toLowerCase() === want)
+            return i;
+    return STRANGE_OBJECT;
+}
+
+const STRANGE_OBJECT = 0;
+
+// src/drawing.c def_char_to_objclass() — a class symbol to its class index.
+function def_char_to_objclass(ch) {
+    for (let i = 1; i < OCLASSES.MAXOCLASSES; i++)
+        if (def_oc_syms[i] === ch)
+            return i;
+    return OCLASSES.MAXOCLASSES;
+}

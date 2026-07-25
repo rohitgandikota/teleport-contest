@@ -69,7 +69,26 @@ C's rn2(100) is `obj_resists(otmp, 5, 95)` at src/mon.c:1482, inside
 straight on to the pet's turn, whose rn2(4) is dog_goal's `!rn2(4)`.
 
 **`meatmetal` is now ported and wired, and seed0030 still diverges at 6276.**
-So the remaining question is narrower: why does no metallivore reach it there?
+
+First rule out that the caller is even meatmetal. `obj_resists` has THREE call
+sites and the RNG tag names only the callee, not the caller:
+
+  - src/mon.c:1482  meatmetal()        obj_resists(otmp, 5, 95)
+  - src/mon.c:1586  meatobj()          obj_resists(otmp, 5, 95)   gelatinous cube
+  - src/mon.c:3323  make_corpse()      obj_resists(obj, 0, 0)     dying monster's
+                                                                  inventory
+
+The third is worth knowing about on its own: with ochance and achance both 0 the
+comparison `chance < 0` can never be true, so it always returns FALSE -- and it
+still spends the rn2(100). That is the "computed and discarded" class in NOTES.
+js/zap.js draws before comparing, so it is already right, but any future caller
+must not short-circuit it.
+
+If it turns out to be the third site, the divergence is a monster DEATH we are
+not performing, not an eating path, and meatmetal is a red herring for seed0030
+(still correct to have ported, just not the cause).
+
+If it is genuinely meatmetal, ask why no metallivore reaches it:
 Check, in this order:
 1. whether the monster taking that turn is a pet (meatmetal returns 0 for pets
    at its first line, and dog.c handles pet eating separately);

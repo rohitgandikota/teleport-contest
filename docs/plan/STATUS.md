@@ -43,7 +43,31 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: the des.* leaves. Measured sizes and draw counts:
+## Do this first: create_object's `coord` and `buc` options
+
+The themeroom subsystem is COMPLETE: des.room() options, all fifteen fills, and
+all four des.* verbs with their chains. The three "themed fill" themerooms are
+gone from the reached-unported list. What is on it now is the fills' remaining
+leaves, and they cluster:
+
+     5%  des.object:buried chest          Buried treasure
+     5%  des.object:random in chest       Buried treasure
+     5%  postprocess:make_dig_engraving   Buried treasure
+     3%  des.monster:ghost                Ghost of an Adventurer
+     3%  des.object:dagger/bow/arrow/scroll   Ghost of an Adventurer (4 entries)
+     3%  des.altar                        Temple of the gods
+     3%  four SHAPED themerooms (des.map, a different path)
+
+**Ghost of an Adventurer is FIVE entries for TWO small create_object options**:
+`coord` (place at a given square rather than random) and `buc`
+(get_table_buc -> curse_state; "not-blessed" is one of its values). Both are
+already sketched in create_object's recorded arms. Best ratio on the list.
+
+Then Buried treasure's three: `buried` plus a contents closure. The closure
+calls des.object() with no arguments, i.e. the RANDOM_CLASS arm, so it needs no
+new machinery either.
+
+## Reference: the des.* leaves, measured sizes and draw counts:
 
 The themeroom fills all run now, so what the generalization sweep lists is what
 THEY call. Measured before planning (the awk/grep from NOTES):

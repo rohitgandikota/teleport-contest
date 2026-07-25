@@ -69,10 +69,25 @@ Two cautions learned doing it:
 wrap threshold, so C puts the suffix on its own line rather than appending it.
 
 `more()` in `js/display.js:417` is already ported and handles both the suffix
-and the wrap. **Nothing calls it on this path.** In C the suffix appears when
-`tty_display_nhwindow(WIN_MESSAGE, TRUE)` blocks on a top line that still has
-`TOPLINE_NEED_MORE` set — find that call in the startup sequence rather than
-adding a call where it seems to belong.
+and the wrap. **Nothing calls it on this path.** There are exactly two places
+C can call it, and they are different mechanisms — do not conflate them:
+
+1. **`win/tty/topl.c:262` `update_topl()`** — when a NEW message arrives while
+   `toplin == TOPLINE_NEED_MORE`, C either APPENDS it to the pending line with
+   two spaces, or calls `more()`. The test is
+   `n0 + strlen(toplines) + 3 < CO - 8` where `n0` is the new message's length.
+   So two short messages share a line silently and only a long pair blocks.
+   This is why gating on `pline` is wrong: most plines append, they do not
+   block.
+2. **`win/tty/wintty.c:1874` `tty_display_nhwindow(WIN_MESSAGE, TRUE)`** —
+   blocks if `toplin == TOPLINE_NEED_MORE`, then sets it back to NEED_MORE and
+   clears the window.
+
+For seed5002 step 0 the pending line is `welcome()`'s single 73-character
+pline, and `--More--` lands on row 1 because 73 + 8 exceeds the 80-column
+terminal. Find which startup call blocks on it (grep
+`display_nhwindow(WIN_MESSAGE, TRUE)`), rather than adding a call where one
+seems to belong.
 
 Two cautions, both learned the hard way:
 

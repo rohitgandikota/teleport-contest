@@ -75,6 +75,38 @@ two is the job.
 is unacknowledged AND the game is about to block for input; guessing will cost
 frames elsewhere. Model `toplin` and let it decide.
 
+**Attempted, measured, reverted — with the two frames that discriminate.**
+A first cut set `toplin = TOPLINE_NEED_MORE` in `pline()`, cleared it wherever
+`_pending_message` is cleared, and rendered the suffix from `more()`'s own rule:
+
+```c
+tty_curs(BASE_WINDOW, cw->curx + 1, cw->cury);
+if (cw->curx >= CO - 8) topl_putsym('\n');   /* CO - 8 == 72 */
+putsyms(defmorestr);                          /* appended, NO leading space */
+```
+
+That is demonstrably the right rendering — **seed0077 step 12 went from 25
+differing cells to 17 and its cursor became exactly C's `[77,0,1]`**. But it
+scored 132 against 135, because seed8000 lost 3 frames. The counterexample is
+sharp and worth keeping:
+
+| frame | C's top line | C's cursor |
+|---|---|---|
+| seed0077 step 12 (after key `' '`) | welcome **+ `--More--`** | `[77,0,1]`, past the suffix |
+| seed8000 step 0 (initial, before any input) | welcome, **no suffix** | `[36,7,1]`, on the hero |
+
+Both frames carry the same kind of message from the same `pline()`. So the
+discriminator is NOT the message and NOT "is there an unacknowledged top line" —
+it is whether the game is actually blocking on `display_nhwindow(WIN_MESSAGE,
+TRUE)` at the moment the frame is taken. The initial frame is captured after the
+map is drawn and the cursor parked on the hero; seed0077 step 12 is captured
+inside a genuine `more()`.
+
+Next attempt should drive the flag from the CALL SITE that blocks, not from
+`pline()`. Note also that seed8000's message is 77 characters, so it crosses the
+`CO - 8` threshold and would wrap to row 1 — check that path separately once the
+gating is right.
+
 ### The leaderboard, and what it says about our real problem
 
 `node tools/leaderboard.mjs` reads `/leaderboard/data.json` directly — the page

@@ -43,7 +43,33 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: `update_mon_extrinsics` (8%), then the themerooms
+## Do this first: the des.* leaves. Measured sizes and draw counts:
+
+The themeroom fills all run now, so what the generalization sweep lists is what
+THEY call. Measured before planning (the awk/grep from NOTES):
+
+    lspo_object     199 lines   0 direct draws
+    lspo_monster    187 lines   3 direct draws
+    lspo_feature     80 lines   0 direct draws
+    lspo_trap        74 lines   0 direct draws     <- smallest
+    lspo_altar       36 lines   0 direct draws
+
+"0 direct draws" does NOT mean cheap: each one bottoms out in a creator that
+draws. lspo_trap is the shortest path in and the chain is fully mapped:
+
+    lspo_trap -> create_trap (sp_lev.c, 35 lines, 0 direct draws)
+              -> get_free_room_loc (20 lines, 0 direct draws, but calls
+                 get_location_coord and get_room_loc, which DO draw)
+              -> mktrap(type, flags, croom, &tm)
+
+We have `mktrap_room` and `somexy`/`somexyspace` in js/mklev.js but NOT the
+generic `mktrap(type, flags, croom, tm)` nor `get_free_room_loc`. Those two are
+the actual unit of work; lspo_trap itself is a thin argument-shape wrapper.
+
+Do lspo_trap first: five of the fifteen fills call des.trap (Boulder room, Trap
+room, Spider nest, Statuary, Teleportation hub), so it unblocks the most.
+
+## Then: update_mon_extrinsics is DONE; this section is history
 
 `merged` (was 58%) and `m_dowear` (was 20%) are both ported and gone from the
 reached-unported list. Latest `tools/generalize.mjs`:

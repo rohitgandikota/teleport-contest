@@ -255,6 +255,30 @@ Emscripten transpile, which generalises almost perfectly but has no
 function-for-function structure to diff, so Phase 2 divides its parity by a
 very large number.
 
+### The reached-unported dump is the best small-win worklist
+
+Print it by tracing `game.unported` in the capture hook at a late keystroke:
+
+    if (process.env.NHTRACE && keyIdx === 30)
+        process.stdout.write('UNP ' + JSON.stringify([...(game.unported||[])]));
+
+It lists only paths the corpus ACTUALLY executes, which beats guessing. For
+seed0077 at key 30 it gave: merged, qtext_pronoun, moveloop_preamble
+set_wear/pickup, pick_lock, onscary's Elbereth branch, dog_hunger,
+mon_hates_silver, m_cansee, may_dig, lined_up, mon_would_consume_item.
+
+Three of those are now ported exactly — `mon_hates_silver`, `dog_hunger`,
+`may_dig` — each small, each neutral on the public corpus, each in the category
+that took held-out screens from 43 to 77.
+
+Sizes checked for the rest, so nobody re-measures:
+- `merged` — src/invent.c:814-948, **134 lines**, zero draws, plus `mergable`.
+  Object stacking. Too big for a tail-end session but no PRNG risk.
+- `m_cansee` / `lined_up` — both need `clear_path()`, the quadrant-path vision
+  walk, which is **absent from this port entirely**. One dependency, not two
+  gaps.
+- `pick_lock`, `set_wear`/`pickup`, `mon_would_consume_item` — not yet sized.
+
 ### Where the effort is best spent next — read this before picking
 
 Ranked by expected value, from the evidence in this file:

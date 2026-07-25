@@ -29,15 +29,21 @@ export function dochug(mtmp) {
     if (mtmp.msleeping && !disturb(mtmp))
         return 0;
 
+    /* src/monmove.c:791 */
     distfleeck(mtmp);
 
     /* src/monmove.c:1773 — m_move() dispatches a tame monster to dog_move()
-       BEFORE it calls mfndpos(), so the pet path does not need the 243-line
-       candidate-square search at all. */
-    if (mtmp.mtame)
-        return dog_move(mtmp, 0);
+       before it reaches mfndpos(). */
+    const status = mtmp.mtame ? dog_move(mtmp, 0) : m_move(mtmp, 0);
 
-    return m_move(mtmp, 0);
+    /* src/monmove.c:915 — distfleeck is RECALCULATED after the move, so every
+       monster that takes a turn spends TWO rn2(5) draws, not one. Calling it
+       once made our turn cost half of C's, which read as though half our
+       monsters were never acting. */
+    if (status !== MMOVE_DIED)
+        distfleeck(mtmp);
+
+    return status;
 }
 
 // src/monmove.c:1720 m_move() — a non-tame monster's turn. The tame case is
@@ -130,7 +136,8 @@ export function m_move(mtmp, after) {
 }
 
 const MTSZ = 4;
-const MMOVE_NOTHING = 0, MMOVE_MOVED = 2, MMOVE_DONE = 3, MMOVE_NOMOVES = 4;
+const MMOVE_NOTHING = 0, MMOVE_DIED = 1, MMOVE_MOVED = 2, MMOVE_DONE = 3,
+      MMOVE_NOMOVES = 4;
 
 /* include/mondata.h hides_under() */
 function hides_under(ptr) {

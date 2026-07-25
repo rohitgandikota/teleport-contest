@@ -395,11 +395,24 @@ never touch column 22, so the map shows through. Both should compute
 differs (NHW_MENU vs NHW_TEXT changes the leading-space rule in
 `render_page()`).
 
-Next probe: dump `cw.type`, `cw.offx` and `cw.maxcol` for the legacy window and
-compare against C's — `maxcol` feeds `offx = min(min(82, cols/2), cols - maxcol
-- 1)`, so a maxcol off by one moves offx by one. `deliver_by_window()` passes
-NHW_MENU for output==3 and NHW_TEXT otherwise; check which the legacy entry
-selects.
+**PROBED — the answer is a one-character-short LINE, and it is arithmetic:**
+
+    WIN type=4 offx=22 offy=0 maxcol=57 rows=17
+
+`offx = min(min(82, cols/2), cols - maxcol - 1) = min(40, 80 - 57 - 1) = 22`.
+For C to place the window at offx 21 its `maxcol` must be **58**, so C's
+longest legacy line is one character longer than ours.
+
+That is a TEXT-CONTENT bug, not a windowing bug: `convert_line()` in
+js/questpgr.js substitutes the quest/deity placeholders (`%d` and friends) and
+one of its expansions is coming out a character short. Find the longest line of
+`questtext.common.legacy` after conversion, compare it against the same line in
+C's rendered screen (`node tools/screendiff.mjs seed0102 0` prints C's rows
+verbatim), and fix the substitution.
+
+Everything downstream follows from that single character: maxcol 57 -> 58 moves
+offx 22 -> 21, which paints column 22 and closes all six remaining cells. The
+same window opens 32 of the 44 sessions.
 
 Six cells is the entire remaining gap on this screen, and the same window opens
 32 of the 44 sessions.

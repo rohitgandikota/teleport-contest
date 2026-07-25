@@ -12,6 +12,7 @@
 import { game } from './gstate.js';
 import { obj_resists } from './zap.js';
 import { COLNO, ROWNO } from './const.js';
+import { OCLASSES } from './objects_data.js';
 import { MFLAGS } from './monst_data.js';
 import { rn2 } from './rng.js';
 import { PMNAMES } from './monst_data.js';
@@ -158,10 +159,72 @@ export function dog_move(mtmp, after) {
     const edog = mtmp.mtame ? (mtmp.edog || {}) : null;
     if (!edog) return 0;
 
+    /* src/dogmove.c dog_hunger() draws nothing — it is a comparison of
+       moves against edog->hungrytime plus messages. Not ported; when it
+       matters it kills a starving pet, which no public session reaches. */
     note_unported('dog_hunger');
-    note_unported('dog_invent');
-    dog_goal(mtmp, edog, after, distu(mtmp.mx, mtmp.my), 0);
+
+    const udist = distu(mtmp.mx, mtmp.my);
+    dog_invent(mtmp, edog, udist);
+    dog_goal(mtmp, edog, after, udist, 0);
     return 0;
+}
+
+// src/dogmove.c:410 dog_invent() — the pet drops what it carries, or picks up
+// what it is standing on.
+//
+// Both halves are guarded, and in the common case — nothing carried, nothing
+// underfoot — this draws NOTHING. That is what the recordings show: seed0101
+// and seed0102 both go straight from distfleeck to dog_goal's first dogfood.
+// Getting the guards right therefore matters as much as the draws.
+/* src/dogmove.c:138 nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS } */
+const nofetch = [OCLASSES.BALL_CLASS, OCLASSES.CHAIN_CLASS, OCLASSES.ROCK_CLASS];
+
+export function dog_invent(mtmp, edog, udist) {
+    if (helpless(mtmp) || mtmp.meating)
+        return 0;
+
+    const omx = mtmp.mx, omy = mtmp.my;
+
+    if (droppables(mtmp)) {
+        if (!rn2(udist + 1) || !rn2(edog.apport))
+            if (rn2(10) < edog.apport) {
+                note_unported('relobj');           /* the drop itself */
+                if (edog.apport > 1) edog.apport--;
+                edog.dropdist = udist;
+                edog.droptime = game.moves;
+            }
+    } else {
+        const obj = (game.level.objects || [])
+                        .find(o => o.ox === omx && o.oy === omy);
+        if (obj && !nofetch.includes(obj.oclass)) {
+            const edible = dogfood(mtmp, obj);
+
+            if (edible <= CADAVER
+                || (edog.mhpmax_penalty && edible === ACCFOOD)) {
+                /* could_reach_item() and dog_eat() are not ported; dog_eat
+                   draws, so stop here rather than guess. */
+                note_unported('dog_eat');
+                return 0;
+            }
+            /* can_carry() itself draws nothing, but it and could_reach_item()
+               decide whether the rn2(20) below happens at all. */
+            note_unported('dog_invent pickup');
+        }
+    }
+    return 0;
+}
+
+/* src/mon.c droppables() — the first thing in the pet's pack it would drop.
+   Our monsters carry no inventory yet, so this is empty rather than wrong;
+   m_initinv() is the gap, and it is recorded there. */
+function droppables(mtmp) {
+    return (mtmp.minvent && mtmp.minvent.length) ? mtmp.minvent[0] : null;
+}
+
+/* src/mondata.h helpless() */
+function helpless(mtmp) {
+    return !!(mtmp.msleeping || !mtmp.mcanmove || (mtmp.mfrozen | 0) > 0);
 }
 
 // src/hack.c distu() — squared distance from the hero.

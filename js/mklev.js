@@ -967,6 +967,59 @@ function create_vault() {
 }
 
 // C ref: mklev.c add_room()
+// src/mklev.c:322 add_subroom() — a room INSIDE another room.
+//
+// Subrooms live in their own array (gs.subrooms / gn.nsubroom), not in
+// svr.rooms, and the parent keeps a back-pointer list. do_room_or_subroom is
+// called with special=FALSE for the "is a room" flag, unlike add_room which
+// passes TRUE, so a subroom is not registered as its own top-level room.
+export function add_subroom(proom, lowx, lowy, hix, hiy, lit, rtype, special) {
+    const g = game;
+    const croom = {
+        lx: lowx, ly: lowy, hx: hix, hy: hiy,
+        rtype, rlit: lit ? 1 : 0,
+        doorct: 0, fdoor: g.level.doorindex,
+        irregular: false, needjoining: !special,
+        nsubrooms: 0, sbrooms: [],
+        roomnoidx: -1,                  /* subrooms are not in svr.rooms */
+        needfill: 0,
+    };
+    do_room_or_subroom(croom, lowx, lowy, hix, hiy, lit, rtype, special, false);
+    (g.level.subrooms ||= []).push(croom);
+    proom.sbrooms.push(croom);
+    proom.nsubrooms++;
+    return croom;
+}
+
+// src/sp_lev.c:1668 create_subroom() — FOUR rnd() draws when size and position
+// are random, in the order w, h, x, y, then litstate_rnd(rlit).
+//
+// The parent must be at least 4x4 and the check happens BEFORE any draw, so a
+// small parent spends nothing at all.
+export function create_subroom(proom, x, y, w, h, rtype, rlit) {
+    const width = proom.hx - proom.lx + 1;
+    const height = proom.hy - proom.ly + 1;
+
+    /* There is a minimum size for the parent room */
+    if (width < 4 || height < 4)
+        return false;
+
+    if (w === -1) w = rnd(width - 3);
+    if (h === -1) h = rnd(height - 3);
+    if (x === -1) x = rnd(width - w);
+    if (y === -1) y = rnd(height - h);
+    if (x === 1) x = 0;
+    if (y === 1) y = 0;
+    if ((x + w + 1) === width) x++;
+    if ((y + h + 1) === height) y++;
+    if (rtype === -1) rtype = OROOM;
+    rlit = litstate_rnd(rlit);
+    add_subroom(proom, proom.lx + x, proom.ly + y,
+                proom.lx + x + w - 1, proom.ly + y + h - 1,
+                rlit, rtype, false);
+    return true;
+}
+
 export function add_room(lowx, lowy, hix, hiy, lit, rtype, special) {
     const g = game;
     const croom = {

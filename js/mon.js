@@ -299,11 +299,11 @@ function likes_lava(ptr) {
 }
 
 // include/rm.h:129-130
-function is_pool(x, y) {
+export function is_pool(x, y) {
     const t = game.level?.at(x, y)?.typ;
     return t !== undefined && t >= POOL && t <= DRAWBRIDGE_UP;
 }
-function is_lava(x, y) {
+export function is_lava(x, y) {
     const t = game.level?.at(x, y)?.typ;
     return t === LAVAPOOL || t === LAVAWALL;
 }

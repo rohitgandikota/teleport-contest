@@ -23197,6 +23197,33 @@ export const OCLASSES = {
  "MAXOCLASSES": 18
 };
 
+// include/objclass.h enum obj_material_types — oc_material ordinals. The
+// is_organic / is_metallic / is_rustprone macros are range tests against these.
+export const MATERIALS = {
+ "NO_MATERIAL": 0,
+ "LIQUID": 1,
+ "WAX": 2,
+ "VEGGY": 3,
+ "FLESH": 4,
+ "PAPER": 5,
+ "CLOTH": 6,
+ "LEATHER": 7,
+ "WOOD": 8,
+ "BONE": 9,
+ "DRAGON_HIDE": 10,
+ "IRON": 11,
+ "METAL": 12,
+ "COPPER": 13,
+ "SILVER": 14,
+ "GOLD": 15,
+ "PLATINUM": 16,
+ "MITHRIL": 17,
+ "PLASTIC": 18,
+ "GLASS": 19,
+ "GEMSTONE": 20,
+ "MINERAL": 21
+};
+
 // include/skills.h — P_* weapon/spell skill constants. oc_skill (oc_subtyp)
 // holds the negated skill for thrown weapons, which is how is_multigen() and
 // is_poisonable() identify them.

@@ -286,6 +286,11 @@ function main() {
     // The anonymous enum in objclass.h carrying WEAPON_CLASS .. MAXOCLASSES.
     const oclasses = extractEnumAt(text, 'ILLOBJ_CLASS');
 
+    /* enum obj_material_types. is_organic/is_metallic/is_rustprone compare
+       oc_material against WOOD, IRON, MITHRIL and SILVER, so the ordinals are
+       load-bearing rather than decorative. */
+    const materials = extractEnumAt(text, 'NO_MATERIAL');
+
     const objEntries = topLevelEntries(text, 'obj_init');
     const descrEntries = topLevelEntries(text, 'obj_descr_init');
 
@@ -352,6 +357,10 @@ export const ONAMES = ${JSON.stringify(onames, null, 1)};
 
 // Object class constants from include/objclass.h (WEAPON_CLASS .. MAXOCLASSES).
 export const OCLASSES = ${JSON.stringify(oclasses, null, 1)};
+
+// include/objclass.h enum obj_material_types — oc_material ordinals. The
+// is_organic / is_metallic / is_rustprone macros are range tests against these.
+export const MATERIALS = ${JSON.stringify(materials, null, 1)};
 
 // include/skills.h — P_* weapon/spell skill constants. oc_skill (oc_subtyp)
 // holds the negated skill for thrown weapons, which is how is_multigen() and

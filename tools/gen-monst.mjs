@@ -275,6 +275,17 @@ function main() {
         .filter(m => Array.isArray(m.pmnames)
                   && m.pmnames.some(n => typeof n === 'string' && n.length > 0));
 
+    /* C keeps the terminator addressable and code indexes it on purpose:
+       dogfood() writes mons[ismnum(fx) ? fx : NUMMONS] with the comment
+       "a valid array entry, though not a valid monster; predicate tests
+       against it will fail". Dropping it entirely turned those tests into a
+       read of undefined. Append it back after NUMMONS has been counted, so the
+       count stays right and mons[NUMMONS] still resolves. */
+    mons.push(Object.fromEntries(
+        Object.keys(mons[0]).map((k) => [
+            k, Array.isArray(mons[0][k]) ? [] : 0,
+        ])));
+
     /* The symbol/sound/attack enums, exported so ported C can compare against
        named constants instead of literals. Hardcoding a numeric otyp/mlet is
        how BOULDER became "worthless piece of orange glass"; see CLAUDE.md. */
@@ -343,7 +354,7 @@ export const STRAT = ${JSON.stringify(STRAT, null, 1)};
 // src/mondata.c:1228 grownups[][2] — [baby, adult] monster index pairs.
 export const GROWNUPS = ${JSON.stringify(GROWNUPS)};
 
-export const NUMMONS = ${mons.length};
+export const NUMMONS = ${mons.length - 1};
 
 // include/monst.h — pmnames indices
 export const MALE = 0, FEMALE = 1, NEUTRAL = 2;

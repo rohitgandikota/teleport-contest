@@ -11,6 +11,7 @@
 
 import { game } from './gstate.js';
 import { obj_resists } from './zap.js';
+import { COLNO, ROWNO } from './const.js';
 import { MFLAGS } from './monst_data.js';
 import { rn2 } from './rng.js';
 import { PMNAMES } from './monst_data.js';
@@ -109,4 +110,62 @@ function resists_poison(mon) {
 
 function note_unported(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/dogmove.c:495 dog_goal() — pick somewhere worth walking to.
+//
+// Only the object search is ported. It walks the level's object list (fobj,
+// newest-first) and calls dogfood() on everything inside a 5-square box around
+// the pet, so it costs one rn2(100) per nearby object before any of its own
+// draws. That is the whole reason obj_resists shows up ahead of dog_goal's
+// rn2(8) in the recordings.
+const SQSRCHRADIUS = 5;
+
+export function dog_goal(mtmp, edog, after, udist, whappr) {
+    const omx = mtmp.mx, omy = mtmp.my;
+
+    const min_x = Math.max(omx - SQSRCHRADIUS, 1);
+    const max_x = Math.min(omx + SQSRCHRADIUS, COLNO - 1);
+    const min_y = Math.max(omy - SQSRCHRADIUS, 0);
+    const max_y = Math.min(omy + SQSRCHRADIUS, ROWNO - 1);
+
+    let gtyp = UNDEF;
+    for (const obj of (game.level.objects || [])) {
+        const nx = obj.ox, ny = obj.oy;
+        if (nx >= min_x && nx <= max_x && ny >= min_y && ny <= max_y) {
+            const otyp = dogfood(mtmp, obj);
+            /* skip inferior goals */
+            if (otyp > gtyp || otyp === UNDEF)
+                continue;
+            /* the branches past here need cursed_object_at(),
+               could_reach_item(), can_reach_location() and m_cansee(); the
+               APPORT one draws rn2(8) and then can_carry(). */
+            note_unported('dog_goal goal selection');
+            break;
+        }
+    }
+
+    note_unported('dog_goal follow-player');
+    return 0;
+}
+
+// src/dogmove.c:977 dog_move() — the pet's turn.
+//
+// dog_hunger() and dog_invent() come first in C and both draw; neither is
+// ported, so this reaches dog_goal()'s search only. The stream is right up to
+// the point one of those would have fired.
+export function dog_move(mtmp, after) {
+    const edog = mtmp.mtame ? (mtmp.edog || {}) : null;
+    if (!edog) return 0;
+
+    note_unported('dog_hunger');
+    note_unported('dog_invent');
+    dog_goal(mtmp, edog, after, distu(mtmp.mx, mtmp.my), 0);
+    return 0;
+}
+
+// src/hack.c distu() — squared distance from the hero.
+function distu(x, y) {
+    const dx = x - game.u.ux, dy = y - game.u.uy;
+    return dx * dx + dy * dy;
 }

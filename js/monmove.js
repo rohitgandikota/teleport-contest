@@ -7,6 +7,7 @@
 
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
+import { dog_move } from './dog.js';
 
 // src/monmove.c:532 distfleeck()
 export function distfleeck(mtmp) {
@@ -23,6 +24,12 @@ export function dochug(mtmp) {
         return 0;                     /* asleep monsters do not act */
 
     distfleeck(mtmp);
+
+    /* src/monmove.c:1773 — m_move() dispatches a tame monster to dog_move()
+       BEFORE it calls mfndpos(), so the pet path does not need the 243-line
+       candidate-square search at all. */
+    if (mtmp.mtame)
+        return dog_move(mtmp, 0);
 
     /* m_move() and the attack paths draw; neither is ported. m_move's
        rn2(4 * (cnt - j)) mtrack check and its rn2(++chcnt) tie-break both

@@ -6,6 +6,7 @@
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
+import { wiz_level_change } from './wizcmds.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
@@ -329,6 +330,8 @@ export async function doextcmd() {
        the ones whose absence puts the whole session out of step. */
     if (name === 'jump')
         return await dojump();
+    if (name === 'levelchange')
+        return await wiz_level_change();
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;

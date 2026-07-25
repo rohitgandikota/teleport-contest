@@ -17,7 +17,7 @@ import { is_pool, is_lava, m_at } from './mon.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { mkobj_at, mksobj_at } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
-import { NON_PM, SPACE_POS, ALTAR, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
+import { NON_PM, SPACE_POS, ALTAR, STAIRS, LADDER, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
          W_EAST, W_WEST, D_LOCKED, D_TRAPPED } from './const.js';
 import { MONSYMS, PMNAMES } from './monst_data.js';
 import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,

@@ -289,12 +289,20 @@ src/sp_lev.c line for line: the bounds check after the step, the
 recomputation, both direction-change arms, the straight-on test and the
 final reversal. No difference.
 
-So with the draw sequence matching and the function matching, the corridor's
-ENDPOINTS must differ — `org` and `dest` come from `join()` (js/mklev.js:1277),
-which derives them from room coordinates via `finddpos()`. Note `finddpos` and
-`good_rm_wall_doorpos` were both verified against C during the earlier seed0004
-investigation, so look at `join()` itself and at what it passes: which rooms it
-pairs, in what order, and the `dosdoor()` placement between them.
+**And the corridor was the wrong suspect entirely.** Our map at <25,17> has
+`typ = 25` (ROOM), and `dig_corridor` only drops boulders on squares it is
+digging as CORR. A boulder standing on ROOM floor did not come from there.
+
+It is a room object: `fill_ordinary_room()`'s `mkobj_at(RANDOM_CLASS, ...)`
+can select ROCK_CLASS and produce a BOULDER. So this belongs with the seed0102
+fountain as the same open question — **C places a thing in a room that we do
+not** — and our three boulders at <52,6>, <31,11>, <28,3> are corridor ones in
+unseen areas, which is why they do not show on the screen and cannot be
+compared against C's.
+
+Do NOT chase `join()` on the strength of this repro; that trail was based on
+the mistaken corridor assumption. `dig_corridor` matching C exactly is still a
+useful result, just not for this bug.
 
 The repro is unchanged and still cheap: `node tools/screendiff.mjs seed0105 0`,
 one cell, C has a boulder at map <25,17> and we have three boulders at <52,6>,

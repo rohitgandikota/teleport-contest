@@ -40,7 +40,25 @@ inventory instead of replaying it.
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
 | **Also open** | **`--More--`** (1108 frames, 40 sessions), **dogmove.c** (7), `mkobj.c:289` (5) |
 | **Blocked on** | nothing |
-| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **109,593/792,838 (13.8%)** |
+| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **110,110/792,838 (13.9%)** · held-out **10.6%** |
+
+### Pet: object search wired, but seed0102 still does not reach it
+
+`dochug` -> `dog_move` -> `dog_goal`'s object search is in and worth **+517
+RNG**; `obj_resists` fell from 7 blocked sessions to 5. seed0102 is NOT among
+the five that moved and still diverges at its own call 4449.
+
+Diagnostic already run, so do not repeat it: at the end of a seed0102 run the
+level holds **17 objects** and a monster with **`mtame: 10` at (29,8)**, so both
+preconditions are met — yet `game.unported` comes back **empty**, meaning
+`note_unported('dog_hunger')` at the top of `dog_move()` never fired and
+`dog_move` was therefore never called. `distfleeck`'s rn2(5) matches at 4448 and
+sits *above* the tame dispatch in our `dochug`, so control does reach that far.
+
+Start by finding out whether `game.unported` is being cleared between the run
+and the read — an empty set for a whole run is itself suspicious, since other
+sessions report themeroom entries. If it is not cleared, the tame branch is
+genuinely not taken and `mtmp.mtame` is not what `dochug` sees.
 
 ### Two sessions within touching distance of a full pass
 

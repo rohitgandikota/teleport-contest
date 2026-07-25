@@ -216,40 +216,25 @@ This is worth more than its one session: any command that targets a location
 goes through getpos, so the same gap silently mis-aligns every session that
 uses one.
 
-### seed0077 HAS NO STARTING INVENTORY — found chasing the apply regression
+### RETRACTED: seed0077's inventory is fine (probe artifact)
 
-Measured at step 0: `game.invent.length` is **13** for seed8000 (letters a-l
-and `$`) and **0** for seed0077-rogue-chargen. The hero starts empty-handed.
+An earlier entry here claimed seed0077 builds no starting inventory. **That was
+wrong** — it came from probing `game.invent.length` at keystroke 0, and for an
+interactively-chargen'd session keystroke 0 is the NAME PROMPT, long before
+`u_init` runs.
 
-This is why wiring `a` (apply) cost seed0077 a screen twice: `getobj()` can
-never match an inventory letter, so it takes its re-prompt loop and eats
-keystrokes that should have been commands. Any getobj command is unsafe on a
-session whose inventory failed to build — including the seven already wired.
+Measured properly, tracking every keystroke: inventory is 0 for keys 0-10 (the
+name "Shade\r" plus the role/race/gender/alignment picks) and **6 from key 11
+onward**, which is exactly right. seed8000 shows 13 at key 0 only because its
+rc names role, race, gender and alignment, so it has no chargen prompts at all.
 
-**Cause narrowed by probe — the inventory IS built, then LOST.**
+**Lesson for any probe on a chargen session:** key 0 is not "the start of the
+game". Gate probes on a keystroke after chargen completes, or on a game-state
+condition, not on `keyIdx === 0`.
 
-Measured, in order:
-- `u_init_role()` runs with `role = 339`, `urole.mnum = 339`, name "Rogue", and
-  `PMNAMES.PM_ROGUE` is 339 — so the switch case matches and
-  `ini_inv(TROBJ.Rogue)` (7 entries) executes. Role resolution is NOT the bug.
-- `addinv()` fires **6 times**, assigning letters a through f, ending with
-  `game.invent.length === 6`.
-- At the first `nhgetch` (step 0), `game.invent.length` is **0**.
-
-So something between the end of u_init and the first keystroke clears or
-replaces `game.invent`. seed8000, whose rc names its role outright, keeps all
-13 of its items — so the losing path is specific to interactive chargen
-(seed0077 enters a name and picks a role through `player_selection()`).
-
-**Next:** bisect that window. Print `game.invent.length` at the end of
-`u_init_inventory()`, after `newgame()` returns in js/jsmain.js, and at the top
-of `moveloop_core`. Suspect anything that rebuilds or re-assigns the `game`
-object during chargen — a second `newgame()`, a state reset after the role
-menu, or `game.invent` being reassigned rather than mutated.
-
-This matters well beyond one session: every interactively-chargen'd session in
-the held-out set would hit it, and a hero with no inventory diverges from C on
-weight, encumbrance, AC and every getobj command.
+So the cause of the `a` (apply) regression on seed0077 is still unknown — see
+the NOTES entry, which records both failed attempts. The invlet hypothesis
+there is now also dead: the letters exist and are correct once chargen is done.
 
 ### Where the effort is best spent next — read this before picking
 

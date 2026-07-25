@@ -94,11 +94,28 @@ rn2(8)  newpw(exper.c:64)        <- note :64, the LEVEL-GAIN branch,
                                     not the :52 one u_init uses
 ```
 
-repeated 14 times: `pluslvl()` running once per gained level. What is missing is
-`playmode:debug` (the rc option is parsed into `rc.opts` and never consumed),
-the debug-only extended commands, and `pluslvl`. `newhp` also lives in
-**attrib.c** in 5.0, not exper.c — porting it from memory of 3.6 would put it in
-the wrong file.
+repeated 14 times: `pluslvl()` running once per gained level.
+
+**`newhp()` and `newpw()` are already ported and already correct**, including
+these branches — `attrib.c:1101`/`:1103` are the `u.ulevel < urole.xlev` LOW
+branch (`hpadv.lornd`), not the initial-HP branch a few lines above, and
+`exper.c:64` is `newpw`'s matching level-gain branch. Do not rewrite them.
+
+What is actually missing is three things, none of them arithmetic:
+
+1. **`playmode:debug`.** The rc option is parsed into `rc.opts` and never
+   consumed, so `wizard` is never set and the WIZMODECMD commands stay hidden.
+2. **Extended commands.** `js/cmd.js` has no `#` handling at all — no
+   `doextcmd()`, no `getlin()`. That is the real cost here, and it is shared
+   with every other `#` session in the corpus, so it pays for itself well beyond
+   these three.
+3. **`pluslvl(incr)`** (src/exper.c:310) and `wiz_level_change()`
+   (src/wizcmds.c:446), which is `getlin("To what experience level do you want
+   to be set?")` then `while (u.ulevel < newlevel) pluslvl(FALSE)`.
+
+`newhp` does live in **attrib.c** in 5.0 rather than exper.c, and ours is in
+`js/exper.js` — an architecture-rule mismatch to fix when something else touches
+that file, not a correctness bug.
 
 **seed0009 is at 89.9% of its PRNG stream**, the highest in the corpus, and
 diverges at call 3337 of 3713 in `getbones(bones.c:645)` followed by

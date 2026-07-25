@@ -580,6 +580,37 @@ rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
 line number. Everything downstream of that assumption has been chased and
 eliminated.
 
+### Next target: goto_level — 4 sessions, one of them at 90.1%
+
+`getbones(bones.c:645)` heads the histogram with 4 sessions, and the tag is
+misleading in the now-familiar way. Our `getbones` IS ported and DOES draw its
+`rn2(3)`. The divergence is that C reaches it a second time and we never do:
+
+```
+3335 rnd(9000)  moveloop_preamble    ok
+3336 rnd(30)    moveloop_preamble    ok
+3337 rn2(3)     getbones             <- C is building a SECOND LEVEL
+3338 rn2(3)     nhlib shuffle           (mklev's own nhl_init)
+3339 rn2(2)     nhlib shuffle
+```
+
+Immediately after the preamble, C runs `mklev()` for a new level: `getbones()`,
+then the Lua state's `shuffle(align)` pair, then the whole generation sequence
+again. Our port stays on level 1 and goes into the move loop (`rn2(12)`,
+mcalcmove).
+
+So the missing subsystem is **`goto_level`** — the hero changing levels. The
+four sessions are seed0009 (90.1%), seed0116, seed5002 and seed5006, and
+seed0009 in particular has almost nothing else wrong with it.
+
+`mklev()` itself is already ported and correct, so this is the surrounding
+machinery: `goto_level` in src/do.c, the stairway/trapdoor entry points that
+call it, `save_currentstate`/`restore` of the level being left, and
+`u_on_upstairs`/`u_on_dnstairs` placement on arrival. Check first WHY the hero
+changes level in seed0009 so early — a trapdoor from `mktrap`, a level
+teleporter, or a `>` in the recorded keys — because that decides which entry
+point to port.
+
 ### Monster movement: what is verified, and where seed8000 stands now
 
 The whole path is ported — `dochug` -> `m_move` / `dog_move` -> `mfndpos` ->

@@ -62,7 +62,38 @@ draws. lspo_trap is the shortest path in and the chain is fully mapped:
                  get_location_coord and get_room_loc, which DO draw)
               -> mktrap(type, flags, croom, &tm)
 
-### des.trap is DONE. des.object is next — chain measured:
+### des.trap and des.object are DONE. des.monster is the last leaf.
+
+    lspo_monster    src/sp_lev.c  187 lines  3 direct draws
+    create_monster  src/sp_lev.c  263 lines  1 direct draw
+    mkclass, makemon, get_location_coord, enexto   ALREADY PORTED
+
+**The draw detail that matters, sp_lev.c create_monster:**
+
+    if (pm) {
+        int loc = pm_to_humidity(pm);
+        /* If water-liking monster, first try is without DRY */
+        get_location_coord(&x, &y, loc | NO_LOC_WARN, croom, m->coord);
+        if (x == -1 && y == -1) {
+            loc |= DRY;
+            get_location_coord(&x, &y, loc, croom, m->coord);   <- SECOND call
+        }
+    } else {
+        get_location_coord(&x, &y, DRY, croom, m->coord);
+    }
+
+A monster whose humidity is not DRY gets TWO full get_location_coord calls when
+the first finds nothing, and each spends up to 100 tries' worth of draws. Only
+the pm == 0 arm makes a single call. Collapsing these into one lookup is the
+same mistake as collapsing get_location_coord's own internal retry.
+
+Also: `In_mines && your_race(pm) && (Race_if(DWARF) || Race_if(GNOME)) && rn2(3)`
+spends an rn2(3) on every create_monster in the Mines for a dwarf or gnome hero.
+
+Storeroom's `des.monster({ class = "m", appear_as = "obj:chest" })` takes the
+mkclass(class, G_NOGEN) arm, so the id path is not what to port first.
+
+### des.object chain, for reference:
 
     lspo_object    src/sp_lev.c  199 lines  0 direct draws
     create_object  src/sp_lev.c  248 lines  0 direct draws   <- the real work

@@ -362,6 +362,24 @@ Test (b) first: instrument themeroom_fill with a per-level counter and compare
 against the C's rn2 log around the themeroom block. Two samples where C has one
 would produce a constant loss exactly like this.
 
+**Partial result, do not repeat it:** a `globalThis` counter inside
+themeroom_fill reads **0** on seed8000 segment 0 and **0** on seed0030 segment
+0. So themeroom_fill is not reached on those levels at all -- yet wiring its
+contents gained +9 RNG, so it IS reached somewhere. It must be firing on deeper
+levels or later segments.
+
+Consequences for the next attempt:
+
+  - Count across ALL segments, not segment 0. `runSegment` per segment and sum;
+    seed0030 has ten.
+  - The -915 therefore comes from levels this probe never visited, which is
+    also why every fill-related hypothesis failed to move it: on the levels
+    that matter, the fills may not be what differs.
+  - Consider counting create_room calls and their rtype instead. If the
+    themerooms that take the des.room path are generated on deeper levels, the
+    -21 from rtype/rlit may be the whole story there and the -894 may be a
+    second, unrelated effect on those same levels.
+
 `themeroom_fill` IS wired and gained +9 RNG (113,910 -> 113,919). It is reached
 through `filler_region()`, which every shaped room ends with, so it does not
 need the des.room() option handling at all. All fifteen fills in js/themerms.js

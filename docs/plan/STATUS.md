@@ -43,7 +43,43 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this next: goto_level. The descend chain, mapped call by call.
+## js/do.js is PORTED but UNWIRED — a TDZ blocks it. Read this first.
+
+The descend path (dodown, next_level, goto_level's new-level arm,
+stairway_at, u_on_dnstairs) is in js/do.js and correct. Wiring `>` to it
+costs 11 screens and 423 RNG with:
+
+    "STAIRS is not defined"    thrown from js/mklev.js mkstairs()
+
+STAIRS **is** imported at js/mklev.js:113. So this is a TDZ on that import
+binding, not a missing symbol. Four wiring placements were tried and ALL
+produce it identically:
+
+    1. dynamic import('./mklev.js') inside goto_level
+    2. do_wire_mklev() called from mklev.js
+    3. do_wire_mklev() called from cmd.js
+    4. do_wire_mklev() called from jsmain.js (the entry point!)
+
+That (4) fails is the important clue: jsmain runs after every module has
+evaluated, so a normal import cycle would already be resolved. **The trigger is
+cmd.js importing do.js at all** -- the wire location is irrelevant.
+
+Hypotheses in order:
+  a. cmd.js is itself imported DURING mklev.js's evaluation (grep mklev.js's
+     transitive imports for cmd.js; display.js and invent.js are likely routes),
+     so adding any new edge from cmd.js reorders the whole graph.
+  b. js/const.js imports js/terminal.js (a FROZEN file) at its top, so const.js
+     is not a leaf; anything that changes when const.js finishes evaluating can
+     leave its exports in TDZ for an importer mid-cycle.
+  c. Try giving do.js NO imports at all (pass rn2/game in through the wire) and
+     see whether the error moves -- that isolates whether do.js's own import
+     list is what reorders the graph.
+
+The baseline is 352 screens; the unwired file keeps it exactly there. Do not
+ship the wiring until the error is understood -- it is an 11-screen regression,
+not a post-divergence artifact.
+
+## The descend chain, mapped call by call.
 
     dodown()              src/do.c:? -> next_level(!trap)
       next_level(at_stairs) src/dungeon.c:1497

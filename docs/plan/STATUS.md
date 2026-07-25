@@ -100,6 +100,16 @@ nothing on the startup path and is a dead end; the call is in win/tty/.
 Our port defers drawing to `_buildScreenOutput()` and has no equivalent of that
 flush-before-draw ordering, which is why nothing calls `more()` here.
 
+**Tried and reverted:** adding
+`if (game._toplin === TOPLINE_NEED_MORE) await more();` at the top of
+`moveloop()` in js/allmain.js, before `docrt()`. It changes nothing —
+seed5002 step 0 still differs by the same 8 cells and the score is unmoved, so
+`more()` is not being reached. Either `_toplin` is not NEED_MORE by then
+(something clears it between `welcome()` and `moveloop()` — check the legacy
+window and `cls()`), or the block belongs at a different point in the startup.
+Establish which BEFORE writing the call: a placement that looks right and never
+fires is worse than none.
+
 Two cautions, both learned the hard way:
 
 - A previous attempt gated `--More--` on `pline` and **lost 3 screens**. The

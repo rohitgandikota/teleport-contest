@@ -210,7 +210,18 @@ function _statusLine1() {
 function _statusLine2() {
     const u = game.u;
     if (!u) return '';
-    return `Dlvl:${u.uz?.dlevel || 1} $:${game._goldCount || 0} HP:${u.uhp || 0}(${u.uhpmax || 0}) Pw:${u.uen || 0}(${u.uenmax || 0}) AC:${u.uac ?? 10} Xp:${u.ulevel || 1}/${u.uexp || 0} T:${game.moves || 1}`;
+    /* src/botl.c bot2str() — BL_EXP is only appended when flags.showexp is on,
+       and BL_TIME only when flags.time is. Both default OFF; seed8000's rc
+       happens to turn them on, which is what made hardcoding them look right. */
+    const f = game.flags || {};
+    let s = `Dlvl:${u.uz?.dlevel || 1} $:${game._goldCount || 0}`
+          + ` HP:${u.uhp || 0}(${u.uhpmax || 0})`
+          + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
+          + ` AC:${u.uac ?? 0}`
+          + ` Xp:${u.ulevel || 1}`;
+    if (f.showexp) s += `/${u.uexp || 0}`;
+    if (f.time) s += ` T:${game.moves || 1}`;
+    return s;
 }
 
 // ── Serialize terminal grid for screen comparison ──

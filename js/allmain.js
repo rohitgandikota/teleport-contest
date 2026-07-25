@@ -19,7 +19,7 @@ import { newhp, newpw } from './exper.js';
 import { u_init_inventory, u_init_skills_discoveries } from './u_init.js';
 import { makedog } from './dog.js';
 import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
-import { com_pager } from './pager.js';
+import { com_pager } from './questpgr.js';
 import { player_selection, tty_init_nhwindows } from './plselect.js';
 import { adjust_menu_promptstyle, ATR_INVERSE } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
@@ -41,6 +41,7 @@ import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { depth } from './dungeon.js';
 import { rnd } from './rng.js';
 import { fastforward_post_mklev } from './fastforward.js';
+import { find_ac } from './do_wear.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
@@ -117,12 +118,19 @@ export async function newgame() {
         // (depth + u.ulevel) / 2, so leaving ulevel at 0 through level
         // generation halves the eligible monster set and changes how many
         // times rndmonst_adj() draws. adj_lev() reads it too.
+        // src/u_init.c:991 — u.umonnum = u.umonster = urole.mnum. find_ac()
+        // starts from mons[u.umonnum].ac, so a hero without it has no base AC.
+        g.u.umonnum = g.u.umonster = g.urole.mnum;
         g.u.ulevel = g.u.ulevelmax = 1;
         g.u.ualign = {
             type: aligns[g.flags.initalign].value,
             record: 0,
             abuse: 0,
         };
+        // src/u_init.c:1006 — ualignbase[A_CURRENT] and [A_ORIGINAL] track the
+        // alignment the hero started with; convert_arg()'s %d, %G and %a all
+        // read [A_ORIGINAL], so the legacy text needs it.
+        g.u.ualignbase = [g.u.ualign.type, g.u.ualign.type];
         g.u.uhave = {};
 
         // src/u_init.c:1028 — the last call u_init_misc() makes, and the last
@@ -175,6 +183,17 @@ export async function newgame() {
     // makes u_calc_moveamt() draw every turn thereafter.
     adjabil(0, 1);
 
+    // src/allmain.c:816-818 — docrt(); flush_screen(1); bot(); all run BEFORE
+    // u_init_skills_discoveries() and the legacy pager, which is why the legacy
+    // window is drawn over a map and a status line rather than a blank screen.
+    init_vision_globals();
+    vision_reset();
+    vision_recalc(0);
+    await cls();
+    await docrt();
+    await flush_screen(1);
+    await bot();
+
     // src/allmain.c:824 — u_init_skills_discoveries(): the hero already knows
     // what came in their own pack. This is what fills the `\\` window.
     u_init_skills_discoveries();
@@ -184,10 +203,15 @@ export async function newgame() {
     // shuffle(align). `legacy` is opt_out (initval On), so it fires unless
     // the rc says `!legacy`.
     if (g.flags.legacy !== false)
-        com_pager(g.uroleplay?.pauper ? 'pauper_legacy' : 'legacy');
+        await com_pager(g.uroleplay?.pauper ? 'pauper_legacy' : 'legacy');
 
     // Fast-forward what is still replayed: allmain.c moveloop_preamble().
     fastforward_post_mklev();
+
+    // src/allmain.c:453 — moveloop_preamble() calls find_ac(). Until it does,
+    // u.uac is still the 0 it was born with, which is why the status line under
+    // the legacy window reads AC:0 even for a hero already wearing armour.
+    find_ac();
 
     // Remaining hardcoded player state. u_init now computes the inventory,
     // gold, attributes, alignment and handedness for real; what is left is
@@ -201,19 +225,9 @@ export async function newgame() {
     g._goldCount = g.u.umoney0;
     g.u.uhp = 10; g.u.uhpmax = 10;      /* newhp() needs the role hp tables */
     g.u.uen = 2; g.u.uenmax = 2;
-    g.u.uac = 10;                       /* find_ac() needs worn armour */
     g.u.uexp = 0;
     g.flags.female = (str2gend(g.rc?.opts?.gender) === 1);
     g.plname = g.plname || 'Contestant';
-
-    // Initial display
-    init_vision_globals();
-    vision_reset();
-    vision_recalc(0);
-    await cls();
-    await docrt();
-    await flush_screen(1);
-    await bot();
 
     // Welcome message
     const alignName = 'neutral';

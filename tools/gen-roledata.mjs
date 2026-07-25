@@ -163,6 +163,48 @@ function extractTable(src, declRe) {
     return parseInitializer(src, brace);
 }
 
+// The preprocessor cannot expand an ENUM member, so role.c's PM_*, NON_PM,
+// S_*, A_* and ART_* references survive -E as bare identifiers. Left as text
+// they become `mons["PM_ROGUE"]` — undefined, silently, at every call site that
+// indexes a table with them. Scrape every enum body out of the preprocessed
+// source and resolve them to their numbers.
+function collectEnums(text) {
+    const values = {};
+    const re = /enum\s+(?:[A-Za-z_][A-Za-z0-9_]*\s*)?\{/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+        const end = text.indexOf('};', m.index);
+        if (end < 0) continue;
+        const body = text.slice(m.index + m[0].length, end);
+        let next = 0;
+        for (let item of body.split(',')) {
+            item = item.replace(/\s+/g, ' ').trim();
+            if (!item) continue;
+            const eq = item.indexOf('=');
+            if (eq < 0) {
+                if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(item) && !(item in values))
+                    values[item] = next;
+                next++;
+                continue;
+            }
+            const nm = item.slice(0, eq).trim();
+            if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(nm)) continue;
+            const expr = item.slice(eq + 1).trim().replace(
+                /[A-Za-z_][A-Za-z0-9_]*/g,
+                id => (Object.prototype.hasOwnProperty.call(values, id)
+                       ? values[id] : id));
+            if (!/^[-+*/()\d\s]+$/.test(expr)) continue;
+            // eslint-disable-next-line no-new-func
+            const v = Function(`"use strict"; return (${expr});`)();
+            if (!(nm in values)) values[nm] = v;
+            next = v + 1;
+        }
+    }
+    return values;
+}
+
+let ENUMS = {};
+
 // Collapse a C string expression to its JS value; leave other leaves as text.
 function leafValue(v) {
     if (Array.isArray(v)) return v;
@@ -187,6 +229,9 @@ function leafValue(v) {
             if (Number.isFinite(n)) return n;
         } catch { /* fall through and keep the text */ }
     }
+    if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(t)
+        && Object.prototype.hasOwnProperty.call(ENUMS, t))
+        return ENUMS[t];
     return t; // a C constant expression, kept verbatim
 }
 
@@ -215,7 +260,9 @@ function buildRole(entry) {
 }
 
 function main() {
-    const src = stripComments(preprocess());
+    const pre = preprocess();
+    ENUMS = collectEnums(pre);
+    const src = stripComments(pre);
 
     const rolesRaw = extractTable(src, /const\s+struct\s+Role\s+roles\s*\[[^\]]*\]\s*=\s*\{/);
     const racesRaw = extractTable(src, /const\s+struct\s+Race\s+races\s*\[[^\]]*\]\s*=\s*\{/);

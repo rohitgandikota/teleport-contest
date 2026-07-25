@@ -64,18 +64,23 @@ function let_to_name(oclass) {
     return '';
 }
 
-// src/invent.c:2100 display_inventory() — walk flags.inv_order, heading each
+// src/invent.c:3220 display_pickinv() — walk flags.inv_order, heading each
 // non-empty class, then its items in inventory-letter order.
 //
-// Returns [text, attr] pairs; the caller owns the window.
+// Returns the menu entries the caller feeds to add_menu(): a heading has no
+// selector and no identifier, an item carries its inventory letter. The "a - "
+// prefix is NOT built here; tty_add_menu() builds it, exactly as in C, which is
+// what makes the +2 in tty_end_menu()'s width the right rule for this window.
 export function display_inventory() {
     const out = [];
     for (const oclass of inv_order()) {
         const items = (game.invent || []).filter(o => o.oclass === oclass);
         if (!items.length) continue;
-        out.push([let_to_name(oclass), ATR_INVERSE]);
+        /* add_menu_heading(win, class_header) — iflags.menu_headings */
+        out.push({ heading: true, str: let_to_name(oclass), attr: ATR_INVERSE });
         for (const o of items)
-            out.push([`${o.invlet} - ${doname(o)}`, ATR_NONE]);
+            out.push({ heading: false, str: doname(o), attr: ATR_NONE,
+                       invlet: o.invlet });
     }
     return out;
 }

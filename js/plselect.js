@@ -24,7 +24,7 @@ import {
 } from './role.js';
 import { roles, races, genders, aligns } from './role_data.js';
 import { COPYRIGHT_BANNER } from './banner_data.js';
-import { just_an } from './objnam.js';
+import { an } from './objnam.js';
 import {
     ROLE_RACEMASK, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, ROLE_ALIGNMASK,
     AM_LAWFUL, AM_NEUTRAL, AM_CHAOTIC, MH_HUMAN,
@@ -40,9 +40,6 @@ import {
 import { NO_COLOR } from './terminal.js';
 
 const ROWS = 24;
-
-// src/objnam.c an() — just_an() picks the article, then the name follows.
-function an(str) { return just_an(str) + str; }
 
 // win/tty/wintty.c:545 tty_init_nhwindows() — the startup banner.
 //

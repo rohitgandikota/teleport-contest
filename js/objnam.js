@@ -115,6 +115,13 @@ export function just_an(str) {
     return 'a ';
 }
 
+// src/objnam.c an() / An() — just_an() picks the article, the name follows.
+export function an(str) { return just_an(str) + str; }
+export function An(str) {
+    const t = an(str);
+    return t.charAt(0).toUpperCase() + t.slice(1);
+}
+
 // src/objnam.c makeplural() — only the regular rules plus the "X of Y" case,
 // which is the one that matters for object names: "scroll of magic mapping"
 // pluralises the HEAD noun, giving "scrolls of magic mapping", not

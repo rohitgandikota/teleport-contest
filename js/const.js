@@ -1337,6 +1337,9 @@ export const UTOTYPE_RMPORTAL = 0x10;
 export const UTOTYPE_DEFERRED = 0x20;
 // include/monflag.h:187 — the race bits in a role's `allow` mask are the
 // M2_ species flags under another name.
+// include/monflag.h:141 — the monster's name is a proper name, so it takes
+// no "the" prefix.
+export const M2_PNAME = MFLAGS.M2_PNAME;
 export const MH_HUMAN = MFLAGS.M2_HUMAN;
 export const MH_ELF = MFLAGS.M2_ELF;
 export const MH_DWARF = MFLAGS.M2_DWARF;

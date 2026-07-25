@@ -10,8 +10,11 @@ import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
 import {
     tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
-    tty_destroy_nhwindow, NHW_TEXT, NHW_MENU, ATR_NONE,
+    tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+    NHW_TEXT, NHW_MENU, ATR_NONE,
 } from './tty/wintty.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD } from './const.js';
+import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt } from './display.js';
 import { vision_recalc } from './vision.js';
@@ -167,8 +170,11 @@ async function show_discoveries() {
 // gets "(1 of 2)", presses a key, gets "(2 of 2)", presses again.
 async function show_attributes() {
     const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
     for (const l of enlightenment())
-        tty_putstr(win, ATR_NONE, l);
+        tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR, l,
+                     MENU_ITEMFLAGS_NONE);
+    tty_end_menu(win, null);
     tty_display_nhwindow(win);
 
     /* dmore() blocks once per page */
@@ -192,8 +198,11 @@ async function show_inventory() {
         return;
     }
     const win = tty_create_nhwindow(NHW_MENU);
-    for (const [text, attr] of items)
-        tty_putstr(win, attr, text);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (const it of items)
+        tty_add_menu(win, null, it.heading ? 0 : 1, it.invlet || 0, 0,
+                     it.attr, NO_COLOR, it.str, MENU_ITEMFLAGS_NONE);
+    tty_end_menu(win, null);
     tty_display_nhwindow(win);
 
     await nhgetch();

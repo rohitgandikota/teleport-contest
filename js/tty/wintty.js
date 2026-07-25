@@ -273,13 +273,13 @@ export function tty_putstr(window, attr, str) {
     (cw.attrs ||= []).push(attr | 0);
     cw.maxrow = cw.data.length;
 
-    /* win/tty/wintty.c tty_end_menu:
-         len = strlen(curr->str) + 2;   -- extra space at beg & end
-         if (len > cw->cols) cw->cols = len;
-       That +2 is what puts the inventory menu at column 32 rather than 33:
-       offx = 80 - (46 + 2) - 1 = 31, then the leading space sits at 31 and the
-       text starts at 32. */
-    const len = Math.min(s.length + 2, COLS);
+    /* win/tty/wintty.c tty_putstr(), NHW_MENU/NHW_TEXT case:
+         n0 = strlen(str) + 1;
+         if (n0 > cw->maxcol) cw->maxcol = n0;
+       Note the +1, where tty_end_menu() uses +2 for an add_menu() entry. The
+       legacy window is the case that tells them apart: it is an NHW_MENU built
+       with putstr, and one extra column would move it from 23 to 22. */
+    const len = s.length + 1;
     if (len > cw.maxcol) cw.maxcol = len;
 }
 
@@ -346,15 +346,10 @@ function render_page(cw, page, display) {
     });
 
     /* win/tty/wintty.c dmore(): the prompt is cw->morestr when set, else
-       defmorestr. A window that pages sets morestr to "(N of M)"; a single-page
-       one leaves it null and gets "--More--". */
-    /* A menu that fits on one page shows "(end) " — WITH a trailing space,
-       which is what puts seed8000's inventory cursor on column 38 rather than
-       37. A text window shows defmorestr. Either kind that pages shows
-       "(N of M)". */
-    cw.morestr = (cw.npages > 1)
-        ? `(${page + 1} of ${cw.npages})`
-        : (cw.type === NHW_MENU) ? '(end) ' : defmorestr;
+       defmorestr. Only tty_end_menu() ever sets it, so a window filled with
+       putstr() — every NHW_TEXT window, and the legacy NHW_MENU — shows
+       "--More--" no matter what its type is. */
+    const morestr = cw.morestr || defmorestr;
 
     /* win/tty/wintty.c process_text_window():
          tty_curs(BASE_WINDOW, cw->offx + 1,
@@ -370,8 +365,8 @@ function render_page(cw, page, display) {
        offx + 1. */
     tty_curs_base(cw.offx + ((cw.type === NHW_TEXT) ? 1 : 2), footerRow);
     let col = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
-    for (let i = 0; i < cw.morestr.length && col < COLS; i++, col++)
-        display.setCell(col, footerRow, cw.morestr[i], NO_COLOR, 0);
+    for (let i = 0; i < morestr.length && col < COLS; i++, col++)
+        display.setCell(col, footerRow, morestr[i], NO_COLOR, 0);
     for (let c = col; c < COLS; c++)
         display.setCell(c, footerRow, ' ', NO_COLOR, 0);
 
@@ -379,7 +374,7 @@ function render_page(cw, page, display) {
        past the prompt. seed8000 records [8,23] for the discoveries window,
        which is 0 + strlen("--More--"). */
     const footerCol = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
-    display.setCursor(footerCol + cw.morestr.length, footerRow);
+    display.setCursor(footerCol + morestr.length, footerRow);
 
     return lines.length;
 }

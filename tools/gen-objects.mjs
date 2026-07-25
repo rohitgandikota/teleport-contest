@@ -155,6 +155,20 @@ function value(tok) {
     const arith = /^\((\d+)UL\s*-\s*(\d+)UL\)$/i.exec(t);
     if (arith) return Number(arith[1]) - Number(arith[2]);
     if (/^\(\s*-?\d+\s*\)$/.test(t)) return Number(t.replace(/[()\s]/g, ''));
+
+    // Whatever else the preprocessor reduced to pure arithmetic or a pure
+    // comparison: `10 - 10` (a_ac), `50 + 30` (oc_cost), `1|2` (oc_dir),
+    // `(7 >= 8)` (oc_tough). Left as text these are strings, and every caller
+    // that does arithmetic on them silently produces NaN — find_ac() read
+    // objects[].a_ac and got "10 - 10", so the whole status line said AC:NaN.
+    if (/^[-+*/|&^()~<>=!\d\s]+$/.test(t) && /\d/.test(t)) {
+        try {
+            // eslint-disable-next-line no-new-func
+            const n = Function(`"use strict"; return (${t});`)();
+            if (typeof n === 'boolean') return n ? 1 : 0;
+            if (Number.isFinite(n)) return n;
+        } catch { /* fall through */ }
+    }
     return t; // an enum / macro identifier
 }
 

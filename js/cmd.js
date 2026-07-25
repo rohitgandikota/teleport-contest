@@ -16,6 +16,7 @@ import {
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir } from './lock.js';
 import { ECMD_OK } from './invent.js';
+import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt } from './display.js';
@@ -186,7 +187,27 @@ export async function doextcmd() {
     if (name === null)
         return ECMD_OK; /* quit */
 
+    /* src/cmd.c extcmdlist — the command's own function runs here. Only the
+       ones that consume further input are wired up so far, because those are
+       the ones whose absence puts the whole session out of step. */
+    if (name === 'jump')
+        return await dojump();
+
     note_unported_cmd(`extcmd:${name}`);
+    return ECMD_OK;
+}
+
+// src/apply.c:1847 dojump() -> jump(0). The jump itself needs the movement and
+// trap plumbing; what is ported is the getpos() call at src/apply.c:2063, which
+// is where a session's cursor keys and pick go.
+async function dojump() {
+    const cc = { x: game.u.ux, y: game.u.uy };
+
+    /* pline("Where do you want to jump?") */
+    if (await getpos(cc, true, 'the desired position') < 0)
+        return ECMD_OK; /* ECMD_CANCEL — user pressed ESC */
+
+    note_unported_cmd('jump:movement');
     return ECMD_OK;
 }
 

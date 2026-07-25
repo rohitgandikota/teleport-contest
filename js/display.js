@@ -10,11 +10,15 @@ import {
     HWALL, VWALL, TLCORNER, TRCORNER, BLCORNER, BRCORNER,
     CROSSWALL, TUWALL, TDWALL, TLWALL, TRWALL,
     D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED, D_BROKEN, SDOOR, ICE,
+    IRONBARS, TREE, LADDER, ALTAR, GRAVE, THRONE, SINK, FOUNTAIN,
+    POOL, MOAT, WATER, LAVAPOOL, LAVAWALL, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
+    AIR, CLOUD, HI_METAL, HI_GOLD, LA_DOWN,
 } from './const.js';
 import { engr_at } from './engrave.js';
 import { nhgetch } from './input.js';
 import { def_monsyms, def_oc_syms } from './drawing_data.js';
-import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE, DEC_TO_UNICODE } from './terminal.js';
+import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
+         CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, DEC_TO_UNICODE } from './terminal.js';
 
 // ── ANSI color codes ──
 // Maps CLR_* constants (0-15) to ANSI SGR color codes.
@@ -84,6 +88,42 @@ function terrain_glyph(loc, x, y) {
     case TRWALL:    return { ch: 't', color: NO_COLOR, dec: true };  // ├
     // src/display.c:2304 — a SECRET door looks exactly like the wall it hides
     // in, so it falls through to the HWALL/VWALL case.
+    /* The rest of the terrain, from include/defsym.h with dat/symbols'
+       "start: DECgraphics" overrides applied. Where a DEC entry exists it
+       wins; where none does, defsym.h's ASCII character stands (fountain,
+       sink, throne, grave and the stairs have no DEC entry).
+
+       None of these had a case at all, so every one fell through to the
+       default and drew as blank. */
+    case IRONBARS:  return { ch: '|', color: HI_METAL, dec: true };   // \xfc
+    case TREE:      return { ch: 'g', color: CLR_GREEN, dec: true };  // \xe7
+    case LADDER:
+        /* src/display.c:2352 — the direction comes from the square's own
+           `ladder` field, not from a level-wide coordinate:
+               idx = (ptr->ladder & LA_DOWN) ? S_dnladder : S_upladder;
+           defsym.h:122-123 gives '<' / '>', both CLR_BROWN, overridden by
+           dat/symbols to \xf9 / \xfa. The known_branch_stairs() arm needs the
+           branch-discovery state and is not reachable yet. */
+        return (loc.ladder & LA_DOWN)
+            ? { ch: 'z', color: CLR_BROWN, dec: true }
+            : { ch: 'y', color: CLR_BROWN, dec: true };
+    case ALTAR:     return { ch: '{', color: CLR_GRAY, dec: true };   // \xfb
+    case GRAVE:     return { ch: '|', color: CLR_WHITE, dec: false };
+    case THRONE:    return { ch: '\\', color: HI_GOLD, dec: false };
+    case SINK:      return { ch: '{', color: CLR_WHITE, dec: false };
+    case FOUNTAIN:  return { ch: '{', color: CLR_BRIGHT_BLUE, dec: false };
+    case POOL:
+    case MOAT:      return { ch: '`', color: CLR_BLUE, dec: true };   // \xe0
+    case WATER:     return { ch: '`', color: CLR_BRIGHT_BLUE, dec: true };
+    case LAVAPOOL:  return { ch: '`', color: CLR_RED, dec: true };
+    case LAVAWALL:  return { ch: '`', color: CLR_ORANGE, dec: true };
+    case ICE:       return { ch: '~', color: CLR_CYAN, dec: true };   // \xfe
+    case DRAWBRIDGE_DOWN:                                  /* S_[vh]odbridge */
+        return { ch: '~', color: CLR_BROWN, dec: true };
+    case DRAWBRIDGE_UP:                                    /* S_[vh]cdbridge */
+        return { ch: '#', color: CLR_BROWN, dec: false };
+    case AIR:       return { ch: ' ', color: CLR_CYAN, dec: false };
+    case CLOUD:     return { ch: '#', color: CLR_GRAY, dec: false };
     case SDOOR:     return loc.horizontal
                         ? { ch: 'q', color: NO_COLOR, dec: true }   // ─
                         : { ch: 'x', color: NO_COLOR, dec: true };  // │

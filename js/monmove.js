@@ -6,19 +6,269 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
-import { rn2 } from './rng.js';
+import { place_monster, remove_monster } from './makemon.js';
+import { rn2, rnd } from './rng.js';
 import { dog_move } from './dog.js';
 import { mfndpos, mon_allowflags } from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
-import { ALLOW_U, COULD_SEE } from './const.js';
+import { OCLASSES } from './objects_data.js';
+import { couldsee } from './vision.js';
+import { ALLOW_U, COULD_SEE, A_LAWFUL, BOLT_LIM, IS_ALTAR } from './const.js';
+import { is_rider } from './makemon.js';
+
+// src/priest.c:9 ALGN_SINNED — worse than strayed (-1..-3).
+const ALGN_SINNED = -4;
+
+/* include/monst.h:214, include/mondata.h:81,174, include/hack.h:1414 and
+   include/monst.h:217,281 — the one-line predicates distfleeck() and onscary()
+   test with. Kept as single expressions so each reads like its macro. */
+const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
+const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
+const unique_corpstat = (ptr) => (ptr.geno & MFLAGS.G_UNIQ) !== 0;
+const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
+const is_minion = (ptr) => (ptr.mflags2 & MFLAGS.M2_MINION) !== 0;
+const is_vampshifter = (mon) =>
+    mon.cham === PMNAMES.PM_VAMPIRE || mon.cham === PMNAMES.PM_VAMPIRE_LEADER
+    || mon.cham === PMNAMES.PM_VLAD_THE_IMPALER;
+const is_lminion = (mon) =>
+    is_minion(game.mons[mon.mnum]) && mon_aligntyp(mon) === A_LAWFUL;
+
+// src/mon.c mon_aligntyp()
+function mon_aligntyp(mon) {
+    return game.mons[mon.mnum].maligntyp;
+}
+
+/* src/monmove.c:450 flees_light() — gremlins flee an artifact light source.
+   Needs artifact_light() and couldsee(), neither of which is ported; a gremlin
+   is the only monster it can ever be true for. */
+function flees_light(mon) {
+    if (mon.mnum !== PMNAMES.PM_GREMLIN)
+        return false;
+    note_unported('flees_light');
+    return false;
+}
+
+/* src/priest.c in_your_sanctuary() — a temple with a peaceful coaligned priest.
+   The early returns that need no priest data are ported; the rest needs the
+   priest subsystem. */
+function in_your_sanctuary(mon, x, y) {
+    if (mon) {
+        if (is_minion(game.mons[mon.mnum]) || is_rider(game.mons[mon.mnum]))
+            return false;
+        x = mon.mx, y = mon.my;
+    }
+    if (game.u.ualign.record <= ALGN_SINNED) /* sinned or worse */
+        return false;
+    note_unported('in_your_sanctuary:temple');
+    return false;
+}
+
+/* src/shk.c inhishop() / src/priest.c inhistemple() — both need the shop and
+   temple bookkeeping. No shopkeeper or priest is created on an ordinary level
+   before either subsystem lands, so the flags they guard are never set. */
+function inhishop(mtmp) {
+    note_unported('inhishop');
+    return false;
+}
+
+function inhistemple(mtmp) {
+    note_unported('inhistemple');
+    return false;
+}
+
+// src/monmove.c:76 mon_track_add() — push a coordinate onto the monster's
+// memory of where it has just been. m_move() consults it to avoid pacing back
+// and forth, so the contents decide the modulus of an rn2 in the position loop.
+export function mon_track_add(mtmp, x, y) {
+    mtmp.mtrack = mtmp.mtrack || [];
+    mtmp.mtrack.unshift({ x, y });
+    if (mtmp.mtrack.length > MTSZ)
+        mtmp.mtrack.length = MTSZ;
+}
+
+// src/monmove.c:88 mon_track_clear()
+export function mon_track_clear(mtmp) {
+    mtmp.mtrack = [];
+}
+
+// src/mon.c monnear() — adjacent, with no diagonal for NODIAG monsters.
+function monnear(mon, x, y) {
+    const distance = dist2(mon.mx, mon.my, x, y);
+
+    if (distance === 2 && NODIAG(mon.mnum))
+        return false;
+    return distance < 3;
+}
+
+// src/monmove.c onscary() — is this square one the monster refuses to stand on?
+//
+// Draws nothing, but it is what turns *scared on, and a scared monster spends
+// an rnd() in monflee(). The engraving and scare-monster-scroll branches need
+// subsystems that are not ported, so they are recorded rather than guessed:
+// answering TRUE there would invent a flee (and a draw) that C did not make.
+export function onscary(x, y, mtmp) {
+    /* <0,0> is used by musical scaring; it doesn't care about scrolls or
+       engravings or dungeon branch */
+    const auditory_scare = (x === 0 && y === 0);
+    const magical_scare = !auditory_scare;
+
+    /* creatures who are directly resistant to any type of scaring:
+       Rodney, lawful minions, Angels, the Riders */
+    if (mtmp.iswiz || is_lminion(mtmp) || mtmp.mnum === PMNAMES.PM_ANGEL
+        || is_rider(game.mons[mtmp.mnum]))
+        return false;
+
+    /* creatures who are directly resistant to magical scaring based on the
+       mere presence of something at a location: humans etc. */
+    if (magical_scare
+        && (game.mons[mtmp.mnum].mlet === MONSYMS.S_HUMAN
+            || unique_corpstat(game.mons[mtmp.mnum])))
+        return false;
+
+    /* shopkeepers inside their own shop, priests inside their own temple */
+    if ((mtmp.isshk && inhishop(mtmp)) || (mtmp.ispriest && inhistemple(mtmp)))
+        return false;
+
+    if (auditory_scare)
+        return true;
+
+    /* should this still be true for defiled/molochian altars? */
+    const loc = game.level?.at(x, y);
+    if (loc && IS_ALTAR(loc.typ)
+        && (game.mons[mtmp.mnum].mlet === MONSYMS.S_VAMPIRE
+            || is_vampshifter(mtmp)))
+        return true;
+
+    /* sobj_at(SCR_SCARE_MONSTER) and sengr_at("Elbereth") both need parts of
+       the object and engraving code that are absent, so neither can be
+       answered yet. Both would return TRUE only in rare states. */
+    note_unported('onscary:scare_monster_and_elbereth');
+    return false;
+}
+
+// src/monmove.c:462 monflee() — begin fleeing for fleetime turns.
+//
+// The caller has already spent the rnd() that produces fleetime; this function
+// itself only draws through its messages, which need pline plumbing that is not
+// here yet.
+export function monflee(mtmp, fleetime, first, fleemsg) {
+    if (DEADMONSTER(mtmp))
+        return;
+
+    if (mtmp === game.u.ustuck)
+        note_unported('release_hero');
+
+    if (!first || !mtmp.mflee) {
+        /* don't lose untimed scare */
+        if (!fleetime) {
+            mtmp.mfleetim = 0;
+        } else if (!mtmp.mflee || mtmp.mfleetim) {
+            fleetime += (mtmp.mfleetim || 0);
+            /* ensure monster flees long enough to visibly stop fighting */
+            if (fleetime === 1)
+                fleetime++;
+            mtmp.mfleetim = Math.min(fleetime, 127);
+        }
+        if (!mtmp.mflee && fleemsg)
+            note_unported('monflee:fleemsg');
+        mtmp.mflee = 1;
+    }
+    /* ignore recently-stepped spaces when made to flee */
+    mon_track_clear(mtmp);
+}
+
+// src/monmove.c set_apparxy() — the monster decides where it thinks the hero
+// is. dochug() calls this before distfleeck(), because inrange/nearby are
+// measured against mux,muy rather than the hero's real position.
+//
+// The ordinary case (monster can see, hero neither invisible nor displaced nor
+// underwater) sets displ to 0 and returns without drawing, which is why leaving
+// this out cost no RNG and still left every monster targeting <0,0>.
+export function set_apparxy(mtmp) {
+    let mx = mtmp.mux, my = mtmp.muy;
+    let displ;
+
+    /* pet knows your smell; grabber still has hold of you; monsters which
+       know where you are don't suddenly forget, if you haven't moved away */
+    if (mtmp.mtame || mtmp === game.u.ustuck
+        || (game.u.ux === mx && game.u.uy === my)) {
+        mtmp.mux = game.u.ux;
+        mtmp.muy = game.u.uy;
+        return;
+    }
+
+    const Invis = !!game.u.uprops?.INVIS;
+    const Displaced = !!game.u.uprops?.DISPLACED;
+    const Underwater = !!game.u.uinwater;
+
+    const notseen = (!mtmp.mcansee || (Invis && !perceives(game.mons[mtmp.mnum])));
+    const notthere = (Displaced && mtmp.mnum !== PMNAMES.PM_DISPLACER_BEAST);
+
+    if (Underwater) {
+        displ = 1;
+    } else if (notseen) {
+        /* Xorns can smell quantities of valuable metal like that in solid
+           gold coins, treat as seen */
+        const umoney = money_cnt(game.invent);
+        displ = (mtmp.mnum === PMNAMES.PM_XORN && umoney) ? 0 : 1;
+    } else if (notthere) {
+        displ = couldsee(mx, my) ? 2 : 1;
+    } else {
+        displ = 0;
+    }
+    if (!displ) {
+        mtmp.mux = game.u.ux;
+        mtmp.muy = game.u.uy;
+        return;
+    }
+
+    /* The displaced/invisible search loop draws rn2 per attempt and rejects on
+       accessible()/closed_door()/can_ooze(), none of which is ported. Guessing
+       the loop's exit would invent draws, so it is recorded instead. */
+    note_unported('set_apparxy:displaced');
+    mtmp.mux = game.u.ux;
+    mtmp.muy = game.u.uy;
+}
+
+// src/invent.c money_cnt()
+function money_cnt(invent) {
+    for (const otmp of invent || [])
+        if (otmp.oclass === OCLASSES.COIN_CLASS)
+            return otmp.quan;
+    return 0;
+}
 
 // src/monmove.c:532 distfleeck()
 export function distfleeck(mtmp) {
+    let seescaryx, seescaryy;
     const bravegremlin = (rn2(5) === 0);
 
-    /* The rest is positional: inrange/nearby/scared from the monster's idea of
-       where the hero is, plus onscary(). None of it draws. */
-    return { inrange: false, nearby: false, scared: false, bravegremlin };
+    const inrange = dist2(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy)
+                    <= (BOLT_LIM * BOLT_LIM);
+    const nearby = inrange && monnear(mtmp, mtmp.mux, mtmp.muy);
+
+    /* Note: if your image is displaced, the monster sees the Elbereth at your
+     * displaced position, thus never attacking your displaced position, but
+     * possibly attacking you by accident. */
+    if (!mtmp.mcansee || (game.u.uprops?.INVIS && !perceives(game.mons[mtmp.mnum]))) {
+        seescaryx = mtmp.mux;
+        seescaryy = mtmp.muy;
+    } else {
+        seescaryx = game.u.ux;
+        seescaryy = game.u.uy;
+    }
+
+    const sawscary = onscary(seescaryx, seescaryy, mtmp);
+    let scared;
+    if (nearby && (sawscary
+                   || (flees_light(mtmp) && !bravegremlin)
+                   || (!mtmp.mpeaceful && in_your_sanctuary(mtmp, 0, 0)))) {
+        scared = true;
+        monflee(mtmp, rnd(rn2(7) ? 10 : 100), true, true);
+    } else {
+        scared = false;
+    }
+    return { inrange, nearby, scared, bravegremlin };
 }
 
 // src/monmove.c:700 dochug() — one monster's turn.
@@ -28,6 +278,11 @@ export function dochug(mtmp) {
        draws and the monster's whole turn when it did wake. */
     if (mtmp.msleeping && !disturb(mtmp))
         return 0;
+
+    /* src/monmove.c:778 — must run after the hero moves and before the monster
+       does, because inrange/nearby in distfleeck() are measured against the
+       monster's guess at the hero's position, not the hero's real one. */
+    set_apparxy(mtmp);
 
     /* src/monmove.c:791 */
     distfleeck(mtmp);
@@ -135,8 +390,11 @@ export function m_move(mtmp, after) {
         mtmp.mtrack = mtmp.mtrack || [];
         mtmp.mtrack.unshift({ x: omx, y: omy });
         if (mtmp.mtrack.length > MTSZ) mtmp.mtrack.length = MTSZ;
-        mtmp.mx = nix;
-        mtmp.my = niy;
+        /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
+           the move. Writing mx/my alone leaves m_at() answering with the old
+           square. */
+        remove_monster(omx, omy);
+        place_monster(mtmp, nix, niy);
     }
     return mmoved;
 }
@@ -188,13 +446,6 @@ function disturb(mtmp) {
 
     mtmp.msleeping = 0;
     return 1;
-}
-
-/* include/vision.h couldsee(x,y) — (viz_array[y][x] & COULD_SEE), which is
-   line of sight from the hero ignoring blindness. js/vision.js maintains the
-   same array, so read it rather than guessing from lit/seenv. */
-function couldsee(x, y) {
-    return !!(game.viz_array?.[y]?.[x] & COULD_SEE);
 }
 
 /* src/mon.c mdistu() — squared distance from the hero to a monster */

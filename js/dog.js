@@ -17,7 +17,7 @@ import { OCLASSES } from './objects_data.js';
 import { MFLAGS } from './monst_data.js';
 import { rn2 } from './rng.js';
 import { PMNAMES } from './monst_data.js';
-import { makemon, MM_EDOG, NO_MINVENT } from './makemon.js';
+import { makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster } from './makemon.js';
 
 const NON_PM = -1;
 
@@ -294,8 +294,11 @@ export function dog_move(mtmp, after) {
         mtmp.mtrack.unshift({ x: omx, y: omy });
         if (mtmp.mtrack.length > MTSZ) mtmp.mtrack.length = MTSZ;
 
-        mtmp.mx = nix;
-        mtmp.my = niy;
+        /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
+           the move. Writing mx/my alone leaves m_at() answering with the old
+           square. */
+        remove_monster(omx, omy);
+        place_monster(mtmp, nix, niy);
         return MMOVE_MOVED;
     }
     return MMOVE_NOTHING;

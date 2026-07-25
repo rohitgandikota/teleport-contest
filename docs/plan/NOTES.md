@@ -1109,3 +1109,34 @@ agreed; only the draw was missing. seed0105 matched 2479 of 2499 RNG calls while
 scoring 0 of 30 screens, on one cell of its very first frame. A session with
 high RNG agreement and zero screens is almost always a drawing bug, not a
 gameplay one -- check `screendiff <session> 0` first.
+
+## Local score and generalization are different axes; the score is the liar
+
+Porting `merged` (src/invent.c:814) moved the local score by **exactly zero** --
+351 screens and 113,910 RNG before and after -- while removing the single
+largest generalization gap in the port: `tools/generalize.mjs` had it reached by
+**58% of random games**, and after the port it does not appear on that list at
+all.
+
+`generalize.mjs` runs 40 games on seeds none of which come from `sessions/`.
+That is the only instrument here that measures the held-out half, which is half
+the final score. Run it before choosing a target and again after finishing one.
+
+Corollary worth internalising: **a change that does nothing to score.sh can be
+the most valuable change available**, and the reverse is the failure mode rule 1
+exists to prevent. Do not rank work by local score delta.
+
+## Some large functions contain no draws at all — measure before budgeting
+
+`m_dowear` is 40 lines and `m_dowear_type` is 204, and neither contains a single
+`rn2`/`rnd`/`rn1`. A 204-line port that cannot move the RNG number is still
+worth doing (it sets `owornmask`/`misc_worn_check`, which nothing else sets, and
+`which_armor` reads), but knowing that in advance changes how you budget it and
+what you expect to see afterwards.
+
+Cheap check before starting any port:
+
+    awk '/^funcname\(/,/^}/' nethack-c/upstream/src/file.c | grep -cE '\brn2\(|\brnd\(|\brn1\('
+
+Zero means the function is a *state* fix. Its effect shows up in screens or in
+some later function's behaviour, never in `diverge.mjs` directly.

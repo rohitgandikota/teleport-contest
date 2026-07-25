@@ -54,10 +54,20 @@ reached-unported list at all. Latest `tools/generalize.mjs` run:
       5%  mergable:erosion_matters
       3%  (six more themerooms, one themeroom_fill)
 
-`m_dowear` is also what makes `which_armor` (js/worn.js) start returning real
-answers, which mfndpos' dig arm and can_touch_safely both read. The themerooms
-are a cluster: eight entries at 3-5% each, so they are collectively larger than
-m_dowear and may be the better target if they share a code path.
+Measured before you plan around it: **`m_dowear` (src/worn.c:757) is 40 lines
+and `m_dowear_type` (:799) is 204, and NEITHER CONTAINS A SINGLE RNG DRAW.**
+Grep them yourself if you doubt it. So this is a state-only fix: it will not
+move the RNG number at all, and it will not move the local screen score much
+either. What it does is make `which_armor` (js/worn.js) start returning real
+answers, which `mfndpos`' dig arm, `can_touch_safely` and monster AC all read,
+and it sets `owornmask`/`misc_worn_check`, which nothing currently sets.
+
+Budget it as one full session for m_dowear_type alone; it is long rather than
+subtle, and the payoff is generalization, not local score.
+
+The themerooms are a cluster: eight entries at 3-5% each, collectively larger
+than m_dowear. Check whether they share a code path before choosing -- if they
+do, they are the better target.
 
 ## How to pick a target (this is the part that matters)
 

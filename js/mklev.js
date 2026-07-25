@@ -42,6 +42,7 @@ function mk_knox_portal(x, y) {
     note_unported_lev('mk_knox_portal placement');
 }
 import { random_engraving, wipeout_text } from './engrave.js';
+import { merged } from './invent.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
 const NON_PM = -1;
@@ -274,9 +275,10 @@ function add_to_container(container, obj) {
     return obj;
 }
 
+/* src/invent.c merged() takes struct obj ** for both, because otmp can be
+   replaced by oname(). js/invent.js keeps that with one-element holders. */
 function merged_p(otmp, obj) {
-    note_unported_lev('merged');
-    return false;
+    return merged({ o: otmp }, { o: obj }) !== 0;
 }
 
 // set_corpsenm stub

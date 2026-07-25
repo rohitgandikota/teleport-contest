@@ -94,6 +94,9 @@ import { GameMap } from './game.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
 import { themerooms, themeroom_fills } from './themerms_data.js';
+import { make_engr_at, wipe_engr_at } from './engrave.js';
+import { DUST } from './const.js';
+import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
@@ -118,7 +121,6 @@ const RANDOM_CLASS = 0;
 const SPBOOK_no_NOVEL = 11;
 
 // Supply chest items
-const DUST = 3;
 const MARK = 6;
 
 const XLIM = 4;
@@ -340,8 +342,12 @@ async function maketrap(x, y, typ) {
 }
 
 // engrave stubs
-function make_engr_at(x, y, text, pristine, epoch, engr_type) { /* stub */ }
-function wipe_engr_at(x, y, cnt, perm) { /* stub */ }
+// src/mklev.c:728 trap_engravings[TRAPNUM] — only three traps leave a warning
+// scratched in the dust next to their niche.
+const trap_engravings = [];
+trap_engravings[TRAPDOOR] = 'Vlad was here';
+trap_engravings[TELEP_TRAP] = 'ad aerarium';
+trap_engravings[LEVEL_TELEP] = 'ad aerarium';
 function make_grave(x, y, text) {
     const loc = game.level?.at(x, y);
     if (loc) loc.typ = GRAVE;
@@ -1474,8 +1480,20 @@ async function makeniche(trap_type) {
             rm.typ = SCORR;
             if (trap_type) {
                 let actualTrap = trap_type;
-                if (is_hole(actualTrap)) actualTrap = ROCKTRAP;
-                await maketrap(xx, yy + dy, actualTrap);
+                if (is_hole(actualTrap) && !Can_fall_thru(g.u.uz))
+                    actualTrap = ROCKTRAP;
+                const ttmp = await maketrap(xx, yy + dy, actualTrap);
+                if (ttmp) {
+                    if (actualTrap !== ROCKTRAP) ttmp.once = 1;
+                    /* src/mklev.c:767 — "ad aerarium" is eleven characters,
+                       and wipe_engr_at() rubs out five of them: two draws per
+                       character, three when it has a rubout substitute. */
+                    if (trap_engravings[actualTrap]) {
+                        make_engr_at(xx, yy - dy,
+                                     trap_engravings[actualTrap], 0, DUST);
+                        wipe_engr_at(xx, yy - dy, 5, false);
+                    }
+                }
             }
             dosdoor(xx, yy, aroom, SDOOR);
         } else {

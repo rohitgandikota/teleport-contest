@@ -54,13 +54,26 @@ for (const e of entries) {
     if (strs.length < 1) continue;
     const ef_txt = strs[0];
 
+    // The first field is the default key binding, written as a character
+    // literal, C('x') for a control key, M('x') for meta, or '\0' for none.
+    // rhack() needs it to tell "bound but not ported yet" from "genuinely not
+    // a command", which is the difference between silence and C's
+    // "Unknown command '%s'." message.
+    let key = 0;
+    const head = e.slice(0, e.indexOf(','));
+    let km;
+    if ((km = /^\s*C\('(.)'\)/.exec(head)))      key = km[1].charCodeAt(0) & 0x1f;
+    else if ((km = /^\s*M\('(.)'\)/.exec(head))) key = 0x80 | km[1].charCodeAt(0);
+    else if ((km = /^\s*'\\\\(.)'/.exec(head)))    key = { n: 10, r: 13, t: 9, 0: 0 }[km[1]] ?? 0;
+    else if ((km = /^\s*'(.)'/.exec(head)))       key = km[1].charCodeAt(0);
+
     // flags is the field after the function pointer; collect the ALL_CAPS
     // identifiers that name known bits.
     let flags = 0;
     for (const m of e.matchAll(/\b([A-Z][A-Z0-9_]{2,})\b/g))
         if (FLAGS[m[1]] !== undefined) flags |= FLAGS[m[1]];
 
-    out.push({ ef_txt, flags });
+    out.push({ ef_txt, key, flags });
 }
 
 const names = Object.keys(FLAGS).sort();
@@ -75,7 +88,7 @@ ${names.map(n => `    ${n}: ${FLAGS[n]},`).join('\n')}
 // src/cmd.c extcmdlist[] — ef_txt and flags, in table order. extcmds_match()
 // walks this in order and returns the indices that matched.
 export const extcmdlist = [
-${out.map(e => `    { ef_txt: ${JSON.stringify(e.ef_txt)}, flags: ${e.flags} },`).join('\n')}
+${out.map(e => `    { ef_txt: ${JSON.stringify(e.ef_txt)}, key: ${e.key}, flags: ${e.flags} },`).join('\n')}
 ];
 `);
 console.log(`wrote ${out.length} extended commands, ${names.length} flag bits`);

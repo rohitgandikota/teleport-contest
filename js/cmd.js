@@ -48,12 +48,20 @@ function isMovementKey(ch) {
 // yet. Listed explicitly so the set shrinks visibly as commands land, rather
 // than hiding behind a catch-all.
 const KNOWN_UNPORTED = new Set([
-    /* ESC and space reach the main prompt only when no window is open — a
-       window consumes its own dismissing key inside display_nhwindow(). C
-       treats both as no-ops here and prints nothing, so they must NOT fall
-       through to the "Unknown command" branch. */
+    /* ESC reaches the main prompt only when no window is open — a window
+       consumes its own dismissing key inside display_nhwindow(). C's parse()
+       treats it as a count cancel and prints nothing.
+
+       SPACE used to be listed here on the same reasoning, and that was wrong.
+       src/cmd.c:2818 skips binding it:
+
+           if (key == ' ' && !flags.rest_on_space)
+               continue;
+
+       so with rest_on_space off — the default — space is bound to nothing and
+       falls through to "Unknown command ' '." C really does print that, on
+       seed0030's very first keystroke among others. */
     '\x1b',
-    ' ',
 ]);
 
 // C ref: hack.c — check if a cell blocks movement

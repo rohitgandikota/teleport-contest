@@ -279,12 +279,19 @@ Three cells differ, and they name two distinct bugs:
    `find_okay_roompos()` matches C, and level-generation RNG agrees call for
    call — so the fountain should be in the same square.
 
-   That points at the DISPLAY layer rather than generation: either we are
-   drawing an object glyph over terrain that C draws as terrain, or a stale
-   remembered glyph is winning. Probe map <31,10> **step-gated to step 21**
-   (see the NOTES entry on probe timing — an ungated probe fires at a different
-   step and told me "no objects here", which is not an answer to this question)
-   and check both `level.objects` at that square and `loc.remembered_glyph`.
+   **Measured, step-gated to step 21:** map <31,10> has `typ = 25` (ROOM), no
+   objects, and a stale `remembered_glyph` of `~`. So it is NOT a display-layer
+   problem and not an object on top of terrain — **our level simply does not
+   have the fountain C has.**
+
+   That is the sharp contradiction to chase: `mkfount()` matches C,
+   `find_okay_roompos()` matches C, and every retry inside it calls
+   `somexyspace()` which DRAWS — so a different retry count would diverge the
+   RNG, and the RNG agrees call for call through all of level generation.
+   Same draws, different square. Either `somexyspace()` maps identical draws to
+   a different coordinate (it was "verified identical" earlier — re-verify,
+   that verification is now suspect), or `mkfount` is being called for a
+   different room than C calls it for.
 
 Fix the hero offset first — it is upstream of everything the pet does, and a
 hero one square away changes what every monster targets.

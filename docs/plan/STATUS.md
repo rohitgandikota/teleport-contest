@@ -226,10 +226,21 @@ Ranked by expected value, from the evidence in this file:
    `clear_path()`. Note no public session appears to create one, so it cannot
    be verified locally — port it for held-out correctness, and expect no local
    movement.
-2. **The run loop** (`lookaround`, 162 lines, ZERO draws). `g` sets
-   `context.run` correctly now but domove single-steps, so C travels several
-   squares where we take one. Pure terrain logic, no PRNG risk, but 162 lines
-   needs verification room.
+2. **The run loop.** `g` sets `context.run` correctly now but domove
+   single-steps, so C travels several squares where we take one.
+
+   Structure, already traced so it need not be re-derived: the repeat is driven
+   by **`gm.multi`**, not by `context.run` alone. `moveloop_core`
+   (src/allmain.c:514) does `if (gm.multi > 0) { lookaround(); ... if
+   (!gm.multi) { context.move = 0; return; } if (context.mv) { if (gm.multi <
+   COLNO && !--gm.multi) end_running(TRUE); ... } }`. `lookaround()`
+   (src/hack.c:3898, 162 lines, **zero draws**) is what clears `multi` when
+   something interesting comes into view.
+
+   So porting this means: `gm.multi` plumbing + the moveloop_core branch +
+   `lookaround` + `end_running`. No PRNG risk anywhere in it, but it is the
+   largest single piece left that has no draws, and a wrong `lookaround` moves
+   the hero silently. Needs a session with room to verify, not a tail-end one.
 3. **The command sweep below** — still the most reliable small-gain source.
 
 **AVOID: the seed0105 boulder.** Four iterations, no fix, three hypotheses

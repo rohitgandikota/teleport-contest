@@ -43,7 +43,31 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## The generalization list is nearly exhausted — switch instrument
+## pluslvl is DONE (+248 RNG). seed0360's next blocker is the WISH code.
+
+After pluslvl, seed0360 diverges at call 2939 instead of 2898, and the first
+mismatch names the next function directly:
+
+    2939  C rn2(67)  ours rn2(12)  @ rnd_otyp_by_namedesc(objnam.c:3522)
+
+That is the object-by-name path, i.e. WISHING. seed0360 is a wizard-mode
+"world tour" session, so it is issuing wishes. Measured:
+
+    rnd_otyp_by_namedesc   src/objnam.c    75 lines  1 draw
+    readobjnam             src/objnam.c   491 lines  8 draws   <- the bulk
+    makewish               src/zap.c      109 lines  0 draws
+
+readobjnam is the big one: it parses an arbitrary wish string into an object.
+491 lines, and the draws are scattered through the parse rather than at the
+end, so a partial port that handles only some syntaxes will spend the wrong
+count on the ones it does not.
+
+Before starting it, check how many public sessions actually wish -- grep the
+session keystrokes for the wish prompt. If it is only seed0360 and seed0108
+(the extcmd-wishlist one), weigh 491 lines against two sessions; the
+divergence-point instrument names what is FIRST, not what is most valuable.
+
+## Reference: the divergence-point instrument
 
 With one 3% entry left, `generalize.mjs` has little more to say. The other
 instrument is the DIVERGENCE POINT of each big session, and its first

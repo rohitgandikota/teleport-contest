@@ -52,11 +52,36 @@ terrain glyphs, and space falling through to "Unknown command".
     3%  themeroom Room in a room
     3%  themeroom Water-surrounded vault
 
-All four are SHAPED rooms with a `des.map`, so they go through
-themeroom_contents() at js/mklev.js:700 -- a DIFFERENT path from everything
-built in this stretch, which handled the des.room() entries. Their contents are
-nested des.room() calls (Room in a room, Nesting rooms) and des.region /
-des.corridor forms.
+**Correction to an earlier note in this file: they are NOT all shaped rooms.**
+Checked against js/themerms_data.js:
+
+    Room in a room                       maps: 0
+    Nesting rooms                        maps: 0
+    Huge room with another room inside   maps: 0
+    Water-surrounded vault               maps: 1   <- the only shaped one
+
+So three of the four take the SAME des.room() path built in this stretch. What
+they need is a general `lspo_room()` function, because their contents are
+NESTED des.room() calls:
+
+    -- "Room in a room"
+    des.room({ type = "ordinary", filled = 1, contents = function()
+       des.room({ type = "ordinary", contents = function()
+          des.door({ state = "random", wall = "all" });
+       end });
+    end });
+
+The des.room option handling currently lives INLINE in themerooms_generate's
+switch (js/mklev.js), which can only handle the top level. Extracting it into
+lspo_room(opts) that create_room()s, topologize()s and then runs `contents`
+with gc.coder->croom pushed -- exactly as src/sp_lev.c:4028 does -- makes the
+nesting work and closes three of the four entries.
+
+Note the inner rooms are SUBROOMS in C (create_subroom, not create_room) when
+gc.coder->croom is already set; check lspo_room's `if (mkr)` branch before
+assuming create_room for both levels.
+
+des.door is also needed for "Room in a room" and is not ported.
 
 Everything else on that list is closed. What went in, bottom-up:
 

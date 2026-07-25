@@ -93,6 +93,27 @@ spends an rn2(3) on every create_monster in the Mines for a dwarf or gnome hero.
 Storeroom's `des.monster({ class = "m", appear_as = "obj:chest" })` takes the
 mkclass(class, G_NOGEN) arm, so the id path is not what to port first.
 
+**Helper status:**
+
+    inside_room       PORTED     pm_to_humidity   PORTED
+    mkclass, makemon, get_location_coord          PORTED
+    enexto             8 lines, wrapper           NOT PORTED
+    enexto_core      154 lines, 1 draw            NOT PORTED
+    goodpos          (measure it)                 NOT PORTED
+
+**Scoping call: port create_monster with enexto RECORDED, not blocked on it.**
+enexto is reached only through
+
+    if (MON_AT(x, y) && enexto(&cc, x, y, pm)) x = cc.x, y = cc.y;
+
+i.e. only when the chosen square is already occupied. On a freshly generated
+level that is rare, and enexto_core spends one draw when it happens. Porting
+create_monster's main path now and recording the collision case is the same
+trade already made for create_object's option arms, and it unblocks Storeroom
+and Cloud room. Do NOT stub enexto to "return false" -- that silently changes
+placement; record it and leave x,y as they were, which is what C does when
+enexto fails.
+
 ### des.object chain, for reference:
 
     lspo_object    src/sp_lev.c  199 lines  0 direct draws

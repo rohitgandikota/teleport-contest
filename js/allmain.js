@@ -6,6 +6,7 @@
 import { game } from './gstate.js';
 import { rn2, rn1 } from './rng.js';
 import { exerchk } from './attrib.js';
+import { init_uhunger } from './eat.js';
 import { ask_do_tutorial } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
@@ -183,6 +184,10 @@ export async function newgame() {
     // role's and race's level-1 intrinsics. Draws nothing itself, but Fast
     // makes u_calc_moveamt() draw every turn thereafter.
     adjabil(0, 1);
+
+    /* src/u_init.c:1002 — init_uhunger() sits between adjabil() and the spell
+       book clear. exerper() consults uhunger every tenth move. */
+    init_uhunger();
 
     // src/allmain.c:816-818 — docrt(); flush_screen(1); bot(); all run BEFORE
     // u_init_skills_discoveries() and the legacy pager, which is why the legacy

@@ -42,6 +42,34 @@ inventory instead of replaying it.
 | **Blocked on** | nothing |
 | **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **109,593/792,838 (13.8%)** |
 
+### Two sessions within touching distance of a full pass
+
+**seed0102 at 4451/4485 (99.2%)** and **seed0101 at 2306/2371 (97.3%)**. Nothing
+else in the corpus is close. Both are worth more than any breadth work.
+
+**seed0102** needs the pet. Its remaining 34 calls are `obj_resists`, `dog_goal`,
+`dog_move`, `score_targ` — and note the ORDER: `obj_resists(zap.c:1469)` fires
+*before* `dog_goal(dogmove.c:554)`'s `rn2(8)`, so it is not the `can_carry()` in
+that same condition (which follows the rn2). It comes from an earlier object in
+`dog_goal`'s square scan. Porting this needs the scan order, `dogfood()`,
+`can_carry()` and `m_cansee()`, not just the two functions the tags name.
+
+Good news for scoping: **`mfndpos` is NOT needed for the pet.** m_move dispatches
+tame monsters at src/monmove.c:1773, which is *before* the `mfndpos` call at
+:1925. The 243-line no-RNG function can wait.
+
+**seed0101** (and 3 more) block on `next_ident(mkobj.c:521)` inside starting
+inventory. At seed0104 call 2525 C draws `rnd(2)` from next_ident where we draw
+`rn2(1)` from `trquan` — the two are transposed by one position, so we create an
+object one step later than C, or one earlier.
+
+Checked and NOT the cause: our `ini_inv` loop tail matches C's
+(`if (--quan) continue; trop++; quan = trquan(trop);`), and C's `trquan` on the
+terminating entry returns 1 without drawing because `trquan_min` is 0 there, so
+our `if (trop)` guard is equivalent. Look instead at `ini_inv_adjust_obj` and the
+`obj->quan = trquan(trop)` at u_init.c:1227, which is a THIRD trquan call site
+inside the loop body.
+
 ### CORRECTION: `--More--` is NOT the biggest opportunity — it is unreachable
 
 The claim below ("9.7% of the public score sitting behind one piece of topl.c")

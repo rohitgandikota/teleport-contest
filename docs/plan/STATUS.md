@@ -163,9 +163,28 @@ that same condition (which follows the rn2). It comes from an earlier object in
 `dog_goal`'s square scan. Porting this needs the scan order, `dogfood()`,
 `can_carry()` and `m_cansee()`, not just the two functions the tags name.
 
-Good news for scoping: **`mfndpos` is NOT needed for the pet.** m_move dispatches
-tame monsters at src/monmove.c:1773, which is *before* the `mfndpos` call at
-:1925. The 243-line no-RNG function can wait.
+**CORRECTION on scoping: `mfndpos` IS needed for the pet.** m_move dispatches
+tame monsters at src/monmove.c:1773, before *its own* mfndpos call at :1925 —
+but `dog_move()` has one of its own at **src/dogmove.c:1063**, and that is what
+actually moves the pet. The 243-line function cannot be skipped.
+
+**Why seed0102 still diverges, measured rather than guessed.** With the move
+loop restructured, `dochug` now runs and the pet is correctly first in the
+monster list (`tame:10 at (29,8)`, matching C's fmon ordering). But
+`dog_goal`'s search finds **zero objects** inside its box, where C finds one:
+
+```
+pet at (29,8)  ->  search box x 24..34, y 3..13
+our objects:  (74,2) (73,17) (65,17) (65,7) (61,11) (56,17) (43,10) (41,9)
+              (40,6) (39,5) (30,14) (28,16) (28,16) (23,14) (7,5) (22,10) (48,14)
+```
+
+The nearest, (30,14), misses by one square on y. That is not an object-placement
+bug: **our pet has never moved.** C's pet has been walking since turn one, so by
+this point the two are standing in different places and C's happens to be within
+reach of something. Chasing the object list is the wrong thread — the pet has to
+actually move first, which means `mfndpos` and the movement-selection tail of
+`dog_move`.
 
 **seed0101 is the SAME blocker — it is the pet too.** Its divergence is at call
 2293, immediately after `moveloop_preamble`:

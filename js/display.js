@@ -11,6 +11,7 @@ import {
     D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED,
 } from './const.js';
 import { nhgetch } from './input.js';
+import { def_monsyms, def_oc_syms } from './drawing_data.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, DEC_TO_UNICODE } from './terminal.js';
 
 // ── ANSI color codes ──
@@ -92,7 +93,30 @@ export function newsym(x, y) {
         return;
     }
 
-    // Contestants: add monster, object, and trap display here.
+    // src/display.c newsym() picks in priority order: hero, then monster, then
+    // object, then trap, then terrain. Only the cell in sight is redrawn; a
+    // remembered glyph is what the hero recalls of somewhere no longer visible.
+    if (cansee(x, y)) {
+        const mon = (game.level?.monsters || [])
+                        .find(m => m.mx === x && m.my === y && m.mhp > 0
+                                   && !m.msleeping_hidden);
+        if (mon) {
+            show_glyph_cell(x, y, def_monsyms[mon.data.mlet] || '?',
+                            mon.data.mcolor ?? NO_COLOR, false);
+            return;
+        }
+
+        /* C shows the TOP of the pile, and our object list is newest-first
+           (place_object prepends), so the first match is the top. */
+        const obj = (game.level?.objects || [])
+                        .find(o => o.ox === x && o.oy === y);
+        if (obj) {
+            const oc = game.objects?.[obj.otyp];
+            show_glyph_cell(x, y, def_oc_syms[obj.oclass] || '?',
+                            oc?.oc_color ?? NO_COLOR, false);
+            return;
+        }
+    }
 
     const tg = terrain_glyph(loc, x, y);
     // Only update display/memory if cell is IN_SIGHT (lit and visible)

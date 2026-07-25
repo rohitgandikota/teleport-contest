@@ -159,3 +159,65 @@ export function fill_temple_of_the_gods(rm) {
     for (const _ of (game.splev_align || []))
         note_unported_themerms('des.altar');
 }
+
+// dat/themerms.lua:92 "Spider nest"
+//
+//     local spooders = nh.level_difficulty() > 8;
+//     local locs = selection.room():percentage(30);
+//     locs:iterate(function(x,y)
+//        des.trap({ type = "web", x = x, y = y,
+//                   spider_on_web = spooders and percent(80) });
+//     end);
+//
+// Lua's `and` SHORT-CIRCUITS, so percent(80) is evaluated only when spooders is
+// true. On a level of difficulty 8 or less this fill spends no draws inside the
+// loop at all; above it, one per selected square. Writing it as an unconditional
+// percent(80) would add a draw per square on every shallow level.
+export function fill_spider_nest(rm) {
+    const spooders = level_difficulty() > 8;
+    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+
+    selection_iterate(locs, (x, y) => {
+        const spider_on_web = spooders && percent(80);
+        note_unported_themerms('des.trap:web');
+    });
+}
+
+// dat/themerms.lua:253 "Storeroom"
+//
+//     local locs = selection.room():percentage(30);
+//     locs:iterate(function(x,y)
+//        if (percent(25)) then des.object("chest");
+//        else des.monster({ class = "m", appear_as = "obj:chest" }); end
+//     end);
+export function fill_storeroom(rm) {
+    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+
+    selection_iterate(locs, (x, y) => {
+        if (percent(25))
+            note_unported_themerms('des.object:chest');
+        else
+            note_unported_themerms('des.monster:mimic-as-chest');
+    });
+}
+
+// dat/themerms.lua:65 "Cloud room"
+//
+//     local fog = selection.room();
+//     for i = 1, (fog:numpoints() / 4) do
+//        des.monster({ id = "fog cloud", asleep = true });
+//     end
+//     des.gas_cloud({ selection = fog });
+//
+// Lua's numeric for with a fractional limit runs while i <= limit, so a room of
+// 14 squares gives 3.5 and three iterations. No draws here; the monsters and
+// the gas cloud are what record.
+export function fill_cloud_room(rm) {
+    const fog = selection_from_mkroom(rm);
+    const limit = selection_numpoints(fog) / 4;
+
+    for (let i = 1; i <= limit; i++)
+        note_unported_themerms('des.monster:fog cloud');
+
+    note_unported_themerms('des.gas_cloud');
+}

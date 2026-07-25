@@ -40,7 +40,7 @@ inventory instead of replaying it.
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
 | **Also open** | **`--More--`** (1108 frames, 40 sessions), **dogmove.c** (7), `mkobj.c:289` (5) |
 | **Blocked on** | nothing |
-| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **110,110/792,838 (13.9%)** · held-out **10.6%** |
+| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **111,527/792,838 (14.1%)** · held-out **10.6%** |
 
 ### Pet: object search wired, but seed0102 still does not reach it
 
@@ -406,6 +406,52 @@ nhwindow call sites after all.
 then the state model discarded, now the trigger localised — but if the next
 attempt does not land it, switch to `m_move` and come back with fresh eyes.
 1108 frames is worth real effort, not unbounded effort.
+
+### The monster phase is ported; the open question is movement accumulation
+
+`dochug` -> `m_move` / `dog_move` -> `mfndpos` -> `newdogpos` is complete end to
+end, plus `mon_allowflags`, `disturb`, `dog_invent`, `dog_goal` and the choice
+loops. `js/fastforward.js` is deleted.
+
+**What is left, measured on seed8000.** C runs FOUR `distfleeck` calls per turn;
+we run two. Its log makes the whole turn shape explicit:
+
+```
+2975-2978  rn2(12)  mcalcmove x4        <- allotment, end of invocation N
+2979       rn2(70)  maybe_generate_rnd_mon
+2980       rn2(300) dosounds
+2981       rn2(20)  gethungry
+2982       rn2(82)  moveloop_core        <- u_wipe_engr gate
+2983-2986  rn2(5)   distfleeck x4        <- invocation N+1's movemon
+2987-2990  rn2(12)  mcalcmove x4         <- and its allotment
+```
+
+So our loop ORDER is right (movemon first, then the new-turn block). What
+differs is which monsters clear the bar. Our four have
+
+```
+speed 1  movement 0      speed 6  movement 0
+speed 12 movement 12     speed 1  movement 0
+```
+
+Only the speed-12 one banks a full ration each turn. A speed-1 monster gets 12
+movement one turn in twelve (`mmove_adj = 1 % 12 = 1; if (rn2(12) < 1)`), so it
+should act about once every twelve turns — yet C's four all act every turn.
+
+Ruled out already, so do not re-check:
+- `mcalcmove` matches C line for line, including that the `rn2(NORMAL_SPEED)`
+  fires even when `mmove_adj` is 0.
+- `mmove` is present for all 383 entries in the generated monster table.
+- `makemon` does not set `movement` in C either — `cg.zeromonst` zeroes it, and
+  ours starts at 0 too.
+- The sleep path: `disturb()` is now ported and changed nothing here.
+
+So the candidate is **accumulation across turns**. Check whether C's monsters
+carry movement forward in a way ours do not — in particular whether anything
+resets `mtmp->movement` between turns, and whether the four monsters C moves are
+even the same four species we generate. Compare our monster list against the
+recorded screen at the same step: if the species differ, the divergence is
+upstream in `makemon`, not in the movement arithmetic at all.
 
 ### The leaderboard, and what it says about our real problem
 

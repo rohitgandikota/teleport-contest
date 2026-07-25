@@ -1941,8 +1941,10 @@ async function fill_ordinary_room(croom, bonus_items) {
                     const otmp = mksobj(otyp, true, false);
                     if (otmp && otyp === POT_HEALING && rn2(2)) {
                         otmp.quan = 2;
+                        otmp.owt = weight(otmp);
                     }
                     cursed_item = otmp?.cursed ?? false;
+                    add_to_container(supply_chest, otmp);
                     if (++tryct2 >= 50) break;
                 } while (cursed_item || !rn2(5));
                 if (rn2(3)) {
@@ -1952,12 +1954,28 @@ async function fill_ordinary_room(croom, bonus_items) {
                     const oclass = extra_classes[rn2(extra_classes.length)];
                     let otmp = mkobj(oclass, false);
                     if (oclass === SPBOOK_no_NOVEL && otmp) {
-                        const depth = g.u?.uz?.dlevel ?? 1;
-                        const maxpass = (depth > 2) ? 2 : 3;
-                        for (let pass = 1; pass <= maxpass; pass++) {
-                            mkobj(oclass, false);
+                        const dpth = depth_of_level(g.u.uz);
+                        const maxpass = (dpth > 2) ? 2 : 3;
+
+                        /* bias towards lower level by generating again and
+                           taking the LOWER-level book. Drawing both and
+                           keeping the first spends the same RNG but leaves a
+                           different book in the chest — oc_level only started
+                           resolving once objclass.h's #define aliases were
+                           emitted. */
+                        for (let pass = 1; pass <= maxpass; ++pass) {
+                            const otmp2 = mkobj(oclass, false);
+
+                            if (game.objects[otmp.otyp].oc_level
+                                <= game.objects[otmp2.otyp].oc_level) {
+                                dealloc_obj(otmp2);
+                            } else {
+                                dealloc_obj(otmp);
+                                otmp = otmp2;
+                            }
                         }
                     }
+                    add_to_container(supply_chest, otmp);
                 }
             }
             skip_chests = true;
@@ -1968,8 +1986,7 @@ async function fill_ordinary_room(croom, bonus_items) {
         mksobj_at(rn2(3) ? LARGE_BOX : CHEST, pos.x, pos.y, true, false);
     }
     // Graffiti
-    const depth = g.u?.uz?.dlevel ?? 1;
-    if (!rn2(27 + 3 * Math.abs(depth))) {
+    if (!rn2(27 + 3 * Math.abs(depth_of_level(g.u.uz)))) {
         const { text: engrText } = random_engraving();
         if (engrText) {
             do {

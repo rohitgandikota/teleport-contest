@@ -488,10 +488,14 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     /* src/dogmove.c:565 — follow the player.
        gtyp is UNDEF whenever the object search above found nothing. */
     if (gtyp === UNDEF) {
-        game.gg = { gx: game.u.ux, gy: game.u.uy, gtyp };
+        /* src/dogmove.c:566 — gg.gx/gg.gy ARE the goal dog_move steers by
+           (GDIST reads them). Writing them into a separate game.gg left the
+           local gx/gy at 0,0, so an appr = 1 pet walked toward the top-left
+           corner of the map instead of toward the hero. */
+        gx = game.u.ux;
+        gy = game.u.uy;
 
-        if (after && udist <= 4 && game.u.ux === game.gg.gx
-            && game.u.uy === game.gg.gy)
+        if (after && udist <= 4 && game.u.ux === gx && game.u.uy === gy)
             return -2;
 
         let appr = (udist >= 9) ? 1 : (mtmp.mflee ? -1 : 0);

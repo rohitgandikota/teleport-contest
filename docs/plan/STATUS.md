@@ -373,9 +373,24 @@ rendered correctly, so this is the window's drawn EXTENT being one column
 narrow, not the message content.
 
 `compute_offx()` in js/tty/wintty.js was compared against
-win/tty/wintty.c:1908 and **matches exactly**, so the bug is in what the window
-BLANKS when painted, not where it starts. Find where NHW_TEXT rows are cleared
-and check the right-edge/left-edge bound against C's `tty_display_nhwindow`.
+win/tty/wintty.c:1908 and **matches exactly**, so the bug is not where the
+window starts.
+
+Traced further: `render_page()` in js/tty/wintty.js blanks from the end of each
+line to COLS, so a line that exists but is EMPTY would still blank column 22.
+We show map there across **six consecutive rows (7-12)**, which means those
+rows are not painted at all — our window has fewer lines than C's.
+
+Two candidates, both cheap to test:
+1. Our legacy text genuinely has fewer lines. `deliver_by_window()` in
+   js/questpgr.js splits the Lua string on `\n`; compare the line count
+   against what C's `dat/` entry holds.
+2. C clears its window's whole RECTANGLE when painting, not just the rows that
+   have content. Check `tty_display_nhwindow`'s NHW_MENU/NHW_TEXT arm in
+   win/tty/wintty.c for a clear-region step before the row loop.
+
+Six cells is the entire remaining gap on this screen, and the same window opens
+32 of the 44 sessions.
 
 Note also win/tty/wintty.c:1921 — inside the same function, BEFORE painting:
 `if (ttyDisplay->toplin == TOPLINE_NEED_MORE) tty_display_nhwindow(WIN_MESSAGE,

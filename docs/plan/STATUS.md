@@ -580,6 +580,39 @@ rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
 line number. Everything downstream of that assumption has been chased and
 eliminated.
 
+### more() is ported and consumes its key; the FRAME it draws is still wrong
+
+`js/display.js` now has `more()` and `pline()` sets `TOPLINE_NEED_MORE`, hooked
+where C hooks it (win/tty/wintty.c:1921 — displaying a menu with an
+unacknowledged top line runs more() first). The keystream effect is correct and
+that was the point: seed0077 step 13's tutorial menu now matches C row for row
+with its cursor on `[27,6,1]`, where before it was showing C's second-pass
+"(Please choose 'y' or 'n'.)" line because the key had been eaten.
+
+**But the frame more() itself draws is wrong.** seed0077 step 12:
+
+```
+C:     Hello Shade, welcome to NetHack!  You are a chaotic male human Rogue.--More--
+       (plus the whole map below)
+ours:                                                                        --More--
+       (nothing else at all)
+```
+
+The cursor is right — `[77,0,1]` in both — so the suffix is being placed at the
+correct column. What is missing is the MESSAGE it should follow and the map
+underneath. 117 cells differ where 25 did before.
+
+`more()` clears `game._pending_message` only AFTER its `await nhgetch()`, so the
+message should still be on screen when the frame is captured. Something else is
+clearing it, or `_buildScreenOutput` is running at the nhgetch hook and redrawing
+row 0 from an already-empty `_pending_message`. Find which before touching
+`more()` again — the suffix placement and the key consumption are both already
+right.
+
+Net effect on the score is zero (135 screens either way), so this is a
+correctness debt rather than a regression, but step 12 is visibly worse than
+before while step 13 is visibly better.
+
 ### FOUND: NetHack 5.0 asks "do a tutorial?" at startup — 32 of 44 sessions
 
 `moveloop()` is three lines:

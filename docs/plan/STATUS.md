@@ -216,6 +216,40 @@ This is worth more than its one session: any command that targets a location
 goes through getpos, so the same gap silently mis-aligns every session that
 uses one.
 
+### The command sweep — currently the most productive line
+
+`/tmp/cnt.mjs` (recreate it: count how often each C command key appears across
+`sessions/*.session.json`, minus the ones rhack already handles) ranks the
+unhandled commands by how often the corpus actually issues them. Working that
+list produced, in order: `.` wait (+179 RNG, +1 screen), `doeat` (+132, +1),
+`g`/`m` prefixes (+1 screen), `dochat` (+8), plus `getobj` for seven commands,
+`F`, `dothrow` and `walk_path` — all correct-but-neutral locally and real for
+held-out sessions.
+
+**The unhandled commands split into two kinds, and the second is easy to miss:**
+
+- **Input consumers** (`f`, `c`, `e`, `t`, and the getobj seven). They read
+  extra keys. Skipping them misaligns the keystream and every later key runs
+  against the wrong command.
+- **Prefixes** (`F`, `g`, `m`). They read NO extra key, so counts stay correct
+  and nothing looks wrong — but they change what the NEXT command does. `F`
+  makes a move attack instead of stepping; `g` makes it run several squares.
+  Both displace the hero silently.
+
+**Still unhandled, with why each is not simply more of the same:**
+
+| key | n | blocker |
+|---|---|---|
+| `a` | 232 | needs each `use_*()`'s own return value; a first attempt that assumed ECMD_TIME cost a screen on seed0077 |
+| `r` `d` `w` | 437 | wired via getobj; the EFFECTS are unported |
+| `?` | 113 | opens a menu that reads its own keys — count is menu-dependent |
+| `p` | 109 | shops |
+| `>` | 81 | `next_level()` -> `goto_level()`. Note the common case already matches: off stairs, C returns ECMD_OK having read nothing, exactly as an unhandled key does |
+
+**The remaining big wins are effects, not input plumbing:** the run loop
+(`lookaround`, 162 lines, zero draws — portable but unverifiable in a short
+session), `throwit`'s trajectory, combat (`mattacku`), and `goto_level`.
+
 ### The technique that is currently producing: screendiff before the divergence
 
 RNG-chasing stopped yielding screens for several stretches. What works now is

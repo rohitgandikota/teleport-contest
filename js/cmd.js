@@ -152,7 +152,15 @@ function note_unported_cmd(what) {
 // left unread turns its own letters into commands, which is what "#jump\n"
 // was doing — j and u moved the hero and the rest were swallowed.
 export async function getlin(query, hook) {
+    /* C tracks two things: obufp, the buffer, and bufp, the insertion point
+       inside it. They come apart under NEWAUTOCOMP (win/tty/getline.c:11,
+       always defined) because a completion extends the buffer while leaving
+       "pointer and cursor ... where they were". Modelling only the buffer put
+       our cursor at the end of the expansion; C leaves it after the typed
+       characters, which is a cursor-only mismatch on an otherwise exact
+       screen. */
     let buf = '';
+    let pos = 0;
 
     for (;;) {
         /* win/tty/getline.c hooked_tty_getlin():
@@ -174,7 +182,7 @@ export async function getlin(query, hook) {
         const display = game?.nhDisplay;
         if (display) {
             const CO = display.cols ?? 80;
-            display.setCursor(Math.min(query.length + 1 + buf.length, CO - 1), 0);
+            display.setCursor(Math.min(query.length + 1 + pos, CO - 1), 0);
         }
 
         const c = String.fromCharCode(await nhgetch());
@@ -184,23 +192,31 @@ export async function getlin(query, hook) {
                on an empty line abandons. Returning immediately either way ate
                a key the C spends going round again. */
             if (buf !== '') {
-                buf = '';
+                buf = '';               /* obufp[0] = '\0'; bufp = obufp; */
+                pos = 0;
                 continue;
             }
             return '\x1b';
         } else if (c === '\n' || c === '\r') {
+            /* NEWAUTOCOMP does NOT truncate here, so a completed name is
+               returned whole even though the cursor sat mid-string. */
             break;
         } else if (c === '\b' || c === '\x7f') {
-            if (buf !== '')
-                buf = buf.slice(0, -1);
+            /*  bufp--; ... *bufp = 0;  — back up and drop the rest. */
+            if (pos > 0) {
+                pos--;
+                buf = buf.slice(0, pos);
+            }
             /* else tty_nhbell() */
-        } else if (c >= ' ' && c !== '\x7f' && buf.length < COLNO) {
-            buf += c;
-            /* if (hook && (*hook)(obufp)) { putsyms(bufp); bufp = eos(bufp); } */
+        } else if (c >= ' ' && c !== '\x7f' && pos < COLNO) {
+            /*  *bufp = c; bufp[1] = 0;  — the new character REPLACES whatever
+                the previous completion had put after the cursor. */
+            buf = buf.slice(0, pos) + c;
+            pos++;
             if (hook) {
                 const completed = hook(buf);
                 if (completed !== null)
-                    buf = completed;
+                    buf = completed;    /* pointer and cursor left where they were */
             }
         }
     }

@@ -537,17 +537,29 @@ jackal always acts, the newt acts 1/2 of the time, each lichen 1/12. Expected
 turns per turn ~1.67, and we measure 1-3. C measures 4, essentially always,
 which is only possible if all four of its monsters have speed >= 12.
 
-So C's species really are different, and yet every input to the selection that
-can be compared matches. The two candidates that have NOT been checked:
+Both now checked, and both MATCH:
 
-1. **`uncommon(mndx)`** — the last filter before the weight is computed. If ours
-   excludes a class of monster C admits (or vice versa) the eligible pool
-   differs while every draw still lines up.
-2. **`level_difficulty()`** — feeds `zlevel`, hence both bounds. Worth printing
-   ours alongside C's expected value for dlevel 1 rather than assuming.
+- `uncommon(mndx)` — identical: `G_NOGEN | G_UNIQ`, then `mvitals & G_GONE`,
+  then the Inhell / `G_HELL` split.
+- `level_difficulty()` — ours is `depth(u.uz)`, exactly C's ordinary-dungeon
+  branch. For dlevel 1 both give 1.
 
-Check those two before touching anything else. Everything else in this path is
-verified.
+**So the entire rndmonst path is verified and the bug is NOT in it.** With
+zlevel 1 and ulevel 1, `maxmlev = (1 + 1) / 2 = 1` and `minmlev = 0`, so only
+difficulty 0-1 monsters are eligible — and those are the slow ones. Both C and
+our port compute the same bounds from the same inputs.
+
+**Which means the premise is wrong somewhere.** Either C's four monsters were
+not all produced by `makemon(NULL, ...)` / `rndmonst` — a themed-room fill, a
+`G_SGROUP` group spawn (which puts several jackals down at once), or a special
+placement would each bypass the difficulty bounds — or `u.ulevel` is not 1 at
+the moment they are created, which would raise `maxmlev` and admit faster
+monsters.
+
+Next step is a MEASUREMENT, not a code change: record the call site and species
+of each of our four inside `makemon`, and compare against what C's stream
+implies at the same call indices. Do not keep auditing rndmonst's inputs —
+every one of them is now verified.
 
 ### The leaderboard, and what it says about our real problem
 

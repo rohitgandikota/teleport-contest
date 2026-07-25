@@ -164,8 +164,26 @@ spots that then block. Our port sets `_toplin = TOPLINE_NEED_MORE` in `pline()`
 and **never clears it**, so after the first message of the game it is
 permanently set and any suffix keyed off it draws on every frame.
 
-Port that clear first. Only once `_toplin` tracks C's will any of the three
-placements above be testable.
+That clear is now ported (js/allmain.js, before the startup `docrt()`), and it
+is score-neutral on its own.
+
+**Still unresolved — where the startup `--More--` actually comes from.**
+Eliminated so far, each by reading the C rather than guessing:
+
+- the `NHW_MAP` arm (wintty.c:1885) — it only flushes when `blocking` is TRUE,
+  and every `display_nhwindow(WIN_MAP, TRUE)` in src/ is in detect.c;
+- the `NHW_TEXT`/`NHW_MENU` arm (wintty.c:1922) — seed5002's rc sets
+  `!legacy`, so no text window is shown at startup;
+- a second message joining the first via `update_topl`'s two-space append —
+  `welcome()` is a single pline and the double space is in its format string.
+
+What is known for certain: seed5002 has **124 steps for 123 keystrokes** with
+`steps[0].key === null`, so C is inside a blocking read at step 0 with the
+suffix already painted, and one key clears it either way — alignment is safe.
+Next thing to try: instrument the C recorder itself, or diff seed5002's step 0
+against a session whose rc does NOT produce a startup `--More--`, to find what
+differs. Do not add another speculative `more()` call; three have been tried and
+all three cost 21 screens and seed8000's pass.
 
 Two cautions, both learned the hard way:
 

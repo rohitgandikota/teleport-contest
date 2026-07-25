@@ -474,10 +474,39 @@ acting is about 1.7, and C shows four consistently.
    still has 12, and the inner `movemon()` loop lets it act again — so four
    `distfleeck` calls could be two monsters moving twice, not four moving once.
 
-Distinguishing them is cheap: count C's `mcalcmove` draws per turn (four, so C
-has exactly four monsters) and then check whether any single turn shows more
-`distfleeck` calls than C has monsters. If it does, reading 2 is right and our
-species may be fine.
+**Test run, and reading 1 is DISPROVEN.** C's per-turn counts over the first
+dozen turns are:
+
+```
+4m/0d  4m/4d  4m/4d  4m/4d  4m/2d  4m/4d  4m/4d  4m/2d  4m/4d  4m/4d  4m/4d
+```
+
+Four `mcalcmove` every turn, so exactly four monsters, and never more than four
+`distfleeck` — so no monster acts twice and reading 2 is out too.
+
+And the probability table is fine. Verified against `include/monsters.h`
+entry by entry:
+
+```
+sewer rat  geno=161  = G_GENO|G_SGROUP|1   freq 1   correct
+lichen     geno=36   = G_GENO|4            freq 4   correct
+newt       geno=37   = G_GENO|5            freq 5   correct
+jackal     geno=163  = G_GENO|G_SGROUP|3   freq 3   correct
+```
+
+(`G_SGROUP` is 0x80 and `G_FREQ` is 0x07, both from monflag.h.) Lichens and newts
+are among the most common early monsters, so generating two lichens and a newt on
+level 1 is entirely plausible — our species are very likely RIGHT.
+
+**So both readings are dead and the contradiction stands:** four monsters with
+speeds 1, 6, 12, 1 cannot yield four turns per turn, yet C does it consistently.
+Something else grants movement. Next places to look, in order:
+1. `mcalcdistress()` — runs immediately before the allotment in C and is not
+   ported at all. If it adjusts `mtmp->movement` or `mspeed`, that is the answer.
+2. `m_everyturn_effect()` — called by `movemon_singlemon` BEFORE the
+   `movement < NORMAL_SPEED` test, so it can change the very field being tested.
+3. Whether C's monsters carry `mspeed == MFAST`, which multiplies mmove by 4/3
+   before the rounding.
 
 ### The leaderboard, and what it says about our real problem
 

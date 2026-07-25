@@ -43,7 +43,31 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## The next thing to do — identified precisely, do not re-derive
+## Do this first: `merged`. It is reached by 58% of random games.
+
+`tools/generalize.mjs` runs 40 games on seeds NONE of which come from
+`sessions/`, so what it reports is generalization, not public-session fit.
+Latest run:
+
+     58%  merged                        <-- src/invent.c:814
+     20%  m_dowear with inventory
+      5%  themeroom Default room with themed fill
+      5%  themeroom Unlit room with themed fill
+      3%  (six more themerooms, one themeroom_fill)
+
+`merged` is reached during level generation in well over half of ALL games,
+public and held-out alike. Nothing else on the worklist is close. It needs
+`weight` and `obj_extract_self` first; `mergable` is a pure predicate and was
+already read in full against src/invent.c during this stretch.
+
+`m_dowear` at 20% is second, and it is also what makes `which_armor`
+(js/worn.js) start returning real answers, which mfndpos' dig arm reads.
+
+**Run generalize.mjs before picking any target.** A session-driven divergence
+tells you about one game; this tells you what the held-out half will hit. The
+seed0030 work below is a single session and should come after these two.
+
+## The seed0030 divergence — identified precisely, do not re-derive
 
 **`m_move` is missing its entire post-move block, `src/monmove.c:1660-1681`.**
 

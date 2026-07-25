@@ -261,6 +261,33 @@ node tools/diverge.mjs <seed>          # prints "divergent call occurs at seg N,
 node tools/screendiff.mjs <seed> <M-1> # everything differing here draws nothing
 ```
 
+### dig_corridor's path arithmetic differs from C's — concrete repro
+
+The window-rendering bugs are fixed and 23 of 44 sessions now match at step 0.
+What blocks most of the rest is CONTENT, and there is now a sharp instance.
+
+`node tools/screendiff.mjs seed0105 0` leaves ONE differing cell: C draws a
+boulder (backquote, colour 12) at map <25,17>; we draw plain floor.
+
+Measured: we DO create boulders — three of them, at <52,6>, <31,11> and
+<28,3> — and every constant is right (BOULDER is 475, ROCK_CLASS, glyph
+backquote). C has one at <25,17>, which is none of ours.
+
+Boulders on an ordinary level come from exactly one place:
+**src/sp_lev.c:2605**, inside `dig_corridor()` —
+`if (nxcor && !rn2(50)) mksobj_at(BOULDER, xx, yy, TRUE, FALSE);`
+Our js/mklev.js:1159 has that line and calls mksobj_at correctly.
+
+So the DRAW SEQUENCE matches (RNG agrees call for call through level
+generation) while the COORDINATES the corridor walk reaches between draws do
+not. That is `dig_corridor`'s path arithmetic — the dix/diy stepping below the
+boulder branch — diverging from C's.
+
+Compare js/mklev.js:1128-1180 against src/sp_lev.c's `dig_corridor` line by
+line. This is a good target: the repro is one cell on one session, the
+suspect function is ~50 lines, and corridors exist on every level in both the
+public and held-out sets.
+
 ### Object POSITIONS differ, not counts — narrowed this iteration
 
 `seed0102` (30 calls from a pass) fails the same way as `seed0105`: C's pet

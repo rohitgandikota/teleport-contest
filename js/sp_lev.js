@@ -1148,21 +1148,22 @@ export function lspo_room(opts, create_room_fn, topologize_fn) {
        always spent and always passes. */
     rn2(100);
 
+    /* src/sp_lev.c:2811 build_room() — with a parent room open this is a
+       SUBROOM, and create_subroom spends four rnd() draws of its own. */
     const parent = game.coder?.croom ?? null;
-    if (parent) {
-        /* create_subroom(), not create_room() */
-        note_unported('lspo_room:create_subroom');
-        return null;
-    }
-
-    const ok = create_room_fn(-1, -1, -1, -1, -1, -1, rtype, rlit);
+    const ok = parent
+        ? create_subroom_fn(parent, -1, -1, -1, -1, rtype, rlit)
+        : create_room_fn(-1, -1, -1, -1, -1, -1, rtype, rlit);
     if (!ok) {
         if (game.in_mk_themerooms)
             game.themeroom_failed = true;
         return null;
     }
 
-    const aroom = game.level.rooms[game.level.nroom - 1];
+    /* the room just built: a subroom went into its own array */
+    const aroom = parent
+        ? game.level.subrooms[game.level.subrooms.length - 1]
+        : game.level.rooms[game.level.nroom - 1];
     if (!aroom)
         return null;
 
@@ -1293,3 +1294,6 @@ export function lspo_door(opts) {
 /* okdoor() lives in js/mklev.js; routed through the wire like somexy. */
 let okdoor_fn = () => true;
 export function sp_lev_wire_okdoor(fn) { okdoor_fn = fn; }
+
+let create_subroom_fn = null;
+export function sp_lev_wire_subroom(fn) { create_subroom_fn = fn; }

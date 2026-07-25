@@ -104,7 +104,8 @@ import { DUST, HEADSTONE, OBJ_CONTAINED } from './const.js';
 import { hole_destination } from './trap.js';
 import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap,
-         sp_lev_wire_okdoor, lspo_room, lspo_door } from './sp_lev.js';
+         sp_lev_wire_okdoor, sp_lev_wire_subroom,
+         lspo_room, lspo_door } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
 import { depth as depth_of_level } from './hacklib.js';
@@ -641,6 +642,7 @@ function ROOM_IS_FILLABLE(croom) {
 sp_lev_wire(add_room, add_door, somexy);
 sp_lev_wire_mktrap(mktrap);
 sp_lev_wire_okdoor(okdoor);
+sp_lev_wire_subroom(create_subroom);
 
 // C ref: mklev.c makerooms()
 async function makerooms() {

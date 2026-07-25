@@ -13,10 +13,17 @@ import { selection_iterate } from './selvar.js';
 import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 import { sobj_at } from './invent.js';
-import { is_pool, is_lava, m_at } from './mon.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { mkobj_at, mksobj_at } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
+
+/* is_pool/is_lava/m_at live in js/mon.js, which reaches this file back through
+   invent.js -> mkobj.js. A direct import leaves them in TDZ the second time a
+   level is generated, so they come in through a wire like somexy and okdoor.
+   Declared here, above every use, because a `let` used before its declaration
+   line is itself a TDZ error. */
+let mon_fns = { is_pool: () => false, is_lava: () => false, m_at: () => null };
+export function sp_lev_wire_mon(fns) { mon_fns = fns; }
 import { NON_PM, SPACE_POS, ALTAR, STAIRS, LADDER, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
          W_EAST, W_WEST, D_LOCKED, D_TRAPPED } from './const.js';
 import { MONSYMS, PMNAMES } from './monst_data.js';
@@ -379,9 +386,9 @@ export function is_ok_location(x, y, humidity) {
         if (!bould || (bould && (humidity & SOLID)))
             return true;
     }
-    if ((humidity & WET) && is_pool(x, y))
+    if ((humidity & WET) && mon_fns.is_pool(x, y))
         return true;
-    if ((humidity & HOT) && is_lava(x, y))
+    if ((humidity & HOT) && mon_fns.is_lava(x, y))
         return true;
     return false;
 }
@@ -957,7 +964,7 @@ export function create_monster(m, croom) {
        untouched, so recording and leaving them is the faithful gap. Returning
        false from a stub would silently relocate nothing; returning true would
        silently relocate everything. */
-    if (m_at(x, y))
+    if (mon_fns.m_at(x, y))
         note_unported('create_monster:enexto');
 
     if (croom && !inside_room(croom, x, y))

@@ -108,6 +108,11 @@ import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap,
          lspo_room, lspo_door } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
+
+/* mktrap()'s "no traps in pools" test needs mon.js's terrain predicates, and
+   mklev.js is reached FROM mon.js's import graph, so they arrive by wire. */
+let mklev_mon = { is_pool: () => false, is_lava: () => false };
+export function mklev_wire_mon(fns) { mklev_mon = fns; }
 import { depth as depth_of_level } from './hacklib.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -1998,7 +2003,7 @@ export function mktrap(num, mktrapflags, croom, tm) {
     const m = { x: 0, y: 0 };
 
     /* no traps in pools */
-    if (tm && (is_pool(tm.x, tm.y) || is_lava(tm.x, tm.y)))
+    if (tm && (mklev_mon.is_pool(tm.x, tm.y) || mklev_mon.is_lava(tm.x, tm.y)))
         return;
 
     if (num > NO_TRAP && num < TRAPNUM) {

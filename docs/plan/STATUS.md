@@ -54,27 +54,51 @@ threw at once — **it was measuring a partial run and is withdrawn.** Use
 `frozen/ps_test_runner.mjs`, and note that the runner swallows stderr, so probes
 must write to a file.
 
-Done that way, against the real runner:
+**Every "0 calls" result below was a BROKEN PROBE. Disregard them.** Three
+separate probe attempts silently measured nothing:
 
-- `dog_move()` — **0 calls**
-- `dochug()` — **0 calls**
-- `movemon()` — probe file never written
+1. `console.error` — the runner swallows stderr.
+2. `require("fs")` inside `js/mon.js` — that file is an ES module, so `require`
+   is undefined and the surrounding try/catch ate the ReferenceError.
+3. `import { appendFileSync } from "node:fs"` at the top of `js/mon.js` — broke
+   module loading outright (`RNG 0/0`).
 
-So seed0102 never reaches the monster-movement phase at all. Its "4451 of 4485"
-is matched calls from chargen and level generation; the move loop is not nearly
-finished, it is not entered.
+If you need to instrument a run, verify the probe fires on a session you KNOW
+executes the code first. A silent probe is indistinguishable from a silent bug.
+
+**What is actually true**, by reasoning from the code rather than a probe:
+`mcalcmove` and `movemon` are called from the same `if (g.context?.move)` block
+at js/allmain.js:302-305, and our `mcalcmove` draws MATCH C at seed0102 calls
+4442-4443. So `context.move` is truthy, `movemon()` does run, and `dochug()` does
+run. The monster phase is entered.
 
 `movemon()` is called from `js/allmain.js:302` inside `if (g.context?.move)`, and
 `game.context.move` is set only by the command handlers in `js/cmd.js` (line 74
 onward). seed0102's keys are `#name`, ESC, `f l i`, ESC, `+`, ESC ... `s s :` —
 almost all zero-time commands, so `context.move` stays 0 for most of the session.
 
-**Unresolved, and the next thing to settle:** our `mcalcmove` draws MATCH C's at
-calls 4442-4445, and those live in the same `if (g.context?.move)` block as the
-`movemon()` call a few lines above. Both cannot be true. Either the probe was
-misplaced, or `allmain.js` imports a different `movemon` than `js/mon.js`
-exports. Check that import before touching anything else — if the monster phase
-really is unreachable, it gates far more than the pet.
+**The real signal, from the stream itself.** C's seed0102 run at the divergence:
+
+```
+4442 rn2(12)   mcalcmove          ok
+4443 rn2(12)   mcalcmove          ok      (so C has TWO monsters)
+4444 rn2(70)   maybe_generate_rnd_mon     ok
+4445 rn2(300)  dosounds                   ok
+4446 rn2(20)   gethungry                  ok
+4447 rn2(73)   moveloop_core              ok
+4448 rn2(5)    distfleeck                 ok   <- dochug IS running
+4449 rn2(100)  obj_resists          <-- C scans an object; we emit rn2(12)
+```
+
+An `rn2(12)` at 4449 is another `mcalcmove`, i.e. our move loop has gone round
+again while C is still inside the pet's turn. Combined with 4448 matching, that
+means `dochug` runs, and then either the tame branch is not taken or
+`dog_goal`'s search finds nothing within its 5-square box.
+
+So the question is narrow: **at that moment, is there an object within 5 squares
+of the pet, and is `mtmp.mtame` set?** C clearly has one in range. Compare our
+level's object coordinates against the pet's position at that turn — if they
+differ, the divergence is upstream in placement, not in the pet at all.
 
 ### Two sessions within touching distance of a full pass
 

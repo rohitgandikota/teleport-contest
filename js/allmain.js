@@ -5,6 +5,7 @@
 
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
+import { ask_do_tutorial } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack } from './cmd.js';
@@ -381,6 +382,14 @@ export async function moveloop(resuming) {
     await docrt();
     await flush_screen(1);
 
+    /* src/allmain.c moveloop() — three lines in C, and this is the middle one.
+       NetHack 5.0 asks every new game whether the player wants the tutorial
+       unless the config settled it; 32 of the 44 public sessions never mention
+       `tutorial` in their rc, so they all see the menu and spend a keystroke on
+       it. Answering yes then builds the tut-1 level. */
+    if (!resuming)
+        await maybe_do_tutorial();
+
     for (;;) {
         await moveloop_core();
         if (game.program_state?.gameover) break;
@@ -389,4 +398,14 @@ export async function moveloop(resuming) {
 
 function note_unported_main(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/allmain.c maybe_do_tutorial()
+export async function maybe_do_tutorial() {
+    if (await ask_do_tutorial()) {
+        /* schedule_goto(tut-1) + deferred_goto() builds the tutorial level.
+           Not ported: the special-level loader for tut-1, and goto_level's
+           save/restore of the level being left. */
+        note_unported_main('tutorial level (tut-1)');
+    }
 }

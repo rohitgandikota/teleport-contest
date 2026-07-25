@@ -289,12 +289,27 @@ function main() {
     const objEntries = topLevelEntries(text, 'obj_init');
     const descrEntries = topLevelEntries(text, 'obj_descr_init');
 
+    /* objclass.h overloads several fields through #define, so one storage slot
+       carries a different meaning per object class:
+           #define oc_level  oc_oc2   (books: spell level)
+           #define oc_skill  oc_subtyp
+           #define a_ac      oc_oc1   (armor class)
+       C code reads objects[otyp].oc_level; a JS port that only has oc_oc2 gets
+       undefined, and `undefined > 1` is quietly false. Emit every alias as a
+       real key so the C name resolves, and scrape them rather than list them so
+       a new #define in 5.1 arrives on its own. */
+    const aliases = [...readFileSync(join(RECORDER, 'include/objclass.h'), 'utf8')
+        .matchAll(/^#define\s+(\w+)\s+(oc_\w+)\s*(?:\/\*|$)/gm)]
+        .map((m) => [m[1], m[2]])
+        .filter(([, target]) => objFields.includes(target));
+
     const objects = objEntries.map((e) => {
         const vals = splitFields(e);
         const o = {};
         objFields.forEach((f, i) => {
             o[f] = resolveEnum(value(vals[i]), ENUMS);
         });
+        for (const [alias, target] of aliases) o[alias] = o[target];
         return o;
     });
 

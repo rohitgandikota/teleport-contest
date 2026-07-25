@@ -21,6 +21,8 @@ import { game } from './gstate.js';
 import { rn2, rnd, rne, rn1 } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
+import { skill_tables } from './skills_data.js';
+import { P_NONE } from './const.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
@@ -42,12 +44,34 @@ const {
 const A_CHAOTIC = -1;   /* include/align.h */
 
 // Objects a random starting item must never be. src/u_init.c:1117-1160.
-/* src/u_init.c restricted_spell_discipline() — a spellbook in a school the
-   role may not advance in. Needs the skill tables; reaching one is recorded
-   rather than guessed, because guessing changes the retry count. */
+// src/u_init.c skills_for_role() — the current role's weapon/spell table.
+function skills_for_role() {
+    const mnum = game.urole?.mnum;
+    for (const pm of Object.keys(skill_tables))
+        if (mnum === pm || mnum === PMNAMES[pm])
+            return skill_tables[pm];
+    return null; /* C panics here */
+}
+
+// src/spell.c spell_skilltype() — oc_skill is #defined to oc_subtyp.
+function spell_skilltype(booktype) {
+    return game.objects[booktype].oc_subtyp;
+}
+
+// src/u_init.c restricted_spell_discipline() — true when the role may not train
+// this spellbook's school at all. ini_inv_mkobj_filter() refuses such books, so
+// a table row missing here changes how many times it retries.
 function restricted_spell_discipline(otyp) {
-    (game.unported ||= new Set()).add('restricted_spell_discipline');
-    return false;
+    const skills = skills_for_role();
+    const this_skill = spell_skilltype(otyp);
+
+    for (const [skill] of skills || []) {
+        if (skill === P_NONE)
+            break;
+        if (skill === this_skill)
+            return false;
+    }
+    return true;
 }
 
 function ini_inv_rejects(obj, got_level1_spellbook) {

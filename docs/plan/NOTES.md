@@ -259,6 +259,34 @@ dungeon globals it depends on) took it to 1535 and screens came back to 19.
 while they are still down either — carry on to the next divergence and re-check.
 Only revert when the change cannot be justified against the C source.**
 
+## The second-biggest bug class: the port does the work and drops the result
+
+Distinct from wrong constants, and invisible to every RNG check. The function
+has the right name, the right signature, draws exactly what C draws — and then
+throws away the part that had no draw in it. Four found so far:
+
+| Symptom | Cause |
+|---|---|
+| Spellbook level test never fired | `objects[otyp].oc_level` read `undefined`. `oc_level` is a `#define` onto `oc_oc2`; our generated table had only the underlying names, and `undefined > 1` is quietly false. |
+| Every monster targeted `<0,0>` | `set_apparxy()` absent. Its ordinary path assigns `mux,muy` and returns **without drawing**, so its absence cost zero RNG. |
+| No object ever on any floor | `mkobj_at()`/`mksobj_at()` called `mkobj()` and returned it without `place_object()`. The draws were perfect; only the placement was dropped. |
+| `dochug`'s whole move condition | `distfleeck()`'s `nearby`/`scared` outputs were computed and discarded by the caller. |
+
+Why it survives review: a JS port reading a field nobody writes gets `undefined`,
+and `undefined > 1`, `undefined & FLAG`, `if (undefined)` are all silently false.
+In C every one of these is a compile error.
+
+**How to find them.** Do not read the C for the lines containing `rn2`. Read the
+whole function body and ask what it *writes* — a field, a list, a global — then
+grep our port for a reader of that thing. `place_object`, `mux`, `oc_level` and
+`aexe` were each written by nobody and read by somebody.
+
+The corollary, seen three times in one session: **fixes arrive in pairs.** A
+missing draw costs nothing until something else exposes it. `init_uhunger` was
+invisible until the exercise system existed to read `uhunger`; `distfleeck`'s
+stub was invisible until `set_apparxy` gave it real coordinates. Expect a fix to
+reveal the next bug rather than to raise the score on its own.
+
 ## Hardcoded constants are the single biggest bug class in this port
 
 **Rule: never write a numeric game constant in `js/`. Import it.** Four separate

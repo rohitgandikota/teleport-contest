@@ -403,12 +403,23 @@ differs (NHW_MENU vs NHW_TEXT changes the leading-space rule in
 For C to place the window at offx 21 its `maxcol` must be **58**, so C's
 longest legacy line is one character longer than ours.
 
-That is a TEXT-CONTENT bug, not a windowing bug: `convert_line()` in
-js/questpgr.js substitutes the quest/deity placeholders (`%d` and friends) and
-one of its expansions is coming out a character short. Find the longest line of
-`questtext.common.legacy` after conversion, compare it against the same line in
-C's rendered screen (`node tools/screendiff.mjs seed0102 0` prints C's rows
-verbatim), and fix the substitution.
+That is a TEXT-CONTENT bug, not a windowing bug. Measured both sides:
+
+- Our longest converted line is **56** chars:
+  `"    Under World, where he now lurks, and bides his time."` — FOUR leading
+  spaces. (Dump them by tracing `convert_line()`'s return in
+  `deliver_by_window()`.)
+- C's rendered row 7 shows that same sentence indented one column further,
+  i.e. **five** leading spaces, 57 chars.
+
+57 + 1 = maxcol 58 -> offx 21. So the fix is one leading space on the indented
+lines of the legacy text — check whether `questtext.common.legacy` in
+js/quest_data.js lost a space when it was generated from the Lua, or whether
+`convert_line()` trims one. Compare against `dat/quest.lua`'s `common.legacy`
+entry directly rather than trusting the generated copy.
+
+Note the +1: our `maxcol` came back 57 for a 56-char line, so tty_putstr already
+adds one. C does the same, which is why 57 -> 58 rather than 57 -> 57.
 
 Everything downstream follows from that single character: maxcol 57 -> 58 moves
 offx 22 -> 21, which paints column 22 and closes all six remaining cells. The

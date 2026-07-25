@@ -255,7 +255,29 @@ Emscripten transpile, which generalises almost perfectly but has no
 function-for-function structure to diff, so Phase 2 divides its parity by a
 very large number.
 
-### TOP TARGET: pet_ranged_attk — blocks the two nearest sessions
+### The real blocker for seed0102/seed0105: the PET is in the wrong place
+
+`pet_ranged_attk` is now ported (see below) and seed8000 still matches call for
+call with it active — but neither target session advanced, because their
+divergence is UPSTREAM of it.
+
+Traced: at the divergent call our pet is at **udist = 5** from the hero with
+**appr = 0**. dogmove.c:571 computes
+`appr = (udist >= 9) ? 1 : mtmp->mflee ? -1 : 0`, and appr == 0 is what sends
+dog_goal into the inventory scan whose dogfood() calls spend the rn2(100)s we
+see instead of C's next draw. **C's appr is non-zero there, so C's pet is at
+udist >= 9** — about four squares further from the hero than ours.
+
+So this is pet positional drift, the same class as the seed4500 mfndpos 5-vs-7
+finding, and it draws nothing until it changes a branch like this one. The
+useful next step is per-keystroke tracing of the PET's <x,y> (the technique in
+NOTES that solved the apply regression), diffing our trace against the
+positions C's screens imply, to find the first turn the two part.
+
+Do not chase it through dog_goal's object scan — that scan is a SYMPTOM of
+appr == 0, not the cause.
+
+### pet_ranged_attk — ported, and why it had to wait for clear_path
 
 `seed0102` (24 calls from a full RNG match) and `seed0105` (20) both stop at the
 same place. C's trace:

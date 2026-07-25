@@ -23,7 +23,9 @@ const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2 } from './rng.js';
 import { dist2 } from './hacklib.js';
 import { PMNAMES } from './monst_data.js';
-import { makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster } from './makemon.js';
+import {
+    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider,
+} from './makemon.js';
 
 const NON_PM = -1;
 

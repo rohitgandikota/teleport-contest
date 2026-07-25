@@ -246,13 +246,22 @@ let _nextObjId = 1;
 
 
 
+// src/mkobj.c mksobj_at() — make it, then PUT IT ON THE FLOOR. Returning the
+// object without place_object() meant nothing ever reached level.objects, so
+// every floor object the level generator produced vanished on creation: the
+// pet's search box was always empty and objects the screens expect to see were
+// never drawn.
 function mksobj_at(otyp, x, y, init, artif) {
-    return mksobj(otyp, init, artif);
+    const otmp = mksobj(otyp, init, artif);
+    place_object(otmp, x, y);
+    return otmp;
 }
 
-
+// src/mkobj.c mkobj_at()
 function mkobj_at(oclass, x, y, artif) {
-    return mkobj(oclass, artif);
+    const otmp = mkobj(oclass, artif);
+    place_object(otmp, x, y);
+    return otmp;
 }
 
 /* mkgold() lives in js/mkobj.js, where src/mkobj.c has it. */

@@ -227,6 +227,24 @@ node tools/diverge.mjs <seed>          # prints "divergent call occurs at seg N,
 node tools/screendiff.mjs <seed> <M-1> # everything differing here draws nothing
 ```
 
+### Object POSITIONS differ, not counts — narrowed this iteration
+
+`seed0102` (30 calls from a pass) fails the same way as `seed0105`: C's pet
+finds ONE object in its 5-square box and moves on to dog_goal's rn2(4) at
+dogmove.c:575, while ours finds three or more and keeps drawing obj_resists.
+
+Measured, not guessed: our level carries **25 objects with no duplicates**
+(checked by keying on `ox,oy:otyp`), and the RNG matches all the way through
+level generation, so the same objects are being CREATED. They are landing in
+different PLACES.
+
+`somexyspace` was verified identical earlier, and `mkobj_at`/`mksobj_at` now
+place correctly. That leaves the placers that compute their own coordinates
+rather than calling somexyspace — `mineralize()` is the obvious one, scattering
+gold and gems across the whole map with its own `rn2(1000) < goldprob` walk and
+a buried/floor split. Compare our mineralize's coordinate loop against
+src/mklev.c:1519 line by line before looking anywhere else.
+
 ### Still open from before
 
 Object CONTENT during level generation: on `seed0105` the pet's search box

@@ -40,7 +40,7 @@ inventory instead of replaying it.
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
 | **Also open** | **`--More--`** (1108 frames, 40 sessions), **dogmove.c** (7), `mkobj.c:289` (5) |
 | **Blocked on** | nothing |
-| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **112,138/792,838 (14.1%)** · held-out **10.6%** |
+| **Score** | **148/11,405 screens**, 0/44 sessions passing, corpus RNG **112,138/792,838 (14.1%)** · held-out **10.6%** |
 
 ### Pet: object search wired, but seed0102 still does not reach it
 
@@ -579,6 +579,33 @@ and confirm those four really are four separate monsters entering `dochug` —
 rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
 line number. Everything downstream of that assumption has been chased and
 eliminated.
+
+### Display: seed0077 step 12 is down to ONE differing cell
+
+From 117 at the start of the stretch. The chain, each step exposing the next:
+
+1. `more()` painting its frame before appending the suffix (117 -> 17)
+2. `newsym` gaining the monster and object layers it never had (17 -> 15)
+3. `gen-drawing.mjs` also scraping `OBJCLASS2`, which declares coins — gold was
+   drawing as `?` with the right colour (15 -> 14, three screens corpus-wide)
+4. `SDOOR` mapped, and the open-door orientation un-inverted (14 -> 13)
+5. **`dosdoor` writing `loc.flags` where C writes `doormask`** (13 -> 1)
+
+(5) is the one to remember. In C those are the SAME STORAGE — `doormask` is a
+member of the `rm` struct's `flags` union — so `levl[x][y].flags` reads
+perfectly plausibly. In JS they are two unrelated properties and nothing ever
+read the one being written, so every door on every level stayed at doormask 0
+and drew as floor. Eleven assignments, nine screens, and +174 RNG because door
+state feeds back into generation. **Any C union is a place this port can lose a
+write silently — grep for others.**
+
+**The one cell left** is a tool at level (35,5) that C shows and we do not. It is
+NOT a vision problem: our level genuinely has no object there. Our 17 objects sit
+at (74,14) (71,15) (70,2) (65,11) (65,6) (60,6) (42,4) (18,15) (11,16) (9,5)
+(2,19) — none near it. `somex`/`somey` are verified identical to
+src/mkroom.c:664, and the map itself now matches, so the rooms are right. What
+differs is WHICH room each object lands in, or the order rooms are filled.
+Compare `fill_ordinary_room`'s iteration against C before touching anything.
 
 ### Next: the glyph layer — newsym never draws monsters or objects
 

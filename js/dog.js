@@ -11,7 +11,7 @@
 
 import { game } from './gstate.js';
 import { obj_resists } from './zap.js';
-import { COLNO, ROWNO } from './const.js';
+import { COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL } from './const.js';
 import { OCLASSES } from './objects_data.js';
 import { MFLAGS } from './monst_data.js';
 import { rn2 } from './rng.js';
@@ -146,8 +146,55 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
         }
     }
 
-    note_unported('dog_goal follow-player');
+    /* src/dogmove.c:565 — follow the player.
+       gtyp is UNDEF whenever the object search above found nothing. */
+    if (gtyp === UNDEF) {
+        game.gg = { gx: game.u.ux, gy: game.u.uy, gtyp };
+
+        if (after && udist <= 4 && game.u.ux === game.gg.gx
+            && game.u.uy === game.gg.gy)
+            return -2;
+
+        let appr = (udist >= 9) ? 1 : (mtmp.mflee ? -1 : 0);
+        if (udist > 1) {
+            if (!IS_ROOM(game.level.at(game.u.ux, game.u.uy)?.typ)
+                || !rn2(4) || whappr)
+                appr = 1;
+            /* the dog_has_minvent case needs monster inventory */
+        }
+
+        /* a pet follows more closely when the hero is carrying its food, is
+           on stairs, or is beside a magic portal. The inventory scan calls
+           dogfood() on EVERY carried item, and dogfood() draws — so this is
+           one rn2(100) per item in the pack. */
+        if (appr === 0) {
+            if (On_stairs(game.u.ux, game.u.uy)) {
+                appr = 1;
+            } else {
+                for (const obj of (game.invent || [])) {
+                    if (dogfood(mtmp, obj) === DOGFOOD) {
+                        appr = 1;
+                        break;
+                    }
+                }
+                if (appr === 0) {
+                    const t = (game.level?.traps || [])
+                                  .find(tr => tr.ttyp === MAGIC_PORTAL);
+                    if (t && distu(t.tx, t.ty) <= 2)
+                        appr = 1;
+                }
+            }
+        }
+        return appr;
+    }
+
+    note_unported('dog_goal non-follow goal');
     return 0;
+}
+
+/* src/dungeon.c On_stairs() */
+function On_stairs(x, y) {
+    return (game.level?.stairs || []).some(st => st.sx === x && st.sy === y);
 }
 
 // src/dogmove.c:977 dog_move() — the pet's turn.

@@ -311,6 +311,29 @@ different answers and one wrong NOTES entry, and thirty seconds of reading the
 function's last line settled it. When a question is "what does C do here",
 read C — do not reason from what would be sensible.
 
+## Wiring `a` (apply) costs seed0077 a screen — twice, cause unknown
+
+Two independent attempts, both reverted:
+
+1. `doapply` -> `getobj`, returning ECMD_TIME for every non-direction apply.
+2. `doapply` -> `getobj`, returning ECMD_TIME only for lamps (whose handler
+   `use_lamp()` is void, so doapply's `int res = ECMD_TIME` genuinely survives)
+   and ECMD_OK for everything else, consuming no keys beyond the object letter.
+
+Both cost seed0077-rogue-chargen exactly one screen (17 -> 16). The second
+attempt consumes strictly fewer keys and fewer turns than the first, so the
+cause is NOT simply "we invented a turn" and NOT the ECMD_TIME/ECMD_OK choice.
+
+seed0077's keys around the command are `...jaeji...` — `a` then `e` as the
+object letter. Both C and our port loop in getobj when a letter matches no
+inventory object, so the counts should agree unless **our inventory letters
+differ from C's**. That is the thing to check before a third attempt: dump
+`game.invent`'s invlet assignments for seed0077 and compare against what C's
+inventory screen shows.
+
+Until then `a` stays unwired. It is 232 keystrokes across the corpus and worth
+having, but not at the price of a screen on a session that currently matches.
+
 ## screendiff rows are SCREEN rows, and the map starts at screen row 1
 
 `tools/screendiff.mjs` prints raw terminal rows. The tty layout is: row 0 is the

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-25** · **1 of 44 sessions passes end to end** (`seed8000`), screens **148 → 199**, corpus RNG **14.4%**, **23 of 44 sessions now match at step 0**
+Last updated: **2026-07-25** · **1 of 44 sessions passes end to end** (`seed8000`), screens **148 → 199**, corpus RNG **14.4%**, **23 of 44 match at step 0** · leaderboard **11th → 9th**, held-out screens **43 → 77**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -235,6 +235,25 @@ condition, not on `keyIdx === 0`.
 So the cause of the `a` (apply) regression on seed0077 is still unknown — see
 the NOTES entry, which records both failed attempts. The invlet hypothesis
 there is now also dead: the letters exist and are correct once chargen is done.
+
+### The held-out score is moving, and that is the real check
+
+Leaderboard, scored 2026-07-25T18:58Z: we are **9th of 16**, up from 11th, with
+**77 held-out screens (was 43)** and held-out RNG 10.9%. Public at that pickup
+was 197 with 1/44 passing.
+
+That near-doubling matters more than the public number: none of this session's
+fixes were tuned to a session. The ones that moved it are exactly the ones with
+no local payoff — `getobj` for seven commands, `walk_path`, `somexy`'s
+irregular-room branch, `F`/`g`/`m`, `dothrow` — plus the window `offx` fix,
+which lands on any session opening with an inset window.
+
+Read the board for the strategic picture too: four entrants sit at a perfect
+11405 public with held-out of 2524, 265, 61 and 0. That is the overfitting
+signature the rules warn about. serteal leads at 92.5% held-out via an
+Emscripten transpile, which generalises almost perfectly but has no
+function-for-function structure to diff, so Phase 2 divides its parity by a
+very large number.
 
 ### Where the effort is best spent next — read this before picking
 

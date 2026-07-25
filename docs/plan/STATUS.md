@@ -81,15 +81,37 @@ corpus from 11.4% to 12.2%. `rnd_rect` has left the blocker histogram entirely.
      clover**, an 11x11 map, and C's next two calls are `rn2(68)` and `rn2(10)`
      — i.e. `rn2(80-1-11)` and `rn2(21-11)`. seed0015 picks **S-shaped** (8x11),
      seed0013 picks Four-leaf clover on its fifth themeroom.
-   - After placement comes `filler_region(6,6)`, which is
-     `percent(30)` — one `rn2(100)` — then `des.region({...})`. The recordings
-     show that as `random src=nhlib.lua:10 parent=percent(nhlib.lua:44)`, twice.
-   - Then `litstate_rnd(mkmap.c:446)`, then `rnd_rect`.
+   - The **complete** call sequence for one shaped themeroom, read straight off
+     seed0009's recording (calls 462-468), is only seven draws:
+
+     ```
+     462  rn2(68)    lspo_map(sp_lev.c:6154)     x = 1 + rn2(COLNO-1-wid)
+     463  rn2(10)    lspo_map(sp_lev.c:6164)     y = rn2(ROWNO-hei)
+     464  rn2(100)   percent(nhlib.lua:44)       math.random(0,99) < threshold
+     465  rn2(100)   percent(nhlib.lua:44)       <- SEE OPEN QUESTION
+     466  rnd(2)     litstate_rnd(mkmap.c:446)   rnd(1 + abs(depth))
+     467  rn2(77)    litstate_rnd(mkmap.c:446)   short-circuit never trips
+     468  rn2(4)     rnd_rect(rect.c:106)
+     ```
+
+     Compare the `default` room, which is calls 499-500: `rn2(100)` at
+     `build_room(sp_lev.c:2811)` then `litstate_rnd`. So the shaped path differs by
+     the two `lspo_map` draws plus one extra `percent`.
+
+   **OPEN QUESTION — resolve this before writing the port.** `filler_region(6,6)`
+   (themerms.lua:880) contains exactly ONE `percent(30)`, but the recording shows
+   TWO consecutive `percent()` calls at 464-465. Both are tagged
+   `random src=nhlib.lua:10 parent=percent(nhlib.lua:44)`, so both really do come
+   from Lua's `percent`, not from a C `rn2(100)`. Find the second caller before
+   assuming a shape for this. It is not `themeroom_fill`: 464 rolled 82, which
+   fails `percent(30)`, so `func` stays nil. Candidates to check: whether
+   `lspo_map`'s `contents` callback runs once per matched map fragment, and what
+   `des.region({ irregular = true, filled = 1 })` does on the Lua side.
 
    So the port needed is: `lspo_map` (position, stamp, `mkmap`-style lit state),
    `lspo_region`/`filler_region`, and `percent()` from `nhlib.lua`. The map data
-   is done; the interpreter is NOT needed for these 30 rooms, because their
-   `contents` functions are all the same two-call shape.
+   is done, and the interpreter is NOT needed for these 30 rooms — their
+   `contents` functions are all the same short shape.
 2. **`do_mkroom()` / special rooms (src/mkroom.c).** `makelevel` chooses at most
    one special room per level (`svn.nroom >= room_threshold && rn2(u_depth) < 3`)
    and our port does not have that step at all — `room_threshold` exists now

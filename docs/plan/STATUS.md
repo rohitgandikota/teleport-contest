@@ -43,7 +43,39 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## '>' IS WIRED — but it does NOT unblock the seven sessions. Correction.
+## The seven "getbones" sessions are DEATH AND RESTART, not level descent.
+
+Traced properly this time. The calls immediately BEFORE the divergence are:
+
+    3329  C rn2(20)  ours rn2(20)  ok  @ vary_init_attr(attrib.c:769)
+    3330  C rn2(20)  ours rn2(20)  ok  @ vary_init_attr(attrib.c:769)
+    ...
+    3337  C rn2(3)   ours rn2(12)  MISMATCH  @ getbones(bones.c:645)
+
+`vary_init_attr` has exactly ONE caller in the whole tree: u_init.c:1391,
+inside u_init() -- character creation. And every one of these sessions is a
+SINGLE segment, so this is not a new segment starting.
+
+So C is running u_init() and then mklev() partway through a single session,
+which means **the hero DIED and a new game began in the same session**.
+seed0030 is literally named "ten-diverse-deaths". getbones is simply the first
+draw the new game's first level makes.
+
+**The blocker is death and restart, not goto_level.** '>' is wired and correct
+but irrelevant to these seven: they press it zero times.
+
+What that needs: done_in_by/done(), the death sequence, then newgame() running
+a second time in the same process. Check first whether our port even survives a
+hero death -- if u.uhp reaching 0 currently does nothing, that is the entry
+point.
+
+This is the THIRD target in a row derived from a correct measurement and aimed
+at the wrong mechanism (the -915 fills, the '>' descend path, and the earlier
+mktrap chase). The pattern: a cross-session tally names the FUNCTION where the
+streams part, which is not the same as the EVENT that put them there. Read the
+calls before the mismatch, not just the mismatching one.
+
+## Reference: the '>' descend path, ported and wired
 
 js/do.js (dodown, next_level, goto_level's new-level arm, stairway_at,
 u_on_dnstairs) is ported and wired to rhack. It cost three missing-symbol

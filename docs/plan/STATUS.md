@@ -322,14 +322,29 @@ best_target scores the HERO (early return at `score -= 3000`, no rnd(5)) plus
 one monster per call, so 10 calls is roughly 4-5 drawing calls against C's 2.
 **Our pet acts about twice as often as C's.**
 
-Note distfleeck is a good cross-check: C spends 8, and dochug calls it twice per
-monster turn, so C has 4 monster turns in the whole session. Count ours the same
-way — if we have more than 4, the extra turns are not pet-specific and the bug
-is in the movement phase for ALL monsters, which would also explain seed4500's
-mfndpos drift. If ours is 4, the pet alone is being over-served.
+**Cross-check taken, and it REVERSES the "acts twice as often" reading.**
 
-That single count is the next thing to take, and it decides which of the two
-subsystems to open.
+    distfleeck:  C = 8 draws, ours = 6 calls
+
+dochug calls distfleeck twice per monster turn, so C has FOUR monster turns and
+we have THREE. **We take fewer turns than C, not more.**
+
+Yet we spend more score_targ draws. The two facts only reconcile one way: our
+`best_target` finds a scoring target on MORE of its turns than C's does. The BT
+trace shows every one of our calls finding the hero along <-1,-1> (early return,
+no draw) AND a monster at <23,8> along <-1,0> (one rnd(5)). C's pet found a
+target on only two of its four turns.
+
+So the fault is back in **find_targ's visibility**: we see <23,8> where C does
+not. clear_path is ported now, so suspect the data it reads rather than the
+walk:
+- Does `viz_clear` get rebuilt when it should? Ours is filled in
+  vision_reset/vision_recalc; if a square is left clear that C marks blocked,
+  find_targ walks straight past a wall.
+- find_targ also stops on `!isok()`; check the map bounds match.
+
+Note the seed4500 mfndpos 5-vs-7 drift is probably the SAME root — both are
+"our monster perceives more open space than C's".
 
 This is the same subsystem that would explain the seed4500 mfndpos 5-vs-7
 drift, so a fix here may resolve both.

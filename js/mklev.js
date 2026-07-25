@@ -723,6 +723,7 @@ async function themerooms_generate(difficulty) {
         return !game.themeroom_failed;
 
     let rtype = OROOM, rlit = -1, contents = null;
+    let roomW = -1, roomH = -1;
     switch (pick.name) {
     case 'default': break;
     case 'Default room with themed fill':
@@ -747,13 +748,32 @@ async function themerooms_generate(difficulty) {
             } }, create_room, topologize);
         };
         break;
+    case 'Huge room with another room inside':
+        /* dat/themerms.lua:323 — w and h are ARGUMENTS, so their rn2(10) and
+           rn2(5) are spent BEFORE the room's own chance roll:
+             des.room({ w = nh.rn2(10)+11, h = nh.rn2(5)+8, filled = 1,
+                        contents = function()
+                           if (percent(90)) then des.room({ ... }) end
+                        end }) */
+        roomW = rn2(10) + 11;
+        roomH = rn2(5) + 8;
+        contents = () => {
+            if (percent(90)) {
+                lspo_room({ type: 'ordinary', filled: 1, contents: () => {
+                    lspo_door({ state: 'random', wall: 'all' });
+                    if (percent(50))
+                        lspo_door({ state: 'random', wall: 'all' });
+                } }, create_room, topologize);
+            }
+        };
+        break;
     default:
         note_unported_lev(`themeroom ${pick.name}`); break;
     }
 
     rn2(100);
 
-    const ok = create_room(-1, -1, -1, -1, -1, -1, rtype, rlit);
+    const ok = create_room(-1, -1, roomW, roomH, -1, -1, rtype, rlit);
     if (ok) {
         // C ref: sp_lev.c:2824 — build_room calls topologize after create_room
         const aroom = game.level.rooms[game.level.nroom - 1];

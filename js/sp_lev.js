@@ -1134,6 +1134,10 @@ const AM_SPLEV_CO = 0x20, AM_SPLEV_NONCO = 0x40, AM_MASK = 0x07;
 // create_subroom(), without it create_room(). Using create_room for both makes
 // the inner room a sibling instead of a subroom.
 export function lspo_room(opts, create_room_fn, topologize_fn) {
+    /* sp_lev.c:4035 — w and h default to -1 (random). When the Lua computes
+       them, e.g. `w = nh.rn2(10)+11`, those draws are ARGUMENTS and are spent
+       before lspo_room is entered at all, hence before the chance roll below. */
+    const w = opts?.w ?? -1, h = opts?.h ?? -1;
     if (game.in_mk_themerooms && game.themeroom_failed)
         return null;
 
@@ -1152,8 +1156,8 @@ export function lspo_room(opts, create_room_fn, topologize_fn) {
        SUBROOM, and create_subroom spends four rnd() draws of its own. */
     const parent = game.coder?.croom ?? null;
     const ok = parent
-        ? create_subroom_fn(parent, -1, -1, -1, -1, rtype, rlit)
-        : create_room_fn(-1, -1, -1, -1, -1, -1, rtype, rlit);
+        ? create_subroom_fn(parent, -1, -1, w, h, rtype, rlit)
+        : create_room_fn(-1, -1, w, h, -1, -1, rtype, rlit);
     if (!ok) {
         if (game.in_mk_themerooms)
             game.themeroom_failed = true;

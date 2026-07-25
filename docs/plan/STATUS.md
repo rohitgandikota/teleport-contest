@@ -216,6 +216,33 @@ This is worth more than its one session: any command that targets a location
 goes through getpos, so the same gap silently mis-aligns every session that
 uses one.
 
+### seed0077 HAS NO STARTING INVENTORY — found chasing the apply regression
+
+Measured at step 0: `game.invent.length` is **13** for seed8000 (letters a-l
+and `$`) and **0** for seed0077-rogue-chargen. The hero starts empty-handed.
+
+This is why wiring `a` (apply) cost seed0077 a screen twice: `getobj()` can
+never match an inventory letter, so it takes its re-prompt loop and eats
+keystrokes that should have been commands. Any getobj command is unsafe on a
+session whose inventory failed to build — including the seven already wired.
+
+**Likely cause.** `u_init_inventory()` -> `u_init_role()` switches on
+`roleMnum()`, and all thirteen roles including `PM_ROGUE` have a case. But
+seed0077's rc sets **no role at all** (`OPTIONS=!autopickup`,
+`suppress_alert`, `symset`, `disclose` — nothing else), so the role comes from
+interactive chargen via `player_selection()`. If that path leaves
+`game.urole.mnum` unset or in a form `roleMnum()` cannot resolve, it returns
+-1, no case matches, and ini_inv is never called.
+
+**Verify first:** probe `roleMnum()` and `game.urole` at the top of
+`u_init_role()` for seed0077 and compare against seed8000, whose rc names the
+role outright. If roleMnum is -1 there, the fix is in how player_selection
+records the chosen role, not in u_init.
+
+This matters well beyond one session: every interactively-chargen'd session in
+the held-out set would hit it, and a hero with no inventory diverges from C on
+weight, encumbrance, AC and every getobj command.
+
 ### Where the effort is best spent next — read this before picking
 
 Ranked by expected value, from the evidence in this file:

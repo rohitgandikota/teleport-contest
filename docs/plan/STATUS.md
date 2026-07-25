@@ -269,10 +269,27 @@ see instead of C's next draw. **C's appr is non-zero there, so C's pet is at
 udist >= 9** — about four squares further from the hero than ours.
 
 So this is pet positional drift, the same class as the seed4500 mfndpos 5-vs-7
-finding, and it draws nothing until it changes a branch like this one. The
-useful next step is per-keystroke tracing of the PET's <x,y> (the technique in
-NOTES that solved the apply regression), diffing our trace against the
-positions C's screens imply, to find the first turn the two part.
+finding, and it draws nothing until it changes a branch like this one.
+
+**Traced per keystroke (seed0102).** The hero never moves — 28,7 for the whole
+session. Our pet sits at **29,8 from key 0 through key 21**, then 30,8 at K22
+(udist 5) and 30,7 at K23. Step 0's screen matches C's on all 1920 cells, so
+both pets START at 29,8.
+
+For C's appr to be non-zero at that point its pet must be at **udist >= 9**,
+i.e. at least three squares out on one axis. **C's pet moved several squares
+where ours barely moved at all.**
+
+That is the shape to chase: not "the pet took a wrong step" but "the pet took
+far fewer steps". Suspects, in order:
+1. `mcalcmove`/movement allotment — does our pet accumulate enough movement
+   points to act on as many turns as C's?
+2. `dog_move` returning early. It now runs pet_ranged_attk, dog_hunger and
+   dog_goal before the position loop; any of them returning non-zero skips the
+   move entirely.
+3. The position loop rejecting every candidate square, leaving nix/niy == omx/omy.
+
+Instrument which of those three fires on the turns between K0 and K22.
 
 Do not chase it through dog_goal's object scan — that scan is a SYMPTOM of
 appr == 0, not the cause.

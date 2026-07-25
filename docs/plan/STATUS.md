@@ -280,16 +280,25 @@ For C's appr to be non-zero at that point its pet must be at **udist >= 9**,
 i.e. at least three squares out on one axis. **C's pet moved several squares
 where ours barely moved at all.**
 
-That is the shape to chase: not "the pet took a wrong step" but "the pet took
-far fewer steps". Suspects, in order:
-1. `mcalcmove`/movement allotment — does our pet accumulate enough movement
-   points to act on as many turns as C's?
-2. `dog_move` returning early. It now runs pet_ranged_attk, dog_hunger and
-   dog_goal before the position loop; any of them returning non-zero skips the
-   move entirely.
-3. The position loop rejecting every candidate square, leaving nix/niy == omx/omy.
+**Correction — it is NOT under-movement.** Instrumenting dog_move's entry and
+early exits shows it runs **four times**, entering at
 
-Instrument which of those three fires on the turns between K0 and K22.
+    29,8  ->  29,7  ->  30,8  ->  31,8
+
+so the pet moves on every turn it gets and takes none of the early exits
+(dog_hunger, appr == -2). The per-keystroke trace looked static only because
+few keys in this session consume a turn.
+
+The real difference is the PATH. Hero is at 28,7 throughout, so those entries
+are udist 2, 1, 5, 10. The divergent call is the third, at 30,8 / udist 5 —
+where C's pet is already at udist >= 9, i.e. one square further right. **Our pet
+detours via 29,7 (upward) before heading right; C's goes more directly.**
+
+So the bug is in which square dog_goal/the position loop CHOOSES, not in how
+often the pet acts. That is a goal or appr computation difference on the first
+or second turn — early enough to trace exhaustively. Dump gx/gy, appr and the
+chosen nix/niy for all four calls and compare against where C's pet demonstrably
+ends up (udist >= 9 by call three).
 
 Do not chase it through dog_goal's object scan — that scan is a SYMPTOM of
 appr == 0, not the cause.

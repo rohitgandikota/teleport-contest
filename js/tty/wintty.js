@@ -372,6 +372,10 @@ function render_page(cw, page, display) {
        offx + 1. */
     tty_curs_base(cw.offx + ((cw.type === NHW_TEXT) ? 1 : 2), footerRow);
     let col = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
+    /* Same as the content rows: a menu's prompt starts at offx + 1, so column
+       offx itself must still be cleared or the map bleeds through beside it. */
+    for (let c = cw.offx; c < col; c++)
+        display.setCell(c, footerRow, ' ', NO_COLOR, 0);
     for (let i = 0; i < morestr.length && col < COLS; i++, col++)
         display.setCell(col, footerRow, morestr[i], NO_COLOR, 0);
     for (let c = col; c < COLS; c++)

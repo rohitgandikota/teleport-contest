@@ -64,8 +64,32 @@ corpus from 11.4% to 12.2%. `rnd_rect` has left the blocker histogram entirely.
 
 **Two candidate next moves, in order:**
 
-1. **`lspo_map` (sp_lev.c:6154), 7 sessions.** Genuinely Lua, and the largest
-   single blocker left by some way.
+1. **The SHAPED themerooms — `lspo_map` (sp_lev.c:6120), 7 sessions.** This is
+   the largest blocker left and it is now fully characterised:
+
+   - `dat/themerms.lua` holds 31 themerooms. `themerooms_generate()` reservoir-
+     samples one per call; `default` has frequency 1000 of 1036, so it wins ~96%
+     of the time and is the only one whose contents are ported.
+   - The other 30 are shapes: `des.map({ map = [[...]], contents = function(m)
+     filler_region(6,6) end })`. **`js/themerms_data.js` already carries all 19
+     map blocks with their width and height** (`tools/gen-themerms.mjs`).
+   - `lspo_map()` places the map with exactly two draws, both derived from those
+     dimensions:
+     `x = 1 + rn2(COLNO - 1 - mf->wid)` (sp_lev.c:6154) and
+     `y = rn2(ROWNO - mf->hei)` (sp_lev.c:6164).
+   - Confirmed against the recordings: seed0009 and seed0004 pick **Four-leaf
+     clover**, an 11x11 map, and C's next two calls are `rn2(68)` and `rn2(10)`
+     — i.e. `rn2(80-1-11)` and `rn2(21-11)`. seed0015 picks **S-shaped** (8x11),
+     seed0013 picks Four-leaf clover on its fifth themeroom.
+   - After placement comes `filler_region(6,6)`, which is
+     `percent(30)` — one `rn2(100)` — then `des.region({...})`. The recordings
+     show that as `random src=nhlib.lua:10 parent=percent(nhlib.lua:44)`, twice.
+   - Then `litstate_rnd(mkmap.c:446)`, then `rnd_rect`.
+
+   So the port needed is: `lspo_map` (position, stamp, `mkmap`-style lit state),
+   `lspo_region`/`filler_region`, and `percent()` from `nhlib.lua`. The map data
+   is done; the interpreter is NOT needed for these 30 rooms, because their
+   `contents` functions are all the same two-call shape.
 2. **`do_mkroom()` / special rooms (src/mkroom.c).** `makelevel` chooses at most
    one special room per level (`svn.nroom >= room_threshold && rn2(u_depth) < 3`)
    and our port does not have that step at all — `room_threshold` exists now

@@ -11,18 +11,20 @@
 
 import { game } from './gstate.js';
 import { obj_resists } from './zap.js';
-import { mfndpos, mon_allowflags, is_pool, is_lava, can_carry } from './mon.js';
+import {
+    mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at,
+} from './mon.js';
 import {
     COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL, ALLOW_M, ALLOW_U,
     IS_OBSTRUCTED, IS_DOOR, D_CLOSED, D_LOCKED, isok,
     IS_STWALL, IS_TREE, W_NONDIGGABLE,
 } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
-import { MFLAGS, MONSYMS, NUMMONS } from './monst_data.js';
+import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
 
 const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
-import { rn2 } from './rng.js';
-import { dist2 } from './hacklib.js';
+import { rn2, rnd } from './rng.js';
+import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
@@ -539,8 +541,205 @@ function On_stairs(x, y) {
 // dog_hunger() and dog_invent() come first in C and both draw; neither is
 // ported, so this reaches dog_goal()'s search only. The stream is right up to
 // the point one of those would have fired.
+// src/dogmove.c find_friends() — is the master or another pet standing behind
+// the target, in the line of fire? Draws nothing.
+function find_friends(mtmp, mtarg, maxdist) {
+    const dx = sgn(mtarg.mx - mtmp.mx), dy = sgn(mtarg.my - mtmp.my);
+    let curx = mtarg.mx, cury = mtarg.my;
+    let dist = distmin(mtarg.mx, mtarg.my, mtmp.mx, mtmp.my);
+
+    for (; dist <= maxdist; ++dist) {
+        curx += dx;
+        cury += dy;
+
+        if (!isok(curx, cury))
+            return false;
+        /* If the pet can't see beyond this point, don't check any farther */
+        if (!m_cansee(mtmp, curx, cury))
+            return false;
+        /* Does pet think you're here? */
+        if (mtmp.mux === curx && mtmp.muy === cury)
+            return true;
+
+        const pal = m_at(curx, cury);
+        if (pal) {
+            if (pal.mtame) {
+                /* Pet won't notice invisible pets */
+                if (!pal.minvis || perceives(game.mons[mtmp.mnum]))
+                    return true;
+            } else {
+                /* Quest leaders and guardians are always seen */
+                const pd = game.mons[pal.mnum];
+                if (pd.msound === MSOUND.MS_LEADER
+                    || pd.msound === MSOUND.MS_GUARDIAN)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+
+// src/dogmove.c find_targ() — walk outwards along <dx,dy> for maxdist squares
+// and return the first monster the pet can see. Draws nothing, but m_cansee()
+// stops the walk, which is what keeps the pet from targeting through walls.
+function find_targ(mtmp, dx, dy, maxdist) {
+    let targ = null;
+    let curx = mtmp.mx, cury = mtmp.my;
+
+    for (let dist = 0; dist < maxdist; ++dist) {
+        curx += dx;
+        cury += dy;
+        if (!isok(curx, cury))
+            break;
+        if (!m_cansee(mtmp, curx, cury))
+            break;
+        if (curx === mtmp.mux && cury === mtmp.muy)
+            return game.u;                 /* &gy.youmonst */
+
+        targ = m_at(curx, cury);
+        if (targ) {
+            /* Is the monster visible to the pet? */
+            if ((!targ.minvis || perceives(game.mons[mtmp.mnum]))
+                && !targ.mundetected
+                /* if a long worm, only accept the head as a target */
+                && targ.mx === curx && targ.my === cury)
+                break;
+            /* If the pet can't see it, it assumes it ain't there */
+            targ = null;
+        }
+    }
+    return targ;
+}
+
+// src/dogmove.c:738 score_targ() — how attractive is this target?
+//
+// Its `score += rnd(5)` fires once per target found and is the draw that
+// seed0102 and seed0105 were missing. The two rn2(3)s only fire for a confused
+// pet and the rn2(mtmp_lev/2+1) only for a vampshifter, so an ordinary pet
+// spends exactly one draw here per target.
+function score_targ(mtmp, mtarg) {
+    let score = 0;
+
+    /* Give 1 in 3 chance of safe breathing even if pet is confused */
+    if (!mtmp.mconf || !rn2(3)) {
+        let mtmp_lev;
+        const tdat = (mtarg === game.u) ? null : game.mons[mtarg.mnum];
+
+        /* the priest/minion alignment arms need the priest subsystem; no
+           minion or priest is adjacent to a pet on an ordinary level */
+        if (mtmp.isminion || mtmp.ispriest || mtarg.isminion || mtarg.ispriest)
+            note_unported('score_targ:faith');
+
+        /* Never target quest friendlies */
+        if (tdat && (tdat.msound === MSOUND.MS_LEADER
+                     || tdat.msound === MSOUND.MS_GUARDIAN))
+            return -5000;
+        /* Is monster adjacent? */
+        if (distmin(mtmp.mx, mtmp.my, mtarg.mx ?? game.u.ux,
+                    mtarg.my ?? game.u.uy) <= 1)
+            return score - 3000;
+        /* Is the monster peaceful or tame? Pets are never targeted */
+        if (mtarg === game.u || mtarg.mtame)
+            return score - 3000;
+        /* Is master/pet behind monster? Check up to 15 squares beyond pet. */
+        if (find_friends(mtmp, mtarg, 15))
+            return score - 3000;
+        /* Target hostile monsters in preference to peaceful ones */
+        if (!mtarg.mpeaceful)
+            score += 10;
+        /* Is the monster passive? Don't waste energy on it, if so */
+        if (tdat.mattk[0][0] === ATTKS.AT_NONE)
+            score -= 1000;
+        /* Even weak pets with breath attacks shouldn't take on very
+           low-level monsters. */
+        if ((mtarg.m_lev < 2 && mtmp.m_lev > 5)
+            || (mtmp.m_lev > 12 && mtarg.m_lev < mtmp.m_lev - 9
+                && game.u.ulevel > 8 && mtarg.m_lev < game.u.ulevel - 7))
+            score -= 25;
+        /* a vampshifter in weak form attacks as if in vampire form */
+        mtmp_lev = mtmp.m_lev;
+        if (is_vampshifter(mtmp)
+            && game.mons[mtmp.mnum].mlet !== MONSYMS.S_VAMPIRE) {
+            mtmp_lev = game.mons[mtmp.cham].mlevel;
+            /* actual vampire level ranges from 1.0*mlvl to 1.5*mlvl */
+            mtmp_lev += rn2(Math.trunc(mtmp_lev / 2) + 1);
+            if (mtmp.m_lev > mtmp_lev)
+                mtmp_lev = mtmp.m_lev;
+        }
+        /* pets hesitate to attack vastly stronger foes */
+        if (mtarg.m_lev > mtmp_lev + 4)
+            score -= (mtarg.m_lev - mtmp_lev) * 20;
+        /* All things being the same, go for the beefiest monster. */
+        score += mtarg.m_lev * 2 + Math.trunc(mtarg.mhp / 3);
+    }
+    /* Fuzz factor to make things less predictable when very similar targets
+       are abundant. */
+    score += rnd(5);
+    /* Pet may decide not to use ranged attack when confused */
+    if (mtmp.mconf && !rn2(3))
+        score -= 1000;
+    return score;
+}
+
+// src/dogmove.c:838 best_target() — the best target in a straight line from the
+// pet, scanning all eight directions out to 7 squares.
+function best_target(mtmp, forced) {
+    let bestscore = -40000;
+    let best_targ = null;
+
+    if (!mtmp)
+        return null;
+    /* If the pet is blind, it's not going to see any target */
+    if (!mtmp.mcansee)
+        return null;
+
+    for (let dy = -1; dy < 2; ++dy) {
+        for (let dx = -1; dx < 2; ++dx) {
+            if (!dx && !dy)
+                continue;
+            const temp_targ = find_targ(mtmp, dx, dy, 7);
+            if (!temp_targ)
+                continue;
+            const currscore = score_targ(mtmp, temp_targ);
+            if (currscore > bestscore) {
+                bestscore = currscore;
+                best_targ = temp_targ;
+            }
+        }
+    }
+
+    /* Filter out targets the pet doesn't like */
+    if (!forced && bestscore < 0)
+        best_targ = null;
+
+    return best_targ;
+}
+
+// src/dogmove.c:889 pet_ranged_attk() — the pet considers a ranged attack.
+//
+// dog_move calls this AFTER its position loop and BEFORE committing the move
+// (src/dogmove.c:1273). We were not calling it at all, which is why seed0102
+// and seed0105 both stop at score_targ's rnd(5).
+function pet_ranged_attk(mtmp, forced) {
+    let hungry = false;
+
+    /* How hungry is the pet? */
+    if (!mtmp.isminion && mtmp.edog)
+        hungry = (game.moves > (mtmp.edog.hungrytime + DOG_HUNGRY));
+
+    const mtarg = best_target(mtmp, forced);
+
+    /* Hungry pets are unlikely to use breath/spit attacks */
+    if (mtarg && (!hungry || !rn2(5))) {
+        /* the attack itself needs mattacku / the monster attack code */
+        note_unported('pet_ranged_attk:attack');
+    }
+    return MMOVE_NOTHING;
+}
+
 // src/dogmove.c:11-12
-const DOG_WEAK = 500, DOG_STARVE = 750;
+// src/dogmove.c:10-12
+const DOG_HUNGRY = 300, DOG_WEAK = 500, DOG_STARVE = 750;
 
 // include/monst.h:214 DEADMONSTER()
 const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
@@ -657,6 +856,15 @@ export function dog_move(mtmp, after) {
         }
     }
 
+    /* src/dogmove.c:1273 — the pet has not attacked anything but is about to
+       move; now is the time for a ranged attack. C calls this AFTER the
+       position loop and BEFORE newdogpos, unconditionally. */
+    {
+        const i = pet_ranged_attk(mtmp, false);
+        if (i !== MMOVE_NOTHING)
+            return i;
+    }
+
     /* src/dogmove.c:1276 newdogpos — apply the move. Draws nothing: it is
        remove_monster() followed by place_monster(), which for us is just the
        pet's coordinates. C does NOT reorder fmon here, so neither do we.
@@ -671,6 +879,14 @@ export function dog_move(mtmp, after) {
         mtmp.mtrack = mtmp.mtrack || [];
         mtmp.mtrack.unshift({ x: omx, y: omy });
         if (mtmp.mtrack.length > MTSZ) mtmp.mtrack.length = MTSZ;
+
+    /* src/dogmove.c:1273 — the pet has not attacked anything but is about to
+       move; now is the time for a ranged attack. */
+    {
+        const i = pet_ranged_attk(mtmp, false);
+        if (i !== MMOVE_NOTHING)
+            return i;
+    }
 
         /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
            the move. Writing mx/my alone leaves m_at() answering with the old

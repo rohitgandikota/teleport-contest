@@ -88,6 +88,41 @@ blocks seed0102 (99.2%), seed0101 (97.3%), the 7 `obj_resists` sessions and the 
 `dog_goal` sessions — and it is smaller than budgeted, because `mfndpos` is not
 on the tame path.
 
+**The acceptance test, straight from seed0101's recording.** Port against this
+rather than against the C source alone; it is the first turn of the move loop
+and it shows the call ORDER, which is the part the source makes hard to see:
+
+```
+2291 rnd(9000)  moveloop_preamble(allmain.c:72)      context.rndencode
+2292 rnd(30)    moveloop_preamble(allmain.c:79)      context.seer_turn
+2293 rnd(2)     next_ident(mkobj.c:521)         <-- still inside the preamble,
+2294 rn2(100)   obj_resists(zap.c:1469)             after set_wear + pickup(1)
+2295 rn2(12)    mcalcmove(mon.c:1164)           <-- movemon starts here
+2296 rn2(12)    mcalcmove
+2297 rn2(12)    mcalcmove
+2298 rn2(12)    mcalcmove
+2299 rn2(70)    maybe_generate_rnd_mon(allmain.c:166)
+2300 rn2(20)    gethungry(eat.c:3191)
+2301 rn2(73)    moveloop_core(allmain.c:360)
+2302 rn2(5)     distfleeck(monmove.c:538)       <-- the pet's turn begins
+2303 rn2(100)   obj_resists(zap.c:1469)
+2304 rn2(8)     dog_goal(dogmove.c:554)
+2305 rn2(100)   obj_resists(zap.c:1469)
+2306 rn2(8)     dog_goal(dogmove.c:554)
+```
+
+Two things to resolve while writing it, both visible only in this log:
+
+1. **2293-2294 are NOT the pet.** They precede `mcalcmove`, so they happen in
+   `moveloop_preamble`'s tail — `set_wear()` and `pickup(1)`, the autopickup at
+   the starting square. Do not attribute them to `dog_invent`.
+2. **`obj_resists` comes BEFORE `dog_goal`'s `rn2(8)`, repeatedly.** The C source
+   reads the other way round —
+   `edog->apport > rn2(8) && can_carry(mtmp, obj) > 0` puts the rn2 first — so
+   either the pairs are offset by one iteration, or the first `obj_resists`
+   arrives through `dogfood()` rather than `can_carry()`. Settle that before
+   writing the loop; getting it backwards costs one draw per object per turn.
+
 ### CORRECTION: `--More--` is NOT the biggest opportunity — it is unreachable
 
 The claim below ("9.7% of the public score sitting behind one piece of topl.c")

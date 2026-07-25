@@ -96,22 +96,36 @@ in themerooms_generate(), with rtype = THEMEROOM, rlit from `lit`, needfill =
 FILL_NONE when `filled` is absent, and calling themeroom_fill(aroom) after
 topologize(), **cost 915 RNG positions** and was reverted. Screens did not move.
 
-So at least one of these four guesses is wrong, and they are the things to
-settle from the C before trying again:
+**All four are now SETTLED from src/sp_lev.c lspo_room():4028. Do not re-derive.**
 
-  1. `filled`'s default in des.room(). I assumed absent means FILL_NONE
-     because "Room with both normal contents and themed fill" sets filled = 1
-     explicitly. Check lspo_room() in sp_lev.c for the actual default -- if it
-     is 1, FILL_NONE suppresses a later fill_special_room() and loses its draws.
-  2. WHERE the contents function runs. I called it right after topologize().
-     build_room() returns the room and the caller runs contents; find that call
-     site and match the order exactly.
-  3. Whether `lit = 0` reaches create_room() as rlit = 0 or as something else.
-  4. Whether THEMEROOM vs OROOM changes anything downstream besides the
-     rn2(100) roll -- js/mklev.js:623 already treats them alike for filling.
+  1. needfill default is `gi.in_mk_themerooms ? 0 : 1`, with the C's own
+     comment `/* theme rooms default to unfilled */`. in_mk_themerooms is TRUE
+     for the whole themerooms_generate() call, so absent `filled` means
+     FILL_NONE. **My guess was right.**
+  2. rlit is `get_table_int_opt(L, "lit", -1)`, so `lit = 0` reaches
+     create_room() as rlit = 0. **Right.**
+  3. rtype is `get_table_roomtype_opt(L, "type", OROOM)`, and sp_lev.c:3962
+     maps "themed" to THEMEROOM. `chance` defaults to 100, so build_room's
+     `rn2(100) < r->chance` is always true and the roll is always spent.
+     **Right.**
+  4. The contents ORDER is where I was wrong. lspo_room does:
 
-Get those from sp_lev.c rather than by trying combinations; the search space is
-16 and only the C says which corner is right.
+         tmpcr = build_room(...);        /* create_room + topologize */
+         update_croom();
+         <contents(tmpcr)>
+         spo_endroom(gc.coder);
+         add_doors_to_room(tmpcr);       /* <-- I omitted this */
+
+     I called contents after topologize (correct) but skipped update_croom()
+     before it and spo_endroom() + add_doors_to_room() after it.
+     js/sp_lev.js already has add_doors_to_room.
+
+The other live suspect is `themeroom_fill` itself: its reservoir sample is
+ported but the 15 fills' contents are not, so once the sample runs at the right
+time we go quiet exactly where C starts drawing. That may make some sessions
+diverge EARLIER than they do today, which is what a 915-position loss with no
+screen change looks like. Expect to need one or two of the fills ported in the
+same change for the number to go up rather than down.
 
 ## How to pick a target (this is the part that matters)
 

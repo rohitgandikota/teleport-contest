@@ -533,14 +533,56 @@ function On_stairs(x, y) {
 // dog_hunger() and dog_invent() come first in C and both draw; neither is
 // ported, so this reaches dog_goal()'s search only. The stream is right up to
 // the point one of those would have fired.
+// src/dogmove.c:11-12
+const DOG_WEAK = 500, DOG_STARVE = 750;
+
+// include/monst.h:214 DEADMONSTER()
+const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
+
+// src/dogmove.c dog_hunger() — a pet that has not eaten in DOG_WEAK turns is
+// weakened, and in DOG_STARVE turns it dies. Draws nothing: it is a comparison
+// of moves against edog->hungrytime, plus messages.
+//
+// Returns TRUE when the pet died, which makes dog_move return MMOVE_DIED and
+// stops dochug from calling distfleeck a second time for it — so a pet that
+// starves changes the DRAW COUNT of the turn even though this function itself
+// spends nothing.
+function dog_hunger(mtmp, edog) {
+    const mdat = game.mons[mtmp.mnum];
+
+    if (game.moves > edog.hungrytime + DOG_WEAK) {
+        if (!carnivorous(mdat) && !herbivorous(mdat)) {
+            edog.hungrytime = game.moves + DOG_WEAK;
+            /* but not too high; it might polymorph */
+        } else if (!edog.mhpmax_penalty) {
+            /* starving pets are limited in healing */
+            const newmhpmax = Math.trunc(mtmp.mhpmax / 3);
+            mtmp.mconf = 1;
+            edog.mhpmax_penalty = mtmp.mhpmax - newmhpmax;
+            mtmp.mhpmax = newmhpmax;
+            if (mtmp.mhp > mtmp.mhpmax)
+                mtmp.mhp = mtmp.mhpmax;
+            if (DEADMONSTER(mtmp)) {
+                note_unported('dog_starve');
+                return true;
+            }
+            /* the "confused from hunger" / beg() messages need pline plumbing */
+            note_unported('dog_hunger:messages');
+        } else if (game.moves > edog.hungrytime + DOG_STARVE
+                   || DEADMONSTER(mtmp)) {
+            note_unported('dog_starve');
+            return true;
+        }
+    }
+    return false;
+}
+
 export function dog_move(mtmp, after) {
     const edog = mtmp.mtame ? (mtmp.edog || {}) : null;
     if (!edog) return 0;
 
-    /* src/dogmove.c dog_hunger() draws nothing — it is a comparison of
-       moves against edog->hungrytime plus messages. Not ported; when it
-       matters it kills a starving pet, which no public session reaches. */
-    note_unported('dog_hunger');
+    if (dog_hunger(mtmp, edog))
+        return MMOVE_DIED;
 
     const omx = mtmp.mx, omy = mtmp.my;
     const udist = distu(omx, omy);

@@ -11,7 +11,7 @@
 
 import { game } from './gstate.js';
 import { obj_resists } from './zap.js';
-import { mfndpos, mon_allowflags, is_pool, is_lava } from './mon.js';
+import { mfndpos, mon_allowflags, is_pool, is_lava, can_carry } from './mon.js';
 import {
     COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL, ALLOW_M, ALLOW_U,
     IS_OBSTRUCTED, IS_DOOR, D_CLOSED, D_LOCKED, isok,
@@ -22,6 +22,7 @@ import { MFLAGS, MONSYMS, NUMMONS } from './monst_data.js';
 const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2 } from './rng.js';
 import { dist2 } from './hacklib.js';
+import { couldsee } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider,
@@ -232,10 +233,8 @@ function sobj_at(otyp, x, y) {
         .some(o => o.ox === x && o.oy === y && o.otyp === otyp);
 }
 
-/* src/dig.c may_dig(), src/mon.c m_cansee() and src/dog.c can_carry() are not
-   ported. can_carry() gates the APPORT branch after its rn2(8) has already
-   been spent, so the draw happens either way; the other two only narrow which
-   square is chosen. */
+/* src/dig.c may_dig() and src/mon.c m_cansee() are not ported; both only narrow
+   which square is chosen and neither draws. */
 function may_dig(x, y) {
     note_unported('may_dig');
     return true;
@@ -244,11 +243,6 @@ function may_dig(x, y) {
 function m_cansee(mon, x, y) {
     note_unported('m_cansee');
     return true;
-}
-
-function can_carry(mtmp, obj) {
-    note_unported('can_carry');
-    return 0;
 }
 
 // src/dog.c:995 dogfood() — only the part that draws is ported.
@@ -437,11 +431,11 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     /* #define DDIST(x, y) (dist2(x, y, omx, omy)) */
     const DDIST = (x, y) => dist2(x, y, omx, omy);
 
-    /* in_masters_sight and dog_has_minvent gate the APPORT branch; both need
-       monster inventory and m_cansee, so the branch is entered only through
-       the food cases until those land. */
-    const in_masters_sight = false;
-    const dog_has_minvent = false;
+    /* src/dogmove.c — both gate the APPORT branch. couldsee() is real, so use
+       it; droppables() needs monster inventory, and a pet carrying nothing is
+       the reachable state until that lands. */
+    const in_masters_sight = couldsee(omx, omy);
+    const dog_has_minvent = false; /* droppables(mtmp) != 0 */
 
     for (const obj of (game.level.objects || [])) {
         const nx = obj.ox, ny = obj.oy;

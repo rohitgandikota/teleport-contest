@@ -8,8 +8,14 @@
 
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
-import { PMNAMES, MONSYMS, MFLAGS } from './monst_data.js';
+import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
 import { is_rider } from './makemon.js';
+import { MAX_CARR_CAP, WT_HUMAN } from './const.js';
+
+// include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
+const MZ_HUMAN = MFLAGS.MZ_MEDIUM;
+
 import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
          D_CLOSED, D_LOCKED, D_BROKEN, IS_OBSTRUCTED, IS_DOOR, IS_WATERWALL,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
@@ -411,3 +417,108 @@ function zombie_maker(mon) {
    generates a zombifier this early, and the call is gated behind
    zombie_maker() above. */
 const zombie_form = (d) => NON_PM;
+
+// src/mon.c curr_mon_load() — total weight the monster is already carrying.
+function curr_mon_load(mtmp) {
+    let curload = 0;
+
+    for (const obj of (mtmp.minvent || [])) {
+        if (obj.otyp !== ONAMES.BOULDER || !throws_rocks(game.mons[mtmp.mnum]))
+            curload += obj.owt;
+    }
+
+    return curload;
+}
+
+// src/mon.c max_mon_load() — human capacity scaled by the monster's weight, or
+// by its size when it has no corpse weight, then halved unless strong.
+function max_mon_load(mtmp) {
+    const mdat = game.mons[mtmp.mnum];
+    let maxload;
+
+    if (!mdat.cwt)
+        maxload = Math.trunc((MAX_CARR_CAP * mdat.msize) / MZ_HUMAN);
+    else if (!strongmonst(mdat) || (strongmonst(mdat) && mdat.cwt > WT_HUMAN))
+        maxload = Math.trunc((MAX_CARR_CAP * mdat.cwt) / WT_HUMAN);
+    else
+        maxload = MAX_CARR_CAP; /* strong monsters w/cwt <= WT_HUMAN */
+
+    if (!strongmonst(mdat))
+        maxload = Math.trunc(maxload / 2);
+
+    if (maxload < 1)
+        maxload = 1;
+
+    return maxload;
+}
+
+// src/mon.c:1990 can_carry() — how many of otmp the monster could pick up.
+// dog_goal()'s APPORT branch tests this AFTER spending its rn2(8), so a wrong
+// answer here changes the goal but not the draw count.
+export function can_carry(mtmp, otmp) {
+    const otyp = otmp.otyp;
+    const newload = otmp.owt;
+    const mdat = game.mons[mtmp.mnum];
+
+    if (notake(mdat))
+        return 0; /* can't carry anything */
+
+    if (!can_touch_safely(mtmp, otmp))
+        return 0;
+
+    /* hostile monsters who like gold will pick up the whole stack;
+       tame monsters with hands will pick up the partial stack */
+    const iquan = otmp.quan;
+
+    /* monsters without hands can't pick up multiple objects at once
+       unless they have an engulfing attack */
+    if (iquan > 1) {
+        let glomper = false;
+
+        if (mdat.mlet === MONSYMS.S_DRAGON
+            && (otmp.oclass === OCLASSES.COIN_CLASS
+                || otmp.oclass === OCLASSES.GEM_CLASS))
+            glomper = true;
+        else
+            for (const atk of mdat.mattk)
+                if (atk[0] === ATTKS.AT_ENGL) {
+                    glomper = true;
+                    break;
+                }
+        if ((mdat.mflags1 & MFLAGS.M1_NOHANDS) && !glomper)
+            return 1;
+    }
+
+    /* steeds don't pick up stuff (to avoid shop abuse) */
+    if (mtmp === game.u.usteed)
+        return 0;
+    if (mtmp.isshk)
+        return iquan; /* no limit */
+    if (mtmp.mpeaceful && !mtmp.mtame)
+        return 0;
+
+    /* special--boulder throwers carry unlimited amounts of boulders */
+    if (throws_rocks(mdat) && otyp === ONAMES.BOULDER)
+        return iquan;
+
+    /* nymphs deal in stolen merchandise, but not boulders or statues */
+    if (mdat.mlet === MONSYMS.S_NYMPH)
+        return (otmp.oclass === OCLASSES.ROCK_CLASS) ? 0 : iquan;
+
+    if (curr_mon_load(mtmp) + newload > max_mon_load(mtmp))
+        return 0;
+
+    return iquan;
+}
+
+/* include/mondata.h and src/mon.c — the two predicates can_carry gates on.
+   can_touch_safely() covers cockatrice corpses and acidic items for a monster
+   without the matching resistance; neither can be on a floor before the corpse
+   and resistance code lands. */
+const notake = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOTAKE) !== 0;
+const strongmonst = (ptr) => (ptr.mflags2 & MFLAGS.M2_STRONG) !== 0;
+
+function can_touch_safely(mtmp, otmp) {
+    note_unported_mon('can_touch_safely');
+    return true;
+}

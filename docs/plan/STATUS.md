@@ -120,12 +120,25 @@ topologize(), **cost 915 RNG positions** and was reverted. Screens did not move.
      before it and spo_endroom() + add_doors_to_room() after it.
      js/sp_lev.js already has add_doors_to_room.
 
-The other live suspect is `themeroom_fill` itself: its reservoir sample is
-ported but the 15 fills' contents are not, so once the sample runs at the right
-time we go quiet exactly where C starts drawing. That may make some sessions
-diverge EARLIER than they do today, which is what a 915-position loss with no
-screen change looks like. Expect to need one or two of the fills ported in the
-same change for the number to go up rather than down.
+**But the ordering was NOT the cause of the 915 loss, and this is measured:**
+`add_doors_to_room` only records doors the map already stamped; it draws
+nothing. Neither does update_croom or spo_endroom.
+
+The cause is `themeroom_fill`. Its reservoir sample IS ported (it draws) but the
+15 fills' contents are NOT — and those contents contain **16 draws**
+(`nh.rn2`, `math.random`, `percent`) across the table:
+
+    awk '/^themeroom_fills = \{/,/^\}/' nethack-c/upstream/dat/themerms.lua \
+      | grep -cE 'nh\.rn2|math\.random|percent\('     # => 16
+
+So wiring the themed-fill rooms makes the sample fire at the right moment and
+then go silent exactly where C keeps drawing, which moves several sessions'
+divergence EARLIER. That is precisely a 915-position loss with no screen change.
+
+**Therefore: do not port the themed-fill themerooms without porting the fills
+they call.** They are one change, not two. Start with the fills whose bodies are
+shortest ("Ice room" is `percent(25)` then a timer per square; "Boulder room" is
+`percent(50)` in a loop) and only then wire lspo_room's option handling.
 
 ## How to pick a target (this is the part that matters)
 

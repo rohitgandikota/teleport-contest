@@ -41,13 +41,38 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## The next thing to do
+## The next thing to do — identified precisely, do not re-derive
 
-**seed0030 (1953 steps, the biggest session) now fails at step 4 on the pet
-being one square off.** C has the kitten at col 55 and the upstair at 56; we
-have gold at 55 and the kitten at 56. That is `dog_move`, and it is the single
-highest-value remaining target because seed0030 alone is 17% of the public
-screens.
+**`m_move` is missing its entire post-move block, `src/monmove.c:1660-1681`.**
+
+    if (mmoved == MMOVE_MOVED || mmoved == MMOVE_DONE) {
+        if (OBJ_AT(mtmp->mx, mtmp->my) && mtmp->mcanmove) {
+            if (metallivorous(ptr))          meatmetal(mtmp);
+            if (ptr == &mons[PM_GELATINOUS_CUBE]) meatobj(mtmp);
+            if (corpse_eater(ptr))           meatcorpse(mtmp);
+            if (mpickstuff(mtmp))            mmoved = MMOVE_DONE;
+            ...
+
+Our m_move places the monster and returns. So **no monster ever eats anything
+off the floor and no monster ever picks anything up.**
+
+This was found from the RNG log, not guessed. seed0030 diverges at call 6276:
+
+    6275  C rn2(5)=1     ours rn2(5)=1      ok        @ distfleeck(monmove.c:538)
+    6276  C rn2(100)=92  ours rn2(4)=0      MISMATCH  @ obj_resists(zap.c:1469)
+    6277  C rn2(8)=7     ours rn2(100)=67   differs   @ dog_goal(dogmove.c:554)
+
+C's rn2(100) is `obj_resists(otmp, 5, 95)` at src/mon.c:1482, inside
+`meatmetal()`. A metallivore moved onto a metal object and ate it; we skipped
+straight on to the pet's turn, whose rn2(4) is dog_goal's `!rn2(4)`.
+
+Start with `meatmetal` (src/mon.c:1465, ~75 lines, its only draw is that
+obj_resists). Then `mpickstuff`, which is the one that affects the most turns.
+
+The visible symptom that led here was seed0030 step 4: C has the kitten at col
+55 and the upstair at 56, we have gold at 55 and the kitten at 56. That is a
+*consequence*, not the cause — `dog_move`'s choice loop and `dog_goal`'s APPORT
+guard were both checked line by line against the C and both already match.
 
 Then `pluslvl`/`losexp` (src/exper.c), which is what seed0360 waits on at step
 20 — it needs `newhp`, `newpw`, `setuhpmax`, `newuexp`, `xlev_to_rank`, so it

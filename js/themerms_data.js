@@ -668,7 +668,8 @@ export const themeroom_fills = [
   "name": "Garden",
   "frequency": 1,
   "mindiff": null,
-  "maxdiff": null
+  "maxdiff": null,
+  "eligible": "return rm.lit == true;"
  },
  {
   "index": 7,
@@ -703,7 +704,8 @@ export const themeroom_fills = [
   "name": "Light source",
   "frequency": 1,
   "mindiff": null,
-  "maxdiff": null
+  "maxdiff": null,
+  "eligible": "return rm.lit == false;"
  },
  {
   "index": 12,

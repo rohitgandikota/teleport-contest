@@ -97,6 +97,23 @@ const maps = {};
     }
 }
 
+// `eligible = function(rm) ... end` is a Lua closure, so the interpreter cannot
+// hand it over either. It changes how many draws the reservoir sample makes, so
+// it has to come across. Capture its body verbatim and let the consumer decide
+// whether it understands it — a fill whose predicate is not recognised must be
+// reported, never silently treated as eligible.
+{
+    const entryRe = /name\s*=\s*['"]([^'"]+)['"]([\s\S]{0,400}?)contents\s*=\s*function/g;
+    let m;
+    while ((m = entryRe.exec(src)) !== null) {
+        const e = /eligible\s*=\s*function\s*\(\s*rm\s*\)\s*(.*?)\s*end\s*,/.exec(m[2]);
+        if (!e) continue;
+        for (const tbl of [meta.themerooms, meta.themeroom_fills])
+            for (const r of tbl)
+                if (r.name === m[1]) r.eligible = e[1];
+    }
+}
+
 for (const r of meta.themerooms) {
     const got = maps[r.name];
     if (got) {

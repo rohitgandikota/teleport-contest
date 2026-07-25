@@ -93,7 +93,7 @@ const {
 import { GameMap } from './game.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
-import { themerooms } from './themerms_data.js';
+import { themerooms, themeroom_fills } from './themerms_data.js';
 import { lspo_map, lspo_region, sp_lev_wire } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
@@ -692,11 +692,43 @@ function filler_region(x, y) {
     lspo_region(x, y, rmtyp, true, FILL_NORMAL, func);
 }
 
-// dat/themerms.lua:1009 themeroom_fill() — a second reservoir sample, over the
-// 15 themeroom_fills, then that fill's own contents. Not ported: the fills
-// place monsters, objects and terrain, each with its own draws.
+// dat/themerms.lua:890 is_eligible(room, mkrm) — for a FILL the room is passed
+// in, so a fill may accept or refuse it, and that changes how many draws the
+// reservoir sample below makes.
+//
+// Only two fills carry a predicate and both test the room's lit state. The
+// generator captures the Lua source of each one rather than a flag, so an
+// unrecognised predicate is reported instead of being assumed true.
+function fill_eligible(fill, rm, difficulty) {
+    if (fill.mindiff != null && difficulty < fill.mindiff) return false;
+    if (fill.maxdiff != null && difficulty > fill.maxdiff) return false;
+    if (rm != null && fill.eligible) {
+        if (fill.eligible === 'return rm.lit == true;') return !!rm.rlit;
+        if (fill.eligible === 'return rm.lit == false;') return !rm.rlit;
+        note_unported_lev(`fill eligible ${fill.name}`);
+        return true;
+    }
+    return true;
+}
+
+// dat/themerms.lua:1009 themeroom_fill() — a second reservoir sample, this one
+// over the 15 themeroom_fills, then the chosen fill's own contents.
+//
+// The sample is ported; the contents are not. Each fill places monsters,
+// objects or terrain with draws of its own, and they are 15 separate functions.
 function themeroom_fill(rm) {
-    note_unported_lev('themeroom_fill');
+    const difficulty = depth_of_level(game.u?.uz);
+    let pick = null;
+    let total_frequency = 0;
+    for (const fill of themeroom_fills) {
+        if (!fill_eligible(fill, rm, difficulty)) continue;
+        const this_frequency = fill.frequency ?? 1;
+        total_frequency += this_frequency;
+        if (this_frequency > 0 && rn2(total_frequency) < this_frequency)
+            pick = fill;
+    }
+    if (!pick) return;
+    note_unported_lev(`themeroom_fill ${pick.name}`);
 }
 
 // The `contents` function of each shaped room, transcribed from themerms.lua.

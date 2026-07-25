@@ -284,18 +284,22 @@ where ours barely moved at all.**
 4454, and calls 4452-4453 match exactly — including score_targ's rnd(5), which
 is the proof that pet_ranged_attk/best_target/find_targ/score_targ are right.
 
-**Remaining on seed0102:** at 4454 C draws rn2(5) (distfleeck, i.e. it has moved
-on to the next monster) while we draw another rnd(5) — **we score one MORE
-target than C.** So `best_target`'s eight-direction scan finds a target C
-rejects. With clear_path now ported, find_targ should stop at the same walls,
-so check in this order:
-1. Is `viz_clear` maintained the same way ours is read? clear_path indexes
-   `viz_clear[row][col]`; confirm vision_reset/vision_recalc fill it for every
-   square C fills.
-2. find_targ returns `game.u` when it reaches <mux,muy>. Our mux/muy come from
-   set_apparxy; if they differ from C's the pet "sees" the hero in a direction
-   C does not.
-3. The `!targ.minvis || perceives()` and `!targ.mundetected` filters.
+**Remaining on seed0102: the pet gets an EXTRA TURN, it does not mis-score.**
+
+Traced best_target's finds: each call sees the HERO along dir <-1,-1> and a
+monster at <23,8> along <-1,0>. The hero hit returns early (score -3000, before
+the rnd(5)), so **exactly one rnd(5) is spent per best_target call** — which is
+what C spends at 4453, and ours matches it.
+
+The extra rnd(5) at 4454 is therefore a SECOND best_target call, i.e. a second
+pet turn, where C has already moved on to the next monster's dochug (its 4454 is
+distfleeck's rn2(5)).
+
+So the question is movement allotment, not targeting: **our pet acts more often
+than C's.** Look at `mcalcmove` and the `mtmp.movement` accounting in
+moveloop_core's monster phase — the pet is accumulating enough points for an
+extra action. Note this is the same subsystem that would explain the seed4500
+mfndpos 5-vs-7 drift, so a fix here may resolve both.
 
 --- superseded diagnosis, kept so it is not re-derived ---
 

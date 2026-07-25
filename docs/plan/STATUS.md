@@ -310,9 +310,9 @@ held-out sessions.
 
 | key | n | blocker |
 |---|---|---|
-| `a` | 232 | needs each `use_*()`'s own return value; a first attempt that assumed ECMD_TIME cost a screen on seed0077 |
+| ~~`a`~~ | 232 | **DONE.** Needed a different input path per item: lock tools reach `get_adjacent_loc`, five others reach `getdir`, lamps take a turn because `use_lamp` is void. See the NOTES entry on per-keystroke state tracing |
 | `r` `d` `w` | 437 | wired via getobj; the EFFECTS are unported |
-| `?` | 113 | opens a menu that reads its own keys — count is menu-dependent |
+| `?` | 113 | `dohelp` (src/pager.c) builds a menu and calls `select_menu(tmpwin, PICK_ONE, &selected)`, then returns ECMD_OK. Key count depends on the selection: a letter plus confirm, or a single ESC. Needs our `select_menu` to consume exactly what C's does — verify against a session that presses `?` before wiring it |
 | `p` | 109 | shops |
 | `>` | 81 | `next_level()` -> `goto_level()`. Note the common case already matches: off stairs, C returns ECMD_OK having read nothing, exactly as an unhandled key does |
 

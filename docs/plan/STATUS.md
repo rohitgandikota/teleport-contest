@@ -293,12 +293,29 @@ final reversal. No difference.
 `typ = 25` (ROOM), and `dig_corridor` only drops boulders on squares it is
 digging as CORR. A boulder standing on ROOM floor did not come from there.
 
-It is a room object: `fill_ordinary_room()`'s `mkobj_at(RANDOM_CLASS, ...)`
-can select ROCK_CLASS and produce a BOULDER. So this belongs with the seed0102
-fountain as the same open question — **C places a thing in a room that we do
-not** — and our three boulders at <52,6>, <31,11>, <28,3> are corridor ones in
-unseen areas, which is why they do not show on the screen and cannot be
-compared against C's.
+**SOURCE FOUND: `mkroll_launch`, which we record as unported.**
+js/mklev.js:346 has
+
+    case ROLLING_BOULDER_TRAP:
+        note_unported_lev('mkroll_launch');
+
+while src/trap.c:511 calls `mkroll_launch(ttmp, x, y, BOULDER, 1L)`, and that
+function (src/trap.c, 34 lines) does `mksobj(BOULDER)` +
+`place_object(cc.x, cc.y)` + `stackobj()`. That is C's boulder.
+
+Ruled out on the way: `fill_ordinary_room()`'s random-object loop is not the
+source — traced on seed0105, its seven rooms roll 1,0,0,2,1,1,2 and place at
+<11,3> and <30,6> only, and since the RNG matches C skips the same rooms. Our
+three boulders at <52,6>, <31,11>, <28,3> are dig_corridor ones in unseen
+areas.
+
+**Porting it is not free.** `mkroll_launch` calls
+`find_random_launch_coord()` (58 lines, **2 draws**) to pick where the boulder
+sits. So this is not a silent no-op we can add — it changes the draw sequence,
+and seed0105 currently matches C to call 2479 of 2499 WITHOUT those draws.
+Reconcile that first: either the draws sit inside a loop that runs zero times
+on this level, or the trap is created after the divergence. Trace when
+`ROLLING_BOULDER_TRAP` is created relative to call 2479 before writing code.
 
 Do NOT chase `join()` on the strength of this repro; that trail was based on
 the mistaken corridor assumption. `dig_corridor` matching C exactly is still a

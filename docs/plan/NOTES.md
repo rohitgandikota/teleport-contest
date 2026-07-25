@@ -1021,3 +1021,59 @@ local `const DUST = 3` under a "Supply chest items" comment, while
 one file. Importing the engraving type from `const.js` is the fix; the lesson is
 that a bare `const NAME = n` in a ported file is a smell even when it is not
 currently wrong.
+
+## The frozen terminal distinguishes gray from "no colour"; the C does not
+
+`win/tty/termcap.c` sets `hilites[CLR_GRAY] = hilites[NO_COLOR] = nilstring` in
+three independent branches (ANSI :1010, AMIGA :1201, TOS :1210). A gray glyph
+therefore carries **no escape at all** and is byte-identical to an uncoloured
+one. `js/terminal.js` (frozen) maps CLR_GRAY(7) to SGR 37 and NO_COLOR(8) to
+SGR 39, so passing a raw CLR_GRAY through produces output the C never emits.
+
+This is easy to miss because it can only ever show up as a colour-only cell
+mismatch — the character matches, so a glyph-level check passes, and nothing
+about it touches the RNG. Gray is the most common colour in the game (goblins,
+all iron and mineral objects, rock), so the fix is worth more than one cell
+suggests. `js/tty/termcap.js` now holds the collapse as `term_start_color()`.
+
+**Generalisation:** any C behaviour implemented by a *table of strings* rather
+than by code (hilites[], the symbol sets) can encode "do nothing" as an entry,
+and a port that reimplements the lookup as arithmetic will miss it.
+
+## Clearing a message means erasing the row, not just the buffer
+
+Our `more()` cleared `game._pending_message` but left the text already painted
+in the grid, so the next thing to draw landed on top of it — seed0360's tutorial
+prompt read `Hello wizard, welcom Do you want a tutorial?`.
+
+The C reaches the erase by a route that looks like a bug and is not:
+
+    /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE */
+    more();
+    ttyDisplay->toplin = TOPLINE_NEED_MORE;   /* more resets this */
+    tty_clear_nhwindow(window);
+
+`tty_clear_nhwindow` only does its `home(); cl_end();` when `toplin !=
+TOPLINE_EMPTY`, and `more()` has just set it to EMPTY. Forcing it back is the
+whole point of the assignment. Reading `more()` alone tells you the line is
+cleared; only the caller actually erases it.
+
+## The step-0 `--More--` claim was wrong: it is 3 sessions, not 32
+
+Measured across all 44 public sessions: 3 have `--More--` on the first frame
+(seed4500, seed5002, seed5006), 26 open on the role's intro text window
+(`It is written in the Book of ...`), 9 open on a blank top line, and the rest
+on a plain welcome message. The intro-text screens already match. Do not plan
+work around the old "32/44" figure.
+
+`more()`'s line break is `if (cw->curx >= CO - 8) topl_putsym('\n')`, i.e. the
+suffix moves to row 1 only when the message ends at column 72 or beyond. That
+is a property of the message length, not of whether a `--More--` happens.
+
+## The advisory RNG count moves without the divergence point moving
+
+seed0002 and seed4500 both lost RNG "positions match overall" (4279 -> 4268,
+2939 -> 2936) from a change that improved screens by 10. Both divergence points
+were unchanged, at calls 2320 and 2869. The lost matches were all *after* the
+divergence, where agreement is coincidence. `git stash` + rerun `diverge.mjs` on
+the affected sessions before treating an RNG drop as a regression.

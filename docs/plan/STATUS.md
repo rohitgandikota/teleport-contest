@@ -98,8 +98,25 @@ starts thinking. `dog_goal(dogmove.c:575)` is separately the blocker in three
 more sessions, and `obj_resists` heads the histogram with five — the same
 subsystem showing up under three different names.
 
-`src/dogmove.c` is around 1500 lines and this is the largest coherent gap left,
-but seed0102 is 34 calls from being the first session to pass outright.
+**The prerequisite is `m_move`, not `dog_move`.** `js/monmove.js` is 34 lines:
+`distfleeck()` is real (its `rn2(5)` is correct and matches), and `dochug()`
+does nothing else but `note_unported('m_move')`. So no monster moves at all.
+
+The dispatch to port, at src/monmove.c:1773, is one line inside `m_move`:
+
+```c
+if (mtmp->wormno) goto not_special;
+if (mtmp->mtame) {                       /* my dog gets special treatment */
+    return postmov(mtmp, ptr, omx, omy, dog_move(mtmp, after),
+                   seenflgs, can_tunnel, can_unlock, can_open);
+}
+```
+
+so `dog_move` cannot be reached without `m_move`'s prologue (`mfndpos`, the
+`can_open`/`can_unlock` flags) and `postmov`. Budget `m_move` + `postmov` +
+`dogmove.c` together — roughly 3,000 lines of C — rather than treating the pet
+as a separable piece. It is the largest single gap left in the port, and it is
+what stands between the corpus and its first passing session.
 
 ### Stub sweep — one more found, not yet fixed
 

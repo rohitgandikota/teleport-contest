@@ -485,6 +485,10 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
         }
     }
 
+    /* src/dogmove.c:483 — appr is declared at function scope in C, and both
+       the follow-player branch and its else arm assign it. */
+    let appr = 0;
+
     /* src/dogmove.c:565 — follow the player.
        gtyp is UNDEF whenever the object search above found nothing. */
     if (gtyp === UNDEF) {
@@ -498,7 +502,7 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
         if (after && udist <= 4 && game.u.ux === gx && game.u.uy === gy)
             return -2;
 
-        let appr = (udist >= 9) ? 1 : (mtmp.mflee ? -1 : 0);
+        appr = (udist >= 9) ? 1 : (mtmp.mflee ? -1 : 0);
         if (udist > 1) {
             if (!IS_ROOM(game.level.at(game.u.ux, game.u.uy)?.typ)
                 || !rn2(4) || whappr)
@@ -528,11 +532,23 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
                 }
             }
         }
-        return appr;
+    } else {
+        /* src/dogmove.c:605-606 — the else arm of the follow-player test sets
+           appr = 1 because gtyp is not UNDEF: the object search DID find a
+           goal, so head for it. Returning 0 here made the pet wander instead,
+           discarding the goal the box scan had just computed. */
+        appr = 1;
     }
 
-    note_unported('dog_goal non-follow goal');
-    return 0;
+    /* src/dogmove.c:607 */
+    if (mtmp.mconf)
+        appr = 0;
+
+    /* src/dogmove.c — gg is ONE struct shared by dog_goal and dog_move; our
+       dog_move reads it through GDIST(), so publish the goal rather than
+       leaving the two halves out of step. */
+    game.gg = { gx, gy, gtyp };
+    return appr;
 }
 
 /* src/dungeon.c On_stairs() */

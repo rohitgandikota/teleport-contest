@@ -8,7 +8,7 @@ import { rn2, rn1 } from './rng.js';
 import { exerchk } from './attrib.js';
 import { init_uhunger } from './eat.js';
 import { settrack, initrack } from './track.js';
-import { ask_do_tutorial } from './options.js';
+import { ask_do_tutorial, set_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack } from './cmd.js';
@@ -73,6 +73,11 @@ export async function newgame() {
         if (ir < 0 || ira < 0 || ig < 0 || ia < 0)
             await player_selection();
     }
+
+    /* src/options.c set_playmode() — called from the port's startup code
+       before the game proper. It renames the hero in wizard mode, so it has to
+       run before anything prints plname. */
+    set_playmode();
 
     // src/allmain.c:780 — seed mvitals from each species' G_NOCORPSE bit,
     // before init_objects(). propagate() and uncommon() both read this.

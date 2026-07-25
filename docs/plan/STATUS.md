@@ -335,13 +335,25 @@ trace shows every one of our calls finding the hero along <-1,-1> (early return,
 no draw) AND a monster at <23,8> along <-1,0> (one rnd(5)). C's pet found a
 target on only two of its four turns.
 
-So the fault is back in **find_targ's visibility**: we see <23,8> where C does
-not. clear_path is ported now, so suspect the data it reads rather than the
-walk:
-- Does `viz_clear` get rebuilt when it should? Ours is filled in
-  vision_reset/vision_recalc; if a square is left clear that C marks blocked,
-  find_targ walks straight past a wall.
-- find_targ also stops on `!isok()`; check the map bounds match.
+**Visibility is NOT the fault — checked.** Probed row 8 from x=23 to x=30: every
+square is typ 25 (ROOM) with `viz_clear = 1`. There is no wall between the pet
+and <23,8>; the monster is genuinely visible from where our pet stands, and C's
+find_targ would see it too from the same square.
+
+Post-whappr score_targ trace (10 calls):
+
+    HERO, 23,8 | HERO, 23,8 | HERO, HERO | HERO, 23,8 | HERO, 23,8
+
+Five best_target calls, four of which find the monster and spend rnd(5). C
+spends 2. So **C's pet was not standing where it could see <23,8> on two of its
+turns** — it had moved off row 8 — while ours stays on it.
+
+So this is the PET'S PATH again, one layer below the whappr fix. Our pet still
+does not follow C's route even with appr = 1. The next thing to take is the
+per-call goal: dump `gx`/`gy` from inside dog_goal (they are in ITS scope, not
+dog_move's — an earlier attempt traced the wrong scope and printed nothing) for
+each of the five calls, and check they head toward the hero at <28,7> as
+appr = 1 should make them.
 
 Note the seed4500 mfndpos 5-vs-7 drift is probably the SAME root — both are
 "our monster perceives more open space than C's".

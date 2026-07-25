@@ -83,11 +83,22 @@ C can call it, and they are different mechanisms — do not conflate them:
    blocks if `toplin == TOPLINE_NEED_MORE`, then sets it back to NEED_MORE and
    clears the window.
 
-For seed5002 step 0 the pending line is `welcome()`'s single 73-character
-pline, and `--More--` lands on row 1 because 73 + 8 exceeds the 80-column
-terminal. Find which startup call blocks on it (grep
-`display_nhwindow(WIN_MESSAGE, TRUE)`), rather than adding a call where one
-seems to belong.
+**For seed5002 step 0 it is mechanism 2, and the caller is the windowport, not
+src/.** `welcome()` (src/allmain.c) is a SINGLE pline — the double space in
+"NetHack!  You are" is in its format string, so do not mistake it for
+update_topl's two-space append. That one 73-character message leaves
+`toplin == TOPLINE_NEED_MORE`, and `--More--` lands on row 1 because 73 + 8
+exceeds the 80-column terminal.
+
+What blocks on it: **`tty_display_nhwindow()` flushes the message window before
+drawing any other window** — see win/tty/wintty.c:1890 and :1922, where the
+NHW_MAP and NHW_MENU/NHW_TEXT arms each call
+`tty_display_nhwindow(WIN_MESSAGE, TRUE)` first. So the startup map draw is
+what triggers it. Grepping `display_nhwindow(WIN_MESSAGE, TRUE)` in src/ finds
+nothing on the startup path and is a dead end; the call is in win/tty/.
+
+Our port defers drawing to `_buildScreenOutput()` and has no equivalent of that
+flush-before-draw ordering, which is why nothing calls `more()` here.
 
 Two cautions, both learned the hard way:
 

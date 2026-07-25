@@ -44,6 +44,7 @@ function mk_knox_portal(x, y) {
 import { random_engraving, wipeout_text } from './engrave.js';
 import { merged, weight } from './invent.js';
 import { themeroom_fill_contents } from './themerms.js';
+import { mkroom_table } from './sp_lev.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
 const NON_PM = -1;
@@ -778,7 +779,7 @@ function themeroom_fill(rm) {
        transcribed in js/themerms.js. */
     const contents = themeroom_fill_contents[pick.name];
     if (contents)
-        contents(rm);
+        contents(mkroom_table(rm));     /* sp_lev.c:5704 — Lua sees a table */
     else
         note_unported_lev(`themeroom_fill ${pick.name}`);
 }

@@ -39,7 +39,7 @@ function note_unported_themerms(what) {
 // The percent(25) is spent whether or not any square melts, and the rn2(1000)
 // is spent once PER SQUARE when it passes.
 export function fill_ice_room(rm) {
-    const ice = selection_from_mkroom(rm);
+    const ice = selection_from_mkroom(rm._mkroom || rm);
 
     lspo_terrain(ice, 'I');
     if (percent(25)) {
@@ -69,7 +69,7 @@ export function fill_ice_room(rm) {
 // spends one rn2(100) per SELECTED square. Both are ported; the object and trap
 // placement is what still records.
 export function fill_boulder_room(rm) {
-    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+    const locs = selection_filter_percent(selection_from_mkroom(rm._mkroom || rm), 30);
 
     selection_iterate(locs, (x, y) => {
         if (percent(50))
@@ -96,7 +96,7 @@ export function fill_trap_room(rm) {
 
     lua_shuffle(traps);
 
-    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+    const locs = selection_filter_percent(selection_from_mkroom(rm._mkroom || rm), 30);
 
     selection_iterate(locs, (x, y) => {
         note_unported_themerms(`des.trap:${traps[0]}`);
@@ -177,7 +177,7 @@ export function fill_temple_of_the_gods(rm) {
 // percent(80) would add a draw per square on every shallow level.
 export function fill_spider_nest(rm) {
     const spooders = level_difficulty() > 8;
-    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+    const locs = selection_filter_percent(selection_from_mkroom(rm._mkroom || rm), 30);
 
     selection_iterate(locs, (x, y) => {
         const spider_on_web = spooders && percent(80);
@@ -193,7 +193,7 @@ export function fill_spider_nest(rm) {
 //        else des.monster({ class = "m", appear_as = "obj:chest" }); end
 //     end);
 export function fill_storeroom(rm) {
-    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+    const locs = selection_filter_percent(selection_from_mkroom(rm._mkroom || rm), 30);
 
     selection_iterate(locs, (x, y) => {
         if (percent(25))
@@ -215,7 +215,7 @@ export function fill_storeroom(rm) {
 // 14 squares gives 3.5 and three iterations. No draws here; the monsters and
 // the gas cloud are what record.
 export function fill_cloud_room(rm) {
-    const fog = selection_from_mkroom(rm);
+    const fog = selection_from_mkroom(rm._mkroom || rm);
     const limit = selection_numpoints(fog) / 4;
 
     for (let i = 1; i <= limit; i++)
@@ -230,7 +230,7 @@ export function fill_cloud_room(rm) {
 // 20. Every one is evaluated regardless of what the earlier ones returned, so
 // this fill always spends exactly seven draws.
 export function fill_ghost_of_an_adventurer(rm) {
-    const loc = selection_rndcoord(selection_from_mkroom(rm), 0);
+    const loc = selection_rndcoord(selection_from_mkroom(rm._mkroom || rm), 0);
 
     note_unported_themerms('des.monster:ghost');
 
@@ -288,7 +288,7 @@ export function fill_buried_zombies(rm) {
 // One percent(30) per nymph. The postprocess entry runs after the whole level
 // is built, not here.
 export function fill_garden(rm) {
-    const s = selection_from_mkroom(rm);
+    const s = selection_from_mkroom(rm._mkroom || rm);
     const npts = selection_numpoints(s) / 6;
 
     for (let i = 1; i <= npts; i++) {
@@ -329,7 +329,7 @@ export function fill_buried_treasure(rm) {
 // the rn2 inside it narrows with it. The loop bound's rn2(3) is spent once,
 // before any of them.
 export function fill_teleportation_hub(rm) {
-    const locs = selection_filter_mapchar(selection_from_mkroom(rm), ROOM, -2);
+    const locs = selection_filter_mapchar(selection_from_mkroom(rm._mkroom || rm), ROOM, -2);
     const n = 2 + rn2(3);
 
     for (let i = 1; i <= n; i++) {

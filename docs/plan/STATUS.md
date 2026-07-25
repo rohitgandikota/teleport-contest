@@ -62,9 +62,31 @@ draws. lspo_trap is the shortest path in and the chain is fully mapped:
                  get_location_coord and get_room_loc, which DO draw)
               -> mktrap(type, flags, croom, &tm)
 
-We have `mktrap_room` and `somexy`/`somexyspace` in js/mklev.js but NOT the
-generic `mktrap(type, flags, croom, tm)` nor `get_free_room_loc`. Those two are
-the actual unit of work; lspo_trap itself is a thin argument-shape wrapper.
+**The full chain, measured. Port bottom-up in this order:**
+
+    get_location      src/sp_lev.c   68 lines  2 draws   NOT PORTED
+    get_location_coord               17 lines  0 draws   NOT PORTED
+    get_room_loc                     20 lines  2 draws   NOT PORTED
+    get_free_room_loc                20 lines  0 direct  NOT PORTED
+    mktrap            src/mklev.c   119 lines  2 draws   NOT PORTED
+    create_trap       src/sp_lev.c   35 lines  0 direct  NOT PORTED
+    lspo_trap                        74 lines  0 direct  NOT PORTED
+
+    somexy / somexyspace   js/mklev.js   ALREADY PORTED and faithful
+    (somexy's irregular-room retry loop is in and correct)
+
+Two practical notes for whoever does it:
+
+- `somexy` lives in js/mklev.js and is NOT exported, and mklev.js imports
+  sp_lev.js. Putting get_room_loc in sp_lev.js therefore needs either an export
+  plus a cycle check, or get_room_loc placed in mklev.js instead. Its C home is
+  sp_lev.c, so prefer exporting somexy and verifying the cycle resolves.
+- get_free_room_loc's first get_location_coord() is spent UNCONDITIONALLY; the
+  retry loop only runs if that lands on a non-ROOM square, and each pass costs
+  another get_room_loc(). Collapsing the two into one loop changes the count.
+
+An attempt to land get_room_loc/get_free_room_loc without get_location_coord
+was backed out rather than left half-wired.
 
 Do lspo_trap first: five of the fifteen fills call des.trap (Boulder room, Trap
 room, Spider nest, Statuary, Teleportation hub), so it unblocks the most.

@@ -42,11 +42,18 @@ function scrape(re) {
 }
 
 /* Only the indented invocations carry data; the #define lines above them name
-   the same macro with its parameter list and must not be matched. */
+   the same macro with its parameter list and must not be matched.
+   Coins use OBJCLASS2, which carries an extra field (GOLD_SYM) between the
+   basename and the symbol name — matching only OBJCLASS() silently left index
+   12 empty and drew gold as '?'. */
 const monsyms = scrape(
     new RegExp(String.raw`^\s+MONSYM\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*(\w+)`, 'gm'));
-const oclasses = scrape(
-    new RegExp(String.raw`^\s+OBJCLASS\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*(\w+)`, 'gm'));
+const oclasses = [
+    ...scrape(new RegExp(
+        String.raw`^\s+OBJCLASS\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*(\w+)`, 'gm')),
+    ...scrape(new RegExp(
+        String.raw`^\s+OBJCLASS2\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*\w+,\s*(\w+)`, 'gm')),
+].sort((a, b) => a.idx - b.idx);
 
 if (!monsyms.length || !oclasses.length) {
     console.error('scrape found nothing — defsym.h layout changed');

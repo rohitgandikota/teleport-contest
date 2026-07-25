@@ -9,8 +9,8 @@
 // 60 monster classes
 export const def_monsyms = ["","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","@"," ","'","&",";",":","~","]"];
 
-// 16 object classes
-export const def_oc_syms = ["","]",")","[","=","\"","(","%","!","?","+","/","","*","`","0","_","."];
+// 17 object classes
+export const def_oc_syms = ["","]",")","[","=","\"","(","%","!","?","+","/","$","*","`","0","_","."];
 
 // symbol name -> class index, for reading SYMBOLS= lines from an rc
 export const monsym_names = {
@@ -88,6 +88,7 @@ export const oclass_names = {
  "SCROLL": 9,
  "SPBOOK": 10,
  "WAND": 11,
+ "COIN": 12,
  "GEM": 13,
  "ROCK": 14,
  "BALL": 15,

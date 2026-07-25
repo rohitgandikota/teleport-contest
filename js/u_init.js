@@ -42,6 +42,14 @@ const {
 const A_CHAOTIC = -1;   /* include/align.h */
 
 // Objects a random starting item must never be. src/u_init.c:1117-1160.
+/* src/u_init.c restricted_spell_discipline() — a spellbook in a school the
+   role may not advance in. Needs the skill tables; reaching one is recorded
+   rather than guessed, because guessing changes the retry count. */
+function restricted_spell_discipline(otyp) {
+    (game.unported ||= new Set()).add('restricted_spell_discipline');
+    return false;
+}
+
 function ini_inv_rejects(obj, got_level1_spellbook) {
     const o = obj.otyp;
     const objects = game.objects;
@@ -52,6 +60,9 @@ function ini_inv_rejects(obj, got_level1_spellbook) {
         || o === game.nocreate || o === game.nocreate2
         || o === game.nocreate3 || o === game.nocreate4
         || o === ONAMES.RIN_LEVITATION
+        /* the 'useless' items, src/u_init.c:1136 */
+        || o === ONAMES.POT_HALLUCINATION
+        || o === ONAMES.POT_ACID
         || o === ONAMES.SCR_AMNESIA
         || o === ONAMES.SCR_FIRE
         || o === ONAMES.SCR_BLANK_PAPER
@@ -63,7 +74,8 @@ function ini_inv_rejects(obj, got_level1_spellbook) {
         || (o === ONAMES.SCR_ENCHANT_WEAPON && roleIs('PM_MONK'))
         || (o === ONAMES.SPE_FORCE_BOLT && roleIs('PM_WIZARD'))
         || (obj.oclass === SPBOOK_CLASS
-            && objects[o].oc_level > (got_level1_spellbook ? 3 : 1))
+            && (objects[o].oc_level > (got_level1_spellbook ? 3 : 1)
+                || restricted_spell_discipline(o)))
         || o === ONAMES.SPE_NOVEL;
 }
 

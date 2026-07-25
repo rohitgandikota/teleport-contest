@@ -261,18 +261,30 @@ node tools/screendiff.mjs seed0102 21
 
 Three cells differ, and they name two distinct bugs:
 
-1. **The HERO is one square off.** C has `@` at <27,8>, standing on the
+1. ~~**The HERO is one square off.**~~ **FIXED** — `'f'` is `dofire`, which
+   reaches `getdir()`; C spends a key on the direction and stays put, while we
+   ran that key as a movement command. seed0102 step 21 is now down to ONE
+   differing cell and its cursor matches C exactly. (Original text below for
+   the record.)
+
+   **The HERO is one square off.** C has `@` at <27,8>, standing on the
    upstairs so the `<` is hidden; we have `@` at <28,8> with the `<` still
    showing at 27,8. Cursor differs the same way (C [27,8] vs ours [28,8]).
    This is hero movement, not monster movement — one extra or one missing step
    over 21 keys. Suspects: a blocked move that we charge and C does not, or a
    key consumed differently. Note seed0102's session is "ranger-name-cancel",
    so it exercises the name prompt and ESC handling.
-2. **<31,11> is a fountain `{` in C and a scroll `?` in ours.** An object is
-   landing on a square where C has none — so object placement is NOT fully
-   cleared after all, despite mineralize matching. Check whether our
-   `mkfount()` runs at all: if the fountain is missing, its square is free for
-   an object that C never places there.
+2. **The one remaining cell: screen <31,11> = MAP <31,10>.** C draws a fountain
+   `{`, we draw a scroll `?`. Ruled out so far: `mkfount()` matches C,
+   `find_okay_roompos()` matches C, and level-generation RNG agrees call for
+   call — so the fountain should be in the same square.
+
+   That points at the DISPLAY layer rather than generation: either we are
+   drawing an object glyph over terrain that C draws as terrain, or a stale
+   remembered glyph is winning. Probe map <31,10> **step-gated to step 21**
+   (see the NOTES entry on probe timing — an ungated probe fires at a different
+   step and told me "no objects here", which is not an answer to this question)
+   and check both `level.objects` at that square and `loc.remembered_glyph`.
 
 Fix the hero offset first — it is upstream of everything the pet does, and a
 hero one square away changes what every monster targets.

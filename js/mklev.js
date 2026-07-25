@@ -1355,6 +1355,33 @@ function somex(croom) { return rn1(croom.hx - croom.lx + 1, croom.lx); }
 function somey(croom) { return rn1(croom.hy - croom.ly + 1, croom.ly); }
 
 function somexy(croom, c) {
+    /* src/mkroom.c:744 — an IRREGULAR room is not a rectangle, so a raw
+       somex/somey can land outside it. C rejects those and redraws, up to 100
+       times, then falls back to an exhaustive scan that draws nothing. Missing
+       this branch meant we accepted the first draw and placed things outside
+       the room, and it cost draws too: every rejected try in C is another
+       somex/somey pair. */
+    if (croom.irregular) {
+        const i = (croom.roomnoidx ?? -1) + ROOMOFFSET;
+        let try_cnt = 0;
+
+        while (try_cnt++ < 100) {
+            c.x = somex(croom);
+            c.y = somey(croom);
+            const loc = game.level.at(c.x, c.y);
+            if (loc && !loc.edge && loc.roomno === i)
+                return true;
+        }
+        /* try harder; exhaustively search until one is found */
+        for (c.x = croom.lx; c.x <= croom.hx; c.x++)
+            for (c.y = croom.ly; c.y <= croom.hy; c.y++) {
+                const loc = game.level.at(c.x, c.y);
+                if (loc && !loc.edge && loc.roomno === i)
+                    return true;
+            }
+        return false;
+    }
+
     if (!croom.nsubrooms) {
         c.x = somex(croom);
         c.y = somey(croom);

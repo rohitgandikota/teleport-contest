@@ -17,7 +17,8 @@
 // selection_setpoint()'s bounds_dirty test, which distinguishes a byte that is
 // 0 from one that is not.
 
-import { COLNO, ROWNO } from './const.js';
+import { game } from './gstate.js';
+import { COLNO, ROWNO, ROOMOFFSET } from './const.js';
 import { rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 
@@ -183,4 +184,35 @@ export function selection_numpoints(sel) {
             if (selection_getpoint(x, y, sel))
                 n++;
     return n;
+}
+
+// src/selvar.c:781 selection_from_mkroom() — the squares belonging to a room.
+//
+// This is what `selection.room()` in the themeroom Lua resolves to, and with no
+// argument it uses the room currently being built (gc.coder->croom).
+//
+// Note the loop is y OUTER and x inner, the opposite of filter_percent() and
+// iterate(). It does not matter here because setpoint order does not affect the
+// resulting set, but copying the x-outer shape by habit and then reusing it
+// somewhere that DOES draw would.
+//
+// The membership test is roomno, not the bounding box: an irregular room only
+// claims the squares topologize() actually stamped.
+export function selection_from_mkroom(croom) {
+    const sel = selection_new();
+
+    if (!croom)
+        croom = game.coder?.croom;
+    if (!croom)
+        return sel;
+
+    const rmno = (croom.roomnoidx ?? -1) + ROOMOFFSET;
+
+    for (let y = croom.ly; y <= croom.hy; y++)
+        for (let x = croom.lx; x <= croom.hx; x++) {
+            const loc = game.level?.at(x, y);
+            if (isok(x, y) && loc && !loc.edge && loc.roomno === rmno)
+                selection_setpoint(x, y, sel, 1);
+        }
+    return sel;
 }

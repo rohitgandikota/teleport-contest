@@ -9,6 +9,7 @@
 // itself.
 
 import { game } from './gstate.js';
+import { selection_iterate } from './selvar.js';
 import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
@@ -297,4 +298,19 @@ let add_room_fn = () => {}, add_door_fn = () => {};
 export function sp_lev_wire(addRoom, addDoor) {
     add_room_fn = addRoom;
     add_door_fn = addDoor;
+}
+
+// src/sp_lev.c:4978 lspo_terrain() — set the terrain of every square in a
+// selection. `des.terrain(sel, "I")` is the argc == 2 form.
+//
+// No draws. sel_set_ter() is the same per-square worker lspo_map() uses, so a
+// terrain change from a themeroom fill and one from a stamped map produce
+// identical cells.
+export function lspo_terrain(sel, mapchr) {
+    const ter = splev_chr2typ(mapchr);
+
+    if (ter === INVALID_TYPE)
+        return;                             /* nhl_error("Erroneous map char") */
+
+    selection_iterate(sel, sel_set_ter, ter);
 }

@@ -102,10 +102,37 @@ TRUE)` at the moment the frame is taken. The initial frame is captured after the
 map is drawn and the cursor parked on the hero; seed0077 step 12 is captured
 inside a genuine `more()`.
 
-Next attempt should drive the flag from the CALL SITE that blocks, not from
-`pline()`. Note also that seed8000's message is 77 characters, so it crosses the
-`CO - 8` threshold and would wrap to row 1 — check that path separately once the
-gating is right.
+**RESOLVED — the answer is that `--More--` is not a state at all, it is a
+FRAME captured inside a blocking call.** Reading `more()` end to end settles it:
+
+```c
+more(void) {
+    ...
+    putsyms(defmorestr);        /* the suffix goes up */
+    xwaitforspace("\033 ");     /* <-- the frame with --More-- is captured HERE */
+    ...
+    ttyDisplay->toplin = TOPLINE_EMPTY;   /* and it is gone again */
+}
+```
+
+So the suffix is on screen for exactly the duration of one input read — the one
+*inside* `more()` — and `toplin` is EMPTY the moment that key arrives. Modelling
+it as a flag that `pline()` sets and the next `nhgetch()` reads is wrong in both
+directions, which is exactly what the seed8000/seed0077 pair showed.
+
+Two corrections to what was written above, both of which cost time:
+
+- The enum values are **`TOPLINE_NEED_MORE = 1`, `TOPLINE_NON_EMPTY = 2`** — the
+  opposite of what a first guess suggests from their order in the header.
+- `update_topl()` (topl.c:138) sets `NEED_MORE` on **every** pline, so "is the
+  top line unacknowledged" does not discriminate anything. Do not gate on it.
+
+**What to build:** a real `more()` in the display layer that draws the suffix by
+the rule already verified below, awaits a key, then clears the top line — called
+where C calls `display_nhwindow(WIN_MESSAGE, TRUE)`. seed8000's initial frame is
+captured before that call ever happens, which is why it has no suffix; its
+welcome `more()` is a LATER capture. Check seed8000's later frames for the
+77-character wrap case once the call site is right.
 
 ### The leaderboard, and what it says about our real problem
 

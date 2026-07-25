@@ -447,3 +447,75 @@ export function get_location(x, y, humidity, croom) {
     }
     return { x, y };
 }
+
+// include/sp_lev.h:66,82-84 — a packed coordinate.
+export const SP_COORD_IS_RANDOM = 0x01000000;
+export const SP_COORD_X = (l) => l & 0xff;
+export const SP_COORD_Y = (l) => (l >> 16) & 0xff;
+export const SP_COORD_PACK = (x, y) => ((x & 0xff) + ((y & 0xff) << 16));
+export const SP_COORD_PACK_RANDOM = (f) => (SP_COORD_IS_RANDOM | (f));
+
+// src/sp_lev.c get_unpacked_coord() — split a packed coord into x, y and the
+// humidity flags. A random coord carries its OWN flags in the low bits and only
+// falls back to the caller's default when it has none.
+export function get_unpacked_coord(loc, defhumidity) {
+    if (loc & SP_COORD_IS_RANDOM) {
+        let getloc_flags = loc & ~SP_COORD_IS_RANDOM;
+        if (!getloc_flags)
+            getloc_flags = defhumidity;
+        return { x: -1, y: -1, is_random: 1, getloc_flags };
+    }
+    return {
+        x: SP_COORD_X(loc), y: SP_COORD_Y(loc),
+        is_random: 0, getloc_flags: defhumidity,
+    };
+}
+
+// src/sp_lev.c get_location_coord() — resolve a packed coord.
+//
+// The retry at the end is the part worth copying exactly: when a RANDOM coord
+// resolved to nothing, C calls get_location() a SECOND time with the caller's
+// humidity rather than the packed flags. That second call spends its own draws,
+// so collapsing the two loses up to 100 tries' worth.
+export function get_location_coord(x, y, humidity, croom, crd) {
+    const c = get_unpacked_coord(crd, humidity);
+    let r = get_location(c.x, c.y,
+                         c.getloc_flags | (c.is_random ? NO_LOC_WARN : 0),
+                         croom);
+
+    if (r.x === -1 && r.y === -1 && c.is_random)
+        r = get_location(c.x, c.y, humidity, croom);
+
+    return r;
+}
+
+// src/sp_lev.c:1360 get_room_loc() — a position inside a room; negative means
+// random. somexy() may retry inside an irregular room, spending a pair each
+// pass; the explicit arm spends at most one rn2 per axis.
+export function get_room_loc(x, y, croom) {
+    if (x < 0 && y < 0) {
+        const c = { x: 0, y: 0 };
+        if (somexy_fn(croom, c))
+            return { x: c.x, y: c.y };
+        return { x, y };                /* panic("can't find a place!") */
+    }
+    if (x < 0) x = rn2(croom.hx - croom.lx + 1);
+    if (y < 0) y = rn2(croom.hy - croom.ly + 1);
+    return { x: x + croom.lx, y: y + croom.ly };
+}
+
+// src/sp_lev.c get_free_room_loc() — a ROOM square, retrying up to 100 times.
+//
+// The first get_location_coord() is spent UNCONDITIONALLY; the loop only runs
+// if it landed on a non-ROOM square, and each pass costs another get_room_loc().
+export function get_free_room_loc(x, y, croom, pos) {
+    let t = get_location_coord(x, y, DRY, croom, pos);
+    let trycnt = 0;
+
+    if (game.level?.at(t.x, t.y)?.typ !== ROOM) {
+        do {
+            t = get_room_loc(x, y, croom);
+        } while (game.level?.at(t.x, t.y)?.typ !== ROOM && ++trycnt <= 100);
+    }
+    return t;
+}

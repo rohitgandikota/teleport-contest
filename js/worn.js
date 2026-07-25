@@ -12,6 +12,10 @@ import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
 import { is_shirt, is_cloak, is_helmet, is_shield, is_gloves, is_boots,
          is_suit, is_flimsy, bimanual, WrappingAllowed } from './obj.js';
 import { ARM_BONUS } from './do_wear.js';
+import { INVIS, FAST, ANTIMAGIC, REFLECTING, PROTECTION, CLAIRVOYANT,
+         STEALTH, TELEPAT, LEVITATION, FLYING, WWALKING, DISPLACED,
+         FUMBLING, JUMPING, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES,
+         SHOCK_RES, POISON_RES, ACID_RES, STONE_RES } from './const.js';
 
 // src/worn.c which_armor() — the object worn in a given slot, or null.
 //
@@ -217,12 +221,113 @@ const is_elven_armor = (o) =>
     || o.otyp === ONAMES.ELVEN_CLOAK || o.otyp === ONAMES.ELVEN_SHIELD
     || o.otyp === ONAMES.ELVEN_BOOTS;
 
-/* src/worn.c update_mon_extrinsics() — grants and revokes the properties an
-   item confers. Monster intrinsics are not tracked in this port, so there is
-   nothing yet to update; the slot bookkeeping above is the part that matters
-   to which_armor() and it is done. */
+// src/worn.c:578 update_mon_extrinsics() — grant or revoke what an item confers.
+//
+// mon->mextrinsics is a bitmask of MR_* values, and res_to_mr() converts the
+// first eight prop_types straight into them because include/prop.h deliberately
+// orders FIRE_RES..STONE_RES to match MR_FIRE..MR_STONE.
+//
+// No draws.
 function update_mon_extrinsics(mon, obj, on, silently) {
-    note_unported_worn('update_mon_extrinsics');
+    let which = game.objects[obj.otyp].oc_oprop;
+    const altwhich = altprop(obj);
+
+    mon.mextrinsics = mon.mextrinsics || 0;
+
+    if (which || altwhich) {
+        for (;;) {                                          /* C's `again:` */
+            if (on) {
+                switch (which) {
+                case INVIS:
+                    mon.minvis = !mon.invis_blkd;
+                    break;
+                case FAST:
+                    /* mon_adjust_speed() needs the speed code */
+                    note_unported_worn('update_mon_extrinsics:mon_adjust_speed');
+                    break;
+                /* handled elsewhere / no effect for monsters / unimplemented */
+                case ANTIMAGIC: case REFLECTING: case PROTECTION:
+                case CLAIRVOYANT: case STEALTH: case TELEPAT:
+                case LEVITATION: case FLYING: case WWALKING:
+                case DISPLACED: case FUMBLING: case JUMPING:
+                    break;
+                default:
+                    mon.mextrinsics |= res_to_mr(which);
+                    break;
+                }
+            } else { /* off */
+                switch (which) {
+                case INVIS:
+                    mon.minvis = mon.perminvis;
+                    break;
+                case FAST:
+                    note_unported_worn('update_mon_extrinsics:mon_adjust_speed');
+                    break;
+                case FIRE_RES: case COLD_RES: case SLEEP_RES: case DISINT_RES:
+                case SHOCK_RES: case POISON_RES: case ACID_RES: case STONE_RES: {
+                    /* Another worn item may confer the same resistance, either
+                       as its own oc_oprop or as an alternate; only clear the
+                       bit when nothing else supplies it. */
+                    const mask = res_to_mr(which);
+                    let otmp = null;
+
+                    for (const o of (mon.minvent || [])) {
+                        if (o === obj || !o.owornmask)
+                            continue;
+                        if (game.objects[o.otyp].oc_oprop === which
+                            || altprop(o) === which) {
+                            otmp = o;
+                            break;
+                        }
+                    }
+                    if (!otmp)
+                        mon.mextrinsics &= ~mask;
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
+
+            /* a worn alchemy smock confers BOTH poison and acid resistance,
+               so the whole switch runs a second time for the other one */
+            if (altwhich && which !== altwhich) {
+                which = altwhich;
+                continue;
+            }
+            break;
+        }
+    }
+
+    /* maybe_blocks: obj->owornmask has been cleared by this point, so C passes
+       a blanket worn-mask; monsters never wield armour so that is safe. */
+    if (w_blocks(obj, ~0) === INVIS) {
+        mon.invis_blkd = on ? 1 : 0;
+        mon.minvis = on ? 0 : mon.perminvis;
+    }
+
+    /* the usteed/SADDLE dismount and the newsym() visibility update need the
+       steed and display state */
+}
+
+// include/prop.h:25 res_to_mr() — the first eight props are the MR_ bits.
+const res_to_mr = (r) => (FIRE_RES <= r && r <= STONE_RES) ? (1 << (r - 1)) : 0;
+
+// src/worn.c:572 altprop() — the alchemy smock's second property.
+const altprop = (o) => (o.otyp === ONAMES.ALCHEMY_SMOCK)
+    ? (POISON_RES + ACID_RES - game.objects[o.otyp].oc_oprop)
+    : 0;
+
+// src/worn.c:38 w_blocks() — what wearing this SUPPRESSES.
+//
+// The CORNUTHAUM arm reads the hero's role, which C notes has no real effect
+// for monsters since they have no clairvoyance; the artifact arm needs ART_*.
+function w_blocks(o, m) {
+    if (o.otyp === ONAMES.MUMMY_WRAPPING && (m & W_ARMC) !== 0)
+        return INVIS;
+    if (o.otyp === ONAMES.CORNUTHAUM && (m & W_ARMH) !== 0)
+        return CLAIRVOYANT;
+    return 0;
 }
 
 const MFAST = 2;   /* include/monst.h — permspeed value */

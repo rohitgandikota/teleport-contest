@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-25** · **1 of 44 sessions passes end to end** (`seed8000`), screens **163 → 194**, corpus RNG **14.4%**
+Last updated: **2026-07-25** · **1 of 44 sessions passes end to end** (`seed8000`), screens **148 → 199**, corpus RNG **14.4%**, **23 of 44 sessions now match at step 0**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -215,6 +215,26 @@ cursor, `.`/`,`/`;`/`:` pick, `@` self, ESC aborts.
 This is worth more than its one session: any command that targets a location
 goes through getpos, so the same gap silently mis-aligns every session that
 uses one.
+
+### Where the effort is best spent next — read this before picking
+
+Ranked by expected value, from the evidence in this file:
+
+1. **`mkroll_launch`** (js/mklev.js:346 records it unported). A real gap with
+   certain value: C spends TWO draws in `find_random_launch_coord()` that we do
+   not, on any level with a ROLLING_BOULDER_TRAP. Needs `linedup()` and
+   `clear_path()`. Note no public session appears to create one, so it cannot
+   be verified locally — port it for held-out correctness, and expect no local
+   movement.
+2. **The run loop** (`lookaround`, 162 lines, ZERO draws). `g` sets
+   `context.run` correctly now but domove single-steps, so C travels several
+   squares where we take one. Pure terrain logic, no PRNG risk, but 162 lines
+   needs verification room.
+3. **The command sweep below** — still the most reliable small-gain source.
+
+**AVOID: the seed0105 boulder.** Four iterations, no fix, three hypotheses
+dead (dig_corridor, fill_ordinary_room's random objects, mkroll_launch). It is
+ONE cell on ONE session. The eliminations are recorded above; leave it.
 
 ### The command sweep — currently the most productive line
 

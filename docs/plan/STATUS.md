@@ -43,7 +43,37 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## The seven "getbones" sessions are DEATH AND RESTART, not level descent.
+## THE BIGGEST REMAINING TARGET: death and restart. Seven sessions.
+
+**js/end.js does not exist. Death is entirely unported.** There is no done(),
+no done_in_by(), no u.uhp <= 0 check anywhere in js/.
+
+Measured, src/end.c is 1948 lines total:
+
+    done          107 lines  0 draws
+    done_in_by    160 lines  0 draws
+    really_done   461 lines  0 draws
+
+**Zero draws in all three.** That is the important number: the death sequence
+itself spends nothing. What it does is print the DYWYPI prompt, the tombstone,
+the final inventory and the score -- all SCREENS -- and then start a new game,
+whose u_init() and mklev() are where the draws resume.
+
+So this is a screen-parity job with a control-flow job attached, not an RNG
+job. For seven sessions the current state is: we keep playing a hero C has
+already killed, so every subsequent frame is wrong.
+
+Order of work:
+  1. the u.uhp <= 0 check and done() reaching the death screens
+  2. the DYWYPI / tombstone / final-inventory screens (pure output, and the
+     tombstone is a fixed 20-line ASCII block)
+  3. newgame() running a second time in the same process -- check what
+     resetGame() in js/gstate.js already does
+
+seed0030 alone is 1953 steps, the largest session in the corpus, and it is
+named "ten-diverse-deaths".
+
+## How this was found, and the rule it earned
 
 Traced properly this time. The calls immediately BEFORE the divergence are:
 

@@ -4,7 +4,7 @@
 import { game } from './gstate.js';
 import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { MONSYMS } from './monst_data.js';
+import { MONSYMS, NUMMONS } from './monst_data.js';
 import { erosion_matters } from './mkobj.js';
 import { is_rider } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
@@ -220,9 +220,14 @@ export function weight(obj) {
 const Is_container = (o) => o.otyp >= ONAMES.LARGE_BOX
                          && o.otyp <= ONAMES.BAG_OF_TRICKS;
 
-// include/mondata.h ismnum()
-const ismnum = (mnum) => mnum !== undefined && mnum !== null
-                      && mnum >= LOW_PM && mnum < game.mons.length;
+// include/monst.h:285 ismnum()
+//
+// Must bound on NUMMONS, not game.mons.length. tools/gen-monst.mjs appends the
+// zeroed terminator back after counting (C indexes mons[NUMMONS] deliberately),
+// so mons.length is NUMMONS + 1 and a length bound accepts corpsenm == NUMMONS,
+// which C rejects. weight() would then read the terminator's cwt of 0 instead
+// of falling through to the generic quan * oc_weight.
+const ismnum = (x) => x >= LOW_PM && x < NUMMONS;
 
 const LOW_PM = 0, LARGEST_INT = 32767;
 

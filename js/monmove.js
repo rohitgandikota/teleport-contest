@@ -6,6 +6,8 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { sobj_at } from './invent.js';
+import { m_carrying } from './mon.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
 import {
@@ -166,10 +168,6 @@ function linedup(ax, ay, bx, by, boulderhandling) {
     return false;
 }
 
-// src/mon.c m_carrying() — does the monster hold one of this type?
-function m_carrying(mtmp, type) {
-    return (mtmp.minvent || []).some(o => o.otyp === type) ? {} : null;
-}
 
 // src/monmove.c:1330 m_search_items() — look for an object worth walking to,
 // and REWRITE the goal to it. One draw, the rn2(25) that usually makes a
@@ -452,10 +450,13 @@ export function onscary(x, y, mtmp) {
             || is_vampshifter(mtmp)))
         return true;
 
-    /* sobj_at(SCR_SCARE_MONSTER) and sengr_at("Elbereth") both need parts of
-       the object and engraving code that are absent, so neither can be
-       answered yet. Both would return TRUE only in rare states. */
-    note_unported('onscary:scare_monster_and_elbereth');
+    /* the scare monster scroll doesn't have any of the below
+     * restrictions, being its own source of power */
+    if (sobj_at(ONAMES.SCR_SCARE_MONSTER, x, y))
+        return true;
+
+    /* sengr_at("Elbereth") needs the engraving code, which is absent. */
+    note_unported('onscary:elbereth');
     return false;
 }
 

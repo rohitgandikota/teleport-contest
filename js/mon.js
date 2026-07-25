@@ -8,6 +8,7 @@
 
 import { game } from './gstate.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
+import { which_armor } from './worn.js';
 import { rn2 } from './rng.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import {
@@ -16,7 +17,7 @@ import {
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver } from './dog.js';
 import { is_rider } from './makemon.js';
-import { MAX_CARR_CAP, WT_HUMAN, W_ARMG } from './const.js';
+import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
 const MZ_HUMAN = MFLAGS.MZ_MEDIUM;
@@ -120,11 +121,28 @@ export function mfndpos(mon, data, flag) {
     let wantpool = (mdat.mlet === MONSYMS.S_EEL);
     const poolok = is_swimmer(mdat) && !wantpool;
     const lavaok = likes_lava(mdat);
+    let rockok = false, treeok = false, mw_tmp;
     let thrudoor = ((flag & (ALLOW_WALL | BUSTDOOR)) !== 0);
 
-    /* ALLOW_DIG needs m_carrying()/MON_WEP, which need monster inventory. */
-    if (flag & ALLOW_DIG)
-        note_unported_mon('mfndpos ALLOW_DIG');
+    if (flag & ALLOW_DIG) {
+        /* need to be specific about what can currently be dug */
+        if (!needspick(mdat)) {
+            rockok = treeok = true;
+        } else if ((mw_tmp = MON_WEP(mon)) && mw_tmp.cursed
+                   && mon.weapon_check === NO_WEAPON_WANTED) {
+            rockok = is_pick(mw_tmp);
+            treeok = is_axe(mw_tmp);
+        } else {
+            rockok = !!(m_carrying(mon, ONAMES.PICK_AXE)
+                        || (m_carrying(mon, ONAMES.DWARVISH_MATTOCK)
+                            && !which_armor(mon, W_ARMS)));
+            treeok = !!(m_carrying(mon, ONAMES.AXE)
+                        || (m_carrying(mon, ONAMES.BATTLE_AXE)
+                            && !which_armor(mon, W_ARMS)));
+        }
+        if (rockok || treeok)
+            thrudoor = true;
+    }
 
     for (;;) {                                  /* nexttry: */
         if (mon.mconf) {
@@ -145,9 +163,10 @@ export function mfndpos(mon, data, flag) {
                 if (!loc) continue;
                 const ntyp = loc.typ;
 
-                if (IS_OBSTRUCTED(ntyp))
-                    continue;                   /* may_passwall/may_dig need
-                                                   the dig subsystem */
+                if (IS_OBSTRUCTED(ntyp)
+                    && !((flag & ALLOW_WALL) && may_passwall(nx, ny))
+                    && !((IS_TREE(ntyp) ? treeok : rockok) && may_dig(nx, ny)))
+                    continue;
                 if (IS_WATERWALL(ntyp) && !is_swimmer(mdat))
                     continue;
                 if (ntyp === IRONBARS && !(flag & ALLOW_BARS))
@@ -252,6 +271,31 @@ export function t_at(x, y) {
     return (game.level?.traps || []).find(t => t.tx === x && t.ty === y) || null;
 }
 
+
+// src/mon.c m_carrying() — the monster's object of this type, or null.
+//
+// This lived in monmove.js and returned a bare {} placeholder. Every caller so
+// far only tested truth, but mfndpos' dig arm reads the object itself, so the
+// dummy would have been a silent wrong answer the moment it was used.
+export function m_carrying(mtmp, type) {
+    for (const otmp of (mtmp.minvent || []))
+        if (otmp.otyp === type)
+            return otmp;
+
+    return null;
+}
+
+// include/monst.h:210 MON_WEP() — monsters do not wield in this port yet.
+const MON_WEP = (mon) => mon.mw || null;
+const NO_WEAPON_WANTED = 0;
+
+// include/obj.h:217,220 is_axe() / is_pick()
+const is_pick = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
+                           || otmp.oclass === OCLASSES.TOOL_CLASS)
+                          && game.objects[otmp.otyp].oc_skill === P_PICK_AXE;
+const is_axe  = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
+                           || otmp.oclass === OCLASSES.TOOL_CLASS)
+                          && game.objects[otmp.otyp].oc_skill === P_AXE;
 
 // src/hack.c:953 cant_squeeze_thru() — 0 means it CAN squeeze. A small monster
 // slips between two walls diagonally; a big one does not.

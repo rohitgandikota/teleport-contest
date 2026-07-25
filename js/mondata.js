@@ -45,3 +45,54 @@ export const corpse_eater = (ptr) =>
     || ptr.pmidx === PMNAMES.PM_BABY_PURPLE_WORM
     || ptr.pmidx === PMNAMES.PM_GHOUL
     || ptr.pmidx === PMNAMES.PM_PIRANHA;
+
+// include/mondata.h humanoid()
+export const humanoid = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
+
+// include/mondata.h:57 is_whirly()
+
+// src/mondata.c:632 sliparm() — armour slides off these entirely.
+export const sliparm = (ptr) => is_whirly(ptr) || ptr.msize <= MFLAGS.MZ_SMALL
+                             || noncorporeal(ptr);
+
+// src/mondata.c:640 breakarm() — armour bursts on these.
+export function breakarm(ptr) {
+    if (sliparm(ptr))
+        return false;
+
+    return bigmonst(ptr)
+        || (ptr.msize > MFLAGS.MZ_SMALL && !humanoid(ptr))
+        /* special cases of humanoids that cannot wear suits */
+        || ptr.pmidx === PMNAMES.PM_MARILITH
+        || ptr.pmidx === PMNAMES.PM_WINGED_GARGOYLE;
+}
+
+// include/mondata.h:133 cantweararm()
+export const cantweararm = (ptr) => breakarm(ptr) || sliparm(ptr);
+
+// src/mondata.c:678 num_horns(), include/mondata.h:56 has_horns()
+export function num_horns(ptr) {
+    switch (ptr.pmidx) {
+    case PMNAMES.PM_HORNED_DEVIL: /* ? "more than one" */
+    case PMNAMES.PM_MINOTAUR:
+    case PMNAMES.PM_ASMODEUS:
+    case PMNAMES.PM_BALROG:
+        return 2;
+    case PMNAMES.PM_WHITE_UNICORN:
+    case PMNAMES.PM_GRAY_UNICORN:
+    case PMNAMES.PM_BLACK_UNICORN:
+    case PMNAMES.PM_KI_RIN:
+        return 1;
+    default:
+        break;
+    }
+    return 0;
+}
+
+export const has_horns = (ptr) => num_horns(ptr) > 0;
+
+// include/mondata.h is_animal()
+export const is_animal = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
+
+// include/mondata.h mindless()
+export const mindless = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;

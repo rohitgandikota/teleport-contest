@@ -558,7 +558,7 @@ export function get_traptype_byname(trapname) {
 //
 // mktrap_flags starts as MKTRAP_MAZEFLAG, which matters because mktrap tests
 // that flag before deciding it has no way to place anything.
-export async function create_trap(t, croom) {
+export function create_trap(t, croom) {
     let pos;
 
     if (t.type === VIBRATING_SQUARE) {
@@ -582,7 +582,7 @@ export async function create_trap(t, croom) {
     if (t.seen)           mktrap_flags |= MKTRAP_SEEN;
     if (t.novictim)       mktrap_flags |= MKTRAP_NOVICTIM;
 
-    await mktrap_fn(t.type, mktrap_flags, null, { x: pos.x, y: pos.y });
+    mktrap_fn(t.type, mktrap_flags, null, { x: pos.x, y: pos.y });
 }
 
 // src/sp_lev.c:4397 lspo_trap() — the des.trap() verb.
@@ -590,7 +590,7 @@ export async function create_trap(t, croom) {
 // Defaults come from the C: spider_on_web starts TRUE, seen and novictim
 // FALSE. The string and (string, x, y) forms leave them all at those defaults;
 // only the table form can change them.
-export async function lspo_trap(type, x, y, opts) {
+export function lspo_trap(type, x, y, opts) {
     const t = {
         type,
         spider_on_web: opts?.spider_on_web !== undefined
@@ -605,7 +605,7 @@ export async function lspo_trap(type, x, y, opts) {
     if (t.type === undefined || t.type === NO_TRAP)
         return;                         /* nhl_error("Unknown trap type") */
 
-    await create_trap(t, game.coder?.croom ?? null);
+    create_trap(t, game.coder?.croom ?? null);
 }
 
 /* mktrap() lives in js/mklev.js, which imports this file; routed through the

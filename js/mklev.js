@@ -329,7 +329,11 @@ function choose_trapnote(ttmp) {
 }
 
 // src/trap.c:490 maketrap()
-async function maketrap(x, y, typ) {
+// NOTE: not async. C's maketrap() is an ordinary function and this one has no
+// awaits in it; the async marker was invented here and it forced every caller
+// up to lspo_region() to be async too, which is what blocked the themeroom
+// fills from calling des.trap at all.
+function maketrap(x, y, typ) {
     const trap = {
         ttyp: typ, tx: x, ty: y,
         tseen: (typ === HOLE),          /* unhideable_trap() */
@@ -1570,7 +1574,7 @@ async function makeniche(trap_type) {
                 let actualTrap = trap_type;
                 if (is_hole(actualTrap) && !Can_fall_thru(g.u.uz))
                     actualTrap = ROCKTRAP;
-                const ttmp = await maketrap(xx, yy + dy, actualTrap);
+                const ttmp = maketrap(xx, yy + dy, actualTrap);
                 if (ttmp) {
                     if (actualTrap !== ROCKTRAP) ttmp.once = 1;
                     /* src/mklev.c:767 — "ad aerarium" is eleven characters,
@@ -1847,7 +1851,7 @@ function mktrap_victim(trap) {
 // rejected one, so a crowded room diverged by however many retries it needed.
 // That is the shape of every function in this chain: the retry loop IS the
 // draw count.
-export async function mktrap(num, mktrapflags, croom, tm) {
+export function mktrap(num, mktrapflags, croom, tm) {
     let kind;
     const lvl = level_difficulty();
 
@@ -1894,7 +1898,7 @@ export async function mktrap(num, mktrapflags, croom, tm) {
                  || (avoid_boulder && sobj_at(ONAMES.BOULDER, m.x, m.y)));
     }
 
-    const trap = await maketrap(m.x, m.y, kind);
+    const trap = maketrap(m.x, m.y, kind);
     /* we should always get the type we asked for, but be paranoid */
     kind = trap ? trap.ttyp : NO_TRAP;
 
@@ -1982,7 +1986,7 @@ async function fill_ordinary_room(croom, bonus_items) {
     if (x <= 1) x = 2;
     let trycnt = 0;
     while (!rn2(x) && ++trycnt < 1000) {
-        await mktrap(0, MKTRAP_NOFLAGS, croom, null);
+        mktrap(0, MKTRAP_NOFLAGS, croom, null);
     }
     // Gold
     if (!rn2(3) && somexyspace(croom, pos)) {

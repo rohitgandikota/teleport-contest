@@ -18,7 +18,7 @@ import { selection_from_mkroom, selection_iterate, selection_rndcoord,
          selection_filter_percent, selection_numpoints,
          selection_filter_mapchar } from './selvar.js';
 import { ROOM } from './const.js';
-import { lspo_terrain } from './sp_lev.js';
+import { lspo_terrain, lspo_trap, get_traptype_byname } from './sp_lev.js';
 
 function note_unported_themerms(what) {
     (game.unported ||= new Set()).add(what);
@@ -75,7 +75,7 @@ export function fill_boulder_room(rm) {
         if (percent(50))
             note_unported_themerms('des.object:boulder');
         else
-            note_unported_themerms('des.trap:rolling boulder');
+            lspo_trap(get_traptype_byname('rolling boulder'), x, y);
     });
 }
 
@@ -99,7 +99,7 @@ export function fill_trap_room(rm) {
     const locs = selection_filter_percent(selection_from_mkroom(rm._mkroom || rm), 30);
 
     selection_iterate(locs, (x, y) => {
-        note_unported_themerms(`des.trap:${traps[0]}`);
+        lspo_trap(get_traptype_byname(traps[0]), x, y);
     });
 }
 
@@ -117,7 +117,7 @@ export function fill_statuary(rm) {
 
     const ntraps = lua_d(3);
     for (let i = 1; i <= ntraps; i++)
-        note_unported_themerms('des.trap:statue');
+        lspo_trap(get_traptype_byname('statue'));   /* no coord: random */
 }
 
 // dat/themerms.lua:157 "Massacre"
@@ -181,7 +181,7 @@ export function fill_spider_nest(rm) {
 
     selection_iterate(locs, (x, y) => {
         const spider_on_web = spooders && percent(80);
-        note_unported_themerms('des.trap:web');
+        lspo_trap(get_traptype_byname('web'), x, y, { spider_on_web });
     });
 }
 

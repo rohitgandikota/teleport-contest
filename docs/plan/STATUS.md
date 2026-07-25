@@ -251,9 +251,31 @@ That is the same silent positional drift that `seed4500` shows at RNG call
 
 **Treat pet/monster drift as ONE bug with three symptoms** (seed0102,
 seed0105, seed4500), not three separate object-placement puzzles. It draws
-nothing, so it needs position instrumentation: dump every monster's <x,y> each
-turn for a session whose screens still match, and find the first turn one sits
-where C's screen says it does not.
+nothing, so it needs position instrumentation.
+
+**Screendiff at the last agreeing step localised it — run this first:**
+
+```
+node tools/screendiff.mjs seed0102 21
+```
+
+Three cells differ, and they name two distinct bugs:
+
+1. **The HERO is one square off.** C has `@` at <27,8>, standing on the
+   upstairs so the `<` is hidden; we have `@` at <28,8> with the `<` still
+   showing at 27,8. Cursor differs the same way (C [27,8] vs ours [28,8]).
+   This is hero movement, not monster movement — one extra or one missing step
+   over 21 keys. Suspects: a blocked move that we charge and C does not, or a
+   key consumed differently. Note seed0102's session is "ranger-name-cancel",
+   so it exercises the name prompt and ESC handling.
+2. **<31,11> is a fountain `{` in C and a scroll `?` in ours.** An object is
+   landing on a square where C has none — so object placement is NOT fully
+   cleared after all, despite mineralize matching. Check whether our
+   `mkfount()` runs at all: if the fountain is missing, its square is free for
+   an object that C never places there.
+
+Fix the hero offset first — it is upstream of everything the pet does, and a
+hero one square away changes what every monster targets.
 
 ### Still open from before
 

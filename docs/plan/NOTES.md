@@ -773,3 +773,28 @@ ever disagree again, look for module state before looking at the port.
 `js/jsmain.js start()` now calls `reset_windows()`, `init_rect_globals()` and
 `reset_role_globals()`. All three existed already and none of them had a caller.
 **When you add module-scope state, add it to that list in the same commit.**
+
+## A stub with the right name is worse than a missing function
+
+`js/mklev.js` carried
+
+```js
+function make_engr_at(x, y, text, pristine, epoch, engr_type) { /* stub */ }
+function wipe_engr_at(x, y, cnt, perm) { /* stub */ }
+```
+
+`makeniche()` called neither, and `wipeout_text()` — fully ported, correct, and
+verified — had no caller at all. Two sessions diverged on it. Nothing in the
+port read as broken: the names were right, the signatures were right, and the
+real work sat in `js/engrave.js` waiting.
+
+`grep -n "stub"` across `js/` before picking a target. A function that returns
+nothing is not the same as a function that is absent, because `note_unported()`
+never fires for it and `game.unported` stays clean.
+
+Same commit, same file, another instance of the constant class: `mklev.js` had a
+local `const DUST = 3` under a "Supply chest items" comment, while
+`include/engrave.h` defines `DUST` as **1**. Two unrelated meanings, one name,
+one file. Importing the engraving type from `const.js` is the fix; the lesson is
+that a bare `const NAME = n` in a ported file is a smell even when it is not
+currently wrong.

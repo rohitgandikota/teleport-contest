@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 134**, corpus RNG **11.1% → 13.1%**
+Last updated: **2026-07-24** · **screens 85 → 134**, corpus RNG **11.1% → 13.3%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,9 +38,9 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | themeroom fill CONTENTS (3), `rnd_class` (4), `obj_resists` (4) |
+| **Also open** | `obj_resists` (5), `rnd_class` (4), themeroom fill CONTENTS (3) |
 | **Blocked on** | nothing |
-| **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **103,984/792,838 (13.1%)** |
+| **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **105,702/792,838 (13.3%)** |
 
 ### The exact next action — READ THIS FIRST
 

@@ -43,7 +43,37 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## js/do.js is PORTED but UNWIRED — a TDZ blocks it. Read this first.
+## '>' IS WIRED — but it does NOT unblock the seven sessions. Correction.
+
+js/do.js (dodown, next_level, goto_level's new-level arm, stairway_at,
+u_on_dnstairs) is ported and wired to rhack. It cost three missing-symbol
+fixes to get there, all recorded in the commit log.
+
+**But the seven sessions that block inside mklev() press '>' ZERO times:**
+
+    seed0009-swimmer-mforce        > keys: 0
+    seed0116-wizard-wear-shop      > keys: 0
+    seed0373-barbarian-quest-tour  > keys: 0
+
+So C is entering mklev() by some route OTHER than the down-staircase command.
+Candidates, matching the session names:
+
+  - a TRAPDOOR or hole fall (dodown's other arm, and mktrap makes trapdoors)
+  - the Mysterious Force pushing the hero UP a level -- seed0009 is literally
+    named "mforce", and goto_level's three Quest draws are exactly that code
+  - entering the Quest or Mines through a magic portal -- seed0373 is
+    "quest-tour"
+  - a level teleport trap
+
+**Find the real route before porting more of goto_level.** The cheapest test:
+instrument our own goto_level with a counter, then compare against the C rn2
+log around each session's divergence call to see what precedes mklev's first
+draw. The '>' path being correct does not mean it is the path being used.
+
+This is the same error as assuming the -915 was the fills: the fix was right
+and the target was wrong.
+
+## Reference: the descend chain, mapped call by call.
 
 The descend path (dodown, next_level, goto_level's new-level arm,
 stairway_at, u_on_dnstairs) is in js/do.js and correct. Wiring `>` to it

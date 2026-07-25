@@ -604,12 +604,32 @@ four sessions are seed0009 (90.1%), seed0116, seed5002 and seed5006, and
 seed0009 in particular has almost nothing else wrong with it.
 
 `mklev()` itself is already ported and correct, so this is the surrounding
-machinery: `goto_level` in src/do.c, the stairway/trapdoor entry points that
-call it, `save_currentstate`/`restore` of the level being left, and
-`u_on_upstairs`/`u_on_dnstairs` placement on arrival. Check first WHY the hero
-changes level in seed0009 so early — a trapdoor from `mktrap`, a level
-teleporter, or a `>` in the recorded keys — because that decides which entry
-point to port.
+machinery. **Checked why, and it is NOT a player action:** the divergence sits
+between `moveloop_preamble` (3335-3336) and the first `moveloop_core`, so no
+recorded key has been consumed yet. seed0009's rc is bare
+(`OPTIONS=symset:DECgraphics`) and its move string starts `Swimmer\ryy  y   yH`
+— chargen, then ordinary movement.
+
+And the level being built is a SPECIAL one. The draws after `getbones` are:
+
+```
+3338 rn2(3)    nhlib shuffle        mklev's own nhl_init
+3339 rn2(2)    nhlib shuffle
+3340 rn2(2)    splev_initlev(sp_lev.c:2992)   <- a Lua-defined level
+3341 rnd(4)    mktrap(mklev.c:2137)
+3342 rn2(100)  percent(nhlib.lua:44)
+```
+
+`splev_initlev` means this goes through the special-level loader, not the
+ordinary `makelevel()` path. So the thing to find is what makes C build a
+special level immediately after the preamble and before the hero's first turn.
+Candidates, in order: the Gnomish Mines entrance being pre-generated, a
+`deferred_goto()` fired by `u.utotype` already set at startup, or the hero
+arriving somewhere other than dungeon level 1.
+
+Establish which by reading C's `moveloop` between `moveloop_preamble` and the
+first `moveloop_core` — the call has to be in there — rather than by porting
+`goto_level` speculatively.
 
 ### Monster movement: what is verified, and where seed8000 stands now
 

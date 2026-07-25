@@ -326,7 +326,41 @@ scrapes only index/name/frequency/mindiff/maxdiff and drops `contents`
 entirely; it needs extending, or the bodies need hand-porting into js/themerms.js
 as the C's own functions.
 
-### The des.room() wiring: measured, isolated, still failing
+### The des.room() wiring: -915 FOUR times, and here is what that eliminates
+
+Attempted four times, always **exactly -915**. The constancy is the clue: the
+loss does not vary with anything about the fills, so it is not draws inside
+them. Ruled out by direct experiment, each independently:
+
+  1. the fills being unported          (all 15 ported -> still -915)
+  2. the des.* leaves being unwired    (all wired and drawing -> still -915)
+  3. the mkroom_table shape            (passed as filler_region does -> -915)
+  4. needfill FILL_NONE vs FILL_NORMAL (isolated to 0)
+
+And the split within it, isolated separately:
+
+    rtype/rlit change only, no contents call     -21
+    contents call from des.room                  -894
+
+So `contents(rm)` from THIS call site costs 894 no matter what contents does.
+That points at the call site, not the callee.
+
+**Next hypotheses, in order of cheapness:**
+
+  a. These three themerooms may not reach this path in C at all. Check whether
+     they have a `maps` entry and go through themeroom_contents() instead --
+     js/mklev.js:700 returns early for those, and the reservoir sample would
+     then be picking a DIFFERENT entry than we think.
+  b. themeroom_fill() may be reached twice per room: once here as des.room's
+     contents and once via filler_region(). C would then draw one reservoir
+     sample; we would draw two.
+  c. create_room() with rtype = THEMEROOM may take a different path than with
+     OROOM somewhere downstream of js/mklev.js:623, which already treats the
+     two alike for filling.
+
+Test (b) first: instrument themeroom_fill with a per-level counter and compare
+against the C's rn2 log around the themeroom block. Two samples where C has one
+would produce a constant loss exactly like this.
 
 `themeroom_fill` IS wired and gained +9 RNG (113,910 -> 113,919). It is reached
 through `filler_region()`, which every shaped room ends with, so it does not

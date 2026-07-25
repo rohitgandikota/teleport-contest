@@ -227,7 +227,8 @@ function sel_set_ter(x, y, typ) {
 
 // src/sp_lev.c:5584 lspo_region(), irregular branch — the only one a themeroom
 // reaches. Coordinates are relative to the map placed by lspo_map().
-export function lspo_region(dx1, dy1, rtype, irregular, needfill, contents) {
+export function lspo_region(dx1, dy1, rtype, irregular, needfill, contents,
+                            joined = true) {
     let rlit = litstate_rnd(-1);            /* sp_lev.c:5638 */
 
     const x = (game.xstart ?? 0) + dx1;
@@ -247,7 +248,10 @@ export function lspo_region(dx1, dy1, rtype, irregular, needfill, contents) {
     troom.rlit = rlit;
     troom.irregular = true;
     troom.needfill = needfill;
-    troom.needjoining = false;              /* joined = false for filler_region */
+    /* get_table_boolean_opt(L, "joined", TRUE) — filler_region passes no
+       `joined` key, so its regions ARE joined by makecorridors. Only
+       'Water-surrounded vault' asks for joined = false. */
+    troom.needjoining = joined;
 
     if (contents) contents(troom);
     add_doors_to_room(troom);

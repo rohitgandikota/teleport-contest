@@ -597,8 +597,16 @@ async function makerooms() {
                 if (g.level.rooms[g.level.nroom]) g.level.rooms[g.level.nroom].hx = -1;
             }
         } else {
-            // Themed room selection (reservoir sampling)
-            if (!(await themerooms_generate(difficulty))) {
+            /* src/mklev.c:415 — gi.in_mk_themerooms is TRUE for the whole
+               themerooms_generate() call, INCLUDING the create_room() the
+               `default` room reaches through des.room(). It is what makes
+               check_room() give up on the first obstruction instead of
+               shrinking and retrying, and what makes lspo_map() re-roll its
+               placement. It was read in four places and never set. */
+            g.in_mk_themerooms = true;
+            const made = await themerooms_generate(difficulty);
+            g.in_mk_themerooms = false;
+            if (!made) {
                 if (themeroom_tries++ > 10
                     || g.level.nroom >= Math.trunc(MAXNROFROOMS / 6))
                     break;

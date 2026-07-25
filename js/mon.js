@@ -176,9 +176,13 @@ export function mfndpos(mon, data, flag) {
                         }
                     }
 
-                    /* diagonal tight squeeze */
+                    /* diagonal tight squeeze — all THREE tests must hold.
+                       Omitting cant_squeeze_thru() blocked every diagonal
+                       between two walls, which cost real candidate squares:
+                       seed8000 had cnt 5 where C had 8. */
                     if (nx !== x && ny !== y
-                        && bad_rock(mdat, x, ny) && bad_rock(mdat, nx, y))
+                        && bad_rock(mdat, x, ny) && bad_rock(mdat, nx, y)
+                        && cant_squeeze_thru(mon))
                         continue;
 
                     const ttmp = t_at(nx, ny);
@@ -219,12 +223,43 @@ function t_at(x, y) {
     return (game.level?.traps || []).find(t => t.tx === x && t.ty === y) || null;
 }
 
-/* include/mondata.h — bad_rock() is the squeeze test; without the polymorph
-   and giant cases it is just "is this square wall-like". */
+// src/hack.c:939 bad_rock() — is this square one a monster cannot walk through?
+// The Sokoban boulder case needs sobj_at, which is not ported; no public
+// session reaches Sokoban.
 function bad_rock(mdat, x, y) {
     const t = game.level?.at(x, y)?.typ;
-    return t === undefined || IS_OBSTRUCTED(t);
+    if (t === undefined) return true;
+    return IS_OBSTRUCTED(t)
+        && (!tunnels(mdat) || needspick(mdat))
+        && !passes_walls(mdat);
 }
+
+// src/hack.c:953 cant_squeeze_thru() — 0 means it CAN squeeze. A small monster
+// slips between two walls diagonally; a big one does not.
+function cant_squeeze_thru(mon) {
+    const ptr = mon.data;
+
+    if (passes_walls(ptr))
+        return 0;
+    if (bigmonst(ptr)
+        && !(amorphous(ptr) || is_whirly(ptr) || noncorporeal(ptr)
+             || slithy(ptr)))
+        return 1;
+    /* curr_mon_load() needs monster inventory; nothing carries anything yet,
+       so the WT_TOOMUCH_DIAGONAL test cannot fire. */
+    return 0;
+}
+
+/* include/mondata.h */
+const bigmonst     = (d) => d.msize >= MFLAGS.MZ_LARGE;
+const amorphous    = (d) => (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0;
+/* include/mondata.h:57 — vortices and the air elemental, by symbol not flag */
+const is_whirly    = (d) => d.mlet === MONSYMS.S_VORTEX
+                         || d.pmidx === PMNAMES.PM_AIR_ELEMENTAL;
+/* include/mondata.h:31 — ghosts */
+const noncorporeal = (d) => d.mlet === MONSYMS.S_GHOST;
+const slithy       = (d) => (d.mflags1 & MFLAGS.M1_SLITHY) !== 0;
+const needspick    = (d) => (d.mflags1 & MFLAGS.M1_NEEDPICK) !== 0;
 
 function note_unported_mon(what) {
     (game.unported ||= new Set()).add(what);

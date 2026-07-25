@@ -175,10 +175,20 @@ function find_pmmonst(pm) {
     return (game.level?.monsters || []).find(m => m.mnum === pm) || null;
 }
 
+// src/mondata.c:517 mon_hates_silver() / :524 hates_silver()
 function mon_hates_silver(mon) {
-    note_unported('mon_hates_silver');
-    return false;
+    return is_vampshifter(mon) || hates_silver(game.mons[mon.mnum]);
 }
+
+// src/mondata.c:524 — True if monster-type is especially affected by silver.
+function hates_silver(ptr) {
+    return is_were(ptr) || ptr.mlet === MONSYMS.S_VAMPIRE || is_demon(ptr)
+        || ptr.pmidx === PMNAMES.PM_SHADE
+        || (ptr.mlet === MONSYMS.S_IMP && ptr.pmidx !== PMNAMES.PM_TENGU);
+}
+
+const is_were = (ptr) => (ptr.mflags2 & MFLAGS.M2_WERE) !== 0;
+const is_demon = (ptr) => (ptr.mflags2 & MFLAGS.M2_DEMON) !== 0;
 
 const resists_ston   = (mon) => { note_unported('resists_ston'); return false; };
 const resists_acid   = (mon) => { note_unported('resists_acid'); return false; };

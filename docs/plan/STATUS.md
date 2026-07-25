@@ -1,19 +1,62 @@
-# STATUS — read this first
+# STATUS
 
-Live handoff state. **Whoever works on this repo updates this file before they
-stop, compact, or hand off.** It is the answer to "what was the last agent doing,
-what did they leave half-finished, and what do I do next?"
+## Where the score stands
 
-The milestone files say what the work *is*. This file says where the work
-*currently stands*.
+**276/11,405 screens (2.4%), 1/44 sessions, corpus RNG 113,910/792,838 (14.4%).**
+seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
-Last updated: **2026-07-25** · **1 of 44 sessions passes end to end** (`seed8000`), screens **148 → 199**, corpus RNG **14.4%**, **23 of 44 match at step 0** · leaderboard **11th → 9th**, held-out screens **43 → 77**
+Up from 199 screens at the start of this stretch. The two changes that moved it
+were both display-layer, not gameplay: the CLR_GRAY collapse (+2) and the
+message-row erase after `--More--` (+15), then getlin's prompt painting and
+`#`-completion (+10) and its NEWAUTOCOMP insertion point (+50).
 
-Live dashboard (score, blockers, milestone state):
-<https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
-it from the same file path after a scoring run to refresh.
+Biggest sessions by screens available: seed0030 (1953), seed4500 (1814),
+seed0360 (833, now 17 matching), seed0014 (714), seed0002 (595).
+
+## What landed this stretch
+
+- `js/mondata.js` — new. The mondata.h predicates were module-local consts in
+  mon.js, so other files kept duplicates. It is a header in C; this is it.
+- `js/hack.js` — new. `may_dig`, `may_passwall`, `bad_rock` moved out of
+  mon.js/dog.js to their real C home. `bad_rock` had three of its five terms.
+- `js/worn.js` — new, `which_armor`. Returns nothing for monsters because
+  m_dowear is absent, which is the C's answer for a monster that has donned
+  nothing; it needs no change once m_dowear lands.
+- `js/tty/termcap.js` — new, `term_start_color`. See NOTES.
+- `js/extcmd_data.js` + `tools/gen-extcmd.mjs` — 170 extended commands with
+  their func_tab.h flags, 52 autocompletable.
+- `sobj_at` ported into invent.js (its C home) and both stubs deleted.
+- `can_touch_safely`, `mfndpos`' ALLOW_DIG arm and its obstruction test,
+  `m_carrying` (moved to mon.c's file, now returns the object), `onscary`'s
+  scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`.
+
+## The next thing to do
+
+seed0360 is the cheapest big session to advance: it now runs to **step 17 of
+832**, where C prints `To what experience level do you want to be set?` and we
+still show `# levelchange`. That is `wiz_level_change` (src/cmd.c), one getlin
+prompt. Several other extended commands prompt the same way, and the getlin
+plumbing they need is now in place.
+
+Do not re-derive these; they are measured and recorded in NOTES.md:
+- the step-0 `--More--` figure is **3** sessions, not the 32 an earlier entry
+  claimed. 26 sessions open on the role intro text, which already matches.
+- an RNG "positions match overall" drop is not a regression on its own; check
+  the divergence point with `git stash` + `diverge.mjs` first.
+
+## Still queued, unchanged
+
+`merged`/`mergable` (invent.c:814, needs `weight` and `obj_extract_self`),
+`pick_lock`, `set_wear`, `mkroll_launch`, the run loop (`gm.multi` +
+`lookaround` + `end_running`), `throwit`'s trajectory, `mattacku`,
+`goto_level`, `dog_eat`, `pickup(1)`.
+
+seed0102/seed0105 remain 31 and 20 calls from a full match, both on the
+`score_targ` over-count. The `dog_goal` fix landed after that trace was taken,
+so **re-run the count before tracing further** — it may have shrunk.
 
 ---
+
 
 ## One-paragraph catch-up
 

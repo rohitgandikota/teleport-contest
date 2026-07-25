@@ -15,7 +15,9 @@ import { rn2 } from './rng.js';
 import { percent, lua_shuffle, lua_d, nh_random } from './nhlua.js';
 import { level_difficulty } from './makemon.js';
 import { selection_from_mkroom, selection_iterate, selection_rndcoord,
-         selection_filter_percent, selection_numpoints } from './selvar.js';
+         selection_filter_percent, selection_numpoints,
+         selection_filter_mapchar } from './selvar.js';
+import { ROOM } from './const.js';
 import { lspo_terrain } from './sp_lev.js';
 
 function note_unported_themerms(what) {
@@ -271,5 +273,68 @@ export function fill_buried_zombies(rm) {
         /* o:stop_timer("rot-corpse") draws nothing */
         nh_random(990, 21);             /* start_timer zombify-mon delay */
         note_unported_themerms('start_timer:zombify-mon');
+    }
+}
+
+// dat/themerms.lua:120 "Garden" — only eligible in a LIT room.
+//
+//     local npts = (s:numpoints() / 6);
+//     for i = 1, npts do
+//        des.monster({ id = "wood nymph", asleep = true });
+//        if (percent(30)) then des.feature("fountain"); end
+//     end
+//     table.insert(postprocess, { handler = make_garden_walls, ... });
+//
+// One percent(30) per nymph. The postprocess entry runs after the whole level
+// is built, not here.
+export function fill_garden(rm) {
+    const s = selection_from_mkroom(rm);
+    const npts = selection_numpoints(s) / 6;
+
+    for (let i = 1; i <= npts; i++) {
+        note_unported_themerms('des.monster:wood nymph');
+        if (percent(30))
+            note_unported_themerms('des.feature:fountain');
+    }
+    note_unported_themerms('postprocess:make_garden_walls');
+}
+
+// dat/themerms.lua:137 "Buried treasure"
+//
+//     des.object({ id = "chest", buried = true, contents = function(otmp)
+//        ...
+//        for i = 1, d(3,4) do des.object(); end
+//     end });
+//
+// The d(3,4) is THREE draws and they happen inside the chest's contents
+// closure, i.e. after the chest itself is placed, not before.
+export function fill_buried_treasure(rm) {
+    note_unported_themerms('des.object:buried chest');
+    note_unported_themerms('postprocess:make_dig_engraving');
+
+    const n = lua_d(3, 4);
+    for (let i = 1; i <= n; i++)
+        note_unported_themerms('des.object:random in chest');
+}
+
+// dat/themerms.lua:268 "Teleportation hub"
+//
+//     local locs = selection.room():filter_mapchar(".");
+//     for i = 1, 2 + nh.rn2(3) do
+//        local pos = locs:rndcoord(1);
+//        if (pos.x > 0) then ... postprocess make_a_trap ... end
+//     end
+//
+// rndcoord(1) REMOVES the square it picks, so the count shrinks each round and
+// the rn2 inside it narrows with it. The loop bound's rn2(3) is spent once,
+// before any of them.
+export function fill_teleportation_hub(rm) {
+    const locs = selection_filter_mapchar(selection_from_mkroom(rm), ROOM, -2);
+    const n = 2 + rn2(3);
+
+    for (let i = 1; i <= n; i++) {
+        const pos = selection_rndcoord(locs, 1);
+        if (pos.x > 0)
+            note_unported_themerms('postprocess:make_a_trap:teleport');
     }
 }

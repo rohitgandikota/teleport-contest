@@ -18,7 +18,7 @@
 // 0 from one that is not.
 
 import { game } from './gstate.js';
-import { COLNO, ROWNO, ROOMOFFSET } from './const.js';
+import { COLNO, ROWNO, ROOMOFFSET, MAX_TYPE, MATCH_WALL, IS_STWALL } from './const.js';
 import { rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 
@@ -251,4 +251,52 @@ export function selection_rndcoord(ov, removeit) {
                 }
     }
     return { x: -1, y: -1 };
+}
+
+// src/selvar.c:248 selection_filter_mapchar() — keep the squares whose terrain
+// matches, optionally also filtering on lit state.
+//
+// The `lit` argument decides whether this DRAWS. nhlsel.c:663 defaults it to -2
+// when the Lua passes only a char, and -2 sets every match unconditionally. The
+// -1 arm spends rn2(2) PER MATCHING SQUARE, so a caller that passes it turns a
+// silent filter into one of the heavier draw sites in level generation.
+export function selection_filter_mapchar(ov, typ, lit) {
+    if (!ov)
+        return null;
+
+    const ret = selection_new();
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+
+    selection_getbounds(ov, rect);
+
+    for (let x = rect.lx; x <= rect.hx; x++)
+        for (let y = rect.ly; y <= rect.hy; y++) {
+            const loc = game.level?.at(x, y);
+            if (selection_getpoint(x, y, ov) && loc && match_maptyps(typ, loc.typ)) {
+                switch (lit) {
+                default:
+                case -2:
+                    selection_setpoint(x, y, ret, 1);
+                    break;
+                case -1:
+                    selection_setpoint(x, y, ret, rn2(2));
+                    break;
+                case 0:
+                case 1:
+                    if ((loc.lit ? 1 : 0) === lit)
+                        selection_setpoint(x, y, ret, 1);
+                    break;
+                }
+            }
+        }
+    return ret;
+}
+
+// src/sp_lev.c:217 match_maptyps()
+function match_maptyps(typ, levltyp) {
+    if (typ === MATCH_WALL && !IS_STWALL(levltyp))
+        return false;
+    if (typ < MAX_TYPE && typ !== levltyp)
+        return false;
+    return true;
 }

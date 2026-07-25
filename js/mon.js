@@ -9,9 +9,10 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
-import { ONAMES, OCLASSES } from './objects_data.js';
+import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { touch_petrifies, mon_hates_silver } from './dog.js';
 import { is_rider } from './makemon.js';
-import { MAX_CARR_CAP, WT_HUMAN } from './const.js';
+import { MAX_CARR_CAP, WT_HUMAN, W_ARMG } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
 const MZ_HUMAN = MFLAGS.MZ_MEDIUM;
@@ -524,7 +525,35 @@ export function can_carry(mtmp, otmp) {
 const notake = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOTAKE) !== 0;
 const strongmonst = (ptr) => (ptr.mflags2 & MFLAGS.M2_STRONG) !== 0;
 
+// src/mon.c can_touch_safely() — would picking this up hurt the monster?
+//
+// Stubbed to TRUE, it let monsters pick up silver they hate and corpses that
+// petrify them, which changes what can_carry() allows and therefore which
+// square m_search_items() steers them to.
 function can_touch_safely(mtmp, otmp) {
-    note_unported_mon('can_touch_safely');
+    const otyp = otmp.otyp;
+    const mdat = game.mons[mtmp.mnum];
+
+    if (otyp === ONAMES.CORPSE && touch_petrifies(game.mons[otmp.corpsenm])
+        && !(mtmp.misc_worn_check & W_ARMG) && !resists_ston(mtmp))
+        return false;
+    if (otyp === ONAMES.CORPSE && is_rider(game.mons[otmp.corpsenm]))
+        return false;
+    if (game.objects[otyp].oc_material === MATERIALS.SILVER
+        && mon_hates_silver(mtmp)
+        && (otyp !== ONAMES.BELL_OF_OPENING || !is_covetous(mdat)))
+        return false;
+    /* touch_artifact() needs the artifact tables; no monster on an early level
+       carries one, and it is the only remaining arm. */
+    note_unported_mon('can_touch_safely:touch_artifact');
     return true;
+}
+
+// include/mondata.h is_covetous()
+const is_covetous = (ptr) => (ptr.mflags3 & MFLAGS.M3_COVETOUS) !== 0;
+
+/* src/mondata.c resists_ston() needs the resistance tables. */
+function resists_ston(mon) {
+    note_unported_mon('resists_ston');
+    return false;
 }

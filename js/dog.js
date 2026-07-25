@@ -120,7 +120,7 @@ const likes_lava   = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_ELEMENTAL
 const ismnum = (x) => x >= 0 && x < NUMMONS;
 
 // include/mondata.h:200-203
-const touch_petrifies = (ptr) => ptr.pmidx === PMNAMES.PM_COCKATRICE
+export const touch_petrifies = (ptr) => ptr.pmidx === PMNAMES.PM_COCKATRICE
                               || ptr.pmidx === PMNAMES.PM_CHICKATRICE;
 const flesh_petrifies = (pm) => touch_petrifies(pm)
                              || pm.pmidx === PMNAMES.PM_MEDUSA;
@@ -179,7 +179,7 @@ function find_pmmonst(pm) {
 }
 
 // src/mondata.c:517 mon_hates_silver() / :524 hates_silver()
-function mon_hates_silver(mon) {
+export function mon_hates_silver(mon) {
     return is_vampshifter(mon) || hates_silver(game.mons[mon.mnum]);
 }
 

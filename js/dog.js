@@ -23,7 +23,7 @@ import { MFLAGS, MONSYMS, NUMMONS } from './monst_data.js';
 const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2 } from './rng.js';
 import { dist2 } from './hacklib.js';
-import { couldsee } from './vision.js';
+import { couldsee, clear_path } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider,
@@ -256,14 +256,9 @@ function may_dig(x, y) {
              && (lev.wall_info & W_NONDIGGABLE));
 }
 
-/* src/mon.c m_cansee() is include/vision.h:42's
-   clear_path(mtmp->mx, mtmp->my, x2, y2), and clear_path — the quadrant-path
-   vision walk — is not ported at all. It only narrows which square is chosen
-   and draws nothing. */
-
+// include/vision.h:42 m_cansee(mtmp, x2, y2) = clear_path(mx, my, x2, y2)
 function m_cansee(mon, x, y) {
-    note_unported('m_cansee');
-    return true;
+    return clear_path(mon.mx, mon.my, x, y);
 }
 
 // src/dog.c:995 dogfood() — only the part that draws is ported.

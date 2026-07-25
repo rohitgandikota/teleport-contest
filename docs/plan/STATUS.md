@@ -446,12 +446,38 @@ Ruled out already, so do not re-check:
   ours starts at 0 too.
 - The sleep path: `disturb()` is now ported and changed nothing here.
 
-So the candidate is **accumulation across turns**. Check whether C's monsters
-carry movement forward in a way ours do not — in particular whether anything
-resets `mtmp->movement` between turns, and whether the four monsters C moves are
-even the same four species we generate. Compare our monster list against the
-recorded screen at the same step: if the species differ, the divergence is
-upstream in `makemon`, not in the movement arithmetic at all.
+**Named them.** Our four monsters on seed8000 are:
+
+```
+lichen  spd 1  at 67,13      newt    spd 6  at 52,17
+jackal  spd 12 at 15,7       lichen  spd 1  at 16,4
+```
+
+The speeds are correct — verified against `include/monsters.h` directly
+(`MON(NAM("sewer rat"), ..., LVL(0, 12, 7, 0, 0), ...)` gives mmove 12, and our
+generated table agrees for sewer rat, lichen and newt). So the arithmetic is not
+the problem.
+
+But that set CANNOT produce four monster turns every turn. `mcalcmove` gives a
+speed-1 monster 12 movement only one turn in twelve, so the expected number
+acting is about 1.7, and C shows four consistently.
+
+**Two readings, and they need separating before any more code is written:**
+
+1. **Our species are wrong while the draw COUNT is right.** `rndmonst` picks by
+   walking a probability table; a wrong table yields a different monster for the
+   same number of draws, so the stream matches and the creatures differ. That
+   would make every monster-speed symptom downstream a red herring. This is the
+   same failure mode that produced the `oc_prob` and `G_` bugs — check
+   `tools/gen-monst.mjs`'s geno/frequency extraction against `monsters.h`.
+2. **C has fast monsters acting twice.** A speed-24 monster banks 24, acts,
+   still has 12, and the inner `movemon()` loop lets it act again — so four
+   `distfleeck` calls could be two monsters moving twice, not four moving once.
+
+Distinguishing them is cheap: count C's `mcalcmove` draws per turn (four, so C
+has exactly four monsters) and then check whether any single turn shows more
+`distfleeck` calls than C has monsters. If it does, reading 2 is right and our
+species may be fine.
 
 ### The leaderboard, and what it says about our real problem
 

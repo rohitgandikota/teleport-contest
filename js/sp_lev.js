@@ -704,10 +704,30 @@ export function create_object(o, croom) {
         break;                                  /* keep what mkobj gave us */
     }
 
-    /* quantity, contents, buried, lit, eroded, locked, trapped, name and the
-       rest need subsystems this port does not have; each is absent rather than
-       approximated. */
-    if (o.quan > 0 || o.buried || o.lit || o.contents)
+    /* src/sp_lev.c create_object() — containment.
+       SP_OBJ_CONTENT puts this object INSIDE the innermost open container;
+       SP_OBJ_CONTAINER opens this one for the objects its contents closure
+       makes. The stack is what lets `des.object({contents=...})` nest. */
+    if ((o.containment & SP_OBJ_CONTENT) && container_obj.length) {
+        const cont = container_obj[container_obj.length - 1];
+        obj_extract_self(otmp);
+        (cont.cobj ||= []).unshift(otmp);
+        otmp.where = OBJ_CONTAINED;
+        otmp.ocontainer = cont;
+    }
+
+    if (o.containment & SP_OBJ_CONTAINER) {
+        otmp.cobj = [];                 /* delete_contents(otmp) */
+        container_obj.push(otmp);
+    }
+
+    if (!(o.containment & SP_OBJ_CONTENT)) {
+        if (o.buried)
+            note_unported('create_object:bury_an_obj');
+    }
+
+    /* quantity, lit, eroded, locked, trapped and name still record. */
+    if (o.quan > 0 || o.lit)
         note_unported('create_object:options');
 
     return otmp;
@@ -717,6 +737,7 @@ export function create_object(o, croom) {
 export function lspo_object(idOrClass, x, y, opts) {
     const o = {
         class: -1, id: STRANGE_OBJECT, spe: -127, curse_state: 0,
+        containment: 0,
         quan: -1, buried: 0, lit: 0, name: opts?.name ?? null,
         contents: opts?.contents ?? null,
         coord: 0,
@@ -745,8 +766,19 @@ export function lspo_object(idOrClass, x, y, opts) {
     if (opts?.buried) o.buried = 1;
     if (opts?.lit)    o.lit = 1;
 
+    if (opts?.contents) o.containment |= SP_OBJ_CONTAINER;
+    if (opts?.inContainer) o.containment |= SP_OBJ_CONTENT;
+
     lspo_object_fixup(o);
-    return create_object(o, game.coder?.croom ?? null);
+    const otmp = create_object(o, game.coder?.croom ?? null);
+
+    /* the contents closure runs with this object open as the container, then
+       it is popped -- src/sp_lev.c pops at the end of lspo_object */
+    if (opts?.contents) {
+        opts.contents(otmp);
+        container_obj.pop();
+    }
+    return otmp;
 }
 
 // src/sp_lev.c find_objtype() — an object name to its index.
@@ -780,6 +812,11 @@ export const get_table_buc = (v) => {
     const i = BUC_STATES.indexOf(String(v));
     return i < 0 ? 0 : i;
 };
+
+// include/sp_lev.h — containment bits, and the open-container stack
+// create_object pushes to. C caps it at MAX_CONTAINMENT and complains past it.
+const SP_OBJ_CONTENT = 0x01, SP_OBJ_CONTAINER = 0x02;
+const container_obj = [];
 
 const STRANGE_OBJECT = 0;
 

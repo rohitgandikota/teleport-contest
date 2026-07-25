@@ -312,12 +312,19 @@ export function fill_garden(rm) {
 // The d(3,4) is THREE draws and they happen inside the chest's contents
 // closure, i.e. after the chest itself is placed, not before.
 export function fill_buried_treasure(rm) {
-    note_unported_themerms('des.object:buried chest');
-    note_unported_themerms('postprocess:make_dig_engraving');
+    lspo_object('chest', undefined, undefined, {
+        buried: true,
+        contents: (otmp) => {
+            /* the postprocess entry is recorded; make_dig_engraving runs after
+               the whole level is built */
+            note_unported_themerms('postprocess:make_dig_engraving');
 
-    const n = lua_d(3, 4);
-    for (let i = 1; i <= n; i++)
-        note_unported_themerms('des.object:random in chest');
+            const n = lua_d(3, 4);
+            for (let i = 1; i <= n; i++)
+                lspo_object(undefined, undefined, undefined,
+                            { inContainer: true });
+        },
+    });
 }
 
 // dat/themerms.lua:268 "Teleportation hub"

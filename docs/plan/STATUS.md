@@ -580,6 +580,39 @@ rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
 line number. Everything downstream of that assumption has been chased and
 eliminated.
 
+### Next: the glyph layer — newsym never draws monsters or objects
+
+seed0077 step 12 is now **17 differing cells** (from 117), and every one of them
+is map content that is present in the level but absent from the screen:
+
+```
+r2 c33   C '-'  ours '?'     a wall glyph terrain_glyph() does not know
+r3 c33   C 'x'  ours '.'     a grid bug
+r3 c34   C '$'  ours '.'     gold
+r6 c34   C '('  ours '.'     a tool
+```
+
+`js/display.js` `newsym()` carries the line
+
+```js
+// Contestants: add monster, object, and trap display here.
+```
+
+so the monster, object and trap layers were never written. C's `newsym` picks in
+priority order — hero, then monster, then object, then trap, then terrain — and
+each needs its class symbol.
+
+**Do NOT hand-write the symbol tables.** `def_monsyms[]` and `def_oc_syms[]`
+live in src/drawing.c and are built from macros in include/defsym.h; a
+transcribed copy is exactly the failure mode that produced the `oc_prob`, `G_`,
+`SPBOOK_no_NOVEL`, `MR_POISON` and `M3_ZOMBIFIER` bugs in this port. Add a
+generator (`tools/gen-drawing.mjs`, alongside gen-monst and gen-objects) that
+scrapes defsym.h, and emit both tables plus `def_char_to_objclass`.
+
+The `?` at r2 c33 is separate and simpler: `terrain_glyph()`'s default arm
+returns `'?'`, so some wall type reaching it is unmapped. Print the `typ` at that
+square to name it.
+
 ### more() is ported and consumes its key; the FRAME it draws is still wrong
 
 `js/display.js` now has `more()` and `pline()` sets `TOPLINE_NEED_MORE`, hooked

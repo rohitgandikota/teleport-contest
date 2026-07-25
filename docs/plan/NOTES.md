@@ -295,10 +295,21 @@ remove): **measured identical** — no per-session screen changes, no divergence
 point moves, only post-divergence RNG noise. So the public corpus cannot decide
 it. Left as ECMD_TIME, which is what shipped.
 
-Resolve it by porting one effect for real (`doread` is the smallest) and seeing
-which return the C actually produces, rather than by reasoning about it — two
-rounds of reasoning here produced two different answers and one wrong NOTES
-entry.
+**RESOLVED by reading src/read.c doread() to its end: `ECMD_TIME` is right.**
+The function returns ECMD_TIME after `seffects(scroll)`, and every ECMD_OK exit
+is narrow — over encumbrance, reading a shirt while blind, a shirt covered by
+armor. A normal scroll read takes a turn, so the shipped value is correct and
+the proposed change to ECMD_OK would have been wrong.
+
+Expect the same shape for the other six (wield, quaff, drop, wear, put on,
+remove): the C function does its work and returns ECMD_TIME, with ECMD_OK
+reserved for refusals that happen BEFORE anything occurs. Verify per command
+rather than assuming, but ECMD_TIME is the right default.
+
+The lesson that generalises: three rounds of reasoning about this produced two
+different answers and one wrong NOTES entry, and thirty seconds of reading the
+function's last line settled it. When a question is "what does C do here",
+read C — do not reason from what would be sensible.
 
 ## screendiff rows are SCREEN rows, and the map starts at screen row 1
 

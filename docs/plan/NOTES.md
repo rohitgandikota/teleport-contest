@@ -259,6 +259,38 @@ dungeon globals it depends on) took it to 1535 and screens came back to 19.
 while they are still down either — carry on to the next divergence and re-check.
 Only revert when the change cannot be justified against the C source.**
 
+## Use screendiff on a step where the RNG still matches
+
+The RNG log only sees draws. A whole category of bug — wrong text, wrong
+formatting, a mis-consumed keystroke — never touches the PRNG and is invisible
+to `diverge.mjs` no matter how long you stare at it.
+
+The move: find the step where the first RNG divergence lands
+(`diverge.mjs` prints `divergent call occurs at seg N, step M`), then run
+`node tools/screendiff.mjs <seed> <M-1>` — the last step where the streams still
+agree. Everything that differs on that screen is a non-drawing bug, already
+present before the RNG went wrong.
+
+One run of this on seed4500 step 40 surfaced three at once:
+
+- `OPTIONS=playmode:debug` turns on wizard mode, and `set_playmode()`
+  (src/options.c:10134) then **overwrites plname with "wizard"** — so a session
+  setting both `name:` and `playmode:debug` shows "Wizard", not the configured
+  name. Wrong on every frame of every debug session.
+- The status line capitalises the name's first letter (src/botl.c:989) while
+  `plname` itself keeps what was typed.
+- Strength above 18 renders as `18/xx` (`get_strength_str`, src/botl.c:20).
+  `STR18(x)` is `18 + x`, so a stored 19 IS `18/01` — the value was right and
+  only the rendering was wrong.
+
+Worth +27 screens in one commit, after a long stretch where RNG-chasing had
+stopped producing any screen gain at all.
+
+The same screen also showed the hero in the wrong place with a turn counter of
+29 against C's 11, which led to '#' being unhandled: a session issuing
+`#jump\n` had its own letters read as commands (`j` and `u` moved the hero).
+Consumption alignment is not visible in the RNG log either.
+
 ## The second-biggest bug class: the port does the work and drops the result
 
 Distinct from wrong constants, and invisible to every RNG check. The function

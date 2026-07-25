@@ -16,7 +16,8 @@ import { percent, lua_shuffle, lua_d, nh_random } from './nhlua.js';
 import { level_difficulty } from './makemon.js';
 import { selection_from_mkroom, selection_iterate, selection_rndcoord,
          selection_filter_percent, selection_numpoints,
-         selection_filter_mapchar } from './selvar.js';
+         selection_filter_mapchar, selection_not,
+         selection_new } from './selvar.js';
 import { ROOM } from './const.js';
 import { lspo_terrain, lspo_trap, get_traptype_byname,
          lspo_object, lspo_monster, lspo_altar } from './sp_lev.js';
@@ -347,8 +348,13 @@ export function fill_teleportation_hub(rm) {
 
     for (let i = 1; i <= n; i++) {
         const pos = selection_rndcoord(locs, 1);
-        if (pos.x > 0)
-            note_unported_themerms('postprocess:make_a_trap:teleport');
+        if (pos.x > 0) {
+            pos.x = pos.x + rm.region.x1 - 1;
+            pos.y = pos.y + rm.region.y1;
+            postprocess_add(make_a_trap, {
+                type: 'teleport', seen: true, coord: pos, teledest: 1,
+            });
+        }
     }
 }
 
@@ -376,3 +382,49 @@ export const themeroom_fill_contents = {
     'Storeroom':              fill_storeroom,
     'Teleportation hub':      fill_teleportation_hub,
 };
+
+// dat/themerms.lua:42 postprocess — handlers queued DURING level generation and
+// run after all of it, in insertion order.
+//
+// The deferral is not cosmetic: make_a_trap picks its teleport destination from
+// the finished level, so running it inline would search a half-built map and
+// spend a different number of draws.
+const postprocess = [];
+
+export function postprocess_add(handler, data) {
+    postprocess.push({ handler, data });
+}
+
+// dat/themerms.lua:1092 post_level_generate() — drain in order, then clear.
+export function post_level_generate() {
+    for (const v of postprocess)
+        v.handler(v.data);
+    postprocess.length = 0;
+}
+
+// dat/themerms.lua:1081 make_a_trap()
+//
+//     if (data.teledest == 1 and data.type == "teleport") then
+//        local locs = selection.negate():filter_mapchar(".");
+//        repeat
+//           data.teledest = locs:rndcoord(1);
+//        until (data.teledest.x ~= data.coord.x and data.teledest.y ~= data.coord.y);
+//     end
+//     des.trap(data);
+//
+// The repeat loop spends one rndcoord per pass, and rndcoord(1) REMOVES its
+// pick, so the candidate set shrinks and each pass draws from a smaller range.
+// The `and` in the until means it retries when EITHER coordinate matches.
+export function make_a_trap(data) {
+    if (data.teledest === 1 && data.type === 'teleport') {
+        const all = selection_not(selection_new());
+        const locs = selection_filter_mapchar(all, ROOM, -2);
+
+        do {
+            data.teledest = selection_rndcoord(locs, 1);
+        } while (!(data.teledest.x !== data.coord.x
+                   && data.teledest.y !== data.coord.y));
+    }
+    lspo_trap(get_traptype_byname(data.type), data.coord.x, data.coord.y,
+              { seen: data.seen });
+}

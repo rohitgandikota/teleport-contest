@@ -44,7 +44,7 @@ function mk_knox_portal(x, y) {
 }
 import { random_engraving, wipeout_text } from './engrave.js';
 import { merged, weight, sobj_at } from './invent.js';
-import { themeroom_fill_contents } from './themerms.js';
+import { themeroom_fill_contents, post_level_generate } from './themerms.js';
 import { mkroom_table } from './sp_lev.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
@@ -623,6 +623,11 @@ async function makelevel() {
        SECOND fill_special_room() call site; the vault above is the first. */
     for (let i = 0; i < g.level.nroom; i++)
         fill_special_room(g.level.rooms[i]);
+
+    /* src/mklev.c:1420 themerooms_post_level_generate() — drain the handlers
+       the fills queued. It runs AFTER every room is filled, which is the point:
+       make_a_trap picks its teleport destination from the finished map. */
+    post_level_generate();
 }
 
 // src/mklev.c:929 ROOM_IS_FILLABLE

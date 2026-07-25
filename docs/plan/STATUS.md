@@ -77,7 +77,58 @@ run. The monster phase is entered.
 onward). seed0102's keys are `#name`, ESC, `f l i`, ESC, `+`, ESC ... `s s :` —
 almost all zero-time commands, so `context.move` stays 0 for most of the session.
 
-**The real signal, from the stream itself.** C's seed0102 run at the divergence:
+### FOUND: our moveloop calls movemon() once; C loops it to exhaustion
+
+This is why the pet never acts, and it is structural rather than a missing
+function. C (src/allmain.c:207-243):
+
+```c
+u.umovement -= NORMAL_SPEED;
+do {                                   /* hero can't move this turn loop */
+    svc.context.mon_moving = TRUE;
+    do {
+        monscanmove = movemon();       /* LOOPS until no monster can move */
+        if (u.umovement >= NORMAL_SPEED)
+            break;                     /* it's now your turn */
+    } while (monscanmove);
+    svc.context.mon_moving = FALSE;
+    ...
+    if (!monscanmove && u.umovement < NORMAL_SPEED) {
+        /* only NOW is a new turn set up */
+        mcalcdistress();
+        for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
+            mtmp->movement += mcalcmove(mtmp, TRUE);
+        maybe_generate_rnd_mon();
+        u_calc_moveamt(mvl_wtcap);
+        settrack();
+        svm.moves++;
+    }
+} while (...);
+```
+
+Ours (js/allmain.js:300-312) calls `movemon()` **once**, unconditionally allots
+movement straight afterwards, and wraps the whole thing in
+`if (g.context?.move)`. Three consequences:
+
+1. Monsters never get a second `movemon()` pass in the same turn, so a monster
+   that banks movement during allotment does not spend it until the next player
+   command.
+2. The allotment happens even when monsters could still move, where C only
+   allots once `movemon()` returns false.
+3. `if (context.move)` skips the monster phase entirely for zero-time commands.
+   seed0102's keys are almost all zero-time (`#name`, ESC, `f l i`, `+`, `\\`,
+   ^X), so its monster phase almost never runs at all.
+
+**Verified, with a probe that actually works this time:** `dochug` fires **0
+times** across seed0102 while the run stays healthy at 4451/4485. The probe
+method that works is `process.stdout.write` inserted by a heredoc script — check
+`node -e "import('./js/monmove.js')"` reports `syntax ok` before trusting a
+result, because a broken edit makes the runner report a clean-looking failure.
+
+This is the next thing to fix and it gates every session's monster phase, not
+just the pet.
+
+**The stream at the divergence**, for reference. C's seed0102:
 
 ```
 4442 rn2(12)   mcalcmove          ok

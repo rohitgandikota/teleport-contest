@@ -18,6 +18,7 @@ import { doopen, doopen_indir } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
 import { dochat } from './sounds.js';
+import { dothrow } from './dothrow.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -321,6 +322,11 @@ export async function rhack(key) {
             game.context.forcefight = 1;
             game.context.move = 0;
         }
+    } else if (ch === 't') {
+        // src/cmd.c cmdlist — 't' is dothrow: getobj() for the object, then
+        // throw_obj()'s getdir() for the direction. 133 keystrokes across the
+        // public corpus, and both reads were previously left to run as commands.
+        game.context.move = (await dothrow() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'c') {
         // src/cmd.c cmdlist — 'c' is dochat, whose getdir() consumes a second
         // key. 107 keystrokes across the public corpus.

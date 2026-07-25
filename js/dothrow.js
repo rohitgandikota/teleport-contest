@@ -1,3 +1,8 @@
+import { game } from './gstate.js';
+import { ECMD_OK, ECMD_TIME } from './const.js';
+import { getobj } from './invent.js';
+import { getdir } from './cmd.js';
+
 // dothrow.js — throwing, firing, and the path a thrown thing takes.
 // C ref: src/dothrow.c
 //
@@ -7,6 +12,39 @@
 // but every caller decides where something ENDS UP from its result, and a
 // wrong endpoint moves the hero or an object without costing a single PRNG
 // call, which is the kind of divergence the RNG log cannot show.
+
+// src/dothrow.c throw_obj() — ask a direction, then throw.
+//
+// res starts at ECMD_TIME and only a cancelled getdir() changes it, so a throw
+// that reaches this point takes a turn. The throw itself needs the multishot,
+// trajectory and damage code; what is ported is the direction read, which is
+// the second of the two extra keys 't' costs.
+export async function throw_obj(obj, shotlimit) {
+    const res = ECMD_TIME;
+
+    /* ask "in what direction?" */
+    if (!await getdir(null))
+        return ECMD_OK; /* ECMD_CANCEL — no time passes */
+
+    note_unported_dothrow('throw_obj:throwit');
+    return res;
+}
+
+// src/dothrow.c dothrow() — the 't' command.
+//
+// ok_to_throw() reads nothing (it only fails for notake, nohands or being
+// overloaded), then getobj() takes the object letter and throw_obj() the
+// direction. Three keys in total, and leaving them unconsumed ran both as
+// commands.
+export async function dothrow() {
+    const obj = await getobj('throw', null, 0);
+
+    return obj ? await throw_obj(obj, 0) : ECMD_OK;
+}
+
+function note_unported_dothrow(what) {
+    (game.unported ||= new Set()).add(what);
+}
 
 // src/dothrow.c:656 walk_path() — Bresenham from src to dest, calling
 // check_proc at every step and stopping early when it returns false.

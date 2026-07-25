@@ -43,7 +43,38 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this next: goto_level. Measured.
+## Do this next: goto_level. The descend chain, mapped call by call.
+
+    dodown()              src/do.c:? -> next_level(!trap)
+      next_level(at_stairs) src/dungeon.c:1497
+        stway = stairway_at(u.ux, u.uy); stway->u_traversed = TRUE;
+        newlevel = { stway->tolev.dnum, stway->tolev.dlevel }
+        goto_level(&newlevel, at_stairs, FALSE, FALSE)
+      goto_level()        src/do.c
+        ...
+        if (!(level_info[new_ledger].flags & LFILE_EXISTS)) {
+            mklev();            <- ALREADY PORTED AND WORKING
+            new = TRUE;
+        } else { ...reload from file... }   <- record this arm
+        ...
+        u_on_dnstairs()   at the ~277 mark
+        u_on_upstairs()   at the ~295 mark
+        losedogs()        at the ~338 mark
+
+The LFILE_EXISTS test is the whole reason this is tractable: a first descent
+takes the mklev() branch, and mklev() is ported. The file-reload branch is for
+revisiting and can record.
+
+Of goto_level's four draws, THREE are the Mysterious Force
+(rn2(4 + mysteryforce), rn2(odds), rn2(diff + 2)) which only fires in the
+Quest, and the fourth is rnd(3) falling damage. A plain staircase descent
+spends NONE of them -- so the descend path can be ported without touching any
+of goto_level's own draws.
+
+dodown's own two draws are the !rn2(3) / rnd(4) pair for falling through a
+trapdoor, also not on the staircase path.
+
+## Measured sizes:
 
     goto_level      src/do.c   520 lines  4 draws   <- the work
     dodown          src/do.c   164 lines  2 draws

@@ -14,7 +14,7 @@ import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
          D_CLOSED, D_LOCKED, D_BROKEN, IS_OBSTRUCTED, IS_DOOR, IS_WATERWALL,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
          ALLOW_TRAPS, ALLOW_M, ALLOW_SANCT, ALLOW_ROCK, NOTONL, OPENDOOR,
-         UNLOCKDOOR, BUSTDOOR } from './const.js';
+         UNLOCKDOOR, BUSTDOOR, ALLOW_TM, ALLOW_MDISP, NON_PM } from './const.js';
 
 // include/permonst.h:80
 export const NORMAL_SPEED = 12;
@@ -169,10 +169,22 @@ export function mfndpos(mon, data, flag) {
                     } else {
                         const mtmp2 = m_at(nx, ny);
                         if (mtmp2) {
-                            /* mm_aggression()/mm_displacement() decide whether
-                               one monster may attack or swap with another. */
-                            note_unported_mon('mfndpos monster-at-target');
-                            continue;
+                            const mmflag = flag | mm_aggression(mon, mtmp2);
+
+                            if (mmflag & ALLOW_M) {
+                                info |= ALLOW_M;
+                                if (mtmp2.mtame) {
+                                    if (!(mmflag & ALLOW_TM))
+                                        continue;
+                                    info |= ALLOW_TM;
+                                }
+                            } else {
+                                flag &= ~ALLOW_MDISP; /* depends on defender */
+                                const mmflag2 = flag | mm_displacement(mon, mtmp2);
+                                if (!(mmflag2 & ALLOW_MDISP))
+                                    continue;
+                                info |= ALLOW_MDISP;
+                            }
                         }
                     }
 
@@ -341,3 +353,61 @@ const passes_bars  = (d) => (d.mflags1 & MFLAGS.M1_UNSOLID) !== 0
                          || (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0
                          || (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0
                          || d.msize <= MFLAGS.MZ_SMALL;
+
+// src/mon.c:2428 mm_aggression() — may `magr` attack `mdef`?
+export function mm_aggression(magr, mdef) {
+    const mndx = magr.data?.pmidx;
+
+    /* pets never fight each other */
+    if (magr.mtame && mdef.mtame)
+        return 0;
+
+    /* purple worms eat shriekers */
+    if ((mndx === PMNAMES.PM_PURPLE_WORM || mndx === PMNAMES.PM_BABY_PURPLE_WORM)
+        && mdef.data?.pmidx === PMNAMES.PM_SHRIEKER)
+        return ALLOW_M | ALLOW_TM;
+
+    return mm_2way_aggression(magr, mdef) | mm_2way_aggression(mdef, magr);
+}
+
+// src/mon.c mm_2way_aggression() — the zombie-maker case is the only one that
+// fires outside the Wizard's tower, and it needs zombie_form(), which is part
+// of the death-drop tables rather than anything in the move loop.
+function mm_2way_aggression(magr, mdef) {
+    if (zombie_maker(magr) && zombie_form(mdef.data) !== NON_PM) {
+        if (magr.mgenmklev && mdef.mgenmklev)
+            return 0;
+        return ALLOW_M | ALLOW_TM;
+    }
+    return 0;
+}
+
+// src/mon.c:2451 mm_displacement() — may `magr` barge past `mdef`?
+export function mm_displacement(magr, mdef) {
+    const pa = magr.data, pd = mdef.data;
+
+    if (is_displacer(pa) && (!is_displacer(pd) || magr.m_lev > mdef.m_lev)
+        && !(magr.mx !== mdef.mx && magr.my !== mdef.my && NODIAG(pd))
+        && !mdef.mtrapped
+        && (is_rider(pa) || pa.msize >= pd.msize))
+        return ALLOW_MDISP;
+    return 0;
+}
+
+/* include/mondata.h */
+const is_displacer = (d) => (d.mflags3 & MFLAGS.M3_DISPLACES) !== 0;
+// src/mon.c:362 zombie_maker() — by CLASS, not by flag. There is no
+// M3_ZOMBIFIER; reading one gave undefined and the predicate was always false.
+function zombie_maker(mon) {
+    const pm = mon.data;
+    if (mon.mcan) return false;
+    if (pm.mlet === MONSYMS.S_ZOMBIE)
+        return pm.pmidx !== PMNAMES.PM_GHOUL && pm.pmidx !== PMNAMES.PM_SKELETON;
+    if (pm.mlet === MONSYMS.S_LICH)
+        return true;
+    return false;
+}
+/* src/zombify.c zombie_form() — needs the zombie table; nothing in the corpus
+   generates a zombifier this early, and the call is gated behind
+   zombie_maker() above. */
+const zombie_form = (d) => NON_PM;

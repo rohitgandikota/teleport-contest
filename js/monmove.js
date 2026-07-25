@@ -8,7 +8,9 @@
 import { game } from './gstate.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
-import { dog_move, could_reach_item } from './dog.js';
+import {
+    dog_move, could_reach_item, dogfood, MANFOOD, ACCFOOD,
+} from './dog.js';
 import {
     mfndpos, mon_allowflags, can_carry, t_at, m_at,
     curr_mon_load, max_mon_load,
@@ -309,9 +311,32 @@ function searches_for_item(mon, obj) {
     return false;
 }
 
-/* src/mon.c mon_would_consume_item() needs the monster eating code. */
+// include/mondata.h:243 corpse_eater()
+const corpse_eater = (ptr) => ptr.pmidx === PMNAMES.PM_PURPLE_WORM
+                           || ptr.pmidx === PMNAMES.PM_BABY_PURPLE_WORM
+                           || ptr.pmidx === PMNAMES.PM_GHOUL
+                           || ptr.pmidx === PMNAMES.PM_PIRANHA;
+
+// src/monmove.c:1036 mon_would_consume_item() — would this monster eat the
+// object rather than carry it? m_search_items() treats that as a reason to walk
+// to it, so a wrong answer changes the pet's goal.
+//
+// The second arm calls dogfood(), which DRAWS an rn2(100) through obj_resists.
+// Stubbing this to false skipped that draw for every tame monster considering
+// an object it might eat.
 function mon_would_consume_item(mtmp, otmp) {
-    note_unported('mon_would_consume_item');
+    if (otmp.otyp === ONAMES.CORPSE
+        && !touch_petrifies(game.mons[otmp.corpsenm])
+        && corpse_eater(game.mons[mtmp.mnum]))
+        return true;
+
+    if (mtmp.mtame && mtmp.edog) { /* has_edog(): not guardian angel */
+        const ftyp = dogfood(mtmp, otmp);
+        if (ftyp < MANFOOD
+            && (ftyp < ACCFOOD || mtmp.edog.hungrytime <= game.moves))
+            return true;
+    }
+
     return false;
 }
 

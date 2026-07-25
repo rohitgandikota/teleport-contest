@@ -48,17 +48,33 @@ inventory instead of replaying it.
 RNG**; `obj_resists` fell from 7 blocked sessions to 5. seed0102 is NOT among
 the five that moved and still diverges at its own call 4449.
 
-Diagnostic already run, so do not repeat it: at the end of a seed0102 run the
-level holds **17 objects** and a monster with **`mtame: 10` at (29,8)**, so both
-preconditions are met — yet `game.unported` comes back **empty**, meaning
-`note_unported('dog_hunger')` at the top of `dog_move()` never fired and
-`dog_move` was therefore never called. `distfleeck`'s rn2(5) matches at 4448 and
-sits *above* the tame dispatch in our `dochug`, so control does reach that far.
+**Diagnosed properly, and the answer is bigger than the pet.** An earlier
+reading of "17 objects, mtame 10 at (29,8)" came from an ad-hoc harness whose run
+threw at once — **it was measuring a partial run and is withdrawn.** Use
+`frozen/ps_test_runner.mjs`, and note that the runner swallows stderr, so probes
+must write to a file.
 
-Start by finding out whether `game.unported` is being cleared between the run
-and the read — an empty set for a whole run is itself suspicious, since other
-sessions report themeroom entries. If it is not cleared, the tame branch is
-genuinely not taken and `mtmp.mtame` is not what `dochug` sees.
+Done that way, against the real runner:
+
+- `dog_move()` — **0 calls**
+- `dochug()` — **0 calls**
+- `movemon()` — probe file never written
+
+So seed0102 never reaches the monster-movement phase at all. Its "4451 of 4485"
+is matched calls from chargen and level generation; the move loop is not nearly
+finished, it is not entered.
+
+`movemon()` is called from `js/allmain.js:302` inside `if (g.context?.move)`, and
+`game.context.move` is set only by the command handlers in `js/cmd.js` (line 74
+onward). seed0102's keys are `#name`, ESC, `f l i`, ESC, `+`, ESC ... `s s :` —
+almost all zero-time commands, so `context.move` stays 0 for most of the session.
+
+**Unresolved, and the next thing to settle:** our `mcalcmove` draws MATCH C's at
+calls 4442-4445, and those live in the same `if (g.context?.move)` block as the
+`movemon()` call a few lines above. Both cannot be true. Either the probe was
+misplaced, or `allmain.js` imports a different `movemon` than `js/mon.js`
+exports. Check that import before touching anything else — if the monster phase
+really is unreachable, it gates far more than the pet.
 
 ### Two sessions within touching distance of a full pass
 

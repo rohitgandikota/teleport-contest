@@ -62,6 +62,37 @@ draws. lspo_trap is the shortest path in and the chain is fully mapped:
                  get_location_coord and get_room_loc, which DO draw)
               -> mktrap(type, flags, croom, &tm)
 
+### des.trap is DONE. des.object is next — chain measured:
+
+    lspo_object    src/sp_lev.c  199 lines  0 direct draws
+    create_object  src/sp_lev.c  248 lines  0 direct draws   <- the real work
+    mkobj_at       src/mkobj.c     8 lines  0 direct draws   ALREADY PORTED
+    mksobj_at                                                ALREADY PORTED
+    mksobj                        81 lines  1 draw           ALREADY PORTED
+
+create_object's first four lines are the whole shape:
+
+    get_location_coord(&x, &y, DRY, croom, o->coord);   <- ported
+    ...
+    otmp = mkobj_at(RANDOM_CLASS, x, y, !named);        <- ported
+    otmp = mksobj_at(o->id, x, y, TRUE, !named);        <- ported
+    otmp = mkobj_at(oclass, x, y, !named);              <- ported
+
+So every leaf create_object needs already exists. The 248 lines are option
+handling (buc, spe, quantity, contents, buried, lit, montype, name, eroded,
+trapped, ...), and the four fills that call des.object use only a handful:
+
+    Storeroom      des.object("chest")
+    Statuary       des.object({ id = "statue" })
+    Massacre       des.object({ id = "corpse", montype = ... })
+    Light source   des.object({ id = "oil lamp", lit = true })
+    Buried treasure des.object({ id = "chest", buried = true, contents = ... })
+
+Port create_object's placement and id/class resolution first, record the
+option arms that need absent subsystems, and wire those five. Do NOT skip
+get_location_coord: it is where the placement draws happen, and des.object with
+no coord is the common case.
+
 ### mktrap already exists as `mktrap_room` — and is missing draws
 
 js/mklev.js:1839 `mktrap_room(croom)` is a partial src/mklev.c:2036 mktrap().

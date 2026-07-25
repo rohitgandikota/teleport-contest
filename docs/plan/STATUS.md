@@ -343,7 +343,39 @@ Three cells differ, and they name two distinct bugs:
    `game.unported` has no `themeroom ...` entry for this level, meaning
    `themerooms_generate` picked `default` — so no themed room ran.
 
-   **Glyph identity confirmed:** `{` is `PCHAR(37, '{', S_fountain, ...)` in
+   ### `--More--` SOLVED (diagnosis): we are missing the startup MESSAGES
+
+Measured across all 44 sessions: **32 have `--More--` on step 0, 12 do not** —
+and the 12 without are exactly the ones where our early screens already match
+(seed8000, seed0077, seed0002, seed0004, ...). So this is worth ~32 screens at
+step 0 alone, before the 1108 later frames.
+
+What actually differs is the MESSAGE, not a missing `more()` call:
+
+- `seed8000` step 0 row 0: `Aloha Contestant, welcome to NetHack!  You are a
+  neutral female human Tourist.` — no `--More--`.
+- `seed0102` step 0 row 0: `\u001b[23CIt is written in the Book of Mars:` —
+  the **legacy blurb**, which we never print at all.
+- `seed5002` step 0: the welcome line WITH `--More--`, and its rc sets
+  `playmode:debug`; wizard mode prints an extra startup message.
+
+`update_topl` (win/tty/topl.c:262) only calls `more()` when a SECOND message
+arrives while the first is unacknowledged and the two do not fit on one line.
+**We print exactly one startup message, so that branch can never fire.** That is
+why all three attempts to add a `more()` call failed and cost 21 screens each:
+the call site was never the problem.
+
+**The fix is to print the messages C prints**, in C's order, and let
+`update_topl` produce `--More--` on its own:
+1. the legacy blurb (`src/allmain.c`, the `flags.legacy` branch — grep
+   `"It is written in the Book of"`),
+2. whatever wizard mode adds when `playmode:debug` is set,
+3. then `welcome()`.
+
+Do NOT add another `more()` call. Port the missing plines and the existing
+machinery should light up by itself.
+
+**Glyph identity confirmed:** `{` is `PCHAR(37, '{', S_fountain, ...)` in
    include/defsym.h and NO object or monster class uses it, so C really does
    have a fountain there.
 

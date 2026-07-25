@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 133**, corpus RNG **11.1% → 12.2%**
+Last updated: **2026-07-24** · **screens 85 → 133**, corpus RNG **11.1% → 12.5%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,135 +38,37 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | `lspo_map` (7), `do_mkroom` special rooms, `obj_resists` (3) |
+| **Also open** | `themeroom_fill` (3), `rnd_class` (4), `obj_resists` (4) |
 | **Blocked on** | nothing |
-| **Score** | **133/11,405 screens**, 0/44 sessions passing, corpus RNG **96,580/792,838 (12.2%)** |
+| **Score** | **133/11,405 screens**, 0/44 sessions passing, corpus RNG **99,184/792,838 (12.5%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**Every chargen frame now matches, up to and including the legacy blurb.** The
-role, race, gender and confirmation menus, and the "It is written in the Book of
-<god>" window, are byte-exact in seed0077. What still fails in the chargen
-sessions is the *status line under* the legacy window — its attribute values
-(`St:15` where C says `St:11`), because the PRNG has already diverged in level
-generation by then. So the frame work in chargen is finished; the remaining
-chargen-session frames need RNG parity, not drawing.
+**`lspo_map` and the shaped themerooms are DONE** and have left the blocker
+histogram entirely. `js/mkmap.js` and the new half of `js/sp_lev.js` place and
+stamp the `des.map` blocks; `tools/gen-themerms.mjs` supplies both the map and
+the `filler_region` coordinates, so 17 of the 19 shaped rooms need no
+hand-written contents at all. All seven blocked sessions moved past it —
+seed0004 463 → 1321, seed0200 377 → 701, seed0009 462 → 547.
 
-**Role filtering is done too** (`reset_role_filtering`, `setrolefilter`,
-`clearrolefilter`, `gotrolefilter`, and the PICK_ANY menu). seed0006 diverged at
-PRNG call **1** because pressing `~` was a no-op; it now reaches call 2510.
+**Next: `themeroom_fill` (dat/themerms.lua:1009), 3 sessions.** This is exactly
+where the port was predicted to stop. `filler_region`'s `percent(30)` selects it
+30% of the time, and it is a second reservoir sample — over the 15
+`themeroom_fills`, already in `js/themerms_data.js` — followed by that fill's
+own contents, which place monsters, objects and terrain. The three sessions now
+report `nh.rn2 src=themerms.lua:1039 parent=region`, which is that sample's
+draw loop. Port it the same way: metadata from the generated table, then each
+fill's contents transcribed from the Lua.
 
-**Two candidate next moves, in order:**
-
-**`create_vault()`'s retry loop is done too** — it was a `note_unported` stub at
-`js/mklev.js`, the first divergence in five sessions, and clearing it took the
-corpus from 11.4% to 12.2%. `rnd_rect` has left the blocker histogram entirely.
-
-**Two candidate next moves, in order:**
-
-1. **The SHAPED themerooms — `lspo_map` (sp_lev.c:6120), 7 sessions.** This is
-   the largest blocker left and it is now fully characterised:
-
-   - `dat/themerms.lua` holds 31 themerooms. `themerooms_generate()` reservoir-
-     samples one per call; `default` has frequency 1000 of 1036, so it wins ~96%
-     of the time and is the only one whose contents are ported.
-   - The other 30 are shapes: `des.map({ map = [[...]], contents = function(m)
-     filler_region(6,6) end })`. **`js/themerms_data.js` already carries all 19
-     map blocks with their width and height** (`tools/gen-themerms.mjs`).
-   - `lspo_map()` places the map with exactly two draws, both derived from those
-     dimensions:
-     `x = 1 + rn2(COLNO - 1 - mf->wid)` (sp_lev.c:6154) and
-     `y = rn2(ROWNO - mf->hei)` (sp_lev.c:6164).
-   - Confirmed against the recordings by replaying the reservoir sample against
-     C's own logged draw results (`js/themerms_data.js` + the session log is
-     enough — no need to run the port): **seed0009 picks "Blocked center"**
-     (11x11), seed0013 and seed0015 pick "Four-leaf clover" and "S-shaped" on
-     their fifth and first themeroom respectively.
-
-   - The **complete** call sequence for one shaped themeroom, read off
-     seed0009's recording and now fully attributed:
-
-     ```
-     431  rn2(k)     rnd_rect        makerooms() loop condition, mklev.c:403
-     432  rn2(1000)  themerms:969  ┐ reservoir sample, one draw per eligible
-      ...   ...        ...         │ entry; 30 of them at difficulty 1
-     461  rn2(1036)  themerms:969  ┘ (the 31st, Twin businesses, needs mindiff 4)
-     462  rn2(68)    lspo_map:6154   x = 1 + rn2(COLNO - 1 - wid)
-     463  rn2(10)    lspo_map:6164   y = rn2(ROWNO - hei)
-     464  rn2(100)   percent:44      "Blocked center" contents: percent(30)
-     465  rn2(100)   percent:44      filler_region(1,1): percent(30)
-     466  rnd(2)     litstate_rnd    lspo_region, sp_lev.c:5638
-     467  rn2(77)    litstate_rnd    the `< 11` short-circuit never trips
-     468  rn2(4)     rnd_rect        the loop condition again, next iteration
-     ```
-
-     The `default` room is calls 499-500 for comparison: `rn2(100)` at
-     `build_room(sp_lev.c:2811)`, then `create_room`'s own `litstate_rnd`.
-
-   **The double-`percent` question is ANSWERED.** It was not a second caller
-   inside `filler_region`; the picked room simply has its own gate.
-   "Blocked center" (themerms.lua:535) is
-
-   ```lua
-   contents = function(m)
-      if (percent(30)) then
-         local terr = { "-", "P" }; shuffle(terr);
-         des.replace_terrain({ region = {1,1, 9,9}, fromterrain = "L",
-                               toterrain = terr[1] });
-      end
-      filler_region(1,1);
-   end
-   ```
-
-   so two `percent(30)` calls, and **a third draw — `shuffle(terr)`'s `rn2(2)` —
-   whenever the first one passes.** seed0009 rolled 82, so it did not. Any port
-   must read each room's `contents` rather than assume they are uniform: they are
-   not.
-
-   **What the port needs, in order:**
-
-   1. `percent(n)` from `dat/nhlib.lua:43` — `math.random(0, 99) < n`, i.e. one
-      `rn2(100)`. Belongs in `js/nhlua.js` beside `lua_shuffle`.
-   2. `lspo_map` (sp_lev.c:6120) — the two placement draws above, then stamping
-      the map onto `levl[][]`. **The stamping is not optional**, for two separate
-      reasons. The obvious one is that an RNG-only version is exactly the kind of
-      plausible-looking stub CLAUDE.md rule 2 forbids. The load-bearing one is
-      `goto redo_maploc` at sp_lev.c:6268:
-
-      > *Themed rooms should never overwrite anything.* Before stamping, C scans
-      > the map's footprint **plus a one-cell border**. Any cell outside the map
-      > that is not `STONE` with `roomno == NO_ROOM`, or any cell inside it whose
-      > `typ` is neither `STONE` nor the map's own glyph, fails the check — and C
-      > jumps back to `redo_maploc`, **re-rolling both placement draws**, up to
-      > 100 times before giving up and setting `themeroom_failed`.
-
-      So the number of `rn2(COLNO-1-wid)` / `rn2(ROWNO-hei)` pairs a shaped room
-      draws depends on the terrain already on the level. Get the collision test
-      wrong by one cell and the retry count changes and the stream diverges.
-      seed0009's Blocked center fits on the first try, so that session alone will
-      not exercise the retry — do not use it as the only check.
-
-      This also needs the `mapfrag` char table (`splev_chars`, sp_lev.c) to turn
-      the ASCII rows in `js/themerms_data.js` into `typ` codes.
-   3. `lspo_region` (sp_lev.c:5584), irregular branch — `litstate_rnd`,
-      `flood_fill_rm`, `add_room`, `add_doors_to_room`.
-   4. Each shaped room's own `contents`, transcribed from themerms.lua. Most are
-      a bare `filler_region(a,b)`; "Blocked center" has the extra gate above.
-
-   **Then the next wall is `themeroom_fill`.** `filler_region`'s `percent(30)`
-   selects it 30% of the time, and it is a second reservoir sample over the 15
-   `themeroom_fills` (already in `js/themerms_data.js`) followed by that fill's
-   contents — monsters, objects, terrain. Budget it as its own milestone. A port
-   that stops short of it is still a strict improvement: it moves the divergence
-   from the first shaped room to the ~30% of them that draw a fill.
-2. **`do_mkroom()` / special rooms (src/mkroom.c).** `makelevel` chooses at most
-   one special room per level (`svn.nroom >= room_threshold && rn2(u_depth) < 3`)
-   and our port does not have that step at all — `room_threshold` exists now
-   only because the vault increments it. `somey(mkroom.c:674)` is the visible
-   blocker in 2 sessions and is inside this subsystem.
-
-Then the long tail: `rnd_rect` (5), `next_ident` (2), `obj_resists` (2), `somey`
-(2), `mkobj`, `wipeout_text`, `dog_goal`, `peace_minded`, one each.
+**Also open, and smaller: two sessions still block on `rnd_rect`** (seed0009 at
+call 547, seed0200 at 701) with OUR `rect_cnt` higher than C's — 6 against 4 for
+seed0009. All the draws up to that point match, including the `create_room` that
+precedes it, so the difference is in the TERRAIN the themeroom map left behind:
+`check_room` reads `levl[][].typ`, and if our stamped map or the room box that
+`flood_fill_rm` + `add_room` derive from it differs by a cell, `create_room`
+succeeds where C fails (or the reverse) and `split_rects` yields a different
+number of free rectangles. Dump the level grid after the first themeroom and
+compare it against the recorded screen rather than guessing.
 
 ### What the window layer now provides
 

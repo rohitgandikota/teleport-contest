@@ -62,6 +62,42 @@ draws. lspo_trap is the shortest path in and the chain is fully mapped:
                  get_location_coord and get_room_loc, which DO draw)
               -> mktrap(type, flags, croom, &tm)
 
+### mktrap already exists as `mktrap_room` — and is missing draws
+
+js/mklev.js:1839 `mktrap_room(croom)` is a partial src/mklev.c:2036 mktrap().
+Generalising it to the real signature `mktrap(num, mktrapflags, croom, tm)` is
+the remaining work, and these are the differences that COST OR ADD DRAWS:
+
+1. **The placement retry loop is absent.** C does
+
+       do {
+           if (++tryct > 200) return;
+           if (mktrapflags & MKTRAP_MAZEFLAG) mazexy(&m);
+           else if (croom && !somexyspace(croom, &m)) return;
+       } while (occupied(m.x, m.y)
+                || (avoid_boulder && sobj_at(BOULDER, m.x, m.y)));
+
+   Ours calls somexyspace ONCE. Every rejected square in C is another
+   somexyspace, so a crowded room diverges by however many retries it needed.
+   `avoid_boulder` is `is_pit(kind) || is_hole(kind)`.
+
+2. **`Inhell && !rn2(5)` is absent** — a fire-trap bias in Gehennom that spends
+   an rn2(5) on every mktrap call down there, before the traptype_rnd loop.
+
+3. **WEB spawns a giant spider**: `if (kind == WEB && !(flags & NOSPIDERONWEB))
+   makemon(&mons[PM_GIANT_SPIDER], m.x, m.y, NO_MM_FLAGS)`. makemon draws.
+   Spider nest passes spider_on_web, so this fires from a themeroom fill.
+
+4. **`lvl` is `level_difficulty()`, not `u.uz.dlevel`.** Ours uses dlevel. They
+   differ once the hero is off the first branch, and lvl gates the
+   mktrap_victim() block (`lvl <= rnd(4)`), so the rnd(4) is spent either way
+   but the block runs on the wrong levels.
+
+5. Missing arms that do not draw but change the result: the `num` parameter
+   (a caller-specified trap type skips traptype_rnd entirely), `tm` (an
+   explicit location skips the placement loop), MKTRAP_SEEN, MKTRAP_NOVICTIM,
+   `Is_rogue_level`, and the early `is_pool_or_lava(tm)` rejection.
+
 **The full chain, measured. Port bottom-up in this order:**
 
     get_location      src/sp_lev.c   68 lines  2 draws   NOT PORTED

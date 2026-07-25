@@ -42,7 +42,42 @@ inventory instead of replaying it.
 | **Blocked on** | nothing |
 | **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **109,593/792,838 (13.8%)** |
 
-### The single biggest screen opportunity: `--More--` (1108 frames, 40 sessions)
+### CORRECTION: `--More--` is NOT the biggest opportunity — it is unreachable
+
+The claim below ("9.7% of the public score sitting behind one piece of topl.c")
+was **wrong**, and the error is worth understanding because it is easy to repeat.
+
+Counting frames that contain `--More--` is not the same as counting frames we
+could score by rendering it. Here is where those 1108 frames actually live:
+
+```
+  137 /   410   seed5002-wizard-coverage-pair
+  131 /   532   seed0399-wizard-hallu-actions
+  124 /  1814   seed4500-knight-coverage
+  100 /  1953   seed0030-ten-diverse-deaths
+   82 /   595   seed0002-healer-reflection-drummer
+   60 /    84   seed0900-tourist-explore-actions
+```
+
+Every one of those is a deep-gameplay session that diverges from C's PRNG stream
+early and scores **zero** screens today. A perfect `--More--` would not win a
+single one of them, because the map, the monsters and the messages underneath it
+are all wrong by then.
+
+Meanwhile the two sessions we DO render frames for contain almost none:
+**seed8000 has 0 of 23, seed0077 has 1 of 33.** That single frame is seed0077
+step 12, which is the one the earlier attempts kept chasing.
+
+**The lesson:** a frame-count over the recordings measures what C draws, not what
+is available to us. Weight any such count by whether we can already render the
+rest of that frame. `tools/generalize.mjs` has the same hazard in a different
+form — it ranks paths by "reached", not by "draws".
+
+**Stop rule invoked.** Three iterations, ~1 screen of realistic upside. Moving to
+`m_move`, which is what actually gates those sessions. The topl.c findings below
+are correct and worth keeping for when the streams reach that far.
+
+### The `--More--` mechanics, correct but not yet worth landing
 
 Measured, not estimated: **1108 of the 11,405 public frames carry `--More--` on
 their top line, across 40 of the 44 sessions.** That is 9.7% of the public score

@@ -324,12 +324,21 @@ Both cost seed0077-rogue-chargen exactly one screen (17 -> 16). The second
 attempt consumes strictly fewer keys and fewer turns than the first, so the
 cause is NOT simply "we invented a turn" and NOT the ECMD_TIME/ECMD_OK choice.
 
-seed0077's keys around the command are `...jaeji...` — `a` then `e` as the
-object letter. Both C and our port loop in getobj when a letter matches no
-inventory object, so the counts should agree unless **our inventory letters
-differ from C's**. That is the thing to check before a third attempt: dump
-`game.invent`'s invlet assignments for seed0077 and compare against what C's
-inventory screen shows.
+**Third attempt localised it exactly.** Wiring a minimal `doapply` (getobj,
+then ECMD_OK — no turn, no extra keys) breaks exactly ONE step, 27, and the
+diff there is a single cell:
+
+    r8 c26   C 'You entered the dungeon 2 turns ago.'
+             ours 'You entered the dungeon 3 turns ago.'
+
+So the port spends **one extra turn** somewhere between the apply and step 27,
+even though doapply itself returns ECMD_OK. The keys around it are
+`...j a e j i...`: `a` then `e` as the object letter, then `j`, then `i`.
+
+The invlet hypothesis is DEAD — the rogue's letters are a-f, so `e` matches an
+object and getobj cannot be looping. Something else in that key run costs a
+turn C does not spend. Bisect by wiring apply and diffing the turn counter at
+each of steps 20-27 to find which keystroke introduces it.
 
 Until then `a` stays unwired. It is 232 keystrokes across the corpus and worth
 having, but not at the price of a screen on a session that currently matches.

@@ -61,6 +61,31 @@ Two cautions learned doing it:
   `set_apparxy`'s common path draws nothing, so its absence was free; it only
   showed up once `distfleeck` was real. Expect fixes to arrive in pairs.
 
+### Next: `--More--` is reachable at seed5002 step 0, and it is 1108 frames
+
+`node tools/screendiff.mjs seed5002 0` shows exactly 8 differing cells: C has
+`--More--` at row 1 col 0 with the cursor there, ours has nothing. This is the
+**two-line variant** — the welcome message is 73 characters, past the `CO - 8`
+wrap threshold, so C puts the suffix on its own line rather than appending it.
+
+`more()` in `js/display.js:417` is already ported and handles both the suffix
+and the wrap. **Nothing calls it on this path.** In C the suffix appears when
+`tty_display_nhwindow(WIN_MESSAGE, TRUE)` blocks on a top line that still has
+`TOPLINE_NEED_MORE` set — find that call in the startup sequence rather than
+adding a call where it seems to belong.
+
+Two cautions, both learned the hard way:
+
+- A previous attempt gated `--More--` on `pline` and **lost 3 screens**. The
+  bug class is that `update_topl` sets `NEED_MORE` on *every* pline, so gating
+  on the message rather than on the blocking call emits it constantly.
+- `more()` also **consumes a key**. Getting the display right but the
+  consumption wrong puts the whole session out of step, which is worse than
+  not drawing it at all.
+
+Because it is 1108 frames across 40 sessions, this is the single largest screen
+item left. Verify against `screendiff` at step 0 of seed5002 before and after.
+
 ### Next: getpos(), the position picker — it decides keystroke alignment
 
 `seed4500-knight-coverage` is the largest session (1814 screens) and its input

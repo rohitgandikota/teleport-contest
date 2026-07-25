@@ -42,6 +42,53 @@ inventory instead of replaying it.
 | **Blocked on** | nothing |
 | **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **106,223/792,838 (13.4%)** |
 
+### The leaderboard, and what it says about our real problem
+
+`node tools/leaderboard.mjs` reads `/leaderboard/data.json` directly — the page
+itself renders from JS, so fetching its HTML only ever shows "Loading…".
+
+Standings at 2026-07-25T01:15Z, sorted by **held-out**, which is the half that
+actually decides the contest:
+
+```
+  #  HELD-OUT   scr%   rng%  pass   PUBLIC   scr%  pass   fork
+  1   10424  92.5%  95.3% 43/44    11405 100.0% 44/44   serteal
+  2    4326  38.4%  18.8%  4/44    11366  99.7% 33/44   richie3366
+  3    2877  25.5%  14.7%  1/44    11405 100.0% 44/44   xeophon
+  4    2524  22.4%  15.4%  2/44    11405 100.0% 44/44   Hoimar
+  5    2463  21.9%  13.4%  2/44     4842  42.5%  9/44   lockwo
+  6    1201  10.7%  16.3%  2/44     2073  18.2% 15/44   chanting-monks
+  7     265   2.4%  11.1%  0/44    11405 100.0% 44/44   daoa0601
+  8     253   2.2%   9.1%  1/44      259   2.3%  0/44   vtjeng
+  9      61   0.5%   2.4%  0/44    11405 100.0% 44/44   kevinjosethomas
+ 10      52   0.5%   6.0%  0/44      169   1.5%  1/44   aganders3
+ 11      43   0.4%   8.9%  0/44      133   1.2%  0/44   us
+```
+
+**Read the fourth column, not the seventh.** Four entrants sit at a perfect
+11405/11405 public with 44/44 sessions passing and then score 265, 61, 2524,
+2877 on the held-out set. That is the overfitting signature the contest warns
+about, and it is worth remembering every time our own public number moves: a
+public point that does not bring a held-out point with it was not real.
+
+serteal leads on merit — 92.5% held-out — but by Emscripten-transpiling the C
+rather than porting it. Phase 2 divides parity by `git diff` size, so that
+approach is a bet on Phase 1 only.
+
+**Our own number to watch is the ratio: held-out / public = 0.32.**
+vtjeng is at 0.98, lockwo 0.51, chanting-monks 0.58, richie3366 0.38. Ours is
+low because 111 of our 134 public screens are character-selection frames, which
+only exist in sessions whose rc does not pin the hero. That is not overfitting —
+the chargen port is faithful — but it does mean our screen count is concentrated
+in one feature rather than spread across the game.
+
+**The strategic consequence.** Held-out RNG (8.9%) is *lower* than public
+(12.2%), so held-out sessions diverge earlier. Nothing about that is fixable by
+polishing frames; it is fixed by getting further into each session's PRNG
+stream. Level generation and the first turn of the move loop are what every
+session in both halves runs, which makes `m_move` the highest-value target for
+the held-out half as well as the public one.
+
 ### The exact next action — READ THIS FIRST
 
 **The whole themed-room path is now ported except the fill CONTENTS.**

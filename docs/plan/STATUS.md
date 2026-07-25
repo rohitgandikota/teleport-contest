@@ -226,18 +226,26 @@ never match an inventory letter, so it takes its re-prompt loop and eats
 keystrokes that should have been commands. Any getobj command is unsafe on a
 session whose inventory failed to build — including the seven already wired.
 
-**Likely cause.** `u_init_inventory()` -> `u_init_role()` switches on
-`roleMnum()`, and all thirteen roles including `PM_ROGUE` have a case. But
-seed0077's rc sets **no role at all** (`OPTIONS=!autopickup`,
-`suppress_alert`, `symset`, `disclose` — nothing else), so the role comes from
-interactive chargen via `player_selection()`. If that path leaves
-`game.urole.mnum` unset or in a form `roleMnum()` cannot resolve, it returns
--1, no case matches, and ini_inv is never called.
+**Cause narrowed by probe — the inventory IS built, then LOST.**
 
-**Verify first:** probe `roleMnum()` and `game.urole` at the top of
-`u_init_role()` for seed0077 and compare against seed8000, whose rc names the
-role outright. If roleMnum is -1 there, the fix is in how player_selection
-records the chosen role, not in u_init.
+Measured, in order:
+- `u_init_role()` runs with `role = 339`, `urole.mnum = 339`, name "Rogue", and
+  `PMNAMES.PM_ROGUE` is 339 — so the switch case matches and
+  `ini_inv(TROBJ.Rogue)` (7 entries) executes. Role resolution is NOT the bug.
+- `addinv()` fires **6 times**, assigning letters a through f, ending with
+  `game.invent.length === 6`.
+- At the first `nhgetch` (step 0), `game.invent.length` is **0**.
+
+So something between the end of u_init and the first keystroke clears or
+replaces `game.invent`. seed8000, whose rc names its role outright, keeps all
+13 of its items — so the losing path is specific to interactive chargen
+(seed0077 enters a name and picks a role through `player_selection()`).
+
+**Next:** bisect that window. Print `game.invent.length` at the end of
+`u_init_inventory()`, after `newgame()` returns in js/jsmain.js, and at the top
+of `moveloop_core`. Suspect anything that rebuilds or re-assigns the `game`
+object during chargen — a second `newgame()`, a state reset after the role
+menu, or `game.invent` being reassigned rather than mutated.
 
 This matters well beyond one session: every interactively-chargen'd session in
 the held-out set would hit it, and a hero with no inventory diverges from C on

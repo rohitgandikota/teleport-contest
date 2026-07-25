@@ -874,6 +874,39 @@ function g_at(x, y) {
 // The g_at() merge matters for the stream: when gold is already on the square
 // the existing pile absorbs the amount and no object is created, so there is no
 // next_ident(). A vault fills four distinct squares, so it makes four.
+// src/mkobj.c mksobj_at() — make it, then PUT IT ON THE FLOOR. Returning the
+// object without place_object() meant nothing ever reached level.objects, so
+// every floor object the level generator produced vanished on creation: the
+// pet's search box was always empty and objects the screens expect to see were
+// never drawn.
+export function mksobj_at(otyp, x, y, init, artif) {
+    const otmp = mksobj(otyp, init, artif);
+    place_object(otmp, x, y);
+    return otmp;
+}
+
+// src/mkobj.c mkobj_at()
+export function mkobj_at(oclass, x, y, artif) {
+    const otmp = mkobj(oclass, artif);
+    place_object(otmp, x, y);
+    return otmp;
+}
+
+// src/mkobj.c place_object() — C PREPENDS to fobj:
+//
+//     otmp->nobj = fobj;
+//     fobj = otmp;
+//
+// so the level's object list is newest-first, and anything that walks it in
+// order sees the most recently created object first. dog_goal()'s search walks
+// it calling dogfood() on each, and dogfood() draws, so the order is part of
+// the PRNG contract.
+export function place_object(otmp, x, y) {
+    otmp.ox = x;
+    otmp.oy = y;
+    (game.level.objects ||= []).unshift(otmp);
+}
+
 export function mkgold(amount, x, y) {
     let gold = g_at(x, y);
 
@@ -884,10 +917,12 @@ export function mkgold(amount, x, y) {
     if (gold) {
         gold.quan += amount;
     } else {
-        gold = mksobj(ONAMES.GOLD_PIECE, true, false);
-        gold.ox = x; gold.oy = y;
+        /* C calls mksobj_at(), which routes through place_object() and so
+           PREPENDS. Building the object by hand and pushing put gold at the
+           wrong end of the list, and dog_goal() walks that list in order
+           calling dogfood(), which draws. */
+        gold = mksobj_at(ONAMES.GOLD_PIECE, x, y, true, false);
         gold.quan = amount;
-        (game.level.objects ||= []).push(gold);
     }
     return gold;
 }

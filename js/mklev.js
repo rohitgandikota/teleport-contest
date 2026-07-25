@@ -15,7 +15,7 @@ import {
 } from './makemon.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room } from './sp_lev.js';
-import { mkgold } from './mkobj.js';
+import { mkgold, place_object, mkobj_at, mksobj_at } from './mkobj.js';
 
 function note_unported_lev(what) {
     (game.unported ||= new Set()).add(what);
@@ -246,40 +246,8 @@ let _nextObjId = 1;
 
 
 
-// src/mkobj.c mksobj_at() — make it, then PUT IT ON THE FLOOR. Returning the
-// object without place_object() meant nothing ever reached level.objects, so
-// every floor object the level generator produced vanished on creation: the
-// pet's search box was always empty and objects the screens expect to see were
-// never drawn.
-function mksobj_at(otyp, x, y, init, artif) {
-    const otmp = mksobj(otyp, init, artif);
-    place_object(otmp, x, y);
-    return otmp;
-}
-
-// src/mkobj.c mkobj_at()
-function mkobj_at(oclass, x, y, artif) {
-    const otmp = mkobj(oclass, artif);
-    place_object(otmp, x, y);
-    return otmp;
-}
-
 /* mkgold() lives in js/mkobj.js, where src/mkobj.c has it. */
 
-// src/mkobj.c place_object() / add_to_buried() — neither draws.
-// src/mkobj.c place_object() — C PREPENDS to fobj:
-//
-//     otmp->nobj = fobj;
-//     fobj = otmp;
-//
-// so the level's object list is newest-first, and anything that walks it in
-// order sees the most recently created object first. dog_goal()'s search walks
-// it calling dogfood() on each, and dogfood() draws, so the order is part of the
-// PRNG contract. Same mistake place_monster() used to have with fmon.
-function place_object(otmp, x, y) {
-    otmp.ox = x; otmp.oy = y;
-    (game.level.objects ||= []).unshift(otmp);
-}
 function add_to_buried(otmp) {
     (game.level.buriedobjs ||= []).push(otmp);
 }

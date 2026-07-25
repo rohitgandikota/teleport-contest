@@ -9,7 +9,7 @@ import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { dog_move } from './dog.js';
 import { mfndpos, mon_allowflags } from './mon.js';
-import { MONSYMS, MFLAGS, PMNAMES } from './monst_data.js';
+import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
 import { ALLOW_U, COULD_SEE } from './const.js';
 
 // src/monmove.c:532 distfleeck()
@@ -71,9 +71,15 @@ export function m_move(mtmp, after) {
                 && !rn2(3)))
             appr = 0;
 
-        /* leppie_avoidance, m_balks_at_approaching and gettrack all change
-           appr or the goal without drawing; none is ported. */
-        note_unported('m_move appr adjustments');
+        /* leppie_avoidance and gettrack change appr/the goal without drawing;
+           neither is ported. */
+        note_unported('m_move leppie/gettrack');
+
+        /* src/monmove.c:1878 — hostiles with a ranged option keep their
+           distance. This changes appr, and appr decides which candidate square
+           wins, so getting it wrong moves a monster to a different legal square
+           while drawing exactly the same numbers. */
+        appr = m_balks_at_approaching(appr, mtmp);
     }
 
     /* src/monmove.c:1891 — the pickup branch. The rn2(10) fires for every
@@ -195,4 +201,52 @@ function couldsee(x, y) {
 function mdistu(mtmp) {
     const dx = mtmp.mx - game.u.ux, dy = mtmp.my - game.u.uy;
     return dx * dx + dy * dy;
+}
+
+// src/monmove.c:1830 m_balks_at_approaching() — should this monster hang back?
+//
+// Draws nothing. Returns -1 to retreat, -2 for a preferred-range weapon, or the
+// caller's appr unchanged.
+function m_balks_at_approaching(oldappr, mtmp) {
+    const x = mtmp.mx, y = mtmp.my, ux = mtmp.mux, uy = mtmp.muy;
+    const edist = (x - ux) * (x - ux) + (y - uy) * (y - uy);
+
+    /* peaceful, far away, or cannot see the hero */
+    if (mtmp.mpeaceful || edist >= 5 * 5 || !m_canseeu(mtmp))
+        return oldappr;
+
+    /* the launcher, polearm and throw-and-return cases all need monster
+       inventory, which nothing carries yet */
+
+    /* can attack from a distance, and is hurt or has not used it */
+    if (ranged_attk_available(mtmp)
+        && ((mtmp.mhp < Math.trunc((mtmp.mhpmax + 1) / 3)) || !mtmp.mspec_used))
+        return -1;
+
+    return oldappr;
+}
+
+// include/vision.h:50 m_canseeu() — Invis and Underwater are hero states the
+// port does not have yet, so this reduces to line of sight.
+function m_canseeu(mtmp) {
+    return couldsee(mtmp.mx, mtmp.my);
+}
+
+// src/mhitu.c:2413 ranged_attk_available() — does this monster have any attack
+// that works at a distance? m_seenres() tracks what the hero has been seen to
+// resist and needs the resistance-memory subsystem; without it C's test reduces
+// to the attack-type check.
+function ranged_attk_available(mtmp) {
+    for (const atk of (mtmp.data?.mattk || [])) {
+        const aatyp = atk[0];
+        if (DISTANCE_ATTK_TYPE(aatyp))
+            return true;
+    }
+    return false;
+}
+
+// include/monattk.h:31
+function DISTANCE_ATTK_TYPE(atyp) {
+    return atyp === ATTKS.AT_SPIT || atyp === ATTKS.AT_BREA
+        || atyp === ATTKS.AT_GAZE || atyp === ATTKS.AT_MAGC;
 }

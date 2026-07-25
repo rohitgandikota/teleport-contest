@@ -283,7 +283,9 @@ function main() {
     const MONSYMS = pick('S_');
     const MSOUND = pick('MS_');
     const ATTKS = defines('include/monattk.h', ['AT_', 'AD_']);
-    const MFLAGS = defines('include/monflag.h', ['M1_', 'M2_', 'M3_', 'G_']);
+        /* MR_ is the resistance family; dogfood()'s resists_poison() needs it,
+       and it lives in the same header as the M1_/M2_/M3_ flags. */
+const MFLAGS = defines('include/monflag.h', ['M1_', 'M2_', 'M3_', 'G_', 'MR_']);
     const MMFLAGS = defines('include/hack.h', ['MM_', 'NO_MM_FLAGS', 'NO_MINVENT']);
     /* MAXMCLASSES and A_NONE are enum/#define constants mkclass() needs but
        that no prefix filter above catches. */

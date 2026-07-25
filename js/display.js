@@ -318,7 +318,7 @@ export function serialize_terminal_grid(display) {
 }
 
 // ── Build screen output ──
-function _buildScreenOutput() {
+export function _buildScreenOutput() {
     const display = game?.nhDisplay;
     if (!display) return;
 
@@ -388,7 +388,8 @@ export async function bot() {
 
 // include/wintty.h:85 — toplin states. NEED_MORE is 1 and NON_EMPTY is 2, the
 // opposite of what their order in the header suggests.
-export const TOPLINE_EMPTY = 0, TOPLINE_NEED_MORE = 1, TOPLINE_NON_EMPTY = 2;
+export const TOPLINE_EMPTY = 0, TOPLINE_NEED_MORE = 1, TOPLINE_NON_EMPTY = 2,
+             TOPLINE_SPECIAL_PROMPT = 3;
 
 const defmorestr = '--More--';
 

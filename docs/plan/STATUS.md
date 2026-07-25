@@ -498,15 +498,30 @@ jackal     geno=163  = G_GENO|G_SGROUP|3   freq 3   correct
 are among the most common early monsters, so generating two lichens and a newt on
 level 1 is entirely plausible — our species are very likely RIGHT.
 
-**So both readings are dead and the contradiction stands:** four monsters with
-speeds 1, 6, 12, 1 cannot yield four turns per turn, yet C does it consistently.
-Something else grants movement. Next places to look, in order:
-1. `mcalcdistress()` — runs immediately before the allotment in C and is not
-   ported at all. If it adjusts `mtmp->movement` or `mspeed`, that is the answer.
-2. `m_everyturn_effect()` — called by `movemon_singlemon` BEFORE the
-   `movement < NORMAL_SPEED` test, so it can change the very field being tested.
-3. Whether C's monsters carry `mspeed == MFAST`, which multiplies mmove by 4/3
-   before the rounding.
+**So both readings are dead and the contradiction stands.** Side by side, first
+dozen turns, counting `rn2(12)` as allotment and `rn2(5)` as distfleeck:
+
+```
+C:    4m/0d  4m/4d  4m/4d  4m/4d  4m/2d  4m/4d  4m/4d  4m/2d  4m/4d
+ours: 4m/0d  4m/2d  4m/1d  4m/1d  4m/2d  4m/2d  4m/3d  5m/1d  4m/1d
+```
+
+The allotment count matches exactly — four monsters, every turn. The turn count
+does not: C's four nearly always act, ours act once or twice. (Caveat: neither
+`rn2(12)` nor `rn2(5)` is unique to those functions, so treat the counts as
+indicative. The 5m outlier is an extra `rn2(12)` from somewhere else.)
+
+`mcalcdistress` is ruled out as the cause: `m_calcdistress` (src/mon.c) touches
+`mblinded`, `mfrozen`, `mfleetim`, regeneration and shapeshifting — never
+`movement` or `mspeed`. `mon_regen` draws nothing; `were_change` and
+`decide_to_shapeshift` do draw but are gated on lycanthropes and shapechangers,
+which none of these four are.
+
+**What is left:** C's four monsters must simply be FASTER than ours, i.e. they
+are different species after all — which means `rndmonst`'s WALK is wrong even
+though the frequency table it walks is right. Verifying the table was necessary
+but not sufficient; the next step is to check how our `rndmonst` accumulates and
+compares, against src/makemon.c, rather than checking the data again.
 
 ### The leaderboard, and what it says about our real problem
 

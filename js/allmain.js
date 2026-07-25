@@ -21,6 +21,16 @@ import { makedog } from './dog.js';
 import { init_attr, vary_init_attr, adjabil, Fast, Very_fast } from './attrib.js';
 import { com_pager } from './pager.js';
 import { player_selection, tty_init_nhwindows } from './plselect.js';
+import { adjust_menu_promptstyle, ATR_INVERSE } from './tty/wintty.js';
+import { NO_COLOR } from './terminal.js';
+
+// src/allmain.c:698 init_sound_disp_gamewindows() — only the part that matters
+// before character selection: creating WIN_INVEN pushes iflags.menu_headings
+// into the tty's menu prompt style.
+function init_sound_disp_gamewindows() {
+    /* src/options.c:7188 — the default heading style */
+    adjust_menu_promptstyle({ color: NO_COLOR, attr: ATR_INVERSE });
+}
 
 // include/you.h:441-442
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
@@ -42,6 +52,11 @@ export async function newgame() {
     {
         // win/tty/wintty.c tty_init_nhwindows() — the banner, before anything.
         tty_init_nhwindows();
+        // src/allmain.c:698 init_sound_disp_gamewindows(): unixmain.c runs it
+        // BEFORE player_selection(), which is why the chargen menu titles are
+        // already wearing iflags.menu_headings (ATR_INVERSE) rather than the
+        // plain style tty_menu_promptstyle starts out with.
+        init_sound_disp_gamewindows();
         const ir = str2role(g.rc?.opts?.role);
         const ira = str2race(g.rc?.opts?.race);
         const ig = str2gend(g.rc?.opts?.gender);

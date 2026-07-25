@@ -19,6 +19,7 @@
 import { game } from './../gstate.js';
 import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
          ATR_UNDERLINE as TERM_UNDERLINE } from './../terminal.js';
+import { MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED } from './../const.js';
 
 // include/wintype.h:128-137 — NetHack's attribute numbers. These are NOT the
 // frozen terminal's bit flags; win/tty/wintty.c term_start_attr() translates
@@ -82,6 +83,19 @@ export function tty_base_pos() { return { x: base.curx, y: base.cury }; }
 // include/wintty.h — the default --More-- prompt.
 const defmorestr = '--More--';
 
+// win/tty/wintty.c:2640 — the style used for a menu's title line. It starts
+// out plain, but src/allmain.c:728 init_sound_disp_gamewindows() pushes
+// iflags.menu_headings into it through adjust_menu_promptstyle(), and that runs
+// BEFORE player_selection(). So by the time the role menu opens the title is
+// already ATR_INVERSE, which is what the recordings show.
+const tty_menu_promptstyle = { color: NO_COLOR, attr: ATR_NONE };
+
+// src/windows.c:1769 adjust_menu_promptstyle()
+export function adjust_menu_promptstyle(style) {
+    tty_menu_promptstyle.color = style.color;
+    tty_menu_promptstyle.attr = style.attr;
+}
+
 const ROWS = 24, COLS = 80;
 
 let windows = [];
@@ -99,7 +113,9 @@ export function tty_create_nhwindow(type) {
         cols: 0,
         maxrow: 0,
         maxcol: 0,
-        data: [],       // one string per line
+        data: [],       // one string per line (tty_putstr path)
+        mlist: null,    // menu item list  (tty_add_menu path)
+        nitems: 0,
         morestr: '',
         npages: 0,
         cancelled: false,
@@ -114,6 +130,8 @@ export function tty_get_nhwindow(window) {
 
 // win/tty/wintty.c tty_destroy_nhwindow()
 export function tty_destroy_nhwindow(window) {
+    const cw = windows[window];
+    if (cw && cw.active) tty_dismiss_nhwindow(window);
     delete windows[window];
 }
 
@@ -125,9 +143,123 @@ export function tty_clear_nhwindow(window) {
     if (cw.type === NHW_MENU || cw.type === NHW_TEXT) {
         cw.data = [];
         cw.attrs = [];
+        cw.mlist = null;
+        cw.nitems = 0;
         cw.maxrow = 0;
         cw.maxcol = 0;
     }
+}
+
+// win/tty/wintty.c tty_start_menu()
+export function tty_start_menu(window, mbehavior) {
+    const cw = windows[window];
+    if (!cw) return;
+    cw.mbehavior = mbehavior;
+    tty_clear_nhwindow(window);
+}
+
+// win/tty/wintty.c tty_add_menu()
+//
+// `identifier` is C's `anything` union: a non-zero value makes the entry
+// selectable, and only a selectable entry gets the "%c - " prefix. A zero
+// identifier is a header/separator line, which is how add_menu_str() works.
+export function tty_add_menu(window, glyphinfo, identifier, ch, gch,
+                             attr, clr, str, itemflags) {
+    const cw = windows[window];
+    if (!cw || str == null) return;
+
+    cw.nitems = (cw.nitems | 0) + 1;
+    let newstr = String(str);
+    if (identifier)
+        newstr = `${ch ? ch : '?'} - ${newstr}`;
+
+    const item = {
+        identifier,
+        count: -1,
+        selected: !!(itemflags & MENU_ITEMFLAGS_SELECTED),
+        itemflags: itemflags | 0,
+        selector: ch || 0,
+        gselector: gch || 0,
+        attr: attr | 0,
+        color: clr,
+        str: newstr,
+    };
+    /* C prepends and reverses in tty_end_menu(); mirroring that matters
+       because end_menu() then prepends the prompt AFTER the reversal, which
+       is what puts the title above the caller's own first line. */
+    item.next = cw.mlist || null;
+    cw.mlist = item;
+}
+
+// src/windows.c add_menu_str() — a non-selectable line.
+export function tty_add_menu_str(window, str) {
+    tty_add_menu(window, null, 0, 0, 0, ATR_NONE, NO_COLOR, str,
+                 MENU_ITEMFLAGS_NONE);
+}
+
+// win/tty/wintty.c tty_end_menu()
+export function tty_end_menu(window, prompt) {
+    const cw = windows[window];
+    if (!cw) return;
+
+    /* Reverse the list so that items are in correct order. */
+    let curr = cw.mlist, head = null;
+    while (curr) { const next = curr.next; curr.next = head; head = curr; curr = next; }
+    cw.mlist = head;
+
+    /* Put the prompt at the beginning of the menu. */
+    if (prompt) {
+        tty_add_menu(window, null, 0, 0, 0, ATR_NONE, NO_COLOR, '',
+                     MENU_ITEMFLAGS_NONE);
+        tty_add_menu(window, null, 0, 0, 0, tty_menu_promptstyle.attr,
+                     tty_menu_promptstyle.color, prompt, MENU_ITEMFLAGS_NONE);
+    }
+
+    /* 52: 'a'..'z' and 'A'..'Z'; the row limit wins on a 24-line terminal. */
+    const lmax = Math.min(52, ROWS - 1);
+    cw.npages = Math.floor((cw.nitems + (lmax - 1)) / lmax);
+    cw.plist = [];
+
+    cw.cols = 0;
+    let menu_ch = '?';
+    let n = 0;
+    for (curr = cw.mlist; curr; n++, curr = curr.next) {
+        if ((n % lmax) === 0) {
+            menu_ch = 'a';
+            cw.plist[Math.floor(n / lmax)] = curr;
+        }
+        if (curr.identifier && !curr.selector) {
+            curr.selector = menu_ch;
+            curr.str = menu_ch + curr.str.slice(1);
+            if (menu_ch === 'z') menu_ch = 'A';
+            else menu_ch = String.fromCharCode(menu_ch.charCodeAt(0) + 1);
+        }
+
+        /* cut off any lines that are too long */
+        let len = curr.str.length + 2;   /* extra space at beg & end */
+        if (len > COLS) {
+            curr.str = curr.str.slice(0, COLS - 2);
+            len = COLS;
+        }
+        if (len > cw.cols) cw.cols = len;
+    }
+    cw.plist[cw.npages] = null;
+
+    /* If greater than 1 page, morestr is "(x of y) ", otherwise "(end) ". */
+    let len;
+    if (cw.npages > 1) {
+        cw.morestr = '';
+        len = `(${cw.npages} of ${cw.npages}) `.length;
+    } else {
+        cw.morestr = '(end) ';
+        len = cw.morestr.length;
+    }
+    if (len > cw.cols) cw.cols = len;
+
+    cw.maxcol = cw.cols;
+
+    if (cw.npages > 1) cw.maxrow = cw.rows = lmax + 1;
+    else cw.maxrow = cw.rows = cw.nitems + 1;
 }
 
 // win/tty/wintty.c tty_putstr() — menu/text path.
@@ -152,17 +284,23 @@ export function tty_putstr(window, attr, str) {
 }
 
 // win/tty/wintty.c:1898-1917 — where the window sits horizontally.
+//
+// wintty.c:13 does `#define H2344_BROKEN` unconditionally, so the branch that
+// looks conditional is the only one that ever compiles: a menu is capped at
+// half the screen width rather than pushed as far right as it will go, and the
+// `offx == 10` collapse test does not exist. The chargen menus are where the
+// difference shows — their longest line is 32, which the other branch would put
+// at column 47 and this one puts at 40, matching the recordings.
 function compute_offx(cw) {
-    /* NHW_TEXT forces full-screen mode */
-    const maxcol = (cw.type === NHW_TEXT) ? COLS : cw.maxcol;
-
-    let offx = Math.max(10, COLS - maxcol - 1);
+    let offx = (cw.type === NHW_TEXT)
+             ? 0
+             : Math.min(Math.min(82, Math.floor(COLS / 2)),
+                        COLS - cw.maxcol - 1);
     if (offx < 0) offx = 0;
     if (cw.type === NHW_MENU) cw.offy = 0;
 
-    /* offx == 10 means the window is too wide to overlay, so it takes the
-       whole screen; likewise anything taller than the display. */
-    if (offx === 10 || cw.maxrow >= ROWS) offx = 0;
+    /* a window taller than the display cannot overlay; it takes the screen */
+    if (cw.maxrow >= ROWS) offx = 0;
     return offx;
 }
 
@@ -245,6 +383,56 @@ function render_page(cw, page, display) {
     return lines.length;
 }
 
+// win/tty/wintty.c:1329 process_menu_window() — draw one page of an mlist
+// menu. Every line is "<space><item text>" starting at offx, and a selected
+// entry has its third character (the '-' of "a - foo") replaced by '*'.
+function process_menu_window(cw, page, display) {
+    const lmax = Math.min(52, ROWS - 1);
+    const items = [];
+    let n = 0;
+    for (let curr = cw.mlist; curr; n++, curr = curr.next)
+        if (Math.floor(n / lmax) === page) items.push(curr);
+
+    if (!cw.offx) display.clearScreen();
+
+    items.forEach((item, lineno) => {
+        const row = cw.offy + lineno;
+        let col = cw.offx;
+        /* the leading space, drawn before any attribute is turned on */
+        if (col < COLS) display.setCell(col, row, ' ', NO_COLOR, 0);
+        col++;
+
+        /* whole line for headers; after "<letter><space><flag><space>" for
+           real entries, so the selector prefix stays unhighlighted */
+        const s = item.str;
+        const attr_n = (s[0] && s[1] === ' ' && s[2] && '-+#'.includes(s[2])
+                        && s[3] === ' ') ? 4 : 0;
+        const attr = term_attr(item.attr);
+
+        for (let i = 0; i < s.length && col < COLS; i++, col++) {
+            const on = (i >= attr_n) ? attr : 0;
+            const ch = (i === 2 && item.identifier && item.selected)
+                       ? (item.count === -1 ? '*' : '#') : s[i];
+            display.setCell(col, row, ch, NO_COLOR, on);
+        }
+        for (let c = col; c < COLS; c++)
+            display.setCell(c, row, ' ', NO_COLOR, 0);
+    });
+
+    /* win/tty/wintty.c:1536 — the footer sits directly under the last entry. */
+    const morestr = (cw.npages > 1) ? `(${page + 1} of ${cw.npages})`
+                                    : cw.morestr;
+    const footerRow = cw.offy + items.length;
+    let col = cw.offx + 1;              /* dmore(): offset 2, tty_curs is 1-based */
+    for (let i = 0; i < morestr.length && col < COLS; i++, col++)
+        display.setCell(col, footerRow, morestr[i], NO_COLOR, 0);
+    for (let c = col; c < COLS; c++)
+        display.setCell(c, footerRow, ' ', NO_COLOR, 0);
+    display.setCursor(cw.offx + 1 + morestr.length, footerRow);
+
+    return items.length;
+}
+
 // win/tty/wintty.c tty_display_nhwindow() — menu/text case.
 // Renders the first page. Paging on subsequent keys is driven by the caller
 // consuming keys, matching how C's dmore() blocks inside the window.
@@ -255,11 +443,17 @@ export function tty_display_nhwindow(window) {
 
     cw.active = 1;
     cw.offx = compute_offx(cw);
+    cw.curr_page = 0;
+
+    /* wintty.c:1944 — `if (cw->data || !cw->maxrow)` picks the text renderer;
+       a window built with add_menu() has no data[] and lands in the menu one. */
+    if (cw.mlist) {
+        process_menu_window(cw, 0, display);
+        return;
+    }
 
     const cap = page_capacity(cw);
     cw.npages = Math.max(1, Math.ceil(cw.data.length / cap));
-    cw.curr_page = 0;
-
     render_page(cw, 0, display);
 }
 
@@ -270,8 +464,45 @@ export function tty_next_page(window) {
     if (!cw || !display) return false;
     if (cw.curr_page + 1 >= cw.npages) return false;
     cw.curr_page++;
-    render_page(cw, cw.curr_page, display);
+    if (cw.mlist) process_menu_window(cw, cw.curr_page, display);
+    else render_page(cw, cw.curr_page, display);
     return true;
+}
+
+// win/tty/wintty.c:4210 docorner() — blank the columns a corner window
+// occupied. The C also refreshes the map underneath; during role selection the
+// glyph buffer is empty, so blanking is all of it.
+function docorner(xmin, ymax, display) {
+    for (let y = 0; y < Math.min(ymax, ROWS); y++)
+        for (let x = xmin; x < COLS; x++)
+            display.setCell(x, y, ' ', NO_COLOR, 0);
+}
+
+// win/tty/wintty.c erase_menu_or_text()
+function erase_menu_or_text(cw, display, clear) {
+    if (cw.offx === 0) {
+        if (clear) display.clearScreen();
+        /* else docrt(), which is the caller's business */
+    } else {
+        docorner(cw.offx, cw.maxrow + 1, display);
+    }
+}
+
+// win/tty/wintty.c tty_dismiss_nhwindow() — menu/text case.
+//
+// `program_state.in_role_selection` forces a full clear instead of a redraw,
+// because nothing tracks what the chargen menus were drawn over. That is why
+// the role menu's screen is gone by the time the race menu appears rather than
+// showing through beside it.
+export function tty_dismiss_nhwindow(window) {
+    const cw = windows[window];
+    const display = game?.nhDisplay;
+    if (!cw || !display) return;
+    if (cw.type !== NHW_MENU && cw.type !== NHW_TEXT) return;
+    if (cw.active) {
+        erase_menu_or_text(cw, display, !!game.in_role_selection);
+        cw.active = 0;
+    }
 }
 
 export function reset_windows() {

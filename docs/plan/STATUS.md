@@ -150,6 +150,23 @@ key consumption left exactly as it is. Look at `_buildScreenOutput()` and the
 
 Verify with `node tools/screendiff.mjs seed5002 0` — 8 cells, row 1 col 0.
 
+**Third placement, also reverted (-21 screens, seed8000's pass):** splitting
+`more()` into `draw_more_suffix()` plus the blocking read, then drawing the
+suffix in `rhack()` whenever `_toplin === TOPLINE_NEED_MORE` before the command
+read. Same regression as placement 2, which is the tell: **our `_toplin` is
+NEED_MORE far more often than C's.**
+
+**The actual missing piece, found while reverting:** src/allmain.c:756 calls
+`display_nhwindow(WIN_MESSAGE, FALSE)` — the NON-blocking variant — and
+win/tty/wintty.c:1879 shows that arm does `ttyDisplay->toplin = TOPLINE_EMPTY`.
+So C CLEARS the flag on a normal cycle and only leaves it set in the specific
+spots that then block. Our port sets `_toplin = TOPLINE_NEED_MORE` in `pline()`
+and **never clears it**, so after the first message of the game it is
+permanently set and any suffix keyed off it draws on every frame.
+
+Port that clear first. Only once `_toplin` tracks C's will any of the three
+placements above be testable.
+
 Two cautions, both learned the hard way:
 
 - A previous attempt gated `--More--` on `pline` and **lost 3 screens**. The

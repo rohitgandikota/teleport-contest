@@ -110,13 +110,22 @@ window and `cls()`), or the block belongs at a different point in the startup.
 Establish which BEFORE writing the call: a placement that looks right and never
 fires is worse than none.
 
-**Why it was dead, confirmed by probe:** `moveloop()` in js/allmain.js is never
-called. `grep -rn 'moveloop(' js/*.js` finds only its own definition and two
-comments — the startup path goes elsewhere. So that function is currently dead
-code wearing a C name, which is its own problem worth fixing: find what the port
-actually runs after `welcome()` and put the message flush there. A trace
-inserted at the top of `moveloop()` produced no output on seed5002, which is how
-this was established.
+**Why it was dead:** `moveloop()` in js/allmain.js is never called. js/jsmain.js
+runs `newgame()` -> `maybe_do_tutorial()` -> `moveloop_core()` in a loop and
+bypasses `moveloop()` deliberately (there is a comment at jsmain.js:161 saying
+so). A trace at the top of `moveloop()` produces no output on seed5002.
+
+**Second placement, also reverted:** the same two lines at the top of
+`moveloop_core()`'s "Vision + display" block — the function that DOES run — cost
+**21 screens and seed8000's pass** (194 -> 173, 1/44 -> 0/44). So that one fires
+and is wrong.
+
+Both failures together say the trigger is narrower than "before any map draw".
+`moveloop_core` runs every turn, so blocking there emits `--More--` on turns C
+does not, and `more()` also consumes a key, which is what breaks seed8000.
+Before the third attempt, work out from win/tty/wintty.c which window draws
+actually reach the NHW_MAP arm with `blocking=TRUE` in the recorded sessions —
+`flush_screen()` is NOT one of them, and that distinction is the whole problem.
 
 Two cautions, both learned the hard way:
 

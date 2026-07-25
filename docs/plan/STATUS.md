@@ -110,6 +110,14 @@ window and `cls()`), or the block belongs at a different point in the startup.
 Establish which BEFORE writing the call: a placement that looks right and never
 fires is worse than none.
 
+**Why it was dead, confirmed by probe:** `moveloop()` in js/allmain.js is never
+called. `grep -rn 'moveloop(' js/*.js` finds only its own definition and two
+comments — the startup path goes elsewhere. So that function is currently dead
+code wearing a C name, which is its own problem worth fixing: find what the port
+actually runs after `welcome()` and put the message flush there. A trace
+inserted at the top of `moveloop()` produced no output on seed5002, which is how
+this was established.
+
 Two cautions, both learned the hard way:
 
 - A previous attempt gated `--More--` on `pline` and **lost 3 screens**. The

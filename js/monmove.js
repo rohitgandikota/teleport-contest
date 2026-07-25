@@ -76,6 +76,17 @@ function inhistemple(mtmp) {
     return false;
 }
 
+// include/mondata.h:115 is_wanderer()
+const is_wanderer = (ptr) => (ptr.mflags2 & MFLAGS.M2_WANDER) !== 0;
+
+// src/steal.c:45 findgold() — the first gold stack in a chain.
+function findgold(chain) {
+    for (const obj of (chain || []))
+        if (obj.oclass === OCLASSES.COIN_CLASS)
+            return obj;
+    return null;
+}
+
 // src/monmove.c:76 mon_track_add() — push a coordinate onto the monster's
 // memory of where it has just been. m_move() consults it to avoid pacing back
 // and forth, so the contents decide the modulus of an rn2 in the position loop.
@@ -285,18 +296,47 @@ export function dochug(mtmp) {
     set_apparxy(mtmp);
 
     /* src/monmove.c:791 */
-    distfleeck(mtmp);
+    let { nearby, scared } = distfleeck(mtmp);
 
-    /* src/monmove.c:1773 — m_move() dispatches a tame monster to dog_move()
-       before it reaches mfndpos(). */
-    const status = mtmp.mtame ? dog_move(mtmp, 0) : m_move(mtmp, 0);
+    const mdat = game.mons[mtmp.mnum];
+    let status = 0;
 
-    /* src/monmove.c:915 — distfleeck is RECALCULATED after the move, so every
-       monster that takes a turn spends TWO rn2(5) draws, not one. Calling it
-       once made our turn cost half of C's, which read as though half our
-       monsters were never acting. */
-    if (status !== MMOVE_DIED)
-        distfleeck(mtmp);
+    /* src/monmove.c:882 — a monster only gets to move if it passes this. Each
+       arm that draws does so ONLY because the arms before it were false, so
+       dropping the whole condition (as we did) loses a draw on any turn a
+       wandering or blinded monster takes a step. */
+    if (!nearby || mtmp.mflee || scared || mtmp.mconf || mtmp.mstun
+        || (mtmp.minvis && !rn2(3))
+        || (mdat.mlet === MONSYMS.S_LEPRECHAUN && !findgold(game.invent)
+            && (findgold(mtmp.minvent) || rn2(2)))
+        || (is_wanderer(mdat) && !rn2(4))
+        || (game.u.uprops?.CONFLICT && !mtmp.iswiz)
+        || (!mtmp.mcansee && !rn2(4)) || mtmp.mpeaceful) {
+
+        /* Possibly cast an undirected spell if not attacking you. castmu()
+           needs the spell tables; a monster with no AT_MAGC attack never
+           reaches it, which is every monster on an early level. */
+        if (!mtmp.mspec_used
+            && dist2(mtmp.mx, mtmp.my, game.u.ux, game.u.uy) <= 49) {
+            for (const a of mdat.mattk) {
+                if (a[0] === ATTKS.AT_MAGC
+                    && (a[1] === ATTKS.AD_SPEL || a[1] === ATTKS.AD_CLRC)) {
+                    note_unported('castmu');
+                    break;
+                }
+            }
+        }
+
+        /* src/monmove.c:1773 — m_move() dispatches a tame monster to
+           dog_move() before it reaches mfndpos(). */
+        if (!status)
+            status = mtmp.mtame ? dog_move(mtmp, 0) : m_move(mtmp, 0);
+
+        /* src/monmove.c:915 — distfleeck is RECALCULATED after the move, so
+           every monster that takes a turn spends TWO rn2(5) draws, not one. */
+        if (status !== MMOVE_DIED)
+            ({ nearby, scared } = distfleeck(mtmp));
+    }
 
     return status;
 }

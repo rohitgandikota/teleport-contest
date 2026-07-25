@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 134**, corpus RNG **11.1% → 13.4%**
+Last updated: **2026-07-25** · **screens 85 → 135**, corpus RNG **11.1% → 13.8%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,9 +38,42 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | **dogmove.c** (5+, and the top three histogram entries), `rnd_class` (4) |
+| **Also open** | **`--More--`** (1108 frames, 40 sessions), **dogmove.c** (7), `mkobj.c:289` (5) |
 | **Blocked on** | nothing |
-| **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **106,223/792,838 (13.4%)** |
+| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **109,593/792,838 (13.8%)** |
+
+### The single biggest screen opportunity: `--More--` (1108 frames, 40 sessions)
+
+Measured, not estimated: **1108 of the 11,405 public frames carry `--More--` on
+their top line, across 40 of the 44 sessions.** That is 9.7% of the public score
+sitting behind one piece of `win/tty/topl.c`, and there is no reason the
+held-out half is different.
+
+Our port does not render it at all. `js/display.js` `pline()` is
+
+```js
+export async function pline(msg) { game._pending_message = msg; }
+```
+
+and `_buildScreenOutput()` writes that string to row 0 and stops. Nothing models
+`ttyDisplay->toplin`, so the suffix never appears and the cursor never parks
+past it.
+
+This is now visible as the last thing between us and whole frames. seed0077
+step 12 is **25 cells** from matching, and **8 of those 25 are exactly the
+`--More--` at columns 69-76**; the rest is a handful of map cells. Several
+sessions will be in the same position.
+
+**What it needs.** `more()` in topl.c appends the suffix and blocks; `pline()`
+sets `toplin = TOPLINE_NEED_MORE`; `display_nhwindow(WIN_MESSAGE, TRUE)` is what
+triggers it. The state already half-exists in `js/game_display.js`
+(`putstr_message` sets `TOPLINE_NEED_MORE`) but nothing reads it, and the render
+path in `js/display.js` is a separate code path that ignores it. Unifying those
+two is the job.
+
+**Do not bolt the string on unconditionally.** C shows it only when the top line
+is unacknowledged AND the game is about to block for input; guessing will cost
+frames elsewhere. Model `toplin` and let it decide.
 
 ### The leaderboard, and what it says about our real problem
 

@@ -625,7 +625,7 @@ function ROOM_IS_FILLABLE(croom) {
         && croom.needfill === FILL_NORMAL;
 }
 
-sp_lev_wire(add_room, add_door);
+sp_lev_wire(add_room, add_door, somexy);
 
 // C ref: mklev.c makerooms()
 async function makerooms() {
@@ -1363,7 +1363,7 @@ function makecorridors() {
 function somex(croom) { return rn1(croom.hx - croom.lx + 1, croom.lx); }
 function somey(croom) { return rn1(croom.hy - croom.ly + 1, croom.ly); }
 
-function somexy(croom, c) {
+export function somexy(croom, c) {
     /* src/mkroom.c:744 — an IRREGULAR room is not a rectangle, so a raw
        somex/somey can land outside it. C rejects those and redraws, up to 100
        times, then falls back to an exhaustive scan that draws nothing. Missing

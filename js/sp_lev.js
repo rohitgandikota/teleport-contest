@@ -12,6 +12,11 @@ import { game } from './gstate.js';
 import { selection_iterate } from './selvar.js';
 import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
+import { sobj_at } from './invent.js';
+import { is_pool, is_lava } from './mon.js';
+import { ONAMES } from './objects_data.js';
+import { ANY_LOC, SOLID, DRY, SPACELOC, WET, HOT,
+         NO_LOC_WARN } from './const.js';
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
 import { depth } from './dungeon.js';
 import { mkgold } from './mkobj.js';
@@ -295,10 +300,16 @@ function maybe_add_door(x, y, croom) {
 
 /* mklev.js owns add_room/add_door; wired at load to avoid an import cycle */
 let add_room_fn = () => {}, add_door_fn = () => {};
-export function sp_lev_wire(addRoom, addDoor) {
+export function sp_lev_wire(addRoom, addDoor, someXY) {
     add_room_fn = addRoom;
     add_door_fn = addDoor;
+    somexy_fn = someXY;
 }
+
+/* somexy() lives in js/mklev.js and mklev.js imports this file, so importing it
+   back directly is a cycle: it resolves to a TDZ error on this module's own
+   consts. The established fix here is the wire above, same as add_room. */
+let somexy_fn = null;
 
 // src/sp_lev.c:4978 lspo_terrain() — set the terrain of every square in a
 // selection. `des.terrain(sel, "I")` is the argc == 2 form.
@@ -333,4 +344,106 @@ export function mkroom_table(tmpr) {
         /* the C mkroom itself, for selection_from_mkroom() */
         _mkroom: tmpr,
     };
+}
+
+// src/sp_lev.c is_ok_location() — may this square host what we are placing?
+export function is_ok_location(x, y, humidity) {
+    const typ = game.level?.at(x, y)?.typ;
+
+    if (typ === undefined)
+        return false;
+
+    if (humidity & ANY_LOC)
+        return true;
+    if ((humidity & SOLID) && IS_OBSTRUCTED(typ))
+        return true;
+    if ((humidity & (DRY | SPACELOC)) && SPACE_POS(typ)) {
+        const bould = sobj_at(ONAMES.BOULDER, x, y) !== null;
+
+        if (!bould || (bould && (humidity & SOLID)))
+            return true;
+    }
+    if ((humidity & WET) && is_pool(x, y))
+        return true;
+    if ((humidity & HOT) && is_lava(x, y))
+        return true;
+    return false;
+}
+
+// src/sp_lev.c get_location() — resolve a coordinate, picking at random when
+// it is negative.
+//
+// The random arm retries up to 100 times, spending a somexy() (inside a room)
+// or an rn2 PAIR (outside one) each pass, and only stops early when
+// is_ok_location() accepts. The exhaustive fallback after 100 tries draws
+// nothing at all, so a crowded level costs exactly 100 tries and no more.
+export function get_location(x, y, humidity, croom) {
+    let cpt = 0;
+    let mx, my, sx, sy;
+
+    if (croom) {
+        mx = croom.lx;
+        my = croom.ly;
+        sx = croom.hx - mx + 1;
+        sy = croom.hy - my + 1;
+    } else {
+        mx = game.xstart ?? 0;
+        my = game.ystart ?? 0;
+        sx = game.xsize ?? COLNO;
+        sy = game.ysize ?? ROWNO;
+    }
+
+    if (x >= 0) {                       /* normal locations */
+        x += mx;
+        y += my;
+    } else {                            /* random location */
+        let found = false;
+
+        do {
+            if (croom) {                /* handle irregular areas */
+                const tmpc = { x: 0, y: 0 };
+                somexy_fn(croom, tmpc);
+                x = tmpc.x;
+                y = tmpc.y;
+            } else {
+                x = mx + rn2(sx);
+                y = my + rn2(sy);
+            }
+            if (is_ok_location(x, y, humidity)) {
+                found = true;
+                break;
+            }
+        } while (++cpt < 100);
+
+        if (!found && cpt >= 100) {
+            /* last try — an exhaustive scan, no draws */
+            for (let xx = 0; xx < sx && !found; xx++)
+                for (let yy = 0; yy < sy; yy++) {
+                    if (is_ok_location(mx + xx, my + yy, humidity)) {
+                        x = mx + xx;
+                        y = my + yy;
+                        found = true;
+                        break;
+                    }
+                }
+            if (!found) {
+                if (!(humidity & NO_LOC_WARN)) {
+                    x = game.x_maze_max ?? COLNO - 1;
+                    y = game.y_maze_max ?? ROWNO - 1;
+                } else {
+                    x = y = -1;
+                }
+            }
+        }
+    }
+
+    if (!(humidity & ANY_LOC) && !isok(x, y)) {
+        if (!(humidity & NO_LOC_WARN)) {
+            x = game.x_maze_max ?? COLNO - 1;
+            y = game.y_maze_max ?? ROWNO - 1;
+        } else {
+            x = y = -1;
+        }
+    }
+    return { x, y };
 }

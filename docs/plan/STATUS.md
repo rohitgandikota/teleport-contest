@@ -93,6 +93,37 @@ option arms that need absent subsystems, and wire those five. Do NOT skip
 get_location_coord: it is where the placement draws happen, and des.object with
 no coord is the common case.
 
+**RESOLVE THIS BEFORE PORTING create_object — it is not what it looks like.**
+
+src/sp_lev.c:2204 reads:
+
+    if (o->class >= 0) c = o->class; else c = 0;
+
+    if (!c) {
+        otmp = mkobj_at(RANDOM_CLASS, x, y, !named);     <- (A)
+    } else if (o->id != -1) {
+        otmp = mksobj_at(o->id, x, y, TRUE, !named);     <- (B)
+    } else { ... def_char_to_objclass / mkgold / mkobj_at(oclass) ... }
+
+and lspo_object sets, for a multi-character name like "chest":
+
+    tmpobj.class = -1;
+    tmpobj.id = find_objtype(L, paramstr, -1);
+
+class = -1 gives c = 0, which takes arm (A) — a RANDOM object — and never
+reaches (B) despite id being set. Taken at face value, `des.object("chest")`
+would not make a chest.
+
+Either the table branch of lspo_object sets `class` from the id's own oclass
+somewhere past sp_lev.c:3580 (most likely, and unverified), or `object` is
+initialised with class != -1 and the -1 is only for the string forms, or (A) is
+genuinely reached and the fills' chests are random objects.
+
+**Read lspo_object's table branch to the end and settle it. Do not port
+create_object from the four lines above.** The draw counts of arms (A) and (B)
+differ -- mkobj_at picks a class and then an object, mksobj_at knows the type --
+so guessing wrong changes the stream, not just the item.
+
 ### mktrap already exists as `mktrap_room` — and is missing draws
 
 js/mklev.js:1839 `mktrap_room(croom)` is a partial src/mklev.c:2036 mktrap().

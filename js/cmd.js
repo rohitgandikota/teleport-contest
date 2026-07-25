@@ -15,7 +15,7 @@ import {
 } from './tty/wintty.js';
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir } from './lock.js';
-import { ECMD_OK } from './invent.js';
+import { ECMD_OK, getobj } from './invent.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -176,6 +176,19 @@ async function get_ext_cmd() {
     return buf;
 }
 
+/* The commands whose first act is getobj() and which read nothing further.
+   Their effects need the use/wear/drop subsystems; what is ported is the
+   object prompt, because that is what decides where the next keystroke goes. */
+async function docmd_getobj(ch) {
+    const obj = await getobj(ch, null, 0);
+
+    if (!obj)
+        return ECMD_OK;   /* Never mind */
+
+    note_unported_cmd(`cmd:${ch}`);
+    return ECMD_TIME;
+}
+
 // src/dothrow.c:469 dofire() -> throw_obj() -> getdir().
 //
 // The throw itself needs the missile and trajectory code. What is ported is the
@@ -267,6 +280,12 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if ('rwqdWPR'.includes(ch)) {
+        // src/cmd.c cmdlist — read, wield, quaff, drop, wear, put on, remove.
+        // Every one of them starts with getobj(), which reads the inventory
+        // letter. Their effects are unported, but consuming that letter is what
+        // keeps the session in step: skip it and the letter runs as a command.
+        game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {
         // src/cmd.c:1930 — '.' is "wait", donull, which returns ECMD_TIME.
         // src/do.c:2351: the only early exit is cmd_safety_prevention, which

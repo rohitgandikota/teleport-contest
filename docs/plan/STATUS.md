@@ -556,10 +556,29 @@ placement would each bypass the difficulty bounds — or `u.ulevel` is not 1 at
 the moment they are created, which would raise `maxmlev` and admit faster
 monsters.
 
-Next step is a MEASUREMENT, not a code change: record the call site and species
-of each of our four inside `makemon`, and compare against what C's stream
-implies at the same call indices. Do not keep auditing rndmonst's inputs —
-every one of them is now verified.
+**Measurement done. All four of our monsters come from the SAME call site:**
+`fill_ordinary_room` -> `makemon(NULL, ...)` -> `rndmonst`. No group spawn, no
+themed fill, no special placement. So C's four come from there too, and since
+`rndmonst` is verified identical with matching draws, **C's four monsters are
+the same species as ours**: lichen, newt, jackal, lichen.
+
+The difficulty pool is not the discriminator either — at `maxmlev` 1 the
+eligible set is lichen, newt, jackal, sewer rat, grid bug, kobold, with speeds
+1, 6, 12, 12, 12, 6 — all `difficulty = 1` in our generated table.
+
+**So every hypothesis is now dead**, and the contradiction is sharper than ever:
+C and our port generate the same four monsters with the same speeds, `mcalcmove`
+is identical, and yet C runs four `distfleeck` calls per turn where the
+arithmetic says ~1.67.
+
+**That means the reading of C's log is what is wrong, not the port.** The four
+`rn2(5)` draws are tagged `distfleeck(monmove.c:538)` but tags name the C
+function at that source line, and `rn2(5)` appears in several places. Before
+writing another line of movement code, dump C's log for one turn with FULL tags
+and confirm those four really are four separate monsters entering `dochug` —
+rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
+line number. Everything downstream of that assumption has been chased and
+eliminated.
 
 ### The leaderboard, and what it says about our real problem
 

@@ -271,13 +271,26 @@ Three of those are now ported exactly — `mon_hates_silver`, `dog_hunger`,
 `may_dig` — each small, each neutral on the public corpus, each in the category
 that took held-out screens from 43 to 77.
 
+Five are now ported exactly: `mon_hates_silver`, `dog_hunger`, `may_dig`,
+`mon_would_consume_item`, `qtext_pronoun`. Three of those turned out to affect
+more than "which square gets chosen" — `dog_hunger`'s return value changes
+dochug's draw count, `mon_would_consume_item` calls dogfood() which DRAWS, and
+`may_dig` let pets route through solid rock. **Treat "only narrows a choice"
+as a hypothesis, not a fact.**
+
 Sizes checked for the rest, so nobody re-measures:
 - `merged` — src/invent.c:814-948, **134 lines**, zero draws, plus `mergable`.
-  Object stacking. Too big for a tail-end session but no PRNG risk.
+  Object stacking. No PRNG risk, but big.
+- `pick_lock` — src/lock.c, **299 lines**, zero draws in the function itself.
+  Reached now that `a` is wired and dispatches lock tools to it.
+- `set_wear` — src/do_wear.c, **31 lines**, zero draws — but it calls
+  `Ring_on`, `Armor_on`, `Boots_on`, `Helmet_on` and the rest, which have not
+  been checked for draws. seed8000 matches call-for-call without it, so none of
+  them draws for a Tourist's starting gear; verify per role before relying on
+  that.
 - `m_cansee` / `lined_up` — both need `clear_path()`, the quadrant-path vision
-  walk, which is **absent from this port entirely**. One dependency, not two
-  gaps.
-- `pick_lock`, `set_wear`/`pickup`, `mon_would_consume_item` — not yet sized.
+  walk, **absent from this port entirely**. One dependency, not two gaps, and
+  it also gates m_move's ranged-attack branch.
 
 ### Where the effort is best spent next — read this before picking
 

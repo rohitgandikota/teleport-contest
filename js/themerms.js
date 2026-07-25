@@ -18,7 +18,8 @@ import { selection_from_mkroom, selection_iterate, selection_rndcoord,
          selection_filter_percent, selection_numpoints,
          selection_filter_mapchar } from './selvar.js';
 import { ROOM } from './const.js';
-import { lspo_terrain, lspo_trap, get_traptype_byname } from './sp_lev.js';
+import { lspo_terrain, lspo_trap, get_traptype_byname,
+         lspo_object } from './sp_lev.js';
 
 function note_unported_themerms(what) {
     (game.unported ||= new Set()).add(what);
@@ -73,7 +74,7 @@ export function fill_boulder_room(rm) {
 
     selection_iterate(locs, (x, y) => {
         if (percent(50))
-            note_unported_themerms('des.object:boulder');
+            lspo_object('boulder', x, y);
         else
             lspo_trap(get_traptype_byname('rolling boulder'), x, y);
     });
@@ -113,7 +114,7 @@ export function fill_trap_room(rm) {
 export function fill_statuary(rm) {
     const nstatues = lua_d(5, 5);
     for (let i = 1; i <= nstatues; i++)
-        note_unported_themerms('des.object:statue');
+        lspo_object('statue');          /* no coord: random in the room */
 
     const ntraps = lua_d(3);
     for (let i = 1; i <= ntraps; i++)
@@ -151,7 +152,7 @@ export function fill_massacre(rm) {
 
 // dat/themerms.lua:191 "Light source" — one unlit-room object, no draws.
 export function fill_light_source(rm) {
-    note_unported_themerms('des.object:oil lamp');
+    lspo_object('oil lamp', undefined, undefined, { lit: true });
 }
 
 // dat/themerms.lua:199 "Temple of the gods" — three altars, one per alignment,
@@ -197,7 +198,7 @@ export function fill_storeroom(rm) {
 
     selection_iterate(locs, (x, y) => {
         if (percent(25))
-            note_unported_themerms('des.object:chest');
+            lspo_object('chest');
         else
             note_unported_themerms('des.monster:mimic-as-chest');
     });

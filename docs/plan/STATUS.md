@@ -128,9 +128,26 @@ corpus from 11.4% to 12.2%. `rnd_rect` has left the blocker histogram entirely.
    1. `percent(n)` from `dat/nhlib.lua:43` — `math.random(0, 99) < n`, i.e. one
       `rn2(100)`. Belongs in `js/nhlua.js` beside `lua_shuffle`.
    2. `lspo_map` (sp_lev.c:6120) — the two placement draws above, then stamping
-      the map onto `levl[][]`. **The stamping is not optional**: an RNG-only
-      version would be exactly the kind of plausible-looking stub CLAUDE.md
-      rule 2 forbids, and the frames would be wrong anyway.
+      the map onto `levl[][]`. **The stamping is not optional**, for two separate
+      reasons. The obvious one is that an RNG-only version is exactly the kind of
+      plausible-looking stub CLAUDE.md rule 2 forbids. The load-bearing one is
+      `goto redo_maploc` at sp_lev.c:6268:
+
+      > *Themed rooms should never overwrite anything.* Before stamping, C scans
+      > the map's footprint **plus a one-cell border**. Any cell outside the map
+      > that is not `STONE` with `roomno == NO_ROOM`, or any cell inside it whose
+      > `typ` is neither `STONE` nor the map's own glyph, fails the check — and C
+      > jumps back to `redo_maploc`, **re-rolling both placement draws**, up to
+      > 100 times before giving up and setting `themeroom_failed`.
+
+      So the number of `rn2(COLNO-1-wid)` / `rn2(ROWNO-hei)` pairs a shaped room
+      draws depends on the terrain already on the level. Get the collision test
+      wrong by one cell and the retry count changes and the stream diverges.
+      seed0009's Blocked center fits on the first try, so that session alone will
+      not exercise the retry — do not use it as the only check.
+
+      This also needs the `mapfrag` char table (`splev_chars`, sp_lev.c) to turn
+      the ASCII rows in `js/themerms_data.js` into `typ` codes.
    3. `lspo_region` (sp_lev.c:5584), irregular branch — `litstate_rnd`,
       `flood_fill_rm`, `add_room`, `add_doors_to_room`.
    4. Each shaped room's own `contents`, transcribed from themerms.lua. Most are

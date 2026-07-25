@@ -288,10 +288,24 @@ Three cells differ, and they name two distinct bugs:
    `find_okay_roompos()` matches C, and every retry inside it calls
    `somexyspace()` which DRAWS — so a different retry count would diverge the
    RNG, and the RNG agrees call for call through all of level generation.
-   Same draws, different square. Either `somexyspace()` maps identical draws to
-   a different coordinate (it was "verified identical" earlier — re-verify,
-   that verification is now suspect), or `mkfount` is being called for a
-   different room than C calls it for.
+   Same draws, different square.
+
+   **Chain now fully re-verified against the C this session:** `mkfount`,
+   `find_okay_roompos`, `somexyspace`, `occupied` all match. `somexy` did NOT —
+   it was missing the `croom->irregular` branch, now ported — but seed0102's
+   rooms appear regular, so that is not this bug.
+
+   **Hard measurement:** `level.flags.nfountains === 0` on our seed0102 level,
+   and `game.unported` contains no theme/fill entry. So we create NO fountain
+   anywhere, while C has one at <31,10>.
+
+   Note what that rules out: `fill_ordinary_room` draws its `rn2(10)` whether
+   or not `mkfount` then runs, so a differing VALUE would not shift the draw
+   count — and the recorded values match. Next: instrument `mkfount` itself and
+   find out whether it is called at all for this level, and if it is, which of
+   its two exits it takes. If it is never called, the room LIST differs (how
+   many rooms reach `fill_ordinary_room`), which is a bigger fish than the
+   fountain.
 
 Fix the hero offset first — it is upstream of everything the pet does, and a
 hero one square away changes what every monster targets.

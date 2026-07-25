@@ -93,6 +93,7 @@ const {
 import { GameMap } from './game.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
+import { themerooms } from './themerms_data.js';
 import { depth as depth_of_level } from './hacklib.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -601,71 +602,51 @@ async function makerooms() {
     }
 }
 
-// Themed room metadata — must match C's themerms.lua frequency table exactly.
-// Generated from themeroom_meta.js (31 rooms).
-const THEMEROOM_META = [
-    { name: 'default', frequency: 1000 },
-    { name: 'Fake Delphi', frequency: 1 },
-    { name: 'Room in a room', frequency: 1 },
-    { name: 'Huge room with another room inside', frequency: 1 },
-    { name: 'Nesting rooms', frequency: 1 },
-    { name: 'Default room with themed fill', frequency: 6 },
-    { name: 'Unlit room with themed fill', frequency: 2 },
-    { name: 'Room with both normal contents and themed fill', frequency: 2 },
-    { name: 'Pillars', frequency: 1 },
-    { name: 'Mausoleum', frequency: 1 },
-    { name: 'Random dungeon feature', frequency: 1 },
-    { name: 'L-shaped', frequency: 1 },
-    { name: 'L-shaped, rot 1', frequency: 1 },
-    { name: 'L-shaped, rot 2', frequency: 1 },
-    { name: 'L-shaped, rot 3', frequency: 1 },
-    { name: 'Blocked center', frequency: 1 },
-    { name: 'Circular, small', frequency: 1 },
-    { name: 'Circular, medium', frequency: 1 },
-    { name: 'Circular, big', frequency: 1 },
-    { name: 'T-shaped', frequency: 1 },
-    { name: 'T-shaped, rot 1', frequency: 1 },
-    { name: 'T-shaped, rot 2', frequency: 1 },
-    { name: 'T-shaped, rot 3', frequency: 1 },
-    { name: 'S-shaped', frequency: 1 },
-    { name: 'S-shaped, rot 1', frequency: 1 },
-    { name: 'Z-shaped', frequency: 1 },
-    { name: 'Z-shaped, rot 1', frequency: 1 },
-    { name: 'Cross', frequency: 1 },
-    { name: 'Four-leaf clover', frequency: 1 },
-    { name: 'Water-surrounded vault', frequency: 1 },
-    { name: 'Twin businesses', frequency: 1, mindiff: 4 },
-];
-
+// dat/themerms.lua is_eligible() — mindiff/maxdiff gate which entries take
+// part in the reservoir sample, so the level's difficulty changes the draw
+// count as well as the outcome.
 function is_themeroom_eligible(room, difficulty) {
     if (room.mindiff != null && difficulty < room.mindiff) return false;
     if (room.maxdiff != null && difficulty > room.maxdiff) return false;
     return true;
 }
 
-// C ref: themerms.lua themerooms_generate()
-// Reservoir sampling picks one themed room. For seed8000 level 1,
-// 'ordinary' always wins (frequency 1000 vs others ~1-10).
+// dat/themerms.lua themerooms_generate() — reservoir sampling over the eligible
+// entries, one rn2(running_total) per entry.
+//
+// `default` (frequency 1000 of 1036) is the only entry whose contents are
+// ported. It is `des.room({ type = "ordinary", filled = 1 })`, which reaches
+// sp_lev.c:2811 —
+//
+//     rtype = (!r->chance || rn2(100) < r->chance) ? r->rtype : OROOM;
+//
+// so one rn2(100), then create_room().
+//
+// The other 30 are SHAPED rooms: `des.map({ map = [[...]] })` stamped by
+// lspo_map(), whose placement draws are rn2(COLNO - 1 - wid) and
+// rn2(ROWNO - hei) from the map's own dimensions. Seven sessions diverge here
+// and the map data they need is in js/themerms_data.js — see STATUS.md.
 async function themerooms_generate(difficulty) {
     let pick = null;
     let total_frequency = 0;
-    for (const meta of THEMEROOM_META) {
+    for (const meta of themerooms) {
         if (!is_themeroom_eligible(meta, difficulty)) continue;
-        const this_frequency = meta.frequency || 1;
+        const this_frequency = meta.frequency ?? 1;
         total_frequency += this_frequency;
-        if (this_frequency > 0 && rn2(total_frequency) < this_frequency) {
+        if (this_frequency > 0 && rn2(total_frequency) < this_frequency)
             pick = meta;
-        }
     }
     if (!pick) return false;
-    // For 'ordinary' rooms, create a standard room
-    // For themed rooms with dynamic dimensions, consume those rn2 calls first
-    const chance = 100;
-    if (pick.name !== 'ordinary') {
-        // Themed room — not expected for seed8000, but handle RNG correctly
-        rn2(100); // chance check (build_room)
+
+    if (pick.name !== 'default') {
+        /* the shaped rooms are not ported; what follows is the `default`
+           sequence, which is wrong for them but keeps the level buildable */
+        note_unported_lev(`themeroom ${pick.name}`);
     }
-    // All themed rooms go through create_room for placement
+
+    /* sp_lev.c:2811 — the rtype chance roll */
+    rn2(100);
+
     const ok = create_room(-1, -1, -1, -1, -1, -1, OROOM, -1);
     if (ok) {
         // C ref: sp_lev.c:2824 — build_room calls topologize after create_room

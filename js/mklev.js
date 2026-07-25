@@ -1371,10 +1371,20 @@ function somexy(croom, c) {
     return false;
 }
 
+// src/mklev.c:1806 occupied() — a TRAP occupies a square too, and leaving that
+// out made somexyspace() accept squares C rejects, so every retry after the
+// first trap on a level landed somewhere different.
 function occupied(x, y) {
     const loc = game.level.at(x, y);
     if (!loc) return false;
+    if (t_at_lev(x, y)) return true;
     return !!(IS_FURNITURE(loc.typ) || loc.typ === LAVAPOOL || IS_POOL(loc.typ));
+    /* invocation_pos() is only meaningful on the invocation level */
+}
+
+/* src/trap.c t_at() */
+function t_at_lev(x, y) {
+    return (game.level?.traps || []).some(t => t.tx === x && t.ty === y);
 }
 
 function somexyspace(croom, c) {

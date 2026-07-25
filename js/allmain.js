@@ -4,9 +4,9 @@
 // Real mklev.js handles level generation for screen parity.
 
 import { game } from './gstate.js';
-import { rn2 } from './rng.js';
+import { rn2, rn1 } from './rng.js';
 import { ask_do_tutorial } from './options.js';
-import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT } from './const.js';
+import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack } from './cmd.js';
 import { docrt, cls, bot, flush_screen, pline } from './display.js';
@@ -358,6 +358,24 @@ export async function moveloop_core() {
                     rnd(3);                             /* u_wipe_engr(rnd(3)) */
             }
         } while (g.u.umovement < NORMAL_SPEED);
+    }
+
+    /******************************************/
+    /* once-per-hero-took-time things go here  */
+    /******************************************/
+
+    g.hero_seq = (g.hero_seq || 0) + 1; /* moves*8 + n for n == 1..7 */
+
+    /* src/allmain.c:409 — the clairvoyance counter is maintained even when no
+       clairvoyance takes place, so this rn1 is spent roughly every 30 turns of
+       any game, not only by a hero carrying the Amulet. */
+    if (g.moves >= g.context.seer_turn) {
+        if ((g.u.uhave?.amulet || g.u.uprops?.CLAIRVOYANT) && !In_endgame(g.u.uz)
+            && !g.u.uprops?.BLOCKED_CLAIRVOYANT)
+            note_unported_main('do_vicinity_map');
+        /* we maintain this counter even when clairvoyance isn't
+           taking place; on average, go again 30 turns from now */
+        g.context.seer_turn = g.moves + rn1(31, 15); /*15..45*/
     }
 
     // Vision + display

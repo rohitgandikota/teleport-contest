@@ -176,6 +176,19 @@ async function get_ext_cmd() {
     return buf;
 }
 
+// src/dothrow.c:469 dofire() -> throw_obj() -> getdir().
+//
+// The throw itself needs the missile and trajectory code. What is ported is the
+// direction read, because that is what keeps the session in step: C spends a key
+// on it and stays put, so a port that skips it walks the hero instead.
+async function dofire() {
+    if (!await getdir(null))
+        return ECMD_OK;
+
+    note_unported_cmd('dofire:throwit');
+    return ECMD_TIME;
+}
+
 // src/cmd.c:495 doextcmd() — dispatch an extended command.
 //
 // The individual commands are not ported. What IS ported is reading the whole
@@ -244,6 +257,13 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === 'f') {
+        // src/cmd.c cmdlist — 'f' is dofire, which reaches throw_obj() and
+        // getdir(). C consumes the direction key there and the hero does NOT
+        // move; leaving 'f' unhandled let the direction run as a movement
+        // command and walked the hero one square off, which is what seed0102
+        // shows at step 21.
+        game.context.move = (await dofire() === ECMD_TIME ? 1 : 0);
     } else if (ch === '#') {
         // src/cmd.c cmdlist — '#' is doextcmd, which reads the command name
         // off the input before doing anything.

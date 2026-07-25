@@ -279,17 +279,31 @@ export function dog_move(mtmp, after) {
         }
     }
 
-    /* newdogpos: the actual move needs m_move_aftermath and the display
-       update; not ported, so the pet still does not change square. Every
-       draw above has happened by now, which is what the stream depends on. */
-    if (chi >= 0)
-        note_unported('dog_move newdogpos');
+    /* src/dogmove.c:1276 newdogpos — apply the move. Draws nothing: it is
+       remove_monster() followed by place_monster(), which for us is just the
+       pet's coordinates. C does NOT reorder fmon here, so neither do we.
+       Without this the pet stands still for the whole game and its search box
+       drifts further from C's with every turn. */
+    if (nix !== omx || niy !== omy) {
+        if (chi >= 0 && (mfp.info[chi] & ALLOW_U)) {
+            note_unported('mattacku');
+            return MMOVE_DONE;
+        }
+        /* src/monmove.c mtrack — remember where we came from, newest first */
+        mtmp.mtrack = mtmp.mtrack || [];
+        mtmp.mtrack.unshift({ x: omx, y: omy });
+        if (mtmp.mtrack.length > MTSZ) mtmp.mtrack.length = MTSZ;
+
+        mtmp.mx = nix;
+        mtmp.my = niy;
+        return MMOVE_MOVED;
+    }
     return MMOVE_NOTHING;
 }
 
 /* include/monst.h MTSZ — how many previous squares a monster remembers. */
 const MTSZ = 4;
-const MMOVE_NOTHING = 0;
+const MMOVE_NOTHING = 0, MMOVE_MOVED = 2, MMOVE_DONE = 3;
 
 /* src/dogmove.c GDIST(x,y) = dist2(x, y, gg.gx, gg.gy) */
 function GDIST(x, y) {

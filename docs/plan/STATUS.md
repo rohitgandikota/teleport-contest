@@ -255,6 +255,42 @@ Emscripten transpile, which generalises almost perfectly but has no
 function-for-function structure to diff, so Phase 2 divides its parity by a
 very large number.
 
+### TOP TARGET: pet_ranged_attk — blocks the two nearest sessions
+
+`seed0102` (24 calls from a full RNG match) and `seed0105` (20) both stop at the
+same place. C's trace:
+
+    4451  rn2(4)   dog_goal(dogmove.c:575)     ok
+    4452  rn2(1)   dog_move(dogmove.c:1255)    MISMATCH — ours draws rn2(100)
+    4453  rnd(5)   score_targ(dogmove.c:830)
+
+**We never call `pet_ranged_attk()` at all.** src/dogmove.c:1273 calls it from
+dog_move AFTER the position loop (label `nxti:`) and BEFORE `newdogpos:`:
+
+    if ((i = pet_ranged_attk(mtmp, FALSE)) != MMOVE_NOTHING)
+        return i;
+
+The chain and its draws:
+- `pet_ranged_attk` (src/dogmove.c:889) — one `rn2(5)`, only when the pet is
+  hungry (`moves > hungrytime + DOG_HUNGRY`).
+- `best_target` (:838, 48 lines, no draws) — scans all 8 directions, calling
+  find_targ then score_targ for each direction that yields a monster.
+- `find_targ` (:796, 42 lines, no draws) — walks up to 7 squares out.
+- `score_targ` (:738, 98 lines) — draws `rn2(3)` and a second `rn2(3)` ONLY
+  when the pet is confused, `rn2(mtmp_lev/2+1)` only for a vampshifter, and
+  **`score += rnd(5)` unconditionally**. That last one is the 4453 draw, and it
+  fires once per target found.
+
+**The catch, and why this needs care rather than a quick port:** `find_targ`
+calls `m_cansee(mtmp, curx, cury)`, which is include/vision.h:42's
+`clear_path()` — absent from this port. Our stub returns TRUE, so find_targ
+would walk through walls and find targets C rejects, spending MORE rnd(5)s than
+C rather than fewer. Porting the chain on top of a permissive m_cansee can
+overshoot.
+
+Either port `clear_path` first, or port the chain and measure both sessions
+immediately — the divergence call number is the check, not the RNG total.
+
 ### The reached-unported dump is the best small-win worklist
 
 Print it by tracing `game.unported` in the capture hook at a late keystroke:

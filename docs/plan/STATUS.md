@@ -89,6 +89,47 @@ stream. Level generation and the first turn of the move loop are what every
 session in both halves runs, which makes `m_move` the highest-value target for
 the held-out half as well as the public one.
 
+### A faithful fix that made the score go DOWN — land it with its partner
+
+`mkobj()` (js/mkobj.js:119) is missing C's SPBOOK_no_NOVEL branch:
+
+```c
+if (oclass == SPBOOK_no_NOVEL) {
+    i = rnd_class(svb.bases[SPBOOK_CLASS], SPE_BLANK_PAPER);
+    oclass = SPBOOK_CLASS;      /* for the sanity check below */
+} else {
+    prob = rnd(go.oclass_prob_totals[oclass]);
+    ...
+}
+```
+
+SPBOOK_no_NOVEL (11) is a PSEUDO-class, not a real oclass. Its range stops at
+SPE_BLANK_PAPER and so excludes SPE_NOVEL, summing to **999** where the full
+SPBOOK_CLASS total is **1000**. `js/mklev.js`'s supply-chest bonus items pass it
+directly, three times in a ten-entry table.
+
+**Adding that branch is a faithful port and it moves the score DOWN:**
+screens 134 → 133, positional RNG 107412 → 106766. It also does exactly what it
+should: `rnd_class(objnam.c:5413)` leaves the blocker histogram entirely and
+seed0014's first divergence rises from **1758 to 2915**.
+
+The cost lands elsewhere: sessions blocking at `mkobj(mkobj.c:289)` go from 5 to
+13. That line is `prob = rnd(go.oclass_prob_totals[oclass])`, so a second bug in
+the per-class totals (or in which class the icp walk selects) was previously
+being cancelled out by the missing branch. Two wrongs were making a right.
+
+**Reverted for now** per CLAUDE.md's "if either drops, fix or revert before
+moving on" — but the branch is correct and must go back in together with
+whatever is wrong at mkobj.c:289. Do not re-derive this from scratch:
+
+- `game.oclass_prob_totals[SPBOOK_CLASS]` is **1000** at runtime and
+  `bases[10..12] = [366, 410, 438]`, both verified correct.
+- The public spellbook range 366..407 sums to 999, also correct.
+- So the data is right; look at the icp walk in `mkobj()` and at the totals for
+  whichever class `rnd(100)` actually selects. In seed0002 at call 1115,
+  `rnd(100)=95` walks mkobjprobs to index 8 = WAND_CLASS, and C then draws
+  `rnd(1000)`. Check our WAND_CLASS total against that.
+
 ### The exact next action — READ THIS FIRST
 
 **The whole themed-room path is now ported except the fill CONTENTS.**

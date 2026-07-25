@@ -772,3 +772,103 @@ export function pm_to_humidity(pm) {
         loc |= HOT;
     return loc;
 }
+
+// src/sp_lev.c create_monster() — place one monster from a des.monster spec.
+//
+// Two draw details that a natural translation loses:
+//
+//   1. A monster whose humidity is not DRY gets TWO full get_location_coord
+//      calls when the first finds nothing: once with its own humidity plus
+//      NO_LOC_WARN, then again with DRY added. Each can spend up to 100 tries.
+//      Only the pm == 0 arm makes a single call.
+//   2. In the Mines, a dwarf or gnome HERO makes every same-race monster spend
+//      an rn2(3) that can discard the species entirely. The gate is on the
+//      hero's race, not the monster's.
+export function create_monster(m, croom) {
+    let pm = null;
+
+    if (m.id !== NON_PM) {
+        pm = game.mons[m.id];
+        /* the G_UNIQ/G_EXTINCT/G_GONE checks read mvitals, which this port
+           does not track; nothing is genocided during level generation. */
+    } else {
+        pm = mkclass(m.class, G_NOGEN);
+        /* pm == 0 here means the class was genocided; settle for random */
+    }
+
+    if (In_mines(game.u?.uz) && pm && your_race(pm)
+        && (Race_if(PM_DWARF) || Race_if(PM_GNOME)) && rn2(3))
+        pm = null;
+
+    let pos;
+    if (pm) {
+        let loc = pm_to_humidity(pm);
+
+        /* If water-liking monster, first try is without DRY */
+        pos = get_location_coord(-1, -1, loc | NO_LOC_WARN, croom, m.coord);
+        if (pos.x === -1 && pos.y === -1) {
+            loc |= DRY;
+            pos = get_location_coord(-1, -1, loc, croom, m.coord);
+        }
+    } else {
+        pos = get_location_coord(-1, -1, DRY, croom, m.coord);
+    }
+
+    let { x, y } = pos;
+
+    /* try to find a close place if someone else is already there.
+       enexto() needs enexto_core/goodpos; when C's enexto FAILS it leaves x,y
+       untouched, so recording and leaving them is the faithful gap. Returning
+       false from a stub would silently relocate nothing; returning true would
+       silently relocate everything. */
+    if (m_at(x, y))
+        note_unported('create_monster:enexto');
+
+    if (croom && !inside_room(croom, x, y))
+        return null;
+
+    if (m.sp_amask !== AM_SPLEV_RANDOM) {
+        note_unported('create_monster:mk_roamer');
+        return null;
+    }
+    if (m.id >= PMNAMES.PM_ARCHEOLOGIST && m.id <= PMNAMES.PM_WIZARD) {
+        note_unported('create_monster:mk_mplayer');
+        return null;
+    }
+
+    return makemon(pm, x, y, m.mm_flags);
+}
+
+// src/sp_lev.c:3214 lspo_monster() — the des.monster() verb, simple forms.
+export function lspo_monster(idOrClass, x, y, opts) {
+    const m = {
+        id: NON_PM, class: -1, coord: 0,
+        sp_amask: AM_SPLEV_RANDOM,
+        mm_flags: 0, peaceful: -1,
+    };
+
+    if (typeof idOrClass === 'string' && idOrClass.length === 1)
+        m.class = idOrClass;
+    else if (typeof idOrClass === 'number')
+        m.id = idOrClass;
+    else if (idOrClass)
+        m.id = name_to_mon(idOrClass);
+
+    if (opts?.class) m.class = opts.class;
+    m.coord = (x === undefined || x === -1) && (y === undefined || y === -1)
+              ? SP_COORD_PACK_RANDOM(0)
+              : SP_COORD_PACK(x, y);
+
+    if (opts?.asleep)   note_unported('lspo_monster:asleep');
+    if (opts?.appear_as) note_unported('lspo_monster:appear_as');
+
+    return create_monster(m, game.coder?.croom ?? null);
+}
+
+// include/align.h:44 AM_SPLEV_RANDOM, include/monflag.h:197 G_NOGEN.
+//
+// Both were written from assumption first and were wrong: AM_SPLEV_RANDOM is
+// 0x80, not 0, so `m.sp_amask !== AM_SPLEV_RANDOM` was true for every monster
+// and sent them all down the mk_roamer arm; G_NOGEN is 0x0200, not 0x1000.
+const AM_SPLEV_RANDOM = 0x80;
+const G_NOGEN = 0x0200;

@@ -351,6 +351,13 @@ export async function pline(msg) {
 // space, and wraps to the next row only when that column is within 8 of the
 // right edge.
 export async function more() {
+    /* C has already painted the message and the map by the time more() runs —
+       pline() writes straight to the tty and the map was drawn by docrt. This
+       port defers both to _buildScreenOutput(), so bring the screen up to date
+       before appending the suffix, or the frame captured inside the wait shows
+       the suffix alone. */
+    _buildScreenOutput();
+
     const display = game?.nhDisplay;
     const msg = game._pending_message || '';
     if (display) {

@@ -517,11 +517,37 @@ indicative. The 5m outlier is an extra `rn2(12)` from somewhere else.)
 `decide_to_shapeshift` do draw but are gated on lycanthropes and shapechangers,
 which none of these four are.
 
-**What is left:** C's four monsters must simply be FASTER than ours, i.e. they
-are different species after all — which means `rndmonst`'s WALK is wrong even
-though the frequency table it walks is right. Verifying the table was necessary
-but not sufficient; the next step is to check how our `rndmonst` accumulates and
-compares, against src/makemon.c, rather than checking the data again.
+**What is left, after eliminating everything checkable in rndmonst.** Compared
+against src/makemon.c line by line and all MATCHING:
+
+- the weighted-reservoir walk itself (`weight > 0`, `totalweight += weight`,
+  `rn2(totalweight) < weight`)
+- `monmax_difficulty(levdif) = (levdif + u.ulevel) / 2` and
+  `monmin_difficulty(levdif) = levdif / 6` (include/monst.h:259)
+- `montooweak` / `montoostrong`
+- `align_shift` — same switch on the dungeon's alignment, same ALIGNWEIGHT
+  arithmetic
+- `temperature_shift` — returns 0 on any level with `flags.temperature == 0`,
+  which is every level reached
+
+**And the arithmetic makes the contradiction exact.** `mcalcmove` gives a
+monster whose speed is below 12 either 0 or 12, never a partial ration — the
+`mmove -= mmove_adj` zeroes it first. So there is no accumulation: per turn the
+jackal always acts, the newt acts 1/2 of the time, each lichen 1/12. Expected
+turns per turn ~1.67, and we measure 1-3. C measures 4, essentially always,
+which is only possible if all four of its monsters have speed >= 12.
+
+So C's species really are different, and yet every input to the selection that
+can be compared matches. The two candidates that have NOT been checked:
+
+1. **`uncommon(mndx)`** — the last filter before the weight is computed. If ours
+   excludes a class of monster C admits (or vice versa) the eligible pool
+   differs while every draw still lines up.
+2. **`level_difficulty()`** — feeds `zlevel`, hence both bounds. Worth printing
+   ours alongside C's expected value for dlevel 1 rather than assuming.
+
+Check those two before touching anything else. Everything else in this path is
+verified.
 
 ### The leaderboard, and what it says about our real problem
 

@@ -94,8 +94,9 @@ import { GameMap } from './game.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
 import { themerooms, themeroom_fills } from './themerms_data.js';
-import { make_engr_at, wipe_engr_at } from './engrave.js';
-import { DUST } from './const.js';
+import { make_engr_at, wipe_engr_at, engr_at, del_engr } from './engrave.js';
+import { get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
+import { DUST, HEADSTONE } from './const.js';
 import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire } from './sp_lev.js';
 import { percent } from './nhlua.js';
@@ -348,9 +349,24 @@ const trap_engravings = [];
 trap_engravings[TRAPDOOR] = 'Vlad was here';
 trap_engravings[TELEP_TRAP] = 'ad aerarium';
 trap_engravings[LEVEL_TELEP] = 'ad aerarium';
-function make_grave(x, y, text) {
+// src/trap.c t_at() — the trap on a square, if any.
+function t_at(x, y) {
+    return (game.level?.traps || []).find(t => t.tx === x && t.ty === y) || null;
+}
+
+// src/engrave.c:1687 make_grave() — a grave only goes on plain room floor with
+// no trap, and an unnamed one draws its epitaph from dat/epitaph.
+function make_grave(x, y, str) {
     const loc = game.level?.at(x, y);
-    if (loc) loc.typ = GRAVE;
+    if (!loc) return;
+    if ((loc.typ !== ROOM && loc.typ !== GRAVE) || t_at(x, y))
+        return;
+    loc.typ = GRAVE;
+    const old = engr_at(x, y);
+    if (old) del_engr(old);
+    if (!str)
+        str = get_rnd_text('epitaph', rn2, MD_PAD_RUMORS);
+    make_engr_at(x, y, str, 0, HEADSTONE);
 }
 
 // in_rooms stub
@@ -1796,8 +1812,10 @@ function mkaltar(croom) {
 }
 
 function mkgrave_room(croom) {
-    if (croom.rtype !== OROOM) return;
+    /* src/mklev.c mkgrave() — `dobell` is an INITIALISER, so its rn2(10) is
+       drawn before the rtype test, not after it. */
     const dobell = !rn2(10);
+    if (croom.rtype !== OROOM) return;
     const pos = { x: 0, y: 0 };
     if (!find_okay_roompos(croom, pos)) return;
     make_grave(pos.x, pos.y, dobell ? 'Saved by the bell!' : null);

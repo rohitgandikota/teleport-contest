@@ -123,9 +123,20 @@ and is wrong.
 Both failures together say the trigger is narrower than "before any map draw".
 `moveloop_core` runs every turn, so blocking there emits `--More--` on turns C
 does not, and `more()` also consumes a key, which is what breaks seed8000.
-Before the third attempt, work out from win/tty/wintty.c which window draws
-actually reach the NHW_MAP arm with `blocking=TRUE` in the recorded sessions —
-`flush_screen()` is NOT one of them, and that distinction is the whole problem.
+
+**The map arm is ruled out.** win/tty/wintty.c:1885 only flushes the message
+window when `blocking` is TRUE, and every `display_nhwindow(WIN_MAP, TRUE)` in
+src/ is in detect.c (magic mapping, detection spells). None is on the startup
+path, so that is NOT where seed5002's step-0 `--More--` comes from.
+
+What is left, and where the next attempt should start: the frame the recorder
+captures as step 0 is taken at the first `nhgetch()`, and `more()` calls
+`nhgetch()` itself. So C is most likely already INSIDE `more()` at step 0 — the
+session's first keystroke dismisses the prompt rather than being a command.
+Check what runs between `welcome()` and the first command read in
+src/allmain.c's newgame/moveloop, and whether the recorder's step numbering
+counts that key. If it does, our port is one keystroke ahead of C from frame
+zero on every session that shows a startup `--More--`.
 
 Two cautions, both learned the hard way:
 

@@ -362,7 +362,38 @@ Test (b) first: instrument themeroom_fill with a per-level counter and compare
 against the C's rn2 log around the themeroom block. Two samples where C has one
 would produce a constant loss exactly like this.
 
-**Partial result, do not repeat it:** a `globalThis` counter inside
+**RESULT — themeroom_fill is never called today. Read this before testing.**
+
+A counter inside themeroom_fill reads **0 across ALL segments** of seed0030
+(ten), seed4500 and seed0360. The only path to it in the current tree is
+filler_region(), which fires only for SHAPED rooms behind a percent(30), and
+no public session reaches it.
+
+This resolves the confusion in the four failed attempts:
+
+  - Every fill-related hypothesis was tested against a function that never
+    ran. That is why the number never moved: not because the hypotheses were
+    wrong, but because nothing was exercising them.
+  - The -894 therefore IS the first-ever call to themeroom_fill on these
+    levels. The three "themed fill" themerooms ARE being picked by the
+    reservoir sample; today they fall through to note_unported_lev plus a
+    default room, and wiring des.room's contents calls themeroom_fill for the
+    first time.
+  - So the question is now sharp: **when the sample picks "Default room with
+    themed fill", does C call themeroom_fill there at all?** If it does, our
+    reservoir sample inside themeroom_fill must be drawing differently from
+    C's. If it does not, we are picking a different themeroom than C is, and
+    the bug is upstream in themerooms_generate's own sample.
+
+Test that by dumping our themerooms_generate pick per level against the C rn2
+log for the same level. The picks, not the fills, are what to compare.
+
+Also note: all fifteen fills and the des.* chains are for the HELD-OUT half.
+generalize.mjs finds themerooms in 3-5% of random games while the public
+corpus reaches them zero times. That is the clearest example this session of
+work that score.sh cannot see.
+
+**Earlier partial result:** a `globalThis` counter inside
 themeroom_fill reads **0** on seed8000 segment 0 and **0** on seed0030 segment
 0. So themeroom_fill is not reached on those levels at all -- yet wiring its
 contents gained +9 RNG, so it IS reached somewhere. It must be firing on deeper

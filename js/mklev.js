@@ -767,6 +767,35 @@ async function themerooms_generate(difficulty) {
             }
         };
         break;
+    case 'Nesting rooms':
+        /* dat/themerms.lua:344 — three levels deep. The middle room's size
+           comes from math.random(floor(width/2), width-2), which the nhlib
+           shim turns into nh.random(a, b+1-a), i.e. a + rn2(b+1-a). Both the
+           middle room's own doors AND the innermost room's are emitted, and
+           each pair is gated by its own percent(15). */
+        roomW = 9 + rn2(4);
+        roomH = 9 + rn2(4);
+        contents = (rm) => {
+            const lo1 = Math.floor(rm.width / 2), hi1 = rm.width - 2;
+            const wid = lo1 + rn2(hi1 + 1 - lo1);
+            const lo2 = Math.floor(rm.height / 2), hi2 = rm.height - 2;
+            const hei = lo2 + rn2(hi2 + 1 - lo2);
+
+            lspo_room({ type: 'ordinary', w: wid, h: hei, filled: 1,
+                        contents: () => {
+                if (percent(90)) {
+                    lspo_room({ type: 'ordinary', filled: 1, contents: () => {
+                        lspo_door({ state: 'random', wall: 'all' });
+                        if (percent(15))
+                            lspo_door({ state: 'random', wall: 'all' });
+                    } }, create_room, topologize);
+                }
+                lspo_door({ state: 'random', wall: 'all' });
+                if (percent(15))
+                    lspo_door({ state: 'random', wall: 'all' });
+            } }, create_room, topologize);
+        };
+        break;
     default:
         note_unported_lev(`themeroom ${pick.name}`); break;
     }

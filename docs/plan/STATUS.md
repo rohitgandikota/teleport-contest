@@ -309,12 +309,25 @@ Three cells differ, and they name two distinct bugs:
    `game.unported` has no `themeroom ...` entry for this level, meaning
    `themerooms_generate` picked `default` — so no themed room ran.
 
-   **Check the glyph identity before going further.** screendiff reports C's
-   cell as `'{' color 15`. `{` is the fountain symbol, but 15 is bright white
-   and NetHack draws fountains blue. Confirm what C actually has there — it may
-   not be a fountain at all, in which case several iterations of this hunt were
-   chasing a misread glyph. `js/drawing_data.js` has the class-to-symbol table
-   and `tools/session-viewer/` can show the recorded cell with its colour.
+   **Glyph identity confirmed:** `{` is `PCHAR(37, '{', S_fountain, ...)` in
+   include/defsym.h and NO object or monster class uses it, so C really does
+   have a fountain there.
+
+   **Every place C can create a fountain** (`grep 'set_levltyp.*FOUNTAIN\|typ =
+   FOUNTAIN'`), with what is known about each:
+   - `src/mklev.c:2293` — `mkfount()`. **Ruled out**, see above.
+   - `src/mkroom.c:995` — inside `cmap_to_type()`, a pure symbol-to-type
+     mapper. Not a creation site; it is called BY the des/special-room code.
+   - `src/do.c:420` — converts a sink to a fountain, driven by a command.
+     seed0102's keys are `  n#name\r ESC f l i ESC + ESC \ ESC ^X SPACE ESC s
+     s :` — nothing there does this.
+   - `src/fountain.c:586` and `src/objnam.c:3591` — not yet examined.
+
+   Since `cmap_to_type` is what the des-file feature code maps through, the
+   most likely remaining source is a special room or des feature our port does
+   not build. Look at what ELSE differs on that level besides this one cell
+   before spending more iterations on a single square — one cell out of 1920 is
+   a poor return, and seed0102 is one session.
 
 Fix the hero offset first — it is upstream of everything the pet does, and a
 hero one square away changes what every monster targets.

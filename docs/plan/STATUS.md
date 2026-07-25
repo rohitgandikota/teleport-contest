@@ -58,17 +58,35 @@ Good news for scoping: **`mfndpos` is NOT needed for the pet.** m_move dispatche
 tame monsters at src/monmove.c:1773, which is *before* the `mfndpos` call at
 :1925. The 243-line no-RNG function can wait.
 
-**seed0101** (and 3 more) block on `next_ident(mkobj.c:521)` inside starting
-inventory. At seed0104 call 2525 C draws `rnd(2)` from next_ident where we draw
-`rn2(1)` from `trquan` — the two are transposed by one position, so we create an
-object one step later than C, or one earlier.
+**seed0101 is the SAME blocker — it is the pet too.** Its divergence is at call
+2293, immediately after `moveloop_preamble`:
 
-Checked and NOT the cause: our `ini_inv` loop tail matches C's
-(`if (--quan) continue; trop++; quan = trquan(trop);`), and C's `trquan` on the
-terminating entry returns 1 without drawing because `trquan_min` is 0 there, so
-our `if (trop)` guard is equivalent. Look instead at `ini_inv_adjust_obj` and the
-`obj->quan = trquan(trop)` at u_init.c:1227, which is a THIRD trquan call site
-inside the loop body.
+```
+2291  rnd(9000)  moveloop_preamble    ok
+2292  rnd(30)    moveloop_preamble    ok
+2293  rnd(2)     next_ident           <- MISMATCH, we jump straight to mcalcmove
+2294  rn2(100)   obj_resists
+2295  rn2(12)    mcalcmove            (the monster loop proper)
+```
+
+Two facts make this unambiguous, and both are easy to get wrong from the tag
+alone:
+
+- **`next_ident()` is called for MONSTERS as well as objects** (makemon.c:871
+  and :1251, not just mkobj.c:1187). An `rnd(2)` tagged `next_ident` is not
+  evidence of object creation.
+- **`obj_resists`'s caller here is `can_carry()` in src/dog.c:1004**
+  (`if (is_quest_artifact(obj) || obj_resists(obj, 0, 95))`), which is pet code,
+  not zap code.
+
+So the earlier reading of this as a starting-inventory `trquan` transposition was
+wrong — that hypothesis is withdrawn. `ini_inv` is fine; it was ruled out by
+checking the loop tail against C, and the tag simply pointed somewhere else.
+
+**Consolidated: the pet is the single highest-value target in the port.** It
+blocks seed0102 (99.2%), seed0101 (97.3%), the 7 `obj_resists` sessions and the 3
+`dog_goal` sessions — and it is smaller than budgeted, because `mfndpos` is not
+on the tame path.
 
 ### CORRECTION: `--More--` is NOT the biggest opportunity — it is unreachable
 

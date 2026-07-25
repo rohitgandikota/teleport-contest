@@ -282,6 +282,20 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === 'F') {
+        // src/cmd.c:1622 do_fight — a PREFIX. It sets context.forcefight and
+        // returns WITHOUT reading another key; the direction that follows is a
+        // normal movement command that attacks instead of moving. Leaving 'F'
+        // unhandled therefore did not misalign keys, it displaced the HERO:
+        // C attacks and stays put where we walked into the square.
+        if (game.context.forcefight) {
+            /* "Double fight prefix, canceled." */
+            game.context.forcefight = 0;
+            game.context.move = 0;
+        } else {
+            game.context.forcefight = 1;
+            game.context.move = 0;
+        }
     } else if (ch === 'c') {
         // src/cmd.c cmdlist — 'c' is dochat, whose getdir() consumes a second
         // key. 107 keystrokes across the public corpus.
@@ -341,6 +355,17 @@ async function domove(dx, dy) {
     const u = game.u;
     const newx = u.ux + dx;
     const newy = u.uy + dy;
+
+    /* src/hack.c:2242 — with the fight prefix set, the hero attacks the target
+       square instead of moving onto it, whether or not anything is there. The
+       attack itself needs the combat code; what matters here is that the hero
+       does NOT move and the turn is still spent. */
+    if (game.context.forcefight) {
+        game.context.forcefight = 0;
+        note_unported_cmd('domove:forcefight attack');
+        game.context.move = 1;
+        return;
+    }
 
     /* src/hack.c:1097 — walking into a closed door opens it, and doopen_indir()
        is where the rnl(20) is spent. autoopen is on by default, so a session

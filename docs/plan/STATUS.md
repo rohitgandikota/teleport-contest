@@ -79,6 +79,36 @@ Both need `des.object` (by id, by class, with `buc` and `buried`) and
 needs anyway. `selection.room():rndcoord()` is `selection_rndcoord`
 (selvar.c:302) over the room's cells — one `rn2(npoints)`.
 
+### Leads found but not acted on — start here if the fill contents stall
+
+**`playmode:debug` and the wizard extended commands — 3 sessions.**
+seed0360, seed0383 and seed0399 all diverge in the same place and for the same
+reason, and it is not a level-generation bug at all. Their rc carries
+`playmode:debug`, and their first keys are `#levelchange`. Immediately after
+`moveloop_preamble` the C log shows a repeating triple —
+
+```
+rnd(8)  newhp(attrib.c:1101)     <- role hpadv.inrnd
+rnd(2)  newhp(attrib.c:1103)     <- race hpadv.inrnd
+rn2(8)  newpw(exper.c:64)        <- note :64, the LEVEL-GAIN branch,
+                                    not the :52 one u_init uses
+```
+
+repeated 14 times: `pluslvl()` running once per gained level. What is missing is
+`playmode:debug` (the rc option is parsed into `rc.opts` and never consumed),
+the debug-only extended commands, and `pluslvl`. `newhp` also lives in
+**attrib.c** in 5.0, not exper.c — porting it from memory of 3.6 would put it in
+the wrong file.
+
+**seed0009 is at 89.9% of its PRNG stream**, the highest in the corpus, and
+diverges at call 3337 of 3713 in `getbones(bones.c:645)` followed by
+`splev_initlev` and `mktrap` — C is generating a second level where our port
+carries on in the move loop. Worth a look purely because it is the closest any
+session has come to a full pass.
+
+**`somey(mkroom.c:674)` — 3 sessions** (seed0104, seed0108, seed5002), all
+around call 1500, inside level generation.
+
 ### What the window layer now provides
 
 `js/tty/wintty.js` has both real C code paths: `tty_start_menu`/`tty_add_menu`/

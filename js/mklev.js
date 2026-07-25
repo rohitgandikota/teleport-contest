@@ -482,17 +482,42 @@ async function makelevel() {
 
     // Branch check
     const branchp = is_branchlev();
+    /* src/mklev.c:1306 — minimum number of rooms needed before a special room
+       is allowed. A vault bumps it, because the vault itself counts as a room
+       but must not make a shop eligible. */
+    let room_threshold = branchp ? 4 : 3;
 
     makecorridors();
     await make_niches();
 
     // src/mklev.c:1317 — a secret treasure vault, not connected to anything.
-    if (g.vault_x !== -1) {
+    //
+    // The retry path is where four sessions diverged. When the first
+    // check_room() fails, C calls create_vault(), which loops up to 100 times
+    // on rnd_rect() — and with only one free rectangle left that is 100
+    // consecutive rn2(1) calls with nothing between them, because a vault sets
+    // dx = dy = 1 rather than rolling them.
+    if (g.vault_x !== -1) {   /* do_vault() */
         const vw = { v: 1 }, vh = { v: 1 };
+        /* C passes &gv.vault_x, and a FAILED check_room still writes through
+           it, so the retry starts from the moved coordinates. */
         const vx = { v: g.vault_x }, vy = { v: g.vault_y };
-        if (check_room(vx, vw, vy, vh, true)) {
+        let ok = check_room(vx, vw, vy, vh, true);
+        g.vault_x = vx.v; g.vault_y = vy.v;
+
+        if (!ok && rnd_rect() && create_vault()) {
+            const nr = g.level.rooms[g.level.nroom];
+            vx.v = g.vault_x = nr.lx;
+            vy.v = g.vault_y = nr.ly;
+            ok = check_room(vx, vw, vy, vh, true);
+            g.vault_x = vx.v; g.vault_y = vy.v;
+            if (!ok) nr.hx = -1;
+        }
+
+        if (ok) {   /* fill_vault: */
             add_room(vx.v, vy.v, vx.v + vw.v, vy.v + vh.v, true, VAULT, false);
             g.level.flags.has_vault = 1;
+            room_threshold++;
             const vaultRoom = g.level.rooms[g.level.nroom - 1];
             if (vaultRoom) {
                 vaultRoom.needfill = FILL_NORMAL;
@@ -503,10 +528,6 @@ async function makelevel() {
             mk_knox_portal(vx.v + vw.v, vy.v + vh.v);
             if (!g.level.flags.noteleport && !rn2(3))
                 await makevtele();
-        } else if (rnd_rect()) {
-            /* src/mklev.c:1334 — the create_vault() retry. Not ported;
-               reaching it would mean the first check_room failed. */
-            note_unported_lev('vault create_vault retry');
         }
     }
 

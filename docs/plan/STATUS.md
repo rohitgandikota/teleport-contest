@@ -43,7 +43,34 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## ONE entry left: "Water-surrounded vault". It is the biggest of the fifteen.
+## The generalization list is nearly exhausted — switch instrument
+
+With one 3% entry left, `generalize.mjs` has little more to say. The other
+instrument is the DIVERGENCE POINT of each big session, and its first
+mismatching call names the missing function directly. Measured:
+
+    seed0360  2898  C rnd(8)     ours rn2(12)   @ newhp(attrib.c:1101)
+    seed0014  2915  C rn2(500)   ours rn2(5)    @ mksobj_init(mkobj.c:1001)
+    seed4500  2869  C rn2(28)    ours rn2(20)   @ m_move(monmove.c:1963)
+    seed0030  6276  C rn2(100)   ours rn2(4)    @ obj_resists(zap.c:1469)
+
+Three different causes, and **seed0360's is the clearest lead in the tree**:
+
+C is calling `newhp()` where we call `mcalcmove()`. newhp's level-up branch is
+only reached from `pluslvl()`, so C is granting a LEVEL GAIN that we never
+grant. pluslvl's two helpers, newhp and newpw, were fixed earlier in this
+session (the level-up branch did one rn1 where C does two gated rnd calls, and
+the Constitution bonus was missing entirely) -- so the helpers are ready and
+`pluslvl` itself is the missing piece.
+
+**Do pluslvl next.** src/exper.c, and it needs setuhpmax, newuexp, xlev_to_rank
+and adjabil beyond the two helpers already done. seed0360 is 833 steps.
+
+seed0014 is a separate object-init divergence (mksobj_init's rn2(500) arm) and
+seed4500 a monster-movement one (m_move:1963's rn2(28)); neither is the same
+bug, so fixing one will not move the others.
+
+## The last themeroom entry: "Water-surrounded vault". It is the biggest of the fifteen.
 
 `tools/generalize.mjs` is down to a single 3% entry from thirteen. Everything
 else in the themeroom subsystem is ported AND wired: all fifteen fills, all four

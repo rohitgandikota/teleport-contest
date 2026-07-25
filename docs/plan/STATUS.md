@@ -43,7 +43,7 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: `m_dowear`. It is reached by 20% of random games.
+## Do this first: `des.room()`. The themerooms are 28% of random games.
 
 `merged` WAS this entry at 58% and is now ported; it no longer appears on the
 reached-unported list at all. Latest `tools/generalize.mjs` run:
@@ -65,9 +65,29 @@ and it sets `owornmask`/`misc_worn_check`, which nothing currently sets.
 Budget it as one full session for m_dowear_type alone; it is long rather than
 subtle, and the payoff is generalization, not local score.
 
-The themerooms are a cluster: eight entries at 3-5% each, collectively larger
-than m_dowear. Check whether they share a code path before choosing -- if they
-do, they are the better target.
+**The themerooms are one port, not eight — this is checked, not assumed.**
+They share the dispatch at js/mklev.js:708 AND the work. Each theme's `contents`
+in dat/themerms.lua is one to three lines that all bottom out in `des.room()`:
+
+    -- "Default room with themed fill"
+    des.room({ type = "themed", contents = themeroom_fill });
+    -- "Unlit room with themed fill"
+    des.room({ type = "themed", lit = 0, contents = themeroom_fill });
+    -- "Room with both normal contents and themed fill"
+    des.room({ type = "themed", filled = 1, contents = themeroom_fill });
+    -- "Room in a room"        (des.room nested inside des.room, + des.door)
+    -- "Nesting rooms"         (same, with w/h from nh.rn2 and math.random)
+
+So porting `des.room()` once — that is `lspo_room()` in sp_lev.c, with the
+option table type/lit/filled/w/h/contents — unlocks most of the eight at 1-3
+lines apiece. Collectively 28% of random games, against m_dowear's 20%, and
+unlike m_dowear these DO draw (nh.rn2 and math.random are right there in the
+Lua), so this one moves the RNG number.
+
+**Do this before m_dowear.** Note also that tools/gen-themerms.mjs currently
+scrapes only index/name/frequency/mindiff/maxdiff and drops `contents`
+entirely; it needs extending, or the bodies need hand-porting into js/themerms.js
+as the C's own functions.
 
 ## How to pick a target (this is the part that matters)
 

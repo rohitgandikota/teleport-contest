@@ -120,7 +120,11 @@ import {
 
 // Object/class constants (normally from objects.js, not in contest template)
 const RANDOM_CLASS = 0;
-const SPBOOK_no_NOVEL = 11;
+// include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
+// It is the NEGATED class, -10, not a class index one past the real ones. Hard
+// coding 11 made it WAND_CLASS, so the supply chest's bonus items generated
+// wands where C generates spellbooks, in 3 of the 10 table slots.
+const SPBOOK_no_NOVEL = -OCLASSES.SPBOOK_CLASS;
 
 // Supply chest items
 const MARK = 6;

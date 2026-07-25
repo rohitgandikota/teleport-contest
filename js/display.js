@@ -8,7 +8,7 @@ import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
     HWALL, VWALL, TLCORNER, TRCORNER, BLCORNER, BRCORNER,
     CROSSWALL, TUWALL, TDWALL, TLWALL, TRWALL,
-    D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED,
+    D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED, D_BROKEN, SDOOR,
 } from './const.js';
 import { nhgetch } from './input.js';
 import { def_monsyms, def_oc_syms } from './drawing_data.js';
@@ -44,10 +44,21 @@ function terrain_glyph(loc, x, y) {
     case STONE:     return { ch: ' ', color: NO_COLOR, dec: false };
     case ROOM:      return { ch: '~', color: NO_COLOR, dec: true };  // DEC middle dot
     case CORR:      return { ch: '#', color: NO_COLOR, dec: false };
+    // src/display.c:2324 — '+' when shut, '-'/'|' when open. The open glyphs
+    // read backwards from their names: S_vodoor is '-' and S_hodoor is '|'
+    // (include/defsym.h:104-105), so the orientation test is inverted.
+    //
+    // D_NODOOR and D_BROKEN both map to S_ndoor, which defsym.h gives as '.'.
+    // Under DECgraphics that renders as the same middle dot the floor uses, so
+    // this keeps the floor glyph: substituting a literal '.' cost 24 screens.
     case DOOR:
-        if (loc.doormask & D_ISOPEN) return { ch: '|', color: CLR_BROWN, dec: false };
-        if (loc.doormask & (D_CLOSED | D_LOCKED)) return { ch: '+', color: CLR_BROWN, dec: false };
-        return { ch: '~', color: NO_COLOR, dec: true };  // D_NODOOR = floor
+        if (loc.doormask & D_ISOPEN)
+            return loc.horizontal
+                ? { ch: '-', color: CLR_BROWN, dec: false }
+                : { ch: '|', color: CLR_BROWN, dec: false };
+        if (loc.doormask & (D_CLOSED | D_LOCKED))
+            return { ch: '+', color: CLR_BROWN, dec: false };
+        return { ch: '~', color: NO_COLOR, dec: true };  // S_ndoor
     case STAIRS:
         // Check upstair vs downstair
         if (game.level?.upstair?.x === x && game.level?.upstair?.y === y)
@@ -65,6 +76,12 @@ function terrain_glyph(loc, x, y) {
     case TDWALL:    return { ch: 'w', color: NO_COLOR, dec: true };  // ┬
     case TLWALL:    return { ch: 'u', color: NO_COLOR, dec: true };  // ┤
     case TRWALL:    return { ch: 't', color: NO_COLOR, dec: true };  // ├
+    // src/display.c:2304 — a SECRET door looks exactly like the wall it hides
+    // in, so it falls through to the HWALL/VWALL case.
+    case SDOOR:     return loc.horizontal
+                        ? { ch: 'q', color: NO_COLOR, dec: true }   // ─
+                        : { ch: 'x', color: NO_COLOR, dec: true };  // │
+
     default:        return { ch: '?', color: NO_COLOR, dec: false };
     }
 }

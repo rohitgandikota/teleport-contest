@@ -129,10 +129,39 @@ Two corrections to what was written above, both of which cost time:
 
 **What to build:** a real `more()` in the display layer that draws the suffix by
 the rule already verified below, awaits a key, then clears the top line — called
-where C calls `display_nhwindow(WIN_MESSAGE, TRUE)`. seed8000's initial frame is
-captured before that call ever happens, which is why it has no suffix; its
-welcome `more()` is a LATER capture. Check seed8000's later frames for the
-77-character wrap case once the call site is right.
+where C calls `display_nhwindow(WIN_MESSAGE, TRUE)`.
+
+**The last clue, and it is in the rc files.** The two frames differ in exactly
+one relevant option:
+
+```
+seed8000  OPTIONS=... ,!legacy, !tutorial, !splash_screen, ...   -> NO --More--
+seed0077  (legacy left at its default, i.e. ON)                  -> --More--
+```
+
+With `legacy` on, `com_pager("legacy")` puts up the Book-of-Kos text window
+first — that is seed0077 step 11, with its own `--More--` on row 17 — and the
+welcome message only reaches the top line afterwards. With `!legacy` the welcome
+is the first and only thing on it.
+
+So the thing to check first is `update_topl()`'s own escalation:
+
+```c
+if (ttyDisplay->cury && otoplin != TOPLINE_SPECIAL_PROMPT)
+    more();
+```
+
+`cw->cury` is non-zero only when the message window already holds something. A
+preceding message (or the pager's dismissal leaving `cury` advanced) is what
+makes the welcome call `more()` in seed0077 and not in seed8000. Verify that
+against the two recordings before writing any code — it predicts the whole
+split, and it means the trigger lives in `update_topl`, not in the display_
+nhwindow call sites after all.
+
+**Three iterations have gone into this.** Each narrowed it — rendering verified,
+then the state model discarded, now the trigger localised — but if the next
+attempt does not land it, switch to `m_move` and come back with fresh eyes.
+1108 frames is worth real effort, not unbounded effort.
 
 ### The leaderboard, and what it says about our real problem
 

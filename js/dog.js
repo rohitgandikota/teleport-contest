@@ -794,7 +794,12 @@ export function dog_move(mtmp, after) {
 
     dog_invent(mtmp, edog, udist);
 
-    const whappr = 0;                 /* moves - edog.whistletime < 5 */
+    /* src/dogmove.c:1038 — whappr is TRUE for the five turns after the pet was
+       whistled for, and edog->whistletime starts at 0, so it is TRUE for the
+       whole opening of the game. Hardcoding it to 0 left appr at 0 there, which
+       makes the pet WANDER by reservoir sample instead of approaching the hero
+       — a completely different path from C's, drawn with the same numbers. */
+    const whappr = (game.moves - (edog.whistletime || 0)) < 5 ? 1 : 0;
     const appr = dog_goal(mtmp, edog, after, udist, whappr);
     if (appr === -2)
         return MMOVE_NOTHING;

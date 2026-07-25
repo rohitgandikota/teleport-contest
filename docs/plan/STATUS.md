@@ -381,13 +381,25 @@ line to COLS, so a line that exists but is EMPTY would still blank column 22.
 We show map there across **six consecutive rows (7-12)**, which means those
 rows are not painted at all — our window has fewer lines than C's.
 
-Two candidates, both cheap to test:
-1. Our legacy text genuinely has fewer lines. `deliver_by_window()` in
-   js/questpgr.js splits the Lua string on `\n`; compare the line count
-   against what C's `dat/` entry holds.
-2. C clears its window's whole RECTANGLE when painting, not just the rows that
-   have content. Check `tty_display_nhwindow`'s NHW_MENU/NHW_TEXT arm in
-   win/tty/wintty.c for a clear-region step before the row loop.
+Both original candidates are now ELIMINATED:
+1. Line count is fine — `questtext.common.legacy` holds **17 lines** and
+   `page_capacity()` is 23, so every line is painted.
+2. C does not clear a rectangle here. win/tty/wintty.c:1925 only clears when
+   the window COLLAPSES (`maxrow >= rows || !menu_overlay`); otherwise it takes
+   the else branch and merely clears WIN_MESSAGE.
+
+**What is left is a one-column offset in where each line starts.** C puts a
+space at column 22 on rows 7-12 (empty lines, blanked from their start); we
+never touch column 22, so the map shows through. Both should compute
+`offx + 1`, so either our `offx` is 22 where C's is 21, or the window type
+differs (NHW_MENU vs NHW_TEXT changes the leading-space rule in
+`render_page()`).
+
+Next probe: dump `cw.type`, `cw.offx` and `cw.maxcol` for the legacy window and
+compare against C's — `maxcol` feeds `offx = min(min(82, cols/2), cols - maxcol
+- 1)`, so a maxcol off by one moves offx by one. `deliver_by_window()` passes
+NHW_MENU for output==3 and NHW_TEXT otherwise; check which the legacy entry
+selects.
 
 Six cells is the entire remaining gap on this screen, and the same window opens
 32 of the 44 sessions.

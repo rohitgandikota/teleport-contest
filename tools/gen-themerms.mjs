@@ -80,23 +80,34 @@ const maps = {};
     let m;
     while ((m = nameRe.exec(src)) !== null) names.push({ at: m.index, name: m[1] });
 
-    const mapRe = /des\.map\(\{[^}]*?map\s*=\s*\[\[\n?([\s\S]*?)\]\]/g;
+    const mapRe = /des\.map\(\{[^}]*?map\s*=\s*\[\[\n?([\s\S]*?)\]\]([\s\S]{0,120})/g;
     while ((m = mapRe.exec(src)) !== null) {
         let owner = null;
         for (const n of names) { if (n.at < m.index) owner = n.name; else break; }
         if (!owner) continue;
         const rows = m[1].replace(/\n$/, '').split('\n');
-        (maps[owner] ||= []).push(rows);
+        /* the tail right after the map literal, so a one-line
+           `contents = function(m) filler_region(1,1); end` is captured whole */
+        const f = /^,\s*contents\s*=\s*function\s*\(\s*m\s*\)\s*filler_region\(\s*(\d+)\s*,\s*(\d+)\s*\)\s*;?\s*end/
+                  .exec(m[2]);
+        (maps[owner] ||= []).push({
+            rows,
+            filler: f ? [Number(f[1]), Number(f[2])] : undefined,
+        });
     }
 }
 
 for (const r of meta.themerooms) {
     const got = maps[r.name];
     if (got) {
-        r.maps = got.map(rows => ({
-            wid: Math.max(...rows.map(l => l.length)),
-            hei: rows.length,
-            rows,
+        r.maps = got.map(m => ({
+            wid: Math.max(...m.rows.map(l => l.length)),
+            hei: m.rows.length,
+            rows: m.rows,
+            /* `contents = function(m) filler_region(A,B); end` is the whole
+               body for 17 of the 19 shaped rooms. Where it is not, `filler`
+               is absent and the room needs its contents read by hand. */
+            filler: m.filler,
         }));
     }
 }

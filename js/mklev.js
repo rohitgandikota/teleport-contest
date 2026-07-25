@@ -94,6 +94,9 @@ import { GameMap } from './game.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
 import { themerooms } from './themerms_data.js';
+import { lspo_map, lspo_region, sp_lev_wire } from './sp_lev.js';
+import { percent } from './nhlua.js';
+import { lua_shuffle } from './nhlua.js';
 import { depth as depth_of_level } from './hacklib.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -576,6 +579,8 @@ function ROOM_IS_FILLABLE(croom) {
         && croom.needfill === FILL_NORMAL;
 }
 
+sp_lev_wire(add_room, add_door);
+
 // C ref: mklev.c makerooms()
 async function makerooms() {
     const g = game;
@@ -638,11 +643,16 @@ async function themerooms_generate(difficulty) {
     }
     if (!pick) return false;
 
-    if (pick.name !== 'default') {
-        /* the shaped rooms are not ported; what follows is the `default`
-           sequence, which is wrong for them but keeps the level buildable */
+    game.themeroom_failed = false;
+
+    /* A room with a des.map is a SHAPE: lspo_map places and stamps it, then its
+       own contents run. Everything else falls through to the `default` room. */
+    const mf = pick.maps && pick.maps[0];
+    if (mf && themeroom_contents(pick, mf))
+        return !game.themeroom_failed;
+
+    if (pick.name !== 'default')
         note_unported_lev(`themeroom ${pick.name}`);
-    }
 
     /* sp_lev.c:2811 — the rtype chance roll */
     rn2(100);
@@ -657,6 +667,56 @@ async function themerooms_generate(difficulty) {
         }
     }
     return ok;
+}
+
+// dat/themerms.lua:880 filler_region() — every shaped room ends with this.
+//
+//   if (percent(30)) then rmtyp = "themed"; func = themeroom_fill; end
+//   des.region({ region={x,y,x,y}, type=rmtyp, irregular=true,
+//                filled=1, contents = func });
+function filler_region(x, y) {
+    let rmtyp = OROOM;
+    let func = null;
+    if (percent(30)) {
+        rmtyp = THEMEROOM;
+        func = themeroom_fill;
+    }
+    lspo_region(x, y, rmtyp, true, FILL_NORMAL, func);
+}
+
+// dat/themerms.lua:1009 themeroom_fill() — a second reservoir sample, over the
+// 15 themeroom_fills, then that fill's own contents. Not ported: the fills
+// place monsters, objects and terrain, each with its own draws.
+function themeroom_fill(rm) {
+    note_unported_lev('themeroom_fill');
+}
+
+// The `contents` function of each shaped room, transcribed from themerms.lua.
+// Seventeen of the nineteen are a bare filler_region(a,b) and come straight
+// from the generated table; the two that are not are spelled out here.
+// Returns false for a room whose contents are not ported, so the caller can
+// fall back rather than emit a wrong stream.
+function themeroom_contents(pick, mf) {
+    if (pick.name === 'Blocked center') {
+        // themerms.lua:535 — this room has its own gate BEFORE filler_region,
+        // and shuffle() adds an rn2(2) whenever the gate passes.
+        lspo_map(mf, () => {
+            if (percent(30)) {
+                const terr = ['-', 'P'];
+                lua_shuffle(terr);
+                note_unported_lev('des.replace_terrain');
+            }
+            filler_region(1, 1);
+        });
+        return true;
+    }
+    if (mf.filler) {
+        const [fx, fy] = mf.filler;
+        lspo_map(mf, () => filler_region(fx, fy));
+        return true;
+    }
+    /* 'Water-surrounded vault' places objects and monsters; not ported. */
+    return false;
 }
 
 // C ref: sp_lev.c check_room()
@@ -791,7 +851,7 @@ function create_vault() {
 }
 
 // C ref: mklev.c add_room()
-function add_room(lowx, lowy, hix, hiy, lit, rtype, special) {
+export function add_room(lowx, lowy, hix, hiy, lit, rtype, special) {
     const g = game;
     const croom = {
         lx: lowx, ly: lowy, hx: hix, hy: hiy,
@@ -1086,7 +1146,7 @@ function dodoor(x, y, aroom) {
     dosdoor(x, y, aroom, maybe_sdoor(8) ? SDOOR : DOOR);
 }
 
-function add_door(x, y, aroom) {
+export function add_door(x, y, aroom) {
     const g = game;
     if (!g.level.doors) g.level.doors = [];
     for (let i = 0; i < aroom.doorct; i++) {

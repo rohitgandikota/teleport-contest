@@ -412,11 +412,24 @@ That is a TEXT-CONTENT bug, not a windowing bug. Measured both sides:
 - C's rendered row 7 shows that same sentence indented one column further,
   i.e. **five** leading spaces, 57 chars.
 
-57 + 1 = maxcol 58 -> offx 21. So the fix is one leading space on the indented
-lines of the legacy text — check whether `questtext.common.legacy` in
-js/quest_data.js lost a space when it was generated from the Lua, or whether
-`convert_line()` trims one. Compare against `dat/quest.lua`'s `common.legacy`
-entry directly rather than trusting the generated copy.
+57 + 1 = maxcol 58 -> offx 21.
+
+**Checked and ruled out: the generated data is faithful.** `dat/quest.lua:145`
+holds `[    Under World, where he now lurks, and bides his time.]` with FOUR
+leading spaces, exactly as js/quest_data.js has it. So no space was lost in
+generation and `convert_line()` is not trimming.
+
+**Remaining candidate — a placeholder expansion.** `dat/quest.lua:147` is
+`Your %G %d seeks to possess the Amulet, and with it`. `%G` and `%d` expand to
+the deity's title and name, and if C's expansion is one character longer than
+ours that line becomes the longest and sets maxcol 58.
+
+Next step, and do it by MEASUREMENT rather than counting characters by eye —
+that is where this stalled: print the exact rendered length of each of C's rows
+from `sessions/seed0102-ranger-name-cancel.session.json` step 0 (the `screen`
+field), print our converted line lengths alongside (trace `convert_line()`'s
+return in `deliver_by_window()`), and find the single row where they differ by
+one. The candidates are the `%G`/`%d` lines, not the indented prose.
 
 Note the +1: our `maxcol` came back 57 for a 56-char line, so tty_putstr already
 adds one. C does the same, which is why 57 -> 58 rather than 57 -> 57.

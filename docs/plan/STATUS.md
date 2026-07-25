@@ -424,12 +424,21 @@ generation and `convert_line()` is not trimming.
 the deity's title and name, and if C's expansion is one character longer than
 ours that line becomes the longest and sets maxcol 58.
 
-Next step, and do it by MEASUREMENT rather than counting characters by eye —
-that is where this stalled: print the exact rendered length of each of C's rows
-from `sessions/seed0102-ranger-name-cancel.session.json` step 0 (the `screen`
-field), print our converted line lengths alongside (trace `convert_line()`'s
-return in `deliver_by_window()`), and find the single row where they differ by
-one. The candidates are the `%G`/`%d` lines, not the indented prose.
+Next step is a MEASUREMENT, but **the obvious way to take it does not work** —
+noted here so the next attempt does not lose an iteration to it as this one did.
+
+Reading `segments[0].steps[0].screen` and joining each row's cells gives row
+lengths that disagree with what `tools/screendiff.mjs` renders (row 0 came out
+39 characters where screendiff shows 56). The cell accessor is dropping
+content: the rows are not plain strings and the per-cell shape is not simply
+`{ch}` or `[ch]`. **Find the real cell shape first** — read how
+`tools/screendiff.mjs` itself decodes a row and reuse that, rather than guessing
+at `c.ch ?? c[0]`.
+
+Once rows decode correctly: print C's per-row rendered length beside our
+`convert_line()` output length for the same line, and find the single row that
+differs by one. The `%G`/`%d` expansions on `dat/quest.lua:147` are the
+candidate; the indented prose is ruled out (it matches the Lua byte for byte).
 
 Note the +1: our `maxcol` came back 57 for a 56-char line, so tty_putstr already
 adds one. C does the same, which is why 57 -> 58 rather than 57 -> 57.

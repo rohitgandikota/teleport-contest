@@ -259,6 +259,24 @@ dungeon globals it depends on) took it to 1535 and screens came back to 19.
 while they are still down either — carry on to the next divergence and re-check.
 Only revert when the change cannot be justified against the C source.**
 
+## screendiff rows are SCREEN rows, and the map starts at screen row 1
+
+`tools/screendiff.mjs` prints raw terminal rows. The tty layout is: row 0 is the
+message line, rows 1..21 are map rows 0..20, rows 22-23 are the status lines.
+
+So a difference reported at **screen row R is map row R - 1**. Reading a
+reported `r 11 c31` as map <31,11> lands you on a wall one row below the actual
+square and makes a probe come back empty, which looks like "the object is not
+there" when it is.
+
+Columns are 1:1 — screen column C is map column C.
+
+Second trap, learned the same way: **a probe fired from inside a game function
+runs at whatever step that function first executes, not at the step screendiff
+showed you.** Gate it on the step number, or dump every step and pick the row
+you want, or the two measurements are of different moments and any conclusion
+drawn by comparing them is meaningless.
+
 ## Use screendiff on a step where the RNG still matches
 
 The RNG log only sees draws. A whole category of bug — wrong text, wrong

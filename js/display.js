@@ -9,11 +9,12 @@ import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
     HWALL, VWALL, TLCORNER, TRCORNER, BLCORNER, BRCORNER,
     CROSSWALL, TUWALL, TDWALL, TLWALL, TRWALL,
-    D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED, D_BROKEN, SDOOR,
+    D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED, D_BROKEN, SDOOR, ICE,
 } from './const.js';
+import { engr_at } from './engrave.js';
 import { nhgetch } from './input.js';
 import { def_monsyms, def_oc_syms } from './drawing_data.js';
-import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, DEC_TO_UNICODE } from './terminal.js';
+import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE, DEC_TO_UNICODE } from './terminal.js';
 
 // ── ANSI color codes ──
 // Maps CLR_* constants (0-15) to ANSI SGR color codes.
@@ -136,7 +137,21 @@ export function newsym(x, y) {
         }
     }
 
-    const tg = terrain_glyph(loc, x, y);
+    /* src/display.c:422 map_location():
+     *
+     *     if (spot_shows_engravings(x, y)
+     *         && (ep = engr_at(x, y)) != 0 && !covers_traps(x, y)) {
+     *         if (cansee(x, y)) ep->erevealed = 1;
+     *         map_engraving(ep, 0);
+     *     } else {
+     *         map_background(x, y, 0);
+     *     }
+     *
+     * An engraving REPLACES the background glyph. We generate engravings
+     * (js/engrave.js) but drew the plain floor over them, so seed0105's very
+     * first frame was one cell wrong and every one of its 30 steps failed.
+     */
+    const tg = engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y);
     // Only update display/memory if cell is IN_SIGHT (lit and visible)
     if (cansee(x, y)) {
         show_glyph_cell(x, y, tg.ch, tg.color, tg.dec);
@@ -148,6 +163,29 @@ export function newsym(x, y) {
         show_glyph_cell(x, y, loc.remembered_glyph.ch,
             loc.remembered_glyph.color, loc.remembered_glyph.decgfx);
     }
+}
+
+
+// include/engrave.h:50 spot_shows_engravings(), include/display.h:633
+// engraving_to_glyph() -> engraving_to_defsym(), include/defsym.h:114,118.
+//
+// S_engroom and S_engrcorr are both CLR_BRIGHT_BLUE; only the character
+// differs, and it is picked from the terrain the engraving sits on.
+function engraving_glyph(loc, x, y) {
+    const typ = loc?.typ;
+    if (!(typ === CORR || typ === ICE || typ === ROOM))
+        return null;
+
+    const ep = engr_at(x, y);
+    if (!ep)
+        return null;
+
+    /* covers_traps() needs the trap-covering objects; nothing generated on an
+       early level covers an engraving. */
+    if (cansee(x, y))
+        ep.erevealed = 1;
+
+    return { ch: typ === CORR ? '#' : '`', color: CLR_BRIGHT_BLUE, dec: false };
 }
 
 // ── docrt ──

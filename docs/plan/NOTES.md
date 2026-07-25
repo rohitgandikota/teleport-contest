@@ -265,21 +265,24 @@ Only revert when the change cannot be justified against the C source.**
 objects are valid for THIS command. C builds its prompt from that set and, on a
 letter that fails it, prints a refusal and **loops for another key**.
 
-Our port ignores the predicate, so it accepts letters C rejects. When the two
-disagree, C consumes more keys than we do and everything after runs against the
-wrong command.
+**Correction — reading src/invent.c:2056-2072 in full changes this.** The
+re-prompt loop fires ONLY when the typed letter matches no inventory object at
+all (`!otmp`), or the count is bad. A letter that matches an object always
+breaks out of the loop, and `obj_ok(otmp) == GETOBJ_EXCLUDE` then returns NULL
+**without reading another key**. So the predicate does NOT change key
+consumption; it only changes whether the command proceeds.
 
-This is fine for commands whose filter accepts essentially anything carried
-(read, wield, quaff, drop, wear, put on, remove — all wired, all neutral-to-
-positive). It is NOT fine for a restricted one: wiring `doapply` cost a screen
-on seed0077, whose keys include `jaeji` — `a`, then `e` as the object letter,
-which `apply_ok` rejects and C re-prompts for while we accepted it.
+What that means for the `doapply` attempt that cost a screen on seed0077: the
+cause was almost certainly the RETURN VALUE, not the key count. That port
+returned ECMD_TIME for every non-direction apply, so it burned a turn wherever
+C's `use_*()` returns ECMD_OK — a failed or no-op apply. Turn accounting, the
+same bug class as the unhandled `.` command, not misalignment.
 
-**Before wiring any command with a narrow object set** (apply, and anything
-else whose C call passes a real `*_ok` function rather than NULL), port the
-predicate and the refusal loop. Until then such a command is better left
-unhandled: consuming the wrong number of keys is worse than consuming none,
-because the miscount compounds over every later keystroke.
+So the rule is narrower than first written: wiring a getobj command is safe for
+key alignment, but **ECMD_TIME must not be returned unless the C path actually
+takes time.** When the individual effect is unported and its return is unknown,
+return ECMD_OK — an under-counted turn costs less than an invented one, because
+the turn counter feeds monster movement, hunger and the exercise checks.
 
 ## screendiff rows are SCREEN rows, and the map starts at screen row 1
 

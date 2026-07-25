@@ -40,7 +40,7 @@ inventory instead of replaying it.
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
 | **Also open** | **`--More--`** (1108 frames, 40 sessions), **dogmove.c** (7), `mkobj.c:289` (5) |
 | **Blocked on** | nothing |
-| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **111,527/792,838 (14.1%)** · held-out **10.6%** |
+| **Score** | **135/11,405 screens**, 0/44 sessions passing, corpus RNG **112,138/792,838 (14.1%)** · held-out **10.6%** |
 
 ### Pet: object search wired, but seed0102 still does not reach it
 
@@ -579,6 +579,40 @@ and confirm those four really are four separate monsters entering `dochug` —
 rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
 line number. Everything downstream of that assumption has been chased and
 eliminated.
+
+### Monster movement: what is verified, and where seed8000 stands now
+
+The whole path is ported — `dochug` -> `m_move` / `dog_move` -> `mfndpos` ->
+`newdogpos`, plus `mon_allowflags`, `disturb`, `mm_aggression`,
+`mm_displacement`, `bad_rock`, `cant_squeeze_thru`, `dog_invent`, `dog_goal` and
+both choice loops. `js/fastforward.js` is gone.
+
+**The bug that mattered: `distfleeck` is called TWICE per monster**, at
+src/monmove.c:791 before the move and :915 after `m_move` returns unless the
+monster died. We called it once, so every monster's turn cost half C's draws.
+That single line is what made C look like it was moving twice as many monsters,
+and it cost a long chain of eliminated hypotheses to find — all of them now
+recorded above as verified rather than unexamined.
+
+**`mfndpos` is CORRECT.** Instrumented on seed8000: it returns 8 on open floor,
+5 when the bottom row is HWALL, 5 when the left column is VWALL, 6 next to a
+door. Those are right for the terrain it is given.
+
+So seed8000's remaining divergence at call 2999 — `rn2(32)` against our
+`rn2(20)`, i.e. C's `cnt` 8 against our 5 — is **not an mfndpos bug**. It means
+our monster is standing somewhere C's is not by that turn. Since every draw up
+to 2998 matches, the position drift comes from a move APPLIED differently, not a
+draw chosen differently. Look at:
+
+1. Whether our chosen square (`chi` -> `poss[chi]`) is the one C picks when the
+   tie-break draws agree — the scan order is x-outer/y-inner in both, so the
+   candidate list should be index-for-index identical.
+2. `m_move`'s branches we do not port — `m_balks_at_approaching` changes `appr`,
+   and `appr` decides which square wins. A wrong `appr` moves the monster to a
+   different legal square while drawing exactly the same numbers.
+
+(2) is the stronger candidate and would explain a silent position drift with a
+matching stream.
 
 ### The leaderboard, and what it says about our real problem
 

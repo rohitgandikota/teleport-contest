@@ -580,6 +580,46 @@ rather than, say, one monster looping, or an unrelated `rn2(5)` sharing the
 line number. Everything downstream of that assumption has been chased and
 eliminated.
 
+### FOUND: NetHack 5.0 asks "do a tutorial?" at startup — 32 of 44 sessions
+
+`moveloop()` is three lines:
+
+```c
+moveloop_preamble(resuming);
+if (!resuming)
+    maybe_do_tutorial();
+for (;;) moveloop_core();
+```
+
+`maybe_do_tutorial()` (src/allmain.c) calls `ask_do_tutorial()`, and that
+(src/options.c:430) puts up a **two-item menu** — "Yes, do a tutorial" /
+"No, just start play" — whenever `tutorial` was NOT set in the config:
+
+```c
+boolean dotut = flags.tutorial;
+if (!opt_set_in_config[opt_tutorial]) { ...menu... }
+```
+
+If the answer is yes it does `schedule_goto(tut-1)` + `deferred_goto()`, which
+builds the tutorial level — `getbones`, the nhlib shuffle pair, `splev_initlev`,
+`mktrap`, the lot.
+
+**This is a 5.0 feature with no 3.6 equivalent, and it affects 32 of the 44
+public sessions** — every one whose rc does not mention `tutorial`. The 12 that
+do (seed8000 among them, with `!tutorial`) are the ones that have been working.
+
+It explains three things at once:
+- the `getbones` cluster (4 sessions) — C building a second level at startup
+- why seed0009's move string is `Swimmer\ryy  y   yH`: after the name and
+  `\r`, one of those `y` keys answers THIS menu, not the `[ynaq]` prompt
+- a missing menu FRAME in 32 sessions, which is screens as well as RNG
+
+**Port order:** `ask_do_tutorial`'s menu first (it is an ordinary NHW_MENU and
+the window layer already draws those), then whether the recorded answer is yes,
+then `deferred_goto` + the tutorial level build behind it. Getting only the menu
+right already consumes the correct key and unblocks the keystream for 32
+sessions.
+
 ### Next target: goto_level — 4 sessions, one of them at 90.1%
 
 `getbones(bones.c:645)` heads the histogram with 4 sessions, and the tag is

@@ -283,10 +283,22 @@ generation) while the COORDINATES the corridor walk reaches between draws do
 not. That is `dig_corridor`'s path arithmetic — the dix/diy stepping below the
 boulder branch — diverging from C's.
 
-Compare js/mklev.js:1128-1180 against src/sp_lev.c's `dig_corridor` line by
-line. This is a good target: the repro is one cell on one session, the
-suspect function is ~50 lines, and corridors exist on every level in both the
-public and held-out sets.
+**Compared, and `dig_corridor` is NOT the bug.** js/mklev.js:1128-1193 matches
+src/sp_lev.c line for line: the bounds check after the step, the
+`maybe_sdoor(100)` SCORR branch, the boulder branch, the dix/diy
+recomputation, both direction-change arms, the straight-on test and the
+final reversal. No difference.
+
+So with the draw sequence matching and the function matching, the corridor's
+ENDPOINTS must differ — `org` and `dest` come from `join()` (js/mklev.js:1277),
+which derives them from room coordinates via `finddpos()`. Note `finddpos` and
+`good_rm_wall_doorpos` were both verified against C during the earlier seed0004
+investigation, so look at `join()` itself and at what it passes: which rooms it
+pairs, in what order, and the `dosdoor()` placement between them.
+
+The repro is unchanged and still cheap: `node tools/screendiff.mjs seed0105 0`,
+one cell, C has a boulder at map <25,17> and we have three boulders at <52,6>,
+<31,11>, <28,3>.
 
 ### Object POSITIONS differ, not counts — narrowed this iteration
 

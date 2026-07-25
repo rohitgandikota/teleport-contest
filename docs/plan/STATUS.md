@@ -309,6 +309,29 @@ source — traced on seed0105, its seven rooms roll 1,0,0,2,1,1,2 and place at
 three boulders at <52,6>, <31,11>, <28,3> are dig_corridor ones in unseen
 areas.
 
+**RETRACTED — both halves of this lead are wrong. Do not follow it.**
+
+1. `linedup(x, y, x, y, 1)` returns **FALSE** for a point against itself:
+   src/mthrowu.c sets `tbx = ax - bx; tby = ay - by;` and returns FALSE
+   immediately when both are zero. So the early return in
+   `find_random_launch_coord()` does NOT fire on an ordinary level and its two
+   draws ARE live.
+2. seed0105 has no rolling-boulder trap anyway. Its traps are ttyp 15 at
+   <26,19> and ttyp 3 at <46,10>, and `game.unported` contains no
+   `mkroll_launch` entry — so that code path was never reached on this level
+   and cannot be the source of C's boulder at <25,17>.
+
+`mkroll_launch` is still genuinely unported (js/mklev.js:346) and worth porting
+on its own merits, but it is NOT this bug.
+
+**What is still true about the boulder**, all measured: it sits on ROOM floor
+(`typ = 25`), so it is not from `dig_corridor`; `fill_ordinary_room`'s
+random-object loop places only at <11,3> and <30,6> on this level with rolls
+1,0,0,2,1,1,2 that C shares; and our three boulders at <52,6>, <31,11>, <28,3>
+are corridor ones in unseen areas. The source remains unidentified.
+
+--- superseded reasoning below, kept so it is not re-derived ---
+
 **Reconciled — on an ordinary level it costs NO draws.**
 `find_random_launch_coord()` (src/trap.c, 58 lines) does have two unconditional
 draws, `distance = rn1(5, 4)` and `tmp = rn2(N_DIRS)`. But they sit BELOW an

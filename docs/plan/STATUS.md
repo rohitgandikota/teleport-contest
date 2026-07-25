@@ -239,11 +239,21 @@ level generation, so the same objects are being CREATED. They are landing in
 different PLACES.
 
 `somexyspace` was verified identical earlier, and `mkobj_at`/`mksobj_at` now
-place correctly. That leaves the placers that compute their own coordinates
-rather than calling somexyspace — `mineralize()` is the obvious one, scattering
-gold and gems across the whole map with its own `rn2(1000) < goldprob` walk and
-a buried/floor split. Compare our mineralize's coordinate loop against
-src/mklev.c:1519 line by line before looking anywhere else.
+place correctly. **`mineralize()` has now been compared line by line against
+src/mklev.c and matches**, including the `y += 2` / `y += 1` skips that decide
+which squares get tested, and its draws match the recording anyway.
+
+So object placement is probably NOT the cause. The likelier explanation is the
+one already open below: the PET is standing somewhere C's is not, so its
+5-square box covers different squares and finds a different number of objects.
+That is the same silent positional drift that `seed4500` shows at RNG call
+2869, where `mfndpos` returns 5 for us and 7 for C.
+
+**Treat pet/monster drift as ONE bug with three symptoms** (seed0102,
+seed0105, seed4500), not three separate object-placement puzzles. It draws
+nothing, so it needs position instrumentation: dump every monster's <x,y> each
+turn for a session whose screens still match, and find the first turn one sits
+where C's screen says it does not.
 
 ### Still open from before
 

@@ -3,6 +3,8 @@
 ## Where the score stands
 
 **351/11,405 screens (3.1%), 1/44 sessions, corpus RNG 113,910/792,838 (14.4%).**
+New since: js/zap.js (obj_resists), meatmetal, m_consume_obj, healmon, delobj,
+and postmov extracted as the real function it is in C.
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 Up from 199 screens at the start of this stretch — a 76% increase, and every
@@ -66,8 +68,22 @@ C's rn2(100) is `obj_resists(otmp, 5, 95)` at src/mon.c:1482, inside
 `meatmetal()`. A metallivore moved onto a metal object and ate it; we skipped
 straight on to the pet's turn, whose rn2(4) is dog_goal's `!rn2(4)`.
 
-Start with `meatmetal` (src/mon.c:1465, ~75 lines, its only draw is that
-obj_resists). Then `mpickstuff`, which is the one that affects the most turns.
+**`meatmetal` is now ported and wired, and seed0030 still diverges at 6276.**
+So the remaining question is narrower: why does no metallivore reach it there?
+Check, in this order:
+1. whether the monster taking that turn is a pet (meatmetal returns 0 for pets
+   at its first line, and dog.c handles pet eating separately);
+2. whether `OBJ_AT(mtmp.mx, mtmp.my)` is true for it — our `game.level.objects`
+   is one flat list, so confirm the object is actually on that square;
+3. whether the caller is a path that does not yet route through `postmov` —
+   C has five, and only the three ours has were wired.
+
+`postmov` is a real function now (src/monmove.c:1455), NOT the tail of m_move.
+That mattered: the block existed but every early return skipped it, so wiring
+meatmetal in changed nothing until postmov was extracted. src/monmove.c:1773 is
+the pet path, so dog_move's result goes through postmov as well.
+
+Then `mpickstuff`, which affects the most turns of the four.
 
 The visible symptom that led here was seed0030 step 4: C has the kitten at col
 55 and the upstair at 56, we have gold at 55 and the kitten at 56. That is a

@@ -1140,3 +1140,28 @@ Cheap check before starting any port:
 
 Zero means the function is a *state* fix. Its effect shows up in screens or in
 some later function's behaviour, never in `diverge.mjs` directly.
+
+## dat/nhlib.lua replaces math.random; the nhlua.c warning is about the built-in
+
+`src/nhlua.c:2946` carries a warning that looks alarming for a byte-exact port:
+
+    /* XXX Note that math.random uses Lua's built-in xoshiro256**
+     * algorithm regardless of what the rest of the game uses. */
+
+Read alone, that says every `math.random` in `dat/*.lua` draws from a PRNG we do
+not model, and therefore that `shuffle()`, `percent()` and `d()` cost no ISAAC64
+calls. **That conclusion is wrong.** `dat/nhlib.lua:5` overrides the function
+before any level-generation Lua runs:
+
+    math.random = function(...)
+       if (#arg == 1) then return 1 + nh.rn2(arg[1]);
+       elseif (#arg == 2) then return nh.random(arg[1], arg[2] + 1 - arg[1]);
+
+So `math.random(i)` is `1 + rn2(i)`, `math.random(0, 99)` is `nh.random(0, 100)`
+i.e. one `rn2(100)`, and every `shuffle`/`percent`/`d` in the themeroom Lua IS
+on the game stream. The nhlua.c comment describes the built-in that nhlib.lua
+then replaces.
+
+**General shape:** a `dat/*.lua` file can redefine a standard library function,
+so a C-side comment about that function's behaviour may be describing something
+the game never actually calls. Check `dat/nhlib.lua` before trusting one.

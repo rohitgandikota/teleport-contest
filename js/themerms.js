@@ -12,7 +12,7 @@
 
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
-import { percent } from './nhlua.js';
+import { percent, lua_shuffle } from './nhlua.js';
 import { level_difficulty } from './makemon.js';
 import { selection_from_mkroom, selection_iterate,
          selection_filter_percent, selection_numpoints } from './selvar.js';
@@ -74,5 +74,29 @@ export function fill_boulder_room(rm) {
             note_unported_themerms('des.object:boulder');
         else
             note_unported_themerms('des.trap:rolling boulder');
+    });
+}
+
+// dat/themerms.lua:105 "Trap room"
+//
+//     local traps = { "arrow", "dart", "falling rock", "bear",
+//                     "land mine", "sleep gas", "rust", "anti magic" };
+//     shuffle(traps);
+//     local locs = selection.room():percentage(30);
+//     locs:iterate(function(x,y) des.trap(traps[1], x, y) end);
+//
+// shuffle() on eight entries spends rn2(8) down to rn2(2), seven draws, BEFORE
+// the percentage() pass. Only traps[1] is ever used, but the whole shuffle
+// happens regardless.
+export function fill_trap_room(rm) {
+    const traps = ['arrow', 'dart', 'falling rock', 'bear',
+                   'land mine', 'sleep gas', 'rust', 'anti magic'];
+
+    lua_shuffle(traps);
+
+    const locs = selection_filter_percent(selection_from_mkroom(rm), 30);
+
+    selection_iterate(locs, (x, y) => {
+        note_unported_themerms(`des.trap:${traps[0]}`);
     });
 }

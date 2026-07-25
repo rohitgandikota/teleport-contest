@@ -278,7 +278,6 @@ function merged_p(otmp, obj) {
     note_unported_lev('merged');
     return false;
 }
-function sobj_at(otyp, x, y) { return false; }
 
 // set_corpsenm stub
 function set_corpsenm(otmp, pm) { /* stub */ }

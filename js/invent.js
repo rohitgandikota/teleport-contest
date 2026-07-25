@@ -132,6 +132,25 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
     }
 }
 
+// src/invent.c:1466 sobj_at() — try to find a particular type of object at
+// designated map location.
+//
+// C walks svl.level.objects[x][y] through ->nexthere. This port keeps one flat
+// list that place_object() PREPENDS to, so filtering it in order yields the
+// same relative order the per-square chain would.
+//
+// It was stubbed to a bare `false` in two files. Everything that asks "is there
+// a boulder here" (mfndpos' Sokoban arm, a pet's dig check) or "is there a
+// scroll of scare monster here" (onscary) got NO from a function that had never
+// looked, which is a wrong answer rather than a missing one.
+export function sobj_at(otyp, x, y) {
+    for (const otmp of (game.level.objects || []))
+        if (otmp.ox === x && otmp.oy === y && otmp.otyp === otyp)
+            return otmp;
+
+    return null;
+}
+
 function note_unported_invent(what) {
     (game.unported ||= new Set()).add(what);
 }

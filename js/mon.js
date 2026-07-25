@@ -7,8 +7,12 @@
 // with the wrong number of monsters desynchronises on its very first turn.
 
 import { game } from './gstate.js';
+import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { rn2 } from './rng.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+import {
+    bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
+} from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver } from './dog.js';
 import { is_rider } from './makemon.js';
@@ -248,16 +252,6 @@ export function t_at(x, y) {
     return (game.level?.traps || []).find(t => t.tx === x && t.ty === y) || null;
 }
 
-// src/hack.c:939 bad_rock() — is this square one a monster cannot walk through?
-// The Sokoban boulder case needs sobj_at, which is not ported; no public
-// session reaches Sokoban.
-function bad_rock(mdat, x, y) {
-    const t = game.level?.at(x, y)?.typ;
-    if (t === undefined) return true;
-    return IS_OBSTRUCTED(t)
-        && (!tunnels(mdat) || needspick(mdat))
-        && !passes_walls(mdat);
-}
 
 // src/hack.c:953 cant_squeeze_thru() — 0 means it CAN squeeze. A small monster
 // slips between two walls diagonally; a big one does not.
@@ -276,15 +270,13 @@ function cant_squeeze_thru(mon) {
 }
 
 /* include/mondata.h */
-const bigmonst     = (d) => d.msize >= MFLAGS.MZ_LARGE;
-const amorphous    = (d) => (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0;
+
+
 /* include/mondata.h:57 — vortices and the air elemental, by symbol not flag */
-const is_whirly    = (d) => d.mlet === MONSYMS.S_VORTEX
-                         || d.pmidx === PMNAMES.PM_AIR_ELEMENTAL;
+
 /* include/mondata.h:31 — ghosts */
-const noncorporeal = (d) => d.mlet === MONSYMS.S_GHOST;
-const slithy       = (d) => (d.mflags1 & MFLAGS.M1_SLITHY) !== 0;
-const needspick    = (d) => (d.mflags1 & MFLAGS.M1_NEEDPICK) !== 0;
+
+
 
 function note_unported_mon(what) {
     (game.unported ||= new Set()).add(what);
@@ -356,16 +348,12 @@ export function mon_allowflags(mtmp) {
 }
 
 /* include/mondata.h — the body-plan predicates mon_allowflags consults. */
-const nohands    = (d) => (d.mflags1 & MFLAGS.M1_NOHANDS) !== 0;
-const verysmall  = (d) => d.msize < MFLAGS.MZ_SMALL;
-const is_giant   = (d) => (d.mflags2 & MFLAGS.M2_GIANT) !== 0;
-const tunnels    = (d) => (d.mflags1 & MFLAGS.M1_TUNNEL) !== 0;
-const passes_walls = (d) => (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
-const throws_rocks = (d) => (d.mflags2 & MFLAGS.M2_ROCKTHROW) !== 0;
-const passes_bars  = (d) => (d.mflags1 & MFLAGS.M1_UNSOLID) !== 0
-                         || (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0
-                         || (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0
-                         || d.msize <= MFLAGS.MZ_SMALL;
+
+
+
+
+
+
 
 // src/mon.c:2428 mm_aggression() — may `magr` attack `mdef`?
 export function mm_aggression(magr, mdef) {
@@ -408,7 +396,7 @@ export function mm_displacement(magr, mdef) {
 }
 
 /* include/mondata.h */
-const is_displacer = (d) => (d.mflags3 & MFLAGS.M3_DISPLACES) !== 0;
+
 // src/mon.c:362 zombie_maker() — by CLASS, not by flag. There is no
 // M3_ZOMBIFIER; reading one gave undefined and the predicate was always false.
 function zombie_maker(mon) {
@@ -522,8 +510,7 @@ export function can_carry(mtmp, otmp) {
    can_touch_safely() covers cockatrice corpses and acidic items for a monster
    without the matching resistance; neither can be on a floor before the corpse
    and resistance code lands. */
-const notake = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOTAKE) !== 0;
-const strongmonst = (ptr) => (ptr.mflags2 & MFLAGS.M2_STRONG) !== 0;
+
 
 // src/mon.c can_touch_safely() — would picking this up hurt the monster?
 //
@@ -550,7 +537,6 @@ function can_touch_safely(mtmp, otmp) {
 }
 
 // include/mondata.h is_covetous()
-const is_covetous = (ptr) => (ptr.mflags3 & MFLAGS.M3_COVETOUS) !== 0;
 
 /* src/mondata.c resists_ston() needs the resistance tables. */
 function resists_ston(mon) {

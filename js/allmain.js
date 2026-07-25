@@ -109,6 +109,9 @@ export async function newgame() {
         g.urole = roles[g.flags.initrole];
         g.urace = races[g.flags.initrace];
         g.u.ulevel = 0;
+        /* C's `u` is a static struct, so u.ualign exists before newhp() writes
+           into it at src/attrib.c:1091. */
+        g.u.ualign = { type: 0, record: 0, abuse: 0 };
         g.u.uhp = g.u.uhpmax = newhp();
         g.u.uen = g.u.uenmax = newpw();
 
@@ -122,11 +125,7 @@ export async function newgame() {
         // starts from mons[u.umonnum].ac, so a hero without it has no base AC.
         g.u.umonnum = g.u.umonster = g.urole.mnum;
         g.u.ulevel = g.u.ulevelmax = 1;
-        g.u.ualign = {
-            type: aligns[g.flags.initalign].value,
-            record: 0,
-            abuse: 0,
-        };
+        /* type and record were filled by newhp() above, where C sets them. */
         // src/u_init.c:1006 — ualignbase[A_CURRENT] and [A_ORIGINAL] track the
         // alignment the hero started with; convert_arg()'s %d, %G and %a all
         // read [A_ORIGINAL], so the legacy text needs it.

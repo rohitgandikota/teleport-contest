@@ -931,15 +931,44 @@ export function create_monster(m, croom) {
         return null;
     }
 
-    return makemon(pm, x, y, m.mm_flags);
+    const mtmp = makemon(pm, x, y, m.mm_flags);
+
+    if (mtmp) {
+        /* src/sp_lev.c create_monster() — both are plain state, no draws.
+           BOOL_RANDOM is -1 (include/global.h:103), so "leave it to makemon"
+           and "explicitly awake" are DIFFERENT values and the test is `>`. */
+        if (m.asleep > BOOL_RANDOM)
+            mtmp.msleeping = m.asleep;
+
+        if (m.appear_as) {
+            /* "obj:chest" -> M_AP_OBJECT with the object's index */
+            const [kind, what] = m.appear_as.split(':');
+            if (kind === 'obj') {
+                let i = 0;
+                for (; i < game.objects.length; i++)
+                    if (OBJ_NAME(game.objects[i]) === what)
+                        break;
+                if (i < game.objects.length) {
+                    mtmp.m_ap_type = M_AP_OBJECT;
+                    mtmp.mappearance = i;
+                } /* else impossible("can't find object") */
+            } else {
+                note_unported(`create_monster:appear_as:${kind}`);
+            }
+        }
+    }
+    return mtmp;
 }
+
+// include/global.h:103 BOOL_RANDOM, include/monst.h:54 M_AP_OBJECT.
+const BOOL_RANDOM = -1, M_AP_OBJECT = 2;
 
 // src/sp_lev.c:3214 lspo_monster() — the des.monster() verb, simple forms.
 export function lspo_monster(idOrClass, x, y, opts) {
     const m = {
         id: NON_PM, class: -1, coord: 0,
         sp_amask: AM_SPLEV_RANDOM,
-        mm_flags: 0, peaceful: -1,
+        mm_flags: 0, peaceful: -1, asleep: BOOL_RANDOM, appear_as: null,
     };
 
     if (typeof idOrClass === 'string' && idOrClass.length === 1)
@@ -954,8 +983,8 @@ export function lspo_monster(idOrClass, x, y, opts) {
               ? SP_COORD_PACK_RANDOM(0)
               : SP_COORD_PACK(x, y);
 
-    if (opts?.asleep)   note_unported('lspo_monster:asleep');
-    if (opts?.appear_as) note_unported('lspo_monster:appear_as');
+    m.asleep = (opts?.asleep === undefined) ? BOOL_RANDOM : (opts.asleep ? 1 : 0);
+    m.appear_as = opts?.appear_as ?? null;
 
     return create_monster(m, game.coder?.croom ?? null);
 }

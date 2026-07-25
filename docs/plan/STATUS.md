@@ -43,7 +43,7 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: `des.room()`. The themerooms are 28% of random games.
+## Do this first: `m_dowear` (20%). The themerooms are 28% but need a whole new subsystem first -- see below.
 
 `merged` WAS this entry at 58% and is now ported; it no longer appears on the
 reached-unported list at all. Latest `tools/generalize.mjs` run:
@@ -136,9 +136,29 @@ then go silent exactly where C keeps drawing, which moves several sessions'
 divergence EARLIER. That is precisely a 915-position loss with no screen change.
 
 **Therefore: do not port the themed-fill themerooms without porting the fills
-they call.** They are one change, not two. Start with the fills whose bodies are
-shortest ("Ice room" is `percent(25)` then a timer per square; "Boulder room" is
-`percent(50)` in a loop) and only then wire lspo_room's option handling.
+they call.** They are one change, not two.
+
+**And this is bigger than "15 short functions" — checked.** Every fill body is
+written against the *selection API*, which is a whole file we do not have:
+`src/nhlsel.c`, 1051 lines. The shortest fill still needs most of it:
+
+    -- "Ice room", the smallest one
+    local ice = selection.room();          -- selection.room()
+    des.terrain(ice, "I");                 -- des.terrain over a selection
+    if (percent(25)) then ... ice:iterate(ice_melter) end   -- :iterate, timers
+
+    -- "Boulder room"
+    local locs = selection.room():percentage(30);  -- :percentage DRAWS
+    locs:iterate(function(x,y) ... des.object / des.trap ... end)
+
+So the real unit of work is: `js/nhlsel.js` mirroring src/nhlsel.c (selection
+create/room/percentage/iterate/filter), then `des.terrain`/`des.object`/
+`des.trap` over a selection, then the fills, then lspo_room's option handling.
+That is a multi-session subsystem, not an afternoon.
+
+Given that, **`m_dowear` (20%, self-contained, no new subsystem) is the better
+next target after all**, even though the themerooms are 28%. Revisit the
+themerooms once nhlsel.js exists for some other reason.
 
 ## How to pick a target (this is the part that matters)
 

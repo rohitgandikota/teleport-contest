@@ -368,6 +368,7 @@ function render_page(cw, page, display) {
     /* dmore(): int offset = (cw->type == NHW_TEXT) ? 1 : 2; and tty_curs is
        1-based, so a text window's prompt starts at column offx and a menu's at
        offx + 1. */
+    tty_curs_base(cw.offx + ((cw.type === NHW_TEXT) ? 1 : 2), footerRow);
     let col = cw.offx + ((cw.type === NHW_TEXT) ? 0 : 1);
     for (let i = 0; i < cw.morestr.length && col < COLS; i++, col++)
         display.setCell(col, footerRow, cw.morestr[i], NO_COLOR, 0);
@@ -423,6 +424,8 @@ function process_menu_window(cw, page, display) {
     const morestr = (cw.npages > 1) ? `(${page + 1} of ${cw.npages})`
                                     : cw.morestr;
     const footerRow = cw.offy + items.length;
+    /* dmore() re-homes the BASE_WINDOW cursor before writing the prompt */
+    tty_curs_base(cw.offx + 2, footerRow);
     let col = cw.offx + 1;              /* dmore(): offset 2, tty_curs is 1-based */
     for (let i = 0; i < morestr.length && col < COLS; i++, col++)
         display.setCell(col, footerRow, morestr[i], NO_COLOR, 0);
@@ -473,9 +476,16 @@ export function tty_next_page(window) {
 // occupied. The C also refreshes the map underneath; during role selection the
 // glyph buffer is empty, so blanking is all of it.
 function docorner(xmin, ymax, display) {
-    for (let y = 0; y < Math.min(ymax, ROWS); y++)
+    let y = 0;
+    for (; y < Math.min(ymax, ROWS); y++) {
+        /* the C moves the BASE_WINDOW cursor once per row, and the position it
+           is left in is what the NEXT tty_putstr(BASE_WINDOW) writes over. A
+           second "Who are you?" after 'a' on the confirmation menu lands on the
+           row below the dismissed menu because of exactly this. */
+        tty_curs_base(xmin, y);
         for (let x = xmin; x < COLS; x++)
             display.setCell(x, y, ' ', NO_COLOR, 0);
+    }
 }
 
 // win/tty/wintty.c erase_menu_or_text()

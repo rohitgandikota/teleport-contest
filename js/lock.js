@@ -13,27 +13,11 @@ import {
     D_TRAPPED, IS_DOOR, ECMD_OK, ECMD_TIME,
 } from './const.js';
 import { newsym } from './display.js';
-import { exercise } from './attrib.js';
+import { exercise, acurrstr, ACURR } from './attrib.js';
 import { get_adjacent_loc } from './cmd.js';
 
 function note_unported_lock(what) {
     (game.unported ||= new Set()).add(what);
-}
-
-// include/attrib.h:25 ACURRSTR / ACURR(). Exceptional Strength is stored above
-// 18 as 18/xx, and acurrstr() folds that back to a plain number.
-function ACURR(i) {
-    return game.u.acurr.a[i];
-}
-
-function acurrstr() {
-    const str = ACURR(A_STR);
-
-    if (str <= 18)
-        return str;
-    if (str <= 121)
-        return 19 + Math.trunc((str - 18) / 2); /* 18/01..18/99 -> 19..69 */
-    return str - 100;
 }
 
 // include/mondata.h verysmall()

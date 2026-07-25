@@ -231,13 +231,13 @@ export function mfndpos(mon, data, flag) {
 }
 
 /* src/mon.c m_at() */
-function m_at(x, y) {
+export function m_at(x, y) {
     return (game.level?.monsters || []).find(m => m.mx === x && m.my === y
                                                   && m.mhp > 0) || null;
 }
 
 /* src/trap.c t_at() */
-function t_at(x, y) {
+export function t_at(x, y) {
     return (game.level?.traps || []).find(t => t.tx === x && t.ty === y) || null;
 }
 

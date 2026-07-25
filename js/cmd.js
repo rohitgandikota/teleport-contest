@@ -15,6 +15,7 @@ import {
 } from './tty/wintty.js';
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir } from './lock.js';
+import { ECMD_OK } from './invent.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt } from './display.js';
@@ -137,6 +138,58 @@ function note_unported_cmd(what) {
     (game.unported ||= new Set()).add(what);
 }
 
+// win/tty/getline.c hooked_tty_getlin() — read a line of text.
+//
+// The completion hook rewrites what is DISPLAYED as you type; it never changes
+// which keys are consumed. Consumption is what matters here: a command line
+// left unread turns its own letters into commands, which is what "#jump\n"
+// was doing — j and u moved the hero and the rest were swallowed.
+export async function getlin(query) {
+    let buf = '';
+
+    for (;;) {
+        const c = String.fromCharCode(await nhgetch());
+
+        if (c === '\x1b') {                 /* ESC abandons the line */
+            return '\x1b';
+        } else if (c === '\n' || c === '\r') {
+            break;
+        } else if (c === '\b' || c === '\x7f') {
+            buf = buf.slice(0, -1);
+        } else if (c >= ' ' && c !== '\x7f') {
+            buf += c;
+        }
+    }
+    return buf;
+}
+
+// win/tty/getline.c:292 tty_get_ext_cmd() — read an extended command name and
+// match it against extcmdlist.
+async function get_ext_cmd() {
+    const buf = (await getlin('#')).trim();
+
+    if (buf === '' || buf === '\x1b')
+        return null;
+    /* extcmds_match with ECM_EXACTMATCH: the hook has already completed the
+       text, so C matches the whole name. */
+    return buf;
+}
+
+// src/cmd.c:495 doextcmd() — dispatch an extended command.
+//
+// The individual commands are not ported. What IS ported is reading the whole
+// name off the input, because a session that issues one and does not have it
+// consumed runs every later keystroke against the wrong command.
+export async function doextcmd() {
+    const name = await get_ext_cmd();
+
+    if (name === null)
+        return ECMD_OK; /* quit */
+
+    note_unported_cmd(`extcmd:${name}`);
+    return ECMD_OK;
+}
+
 export async function rhack(key) {
     if (key === 0) {
         // Read key from input
@@ -170,6 +223,10 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === '#') {
+        // src/cmd.c cmdlist — '#' is doextcmd, which reads the command name
+        // off the input before doing anything.
+        game.context.move = (await doextcmd() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'o') {
         // src/cmd.c cmdlist — 'o' is doopen. It reads a direction key of its
         // own, so skipping it would put the whole session out of step.

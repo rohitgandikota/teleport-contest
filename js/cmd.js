@@ -13,13 +13,14 @@ import {
     tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
     NHW_TEXT, NHW_MENU, ATR_NONE,
 } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
+import { doopen, doopen_indir } from './lock.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt } from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
-         IS_WALL, IS_OBSTRUCTED } from './const.js';
+         IS_WALL, IS_OBSTRUCTED, IS_DOOR } from './const.js';
 import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell } from './spell.js';
@@ -47,6 +48,19 @@ const KNOWN_UNPORTED = new Set([
 ]);
 
 // C ref: hack.c — check if a cell blocks movement
+// include/rm.h closed_door()
+function closed_door(x, y) {
+    const loc = game.level?.at(x, y);
+    return !!(loc && IS_DOOR(loc.typ) && (loc.doormask & (D_CLOSED | D_LOCKED)));
+}
+
+/* src/allmain.c — autoopen defaults on and none of the recorded rc files turn
+   it off, but read the option rather than assuming so an rc that does is
+   honoured. */
+function flags_autoopen() {
+    return game.flags?.autoopen !== false;
+}
+
 function blocksMove(x, y) {
     const loc = game.level?.at(x, y);
     if (!loc) return true;
@@ -57,6 +71,72 @@ function blocksMove(x, y) {
 }
 
 // C ref: cmd.c rhack — main command dispatcher
+// src/cmd.c confdir() — a confused or stunned hero moves in a random direction.
+// u_maybe_impaired() is false while the property subsystem is absent, so this
+// draws nothing yet; it is written out so the draw lands in the right place
+// when Confusion becomes reachable.
+function confdir(force_impairment) {
+    if (force_impairment || u_maybe_impaired()) {
+        note_unported_cmd('confdir:impaired');
+    }
+}
+
+// src/hack.c u_maybe_impaired()
+function u_maybe_impaired() {
+    return !!(game.u.uprops?.CONFUSION || game.u.uprops?.STUNNED);
+}
+
+// src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.
+//
+// Only the plain movement-key path is reachable from a recorded session; the
+// mouse, help and fuzzer arms all need input this port does not receive. The
+// key IS consumed either way, so a caller that skips getdir leaves the session
+// one keystroke out of step, not merely one draw.
+export async function getdir(s) {
+    const dirsym = String.fromCharCode(await nhgetch());
+
+    if (dirsym === '.' || dirsym === 's') {
+        game.u.dx = game.u.dy = game.u.dz = 0;
+        return true;
+    }
+    if (dirsym === '<' || dirsym === '>') {
+        game.u.dx = game.u.dy = 0;
+        game.u.dz = (dirsym === '<') ? -1 : 1;
+        return true;
+    }
+    if (!isMovementKey(dirsym)) {
+        /* "What a strange direction!" — no draw, no turn */
+        return false;
+    }
+    game.u.dx = DIR_DX[dirsym];
+    game.u.dy = DIR_DY[dirsym];
+    game.u.dz = 0;
+
+    if (!game.u.dz)
+        confdir(false);
+    return true;
+}
+
+// src/cmd.c get_adjacent_loc()
+export async function get_adjacent_loc(prompt, emsg, x, y, cc) {
+    if (!await getdir(prompt))
+        return 0; /* pline1(Never_mind) */
+
+    const new_x = x + game.u.dx;
+    const new_y = y + game.u.dy;
+    if (cc && isok(new_x, new_y)) {
+        cc.x = new_x;
+        cc.y = new_y;
+    } else {
+        return 0;
+    }
+    return 1;
+}
+
+function note_unported_cmd(what) {
+    (game.unported ||= new Set()).add(what);
+}
+
 export async function rhack(key) {
     if (key === 0) {
         // Read key from input
@@ -90,6 +170,10 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === 'o') {
+        // src/cmd.c cmdlist — 'o' is doopen. It reads a direction key of its
+        // own, so skipping it would put the whole session out of step.
+        game.context.move = (await doopen() === ECMD_TIME ? 1 : 0);
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.
@@ -112,6 +196,20 @@ async function domove(dx, dy) {
     const u = game.u;
     const newx = u.ux + dx;
     const newy = u.uy + dy;
+
+    /* src/hack.c:1097 — walking into a closed door opens it, and doopen_indir()
+       is where the rnl(20) is spent. autoopen is on by default, so a session
+       never needs to press 'o' for this draw to happen; it fires on the first
+       step into a doorway. */
+    if (closed_door(newx, newy)
+        && flags_autoopen() && !game.context.run
+        && !game.u.uprops?.CONFUSION && !game.u.uprops?.STUNNED
+        && !game.u.uprops?.FUMBLING) {
+        await doopen_indir(newx, newy);
+        game.context.door_opened = !closed_door(newx, newy);
+        game.context.move = 0; /* (ux != u.ux || uy != u.uy) */
+        return;
+    }
 
     if (blocksMove(newx, newy)) {
         // Can't move there

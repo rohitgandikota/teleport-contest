@@ -43,7 +43,22 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: `m_dowear` (20%). The themerooms are 28% but need a whole new subsystem first -- see below.
+## Do this first: `update_mon_extrinsics` (8%), then the themerooms
+
+`merged` (was 58%) and `m_dowear` (was 20%) are both ported and gone from the
+reached-unported list. Latest `tools/generalize.mjs`:
+
+      8%  update_mon_extrinsics     <-- next, src/worn.c, inside m_dowear_type
+      5%  themeroom Default room with themed fill
+      5%  themeroom Unlit room with themed fill
+      3%  (six more themerooms, one themeroom_fill)
+
+`update_mon_extrinsics` needs monster intrinsics, which this port does not
+track at all yet -- check whether that is a small struct addition or a real
+subsystem before committing to it.
+
+The themerooms are still 28% collectively but need src/nhlsel.c (1051 lines)
+first; see below.
 
 `merged` WAS this entry at 58% and is now ported; it no longer appears on the
 reached-unported list at all. Latest `tools/generalize.mjs` run:

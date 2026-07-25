@@ -116,10 +116,30 @@ RNG** against the current 134 / 109589, and **seed0002 does not move at all**
 reads, or something downstream of a non-zero record regresses more than it
 gains. Reverted.
 
-Next step is not to re-derive the above: instrument a Healer run and print
-`game.u.ualign.record` at the moment `peace_minded` is called. If it is 10 there
-and the draw is still rn2(16), the bug is in our peace_minded, not in the
-initialisation.
+**Instrumented, and the answer is neither.** A probe on the final line of
+`peace_minded()` records ZERO calls across the whole of seed0002 — our port
+never reaches the function. `js/makemon.js`'s peace_minded is itself a faithful
+port of the C, final draws included; it simply is not called where C calls it.
+So the `rn2(16)` we emit at call 2206 comes from somewhere else entirely, and
+the `peace_minded` tag in the diverge output is C's label for that position,
+not ours.
+
+Two things fell out of that probe that need explaining before anything here is
+touched again:
+
+- **`game.urole.name.m` reads "Rambler" after the run.** Rambler is a Tourist
+  RANK TITLE, not a role name; no entry in `roles[]` is called that. Something
+  is assigning a rank record over `game.urole`. `js/botl.js` `rank_of()` /
+  `xlev_to_rank()` are the obvious suspects. If `urole` is clobbered mid-game
+  then every role-derived draw after that point is wrong, which would matter far
+  beyond peace_minded.
+- **seed0002 pins nothing** (`OPTIONS=symset:DECgraphics`), so its Healer comes
+  from interactive chargen. Confirm our chargen actually selects Healer before
+  blaming anything downstream.
+
+Do NOT re-attempt the newhp/initrecord change until those two are settled. It
+measured 132 screens / 108385 RNG against 134 / 109589 and moved seed0002 not at
+all, which is exactly what you would expect if peace_minded never runs.
 
 ### A faithful fix that made the score go DOWN — land it with its partner
 

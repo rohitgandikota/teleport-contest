@@ -43,7 +43,27 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## The single biggest lever: SEVEN sessions block on level transition.
+## Do this next: goto_level. Measured.
+
+    goto_level      src/do.c   520 lines  4 draws   <- the work
+    dodown          src/do.c   164 lines  2 draws
+    doup            src/do.c    47 lines  0 draws
+    schedule_goto              15 lines  0 draws
+    deferred_goto              30 lines  0 draws
+
+520 lines is the headline number and it overstates the job: much of goto_level
+is save/restore for REVISITING a level (save_currentstate, the level-file
+read/write, mapseen bookkeeping). A first descent to an unvisited level takes
+the mklev() path, and mklev() is already ported and working -- that is exactly
+why the seven sessions' first mismatch lands on getbones, mklev's first draw.
+
+So the port order is: the descend path only (dodown -> goto_level's new-level
+arm -> mklev), with the revisit/save arms recorded. Then u_on_dnstairs and
+losedogs, which put the hero and the pets on the new level.
+
+`<` and `>` already reach js/cmd.js:119; they currently do nothing.
+
+## The tally that produced this, for reference:
 
 Tallying the first mismatching function across all 44 sessions:
 

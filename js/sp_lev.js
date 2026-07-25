@@ -723,7 +723,7 @@ export function create_object(o, croom) {
 
     if (!(o.containment & SP_OBJ_CONTENT)) {
         if (o.buried)
-            note_unported('create_object:bury_an_obj');
+            bury_an_obj(otmp);
     }
 
     /* quantity, lit, eroded, locked, trapped and name still record. */
@@ -818,6 +818,46 @@ export const get_table_buc = (v) => {
 const SP_OBJ_CONTENT = 0x01, SP_OBJ_CONTAINER = 0x02;
 const container_obj = [];
 
+// src/dig.c bury_an_obj() — move an object into the buried list.
+//
+// The draw that matters here is obj_resists(otmp, 0, 0). With both chances 0
+// the test `chance < 0` can never be true, so it always returns FALSE -- and it
+// STILL spends its rn2(100). Skipping the call because its answer is known is
+// the "computed and discarded" trap: the answer is constant, the draw is not.
+//
+// The second is start_timer's rnd(250) for organic material, gated on another
+// obj_resists(otmp, 5, 95) which draws whether or not it passes.
+export function bury_an_obj(otmp) {
+    if (obj_resists(otmp, 0, 0))
+        return;                         /* Riders, Amulet, invocation tools */
+
+    obj_extract_self(otmp);
+
+    const under_ice = game.level?.at(otmp.ox, otmp.oy)?.typ === ICE;
+
+    if ((otmp.otyp === ONAMES.ROCK && !under_ice)
+        || otmp.otyp === ONAMES.BOULDER) {
+        /* merges into the burying material */
+        return;                         /* obfree() */
+    }
+
+    if (otmp.otyp === ONAMES.CORPSE) {
+        /* already handled; should cancel the timer if under ice */
+    } else if ((under_ice ? (otmp.oclass === OCLASSES.POTION_CLASS)
+                          : is_organic(otmp))
+               && !obj_resists(otmp, 5, 95)) {
+        rnd(250);                       /* start_timer ROT_ORGANIC delay */
+        note_unported('bury_an_obj:start_timer');
+    }
+
+    (game.level.buriedobjs ||= []).push(otmp);   /* add_to_buried() */
+    otmp.where = OBJ_BURIED;
+}
+
+// include/obj.h is_organic()
+const is_organic = (o) => game.objects[o.otyp].oc_material <= MATERIALS.WOOD;
+
+const OBJ_BURIED = 6;
 const STRANGE_OBJECT = 0;
 
 // src/drawing.c def_char_to_objclass() — a class symbol to its class index.

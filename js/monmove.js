@@ -7,7 +7,7 @@
 
 import { game } from './gstate.js';
 import { sobj_at } from './invent.js';
-import { m_carrying } from './mon.js';
+import { m_carrying, meatmetal } from './mon.js';
 import { metallivorous, corpse_eater } from './mondata.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
@@ -720,7 +720,8 @@ export function m_move(mtmp, after) {
            path where the caller returns immediately. */
         const st = { mmoved: MMOVE_NOTHING, appr };
         if (m_search_items(mtmp, goal, st)) {
-            return MMOVE_DONE; /* C returns postmov(...) */
+            /* src/monmove.c:1799 — C returns through postmov() here too. */
+            return postmov(mtmp, ptr, omx, omy, MMOVE_DONE);
         }
         ggx = goal.x; ggy = goal.y; appr = st.appr;
     }
@@ -779,32 +780,36 @@ export function m_move(mtmp, after) {
         place_monster(mtmp, nix, niy);
     }
 
-    /* src/monmove.c:1660 — everything a monster does AFTER arriving.
-     *
-     * This block was absent entirely, which means no monster has ever eaten
-     * anything off the floor and no monster has ever picked anything up. It is
-     * the first divergence in seed0030 (call 6276): C spends obj_resists'
-     * rn2(100) inside meatmetal() and we go straight on to the next monster.
-     *
-     * The predicates are ported so the gap is recorded per-species on the
-     * reached-unported worklist rather than being invisible; the four
-     * functions themselves are not, and each one draws.
-     */
+    return postmov(mtmp, ptr, omx, omy, mmoved);
+}
+
+// src/monmove.c:1455 postmov() — everything a monster does after arriving.
+//
+// This is a SEPARATE FUNCTION in C, not the tail of m_move, and m_move returns
+// through it from five different places (:1773, :1799, :1823, :1847, :1907).
+// Writing it as a tail meant every early return skipped it, which is why
+// wiring meatmetal() in changed nothing: the block was there but unreachable
+// on the paths that mattered. :1773 is the pet path, so dog_move()'s result
+// goes through here too.
+function postmov(mtmp, ptr, omx, omy, mmoved) {
     if (mmoved === MMOVE_MOVED || mmoved === MMOVE_DONE) {
         if (OBJ_AT(mtmp.mx, mtmp.my) && mtmp.mcanmove) {
             /* Maybe a rock mole just ate some metal object */
-            if (metallivorous(ptr))
-                note_unported('m_move:meatmetal');
+            if (metallivorous(ptr)) {
+                if (meatmetal(mtmp) === 2)
+                    return MMOVE_DIED; /* it died */
+            }
 
             /* Maybe a cube ate just about anything */
             if (ptr.pmidx === PMNAMES.PM_GELATINOUS_CUBE)
-                note_unported('m_move:meatobj');
+                note_unported('postmov:meatobj');
 
             /* Maybe a purple worm ate a corpse */
             if (corpse_eater(ptr))
-                note_unported('m_move:meatcorpse');
+                note_unported('postmov:meatcorpse');
 
-            note_unported('m_move:mpickstuff');
+            /* mpickstuff() draws; it is the one that affects the most turns. */
+            note_unported('postmov:mpickstuff');
         }
     }
     return mmoved;

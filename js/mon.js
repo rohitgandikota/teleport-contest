@@ -9,6 +9,9 @@
 import { game } from './gstate.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
+import { obj_resists } from './zap.js';
+import { mksobj_at } from './mkobj.js';
+import { newsym } from './display.js';
 import { rn2 } from './rng.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import {
@@ -271,6 +274,125 @@ export function t_at(x, y) {
     return (game.level?.traps || []).find(t => t.tx === x && t.ty === y) || null;
 }
 
+
+// src/mon.c healmon() — heal a monster, raising mhpmax only past `overheal`.
+export function healmon(mtmp, amt, overheal) {
+    const oldhp = mtmp.mhp;
+
+    if (mtmp.mhp + amt > mtmp.mhpmax + overheal) {
+        mtmp.mhpmax += overheal;
+        mtmp.mhp = mtmp.mhpmax;
+    } else {
+        mtmp.mhp += amt;
+        if (mtmp.mhp > mtmp.mhpmax)
+            mtmp.mhpmax = mtmp.mhp;
+    }
+    return mtmp.mhp - oldhp;
+}
+
+// src/mon.c m_consume_obj() — the monster swallows otmp.
+//
+// Every arm past delobj() is gated on a corpse, glob, egg or container
+// predicate. For the metal object meatmetal() feeds it none of them can be
+// true, so this is the whole function on that path rather than a reduction of
+// it; the guards are the C's own, evaluated, not assumed.
+function m_consume_obj(mtmp, otmp) {
+    const ispet = mtmp.mtame;
+
+    /* non-pet: Heal up to the object's weight in hp */
+    if (!ispet && mtmp.mhp < mtmp.mhpmax)
+        healmon(mtmp, game.objects[otmp.otyp].oc_weight, 0);
+
+    if (otmp.cobj && otmp.cobj.length) {
+        note_unported_mon('m_consume_obj:meatbox');
+        return;
+    }
+
+    const corpsenm = (otmp.otyp === ONAMES.CORPSE) ? otmp.corpsenm : NON_PM;
+    if (corpsenm !== NON_PM || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
+        || otmp.otyp === ONAMES.EGG || otmp.otyp === ONAMES.CARROT) {
+        /* polyfood/mlevelgain/mhealup/mstoning and their newcham, grow_up,
+           monstone and mon_givit consequences; all draw. */
+        note_unported_mon('m_consume_obj:corpse_effects');
+        return;
+    }
+
+    delobj(otmp); /* munch */
+}
+
+// src/mkobj.c delobj() — take the object off the floor and free it.
+function delobj(obj) {
+    const objs = game.level?.objects;
+    if (!objs) return;
+    const i = objs.indexOf(obj);
+    if (i >= 0) objs.splice(i, 1);
+}
+
+// src/mon.c:1465 meatmetal() — a rock mole or similar eats the topmost metal
+// object it is standing on.
+//
+// Reached from m_move()'s post-move block. Its rn2(100) is obj_resists', and
+// it is the first call seed0030 diverges on.
+export function meatmetal(mtmp) {
+    /* If a pet, eating is handled separately, in dog.c */
+    if (mtmp.mtame)
+        return 0;
+
+    /* Eats topmost metal object if it is there */
+    for (const otmp of (game.level?.objects || [])
+                         .filter(o => o.ox === mtmp.mx && o.oy === mtmp.my)) {
+        /* Don't eat indigestible/choking/inappropriate objects */
+        if ((game.mons[mtmp.mnum].pmidx === PMNAMES.PM_RUST_MONSTER
+             && !is_rustprone(otmp))
+            || (otmp.otyp === ONAMES.AMULET_OF_STRANGULATION
+                || otmp.otyp === ONAMES.RIN_SLOW_DIGESTION)
+            || (otmp.opoisoned && !resists_poison(mtmp)))
+            continue;
+        if (is_metallic(otmp) && !obj_resists(otmp, 5, 95)
+            && touch_artifact(otmp, mtmp)) {
+            if (game.mons[mtmp.mnum].pmidx === PMNAMES.PM_RUST_MONSTER
+                && otmp.oerodeproof) {
+                /* The object's rustproofing is gone now */
+                otmp.oerodeproof = 0;
+                mtmp.mstun = 1;
+                /* "%s spits %s out in disgust!" */
+            } else {
+                /* "%s eats %s!" / You_hear("a crunching sound.") */
+                mtmp.meating = Math.trunc(otmp.owt / 2) + 1;
+                m_consume_obj(mtmp, otmp);
+                if (DEADMONSTER(mtmp))
+                    return 2;
+                /* Left behind a pile? */
+                if (rnd(25) < 3)
+                    mksobj_at(ONAMES.ROCK, mtmp.mx, mtmp.my, true, false);
+                newsym(mtmp.mx, mtmp.my);
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+// include/objclass.h:194,200 is_metallic() / is_rustprone()
+const is_metallic = (otmp) => game.objects[otmp.otyp].oc_material >= MATERIALS.IRON
+                           && game.objects[otmp.otyp].oc_material <= MATERIALS.MITHRIL;
+const is_rustprone = (otmp) => game.objects[otmp.otyp].oc_material === MATERIALS.IRON;
+
+/* src/mondata.c resists_poison() needs the resistance tables. */
+function resists_poison(mon) {
+    note_unported_mon('resists_poison');
+    return false;
+}
+
+/* src/artifact.c touch_artifact() — TRUE for anything that is not an artifact,
+   which is every object a rock mole meets on an early level. */
+function touch_artifact(otmp, mon) {
+    if (otmp.oartifact) {
+        note_unported_mon('touch_artifact');
+        return true;
+    }
+    return true;
+}
 
 // src/mon.c m_carrying() — the monster's object of this type, or null.
 //

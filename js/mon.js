@@ -9,10 +9,12 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { PMNAMES, MONSYMS, MFLAGS } from './monst_data.js';
+import { is_rider } from './makemon.js';
 import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
          D_CLOSED, D_LOCKED, D_BROKEN, IS_OBSTRUCTED, IS_DOOR, IS_WATERWALL,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
-         ALLOW_TRAPS, NOTONL, OPENDOOR, UNLOCKDOOR, BUSTDOOR } from './const.js';
+         ALLOW_TRAPS, ALLOW_M, ALLOW_SANCT, ALLOW_ROCK, NOTONL, OPENDOOR,
+         UNLOCKDOOR, BUSTDOOR } from './const.js';
 
 // include/permonst.h:80
 export const NORMAL_SPEED = 12;
@@ -258,3 +260,49 @@ function is_lava(x, y) {
     const t = game.level?.at(x, y)?.typ;
     return t === LAVAPOOL || t === LAVAWALL;
 }
+
+// src/mon.c:2064 mon_allowflags() — what a monster is permitted to walk into.
+// Draws nothing, but it is mfndpos()'s `flag` argument, so it decides the
+// candidate set the pet's tie-break draws range over.
+export function mon_allowflags(mtmp) {
+    let allowflags = 0;
+    const d = mtmp.data;
+
+    const can_open = !(nohands(d) || verysmall(d));
+    /* monhaskey() needs monster inventory; iswiz and is_rider are enough
+       for anything the public corpus generates this early. */
+    const can_unlock = (mtmp.iswiz || is_rider(d));
+    const doorbuster = is_giant(d);
+    const can_tunnel = tunnels(d);
+
+    if (mtmp.mtame)
+        allowflags |= ALLOW_M | ALLOW_TRAPS | ALLOW_SANCT | ALLOW_SSM;
+    else if (mtmp.mpeaceful)
+        allowflags |= ALLOW_SANCT | ALLOW_SSM;
+    else
+        allowflags |= ALLOW_U;
+
+    if (mtmp.isshk) allowflags |= ALLOW_SSM;
+    if (mtmp.ispriest) allowflags |= ALLOW_SSM | ALLOW_SANCT;
+    if (passes_walls(d)) allowflags |= (ALLOW_ROCK | ALLOW_WALL);
+    if (throws_rocks(d)) allowflags |= ALLOW_ROCK;
+    if (can_tunnel) allowflags |= ALLOW_DIG;
+    if (doorbuster) allowflags |= BUSTDOOR;
+    if (can_open) allowflags |= OPENDOOR;
+    if (can_unlock) allowflags |= UNLOCKDOOR;
+    if (passes_bars(d)) allowflags |= ALLOW_BARS;
+
+    return allowflags;
+}
+
+/* include/mondata.h — the body-plan predicates mon_allowflags consults. */
+const nohands    = (d) => (d.mflags1 & MFLAGS.M1_NOHANDS) !== 0;
+const verysmall  = (d) => d.msize < MFLAGS.MZ_SMALL;
+const is_giant   = (d) => (d.mflags2 & MFLAGS.M2_GIANT) !== 0;
+const tunnels    = (d) => (d.mflags1 & MFLAGS.M1_TUNNEL) !== 0;
+const passes_walls = (d) => (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
+const throws_rocks = (d) => (d.mflags2 & MFLAGS.M2_ROCKTHROW) !== 0;
+const passes_bars  = (d) => (d.mflags1 & MFLAGS.M1_UNSOLID) !== 0
+                         || (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0
+                         || (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0
+                         || d.msize <= MFLAGS.MZ_SMALL;

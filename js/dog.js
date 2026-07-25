@@ -11,7 +11,8 @@
 
 import { game } from './gstate.js';
 import { obj_resists } from './zap.js';
-import { COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL } from './const.js';
+import { mfndpos, mon_allowflags } from './mon.js';
+import { COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL, ALLOW_M, ALLOW_U } from './const.js';
 import { OCLASSES } from './objects_data.js';
 import { MFLAGS } from './monst_data.js';
 import { rn2 } from './rng.js';
@@ -211,10 +212,101 @@ export function dog_move(mtmp, after) {
        matters it kills a starving pet, which no public session reaches. */
     note_unported('dog_hunger');
 
-    const udist = distu(mtmp.mx, mtmp.my);
+    const omx = mtmp.mx, omy = mtmp.my;
+    const udist = distu(omx, omy);
+
     dog_invent(mtmp, edog, udist);
-    dog_goal(mtmp, edog, after, udist, 0);
-    return 0;
+
+    const whappr = 0;                 /* moves - edog.whistletime < 5 */
+    const appr = dog_goal(mtmp, edog, after, udist, whappr);
+    if (appr === -2)
+        return MMOVE_NOTHING;
+
+    /* src/dogmove.c:1062 — the squares the pet may move to */
+    const mfp = {};
+    const cnt = mfndpos(mtmp, mfp, mon_allowflags(mtmp));
+
+    /* Dogs normally avoid cursed items, so count the clean squares first;
+       the count is the bound of the rn2 below. */
+    let uncursedcnt = 0;
+    for (let i = 0; i < cnt; i++) {
+        const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
+        if (cursed_object_at(nx, ny))
+            continue;
+        uncursedcnt++;
+    }
+
+    let nix = omx, niy = omy, chi = -1, chcnt = 0;
+    let nidist = GDIST(nix, niy);
+
+    for (let i = 0; i < cnt; i++) {
+        const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
+        const cursemsg = cursed_object_at(nx, ny);
+
+        /* the eat/attack branches at the top of this loop need dog_eat and
+           the monster-attack path; neither is ported and both draw */
+        if (mfp.info[i] & (ALLOW_M | ALLOW_U)) {
+            note_unported('dog_move attack branch');
+            continue;
+        }
+
+        /* saw a cursed item and is not being forced onto it */
+        if (cursemsg && !mtmp.mleashed && uncursedcnt > 0
+            && rn2(13 * uncursedcnt))
+            continue;
+
+        /* lessen the chance of backtracking; only when loose and far away */
+        if (!mtmp.mleashed && distmin(omx, omy, game.u.ux, game.u.uy) > 5) {
+            const k = edog ? uncursedcnt : cnt;
+            let skip = false;
+            const track = mtmp.mtrack || [];
+            for (let j = 0; j < MTSZ && j < k - 1; j++)
+                if (track[j] && nx === track[j].x && ny === track[j].y)
+                    if (rn2(MTSZ * (k - j))) { skip = true; break; }
+            if (skip) continue;
+        }
+
+        const ndist = GDIST(nx, ny);
+        const j = (ndist - nidist) * appr;
+        if ((j === 0 && !rn2(++chcnt)) || j < 0
+            || (j > 0 && !whappr
+                && ((omx === nix && omy === niy && !rn2(3)) || !rn2(12)))) {
+            nix = nx;
+            niy = ny;
+            nidist = ndist;
+            if (j < 0) chcnt = 0;
+            chi = i;
+        }
+    }
+
+    /* newdogpos: the actual move needs m_move_aftermath and the display
+       update; not ported, so the pet still does not change square. Every
+       draw above has happened by now, which is what the stream depends on. */
+    if (chi >= 0)
+        note_unported('dog_move newdogpos');
+    return MMOVE_NOTHING;
+}
+
+/* include/monst.h MTSZ — how many previous squares a monster remembers. */
+const MTSZ = 4;
+const MMOVE_NOTHING = 0;
+
+/* src/dogmove.c GDIST(x,y) = dist2(x, y, gg.gx, gg.gy) */
+function GDIST(x, y) {
+    const gx = game.gg?.gx ?? game.u.ux, gy = game.gg?.gy ?? game.u.uy;
+    const dx = x - gx, dy = y - gy;
+    return dx * dx + dy * dy;
+}
+
+/* src/hack.c distmin() — the Chebyshev distance */
+function distmin(x0, y0, x1, y1) {
+    return Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+}
+
+/* src/dogmove.c cursed_object_at() */
+function cursed_object_at(x, y) {
+    return (game.level?.objects || [])
+               .some(o => o.ox === x && o.oy === y && o.cursed);
 }
 
 // src/dogmove.c:410 dog_invent() — the pet drops what it carries, or picks up

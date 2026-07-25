@@ -41,14 +41,62 @@ export const PICK_RIGID = 1;
 // real entries.
 const IndexOkT = (i, tab) => i >= 0 && i < tab.length;
 
-// gr.rfilter — the role filter set by command-line/rc restrictions. No public
-// session uses it, but the checks are ported so behaviour is not silently
-// different if a held-out session does. Kept as C-shaped state.
-const rfilter = { roles: new Array(roles.length).fill(0), mask: 0 };
-export function reset_role_filtering() {
-    rfilter.roles.fill(0);
-    rfilter.mask = 0;
+// gr.rfilter — the set of roles/races/genders/alignments the player has ruled
+// out from the '~' menu during character selection. Kept as C-shaped state
+// because ok_role()/ok_race()/ok_gend()/ok_align() consult it directly and
+// every rigid_role_checks() draw depends on what it excludes.
+export const rfilter = { roles: new Array(roles.length).fill(0), mask: 0 };
+
+// src/role.c:1290 clearrolefilter()
+export function clearrolefilter(which) {
+    switch (which) {
+    case RS_filter:
+        rfilter.mask = 0;   /* race, gender and alignment filters */
+        /* FALLTHRU */
+    case RS_ROLE:
+        rfilter.roles.fill(0);
+        break;
+    case RS_RACE:
+        rfilter.mask &= ~ROLE_RACEMASK;
+        break;
+    case RS_GENDER:
+        rfilter.mask &= ~ROLE_GENDMASK;
+        break;
+    case RS_ALGNMNT:
+        rfilter.mask &= ~ROLE_ALIGNMASK;
+        break;
+    default:
+        break;
+    }
 }
+
+// src/role.c:1268 setrolefilter() — the menu returns the NAME string of each
+// unacceptable choice, and this works out which of the four tables it came from.
+export function setrolefilter(bufp) {
+    let i;
+    if ((i = str2role(bufp)) !== ROLE_NONE && i !== ROLE_RANDOM)
+        rfilter.roles[i] = 1;
+    else if ((i = str2race(bufp)) !== ROLE_NONE && i !== ROLE_RANDOM)
+        rfilter.mask |= races[i].selfmask;
+    else if ((i = str2gend(bufp)) !== ROLE_NONE && i !== ROLE_RANDOM)
+        rfilter.mask |= genders[i].allow;
+    else if ((i = str2align(bufp)) !== ROLE_NONE && i !== ROLE_RANDOM)
+        rfilter.mask |= aligns[i].allow;
+    else
+        return false;
+    return true;
+}
+
+// src/role.c:1314 gotrolefilter()
+export function gotrolefilter() {
+    if (rfilter.mask) return true;
+    for (let i = 0; i < roles.length; ++i)
+        if (rfilter.roles[i]) return true;
+    return false;
+}
+
+// include/winprocs.h:308-313
+const RS_ROLE = 1, RS_RACE = 2, RS_GENDER = 3, RS_ALGNMNT = 4, RS_filter = 5;
 
 // src/role.c:971 ok_role() — is rolenum compatible with any
 // racenum/gendnum/alignnum constraints?

@@ -431,6 +431,35 @@ function process_menu_window(cw, page, display) {
     return items.length;
 }
 
+// win/tty/wintty.c:1178 set_item_state() — repaint ONE entry's selection flag
+// in place after the player toggles it.
+//
+// Note the characters: the full-page draw in process_menu_window() writes '*'
+// for a selected entry, but this writes '+'. So a preselected entry shows '*'
+// until the player touches it and '+' afterwards. That is not a typo in either
+// place; both spellings appear on the same screen.
+export function set_item_state(window, lineno, item) {
+    const cw = windows[window];
+    const display = game?.nhDisplay;
+    if (!cw || !display) return;
+    const ch = item.selected ? (item.count === -1 ? '+' : '#') : '-';
+    /* tty_curs(window, 4, lineno) — 1-based, so column offx + 3 */
+    display.setCell(cw.offx + 3, cw.offy + lineno, ch, NO_COLOR,
+                    term_attr(item.attr));
+}
+
+// The item at a given 0-based line of the current page, for set_item_state().
+export function menu_page_items(window, page) {
+    const cw = windows[window];
+    if (!cw) return [];
+    const lmax = Math.min(52, ROWS - 1);
+    const out = [];
+    let n = 0;
+    for (let curr = cw.mlist; curr; n++, curr = curr.next)
+        if (Math.floor(n / lmax) === page) out.push(curr);
+    return out;
+}
+
 // win/tty/wintty.c tty_display_nhwindow() — menu/text case.
 // Renders the first page. Paging on subsequent keys is driven by the caller
 // consuming keys, matching how C's dmore() blocks inside the window.

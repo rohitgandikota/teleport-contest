@@ -20,7 +20,8 @@ import { nhgetch } from './input.js';
 import {
     ROLE_NONE, ROLE_RANDOM, rigid_role_checks, ok_role, ok_race, ok_gend,
     ok_align, pick_role, pick_race, pick_gend, pick_align,
-    randrole, PICK_RANDOM,
+    randrole, PICK_RANDOM, rfilter, setrolefilter, clearrolefilter,
+    gotrolefilter,
 } from './role.js';
 import { roles, races, genders, aligns } from './role_data.js';
 import { COPYRIGHT_BANNER } from './banner_data.js';
@@ -35,7 +36,8 @@ import {
     tty_curs_base, tty_putstr_base, tty_putch_base, tty_base_cursor,
     tty_base_pos, tty_create_nhwindow, tty_destroy_nhwindow,
     tty_get_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
-    tty_end_menu, tty_display_nhwindow, NHW_MENU, ATR_NONE,
+    tty_end_menu, tty_display_nhwindow, set_item_state, menu_page_items,
+    NHW_MENU, ATR_NONE,
 } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
 
@@ -170,7 +172,9 @@ function setup_rolemenu(win, filtering, race, gend, algn) {
                      && ok_gend(i, race, gend, algn)
                      && ok_align(i, race, gend, algn);
         if (filtering && !role_ok) continue;
-        const any = filtering ? i + 1 : 1;   /* a_int vs a_string; both != 0 */
+        /* a_int when picking, a_string when resetting the filter — the
+           filter menu returns names, which setrolefilter() parses back. */
+        const any = filtering ? i + 1 : roles[i].name.m;
         let thisch = roles[i].name.m[0].toLowerCase();
         if (thisch === lastch) thisch = thisch.toUpperCase();
 
@@ -195,7 +199,7 @@ function setup_racemenu(win, filtering, role, gend, algn) {
                      && ok_role(role, i, gend, algn)
                      && ok_align(role, i, gend, algn);
         if (filtering && !race_ok) continue;
-        const any = filtering ? i + 1 : 1;
+        const any = filtering ? i + 1 : races[i].noun;
         const this_ch = races[i].noun[0];
         tty_add_menu(win, null, any,
                      filtering ? this_ch : this_ch.toUpperCase(),
@@ -213,7 +217,7 @@ function setup_gendmenu(win, filtering, role, race, algn) {
                      && ok_role(role, race, i, algn)
                      && ok_race(role, race, i, algn);
         if (filtering && !gend_ok) continue;
-        const any = filtering ? i + 1 : 1;
+        const any = filtering ? i + 1 : genders[i].adj;
         const this_ch = genders[i].adj[0];
         tty_add_menu(win, null, any,
                      filtering ? this_ch : this_ch.toUpperCase(),
@@ -231,7 +235,7 @@ function setup_algnmenu(win, filtering, role, race, gend) {
                      && ok_role(role, race, gend, i)
                      && ok_race(role, race, gend, i);
         if (filtering && !algn_ok) continue;
-        const any = filtering ? i + 1 : 1;
+        const any = filtering ? i + 1 : aligns[i].adj;
         const this_ch = aligns[i].adj[0];
         tty_add_menu(win, null, any,
                      filtering ? this_ch : this_ch.toUpperCase(),
@@ -263,12 +267,19 @@ function role_menu_extra(which, where, preselect) {
     case RS_NAME:
         what = 'name';
         break;
-    case RS_ROLE:
+    case RS_ROLE: {
         what = 'role';
         fv = r;
-        /* the loop looks for a second unfiltered role; with no filter set
-           there is always one, so `constrainer` stays null */
+        /* if the filter leaves exactly one role, the role entry is disabled */
+        let i;
+        for (i = 0; i < roles.length; ++i)
+            if (i !== fv && !rfilter.roles[i]) break;
+        if (i === roles.length) {
+            constrainer = 'filter';
+            forcedvalue = 'role';
+        }
         break;
+    }
     case RS_RACE:
         what = 'race';
         fv = f.initrace;
@@ -279,7 +290,8 @@ function role_menu_extra(which, where, preselect) {
             if (c >= 0) {
                 constrainer = 'role';
                 forcedvalue = races[c].noun;
-            } else if (fv >= 0 && allowmask === races[fv].selfmask) {
+            } else if (fv >= 0
+                       && (allowmask & ~rfilter.mask) === races[fv].selfmask) {
                 constrainer = 'filter';
                 forcedvalue = 'race';
             }
@@ -296,7 +308,8 @@ function role_menu_extra(which, where, preselect) {
             if (gend >= 0) {
                 constrainer = 'role';
                 forcedvalue = genders[gend].adj;
-            } else if (fv >= 0 && allowmask === genders[fv].allow) {
+            } else if (fv >= 0
+                       && (allowmask & ~rfilter.mask) === genders[fv].allow) {
                 constrainer = 'filter';
                 forcedvalue = 'gender';
             }
@@ -321,7 +334,8 @@ function role_menu_extra(which, where, preselect) {
             else if (allowmask === AM_CHAOTIC) a = 2;
             if (a >= 0) constrainer = 'race';
         }
-        if (fv >= 0 && !constrainer && ROLE_ALIGNMASK === aligns[fv].allow) {
+        if (fv >= 0 && !constrainer
+            && (ROLE_ALIGNMASK & ~rfilter.mask) === aligns[fv].allow) {
             constrainer = 'filter';
             forcedvalue = 'alignment';
         }
@@ -341,9 +355,9 @@ function role_menu_extra(which, where, preselect) {
                      `Pick${fv >= 0 ? ' another' : ''} ${what} first`,
                      MENU_ITEMFLAGS_NONE);
     } else if (which === RS_filter) {
-        /* gotrolefilter() is false until '~' is used, which no session does */
         tty_add_menu(where, null, RS_menu_arg(RS_filter), '~', 0,
-                     ATR_NONE, NO_COLOR, 'Set role/race/&c filtering',
+                     ATR_NONE, NO_COLOR,
+                     `${gotrolefilter() ? 'Reset' : 'Set'} role/race/&c filtering`,
                      MENU_ITEMFLAGS_NONE);
     } else if (which === ROLE_RANDOM) {
         tty_add_menu(where, null, ROLE_RANDOM, '*', 0, ATR_NONE, NO_COLOR,
@@ -396,6 +410,78 @@ async function select_menu_pick_one(win) {
             if (it.identifier && it.selector === c) return it.identifier;
         /* anything else is ignored and the menu waits for another key */
     }
+}
+
+// win/tty/wintty.c tty_select_menu(win, PICK_ANY) — the player toggles entries
+// with their selector letters and commits with <return>/<space>.
+//
+// Toggling repaints only that one line through set_item_state(), which writes
+// '+' where the initial full-page draw writes '*'. Returns the list of selected
+// identifiers, or null for <escape>.
+async function select_menu_pick_any(win) {
+    tty_display_nhwindow(win);
+    const cw = tty_get_nhwindow(win);
+    for (;;) {
+        const c = String.fromCharCode(await nhgetch());
+        if (c === '\x1b') return null;
+        if (c === '\n' || c === '\r' || c === ' ') {
+            const out = [];
+            for (let it = cw.mlist; it; it = it.next)
+                if (it.identifier && it.selected) out.push(it.identifier);
+            return out;
+        }
+        const page = menu_page_items(win, cw.curr_page || 0);
+        const idx = page.findIndex(it => it.identifier && it.selector === c);
+        if (idx >= 0) {
+            /* wintty.c toggle_menu_curr(): flip, then repaint that line */
+            const it = page[idx];
+            it.selected = !it.selected;
+            it.count = -1;
+            set_item_state(win, idx, it);
+        }
+    }
+}
+
+// src/role.c:2728 reset_role_filtering() — the '~' menu.
+//
+// Everything here is built with the `filtering = FALSE` half of the four
+// setup_*menu() functions: entries carry the NAME STRING as their identifier
+// rather than an index, races/genders/alignments take their CAPITAL initial as
+// the selector (the lowercase ones are already taken by the roles on the same
+// page), and anything the current filter already excludes comes preselected.
+async function reset_role_filtering() {
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+
+    /* no extra blank line preceding this entry; end_menu supplies one */
+    tty_add_menu_str(win, 'Unacceptable roles');
+    setup_rolemenu(win, false, ROLE_NONE, ROLE_NONE, ROLE_NONE);
+
+    tty_add_menu_str(win, '');
+    tty_add_menu_str(win, 'Unacceptable races');
+    setup_racemenu(win, false, ROLE_NONE, ROLE_NONE, ROLE_NONE);
+
+    tty_add_menu_str(win, '');
+    tty_add_menu_str(win, 'Unacceptable genders');
+    setup_gendmenu(win, false, ROLE_NONE, ROLE_NONE, ROLE_NONE);
+
+    tty_add_menu_str(win, '');
+    tty_add_menu_str(win, 'Unacceptable alignments');
+    setup_algnmenu(win, false, ROLE_NONE, ROLE_NONE, ROLE_NONE);
+
+    tty_end_menu(win, 'Pick all that apply'
+                 + (gotrolefilter()
+                    ? ' and/or unpick any that no longer apply' : ''));
+    const selected = await select_menu_pick_any(win);
+    tty_destroy_nhwindow(win);
+
+    const f = game.flags;
+    if (selected) {   /* n >= 0; an empty list clears the filter */
+        clearrolefilter(RS_filter);
+        for (const name of selected) setrolefilter(name);
+        f.initrole = f.initrace = f.initgend = f.initalign = ROLE_NONE;
+    }
+    return !!(selected && selected.length);
 }
 
 // src/role.c:2340 — the identifier a PICK_ONE chargen menu returns.
@@ -484,6 +570,13 @@ async function genl_player_setup(screenheight) {
             const r = decode_choice(await select_menu_pick_one(win));
             tty_destroy_nhwindow(win);
             if (r.kind === 'quit') return -1;
+            if (r.kind === 'jump' && r.to === RS_filter) {
+                /* src/role.c:2357 — the role is dropped, the filter menu runs,
+                   and the role menu is re-entered whatever it returned. */
+                f.initrole = ROLE_NONE;
+                await reset_role_filtering();
+                return RS_ROLE;
+            }
             if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
             f.initrole = (r.kind === 'random')
                 ? pickOr(pick_role(f.initrace, f.initgend, f.initalign,
@@ -519,6 +612,12 @@ async function genl_player_setup(screenheight) {
                 const r = decode_choice(await select_menu_pick_one(win));
                 tty_destroy_nhwindow(win);
                 if (r.kind === 'quit') return -1;
+                if (r.kind === 'jump' && r.to === RS_filter) {
+                    /* src/role.c:2441 — go back to the role menu only if the
+                       filter actually changed something. */
+                    f.initrace = ROLE_NONE;
+                    return (await reset_role_filtering()) ? RS_ROLE : RS_RACE;
+                }
                 if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
                 k = (r.kind === 'random')
                     ? pickOr(pick_race(f.initrole, f.initgend, f.initalign,
@@ -555,6 +654,10 @@ async function genl_player_setup(screenheight) {
                 const r = decode_choice(await select_menu_pick_one(win));
                 tty_destroy_nhwindow(win);
                 if (r.kind === 'quit') return -1;
+                if (r.kind === 'jump' && r.to === RS_filter) {
+                    f.initgend = ROLE_NONE;
+                    return (await reset_role_filtering()) ? RS_ROLE : RS_GENDER;
+                }
                 if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
                 k = (r.kind === 'random')
                     ? pickOr(pick_gend(f.initrole, f.initrace, f.initalign,
@@ -595,6 +698,10 @@ async function genl_player_setup(screenheight) {
             const r = decode_choice(await select_menu_pick_one(win));
             tty_destroy_nhwindow(win);
             if (r.kind === 'quit') return -1;
+            if (r.kind === 'jump' && r.to === RS_filter) {
+                f.initalign = ROLE_NONE;
+                return (await reset_role_filtering()) ? RS_ROLE : RS_ALGNMNT;
+            }
             if (r.kind === 'jump') { clearFacet(r.to); return r.to; }
             k = (r.kind === 'random')
                 ? pickOr(pick_align(f.initrole, f.initrace, f.initgend,

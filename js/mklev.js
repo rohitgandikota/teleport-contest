@@ -104,7 +104,7 @@ import { DUST, HEADSTONE, OBJ_CONTAINED } from './const.js';
 import { hole_destination } from './trap.js';
 import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap,
-         sp_lev_wire_okdoor } from './sp_lev.js';
+         sp_lev_wire_okdoor, lspo_room, lspo_door } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
 import { depth as depth_of_level } from './hacklib.js';
@@ -729,6 +729,22 @@ async function themerooms_generate(difficulty) {
         rtype = THEMEROOM; contents = themeroom_fill; rlit = 0; break;
     case 'Room with both normal contents and themed fill':
         rtype = THEMEROOM; contents = themeroom_fill; break;
+    case 'Room in a room':
+        /* dat/themerms.lua:308 — nested des.room() with a door innermost:
+             des.room({ type="ordinary", filled=1, contents = function()
+                des.room({ type="ordinary", contents = function()
+                   des.door({ state="random", wall="all" });
+                end });
+             end });
+           The OUTER room is what this switch builds; the inner one goes
+           through lspo_room, which routes to create_subroom because a parent
+           room is open by then. */
+        contents = () => {
+            lspo_room({ type: 'ordinary', contents: () => {
+                lspo_door({ state: 'random', wall: 'all' });
+            } }, create_room, topologize);
+        };
+        break;
     default:
         note_unported_lev(`themeroom ${pick.name}`); break;
     }

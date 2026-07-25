@@ -17,6 +17,7 @@ import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
+import { dochat } from './sounds.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -281,6 +282,10 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === 'c') {
+        // src/cmd.c cmdlist — 'c' is dochat, whose getdir() consumes a second
+        // key. 107 keystrokes across the public corpus.
+        game.context.move = (await dochat() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'e') {
         // src/cmd.c cmdlist — 'e' is doeat, which reaches floorfood() and then
         // getobj(). 330 keystrokes across the public corpus, the most of any

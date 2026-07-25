@@ -43,7 +43,40 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## THE BIGGEST REMAINING TARGET: death and restart. Seven sessions.
+## THE BIGGEST REMAINING TARGET: death and restart. Ground truth located.
+
+**seed0030's first death is at step 73.** The exact frames, decoded from the
+recorded session:
+
+    step 73  "You die...--More--"        (top line)
+    step 74  "You die...--More--"
+    step 75  the tombstone:
+
+                             ----------
+                            /          \
+                           /    REST    \
+                          /      IN      \
+                         /     PEACE      \
+                        /                  \
+                        |      Quincy      |
+
+That is `outrip()` in src/end.c, and the block is fixed ASCII with the hero's
+name centred in it. Everything between step 73 and the next game is SCREENS --
+done/done_in_by/really_done spend ZERO draws between them (728 lines measured).
+
+So the work is, in order:
+
+  1. done() reaching "You die..." with its --More-- (js/end.js has the seam;
+     losehp in js/hack.js is the route in)
+  2. outrip()'s tombstone -- a fixed block, name centred, then the killer line,
+     the gold, and the year
+  3. the final-inventory and score screens
+  4. newgame() a second time; check what resetGame() in js/gstate.js clears
+
+seed0030 is 1953 steps, the largest session in the corpus, and reaches step 73
+of them today. Seven sessions share this blocker.
+
+## Measured sizes
 
 **js/end.js does not exist. Death is entirely unported.** There is no done(),
 no done_in_by(), no u.uhp <= 0 check anywhere in js/.

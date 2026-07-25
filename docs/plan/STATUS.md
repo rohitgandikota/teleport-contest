@@ -77,41 +77,71 @@ corpus from 11.4% to 12.2%. `rnd_rect` has left the blocker histogram entirely.
      dimensions:
      `x = 1 + rn2(COLNO - 1 - mf->wid)` (sp_lev.c:6154) and
      `y = rn2(ROWNO - mf->hei)` (sp_lev.c:6164).
-   - Confirmed against the recordings: seed0009 and seed0004 pick **Four-leaf
-     clover**, an 11x11 map, and C's next two calls are `rn2(68)` and `rn2(10)`
-     — i.e. `rn2(80-1-11)` and `rn2(21-11)`. seed0015 picks **S-shaped** (8x11),
-     seed0013 picks Four-leaf clover on its fifth themeroom.
-   - The **complete** call sequence for one shaped themeroom, read straight off
-     seed0009's recording (calls 462-468), is only seven draws:
+   - Confirmed against the recordings by replaying the reservoir sample against
+     C's own logged draw results (`js/themerms_data.js` + the session log is
+     enough — no need to run the port): **seed0009 picks "Blocked center"**
+     (11x11), seed0013 and seed0015 pick "Four-leaf clover" and "S-shaped" on
+     their fifth and first themeroom respectively.
+
+   - The **complete** call sequence for one shaped themeroom, read off
+     seed0009's recording and now fully attributed:
 
      ```
-     462  rn2(68)    lspo_map(sp_lev.c:6154)     x = 1 + rn2(COLNO-1-wid)
-     463  rn2(10)    lspo_map(sp_lev.c:6164)     y = rn2(ROWNO-hei)
-     464  rn2(100)   percent(nhlib.lua:44)       math.random(0,99) < threshold
-     465  rn2(100)   percent(nhlib.lua:44)       <- SEE OPEN QUESTION
-     466  rnd(2)     litstate_rnd(mkmap.c:446)   rnd(1 + abs(depth))
-     467  rn2(77)    litstate_rnd(mkmap.c:446)   short-circuit never trips
-     468  rn2(4)     rnd_rect(rect.c:106)
+     431  rn2(k)     rnd_rect        makerooms() loop condition, mklev.c:403
+     432  rn2(1000)  themerms:969  ┐ reservoir sample, one draw per eligible
+      ...   ...        ...         │ entry; 30 of them at difficulty 1
+     461  rn2(1036)  themerms:969  ┘ (the 31st, Twin businesses, needs mindiff 4)
+     462  rn2(68)    lspo_map:6154   x = 1 + rn2(COLNO - 1 - wid)
+     463  rn2(10)    lspo_map:6164   y = rn2(ROWNO - hei)
+     464  rn2(100)   percent:44      "Blocked center" contents: percent(30)
+     465  rn2(100)   percent:44      filler_region(1,1): percent(30)
+     466  rnd(2)     litstate_rnd    lspo_region, sp_lev.c:5638
+     467  rn2(77)    litstate_rnd    the `< 11` short-circuit never trips
+     468  rn2(4)     rnd_rect        the loop condition again, next iteration
      ```
 
-     Compare the `default` room, which is calls 499-500: `rn2(100)` at
-     `build_room(sp_lev.c:2811)` then `litstate_rnd`. So the shaped path differs by
-     the two `lspo_map` draws plus one extra `percent`.
+     The `default` room is calls 499-500 for comparison: `rn2(100)` at
+     `build_room(sp_lev.c:2811)`, then `create_room`'s own `litstate_rnd`.
 
-   **OPEN QUESTION — resolve this before writing the port.** `filler_region(6,6)`
-   (themerms.lua:880) contains exactly ONE `percent(30)`, but the recording shows
-   TWO consecutive `percent()` calls at 464-465. Both are tagged
-   `random src=nhlib.lua:10 parent=percent(nhlib.lua:44)`, so both really do come
-   from Lua's `percent`, not from a C `rn2(100)`. Find the second caller before
-   assuming a shape for this. It is not `themeroom_fill`: 464 rolled 82, which
-   fails `percent(30)`, so `func` stays nil. Candidates to check: whether
-   `lspo_map`'s `contents` callback runs once per matched map fragment, and what
-   `des.region({ irregular = true, filled = 1 })` does on the Lua side.
+   **The double-`percent` question is ANSWERED.** It was not a second caller
+   inside `filler_region`; the picked room simply has its own gate.
+   "Blocked center" (themerms.lua:535) is
 
-   So the port needed is: `lspo_map` (position, stamp, `mkmap`-style lit state),
-   `lspo_region`/`filler_region`, and `percent()` from `nhlib.lua`. The map data
-   is done, and the interpreter is NOT needed for these 30 rooms — their
-   `contents` functions are all the same short shape.
+   ```lua
+   contents = function(m)
+      if (percent(30)) then
+         local terr = { "-", "P" }; shuffle(terr);
+         des.replace_terrain({ region = {1,1, 9,9}, fromterrain = "L",
+                               toterrain = terr[1] });
+      end
+      filler_region(1,1);
+   end
+   ```
+
+   so two `percent(30)` calls, and **a third draw — `shuffle(terr)`'s `rn2(2)` —
+   whenever the first one passes.** seed0009 rolled 82, so it did not. Any port
+   must read each room's `contents` rather than assume they are uniform: they are
+   not.
+
+   **What the port needs, in order:**
+
+   1. `percent(n)` from `dat/nhlib.lua:43` — `math.random(0, 99) < n`, i.e. one
+      `rn2(100)`. Belongs in `js/nhlua.js` beside `lua_shuffle`.
+   2. `lspo_map` (sp_lev.c:6120) — the two placement draws above, then stamping
+      the map onto `levl[][]`. **The stamping is not optional**: an RNG-only
+      version would be exactly the kind of plausible-looking stub CLAUDE.md
+      rule 2 forbids, and the frames would be wrong anyway.
+   3. `lspo_region` (sp_lev.c:5584), irregular branch — `litstate_rnd`,
+      `flood_fill_rm`, `add_room`, `add_doors_to_room`.
+   4. Each shaped room's own `contents`, transcribed from themerms.lua. Most are
+      a bare `filler_region(a,b)`; "Blocked center" has the extra gate above.
+
+   **Then the next wall is `themeroom_fill`.** `filler_region`'s `percent(30)`
+   selects it 30% of the time, and it is a second reservoir sample over the 15
+   `themeroom_fills` (already in `js/themerms_data.js`) followed by that fill's
+   contents — monsters, objects, terrain. Budget it as its own milestone. A port
+   that stops short of it is still a strict improvement: it moves the divergence
+   from the first shaped room to the ~30% of them that draw a fill.
 2. **`do_mkroom()` / special rooms (src/mkroom.c).** `makelevel` chooses at most
    one special room per level (`svn.nroom >= room_threshold && rn2(u_depth) < 3`)
    and our port does not have that step at all — `room_threshold` exists now

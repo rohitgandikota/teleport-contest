@@ -9,10 +9,13 @@ import { game } from './gstate.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
 import { dog_move, could_reach_item } from './dog.js';
-import { mfndpos, mon_allowflags, can_carry, t_at, m_at } from './mon.js';
+import {
+    mfndpos, mon_allowflags, can_carry, t_at, m_at,
+    curr_mon_load, max_mon_load,
+} from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
-import { OCLASSES, ONAMES } from './objects_data.js';
-import { couldsee } from './vision.js';
+import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
+import { couldsee, cansee } from './vision.js';
 import { gettrack } from './track.js';
 import { distmin } from './hacklib.js';
 import { acurrstr } from './attrib.js';
@@ -25,6 +28,7 @@ const can_track = (ptr) => haseyes(ptr);
 const haseyes = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
 import {
     ALLOW_U, COULD_SEE, A_LAWFUL, BOLT_LIM, IS_ALTAR, COLNO, ROWNO, A_STR,
+    ALL_TRAPS, NO_TRAP,
 } from './const.js';
 import { is_rider } from './makemon.js';
 
@@ -227,13 +231,93 @@ function objects_at(x, y) {
     return (game.level?.objects || []).filter(o => o.ox === x && o.oy === y);
 }
 
-/* Recorded rather than guessed: each narrows which square is chosen and none
-   draws, but a wrong answer moves the monster. */
+/* include/mondata.h:143-146 and friends — what a monster is willing to pick up.
+   likes_objs counts an armed monster as a collector. */
+const mindless    = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
+const is_animal   = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
+const likes_gold  = (ptr) => (ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0;
+const likes_gems  = (ptr) => (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;
+const likes_magic = (ptr) => (ptr.mflags2 & MFLAGS.M2_MAGIC) !== 0;
+const is_armed    = (ptr) => ptr.mattk.some(a => a[0] === ATTKS.AT_WEAP);
+const likes_objs  = (ptr) => (ptr.mflags2 & MFLAGS.M2_COLLECT) !== 0 || is_armed(ptr);
+const is_unicorn  = (ptr) => ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
+const touch_petrifies = (ptr) => ptr.pmidx === PMNAMES.PM_COCKATRICE
+                              || ptr.pmidx === PMNAMES.PM_CHICKATRICE;
+
+// src/monmove.c:991 — the object classes a collector and a magic-user want.
+const practical = [OCLASSES.WEAPON_CLASS, OCLASSES.ARMOR_CLASS,
+                   OCLASSES.GEM_CLASS, OCLASSES.FOOD_CLASS];
+const magical = [OCLASSES.AMULET_CLASS, OCLASSES.POTION_CLASS,
+                 OCLASSES.SCROLL_CLASS, OCLASSES.WAND_CLASS,
+                 OCLASSES.RING_CLASS, OCLASSES.SPBOOK_CLASS];
+
+// src/mondata.c:1617 mon_knows_traps() — mtrapseen is a bitmask of trap types
+// the monster has learned, with bit (ttyp - 1) per type.
+function mon_knows_traps(mtmp, ttyp) {
+    if (ttyp === ALL_TRAPS)
+        return !!mtmp.mtrapseen;
+    else if (ttyp === NO_TRAP)
+        return !mtmp.mtrapseen;
+    else
+        return ((mtmp.mtrapseen ?? 0) & (1 << (ttyp - 1))) !== 0;
+}
+
+// src/monmove.c mon_would_take_item() — each class of taker has its own load
+// ceiling, so a heavily-laden monster stops being interested rather than being
+// refused later by can_carry().
+function mon_would_take_item(mtmp, otmp) {
+    const ptr = game.mons[mtmp.mnum];
+    const pctload = Math.trunc((curr_mon_load(mtmp) * 100) / max_mon_load(mtmp));
+
+    if (otmp === game.u.uball || otmp === game.u.uchain)
+        return false;
+    if (mtmp.mtame && otmp.cursed)
+        return false; /* note: will get overridden if mtmp will eat otmp */
+    if (is_unicorn(ptr)
+        && game.objects[otmp.otyp].oc_material !== MATERIALS.GEMSTONE)
+        return false;
+    if (!mindless(ptr) && !is_animal(ptr) && pctload < 75
+        && searches_for_item(mtmp, otmp))
+        return true;
+    if (likes_gold(ptr) && otmp.otyp === ONAMES.GOLD_PIECE && pctload < 95)
+        return true;
+    if (likes_gems(ptr) && otmp.oclass === OCLASSES.GEM_CLASS
+        && game.objects[otmp.otyp].oc_material !== MATERIALS.MINERAL
+        && pctload < 85)
+        return true;
+    if (likes_objs(ptr) && practical.includes(otmp.oclass) && pctload < 75)
+        return true;
+    if (likes_magic(ptr) && magical.includes(otmp.oclass) && pctload < 85)
+        return true;
+    if (throws_rocks(ptr) && otmp.otyp === ONAMES.BOULDER && pctload < 50)
+        return true;
+    if (mtmp.mnum === PMNAMES.PM_GELATINOUS_CUBE
+        && otmp.oclass !== OCLASSES.ROCK_CLASS
+        && otmp.oclass !== OCLASSES.BALL_CLASS
+        && !(otmp.otyp === ONAMES.CORPSE
+             && touch_petrifies(game.mons[otmp.corpsenm])))
+        return true;
+
+    return false;
+}
+
+/* src/muse.c:2706 searches_for_item() needs the whole monster item-use
+   subsystem. Its caller gates it behind !mindless && !is_animal, so no animal
+   or mindless monster — which is most of an early level — can reach it. */
+function searches_for_item(mon, obj) {
+    note_unported('searches_for_item');
+    return false;
+}
+
+/* src/mon.c mon_would_consume_item() needs the monster eating code. */
+function mon_would_consume_item(mtmp, otmp) {
+    note_unported('mon_would_consume_item');
+    return false;
+}
+
+/* in_rooms(SHOPBASE) needs the shop subsystem; no shop exists on a level
+   before it lands. */
 function in_shop(x, y) { return false; }
-function cansee(x, y) { note_unported('cansee'); return false; }
-function mon_knows_traps(mtmp, ttyp) { note_unported('mon_knows_traps'); return false; }
-function mon_would_take_item(mtmp, otmp) { note_unported('mon_would_take_item'); return false; }
-function mon_would_consume_item(mtmp, otmp) { note_unported('mon_would_consume_item'); return false; }
 
 // src/monmove.c:76 mon_track_add() — push a coordinate onto the monster's
 // memory of where it has just been. m_move() consults it to avoid pacing back

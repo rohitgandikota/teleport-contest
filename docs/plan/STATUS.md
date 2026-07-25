@@ -93,7 +93,31 @@ option arms that need absent subsystems, and wire those five. Do NOT skip
 get_location_coord: it is where the placement draws happen, and des.object with
 no coord is the common case.
 
-**RESOLVE THIS BEFORE PORTING create_object — it is not what it looks like.**
+**RESOLVED — read this instead of re-deriving it.**
+
+The four lines at sp_lev.c:2204 read as though `des.object("chest")` makes a
+RANDOM object: lspo_object sets `class = -1` for any multi-character name, that
+gives `c = 0`, and create_object's first arm is `mkobj_at(RANDOM_CLASS, ...)`,
+which never reaches the `mksobj_at(o->id, ...)` arm.
+
+It does not, because of a FIXUP after all the argument-form parsing, at
+sp_lev.c:3662:
+
+    if (tmpobj.class == -1 && tmpobj.id > STRANGE_OBJECT)
+        tmpobj.class = objects[tmpobj.id].oc_class;
+    else if (tmpobj.class > -1 && tmpobj.id == STRANGE_OBJECT)
+        tmpobj.id = -1;
+
+So a named object gets its class back from objects[id].oc_class before
+create_object ever runs, `c` is non-zero, and arm (B) mksobj_at IS the one
+taken. The converse also matters: a class given with no id has its id forced to
+-1, which is what sends it to the third arm's def_char_to_objclass/mkgold path.
+
+**Port the fixup with create_object.** Without it every named object in every
+themeroom fill becomes a random one, and the draw counts differ: mkobj_at picks
+a class and then an object, mksobj_at knows the type.
+
+### The original question, for the record
 
 src/sp_lev.c:2204 reads:
 

@@ -1077,3 +1077,35 @@ seed0002 and seed4500 both lost RNG "positions match overall" (4279 -> 4268,
 were unchanged, at calls 2320 and 2869. The lost matches were all *after* the
 divergence, where agreement is coincidence. `git stash` + rerun `diverge.mjs` on
 the affected sessions before treating an RNG drop as a regression.
+
+## defsym.h is not the last word on a symbol: dat/symbols overrides it
+
+`include/defsym.h` gives each map symbol an ASCII character, and it is tempting
+to treat that as the answer. It is not. `dat/symbols` has a `start: DECgraphics`
+section that overrides many of them, and these sessions run under DECgraphics.
+
+Two that bit us, both worth 40+ screens each:
+
+    S_vodoor: \xe1   # meta-a, checkerboard      (defsym.h says '-')
+    S_hodoor: \xe1   # meta-a, checkerboard      (defsym.h says '|')
+
+Both open-door orientations are the *same* DEC glyph, so `loc.horizontal` never
+affects an open door on screen even though defsym.h implies it must. Likewise
+`S_ndoor` and `S_room` are both `\xfe` (centred dot).
+
+**Before hardcoding any map character, grep `dat/symbols` between `start:
+DECgraphics` and the next `start:` for its `S_*` name.** If it appears there,
+that entry wins.
+
+## Engravings replace the background glyph
+
+`src/display.c:422` picks the engraving glyph INSTEAD of the terrain when
+`spot_shows_engravings(x,y)` (CORR, ICE or ROOM per include/engrave.h:50) and no
+trap covers the square. S_engroom is '`' and S_engrcorr '#', both
+CLR_BRIGHT_BLUE. We had been generating engravings and painting floor over them.
+
+This is a good example of the general shape: the *state* was correct and the RNG
+agreed; only the draw was missing. seed0105 matched 2479 of 2499 RNG calls while
+scoring 0 of 30 screens, on one cell of its very first frame. A session with
+high RNG agreement and zero screens is almost always a drawing bug, not a
+gameplay one -- check `screendiff <session> 0` first.

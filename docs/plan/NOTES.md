@@ -346,9 +346,29 @@ enlightenment display, which prints "You entered the dungeon N turns ago").
 Steps 0-26 matching therefore proves nothing about when the extra turn was
 spent — it may have been spent much earlier and simply never shown.
 
-To localise it, instrument `game.moves` directly per keystroke with apply wired
-and without, and diff the two traces to find the first keystroke where they
-part. Screens cannot answer this question on a session with `time` off.
+**Traced. The two `game.moves` sequences part at keystroke 20:**
+
+    without apply:  ... M17=2 M18=2 M19=2 M20=2 M21=2 ...   (C agrees: 2)
+    with apply:     ... M17=2 M18=2 M19=2 M20=3 M21=3 ...
+
+The keys there are `a` `e` `j` `i`, and the rogue carries letters **a-f only**.
+
+- WITHOUT apply: `a` is an unknown command (no turn); `e` runs doeat, whose
+  getobj reads `j` — no match, so it loops through `i` and then ESC, a
+  quitchar, returning null. doeat returns ECMD_OK. **Zero turns**, and C
+  agrees.
+- WITH apply: `a` runs doapply, whose getobj reads `e` — a match, returns
+  immediately. Then `j` is left to run as a MOVEMENT command. **One turn.**
+
+So C, like our no-apply path, spends nothing across that run. Since C's doapply
+certainly consumes `e` too, the difference must be what C does with `j`
+afterwards — it is not treating it as a move. Read `getobj`'s behaviour when
+`apply_ok` REJECTS the matched object: C prints "silly thing" and returns NULL
+(src/invent.c:2071), but check whether it consumes further input first, and
+check what `apply_ok` returns for the rogue's item `e`.
+
+That is the whole remaining question, and it is now a two-function read rather
+than a hunt.
 
 Until then `a` stays unwired. It is 232 keystrokes across the corpus and worth
 having, but not at the price of a screen on a session that currently matches.

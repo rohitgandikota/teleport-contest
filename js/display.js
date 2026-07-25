@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { term_start_color } from './tty/termcap.js';
 import { rank } from './botl.js';
 import { cansee } from './vision.js';
 import {
@@ -188,7 +189,7 @@ function render_map_row(y) {
     for (let x = firstCol; x <= lastCol; x++) {
         const loc = game.level.at(x, y);
         const ch = loc?.disp_ch ?? ' ';
-        const color = loc?.disp_color ?? NO_COLOR;
+        const color = term_start_color(loc?.disp_color ?? NO_COLOR);
         const dec = !!loc?.disp_decgfx;
 
         if (ch === ' ') {
@@ -349,7 +350,9 @@ function _buildScreenOutput() {
                 const loc = game.level?.at(x, y);
                 if (!loc?.disp_ch || loc.disp_ch === ' ') continue;
                 const ch = loc.disp_decgfx ? (DEC_TO_UNICODE[loc.disp_ch] || loc.disp_ch) : loc.disp_ch;
-                display.setCell(x - 1, y + 1, ch, loc.disp_color ?? NO_COLOR, loc.disp_attr ?? 0);
+                display.setCell(x - 1, y + 1, ch,
+                                term_start_color(loc.disp_color ?? NO_COLOR),
+                                loc.disp_attr ?? 0);
             }
         }
         // Status lines
@@ -424,15 +427,62 @@ export async function more() {
 
     const display = game?.nhDisplay;
     const msg = game._pending_message || '';
+    /* cury must outlive the paint block: tty_clear_nhwindow() erases through
+       cw->cury, and that is set here by the same test that wraps the suffix. */
+    let row = 0;
     if (display) {
         const CO = display.cols ?? 80;
-        let col = msg.length, row = 0;
+        let col = msg.length;
         if (col >= CO - 8) { col = 0; row = 1; }
         for (let i = 0; i < defmorestr.length && col + i < CO; i++)
             display.setCell(col + i, row, defmorestr[i], NO_COLOR, 0);
         display.setCursor(Math.min(col + defmorestr.length, CO - 1), row);
     }
     await nhgetch();
-    game._toplin = TOPLINE_EMPTY;
+
+    /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE:
+     *
+     *     more();
+     *     ttyDisplay->toplin = TOPLINE_NEED_MORE;   / * more resets this * /
+     *     tty_clear_nhwindow(window);
+     *
+     * The reassignment looks redundant and is not: tty_clear_nhwindow() only
+     * does its home()/cl_end() when toplin != TOPLINE_EMPTY, and more() has
+     * just set it to EMPTY. Forcing it back is what makes the erase happen.
+     *
+     * Clearing only _pending_message left the text already painted into the
+     * grid, so whatever drew next landed on top of it: seed0360's tutorial
+     * prompt starts at column 21 and the first 21 columns still read
+     * "Hello wizard, welcom".
+     */
+    game._toplin = TOPLINE_NEED_MORE;
     game._pending_message = '';
+    tty_clear_nhwindow_message(row);
+    game._toplin = TOPLINE_EMPTY;
+}
+
+// win/tty/wintty.c tty_clear_nhwindow(), the NHW_MESSAGE arm:
+//
+//     if (ttyDisplay->toplin != TOPLINE_EMPTY) {
+//         home(); cl_end();
+//         if (cw->cury) docorner(1, cw->cury + 1, 0);
+//         cw->curx = cw->cury = 0;
+//         ttyDisplay->toplin = TOPLINE_EMPTY;
+//     }
+//
+// cl_end() erases to end of line, so the row becomes blanks rather than
+// keeping stale glyphs. cury is non-zero only when the message wrapped, which
+// for more() means the "--More--" suffix went to row 1.
+function tty_clear_nhwindow_message(cury) {
+    if (game._toplin === TOPLINE_EMPTY)
+        return;
+
+    const display = game?.nhDisplay;
+    if (display) {
+        const CO = display.cols ?? 80;
+        for (let r = 0; r <= (cury || 0); r++)
+            for (let c = 0; c < CO; c++)
+                display.setCell(c, r, ' ', NO_COLOR, 0);
+    }
+    game._toplin = TOPLINE_EMPTY;
 }

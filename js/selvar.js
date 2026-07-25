@@ -216,3 +216,39 @@ export function selection_from_mkroom(croom) {
         }
     return sel;
 }
+
+// src/selvar.c:284 selection_rndcoord() — one uniformly-chosen set square.
+//
+// Counts the set points first, then spends ONE rn2(count) and walks the same
+// x-outer/y-inner order again to reach it. The count pass draws nothing, so a
+// selection with no set points spends nothing at all.
+//
+// `removeit` clears the chosen square, which is how a caller pulling several
+// coordinates gets distinct ones.
+export function selection_rndcoord(ov, removeit) {
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    let idx = 0;
+
+    selection_getbounds(ov, rect);
+
+    for (let dx = rect.lx; dx <= rect.hx; dx++)
+        for (let dy = rect.ly; dy <= rect.hy; dy++)
+            if (selection_getpoint(dx, dy, ov))
+                idx++;
+
+    if (idx) {
+        let c = rn2(idx);
+
+        for (let dx = rect.lx; dx <= rect.hx; dx++)
+            for (let dy = rect.ly; dy <= rect.hy; dy++)
+                if (selection_getpoint(dx, dy, ov)) {
+                    if (!c) {
+                        if (removeit)
+                            selection_setpoint(dx, dy, ov, 0);
+                        return { x: dx, y: dy };
+                    }
+                    c--;
+                }
+    }
+    return { x: -1, y: -1 };
+}

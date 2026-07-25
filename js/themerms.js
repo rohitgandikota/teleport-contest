@@ -14,7 +14,7 @@ import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { percent, lua_shuffle, lua_d, nh_random } from './nhlua.js';
 import { level_difficulty } from './makemon.js';
-import { selection_from_mkroom, selection_iterate,
+import { selection_from_mkroom, selection_iterate, selection_rndcoord,
          selection_filter_percent, selection_numpoints } from './selvar.js';
 import { lspo_terrain } from './sp_lev.js';
 
@@ -220,4 +220,56 @@ export function fill_cloud_room(rm) {
         note_unported_themerms('des.monster:fog cloud');
 
     note_unported_themerms('des.gas_cloud');
+}
+
+// dat/themerms.lua:225 "Ghost of an Adventurer"
+//
+// One rndcoord, then SIX percent() gates in a fixed order: 65, 55, 45, 65, 20,
+// 20. Every one is evaluated regardless of what the earlier ones returned, so
+// this fill always spends exactly seven draws.
+export function fill_ghost_of_an_adventurer(rm) {
+    const loc = selection_rndcoord(selection_from_mkroom(rm), 0);
+
+    note_unported_themerms('des.monster:ghost');
+
+    if (percent(65)) note_unported_themerms('des.object:dagger');
+    if (percent(55)) note_unported_themerms('des.object:weapon');
+    if (percent(45)) {
+        note_unported_themerms('des.object:bow');
+        note_unported_themerms('des.object:arrow');
+    }
+    if (percent(65)) note_unported_themerms('des.object:armor');
+    if (percent(20)) note_unported_themerms('des.object:ring');
+    if (percent(20)) note_unported_themerms('des.object:scroll');
+}
+
+// dat/themerms.lua:154 "Buried zombies"
+//
+// The candidate list GROWS with depth: four species below difficulty 4, six up
+// to 6, eight above. shuffle() therefore costs three, five or seven draws per
+// iteration, and there is one iteration per two squares of the room.
+//
+// math.random(990, 1010) goes through the shim as nh.random(990, 21), i.e.
+// 990 + rn2(21) — one more draw each time round.
+export function fill_buried_zombies(rm) {
+    const diff = level_difficulty();
+    const zombifiable = ['kobold', 'gnome', 'orc', 'dwarf'];
+
+    if (diff > 3) {
+        zombifiable[4] = 'elf';
+        zombifiable[5] = 'human';
+        if (diff > 6) {
+            zombifiable[6] = 'ettin';
+            zombifiable[7] = 'giant';
+        }
+    }
+
+    const n = (rm.width * rm.height) / 2;
+    for (let i = 1; i <= n; i++) {
+        lua_shuffle(zombifiable);
+        note_unported_themerms('des.object:buried corpse');
+        /* o:stop_timer("rot-corpse") draws nothing */
+        nh_random(990, 21);             /* start_timer zombify-mon delay */
+        note_unported_themerms('start_timer:zombify-mon');
+    }
 }

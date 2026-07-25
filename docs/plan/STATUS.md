@@ -43,29 +43,34 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## Do this first: `merged`. It is reached by 58% of random games.
+## Do this first: `m_dowear`. It is reached by 20% of random games.
+
+`merged` WAS this entry at 58% and is now ported; it no longer appears on the
+reached-unported list at all. Latest `tools/generalize.mjs` run:
+
+     20%  m_dowear with inventory       <-- next
+      5%  themeroom Default room with themed fill
+      5%  themeroom Unlit room with themed fill
+      5%  mergable:erosion_matters
+      3%  (six more themerooms, one themeroom_fill)
+
+`m_dowear` is also what makes `which_armor` (js/worn.js) start returning real
+answers, which mfndpos' dig arm and can_touch_safely both read. The themerooms
+are a cluster: eight entries at 3-5% each, so they are collectively larger than
+m_dowear and may be the better target if they share a code path.
+
+## How to pick a target (this is the part that matters)
 
 `tools/generalize.mjs` runs 40 games on seeds NONE of which come from
 `sessions/`, so what it reports is generalization, not public-session fit.
-Latest run:
 
-     58%  merged                        <-- src/invent.c:814
-     20%  m_dowear with inventory
-      5%  themeroom Default room with themed fill
-      5%  themeroom Unlit room with themed fill
-      3%  (six more themerooms, one themeroom_fill)
+**Run it before picking any target, and re-run it after.** A session-driven
+divergence tells you about one game; this tells you what the held-out half will
+hit. Porting `merged` moved the local score by zero and removed the single
+biggest generalization gap in the port — those are not the same axis, and the
+score is the one that lies to you.
 
-`merged` is reached during level generation in well over half of ALL games,
-public and held-out alike. Nothing else on the worklist is close. It needs
-`weight` and `obj_extract_self` first; `mergable` is a pure predicate and was
-already read in full against src/invent.c during this stretch.
-
-`m_dowear` at 20% is second, and it is also what makes `which_armor`
-(js/worn.js) start returning real answers, which mfndpos' dig arm reads.
-
-**Run generalize.mjs before picking any target.** A session-driven divergence
-tells you about one game; this tells you what the held-out half will hit. The
-seed0030 work below is a single session and should come after these two.
+The seed0030 work below is one session and should come after the list above.
 
 ## The seed0030 divergence — identified precisely, do not re-derive
 

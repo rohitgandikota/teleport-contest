@@ -19,7 +19,7 @@ import { selection_from_mkroom, selection_iterate, selection_rndcoord,
          selection_filter_mapchar } from './selvar.js';
 import { ROOM } from './const.js';
 import { lspo_terrain, lspo_trap, get_traptype_byname,
-         lspo_object } from './sp_lev.js';
+         lspo_object, lspo_monster } from './sp_lev.js';
 
 function note_unported_themerms(what) {
     (game.unported ||= new Set()).add(what);
@@ -200,7 +200,8 @@ export function fill_storeroom(rm) {
         if (percent(25))
             lspo_object('chest');
         else
-            note_unported_themerms('des.monster:mimic-as-chest');
+            lspo_monster(null, undefined, undefined,
+                         { class: 'm', appear_as: 'obj:chest' });
     });
 }
 
@@ -220,7 +221,7 @@ export function fill_cloud_room(rm) {
     const limit = selection_numpoints(fog) / 4;
 
     for (let i = 1; i <= limit; i++)
-        note_unported_themerms('des.monster:fog cloud');
+        lspo_monster('fog cloud', undefined, undefined, { asleep: true });
 
     note_unported_themerms('des.gas_cloud');
 }
@@ -293,7 +294,7 @@ export function fill_garden(rm) {
     const npts = selection_numpoints(s) / 6;
 
     for (let i = 1; i <= npts; i++) {
-        note_unported_themerms('des.monster:wood nymph');
+        lspo_monster('wood nymph', undefined, undefined, { asleep: true });
         if (percent(30))
             note_unported_themerms('des.feature:fountain');
     }

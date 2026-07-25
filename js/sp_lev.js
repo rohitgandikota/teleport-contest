@@ -870,5 +870,15 @@ export function lspo_monster(idOrClass, x, y, opts) {
 // Both were written from assumption first and were wrong: AM_SPLEV_RANDOM is
 // 0x80, not 0, so `m.sp_amask !== AM_SPLEV_RANDOM` was true for every monster
 // and sent them all down the mk_roamer arm; G_NOGEN is 0x0200, not 0x1000.
+// src/mondata.c name_to_mon() — a monster name to its index.
+export function name_to_mon(name) {
+    const want = String(name).toLowerCase();
+
+    for (let i = 0; i < game.mons.length; i++)
+        if ((game.mons[i]?.pmname || '').toLowerCase() === want)
+            return i;
+    return NON_PM;
+}
+
 const AM_SPLEV_RANDOM = 0x80;
 const G_NOGEN = 0x0200;

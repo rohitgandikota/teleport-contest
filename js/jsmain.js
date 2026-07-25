@@ -16,6 +16,9 @@ import { newgame, moveloop_core } from './allmain.js';
 import { parseNethackrc, optValue } from './options.js';
 import { flush_screen } from './display.js';
 import { GameDisplay } from './game_display.js';
+import { reset_windows } from './tty/wintty.js';
+import { init_rect_globals } from './rect.js';
+import { reset_role_globals } from './role.js';
 
 // ── NethackGame ──
 // Wraps a single game session with replay infrastructure.
@@ -84,6 +87,13 @@ export class NethackGame {
 
     async start() {
         const g = resetGame();
+
+        /* Module-scoped state that C keeps in globals and re-initialises per
+           process. The judge runs every session in one process, so anything
+           left behind leaks into the next game. */
+        reset_windows();
+        init_rect_globals();
+        reset_role_globals();
 
         // Parse nethackrc. `rc.opts` is keyed by canonical option name, as
         // resolved against the generated table in js/optlist.js.

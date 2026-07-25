@@ -47,6 +47,17 @@ const IndexOkT = (i, tab) => i >= 0 && i < tab.length;
 // every rigid_role_checks() draw depends on what it excludes.
 export const rfilter = { roles: new Array(roles.length).fill(0), mask: 0 };
 
+// Every module-scoped C global that outlives a single game has to be zeroed
+// between segments, because the judge runs all 44 sessions in ONE process where
+// the C ran 44 separate ones. gr.rfilter is the case that bit: a session that
+// used the '~' menu left its filter set for whatever ran next, so the corpus
+// score depended on session order.
+export function reset_role_globals() {
+    rfilter.roles.fill(0);
+    rfilter.mask = 0;
+    game.mons = null;
+}
+
 // src/role.c:1290 clearrolefilter()
 export function clearrolefilter(which) {
     switch (which) {

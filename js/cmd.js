@@ -267,6 +267,13 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === '.') {
+        // src/cmd.c:1930 — '.' is "wait", donull, which returns ECMD_TIME.
+        // src/do.c:2351: the only early exit is cmd_safety_prevention, which
+        // fires on a paranoid-confirmation option none of the recorded rc
+        // files set. So this rests one move and CONSUMES A TURN; leaving it
+        // unhandled made the hero stand still for free while C's clock moved.
+        game.context.move = 1;
     } else if (ch === 'f') {
         // src/cmd.c cmdlist — 'f' is dofire, which reaches throw_obj() and
         // getdir(). C consumes the direction key there and the hero does NOT

@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-25** · **screens 85 → 135**, corpus RNG **11.1% → 13.8%**
+Last updated: **2026-07-25** · **1 of 44 sessions passes end to end** (`seed8000`), screens **135 → 163**, corpus RNG **13.8% → 14.4%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -17,19 +17,19 @@ it from the same file path after a scoring run to refresh.
 
 ## One-paragraph catch-up
 
-The C recorder reproduces all 44 public sessions byte-for-byte, so the oracle is
-trustworthy, and four tools localise divergences. Level generation is now real
-rather than replayed: `seed8000` reproduces **3103 of its 3130** PRNG calls and
-**19 of its 23** frames, and the remaining divergence is in the monster move
-loop, past level generation entirely. Getting there meant porting `makemon`, the
-trap and corpse pipelines, `mksobj_init`'s food branch, `random_engraving` with a
-real reader for `dat/rumors`, and `mineralize` — and, more than anything, finding
-that hand-written constant blocks were wrong in bulk (see
-[NOTES.md](NOTES.md)). The score is still **19 of 11,405 screens** because
-frames need content subsystems the port does not have yet, not because the
-generation is wrong. Two things stand between here and the first complete
-session: wiring the finished tty window layer, and computing the hero's starting
-inventory instead of replaying it.
+**`seed8000-tourist-starter` now reproduces the C PRNG stream exactly — all 3130
+calls — with all 23 screens matching. It is the first session to pass end to
+end.** Getting there was four missing draws found by walking its divergence
+forward one at a time, and the method generalises: once a session's screens all
+match, the RNG log becomes a precise worklist, because every mismatch names the
+C function and source line that produced it. The four were the clairvoyance
+counter in `moveloop_core` (`rn1(31,15)`, maintained even when no clairvoyance
+happens), the whole attribute exercise system (`exerchk` → `exerper` →
+`exercise`, one `rn2(19)` every tenth move), `set_apparxy` (whose ordinary path
+draws nothing, which is why its absence was invisible), and `init_uhunger`.
+
+The corpus score is still **163 of 11,405 screens** because most sessions need
+content subsystems the port does not have, not because generation is wrong.
 
 ---
 
@@ -37,10 +37,46 @@ inventory instead of replaying it.
 
 | | |
 |---|---|
-| **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | **`--More--`** (1108 frames, 40 sessions), **dogmove.c** (7), `mkobj.c:289` (5) |
+| **Current milestone** | **First full session** — `seed8000` matches C call for call; generalise the method |
+| **Also open** | **object placement during level gen** (see below), **`--More--`** (1108 frames, 40 sessions), `mkobj.c:289` (5) |
 | **Blocked on** | nothing |
-| **Score** | **148/11,405 screens**, 0/44 sessions passing, corpus RNG **112,138/792,838 (14.1%)** · held-out **10.6%** |
+| **Score** | **163/11,405 screens**, **1/44 sessions passing**, corpus RNG **113,896/792,838 (14.4%)** · held-out **10.6%** |
+
+### The method that produced the first pass — use it next
+
+Pick the session closest to a full RNG match, not the one with the most screens.
+`node tools/scoreboard.mjs` prints `rng matched/total` per session; the smallest
+gap is the best target. Then `node tools/diverge.mjs <seed>` names the C function
+and line of the first mismatch, and the fix is to go read that line. seed8000
+went 2497 → 2999 → 3047 → 3086 → complete in four such steps.
+
+Two cautions learned doing it:
+
+- **The divergence point is the measure, not `positions match overall`.** A
+  faithful change can lower the match count while leaving the divergence exactly
+  where it was, because the count includes coincidental post-divergence matches.
+  Twice this session a "regression" was nothing of the kind — check
+  `diverge.mjs`'s call number before reverting anything.
+- **A draw that is missing costs nothing until something else exposes it.**
+  `set_apparxy`'s common path draws nothing, so its absence was free; it only
+  showed up once `distfleeck` was real. Expect fixes to arrive in pairs.
+
+### Next: object placement during level generation
+
+Two sessions independently point at it. On `seed0105` the pet's 5-square search
+box holds **zero** objects where C's holds one, so our `appr` differs and we run
+an inventory scan C skips; on `seed0077` step 12 a tool at (35,5) is missing from
+our level. `somex`/`somey`/`somexyspace` were all verified identical, so the gap
+is in what gets placed, not where. This is upstream of the pet code and of any
+session with floor objects, so it is worth more than the 18 remaining calls on
+seed0105.
+
+`seed0004` is a separate, purely level-gen divergence at call 1923: C draws
+`rn2(4)` at `makeniche(mklev.c:758)` where we draw a second `rn2(6)` from
+`finddpos`. Instrumenting `good_rm_wall_doorpos` showed it returning `ok` on the
+first try for both niche calls, so the extra draw is NOT a `finddpos` retry —
+suspect `place_niche`'s terrain test or the `makeniche` loop shape. Half-done:
+the instrumentation was reverted, so this needs re-instrumenting to finish.
 
 ### Pet: object search wired, but seed0102 still does not reach it
 

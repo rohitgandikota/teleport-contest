@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 133**, corpus RNG **11.1% → 12.5%**
+Last updated: **2026-07-24** · **screens 85 → 134**, corpus RNG **11.1% → 13.1%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,37 +38,46 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | `themeroom_fill` (3), `rnd_class` (4), `obj_resists` (4) |
+| **Also open** | themeroom fill CONTENTS (3), `rnd_class` (4), `obj_resists` (4) |
 | **Blocked on** | nothing |
-| **Score** | **133/11,405 screens**, 0/44 sessions passing, corpus RNG **99,184/792,838 (12.5%)** |
+| **Score** | **134/11,405 screens**, 0/44 sessions passing, corpus RNG **103,984/792,838 (13.1%)** |
 
 ### The exact next action — READ THIS FIRST
 
-**`lspo_map` and the shaped themerooms are DONE** and have left the blocker
-histogram entirely. `js/mkmap.js` and the new half of `js/sp_lev.js` place and
-stamp the `des.map` blocks; `tools/gen-themerms.mjs` supplies both the map and
-the `filler_region` coordinates, so 17 of the 19 shaped rooms need no
-hand-written contents at all. All seven blocked sessions moved past it —
-seed0004 463 → 1321, seed0200 377 → 701, seed0009 462 → 547.
+**The whole themed-room path is now ported except the fill CONTENTS.**
+`lspo_map` places and stamps the shaped rooms, `lspo_region` turns them into
+rooms, and `themeroom_fill`'s reservoir sample is exact. `lspo_map` and
+`themeroom_fill`'s sample have both left the blocker histogram.
 
-**Next: `themeroom_fill` (dat/themerms.lua:1009), 3 sessions.** This is exactly
-where the port was predicted to stop. `filler_region`'s `percent(30)` selects it
-30% of the time, and it is a second reservoir sample — over the 15
-`themeroom_fills`, already in `js/themerms_data.js` — followed by that fill's
-own contents, which place monsters, objects and terrain. The three sessions now
-report `nh.rn2 src=themerms.lua:1039 parent=region`, which is that sample's
-draw loop. Port it the same way: metadata from the generated table, then each
-fill's contents transcribed from the Lua.
+Two bugs found on the way, both worth remembering:
 
-**Also open, and smaller: two sessions still block on `rnd_rect`** (seed0009 at
-call 547, seed0200 at 701) with OUR `rect_cnt` higher than C's — 6 against 4 for
-seed0009. All the draws up to that point match, including the `create_room` that
-precedes it, so the difference is in the TERRAIN the themeroom map left behind:
-`check_room` reads `levl[][].typ`, and if our stamped map or the room box that
-`flood_fill_rm` + `add_room` derive from it differs by a cell, `create_room`
-succeeds where C fails (or the reverse) and `split_rects` yields a different
-number of free rectangles. Dump the level grid after the first themeroom and
-compare it against the recorded screen rather than guessing.
+- **`gi.in_mk_themerooms` was read in four places and written in none.** Every
+  themeroom-specific branch in the level generator was dead. Its visible effect
+  is in `check_room`: after the `rn2(3)` that decides whether to give up, a
+  themeroom returns FALSE immediately rather than shrinking its bounds and
+  retrying. Retrying let `create_room` succeed where C failed, and the extra
+  `split_rects` left our free-rectangle list larger than C's. Worth **+0.6%** of
+  the corpus on its own.
+- **`des.region` defaults `joined` to TRUE**, and `filler_region` omits the key.
+  Hardcoding it false stopped `makecorridors` joining those rooms. **+0.2%**.
+
+**Next: the fill contents.** Two are reachable in the public corpus, identified
+by replaying the sample against C's own logged results:
+
+- **"Ghost of an Adventurer"** (seed0015, themerms.lua:222) —
+  `selection.room():rndcoord(0)`, `des.monster{id="ghost", asleep, waiting}`,
+  then six independent `percent()` gates each placing an object by `id` or by
+  `class` with `buc = "not-blessed"`.
+- **"Buried zombies"** (seed0013 ×2, themerms.lua:151) — `(rm.width *
+  rm.height) / 2` iterations of `shuffle(zombifiable)` then a buried corpse with
+  a stopped rot timer. The zombifiable list GROWS with level difficulty (4
+  entries below depth 4, 6 below 7, 8 above), and `shuffle` draws one rn2 per
+  element, so the difficulty changes the draw count.
+
+Both need `des.object` (by id, by class, with `buc` and `buried`) and
+`des.monster`, which is the `mkobj`/`makemon` bridge the special-level loader
+needs anyway. `selection.room():rndcoord()` is `selection_rndcoord`
+(selvar.c:302) over the room's cells — one `rn2(npoints)`.
 
 ### What the window layer now provides
 

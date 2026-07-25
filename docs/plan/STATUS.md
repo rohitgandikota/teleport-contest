@@ -388,6 +388,33 @@ This resolves the confusion in the four failed attempts:
 Test that by dumping our themerooms_generate pick per level against the C rn2
 log for the same level. The picks, not the fills, are what to compare.
 
+**RESULT — seed0030's picks across all ten segments:**
+
+    default          92
+    Blocked center    1
+    Z-shaped, rot 1   1
+
+The three "themed fill" entries are picked ZERO times there, and the two
+non-default picks are SHAPED rooms that return early through
+themeroom_contents() before reaching the des.room switch at all. So the
+des.room change is a NO-OP for seed0030 -- yet the corpus still loses 915.
+
+**Therefore the -915 is concentrated in specific other sessions.** Find them
+before theorising further:
+
+    apply the des.room change, run tools/scoreboard.mjs, and diff the
+    per-session rng column against the committed baseline. Two or three
+    sessions will account for the whole loss.
+
+Then dump picks for THOSE sessions. If they pick a themed-fill entry where C
+picks something else, the bug is in themerooms_generate's reservoir sample
+(is_themeroom_eligible's difficulty gates are the likely suspect, since they
+decide how many entries the sample walks and therefore how many rn2 it spends).
+
+Do not run another whole-corpus experiment without first knowing which sessions
+move. Four attempts were spent measuring a total while reasoning about a path
+that was never reached in most of it.
+
 Also note: all fifteen fills and the des.* chains are for the HELD-OUT half.
 generalize.mjs finds themerooms in 3-5% of random games while the public
 corpus reaches them zero times. That is the clearest example this session of

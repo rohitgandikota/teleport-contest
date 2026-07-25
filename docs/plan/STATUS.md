@@ -7,7 +7,7 @@ what did they leave half-finished, and what do I do next?"
 The milestone files say what the work *is*. This file says where the work
 *currently stands*.
 
-Last updated: **2026-07-24** · **screens 85 → 133**; chargen menus, the legacy pager and role filtering
+Last updated: **2026-07-24** · **screens 85 → 133**, corpus RNG **11.1% → 12.2%**
 
 Live dashboard (score, blockers, milestone state):
 <https://claude.ai/code/artifact/9556cfe3-2442-42f7-a1d3-605e58f4e81b> — republish
@@ -38,9 +38,9 @@ inventory instead of replaying it.
 | | |
 |---|---|
 | **Current milestone** | **Breadth** — every chargen frame up to the legacy blurb now matches |
-| **Also open** | `create_room`/`rnd_rect` (5), `lspo_map` (8) |
+| **Also open** | `lspo_map` (7), `do_mkroom` special rooms, `obj_resists` (3) |
 | **Blocked on** | nothing |
-| **Score** | **133/11,405 screens**, 0/44 sessions passing, corpus RNG **90,001/792,838 (11.4%)** |
+| **Score** | **133/11,405 screens**, 0/44 sessions passing, corpus RNG **96,580/792,838 (12.2%)** |
 
 ### The exact next action — READ THIS FIRST
 
@@ -58,18 +58,19 @@ PRNG call **1** because pressing `~` was a no-op; it now reaches call 2510.
 
 **Two candidate next moves, in order:**
 
-1. **`create_room()` (src/sp_lev.c) — 5 sessions, the biggest non-Lua item.**
-   seed0077, seed0007, seed0012 and seed0014 all diverge inside a run of
-   `rnd_rect` calls that follows `check_room(sp_lev.c:1455)`. The signature is
-   unmistakable: C draws `rn2(1)` over and over (its free-rectangle list is down
-   to one entry) while we draw `rn2(6)`, `rn2(5)`, `rn2(7)`… — our list still
-   has room in it. `js/rect.js` itself was audited against `src/rect.c` and is
-   faithful, so the bug is in the CALLER: the themed-room path that should be
-   calling `split_rects()` after placing a room is not running. Start at
-   `check_room`/`create_room` in `sp_lev.c` and find which placements never
-   remove their rectangle.
-2. **`lspo_map` (sp_lev.c:6154), 8 sessions.** Genuinely Lua, and the only
-   remaining item with real depth.
+**`create_vault()`'s retry loop is done too** — it was a `note_unported` stub at
+`js/mklev.js`, the first divergence in five sessions, and clearing it took the
+corpus from 11.4% to 12.2%. `rnd_rect` has left the blocker histogram entirely.
+
+**Two candidate next moves, in order:**
+
+1. **`lspo_map` (sp_lev.c:6154), 7 sessions.** Genuinely Lua, and the largest
+   single blocker left by some way.
+2. **`do_mkroom()` / special rooms (src/mkroom.c).** `makelevel` chooses at most
+   one special room per level (`svn.nroom >= room_threshold && rn2(u_depth) < 3`)
+   and our port does not have that step at all — `room_threshold` exists now
+   only because the vault increments it. `somey(mkroom.c:674)` is the visible
+   blocker in 2 sessions and is inside this subsystem.
 
 Then the long tail: `rnd_rect` (5), `next_ident` (2), `obj_resists` (2), `somey`
 (2), `mkobj`, `wipeout_text`, `dog_goal`, `peace_minded`, one each.
@@ -130,13 +131,15 @@ loop, and `fastforward_step` still replays 127 calls of it.
 
 | Blocker | Sessions | Notes |
 |---|---:|---|
-| `lspo_map(sp_lev.c:6154)` | 8 | **Lua** |
-| `rnd_rect(rect.c:106)` | 5 | |
-| `next_ident`, `obj_resists`, `somey` | 2 each | |
+| `lspo_map(sp_lev.c:6154)` | 7 | **Lua** |
+| `obj_resists(zap.c:1469)` | 3 | |
+| `mkobj(mkobj.c:289)` | 3 | |
+| `wipeout_text`, `somey`, `rnd_class`, `next_ident`, | 2 each | |
+| `newhp`, `makelevel`, `hole_destination`, `getbones` | 2 each | |
 | everything else | 1 each | |
 
-`fill_special_room` and the `nhlib` shuffle are gone from this table entirely.
-`lspo_map` is the only Lua item left.
+`fill_special_room`, the `nhlib` shuffle and `rnd_rect` are all gone from this
+table. `lspo_map` is the only Lua item left.
 
 ### Fake-RNG stubs: two of three cleared, one remains
 

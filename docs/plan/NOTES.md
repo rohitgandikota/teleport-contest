@@ -756,3 +756,20 @@ on row 10. Nothing in `tty_askname` mentions a row number.
 `showexp,time`, so the only session whose frames were passing was the one that
 made the bug invisible. Every other session's status line was wrong by two
 fields. When a field looks unconditional, check `optlist.js` before believing it.
+
+## Module-scoped state leaks between sessions — the judge uses ONE process
+
+The C runs each session as a separate process, so every file-scope global starts
+zeroed. Our judge loads `js/jsmain.js` once and calls `runSegment` 44 times, so
+anything at module scope survives into the next game.
+
+This was invisible until `reset_role_filtering()` landed and a session that
+pressed `~` left `gr.rfilter` set for whatever ran next. The symptom is the
+tell: **`tools/diverge.mjs --all` and `node tools/diverge.mjs <session>`
+disagreed** — seed0007 reported `div@0` in the sweep and `div@2831` on its own,
+because the sweep shares a process and the single run does not. If those two
+ever disagree again, look for module state before looking at the port.
+
+`js/jsmain.js start()` now calls `reset_windows()`, `init_rect_globals()` and
+`reset_role_globals()`. All three existed already and none of them had a caller.
+**When you add module-scope state, add it to that list in the same commit.**

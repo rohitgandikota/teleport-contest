@@ -296,10 +296,28 @@ pet turn, where C has already moved on to the next monster's dochug (its 4454 is
 distfleeck's rn2(5)).
 
 So the question is movement allotment, not targeting: **our pet acts more often
-than C's.** Look at `mcalcmove` and the `mtmp.movement` accounting in
-moveloop_core's monster phase — the pet is accumulating enough points for an
-extra action. Note this is the same subsystem that would explain the seed4500
-mfndpos 5-vs-7 drift, so a fix here may resolve both.
+than C's.**
+
+Checked and ELIMINATED this iteration:
+- `mcalcmove` — matches src/mon.c line for line, including the MSLOW/MFAST
+  arms and the `rn2(NORMAL_SPEED) < mmove_adj` rounding.
+- moveloop_core's monster phase — the `do { movemon(); if (umovement >=
+  NORMAL_SPEED) break; } while (monscanmove)` loop and the allotment below it
+  match src/allmain.c:207-232 exactly.
+- Duplicate monsters in `level.monsters` — none; m_id set size equals array
+  length.
+- `movemon_singlemon`'s return — WAS wrong (returned "has any movement left"
+  where C returns FALSE) and is now fixed, but it is neutral because mcalcmove
+  only ever grants multiples of NORMAL_SPEED.
+
+Still unlocated. Next: instrument `mtmp.movement` for the PET across a whole
+turn — before allotment, after allotment, and at each movemon_singlemon entry —
+and compare the number of times it clears NORMAL_SPEED against the number of
+dog_move calls. Four dog_move calls were observed on seed0102; establish how
+many C makes by counting its score_targ rnd(5)s in the recorded stream.
+
+This is the same subsystem that would explain the seed4500 mfndpos 5-vs-7
+drift, so a fix here may resolve both.
 
 --- superseded diagnosis, kept so it is not re-derived ---
 

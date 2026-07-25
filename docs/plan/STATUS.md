@@ -365,8 +365,25 @@ arrives while the first is unacknowledged and the two do not fit on one line.
 why all three attempts to add a `more()` call failed and cost 21 screens each:
 the call site was never the problem.
 
-**The fix is to print the messages C prints**, in C's order, and let
-`update_topl` produce `--More--` on its own:
+**Measured further — seed0102 step 0 is only SIX cells away.** Run
+`node tools/screendiff.mjs seed0102 0`: cursor matches, and the only
+differences are rows 7-12 at **column 22**, where C has spaces and we show map
+content bleeding through (`─`, `·`, `k`, `"`). The legacy text is already
+rendered correctly, so this is the window's drawn EXTENT being one column
+narrow, not the message content.
+
+`compute_offx()` in js/tty/wintty.js was compared against
+win/tty/wintty.c:1908 and **matches exactly**, so the bug is in what the window
+BLANKS when painted, not where it starts. Find where NHW_TEXT rows are cleared
+and check the right-edge/left-edge bound against C's `tty_display_nhwindow`.
+
+Note also win/tty/wintty.c:1921 — inside the same function, BEFORE painting:
+`if (ttyDisplay->toplin == TOPLINE_NEED_MORE) tty_display_nhwindow(WIN_MESSAGE,
+TRUE);`. That is a real `more()` trigger, but it cannot fire at startup because
+nothing has been plined yet when the legacy pager runs.
+
+**Where a `--More--` DOES belong**, in C's order, is after printing the
+messages C prints and letting `update_topl` produce it on its own:
 1. the legacy blurb (`src/allmain.c`, the `flags.legacy` branch — grep
    `"It is written in the Book of"`),
 2. whatever wizard mode adds when `playmode:debug` is set,

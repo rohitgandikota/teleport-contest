@@ -13,6 +13,11 @@ import { mfndpos, mon_allowflags } from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
 import { OCLASSES } from './objects_data.js';
 import { couldsee } from './vision.js';
+import { gettrack } from './track.js';
+
+// src/mondata.c:623 can_track() — Excalibur or eyes.
+const can_track = (ptr) => haseyes(ptr);
+const haseyes = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
 import { ALLOW_U, COULD_SEE, A_LAWFUL, BOLT_LIM, IS_ALTAR } from './const.js';
 import { is_rider } from './makemon.js';
 
@@ -358,23 +363,43 @@ export function m_move(mtmp, after) {
     if (mtmp.mconf) {
         appr = 0;
     } else {
-        const should_see = (dist2(omx, omy, ggx, ggy) <= 36);
+        /* src/monmove.c:1861 — all three terms matter. Ours had only the
+           distance one, which made should_see true far too often and skipped
+           the gettrack branch below; that branch changes the GOAL, so the
+           monster walked somewhere else while drawing the same numbers. */
+        const here = game.level.at(omx, omy);
+        const there = game.level.at(ggx, ggy);
+        const should_see = (couldsee(omx, omy)
+                            && (there?.lit || !here?.lit)
+                            && (dist2(omx, omy, ggx, ggy) <= 36));
 
         if (!mtmp.mcansee
-            || (mtmp.mpeaceful && !mtmp.isshk)
-            || ((ptr.mlet === MONSYMS.S_BAT || ptr.mlet === MONSYMS.S_LIGHT)
-                && !rn2(3)))
+            || (should_see && game.u.uprops?.INVIS
+                && !perceives(ptr) && rn2(11))
+            || (mtmp.mpeaceful && !mtmp.isshk) /* allow shks to follow */
+            || ((mtmp.mnum === PMNAMES.PM_STALKER
+                 || ptr.mlet === MONSYMS.S_BAT
+                 || ptr.mlet === MONSYMS.S_LIGHT) && !rn2(3)))
             appr = 0;
 
-        /* leppie_avoidance and gettrack change appr/the goal without drawing;
-           neither is ported. */
-        note_unported('m_move leppie/gettrack');
+        /* leppie_avoidance needs the leprechaun gold logic; it only ever turns
+           appr from 1 to -1 and draws nothing. */
+        if (appr === 1)
+            note_unported('leppie_avoidance');
 
         /* src/monmove.c:1878 — hostiles with a ranged option keep their
            distance. This changes appr, and appr decides which candidate square
            wins, so getting it wrong moves a monster to a different legal square
            while drawing exactly the same numbers. */
         appr = m_balks_at_approaching(appr, mtmp);
+
+        if (!should_see && can_track(ptr)) {
+            const cp = gettrack(omx, omy);
+            if (cp) {
+                ggx = cp.x;
+                ggy = cp.y;
+            }
+        }
     }
 
     /* src/monmove.c:1891 — the pickup branch. The rn2(10) fires for every

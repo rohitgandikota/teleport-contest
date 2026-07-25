@@ -7,6 +7,7 @@ import { game } from './gstate.js';
 import { rn2, rn1 } from './rng.js';
 import { exerchk } from './attrib.js';
 import { init_uhunger } from './eat.js';
+import { settrack, initrack } from './track.js';
 import { ask_do_tutorial } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
@@ -353,6 +354,9 @@ export async function moveloop_core() {
                 maybe_generate_rnd_mon();
 
                 u_calc_moveamt();
+                /* src/allmain.c:242 — record the square the hero just left, so
+                   a monster that cannot see the hero has a trail to follow. */
+                settrack();
 
                 g.moves = (g.moves || 1) + 1;
 

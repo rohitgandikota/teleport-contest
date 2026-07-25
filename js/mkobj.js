@@ -25,7 +25,7 @@
 
 import { game } from './gstate.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
-import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
+import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
     rndmonnum, level_difficulty, is_male, is_female, is_neuter, is_rider,
 } from './makemon.js';
@@ -132,6 +132,15 @@ export function mkobj(oclass, artif) {
         i = game.bases[oclass];
         while ((prob -= objects[i].oc_prob) > 0)
             ++i;
+    }
+
+    /* src/mkobj.c:295 — C's probtype guard. It resets i when the walk lands
+       outside the class, which changes WHICH object is returned, so leaving it
+       out is not merely dropping a diagnostic. If it ever fires, oc_prob or
+       oclass_prob_totals is wrong. */
+    if (objects[i].oc_class !== oclass || !obj_descr_name(i)) {
+        note_unported_obj(`probtype error oclass=${oclass} i=${i}`);
+        i = game.bases[oclass];
     }
 
     return mksobj(i, true, artif);
@@ -974,6 +983,12 @@ export function start_corpse_timeout(body) {
             }
     }
     body.rot_when = when;
+}
+
+// include/objclass.h OBJ_NAME() — obj_descr[].oc_name; a null name marks a
+// table slot that is not a real object.
+function obj_descr_name(i) {
+    return obj_descr[game.objects[i].oc_name_idx]?.oc_name ?? null;
 }
 
 function note_unported_obj(what) {

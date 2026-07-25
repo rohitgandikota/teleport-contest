@@ -89,6 +89,38 @@ stream. Level generation and the first turn of the move loop are what every
 session in both halves runs, which makes `m_move` the highest-value target for
 the held-out half as well as the public one.
 
+### peace_minded and u.ualign.record — verified facts, fix not yet landing
+
+Four sessions block at `peace_minded(makemon.c:2306)`. The draw is
+
+```c
+return (boolean) (!!rn2(16 + (u.ualign.record < -15 ? -15 : u.ualign.record))
+                  && !!rn2(2 + abs(mal)));
+```
+
+so the bound reads `u.ualign.record` directly. seed0002 (a Healer) has C drawing
+`rn2(26)` against our `rn2(16)` — C's record is **10**, ours is **0**.
+
+Verified:
+- `roles[].initrecord` is 10 for Archeologist, Barbarian, Healer, Knight, Monk,
+  Rogue, Ranger, Samurai and 0 for Caveman, Priest, Tourist, Valkyrie, Wizard.
+  Healer being 10 matches C's rn2(26) exactly.
+- C sets it in **`newhp()`, src/attrib.c:1091**, inside the `u.ulevel == 0`
+  branch under `if (svm.moves == 0)` — not in u_init. `js/allmain.js` hardcodes
+  `record: 0` instead.
+
+Porting that assignment faithfully — into `newhp()` where C has it, with
+`g.u.ualign` pre-created so the write lands — scores **132 screens / 108385
+RNG** against the current 134 / 109589, and **seed0002 does not move at all**
+(still call 2206). So the assignment is not reaching the value peace_minded
+reads, or something downstream of a non-zero record regresses more than it
+gains. Reverted.
+
+Next step is not to re-derive the above: instrument a Healer run and print
+`game.u.ualign.record` at the moment `peace_minded` is called. If it is 10 there
+and the draw is still rn2(16), the bug is in our peace_minded, not in the
+initialisation.
+
 ### A faithful fix that made the score go DOWN — land it with its partner
 
 `mkobj()` (js/mkobj.js:119) is missing C's SPBOOK_no_NOVEL branch:
@@ -118,9 +150,14 @@ The cost lands elsewhere: sessions blocking at `mkobj(mkobj.c:289)` go from 5 to
 the per-class totals (or in which class the icp walk selects) was previously
 being cancelled out by the missing branch. Two wrongs were making a right.
 
-**Reverted for now** per CLAUDE.md's "if either drops, fix or revert before
-moving on" — but the branch is correct and must go back in together with
-whatever is wrong at mkobj.c:289. Do not re-derive this from scratch:
+**RESOLVED and landed.** The partner bug was the constant itself:
+`include/objclass.h:152` defines `SPBOOK_no_NOVEL` as `(0 - (int) SPBOOK_CLASS)`
+= **-10**, a NEGATED class, and `js/mklev.js` had it hardcoded as **11**, which
+in this build is `WAND_CLASS`. So the branch was firing on wands. With both
+fixed together: RNG 13.5% -> 13.8%, screens held at 134, and sessions stuck at
+mkobj.c:289 went from 13 back to 5. Kept for the record because the shape
+recurs — a faithful fix can look like a regression when a second bug was
+cancelling it out:
 
 - `game.oclass_prob_totals[SPBOOK_CLASS]` is **1000** at runtime and
   `bases[10..12] = [366, 410, 438]`, both verified correct.

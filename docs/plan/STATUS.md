@@ -43,7 +43,39 @@ scare-monster arm, `extcmds_match`, `ext_cmd_getlin_hook`, `wiz_level_change`,
 `term_start_color`, the engraving glyph, the DEC open-door glyph, the missing
 terrain glyphs, and space falling through to "Unknown command".
 
-## The themeroom subsystem is COMPLETE. Four entries remain, all one shape.
+## ONE entry left: "Water-surrounded vault". It is the biggest of the fifteen.
+
+`tools/generalize.mjs` is down to a single 3% entry from thirteen. Everything
+else in the themeroom subsystem is ported AND wired: all fifteen fills, all four
+des.* verbs with their chains, des.room/des.door/des.altar, the selection
+primitives, containment, the postprocess queue, subrooms, and the three nested
+themerooms (Room in a room, Huge room, Nesting rooms).
+
+**What the last one needs, read from dat/themerms.lua:765.** It is not another
+des.room entry -- it is the only genuinely SHAPED themeroom, and it uses Lua
+object bindings nothing else in the file touches:
+
+    des.map({ map = [[...6x6...]], contents = function(m) ... end })
+    des.region({ region={3,3,3,3}, type="themed", irregular=true,
+                 filled=0, joined=false })
+    shuffle(chest_spots)                        -- 3 draws over 4 entries
+    obj.new("scroll of teleportation")          -- NOT PORTED, a Lua obj binding
+    itm:class()                                 -- NOT PORTED
+    box = des.object({ id="chest", coord=..., olocked="no" })
+    box:addcontent(itm)                         -- NOT PORTED
+
+`obj.new`, `:class()` and `:addcontent()` are src/nhlobj.c bindings -- a file
+this port has not touched at all. They are what let the Lua build an object
+OUTSIDE the level and then insert it, which is different from des.object's
+create-in-place.
+
+Order of work: nhlobj.c's obj.new/class/addcontent first, then des.map's
+contents callback (lspo_map already exists and stamps the map; what is missing
+is running its `contents` with the map's coordinate frame), then this fill.
+
+Note `math.random(#escape_items)` is ONE draw picking among four, and the
+glass/crystal test branches on the RESULT, so the two des.object arms differ
+only in olocked -- the draw count is the same either way.
 
 `tools/generalize.mjs` is down to:
 

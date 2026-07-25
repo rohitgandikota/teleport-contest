@@ -280,6 +280,25 @@ For C's appr to be non-zero at that point its pet must be at **udist >= 9**,
 i.e. at least three squares out on one axis. **C's pet moved several squares
 where ours barely moved at all.**
 
+**FIXED (whappr), and the chain now fires correctly.** seed0102 advances to
+4454, and calls 4452-4453 match exactly — including score_targ's rnd(5), which
+is the proof that pet_ranged_attk/best_target/find_targ/score_targ are right.
+
+**Remaining on seed0102:** at 4454 C draws rn2(5) (distfleeck, i.e. it has moved
+on to the next monster) while we draw another rnd(5) — **we score one MORE
+target than C.** So `best_target`'s eight-direction scan finds a target C
+rejects. With clear_path now ported, find_targ should stop at the same walls,
+so check in this order:
+1. Is `viz_clear` maintained the same way ours is read? clear_path indexes
+   `viz_clear[row][col]`; confirm vision_reset/vision_recalc fill it for every
+   square C fills.
+2. find_targ returns `game.u` when it reaches <mux,muy>. Our mux/muy come from
+   set_apparxy; if they differ from C's the pet "sees" the hero in a direction
+   C does not.
+3. The `!targ.minvis || perceives()` and `!targ.mundetected` filters.
+
+--- superseded diagnosis, kept so it is not re-derived ---
+
 **Correction — it is NOT under-movement.** Instrumenting dog_move's entry and
 early exits shows it runs **four times**, entering at
 

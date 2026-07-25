@@ -17,6 +17,12 @@ import { is_pool, is_lava } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { ANY_LOC, SOLID, DRY, SPACELOC, WET, HOT,
          NO_LOC_WARN } from './const.js';
+import { NO_TRAP, VIBRATING_SQUARE,
+         MKTRAP_MAZEFLAG, MKTRAP_SEEN, MKTRAP_NOSPIDERONWEB, MKTRAP_NOVICTIM,
+         ARROW_TRAP, DART_TRAP, ROCKTRAP, SQKY_BOARD, BEAR_TRAP, LANDMINE,
+         ROLLING_BOULDER_TRAP, SLP_GAS_TRAP, RUST_TRAP, FIRE_TRAP, PIT,
+         SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL,
+         WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP } from './const.js';
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
 import { depth } from './dungeon.js';
 import { mkgold } from './mkobj.js';
@@ -519,3 +525,90 @@ export function get_free_room_loc(x, y, croom, pos) {
     }
     return t;
 }
+
+// src/sp_lev.c:4323 trap_types[] — the des.trap() name table, in C's order.
+const trap_types = [
+    ['arrow', ARROW_TRAP], ['dart', DART_TRAP], ['falling rock', ROCKTRAP],
+    ['board', SQKY_BOARD], ['bear', BEAR_TRAP], ['land mine', LANDMINE],
+    ['rolling boulder', ROLLING_BOULDER_TRAP], ['sleep gas', SLP_GAS_TRAP],
+    ['rust', RUST_TRAP], ['fire', FIRE_TRAP], ['pit', PIT],
+    ['spiked pit', SPIKED_PIT], ['hole', HOLE], ['trap door', TRAPDOOR],
+    ['teleport', TELEP_TRAP], ['level teleport', LEVEL_TELEP],
+    ['magic portal', MAGIC_PORTAL], ['web', WEB], ['statue', STATUE_TRAP],
+    ['magic', MAGIC_TRAP], ['anti magic', ANTI_MAGIC],
+    ['polymorph', POLY_TRAP], ['vibrating square', VIBRATING_SQUARE],
+    ['random', -1],
+];
+
+// src/sp_lev.c:4379 get_traptype_byname() — case-insensitive, NO_TRAP if absent.
+export function get_traptype_byname(trapname) {
+    for (const [name, type] of trap_types)
+        if (name.toLowerCase() === String(trapname).toLowerCase())
+            return type;
+    return NO_TRAP;
+}
+
+// src/sp_lev.c create_trap() — place one trap from a des.trap() spec.
+//
+// Note it calls mktrap with croom = NULL and an explicit tm, so mktrap's own
+// placement retry never runs; the searching happens HERE, and the two paths
+// differ. Inside a room it is get_free_room_loc (which retries on non-ROOM
+// squares); outside one it retries only while the square is stairs or a
+// ladder, up to 100 times.
+//
+// mktrap_flags starts as MKTRAP_MAZEFLAG, which matters because mktrap tests
+// that flag before deciding it has no way to place anything.
+export async function create_trap(t, croom) {
+    let pos;
+
+    if (t.type === VIBRATING_SQUARE) {
+        note_unported('create_trap:vibrating square');
+        return;
+    } else if (croom) {
+        pos = get_free_room_loc(-1, -1, croom, t.coord);
+    } else {
+        let trycnt = 0;
+        do {
+            pos = get_location_coord(-1, -1, DRY, croom, t.coord);
+        } while ((game.level?.at(pos.x, pos.y)?.typ === STAIRS
+                  || game.level?.at(pos.x, pos.y)?.typ === LADDER)
+                 && ++trycnt <= 100);
+        if (trycnt > 100)
+            return;
+    }
+
+    let mktrap_flags = MKTRAP_MAZEFLAG;
+    if (!t.spider_on_web) mktrap_flags |= MKTRAP_NOSPIDERONWEB;
+    if (t.seen)           mktrap_flags |= MKTRAP_SEEN;
+    if (t.novictim)       mktrap_flags |= MKTRAP_NOVICTIM;
+
+    await mktrap_fn(t.type, mktrap_flags, null, { x: pos.x, y: pos.y });
+}
+
+// src/sp_lev.c:4397 lspo_trap() — the des.trap() verb.
+//
+// Defaults come from the C: spider_on_web starts TRUE, seen and novictim
+// FALSE. The string and (string, x, y) forms leave them all at those defaults;
+// only the table form can change them.
+export async function lspo_trap(type, x, y, opts) {
+    const t = {
+        type,
+        spider_on_web: opts?.spider_on_web !== undefined
+                       ? !!opts.spider_on_web : true,
+        seen: !!opts?.seen,
+        novictim: opts?.victim !== undefined ? !opts.victim : false,
+        coord: (x === undefined || x === -1) && (y === undefined || y === -1)
+               ? SP_COORD_PACK_RANDOM(0)
+               : SP_COORD_PACK(x, y),
+    };
+
+    if (t.type === undefined || t.type === NO_TRAP)
+        return;                         /* nhl_error("Unknown trap type") */
+
+    await create_trap(t, game.coder?.croom ?? null);
+}
+
+/* mktrap() lives in js/mklev.js, which imports this file; routed through the
+   wire for the same cycle reason as somexy. */
+let mktrap_fn = null;
+export function sp_lev_wire_mktrap(fn) { mktrap_fn = fn; }

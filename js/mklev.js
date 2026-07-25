@@ -103,7 +103,7 @@ import { get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
 import { DUST, HEADSTONE, OBJ_CONTAINED } from './const.js';
 import { hole_destination } from './trap.js';
 import { Can_fall_thru } from './dungeon.js';
-import { lspo_map, lspo_region, sp_lev_wire } from './sp_lev.js';
+import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
 import { depth as depth_of_level } from './hacklib.js';
@@ -629,6 +629,7 @@ function ROOM_IS_FILLABLE(croom) {
 }
 
 sp_lev_wire(add_room, add_door, somexy);
+sp_lev_wire_mktrap(mktrap);
 
 // C ref: mklev.c makerooms()
 async function makerooms() {
@@ -1846,7 +1847,7 @@ function mktrap_victim(trap) {
 // rejected one, so a crowded room diverged by however many retries it needed.
 // That is the shape of every function in this chain: the retry loop IS the
 // draw count.
-async function mktrap(num, mktrapflags, croom, tm) {
+export async function mktrap(num, mktrapflags, croom, tm) {
     let kind;
     const lvl = level_difficulty();
 

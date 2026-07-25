@@ -10,6 +10,7 @@ import {
     CROSSWALL, TUWALL, TDWALL, TLWALL, TRWALL,
     D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED,
 } from './const.js';
+import { nhgetch } from './input.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, DEC_TO_UNICODE } from './terminal.js';
 
 // ── ANSI color codes ──
@@ -318,7 +319,49 @@ export async function bot() {
     // Status line updates happen in _buildScreenOutput
 }
 
+// include/wintty.h:85 — toplin states. NEED_MORE is 1 and NON_EMPTY is 2, the
+// opposite of what their order in the header suggests.
+export const TOPLINE_EMPTY = 0, TOPLINE_NEED_MORE = 1, TOPLINE_NON_EMPTY = 2;
+
+const defmorestr = '--More--';
+
 // ── pline ──
+//
+// win/tty/topl.c update_topl() ends with `ttyDisplay->toplin =
+// TOPLINE_NEED_MORE`, so EVERY message leaves the top line needing
+// acknowledgement. The next thing that blocks calls more(), which draws
+// "--More--" and CONSUMES A KEY. Without that, the key meant for the --More--
+// is read by whatever comes next — which is how the tutorial menu ended up on
+// its second pass.
 export async function pline(msg) {
     game._pending_message = msg;
+    game._toplin = msg ? TOPLINE_NEED_MORE : TOPLINE_EMPTY;
+}
+
+// win/tty/topl.c more() — draw the suffix, block for a key, clear the top line.
+//
+//     tty_curs(BASE_WINDOW, cw->curx + 1, cw->cury);
+//     if (cw->curx >= CO - 8) topl_putsym('\n');
+//     putsyms(defmorestr);
+//     xwaitforspace("\033 ");
+//     ...
+//     ttyDisplay->toplin = TOPLINE_EMPTY;
+//
+// The suffix is appended at the message's own end column with NO separating
+// space, and wraps to the next row only when that column is within 8 of the
+// right edge.
+export async function more() {
+    const display = game?.nhDisplay;
+    const msg = game._pending_message || '';
+    if (display) {
+        const CO = display.cols ?? 80;
+        let col = msg.length, row = 0;
+        if (col >= CO - 8) { col = 0; row = 1; }
+        for (let i = 0; i < defmorestr.length && col + i < CO; i++)
+            display.setCell(col + i, row, defmorestr[i], NO_COLOR, 0);
+        display.setCursor(Math.min(col + defmorestr.length, CO - 1), row);
+    }
+    await nhgetch();
+    game._toplin = TOPLINE_EMPTY;
+    game._pending_message = '';
 }

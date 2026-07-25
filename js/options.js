@@ -4,6 +4,7 @@
 
 import { game } from './gstate.js';
 import { nhgetch } from './input.js';
+import { more, TOPLINE_NEED_MORE } from './display.js';
 import {
     NHW_MENU, ATR_NONE,
     tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu, tty_add_menu,
@@ -187,6 +188,11 @@ export async function ask_do_tutorial() {
     /* opt_set_in_config[opt_tutorial] — did the rc mention it at all? */
     if (game.rc?.optSetInConfig?.tutorial)
         return dotut;
+
+    /* win/tty/wintty.c:1921 — displaying a menu while the top line is still
+       unacknowledged runs more() FIRST, which consumes the key meant for it. */
+    if (game._toplin === TOPLINE_NEED_MORE)
+        await more();
 
     let pass = 0;
     for (;;) {

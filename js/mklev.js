@@ -103,7 +103,8 @@ import { get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
 import { DUST, HEADSTONE, OBJ_CONTAINED } from './const.js';
 import { hole_destination } from './trap.js';
 import { Can_fall_thru } from './dungeon.js';
-import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap } from './sp_lev.js';
+import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap,
+         sp_lev_wire_okdoor } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
 import { depth as depth_of_level } from './hacklib.js';
@@ -639,6 +640,7 @@ function ROOM_IS_FILLABLE(croom) {
 
 sp_lev_wire(add_room, add_door, somexy);
 sp_lev_wire_mktrap(mktrap);
+sp_lev_wire_okdoor(okdoor);
 
 // C ref: mklev.c makerooms()
 async function makerooms() {
@@ -1344,7 +1346,7 @@ function bydoor(x, y) {
     return false;
 }
 
-function okdoor(x, y) {
+export function okdoor(x, y) {
     const map = game.level;
     const loc = map.at(x, y);
     if (!loc) return false;

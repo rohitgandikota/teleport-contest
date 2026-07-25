@@ -17,7 +17,8 @@ import { is_pool, is_lava, m_at } from './mon.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { mkobj_at, mksobj_at } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
-import { NON_PM, SPACE_POS, ALTAR } from './const.js';
+import { NON_PM, SPACE_POS, ALTAR, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
+         W_EAST, W_WEST, D_LOCKED, D_TRAPPED } from './const.js';
 import { MONSYMS, PMNAMES } from './monst_data.js';
 import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
          noncorporeal, likes_fire } from './mondata.js';
@@ -1176,3 +1177,119 @@ export function lspo_room(opts, create_room_fn, topologize_fn) {
     }
     return aroom;
 }
+
+// src/sp_lev.c create_door() — the des.door() verb's worker.
+//
+// Twelve draw sites. Two structures matter:
+//
+//  1. The mask cascade is NESTED, so the number of draws depends on which way
+//     each one falls: a non-secret door spends rn2(3), then on a 0 spends
+//     rn2(5), possibly rn2(6), and possibly rn2(25). Flattening it into one
+//     roll per property would spend a fixed count where C spends a variable one.
+//  2. The placement loop spends rn2(4) EVERY pass, before the wall test that
+//     may `continue`. A pass that rejects the wall still cost its draw, and the
+//     position rn2 is only spent on a pass that gets past that test.
+export function create_door(dd, broom) {
+    if (dd.secret === -1)
+        dd.secret = rn2(2);
+
+    if (dd.wall === W_RANDOM)
+        dd.wall = W_ANY;                /* speeds up the loop below */
+
+    if (dd.mask === -1) {
+        /* is it a locked door, closed, or a doorway? */
+        if (!dd.secret) {
+            if (!rn2(3)) {
+                if (!rn2(5))
+                    dd.mask = D_ISOPEN;
+                else if (!rn2(6))
+                    dd.mask = D_LOCKED;
+                else
+                    dd.mask = D_CLOSED;
+                if (dd.mask !== D_ISOPEN && !rn2(25))
+                    dd.mask |= D_TRAPPED;
+            } else {
+                dd.mask = D_NODOOR;
+            }
+        } else {
+            if (!rn2(5))
+                dd.mask = D_LOCKED;
+            else
+                dd.mask = D_CLOSED;
+
+            if (!rn2(20))
+                dd.mask |= D_TRAPPED;
+        }
+    }
+
+    let x = 0, y = 0, trycnt;
+    for (trycnt = 0; trycnt < 100; ++trycnt) {
+        const dwall = dd.wall, dpos = dd.pos;
+        const span = (a, b) => (dpos === -1) ? rn2(1 + b - a) : dpos;
+        let ok = false;
+
+        switch (rn2(4)) {
+        case 0:
+            if (!(dwall & W_NORTH)) continue;
+            y = broom.ly - 1;
+            x = broom.lx + span(broom.lx, broom.hx);
+            if (!isok(x, y - 1) || IS_OBSTRUCTED(game.level.at(x, y - 1)?.typ))
+                continue;
+            ok = true; break;
+        case 1:
+            if (!(dwall & W_SOUTH)) continue;
+            y = broom.hy + 1;
+            x = broom.lx + span(broom.lx, broom.hx);
+            if (!isok(x, y + 1) || IS_OBSTRUCTED(game.level.at(x, y + 1)?.typ))
+                continue;
+            ok = true; break;
+        case 2:
+            if (!(dwall & W_WEST)) continue;
+            x = broom.lx - 1;
+            y = broom.ly + span(broom.ly, broom.hy);
+            if (!isok(x - 1, y) || IS_OBSTRUCTED(game.level.at(x - 1, y)?.typ))
+                continue;
+            ok = true; break;
+        case 3:
+            if (!(dwall & W_EAST)) continue;
+            x = broom.hx + 1;
+            y = broom.ly + span(broom.ly, broom.hy);
+            if (!isok(x + 1, y) || IS_OBSTRUCTED(game.level.at(x + 1, y)?.typ))
+                continue;
+            ok = true; break;
+        }
+        if (ok && okdoor_fn(x, y))
+            break;
+    }
+    if (trycnt >= 100)
+        return;                         /* impossible("can't find a place") */
+
+    const loc = game.level?.at(x, y);
+    if (!loc || !SPACE_POS(loc.typ))
+        return;                         /* set_levltyp refuses */
+    loc.typ = dd.secret ? SDOOR : DOOR;
+    loc.doormask = dd.mask;
+}
+
+// src/sp_lev.c:3729 lspo_door() — the des.door() verb. No draws of its own.
+export function lspo_door(opts) {
+    const STATES = { random: -1, open: D_ISOPEN, closed: D_CLOSED,
+                     locked: D_LOCKED, nodoor: D_NODOOR, broken: D_BROKEN };
+    const WALLS = { random: W_RANDOM, all: W_ANY, north: W_NORTH,
+                    south: W_SOUTH, east: W_EAST, west: W_WEST };
+    const dd = {
+        secret: opts?.secret === undefined ? -1 : (opts.secret ? 1 : 0),
+        mask: STATES[opts?.state ?? 'random'] ?? -1,
+        wall: WALLS[opts?.wall ?? 'random'] ?? W_RANDOM,
+        pos: opts?.pos ?? -1,
+    };
+
+    const broom = game.coder?.croom;
+    if (!broom)
+        return;
+    create_door(dd, broom);
+}
+
+/* okdoor() lives in js/mklev.js; routed through the wire like somexy. */
+let okdoor_fn = () => true;
+export function sp_lev_wire_okdoor(fn) { okdoor_fn = fn; }

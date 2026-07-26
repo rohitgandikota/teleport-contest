@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 124,610/792,838 (15.7%).**
+**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 126,879/792,838 (16.0%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -184,8 +184,25 @@ were read in five places and assigned in none. getbones() returns before its
 rn2(3) when discover is set, so every explore-mode session drew a call C does
 not. seed0900 went 302 -> 2431 and seed1150 302 -> 2357, +4,315 corpus RNG.
 
-Still early and unexplained: seed0015 at 358 (find_montype), seed2600 at 395,
-both seed0013 sessions at 528.
+seed0015 was then chased from 358 to 2513 in three steps, each found by
+stack-tracing RND() at the divergent call and READING THE CALLER CHAIN rather
+than guessing from the C tag:
+
+  1. the trace showed makemon <- rndmonst, i.e. a RANDOM monster where C made
+     a named one. name_to_mon read a scalar `pmname`; a permonst carries
+     pmnames[] INDEXED BY GENDER and a ghost is [null, null, "ghost"], so it
+     matched nothing and every des.monster("ghost") fell through to rndmonst.
+  2. create_monster never called induced_align(80), which C uses for any spec
+     that named no alignment -- most of them.
+  3. makemon never named the ghost, and rndghostname() draws twice.
+
+Still early and unexplained: seed2600 at 395, both seed0013 sessions at 528.
+
+The lesson is the method. `js/rng.js`'s RND() with a temporary env-gated
+stack trace, run through `node frozen/ps_test_runner.mjs
+--worker-session=<file>` (the parent runner spawns a child and swallows
+stderr), names OUR caller. The diverge tool names C's. Comparing the two is
+what turns "obj_resists is next" into "our name lookup returns NON_PM".
 
 ### Two missing DRAWS found by following divergences down, not by guessing
 

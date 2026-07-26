@@ -11,9 +11,13 @@ import {
     mkobj, mksobj, next_ident, blessorcurse, special_corpse, start_corpse_timeout,
 } from './mkobj.js';
 import {
-    rndmonnum, makemon, mkclass, monsndx, level_difficulty, MM_NOGRP, NO_MM_FLAGS,
-    Inhell,
+    rndmonnum, rndmonnum_adj, makemon, mkclass, monsndx, level_difficulty,
+    MM_NOGRP, NO_MM_FLAGS, Inhell, likes_gems,
 } from './makemon.js';
+import { MM_NOCOUNTBIRTH, MM_NOMSG } from './const.js';
+import { mongone } from './mon.js';
+import { sgn } from './hacklib.js';
+import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room } from './sp_lev.js';
 import {
@@ -295,6 +299,45 @@ function mkcorpstat(objtyp, mtmp, pm, x, y, corpstatflags) {
 }
 
 
+// src/trap.c:508 mk_trap_statue() — the statue that sits on a STATUE_TRAP.
+//
+// Not decoration: the statue CONTAINS the gear of the monster it depicts, so
+// the makemon and the inventory transfer are part of the object, not extra.
+//
+// Draws: rndmonnum_adj(3, 6) in a retry loop of up to ten that rejects a
+// unicorn sharing the hero's alignment sign, then mkcorpstat's, then a full
+// makemon's. Skipping the whole thing left the statue off the level, which is
+// how seed0030 shows a kitten statue where we show only the gold beneath it.
+function mk_trap_statue(x, y) {
+    let mptr, trycount = 10;
+
+    do {                    /* avoid an ultimately hostile co-aligned unicorn */
+        mptr = game.mons[rndmonnum_adj(3, 6)];
+    } while (--trycount > 0 && is_unicorn(mptr)
+             && sgn(game.u.ualign.type) === sgn(mptr.maligntyp));
+
+    const statue = mkcorpstat(ONAMES.STATUE, null, mptr.pmidx, x, y,
+                              CORPSTAT_NONE);
+    const mtmp = makemon(game.mons[statue.corpsenm], 0, 0,
+                         MM_NOCOUNTBIRTH | MM_NOMSG);
+    if (!mtmp)
+        return;             /* should never happen */
+
+    /* the monster's whole pack moves into the statue */
+    while (mtmp.minvent && mtmp.minvent.length) {
+        const otmp = mtmp.minvent[0];
+        otmp.owornmask = 0;
+        obj_extract_self(otmp);
+        add_to_container(statue, otmp);
+    }
+    statue.owt = weight(statue);
+
+    mongone(mtmp);
+}
+
+// include/mondata.h:149 is_unicorn()
+const is_unicorn = (ptr) => ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
+
 // maketrap stub
 // src/trap.c:3083 choose_trapnote() — a squeaky board picks an unused musical
 // note. The draw's ARGUMENT is the count of notes still free on this level, so
@@ -333,7 +376,7 @@ function maketrap(x, y, typ) {
         trap.tnote = choose_trapnote(trap);
         break;
     case STATUE_TRAP:
-        note_unported_lev('mk_trap_statue');
+        mk_trap_statue(x, y);
         break;
     case ROLLING_BOULDER_TRAP:
         note_unported_lev('mkroll_launch');

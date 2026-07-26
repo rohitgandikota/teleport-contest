@@ -82,7 +82,7 @@ const likes_gold = (ptr) => (ptr.mflags2 & M2_GREEDY) !== 0;
 const is_domestic = (ptr) => (ptr.mflags2 & M2_DOMESTIC) !== 0;
 const race_hostile = (ptr) => (ptr.mflags2 & (game.urace?.hatemask ?? 0)) !== 0;
 const race_peaceful = (ptr) => (ptr.mflags2 & (game.urace?.lovemask ?? 0)) !== 0;
-const likes_gems = (ptr) => (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;
+export const likes_gems = (ptr) => (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;
 const is_unicorn = (ptr) => ptr.mlet === S_UNICORN && likes_gems(ptr);
 const is_demon = (ptr) => (ptr.mflags2 & MFLAGS.M2_DEMON) !== 0;
 const is_ndemon = (ptr) =>

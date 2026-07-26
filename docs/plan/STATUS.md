@@ -857,12 +857,31 @@ letter list is built from any_obj_ok, which is real), drop's levitation
 branch (recorded), dropx's ship_object (recorded), dropz's flooreffects
 (recorded) or stackobj (recorded).
 
-TO FIND IT: wire dodrop temporarily, then diff the per-session scoreboard
-against the current one to see WHICH sessions lose the 2, and trace rn2 on
-that session with the globalThis counter. Two calls in one or two sessions is
-a small enough signal to locate exactly. Do not port more guards on the
-assumption they are the cause -- that is what better_not_try_to_drop_that
-would have been.
+DID THAT, AND THE NET -2 IS HIDING A LOT. Per-session diff with the wiring on:
+
+    GAINS                        LOSSES
+    seed0367       +11           seed0013-friday13   -9
+    seed0030        +7           seed0108            -8
+    seed0361        +5           seed4500            -7
+    seed0360        +2           seed5006            -3
+    seed0399        +2           seed0383            -1
+                                 seed0013-rogue      -1
+    total          +27           total              -29
+
+SO THE DROP CHAIN IS RIGHT FOR FIVE SESSIONS AND WRONG FOR SIX, and the -2 is
+the residue. Treating it as "one small bug worth 2 calls" would have been
+completely wrong -- there are at least two different behaviours in play.
+
+The gainers are quest/tour sessions (0367 priest-quest, 0361 archeologist,
+0030 ten-deaths) where dropping evidently now matches. The losers include
+BOTH friday13 sessions and 0108 wizard-extcmd-wishlist.
+
+NEXT: take seed0013-friday13 (-9, the largest single loss) and trace where
+its stream first differs with the wiring on, using the globalThis rn2 counter
+and a stack dump. One session, one direction, nine calls -- and the answer
+will not be the same as whatever seed0367 is gaining from.
+
+DO NOT chase the aggregate. It nets out and tells you nothing.
 
 SIZED cmd:d (30%) -- the DROP command, and it is now within reach because
 freeinv landed. The chain:

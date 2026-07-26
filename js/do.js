@@ -7,6 +7,7 @@
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
+import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg } from './attrib.js';
 import { freeinv, getobj, any_obj_ok } from './invent.js';
@@ -267,7 +268,7 @@ export function drop(obj) {
         && note_unported_do('drop:better_not_try_to_drop_that'))
         return ECMD_FAIL;
     if (obj === game.uwep) {
-        if (note_unported_do('drop:welded')) {
+        if (welded(obj)) {
             note_unported_do('drop:weldmsg');
             return ECMD_FAIL;
         }

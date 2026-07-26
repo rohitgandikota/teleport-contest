@@ -1341,7 +1341,7 @@ function mcould_eat_tin(mon) {
 const erodeable_wep = (o) =>
     o.oclass === OCLASSES.WEAPON_CLASS || is_weptool(o, game.objects)
     || o.otyp === ONAMES.HEAVY_IRON_BALL || o.otyp === ONAMES.IRON_CHAIN;
-const will_weld = (o) =>
+export const will_weld = (o) =>
     o.cursed && (erodeable_wep(o) || o.otyp === ONAMES.TIN_OPENER);
 const mwelded = (obj) =>
     !!(obj && (obj.owornmask & W_WEP) && will_weld(obj));

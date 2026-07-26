@@ -531,7 +531,12 @@ export async function rhack(key) {
     const ch = String.fromCharCode(key);
 
     if (isMovementKey(ch)) {
-        await domove(DIR_DX[ch], DIR_DY[ch]);
+        /* src/cmd.c movecmd() — the key sets u.dx/u.dy, then domove() reads
+           them. Keeping the direction on `u` is what lets moveloop's run
+           branch call domove() again without re-reading a key. */
+        game.u.dx = DIR_DX[ch];
+        game.u.dy = DIR_DY[ch];
+        await domove();
         game.context.move = 1;
     } else if (ch === 'Q') {
         // src/cmd.c cmdlist — 'Q' is dowieldquiver.
@@ -667,8 +672,12 @@ export async function rhack(key) {
 }
 
 // C ref: hack.c domove — execute a movement
-async function domove(dx, dy) {
+async function domove() {
     const u = game.u;
+    /* C's domove() takes no arguments and reads u.dx/u.dy, which movecmd()
+       set from the key. moveloop's run branch calls it the same way, so the
+       direction has to live on `u` rather than in a parameter. */
+    const dx = u.dx, dy = u.dy;
     const newx = u.ux + dx;
     const newy = u.uy + dy;
 

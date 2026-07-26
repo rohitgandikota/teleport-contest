@@ -105,7 +105,7 @@ import { hole_destination } from './trap.js';
 import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap,
          sp_lev_wire_okdoor, sp_lev_wire_subroom,
-         lspo_room, lspo_door } from './sp_lev.js';
+         lspo_room, lspo_door, inside_room } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
 
@@ -1546,12 +1546,28 @@ export function somexy(croom, c) {
         c.y = somey(croom);
         return true;
     }
+    /* src/mkroom.c somexy() — a room WITH subrooms rejects any square that
+       falls inside one of them, and each rejection costs another somex/somey
+       pair. Returning as soon as the square is not a wall places things inside
+       subrooms C keeps clear AND spends fewer draws.
+
+       This could not fire until "Room in a room" made lspo_room call
+       create_subroom earlier in this session; the gap was dormant because
+       nothing generated a subroom. */
     let try_cnt = 0;
     while (try_cnt++ < 100) {
         c.x = somex(croom);
         c.y = somey(croom);
         const loc = game.level.at(c.x, c.y);
         if (loc && IS_WALL(loc.typ)) continue;
+
+        let in_subroom = false;
+        for (let i = 0; i < croom.nsubrooms; i++)
+            if (inside_room(croom.sbrooms[i], c.x, c.y)) {
+                in_subroom = true;
+                break;
+            }
+        if (in_subroom) continue;       /* goto you_lose */
         return true;
     }
     return false;

@@ -44,11 +44,31 @@ sessions:
    fails every screen from step 7 onward in both sessions -- seed0004 alone
    is 408 steps.
 
-   Find where C clears it before fixing: the likely site is
-   tty_display_nhwindow on the menu, or a clear_nhwindow(WIN_MESSAGE) in
-   role.c's confirmation loop. Do not simply blank _pending_message at menu
-   creation without checking which C call does it, or the message will
-   disappear in cases where C keeps it.
+   THE C CALL IS FOUND. win/tty/wintty.c tty_display_nhwindow(), NHW_MENU:
+
+       if (cw->offx == 10 || cw->maxrow >= rows || !iflags.menu_overlay) {
+           ... term_clear_screen() / cl_eos(); toplin = TOPLINE_EMPTY;
+       } else {
+           tty_clear_nhwindow(WIN_MESSAGE);
+       }
+
+   and C's tty_clear_nhwindow NHW_MESSAGE arm homes, cl_end()s and sets
+   toplin = TOPLINE_EMPTY, guarded on toplin != TOPLINE_EMPTY.
+
+   ATTEMPTED AND REVERTED: porting both arms cost 473 SCREENS (497 -> 24) and
+   133,895 rng. So the clear fires far more often for us than for C, or fires
+   where C does not.
+
+   Do not retry this by tweaking the guard. The measurement says our menu
+   display path reaches this point in situations C's does not, so the next
+   step is to find out WHEN each side calls tty_display_nhwindow on a menu --
+   instrument both the call and the resulting offx/maxrow, and compare
+   against the recorded screens, before touching the clear again.
+
+   Note js/optlist.js:123-124 has TWO menu_overlay entries with different
+   initval ("On" for set_in_game, "Off" for set_in_config), so which default
+   applies is not obvious and C's third disjunct !iflags.menu_overlay may be
+   the deciding term.
 
 NEXT MAJOR TARGET: THE MONSTER NAMING SUBSYSTEM (src/do_name.c x_monnam).
 

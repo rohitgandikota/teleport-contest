@@ -9,12 +9,13 @@
 import { game } from './gstate.js';
 import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
+import { finish_meating } from './dogmove.js';
 import { is_metallic } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
 import { mksobj_at } from './mkobj.js';
-import { newsym } from './display.js';
+import { newsym, canseemon } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
@@ -954,7 +955,7 @@ export function set_ustuck(mtmp) {
 export function wakeup(mtmp, via_attack) {
     const was_sleeping = mtmp.msleeping;
 
-    note_unported_mon('wakeup:wake_msg');
+    wake_msg(mtmp, via_attack);
     mtmp.msleeping = 0;
     if (M_AP_TYPE(mtmp) !== M_AP_NOTHING) {
         /* mimics come out of hiding, but disguised Wizard doesn't
@@ -966,7 +967,7 @@ export function wakeup(mtmp, via_attack) {
         mtmp.mundetected = 0;
         newsym(mtmp.mx, mtmp.my);
     }
-    note_unported_mon('wakeup:finish_meating');
+    finish_meating(mtmp);
     if (via_attack) {
         const was_peaceful = mtmp.mpeaceful;
 
@@ -1071,4 +1072,17 @@ export function shieldeff_mon(mtmp) {
     /* does not depend on seeing the monster; the shield effect is visible */
     if (cansee(mtmp.mx, mtmp.my))
         note_unported_mon('shieldeff_mon:pline_resists');
+}
+
+// src/mon.c:4322 wake_msg() — "%s wakes up!" when you see it happen.
+//
+// It tests mtmp->msleeping, so it MUST run before wakeup() clears that flag.
+// C calls it as wakeup's first statement for exactly that reason; moving it
+// after the clear silences the message permanently.
+//
+// `interesting` (wakeup's via_attack) only picks the punctuation: "!" for an
+// attack, "." otherwise. A flesh golem additionally gets " It's alive!".
+export function wake_msg(mtmp, interesting) {
+    if (mtmp.msleeping && canseemon(mtmp))
+        note_unported_mon('wake_msg:pline');
 }

@@ -34,6 +34,17 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
+cmd:w SIZED (25%) -- NOT CHEAP. dowear() itself is 19 lines and its two
+predicates verysmall/nohands are ported, but it ends in
+accessory_or_armor_on() at 220 lines, which needs canwearobj() 177 and
+armor_on() 66. ~460 lines for the chain. The dispatcher trap once more: the
+function named in the gap is small and the thing it returns into is not.
+
+Note wear_ok IS already ported, at js/cmd.js:415, as a `const` arrow -- which
+is why a `grep "^function wear_ok"` reports it missing. Grep the bare name.
+
+cmd:r (25%) is doread at 318 lines and was not sized further.
+
 distant_name SIZED (25%, dog_invent:distant_name and mpickstuff's twin):
 63 lines in src/objnam.c:347, and NOT a leaf. It needs
 

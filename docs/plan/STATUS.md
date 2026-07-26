@@ -834,10 +834,24 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+  CHECKED, DEPRIORITISED  can_touch_safely:touch_artifact (59%) -- the rest
+        of can_touch_safely IS ported (js/mon.js:857); touch_artifact is the
+        only remaining arm and it is 66 lines PLUS the artifact tables. The
+        arm only fires when the object is an artifact, which no monster on an
+        early level carries, so the 59% counts the CALL and not the branch.
+
+THAT IS TWICE NOW that a high-reach entry turned out to count a call whose
+unported branch is rarely or never taken -- remember_topl at 100% and this at
+59%. tools/unported-hits.mjs measures REACH OF THE CALL SITE, and a
+note_unported() sitting past a guard inflates its own score. Read the code
+around any entry before believing its rank; two commands has been enough
+every time.
+
 onscary:elbereth at 98% is gated on engravings, which is a named absent
 subsystem -- that is the single highest-reach thing blocked by something
 large, and worth weighing against the tty menu that blocks getbones across
-four sessions.
+four sessions. Check the same way first: find whether the elbereth arm is
+past a guard that early-game play rarely satisfies.
 
 TWO SCREEN-VISIBLE GAPS FOUND BY SWEEPING screendiff, both hitting several
 sessions:

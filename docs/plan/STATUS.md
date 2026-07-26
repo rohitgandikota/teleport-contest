@@ -176,15 +176,25 @@ screen break is step 2, the tutorial-prompt menu, at r6 c20:
     C     "                   m (end)"
     ours  "                   m\u2500(end)"   (a horizontal line at c20)
 
-C's menu footer is the DECgraphics lower-left corner at offx, then a SPACE,
-then "(end)". We draw a border segment in that space. cw.morestr is set to
-"(end) " with a TRAILING space at js/tty/wintty.js:254 and the paint starts at
-offx + 1 for a menu, so the extra glyph is coming from whatever draws the
-bottom border row, not from morestr itself.
+MEASURED, cols 17-29 of rows 2-6, before and after the menu appears:
 
-One cell, and it gates every later screen in the session (26 of them). Find
-the bottom-border draw in js/tty/wintty.js and compare it against C's
-tty_end_menu / process_menu_window footer handling.
+    step 1 (map only)   r6: "  mqqqqqaq~qj"
+    step 2 (menu up)    r6: "  m (end)    "
+
+So the 'm' at col 19 is the MAP's lower-left corner showing through beside the
+menu -- C does NOT clear it. C overwrites from col 20 with " (end)" and then
+spaces. We leave the map's 'q' (the DECgraphics horizontal) at col 20, i.e. we
+start the footer one column too far right, or we do not blank col 20 at all.
+
+js/tty/wintty.js:374 currently clears cw.offx .. col-1 and writes morestr from
+col = offx + 1. Since cw.morestr is "(end) " with a TRAILING space, and C's
+line reads " (end)" with a LEADING one, check whether C's footer is actually
+written at offx + 1 with a space emitted ahead of morestr, rather than morestr
+being written at offx + 2. Read process_menu_window's footer emit in
+win/tty/wintty.c before changing the offset -- getting it wrong shifts every
+menu footer in the corpus, not just this one.
+
+One cell, and it gates all 26 screens in the session.
 
 ### seed0101 at 2293 is the THROW subsystem, at step 9
 

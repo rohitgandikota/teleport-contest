@@ -39,12 +39,33 @@ ELIMINATED SO FAR, all by comparison against the C rather than by guessing:
     src/teleport.c line for line.
   - enexto_core itself is ported with no unported markers.
 
-THAT LEAVES goodpos(). enexto_core walks the shuffled candidates and takes
-the first that goodpos accepts, so with an identical candidate ORDER a
-different winner means a different ACCEPTANCE. Compare js/makemon.js's
-goodpos against src/makemon.c goodpos arm by arm -- particularly the
-GP_CHECKSCARY and GP_AVOID_MONPOS paths, which are the two flags this call
-passes.
+THAT LEAVES goodpos(), and comparing it arm by arm against src/teleport.c:86
+found three real differences. Two are fixed:
+
+  - MON_AT was rejected unconditionally; C guards it with GP_AVOID_MONPOS.
+  - the hero's square was rejected unconditionally; C guards it with
+    !GP_ALLOW_U plus three more tests (not the hero, not the engulfer holding
+    you, not your steed). C's comment says why: goodpos also relocates
+    engravings and objects, which CAN share the hero's square.
+
+The third is STRUCTURAL AND NOT FIXED. C's signature is
+
+    goodpos(coordxy x, coordxy y, struct monst *mtmp, mmflags_nht gpflags)
+
+taking a MONSTER. js/makemon.js takes a PERMONST (it uses ptr.mlet, and C
+does mdat = mtmp->data inside). That makes two of C's tests inexpressible:
+
+    if (mtmp2 && (mtmp2 != mtmp || mtmp->wormno))
+        return FALSE;
+
+The identity test lets a monster be placed back at ITS OWN location, which
+matters for relocation, and the wormno test rejects that for long worms
+because every segment answers m_at(). With a permonst there is no identity
+to compare and no wormno to read, so both are simply absent.
+
+Changing the signature touches every caller and is a separate piece of work.
+Do it before assuming the pet-placement divergence is elsewhere -- the pet is
+placed via a fakemon in C, so the identity test IS reached on that path.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

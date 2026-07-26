@@ -186,13 +186,28 @@ menu -- C does NOT clear it. C overwrites from col 20 with " (end)" and then
 spaces. We leave the map's 'q' (the DECgraphics horizontal) at col 20, i.e. we
 start the footer one column too far right, or we do not blank col 20 at all.
 
-js/tty/wintty.js:374 currently clears cw.offx .. col-1 and writes morestr from
-col = offx + 1. Since cw.morestr is "(end) " with a TRAILING space, and C's
-line reads " (end)" with a LEADING one, check whether C's footer is actually
-written at offx + 1 with a space emitted ahead of morestr, rather than morestr
-being written at offx + 2. Read process_menu_window's footer emit in
-win/tty/wintty.c before changing the offset -- getting it wrong shifts every
-menu footer in the corpus, not just this one.
+FOUND THE MECHANISM. process_menu_window (win/tty/wintty.c:1329) emits every
+menu line like this:
+
+    tty_curs(window, 1, page_lines);   /* window-relative column 1 */
+    if (cw->offx)
+        cl_end();
+    (void) putchar(' ');               /* <- AN EXPLICIT LEADING SPACE */
+    ++ttyDisplay->curx;
+    ... then the selector, the space, and the text
+
+tty_curs(window, 1, y) is window-relative column 1, i.e. 0-based cw->offx. So
+the space lands AT offx and the content starts at offx + 1. That is where
+C's " (end)" comes from: the space is not part of morestr, it is emitted
+ahead of every menu line.
+
+Which means cw.offx here is 20, not 19 -- the 'm' at column 19 is the map
+outside the menu, which C never touches. Check our offx for this window before
+changing the paint: if ours is 19 the whole menu is one column left and the
+leading space is missing, and both have to move together.
+
+Do not "fix" this by widening the clear in js/tty/wintty.js:374. Getting the
+offset wrong shifts every menu footer in the corpus, not just this one.
 
 One cell, and it gates all 26 screens in the session.
 

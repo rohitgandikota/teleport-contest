@@ -693,7 +693,15 @@ export function remove_monster(x, y) {
 // The only draw is the S_EEL rn2(13). Everything else is terrain and occupancy,
 // so a wrong answer costs a whole extra rndmonst() block (9 draws) rather than
 // a single call — which is exactly how a mis-ported goodpos announces itself.
-export function goodpos(x, y, ptr, gpflags = 0) {
+export function goodpos(x, y, mtmp, gpflags = 0) {
+    /* src/teleport.c:86 — C's third argument is a struct monst *, and it does
+       `mdat = mtmp->data` inside the `if (mtmp)` block. This took a permonst
+       directly, which made two of C's tests inexpressible: the identity test
+       that lets a monster be placed back at its OWN square, and the wormno
+       test that overrides it for long worms, whose every segment answers
+       m_at(). Callers now pass a monster (enexto_core builds the fakemon C
+       builds); mdat is derived here. */
+    const ptr = mtmp?.data || null;
     const ignorewater = (gpflags & MM_IGNOREWATER) !== 0;
 
     if (!isok(x, y))
@@ -722,7 +730,15 @@ export function goodpos(x, y, ptr, gpflags = 0) {
     if (!loc)
         return false;
 
-    if (ptr) {
+    if (mtmp) {
+        /* src/teleport.c:130 — a monster may be placed back in its own
+           location. m_at() returning the SAME monster is fine, except for a
+           long worm, where every segment answers m_at() and the head may be
+           elsewhere. */
+        const mtmp2 = m_at(x, y);
+        if (mtmp2 && (mtmp2 !== mtmp || mtmp.wormno))
+            return false;
+
         if (loc.typ === POOL && !ignorewater) {
             return is_swimmer(ptr);
         } else if (ptr.mlet === S_EEL && rn2(13) && !ignorewater) {
@@ -1342,7 +1358,7 @@ export function makemon(ptr, x, y, mmflags) {
         do {
             if (!(ptr = rndmonst()))
                 return null;
-        } while (++tryct <= 50 && !goodpos(x, y, ptr));
+        } while (++tryct <= 50 && !goodpos(x, y, { data: ptr, wormno: 0 }));
         mndx = monsndx(ptr);
     }
     propagate(mndx, countbirth, false);

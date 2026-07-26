@@ -19,7 +19,7 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          NATTK } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
-import { abon, hitval, weapon_hit_bonus } from './weapon.js';
+import { abon, hitval, weapon_hit_bonus, dmgval } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc, unsolid } from './mondata.js';
@@ -30,7 +30,7 @@ import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_RINGR, W_RINGL } from './const.js';
+         W_ARMG, W_RINGR, W_RINGL, P_KNIFE } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -800,7 +800,7 @@ function hmon_hitmon_weapon(hmd, mon, obj) {
                 || !note_pred('ammo_and_launcher', obj)))) {
         note_unported_uhitm('hmon_hitmon:weapon_ranged');
     } else {
-        note_unported_uhitm('hmon_hitmon:weapon_melee');
+        hmon_hitmon_weapon_melee(hmd, mon, obj);
         if (hmd.doreturn)
             return;
     }
@@ -811,4 +811,42 @@ function hmon_hitmon_weapon(hmd, mon, obj) {
 function note_pred(name, obj) {
     note_unported_uhitm('hmon_hitmon:' + name);
     return false;
+}
+
+// src/uhitm.c:934 hmon_hitmon_weapon_melee() — "normal" weapon usage.
+//
+// Head only. The base damage comes from dmgval (src/weapon.c, now ported),
+// and train_weapon_skill is set from the RESULT: a minimal hit does not
+// exercise proficiency, same rule as the bare-handed path.
+//
+// The Healer knife bonus is not a draw but it is not a constant either --
+// it scales with how many of THIS species you have already killed,
+// min(3, mvitals[monsndx].died / 6), so it needs the mvitals table.
+//
+// The special-attack chain below the head is a single if/else if ladder, so
+// AT MOST ONE of backstab, weapon-shatter and the rest can fire. Its first
+// arm is a guard that disables all of them: no skill training, or the
+// monster is holding you, or you are two-weaponing, or the weapon is
+// Cleaver. Porting the arms as independent ifs would let several fire at
+// once and would draw where C draws nothing.
+function hmon_hitmon_weapon_melee(hmd, mon, obj) {
+    /* "normal" weapon usage */
+    hmd.use_weapon_skill = true;
+    hmd.dmg = dmgval(obj, mon);
+    /* a minimal hit doesn't exercise proficiency */
+    hmd.train_weapon_skill = (hmd.dmg > 1);
+
+    /* Healer with anatomy knowledge */
+    if (Role_if(PMNAMES.PM_HEALER) && hmd.hand_to_hand
+        && obj.oclass === OCLASSES.WEAPON_CLASS
+        && game.objects[obj.otyp].oc_skill === P_KNIFE)
+        note_unported_uhitm('hmon_hitmon:healer_anatomy');   /* mvitals */
+
+    /* special attack actions -- an if/else ladder: at most one fires */
+    if (!hmd.train_weapon_skill || mon === game.u.ustuck || game.u.twoweap
+        || (hmd.hand_to_hand && note_unported_uhitm('hmon_hitmon:is_art_CLEAVER'))) {
+        ;   /* no special bonuses */
+    } else {
+        note_unported_uhitm('hmon_hitmon:special_attacks');
+    }
 }

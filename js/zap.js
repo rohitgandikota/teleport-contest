@@ -8,7 +8,7 @@
 import { game } from './gstate.js';
 import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER } from './monst.js';
-import { killed } from './mon.js';
+import { killed, shieldeff_mon } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2 } from './rng.js';
 import { is_rider } from './makemon.js';
@@ -89,7 +89,7 @@ export function resist(mtmp, oclass, damage, tell) {
     const resisted = rn2(100 + alev - dlev) < game.mons[mtmp.mnum].mr;
     if (resisted) {
         if (tell)
-            note_zap_unported('resist:shieldeff_mon');
+            shieldeff_mon(mtmp);
         damage = ((damage + 1) / 2) | 0;
     }
 

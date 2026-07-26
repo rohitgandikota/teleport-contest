@@ -8,7 +8,7 @@
 
 import { game } from './gstate.js';
 import { adjalign } from './attrib.js';
-import { couldsee } from './vision.js';
+import { couldsee, cansee } from './vision.js';
 import { is_metallic } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
@@ -1054,4 +1054,21 @@ export function killed(mtmp) {
 // Recorded with its flags so game.unported says which caller wanted it.
 export function xkilled(mtmp, xkill_flags) {
     note_unported_mon(`xkilled:flags=${xkill_flags}`);
+}
+
+// src/mon.c:6058 shieldeff_mon() — the "resists!" flash.
+//
+// The two halves are gated DIFFERENTLY, and C's comment says why: the shield
+// effect itself is visible whether or not you can make out the monster, so
+// shieldeff() runs unconditionally, while the message needs cansee(). Gating
+// both on cansee -- the obvious reading, since they describe one event --
+// would drop the animation for an unseen resister.
+//
+// shieldeff (a display animation) and pline_mon are recorded; the cansee
+// structure is real.
+export function shieldeff_mon(mtmp) {
+    note_unported_mon('shieldeff_mon:shieldeff');
+    /* does not depend on seeing the monster; the shield effect is visible */
+    if (cansee(mtmp.mx, mtmp.my))
+        note_unported_mon('shieldeff_mon:pline_resists');
 }

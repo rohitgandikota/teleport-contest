@@ -314,8 +314,22 @@ weapon. Ready it instead? [ynq]" confirmation that step 5 shows, so it pulls
 in getobj's object-letter prompt as well.
 
 This is the same subsystem seed0101's RNG divergence needs: 'Q' at step 4,
-'t' at step 7 and the throw at step 9 are one chain. Porting dowieldquiver
-alone moves the screens; the RNG needs dothrow.c behind it.
+'t' at step 7 and the throw at step 9 are one chain.
+
+TWO pieces, and binding 'Q' alone is NOT enough:
+
+  1. dowieldquiver (src/wield.c:505) is a one-liner onto doquiver_core, which
+     is substantial: getobj with a ready_ok filter, setuqwep, the
+     already-quivered and coin-split arms, unsplitobj.
+  2. js/invent.js getobj() NEVER PRINTS ITS PROMPT. It goes straight to
+     nhgetch at :110. C builds "What do you want to ready? [- cd or ?*]" by
+     scanning inventory with the filter and listing the letters that pass.
+     Every getobj-driven command in the corpus shows that string, so this is
+     worth more than the one session -- 't' at step 7 shows
+     "What do you want to throw? [bcd or ?*]" from the same code.
+
+Do getobj's prompt FIRST. It is the shared piece, and it is measurable on its
+own: any session that reaches a getobj prompt will show the difference.
 
 ### seed0101 at 2293 is the THROW subsystem, at step 9
 

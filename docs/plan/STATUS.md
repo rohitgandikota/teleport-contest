@@ -114,10 +114,27 @@ console.error after writing it) before drawing any conclusion from silence.
 The same mistake earlier in this session briefly made movemon, dochug and
 dog_move all look like dead code.
 
-What to print: the full shuffled candidate array with indices, plus which
-index goodpos first accepts. C must be accepting (56,4); we accept (58,4).
-Both are in the radius-1 ring around (57,4), so the question is purely which
-one the shuffle put first.
+MEASURED, the shuffled ring for the pet at hero (57,4):
+
+    57,3  58,4  56,3  58,3  58,5  56,5  56,4  57,5
+
+We reject (57,3) -- it is the room's top wall -- and accept (58,4), the
+second entry. C ends up on (56,4), which is SEVENTH in our order. For C to
+reach it, C's shuffle must have produced a different permutation, because
+goodpos would have accepted (58,4) for C too.
+
+So the divergence is IN THE PERMUTATION, not in acceptance. With the RNG
+stream matching, that means either
+  - our PRE-shuffle collection order differs from C's, so identical swaps
+    yield a different result, or
+  - the shuffle is applied over a different span (C shuffles per radius; if
+    our radius boundaries differ the swaps group differently).
+
+C's pre-shuffle order for radius 1 around (57,4), y outer then x inner,
+ring edges only, is
+    (56,3) (57,3) (58,3) (56,4) (58,4) (56,5) (57,5) (58,5)
+Print ours BEFORE the shuffle and compare against that list directly -- that
+is one line in collect_coords and settles it either way.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

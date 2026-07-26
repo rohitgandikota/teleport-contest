@@ -27,6 +27,7 @@ import { ART_SNICKERSNEE } from './artilist_data.js';
 import { P_NONE, W_QUIVER, W_WEP } from './const.js';
 import { Is_container } from './obj.js';
 import { skill_init } from './weapon.js';
+import { spell_skilltype } from './spell.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
@@ -60,10 +61,6 @@ function skills_for_role() {
     return null; /* C panics here */
 }
 
-// src/spell.c spell_skilltype() — oc_skill is #defined to oc_subtyp.
-function spell_skilltype(booktype) {
-    return game.objects[booktype].oc_subtyp;
-}
 
 // src/u_init.c restricted_spell_discipline() — true when the role may not train
 // this spellbook's school at all. ini_inv_mkobj_filter() refuses such books, so

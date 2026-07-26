@@ -458,11 +458,38 @@ export async function flush_screen(mode) {
     _buildScreenOutput();
 }
 
-// ── cls ──
+// src/display.c:2189 cls()
+//
+//     display_nhwindow(WIN_MESSAGE, FALSE); / * flush messages * /
+//     disp.botlx = TRUE;
+//     clear_nhwindow(WIN_MAP);
+//     clear_glyph_buffer();
+//
+// The first line is the one that was missing. C FLUSHES the message window:
+// win/tty/wintty.c's NHW_MESSAGE arm calls more() when a message is still
+// unacknowledged, then clears it, leaving toplin == TOPLINE_EMPTY. Wiping the
+// text without touching the flag left toplin at TOPLINE_NEED_MORE with nothing
+// behind it, so the NEXT message took update_topl's joining branch and got
+// glued onto an empty string -- two leading spaces, and seed8000's last two
+// screens shifted right by two columns.
 export async function cls() {
+    if (game._in_cls)
+        return;
+    game._in_cls = true;
+
+    /* display_nhwindow(WIN_MESSAGE, FALSE) */
+    if (game._toplin === TOPLINE_NEED_MORE) {
+        await more();
+        game._toplin = TOPLINE_NEED_MORE;   /* more() reset it; force the erase */
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+    }
+    game._pending_message = '';
+    game._toplin = TOPLINE_EMPTY;
+
     const display = game?.nhDisplay;
     if (display?.clearScreen) display.clearScreen();
-    game._pending_message = '';
+
+    game._in_cls = false;
 }
 
 // ── bot ──

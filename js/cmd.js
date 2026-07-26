@@ -37,7 +37,7 @@ import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt, _buildScreenOutput,
-         TOPLINE_SPECIAL_PROMPT } from './display.js';
+         TOPLINE_SPECIAL_PROMPT , TOPLINE_EMPTY} from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
          IS_WALL, IS_OBSTRUCTED, IS_DOOR } from './const.js';
@@ -377,7 +377,14 @@ export async function rhack(key) {
         key = await nhgetch();
         // The boundary frame has now been captured with the previous
         // command's message on it, so it is safe to clear for this command.
+        //
+        // win/tty/wintty.c tty_clear_nhwindow(), NHW_MESSAGE, clears the FLAG
+        // as well as the text. Dropping the text alone left toplin at
+        // TOPLINE_NEED_MORE with nothing behind it, and update_topl's joining
+        // branch then glued the next message onto an empty string, indenting
+        // it by the two spaces the join inserts.
         game._pending_message = '';
+        game._toplin = TOPLINE_EMPTY;
     }
 
     const ch = String.fromCharCode(key);

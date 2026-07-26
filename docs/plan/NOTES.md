@@ -1644,29 +1644,32 @@ no unbound case-label constants anywhere in js/.
 Executing the arm remains the stronger check, because it also catches a bound
 constant with the WRONG VALUE, which no static pass can see. The sweep is the
 cheap first pass; forcing the input is the one that proves the number.
-## undefined-refs.mjs has two blind spots; do not read a clean report as safety
+## undefined-refs.mjs works; the failure was skipping it
 
-Found while porting `setmangry` (js/mon.js), which threw
-`STRAT_WAITMASK is not defined` on its second line in all five arms while
-`node tools/undefined-refs.mjs` reported it clean.
+RETRACTED CLAIM. An earlier version of this entry said the tool has a blind
+spot for value references and stayed silent on `STRAT_WAITMASK` in
+`setmangry` (js/mon.js). That is false and was never measured -- the tool was
+run only AFTER the import was added, and the clean report was assumed for the
+before state rather than observed.
 
-**Blind spot 1: it only checks CALL targets, not value references.**
-`mtmp.mstrategy &= ~STRAT_WAITMASK` never calls `STRAT_WAITMASK`, so an
-unimported constant used in arithmetic, a comparison, or a bitmask is
-invisible to it. Constants are the majority of what a ported C function
-references, so this is the common case, not the edge case.
+Measured directly: delete the `STRAT_WAITMASK` import and
+`node tools/undefined-refs.mjs` reports 19 instead of 18 and names
+`STRAT_WAITMASK  (first use js/mon.js:0)`. The ALL_CAPS-used-bare pass at
+tools/undefined-refs.mjs:132 exists precisely for this and does its job.
+Aliased imports are handled too (line 76 keeps the local name after `as`).
 
-**Blind spot 2: it does not parse aliased imports.** `import { ATR_UNDERLINE
-as TERM_UNDERLINE }` in js/tty/wintty.js is reported as unbound at line 0.
-It is correctly exported from js/terminal.js:28. As of this writing all 18
-reported "unbound call targets" are false positives of this kind or of
-property shorthand (`cols`, `grid`, `cursorRow` in js/game_display.js) and
-keywords (`async`, `requestAnimationFrame`). Do not spend a session chasing
-them.
+**The actual lesson is about sequence, not tooling.** `setmangry` was ported,
+then verified by forced input, and the cheap whole-tree check was skipped in
+between. Forced input found the crash, so nothing was shipped broken, but the
+30-second check would have found it first. Run `undefined-refs.mjs` right
+after adding a function and before any deeper verification.
 
-**What actually catches this class:** call the function with synthetic
-arguments and exercise every arm. A module that imports cleanly proves only
-that it parses; an unchanged scoreboard proves only that nothing reached the
-code. Neither can distinguish correct-but-dormant from crashes-on-first-use,
-and every function ported ahead of its call site is dormant by construction.
-See the verify-by-forced-input entry.
+Standing caveat, unchanged: a clean report still cannot tell
+correct-but-dormant from crashes-on-first-use for anything the report has no
+opinion on, so forced input remains necessary for functions ported ahead of
+their call sites. It is the second check, not the only one.
+
+Currently 18 reported refs are false positives (property shorthand `cols`,
+`grid`, `cursorRow` in js/game_display.js; keywords `async`,
+`requestAnimationFrame`; and `ATR_UNDERLINE` in js/tty/wintty.js, which is
+genuinely exported from js/terminal.js:28). Do not spend a session on them.

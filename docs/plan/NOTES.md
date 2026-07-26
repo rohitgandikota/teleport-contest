@@ -1332,3 +1332,39 @@ arm was correct term-for-term against the C; C simply short-circuited earlier
 on `!nearby` because its pet was twelve columns from the hero and ours was
 adjacent. Fixing the line the trace pointed at would have been fitting a
 symptom.
+
+## An unmodelled value may still be usable: check what the C does WITH it
+
+ubirthday, the game's start time, is not derivable from this repo. The
+recorder builds it with mktime() from NETHACK_FIXED_DATETIME in the recording
+machine's local timezone, and takes tm_isdst from the moment the recording
+was actually made. Determining it by fitting to the public sessions would be
+overfitting, and it would silently break on any held-out session recorded
+elsewhere.
+
+That looks like a hard blocker, and for one consumer it is. But it blocked two
+functions with different needs, and reading what each one DOES with the value
+separated them:
+
+  nameshk uses `ubirthday / 257` to pick a shopkeeper name. Genuinely
+  TZ-dependent. BUT the modulo before its loop means every non-tools shop
+  takes the first arm and draws nothing, so only the displayed NAME is
+  affected, not the RNG stream. Ported, with the name recorded as unported.
+
+  antholemon uses `ubirthday % 3` and nothing else. Every timezone offset is a
+  whole or half hour, hence a multiple of 1800, and 1800 is divisible by 3. So
+  the offset CANNOT change the result. Ported outright, computing the value
+  from game.fixed_datetime so it stays correct for any recording timezone.
+
+The general move: before recording something as blocked on an unmodelled
+input, look at the arithmetic applied to it. A modulus that divides the
+uncertainty, a comparison whose threshold the uncertainty never crosses, or a
+value used only for display can all make the unknown irrelevant. The question
+is not "do we know this value" but "can the answer change if we are wrong
+about it".
+
+The inverse is worth stating too, because it decides whether a port is safe:
+if the unmodelled value gates whether a branch RUNS, it changes draw counts
+and cannot be finessed. That is why antholemon mattered at all -- while it was
+absent, the ANTHOLE arm always fell through to BARRACKS and spent an rn2(4)
+the C does not.

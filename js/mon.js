@@ -27,7 +27,8 @@ import { newsym, canseemon, pline } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
-import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG } from './const.js';
+import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
+         M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
@@ -131,7 +132,20 @@ function movemon_singlemon(mtmp) {
        gap is recorded instead. See docs/plan/STATUS.md for the measurement
        and the leading hypothesis (our mundetected is set more liberally than
        C's, so hiders stop moving where C moves them). */
-    (game.unported ||= new Set()).add('movemon_singlemon:hider/eel arms');
+    if (is_hider(mtmp.data)) {
+        if (restrap(mtmp))
+            return false;
+        if (M_AP_TYPE(mtmp) === M_AP_FURNITURE
+            || M_AP_TYPE(mtmp) === M_AP_OBJECT)
+            return false;
+        if (mtmp.mundetected)
+            return false;
+    } else if (mtmp.data.mlet === MONSYMS.S_EEL && !mtmp.mundetected
+               && (mtmp.mflee || !m_next2u(mtmp))
+               && !canseemon(mtmp) && !rn2(4)) {
+        if (hideunder(mtmp))
+            return false;
+    }
 
     dochug(mtmp);
     return mtmp.movement >= NORMAL_SPEED;

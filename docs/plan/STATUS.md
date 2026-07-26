@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**378/11,405 screens (3.3%), 1/44 sessions, corpus RNG 113,188/792,838 (14.3%).**
+**384/11,405 screens (3.4%), 1/44 sessions, corpus RNG 112,878/792,838 (14.2%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -58,6 +58,31 @@ js/do.js already has dodown, next_level, goto_level and stairway_at.
 
 Same caution applies to obj_resists at 6 sessions: js/zap.js has it. The tag
 names the C function containing the divergent line, not a missing function.
+
+### Where the pet work stands, and the open question
+
+acurr(), initedog()'s edog fields and dog_move's per-square object walk are in
+(see the commits). dog_goal now settles on a goal on the first object instead
+of re-drawing rn2(8) for every object in its box.
+
+What is still open is LEVEL CONTENT. On seed1500, C's dog_goal calls dogfood()
+on FIVE objects inside the pet's 11x11 box and we call it on TWO. Measured:
+
+    pet at 68,14   box x 63..73, y 9..19
+    our whole level holds 20 objects: 16 gold, 1 corpse, 1 blank paper,
+    2 scrolls of teleportation
+    only 2 of them are in the box: gold at 72,13 and the corpse at 68,13
+
+Only ONE mkobj_at() call happens in our entire level generation, and RNG
+matches C call for call through all of it, so the rn2(3) gate at
+src/mklev.c:1156 is being answered identically. Either C's extra objects come
+from a placement path we do not run at all (one that spends no draws), or the
+three extra obj_resists belong to dog_move's walk over squares that hold
+objects in C and not in ours.
+
+Next step: count C's objects rather than inferring them. The recorded screens
+show the level, so decode step 0 of seed1500 and count the object glyphs on
+the map, then compare against game.level.objects.
 
 ### What the obj_resists cluster actually is
 

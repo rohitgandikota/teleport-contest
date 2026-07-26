@@ -17,7 +17,7 @@ import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
          HUNGRY, FAINTING,
          A_LAWFUL } from './const.js';
 import { ONAMES } from './objects_data.js';
-import { getobj, weight, useup } from './invent.js';
+import { getobj, weight, useup, useupf } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
@@ -288,13 +288,13 @@ export function done_eating(message) {
         note_unported_eat('done_eating:fpostfx');
 
     /* the object leaves by one of two doors: useup() when carried, useupf()
-       when it is lying on the floor. useup is ported; useupf still needs
-       delobj plus the shop billing arms. */
+       when it is lying on the floor (src/eat.c:568, :570). Both are ported;
+       useupf's shop-billing arm records inside useupf itself. */
     if (piece) {
         if (carried(piece))
             useup(piece);
         else
-            note_unported_eat('done_eating:useupf');
+            useupf(piece, 1);
     }
 
     game.context.victual = {};          /* zero_victual */

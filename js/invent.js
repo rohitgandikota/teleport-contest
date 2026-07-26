@@ -2,15 +2,19 @@
 // C ref: src/invent.c
 
 import { game } from './gstate.js';
+import { delobj } from './mon.js';
+import { costly_spot } from './shk.js';
+import { u_at } from './const.js';
+import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS } from './monst_data.js';
-import { erosion_matters, curse } from './mkobj.js';
+import { erosion_matters, curse, splitobj } from './mkobj.js';
 import {
     carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, Is_container, Is_candle, Is_pudding,
 } from './obj.js';
-import { is_rider } from './makemon.js';
+import { is_rider, hideunder } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { pline } from './display.js';
@@ -197,6 +201,34 @@ export function sobj_at(otyp, x, y) {
             return otmp;
 
     return null;
+}
+
+// src/invent.c:4763 useupf() — consume `numused` of a stack lying on the FLOOR.
+//
+// The floor twin of useup(). C's comment on the split is worth keeping:
+// burn_floor_objects() holds an object pointer it tries to useupf() more than
+// once, so obj has to survive when the stack is plural.
+//
+// The shop-billing arm is gated on costly_spot(), which answers false on any
+// level without a shop, so the ordinary path is fully ported.
+export function useupf(obj, numused) {
+    const at_u = u_at(obj.ox, obj.oy);
+    let otmp;
+
+    /* burn_floor_objects() keeps an object pointer that it tries to
+     * useupf() multiple times, so obj must survive if plural */
+    if (obj.quan > numused)
+        otmp = splitobj(obj, numused);
+    else
+        otmp = obj;
+
+    if (!game.context?.mon_moving && costly_spot(otmp.ox, otmp.oy)) {
+        /* addtobill() / stolen_value() need the shop subsystem */
+        (game.unported ||= new Set()).add('useupf:shop_billing');
+    }
+    delobj(otmp);
+    if (at_u && game.u?.uundetected && hides_under(game.youmonst?.data))
+        hideunder(game.youmonst);
 }
 
 // src/invent.c:4366 stackobj() — merge a just-dropped object into any

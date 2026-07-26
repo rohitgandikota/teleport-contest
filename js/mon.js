@@ -571,7 +571,7 @@ export function m_consume_obj(mtmp, otmp) {
 }
 
 // src/mkobj.c delobj() — take the object off the floor and free it.
-function delobj(obj) {
+export function delobj(obj) {
     const objs = game.level?.objects;
     if (!objs) return;
     const i = objs.indexOf(obj);

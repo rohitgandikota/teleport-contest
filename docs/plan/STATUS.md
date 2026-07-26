@@ -142,11 +142,29 @@ when the hero IS in a room, rn2(4) is nonzero and whappr is false, C draws
 rn2(edog->apport) and we draw nothing. That is a latent divergence needing
 monster inventory (dog_has_minvent) and edog->apport.
 
-WHAT IS LEFT: with the same appr, same GDIST goal and same rn2(4), C finds a
-candidate scoring j == 0 and we do not. That points at the CANDIDATE LIST
-itself -- mfndpos returning different squares or a different count -- or at
-the starting nidist. Next: dump cnt and the poss[] array at the divergent
-call and check the count against what the map should allow.
+SAMPLER ELIMINATED TOO. Traced the loop with candidate-level detail:
+
+  rn2(1)=0    i=0/7 nd=1 nid=1 j=0 chcnt=0    <- first tie, pre-increment
+  rn2(2)=1    i=1/7 nd=1 nid=1 j=0 chcnt=1    <- second tie
+  rn2(12)     i=2..6                          <- worse-square acceptance
+
+Our loop DOES draw rn2(1) at a first tie and rn2(2) at the second, which is
+the pre-increment behaving exactly as C's does. chcnt advances correctly.
+So neither appr, nor IS_ROOM, nor the sampler, nor the pre-increment is the
+cause. THREE leads eliminated by measurement, none by reading.
+
+WHAT IS LEFT: the CANDIDATE LIST. Same appr, same goal, same rn2(4), same
+sampler, yet at one specific invocation C scores a candidate at j == 0 and we
+score none. j = (GDIST(nx,ny) - nidist) * appr, so with appr and GDIST's goal
+agreeing, the difference has to be in which (nx, ny) are offered or in the
+starting nidist. cnt varies per call in our trace (7, then 5), so compare
+mfndpos's output square-for-square against what the C map allows.
+
+CAUTION FOR WHOEVER DOES THAT: a hand-rolled global RNG counter does NOT line
+up with tools/diverge.mjs's numbering -- they count different things. Do not
+try to correlate by index. Either log from inside diverge.mjs itself, or key
+the dump on a game-state predicate (pet position, turn number) that both
+sides can be matched on.
 
 HOW TO INSTRUMENT (this cost most of a tick to work out):
 frozen/ps_test_runner.mjs spawnSync's a worker and CAPTURES its stdout and

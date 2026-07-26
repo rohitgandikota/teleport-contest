@@ -324,3 +324,9 @@ export function can_blow(mtmp) {
         return false;
     return true;
 }
+
+// include/mondata.h:59 flaming() — an identity test against four specific
+// permonst entries, not a flag test.
+export const flaming = (d) =>
+    d.pmidx === PMNAMES.PM_FIRE_VORTEX || d.pmidx === PMNAMES.PM_FLAMING_SPHERE
+    || d.pmidx === PMNAMES.PM_FIRE_ELEMENTAL || d.pmidx === PMNAMES.PM_SALAMANDER;

@@ -10,16 +10,16 @@ import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
-import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST,
+import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
 import { sobj_at } from './invent.js';
-import { m_carrying, meatmetal } from './mon.js';
+import { m_carrying, meatmetal, resists_ston } from './mon.js';
 import { metallivorous, corpse_eater } from './mondata.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
@@ -508,8 +508,15 @@ function searches_for_item(mon, obj) {
             return obj.spe > 0;
         break;
     case OCLASSES.FOOD_CLASS:
-        /* needs cures_stoning() and mcould_eat_tin() */
-        note_unported('searches_for_item:food');
+        if (typ === ONAMES.CORPSE)
+            return ((mon.misc_worn_check & W_ARMG) !== 0
+                    && touch_petrifies(game.mons[obj.corpsenm]))
+                   || (!resists_ston(mon) && cures_stoning(mon, obj, false));
+        if (typ === ONAMES.TIN)
+            return mcould_eat_tin(mon)
+                   && !resists_ston(mon) && cures_stoning(mon, obj, true);
+        if (typ === ONAMES.EGG && obj.corpsenm !== NON_PM)
+            return touch_petrifies(game.mons[obj.corpsenm]);
         break;
     default:
         break;
@@ -1264,3 +1271,67 @@ function m_has_launcher_and_ammo(mtmp) {
     }
     return false;
 }
+
+// src/muse.c:2985 cures_stoning() — would eating this stop petrification?
+function cures_stoning(mon, obj, tinok) {
+    if (obj.otyp === ONAMES.POT_ACID)
+        return true;
+    if (obj.otyp === ONAMES.GLOB_OF_GREEN_SLIME)
+        return slimeproof(game.mons[mon.mnum]);
+    if (obj.otyp !== ONAMES.CORPSE && (obj.otyp !== ONAMES.TIN || !tinok))
+        return false;
+    /* corpse, or tin that mon can open */
+    if (obj.corpsenm === NON_PM)        /* empty/special tin */
+        return false;
+    return obj.corpsenm === PMNAMES.PM_LIZARD
+           || acidic(game.mons[obj.corpsenm]);
+}
+
+// src/muse.c:3001 mcould_eat_tin() — can this monster open a tin?
+//
+// Different from the player: the opener or blade does NOT have to be wielded,
+// and a knife counts as well as a dagger. Animals cannot, which is how a
+// monkey that steals a tin still cannot eat it.
+function mcould_eat_tin(mon) {
+    if (is_animal(game.mons[mon.mnum]))
+        return false;
+
+    const mwep = MON_WEP(mon);
+    const welded_wep = !!(mwep && mwelded(mwep));
+
+    for (const obj of mon.minvent || []) {
+        /* if stuck with a cursed weapon, don't check rest of inventory */
+        if (welded_wep && obj !== mwep)
+            continue;
+        if (obj.otyp === ONAMES.TIN_OPENER
+            || (obj.oclass === OCLASSES.WEAPON_CLASS
+                && (game.objects[obj.otyp].oc_skill === P_DAGGER
+                    || game.objects[obj.otyp].oc_skill === P_KNIFE)))
+            return true;
+    }
+    return false;
+}
+
+/* src/wield.c:63 erodeable_wep(), :68 will_weld(), :1078 mwelded(), and
+   include/obj.h:249 is_weptool(). Local rather than imported: js/wield.js and
+   js/mkobj.js both close a cycle from here (NOTES, "The module graph is
+   load-bearing"). */
+const is_weptool = (o) =>
+    o.oclass === OCLASSES.TOOL_CLASS
+    && game.objects[o.otyp].oc_subtyp !== P_NONE;
+const erodeable_wep = (o) =>
+    o.oclass === OCLASSES.WEAPON_CLASS || is_weptool(o)
+    || o.otyp === ONAMES.HEAVY_IRON_BALL || o.otyp === ONAMES.IRON_CHAIN;
+const will_weld = (o) =>
+    o.cursed && (erodeable_wep(o) || o.otyp === ONAMES.TIN_OPENER);
+const mwelded = (obj) =>
+    !!(obj && (obj.owornmask & W_WEP) && will_weld(obj));
+
+/* include/mondata.h:88 acidic() and :75 slimeproof(); js/dog.js has private
+   copies, local here for the same cycle reason. */
+const acidic = (d) => (d.mflags1 & MFLAGS.M1_ACID) !== 0;
+const slimeproof = (d) => d.pmidx === PMNAMES.PM_GREEN_SLIME
+                       || flaming(d) || noncorporeal(d);
+
+/* include/objclass.h skill values used by mcould_eat_tin. */
+const P_NONE = 0, P_DAGGER = 1, P_KNIFE = 2;

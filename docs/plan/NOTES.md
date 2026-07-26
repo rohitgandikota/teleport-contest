@@ -1952,3 +1952,33 @@ cancels against the push order. That is not findable by auditing this code
 path; it needs the 69 lost screens identified session by session. Run the
 change, diff the per-session scoreboard against the current one, and look at
 which sessions lose and what they have in common.
+
+## Before porting anything, grep for the BARE NAME -- five duplicates came from not doing it
+
+Every one of these was written fresh and then discovered to already exist:
+
+    dog_move, dog_hunger    js/dog.js -- re-ported into a new js/dogmove.js
+    mkobj_at                js/mkobj.js exports it; js/makemon.js had a private
+                            copy that PUSHED where place_object UNSHIFTS
+    carried, OBJ_INVENT     js/obj.js:57,64
+    done_eating             js/eat.js:261, already with C's ordering comment
+    tty_clear_nhwindow_message   js/display.js, duplicated into wintty.js
+
+THE FAILING CHECK IN THREE OF THEM WAS THE GREP PATTERN. `grep "function X"`
+does not match `export const X = (a) => ...`, and a lot of this port's small
+functions are const arrows. `ls js/<file>.js` is worse still -- dog_move lives
+in js/dog.js, not js/dogmove.js, so the file being absent proved nothing.
+
+USE:  grep -rn "\bNAME\b" js/ | head
+NOT:  grep -rn "function NAME" js/
+NOT:  ls js/<expected-file>.js
+
+The cost is not just wasted work. Two of these shipped briefly as a SECOND
+definition with different behaviour -- makemon's mkobj_at pushed to
+level.objects where place_object prepends, and the wintty clear fired on a
+different path than display.js's. A duplicate that merely wastes time is the
+good case.
+
+tools/dup-defs.mjs finds these AFTER the fact and is worth running, but it
+only reports names defined in more than one FILE. A private copy shadowing an
+imported one inside the same file does not show up.

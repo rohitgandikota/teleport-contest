@@ -316,11 +316,29 @@ export function passivemm(magr, mdef, mhitb, mdead, mwep) {
     /* These affect the enemy only if defender is still alive.
        THE rn2(3) IS A DRAW and it happens for EVERY surviving passive,
        whatever the damage type -- the switch inside it is what varies.
-       Recording before this roll, as an earlier version did, silently
-       dropped one draw from every passive counter-attack. */
-    if (rn2(3))
-        (game.unported ||= new Set()).add(`passivemm:alive:${adname}`);
+       Recording before this roll silently drops one draw from every passive
+       counter-attack.
 
+       Only five damage types have an arm here: AD_PLYS, AD_COLD, AD_STUN,
+       AD_FIRE and AD_ELEC. Everything else, AD_PHYS included, hits
+       `default: tmp = 0` and inflicts nothing -- so recording for those was
+       claiming a gap that does not exist. */
+    const ALIVE_ARMS = [ATTKS.AD_PLYS, ATTKS.AD_COLD, ATTKS.AD_STUN,
+                        ATTKS.AD_FIRE, ATTKS.AD_ELEC];
+    if (rn2(3)) {
+        if (ALIVE_ARMS.includes(adtyp))
+            (game.unported ||= new Set()).add(`passivemm:alive:${adname}`);
+        else
+            tmp = 0;    /* default: */
+    } else {
+        tmp = 0;
+    }
+
+    /* assess_dmg: the passive damage lands on the ATTACKER, and can kill it */
+    if ((magr.mhp -= tmp) <= 0) {
+        monkilled(magr, '', adtyp);
+        return (mdead | mhit | M_ATTK_AGR_DIED);
+    }
     return (mdead | mhit);
 }
 

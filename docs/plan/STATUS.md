@@ -319,10 +319,34 @@ NOTE the earlier entry in this file eliminated IS_ROOM on seed0004 by
 observing rn2(4)=0 on both sides. That was a DIFFERENT session and a
 different moment; it does not clear it here.
 
-NEXT: at the turn containing call 6276, print levl[u.ux][u.uy].typ and
-IS_ROOM's verdict. An extra draw is a much sharper signal than a displaced
-pet, and it is the same underlying bug -- the pet ends up elsewhere because
-appr was computed from a different branch.
+CORRECTION, AND IT IS SHARPER THAN THE IS_ROOM READING ABOVE: the two sides
+are not just drawing different values, they are in DIFFERENT BRANCHES of
+dog_goal. The diverge tags say so directly --
+
+  C     6277  rn2(8)  @ dog_goal(dogmove.c:554)
+  ours  6276  rn2(4)                  [dogmove.c:575 is the appr test]
+
+dogmove.c:554 is the APPORT branch, `edog->apport > rn2(8)`, where the pet
+decides to FETCH AN OBJECT:
+
+    } else if (gg.gtyp == UNDEF && in_masters_sight && !dog_has_minvent
+               && (!levl[omx][omy].lit || levl[u.ux][u.uy].lit)
+               && (otyp == MANFOOD || m_cansee(mtmp, nx, ny))
+               && edog->apport > rn2(8)
+               && can_carry(mtmp, obj) > 0) {
+
+So C's pet is considering fetching something -- plausibly the gold seen in
+the earlier screendiff -- and ours never gets there, falling through to the
+appr test instead.
+
+We DO have this branch (js/dog.js, inside dog_goal) with the rn2(8) present,
+so it is reached-but-failing, not missing. SUSPECT THE ACCESSOR FIRST: the
+condition reads `mtmp.edog?.apport`, but edog lives at mtmp.mextra.edog and
+js/const.js exposes EDOG(mtmp) for exactly that. `mtmp.edog` is undefined, so
+`undefined > rn2(8)` is false -- and note it would STILL DRAW, so a wrong
+accessor here changes the branch taken without removing the draw. That alone
+does not explain a missing rn2(8), which means an EARLIER condition in the
+chain also fails; check gtyp, in_masters_sight and the lit tests in order.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

@@ -1,3 +1,47 @@
+=== HANDOFF: 511/11405 screens, RNG 140518/792838, 1/44 sessions ===
+
+THE LEDGER IS NOW TRUSTWORTHY. Twenty recorded gaps were wrong and are fixed:
+fifteen false entries (a dependency was already ported and nobody rechecked)
+and five PHANTOM entries that recorded at a dispatch point where C's switch
+has no matching arm at all. Before that work the top of unported-hits read
+100/66/43/39 percent and three of those four were fictional. It now tops out
+at 27% for anything actionable.
+
+WHAT LANDED: the complete monster-vs-monster combat chain, wired.
+    shade_miss, mhitm_ad_phys, mhitm_adtyping, mhitm_knockback, mdamagem,
+    hitmm, getmattk, passivemm, mattackm
+    + the death path: monkilled, mondied, mondead, lifesaved_monster
+    + relobj/mdrop_obj/extract_from_minvent, so kills drop inventory
+    + corpse_chance, so a death rolls for a corpse
+    + max_passive_dmg, so a pet declines a suicidal fight
+    + dog_move's attack branch and pet_ranged_attk, both wired
+Pets now fight, kill, and die. A jackal biting a newt produces draws=4:
+rnd(20 + i) to-hit, d(damn, damd) damage, and mhitm_knockback's two.
+
+Also: the run loop (lookaround + domove's nomul exits), useupf, stackobj,
+impact_disturbs_zombies, confers_luck, down_gate/ship_object, fpostfx,
+dog_invent's pickup, and the movemon_singlemon gates.
+
+NEXT TARGETS, all verified real:
+
+    drop:levitation_and_message  27%  needs can_reach_floor (~28L, and most
+                                      of ITS deps are now ported -- Levitation,
+                                      Flying, ceiling_hider, attacktype, t_at)
+                                      PLUS dosinkring, hitfloor, float_down,
+                                      finesse_ahriman. can_reach_floor alone
+                                      does NOT clear it.
+    cmd:r                        25%  doread, 318L
+    cmd:w                        25%  dowear is 19L but its chain is ~460
+                                      (accessory_or_armor_on 220, canwearobj
+                                      177, armor_on 66)
+    dofire:empty quiver prompt   25%  needs autoquiver/fireassist/ok_to_throw
+
+STILL RECORDED INSIDE WORKING CODE, and these are the honest remainders:
+    make_corpse 378L         a kill leaves no body
+    mhitm_ad_* 38 arms       every non-physical damage type
+    mattackm's AT_GAZE/EXPL/ENGL/BREA/SPIT arms
+    flooreffects 198L, cpostfx 199L
+
 === NEXT: relobj, so dead monsters drop what they carried (36%) ===
 Current: 511/11405 screens, RNG 140467/792838.
 

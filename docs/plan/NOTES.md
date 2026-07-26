@@ -1294,3 +1294,41 @@ The related trap: a prompt can also be missing because its whole COMMAND is
 unported. "Where do you want to travel to?" is a plain pline in dotravel
 (src/cmd.c:5333) before getpos is called, and dotravel is not ported at all,
 so no amount of work on getpos would produce it.
+
+## Identify a glyph by its POSITION first, never by a colour that matches
+
+Two sessions went into "seed0030 is missing a statue" on the strength of one
+coincidence: the mismatched cell was an `f` in colour 15, and
+`objects[STATUE].oc_color` is also 15. Statues take the monster's symbol and
+the statue object's colour, so a white `f` is exactly what a kitten statue
+looks like. The inference was clean and completely wrong.
+
+What it cost: `fill_statuary` traced, `mk_trap_statue` found unported and then
+fully ported (a real C function, so the port was kept), and neither changed a
+single cell, because instrumentation showed both are entered ZERO times for
+that seed. There was never a statue.
+
+The check that would have killed it in one command, before any of that:
+
+    @ row 5 col 19
+    f row 5 col 20
+
+The glyph is one square from the hero. It is the starting pet. Dumping the
+recorded screen and printing the position of the mismatched glyph relative to
+`@` costs one `node -e` and needs no knowledge of the subsystem at all.
+
+The general rule: a colour or a symbol matching your hypothesis is consistent
+with it, never evidence for it. The NetHack glyph space is small, symbols are
+reused across objects and monsters by design, and colour collisions are
+everywhere. Position, adjacency to the hero, and whether the thing MOVES
+between steps are all cheap and all far more discriminating. Ask "where is it
+and does it move" before "what could render like that".
+
+The same shape shows up whenever a stack trace names one function: the tag on
+a divergent RNG call names the C function containing the divergent line, and
+the JS stack names OUR caller, and neither is the bug's location. In this same
+thread our extra `rn2(4)` traced to `dochug` at the `is_wanderer` arm, and the
+arm was correct term-for-term against the C; C simply short-circuited earlier
+on `!nearby` because its pet was twelve columns from the hero and ours was
+adjacent. Fixing the line the trace pointed at would have been fitting a
+symptom.

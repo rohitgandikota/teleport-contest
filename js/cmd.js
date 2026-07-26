@@ -536,6 +536,19 @@ export async function rhack(key) {
            branch call domove() again without re-reading a key. */
         game.u.dx = DIR_DX[ch];
         game.u.dy = DIR_DY[ch];
+        /* src/cmd.c:3792 DOMOVE_RUSH — seed multi with max(COLNO, ROWNO) as
+           the upper bound on how far one command can carry the hero. The run
+           does NOT end by counting down: moveloop's guard is
+           (multi < COLNO && !--multi) and multi starts AT COLNO, so it never
+           decrements for a rush. It ends through nomul(0), from lookaround or
+           from domove bumping a monster, being blocked, or stepping onto a
+           door. */
+        if (game.context.run) {
+            if (!game.multi)
+                game.multi = Math.max(COLNO, ROWNO);
+            game.u.last_str_turn = 0;
+            game.context.mv = true;
+        }
         await domove();
         game.context.move = 1;
     } else if (ch === 'Q') {
@@ -672,7 +685,7 @@ export async function rhack(key) {
 }
 
 // C ref: hack.c domove — execute a movement
-async function domove() {
+export async function domove() {
     const u = game.u;
     /* C's domove() takes no arguments and reads u.dx/u.dy, which movecmd()
        set from the key. moveloop's run branch calls it the same way, so the
@@ -680,15 +693,6 @@ async function domove() {
     const dx = u.dx, dy = u.dy;
     const newx = u.ux + dx;
     const newy = u.uy + dy;
-
-    /* src/hack.c — with the rush prefix set, domove() repeats until lookaround()
-       finds something interesting, so C travels several squares where a single
-       step is taken here. The run loop needs lookaround() and is not ported;
-       record it so the distance gap is visible rather than silent. */
-    if (game.context.run) {
-        note_unported_cmd('domove:run loop');
-        game.context.run = 0;
-    }
 
     /* src/hack.c:2242 — with the fight prefix set, the hero attacks the target
        square instead of moving onto it, whether or not anything is there. The
@@ -733,6 +737,28 @@ async function domove() {
        `const mtmp = m_at(...)` below. Placed above it the whole suite reads
        56/11405 from a temporal dead zone, which looks like a catastrophic
        behavioural regression and is really one misplaced line. */
+
+    /* src/hack.c:2786 — bumping a monster ends a run.
+     *
+     *     if (mtmp) {
+     *         if (!is_safemon(mtmp) || svc.context.forcefight)
+     *             nomul(0);
+     *         ...
+     *     }
+     *
+     * C's comment explains the is_safemon half: "don't stop travel when
+     * displacing pets; if the displace fails for some reason, do_attack() in
+     * uhitm.c will stop travel rather than domove". So walking into a pet
+     * keeps the run going and walking into anything else does not.
+     *
+     * Unlike hack.c:2766 this is NOT gated on context.run and does NOT
+     * return -- it only clears multi and lets the rest of domove proceed.
+     * This sits before the blocked-move test, matching C's order. */
+    {
+        const mtmp_bump = m_at(newx, newy);
+        if (mtmp_bump && (!is_safemon(mtmp_bump) || game.context.forcefight))
+            nomul(0);
+    }
 
     /* src/hack.c:2846 — the blocked-move exit.
      *

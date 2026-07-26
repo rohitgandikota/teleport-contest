@@ -351,10 +351,23 @@ things could do that with the RNG still matching:
     without changing a draw), or
   - they are created and then lost, the "computed and discarded" shape.
 
-NEXT MEASUREMENT: dump every object with otyp === ONAMES.STATUE and its
-position at step 0 for seed0030, and compare against the 'f' glyphs on the
-recorded screen. Do not infer from one square -- find all of them and see
-whether the set is shifted, short, or empty.
+MEASURED: our whole level holds exactly ONE statue.
+
+    STATUES n=1  at 15,10  corpsenm=158
+
+Two facts from that, and no inference beyond them:
+
+  - corpsenm IS being set (158), so lspo_object('statue') does reach
+    set_corpsenm. The statue glyph fix will render it correctly.
+  - n=1 is far short of fill_statuary's d(5,5), which is 5..25. Either
+    fill_statuary never ran this game (the "Statuary" themeroom simply was not
+    picked, in which case that lone statue came from somewhere else and C's at
+    56,4 needs a different explanation), or it ran and only one object
+    survived.
+
+Settle WHICH before doing anything else: log whether fill_statuary is entered
+at all for seed0030. If it is not, stop looking at fill_statuary -- C's statue
+at 56,4 is from another source, and the two are unrelated.
 
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 

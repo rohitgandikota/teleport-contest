@@ -4,6 +4,7 @@
 // Real mklev.js handles level generation for screen parity.
 
 import { game } from './gstate.js';
+import { set_wear } from './do_wear.js';
 import { maybe_finished_meal } from './eat.js';
 
 // src/allmain.c set_occupation() / stop_occupation() — the multi-turn action
@@ -300,7 +301,7 @@ export async function newgame() {
 
        tools/unported-hits.mjs has this reached by 100% of sessions, but the
        reach figure counts the CALL, not the work behind it. */
-    note_unported_main('moveloop_preamble:set_wear');
+    set_wear(null);   /* for side-effects of starting gear */
     g.context.seer_turn = rnd(30);
     g.u.umovement = NORMAL_SPEED;
 

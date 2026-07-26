@@ -16,7 +16,9 @@ import {
 } from './makemon.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room } from './sp_lev.js';
-import { mkgold, place_object, mkobj_at, mksobj_at } from './mkobj.js';
+import {
+    mkgold, place_object, mkobj_at, mksobj_at, add_to_container,
+} from './mkobj.js';
 
 function note_unported_lev(what) {
     (game.unported ||= new Set()).add(what);
@@ -266,32 +268,6 @@ function add_to_buried(otmp) {
 }
 function dealloc_obj(otmp) { /* stub */ }
 function curse(otmp) { if (otmp) otmp.cursed = true; }
-// src/mkobj.c add_to_container() — link the object into the container's cobj
-// chain. C PREPENDS here too. Discarding the object (as the stub did) lost
-// every item the supply chest was filled with; the fill loop's draws were
-// correct, the results were thrown away.
-function add_to_container(container, obj) {
-    /* merged() can stack identical items instead of adding a new entry; it
-       needs the object-merge rules, and the supply chest fill deliberately
-       rerolls until it gets a noncursed item, so distinct items are the
-       common case. */
-    for (const otmp of (container.cobj || [])) {
-        if (merged_p(otmp, obj))
-            return otmp;
-    }
-
-    obj.where = OBJ_CONTAINED;
-    obj.ocontainer = container;
-    (container.cobj ||= []).unshift(obj);
-    return obj;
-}
-
-/* src/invent.c merged() takes struct obj ** for both, because otmp can be
-   replaced by oname(). js/invent.js keeps that with one-element holders. */
-function merged_p(otmp, obj) {
-    return merged({ o: otmp }, { o: obj }) !== 0;
-}
-
 // set_corpsenm stub
 function set_corpsenm(otmp, pm) { /* stub */ }
 

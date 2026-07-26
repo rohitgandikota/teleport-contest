@@ -10,6 +10,8 @@
 // from enexto() to place it.
 
 import { game } from './gstate.js';
+import { DEADMONSTER } from './monst.js';
+import { perceives } from './mondata.js';
 import { sobj_at } from './invent.js';
 import { may_dig } from './hack.js';
 import { obj_resists } from './zap.js';
@@ -747,8 +749,6 @@ function pet_ranged_attk(mtmp, forced) {
 // src/dogmove.c:10-12
 const DOG_HUNGRY = 300, DOG_WEAK = 500, DOG_STARVE = 750;
 
-// include/monst.h:214 DEADMONSTER()
-const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
 
 // src/dogmove.c dog_hunger() — a pet that has not eaten in DOG_WEAK turns is
 // weakened, and in DOG_STARVE turns it dies. Draws nothing: it is a comparison

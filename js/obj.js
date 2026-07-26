@@ -47,3 +47,19 @@ export const WrappingAllowed = (mptr) =>
     && !noncorporeal(mptr) && mptr.mlet !== MONSYMS.S_CENTAUR
     && mptr.pmidx !== PMNAMES.PM_WINGED_GARGOYLE
     && mptr.pmidx !== PMNAMES.PM_MARILITH;
+
+// include/obj.h:75 — obj->where. These are an enum in all but name, and the
+// values are load-bearing: obj_extract_self() switches on them.
+export const OBJ_FREE = 0;      /* object not attached to anything */
+export const OBJ_FLOOR = 1;     /* object on floor */
+export const OBJ_CONTAINED = 2; /* object in a container */
+export const OBJ_INVENT = 3;    /* object in the hero's inventory */
+export const OBJ_MINVENT = 4;   /* object in a monster inventory */
+export const OBJ_MIGRATING = 5; /* object sent off to another level */
+export const OBJ_BURIED = 6;    /* object buried */
+export const OBJ_ONBILL = 7;    /* object on shk bill */
+
+// include/obj.h:332
+export const carried = (o) => o.where === OBJ_INVENT;
+// include/obj.h:333
+export const mcarried = (o) => o.where === OBJ_MINVENT;

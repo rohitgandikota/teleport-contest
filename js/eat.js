@@ -14,6 +14,7 @@ import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
          A_LAWFUL } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { getobj } from './invent.js';
+import { pline } from './display.js';
 
 // src/eat.c:3170 gethungry()
 export function gethungry() {

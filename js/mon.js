@@ -12,7 +12,8 @@ import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
 import { mksobj_at } from './mkobj.js';
 import { newsym } from './display.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd } from './rng.js';
+import { DEADMONSTER } from './monst.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import {
     bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,

@@ -6,6 +6,9 @@ import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS } from './monst_data.js';
 import { erosion_matters } from './mkobj.js';
+import {
+    carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT,
+} from './obj.js';
 import { is_rider } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
@@ -464,8 +467,6 @@ export function obj_extract_self(obj) {
 }
 
 // include/obj.h — obj->where values, and the two how_lost values mergable reads.
-const OBJ_FREE = 0, OBJ_FLOOR = 1, OBJ_CONTAINED = 2, OBJ_INVENT = 3,
-      OBJ_MINVENT = 4;
 const LOST_NONE = 0, LOST_EXPLODING = 1, LOST_THROWN = 2;
 
 const Is_candle = (o) => o.otyp === ONAMES.TALLOW_CANDLE

@@ -30,6 +30,11 @@ import {
     rndmonnum, level_difficulty, is_male, is_female, is_neuter, is_rider,
 } from './makemon.js';
 import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
+/* invent.js imports erosion_matters() from here, so this edge closes a cycle.
+   Both sides export function DECLARATIONS, which hoist, so each module sees the
+   other's bindings by the time anything is called. */
+import { merged } from './invent.js';
+import { OBJ_CONTAINED } from './obj.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
@@ -1004,3 +1009,26 @@ function Is_rogue_level() {
 function Inhell() {
     return game.dungeons?.[game.u?.uz?.dnum]?.flags?.hellish === true;
 }
+
+// src/mkobj.c:2676 add_to_container() — link an object into a container's cobj
+// chain, or merge it into an identical stack already there.
+//
+// C PREPENDS: `obj->nobj = container->cobj; container->cobj = obj;`. The merge
+// loop runs first and walks the existing contents in that same order, so the
+// returned pointer is the SURVIVING object, which is not always the one passed
+// in. Callers that keep using `obj` after this without taking the return value
+// are using a freed pointer.
+export function add_to_container(container, obj) {
+    /* C also panics on obj->where != OBJ_FREE and calls obj_no_longer_held()
+       when the container is on the floor; neither is modelled yet, and both
+       are bookkeeping rather than draws. */
+    for (const otmp of (container.cobj || []))
+        if (merged({ o: otmp }, { o: obj }) !== 0)
+            return otmp;
+
+    obj.where = OBJ_CONTAINED;
+    obj.ocontainer = container;
+    (container.cobj ||= []).unshift(obj);
+    return obj;
+}
+

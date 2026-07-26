@@ -91,6 +91,9 @@ export function num_horns(ptr) {
 
 export const has_horns = (ptr) => num_horns(ptr) > 0;
 
+// include/mondata.h:81 perceives() — can this species see invisible?
+export const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
+
 // include/mondata.h is_animal()
 export const is_animal = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
 

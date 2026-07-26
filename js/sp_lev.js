@@ -10,12 +10,14 @@
 
 import { game } from './gstate.js';
 import { selection_iterate } from './selvar.js';
-import { rn1, rn2 } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import { isok } from './hacklib.js';
-import { sobj_at } from './invent.js';
-import { ONAMES, OCLASSES } from './objects_data.js';
-import { mkobj_at, mksobj_at } from './mkobj.js';
+import { sobj_at, weight, obj_extract_self } from './invent.js';
+import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { mkobj_at, mksobj_at, add_to_container } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
+import { obj_resists } from './zap.js';
+import { OBJ_BURIED } from './obj.js';
 
 /* is_pool/is_lava/m_at live in js/mon.js, which reaches this file back through
    invent.js -> mkobj.js. A direct import leaves them in TDZ the second time a
@@ -52,7 +54,7 @@ import {
     TLWALL, TRWALL, DBWALL, AIR, CLOUD, FOUNTAIN, THRONE, SINK, MOAT, POOL,
     LAVAPOOL, LAVAWALL, ICE, WATER, TREE, IRONBARS,
     MAX_TYPE, MATCH_WALL, INVALID_TYPE, NO_ROOM, ROOMOFFSET, D_CLOSED,
-    MAXNROFROOMS, IS_WALL, IS_DOOR,
+    MAXNROFROOMS, IS_WALL, IS_DOOR, IS_OBSTRUCTED,
 } from './const.js';
 
 // src/sp_lev.c:2731 fill_special_room()
@@ -712,26 +714,58 @@ export function create_object(o, croom) {
         break;                                  /* keep what mkobj gave us */
     }
 
-    /* src/sp_lev.c create_object() — containment.
+    /* src/sp_lev.c:2304 create_object() — containment.
        SP_OBJ_CONTENT puts this object INSIDE the innermost open container;
        SP_OBJ_CONTAINER opens this one for the objects its contents closure
-       makes. The stack is what lets `des.object({contents=...})` nest. */
-    if ((o.containment & SP_OBJ_CONTENT) && container_obj.length) {
-        const cont = container_obj[container_obj.length - 1];
-        obj_extract_self(otmp);
-        (cont.cobj ||= []).unshift(otmp);
-        otmp.where = OBJ_CONTAINED;
-        otmp.ocontainer = cont;
+       makes. The stack is what lets `des.object({contents=...})` nest.
+
+       C's outer test is `SP_OBJ_CONTENT || invent_carrying_monster`, and the
+       empty-stack arm then either drops the object on the floor or hands it to
+       that monster. invent_carrying_monster is not modelled, so the arm this
+       port can reach is the floor one, which does nothing. */
+    if (o.containment & SP_OBJ_CONTENT) {
+        if (container_obj.length) {
+            const cobj = container_obj[container_obj.length - 1];
+
+            obj_extract_self(otmp);     /* remove_object() */
+            if (cobj) {
+                otmp = add_to_container(cobj, otmp);
+                cobj.owt = weight(cobj);
+            } else {
+                /* The slot was cleared because bury_an_obj() freed the
+                   container out from under us. C destroys the would-be content
+                   rather than dropping it on the floor, and returns NULL. */
+                obj_extract_self(otmp);
+                if (otmp.oartifact)
+                    note_unported('create_object:artifact_exists');
+                return null;            /* obfree(otmp, NULL) */
+            }
+        }
     }
 
     if (o.containment & SP_OBJ_CONTAINER) {
         otmp.cobj = [];                 /* delete_contents(otmp) */
-        container_obj.push(otmp);
+        if (container_obj.length < MAX_CONTAINMENT)
+            container_obj.push(otmp);
+        else
+            note_unported('create_object:too deeply nested containers');
     }
 
     if (!(o.containment & SP_OBJ_CONTENT)) {
-        if (o.buried)
-            bury_an_obj(otmp);
+        if (o.buried) {
+            const dealloced = { v: false };
+
+            bury_an_obj(otmp, dealloced);
+            if (dealloced.v) {
+                /* C nulls the slot WITHOUT popping it: container_idx keeps its
+                   value, so the stack still has to be popped by lspo_object.
+                   Assigning past the end here would grow the array, so only
+                   touch it when something is actually open. */
+                if (container_obj.length)
+                    container_obj[container_obj.length - 1] = null;
+                otmp = null;
+            }
+        }
     }
 
     /* quantity, lit, eroded, locked, trapped and name still record. */
@@ -780,13 +814,26 @@ export function lspo_object(idOrClass, x, y, opts) {
     lspo_object_fixup(o);
     const otmp = create_object(o, game.coder?.croom ?? null);
 
-    /* the contents closure runs with this object open as the container, then
-       it is popped -- src/sp_lev.c pops at the end of lspo_object */
+    /* The contents closure runs with this object open as the container, then
+       the stack is popped. C runs the closure even when create_object returned
+       NULL (nhl_push_obj pushes nil), and pops on the CONTAINER flag rather
+       than on otmp, so a failed container still balances the stack. */
     if (opts?.contents) {
         opts.contents(otmp);
-        container_obj.pop();
+        spo_pop_container();
     }
     return otmp;
+}
+
+// src/sp_lev.c:3040 spo_pop_container() — close the innermost container.
+//
+// C decrements the index and NULLS the slot; it does not shrink an array. That
+// distinction matters because create_object's buried-dealloc path writes NULL
+// into the top slot WITHOUT decrementing, so "slot is NULL" and "stack is
+// empty" are different states that the SP_OBJ_CONTENT arm tells apart.
+function spo_pop_container() {
+    if (container_obj.length > 0)
+        container_obj.pop();
 }
 
 // src/sp_lev.c find_objtype() — an object name to its index.
@@ -824,6 +871,8 @@ export const get_table_buc = (v) => {
 // include/sp_lev.h — containment bits, and the open-container stack
 // create_object pushes to. C caps it at MAX_CONTAINMENT and complains past it.
 const SP_OBJ_CONTENT = 0x01, SP_OBJ_CONTAINER = 0x02;
+// src/sp_lev.c:195 MAX_CONTAINMENT
+const MAX_CONTAINMENT = 10;
 const container_obj = [];
 
 // src/dig.c bury_an_obj() — move an object into the buried list.
@@ -835,7 +884,23 @@ const container_obj = [];
 //
 // The second is start_timer's rnd(250) for organic material, gated on another
 // obj_resists(otmp, 5, 95) which draws whether or not it passes.
-export function bury_an_obj(otmp) {
+//
+// `dealloced` is C's out-parameter, and it is load-bearing rather than
+// informational: ROCK and BOULDER are FREED here, they merge into the burying
+// material rather than joining the buried list. Every caller that can bury an
+// object it still holds a pointer to has to be told, or it keeps using freed
+// memory. create_object is one such caller -- see the container_obj clear at
+// its call site.
+//
+// C also returns otmp2 (the pile's nexthere, read before the extract so the
+// caller can keep walking a chain it is mutating). This port keeps object
+// piles as a flat list rather than a nexthere chain (see js/invent.js:141), and
+// the only caller of that return value is bury_objs(), which is not ported, so
+// there is nothing here to return it from.
+export function bury_an_obj(otmp, dealloced) {
+    if (dealloced)
+        dealloced.v = false;
+
     if (obj_resists(otmp, 0, 0))
         return;                         /* Riders, Amulet, invocation tools */
 
@@ -845,7 +910,9 @@ export function bury_an_obj(otmp) {
 
     if ((otmp.otyp === ONAMES.ROCK && !under_ice)
         || otmp.otyp === ONAMES.BOULDER) {
-        /* merges into the burying material */
+        /* merges into burying material; boulder removal is for #wizbury */
+        if (dealloced)
+            dealloced.v = true;
         return;                         /* obfree() */
     }
 
@@ -865,7 +932,6 @@ export function bury_an_obj(otmp) {
 // include/obj.h is_organic()
 const is_organic = (o) => game.objects[o.otyp].oc_material <= MATERIALS.WOOD;
 
-const OBJ_BURIED = 6;
 const STRANGE_OBJECT = 0;
 
 // src/drawing.c def_char_to_objclass() — a class symbol to its class index.

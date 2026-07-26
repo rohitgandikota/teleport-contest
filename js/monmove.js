@@ -6,6 +6,7 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
 import { sobj_at } from './invent.js';
 import { m_carrying, meatmetal } from './mon.js';
@@ -35,6 +36,7 @@ const haseyes = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
 import {
     ALLOW_U, COULD_SEE, A_LAWFUL, BOLT_LIM, IS_ALTAR, COLNO, ROWNO, A_STR,
     ALL_TRAPS, NO_TRAP,
+    G_GENOD,
 } from './const.js';
 import { is_rider } from './makemon.js';
 import { MSOUND } from './monst_data.js';
@@ -50,9 +52,6 @@ const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
 const unique_corpstat = (ptr) => (ptr.geno & MFLAGS.G_UNIQ) !== 0;
 const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
 const is_minion = (ptr) => (ptr.mflags2 & MFLAGS.M2_MINION) !== 0;
-const is_vampshifter = (mon) =>
-    mon.cham === PMNAMES.PM_VAMPIRE || mon.cham === PMNAMES.PM_VAMPIRE_LEADER
-    || mon.cham === PMNAMES.PM_VLAD_THE_IMPALER;
 const is_lminion = (mon) =>
     is_minion(game.mons[mon.mnum]) && mon_aligntyp(mon) === A_LAWFUL;
 
@@ -422,6 +421,27 @@ function monnear(mon, x, y) {
 // mfndpos() then REJECTS any square holding a boulder when ALLOW_ROCK is
 // clear. Leaving it out shrinks the candidate list for every shopkeeper,
 // priest and leader on a level with boulders.
+// src/monmove.c:2365 can_fog() — may this monster turn into a fog cloud to
+// slip under a closed door? Only vampshifters, and only while fog clouds are
+// not genocided, the hero has no Protection from shape changers, and the
+// monster is not carrying something that would stop it.
+//
+// mfndpos() reads it beside amorphous() to decide whether a closed door blocks
+// the square at all.
+export function can_fog(mtmp) {
+    if (!(game.mvitals?.[PMNAMES.PM_FOG_CLOUD]?.mvflags & G_GENOD)
+        && is_vampshifter(mtmp)) {
+        /* Protection_from_shape_changers needs the hero's worn items, and
+           stuff_prevents_passage() needs monster inventory. */
+        note_unported('can_fog:Protection_from_shape_changers');
+        return false;
+    }
+    return false;
+}
+
+// include/monst.h:250 engulfing_u()
+export const engulfing_u = (mon) => !!game.u?.uswallow && game.u.ustuck === mon;
+
 export function m_can_break_boulder(mtmp) {
     return is_rider(mtmp.data)
         || (!mtmp.mspec_used

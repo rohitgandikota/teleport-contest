@@ -11,3 +11,11 @@ export const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
 
 // include/monst.h:210 MON_WEP() — the monster's wielded weapon.
 export const MON_WEP = (mon) => mon.mw || null;
+
+// include/monst.h:216 is_vampshifter() — takes a MONSTER, not a permonst,
+// because it reads cham (what the creature really is) rather than data (what
+// shape it currently wears).
+import { PMNAMES } from './monst_data.js';
+export const is_vampshifter = (mon) =>
+    mon.cham === PMNAMES.PM_VAMPIRE || mon.cham === PMNAMES.PM_VAMPIRE_LEADER
+    || mon.cham === PMNAMES.PM_VLAD_THE_IMPALER;

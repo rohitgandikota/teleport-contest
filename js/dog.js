@@ -10,7 +10,7 @@
 // from enexto() to place it.
 
 import { game } from './gstate.js';
-import { DEADMONSTER } from './monst.js';
+import { DEADMONSTER , is_vampshifter} from './monst.js';
 import { acurr } from './attrib.js';
 import { perceives , is_domestic} from './mondata.js';
 import { sobj_at } from './invent.js';
@@ -153,10 +153,6 @@ const poisonous    = (ptr) => (ptr.mflags1 & MFLAGS.M1_POIS) !== 0;
 const is_undead    = (ptr) => (ptr.mflags2 & MFLAGS.M2_UNDEAD) !== 0;
 const is_elf       = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
 const noncorporeal = (ptr) => ptr.mlet === MONSYMS.S_GHOST;
-// include/monst.h:217 is_vampshifter() — a monster, not a permonst.
-const is_vampshifter = (mon) =>
-    mon.cham === PMNAMES.PM_VAMPIRE || mon.cham === PMNAMES.PM_VAMPIRE_LEADER
-    || mon.cham === PMNAMES.PM_VLAD_THE_IMPALER;
 /* include/mondata.h:59,190 — both are explicit species lists, not flag tests.
    There is no M1_FIRE_RES; fire resistance lives in mresists as MR_FIRE, and
    guessing a flag here silently made every monster flaming. */

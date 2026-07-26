@@ -15,6 +15,7 @@ import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+
 import { has_ceiling } from './dungeon.js';
 import { in_rooms } from './hack.js';
 import { m_harmless_trap } from './trap.js';
@@ -29,11 +30,11 @@ import { online2, isok } from './hacklib.js';
    functions living in js/monmove.js, which imports this file. Both sides
    export function declarations, so the cycle resolves through hoisting. */
 import { onscary, in_your_sanctuary, m_can_break_boulder,
-         mon_knows_traps } from './monmove.js';
-import { Is_waterlevel } from './const.js';
+         mon_knows_traps, can_fog, engulfing_u } from './monmove.js';
+import { Is_waterlevel, Is_rogue_level } from './const.js';
 import {
     bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater,
+    is_clinger, is_flyer, is_floater, mindless, dmgtype,
 } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver } from './dog.js';
@@ -48,7 +49,8 @@ import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
          ALLOW_TRAPS, ALLOW_M, ALLOW_SANCT, ALLOW_ROCK, NOTONL, OPENDOOR,
          UNLOCKDOOR, BUSTDOOR, ALLOW_TM, ALLOW_MDISP, NON_PM,
-         NOGARLIC, TEMPLE, TRAPNUM, TELEP_TRAP } from './const.js';
+         NOGARLIC, TEMPLE, TRAPNUM, TELEP_TRAP, SHOPBASE,
+         W_NONDIGGABLE } from './const.js';
 
 // include/permonst.h:80
 export const NORMAL_SPEED = 12;
@@ -204,11 +206,30 @@ export function mfndpos(mon, data, flag) {
                     && !((flag & ALLOW_WALL) && may_passwall(nx, ny))
                     && !((IS_TREE(ntyp) ? treeok : rockok) && may_dig(nx, ny)))
                     continue;
+                /* src/mon.c:2218 — intelligent peacefuls will not dig
+                   through a shop or temple wall to get somewhere, unless they
+                   are already inside one. */
+                if (IS_OBSTRUCTED(ntyp) && rockok
+                    && !mindless(mon.data) && (mon.mpeaceful || mon.mtame)
+                    && (in_rooms(nx, ny, TEMPLE) || in_rooms(nx, ny, SHOPBASE))
+                    && !(in_rooms(x, y, TEMPLE) || in_rooms(x, y, SHOPBASE)))
+                    continue;
                 if (IS_WATERWALL(ntyp) && !is_swimmer(mdat))
                     continue;
-                if (ntyp === IRONBARS && !(flag & ALLOW_BARS))
+                /* src/mon.c:2227 — KMH: iron bars. Rusting and corroding
+                   attacks get through ordinary bars but not non-diggable
+                   ones, so those reject the square even with ALLOW_BARS. */
+                if (ntyp === IRONBARS
+                    && (!(flag & ALLOW_BARS)
+                        || ((loc.wall_info & W_NONDIGGABLE)
+                            && (dmgtype(mdat, ATTKS.AD_RUST)
+                                || dmgtype(mdat, ATTKS.AD_CORR)))))
                     continue;
                 if (IS_DOOR(ntyp)
+                    /* an amorphous creature can only move under or through a
+                       closed door when it does not currently have the hero
+                       engulfed */
+                    && !((amorphous(mdat) || can_fog(mon)) && !engulfing_u(mon))
                     && (((loc.doormask & D_CLOSED) && !(flag & OPENDOOR))
                         || ((loc.doormask & D_LOCKED) && !(flag & UNLOCKDOOR)))
                     && !thrudoor)
@@ -219,7 +240,11 @@ export function mfndpos(mon, data, flag) {
                 if (nx !== x && ny !== y
                     && (nodiag
                         || (IS_DOOR(nowtyp) && (here.doormask & ~D_BROKEN))
-                        || (IS_DOOR(ntyp) && (loc.doormask & ~D_BROKEN))))
+                        || (IS_DOOR(ntyp) && (loc.doormask & ~D_BROKEN))
+                        /* no diagonal in or out of a doorway on the Rogue
+                           level, where the display is the 1980 original */
+                        || ((IS_DOOR(nowtyp) || IS_DOOR(ntyp))
+                            && Is_rogue_level())))
                     continue;
 
                 if ((!lavaok || !(flag & ALLOW_WALL)) && ntyp === LAVAWALL)

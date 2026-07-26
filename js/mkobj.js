@@ -24,6 +24,7 @@
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
+import { Is_rogue_level } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -1008,12 +1009,10 @@ function note_unported_obj(what) {
     (game.unported ||= new Set()).add(what);
 }
 
-// src/dungeon.c Is_rogue_level() / Inhell — neither is reachable on the levels
-// the public corpus generates, but the branches exist so the class table is
-// selected the way C selects it rather than being assumed.
-function Is_rogue_level() {
-    return game.level?.flags?.is_rogue_level === true;
-}
+/* Is_rogue_level() is include/dungeon.h's Lcheck against rogue_level and lives
+   in js/const.js with the other level tests. The copy that used to
+   be here tested game.level.flags.is_rogue_level instead, which is a different
+   question and a flag nothing sets. */
 function Inhell() {
     return game.dungeons?.[game.u?.uz?.dnum]?.flags?.hellish === true;
 }

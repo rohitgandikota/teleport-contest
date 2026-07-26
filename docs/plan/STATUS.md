@@ -191,9 +191,28 @@ placed by somexyspace. Our three calls land at (13,10), (51,16) and (57,4). The
 RNG matches to call 6276, so the gate draws agree; C's third sleeper must land
 somewhere our somexyspace does not put it, or C skips a room we fill.
 
-Next: log which ROOM each of our three makemon calls belongs to, and compare
-against C's room order. Room3 is 56,4-58,5 and holds both the pet's path and
-the sleeper, so it is the room to check first.
+Our sleeper code at js/mklev.js:2122 is
+
+    if (!rn2(3) && somexyspace(croom, pos)) makemon(null, pos.x, pos.y, MM_NOGRP);
+
+against C's src/mklev.c:974
+
+    if ((u.uhave.amulet || !rn2(3)) && somexyspace(croom, &pos)) ...
+
+The missing `u.uhave.amulet ||` is harmless HERE -- without the Amulet the ||
+short-circuits to the same rn2(3) and spends the same draw -- but it should be
+added anyway, because WITH the Amulet C skips the rn2(3) entirely and we would
+spend a draw C does not. That is a real future desync on Amulet levels.
+
+So the placement is the remaining suspect: same gate, same draw, different
+square. **Compare somexyspace's result for room3 (56,4-58,5) against C's.**
+js/mklev.js:1426 somexyspace already carries a fix for the irregular-room retry
+loop; check the SPACE_POS/accessible test it uses to reject a square, since
+rejecting one square more or fewer than C changes which position the same draws
+land on.
+
+That is the whole remaining distance on seed0030's first screen divergence:
+one square, one predicate.
 
 Superseded readings follow; each was overturned by one measurement.
 

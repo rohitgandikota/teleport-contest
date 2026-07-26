@@ -330,3 +330,8 @@ export function can_blow(mtmp) {
 export const flaming = (d) =>
     d.pmidx === PMNAMES.PM_FIRE_VORTEX || d.pmidx === PMNAMES.PM_FLAMING_SPHERE
     || d.pmidx === PMNAMES.PM_FIRE_ELEMENTAL || d.pmidx === PMNAMES.PM_SALAMANDER;
+
+// include/mondata.h:38 is_hider(). C's own comment warns it is True for mimics
+// even though a hiding mimic uses M_AP_* rather than mundetected, so callers
+// pair it with a mundetected test.
+export const is_hider = (d) => (d.mflags1 & MFLAGS.M1_HIDE) !== 0;

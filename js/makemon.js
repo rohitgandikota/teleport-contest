@@ -694,7 +694,7 @@ export function remove_monster(x, y) {
 // The only draw is the S_EEL rn2(13). Everything else is terrain and occupancy,
 // so a wrong answer costs a whole extra rndmonst() block (9 draws) rather than
 // a single call — which is exactly how a mis-ported goodpos announces itself.
-function goodpos(x, y, ptr, gpflags = 0) {
+export function goodpos(x, y, ptr, gpflags = 0) {
     const ignorewater = (gpflags & MM_IGNOREWATER) !== 0;
 
     if (!isok(x, y))

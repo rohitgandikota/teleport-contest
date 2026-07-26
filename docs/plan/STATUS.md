@@ -320,16 +320,24 @@ seed0030's first diff is r5 c55: C 'f' color 15, ours '$' color 11.
 objects[STATUE].oc_color is 15, and 'f' is a kitten's letter -- so C is
 drawing a STATUE OF A KITTEN there, and we are drawing GOLD.
 
-That is NOT the glyph bug just fixed: our display would render a statue
-correctly now. It is PILE ORDER. js/display.js finds the first object at the
-square in a newest-first list; C shows the pile top. Both place_object
-implementations prepend, so a divergence means one object reached the square
-by a path that does not prepend -- mkgold merging into an existing pile
-(gold.quan += amount) is the obvious candidate, since it re-uses the existing
-object rather than placing a new one.
+NOT pile order -- I guessed that and then measured it. Dumping our objects at
+map (56,4) at step 0 gives:
 
-seed0030's RNG matches through level generation (it diverges at 6276), so both
-objects exist on both sides; only their order differs.
+    PILE otyp=438 cls=12 n=1        (one GOLD_PIECE, nothing else)
+
+There is no statue there at all. It is MISSING, not underneath.
+
+seed0030's RNG matches through level generation (it diverges at 6276), so if C
+created the statue with any draw we would have made that draw too. Candidates,
+in order of likelihood:
+
+  a. a themeroom fill that we spend the draws for and do not create the object
+     from -- js/themerms.js fill_statuary is the obvious one to read first,
+     and that exact shape (draws spent, object not made) was already found and
+     fixed once this session in fill_buried_zombies.
+  b. mkcorpstat(STATUE, ...) reached from a path we skip.
+
+Check fill_statuary against dat/themerms.lua before anything else.
 
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 

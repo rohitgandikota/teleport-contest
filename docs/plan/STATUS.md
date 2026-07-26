@@ -530,11 +530,35 @@ THIS IS A STUB THAT LOOKS LIKE AN IMPLEMENTATION -- no note_unported call, no
 TODO, so no tool flagged it and it reads as finished code. Worth grepping for
 other one-line bodies in js/dog.js and js/dogmove.js on the same suspicion.
 
-TO FIX: port droppables properly from src/dogmove.c. It is 109 lines but
-mostly straight-line filtering. The minimum that fixes seed0004 is excluding
-worn and wielded items, but do the whole function rather than the minimum --
-the pick-axe/key/unihorn retention arms decide what a pet drops in every later
-game, and a partial version will read as correct while diverging elsewhere.
+FIXED. droppables is ported whole (see the commit) and seed0004's first
+divergence MOVED FROM 3694 TO 3746, 52 calls further in. Screens hold at 510.
+
+THE NEW DIVERGENCE, traced rather than inferred:
+
+    3746  C rn2(1)=0  ours rn2(12)=9  MISMATCH  @ dog_move(dogmove.c:1255)
+    TRACE call#3747 rn2(12)=9  at dog_move (js/dog.js:1155)
+
+js/dog.js:1155 is the scoring loop's worse-square acceptance, the `!rn2(12)`
+arm. C's rn2(1) is the reservoir sampler at a TIE -- chcnt 0 to 1.
+
+So for the SAME candidate square C computes j == 0 and we compute j > 0.
+j = (GDIST(nx, ny) - nidist) * appr, so with the same candidate the
+difference is in GDIST's goal, in nidist, or in appr.
+
+That is the same shape as the seed0030 chase, but this time on a
+SINGLE-GAME session with the divergent call traced to our own line, so the
+coordinates can be trusted. dog_goal now runs correctly through droppables,
+but its OUTPUT -- game.gg -- may still differ, and gg is exactly what GDIST
+reads.
+
+NEXT: print game.gg and appr at the top of dog_move's scoring loop for the
+turn containing call 3746, plus nidist's starting value. One of those three
+differs from C; the candidate list is already known to match.
+
+USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
+rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog
+index N+1). It named this divergence in one command, where inferring from the
+diverge tag cost roughly twenty ticks on the previous one.
 
 This is a much better foothold than seed0030 ever was: one game, one function,
 one draw, and the C's expected value is known (rn2(4)=3).

@@ -87,7 +87,11 @@ export function losehp(n, knam, k_format) {
 // `typewanted` filters: 0 accepts any room, SHOPBASE accepts every shop type.
 // No draws anywhere in it.
 export function in_rooms(x, y, typewanted) {
-    const rooms = game.rooms || [];
+    /* svr.rooms in the C. The live array is game.level.rooms, assigned by
+       mklev; game.rooms is initialised once in js/game.js and never written,
+       so reading it here made every TYPE-FILTERED lookup fail -- in_rooms(x,
+       y, SHOPBASE) and in_rooms(x, y, TEMPLE) always returned empty. */
+    const rooms = game.level?.rooms || [];
     const goodtype = (rno) => {
         if (!typewanted)
             return true;

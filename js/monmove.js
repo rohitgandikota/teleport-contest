@@ -10,10 +10,11 @@ import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
-import { MON_POLE_DIST,
+import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
-import { amorphous, passes_walls } from './mondata.js';
+import { amorphous, passes_walls, is_floater, nonliving,
+         attacktype } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -157,8 +158,11 @@ function has_shrine(pri) {
     return e.shralign === Amask2align(lev.altarmask & ~AM_SHRINE);
 }
 
-/* p_coaligned lives in js/priest.js, its C home; imported rather than
-   restated so the two cannot drift. */
+/* src/priest.c:370 p_coaligned(). js/priest.js owns it, but importing that
+   module here closes a cycle (see NOTES, "The module graph is load-bearing"),
+   so priest.js publishes it on the shared game object the way js/hack.js
+   publishes in_rooms. */
+const p_coaligned = (priest) => game.p_coaligned?.(priest) ?? false;
 
 /* src/shk.c inhishop() / src/priest.c inhistemple() — both need the shop and
    temple bookkeeping. No shopkeeper or priest is created on an ordinary level
@@ -427,7 +431,71 @@ function mon_would_take_item(mtmp, otmp) {
    subsystem. Its caller gates it behind !mindless && !is_animal, so no animal
    or mindless monster — which is most of an early level — can reach it. */
 function searches_for_item(mon, obj) {
-    note_unported('searches_for_item');
+    const typ = obj.otyp;
+    const d = game.mons[mon.mnum];
+
+    /* don't let monsters interact with protected items on the floor */
+    if (obj.where === OBJ_FLOOR && obj.ox === mon.mx && obj.oy === mon.my
+        && onscary(obj.ox, obj.oy, mon))
+        return false;
+
+    if (is_animal(d) || mindless(d) || mon.mnum === PMNAMES.PM_GHOST)
+        return false;               /* don't loot bones piles */
+
+    if (typ === ONAMES.WAN_MAKE_INVISIBLE || typ === ONAMES.POT_INVISIBILITY)
+        return !mon.minvis && !mon.invis_blkd && !attacktype(d, ATTKS.AT_GAZE);
+    if (typ === ONAMES.WAN_SPEED_MONSTER || typ === ONAMES.POT_SPEED)
+        return mon.mspeed !== MFAST;
+
+    switch (obj.oclass) {
+    case OCLASSES.WAND_CLASS:
+        if (obj.spe <= 0)
+            return false;
+        if (typ === ONAMES.WAN_DIGGING)
+            return !is_floater(d);
+        if (typ === ONAMES.WAN_POLYMORPH)
+            return d.difficulty < 6;
+        if (game.objects[typ].oc_dir === RAY || typ === ONAMES.WAN_STRIKING
+            || typ === ONAMES.WAN_UNDEAD_TURNING
+            || typ === ONAMES.WAN_TELEPORTATION
+            || typ === ONAMES.WAN_CREATE_MONSTER)
+            return true;
+        break;
+    case OCLASSES.POTION_CLASS:
+        if (typ === ONAMES.POT_HEALING || typ === ONAMES.POT_EXTRA_HEALING
+            || typ === ONAMES.POT_FULL_HEALING || typ === ONAMES.POT_POLYMORPH
+            || typ === ONAMES.POT_GAIN_LEVEL || typ === ONAMES.POT_PARALYSIS
+            || typ === ONAMES.POT_SLEEPING || typ === ONAMES.POT_ACID
+            || typ === ONAMES.POT_CONFUSION)
+            return true;
+        if (typ === ONAMES.POT_BLINDNESS && !attacktype(d, ATTKS.AT_GAZE))
+            return true;
+        break;
+    case OCLASSES.SCROLL_CLASS:
+        if (typ === ONAMES.SCR_TELEPORTATION
+            || typ === ONAMES.SCR_CREATE_MONSTER
+            || typ === ONAMES.SCR_EARTH || typ === ONAMES.SCR_FIRE)
+            return true;
+        break;
+    case OCLASSES.AMULET_CLASS:
+        if (typ === ONAMES.AMULET_OF_LIFE_SAVING)
+            return !(nonliving(d) || is_vampshifter(mon));
+        if (typ === ONAMES.AMULET_OF_REFLECTION
+            || typ === ONAMES.AMULET_OF_GUARDING)
+            return true;
+        break;
+    case OCLASSES.TOOL_CLASS:
+        /* needs can_blow(). C falls out of the switch returning FALSE, so
+           this records and returns false rather than "unknown". */
+        note_unported('searches_for_item:tool');
+        break;
+    case OCLASSES.FOOD_CLASS:
+        /* needs cures_stoning() and mcould_eat_tin() */
+        note_unported('searches_for_item:food');
+        break;
+    default:
+        break;
+    }
     return false;
 }
 

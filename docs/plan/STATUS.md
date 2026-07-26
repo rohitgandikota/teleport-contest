@@ -170,7 +170,33 @@ map 58. makemon logged only ONE random monster in this room, at (57,4) -- so
 the thing at map 58 is the PET, and the thing at 57 is the random sleeper. C's
 pet is at 56 and ours is at 58: two squares apart, not one.
 
-**MEASURED, and it is neither placement nor enexto. THE PET NEVER MOVES.**
+**FINAL, measured twice. The pet moves fine; the EXTRA MONSTER is the bug.**
+
+Tracing dog_move on seed0030 shows it called every turn and committing:
+
+    dog_move-enter | move 58,4->58,5 | move 58,5->57,4 | move 57,4->57,5
+                   | move 57,5->56,4
+
+so the pet does follow the hero and does reach (56,4), which is exactly where
+C's pet is. An earlier reading here said "the pet never moves" -- that was
+wrong, taken from a single step-4 snapshot without tracing.
+
+So the two 'f' glyphs at step 4 are the PET plus the random sleeper that
+fill_ordinary_room placed at (57,4), and C has NO monster at 57 -- its frame is
+pet / upstair / floor. The extra monster was the bug all along, which was the
+FIRST reading, discarded through four intermediate theories.
+
+Where it comes from: src/mklev.c:974, one sleeper per room gated on !rn2(3) and
+placed by somexyspace. Our three calls land at (13,10), (51,16) and (57,4). The
+RNG matches to call 6276, so the gate draws agree; C's third sleeper must land
+somewhere our somexyspace does not put it, or C skips a room we fill.
+
+Next: log which ROOM each of our three makemon calls belongs to, and compare
+against C's room order. Room3 is 56,4-58,5 and holds both the pet's path and
+the sleeper, so it is the room to check first.
+
+Superseded readings follow; each was overturned by one measurement.
+
 
 Dumping the pet's square immediately after makedog on seed0030:
 

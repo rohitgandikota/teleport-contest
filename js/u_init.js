@@ -26,6 +26,7 @@ import { skill_tables } from './skills_data.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
 import { P_NONE, W_QUIVER, W_WEP } from './const.js';
 import { Is_container } from './obj.js';
+import { skill_init } from './weapon.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
@@ -569,4 +570,10 @@ function worn_slots() {
 export function u_init_skills_discoveries() {
     for (const otmp of game.invent || [])
         ini_inv_use_obj(otmp);
+
+    /* src/u_init.c:1404 — skill_init(skills_for_role()). Nothing here draws,
+       but u.weapon_skills is what percent_success() reads, and without it the
+       rnd(100) comparison in spelleffects_check has no input. */
+    skill_init(skills_for_role());
 }
+

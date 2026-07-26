@@ -5290,16 +5290,25 @@ THE FULL CHAIN, sized:
 
     attack_checks      139 lines
     hitum               58   draws rnd(20) for dieroll
-    find_roll_to_hit    63   draws; hitum calls it first
+    find_roll_to_hit    63   NO DRAWS -- checked, zero rn2/rnd/rn1
     known_hitum         60
     hmon                16   then hmon_hitmon, not sized
 
 So roughly 340 lines before the first hostile swing produces a message, and
 hmon_hitmon is beyond that. This is a genuine subsystem, not an afternoon.
 
+CORRECTION: an earlier version of this entry said find_roll_to_hit draws and
+should therefore go first. It does not -- grepping the whole function for
+rn2/rnd/rn1 returns zero. It is pure arithmetic over abon(), find_mac(),
+u.uhitinc, Luck and maybe_polyd(), NONE of which exist in js/ yet. So it is
+still first, but for a different reason: hitum uses its result immediately and
+the three missing helpers are the real work.
+
 ORDER, and it is worth doing in this order because each step is measurable:
-  1. find_roll_to_hit, since hitum calls it before anything else and it draws.
-     Nothing else can be verified until its draws are right.
+  1. abon(), find_mac() and maybe_polyd(), then find_roll_to_hit. No draws in
+     any of them, so correctness here is checked by value, not by the
+     scoreboard -- print tmp for a known monster and hero and compare against
+     the C's arithmetic by hand.
   2. hitum's own rnd(20) and the hit/miss branch.
   3. known_hitum -> hmon -> hmon_hitmon for the damage and the message.
   4. attack_checks last, returning FALSE for the reachable cases with each

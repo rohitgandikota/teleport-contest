@@ -551,7 +551,7 @@ export function m_carrying(mtmp, type) {
 const NO_WEAPON_WANTED = 0;
 
 // include/obj.h:217,220 is_axe() / is_pick()
-const is_pick = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
+export const is_pick = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
                            || otmp.oclass === OCLASSES.TOOL_CLASS)
                           && game.objects[otmp.otyp].oc_skill === P_PICK_AXE;
 const is_axe  = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS

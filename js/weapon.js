@@ -8,13 +8,18 @@
 
 import { game } from './gstate.js';
 import { STR18 } from './const.js';
+import { MONSYMS } from './monst_data.js';
+import { mon_hates_blessings, thick_skinned, passes_walls,
+         is_swimmer } from './mondata.js';
+import { is_spear } from './u_init.js';
+import { is_pool, is_pick } from './mon.js';
+import { is_weptool } from './mkobj.js';
 import { ACURR } from './attrib.js';
 import { A_STR, A_DEX } from './const.js';
 import { AKLYS_LIM } from './const.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
 import { spell_skilltype } from './spell.js';
 import { discover_object } from './o_init.js';
-import { OCLASSES } from './objects_data.js';
 import {
     P_NONE, P_NUM_SKILLS, P_ISRESTRICTED, P_UNSKILLED, P_BASIC, P_EXPERT,
     P_BARE_HANDED_COMBAT, P_RIDING, P_HEALING_SPELL, P_CLERIC_SPELL,
@@ -217,4 +222,50 @@ export function abon() {
     else if (dex < 8)   return sbon - 1;
     else if (dex < 14)  return sbon;
     else                return sbon + dex - 14;
+}
+
+/* src/weapon.c:71 kebabable[] — the monster classes a spear skewers. */
+const kebabable = [MONSYMS.S_XORN, MONSYMS.S_DRAGON, MONSYMS.S_JABBERWOCK,
+                   MONSYMS.S_NAGA, MONSYMS.S_GIANT];
+
+// src/weapon.c:149 hitval() — a weapon's to-hit bonus against a given monster.
+//
+// Draws nothing. Note that otmp->spe is added ONLY for a weapon or weptool,
+// while oc_hitbon applies to anything, so an enchanted non-weapon does not
+// gain its enchantment as to-hit.
+export function hitval(otmp, mon) {
+    let tmp = 0;
+    const ptr = game.mons[mon.mnum];
+    const Is_weapon = (otmp.oclass === OCLASSES.WEAPON_CLASS
+                       || is_weptool(otmp, game.objects));
+
+    if (Is_weapon)
+        tmp += otmp.spe || 0;
+
+    /* weapon-specific "to hit" bonus */
+    tmp += game.objects[otmp.otyp].oc_hitbon;
+
+    /* blessed weapons used against undead or demons */
+    if (Is_weapon && otmp.blessed && mon_hates_blessings(mon))
+        tmp += 2;
+
+    if (is_spear(otmp) && kebabable.includes(ptr.mlet))
+        tmp += 2;
+
+    /* trident is highly effective against swimmers */
+    if (otmp.otyp === ONAMES.TRIDENT && is_swimmer(ptr)) {
+        if (is_pool(mon.mx, mon.my))
+            tmp += 4;
+        else if (ptr.mlet === MONSYMS.S_EEL || ptr.mlet === MONSYMS.S_SNAKE)
+            tmp += 2;
+    }
+
+    /* picks used against xorns and earth elementals */
+    if (is_pick(otmp) && passes_walls(ptr) && thick_skinned(ptr))
+        tmp += 2;
+
+    if (otmp.oartifact)
+        note_unported_weapon('hitval:spec_abon');
+
+    return tmp;
 }

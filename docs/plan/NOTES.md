@@ -2055,6 +2055,38 @@ js/hacklib.js where it belongs, and mon_hates_silver is in js/dog.js, which is
 architectural drift (it is src/mondata.c:517) but a genuine definition. Do not
 re-port either.
 
+A THIRD time, and this one cost the most. Wiring movemon_singlemon's hider
+and eel arms measured -42 screens and -5217 RNG, and I recorded the arms as
+unported on the strength of that number. It was wrong. The arms are fine. A
+guard reading
+
+    if not re.search(r"\bM_AP_FURNITURE\b", s): add_the_import()
+
+found the name -- in the code I had just written -- and skipped the import, so
+M_AP_FURNITURE was unbound, seed0361 and seed0367 threw, and 24+18 screens
+vanished. With the import present the same arms cost nothing.
+
+TWO RULES FROM THIS, both cheap:
+
+1. A SESSION THAT DROPS TO EXACTLY 0 SCREENS IS A CRASH, NOT A DIVERGENCE.
+   A behavioural difference degrades a score; it does not zero it. Check
+   `"error"` in the runner's JSON before theorising about behaviour. I spent
+   a full round inventing hypotheses about mundetected being set too liberally
+   when one grep for the error string would have ended it. The per-session
+   diff already showed 24 -> 0 and 18 -> 0, and that shape was the tell.
+
+2. NEVER GUARD AN IMPORT INSERTION BY SEARCHING THE FILE FOR THE NAME. The
+   code being inserted contains the name. Audit instead: list every identifier
+   the new code uses, test each against an actual `^import {...}` line, add
+   exactly what is missing. On this edit the guard found nothing to do and the
+   audit found four (M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit).
+
+The deeper point is about the recorded gap itself. `game.unported` entries are
+supposed to be honest statements that a path is not ported. This one was a
+lie produced by a measurement artifact, and it would have sat there telling
+future readers a working subsystem was missing. Verify a regression is real
+BEFORE recording a gap on the strength of it.
+
 It bit a second time within the hour, from the other direction. A script that
 was supposed to add a `pronoun_gender` import to js/do_name.js guarded itself
 with "skip if pronoun_gender already appears above the function". It did

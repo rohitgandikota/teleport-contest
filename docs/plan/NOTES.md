@@ -2414,11 +2414,24 @@ weapon-selection loop whose exit condition is "no weapon", satisfied only by
 the undefined read. That is a second bug sitting behind the first, and fixing
 the storage without finding it produces a hang rather than a wrong answer.
 
-DO NOT repeat the bulk rename. The order has to be:
-  1. find the loop -- run seed0361 with the rename applied and interrupt it,
-     or instrument the wield/uhitm paths for repeat counts
-  2. fix the loop's exit condition against the REAL uwep
-  3. only then unify the storage
+BISECTED. Two of the three files are fine and are now committed:
+  js/uhitm.js  the unarmed flag        -- no hang, committed
+  js/do.js     drop's wielding checks  -- no hang, committed
+  js/wield.js  THE HANG IS HERE, all three reads still on game.uwep
+
+Narrowed further: js/wield.js:133 is welded()'s own test,
+
+    if (obj && obj === game.uwep && will_weld(obj))
+
+and game.uwep being undefined is what makes welded() ALWAYS RETURN 0. Point
+it at game.u.uwep and welded goes live, which makes canletgo() (js/do.js:397)
+refuse to release a cursed wielded weapon -- correct C behaviour -- and
+something upstream retries forever instead of giving up.
+
+SO THE REMAINING BUG IS A MISSING GIVE-UP, not the storage. Find the caller
+that loops while canletgo() keeps saying no; C's equivalent stops after the
+message. Fix that, then wield.js's three reads can be pointed at
+game.u.uwep like the other two files.
 
 Note also uarm, uarms, uarmf, uquiver and uswapwep have the same split
 (game.X vs game.u.X). uarmf and uarm are only ever read as game.X and never

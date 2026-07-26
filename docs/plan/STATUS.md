@@ -43,6 +43,34 @@ right.
    thing in the shop chain.
 4. **Per-spell dispatch (zap.c)** for seed0501.
 
+### The three instruments, and what each one answers
+
+    tools/diverge.mjs        WHERE a session's RNG stream first disagrees.
+                             Aggregate it across all 44 (command above) to
+                             rank by position. Blind to any gap that draws
+                             nothing.
+    tools/generalize.mjs     Does the port survive 40 seeds NOT in sessions/,
+                             and which unported paths do they reach. This is
+                             the only instrument for the held-out half.
+    tools/unported-hits.mjs  Of the code we know is missing, what do the
+                             SCORED sessions actually hit, and in how many.
+                             Ranks by impact rather than position.
+
+They disagree, and that is the point. skill_init's unrestrict arm was reached
+by 100% of games and never appeared in the divergence aggregate once, because
+it is RNG-neutral: it broke every role's special spell without moving a single
+draw. Run all three; a gap that only one of them sees is still a gap.
+
+Current unported-hits standing (44 sessions):
+
+     14%  moveloop_preamble set_wear/pickup
+     14%  topl:remember_topl
+      5%  start_timer:zombify-mon
+
+That list being short is itself informative: the known gaps are NOT what is
+capping the public score right now, the early divergences are. Expect it to
+grow as sessions get pushed deeper.
+
 ### Two rules this session paid for the hard way
 
 - **After landing a subsystem, PROVE it does its work.** RNG rose 3,961 on a

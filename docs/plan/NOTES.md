@@ -1234,3 +1234,26 @@ bodies rather than the count. The `--all` flag lists the identical duplicates
 too, which are still architecture drift: a header macro belongs in the JS
 mirror of that header (js/obj.js, js/monst.js, js/mondata.js), not copied into
 every file that needs it.
+
+## Never infer a constant's value from its name; grep the #define
+
+Three bugs in one session, all the same shape: a constant written from what the
+name suggested rather than from the header.
+
+  - OBJ_CONTAINED as 3; include/obj.h:77 says 2
+  - LOW_PM as 1; include/permonst.h:15 says NON_PM + 1, and NON_PM is -1, so 0
+  - UNKNOWN_SPELL as 0; include/spell.h:9 says -1
+
+The last one was the expensive one. spelleffects_check takes the spell INDEX,
+so UNKNOWN_SPELL = 0 made index 0 -- the first known spell -- look unknown, and
+every cast was rejected on the function's opening line. The whole spell chain
+was ported and correct and did nothing, and it took an instrumented run to
+find that getspell was returning idx 0 perfectly while spelleffects_check was
+never reached.
+
+Sentinels are the dangerous ones. A name like NO_SPELL, NON_PM, UNKNOWN_SPELL
+or P_NONE reads like zero and is often -1, and the wrong value does not throw:
+it silently makes a valid index look invalid. `grep -rn "define <NAME>"
+nethack-c/upstream/include/` costs two seconds.
+
+tools/undefined-refs.mjs will not catch these. A wrong value is bound.

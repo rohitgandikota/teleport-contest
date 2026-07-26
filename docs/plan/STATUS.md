@@ -393,16 +393,33 @@ So the whole chain SHOULD agree:
 We draw rn2(4) instead, so WE NEVER SEE THE GOLD IN THE LOOP AT ALL. That is
 the only remaining possibility and it moves the question off dogfood entirely.
 
-NEXT: instrument dog_goal's object loop itself --
-`for (const obj of (game.level.objects || []))` at js/dog.js:637 -- and print
-how many objects it iterates and their coordinates on the divergent turn.
-Compare against the bounding box (min_x/max_x/min_y/max_y from SQSRCHRADIUS).
-Two concrete candidates:
-  - game.level.objects does not contain the gold (an object-list population
-    problem, not a pet problem), or
-  - the gold is outside the bounding box because SQSRCHRADIUS or the clamps
+THE mkobj_at ORDER FIX IS IN (see NOTES) AND DOES NOT MOVE THIS. seed0030
+still diverges at call 6276 and step 4. That is expected in hindsight --
+mkobj_at only creates spider/snake objects, and seed0030 game 1's gold comes
+from elsewhere.
+
+SO THIS IS STILL THE OPEN QUESTION, unchanged and now the only one left on
+this trail: our dog_goal object loop does not reach the gold that C's pet
+goes for. Verified already: dogfood classifies gold as APPORT (4) on BOTH
+sides, the loop's skip test passes (4 > 6 and 4 === 6 are both false), and the
+branch gate 4 < MANFOOD(3) is false, which routes to the else-if that draws
+rn2(8). We draw rn2(4) instead, so the loop never sees the object.
+
+INSTRUMENT THE LOOP -- this has been named as the next step for several ticks
+and not yet done:
+
+    js/dog.js:637   for (const obj of (game.level.objects || []))
+
+Print the iteration count and every object's (ox, oy) on the divergent turn,
+and the bounding box min_x/max_x/min_y/max_y that SQSRCHRADIUS produces. Two
+candidates:
+  - game.level.objects does not contain the gold at all, which would be an
+    object-population bug affecting far more than pets, or
+  - the gold is outside the bounding box because SQSRCHRADIUS or its clamps
     differ from C's.
-Check which before touching anything.
+
+Use the assert-the-replace-landed pattern; a silent no-op edit has cost two
+ticks in this file already.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

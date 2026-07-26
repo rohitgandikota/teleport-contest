@@ -1165,3 +1165,34 @@ then replaces.
 **General shape:** a `dat/*.lua` file can redefine a standard library function,
 so a C-side comment about that function's behaviour may be describing something
 the game never actually calls. Check `dat/nhlib.lua` before trusting one.
+
+## A missing import is invisible until its branch runs
+
+A JS module loads fine with a call to a name it never imported. The
+ReferenceError fires only when that line executes, so a missing import on a
+rarely-taken branch passes `node --check`, passes module load, passes every
+public session that does not take the branch, and then throws on a held-out
+game.
+
+`tools/undefined-refs.mjs` reports, per file, the names used in call position
+or as a namespace base (`MATERIALS.WOOD`) that the module never binds. First
+run found seven real ones:
+
+  - `pline` in js/eat.js, on the choke path, so any death by choking threw
+  - `obj_resists` and `obj_extract_self` in js/sp_lev.js, both inside
+    bury_an_obj, so burying anything threw
+  - `MATERIALS` in js/sp_lev.js is_organic, same path
+  - `rnd` in js/sp_lev.js and js/mon.js
+  - `perceives` in js/dog.js, which was never ported at all
+
+Two of the 40 generalize seeds were dying on that buried-object path; all 40
+run clean now. None of the 44 public sessions ever reached any of it, so the
+local score did not move by a point.
+
+Run it after landing anything, and treat it as complementary to generalize.mjs:
+generalize finds the crash, this finds the cause without needing a seed that
+reaches it. It is a lexical scan, so it over-reports. Known false positives:
+object-literal getters in js/game_display.js, `async (` in js/jsmain.js and
+js/plselect.js, private `#` methods in js/lua/lmathlib.js, and `_statusLine1`
+in js/display.js (defined at :329, still reported -- decomment mangles
+something earlier in that file, so the tool is partly blind there).

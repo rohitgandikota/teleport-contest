@@ -11,6 +11,7 @@
 // code and is recorded, not faked.
 
 import { game } from './gstate.js';
+import { wakeup } from './mon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
@@ -21,14 +22,14 @@ import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
-import { is_orc } from './mondata.js';
+import { is_orc, unsolid } from './mondata.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
 import { OCLASSES, MATERIALS } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
-         HMON_MELEE, HMON_APPLIED } from './const.js';
+         HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -606,7 +607,7 @@ export function hmon_hitmon(mon, obj, thrown, dieroll) {
         saved_oname: '',
     };
 
-    note_unported_uhitm('hmon_hitmon:do_hit');
+    hmon_hitmon_do_hit(hmd, mon, obj);
     if (hmd.doreturn)
         return hmd.retval;
 
@@ -646,3 +647,67 @@ function note_is_pole_unported() {
     note_unported_uhitm('hmon_hitmon:is_pole');
     return false;
 }
+
+// src/uhitm.c:1387 hmon_hitmon_do_hit() — routes the blow by what is in hand.
+//
+// Pure dispatch, no draw of its own; everything it calls draws. Three things
+// in it are load-bearing:
+//
+// The stone-missile early return is the only path here that ends the blow. It
+// applies to THROWN and KICKED but explicitly NOT Applied, and it calls
+// wakeup(mon, TRUE) -- so a rock bouncing off a xorn still angers it, and
+// still costs alignment through setmangry, even though it does no damage.
+//
+// saved_oname is captured BEFORE the helpers run because the object may be
+// destroyed by them and the name is still needed afterwards. The lamplit
+// artifact case takes the bare name so a lit Sunsword does not announce
+// itself.
+//
+// The GEM_CLASS in the weapon test is not a mistake: gems are thrown at
+// unicorns and go through the weapon path.
+function hmon_hitmon_do_hit(hmd, mon, obj) {
+    if (!obj) {                         /* attack with bare hands */
+        note_unported_uhitm('hmon_hitmon:barehands');
+    } else {
+        if ((hmd.thrown === HMON_THROWN || hmd.thrown === HMON_KICKED)
+            && note_stone_missile_unported(obj) && passes_rocks(hmd.mdat)) {
+            note_unported_uhitm('hmon_hitmon:hit_no_harm');
+            wakeup(mon, true);
+            hmd.doreturn = true;
+            hmd.retval = true;
+            return;
+        }
+        /* remember obj's name since it might end up being destroyed */
+        note_unported_uhitm('hmon_hitmon:saved_oname');
+
+        if (obj.oclass === OCLASSES.WEAPON_CLASS || is_weptool(obj, game.objects)
+            || obj.oclass === OCLASSES.GEM_CLASS) {
+            note_unported_uhitm('hmon_hitmon:weapon');
+            if (hmd.doreturn)
+                return;
+        /* attacking with non-weapons */
+        } else if (obj.oclass === OCLASSES.POTION_CLASS) {
+            note_unported_uhitm('hmon_hitmon:potion');
+            if (hmd.doreturn)
+                return;
+        } else {
+            if (hmd.mdat === game.mons[PMNAMES.PM_SHADE] && !shade_aware(obj)) {
+                hmd.dmg = 0;
+            } else {
+                note_unported_uhitm('hmon_hitmon:misc_obj');
+            }
+        }
+    }
+}
+
+// include/mondata.h:208 passes_rocks() — a header macro with no JS home yet.
+// Both halves exist: passes_walls is in this file, unsolid in js/mondata.js.
+const passes_rocks = (ptr) => passes_walls(ptr) && !unsolid(ptr);
+
+// src/dothrow.c stone_missile() /
+// src/uhitm.c shade_aware() — recorded.
+function note_stone_missile_unported(obj) {
+    note_unported_uhitm('hmon_hitmon:stone_missile');
+    return false;
+}
+const shade_aware = (o) => { note_unported_uhitm('hmon_hitmon:shade_aware'); return false; };

@@ -648,14 +648,29 @@ Therefore EXACTLY ONE of these is true:
   (b) C's hero IS at row 5, and it fell back like we did -- meaning the hero
       positions have diverged by this point in the game.
 
-THE ONE THING STILL NEEDED is C's hero position at THIS step. Our own hero is
-now known to be (71,4). Get the step index for call 3741 (count moves, or
-publish a step counter alongside globalThis.__n), then read the @ from the
-recorded session screen at that step. That single coordinate decides between
-a pet-goal bug and a hero-drift bug, and they need completely different work.
+SETTLED, AND (a) HOLDS. Printing game.moves alongside gives
 
-Note screens stop matching at step 13 while this is near step 127, so drift
-is entirely possible; do not treat (a) as the default because it is smaller.
+    GOAL#3741 moves=5 hero=(71,4) gtyp=6
+
+MOVES = 5. This is game turn FIVE, not step 127 -- the RNG index is high only
+because chargen and level generation burn thousands of calls before the first
+turn. My earlier estimate of "31% through the stream so ~step 127" was wrong
+for exactly that reason; RNG index does not scale linearly with step when
+setup dominates the front of the stream.
+
+Turn 5 lands around step 13, which is where screendiff shows the first
+differing screen AND shows the @ at the identical position on both sides. So
+C's hero is also at (71,4).
+
+THEREFORE C DID NOT FALL BACK. Its goal row is 5 while its hero is on row 4,
+so C's gtyp is NOT UNDEF -- C found an object goal on row 5 that our dog_goal
+rejected. Our gtyp being UNDEF is the bug.
+
+The pet is at (69,5), so the object C steers at is on the pet's own row,
+within SQSRCHRADIUS. NEXT: dump every object dog_goal considers on turn 5
+with its dogfood() verdict and which branch it lands in, and find the row-5
+object we reject. The droppables fix already changed what reaches dog_invent
+on this turn, so re-measure rather than reusing any earlier object trace.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

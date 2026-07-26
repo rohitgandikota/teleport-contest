@@ -16,6 +16,9 @@ import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
+import { adjalign } from './attrib.js';
+import { is_undead } from './mondata.js';
+import { A_LAWFUL } from './const.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -78,3 +81,33 @@ export function do_attack(mtmp) {
     note_unported_uhitm('do_attack:combat');
     return true;
 }
+
+// src/uhitm.c:331 check_caitiff() — a Knight's chivalry and a Samurai's giri.
+//
+// Draws nothing, but it calls adjalign(-1), which moves the hero's alignment
+// record AND raises ualign.abuse. find_roll_to_hit calls it once per attack
+// sequence, guarded by `if (!(*attk_count)++)`, so it must not fire on the
+// second and later attacks of a multi-attack turn.
+//
+// The two You() messages need pline plumbing and are recorded; the alignment
+// change is the part that persists.
+export function check_caitiff(mtmp) {
+    if (game.u.ualign.record <= -10)
+        return;
+
+    const d = game.mons[mtmp.mnum];
+
+    if (Role_if(PMNAMES.PM_KNIGHT) && game.u.ualign.type === A_LAWFUL
+        && !is_undead(d)
+        && (helpless(mtmp) || (mtmp.mflee && !mtmp.mavenge))) {
+        note_unported_uhitm('check_caitiff:caitiff_message');
+        adjalign(-1);
+    } else if (Role_if(PMNAMES.PM_SAMURAI) && mtmp.mpeaceful) {
+        /* attacking peaceful creatures is bad for the samurai's giri */
+        note_unported_uhitm('check_caitiff:dishonor_message');
+        adjalign(-1);
+    }
+}
+
+// src/role.c Role_if()
+const Role_if = (pm) => game.urole?.malenum === pm || game.urole?.pmidx === pm;

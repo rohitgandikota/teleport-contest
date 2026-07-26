@@ -335,3 +335,6 @@ export const flaming = (d) =>
 // even though a hiding mimic uses M_AP_* rather than mundetected, so callers
 // pair it with a mundetected test.
 export const is_hider = (d) => (d.mflags1 & MFLAGS.M1_HIDE) !== 0;
+
+// include/mondata.h:100 is_orc()
+export const is_orc = (d) => (d.mflags2 & MFLAGS.M2_ORC) !== 0;

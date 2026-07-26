@@ -16,7 +16,7 @@ import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
-import { MON_DETACH, P_DAGGER, P_SABER} from './const.js';
+import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
@@ -934,5 +934,49 @@ export function set_ustuck(mtmp) {
     if (!game.u.ustuck) {
         game.u.uswallow = 0;
         game.u.uswldtim = 0;
+    }
+}
+
+// src/mon.c wakeup() — wake a monster, and if this was an attack, anger it.
+//
+// Both `was_sleeping` and `was_peaceful` are read BEFORE the calls that clear
+// them. setmangry() clears mpeaceful, so a port that tested mtmp->mpeaceful
+// after it would never take the priest/shopkeeper branch -- the same ordering
+// trap as anger_guards in hmon().
+//
+// The forcefight branch is an ELSE of the mimic branch, not a sibling: a
+// hiding mimic is revealed by seemimic, everything else hiding is revealed
+// only when you deliberately F-fight its square.
+//
+// wake_msg, seemimic, finish_meating, growl, setmangry, ghod_hitsu and
+// hot_pursuit are recorded where they are not ported.
+export function wakeup(mtmp, via_attack) {
+    const was_sleeping = mtmp.msleeping;
+
+    note_unported_mon('wakeup:wake_msg');
+    mtmp.msleeping = 0;
+    if (M_AP_TYPE(mtmp) !== M_AP_NOTHING) {
+        /* mimics come out of hiding, but disguised Wizard doesn't
+           have to lose his disguise */
+        if (M_AP_TYPE(mtmp) !== M_AP_MONSTER)
+            note_unported_mon('wakeup:seemimic');
+    } else if (game.context?.forcefight && !game.context?.mon_moving
+               && mtmp.mundetected) {
+        mtmp.mundetected = 0;
+        newsym(mtmp.mx, mtmp.my);
+    }
+    note_unported_mon('wakeup:finish_meating');
+    if (via_attack) {
+        const was_peaceful = mtmp.mpeaceful;
+
+        if (was_sleeping)
+            note_unported_mon('wakeup:growl');
+        note_unported_mon('wakeup:setmangry');
+        if (was_peaceful) {
+            if (mtmp.ispriest && in_rooms(mtmp.mx, mtmp.my, TEMPLE)?.length)
+                note_unported_mon('wakeup:ghod_hitsu');
+            if (mtmp.isshk && !(game.u?.ushops || '').length)
+                note_unported_mon('wakeup:hot_pursuit');
+        }
     }
 }

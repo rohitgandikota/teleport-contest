@@ -1810,15 +1810,31 @@ altkeyhandling, altmeta, BIOS, checkpoint, menu_overlay and others.
 
 findOption() returns the FIRST match, so which arm wins is decided by
 declaration order in the generated file rather than by the build
-configuration. For menu_overlay the TTY_GRAPHICS arm happens to come first, so
-the effective value is On, which is correct for a tty build. THAT IS LUCK, NOT
-DESIGN -- for any of the other 24 the wrong arm may be first.
+configuration.
 
-This is a generator bug, not a hand-written one, so the fix belongs in
-tools/gen-optlist.mjs: resolve TTY_GRAPHICS (and any other build flag the
-recorded sessions imply) at generation time and emit one entry per option.
-Regenerate rather than hand-editing js/optlist.js.
+SCOPE, MEASURED -- an earlier version of this entry said "for any of the other
+24 the wrong arm may be first", which overstated it. Of the 25 duplicated
+names, only THREE have arms whose initval differs at all; the other 22
+duplicate harmlessly.
 
-Check the other 24 against include/optlist.h before assuming any option's
-default is right. An option whose default silently comes from the wrong
-#ifdef arm changes behaviour with nothing in the port looking wrong.
+  checkpoint    On / Off, guarded by #ifdef INSURANCE.
+                config.h:435 DOES define INSURANCE, so the On arm applies and
+                it is emitted first. Correct.
+  menu_overlay  On / Off, guarded by #ifdef TTY_GRAPHICS.
+                A tty build defines it, so the On arm applies and is emitted
+                first. Correct.
+  sounds        On / Off, guarded by #ifdef SND_LIB_INTEGRATED.
+                sndprocs.h:200 defines that ONLY when one of SND_LIB_MINIAUDIO,
+                SND_LIB_FMOD, SND_LIB_SOUND_ESCCODES, SND_LIB_VISSOUND,
+                SND_LIB_WINDSOUND or SND_LIB_MACSOUND is set. A default build
+                sets none, so the #else arm applies and `sounds` should default
+                to Off. WE EMIT THE On ARM FIRST, so our default is WRONG.
+
+sounds controls sound effects and produces no screen output, so this is a
+faithfulness defect rather than a scoring one -- but it is the one case where
+the emission order picked the wrong arm, which is what makes the generator bug
+real rather than theoretical.
+
+The fix belongs in tools/gen-optlist.mjs: resolve the build flags at
+generation time and emit one entry per option. Regenerate rather than
+hand-editing js/optlist.js.

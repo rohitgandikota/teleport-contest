@@ -840,6 +840,25 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+SIZED domove:run loop (27%) -- it needs lookaround(), 161 LINES in
+src/hack.c, which is the function that decides when a run stops: a monster
+comes into view, a fork appears, an object or door is reached, the corridor
+turns. Nothing else in the port needs it, so there is no shared-infrastructure
+argument the way there was for the inventory-removal chain.
+
+js/cmd.js:679 already records the gap deliberately and zeroes context.run, so
+a rush currently takes ONE step where C takes several. That is a distance
+error, not a crash, and it is visible in the record rather than silent.
+
+Weigh it against the two 40%-ish entries, which both gate on mattackm (299
+lines) and would unblock each other. lookaround at 161 lines unblocks only
+this. Neither is small; the mattackm pair is better value per line.
+
+NOTE the trap already recorded elsewhere in this file: do NOT "fix" the rush
+by adding HJKLYUBN to isMovementKey. That makes the error invisible (no more
+"Unknown command") while leaving the distance wrong, which is worse than the
+current state.
+
 DROP CHAIN STATUS: ported end to end but NOT WIRED, because wiring dodrop to
 the 'd' command costs rng matches. The gap has been narrowed by measurement:
 

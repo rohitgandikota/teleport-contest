@@ -8,7 +8,7 @@
 //
 // Nothing here draws.
 
-import { MFLAGS, MONSYMS, PMNAMES, ATTKS } from './monst_data.js';
+import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import { game } from './gstate.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MON_WEP } from './monst.js';
@@ -269,3 +269,14 @@ export const resists_ston   = (mon) => Resists_Elem(mon, STONE_RES);
 function note_unported_mondata(what) {
     (game.unported ||= new Set()).add(what);
 }
+
+/* needspick, mindless and is_animal already live above in this file. */
+
+// include/mondata.h:95 is_undead()
+export const is_undead   = (d) => (d.mflags2 & MFLAGS.M2_UNDEAD) !== 0;
+// include/mondata.h:218 weirdnonliving() — golems and vortices
+export const weirdnonliving = (d) =>
+    d.mlet === MONSYMS.S_GOLEM || d.mlet === MONSYMS.S_VORTEX;
+// include/mondata.h:219 nonliving()
+export const nonliving = (d) =>
+    is_undead(d) || d.pmidx === PMNAMES.PM_MANES || weirdnonliving(d);

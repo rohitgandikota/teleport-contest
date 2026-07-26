@@ -230,11 +230,39 @@ good deal of code is presumably written around that. Setting croom for real
 changes get_location, create_monster's placement and the des.* verbs all at
 once.
 
-Do it, but do it in one deliberate pass with the divergence points watched per
-session, not as a one-line enablement. The commit that reverted it is in the
-history if the diff is wanted.
+WHY it regressed is now known, and it names the rest of the job.
 
-Still unexplained: both seed0013 sessions at 528.
+src/sp_lev.c cvt_to_relcoord():
+
+    if (gc.coder && gc.coder->croom) {
+        *x -= gc.coder->croom->lx;
+        *y -= gc.coder->croom->ly;
+    } else {
+        *x -= gx.xstart;
+        *y -= gy.ystart;
+    }
+
+Every coordinate handed OUT to Lua is converted to room-relative first
+(nhlsel.c:939 in selection:iterate, and the same for rndcoord), and
+get_location() adds the origin back on the way IN. So the Lua works in
+RELATIVE coordinates throughout and the round trip is exact.
+
+Our port hands back ABSOLUTE coordinates from selection_iterate and
+selection_rndcoord, and that is only correct because croom is always null, so
+get_location's mx/my are xstart/ystart. Set croom without converting and every
+explicit coordinate from a selection gets offset by the room origin a second
+time -- which is exactly what drove seed0015 backward.
+
+So the pass is: create_des_coder + update_croom + spo_push_room/spo_endroom,
+AND cvt_to_relcoord/cvt_to_abscoord applied at every Lua boundary
+(selection_iterate, selection_rndcoord, and the nhlua.c:428/483 sites), landed
+together. Two of the three remaining early divergences are behind it:
+seed2600 at 395 and both seed0013 sessions at 528 all show C drawing
+somex/somey inside the room where we draw a whole-map random.
+
+seed0013's two sessions at 528 are the SAME cause as seed2600: C's tag at
+522-524 reads parent=region(...), so croom is set there too, and C draws
+somex/somey where we draw rn2(21)/rn2(4).
 
 The lesson is the method. `js/rng.js`'s RND() with a temporary env-gated
 stack trace, run through `node frozen/ps_test_runner.mjs

@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 120,295/792,838 (15.2%).**
+**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 124,610/792,838 (15.7%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -167,6 +167,25 @@ u_calc_moveamt's rn2(3) is being drawn identically and Fast() agrees; the
 difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
+
+### Rank sessions by DIVERGENCE POINT, not by screens
+
+    for f in sessions/*.session.json; do
+      n=$(basename $f .session.json)
+      d=$(node tools/diverge.mjs "$f" 2>/dev/null \
+          | grep -oE "diverges at call [0-9]+" | grep -oE "[0-9]+")
+      [ -n "$d" ] && echo "$d $n"
+    done | sort -n | head
+
+An early divergence is a cheap bug: everything after it is noise. Six sessions
+sat at calls 302-528, all inside character creation, and two of them came from
+ONE cause -- optfn_playmode was never ported, so game.wizard and game.discover
+were read in five places and assigned in none. getbones() returns before its
+rn2(3) when discover is set, so every explore-mode session drew a call C does
+not. seed0900 went 302 -> 2431 and seed1150 302 -> 2357, +4,315 corpus RNG.
+
+Still early and unexplained: seed0015 at 358 (find_montype), seed2600 at 395,
+both seed0013 sessions at 528.
 
 ### Two missing DRAWS found by following divergences down, not by guessing
 

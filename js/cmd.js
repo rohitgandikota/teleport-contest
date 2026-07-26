@@ -924,3 +924,38 @@ async function show_inventory() {
     tty_destroy_nhwindow(win);
     await docrt();
 }
+
+// src/do_wear.c reset_remarm() — forget a partly-finished take-off.
+export function reset_remarm() {
+    const t = (game.context.takeoff ||= {});
+    t.what = t.mask = 0;
+    t.disrobing = '';
+}
+
+// src/lock.c:259 reset_pick() — forget a partly-finished lock pick or force.
+export function reset_pick() {
+    const x = (game.xlock ||= {});
+    x.usedtime = x.chance = x.picktyp = 0;
+    x.magic_key = false;
+    x.door = null;
+    x.box = null;
+}
+
+// src/apply.c:2813 reset_trapset() — forget a partly-set trap.
+export function reset_trapset() {
+    const t = (game.trapinfo ||= {});
+    t.tobj = 0;
+    t.force_bungle = 0;
+}
+
+// src/cmd.c:195 reset_occupations() — abandon every multi-turn task at once.
+//
+// Three separate state blocks, cleared together because any command that
+// interrupts the hero has to abandon ALL of them, not just the one it knows
+// about. Dropping an object does this: you cannot go on picking a lock while
+// rummaging through your pack.
+export function reset_occupations() {
+    reset_remarm();
+    reset_pick();
+    reset_trapset();
+}

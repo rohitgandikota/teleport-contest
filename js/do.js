@@ -7,6 +7,7 @@
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
+import { reset_occupations } from './cmd.js';
 import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg } from './attrib.js';
@@ -302,7 +303,7 @@ export async function dodrop() {
     if (game.u.ushops?.length)
         note_unported_do('dodrop:sellobj_state:NORMAL');
     if (result)
-        note_unported_do('dodrop:reset_occupations');
+        reset_occupations();
 
     return result;
 }

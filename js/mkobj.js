@@ -33,8 +33,9 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 /* invent.js imports erosion_matters() from here, so this edge closes a cycle.
    Both sides export function DECLARATIONS, which hoist, so each module sees the
    other's bindings by the time anything is called. */
-import { merged } from './invent.js';
+import { merged, weight } from './invent.js';
 import { OBJ_CONTAINED } from './obj.js';
+import { depth } from './dungeon.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
@@ -925,7 +926,11 @@ export function mkgold(amount, x, y) {
     let gold = g_at(x, y);
 
     if (amount <= 0) {
-        const mul = rnd(Math.trunc(30 / Math.max(12 - level_difficulty(), 2)));
+        /* src/mkobj.c:2008 — the multiplier uses depth(), the amount uses
+           level_difficulty(). They agree on an ordinary level and diverge once
+           the hero carries the Amulet or reaches the endgame, where
+           level_difficulty() stops tracking depth. */
+        const mul = rnd(Math.trunc(30 / Math.max(12 - depth(game.u.uz), 2)));
         amount = 1 + rnd(level_difficulty() + 2) * mul;
     }
     if (gold) {
@@ -938,6 +943,9 @@ export function mkgold(amount, x, y) {
         gold = mksobj_at(ONAMES.GOLD_PIECE, x, y, true, false);
         gold.quan = amount;
     }
+    /* src/mkobj.c:2018 — runs on BOTH branches, so a pile that just grew gets
+       reweighed too. can_carry() reads this as its `newload`. */
+    gold.owt = weight(gold);
     return gold;
 }
 

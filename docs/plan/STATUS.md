@@ -61,28 +61,37 @@ by 100% of games and never appeared in the divergence aggregate once, because
 it is RNG-neutral: it broke every role's special spell without moving a single
 draw. Run all three; a gap that only one of them sees is still a gap.
 
-Current unported-hits standing (44 sessions):
+Current unported-hits standing (44 sessions, harness now correct, 0 throws):
 
-     14%  moveloop_preamble set_wear/pickup
-     14%  topl:remember_topl
-      5%  start_timer:zombify-mon
+    100%  moveloop_preamble set_wear/pickup    43%  dog_move attack branch
+    100%  topl:remember_topl                   41%  linedup:boulder walk
+     98%  onscary:elbereth                     41%  postmov:mpickstuff
+     80%  encumber_msg                         39%  bite:nutrition
+     80%  near_capacity                        39%  start_eating:done_eating
+     52%  can_touch_safely:touch_artifact      30%  cmd:d
+     45%  in_your_sanctuary:temple             27%  dofire:empty quiver prompt
+     45%  pet_ranged_attk:attack               27%  domove:run loop
 
-CAVEAT, and FIX THIS BEFORE USING THE NUMBERS. Those percentages are wrong as
-"how often the gap matters". `moveloop_preamble set_wear/pickup` is an
-UNCONDITIONAL note_unported at js/allmain.js:290, so every session reaching
-the move loop must hit it, and 14% is impossible. What 14% actually measures
-is how far the tool's own harness got: it feeds only segment 0's keys and does
-not reproduce what frozen/ps_test_runner.mjs does, so 41 of 44 sessions run
-out of input early.
+THIS IS THE WORK QUEUE. It is a better first read than the divergence
+aggregate for deciding WHAT to port, because it ranks by how many scored
+sessions actually reach a known gap. Use the aggregate to decide whether a
+change helped.
 
-The ORDERING is still meaningful and the tool still found a real thing. The
-percentages are a floor, not a frequency. First job for whoever picks this up:
-make the harness drive sessions the way ps_test_runner does, then re-read.
+Read onscary:elbereth (98%) first. onscary() is called from distfleeck(),
+which is where three sessions have their first RNG mismatch, so that entry
+and that divergence are very likely the same bug seen from two directions --
+and it is reached by essentially every session.
 
-The interesting question the fixed tool would answer is the one that made it
-worth building: which known gaps do the scored sessions actually reach.
-skill_init's unrestrict arm was reached by 100% of GENERALIZE games and never
-appeared in the divergence aggregate at all, because it draws nothing.
+encumber_msg and near_capacity at 80% are the next pair and they are related:
+both are inventory-weight code on the movement path.
+
+An earlier version of this table was WRONG and the way it was caught is worth
+keeping. It reported the first row at 14%, but that row is an UNCONDITIONAL
+note_unported at js/allmain.js:290, so any figure below 100% is arithmetically
+impossible. The harness was passing a flattened key list where the real runner
+passes `moves` per segment, so 41 of 44 sessions ran out of input early and
+the percentages were measuring the tool, not the port. If a number looks
+impossible for an unconditional path, suspect the harness before the result.
 
 ### Two rules this session paid for the hard way
 

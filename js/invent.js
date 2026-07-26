@@ -2,6 +2,7 @@
 // C ref: src/invent.c
 
 import { game } from './gstate.js';
+import { Hallucination } from './youprop.js';
 import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS } from './monst_data.js';
@@ -514,7 +515,6 @@ const is_reviver = (ptr) => !!ptr && (is_rider(ptr) || ptr.mlet === MONSYMS.S_TR
    that is not ported; all three only ever make mergable STRICTER, so a false
    here can merge two stacks C would keep apart in those rare states. */
 function Blind() { return false; }
-function Hallucination() { return false; }
 function Role_if(role) { return false; }
 /* erosion_matters() is fully ported in js/mkobj.js (its C home is
    src/mkobj.c); it was stubbed here by mistake. */

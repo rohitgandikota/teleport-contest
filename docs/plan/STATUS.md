@@ -67,9 +67,22 @@ Current unported-hits standing (44 sessions):
      14%  topl:remember_topl
       5%  start_timer:zombify-mon
 
-That list being short is itself informative: the known gaps are NOT what is
-capping the public score right now, the early divergences are. Expect it to
-grow as sessions get pushed deeper.
+CAVEAT, and FIX THIS BEFORE USING THE NUMBERS. Those percentages are wrong as
+"how often the gap matters". `moveloop_preamble set_wear/pickup` is an
+UNCONDITIONAL note_unported at js/allmain.js:290, so every session reaching
+the move loop must hit it, and 14% is impossible. What 14% actually measures
+is how far the tool's own harness got: it feeds only segment 0's keys and does
+not reproduce what frozen/ps_test_runner.mjs does, so 41 of 44 sessions run
+out of input early.
+
+The ORDERING is still meaningful and the tool still found a real thing. The
+percentages are a floor, not a frequency. First job for whoever picks this up:
+make the harness drive sessions the way ps_test_runner does, then re-read.
+
+The interesting question the fixed tool would answer is the one that made it
+worth building: which known gaps do the scored sessions actually reach.
+skill_init's unrestrict arm was reached by 100% of GENERALIZE games and never
+appeared in the divergence aggregate at all, because it draws nothing.
 
 ### Two rules this session paid for the hard way
 

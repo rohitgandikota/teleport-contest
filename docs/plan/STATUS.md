@@ -5226,3 +5226,14 @@ step onto a peaceful and moving the hero somewhere C does not. Compare the
 first few calls against the recorded screens for those steps.
 
 Do NOT re-transcribe do_attack or is_safemon; both are verified neutral.
+
+ALSO ELIMINATED: the hero-moves-before-the-swap ordering. C does
+`u.ux += u.dx` at hack.c:2874 and calls the swap at 2922, so the hero IS at
+the destination when the swap runs, exactly as in our domove which assigns
+u.ux = newx before calling it. u.ux0/u.uy0 are set at hack.c:2780, before the
+monster block, and ours at js/cmd.js:584, likewise before. The positional
+preconditions match.
+
+So the swap is entered with the same hero state C has, which makes the -247
+more likely to be about WHICH ARM it takes than about where it starts. That
+is what the instrumentation above should print first.

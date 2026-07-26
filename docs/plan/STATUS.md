@@ -237,9 +237,42 @@ against the wrong step. It is that 77,16 points EAST while the hero, at the
 moment of this move, is WEST. Our newt is walking in the opposite direction
 from C's.
 
-That makes mtmp.mux/muy, the monster's belief about the hero's position, the
-prime suspect, and set_apparxy the function that sets it. set_apparxy DRAWS,
-so if it is wrong it is both a position and an RNG fault.
+That made mtmp.mux/muy the prime suspect, so set_apparxy was read against the
+C. It has a REAL GAP, though not the one that explains this goal.
+
+js/monmove.js set_apparxy short-circuits the whole displaced branch:
+
+    note_unported('set_apparxy:displaced');
+    mtmp.mux = game.u.ux;      /* the EXACT hero position */
+    mtmp.muy = game.u.uy;
+
+C at that point (monmove.c, after the `if (!displ)` early return) does:
+
+    gotu = notseen ? !rn2(3) : notthere ? !rn2(4) : FALSE;
+    if (!gotu) {
+        do {
+            mx = u.ux - displ + rn2(2 * displ + 1);
+            my = u.uy - displ + rn2(2 * displ + 1);
+        } while (!isok(mx, my) || ...);      /* up to 200 tries */
+    }
+
+So whenever a monster cannot see the hero, C spends one rn2(3) or rn2(4) plus
+TWO rn2(2 * displ + 1) per loop iteration, and ends with a DISPLACED belief
+near the hero rather than on it. We spend nothing and take the hero's exact
+square. That is a missing-draw gap on a path every blind or unseen monster
+takes, and it is worth closing on its own.
+
+BUT IT DOES NOT EXPLAIN THIS NEWT. Our short-circuit sets mux/muy to the hero
+EXACTLY, i.e. (71,15), which is WEST. The observed goal was 77,16, to the
+EAST. So the goal did not come from mux/muy at js/monmove.js:729 -- it came
+from one of the other two assignment sites, gettrack at :768 or the strategy
+pair at :802. gettrack is the likelier of the two: the probe above caught it
+returning cp=74,15 on a later move, so it is live for this monster.
+
+NEXT: guard a probe on the newt's FIRST m_move specifically (not on the first
+call to any one site) and print which of the three sites assigns ggx,ggy.
+Then compare that site against the C. If it is gettrack, the hero's track
+history is the thing to check.
 
 Note that GAP 1 and GAP 2 above are still real omissions worth closing on
 their own merits, they are simply not this bug. Do not delete those entries.

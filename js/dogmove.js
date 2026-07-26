@@ -13,6 +13,8 @@ import { M_AP_TYPE, M_AP_NOTHING, MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED,
          MMOVE_DONE, EDOG, has_edog } from './const.js';
 import { distu } from './hacklib.js';
 import { DEADMONSTER } from './monst.js';
+import { carnivorous, herbivorous } from './mondata.js';
+import { cansee, couldsee } from './vision.js';
 import { newsym } from './display.js';
 import { MONSYMS } from './monst_data.js';
 
@@ -33,6 +35,68 @@ export function finish_meating(mtmp) {
         mtmp.mappearance = 0;
         newsym(mtmp.mx, mtmp.my);
     }
+}
+
+// src/dogmove.c:9-11 — file-local hunger thresholds, in turns since the pet
+// last ate. C keeps these private to dogmove.c, so they live here too.
+const DOG_HUNGRY = 300;
+const DOG_WEAK   = 500;
+const DOG_STARVE = 750;
+
+// src/dogmove.c:362 dog_hunger() — the pet gets weak, then starves.
+//
+// No draw. The three arms below the DOG_WEAK gate are mutually exclusive and
+// their ORDER encodes the rule:
+//
+//   neither carnivore nor herbivore  cannot starve at all: hungrytime is
+//                                    just pushed forward. C notes it is kept
+//                                    from going too high because the pet
+//                                    might polymorph into something that CAN
+//                                    starve.
+//   first time weak                  mhpmax is cut to a THIRD and the lost
+//                                    amount is stored in mhpmax_penalty, not
+//                                    discarded, so feeding can give it back.
+//                                    mconf is set: a starving pet is confused.
+//   already penalised, past STARVE   dies.
+//
+// The DEADMONSTER check inside the second arm matters: cutting mhpmax to a
+// third can drop mhp below 1 on its own, so a pet can die from the penalty
+// itself rather than from reaching DOG_STARVE.
+//
+// dog_starve and the four message variants are recorded; every state change
+// is real.
+export function dog_hunger(mtmp, edog) {
+    if (game.moves > edog.hungrytime + DOG_WEAK) {
+        const ptr = game.mons[mtmp.mnum];
+        if (!carnivorous(ptr) && !herbivorous(ptr)) {
+            edog.hungrytime = game.moves + DOG_WEAK;
+            /* but not too high; it might polymorph */
+        } else if (!edog.mhpmax_penalty) {
+            /* starving pets are limited in healing */
+            const newmhpmax = (mtmp.mhpmax / 3) | 0;
+            mtmp.mconf = 1;
+            edog.mhpmax_penalty = mtmp.mhpmax - newmhpmax;
+            mtmp.mhpmax = newmhpmax;
+            if (mtmp.mhp > mtmp.mhpmax)
+                mtmp.mhp = mtmp.mhpmax;
+            if (DEADMONSTER(mtmp)) {
+                note_dogmove_unported('dog_hunger:dog_starve');
+                return true;
+            }
+            if (cansee(mtmp.mx, mtmp.my))
+                note_dogmove_unported('dog_hunger:confused_msg');
+            else if (couldsee(mtmp.mx, mtmp.my))
+                note_dogmove_unported('dog_hunger:beg');
+            else
+                note_dogmove_unported('dog_hunger:worried_msg');
+            note_dogmove_unported('dog_hunger:stop_occupation');
+        } else if (game.moves > edog.hungrytime + DOG_STARVE
+                   || DEADMONSTER(mtmp)) {
+            note_dogmove_unported('dog_hunger:dog_starve');
+            return true;
+        }
+    }
+    return false;
 }
 
 // src/dogmove.c:977 dog_move() — the pet's per-turn decision.
@@ -74,7 +138,7 @@ export function dog_move(mtmp, after) {
     }
 
     const omx = mtmp.mx, omy = mtmp.my;
-    if (edog && note_dogmove_unported('dog_move:dog_hunger'))
+    if (edog && dog_hunger(mtmp, edog))
         return MMOVE_DIED;                      /* starved */
 
     udist = distu(omx, omy);

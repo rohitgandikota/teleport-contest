@@ -19,7 +19,7 @@ import { is_hider, verysmall } from './mondata.js';
 import { bad_rock } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './const.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
    are cycles when imported directly, so cmd.js -- which already pulls in every
@@ -317,13 +317,10 @@ async function get_ext_cmd() {
     return buf;
 }
 
-/* src/potion.c drink_ok() — only potions are suggested for 'q'. Ported and
-   correct against the C, but NOT WIRED: passing it as getobj's filter costs
-   212 screens and 45,893 RNG calls, which is a control-flow change rather
-   than a cosmetic one. Objects do carry oclass (js/mkobj.js:690 sets it from
-   objects[otyp].oc_class), so the cause is something else -- most likely an
-   exception inside getobj_letters or a starting inventory built by a path
-   that skips that assignment. Investigate before wiring; see STATUS. */
+/* src/potion.c drink_ok() — only potions are suggested for 'q'. The !obj arm
+   returns GETOBJ_EXCLUDE; C's EXCLUDE_NONINVENT case needs drink_ok_extra,
+   which tracks whether the hero already passed up a fountain, and is not
+   modelled. */
 function drink_ok(obj) {
     if (!obj)
         return GETOBJ_EXCLUDE;
@@ -338,13 +335,11 @@ function drink_ok(obj) {
    is offered. A missing filter offers the WHOLE inventory, which is what
    js/cmd.js used to do by passing null.
 
-   Filters all stay null for now: drink_ok is written and correct but wiring
-   it regresses 212 screens (see its comment). The VERBS are correct for all
-   seven commands, which is the larger half of the top line -- verified on
-   seed2200 step 4, where "What do you want to drink?" now matches C exactly
-   and only the letter list still differs. */
+   'q' now carries drink_ok and produces "[fgh]" on seed2200, matching C
+   exactly. The other six filters are not ported yet and stay null, so those
+   commands still offer the whole inventory; their VERBS are correct. */
 const GETOBJ_CMD = {
-    q: { word: 'drink',   ok: null, flags: GETOBJ_NOFLAGS },
+    q: { word: 'drink',   ok: drink_ok, flags: GETOBJ_NOFLAGS },
     r: { word: 'read',    ok: null,     flags: GETOBJ_NOFLAGS },
     w: { word: 'wield',   ok: null,     flags: GETOBJ_NOFLAGS },
     W: { word: 'wear',    ok: null,     flags: GETOBJ_NOFLAGS },

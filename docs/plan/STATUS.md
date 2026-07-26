@@ -34,6 +34,36 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
+=== THE NO-WEAPON mhitm PATH IS ~48 LINES. START HERE. ===
+
+Sized concretely. The monster-vs-monster branch of mhitm_ad_phys, for the case
+that actually happens (a pet with no weapon), is:
+
+    let mwep = MON_WEP(magr);
+    const vis = canseemon(magr) && canseemon(mdef);
+    if (aatyp !== AT_WEAP && aatyp !== AT_CLAW) mwep = null;   // BITE -> null
+    if (shade_miss(...)) damage = 0;
+    else if (aatyp === AT_KICK && thick_skinned(pd)) damage = 0;
+    else if (mwep) { ...weapon block, UNREACHABLE without a weapon... }
+    else if (purple worm vs shrieker) { ...damage cap... }
+
+About 12 lines. With no weapon the entire weapon block -- dmgval,
+artifact_hit, rustm, mhitm_really_poison, do_stone_mon -- is skipped, and
+damage simply passes through as the caller computed it.
+
+Everything it needs is ported EXCEPT shade_miss:
+
+    MON_WEP, canseemon, thick_skinned (js/mondata.js:371)   PORTED
+    shade_miss                              MISSING, 36 lines, uhitm.c:2016
+
+SO THE DAMAGE LEAF IS ~48 LINES, not the 220 the function's total suggests.
+
+This changes the whole picture for the 41% and 39% entries. Re-size mdamagem,
+passivemm and mhitm_adtyping the same way -- by the branch mattackm actually
+reaches, not by the function -- before deciding the chain is too big. The
+earlier ~1000-line figure sized functions rather than reached branches and is
+almost certainly several times too high.
+
 mattackm RE-SIZED DOWNWARD, and this is the most useful correction here.
 mhitm_ad_phys is 220 lines, but it splits into THREE branches by who is
 fighting:

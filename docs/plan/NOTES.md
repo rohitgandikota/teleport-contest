@@ -1982,3 +1982,40 @@ good case.
 tools/dup-defs.mjs finds these AFTER the fact and is worth running, but it
 only reports names defined in more than one FILE. A private copy shadowing an
 imported one inside the same file does not show up.
+
+## The rng match count is downstream-contaminated; only the divergence POINT is clean
+
+This is recorded elsewhere in STATUS and I still spent three ticks ignoring it,
+so here is the concrete case.
+
+Wiring dodrop to the 'd' command appeared to cost 2 rng matches, so I did not
+wire it. Porting welded and canletgo appeared to narrow the cost from 10 to 2,
+which looked like convergence. A per-session diff then showed +27 gained and
+-29 lost across eleven sessions, which looked like two competing bugs.
+
+ALL OF IT WAS NOISE. Comparing the FIRST DIVERGENCE CALL for every one of the
+43 diverging sessions, with and without the wiring, gave an IDENTICAL result
+for all 43. Not one moved. Every one of those +/- numbers was accumulated
+after the stream had already parted, where the count means nothing.
+
+WHY THE AGGREGATE MISLEADS: once a session diverges at call N, everything
+after N is two different games. Their draw counts drift apart for reasons
+unrelated to the change under test, and the drift is large -- nine calls in
+one session here, from a change that provably altered nothing.
+
+THE CHECK, and it is one loop:
+
+    for f in sessions/*.session.json; do
+        echo -n "$(basename $f) "
+        node tools/diverge.mjs "$f" 2>/dev/null | grep -m1 MISMATCH | awk '{print $1}'
+    done > before.txt
+    # apply change
+    # ...same loop into after.txt
+    diff before.txt after.txt
+
+An empty diff means the change is behaviourally inert on the public corpus.
+That is not a reason to reject a FAITHFUL change -- C wires dodrop, so we
+wire dodrop -- it just means the rng figure cannot be used to judge it.
+
+Use the rng count as a DETECTOR (something moved, look closer) and never as a
+VERDICT.

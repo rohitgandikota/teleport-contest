@@ -122,6 +122,37 @@ export const y_monnam = (mtmp) => x_monnam(mtmp, ARTICLE_YOUR, null, 0, false);
 export const Monnam  = (mtmp) => upstart(mon_nam(mtmp));
 export const YMonnam = (mtmp) => upstart(y_monnam(mtmp));
 
+// src/do_name.c:1191 mon_nam_too() — name `mon`, except that when it IS
+// `other_mon` the reflexive pronoun is used instead.
+//
+// This is what makes a monster-vs-monster message read "The jackal bites
+// itself" rather than "The jackal bites the jackal". hitmm and missmm both
+// pass the attacker as other_mon, so the case fires whenever a monster's
+// attack lands on itself (confusion, a bounced ray).
+//
+// C allocates from nextmbuf(), a rotating static buffer, because two of these
+// can be live in one pline() call; we return plain strings, so that machinery
+// has no counterpart here.
+//
+// Note the pronoun_gender() call passes PRONOUN_HALLU, so this is an RNG draw
+// while hallucinating.
+export function mon_nam_too(mon, other_mon) {
+    if (mon !== other_mon)
+        return mon_nam(mon);
+
+    switch (pronoun_gender(mon, PRONOUN_HALLU)) {
+    case 0:
+        return 'himself';
+    case 1:
+        return 'herself';
+    case 3: /* could happen when hallucinating */
+        return 'themselves';
+    default:
+    case 2:
+        return 'itself';
+    }
+}
+
 // src/hacklib.c upstart() — capitalise the first letter.
 function upstart(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
 

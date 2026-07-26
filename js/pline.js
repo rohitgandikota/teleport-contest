@@ -9,6 +9,8 @@
 // carry a trailing space that is easy to lose.
 
 import { pline } from './display.js';
+import { game } from './gstate.js';
+import { Deaf, Unaware, Underwater } from './youprop.js';
 
 // src/pline.c:366 You()
 export async function You(line) {
@@ -29,4 +31,30 @@ export async function You_feel(line) {
 // src/pline.c:403 You_cant()
 export async function You_cant(line) {
     await pline("You can't " + line);
+}
+
+// src/pline.c:436 You_hear() — the sound-message wrapper.
+//
+// Unlike the others above this one can print NOTHING. The early return is the
+// whole point of the function: a deaf hero, or one who has turned the
+// `acoustics` option off, gets no message at all, so a port that always
+// printed would put a line on the top line that C never puts there. Since a
+// top-line message can force a --More-- and eat a keystroke, that is not a
+// cosmetic difference.
+//
+// The Deaf guard is `Deaf && !Unaware`, so an unconscious hero still "hears"
+// (they dream it) -- which is why the Unaware arm exists below.
+//
+// js/sounds.c's dosounds() already draws the RNG for fountain and sink noises
+// with the message commented out; those call sites can use this now.
+export async function You_hear(line) {
+    if ((Deaf() && !Unaware()) || game.flags?.acoustics === false)
+        return;
+
+    if (Underwater())
+        await pline('You barely hear ' + line);
+    else if (Unaware())
+        await pline('You dream that you hear ' + line);
+    else
+        await pline('You hear ' + line);
 }

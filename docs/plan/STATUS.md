@@ -4951,10 +4951,36 @@ hack.js closes the same cycle by a longer route. Several other symbols had to
 move with it (ALGN_SINNED, is_minion) and other modules import
 in_your_sanctuary from monmove.js, so a re-export was needed too. All reverted.
 
-NEXT: this needs the wire pattern already used for sp_lev_wire and
-mkroom_wire, not another import. Have js/hack.js hand in_rooms to js/priest.js
-at startup the way js/mklev.js hands topologize to js/mkroom.js. Then move
-in_your_sanctuary to priest.js properly, with ALGN_SINNED and is_minion, and
-leave a re-export in monmove.js for its existing callers.
+SECOND ATTEMPT: THE WIRE WORKS, THE BEHAVIOUR DOES NOT. Also reverted.
 
-The three helpers were correct as written; the only obstacle is module wiring.
+The wiring problem IS solved, and the solution is worth keeping:
+  - wiring from js/hack.js does NOT work. hack.js importing priest.js closes
+    the cycle by a different route, because priest.js's own imports
+    (makemon, mkobj, worn, sp_lev, mon) reach hack.js again.
+  - wiring from js/jsmain.js DOES work. The entry point imports both and calls
+    priest_wire({ in_rooms }); no cycle, module loads, seed8000 still passes
+    call for call.
+
+So the pattern for any future case like this is: wire from the ENTRY POINT,
+not from the module that happens to own the function.
+
+WHAT FAILED: with in_your_sanctuary actually live, the corpus drops from 492
+screens to 238 and RNG from 140934 to 76330. It is not throwing -- seed8000
+passes -- so the function is returning TRUE somewhere C returns FALSE, and
+each false positive sets `scared` in distfleeck and spends an extra
+monflee(mtmp, rnd(rn2(7) ? 10 : 100), ...).
+
+The suspects, in order:
+  1. temple_occupied's substitution of in_rooms(u.ux, u.uy, 0) for u.urooms.
+     If in_rooms returns rooms the hero is merely ADJACENT to rather than
+     inside, every monster near a temple becomes scared.
+  2. The roomno comparison: C compares `roomno != *in_rooms(x, y, TEMPLE)`,
+     dereferencing the FIRST char of a possibly-empty string. Our
+     .charAt(0) on an empty string gives '', and roomno is '' when no temple
+     is occupied -- so '' === '' would wrongly pass. The early return on
+     `roomno === ''` should cover it, but check the interaction.
+  3. has_shrine / p_coaligned returning true too readily now that priestini
+     creates real priests.
+
+Suspect 2 is cheap to check and is a genuine C-vs-JS string-semantics trap.
+Start there.

@@ -11,6 +11,7 @@ import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
+import { hot_pursuit } from './shk.js';
 import { is_metallic } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
@@ -593,8 +594,13 @@ function cant_squeeze_thru(mon) {
 
 
 
+// Records an unported call by name. Returns FALSE explicitly, not undefined,
+// because several call sites use it in boolean position (seemimic's
+// is_blocker_appear, growl's verb lookup) and relying on undefined being
+// falsy there would read as an accident rather than a decision.
 function note_unported_mon(what) {
     (game.unported ||= new Set()).add(what);
+    return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -962,7 +968,7 @@ export function wakeup(mtmp, via_attack) {
         /* mimics come out of hiding, but disguised Wizard doesn't
            have to lose his disguise */
         if (M_AP_TYPE(mtmp) !== M_AP_MONSTER)
-            note_unported_mon('wakeup:seemimic');
+            seemimic(mtmp);
     } else if (game.context?.forcefight && !game.context?.mon_moving
                && mtmp.mundetected) {
         mtmp.mundetected = 0;
@@ -979,7 +985,7 @@ export function wakeup(mtmp, via_attack) {
             if (mtmp.ispriest && in_rooms(mtmp.mx, mtmp.my, TEMPLE)?.length)
                 note_unported_mon('wakeup:ghod_hitsu');
             if (mtmp.isshk && !(game.u?.ushops || '').length)
-                note_unported_mon('wakeup:hot_pursuit');
+                hot_pursuit(mtmp);
         }
     }
 }
@@ -1086,4 +1092,34 @@ export function shieldeff_mon(mtmp) {
 export function wake_msg(mtmp, interesting) {
     if (mtmp.msleeping && canseemon(mtmp))
         note_unported_mon('wake_msg:pline');
+}
+
+// src/mon.c:4409 seemimic() — a mimic is discovered and drops its disguise.
+//
+// is_blocker_appear is captured FIRST, before m_ap_type is cleared, because
+// once the disguise is gone the monster no longer appears as anything that
+// blocks light. Reading it after the clear would always be false and the
+// square would stay dark. Same save-before-mutate shape as wakeup's
+// was_sleeping and hmon's anger_guards.
+//
+// The unblock is conditional on does_block() as well: the mimic may be
+// standing somewhere that blocks light on its own account, and in that case
+// the point stays blocked.
+//
+// is_lightblocker_mappear, has_mcorpsenm, freemcorpsenm, does_block and
+// unblock_point are recorded; the appearance reset and the redraw are real.
+export function seemimic(mtmp) {
+    const is_blocker_appear = note_unported_mon('seemimic:is_lightblocker_mappear');
+
+    note_unported_mon('seemimic:mcorpsenm');
+
+    mtmp.m_ap_type = M_AP_NOTHING;
+    mtmp.mappearance = 0;
+
+    /*  Discovered mimics don't block light. */
+    if (is_blocker_appear
+        && !note_unported_mon('seemimic:does_block'))
+        note_unported_mon('seemimic:unblock_point');
+
+    newsym(mtmp.mx, mtmp.my);
 }

@@ -168,7 +168,7 @@ difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
 
-### seed0101 at 2293: something creates an object inside moveloop_preamble
+### seed0101 at 2293 is the THROW subsystem, at step 9
 
     2291  rnd(9000)  moveloop_preamble(allmain.c:72)   ours matches
     2292  rnd(30)    moveloop_preamble(allmain.c:79)   ours matches
@@ -180,20 +180,25 @@ something between seer_turn and the first move, and we go straight to
 mcalcmove. The session's first key is 'Q' at step 4, well after this, so it is
 not the command.
 
-What sits there in C is the block js/allmain.js records as
-`moveloop_preamble set_wear/pickup`:
+IT IS NOT moveloop_preamble. Those two tags are simply the last calls that
+still matched; the divergence itself is at SEG 1, STEP 9. Always read the
+"divergent call occurs at" line before inferring from the adjacent tags -- I
+got this wrong once already.
 
-    svc.context.rndencode = rnd(9000);      <- 2291, matches
-    set_wear((struct obj *) 0);
-    reset_justpicked(gi.invent);
-    (void) pickup(1);
-    svc.context.seer_turn = (long) rnd(30); <- 2292, matches
+Step 9 is the THROW:
 
-so the draws at 2293-2294 come AFTER seer_turn, i.e. after that block, not
-inside it. Do not assume it is pickup(1) -- the ordering rules that out.
-Instrument RND at 2293 on the C side is impossible, so instead read
-moveloop_preamble's tail (src/allmain.c:80 onward, u.umovement/initrack) and
-moveloop_core's opening for the first thing that makes an object or a monster.
+    4  "Q"  What do you want to ready? [- cd or ?*]
+    5  "b"  That is your alternate weapon.  Ready it instead? [ynq] (q)
+    6  "y"  b - a +1 bow (at the ready).
+    7  "t"  What do you want to throw? [bcd or ?*]
+    8  "d"  In what direction?
+    9  "l"  You aren't wielding a bow, so you throw your arrow by hand.
+
+So the next_ident + obj_resists at 2293-2294 are throwit() splitting the arrow
+stack: splitobj() makes a new object, which calls next_ident for its o_id and
+then gets checked. The whole Q/t/direction sequence ahead of it also has to
+work -- dowieldquiver's prompt, the "alternate weapon" ynq, and getobj for the
+throw -- so this is the throw subsystem (src/dothrow.c), not a stray draw.
 
 ### seed0501 at 2205 is the spell-casting subsystem
 

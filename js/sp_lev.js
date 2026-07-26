@@ -15,6 +15,7 @@ import { isok } from './hacklib.js';
 import { sobj_at, weight, obj_extract_self } from './invent.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { mkobj_at, mksobj_at, add_to_container, set_corpsenm } from './mkobj.js';
+import { stock_room } from './shknam.js';
 import { OBJ_NAME } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
@@ -77,12 +78,9 @@ export function fill_special_room(croom) {
 
     if (croom.needfill === FILL_NORMAL) {
         if (croom.rtype >= SHOPBASE) {
-            /* stock_room() is a separate subsystem (shop inventory). It IS
-               now reached: since the special-room chain landed, makelevel
-               marks real shops and this is the next thing they need. A shop
-               with no stock is a screen difference, not just a missing draw. */
-            note_unported('stock_room');
-            game.level.flags.has_shop = true;
+            /* src/mklev.c fill_special_room() — a shop's stock and its
+               shopkeeper. stock_room sets has_shop itself. */
+            stock_room(croom.rtype - SHOPBASE, croom);
             return;
         }
 

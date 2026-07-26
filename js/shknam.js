@@ -8,6 +8,19 @@
 
 import { rnd } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { game } from './gstate.js';
+import { rn2 } from './rng.js';
+import { isok, ROOMOFFSET, IS_ROOM, D_NODOOR, D_ISOPEN, D_LOCKED, D_TRAPPED,
+         SDOOR, DOOR, MM_ESHK, NO_MM_FLAGS } from './const.js';
+import { makemon, mkclass, mkmonmoney, mongets, set_malign } from './makemon.js';
+import { mkobj_at, mksobj_at } from './mkobj.js';
+import { m_at } from './mon.js';
+import { PMNAMES, MONSYMS } from './monst_data.js';
+import { rnd as _rnd } from './rng.js';
+import { distmin } from './hacklib.js';
+import { newsym } from './display.js';
+import { depth } from './dungeon.js';
+import { SHKNAMES, SHKNMS_ORDER } from './shknam_data.js';
 
 // src/shknam.c:19 VEGETARIAN_CLASS — not a real object class, a marker the
 // health food store uses to route through mkveggy_at().
@@ -57,6 +70,72 @@ export const shtypes = [
                [2, T('WAN_LIGHT')], [1, T('SCR_LIGHT')], [1, T('SPE_LIGHT')]] },
 ];
 
+/* src/shknam.c:209 — each shtypes[] entry ends with its shopkeeper name list.
+   The identity of that list, not just its contents, is read by shkinit(): its
+   mongets block branches on `shknms == shktools` and friends. SHKNMS_ORDER is
+   generated from the same table so the two cannot drift apart. */
+shtypes.forEach((shp, i) => { shp.shknms = SHKNMS_ORDER[i]; });
+
+// src/shknam.c:598 good_shopdoor() — where the shopkeeper stands, and which
+// door index it belongs to. Draws nothing; pure geometry. Returns -1 when no
+// door works, which is what makes shkinit fail and stock_room give up.
+export function good_shopdoor(sroom) {
+    for (let i = 0; i < sroom.doorct; i++) {
+        const di = sroom.fdoor + i;
+        const door = game.level.doors?.[di];
+        if (!door)
+            continue;
+        let sx = door.x, sy = door.y;
+
+        if (sroom.irregular) {
+            const rmno = (game.level.rooms.indexOf(sroom)) + ROOMOFFSET;
+            const ok = (x, y) => {
+                const l = isok(x, y) ? game.level.at(x, y) : null;
+                return l && !l.edge && l.roomno === rmno;
+            };
+            if (ok(sx - 1, sy)) sx--;
+            else if (ok(sx + 1, sy)) sx++;
+            else if (ok(sx, sy - 1)) sy--;
+            else if (ok(sx, sy + 1)) sy++;
+            else continue;
+        } else if (sx === sroom.lx - 1) { sx++; }
+        else if (sx === sroom.hx + 1) { sx--; }
+        else if (sy === sroom.ly - 1) { sy++; }
+        else if (sy === sroom.hy + 1) { sy--; }
+        else { continue; }
+
+        return { di, sx, sy };
+    }
+    return { di: -1, sx: 0, sy: 0 };
+}
+
+// src/shknam.c nameshk() — name the shopkeeper.
+//
+// Reads as a blocker because name_wanted is seeded from ubirthday, which we do
+// not model. Work the control flow instead: name_wanted is reduced by
+// `% names_avail` before the loop, so it is ALWAYS less than names_avail, and
+// every shop that is not a tools shop takes the `name_wanted < names_avail`
+// arm on the first iteration and DRAWS NOTHING. Only a tools shop draws, and
+// exactly one rn2(names_avail).
+//
+// So the unmodelled ubirthday changes WHICH NAME appears, a screen difference,
+// and not the draw count. The name itself is recorded as unported; the draw is
+// faithful, and names_avail is the generated list's length, which is why the
+// list must not lose or gain an entry.
+export function nameshk(shk, shknms) {
+    const nlp = SHKNAMES[shknms];
+    const names_avail = nlp.length;
+
+    if (shknms === 'shktools') {
+        shk.shknam = nlp[rn2(names_avail)];
+        shk.female = 0;         /* reversed below for '_' prefix */
+    } else {
+        /* name_wanted needs ubirthday; the arm taken draws nothing either way */
+        (game.unported ||= new Set()).add('shknam:nameshk:ubirthday');
+        shk.female = 0;
+    }
+}
+
 // src/shknam.c:465 get_shop_item() — pick one item type for a shop square.
 //
 // Same walk shape as mkshop's shop-type pick: rnd(100), then subtract each
@@ -70,4 +149,154 @@ export function get_shop_item(type) {
         continue;
 
     return shp.iprobs[i][1];
+}
+
+
+// src/shknam.c:628 shkinit() — create the shopkeeper. Returns the door index,
+// or -1, which makes stock_room give up and leave the shop empty.
+//
+// Draws: makemon's, then mkmonmoney's rnd(100), then a CONDITIONAL rn2 whose
+// presence depends on which name list the shop uses. A tools or wand shop
+// draws NEITHER, because the first two disjuncts short-circuit; a ring shop
+// draws rn2(2) and a general store rn2(5). Then nameshk, which draws only for
+// a tools shop. Getting shknms wrong changes which draw happens.
+function shkinit(shp, sroom) {
+    const { di: sh, sx, sy } = good_shopdoor(sroom);
+    if (sh < 0)
+        return -1;
+
+    if (m_at(sx, sy))
+        (game.unported ||= new Set()).add('shknam:shkinit:rloc'); /* insurance */
+
+    const shk = makemon(game.mons[PMNAMES.PM_SHOPKEEPER], sx, sy, MM_ESHK);
+    if (!shk)
+        return -1;
+
+    shk.isshk = shk.mpeaceful = 1;
+    set_malign(shk);
+    shk.msleeping = 0;
+    shk.eshk = {
+        shoproom: game.level.rooms.indexOf(sroom) + ROOMOFFSET,
+        shoptype: sroom.rtype,
+        shd: game.level.doors[sh],
+        shk: { x: sx, y: sy },
+        robbed: 0, credit: 0, debit: 0, loan: 0,
+        following: false, surcharge: false, dismiss_kops: false,
+        billct: 0, visitct: 0, customer: '',
+    };
+    sroom.resident = shk;
+
+    mkmonmoney(shk, 1000 + 30 * _rnd(100));     /* initial capital */
+
+    if (shp.shknms === 'shkrings')
+        mongets(shk, ONAMES.TOUCHSTONE);
+    if (shp.shknms === 'shktools' || shp.shknms === 'shkwands'
+        || (shp.shknms === 'shkrings' && rn2(2))
+        || (shp.shknms === 'shkgeneral' && rn2(5)))
+        mongets(shk, ONAMES.SCR_CHARGING);
+
+    nameshk(shk, shp.shknms);
+
+    return sh;
+}
+
+// src/shknam.c:695 stock_room_goodpos() — may this square hold stock?
+// No draws; pure geometry. The non-irregular arm excludes the row of squares
+// nearest the door.
+function stock_room_goodpos(sroom, rmno, sh, sx, sy) {
+    const door = game.level.doors[sh];
+    if (sroom.irregular) {
+        const l = game.level.at(sx, sy);
+        if (!l || l.edge || l.roomno !== rmno
+            || distmin(sx, sy, door.x, door.y) <= 1)
+            return false;
+    } else if ((sx === sroom.lx && door.x === sx - 1)
+               || (sx === sroom.hx && door.x === sx + 1)
+               || (sy === sroom.ly && door.y === sy - 1)
+               || (sy === sroom.hy && door.y === sy + 1)) {
+        return false;
+    }
+
+    /* only generate items on solid floor squares */
+    return !!IS_ROOM(game.level.at(sx, sy)?.typ);
+}
+
+// src/shknam.c:454 mkshobj_at() — one shop square's contents.
+//
+// ORDER IS LOAD-BEARING: the rn2(100) mimic check runs FIRST and always, and
+// only if it fails to place a mimic is get_shop_item called. Picking the item
+// first and checking for a mimic afterwards would look equivalent and desync
+// on every square.
+function mkshobj_at(shp, sx, sy, mkspecl) {
+    if (mkspecl && (shp.name === 'rare books'
+                    || shp.name === 'second-hand bookstore')) {
+        const novel = mksobj_at(ONAMES.SPE_NOVEL, sx, sy, false, false);
+        if (novel)
+            game.context.tribute.bookstock = true;
+        return;
+    }
+
+    let ptr, mtmp;
+    if (rn2(100) < depth(game.u.uz) && !m_at(sx, sy)
+        && (ptr = mkclass(MONSYMS.S_MIMIC, 0)) !== null
+        && (mtmp = makemon(ptr, sx, sy, NO_MM_FLAGS)) !== null) {
+        /* nothing */
+    } else {
+        const atype = get_shop_item(shtypes.indexOf(shp));
+        if (atype === VEGETARIAN_CLASS)
+            (game.unported ||= new Set()).add('shknam:mkveggy_at');
+        else if (atype < 0)
+            mksobj_at(-atype, sx, sy, true, true);
+        else
+            mkobj_at(atype, sx, sy, true);
+    }
+}
+
+// src/shknam.c:718 stock_room() — stock a newly-created shop.
+export function stock_room(shp_indx, sroom) {
+    let stockcount = 0, specialspot = 0;
+    const rmno = game.level.rooms.indexOf(sroom) + ROOMOFFSET;
+    const shp = shtypes[shp_indx];
+
+    /* first, try to place a shopkeeper in the room */
+    const sh = shkinit(shp, sroom);
+    if (sh < 0)
+        return;
+
+    /* no doorways without doors, and no trapped doors, in shops */
+    const dx = game.level.doors[sroom.fdoor].x;
+    const dy = game.level.doors[sroom.fdoor].y;
+    const dlev = game.level.at(dx, dy);
+    if (dlev.doormask === D_NODOOR) {
+        dlev.doormask = D_ISOPEN;
+        newsym(dx, dy);
+    }
+    if (dlev.typ === SDOOR) {
+        dlev.typ = DOOR;                /* cvt_sdoor_to_door */
+        newsym(dx, dy);
+    }
+    if (dlev.doormask & D_TRAPPED)
+        dlev.doormask = D_LOCKED;
+    if (dlev.doormask === D_LOCKED)
+        (game.unported ||= new Set()).add('shknam:closed_for_inventory_engr');
+
+    /* svc.context.tribute.enabled is set TRUE at game start (allmain.c:776),
+       so this block RUNS and its rnd(stockcount) is not optional. */
+    if (game.context.tribute?.enabled && !game.context.tribute?.bookstock) {
+        for (let sx = sroom.lx; sx <= sroom.hx; sx++)
+            for (let sy = sroom.ly; sy <= sroom.hy; sy++)
+                if (stock_room_goodpos(sroom, rmno, sh, sx, sy))
+                    stockcount++;
+        specialspot = _rnd(stockcount);
+        stockcount = 0;
+    }
+
+    for (let sx = sroom.lx; sx <= sroom.hx; sx++)
+        for (let sy = sroom.ly; sy <= sroom.hy; sy++)
+            if (stock_room_goodpos(sroom, rmno, sh, sx, sy)) {
+                stockcount++;
+                mkshobj_at(shp, sx, sy, stockcount === specialspot);
+            }
+
+    game.level.flags.has_shop = true;
 }

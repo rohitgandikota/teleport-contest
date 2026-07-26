@@ -651,7 +651,7 @@ function findgold(minvent) {
 }
 
 // src/mon.c mkmonmoney()
-function mkmonmoney(mtmp, amount) {
+export function mkmonmoney(mtmp, amount) {
     mtmp.mgold = (mtmp.mgold || 0) + amount;
 }
 
@@ -738,7 +738,7 @@ function pmIndexOf(name) {
 }
 
 // src/align.c set_malign() — recomputes malign from peacefulness. No draw.
-function set_malign(mtmp) {
+export function set_malign(mtmp) {
     const mal = mtmp.data.maligntyp;
     const coaligned = (sgn(mal) === sgn(game.u.ualign.type));
 

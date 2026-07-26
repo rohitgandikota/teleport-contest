@@ -5270,3 +5270,23 @@ NEXT: that means the attack check cannot land before attack_checks and the
 melee code, or at least before enough of hitum() to produce the message. Do
 not keep re-wiring it and measuring; it will cost 30 every time until the
 combat path exists.
+
+HOW MUCH COMBAT CODE IS ACTUALLY NEEDED, measured rather than assumed. With
+the check wired and the combat arm counted, seed0030 reaches it exactly ONCE
+(a hostile mnum=59; a counter printing at n=1 and n=50 only ever printed n=1).
+So the 30 screens cascade from a single blocked move, not from a busy combat
+loop.
+
+That is much better news than "port uhitm.c". The sizes:
+
+    attack_checks   139 lines   src/uhitm.c
+    hitum            58 lines   src/uhitm.c
+
+and only the path a single ordinary melee swing takes has to work. Everything
+attack_checks guards against -- Elbereth, peacefuls, displaced images, safe
+pets -- is either already ported here or not reachable in these sessions.
+
+ORDER: port hitum first and have attack_checks return FALSE for the reachable
+cases with each guard it skips recorded, then wire the check and re-measure.
+If the 30 does not come back, the remaining guards can be filled in against
+sessions that reach them rather than speculatively.

@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**458/11,405 screens (4.0%), 1/44 sessions, corpus RNG 135,924/792,838 (17.1%).**
+**473/11,405 screens (4.1%), 1/44 sessions, corpus RNG 135,915/792,838 (17.1%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -300,7 +300,33 @@ both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 
-### seed0101's screens now break at step 4: 'Q' is not bound
+### seed0101 is now at step 9; the prompt chain is DONE
+
+Ported this stretch, in the order the session exercises them:
+
+    getobj's prompt + letter list (src/invent.c:1830, :1919)
+    yn_function's resp arm, i.e. "[ynq] (q)"   (win/tty/topl.c:365)
+    getdir's prompt                            (src/cmd.c)
+    ready_ok, doquiver_core, dowieldquiver, 'Q'  (src/wield.c)
+    throw_ok                                   (src/dothrow.c)
+    setuqwep, xprname, prinv                   (src/invent.c, src/wield.c)
+    u_init's alternate-weapon slot             (src/u_init.c:1291)
+
+seed0101 went from breaking at step 2 to step 9, and the corpus from 429 to
+473 screens.
+
+WHAT IS LEFT for it is throwit()'s trajectory (src/dothrow.c:1600 onward).
+Step 9's message
+
+    "You aren't wielding a bow, so you throw your arrow by hand."
+
+comes from src/dothrow.c:1643, inside the range calculation: is_ammo without a
+matching launcher HALVES the range and prints that line. It needs skill_name,
+weapon_descr, body_part and an(), plus the range arithmetic around it. That is
+the throw subsystem proper, not a stray message -- do not port the pline
+alone, it is meaningless without the range halving it accompanies.
+
+### SUPERSEDED: seed0101's screens break at step 4: 'Q' is not bound
 
 Measured, not inferred:
 

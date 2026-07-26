@@ -449,6 +449,35 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
         }
         note_unported_uhitm('passive:exercise:A_STR');
         break;
+    case ATTKS.AD_STON:
+        /* no draw of its own. The protection test decides whether you are
+           stoned, and returns a THIRD value, M_ATTK_DEF_DIED, which neither
+           of the two flag words above can express. */
+        if (mhitb) {
+            note_unported_uhitm('passive:attk_protection');
+            /* Stone_resistance / poly_when_stoned / polymon / done_in_by */
+        }
+        break;
+    case ATTKS.AD_RUST:
+    case ATTKS.AD_CORR:
+        /* Same three guards as AD_FIRE, but WITHOUT its !rn2(6): rust and
+           corrosion erode the boots every time, fire and acid only one kick
+           in six. Sharing one helper across all four arms -- they are
+           otherwise character-for-character identical -- would silently add
+           a draw to these two or drop it from the other two. */
+        if (mhitb && !mon.mcan && weapon) {
+            if (aatyp === ATTKS.AT_KICK) {
+                if (game.uarmf)
+                    note_unported_uhitm('passive:erode_obj:rust_corr');
+            } else if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW
+                       || aatyp === ATTKS.AT_MAGC || aatyp === ATTKS.AT_TUCH)
+                note_unported_uhitm('passive:passive_obj:rust_corr');
+        }
+        break;
+    case ATTKS.AD_MAGM:
+        /* wrath of gods for attacking Oracle -- no draw either way */
+        note_unported_uhitm('passive:magic_missiles');
+        break;
     default:
         note_unported_uhitm(`passive:adtyp=${adtyp}`);
         break;

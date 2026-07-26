@@ -1585,3 +1585,43 @@ Every hit is inside a function that opens with `const u = game.u`, so the
 binding resolves. Worth re-running after adding any function that touches hero
 coordinates, because the failure is silent: it throws only on the path that
 uses it, which may be rare enough to look like a behavioural difference.
+
+## undefined-refs.mjs cannot see unbound CONSTANTS. Execute the arm instead.
+
+weapon_hit_bonus and skill_based_spellbook_id both switched on P_SKILLED,
+P_MASTER and P_GRAND_MASTER without importing them. Either would have thrown a
+ReferenceError the moment the hero reached Skilled in any weapon, or for a
+Wizard in any spell school.
+
+NOTHING IN THE TOOLCHAIN SAW IT:
+  undefined-refs.mjs  scans CALL TARGETS; these are constants in a switch
+  scoreboard          no public session reaches Skilled, so the path never ran
+  generalize          same
+  dup-defs            not a duplicate
+
+It would have surfaced on a held-out session, as a crash, in code that reviews
+as correct.
+
+WHAT FOUND IT: forcing the input and running the function.
+
+    const save = sk[t].skill;
+    for (const [lvl, name, expected] of TABLE) {
+        sk[t].skill = lvl;
+        console.log(name, expected, weapon_hit_bonus(wep));
+    }
+    sk[t].skill = save;
+
+The first forced level threw. The same loop then verified the whole table
+against the C once the imports were fixed: restricted and unskilled -4, basic
+0, skilled 2, expert 3.
+
+USE THIS FOR EVERY ZERO-DRAW FUNCTION whose arms the sessions do not naturally
+exercise. find_roll_to_hit's monster-state bonuses were verified the same way,
+by setting mstun, mflee, msleeping and mcanmove on a live monster and
+measuring the delta (+2, +2, +2, +4).
+
+A STATIC SWEEP WAS TRIED AND ABANDONED. Grepping for SCREAMING_CASE
+identifiers used but not bound per module produces far too many false
+positives: destructured imports, namespace members like OCLASSES.WEAPON_CLASS,
+and names that appear only in comments. It is not worth shipping. Executing
+the arm is slower per function and it is the check that actually works.

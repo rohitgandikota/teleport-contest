@@ -684,10 +684,35 @@ object somewhere C did not, or failed to put one where C did. That is the
 same shape as the seed0030 "$ where C has the pet" observation, which was
 never explained either.
 
-NEXT: compare the full object list at turn 5 against what the recorded screen
-shows. Our level.objects has 12 entries on seed0030 and an unknown count
-here; print all of them with coordinates and classes, then read the recorded
-screen for objects our list lacks. Start with row 5 near x=69.
+SCREEN COMPARED. The recorded map around the pet:
+
+     4  |     ┌───┐
+     5  |     │···│
+     6  |     │····
+     7* |  ┌──┘··@│      <- the @, so display row 7 is MAP ROW 4
+     8 >|  │·····u│      <- the pony, so display row 8 is MAP ROW 5
+     9  |  │·····<│
+
+DISPLAY ROW = MAP ROW + 3 here. The pony on display row 8 confirms map row 5,
+matching our pet(69,5).
+
+There is NO object glyph on that row -- but A MONSTER'S GLYPH COVERS AN
+OBJECT BENEATH IT, so an object under the pony would be invisible on both
+sides. That is consistent with C having a row-5 object we lack and cannot be
+used to rule it out.
+
+NEXT, and prefer this over more screen-reading: print our full level.objects
+with coordinates at turn 5 (not just what dog_goal's box admits), and check
+whether ANY object sits at row 5. If none does, the object is missing from
+our level entirely and the question moves to level generation -- which
+mkobj_at/place_object site should have created it. If one does sit there but
+dog_goal never sees it, the bounding box or the loop filter is at fault after
+all.
+
+Note display row = map row + 3 for this session's layout; that offset has
+already caused one wrong reading in this file (the '(57,4) vs column 55'
+confusion on seed0030). Do not eyeball coordinates off a screen without
+establishing it.
 
 ALSO WORTH CHECKING while here: both objects at (67,2) classify as APPORT and
 neither sets gtyp, meaning the APPORT branch is being entered and losing its

@@ -1426,3 +1426,43 @@ an unported stub that every shop mimic reached, and porting it was right. The
 work was correct even though the metric that motivated it was not measuring
 what I believed. Good work can come from a bad signal -- that is not a reason
 to trust the signal.
+
+## The module graph is load-bearing: adding an import can regress the corpus
+
+Porting in_your_sanctuary took four reverts, none of them caused by the port.
+All four were the module graph.
+
+Measured, each independently:
+
+    monmove.js imports hack.js                     cycle, throws at load
+    move the function to priest.js (its C HOME)    492 -> 238 screens
+    jsmain.js imports hack.js only                 no change
+    jsmain.js imports monmove.js only              no change
+    jsmain.js imports BOTH                         492 -> 266 screens
+
+The second one is the important one. Moving a function to the file matching
+its C source is normally the RIGHT thing here, and it cost 254 screens. A
+bisect settled it: stubbing the moved function to `return false`, so it
+behaved exactly like the code it replaced, STILL regressed. The logic was
+never involved; the restructuring was.
+
+The likely mechanism is a cycle that does not throw. monmove.js re-exporting
+from priest.js makes it import a module whose own imports lead back to
+monmove.js, and ES modules resolve that by leaving a binding undefined at CALL
+time rather than failing at load. The symptom is silent wrong behaviour, not
+an error.
+
+WHAT WORKS: publish the function on the shared game object from the module
+that owns it, and read it through game.* from the module that needs it.
+
+    js/hack.js:     game.in_rooms = in_rooms;
+    js/monmove.js:  game.in_rooms?.(x, y, t) ?? ''
+
+That touches no import edge, so the graph is byte-identical and the corpus is
+unchanged. It is uglier than an import and it is the only thing measured to
+work.
+
+Note the asymmetry, because it is not obvious: monmove.js IMPORTING priest.js
+is fine and does not regress. It was the RE-EXPORT that broke things. So the
+rule is not "never add imports" -- it is "measure the corpus after any change
+to the module graph, including one that only moves code between files".

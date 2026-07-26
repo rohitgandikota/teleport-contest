@@ -6,6 +6,36 @@
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
+TOP TARGET, FOUND BY RE-RANKING ON SCREENS RATHER THAN RNG: getobj's prompt.
+
+tools/screendiff.mjs on seed2200 step 4 shows exactly this:
+
+  C     What do you want to drink? [fgh or ?*]
+  ours  What do you want to q? [abcdefghijklmn or ?*]
+
+TWO bugs in one line, both in js/cmd.js:324:
+
+    const obj = await getobj(ch, null, 0);
+
+  1. the VERB is the raw command character. C passes a word: dodrink calls
+     getobj("drink", ...), doread calls getobj("read", ...), and so on.
+  2. the FILTER is null, so every inventory letter is offered. C passes a
+     predicate per command (potion_ok for 'q', etc.) and getobj_letters
+     already applies it correctly -- js/invent.js:124 is right, it is only
+     ever handed null.
+
+js/cmd.js:498 records that these commands are 330 KEYSTROKES ACROSS THE
+PUBLIC CORPUS, THE MOST OF ANY COMMAND. Every one of them currently paints a
+wrong top line, and the top line is row 0 of a scored 24x80 grid.
+
+This is why the re-ranking mattered: seed2200 reproduces 92% of its RNG and
+shows 4 of 230 screens. The RNG is nearly right and the DISPLAY is wrong.
+tools/diverge.mjs pointed at exercise(attrib.c:509) for this session, which is
+a real RNG divergence 2700 calls later and not what costs it 226 screens.
+
+TO FIX: give each command its verb and its obj_ok predicate, from the C
+cmdlist in src/cmd.c. Do NOT invent the words or the filters -- read them.
+
 MOST RECENT WORK: the melee chain behind uhitm.c's do_attack. TWENTY functions
 ported. The most recent are hmon, wakeup and setmangry, plus a correction to
 do_attack's Punished term.

@@ -71,7 +71,32 @@ js/cmd.js:460 already routes 'e' and reaches floorfood(); what is missing is
 doeat's body, start_eating's occupation, and the choke() gate that ends the
 game. Under 400 lines total for the path that unblocks seed0030's first death.
 
-## THE LAST LINK: the occupation loop. js/allmain.js has none.
+## seed0030's FIRST screen divergence is a pet TRAIL, at step 4.
+
+The largest session in the corpus (1953 steps) breaks on screens long before
+its RNG divergence at 6276. `screendiff sessions/seed0030... --first`:
+
+    step 4, after key "h"     3 of 1920 cells differ
+      r5 c55   C 'f' white     ours '$' yellow
+      r5 c56   C '<' yellow    ours 'f' white
+      r5 c57   C '.' default   ours 'f' white
+
+**Ours has TWO kittens.** The pet moved from c56 to c57 and the vacated square
+was never redrawn, so the old glyph persists. C has one 'f' at c55, with the
+upstair and floor visible where ours shows the trail.
+
+Where it should be cleared: src/monmove.c:1655 calls `newsym(mtmp->mx,
+mtmp->my)` on the NEW position only, so the OLD square is redrawn by something
+else -- find it before patching. Candidates: remove_monster in src/mon.c, or
+the per-turn vision/flush pass. Do NOT just add a newsym on the old square
+without finding the C's actual mechanism; a redraw in the wrong place is how
+the display picks up a second bug.
+
+This matters more than the choke path right now: seed0030 is 1953 steps and
+currently matches 20 of them. A pet that leaves a trail is wrong on nearly
+every frame with a pet in it, which is most frames of most sessions.
+
+## THE OCCUPATION LOOP (now ported): js/allmain.js had none.
 
 doeat -> start_eating -> bite -> choke -> done is PORTED and connected for
 ordinary food. It has not fired yet because multi-turn meals run through the

@@ -5099,3 +5099,32 @@ VERIFY BY PROBE, not by score: the function draws nothing, so the corpus will
 not move even when it is correct. Count how many times it returns TRUE before
 and after, and check that a monster actually walks toward an item it now
 wants.
+
+## searches_for_item: WAND/POTION/SCROLL/AMULET/TOOL done, FOOD open
+
+Landed (two commits): the four easy arms, then can_blow and the TOOL arm.
+On unported-hits the original 43% entry is now just searches_for_item:food at
+7%. RNG 140934 -> 140970.
+
+THE FOOD ARM WAS ATTEMPTED AND REVERTED. Not for a logic reason -- the port
+was written in full and is straightforward -- but because its dependency
+closure is wider than it looks. Written and working: cures_stoning
+(src/muse.c:2985), mcould_eat_tin (:3001), mwelded (src/wield.c:1078),
+will_weld and erodeable_wep (:63, :68). Missing underneath those:
+
+    flaming        no definition in js/ at all (include/mondata.h)
+    resists_ston   used in js/mon.js:831 but never defined
+    is_weptool     private const in js/mkobj.js, needed by erodeable_wep
+    NON_PM, SKILLS, W_ARMG, W_WEP   not imported into monmove.js
+
+resists_ston is the interesting one: js/mon.js CALLS it at line 831 and
+nothing defines it. That is the same class of latent bug as the p_coaligned
+import that shipped without its import statement -- it does not throw only
+because the guard in front of it short-circuits on every path these sessions
+take.
+
+ORDER: define flaming and resists_ston in js/mondata.js (both are one-line
+mflags reads), add is_weptool there or duplicate it locally with a comment,
+add the four constants to monmove.js's EXISTING const.js import, verify with
+tools/undefined-refs.mjs, and only then write the arm. Do not add a new import
+edge to monmove.js under any circumstances.

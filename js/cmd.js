@@ -1,4 +1,4 @@
-import { dowield } from './wield.js';
+import { dowield, doquiver_core } from './wield.js';
 import { doread } from './read.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
@@ -465,8 +465,19 @@ async function dofire() {
        the direction read there would put the session out of step in the other
        direction. Record that case rather than consume a key for it. */
     if (!game.u.uquiver) {
-        note_unported_cmd('dofire:empty quiver prompt');
-        return ECMD_OK;
+        /* src/dothrow.c dofire() — with autoquiver off (the default) C says
+           so and then PROMPTS through doquiver_core, which calls getobj and
+           reads a key. Returning here left that key in the stream.
+           The polearm, bullwhip and fireassist arms above the message need
+           use_pole/use_whip and record. */
+        if (game.u.uwep)
+            note_unported_cmd('dofire:polearm_or_whip');
+        await You('have no ammunition readied.');
+        const res = await doquiver_core('fire');
+        if (res !== ECMD_OK && res !== ECMD_TIME)
+            return res;
+        if (!game.u.uquiver)
+            return ECMD_OK;
     }
 
     if (!await getdir(null))

@@ -955,9 +955,13 @@ function can_touch_safely(mtmp, otmp) {
         && mon_hates_silver(mtmp)
         && (otyp !== ONAMES.BELL_OF_OPENING || !is_covetous(mdat)))
         return false;
-    /* touch_artifact() needs the artifact tables; no monster on an early level
-       carries one, and it is the only remaining arm. */
-    note_unported_mon('can_touch_safely:touch_artifact');
+    /* touch_artifact() is ported above: it answers TRUE for anything that is
+       not an artifact, which is every object on an early level, and records
+       its own gap for a real artifact. Calling it is strictly better than
+       recording a second gap here, which was hiding the fact that the common
+       path was already answerable. */
+    if (!touch_artifact(otmp, mtmp))
+        return false;
     return true;
 }
 

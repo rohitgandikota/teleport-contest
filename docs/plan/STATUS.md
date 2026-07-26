@@ -27,6 +27,42 @@ advisory RNG number disagree, TRUST IT. Removing a duplicate pet_ranged_attk
 call moved a session later while the RNG proxy fell 78, and the aggregate was
 right.
 
+### THE ACTUAL BOTTLENECK: mfndpos returns too few squares
+
+Found by asking where sessions diverge rather than what is unported, which is
+what closing the -28 thread pointed at. seed4500 diverges at call 2869 and
+seed0360 at 2939 -- both very early, both in the SAME function.
+
+    2868  C rn2(5)=2    ours rn2(5)=2    ok        @ distfleeck(monmove.c:538)
+    2869  C rn2(28)=27  ours rn2(20)=7   MISMATCH  @ m_move(monmove.c:1963)
+    2870  C rn2(5)=3    ours rn2(5)=3    ok        @ distfleeck
+
+The C at monmove.c:1961 is
+
+    if (rn2(4 * (cnt - j)))
+
+so C's argument of 28 means cnt - j = 7 and our 20 means cnt - j = 5. With
+j = 0 on the first track entry, OUR mfndpos RETURNED 5 CANDIDATE SQUARES WHERE
+C RETURNED 7. Two legal squares are missing from the candidate list.
+
+Why this outranks everything else on the list below: mfndpos runs for every
+monster on every turn, its count feeds the modulus of this draw AND the
+`!rn2(++chcnt)` tie-break in the same loop, and a wrong count therefore
+desyncs the stream on essentially the first monster move of the game. It is
+almost certainly why so many sessions diverge in the 2800-3000 range rather
+than anywhere interesting.
+
+NEXT, and this is cheap: dump our mfndpos candidate list for that monster at
+that turn (seed4500, call 2869) and compare it against the eight neighbouring
+squares by hand. Two of them are being rejected that should not be. Check the
+arms most recently touched first -- js/mon.js mfndpos has poolok/lavaok,
+m_in_air/is_clinger and the ALLOW_* gates, and the notes above record that the
+poison-gas region and worm_cross arms are still unported.
+
+Do NOT start uhitm.c before this. A monster-movement count that is wrong on
+turn one makes every later measurement noisier, including any attempt to
+verify a do_attack port.
+
 ### Ranked next actions
 
 1. **uhitm.c / do_attack** (4 sessions, and probably feeds the dog_move 6).

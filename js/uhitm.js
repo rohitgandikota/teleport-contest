@@ -613,7 +613,7 @@ export function hmon_hitmon(mon, obj, thrown, dieroll) {
         return hmd.retval;
 
     if (hmd.dmg > 0)
-        note_unported_uhitm('hmon_hitmon:dmg_recalc');
+        hmon_hitmon_dmg_recalc(hmd, obj);
 
     if (hmd.ispoisoned)
         note_unported_uhitm('hmon_hitmon:poison');
@@ -867,4 +867,70 @@ function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     } else {
         note_unported_uhitm('hmon_hitmon:special_attacks');
     }
+}
+
+// src/uhitm.c:1436 hmon_hitmon_dmg_recalc() — damage, strength and skill
+// bonuses applied on top of the base roll.
+//
+// No draw of its own; dbon() and weapon_dam_bonus() are table lookups.
+// What matters here is the arithmetic, and the two scaling cases round
+// DIFFERENTLY:
+//
+//   dual attack        (3 * abs + 2) / 4    3/4 of the strength bonus
+//   two-handed melee   (3 * abs + 1) / 2    3/2 of the strength bonus
+//
+// The +2 and the +1 are not interchangeable rounding fudge -- they are what
+// make two hits at 3/4 each total more than one regular hit, while a
+// two-handed blow approximately matches a double hit. Both use sgn() so a
+// NEGATIVE strength bonus stays negative through the scaling; taking abs()
+// and dropping the sign would turn a penalty into a bonus.
+//
+// The strength bonus is skipped entirely for ammo fired from its matching
+// launcher: that gets the ring-of-increase-damage bonus but no strength.
+//
+// dbon, weapon_dam_bonus, ammo_and_launcher, PROJECTILE, weapon_type,
+// uwep_skill_type and use_skill are recorded.
+function hmon_hitmon_dmg_recalc(hmd, obj) {
+    let dmgbonus = 0, strbonus, absbonus;
+
+    if (hmd.get_dmg_bonus) {
+        /* for dual attacks, udaminc applies to both, and two-handed
+           weapons use it as-is */
+        dmgbonus = game.u.udaminc || 0;
+        if (hmd.thrown !== HMON_THROWN
+            || !obj || !game.uwep
+            || !note_unported_uhitm('dmg_recalc:ammo_and_launcher')) {
+            strbonus = note_dbon_unported();
+            absbonus = Math.abs(strbonus);
+            if (hmd.twohits)
+                strbonus = (((3 * absbonus + 2) / 4) | 0) * sgn(strbonus);
+            else if (hmd.thrown === HMON_MELEE && game.uwep
+                     && note_unported_uhitm('dmg_recalc:bimanual'))
+                strbonus = (((3 * absbonus + 1) / 2) | 0) * sgn(strbonus);
+            dmgbonus += strbonus;
+        }
+    }
+
+    if (hmd.use_weapon_skill) {
+        note_unported_uhitm('dmg_recalc:weapon_dam_bonus');
+
+        /* hit for more than minimal damage (before being adjusted for
+           damage or skill bonus) trains the skill toward future
+           enhancement */
+        if (hmd.train_weapon_skill)
+            note_unported_uhitm('dmg_recalc:use_skill');
+    }
+
+    /* apply combined damage+strength and skill bonuses */
+    hmd.dmg += dmgbonus;
+    /* don't let penalty, if bonus is negative, turn a hit into a miss */
+    if (hmd.dmg < 1)
+        hmd.dmg = 1;
+}
+
+// src/attrib.c dbon() — strength damage bonus. Not ported; returns 0 so the
+// scaling above is exercised but adds nothing.
+function note_dbon_unported() {
+    note_unported_uhitm('dmg_recalc:dbon');
+    return 0;
 }

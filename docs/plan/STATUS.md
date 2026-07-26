@@ -215,12 +215,17 @@ WHAT IS LEFT is the entry path, and it is a menu problem, not a spell problem:
 
 getspell (src/spell.c:715) either pops a queued key, or with
 flags.menu_style == MENU_TRADITIONAL builds a "Cast which spell? [a-c *?]"
-prompt and reads a letter, or otherwise opens the spell MENU. Check what
-seed0501 actually sends before choosing which arm to port -- the traditional
-letter path needs only yn_function, the menu path needs the tty menu
-subsystem, which is also what getbones' '?' arm and level_tele's '?' arm want.
-Three separate blockers converge on that one subsystem, so it is probably the
-right next big piece.
+prompt and reads a letter, or otherwise opens the spell MENU.
+
+CHECKED: seed0501's keys are  " " " " "n" "Z" "a" "." "r" "g" "y"  -- 'Z' is
+docast and 'a' picks the first spell, so it takes the TRADITIONAL LETTER path.
+No menu subsystem is needed for it. That path is num_spells(), the
+"Cast which spell? [%s *?]" prompt with its retry_limit of 10, yn_function to
+read the letter, and spell_let_to_idx. Do that, not the menu.
+
+The menu subsystem is still wanted by getbones' '?' arm and level_tele's '?'
+arm (4 + 4 sessions), so it remains a real piece of work -- just not this
+session's blocker.
 
 SUPERSEDED, kept for the dependency list:
 

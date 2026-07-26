@@ -96,15 +96,31 @@ neighbours, which is correct FOR THAT SQUARE), the question is now narrow:
 why is our newt at 77,14 when C's is somewhere with 7 open neighbours, given
 every other monster is where C has it?
 
-Two candidates, in order of cheapness:
-  1. The newt was PLACED differently. Note that call 2864 is
-     maybe_generate_rnd_mon(allmain.c:166) drawing rn2(70), and it MATCHES.
-     If the newt was created there, check what follows that draw: a matching
-     "should I generate" roll does not mean the placement that follows it
-     matched.
-  2. The newt MOVED differently on an earlier turn whose m_move draw is not
-     in the window above. Widen -w further and look for earlier moves by a
-     monster whose count sequence is consistent with a newt.
+CANDIDATE 1 (wrong placement) IS OUT. Calls 2864-2867 are just this turn's
+preamble and nothing was created:
+
+    2864  rn2(70)=64   maybe_generate_rnd_mon   ok, and NO placement draws
+                                                follow it, so the check failed
+                                                and no monster was generated
+    2865  rn2(200)=3   dosounds                 ok
+    2866  rn2(20)=9    gethungry                ok
+    2867  rn2(67)=56   moveloop_core            ok
+    2868  rn2(5)=2     distfleeck               ok
+    2869  rn2(28)      m_move                   MISMATCH
+
+So 2869 is the FIRST monster move of this turn, and the newt already existed.
+
+WHAT IS LEFT: the newt moved differently on an earlier turn. The four matching
+m_move draws at 2802/2815/2841/2851 belong to earlier turns and we do not know
+which monster each belongs to -- that is the missing piece.
+
+NEXT: tag each m_move draw with its monster. Add the monster's m_id (or mnum
+plus position) to a stderr line in our m_move next to the rn2(4 * (cnt - j)),
+run seed4500, and build the per-monster count sequence. Then find the newt's
+own earlier moves and the first one whose count differs from C's implied
+value. C's side stays readable from the log throughout. This is a
+half-hour job with a clear finish line, and it ends at the specific turn our
+newt and C's parted.
 
 That technique generalises and is the useful part of this thread: when a
 monster's position cannot be observed directly, the modulus of a draw that

@@ -102,6 +102,8 @@ export const mindless = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
 
 // include/mondata.h:19,20,27 — placement predicates read by pm_to_humidity().
 export const is_flyer   = (ptr) => (ptr.mflags1 & MFLAGS.M1_FLY) !== 0;
+// include/mondata.h:22 is_clinger()
+export const is_clinger = (ptr) => (ptr.mflags1 & MFLAGS.M1_CLING) !== 0;
 export const is_floater = (ptr) => ptr.mlet === MONSYMS.S_EYE
                                 || ptr.mlet === MONSYMS.S_LIGHT;
 export const amphibious = (ptr) => (ptr.mflags1 & MFLAGS.M1_AMPHIBIOUS) !== 0;

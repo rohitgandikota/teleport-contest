@@ -15,8 +15,11 @@ import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER } from './monst.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+import { has_ceiling } from './dungeon.js';
+import { Is_waterlevel } from './const.js';
 import {
     bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
+    is_clinger, is_flyer, is_floater,
 } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver } from './dog.js';
@@ -111,6 +114,18 @@ import { dochug } from './monmove.js';
 // note_unported_mon() where they would matter rather than silently dropped, so
 // a session that does reach one shows up in game.unported instead of quietly
 // diverging.
+// src/mon.c:2130 m_in_air() — is this monster off the ground right now?
+//
+// mfndpos() reads it twice, for poolok and lavaok, and a flyer that cannot swim
+// is exactly the case the port was getting wrong: without this, water and lava
+// squares were dropped from the candidate list, so cnt came out short and the
+// rn2(4 * (cnt - j)) inside m_move() drew the wrong bound.
+export function m_in_air(mtmp) {
+    return is_flyer(mtmp.data)
+        || is_floater(mtmp.data)
+        || (is_clinger(mtmp.data) && has_ceiling(game.u?.uz) && mtmp.mundetected);
+}
+
 export function mfndpos(mon, data, flag) {
     const mdat = mon.data;
     const map = game.level;
@@ -123,8 +138,11 @@ export function mfndpos(mon, data, flag) {
 
     const nodiag = NODIAG(mdat);
     let wantpool = (mdat.mlet === MONSYMS.S_EEL);
-    const poolok = is_swimmer(mdat) && !wantpool;
-    const lavaok = likes_lava(mdat);
+    const poolok = ((!Is_waterlevel(game.u?.uz) && m_in_air(mon))
+                    || (is_swimmer(mdat) && !wantpool));
+    let lavaok = (m_in_air(mon) || likes_lava(mdat));
+    if (mdat.pmidx === PMNAMES.PM_FLOATING_EYE)  /* prefers to avoid heat */
+        lavaok = false;
     let rockok = false, treeok = false, mw_tmp;
     let thrudoor = ((flag & (ALLOW_WALL | BUSTDOOR)) !== 0);
 

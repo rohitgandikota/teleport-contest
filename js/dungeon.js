@@ -11,6 +11,7 @@
 // docs/plan/04-level-generation.md §4.0.
 
 import { game } from './gstate.js';
+import { In_endgame, Is_earthlevel } from './const.js';
 import { rn2, rn1 } from './rng.js';
 import { dungeon as DUNGEON_DATA } from './dungeon_data.js';
 
@@ -636,4 +637,12 @@ function Is_stronghold(lev) {
 // include/dungeon.h:139 In_sokoban()
 export function In_sokoban(lev) {
     return lev.dnum === game.sokoban_dnum;
+}
+
+// src/dungeon.c:1690 has_ceiling() — false only in the endgame planes other
+// than the Plane of Earth.
+export function has_ceiling(lev) {
+    if (In_endgame(lev) && !Is_earthlevel(lev))
+        return false;
+    return true;
 }

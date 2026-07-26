@@ -300,6 +300,37 @@ both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 
+### RESOLVED: seed2200's cell was a STATUE, not a monster
+
+statue_to_glyph (include/display.h:950) makes a STATUE into
+corpsenm + GLYPH_STATUE_*_OFF, and src/display.c:2829 resolves it as
+
+    gmap->sym.symidx = mons[offset].mlet + SYM_OFF_M;   /* MONSTER's symbol */
+    obj_color(STATUE);                                  /* STATUE's colour  */
+
+so a grid bug statue is an 'x' in stone grey. We drew '`' in the object's
+colour. Fixed; 473 -> 482 screens, seed2200 step 0 -> 4.
+
+Note the asymmetry with the corpse case: a corpse changes only COLOUR, because
+a body glyph and a food object are both '%'. A statue changes SYMBOL TOO.
+
+### The same glyph family explains seed0030, but the cause is different
+
+seed0030's first diff is r5 c55: C 'f' color 15, ours '$' color 11.
+objects[STATUE].oc_color is 15, and 'f' is a kitten's letter -- so C is
+drawing a STATUE OF A KITTEN there, and we are drawing GOLD.
+
+That is NOT the glyph bug just fixed: our display would render a statue
+correctly now. It is PILE ORDER. js/display.js finds the first object at the
+square in a newest-first list; C shows the pile top. Both place_object
+implementations prepend, so a divergence means one object reached the square
+by a path that does not prepend -- mkgold merging into an existing pile
+(gold.quan += amount) is the obvious candidate, since it re-uses the existing
+object rather than placing a new one.
+
+seed0030's RNG matches through level generation (it diverges at 6276), so both
+objects exist on both sides; only their order differs.
+
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 
 Ranked by first-mismatch size, the cheapest remaining screen diffs are:

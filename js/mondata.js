@@ -30,6 +30,11 @@ export const needspick    = (d) => (d.mflags1 & MFLAGS.M1_NEEDPICK) !== 0;
 export const nohands    = (d) => (d.mflags1 & MFLAGS.M1_NOHANDS) !== 0;
 export const verysmall  = (d) => d.msize < MFLAGS.MZ_SMALL;
 export const is_giant   = (d) => (d.mflags2 & MFLAGS.M2_GIANT) !== 0;
+// include/mondata.h:114 is_neuter() — was defined in js/makemon.js, which is
+// not its C home; js/role.js still carries a third private copy.
+export const is_neuter  = (ptr) => (ptr.mflags2 & MFLAGS.M2_NEUTER) !== 0;
+// include/mondata.h:135 type_is_pname() — was private to js/questpgr.js.
+export const type_is_pname = (ptr) => (ptr.mflags2 & MFLAGS.M2_PNAME) !== 0;
 export const tunnels    = (d) => (d.mflags1 & MFLAGS.M1_TUNNEL) !== 0;
 export const passes_walls = (d) => (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
 export const throws_rocks = (d) => (d.mflags2 & MFLAGS.M2_ROCKTHROW) !== 0;

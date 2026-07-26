@@ -533,6 +533,7 @@ export const AMII_LOUDER_VOLUME = 80;
 // ===== monflag.h =====
 export const NEUTRAL = (FEMALE + 1);
 export const NUM_MGENDERS = (NEUTRAL + 1);
+export const G_UNIQ = 0x1000;   /* monflag.h:194 generated only once */
 export const G_KNOWN = 0x04;
 export const G_GENOD = 0x02;
 export const G_EXTINCT = 0x01;

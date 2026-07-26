@@ -4047,3 +4047,42 @@ before and after, per the method note above.
 DO NOT port the conditions alone as a way to "get the draws right". The rn2
 would land correctly and then mkshop's absence would desync a few calls later,
 which reads as progress on the RNG proxy while leaving the level wrong.
+
+## Special-room subsystem: LANDED (except mktemple)
+
+The gap recorded above is closed apart from one arm. js/mkroom.js now exists
+with do_mkroom, mkshop, pick_room, mkzoo, mkswamp, isbig, has_dnstairs,
+has_upstairs, invalid_shop_shape, nexttodoor and the shtypes table, and the
+depth-gated chain is wired into makelevel between the vault block and
+place_branch, which is exactly where C has it.
+
+    RNG 136,523 -> 140,488   (+3,965)
+    screens 492, unchanged;  sessions 1/44, unchanged
+    makelevel(mklev.c:1350) DROPS OUT of the first-mismatch aggregate
+
+Nearly all of that came from mkshop and the chain conditions. pick_room and
+mkzoo added 4, and mkswamp added 0, because those arms are gated on depth
+greater than 4 and 15 respectively and the sessions mostly generate shallow
+levels. That is the expected shape, not a disappointment: the shop arm is the
+one that fires at depth 2 and 3, and it is the one that paid.
+
+WHAT IS STILL OPEN HERE, in the order it is worth doing:
+
+1. mktemple (src/mkroom.c:598). The last arm. NOT small: it needs shrine_pos,
+   induced_align(80) which DRAWS, and priestini, which creates the temple
+   priest. Gated on u_depth > 8.
+2. antholemon (src/mkroom.c:502) needs ubirthday, the game start timestamp,
+   which we do not model. The session JSON carries a datetime per segment, so
+   the value is available in principle. Until then the ANTHOLE arm falls
+   through and we draw the following rn2(4) that C does not, on levels below
+   depth 12 only.
+3. fill_zoo (src/mkroom.c:275) and the shop stocking. Both rooms are currently
+   MARKED but not FILLED. mkshop and mkzoo only set rtype and needfill, which
+   is faithful, and C stocks them at the end of makelevel through the
+   fill_special_room pass we already run for the vault. VERIFY that our pass
+   actually reaches these new rooms; if it does not, the levels have empty
+   shops and zoos and the divergence will show up as missing objects and
+   monsters rather than as a missing draw.
+
+Item 3 is the one to check first, and it is cheap: count objects and monsters
+on a depth-2 level and see whether the shop room has stock.

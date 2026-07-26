@@ -217,7 +217,7 @@ export function eatfood() {
         food = null;
     if (!food) {
         /* maybe it was stolen? */
-        note_unported_eat('eatfood:do_reset_eat');
+        do_reset_eat();
         return 0;
     }
     if (!v.eating)
@@ -228,7 +228,7 @@ export function eatfood() {
             return 0;
         return 1;                       /* still busy */
     }
-    note_unported_eat('eatfood:done_eating');
+    done_eating(true);
     return 0;
 }
 
@@ -237,3 +237,48 @@ const carried = (o) => (game.invent || []).includes(o);
 
 // src/invent.c obj_here() — is this object on that square?
 const obj_here = (o, x, y) => o.ox === x && o.oy === y;
+
+// src/eat.c done_eating() — the meal finished normally.
+//
+// Order matters: go.occupation is cleared BEFORE newuhs(), with the C's own
+// comment "do this early, so newuhs() knows we're done". newuhs recomputes the
+// hunger state, and it reads whether an occupation is running.
+export function done_eating(message) {
+    const v = game.context.victual;
+    const piece = v.piece;
+
+    if (piece)
+        piece.in_use = true;
+    game.occupation = null;             /* early, so newuhs knows we're done */
+    note_unported_eat('done_eating:newuhs');
+
+    if (message)
+        note_unported_eat('done_eating:message');
+
+    /* cpostfx/fpostfx are the food's after-effects and need the corpse and
+       food-effect tables; useup/useupf remove it from inventory or floor. */
+    note_unported_eat('done_eating:postfx_and_useup');
+
+    game.context.victual = {};          /* zero_victual */
+}
+
+// src/eat.c do_reset_eat() — the meal was interrupted.
+//
+// canchoke is deliberately NOT cleared: the C comment says so outright, because
+// resuming the same food has to remember whether the hero was Satiated when
+// they STARTED it. Clearing it here would let a hero resume a meal that should
+// still kill them.
+export function do_reset_eat() {
+    const v = game.context.victual;
+
+    if (v?.piece) {
+        v.o_id = 0;
+        note_unported_eat('do_reset_eat:touchfood');
+    }
+    if (v) {
+        v.fullwarn = 0;
+        v.eating = 0;
+        v.doreset = 0;
+        /* canchoke intentionally left alone */
+    }
+}

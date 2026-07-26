@@ -20,7 +20,7 @@ import { touch_petrifies } from './dog.js';
 import { resists_ston } from './mon.js';
 import { MON_WEP, mon_offmap } from './monst.js';
 import { PMNAMES } from './monst_data.js';
-import { MATTK_AATYP, MATTK_ADTYP, MATTK_DAMN, MATTK_DAMD } from './const.js';
+import { MATTK_AATYP, MATTK_ADTYP, MATTK_DAMN, MATTK_DAMD, NATTK } from './const.js';
 import { MATERIALS } from './objects_data.js';
 import { shade_miss } from './uhitm.js';
 import { s_suffix } from './hacklib.js';
@@ -246,4 +246,54 @@ export function hitmm(magr, mdef, mattk, mwep, dieroll) {
 
 function note_mhitm_unported(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/mhitm.c:? passivemm() — the DEFENDER's passive counter-attack, run
+// after every attack mattackm makes.
+//
+// Two things here are easy to get wrong.
+//
+// First, the passive attack is stored in the slot whose aatyp is AT_NONE,
+// not in a dedicated field, and the loop scans for it. A monster with no
+// such slot -- most monsters, including every early-game pet target --
+// returns immediately and DRAWS NOTHING. Rolling unconditionally would add
+// a draw to every blow in the game.
+//
+// Second, when a passive DOES exist the roll has three shapes: d(damn, damd)
+// when damn is set, d(mlevel + 1, damd) when only damd is, and 0 when
+// neither. The middle one scales with the defender's level and is the one a
+// from-memory port would miss.
+//
+// The per-adtyp switch that follows is recorded by damage type, the same way
+// mhitm_adtyping records its arms, so game.unported names which passive was
+// reached rather than lumping them together.
+export function passivemm(magr, mdef, mhitb, mdead, mwep) {
+    const mddat = mdef.data;
+    const mhit = mhitb ? M_ATTK_HIT : M_ATTK_MISS;
+    let i, tmp;
+
+    for (i = 0; ; i++) {
+        if (i >= NATTK)
+            return (mdead | mhit); /* no passive attacks */
+        if (mddat.mattk[i][MATTK_AATYP] === ATTKS.AT_NONE)
+            break;
+    }
+
+    const damn = mddat.mattk[i][MATTK_DAMN], damd = mddat.mattk[i][MATTK_DAMD];
+    if (damn)
+        tmp = d(damn, damd);
+    else if (damd)
+        tmp = d((mddat.mlevel | 0) + 1, damd);
+    else
+        tmp = 0;
+
+    /* These affect the enemy even if defender killed */
+    const adtyp = mddat.mattk[i][MATTK_ADTYP];
+    for (const [name, code] of Object.entries(ATTKS)) {
+        if (name.startsWith('AD_') && code === adtyp) {
+            (game.unported ||= new Set()).add(`passivemm:${name}`);
+            break;
+        }
+    }
+    return (mdead | mhit);
 }

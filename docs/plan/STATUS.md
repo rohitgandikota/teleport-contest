@@ -5083,9 +5083,11 @@ REVISED ORDER AGAIN:
      mondata.js -- but removing them forces the mondata import that helps
      trigger the cycle. Consider leaving them and NOT importing mondata.js
      into monmove.js at all.
-  2. For the arms, prefer reading predicates off `game` (the pattern that
-     worked for in_rooms) over adding import edges to monmove.js. It is
-     uglier and it is the only approach measured not to perturb the graph.
+  2. SUPERSEDED. That said "prefer reading predicates off `game` over adding
+     import edges to monmove.js". Testing each edge individually later showed
+     dog.js, mkobj.js, obj.js and mon.js are all SAFE imports from monmove.js;
+     only hack.js and a priest.js re-export fail. Import normally and test the
+     edge; use the game-object pattern only for the two that fail.
   3. Verify with tools/undefined-refs.mjs AND run the scoreboard after EACH
      import change, not once at the end. Three of the last five reverts were
      import-graph problems that a per-edge measurement would have caught

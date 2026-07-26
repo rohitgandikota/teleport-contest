@@ -1467,6 +1467,28 @@ is fine and does not regress. It was the RE-EXPORT that broke things. So the
 rule is not "never add imports" -- it is "measure the corpus after any change
 to the module graph, including one that only moves code between files".
 
+LATER CORRECTION, and it matters because I drew the wrong conclusion twice.
+After these failures I adopted "no new import edge into monmove.js under any
+circumstances" and duplicated seven helpers locally to obey it. Testing the
+edges ONE AT A TIME afterwards showed that rule was far too broad:
+
+    monmove.js -> dog.js     safe
+    monmove.js -> mkobj.js   safe
+    monmove.js -> obj.js     safe
+    monmove.js -> mon.js     safe (already a working cycle)
+    monmove.js -> hack.js    FAILS
+    monmove.js -> priest.js  FAILS (re-export only)
+
+Four of those duplicates were reclaimed once each edge was tested, taking
+dup-defs 155 -> 151. One of the failures I had recorded, "importing
+Is_container from obj.js costs 129 screens", turned out to be a malformed
+import anchor rather than a cycle at all.
+
+THE GENERALISABLE MISTAKE: one failing edge tells you THAT edge is bad, not
+that the class is bad. Generalising from a single measurement produced a rule
+that cost real architectural debt and a false entry in this file. Test each
+edge; it is about one command each.
+
 ## A no-op change that "fixes" nothing will not tell you it did nothing
 
 I changed mon_resistancebits and resists_poison from reading mon.data.mresists

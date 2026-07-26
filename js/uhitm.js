@@ -23,7 +23,7 @@ import { worn } from './do_wear.js';
 import { is_orc } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
-import { W_ARM, W_ARMS } from './const.js';
+import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -186,3 +186,32 @@ const Race_if = (pm) => game.urace?.malenum === pm || game.urace?.pmidx === pm;
    cannot be imported here without closing a cycle. */
 const martial_bonus = () =>
     Role_if(PMNAMES.PM_SAMURAI) || Role_if(PMNAMES.PM_MONK);
+
+// src/uhitm.c mon_maybe_unparalyze() — a paralysed monster may snap out of it.
+//
+// DRAWS, and the draw is unconditional on the monster being unable to move:
+// hitum calls this between find_roll_to_hit and its own rnd(20), so a frozen
+// target costs an rn2(10) that a mobile one does not.
+export function mon_maybe_unparalyze(mtmp) {
+    if (!mtmp.mcanmove) {
+        if (!rn2(10)) {
+            mtmp.mcanmove = 1;
+            mtmp.mfrozen = 0;
+        }
+    }
+}
+
+// src/uhitm.c double_punch() — chance of a second bare-handed hit.
+//
+// DRAWS rn2(5), but ONLY when bare-handed above Basic skill. C's own table:
+// unskilled and basic 0%, skilled 20%, expert 40%, master 60%, grandmaster
+// 80%. Note the guard is `!uwep && !uarms` -- a shield suppresses it as
+// surely as a weapon does.
+export function double_punch() {
+    /* P_BARE_HANDED_COMBAT and P_MARTIAL_ARTS are the same skill */
+    const skl_lvl = game.u.weapon_skills[P_BARE_HANDED_COMBAT].skill;
+
+    if (!game.u.uwep && !worn(W_ARMS) && skl_lvl > P_BASIC)
+        return (skl_lvl - P_BASIC) > rn2(5);
+    return false;
+}

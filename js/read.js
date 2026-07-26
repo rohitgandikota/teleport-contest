@@ -15,7 +15,8 @@ import { ECMD_OK, ECMD_TIME } from './invent.js';
 import { ECMD_CANCEL, GETOBJ_PROMPT, EXT_ENCUMBER } from './const.js';
 import { near_capacity } from './attrib.js';
 import { You_cant } from './pline.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
+import { pline } from './display.js';
 
 // src/hack.c check_capacity() — refuse an action while overloaded.
 export async function check_capacity(str) {
@@ -41,6 +42,17 @@ export async function doread(read_ok) {
         return ECMD_CANCEL;
 
     scroll.pickup_prev = 0; /* no longer 'just picked up' */
+
+    /* src/read.c — reading something that is neither a scroll nor a
+       spellbook. read_ok returns GETOBJ_DOWNPLAY for those rather than
+       EXCLUDE, so the letter is still selectable and this arm is genuinely
+       reachable. silly_thing_to is "That is a silly thing to %s."
+       (src/decl.c:43). No turn is spent. */
+    if (scroll.oclass !== OCLASSES.SCROLL_CLASS
+        && scroll.oclass !== OCLASSES.SPBOOK_CLASS) {
+        await pline('That is a silly thing to read.');
+        return ECMD_OK;
+    }
 
     /* src/read.c — the per-item switch. Each arm needs its own subsystem
        (rumours, spellbook study, the scroll effects table), so the item is

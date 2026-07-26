@@ -62,7 +62,7 @@ export async function wiz_level_change() {
             return ECMD_OK;
         }
         while (game.u.ulevel < newlevel)
-            pluslvl(false);
+            await pluslvl(false);
     }
 
     /* blessed full healing or restore ability won't fix any lost levels */

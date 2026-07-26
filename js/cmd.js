@@ -400,7 +400,7 @@ export async function rhack(key) {
         game.context.move = (dosearch() ? 1 : 0);
     } else if (ch === '+') {
         // src/cmd.c cmdlist — '+' is dovspell.
-        game.context.move = (dovspell() === ECMD_TIME ? 1 : 0);
+        game.context.move = ((await dovspell()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'i') {
         // src/cmd.c cmdlist — 'i' is ddoinv, which returns ECMD_OK.
         game.context.move = 0;
@@ -500,7 +500,7 @@ export async function rhack(key) {
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.
-        game.context.move = (dolook() === ECMD_TIME ? 1 : 0);
+        game.context.move = ((await dolook()) === ECMD_TIME ? 1 : 0);
     } else if (KNOWN_UNPORTED.has(ch)) {
         // C recognises these keys and does real work for them; we have not
         // ported that work yet. Emitting "Unknown command" here would be

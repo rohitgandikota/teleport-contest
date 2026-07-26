@@ -152,7 +152,7 @@ function note_unported_eat(what) {
 //
 // The rn2(20) is the only draw, and it is short-circuited by Breathless or
 // Hunger, so a hero with either spends nothing here.
-export function choke(food) {
+export async function choke(food) {
     /* only happens if you were satiated */
     if (game.u.uhs !== SATIATED) {
         if (!food || food.otyp !== ONAMES.AMULET_OF_STRANGULATION)
@@ -174,9 +174,9 @@ export function choke(food) {
     }
 
     game.killer = { format: KILLED_BY, name: 'quick snack' };
-    pline('You choke over it.');
-    pline('You die...');
-    done(CHOKING);
+    await pline('You choke over it.');
+    await pline('You die...');
+    await done(CHOKING);
 }
 
 // src/eat.c:3132 bite() — one turn of eating. Returns 1 if the hero choked and

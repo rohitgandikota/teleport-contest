@@ -13,6 +13,7 @@ import { is_rider } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { pline } from './display.js';
+import { You } from './pline.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
@@ -25,24 +26,20 @@ export const ECMD_TIME = 1;
 // feature and not blind, C prints "You see no objects here." and returns
 // ECMD_OK — so looking does NOT consume a turn. Objects, dungeon features and
 // engravings join this function as those subsystems land.
-export function look_here(obj_cnt, lhflags) {
+export async function look_here(obj_cnt, lhflags) {
     const Blind = !!game.u?.ublind;
     const verb = Blind ? 'feel' : 'see';
 
     /* no objects at the hero's square yet, because objects are not ported */
-    You(`${verb} no objects here.`);
+    await You(`${verb} no objects here.`);
     return Blind ? ECMD_TIME : ECMD_OK;
 }
 
 // src/invent.c:4319 dolook()
-export function dolook() {
-    return look_here(0, 0);
+export async function dolook() {
+    return await look_here(0, 0);
 }
 
-// src/pline.c You() — "You " prefix on a message.
-function You(msg) {
-    pline(`You ${msg}`);
-}
 
 // ---------------------------------------------------------------------------
 // Inventory display

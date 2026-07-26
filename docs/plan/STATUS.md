@@ -1,3 +1,45 @@
+=== SESSION STATE: 510/11405 screens, RNG 140589/792838, 1/44 sessions ===
+
+WHAT THIS SESSION DID, in short: ported ~35 functions, wired the run loop,
+and audited the unported ledger. The audit was the highest-value part and is
+described in the block below. Fifteen recorded gaps were false; one of those
+was a live bug (mpickstuff took objects off the floor and gave them to nobody,
+so they vanished) and one was an inverted predicate chain (note_unported used
+AS A BOOLEAN made every corpse read as non-petrifying).
+
+TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
+
+    100%  topl:remember_topl          ^P history, no screen output. Correctly
+                                      deprioritised -- porting it cannot move
+                                      a single cell.
+     41%  dog_move attack branch      BLOCKED on mattackm. ~900 lines with its
+                                      chain (mattackm 299 + hitmm 88 +
+                                      mdamagem 104 + mhitm_adtyping 51 +
+                                      mhitm_ad_phys 220 + passivemm 154).
+                                      The leaf layer IS done: noises,
+                                      pre_mm_attack, missmm, could_seduce,
+                                      pronoun_gender, mon_nam_too, You_hear.
+                                      Do NOT port the decision without
+                                      mattackm -- the pet would decide to
+                                      attack and then do nothing, which is
+                                      worse than declining.
+     39%  pet_ranged_attk:attack      Same blocker.
+     39%  done_eating:fpostfx         fpostfx is 90 lines; cpostfx 199.
+     27%  dog_invent:check_gear...    Small, needs check_gear_next_turn.
+     27%  drop:levitation_and_msg     VERIFIED REAL: all five deps missing
+                                      (can_reach_floor, dosinkring, hitfloor,
+                                      float_down, finesse_ahriman).
+     27%  freeinv_core:uhave_arti...   Needs u.uhave, not tracked at all.
+     27%  dropz:flooreffects          198 lines.
+     25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
+                                      chain is unsized.
+
+THE HEURISTIC THAT KEPT WORKING: before sizing a gap, check whether its
+dependencies are ALREADY PORTED. Five entries this session fell for a few
+dozen lines each that way (stackobj, impact_disturbs_zombies, useupf,
+confers_luck, dog_invent pickup) because their real work -- merged(),
+is_flimsy(), splitobj(), delobj() -- was already sitting there.
+
 === THE unported AUDIT: SIX FALSE GAPS, ONE REAL DEFECT ===
 Current: 510/11405 screens, RNG 140679/792838, 1/44 sessions.
 

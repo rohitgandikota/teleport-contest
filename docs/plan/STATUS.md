@@ -320,13 +320,22 @@ The 'x' at column 9 IS the window border. The 'x' at column 16 sits in the
 middle of the floor ('~' on both sides) with an object '(' beside it, so it is
 a grid bug. C has a monster at map (17,10).
 
-Our level at that moment holds three monsters: 23,10 / 75,6 / 42,4. Note the
-FIRST one -- map y 10, the same row, six columns right of C's. So this is a
-monster at the right row and the wrong column, not a missing one.
+MEASURED FACTS ONLY, because three successive readings of this cell were
+wrong. Instrumenting makemon at seed2200 step 0 gives all three of our
+monsters and where each came from:
 
-That is a strong, cheap probe: same row, wrong column, at step 0 with no
-gameplay in between. Compare the placement draws for that monster against C's
-at level generation.
+    mndx=158  at 42,4   <- fill_ordinary_room
+    mndx=158  at 75,6   <- fill_ordinary_room
+    mndx=32   at 23,10  <- makedog          (this is the PET)
+
+So the monster on row 10 is the starting pet, and the "same row, six columns
+off" reading was coincidence. C's grid bug at map (17,10) has no counterpart
+in our level at all -- we create two fill_ordinary_room monsters and a pet,
+and C evidently creates at least one more.
+
+That is where to look: the monster COUNT at level generation, not a placement
+offset. Compare how many makemon calls C makes during mklev against ours for
+this seed, using the RNG log's tags rather than the screen.
 
 I retracted this reading once on the grounds that 'x' is a border glyph. That
 retraction was WRONG -- the glyph is ambiguous and only its neighbours settle

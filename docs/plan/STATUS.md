@@ -198,16 +198,24 @@ full; it draws NOTHING, and here is exactly what it needs:
       js/do_wear.js reads game.invent by owornmask, so these are reachable
   weight(uarms) vs objects[SMALL_SHIELD].oc_weight — both present
 
-THE BLOCKER is P_SKILL(skilltype), i.e. u.weapon_skills[]. That array is not
-modelled at all: js/u_init.js's u_init_skills_discoveries only walks invent and
-calls ini_inv_use_obj. Without it, `skill = max(P_SKILL(t), P_UNSKILLED) - 1`
-has no source, and skill feeds difficulty, which feeds the whole chance.
+THE BLOCKER WAS P_SKILL(skilltype), i.e. u.weapon_skills[], which did not
+exist. That is now DONE: js/weapon.js carries skill_init and weapon_type, and
+u_init_skills_discoveries calls skill_init(skills_for_role()) at C's position
+(src/u_init.c:1404). It draws nothing, so the corpus is unchanged by it.
 
-So the order is: port u.weapon_skills and the role skill table's
-initialisation FIRST (src/u_init.c, the role's skills[] applied at game start),
-then spellev + spell_skilltype + isqrt, then percent_success, then
-spelleffects_check. Do not start percent_success before the skill array
-exists; it cannot be right without it.
+Remaining for percent_success, in order:
+
+  1. spellev(spell) and spell_skilltype() -- spell_skilltype already exists in
+     js/u_init.js as objects[booktype].oc_subtyp; move it to js/spell.js, its
+     C home, rather than adding a second copy
+  2. isqrt (src/hacklib.c:682) into js/hacklib.js -- the odd-number
+     subtraction loop, six lines
+  3. percent_success itself into js/spell.js
+  4. spelleffects_check, then docast/spelleffects around it
+
+The worn-item reads (uarm, uarmc, uarms, uarmh, uarmg, uarmf, uwep) go through
+js/do_wear.js's owornmask lookup, which is already there. The three armour
+bonuses are literals in src/spell.c:106 -- uarmhbon 4, uarmgbon 6, uarmfbon 2.
 
 ### Every sub-1000 divergence is now cleared; the earliest is 1956
 

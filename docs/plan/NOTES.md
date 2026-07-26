@@ -1204,3 +1204,33 @@ screens in one session and quietly break the only PASSING session, and the
 total still goes up. Read the `sessions passed N/44` line every time, not just
 the screen count: seed8000 went from 23/23 to 21/23 and the total still rose,
 so the pass count was the only visible signal.
+
+## A duplicated definition with a DIFFERENT body is invisible to every metric
+
+`tools/dup-defs.mjs` reports names defined in more than one module and whether
+the definitions agree. Both copies compile, both look right, and whichever one
+the caller imported wins, so nothing in the score ever points at it.
+
+First runs found, all real:
+
+  - MMOVE_DIED and MMOVE_MOVED were SWAPPED in js/monmove.js against
+    include/hack.h:1322, and js/dog.js had a THIRD copy with MMOVE_MOVED set
+    to C's DIED value and no MMOVE_DIED at all -- dog_move's death return was
+    an unbound name that would have thrown the first time a pet died
+  - W_QUIVER was 0x0800 in js/u_init.js and js/objnam.js where
+    include/prop.h:111 says 0x0200; the two agreed with each other so the
+    display still worked
+  - curse() in js/mklev.js set cursed and nothing else, missing C's
+    COIN_CLASS early return and the blessed clear
+  - carried() in js/eat.js tested membership of game.invent where
+    include/obj.h:332 tests obj->where == OBJ_INVENT
+  - Is_rogue_level in js/mkobj.js tested a level flag nothing sets, against
+    js/const.js's real Lcheck
+  - depth() and dist2() each existed twice, in the right file and a wrong one
+
+Run it after touching anything shared. Most of what it reports is textual
+(a multi-declarator `const A = 0, B = 1;` versus separate lines), so read the
+bodies rather than the count. The `--all` flag lists the identical duplicates
+too, which are still architecture drift: a header macro belongs in the JS
+mirror of that header (js/obj.js, js/monst.js, js/mondata.js), not copied into
+every file that needs it.

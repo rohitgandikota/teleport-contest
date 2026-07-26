@@ -701,13 +701,35 @@ OBJECT BENEATH IT, so an object under the pony would be invisible on both
 sides. That is consistent with C having a row-5 object we lack and cannot be
 used to rule it out.
 
-NEXT, and prefer this over more screen-reading: print our full level.objects
-with coordinates at turn 5 (not just what dog_goal's box admits), and check
-whether ANY object sits at row 5. If none does, the object is missing from
-our level entirely and the question moves to level generation -- which
-mkobj_at/place_object site should have created it. If one does sit there but
-dog_goal never sees it, the bounding box or the loop filter is at fault after
-all.
+FULL OBJECT LIST DUMPED at turn 5 -- 27 objects. Only TWO sit on row 5:
+
+    40,5/c7    46,5/c14
+
+Both are far from the pet at x=69 and well outside SQSRCHRADIUS, so neither
+can be C's goal. THERE IS NO ROW-5 OBJECT NEAR THE PET ON EITHER SIDE, and
+the "C found an object goal we rejected" reading does not survive.
+
+THAT REOPENS THE DERIVATION. gy = 5 came from assuming (69,4) was the
+previous best when C evaluated (69,6), because that is what OUR trace shows.
+If C's loop reached (69,6) with a different nidist -- because it took a
+different candidate earlier, or because its candidate ORDER differs -- the
+equation has a different solution and gy = 5 is wrong.
+
+DO NOT KEEP BUILDING ON gy = 5. The next step is to stop inferring C's state
+from single equations and get C's actual per-candidate numbers: find whether
+the C source tree ships a debug/trace build, or whether the recorded session
+carries anything beyond screens and keystrokes. If neither exists, this
+divergence may not be resolvable by inference at all, and the remaining
+approach is to port the surrounding code faithfully and re-measure rather
+than to solve for C's internals.
+
+STEPPING BACK: this trail has consumed a great many ticks. The verified fixes
+it produced are real (three goodpos arms, the mkobj_at duplicate, the
+droppables stub) but the original divergence is unresolved and each layer has
+revealed another. Consider whether the remaining effort is better spent on
+the large absent subsystems in this file's list -- xkilled at 263 lines, the
+tty menu that blocks getbones across four sessions, uppercase movement --
+where the work is porting rather than archaeology.
 
 Note display row = map row + 3 for this session's layout; that offset has
 already caused one wrong reading in this file (the '(57,4) vs column 55'

@@ -14,7 +14,7 @@ import { growl } from './sounds.js';
 import { sengr_at } from './engrave.js';
 import { Monnam } from './do_name.js';
 import { hot_pursuit } from './shk.js';
-import { is_metallic } from './obj.js';
+import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
@@ -1157,11 +1157,10 @@ export function mpickstuff(mtmp) {
     for (const otmp of here) {
         /* avoid special items; once the hero picks them up they cease being
            special and become eligible for normal pickup */
-        /* src/mon.c — mines/Sokoban prizes are skipped until the hero has
-           picked them up. Neither predicate exists in js/ yet; both are
-           recorded, so the skip cannot fire and a prize would be taken. */
-        note_unported_mon('mpickstuff:is_mines_prize');
-        note_unported_mon('mpickstuff:is_soko_prize');
+        /* avoid special items; once the hero picks them up they cease being
+           special and become eligible for normal pickup */
+        if (is_mines_prize(otmp) || is_soko_prize(otmp))
+            continue;
 
         /* Nymphs take everything.  Most monsters don't pick up corpses. */
         if (mon_would_take_item(mtmp, otmp)) {

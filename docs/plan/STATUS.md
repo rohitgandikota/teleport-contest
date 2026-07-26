@@ -1,3 +1,44 @@
+
+=== NEXT ACTION (lookaround is ported; only the wiring is left) ===
+
+lookaround() and its whole leaf chain are committed and verified by forced
+execution. The score is unchanged at 510 because NOTHING CALLS IT YET, and
+that is the entire remaining task. Do this next, in this order:
+
+1. domove() signature. C's is domove(void) and reads u.dx/u.dy; ours is
+   domove(dx, dy) in js/cmd.js:670. moveloop calls it with no arguments, so
+   the signature has to match C before the branch below can call it. Set
+   u.dx/u.dy at the call sites that currently pass arguments.
+
+2. The moveloop branch, src/allmain.c:515. The port's moveloop
+   (js/allmain.js:519) goes from the occupation check straight to rhack and
+   has no multi>0 branch at all. C:
+
+       if (gm.multi > 0) {
+           lookaround();
+           if (!gm.multi) { svc.context.move = 0; return; }  // lookaround cleared it
+           if (svc.context.mv) {
+               if (gm.multi < COLNO && !--gm.multi) end_running(TRUE);
+               domove();
+           } else {
+               --gm.multi;
+               rhack(gc.cmd_key);
+           }
+       }
+
+   Note lookaround stops the run by calling nomul(0), which zeroes multi --
+   that is why the !gm.multi test sits immediately after the call.
+
+3. The rush prefix must set multi and context.mv. Until it does, multi is
+   never > 0 from movement and the branch is dead code.
+
+4. THEN delete the recorded gap at js/cmd.js:679 and the context.run = 0 on
+   the line after it, plus the one at js/cmd.js:574. Those two are the
+   placeholders this replaces; end_running() is now the real way to zero run.
+
+Do NOT add HJKLYUBN to isMovementKey as part of this. That trades a visible
+"Unknown command" for an invisible wrong distance and is not the fix.
+
 # STATUS
 
 ## START HERE

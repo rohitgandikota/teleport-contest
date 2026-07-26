@@ -2131,6 +2131,19 @@ function mkgrave_room(croom) {
 async function fill_ordinary_room(croom, bonus_items) {
     const g = game;
     if (!croom || (croom.rtype !== OROOM && croom.rtype !== THEMEROOM)) return;
+
+    /* src/mklev.c:952 — the subroom recursion sits BETWEEN the two guards, and
+       the C says why: "we don't want an outer room that's specified to be
+       unfilled to block an inner subroom that's specified to be filled."
+       Putting it after the needfill check, which is where it naturally wants to
+       go, silently skips every subroom of an unfilled room. */
+    for (let x = 0; x < (croom.nsubrooms || 0); ++x) {
+        const subroom = croom.sbrooms[x];
+        if (!subroom)
+            return;                     /* impossible("Null subroom") */
+        await fill_ordinary_room(subroom, false);
+    }
+
     if (croom.needfill !== FILL_NORMAL) return;
 
     const pos = { x: 0, y: 0 };

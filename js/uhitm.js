@@ -58,6 +58,40 @@ const is_longworm = (ptr) =>
 // src/mon.c helpless()
 /* helpless() lives in js/monst.js, matching include/monst.h:251. */
 
+// src/uhitm.c:2016 shade_miss() — an attack passing harmlessly through a
+// shade. Returns TRUE when the attack did nothing.
+//
+// The first test is the whole function for any ordinary defender: not a
+// shade means FALSE immediately, with no message and no draws. That is why
+// mhitm_ad_phys can call this on every monster-vs-monster blow cheaply.
+//
+// dmgval() is unported, but it is only evaluated when obj is non-Null AND the
+// defender IS a shade -- C's || short-circuits first -- so a weaponless
+// attacker never reaches it. Recorded at exactly that point rather than
+// guessed, because guessing "does damage" would make a silver weapon fail
+// against a shade and guessing the reverse would make a stick work.
+export function shade_miss(magr, mdef, obj, thrown, verbose) {
+    const youdef = (mdef === game.youmonst);
+
+    /* we're using dmgval() for zero/not-zero, not for actual damage amount */
+    if (mdef.data.pmidx !== PMNAMES.PM_SHADE)
+        return false;
+    if (obj) {
+        /* dmgval(obj, mdef) */
+        (game.unported ||= new Set()).add('uhitm:shade_miss:dmgval');
+        return false;
+    }
+
+    if (verbose) {
+        /* the "passes harmlessly through" message needs cxname, vtense,
+           s_suffix and map_invisible */
+        (game.unported ||= new Set()).add('uhitm:shade_miss:message');
+    }
+    if (!youdef)
+        mdef.msleeping = 0;
+    return true;
+}
+
 // src/uhitm.c:462 do_attack() — returns TRUE if the hero's move is used up.
 //
 // Returning FALSE is what lets the caller swap places with the monster, so the

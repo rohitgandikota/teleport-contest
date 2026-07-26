@@ -378,12 +378,31 @@ starting that, both worth not rediscovering:
     path, not the classification path. Do not compare those two; they are not
     counterparts.
 
-So the remaining question is narrow: what does each side's dogfood return for
-a COIN_CLASS object, and is it below or at/above MANFOOD? Find the outer
-switch's default arm in src/dog.c (it is past the FOOD_CLASS inner switch,
-which has its own default and is easy to mistake for it) and compare with
-ours. That single value decides which branch dog_goal takes and therefore
-whether the rn2(8) is drawn.
+ANSWERED, AND BOTH SIDES AGREE. src/dog.c:1111's outer default returns APPORT
+for a non-cursed, non-BALL, non-CHAIN object, and gold is all three, so C
+classifies gold as APPORT. js/dog.js:456-459 has the identical arm and the
+identical return. The enum matches too: MANFOOD = 3, APPORT = 4 on both sides.
+
+So the whole chain SHOULD agree:
+    dogfood(gold) = APPORT = 4
+    skip test:  otyp > gtyp  ->  4 > 6 (UNDEF) is FALSE, no skip
+                otyp === UNDEF -> 4 === 6 is FALSE, no skip
+    branch gate: otyp < MANFOOD -> 4 < 3 is FALSE
+                 -> the else-if APPORT branch, which draws rn2(8)
+
+We draw rn2(4) instead, so WE NEVER SEE THE GOLD IN THE LOOP AT ALL. That is
+the only remaining possibility and it moves the question off dogfood entirely.
+
+NEXT: instrument dog_goal's object loop itself --
+`for (const obj of (game.level.objects || []))` at js/dog.js:637 -- and print
+how many objects it iterates and their coordinates on the divergent turn.
+Compare against the bounding box (min_x/max_x/min_y/max_y from SQSRCHRADIUS).
+Two concrete candidates:
+  - game.level.objects does not contain the gold (an object-list population
+    problem, not a pet problem), or
+  - the gold is outside the bounding box because SQSRCHRADIUS or the clamps
+    differ from C's.
+Check which before touching anything.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

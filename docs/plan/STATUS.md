@@ -67,7 +67,39 @@ monster is moved per draw, not what mfndpos returns for it.
 
 Useful detail for whoever picks this up: mon 59 shows up at calls 2841
 (58,17), 2851 (59,17) and 2872 (60,17), walking steadily east, with the newt
-at 2869 interleaved between. That interleaving is the thing to explain.
+at 2869 interleaved between.
+
+FOLLOW-UP, and it narrows things further. Every draw matches through 2868 and
+only the BOUND differs at 2869, which argues we are moving the SAME newt, not
+a different monster -- different monsters would have desynced the draws
+earlier. So the newt is at a DIFFERENT SQUARE in C than in our run, and its
+position diverged at some earlier point WITHOUT any RNG difference. cnt = 7 is
+an open-floor count; ours is 5 because our newt is against a wall. A monster
+that moved to the wrong square without drawing is the thing to find, and the
+RNG trace by construction cannot point at it.
+
+WHAT THE movemon COMPARISON DID FIND. js/mon.js:113 movemon_singlemon is four
+lines; C's (mon.c:1214) has a good deal more, and these are genuine gaps
+independent of seed4500:
+
+    m_everyturn_effect   NOT the problem -- only acts on PM_FOG_CLOUD
+                         (monmove.c:650), so it is a no-op for ordinary
+                         monsters. Checked so nobody re-checks it.
+    restrap(mtmp)        MISSING. Fires for is_hider monsters and can draw.
+    the S_EEL arm        MISSING, and it carries an explicit !rn2(4) plus
+                         hideunder(). An eel in a pool draws here every turn.
+    minliquid(mtmp)      MISSING. Gates dochug entirely when it returns TRUE.
+    I_SPECIAL re-equip   MISSING. Calls m_dowear and can consume the turn.
+    mon_offmap, isgd     MISSING gates.
+    dochugw vs dochug    We call dochug; C calls dochugw(mtmp, TRUE), which
+                         wraps it with the occupation-interrupt check. NO
+                         draws of its own, so it is a correctness gap for
+                         interrupting multi-turn actions, not an RNG one.
+
+Also worth a look: C sets somebody_can_move from `movement >= NORMAL_SPEED`
+BEFORE dochug runs, while we return that test AFTER dochug. If dochug alters
+movement the two disagree. The existing comment at js/mon.js:113 argues the
+current shape is deliberate, so measure before changing it.
 
 === (attempt 1 notes follow) ===
 

@@ -2069,3 +2069,39 @@ binding, and `import`-ing is not the same as mentioning. Both times the fix is
 the same -- match a DEFINITION or an IMPORT, never a bare occurrence -- and
 both times the thing that actually caught it was executing the function, not
 loading the module.
+
+
+## A partially wired loop can be WORSE than the honest gap it replaces
+
+Wiring lookaround() into moveloop's run branch measured -7 screens and was
+reverted. The port was faithful line for line; what was missing was a
+terminator, and that turns a bounded error into an unbounded one.
+
+The recorded gap took ONE step where C takes several. Wrong, but wrong by a
+known small amount, and the same amount every time. The wired loop had no way
+to stop -- lookaround does not halt a rush in an open room, and C relies on
+domove_core's own nomul(0) calls for that -- so the hero ran until something
+incidental stopped him. Distance error unbounded instead of one square.
+
+The measurement said so plainly, and it is worth reading the shape of it:
+
+    RNG   +40   the loop really does produce more correct draws
+    screens -7  and still puts the hero on the wrong square
+
+That combination is the signature of this failure. More correct draws with
+fewer correct screens means the mechanism is right and the STOPPING CONDITION
+is wrong, because RNG accumulates per action while the screen only cares where
+things ended up.
+
+The general rule: before wiring a loop, find every exit C has, not just the
+one the loop is named after. lookaround is the INTERESTING exit and it is the
+one the docs and the function name point at; the ordinary exit is a dozen
+scattered nomul(0) calls inside the thing being looped. Grep for the
+terminator, not the body. `grep -c "nomul(0)" src/hack.c` against the port's
+count would have predicted this in one command and before any code was
+written.
+
+Corollary for `game.unported`: a recorded gap is a real engineering position,
+not a placeholder to clear as fast as possible. Replacing one with a partial
+port is only progress if the partial port's error is SMALLER, and that has to
+be measured rather than assumed.

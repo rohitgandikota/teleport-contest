@@ -269,8 +269,32 @@ not known then:
     downstream, so dog_move's own draws agree; the difference is in which
     square it CHOOSES, not what it rolls.
 
-Start from seed0030 step 4 with screendiff, and instrument dog_move's chosen
-square on that specific turn.
+INSTRUMENTED. dog_move's early turns on seed0030, printing pet position,
+each candidate and its j:
+
+    DM m=2 pet(58,4) cand(57,4) j=-3 nid=4 appr=1 gg=(56,4)
+    DM m=2 pet(58,4) cand(58,5) j=4  nid=1 appr=1 gg=(56,4)
+    DM m=2 pet(57,4) cand(56,4) j=1  nid=1 appr=1 gg=(57,5)
+    DM m=2 pet(57,4) cand(56,5) j=0  nid=1 appr=1 gg=(57,5)
+    DM m=3 pet(58,5) cand(57,4) j=-2 nid=4 appr=1 gg=(56,5)
+
+TWO THINGS TO NOTE BEFORE GOING FURTHER:
+
+1. The pet moves TWICE per turn at m=2 -- pet(58,4) then pet(57,4). A kitten
+   is fast (16 speed vs the hero's 12), so it banks enough movement for a
+   second action on some turns. Confirm our movement accounting matches C's
+   before reading anything into the squares chosen: an extra or missing
+   second move changes everything downstream and would look exactly like a
+   bad choice.
+
+2. gg CHANGES between the two calls in the same turn, (56,4) then (57,5).
+   That is dog_goal recomputing, which is correct in principle -- but it
+   means the second move is steered by a goal derived from the state after
+   the first, so the two are not independent.
+
+The trace format is here so the next tick can start from data rather than
+re-deriving it. Compare against what C must have done to leave the pet where
+step 4 shows it.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

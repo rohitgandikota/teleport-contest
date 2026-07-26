@@ -21,7 +21,7 @@ import { abon, hitval, weapon_hit_bonus } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc } from './mondata.js';
-import { is_blade, is_axe, set_ustuck } from './mon.js';
+import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
 import { OCLASSES } from './objects_data.js';
 import { sgn } from './hacklib.js';
@@ -301,5 +301,65 @@ export function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
                 note_unported_uhitm('known_hitum:cutworm');
         }
     }
+    return malive;
+}
+
+// src/uhitm.c hitum() — one melee attack sequence, possibly two hits.
+//
+// This is where the chain's draws finally land in order:
+//     find_roll_to_hit   (no draw)
+//     mon_maybe_unparalyze   rn2(10), ONLY if the target cannot move
+//     rnd(20)                the die
+//     known_hitum            rn2(25), then rn2(3) and rnd(100) if it gates
+// and the whole sequence repeats for a second hit when twohits is set.
+//
+// twohits is 0 for a single hit and 1 for the first of two, and known_hitum's
+// callees read it, which is why it is game state rather than a local. It is
+// set to 2 before the second hit and cleared at the end.
+//
+// Not ported, each recorded: hitum_cleave (wielded Cleaver), passive (the
+// monster's counter-attack, 256 lines and it draws), and the exercise(A_DEX)
+// on a successful hit.
+export function hitum(mon, uattk) {
+    const wepbefore = game.u.uwep;
+    const secondwep = game.u.twoweap ? game.u.uswapwep : null;
+    const x = game.u.ux + game.u.dx, y = game.u.uy + game.u.dy;
+    const oldumort = game.u.umortality || 0;
+    const out = { attk_count: 0, role_roll_penalty: 0 };
+
+    if (game.u.uwep && game.u.uwep.oartifact)
+        note_unported_uhitm('hitum:cleaver_check');
+
+    /* 0: single hit, 1: first of two; hmon_hitmon reads it downstream */
+    game.twohits = (game.u.uwep ? game.u.twoweap : double_punch()) ? 1 : 0;
+
+    let tmp = find_roll_to_hit(mon, uattk.aatyp, game.u.uwep, out);
+    mon_maybe_unparalyze(mon);
+    let dieroll = rnd(20);
+    const mhit = [(tmp > dieroll || game.u.uswallow) ? 1 : 0];
+    if (tmp > dieroll)
+        note_unported_uhitm('hitum:exercise_dex');
+
+    let malive = known_hitum(mon, game.u.uwep, mhit, tmp,
+                             out.role_roll_penalty, uattk, dieroll);
+    note_unported_uhitm('hitum:passive');
+
+    /* second attack for two-weapon combat or skilled unarmed combat */
+    if (game.twohits && !(game.override_confirmation
+                          || (game.multi || 0) < 0
+                          || (game.u.umortality || 0) > oldumort
+                          || !malive || m_at(x, y) !== mon)) {
+        game.twohits = 2;               /* second of 2 hits */
+        tmp = find_roll_to_hit(mon, uattk.aatyp, game.u.uswapwep, out);
+        mon_maybe_unparalyze(mon);
+        dieroll = rnd(20);
+        mhit[0] = (tmp > dieroll || game.u.uswallow) ? 1 : 0;
+        malive = known_hitum(mon, secondwep, mhit, tmp,
+                             out.role_roll_penalty, uattk, dieroll);
+        /* the second counter-attack only happens if the second hit lands */
+        if (mhit[0])
+            note_unported_uhitm('hitum:passive2');
+    }
+    game.twohits = 0;
     return malive;
 }

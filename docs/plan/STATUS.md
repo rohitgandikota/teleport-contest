@@ -208,11 +208,32 @@ The interior is TWO ROWS BY THREE COLUMNS and the hero's row has DOORS (+)
 at BOTH ENDS. So most of the radius-1 ring is wall, and the ring entries our
 port accepts include squares that are wall or door on C's map.
 
-NEXT: print, for each of the eight ring entries, our levl[x][y].typ and what
-goodpos returns. Any entry we accept that is a wall or a closed door is the
-bug -- our ACCESSIBLE()/door handling would be accepting terrain C refuses.
-That is a much smaller question than the whole placement path and it is the
-one the geometry now points at.
+MEASURED, AND THE TERRAIN HYPOTHESIS IS DISPROVEN:
+
+    TYP (57,3) typ=2  ok=false     <- wall, correctly rejected
+    TYP (58,4) typ=25 ok=true      <- ROOM, correctly accepted
+
+(58,4) is ordinary room floor and goodpos is right to take it. We are NOT
+accepting terrain C refuses, so that line of attack is closed.
+
+WHAT THIS LEAVES, and it is worth stating plainly because every component has
+now been verified individually: collection order, shuffle algorithm, shuffle
+draws, hero position, all four goodpos arms, the dispatch guard, and the
+terrain at the winning square are ALL correct in isolation. The pet still
+lands on a different square than C's.
+
+A COORDINATE-MAPPING DISCREPANCY IS THE MOST LIKELY REMAINING EXPLANATION AND
+HAS NOT BEEN CHECKED. makedog reports the hero at map (57,4), but screendiff
+draws the @ at display row 6, around column 55. Display row 6 should be map
+row 5, not 4, and column 55 is not 57. Until that offset is reconciled, EVERY
+coordinate comparison in this entry is suspect -- including "C's pet is at
+(56,4)", which was read off the display, not measured.
+
+DO THAT FIRST: establish the exact map-to-display transform (which map row is
+display row 0, and whether column is 1:1), then re-derive where C's pet
+actually is in MAP coordinates. It is entirely possible the two placements
+agree and the rendering differs, which would move this bug to the display
+layer.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

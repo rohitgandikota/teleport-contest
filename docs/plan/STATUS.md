@@ -1,3 +1,32 @@
+=== make_corpse SIZED BY REACHED BRANCH: ~70 LINES, NOT 378 ===
+
+mon:mondied:make_corpse is the 23% entry and it is NOT the 378-line monster
+its total suggests. The function opens with a large switch on mndx for
+species-specific drops -- dragon scales, unicorn horn, worm tooth, iron
+chains, glass gems -- and an ordinary monster matches NONE of them and falls
+to `default_1`, which is about fifteen lines:
+
+    if (mvitals[mndx].mvflags & G_NOCORPSE) return NULL;
+    corpstatflags |= CORPSTAT_INIT;
+    obj = mkcorpstat(CORPSE, KEEPTRAITS(mtmp) ? mtmp : 0, mdat, x, y, flags);
+    if (burythem) { bury_an_obj(...); newsym(...); return ...; }
+
+then a short tail (bypass_obj, oname if the monster was named).
+
+    mkcorpstat    52L  mkobj.c   MISSING -- the actual corpse object
+    bury_an_obj        PORTED
+    KEEPTRAITS         a macro, unsized
+    mvitals            already tracked; mondead bumps .died
+
+So ~70 lines for the reached path. That makes it the CHEAPEST of the four
+remaining 23-25% entries by a wide margin -- cmd:r is doread at 318, cmd:w is
+~460 through accessory_or_armor_on, and dofire needs autoquiver and
+fireassist.
+
+DO THIS ONE NEXT. It also closes a visible behavioural gap rather than an
+invisible one: kills currently leave no body at all, which changes what the
+hero can eat and what a pet will pick up.
+
 === HANDOFF: 511/11405 screens, RNG 140518/792838, 1/44 sessions ===
 
 THE LEDGER IS NOW TRUSTWORTHY. Twenty recorded gaps were wrong and are fixed:

@@ -93,9 +93,37 @@ now been checked and most are harmless:
   work, not failures.
 
 So sort candidates by (reach x likelihood the answer differs), and the second
-factor needs a look at the code. The rows worth checking next on that basis
-are pet_ranged_attk:attack (45%) and dog_move attack branch (43%), which sit
-in the pet cluster that six sessions already diverge in.
+factor needs a look at the code. Every top row has now been checked, and the result changes how to read the
+table:
+
+  100% moveloop_preamble set_wear/pickup   unconditional marker, not a failure
+  100% topl:remember_topl                  unconditional marker, not a failure
+   98% onscary:elbereth                    HARMLESS. stub returns FALSE, which
+                                           is what C returns with no engraving
+   80% encumber_msg:message                message only; the STATE half landed
+   57% can_touch_safely:touch_artifact     HARMLESS. touch_artifact returns 1
+                                           immediately for a non-artifact and
+                                           draws nothing, so our arm matches
+                                           for every ordinary object
+
+The pattern is consistent and worth internalising: these are single unported
+ARMS on otherwise-complete functions, and the unported arm is the rare case.
+A high reach number mostly means "this function runs a lot", which is not the
+same as "this function is wrong a lot".
+
+So the queue's honest value is lower than it first looked. Its real use is
+NARROW: it finds gaps that draw nothing and are therefore invisible to
+tools/diverge.mjs. That is exactly how skill_init's unrestrict arm was found,
+and how near_capacity was found -- and near_capacity in turn exposed the
+missing obj.owt, which was a genuine silent corruption under every object in
+the game.
+
+Read a row as a QUESTION, not a defect: "when this arm is taken, does our
+answer differ, and does the C draw there?" Three of the five top rows answer
+no. The next rows to put that question to are pet_ranged_attk:attack (45%)
+and dog_move attack branch (43%), which are different in kind: they sit in the
+pet cluster that seven sessions already diverge in, so there is independent
+evidence something there is actually wrong.
 
 ## BLOCKER FOUND: inventory objects have no owt
 

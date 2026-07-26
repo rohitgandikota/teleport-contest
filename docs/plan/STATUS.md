@@ -864,6 +864,32 @@ same trap set_wear set. Its attack-type callees are all absent:
 
 So the full unit is 600+ lines, not 299.
 
+AND THAT WAS STILL TOO SMALL. Going bottom-up to port hitmm first showed the
+trap has a THIRD level: hitmm's last line is `return mdamagem(...)`, and
+mattackm follows every attack with passivemm. Neither is ported:
+
+    mdamagem       104 lines   the actual damage; hitmm ENDS in it
+    passivemm      154 lines   defender's passive counter, per attack
+    pre_mm_attack   32 lines   unhide/unmimic both parties, then newsym
+    could_seduce    48 lines   gates the "pretends to be friendly" arm
+    mon_nam_too     26 lines   "itself" vs the defender's name
+    simpleonames    15 lines   the silver-sear message
+    noises          12 lines   the out-of-sight fallback
+    shade_miss       ? lines   unsized
+    s_suffix                   ALREADY PORTED, js/hacklib.js
+    mon_hates_silver           ALREADY PORTED, js/dog.js
+
+MELEE-ONLY mattackm IS THEREFORE ~800 LINES, not the 400 I recorded. Each
+sizing this session has been an undercount because I sized the function I
+named and not the leaf it returns into. The rule that actually works: size
+the LAST LINE of every function in the chain, because a `return f(...)` is
+not a call, it IS the function.
+
+This does not change the ranking -- lookaround is still one 27% entry and
+this is still two ~40% entries -- but it does change the shape of the work
+from one session to two or three, and it means the melee path should land
+in pieces that each verify, not as one 800-line drop.
+
 THE SPLIT IS VERIFIED, not assumed -- I read mattackm's switch rather than
 trusting the shape. Every melee attack type funnels into hitmm:
 

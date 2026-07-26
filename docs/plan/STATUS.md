@@ -74,10 +74,31 @@ sessions:
    message that needs clearing. It is already PAINTED INTO THE GRID and never
    erased. _pending_message is empty; the cells are not.
 
-   Next step is on the paint side: find what writes row 0 during chargen and
-   what should erase those cells before the menu draws over columns 41-79.
-   js/display.js:600 already carries a comment about tty_clear_nhwindow only
-   clearing part of the row, which is the right neighbourhood.
+   PAINT-SIDE INVESTIGATION, what is established so far:
+
+   - cls() is called ONCE in seed0004, with toplin=0 and msg="" -- already
+     empty, nothing for it to erase. Adding a TOPLINE_SPECIAL_PROMPT arm to
+     cls() changed the score by zero, so cls is not on this path.
+   - There are only THREE sites that clear game._pending_message:
+     js/cmd.js:525, js/display.js:520 and js/display.js:612. NONE are in
+     js/plselect.js, so the chargen path never clears the message at all --
+     it just draws the menu over whatever row 0 already holds.
+   - js/display.js:606 carries a comment from a previous agent describing
+     THIS EXACT DEFECT on a different session: "Clearing only
+     _pending_message left the text already painted into the grid, so
+     whatever drew next landed on top of it: seed0360's tutorial prompt
+     starts at column 21 and the first 21 columns still read 'Hello wizard,
+     welcom'." They fixed it for the more() path by calling
+     tty_clear_nhwindow_message(row); the chargen path has no equivalent.
+   - js/cmd.js:525 has the same shape: it clears the text and the flag but
+     never calls tty_clear_nhwindow_message, so the cells survive there too.
+     That is a second live instance, not yet tested.
+
+   So the defect class is: CLEARING _pending_message DOES NOT ERASE THE GRID.
+   Three sites clear the message; only the two in display.js erase the cells,
+   and only one of those unconditionally. Fixing it means auditing all three
+   plus adding one to the plselect menu path, and each needs measuring
+   separately -- an unconditional erase is what cost 473 screens earlier.
 
    Note js/optlist.js:123-124 has TWO menu_overlay entries with different
    initval ("On" for set_in_game, "Off" for set_in_config), so which default

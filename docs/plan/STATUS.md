@@ -34,6 +34,31 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
+mattackm RE-SIZED DOWNWARD, and this is the most useful correction here.
+mhitm_ad_phys is 220 lines, but it splits into THREE branches by who is
+fighting:
+
+    magr == &youmonst   the hero attacking      (uhitm)   ~90 lines
+    mdef == &youmonst   a monster attacking you (mhitu)   ~80 lines
+    else                MONSTER VS MONSTER      (mhitm)   ~50 lines
+
+mattackm only ever reaches the third. So the physical-melee chain is NOT the
+~1000 lines recorded earlier -- the 220 becomes about 50, and the same
+three-way split very likely applies to mdamagem and the other mhitm_ad_*
+arms, since they share the signature and the mhitm_data struct. RE-SIZE
+mdamagem and passivemm the same way before committing to a number.
+
+What the mhitm branch of mhitm_ad_phys needs, from its first ~30 lines:
+    MON_WEP, canseemon, touch_petrifies, which_armor, rn1,
+    Monnam, mon_nam_too, DEADMONSTER      ALL PORTED
+    shade_miss, do_stone_mon, dmgval,
+    artifact_hit, pline_mon, thick_skinned  NOT PORTED, unsized
+
+For a pet with no weapon -- the overwhelmingly common case -- mwep is null
+(and forced null for any aatyp other than AT_WEAP/AT_CLAW), so the entire
+weapon block including artifact_hit and dmgval is skipped. Check what the
+no-weapon path actually needs before sizing those.
+
 cmd:w SIZED (25%) -- NOT CHEAP. dowear() itself is 19 lines and its two
 predicates verysmall/nohands are ported, but it ends in
 accessory_or_armor_on() at 220 lines, which needs canwearobj() 177 and

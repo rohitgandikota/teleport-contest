@@ -2307,3 +2307,38 @@ sizeable change:
 
 All five current zero-screen sessions report error:null -- they diverge too
 early to match a screen, which is a different thing from crashing.
+
+## Record where the WORK is, not where the BRANCH is
+
+Six gap records were found firing on paths where C does nothing at all. All
+six were written by me, in code I had just ported, and every one inflated its
+reach to "every time this function runs":
+
+    freeinv_core:uhave_artifacts   27%  C's arms are five specific artifacts;
+                                        an ordinary object matches none
+    dropz:flooreffects             27%  returns FALSE on dry floor with no trap
+    drop:levitation_and_message    27%  needs !can_reach_floor or a ring on a sink
+    done_eating:fpostfx            39%  only seven foods have an arm
+    passivemm:always / :alive      41%  the switches have arms for 2 and 5
+                                        damage types; AD_PHYS hits default
+    can_touch_safely:touch_artifact 66% the callee was already ported
+
+Combined with the fifteen stale entries the audit found, TWENTY of the ledger's
+records were wrong, and the top of unported-hits read 100/66/43/39 percent with
+three of four fictional.
+
+THE RULE: put the record INSIDE the arm that would do the work, never at the
+dispatch point above it. A switch with 39 cases and 3 implemented does not
+have one 39-case gap; it has 36 gaps, most of which no session reaches.
+
+THE TEST: after adding a record, ask "what fraction of calls does C do nothing
+on?" If the answer is "most", the record is in the wrong place. Cheap check --
+port the function, then look at whether the entry appears in unported-hits at
+all. Four of the six above vanished from the list completely, meaning no
+public session ever reaches them.
+
+WHY IT MATTERS beyond tidiness: unported-hits ranks by reach and is the thing
+used to choose what to port next. A record at a dispatch point does not just
+overstate one number, it outranks genuinely reachable work and sends the next
+session at the wrong target. mattackm was deferred three times on exactly that
+kind of inflated reading.

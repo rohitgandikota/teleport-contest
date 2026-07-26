@@ -508,7 +508,7 @@ export function obj_extract_self(obj) {
         break;
     }
     case OBJ_INVENT:
-        note_unported_invent('obj_extract_self:freeinv');
+        freeinv(obj);       /* src/mkobj.c:2573 -- ported at invent.js:622 */
         break;
     default: {   /* OBJ_FLOOR — remove_object() */
         const objs = game.level?.objects;

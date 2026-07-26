@@ -1,3 +1,5 @@
+import { exercise } from './attrib.js';
+import { A_CON } from './const.js';
 // eat.js — nutrition.
 // C ref: src/eat.c
 //
@@ -176,7 +178,7 @@ export async function choke(food) {
         note_unported_eat('choke:knight_adjalign');
     }
 
-    note_unported_eat('choke:exercise');
+    exercise(A_CON, false);   /* src/eat.c:256 */
 
     /* Breathless and Hunger are intrinsics this port does not track, so the
        rn2(20) is always the deciding test here. */
@@ -209,7 +211,7 @@ export function bite() {
         return 1;
     }
     if (v.doreset) {
-        note_unported_eat('bite:do_reset_eat');
+        do_reset_eat();     /* src/eat.c:3142 -- ported at eat.js:307 */
         return 0;
     }
     /* src/eat.c bite() tail — force_save_hs makes lesshungry() treat this as

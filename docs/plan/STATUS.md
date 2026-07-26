@@ -778,6 +778,41 @@ then whether role and race match C at that point. Do not assume the rn2 is
 wrong -- seed0004 matches C's RNG stream well past chargen, which an extra or
 missing draw here would break immediately.
 
+REDIRECT: STOP THE PET ARCHAEOLOGY, PORT WHAT EVERY SESSION REACHES.
+
+tools/unported-hits.mjs ranks unported paths by the share of the 44 sessions
+that actually REACH them. That is the list to work, and it was not consulted
+once during the pet investigation:
+
+    100%  moveloop_preamble set_wear/pickup
+    100%  topl:remember_topl
+     98%  onscary:elbereth
+     80%  encumber_msg:message
+     59%  can_touch_safely:touch_artifact
+     52%  do_name:x_monnam:canspotmon
+     45%  dog_move attack branch
+     43%  postmov:mpickstuff
+     41%  pet_ranged_attk:attack
+     39%  bite:nutrition
+
+Two paths are hit by EVERY session and several more by most of them. Compare
+that against the pet-goal divergence, which is one branch in one function on
+one turn of one session.
+
+Suggested order, cheapest-with-most-reach first:
+  - encumber_msg:message (80%) writes to row 0, which is scored, and messages
+    have already produced four screen gains this session.
+  - do_name:x_monnam:canspotmon (52%) is the unseen-monster "it" arm of the
+    x_monnam ported earlier this session; the surrounding function already
+    exists so this is an arm, not a subsystem.
+  - moveloop_preamble set_wear/pickup (100%) is worth sizing before starting,
+    since 100% reach says nothing about how large it is.
+  - topl:remember_topl (100%) is ^P message history and likely has NO screen
+    effect; check before spending time on it despite the reach figure.
+
+Do not read reach as importance without checking screen impact. remember_topl
+is the counterexample sitting at the top of the list.
+
 TWO SCREEN-VISIBLE GAPS FOUND BY SWEEPING screendiff, both hitting several
 sessions:
 

@@ -64,80 +64,46 @@ THE DIVERGENCE AGGREGATE, re-measured this session:
 do_attack:474 is the Punished/rn2(7) line just corrected, so the melee chain
 IS on the critical path for 4 sessions.
 
-dog_move at 7 sessions is the single largest blocker, and js/dogmove.js DOES
-NOT EXIST -- the whole file is unported, not merely incomplete. Confirmed by
-`ls js/dogmove.js`. The divergent line, src/dogmove.c:1255, is inside the pet
-position-scoring loop:
+dog_move at 7 sessions (8 with the combat gate wired) is the single largest
+blocker. CORRECTION, and this cost two full ticks: an earlier version of this
+entry said "js/dogmove.js DOES NOT EXIST -- the whole file is unported."
+
+That was TRUE ABOUT THE FILE AND FALSE ABOUT THE FUNCTION. dog_move has been
+ported all along, filed under js/dog.js:994 (~211 lines, 10 draws, full
+chcnt/uncursedcnt/MTSZ logic), and js/monmove.js:950 calls it. dog_hunger is
+there too at :964. Both were re-ported into a new js/dogmove.js before anyone
+checked, and the new dog_move was LESS complete than the existing one; all of
+it was deleted.
+
+A MISSING FILE IS NOT EVIDENCE OF A MISSING FUNCTION in this tree, because
+several functions are filed under the wrong module relative to their C home.
+Before porting anything, run:
+
+    grep -rn "function <name>" js/
+
+not `ls js/<file>.js`. The five-second check would have saved both ticks.
+
+THEREFORE THE dog_move WORK IS DEBUGGING, NOT PORTING. The function already
+draws; it draws DIFFERENTLY from C somewhere near dogmove.c:1255, which is
+inside the position-scoring loop:
 
     j = ((ndist = GDIST(nx, ny)) - nidist) * appr;
     if ((j == 0 && !rn2(++chcnt)) || j < 0
         || (j > 0 && !whappr
             && ((omx == nix && omy == niy && !rn2(3)) || !rn2(12)))) {
 
-Note `!rn2(++chcnt)`: a reservoir sampler over equally-good squares, and the
-PRE-increment is load-bearing. There is also `rn2(MTSZ * (k - j))` in the
-mtrack backtrack check just above it. Every one of these draws on ordinary pet
-movement, which is why 7 sessions diverge here and why the fix is a real port
-of dogmove.c rather than a patch.
-
-STILL DORMANT: do_attack's call site is deliberately NOT wired. It costs 30
-screens and does not throw (verified). The gate is hmon_hitmon: a hero who
-swings without dealing damage diverges behaviourally, not just in draws.
-
-THE MELEE CHAIN NOW STANDS AT 30 FUNCTIONS, and the damage path RUNS END TO
-END. Forcing a mace swing walks
-
-    hmon_hitmon -> do_hit -> weapon -> weapon_melee -> dmgval
-                -> dmg_recalc -> damage application
-
-and takes a monster from 20 HP to 15. That is verified behaviour, not
-structure.
-
-Landed this session: hmon, wakeup, setmangry, passive (head, AD_FIRE/ACID/
-STON/RUST/CORR/MAGM/ENCH arms, and its SECOND switch), hmon_hitmon skeleton,
-do_hit, barehands, weapon, weapon_melee head, dmgval (src/weapon.c, 140
-lines), dmg_recalc, and the damage application itself.
-
-STILL NEEDED BEFORE do_attack CAN BE WIRED:
-  kill handling      when mhp reaches 0 -- xkilled, and the death drop
-  msg_hit            SCREEN-VISIBLE, the first piece here that can move
-                     screens rather than only draws
-
-Then wire do_attack's call site. It currently costs 30 screens and does not
-throw (verified earlier); that cost should invert once the above land.
-
-RECURRING DEFECT CLASS FOUND THIS SESSION, worth reading before porting
-anything else. Five instances, one shape: an expression that is WRONG but
-PARSES, and whose wrongness is invisible because undefined is falsy and the
-common path happens to be correct anyway.
-
-  MFLAGS.MS_WATCH        property that does not exist on a real object
-  STRAT_WAITMASK         never imported (this one THREW -- the lucky case)
-  uprops.PUNISHED        plausible name, wrong source: it is (uball != 0)
-  MATERIALS.NO_MATERIAL  right name, wrong module (objects_data, not const)
-  WT_IRON_BALL_INCR      written from MEMORY, then found correct in
-                         include/weight.h:18. Right answer, wrong method.
-
-Only STRAT_WAITMASK threw. The others behaved correctly on the path that runs
-today and would have diverged later, far from the cause. CHECK THE HEADER for
-what a name is; do not trust a name that reads plausibly.
-
-Cheap-to-expensive check order, and run them in this order:
-  1. node tools/undefined-refs.mjs   30s, catches unimported/misnamed
-                                     constants. It WORKS -- an earlier claim
-                                     of a blind spot was retracted as
-                                     unmeasured, see NOTES.
-  2. force every arm with synthetic args, RNG seeded. The only check that
-     works for a function ported ahead of its call site.
-  3. probe the RNG stream position to prove a path draws NOTHING: run with a
-     fixed seed, then compare the next value against a fresh-seed baseline.
-     This is how "punching a shade draws nothing" was proven rather than
-     asserted.
-  4. node tools/scoreboard.mjs       catches duplicate module-scope bindings,
-                                     which parse-error to a hard 0/44 rather
-                                     than degrading. Five rounds of those this
-                                     session; all cheap because they cannot
-                                     ship.
+Things to check in js/dog.js's copy, in order of how quietly they fail:
+  - GDIST reads game.gg.gx/gy. A `?? 0` fallback on a missing field makes it
+    measure to (0,0) and score every square by closeness to the top-left
+    corner. This exact bug was hit twice, from both sides; js/dog.js:686 has
+    a comment about it.
+  - rn2(++chcnt) must PRE-increment: first tie is rn2(1), always 0, always
+    wins. rn2(chcnt++) makes the first call rn2(0).
+  - chcnt must RESET to 0 on a strictly better square (j < 0).
+  - the backtrack rn2(MTSZ * (k - j)) runs ONLY when unleashed AND distmin
+    from the hero > 5.
+  - uncursedcnt scales rn2(13 * uncursedcnt), so an off-by-one in the
+    pre-count shifts every cursed-square decision.
 
 ALTERNATIVE: dog_move unblocks 7 sessions against this chain's 4, but
 js/dogmove.js does not exist at all, so it is a cold start on a 400-line

@@ -13,7 +13,12 @@
 import { game } from './gstate.js';
 import { rnd, rn2 } from './rng.js';
 import { OROOM, SHOPBASE, FILL_NORMAL, COURT, ZOO, BEEHIVE, MORGUE,
-         BARRACKS, SWAMP, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE } from './const.js';
+         BARRACKS, SWAMP, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE,
+         ROOMOFFSET, POOL, SDOOR, IS_ROOM, IS_DOOR, isok,
+         OBJ_AT } from './const.js';
+import { makemon, mkclass, NO_MM_FLAGS } from './makemon.js';
+import { m_at, t_at } from './mon.js';
+import { PMNAMES, MONSYMS } from './monst_data.js';
 import { OCLASSES } from './objects_data.js';
 import { inside_room } from './sp_lev.js';
 
@@ -72,7 +77,7 @@ export function do_mkroom(roomtype) {
         case BEEHIVE:   mkzoo(BEEHIVE);   break;
         case MORGUE:    mkzoo(MORGUE);    break;
         case BARRACKS:  mkzoo(BARRACKS);  break;
-        case SWAMP:     note_unported_mkroom('mkswamp');  break;
+        case SWAMP:     mkswamp();        break;
         case TEMPLE:    note_unported_mkroom('mktemple'); break;
         case LEPREHALL: mkzoo(LEPREHALL); break;
         case COCKNEST:  mkzoo(COCKNEST);  break;
@@ -187,6 +192,71 @@ function mkzoo(type) {
         sroom.rtype = type;
         sroom.needfill = FILL_NORMAL;
     }
+}
+
+// src/mkroom.c:530 mkswamp() — turn up to five rooms swampy.
+//
+// Note the loop shape: it runs five times unconditionally and spends an
+// rn2(nroom) on EVERY pass, including passes whose room is rejected. It can
+// also pick the same room twice. Both are the C's behaviour, not an accident,
+// and a "cleaner" loop that draws only for eligible rooms would desync.
+//
+// Only fires at u_depth > 15, so it is rare in the public sessions.
+function mkswamp() {
+    let eelct = 0;
+
+    for (let i = 0; i < 5; i++) {       /* turn up to 5 rooms swampy */
+        const idx = rn2(game.level.nroom);
+        const sroom = game.level.rooms[idx];
+        if (!sroom || sroom.hx < 0 || sroom.rtype !== OROOM
+            || has_upstairs(sroom) || has_dnstairs(sroom))
+            continue;
+
+        const rmno = idx + ROOMOFFSET;
+
+        /* satisfied; make a swamp */
+        sroom.rtype = SWAMP;
+        for (let sx = sroom.lx; sx <= sroom.hx; sx++)
+            for (let sy = sroom.ly; sy <= sroom.hy; sy++) {
+                const lev = game.level.at(sx, sy);
+                if (!lev || !IS_ROOM(lev.typ) || lev.roomno !== rmno)
+                    continue;
+                if (!OBJ_AT(sx, sy) && !m_at(sx, sy) && !t_at(sx, sy)
+                    && !nexttodoor(sx, sy)) {
+                    if ((sx + sy) % 2) {
+                        note_unported_mkroom('mkswamp:del_engr_at');
+                        lev.typ = POOL;
+                        if (!eelct || !rn2(4)) {
+                            /* mkclass() won't do, as we might get kraken */
+                            makemon(game.mons[rn2(5)
+                                        ? PMNAMES.PM_GIANT_EEL
+                                        : rn2(2)
+                                            ? PMNAMES.PM_PIRANHA
+                                            : PMNAMES.PM_ELECTRIC_EEL],
+                                    sx, sy, NO_MM_FLAGS);
+                            eelct++;
+                        }
+                    } else if (!rn2(4)) {   /* swamps tend to be moldy */
+                        makemon(mkclass(MONSYMS.S_FUNGUS, 0), sx, sy,
+                                NO_MM_FLAGS);
+                    }
+                }
+            }
+        game.level.flags.has_swamp = 1;
+    }
+}
+
+// src/mkroom.c:623 nexttodoor()
+function nexttodoor(sx, sy) {
+    for (let dx = -1; dx <= 1; dx++)
+        for (let dy = -1; dy <= 1; dy++) {
+            if (!isok(sx + dx, sy + dy))
+                continue;
+            const lev = game.level.at(sx + dx, sy + dy);
+            if (lev && (IS_DOOR(lev.typ) || lev.typ === SDOOR))
+                return true;
+        }
+    return false;
 }
 
 // src/mkroom.c:640 has_dnstairs()

@@ -1885,12 +1885,32 @@ So mkobj_at's push IS a real bug and delegating to place_object IS the
 faithful fix. It costing 69 screens therefore means OTHER insertions are also
 mis-ordered and the push was accidentally compensating for them.
 
-SCOPE IS SMALL: 9 references to level.objects across four files
-(js/dog.js, js/invent.js, js/makemon.js, js/mkobj.js) and 9 place_object
-call sites. Audit all of them together rather than one at a time -- fixing
-one in isolation is what produced the regression, because a partially
-corrected order can be further from C than a consistently wrong one.
+AUDITED, AND THE "COMPENSATING ERRORS ELSEWHERE" GUESS IS WRONG. There are
+exactly TWO insertion sites in the whole tree:
 
-Specifically check every site that adds to level.objects WITHOUT going
-through place_object, the way mkobj_at did. Those are the compensating
-errors.
+    js/mkobj.js:1016   place_object()   unshift   correct
+    js/makemon.js:797  mkobj_at()       push      wrong
+
+and no others. So nothing else is mis-ordered.
+
+WHAT IS ACTUALLY THERE IS A DUPLICATE DEFINITION -- the fourth of this
+session:
+
+    js/mkobj.js:998    export function mkobj_at()   calls place_object   CORRECT
+    js/makemon.js:794  function mkobj_at()          inlines push         WRONG
+
+js/mklev.js:28 imports the exported one, so its three call sites (1899, 2410,
+2414) are fine. js/makemon.js:1419 uses its own private copy, in the
+S_SPIDER/S_SNAKE arm of makemon(). That arm is the ONLY consumer of the buggy
+version.
+
+So the blast radius is spiders and snakes creating their web/egg objects, and
+correcting just that one arm cost 69 screens. Since no other insertion is
+wrong, the regression is NOT compensation -- it means the corrected order is
+genuinely further from C for those sessions, which points at the CALL ORDER or
+TIMING of that arm rather than the insertion primitive.
+
+Next: check where C's makemon calls mkobj_at for S_SPIDER/S_SNAKE and whether
+our arm runs at the same point relative to the rest of makemon. Delete the
+duplicate either way -- js/makemon.js should import from js/mkobj.js -- but
+measure that separately from any reordering.

@@ -300,6 +300,23 @@ both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 
+### seed0101's screens now break at step 4: 'Q' is not bound
+
+Measured, not inferred:
+
+    step 4, key "Q"
+    C     "What do you want to ready? [- cd or ?*]"
+    ours  "Unknown command 'Q'."   (33 cells differ, all on row 0)
+
+dowieldquiver (src/wield.c:505) is not ported and 'Q' has no arm in rhack.
+It needs getobj with a quiver-specific prompt and the "That is your alternate
+weapon. Ready it instead? [ynq]" confirmation that step 5 shows, so it pulls
+in getobj's object-letter prompt as well.
+
+This is the same subsystem seed0101's RNG divergence needs: 'Q' at step 4,
+'t' at step 7 and the throw at step 9 are one chain. Porting dowieldquiver
+alone moves the screens; the RNG needs dothrow.c behind it.
+
 ### seed0101 at 2293 is the THROW subsystem, at step 9
 
     2291  rnd(9000)  moveloop_preamble(allmain.c:72)   ours matches

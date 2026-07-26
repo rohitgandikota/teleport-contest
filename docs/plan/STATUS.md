@@ -2,7 +2,7 @@
 
 ## START HERE
 
-**492/11,405 screens (4.3%), 1/44 sessions, RNG 140,718/792,838 (17.7%).**
+**492/11,405 screens (4.3%), 1/44 sessions, RNG 140,726/792,838 (17.7%).**
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
@@ -36,9 +36,11 @@ right.
    entry before rewriting it -- it lists what is already ruled out.
 2. **tty menu subsystem** -- unblocks getbones (4 sessions) and level_tele's
    `?` arm.
-3. **The -36 shop-stocking residual** -- narrowed to the makemon inside
-   mkshobj_at. mkclass is RULED OUT, compared term for term. Small, and it is
-   a known-wrong thing rather than a missing one.
+3. **The shop-stocking residual, now -28** -- was -36; set_mimic_sym was a
+   stub reached by every shop mimic and porting it recovered 8. mkclass is
+   RULED OUT (compared term for term) and set_mimic_sym is now ported, so the
+   remainder is elsewhere in makemon's mimic path. Still the only known-wrong
+   thing in the shop chain.
 4. **Per-spell dispatch (zap.c)** for seed0501.
 
 ### Two rules this session paid for the hard way

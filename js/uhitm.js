@@ -29,7 +29,8 @@ import { OCLASSES, MATERIALS } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
-         HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED } from './const.js';
+         HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
+         W_ARMG, W_RINGR, W_RINGL } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -667,7 +668,7 @@ function note_is_pole_unported() {
 // unicorns and go through the weapon path.
 function hmon_hitmon_do_hit(hmd, mon, obj) {
     if (!obj) {                         /* attack with bare hands */
-        note_unported_uhitm('hmon_hitmon:barehands');
+        hmon_hitmon_barehands(hmd, mon);
     } else {
         if ((hmd.thrown === HMON_THROWN || hmd.thrown === HMON_KICKED)
             && note_stone_missile_unported(obj) && passes_rocks(hmd.mdat)) {
@@ -711,3 +712,60 @@ function note_stone_missile_unported(obj) {
     return false;
 }
 const shade_aware = (o) => { note_unported_uhitm('hmon_hitmon:shade_aware'); return false; };
+
+// src/uhitm.c:838 hmon_hitmon_barehands() — the bare-handed damage roll.
+//
+// The rnd() sits in the ELSE of the shade test, so punching a shade draws
+// NOTHING. That is the whole shape of the function: a shade is immune to
+// bare hands, and C does not roll damage it would discard.
+//
+// train_weapon_skill is set from the ROLL, not from a constant: you only
+// train bare-handed combat when the d2/d4 came up above 1. A port that set
+// it TRUE unconditionally would train skill on every punch.
+//
+// The glove/ring mask is a priority, not a sum. Gloves shadow rings
+// entirely -- rings are worn UNDER gloves -- and two silver rings never
+// stack. Which ring counts depends on twohits: 0 checks both (C calls this
+// backwards compatibility for playability), 1 the right, 2 the left, and a
+// polymorphed hero's third or later hit gets neither.
+//
+// special_dmgval is recorded, so silverhit stays 0 and no silver bonus is
+// added yet.
+function hmon_hitmon_barehands(hmd, mon) {
+    const silverhit = 0;                /* worn masks */
+
+    if (hmd.mdat === game.mons[PMNAMES.PM_SHADE]) {
+        hmd.dmg = 0;                    /* NO DRAW on this path */
+    } else {
+        /* note: 1..2 or 1..4 can be substantially increased by
+           strength bonus or skill bonus, usually both... */
+        hmd.dmg = rnd(!martial_bonus() ? 2 : 4);
+        hmd.use_weapon_skill = true;
+        hmd.train_weapon_skill = (hmd.dmg > 1);
+    }
+
+    /* gloves shadow rings; two silver rings do not stack */
+    const spcdmgflg = game.uarmg ? W_ARMG
+                    : (((hmd.twohits === 0 || hmd.twohits === 1) ? W_RINGR : 0)
+                       | ((hmd.twohits === 0 || hmd.twohits === 2) ? W_RINGL : 0));
+    note_unported_uhitm('hmon_hitmon:special_dmgval');
+
+    switch (hmd.twohits) {
+    case 0:     /* one hit attempted; either hand's silver ring applies, and
+                 * wearing two is the same as wearing one */
+        hmd.barehand_silver_rings = (silverhit & (W_RINGR | W_RINGL)) ? 1 : 0;
+        break;
+    case 1:     /* first of two or more; right ring applies */
+        hmd.barehand_silver_rings = (silverhit & W_RINGR) ? 1 : 0;
+        break;
+    case 2:     /* second of two or more; left ring applies */
+        hmd.barehand_silver_rings = (silverhit & W_RINGL) ? 1 : 0;
+        break;
+    default:    /* third or later hit of a polymorphed hero; the rings were
+                 * already applied on the first and second */
+        hmd.barehand_silver_rings = 0;
+        break;
+    }
+    if (hmd.barehand_silver_rings > 0)
+        hmd.silvermsg = true;
+}

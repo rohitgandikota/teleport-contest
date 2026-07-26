@@ -1576,3 +1576,12 @@ Related trap in the same family: a bare `u` is idiomatic in the C, where it is
 a global. Every ported function that lives at module scope must use game.u,
 and one that happens to be nested inside domove will compile and work, which
 is how this survived being written twice.
+
+SWEPT, and the tree is clean. The check is
+
+    grep -rn "[^.a-zA-Z_]u\.u[a-z]" js/*.js | grep -v "game\.u\|const u = "
+
+Every hit is inside a function that opens with `const u = game.u`, so the
+binding resolves. Worth re-running after adding any function that touches hero
+coordinates, because the failure is silent: it throws only on the path that
+uses it, which may be rare enough to look like a behavioural difference.

@@ -269,10 +269,40 @@ from one of the other two assignment sites, gettrack at :768 or the strategy
 pair at :802. gettrack is the likelier of the two: the probe above caught it
 returning cp=74,15 on a later move, so it is live for this monster.
 
-NEXT: guard a probe on the newt's FIRST m_move specifically (not on the first
-call to any one site) and print which of the three sites assigns ggx,ggy.
-Then compare that site against the C. If it is gettrack, the hero's track
-history is the thing to check.
+PROBE RUN, CORRECTLY GUARDED THIS TIME, and it exonerates the move:
+
+    SITE729 mux=77,16 hero=77,16 at=76,13 | SITE802 goal=77,16 | FINAL 77,16
+
+At the newt's FIRST move the hero is at (77,16), and mux/muy equals it exactly.
+gettrack never fires. So the goal is CORRECT, and stepping 76,13 -> 77,14 is
+genuinely toward the hero. Our newt is behaving properly on this move.
+
+WHICH MEANS THE EARLIER "C GOES WEST, WE GO EAST" READING WAS ALSO BUILT ON A
+TIMING ERROR. The hero at (71,15) came from the gettrack probe, which fired on
+a LATER move; at the move actually under examination the hero is at (77,16).
+That is the second time this thread has crossed two observations from
+different moments -- and it is worth noticing that the guard I added
+specifically to prevent it is what exposed it.
+
+WHAT IS ACTUALLY STILL TRUE, stripped of the bad inferences:
+  - our newt is born at 76,13 (correct; level generation matches)
+  - its first move to 77,14 is correct given a correct goal
+  - at the DIVERGENT call it stands at 77,14 with cnt=5, and C's monster in
+    that slot has cnt=7
+  - the map scan found exactly one square nearby with 7 candidates: 75,14
+
+NOTE THE CONFLATION TO AVOID: cnt is the number of candidate squares mfndpos
+returns for the monster's CURRENT position, not the open-neighbour count of
+its destination. The map scan is still a valid way to ask "where could C's
+monster be standing", but the answer must be checked against where the newt
+could plausibly have walked, not assumed.
+
+NEXT: the newt makes several moves between its first and the divergent call.
+Print its position on EVERY move (guard on m_id only, no first-call flag) and
+compare the sequence against the hero's position each turn. The move where our
+newt's behaviour stops making sense against a correct goal is the one to
+examine -- and if every move is individually correct, the fault is upstream in
+what the hero did, not in the newt at all.
 
 Note that GAP 1 and GAP 2 above are still real omissions worth closing on
 their own merits, they are simply not this bug. Do not delete those entries.

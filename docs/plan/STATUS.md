@@ -345,10 +345,27 @@ which is exactly this call, and our getobj already reads a key with nhgetch at
 js/invent.js:110 -- so swapping that read for tty_yn_function(qbuf, null, 0)
 adds the paint without changing which keys are consumed.
 
-The work is `buf`, the letter list: src/invent.c:1765-1915 walks inventory
-applying obj_ok_func and builds the ranges, which is how "[- cd or ?*]" gets
-its "- cd". That is ~150 lines and is the actual job. The '-' comes from
-getobj_hands_txt (src/invent.c:1719) when GETOBJ_PROMPT allows "your hands".
+The work is `buf`, the letter list. Read in full, the core is SMALLER than the
+line span suggests -- most of src/invent.c:1765-1915 is the command-queue and
+force_invmenu paths that no recorded session takes. The part that matters:
+
+  1. The '-' block (src/invent.c:1830-1850). obj_ok(NULL) is called for the
+     "your hands / nothing" choice. On GETOBJ_SUGGEST it appends HANDS_SYM
+     and then A SPACE -- `*bp++ = ' '` with the comment "put a space after the
+     '-' in the prompt". That space is why C reads "[- cd" and not "[-cd".
+  2. sortloot(&invent, SORTLOOT_INVLET, FALSE, 0) -- inventory MUST be walked
+     in invlet order before letters are collected, not in list order.
+  3. The accumulation loop (src/invent.c:1864):
+         bp[suggested++] = otmp->invlet;
+         switch ((*obj_ok)(otmp)) {
+         case GETOBJ_EXCLUDE_INACCESS: suggested--; inaccess++; break;
+         case GETOBJ_EXCLUDE: case GETOBJ_EXCLUDE_SELECTABLE: ...
+         }
+     i.e. append first, then un-append when the filter rejects.
+
+So the pieces are: the GETOBJ_* return enum, sortloot's INVLET ordering, this
+loop, the assembly at :1919, and one filter per command (ready_ok for 'Q',
+and whatever 't' uses). Land them together, per the note above.
 
 Land the assembly and the letter list TOGETHER. A prompt reading "[*]" where
 C reads "[- cd or ?*]" is still a screen mismatch, just a different one, and

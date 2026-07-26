@@ -1,3 +1,4 @@
+import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
 import { M_ATTK_DEF_DIED } from './const.js';
 import { M_ATTK_HIT } from './const.js';
@@ -948,8 +949,48 @@ function pet_ranged_attk(mtmp, forced) {
 
     /* Hungry pets are unlikely to use breath/spit attacks */
     if (mtarg && (!hungry || !rn2(5))) {
-        /* the attack itself needs mattacku / the monster attack code */
-        note_unported('pet_ranged_attk:attack');
+        let mstatus = M_ATTK_MISS;
+
+        if (mtarg === game.youmonst) {
+            /* mattacku() -- a pet attacking the HERO needs the
+               monster-attacks-you path, which is not ported. */
+            note_unported('pet_ranged_attk:mattacku');
+            return MMOVE_NOTHING;
+        }
+
+        game.bhitpos = { x: mtmp.mx, y: mtmp.my };
+        mstatus = mattackm(mtmp, mtarg);
+
+        /* Shouldn't happen, really */
+        if (mstatus & M_ATTK_AGR_DIED)
+            return MMOVE_DIED;
+
+        /* Allow the targeted nasty to strike back - if the targeted beast
+         * doesn't have a ranged attack, nothing will happen. */
+        if ((mstatus & M_ATTK_HIT) && !(mstatus & M_ATTK_DEF_DIED)
+            && rn2(4)) {
+            /* Can monster see?  If it can, it can retaliate even if the pet
+             * is invisible, since it'll see the direction the ranged attack
+             * came from; haseyes() is unported, so only mcansee is tested
+             * here and the eyeless case is recorded. */
+            if (mtarg.mcansee) {
+                note_unported('pet_ranged_attk:haseyes');
+                game.bhitpos = { x: mtmp.mx, y: mtmp.my };
+                const mresp = mattackm(mtarg, mtmp);
+                if (mresp & M_ATTK_DEF_DIED)
+                    return MMOVE_DIED;
+            }
+        }
+
+        /* Only lose the rest of the move if a ranged attack really happened;
+         * best_target never selects a melee-reachable monster, so mattackm
+         * can only have tried ranged options, and returns M_ATTK_MISS when
+         * the monster has none. */
+        if (mstatus !== M_ATTK_MISS)
+            return MMOVE_DONE;
+    } else if (forced) {
+        /* domonnoise() */
+        note_unported('pet_ranged_attk:domonnoise');
     }
     return MMOVE_NOTHING;
 }

@@ -216,10 +216,24 @@ Both need maxcol == 59 to produce 20. Ours produces 19, so our maxcol is 60 --
 one too large. The menu is therefore one column left of C's for its whole
 width, and the missing leading space at the footer is a symptom, not the bug.
 
-So: find where cw.maxcol is accumulated in js/tty/wintty.js and compare it
-against C's tty_add_menu/tty_end_menu length arithmetic. An off-by-one there
-moves every menu in the corpus one column, which is worth far more than this
-one cell.
+NARROWED FURTHER. C's tty_end_menu does:
+
+    for each menu entry:
+        len = strlen(curr->str) + 2;   /* extra space at beg & end */
+        if (len > cw->cols) cw->cols = len;
+    ... then morestr ("(end) ", 6 chars) is measured the same way ...
+    cw->maxcol = cw->cols;
+
+js/tty/wintty.js:259 already has `cw.maxcol = cw.cols`, so the discrepancy is
+in cw.cols: ours reaches 60 where C reaches 59. Note the +2 here versus the +1
+in tty_putstr (js/tty/wintty.js:283) -- a menu built with add_menu and one
+built with putstr measure DIFFERENTLY, and the legacy window is the case that
+tells them apart.
+
+The measurement to make next: log every entry string and its computed length
+for this window, and compare against the recorded screen's longest line. One
+entry is a character longer than C thinks it is, or we are applying +2 where C
+applies +1 (or the reverse) for one of them.
 
 Do NOT widen the clear in js/tty/wintty.js:374 and do NOT switch the offx
 branch -- the comment at js/tty/wintty.js:291 records that the H2344_BROKEN

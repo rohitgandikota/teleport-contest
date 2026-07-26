@@ -6,6 +6,7 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { sengr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
@@ -713,8 +714,8 @@ export function onscary(x, y, mtmp) {
     if (sobj_at(ONAMES.SCR_SCARE_MONSTER, x, y))
         return true;
 
-    /* sengr_at("Elbereth") needs the engraving code, which is absent. */
-    note_unported('onscary:elbereth');
+    /* src/monmove.c — the last arm: an engraved Elbereth scares it. */
+    return !!sengr_at("Elbereth", x, y, true);
     return false;
 }
 

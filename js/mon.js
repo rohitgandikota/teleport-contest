@@ -11,6 +11,7 @@ import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
+import { sengr_at } from './engrave.js';
 import { Monnam } from './do_name.js';
 import { hot_pursuit } from './shk.js';
 import { is_metallic } from './obj.js';
@@ -1008,7 +1009,7 @@ export async function wakeup(mtmp, via_attack) {
 // branch is unreachable today -- that is the honest state, not a stub: when
 // engravings land the condition starts being true on its own.
 export async function setmangry(mtmp, via_attack) {
-    if (via_attack && note_sengr_at_unported()
+    if (via_attack && sengr_at("Elbereth", game.u.ux, game.u.uy, true)
         && (onscary(game.u.ux, game.u.uy, mtmp) || mtmp.mpeaceful)) {
         /* unreachable until the engraving subsystem is ported */
         adjalign((game.u.ualign.record > 5) ? -5 : -rnd(5));
@@ -1043,12 +1044,6 @@ export async function setmangry(mtmp, via_attack) {
         note_unported_mon('setmangry:peacefuls_respond');
 }
 
-// src/engrave.c sengr_at() — not ported. No engraving can exist yet, so this
-// is false for the same reason C would be false on a bare floor.
-function note_sengr_at_unported() {
-    note_unported_mon('setmangry:sengr_at');
-    return false;
-}
 
 // src/mon.c:3470 killed() — the hero killed this monster, with a message.
 // Three lines in C and a pure delegation; xkilled (263 lines) does the work

@@ -95,9 +95,37 @@ STILL NEEDED BEFORE do_attack CAN BE WIRED:
   the damage-application path  (mon->mhp -= dmg and the kill handling)
   hmon_hitmon_msg_hit          messages, screen-visible
 
-NEXT: hmon_hitmon_weapon_melee. Alternatively dog_move, which unblocks
-nearly twice as many sessions (7 vs 4) but is a cold start on an absent
-400-line file.
+NEXT, and it is NOT hmon_hitmon_weapon_melee directly: that function's very
+first act is
+
+    hmd->dmg = dmgval(obj, mon);          src/uhitm.c:944
+
+and dmgval (src/weapon.c:216, 140 lines) IS NOT PORTED. It belongs in
+js/weapon.js. Port it before weapon_melee; everything downstream reads the
+number it returns.
+
+dmgval's shape, so the next agent does not have to re-derive it:
+  - CREAM_PIE returns 0 immediately, with NO draw.
+  - Then it splits on bigmonst(ptr) into TWO separate tables. The big-monster
+    arm draws rnd(objects[otyp].oc_wldam); the small arm draws
+    rnd(objects[otyp].oc_wsdam). Both are guarded by `if (oc_wldam)` /
+    `if (oc_wsdam)`, so a weapon with a zero entry draws nothing at all.
+  - Each arm then has its own switch adding per-weapon bonuses, several of
+    which draw again: rnd(4), rnd(6), d(2,4), d(2,6) on the big side.
+
+TRANSCRIBE THIS TABLE FROM THE C. It is the single most 5.0-changed thing in
+the melee path -- SILVER_MACE, PARTISAN and RUNESWORD all appear in the
+big-monster switch and none of them are 3.6 entries. Anything written from
+pretrained NetHack knowledge will look right and diverge on the first swing.
+
+After dmgval: hmon_hitmon_weapon_melee (133 lines, and note its Rogue
+backstab draws rnd(u.ulevel) and its weapon-shatter arm keys off
+dieroll == 2), then dmg_recalc, then the damage-application path, then
+msg_hit.
+
+ALTERNATIVE: dog_move unblocks 7 sessions against this chain's 4, but
+js/dogmove.js does not exist at all, so it is a cold start on a 400-line
+file rather than four more units on a chain already 26 deep.
 
 ITS DEPENDENCY TREE, walked rather than estimated:
 

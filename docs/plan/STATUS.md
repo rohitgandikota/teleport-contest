@@ -331,6 +331,29 @@ TWO pieces, and binding 'Q' alone is NOT enough:
 Do getobj's prompt FIRST. It is the shared piece, and it is measurable on its
 own: any session that reaches a getobj prompt will show the difference.
 
+The assembly is src/invent.c:1919 and is short:
+
+    Sprintf(qbuf, "What do you want to %s?", word);
+    if (!buf[0])
+        Strcat(qbuf, " [*]");
+    else
+        Sprintf(eos(qbuf), " [%s or ?*]", buf);
+    ilet = yn_function(qbuf, (char *) 0, '\0', FALSE);
+
+tty_yn_function is ALREADY ported (js/tty/topl.js) for the resp == NULL arm,
+which is exactly this call, and our getobj already reads a key with nhgetch at
+js/invent.js:110 -- so swapping that read for tty_yn_function(qbuf, null, 0)
+adds the paint without changing which keys are consumed.
+
+The work is `buf`, the letter list: src/invent.c:1765-1915 walks inventory
+applying obj_ok_func and builds the ranges, which is how "[- cd or ?*]" gets
+its "- cd". That is ~150 lines and is the actual job. The '-' comes from
+getobj_hands_txt (src/invent.c:1719) when GETOBJ_PROMPT allows "your hands".
+
+Land the assembly and the letter list TOGETHER. A prompt reading "[*]" where
+C reads "[- cd or ?*]" is still a screen mismatch, just a different one, and
+it would look like the port regressed rather than advanced.
+
 ### seed0101 at 2293 is the THROW subsystem, at step 9
 
     2291  rnd(9000)  moveloop_preamble(allmain.c:72)   ours matches

@@ -2,6 +2,12 @@
 // C ref: src/steal.c
 
 import { game } from './gstate.js';
+
+/* js/dog.js owns droppables() and imports this module, so it hands the
+   function over instead of being imported back -- dog.js is one of the
+   modules that re-enters during initialisation. */
+let droppables_fn = null;
+export function steal_wire_droppables(fn) { droppables_fn = fn; }
 import { extract_from_minvent } from './worn.js';
 import { place_object } from './mkobj.js';
 import { stackobj } from './invent.js';
@@ -55,20 +61,21 @@ export function relobj(mtmp, show, is_pet) {
         (game.unported ||= new Set()).add('steal:relobj:vault_gold');
     }
 
-    if (is_pet) {
-        /* droppables() picks only what a pet is willing to part with */
-        (game.unported ||= new Set()).add('steal:relobj:is_pet');
-        return;
-    }
+    /* is_pet TRUE keeps wielded and worn gear: C loops on droppables()
+       rather than the whole pack. droppables lives in js/dog.js, which
+       imports this module, so it is handed over rather than imported back. */
+    const pick = is_pet
+        ? () => (droppables_fn ? droppables_fn(mtmp) : null)
+        : () => ((mtmp.minvent && mtmp.minvent.length) ? mtmp.minvent[0] : null);
 
-    while (mtmp.minvent && mtmp.minvent.length) {
-        const otmp = mtmp.minvent[0];
-        mdrop_obj(mtmp, otmp, false);
-        /* guard against an extract that did not remove it, which would
-           spin here forever */
-        if (mtmp.minvent[0] === otmp) {
+    for (let otmp = pick(); otmp; otmp = pick()) {
+        mdrop_obj(mtmp, otmp, is_pet && !!game.flags?.verbose);
+        /* guard against an extract that did not remove it, which would spin
+           here forever */
+        if (mtmp.minvent && mtmp.minvent[0] === otmp) {
             mtmp.minvent.shift();
             (game.unported ||= new Set()).add('steal:relobj:extract_failed');
+            break;
         }
     }
 

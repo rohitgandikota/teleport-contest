@@ -1,3 +1,4 @@
+import { relobj, steal_wire_droppables } from './steal.js';
 import { ROT_ICE_ADJUSTMENT } from './const.js';
 import { max_passive_dmg } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
@@ -1351,7 +1352,7 @@ export function dog_invent(mtmp, edog, udist) {
     if (droppables(mtmp)) {
         if (!rn2(udist + 1) || !rn2(edog.apport))
             if (rn2(10) < edog.apport) {
-                note_unported('relobj');           /* the drop itself */
+                relobj(mtmp, mtmp.minvis ? 1 : 0, true);  /* the drop itself */
                 if (edog.apport > 1) edog.apport--;
                 edog.dropdist = udist;
                 edog.droptime = game.moves;
@@ -1526,3 +1527,6 @@ function distu(x, y) {
     const dx = x - game.u.ux, dy = y - game.u.uy;
     return dx * dx + dy * dy;
 }
+
+/* hand droppables() to js/steal.js; see its header for why */
+steal_wire_droppables(droppables);

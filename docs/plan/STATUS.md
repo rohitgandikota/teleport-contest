@@ -133,12 +133,31 @@ m_can_break_boulder. Two things learned doing it:
     are post-divergence coincidence. The arm is verbatim C and is KEPT;
     deleting faithful code to buy screens is the rule-1 failure mode.
 
-STILL MISSING from mfndpos, and worth doing next: the trap arm needs
-m_harmless_trap (src/trap.c:1106), which needs Resists_Elem
-(src/mondata.c:129), resists_magm and defended -- the monster resistance
-subsystem. Also absent: the amorphous/can_fog door arm, the poison-gas region
-test, the shop/temple wall-digging test, the IRONBARS non-diggable arm, and
-the rogue-level and worm_cross diagonal arms.
+mfndpos is now COMPLETE except for two arms with real subsystem dependencies:
+the poison-gas region test (needs the NhRegion subsystem) and the worm_cross
+diagonal (needs long worm segments). Everything else landed, including the
+trap arm and the resistance chain under it: dmgtype, defended, Resists_Elem,
+resists_magm and the eight resists_* wrappers in js/mondata.js, plus
+floor_trigger, check_in_air and m_harmless_trap in js/trap.js and hastrack in
+js/track.js.
+
+dog_move also gained m_avoid_kicked_loc, m_avoid_soko_push_loc, and the
+rn2(40) that lets a pet step onto a trap it has seen -- a DRAW that was
+missing outright, not merely a decision.
+
+### Four header macros were defined twice, with two of them DIFFERING
+
+Consolidated into js/monst.js (include/monst.h): DEADMONSTER, MON_WEP,
+is_vampshifter. Into js/const.js: Is_rogue_level, where js/mkobj.js had a copy
+testing `game.level.flags.is_rogue_level`, a flag nothing sets, against the
+real Lcheck. js/monmove.js also carried its own dist2 labelled "src/hack.c"
+when dist2 is src/hacklib.c and already lived in js/hacklib.js.
+
+Run this after touching anything shared -- a duplicate with a DIFFERENT body
+is the dangerous kind, and it does not show up in any score:
+
+    grep -rhoE "^(export )?(function|const) [a-z_A-Z0-9]+" js/*.js js/tty/*.js \
+      | awk '{print $NF}' | sort | uniq -d
 
 ### Previously open on seed0700: the turn counter is one ahead
 

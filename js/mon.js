@@ -439,7 +439,7 @@ export function healmon(mtmp, amt, overheal) {
 // predicate. For the metal object meatmetal() feeds it none of them can be
 // true, so this is the whole function on that path rather than a reduction of
 // it; the guards are the C's own, evaluated, not assumed.
-function m_consume_obj(mtmp, otmp) {
+export function m_consume_obj(mtmp, otmp) {
     const ispet = mtmp.mtame;
 
     /* non-pet: Heal up to the object's weight in hp */

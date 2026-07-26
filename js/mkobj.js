@@ -100,6 +100,82 @@ export { mkobjprobs, boxiprobs, rogueprobs, hellprobs };
 // src/mkobj.c:521 next_ident()
 // One rnd(2) per created object or monster. Cheap to overlook and it appears
 // between every pair of object draws in the recordings.
+// src/shk.c:2864 oid_price_adjustment() — the +1 an unidentified object's
+// o_id can add to its shop price. Its C home is shk.c; there is no js/shk.js
+// yet, and it exists here only because nextoid() below is its sole caller so
+// far. Move it when the shop code lands.
+function oid_price_adjustment(obj, oid) {
+    let res = 0;
+    const otyp = obj.otyp;
+
+    if (!(obj.dknown && game.objects[otyp].oc_name_known)
+        && (obj.oclass !== OCLASSES.GEM_CLASS
+            || game.objects[otyp].oc_material !== GLASS)) {
+        res = ((oid % 4) === 0) ? 1 : 0; /* id%4 ==0 -> +1, ==1..3 -> 0 */
+    }
+    return res;
+}
+
+// src/mkobj.c:536 nextoid() — pick the split-off object's id.
+//
+// Draws NOTHING, unlike next_ident(). It walks context.ident forward until the
+// new id gives the same price adjustment as the parent's, so a stack that
+// splits does not change price, and it leaves context.ident on the id it used.
+// That last part is why it cannot be replaced by next_ident(): the two advance
+// context.ident by different amounts and every later object id would shift.
+function nextoid(oldobj, newobj) {
+    let trylimit = 256;             /* limit of 4 suffices at present */
+    let oid = game.context.ident - 1; /* loop increment will reverse -1 */
+
+    const olddif = oid_price_adjustment(oldobj, oldobj.o_id);
+    let newdif;
+    do {
+        ++oid;
+        if (!oid)                   /* avoid using 0 (in case value wrapped) */
+            ++oid;
+        newdif = oid_price_adjustment(newobj, oid);
+    } while (newdif !== olddif && --trylimit >= 0);
+    game.context.ident = oid;       /* update 'last ident used' */
+    return oid;
+}
+
+// src/mkobj.c:457 splitobj() — split num items off obj into a new object.
+//
+// Draws nothing. Ported for dog_eat(), which splits a single item off a food
+// stack so a pet eats one ration rather than the whole pile.
+//
+// Not ported, each recorded rather than faked: splitbill (shops), the timer
+// and light-source splits, and the Lua reference bookkeeping. copy_oextra is
+// approximated by carrying the fields our object model actually has.
+export function splitobj(obj, num) {
+    /* can't split containers; C panics here */
+    if (obj.cobj || num <= 0 || obj.quan <= num)
+        note_unported_obj('splitobj:panic');
+
+    const otmp = { ...obj };        /* *otmp = *obj -- copies whole structure */
+    otmp.oextra = null;
+    otmp.o_id = nextoid(obj, otmp);
+    otmp.timed = 0;                 /* not timed, yet */
+    otmp.lamplit = 0;               /* ditto */
+    otmp.owornmask = 0;             /* new object isn't worn */
+    obj.quan -= num;
+    obj.owt = weight(obj);
+    otmp.quan = num;
+    otmp.owt = weight(otmp);
+    otmp.pickup_prev = 0;
+
+    game.context.objsplit = game.context.objsplit || {};
+    game.context.objsplit.parent_oid = obj.o_id;
+    game.context.objsplit.child_oid = otmp.o_id;
+
+    if (obj.unpaid)
+        note_unported_obj('splitobj:splitbill');
+    if (obj.timed)
+        note_unported_obj('splitobj:obj_split_timers');
+
+    return otmp;
+}
+
 export function next_ident() {
     const ctx = game.context;
     const id = ctx.ident || 1;

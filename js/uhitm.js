@@ -11,10 +11,11 @@
 // code and is recorded, not faked.
 
 import { game } from './gstate.js';
-import { rn2, rnd } from './rng.js';
+import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
-import { IS_OBSTRUCTED, MON_POLE_DIST } from './const.js';
+import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
+         NATTK } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus } from './weapon.js';
@@ -362,4 +363,47 @@ export function hitum(mon, uattk) {
     }
     game.twohits = 0;
     return malive;
+}
+
+// src/uhitm.c passive() — the monster's counter-attack after the hero hits it.
+//
+// hitum calls this unconditionally, so its FIRST action matters on every
+// single melee swing: it scans the monster's attack table for an AT_NONE
+// slot, which is how a passive attack is encoded. Most monsters have none and
+// the function returns having drawn NOTHING. That early return is the common
+// path and is why porting the head alone is worth doing.
+//
+// When a passive attack IS present, the damage roll happens BEFORE the switch
+// and regardless of which arm runs:
+//     d(damn, damd)        if damn is set
+//     d(m_lev + 1, damd)   otherwise, if damd is set
+//     0                    if neither
+// C's own comment notes tmp is not always used, but the DRAW still happens.
+// That is the trap: a port that computed the damage inside the arm that needs
+// it would skip a draw for every arm that does not.
+//
+// The switch itself -- AD_FIRE, AD_ACID, AD_STON, AD_RUST, AD_CORR, AD_MAGM,
+// AD_ENCH and the rest, each with its own draws -- is recorded, not faked.
+export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
+    const ptr = game.mons[mon.mnum];
+    const mhit = mhitb ? M_ATTK_HIT : M_ATTK_MISS;
+    const malive = maliveb ? M_ATTK_HIT : M_ATTK_MISS;
+
+    let i;
+    for (i = 0; ; i++) {
+        if (i >= NATTK)
+            return malive | mhit;       /* no passive attacks: NO DRAW */
+        if (ptr.mattk[i] && ptr.mattk[i][0] === ATTKS.AT_NONE)
+            break;                      /* try this one */
+    }
+
+    /* Note: tmp is not always used, but the draw happens regardless */
+    const damn = ptr.mattk[i][2], damd = ptr.mattk[i][3];
+    if (damn)
+        d(damn, damd);
+    else if (damd)
+        d(mon.m_lev + 1, damd);
+
+    note_unported_uhitm(`passive:adtyp=${ptr.mattk[i][1]}`);
+    return malive | mhit;
 }

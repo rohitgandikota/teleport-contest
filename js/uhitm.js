@@ -21,6 +21,9 @@ import { abon, hitval, weapon_hit_bonus } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc } from './mondata.js';
+import { is_blade, is_axe, set_ustuck } from './mon.js';
+import { is_weptool } from './mkobj.js';
+import { OCLASSES } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC } from './const.js';
@@ -236,4 +239,67 @@ export function missum(mdef, mattk, wouldhavehit) {
 
     if (!helpless(mdef))
         note_unported_uhitm('missum:wakeup');
+}
+
+// src/uhitm.c known_hitum() — resolve a hit or miss that the hero knows about.
+//
+// THE FIRST FUNCTION IN THIS CHAIN THAT DRAWS, and the draws are nested:
+// rn2(25) gates the flee check, and only if that passes does rn2(3) decide
+// whether monflee gets rnd(100) or 0. So a healthy monster costs one draw, a
+// wounded one that passes the gate costs two or three.
+//
+// mhit is C's in/out parameter: a Vorpal Blade hit against a headless target
+// is converted back to a miss. It is passed as a one-element array so the
+// caller sees the change, and the conduct counter is rolled back with it --
+// a miss must not count as having hit with a weapon.
+//
+// hmon (the damage) and cutworm (long worms) are recorded, not approximated.
+// Without hmon the monster takes no damage, so mhp stays equal to oldhp and
+// the Vorpal-miss branch fires every time; that is noted at the branch so the
+// behaviour is not mistaken for a bug later.
+export function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
+                            uattk, dieroll) {
+    let malive = true;
+    /* hmon() might destroy the weapon; remember the aspect for cutworm */
+    const slice_or_chop = !!(weapon && (is_blade(weapon) || is_axe(weapon)));
+
+    if (game.override_confirmation)
+        note_unported_uhitm('known_hitum:bloodthirsty_blade_message');
+
+    if (!mhit[0]) {
+        missum(mon, uattk, (rollneeded + armorpenalty > dieroll));
+    } else {
+        const oldhp = mon.mhp;
+        const oldweaphit = game.u.uconduct?.weaphit ?? 0;
+
+        /* KMH, conduct */
+        if (weapon && (weapon.oclass === OCLASSES.WEAPON_CLASS
+                       || is_weptool(weapon, game.objects))) {
+            game.u.uconduct = game.u.uconduct || {};
+            game.u.uconduct.weaphit = oldweaphit + 1;
+        }
+
+        /* hmon() applies the damage and may kill the monster */
+        note_unported_uhitm('known_hitum:hmon');
+
+        if (malive) {
+            if (!rn2(25) && mon.mhp < mon.mhpmax / 2 && !game.u.uswallow) {
+                monflee(mon, !rn2(3) ? rnd(100) : 0, false, true);
+
+                if (game.u.ustuck === mon && !game.u.uswallow)
+                    set_ustuck(null);
+            }
+            /* Vorpal Blade hit converted to miss: headless monster or worm
+               tail. NOTE: with hmon unported the monster never loses hp, so
+               this fires on every hit. It is faithful to the C given no
+               damage was applied. */
+            if (mon.mhp === oldhp) {
+                mhit[0] = 0;
+                game.u.uconduct.weaphit = oldweaphit;  /* a miss is not a hit */
+            }
+            if (mon.wormno && mhit[0])
+                note_unported_uhitm('known_hitum:cutworm');
+        }
+    }
+    return malive;
 }

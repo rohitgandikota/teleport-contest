@@ -206,21 +206,42 @@ is 4, the lowest of the six candidates. The selection logic is doing its job.
 
 *** THE BUG IS THE GOAL: ggx,ggy = 77,16 ***
 
-The hero is at map (11,15) on that step. The newt's goal is sixty-six columns
-away from the hero, and for a non-pet monster the goal is normally the
-monster's BELIEF about where the hero is, mtmp->mux/muy, set by set_apparxy.
-A newt walking purposefully toward 77,16 while the hero stands at 11,15 is not
-a plausible belief; it is a wrong goal.
+CAUTION -- MY FIRST READING OF THIS WAS WRONG. I compared the goal against the
+hero at map (11,15), which is where the hero stands at STEP 41, the step the
+divergence is reported on. But the newt's first move happens much earlier in
+the run. Instrumenting gettrack for this newt shows:
+
+    GETTRACK newt cp=74,15 hero=71,15
+
+The hero was at (71,15) at that point, three squares from the newt's
+neighbourhood. So a goal of 77,16 is entirely plausible as a belief about a
+hero who was nearby, and the "sixty-six columns away" argument is void.
+
+WHAT REMAINS TRUE: the newt's chosen square is correct GIVEN its goal, so the
+selection block is not at fault, and the divergence is upstream of it. What is
+NOT established is that the goal is wrong -- that needs comparing against C,
+not against a hero position taken from the wrong step.
 
 Note that GAP 1 and GAP 2 above are still real omissions worth closing on
 their own merits, they are simply not this bug. Do not delete those entries.
 
-NEXT, and this is now a short hop: js/monmove.js sets ggx,ggy three times --
-line 729 from mtmp.mux/muy, line 768 from a coordinate cp, line 802 from a
-goal/appr strategy pair. Print WHICH of the three assigned 77,16 for this
-newt, then compare that path against the C. Check set_apparxy first if it is
-line 729, since a wrong mux/muy would also explain why the monster is heading
-away from the hero, and set_apparxy's own draws would then be suspect too.
+NEXT: the three ggx/ggy assignment sites in js/monmove.js are line 729
+(mtmp.mux/muy), 768 (gettrack's cp) and 802 (a goal/appr strategy pair).
+Instrument all three to report which one wins for m_id=30 on its FIRST move,
+being careful to guard on the move rather than on the first call to any one
+site -- the gettrack probe above fired on a different, later move than the
+m_move probe did, which is what produced the confusion.
+
+Then, and this is the part that actually decides it, work out what C's goal
+must have been. C's newt ends up somewhere with 7 open neighbours; our goal of
+77,16 sends it into a wall corner with 5. Enumerate the squares near 76,13
+with 7 open neighbours and see which goal would lead there. That is a static
+map question and needs no replay.
+
+A caution for whoever picks this up: this thread has produced six retracted
+readings, and the last one was retracted for comparing against a hero position
+taken from the wrong step. Pin down WHEN each observation was made before
+reasoning from it.
 
 Note the newt is at 77,14, hard against the VWALL at x=78, and needs 7 open
 neighbours in C. A square with 7 open neighbours is well clear of any wall, so

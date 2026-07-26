@@ -7,7 +7,10 @@
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
-import { pline } from './display.js';
+import { encumber_msg } from './attrib.js';
+import { freeinv } from './invent.js';
+import { place_object } from './mkobj.js';
+import { pline, newsym } from './display.js';
 import { ECMD_OK, ECMD_TIME } from './const.js';
 import { rn2, rnd } from './rng.js';
 
@@ -170,4 +173,69 @@ export async function deferred_goto() {
     game.u.utotype = UTOTYPE_NONE;      /* the caller keys off this */
     game.dfr_pre_msg = null;
     game.dfr_post_msg = null;
+}
+
+// src/do.c dropz() — put the object on the floor (or into the engulfer).
+//
+// The three wielded-slot clears come FIRST: an object being dropped must stop
+// being the weapon, quiver or offhand before it leaves inventory, or those
+// pointers dangle.
+//
+// flooreffects RETURNS EARLY when the object is destroyed on landing -- water,
+// lava, a trapdoor -- so place_object is skipped entirely in that case. Calling
+// place_object unconditionally would leave a destroyed object on the map.
+//
+// encumber_msg() runs at the very end and OUTSIDE the swallow branch, so
+// dropping while engulfed still reports the weight change.
+//
+// The engulfer branch, flooreffects, container impact, zombie disturbance,
+// ball dropping, shop selling, stackobj and the blind-levitation map_object
+// are recorded.
+export function dropz(obj, with_impact) {
+    if (obj === game.uwep)
+        note_unported_do('dropz:setuwep');
+    if (obj === game.uquiver)
+        note_unported_do('dropz:setuqwep');
+    if (obj === game.uswapwep)
+        note_unported_do('dropz:setuswapwep');
+
+    if (game.u.uswallow) {
+        note_unported_do('dropz:engulfer_branch');
+    } else {
+        if (note_unported_do('dropz:flooreffects'))
+            return;
+        place_object(obj, game.u.ux, game.u.uy);
+        if (with_impact)
+            note_unported_do('dropz:container_impact_dmg');
+        note_unported_do('dropz:impact_disturbs_zombies');
+        if (obj === game.uball)
+            note_unported_do('dropz:drop_ball');
+        else if (game.level?.flags?.has_shop)
+            note_unported_do('dropz:sellobj');
+        note_unported_do('dropz:stackobj');
+        newsym(game.u.ux, game.u.uy);   /* remap location under self */
+    }
+    encumber_msg();
+}
+
+// src/do.c dropy() — dropz with no impact.
+export function dropy(obj) {
+    dropz(obj, false);
+}
+
+// src/do.c dropx() — take it out of inventory, then put it down.
+//
+// freeinv FIRST, then the placement. ship_object is the chute that swallows
+// an object on a Sokoban or level-teleporter square and RETURNS EARLY, so
+// nothing reaches the floor there; doaltarobj sets bknown when it lands on
+// an altar.
+export function dropx(obj) {
+    freeinv(obj);
+    if (!game.u.uswallow) {
+        if (note_unported_do('dropx:ship_object'))
+            return;
+        if (note_unported_do('dropx:IS_ALTAR'))
+            note_unported_do('dropx:doaltarobj');
+    }
+    dropy(obj);
 }

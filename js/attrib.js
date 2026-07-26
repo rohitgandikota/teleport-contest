@@ -95,7 +95,7 @@ export function near_capacity() {
 //
 // The stagger() verb varies by polyform and is recorded; every other string
 // is C's verbatim.
-async function encumber_msg() {
+export async function encumber_msg() {
     const newcap = near_capacity();
 
     if (game.oldcap < newcap) {

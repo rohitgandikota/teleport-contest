@@ -5193,3 +5193,36 @@ enters it, and the fault is upstream of linedup entirely.
 blocking_terrain is worth keeping in mind separately: is_waterwall is not
 ported and is recorded, which is correct for ordinary levels but would matter
 on the water level.
+
+## uhitm.c: groundwork LANDED, the swap is isolated as the fault
+
+js/uhitm.js exists with do_attack's is_safemon branch, and js/display.js has
+the display.h vision predicates including is_safemon. All of it is committed
+and measured NEUTRAL (491 screens, 140953 RNG) because it is not wired in.
+
+TWO INDEPENDENT ATTEMPTS NOW AGREE ON THE FAULT. Measured separately this
+time rather than as one change:
+
+    attack check wired into domove, no swap      491 -> 487   (-4)
+    plus domove_swap_with_pet                    491 -> 244   (-247)
+
+The first attempt saw -24 and -224 for the same two halves. So do_attack,
+is_safemon and the vision predicates are NOT the problem; domove_swap_with_pet
+is. That is now established twice by different routes and should not be
+re-derived.
+
+WHAT IS DIFFERENT ABOUT OUR domove. C reaches the swap at hack.c:2919 after a
+long stretch our domove does not have: domove_bump_mon, the ironbars fight,
+trap and terrain handling, u_on_newpos and spoteffects. The swap is the ELSE-IF
+arm of `if (displaceu)` and carries a `!(is_hider && mundetected)` guard, both
+of which the port has. What it cannot have is the STATE those intervening
+steps would have set.
+
+NEXT, and make it a measurement rather than another transcription pass: wire
+the swap again and instrument domove_swap_with_pet to print, on each call,
+which arm it takes and the hero's ux/uy/ux0/uy0 before and after. A -247 is
+far too large for a rare arm, so it is almost certainly firing on nearly every
+step onto a peaceful and moving the hero somewhere C does not. Compare the
+first few calls against the recorded screens for those steps.
+
+Do NOT re-transcribe do_attack or is_safemon; both are verified neutral.

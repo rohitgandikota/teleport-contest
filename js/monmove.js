@@ -871,6 +871,17 @@ export function m_move(mtmp, after) {
     let chi = -1;
     let nix = omx, niy = omy;
     let nidist = dist2(nix, niy, ggx, ggy);
+
+    /* src/monmove.c:1936 — allow monsters to be shortsighted on some levels
+       for balance. When this fires it flips appr from 1 to 0, which switches
+       the selection below from "deterministically approach the goal" to the
+       random !rn2(++chcnt) tie-break, so it changes both the destination AND
+       the draw count. level.flags.shortsighted is only set by special levels,
+       so this is dormant on ordinary ones rather than dead. */
+    if (!mtmp.mpeaceful && game.level.flags.shortsighted
+        && nidist > (couldsee(nix, niy) ? 144 : 36) && appr === 1)
+        appr = 0;
+
     let mmoved = MMOVE_NOTHING;
 
     for (let i = 0; i < cnt; i++) {

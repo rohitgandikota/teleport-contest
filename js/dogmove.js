@@ -296,4 +296,10 @@ export function dog_scoring_loop(mtmp, edog, mfp, cnt, uncursedcnt, appr,
 }
 
 // src/dogmove.c:995 GDIST() — squared distance to the pet's current goal.
-const GDIST = (x, y) => dist2(x, y, game.gx ?? 0, game.gy ?? 0);
+//
+// The goal lives in game.gg, published by dog_goal (js/dog.js). This was
+// first written as `game.gx ?? 0, game.gy ?? 0`, which is undefined and so
+// measured distance to (0,0) -- every square would score by how close it is
+// to the top-left corner. js/dog.js:686 carries a comment about a previous
+// agent hitting the same thing from the other side.
+const GDIST = (x, y) => dist2(x, y, game.gg?.gx ?? 0, game.gg?.gy ?? 0);

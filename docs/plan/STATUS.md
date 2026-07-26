@@ -62,8 +62,23 @@ THE DIVERGENCE AGGREGATE, re-measured this session:
      2  mount_steed(steed.c:341)
 
 do_attack:474 is the Punished/rn2(7) line just corrected, so the melee chain
-IS on the critical path for 4 sessions. dog_move at 7 is the single largest
-blocker and is untouched.
+IS on the critical path for 4 sessions.
+
+dog_move at 7 sessions is the single largest blocker, and js/dogmove.js DOES
+NOT EXIST -- the whole file is unported, not merely incomplete. Confirmed by
+`ls js/dogmove.js`. The divergent line, src/dogmove.c:1255, is inside the pet
+position-scoring loop:
+
+    j = ((ndist = GDIST(nx, ny)) - nidist) * appr;
+    if ((j == 0 && !rn2(++chcnt)) || j < 0
+        || (j > 0 && !whappr
+            && ((omx == nix && omy == niy && !rn2(3)) || !rn2(12)))) {
+
+Note `!rn2(++chcnt)`: a reservoir sampler over equally-good squares, and the
+PRE-increment is load-bearing. There is also `rn2(MTSZ * (k - j))` in the
+mtrack backtrack check just above it. Every one of these draws on ordinary pet
+movement, which is why 7 sessions diverge here and why the fix is a real port
+of dogmove.c rather than a patch.
 
 STILL DORMANT: do_attack's call site is deliberately NOT wired. It costs 30
 screens and does not throw (verified). The gate is hmon_hitmon: a hero who

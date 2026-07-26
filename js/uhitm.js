@@ -683,7 +683,7 @@ function hmon_hitmon_do_hit(hmd, mon, obj) {
 
         if (obj.oclass === OCLASSES.WEAPON_CLASS || is_weptool(obj, game.objects)
             || obj.oclass === OCLASSES.GEM_CLASS) {
-            note_unported_uhitm('hmon_hitmon:weapon');
+            hmon_hitmon_weapon(hmd, mon, obj);
             if (hmd.doreturn)
                 return;
         /* attacking with non-weapons */
@@ -768,4 +768,47 @@ function hmon_hitmon_barehands(hmd, mon) {
     }
     if (hmd.barehand_silver_rings > 0)
         hmd.silvermsg = true;
+}
+
+// src/uhitm.c:1070 hmon_hitmon_weapon() — melee blow, or wrong-tool blow?
+//
+// Pure routing, no draw. The four OR'd clauses are the ways to hit something
+// with a weapon that is not being used as one:
+//
+//   is_launcher                 swinging a bow like a club
+//   !thrown && missile/ammo     jabbing with an arrow held in hand
+//   !thrown && !usteed && pole  a polearm at arm's length, on foot. Mounted
+//                               is fine, and ART_SNICKERSNEE is exempt.
+//   ammo without its launcher   thrown, but not from the matching bow
+//
+// The polearm clause needs BOTH !u.usteed and the artifact test; dropping
+// either turns a legitimate mounted lance charge into a fumble.
+//
+// is_launcher, is_missile, is_ammo, is_art and ammo_and_launcher are
+// recorded, so today every weapon blow routes to the melee arm -- which is
+// the correct behaviour for an ordinary weapon and wrong only for the four
+// cases above, none of which can arise before those predicates exist.
+function hmon_hitmon_weapon(hmd, mon, obj) {
+    /* is it not a melee weapon? */
+    if (note_pred('is_launcher', obj)
+        || (!hmd.thrown && (note_pred('is_missile', obj)
+                            || note_pred('is_ammo', obj)))
+        || (!hmd.thrown && !game.u.usteed && note_pred('is_pole', obj)
+            && !note_pred('is_art:SNICKERSNEE', obj))
+        || (note_pred('is_ammo', obj)
+            && (hmd.thrown !== HMON_THROWN
+                || !note_pred('ammo_and_launcher', obj)))) {
+        note_unported_uhitm('hmon_hitmon:weapon_ranged');
+    } else {
+        note_unported_uhitm('hmon_hitmon:weapon_melee');
+        if (hmd.doreturn)
+            return;
+    }
+}
+
+// The object predicates this routing needs, none of them ported. Each is
+// recorded by name so game.unported says which one a divergence wanted.
+function note_pred(name, obj) {
+    note_unported_uhitm('hmon_hitmon:' + name);
+    return false;
 }

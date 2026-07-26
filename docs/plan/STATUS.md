@@ -5335,3 +5335,45 @@ ORDER, and it is worth doing in this order because each step is measurable:
 The single combat-path hit measured above means step 5 can be verified on one
 encounter in seed0030, which is a tight feedback loop for a subsystem this
 size.
+
+## The melee to-hit chain is COMPLETE; hitum is next and is bigger than it looks
+
+Landed and verified BY VALUE, since none of them draw and the scoreboard
+cannot see them:
+
+    abon               src/weapon.c:950    returns 1 for str 9 / dex 14 / lvl 1
+    find_mac           src/worn.c:717      base ac unchanged with no armour
+    is_orc, adjalign, check_caitiff
+    hitval             src/weapon.c:149    +1 weapon, hitbon 0 -> 1
+    weapon_hit_bonus   src/weapon.c:1545   P_BASIC -> 0, barehanded -> 1
+    find_roll_to_hit   src/uhitm.c         21 + hitval 1 + whb 0 -> 22
+
+Two constants that would have been wrong if taken from their names:
+ALIGNLIM is 10 + moves/200, not 10, so it grows as the game runs; and Luck is
+uluck + moreluck entering as sgn(Luck) * ((abs(Luck) + 2) / 3), which differs
+from Luck/3 for negative values.
+
+HITUM'S DEPENDENCIES, sized. hitum itself is 58 lines and its rnd(20) is the
+first draw in the whole chain, so it is also the first thing the scoreboard
+can measure. But it calls:
+
+    known_hitum            60 lines
+    passive               256 lines   <-- the surprise
+    mon_maybe_unparalyze    9
+    double_punch           19
+    hitum_cleave            ?         only for wielded Cleaver, skippable
+    u_wield_art, exercise             exercise already exists in js/attrib.js
+
+passive() at 256 lines is the monster's counter-attack, and hitum calls it
+unconditionally after known_hitum. It cannot simply be recorded, because it
+draws.
+
+REVISED ESTIMATE: the earlier "340 lines, treat as a floor" is now clearly
+low. Reaching a single scoreboard-visible melee swing needs hitum, known_hitum
+and passive at minimum, roughly 375 lines on top of what has landed, plus
+hmon and hmon_hitmon underneath known_hitum.
+
+NEXT: port mon_maybe_unparalyze and double_punch (28 lines together, both
+small), then hitum with known_hitum and passive recorded, and measure. If the
+rnd(20) alone moves the aggregate, the rest can follow against real evidence
+rather than speculatively.

@@ -479,12 +479,35 @@ the same search. Note the direction of the error: ours approaches MORE than
 C's, so the missing `dog_has_minvent` term at js/dog.js:567 is NOT the cause,
 since that term can only make a dog approach more often.
 
-NEXT ACTION: instrument our dog_goal at seg 1 step 4 and print gtyp/gx/gy
-plus every object it considers with its dogfood() verdict, then compare
-against the objects on C's screen near row 17 col 31. Establish WHICH goal
-C's pet is walking to before changing anything. The failure mode to avoid is
-the one this entry already documents once: do not infer the cause from the
-one function whose name appears in the stack trace.
+MEASURED (instrumentation since reverted, js/dog.js is untouched). Over a
+full seed0030 run, ~19 objects on the level, dog_goal's outcomes:
+
+    gtyp chosen   APPORT 68    UNDEF 732        (9% of turns get a goal)
+    dogfood says  ACCFOOD 4  MANFOOD 24  APPORT 1220  POISON 48  UNDEF 43
+
+So the object search is NOT dead: dogfood returns real verdicts and the
+APPORT arm fires 68 times. Two things follow, and both cut off a guess that
+looked obvious a moment earlier.
+
+MANFOOD never becoming a goal is CORRECT, not a bug. The C is
+`if (otyp < MANFOOD)`, and MANFOOD is not less than MANFOOD, so those 24 fall
+through to the APPORT arm exactly as C intends. Do not "fix" this.
+
+ACCFOOD (4 occurrences) never became a goal either, which is the one gap
+worth a look: an ACCFOOD verdict SHOULD set gtyp=2 unless could_reach_item()
+or can_reach_location() rejected it. Four samples is too few to conclude
+anything, and those two reachability calls are the untested part of the loop.
+
+NEXT ACTION: this is where the seed0030 thread stands. The remaining question
+is narrow and stated so it can be answered without re-deriving the above:
+for each of the 4 ACCFOOD objects, did could_reach_item or can_reach_location
+reject it, and does C reject it too? Instrument those two predicates rather
+than dogfood, which is already cleared.
+
+Keep the standing caution: the pet-position gap is the thing being explained,
+and a 9%-goal-rate pet that follows the hero every other turn is consistent
+with what we see on screen. Do not change monmove.js:686, and do not change
+the MANFOOD comparison.
 
 One real gap found in passing, not the cause: js/dog.js:567 omits C's
 `|| (dog_has_minvent && rn2(edog->apport))` from the follow-player test

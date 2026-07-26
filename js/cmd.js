@@ -6,6 +6,8 @@
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
+import { dodrop } from './do.js';
+import { any_obj_ok } from './invent.js';
 import { dodown, do_wire_mklev } from './do.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
 import { sp_lev_wire_mon } from './sp_lev.js';
@@ -345,12 +347,7 @@ function read_ok(obj) {
     return GETOBJ_DOWNPLAY;
 }
 
-/* src/invent.c:1710 any_obj_ok() — 'd' drop accepts anything in inventory. */
-function any_obj_ok(obj) {
-    if (obj)
-        return GETOBJ_SUGGEST;
-    return GETOBJ_EXCLUDE;
-}
+/* any_obj_ok() lives in js/invent.js, mirroring src/invent.c:1710. */
 
 /* src/do_wear.c:3404 equip_ok() — the shared filter behind W, T, P and R.
 //

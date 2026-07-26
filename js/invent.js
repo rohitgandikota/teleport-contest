@@ -615,3 +615,10 @@ export function useup(obj) {
         useupall(obj);
     }
 }
+
+/* src/invent.c:1710 any_obj_ok() — 'd' drop accepts anything in inventory. */
+export function any_obj_ok(obj) {
+    if (obj)
+        return GETOBJ_SUGGEST;
+    return GETOBJ_EXCLUDE;
+}

@@ -7,11 +7,12 @@
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
+import { ONAMES } from './objects_data.js';
 import { encumber_msg } from './attrib.js';
-import { freeinv } from './invent.js';
+import { freeinv, getobj, any_obj_ok } from './invent.js';
 import { place_object } from './mkobj.js';
 import { pline, newsym } from './display.js';
-import { ECMD_OK, ECMD_TIME } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './const.js';
 import { rn2, rnd } from './rng.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -238,4 +239,69 @@ export function dropx(obj) {
             note_unported_do('dropx:doaltarobj');
     }
     dropy(obj);
+}
+
+// src/do.c drop() — the guards, then dropx().
+//
+// Four ways to fail before anything moves: no object, canletgo says no
+// (cursed-and-worn, or a container in use), a corpse better_not_try_to_drop,
+// and a WELDED weapon -- which prints the weld message and fails rather than
+// silently declining, so the player learns why.
+//
+// The wielded-slot clears happen HERE as well as in dropz. That is not
+// redundant in C: drop() can return ECMD_TIME through the levitation path
+// below without ever reaching dropz, and the slot still has to be cleared.
+//
+// how_lost = LOST_DROPPED is set immediately before dropx so the object
+// records how it left inventory; bones and shop code read it.
+//
+// The engulfed branch, the Heart of Ahriman levitation dance (ELevitation is
+// forced so hitfloor happens before float_down), doname messages, canletgo,
+// welded/weldmsg and hitfloor are recorded.
+export function drop(obj) {
+    if (!obj)
+        return ECMD_FAIL;
+    if (note_unported_do('drop:canletgo'))
+        return ECMD_FAIL;
+    if (obj.otyp === ONAMES.CORPSE
+        && note_unported_do('drop:better_not_try_to_drop_that'))
+        return ECMD_FAIL;
+    if (obj === game.uwep) {
+        if (note_unported_do('drop:welded')) {
+            note_unported_do('drop:weldmsg');
+            return ECMD_FAIL;
+        }
+        note_unported_do('drop:setuwep');
+    }
+    if (obj === game.uquiver)
+        note_unported_do('drop:setuqwep');
+    if (obj === game.uswapwep)
+        note_unported_do('drop:setuswapwep');
+
+    if (game.u.uswallow) {
+        note_unported_do('drop:engulfed_branch');
+    } else {
+        note_unported_do('drop:levitation_and_message');
+    }
+    obj.how_lost = LOST_DROPPED;
+    dropx(obj);
+    return ECMD_TIME;
+}
+
+// src/do.c dodrop() — the 'd' command.
+//
+// sellobj_state brackets the getobj so a shop prices the item as a
+// DELIBERATE sale rather than an accidental one, and is restored afterwards
+// whether or not anything was dropped.
+export async function dodrop() {
+    if (game.u.ushops?.length)
+        note_unported_do('dodrop:sellobj_state:DELIBERATE');
+    const result = drop(await getobj('drop', any_obj_ok,
+                                     GETOBJ_PROMPT | GETOBJ_ALLOWCNT));
+    if (game.u.ushops?.length)
+        note_unported_do('dodrop:sellobj_state:NORMAL');
+    if (result)
+        note_unported_do('dodrop:reset_occupations');
+
+    return result;
 }

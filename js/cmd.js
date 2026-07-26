@@ -18,7 +18,7 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock } from './hack.js';
 import { curr_mon_load } from './mon.js';
-import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './const.js';
+import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
@@ -329,23 +329,44 @@ function drink_ok(obj) {
     return GETOBJ_EXCLUDE;
 }
 
+/* src/read.c:315 read_ok() — scrolls and spellbooks. Note the else arm is
+   GETOBJ_DOWNPLAY, not GETOBJ_EXCLUDE: C distinguishes "not a sensible
+   choice" from "not allowed", and only SUGGEST puts a letter in the prompt,
+   so both keep the letter out while meaning different things to the menu. */
+function read_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+    if (obj.oclass === OCLASSES.SCROLL_CLASS
+        || obj.oclass === OCLASSES.SPBOOK_CLASS)
+        return GETOBJ_SUGGEST;
+    return GETOBJ_DOWNPLAY;
+}
+
+/* src/invent.c:1710 any_obj_ok() — 'd' drop accepts anything in inventory. */
+function any_obj_ok(obj) {
+    if (obj)
+        return GETOBJ_SUGGEST;
+    return GETOBJ_EXCLUDE;
+}
+
 /* src/cmd.c cmdlist — the verb and object filter each command hands getobj().
    Read from the C, not invented: the word appears verbatim in the prompt
    ("What do you want to drink?") and the flags decide whether '-' for hands
    is offered. A missing filter offers the WHOLE inventory, which is what
    js/cmd.js used to do by passing null.
 
-   'q' now carries drink_ok and produces "[fgh]" on seed2200, matching C
-   exactly. The other six filters are not ported yet and stay null, so those
-   commands still offer the whole inventory; their VERBS are correct. */
+   'q', 'r' and 'd' carry their real filters. 'w', 'W', 'P' and 'R' all route
+   through C's equip_ok(obj, taking_off, is_accessory), which is a larger
+   function and is not ported, so they stay null and still offer the whole
+   inventory; their VERBS are correct. */
 const GETOBJ_CMD = {
     q: { word: 'drink',   ok: drink_ok, flags: GETOBJ_NOFLAGS },
-    r: { word: 'read',    ok: null,     flags: GETOBJ_NOFLAGS },
+    r: { word: 'read',    ok: read_ok,  flags: GETOBJ_PROMPT },
     w: { word: 'wield',   ok: null,     flags: GETOBJ_NOFLAGS },
     W: { word: 'wear',    ok: null,     flags: GETOBJ_NOFLAGS },
     P: { word: 'put on',  ok: null,     flags: GETOBJ_NOFLAGS },
     R: { word: 'remove',  ok: null,     flags: GETOBJ_NOFLAGS },
-    d: { word: 'drop',    ok: null,     flags: GETOBJ_NOFLAGS },
+    d: { word: 'drop',    ok: any_obj_ok, flags: GETOBJ_NOFLAGS },
 };
 
 /* The commands whose first act is getobj() and which read nothing further.

@@ -157,9 +157,16 @@ inferred rather than directly observed:
      C at that moment rather than one column off, which would move the whole
      ring and explain everything.
 
-CHECKED 2, AND IT IS NOT A ONE-COLUMN DIFFERENCE. Reading the recorded
-screen at step 4 puts C's hero at row 6, column 16. Our FIRST makedog runs
-with hero (57,4); our SECOND runs with hero (16,16).
+CHECKED 2: THE HERO MATCHES. tools/screendiff.mjs shows "@" at the SAME row
+and column in both renders at step 4 (row 6, inside "+@..+"). An earlier
+reading of "C hero at column 16" came from parsing the session JSON's screen
+field by hand and was a MISREAD of that format -- do not repeat it; use
+screendiff, which aligns the two renders for you.
+
+A game-indexed probe confirms makedog fires once per game with moves=0:
+game 1 hero (57,4), game 2 (16,16), game 3 (73,5). Game 1 is the one the
+step-4 screen belongs to, so (57,4) is the right figure after all and the
+earlier caution about wrong-game coordinates is withdrawn.
 
 seed0030 is "ten-diverse-deaths" -- TEN GAMES in one session -- so makedog
 is called once per game and the step-4 screen belongs to the first. Either
@@ -172,10 +179,18 @@ impossible if the hero were forty columns away on the same map. The more
 likely reading is that the (57,4) call belongs to a different game than the
 step-4 screen, and the pet being compared is the one placed at (16,16).
 
-Re-run the makedog probe printing a GAME INDEX alongside the coordinates,
-and confirm which call produced the pet visible at step 4, before trusting
-either number. The (57,4) figure has been carried through several ticks of
-reasoning in this entry and may belong to the wrong game entirely.
+SO THE CONTRADICTION STANDS AND IS NOW FULLY ISOLATED. At hero (57,4),
+game 1, moves 0: our pre-shuffle ring matches C's order exactly, the shuffle
+algorithm matches line for line, the RNG stream matches to call 6276 which is
+far past this point, and the hero's square is confirmed identical. Yet C's
+pet ends west of the stairs and ours east.
+
+Only assumption 1 is left untested: that the DRAWS AT THIS CALL SITE matched.
+The aggregate stream matching to 6276 does not prove it -- a pair of
+compensating differences reads as a match. Log the actual k values the
+shuffle consumes (k = rn2(n) for n = 8,7,6...) and check them against what
+would have to hold for C to end on (56,4). That is the only remaining way
+identical inputs can produce different outputs.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

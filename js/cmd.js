@@ -18,8 +18,10 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock } from './hack.js';
 import { curr_mon_load } from './mon.js';
-import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS } from './const.js';
+import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
+import { x_monnam } from './do_name.js';
+import { You } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
    are cycles when imported directly, so cmd.js -- which already pulls in every
@@ -740,7 +742,7 @@ async function domove(dx, dy) {
     const mtmp = m_at(newx, newy);
     if (mtmp && is_safemon(mtmp)
         && !(is_hider(game.mons[mtmp.mnum]) && mtmp.mundetected)) {
-        if (!domove_swap_with_pet(mtmp, newx, newy)) {
+        if (!(await domove_swap_with_pet(mtmp, newx, newy))) {
             game.u.ux = game.u.ux0;     /* didn't move after all */
             game.u.uy = game.u.uy0;
         }
@@ -760,7 +762,7 @@ async function domove(dx, dy) {
 // attempt used a bare `u`, which is a local inside domove and invisible from
 // module scope, so this function threw on every step onto a pet and cost 247
 // screens. It looked like a logic fault and was not.
-function domove_swap_with_pet(mtmp, x, y) {
+async function domove_swap_with_pet(mtmp, x, y) {
     let didnt_move = false;
     const mdat = game.mons[mtmp.mnum];
     const u_with_boulder = !!sobj_at(ONAMES.BOULDER, game.u.ux, game.u.uy);
@@ -809,7 +811,21 @@ function domove_swap_with_pet(mtmp, x, y) {
         place_monster(mtmp, game.u.ux0, game.u.uy0);
         newsym(x, y);
         newsym(game.u.ux0, game.u.uy0);
-        note_unported_cmd('domove_swap_with_pet:swap_message');
+        /* src/hack.c:2169 — the verb depends on PEACEFULNESS, not tameness:
+           a peaceful monster is swapped with, a hostile one is frightened.
+           The article is ARTICLE_YOUR for a tame monster, which x_monnam
+           downgrades to ARTICLE_THE for anything else, so "your little dog"
+           and "the jackal" both come out of the same call.
+
+           C's third argument is a "peaceful" adjective for peaceful non-tame
+           monsters, and its has_mgivenname/type_is_pname article choice is
+           not modelled; both are recorded inside x_monnam. */
+        await You(`${mtmp.mpeaceful ? 'swap places with' : 'frighten'} `
+                  + x_monnam(mtmp,
+                             mtmp.mtame ? ARTICLE_YOUR : ARTICLE_THE,
+                             (mtmp.mpeaceful && !mtmp.mtame) ? 'peaceful' : null,
+                             0, false)
+                  + '.');
     }
     return !didnt_move;
 }

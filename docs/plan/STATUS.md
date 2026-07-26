@@ -366,12 +366,24 @@ NOT food by that classification. If our dogfood ranks the object below
 MANFOOD where C ranks it at or above, we take the food branch and never
 reach the rn2(8) -- which is exactly the observed symptom.
 
-NEXT, and it is a small comparison rather than an instrumentation run: diff
-js/dog.js's dogfood against src/dogmove.c dogfood for the object class in
-play. The earlier screendiff showed GOLD ("$") at the square C's pet went
-for, so start with how each side classifies gold. Note dogfood has a fair
-number of arms (DOGFOOD/CADAVER/ACCFOOD/MANFOOD/APPORT/POISON/UNDEF) and only
-the boundary at MANFOOD matters here.
+NEXT: diff dogfood's verdict for the object in play. Two facts found while
+starting that, both worth not rediscovering:
+
+  - dogfood lives in src/dog.c:995, NOT src/dogmove.c. Its early returns
+    (POISON for poisoned, TABU/APPORT for quest artifacts and obj_resists)
+    match ours exactly.
+  - C's dogfood has NO `case COIN_CLASS` in its oclass switch, so gold falls
+    through to the OUTER default. The COIN_CLASS arm at js/dog.js:521 belongs
+    to a DIFFERENT function -- it assigns mtmp.meating, so it is the eating
+    path, not the classification path. Do not compare those two; they are not
+    counterparts.
+
+So the remaining question is narrow: what does each side's dogfood return for
+a COIN_CLASS object, and is it below or at/above MANFOOD? Find the outer
+switch's default arm in src/dog.c (it is past the FOOD_CLASS inner switch,
+which has its own default and is easy to mistake for it) and compare with
+ours. That single value decides which branch dog_goal takes and therefore
+whether the rn2(8) is drawn.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

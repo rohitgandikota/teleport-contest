@@ -80,17 +80,25 @@ from a placement path we do not run at all (one that spends no draws), or the
 three extra obj_resists belong to dog_move's walk over squares that hold
 objects in C and not in ours.
 
-Counting C's objects off the recorded screen does NOT settle this and was
-tried: step 0 of seed1500 shows exactly ONE object glyph, a '!' at map 55,15,
-because the hero only sees their starting room and everything else is dark.
-Do not repeat that measurement.
+Counting object glyphs off a recorded screen does NOT work and wasted a pass.
+Step 0 of most sessions is the LEGACY BLURB, not the map, so a scan for object
+symbols picks up punctuation from the intro text ("Go bravely with Kos!" reads
+as a potion at map 55,15). Even on a real map frame it would only ever see the
+hero's lit room. Do not repeat that measurement.
 
-What would settle it: instrument mkobj_at/mkgold/mksobj_at to log every
-placement with its position, run the session, and compare the count and the
-positions against the rn2(3) results the RNG log already agrees on. If the
-draws agree and the placements do not, the gap is a placement path that spends
-no draws; if the number of mkobj_at calls itself is short, the gap is a
-CALLER that we never reach.
+What HAS been measured: fill_ordinary_room runs for 9 rooms on seed1500 and
+its rn2(3) results are 1,0,1,1,2,2,2,2,2 -- exactly one zero, so exactly one
+mkobj_at() call. RNG matches C call for call through all of level generation,
+so C answers that gate identically and makes the same single call. Our object
+COUNT from this site is therefore right, and the earlier "C has three more
+objects near the pet" reading is unproven.
+
+So the three unexplained obj_resists are most likely NOT dog_goal's box walk.
+The remaining candidates, in order: dog_move's own per-square object walk (now
+ported, and confirmed live at 167 calls per session), dog_invent, and the
+meatobj/meatmetal arms at src/mon.c:1482 and :1586. Instrument obj_resists
+itself with a stack trace (js/rng.js RND, gated on an env var, as was done for
+call 2869 of seed4500) and read the caller directly rather than inferring it.
 
 ### What the obj_resists cluster actually is
 

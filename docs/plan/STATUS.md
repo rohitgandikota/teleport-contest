@@ -4970,7 +4970,37 @@ passes -- so the function is returning TRUE somewhere C returns FALSE, and
 each false positive sets `scared` in distfleeck and spends an extra
 monflee(mtmp, rnd(rn2(7) ? 10 : 100), ...).
 
-The suspects, in order:
+THIRD ATTEMPT, WITH in_rooms FIXED: SAME REGRESSION, 238 screens. And a
+bisect that changes the diagnosis completely.
+
+Made the moved in_your_sanctuary `return false` immediately, i.e. behave
+EXACTLY like the old stub. THE REGRESSION PERSISTED at 238/76330. So the
+function's logic is NOT the cause and never was -- the three suspects below
+are all irrelevant.
+
+Bisecting the refactor itself:
+    import './hack.js' early from jsmain.js      -> NO regression (492)
+    import './priest.js' early from jsmain.js    -> NO regression (492)
+    the monmove.js + priest.js edits together    -> regression (238)
+
+So it is the module restructuring, not the wire and not the logic. The most
+likely mechanism is that monmove.js's `export { in_your_sanctuary } from
+'./priest.js'` makes monmove.js import priest.js, whose own imports
+(makemon, mkobj, worn, sp_lev, mon) lead back to monmove.js. That kind of
+cycle does not always throw; it can leave a binding undefined at CALL time,
+so distfleeck's call fails or returns undefined and the flee branch behaves
+differently. Removing the local ALGN_SINNED was checked and is NOT it -- its
+only use was inside the moved function.
+
+WHAT THIS MEANS FOR THE NEXT ATTEMPT: do not move in_your_sanctuary out of
+monmove.js. Leave it where it is and wire in_rooms INTO monmove.js from
+jsmain.js instead. That keeps the module graph unchanged, which the bisect
+shows is the sensitive part, and still breaks the import cycle. The three
+helpers (temple_occupied, findpriest, has_shrine) can live in priest.js and be
+imported by monmove.js only if that import does not itself close the cycle --
+test that separately before relying on it.
+
+The superseded suspects, kept only to show they were considered:
   1. temple_occupied's substitution of in_rooms(u.ux, u.uy, 0) for u.urooms.
      If in_rooms returns rooms the hero is merely ADJACENT to rather than
      inside, every monster near a temple becomes scared.

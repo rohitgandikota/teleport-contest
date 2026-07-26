@@ -165,12 +165,39 @@ C line by line without any RNG reasoning at all. Our choice of 77,14 differs
 from C's, and C's destination has 7 open neighbours so it is well clear of the
 wall the newt walked into.
 
-NEXT: read js/monmove.js m_move's selection block against src/monmove.c:1965
-onward -- `nearer = ((ndist = dist2(nx, ny, ggx, ggy)) < nidist)` and the
-`(appr == 1 && nearer) || (appr == -1 && !nearer) || (!appr && !rn2(++chcnt))`
-test -- and check ggx/ggy, appr, and the initial nidist. A wrong goal or a
-wrong starting nidist would send the monster the wrong way with no draw to
-betray it, which is exactly the signature here.
+COMPARED, and there are TWO concrete gaps in exactly that block. Neither is
+confirmed as the newt's bug yet, but both are real and both can change a
+destination without leaving a draw.
+
+GAP 1 -- the shortsighted appr override is missing entirely (monmove.c:1936):
+
+    if (!mtmp->mpeaceful && svl.level.flags.shortsighted
+        && nidist > (couldsee(nix, niy) ? 144 : 36) && appr == 1)
+        appr = 0;
+
+We compute nidist and go straight into the loop. When this fires, C flips
+appr from 1 to 0, which switches the whole selection from "deterministically
+approach the goal" to the random `!rn2(++chcnt)` tie-break. That is both a
+different destination AND a different draw count, so it desyncs twice over.
+Check whether level.flags.shortsighted is ever set before assuming it is dead
+code -- if it is set on any level a session visits, this is a strong candidate.
+
+GAP 2 -- the appr == -2 arm of the selection test is missing (monmove.c:1971):
+
+    || (appr == -2
+        && ((ndist <= preferredrange_min && !nearer)
+            || (ndist >= preferredrange_max && nearer)))
+
+appr == -2 is the keep-your-distance behaviour. Without this arm a monster
+with appr == -2 falls through to the `mmoved == MMOVE_NOTHING` catch-all and
+simply takes the FIRST candidate square, which is deterministic and wrong.
+Check whether anything sets appr = -2 on our side; if nothing does, that is
+itself a gap further upstream in dog_goal / m_move's goal selection.
+
+NEXT: instrument our m_move to print appr and level.flags.shortsighted for the
+newt's FIRST move (76,13 -> 77,14). If appr is 1 and shortsighted is set, GAP
+1 is the bug. If appr is -2, GAP 2 is. If neither, the selection block is
+sound and the fault is in ggx/ggy, i.e. the goal the newt is walking toward.
 
 Note the newt is at 77,14, hard against the VWALL at x=78, and needs 7 open
 neighbours in C. A square with 7 open neighbours is well clear of any wall, so

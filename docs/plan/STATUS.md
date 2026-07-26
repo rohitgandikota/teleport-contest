@@ -4084,5 +4084,56 @@ WHAT IS STILL OPEN HERE, in the order it is worth doing:
    shops and zoos and the divergence will show up as missing objects and
    monsters rather than as a missing draw.
 
-Item 3 is the one to check first, and it is cheap: count objects and monsters
-on a depth-2 level and see whether the shop room has stock.
+Item 3 CHECKED, and it found two bugs in the port that had just landed. See
+the commit "Fix two wrong lookups in invalid_shop_shape". mkshop was returning
+without making a shop on EVERY level, because invalid_shop_shape read
+game.doors (the array is game.level.doors) and compared square types against a
+hardcoded ROOM_TYP = 20 written from memory. ROOM is 25; 20 is LAVAPOOL. So
+insidect was always 0 and every candidate room was rejected.
+
+That is the NOTES entry "Never infer a constant's value from its name" being
+violated by the same session that wrote it. The lesson that generalises: after
+landing a subsystem, PROVE it does its work rather than trusting the score to
+tell you. RNG went UP 3,961 on a mkshop that never once made a shop; the whole
+gain was the chain's condition draws. One stderr counter in mkshop showed the
+truth in a minute.
+
+Shops are now genuinely created (+265 more RNG on top).
+
+## NEXT: stock_room, i.e. shops are MARKED but still EMPTY
+
+This is now the live end of the special-room work, and it is a screen problem
+rather than only an RNG one: a shop with no stock and no shopkeeper renders
+as an empty room.
+
+js/sp_lev.js fill_special_room() reaches the shop branch and calls
+note_unported('stock_room'). The comment there claiming it "is not reached by
+any session" has been corrected; it IS reached now.
+
+THE CHAIN, sized by reading it (src/shknam.c):
+
+    stock_room           84 lines   shknam.c:718
+    shkinit              65 lines   shknam.c:628   places the shopkeeper
+    mkshobj_at           30 lines   shknam.c:454   one object per square
+    stock_room_goodpos   20 lines   shknam.c:695   no RNG, pure geometry
+
+Order matters: stock_room RETURNS EARLY on `if ((sh = shkinit(shp, sroom)) < 0)
+return;`, so shkinit cannot be skipped or stubbed to get the objects working.
+
+THE GOTCHA THAT WILL BITE, found while reading mkshobj_at. It calls
+get_shop_item(), which reads the iprobs sub-table of shtypes[] -- the
+`{ { 90, ARMOR_CLASS }, { 10, WEAPON_CLASS }, ... }` block in each entry.
+js/mkroom.js's shtypes carries ONLY name, symb and prob, because that is all
+mkshop needed. Extending that table is step one, and it should be regenerated
+from src/shknam.c rather than hand-copied, since it is six pairs per entry
+across twelve entries.
+
+Draws per stocked square, so the order is load-bearing: mkshobj_at draws
+rn2(100) FIRST, and only if that fails to make a mimic does it call
+get_shop_item and then mkobj_at/mksobj_at. A port that picks the item first
+and checks for a mimic afterwards would look equivalent and desync on every
+shop square.
+
+Also needed: mkveggy_at for the VEGETARIAN_CLASS arm, and make_engr_at for the
+"Closed for inventory" engraving on a locked shop door (the engraving
+subsystem is absent, so that arm should be recorded rather than faked).

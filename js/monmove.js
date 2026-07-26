@@ -8,6 +8,9 @@
 import { game } from './gstate.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
+import { is_launcher, is_pole } from './u_init.js';
+import { ammo_and_launcher } from './wield.js';
+import { MON_POLE_DIST } from './const.js';
 import { amorphous, passes_walls } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
@@ -1041,15 +1044,20 @@ function m_balks_at_approaching(oldappr, mtmp, prange) {
     if (mtmp.mpeaceful || edist >= 5 * 5 || !m_canseeu(mtmp))
         return oldappr;
 
-    /* src/monmove.c — the three ranged cases, in C's order. The first two
-       still need m_has_launcher_and_ammo and the monster's wielded polearm,
-       and are recorded; the throw-and-return case is ported because it is the
-       only one that returns -2 and sets the preferred range. */
-    if (mtmp.minvent && mtmp.minvent.length)
-        note_unported('m_balks:launcher_and_polearm');
+    /* src/monmove.c — the three ranged cases, in C's order. Order matters:
+       each returns, so a monster with both a launcher and a polearm takes the
+       first arm, and only a monster with neither reaches the -2 case. */
+    const mwep = MON_WEP(mtmp);
+
+    /* has ammo + launcher */
+    if (m_has_launcher_and_ammo(mtmp))
+        return -1;
+
+    /* is using a polearm and in range */
+    if (mwep && is_pole(mwep) && edist <= MON_POLE_DIST)
+        return -1;
 
     /* is using a throw-and-return weapon; provide min and max preferred range */
-    const mwep = MON_WEP(mtmp);
     let arw;
     if (mwep && (arw = autoreturn_weapon(mwep)) !== null) {
         if (prange) {
@@ -1090,4 +1098,17 @@ function ranged_attk_available(mtmp) {
 function DISTANCE_ATTK_TYPE(atyp) {
     return atyp === ATTKS.AT_SPIT || atyp === ATTKS.AT_BREA
         || atyp === ATTKS.AT_GAZE || atyp === ATTKS.AT_MAGC;
+}
+
+// src/mthrowu.c:58 m_has_launcher_and_ammo() — its C home is mthrowu.c, which
+// has no JS counterpart yet; move it when the monster-missile code lands.
+function m_has_launcher_and_ammo(mtmp) {
+    const mwep = MON_WEP(mtmp);
+
+    if (mwep && is_launcher(mwep)) {
+        for (const otmp of mtmp.minvent || [])
+            if (ammo_and_launcher(otmp, mwep))
+                return true;
+    }
+    return false;
 }

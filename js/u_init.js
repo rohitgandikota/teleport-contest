@@ -258,7 +258,7 @@ const is_spear = (otmp) =>
     otmp.oclass === OCLASSES.WEAPON_CLASS
     && game.objects[otmp.otyp].oc_skill === SKILLS.P_SPEAR;
 
-const is_launcher = (otmp) =>
+export const is_launcher = (otmp) =>
     otmp.oclass === OCLASSES.WEAPON_CLASS
     && game.objects[otmp.otyp].oc_skill >= SKILLS.P_BOW
     && game.objects[otmp.otyp].oc_skill <= SKILLS.P_CROSSBOW;

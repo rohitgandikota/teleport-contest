@@ -180,11 +180,34 @@ spelleffects_check (src/spell.c, the check returns TRUE on failure). Its one
 visible draw is `rnd(100) > percent_success(spell)`, and the exercise(A_WIS)
 at attrib.c:509 that follows spends rn2(19).
 
-percent_success() is the real work: it reads the role's spelbase/spelheal, the
-hero's Int or Wis, armour penalties (metal helm, shield, gloves) and the
-spell's level. None of it draws, but all of it decides the comparison.
+percent_success() (src/spell.c:2173) is the real work. It has been read in
+full; it draws NOTHING, and here is exactly what it needs:
 
-This is a genuine subsystem, not a missing line. Budget it as one.
+  from js/role_data.js, already present:
+      spelbase, spelheal, spelstat, spelarmr, spelshld, spelspec, spelsbon
+  from js/spell.js:
+      spellid (present), spellev (ABSENT), spell_skilltype (ABSENT, it is just
+      objects[booktype].oc_skill)
+  from src/spell.c:106, three literal defines:
+      uarmhbon 4, uarmgbon 6, uarmfbon 2
+  from js/hacklib.js:
+      isqrt (ABSENT; src/hacklib.c:682, the odd-number subtraction loop)
+  from js/attrib.js:
+      ACURR (present, and correct since it now delegates to acurr)
+  worn items: uarm, uarmc, uarms, uarmh, uarmg, uarmf, uwep
+      js/do_wear.js reads game.invent by owornmask, so these are reachable
+  weight(uarms) vs objects[SMALL_SHIELD].oc_weight — both present
+
+THE BLOCKER is P_SKILL(skilltype), i.e. u.weapon_skills[]. That array is not
+modelled at all: js/u_init.js's u_init_skills_discoveries only walks invent and
+calls ini_inv_use_obj. Without it, `skill = max(P_SKILL(t), P_UNSKILLED) - 1`
+has no source, and skill feeds difficulty, which feeds the whole chance.
+
+So the order is: port u.weapon_skills and the role skill table's
+initialisation FIRST (src/u_init.c, the role's skills[] applied at game start),
+then spellev + spell_skilltype + isqrt, then percent_success, then
+spelleffects_check. Do not start percent_success before the skill array
+exists; it cannot be right without it.
 
 ### Every sub-1000 divergence is now cleared; the earliest is 1956
 

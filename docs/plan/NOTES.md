@@ -2193,3 +2193,37 @@ the target function is just as fatal as a duplicate import.
 Both times the 0/0 signature identified it in one grep. That rule -- a session
 at exactly 0 screens is a crash, not a divergence -- has now paid for itself
 three times in a day.
+
+## js/do.js cannot be imported from a NEW module (mklev_fn temporal dead zone)
+
+Porting ship_object() into a new js/dokick.js and calling it from dropx()
+failed with `Cannot access 'mklev_fn' before initialization` and took the suite
+from 510 to 0. That is do.js's OWN module-scope variable, which means do.js was
+being re-entered while still initialising.
+
+do.js does module-init-time wiring:
+
+    do_wire_mklev(mklev);   // js/cmd.js does this at import time
+
+so anything that pulls do.js back in before that line runs sees a dead zone
+rather than a clean circular-import error. Three attempts to route around it
+all failed:
+
+  - dokick.js -> do.js for stairway_at. Moved stairway_at to a new js/stairs.js
+    (its real src/stairs.c home). Still cycled.
+  - dokick.js -> mon.js for t_at. Moved t_at to js/trap.js (its real
+    src/trap.c home). Still cycled -- and the move alone broke do.js even with
+    the dokick import removed, so the chain runs through mondata/display, not
+    through the obvious edge.
+  - removing the dokick import from do.js while keeping the moves. Still broke.
+
+Reverted the whole batch. WHAT TO DO INSTEAD when this comes up again: do not
+try to find a clean import path into do.js -- use the wiring pattern do.js
+already established for exactly this reason (do_wire_mklev / sp_lev_wire_mon /
+mklev_wire_mon in js/cmd.js:31-33). cmd.js imports everything and does the
+wiring after all modules have initialised. A new module that do.js must call
+should be wired the same way, from cmd.js, not imported directly.
+
+The architectural moves themselves were correct (stairway_at belongs in
+stairs.js, t_at in trap.js) and are worth redoing as a SEPARATE change,
+measured on their own, once the wiring question is settled.

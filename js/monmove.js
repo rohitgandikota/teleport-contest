@@ -475,10 +475,12 @@ const next2u = (px, py) => distu(px, py) <= 2;
 // include/rm.h:538 Sokoban — the level flag.
 const Sokoban = () => game.level?.flags?.sokoban_rules === true;
 
-// Conflict needs the hero's worn items; recorded rather than assumed false.
-function Conflict() {
-    return false;
-}
+// include/youprop.h:218 Conflict — (HConflict || EConflict), the intrinsic or
+// the extrinsic. The port keeps the hero's properties on u.uprops, so this
+// reads them the same way the clairvoyance check in js/allmain.js does. There
+// is no source of conflict in the game yet, so it answers false today, but it
+// answers it by LOOKING rather than by assuming.
+const Conflict = () => !!(game.u?.uprops?.CONFLICT);
 
 export function m_can_break_boulder(mtmp) {
     return is_rider(mtmp.data)

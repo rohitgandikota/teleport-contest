@@ -1,4 +1,35 @@
 
+=== THE WIRING WAS ATTEMPTED AND REVERTED. READ THIS FIRST. ===
+
+Steps 1-3 below were implemented and MEASURED AT -7 SCREENS (510 -> 503), so
+they were reverted per the no-regression rule. Step 1 (the domove() signature)
+was fine and is committed; steps 2 and 3 are not. The reason is a FOURTH
+requirement that none of the four steps mentions, and it is the real blocker:
+
+    C's src/hack.c contains 12+ nomul(0) calls INSIDE domove/domove_core.
+    js/cmd.js's domove contains ZERO.
+
+Those calls are how a run actually ends in the common case. lookaround() does
+NOT stop a rush crossing an open room: every neighbour is ROOM, so each one
+hits the `continue`, corrct stays 0, and the function returns without calling
+nomul. C ends that run when domove itself fails to move -- blocked by a wall,
+a boulder, a closed door -- and each of those sites calls nomul(0).
+
+Without them the wired loop has no terminator. multi is seeded to
+max(COLNO, ROWNO) = 80, and the `if (multi < COLNO && !--multi)` guard does
+NOT decrement it (80 < 80 is false -- that countdown is for a count prefix
+like "20j", not for a rush), so the hero keeps moving until something
+incidental stops him. That is a LARGER positional error than the single step
+the recorded gap currently produces, which is exactly why it measured worse.
+
+Measured effect: seed4500 11->8 and seed5002 8->4, the only two sessions that
+change. Both use the g prefix (17 and 7 times). RNG went UP 40 while screens
+went DOWN 7 -- the loop does produce more correct draws, it just puts the hero
+on the wrong square, which is the more expensive error.
+
+SO THE REAL ORDER IS: port domove_core's nomul(0) sites FIRST, then wire.
+Doing the wiring before them is strictly worse than the honest one-step gap.
+
 === NEXT ACTION (lookaround is ported; only the wiring is left) ===
 
 lookaround() and its whole leaf chain are committed and verified by forced

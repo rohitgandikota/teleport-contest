@@ -1,3 +1,5 @@
+import { is_rider } from './makemon.js';
+import { G_FREQ } from './const.js';
 // mondata.js — the "what kind of creature is this" predicates.
 // C ref: include/mondata.h (they are macros there) and src/mondata.c
 //
@@ -471,4 +473,44 @@ export function max_passive_dmg(mdef, magr) {
         }
     }
     return dmg;
+}
+
+// include/mondata.h:108 is_golem()
+export const is_golem = (ptr) => ptr.mlet === MONSYMS.S_GOLEM;
+
+// src/mon.c:3181 corpse_chance() — will this death leave a corpse?
+//
+// The tail is what runs for an ordinary monster and it ENDS IN A DRAW:
+// !rn2(2 + rare + verysmall). That draw happens on every ordinary kill, so
+// skipping this function costs one RNG call per death -- which now matters,
+// because pets kill things.
+//
+// The lich/Vlad dust message and the gas-spore AT_BOOM explosion are earlier
+// arms that record; neither is reachable by an early-dungeon pet fight.
+export function corpse_chance(mon, magr, was_swallowed) {
+    const mdat = mon.data;
+
+    if (mdat.pmidx === PMNAMES.PM_VLAD_THE_IMPALER
+        || mdat.mlet === MONSYMS.S_LICH) {
+        (game.unported ||= new Set()).add('corpse_chance:crumbles_to_dust');
+        return false;
+    }
+
+    /* Gas spores always explode upon death */
+    for (let i = 0; i < NATTK; i++) {
+        if (mdat.mattk[i][MATTK_AATYP] === ATTKS.AT_BOOM) {
+            (game.unported ||= new Set()).add('corpse_chance:gas_spore_boom');
+            return false;
+        }
+    }
+
+    /* LEVEL_SPECIFIC_NOCORPSE() needs the endgame/quest level tests */
+
+    if (((bigmonst(mdat) || mdat.pmidx === PMNAMES.PM_LIZARD) && !mon.mcloned)
+        || is_golem(mdat) || is_rider(mdat) || mon.isshk)
+        return true;
+
+    const tmp = 2 + (((mdat.geno & G_FREQ) < 2) ? 1 : 0)
+                  + (verysmall(mdat) ? 1 : 0);
+    return !rn2(tmp);
 }

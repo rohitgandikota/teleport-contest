@@ -533,6 +533,13 @@ export const AMII_LOUDER_VOLUME = 80;
 // ===== monflag.h =====
 export const NEUTRAL = (FEMALE + 1);
 export const NUM_MGENDERS = (NEUTRAL + 1);
+// src/? accessible(x,y) — ACCESSIBLE of the terrain at (x,y).
+export function accessible(x, y) {
+    const loc = game?.level?.at?.(x, y);
+    return !!loc && ACCESSIBLE(loc.typ);
+}
+
+export const G_FREQ = 0x0007;   /* monflag.h:202 creation frequency mask */
 export const G_UNIQ = 0x1000;   /* monflag.h:194 generated only once */
 export const G_KNOWN = 0x04;
 export const G_GENOD = 0x02;

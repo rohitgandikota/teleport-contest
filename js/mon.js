@@ -1,3 +1,5 @@
+import { accessible } from './const.js';
+import { corpse_chance } from './mondata.js';
 import { mon_offmap } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
@@ -1390,10 +1392,15 @@ export function mondied(mdef) {
     if (!DEADMONSTER(mdef))
         return; /* lifesaved */
 
-    /* corpse_chance() and make_corpse() are not ported; a kill currently
-       leaves no body. Recorded rather than dropped silently, because a
-       missing corpse changes what the hero can eat and what a pet picks up. */
-    (game.unported ||= new Set()).add('mon:mondied:make_corpse');
+    /* this assumes that the dead monster's map coordinates remain accurate */
+    if (corpse_chance(mdef, null, false)
+        && (accessible(mdef.mx, mdef.my) || is_pool(mdef.mx, mdef.my))) {
+        /* make_corpse() is 378 lines and not ported, so a kill that SHOULD
+           leave a body still leaves none. corpse_chance()'s !rn2(tmp) DOES
+           now happen, and that is the part that moves the RNG stream on
+           every ordinary death. */
+        (game.unported ||= new Set()).add('mon:mondied:make_corpse');
+    }
 }
 
 // src/mon.c monkilled() — a monster is killed BY something.

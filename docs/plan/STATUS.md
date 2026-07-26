@@ -4122,6 +4122,27 @@ RULED OUT, so do not re-check these:
   - do_attack's gate matches C: !mtmp->mundetected is true for ordinary
     monsters in both, so do_attack fires on the same steps C fires it on.
 
+THE EXACT STRUCTURE, read since the revert (src/hack.c:2886):
+
+    if (mtmp) {
+        if (displaceu) {
+            /* displacer beast swaps with you; sets mux/muy, then
+               minliquid + mintrap under context.mon_moving = 1 */
+        } else if (is_safemon(mtmp)
+                   && !(is_hider(mtmp->data) && mtmp->mundetected)) {
+            if (!domove_swap_with_pet(mtmp, x, y)) {
+                u.ux = u.ux0, u.uy = u.uy0;   /* didn't move after all */
+                if (u.usteed) u.usteed->mx = u.ux, u.usteed->my = u.uy;
+            }
+        }
+    }
+
+Two things the reverted attempt got wrong here. The swap is the ELSE-IF arm of
+`if (displaceu)`, not a standalone test, and it carries a
+`!(is_hider(mtmp->data) && mtmp->mundetected)` guard that was omitted
+entirely. Neither alone explains a -224, so do not assume fixing them is
+sufficient; re-measure.
+
 WHERE TO LOOK NEXT: our domove is in js/cmd.js, not js/hack.js, and it is a
 much shorter function than C's domove_core. C runs a long sequence between the
 monster check and the swap (domove_bump_mon, the ironbars fight, trap and

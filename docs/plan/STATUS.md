@@ -71,6 +71,28 @@ js/cmd.js:460 already routes 'e' and reaches floorfood(); what is missing is
 doeat's body, start_eating's occupation, and the choke() gate that ends the
 game. Under 400 lines total for the path that unblocks seed0030's first death.
 
+**The exact death condition, src/eat.c:3138 in bite():**
+
+    if (svc.context.victual.canchoke && u.uhunger >= 2000) {
+        choke(svc.context.victual.piece);
+        return 1;
+    }
+
+So the hero chokes by eating while ALREADY at 2000+ nutrition -- Satiated to
+the point of death. `canchoke` is set when the food is a normal meal (not a
+tin, not a corpse being force-fed). That means the port needs u.uhunger tracked
+across meals, not just the eat command: the death is a consequence of
+accumulated nutrition, and eating one item at the wrong hunger level is what
+triggers it.
+
+js/eat.js already has doeat and floorfood; the gap it records is
+'doeat:eating'. What is missing is start_eating's occupation loop, bite()'s
+per-turn call, and u.uhunger accounting in gethungry (which IS already ported
+-- js has gethungry in the moveloop, it appears in the RNG log at eat.c:3191).
+
+The second choke() caller at eat.c:2387 is AMULET_OF_STRANGULATION and is not
+seed0030's path.
+
 Note choke() draws once and doeat twice, so this DOES move the RNG stream --
 unlike done()/outrip(), which spend nothing. Measure per-session and check the
 divergence point, not the corpus total.

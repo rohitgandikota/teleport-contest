@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**443/11,405 screens (3.9%), 1/44 sessions, corpus RNG 116,757/792,838 (14.7%).**
+**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 120,295/792,838 (15.2%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -167,6 +167,29 @@ u_calc_moveamt's rn2(3) is being drawn identically and Fast() agrees; the
 difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
+
+### Two missing DRAWS found by following divergences down, not by guessing
+
+Both were invisible to the "reached but unported" list, because the code path
+WAS reached -- it just spent fewer draws than C.
+
+  - finddpos_shift() had no irregular-room walk. C steps inward through
+    STONE/CORR looking for a good wall position and SHIFTS x/y to it; without
+    that every such pick failed and finddpos() spent another rn1() on its
+    retry loop. Themed rooms are irregular, so it fires on most levels.
+    seed0004: 1923 -> 2458.
+  - makedog() never saddled the starting pony. src/dog.c:260 calls
+    put_saddle_on_mon(NULL, mtmp) for a PM_PONY, and creating that saddle
+    spends a next_ident(). seed0103: 2334 -> 2440.
+  - dog_invent() skipped the fetch entirely, including its rn2(20) and
+    rn2(udist)/rn2(apport), because can_carry and could_reach_item had not
+    landed when it was written. They have now.
+
+The method that found all three: take a session's first divergence, read the
+C function named in the tag, and compare it line by line against ours. The tag
+names the function containing the divergent SOURCE LINE, not a missing
+function -- getbones, obj_resists and next_ident were all already ported and
+all three were pointing at a caller that drew a different number of times.
 
 ### The next blocker, re-measured after level_tele
 

@@ -411,3 +411,52 @@ export function adj_victual_nutrition() {
     }
     return Math.max(nut, 1);
 }
+
+// src/eat.c lesshungry() — add nutrition, then react to the new total.
+//
+// The two thresholds are 2000 (choke) and 1500 (the "hard time getting all
+// of it down" warning), and the 1500 arm exists so that EVERY eating path
+// warns before the 2000 one kills you -- C says so in a comment.
+//
+// iseating is (occupation == eatfood) || force_save_hs, and it decides which
+// choke() argument is used and whether reset_eat() follows. The force_save_hs
+// half is why recalc_wt's caller sets it around the nutrition update.
+//
+// newuhs(FALSE) runs unconditionally at the end: the hunger STATE is
+// recomputed whether or not anything was said.
+//
+// reset_eat and paranoid_query are not ported and are recorded; the messages
+// need nomovemsg/multi plumbing and are recorded too.
+export function lesshungry(num) {
+    /* see comments in newuhs() for discussion on force_save_hs */
+    const iseating = (game.occupation === eatfood) || game.force_save_hs;
+
+    game.u.uhunger += num;
+    if (game.u.uhunger >= 2000) {
+        if (!iseating || game.context.victual?.canchoke) {
+            if (iseating) {
+                choke(game.context.victual.piece);
+                note_unported_eat('lesshungry:reset_eat');
+            } else {
+                choke(null);        /* opentin's tin is not modelled */
+                /* no reset_eat() */
+            }
+        }
+    } else {
+        /* report when nearly full so all eating warns before choking */
+        if (game.u.uhunger >= 1500 && !game.u.uprops?.HUNGER
+            && (!game.context.victual?.eating
+                || !game.context.victual?.fullwarn)) {
+            note_unported_eat('lesshungry:hard_time_msg');
+            if (!game.context.victual?.eating) {
+                note_unported_eat('lesshungry:multi');
+            } else {
+                if (game.context.victual.canchoke
+                    && (game.context.victual.reqtime
+                        - game.context.victual.usedtime) > 1)
+                    note_unported_eat('lesshungry:paranoid_query');
+            }
+        }
+    }
+    newuhs(false);
+}

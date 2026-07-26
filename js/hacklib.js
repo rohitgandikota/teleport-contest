@@ -31,13 +31,8 @@ export function dist2(x1, y1, x2, y2) {
     return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 }
 
-export function depth(uz) {
-    const dnum = uz?.dnum ?? 0;
-    const dlevel = uz?.dlevel ?? 1;
-    const dungeon = game?.dungeons?.[dnum];
-    if (!dungeon) return dlevel;
-    return (dungeon.depth_start || 1) + dlevel - 1;
-}
+/* depth() is src/dungeon.c and lives in js/dungeon.js. The copy that was
+   here differed only in being defensive about a missing dungeon entry. */
 
 // C ref: rn2(x) already in rng.js — re-export not needed
 

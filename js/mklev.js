@@ -115,7 +115,7 @@ import { lua_shuffle } from './nhlua.js';
    mklev.js is reached FROM mon.js's import graph, so they arrive by wire. */
 let mklev_mon = { is_pool: () => false, is_lava: () => false };
 export function mklev_wire_mon(fns) { mklev_mon = fns; }
-import { depth as depth_of_level } from './hacklib.js';
+import { depth as depth_of_level } from './dungeon.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
     HWALL, VWALL, TLCORNER, TRCORNER, BLCORNER, BRCORNER,

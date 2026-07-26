@@ -3962,3 +3962,68 @@ do_attack returning FALSE for a safe monster, with NO swap at all, and see
 whether the hero simply walking onto the pet's square (leaving the pet in
 place) scores better or worse than blocking. That isolates the swap from the
 attack gate, which this attempt conflated.
+
+## MAJOR GAP FOUND: the whole special-room subsystem is absent
+
+This is almost certainly the largest single structural hole left, and it is
+not on any milestone list. Found by chasing makelevel(mklev.c:1350), which the
+first-mismatch aggregate puts at 3 sessions.
+
+MEASURED: there is no js/mkroom.js, and mkshop, mkzoo, mktemple and mkswamp
+appear NOWHERE in js/. js/mklev.js goes straight from the vault block to
+place_branch, skipping src/mklev.c:1344-1376 entirely -- the "make up to 1
+special room" step. We have room_threshold (js/mklev.js:571, incremented at
+603 for a vault) and then never use it.
+
+The C we skip:
+
+    if (wizard && nh_getenv("SHOPTYPE"))            do_mkroom(SHOPBASE);
+    else if (u_depth > 1 && u_depth < depth(&medusa_level)
+             && svn.nroom >= room_threshold && rn2(u_depth) < 3)
+                                                    do_mkroom(SHOPBASE);
+    else if (u_depth > 4  && !rn2(6))               do_mkroom(COURT);
+    else if (u_depth > 5  && !rn2(8) && leprechauns_left)  do_mkroom(LEPREHALL);
+    else if (u_depth > 6  && !rn2(7))               do_mkroom(ZOO);
+    else if (u_depth > 8  && !rn2(5))               do_mkroom(TEMPLE);
+    else if (u_depth > 9  && !rn2(5) && killer_bees_left)  do_mkroom(BEEHIVE);
+    else if (u_depth > 11 && !rn2(6))               do_mkroom(MORGUE);
+    else if (u_depth > 12 && !rn2(8) && antholemon())      do_mkroom(ANTHOLE);
+    else if (u_depth > 14 && !rn2(4) && soldiers_left)     do_mkroom(BARRACKS);
+    else if (u_depth > 15 && !rn2(6))               do_mkroom(SWAMP);
+    else if (u_depth > 16 && !rn2(8) && cockatrices_left)  do_mkroom(COCKNEST);
+
+WHY IT IS URGENT, and this is the part worth reading carefully. Work the
+arithmetic at shallow depth rather than assuming special rooms are a deep-level
+concern:
+
+  depth 1: the first arm fails on `u_depth > 1` and every later arm fails on
+           its depth test. NOTHING is drawn. Our level 1 is therefore correct,
+           which is exactly why seed8000-tourist-starter still passes.
+
+  depth 2: `u_depth > 1` passes, `u_depth < depth(medusa_level)` passes (medusa
+           is around 21-24), and then `rn2(2) < 3` is ALWAYS TRUE, because
+           rn2(2) is 0 or 1 and both are less than 3. So at depth 2, whenever
+           nroom >= room_threshold, C ALWAYS MAKES A SHOP.
+
+So this is not a rare deep-level feature. Every session that walks down one
+staircase hits it, and it costs us the rn2(u_depth) draw plus the whole of
+mkshop: the shop-type selection, the door placement, and one mkobj per square
+of stock. That is a large, immediate desync on the second level of the game.
+
+SCOPE. This is a real subsystem, not a one-liner, and it should get its own
+session with a fresh context:
+  - js/mkroom.js, new file mirroring src/mkroom.c
+  - do_mkroom (src/mkroom.c:52), the dispatch, small
+  - mkshop + shop stocking, the big one and the only one needed for depth 2-4
+  - mkzoo, mktemple, mkswamp for depth 5+
+  - the chain itself wired into makelevel between the vault block and
+    place_branch, in that exact position
+
+ORDER OF WORK: port the chain's CONDITIONS and mkshop first and measure. Do
+not port mkzoo/mktemple/mkswamp until the shop path is verified, since the
+sessions reach depth 2 far more often than depth 9. Confirm with the aggregate
+before and after, per the method note above.
+
+DO NOT port the conditions alone as a way to "get the draws right". The rn2
+would land correctly and then mkshop's absence would desync a few calls later,
+which reads as progress on the RNG proxy while leaving the level wrong.

@@ -2124,6 +2124,13 @@ export const ALLOW_SSM    = 0x40000000;
 export const NOGARLIC     = 0x80000000 | 0; // force signed 32-bit
 
 // Monster attack result bitmask flags (src/uhitm.c and src/mhitm.c)
+// include/monattk.h struct attack { aatyp, adtyp, damn, damd }.
+// js/monst_data.js stores each entry as a 4-element ARRAY rather than an
+// object, so C's mattk->aatyp is mattk[MATTK_AATYP] here. Named so a misread
+// is a visible error rather than a silent `undefined`.
+export const MATTK_AATYP = 0, MATTK_ADTYP = 1,
+             MATTK_DAMN = 2,  MATTK_DAMD = 3;
+
 export const M_ATTK_MISS = 0x0;
 export const M_ATTK_HIT = 0x1;
 export const M_ATTK_DEF_DIED = 0x2;

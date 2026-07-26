@@ -20,6 +20,7 @@ import { touch_petrifies } from './dog.js';
 import { resists_ston } from './mon.js';
 import { MON_WEP, mon_offmap } from './monst.js';
 import { PMNAMES } from './monst_data.js';
+import { MATTK_AATYP, MATTK_ADTYP, MATTK_DAMN, MATTK_DAMD } from './const.js';
 import { MATERIALS } from './objects_data.js';
 import { shade_miss } from './uhitm.js';
 import { s_suffix } from './hacklib.js';
@@ -46,7 +47,7 @@ export async function noises(magr, mattk) {
         game.far_noise = farq;
         game.noisetime = game.moves;
         await You_hear(
-            ((mattk.aatyp === ATTKS.AT_EXPL) ? 'an explosion' : 'some noises')
+            ((mattk[MATTK_AATYP] === ATTKS.AT_EXPL) ? 'an explosion' : 'some noises')
             + (farq ? ' in the distance' : '') + '.');
     }
 }
@@ -133,7 +134,7 @@ export async function missmm(magr, mdef, mattk) {
 export function mdamagem(magr, mdef, mattk, mwep, dieroll) {
     const pa = magr.data, pd = mdef.data;
     const mhm = {
-        damage: d(mattk.damn | 0, mattk.damd | 0),
+        damage: d(mattk[MATTK_DAMN] | 0, mattk[MATTK_DAMD] | 0),
         hitflags: M_ATTK_MISS,
         permdmg: 0,
         specialdmg: 0,
@@ -142,7 +143,7 @@ export function mdamagem(magr, mdef, mattk, mwep, dieroll) {
     };
 
     if ((touch_petrifies(pd)
-         || (mattk.adtyp === ATTKS.AD_DGST && pd.pmidx === PMNAMES.PM_MEDUSA))
+         || (mattk[MATTK_ADTYP] === ATTKS.AD_DGST && pd.pmidx === PMNAMES.PM_MEDUSA))
         && !resists_ston(magr)) {
         /* attk_protection(), poly_when_stoned(), mon_to_stone() and
            monstone() are unported; the attacker turning to stone is a whole
@@ -187,8 +188,8 @@ export function mdamagem(magr, mdef, mattk, mwep, dieroll) {
 // artifact weapon suppresses the message entirely, because artifact_hit()
 // delivers its own.
 export function hitmm(magr, mdef, mattk, mwep, dieroll) {
-    const weaponhit = (mattk.aatyp === ATTKS.AT_WEAP
-                       || (mattk.aatyp === ATTKS.AT_CLAW && mwep));
+    const weaponhit = (mattk[MATTK_AATYP] === ATTKS.AT_WEAP
+                       || (mattk[MATTK_AATYP] === ATTKS.AT_CLAW && mwep));
     const silverhit = !!(weaponhit && mwep
                          && game.objects[mwep.otyp]?.oc_material === MATERIALS.SILVER);
 
@@ -208,7 +209,7 @@ export function hitmm(magr, mdef, mattk, mwep, dieroll) {
             buf = `${magr_name} ${mdef.mcansee ? 'smiles at' : 'talks to'}`;
             note_mhitm_unported('hitmm:seduce_message');
         } else {
-            switch (mattk.aatyp) {
+            switch (mattk[MATTK_AATYP]) {
             case ATTKS.AT_BITE: buf = `${magr_name} bites`; break;
             case ATTKS.AT_STNG: buf = `${magr_name} stings`; break;
             case ATTKS.AT_BUTT: buf = `${magr_name} butts`; break;

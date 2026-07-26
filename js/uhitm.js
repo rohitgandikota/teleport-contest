@@ -14,6 +14,7 @@ import { A_DEX } from './const.js';
 
 import { game } from './gstate.js';
 import { helpless, MON_WEP } from './monst.js';
+import { MATTK_AATYP, MATTK_ADTYP, MATTK_DAMN, MATTK_DAMD } from './const.js';
 import { You } from './pline.js';
 import { mon_nam } from './do_name.js';
 import { exclam } from './zap.js';
@@ -86,11 +87,11 @@ export function mhitm_knockback(magr, mdef, mattk, hitflags, weapon_used) {
         return false;
 
     /* only certain attacks qualify for knockback */
-    if (!((mattk.adtyp === ATTKS.AD_PHYS)
-          && (mattk.aatyp === ATTKS.AT_CLAW
-              || mattk.aatyp === ATTKS.AT_KICK
-              || mattk.aatyp === ATTKS.AT_BUTT
-              || mattk.aatyp === ATTKS.AT_WEAP)))
+    if (!((mattk[MATTK_ADTYP] === ATTKS.AD_PHYS)
+          && (mattk[MATTK_AATYP] === ATTKS.AT_CLAW
+              || mattk[MATTK_AATYP] === ATTKS.AT_KICK
+              || mattk[MATTK_AATYP] === ATTKS.AT_BUTT
+              || mattk[MATTK_AATYP] === ATTKS.AT_WEAP)))
         return false;
 
     /* don't knockback if attacker also wants to grab or engulf */
@@ -127,13 +128,13 @@ const MHITM_AD_ARMS = {
 };
 
 export function mhitm_adtyping(magr, mattk, mdef, mhm) {
-    if (mattk.adtyp === ATTKS.AD_PHYS) {
+    if (mattk[MATTK_ADTYP] === ATTKS.AD_PHYS) {
         mhitm_ad_phys(magr, mattk, mdef, mhm);
         return;
     }
 
     for (const [name, fn] of Object.entries(MHITM_AD_ARMS)) {
-        if (mattk.adtyp === ATTKS[name]) {
+        if (mattk[MATTK_ADTYP] === ATTKS[name]) {
             (game.unported ||= new Set()).add(`mhitm_ad_${fn}`);
             return;
         }
@@ -176,12 +177,12 @@ export function mhitm_ad_phys(magr, mattk, mdef, mhm) {
         let mwep = MON_WEP(magr);
         const vis = canseemon(magr) && canseemon(mdef);
 
-        if (mattk.aatyp !== ATTKS.AT_WEAP && mattk.aatyp !== ATTKS.AT_CLAW)
+        if (mattk[MATTK_AATYP] !== ATTKS.AT_WEAP && mattk[MATTK_AATYP] !== ATTKS.AT_CLAW)
             mwep = null;
 
         if (shade_miss(magr, mdef, mwep, false, vis)) {
             mhm.damage = 0;
-        } else if (mattk.aatyp === ATTKS.AT_KICK && thick_skinned(pd)) {
+        } else if (mattk[MATTK_AATYP] === ATTKS.AT_KICK && thick_skinned(pd)) {
             /* [no 'kicking boots' check needed; monsters with kick attacks
                can't wear boots and monsters that wear boots don't kick] */
             mhm.damage = 0;

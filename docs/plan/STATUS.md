@@ -5040,9 +5040,32 @@ could port the WAND, POTION, SCROLL and AMULET arms, which need only
 FALSE by falling out of the switch, so a recorded arm must return FALSE too,
 not "unknown".
 
-ORDER: nonliving and needspick first (both one-liners over mflags), then the
-four easy arms, then can_blow, then the FOOD arm last since cures_stoning and
-mcould_eat_tin are the only real work.
+ATTEMPTED AND REVERTED. The dependency audit above was INCOMPLETE and that is
+what stopped it. Writing the four "easy" arms surfaced two more missing
+symbols that the audit did not catch, because I checked for them by name in
+the wrong places:
+
+    RAY          does not exist anywhere in js/. It is the oc_dir value the
+                 WAND arm tests (`objects[typ].oc_dir == RAY`). Needs adding
+                 to js/const.js from include/objclass.h.
+    attacktype   has no function definition in js/ at all, despite an earlier
+                 grep appearing to place it in js/makemon.js. Both the POTION
+                 and WAND arms need it.
+
+With those unbound the corpus fell to 249 screens; reverted.
+
+WHAT LANDED ANYWAY: is_undead, weirdnonliving and nonliving are now in
+js/mondata.js (commit "Add is_undead, weirdnonliving and nonliving"), and
+dog.js's private is_undead copy is gone. needspick, mindless and is_animal
+turned out to already exist there.
+
+REVISED ORDER: add RAY to js/const.js and port attacktype FIRST, verifying
+each is actually bound with tools/undefined-refs.mjs before writing any arm.
+Then the four arms, then can_blow, then the FOOD arm.
+
+LESSON FOR THE AUDIT: grepping "does symbol X exist" is not enough -- check
+that it exists as a DEFINITION, not merely as a mention. attacktype appears in
+js/makemon.js as a CALL, which is what made the audit report it present.
 
 VERIFY BY PROBE, not by score: the function draws nothing, so the corpus will
 not move even when it is correct. Count how many times it returns TRUE before

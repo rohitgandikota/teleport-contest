@@ -631,8 +631,26 @@ export function hmon_hitmon(mon, obj, thrown, dieroll) {
     }
 
     if (!hmd.already_killed) {
-        note_unported_uhitm('hmon_hitmon:apply_damage');
+        /* the conduct test that gates first_weapon_hit is NOT just "did you
+           hit with a weapon": it also requires the object to be the wielded
+           one (or the offhand while two-weaponing), a melee or applied blow
+           rather than a throw, no jousting (already logged), real damage, and
+           weaphit <= 1 -- the caller has already incremented it, which is why
+           the first hit tests as 1 rather than 0. */
+        if (obj && (obj === game.uwep
+                    || (obj === game.uswapwep && game.u.twoweap))
+            && (obj.oclass === OCLASSES.WEAPON_CLASS
+                || is_weptool(obj, game.objects))
+            && (thrown === HMON_MELEE || thrown === HMON_APPLIED)
+            && !hmd.jousting
+            && hmd.dmg > 0 && (game.u.uconduct?.weaphit ?? 0) <= 1)
+            note_unported_uhitm('hmon_hitmon:first_weapon_hit');
+        mon.mhp -= hmd.dmg;
     }
+    /* adjustments might have made tmp become less than what a level-draining
+       artifact has already done to max HP */
+    if (mon.mhp > mon.mhpmax)
+        mon.mhp = mon.mhpmax;
 
     note_unported_uhitm('hmon_hitmon:pet');
     note_unported_uhitm('hmon_hitmon:splitmon');

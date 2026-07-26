@@ -666,11 +666,33 @@ THEREFORE C DID NOT FALL BACK. Its goal row is 5 while its hero is on row 4,
 so C's gtyp is NOT UNDEF -- C found an object goal on row 5 that our dog_goal
 rejected. Our gtyp being UNDEF is the bug.
 
-The pet is at (69,5), so the object C steers at is on the pet's own row,
-within SQSRCHRADIUS. NEXT: dump every object dog_goal considers on turn 5
-with its dogfood() verdict and which branch it lands in, and find the row-5
-object we reject. The droppables fix already changed what reaches dog_invent
-on this turn, so re-measure rather than reusing any earlier object trace.
+DUMPED. Every object our dog_goal considers on turn 5:
+
+    OBJ pet(69,5) at(67,2) oclass=6 otyp=245 food=4 gtyp=6
+    OBJ pet(69,5) at(67,2) oclass=9 otyp=333 food=4 gtyp=6
+
+TWO objects, BOTH AT (67,2), and NOTHING ON ROW 5. Both classify as food=4
+(APPORT) yet gtyp stays 6 (UNDEF), so neither wins the APPORT branch either.
+
+C steers at something on row 5. We do not consider any object on row 5, so
+this is no longer a dog_goal branch question -- WE DO NOT HAVE THE OBJECT C
+HAS. The pet is at (69,5) and (67,2) is inside SQSRCHRADIUS, so a row-5
+object near the pet would be inside it too; the box is not excluding it.
+
+THIS IS AN OBJECT-PLACEMENT DIVERGENCE, not a pet bug. Level generation put an
+object somewhere C did not, or failed to put one where C did. That is the
+same shape as the seed0030 "$ where C has the pet" observation, which was
+never explained either.
+
+NEXT: compare the full object list at turn 5 against what the recorded screen
+shows. Our level.objects has 12 entries on seed0030 and an unknown count
+here; print all of them with coordinates and classes, then read the recorded
+screen for objects our list lacks. Start with row 5 near x=69.
+
+ALSO WORTH CHECKING while here: both objects at (67,2) classify as APPORT and
+neither sets gtyp, meaning the APPORT branch is being entered and losing its
+rn2(8) roll twice, or is not being entered at all. That is a separate
+question from the missing object and should not be conflated with it.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

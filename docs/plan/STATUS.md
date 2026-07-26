@@ -3878,6 +3878,21 @@ is_safemon, the foo test, monflee, and the hero/pet position swap in domove.
 attack_checks and everything past it is the actual combat code and is a
 separate job; a hostile monster can keep hitting note_unported.
 
+PATH CONFIRMED LIVE (probe added to domove, counted m_at hits, then reverted):
+
+    seed0030-ten-diverse-deaths   tame 16   hostile 19
+    seed4500-knight-coverage      tame  0   hostile  1
+    seed8000-tourist-starter      never steps onto a monster at all
+
+So the displacement path is taken sixteen times in a single session, each one
+an rn2(7) we never draw plus a hero/pet swap we never perform. Note the third
+line: seed8000 is the ONE session that currently passes, and it is also the
+one that never steps onto a monster. That is consistent with this being a real
+and widely-taken gap rather than a rare corner.
+
+The hostile counts are the separate, larger job (attack_checks and the combat
+code). The tame count is the bounded one described above.
+
 Method note, learned twice in this session: run the aggregate before and after
 and let it decide, not the advisory RNG proxy. The lamp fix moved screens 482
 to 492 and removed mksobj_init from the aggregate entirely. Two faithful ports

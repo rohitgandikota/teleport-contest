@@ -14,7 +14,7 @@ import { encumber_msg } from './attrib.js';
 import { freeinv, getobj, any_obj_ok } from './invent.js';
 import { place_object } from './mkobj.js';
 import { pline, newsym } from './display.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR } from './const.js';
 import { rn2, rnd } from './rng.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -237,8 +237,8 @@ export function dropx(obj) {
     if (!game.u.uswallow) {
         if (note_unported_do('dropx:ship_object'))
             return;
-        if (note_unported_do('dropx:IS_ALTAR'))
-            note_unported_do('dropx:doaltarobj');
+        if (IS_ALTAR(game.level.at(game.u.ux, game.u.uy)?.typ))
+            note_unported_do('dropx:doaltarobj');   /* sets bknown */
     }
     dropy(obj);
 }

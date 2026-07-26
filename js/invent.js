@@ -585,7 +585,7 @@ export function freeinv(obj) {
         inv.splice(i, 1);           /* extract_nobj(obj, &gi.invent) */
     obj.pickup_prev = 0;
     freeinv_core(obj);
-    note_unported_invent('freeinv:update_inventory');
+    update_inventory();
 }
 
 // src/invent.c useupall() — the whole stack goes.
@@ -610,7 +610,7 @@ export function useup(obj) {
         obj.in_use = false;         /* no longer in use */
         obj.quan--;
         obj.owt = weight(obj);
-        note_unported_invent('useup:update_inventory');
+        update_inventory();
     } else {
         useupall(obj);
     }
@@ -621,4 +621,26 @@ export function any_obj_ok(obj) {
     if (obj)
         return GETOBJ_SUGGEST;
     return GETOBJ_EXCLUDE;
+}
+
+// src/invent.c update_inventory() — refresh the persistent inventory window.
+//
+// Two early returns first: nothing happens before the move loop starts, and
+// nothing happens while map output is suppressed. Both matter here, because
+// freeinv and useup call this during level generation and restore, when the
+// window does not exist yet.
+//
+// The body brackets the windowport call with iflags.suppress_price forced to
+// 0, because a perm_invent refresh can fire from inside code that is
+// deliberately hiding shop prices while formatting a message, and the window
+// should still show normal names. That is recorded along with the windowport
+// call itself -- the tty port only does real work when perm_invent is on, and
+// no recorded session turns it on.
+export function update_inventory() {
+    if (!game.program_state?.in_moveloop)
+        return;
+    if (note_unported_invent('update_inventory:suppress_map_output'))
+        return;
+
+    note_unported_invent('update_inventory:win_update_inventory');
 }

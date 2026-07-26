@@ -24,14 +24,31 @@ sessions:
    test. That would take one step where C takes many, which diverges
    differently rather than less. It needs context.run = 3 and the run loop.
 
-2. THE CHARGEN TOP LINE IS NOT CLEARED. seed0002 and seed0004 both show
+2. THE MESSAGE LINE IS NOT CLEARED WHEN A MENU OPENS. seed0004 step 7 and
+   seed0002 both show
 
-     C     "                    Is this ok? [ynaq]"
-     ours  "Shall I pick character's race, role, gen Is this ok? [ynaq]"
+     C     row 0: "                                         Is this ok? [ynaq]"
+     ours  row 0: "Shall I pick character's race, role, gen Is this ok? [ynaq]"
 
-   The previous prompt is still on row 0 underneath the new one. This is a
-   clear-line bug in the chargen path, not a message-content bug, and it
-   costs every screen after it in those sessions.
+   Characterised: the confirmation menu occupies columns 41-79. C's row 4
+   reads "NetHack, Copyright 1985-2026             y * Yes; start game", so
+   the left half of the screen is the BANNER, and row 0 columns 0-40 are
+   blank in C simply because the banner does not reach row 0.
+
+   We still hold the previous prompt there. So C clears the message window
+   when the menu is displayed and we do not; js/plselect.js builds the menu
+   with plsel_startmenu/tty_add_menu/tty_end_menu and never touches
+   game._pending_message.
+
+   This is NOT a message-content bug. Row 0 is scored, so a stale top line
+   fails every screen from step 7 onward in both sessions -- seed0004 alone
+   is 408 steps.
+
+   Find where C clears it before fixing: the likely site is
+   tty_display_nhwindow on the menu, or a clear_nhwindow(WIN_MESSAGE) in
+   role.c's confirmation loop. Do not simply blank _pending_message at menu
+   creation without checking which C call does it, or the message will
+   disappear in cases where C keeps it.
 
 NEXT MAJOR TARGET: THE MONSTER NAMING SUBSYSTEM (src/do_name.c x_monnam).
 

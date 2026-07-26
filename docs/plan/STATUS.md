@@ -137,7 +137,30 @@ agree with C's. So the difference is WHICH ROOM each draw applies to, or what
 somexyspace returns given the same draws -- i.e. room ORDER or room GEOMETRY,
 not the monster fill itself.
 
-Check next: dump our room list (lx,ly,hx,hy in order) for seed0030 level 1 and
+**Our room list for seed0030 level 1, measured (5 rooms):**
+
+    room0: 10,8-18,10     room1: 33,6-38,10     room2: 48,16-53,18
+    room3: 56,4-58,5      room4: 66,8-71,10
+
+Room3 is the one on screen row 5. BOTH anomalies live in it: our pet at (56,4)
+and the extra random monster at (57,4). C's frame for the same row is
+
+    row 4   +---+   walls
+    row 5   |f<.|   pet at 55, upstair at 56, floor at 57
+
+so C's interior for that room is x = 55..57, and ours is x = 56..58 -- shifted
+one column right. Yet the WALLS render identically in both frames (row 4
+matched), which is the part that does not add up and is worth resolving first:
+either our lx/hx are right and the contents are misplaced, or the walls are
+drawn from something other than lx/hx.
+
+Check `topologize` and the wall-drawing path against croom->lx/hx before
+touching room creation. If the walls come from a different source than the
+room bounds, the two can disagree silently -- and every somexy/somexyspace
+placement in that room inherits the wrong bounds, which is exactly the
+signature here: pet one square off AND a monster one square off, same room.
+
+## Superseded: dump our room list
 compare against the room the C places its third monster in. If the rooms differ
 in order or extent, the fill is innocent and the bug is in mklev's room
 creation -- which would also explain the pet being one square off, since

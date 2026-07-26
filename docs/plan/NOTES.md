@@ -2438,3 +2438,38 @@ Note also uarm, uarms, uarmf, uquiver and uswapwep have the same split
 written at all, so they are undefined too. The whole worn-equipment storage
 needs unifying, and that is the same structural work setworn needs -- do them
 together, not piecemeal.
+
+## A pline() that forces --More-- HANGS the runner when the key queue is empty
+
+Final bisect of the uwep work. The hang was not welded() going live and not
+canletgo -- canletgo has exactly one caller (js/do.js:312) and it returns
+immediately. It was MY OWN dowield code:
+
+    if (wep === game.u.uwep) {
+        await You('are already wielding that!');
+        return ECMD_FAIL;
+    }
+
+With game.uwep (undefined) that branch never fired. With the real
+game.u.uwep it fires when a session re-wields the same weapon, and the
+message forces a --More-- because a message is already on the top line.
+--More-- BLOCKS for a keystroke, and at that point the session's recorded
+keys are exhausted, so it blocks forever. seed0361 ran past every timeout
+I gave it.
+
+THIS IS A GENERAL HAZARD, not a wield bug. Any newly-ported message on a
+path a session reaches near the end of its input can hang the runner rather
+than merely diverge. The symptom is distinctive and worth recognising: the
+session does not fail, it never returns, and the scoreboard's TOTAL step
+count DROPS (11405 -> 11039) because the session is missing entirely rather
+than scoring zero.
+
+    a crashed session  -> screens 0, total unchanged
+    a hung session     -> session absent, TOTAL SHRINKS
+
+Check the total, not just the screens.
+
+The uwep storage fix is still right and two thirds of it is committed
+(js/uhitm.js, js/do.js). js/wield.js's three reads stay on game.uwep until
+the --More-- behaviour at end-of-input is understood -- that is a frozen-file
+question (js/terminal.js) and not something to work around in wield.js.

@@ -14,7 +14,10 @@ import {
     rndmonnum, rndmonnum_adj, makemon, mkclass, monsndx, level_difficulty,
     MM_NOGRP, NO_MM_FLAGS, Inhell, likes_gems,
 } from './makemon.js';
-import { MM_NOCOUNTBIRTH, MM_NOMSG } from './const.js';
+import { MM_NOCOUNTBIRTH, MM_NOMSG, SHOPBASE, COURT, LEPREHALL, ZOO, TEMPLE,
+         BEEHIVE, MORGUE, ANTHOLE, BARRACKS, SWAMP, COCKNEST,
+         G_GONE } from './const.js';
+import { do_mkroom, antholemon, mkroom_wire } from './mkroom.js';
 import { mongone } from './mon.js';
 import { sgn } from './hacklib.js';
 import { obj_extract_self } from './invent.js';
@@ -614,6 +617,50 @@ async function makelevel() {
         }
     }
 
+    /* src/mklev.c:1344 — make up to 1 special room, type dependent on depth.
+       mkroom doesn't guarantee a room gets created, and this step only sets
+       the room's rtype; the fill happens later with the other special rooms.
+
+       The chain is a single if/else-if, so at most ONE arm's rn2 is drawn and
+       every arm after the first true one is skipped. The wizard-mode SHOPTYPE
+       override that heads the chain in C is not modelled.
+
+       Depth arithmetic worth keeping in mind: the shop arm's gate is
+       rn2(u_depth) < 3, so at depths 2 and 3 it is ALWAYS true and a shop is
+       made whenever nroom >= room_threshold. */
+    {
+        const u_depth = g.u?.uz?.dlevel ?? 1;
+        const medusa_depth = g.medusa_level?.dlevel ?? 999;
+
+        if (u_depth > 1 && u_depth < medusa_depth
+            && g.level.nroom >= room_threshold && rn2(u_depth) < 3)
+            do_mkroom(SHOPBASE);
+        else if (u_depth > 4 && !rn2(6))
+            do_mkroom(COURT);
+        else if (u_depth > 5 && !rn2(8)
+                 && !(g.mvitals?.[PMNAMES.PM_LEPRECHAUN]?.mvflags & G_GONE))
+            do_mkroom(LEPREHALL);
+        else if (u_depth > 6 && !rn2(7))
+            do_mkroom(ZOO);
+        else if (u_depth > 8 && !rn2(5))
+            do_mkroom(TEMPLE);
+        else if (u_depth > 9 && !rn2(5)
+                 && !(g.mvitals?.[PMNAMES.PM_KILLER_BEE]?.mvflags & G_GONE))
+            do_mkroom(BEEHIVE);
+        else if (u_depth > 11 && !rn2(6))
+            do_mkroom(MORGUE);
+        else if (u_depth > 12 && !rn2(8) && antholemon())
+            do_mkroom(ANTHOLE);
+        else if (u_depth > 14 && !rn2(4)
+                 && !(g.mvitals?.[PMNAMES.PM_SOLDIER]?.mvflags & G_GONE))
+            do_mkroom(BARRACKS);
+        else if (u_depth > 15 && !rn2(6))
+            do_mkroom(SWAMP);
+        else if (u_depth > 16 && !rn2(8)
+                 && !(g.mvitals?.[PMNAMES.PM_COCKATRICE]?.mvflags & G_GONE))
+            do_mkroom(COCKNEST);
+    }
+
     // Place dungeon branch
     if (branchp) {
         place_branch(branchp);
@@ -664,6 +711,7 @@ function ROOM_IS_FILLABLE(croom) {
 }
 
 sp_lev_wire(add_room, add_door, somexy);
+mkroom_wire({ topologize });
 sp_lev_wire_mktrap(mktrap);
 sp_lev_wire_okdoor(okdoor);
 sp_lev_wire_subroom(create_subroom);

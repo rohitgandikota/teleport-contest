@@ -11,8 +11,9 @@
 // and recorded, so do_mkroom's other arms are honest holes rather than stubs.
 
 import { game } from './gstate.js';
-import { rnd } from './rng.js';
-import { OROOM, SHOPBASE, FILL_NORMAL } from './const.js';
+import { rnd, rn2 } from './rng.js';
+import { OROOM, SHOPBASE, FILL_NORMAL, COURT, ZOO, BEEHIVE, MORGUE,
+         BARRACKS, SWAMP, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE } from './const.js';
 import { OCLASSES } from './objects_data.js';
 import { inside_room } from './sp_lev.js';
 
@@ -65,7 +66,20 @@ export function do_mkroom(roomtype) {
     if (roomtype >= SHOPBASE) {
         mkshop();
     } else {
-        note_unported_mkroom(`do_mkroom:${roomtype}`);
+        switch (roomtype) {
+        case COURT:     mkzoo(COURT);     break;
+        case ZOO:       mkzoo(ZOO);       break;
+        case BEEHIVE:   mkzoo(BEEHIVE);   break;
+        case MORGUE:    mkzoo(MORGUE);    break;
+        case BARRACKS:  mkzoo(BARRACKS);  break;
+        case SWAMP:     note_unported_mkroom('mkswamp');  break;
+        case TEMPLE:    note_unported_mkroom('mktemple'); break;
+        case LEPREHALL: mkzoo(LEPREHALL); break;
+        case COCKNEST:  mkzoo(COCKNEST);  break;
+        case ANTHOLE:   mkzoo(ANTHOLE);   break;
+        default:
+            note_unported_mkroom(`do_mkroom:${roomtype}`);
+        }
     }
 }
 
@@ -127,6 +141,52 @@ function mkshop() {
 
     /* stocked later, with the other special rooms, at the end of makelevel */
     sroom.needfill = FILL_NORMAL;
+}
+
+// src/mkroom.c:220 pick_room() — an unused room, preferably with one door.
+//
+// Draws even when it finds nothing: the starting index is rn2(nroom), and the
+// walk spends an rn2(3) on any room holding the downstairs and an rn2(5) on
+// any room with more than one door. Those are the draws the whole special-room
+// chain was missing below the shop arm.
+//
+// The wrap is C's `if (sroom == &rooms[nroom]) sroom = &rooms[0]`, i.e. the
+// scan starts at a random room and wraps once through all of them.
+function pick_room(strict) {
+    const nroom = game.level.nroom;
+    if (nroom <= 0)
+        return null;
+
+    let idx = rn2(nroom);
+    for (let i = nroom; i--; idx++) {
+        if (idx === nroom)
+            idx = 0;
+        const sroom = game.level.rooms[idx];
+        if (!sroom || sroom.hx < 0)
+            return null;
+        if (sroom.rtype !== OROOM)
+            continue;
+        if (!strict) {
+            if (has_upstairs(sroom) || (has_dnstairs(sroom) && rn2(3)))
+                continue;
+        } else if (has_upstairs(sroom) || has_dnstairs(sroom)) {
+            continue;
+        }
+        if (sroom.doorct === 1 || !rn2(5))
+            return sroom;
+    }
+    return null;
+}
+
+// src/mkroom.c:244 mkzoo() — the room is only marked here. As with mkshop,
+// the C's comment records that it "does not get stocked at this time - it
+// will get stocked at the end of makelevel()".
+function mkzoo(type) {
+    const sroom = pick_room(false);
+    if (sroom) {
+        sroom.rtype = type;
+        sroom.needfill = FILL_NORMAL;
+    }
 }
 
 // src/mkroom.c:640 has_dnstairs()

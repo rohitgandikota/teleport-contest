@@ -50,6 +50,7 @@ import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt, _buildScreenOutput,
+         tty_clear_nhwindow_message,
          TOPLINE_SPECIAL_PROMPT , TOPLINE_EMPTY} from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
@@ -522,6 +523,10 @@ export async function rhack(key) {
         // TOPLINE_NEED_MORE with nothing behind it, and update_topl's joining
         // branch then glued the next message onto an empty string, indenting
         // it by the two spaces the join inserts.
+        /* js/display.js:606 records this same defect on seed0360: clearing
+           the text without erasing the cells leaves the old prompt painted
+           in the grid for whatever draws next to land on top of. */
+        tty_clear_nhwindow_message(game._topl_cury || 0);
         game._pending_message = '';
         game._toplin = TOPLINE_EMPTY;
     }

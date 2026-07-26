@@ -11,6 +11,15 @@ to docallcmd (cmd.c:1774). So do not re-run this sweep expecting more.
 
 The remaining extcmds are genuinely unported commands, not missing wires.
 
+THE SINGLE-KEY cmd:* RECORDS ARE ALSO ALL GENUINE. Same sweep, same result:
+the five unhandled keys are r=read, w=wield, q=quaff, P=puton, W=wear, and
+NONE of doread, dowield, doquaff, dopay, dowear or dotakeoff exists in the
+port. There is no wiring shortcut left in the command layer.
+
+So the "ported but unwired" pattern -- which produced eight finds today
+(touch_artifact, done_eating, adjabil, curse, mpickobj, stackobj, useupf,
+dochat) -- is now EXHAUSTED. What remains costs real porting.
+
 === make_corpse SIZED BY REACHED BRANCH: ~70 LINES, NOT 378 ===
 
 mon:mondied:make_corpse is the 23% entry and it is NOT the 378-line monster

@@ -120,6 +120,13 @@ export const unsolid = (ptr) => (ptr.mflags1 & MFLAGS.M1_UNSOLID) !== 0;
 // do_attack so the "Wait!" message prints, while a ceiling hider does not.
 export const hides_under = (ptr) => (ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0;
 
+// include/mondata.h:43 ceiling_hider() — hides on the ceiling rather than
+// under something. A mimic is is_clinger but is explicitly excluded, because
+// it clings to imitate furniture rather than to hang overhead.
+export const ceiling_hider = (ptr) =>
+    is_hider(ptr) && ((is_clinger(ptr) && ptr.mlet !== MONSYMS.S_MIMIC)
+                      || is_flyer(ptr)); /* lurker above */
+
 // include/mondata.h:147 webmaker() — only the two spiders.
 export const webmaker = (ptr) => ptr.pmidx === PMNAMES.PM_CAVE_SPIDER
                               || ptr.pmidx === PMNAMES.PM_GIANT_SPIDER;

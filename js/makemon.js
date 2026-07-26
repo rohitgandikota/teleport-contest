@@ -797,7 +797,7 @@ function mkobj_at(oclass, x, y, artif) {
 }
 
 // src/mon.c hideunder() — positional only during mklev (seeit is 0), no draw.
-function hideunder(mtmp) {
+export function hideunder(mtmp) {
     mtmp.mundetected = 0;
 }
 
@@ -826,7 +826,7 @@ const mimic_syms = [
 //
 // Only the arms reachable from ordinary level generation are ported; the maze,
 // Delphi and rogue-level arms are recorded rather than faked.
-function set_mimic_sym(mtmp) {
+export function set_mimic_sym(mtmp) {
     if (!mtmp)
         return;
 

@@ -1,3 +1,7 @@
+import { is_hider } from './mondata.js';
+import { ceiling_hider } from './mondata.js';
+import { sensemon } from './display.js';
+import { mdistu } from './monmove.js';
 // mon.js — monster bookkeeping.
 // C ref: src/mon.c
 //
@@ -45,7 +49,7 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
     is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver, could_reach_item } from './dog.js';
-import { is_rider } from './makemon.js';
+import { is_rider, set_mimic_sym, hideunder } from './makemon.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
@@ -120,11 +124,66 @@ function movemon_singlemon(mtmp) {
     if (mtmp.movement < NORMAL_SPEED)
         return false;
     mtmp.movement -= NORMAL_SPEED;
+
+    /* src/mon.c:1286 — the hider and eel arms are NOT wired here.
+       js/mon.js has restrap() ported below and it is correct in isolation,
+       but wiring these two arms measured -42 screens and -5217 RNG, so the
+       gap is recorded instead. See docs/plan/STATUS.md for the measurement
+       and the leading hypothesis (our mundetected is set more liberally than
+       C's, so hiders stop moving where C moves them). */
+    (game.unported ||= new Set()).add('movemon_singlemon:hider/eel arms');
+
     dochug(mtmp);
     return mtmp.movement >= NORMAL_SPEED;
 }
 
 import { dochug } from './monmove.js';
+
+// include/you.h:560 m_next2u() — distu((m)->mx, (m)->my) <= 2.
+// Its C home is you.h; kept here because restrap() below is its only user so
+// far and js/mon.js already exports mdistu's twin.
+const m_next2u = (mtmp) => mdistu(mtmp) <= 2;
+
+// src/mon.c:961 restrap() — a hider that is not being watched hides again.
+//
+// The rn2(3) is FOURTH in the OR chain, after mcan, M_AP_TYPE and cansee, so
+// it is reached only for a hider the hero cannot currently see. That ordering
+// is the whole draw behaviour: put the roll earlier and every hider burns a
+// draw every turn.
+//
+// Called from movemon_singlemon before the monster moves; returning TRUE means
+// the monster spent its turn hiding and does not act.
+export function restrap(mtmp) {
+    let t;
+
+    if (mtmp.mcan || M_AP_TYPE(mtmp) || cansee(mtmp.mx, mtmp.my)
+        || rn2(3) || mtmp === game.u?.ustuck
+        /* can't hide while trapped except in pits */
+        || (mtmp.mtrapped && (t = t_at(mtmp.mx, mtmp.my))
+            && !is_pit(t.ttyp))
+        /* can't hide on ceiling if there isn't one */
+        || (ceiling_hider(mtmp.data) && !has_ceiling(game.u?.uz))
+        /* won't hide when adjacent to hero */
+        || (sensemon(mtmp) && m_next2u(mtmp)))
+        return false;
+
+    if (mtmp.data.mlet === MONSYMS.S_MIMIC) {
+        if (mtmp.msleeping || mtmp.mfrozen) {
+            /*
+             * The mimic needs to be awake to disguise itself
+             * as something else.
+             */
+            return false;
+        }
+        set_mimic_sym(mtmp);
+        return true;
+    } else if (game.level?.at?.(mtmp.mx, mtmp.my)?.typ === ROOM) {
+        mtmp.mundetected = 1;
+        return true;
+    }
+
+    return false;
+}
 
 // src/mon.c:2140 mfndpos() — the squares a monster may move to.
 //

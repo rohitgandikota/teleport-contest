@@ -45,3 +45,13 @@ export function s_suffix(s) {
     if (s.endsWith('s')) return s + "'";
     return s + "'s";
 }
+
+// src/hacklib.c:704 online2() — are the two points on a straight line?
+//
+// Orthogonal when either delta is zero, diagonal when the deltas match in
+// magnitude. Both signs of the diagonal are tested separately because C is
+// comparing ints, not absolute values.
+export function online2(x0, y0, x1, y1) {
+    const dx = x0 - x1, dy = y0 - y1;
+    return (!dy || !dx || dy === dx || dy === -dx);
+}

@@ -16,6 +16,13 @@ import { rn2, rnd } from './rng.js';
 import { DEADMONSTER } from './monst.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import { has_ceiling } from './dungeon.js';
+import { in_rooms } from './hack.js';
+import { sobj_at } from './invent.js';
+import { online2 } from './hacklib.js';
+/* onscary() and in_your_sanctuary() are src/monmove.c and src/priest.c
+   functions living in js/monmove.js, which imports this file. Both sides
+   export function declarations, so the cycle resolves through hoisting. */
+import { onscary, in_your_sanctuary, m_can_break_boulder } from './monmove.js';
 import { Is_waterlevel } from './const.js';
 import {
     bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
@@ -33,7 +40,8 @@ import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
          D_CLOSED, D_LOCKED, D_BROKEN, IS_OBSTRUCTED, IS_DOOR, IS_WATERWALL,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
          ALLOW_TRAPS, ALLOW_M, ALLOW_SANCT, ALLOW_ROCK, NOTONL, OPENDOOR,
-         UNLOCKDOOR, BUSTDOOR, ALLOW_TM, ALLOW_MDISP, NON_PM } from './const.js';
+         UNLOCKDOOR, BUSTDOOR, ALLOW_TM, ALLOW_MDISP, NON_PM,
+         NOGARLIC, TEMPLE, TRAPNUM } from './const.js';
 
 // include/permonst.h:80
 export const NORMAL_SPEED = 12;
@@ -214,6 +222,20 @@ export function mfndpos(mon, data, flag) {
                     && (lavaok || !is_lava(nx, ny))) {
                     let info = 0;
 
+                    /* src/mon.c:2277 — Displacement moves the square the
+                       scare check is made on, as long as the hero is visible
+                       to this monster. Not modelled, so dispx/dispy are nx/ny. */
+                    const dispx = nx, dispy = ny;
+
+                    /* src/mon.c:2278 — a scary square (Elbereth, a scroll of
+                       scare monster) is rejected unless the monster ignores
+                       them. No draw; it just removes a candidate. */
+                    if (onscary(dispx, dispy, mon)) {
+                        if (!(flag & ALLOW_SSM))
+                            continue;
+                        info |= ALLOW_SSM;
+                    }
+
                     if (nx === game.u.ux && ny === game.u.uy) {
                         mon.mux = game.u.ux;
                         mon.muy = game.u.uy;
@@ -246,6 +268,45 @@ export function mfndpos(mon, data, flag) {
                         }
                     }
 
+                    /* src/mon.c:2318 — ALLOW_SANCT only prevents MOVEMENT
+                       into a temple, not attack, which is why it sits in the
+                       else arm of the hero test. */
+                    if (!(nx === game.u.ux && ny === game.u.uy)
+                        && !(nx === mon.mux && ny === mon.muy)) {
+                        if (game.level?.flags?.has_temple
+                            && in_rooms(nx, ny, TEMPLE)
+                            && !in_rooms(x, y, TEMPLE)
+                            && in_your_sanctuary(null, nx, ny)) {
+                            if (!(flag & ALLOW_SANCT))
+                                continue;
+                            info |= ALLOW_SANCT;
+                        }
+                    }
+
+                    /* src/mon.c:2326 — C reads OBJ_AT once into `checkobj`
+                       and gates both object tests on it. */
+                    const checkobj = objects_here(nx, ny);
+
+                    if (checkobj && sobj_at(ONAMES.CLOVE_OF_GARLIC, nx, ny)) {
+                        if (flag & NOGARLIC)
+                            continue;
+                        info |= NOGARLIC;
+                    }
+                    if (checkobj && sobj_at(ONAMES.BOULDER, nx, ny)) {
+                        if (!(flag & ALLOW_ROCK))
+                            continue;
+                        info |= ALLOW_ROCK;
+                    }
+
+                    /* src/mon.c:2338 — avoid standing in the hero's line.
+                       monseeu is the same test onscary's displacement uses. */
+                    const monseeu = (mon.mcansee && !game.u?.uprops?.INVIS);
+                    if (monseeu && monlineu(mon, nx, ny)) {
+                        if (flag & NOTONL)
+                            continue;
+                        info |= NOTONL;
+                    }
+
                     /* diagonal tight squeeze — all THREE tests must hold.
                        Omitting cant_squeeze_thru() blocked every diagonal
                        between two walls, which cost real candidate squares:
@@ -255,12 +316,17 @@ export function mfndpos(mon, data, flag) {
                         && cant_squeeze_thru(mon))
                         continue;
 
+                    /* src/mon.c:2347 — a monster avoids a trap type it is
+                       familiar with. The full arm needs m_harmless_trap(),
+                       which needs Resists_Elem/resists_magm/defended, i.e. the
+                       monster resistance subsystem. Until that lands this
+                       stays as it was rather than shipping half of it: the
+                       square is kept and marked, which is what C does for a
+                       pet (ALLOW_TRAPS) and for any harmless trap. */
                     const ttmp = t_at(nx, ny);
                     if (ttmp) {
-                        /* pets get ALLOW_TRAPS and dogmove.c does the
-                           checking; anything else needs mon_knows_traps() */
                         if (!(flag & ALLOW_TRAPS))
-                            note_unported_mon('mfndpos trap avoidance');
+                            note_unported_mon('mfndpos:m_harmless_trap');
                         info |= ALLOW_TRAPS;
                     }
 
@@ -280,6 +346,18 @@ export function mfndpos(mon, data, flag) {
 
     data.cnt = cnt;
     return cnt;
+}
+
+// include/rm.h:500 OBJ_AT() — is there anything on this square?
+function objects_here(x, y) {
+    return (game.level?.objects || []).some(o => o.ox === x && o.oy === y);
+}
+
+// src/mon.c:2055 monlineu() — is <nx,ny> in a straight line from where this
+// monster THINKS the hero is? Note it uses mux/muy, the remembered position,
+// not the real one.
+function monlineu(mon, nx, ny) {
+    return online2(nx, ny, mon.mux, mon.muy);
 }
 
 /* src/mon.c m_at() */
@@ -522,7 +600,7 @@ export function mon_allowflags(mtmp) {
     if (mtmp.isshk) allowflags |= ALLOW_SSM;
     if (mtmp.ispriest) allowflags |= ALLOW_SSM | ALLOW_SANCT;
     if (passes_walls(d)) allowflags |= (ALLOW_ROCK | ALLOW_WALL);
-    if (throws_rocks(d)) allowflags |= ALLOW_ROCK;
+    if (throws_rocks(d) || m_can_break_boulder(mtmp)) allowflags |= ALLOW_ROCK;
     if (can_tunnel) allowflags |= ALLOW_DIG;
     if (doorbuster) allowflags |= BUSTDOOR;
     if (can_open) allowflags |= OPENDOOR;

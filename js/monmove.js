@@ -37,6 +37,7 @@ import {
     ALL_TRAPS, NO_TRAP,
 } from './const.js';
 import { is_rider } from './makemon.js';
+import { MSOUND } from './monst_data.js';
 
 // src/priest.c:9 ALGN_SINNED — worse than strayed (-1..-3).
 const ALGN_SINNED = -4;
@@ -73,7 +74,7 @@ function flees_light(mon) {
 /* src/priest.c in_your_sanctuary() — a temple with a peaceful coaligned priest.
    The early returns that need no priest data are ported; the rest needs the
    priest subsystem. */
-function in_your_sanctuary(mon, x, y) {
+export function in_your_sanctuary(mon, x, y) {
     if (mon) {
         if (is_minion(game.mons[mon.mnum]) || is_rider(game.mons[mon.mnum]))
             return false;
@@ -413,6 +414,21 @@ function monnear(mon, x, y) {
 // an rnd() in monflee(). The engraving and scare-monster-scroll branches need
 // subsystems that are not ported, so they are recorded rather than guessed:
 // answering TRUE there would invent a flee (and a draw) that C did not make.
+// src/monmove.c:133 m_can_break_boulder() — may this monster smash a boulder
+// out of its way? Riders always can; shopkeepers, priests and quest leaders
+// can while their special attack is off cooldown.
+//
+// mon_allowflags() reads it alongside throws_rocks() to decide ALLOW_ROCK, and
+// mfndpos() then REJECTS any square holding a boulder when ALLOW_ROCK is
+// clear. Leaving it out shrinks the candidate list for every shopkeeper,
+// priest and leader on a level with boulders.
+export function m_can_break_boulder(mtmp) {
+    return is_rider(mtmp.data)
+        || (!mtmp.mspec_used
+            && (mtmp.isshk || mtmp.ispriest
+                || mtmp.data.msound === MSOUND.MS_LEADER));
+}
+
 export function onscary(x, y, mtmp) {
     /* <0,0> is used by musical scaring; it doesn't care about scrolls or
        engravings or dungeon branch */

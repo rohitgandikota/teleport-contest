@@ -7,6 +7,8 @@
 // with the wrong number of monsters desynchronises on its very first turn.
 
 import { game } from './gstate.js';
+import { adjalign } from './attrib.js';
+import { couldsee } from './vision.js';
 import { is_metallic } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
@@ -16,7 +18,7 @@ import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
-import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER } from './const.js';
+import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
@@ -35,9 +37,8 @@ import { online2, isok } from './hacklib.js';
 import { onscary, in_your_sanctuary, m_can_break_boulder,
          mon_knows_traps, can_fog } from './monmove.js';
 import { Is_waterlevel, Is_rogue_level, engulfing_u } from './const.js';
-import {
-    bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits } from './mondata.js';
+import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
+    is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver } from './dog.js';
 import { is_rider } from './makemon.js';
@@ -979,4 +980,63 @@ export function wakeup(mtmp, via_attack) {
                 note_unported_mon('wakeup:hot_pursuit');
         }
     }
+}
+
+// src/mon.c setmangry() — turn a peaceful monster hostile.
+//
+// The order of the three early exits is what carries the behaviour:
+//   1. STRAT_WAITMASK is cleared for EVERY monster, hostile ones included,
+//      before any return. A monster waiting to ambush stops waiting even if
+//      it was already angry.
+//   2. an already-hostile monster returns; there is nothing to anger.
+//   3. a TAME monster returns too, still peaceful. Hitting your own pet does
+//      not turn it hostile here, and costs no alignment. C flags this as
+//      probably-wrong in a comment and keeps it; so do we.
+//
+// The Elbereth branch is the only source of a draw, rnd(5), and only when
+// alignment is already at or below 5. sengr_at is part of the engraving
+// subsystem, which is not ported, so no engraving exists to stand on and the
+// branch is unreachable today -- that is the honest state, not a stub: when
+// engravings land the condition starts being true on its own.
+export function setmangry(mtmp, via_attack) {
+    if (via_attack && note_sengr_at_unported()
+        && (onscary(game.u.ux, game.u.uy, mtmp) || mtmp.mpeaceful)) {
+        /* unreachable until the engraving subsystem is ported */
+        adjalign((game.u.ualign.record > 5) ? -5 : -rnd(5));
+        note_unported_mon('setmangry:del_engr_at');
+    }
+
+    mtmp.mstrategy &= ~STRAT_WAITMASK;
+    if (!mtmp.mpeaceful)
+        return;
+    if (mtmp.mtame)
+        return;
+    mtmp.mpeaceful = 0;
+    if (mtmp.ispriest) {
+        if (game.p_coaligned?.(mtmp))
+            adjalign(-5); /* very bad */
+        else
+            adjalign(2);
+    } else
+        adjalign(-1); /* attacking peaceful monsters is bad */
+    if (humanoid(game.mons[mtmp.mnum]) || mtmp.isshk || mtmp.isgd) {
+        if (couldsee(mtmp.mx, mtmp.my))
+            note_unported_mon('setmangry:pline_mon_gets_angry');
+    } else {
+        note_unported_mon('setmangry:growl');
+    }
+
+    /* attacking your own quest leader will anger his or her guardians */
+    note_unported_mon('setmangry:quest_leader_check');
+
+    /* make other peaceful monsters react */
+    if (!game.context?.mon_moving)
+        note_unported_mon('setmangry:peacefuls_respond');
+}
+
+// src/engrave.c sengr_at() — not ported. No engraving can exist yet, so this
+// is false for the same reason C would be false on a bare floor.
+function note_sengr_at_unported() {
+    note_unported_mon('setmangry:sengr_at');
+    return false;
 }

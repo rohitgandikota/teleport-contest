@@ -6,6 +6,7 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { mpickstuff } from './mon.js';
 import { sengr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
@@ -174,7 +175,7 @@ const p_coaligned = (priest) => game.p_coaligned?.(priest) ?? false;
 /* src/shk.c inhishop() / src/priest.c inhistemple() — both need the shop and
    temple bookkeeping. No shopkeeper or priest is created on an ordinary level
    before either subsystem lands, so the flags they guard are never set. */
-function inhishop(mtmp) {
+export function inhishop(mtmp) {
     note_unported('inhishop');
     return false;
 }
@@ -423,7 +424,7 @@ export function mon_knows_traps(mtmp, ttyp) {
 // src/monmove.c mon_would_take_item() — each class of taker has its own load
 // ceiling, so a heavily-laden monster stops being interested rather than being
 // refused later by can_carry().
-function mon_would_take_item(mtmp, otmp) {
+export function mon_would_take_item(mtmp, otmp) {
     const ptr = game.mons[mtmp.mnum];
     const pctload = Math.trunc((curr_mon_load(mtmp) * 100) / max_mon_load(mtmp));
 
@@ -1156,8 +1157,7 @@ function postmov(mtmp, ptr, omx, omy, mmoved) {
             if (corpse_eater(ptr))
                 note_unported('postmov:meatcorpse');
 
-            /* mpickstuff() draws; it is the one that affects the most turns. */
-            note_unported('postmov:mpickstuff');
+            mpickstuff(mtmp);
         }
     }
     return mmoved;

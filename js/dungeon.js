@@ -13,6 +13,7 @@
 import { game } from './gstate.js';
 import { In_endgame, Is_earthlevel } from './const.js';
 import { rn2, rn1 } from './rng.js';
+import { A_NONE, AM_NONE, A_LAWFUL, AM_LAWFUL } from './const.js';
 import { dungeon as DUNGEON_DATA } from './dungeon_data.js';
 
 // include/global.h:408-409
@@ -572,6 +573,13 @@ const LEVEL_MAP = [
     ['soko1', 'sokoend_level'],
 ];
 
+// src/dungeon.c Is_special() — the s_level entry for this level, or null.
+export function Is_special(lev) {
+    return game.sp_levchn.find(
+        (l) => l.dlevel && l.dlevel.dnum === lev.dnum
+               && l.dlevel.dlevel === lev.dlevel) ?? null;
+}
+
 // src/dungeon.c:566 find_level() — locate a special level by its proto name.
 function find_level(nam) {
     return game.sp_levchn.find(
@@ -686,3 +694,31 @@ export function get_level(newlevel, levnum) {
 export function dunlevs_in_dungeon(lev) {
     return game.dungeons[lev.dnum].num_dunlevs;
 }
+
+// src/dungeon.c:2012 induced_align() — the alignment a monster gets when the
+// level, rather than the species, decides.
+//
+// Three chances in order: the special level's own alignment, then the
+// dungeon's, each gated on rn2(100) < pct, and failing both a flat
+// rn2(3) - 1. create_monster() calls it for every des.monster() that did not
+// name an alignment, which is most of them, so the draw is not rare.
+export function induced_align(pct) {
+    const lev = Is_special(game.u.uz);
+
+    if (lev && lev.flags?.align)
+        if (rn2(100) < pct)
+            return lev.flags.align;
+
+    if (game.dungeons[game.u.uz.dnum]?.flags?.align)
+        if (rn2(100) < pct)
+            return game.dungeons[game.u.uz.dnum].flags.align;
+
+    const al = rn2(3) - 1;
+    return Align2amask(al);
+}
+
+// include/align.h:50 Align2amask() — A_NONE and A_LAWFUL are special-cased
+// rather than falling out of the +2, so the mapping is not a plain shift.
+const Align2amask = (x) => (x === A_NONE) ? AM_NONE
+                         : (x === A_LAWFUL) ? AM_LAWFUL
+                         : ((x) + 2);

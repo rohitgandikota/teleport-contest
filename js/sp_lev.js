@@ -44,7 +44,7 @@ import { NO_TRAP, VIBRATING_SQUARE,
          SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL,
          WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP } from './const.js';
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
-import { depth } from './dungeon.js';
+import { depth, induced_align } from './dungeon.js';
 import { mkgold } from './mkobj.js';
 import { mkclass, makemon, is_male, is_female } from './makemon.js';
 import { In_mines } from './const.js';
@@ -1084,10 +1084,15 @@ export function create_monster(m, croom) {
     if (croom && !inside_room(croom, x, y))
         return null;
 
+    /* src/sp_lev.c create_monster() — a spec that named an alignment resolves
+       it directly; anything else asks the LEVEL, and that draws. */
+    let amask;
     if (m.sp_amask !== AM_SPLEV_RANDOM) {
+        amask = sp_amask_to_amask(m.sp_amask);
         note_unported('create_monster:mk_roamer');
         return null;
     }
+    amask = induced_align(80);
     if (m.id >= PMNAMES.PM_ARCHEOLOGIST && m.id <= PMNAMES.PM_WIZARD) {
         note_unported('create_monster:mk_mplayer');
         return null;
@@ -1126,7 +1131,7 @@ export function create_monster(m, croom) {
 const BOOL_RANDOM = -1, M_AP_OBJECT = 2;
 
 // include/monflag.h:214 enum mgender
-const MALE = 0, FEMALE = 1, NEUTRAL = 2;
+const MALE = 0, FEMALE = 1, NEUTRAL = 2, NUM_MGENDERS = 3;
 // include/permonst.h:15 — LOW_PM = NON_PM + 1, and NON_PM is -1.
 const LOW_PM = 0;
 
@@ -1144,7 +1149,7 @@ const LOW_PM = 0;
 function find_montype(s, mgender) {
     let mgend = NEUTRAL;
 
-    const i = name_to_mon(s);
+    const i = name_to_mon(s, mgender);
     if (i >= LOW_PM && i < NUMMONS) {
         const ptr = game.mons[i];
         if (is_male(ptr) || is_female(ptr))
@@ -1196,13 +1201,63 @@ export function lspo_monster(idOrClass, x, y, opts) {
 // 0x80, not 0, so `m.sp_amask !== AM_SPLEV_RANDOM` was true for every monster
 // and sent them all down the mk_roamer arm; G_NOGEN is 0x0200, not 0x1000.
 // src/mondata.c name_to_mon() — a monster name to its index.
-export function name_to_mon(name) {
-    const want = String(name).toLowerCase();
+// src/mondata.c:1038 name_to_monplus(), core loop.
+//
+// A permonst carries pmnames[] INDEXED BY GENDER, not a single name, and for
+// many species only one slot is filled: a ghost is
+// pmnames = [null, null, "ghost"], i.e. the NEUTRAL slot alone. Reading a
+// scalar `pmname` therefore matched nothing at all for those, so every
+// des.monster("ghost") in a themeroom silently fell through to a RANDOM
+// monster and spent rndmonst's draws instead of the named species'.
+//
+// C takes the LONGEST match rather than the first, because names prefix each
+// other ("ettin" against "ettin zombie"), and accepts a trailing word or a
+// plural/possessive suffix so that "ettin zombie corpse" resolves. `matchgend`
+// is the gender the matched slot implies, which is what find_montype reads
+// before deciding whether to spend its rn2(2).
+//
+// Not ported: the leading article strip, the alternate-names table (about
+// sixty entries: "genie", "high priestess", "wood elf" and so on), and
+// title_to_mon. Every name the themerooms use is a plain pmnames[] entry.
+export function name_to_mon(name, gender_name_var) {
+    const str = String(name).toLowerCase();
+    const slen = str.length;
+    let mntmp = NON_PM, len = 0, matchgend = -1, exact_match = false;
 
-    for (let i = 0; i < game.mons.length; i++)
-        if ((game.mons[i]?.pmname || '').toLowerCase() === want)
-            return i;
-    return NON_PM;
+    for (let i = LOW_PM; i < game.mons.length; i++) {
+        for (let mgend = MALE; mgend < NUM_MGENDERS; mgend++) {
+            const nm = game.mons[i]?.pmnames?.[mgend];
+            if (!nm)
+                continue;
+
+            const m_i_len = nm.length;
+            if (m_i_len > len && str.startsWith(nm.toLowerCase())) {
+                if (m_i_len === slen) {
+                    mntmp = i; len = m_i_len; matchgend = mgend;
+                    exact_match = true;
+                    break;
+                } else if (slen > m_i_len) {
+                    const rest = str.slice(m_i_len);
+                    if (rest[0] === ' ' || rest === 's' || rest.startsWith('s ')
+                        || rest === "'" || rest.startsWith("' ")
+                        || rest === "'s" || rest.startsWith("'s ")
+                        || rest === 'es' || rest.startsWith('es ')) {
+                        mntmp = i; len = m_i_len; matchgend = mgend;
+                    }
+                }
+            }
+        }
+        if (exact_match)
+            break;
+    }
+
+    if (gender_name_var && matchgend !== -1) {
+        /* do not override a caller's male/female with a matched neuter name */
+        if (!(matchgend === NEUTRAL
+              && (gender_name_var.v === MALE || gender_name_var.v === FEMALE)))
+            gender_name_var.v = matchgend;
+    }
+    return mntmp;
 }
 
 const AM_SPLEV_RANDOM = 0x80;

@@ -8,7 +8,9 @@
 import { game } from './gstate.js';
 import { done } from './end.js';
 import { rn2 } from './rng.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME } from './const.js';
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING,
+         A_LAWFUL } from './const.js';
+import { ONAMES } from './objects_data.js';
 import { getobj } from './invent.js';
 
 // src/eat.c:3170 gethungry()
@@ -77,8 +79,63 @@ export async function doeat() {
     if (!otmp)
         return ECMD_OK;
 
-    note_unported_eat('doeat:eating');
+    /* src/eat.c doeat() tail — the tin, corpse and conduct arms above this
+       need their own subsystems; what is ported is the ordinary-food path,
+       which is the one that reaches choke(). */
+    if (otmp.otyp === ONAMES.TIN || otmp.otyp === ONAMES.CORPSE
+        || otmp.globby) {
+        note_unported_eat('doeat:tin_or_corpse');
+        return ECMD_TIME;
+    }
+
+    const v = (game.context.victual ||= {});
+    v.piece = otmp;
+    v.o_id = otmp.o_id;
+    v.usedtime = 0;
+    v.reqtime = game.objects[otmp.otyp].oc_delay;
+
+    /* nutrition units per round eating */
+    if (v.reqtime === 0 || !otmp.oeaten)
+        v.nmod = 0;
+    else if (otmp.oeaten >= v.reqtime)
+        v.nmod = -Math.trunc(otmp.oeaten / v.reqtime);
+    else
+        v.nmod = v.reqtime % otmp.oeaten;
+
+    /* THE death condition: latched ONCE here from the hunger state at the
+       moment the meal starts, not re-tested per bite. */
+    v.canchoke = (game.u.uhs === SATIATED);
+
+    start_eating(otmp, false);
     return ECMD_TIME;
+}
+
+// src/eat.c start_eating() — begin (or resume) a meal.
+//
+// bite() is called BEFORE usedtime is incremented, so a one-turn meal eaten
+// while Satiated chokes on the very first call rather than after finishing.
+export function start_eating(otmp, already_partly_eaten) {
+    const v = game.context.victual;
+
+    v.fullwarn = 0;
+    v.doreset = 0;
+    v.eating = 1;
+
+    if (bite()) {
+        /* survived choking; finish off food that is nearly done */
+        if (++v.usedtime >= v.reqtime)
+            note_unported_eat('start_eating:done_eating');
+        return;
+    }
+
+    if (++v.usedtime >= v.reqtime) {
+        note_unported_eat('start_eating:done_eating');
+        return;
+    }
+
+    /* set_occupation(eatfood, ...) — the multi-turn occupation needs the
+       occupation loop in allmain.c */
+    note_unported_eat('start_eating:set_occupation');
 }
 
 function note_unported_eat(what) {
@@ -99,8 +156,11 @@ export function choke(food) {
     if (game.u.uhs !== SATIATED) {
         if (!food || food.otyp !== ONAMES.AMULET_OF_STRANGULATION)
             return;
-    } else if (Role_if(PM_KNIGHT) && game.u.ualign?.type === A_LAWFUL) {
-        note_unported_eat('choke:adjalign');   /* gluttony is unchivalrous */
+    } else {
+        /* Role_if(PM_KNIGHT) && u.ualign.type == A_LAWFUL -> adjalign(-1),
+           "gluttony is unchivalrous". Needs the hero's role and alignment
+           record; it changes no draw. */
+        note_unported_eat('choke:knight_adjalign');
     }
 
     note_unported_eat('choke:exercise');

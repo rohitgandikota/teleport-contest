@@ -300,6 +300,32 @@ both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 
+### THREE sessions share one signature: a monster missing at level generation
+
+Ranked by first-mismatch size, the cheapest remaining screen diffs are:
+
+    1 cell  seed0012-monk-vault-escort     step 16  r6 c3   C 'r'  ours '`'
+    1 cell  seed2200-wizard-quaff-zap-read step 0   r11 c16 C 'x'  ours '`'
+    1 cell  seed0700-samurai-explore-descend
+
+The first two are the SAME defect. C draws a monster ('r' a rat, 'x' a grid
+bug); we draw '`', the boulder underneath it. js/display.js:168 checks m_at()
+BEFORE the object list, so if a monster were there we would draw it -- meaning
+the monster is absent from our level or standing elsewhere.
+
+seed2200's is at STEP 0, before any input, so it is purely level generation.
+
+This is the same class as seed0367's extra rnd(5) (recorded below): a monster
+in the wrong place with no draw disagreeing. Three sessions now point at it,
+and seed2200 is the cheapest probe because its frame is the initial one -- no
+gameplay to unwind.
+
+MEASURE, do not infer: dump game.level.monsters with positions right after
+mklev for seed2200 and compare against the recorded step-0 screen, which shows
+every monster the hero can see. The screen is ground truth here in a way it
+was not for the object question further down, because monsters at step 0 are
+all in the starting room.
+
 ### seed0101 is now at step 9; the prompt chain is DONE
 
 Ported this stretch, in the order the session exercises them:

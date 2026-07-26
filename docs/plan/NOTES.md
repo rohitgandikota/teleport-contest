@@ -2087,6 +2087,23 @@ lie produced by a measurement artifact, and it would have sat there telling
 future readers a working subsystem was missing. Verify a regression is real
 BEFORE recording a gap on the strength of it.
 
+`game.unported` DRIFTS IN BOTH DIRECTIONS, and both were seen the same day:
+
+  - recording work that IS done. freeinv_core's LOADSTONE arm recorded
+    'curse_loadstone' while curse() had been sitting in js/mkobj.js the whole
+    time. Nothing rechecks a gap once written.
+  - recording work that was NEVER THERE. The same function's COIN_CLASS arm
+    recorded 'freeinv_core:money2mon'. In 5.0 that arm is two statements,
+    `disp.botl = TRUE; return;`, and money2mon appears nowhere in invent.c.
+    Almost certainly a 3.4/3.6 memory written into a 5.0 port -- exactly the
+    failure CLAUDE.md rule 3a warns about, surviving as a comment instead of
+    as code.
+
+So a gap entry is a claim about the C, and it decays like any other. When
+touching a function, re-read the C arm the record refers to before trusting
+it. Both of these cost nothing to fix once looked at, and both had been
+quietly wrong for a while.
+
 It bit a second time within the hour, from the other direction. A script that
 was supposed to add a `pronoun_gender` import to js/do_name.js guarded itself
 with "skip if pronoun_gender already appears above the function". It did

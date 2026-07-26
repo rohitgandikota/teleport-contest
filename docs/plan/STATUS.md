@@ -365,9 +365,19 @@ Two facts from that, and no inference beyond them:
     56,4 needs a different explanation), or it ran and only one object
     survived.
 
-Settle WHICH before doing anything else: log whether fill_statuary is entered
-at all for seed0030. If it is not, stop looking at fill_statuary -- C's statue
-at 56,4 is from another source, and the two are unrelated.
+SETTLED BY MEASUREMENT: fill_statuary is entered ZERO times for seed0030. The
+"Statuary" themeroom is not picked this game.
+
+So fill_statuary is NOT the lead. The one statue we do have (15,10) and the
+one C shows (56,4) both come from somewhere else. Statues are also created by
+
+  - mkcorpstat(STATUE, ...) -- e.g. makeniche's dead adventurer behind iron
+    bars, which js/mklev.js already calls
+  - STATUE_TRAP, whose trap carries a statue object
+
+Read those two before anything else. Note that our lone statue has
+corpsenm 158, the same species as the two fill_ordinary_room monsters logged
+for seed2200, which is worth checking but is NOT yet evidence of anything.
 
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 

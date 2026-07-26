@@ -400,10 +400,71 @@ full makemon whose inventory is transferred into the statue. Port it as a
 unit; the makemon and the inventory transfer are not optional decoration, the
 statue is meant to contain that monster's gear.
 
-Note that seed0030's RNG matches through level generation, so check where
-those draws land before assuming this is the divergence -- it explains the
-missing OBJECT, which is a screen difference, and may or may not be the RNG
-one.
+RETRACTED, and the retraction is the useful part. mk_trap_statue is now
+ported (commit "Port mk_trap_statue, mongone and m_detach") and it changed
+NOTHING: 482 screens and 135915 RNG before and after. Instrumenting the
+function shows it is entered ZERO times for seed0030, exactly as
+fill_statuary was. Neither statue source fires. There is no missing statue.
+
+The 'f' was never a statue. Dumping C's own first screen:
+
+    @ row 5 col 19
+    f row 5 col 20
+
+The 'f' is DIRECTLY ADJACENT to the hero. It is the starting pet. The whole
+statue thread came from matching objects[STATUE].oc_color == 15 against a
+white 'f' and never checking the far cheaper thing, which was where the
+glyph sits relative to '@'. Colour equality is not identification. Two
+sessions of work hung off that one unchecked inference.
+
+The port is kept anyway: mk_trap_statue is a real C function that was a
+note_unported_lev stub, so a statue trap generated a trap with no statue.
+It will fire on a held-out session that rolls one. But it was not this bug,
+and it was not found by the reasoning that led to it.
+
+WHERE seed0030 ACTUALLY DIVERGES (measured, tools/diverge.mjs):
+
+    6275  C rn2(5)=1     ours rn2(5)=1     ok        @ distfleeck(monmove.c:538)
+    6276  C rn2(100)=92  ours rn2(4)=0     MISMATCH  @ obj_resists(zap.c:1469)
+    6277  C rn2(8)=7     ours rn2(100)=67  differs   @ dog_goal(dogmove.c:554)
+    6278  C rn2(100)=1   ours rn2(8)=1     differs   @ obj_resists(zap.c:1469)
+    6280  C rn2(4)=1     ours rn2(100)=85  differs   @ dog_goal(dogmove.c:575)
+
+    C:    100, 8, 100, 100, 4
+    ours:   4, 100, 8, 100, 100
+
+We emit one EXTRA rn2(4) and then C's next four draws in order. Stack trace
+at that call (the RNG-log index is off by one from diverge's numbering, so
+trace a window, not a point):
+
+    at rn2 (js/rng.js)
+    at dochug (js/monmove.js:686)
+
+Line 686 is `|| (is_wanderer(mdat) && !rn2(4))`. The monster there is
+mnum=32 tame=10 peac=1 nearby=true scared=false cansee=true wander=true,
+i.e. the pet kitten. Our dochug condition matches C's (monmove.c:881) term
+for term and in order, and include/monsters.h:386 confirms the kitten really
+does carry M2_WANDER, so is_wanderer is right in both. C therefore has to be
+short-circuiting on an EARLIER disjunct and never reaching the rn2(4).
+
+The disjuncts before it are !nearby, mflee, scared, mconf, mstun,
+(minvis && !rn2(3)), and the leprechaun clause. C drew no rn2(3), so minvis
+is false there. The candidate that fits without contradicting anything
+measured is `!nearby` being TRUE in C, which would mean C's pet is NOT
+adjacent at seg 1 step 4 while ours is. That is a POSITION divergence with
+no RNG divergence in front of it, which is possible whenever a movement
+decision picks between equally-rated squares without drawing.
+
+NEXT ACTION: do not port anything from the above paragraph. Verify it first.
+Dump our pet's (mx,my) at seg 1 step 4 and compare against where C's 'f' is
+on that step's recorded screen. If C's pet is further than one square, the
+bug is upstream in dog_move's square choice, not at monmove.js:686, and
+"fixing" line 686 would be fitting the symptom.
+
+One real gap found in passing, not the cause: js/dog.js:567 omits C's
+`|| (dog_has_minvent && rn2(edog->apport))` from the follow-player test
+(dogmove.c:575). It is RNG-neutral while dog_has_minvent is hardcoded false
+at js/dog.js:504, and unhardcoding it needs droppables() ported.
 
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 

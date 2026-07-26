@@ -6,6 +6,33 @@
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
+TWO SCREEN-VISIBLE GAPS FOUND BY SWEEPING screendiff, both hitting several
+sessions:
+
+1. UPPERCASE MOVEMENT KEYS ARE UNHANDLED. seed0012 prints
+   "Unknown command 'H'." where C prints "You see here a chest."; seed0014
+   does the same with 'K'. js/cmd.js:69 tests `'hjklyubn'.includes(ch)`,
+   lowercase only.
+
+   In C these are RUSH, not a second spelling of walk. src/cmd.c:1461
+   do_rush_west calls set_move_cmd(DIR_W, 3), and set_move_cmd stores that 3
+   in svc.context.run and sets DOMOVE_RUSH; the lowercase commands pass 0 and
+   set DOMOVE_WALK. So the difference is context.run, and rush keeps moving
+   until something interesting stops it.
+
+   DO NOT "fix" this by adding the uppercase letters to the isMovementKey
+   test. That would take one step where C takes many, which diverges
+   differently rather than less. It needs context.run = 3 and the run loop.
+
+2. THE CHARGEN TOP LINE IS NOT CLEARED. seed0002 and seed0004 both show
+
+     C     "                    Is this ok? [ynaq]"
+     ours  "Shall I pick character's race, role, gen Is this ok? [ynaq]"
+
+   The previous prompt is still on row 0 underneath the new one. This is a
+   clear-line bug in the chargen path, not a message-content bug, and it
+   costs every screen after it in those sessions.
+
 NEXT MAJOR TARGET: THE MONSTER NAMING SUBSYSTEM (src/do_name.c x_monnam).
 
 x_monnam is 205 lines and has 396 CALL SITES across the C source. Nothing

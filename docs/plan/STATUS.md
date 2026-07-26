@@ -22,11 +22,34 @@ What is already ruled out:
   - enexto_core (js/teleport.js:125) is fully ported, no unported markers.
   - makedog passes makemon(mons[pettype], u.ux, u.uy, ...) exactly as C does.
 
-So the difference is in what goodpos() ACCEPTS at placement time, or in the
-map state when placement runs. Note the pet is placed DURING level
-generation, before the whole-level wallification pass that was just added, so
-the map it sees is the mid-generation one -- check that our mid-generation
-map matches C's at that moment before suspecting goodpos.
+IT IS SYSTEMATIC, not one session's luck. seed0030 -- 1952 steps, the largest
+session in the corpus, diverging at STEP 4 -- shows C's "f<." against our
+"$<f": the kitten two squares right, with the gold it should be standing on
+now visible. Same shape as seed0004's pony.
+
+ELIMINATED SO FAR, all by comparison against the C rather than by guessing:
+  - makedog's call. C is makemon(&mons[pettype], u.ux, u.uy,
+    MM_EDOG | NO_MINVENT); ours is identical.
+  - the RNG. seed0004 matches C for 3694 calls, well past placement, so every
+    draw enexto made agreed in count AND argument.
+  - collect_coords (js/teleport.js:39). Bounds (max(loy,0), max(lox,1)), the
+    ROWNO-1/COLNO-1 breaks, the ring-edge test, both quick filters
+    (skip_mons/m_at and skip_inaccessible/ZAP_POS) and the shuffle
+    (k = rn2(n), swap [k] with [0], advance, decrement) all match
+    src/teleport.c line for line.
+  - enexto_core itself is ported with no unported markers.
+
+THAT LEAVES goodpos(). enexto_core walks the shuffled candidates and takes
+the first that goodpos accepts, so with an identical candidate ORDER a
+different winner means a different ACCEPTANCE. Compare js/makemon.js's
+goodpos against src/makemon.c goodpos arm by arm -- particularly the
+GP_CHECKSCARY and GP_AVOID_MONPOS paths, which are the two flags this call
+passes.
+
+One ordering fact to keep in mind: the pet is placed during level generation,
+before the whole-level wallification pass added at js/mklev.js, so the map
+goodpos sees is the mid-generation one, not the finished map a screendiff
+shows.
 
 PREVIOUS TARGET, NOW FIXED: seed0004 picked the wrong gender at chargen.
 

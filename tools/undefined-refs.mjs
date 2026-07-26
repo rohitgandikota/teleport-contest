@@ -89,7 +89,10 @@ for (const file of jsFiles(join(ROOT, 'js')).sort()) {
 
     // `let a = ..., b = ...` — every declarator after the first. Missing these
     // reported add_door_fn in js/sp_lev.js as unbound when the wire defines it.
-    for (const m of src.matchAll(new RegExp(`(?:const|let|var)\\s+([^;\\n]*)`, 'g')))
+    // The capture runs to the SEMICOLON, not the newline: an enum written as
+    // `export const A = 0, B = 1,\n    C = 2;` puts most of its names on
+    // continuation lines, and stopping at \n bound only the first row.
+    for (const m of src.matchAll(new RegExp(`(?:const|let|var)\\s+([^;]{0,400})`, 'g')))
         for (const part of m[1].split(','))
             for (const n of part.match(new RegExp(IDENT, 'g')) || []) {
                 if (part.trim().startsWith(n)) bound.add(n);
@@ -117,6 +120,16 @@ for (const file of jsFiles(join(ROOT, 'js')).sort()) {
     // names used in call position, minus property accesses (`x.foo(`)
     const missing = new Set();
     for (const m of src.matchAll(new RegExp(`(\\.?)\\s*(${IDENT})\\s*\\(`, 'g'))) {
+        const [, dot, name] = m;
+        if (dot === '.' || bound.has(name) || GLOBALS.has(name)) continue;
+        missing.add(name);
+    }
+
+    // ALL_CAPS identifiers used bare, e.g. `obj.owornmask & W_QUIVER`. These
+    // are neither calls nor namespace bases, so both passes above miss them --
+    // removing a wrong local `const W_QUIVER = 0x0800` left js/objnam.js and
+    // js/u_init.js referencing an unbound name and the sweep stayed silent.
+    for (const m of src.matchAll(new RegExp(`(\\.?)\\s*\\b([A-Z][A-Z0-9_]{2,})\\b\\s*(?![\\w$(.:])`, 'g'))) {
         const [, dot, name] = m;
         if (dot === '.' || bound.has(name) || GLOBALS.has(name)) continue;
         missing.add(name);

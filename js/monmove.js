@@ -39,6 +39,8 @@ import {
     G_GENOD,
 } from './const.js';
 import { is_rider } from './makemon.js';
+import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
+         MMOVE_NOMOVES } from './const.js';
 import { MSOUND } from './monst_data.js';
 
 // src/priest.c:9 ALGN_SINNED — worse than strayed (-1..-3).
@@ -903,8 +905,8 @@ function postmov(mtmp, ptr, omx, omy, mmoved) {
 }
 
 const MTSZ = 4;
-const MMOVE_NOTHING = 0, MMOVE_DIED = 1, MMOVE_MOVED = 2, MMOVE_DONE = 3,
-      MMOVE_NOMOVES = 4;
+/* include/hack.h:1322 — these were declared here with MMOVE_DIED and
+   MMOVE_MOVED SWAPPED against the header. js/const.js has them right. */
 
 /* include/mondata.h hides_under() */
 function hides_under(ptr) {

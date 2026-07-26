@@ -12,6 +12,10 @@
 import { game } from './gstate.js';
 import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { m_avoid_kicked_loc, m_avoid_soko_push_loc } from './monmove.js';
+/* include/hack.h:1322 — MMOVE_MOVED is 1 and MMOVE_DIED is 2. This file had
+   its own copy with MMOVE_MOVED = 2 (C's DIED value) and no MMOVE_DIED at all,
+   so dog_move's death return was an unbound name. */
+import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE } from './const.js';
 import { acurr } from './attrib.js';
 import { perceives , is_domestic} from './mondata.js';
 import { sobj_at } from './invent.js';
@@ -1041,7 +1045,6 @@ export function dog_move(mtmp, after) {
 
 /* include/monst.h MTSZ — how many previous squares a monster remembers. */
 const MTSZ = 4;
-const MMOVE_NOTHING = 0, MMOVE_MOVED = 2, MMOVE_DONE = 3;
 
 /* src/dogmove.c GDIST(x,y) = dist2(x, y, gg.gx, gg.gy) */
 function GDIST(x, y) {

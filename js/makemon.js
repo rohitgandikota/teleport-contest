@@ -1250,7 +1250,7 @@ export function makemon(ptr, x, y, mmflags) {
     case S_SNAKE:
         if (game.in_mklev) {
             if (x && y)
-                mkobj_at(RANDOM_CLASS, x, y, true);
+                mkobj_at(OCLASSES.RANDOM_CLASS, x, y, true);
             hideunder(mtmp);
         }
         break;

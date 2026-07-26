@@ -10,6 +10,12 @@ import { isqrt } from './hacklib.js';
 import { is_metallic } from './obj.js';
 import { ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
+import { rnd } from './rng.js';
+import { You, Your, You_feel } from './pline.js';
+import { acurr } from './attrib.js';
+import { morehungry } from './eat.js';
+import { ECMD_TIME } from './const.js';
+import { A_STR, A_INT } from './const.js';
 import { W_ARM, W_ARMC, W_ARMS, W_ARMH, W_ARMG, W_ARMF, W_WEP,
          P_CLERIC_SPELL, P_UNSKILLED, P_ISRESTRICTED } from './const.js';
 
@@ -30,6 +36,128 @@ export function spellev(spidx) {
 // src/spell.c:856 spell_skilltype() — oc_skill is #defined to oc_subtyp.
 export function spell_skilltype(booktype) {
     return game.objects[booktype].oc_subtyp;
+}
+
+// src/spell.c:17 KEEN, include/spell.h:36 SPELL_LEV_PW
+const KEEN = 20000;
+const SPELL_LEV_PW = (lvl) => lvl * 5;
+
+// include/spell.h:33 spellknow()
+function spellknow(spidx) {
+    return game.spl_book?.[spidx]?.sp_know ?? 0;
+}
+
+// src/spell.c:1220 spelleffects_check() — everything that can stop a cast
+// before it happens. Returns TRUE when the cast is rejected.
+//
+// The DRAW is the last line: `rnd(100) > percent_success(spell)`. Everything
+// above it is a gate, and two of those gates draw too -- rnd(*energy) when the
+// hero's knowledge of the spell has run out, and rnd(2 * *energy) when the
+// Amulet drains them.
+//
+// Returns { rejected, res, energy } because C uses two out-parameters.
+export async function spelleffects_check(spell, energyRef) {
+    let res = ECMD_OK;
+    const confused = !!game.u?.uprops?.CONFUSION;
+
+    energyRef.v = 0;
+
+    if (spell === UNKNOWN_SPELL) {
+        return { rejected: true, res: ECMD_OK };
+    }
+    /* rejectcasting() covers Stunned and having no free hands */
+    if (rejectcasting()) {
+        return { rejected: true, res: ECMD_OK };
+    }
+
+    energyRef.v = SPELL_LEV_PW(spellev(spell));   /* 5 <= energy <= 35 */
+
+    if (spellknow(spell) <= 0) {
+        await Your('knowledge of this spell is twisted.');
+        await pline('It invokes nightmarish images in your mind...');
+        note_unported_spell('spell_backfire');
+        game.u.uen -= rnd(energyRef.v);
+        if (game.u.uen < 0) game.u.uen = 0;
+        return { rejected: true, res: ECMD_TIME };
+    } else if (spellknow(spell) <= KEEN / 200) {
+        await You('strain to recall the spell.');
+    } else if (spellknow(spell) <= KEEN / 40) {
+        await You('have difficulty remembering the spell.');
+    } else if (spellknow(spell) <= KEEN / 20) {
+        await Your('knowledge of this spell is growing faint.');
+    } else if (spellknow(spell) <= KEEN / 10) {
+        await Your('recall of this spell is gradually fading.');
+    }
+
+    if (game.u.uhunger <= 10 && spellid(spell) !== ONAMES.SPE_DETECT_FOOD) {
+        await You('are too hungry to cast that spell.');
+        return { rejected: true, res: ECMD_OK };
+    } else if (ACURR(A_STR) < 4 && spellid(spell) !== ONAMES.SPE_RESTORE_ABILITY) {
+        await You('lack the strength to cast spells.');
+        return { rejected: true, res: ECMD_OK };
+    }
+    /* check_capacity() needs the encumbrance message plumbing; it draws
+       nothing and only fires when the hero is carrying near their limit. */
+
+    if (game.u.uhave?.amulet && game.u.uen >= energyRef.v) {
+        await You_feel('the amulet draining your energy away.');
+        game.u.uen -= rnd(2 * energyRef.v);
+        if (game.u.uen < 0) game.u.uen = 0;
+        res = ECMD_TIME;                /* time is used even if the cast fails */
+    }
+
+    if (energyRef.v > game.u.uen) {
+        await You("don't have enough energy to cast that spell"
+                  + ((game.u.uen < game.u.uenmax) ? ''
+                     : (energyRef.v > (game.u.uenpeak ?? 0)) ? ' yet'
+                     : ' anymore') + '.');
+        return { rejected: true, res };
+    }
+
+    if (spellid(spell) !== ONAMES.SPE_DETECT_FOOD) {
+        let hungr = energyRef.v * 2;
+
+        /* a Wizard's Intelligence reduces the hunger cost */
+        let intell = acurr(A_INT);
+        if (!Role_if(PMNAMES.PM_WIZARD))
+            intell = 10;
+        if (intell >= 17)
+            hungr = 0;
+        else if (intell === 16)
+            hungr = Math.trunc(hungr / 4);
+        else if (intell === 15)
+            hungr = Math.trunc(hungr / 2);
+
+        /* do not put the hero quite into fainting */
+        if (hungr > game.u.uhunger - 3)
+            hungr = game.u.uhunger - 3;
+        morehungry(hungr);
+    }
+
+    const chance = percent_success(spell);
+    if (confused || (rnd(100) > chance)) {
+        await You('fail to cast the spell correctly.');
+        game.u.uen -= Math.trunc(energyRef.v / 2);
+        return { rejected: true, res: ECMD_TIME };
+    }
+    return { rejected: false, res };
+}
+
+// src/spell.c rejectcasting() — Stunned, or no free hands.
+function rejectcasting() {
+    if (game.u?.uprops?.STUNNED) {
+        note_unported_spell('rejectcasting:Stunned message');
+        return true;
+    }
+    /* the no-free-hands arm needs cantwield/welded on the hero's weapon */
+    return false;
+}
+
+// src/spell.c UNKNOWN_SPELL
+const UNKNOWN_SPELL = 0;
+
+function note_unported_spell(what) {
+    (game.unported ||= new Set()).add(what);
 }
 
 // src/spell.c:106 — the metal-armour penalties. Not role-specific: headgear,

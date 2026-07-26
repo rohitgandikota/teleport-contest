@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 126,879/792,838 (16.0%).**
+**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 126,886/792,838 (16.0%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -253,12 +253,24 @@ get_location's mx/my are xstart/ystart. Set croom without converting and every
 explicit coordinate from a selection gets offset by the room origin a second
 time -- which is exactly what drove seed0015 backward.
 
-So the pass is: create_des_coder + update_croom + spo_push_room/spo_endroom,
-AND cvt_to_relcoord/cvt_to_abscoord applied at every Lua boundary
-(selection_iterate, selection_rndcoord, and the nhlua.c:428/483 sites), landed
-together. Two of the three remaining early divergences are behind it:
-seed2600 at 395 and both seed0013 sessions at 528 all show C drawing
-somex/somey inside the room where we draw a whole-map random.
+That pass is now DONE and committed: create_des_coder, update_croom,
+spo_push_room, spo_endroom, both lspo_room and lspo_region pushing their room
+around the contents callback, and cvt_to_relcoord/cvt_to_abscoord applied in
+selection_iterate and selection_rndcoord. Nothing regresses -- seed0015 holds
+at 2513 -- and the machinery is faithful where before it was absent.
+
+But seed2600 (395) and seed0013 (528) STILL do not move. C draws somex/somey
+inside the room at those calls and we still draw a whole-map random, so
+create_altar is reaching its no-croom branch for another reason. Next step is
+to instrument create_altar again now that the coder exists, and find which
+path reaches it with croom null -- the earlier probe showed `coder=false`,
+which is now fixed, so the answer will have changed.
+
+The nhlua.c:428/483 conversion sites are still unported; nothing currently
+routes through them.
+
+Do NOT undo the conversions to "simplify": they are what keep the enablement
+from regressing, and the version without them cost 2,286 corpus RNG.
 
 seed0013's two sessions at 528 are the SAME cause as seed2600: C's tag at
 522-524 reads parent=region(...), so croom is set there too, and C draws

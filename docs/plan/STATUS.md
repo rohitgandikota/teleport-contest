@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**444/11,405 screens (3.9%), 1/44 sessions, corpus RNG 126,886/792,838 (16.0%).**
+**449/11,405 screens (3.9%), 1/44 sessions, corpus RNG 129,288/792,838 (16.3%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -259,7 +259,20 @@ around the contents callback, and cvt_to_relcoord/cvt_to_abscoord applied in
 selection_iterate and selection_rndcoord. Nothing regresses -- seed0015 holds
 at 2513 -- and the machinery is faithful where before it was absent.
 
-But seed2600 (395) and seed0013 (528) STILL do not move. C draws somex/somey
+seed2600 is FIXED: 395 -> 2830. The last piece was that themerooms_generate
+builds a themed room with create_room + topologize and calls its contents
+function DIRECTLY. That is our inline equivalent of the
+des.room({type="themed", contents=themeroom_fill}) the Lua writes, so it owes
+lspo_room's bookkeeping too -- push the room, update_croom, run contents, pop.
+Neither lspo_room nor lspo_region was on that path, which is why instrumenting
+create_altar kept showing coder=false even after both of those pushed.
+
+seed0013 moved 528 -> 540 separately: fill_buried_zombies skipped its
+des.object() and spent only the zombify timer's draw, so the corpse's own
+somex/somey never happened.
+
+OLD, now resolved: seed2600 and seed0013 did not move when only
+lspo_room and lspo_region pushed. C draws somex/somey
 inside the room at those calls and we still draw a whole-map random, so
 create_altar is reaching its no-croom branch for another reason. Next step is
 to instrument create_altar again now that the coder exists, and find which

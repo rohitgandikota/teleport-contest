@@ -2369,8 +2369,26 @@ modules: js/cmd.js imports them and calls their `*_wire()` setters after
 everything has initialised. Anything else that needs one of their functions
 should be wired the same way, not imported.
 
-Left as-is for now: two mkcorpstat implementations, the mklev one used by
-level generation and the mkobj one used by make_corpse. Recorded rather than
-hidden. Fixing it means moving the function to its src/mkobj.c home and
-wiring mklev.js to it, which is a separate change that needs its own
-measurement.
+Left as-is: two mkcorpstat implementations, the mklev one used by level
+generation and the mkobj one used by make_corpse.
+
+SECOND ATTEMPT ALSO FAILED, and it rules out the obvious fix. I tried the
+cmd.js wiring pattern that worked for js/dokick.js -- a `let fn = null` plus a
+`mon_wire_mkcorpstat()` setter in js/mon.js, wired from cmd.js. Result:
+`Cannot access 'mkcorpstat_fn' before initialization`, all 44 sessions to
+zero.
+
+So js/mon.js is ALSO re-entered during its own initialisation, which means
+the wire-setter trick does not work when the module holding the setter is
+itself in a cycle. dokick.js worked because it is a NEW leaf module that
+nothing imports back.
+
+THE RULE THAT ACTUALLY HOLDS: the wire pattern fixes a NEW module that needs
+something from an old one. It does not fix two OLD modules that already
+import each other. For those, the function has to move to a module outside
+the cycle, or the duplicate stays.
+
+Three modules are now known to be re-entrant during init: js/do.js,
+js/mklev.js, js/mon.js. Assume any long-established module is until shown
+otherwise, and prefer adding a new leaf module over threading a call into an
+old one.

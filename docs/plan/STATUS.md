@@ -2,9 +2,23 @@
 
 ## START HERE
 
-**492/11,405 screens (4.3%), 1/44 sessions, RNG 140,726/792,838 (17.7%).**
+**493/11,405 screens (4.3%), 1/44 sessions, RNG 140,680/792,838 (17.7%).**
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
+
+MOST RECENT WORK: the melee to-hit chain behind uhitm.c's do_attack. Ten
+functions ported and VERIFIED BY FORCED INPUT rather than by score, since none
+of them draw. That found a latent ReferenceError (unbound P_SKILLED,
+P_MASTER, P_GRAND_MASTER) that would have crashed any session where the hero
+reached Skilled, and which undefined-refs, the scoreboard, generalize and
+dup-defs were all structurally unable to see.
+
+NEXT IN THE CHAIN is known_hitum (60 lines, src/uhitm.c). It DRAWS -- rn2(25),
+rn2(3) and rnd(100) in its flee branch -- so unlike everything below it, the
+scoreboard can finally see it. It needs missum, hmon (16 lines, then
+hmon_hitmon underneath), cutworm, set_ustuck, sticks, is_blade and is_axe.
+After it, hitum wires the whole thing together and passive (256 lines, draws)
+follows.
 
 Run this FIRST, before picking anything. It is the targeting instrument and
 takes about three minutes:

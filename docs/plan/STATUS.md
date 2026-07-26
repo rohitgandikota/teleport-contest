@@ -5305,10 +5305,26 @@ still first, but for a different reason: hitum uses its result immediately and
 the three missing helpers are the real work.
 
 ORDER, and it is worth doing in this order because each step is measurable:
-  1. abon(), find_mac() and maybe_polyd(), then find_roll_to_hit. No draws in
-     any of them, so correctness here is checked by value, not by the
-     scoreboard -- print tmp for a known monster and hero and compare against
-     the C's arithmetic by hand.
+  1. abon() and find_mac() are DONE, both verified by value (abon returns 1
+     for str 9 / dex 14 / ulevel 1; find_mac returns base ac unchanged for
+     monsters with no armour). maybe_polyd is a one-line macro.
+
+     find_roll_to_hit ITSELF is not 63 lines of work. Reading its body, it
+     needs FIVE more unported functions:
+
+         check_caitiff      17 lines   src/uhitm.c:331
+         hitval             39         src/weapon.c:149
+         weapon_hit_bonus   92         src/weapon.c:1545
+         martial_bonus      ?          not located in src/*.c, likely a macro
+         is_orc             1 line     include/mondata.h
+
+     weapon_hit_bonus at 92 lines is the bulk, and it reads the hero's weapon
+     SKILL table, so it will pull in more. THE 340-LINE ESTIMATE ABOVE IS
+     THEREFORE LOW; treat it as a floor, not a total.
+
+     None of these draw, so all of them are verified by value. That is slow but
+     it is reliable, and it is the only confirmation available for arithmetic
+     that the scoreboard cannot see.
   2. hitum's own rnd(20) and the hit/miss branch.
   3. known_hitum -> hmon -> hmon_hitmon for the damage and the message.
   4. attack_checks last, returning FALSE for the reachable cases with each

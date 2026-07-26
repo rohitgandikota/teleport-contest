@@ -13,7 +13,7 @@ import { encumber_msg } from './attrib.js';
 import { freeinv, getobj, any_obj_ok } from './invent.js';
 import { place_object } from './mkobj.js';
 import { pline, newsym } from './display.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE } from './const.js';
 import { rn2, rnd } from './rng.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -262,7 +262,7 @@ export function dropx(obj) {
 export function drop(obj) {
     if (!obj)
         return ECMD_FAIL;
-    if (note_unported_do('drop:canletgo'))
+    if (!canletgo(obj, 'drop'))
         return ECMD_FAIL;
     if (obj.otyp === ONAMES.CORPSE
         && note_unported_do('drop:better_not_try_to_drop_that'))
@@ -305,4 +305,56 @@ export async function dodrop() {
         note_unported_do('dodrop:reset_occupations');
 
     return result;
+}
+
+// src/do.c:665 canletgo() — may this object leave the hero's hands?
+//
+// Five refusals, and each one's MESSAGE is suppressed when `word` is empty:
+// callers that only want the yes/no answer pass "" and get it silently. That
+// is why the welded arm's comment warns that bknown can become set with no
+// message shown.
+//
+//   worn armour or accessory   you cannot drop what you are wearing
+//   welded uwep                and NO weldmsg here, unlike drop()
+//   cursed LOADSTONE           the classic refusal, and it set_bknown()s
+//   LEASH with a monster on it tied around your hand
+//   the SADDLE you are on
+//
+// The loadstone arm carries a getobj kludge: corpsenm holds the count the
+// player asked for when a stack split was refused, is used to word the
+// message, and is RESET to 0 immediately after. Preserved because a leftover
+// corpsenm on a loadstone would read as a corpse type.
+//
+// The messages, body_part/makeplural and set_bknown are recorded; every
+// refusal itself is real.
+export function canletgo(obj, word) {
+    if (obj.owornmask & (W_ARMOR | W_ACCESSORY)) {
+        if (word) note_unported_do('canletgo:wearing_msg');
+        return false;
+    }
+    if (obj === game.uwep && welded(game.uwep)) {
+        /* no weldmsg(), so uwep bknown might become set silently */
+        if (word) note_unported_do('canletgo:welded_msg');
+        return false;
+    }
+    if (obj.otyp === ONAMES.LOADSTONE && obj.cursed) {
+        if (word) {
+            /* getobj ignores a count for throwing; replicate its kludge */
+            if (word === 'throw' && obj.quan > 1)
+                obj.corpsenm = 1;
+            note_unported_do('canletgo:loadstone_msg');
+        }
+        obj.corpsenm = 0;               /* reset */
+        note_unported_do('canletgo:set_bknown');
+        return false;
+    }
+    if (obj.otyp === ONAMES.LEASH && obj.leashmon !== 0) {
+        if (word) note_unported_do('canletgo:leash_msg');
+        return false;
+    }
+    if (obj.owornmask & W_SADDLE) {
+        if (word) note_unported_do('canletgo:saddle_msg');
+        return false;
+    }
+    return true;
 }

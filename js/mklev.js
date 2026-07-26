@@ -380,7 +380,7 @@ function make_grave(x, y, str) {
     if (old) del_engr(old);
     if (!str)
         str = get_rnd_text('epitaph', rn2, MD_PAD_RUMORS);
-    make_engr_at(x, y, str, 0, HEADSTONE);
+    make_engr_at(x, y, str, null, 0, HEADSTONE);
 }
 
 // in_rooms stub
@@ -1723,7 +1723,8 @@ async function makeniche(trap_type) {
                        character, three when it has a rubout substitute. */
                     if (trap_engravings[actualTrap]) {
                         make_engr_at(xx, yy - dy,
-                                     trap_engravings[actualTrap], 0, DUST);
+                                     trap_engravings[actualTrap], null, 0,
+                                     DUST);
                         wipe_engr_at(xx, yy - dy, 5, false);
                     }
                 }

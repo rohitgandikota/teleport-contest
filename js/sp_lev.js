@@ -18,6 +18,8 @@ import { mkobj_at, mksobj_at, add_to_container } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
+import { make_engr_at, engr_at } from './engrave.js';
+import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD } from './const.js';
 
 /* is_pool/is_lava/m_at live in js/mon.js, which reaches this file back through
    invent.js -> mkobj.js. A direct import leaves them in TDZ the second time a
@@ -625,6 +627,50 @@ export function lspo_trap(type, x, y, opts) {
         return;                         /* nhl_error("Unknown trap type") */
 
     create_trap(t, game.coder?.croom ?? null);
+}
+
+// src/sp_lev.c:3881 lspo_engraving() — the des.engraving() verb.
+//
+// Draws nothing itself. get_location_coord() only spends draws when the coord
+// is RANDOM, and make_engr_at() only when the type is <= 0; the table form
+// always resolves a real type from engrtypes2i[] and every themeroom caller
+// passes a real coord.
+//
+// C's default type is "engrave", not "dust", even though etyp is initialised to
+// DUST -- the initialiser is dead, get_table_option() overwrites it.
+const engrtypes = ['dust', 'engrave', 'burn', 'mark', 'blood'];
+const engrtypes2i = [DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD];
+
+export function lspo_engraving(opts) {
+    let x = -1, y = -1;
+
+    if (opts?.coord) {
+        x = opts.coord.x;
+        y = opts.coord.y;
+    } else if (opts?.x !== undefined || opts?.y !== undefined) {
+        x = opts.x ?? -1;
+        y = opts.y ?? -1;
+    }
+
+    const ti = engrtypes.indexOf(opts?.type ?? 'engrave');
+    const etyp = engrtypes2i[ti < 0 ? 1 : ti];
+    const txt = opts?.text ?? '';
+    /* C: degrade defaults TRUE, guardobjects FALSE */
+    const wipeout = opts?.degrade !== undefined ? !!opts.degrade : true;
+    const guardobjs = !!opts?.guardobjects;
+
+    const ecoord = (x === -1 && y === -1) ? SP_COORD_PACK_RANDOM(0)
+                                          : SP_COORD_PACK(x, y);
+
+    const r = get_location_coord(x, y, DRY, game.coder?.croom ?? null, ecoord);
+
+    make_engr_at(r.x, r.y, txt, null, 0, etyp);
+
+    const ep = engr_at(r.x, r.y);
+    if (ep) {
+        ep.guardobjects = guardobjs ? 1 : 0;
+        ep.nowipeout = !wipeout;
+    }
 }
 
 /* mktrap() lives in js/mklev.js, which imports this file; routed through the

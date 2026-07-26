@@ -350,18 +350,28 @@ indirection here. EDOG() in js/const.js reads mtmp.mextra.edog and is a
 SEPARATE, unused path -- worth reconciling for the architecture rule, but it
 is not this bug.
 
-So an EARLIER condition in the chain fails. Check them in source order at the
-turn containing call 6276:
+OUR APPORT BRANCH MATCHES C CONDITION FOR CONDITION -- compared line by line
+at js/dog.js:653-659 against dogmove.c:550-555. gtyp === UNDEF,
+in_masters_sight, !dog_has_minvent, both lit tests, the MANFOOD/m_cansee
+test, the rn2(8) and can_carry are all present and in the same order.
 
-    gtyp === UNDEF          has a goal already been chosen this call?
-    in_masters_sight        js/dog.js:634 defines it as couldsee(omx, omy)
-    !dog_has_minvent        does our pet already carry something?
-    the lit tests           !levl[omx][omy].lit || levl[u.ux][u.uy].lit
-    otyp === MANFOOD || m_cansee(mtmp, nx, ny)
+SO THE BRANCH IS NEVER ENTERED, AND THE GATE IS ONE LEVEL UP:
 
-Print each one's value for the object the pet should be considering. The
-object loop must also be reaching that object at all -- confirm the gold is
-in the scanned range before testing the conditions on it.
+    if (otyp < MANFOOD) {          <- the food branch
+        ...
+    } else if (gtyp === UNDEF && in_masters_sight && ...) {   <- APPORT
+
+otyp is dogfood(mtmp, obj). The APPORT branch only runs when the object is
+NOT food by that classification. If our dogfood ranks the object below
+MANFOOD where C ranks it at or above, we take the food branch and never
+reach the rn2(8) -- which is exactly the observed symptom.
+
+NEXT, and it is a small comparison rather than an instrumentation run: diff
+js/dog.js's dogfood against src/dogmove.c dogfood for the object class in
+play. The earlier screendiff showed GOLD ("$") at the square C's pet went
+for, so start with how each side classifies gold. Note dogfood has a fair
+number of arms (DOGFOOD/CADAVER/ACCFOOD/MANFOOD/APPORT/POISON/UNDEF) and only
+the boundary at MANFOOD matters here.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

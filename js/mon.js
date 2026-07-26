@@ -53,7 +53,7 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
     is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, mon_hates_silver, could_reach_item } from './dog.js';
-import { is_rider, set_mimic_sym, hideunder } from './makemon.js';
+import { is_rider, set_mimic_sym, hideunder, mpickobj } from './makemon.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
@@ -1295,7 +1295,14 @@ export function mpickstuff(mtmp) {
                     note_unported_mon('mpickstuff:pline_picks_up');
             }
             obj_extract_self(otmp3);        /* remove from floor */
-            note_unported_mon('mpickstuff:mpickobj');
+            /* src/steal.c:618 mpickobj() — may merge and free otmp3.
+               js/makemon.js has a reduced version that does the essential
+               thing, moving the object into minvent. Recording instead was
+               strictly worse than calling it: obj_extract_self has already
+               taken the object off the floor, so with no call the object
+               was being LOST rather than picked up. */
+            mpickobj(mtmp, otmp3);
+            note_unported_mon('mpickobj:shop_light_thrown_arms');
             note_unported_mon('mpickstuff:check_gear_next_turn');
             newsym(mtmp.mx, mtmp.my);
             return true;                    /* pick only one object */

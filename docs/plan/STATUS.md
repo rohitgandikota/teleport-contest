@@ -5059,9 +5059,37 @@ js/mondata.js (commit "Add is_undead, weirdnonliving and nonliving"), and
 dog.js's private is_undead copy is gone. needspick, mindless and is_animal
 turned out to already exist there.
 
-REVISED ORDER: add RAY to js/const.js and port attacktype FIRST, verifying
-each is actually bound with tools/undefined-refs.mjs before writing any arm.
-Then the four arms, then can_blow, then the FOOD arm.
+GROUNDWORK DONE (commit "Add the oc_dir constants and attacktype to their C
+homes"): RAY, IMMEDIATE and NODIR are in js/const.js, attacktype and
+attacktype_fordmg are in js/mondata.js, and the private copies in mkobj.js,
+o_init.js and makemon.js are gone. dup-defs dropped 150 -> 149.
+
+Note attacktype DID exist all along, as a const arrow in js/makemon.js. The
+audit missed it because I grepped for "function attacktype". Grep for the
+NAME, not a declaration form.
+
+SECOND ATTEMPT AT THE ARMS: still reverted, and NOT for a logic reason.
+Adding `import { NATTK } from './const.js'` to js/mondata.js -- part of the
+groundwork above -- changed the module graph enough that monmove.js importing
+priest.js for p_coaligned now closes a cycle ("Cannot access 'add_room_fn'
+before initialization"). That same import was fine two commits earlier.
+
+This is the third distinct manifestation of the NOTES entry "The module graph
+is load-bearing". Adding one import edge to a LEAF module retroactively broke
+an import edge elsewhere that had already been measured safe.
+
+REVISED ORDER AGAIN:
+  1. monmove.js's local mindless and is_animal must go, they now duplicate
+     mondata.js -- but removing them forces the mondata import that helps
+     trigger the cycle. Consider leaving them and NOT importing mondata.js
+     into monmove.js at all.
+  2. For the arms, prefer reading predicates off `game` (the pattern that
+     worked for in_rooms) over adding import edges to monmove.js. It is
+     uglier and it is the only approach measured not to perturb the graph.
+  3. Verify with tools/undefined-refs.mjs AND run the scoreboard after EACH
+     import change, not once at the end. Three of the last five reverts were
+     import-graph problems that a per-edge measurement would have caught
+     immediately.
 
 LESSON FOR THE AUDIT: grepping "does symbol X exist" is not enough -- check
 that it exists as a DEFINITION, not merely as a mention. attacktype appears in

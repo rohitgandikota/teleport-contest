@@ -30,8 +30,8 @@ import { online2, isok } from './hacklib.js';
    functions living in js/monmove.js, which imports this file. Both sides
    export function declarations, so the cycle resolves through hoisting. */
 import { onscary, in_your_sanctuary, m_can_break_boulder,
-         mon_knows_traps, can_fog, engulfing_u } from './monmove.js';
-import { Is_waterlevel, Is_rogue_level } from './const.js';
+         mon_knows_traps, can_fog } from './monmove.js';
+import { Is_waterlevel, Is_rogue_level, engulfing_u } from './const.js';
 import {
     bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
     is_clinger, is_flyer, is_floater, mindless, dmgtype,

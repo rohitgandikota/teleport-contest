@@ -17,7 +17,7 @@ import {
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room } from './sp_lev.js';
 import {
-    mkgold, place_object, mkobj_at, mksobj_at, add_to_container,
+    mkgold, place_object, mkobj_at, mksobj_at, add_to_container, curse,
 } from './mkobj.js';
 
 function note_unported_lev(what) {
@@ -267,7 +267,6 @@ function add_to_buried(otmp) {
     (game.level.buriedobjs ||= []).push(otmp);
 }
 function dealloc_obj(otmp) { /* stub */ }
-function curse(otmp) { if (otmp) otmp.cursed = true; }
 // set_corpsenm stub
 function set_corpsenm(otmp, pm) { /* stub */ }
 

@@ -15,6 +15,8 @@ import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
 import { ONAMES } from './objects_data.js';
 import { getobj } from './invent.js';
 import { pline } from './display.js';
+/* include/obj.h:332 carried() is a WHERE test, not list membership. */
+import { carried } from './obj.js';
 
 // src/eat.c:3170 gethungry()
 export function gethungry() {
@@ -234,8 +236,6 @@ export function eatfood() {
     return 0;
 }
 
-// src/invent.c carried() — is this object in the hero's inventory?
-const carried = (o) => (game.invent || []).includes(o);
 
 // src/invent.c obj_here() — is this object on that square?
 const obj_here = (o, x, y) => o.ox === x && o.oy === y;

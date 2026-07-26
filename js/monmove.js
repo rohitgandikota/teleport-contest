@@ -40,7 +40,7 @@ import {
 } from './const.js';
 import { is_rider } from './makemon.js';
 import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
-         MMOVE_NOMOVES } from './const.js';
+         MMOVE_NOMOVES, engulfing_u } from './const.js';
 import { MSOUND } from './monst_data.js';
 
 // src/priest.c:9 ALGN_SINNED — worse than strayed (-1..-3).
@@ -440,9 +440,6 @@ export function can_fog(mtmp) {
     }
     return false;
 }
-
-// include/monst.h:250 engulfing_u()
-export const engulfing_u = (mon) => !!game.u?.uswallow && game.u.ustuck === mon;
 
 // src/monmove.c m_avoid_kicked_loc() — a peaceful or tame monster next to the
 // hero keeps clear of the square the hero just kicked, so it does not walk

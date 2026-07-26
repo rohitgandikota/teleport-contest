@@ -172,8 +172,21 @@ function bcsign(otmp) {
     return (otmp.blessed ? 1 : 0) - (otmp.cursed ? 1 : 0);
 }
 
-function curse(otmp) { otmp.cursed = 1; otmp.blessed = 0; }
-function bless(otmp) { otmp.blessed = 1; otmp.cursed = 0; }
+// src/mkobj.c:1783 curse() and :1745 bless(). Both return early for gold,
+// which is neither blessed nor cursed, and both clear the opposite flag. The
+// lamplit/arti_light_radius bookkeeping needs the light-source subsystem.
+export function curse(otmp) {
+    if (otmp.oclass === OCLASSES.COIN_CLASS)
+        return;
+    otmp.blessed = 0;
+    otmp.cursed = 1;
+}
+export function bless(otmp) {
+    if (otmp.oclass === OCLASSES.COIN_CLASS)
+        return;
+    otmp.cursed = 0;
+    otmp.blessed = 1;
+}
 
 // src/mkobj.c:1846 blessorcurse()
 export function blessorcurse(otmp, chance) {

@@ -80,8 +80,29 @@ remaining possibilities are narrow:
     at the makedog call and compare against where the recorded screen shows @.
   - or enexto_core is entered with a different radius/flag combination.
 
-Note the stairs "<" appear at the same column on both sides, so the ROOM
-matches; that does not prove the hero's square matches.
+MEASURED: the hero is at (57,4) and our pet lands at (58,4), one square EAST.
+C's pet is at (56,4), one square WEST -- that is where our "$" shows, so the
+hero's square and the gold's square both agree. The disagreement is purely
+which adjacent square the ring shuffle handed over first.
+
+A FOURTH goodpos difference was found while checking this and is NOT fixed:
+C's goodpos has a GP_CHECKSCARY arm at src/teleport.c:168,
+
+    if (checkscary && (mtmp->m_id ? onscary(x, y, mtmp)
+                                  : goodpos_onscary(x, y, mdat)))
+
+and js/makemon.js has no reference to onscary at all. goodpos_onscary
+(teleport.c:53) tests scare-monster scrolls and engraved Elbereth, both of
+which need subsystems that are absent, and for an ordinary pet with neither
+present it evaluates FALSE. So it is a genuine gap that cannot currently
+change any placement -- port it when engravings land, not before.
+
+STILL UNEXPLAINED, and every cheap explanation is now eliminated:
+collect_coords, the shuffle, the RNG stream, all four goodpos arms, the
+hero's position and the gold's position all agree. The next thing to
+instrument is enexto_core itself: print the shuffled candidate list and the
+index of the winner, and compare the ORDER against what C must have had for
+(56,4) to come first.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

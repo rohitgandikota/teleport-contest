@@ -2,18 +2,51 @@
 
 ## Where the score stands
 
-**351/11,405 screens (3.1%), 1/44 sessions, corpus RNG 113,910/792,838 (14.4%).**
-New since: js/zap.js (obj_resists), meatmetal, m_consume_obj, healmon, delobj,
-and postmov extracted as the real function it is in C.
+**372/11,405 screens (3.3%), 1/44 sessions, corpus RNG 113,188/792,838 (14.3%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
-Up from 199 screens at the start of this stretch — a 76% increase, and every
-point of it came from the **display layer**, not from gameplay. The RNG number
-did not move at all. That is the headline finding: we are further along in game
-logic than in drawing, and the cheapest screens left are still drawing bugs.
+New this stretch, in the order it landed:
 
-Per-session: seed0030 6 -> 20, seed0360 1 -> 20, seed0399 3 -> 16,
-seed0014 10, seed0105 0 -> 1.
+- create_object's buried-dealloc path (bury_an_obj's `dealloced` out-parameter,
+  the container-slot clear, the NULL-container branch that destroys the
+  content), spo_pop_container, MAX_CONTAINMENT
+- add_to_container moved to js/mkobj.js, the OBJ_* where-enum and
+  carried/mcarried to js/obj.js, DEADMONSTER to a new js/monst.js
+- make_dig_engraving, lspo_engraving, selection_clear; make_engr_at gained C's
+  six parameters and its rnd(N_ENGRAVE - 1) branch
+- start_timer and the timer queue, in a new js/timeout.js
+- m_in_air, is_clinger, has_ceiling, and the poolok/lavaok fix in mfndpos
+- update_topl and xwaitforspace, in new js/tty/topl.js and js/tty/getline.js
+- moveloop_preamble's moon-phase block, change_luck, You()/Your()
+
+## The next blocker, measured rather than guessed
+
+Run this to rank what to port next. It tags each session's FIRST divergent
+call with the C function containing that source line:
+
+    for f in sessions/*.session.json; do
+      node tools/diverge.mjs "$f" 2>/dev/null | grep "Next C function to port"
+    done | sort | uniq -c | sort -rn
+
+As of this writing:
+
+    7  getbones (src/bones.c:645)
+    6  obj_resists (src/zap.c:1469)
+    6  dog_move (src/dogmove.c:1255)
+    4  next_ident (src/mkobj.c:521)
+    3  somex (src/mkroom.c:668)
+    3  rnd_otyp_by_namedesc (src/objnam.c:3522)
+
+**getbones is not the thing to port.** We already have it, rn2(3) and all. Its
+appearance means the session is generating a SECOND LEVEL and we are not:
+C spends getbones' rn2(3) and walks into makelevel, while we walk into
+mcalcmove. seed5002 shows the trigger plainly, `\u0016` at step 2 is Ctrl-V,
+the wizard level teleport. So the work is level CHANGE, not bones:
+wiz_level_tele / level_tele, then goto_level driving mklev for the new level.
+js/do.js already has dodown, next_level, goto_level and stairway_at.
+
+Same caution applies to obj_resists at 6 sessions: js/zap.js has it. The tag
+names the C function containing the divergent line, not a missing function.
 
 ## The pattern worth internalising
 

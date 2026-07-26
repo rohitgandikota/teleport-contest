@@ -569,11 +569,30 @@ UNDEF here is not automatically wrong, but it IS the difference worth
 measuring first. Print gtyp and gg from dog_goal itself on that turn, and
 work out what C's gtyp must be for its rn2(1) tie to occur.
 
-WARNING ABOUT THIS SAMPLE: the lines above are the LAST scoring-loop calls of
-the session, not necessarily the turn containing call 3746. Correlate by RNG
-index or turn number before drawing conclusions -- pairing a convenient trace
-line with a distant call index is the exact mistake that cost this
-investigation twenty ticks on seed0030.
+CORRELATED PROPERLY this time, by publishing the rn2 counter to globalThis and
+gating the probe on it. At the divergent call:
+
+    J#3746 pet(69,5) cand(69,4) nd=4  nid=13 appr=1 j=-9 gg=(71,4) gtyp=6
+    J#3746 pet(69,5) cand(69,6) nd=8  nid=4  appr=1 j=4  gg=(71,4) gtyp=6
+    J#3747 pet(69,5) cand(70,5) nd=2  nid=4  appr=1 j=-2 gg=(71,4) gtyp=6
+
+Our j = 4 on cand(69,6) sends us to the worse-square arm and its rn2(12);
+C has j == 0 there and spends the sampler's rn2(1) instead.
+
+ARITHMETIC CHECKS OUT ON OUR SIDE: GDIST(69,6) against gg=(71,4) is
+(69-71)^2 + (6-4)^2 = 8, matching nd=8. So our j is computed correctly FROM
+OUR GOAL, and the goal itself is what differs -- C's gg cannot be (71,4) or
+it would have the same j we do.
+
+gtyp is 6 (UNDEF) for us, meaning dog_goal found no object goal and fell back.
+So the question is precisely: WHAT GOAL DOES C'S dog_goal SET ON THIS TURN?
+If C's gtyp is APPORT or a food type, C steers at an object, gg differs, and
+every candidate's j shifts -- which is exactly the observed symptom.
+
+NEXT: work out C's gg from its own numbers. C's rn2(1) tie at cand(69,6)
+means C's GDIST(69,6) == C's nidist at that moment. That is one equation; the
+neighbouring candidates give more. Solve for which square C is steering at,
+then find which dog_goal branch would choose it.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

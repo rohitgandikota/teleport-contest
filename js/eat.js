@@ -9,7 +9,8 @@ import { game } from './gstate.js';
 import { done } from './end.js';
 import { set_occupation } from './allmain.js';
 import { rn2 } from './rng.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING,
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
+         HUNGRY, FAINTING,
          A_LAWFUL } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { getobj } from './invent.js';
@@ -250,7 +251,7 @@ export function done_eating(message) {
     if (piece)
         piece.in_use = true;
     game.occupation = null;             /* early, so newuhs knows we're done */
-    note_unported_eat('done_eating:newuhs');
+    newuhs(false);
 
     if (message)
         note_unported_eat('done_eating:message');
@@ -281,4 +282,52 @@ export function do_reset_eat() {
         v.doreset = 0;
         /* canchoke intentionally left alone */
     }
+}
+
+// src/eat.c newuhs() — recompute the hunger status from u.uhunger.
+//
+// The state table is the part the choke death depends on:
+//
+//     h > 1000 -> SATIATED, > 150 -> NOT_HUNGRY, > 50 -> HUNGRY,
+//     > 0 -> WEAK, else FAINTING
+//
+// Note SATIATED starts at 1001 but choke() needs u.uhunger >= 2000 as well,
+// so there is a wide band where the hero is Satiated and eating is safe.
+//
+// save_hs/saved_hs exist so that passing WEAK -> HUNGRY -> NOT_HUNGRY during a
+// single meal produces one message about the whole meal rather than one per
+// bite; the C's comment block says the occupation test alone is not enough
+// because start_eating calls bite() before setting the occupation.
+let save_hs = 0, saved_hs = false;
+
+export function newuhs(incr) {
+    const h = game.u.uhunger;
+    const newhs = (h > 1000) ? SATIATED
+                : (h > 150)  ? NOT_HUNGRY
+                : (h > 50)   ? HUNGRY
+                : (h > 0)    ? WEAK
+                             : FAINTING;
+
+    /* mid-meal: remember the status we started at and report once at the end */
+    if (game.occupation === eatfood || game.context?.victual?.eating) {
+        if (!saved_hs) {
+            save_hs = game.u.uhs;
+            saved_hs = true;
+        }
+        game.u.uhs = newhs;
+        return;
+    }
+    if (saved_hs) {
+        saved_hs = false;
+        /* the "you only feel hungry now" decision compares save_hs to newhs;
+           the messages need pline plumbing this path does not have yet */
+        note_unported_eat('newuhs:end_of_meal_message');
+    }
+
+    /* the FAINTING/FAINTED arms nomul() the hero and draw; WEAK's warnings and
+       the Hallucination arm need their own state. */
+    if (newhs >= WEAK && game.u.uhs < WEAK)
+        note_unported_eat('newuhs:weak_or_fainting');
+
+    game.u.uhs = newhs;
 }

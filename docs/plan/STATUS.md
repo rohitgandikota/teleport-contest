@@ -4295,3 +4295,41 @@ STILL OPEN in the special-room area:
     fill_zoo cannot run without them, then fill_zoo itself, then wire it into
     fill_special_room's switch beside the shop branch. antholemon still gates
     the ANTHOLE arm and is still blocked on ubirthday.
+
+## Special-room area: now complete except mktemple and antholemon
+
+fill_zoo landed (commit "Port fill_zoo with courtmon, morguemon, squadmon and
+mk_tt_object"), verified by probe: seed4500 fills a leprechaun hall, seed0360
+a zoo. RNG 140,717 -> 140,719, screens 492.
+
+State of the whole area:
+
+    do_mkroom chain in makelevel   DONE
+    mkshop + pick_room + mkzoo     DONE
+    mkswamp                        DONE
+    stock_room + shkinit + nameshk DONE   (shops stocked, verified by probe)
+    fill_zoo + the species pickers DONE   (zoos filled, verified by probe)
+    mktemple                       OPEN
+    antholemon                     OPEN
+
+Both remaining items are genuinely blocked rather than merely unstarted:
+
+  mktemple (src/mkroom.c:598) needs shrine_pos, induced_align which DRAWS, and
+  priestini, which creates the temple priest. Gated on u_depth > 8.
+
+  antholemon (src/mkroom.c:502) needs ubirthday. Note the asymmetry with
+  nameshk: there the unmodelled value only picked a NAME, so the draw count was
+  unaffected and the port went ahead. Here it decides whether the ANTHOLE arm
+  fires at all, so it changes draw counts and cannot be finessed the same way.
+  The session JSON carries a datetime per segment, so modelling ubirthday is
+  the real fix and would unblock both this and nameshk's chosen name.
+
+The gains from this whole area were concentrated in ONE place. mkshop and the
+chain conditions paid ~3,961; pick_room and mkzoo paid 4; mkswamp 0; fill_zoo
+2. That is the depth gating: the shop arm fires at depths 2 and 3, everything
+else at depth 5 and below, and the sessions mostly generate shallow levels.
+Worth remembering before spending a session on a deep-level subsystem.
+
+Open loose end still unresolved: the -36 in the shop stocking, narrowed to
+mkclass(S_MIMIC, 0) and its makemon. See the entry above for what was ruled
+out.

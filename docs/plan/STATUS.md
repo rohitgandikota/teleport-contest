@@ -1,3 +1,34 @@
+=== NEXT: setworn, and it needs a STRUCTURE not just a function ===
+Current: 512/11405 screens, RNG 140750/792838.
+
+dowield:setuwep (25%) needs setuwep (36L), which needs setworn (73L,
+src/worn.c). setuwep itself is straightforward and its other dependencies are
+now all ported -- is_launcher, is_ammo, is_missile, is_pole, is_weptool.
+
+setworn IS THE BLOCKER AND IT IS NOT A PLAIN PORT. C walks a `worn[]` table
+mapping each W_* mask to the pointer that holds it:
+
+    for (wp = worn; wp->w_mask; wp++)
+        if (wp->w_mask & mask) { ... *(wp->w_obj) = obj; ... }
+
+This port has NO such table. It stores game.uwep, game.uarmf and so on as
+separate fields, with a worn(mask) accessor in js/spell.js:349. So setworn
+needs the mask -> field mapping built first, and that is a structural
+addition rather than a translation.
+
+WHAT setworn DOES for W_WEP, which is what setuwep needs:
+  - clears the old object's owornmask
+  - because W_WEP is NOT in ~(W_SWAPWEP | W_QUIVER), it ALSO updates
+    u.uprops[oc_oprop].extrinsic, calls monstunseesu_prop, handles w_blocks
+    and set_artifact_intrinsic
+  - cancel_doff for an interrupted takeoff
+  - drops twoweap if the old object was a weapon
+  - then sets the new object and repeats the property work in reverse
+
+So a shortcut that just assigns game.uwep would skip the extrinsic
+bookkeeping and be wrong the moment a weapon confers a property. Build the
+table.
+
 === m_initinv mlet=53 (16%) IS NOT A PHANTOM. Prediction tested, wrong. ===
 
 I predicted this was a seventh phantom: C's S_HUMAN arm is a chain

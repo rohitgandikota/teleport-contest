@@ -1,3 +1,5 @@
+import { VIBRATING_SQUARE } from './const.js';
+import { You_cant } from './pline.js';
 import { OCLASSES } from './objects_data.js';
 import { IS_SINK } from './const.js';
 import { can_reach_floor } from './engrave.js';
@@ -68,7 +70,17 @@ export async function dodown() {
     /* levitation, being stuck, u_rooted, trapdoors and holes each have their
        own arm above this in C; none is reachable without those subsystems */
     if (!stairs_down && !ladder_down) {
-        note_unported_do('dodown:not_on_stairs');
+        /* src/do.c dodown() — the levitation, stuck, u_rooted, trapdoor and
+           hole arms all sit above this and need subsystems that are absent;
+           each records. What C actually does when none of them applies is
+           print "You can't go down here." and spend no turn.
+           The " yet" suffix is for the vibrating square. */
+        const trap = t_at(game.u.ux, game.u.uy);
+        if (game.flags?.autodig && !game.context?.nopick && game.u.uwep)
+            note_unported_do('dodown:autodig');
+        await You_cant('go down here'
+                       + ((trap && trap.ttyp === VIBRATING_SQUARE) ? ' yet' : '')
+                       + '.');
         return ECMD_OK;
     }
 

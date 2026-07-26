@@ -23,7 +23,7 @@ import { PMNAMES } from './monst_data.js';
 import { helpless, DEADMONSTER } from './monst.js';
 
 import { sensemon, canseemon } from './display.js';
-import { m_at } from './mon.js';
+import { m_at, monkilled } from './mon.js';
 import { find_mac } from './worn.js';
 import { getmattk } from './mhitu.js';
 import { hitval } from './weapon.js';
@@ -178,10 +178,12 @@ export function mdamagem(magr, mdef, mattk, mwep, dieroll) {
 
     mdef.mhp -= mhm.damage;
     if (mdef.mhp < 1) {
-        /* monkilled() and the corpse/zombify bookkeeping around it are
-           unported. The hit points ARE deducted above, so the defender is
-           left dead; what is missing is the death itself. */
-        (game.unported ||= new Set()).add('mdamagem:monkilled');
+        /* src/mhitm.c — the corpse/zombify bookkeeping around this call
+           (mkcorpstat_norevive, troll_baned, zombie_form) is still absent
+           and records inside monkilled's chain. */
+        monkilled(mdef, '', mattk[MATTK_ADTYP]);
+        if (!DEADMONSTER(mdef))
+            return mhm.hitflags; /* mdef lifesaved */
         return M_ATTK_DEF_DIED;
     }
     return (mhm.hitflags |= M_ATTK_HIT);

@@ -1,3 +1,8 @@
+import { onscary } from './monmove.js';
+import { M_ATTK_DEF_DIED } from './const.js';
+import { M_ATTK_HIT } from './const.js';
+import { M_ATTK_AGR_DIED } from './const.js';
+import { mattackm } from './mhitm.js';
 // dog.js — the starting pet.
 // C ref: src/dog.c
 //
@@ -1064,9 +1069,55 @@ export function dog_move(mtmp, after) {
            ALLOW_U on the non-tame, non-peaceful arm, so a pet never carries
            it -- but matching the C costs nothing and removes a condition that
            would be wrong the moment a conflicted pet did get the flag. */
-        if (mfp.info[i] & ALLOW_M) {
-            note_unported('dog_move attack branch');
-            continue;
+        if ((mfp.info[i] & ALLOW_M) && m_at(nx, ny)) {
+            const mtmp2 = m_at(nx, ny);
+            /* src/dogmove.c:1119 — how audacious the pet is about attacking
+               a differently-levelled foe, scaled by its fraction of max HP.
+               balk maxes at +3 and is the LOWEST level it refuses, which is
+               why the comparison below is >=. */
+            const balk = mtmp.m_lev + Math.floor((5 * mtmp.mhp) / mtmp.mhpmax) - 2;
+
+            if ((mtmp2.m_lev | 0) >= balk
+                || (mtmp2.mtame && mtmp.mtame)
+                || ((mtmp.mhp * 4 < mtmp.mhpmax
+                     || mtmp2.data.msound === MFLAGS.MS_GUARDIAN
+                     || mtmp2.data.msound === MFLAGS.MS_LEADER)
+                    && mtmp2.mpeaceful)) {
+                continue;
+            }
+            /* max_passive_dmg() would add another skip condition here; a pet
+               should decline a foe whose passive alone would kill it. */
+            note_unported('dog_move:max_passive_dmg');
+
+            if ((mtmp2.data.pmidx === PMNAMES.PM_FLOATING_EYE && rn2(10))
+                || (mtmp2.data.pmidx === PMNAMES.PM_GELATINOUS_CUBE && rn2(10))
+                || (touch_petrifies(mtmp2.data) && !resists_ston(mtmp))) {
+                /* C consults best_target() before giving up, to allow a
+                   ranged attack instead; that is unported, and its own
+                   comment marks ranged_only as not working as intended. */
+                continue;
+            }
+
+            if (after)
+                return MMOVE_NOTHING; /* hit only once each move */
+
+            game.bhitpos = { x: nx, y: ny };
+            const mstatus = mattackm(mtmp, mtmp2);
+
+            /* aggressor (pet) died */
+            if (mstatus & M_ATTK_AGR_DIED)
+                return MMOVE_DIED;
+
+            if ((mstatus & (M_ATTK_HIT | M_ATTK_DEF_DIED)) === M_ATTK_HIT
+                && rn2(4)
+                && mtmp2.mlstmv !== game.moves
+                && !onscary(mtmp.mx, mtmp.my, mtmp2)) {
+                /* the counter-attack; monnear() is unported and only matters
+                   for long worms, which cannot be reached here yet */
+                game.bhitpos = { x: mtmp.mx, y: mtmp.my };
+                mattackm(mtmp2, mtmp); /* return attack */
+            }
+            return MMOVE_DONE;
         }
 
         /* src/dogmove.c:1182 — keep clear of the square the hero just kicked,

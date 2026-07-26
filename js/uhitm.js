@@ -24,10 +24,11 @@ import { worn } from './do_wear.js';
 import { is_orc } from './mondata.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
-import { OCLASSES } from './objects_data.js';
+import { OCLASSES, MATERIALS } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
-import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC } from './const.js';
+import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
+         HMON_MELEE, HMON_APPLIED } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -548,3 +549,100 @@ export function hmon(mon, obj, thrown, dieroll) {
 // have been silently false for every monster forever.
 const is_watch = (d) =>
     d.pmidx === PMNAMES.PM_WATCHMAN || d.pmidx === PMNAMES.PM_WATCH_CAPTAIN;
+
+// src/uhitm.c:1754 hmon_hitmon() — the melee damage path.
+//
+// 181 lines in C, but almost all of it is a struct init followed by a fixed
+// dispatch order into helpers. Both halves are ported here; the helpers
+// themselves are recorded and land one at a time.
+//
+// The struct init is pure assignment and draws nothing, but the field VALUES
+// are not defaults to be filled in later -- several encode real conditions
+// that the helpers branch on, and getting one wrong misroutes the dispatch
+// rather than producing a slightly wrong number:
+//
+//   twohits        thrown ? 0 : gt.twohits  -- a thrown weapon never twohits
+//   unarmed        !uwep && !uarm && !uarms -- a SHIELD makes you not unarmed
+//   hand_to_hand   HMON_MELEE, or HMON_APPLIED with a POLEARM. An applied
+//                  grapnel is explicitly not hand-to-hand.
+//   get_dmg_bonus  starts TRUE and is cleared by helpers, not set by them.
+//
+// The dispatch order is fixed and each step can short-circuit the rest:
+// do_hit (which may set doreturn), then dmg_recalc only if dmg > 0, then
+// poison only if ispoisoned, then the dmg < 1 branch, then exactly one of
+// jousting / stagger / the two-weapon arm, then the kill handling, then pet,
+// splitmon and msg_hit.
+export function hmon_hitmon(mon, obj, thrown, dieroll) {
+    const hmd = {
+        dmg: 0,
+        thrown: thrown,
+        twohits: thrown ? 0 : (game.twohits || 0),
+        dieroll: dieroll,
+        mdat: game.mons[mon.mnum],
+        use_weapon_skill: false,
+        train_weapon_skill: false,
+        barehand_silver_rings: 0,
+        silvermsg: false,
+        silverobj: false,
+        lightobj: false,
+        material: obj ? game.objects[obj.otyp].oc_material : MATERIALS.NO_MATERIAL,
+        jousting: 0,
+        hittxt: false,
+        get_dmg_bonus: true,
+        unarmed: !game.uwep && !game.uarm && !game.uarms,
+        hand_to_hand: (thrown === HMON_MELEE
+                       /* not grapnels; applied implies uwep */
+                       || (thrown === HMON_APPLIED && is_pole(game.uwep))),
+        ispoisoned: false,
+        unpoisonmsg: false,
+        needpoismsg: false,
+        poiskilled: false,
+        already_killed: false,
+        offmap: false,
+        destroyed: false,
+        dryit: false,
+        doreturn: false,
+        retval: false,
+        saved_oname: '',
+    };
+
+    note_unported_uhitm('hmon_hitmon:do_hit');
+    if (hmd.doreturn)
+        return hmd.retval;
+
+    if (hmd.dmg > 0)
+        note_unported_uhitm('hmon_hitmon:dmg_recalc');
+
+    if (hmd.ispoisoned)
+        note_unported_uhitm('hmon_hitmon:poison');
+
+    if (hmd.dmg < 1) {
+        note_unported_uhitm('hmon_hitmon:no_damage');
+    }
+
+    if (hmd.jousting) {
+        note_unported_uhitm('hmon_hitmon:jousting');
+    } else if (hmd.unarmed && hmd.dmg > 1 && !thrown && !obj && !game.Upolyd) {
+        note_unported_uhitm('hmon_hitmon:stagger');
+    } else if (!hmd.unarmed && hmd.dmg > 1 && !thrown && !game.Upolyd) {
+        note_unported_uhitm('hmon_hitmon:twoweap_arm');
+    }
+
+    if (!hmd.already_killed) {
+        note_unported_uhitm('hmon_hitmon:apply_damage');
+    }
+
+    note_unported_uhitm('hmon_hitmon:pet');
+    note_unported_uhitm('hmon_hitmon:splitmon');
+    note_unported_uhitm('hmon_hitmon:msg_hit');
+
+    return hmd.retval;
+}
+
+// include/obj.h is_pole() — a polearm or lance, the applied weapons that
+// still count as hand-to-hand.
+const is_pole = (o) => !!o && note_is_pole_unported();
+function note_is_pole_unported() {
+    note_unported_uhitm('hmon_hitmon:is_pole');
+    return false;
+}

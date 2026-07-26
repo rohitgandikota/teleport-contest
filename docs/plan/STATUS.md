@@ -169,7 +169,7 @@ COMPARED, and there are TWO concrete gaps in exactly that block. Neither is
 confirmed as the newt's bug yet, but both are real and both can change a
 destination without leaving a draw.
 
-GAP 1 -- the shortsighted appr override is missing entirely (monmove.c:1936):
+GAP 1 -- PORTED (commit "Port m_move's shortsighted appr override"). Was:
 
     if (!mtmp->mpeaceful && svl.level.flags.shortsighted
         && nidist > (couldsee(nix, niy) ? 144 : 36) && appr == 1)
@@ -182,17 +182,26 @@ different destination AND a different draw count, so it desyncs twice over.
 Check whether level.flags.shortsighted is ever set before assuming it is dead
 code -- if it is set on any level a session visits, this is a strong candidate.
 
-GAP 2 -- the appr == -2 arm of the selection test is missing (monmove.c:1971):
+GAP 2 -- STILL OPEN, and blocked on a signature change (monmove.c:1971):
 
     || (appr == -2
         && ((ndist <= preferredrange_min && !nearer)
             || (ndist >= preferredrange_max && nearer)))
 
-appr == -2 is the keep-your-distance behaviour. Without this arm a monster
-with appr == -2 falls through to the `mmoved == MMOVE_NOTHING` catch-all and
-simply takes the FIRST candidate square, which is deterministic and wrong.
-Check whether anything sets appr = -2 on our side; if nothing does, that is
-itself a gap further upstream in dog_goal / m_move's goal selection.
+appr == -2 is the keep-your-distance behaviour of a monster using a
+throw-and-return weapon. CHECKED: nothing on our side can set appr to -2,
+because C's m_balks_at_approaching takes two out-parameters that ours does not:
+
+    m_balks_at_approaching(int oldappr, struct monst *mtmp,
+                           int *pdistmin, int *pdistmax)
+
+Ours is m_balks_at_approaching(appr, mtmp). The -2 return and the preferred
+range both come from the autoreturn_weapon arm of that function, so porting
+the selection arm alone would be dead code.
+
+ORDER: extend m_balks_at_approaching with the two out-parameters and its
+autoreturn_weapon arm FIRST, then add the appr == -2 arm to the selection
+test. Doing it the other way round adds an arm nothing can reach.
 
 TEST RUN. NEITHER GAP APPLIES, AND THE SELECTION BLOCK IS SOUND:
 

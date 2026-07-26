@@ -60,8 +60,16 @@ export function do_attack(mtmp) {
 
         /* src/uhitm.c:474 — the rn2(7) fires on EVERY step onto a peaceful,
            before any of the cheaper terms, because || evaluates left to right
-           and Punished is false for an unpunished hero. */
-        const foo = !!(game.u.uprops?.PUNISHED || !rn2(7)
+           and Punished is false for an unpunished hero.
+
+           include/youprop.h:77 defines Punished as (uball != 0): it is the
+           heavy iron ball, NOT a uprops intrinsic. This first read it as
+           game.u.uprops.PUNISHED, which is permanently undefined -- falsy, so
+           the rn2(7) did still draw and the common path was right by accident,
+           but the term could never become true once punishment is ported.
+           The ball subsystem does not exist yet, so u.uball is absent and this
+           is false for the same reason C is false. */
+        const foo = !!(game.u.uball || !rn2(7)
                        || (is_longworm(mdat) && mtmp.wormno)
                        || (IS_OBSTRUCTED(game.level.at(game.u.ux, game.u.uy)?.typ)
                            && !passes_walls(mdat)));

@@ -589,10 +589,33 @@ So the question is precisely: WHAT GOAL DOES C'S dog_goal SET ON THIS TURN?
 If C's gtyp is APPORT or a food type, C steers at an object, gg differs, and
 every candidate's j shifts -- which is exactly the observed symptom.
 
-NEXT: work out C's gg from its own numbers. C's rn2(1) tie at cand(69,6)
-means C's GDIST(69,6) == C's nidist at that moment. That is one equation; the
-neighbouring candidates give more. Solve for which square C is steering at,
-then find which dog_goal branch would choose it.
+SOLVED FOR C'S GOAL ROW. In our trace the candidate before (69,6) is (69,4)
+with j = -9, which makes it the new best, so nidist becomes GDIST(69,4). C
+then has j == 0 at (69,6), which means
+
+    C's GDIST(69,6) == C's GDIST(69,4)
+    (69-gx)^2 + (6-gy)^2 == (69-gx)^2 + (4-gy)^2
+    (6-gy)^2 == (4-gy)^2
+    6-gy = gy-4   ->   gy = 5
+
+C'S GOAL IS ON ROW 5. Ours is gg=(71,4), row 4. The pet itself is at (69,5),
+so C is steering at something on the pet's own row and we are steering one row
+north of it.
+
+The gx term cancels out of that equation, so this says nothing about the
+column -- only that the ROW differs, which is enough to produce the observed
+tie-versus-worse-square split.
+
+NEXT: find what is at row 5 near the pet that C would pick. Our gtyp is UNDEF
+(no object goal, fallback), so either
+  - C picked an OBJECT on row 5 that our dog_goal rejected, and gtyp should
+    not be UNDEF; or
+  - both fell back, and our FALLBACK target is wrong by one row. Check what
+    dog_goal assigns to gg when gtyp stays UNDEF, against src/dogmove.c --
+    C's fallback is the hero's square, so compare against u.uy at that turn.
+
+The second is cheaper to check and is the more likely of the two given gtyp
+is UNDEF on our side.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

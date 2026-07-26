@@ -632,17 +632,30 @@ But call 3746 sits about 31% through a 12,084-call stream, so it is near step
 127, not step 13. screendiff only ever shows the FIRST divergent screen, so
 matching heroes at step 13 says nothing about step 127.
 
-TO ACTUALLY SETTLE IT: print u.ux/u.uy from inside dog_goal on the turn
-containing call 3746, using the globalThis rn2-counter gate that worked for
-the J probe (publish _rngLog.length to globalThis.__n in rn2, then guard the
-probe on __n being in range). Compare that against where the recorded screen
-for that same step puts the @.
+MEASURED FROM INSIDE dog_goal at the divergent call:
 
-Reading (a) -- C found an object goal our dog_goal rejected -- remains
-untested, and reading (b) -- the hero itself has drifted by step 127 -- is
-entirely plausible given screens stop matching at step 13. Do not assume
-either. The seed0030 arc was lost to exactly this kind of "the cheap check
-looked fine" inference.
+    GOAL#3741 hero=(71,4) gg=(71,4) gtyp=6 appr=1
+
+So OUR side is internally consistent: gtyp is UNDEF, the fallback fires, and
+gg is set to our hero at (71,4). Nothing is wrong with our fallback.
+
+C's goal row is 5 (derived algebraically from its rn2(1) tie -- see above).
+Therefore EXACTLY ONE of these is true:
+
+  (a) C's hero is also at row 4, and C did NOT fall back -- it found an
+      object goal on row 5 that our dog_goal rejected. Our gtyp should not be
+      UNDEF.
+  (b) C's hero IS at row 5, and it fell back like we did -- meaning the hero
+      positions have diverged by this point in the game.
+
+THE ONE THING STILL NEEDED is C's hero position at THIS step. Our own hero is
+now known to be (71,4). Get the step index for call 3741 (count moves, or
+publish a step counter alongside globalThis.__n), then read the @ from the
+recorded session screen at that step. That single coordinate decides between
+a pet-goal bug and a hero-drift bug, and they need completely different work.
+
+Note screens stop matching at step 13 while this is near step 127, so drift
+is entirely possible; do not treat (a) as the default because it is smaller.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

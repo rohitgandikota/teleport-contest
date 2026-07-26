@@ -1,3 +1,4 @@
+import { relobj } from './steal.js';
 import { accessible } from './const.js';
 import { corpse_chance } from './mondata.js';
 import { mon_offmap } from './monst.js';
@@ -1000,9 +1001,16 @@ function can_touch_safely(mtmp, otmp) {
 // due_to_death arm (nemdead/leaddead/relobj), thiefdead, shkgone, wormgone,
 // the endgame flag, and the steed dismount.
 export function m_detach(mtmp, mptr, due_to_death) {
-    if (mtmp.mleashed || mtmp.iswiz || mtmp.isshk || mtmp.wormno
-        || due_to_death)
-        (game.unported ||= new Set()).add('mon:m_detach');
+    if (mtmp.mleashed || mtmp.iswiz || mtmp.isshk || mtmp.wormno)
+        (game.unported ||= new Set()).add('mon:m_detach:leash_wiz_shk_worm');
+
+    if (due_to_death) {
+        if (mtmp.data.msound === MFLAGS.MS_NEMESIS
+            || mtmp.data.msound === MFLAGS.MS_LEADER)
+            (game.unported ||= new Set()).add('mon:m_detach:quest_death');
+        /* release (drop onto map) all objects carried by mtmp */
+        relobj(mtmp, 1, false);
+    }
 
     /* mon_leaving_level() — off the map, but still on the fmon chain */
     if (mtmp.mx > 0)

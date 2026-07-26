@@ -16,7 +16,7 @@ import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
-import { MON_DETACH } from './const.js';
+import { MON_DETACH, P_DAGGER, P_SABER} from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
@@ -550,11 +550,18 @@ export function m_carrying(mtmp, type) {
 // include/monst.h:210 MON_WEP() — monsters do not wield in this port yet.
 const NO_WEAPON_WANTED = 0;
 
+// include/obj.h:213 is_blade() — a cutting weapon, dagger through saber.
+// WEAPON_CLASS only, unlike is_axe and is_pick which also accept a weptool.
+export const is_blade = (otmp) =>
+    otmp.oclass === OCLASSES.WEAPON_CLASS
+    && game.objects[otmp.otyp].oc_skill >= P_DAGGER
+    && game.objects[otmp.otyp].oc_skill <= P_SABER;
+
 // include/obj.h:217,220 is_axe() / is_pick()
 export const is_pick = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
                            || otmp.oclass === OCLASSES.TOOL_CLASS)
                           && game.objects[otmp.otyp].oc_skill === P_PICK_AXE;
-const is_axe  = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
+export const is_axe  = (otmp) => (otmp.oclass === OCLASSES.WEAPON_CLASS
                            || otmp.oclass === OCLASSES.TOOL_CLASS)
                           && game.objects[otmp.otyp].oc_skill === P_AXE;
 

@@ -539,3 +539,79 @@ export async function prinv(prefix, obj, quan) {
     await pline(`${prefix}${prefix ? ' ' : ''}`
                 + xprname(obj, null, obj.invlet, true, 0, quan));
 }
+
+// src/invent.c freeinv_core() — the bookkeeping an object needs on its way
+// OUT of inventory, before it is freed or moved.
+//
+// Almost all of it is quest/invocation artifact tracking: the Amulet, the
+// Candelabrum, the Bell, the Book and the quest artifact each clear their
+// u.uhave flag, and C calls impossible() if the flag was not set. None of
+// those can be carried this early, so every arm is recorded rather than
+// guessed at.
+//
+// The three that are NOT artifact bookkeeping matter more often: a LOADSTONE
+// is CURSED on the way out (that is how it resists being dropped), anything
+// conferring luck triggers set_moreluck, and a timed FIGURINE has its
+// transform timer stopped. The tin reference is cleared last.
+function freeinv_core(obj) {
+    if (obj.oclass === OCLASSES.COIN_CLASS) {
+        note_unported_invent('freeinv_core:money2mon');
+        return;
+    }
+    note_unported_invent('freeinv_core:uhave_artifacts');
+
+    if (obj.otyp === ONAMES.LOADSTONE)
+        note_unported_invent('freeinv_core:curse_loadstone');
+    else if (note_unported_invent('freeinv_core:confers_luck'))
+        note_unported_invent('freeinv_core:set_moreluck');
+    else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
+        note_unported_invent('freeinv_core:stop_timer');
+
+    if (obj === game.context?.tin?.tin) {
+        game.context.tin.tin = null;
+        game.context.tin.o_id = 0;
+    }
+}
+
+// src/invent.c freeinv() — remove an object from the hero's inventory.
+//
+// extract_nobj unlinks it from the invent chain; C keeps a flat array here,
+// so a splice by identity is the same operation. pickup_prev is cleared so a
+// later pickup does not think it was already handled.
+export function freeinv(obj) {
+    const inv = (game.invent ||= []);
+    const i = inv.indexOf(obj);
+    if (i >= 0)
+        inv.splice(i, 1);           /* extract_nobj(obj, &gi.invent) */
+    obj.pickup_prev = 0;
+    freeinv_core(obj);
+    note_unported_invent('freeinv:update_inventory');
+}
+
+// src/invent.c useupall() — the whole stack goes.
+//
+// setnotworn first (a worn item must stop being worn before it stops
+// existing), then freeinv, then obfree which deletes contents recursively.
+export function useupall(obj) {
+    note_unported_invent('useupall:setnotworn');
+    freeinv(obj);
+    note_unported_invent('useupall:obfree');
+}
+
+// src/invent.c useup() — consume ONE of a stack, or all of it.
+//
+// C's comment notes this works correctly for containers because containers
+// do not merge, so quan is always 1 for them and they take the useupall arm.
+//
+// in_use is cleared on the surviving stack: done_eating sets it before
+// calling here, and leaving it set would make the remainder look mid-use.
+export function useup(obj) {
+    if (obj.quan > 1) {
+        obj.in_use = false;         /* no longer in use */
+        obj.quan--;
+        obj.owt = weight(obj);
+        note_unported_invent('useup:update_inventory');
+    } else {
+        useupall(obj);
+    }
+}

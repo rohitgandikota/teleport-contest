@@ -17,6 +17,7 @@ import {
     A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA,
     SATIATED, NOT_HUNGRY, HUNGRY, WEAK, FAINTING, FAINTED,
     MOD_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER,
+    LUCKMIN, LUCKMAX,
 } from './const.js';
 import { PMNAMES } from './monst_data.js';
 
@@ -306,4 +307,16 @@ export function exerchk() {
            attrcurse(), which no reachable state triggers yet. */
         note_unported_attrib('exerchk:test');
     }
+}
+
+// src/attrib.c:411 change_luck() — adjust luck, clamped to LUCKMIN..LUCKMAX.
+//
+// The clamps are one-sided on purpose: a value already past a bound in the
+// wrong direction is left alone, because only the sign-matching test fires.
+export function change_luck(n) {
+    game.u.uluck += n;
+    if (game.u.uluck < 0 && game.u.uluck < LUCKMIN)
+        game.u.uluck = LUCKMIN;
+    if (game.u.uluck > 0 && game.u.uluck > LUCKMAX)
+        game.u.uluck = LUCKMAX;
 }

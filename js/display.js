@@ -2,6 +2,8 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { update_topl } from './tty/topl.js';
+import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank } from './botl.js';
 import { cansee } from './vision.js';
@@ -484,8 +486,11 @@ const defmorestr = '--More--';
 // is read by whatever comes next — which is how the tutorial menu ended up on
 // its second pass.
 export async function pline(msg) {
-    game._pending_message = msg;
-    game._toplin = msg ? TOPLINE_NEED_MORE : TOPLINE_EMPTY;
+    /* src/pline.c vpline() -> putstr(WIN_MESSAGE) -> tty_putstr() ->
+       update_topl(). Assigning the message straight into the top line skipped
+       the state machine entirely: a second message overwrote the first instead
+       of either joining it or raising --More-- and waiting for a key. */
+    await update_topl(msg);
 }
 
 // win/tty/topl.c more() — draw the suffix, block for a key, clear the top line.
@@ -521,7 +526,11 @@ export async function more() {
             display.setCell(col + i, row, defmorestr[i], NO_COLOR, 0);
         display.setCursor(Math.min(col + defmorestr.length, CO - 1), row);
     }
-    await nhgetch();
+    /* win/tty/topl.c more(): xwaitforspace("\033 "), NOT a bare getch. Only
+       space, ESC and newline dismiss the prompt; anything else rings the bell
+       and waits again, so a movement key pressed at a --More-- is still
+       waiting to be read as a command afterwards. */
+    await xwaitforspace('\x1b ');
 
     /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE:
      *

@@ -39,13 +39,16 @@ export function stop_occupation() {
 }
 
 import { rn2, rn1 } from './rng.js';
-import { exerchk } from './attrib.js';
+import { exerchk, change_luck } from './attrib.js';
 import { init_uhunger } from './eat.js';
 import { settrack, initrack } from './track.js';
+import { phase_of_the_moon, friday_13th } from './calendar.js';
 import { ask_do_tutorial, set_playmode } from './options.js';
-import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame } from './const.js';
+import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
+         FULL_MOON, NEW_MOON } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack } from './cmd.js';
+import { You } from './pline.js';
 import {
     docrt, cls, bot, flush_screen, pline, TOPLINE_EMPTY,
 } from './display.js';
@@ -324,6 +327,29 @@ export async function newgame() {
                                                 : g.urole.name.m);
         await pline(`${Hello(null)} ${g.plname}, welcome to NetHack! `
                     + ` You are a${buf}.`);
+    }
+
+    // src/allmain.c:56 moveloop_preamble() — "side-effects from the real
+    // world", and they come BEFORE the new-game branch.
+    //
+    // Neither draws, but both can pline, and a pline at this point is what
+    // pushes the greeting into needing a --More--: the greeting is 76 columns
+    // and "--More--" is 8, so the tty wraps the prompt onto row 1 rather than
+    // appending it. That is the whole difference on seed4500's first frame.
+    //
+    // The luck changes are real too: a full moon starts the hero at Luck 1 and
+    // Friday the 13th at -1, which every later luck-sensitive roll reads.
+    g.flags.moonphase = phase_of_the_moon();
+    if (g.flags.moonphase === FULL_MOON) {
+        await You('are lucky!  Full moon tonight.');
+        change_luck(1);
+    } else if (g.flags.moonphase === NEW_MOON) {
+        await pline('Be careful!  New moon tonight.');
+    }
+    g.flags.friday13 = friday_13th();
+    if (g.flags.friday13) {
+        await pline('Watch out!  Bad things can happen on Friday the 13th.');
+        change_luck(-1);
     }
 }
 

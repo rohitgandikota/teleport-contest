@@ -19,3 +19,14 @@ export async function You(line) {
 export async function Your(line) {
     await pline('Your ' + line);
 }
+
+// src/pline.c:388 You_feel() — "You feel " (or "You dream that you feel "
+// when Unaware, which needs the sleep/unconsciousness state).
+export async function You_feel(line) {
+    await pline('You feel ' + line);
+}
+
+// src/pline.c:403 You_cant()
+export async function You_cant(line) {
+    await pline("You can't " + line);
+}

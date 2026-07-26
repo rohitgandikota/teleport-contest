@@ -646,3 +646,43 @@ export function has_ceiling(lev) {
         return false;
     return true;
 }
+
+// src/dungeon.c get_level() — turn a LOGICAL depth into a d_level.
+//
+// The player thinks in absolute depths ("level 12"); a d_level is a dungeon
+// number plus a level within it. Below the current dungeon's start this walks
+// UP the branch tree until it finds the dungeon that contains the depth, and
+// past the end of the dungeon it clamps to the last level rather than failing.
+export function get_level(newlevel, levnum) {
+    let dgn = game.u.uz.dnum;
+    const dungeons = game.dungeons;
+
+    if (levnum <= 0) {
+        /* can only currently happen in the endgame */
+        levnum = game.u.uz.dlevel;
+    } else if (levnum > (dungeons[dgn].depth_start
+                         + dungeons[dgn].num_dunlevs - 1)) {
+        /* beyond the end of the dungeon, jump to the last level */
+        levnum = dungeons[dgn].num_dunlevs;
+    } else {
+        if (levnum < dungeons[dgn].depth_start) {
+            do {
+                /* find the parent dungeon; end2 is always the child */
+                const br = (game.branches || []).find((b) => b.end2.dnum === dgn);
+                if (!br)
+                    throw new Error('get_level: can\'t find parent dungeon');
+                dgn = br.end1.dnum;
+            } while (levnum < dungeons[dgn].depth_start);
+        }
+        /* now within the same dungeon; calculate the level */
+        levnum = levnum - dungeons[dgn].depth_start + 1;
+    }
+
+    newlevel.dnum = dgn;
+    newlevel.dlevel = levnum;
+}
+
+// src/dungeon.c dunlevs_in_dungeon()
+export function dunlevs_in_dungeon(lev) {
+    return game.dungeons[lev.dnum].num_dunlevs;
+}

@@ -48,6 +48,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack } from './cmd.js';
+import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
     docrt, cls, bot, flush_screen, pline, TOPLINE_EMPTY,
@@ -504,6 +505,11 @@ export async function moveloop_core() {
     // before dispatching, so each message survives exactly until the frame
     // that displays it has been captured.
     await rhack(0);
+
+    /* src/allmain.c:538 — a command that scheduled a level change takes it
+       here, AFTER rhack() returns, not inside the command itself. */
+    if (g.u.utotype)
+        await deferred_goto();
 }
 
 // C ref: allmain.c moveloop()

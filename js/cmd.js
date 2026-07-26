@@ -17,7 +17,7 @@ import { is_pool, is_lava, m_at } from './mon.js';
 do_wire_mklev(mklev);
 sp_lev_wire_mon({ is_pool, is_lava, m_at });
 mklev_wire_mon({ is_pool, is_lava });
-import { wiz_level_change } from './wizcmds.js';
+import { wiz_level_change, wiz_level_tele } from './wizcmds.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
@@ -392,6 +392,9 @@ export async function rhack(key) {
     if (isMovementKey(ch)) {
         await domove(DIR_DX[ch], DIR_DY[ch]);
         game.context.move = 1;
+    } else if (ch === '\x16') {
+        // src/cmd.c:1970 — C('v') is wizlevelport / wiz_level_tele.
+        game.context.move = ((await wiz_level_tele()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '>') {
         // src/cmd.c cmdlist — '>' is dodown.
         game.context.move = (await dodown() === ECMD_TIME ? 1 : 0);

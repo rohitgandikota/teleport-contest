@@ -4167,8 +4167,47 @@ good_shopdoor() is the other missing piece and it decides the shopkeeper's
 square, so it is positional as well as a gate: shkinit returns -1 when it
 fails, and stock_room returns immediately on that, leaving the shop empty.
 
-ORDER: carry the shknms name lists into js/shknam.js first (regenerate them
-from src/shknam.c, do not hand-copy), then good_shopdoor, then shkinit, then
-stock_room_goodpos and mkshobj_at, then stock_room itself. Verify with a
-stderr counter that a shop actually gets stock, exactly as the mkshop bug
-above was caught -- do not trust the RNG number to tell you.
+NAMESHK, read in full, and the result is better than feared. It looks like a
+blocker because it needs ubirthday, which we do not model:
+
+    int nseed = (int) ((long) ubirthday / 257L);
+    name_wanted += ledger_no(&u.uz) + (nseed % 13) - (nseed % 5);
+    if (name_wanted < 0) name_wanted += (13 + 5);
+    shk->female = name_wanted & 1;
+    for (names_avail = 0; nlp[names_avail]; names_avail++) continue;
+    name_wanted = name_wanted % names_avail;
+    for (trycnt = 0; trycnt < 50; trycnt++) {
+        if (nlp == shktools) { shname = shktools[rn2(names_avail)]; ... }
+        else if (name_wanted < names_avail) { shname = nlp[name_wanted]; }
+        else if ((i = rn2(names_avail)) != 0) { ... }
+
+Work the control flow. `name_wanted = name_wanted % names_avail` makes
+name_wanted ALWAYS less than names_avail, so for any shop that is not a tools
+shop the second arm is taken on the FIRST iteration and NOTHING IS DRAWN.
+Only a tools shop draws, and it draws exactly one rn2(names_avail).
+
+So ubirthday decides WHICH NAME appears, which is a screen difference, but it
+does not change the DRAW COUNT for any shop except a tools shop, and even
+there the count is fixed at one. shkinit can therefore be ported RNG-faithfully
+now, with the chosen name recorded as depending on unmodelled ubirthday. That
+is a much smaller blocker than antholemon's, where the unmodelled value gates
+whether an arm fires at all.
+
+The name lists still have to be carried for the tools-shop draw to have the
+right modulus: names_avail is the list LENGTH, so a wrong list length is a
+wrong rn2 argument. Lengths measured from src/shknam.c:
+
+    shkliquors 30   shkbooks 26   shkarmors 30   shkwands 31   shkrings 32
+    shkfoods 32     shkweapons 31  shktools 67   shklight 32   shkgeneral 30
+    shkhealthfoods 31
+
+shktools at 67 is the one that matters most, since it is the only list whose
+length feeds an rn2.
+
+ORDER: generate the shknms name lists into js/shknam_data.js with a
+tools/gen-shknam.mjs, following the repo convention for data tables rather
+than hand-copying ~370 names, and add the shknms field to shtypes. Then
+good_shopdoor, then shkinit, then stock_room_goodpos and mkshobj_at, then
+stock_room itself. Verify with a stderr counter that a shop actually gets
+stock, exactly as the mkshop bug above was caught -- do not trust the RNG
+number to tell you.

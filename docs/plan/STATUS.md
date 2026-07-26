@@ -5382,6 +5382,17 @@ own comment flags: the test was changed from <= to < specifically so that
 find_roll_to_hit, forcing each monster state:
     mstun +2, mflee +2, msleeping +2, !mcanmove +4   all OK
 
+hitval, forcing both the negative and the POSITIVE side of each situational
+arm, since the sessions only ever exercise the negative one:
+    plain dagger / blessed vs non-undead / spear vs non-kebabable
+    / pick-axe vs normal        all return oc_hitbon alone   OK
+    spear vs a giant            oc_hitbon + 2                OK
+    blessed dagger vs a zombie  oc_hitbon + 2                OK
+
+Testing only the negative side is worth nothing: every arm returns the base
+value when its condition is false, so a transcription that dropped an arm
+entirely would still pass. Force the condition TRUE.
+
 Two constants that would have been wrong if taken from their names:
 ALIGNLIM is 10 + moves/200, not 10, so it grows as the game runs; and Luck is
 uluck + moreluck entering as sgn(Luck) * ((abs(Luck) + 2) / 3), which differs

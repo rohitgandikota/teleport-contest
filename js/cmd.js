@@ -18,6 +18,7 @@ do_wire_mklev(mklev);
 sp_lev_wire_mon({ is_pool, is_lava, m_at });
 mklev_wire_mon({ is_pool, is_lava });
 import { wiz_level_change, wiz_level_tele } from './wizcmds.js';
+import { tty_yn_function } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
@@ -122,7 +123,15 @@ function u_maybe_impaired() {
 // key IS consumed either way, so a caller that skips getdir leaves the session
 // one keystroke out of step, not merely one draw.
 export async function getdir(s) {
-    const dirsym = String.fromCharCode(await nhgetch());
+    /* src/cmd.c getdir():
+         dirsym = yn_function((s && *s != '^') ? s : "In what direction?",
+                              (char *) 0, '\0', FALSE);
+       The read was going straight to nhgetch, so the prompt never appeared;
+       routing it through tty_yn_function paints it without changing which
+       key is consumed. A caller-supplied string starting with '^' is a
+       key-hint, not a prompt, and is ignored here as C ignores it. */
+    const dirsym = await tty_yn_function(
+        (s && s[0] !== '^') ? s : 'In what direction?', null, '\0');
 
     if (dirsym === '.' || dirsym === 's') {
         game.u.dx = game.u.dy = game.u.dz = 0;

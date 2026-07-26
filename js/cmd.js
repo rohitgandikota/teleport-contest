@@ -1,3 +1,4 @@
+import { dowield } from './wield.js';
 import { doread } from './read.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
@@ -564,6 +565,10 @@ export async function rhack(key) {
     } else if (ch === 'Q') {
         // src/cmd.c cmdlist — 'Q' is dowieldquiver.
         game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'w') {
+        /* src/cmd.c cmdlist — 'w' is dowield, which calls getobj() and so
+           READS A KEY. Same keystream reason as 'r' above. */
+        game.context.move = ((await dowield()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'r') {
         /* src/cmd.c cmdlist — 'r' is doread. It calls getobj(), which READS
            A KEY, so leaving it undispatched let the inventory letter run as a

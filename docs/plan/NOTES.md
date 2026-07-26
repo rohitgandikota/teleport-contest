@@ -1196,3 +1196,11 @@ object-literal getters in js/game_display.js, `async (` in js/jsmain.js and
 js/plselect.js, private `#` methods in js/lua/lmathlib.js, and `_statusLine1`
 in js/display.js (defined at :329, still reported -- decomment mangles
 something earlier in that file, so the tool is partly blind there).
+
+## The scoreboard's per-session view is the diagnostic, TOTAL is not
+
+`node tools/scoreboard.mjs | tail -3` hides regressions. A change can add 20
+screens in one session and quietly break the only PASSING session, and the
+total still goes up. Read the `sessions passed N/44` line every time, not just
+the screen count: seed8000 went from 23/23 to 21/23 and the total still rose,
+so the pass count was the only visible signal.

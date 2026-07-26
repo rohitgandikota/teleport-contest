@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**372/11,405 screens (3.3%), 1/44 sessions, corpus RNG 113,188/792,838 (14.3%).**
+**378/11,405 screens (3.3%), 1/44 sessions, corpus RNG 113,188/792,838 (14.3%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -18,6 +18,17 @@ New this stretch, in the order it landed:
 - m_in_air, is_clinger, has_ceiling, and the poolok/lavaok fix in mfndpos
 - update_topl and xwaitforspace, in new js/tty/topl.js and js/tty/getline.js
 - moveloop_preamble's moon-phase block, change_luck, You()/Your()
+- cls() now flushes the message window the way C's display.c:2189 does, and
+  both places that drop the topline text now clear the toplin flag with it
+
+### The topline invariant, learned the hard way
+
+`game._toplin` and `game._pending_message` are ONE piece of state. Whenever the
+text is dropped the flag has to go to TOPLINE_EMPTY in the same breath, because
+update_topl's joining branch keys off the flag alone: with the flag still at
+TOPLINE_NEED_MORE and the text empty, the next message is glued onto "" and
+comes out indented two columns. That cost seed8000 its pass until it was found.
+C never has the problem because tty_clear_nhwindow(WIN_MESSAGE) does both.
 
 ## The next blocker, measured rather than guessed
 

@@ -13,7 +13,7 @@ import { A_DEX } from './const.js';
 // code and is recorded, not faked.
 
 import { game } from './gstate.js';
-import { helpless } from './monst.js';
+import { helpless, MON_WEP } from './monst.js';
 import { You } from './pline.js';
 import { mon_nam } from './do_name.js';
 import { exclam } from './zap.js';
@@ -29,7 +29,7 @@ import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
-import { is_orc, unsolid } from './mondata.js';
+import { is_orc, unsolid, thick_skinned } from './mondata.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
@@ -57,6 +57,65 @@ const is_longworm = (ptr) =>
 
 // src/mon.c helpless()
 /* helpless() lives in js/monst.js, matching include/monst.h:251. */
+
+// include/monattk.h:94 struct mhitm_data — { damage, hitflags, done,
+// permdmg, specialdmg, dieroll }. Passed by pointer in C so the arms can
+// mutate it; a plain object here does the same.
+
+// src/uhitm.c:4082 mhitm_ad_phys() — ordinary physical damage.
+//
+// C's one function serves three different fights and branches on WHO is
+// involved: the hero attacking (uhitm), a monster attacking the hero (mhitu),
+// and monster versus monster (mhitm). mattackm() only ever reaches the third,
+// which is why this is ~12 lines here rather than the function's full 220 --
+// the other two branches are recorded, not written, because nothing calls
+// them yet.
+//
+// In the mhitm branch, note that mwep is forced to null for any attack type
+// other than AT_WEAP or AT_CLAW. A biting or kicking monster therefore skips
+// the whole weapon block, and damage passes through exactly as the caller
+// computed it.
+export function mhitm_ad_phys(magr, mattk, mdef, mhm) {
+    const pa = magr.data, pd = mdef.data;
+
+    if (magr === game.youmonst) {
+        /* uhitm — the hero attacking; not reached until damageum() lands */
+        (game.unported ||= new Set()).add('mhitm_ad_phys:uhitm');
+        return;
+    } else if (mdef === game.youmonst) {
+        /* mhitu — a monster attacking the hero */
+        (game.unported ||= new Set()).add('mhitm_ad_phys:mhitu');
+        return;
+    } else {
+        /* mhitm */
+        let mwep = MON_WEP(magr);
+        const vis = canseemon(magr) && canseemon(mdef);
+
+        if (mattk.aatyp !== ATTKS.AT_WEAP && mattk.aatyp !== ATTKS.AT_CLAW)
+            mwep = null;
+
+        if (shade_miss(magr, mdef, mwep, false, vis)) {
+            mhm.damage = 0;
+        } else if (mattk.aatyp === ATTKS.AT_KICK && thick_skinned(pd)) {
+            /* [no 'kicking boots' check needed; monsters with kick attacks
+               can't wear boots and monsters that wear boots don't kick] */
+            mhm.damage = 0;
+        } else if (mwep) { /* non-Null 'mwep' implies AT_WEAP || AT_CLAW */
+            /* dmgval, artifact_hit, rustm, mhitm_really_poison and
+               do_stone_mon are all unported; a monster wielding a weapon
+               records rather than taking a guessed amount of damage. */
+            (game.unported ||= new Set()).add('mhitm_ad_phys:weapon_block');
+        } else if (pa.pmidx === PMNAMES.PM_PURPLE_WORM
+                   && pd.pmidx === PMNAMES.PM_SHRIEKER) {
+            /* hack to enhance mm_aggression(); we don't want purple
+               worm's bite attack to kill a shrieker because then it
+               won't swallow the corpse; but if the target survives,
+               the subsequent engulf attack should accomplish that */
+            if (mhm.damage >= mdef.mhp && mdef.mhp > 1)
+                mhm.damage = mdef.mhp - 1;
+        }
+    }
+}
 
 // src/uhitm.c:2016 shade_miss() — an attack passing harmlessly through a
 // shade. Returns TRUE when the attack did nothing.

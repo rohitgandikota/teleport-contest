@@ -84,44 +84,60 @@ STILL DORMANT: do_attack's call site is deliberately NOT wired. It costs 30
 screens and does not throw (verified). The gate is hmon_hitmon: a hero who
 swings without dealing damage diverges behaviourally, not just in draws.
 
-THE MELEE CHAIN NOW STANDS AT 26 FUNCTIONS. Landed since the last update:
-hmon, wakeup, setmangry, passive (head + AD_FIRE/ACID/STON/RUST/CORR/MAGM/
-ENCH arms + the SECOND switch), hmon_hitmon (skeleton), hmon_hitmon_do_hit,
-hmon_hitmon_barehands, hmon_hitmon_weapon.
+THE MELEE CHAIN NOW STANDS AT 30 FUNCTIONS, and the damage path RUNS END TO
+END. Forcing a mace swing walks
+
+    hmon_hitmon -> do_hit -> weapon -> weapon_melee -> dmgval
+                -> dmg_recalc -> damage application
+
+and takes a monster from 20 HP to 15. That is verified behaviour, not
+structure.
+
+Landed this session: hmon, wakeup, setmangry, passive (head, AD_FIRE/ACID/
+STON/RUST/CORR/MAGM/ENCH arms, and its SECOND switch), hmon_hitmon skeleton,
+do_hit, barehands, weapon, weapon_melee head, dmgval (src/weapon.c, 140
+lines), dmg_recalc, and the damage application itself.
 
 STILL NEEDED BEFORE do_attack CAN BE WIRED:
-  hmon_hitmon_weapon_melee     the weapon damage draws
-  hmon_hitmon_dmg_recalc       skill and strength bonuses
-  the damage-application path  (mon->mhp -= dmg and the kill handling)
-  hmon_hitmon_msg_hit          messages, screen-visible
+  kill handling      when mhp reaches 0 -- xkilled, and the death drop
+  msg_hit            SCREEN-VISIBLE, the first piece here that can move
+                     screens rather than only draws
 
-NEXT, and it is NOT hmon_hitmon_weapon_melee directly: that function's very
-first act is
+Then wire do_attack's call site. It currently costs 30 screens and does not
+throw (verified earlier); that cost should invert once the above land.
 
-    hmd->dmg = dmgval(obj, mon);          src/uhitm.c:944
+RECURRING DEFECT CLASS FOUND THIS SESSION, worth reading before porting
+anything else. Five instances, one shape: an expression that is WRONG but
+PARSES, and whose wrongness is invisible because undefined is falsy and the
+common path happens to be correct anyway.
 
-and dmgval (src/weapon.c:216, 140 lines) IS NOT PORTED. It belongs in
-js/weapon.js. Port it before weapon_melee; everything downstream reads the
-number it returns.
+  MFLAGS.MS_WATCH        property that does not exist on a real object
+  STRAT_WAITMASK         never imported (this one THREW -- the lucky case)
+  uprops.PUNISHED        plausible name, wrong source: it is (uball != 0)
+  MATERIALS.NO_MATERIAL  right name, wrong module (objects_data, not const)
+  WT_IRON_BALL_INCR      written from MEMORY, then found correct in
+                         include/weight.h:18. Right answer, wrong method.
 
-dmgval's shape, so the next agent does not have to re-derive it:
-  - CREAM_PIE returns 0 immediately, with NO draw.
-  - Then it splits on bigmonst(ptr) into TWO separate tables. The big-monster
-    arm draws rnd(objects[otyp].oc_wldam); the small arm draws
-    rnd(objects[otyp].oc_wsdam). Both are guarded by `if (oc_wldam)` /
-    `if (oc_wsdam)`, so a weapon with a zero entry draws nothing at all.
-  - Each arm then has its own switch adding per-weapon bonuses, several of
-    which draw again: rnd(4), rnd(6), d(2,4), d(2,6) on the big side.
+Only STRAT_WAITMASK threw. The others behaved correctly on the path that runs
+today and would have diverged later, far from the cause. CHECK THE HEADER for
+what a name is; do not trust a name that reads plausibly.
 
-TRANSCRIBE THIS TABLE FROM THE C. It is the single most 5.0-changed thing in
-the melee path -- SILVER_MACE, PARTISAN and RUNESWORD all appear in the
-big-monster switch and none of them are 3.6 entries. Anything written from
-pretrained NetHack knowledge will look right and diverge on the first swing.
-
-After dmgval: hmon_hitmon_weapon_melee (133 lines, and note its Rogue
-backstab draws rnd(u.ulevel) and its weapon-shatter arm keys off
-dieroll == 2), then dmg_recalc, then the damage-application path, then
-msg_hit.
+Cheap-to-expensive check order, and run them in this order:
+  1. node tools/undefined-refs.mjs   30s, catches unimported/misnamed
+                                     constants. It WORKS -- an earlier claim
+                                     of a blind spot was retracted as
+                                     unmeasured, see NOTES.
+  2. force every arm with synthetic args, RNG seeded. The only check that
+     works for a function ported ahead of its call site.
+  3. probe the RNG stream position to prove a path draws NOTHING: run with a
+     fixed seed, then compare the next value against a fresh-seed baseline.
+     This is how "punching a shade draws nothing" was proven rather than
+     asserted.
+  4. node tools/scoreboard.mjs       catches duplicate module-scope bindings,
+                                     which parse-error to a hard 0/44 rather
+                                     than degrading. Five rounds of those this
+                                     session; all cheap because they cannot
+                                     ship.
 
 ALTERNATIVE: dog_move unblocks 7 sessions against this chain's 4, but
 js/dogmove.js does not exist at all, so it is a cold start on a 400-line

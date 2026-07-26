@@ -1,3 +1,4 @@
+import { setuqwep } from './wield.js';
 import { impact_disturbs_zombies } from './hack.js';
 import { stackobj } from './invent.js';
 // do.js — commands that move the hero between levels, and the level change
@@ -200,7 +201,7 @@ export function dropz(obj, with_impact) {
     if (obj === game.uwep)
         note_unported_do('dropz:setuwep');
     if (obj === game.uquiver)
-        note_unported_do('dropz:setuqwep');
+        setuqwep(null);         /* src/do.c -- ported at wield.js:113 */
     if (obj === game.uswapwep)
         note_unported_do('dropz:setuswapwep');
 

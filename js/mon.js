@@ -52,7 +52,7 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
     is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
-import { touch_petrifies, mon_hates_silver, could_reach_item } from './dog.js';
+import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, mpickobj } from './makemon.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
@@ -1271,10 +1271,11 @@ export function mpickstuff(mtmp) {
 
         /* Nymphs take everything.  Most monsters don't pick up corpses. */
         if (mon_would_take_item(mtmp, otmp)) {
+            /* Nymphs take everything.  Most monsters don't pick up corpses. */
             if (otmp.otyp === ONAMES.CORPSE && mdat.mlet !== MONSYMS.S_NYMPH
-                && !note_unported_mon('mpickstuff:touch_petrifies')
+                && !touch_petrifies(game.mons[otmp.corpsenm])
                 && otmp.corpsenm !== PMNAMES.PM_LIZARD
-                && !note_unported_mon('mpickstuff:acidic'))
+                && !acidic(game.mons[otmp.corpsenm]))
                 continue;
             if (!can_touch_safely(mtmp, otmp))
                 continue;

@@ -1,3 +1,4 @@
+import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
 // C ref: cmd.c rhack(), hack.c domove().
 //
@@ -853,7 +854,7 @@ async function domove_swap_with_pet(mtmp, x, y) {
     game.u.ux = game.u.ux0; game.u.uy = game.u.uy0;
     mtmp.mundetected = 0;
     if (mtmp.m_ap_type)
-        note_unported_cmd('domove_swap_with_pet:seemimic');
+        seemimic(mtmp);         /* src/hack.c -- ported at mon.js:1213 */
     game.u.ux = mtmp.mx; game.u.uy = mtmp.my;   /* resume swapping positions */
 
     const trap = mtmp.mtrapped ? t_at(mtmp.mx, mtmp.my) : null;

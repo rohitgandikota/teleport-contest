@@ -1707,3 +1707,32 @@ finish_meating, growl, setmangry, hot_pursuit all calling real functions
 instead of recording) changed the wiring cost by EXACTLY ZERO -- still 23
 screens and 2,973 rng. The cost is not about consequences of a blow. Do not
 assume a chain going live moves a number; measure it.
+
+## RNG match and screen match are close to INDEPENDENT; check both before choosing a target
+
+Measured on the three sessions whose first RNG divergence is dog_move:
+
+  session    RNG matched        screens matched
+  seed0007   2948/16373  (18%)   19/302   (6%)
+  seed0017   2793/3465   (81%)    0/67    (0%)
+  seed0077   3209/3242   (99%)   18/33   (55%)
+
+seed0017 reproduces 81% of the RNG stream and matches NOT ONE SCREEN. seed0077
+reproduces 99% of the RNG and still misses 45% of screens. Screens are what is
+scored; RNG is a proxy that can be almost right while the output is entirely
+wrong.
+
+For seed0007 specifically the screen divergence is around step 19 and the RNG
+divergence at call 2832 is around step 48 -- THE SCREENS BREAK 29 STEPS BEFORE
+THE RNG DOES. Several ticks went into the dog_move RNG divergence on the
+assumption it was what cost this session its screens. It is not.
+
+Before spending a session on a divergence, run the session and compare the two
+numbers:
+
+    node frozen/ps_test_runner.mjs sessions/<name>.session.json
+
+A session with high RNG and low screens has a DISPLAY or message bug, not an
+RNG bug, and tools/diverge.mjs will still happily name an RNG function for it.
+diverge.mjs answers "where does the RNG first differ", which is not the same
+question as "why does this session score badly".

@@ -2154,3 +2154,42 @@ Corollary for `game.unported`: a recorded gap is a real engineering position,
 not a placeholder to clear as fast as possible. Replacing one with a partial
 port is only progress if the partial port's error is SMALLER, and that has to
 be measured rather than assumed.
+
+## note_unported() must never stand in for a BOOLEAN
+
+The worst of the fifteen false records was not a missing call. mpickstuff had:
+
+    if (otmp.otyp === CORPSE && mdat.mlet !== S_NYMPH
+        && !note_unported_mon('mpickstuff:touch_petrifies')
+        && otmp.corpsenm !== PM_LIZARD
+        && !note_unported_mon('mpickstuff:acidic'))
+        continue;
+
+note_unported returns false, so `!note_unported(...)` is always TRUE, and the
+chain read as "this corpse never petrifies and is never acidic". Monsters
+picked up cockatrice corpses. Both predicates had been ported in js/dog.js the
+whole time.
+
+A recorded gap is honest when it REPLACES an action. It is a lie when it
+substitutes for a VALUE, because it silently commits to one branch. The same
+applies to the `if (note_unported(...)) return;` shape -- fine, since it always
+takes the same path and says so -- versus using the return value as data.
+
+Related, from the same sweep: mpickstuff called obj_extract_self() to take an
+object off the floor and then RECORDED where mpickobj() belonged, so the object
+left the floor and entered nobody's inventory. It vanished. Recording where a
+call belongs is only honest if the surrounding operation is skipped too; a
+record dropped into the middle of a half-finished sequence is a bug.
+
+## Prepending an import block is not safe in a large file
+
+Twice in one session the fix `s = "import {...}\n" + s` produced
+"Identifier X has already been declared" and took the whole suite to 0/0,
+because the file already imported that name on another line (mon.js had
+touch_petrifies; uhitm.js had a local wepbefore). Merge into the EXISTING
+import line for that module instead, and remember that a duplicate `const` in
+the target function is just as fatal as a duplicate import.
+
+Both times the 0/0 signature identified it in one grep. That rule -- a session
+at exactly 0 screens is a crash, not a divergence -- has now paid for itself
+three times in a day.

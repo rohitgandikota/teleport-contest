@@ -813,6 +813,32 @@ Suggested order, cheapest-with-most-reach first:
 Do not read reach as importance without checking screen impact. remember_topl
 is the counterexample sitting at the top of the list.
 
+PROGRESS ON THIS LIST so far:
+  DONE  encumber_msg:message (was 80%)  -- ported, gone from the list
+  DONE  x_monnam:canspotmon (was 52%)   -- arm wired, gone from the list
+  DONE  moveloop_preamble set_wear      -- set_wear + Armor_on, gone from
+                                           the list; the other nine *_on
+                                           slot handlers are recorded BY SLOT
+  CHECKED, DEPRIORITISED  topl:remember_topl (100%) -- 21 lines of pure ^P
+        message-history bookkeeping. No screen output and no draws; it only
+        matters when ^P is pressed. The reach figure counts the call, and the
+        call does nothing observable. Port it for faithfulness some day, not
+        for score.
+
+CURRENT LIST AFTER THOSE:
+     98%  onscary:elbereth              needs the engraving subsystem
+     59%  can_touch_safely:touch_artifact
+     45%  dog_move attack branch
+     43%  postmov:mpickstuff
+     41%  pet_ranged_attk:attack
+     39%  bite:nutrition
+     39%  start_eating:done_eating
+
+onscary:elbereth at 98% is gated on engravings, which is a named absent
+subsystem -- that is the single highest-reach thing blocked by something
+large, and worth weighing against the tty menu that blocks getbones across
+four sessions.
+
 TWO SCREEN-VISIBLE GAPS FOUND BY SWEEPING screendiff, both hitting several
 sessions:
 

@@ -9,7 +9,8 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
-         M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU } from './const.js';
+         M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
+         SUPPRESS_SADDLE, has_mgivenname } from './const.js';
 import { humanoid, is_animal, mindless, pronoun_gender } from './mondata.js';
 import { canspotmon } from './display.js';
 
@@ -110,6 +111,14 @@ function just_an(str) {
     note_do_name_unported('just_an:special_cases');
     return ('aeiou'.includes(str[0].toLowerCase()) ? 'an ' : 'a ') + str;
 }
+
+// src/do_name.c:1152 a_monnam() — ARTICLE_A.
+// The SUPPRESS_SADDLE when the monster has a given name is not decoration:
+// x_monnam appends "saddled" otherwise, and a named steed would read
+// "a saddled Fido" instead of "a Fido".
+export const a_monnam = (mtmp) =>
+    x_monnam(mtmp, ARTICLE_A, null, has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0,
+             false);
 
 // src/do_name.c mon_nam() — ARTICLE_THE, no adjective.
 export const mon_nam = (mtmp) => x_monnam(mtmp, ARTICLE_THE, null, 0, false);

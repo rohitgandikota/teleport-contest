@@ -1,3 +1,4 @@
+import { cmdq_clear } from './cmd.js';
 // hack.js — the hero's movement and the terrain predicates that go with it.
 // C ref: src/hack.c
 //
@@ -17,7 +18,7 @@ import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
 
-    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO,} from './const.js';
+    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED } from './const.js';
 import { sobj_at } from './invent.js';
 import { done } from './end.js';
 import { DIED } from './const.js';
@@ -192,3 +193,59 @@ const note_unported_hack = (w) => {
     (game.unported ||= new Set()).add('hack:' + w);
     return false;
 };
+
+// src/hack.c:4130 end_running() — stop a run/rush/travel.
+//
+// The time_botl line is the one with a visible consequence: moveloop()
+// suppresses the time field while context.run is non-zero, so the turn counter
+// has to be forced to repaint at the moment running stops, or it shows a stale
+// value for one frame.
+export function end_running(and_travel) {
+    const ctx = (game.context ||= {});
+
+    if (ctx.run) {
+        ctx.run = 0;
+        if (game.flags?.time)
+            (game.disp ||= {}).time_botl = true;
+        /* classify_terrain() suppresses setting disp.botl while running, so C
+           recomputes here. The terrainstatus option defaults to Off
+           (js/optlist.js:219) and classify_terrain is not ported, so this arm
+           cannot fire yet; recorded rather than guessed. */
+        if (game.flags?.terrainstatus) {
+            (game.unported ||= new Set()).add('hack:end_running:classify_terrain');
+        }
+    }
+
+    /* 'context.mv' isn't travel but callers who want to end travel
+       all clear it too */
+    if (and_travel)
+        ctx.travel = ctx.travel1 = ctx.mv = 0;
+    if (game.travelmap) {
+        /* selection_free(gt.travelmap, TRUE) — the travel map is not ported */
+        (game.unported ||= new Set()).add('hack:end_running:travelmap');
+        game.travelmap = null;
+    }
+    /* cancel multi */
+    if (game.multi > 0)
+        game.multi = 0;
+}
+
+// src/hack.c:4161 nomul() — set the multi-turn counter.
+//
+// The early return carries C's own comment ("This is a bug fix by ab@unido"):
+// a caller asking for a SHORTER helplessness than the one already in effect is
+// ignored, so the longest wins rather than the latest.
+export function nomul(nval) {
+    if (game.multi < nval)
+        return;              /* This is a bug fix by ab@unido */
+    (game.disp ||= {}).botl ||= (game.multi >= 0);
+    if (game.u) {
+        game.u.uinvulnerable = false; /* Kludge to avoid ctrl-C bug -dlc */
+        game.u.usleep = 0;
+    }
+    game.multi = nval;
+    if (nval === 0)
+        game.multi_reason = null, game.multireasonbuf = '';
+    end_running(true);
+    cmdq_clear(CQ_CANNED);
+}

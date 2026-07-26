@@ -58,3 +58,18 @@ export async function You_hear(line) {
     else
         await pline('You hear ' + line);
 }
+
+// src/pline.c:93 set_msg_xy() — where the NEXT message is considered to happen.
+//
+// This feeds a11y.msg_loc, which only the accessibility message-location
+// feature reads. It touches no cell of the 24x80 grid, so it is invisible to
+// scoring; it exists so pline_xy below reads the way C reads.
+export function set_msg_xy(x, y) {
+    (game.a11y ||= {}).msg_loc = { x, y };
+}
+
+// src/pline.c:126 pline_xy() — pline() with a message location attached.
+export async function pline_xy(x, y, line) {
+    set_msg_xy(x, y);
+    await pline(line);
+}

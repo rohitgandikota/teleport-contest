@@ -10,7 +10,9 @@ import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
-import { MON_POLE_DIST } from './const.js';
+import { MON_POLE_DIST,
+    AM_SHRINE, Amask2align, ROOMOFFSET
+} from './const.js';
 import { amorphous, passes_walls } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
@@ -90,8 +92,74 @@ export function in_your_sanctuary(mon, x, y) {
     }
     if (game.u.ualign.record <= ALGN_SINNED) /* sinned or worse */
         return false;
-    note_unported('in_your_sanctuary:temple');
-    return false;
+    if (!game.in_rooms)
+        return false;                   /* hack.js not loaded yet */
+
+    /* C: `roomno != *in_rooms(x, y, TEMPLE)` dereferences the first char of a
+       possibly-empty string, i.e. compares against '\0'. charAt(0) on an empty
+       string gives '', and the roomno === '' guard keeps that from matching. */
+    const roomno = temple_occupied(_in_rooms(game.u.ux, game.u.uy, 0));
+    if (roomno === '' || roomno !== _in_rooms(x, y, TEMPLE).charAt(0))
+        return false;
+
+    const priest = findpriest(roomno);
+    if (!priest)
+        return false;
+
+    return has_shrine(priest) && p_coaligned(priest) && !!priest.mpeaceful;
+}
+
+/* js/hack.js publishes in_rooms on the shared game object; importing it here
+   closes a cycle, moving this function to js/priest.js regresses the corpus by
+   restructuring the module graph, and adding the import to the entry point
+   perturbs init order. All three were measured -- see STATUS. */
+const _in_rooms = (x, y, t) => game.in_rooms?.(x, y, t) ?? '';
+
+// src/priest.c temple_occupied() — the first room in `array` that is a temple.
+// C passes u.urooms; in_rooms(u.ux, u.uy, 0) is the same set computed from the
+// hero's position, which is what urooms holds.
+function temple_occupied(array) {
+    for (const ch of array || '')
+        if (game.level?.rooms?.[ch.charCodeAt(0) - ROOMOFFSET]?.rtype === TEMPLE)
+            return ch;
+    return '';
+}
+
+// src/priest.c histemple_at()
+function histemple_at(priest, x, y) {
+    const r = _in_rooms(x, y, TEMPLE);
+    return !!(priest && priest.ispriest && r
+              && priest.epri?.shroom === r.charCodeAt(0)
+              && priest.epri.shrlevel.dnum === game.u.uz.dnum
+              && priest.epri.shrlevel.dlevel === game.u.uz.dlevel);
+}
+
+// src/priest.c findpriest()
+function findpriest(roomno) {
+    for (const mtmp of game.level.monsters || []) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        if (mtmp.ispriest && mtmp.epri?.shroom === roomno
+            && histemple_at(mtmp, mtmp.mx, mtmp.my))
+            return mtmp;
+    }
+    return null;
+}
+
+// src/priest.c has_shrine()
+function has_shrine(pri) {
+    if (!pri || !pri.ispriest)
+        return false;
+    const e = pri.epri;
+    const lev = game.level.at(e.shrpos.x, e.shrpos.y);
+    if (!lev || !IS_ALTAR(lev.typ) || !(lev.altarmask & AM_SHRINE))
+        return false;
+    return e.shralign === Amask2align(lev.altarmask & ~AM_SHRINE);
+}
+
+// src/priest.c:370 p_coaligned()
+function p_coaligned(priest) {
+    return game.u.ualign.type === mon_aligntyp(priest);
 }
 
 /* src/shk.c inhishop() / src/priest.c inhistemple() — both need the shop and

@@ -141,3 +141,8 @@ export function in_rooms(x, y, typewanted) {
         }
     return out;
 }
+
+/* js/monmove.js needs in_rooms() but cannot import this file without closing
+   a cycle, and adding the import to the entry point perturbs module init order
+   (see STATUS). Publishing on the shared game object avoids both. */
+game.in_rooms = in_rooms;

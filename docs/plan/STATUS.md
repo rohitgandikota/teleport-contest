@@ -333,9 +333,25 @@ off" reading was coincidence. C's grid bug at map (17,10) has no counterpart
 in our level at all -- we create two fill_ordinary_room monsters and a pet,
 and C evidently creates at least one more.
 
-That is where to look: the monster COUNT at level generation, not a placement
-offset. Compare how many makemon calls C makes during mklev against ours for
-this seed, using the RNG log's tags rather than the screen.
+AND A CONSTRAINT THAT NARROWS IT SHARPLY: seed2200's RNG matches C call for
+call all the way through level generation. It diverges at 2724, in
+exercise(attrib.c:509), which is AFTER moveloop_preamble -- so every draw that
+creates or places a monster already agrees.
+
+That rules out "C makes an extra makemon we skip", because an extra makemon
+would draw. What is left:
+
+  a. our port DOES have that monster and does not DISPLAY it. js/display.js
+     checks m_at(), which filters on `m.mhp > 0` -- a monster whose mhp was
+     never set would vanish from the screen while still existing, and the
+     object underneath ('`') would show instead. CHECK THIS FIRST, it fits
+     the symptom exactly.
+  b. C creates it through a path that spends no draws.
+  c. the glyph is still not what I think it is.
+
+Probe for (a): dump game.level.monsters WITH mhp for seed2200 step 0. Three
+monsters were logged (two fill_ordinary_room, one makedog pet); if any has
+mhp undefined or <= 0, that is the answer.
 
 I retracted this reading once on the grounds that 'x' is a border glyph. That
 retraction was WRONG -- the glyph is ambiguous and only its neighbours settle

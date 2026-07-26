@@ -4252,12 +4252,20 @@ Probing further, mkclass(S_MIMIC, 0) returns a valid permonst on every hit
 (pmidx 64 each time), so it is not failing and falling through to the
 get_shop_item branch, which was the obvious guess.
 
-NEXT: the difference is in the DRAW SEQUENCE of mkclass(S_MIMIC, 0) and the
-makemon that follows it, not in which branch is taken. Dump our rn2/rnd calls
-for one of those five hits and diff them against the recorded log at the same
-call index; tools/diverge.mjs gives the index. Check mkclass's probability
-walk first, since S_MIMIC has few members and a wrong member count changes the
-modulus.
+MKCLASS RULED OUT. Compared js/makemon.js mkclass_aligned against
+src/makemon.c term for term: same init_mongen_order and MONSi indirection,
+same rn2(9) hell-only gate, same rn2(2) montoostrong reject, same
+rnd(num) final walk, in the same order. It is not the divergence.
+
+So the residual is in the makemon() that FOLLOWS the mkclass, called as
+makemon(ptr, sx, sy, NO_MM_FLAGS) from mkshobj_at. That is a heavily-shared
+function, so the difference is more likely in a branch that only a shop-square
+mimic reaches than in makemon's common path, which many other call sites
+already exercise correctly.
+
+NEXT: dump our rn2/rnd sequence across ONE of those five makemon calls and
+diff it against the recorded log at the same call index (tools/diverge.mjs
+prints the index). Do not re-check mkclass.
 
 STILL OPEN in the special-room area:
   - mktemple (src/mkroom.c:598): needs shrine_pos, induced_align which DRAWS,

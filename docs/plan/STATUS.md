@@ -622,13 +622,27 @@ TWO READINGS, and they are very different in weight:
      ROW 4 -- a hero-position divergence, which is far more serious than a pet
      bug and would mean the pet is only where this surfaced.
 
-DISTINGUISH THEM FIRST, it is one command: screendiff seed0004 at the turn
-containing call 3746 and read the @ position on both sides. If the heroes
-agree, reading (a) holds and the hunt goes back to which object C picked. If
-they differ, drop the pet entirely and chase the hero.
+RAN THE TEST AND IT DOES NOT SETTLE IT -- record this before repeating it.
+screendiff seed0004 reports its first differing screen at STEP 13, and the @
+is at the identical position on both sides there:
 
-Do NOT assume (a) because it is the smaller bug. The whole seed0030 arc was
-lost to preferring the convenient reading.
+    7* |                                                              ┌──┘··@│
+
+But call 3746 sits about 31% through a 12,084-call stream, so it is near step
+127, not step 13. screendiff only ever shows the FIRST divergent screen, so
+matching heroes at step 13 says nothing about step 127.
+
+TO ACTUALLY SETTLE IT: print u.ux/u.uy from inside dog_goal on the turn
+containing call 3746, using the globalThis rn2-counter gate that worked for
+the J probe (publish _rngLog.length to globalThis.__n in rn2, then guard the
+probe on __n being in range). Compare that against where the recorded screen
+for that same step puts the @.
+
+Reading (a) -- C found an object goal our dog_goal rejected -- remains
+untested, and reading (b) -- the hero itself has drifted by step 127 -- is
+entirely plausible given screens stop matching at step 13. Do not assume
+either. The seed0030 arc was lost to exactly this kind of "the cheap check
+looked fine" inference.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

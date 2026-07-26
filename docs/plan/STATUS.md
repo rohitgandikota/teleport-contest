@@ -1,3 +1,34 @@
+=== NEXT: relobj, so dead monsters drop what they carried (36%) ===
+Current: 511/11405 screens, RNG 140467/792838.
+
+mon:m_detach is the 36% entry and its due_to_death block is what matters:
+
+    if (due_to_death) {
+        if (msound == MS_NEMESIS) { nemdead(); ... }   quest only
+        if (msound == MS_LEADER)  { leaddead(); }      quest only
+        relobj(mtmp, 1, FALSE);   <-- THIS. drops minvent onto the map
+    }
+
+relobj (src/steal.c:875) is 24 lines: a vault-guard gold special case that
+ordinary monsters skip, then `while ((otmp = mtmp->minvent) != 0)
+mdrop_obj(...)`, then newsym. It needs:
+
+    mdrop_obj     33L  MISSING     the per-object drop
+    droppables         EXISTS but is NOT EXPORTED, js/dog.js -- only the
+                                   is_pet path uses it, and relobj's death
+                                   path passes is_pet FALSE, so it walks
+                                   minvent directly
+    obj_extract_self   PORTED
+    newsym             PORTED
+
+So ~57 lines for the pair, and the gold arm records. This matters now that
+pets kill: a monster that dies currently takes its inventory with it.
+
+WATCH FOR THE HALF-STATE. mdrop_obj must both remove from minvent AND place
+on the floor. Dropping one half is the mpickstuff bug in reverse -- that one
+took an object off the floor and gave it to nobody, and cost a session before
+it was found.
+
 === SESSION STATE: 510/11405 screens, RNG 140589/792838, 1/44 sessions ===
 
 WHAT THIS SESSION DID, in short: ported ~35 functions, wired the run loop,

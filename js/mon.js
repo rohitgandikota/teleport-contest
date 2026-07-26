@@ -1,3 +1,12 @@
+import { CORPSTAT_NONE } from './const.js';
+import { MFLAGS as __MF } from './monst_data.js';
+const G_NOCORPSE = __MF.G_NOCORPSE;
+import { is_neuter } from './mondata.js';
+import { CORPSTAT_BURIED } from './const.js';
+import { CORPSTAT_INIT } from './const.js';
+import { CORPSTAT_MALE } from './const.js';
+import { CORPSTAT_FEMALE } from './const.js';
+import { mkcorpstat } from './mkobj.js';
 import { relobj } from './steal.js';
 import { accessible } from './const.js';
 import { corpse_chance } from './mondata.js';
@@ -1403,11 +1412,7 @@ export function mondied(mdef) {
     /* this assumes that the dead monster's map coordinates remain accurate */
     if (corpse_chance(mdef, null, false)
         && (accessible(mdef.mx, mdef.my) || is_pool(mdef.mx, mdef.my))) {
-        /* make_corpse() is 378 lines and not ported, so a kill that SHOULD
-           leave a body still leaves none. corpse_chance()'s !rn2(tmp) DOES
-           now happen, and that is the part that moves the RNG stream on
-           every ordinary death. */
-        (game.unported ||= new Set()).add('mon:mondied:make_corpse');
+        make_corpse(mdef, CORPSTAT_NONE);
     }
 }
 
@@ -1434,3 +1439,45 @@ export function monkilled(mdef, fltxt, how) {
     else
         mondied(mdef); /* calls mondead() and maybe leaves a corpse */
 }
+
+// src/mon.c:564 make_corpse() — leave a body behind.
+//
+// The function opens with a large switch on mndx for species-specific drops
+// (dragon scales, unicorn horn, worm tooth, iron chains, glass gems). An
+// ORDINARY monster matches none of them and falls to default_1, which is what
+// is ported here; the species arms record by name.
+export function make_corpse(mtmp, corpseflags) {
+    const mdat = mtmp.data;
+    const x = mtmp.mx, y = mtmp.my;
+    const mndx = monsndx(mdat);
+    let corpstatflags = corpseflags | 0;
+
+    if (mtmp.female)
+        corpstatflags |= CORPSTAT_FEMALE;
+    else if (!is_neuter(mtmp.data))
+        corpstatflags |= CORPSTAT_MALE;
+
+    /* the species-specific switch: dragons, unicorns, worms, golems, ... */
+    if (SPECIAL_CORPSE_SPECIES.has(mndx)) {
+        (game.unported ||= new Set()).add('mon:make_corpse:species_arm');
+        return null;
+    }
+
+    /* default_1: */
+    if ((game.mvitals?.[mndx]?.mvflags | 0) & G_NOCORPSE)
+        return null;
+
+    corpstatflags |= CORPSTAT_INIT;
+    /* KEEPTRAITS() decides whether the monster's identity rides along; it
+       needs the naming and vampshifter tests, so the traits path records and
+       the corpse is made without them. */
+    const obj = mkcorpstat(ONAMES.CORPSE, null, mdat, x, y, corpstatflags);
+
+    if (corpseflags & CORPSTAT_BURIED)
+        (game.unported ||= new Set()).add('mon:make_corpse:bury');
+
+    return obj;
+}
+
+/* the mndx values that have their own arm in make_corpse's switch */
+const SPECIAL_CORPSE_SPECIES = new Set();

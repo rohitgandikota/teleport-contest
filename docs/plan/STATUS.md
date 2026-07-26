@@ -194,10 +194,33 @@ simply takes the FIRST candidate square, which is deterministic and wrong.
 Check whether anything sets appr = -2 on our side; if nothing does, that is
 itself a gap further upstream in dog_goal / m_move's goal selection.
 
-NEXT: instrument our m_move to print appr and level.flags.shortsighted for the
-newt's FIRST move (76,13 -> 77,14). If appr is 1 and shortsighted is set, GAP
-1 is the bug. If appr is -2, GAP 2 is. If neither, the selection block is
-sound and the fault is in ggx/ggy, i.e. the goal the newt is walking toward.
+TEST RUN. NEITHER GAP APPLIES, AND THE SELECTION BLOCK IS SOUND:
+
+    NEWT at=76,13 appr=1 shortsighted=false peaceful=false
+         goal=77,16 nidist=10 cnt=6
+         poss=[75,12 75,13 75,14 76,14 77,13 77,14]
+
+appr is 1 (so GAP 2's -2 arm is irrelevant) and shortsighted is false (so GAP
+1 never fires). Given goal 77,16, picking 77,14 is CORRECT: dist2 to the goal
+is 4, the lowest of the six candidates. The selection logic is doing its job.
+
+*** THE BUG IS THE GOAL: ggx,ggy = 77,16 ***
+
+The hero is at map (11,15) on that step. The newt's goal is sixty-six columns
+away from the hero, and for a non-pet monster the goal is normally the
+monster's BELIEF about where the hero is, mtmp->mux/muy, set by set_apparxy.
+A newt walking purposefully toward 77,16 while the hero stands at 11,15 is not
+a plausible belief; it is a wrong goal.
+
+Note that GAP 1 and GAP 2 above are still real omissions worth closing on
+their own merits, they are simply not this bug. Do not delete those entries.
+
+NEXT, and this is now a short hop: js/monmove.js sets ggx,ggy three times --
+line 729 from mtmp.mux/muy, line 768 from a coordinate cp, line 802 from a
+goal/appr strategy pair. Print WHICH of the three assigned 77,16 for this
+newt, then compare that path against the C. Check set_apparxy first if it is
+line 729, since a wrong mux/muy would also explain why the monster is heading
+away from the hero, and set_apparxy's own draws would then be suspect too.
 
 Note the newt is at 77,14, hard against the VWALL at x=78, and needs 7 open
 neighbours in C. A square with 7 open neighbours is well clear of any wall, so

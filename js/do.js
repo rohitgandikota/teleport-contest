@@ -1,3 +1,6 @@
+import { OCLASSES } from './objects_data.js';
+import { IS_SINK } from './const.js';
+import { can_reach_floor } from './engrave.js';
 import { is_lava } from './mon.js';
 import { is_pool } from './mon.js';
 import { t_at } from './mon.js';
@@ -314,7 +317,22 @@ export function drop(obj) {
     if (game.u.uswallow) {
         note_unported_do('drop:engulfed_branch');
     } else {
-        note_unported_do('drop:levitation_and_message');
+        /* src/do.c drop() — two conditional arms, neither of which fires on
+           an ordinary drop:
+             a RING (or meat ring) onto a SINK goes to dosinkring(), and
+             !can_reach_floor(TRUE) takes the levitation path with
+             finesse_ahriman/hitfloor/float_down.
+           can_reach_floor is now ported and answers TRUE for a hero standing
+           normally, so recording unconditionally claimed a gap on every
+           single drop. */
+        const sink = IS_SINK(game.level.at(game.u.ux, game.u.uy)?.typ);
+        if ((obj.oclass === OCLASSES.RING_CLASS
+             || obj.otyp === ONAMES.MEAT_RING) && sink) {
+            note_unported_do('drop:dosinkring');
+            return ECMD_TIME;
+        }
+        if (!can_reach_floor(true))
+            note_unported_do('drop:levitation_and_message');
     }
     obj.how_lost = LOST_DROPPED;
     dropx(obj);

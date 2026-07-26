@@ -972,7 +972,7 @@ export function wakeup(mtmp, via_attack) {
 
         if (was_sleeping)
             note_unported_mon('wakeup:growl');
-        note_unported_mon('wakeup:setmangry');
+        setmangry(mtmp, true);
         if (was_peaceful) {
             if (mtmp.ispriest && in_rooms(mtmp.mx, mtmp.my, TEMPLE)?.length)
                 note_unported_mon('wakeup:ghod_hitsu');

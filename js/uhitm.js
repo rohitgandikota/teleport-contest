@@ -658,6 +658,37 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     note_unported_uhitm('hmon_hitmon:splitmon');
     await hmon_hitmon_msg_hit(hmd, mon, obj);
 
+    /* src/uhitm.c:1897 -- the kill/survive tail.
+       poiskilled and destroyed are separate branches, and BOTH check
+       already_killed again before calling the kill, because an earlier stage
+       may have done it. */
+    if (hmd.needpoismsg)
+        note_unported_uhitm('hmon_hitmon:needpoismsg');
+    if (hmd.poiskilled) {
+        note_unported_uhitm('hmon_hitmon:poison_deadly');
+        if (!hmd.already_killed)
+            note_unported_uhitm('hmon_hitmon:xkilled');
+        hmd.destroyed = true;
+    } else if (hmd.destroyed) {
+        if (!hmd.already_killed)
+            note_unported_uhitm('hmon_hitmon:killed');
+    } else if (game.u.umconf && hmd.hand_to_hand) {
+        /* confused-touch: resist() DRAWS */
+        note_unported_uhitm('hmon_hitmon:nohandglow');
+        note_unported_uhitm('hmon_hitmon:resist_confuse');
+    }
+    if (hmd.unpoisonmsg)
+        note_unported_uhitm('hmon_hitmon:unpoisonmsg');
+
+    /* A monster that is still here gets woken and angered. This is the piece
+       that makes a swing have consequences beyond damage: wakeup calls
+       setmangry, which turns a peaceful monster hostile and costs alignment.
+       Both are ported, so this is a real call chain. */
+    if (!hmd.destroyed && !hmd.offmap) {
+        wakeup(mon, true);
+        note_unported_uhitm('hmon_hitmon:maybe_knockback');
+    }
+
     return hmd.retval;
 }
 

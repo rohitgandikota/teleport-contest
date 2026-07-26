@@ -301,7 +301,7 @@ const magical = [OCLASSES.AMULET_CLASS, OCLASSES.POTION_CLASS,
 
 // src/mondata.c:1617 mon_knows_traps() — mtrapseen is a bitmask of trap types
 // the monster has learned, with bit (ttyp - 1) per type.
-function mon_knows_traps(mtmp, ttyp) {
+export function mon_knows_traps(mtmp, ttyp) {
     if (ttyp === ALL_TRAPS)
         return !!mtmp.mtrapseen;
     else if (ttyp === NO_TRAP)

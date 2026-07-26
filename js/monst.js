@@ -8,3 +8,6 @@
 
 // include/monst.h:214 DEADMONSTER()
 export const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
+
+// include/monst.h:210 MON_WEP() — the monster's wielded weapon.
+export const MON_WEP = (mon) => mon.mw || null;

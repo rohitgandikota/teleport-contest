@@ -13,16 +13,23 @@ import { obj_resists } from './zap.js';
 import { mksobj_at } from './mkobj.js';
 import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
-import { DEADMONSTER } from './monst.js';
+import { DEADMONSTER, MON_WEP } from './monst.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import { has_ceiling } from './dungeon.js';
 import { in_rooms } from './hack.js';
+import { m_harmless_trap } from './trap.js';
+import { hastrack } from './track.js';
+
+// include/trap.h:125 fixed_tele_trap()
+const fixed_tele_trap = (t) => t.ttyp === TELEP_TRAP
+                            && isok(t.teledest?.x, t.teledest?.y);
 import { sobj_at } from './invent.js';
-import { online2 } from './hacklib.js';
+import { online2, isok } from './hacklib.js';
 /* onscary() and in_your_sanctuary() are src/monmove.c and src/priest.c
    functions living in js/monmove.js, which imports this file. Both sides
    export function declarations, so the cycle resolves through hoisting. */
-import { onscary, in_your_sanctuary, m_can_break_boulder } from './monmove.js';
+import { onscary, in_your_sanctuary, m_can_break_boulder,
+         mon_knows_traps } from './monmove.js';
 import { Is_waterlevel } from './const.js';
 import {
     bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
@@ -41,7 +48,7 @@ import { COLNO, ROWNO, POOL, DRAWBRIDGE_UP, LAVAPOOL, LAVAWALL, IRONBARS,
          ALLOW_ALL, ALLOW_U, ALLOW_SSM, ALLOW_WALL, ALLOW_DIG, ALLOW_BARS,
          ALLOW_TRAPS, ALLOW_M, ALLOW_SANCT, ALLOW_ROCK, NOTONL, OPENDOOR,
          UNLOCKDOOR, BUSTDOOR, ALLOW_TM, ALLOW_MDISP, NON_PM,
-         NOGARLIC, TEMPLE, TRAPNUM } from './const.js';
+         NOGARLIC, TEMPLE, TRAPNUM, TELEP_TRAP } from './const.js';
 
 // include/permonst.h:80
 export const NORMAL_SPEED = 12;
@@ -317,17 +324,28 @@ export function mfndpos(mon, data, flag) {
                         continue;
 
                     /* src/mon.c:2347 — a monster avoids a trap type it is
-                       familiar with. The full arm needs m_harmless_trap(),
-                       which needs Resists_Elem/resists_magm/defended, i.e. the
-                       monster resistance subsystem. Until that lands this
-                       stays as it was rather than shipping half of it: the
-                       square is kept and marked, which is what C does for a
-                       pet (ALLOW_TRAPS) and for any harmless trap. */
+                       familiar with. Pets get ALLOW_TRAPS and dogmove.c does
+                       the deciding instead. A HARMLESS trap is neither avoided
+                       nor marked, which is the part that matters here: marking
+                       it unconditionally set ALLOW_TRAPS on squares C leaves
+                       clear, and m_move reads info[] to choose. */
                     const ttmp = t_at(nx, ny);
                     if (ttmp) {
-                        if (!(flag & ALLOW_TRAPS))
-                            note_unported_mon('mfndpos:m_harmless_trap');
-                        info |= ALLOW_TRAPS;
+                        if (ttmp.ttyp >= TRAPNUM || ttmp.ttyp === 0) {
+                            /* impossible("A monster looked at a very strange
+                               trap of type %d.") -- and then continues. */
+                            continue;
+                        }
+                        /* a fixed-destination teleport trap the hero has used
+                           is a route, not a hazard */
+                        if (fixed_tele_trap(ttmp) && hastrack(nx, ny)) {
+                            info |= ALLOW_TRAPS;
+                        } else if (!m_harmless_trap(mon, ttmp)) {
+                            if (!(flag & ALLOW_TRAPS)
+                                && mon_knows_traps(mon, ttmp.ttyp))
+                                continue;
+                            info |= ALLOW_TRAPS;
+                        }
                     }
 
                     data.poss[cnt] = { x: nx, y: ny };
@@ -505,7 +523,6 @@ export function m_carrying(mtmp, type) {
 }
 
 // include/monst.h:210 MON_WEP() — monsters do not wield in this port yet.
-const MON_WEP = (mon) => mon.mw || null;
 const NO_WEAPON_WANTED = 0;
 
 // include/obj.h:217,220 is_axe() / is_pick()

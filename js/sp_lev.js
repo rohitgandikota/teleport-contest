@@ -31,7 +31,7 @@ let mon_fns = { is_pool: () => false, is_lava: () => false, m_at: () => null };
 export function sp_lev_wire_mon(fns) { mon_fns = fns; }
 import { NON_PM, SPACE_POS, ALTAR, STAIRS, LADDER, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
          W_EAST, W_WEST, D_LOCKED, D_TRAPPED } from './const.js';
-import { MONSYMS, PMNAMES } from './monst_data.js';
+import { MONSYMS, PMNAMES, NUMMONS } from './monst_data.js';
 import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
          noncorporeal, likes_fire } from './mondata.js';
 import { def_oc_syms } from './drawing_data.js';
@@ -46,7 +46,7 @@ import { NO_TRAP, VIBRATING_SQUARE,
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
 import { depth } from './dungeon.js';
 import { mkgold } from './mkobj.js';
-import { mkclass, makemon } from './makemon.js';
+import { mkclass, makemon, is_male, is_female } from './makemon.js';
 import { In_mines } from './const.js';
 import {
     OROOM, THEMEROOM, VAULT, COURT, ZOO, BEEHIVE, ANTHOLE, COCKNEST,
@@ -1125,6 +1125,42 @@ export function create_monster(m, croom) {
 // include/global.h:103 BOOL_RANDOM, include/monst.h:54 M_AP_OBJECT.
 const BOOL_RANDOM = -1, M_AP_OBJECT = 2;
 
+// include/monflag.h:214 enum mgender
+const MALE = 0, FEMALE = 1, NEUTRAL = 2;
+// include/permonst.h:15 — LOW_PM = NON_PM + 1, and NON_PM is -1.
+const LOW_PM = 0;
+
+// src/sp_lev.c:3142 find_montype() — resolve a monster NAME to its index and
+// settle its gender.
+//
+// The gender settling DRAWS. A species that is male-only or female-only takes
+// its own, and a name that carried a gender prefix keeps that, but anything
+// else spends an rn2(2). The port resolved the name with name_to_mon() and
+// never made that draw, so every des.monster("some name") in a themeroom was
+// one call short.
+//
+// name_to_monplus() is name_to_mon() plus the gender-prefix parsing; no
+// themeroom name currently carries one.
+function find_montype(s, mgender) {
+    let mgend = NEUTRAL;
+
+    const i = name_to_mon(s);
+    if (i >= LOW_PM && i < NUMMONS) {
+        const ptr = game.mons[i];
+        if (is_male(ptr) || is_female(ptr))
+            mgend = is_female(ptr) ? FEMALE : MALE;
+        else
+            mgend = (mgend === FEMALE) ? FEMALE
+                    : (mgend === MALE) ? MALE : rn2(2);
+        if (mgender)
+            mgender.v = mgend;
+        return i;
+    }
+    if (mgender)
+        mgender.v = NEUTRAL;
+    return NON_PM;
+}
+
 // src/sp_lev.c:3214 lspo_monster() — the des.monster() verb, simple forms.
 export function lspo_monster(idOrClass, x, y, opts) {
     const m = {
@@ -1137,8 +1173,11 @@ export function lspo_monster(idOrClass, x, y, opts) {
         m.class = idOrClass;
     else if (typeof idOrClass === 'number')
         m.id = idOrClass;
-    else if (idOrClass)
-        m.id = name_to_mon(idOrClass);
+    else if (idOrClass) {
+        const mgend = { v: NEUTRAL };
+        m.id = find_montype(idOrClass, mgend);
+        m.mgender = mgend.v;
+    }
 
     if (opts?.class) m.class = opts.class;
     m.coord = (x === undefined || x === -1) && (y === undefined || y === -1)

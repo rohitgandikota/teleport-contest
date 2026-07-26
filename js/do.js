@@ -1,3 +1,6 @@
+import { is_lava } from './mon.js';
+import { is_pool } from './mon.js';
+import { t_at } from './mon.js';
 import { setuqwep } from './wield.js';
 import { impact_disturbs_zombies } from './hack.js';
 import { stackobj } from './invent.js';
@@ -215,8 +218,23 @@ export function dropz(obj, with_impact) {
     if (game.u.uswallow) {
         note_unported_do('dropz:engulfer_branch');
     } else {
-        if (note_unported_do('dropz:flooreffects'))
-            return;
+        /* src/do.c flooreffects() — returns TRUE when the object did NOT
+           come to rest on the floor: a boulder filling a pool or pit, or
+           the object burning in lava, sinking in water, or falling into a
+           hole. On ordinary dry floor with no trap it returns FALSE and the
+           caller places the object, which is what happens here.
+
+           Recording unconditionally claimed a gap on every drop; it now
+           fires only where C could actually answer TRUE. */
+        {
+            const t = t_at(game.u.ux, game.u.uy);
+            if (obj.otyp === ONAMES.BOULDER || t
+                || is_pool(game.u.ux, game.u.uy)
+                || is_lava(game.u.ux, game.u.uy)) {
+                if (note_unported_do('dropz:flooreffects'))
+                    return;
+            }
+        }
         place_object(obj, game.u.ux, game.u.uy);
         if (with_impact)
             note_unported_do('dropz:container_impact_dmg');

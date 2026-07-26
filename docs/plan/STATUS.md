@@ -481,10 +481,34 @@ Candidate sources for an rn2(11) in the tree (none in dog_goal):
 Neither is obviously on a pet's ordinary turn, so grep the whole tree for
 draws whose argument can be 11 rather than guessing.
 
-CONCRETE NEXT STEP: instrument rn2 itself to print a stack trace on the
-3694th call in seed0004. That names our function directly instead of
-inferring it, and the earlier ticks on this trail were lost precisely to
-inferring which code was running.
+DONE, AND IT NAMES THE BUG. A stack trace on the divergent call (note:
+diverge.mjs's index 3694 is _rngLog index 3695 -- they are off by one) gives
+
+    TRACE call#3695 rn2(11)=1
+      at dog_invent (js/dog.js:1253)
+      at dog_move   (js/dog.js:1004)
+      at dochug     (js/monmove.js:950)
+
+So the rn2(11) is dog_invent's, not dog_goal's, and js/dog.js:1253 is
+
+    if (droppables(mtmp)) {
+        if (!rn2(udist + 1) || !rn2(edog.apport))
+
+rn2(udist + 1) with udist == 10 IS rn2(11). The whole block is gated on
+droppables(mtmp).
+
+THEREFORE: C's droppables(mtmp) is FALSE and ours is TRUE. C skips the block
+entirely and goes on to dog_goal's rn2(4); we enter it and spend a draw C
+never spends. OUR PET IS CARRYING SOMETHING C'S PET IS NOT.
+
+seed0004 is "feeding-pony", and js/dog.js:80 already carries the note that
+NO_MINVENT exists to stop makemon() giving a pony an already-worn saddle. That
+is the first thing to check: does our pony start with a saddle, or any minvent,
+where C's has none?
+
+NEXT: print mtmp.minvent (or whatever droppables() reads) for the pet at that
+turn, and compare against what makedog/makemon should have given it with
+MM_EDOG | NO_MINVENT. This is a pet-inventory bug, not a pet-movement bug.
 
 This is a much better foothold than seed0030 ever was: one game, one function,
 one draw, and the C's expected value is known (rn2(4)=3).

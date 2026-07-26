@@ -6,6 +6,8 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { amorphous, passes_walls } from './mondata.js';
+import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
 import { sobj_at } from './invent.js';
@@ -607,12 +609,68 @@ export function set_apparxy(mtmp) {
         return;
     }
 
-    /* The displaced/invisible search loop draws rn2 per attempt and rejects on
-       accessible()/closed_door()/can_ooze(), none of which is ported. Guessing
-       the loop's exit would invent draws, so it is recorded instead. */
-    note_unported('set_apparxy:displaced');
-    mtmp.mux = game.u.ux;
-    mtmp.muy = game.u.uy;
+    /* src/monmove.c — without something like the following, invisibility and
+       displacement are too powerful.
+
+       This branch was recorded unported and short-circuited to the hero's
+       exact square, which spent NO draws on a path every unseen monster takes.
+       C spends one rn2(3) or rn2(4) here, then TWO rn2(2 * displ + 1) per
+       iteration of the retry loop below. */
+    const gotu = notseen ? !rn2(3) : notthere ? !rn2(4) : false;
+
+    if (!gotu) {
+        let try_cnt = 0;
+        const ptr = game.mons[mtmp.mnum];
+
+        do {
+            if (++try_cnt > 200) {
+                mx = game.u.ux;
+                my = game.u.uy;
+                break;              /* punt */
+            }
+            mx = game.u.ux - displ + rn2(2 * displ + 1);
+            my = game.u.uy - displ + rn2(2 * displ + 1);
+        } while (!isok(mx, my)
+                 || (displ !== 2 && mx === mtmp.mx && my === mtmp.my)
+                 || ((mx !== game.u.ux || my !== game.u.uy)
+                     && !passes_walls(ptr)
+                     && !(accessible(mx, my)
+                          || (closed_door_mm(mx, my)
+                              && (can_ooze(mtmp) || can_fog(mtmp)))))
+                 || !couldsee(mx, my));
+    } else {
+        mx = game.u.ux;
+        my = game.u.uy;
+    }
+
+    mtmp.mux = mx;
+    mtmp.muy = my;
+}
+
+// src/monmove.c:2188 accessible() — uses the terrain in front of a closed
+// drawbridge, not the drawbridge itself.
+function accessible(x, y) {
+    const levtyp = game.level.at(x, y)?.typ;
+    return ACCESSIBLE(levtyp) && !closed_door_mm(x, y);
+}
+
+/* src/detect.c closed_door() — js/cmd.js has the same predicate, but importing
+   it here would close a cycle (cmd.js already imports this file). */
+function closed_door_mm(x, y) {
+    const lev = game.level.at(x, y);
+    return !!lev && lev.typ === DOOR
+        && (lev.doormask & (D_LOCKED | D_CLOSED)) !== 0;
+}
+
+// src/monmove.c:2356 can_ooze() — squeeze under a door.
+// stuff_prevents_passage() needs the inventory-bulk rules; it is recorded
+// rather than assumed, since assuming FALSE would let a laden monster ooze.
+function can_ooze(mtmp) {
+    if (!amorphous(game.mons[mtmp.mnum]))
+        return false;
+    if (mtmp.minvent && mtmp.minvent.length)
+        note_unported('can_ooze:stuff_prevents_passage');
+    return true;
 }
 
 // src/invent.c money_cnt()

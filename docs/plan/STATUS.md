@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**457/11,405 screens (4.0%), 1/44 sessions, corpus RNG 135,921/792,838 (17.1%).**
+**457/11,405 screens (4.0%), 1/44 sessions, corpus RNG 135,924/792,838 (17.1%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -217,7 +217,20 @@ getspell (src/spell.c:715) either pops a queued key, or with
 flags.menu_style == MENU_TRADITIONAL builds a "Cast which spell? [a-c *?]"
 prompt and reads a letter, or otherwise opens the spell MENU.
 
-THE CHAIN IS NOW COMPLETE AND STILL DOES NOT FIRE. Ported and committed:
+THE CHAIN NOW FIRES. seed0501: 2205 -> 2208.
+
+The last blocker was a constant I got wrong: UNKNOWN_SPELL is -1
+(include/spell.h:9) and I had written 0. spelleffects_check takes the spell
+INDEX, so index 0 -- the first known spell -- looked unknown and every cast was
+rejected on the function's opening line. What found it: getspell was returning
+ilet 'a' and idx 0 correctly while spelleffects_check was never reached, so the
+failure had to be between them.
+
+WHAT IS LEFT for seed0501 is the per-spell dispatch itself: at call 2208 C is
+in zapyourself(zap.c:2911) drawing d(6,4). That switch has an arm per spell and
+every arm draws; it needs zap.c's effect code. A genuine subsystem.
+
+SUPERSEDED (the chain was incomplete when this was written): Ported and committed:
 getspell (traditional arm), docast, spelleffects, spelleffects_check,
 percent_success, initialspell, skill_init, tty_yn_function, and u_init's
 "force starting Pw" block (src/u_init.c:1408, without which a Priest's uen is

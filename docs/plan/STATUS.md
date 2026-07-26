@@ -300,7 +300,7 @@ both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 
-### THREE sessions share one signature: a monster missing at level generation
+### Three cheap one-cell diffs, and what they are NOT
 
 Ranked by first-mismatch size, the cheapest remaining screen diffs are:
 
@@ -308,23 +308,26 @@ Ranked by first-mismatch size, the cheapest remaining screen diffs are:
     1 cell  seed2200-wizard-quaff-zap-read step 0   r11 c16 C 'x'  ours '`'
     1 cell  seed0700-samurai-explore-descend
 
-The first two are the SAME defect. C draws a monster ('r' a rat, 'x' a grid
-bug); we draw '`', the boulder underneath it. js/display.js:168 checks m_at()
-BEFORE the object list, so if a monster were there we would draw it -- meaning
-the monster is absent from our level or standing elsewhere.
+DO NOT read these as "a monster is missing". That was my first conclusion and
+it is unsupported:
 
-seed2200's is at STEP 0, before any input, so it is purely level generation.
+  - 'x' is the DECgraphics VERTICAL LINE, not a grid bug. In the tty symset a
+    window border is lqqqk / x / mqqqj, so an 'x' at a window's edge column is
+    a border segment.
+  - seed2200's step 0 is the LEGACY BLURB screen, not the map. Scanning it for
+    "monster glyphs" returns the blurb's own prose, which is how I first
+    mis-read it (the same trap as the object-glyph scan recorded further down,
+    which read "Go bravely with Kos!" as a potion).
 
-This is the same class as seed0367's extra rnd(5) (recorded below): a monster
-in the wrong place with no draw disagreeing. Three sessions now point at it,
-and seed2200 is the cheapest probe because its frame is the initial one -- no
-gameplay to unwind.
+What IS known: at seed2200 step 0, r11 c16, C draws 'x' and we draw '`'. Our
+level at that moment holds three monsters, at 23,10 / 75,6 / 42,4 -- none of
+them near column 16 -- so the cell is almost certainly window border versus
+map bleed-through, i.e. the same FAMILY as the menu-footer cell that was fixed
+by blanking column offx, not a monster problem at all.
 
-MEASURE, do not infer: dump game.level.monsters with positions right after
-mklev for seed2200 and compare against the recorded step-0 screen, which shows
-every monster the hero can see. The screen is ground truth here in a way it
-was not for the object question further down, because monsters at step 0 are
-all in the starting room.
+NEXT: decode seed2200 step 0 and print rows 9-13 columns 8-24 verbatim, both
+sides, the way the menu cell was finally settled. Do not scan for glyph
+classes on a screen that may not be showing the map.
 
 ### seed0101 is now at step 9; the prompt chain is DONE
 

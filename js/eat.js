@@ -204,7 +204,18 @@ export function bite() {
         note_unported_eat('bite:do_reset_eat');
         return 0;
     }
-    note_unported_eat('bite:nutrition');
+    /* src/eat.c bite() tail — force_save_hs makes lesshungry() treat this as
+       eating even though the occupation check would not; see lesshungry. */
+    game.force_save_hs = true;
+    if (v.nmod < 0) {
+        lesshungry(adj_victual_nutrition());
+        consume_oeaten(v.piece, v.nmod);        /* -= -nmod */
+    } else if (v.nmod > 0 && (v.usedtime % v.nmod)) {
+        lesshungry(1);
+        consume_oeaten(v.piece, -1);            /* -= 1 */
+    }
+    game.force_save_hs = false;
+    recalc_wt();
     return 0;
 }
 
@@ -459,4 +470,40 @@ export function lesshungry(num) {
         }
     }
     newuhs(false);
+}
+
+// src/eat.c consume_oeaten() — reduce a partly-eaten object's remaining food.
+//
+// A POSITIVE amt is a BIT SHIFT, not a subtraction: oeaten >>= amt halves the
+// remainder amt times. A negative amt is the plain decrement, and because the
+// value is already negative it is ADDED. Reading the sign as "how much to
+// remove" and subtracting in both cases is wrong in the common case.
+//
+// THE CLAMP AT THE END IS THE POINT, and C spends fourteen lines explaining
+// it: oeaten must never reach 0, because the object is not removed from
+// inventory until the "you finish eating" message on the NEXT turn, and a
+// zero oeaten reads as UNTOUCHED. That produced unexpected encumbrance
+// messages at the end of a meal and full nutrition from an interrupted one.
+// C also notes oeaten is unsigned there, so an over-subtraction wraps to a
+// huge positive -- the reported cause of massively heavy food and unlimited
+// satiation. Setting reqtime = usedtime is what actually ends the meal.
+export function consume_oeaten(obj, amt) {
+    if (amt > 0) {
+        /* bit shift to divide the remaining amount of food */
+        obj.oeaten >>= amt;
+    } else {
+        /* simple decrement; value is negative so we actually add it */
+        if (obj.oeaten > -amt)
+            obj.oeaten += amt;
+        else
+            obj.oeaten = 0;
+    }
+
+    /* mustn't let partly-eaten drop all the way to 0 or the item would be
+       restored to untouched; set to no bites left */
+    if (obj.oeaten === 0) {
+        if (obj === game.context.victual?.piece)  /* true unless wishing */
+            game.context.victual.reqtime = game.context.victual.usedtime;
+        obj.oeaten = 1;         /* smallest possible positive value */
+    }
 }

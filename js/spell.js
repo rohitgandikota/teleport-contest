@@ -14,7 +14,9 @@ import { rnd } from './rng.js';
 import { tty_yn_function } from './tty/topl.js';
 import { ECMD_FAIL } from './const.js';
 import { You, Your, You_feel } from './pline.js';
-import { acurr } from './attrib.js';
+import { acurr, exercise } from './attrib.js';
+import { mksobj } from './mkobj.js';
+import { A_WIS } from './const.js';
 import { morehungry } from './eat.js';
 import { ECMD_TIME } from './const.js';
 import { A_STR, A_INT } from './const.js';
@@ -159,10 +161,24 @@ export async function spelleffects(spell_otyp, atme, force) {
     const spell = spell_idx(spell_otyp);
     const energy = { v: 0 };
 
-    const r = await spelleffects_check(spell, energy);
-    if (r.rejected)
-        return r.res;
+    if (!force) {
+        const r = await spelleffects_check(spell, energy);
+        if (r.rejected)
+            return r.res;
+    }
 
+    game.u.uen -= energy.v;
+    exercise(A_WIS, true);
+
+    /* pseudo = mksobj(spellid(spell), FALSE, FALSE) — a throwaway object
+       carrying the spell's stats, which the per-spell dispatch below reads.
+       mksobj DRAWS, so it is made here rather than skipped with the switch. */
+    const pseudo = mksobj(force ? spell : spellid(spell), false, false);
+    pseudo.blessed = pseudo.cursed = 0;
+    pseudo.quan = 20;                   /* do not let useup get it */
+
+    /* the per-spell switch needs zap/potion/dig and the rest of the effect
+       code; every arm of it draws. */
     note_unported_spell('spelleffects:per-spell dispatch');
     return ECMD_TIME;
 }
@@ -297,8 +313,10 @@ function rejectcasting() {
     return false;
 }
 
-// src/spell.c UNKNOWN_SPELL
-const UNKNOWN_SPELL = 0;
+// include/spell.h:9 UNKNOWN_SPELL — MINUS ONE. Written as 0 here first,
+// which made spell index 0 (the first known spell) look unknown and made
+// spelleffects_check reject every cast on its opening line.
+const UNKNOWN_SPELL = -1;
 
 function note_unported_spell(what) {
     (game.unported ||= new Set()).add(what);

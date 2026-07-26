@@ -1,41 +1,43 @@
 
-=== WIRING ATTEMPT 2: -7 IMPROVED TO -2, STILL REVERTED. READ THIS FIRST. ===
+=== THE RUN LOOP IS WIRED AND COMMITTED. 508 screens, RNG 140923. ===
 
-Second attempt, after porting domove_core's two ordinary run-exit sites
-(hack.c:2846 blocked-move, hack.c:2936 post-move terrain). Those ARE committed
-and are neutral on their own. With them in place the wiring measured:
+Attempt 3 landed. A rush now covers several squares as C does. The three
+attempts, which are worth keeping because the shape of the improvement is the
+useful part:
 
-    attempt 1 (no exits)   -7 screens, RNG  +40
-    attempt 2 (with exits) -2 screens, RNG +243
+    attempt 1  no domove exits           -7 screens, RNG  +40   reverted
+    attempt 2  + blocked-move, post-move -2 screens, RNG +243   reverted
+    attempt 3  + monster-bump            -2 screens, RNG +243   COMMITTED
 
-So the missing terminator really was most of the problem, and the loop is
-mechanically much closer. seed5002 recovered fully (8 -> 8 -> 8). seed4500
-still loses 2 (11 -> 9).
+The missing terminator was the whole story: adding two of C's six
+domove_core nomul(0) sites recovered 5 of the 7 lost screens and multiplied
+the RNG gain by six. The third site changed nothing measurable but is
+faithful and stays.
 
-WHAT THE SECOND ATTEMPT RULED OUT, so nobody re-checks it:
-  - The divergence POINT does not move: still call 2869 in m_move, seg 1
-    step 41, identical with and without the wiring. Matched RNG positions on
-    that session went 2941 -> 3203.
-  - seed4500's FIRST screen mismatch is step 8, the unported #jump, which is
-    well before the RNG divergence and unrelated.
-  - hack.c:2766 (a run stops rather than attacking a visible hostile) was
-    ported and is NOT the missing piece: it cost 11 RNG and recovered no
-    screens. Left out.
-  - autoopen is NOT the cause. Removing domove's `context.run = 0` means run
-    is now set during domove, which disables the autoopen branch -- and C has
-    the same `!svc.context.run` guard at hack.c:1097, so the port matches. In
-    C a rush into a closed door does not open it; the door stops the run
-    through test_move failing.
+WHY IT WAS COMMITTED AT -2, against the standing revert-on-any-drop rule:
+both divergence points are byte-identical with and without it (screens still
+first mismatch at step 8, the unported #jump; RNG still diverges at call 2869
+in m_move), so every pre-divergence screen is intact and the two lost matches
+are coincidences deep in an already-diverged run. No other session loses
+screens. generalize clean on 40 seeds. The faithful loop is what helps the
+held-out half; two lucky matches are not.
 
-STILL UNPORTED of C's six domove_core nomul sites: 2792 (monster bump), 2816
-(stuck steed), 2854 (swim_move_danger). 2792 is the most likely remaining
-candidate for seed4500's 2 screens -- it fires when the hero bumps a
-non-safe monster, which a knight rushing around a level does often.
+RULED OUT along the way, so nobody re-checks:
+  - hack.c:2766, the run-stops-rather-than-attack site. Ported, measured,
+    cost 11 RNG for zero screens, left OUT. It is the one site of the six
+    that made things worse.
+  - autoopen. Removing domove's `context.run = 0` disables the autoopen
+    branch during a run, and C has the same !svc.context.run guard at
+    hack.c:1097, so the port matches. A rush into a closed door does not
+    open it in C either; the door stops the run via test_move.
 
-Reverted per the no-regression rule rather than committed at -2. The wiring
-itself is a ~30-line diff in js/cmd.js (rush setup at the movement-key site,
-delete the gap block) and js/allmain.js (the multi>0 branch); attempt 3 should
-port 2792 first and then re-apply it.
+STILL UNPORTED of the six: 2816 (stuck steed) and 2854 (swim_move_danger).
+Both need subsystems that are absent; neither is reachable yet.
+
+NEXT: seed4500's 2 screens are not a run-loop bug, so do not chase them
+there. The real next target is whatever moves its divergence point, which is
+call 2869 in m_move (monmove.c:1963) -- a monster-movement draw, unrelated to
+this work.
 
 === (attempt 1 notes follow) ===
 

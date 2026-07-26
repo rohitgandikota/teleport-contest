@@ -26,6 +26,13 @@ import { rn2, rnd } from './rng.js';
 let mklev_fn = null;
 export function do_wire_mklev(fn) { mklev_fn = fn; }
 
+/* js/dokick.js holds ship_object(), which dropx() calls. It is wired rather
+   than imported: importing it here re-enters do.js during its own
+   initialisation and hits the mklev_fn dead zone above. js/cmd.js does the
+   wiring, as it already does for mklev and sp_lev. */
+let ship_object_fn = null;
+export function do_wire_dokick(fn) { ship_object_fn = fn; }
+
 function note_unported_do(what) {
     (game.unported ||= new Set()).add(what);
 }
@@ -238,7 +245,10 @@ export function dropy(obj) {
 export function dropx(obj) {
     freeinv(obj);
     if (!game.u.uswallow) {
-        if (note_unported_do('dropx:ship_object'))
+        /* src/do.c:298 — ship_object() sends the object down a hole or
+           stairs and returns TRUE when it did, in which case dropy() must
+           not also place it. */
+        if (ship_object_fn && ship_object_fn(obj, game.u.ux, game.u.uy, false))
             return;
         if (IS_ALTAR(game.level.at(game.u.ux, game.u.uy)?.typ))
             note_unported_do('dropx:doaltarobj');   /* sets bknown */

@@ -840,6 +840,24 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+SIZED bite:nutrition (39%) -- js/eat.js:205, the tail of src/eat.c bite().
+Four functions, none of them present:
+
+    lesshungry              44 lines
+    adj_victual_nutrition   18 lines
+    consume_oeaten          64 lines
+    recalc_wt               13 lines
+                           139 lines total
+
+The logic itself is short -- nmod < 0 spends adj_victual_nutrition() and
+consumes nmod; nmod > 0 with (usedtime % nmod) spends 1 and consumes 1; then
+recalc_wt. But all four callees are missing, so this is a 139-line unit, not
+the few lines the call site suggests.
+
+lesshungry is the interesting one: it is the hunger-state machine every food
+path shares, so porting it serves more than this entry. Check what else
+records it before treating this as a bite-only cost.
+
 SIZED dog_move attack branch (45%) -- src/dogmove.c:1102, the
 `(mfp.info[i] & ALLOW_M) && MON_AT(nx, ny)` arm. It has two halves with very
 different costs:

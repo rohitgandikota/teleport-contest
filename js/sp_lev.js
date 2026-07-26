@@ -907,7 +907,7 @@ function update_croom() {
     game.coder.croom = n ? (game.coder.tmproomlist[n - 1] ?? null) : null;
 }
 
-function spo_push_room(troom) {
+export function spo_push_room(troom) {
     if (!game.coder)
         return;
     game.coder.tmproomlist[game.coder.n_subroom] = troom;
@@ -916,7 +916,7 @@ function spo_push_room(troom) {
 }
 
 // src/sp_lev.c spo_endroom()
-function spo_endroom() {
+export function spo_endroom() {
     if (!game.coder)
         return;
     if ((game.coder.n_subroom || 0) > 1) {

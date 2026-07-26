@@ -114,13 +114,43 @@ WHAT IS LEFT: the newt moved differently on an earlier turn. The four matching
 m_move draws at 2802/2815/2841/2851 belong to earlier turns and we do not know
 which monster each belongs to -- that is the missing piece.
 
-NEXT: tag each m_move draw with its monster. Add the monster's m_id (or mnum
-plus position) to a stderr line in our m_move next to the rn2(4 * (cnt - j)),
-run seed4500, and build the per-monster count sequence. Then find the newt's
-own earlier moves and the first one whose count differs from C's implied
-value. C's side stays readable from the log throughout. This is a
-half-hour job with a clear finish line, and it ends at the specific turn our
-newt and C's parted.
+TAGGED, and the answer is sharper than expected. Instrumenting our m_move to
+print m_id/mnum/position alongside each rn2(4 * (cnt - j)) gives (our call
+numbers run one ahead of C's):
+
+    #2803  m_id=20 mnum=59  at 56,17  cnt=5  arg=20
+    #2816  m_id=20 mnum=59  at 57,17  cnt=6  arg=24
+    #2842  m_id=20 mnum=59  at 58,17  cnt=5  arg=20
+    #2852  m_id=20 mnum=59  at 59,17  cnt=4  arg=16
+    #2870  m_id=30 mnum=322 at 77,14  cnt=5  arg=20   <- the mismatch
+    #2873  m_id=20 mnum=59  at 60,17  cnt=3  arg=12
+
+All four matching draws are THE SAME MONSTER, m_id=20, walking steadily east
+along row 17, and its next move at #2873 matches C's 2872 as well. So the
+agreement was never evidence that many monsters are correctly placed; it was
+one monster being correct six times.
+
+The mismatch is m_id=30, the newt, and #2870 IS ITS FIRST APPEARANCE in this
+log. It has no earlier move to have gone wrong in.
+
+WHY IT CAN STILL BE AN EARLIER MOVE: this draw is inside `if (appr != 0)` and
+only fires when a candidate square matches an mtrack entry. A monster whose
+mtrack is still empty draws NOTHING here, so the newt may well have moved
+several times already without appearing above. Absence from the list is not
+absence of movement.
+
+SO THE TWO REMAINING POSSIBILITIES ARE:
+  1. The newt was PLACED at 77,14 by level generation and C's sits elsewhere.
+     Check this first -- it is static, and mklev's monster placement is
+     testable without replaying turns.
+  2. It moved earlier through the drawless path (empty mtrack, or appr == 0).
+     If so, instrument m_move ENTRY rather than that one draw, printing every
+     monster's position each turn, and diff the newt's track against where
+     C's must have been.
+
+Note the newt is at 77,14, hard against the VWALL at x=78, and needs 7 open
+neighbours in C. A square with 7 open neighbours is well clear of any wall, so
+C's newt is not merely one step away; the positions are substantially apart.
 
 That technique generalises and is the useful part of this thread: when a
 monster's position cannot be observed directly, the modulus of a draw that

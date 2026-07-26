@@ -6,6 +6,7 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { newsym } from './display.js';
 import { sobj_at } from './invent.js';
 import { m_carrying, meatmetal } from './mon.js';
 import { metallivorous, corpse_eater } from './mondata.js';
@@ -778,6 +779,11 @@ export function m_move(mtmp, after) {
            square. */
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+        /* src/monmove.c:1508 — "update the old position". remove_monster is a
+           bare macro that only clears level.monsters[][]; nothing redraws the
+           vacated square unless this runs, so the monster's old glyph stays on
+           screen and every frame with a moving pet shows a trail. */
+        newsym(omx, omy);
     }
 
     return postmov(mtmp, ptr, omx, omy, mmoved);

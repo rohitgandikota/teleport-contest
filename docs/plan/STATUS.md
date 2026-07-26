@@ -81,8 +81,19 @@ its RNG divergence at 6276. `screendiff sessions/seed0030... --first`:
       r5 c56   C '<' yellow    ours 'f' white
       r5 c57   C '.' default   ours 'f' white
 
-**Ours has TWO kittens.** The pet moved from c56 to c57 and the vacated square
-was never redrawn, so the old glyph persists. C has one 'f' at c55, with the
+**Ours has TWO 'f' monsters, and it is NOT a display trail.** I assumed a
+stale glyph, added the missing `newsym(omx, omy)` from src/monmove.c:1508 (a
+real omission -- remove_monster is a bare macro that only clears
+level.monsters[][], so the vacated square is never redrawn without it), and the
+three cells did not change.
+
+So there really are two monsters on screen where C has one. That is a
+makemon/level-generation difference, not a rendering one. C's single 'f' sits
+at c55 ON the gold pile (ours still shows '$' there), so C's pet has moved onto
+the gold and ours has not -- and we have an extra monster besides.
+
+Next: count monsters on the level in both. `game.level.monsters.length` after
+segment 0 against the C's makemon draws around level generation. C has one 'f' at c55, with the
 upstair and floor visible where ours shows the trail.
 
 Where it should be cleared: src/monmove.c:1655 calls `newsym(mtmp->mx,

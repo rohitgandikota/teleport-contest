@@ -23,8 +23,7 @@ import { get_shop_item } from './shknam.js';
 import { attacktype } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
-    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET
-} from './const.js';
+    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
 import { enexto_core } from './teleport.js';
 
 // include/hack.h:1174-1175
@@ -700,8 +699,18 @@ export function goodpos(x, y, ptr, gpflags = 0) {
     if (!isok(x, y))
         return false;
 
-    if (game.u.ux === x && game.u.uy === y)
-        return false;
+    /* src/teleport.c:107 — the hero's own square is rejected only when
+       GP_ALLOW_U is absent, and even then not for the hero, the engulfer
+       holding you, or your steed. C's comment says why the guard exists: the
+       same function relocates engravings and objects, which CAN be
+       co-located with you. This rejected u.ux/u.uy unconditionally. */
+    if (!(gpflags & GP_ALLOW_U)) {
+        if (game.u.ux === x && game.u.uy === y
+            && ptr !== game.youmonst
+            && (ptr !== game.u.ustuck || !game.u.uswallow)
+            && (!game.u.usteed || ptr !== game.u.usteed))
+            return false;
+    }
     /* src/teleport.c:114 — `if (MON_AT(x, y) && avoid_monpos) return FALSE;`
        The monster test is CONDITIONAL on GP_AVOID_MONPOS. Rejecting an
        occupied square unconditionally, as this did, makes every caller that

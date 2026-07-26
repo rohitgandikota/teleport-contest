@@ -168,11 +168,35 @@ If C offers (37,17) and we do not, every downstream j shifts and the tie set
 changes -- which is exactly the observed symptom (C ties where we do not)
 while appr, GDIST, the sampler and the pre-increment all agree.
 
-NEXT: find out why (37,17) is filtered. seed0007 is the snake-swamp level, so
-water is a strong candidate -- check mfndpos's pool/lava handling against
-src/mon.c, particularly whether a TAME monster is allowed to consider a
-water square it would refuse to enter. Confirm the terrain at (37,17) first
-rather than assuming.
+RESOLVED, AND THE LEAD IS DEAD. (37,17) is not swamp water -- it is typ=25
+(ROOM), same as its neighbours. Instrumenting every `continue` in mfndpos
+showed it is rejected at js/mon.js:283:
+
+    if (nx === u.ux && ny === u.uy) { ...; if (!(flag & ALLOW_U)) continue; }
+
+(37,17) IS THE HERO'S OWN SQUARE. And src/mon.c mon_allowflags gives a tame
+monster ALLOW_M | ALLOW_TRAPS | ALLOW_SANCT | ALLOW_SSM and NOT ALLOW_U, so C
+excludes the hero's square for a pet exactly as we do. Our mon_allowflags has
+the same three-branch structure. cnt = 7 is CORRECT.
+
+Guessing "snake-swamp level, so it must be water" would have sent the next
+agent to rewrite correct pool-handling code. The terrain dump cost one
+command and killed it.
+
+FIVE LEADS NOW ELIMINATED BY MEASUREMENT: appr, IS_ROOM, the reservoir
+sampler, the pre-increment, and the candidate list. All five looked plausible
+on inspection; none survived a trace.
+
+WHERE THAT LEAVES IT: the candidate SET and ORDER are right, appr is right,
+GDIST's goal is right, the sampler is right. The remaining variable in
+j = (GDIST(nx,ny) - nidist) * appr is NIDIST -- specifically its STARTING
+value, GDIST(nix, niy) with nix,niy = omx,omy before the loop. If our pet's
+position or the goal differs from C's by the time the loop starts, every j
+shifts uniformly and the tie set changes without any single candidate being
+wrong. Check what dog_goal actually stored in game.gg against what C's
+gg.gx/gg.gy hold at the same turn, and confirm the pet is standing where C
+thinks it is -- an earlier divergence in pet MOVEMENT would produce exactly
+this signature at a later turn.
 
 WHAT IS LEFT: the CANDIDATE LIST. Same appr, same goal, same rn2(4), same
 sampler, yet at one specific invocation C scores a candidate at j == 0 and we

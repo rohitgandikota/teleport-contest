@@ -5403,6 +5403,23 @@ The amulet case is the one worth having: it must NOT go through ARM_BONUS, so
 erosion cannot reduce it. With an empty inventory the whole loop is skipped
 and that distinction is untestable.
 
+searches_for_item, all four ported oclass arms:
+    wand of digging spe 3   -> true    OK
+    same wand spe 0         -> false   OK   (the spe <= 0 early-out)
+    potion of healing       -> true    OK
+    scroll of teleportation -> true    OK
+    amulet of reflection    -> true    OK
+
+WHY IT NEEDED A SYNTHETIC MONSTER, and this is itself a finding: EVERY monster
+on seed4500's level is either an animal or mindless, so the early-out at the
+top of the function returns false before any oclass arm is reached. The whole
+switch was untested. Scanning the mons table for the first non-animal,
+non-mindless species (index 15) was needed to reach it at all.
+
+That also explains the modest unported-hits numbers for this function: it is
+not that monsters decline the items, it is that most monsters never get past
+the first two lines.
+
 Two constants that would have been wrong if taken from their names:
 ALIGNLIM is 10 + moves/200, not 10, so it grows as the game runs; and Luck is
 uluck + moreluck entering as sgn(Luck) * ((abs(Luck) + 2) / 3), which differs

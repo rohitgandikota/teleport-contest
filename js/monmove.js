@@ -14,7 +14,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype } from './mondata.js';
+         attacktype, can_blow, needspick } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -367,6 +367,16 @@ const likes_magic = (ptr) => (ptr.mflags2 & MFLAGS.M2_MAGIC) !== 0;
 const is_armed    = (ptr) => ptr.mattk.some(a => a[0] === ATTKS.AT_WEAP);
 const likes_objs  = (ptr) => (ptr.mflags2 & MFLAGS.M2_COLLECT) !== 0 || is_armed(ptr);
 const is_unicorn  = (ptr) => ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
+
+/* include/obj.h:337 Is_container() and :339 Is_mbag(). Both are duplicated
+   here on purpose: js/obj.js has Is_container and js/mkobj.js has a private
+   Is_mbag, but adding an import edge to monmove.js closes a cycle (NOTES,
+   "The module graph is load-bearing"). dup-defs will flag these; the bodies
+   are transcribed from the same C macros. */
+const Is_container = (o) =>
+    o.otyp >= ONAMES.LARGE_BOX && o.otyp <= ONAMES.BAG_OF_TRICKS;
+const Is_mbag = (o) =>
+    o.otyp === ONAMES.BAG_OF_HOLDING || o.otyp === ONAMES.BAG_OF_TRICKS;
 const touch_petrifies = (ptr) => ptr.pmidx === PMNAMES.PM_COCKATRICE
                               || ptr.pmidx === PMNAMES.PM_CHICKATRICE;
 
@@ -485,9 +495,17 @@ function searches_for_item(mon, obj) {
             return true;
         break;
     case OCLASSES.TOOL_CLASS:
-        /* needs can_blow(). C falls out of the switch returning FALSE, so
-           this records and returns false rather than "unknown". */
-        note_unported('searches_for_item:tool');
+        if (typ === ONAMES.PICK_AXE)
+            return needspick(d);
+        if (typ === ONAMES.UNICORN_HORN)
+            return !obj.cursed && !is_unicorn(d)
+                   && mon.mnum !== PMNAMES.PM_KI_RIN;
+        if (typ === ONAMES.FROST_HORN || typ === ONAMES.FIRE_HORN)
+            return obj.spe > 0 && can_blow(mon);
+        if (Is_container(obj) && !(Is_mbag(obj) && obj.cursed) && !obj.olocked)
+            return true;
+        if (typ === ONAMES.EXPENSIVE_CAMERA)
+            return obj.spe > 0;
         break;
     case OCLASSES.FOOD_CLASS:
         /* needs cures_stoning() and mcould_eat_tin() */

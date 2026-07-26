@@ -299,3 +299,24 @@ export function attacktype_fordmg(ptr, atyp, dtyp) {
 export function attacktype(ptr, atyp) {
     return attacktype_fordmg(ptr, atyp, ATTKS.AD_ANY) !== null;
 }
+
+// include/mondata.h:26 breathless()
+export const breathless = (d) => (d.mflags1 & MFLAGS.M1_BREATHLESS) !== 0;
+// include/mondata.h:55 has_head() — note the sense: NOHEAD CLEAR means it has one
+export const has_head   = (d) => (d.mflags1 & MFLAGS.M1_NOHEAD) === 0;
+// include/mondata.h:62 is_silent()
+export const is_silent  = (d) => d.msound === MFLAGS.MS_SILENT;
+
+// src/mondata.c:567 can_blow() — can this monster blow a horn?
+//
+// The hero's Strangled arm is not modelled; it only applies to youmonst and a
+// monster is never that here.
+export function can_blow(mtmp) {
+    const d = game.mons[mtmp.mnum];
+
+    if ((is_silent(d) || d.msound === MFLAGS.MS_BUZZ)
+        && (breathless(d) || verysmall(d) || !has_head(d)
+            || d.mlet === MONSYMS.S_EEL))
+        return false;
+    return true;
+}

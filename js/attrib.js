@@ -177,8 +177,13 @@ export const Very_fast = () => false;
 
 // include/attrib.h:25 ACURRSTR / ACURR(). Exceptional Strength is stored above
 // 18 as 18/xx, and acurrstr() folds that back to a plain number.
+// include/attrib.h:24 — #define ACURR(x) (acurr(x))
+//
+// It is the FUNCTION, not the array. Reading u.acurr.a[i] directly skips the
+// abon/atemp terms and the 3..25 clamp, which is a different number whenever
+// the hero is drained, boosted, or (as at makedog() time) not yet rolled.
 export function ACURR(i) {
-    return game.u.acurr.a[i];
+    return acurr(i);
 }
 
 export function acurrstr() {

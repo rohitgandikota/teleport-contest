@@ -432,7 +432,11 @@ export async function moveloop_core() {
                    a monster that cannot see the hero has a trail to follow. */
                 settrack();
 
-                g.moves = (g.moves || 1) + 1;
+                /* src/allmain.c:244 svm.moves++. The counter starts at 1
+                   (src/u_init.c:645), so plain increment; the old
+                   `(g.moves || 1) + 1` only happened to agree because the
+                   first increment landed on 2 either way. */
+                g.moves++;
 
                 dosounds();
                 gethungry();

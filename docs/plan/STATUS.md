@@ -196,7 +196,31 @@ than guessing from the C tag:
      that named no alignment -- most of them.
   3. makemon never named the ghost, and rndghostname() draws twice.
 
-Still early and unexplained: seed2600 at 395, both seed0013 sessions at 528.
+seed2600 at 395 IS explained, and it is structural rather than a missing
+function. C's tags at 389-394 read `parent=room([C]:-1)` and then
+`somex(mkroom.c:668)`: C is inside a des.room{} contents callback, so
+gc.coder->croom is set, and create_altar takes its `if (croom)` branch into
+get_free_room_loc -> somexy -> somex/somey, i.e. a coordinate INSIDE the room.
+
+Our stack at the same call is
+
+    get_location <- get_location_coord <- create_altar <- lspo_altar
+      <- fill_temple_of_the_gods <- themeroom_fill <- lspo_region
+      <- filler_region
+
+so we reach the same fill through lspo_region, where nothing sets
+game.coder.croom -- only lspo_room does (js/sp_lev.js:1394). create_altar
+therefore takes its `else` branch and draws rn2(80)/rn2(21), a whole-map
+random, where C draws rn2(8)/rn2(4) within the room.
+
+Two things to check before fixing, because the wrong one is easy to pick:
+whether the themeroom should be dispatched through lspo_room rather than
+lspo_region at all, and whether C's update_croom() (src/sp_lev.c:6323, which
+maintains a tmproomlist STACK with n_subroom) needs porting so croom is
+maintained by the same mechanism C uses rather than by lspo_room's local
+save/restore.
+
+Still unexplained: both seed0013 sessions at 528.
 
 The lesson is the method. `js/rng.js`'s RND() with a temporary env-gated
 stack trace, run through `node frozen/ps_test_runner.mjs

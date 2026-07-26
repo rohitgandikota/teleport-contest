@@ -4458,9 +4458,30 @@ function, so the difference is more likely in a branch that only a shop-square
 mimic reaches than in makemon's common path, which many other call sites
 already exercise correctly.
 
-NEXT: dump our rn2/rnd sequence across ONE of those five makemon calls and
-diff it against the recorded log at the same call index (tools/diverge.mjs
-prints the index). Do not re-check mkclass.
+RULED OUT SO FAR, each compared against the C rather than guessed. Do not
+re-check any of these:
+
+  mkclass / mkclass_aligned  same init_mongen_order and MONSi indirection,
+                             same rn2(9), rn2(2) and rnd(num), same order
+  set_mimic_sym              WAS a stub and is now ported; that recovered 8
+                             of the original 36, leaving 28
+  makemon call order         place_monster, mgenmklev, peace_minded, then the
+                             S_MIMIC switch -- matches src/makemon.c:1295-1305
+                             exactly
+  m_initinv                  C has no S_MIMIC case, so a mimic falls to the
+                             default arm and draws nothing; ours does the same
+  mkveggy_at, rloc, engraving  probed, never reached in any session
+
+WHAT IS LEFT: the remaining 28 is inside the mimic's makemon() somewhere other
+than the above, or inside one of set_mimic_sym's own arms whose draw count I
+did not verify individually (the furnsyms ROLL_FROM, the mkobj(s_sym) call,
+the rndmonnum for a statue/corpse/egg/tin appearance).
+
+NEXT, and this time actually do it rather than eliminating further: dump our
+rn2/rnd sequence across ONE mimic's makemon and diff it against the recorded
+log at that call index (tools/diverge.mjs prints the index). Elimination has
+gone as far as it usefully can; five suspects are gone and the next step is a
+direct comparison.
 
 STILL OPEN in the special-room area:
   - mktemple (src/mkroom.c:598): needs shrine_pos, induced_align which DRAWS,

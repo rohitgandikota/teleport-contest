@@ -24,7 +24,7 @@ import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { skill_tables } from './skills_data.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
-import { P_NONE, W_QUIVER, W_WEP } from './const.js';
+import { P_NONE, W_QUIVER, W_WEP , W_SWAPWEP} from './const.js';
 import { Is_container } from './obj.js';
 import { skill_init } from './weapon.js';
 import { spell_skilltype, initialspell, num_spells,
@@ -556,6 +556,11 @@ function ini_inv_wield(obj) {
         if (!game.u.uquiver) { obj.owornmask |= W_QUIVER; game.u.uquiver = obj; }
     } else if (!game.u.uwep) {
         obj.owornmask |= W_WEP; game.u.uwep = obj;
+    } else if (!game.u.uswapwep) {
+        /* src/u_init.c:1291 — the SECOND weapon becomes the alternate. A
+           Ranger's bow lands here, and ready_ok's ammo_and_launcher test
+           reads uswapwep to decide whether the arrows are suggested. */
+        obj.owornmask |= W_SWAPWEP; game.u.uswapwep = obj;
     }
 }
 

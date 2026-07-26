@@ -44,6 +44,7 @@ import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
 import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
+import { dowieldquiver } from './wield.js';
 
 // Direction deltas: y u k
 //                   h . l
@@ -392,6 +393,9 @@ export async function rhack(key) {
     if (isMovementKey(ch)) {
         await domove(DIR_DX[ch], DIR_DY[ch]);
         game.context.move = 1;
+    } else if (ch === 'Q') {
+        // src/cmd.c cmdlist — 'Q' is dowieldquiver.
+        game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Z') {
         // src/cmd.c cmdlist — 'Z' is docast.
         game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);

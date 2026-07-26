@@ -339,6 +339,23 @@ in order of likelihood:
 
 Check fill_statuary against dat/themerms.lua before anything else.
 
+CHECKED, and (a) is NOT it: js/themerms.js fill_statuary really does call
+lspo_object('statue') d(5,5) times and lspo_trap for the statue traps. So the
+objects are being created.
+
+Which means the statues exist somewhere and just are not at map (56,4). Two
+things could do that with the RNG still matching:
+
+  - create_object places them at different coordinates (the position comes
+    from somexyspace inside the room, so a room-geometry difference moves them
+    without changing a draw), or
+  - they are created and then lost, the "computed and discarded" shape.
+
+NEXT MEASUREMENT: dump every object with otyp === ONAMES.STATUE and its
+position at step 0 for seed0030, and compare against the 'f' glyphs on the
+recorded screen. Do not infer from one square -- find all of them and see
+whether the set is shifted, short, or empty.
+
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 
 Ranked by first-mismatch size, the cheapest remaining screen diffs are:

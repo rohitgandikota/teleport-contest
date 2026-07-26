@@ -21,28 +21,14 @@ import { m_at, t_at } from './mon.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { OCLASSES } from './objects_data.js';
 import { inside_room } from './sp_lev.js';
+import { shtypes } from './shknam.js';
 
 function note_unported_mkroom(what) {
     (game.unported ||= new Set()).add(`mkroom:${what}`);
 }
 
-// src/shknam.c:209 shtypes[] — the shop table. Only the fields mkshop() reads
-// are carried: the class symbol and the probability. The probabilities sum to
-// exactly 100, which is what makes the rnd(100) walk below terminate.
-export const shtypes = [
-    { name: 'general store',                   symb: OCLASSES.RANDOM_CLASS, prob: 42 },
-    { name: 'used armor dealership',           symb: OCLASSES.ARMOR_CLASS,  prob: 14 },
-    { name: 'second-hand bookstore',           symb: OCLASSES.SCROLL_CLASS, prob: 10 },
-    { name: 'liquor emporium',                 symb: OCLASSES.POTION_CLASS, prob: 10 },
-    { name: 'antique weapons outlet',          symb: OCLASSES.WEAPON_CLASS, prob: 5 },
-    { name: 'delicatessen',                    symb: OCLASSES.FOOD_CLASS,   prob: 5 },
-    { name: 'jewelers',                        symb: OCLASSES.RING_CLASS,   prob: 3 },
-    { name: 'quality apparel and accessories', symb: OCLASSES.WAND_CLASS,   prob: 3 },
-    { name: 'hardware store',                  symb: OCLASSES.TOOL_CLASS,   prob: 3 },
-    { name: 'rare books',                      symb: OCLASSES.SPBOOK_CLASS, prob: 3 },
-    { name: 'health food store',               symb: OCLASSES.FOOD_CLASS,   prob: 2 },
-    { name: 'lighting store',                  symb: OCLASSES.TOOL_CLASS,   prob: 0 },
-];
+/* shtypes[] now lives in js/shknam.js, its C home, next to
+   get_shop_item() which reads the other half of the same table. */
 
 // src/mkroom.c:502 antholemon() — which ant species an anthole gets.
 //

@@ -213,11 +213,32 @@ window:
 57 characters + 2 = 59, which is exactly C's value, so cw.cols is 59 and
 offx = min(min(82, 40), 80 - 59 - 1) = 20. Our offset is RIGHT.
 
-Which means the '\u2500' at column 20 is not a geometry error at all: the
-footer paint at js/tty/wintty.js:374 clears cw.offx .. col-1 and would blank
-column 20 given offx 20. So that paint is not running for this window, or the
-row is drawn again afterwards by something that does not clear it. Find what
-paints row 6 after the menu footer does.
+MEASURED AT THE FOOTER PAINT, which settles it:
+
+    FOOT type=4 offx=22 cols=0 maxcol=57 morestr=""
+
+Three things wrong at once, and they are one cause:
+
+  - cw.cols is ZERO. tty_end_menu never ran for this window. maxcol 57 came
+    from tty_putstr's `+1` path (js/tty/wintty.js:283), not from the menu's
+    `+2` path (js/tty/wintty.js:239).
+  - therefore offx is 22, where C's is 20 (C's maxcol is 59).
+  - therefore morestr is "" and the footer falls back to defmorestr
+    "--More--", not "(end) ".
+
+So the tutorial prompt is being built with putstr lines where C builds it with
+add_menu entries. The window is two columns right of C's and its footer text
+is wrong; the single stray glyph at column 20 is just the first cell where
+that shows.
+
+FIX THERE, not in the paint: find where the tutorial query window is filled
+(js/options.js ask_do_tutorial and whatever it calls) and make it use the
+menu path so tty_end_menu runs. Expect offx to move 22 -> 20 and morestr to
+become "(end) ".
+
+This supersedes TWO earlier readings in this file, both wrong: that the cause
+was a missing leading space, and that maxcol was 60 against C's 59. Both were
+inferences; only the instrumented run gave the actual numbers.
 
 The superseded arithmetic argument follows; it is kept only to show the
 inference and why measuring beat it.

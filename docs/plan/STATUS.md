@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**384/11,405 screens (3.4%), 1/44 sessions, corpus RNG 112,878/792,838 (14.2%).**
+**432/11,405 screens (3.8%), 1/44 sessions, corpus RNG 112,906/792,838 (14.2%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -58,6 +58,46 @@ js/do.js already has dodown, next_level, goto_level and stairway_at.
 
 Same caution applies to obj_resists at 6 sessions: js/zap.js has it. The tag
 names the C function containing the divergent line, not a missing function.
+
+### The highest-yield sweep right now: rank sessions by FIRST-mismatch size
+
+    for f in sessions/*.session.json; do
+      n=$(basename $f .session.json)
+      d=$(node tools/screendiff.mjs "$f" 2>/dev/null \
+          | grep -oE "^cells +[0-9]+ of" | grep -oE "[0-9]+")
+      [ -n "$d" ] && echo "$d $n"
+    done | sort -n | head
+
+A session whose first bad frame differs by ONE cell is a single bug, and
+several sessions usually share it. That sweep produced, in one pass:
+
+  - nine sessions at one cell; five of them the SAME cell, r0 c56, the digit
+    in "Welcome to experience level N." That was pluslvl() calling pline()
+    without awaiting it. Worth +48 screens.
+  - one at one cell: a '%' drawn brown that should take the monster's colour
+    (obj_to_glyph makes a corpse a BODY glyph). Worth +6.
+
+Re-run it after every landing; the cheap ones regenerate as deeper frames
+become reachable.
+
+### await pline(), always
+
+pline() is async: it routes through update_topl(), which can reach more(),
+which BLOCKS. Any caller that does not await it keeps running while the
+message sits behind an unawaited promise. This does not throw and does not
+change the RNG, it just freezes the top line. Five call sites had it.
+
+When making a function async to fix this, the ripple has to go all the way to
+the command dispatcher in js/cmd.js, or the same bug reappears one level up.
+
+### Still open on seed0700: the turn counter is one ahead
+
+C shows T:2 where we show T:3 at step 5, so our new-turn block in
+moveloop_core runs one extra time. RNG matches through that point, so
+u_calc_moveamt's rn2(3) is being drawn identically and Fast() agrees; the
+difference is in how much umovement a command consumes, i.e. which commands
+set context.move. moves itself starts at 1 and increments plainly, already
+verified against src/u_init.c:645 and src/allmain.c:244.
 
 ### Where the pet work stands, and the open question
 

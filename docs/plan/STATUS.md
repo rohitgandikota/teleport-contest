@@ -461,11 +461,30 @@ C DRAWS THE rn2(4), so for C !IS_ROOM was FALSE -- the hero is standing in a
 room. We draw rn2(11) at that position instead, so we are not evaluating that
 term at all.
 
-rn2(11) is the shape of `rn2(edog->apport)` with apport == 11 -- the FOURTH
-term of the same chain. But our port is recorded elsewhere in this file as
-MISSING that term entirely, so either that note is wrong or the rn2(11) comes
-from somewhere else in dog_goal. RESOLVE THAT FIRST: grep dog_goal for every
-rn2 and find which one can produce 11.
+RESOLVED: OUR dog_goal HAS NO rn2(11). Grepping it finds exactly two draws --
+rn2(8) in the APPORT branch and rn2(4) in the appr test. So the rn2(11) at
+call 3694 is NOT from dog_goal at all; the tag on that line names C's
+function, not ours.
+
+THAT IS THE REAL SHAPE OF THIS DIVERGENCE: the streams are aligned through
+3693, then C enters dog_goal and draws rn2(4) while WE ARE SOMEWHERE ELSE
+ENTIRELY, drawing rn2(11). We are not taking a different branch inside
+dog_goal -- we are not in dog_goal.
+
+So the question is no longer about appr or IS_ROOM or the APPORT arm. It is:
+what does our code call at that point that C does not, and why does C reach
+dog_goal there when we do not?
+
+Candidate sources for an rn2(11) in the tree (none in dog_goal):
+    js/dog.js:876   rn2(trunc(mtmp_lev / 2) + 1)  -- 11 when mtmp_lev is 20-21
+    js/dog.js:1136  rn2(13 * uncursedcnt)         -- cannot be 11
+Neither is obviously on a pet's ordinary turn, so grep the whole tree for
+draws whose argument can be 11 rather than guessing.
+
+CONCRETE NEXT STEP: instrument rn2 itself to print a stack trace on the
+3694th call in seed0004. That names our function directly instead of
+inferring it, and the earlier ticks on this trail were lost precisely to
+inferring which code was running.
 
 This is a much better foothold than seed0030 ever was: one game, one function,
 one draw, and the C's expected value is known (rn2(4)=3).

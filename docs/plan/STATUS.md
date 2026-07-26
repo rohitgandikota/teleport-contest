@@ -1,3 +1,46 @@
+=== THE unported AUDIT: SIX FALSE GAPS, ONE REAL DEFECT ===
+Current: 510/11405 screens, RNG 140679/792838, 1/44 sessions.
+
+I swept all 312 recorded gap names against the port's actual function
+definitions (46 matched something that exists) and checked the reached ones.
+Six records were wrong. FIVE of the six were "gap recorded before the
+dependency landed, never rechecked":
+
+    can_touch_safely:touch_artifact  66%  touch_artifact was 300 lines up in
+                                          the SAME FILE. Clearing it showed no
+                                          session ever touches a real artifact
+                                          at all -- the 66% was entirely false.
+    start_eating:done_eating         39%  done_eating ported at eat.js:261.
+                                          Reach moved DOWN to fpostfx/useupf,
+                                          which is where the code is actually
+                                          missing.
+    pluslvl:adjabil                  16%  adjabil ported at attrib.js:254.
+                                          THIS ONE MOVED THE SCORE: 508 -> 510.
+    freeinv_core:curse_loadstone     27%  curse() ported in mkobj.js.
+    mpickstuff:mpickobj               9%  see below.
+
+The sixth was different in kind: freeinv_core:money2mon recorded a gap that
+DOES NOT EXIST IN 5.0. That arm is two statements, `disp.botl = TRUE; return;`
+and money2mon appears nowhere in invent.c. It is 3.4/3.6 knowledge that got
+written into a comment instead of code, which is the rule 3a failure surviving
+in the one place nothing checks.
+
+AND ONE WAS A LIVE BUG, not just a stale note. mpickstuff called
+obj_extract_self() to take an object off the floor and then RECORDED instead
+of calling mpickobj, so the object left the floor and reached nobody's
+inventory. It vanished. Recording where a call belongs is only honest if the
+surrounding code is also skipped; here the record sat in the middle of a
+half-completed operation.
+
+WHAT THIS MEANS FOR THE ROADMAP: unported-hits ranks by reach, and it was
+ranking against records rather than against reality, so it was pointing at
+the wrong work. It now tops out at topl:remember_topl (100%, ^P history, no
+screen output, still correctly deprioritised) then dog_move attack branch at
+43%. Trust it more than before, but re-read the C arm behind any record you
+are about to build on.
+
+NOT YET CHECKED: 40 of the 46 suspects, all below 9% reach. Worth finishing.
+
 
 === THE RUN LOOP IS WIRED AND COMMITTED. 508 screens, RNG 140923. ===
 

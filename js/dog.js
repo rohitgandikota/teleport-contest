@@ -1038,14 +1038,6 @@ export function dog_move(mtmp, after) {
         mtmp.mtrack.unshift({ x: omx, y: omy });
         if (mtmp.mtrack.length > MTSZ) mtmp.mtrack.length = MTSZ;
 
-    /* src/dogmove.c:1273 — the pet has not attacked anything but is about to
-       move; now is the time for a ranged attack. */
-    {
-        const i = pet_ranged_attk(mtmp, false);
-        if (i !== MMOVE_NOTHING)
-            return i;
-    }
-
         /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
            the move. Writing mx/my alone leaves m_at() answering with the old
            square. */

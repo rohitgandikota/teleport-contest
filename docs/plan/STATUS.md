@@ -204,7 +204,25 @@ ahead of every menu line.
 Which means cw.offx here is 20, not 19 -- the 'm' at column 19 is the map
 outside the menu, which C never touches.
 
-AND THE CAUSE IS maxcol, NOT THE OFFSET FORMULA. Both of C's branches agree
+maxcol IS NOT THE CAUSE -- I inferred that from arithmetic and then MEASURED
+it, and the inference was wrong. Instrumenting the entry loop gives, for this
+window:
+
+    ENTRY len=59 "Put \"OPTIONS=!tutorial\" in .nethackrc to skip this query."
+
+57 characters + 2 = 59, which is exactly C's value, so cw.cols is 59 and
+offx = min(min(82, 40), 80 - 59 - 1) = 20. Our offset is RIGHT.
+
+Which means the '\u2500' at column 20 is not a geometry error at all: the
+footer paint at js/tty/wintty.js:374 clears cw.offx .. col-1 and would blank
+column 20 given offx 20. So that paint is not running for this window, or the
+row is drawn again afterwards by something that does not clear it. Find what
+paints row 6 after the menu footer does.
+
+The superseded arithmetic argument follows; it is kept only to show the
+inference and why measuring beat it.
+
+SUPERSEDED -- WRONG:  Both of C's branches agree
 on this window:
 
     H2344_BROKEN (the one we use):

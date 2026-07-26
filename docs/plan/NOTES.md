@@ -1673,3 +1673,37 @@ Currently 18 reported refs are false positives (property shorthand `cols`,
 `grid`, `cursorRow` in js/game_display.js; keywords `async`,
 `requestAnimationFrame`; and `ATR_UNDERLINE` in js/tty/wintty.js, which is
 genuinely exported from js/terminal.js:28). Do not spend a session on them.
+
+## The divergence point and the screen count can move in OPPOSITE directions
+
+Measured on the combat gate (wiring domove_attackmon_at into domove), with
+the melee chain at 44 functions and the wakeup chain fully live:
+
+                        unwired    wired
+  do_attack first-div   4 sessions   0        <- eliminated
+  dog_move              7            8
+  obj_resists           4            5
+  screens               493          470      <- costs 23
+  rng                   140,680      137,707  <- costs 2,973
+
+Wiring is CORRECT by the divergence measure: four sessions stop failing at
+do_attack and get further into the game before failing elsewhere. STATUS
+records that the divergence point is the real measure, not the advisory RNG
+count -- and by that measure this is a clear improvement.
+
+It still costs 23 scored screens, because getting further into the game
+reaches MORE unported code, and that code renders wrong frames. The
+sessions advance and the score drops.
+
+Do not resolve this by picking whichever number looks better. Both are real:
+the chain is right, and the cost is downstream of it. The change stays out
+until the downstream code (dog_move, obj_resists) exists, at which point the
+same wiring should pay. Re-measure both numbers together whenever either of
+those lands -- a wiring that costs 23 today may pay 100 tomorrow with no
+change to the wiring itself.
+
+Also measured: bringing the whole wakeup chain live (wake_msg, seemimic,
+finish_meating, growl, setmangry, hot_pursuit all calling real functions
+instead of recording) changed the wiring cost by EXACTLY ZERO -- still 23
+screens and 2,973 rng. The cost is not about consequences of a blow. Do not
+assume a chain going live moves a number; measure it.

@@ -11,6 +11,7 @@ import { MON_WEP } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
+    IS_OBSTRUCTED, LAVAWALL,
     P_DAGGER, P_KNIFE,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
@@ -246,9 +247,26 @@ function linedup(ax, ay, bx, by, boulderhandling) {
             return true;
         if (boulderhandling === 0)
             return false;
-        /* not line of sight, but might still be lined up if the only things
-           in the way are boulders */
-        note_unported('linedup:boulder walk');
+
+        /* No line of sight, but it may still be lined up if the ONLY things in
+           the way are boulders. Note the draw at the end: rn2(2 +
+           boulderspots), so more boulders make a clear shot less likely, and
+           boulderhandling == 1 skips the roll entirely. */
+        const dx = sgn(ax - bx), dy = sgn(ay - by);
+        let boulderspots = 0;
+        let cx = bx, cy = by;
+        do {
+            /* <cx,cy> is guaranteed to eventually converge with <ax,ay> */
+            cx += dx; cy += dy;
+            if (blocking_terrain(cx, cy))
+                return false;
+            if (sobj_at(ONAMES.BOULDER, cx, cy))
+                ++boulderspots;
+        } while (cx !== ax || cy !== ay);
+
+        /* reached target position without encountering an obstacle */
+        if (boulderhandling === 1 || rn2(2 + boulderspots) < 2)
+            return true;
         return false;
     }
     return false;
@@ -1328,3 +1346,17 @@ const mwelded = (obj) =>
     !!(obj && (obj.owornmask & W_WEP) && will_weld(obj));
 
 /* acidic and slimeproof come from js/dog.js. */
+
+// src/mthrowu.c:1282 blocking_terrain() — does this square stop a missile?
+//
+// is_waterwall needs the water-level terrain, which no ordinary level has, so
+// it is recorded rather than assumed false.
+function blocking_terrain(x, y) {
+    if (!isok(x, y))
+        return true;
+    const lev = game.level.at(x, y);
+    if (!lev || IS_OBSTRUCTED(lev.typ) || closed_door_mm(x, y)
+        || lev.typ === LAVAWALL)
+        return true;
+    return false;
+}

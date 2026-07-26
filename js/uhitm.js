@@ -215,3 +215,25 @@ export function double_punch() {
         return (skl_lvl - P_BASIC) > rn2(5);
     return false;
 }
+
+// src/uhitm.c:5198 missum() — the hero's attack misses.
+//
+// Draws nothing itself. Its three messages need pline plumbing and are
+// recorded, but the WAKEUP is behaviour, not a message: a monster that was
+// asleep stops being asleep, and wakeup() in turn calls setmangry(), which
+// makes a peaceful monster hostile. That is state a later turn depends on.
+//
+// wakeup() is not ported -- it opens a chain through wake_msg, seemimic,
+// finish_meating, growl, setmangry, ghod_hitsu and hot_pursuit -- so it is
+// recorded here rather than approximated. Approximating it by just clearing
+// msleeping would leave a peaceful monster peaceful after being attacked,
+// which is a worse wrong answer than doing nothing.
+export function missum(mdef, mattk, wouldhavehit) {
+    if (wouldhavehit)   /* a monk missing due to the body-armour penalty */
+        note_unported_uhitm('missum:cumbersome_armor_message');
+
+    note_unported_uhitm('missum:miss_message');
+
+    if (!helpless(mdef))
+        note_unported_uhitm('missum:wakeup');
+}

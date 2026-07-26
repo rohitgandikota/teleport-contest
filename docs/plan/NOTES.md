@@ -1910,7 +1910,27 @@ wrong, the regression is NOT compensation -- it means the corrected order is
 genuinely further from C for those sessions, which points at the CALL ORDER or
 TIMING of that arm rather than the insertion primitive.
 
-Next: check where C's makemon calls mkobj_at for S_SPIDER/S_SNAKE and whether
-our arm runs at the same point relative to the rest of makemon. Delete the
-duplicate either way -- js/makemon.js should import from js/mkobj.js -- but
-measure that separately from any reordering.
+CHECKED THE ARM: IT IS FAITHFUL. src/makemon.c:1307 and js/makemon.js:1415
+match exactly -- same in_mklev guard, same `x && y` test, same mkobj_at call,
+same hideunder. And place_object differs from makemon.js's inlined version
+ONLY in unshift vs push; there is no other behaviour in it.
+
+So insertion ORDER is the single difference, and correcting it to match C
+costs 69 screens. Every other explanation is now eliminated: the arm is
+right, the primitive is right, there are no other insertion sites, and the
+flat-list model is sound.
+
+THAT MEANS A CONSUMER READS THE ORDER WRONG. The push order accidentally
+satisfies it; the correct prepend order does not. The consumers that care are
+
+    js/dog.js dog_goal's object loop   -- walks level.objects calling
+                                          dogfood(), which DRAWS
+    js/invent.js sobj_at              -- filters the flat list by square
+
+Audit those two against C before touching the insertion again. In particular
+check whether either one reverses, sorts, or takes the LAST match where C
+takes the first -- a consumer that reads back-to-front turns a correct
+prepend into a wrong answer and makes the buggy push look right.
+
+Deleting the duplicate mkobj_at is still correct on the architecture rule, but
+do it in the same change as the consumer fix, not before it.

@@ -17,7 +17,9 @@ import { is_weptool } from './mkobj.js';
 import { ACURR } from './attrib.js';
 import { A_STR, A_DEX } from './const.js';
 import { AKLYS_LIM } from './const.js';
-import { ONAMES, OCLASSES } from './objects_data.js';
+import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { bigmonst } from './mondata.js';
+import { rnd, d } from './rng.js';
 import { spell_skilltype } from './spell.js';
 import { discover_object } from './o_init.js';
 import {
@@ -339,4 +341,148 @@ export function weapon_hit_bonus(weapon) {
     }
 
     return bonus;
+}
+
+// src/weapon.c:216 dmgval() — how much damage this object does to this
+// monster, before strength, skill and artifact bonuses.
+//
+// The draws are the point, and there are a lot of them. Every one is
+// conditional, and the conditions are not interchangeable:
+//
+//   CREAM_PIE returns 0 with NO draw at all, before anything else.
+//   The base roll splits on bigmonst(ptr) into TWO tables: rnd(oc_wldam)
+//   for large monsters, rnd(oc_wsdam) for small. Both are guarded by the
+//   field being nonzero, so a weapon with a 0 entry draws nothing.
+//   Each table then has its own switch of per-weapon bonuses, several of
+//   which draw AGAIN: rnd(4), rnd(6), d(2,4), d(2,6).
+//
+// The two switches are NOT the same weapon lists. MORNING_STAR is a +1 on
+// the large table and an rnd(4) on the small one; TRIDENT is d(2,4) large
+// and +1 small. Deriving one from the other is wrong in both directions.
+//
+// This table is transcribed from the 5.0 source. SILVER_MACE, PARTISAN and
+// RUNESWORD are in it and are not 3.6 entries.
+export function dmgval(otmp, mon) {
+    let tmp = 0;
+    const otyp = otmp.otyp;
+    const ptr = game.mons[mon.mnum];
+    const Is_weapon = (otmp.oclass === OCLASSES.WEAPON_CLASS
+                       || is_weptool(otmp, game.objects));
+
+    if (otyp === ONAMES.CREAM_PIE)
+        return 0;
+
+    const O = ONAMES, oc = game.objects[otyp];
+
+    if (bigmonst(ptr)) {
+        if (oc.oc_wldam)
+            tmp = rnd(oc.oc_wldam);
+        switch (otyp) {
+        case O.IRON_CHAIN: case O.CROSSBOW_BOLT: case O.MORNING_STAR:
+        case O.PARTISAN: case O.RUNESWORD: case O.ELVEN_BROADSWORD:
+        case O.BROADSWORD:
+            tmp++;
+            break;
+        case O.FLAIL: case O.RANSEUR: case O.VOULGE:
+            tmp += rnd(4);
+            break;
+        case O.ACID_VENOM: case O.HALBERD: case O.SPETUM:
+            tmp += rnd(6);
+            break;
+        case O.BATTLE_AXE: case O.BARDICHE: case O.TRIDENT:
+            tmp += d(2, 4);
+            break;
+        case O.TSURUGI: case O.DWARVISH_MATTOCK: case O.TWO_HANDED_SWORD:
+            tmp += d(2, 6);
+            break;
+        }
+    } else {
+        if (oc.oc_wsdam)
+            tmp = rnd(oc.oc_wsdam);
+        switch (otyp) {
+        case O.IRON_CHAIN: case O.CROSSBOW_BOLT: case O.MACE:
+        case O.SILVER_MACE: case O.WAR_HAMMER: case O.FLAIL:
+        case O.SPETUM: case O.TRIDENT:
+            tmp++;
+            break;
+        case O.BATTLE_AXE: case O.BARDICHE: case O.BILL_GUISARME:
+        case O.GUISARME: case O.LUCERN_HAMMER: case O.MORNING_STAR:
+        case O.RANSEUR: case O.BROADSWORD: case O.ELVEN_BROADSWORD:
+        case O.RUNESWORD: case O.VOULGE:
+            tmp += rnd(4);
+            break;
+        case O.ACID_VENOM:
+            tmp += rnd(6);
+            break;
+        }
+    }
+    if (Is_weapon) {
+        tmp += otmp.spe;
+        /* negative enchantment mustn't produce negative damage */
+        if (tmp < 0)
+            tmp = 0;
+    }
+
+    if (oc.oc_material <= MATERIALS.LEATHER && thick_skinned(ptr))
+        /* thick-skinned or scaled creatures don't feel it */
+        tmp = 0;
+    if (ptr === game.mons[PMNAMES.PM_SHADE] && !note_dmgval_unported('shade_glare'))
+        tmp = 0;
+
+    /* "very heavy iron ball"; weight increase is in increments */
+    if (otyp === O.HEAVY_IRON_BALL && tmp > 0) {
+        let wt = game.objects[O.HEAVY_IRON_BALL].oc_weight;
+
+        if (otmp.owt > wt) {
+            wt = ((otmp.owt - wt) / WT_IRON_BALL_INCR) | 0;
+            tmp += rnd(4 * wt);
+            if (tmp > 25)
+                tmp = 25;       /* objects[].oc_wldam */
+        }
+    }
+
+    /* Put weapon vs. monster type damage bonuses in below: */
+    if (Is_weapon || otmp.oclass === OCLASSES.GEM_CLASS
+        || otmp.oclass === OCLASSES.BALL_CLASS
+        || otmp.oclass === OCLASSES.CHAIN_CLASS) {
+        let bonus = 0;
+
+        if (otmp.blessed && mon_hates_blessings(mon))
+            bonus += rnd(4);
+        if (note_dmgval_unported('is_axe') && note_dmgval_unported('is_wooden'))
+            bonus += rnd(4);
+        if (oc.oc_material === MATERIALS.SILVER
+            && note_dmgval_unported('mon_hates_silver'))
+            bonus += rnd(20);
+        if (note_dmgval_unported('artifact_light') && otmp.lamplit
+            && note_dmgval_unported('hates_light'))
+            bonus += rnd(8);
+
+        /* if the weapon is going to get a double damage bonus, adjust this
+           bonus so that effectively it's added after the doubling */
+        if (bonus > 1 && otmp.oartifact
+            && note_dmgval_unported('spec_dbon') >= 25)
+            bonus = ((bonus + 1) / 2) | 0;
+
+        tmp += bonus;
+    }
+
+    if (tmp > 0) {
+        tmp -= note_dmgval_unported('greatest_erosion') ? 1 : 0;
+        if (tmp < 1)
+            tmp = 1;
+    }
+
+    return tmp;
+}
+
+// include/weight.h:18 WT_IRON_BALL_INCR — verified against the header, not
+// recalled: the value was written from memory first and then checked.
+const WT_IRON_BALL_INCR = 160;
+
+// Predicates dmgval needs that are not ported. Each returns 0/false and is
+// recorded by name, so game.unported says which one a divergence wanted.
+function note_dmgval_unported(what) {
+    (game.unported ||= new Set()).add('weapon:dmgval:' + what);
+    return 0;
 }

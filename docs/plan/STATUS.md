@@ -6,16 +6,72 @@
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
-MOST RECENT WORK: the melee to-hit chain behind uhitm.c's do_attack. Ten
-functions ported and VERIFIED BY FORCED INPUT rather than by score, since none
-of them draw. That found a latent ReferenceError (unbound P_SKILLED,
-P_MASTER, P_GRAND_MASTER) that would have crashed any session where the hero
-reached Skilled, and which undefined-refs, the scoreboard, generalize and
-dup-defs were all structurally unable to see.
+MOST RECENT WORK: the melee chain behind uhitm.c's do_attack. TWENTY functions
+ported. The most recent are hmon, wakeup and setmangry, plus a correction to
+do_attack's Punished term.
 
-NEXT IN THE CHAIN is known_hitum (60 lines, src/uhitm.c). It DRAWS -- rn2(25),
-rn2(3) and rnd(100) in its flee branch -- so unlike everything below it, the
-scoreboard can finally see it.
+Three ordering/binding defects were found in these three functions, and the
+shape they share is the important part:
+
+  hmon      anger_guards is read BEFORE hmon_hitmon, which can kill the
+            monster or flip its peacefulness.
+  wakeup    was_sleeping and was_peaceful are read BEFORE the calls that
+            clear them. setmangry() clears mpeaceful, so testing it after
+            would make the priest/shopkeeper branch dead code.
+  is_watch  an IDENTITY test against PM_WATCHMAN/PM_WATCH_CAPTAIN, not a
+            msound test. Written first as MFLAGS.MS_WATCH, which does not
+            exist: silently false for every monster, forever.
+  setmangry threw "STRAT_WAITMASK is not defined" on its second line in all
+            five arms. Module load was clean and the scoreboard was
+            unchanged, because nothing calls it yet.
+  Punished  include/youprop.h:77 defines it as (uball != 0), the iron ball,
+            NOT a uprops intrinsic. Read as game.u.uprops.PUNISHED it is
+            permanently undefined -- falsy, so the rn2(7) after it in the ||
+            chain still drew and the common path was right BY ACCIDENT, while
+            the term could never become true once punishment lands.
+
+THE GENERAL LESSON, worth more than any of the five: a JS name that resolves
+to undefined is not an error, it is an answer. Only the STRAT_WAITMASK case
+threw. When the surrounding logic makes undefined behave correctly today, the
+defect is invisible to every tool and to the score, and surfaces later at a
+line far from its cause. Check the HEADER for what a name is, do not trust a
+name that reads plausibly.
+
+Sequence that catches these cheaply, in order:
+  1. node tools/undefined-refs.mjs      (30s, catches unimported constants --
+                                         it DOES work, see NOTES; an earlier
+                                         claim that it has a value-reference
+                                         blind spot was retracted as unmeasured)
+  2. force every arm with synthetic args (catches wrong-but-parseable, and is
+                                         the ONLY check that works for a
+                                         function ported ahead of its call site)
+  3. node tools/scoreboard.mjs          (catches duplicate bindings, which
+                                         parse-error to a hard 0/44 rather
+                                         than degrading -- cheap to spot)
+
+THE DIVERGENCE AGGREGATE, re-measured this session:
+
+     7  dog_move(dogmove.c:1255)
+     4  obj_resists(zap.c:1469)
+     4  getbones(bones.c:645)
+     4  do_attack(uhitm.c:474)
+     3  rnd_otyp_by_namedesc(objnam.c:3522)
+     3  next_ident(mkobj.c:521)
+     3  distfleeck(monmove.c:538)
+     2  place_lregion(mkmaze.c:396)
+     2  mount_steed(steed.c:341)
+
+do_attack:474 is the Punished/rn2(7) line just corrected, so the melee chain
+IS on the critical path for 4 sessions. dog_move at 7 is the single largest
+blocker and is untouched.
+
+STILL DORMANT: do_attack's call site is deliberately NOT wired. It costs 30
+screens and does not throw (verified). The gate is hmon_hitmon: a hero who
+swings without dealing damage diverges behaviourally, not just in draws.
+
+NEXT: passive's switch arms (each draws, so scoreboard-visible), then
+hmon_hitmon. Alternatively dog_move, which unblocks nearly twice as many
+sessions but is a larger unknown.
 
 ITS DEPENDENCY TREE, walked rather than estimated:
 

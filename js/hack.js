@@ -1,3 +1,4 @@
+import { is_flimsy } from './obj.js';
 import { You, pline_xy, pline_The, set_msg_xy } from './pline.js';
 import { a_monnam, upstart } from './do_name.js';
 import { is_door_mappear } from './monst.js';
@@ -541,4 +542,24 @@ export async function lookaround() {
             u.dy = y0 - u.uy;
         }
     }
+}
+
+// src/hack.c:1787 impact_disturbs_zombies() — a heavy object hitting the floor
+// wakes zombies buried nearby.
+//
+// The early return is fully ported and is what fires in the common case: a
+// light or flimsy object makes no noticeable impact and nothing happens. Only
+// a heavy, non-flimsy drop reaches disturb_buried_zombies(), which needs the
+// buried object list and peek_timer/stop_timer -- none of which exist yet --
+// so that call is recorded rather than guessed.
+//
+// Note the threshold flips with `violent`: 10 for a violent impact, 100 for an
+// ordinary drop, so an ordinary drop has to be ten times heavier to matter.
+export function impact_disturbs_zombies(obj, violent) {
+    /* if object won't make a noticeable impact, let buried zombies rest */
+    if (obj.owt < (violent ? 10 : 100) || is_flimsy(obj))
+        return;
+
+    /* disturb_buried_zombies(obj->ox, obj->oy) */
+    (game.unported ||= new Set()).add('hack:disturb_buried_zombies');
 }

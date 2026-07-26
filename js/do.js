@@ -1,3 +1,5 @@
+import { impact_disturbs_zombies } from './hack.js';
+import { stackobj } from './invent.js';
 // do.js — commands that move the hero between levels, and the level change
 // itself.
 // C ref: src/do.c
@@ -210,12 +212,12 @@ export function dropz(obj, with_impact) {
         place_object(obj, game.u.ux, game.u.uy);
         if (with_impact)
             note_unported_do('dropz:container_impact_dmg');
-        note_unported_do('dropz:impact_disturbs_zombies');
+        impact_disturbs_zombies(obj, with_impact);
         if (obj === game.uball)
             note_unported_do('dropz:drop_ball');
         else if (game.level?.flags?.has_shop)
             note_unported_do('dropz:sellobj');
-        note_unported_do('dropz:stackobj');
+        stackobj(obj);
         newsym(game.u.ux, game.u.uy);   /* remap location under self */
     }
     encumber_msg();

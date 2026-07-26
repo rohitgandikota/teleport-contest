@@ -199,6 +199,23 @@ export function sobj_at(otyp, x, y) {
     return null;
 }
 
+// src/invent.c:4366 stackobj() — merge a just-dropped object into any
+// compatible stack already on its square.
+//
+// C walks svl.level.objects[ox][oy] through the nexthere chain; the port keeps
+// one flat array and filters on ox/oy, so the iteration order is the array's.
+// merged() does the real work and is already ported.
+//
+// The break matters: C stops at the FIRST successful merge rather than
+// continuing, because merged() has already freed the merged-away object.
+export function stackobj(obj) {
+    for (const otmp of (game.level?.objects || []))
+        if (otmp.ox === obj.ox && otmp.oy === obj.oy
+            && otmp !== obj && merged(obj, otmp))
+            break;
+    return;
+}
+
 // src/mkobj.c weight() — how heavy is this stack, right now.
 //
 // Needed by merged(), which is the most-reached unported path in the whole

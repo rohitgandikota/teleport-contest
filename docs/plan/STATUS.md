@@ -139,14 +139,38 @@ mtrack is still empty draws NOTHING here, so the newt may well have moved
 several times already without appearing above. Absence from the list is not
 absence of movement.
 
-SO THE TWO REMAINING POSSIBILITIES ARE:
-  1. The newt was PLACED at 77,14 by level generation and C's sits elsewhere.
-     Check this first -- it is static, and mklev's monster placement is
-     testable without replaying turns.
-  2. It moved earlier through the drawless path (empty mtrack, or appr == 0).
-     If so, instrument m_move ENTRY rather than that one draw, printing every
-     monster's position each turn, and diff the newt's track against where
-     C's must have been.
+RESOLVED TO ONE MOVE. Instrumenting place_monster shows both monsters are
+born during level generation:
+
+    BORN m_id=20 mnum=59  at 55,17  in_mklev=true
+    BORN m_id=30 mnum=322 at 76,13  in_mklev=true
+
+So the newt is PLACED AT 76,13, not 77,14. Possibility 1 is out: placement is
+not the problem, and it cannot be, since the whole of level generation matches
+(the first divergence is at call 2869, deep into play).
+
+The newt then reached 77,14 by MOVING, one step southeast into the wall
+corner, and that move drew nothing -- which is why it never appeared in the
+m_move list. m_id=20's birth at 55,17 is likewise correct, confirmed by its
+six subsequent matching moves.
+
+THE BUG IS THAT SINGLE MOVE, 76,13 -> 77,14. And note what it implies about
+the code path: the rn2(4 * (cnt - j)) track check draws nothing when mtrack is
+empty, and the `!rn2(++chcnt)` tie-break only draws when appr == 0. A move
+that spends NO draws therefore took the appr != 0 branch, where the square is
+chosen DETERMINISTICALLY by the nearer/nidist comparison.
+
+That is very good news: a deterministic selection can be compared against the
+C line by line without any RNG reasoning at all. Our choice of 77,14 differs
+from C's, and C's destination has 7 open neighbours so it is well clear of the
+wall the newt walked into.
+
+NEXT: read js/monmove.js m_move's selection block against src/monmove.c:1965
+onward -- `nearer = ((ndist = dist2(nx, ny, ggx, ggy)) < nidist)` and the
+`(appr == 1 && nearer) || (appr == -1 && !nearer) || (!appr && !rn2(++chcnt))`
+test -- and check ggx/ggy, appr, and the initial nidist. A wrong goal or a
+wrong starting nidist would send the monster the wrong way with no draw to
+betray it, which is exactly the signature here.
 
 Note the newt is at 77,14, hard against the VWALL at x=78, and needs 7 open
 neighbours in C. A square with 7 open neighbours is well clear of any wall, so

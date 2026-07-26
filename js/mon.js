@@ -11,13 +11,14 @@ import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
+import { Monnam } from './do_name.js';
 import { hot_pursuit } from './shk.js';
 import { is_metallic } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
 import { mksobj_at } from './mkobj.js';
-import { newsym, canseemon } from './display.js';
+import { newsym, canseemon, pline } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
@@ -959,7 +960,7 @@ export function set_ustuck(mtmp) {
 //
 // wake_msg, seemimic, finish_meating, growl, setmangry, ghod_hitsu and
 // hot_pursuit are recorded where they are not ported.
-export function wakeup(mtmp, via_attack) {
+export async function wakeup(mtmp, via_attack) {
     const was_sleeping = mtmp.msleeping;
 
     wake_msg(mtmp, via_attack);
@@ -980,7 +981,7 @@ export function wakeup(mtmp, via_attack) {
 
         if (was_sleeping)
             growl(mtmp);
-        setmangry(mtmp, true);
+        await setmangry(mtmp, true);
         if (was_peaceful) {
             if (mtmp.ispriest && in_rooms(mtmp.mx, mtmp.my, TEMPLE)?.length)
                 note_unported_mon('wakeup:ghod_hitsu');
@@ -1006,7 +1007,7 @@ export function wakeup(mtmp, via_attack) {
 // subsystem, which is not ported, so no engraving exists to stand on and the
 // branch is unreachable today -- that is the honest state, not a stub: when
 // engravings land the condition starts being true on its own.
-export function setmangry(mtmp, via_attack) {
+export async function setmangry(mtmp, via_attack) {
     if (via_attack && note_sengr_at_unported()
         && (onscary(game.u.ux, game.u.uy, mtmp) || mtmp.mpeaceful)) {
         /* unreachable until the engraving subsystem is ported */
@@ -1029,7 +1030,7 @@ export function setmangry(mtmp, via_attack) {
         adjalign(-1); /* attacking peaceful monsters is bad */
     if (humanoid(game.mons[mtmp.mnum]) || mtmp.isshk || mtmp.isgd) {
         if (couldsee(mtmp.mx, mtmp.my))
-            note_unported_mon('setmangry:pline_mon_gets_angry');
+            await pline(`${Monnam(mtmp)} gets angry!`);
     } else {
         growl(mtmp);
     }

@@ -4310,7 +4310,14 @@ State of the whole area:
     stock_room + shkinit + nameshk DONE   (shops stocked, verified by probe)
     fill_zoo + the species pickers DONE   (zoos filled, verified by probe)
     antholemon                     DONE   (see below; ubirthday finessed)
-    mktemple                       OPEN   (the only one left)
+    mktemple + priestini           DONE
+
+THE SPECIAL-ROOM AREA IS COMPLETE. Every arm of do_mkroom is ported and every
+marked room is filled. Remaining holes inside it are individually recorded
+through game.unported and none of them gates a draw: rloc's insurance case,
+the sanctum Amulet arm, uncurse's artifact-light bookkeeping, ndemon in
+morguemon's deep arm, the maze-level throne rescan, mkveggy_at/shkveg, and
+nameshk's chosen NAME (its draw count is unaffected, see below).
 
 Both remaining items are genuinely blocked rather than merely unstarted:
 

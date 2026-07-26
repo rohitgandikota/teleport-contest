@@ -289,7 +289,7 @@ export function drop(obj) {
         note_unported_do('drop:setuwep');
     }
     if (obj === game.uquiver)
-        note_unported_do('drop:setuqwep');
+        setuqwep(null);         /* src/do.c -- ported at wield.js:113 */
     if (obj === game.uswapwep)
         note_unported_do('drop:setuswapwep');
 

@@ -1874,7 +1874,23 @@ prepending, matching should improve. Two readings:
     per-square order only if every insertion preserves it globally, which
     prepend does not once two squares interleave.
 
-The second is more likely and would mean the fix is structural: index
-level.objects by [x][y] as C does, rather than choosing between push and
-unshift on one flat array. Do not re-attempt the one-line version without
-resolving which reading holds.
+RESOLVED WHICH READING HOLDS, and it is the FIRST one. The flat-list model is
+sound: js/invent.js:186 and js/dog.js:1229 both record the reasoning, that
+place_object() prepending to one flat list yields the same RELATIVE order per
+square that C's ->nexthere chain does, so filtering by square recovers C's
+order. That is correct -- two objects on the same square keep their relative
+positions under a global prepend.
+
+So mkobj_at's push IS a real bug and delegating to place_object IS the
+faithful fix. It costing 69 screens therefore means OTHER insertions are also
+mis-ordered and the push was accidentally compensating for them.
+
+SCOPE IS SMALL: 9 references to level.objects across four files
+(js/dog.js, js/invent.js, js/makemon.js, js/mkobj.js) and 9 place_object
+call sites. Audit all of them together rather than one at a time -- fixing
+one in isolation is what produced the regression, because a partially
+corrected order can be further from C than a consistently wrong one.
+
+Specifically check every site that adds to level.objects WITHOUT going
+through place_object, the way mkobj_at did. Those are the compensating
+errors.

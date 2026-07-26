@@ -63,9 +63,25 @@ matters for relocation, and the wormno test rejects that for long worms
 because every segment answers m_at(). With a permonst there is no identity
 to compare and no wormno to read, so both are simply absent.
 
-Changing the signature touches every caller and is a separate piece of work.
-Do it before assuming the pet-placement divergence is elsewhere -- the pet is
-placed via a fakemon in C, so the identity test IS reached on that path.
+THE SIGNATURE CHANGE IS NOW DONE and it did NOT move the pet. seed0030 still
+shows "f<." against "$<f" at step 4. So goodpos is no longer a candidate:
+all three differences in it are fixed and the placement is unchanged.
+
+WHAT THE "$" MEANS, and it is the most useful clue left: in our render the
+gold is VISIBLE at the square where C draws the pet. Gold does not block
+placement, so C's pet is simply STANDING ON the gold and hiding it. Both
+sides therefore agree on where the gold is; they disagree only on which
+adjacent square the pet took.
+
+Since collect_coords, the shuffle, the RNG stream and goodpos all match, the
+remaining possibilities are narrow:
+  - the hero is standing somewhere different when makedog runs, which makes
+    the whole ring different. CHECK THIS FIRST -- it is cheap: print u.ux,u.uy
+    at the makedog call and compare against where the recorded screen shows @.
+  - or enexto_core is entered with a different radius/flag combination.
+
+Note the stairs "<" appear at the same column on both sides, so the ROOM
+matches; that does not prove the hero's square matches.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

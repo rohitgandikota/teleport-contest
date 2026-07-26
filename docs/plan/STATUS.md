@@ -84,9 +84,20 @@ STILL DORMANT: do_attack's call site is deliberately NOT wired. It costs 30
 screens and does not throw (verified). The gate is hmon_hitmon: a hero who
 swings without dealing damage diverges behaviourally, not just in draws.
 
-NEXT: passive's switch arms (each draws, so scoreboard-visible), then
-hmon_hitmon. Alternatively dog_move, which unblocks nearly twice as many
-sessions but is a larger unknown.
+THE MELEE CHAIN NOW STANDS AT 26 FUNCTIONS. Landed since the last update:
+hmon, wakeup, setmangry, passive (head + AD_FIRE/ACID/STON/RUST/CORR/MAGM/
+ENCH arms + the SECOND switch), hmon_hitmon (skeleton), hmon_hitmon_do_hit,
+hmon_hitmon_barehands, hmon_hitmon_weapon.
+
+STILL NEEDED BEFORE do_attack CAN BE WIRED:
+  hmon_hitmon_weapon_melee     the weapon damage draws
+  hmon_hitmon_dmg_recalc       skill and strength bonuses
+  the damage-application path  (mon->mhp -= dmg and the kill handling)
+  hmon_hitmon_msg_hit          messages, screen-visible
+
+NEXT: hmon_hitmon_weapon_melee. Alternatively dog_move, which unblocks
+nearly twice as many sessions (7 vs 4) but is a cold start on an absent
+400-line file.
 
 ITS DEPENDENCY TREE, walked rather than estimated:
 

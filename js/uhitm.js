@@ -412,7 +412,47 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
     else if (damd)
         d(mon.m_lev + 1, damd);
 
-    note_unported_uhitm(`passive:adtyp=${ptr.mattk[i][1]}`);
+    /*  These affect you even if they just died.  */
+    const adtyp = ptr.mattk[i][1];
+    switch (adtyp) {
+    case ATTKS.AD_FIRE:
+        /* every draw here is behind THREE guards: the hit landed, the monster
+           is not cancelled, and the hero was using an object. A bare-handed
+           miss against a red mold draws nothing past the d() above. */
+        if (mhitb && !mon.mcan && weapon) {
+            if (aatyp === ATTKS.AT_KICK) {
+                if (game.uarmf && !rn2(6))
+                    note_unported_uhitm('passive:erode_obj:burn');
+            } else if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW
+                       || aatyp === ATTKS.AT_MAGC || aatyp === ATTKS.AT_TUCH)
+                note_unported_uhitm('passive:passive_obj:fire');
+        }
+        break;
+    case ATTKS.AD_ACID:
+        /* NOTE the asymmetry with AD_FIRE: this arm's first block is guarded
+           by mhitb alone -- no !mcan, no weapon -- so a cancelled acid blob
+           still splashes you, and the rn2(2) fires bare-handed. The second
+           block then repeats the weapon test separately. Folding the two
+           blocks together would lose the rn2(2) on every bare-handed hit. */
+        if (mhitb && rn2(2)) {
+            note_unported_uhitm('passive:acid_splash');   /* mdamageu */
+            if (!rn2(30))
+                note_unported_uhitm('passive:erode_armor:corrode');
+        }
+        if (mhitb && weapon) {
+            if (aatyp === ATTKS.AT_KICK) {
+                if (game.uarmf && !rn2(6))
+                    note_unported_uhitm('passive:erode_obj:corrode');
+            } else if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW
+                       || aatyp === ATTKS.AT_MAGC || aatyp === ATTKS.AT_TUCH)
+                note_unported_uhitm('passive:passive_obj:acid');
+        }
+        note_unported_uhitm('passive:exercise:A_STR');
+        break;
+    default:
+        note_unported_uhitm(`passive:adtyp=${adtyp}`);
+        break;
+    }
     return malive | mhit;
 }
 

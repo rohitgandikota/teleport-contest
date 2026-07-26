@@ -1466,3 +1466,33 @@ Note the asymmetry, because it is not obvious: monmove.js IMPORTING priest.js
 is fine and does not regress. It was the RE-EXPORT that broke things. So the
 rule is not "never add imports" -- it is "measure the corpus after any change
 to the module graph, including one that only moves code between files".
+
+## A no-op change that "fixes" nothing will not tell you it did nothing
+
+I changed mon_resistancebits and resists_poison from reading mon.data.mresists
+to game.mons[mon.mnum].mresists, and committed it as fixing a silent total
+failure of every resists_* predicate. THAT CLAIM WAS FALSE.
+
+js/makemon.js:1345 sets `data: ptr` on every monster it creates. Verified at
+runtime on seed4500: all 15 monsters have .data, and for all 15
+`mtmp.data === game.mons[mtmp.mnum]`. The two expressions are the same object.
+The original code was correct and the change is a no-op.
+
+WHAT MISLED ME, and it is worth guarding against: the score did not move, and
+I read that as "this path is not exercised by the public sessions" rather than
+as "this change does nothing". Both explanations predict an unchanged score,
+and I picked the one that flattered the change. A no-op and a correct-but-
+dormant fix are indistinguishable by score alone.
+
+THE CHECK THAT SEPARATES THEM: before claiming a fix, demonstrate the OLD code
+was wrong. Here that was one runtime print comparing the two expressions, and
+it takes a minute. If you cannot show the old value differed from the new one,
+you have not fixed anything.
+
+The related trap is real though, and this is why the idiom looked suspicious:
+`mon->data` is how the C reaches a permonst, and porting it literally works
+ONLY because makemon happens to set a parallel .data field. Nothing enforces
+that. A monster built by any other path would have mnum but no .data, and
+every .data read would silently answer undefined. There are 35 such reads in
+js/. Prefer game.mons[mnum] in NEW code for that reason -- but do not call
+converting the existing ones a bug fix.

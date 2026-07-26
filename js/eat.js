@@ -7,6 +7,7 @@
 
 import { game } from './gstate.js';
 import { done } from './end.js';
+import { set_occupation } from './allmain.js';
 import { rn2 } from './rng.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING,
          A_LAWFUL } from './const.js';
@@ -133,9 +134,7 @@ export function start_eating(otmp, already_partly_eaten) {
         return;
     }
 
-    /* set_occupation(eatfood, ...) — the multi-turn occupation needs the
-       occupation loop in allmain.c */
-    note_unported_eat('start_eating:set_occupation');
+    set_occupation(eatfood, `eating ${otmp.oname ?? ''}`, 0);
 }
 
 function note_unported_eat(what) {
@@ -202,3 +201,39 @@ export function bite() {
     note_unported_eat('bite:nutrition');
     return 0;
 }
+
+// src/eat.c eatfood() — the occupation callback. Returns 1 while still busy,
+// 0 when the meal is over (or was interrupted).
+//
+// usedtime is incremented BEFORE bite(), and the test is <= reqtime rather
+// than < , so the last turn of a meal still takes a bite. Writing it as < , or
+// biting before incrementing, drops that final bite -- and for a Satiated hero
+// that final bite is the one that chokes.
+export function eatfood() {
+    const v = game.context.victual;
+    let food = v?.piece;
+
+    if (food && !carried(food) && !obj_here(food, game.u.ux, game.u.uy))
+        food = null;
+    if (!food) {
+        /* maybe it was stolen? */
+        note_unported_eat('eatfood:do_reset_eat');
+        return 0;
+    }
+    if (!v.eating)
+        return 0;
+
+    if (++v.usedtime <= v.reqtime) {
+        if (bite())
+            return 0;
+        return 1;                       /* still busy */
+    }
+    note_unported_eat('eatfood:done_eating');
+    return 0;
+}
+
+// src/invent.c carried() — is this object in the hero's inventory?
+const carried = (o) => (game.invent || []).includes(o);
+
+// src/invent.c obj_here() — is this object on that square?
+const obj_here = (o, x, y) => o.ox === x && o.oy === y;

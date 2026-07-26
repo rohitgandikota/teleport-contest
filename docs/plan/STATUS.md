@@ -42,8 +42,24 @@ The C at monmove.c:1961 is
     if (rn2(4 * (cnt - j)))
 
 so C's argument of 28 means cnt - j = 7 and our 20 means cnt - j = 5. With
-j = 0 on the first track entry, OUR mfndpos RETURNED 5 CANDIDATE SQUARES WHERE
-C RETURNED 7. Two legal squares are missing from the candidate list.
+j = 0 on the first track entry, our mfndpos returned 5 candidates where C's
+returned 7.
+
+BUT THE CAUSE IS NOT SETTLED, and the obvious reading is probably wrong.
+Dumping the candidate list at that exact call:
+
+    monster PM_NEWT (322) at 77,14, cnt=5
+    neighbours 76,13 / 76,14 / 76,15 / 77,13 / 77,15   all typ 25 (ROOM), taken
+    neighbours 78,13 / 78,14 / 78,15   all typ 1 (VWALL), rejected
+
+Five open squares is EXACTLY RIGHT for a newt standing against a vertical
+wall. A newt cannot enter walls, so C cannot be accepting those three either.
+The likelier explanation is that C'S NEWT IS SOMEWHERE ELSE -- a position with
+seven open neighbours, i.e. not against a wall.
+
+That makes this the same shape as the seed0030 pet: a POSITION divergence
+upstream, with no RNG divergence in front of it, surfacing later as a wrong
+modulus. Do not "fix" mfndpos on the strength of the count alone.
 
 Why this outranks everything else on the list below: mfndpos runs for every
 monster on every turn, its count feeds the modulus of this draw AND the
@@ -52,12 +68,13 @@ desyncs the stream on essentially the first monster move of the game. It is
 almost certainly why so many sessions diverge in the 2800-3000 range rather
 than anywhere interesting.
 
-NEXT, and this is cheap: dump our mfndpos candidate list for that monster at
-that turn (seed4500, call 2869) and compare it against the eight neighbouring
-squares by hand. Two of them are being rejected that should not be. Check the
-arms most recently touched first -- js/mon.js mfndpos has poolok/lavaok,
-m_in_air/is_clinger and the ALLOW_* gates, and the notes above record that the
-poison-gas region and worm_cross arms are still unported.
+NEXT: establish WHERE C's newt is before touching mfndpos. The candidate dump
+is already done and is above; what is missing is C's side. Find the newt on
+the recorded screen for that step (it renders as ':') and compare its position
+with our 77,14. If C's newt is off the wall, the bug is whatever moved ours
+there, and mfndpos is innocent. Only if C's newt is ALSO at 77,14 is the
+candidate filter itself wrong, and in that case check poolok/lavaok,
+m_in_air/is_clinger and the ALLOW_* gates in js/mon.js mfndpos.
 
 Do NOT start uhitm.c before this. A monster-movement count that is wrong on
 turn one makes every later measurement noisier, including any attempt to

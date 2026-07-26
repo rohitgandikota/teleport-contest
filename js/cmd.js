@@ -18,7 +18,7 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock } from './hack.js';
+import { bad_rock, nomul } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
@@ -56,7 +56,7 @@ import { newsym, flush_screen, pline, docrt, _buildScreenOutput,
          TOPLINE_SPECIAL_PROMPT , TOPLINE_EMPTY} from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
-         IS_WALL, IS_OBSTRUCTED, IS_DOOR } from './const.js';
+         IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
@@ -734,9 +734,28 @@ async function domove() {
        56/11405 from a temporal dead zone, which looks like a catastrophic
        behavioural regression and is really one misplaced line. */
 
+    /* src/hack.c:2846 — the blocked-move exit.
+     *
+     *     if (!test_move(u.ux, u.uy, x - u.ux, y - u.uy, DO_MOVE)) {
+     *         if (!svc.context.door_opened) {
+     *             svc.context.move = 0;
+     *             nomul(0);
+     *         }
+     *         return;
+     *     }
+     *
+     * The nomul(0) is how a RUN ends in the ordinary case: lookaround() does
+     * not stop a rush crossing an open room, so C relies on the hero walking
+     * into something. Without it a wired run loop has no terminator.
+     *
+     * The door_opened guard matters: walking into a closed door with autoopen
+     * opens it and consumes the turn, and that must NOT stop a run. */
     if (blocksMove(newx, newy)) {
         // Can't move there
-        game.context.move = 0;
+        if (!game.context.door_opened) {
+            game.context.move = 0;
+            nomul(0);
+        }
         return;
     }
 
@@ -758,6 +777,30 @@ async function domove() {
         if (!(await domove_swap_with_pet(mtmp, newx, newy))) {
             game.u.ux = game.u.ux0;     /* didn't move after all */
             game.u.uy = game.u.uy0;
+        }
+    }
+
+    /* src/hack.c:2936 — the post-move run check.
+     *
+     *     reset_occupations();
+     *     if (svc.context.run) {
+     *         if (svc.context.run < 8)
+     *             if (IS_DOOR(tmpr->typ) || IS_OBSTRUCTED(tmpr->typ)
+     *                 || IS_FURNITURE(tmpr->typ))
+     *                 nomul(0);
+     *     }
+     *
+     * tmpr is the square just MOVED ONTO, not the one ahead. This is the
+     * second ordinary way a run ends -- stepping onto a doorway, a fountain,
+     * an altar, stairs -- and it is separate from lookaround(), which only
+     * inspects neighbours. run == 8 is the travel case and is exempt. */
+    reset_occupations();
+    if (game.context.run) {
+        if (game.context.run < 8) {
+            const tmpr = game.level?.at?.(newx, newy);
+            if (tmpr && (IS_DOOR(tmpr.typ) || IS_OBSTRUCTED(tmpr.typ)
+                         || IS_FURNITURE(tmpr.typ)))
+                nomul(0);
         }
     }
 

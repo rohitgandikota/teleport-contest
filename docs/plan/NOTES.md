@@ -2279,3 +2279,31 @@ proves its behaviour only to the extent the inputs are real.
 Named constants were added (MATTK_AATYP/ADTYP/DAMN/DAMD in js/const.js) so
 the next misread is a visible error rather than a silent undefined. Prefer
 that to raw indices anywhere the C uses a struct field.
+
+## A "regression" with a NEW zero-screen session is a crash you just exposed
+
+Wiring corpse_chance into mondied first measured -28 screens with the
+zero-screen count rising 5 -> 6. Reverting on that number would have thrown
+away a correct change AND left a latent bug in place.
+
+The crashed session reported `CORPSTAT_NONE is not defined`, and the name is
+referenced at js/mklev.js:324 with no import -- it had been a latent
+ReferenceError for some time, firing only on levels that reach that line.
+Making corpse_chance real changed which levels reach it. Importing the name
+turned -28 into +6, a new session high of 511.
+
+SO: when a change measures badly AND the zero-screen count rises, the crash is
+usually NOT in the code you just wrote. Read the error before attributing the
+delta to your own behaviour change. Twice today the crash was in code that had
+been quietly broken all along and only became reachable.
+
+Checking whether the port has live crashes is cheap and worth doing after any
+sizeable change:
+
+    for s in $(node tools/scoreboard.mjs | grep -E "screens *0/" | awk '{print $2}'); do
+        node frozen/ps_test_runner.mjs --worker-session=sessions/$s.session.json |
+            grep -oE '"error":"[^"]*"|"error":null'
+    done
+
+All five current zero-screen sessions report error:null -- they diverge too
+early to match a screen, which is a different thing from crashing.

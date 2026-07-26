@@ -168,6 +168,25 @@ difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
 
+### Every sub-1000 divergence is now cleared; the earliest is 1956
+
+    1956  seed0367-priest-quest-tour
+    2205  seed0501-priest-cast-read-turn
+    2293  seed0101-ranger-quiver-throw-travel-engrave
+    2300  seed1500-rogue-explore-move
+
+seed0367 at 1956 is in the pet's ranged-attack targeting. C spends ONE
+rnd(5) at score_targ(dogmove.c:830) and moves on to distfleeck; we spend a
+second one, so best_target() (src/dogmove.c:838) found a target in a direction
+where C found none.
+
+best_target scans all eight directions with find_targ(mtmp, dx, dy, 7), which
+walks up to seven squares and SKIPS invisible monsters unless the pet has see
+invisible. score_targ is called once per direction that yields a target, and
+its rnd(5) fuzz factor is the visible draw. So the next step is to compare our
+find_targ against C's line walk -- the skip conditions and the distance bound
+are where an extra target comes from.
+
 ### Rank sessions by DIVERGENCE POINT, not by screens
 
     for f in sessions/*.session.json; do

@@ -855,11 +855,30 @@ cpostfx alone is 199 lines -- it is the corpse-effect dispatcher (every
 "you feel..." intrinsic, teleportitis, stoning, the lot) and dwarfs the
 function that calls it. fpostfx (90) is its non-corpse twin.
 
-SO THIS IS NOT A 29-LINE ITEM. The useup/useupf/carried/food_xname group is
-about 50 lines and is the mechanical half; the postfx pair is 289 lines and
-is a subsystem. Splitting them is viable: done_eating with both postfx calls
-RECORDED would still remove the object from inventory, end the occupation and
-clear victual, which is most of the observable behaviour.
+SO THIS IS NOT A 29-LINE ITEM. And the "mechanical half is about 50 lines"
+estimate written here first was ALSO WRONG -- useup is 12 lines but its own
+chain is entirely absent:
+
+    useup -> useupall -> setnotworn (34)
+                      -> freeinv (6)
+                      -> obfree (not sized, deletes contents recursively)
+          -> update_inventory (absent)
+
+So even the "small" half pulls in the inventory-removal machinery, which
+nothing in js/ has yet. THAT is the real reason this entry is expensive, and
+it is a better argument for doing it than cpostfx was against: useup,
+freeinv, setnotworn and obfree are needed by EVERY item-consuming path, not
+just eating -- reading a scroll, quaffing a potion, breaking a wand. They are
+infrastructure, and their absence is why so many item commands stop at the
+prompt.
+
+REVISED RECOMMENDATION: port the inventory-removal chain (useup, useupall,
+freeinv, setnotworn, obfree, update_inventory) as its own unit and treat
+done_eating as its first consumer. Do NOT start from done_eating.
+
+The postfx pair (cpostfx 199, fpostfx 90) stays recorded; done_eating with
+those two recorded still removes the object, ends the occupation and clears
+victual.
 
 Worth noting one ordering detail C flags in a comment: occupation is zeroed
 BEFORE newuhs(FALSE) "so newuhs() knows we're done". Zeroing it after would

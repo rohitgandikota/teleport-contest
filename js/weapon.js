@@ -7,7 +7,7 @@
 // array that comparison has no input at all.
 
 import { game } from './gstate.js';
-import { BOLT_LIM } from './const.js';
+import { AKLYS_LIM } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { spell_skilltype } from './spell.js';
 import { discover_object } from './o_init.js';
@@ -164,9 +164,8 @@ function note_unported_weapon(what) {
     (game.unported ||= new Set()).add(what);
 }
 
-/* src/weapon.c:512 — AKLYS_LIM is BOLT_LIM / 2, and the table stores the
-   SQUARE of it because the caller compares against dist2. */
-const AKLYS_LIM = Math.trunc(BOLT_LIM / 2);
+/* AKLYS_LIM comes from js/const.js; the table stores its SQUARE because the
+   caller compares against dist2. */
 
 /* src/weapon.c:514 arwep[] — the throw-and-return weapons. BOOMERANG is
    commented out in the C and is left out here for the same reason. */

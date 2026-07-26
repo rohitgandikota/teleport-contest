@@ -16,7 +16,14 @@ import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
-import { adjalign } from './attrib.js';
+import { adjalign, near_capacity } from './attrib.js';
+import { abon, hitval, weapon_hit_bonus } from './weapon.js';
+import { find_mac } from './worn.js';
+import { worn } from './do_wear.js';
+import { is_orc } from './mondata.js';
+import { sgn } from './hacklib.js';
+import { ATTKS } from './monst_data.js';
+import { W_ARM, W_ARMS } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -111,3 +118,71 @@ export function check_caitiff(mtmp) {
 
 // src/role.c Role_if()
 const Role_if = (pm) => game.urole?.malenum === pm || game.urole?.pmidx === pm;
+
+// src/uhitm.c find_roll_to_hit() — the number the d20 must beat.
+//
+// Draws nothing itself; hitum rolls rnd(20) against the value it returns.
+// attk_count and role_roll_penalty are C out-parameters, passed here as a
+// single mutable object so the caller sees both.
+//
+// The check_caitiff() call is guarded by `if (!(*attk_count)++)`, so it fires
+// on the FIRST attack of a sequence only -- a multi-attack turn must not
+// penalise the hero's alignment repeatedly.
+export function find_roll_to_hit(mtmp, aatyp, weapon, out) {
+    const ptr = game.mons[mtmp.mnum];
+    out.role_roll_penalty = 0;              /* default is `none' */
+
+    /* include/you.h:464 Luck is uluck + moreluck */
+    const Luck = (game.u.uluck || 0) + (game.u.moreluck || 0);
+
+    let tmp = 1 + abon() + find_mac(mtmp) + (game.u.uhitinc || 0)
+              + (sgn(Luck) * Math.trunc((Math.abs(Luck) + 2) / 3))
+              + game.u.ulevel;              /* maybe_polyd: not polymorphed */
+
+    /* some actions should occur only once during multiple attacks */
+    if (!(out.attk_count++))
+        check_caitiff(mtmp);
+
+    /* adjust vs. monster state */
+    if (mtmp.mstun)      tmp += 2;
+    if (mtmp.mflee)      tmp += 2;
+    if (mtmp.msleeping)  tmp += 2;
+    if (!mtmp.mcanmove)  tmp += 4;
+
+    /* role/race adjustments */
+    if (Role_if(PMNAMES.PM_MONK)) {
+        if (worn(W_ARM))
+            tmp -= (out.role_roll_penalty = game.urole.spelarmr);
+        else if (!game.u.uwep && !worn(W_ARMS))
+            tmp += Math.trunc(game.u.ulevel / 3) + 2;
+    }
+    if (is_orc(ptr) && Race_if(PMNAMES.PM_ELF))
+        tmp++;
+
+    /* encumbrance: with a lot of luggage, your agility diminishes */
+    const tmp2 = near_capacity();
+    if (tmp2 !== 0)
+        tmp -= (tmp2 * 2) - 1;
+    if (game.u.utrap)
+        tmp -= 3;
+
+    /* hitval applies when wielding a weapon; weapon_hit_bonus applies to any
+       weapon attack, bare-handed included, and to a martial artist's kick */
+    if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW) {
+        if (weapon)
+            tmp += hitval(weapon, mtmp);
+        tmp += weapon_hit_bonus(weapon);
+    } else if (aatyp === ATTKS.AT_KICK && martial_bonus()) {
+        tmp += weapon_hit_bonus(null);
+    }
+
+    return tmp;
+}
+
+// src/role.c Race_if()
+const Race_if = (pm) => game.urace?.malenum === pm || game.urace?.pmidx === pm;
+
+/* include/skills.h:81 martial_bonus() — mirrored from js/weapon.js, which
+   cannot be imported here without closing a cycle. */
+const martial_bonus = () =>
+    Role_if(PMNAMES.PM_SAMURAI) || Role_if(PMNAMES.PM_MONK);

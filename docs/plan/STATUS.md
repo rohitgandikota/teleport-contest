@@ -203,6 +203,27 @@ exist. That is now DONE: js/weapon.js carries skill_init and weapon_type, and
 u_init_skills_discoveries calls skill_init(skills_for_role()) at C's position
 (src/u_init.c:1404). It draws nothing, so the corpus is unchanged by it.
 
+DONE since: skill_init + u.weapon_skills (js/weapon.js), isqrt
+(js/hacklib.js), spellev and spell_skilltype (js/spell.js, the latter MOVED
+from js/u_init.js), percent_success, spelleffects_check, and morehungry
+(js/eat.js). None of it moved the corpus, and that is expected: nothing calls
+spelleffects_check yet.
+
+WHAT IS LEFT is the entry path, and it is a menu problem, not a spell problem:
+
+    docast() -> getspell(&spell_no) -> spelleffects(sp_id, FALSE, FALSE)
+
+getspell (src/spell.c:715) either pops a queued key, or with
+flags.menu_style == MENU_TRADITIONAL builds a "Cast which spell? [a-c *?]"
+prompt and reads a letter, or otherwise opens the spell MENU. Check what
+seed0501 actually sends before choosing which arm to port -- the traditional
+letter path needs only yn_function, the menu path needs the tty menu
+subsystem, which is also what getbones' '?' arm and level_tele's '?' arm want.
+Three separate blockers converge on that one subsystem, so it is probably the
+right next big piece.
+
+SUPERSEDED, kept for the dependency list:
+
 Remaining for percent_success, in order:
 
   1. spellev(spell) and spell_skilltype() -- spell_skilltype already exists in

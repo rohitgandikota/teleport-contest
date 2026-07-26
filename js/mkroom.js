@@ -40,18 +40,49 @@ function note_unported_mkroom(what) {
 
 // src/mkroom.c:502 antholemon() — which ant species an anthole gets.
 //
-// Draws nothing. It needs ubirthday (the game's start timestamp, which C mods
-// by 3 to vary the species between games) and we do not model that yet, so
-// this is an honest hole rather than a plausible return value: it reports
-// itself and answers "no ant available", which makes the ANTHOLE arm of
-// makelevel's chain fall through to BARRACKS.
+// Draws nothing. It needs ubirthday, the game's start time, which we do not
+// model: the recorder derives it with mktime() from NETHACK_FIXED_DATETIME in
+// the RECORDING MACHINE'S local timezone, taking tm_isdst from the moment the
+// recording was actually made. That value is not derivable from this repo and
+// must not be fitted to the sessions.
 //
-// CONSEQUENCE, stated so it is not a surprise: on levels deeper than 12 where
-// C would have made an anthole, we draw the following rn2(4) that C does not.
-// Shallower levels are unaffected, since the arm is gated on u_depth > 12.
+// It does not have to be. antholemon uses ubirthday ONLY as `% 3`, and every
+// timezone offset is a whole or half hour, i.e. a multiple of 1800, which is
+// divisible by 3. So the offset cannot change the result:
+//
+//     2000-06-01 12:00:00 UTC = 959860800, and 959860800 % 3 == 0,
+//     and (959860800 + k * 1800) % 3 == 0 for every k.
+//
+// The fixed datetime already reaches us as game.fixed_datetime, so indx is
+// computed from it rather than assumed, and it stays correct for any recording
+// timezone. nameshk's `ubirthday / 257` has no such invariance, which is why
+// only the chosen NAME there remains unported.
 export function antholemon() {
-    note_unported_mkroom('antholemon:ubirthday');
-    return false;
+    let mtyp, trycnt = 0;
+
+    const dt = game.fixed_datetime;
+    if (!dt) {
+        note_unported_mkroom('antholemon:no_fixed_datetime');
+        return null;
+    }
+    const ub = Date.UTC(+dt.slice(0, 4), +dt.slice(4, 6) - 1, +dt.slice(6, 8),
+                        +dt.slice(8, 10), +dt.slice(10, 12),
+                        +dt.slice(12, 14)) / 1000;
+
+    let indx = ((ub % 3) + 3) % 3;      /* timezone-invariant, see above */
+    indx += level_difficulty();
+
+    /* Same monsters within a level, different ones between levels */
+    do {
+        switch ((indx + trycnt) % 3) {
+        case 0:  mtyp = PMNAMES.PM_SOLDIER_ANT; break;
+        case 1:  mtyp = PMNAMES.PM_FIRE_ANT;    break;
+        default: mtyp = PMNAMES.PM_GIANT_ANT;   break;
+        }
+        /* try again if chosen type has been genocided or used up */
+    } while (++trycnt < 3 && (game.mvitals?.[mtyp]?.mvflags & G_GONE));
+
+    return (game.mvitals?.[mtyp]?.mvflags & G_GONE) ? null : game.mons[mtyp];
 }
 
 // src/mkroom.c:42 isbig()

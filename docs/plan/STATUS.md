@@ -148,11 +148,31 @@ and the extra random monster at (57,4). C's frame for the same row is
     row 4   +---+   walls
     row 5   |f<.|   pet at 55, upstair at 56, floor at 57
 
-so C's interior for that room is x = 55..57, and ours is x = 56..58 -- shifted
-one column right. Yet the WALLS render identically in both frames (row 4
-matched), which is the part that does not add up and is worth resolving first:
-either our lx/hx are right and the contents are misplaced, or the walls are
-drawn from something other than lx/hx.
+**and the room bounds are CORRECT -- I misread the axis.** js/display.js maps
+`setCell(x - 1, y + 1, ...)`, so SCREEN COLUMN = MAP X - 1 and screen row =
+map y + 1. Converting C's frame:
+
+    screen col 55 -> map x 56    C: pet
+    screen col 56 -> map x 57    C: upstair
+    screen col 57 -> map x 58    C: floor
+
+which is exactly our room3 at x = 56..58. The walls matching was the clue that
+the bounds were fine; the "shift" was my own screen-vs-map confusion, and
+NOTES already records that screen row R is map row R-1 for the same reason.
+
+So the real difference is:
+
+    C     map 56 = pet (standing on the gold), 57 = upstair, 58 = floor
+    ours  map 56 = gold visible, 57 = monster, 58 = monster
+
+Our pet has not moved onto the gold at map 56, and there is a second monster at
+map 58. makemon logged only ONE random monster in this room, at (57,4) -- so
+the thing at map 58 is the PET, and the thing at 57 is the random sleeper. C's
+pet is at 56 and ours is at 58: two squares apart, not one.
+
+Next: our pet starts where? makedog places it adjacent to the hero. Compare its
+initial square against C's before assuming dog_move is at fault -- if it starts
+wrong, every subsequent move inherits that.
 
 Check `topologize` and the wall-drawing path against croom->lx/hx before
 touching room creation. If the walls come from a different source than the

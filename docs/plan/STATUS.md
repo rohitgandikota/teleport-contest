@@ -864,6 +864,27 @@ same trap set_wear set. Its attack-type callees are all absent:
 
 So the full unit is 600+ lines, not 299.
 
+THE SPLIT IS VERIFIED, not assumed -- I read mattackm's switch rather than
+trusting the shape. Every melee attack type funnels into hitmm:
+
+    AT_WEAP                                    -> hitmm
+    AT_CLAW AT_KICK AT_BITE AT_STNG
+    AT_TUCH AT_BUTT AT_TENT                    -> hitmm  (mhitm.c:455)
+    AT_HUGS  (only if the previous TWO
+              attacks both returned M_ATTK_HIT) -> hitmm  (mhitm.c:488)
+
+and every special type has its own single call site, each on one line:
+
+    AT_GAZE            -> gazemm   (mhitm.c:494)
+    AT_EXPL            -> explmm   (mhitm.c:502)
+    AT_ENGL            -> gulpmm   (mhitm.c:532)
+    AT_BREA AT_SPIT    -> breamm   (mhitm.c:539+)
+
+So the four unported specials are each one recordable line in the switch, which
+is what makes the melee-only port honest rather than a stub: an engulfing
+attack records 'mattackm:AT_ENGL' and declines, it does not silently melee
+instead. That distinction is the whole difference between a split and a fake.
+
 BUT IT SPLITS SENSIBLY, unlike lookaround. A pet attacking an ordinary
 monster needs only the melee path: mattackm + hitmm (88) + missmm (15), about
 400 lines, with gulpmm/gazemm/explmm/breamm recorded by attack type the way

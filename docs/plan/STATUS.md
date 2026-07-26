@@ -904,6 +904,39 @@ STILL NEEDED FOR THE MELEE PATH, in dependency order:
 That is ~660 lines remaining. Nothing above needs to be guessed at; the leaf
 layer is done and verified by forced execution.
 
+...EXCEPT THAT 660 IS ALSO WRONG, AND THE RANKING HAS NOW INVERTED. Sizing
+mdamagem the same way found a FOURTH level of the same trap. mdamagem's damage
+work is mhitm_adtyping (uhitm.c:4782), a 51-line dispatcher over 39 separate
+mhitm_ad_* functions, and the one the ordinary case needs, mhitm_ad_phys, is
+220 lines on its own. Add monkilled (42), grow_up, mhitm_knockback, and
+mdamagem's own 104, and the physical-melee path alone is:
+
+    mattackm 299 + hitmm 88 + mdamagem 104 + mhitm_adtyping 51
+    + mhitm_ad_phys 220 + passivemm 154 + monkilled 42 + the rest
+    = 1000+ lines, for the PHYSICAL case only
+
+So I then sized lookaround the same way rather than trusting my own earlier
+number, because an undercount in one direction is no reason to trust the
+other. Its chain: 8 of its 16 callees are already ported (closed_door,
+is_safemon, mon_visible, u_at, dist2, m_at, isok, upstart); missing are
+avoid_moving_on_liquid 28, avoid_moving_on_trap 17, nomul 13, plus
+is_door_mappear (a monst.h one-liner), is_pool_or_lava, pline_xy, set_msg_xy
+and a_monnam, all small. TOTAL ~250 LINES.
+
+    lookaround      ~250 lines   unblocks one 27% entry   = 0.108 %/line
+    mattackm melee ~1000 lines   unblocks two ~40% entries = ~0.085 %/line
+
+DECISION: DO lookaround NEXT. It is better value per line, it is one session
+rather than three or four, and it lands as a working whole instead of leaving
+a half-built combat chain. The mattackm leaf layer already committed keeps its
+value either way -- nothing there is wasted, and mon_nam_too/You_hear/
+pronoun_gender are shared infrastructure that several other paths want.
+
+This is the fourth sizing this session to change the plan, and the second to
+reverse a decision I had already written down. The rule earned: size the whole
+transitive chain BEFORE ranking, never the named function, and re-size the
+alternative too before switching.
+
 MELEE-ONLY mattackm IS THEREFORE ~800 LINES, not the 400 I recorded. Each
 sizing this session has been an undercount because I sized the function I
 named and not the leaf it returns into. The rule that actually works: size

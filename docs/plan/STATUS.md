@@ -1,3 +1,34 @@
+=== THE TOP FOUR ENTRIES ALL NEED STRUCTURES, NOT TRANSLATIONS ===
+512/11405 screens, RNG 140750/792838. Checked all four; none is a quick port.
+
+  dowield:setuwep      25%  setuwep 36L needs setworn 73L, which walks a
+                            worn[] mask->pointer table this port does not
+                            have. Detailed in the block below.
+  getobj:menu          23%  fires on '?' or '*' at an object prompt, which
+                            opens a menu that READS ITS OWN KEYS. Needs the
+                            tty menu subsystem. Correct record.
+  goto_level:losedogs  23%  losedogs 113L moves pets and migrating monsters
+                            onto the new level. The port has NEITHER
+                            gm.mydogs NOR gm.migrating_mons, and keepdogs --
+                            the counterpart that fills mydogs on the way out
+                            -- is absent too. The whole pet-follows-you-
+                            downstairs subsystem is missing, not just this
+                            function. The existing record already says so.
+  dofire:polearm_or_whip 23% needs use_pole and use_whip.
+
+WHAT IS ACTUALLY CHEAP RIGHT NOW: nothing above 23%. The key-consumption
+class is exhausted (cmd:r, cmd:w, extcmd:chat, doread and dofire's quiver
+prompt all cleared), and the ported-but-unwired class is exhausted (both
+sweeps came back clean negatives). What remains is real subsystem work:
+the worn[] table, the tty menu, the migration lists, and the ~460-line
+wear chain.
+
+ONE SMALL THING STILL OPEN: getobj returns null for '-' where C returns
+&hands_obj, a sentinel meaning "your hands". Callers that should see
+"chose hands" currently see "cancelled". No keystroke difference, so it is
+not urgent, but it IS a behavioural divergence rather than a missing
+feature.
+
 === NEXT: setworn, and it needs a STRUCTURE not just a function ===
 Current: 512/11405 screens, RNG 140750/792838.
 

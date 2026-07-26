@@ -6,7 +6,7 @@ import { Hallucination } from './youprop.js';
 import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS } from './monst_data.js';
-import { erosion_matters } from './mkobj.js';
+import { erosion_matters, curse } from './mkobj.js';
 import {
     carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, Is_container, Is_candle, Is_pudding,
 } from './obj.js';
@@ -570,16 +570,40 @@ export async function prinv(prefix, obj, quan) {
 // is CURSED on the way out (that is how it resists being dropped), anything
 // conferring luck triggers set_moreluck, and a timed FIGURINE has its
 // transform timer stopped. The tin reference is cleared last.
+// src/artifact.c:? confers_luck() — does carrying this raise Luck?
+//
+// The oartifact test short-circuits before spec_ability(), so for any ordinary
+// object this answers FALSE without needing the artifact subsystem at all.
+// Only an actual artifact reaches spec_ability(), which needs get_artifact()
+// and the artilist; that arm records rather than guessing.
+export function confers_luck(obj) {
+    /* might as well check for this too */
+    if (obj.otyp === ONAMES.LUCKSTONE)
+        return true;
+
+    if (!obj.oartifact)
+        return false;
+
+    /* spec_ability(obj, SPFX_LUCK) — needs get_artifact() and artilist */
+    (game.unported ||= new Set()).add('invent:confers_luck:spec_ability');
+    return false;
+}
+
 function freeinv_core(obj) {
     if (obj.oclass === OCLASSES.COIN_CLASS) {
-        note_unported_invent('freeinv_core:money2mon');
+        /* src/invent.c freeinv_core() — this arm is exactly two statements in
+           5.0. The 'money2mon' gap recorded here before did not correspond to
+           anything in this function; money2mon appears nowhere in invent.c. */
+        (game.disp ||= {}).botl = true;
         return;
     }
     note_unported_invent('freeinv_core:uhave_artifacts');
 
     if (obj.otyp === ONAMES.LOADSTONE)
-        note_unported_invent('freeinv_core:curse_loadstone');
-    else if (note_unported_invent('freeinv_core:confers_luck'))
+        curse(obj);
+    else if (confers_luck(obj))
+        /* set_moreluck() needs stone_luck() and carrying(); reached only for a
+           luckstone or a luck-conferring artifact, so it records. */
         note_unported_invent('freeinv_core:set_moreluck');
     else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
         note_unported_invent('freeinv_core:stop_timer');

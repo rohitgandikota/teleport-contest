@@ -1,3 +1,16 @@
+=== EXTCMD SWEEP DONE: chat was the only one. 512 screens. ===
+
+Wiring #chat to the already-ported dochat gained a screen (511 -> 512),
+because #chat calls getdir() and consumes a direction key -- without it the
+key ran as a command and every later keystroke was out of step.
+
+I then swept all 40 reached extcmd:* records against the port for a matching
+do<name>() and found NOTHING ELSE. The one apparent hit, doname, is a name
+collision: js/objnam.js's doname formats an object name, while C's #name maps
+to docallcmd (cmd.c:1774). So do not re-run this sweep expecting more.
+
+The remaining extcmds are genuinely unported commands, not missing wires.
+
 === make_corpse SIZED BY REACHED BRANCH: ~70 LINES, NOT 378 ===
 
 mon:mondied:make_corpse is the 23% entry and it is NOT the 378-line monster

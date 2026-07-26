@@ -2255,10 +2255,11 @@ async function fill_ordinary_room(croom, bonus_items) {
             } while (!rn2(40));
         }
     }
-    // Random objects
-    /* src/mklev.c:974 — the || SHORT-CIRCUITS: carrying the Amulet skips the
-       rn2(3) entirely, so spending it unconditionally is a draw C never makes. */
-    if ((game.u?.uhave?.amulet || !rn2(3)) && somexyspace(croom, pos)) {
+    /* src/mklev.c:1156 — random objects. Plain `!rn2(3)`, with NO Amulet
+       short-circuit: that belongs to the MONSTER site at mklev.c:974, and
+       having it here would make a hero carrying the Amulet get an object in
+       every room while skipping the rn2(3) those rooms should spend. */
+    if (!rn2(3) && somexyspace(croom, pos)) {
         mkobj_at(RANDOM_CLASS, pos.x, pos.y, true);
         let objTrycnt = 0;
         while (!rn2(5)) {

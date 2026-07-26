@@ -229,11 +229,28 @@ row 5, not 4, and column 55 is not 57. Until that offset is reconciled, EVERY
 coordinate comparison in this entry is suspect -- including "C's pet is at
 (56,4)", which was read off the display, not measured.
 
-DO THAT FIRST: establish the exact map-to-display transform (which map row is
-display row 0, and whether column is 1:1), then re-derive where C's pet
-actually is in MAP coordinates. It is entirely possible the two placements
-agree and the rendering differs, which would move this bug to the display
-layer.
+RECONCILED, AND IT INVALIDATES THE PREMISE OF THIS WHOLE INVESTIGATION.
+
+makedog runs at MOVES=0. The screendiff being compared is STEP 4 -- four
+keystrokes later. By then the hero has moved (which is why the @ is at
+display column ~55 rather than map column 57) AND SO HAS THE PET.
+
+So the step-4 pet position is NOT the placement position. It is the placement
+position plus four turns of dog_move. Comparing it against makedog's output
+was comparing two different moments, and every conclusion drawn from that
+comparison -- "C's pet is at (56,4)", "we take the second ring candidate and
+C takes the seventh" -- is unfounded.
+
+The placement itself may well be correct. What differs at step 4 could be
+entirely down to PET MOVEMENT, which returns this to dog_move, the function
+this line of investigation started from and which was set aside earlier as
+"not what costs those sessions their screens".
+
+DO THIS FIRST, and it is cheap: run screendiff and look at the EARLIEST step
+where the pet is visible -- ideally step 0 or 1, before any pet turn has
+resolved. If the pet agrees there, placement is fine and the bug is in
+dog_move. If it already differs at step 0, placement is genuinely wrong and
+the earlier analysis can be resumed with a valid reference point.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

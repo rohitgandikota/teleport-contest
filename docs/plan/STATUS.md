@@ -329,6 +329,39 @@ This matters more than the choke path right now: seed0030 is 1953 steps and
 currently matches 20 of them. A pet that leaves a trail is wrong on nearly
 every frame with a pet in it, which is most frames of most sessions.
 
+## Reachability sweep on the OCCUPATION mechanism — one gap found
+
+Same method as the subroom sweep: grep the C for everything that reads the
+structure a new subsystem creates. `grep -rn "go\.occupation\|stop_occupation"`
+turns up:
+
+    allmain.c:506   the moveloop check              PORTED
+    allmain.c:684   stop_occupation                 PORTED, but see below
+    dogmove.c:386   a begging pet stops it          reachable now
+    do_wear.c:3254  taking armour off stops it      not ported
+    dig.c:197,599   `go.occupation == dig` tests    dig not ported
+    cmd.c:209,212   set_occupation itself           PORTED
+
+**The gap: stop_occupation calls maybe_finished_meal(TRUE).**
+
+    if (go.occupation) {
+        if (!maybe_finished_meal(TRUE))
+            You("stop %s.", go.occtxt);
+        go.occupation = 0;
+        disp.botl = TRUE;
+        nomul(0);
+    } else if (gm.multi >= 0) {
+        nomul(0);
+    }
+
+Ours clears the slot and returns. So an interrupted meal that is nearly done is
+never finished, and the "You stop eating." message is printed where C prints
+nothing. maybe_finished_meal is in src/eat.c and is small; port it with
+stop_occupation rather than separately, since the message is conditional on it.
+
+Also note dogmove.c:386 -- a hungry pet begging calls stop_occupation, and
+dog_hunger IS ported, so this path is live.
+
 ## THE OCCUPATION LOOP (now ported): js/allmain.js had none.
 
 doeat -> start_eating -> bite -> choke -> done is PORTED and connected for

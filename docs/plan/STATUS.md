@@ -4309,20 +4309,26 @@ State of the whole area:
     mkswamp                        DONE
     stock_room + shkinit + nameshk DONE   (shops stocked, verified by probe)
     fill_zoo + the species pickers DONE   (zoos filled, verified by probe)
-    mktemple                       OPEN
-    antholemon                     OPEN
+    antholemon                     DONE   (see below; ubirthday finessed)
+    mktemple                       OPEN   (the only one left)
 
 Both remaining items are genuinely blocked rather than merely unstarted:
 
   mktemple (src/mkroom.c:598) needs shrine_pos, induced_align which DRAWS, and
   priestini, which creates the temple priest. Gated on u_depth > 8.
 
-  antholemon (src/mkroom.c:502) needs ubirthday. Note the asymmetry with
-  nameshk: there the unmodelled value only picked a NAME, so the draw count was
-  unaffected and the port went ahead. Here it decides whether the ANTHOLE arm
-  fires at all, so it changes draw counts and cannot be finessed the same way.
-  The session JSON carries a datetime per segment, so modelling ubirthday is
-  the real fix and would unblock both this and nameshk's chosen name.
+  antholemon is DONE, and the reasoning is worth reusing (NOTES has it as a
+  general entry). ubirthday is genuinely not derivable -- the recorder builds
+  it with mktime() in the RECORDING MACHINE'S timezone with tm_isdst from the
+  real recording moment -- but antholemon uses it only as `% 3`, and every
+  timezone offset is a multiple of 1800, which is divisible by 3. So the
+  offset cannot change the answer. Computed from game.fixed_datetime, which
+  the runner already threads through, so it holds for any recording timezone
+  rather than just the one behind the public sessions.
+
+  Do NOT try the same trick on nameshk: it divides by 257 and has no such
+  invariance. Its draw count was already shown to be unaffected, so only the
+  displayed name stays unported.
 
 The gains from this whole area were concentrated in ONE place. mkshop and the
 chain conditions paid ~3,961; pick_room and mkzoo paid 4; mkswamp 0; fill_zoo

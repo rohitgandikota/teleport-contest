@@ -34,7 +34,47 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
-=== mattackm CHAIN: THE WHOLE SUPPORT LAYER IS DONE. ONLY mattackm LEFT. ===
+=== mattackm IS DONE. THE BLOCKER IS NOW THE DEATH SUBSYSTEM. ===
+
+ALL NINE PIECES COMMITTED, each verified against the REAL monster table:
+
+    shade_miss       uhitm.c:2016    mhitm_ad_phys   uhitm.c:4128
+    mhitm_adtyping   uhitm.c:4782    mhitm_knockback uhitm.c:5247
+    mdamagem         mhitm.c         hitmm           mhitm.c:644
+    getmattk         mhitu.c         passivemm       mhitm.c
+    mattackm         mhitm.c
+
+END-TO-END PROOF: a jackal attacking a newt returns M_ATTK_HIT, deals 2
+damage, stamps mlstmv, and produces DRAWS=4 -- rnd(20 + i) to-hit,
+d(damn, damd) damage, and mhitm_knockback's rn2(3) and rn2(chance). That is
+the exact draw signature C makes for an ordinary pet blow.
+
+WHY IT IS STILL NOT WIRED. mdamagem deducts hit points and then records
+'mdamagem:monkilled' instead of running the death path. Wiring dog_move's
+attack branch now would leave monsters at mhp <= 0 still on the map: no
+corpse, no removal, no experience. That is the vanishing-object bug shape
+again and it must not ship.
+
+THE DEATH SUBSYSTEM, sized:
+
+    monkilled           42L   mon.c   message + disintegested + dispatch
+    mondied             11L   mon.c   mondead + corpse_chance + make_corpse
+    mondead             97L   mon.c   THE REAL WORK -- lifesaved_monster,
+                                      the vampshifter revert, m_detach
+    corpse_chance         ?         unsized
+    make_corpse           ?         unsized
+    lifesaved_monster     ?         unsized
+    nonliving                 PORTED (js/mondata.js)
+
+SIZE mondead BY REACHED BRANCH FIRST. Every function in this chain turned
+out several times smaller than its line count once the unreachable arms were
+excluded -- mhitm_ad_phys was 220 and used 12. Do not take 97 at face value.
+
+ONCE monkilled EXISTS: wire dog_move's attack branch (41%) and
+pet_ranged_attk (39%). Those are the two largest entries on the reach list
+and they share this blocker.
+
+
 
 COMMITTED, each verified by forced execution with the RNG log on:
 

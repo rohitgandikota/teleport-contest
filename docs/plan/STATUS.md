@@ -6,6 +6,30 @@
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
+NEXT CONCRETE TARGET: seed0004 picks the WRONG GENDER at chargen.
+
+After the menu-overlay clear landed (501 screens), seed0004's divergence moved
+to step 9 and is now:
+
+  C     Salutations Tetra, welcome to NetHack!  You are a lawful female human Knight.
+  ours  Salutations Tetra, welcome to NetHack!  You are a lawful male human Knight.
+
+Everything else on the line matches, so the message assembly is right and the
+GENDER FACET IS WRONG. C's status line reads "Tetra the Gallant"; the role
+title is gender-dependent, so this propagates.
+
+js/role.js:270 pick_gend is structurally faithful to the C -- it counts
+ok_gend matches, draws rn2(gends_ok), then walks to the nth allowed gender.
+So the fault is more likely UPSTREAM: either the session's recorded input
+picks gender explicitly and we mis-parse it, or an earlier facet (role/race)
+differs and changes which genders ok_gend allows.
+
+Check in this order before touching pick_gend: what the session actually sends
+for the gender prompt, then whether initgend is set from the rc/options path,
+then whether role and race match C at that point. Do not assume the rn2 is
+wrong -- seed0004 matches C's RNG stream well past chargen, which an extra or
+missing draw here would break immediately.
+
 TWO SCREEN-VISIBLE GAPS FOUND BY SWEEPING screendiff, both hitting several
 sessions:
 

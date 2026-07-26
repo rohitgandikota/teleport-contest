@@ -5130,3 +5130,33 @@ mflags reads), add is_weptool there or duplicate it locally with a comment,
 add the four constants to monmove.js's EXISTING const.js import, verify with
 tools/undefined-refs.mjs, and only then write the arm. Do not add a new import
 edge to monmove.js under any circumstances.
+
+## linedup's boulder walk: PORTED AND REVERTED, -1 screen / -17 RNG
+
+src/mthrowu.c:1348. 41% on unported-hits and it DRAWS, which makes it more
+interesting than most of that list: when a monster has no line of sight, C
+walks the line counting boulders and then rolls rn2(2 + boulderspots) < 2, so
+more boulders make a clear shot less likely. boulderhandling == 1 skips the
+roll entirely. We returned false without drawing.
+
+The port is written and is a faithful transcription, including
+blocking_terrain (src/mthrowu.c:1282). It costs 1 screen and 17 RNG, so it is
+reverted per the loop rule.
+
+WHY IT PROBABLY REGRESSES, and this is the thing to check first: the draw is
+only reached when the line-of-sight test above it FAILS. That test is
+
+    u_at(ax, ay) ? couldsee(bx, by) : clear_path(ax, ay, bx, by)
+
+If our clear_path or couldsee is more pessimistic than C's, we reach the
+boulder walk on turns where C never does, and spend an rn2 C never spends.
+The regression would then be in clear_path, not in the code I wrote.
+
+NEXT: instrument how often the boulder walk is entered, and on the first
+entry dump ax,ay,bx,by plus what clear_path returned. Compare against whether
+C could have reached it at that call index (tools/diverge.mjs gives the
+index). Do NOT re-transcribe the boulder walk; it matches the C.
+
+blocking_terrain is worth keeping in mind separately: is_waterwall is not
+ported and is recorded, which is correct for ordinary levels but would matter
+on the water level.

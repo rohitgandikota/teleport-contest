@@ -674,7 +674,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
             killed(mon);
     } else if (game.u.umconf && hmd.hand_to_hand) {
         /* confused-touch: resist() DRAWS */
-        note_unported_uhitm('hmon_hitmon:nohandglow');
+        nohandglow(mon);
         note_unported_uhitm('hmon_hitmon:resist_confuse');
     }
     if (hmd.unpoisonmsg)
@@ -1009,4 +1009,26 @@ async function hmon_hitmon_msg_hit(hmd, mon, obj) {
             await You(`${verb} it${canseemon(mon) ? exclam(hmd.dmg) : '.'}`);
         }
     }
+}
+
+// src/uhitm.c:6315 nohandglow() — one charge of confuse-monster is spent.
+//
+// The messages need makeplural/body_part/hcolor and are recorded, but the
+// DECREMENT is behaviour a later turn depends on, so it is real: without it
+// a single confuse-monster casting would confuse every monster you touch
+// forever.
+//
+// The early return is doing two jobs. No charges left is obvious; the second,
+// mon->mconf, means touching an ALREADY-confused monster spends nothing --
+// so the charge is consumed per monster newly confused, not per touch.
+//
+// u.umconf == 1 is the last charge and gets a different message from the
+// others ("stop glowing" versus "no longer glow so brightly"), which is why
+// the decrement happens AFTER the message rather than before.
+export function nohandglow(mon) {
+    if (!game.u.umconf || mon.mconf)
+        return;
+
+    note_unported_uhitm('nohandglow:message');
+    game.u.umconf--;
 }

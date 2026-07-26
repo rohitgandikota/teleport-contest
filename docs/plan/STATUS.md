@@ -60,7 +60,20 @@ subsystem than "combat" and it is already partly reachable -- rhack dispatches
 'e' today. What is missing between the command and the death is doeat/eatfood's
 occupation loop and the choke() gate.
 
-Do not port combat for this. Check src/eat.c's choke() callers first.
+Do not port combat for this. Measured, the eat chain is small:
+
+    doeat         268 lines  2 draws    <- the bulk; 'e' already dispatches to it
+    choke          44 lines  1 draw
+    eatfood        23 lines  0 draws
+    start_eating   53 lines  0 draws
+
+js/cmd.js:460 already routes 'e' and reaches floorfood(); what is missing is
+doeat's body, start_eating's occupation, and the choke() gate that ends the
+game. Under 400 lines total for the path that unblocks seed0030's first death.
+
+Note choke() draws once and doeat twice, so this DOES move the RNG stream --
+unlike done()/outrip(), which spend nothing. Measure per-session and check the
+divergence point, not the corpus total.
 
 **The frames.** The exact frames, decoded from the
 recorded session:

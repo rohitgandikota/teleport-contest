@@ -840,6 +840,30 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+DROP CHAIN STATUS: ported end to end but NOT WIRED, because wiring dodrop to
+the 'd' command costs rng matches. The gap has been narrowed by measurement:
+
+    before welded + canletgo    -10 rng
+    after  welded + canletgo     -2 rng
+
+better_not_try_to_drop_that (15 lines) was the obvious next candidate and IS
+RULED OUT: drop() guards it with `obj->otyp == CORPSE &&`, so it is never
+reached for an ordinary item, and the sessions' drops are not corpses. It
+also needs u_safe_from_fatal_corpse and paranoid_ynq, neither present.
+
+SO THE REMAINING 2 CALLS ARE SOMEWHERE ELSE IN THE CHAIN. Candidates, in the
+order they run: dodrop's sellobj_state pair (recorded), getobj itself (its
+letter list is built from any_obj_ok, which is real), drop's levitation
+branch (recorded), dropx's ship_object (recorded), dropz's flooreffects
+(recorded) or stackobj (recorded).
+
+TO FIND IT: wire dodrop temporarily, then diff the per-session scoreboard
+against the current one to see WHICH sessions lose the 2, and trace rn2 on
+that session with the globalThis counter. Two calls in one or two sessions is
+a small enough signal to locate exactly. Do not port more guards on the
+assumption they are the cause -- that is what better_not_try_to_drop_that
+would have been.
+
 SIZED cmd:d (30%) -- the DROP command, and it is now within reach because
 freeinv landed. The chain:
 

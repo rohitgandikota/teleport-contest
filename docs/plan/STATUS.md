@@ -375,9 +375,35 @@ one C shows (56,4) both come from somewhere else. Statues are also created by
     bars, which js/mklev.js already calls
   - STATUE_TRAP, whose trap carries a statue object
 
-Read those two before anything else. Note that our lone statue has
-corpsenm 158, the same species as the two fill_ordinary_room monsters logged
-for seed2200, which is worth checking but is NOT yet evidence of anything.
+FOUND IT, and it is in our own source rather than the C: js/mklev.js:335 is
+
+    case STATUE_TRAP:
+        note_unported_lev('mk_trap_statue');
+        break;
+
+mk_trap_statue (src/trap.c:508) is what puts a statue on a STATUE_TRAP square,
+and it is not ported. That is a statue source we skip entirely.
+
+It DRAWS, and the draws are not trivial:
+
+    do { mptr = &mons[rndmonnum_adj(3, 6)]; }
+    while (--trycount > 0 && is_unicorn(mptr)
+           && sgn(u.ualign.type) == sgn(mptr->maligntyp));
+    statue = mkcorpstat(STATUE, NULL, mptr, x, y, CORPSTAT_NONE);
+    mtmp = makemon(&mons[statue->corpsenm], 0, 0, MM_NOCOUNTBIRTH|MM_NOMSG);
+    ... move mtmp's whole inventory INTO the statue ...
+    statue->owt = weight(statue);
+    mongone(mtmp);
+
+i.e. a retry loop that rejects a co-aligned unicorn, then mkcorpstat, then a
+full makemon whose inventory is transferred into the statue. Port it as a
+unit; the makemon and the inventory transfer are not optional decoration, the
+statue is meant to contain that monster's gear.
+
+Note that seed0030's RNG matches through level generation, so check where
+those draws land before assuming this is the divergence -- it explains the
+missing OBJECT, which is a screen difference, and may or may not be the RNG
+one.
 
 ### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 

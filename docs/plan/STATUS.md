@@ -850,9 +850,31 @@ js/cmd.js:679 already records the gap deliberately and zeroes context.run, so
 a rush currently takes ONE step where C takes several. That is a distance
 error, not a crash, and it is visible in the record rather than silent.
 
-Weigh it against the two 40%-ish entries, which both gate on mattackm (299
-lines) and would unblock each other. lookaround at 161 lines unblocks only
-this. Neither is small; the mattackm pair is better value per line.
+RESIZED mattackm, AND THE "299 lines" FIGURE WAS THE DISPATCHER ONLY -- the
+same trap set_wear set. Its attack-type callees are all absent:
+
+    hitmm     88 lines      the melee hit
+    missmm    15 lines      the melee miss
+    gulpmm   118 lines      engulfing
+    gazemm    67 lines      gaze attacks
+    explmm    40 lines      exploding
+    breamm     ? lines      breath weapons
+    getmattk   ? lines      picks which attack is used
+    find_mac  19 lines      ALREADY PORTED, in js/uhitm.js
+
+So the full unit is 600+ lines, not 299.
+
+BUT IT SPLITS SENSIBLY, unlike lookaround. A pet attacking an ordinary
+monster needs only the melee path: mattackm + hitmm (88) + missmm (15), about
+400 lines, with gulpmm/gazemm/explmm/breamm recorded by attack type the way
+passive's arms already are. Engulfing, gazing, exploding and breathing are
+distinguishable at the dispatch site, so recording them individually keeps
+game.unported precise.
+
+REVISED COMPARISON: 400 lines of mattackm's melee path unblocks BOTH 45% and
+41% entries; 161 lines of lookaround unblocks one 27% entry. The mattackm
+path is still the better target, and the melee-only split makes it a session
+of work rather than two.
 
 NOTE the trap already recorded elsewhere in this file: do NOT "fix" the rush
 by adding HJKLYUBN to isMovementKey. That makes the error invisible (no more

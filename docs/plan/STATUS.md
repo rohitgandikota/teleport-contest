@@ -3758,3 +3758,67 @@ At the end of a working session, revise: the "Right now" table, "The exact next
 action", anything finished into "Completed", and any new fork or open thread. Do
 not let it drift — a stale STATUS.md is worse than none, because the next agent
 will trust it.
+
+## Where the 44 sessions actually diverge (aggregate, re-run this)
+
+The single most useful targeting instrument in the repo, and it did not exist
+before. One line, ~3 minutes:
+
+    for f in sessions/*.session.json; do
+        node tools/diverge.mjs "$f" 2>/dev/null | grep -m1 MISMATCH | sed 's/.*@ //'
+    done | sort | uniq -c | sort -rn
+
+Current standing:
+
+       6  dog_move(dogmove.c:1255)
+       4  obj_resists(zap.c:1469)
+       4  mksobj_init(mkobj.c:1001)
+       4  getbones(bones.c:645)
+       3  rnd_otyp_by_namedesc(objnam.c:3522)
+       3  makelevel(mklev.c:1350)
+       3  distfleeck(monmove.c:538)
+       2  next_ident(mkobj.c:521)
+       2  mount_steed(steed.c:341)
+
+Read it as "which C function is executing when we first disagree", NOT as
+"which function is unported" -- the tag names the C function containing the
+divergent source line, and our code is often correct there while the STATE
+reaching it is wrong. dog_move + obj_resists + distfleeck is one cluster,
+14 of 44 sessions, all pet behaviour.
+
+USE IT AS THE BEFORE/AFTER, not just the picker. Removing the duplicate
+pet_ranged_attk call moved distfleeck from 4 sessions to 3 while the advisory
+RNG proxy went DOWN 78. The aggregate said "one session now diverges strictly
+later" and the proxy said "worse"; the aggregate was right and the change was
+provably correct against C, which has exactly one call site (dogmove.c:1273).
+When the two disagree, trust the divergence point.
+
+## dog_eat landed, and the cluster did NOT move
+
+dog_nutrition, dog_eat, splitobj, nextoid and oid_price_adjustment are ported
+(commit "Port dog_nutrition, dog_eat, ..."). The bug was real and worth
+fixing: dog_move's eat branch returned MMOVE_NOTHING, so a pet that decided
+to eat froze in place while C's walked onto the food.
+
+It did not move the aggregate. dog_move(dogmove.c:1255) is still 6 sessions,
+screens still 482, and the proxy moved -9. Instrumenting dog_eat shows it is
+called ZERO times in seed0030 and seed8000, so the branch is simply not
+reached in those; the -9 means it does fire somewhere in the other 42.
+
+So dogmove.c:1255 is NOT blocked on the eat branch. That line is the square
+scoring test, `(j == 0 && !rn2(++chcnt)) || j < 0 || (j > 0 && !whappr && ...)`,
+and our copy of it matches C term for term and in order -- checked. What
+differs is the STATE it scores with: appr, nidist, cnt, uncursedcnt, mtrack,
+and the mfndpos candidate list.
+
+NEXT ACTION for this cluster: stop reading the scoring test and start dumping
+its inputs. For one of the six sessions, print appr, cnt, uncursedcnt and the
+candidate (nx,ny) list on the turn of the first mismatch, and compare against
+what C must have had for its pet to end up where the recorded screen shows it.
+appr comes from dog_goal, which is where the earlier measurements pointed
+(goal chosen on only 9% of turns), so appr is the first input to check.
+
+Do NOT port more dogmove functions speculatively. Two ports in a row now have
+been faithful, correct, and worth zero, because the cause was upstream state
+rather than a missing function. The aggregate above is cheap; run it before
+and after anything, and let it, not the RNG proxy, decide whether to keep.

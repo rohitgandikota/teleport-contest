@@ -1,3 +1,4 @@
+import { max_passive_dmg } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
 import { M_ATTK_DEF_DIED } from './const.js';
@@ -1120,15 +1121,13 @@ export function dog_move(mtmp, after) {
 
             if ((mtmp2.m_lev | 0) >= balk
                 || (mtmp2.mtame && mtmp.mtame)
+                || (max_passive_dmg(mtmp2, mtmp) >= mtmp.mhp)
                 || ((mtmp.mhp * 4 < mtmp.mhpmax
                      || mtmp2.data.msound === MFLAGS.MS_GUARDIAN
                      || mtmp2.data.msound === MFLAGS.MS_LEADER)
                     && mtmp2.mpeaceful)) {
                 continue;
             }
-            /* max_passive_dmg() would add another skip condition here; a pet
-               should decline a foe whose passive alone would kill it. */
-            note_unported('dog_move:max_passive_dmg');
 
             if ((mtmp2.data.pmidx === PMNAMES.PM_FLOATING_EYE && rn2(10))
                 || (mtmp2.data.pmidx === PMNAMES.PM_GELATINOUS_CUBE && rn2(10))

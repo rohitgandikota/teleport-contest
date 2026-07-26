@@ -18,7 +18,7 @@ import { canspotmon } from './display.js';
 import { G_UNIQ, PRONOUN_NO_IT, PRONOUN_HALLU } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { is_vampshifter } from './monst.js';
-import { NATTK } from './const.js';
+import { NATTK, MATTK_AATYP, MATTK_ADTYP, MATTK_DAMN, MATTK_DAMD } from './const.js';
 import { MON_WEP } from './monst.js';
 import { which_armor } from './worn.js';
 import { W_ARM, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES, SHOCK_RES,
@@ -416,4 +416,59 @@ export function pronoun_gender(mtmp, pg_flags) {
         return 2;
     return (humanoid(mtmp.data) || (mtmp.data.geno & G_UNIQ)
             || type_is_pname(mtmp.data)) ? (mtmp.female | 0) : 2;
+}
+
+// src/mondata.c:720 max_passive_dmg() — the worst the DEFENDER's passive
+// could do to the attacker, used by dog_move to let a pet decline a foe
+// whose passive alone would kill it.
+//
+// Two loops. The first counts how many of the attacker's attacks could
+// trigger a passive at all; the second finds the defender's passive slot
+// (AT_NONE or AT_BOOM) and computes its damage, then multiplies by that
+// count. Note the damage falls back to mlevel + 1 when damn is zero, the
+// same shape passivemm uses.
+//
+// completelyburns/rots/rusts are unported; those arms set dmg to the
+// attacker's full hit points, so they matter only against golems.
+export function max_passive_dmg(mdef, magr) {
+    let multi2 = 0, dmg = 0;
+
+    /* each attack by magr can result in passive damage */
+    for (let i = 0; i < NATTK; i++) {
+        switch (magr.data.mattk[i][MATTK_AATYP]) {
+        case ATTKS.AT_CLAW: case ATTKS.AT_BITE: case ATTKS.AT_KICK:
+        case ATTKS.AT_BUTT: case ATTKS.AT_TUCH: case ATTKS.AT_STNG:
+        case ATTKS.AT_HUGS: case ATTKS.AT_ENGL: case ATTKS.AT_TENT:
+        case ATTKS.AT_WEAP:
+            multi2++;
+            break;
+        default:
+            break;
+        }
+    }
+
+    for (let i = 0; i < NATTK; i++) {
+        const aatyp = mdef.data.mattk[i][MATTK_AATYP];
+        if (aatyp === ATTKS.AT_NONE || aatyp === ATTKS.AT_BOOM) {
+            const adtyp = mdef.data.mattk[i][MATTK_ADTYP];
+            if (adtyp === ATTKS.AD_FIRE || adtyp === ATTKS.AD_DCAY
+                || adtyp === ATTKS.AD_RUST) {
+                /* completelyburns/rots/rusts would set dmg = magr.mhp here */
+                (game.unported ||= new Set()).add('max_passive_dmg:golem_arms');
+            }
+            if ((adtyp === ATTKS.AD_ACID && !resists_acid(magr))
+                || (adtyp === ATTKS.AD_COLD && !resists_cold(magr))
+                || (adtyp === ATTKS.AD_FIRE && !resists_fire(magr))
+                || (adtyp === ATTKS.AD_ELEC && !resists_elec(magr))
+                || adtyp === ATTKS.AD_PHYS) {
+                dmg = mdef.data.mattk[i][MATTK_DAMN];
+                if (!dmg)
+                    dmg = mdef.data.mlevel + 1;
+                dmg *= mdef.data.mattk[i][MATTK_DAMD];
+            }
+            dmg *= multi2;
+            break;
+        }
+    }
+    return dmg;
 }

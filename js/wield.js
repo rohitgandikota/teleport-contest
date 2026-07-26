@@ -7,7 +7,8 @@
 
 import { game } from './gstate.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
-         GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
+         GETOBJ_PROMPT, GETOBJ_ALLOWCNT, prinv } from './invent.js';
+import { W_QUIVER } from './const.js';
 import { You } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
 
@@ -91,8 +92,10 @@ export async function doquiver_core(verb) {
         note_unported_wield('doquiver_core:untwoweapon');
     }
 
-    /* setuqwep + prinv still need the object-split bookkeeping */
-    note_unported_wield('doquiver_core:setuqwep');
+    /* src/wield.c:652 — place the item in the quiver BEFORE printing, so the
+       inventory line already reads "(at the ready)". */
+    setuqwep(newquiver);
+    await prinv(null, newquiver, 0);
     return ECMD_OK;
 }
 
@@ -103,4 +106,13 @@ export async function dowieldquiver() {
 
 function note_unported_wield(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/wield.c setuqwep() — put an object in the quiver slot.
+function setuqwep(obj) {
+    if (game.u.uquiver)
+        game.u.uquiver.owornmask &= ~W_QUIVER;
+    game.u.uquiver = obj;
+    if (obj)
+        obj.owornmask |= W_QUIVER;
 }

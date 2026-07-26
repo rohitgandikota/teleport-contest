@@ -523,3 +523,19 @@ const PM_CLERIC = 0;
 function note_unported_invent(what) {
     (game.unported ||= new Set()).add(what);
 }
+
+// src/invent.c xprname() — one inventory line: "b - a +1 bow".
+//
+// C's format is "%c - %.*s%s": the letter, " - ", the object's name, and a
+// suffix that is "." when the caller asked for a sentence.
+export function xprname(obj, txt, let_, dot, cost, quan) {
+    const name = txt || doname(obj);
+    return `${let_} - ${name}${dot ? '.' : ''}`;
+}
+
+// src/invent.c prinv() — print one inventory line, optionally prefixed.
+export async function prinv(prefix, obj, quan) {
+    if (!prefix) prefix = '';
+    await pline(`${prefix}${prefix ? ' ' : ''}`
+                + xprname(obj, null, obj.invlet, true, 0, quan));
+}

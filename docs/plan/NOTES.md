@@ -1368,3 +1368,37 @@ if the unmodelled value gates whether a branch RUNS, it changes draw counts
 and cannot be finessed. That is why antholemon mattered at all -- while it was
 absent, the ANTHOLE arm always fell through to BARRACKS and spent an rn2(4)
 the C does not.
+
+## Default-On options: read them defensively, not with plain truthiness
+
+include/optlist.h has 41 boolean options whose default column is On, and
+js/jsmain.js sets only three of them on game.flags. That looks like 38 latent
+bugs. It is not, and the sweep is worth not repeating.
+
+Swept every default-On flag for "read somewhere in js/ but never set in
+jsmain.js". Four came up: flags.acoustics, flags.autoopen, flags.bones,
+flags.tutorial. Every one of them is read DEFENSIVELY, so an unset value
+already behaves as On and matches the C:
+
+    js/cmd.js     return game.flags?.autoopen !== false;
+    js/mklev.js   if (flags.bones === false) return false;
+
+That is the pattern to copy. Comparing against `false` rather than testing
+truthiness means an option we have never initialised takes the C's default,
+while an rc file that explicitly turns it off is still honoured.
+
+The one real bug of this class came from breaking that pattern. is_safemon
+was written as
+
+    game.flags?.safe_dog && mon.mpeaceful && ...
+
+so an unset safe_dog made is_safemon always FALSE, and every step onto a pet
+fell through to the combat path instead of swapping places. optlist.h:634
+shows safepet defaults On. Writing `game.flags?.safe_dog !== false` would have
+been correct without needing the default set at all.
+
+So: when porting a condition that reads an option, check its default column in
+include/optlist.h, and if it is On, write the test so that undefined means on.
+Setting the default in jsmain.js is the belt-and-braces fix but it is easy to
+forget for the next option; the defensive read cannot be forgotten because it
+is at the point of use.

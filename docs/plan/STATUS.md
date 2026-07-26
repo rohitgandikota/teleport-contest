@@ -840,6 +840,32 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+SIZED cmd:d (30%) -- the DROP command, and it is now within reach because
+freeinv landed. The chain:
+
+    dodrop  14 lines   sellobj_state around the getobj, reset_occupations
+    drop    66 lines
+    dropx   10 lines   calls freeinv() -- PORTED -- then ship_object,
+                       doaltarobj, dropy
+    dropy    3 lines
+    dropz   36 lines   flooreffects, then place_object() -- PORTED -- and
+                       newsym
+
+~129 lines, but the two structural pieces it needs (freeinv to take the
+object out of inventory, place_object to put it on the floor) BOTH EXIST NOW.
+What is missing is the surrounding policy: sellobj_state and the shop arms,
+ship_object (the Sokoban/level-teleporter chute), doaltarobj (sets bknown),
+flooreffects (water, lava, traps), reset_occupations.
+
+That makes it the first COMMAND EFFECT that can be ported end to end rather
+than stopping at the prompt, which is what every item command currently does.
+getobj already names it "drop" and offers the right letters (any_obj_ok); the
+gap is purely what happens after the letter is chosen.
+
+Worth doing before the postfx dispatchers: dropping is 30% of sessions and
+its failure mode is visible -- the object stays in inventory and never
+appears on the floor, so both the inventory and the map are wrong.
+
 SIZED start_eating:done_eating (39%) -- src/eat.c done_eating, 29 lines
 itself but SIX missing callees:
 

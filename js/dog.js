@@ -27,7 +27,7 @@ import { is_metallic } from './obj.js';
 import { obj_resists } from './zap.js';
 import { newsym } from './display.js';
 import { splitobj } from './mkobj.js';
-import { m_consume_obj, is_pick } from './mon.js';
+import { m_consume_obj, is_pick, check_gear_next_turn } from './mon.js';
 import {
     mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at, t_at,
 } from './mon.js';
@@ -1307,7 +1307,7 @@ export function dog_invent(mtmp, edog, udist) {
                             mtmp.weapon_check = NEED_HTH_WEAPON;
                             note_unported('dog_invent:mon_wield_item');
                         }
-                        note_unported('dog_invent:check_gear_next_turn');
+                        check_gear_next_turn(mtmp);
                     }
                 }
             }

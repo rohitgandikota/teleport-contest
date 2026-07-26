@@ -642,6 +642,17 @@ function touch_artifact(otmp, mon) {
     return true;
 }
 
+// src/mon.c:5915 check_gear_next_turn() — flag the monster to reconsider its
+// equipment on its next move.
+//
+// One line, but it is the trigger for the I_SPECIAL arm in
+// movemon_singlemon() above: a monster that just picked something up sets
+// this, and next turn that arm calls m_dowear() and may spend the turn
+// equipping. C's comment: "this hides the details of that".
+export function check_gear_next_turn(mon) {
+    mon.misc_worn_check |= I_SPECIAL;
+}
+
 // src/mon.c m_carrying() — the monster's object of this type, or null.
 //
 // This lived in monmove.js and returned a bare {} placeholder. Every caller so
@@ -1304,7 +1315,7 @@ export function mpickstuff(mtmp) {
                was being LOST rather than picked up. */
             mpickobj(mtmp, otmp3);
             note_unported_mon('mpickobj:shop_light_thrown_arms');
-            note_unported_mon('mpickstuff:check_gear_next_turn');
+            check_gear_next_turn(mtmp);
             newsym(mtmp.mx, mtmp.my);
             return true;                    /* pick only one object */
         }

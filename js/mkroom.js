@@ -22,7 +22,7 @@ import { somexyspace, occupied, make_grave } from './mklev.js';
 import { OROOM, SHOPBASE, FILL_NORMAL, COURT, ZOO, BEEHIVE, MORGUE,
          BARRACKS, SWAMP, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE,
          ROOMOFFSET, POOL, SDOOR, ROOM, IS_ROOM, IS_DOOR, isok, G_GONE,
-         In_endgame, SPACE_POS, IS_THRONE, THRONE,
+         In_endgame, SPACE_POS, IS_THRONE, THRONE, ALTAR, AM_SHRINE,
          OBJ_AT } from './const.js';
 import { makemon, mkclass } from './makemon.js';
 import { m_at, t_at } from './mon.js';
@@ -30,6 +30,8 @@ import { PMNAMES, MONSYMS } from './monst_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { inside_room } from './sp_lev.js';
 import { shtypes } from './shknam.js';
+import { priestini } from './priest.js';
+import { induced_align } from './dungeon.js';
 
 function note_unported_mkroom(what) {
     (game.unported ||= new Set()).add(`mkroom:${what}`);
@@ -103,7 +105,7 @@ export function do_mkroom(roomtype) {
         case MORGUE:    mkzoo(MORGUE);    break;
         case BARRACKS:  mkzoo(BARRACKS);  break;
         case SWAMP:     mkswamp();        break;
-        case TEMPLE:    note_unported_mkroom('mktemple'); break;
+        case TEMPLE:    mktemple();       break;
         case LEPREHALL: mkzoo(LEPREHALL); break;
         case COCKNEST:  mkzoo(COCKNEST);  break;
         case ANTHOLE:   mkzoo(ANTHOLE);   break;
@@ -467,6 +469,47 @@ export function squadmon() {
         mndx = squadprob[rn2(squadprob.length)][0];     /* ROLL_FROM */
 
     return (game.mvitals?.[mndx]?.mvflags & G_GONE) ? null : game.mons[mndx];
+}
+
+// src/mkroom.c:577 shrine_pos() — the altar's square, the room's centre.
+//
+// Draws rn2(2) for each dimension whose extent is EVEN (delta odd), because
+// the exact centre then falls between two map squares and C picks a side.
+// A room with both extents odd draws nothing here.
+function shrine_pos(sroom) {
+    const buf = { x: 0, y: 0 };
+    let delta;
+
+    delta = sroom.hx - sroom.lx;
+    buf.x = sroom.lx + Math.trunc(delta / 2);
+    if ((delta % 2) && rn2(2))
+        buf.x++;
+    delta = sroom.hy - sroom.ly;
+    buf.y = sroom.ly + Math.trunc(delta / 2);
+    if ((delta % 2) && rn2(2))
+        buf.y++;
+    return buf;
+}
+
+// src/mkroom.c:598 mktemple() — the temple and its priest.
+//
+// pick_room(TRUE) here, not FALSE: a temple demands a room with NEITHER
+// staircase, where mkzoo tolerates the downstairs on an rn2(3).
+function mktemple() {
+    const sroom = pick_room(true);
+    if (!sroom)
+        return;
+
+    /* set up Priest and shrine */
+    sroom.rtype = TEMPLE;
+    /* In temples, shrines are blessed altars located in the centre */
+    const spot = shrine_pos(sroom);
+    const lev = game.level.at(spot.x, spot.y);
+    lev.typ = ALTAR;
+    lev.altarmask = induced_align(80);
+    priestini(game.u.uz, sroom, spot.x, spot.y, false);
+    lev.altarmask |= AM_SHRINE;
+    game.level.flags.has_temple = 1;
 }
 
 // src/mkroom.c:530 mkswamp() — turn up to five rooms swampy.

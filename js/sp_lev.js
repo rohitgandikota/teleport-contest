@@ -1110,6 +1110,11 @@ export function inside_room(croom, x, y) {
 // The flags ACCUMULATE: a flying eel is WET from the first test and gains
 // HOT|WET from the second, so the humidity a monster searches with is often
 // several bits, and get_location's is_ok_location accepts any of them.
+// src/sp_lev.c:1311 pm_good_location()
+export function pm_good_location(x, y, pm) {
+    return is_ok_location(x, y, pm_to_humidity(pm));
+}
+
 export function pm_to_humidity(pm) {
     let loc = DRY;
 

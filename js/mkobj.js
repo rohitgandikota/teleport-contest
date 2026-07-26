@@ -41,7 +41,7 @@ import { depth } from './dungeon.js';
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
 // value mkobj() accepts that is not a real oclass.
-const SPBOOK_no_NOVEL = -OCLASSES.SPBOOK_CLASS;
+export const SPBOOK_no_NOVEL = -OCLASSES.SPBOOK_CLASS;
 
 // include/permonst.h
 const NON_PM = -1;
@@ -1065,6 +1065,19 @@ export function mk_tt_object(objtype, x, y) {
     set_corpsenm(otmp, pm);
 
     return otmp;
+}
+
+// src/mkobj.c:1822 uncurse() — clear the cursed bit.
+//
+// The light-radius and luck bookkeeping around it only fires for a lit
+// artifact or a carried luck-conferring object, neither of which applies to
+// a priest's robe at level generation; they are recorded rather than faked.
+export function uncurse(otmp) {
+    if (otmp.lamplit)
+        note_unported_obj('uncurse:arti_light_radius');
+    otmp.cursed = 0;
+    if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
+        otmp.owt = weight(otmp);
 }
 
 export function set_corpsenm(obj, id) {

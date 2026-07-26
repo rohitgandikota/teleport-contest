@@ -558,7 +558,7 @@ export function mongets(mtmp, otyp) {
 }
 
 // src/mon.c mpickobj() — returns true when otmp was freed by merging.
-function mpickobj(mtmp, otmp) {
+export function mpickobj(mtmp, otmp) {
     if (!mtmp.minvent) mtmp.minvent = [];
     mtmp.minvent.push(otmp);
     return false;

@@ -18,6 +18,7 @@ import { MM_NOCOUNTBIRTH, MM_NOMSG, SHOPBASE, COURT, LEPREHALL, ZOO, TEMPLE,
          BEEHIVE, MORGUE, ANTHOLE, BARRACKS, SWAMP, COCKNEST,
          G_GONE } from './const.js';
 import { do_mkroom, antholemon, mkroom_wire } from './mkroom.js';
+import { SPBOOK_no_NOVEL } from './mkobj.js';
 import { mongone } from './mon.js';
 import { sgn } from './hacklib.js';
 import { obj_extract_self } from './invent.js';
@@ -147,7 +148,7 @@ const RANDOM_CLASS = 0;
 // It is the NEGATED class, -10, not a class index one past the real ones. Hard
 // coding 11 made it WAND_CLASS, so the supply chest's bonus items generated
 // wands where C generates spellbooks, in 3 of the 10 table slots.
-const SPBOOK_no_NOVEL = -OCLASSES.SPBOOK_CLASS;
+/* SPBOOK_no_NOVEL is imported from js/mkobj.js, where it lives. */
 
 // Supply chest items
 const MARK = 6;

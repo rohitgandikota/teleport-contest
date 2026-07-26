@@ -6,7 +6,29 @@
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
-NEXT CONCRETE TARGET: seed0004 picks the WRONG GENDER at chargen.
+NEXT CONCRETE TARGET: seed0004's PET LANDS ON THE WRONG SQUARE.
+
+After the wallification fix (510 screens) seed0004's earliest difference is
+the pony's position, still at step 9:
+
+  C     row 8  │·····u│      row 10 │······│
+  ours  row 8  │······│      row 10 │····u·│
+
+The room outline now matches exactly; only the pet differs, by two rows.
+
+What is already ruled out:
+  - the RNG. seed0004 matches C for 3694 calls, well past placement, so the
+    draws enexto made were identical in count and argument.
+  - enexto_core (js/teleport.js:125) is fully ported, no unported markers.
+  - makedog passes makemon(mons[pettype], u.ux, u.uy, ...) exactly as C does.
+
+So the difference is in what goodpos() ACCEPTS at placement time, or in the
+map state when placement runs. Note the pet is placed DURING level
+generation, before the whole-level wallification pass that was just added, so
+the map it sees is the mid-generation one -- check that our mid-generation
+map matches C's at that moment before suspecting goodpos.
+
+PREVIOUS TARGET, NOW FIXED: seed0004 picked the wrong gender at chargen.
 
 After the menu-overlay clear landed (501 screens), seed0004's divergence moved
 to step 9 and is now:

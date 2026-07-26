@@ -29,7 +29,7 @@ import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
-import { is_orc, unsolid, thick_skinned } from './mondata.js';
+import { is_orc, unsolid, thick_skinned, attacktype } from './mondata.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
@@ -57,6 +57,51 @@ const is_longworm = (ptr) =>
 
 // src/mon.c helpless()
 /* helpless() lives in js/monst.js, matching include/monst.h:251. */
+
+// src/uhitm.c:5247 mhitm_knockback() — a hit may shove the defender back.
+//
+// THE TWO DRAWS AT THE TOP HAPPEN ON EVERY ATTACK, before any early return,
+// and that is the whole reason this is ported now. knockdistance rolls
+// rn2(3) unconditionally, and rn2(chance) rolls again immediately after;
+// only then does C start rejecting. Skipping this function would drop two
+// RNG calls from every single monster-vs-monster blow.
+//
+// After the draws, an ordinary bite exits on the attack-type filter:
+// knockback is only for AD_PHYS with AT_CLAW, AT_KICK, AT_BUTT or AT_WEAP.
+// Everything past that filter -- the direction maths, the messages, the
+// dismount and death handling -- is recorded, since no ported attack type
+// reaches it yet.
+export function mhitm_knockback(magr, mdef, mattk, hitflags, weapon_used) {
+    const u_agr = (magr === game.youmonst);
+    const knockdistance = rn2(3) ? 1 : 2; /* 67%: 1 step, 33%: 2 steps */
+    let chance = 6; /* 1/6 chance of attack knocking back a monster */
+    const wep = weapon_used ? (u_agr ? game.u.uwep : MON_WEP(magr)) : null;
+
+    if (wep && wep.oartifact) {
+        /* is_art(wep, ART_OGRESMASHER) -- the artifact table is not ported */
+        (game.unported ||= new Set()).add('mhitm_knockback:ogresmasher');
+    }
+
+    if (rn2(chance))
+        return false;
+
+    /* only certain attacks qualify for knockback */
+    if (!((mattk.adtyp === ATTKS.AD_PHYS)
+          && (mattk.aatyp === ATTKS.AT_CLAW
+              || mattk.aatyp === ATTKS.AT_KICK
+              || mattk.aatyp === ATTKS.AT_BUTT
+              || mattk.aatyp === ATTKS.AT_WEAP)))
+        return false;
+
+    /* don't knockback if attacker also wants to grab or engulf */
+    if (attacktype(magr.data, ATTKS.AT_ENGL)
+        || attacktype(magr.data, ATTKS.AT_HUGS))
+        return false;
+
+    /* the shove itself: direction maths, messages, dismount, death */
+    (game.unported ||= new Set()).add('mhitm_knockback:shove');
+    return false;
+}
 
 // src/uhitm.c:4782 mhitm_adtyping() — dispatch on the attack's DAMAGE type.
 //

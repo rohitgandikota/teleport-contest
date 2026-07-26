@@ -6,6 +6,8 @@
 // port that tracks the turn counter correctly still has to make the call.
 
 import { game } from './gstate.js';
+import { Race_if } from './u_init.js';
+import { PMNAMES } from './monst_data.js';
 import { done } from './end.js';
 import { set_occupation } from './allmain.js';
 import { rn2 } from './rng.js';
@@ -13,7 +15,7 @@ import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
          HUNGRY, FAINTING,
          A_LAWFUL } from './const.js';
 import { ONAMES } from './objects_data.js';
-import { getobj } from './invent.js';
+import { getobj, weight } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
@@ -360,4 +362,52 @@ export function maybe_finished_meal(stopping) {
 export function morehungry(num) {
     game.u.uhunger -= num;
     newuhs(true);
+}
+
+// src/eat.c recalc_wt() — the piece being eaten gets lighter.
+//
+// Three lines of substance: owt is recomputed from weight() as the meal is
+// consumed. C's impossible() on a missing piece is a programming-error
+// report, not a game event, so it is recorded rather than made to throw.
+export function recalc_wt() {
+    const piece = game.context.victual?.piece;
+
+    if (!piece) {
+        note_unported_eat('recalc_wt:impossible');
+        return;
+    }
+    piece.owt = weight(piece);
+}
+
+// src/eat.c adj_victual_nutrition() — race-adjusted nutrition for the two
+// foods that care.
+//
+// Called ONLY when nmod is negative, which is why the first thing it does is
+// negate it; C says so in a comment and asserts nut > 0.
+//
+// Elves get a quarter more from a lembas wafer and orcs a quarter less
+// (800 -> 1000 or 600); dwarves get a sixth more from a cram ration
+// (600 -> 700). The roundings differ -- (nut+2)/4 twice, (nut+3)/6 once --
+// and are C's, not a uniform formula.
+//
+// maybe_polyd checks the POLYFORM first and the race second, so a
+// polymorphed hero is judged by what it currently is. That is recorded;
+// polyform is not modelled, so the race test alone decides here.
+export function adj_victual_nutrition() {
+    const otyp = game.context.victual.piece.otyp;
+    /* only called when nmod is negative; convert to positive */
+    let nut = -game.context.victual.nmod;
+
+    if (otyp === ONAMES.LEMBAS_WAFER) {
+        note_unported_eat('adj_victual_nutrition:maybe_polyd');
+        if (Race_if(PMNAMES.PM_ELF))
+            nut += Math.trunc((nut + 2) / 4);       /* 800 -> 1000 */
+        else if (Race_if(PMNAMES.PM_ORC))
+            nut -= Math.trunc((nut + 2) / 4);       /* 800 -> 600 */
+    } else if (otyp === ONAMES.CRAM_RATION) {
+        note_unported_eat('adj_victual_nutrition:maybe_polyd');
+        if (Race_if(PMNAMES.PM_DWARF))
+            nut += Math.trunc((nut + 3) / 6);       /* 600 -> 700 */
+    }
+    return Math.max(nut, 1);
 }

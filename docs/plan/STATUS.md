@@ -339,14 +339,29 @@ So C's pet is considering fetching something -- plausibly the gold seen in
 the earlier screendiff -- and ours never gets there, falling through to the
 appr test instead.
 
-We DO have this branch (js/dog.js, inside dog_goal) with the rn2(8) present,
-so it is reached-but-failing, not missing. SUSPECT THE ACCESSOR FIRST: the
-condition reads `mtmp.edog?.apport`, but edog lives at mtmp.mextra.edog and
-js/const.js exposes EDOG(mtmp) for exactly that. `mtmp.edog` is undefined, so
-`undefined > rn2(8)` is false -- and note it would STILL DRAW, so a wrong
-accessor here changes the branch taken without removing the draw. That alone
-does not explain a missing rn2(8), which means an EARLIER condition in the
-chain also fails; check gtyp, in_masters_sight and the lit tests in order.
+We DO have this branch (js/dog.js:658) with the rn2(8) present, so it is
+reached-but-failing, not missing.
+
+NOT THE ACCESSOR -- checked and withdrawn. The condition reads
+`mtmp.edog?.apport` and edog is stored directly on mtmp.edog throughout
+js/dog.js (created at :119 as `mtmp.edog ||= {}`, read at :554, :658, :938).
+It is internally consistent; the port simply does not use C's mextra
+indirection here. EDOG() in js/const.js reads mtmp.mextra.edog and is a
+SEPARATE, unused path -- worth reconciling for the architecture rule, but it
+is not this bug.
+
+So an EARLIER condition in the chain fails. Check them in source order at the
+turn containing call 6276:
+
+    gtyp === UNDEF          has a goal already been chosen this call?
+    in_masters_sight        js/dog.js:634 defines it as couldsee(omx, omy)
+    !dog_has_minvent        does our pet already carry something?
+    the lit tests           !levl[omx][omy].lit || levl[u.ux][u.uy].lit
+    otyp === MANFOOD || m_cansee(mtmp, nx, ny)
+
+Print each one's value for the object the pet should be considering. The
+object loop must also be reaching that object at all -- confirm the gold is
+in the scanned range before testing the conditions on it.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

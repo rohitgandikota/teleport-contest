@@ -53,3 +53,12 @@ export const Unaware = () => {
     (game.unported ||= new Set()).add('youprop:Unaware');
     return false;
 };
+
+// include/youprop.h:152 See_invisible — (HSee_invisible || ESee_invisible).
+export const See_invisible = () => !!game.u?.uprops?.SEE_INVIS;
+
+// include/youprop.h:198 Invis — ((HInvis || EInvis) && !BInvis).
+// The flat uprops map has no blocked slot, so the BInvis term has nowhere to
+// live yet; nothing blocks invisibility today, so this is right for now and
+// the term goes in when uprops grows the struct.
+export const Invis = () => !!game.u?.uprops?.INVIS;

@@ -378,6 +378,15 @@ export const carnivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_CARNIVORE) !== 0;
 // include/mondata.h:91 herbivorous()
 export const herbivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_HERBIVORE) !== 0;
 
+// src/mondata.c:1180 gender() — 0 male, 1 female, 2 none.
+// Unlike pronoun_gender below, this one does not care whether the hero can
+// see the monster, and it never draws.
+export function gender(mtmp) {
+    if (is_neuter(mtmp.data))
+        return 2;
+    return mtmp.female | 0;
+}
+
 // src/mondata.c:1191 pronoun_gender() — like gender(), but unseen humanoids
 // are "it" rather than "he"/"she", lower animals are "it" even when seen, and
 // hallucination can yield "they". This is the one messages use.

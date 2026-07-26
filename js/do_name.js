@@ -9,8 +9,8 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
-         M_AP_TYPE, M_AP_MONSTER } from './const.js';
-import { humanoid, is_animal, mindless } from './mondata.js';
+         M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU } from './const.js';
+import { humanoid, is_animal, mindless, pronoun_gender } from './mondata.js';
 import { canspotmon } from './display.js';
 
 // src/do_name.c:759 ghostnames[] — 34 entries.

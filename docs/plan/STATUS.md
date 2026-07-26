@@ -876,12 +876,24 @@ The gainers are quest/tour sessions (0367 priest-quest, 0361 archeologist,
 0030 ten-deaths) where dropping evidently now matches. The losers include
 BOTH friday13 sessions and 0108 wizard-extcmd-wishlist.
 
-NEXT: take seed0013-friday13 (-9, the largest single loss) and trace where
-its stream first differs with the wiring on, using the globalThis rn2 counter
-and a stack dump. One session, one direction, nine calls -- and the answer
-will not be the same as whatever seed0367 is gaining from.
+TRACED seed0013-friday13 (-9) AND IT IS DOWNSTREAM NOISE. Its FIRST
+divergence is call 3846 at distfleeck WITH the wiring and call 3846 at
+distfleeck WITHOUT it -- identical. The nine lost matches are all after that
+point, where the streams have already parted and any count is meaningless.
 
-DO NOT chase the aggregate. It nets out and tells you nothing.
+THIS IS THE DOWNSTREAM-DELTA TRAP ALREADY IN NOTES, and it applies to the
+whole +27/-29 table above: none of those per-session numbers were checked
+against each session's divergence POINT. A session whose first mismatch is
+early can swing its matched-call count by dozens on an unrelated change.
+
+WHAT WOULD ACTUALLY SETTLE THE WIRING: for each of the eleven sessions that
+moved, compare the FIRST DIVERGENCE CALL with and without dodrop wired. If
+no session's first divergence moves LATER, the wiring buys nothing real; if
+one does, that is the session to work on and the rest is noise.
+
+The aggregate rng figure and the per-session rng figures are BOTH downstream-
+contaminated. The divergence point is the only clean measure, which STATUS
+already says elsewhere and which I did not apply here for three ticks.
 
 SIZED cmd:d (30%) -- the DROP command, and it is now within reach because
 freeinv landed. The chain:

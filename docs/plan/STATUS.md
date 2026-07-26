@@ -80,9 +80,17 @@ from a placement path we do not run at all (one that spends no draws), or the
 three extra obj_resists belong to dog_move's walk over squares that hold
 objects in C and not in ours.
 
-Next step: count C's objects rather than inferring them. The recorded screens
-show the level, so decode step 0 of seed1500 and count the object glyphs on
-the map, then compare against game.level.objects.
+Counting C's objects off the recorded screen does NOT settle this and was
+tried: step 0 of seed1500 shows exactly ONE object glyph, a '!' at map 55,15,
+because the hero only sees their starting room and everything else is dark.
+Do not repeat that measurement.
+
+What would settle it: instrument mkobj_at/mkgold/mksobj_at to log every
+placement with its position, run the session, and compare the count and the
+positions against the rn2(3) results the RNG log already agrees on. If the
+draws agree and the placements do not, the gap is a placement path that spends
+no draws; if the number of mkobj_at calls itself is short, the gap is a
+CALLER that we never reach.
 
 ### What the obj_resists cluster actually is
 

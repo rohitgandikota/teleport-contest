@@ -38,3 +38,12 @@ export const is_door_mappear = (mon) =>
     M_AP_TYPE(mon) === M_AP_FURNITURE
     && (mon.mappearance === MONSYMS.S_hcdoor
         || mon.mappearance === MONSYMS.S_vcdoor);
+
+// include/monst.h:255 mon_offmap() — ((mon)->mstate != MON_FLOOR).
+//
+// mstate is not tracked yet, so `| 0` makes an absent value read as MON_FLOOR
+// (0) and the monster counts as on the map. Without that coercion `undefined
+// !== 0` is true and EVERY monster reads as off-map, which would make
+// movemon skip the entire level.
+import { MON_FLOOR } from './const.js';
+export const mon_offmap = (mon) => (mon.mstate | 0) !== MON_FLOOR;

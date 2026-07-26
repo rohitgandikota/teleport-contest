@@ -1,3 +1,6 @@
+import { mon_offmap } from './monst.js';
+import { dist2 } from './hacklib.js';
+import { m_dowear } from './worn.js';
 import { is_hider } from './mondata.js';
 import { ceiling_hider } from './mondata.js';
 import { sensemon } from './display.js';
@@ -28,7 +31,7 @@ import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
-         M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit } from './const.js';
+         M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
@@ -122,9 +125,36 @@ function movemon_singlemon(mtmp) {
        `do { movemon() } while (monscanmove)` loop, so reporting TRUE for a
        monster that merely has some leftover movement runs the whole loop again
        and hands every monster an extra turn. */
+    /* src/mon.c:1244 — a monster that is no longer on this map does not act. */
+    if (mon_offmap(mtmp))
+        return false;
+
     if (mtmp.movement < NORMAL_SPEED)
         return false;
     mtmp.movement -= NORMAL_SPEED;
+
+    /* src/mon.c:1265 minliquid() — drowning, burning and fountain effects.
+       162 lines in minliquid_core, and every arm is gated on inpool, inlava
+       or infountain, so a monster on dry floor draws nothing and this is
+       recorded rather than ported. A monster standing in water WILL diverge. */
+    if (is_pool(mtmp.mx, mtmp.my) || is_lava(mtmp.mx, mtmp.my))
+        (game.unported ||= new Set()).add('movemon_singlemon:minliquid');
+
+    /* src/mon.c:1268 — after losing equipment, try to put on replacement.
+       C's comment: "hostiles only try to equip things if they think hero
+       isn't nearby; if they think hero is nearby, leave the flag intact so
+       that it can be checked again on subsequent moves". Note the distance is
+       to mux/muy, where the monster BELIEVES the hero is, not u.ux/u.uy. */
+    if (mtmp.misc_worn_check & I_SPECIAL) {
+        if (mtmp.mpeaceful || mtmp.mtame
+            || dist2(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy) > (3 * 3)) {
+            mtmp.misc_worn_check &= ~I_SPECIAL;
+            const oldworn = mtmp.misc_worn_check;
+            m_dowear(mtmp, false);
+            if (mtmp.misc_worn_check !== oldworn || !mtmp.mcanmove)
+                return false; /* is spending this turn equipping */
+        }
+    }
 
     /* src/mon.c:1286 — the hider and eel arms are NOT wired here.
        js/mon.js has restrap() ported below and it is correct in isolation,

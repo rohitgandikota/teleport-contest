@@ -75,14 +75,36 @@ its line of sight. C never renders it, so there is no ':' on the map rows to
 compare against. (The ':' characters that do appear are on screen rows 22-23,
 which are the status lines, not the map.)
 
-NEXT, and it has to be a trace rather than a look: instrument our newt's
-position each turn from its creation up to call 2869 and find the turn its
-count first differs from what C's stream implies. The modulus of C's
-rn2(4 * (cnt - j)) gives C's candidate count on every one of that monster's
-moves, so C's count is READABLE FROM THE LOG at each step even though its
-position is not. Walk backwards: the first call where C's implied count and
-ours diverge is the turn the positions parted, and that is the bug's real
-location.
+TRACE DONE. Run tools/diverge.mjs with -w 600 and grep for m_move(monmove.c:
+1963); the modulus of each is C's candidate count for that monster's move, so
+C's counts are readable even though its positions are not:
+
+    2802  C rn2(20)  ours rn2(20)  ok
+    2815  C rn2(24)  ours rn2(24)  ok
+    2841  C rn2(20)  ours rn2(20)  ok
+    2851  C rn2(16)  ours rn2(16)  ok
+    2869  C rn2(28)  ours rn2(20)  MISMATCH  <- first
+    2872  C rn2(12)  ours rn2(12)  ok        <- still agrees after!
+
+THE FOUR PRECEDING MONSTER MOVES ALL MATCH, and 2872 matches again. So our
+monsters are NOT broadly misplaced -- the level and its population are
+substantially right, and this is one specific creature. That rules out a
+systemic level-generation or placement fault and makes the problem local.
+
+Combined with the candidate dump (newt at 77,14 against a VWALL, 5 open
+neighbours, which is correct FOR THAT SQUARE), the question is now narrow:
+why is our newt at 77,14 when C's is somewhere with 7 open neighbours, given
+every other monster is where C has it?
+
+Two candidates, in order of cheapness:
+  1. The newt was PLACED differently. Note that call 2864 is
+     maybe_generate_rnd_mon(allmain.c:166) drawing rn2(70), and it MATCHES.
+     If the newt was created there, check what follows that draw: a matching
+     "should I generate" roll does not mean the placement that follows it
+     matched.
+  2. The newt MOVED differently on an earlier turn whose m_move draw is not
+     in the window above. Widen -w further and look for earlier moves by a
+     monster whose count sequence is consistent with a newt.
 
 That technique generalises and is the useful part of this thread: when a
 monster's position cannot be observed directly, the modulus of a draw that

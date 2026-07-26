@@ -584,7 +584,8 @@ async function domove(dx, dy) {
     }
 
     /* src/hack.c:2787's do_attack() call is NOT wired here. Measured: the
-       swap below is worth +2 screens, but adding this attack check costs 30.
+       swap below is worth +2 screens, adding this attack check costs 30, and
+       it does NOT throw -- that was checked, so the 30 is real behaviour.
        js/uhitm.js holds the ported do_attack; see STATUS. */
 
     if (blocksMove(newx, newy)) {

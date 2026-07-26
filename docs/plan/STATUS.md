@@ -5237,3 +5237,36 @@ preconditions match.
 So the swap is entered with the same hero state C has, which makes the -247
 more likely to be about WHICH ARM it takes than about where it starts. That
 is what the instrumentation above should print first.
+
+## uhitm.c: the SWAP is landed (+2 screens); the attack check is not
+
+domove_swap_with_pet is ported and wired, taking screens 491 -> 493. The hero
+now swaps places with a pet instead of walking through it.
+
+WHY THE FIRST TWO ATTEMPTS FAILED, and it was not what every entry above
+guessed: both wrote the function at module scope referencing a bare `u`, which
+is a LOCAL inside domove and invisible from module scope, so it threw on every
+step onto a pet. -247 and -224 screens. Two bisects and four eliminations went
+into treating that as a logic fault. A try/catch around the call printed
+"u is not defined" on the first run.
+
+THE LESSON, now also in NOTES: a large regression that looks like wrong
+behaviour may be an exception being swallowed. Ask whether the code RAN before
+asking which branch it took. Every hero coordinate in that function goes
+through game.u.
+
+THE ATTACK CHECK IS STILL OUT, and this time for a real reason. Wiring
+do_attack at src/hack.c:2787 costs 30 screens, and it does NOT throw -- that
+was checked with the same try/catch. So the 30 is genuine behaviour.
+
+The likely mechanism: when is_safemon is false, our do_attack falls to
+`note_unported('do_attack:combat'); return true;`, which consumes the hero's
+move. C also returns TRUE there, because the hero really does spend the move
+attacking -- but C's attack also lands damage and prints messages, so the
+resulting screens differ. Returning TRUE without attacking is not equivalent to
+attacking.
+
+NEXT: that means the attack check cannot land before attack_checks and the
+melee code, or at least before enough of hitum() to produce the message. Do
+not keep re-wiring it and measuring; it will cost 30 every time until the
+combat path exists.

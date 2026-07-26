@@ -170,7 +170,7 @@ const herbivorous  = (ptr) => (ptr.mflags1 & MFLAGS.M1_HERBIVORE) !== 0;
 const metallivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_METALLIVORE) !== 0;
 const haseyes      = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
 const humanoid     = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
-const acidic       = (ptr) => (ptr.mflags1 & MFLAGS.M1_ACID) !== 0;
+export const acidic = (ptr) => (ptr.mflags1 & MFLAGS.M1_ACID) !== 0;
 const poisonous    = (ptr) => (ptr.mflags1 & MFLAGS.M1_POIS) !== 0;
 /* is_undead lives in js/mondata.js, its C home (include/mondata.h:95). */
 const is_elf       = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
@@ -195,7 +195,7 @@ const flesh_petrifies = (pm) => touch_petrifies(pm)
                              || pm.pmidx === PMNAMES.PM_MEDUSA;
 
 // include/mondata.h:75
-const slimeproof = (ptr) => ptr.pmidx === PMNAMES.PM_GREEN_SLIME
+export const slimeproof = (ptr) => ptr.pmidx === PMNAMES.PM_GREEN_SLIME
                          || flaming(ptr) || noncorporeal(ptr);
 
 // include/mondata.h:196

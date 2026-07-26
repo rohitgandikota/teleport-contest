@@ -11,6 +11,7 @@ import { MON_WEP } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
+    P_DAGGER, P_KNIFE,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
@@ -20,6 +21,10 @@ import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
 import { sobj_at } from './invent.js';
 import { m_carrying, meatmetal, resists_ston } from './mon.js';
+import { acidic, slimeproof } from './dog.js';
+import { Is_mbag } from './mkobj.js';
+import { Is_container } from './obj.js';
+import { is_weptool } from './mkobj.js';
 import { metallivorous, corpse_eater } from './mondata.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
@@ -373,10 +378,8 @@ const is_unicorn  = (ptr) => ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
    Is_mbag, but adding an import edge to monmove.js closes a cycle (NOTES,
    "The module graph is load-bearing"). dup-defs will flag these; the bodies
    are transcribed from the same C macros. */
-const Is_container = (o) =>
-    o.otyp >= ONAMES.LARGE_BOX && o.otyp <= ONAMES.BAG_OF_TRICKS;
-const Is_mbag = (o) =>
-    o.otyp === ONAMES.BAG_OF_HOLDING || o.otyp === ONAMES.BAG_OF_TRICKS;
+/* Is_container comes from js/obj.js. */
+/* Is_mbag comes from js/mkobj.js. */
 const touch_petrifies = (ptr) => ptr.pmidx === PMNAMES.PM_COCKATRICE
                               || ptr.pmidx === PMNAMES.PM_CHICKATRICE;
 
@@ -1316,22 +1319,12 @@ function mcould_eat_tin(mon) {
    include/obj.h:249 is_weptool(). Local rather than imported: js/wield.js and
    js/mkobj.js both close a cycle from here (NOTES, "The module graph is
    load-bearing"). */
-const is_weptool = (o) =>
-    o.oclass === OCLASSES.TOOL_CLASS
-    && game.objects[o.otyp].oc_subtyp !== P_NONE;
 const erodeable_wep = (o) =>
-    o.oclass === OCLASSES.WEAPON_CLASS || is_weptool(o)
+    o.oclass === OCLASSES.WEAPON_CLASS || is_weptool(o, game.objects)
     || o.otyp === ONAMES.HEAVY_IRON_BALL || o.otyp === ONAMES.IRON_CHAIN;
 const will_weld = (o) =>
     o.cursed && (erodeable_wep(o) || o.otyp === ONAMES.TIN_OPENER);
 const mwelded = (obj) =>
     !!(obj && (obj.owornmask & W_WEP) && will_weld(obj));
 
-/* include/mondata.h:88 acidic() and :75 slimeproof(); js/dog.js has private
-   copies, local here for the same cycle reason. */
-const acidic = (d) => (d.mflags1 & MFLAGS.M1_ACID) !== 0;
-const slimeproof = (d) => d.pmidx === PMNAMES.PM_GREEN_SLIME
-                       || flaming(d) || noncorporeal(d);
-
-/* include/objclass.h skill values used by mcould_eat_tin. */
-const P_NONE = 0, P_DAGGER = 1, P_KNIFE = 2;
+/* acidic and slimeproof come from js/dog.js. */

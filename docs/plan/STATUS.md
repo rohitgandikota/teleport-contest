@@ -847,11 +847,26 @@ note_unported() sitting past a guard inflates its own score. Read the code
 around any entry before believing its rank; two commands has been enough
 every time.
 
-onscary:elbereth at 98% is gated on engravings, which is a named absent
-subsystem -- that is the single highest-reach thing blocked by something
-large, and worth weighing against the tty menu that blocks getbones across
-four sessions. Check the same way first: find whether the elbereth arm is
-past a guard that early-game play rarely satisfies.
+CHECKED onscary:elbereth (98%) THE SAME WAY, AND IT SURVIVES -- unlike the
+two above. The note sits at the END of onscary, after the scare-scroll test,
+so 98% means "onscary ran to completion", not "Elbereth mattered". By itself
+that is the same inflation as remember_topl and touch_artifact.
+
+BUT THE UNDERLYING SUBSYSTEM IS REAL WORK WITH REAL REACH: 7 of the 44
+sessions send the E (engrave) command, and one is named outright --
+seed0101-ranger-quiver-throw-travel-engrave. 675 "engrave" mentions across
+the corpus. So engravings are exercised deliberately, not incidentally.
+
+That makes the engraving subsystem worth roughly SEVEN SESSIONS, which is
+comparable to the tty menu's four for getbones and larger than anything else
+currently identified. It also unblocks three things already recorded
+elsewhere in this file: onscary's Elbereth arm, setmangry's sengr_at
+hypocrite branch (its only draw, an rnd(5)), and goodpos_onscary.
+
+RECOMMENDED NEXT TARGET: the engraving subsystem (src/engrave.c), sized
+first. Do not start it without counting its own dependencies the way
+set_wear's ten *_on handlers turned up -- read the file's function list and
+check which of them already exist before committing.
 
 TWO SCREEN-VISIBLE GAPS FOUND BY SWEEPING screendiff, both hitting several
 sessions:

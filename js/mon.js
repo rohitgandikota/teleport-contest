@@ -921,3 +921,18 @@ export function resists_ston(mon) {
         (game.unported ||= new Set()).add('mon:Resists_Elem:worn');
     return (mon_resistancebits(mon) & MFLAGS.MR_STONE) !== 0;
 }
+
+// src/mon.c:3421 set_ustuck() — set or clear what the hero is stuck to.
+//
+// Draws nothing. The point of having it as a function rather than an
+// assignment is the clearing side: releasing u.ustuck must also clear
+// uswallow and uswldtim, or the hero stays "swallowed" by nothing.
+export function set_ustuck(mtmp) {
+    game.disp = game.disp || {};
+    game.disp.botl = true;
+    game.u.ustuck = mtmp;
+    if (!game.u.ustuck) {
+        game.u.uswallow = 0;
+        game.u.uswldtim = 0;
+    }
+}

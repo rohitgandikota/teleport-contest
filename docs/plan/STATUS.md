@@ -15,10 +15,27 @@ dup-defs were all structurally unable to see.
 
 NEXT IN THE CHAIN is known_hitum (60 lines, src/uhitm.c). It DRAWS -- rn2(25),
 rn2(3) and rnd(100) in its flee branch -- so unlike everything below it, the
-scoreboard can finally see it. It needs missum, hmon (16 lines, then
-hmon_hitmon underneath), cutworm, set_ustuck, sticks, is_blade and is_axe.
-After it, hitum wires the whole thing together and passive (256 lines, draws)
-follows.
+scoreboard can finally see it.
+
+ITS DEPENDENCY TREE, walked rather than estimated:
+
+    is_blade, is_axe    DONE (js/mon.js), verified across the skill range
+    set_ustuck    15 lines  DONE (js/mon.js)
+    missum        17 lines  small, but needs wakeup
+      wakeup      31 lines  and wakeup opens ITS OWN chain:
+                            wake_msg, seemimic, finish_meating, growl,
+                            setmangry, ghod_hitsu, hot_pursuit
+    hmon          16 lines  then hmon_hitmon underneath, unsized
+    cutworm      105 lines  long worms only; recordable
+
+setmangry is the one to look at before committing to this: it changes
+alignment and anger state and is likely to pull in more again.
+
+SO known_hitum IS NOT A 60-LINE JOB. missum's chain through wakeup and
+setmangry is the bulk, and cutworm is skippable. A reasonable first cut is to
+port missum with wakeup RECORDED, land known_hitum's other arms, and measure
+whether the rn2(25)/rn2(3)/rnd(100) alone move the aggregate. If they do, the
+wakeup chain can follow against evidence.
 
 Run this FIRST, before picking anything. It is the targeting instrument and
 takes about three minutes:

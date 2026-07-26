@@ -153,6 +153,27 @@ the pre-increment behaving exactly as C's does. chcnt advances correctly.
 So neither appr, nor IS_ROOM, nor the sampler, nor the pre-increment is the
 cause. THREE leads eliminated by measurement, none by reading.
 
+CONCRETE LEAD -- A MISSING CANDIDATE SQUARE.
+
+mfndpos's iteration order is correct: nx outer, ny inner, from max(1, x-1)
+and max(0, y-1), matching src/mon.c:2140. But the traced candidate list for a
+pet at (38,17) is
+
+  (37,16) (37,18) (38,16) (38,18) (39,16) (39,17) (39,18)   cnt = 7
+
+(37,17), directly WEST of the pet, is absent. The pet's own square (38,17) is
+correctly excluded, so a full neighbourhood should offer 8 and we offer 7.
+
+If C offers (37,17) and we do not, every downstream j shifts and the tie set
+changes -- which is exactly the observed symptom (C ties where we do not)
+while appr, GDIST, the sampler and the pre-increment all agree.
+
+NEXT: find out why (37,17) is filtered. seed0007 is the snake-swamp level, so
+water is a strong candidate -- check mfndpos's pool/lava handling against
+src/mon.c, particularly whether a TAME monster is allowed to consider a
+water square it would refuse to enter. Confirm the terrain at (37,17) first
+rather than assuming.
+
 WHAT IS LEFT: the CANDIDATE LIST. Same appr, same goal, same rn2(4), same
 sampler, yet at one specific invocation C scores a candidate at j == 0 and we
 score none. j = (GDIST(nx,ny) - nidist) * appr, so with appr and GDIST's goal

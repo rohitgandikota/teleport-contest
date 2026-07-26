@@ -97,12 +97,27 @@ which need subsystems that are absent, and for an ordinary pet with neither
 present it evaluates FALSE. So it is a genuine gap that cannot currently
 change any placement -- port it when engravings land, not before.
 
-STILL UNEXPLAINED, and every cheap explanation is now eliminated:
-collect_coords, the shuffle, the RNG stream, all four goodpos arms, the
-hero's position and the gold's position all agree. The next thing to
-instrument is enexto_core itself: print the shuffled candidate list and the
-index of the winner, and compare the ORDER against what C must have had for
-(56,4) to come first.
+CONFIRMED THE PATH IS ENTERED: instrumenting makemon's byyou branch prints
+`BYYOU at (57,4) in_mklev=false`, so the guard `byyou && !gi.in_mklev` passes
+and enexto_core IS called for the pet. That rules out the pet being placed by
+some other route.
+
+STILL UNEXPLAINED. Eliminated: collect_coords, the shuffle, the RNG stream,
+all four goodpos arms, the hero's position, the gold's position, and now the
+dispatch into enexto_core.
+
+NEXT, and mind the trap that wasted the end of this tick: an attempt to print
+each candidate inside enexto_core's first loop produced NO output, which
+looks like "the loop never runs" and is not -- the python replace simply did
+not match the current text of that line. VERIFY THE EDIT LANDED (grep for the
+console.error after writing it) before drawing any conclusion from silence.
+The same mistake earlier in this session briefly made movemon, dochug and
+dog_move all look like dead code.
+
+What to print: the full shuffled candidate array with indices, plus which
+index goodpos first accepts. C must be accepting (56,4); we accept (58,4).
+Both are in the radius-1 ring around (57,4), so the question is purely which
+one the shuffle put first.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

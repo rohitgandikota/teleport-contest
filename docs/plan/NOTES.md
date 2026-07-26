@@ -1736,3 +1736,39 @@ A session with high RNG and low screens has a DISPLAY or message bug, not an
 RNG bug, and tools/diverge.mjs will still happily name an RNG function for it.
 diverge.mjs answers "where does the RNG first differ", which is not the same
 question as "why does this session score badly".
+
+## getobj's re-prompt loop can eat an entire session
+
+Found while wiring drink_ok as getobj's object filter. Wiring a CORRECT filter
+cost 212 screens and 45,893 RNG calls, which is far too much for a change that
+only shortens a letter list.
+
+Cause: js/invent.js getobj() ends in
+
+    for (;;) {
+        const ilet = await tty_yn_function(qbuf, null, '\0');
+        ...
+        const otmp = (game.invent || []).find(o => o.invlet === ilet);
+        if (otmp) return otmp;
+        /* C re-prompts on an unrecognised letter, which costs another key. */
+    }
+
+C does re-prompt, so the loop is faithful in shape. But when the offered set is
+empty and the recorded keystroke names an item we do not have, the letter never
+matches, the loop never exits, and it CONSUMES EVERY REMAINING KEY IN THE
+SESSION. Instrumented: getobj_letters runs 154 times across seed2200 normally
+and exactly ONCE with the filter wired -- the first call swallowed the rest of
+the input.
+
+The deeper problem it exposed: at the first 'q' in seed2200 our game.invent
+holds ONE object (oclass=2, otyp=79) while C's prompt offers fourteen letters.
+The starting inventory is wrong, and the null filter was hiding it by offering
+whatever letters we did have.
+
+Two consequences worth acting on separately:
+  - Do not treat "wiring a correct predicate made the score worse" as evidence
+    the predicate is wrong. Here the predicate was right and it uncovered two
+    other faults.
+  - An unbounded input-consuming loop should be suspected whenever an RNG
+    delta is far larger than the change could plausibly explain. 45,893 calls
+    for a letter-list change was the tell.

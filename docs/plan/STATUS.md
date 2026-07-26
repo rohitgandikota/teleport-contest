@@ -71,6 +71,34 @@ js/cmd.js:460 already routes 'e' and reaches floorfood(); what is missing is
 doeat's body, start_eating's occupation, and the choke() gate that ends the
 game. Under 400 lines total for the path that unblocks seed0030's first death.
 
+**doeat's tail sets everything the death depends on** (src/eat.c, the last
+lines of doeat before `return ECMD_TIME`):
+
+    victual.reqtime = objects[otmp->otyp].oc_delay;
+    ... rounddiv adjustments for partly-eaten food ...
+    if (reqtime == 0 || otmp->oeaten == 0)      nmod = 0;
+    else if (otmp->oeaten >= reqtime)           nmod = -(oeaten / reqtime);
+    else                                        nmod = reqtime % oeaten;
+    victual.canchoke = (u.uhs == SATIATED);     <- THE DEATH CONDITION
+
+    if (!dont_start) start_eating(otmp, already_partly_eaten);
+
+So `canchoke` is latched ONCE, when the meal starts, from the hunger state at
+that moment -- not re-checked per bite. That is why the death is deterministic
+given the hunger state: the hero commits to a meal while Satiated and bite()
+kills on the first turn that uhunger is still >= 2000.
+
+choke() and bite() are PORTED (js/eat.js). What remains is doeat's tail above
+plus start_eating's occupation loop:
+
+    start_eating: victual.eating = 1; fullwarn = doreset = 0
+                  if (bite()) { ...finish if usedtime >= reqtime...; return }
+                  if (++usedtime >= reqtime) { done_eating(...); return }
+                  set_occupation(eatfood, "eating <food>", 0)
+
+Note bite() is called BEFORE usedtime is incremented, so a one-turn meal
+eaten while Satiated chokes on the very first call.
+
 **The exact death condition, src/eat.c:3138 in bite():**
 
     if (svc.context.victual.canchoke && u.uhunger >= 2000) {

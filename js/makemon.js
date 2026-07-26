@@ -1303,7 +1303,12 @@ export function makemon(ptr, x, y, mmflags) {
     const byyou = (x === game.u.ux && y === game.u.uy);
     if (byyou && !game.in_mklev) {
         const cc = { x: 0, y: 0 };
-        const gpflags = GP_CHECKSCARY | GP_AVOID_MONPOS;
+        /* src/makemon.c:1162 — gpflags carries MM_IGNOREWATER THROUGH from
+           the caller's mmflags; it is not just the two GP_ bits. A caller
+           that passes MM_IGNOREWATER wants goodpos to accept water, and
+           dropping it here makes those placements scan differently. */
+        const gpflags = ((mmflags & MM_IGNOREWATER) ? MM_IGNOREWATER : 0)
+                        | GP_CHECKSCARY | GP_AVOID_MONPOS;
         if (!enexto_core(cc, game.u.ux, game.u.uy, ptr, gpflags, goodpos)
             && !enexto_core(cc, game.u.ux, game.u.uy, ptr,
                             gpflags & ~GP_CHECKSCARY, goodpos))

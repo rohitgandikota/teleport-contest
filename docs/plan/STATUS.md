@@ -5286,7 +5286,27 @@ and only the path a single ordinary melee swing takes has to work. Everything
 attack_checks guards against -- Elbereth, peacefuls, displaced images, safe
 pets -- is either already ported here or not reachable in these sessions.
 
-ORDER: port hitum first and have attack_checks return FALSE for the reachable
-cases with each guard it skips recorded, then wire the check and re-measure.
-If the 30 does not come back, the remaining guards can be filled in against
-sessions that reach them rather than speculatively.
+THE FULL CHAIN, sized:
+
+    attack_checks      139 lines
+    hitum               58   draws rnd(20) for dieroll
+    find_roll_to_hit    63   draws; hitum calls it first
+    known_hitum         60
+    hmon                16   then hmon_hitmon, not sized
+
+So roughly 340 lines before the first hostile swing produces a message, and
+hmon_hitmon is beyond that. This is a genuine subsystem, not an afternoon.
+
+ORDER, and it is worth doing in this order because each step is measurable:
+  1. find_roll_to_hit, since hitum calls it before anything else and it draws.
+     Nothing else can be verified until its draws are right.
+  2. hitum's own rnd(20) and the hit/miss branch.
+  3. known_hitum -> hmon -> hmon_hitmon for the damage and the message.
+  4. attack_checks last, returning FALSE for the reachable cases with each
+     skipped guard recorded. Its guards are Elbereth, peacefuls, displaced
+     images and safe pets, all either already ported here or unreachable.
+  5. Only then wire do_attack's call site and re-measure the 30.
+
+The single combat-path hit measured above means step 5 can be verified on one
+encounter in seed0030, which is a tight feedback loop for a subsystem this
+size.

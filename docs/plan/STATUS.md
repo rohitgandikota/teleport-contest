@@ -606,16 +606,29 @@ The gx term cancels out of that equation, so this says nothing about the
 column -- only that the ROW differs, which is enough to produce the observed
 tie-versus-worse-square split.
 
-NEXT: find what is at row 5 near the pet that C would pick. Our gtyp is UNDEF
-(no object goal, fallback), so either
-  - C picked an OBJECT on row 5 that our dog_goal rejected, and gtyp should
-    not be UNDEF; or
-  - both fell back, and our FALLBACK target is wrong by one row. Check what
-    dog_goal assigns to gg when gtyp stays UNDEF, against src/dogmove.c --
-    C's fallback is the hero's square, so compare against u.uy at that turn.
+FALLBACK CHECKED AND IT MATCHES C. src/dogmove.c:566 and js/dog.js:685 agree:
 
-The second is cheaper to check and is the more likely of the two given gtyp
-is UNDEF on our side.
+    if (gtyp == UNDEF || (gtyp != DOGFOOD && gtyp != APPORT
+                          && moves < edog->hungrytime)) {
+        gg.gx = u.ux; gg.gy = u.uy;
+
+So with gtyp UNDEF our gg IS the hero's square, which means OUR HERO IS AT
+(71,4) on that turn. And C's goal row is 5.
+
+TWO READINGS, and they are very different in weight:
+  a) C did NOT fall back -- it found an object goal on row 5 that our dog_goal
+     rejected, so C's gtyp is APPORT or a food type where ours is UNDEF; or
+  b) C DID fall back too, in which case C'S HERO IS ON ROW 5 AND OURS IS ON
+     ROW 4 -- a hero-position divergence, which is far more serious than a pet
+     bug and would mean the pet is only where this surfaced.
+
+DISTINGUISH THEM FIRST, it is one command: screendiff seed0004 at the turn
+containing call 3746 and read the @ position on both sides. If the heroes
+agree, reading (a) holds and the hunt goes back to which object C picked. If
+they differ, drop the pet entirely and chase the hero.
+
+Do NOT assume (a) because it is the smaller bug. The whole seed0030 arc was
+lost to preferring the convenient reading.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

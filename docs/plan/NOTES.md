@@ -1540,3 +1540,39 @@ that. A monster built by any other path would have mnum but no .data, and
 every .data read would silently answer undefined. There are 35 such reads in
 js/. Prefer game.mons[mnum] in NEW code for that reason -- but do not call
 converting the existing ones a bug fix.
+
+## A big regression may be a swallowed exception, not wrong behaviour
+
+domove_swap_with_pet was ported three times. The first two cost 247 and 224
+screens and were treated as logic faults: two bisects, four eliminations
+(do_attack, is_safemon, the vision predicates, the positional preconditions),
+and several confident STATUS entries about "which arm the swap takes".
+
+It was throwing. The function sat at module scope and referenced a bare `u`,
+which is a LOCAL inside domove and invisible from there, so every step onto a
+pet raised "u is not defined". Wrapping the call in a try/catch and printing
+the message found it on the first run. With every coordinate routed through
+game.u the same code is worth +2 screens.
+
+THE MISTAKE: "which arm does it take" presupposes the function ran. I never
+checked that. A thrown exception inside a move handler can be caught upstream
+and turned into a silently failed move, which looks exactly like bad logic
+from the scoreboard.
+
+THE CHECK, and it costs one run: wrap the new call in
+
+    try { ... } catch (e) { process.stderr.write(`THREW ${e.message}\n`); }
+
+before doing anything cleverer. Do it whenever a change costs more than a
+handful of screens, because that magnitude usually means a whole code path
+stopped working rather than one branch answering differently.
+
+The negative result is worth having too. The same check on do_attack's call
+site showed it does NOT throw, so its 30-screen cost is real behaviour, and
+that is what established the attack check cannot land before the melee code
+exists. Same one-line probe, opposite conclusion, both actionable.
+
+Related trap in the same family: a bare `u` is idiomatic in the C, where it is
+a global. Every ported function that lives at module scope must use game.u,
+and one that happens to be nested inside domove will compile and work, which
+is how this survived being written twice.

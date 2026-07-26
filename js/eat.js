@@ -6,6 +6,7 @@
 // port that tracks the turn counter correctly still has to make the call.
 
 import { game } from './gstate.js';
+import { done } from './end.js';
 import { rn2 } from './rng.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME } from './const.js';
 import { getobj } from './invent.js';
@@ -82,4 +83,62 @@ export async function doeat() {
 
 function note_unported_eat(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/eat.c:245 choke() — the hero eats past Satiated and dies.
+//
+// This is seed0030's first death and the blocker for seven sessions. The
+// guard is the SATIATED state, not the food: eating an ordinary meal chokes
+// only when u.uhs is already SATIATED, and anything else returns immediately
+// unless it is an amulet of strangulation.
+//
+// The rn2(20) is the only draw, and it is short-circuited by Breathless or
+// Hunger, so a hero with either spends nothing here.
+export function choke(food) {
+    /* only happens if you were satiated */
+    if (game.u.uhs !== SATIATED) {
+        if (!food || food.otyp !== ONAMES.AMULET_OF_STRANGULATION)
+            return;
+    } else if (Role_if(PM_KNIGHT) && game.u.ualign?.type === A_LAWFUL) {
+        note_unported_eat('choke:adjalign');   /* gluttony is unchivalrous */
+    }
+
+    note_unported_eat('choke:exercise');
+
+    /* Breathless and Hunger are intrinsics this port does not track, so the
+       rn2(20) is always the deciding test here. */
+    if (!rn2(20)) {
+        if (food && food.otyp === ONAMES.AMULET_OF_STRANGULATION)
+            return;                     /* "choke, but recover your composure" */
+    }
+
+    game.killer = { format: KILLED_BY, name: 'quick snack' };
+    pline('You choke over it.');
+    pline('You die...');
+    done(CHOKING);
+}
+
+// src/eat.c:3132 bite() — one turn of eating. Returns 1 if the hero choked and
+// survived, 0 otherwise.
+//
+// The choke gate is the whole reason this function matters here:
+//
+//     if (victual.canchoke && u.uhunger >= 2000) { choke(piece); return 1; }
+//
+// so the death is a consequence of ACCUMULATED nutrition, not of the meal.
+export function bite() {
+    const v = game.context?.victual;
+    if (!v)
+        return 0;
+
+    if (v.canchoke && game.u.uhunger >= 2000) {
+        choke(v.piece);
+        return 1;
+    }
+    if (v.doreset) {
+        note_unported_eat('bite:do_reset_eat');
+        return 0;
+    }
+    note_unported_eat('bite:nutrition');
+    return 0;
 }

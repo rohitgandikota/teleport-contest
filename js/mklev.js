@@ -392,7 +392,7 @@ function in_rooms(x, y, rtype) { return []; }
 // C ref: bones.c getbones()
 function getbones() {
     const flags = game.flags || {};
-    if (flags.explore) return false;
+    if (game.discover) return false;      /* src/bones.c:639 */
     if (flags.bones === false) return false;
     if (rn2(3) && !game.flags?.debug) return false;
     return false;

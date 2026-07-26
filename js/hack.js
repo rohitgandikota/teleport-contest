@@ -10,6 +10,7 @@
 import { game } from './gstate.js';
 import { do_attack } from './uhitm.js';
 import { sensemon, is_safemon } from './display.js';
+import { hides_under } from './mondata.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { rn2 } from './rng.js';
 import {
@@ -168,7 +169,7 @@ game.in_rooms = in_rooms;
 // do_attack is only called when the displacement did NOT happen.
 export async function domove_attackmon_at(mtmp, x, y, displaceu) {
     if (game.context?.forcefight || !mtmp.mundetected || sensemon(mtmp)
-        || ((note_unported_hack('domove_attackmon_at:hides_under')
+        || ((hides_under(game.mons[mtmp.mnum])
              || game.mons[mtmp.mnum].mlet === MONSYMS.S_EEL)
             && !is_safemon(mtmp))) {
         /* target monster might decide to switch places with you... */

@@ -103,6 +103,12 @@ export const has_horns = (ptr) => num_horns(ptr) > 0;
 // include/mondata.h:63 unsolid()
 export const unsolid = (ptr) => (ptr.mflags1 & MFLAGS.M1_UNSOLID) !== 0;
 
+// include/mondata.h:35 hides_under() — conceals itself UNDER an object, as
+// distinct from a ceiling hider. domove_attackmon_at leans on that
+// distinction: a hides_under monster you cannot see still routes into
+// do_attack so the "Wait!" message prints, while a ceiling hider does not.
+export const hides_under = (ptr) => (ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0;
+
 // include/mondata.h:147 webmaker() — only the two spiders.
 export const webmaker = (ptr) => ptr.pmidx === PMNAMES.PM_CAVE_SPIDER
                               || ptr.pmidx === PMNAMES.PM_GIANT_SPIDER;

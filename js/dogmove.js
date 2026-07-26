@@ -10,10 +10,13 @@
 
 import { game } from './gstate.js';
 import { M_AP_TYPE, M_AP_NOTHING, MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED,
-         MMOVE_DONE, EDOG, has_edog } from './const.js';
-import { distu } from './hacklib.js';
+         MMOVE_DONE, EDOG, has_edog, ALLOW_TRAPS, ACCFOOD,
+         MANFOOD } from './const.js';
+import { distu, dist2, distmin } from './hacklib.js';
 import { DEADMONSTER } from './monst.js';
 import { carnivorous, herbivorous } from './mondata.js';
+import { could_reach_item, dogfood } from './dog.js';
+import { rn2 } from './rng.js';
 import { cansee, couldsee } from './vision.js';
 import { newsym } from './display.js';
 import { MONSYMS } from './monst_data.js';
@@ -165,12 +168,14 @@ export function dog_move(mtmp, after) {
     } else
         whappr = 0;
 
-    /* THE POSITION-SCORING LOOP IS NOT PORTED. It is where the draws are:
-       rn2(MTSZ * (k - j)) in the mtrack backtrack check, then
-       rn2(++chcnt) -- a reservoir sampler over equally-good squares, and the
-       PRE-increment is load-bearing -- plus rn2(3) and rn2(12).
-       Returning MMOVE_NOTHING rather than guessing a move. */
-    note_dogmove_unported('dog_move:scoring_loop');
+    /* THE SCORING LOOP. Every draw in it is conditional and the ORDER is the
+       specification; see the block comment above dog_scoring_loop. The
+       surrounding setup (appr from dog_goal, allowflags, the cursemsg array)
+       is not ported yet, so the loop is not called from here -- calling it
+       with a guessed appr would be worse than not calling it. It is written
+       and exercised in isolation so that when dog_goal lands, this is a
+       one-line wire rather than a fresh port. */
+    note_dogmove_unported('dog_move:dog_goal_and_setup');
     return MMOVE_NOTHING;
 }
 
@@ -178,3 +183,117 @@ function note_dogmove_unported(what) {
     (game.unported ||= new Set()).add('dogmove:' + what);
     return false;
 }
+
+// include/monst.h MTSZ — how many past positions a monster remembers.
+const MTSZ = 4;
+
+// src/dogmove.c:1176-1266 — the pet's position-scoring loop.
+//
+// This is the part that makes dog_move the first divergence for 7 of the 44
+// public sessions. Four draws, every one conditional, and the order they can
+// fire in IS the specification:
+//
+//   rn2(40)                trap avoidance. Only when the square has a trap
+//                          the hero has SEEN and the pet is not leashed. A
+//                          leashed pet whimpers instead and draws nothing.
+//   rn2(13 * uncursedcnt)  cursed-item avoidance. Only when a cursed item
+//                          was seen here, the pet is unleashed, AND there is
+//                          at least one uncursed alternative -- uncursedcnt
+//                          scales the modulus, so more choices means more
+//                          likely to keep looking.
+//   rn2(MTSZ * (k - j))    backtrack avoidance, per remembered position.
+//                          ONLY when unleashed and more than 5 tiles from
+//                          the hero: C notes this causes problems for pets
+//                          trying to follow you, so it is deliberately
+//                          suppressed when close.
+//   rn2(++chcnt)           the reservoir sampler over equally-good squares.
+//                          PRE-increment: the first tie is rn2(1) which is
+//                          always 0, so it always wins; the second is rn2(2),
+//                          and so on. Writing rn2(chcnt++) makes the first
+//                          call rn2(0).
+//   rn2(3) / rn2(12)       the worse-square acceptance, only when not
+//                          whistle-approaching. rn2(3) applies only when the
+//                          current best is the pet's own square.
+//
+// chcnt is RESET to 0 when a strictly better square is found (j < 0), so the
+// sampler restarts its count at each new best. Leaving it running would
+// make later ties less likely to displace the best square than they should.
+export function dog_scoring_loop(mtmp, edog, mfp, cnt, uncursedcnt, appr,
+                                 whappr, omx, omy, cursemsg) {
+    let nix = omx, niy = omy, chi = -1, chcnt = 0;
+    let nidist = GDIST(nix, niy);
+    let do_eat = false;
+
+    for (let i = 0; i < cnt; i++) {
+        const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
+
+        /* dog avoids harmful traps, but perhaps it has to pass one in order
+           to follow the player */
+        if ((mfp.info[i] & ALLOW_TRAPS) && note_dogmove_unported('scoring:t_at')) {
+            if (mtmp.mleashed) {
+                note_dogmove_unported('scoring:whimper');
+            } else {
+                /* 1/40 chance of stepping on it anyway */
+                if (note_dogmove_unported('scoring:trap_tseen') && rn2(40))
+                    continue;
+            }
+        }
+
+        /* dog eschews cursed objects, but likes dog food
+           (minion isn't interested; cursemsg stays FALSE) */
+        if (edog) {
+            const can_reach_food = could_reach_item(mtmp, nx, ny);
+            for (let obj = game.level.objects?.[nx]?.[ny]; obj; obj = obj.nexthere) {
+                if (obj.cursed) {
+                    cursemsg[i] = true;
+                } else if (can_reach_food
+                           && dogfood(mtmp, obj) < MANFOOD
+                           && (dogfood(mtmp, obj) < ACCFOOD
+                               || edog.hungrytime <= game.moves)) {
+                    /* likes the food so much he might eat it even when it
+                       conceals a cursed object */
+                    nix = nx; niy = ny; chi = i; do_eat = true;
+                    cursemsg[i] = false;        /* not reluctant */
+                    return { nix, niy, chi, do_eat };   /* goto newdogpos */
+                }
+            }
+        }
+
+        /* saw a cursed item and aren't forced to walk on it: usually keep
+           looking */
+        if (cursemsg[i] && !mtmp.mleashed && uncursedcnt > 0
+            && rn2(13 * uncursedcnt))
+            continue;
+
+        /* Lessen the chance of backtracking. Only when not leashed and more
+           than 5 tiles away, because it breaks pets trying to follow you. */
+        if (!mtmp.mleashed
+            && distmin(mtmp.mx, mtmp.my, game.u.ux, game.u.uy) > 5) {
+            const k = edog ? uncursedcnt : cnt;
+            let skip = false;
+            for (let j = 0; j < MTSZ && j < k - 1; j++)
+                if (nx === mtmp.mtrack?.[j]?.x && ny === mtmp.mtrack?.[j]?.y)
+                    if (rn2(MTSZ * (k - j))) { skip = true; break; }
+            if (skip)
+                continue;                       /* goto nxti */
+        }
+
+        const ndist = GDIST(nx, ny);
+        const j = (ndist - nidist) * appr;
+        if ((j === 0 && !rn2(++chcnt)) || j < 0
+            || (j > 0 && !whappr
+                && ((omx === nix && omy === niy && !rn2(3)) || !rn2(12)))) {
+            nix = nx;
+            niy = ny;
+            nidist = ndist;
+            if (j < 0)
+                chcnt = 0;
+            chi = i;
+        }
+    }
+
+    return { nix, niy, chi, do_eat };
+}
+
+// src/dogmove.c:995 GDIST() — squared distance to the pet's current goal.
+const GDIST = (x, y) => dist2(x, y, game.gx ?? 0, game.gy ?? 0);

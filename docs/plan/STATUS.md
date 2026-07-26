@@ -48,6 +48,30 @@ js/do.js already has dodown, next_level, goto_level and stairway_at.
 Same caution applies to obj_resists at 6 sessions: js/zap.js has it. The tag
 names the C function containing the divergent line, not a missing function.
 
+### What the obj_resists cluster actually is
+
+Six sessions' first divergence is tagged obj_resists(zap.c:1469). js/zap.js has
+obj_resists and it is correct. What differs is how MANY times C calls it.
+seed1500 at call 2297:
+
+    2296  rn2(4)    dochug(monmove.c:886)
+    2297  rn2(100)  obj_resists      <- ours matches
+    2298  rn2(8)    dog_goal(dogmove.c:554)   <- edog->apport > rn2(8)
+    2299  rn2(100)  obj_resists      <- ours matches
+    2300  rn2(100)  obj_resists      <- ours stops here, draws rn2(8) instead
+    2301  rn2(100)  obj_resists
+    2302  rn2(100)  obj_resists
+
+C runs four consecutive obj_resists after dog_goal's rn2(8) and we run one.
+dog_goal's APPORT branch cannot be the source of all four: it short-circuits on
+`gg.gtyp == UNDEF`, so once a goal is set no later object reaches the rn2(8).
+can_carry() calls can_touch_safely(), which does not draw. So the extra calls
+come from the pet actually PICKING UP and eating, i.e. dog_move (dogmove.c:1255)
+and the meatobj/meatmetal arms at mon.c:1482 and mon.c:1586.
+
+That makes obj_resists and dog_move the same 6-session job, not two. Port
+dog_move and its object handling and both tags should move together.
+
 ## The pattern worth internalising
 
 Four of the six fixes were "the state was right, the draw was missing or

@@ -4005,10 +4005,30 @@ concern:
            rn2(2) is 0 or 1 and both are less than 3. So at depth 2, whenever
            nroom >= room_threshold, C ALWAYS MAKES A SHOP.
 
-So this is not a rare deep-level feature. Every session that walks down one
-staircase hits it, and it costs us the rn2(u_depth) draw plus the whole of
-mkshop: the shop-type selection, the door placement, and one mkobj per square
-of stock. That is a large, immediate desync on the second level of the game.
+So this is not a rare deep-level feature. The shop arm's probability is
+rn2(u_depth) < 3, i.e. min(1, 3/u_depth):
+
+    depth 2   always      depth 5   3/5        depth 16  3/16
+    depth 3   always      depth 10  3/10       depth 20  3/20
+
+Depths 2 and 3 make a shop EVERY time nroom >= room_threshold.
+
+MEASURED with a probe on our own makelevel (since reverted), printing depth,
+nroom and room_threshold per level generated:
+
+    seed0030-ten-diverse-deaths   depth=1 x many        shoparm never fires
+    seed4500-knight-coverage      depth 1, 5, 10, 20    fires at 5, 10, 20
+    seed0360-wizard-world-tour    depth 1, 16, 18, 2    fires at 16, 18, 2
+
+Two things to take from that. First, nroom >= room_threshold held in EVERY
+case where depth > 1, so the room-count gate is not what saves us. Second,
+and this corrects the paragraph above: seed0030 generates only depth-1 levels,
+so this gap does not touch it at all. Sessions that stay on level 1 are
+unaffected, which is a different and smaller claim than "every session".
+
+The cost when it does fire is the rn2(u_depth) draw plus the whole of mkshop:
+the shop-type selection, the door placement, and one mkobj per square of
+stock.
 
 SCOPE. This is a real subsystem, not a one-liner, and it should get its own
 session with a fresh context:

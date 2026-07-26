@@ -94,10 +94,43 @@ now been checked and most are harmless:
 
 So sort candidates by (reach x likelihood the answer differs), and the second
 factor needs a look at the code. The rows worth checking next on that basis
-are encumber_msg and near_capacity (80%), which are inventory-weight code on
-the movement path and DO change behaviour when wrong, and pet_ranged_attk:
-attack (45%) and dog_move attack branch (43%), which sit in the pet cluster
-that six sessions already diverge in.
+are pet_ranged_attk:attack (45%) and dog_move attack branch (43%), which sit
+in the pet cluster that six sessions already diverge in.
+
+## BLOCKER FOUND: inventory objects have no owt
+
+near_capacity and encumber_msg (both 80%) were attempted and REVERTED, and
+what stopped them is worth more than the port would have been.
+
+weight_cap() ports cleanly and gives the right answer: 575 for a starting
+tourist, which is 25 * (str + con) + 50 with str + con = 21, matching
+include/weight.h. But calc_capacity came back NaN, and instrumenting
+inv_weight showed why:
+
+    BADOWT otyp=24 owt=undefined quan=27
+    keys=otyp,oclass,quan,spe,blessed,cursed,oeaten,age,corpsenm,o_id,dknown,rknown
+
+There is no owt field on inventory objects AT ALL. C sets obj->owt at creation
+(mksobj calls weight()) and every later reader uses that cached value; we
+never populate it. js/invent.js has a real weight() function, so the value is
+computable -- it is simply never stored.
+
+WHY THIS MATTERS BEYOND ENCUMBRANCE. Anything reading a cached weight is
+affected, and several already do: splitobj and dog_eat set otmp.owt on objects
+that never had one, mkroom's COURT chest does the same, and stock_room's
+shopkeeper capital does not. Those writes are landing on a field nothing else
+maintains.
+
+FIX IT AT THE SOURCE, not at the reader. mksobj (and mkobj_at / mksobj_at)
+should set owt = weight(otmp) the way C does, and u_init's starting inventory
+should go through the same path. Do NOT paper over it by having inv_weight
+call weight() directly: C reads the cached field, and an object whose weight
+has been adjusted (a partly-eaten food, a split stack, a filled container)
+would then read differently from C.
+
+Once owt exists, near_capacity is a ten-line port and encumber_msg's state
+half comes with it; the message half needs pline plumbing and can stay
+recorded.
 
 encumber_msg and near_capacity at 80% are the next pair and they are related:
 both are inventory-weight code on the movement path.

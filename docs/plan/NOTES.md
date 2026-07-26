@@ -1275,10 +1275,20 @@ Sweep for more with
 
     grep -rn "await nhgetch()" js/*.js js/tty/*.js | grep -v tty_yn_function
 
-and then check each against its C caller. NOT every one is a bug -- a window
-dismissal really is a bare read (C uses xwaitforspace, not yn_function), and
-js/cmd.js:618 and :641 are those. As of this writing the remaining candidates
-are js/getpos.js:71 and js/options.js:219.
+and then check each against its C caller. NOT every one is a bug, and the
+sweep was run to completion once:
+
+  - js/cmd.js:618, :641  window dismissals. C uses xwaitforspace, not
+                         yn_function, so a bare read is CORRECT here.
+  - js/options.js:219    select_menu(win, PICK_ONE). A menu selection, not a
+                         prompt. Correct as-is.
+  - js/getpos.js:71      NOT the same fix. C's getpos (src/getpos.c:771) shows
+                         its goal message CONDITIONALLY inside the loop, via a
+                         show_goal_msg flag, rather than painting once before
+                         the read. Porting it needs that flag's logic.
+
+So getobj and getdir were the only two instances of the simple form, and both
+are now fixed.
 
 The related trap: a prompt can also be missing because its whole COMMAND is
 unported. "Where do you want to travel to?" is a plain pline in dotravel

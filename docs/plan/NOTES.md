@@ -2392,3 +2392,36 @@ Three modules are now known to be re-entrant during init: js/do.js,
 js/mklev.js, js/mon.js. Assume any long-established module is until shown
 otherwise, and prefer adding a new leaf module over threading a call into an
 old one.
+
+## game.uwep is never written, and "fixing" that HANGS seed0361
+
+js/u_init.js:558 is the only place a wielded weapon is stored, and it writes
+`game.u.uwep`. But eleven places READ `game.uwep`, which is therefore always
+undefined. The most alarming is js/uhitm.js:780:
+
+    unarmed: !game.uwep && !game.uarm && !game.uarms,
+
+so the hero reads as bare-handed in every melee calculation. do.js's three
+"are you wielding this?" checks never fire either.
+
+I pointed all eleven at game.u.uwep. Twelve replacements, three files. Result:
+seed0361 stopped terminating -- it ran past the 120s worker timeout and
+vanished from the scoreboard entirely (total steps fell 11405 -> 11039, which
+is exactly seed0361's 366). Reverted.
+
+SO SOMETHING LOOPS ON uwep BEING FALSY. Almost certainly a wield/unwield or
+weapon-selection loop whose exit condition is "no weapon", satisfied only by
+the undefined read. That is a second bug sitting behind the first, and fixing
+the storage without finding it produces a hang rather than a wrong answer.
+
+DO NOT repeat the bulk rename. The order has to be:
+  1. find the loop -- run seed0361 with the rename applied and interrupt it,
+     or instrument the wield/uhitm paths for repeat counts
+  2. fix the loop's exit condition against the REAL uwep
+  3. only then unify the storage
+
+Note also uarm, uarms, uarmf, uquiver and uswapwep have the same split
+(game.X vs game.u.X). uarmf and uarm are only ever read as game.X and never
+written at all, so they are undefined too. The whole worn-equipment storage
+needs unifying, and that is the same structural work setworn needs -- do them
+together, not piecemeal.

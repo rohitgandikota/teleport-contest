@@ -34,6 +34,44 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
+=== mattackm CHAIN: 2 OF 5 PIECES DONE. mdamagem IS NEXT AND IS SIZED. ===
+
+DONE and committed, written against fully ported code:
+    mhitm_ad_phys (mhitm branch)   ~12 lines   uhitm.c:4128
+    mhitm_adtyping (dispatcher)    ~40 lines   uhitm.c:4782
+    shade_miss                      36 lines   uhitm.c:2016
+
+mdamagem (mhitm.c) SIZED BY REACHED PATH. Its core for an ordinary pet blow:
+
+    mhm.damage = d(mattk->damn, mattk->damd);     <-- THE DAMAGE DRAW
+    mhm.hitflags = M_ATTK_MISS;
+    ... petrify block, fires only vs a petrifying defender ...
+    mhitm_adtyping(magr, mattk, mdef, &mhm);      <-- DONE
+    if (mhitm_knockback(...) && ...) return hitflags;
+    if (mhm.done) return hitflags;
+    if (!mhm.damage) return hitflags;
+    mdef->mhp -= mhm.damage;
+    if (mdef->mhp < 1) { ...death... }
+
+Still missing, with sizes:
+    mhitm_knockback   174 lines  uhitm.c   <-- the big one; CHECK ITS OWN
+                                              BRANCH SPLIT FIRST, it takes
+                                              magr/mdef like the ad_* arms
+                                              and may be far smaller for
+                                              monster-vs-monster
+    attk_protection    38 lines  mhitm.c   petrify block only
+    monkilled          42 lines  mon.c     death path
+    d()                          PORTED, js/rng.js
+
+THE DAMAGE DRAW IS THE PRIZE. d(damn, damd) is the first RNG call any pet
+attack makes, and it is currently never drawn because the whole branch is
+declined. Getting mdamagem in should move the RNG stream on every session
+where a pet fights, which is 41% of them.
+
+WARNING carried forward: do NOT wire dog_move's attack branch until mattackm
+can actually deal damage. A pet that decides to attack and then does nothing
+is worse than one that declines -- that was measured, not assumed.
+
 === THE NO-WEAPON mhitm PATH IS ~48 LINES. START HERE. ===
 
 Sized concretely. The monster-vs-monster branch of mhitm_ad_phys, for the case

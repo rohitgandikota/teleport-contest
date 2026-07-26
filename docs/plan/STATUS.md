@@ -421,15 +421,31 @@ and otyp is APPORT (4), not MANFOOD (3), so it hangs entirely on m_cansee.
 js/dog.js:313 defines it as clear_path(mon.mx, mon.my, x, y), and
 js/vision.js:557 clear_path tests viz_clear[row][col].
 
-SO CHECK WHETHER viz_clear IS POPULATED WHEN dog_goal RUNS. If it is empty or
-stale at that moment, is_clear() is false for every square, clear_path returns
-false, m_cansee returns false, and the APPORT arm is skipped -- which is
-exactly the observed behaviour. That would also mean every other m_cansee and
-clear_path caller is silently answering "no line of sight" at that point in
-the turn, so the blast radius is much wider than pets.
+CHECKED, AND m_cansee IS TRUE. Probing it inside the && chain prints
 
-Print viz_clear's dimensions and a sample row from inside dog_goal, and
-compare against when vision_recalc last ran.
+    CS pet(58,4)->obj(56,4) otyp=4 cansee=true
+    CS pet(57,4)->obj(56,4) otyp=4 cansee=true
+
+Because the probe sits INSIDE the chain, its printing at all proves every
+EARLIER condition passed too: gtyp === UNDEF, in_masters_sight,
+!dog_has_minvent and both lit tests. So the APPORT arm IS entered in game 1
+and the rn2(8) IS drawn. viz_clear is fine.
+
+WHICH MEANS I ANALYSED THE WRONG GAME. AGAIN. seed0030 is ten-diverse-deaths,
+TEN games. The pet(58,4) coordinates above are game 1. Call 6276 -- where the
+rn2(4)-instead-of-rn2(8) divergence lives -- is far deeper in the session and
+belongs to a LATER game. Every conclusion in this entry that pairs a game-1
+coordinate with call 6276 is unfounded, which is the second time this exact
+mistake has been made on this session (see the earlier withdrawn
+'wrong-game coordinates' caution, which was withdrawn for the wrong reason).
+
+BEFORE ANY MORE WORK ON THIS TRAIL: establish which GAME call 6276 is in, and
+instrument only that game. A game counter printed alongside every probe is the
+minimum; matching a coordinate to a call index without one is guesswork.
+
+seed0030 is a poor choice of session for this precisely because it runs ten
+games. Prefer a single-game session showing the same dog_goal divergence, if
+one exists in the aggregate.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

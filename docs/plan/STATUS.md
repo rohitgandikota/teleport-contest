@@ -5348,6 +5348,21 @@ cannot see them:
     weapon_hit_bonus   src/weapon.c:1545   P_BASIC -> 0, barehanded -> 1
     find_roll_to_hit   src/uhitm.c         21 + hitval 1 + whb 0 -> 22
 
+find_roll_to_hit's monster-state arms were then verified INDIVIDUALLY by
+setting each flag on a live monster and measuring the delta, because the
+monsters in these sessions have none of them set and the arms would otherwise
+be untested transcription:
+
+    mstun       expect +2   got +2   OK
+    mflee       expect +2   got +2   OK
+    msleeping   expect +2   got +2   OK
+    !mcanmove   expect +4   got +4   OK
+
+That is the check that guards against the failure mode the score cannot see:
+a faithful-LOOKING transcription with one constant wrong. Do the same for any
+arm of a zero-draw function that the sessions do not naturally exercise --
+force the input, measure the delta, compare against the C by hand.
+
 Two constants that would have been wrong if taken from their names:
 ALIGNLIM is 10 + moves/200, not 10, so it grows as the game runs; and Luck is
 uluck + moreluck entering as sgn(Luck) * ((abs(Luck) + 2) / 3), which differs

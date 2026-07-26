@@ -18,7 +18,7 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock } from './hack.js';
 import { curr_mon_load } from './mon.js';
-import { is_pit } from './const.js';
+import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './const.js';
 import { ONAMES } from './objects_data.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
@@ -317,11 +317,50 @@ async function get_ext_cmd() {
     return buf;
 }
 
+/* src/potion.c drink_ok() — only potions are suggested for 'q'. Ported and
+   correct against the C, but NOT WIRED: passing it as getobj's filter costs
+   212 screens and 45,893 RNG calls, which is a control-flow change rather
+   than a cosmetic one. Objects do carry oclass (js/mkobj.js:690 sets it from
+   objects[otyp].oc_class), so the cause is something else -- most likely an
+   exception inside getobj_letters or a starting inventory built by a path
+   that skips that assignment. Investigate before wiring; see STATUS. */
+function drink_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+    if (obj.oclass === OCLASSES.POTION_CLASS)
+        return GETOBJ_SUGGEST;
+    return GETOBJ_EXCLUDE;
+}
+
+/* src/cmd.c cmdlist — the verb and object filter each command hands getobj().
+   Read from the C, not invented: the word appears verbatim in the prompt
+   ("What do you want to drink?") and the flags decide whether '-' for hands
+   is offered. A missing filter offers the WHOLE inventory, which is what
+   js/cmd.js used to do by passing null.
+
+   Filters all stay null for now: drink_ok is written and correct but wiring
+   it regresses 212 screens (see its comment). The VERBS are correct for all
+   seven commands, which is the larger half of the top line -- verified on
+   seed2200 step 4, where "What do you want to drink?" now matches C exactly
+   and only the letter list still differs. */
+const GETOBJ_CMD = {
+    q: { word: 'drink',   ok: null, flags: GETOBJ_NOFLAGS },
+    r: { word: 'read',    ok: null,     flags: GETOBJ_NOFLAGS },
+    w: { word: 'wield',   ok: null,     flags: GETOBJ_NOFLAGS },
+    W: { word: 'wear',    ok: null,     flags: GETOBJ_NOFLAGS },
+    P: { word: 'put on',  ok: null,     flags: GETOBJ_NOFLAGS },
+    R: { word: 'remove',  ok: null,     flags: GETOBJ_NOFLAGS },
+    d: { word: 'drop',    ok: null,     flags: GETOBJ_NOFLAGS },
+};
+
 /* The commands whose first act is getobj() and which read nothing further.
    Their effects need the use/wear/drop subsystems; what is ported is the
    object prompt, because that is what decides where the next keystroke goes. */
 async function docmd_getobj(ch) {
-    const obj = await getobj(ch, null, 0);
+    const spec = GETOBJ_CMD[ch];
+    const obj = await getobj(spec ? spec.word : ch,
+                            spec ? spec.ok : null,
+                            spec ? spec.flags : 0);
 
     if (!obj)
         return ECMD_OK;   /* Never mind */

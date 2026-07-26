@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { ONAMES } from './objects_data.js';
 import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
@@ -176,9 +177,22 @@ export function newsym(x, y) {
         const obj = (game.level?.objects || [])
                         .find(o => o.ox === x && o.oy === y);
         if (obj) {
+            /* include/display.h:894 obj_to_glyph() — a CORPSE does NOT become
+               an object glyph. It becomes `corpsenm + GLYPH_BODY_OFF`, a BODY
+               glyph, and a body glyph takes the colour of the MONSTER it came
+               from rather than objects[CORPSE].oc_color. Drawing every corpse
+               the object's brown was wrong for every species that is not
+               brown: seed1500's first frame differs by exactly one cell, a
+               red '%' we drew brown.
+
+               The symbol is unchanged, because def_oc_syms[FOOD_CLASS] and
+               the body glyph's symbol are both '%'. */
             const oc = game.objects?.[obj.otyp];
-            show_glyph_cell(x, y, def_oc_syms[obj.oclass] || '?',
-                            oc?.oc_color ?? NO_COLOR, false);
+            let color = oc?.oc_color ?? NO_COLOR;
+            if (obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0)
+                color = game.mons?.[obj.corpsenm]?.mcolor ?? color;
+
+            show_glyph_cell(x, y, def_oc_syms[obj.oclass] || '?', color, false);
             return;
         }
     }

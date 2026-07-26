@@ -2054,3 +2054,18 @@ Two hits in this chain were real and worth knowing: s_suffix is in
 js/hacklib.js where it belongs, and mon_hates_silver is in js/dog.js, which is
 architectural drift (it is src/mondata.c:517) but a genuine definition. Do not
 re-port either.
+
+It bit a second time within the hour, from the other direction. A script that
+was supposed to add a `pronoun_gender` import to js/do_name.js guarded itself
+with "skip if pronoun_gender already appears above the function". It did
+appear -- in the DOC COMMENT I had just written, which says "the
+pronoun_gender() call passes PRONOUN_HALLU". The guard read its own
+documentation as evidence the import existed, skipped silently, and the file
+still loaded clean because the reference was inside a function body that
+nothing had called yet.
+
+That is the whole failure mode in one line: a name in a comment is not a
+binding, and `import`-ing is not the same as mentioning. Both times the fix is
+the same -- match a DEFINITION or an IMPORT, never a bare occurrence -- and
+both times the thing that actually caught it was executing the function, not
+loading the module.

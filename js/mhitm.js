@@ -20,6 +20,17 @@ import { touch_petrifies } from './dog.js';
 import { resists_ston } from './mon.js';
 import { MON_WEP, mon_offmap } from './monst.js';
 import { PMNAMES } from './monst_data.js';
+import { helpless, DEADMONSTER } from './monst.js';
+
+import { sensemon, canseemon } from './display.js';
+import { m_at } from './mon.js';
+import { find_mac } from './worn.js';
+import { getmattk } from './mhitu.js';
+import { hitval } from './weapon.js';
+import { distmin } from './hacklib.js';
+import { rnd } from './rng.js';
+import { unsolid } from './mondata.js';
+import { M_ATTK_AGR_DIED } from './const.js';
 import { MATTK_AATYP, MATTK_ADTYP, MATTK_DAMN, MATTK_DAMD, NATTK } from './const.js';
 import { MATERIALS } from './objects_data.js';
 import { shade_miss } from './uhitm.js';
@@ -296,4 +307,152 @@ export function passivemm(magr, mdef, mhitb, mdead, mwep) {
         }
     }
     return (mdead | mhit);
+}
+
+// src/mhitm.c:? mattackm() — one monster attacks another. THE ENTRY POINT.
+//
+// Returns M_ATTK_HIT if any of the monster's NATTK attacks connected.
+//
+// Ported: the whole head, the NATTK loop, getmattk dispatch, the melee arms
+// (AT_WEAP falling through to AT_CLAW/KICK/BITE/STNG/TUCH/BUTT/TENT) with
+// their to-hit roll, and the passivemm call and result handling that follow
+// every attack. Recorded: the ranged and special arms (AT_GAZE, AT_EXPL,
+// AT_ENGL, AT_BREA, AT_SPIT), each under its own name.
+//
+// dieroll = rnd(20 + i) is the to-hit roll and it uses the ATTACK INDEX, so
+// later attacks in the same round roll against a wider range. That detail is
+// easy to drop and would skew every multi-attack monster.
+export function mattackm(magr, mdef) {
+    if (!magr || !mdef)
+        return M_ATTK_MISS; /* mike@genat */
+    if (helpless(magr))
+        return M_ATTK_MISS;
+    const pa = magr.data, pd = mdef.data;
+
+    /* Grid bugs cannot attack at an angle. */
+    if (pa.pmidx === PMNAMES.PM_GRID_BUG
+        && magr.mx !== mdef.mx && magr.my !== mdef.my)
+        return M_ATTK_MISS;
+
+    /* Calculate the armour class differential. */
+    let tmp = find_mac(mdef) + (magr.m_lev | 0);
+    if (mdef.mconf || helpless(mdef)) {
+        tmp += 4;
+        mdef.msleeping = 0;
+    }
+
+    /* mundetected monsters become un-hidden if they are attacked */
+    if (mdef.mundetected) {
+        mdef.mundetected = 0;
+        newsym(mdef.mx, mdef.my);
+        if (canseemon(mdef) && !sensemon(mdef))
+            note_mhitm_unported('mattackm:emerges_message');
+    }
+
+    magr.mlstmv = game.moves;
+    game.skipdrin = false;
+
+    const res = new Array(NATTK).fill(M_ATTK_MISS);
+    let struck = 0;
+
+    /* Now perform all attacks for the monster. */
+    for (let i = 0; i < NATTK; i++) {
+        res[i] = M_ATTK_MISS;
+
+        /* target might no longer be there */
+        if (i > 0 && (m_at(mdef.mx, mdef.my) !== mdef
+                      || DEADMONSTER(magr) || DEADMONSTER(mdef)))
+            continue;
+
+        const alt_attk = [];
+        const mattk = getmattk(magr, mdef, i, res, alt_attk);
+        let mwep = null, attk = 1, strike = 0, dieroll = 0;
+
+        switch (mattk[MATTK_AATYP]) {
+        case ATTKS.AT_WEAP:
+            if ((mwep = MON_WEP(magr)) !== null) {
+                if (game.vis)
+                    note_mhitm_unported('mattackm:mswingsm');
+                tmp += hitval(mwep, mdef);
+            }
+            /* FALLTHRU */
+        case ATTKS.AT_CLAW:
+        case ATTKS.AT_KICK:
+        case ATTKS.AT_BITE:
+        case ATTKS.AT_STNG:
+        case ATTKS.AT_TUCH:
+        case ATTKS.AT_BUTT:
+        case ATTKS.AT_TENT: {
+            if (mattk[MATTK_AATYP] === ATTKS.AT_KICK && magr.mtrapped)
+                continue;   /* mtrapped_in_pit() unported; mtrapped is its
+                               necessary condition, so this is conservative */
+            /* Nymph that teleported away on first attack? */
+            if (distmin(magr.mx, magr.my, mdef.mx, mdef.my) > 1)
+                continue;   /* may still have a ranged attack */
+            /* Monsters won't attack cockatrices physically if they
+             * have a weapon instead. */
+            if (!magr.mconf && mwep
+                && mattk[MATTK_AATYP] !== ATTKS.AT_WEAP
+                && touch_petrifies(mdef.data)) {
+                strike = 0;
+                break;
+            }
+            dieroll = rnd(20 + i);
+            strike = (tmp > dieroll) ? 1 : 0;
+            /* KMH -- don't accumulate to-hit bonuses */
+            if (mwep)
+                tmp -= hitval(mwep, mdef);
+            if (strike) {
+                if (unsolid(mdef.data)) {
+                    /* failed_grab() unported */
+                    note_mhitm_unported('mattackm:failed_grab');
+                }
+                res[i] = hitmm(magr, mdef, mattk, mwep, dieroll);
+            } else {
+                missmm(magr, mdef, mattk);
+            }
+            break;
+        }
+
+        case ATTKS.AT_NONE:
+            /* an EMPTY attack slot, not a missing feature. C's switch has no
+               case for it and falls to default, which does nothing; recording
+               it as unported would put a permanent false entry in the ledger
+               for every monster with fewer than NATTK attacks -- which is
+               almost all of them. */
+            attk = 0;
+            break;
+
+        default:
+            /* AT_GAZE -> gazemm, AT_EXPL -> explmm, AT_ENGL -> gulpmm,
+               AT_BREA/AT_SPIT -> breamm, AT_HUGS. Each records under its own
+               name so the reach tool can rank them separately. */
+            for (const [name, code] of Object.entries(ATTKS))
+                if (name.startsWith('AT_') && code === mattk[MATTK_AATYP]) {
+                    note_mhitm_unported(`mattackm:${name}`);
+                    break;
+                }
+            attk = 0;
+            break;
+        }
+
+        if (attk && !(res[i] & M_ATTK_AGR_DIED)
+            && distmin(magr.mx, magr.my, mdef.mx, mdef.my) <= 1)
+            res[i] = passivemm(magr, mdef, strike,
+                               (res[i] & M_ATTK_DEF_DIED), mwep);
+
+        if (res[i] & M_ATTK_DEF_DIED)
+            return res[i];
+        if (res[i] & M_ATTK_AGR_DIED)
+            return res[i];
+        if (helpless(magr))
+            return res[i];
+        /* eg. defender was knocked into a level teleport trap */
+        if (mon_offmap(mdef))
+            return res[i];
+        if (res[i] & M_ATTK_HIT)
+            struck = 1; /* at least one hit */
+    }
+
+    return (struck ? M_ATTK_HIT : M_ATTK_MISS);
 }

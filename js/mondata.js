@@ -241,8 +241,12 @@ export function Resists_Elem(mon, propindx) {
 }
 
 // include/monst.h:270 mon_resistancebits()
-const mon_resistancebits = (mon) =>
-    (mon.data.mresists | (mon.mextrinsics ?? 0) | (mon.mintrinsics ?? 0));
+/* include/monst.h:270. This read mon.data.mresists, but our monsters carry
+   mnum indexing game.mons rather than a data pointer, so every resists_*
+   built on it was reading undefined. */
+export const mon_resistancebits = (mon) =>
+    ((game.mons[mon.mnum]?.mresists ?? 0)
+     | (mon.mextrinsics ?? 0) | (mon.mintrinsics ?? 0));
 
 // src/mondata.c:215 resists_magm() — magic (missile) resistance.
 export function resists_magm(mon) {

@@ -466,9 +466,11 @@ export function dogfood(mon, obj) {
    early, and the call draws nothing either way. */
 function is_quest_artifact(obj) { return false; }
 
-/* src/mondata.h resists_poison() */
+/* include/monst.h:277 resists_poison(). This read mon.data.mresists, but our
+   monsters carry mnum indexing game.mons rather than a data pointer, so it
+   was ALWAYS FALSE. */
 function resists_poison(mon) {
-    return !!(mon.data?.mresists & MFLAGS.MR_POISON);
+    return !!((game.mons[mon.mnum]?.mresists ?? 0) & MFLAGS.MR_POISON);
 }
 
 function note_unported(what) {

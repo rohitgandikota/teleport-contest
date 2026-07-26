@@ -93,12 +93,27 @@ so C answers that gate identically and makes the same single call. Our object
 COUNT from this site is therefore right, and the earlier "C has three more
 objects near the pet" reading is unproven.
 
-So the three unexplained obj_resists are most likely NOT dog_goal's box walk.
-The remaining candidates, in order: dog_move's own per-square object walk (now
-ported, and confirmed live at 167 calls per session), dog_invent, and the
-meatobj/meatmetal arms at src/mon.c:1482 and :1586. Instrument obj_resists
-itself with a stack trace (js/rng.js RND, gated on an env var, as was done for
-call 2869 of seed4500) and read the caller directly rather than inferring it.
+The callers HAVE now been read directly, by stack-tracing RND() in js/rng.js
+(gate it on an env var and run the worker directly -- the parent runner spawns
+a child and swallows stderr, so `node frozen/ps_test_runner.mjs
+--worker-session=<file>` is required). Ours, around the divergence:
+
+    #2296 rn2(100)  obj_resists <- dogfood <- dog_goal <- dog_move
+    #2297 rn2(8)    dog_goal
+    #2298 rn2(100)  obj_resists <- dogfood <- dog_goal <- dog_move
+    #2299 rn2(5)    distfleeck   <- NEXT MONSTER; dog_move drew nothing more
+
+C spends three more obj_resists between its equivalent of #2298 and its
+distfleeck. dog_move's per-square object walk is ported and live (167 calls a
+session) but finds zero objects on the pet's neighbours here, while C finds
+three.
+
+Since the object COUNT from fill_ordinary_room is provably right, the most
+likely shape is a PILE: C walks svl.level.objects[nx][ny] through ->nexthere,
+so three objects stacked on ONE square give three dogfood calls from one
+square. Look for a placement that should stack and instead merges or replaces
+-- mkgold onto an existing pile is the obvious suspect, since gold is 16 of
+our 20 level objects.
 
 ### What the obj_resists cluster actually is
 

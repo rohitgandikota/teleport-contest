@@ -182,7 +182,7 @@ different destination AND a different draw count, so it desyncs twice over.
 Check whether level.flags.shortsighted is ever set before assuming it is dead
 code -- if it is set on any level a session visits, this is a strong candidate.
 
-GAP 2 -- STILL OPEN, and blocked on a signature change (monmove.c:1971):
+GAP 2 -- PORTED (commit "Port autoreturn_weapon and unblock m_move's appr == -2 arm"). Was:
 
     || (appr == -2
         && ((ndist <= preferredrange_min && !nearer)
@@ -199,9 +199,15 @@ Ours is m_balks_at_approaching(appr, mtmp). The -2 return and the preferred
 range both come from the autoreturn_weapon arm of that function, so porting
 the selection arm alone would be dead code.
 
-ORDER: extend m_balks_at_approaching with the two out-parameters and its
-autoreturn_weapon arm FIRST, then add the appr == -2 arm to the selection
-test. Doing it the other way round adds an arm nothing can reach.
+DONE in that order: autoreturn_weapon and the arwep table went into
+js/weapon.js, m_balks_at_approaching gained a range out-parameter and its -2
+return, then the selection arm was added. Dormant on the public sessions,
+which contain no aklys-wielding monster.
+
+ALL THREE selection-block gaps found while chasing the newt are now closed.
+The newt divergence itself is still open, and the surviving facts about it are
+above -- birth position correct, first move correct, and two retracted
+readings whose shared cause was comparing observations from different steps.
 
 TEST RUN. NEITHER GAP APPLIES, AND THE SELECTION BLOCK IS SOUND:
 

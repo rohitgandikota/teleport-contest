@@ -3822,3 +3822,67 @@ Do NOT port more dogmove functions speculatively. Two ports in a row now have
 been faithful, correct, and worth zero, because the cause was upstream state
 rather than a missing function. The aggregate above is cheap; run it before
 and after anything, and let it, not the RNG proxy, decide whether to keep.
+
+## THE NEXT THING TO PORT: uhitm.c do_attack, the pet-displacement path
+
+After the lamp fix, the first-mismatch aggregate is:
+
+       6  dog_move(dogmove.c:1255)
+       4  obj_resists(zap.c:1469)
+       4  getbones(bones.c:645)
+       4  do_attack(uhitm.c:474)        <-- newly surfaced
+       3  rnd_otyp_by_namedesc(objnam.c:3522)
+       3  makelevel(mklev.c:1350)
+       3  distfleeck(monmove.c:538)
+
+MEASURED: there is no js/uhitm.js and no do_attack anywhere in the tree. The
+hero's melee and displacement code is entirely absent. Our domove (js/cmd.js:537)
+has NO m_at() check at all: it tests closed_door, then blocksMove, then moves
+the hero. The hero walks straight THROUGH monsters, drawing nothing.
+
+C's path when the hero steps onto a pet or peaceful (uhitm.c:462 onward):
+
+    if (is_safemon(mtmp) && !svc.context.forcefight) {
+        if (!u_wield_art(ART_STORMBRINGER)) {
+            boolean foo = (Punished || !rn2(7)
+                           || (is_longworm(mtmp->data) && mtmp->wormno)
+                           || (IS_OBSTRUCTED(levl[u.ux][u.uy].typ)
+                               && !passes_walls(mtmp->data))), ...
+            if (inshop || foo) {
+                if (mtmp->mtame) monflee(mtmp, rnd(6), FALSE, FALSE);
+                You("stop.  %s is in the way!", buf);
+                return TRUE;
+            } else if (mtmp->mfrozen || helpless(mtmp)
+                       || (mtmp->data->mmove == 0 && rn2(6))) {
+                pline("%s doesn't seem to move!", Monnam(mtmp));
+                return TRUE;
+            } else
+                return FALSE;   /* caller swaps hero and pet */
+
+Three draws on a path the hero takes constantly: rn2(7) every time, then
+rnd(6) or rn2(6) depending on the arm.
+
+HYPOTHESIS, NOT ESTABLISHED, and worth stating because it would tie the top
+two entries together: if the hero never displaces the pet, the pet ends up on
+a different square from C's, and dog_move then scores its candidate squares
+from the wrong place. That would make do_attack the upstream cause of the
+dog_move(dogmove.c:1255) cluster as well, 10 of 44 sessions between them, and
+it fits the seed0030 evidence recorded further up this file, where our pet was
+ADJACENT to the hero and C's was twelve columns away.
+
+Do not treat that as proven. The cheap test is to port only the displacement
+path, then re-run the aggregate: if dog_move drops below 6, the link is real.
+
+SCOPE IT SMALL. Do not port all of uhitm.c. The reachable path needs
+is_safemon, the foo test, monflee, and the hero/pet position swap in domove.
+attack_checks and everything past it is the actual combat code and is a
+separate job; a hostile monster can keep hitting note_unported.
+
+Method note, learned twice in this session: run the aggregate before and after
+and let it decide, not the advisory RNG proxy. The lamp fix moved screens 482
+to 492 and removed mksobj_init from the aggregate entirely. Two faithful ports
+before it (mk_trap_statue, dog_eat) moved nothing, because a correct port of a
+function that is never reached is worth exactly zero. Check that the code you
+are about to write is on a path the sessions actually take -- instrumenting a
+function with a counter and running one session costs a minute and would have
+saved both of those.

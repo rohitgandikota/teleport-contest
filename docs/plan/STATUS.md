@@ -34,10 +34,40 @@ RULED OUT along the way, so nobody re-checks:
 STILL UNPORTED of the six: 2816 (stuck steed) and 2854 (swim_move_danger).
 Both need subsystems that are absent; neither is reachable yet.
 
-NEXT: seed4500's 2 screens are not a run-loop bug, so do not chase them
-there. The real next target is whatever moves its divergence point, which is
-call 2869 in m_move (monmove.c:1963) -- a monster-movement draw, unrelated to
-this work.
+NEXT: seed4500's 2 screens are not a run-loop bug. I traced its divergence
+point instead, and the answer is worth having because it is NOT what it looks
+like.
+
+    call 2869 is m_move's mtrack roll, `rn2(4 * (cnt - j))` at monmove.c:1963
+    C draws rn2(28)  ->  cnt - j = 7
+    we draw rn2(20)  ->  cnt - j = 5
+
+The obvious reading is that our mfndpos under-counts. IT DOES NOT. I
+instrumented mfndpos at exactly that call and dumped the 3x3 around the
+monster:
+
+    monster is a newt (pmidx 322) at (77,14), flag 268697600, cnt = 5
+      (76,13) ROOM *   (77,13) ROOM *   (78,13) VWALL
+      (76,14) ROOM *   (77,14) self     (78,14) VWALL
+      (76,15) STAIRS * (77,15) ROOM *   (78,15) VWALL
+
+Five legal neighbours, five returned, all correct -- the newt is against a
+room's east wall, so three of its eight neighbours are wall. Our mfndpos is
+RIGHT here.
+
+But a monster pinned against a wall cannot have 7 legal neighbours, so C
+cannot be moving this newt at call 2869. IT IS MOVING A DIFFERENT MONSTER.
+The bug is upstream of mfndpos entirely: our monster ITERATION differs -- a
+monster C moves and we skip, one we move and C skips, or a different order.
+
+So do not go debugging mfndpos, and do not chase the newt. The next
+investigation is movemon()'s loop in src/mon.c: which monsters get a move
+this turn and in what order. Compare against the trace by instrumenting which
+monster is moved per draw, not what mfndpos returns for it.
+
+Useful detail for whoever picks this up: mon 59 shows up at calls 2841
+(58,17), 2851 (59,17) and 2872 (60,17), walking steadily east, with the newt
+at 2869 interleaved between. That interleaving is the thing to explain.
 
 === (attempt 1 notes follow) ===
 

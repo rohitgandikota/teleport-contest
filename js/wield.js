@@ -9,6 +9,10 @@ import { game } from './gstate.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { You } from './pline.js';
+import { tty_yn_function } from './tty/topl.js';
+
+// include/hack.h:1330 ynq()
+const ynq = (query) => tty_yn_function(query, 'ynq', 'q');
 import { ECMD_OK, ECMD_CANCEL, P_BOW, P_CROSSBOW } from './const.js';
 import { OCLASSES } from './objects_data.js';
 
@@ -70,8 +74,24 @@ export async function doquiver_core(verb) {
     if (!newquiver)
         return ECMD_CANCEL;
 
-    /* the split, already-quivered and coin arms, and setuqwep itself, still
-       need the object-split bookkeeping */
+    /* src/wield.c:633 — readying the ALTERNATE weapon needs confirmation.
+       The wording tracks two/one-handed use and singular/plural. */
+    if (newquiver === game.u.uswapwep) {
+        const use_plural = false;       /* is_plural/pair_of need objnam */
+        const qbuf = `${!use_plural ? 'That is' : 'Those are'} your `
+                   + `${game.u.twoweap ? 'second' : 'alternate'} weapon.  `
+                   + `Ready ${!use_plural ? 'it' : 'them'} instead?`;
+
+        if (await ynq(qbuf) !== 'y') {
+            note_unported_wield('doquiver_core:decline message');
+            return ECMD_OK;
+        }
+        /* quivering the alternate weapon, so no more uswapwep */
+        game.u.uswapwep = null;
+        note_unported_wield('doquiver_core:untwoweapon');
+    }
+
+    /* setuqwep + prinv still need the object-split bookkeeping */
     note_unported_wield('doquiver_core:setuqwep');
     return ECMD_OK;
 }

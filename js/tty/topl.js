@@ -126,18 +126,35 @@ export async function tty_yn_function(query, resp, def) {
     if (game._toplin === TOPLINE_NEED_MORE)
         await more();
 
+    let prompt = query;
     if (resp) {
-        (game.unported ||= new Set()).add('tty_yn_function:resp filter');
+        /* win/tty/topl.c builds "<query> [<resp>] " and appends "(<def>) "
+           when there is a default. The screen shows it as
+           "... Ready it instead? [ynq] (q)". The '#' digits case and the
+           <esc>-hides-the-tail case are not ported. */
+        prompt += ` [${resp}]`;
+        if (def && def !== '\0')
+            prompt += ` (${def})`;
     }
 
-    game._pending_message = query;
+    game._pending_message = prompt;
     game._toplin = TOPLINE_SPECIAL_PROMPT;
     _buildScreenOutput();
 
     const display = game?.nhDisplay;
     if (display)
-        display.setCursor(Math.min(query.length + 1, (display.cols ?? 80) - 1), 0);
+        display.setCursor(Math.min(prompt.length + 1, (display.cols ?? 80) - 1), 0);
 
-    const c = await nhgetch();
-    return (typeof c === 'string') ? c : String.fromCharCode(c);
+    /* with a resp string, only the listed characters (plus the quitchars) are
+       accepted; anything else re-reads. */
+    for (;;) {
+        const c = await nhgetch();
+        const ch = (typeof c === 'string') ? c : String.fromCharCode(c);
+        if (!resp)
+            return ch;
+        if (resp.includes(ch))
+            return ch;
+        if (ch === '\x1b' || ch === '\r' || ch === '\n' || ch === ' ')
+            return def && def !== '\0' ? def : ch;
+    }
 }

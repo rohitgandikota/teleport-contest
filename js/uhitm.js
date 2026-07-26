@@ -58,6 +58,46 @@ const is_longworm = (ptr) =>
 // src/mon.c helpless()
 /* helpless() lives in js/monst.js, matching include/monst.h:251. */
 
+// src/uhitm.c:4782 mhitm_adtyping() — dispatch on the attack's DAMAGE type.
+//
+// 39 arms in C, one per AD_* code. Only AD_PHYS is ported; every other arm
+// records under its own name so game.unported names the exact damage type
+// that was reached rather than a single lumped entry. That distinction is
+// the point of writing the dispatcher now: it turns one opaque gap into 38
+// individually-sized ones, and the reach tool will rank them.
+//
+// The default arm is real: an unrecognised damage type deals no damage.
+const MHITM_AD_ARMS = {
+    AD_STUN: 'stun', AD_LEGS: 'legs', AD_WERE: 'were', AD_HEAL: 'heal',
+    AD_FIRE: 'fire', AD_COLD: 'cold', AD_ELEC: 'elec', AD_ACID: 'acid',
+    AD_STON: 'ston', AD_SSEX: 'ssex', AD_SITM: 'sedu', AD_SEDU: 'sedu',
+    AD_SGLD: 'sgld', AD_TLPT: 'tlpt', AD_BLND: 'blnd', AD_CURS: 'curs',
+    AD_DRLI: 'drli', AD_RUST: 'rust', AD_CORR: 'corr', AD_DCAY: 'dcay',
+    AD_DREN: 'dren', AD_DRST: 'drst', AD_DRDX: 'drst', AD_DRCO: 'drst',
+    AD_DRIN: 'drin', AD_STCK: 'stck', AD_WRAP: 'wrap', AD_PLYS: 'plys',
+    AD_SLEE: 'slee', AD_SLIM: 'slim', AD_ENCH: 'ench', AD_SLOW: 'slow',
+    AD_CONF: 'conf', AD_POLY: 'poly', AD_DISE: 'dise', AD_SAMU: 'samu',
+    AD_DETH: 'deth', AD_PEST: 'pest', AD_FAMN: 'famn', AD_DGST: 'dgst',
+    AD_HALU: 'halu',
+};
+
+export function mhitm_adtyping(magr, mattk, mdef, mhm) {
+    if (mattk.adtyp === ATTKS.AD_PHYS) {
+        mhitm_ad_phys(magr, mattk, mdef, mhm);
+        return;
+    }
+
+    for (const [name, fn] of Object.entries(MHITM_AD_ARMS)) {
+        if (mattk.adtyp === ATTKS[name]) {
+            (game.unported ||= new Set()).add(`mhitm_ad_${fn}`);
+            return;
+        }
+    }
+
+    /* default: */
+    mhm.damage = 0;
+}
+
 // include/monattk.h:94 struct mhitm_data — { damage, hitflags, done,
 // permdmg, specialdmg, dieroll }. Passed by pointer in C so the arms can
 // mutate it; a plain object here does the same.

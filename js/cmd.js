@@ -1,3 +1,4 @@
+import { doread } from './read.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
 // C ref: cmd.c rhack(), hack.c domove().
@@ -563,6 +564,11 @@ export async function rhack(key) {
     } else if (ch === 'Q') {
         // src/cmd.c cmdlist — 'Q' is dowieldquiver.
         game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'r') {
+        /* src/cmd.c cmdlist — 'r' is doread. It calls getobj(), which READS
+           A KEY, so leaving it undispatched let the inventory letter run as a
+           command and put every later keystroke out of step. */
+        game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Z') {
         // src/cmd.c cmdlist — 'Z' is docast.
         game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);

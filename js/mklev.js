@@ -2119,7 +2119,9 @@ async function fill_ordinary_room(croom, bonus_items) {
 
     const pos = { x: 0, y: 0 };
     // Sleeping monster (33%)
-    if (!rn2(3) && somexyspace(croom, pos)) {
+    /* src/mklev.c:974 — the || SHORT-CIRCUITS: carrying the Amulet skips the
+       rn2(3) entirely, so spending it unconditionally is a draw C never makes. */
+    if ((game.u?.uhave?.amulet || !rn2(3)) && somexyspace(croom, pos)) {
         makemon(null, pos.x, pos.y, MM_NOGRP);
     }
     // Traps
@@ -2131,7 +2133,9 @@ async function fill_ordinary_room(croom, bonus_items) {
         mktrap(0, MKTRAP_NOFLAGS, croom, null);
     }
     // Gold
-    if (!rn2(3) && somexyspace(croom, pos)) {
+    /* src/mklev.c:974 — the || SHORT-CIRCUITS: carrying the Amulet skips the
+       rn2(3) entirely, so spending it unconditionally is a draw C never makes. */
+    if ((game.u?.uhave?.amulet || !rn2(3)) && somexyspace(croom, pos)) {
         mkgold(0, pos.x, pos.y);
     }
     // Fountain
@@ -2239,7 +2243,9 @@ async function fill_ordinary_room(croom, bonus_items) {
         }
     }
     // Random objects
-    if (!rn2(3) && somexyspace(croom, pos)) {
+    /* src/mklev.c:974 — the || SHORT-CIRCUITS: carrying the Amulet skips the
+       rn2(3) entirely, so spending it unconditionally is a draw C never makes. */
+    if ((game.u?.uhave?.amulet || !rn2(3)) && somexyspace(croom, pos)) {
         mkobj_at(RANDOM_CLASS, pos.x, pos.y, true);
         let objTrycnt = 0;
         while (!rn2(5)) {

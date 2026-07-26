@@ -204,6 +204,25 @@ short-circuits to the same rn2(3) and spends the same draw -- but it should be
 added anyway, because WITH the Amulet C skips the rn2(3) entirely and we would
 spend a draw C does not. That is a real future desync on Amulet levels.
 
+**somexyspace and occupied both match C EXACTLY -- verified line by line.**
+
+    somexyspace   src/mkroom.c   somexy && isok && !occupied && (ROOM|CORR|ICE),
+                                 100 tries -- ours is identical
+    occupied      src/mklev.c:1806  t_at || IS_FURNITURE || is_lava || is_pool
+                                 || invocation_pos -- ours is identical
+                                 (invocation_pos records, and is meaningful
+                                 only on the invocation level)
+
+So neither predicate is the bug, and the sleeper landing on C's upstair square
+is NOT an occupied() gap: C's occupied does not reject stairs either, because
+IS_FURNITURE covers fountains/thrones/sinks/altars, not staircases.
+
+That leaves `somexy` -- the raw coordinate pick inside the loop. Compare it
+against src/mkroom.c somexy, and in particular the ORDER of its rn2 calls and
+whether it draws once or twice per attempt: somexyspace retries up to 100
+times, so one extra or missing draw per attempt shifts every later placement on
+the level while the total still happens to line up at call 6276.
+
 So the placement is the remaining suspect: same gate, same draw, different
 square. **Compare somexyspace's result for room3 (56,4-58,5) against C's.**
 js/mklev.js:1426 somexyspace already carries a fix for the irregular-room retry

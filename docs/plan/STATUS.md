@@ -59,11 +59,25 @@ sessions:
    133,895 rng. So the clear fires far more often for us than for C, or fires
    where C does not.
 
-   Do not retry this by tweaking the guard. The measurement says our menu
-   display path reaches this point in situations C's does not, so the next
-   step is to find out WHEN each side calls tty_display_nhwindow on a menu --
-   instrument both the call and the resulting offx/maxrow, and compare
-   against the recorded screens, before touching the clear again.
+   INSTRUMENTED, AND THE DIAGNOSIS CHANGES. seed0004 reaches
+   tty_display_nhwindow on a menu only SEVEN times in the whole session, and
+   in every one game._pending_message is ALREADY EMPTY (""). So the overlay
+   clear C performs would be a no-op for us and cannot be what fixes row 0.
+
+   The 473-screen loss came from the OTHER half of that change: adding an
+   NHW_MESSAGE arm to js/tty/wintty.js's tty_clear_nhwindow. That was a
+   DUPLICATE -- js/display.js already has tty_clear_nhwindow_message(row) and
+   calls it at :518 and :613. Making wintty's version also clear meant two
+   implementations firing on different paths.
+
+   THEREFORE the stale "Shall I pick character's..." text is NOT a pending
+   message that needs clearing. It is already PAINTED INTO THE GRID and never
+   erased. _pending_message is empty; the cells are not.
+
+   Next step is on the paint side: find what writes row 0 during chargen and
+   what should erase those cells before the menu draws over columns 41-79.
+   js/display.js:600 already carries a comment about tty_clear_nhwindow only
+   clearing part of the row, which is the right neighbourhood.
 
    Note js/optlist.js:123-124 has TWO menu_overlay entries with different
    initval ("On" for set_in_game, "Off" for set_in_config), so which default

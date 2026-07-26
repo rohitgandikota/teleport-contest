@@ -331,3 +331,25 @@ export function newuhs(incr) {
 
     game.u.uhs = newhs;
 }
+
+// src/eat.c maybe_finished_meal() — finish a meal that consume_oeaten has
+// already exhausted, rather than reporting it as interrupted.
+//
+// stop_occupation calls this FIRST and only prints "You stop <occtxt>." when it
+// returns FALSE, so omitting it both leaves the food half-eaten and prints a
+// message C does not.
+//
+// `stopping` clears the occupation BEFORE eatfood() runs, which the C notes is
+// "for do_reset_eat" -- eatfood checks the occupation, so leaving it set makes
+// the meal look still-in-progress to its own callback.
+export function maybe_finished_meal(stopping) {
+    const v = game.context?.victual;
+
+    if (game.occupation === eatfood && v && v.usedtime >= v.reqtime) {
+        if (stopping)
+            game.occupation = null;     /* for do_reset_eat */
+        eatfood();                      /* calls done_eating to use the food up */
+        return true;
+    }
+    return false;
+}

@@ -4,6 +4,7 @@
 // Real mklev.js handles level generation for screen parity.
 
 import { game } from './gstate.js';
+import { maybe_finished_meal } from './eat.js';
 
 // src/allmain.c set_occupation() / stop_occupation() — the multi-turn action
 // slot. moveloop_core calls go.occupation once per turn until it returns 0.
@@ -26,8 +27,13 @@ export function set_occupation(fn, txt, xtime) {
 // src/allmain.c stop_occupation()
 export function stop_occupation() {
     if (game.occupation) {
+        /* src/allmain.c:684 — maybe_finished_meal runs FIRST, and the
+           "You stop <occtxt>." message only prints when it returns FALSE. */
+        if (!maybe_finished_meal(true))
+            note_unported_main(`stop_occupation:message:${game.occtxt}`);
         game.occupation = null;
         game.occtxt = null;
+        /* nomul(0) */
     }
     game.multi = 0;
 }

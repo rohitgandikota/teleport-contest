@@ -444,6 +444,24 @@ export async function moveloop_core() {
     await bot();
     await flush_screen(1);
 
+    /* src/allmain.c:485 — an active occupation CONSUMES the turn instead of
+       reading a command. It runs once per turn until it returns 0, and a
+       nearby monster stops it early.
+     *
+     *     if (gm.multi >= 0 && go.occupation) {
+     *         if ((*go.occupation)() == 0) go.occupation = 0;
+     *         if (monster_nearby()) stop_occupation();
+     *     }
+     *
+     * monster_nearby() needs the interrupt checks; without it an occupation
+     * runs to completion where C would break it off, so it records. */
+    if ((g.multi ?? 0) >= 0 && g.occupation) {
+        if (g.occupation() === 0)
+            g.occupation = null;
+        note_unported_main('moveloop:monster_nearby');
+        return;                         /* the occupation took this turn */
+    }
+
     // Read and execute one command. The frame captured inside nhgetch shows
     // the message produced by the PREVIOUS command, which is why the message
     // must not be cleared here — rhack() clears it after reading the key and

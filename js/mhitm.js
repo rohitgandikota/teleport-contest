@@ -20,6 +20,10 @@ import { touch_petrifies } from './dog.js';
 import { resists_ston } from './mon.js';
 import { MON_WEP, mon_offmap } from './monst.js';
 import { PMNAMES } from './monst_data.js';
+import { MATERIALS } from './objects_data.js';
+import { shade_miss } from './uhitm.js';
+import { s_suffix } from './hacklib.js';
+import { mon_hates_silver } from './dog.js';
 import { ATTKS } from './monst_data.js';
 import { seemimic } from './mon.js';
 import { newsym, canspotmon, pline } from './display.js';
@@ -169,4 +173,76 @@ export function mdamagem(magr, mdef, mattk, mwep, dieroll) {
         return M_ATTK_DEF_DIED;
     }
     return (mhm.hitflags |= M_ATTK_HIT);
+}
+
+// src/mhitm.c:644 hitmm() — one monster's attack CONNECTS with another.
+//
+// The twin of missmm above. It prints the blow, then hands off to mdamagem,
+// which is where the damage roll happens.
+//
+// The message switch is per attack type and the wording is not
+// interchangeable: bites, stings, butts, touches and tentacle-sucks each have
+// their own verb, AT_HUGS reads "squeezes" unless the attacker already has
+// the hero held, and everything else falls through to plain "hits". An
+// artifact weapon suppresses the message entirely, because artifact_hit()
+// delivers its own.
+export function hitmm(magr, mdef, mattk, mwep, dieroll) {
+    const weaponhit = (mattk.aatyp === ATTKS.AT_WEAP
+                       || (mattk.aatyp === ATTKS.AT_CLAW && mwep));
+    const silverhit = !!(weaponhit && mwep
+                         && game.objects[mwep.otyp]?.oc_material === MATERIALS.SILVER);
+
+    pre_mm_attack(magr, mdef);
+
+    const compat = !magr.mcan ? could_seduce(magr, mdef, mattk) : 0;
+    if (!compat && shade_miss(magr, mdef, mwep, false, game.vis))
+        return M_ATTK_MISS; /* bypass mdamagem() */
+
+    if (game.vis) {
+        const magr_name = Monnam(magr);
+        let buf = '';
+
+        if (compat) {
+            /* "%s %s %s." -- smiles at / talks to, then engagingly /
+               seductively */
+            buf = `${magr_name} ${mdef.mcansee ? 'smiles at' : 'talks to'}`;
+            note_mhitm_unported('hitmm:seduce_message');
+        } else {
+            switch (mattk.aatyp) {
+            case ATTKS.AT_BITE: buf = `${magr_name} bites`; break;
+            case ATTKS.AT_STNG: buf = `${magr_name} stings`; break;
+            case ATTKS.AT_BUTT: buf = `${magr_name} butts`; break;
+            case ATTKS.AT_TUCH: buf = `${magr_name} touches`; break;
+            case ATTKS.AT_TENT:
+                buf = `${s_suffix(magr_name)} tentacles suck`;
+                break;
+            case ATTKS.AT_HUGS:
+                if (magr !== game.u?.ustuck) {
+                    buf = `${magr_name} squeezes`;
+                    break;
+                }
+                /* FALLTHRU */
+            default:
+                if (!weaponhit || !mwep || !mwep.oartifact)
+                    buf = `${magr_name} hits`;
+                break;
+            }
+            if (buf)
+                pline(`${buf} ${mon_nam_too(mdef, magr)}.`);
+
+            if (mon_hates_silver(mdef) && silverhit) {
+                /* "%s %s sears %s!" -- needs simpleonames() and the
+                   himself/his own substitutions */
+                note_mhitm_unported('hitmm:silver_sear_message');
+            }
+        }
+    } else {
+        noises(magr, mattk);
+    }
+
+    return mdamagem(magr, mdef, mattk, mwep, dieroll);
+}
+
+function note_mhitm_unported(what) {
+    (game.unported ||= new Set()).add(what);
 }

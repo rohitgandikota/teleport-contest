@@ -18,6 +18,7 @@ import { mkobj_at, mksobj_at, add_to_container } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
+import { start_timer, TIMER_OBJECT, ROT_ORGANIC } from './timeout.js';
 import { make_engr_at, engr_at } from './engrave.js';
 import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD } from './const.js';
 
@@ -967,8 +968,8 @@ export function bury_an_obj(otmp, dealloced) {
     } else if ((under_ice ? (otmp.oclass === OCLASSES.POTION_CLASS)
                           : is_organic(otmp))
                && !obj_resists(otmp, 5, 95)) {
-        rnd(250);                       /* start_timer ROT_ORGANIC delay */
-        note_unported('bury_an_obj:start_timer');
+        start_timer((under_ice ? 0 : 250) + rnd(250),
+                    TIMER_OBJECT, ROT_ORGANIC, otmp);
     }
 
     (game.level.buriedobjs ||= []).push(otmp);   /* add_to_buried() */

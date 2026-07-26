@@ -68,13 +68,25 @@ desyncs the stream on essentially the first monster move of the game. It is
 almost certainly why so many sessions diverge in the 2800-3000 range rather
 than anywhere interesting.
 
-NEXT: establish WHERE C's newt is before touching mfndpos. The candidate dump
-is already done and is above; what is missing is C's side. Find the newt on
-the recorded screen for that step (it renders as ':') and compare its position
-with our 77,14. If C's newt is off the wall, the bug is whatever moved ours
-there, and mfndpos is innocent. Only if C's newt is ALSO at 77,14 is the
-candidate filter itself wrong, and in that case check poolok/lavaok,
-m_in_air/is_clinger and the ALLOW_* gates in js/mon.js mfndpos.
+THE SCREEN CANNOT SETTLE IT -- tried, do not repeat. The divergence is at
+seg 1 step 41 (key "j"), and on that recorded screen the hero is at map
+(11,15) while our newt is at (77,14), sixty-six columns away and far outside
+its line of sight. C never renders it, so there is no ':' on the map rows to
+compare against. (The ':' characters that do appear are on screen rows 22-23,
+which are the status lines, not the map.)
+
+NEXT, and it has to be a trace rather than a look: instrument our newt's
+position each turn from its creation up to call 2869 and find the turn its
+count first differs from what C's stream implies. The modulus of C's
+rn2(4 * (cnt - j)) gives C's candidate count on every one of that monster's
+moves, so C's count is READABLE FROM THE LOG at each step even though its
+position is not. Walk backwards: the first call where C's implied count and
+ours diverge is the turn the positions parted, and that is the bug's real
+location.
+
+That technique generalises and is the useful part of this thread: when a
+monster's position cannot be observed directly, the modulus of a draw that
+depends on its surroundings is an indirect measurement of it.
 
 Do NOT start uhitm.c before this. A monster-movement count that is wrong on
 turn one makes every later measurement noisier, including any attempt to

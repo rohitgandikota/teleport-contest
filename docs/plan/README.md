@@ -15,35 +15,45 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 Update this table at the end of every working session, before compacting or
 handing off. `Local` is the public-session screen score from `bash frozen/score.sh`.
 
-| # | Milestone | File | Status | Local screens |
+| # | Milestone | File | Status | Notes |
 |---|---|---|---|---|
 | M0 | Strategy and architecture decisions | [00-strategy.md](00-strategy.md) | done | — |
-| M1 | Verification loop and dev tooling | [01-verification-loop.md](01-verification-loop.md) | **done** | 0/11,405 |
-| M2 | Options, rc parsing, chargen | [02-options-and-chargen.md](02-options-and-chargen.md) | next | — |
-| M9a | Lua core (blocks M4) | [09-lua-and-special-levels.md](09-lua-and-special-levels.md) | not started | — |
-| M3 | tty windowport (the screen) | [03-tty-windowport.md](03-tty-windowport.md) | not started | — |
-| M4 | Level generation | [04-level-generation.md](04-level-generation.md) | not started | — |
-| M5 | Display, vision, status lines | [05-display-and-status.md](05-display-and-status.md) | not started | — |
-| M6 | Move loop and core commands | [06-moveloop-and-commands.md](06-moveloop-and-commands.md) | not started | — |
-| M7 | Monsters, pets, combat | [07-monsters-and-combat.md](07-monsters-and-combat.md) | not started | — |
-| M8 | Objects, inventory, menus | [08-objects-and-inventory.md](08-objects-and-inventory.md) | not started | — |
+| M1 | Verification loop and dev tooling | [01-verification-loop.md](01-verification-loop.md) | **done** | plus `tools/diverge.mjs`, `undefined-refs`, `dup-defs`, `generalize` |
+| M2 | Options, rc parsing, chargen | [02-options-and-chargen.md](02-options-and-chargen.md) | mostly done | `optfn_playmode` landed; `flags.safe_dog` default found missing |
+| M9a | Lua core (blocks M4) | [09-lua-and-special-levels.md](09-lua-and-special-levels.md) | partial | des-coder room stack, `cvt_to_relcoord`, `des.object` montype |
+| M3 | tty windowport (the screen) | [03-tty-windowport.md](03-tty-windowport.md) | partial | topl, getline, menu footer; **menu subsystem still absent** |
+| M4 | Level generation | [04-level-generation.md](04-level-generation.md) | partial | rooms, corridors, niches, vault, traps; **whole special-room subsystem absent** |
+| M5 | Display, vision, status lines | [05-display-and-status.md](05-display-and-status.md) | partial | glyphs incl. corpse/statue colour; `canspotmon` family absent |
+| M6 | Move loop and core commands | [06-moveloop-and-commands.md](06-moveloop-and-commands.md) | partial | domove, doopen, getdir, getobj, quiver, throw; **no `m_at` check in domove** |
+| M7 | Monsters, pets, combat | [07-monsters-and-combat.md](07-monsters-and-combat.md) | partial | mfndpos, dochug, dog_move/goal/eat; **all of uhitm.c absent** |
+| M8 | Objects, inventory, menus | [08-objects-and-inventory.md](08-objects-and-inventory.md) | partial | mkobj, splitobj, weight, invent basics |
 | M9b | Special levels and quests | [09-lua-and-special-levels.md](09-lua-and-special-levels.md) | not started | — |
-| M10 | Subsystem sweeps | [10-subsystem-sweeps.md](10-subsystem-sweeps.md) | not started | — |
-| M11 | Save, restore, multi-segment, bones | [11-save-restore.md](11-save-restore.md) | not started | — |
-| M12 | Generalization hardening | [12-generalization-hardening.md](12-generalization-hardening.md) | not started | — |
+| M10 | Subsystem sweeps | [10-subsystem-sweeps.md](10-subsystem-sweeps.md) | ongoing | spells reachable from `Z`; per-spell dispatch absent |
+| M11 | Save, restore, multi-segment, bones | [11-save-restore.md](11-save-restore.md) | not started | `getbones` blocks 4 sessions |
+| M12 | Generalization hardening | [12-generalization-hardening.md](12-generalization-hardening.md) | ongoing | 40 non-session seeds run clean every commit |
 
-**Measured baseline, 2026-07-24, untouched skeleton:**
+The milestone numbering is nominal now. Work is driven by the first-mismatch
+aggregate (see STATUS.md), not by walking M2 to M12 in order, because the
+sessions diverge wherever they diverge.
+
+**Current, 2026-07-26:**
 
 | | |
 |---|---|
-| Sessions passed | 0 / 44 |
-| Screens matched | **0 / 11,405** |
-| RNG positions matched | 25,429 / 792,838 (3.2%) |
+| Sessions passed | 1 / 44 |
+| Screens matched | **492 / 11,405 (4.3%)** |
+| RNG positions matched | 136,523 / 792,838 (17.2%) |
 
-Zero screens. The partial credit the README mentions on
-`seed8000-tourist-starter` is RNG-only and fake — it comes from
-`js/fastforward.js` replaying a recorded list — and it produces no matching
-frame at all. Frame 0 renders completely blank.
+`js/fastforward.js` is gone from the passing path: `seed8000-tourist-starter`
+passes on ported code. Treat the RNG number as advisory only -- it counts
+positional matches, so it can rise while a real divergence sits upstream, and
+it can fall on a change that is provably correct against the C. The
+first-mismatch aggregate in STATUS.md is the honest progress signal.
+
+**Historical baseline, 2026-07-24, untouched skeleton:** 0/44 sessions,
+0/11,405 screens, 25,429/792,838 RNG -- and that RNG credit was fake, coming
+from `js/fastforward.js` replaying a recorded list while frame 0 rendered
+blank.
 
 Reproduce with `node tools/scoreboard.mjs`; history in
 [score-history.tsv](score-history.tsv).

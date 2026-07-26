@@ -1047,7 +1047,21 @@ export function dog_move(mtmp, after) {
         /* src/dogmove.c:1141 — the ALLOW_M attack and ALLOW_MDISP displace
            branches need mattackm/mdisplacem, the monster-vs-monster combat
            path. Both draw, so stop rather than guess their numbers. */
-        if (mfp.info[i] & (ALLOW_M | ALLOW_U)) {
+        /* src/dogmove.c:1073 — a square holding a monster is only a
+           candidate when attacking or displacing it is permitted. */
+        if (m_at(nx, ny) && !(mfp.info[i] & (ALLOW_M | ALLOW_MDISP)))
+            continue;
+
+        /* src/dogmove.c:1102 — the ALLOW_M attack branch needs mattackm, the
+           monster-vs-monster combat path, which draws. Stop rather than guess.
+
+           ALLOW_U is no longer skipped here, because C does not skip it: it
+           handles it at newdogpos (dogmove.c:1280). In practice this changes
+           nothing for a pet -- mon_allowflags (src/mon.c:2085) only sets
+           ALLOW_U on the non-tame, non-peaceful arm, so a pet never carries
+           it -- but matching the C costs nothing and removes a condition that
+           would be wrong the moment a conflicted pet did get the flag. */
+        if (mfp.info[i] & ALLOW_M) {
             note_unported('dog_move attack branch');
             continue;
         }

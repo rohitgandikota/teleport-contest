@@ -292,9 +292,37 @@ TWO THINGS TO NOTE BEFORE GOING FURTHER:
    means the second move is steered by a goal derived from the state after
    the first, so the two are not independent.
 
-The trace format is here so the next tick can start from data rather than
-re-deriving it. Compare against what C must have done to leave the pet where
-step 4 shows it.
+THE ACTUAL RNG DIVERGENCE FOR seed0030, from tools/diverge.mjs -w 4:
+
+  6275  C rn2(5)=1    ours rn2(5)=1    ok        @ distfleeck
+  6276  C rn2(100)=92 ours rn2(4)=0    MISMATCH  @ obj_resists(zap.c:1469)
+  6277  C rn2(8)=7    ours rn2(100)=67 differs   @ dog_goal(dogmove.c:554)
+  6278  C rn2(100)=1  ours rn2(8)=1    differs   @ obj_resists
+
+READ THE SHAPE, not just the first mismatched line. Our rn2(100) at 6277 is
+C's rn2(100) from 6276, and our rn2(8) at 6278 is C's rn2(8) from 6277. WE
+ARE ONE DRAW AHEAD: we make an extra rn2(4) that C does not make at all, and
+everything after it is C's stream shifted by one.
+
+rn2(4) is dog_goal's appr test, src/dogmove.c:575:
+
+    if (!IS_ROOM(levl[u.ux][u.uy].typ) || !rn2(4) || whappr
+        || (dog_has_minvent && rn2(edog->apport)))
+        appr = 1;
+
+That is an OR chain, so C reaches the rn2(4) only when !IS_ROOM is FALSE --
+the hero must be standing IN a room. If our IS_ROOM disagrees with C's for
+the hero's square at that moment, we evaluate the rn2(4) where C
+short-circuits past it, or vice versa.
+
+NOTE the earlier entry in this file eliminated IS_ROOM on seed0004 by
+observing rn2(4)=0 on both sides. That was a DIFFERENT session and a
+different moment; it does not clear it here.
+
+NEXT: at the turn containing call 6276, print levl[u.ux][u.uy].typ and
+IS_ROOM's verdict. An extra draw is a much sharper signal than a displaced
+pet, and it is the same underlying bug -- the pet ends up elsewhere because
+appr was computed from a different branch.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

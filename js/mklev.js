@@ -1221,9 +1221,45 @@ function good_rm_wall_doorpos(x, y, dir, room) {
     return true;
 }
 
+// src/mklev.c finddpos_shift() — is this a usable doorway, and if the room is
+// IRREGULAR, is there one just inside it?
+//
+// The irregular walk was missing. An irregular room's wall does not follow its
+// bounding rectangle, so the point finddpos() picked can sit outside the wall
+// with STONE or CORR between. C steps inward one square at a time until it
+// either finds a good wall position (and SHIFTS x/y to it, which is what the
+// name is about) or leaves the rectangle. Without it every such pick failed,
+// finddpos() spent another rn1() on its retry loop, and every draw after that
+// point on the level was off by one.
 function finddpos_shift(xp, yp, dir, aroom) {
     const rdir = DIR_180(dir);
-    if (good_rm_wall_doorpos(xp.v, yp.v, rdir, aroom)) return true;
+    const dx = xdir[rdir], dy = ydir[rdir];
+
+    if (good_rm_wall_doorpos(xp.v, yp.v, rdir, aroom))
+        return true;
+
+    if (aroom.irregular) {
+        let rx = xp.v, ry = yp.v;
+        let fail = false;
+
+        while (!fail && isok(rx, ry)
+               && (game.level.at(rx, ry)?.typ === STONE
+                   || game.level.at(rx, ry)?.typ === CORR)) {
+            rx += dx;
+            ry += dy;
+            if (good_rm_wall_doorpos(rx, ry, rdir, aroom)) {
+                xp.v = rx;
+                yp.v = ry;
+                return true;
+            }
+            const t = game.level.at(rx, ry)?.typ;
+            if (!(t === STONE || t === CORR))
+                fail = true;
+            if (rx < aroom.lx || rx > aroom.hx
+                || ry < aroom.ly || ry > aroom.hy)
+                fail = true;
+        }
+    }
     return false;
 }
 

@@ -92,8 +92,26 @@ makemon/level-generation difference, not a rendering one. C's single 'f' sits
 at c55 ON the gold pile (ours still shows '$' there), so C's pet has moved onto
 the gold and ours has not -- and we have an extra monster besides.
 
-Next: count monsters on the level in both. `game.level.monsters.length` after
-segment 0 against the C's makemon draws around level generation. C has one 'f' at c55, with the
+**Confirmed twice over: it is NOT a display bug.** The vacated-square redraw
+`newsym(omx, omy)` was genuinely missing and is now ported into postmov (where
+src/monmove.c:1508 has it -- inside postmov, so EVERY path returning through it
+redraws, including dog_move's at :1773). The three cells did not change either
+time.
+
+The frames side by side:
+
+    C     |f<.|      pet at c55 ON the gold, upstair at c56, floor at c57
+    ours  |$ff|      gold visible at c55, monsters at c56 AND c57
+
+So we generate an EXTRA monster, and our pet has not moved onto the gold.
+seed0030 diverges on screens at step 4 while its RNG matches to call 6276, so
+the extra monster is placed with draws that happen to line up -- most likely a
+makemon that C makes elsewhere, or one we make twice.
+
+Next: instrument makemon with a per-level counter and compare the count and
+the species against the C rn2 log's makemon tags during level generation. Do
+NOT assume it is the pet; the second 'f' could be a randomly generated kitten
+that C places on another square. C has one 'f' at c55, with the
 upstair and floor visible where ours shows the trail.
 
 Where it should be cleared: src/monmove.c:1655 calls `newsym(mtmp->mx,

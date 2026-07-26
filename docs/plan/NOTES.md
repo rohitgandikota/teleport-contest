@@ -1927,10 +1927,28 @@ satisfies it; the correct prepend order does not. The consumers that care are
                                           dogfood(), which DRAWS
     js/invent.js sobj_at              -- filters the flat list by square
 
-Audit those two against C before touching the insertion again. In particular
-check whether either one reverses, sorts, or takes the LAST match where C
-takes the first -- a consumer that reads back-to-front turns a correct
-prepend into a wrong answer and makes the buggy push look right.
+CHECKED BOTH CONSUMERS, AND THIS HYPOTHESIS IS WRONG TOO. js/invent.js:193
+sobj_at returns on the FIRST match; js/dog.js:1261 uses .find(), also first
+match. Neither reverses, sorts, nor takes the last. First-match on a
+prepend-ordered list is exactly right for C's chain head.
 
-Deleting the duplicate mkobj_at is still correct on the architecture rule, but
-do it in the same change as the consumer fix, not before it.
+WHERE THAT LEAVES IT, stated plainly so nobody re-walks this:
+
+  the S_SPIDER/S_SNAKE arm       matches src/makemon.c:1307 exactly
+  place_object                   unshift, correct, no other behaviour
+  insertion sites                exactly two, one correct one push
+  the flat-list model            sound (prepend preserves per-square order)
+  both consumers                 first-match, correct
+  C's place_object               prepends to BOTH the per-square chain and
+                                 the global fobj, so newest-first either way
+
+Every component checks out, and making the one wrong insertion correct still
+costs 69 screens and 9,053 rng. THAT REGRESSION IS UNEXPLAINED.
+
+Do not spend another session assuming one of the above is subtly wrong -- they
+have each been checked against the C directly. The likelier remaining shape is
+that some OTHER divergence downstream is order-sensitive and currently
+cancels against the push order. That is not findable by auditing this code
+path; it needs the 69 lost screens identified session by session. Run the
+change, diff the per-session scoreboard against the current one, and look at
+which sessions lose and what they have in common.

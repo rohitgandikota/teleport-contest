@@ -385,7 +385,10 @@ export function mksobj_init(otmp, artif) {
         case ONAMES.TALLOW_CANDLE:
         case ONAMES.WAX_CANDLE:
             otmp.spe = 1;
-            otmp.age = 20 * 20; /* 400 */
+            /* src/mkobj.c:991 — 20 * oc_cost, which C's own comment marks as
+               "400 or 200": a tallow candle costs 10 and a wax one 20, so the
+               two candle types do NOT share an age. */
+            otmp.age = 20 * game.objects[otmp.otyp].oc_cost;
             otmp.lamplit = 0;
             otmp.quan = 1 + (rn2(2) ? rn2(7) : 0);
             blessorcurse(otmp, 5);
@@ -393,7 +396,11 @@ export function mksobj_init(otmp, artif) {
         case ONAMES.BRASS_LANTERN:
         case ONAMES.OIL_LAMP:
             otmp.spe = 1;
-            otmp.age = 1500;
+            /* src/mkobj.c:1001 — rn1(500, 1000), i.e. 1000..1499. This was a
+               hardcoded 1500, which is both the wrong value and, worse, a
+               MISSING DRAW: every lamp or lantern generated shifted the whole
+               stream by one rn2. */
+            otmp.age = rn1(500, 1000);
             otmp.lamplit = 0;
             blessorcurse(otmp, 5);
             break;

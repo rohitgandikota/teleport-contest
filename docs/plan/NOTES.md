@@ -1644,3 +1644,29 @@ no unbound case-label constants anywhere in js/.
 Executing the arm remains the stronger check, because it also catches a bound
 constant with the WRONG VALUE, which no static pass can see. The sweep is the
 cheap first pass; forcing the input is the one that proves the number.
+## undefined-refs.mjs has two blind spots; do not read a clean report as safety
+
+Found while porting `setmangry` (js/mon.js), which threw
+`STRAT_WAITMASK is not defined` on its second line in all five arms while
+`node tools/undefined-refs.mjs` reported it clean.
+
+**Blind spot 1: it only checks CALL targets, not value references.**
+`mtmp.mstrategy &= ~STRAT_WAITMASK` never calls `STRAT_WAITMASK`, so an
+unimported constant used in arithmetic, a comparison, or a bitmask is
+invisible to it. Constants are the majority of what a ported C function
+references, so this is the common case, not the edge case.
+
+**Blind spot 2: it does not parse aliased imports.** `import { ATR_UNDERLINE
+as TERM_UNDERLINE }` in js/tty/wintty.js is reported as unbound at line 0.
+It is correctly exported from js/terminal.js:28. As of this writing all 18
+reported "unbound call targets" are false positives of this kind or of
+property shorthand (`cols`, `grid`, `cursorRow` in js/game_display.js) and
+keywords (`async`, `requestAnimationFrame`). Do not spend a session chasing
+them.
+
+**What actually catches this class:** call the function with synthetic
+arguments and exercise every arm. A module that imports cleanly proves only
+that it parses; an unchanged scoreboard proves only that nothing reached the
+code. Neither can distinguish correct-but-dormant from crashes-on-first-use,
+and every function ported ahead of its call site is dormant by construction.
+See the verify-by-forced-input entry.

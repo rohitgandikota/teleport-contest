@@ -6,6 +6,8 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { autoreturn_weapon } from './weapon.js';
+import { MON_WEP } from './monst.js';
 import { amorphous, passes_walls } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
@@ -785,6 +787,7 @@ export function m_move(mtmp, after) {
         return MMOVE_NOTHING;      /* do not leave hiding place */
 
     let ggx = mtmp.mux, ggy = mtmp.muy;
+    const prange = { min: 0, max: 0 };
     let appr = mtmp.mflee ? -1 : 1;
 
     if (mtmp.mconf) {
@@ -818,7 +821,7 @@ export function m_move(mtmp, after) {
            distance. This changes appr, and appr decides which candidate square
            wins, so getting it wrong moves a monster to a different legal square
            while drawing exactly the same numbers. */
-        appr = m_balks_at_approaching(appr, mtmp);
+        appr = m_balks_at_approaching(appr, mtmp, prange);
 
         if (!should_see && can_track(ptr)) {
             const cp = gettrack(omx, omy);
@@ -901,6 +904,12 @@ export function m_move(mtmp, after) {
 
         if ((appr === 1 && nearer) || (appr === -1 && !nearer)
             || (!appr && !rn2(++chcnt))
+            /* src/monmove.c:1971 — keep-your-distance, for a monster wielding
+               a throw-and-return weapon. Only reachable now that
+               m_balks_at_approaching can return -2. */
+            || (appr === -2
+                && ((ndist <= prange.min && !nearer)
+                    || (ndist >= prange.max && nearer)))
             || (mmoved === MMOVE_NOTHING)) {
             nix = nx;
             niy = ny;
@@ -1024,7 +1033,7 @@ function mdistu(mtmp) {
 //
 // Draws nothing. Returns -1 to retreat, -2 for a preferred-range weapon, or the
 // caller's appr unchanged.
-function m_balks_at_approaching(oldappr, mtmp) {
+function m_balks_at_approaching(oldappr, mtmp, prange) {
     const x = mtmp.mx, y = mtmp.my, ux = mtmp.mux, uy = mtmp.muy;
     const edist = (x - ux) * (x - ux) + (y - uy) * (y - uy);
 
@@ -1032,8 +1041,23 @@ function m_balks_at_approaching(oldappr, mtmp) {
     if (mtmp.mpeaceful || edist >= 5 * 5 || !m_canseeu(mtmp))
         return oldappr;
 
-    /* the launcher, polearm and throw-and-return cases all need monster
-       inventory, which nothing carries yet */
+    /* src/monmove.c — the three ranged cases, in C's order. The first two
+       still need m_has_launcher_and_ammo and the monster's wielded polearm,
+       and are recorded; the throw-and-return case is ported because it is the
+       only one that returns -2 and sets the preferred range. */
+    if (mtmp.minvent && mtmp.minvent.length)
+        note_unported('m_balks:launcher_and_polearm');
+
+    /* is using a throw-and-return weapon; provide min and max preferred range */
+    const mwep = MON_WEP(mtmp);
+    let arw;
+    if (mwep && (arw = autoreturn_weapon(mwep)) !== null) {
+        if (prange) {
+            prange.min = 2 * 2;
+            prange.max = arw.range;
+        }
+        return -2;
+    }
 
     /* can attack from a distance, and is hurt or has not used it */
     if (ranged_attk_available(mtmp)

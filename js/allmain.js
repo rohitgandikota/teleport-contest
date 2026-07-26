@@ -285,9 +285,14 @@ export async function newgame() {
     // hero-can't-move loop starts at -NORMAL_SPEED instead of 0 and runs its
     // new-turn block twice per command, advancing the turn counter twice.
     g.context.rndencode = rnd(9000);
-    /* set_wear() and pickup(1) draw only when there is something to wear or
-       pick up at the starting square; neither is ported. */
-    note_unported_main('moveloop_preamble set_wear/pickup');
+    /* src/allmain.c:73 — a NEW game calls set_wear((struct obj *) 0) here,
+       "for side-effects of starting gear", and nothing else. The
+       read_engr_at() on line 87 is in the `if (resuming)` branch and only
+       runs when RESTORING a save, so it is not on this path at all; an
+       earlier comment here claimed pickup(1), which C does not call either.
+       set_wear is 30 lines in src/do_wear.c and is the whole of what is
+       missing. tools/unported-hits.mjs has this reached by 100% of sessions. */
+    note_unported_main('moveloop_preamble:set_wear');
     g.context.seer_turn = rnd(30);
     g.u.umovement = NORMAL_SPEED;
 

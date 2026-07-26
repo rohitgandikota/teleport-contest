@@ -443,9 +443,32 @@ BEFORE ANY MORE WORK ON THIS TRAIL: establish which GAME call 6276 is in, and
 instrument only that game. A game counter printed alongside every probe is the
 minimum; matching a coordinate to a call index without one is guesswork.
 
-seed0030 is a poor choice of session for this precisely because it runs ten
-games. Prefer a single-game session showing the same dog_goal divergence, if
-one exists in the aggregate.
+FOUND THE RIGHT SESSION: seed0004-feeding-pony. It is the ONLY session whose
+first divergence is in dog_goal, and it is a single game, so no game-index
+confusion is possible.
+
+  3693  C rn2(5)=3   ours rn2(5)=3   ok        @ distfleeck
+  3694  C rn2(4)=3   ours rn2(11)=1  MISMATCH  @ dog_goal(dogmove.c:575)
+  3695  C rn2(5)=1   ours rn2(3)=0   differs   @ distfleeck
+
+dogmove.c:575 is the appr test:
+
+    if (!IS_ROOM(levl[u.ux][u.uy].typ) || !rn2(4) || whappr
+        || (dog_has_minvent && rn2(edog->apport)))
+        appr = 1;
+
+C DRAWS THE rn2(4), so for C !IS_ROOM was FALSE -- the hero is standing in a
+room. We draw rn2(11) at that position instead, so we are not evaluating that
+term at all.
+
+rn2(11) is the shape of `rn2(edog->apport)` with apport == 11 -- the FOURTH
+term of the same chain. But our port is recorded elsewhere in this file as
+MISSING that term entirely, so either that note is wrong or the rn2(11) comes
+from somewhere else in dog_goal. RESOLVE THAT FIRST: grep dog_goal for every
+rn2 and find which one can produce 11.
+
+This is a much better foothold than seed0030 ever was: one game, one function,
+one draw, and the C's expected value is known (rn2(4)=3).
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

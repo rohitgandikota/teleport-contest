@@ -2227,3 +2227,19 @@ should be wired the same way, from cmd.js, not imported directly.
 The architectural moves themselves were correct (stairway_at belongs in
 stairs.js, t_at in trap.js) and are worth redoing as a SEPARATE change,
 measured on their own, once the wiring question is settled.
+
+RESOLVED, and with a correction to the above. The fix is the wiring pattern
+do.js already uses: js/cmd.js imports both sides and calls a `*_wire()` setter
+after every module has initialised, exactly as it does for do_wire_mklev,
+sp_lev_wire_mon and mklev_wire_mon. js/dokick.js now takes stairway_at and
+t_at that way and ship_object is wired into dropx with no regression. When a
+port keeps three near-identical wiring helpers around, that repetition is
+telling you something structural about the module rather than being cruft.
+
+THE CORRECTION: `node -e "import('./js/do.js')"` FAILS ON A CLEAN TREE. It has
+always failed. do.js is not standalone-importable by design -- it is loaded
+through cmd.js, which does the wiring -- so that command is NOT a health check
+and a failure from it means nothing. I used it as one and briefly concluded a
+reverted change was still broken. Use `node tools/scoreboard.mjs` instead;
+that is the entry point the runner actually uses, and it was reading a correct
+510 the whole time.

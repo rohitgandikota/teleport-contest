@@ -157,9 +157,25 @@ inferred rather than directly observed:
      C at that moment rather than one column off, which would move the whole
      ring and explain everything.
 
-Check 2 first: it is the assumption that has never been tested, and a
-one-column difference in the hero's start position would produce exactly
-this symptom while leaving every component correct.
+CHECKED 2, AND IT IS NOT A ONE-COLUMN DIFFERENCE. Reading the recorded
+screen at step 4 puts C's hero at row 6, column 16. Our FIRST makedog runs
+with hero (57,4); our SECOND runs with hero (16,16).
+
+seed0030 is "ten-diverse-deaths" -- TEN GAMES in one session -- so makedog
+is called once per game and the step-4 screen belongs to the first. Either
+our games are ordered differently from C's, or our first game starts the
+hero somewhere C's does not.
+
+DO NOT CONCLUDE FROM THIS ALONE that the start position is wrong: the
+screendiff at step 4 matches on every row except the pet, which would be
+impossible if the hero were forty columns away on the same map. The more
+likely reading is that the (57,4) call belongs to a different game than the
+step-4 screen, and the pet being compared is the one placed at (16,16).
+
+Re-run the makedog probe printing a GAME INDEX alongside the coordinates,
+and confirm which call produced the pet visible at step 4, before trusting
+either number. The (57,4) figure has been carried through several ticks of
+reasoning in this entry and may belong to the wrong game entirely.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

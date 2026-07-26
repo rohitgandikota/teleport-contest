@@ -2019,3 +2019,38 @@ wire dodrop -- it just means the rng figure cannot be used to judge it.
 
 Use the rng count as a DETECTOR (something moved, look closer) and never as a
 VERDICT.
+
+
+## Sizing greps produce FALSE POSITIVES, and that direction is the dangerous one
+
+Sizing the mattackm chain, `grep -rln "\bnoises\b" js/*.js` reported
+`js/quest_data.js`, so noises looked ported. It is not. The hit was quest text:
+
+    "text": "You stand before the entrance to %i.  Strange\nscratching
+             noises come from within the building. ..."
+
+A bare-name grep matches inside string literals, comments and generated data
+tables. That is the OPPOSITE of the duplicate-port bug and it is worse:
+
+  - the DUPLICATE bug (`grep "function X"` missing `export const X =`) made me
+    port something twice. Wasteful, caught by dup-defs.mjs, harmless to the
+    score.
+  - the FALSE-POSITIVE bug makes me SKIP something, believing it is ported.
+    Nothing catches that. The call site throws at runtime, or worse, the name
+    resolves to an unrelated import and the function silently does the wrong
+    thing.
+
+So the standing "grep the bare name" rule needs its other half. Grep the bare
+name to find duplicates, but confirm a POSITIVE by looking at the line: it must
+be a definition (`function X`, `const X =`, `export ... X`), not a mention. The
+one-liner that does both:
+
+    grep -rn "^\(export \)\?\(async \)\?\(function\|const\|let\) X\b" js/
+
+and exclude `*_data.js`, which is generated and restates names it does not
+define.
+
+Two hits in this chain were real and worth knowing: s_suffix is in
+js/hacklib.js where it belongs, and mon_hates_silver is in js/dog.js, which is
+architectural drift (it is src/mondata.c:517) but a genuine definition. Do not
+re-port either.

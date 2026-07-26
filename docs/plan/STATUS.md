@@ -455,11 +455,36 @@ adjacent at seg 1 step 4 while ours is. That is a POSITION divergence with
 no RNG divergence in front of it, which is possible whenever a movement
 decision picks between equally-rated squares without drawing.
 
-NEXT ACTION: do not port anything from the above paragraph. Verify it first.
-Dump our pet's (mx,my) at seg 1 step 4 and compare against where C's 'f' is
-on that step's recorded screen. If C's pet is further than one square, the
-bug is upstream in dog_move's square choice, not at monmove.js:686, and
-"fixing" line 686 would be fitting the symptom.
+CONFIRMED, and it is NOT a bug at monmove.js:686. C's recorded screen for
+seg 1 step 4:
+
+    @ row 16 col 19
+    f row 17 col 31
+
+C's pet is TWELVE columns from the hero. Our trace at the same call reports
+nearby=true. So `!nearby` is TRUE in C, short-circuits the disjunction on its
+very first term, and C never evaluates is_wanderer at all. Our condition is
+correct as written; do not touch it. The rn2(4) is a SYMPTOM.
+
+The bug is that our pet is glued to the hero while C's has wandered twelve
+squares off. dochug is reading a position that our dog_move put in the wrong
+place, so the fix is upstream in the goal choice, not in the draw.
+
+That points at dog_goal's object search rather than its follow-player block.
+A pet twelve squares away has almost certainly picked an OBJECT goal
+(gtyp != UNDEF), which is what makes it ignore the hero; ours picks no goal
+and falls through to "follow player" every turn. The obj_resists draws
+bracketing the divergence are dogfood() evaluating floor objects, which is
+the same search. Note the direction of the error: ours approaches MORE than
+C's, so the missing `dog_has_minvent` term at js/dog.js:567 is NOT the cause,
+since that term can only make a dog approach more often.
+
+NEXT ACTION: instrument our dog_goal at seg 1 step 4 and print gtyp/gx/gy
+plus every object it considers with its dogfood() verdict, then compare
+against the objects on C's screen near row 17 col 31. Establish WHICH goal
+C's pet is walking to before changing anything. The failure mode to avoid is
+the one this entry already documents once: do not infer the cause from the
+one function whose name appears in the stack trace.
 
 One real gap found in passing, not the cause: js/dog.js:567 omits C's
 `|| (dog_has_minvent && rn2(edog->apport))` from the follow-player test

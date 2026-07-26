@@ -329,6 +329,33 @@ This matters more than the choke path right now: seed0030 is 1953 steps and
 currently matches 20 of them. A pet that leaves a trail is wrong on nearly
 every frame with a pet in it, which is most frames of most sessions.
 
+## Reachability sweep on the des.* verbs — one gap found
+
+`grep -rn "container_obj\["` in src/sp_lev.c turns up the pop path our port
+does not implement, at :2428 inside create_object:
+
+    if (o->buried) {
+        boolean dealloced;
+        (void) bury_an_obj(otmp, &dealloced);
+        if (dealloced) {
+            if (container_idx)
+                container_obj[container_idx - 1] = NULL;   <- MISSING
+            otmp = NULL;
+        }
+    }
+
+bury_an_obj DEALLOCATES rocks and boulders (they merge into the burying
+material). When that happens and the object was the open container, C nulls the
+stack slot so nothing is later put inside a freed object.
+
+Our bury_an_obj returns nothing and signals no dealloc, and our create_object
+never clears the slot. It cannot bite today -- Buried treasure buries a CHEST,
+which is neither ROCK nor BOULDER, so the dealloc arm does not run. It will the
+moment anything buries a boulder with contents open.
+
+Port it as: bury_an_obj returns whether it deallocated, and create_object
+clears container_obj's top and nulls otmp when it did.
+
 ## Reachability sweep on the OCCUPATION mechanism — one gap found
 
 Same method as the subroom sweep: grep the C for everything that reads the

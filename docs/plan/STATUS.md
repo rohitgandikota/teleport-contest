@@ -5165,11 +5165,30 @@ pessimistic than C's, we fall through to the boulder walk on turns C never
 does and spend an rn2 C never spends, which is exactly the -17 RNG the port
 cost.
 
-NEXT: compare js/vision.js couldsee against src/vision.c. It reads the
-viz_array/viz_clear machinery that vision_reset builds, so check that
-vision_reset is being called at the right points as well as that couldsee's
-own logic matches. Do NOT re-transcribe the boulder walk; it matches the C,
-and do not chase clear_path, which never runs here.
+couldsee CHECKED TOO, AND IT IS ALSO FINE. js/vision.js couldsee is
+
+    (game.viz_array?.[y]?.[x] & COULD_SEE) != 0
+
+which matches include/vision.h:29 exactly, plus a bounds guard C's macro
+leaves to its callers. And viz_array is populated sanely: at the first
+couldsee call in seed4500 it holds 38 COULD_SEE cells with the hero at 76,16,
+which is a plausible lit-room area rather than an empty or stale array.
+
+SO ALL THREE SUSPECTS ARE ELIMINATED: the boulder walk transcription matches
+the C, clear_path never runs, and couldsee and its viz_array are correct. The
+line-of-sight test is failing legitimately, and the boulder branch is genuinely
+reached where C reaches it.
+
+WHICH LEAVES: either our boulderspots COUNT differs from C's along the same
+line, or the -17 is a divergence that already exists downstream and the port
+merely makes it visible by spending a draw there. Those are distinguishable.
+
+NEXT, and this is the direct comparison rather than another elimination: apply
+the port again, run tools/diverge.mjs, and look at the FIRST call where the
+rn2(2 + boulderspots) appears. If C draws rn2 with a different modulus at that
+index, our boulderspots count is wrong and the line-walk is the place to look.
+If C does not draw there at all, the branch is being entered on a turn C never
+enters it, and the fault is upstream of linedup entirely.
 
 blocking_terrain is worth keeping in mind separately: is_waterwall is not
 ported and is recorded, which is correct for ordinary levels but would matter

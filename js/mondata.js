@@ -11,6 +11,7 @@
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import { game } from './gstate.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { NATTK } from './const.js';
 import { MON_WEP } from './monst.js';
 import { which_armor } from './worn.js';
 import { W_ARM, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES, SHOCK_RES,
@@ -280,3 +281,21 @@ export const weirdnonliving = (d) =>
 // include/mondata.h:219 nonliving()
 export const nonliving = (d) =>
     is_undead(d) || d.pmidx === PMNAMES.PM_MANES || weirdnonliving(d);
+
+// src/mondata.c:41 attacktype_fordmg() — the monster's attack of a given type,
+// or null. AD_ANY matches any damage type.
+export function attacktype_fordmg(ptr, atyp, dtyp) {
+    for (let i = 0; i < NATTK; i++) {
+        const a = ptr.mattk[i];
+        if (!a)
+            continue;
+        if (a[0] === atyp && (dtyp === ATTKS.AD_ANY || a[1] === dtyp))
+            return a;
+    }
+    return null;
+}
+
+// src/mondata.c:54 attacktype() — does this monster type have such an attack?
+export function attacktype(ptr, atyp) {
+    return attacktype_fordmg(ptr, atyp, ATTKS.AD_ANY) !== null;
+}

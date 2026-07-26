@@ -24,7 +24,7 @@
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { Is_rogue_level } from './const.js';
+import { Is_rogue_level, NODIR} from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -574,7 +574,7 @@ export function mksobj_init(otmp, artif) {
 }
 
 // include/objclass.h — oc_dir value used by the wand charge formula.
-const NODIR = 1;
+/* NODIR lives in js/const.js with the rest of the oc_dir family. */
 // include/monflag.h:178
 const MZ_SMALL = 1;
 

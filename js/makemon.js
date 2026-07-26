@@ -20,6 +20,7 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
+import { attacktype } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET
@@ -102,8 +103,7 @@ export const is_rider = (ptr) => ptr.pmidx === PMNAMES.PM_DEATH
                        || ptr.pmidx === PMNAMES.PM_FAMINE
                        || ptr.pmidx === PMNAMES.PM_PESTILENCE;
 // src/mondata.c attacktype_fordmg() — is_armed(ptr) is attacktype(ptr, AT_WEAP)
-const attacktype = (ptr, atyp) =>
-    ptr.mattk.some(a => a[0] === atyp);
+/* attacktype lives in js/mondata.js, its C home (src/mondata.c:54). */
 const is_armed = (ptr) => attacktype(ptr, AT_WEAP);
 
 // include/monst.h:259-265

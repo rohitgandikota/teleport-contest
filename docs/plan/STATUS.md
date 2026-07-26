@@ -5152,10 +5152,24 @@ If our clear_path or couldsee is more pessimistic than C's, we reach the
 boulder walk on turns where C never does, and spend an rn2 C never spends.
 The regression would then be in clear_path, not in the code I wrote.
 
-NEXT: instrument how often the boulder walk is entered, and on the first
-entry dump ax,ay,bx,by plus what clear_path returned. Compare against whether
-C could have reached it at that call index (tools/diverge.mjs gives the
-index). Do NOT re-transcribe the boulder walk; it matches the C.
+NARROWED, AND THE SUSPECT ABOVE IS WRONG. Instrumenting clear_path shows it
+is NEVER CALLED in seed4500. The line-of-sight test is
+
+    u_at(ax, ay) ? couldsee(bx, by) : clear_path(ax, ay, bx, by)
+
+and linedup's boulder branch is reached in 41% of sessions, so the test IS
+failing -- but via the u_at branch, i.e. through couldsee(), not clear_path().
+
+SO THE SUSPECT IS couldsee(), not clear_path(). If our couldsee is more
+pessimistic than C's, we fall through to the boulder walk on turns C never
+does and spend an rn2 C never spends, which is exactly the -17 RNG the port
+cost.
+
+NEXT: compare js/vision.js couldsee against src/vision.c. It reads the
+viz_array/viz_clear machinery that vision_reset builds, so check that
+vision_reset is being called at the right points as well as that couldsee's
+own logic matches. Do NOT re-transcribe the boulder walk; it matches the C,
+and do not chase clear_path, which never runs here.
 
 blocking_terrain is worth keeping in mind separately: is_waterwall is not
 ported and is recorded, which is correct for ordinary levels but would matter

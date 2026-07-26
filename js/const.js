@@ -539,6 +539,11 @@ export function accessible(x, y) {
     return !!loc && ACCESSIBLE(loc.typ);
 }
 
+// src/mkobj.c:2391 ROT_ICE_ADJUSTMENT — a file-local #define in C, not a
+// header constant; kept here because js/dog.js holds peek_at_iced_corpse_age,
+// which is itself drift from its src/mkobj.c home.
+export const ROT_ICE_ADJUSTMENT = 2;
+
 export const G_FREQ = 0x0007;   /* monflag.h:202 creation frequency mask */
 export const G_UNIQ = 0x1000;   /* monflag.h:194 generated only once */
 export const G_KNOWN = 0x04;

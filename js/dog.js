@@ -1,3 +1,4 @@
+import { ROT_ICE_ADJUSTMENT } from './const.js';
 import { max_passive_dmg } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
@@ -230,8 +231,14 @@ const is_rustprone = (otmp) => game.objects[otmp.otyp].oc_material === IRON;
    cooking code lands, so recording keeps the gap visible without inventing a
    branch. */
 function peek_at_iced_corpse_age(obj) {
-    note_unported('peek_at_iced_corpse_age');
-    return obj.age ?? 0;
+    let retval = obj.age ?? 0;
+
+    if (obj.otyp === ONAMES.CORPSE && obj.on_ice) {
+        /* Adjust the age; must be same as obj_timer_checks() for off ice */
+        const age = game.moves - (obj.age ?? 0);
+        retval += Math.floor(age * (ROT_ICE_ADJUSTMENT - 1) / ROT_ICE_ADJUSTMENT);
+    }
+    return retval;
 }
 
 function stale_egg(obj) {

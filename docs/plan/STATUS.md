@@ -1,9 +1,53 @@
 # STATUS
 
-## Where the score stands
+## START HERE
 
-**473/11,405 screens (4.1%), 1/44 sessions, corpus RNG 135,915/792,838 (17.1%).**
-seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
+**492/11,405 screens (4.3%), 1/44 sessions, RNG 140,718/792,838 (17.7%).**
+Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
+code; js/fastforward.js is not on its path.
+
+Run this FIRST, before picking anything. It is the targeting instrument and
+takes about three minutes:
+
+    for f in sessions/*.session.json; do
+        node tools/diverge.mjs "$f" 2>/dev/null | grep -m1 MISMATCH | sed 's/.*@ //'
+    done | sort | uniq -c | sort -rn
+
+Standing at last run:
+
+       6  dog_move(dogmove.c:1255)      3  rnd_otyp_by_namedesc(objnam.c:3522)
+       4  obj_resists(zap.c:1469)       3  next_ident(mkobj.c:521)
+       4  getbones(bones.c:645)         3  distfleeck(monmove.c:538)
+       4  do_attack(uhitm.c:474)
+
+Read it as "which C function is running when we first disagree", NOT as "which
+function is missing" -- our code is often correct there and the STATE reaching
+it is wrong. Use it as the before/after for every change; when it and the
+advisory RNG number disagree, TRUST IT. Removing a duplicate pet_ranged_attk
+call moved a session later while the RNG proxy fell 78, and the aggregate was
+right.
+
+### Ranked next actions
+
+1. **uhitm.c / do_attack** (4 sessions, and probably feeds the dog_move 6).
+   The whole file is absent and domove has no m_at check, so the hero walks
+   THROUGH monsters. Was attempted and reverted; the measurements localise the
+   fault to domove_swap_with_pet, not to is_safemon or the rn2(7). Read that
+   entry before rewriting it -- it lists what is already ruled out.
+2. **tty menu subsystem** -- unblocks getbones (4 sessions) and level_tele's
+   `?` arm.
+3. **The -36 shop-stocking residual** -- narrowed to the makemon inside
+   mkshobj_at. mkclass is RULED OUT, compared term for term. Small, and it is
+   a known-wrong thing rather than a missing one.
+4. **Per-spell dispatch (zap.c)** for seed0501.
+
+### Two rules this session paid for the hard way
+
+- **After landing a subsystem, PROVE it does its work.** RNG rose 3,961 on a
+  mkshop that had never once made a shop; the gain was entirely the chain's
+  condition draws. One stderr counter found it in a minute.
+- **Never write a constant from memory.** ROOM is 25, not 20; 20 is LAVAPOOL.
+  That bug was committed hours after the NOTES entry warning about it.
 
 New this stretch, in the order it landed:
 

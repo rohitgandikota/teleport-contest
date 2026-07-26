@@ -3901,3 +3901,64 @@ function that is never reached is worth exactly zero. Check that the code you
 are about to write is on a path the sessions actually take -- instrumenting a
 function with a counter and running one session costs a minute and would have
 saved both of those.
+
+## do_attack: ATTEMPTED AND REVERTED. Read this before trying again.
+
+The displacement port described in the entry above was written in full and
+backed out. Everything below is measured, and it saves the next attempt the
+whole dead end.
+
+WHAT WAS BUILT (all reverted, tree is clean at 492 screens / 136523 RNG):
+js/uhitm.js with do_attack's is_safemon branch; mon_visible, sensemon,
+canseemon, canspotmon and is_safemon added to js/display.js (their C home,
+include/display.h plus display.c:215); domove_attackmon_at and
+domove_swap_with_pet next to domove in js/cmd.js; exports for helpless,
+verysmall and goodpos.
+
+THE ONE FINDING WORTH KEEPING, verified from include/optlist.h:634:
+
+    On, Yes, No, No, NoAlias, &flags.safe_dog, Term_False,
+
+flags.safe_dog ("safepet") DEFAULTS ON. We never set it, so game.flags.safe_dog
+is undefined. That single fact controls the whole path: is_safemon() is
+`flags.safe_dog && mpeaceful && canspotmon && !Confusion && !Hallucination
+&& !Stunned`, so with safe_dog unset is_safemon is ALWAYS FALSE and every step
+onto a pet falls through to the combat code instead of swapping.
+
+THE MEASUREMENTS, in order, because the direction is the diagnostic:
+
+    baseline                              492 screens   136523 rng
+    wiring in, safe_dog left unset        468 (-24)     133326 (-3197)
+    wiring in, safe_dog = true            244 (-224)     81625 (-51701)
+
+Read that carefully. With safe_dog unset, do_attack always reached the
+`note_unported('do_attack:combat'); return true;` arm, so the hero's move was
+consumed and it never stepped onto a monster at all: -24 screens is the cost
+of blocking a move the hero should make. Turning safe_dog on ENABLED the swap
+path and made things ten times worse, which means the swap itself is wrong,
+not merely absent. That is the useful signal: the bug is inside
+domove_swap_with_pet or in where domove calls it, NOT in is_safemon or in
+do_attack's rn2(7).
+
+RULED OUT, so do not re-check these:
+  - blocksMove (js/cmd.js:94) does NOT test for monsters, so it was not
+    swallowing the move before the swap could run.
+  - u.ux0/u.uy0 are set by domove before the swap call, so they were not stale.
+  - goodpos draws only for S_EEL, so it was not adding spurious draws.
+  - do_attack's gate matches C: !mtmp->mundetected is true for ordinary
+    monsters in both, so do_attack fires on the same steps C fires it on.
+
+WHERE TO LOOK NEXT: our domove is in js/cmd.js, not js/hack.js, and it is a
+much shorter function than C's domove_core. C runs a long sequence between the
+monster check and the swap (domove_bump_mon, the ironbars fight, trap and
+terrain handling, u_on_newpos) that ours does not have, and C's swap is inside
+an `else if` chain whose earlier arms we do not model. Port the swap ONLY
+after establishing which of C's intermediate steps our domove is missing;
+grafting hack.c:2919 onto a domove that skips hack.c:2790-2918 is what failed
+here.
+
+Cheapest next experiment: land ONLY the safe_dog default plus is_safemon and
+do_attack returning FALSE for a safe monster, with NO swap at all, and see
+whether the hero simply walking onto the pet's square (leaving the pet in
+place) scores better or worse than blocking. That isolates the swap from the
+attack gate, which this attempt conflated.

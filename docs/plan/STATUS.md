@@ -183,9 +183,19 @@ where C found none.
 best_target scans all eight directions with find_targ(mtmp, dx, dy, 7), which
 walks up to seven squares and SKIPS invisible monsters unless the pet has see
 invisible. score_targ is called once per direction that yields a target, and
-its rnd(5) fuzz factor is the visible draw. So the next step is to compare our
-find_targ against C's line walk -- the skip conditions and the distance bound
-are where an extra target comes from.
+its rnd(5) fuzz factor is the visible draw.
+
+All three have now been compared against the C line by line and all three
+MATCH, including the early returns: score_targ returns before the rnd(5) for
+quest friendlies (MS_LEADER/MS_GUARDIAN), for an adjacent target, for a tame
+one, and when find_friends sees a friendly behind the target. So the extra
+rnd(5) is not a logic difference in the targeting itself.
+
+That leaves the inputs: m_cansee(), m_at(), or the monsters simply standing
+somewhere else. The last is the same class of problem as the pet-position
+divergence recorded further down -- a NON-DRAWING difference that moves a
+monster without any call disagreeing. Check m_cansee first, it is the only one
+of the three with real logic in it.
 
 ### Rank sessions by DIVERGENCE POINT, not by screens
 

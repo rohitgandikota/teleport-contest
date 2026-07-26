@@ -11,6 +11,7 @@
 // code and is recorded, not faked.
 
 import { game } from './gstate.js';
+import { helpless } from './monst.js';
 import { You } from './pline.js';
 import { exclam } from './zap.js';
 import { canseemon } from './display.js';
@@ -52,8 +53,7 @@ const is_longworm = (ptr) =>
     || ptr.pmidx === PMNAMES.PM_LONG_WORM_TAIL;
 
 // src/mon.c helpless()
-const helpless = (mon) =>
-    !!(mon.msleeping || !mon.mcanmove || (mon.mfrozen | 0) > 0);
+/* helpless() lives in js/monst.js, matching include/monst.h:251. */
 
 // src/uhitm.c:462 do_attack() — returns TRUE if the hero's move is used up.
 //

@@ -10,6 +10,7 @@ import { game } from './gstate.js';
 import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
+import { growl } from './sounds.js';
 import { is_metallic } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
@@ -972,7 +973,7 @@ export function wakeup(mtmp, via_attack) {
         const was_peaceful = mtmp.mpeaceful;
 
         if (was_sleeping)
-            note_unported_mon('wakeup:growl');
+            growl(mtmp);
         setmangry(mtmp, true);
         if (was_peaceful) {
             if (mtmp.ispriest && in_rooms(mtmp.mx, mtmp.my, TEMPLE)?.length)
@@ -1024,7 +1025,7 @@ export function setmangry(mtmp, via_attack) {
         if (couldsee(mtmp.mx, mtmp.my))
             note_unported_mon('setmangry:pline_mon_gets_angry');
     } else {
-        note_unported_mon('setmangry:growl');
+        growl(mtmp);
     }
 
     /* attacking your own quest leader will anger his or her guardians */

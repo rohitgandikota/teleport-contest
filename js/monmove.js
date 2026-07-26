@@ -157,10 +157,8 @@ function has_shrine(pri) {
     return e.shralign === Amask2align(lev.altarmask & ~AM_SHRINE);
 }
 
-// src/priest.c:370 p_coaligned()
-function p_coaligned(priest) {
-    return game.u.ualign.type === mon_aligntyp(priest);
-}
+/* p_coaligned lives in js/priest.js, its C home; imported rather than
+   restated so the two cannot drift. */
 
 /* src/shk.c inhishop() / src/priest.c inhistemple() — both need the shop and
    temple bookkeeping. No shopkeeper or priest is created on an ordinary level

@@ -15,7 +15,7 @@ import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
          HUNGRY, FAINTING,
          A_LAWFUL } from './const.js';
 import { ONAMES } from './objects_data.js';
-import { getobj, weight } from './invent.js';
+import { getobj, weight, useup } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
@@ -270,9 +270,22 @@ export function done_eating(message) {
     if (message)
         note_unported_eat('done_eating:message');
 
-    /* cpostfx/fpostfx are the food's after-effects and need the corpse and
-       food-effect tables; useup/useupf remove it from inventory or floor. */
-    note_unported_eat('done_eating:postfx_and_useup');
+    /* cpostfx (199 lines) and fpostfx (90) are the food's after-effects and
+       need the corpse and food-effect tables; both stay recorded. */
+    if (piece && (piece.otyp === ONAMES.CORPSE || piece.globby))
+        note_unported_eat('done_eating:cpostfx');
+    else
+        note_unported_eat('done_eating:fpostfx');
+
+    /* the object leaves by one of two doors: useup() when carried, useupf()
+       when it is lying on the floor. useup is ported; useupf still needs
+       delobj plus the shop billing arms. */
+    if (piece) {
+        if (carried(piece))
+            useup(piece);
+        else
+            note_unported_eat('done_eating:useupf');
+    }
 
     game.context.victual = {};          /* zero_victual */
 }

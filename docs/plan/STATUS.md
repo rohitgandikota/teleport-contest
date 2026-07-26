@@ -217,6 +217,29 @@ So neither predicate is the bug, and the sleeper landing on C's upstair square
 is NOT an occupied() gap: C's occupied does not reject stairs either, because
 IS_FURNITURE covers fountains/thrones/sinks/altars, not staircases.
 
+**somexy also matches for the room in question**, which takes the
+`if (!croom->nsubrooms) { somex; somey; return TRUE; }` arm -- room3 has no
+subrooms, so it is one somex/somey pair and return, identical to C.
+
+**But somexy's SUBROOM arm has a real gap.** C, src/mkroom.c:
+
+    while (try_cnt++ < 100) {
+        c->x = somex(croom); c->y = somey(croom);
+        if (IS_WALL(levl[c->x][c->y].typ)) continue;
+        for (i = 0; i < croom->nsubrooms; i++)
+            if (inside_room(croom->sbrooms[i], c->x, c->y))
+                goto you_lose;              <- MISSING IN OURS
+        break;
+     you_lose: ;
+    }
+
+Ours returns TRUE as soon as the square is not a wall, so it will happily place
+things INSIDE a subroom that C rejects -- and each rejection in C costs another
+somex/somey pair, so this is a draw difference too. It has not fired yet
+because nothing generated a subroom until this session's "Room in a room"
+themeroom went in; now that lspo_room calls create_subroom, it can.
+`inside_room` is ported (js/sp_lev.js) and only needs wiring here.
+
 That leaves `somexy` -- the raw coordinate pick inside the loop. Compare it
 against src/mkroom.c somexy, and in particular the ORDER of its rn2 calls and
 whether it draws once or twice per attempt: somexyspace retries up to 100

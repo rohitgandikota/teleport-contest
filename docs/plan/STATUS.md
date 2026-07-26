@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**432/11,405 screens (3.8%), 1/44 sessions, corpus RNG 112,906/792,838 (14.2%).**
+**429/11,405 screens (3.8%), 1/44 sessions, corpus RNG 112,964/792,838 (14.2%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -120,9 +120,25 @@ NOTONL/monlineu and trap arms, every one of which REJECTS a square C rejects
 and we accept, which is exactly how a candidate list goes wrong without
 changing a single draw.
 
-Port those arms next. They are pure predicates with no draws of their own, so
-they cannot regress the RNG, and they decide the list every pet and monster
-move is chosen from.
+Those arms are now ported: onscary/ALLOW_SSM, ALLOW_SANCT, NOGARLIC,
+ALLOW_ROCK and NOTONL, plus online2, monlineu, OBJ_AT, in_rooms and
+m_can_break_boulder. Two things learned doing it:
+
+  - mux/muy were never assigned by anything (set_apparxy is not ported) and so
+    read as undefined. monlineu feeds them to online2, where undefined makes
+    every delta NaN and `!dy` answers TRUE for every square, marking NOTONL
+    everywhere. They now start at 0, which is what C's zeroed struct holds.
+  - the boulder arm costs seed0030 three screens and gains it 77 RNG
+    positions, with the divergence point unchanged at call 6276. Both numbers
+    are post-divergence coincidence. The arm is verbatim C and is KEPT;
+    deleting faithful code to buy screens is the rule-1 failure mode.
+
+STILL MISSING from mfndpos, and worth doing next: the trap arm needs
+m_harmless_trap (src/trap.c:1106), which needs Resists_Elem
+(src/mondata.c:129), resists_magm and defended -- the monster resistance
+subsystem. Also absent: the amorphous/can_fog door arm, the poison-gas region
+test, the shop/temple wall-digging test, the IRONBARS non-diggable arm, and
+the rogue-level and worm_cross diagonal arms.
 
 ### Previously open on seed0700: the turn counter is one ahead
 

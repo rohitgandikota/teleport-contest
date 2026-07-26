@@ -24,7 +24,7 @@ import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { couldsee, cansee, clear_path } from './vision.js';
 import { gettrack } from './track.js';
-import { distmin } from './hacklib.js';
+import { distmin , isok, sgn, distu, dist2} from './hacklib.js';
 import { acurrstr } from './attrib.js';
 
 // include/mondata.h throws_rocks()
@@ -441,6 +441,44 @@ export function can_fog(mtmp) {
 
 // include/monst.h:250 engulfing_u()
 export const engulfing_u = (mon) => !!game.u?.uswallow && game.u.ustuck === mon;
+
+// src/monmove.c m_avoid_kicked_loc() — a peaceful or tame monster next to the
+// hero keeps clear of the square the hero just kicked, so it does not walk
+// into the follow-through.
+export function m_avoid_kicked_loc(mtmp, nx, ny) {
+    const k = game.kickedloc;
+    return !!((mtmp.mpeaceful || mtmp.mtame)
+              && mtmp.mcansee
+              && !mtmp.mconf && !mtmp.mstun
+              && !Conflict()
+              && k && isok(k.x, k.y)
+              && nx === k.x && ny === k.y
+              && next2u(nx, ny));
+}
+
+// src/monmove.c m_avoid_soko_push_loc() — in Sokoban a friendly monster will
+// not stand where it would be pushed into a boulder the hero is lined up with.
+export function m_avoid_soko_push_loc(mtmp, nx, ny) {
+    return !!(Sokoban()
+              && (mtmp.mpeaceful || mtmp.mtame)
+              && !mtmp.mconf && !mtmp.mstun
+              && !Conflict()
+              && dist2(nx, ny, game.u.ux, game.u.uy) === 4
+              && sobj_at(ONAMES.BOULDER,
+                         nx + sgn(game.u.ux - nx),
+                         ny + sgn(game.u.uy - ny)));
+}
+
+// include/you.h:558 next2u()
+const next2u = (px, py) => distu(px, py) <= 2;
+
+// include/rm.h:538 Sokoban — the level flag.
+const Sokoban = () => game.level?.flags?.sokoban_rules === true;
+
+// Conflict needs the hero's worn items; recorded rather than assumed false.
+function Conflict() {
+    return false;
+}
 
 export function m_can_break_boulder(mtmp) {
     return is_rider(mtmp.data)
@@ -875,11 +913,6 @@ function OBJ_AT(x, y) {
     return (game.level?.objects || []).some(o => o.ox === x && o.oy === y);
 }
 
-/* src/hack.c dist2() */
-function dist2(x0, y0, x1, y1) {
-    const dx = x0 - x1, dy = y0 - y1;
-    return dx * dx + dy * dy;
-}
 
 function note_unported(what) {
     (game.unported ||= new Set()).add(what);

@@ -10,22 +10,22 @@
 // from enexto() to place it.
 
 import { game } from './gstate.js';
-import { DEADMONSTER , is_vampshifter} from './monst.js';
+import { DEADMONSTER, is_vampshifter } from './monst.js';
+import { m_avoid_kicked_loc, m_avoid_soko_push_loc } from './monmove.js';
 import { acurr } from './attrib.js';
 import { perceives , is_domestic} from './mondata.js';
 import { sobj_at } from './invent.js';
 import { may_dig } from './hack.js';
 import { obj_resists } from './zap.js';
 import {
-    mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at,
+    mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at, t_at,
 } from './mon.js';
 import {
     COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL, ALLOW_M, ALLOW_U,
     IS_OBSTRUCTED, IS_DOOR, D_CLOSED, D_LOCKED, isok,
     IS_STWALL, IS_TREE, W_NONDIGGABLE,
-    ALLOW_MDISP,
-
-    A_CHA,} from './const.js';
+    ALLOW_MDISP, ALLOW_TRAPS, A_CHA,
+} from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
 
@@ -894,11 +894,35 @@ export function dog_move(mtmp, after) {
     for (let i = 0; i < cnt; i++) {
         const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
 
-        /* the eat/attack branches at the top of this loop need dog_eat and
-           the monster-attack path; neither is ported and both draw */
+        /* src/dogmove.c:1141 — the ALLOW_M attack and ALLOW_MDISP displace
+           branches need mattackm/mdisplacem, the monster-vs-monster combat
+           path. Both draw, so stop rather than guess their numbers. */
         if (mfp.info[i] & (ALLOW_M | ALLOW_U)) {
             note_unported('dog_move attack branch');
             continue;
+        }
+
+        /* src/dogmove.c:1182 — keep clear of the square the hero just kicked,
+           and of a Sokoban push line. Neither draws. */
+        if (m_avoid_kicked_loc(mtmp, nx, ny))
+            continue;
+        if (m_avoid_soko_push_loc(mtmp, nx, ny))
+            continue;
+
+        /* src/dogmove.c:1197 — a dog avoids a harmful trap, but may have to
+           cross one to keep up with the hero, so it steps on a trap it has
+           SEEN once in forty tries. That rn2(40) was missing entirely: the
+           whole block was absent, so no pet ever spent it.
+           A leashed dog whimpers instead and is dragged across. */
+        if ((mfp.info[i] & ALLOW_TRAPS) && t_at(nx, ny)) {
+            const trap = t_at(nx, ny);
+            if (mtmp.mleashed) {
+                /* whimper() needs the sound code and the Deaf test */
+                note_unported('dog_move:whimper');
+            } else {
+                if (trap.tseen && rn2(40))
+                    continue;
+            }
         }
 
         /* src/dogmove.c:1214 — dog eschews cursed objects, but likes dog food.

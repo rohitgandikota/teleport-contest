@@ -24,6 +24,9 @@ export function distmin(x1, y1, x2, y2) {
     return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 }
 
+// include/hack.h:1531 distu() — squared distance from the hero.
+export const distu = (xx, yy) => dist2(xx, yy, game.u.ux, game.u.uy);
+
 export function dist2(x1, y1, x2, y2) {
     return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
 }

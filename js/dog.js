@@ -17,6 +17,7 @@ import { m_avoid_kicked_loc, m_avoid_soko_push_loc } from './monmove.js';
    so dog_move's death return was an unbound name. */
 import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE } from './const.js';
 import { acurr } from './attrib.js';
+import { put_saddle_on_mon } from './steed.js';
 import { perceives , is_domestic} from './mondata.js';
 import { sobj_at } from './invent.js';
 import { may_dig } from './hack.js';
@@ -78,6 +79,19 @@ export function makedog() {
                          MM_EDOG | NO_MINVENT);
     if (!mtmp)
         return null;
+
+    /* src/dog.c:260 — the starting pet is recorded, and an initial PONY comes
+       already saddled unless the hero is a pauper. Passing no saddle makes
+       put_saddle_on_mon() create one, and that mksobj() spends a next_ident().
+       Skipping it lost a draw in the middle of character creation. */
+    if (!game.context.startingpet_mid) {
+        game.context.startingpet_mid = mtmp.m_id;
+        if (!game.u.uroleplay?.pauper) {
+            if (pettype === PMNAMES.PM_PONY)
+                put_saddle_on_mon(null, mtmp);
+        }
+        /* see_monster_closeup() is display bookkeeping */
+    }
 
     initedog(mtmp, true);
     return mtmp;

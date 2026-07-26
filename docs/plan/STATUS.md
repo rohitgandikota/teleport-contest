@@ -4314,8 +4314,36 @@ State of the whole area:
 
 Both remaining items are genuinely blocked rather than merely unstarted:
 
-  mktemple (src/mkroom.c:598) needs shrine_pos, induced_align which DRAWS, and
-  priestini, which creates the temple priest. Gated on u_depth > 8.
+  mktemple (src/mkroom.c:598) is the last one, gated on u_depth > 8. SCOPED,
+  with every dependency checked rather than guessed:
+
+    shrine_pos      (mkroom.c:577)   20 lines. Draws rn2(2) TWICE, but only
+                                     when the room's width/height delta is
+                                     odd. Trivial, no missing deps.
+    induced_align   (dungeon.c:1999) 17 lines. Draws rn2(100) only when the
+                                     level or dungeon carries an align flag,
+                                     then rn2(3) unconditionally. For an
+                                     ordinary dungeon level it is just
+                                     rn2(3) - 1 through Align2amask, which
+                                     js/const.js already has.
+    priestini       (priest.c:220)   57 lines. THE BLOCKER.
+
+  priestini's draws, in order: rn2(N_DIRS) for the starting direction, then
+  makemon(MM_EPRI), then rn1(3, 2) for the spellbook count with one
+  mkobj(SPBOOK_no_NOVEL, FALSE) per book, then rn2(2) for the robe. Missing
+  dependencies: pm_good_location, p_coaligned, uncurse. Present: mpickobj,
+  which_armor, curse, Amask2align, SPBOOK_no_NOVEL.
+
+  DO NOT port mktemple with priestini left as a note_unported. The altar and
+  the shrine would render, so it would look like progress, while every one of
+  the draws above went missing and desynced the rest of the level. Either the
+  whole chain lands or none of it does. This is the same trap as porting the
+  special-room chain's conditions without mkshop, warned about further up.
+
+  Rough order once started: pm_good_location, p_coaligned and uncurse first
+  (all small), then priestini, then induced_align and shrine_pos, then
+  mktemple, then flip do_mkroom's TEMPLE arm. Probe that a temple actually
+  gets a priest, the same way the shop and zoo fills were confirmed.
 
   antholemon is DONE, and the reasoning is worth reusing (NOTES has it as a
   general entry). ubirthday is genuinely not derivable -- the recorder builds

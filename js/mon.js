@@ -30,6 +30,8 @@ import { newsym, canseemon, pline } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
+import { is_vampshifter } from './monst.js';
+import { ismnum } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
@@ -53,7 +55,7 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
     is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
-import { is_rider, set_mimic_sym, hideunder, mpickobj } from './makemon.js';
+import { is_rider, set_mimic_sym, hideunder, mpickobj, monsndx } from './makemon.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
@@ -1321,4 +1323,99 @@ export function mpickstuff(mtmp) {
         }
     }
     return false;
+}
+
+// src/mon.c lifesaved_monster() — an amulet of life saving may revive it.
+//
+// mlifesaver() returns the worn amulet, and no monster in an early-dungeon
+// session has one, so this is a lookup and a return. The revival itself
+// records rather than being guessed at.
+export function lifesaved_monster(mtmp) {
+    /* mlifesaver(mtmp) walks minvent for a worn AMULET_OF_LIFE_SAVING */
+    const lifesave = (mtmp.minvent || []).find(
+        o => o.otyp === ONAMES.AMULET_OF_LIFE_SAVING && o.owornmask);
+    if (!lifesave)
+        return;
+
+    (game.unported ||= new Set()).add('mon:lifesaved_monster:revive');
+}
+
+// src/mon.c mondead() — the monster dies.
+//
+// The reached path for an ordinary monster is short: zero the hit points,
+// give the amulet its chance, bump the species death count, and detach.
+// Everything between is species-specific and skipped -- the vampshifter
+// revert, the steam vortex cloud, the vault guard's deferred removal, the
+// chameleon and lycanthrope true-form restore, the quest leader flag, the
+// mail daemon and the Keystone Kops.
+//
+// m_detach() is what actually removes it from the map and the monster list,
+// and it was already ported.
+export function mondead(mtmp) {
+    const be_sad = !!game.sad_feeling;
+    game.sad_feeling = false;
+
+    mtmp.mhp = 0; /* in case caller hasn't done this */
+    lifesaved_monster(mtmp);
+    if (!DEADMONSTER(mtmp))
+        return;
+
+    if (is_vampshifter(mtmp)) {
+        /* vamprises() -- reverts to vampire instead of dying */
+        (game.unported ||= new Set()).add('mon:mondead:vamprises');
+        return;
+    }
+
+    if (be_sad)
+        (game.unported ||= new Set()).add('mon:mondead:sad_feeling_msg');
+
+    /* the species-specific arms above m_detach are recorded only when they
+       would fire, so an ordinary monster produces no entries at all */
+    if (mtmp.isgd || ismnum(mtmp.cham))
+        (game.unported ||= new Set()).add('mon:mondead:special_forms');
+
+    const mptr = mtmp.data; /* save this for m_detach() */
+    const mndx = monsndx(mtmp.data);
+    game.mvitals ||= [];
+    game.mvitals[mndx] ||= { died: 0, mvflags: 0 };
+    if (game.mvitals[mndx].died < 255)
+        game.mvitals[mndx].died++;
+
+    m_detach(mtmp, mptr, true);
+}
+
+// src/mon.c mondied() — mondead(), then maybe leave a corpse.
+export function mondied(mdef) {
+    mondead(mdef);
+    if (!DEADMONSTER(mdef))
+        return; /* lifesaved */
+
+    /* corpse_chance() and make_corpse() are not ported; a kill currently
+       leaves no body. Recorded rather than dropped silently, because a
+       missing corpse changes what the hero can eat and what a pet picks up. */
+    (game.unported ||= new Set()).add('mon:mondied:make_corpse');
+}
+
+// src/mon.c monkilled() — a monster is killed BY something.
+//
+// how is the AD_* damage type; it decides whether a corpse is possible at
+// all (digestion, disintegration and a burnt flammable golem leave none).
+export function monkilled(mdef, fltxt, how) {
+    const mptr = mdef.data;
+
+    if (fltxt && cansee(mdef.mx, mdef.my)) {
+        /* "%s is destroyed/killed by the %s!" */
+        (game.unported ||= new Set()).add('mon:monkilled:message');
+    } else {
+        /* sad feeling is deferred until after potential life-saving */
+        game.sad_feeling = !!mdef.mtame;
+    }
+
+    /* no corpse if digested or disintegrated or flammable golem burnt up */
+    game.disintegested = (how === ATTKS.AD_DGST
+                          || how === -ATTKS.AD_RBRE);
+    if (game.disintegested)
+        mondead(mdef); /* never leaves a corpse */
+    else
+        mondied(mdef); /* calls mondead() and maybe leaves a corpse */
 }

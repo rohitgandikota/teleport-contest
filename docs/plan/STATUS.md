@@ -4458,30 +4458,36 @@ function, so the difference is more likely in a branch that only a shop-square
 mimic reaches than in makemon's common path, which many other call sites
 already exercise correctly.
 
-RULED OUT SO FAR, each compared against the C rather than guessed. Do not
-re-check any of these:
+THREAD CLOSED. THE -28 IS NOT A DEFECT SIGNAL. Stop chasing it.
 
-  mkclass / mkclass_aligned  same init_mongen_order and MONSi indirection,
-                             same rn2(9), rn2(2) and rnd(num), same order
-  set_mimic_sym              WAS a stub and is now ported; that recovered 8
-                             of the original 36, leaving 28
-  makemon call order         place_monster, mgenmklev, peace_minded, then the
-                             S_MIMIC switch -- matches src/makemon.c:1295-1305
-                             exactly
-  m_initinv                  C has no S_MIMIC case, so a mimic falls to the
-                             default arm and draws nothing; ours does the same
-  mkveggy_at, rloc, engraving  probed, never reached in any session
+Tried the direct comparison and it exposed the flaw in the whole exercise. The
+mimic makemon calls sit at roughly call 9000 in both sessions that reach them:
 
-WHAT IS LEFT: the remaining 28 is inside the mimic's makemon() somewhere other
-than the above, or inside one of set_mimic_sym's own arms whose draw count I
-did not verify individually (the furnsyms ROLL_FROM, the mkobj(s_sym) call,
-the rndmonnum for a statue/corpse/egg/tin appearance).
+    seed4500  mimic makemon at calls 8959, 9151   diverges at call 2869
+    seed0360  same shape                          diverges at call 2939
 
-NEXT, and this time actually do it rather than eliminating further: dump our
-rn2/rnd sequence across ONE mimic's makemon and diff it against the recorded
-log at that call index (tools/diverge.mjs prints the index). Elimination has
-gone as far as it usefully can; five suspects are gone and the next step is a
-direct comparison.
+Both are SIX THOUSAND CALLS PAST the point where the session already diverged.
+Everything measured there is post-divergence positional re-alignment, which is
+exactly what the scoreboard's own caveat warns about: the RNG figure counts
+positional matches and means little once a stream has broken upstream.
+
+So the -36-then-28 was never evidence of a bug in the shop path. It was noise.
+The 8 that set_mimic_sym "recovered" was real work -- that stub genuinely
+needed porting and every shop mimic hit it -- but the NUMBER that motivated it
+was not measuring what I thought.
+
+Ruled out along the way, and these are still worth keeping since they were
+compared against the C properly: mkclass_aligned (same indirection, same
+rn2(9)/rn2(2)/rnd(num) in order), makemon's call ordering around the S_MIMIC
+switch (matches src/makemon.c:1295-1305), m_initinv (C has no S_MIMIC case, so
+the default arm draws nothing, as ours does), and mkveggy_at/rloc/engraving
+(probed, never reached).
+
+THE GENERAL LESSON, and it applies to every future residual: before treating a
+small RNG delta as a defect, check WHERE the affected code runs relative to
+that session's divergence point. tools/diverge.mjs prints it. A delta measured
+downstream of a divergence is not a signal, and I spent several passes
+eliminating suspects for one that never existed.
 
 STILL OPEN in the special-room area:
   - mktemple (src/mkroom.c:598): needs shrine_pos, induced_align which DRAWS,

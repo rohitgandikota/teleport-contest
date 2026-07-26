@@ -1402,3 +1402,27 @@ include/optlist.h, and if it is On, write the test so that undefined means on.
 Setting the default in jsmain.js is the belt-and-braces fix but it is easy to
 forget for the next option; the defensive read cannot be forgotten because it
 is at the point of use.
+
+## A small RNG delta downstream of a divergence is noise, not a defect
+
+The shop-stocking port moved the advisory RNG figure by -36, and I treated
+that as a bug to hunt. Five suspects were eliminated across several passes,
+each comparison correct and each leaving the number unchanged. The number was
+never a signal.
+
+The mimic code the delta was attributed to runs at about call 9000 in the two
+sessions that reach it, and both of those sessions diverge at about call 2900.
+Everything measured there is post-divergence positional re-alignment. The
+scoreboard prints the caveat on every run -- "rng is advisory only and counts
+positional matches, so it can overstate progress after an early divergence" --
+and it applies to small NEGATIVE deltas exactly as much as to progress.
+
+Before chasing any residual, run tools/diverge.mjs on the sessions involved
+and compare the divergence call number against where the suspect code runs. If
+the code runs downstream, the delta tells you nothing about it.
+
+What survives the retraction is worth noting too: set_mimic_sym genuinely was
+an unported stub that every shop mimic reached, and porting it was right. The
+work was correct even though the metric that motivated it was not measuring
+what I believed. Good work can come from a bad signal -- that is not a reason
+to trust the signal.

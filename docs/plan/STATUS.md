@@ -185,12 +185,34 @@ algorithm matches line for line, the RNG stream matches to call 6276 which is
 far past this point, and the hero's square is confirmed identical. Yet C's
 pet ends west of the stairs and ours east.
 
-Only assumption 1 is left untested: that the DRAWS AT THIS CALL SITE matched.
-The aggregate stream matching to 6276 does not prove it -- a pair of
-compensating differences reads as a match. Log the actual k values the
-shuffle consumes (k = rn2(n) for n = 8,7,6...) and check them against what
-would have to hold for C to end on (56,4). That is the only remaining way
-identical inputs can produce different outputs.
+ASSUMPTION 1 IS NOW CHECKED TOO. The shuffle's k values for radius 1 are
+1, 3, 2, 1, 3, 0, 1, and hand-walking them over the pre-shuffle ring
+reproduces our observed permutation exactly. The draws are internally
+consistent and agree with C's stream.
+
+SO THE SHUFFLE IS CORRECT AND C MUST BE REJECTING SQUARES WE ACCEPT.
+Our order is
+
+    57,3  58,4  56,3  58,3  58,5  56,5  56,4  57,5
+
+we reject only the first and take the second; C must reject the first SIX.
+
+THE ROOM GEOMETRY EXPLAINS WHY THAT IS PLAUSIBLE. screendiff rows 4-7:
+
+    ┌───┐
+    │f<·│
+    +@··+
+    └───┘
+
+The interior is TWO ROWS BY THREE COLUMNS and the hero's row has DOORS (+)
+at BOTH ENDS. So most of the radius-1 ring is wall, and the ring entries our
+port accepts include squares that are wall or door on C's map.
+
+NEXT: print, for each of the eight ring entries, our levl[x][y].typ and what
+goodpos returns. Any entry we accept that is a wall or a closed door is the
+bug -- our ACCESSIBLE()/door handling would be accepting terrain C refuses.
+That is a much smaller question than the whole placement path and it is the
+one the geometry now points at.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

@@ -1,3 +1,30 @@
+=== NEXT CHEAP WIN: m_initinv mlet=53 (16%) is probably a phantom ===
+
+C's S_HUMAN arm in m_initinv is a CHAIN, not a block:
+
+    if (is_mercenary(ptr))                    { soldiers, guards, watchmen }
+    else if (ptr == &mons[PM_SHOPKEEPER])     { ... }
+    else if (ptr->msound == MS_PRIEST ...)    { ... }
+    else if (quest_mon_represents_role(...))  { ... }
+
+An ORDINARY human matches none and C does nothing, so js/makemon.js:603
+recording for every S_HUMAN overstates the gap the same way the six other
+phantoms did. Gate it on those four conditions.
+
+THE BLOCKER, and it needs a fresh head. is_mercenary is
+`(mflags2 & M2_MERC) != 0`, include/mondata.h:111. It exists module-locally
+at js/monmove.js:379. Adding it to js/mondata.js and importing it in both
+places produced `Identifier 'is_mercenary' has already been declared`, and
+js/mondata.js then failed to import STANDALONE even though it contains
+exactly one definition and one comment mentioning the name. I could not
+trace it and reverted.
+
+Suggestion: do NOT move it. Add the gate to makemon.js using a local
+`const is_merc = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;` -- a third
+copy is ugly but the two existing ones already disagree with nothing, and
+dup-defs will list it honestly. Consolidating the three is a separate
+change.
+
 === EXTCMD SWEEP DONE: chat was the only one. 512 screens. ===
 
 Wiring #chat to the already-ported dochat gained a screen (511 -> 512),

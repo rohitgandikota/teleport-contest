@@ -23,6 +23,7 @@ import { discover_object } from './o_init.js';
 import {
     P_NONE, P_NUM_SKILLS, P_ISRESTRICTED, P_UNSKILLED, P_BASIC, P_EXPERT,
     P_BARE_HANDED_COMBAT, P_RIDING, P_HEALING_SPELL, P_CLERIC_SPELL,
+    P_TWO_WEAPON_COMBAT, P_LAST_WEAPON,
     P_ATTACK_SPELL, P_ENCHANTMENT_SPELL, P_BOW, P_CROSSBOW,
 } from './const.js';
 import { PMNAMES } from './monst_data.js';
@@ -268,4 +269,74 @@ export function hitval(otmp, mon) {
         note_unported_weapon('hitval:spec_abon');
 
     return tmp;
+}
+
+// include/skills.h:81 martial_bonus() — a Samurai's or Monk's martial arts.
+const martial_bonus = () =>
+    Role_if(PMNAMES.PM_SAMURAI) || Role_if(PMNAMES.PM_MONK);
+
+// src/weapon.c:1545 weapon_hit_bonus() — the to-hit adjustment from the
+// hero's SKILL with the weapon being used.
+//
+// Draws nothing. Three separate tables, and the two-weapon one is all
+// NEGATIVE: fighting with two weapons is a penalty at every skill level, from
+// -9 unskilled to -3 expert, so it is not a mirror of the one-weapon table.
+//
+// The bare-handed arm is arithmetic rather than a table:
+//     bonus = max(P_SKILL, P_UNSKILLED) - 1     unskilled becomes 0
+//     bonus = ((bonus + 2) * (martial ? 2 : 1)) / 2
+// which yields the +1..+3 / +3..+7 spread C documents in its comment.
+export function weapon_hit_bonus(weapon) {
+    let bonus = 0;
+    const sk = game.u.weapon_skills;
+    const P_SKILL = (t) => sk[t].skill;
+
+    const wep_type = weapon_type(weapon);
+    /* use two-weapon skill only if attacking with one of the wielded weapons */
+    const type = (game.u.twoweap
+                  && (weapon === game.u.uwep || weapon === game.u.uswapwep))
+                 ? P_TWO_WEAPON_COMBAT : wep_type;
+
+    if (type === P_NONE) {
+        bonus = 0;
+    } else if (type <= P_LAST_WEAPON) {
+        switch (P_SKILL(type)) {
+        case P_ISRESTRICTED:
+        case P_UNSKILLED: bonus = -4; break;
+        case P_BASIC:     bonus = 0;  break;
+        case P_SKILLED:   bonus = 2;  break;
+        case P_EXPERT:    bonus = 3;  break;
+        default:          bonus = -4; break;   /* impossible() in C */
+        }
+    } else if (type === P_TWO_WEAPON_COMBAT) {
+        let skill = P_SKILL(P_TWO_WEAPON_COMBAT);
+        if (P_SKILL(wep_type) < skill)
+            skill = P_SKILL(wep_type);
+        switch (skill) {
+        case P_ISRESTRICTED:
+        case P_UNSKILLED: bonus = -9; break;
+        case P_BASIC:     bonus = -7; break;
+        case P_SKILLED:   bonus = -5; break;
+        case P_EXPERT:    bonus = -3; break;
+        default:          bonus = -9; break;   /* impossible() in C */
+        }
+    } else if (type === P_BARE_HANDED_COMBAT) {
+        bonus = P_SKILL(type);
+        bonus = Math.max(bonus, P_UNSKILLED) - 1;   /* unskilled => 0 */
+        bonus = Math.trunc(((bonus + 2) * (martial_bonus() ? 2 : 1)) / 2);
+    }
+
+    /* KMH -- It's harder to hit while you are riding */
+    if (game.u.usteed) {
+        switch (P_SKILL(P_RIDING)) {
+        case P_ISRESTRICTED:
+        case P_UNSKILLED: bonus -= 2; break;
+        case P_BASIC:     bonus -= 1; break;
+        default: break;                         /* skilled and expert: none */
+        }
+        if (game.u.twoweap)
+            bonus -= 2;
+    }
+
+    return bonus;
 }

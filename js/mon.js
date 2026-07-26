@@ -18,7 +18,7 @@ import { newsym } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster } from './makemon.js';
-import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK } from './const.js';
+import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
@@ -1039,4 +1039,19 @@ export function setmangry(mtmp, via_attack) {
 function note_sengr_at_unported() {
     note_unported_mon('setmangry:sengr_at');
     return false;
+}
+
+// src/mon.c:3470 killed() — the hero killed this monster, with a message.
+// Three lines in C and a pure delegation; xkilled (263 lines) does the work
+// and is recorded.
+export function killed(mtmp) {
+    xkilled(mtmp, XKILL_GIVEMSG);
+}
+
+// src/mon.c:3477 xkilled() — 263 lines: the death message, the corpse and
+// death drop, experience, vanquished-monster bookkeeping, and the special
+// cases for shopkeepers, guards, quest leaders and Riders. Not ported.
+// Recorded with its flags so game.unported says which caller wanted it.
+export function xkilled(mtmp, xkill_flags) {
+    note_unported_mon(`xkilled:flags=${xkill_flags}`);
 }

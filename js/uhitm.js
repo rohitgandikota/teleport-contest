@@ -14,7 +14,7 @@ import { game } from './gstate.js';
 import { You } from './pline.js';
 import { exclam } from './zap.js';
 import { canseemon } from './display.js';
-import { wakeup } from './mon.js';
+import { wakeup, killed, xkilled } from './mon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
@@ -33,7 +33,7 @@ import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP } from './const.js';
+         W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP, XKILL_NOMSG } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -667,11 +667,11 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     if (hmd.poiskilled) {
         note_unported_uhitm('hmon_hitmon:poison_deadly');
         if (!hmd.already_killed)
-            note_unported_uhitm('hmon_hitmon:xkilled');
+            xkilled(mon, XKILL_NOMSG);
         hmd.destroyed = true;
     } else if (hmd.destroyed) {
         if (!hmd.already_killed)
-            note_unported_uhitm('hmon_hitmon:killed');
+            killed(mon);
     } else if (game.u.umconf && hmd.hand_to_hand) {
         /* confused-touch: resist() DRAWS */
         note_unported_uhitm('hmon_hitmon:nohandglow');

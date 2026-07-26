@@ -217,6 +217,29 @@ getspell (src/spell.c:715) either pops a queued key, or with
 flags.menu_style == MENU_TRADITIONAL builds a "Cast which spell? [a-c *?]"
 prompt and reads a letter, or otherwise opens the spell MENU.
 
+THE CHAIN IS NOW COMPLETE AND STILL DOES NOT FIRE. Ported and committed:
+getspell (traditional arm), docast, spelleffects, spelleffects_check,
+percent_success, initialspell, skill_init, tty_yn_function, and u_init's
+"force starting Pw" block (src/u_init.c:1408, without which a Priest's uen is
+below SPELL_LEV_PW(1) and the cast is rejected on energy).
+
+Instrumented, at seed0501's 'Z':
+    docast IS reached
+    getspell sees num_spells() == 2, spl_book populated with sp_know 20000,
+        rejectcasting() false
+    spelleffects_check is NEVER reached
+
+So getspell's prompt loop is not returning. It reads with tty_yn_function ->
+nhgetch(); the session's next key is 'a', which spell_let_to_idx maps to 0. If
+nhgetch is handing back something else the loop retries ten times and gives
+up with "That's enough tries."
+
+NEXT: instrument the ilet that tty_yn_function returns inside getspell. The
+likely cause is input-queue position -- our 'Z' handler may be consuming the
+key differently from C's, or the three leading keys (" ", " ", "n") are not
+being absorbed by the same prompts. Compare against the recorded screens at
+those steps before changing anything.
+
 CHECKED: seed0501's keys are  " " " " "n" "Z" "a" "." "r" "g" "y"  -- 'Z' is
 docast and 'a' picks the first spell, so it takes the TRADITIONAL LETTER path.
 No menu subsystem is needed for it. That path is num_spells(), the

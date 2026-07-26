@@ -84,7 +84,7 @@ function spell_let_to_idx(ilet) {
 }
 
 // src/spell.c num_spells() — spells are contiguous from slot 0.
-function num_spells() {
+export function num_spells() {
     for (let i = 0; i < MAXSPELL; i++)
         if (spellid(i) === NO_SPELL)
             return i;
@@ -184,7 +184,7 @@ const quitchars = ' \r\n\x1b';
 
 // src/spell.c:17 KEEN, include/spell.h:36 SPELL_LEV_PW
 const KEEN = 20000;
-const SPELL_LEV_PW = (lvl) => lvl * 5;
+export const SPELL_LEV_PW = (lvl) => lvl * 5;
 
 // include/spell.h:33 spellknow()
 function spellknow(spidx) {

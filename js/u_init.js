@@ -27,7 +27,8 @@ import { ART_SNICKERSNEE } from './artilist_data.js';
 import { P_NONE, W_QUIVER, W_WEP } from './const.js';
 import { Is_container } from './obj.js';
 import { skill_init } from './weapon.js';
-import { spell_skilltype, initialspell } from './spell.js';
+import { spell_skilltype, initialspell, num_spells,
+         SPELL_LEV_PW } from './spell.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
@@ -577,5 +578,14 @@ export function u_init_skills_discoveries() {
        but u.weapon_skills is what percent_success() reads, and without it the
        rnd(100) comparison in spelleffects_check has no input. */
     skill_init(skills_for_role());
+
+    /* src/u_init.c:1408 — if the hero knows any spell, force starting Pw high
+       enough to cast a level 1 one. Without this a Priest's uen sits below
+       SPELL_LEV_PW(1) and spelleffects_check rejects the cast on energy
+       before ever reaching its rnd(100). */
+    if (num_spells() && (game.u.uenmax < SPELL_LEV_PW(1))) {
+        game.u.uen = game.u.uenmax = game.u.uenpeak = SPELL_LEV_PW(1);
+        (game.u.ueninc ||= [])[game.u.ulevel] = SPELL_LEV_PW(1);
+    }
 }
 

@@ -4137,3 +4137,38 @@ shop square.
 Also needed: mkveggy_at for the VEGETARIAN_CLASS arm, and make_engr_at for the
 "Closed for inventory" engraving on a locked shop door (the engraving
 subsystem is absent, so that arm should be recorded rather than faked).
+
+DONE SINCE: js/shknam.js now exists with shtypes (moved out of js/mkroom.js,
+which was the wrong home) carrying the full iprobs sub-table, plus
+get_shop_item. get_shop_item is COMPLETE BUT UNCALLED -- its caller
+mkshobj_at is gated behind shkinit. Shops are still marked and empty.
+
+SHKINIT, read in full (src/shknam.c:628). Three things in it are not obvious
+and each is a draw:
+
+  1. mkmonmoney(shk, 1000 + 30 * rnd(100)) -- the shopkeeper's starting
+     capital. One rnd(100), unconditional.
+  2. The mongets block is gated on the shop's SHKNMS field, which js/shknam.js
+     does NOT yet carry:
+
+         if (shknms == shktools || shknms == shkwands
+             || (shknms == shkrings && rn2(2))
+             || (shknms == shkgeneral && rn2(5)))
+             mongets(shk, SCR_CHARGING);
+
+     So a ring shop draws rn2(2) and a general store draws rn2(5), and a tools
+     or wand shop draws NEITHER because the first two disjuncts short-circuit.
+     Getting shknms wrong changes which draw happens, not just which item.
+     A ring shop also gets a TOUCHSTONE, with no draw.
+  3. nameshk(shk, shp->shknms) picks the shopkeeper's name from that list and
+     DRAWS. The twelve name arrays have to be carried for this.
+
+good_shopdoor() is the other missing piece and it decides the shopkeeper's
+square, so it is positional as well as a gate: shkinit returns -1 when it
+fails, and stock_room returns immediately on that, leaving the shop empty.
+
+ORDER: carry the shknms name lists into js/shknam.js first (regenerate them
+from src/shknam.c, do not hand-copy), then good_shopdoor, then shkinit, then
+stock_room_goodpos and mkshobj_at, then stock_room itself. Verify with a
+stderr counter that a shop actually gets stock, exactly as the mkshop bug
+above was caught -- do not trust the RNG number to tell you.

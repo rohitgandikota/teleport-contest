@@ -2342,3 +2342,35 @@ used to choose what to port next. A record at a dispatch point does not just
 overstate one number, it outranks genuinely reachable work and sends the next
 session at the wrong target. mattackm was deferred three times on exactly that
 kind of inflated reading.
+
+## I duplicated mkcorpstat, and could not consolidate it (mklev.js cycle)
+
+Porting make_corpse I added mkcorpstat to js/mkobj.js. One already existed,
+private, in js/mklev.js. I found it only afterwards, in dup-defs -- because I
+had grepped
+
+    ^export function mkcorpstat
+
+which cannot see `function mkcorpstat`. That is the exact mistake this file
+already warns about under "grep the bare name", made again.
+
+WORSE, THE TWO DIFFER. mklev.js's takes pm as a MONSTER INDEX and starts the
+rot timer for special corpses; mine takes a permonst pointer as C does and
+does not. Both are reachable.
+
+CONSOLIDATION FAILED. Deleting mine and importing mklev.js's into js/mon.js
+threw `Cannot access 'mklev_mon' before initialization` and took all 44
+sessions to zero. mklev.js does module-init-time wiring (mklev_wire_mon)
+exactly as js/do.js does, so it has the same property: A NEW IMPORTER OF
+mklev.js CAN RE-ENTER IT DURING ITS OWN INITIALISATION.
+
+So js/do.js is not special. Treat BOTH do.js and mklev.js as wire-only
+modules: js/cmd.js imports them and calls their `*_wire()` setters after
+everything has initialised. Anything else that needs one of their functions
+should be wired the same way, not imported.
+
+Left as-is for now: two mkcorpstat implementations, the mklev one used by
+level generation and the mkobj one used by make_corpse. Recorded rather than
+hidden. Fixing it means moving the function to its src/mkobj.c home and
+wiring mklev.js to it, which is a separate change that needs its own
+measurement.

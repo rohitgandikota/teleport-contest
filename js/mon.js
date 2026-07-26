@@ -1457,8 +1457,18 @@ export function make_corpse(mtmp, corpseflags) {
     else if (!is_neuter(mtmp.data))
         corpstatflags |= CORPSTAT_MALE;
 
-    /* the species-specific switch: dragons, unicorns, worms, golems, ... */
-    if (SPECIAL_CORPSE_SPECIES.has(mndx)) {
+    /* C's switch is in two halves. The first has real arms -- dragons drop
+       scales, unicorns a horn, long worms a tooth, mummies and zombies their
+       old-race corpse, golems their material, puddings and oozes nothing.
+       The second is a LONG packed fall-through list (mon.c:867 and around it)
+       naming most ordinary monsters explicitly, and every one of those lands
+       on default_1, the generic path below. So enumerating them would be
+       pointless -- what matters is only the species with their own arm.
+
+       Those are NOT detected here yet: a dragon dying leaves a plain corpse
+       instead of scales. Recorded by species so the gap is visible where it
+       happens rather than being silent. */
+    if (SPECIAL_CORPSE_ARMS.has(mndx)) {
         (game.unported ||= new Set()).add('mon:make_corpse:species_arm');
         return null;
     }
@@ -1479,5 +1489,17 @@ export function make_corpse(mtmp, corpseflags) {
     return obj;
 }
 
-/* the mndx values that have their own arm in make_corpse's switch */
-const SPECIAL_CORPSE_SPECIES = new Set();
+/* mndx values with their OWN arm in make_corpse's switch, as opposed to the
+   packed fall-through list that reaches default_1. Dragons, unicorns and the
+   long worm are the ones an early session could plausibly meet. */
+const SPECIAL_CORPSE_ARMS = new Set([
+    PMNAMES.PM_GRAY_DRAGON, PMNAMES.PM_GOLD_DRAGON, PMNAMES.PM_SILVER_DRAGON,
+    PMNAMES.PM_RED_DRAGON, PMNAMES.PM_ORANGE_DRAGON, PMNAMES.PM_WHITE_DRAGON,
+    PMNAMES.PM_BLACK_DRAGON, PMNAMES.PM_BLUE_DRAGON, PMNAMES.PM_GREEN_DRAGON,
+    PMNAMES.PM_YELLOW_DRAGON,
+    PMNAMES.PM_WHITE_UNICORN, PMNAMES.PM_GRAY_UNICORN, PMNAMES.PM_BLACK_UNICORN,
+    PMNAMES.PM_LONG_WORM,
+    PMNAMES.PM_IRON_GOLEM, PMNAMES.PM_GLASS_GOLEM, PMNAMES.PM_CLAY_GOLEM,
+    PMNAMES.PM_STONE_GOLEM, PMNAMES.PM_WOOD_GOLEM, PMNAMES.PM_ROPE_GOLEM,
+    PMNAMES.PM_LEATHER_GOLEM, PMNAMES.PM_GOLD_GOLEM, PMNAMES.PM_PAPER_GOLEM,
+].filter(v => v !== undefined));

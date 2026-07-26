@@ -1216,6 +1216,13 @@ function topologize(croom) {
             const loc = game.level.at(x, y);
             if (loc) { loc.edge = true; loc.roomno = loc.roomno ? SHARED : roomno; }
         }
+
+    /* src/mklev.c:1650 — recurse into the subrooms so each stamps its OWN
+       roomno over the parent's. Without this a subroom's squares keep the
+       parent's number, and every roomno test reads them as the outer room:
+       somexy's irregular arm, selection_from_mkroom, in_rooms, inside_room. */
+    for (let subindex = 0; subindex < (croom.nsubrooms || 0); subindex++)
+        topologize(croom.sbrooms[subindex]);
 }
 
 // ============================================================

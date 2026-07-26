@@ -14,7 +14,7 @@ import { game } from './gstate.js';
 import { Deaf } from './youprop.js';
 import { You_hear } from './pline.js';
 import { M_AP_TYPE, M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED } from './const.js';
-import { d } from './rng.js';
+import { d, rn2 } from './rng.js';
 import { mhitm_adtyping, mhitm_knockback } from './uhitm.js';
 import { touch_petrifies } from './dog.js';
 import { resists_ston } from './mon.js';
@@ -300,14 +300,27 @@ export function passivemm(magr, mdef, mhitb, mdead, mwep) {
     else
         tmp = 0;
 
-    /* These affect the enemy even if defender killed */
     const adtyp = mddat.mattk[i][MATTK_ADTYP];
-    for (const [name, code] of Object.entries(ATTKS)) {
-        if (name.startsWith('AD_') && code === adtyp) {
-            (game.unported ||= new Set()).add(`passivemm:${name}`);
-            break;
-        }
-    }
+    const adname = Object.entries(ATTKS).find(
+        ([n, c]) => n.startsWith('AD_') && c === adtyp)?.[0] ?? 'AD_?';
+
+    /* These affect the enemy even if defender killed. Only AD_ACID and
+       AD_ENCH have arms; everything else, AD_PHYS included, falls to
+       default and does nothing here. */
+    if (adtyp === ATTKS.AD_ACID || adtyp === ATTKS.AD_ENCH)
+        (game.unported ||= new Set()).add(`passivemm:always:${adname}`);
+
+    if (mdead || mdef.mcan)
+        return (mdead | mhit);
+
+    /* These affect the enemy only if defender is still alive.
+       THE rn2(3) IS A DRAW and it happens for EVERY surviving passive,
+       whatever the damage type -- the switch inside it is what varies.
+       Recording before this roll, as an earlier version did, silently
+       dropped one draw from every passive counter-attack. */
+    if (rn2(3))
+        (game.unported ||= new Set()).add(`passivemm:alive:${adname}`);
+
     return (mdead | mhit);
 }
 

@@ -34,6 +34,26 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
+distant_name SIZED (25%, dog_invent:distant_name and mpickstuff's twin):
+63 lines in src/objnam.c:347, and NOT a leaf. It needs
+
+    get_obj_location()   MISSING
+    gd.distantname       a global flag that xname()/doname() must READ --
+                         js/objnam.js has no notion of it (0 occurrences)
+    program_state.gameover  not tracked (only guards the o_id suppression)
+    distu()              private to js/dog.js, needs its src/mon.c home
+    xname / doname       ALREADY PORTED, objnam.c:147 and :234
+
+The reason it is not a leaf is the flag: distant_name's whole job is to call
+func() with gd.distantname raised so that xname() does NOT set obj->dknown for
+a far-off object. Porting distant_name without threading that flag into
+xname/doname would make every distant object read as identified, which is a
+silent wrong answer rather than a visible gap. Thread the flag first.
+
+The side effect is the point, not the string: C calls distant_name purely for
+dknown and find_artifact even when the result is never printed, which is why
+js/dog.js records it BEFORE the extract rather than skipping it.
+
 THE HEURISTIC THAT KEPT WORKING: before sizing a gap, check whether its
 dependencies are ALREADY PORTED. Five entries this session fell for a few
 dozen lines each that way (stackobj, impact_disturbs_zombies, useupf,

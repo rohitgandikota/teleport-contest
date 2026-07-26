@@ -1838,3 +1838,43 @@ real rather than theoretical.
 The fix belongs in tools/gen-optlist.mjs: resolve the build flags at
 generation time and emit one entry per option. Regenerate rather than
 hand-editing js/optlist.js.
+
+## level.objects insertion order: mkobj_at pushes where place_object unshifts
+
+Found while tracing why dog_goal never sees a gold pile that C's pet goes for.
+
+js/mkobj.js:1013 place_object() does `unshift`, and the comment above it is
+explicit about why: "dog_goal()'s search walks it calling dogfood() on each,
+and dogfood() draws, so the order is part of the PRNG contract."
+
+js/makemon.js mkobj_at() inlines the placement and uses `push`. So an object
+created through mkobj_at lands at the END of level.objects instead of the
+front, and every consumer that walks the list in order sees a different
+sequence than C.
+
+C's mkobj_at (src/mkobj.c) is just
+
+    otmp = mkobj(let, artif);
+    place_object(otmp, x, y);
+    return otmp;
+
+so calling place_object is unambiguously the faithful form.
+
+MEASURED: making that change costs 69 SCREENS and 9,053 rng (510 -> 441).
+Reverted under the loop rule. That is a surprising result and worth
+understanding rather than retrying blindly -- if C prepends and we start
+prepending, matching should improve. Two readings:
+
+  - place_object's unshift may itself be wrong for some other call path, and
+    the push in mkobj_at was accidentally compensating for it. Check what
+    else calls place_object and whether C's chain really is newest-first for
+    those.
+  - or the flat single list is too lossy a model. C has a PER-SQUARE chain
+    (svl.level.objects[x][y] linked by ->nexthere). A flat list can reproduce
+    per-square order only if every insertion preserves it globally, which
+    prepend does not once two squares interleave.
+
+The second is more likely and would mean the fix is structural: index
+level.objects by [x][y] as C does, rather than choosing between push and
+unshift on one flat array. Do not re-attempt the one-line version without
+resolving which reading holds.

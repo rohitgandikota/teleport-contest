@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**449/11,405 screens (3.9%), 1/44 sessions, corpus RNG 129,288/792,838 (16.3%).**
+**457/11,405 screens (4.0%), 1/44 sessions, corpus RNG 135,921/792,838 (17.1%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -267,9 +267,13 @@ lspo_room's bookkeeping too -- push the room, update_croom, run contents, pop.
 Neither lspo_room nor lspo_region was on that path, which is why instrumenting
 create_altar kept showing coder=false even after both of those pushed.
 
-seed0013 moved 528 -> 540 separately: fill_buried_zombies skipped its
-des.object() and spent only the zombify timer's draw, so the corpse's own
-somex/somey never happened.
+seed0013 is FIXED: 528 -> 540 -> 3846, in two steps. fill_buried_zombies
+skipped its des.object() and spent only the zombify timer's draw, so the
+corpse's own somex/somey never happened. Then lspo_object turned out to ignore
+the `montype` option entirely, so the corpse had no corpsenm, create_object
+never called set_corpsenm, and start_corpse_timeout -- whose single rnz() is
+five PRNG calls -- never ran. montype resolves WITHOUT a gender draw, unlike
+des.monster()'s id.
 
 OLD, now resolved: seed2600 and seed0013 did not move when only
 lspo_room and lspo_region pushed. C draws somex/somey

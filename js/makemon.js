@@ -702,7 +702,11 @@ export function goodpos(x, y, ptr, gpflags = 0) {
 
     if (game.u.ux === x && game.u.uy === y)
         return false;
-    if (m_at(x, y))
+    /* src/teleport.c:114 — `if (MON_AT(x, y) && avoid_monpos) return FALSE;`
+       The monster test is CONDITIONAL on GP_AVOID_MONPOS. Rejecting an
+       occupied square unconditionally, as this did, makes every caller that
+       does NOT pass that flag reject squares C accepts. */
+    if (m_at(x, y) && (gpflags & GP_AVOID_MONPOS))
         return false;
 
     const loc = game.level?.at(x, y);

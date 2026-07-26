@@ -191,11 +191,24 @@ quest friendlies (MS_LEADER/MS_GUARDIAN), for an adjacent target, for a tame
 one, and when find_friends sees a friendly behind the target. So the extra
 rnd(5) is not a logic difference in the targeting itself.
 
-That leaves the inputs: m_cansee(), m_at(), or the monsters simply standing
-somewhere else. The last is the same class of problem as the pet-position
-divergence recorded further down -- a NON-DRAWING difference that moves a
-monster without any call disagreeing. Check m_cansee first, it is the only one
-of the three with real logic in it.
+m_cansee and clear_path have now been checked too and BOTH match. m_cansee is
+clear_path(mx, my, x2, y2) in both (include/vision.h:42), and our clear_path's
+generic Bresenham walk is line-for-line the same as C's four quadrant macros
+(src/vision.c:1212 q1_path and its siblings) including the error-term setup,
+the tie-break order, and the blocked-by-default result.
+
+So five functions in the chain -- find_targ, best_target, score_targ, m_cansee,
+clear_path -- are all verbatim. The extra target therefore comes from a MONSTER
+STANDING SOMEWHERE ELSE, which is the same non-drawing-difference class as the
+pet-position divergence recorded further down: something moves a monster
+without any call disagreeing.
+
+Do NOT keep re-reading the targeting code; it is correct. The productive thing
+is to dump the monster list and positions at that turn for both sides -- ours
+from an instrumented run, C's from the recorded SCREEN, which shows every
+monster the hero can see -- and find which monster is in the wrong place. That
+is a different and slower measurement than the RNG trace, and it is the one
+this divergence needs.
 
 ### Rank sessions by DIVERGENCE POINT, not by screens
 

@@ -120,14 +120,33 @@ scoring loop, and DOES draw: 550 candidate evaluations across the session,
 live and the sampler fires. The divergence is not absence, it is a
 DIFFERENCE at one specific invocation where C ties and we do not.
 
-THE STANDOUT MEASUREMENT: appr is 1 on all 550 evaluations. Never -1, never
-0. In C, dog_goal returns appr = -1 when the pet should move AWAY from the
-goal and 0 when it should not care, and those cases are common (a scared or
-fleeing pet, a pet with no goal). An appr that is always 1 means every square
-is scored as "get closer", which changes j for every candidate and therefore
-which candidates tie. That is the strongest lead and should be checked first:
-read js/dog.js's dog_goal for the paths that should return -1 or 0 and
-confirm whether any is reachable.
+appr IS 1 on all 550 evaluations, but that turned out NOT to be the bug, and
+the reason is worth keeping because it kills an obvious-looking lead:
+
+    appr = (udist >= 9) ? 1 : (mflee ? -1 : 0);
+    if (udist > 1) {
+        if (!IS_ROOM(levl[u.ux][u.uy].typ) || !rn2(4) || whappr
+            || (dog_has_minvent && rn2(edog->apport)))
+            appr = 1;
+    }
+
+At the divergent call the log shows `C rn2(4)=0  ours rn2(4)=0  ok`. rn2(4)
+is 0, so !rn2(4) is TRUE, so C sets appr = 1 as well. Both sides agree on
+appr at the exact moment they disagree on the tie. IS_ROOM is also correct
+(typ >= ROOM, js/const.js:2061). So appr is eliminated.
+
+SEPARATE REAL GAP FOUND WHILE CHECKING THIS: our override drops C's FOURTH
+term, `(dog_has_minvent && rn2(edog->apport))`. It is short-circuited away
+whenever an earlier term is true, which is why it has not diverged yet -- but
+when the hero IS in a room, rn2(4) is nonzero and whappr is false, C draws
+rn2(edog->apport) and we draw nothing. That is a latent divergence needing
+monster inventory (dog_has_minvent) and edog->apport.
+
+WHAT IS LEFT: with the same appr, same GDIST goal and same rn2(4), C finds a
+candidate scoring j == 0 and we do not. That points at the CANDIDATE LIST
+itself -- mfndpos returning different squares or a different count -- or at
+the starting nidist. Next: dump cnt and the poss[] array at the divergent
+call and check the count against what the map should allow.
 
 HOW TO INSTRUMENT (this cost most of a tick to work out):
 frozen/ps_test_runner.mjs spawnSync's a worker and CAPTURES its stdout and

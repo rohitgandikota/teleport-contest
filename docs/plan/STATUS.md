@@ -825,14 +825,29 @@ PROGRESS ON THIS LIST so far:
         call does nothing observable. Port it for faithfulness some day, not
         for score.
 
+  DONE  onscary:elbereth (was 98%) -- sengr_at turned out to be TEN LINES
+        with its only dependency (engr_at) already present, so the
+        "blocked on the engraving subsystem" note three call sites carried
+        was wrong. Wired to onscary and to setmangry's hypocrite branch,
+        which holds setmangry's only draw (rnd(5)).
+
 CURRENT LIST AFTER THOSE:
-     98%  onscary:elbereth              needs the engraving subsystem
-     59%  can_touch_safely:touch_artifact
+    100%  topl:remember_topl              deprioritised, see above
+     59%  can_touch_safely:touch_artifact deprioritised, see above
      45%  dog_move attack branch
      43%  postmov:mpickstuff
      41%  pet_ranged_attk:attack
      39%  bite:nutrition
      39%  start_eating:done_eating
+
+SIZED postmov:mpickstuff (43%) -- src/mon.c:1847, 63 lines. Its only draw is
+an rn2(25) guarded by `!mtame && in_rooms(SHOPBASE)`, so it spends nothing
+outside a shop; but the PICKUP itself moves objects off the floor and into
+monster inventory, which is map state and therefore screen state.
+Dependencies inhishop, is_mines_prize, is_soko_prize and mon_would_take_item
+all already exist in js/monmove.js, as do could_reach_item and in_rooms. So
+this is a genuine 63-line leaf port with no hidden subsystem behind it --
+the first item on this list that sizes to what it looks like.
 
   CHECKED, DEPRIORITISED  can_touch_safely:touch_artifact (59%) -- the rest
         of can_touch_safely IS ported (js/mon.js:857); touch_artifact is the

@@ -4211,3 +4211,40 @@ good_shopdoor, then shkinit, then stock_room_goodpos and mkshobj_at, then
 stock_room itself. Verify with a stderr counter that a shop actually gets
 stock, exactly as the mkshop bug above was caught -- do not trust the RNG
 number to tell you.
+
+## Shop stocking: LANDED. Shops now have a shopkeeper and stock.
+
+stock_room, shkinit, good_shopdoor, nameshk, stock_room_goodpos, mkshobj_at
+and get_shop_item are ported, and tools/gen-shknam.mjs generates
+js/shknam_data.js (11 lists, 372 names, plus the shknms of each shtypes entry).
+fill_special_room's shop branch calls stock_room instead of note_unported.
+
+VERIFIED BY PROBE, not by the score: seed4500's general store places 32
+objects where it previously placed none. Do this every time; it is what caught
+the mkshop bug one entry above.
+
+    RNG 140,753 -> 140,717  (-36, and NOT explained; see below)
+    screens 492, unchanged; aggregate unchanged
+
+THE -36 IS AN OPEN LOOSE END. Checked and ruled out: depth() matches
+src/dungeon.c:1431 exactly, and the specialspot comparison matches C's
+`((stockcount) && (stockcount == specialspot))`. Not chased further. The
+likeliest remaining suspects, in order:
+  1. mkveggy_at / shkveg, unported. Only the health food store (prob 2/100)
+     routes through VEGETARIAN_CLASS, so it should be rare, but shkveg draws
+     an rnd(maxprob) that we never spend when it IS hit.
+  2. The mimic path in mkshobj_at: mkclass(S_MIMIC, 0) and its makemon.
+  3. mkobj_at / mksobj_at behaviour for shop stock specifically, since these
+     are called with init and artif TRUE in a context nothing else used.
+Instrument the draw sequence for ONE shop against the recorded log rather than
+guessing between these.
+
+STILL OPEN in the special-room area:
+  - mktemple (src/mkroom.c:598): needs shrine_pos, induced_align which DRAWS,
+    and priestini. Gated on u_depth > 8.
+  - antholemon (src/mkroom.c:502): needs ubirthday. Unlike nameshk, here the
+    unmodelled value gates whether the arm fires, so it changes draw counts.
+  - fill_zoo (src/mkroom.c:275): mkzoo MARKS rooms but fill_special_room does
+    not yet fill COURT/ZOO/BEEHIVE/ANTHOLE/COCKNEST/MORGUE/BARRACKS. Same
+    shape of gap stock_room just closed for shops, and the same test applies:
+    probe that a zoo actually gets monsters.

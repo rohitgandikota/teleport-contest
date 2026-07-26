@@ -1257,3 +1257,30 @@ it silently makes a valid index look invalid. `grep -rn "define <NAME>"
 nethack-c/upstream/include/` costs two seconds.
 
 tools/undefined-refs.mjs will not catch these. A wrong value is bound.
+
+## A key read without a painted prompt is silent and corpus-wide
+
+getobj and getdir both read their key with a bare nhgetch, so their prompts
+never appeared. C reads BOTH through yn_function, which paints first:
+
+    getobj  src/invent.c:1919  yn_function(qbuf, NULL, '\0', FALSE)
+    getdir  src/cmd.c          yn_function(s ? s : "In what direction?", ...)
+
+Routing the existing read through tty_yn_function adds the paint without
+changing which key is consumed, so it is safe: the RNG cannot move, only the
+screen. Both were worth several screens each because every command that asks
+for an object or a direction shows them.
+
+Sweep for more with
+
+    grep -rn "await nhgetch()" js/*.js js/tty/*.js | grep -v tty_yn_function
+
+and then check each against its C caller. NOT every one is a bug -- a window
+dismissal really is a bare read (C uses xwaitforspace, not yn_function), and
+js/cmd.js:618 and :641 are those. As of this writing the remaining candidates
+are js/getpos.js:71 and js/options.js:219.
+
+The related trap: a prompt can also be missing because its whole COMMAND is
+unported. "Where do you want to travel to?" is a plain pline in dotravel
+(src/cmd.c:5333) before getpos is called, and dotravel is not ported at all,
+so no amount of work on getpos would produce it.

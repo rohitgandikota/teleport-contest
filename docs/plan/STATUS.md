@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**457/11,405 screens (4.0%), 1/44 sessions, corpus RNG 135,924/792,838 (17.1%).**
+**458/11,405 screens (4.0%), 1/44 sessions, corpus RNG 135,924/792,838 (17.1%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -226,7 +226,20 @@ Three things wrong at once, and they are one cause:
   - therefore morestr is "" and the footer falls back to defmorestr
     "--More--", not "(end) ".
 
-WRONG CONCLUSION, CORRECTED: that FOOT line is NOT the tutorial menu.
+FIXED. The menu footer row never blanked column cw.offx, where the content
+rows already did. C emits `tty_curs(window, 1, y); if (offx) cl_end();
+putchar(' ')` for every menu line, so a space lands ON offx and the text
+starts at offx + 1. seed0101's screens move step 2 -> 4.
+
+What found it, after four wrong inferences, was a NEGATIVE result:
+instrumenting the footer path at js/tty/wintty.js:367 produced no output at
+all for this window. That meant a different function drew it -- the menu
+display path at :429 -- and that one was missing the clear loop. The lesson is
+that "my instrumentation printed nothing" is itself data, not a failed run.
+
+The four wrong readings are kept below because each one looked right:
+
+WRONG (1 of 4): that FOOT line is NOT the tutorial menu.
 ask_do_tutorial (js/options.js:185) does use tty_add_menu and does call
 tty_end_menu, so its cols is set properly. The window measured above -- an
 NHW_MENU with cols 0, built by putstr -- is the LEGACY window, which

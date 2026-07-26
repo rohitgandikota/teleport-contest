@@ -120,7 +120,30 @@ random-monster fill, not the pet: makedog does not appear in the log at all.
 
 The caution about not assuming it is the pet was right; it is not.
 
-Next: find how many random monsters C's makelevel places on this level and
+**Located in the C.** src/mklev.c:974, inside fill_ordinary_room:
+
+    if ((u.uhave.amulet || !rn2(3)) && somexyspace(croom, &pos)) {
+        tmonst = makemon((struct permonst *) 0, pos.x, pos.y, MM_NOGRP);
+        if (tmonst && tmonst->data == &mons[PM_GIANT_SPIDER]
+            && !occupied(pos.x, pos.y))
+            (void) maketrap(pos.x, pos.y, WEB);
+    }
+
+One sleeping monster per room, gated on !rn2(3), placed by somexyspace. Our
+three calls are three rooms passing that gate.
+
+Since the RNG matches to call 6276, the rn2(3) gates and the somexyspace draws
+agree with C's. So the difference is WHICH ROOM each draw applies to, or what
+somexyspace returns given the same draws -- i.e. room ORDER or room GEOMETRY,
+not the monster fill itself.
+
+Check next: dump our room list (lx,ly,hx,hy in order) for seed0030 level 1 and
+compare against the room the C places its third monster in. If the rooms differ
+in order or extent, the fill is innocent and the bug is in mklev's room
+creation -- which would also explain the pet being one square off, since
+somexy/somexyspace read the same room bounds.
+
+## Superseded: how many random monsters C places
 where. src/mklev.c's makelevel ends with a loop over rnd(...) monsters; compare
 its count against our three, and check whether our third call is one C never
 makes or one C makes at a different square. The RNG matching to call 6276 means

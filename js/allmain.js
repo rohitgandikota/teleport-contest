@@ -4,6 +4,34 @@
 // Real mklev.js handles level generation for screen parity.
 
 import { game } from './gstate.js';
+
+// src/allmain.c set_occupation() / stop_occupation() — the multi-turn action
+// slot. moveloop_core calls go.occupation once per turn until it returns 0.
+//
+// Nothing here draws. The mechanism is what makes eating a food with
+// oc_delay > 1 span several turns, and it is the same `gm.multi >= 0` gate the
+// run loop uses, so porting it unblocks both.
+export function set_occupation(fn, txt, xtime) {
+    if (xtime) {
+        /* timed_occupation wraps fn and counts down xtime */
+        game.occupation = null;
+        (game.unported ||= new Set()).add('set_occupation:timed_occupation');
+        return;
+    }
+    game.occupation = fn;
+    game.occtxt = txt;
+    game.occtime = 0;
+}
+
+// src/allmain.c stop_occupation()
+export function stop_occupation() {
+    if (game.occupation) {
+        game.occupation = null;
+        game.occtxt = null;
+    }
+    game.multi = 0;
+}
+
 import { rn2, rn1 } from './rng.js';
 import { exerchk } from './attrib.js';
 import { init_uhunger } from './eat.js';

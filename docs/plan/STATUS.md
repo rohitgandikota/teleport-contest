@@ -130,11 +130,36 @@ stream matching, that means either
   - the shuffle is applied over a different span (C shuffles per radius; if
     our radius boundaries differ the swaps group differently).
 
-C's pre-shuffle order for radius 1 around (57,4), y outer then x inner,
-ring edges only, is
-    (56,3) (57,3) (58,3) (56,4) (58,4) (56,5) (57,5) (58,5)
-Print ours BEFORE the shuffle and compare against that list directly -- that
-is one line in collect_coords and settles it either way.
+OUR PRE-SHUFFLE ORDER IS CORRECT. Measured:
+
+    PRE r=1 n=8  56,3 57,3 58,3 56,4 58,4 56,5 57,5 58,5
+
+which is exactly C's y-outer/x-inner ring-edge order. Post-shuffle we get
+
+    57,3 58,4 56,3 58,3 58,5 56,5 56,4 57,5
+
+and seed0030's first RNG mismatch is at call 6276, far AFTER pet placement,
+so the shuffle's rn2 draws agreed with C's in count and value.
+
+THAT IS A CONTRADICTION and it is the state to resume from: identical input
+order, identical algorithm (verified line for line), identical draws --
+yet C lands on (56,4) and we land on (58,4). One of those four claims is
+false and the cheap ones are already checked, so suspect the two that are
+inferred rather than directly observed:
+
+  1. "identical draws" is inferred from the aggregate stream matching to
+     6276. It does NOT prove the draws at THIS call site matched -- an equal
+     number of compensating differences would look the same. Log the actual
+     k values from the shuffle and compare against a C trace if one can be
+     produced.
+  2. "C lands on (56,4)" is inferred from the RENDERED SCREEN, where the pet
+     glyph sits west of the stairs. Confirm the hero is really at (57,4) in
+     C at that moment rather than one column off, which would move the whole
+     ring and explain everything.
+
+Check 2 first: it is the assumption that has never been tested, and a
+one-column difference in the hero's start position would produce exactly
+this symptom while leaving every component correct.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

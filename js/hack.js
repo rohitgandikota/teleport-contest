@@ -1,7 +1,11 @@
+import { You, pline_xy, pline_The, set_msg_xy } from './pline.js';
+import { a_monnam, upstart } from './do_name.js';
+import { is_door_mappear } from './monst.js';
+import { dist2 } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
-import { is_pool, is_lava, t_at } from './mon.js';
-import { cmdq_clear } from './cmd.js';
+import { is_pool, is_lava, t_at, m_at } from './mon.js';
+import { cmdq_clear, closed_door } from './cmd.js';
 // hack.js — the hero's movement and the terrain predicates that go with it.
 // C ref: src/hack.c
 //
@@ -13,7 +17,7 @@ import { cmdq_clear } from './cmd.js';
 
 import { game } from './gstate.js';
 import { do_attack } from './uhitm.js';
-import { sensemon, is_safemon } from './display.js';
+import { sensemon, is_safemon, mon_visible } from './display.js';
 import { hides_under } from './mondata.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { rn2 } from './rng.js';
@@ -21,7 +25,7 @@ import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
 
-    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL } from './const.js';
+    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR, M_AP_OBJECT, M_AP_FURNITURE, M_AP_TYPE, isok, u_at } from './const.js';
 import { sobj_at } from './invent.js';
 import { done } from './end.js';
 import { DIED } from './const.js';
@@ -326,4 +330,215 @@ export function avoid_moving_on_liquid(x, y, msg) {
         return true;
     }
     return false;
+}
+
+// include/hack.h:1414 NODIAG() — only grid bugs cannot move diagonally.
+const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
+
+// src/hack.c:3898 lookaround() — decide whether a run/rush should stop here,
+// and if it is following a corridor, which way to turn next.
+//
+// This is what makes a rush cover several squares in one command. Without it
+// the port zeroed context.run and took a single step, so every G/shift move
+// diverged from C by however many squares C would have continued.
+//
+// C uses two gotos. `stop` is the ordinary "end the run" exit, translated as
+// nomul(0) + return. `bcorr` is a FORWARD jump landing inside the corridor
+// arm of the if-else chain, reached from the trap arm and the closed-door
+// arm; it is translated as an explicit flag rather than by restructuring,
+// because the fall-through order is load bearing and rewriting it as nested
+// conditions is exactly the kind of "cleaner" shape that diverges later.
+//
+// The turn logic at the bottom is the part with no obvious intuition: i0
+// tracks the closest corridor square seen, m0 whether a monster was on it,
+// noturn whether two corridor squares were non-adjacent (a fork). A turn is
+// only taken when exactly one corridor continues, and never more than a half
+// turn per step, which is what u.last_str_turn accumulates.
+export async function lookaround() {
+    let x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
+    let corrct = 0, noturn = 0;
+    const u = game.u;
+    const lev = game.level;
+
+    /* Grid bugs stop if trying to move diagonal, even if blind.  Maybe */
+    /* they polymorphed while in the middle of a long move. */
+    if (NODIAG(u.umonnum) && u.dx && u.dy) {
+        await You('cannot move diagonally.');
+        nomul(0);
+        return;
+    }
+
+    if (u.ublind || (game.context?.run | 0) === 0)
+        return;
+
+    for (x = u.ux - 1; x <= u.ux + 1; x++) {
+        for (y = u.uy - 1; y <= u.uy + 1; y++) {
+            const infront = (x === u.ux + u.dx && y === u.uy + u.dy);
+            const run = game.context?.run | 0;
+
+            /* ignore out of bounds, and our own location */
+            if (!isok(x, y) || u_at(x, y))
+                continue;
+            /* (grid bugs) ignore diagonals */
+            if (NODIAG(u.umonnum) && x !== u.ux && y !== u.uy)
+                continue;
+
+            const mtmp = m_at(x, y);
+            let bcorr = false, stop = false, next = false;
+
+            /* can we see a monster there? */
+            if (mtmp
+                && M_AP_TYPE(mtmp) !== M_AP_FURNITURE
+                && M_AP_TYPE(mtmp) !== M_AP_OBJECT
+                && mon_visible(mtmp)) {
+                /* running movement and not a hostile monster */
+                /* OR it blocks our move direction and we're not traveling */
+                if ((run !== 1 && !is_safemon(mtmp))
+                    || (infront && !game.context?.travel)) {
+                    if (game.flags?.mention_walls)
+                        await pline_xy(x, y, upstart(a_monnam(mtmp))
+                                       + ' blocks your path.');
+                    nomul(0);
+                    return;
+                }
+            }
+
+            const loc = lev?.at?.(x, y);
+            if (!loc)
+                continue;
+
+            /* stone is never interesting */
+            if (loc.typ === STONE)
+                continue;
+            /* ignore the square we're moving away from */
+            if (x === u.ux - u.dx && y === u.uy - u.dy)
+                continue;
+
+            /* stop for traps, sometimes */
+            if (avoid_moving_on_trap(x, y, (infront && run > 1))) {
+                if (run === 1)
+                    bcorr = true;       /* goto bcorr -- if you must */
+                else if (infront)
+                    stop = true;
+            }
+
+            if (!bcorr && !stop) {
+                const here = lev?.at?.(u.ux, u.uy);
+                /* more uninteresting terrain */
+                if (IS_OBSTRUCTED(loc.typ) || loc.typ === ROOM
+                    || IS_AIR(loc.typ) || loc.typ === ICE) {
+                    continue;
+                } else if (closed_door(x, y)
+                           || (mtmp && is_door_mappear(mtmp))) {
+                    /* a closed door? */
+                    /* ignore if diagonal */
+                    if (x !== u.ux && y !== u.uy)
+                        continue;
+                    if (run !== 1 && !game.context?.travel) {
+                        if (game.flags?.mention_walls) {
+                            set_msg_xy(x, y);
+                            await You('stop in front of the door.');
+                        }
+                        stop = true;
+                    } else {
+                        /* orthogonal to a closed door, treat as a corridor */
+                        bcorr = true;
+                    }
+                } else if (loc.typ === CORR) {
+                    bcorr = true;
+                } else if (is_pool_or_lava(x, y)) {
+                    if (infront && avoid_moving_on_liquid(x, y, true))
+                        stop = true;
+                    else
+                        next = true;
+                } else { /* e.g. objects or trap or stairs */
+                    if (run === 1)
+                        bcorr = true;
+                    else if (run === 8)
+                        next = true;
+                    else if (mtmp)
+                        next = true;            /* d */
+                    else if (((x === u.ux - u.dx) && (y !== u.uy + u.dy))
+                             || ((y === u.uy - u.dy) && (x !== u.ux + u.dx)))
+                        next = true;
+                    /* otherwise falls through to stop */
+                }
+            }
+
+            if (next)
+                continue;
+
+            if (bcorr) {
+                /* bcorr: */
+                const here = lev?.at?.(u.ux, u.uy);
+                if (here && here.typ !== ROOM) {
+                    /* running or traveling */
+                    if (run === 1 || run === 3 || run === 8) {
+                        /* distance from x,y to location we're moving to */
+                        i = dist2(x, y, u.ux + u.dx, u.uy + u.dy);
+                        /* ignore if not on or directly adjacent to it */
+                        if (i > 2)
+                            continue;
+                        /* if we've seen one corridor, and x,y is not directly
+                           orthogonally next to it, mark noturn */
+                        if (corrct === 1 && dist2(x, y, x0, y0) !== 1)
+                            noturn = 1;
+                        /* if previous x,y was diagonal, now x,y is
+                           orthogonal (or this is first time we're here) */
+                        if (i < i0) {
+                            i0 = i;
+                            x0 = x;
+                            y0 = y;
+                            m0 = mtmp ? 1 : 0;
+                        }
+                    }
+                    corrct++;
+                }
+                continue;
+            }
+
+            /* stop: */
+            nomul(0);
+            return;
+        }
+    } /* end for loops */
+
+    if (corrct > 1 && (game.context?.run | 0) === 2) {
+        if (game.flags?.mention_walls)
+            await pline_The('corridor widens here.');
+        nomul(0);
+        return;
+    }
+
+    const run = game.context?.run | 0;
+    if ((run === 1 || run === 3 || run === 8)
+        && !noturn && !m0 && i0
+        && (corrct === 1 || (corrct === 2 && i0 === 1))) {
+        /* make sure that we do not turn too far */
+        if (i0 === 2) {
+            if (u.dx === y0 - u.uy && u.dy === u.ux - x0)
+                i = 2; /* straight turn right */
+            else
+                i = -2; /* straight turn left */
+        } else if (u.dx && u.dy) {
+            if ((u.dx === u.dy && y0 === u.uy)
+                || (u.dx !== u.dy && y0 !== u.uy))
+                i = -1; /* half turn left */
+            else
+                i = 1; /* half turn right */
+        } else {
+            if ((x0 - u.ux === y0 - u.uy && !u.dy)
+                || (x0 - u.ux !== y0 - u.uy && u.dy))
+                i = 1; /* half turn right */
+            else
+                i = -1; /* half turn left */
+        }
+
+        i += (u.last_str_turn | 0);
+        if (i <= 2 && i >= -2) {
+            u.last_str_turn = i;
+            u.dx = x0 - u.ux;
+            u.dy = y0 - u.uy;
+        }
+    }
 }

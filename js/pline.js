@@ -73,3 +73,8 @@ export async function pline_xy(x, y, line) {
     set_msg_xy(x, y);
     await pline(line);
 }
+
+// src/pline.c:414 pline_The()
+export async function pline_The(line) {
+    await pline('The ' + line);
+}

@@ -163,7 +163,7 @@ export function mon_nam_too(mon, other_mon) {
 }
 
 // src/hacklib.c upstart() — capitalise the first letter.
-function upstart(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
+export function upstart(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
 
 function note_do_name_unported(what) {
     (game.unported ||= new Set()).add('do_name:' + what);

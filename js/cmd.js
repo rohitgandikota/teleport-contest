@@ -94,7 +94,7 @@ const KNOWN_UNPORTED = new Set([
 
 // C ref: hack.c — check if a cell blocks movement
 // include/rm.h closed_door()
-function closed_door(x, y) {
+export function closed_door(x, y) {
     const loc = game.level?.at(x, y);
     return !!(loc && IS_DOOR(loc.typ) && (loc.doormask & (D_CLOSED | D_LOCKED)));
 }

@@ -840,6 +840,30 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+SIZED dog_move attack branch (45%) -- src/dogmove.c:1102, the
+`(mfp.info[i] & ALLOW_M) && MON_AT(nx, ny)` arm. It has two halves with very
+different costs:
+
+  THE DECISION IS SMALL AND PORTABLE. C weights the pet's audacity by its
+  fraction of max HP:
+
+      balk = mtmp->m_lev + ((5 * mtmp->mhp) / mtmp->mhpmax) - 2
+
+  and refuses the attack when the target's level >= balk, when both are tame
+  and not Conflicted, when max_passive_dmg would kill the pet, or when the
+  pet is under a quarter HP against a guardian. C spends a fourteen-line
+  comment on the HP bands; balk's maximum is +3 and the comparison is >=,
+  which is easy to get backwards.
+
+  THE ATTACK ITSELF IS mattackm, 299 LINES in src/mhitm.c, and it is not
+  ported. So this entry is NOT a leaf: porting the decision without mattackm
+  means deciding to attack and then doing nothing, which is worse than
+  declining.
+
+Do the decision and mattackm together, or neither. Given mattackm's size that
+is a session of its own, and it also unblocks pet_ranged_attk:attack (41%)
+which sits just below it on the list.
+
 SIZED postmov:mpickstuff (43%) -- src/mon.c:1847, 63 lines. Its only draw is
 an rn2(25) guarded by `!mtame && in_rooms(SHOPBASE)`, so it spends nothing
 outside a shop; but the PICKUP itself moves objects off the floor and into

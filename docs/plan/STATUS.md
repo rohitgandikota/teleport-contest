@@ -168,6 +168,33 @@ difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
 
+### seed0101 at 2293: something creates an object inside moveloop_preamble
+
+    2291  rnd(9000)  moveloop_preamble(allmain.c:72)   ours matches
+    2292  rnd(30)    moveloop_preamble(allmain.c:79)   ours matches
+    2293  rnd(2)     next_ident(mkobj.c:521)           ours draws rn2(12)
+    2294  rn2(100)   obj_resists(zap.c:1469)
+
+next_ident is called by mksobj (o_id) and by makemon (m_id), so C is CREATING
+something between seer_turn and the first move, and we go straight to
+mcalcmove. The session's first key is 'Q' at step 4, well after this, so it is
+not the command.
+
+What sits there in C is the block js/allmain.js records as
+`moveloop_preamble set_wear/pickup`:
+
+    svc.context.rndencode = rnd(9000);      <- 2291, matches
+    set_wear((struct obj *) 0);
+    reset_justpicked(gi.invent);
+    (void) pickup(1);
+    svc.context.seer_turn = (long) rnd(30); <- 2292, matches
+
+so the draws at 2293-2294 come AFTER seer_turn, i.e. after that block, not
+inside it. Do not assume it is pickup(1) -- the ordering rules that out.
+Instrument RND at 2293 on the C side is impossible, so instead read
+moveloop_preamble's tail (src/allmain.c:80 onward, u.umovement/initrack) and
+moveloop_core's opening for the first thing that makes an object or a monster.
+
 ### seed0501 at 2205 is the spell-casting subsystem
 
     2203  rnd(9000)  moveloop_preamble   ours matches

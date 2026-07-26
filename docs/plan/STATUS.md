@@ -1,29 +1,26 @@
-=== NEXT CHEAP WIN: m_initinv mlet=53 (16%) is probably a phantom ===
+=== m_initinv mlet=53 (16%) IS NOT A PHANTOM. Prediction tested, wrong. ===
 
-C's S_HUMAN arm in m_initinv is a CHAIN, not a block:
+I predicted this was a seventh phantom: C's S_HUMAN arm is a chain
+(is_mercenary, PM_SHOPKEEPER, MS_PRIEST, quest monk) and an ordinary human
+matches none, so gating it looked like it would clear 16%.
 
-    if (is_mercenary(ptr))                    { soldiers, guards, watchmen }
-    else if (ptr == &mons[PM_SHOPKEEPER])     { ... }
-    else if (ptr->msound == MS_PRIEST ...)    { ... }
-    else if (quest_mon_represents_role(...))  { ... }
+GATED IT AND MEASURED. Reach after gating: still 16%. Every S_HUMAN the
+public sessions reach really is a mercenary, shopkeeper or priest, so the
+record was accurate all along. The gate is committed anyway because it is
+what C does and protects a held-out session containing an ordinary human,
+but it clears nothing.
 
-An ORDINARY human matches none and C does nothing, so js/makemon.js:603
-recording for every S_HUMAN overstates the gap the same way the six other
-phantoms did. Gate it on those four conditions.
+TWO THINGS THAT FOLLOW:
 
-THE BLOCKER, and it needs a fresh head. is_mercenary is
-`(mflags2 & M2_MERC) != 0`, include/mondata.h:111. It exists module-locally
-at js/monmove.js:379. Adding it to js/mondata.js and importing it in both
-places produced `Identifier 'is_mercenary' has already been declared`, and
-js/mondata.js then failed to import STANDALONE even though it contains
-exactly one definition and one comment mentioning the name. I could not
-trace it and reverted.
+  - The is_mercenary consolidation is NOT worth chasing. It only existed to
+    enable this gate, and the gate buys nothing. js/makemon.js now has a
+    third local copy alongside js/monmove.js:379; dup-defs lists it. Tidy it
+    only if something else needs it.
 
-Suggestion: do NOT move it. Add the gate to makemon.js using a local
-`const is_merc = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;` -- a third
-copy is ugly but the two existing ones already disagree with nothing, and
-dup-defs will list it honestly. Consolidating the three is a separate
-change.
+  - After six confirmed phantoms I assumed a seventh. Gating is cheap, but
+    the PREDICTION that a dispatch-point record is phantom has to be
+    measured. The cheap test is: gate it, then check whether the reach
+    number actually moves.
 
 === EXTCMD SWEEP DONE: chat was the only one. 512 screens. ===
 

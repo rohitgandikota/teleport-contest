@@ -13,7 +13,13 @@
 import { game } from './gstate.js';
 import { Deaf } from './youprop.js';
 import { You_hear } from './pline.js';
-import { M_AP_TYPE } from './const.js';
+import { M_AP_TYPE, M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED } from './const.js';
+import { d } from './rng.js';
+import { mhitm_adtyping, mhitm_knockback } from './uhitm.js';
+import { touch_petrifies } from './dog.js';
+import { resists_ston } from './mon.js';
+import { MON_WEP, mon_offmap } from './monst.js';
+import { PMNAMES } from './monst_data.js';
 import { ATTKS } from './monst_data.js';
 import { seemimic } from './mon.js';
 import { newsym, canspotmon, pline } from './display.js';
@@ -107,4 +113,60 @@ export async function missmm(magr, mdef, mattk) {
     } else {
         await noises(magr, mattk);
     }
+}
+
+// src/mhitm.c mdamagem() — apply one monster's attack damage to another.
+//
+// THE FIRST LINE IS THE POINT: d(damn, damd) is the damage roll, and it is
+// the first RNG call any monster-vs-monster attack makes. Until this landed
+// the whole branch was declined and that draw never happened.
+//
+// Ported: the roll, the mhitm_data setup, the mhitm_adtyping dispatch, the
+// mhitm_knockback call (which draws twice more), and the damage application.
+// Recorded: the petrification block, which needs attk_protection/monstone and
+// fires only against a petrifying defender, and the death path, which needs
+// monkilled.
+export function mdamagem(magr, mdef, mattk, mwep, dieroll) {
+    const pa = magr.data, pd = mdef.data;
+    const mhm = {
+        damage: d(mattk.damn | 0, mattk.damd | 0),
+        hitflags: M_ATTK_MISS,
+        permdmg: 0,
+        specialdmg: 0,
+        dieroll: dieroll,
+        done: false,
+    };
+
+    if ((touch_petrifies(pd)
+         || (mattk.adtyp === ATTKS.AD_DGST && pd.pmidx === PMNAMES.PM_MEDUSA))
+        && !resists_ston(magr)) {
+        /* attk_protection(), poly_when_stoned(), mon_to_stone() and
+           monstone() are unported; the attacker turning to stone is a whole
+           death path and is not guessed at. */
+        (game.unported ||= new Set()).add('mdamagem:petrify_attacker');
+        return M_ATTK_MISS;
+    }
+
+    mhitm_adtyping(magr, mattk, mdef, mhm);
+
+    if (mhitm_knockback(magr, mdef, mattk, mhm.hitflags, MON_WEP(magr) !== null)
+        && (((mhm.hitflags & (M_ATTK_DEF_DIED | M_ATTK_HIT)) !== 0)
+            || mon_offmap(mdef)))
+        return mhm.hitflags;
+
+    if (mhm.done)
+        return mhm.hitflags;
+
+    if (!mhm.damage)
+        return mhm.hitflags;
+
+    mdef.mhp -= mhm.damage;
+    if (mdef.mhp < 1) {
+        /* monkilled() and the corpse/zombify bookkeeping around it are
+           unported. The hit points ARE deducted above, so the defender is
+           left dead; what is missing is the death itself. */
+        (game.unported ||= new Set()).add('mdamagem:monkilled');
+        return M_ATTK_DEF_DIED;
+    }
+    return (mhm.hitflags |= M_ATTK_HIT);
 }

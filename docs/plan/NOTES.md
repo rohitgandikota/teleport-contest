@@ -1760,10 +1760,31 @@ SESSION. Instrumented: getobj_letters runs 154 times across seed2200 normally
 and exactly ONCE with the filter wired -- the first call swallowed the rest of
 the input.
 
-The deeper problem it exposed: at the first 'q' in seed2200 our game.invent
-holds ONE object (oclass=2, otyp=79) while C's prompt offers fourteen letters.
-The starting inventory is wrong, and the null filter was hiding it by offering
-whatever letters we did have.
+The deeper problem it exposed, AND AN OPEN CONTRADICTION -- do not act on the
+first reading of this without re-measuring:
+
+At the traced first 'q' our game.invent held ONE object, oclass=2 otyp=79,
+which is the quarterstaff, the FIRST entry of the Wizard table. But with the
+filter absent the same session's prompt offers fourteen letters, and fourteen
+is exactly right.
+
+The table itself is CORRECT. js/uinit_data.js TROBJ.Wizard has nine entries
+matching src/u_init.c:167 item for item: quarterstaff, cloak of magic
+resistance, 1 wand, 2 rings, 3 POTIONS (trclass 8), 3 scrolls, force bolt,
+1 more spellbook, magic marker. That sums to 14 objects with 3 potions, which
+is C's [abcdefghijklmn] and [fgh] exactly. So the data is not the bug and
+ini_inv is called.
+
+Which leaves two possibilities, untested:
+  - ini_inv creates only the first entry and the UNDEF_TYP entries (which need
+    a random object of that class) silently fail, and the fourteen letters
+    seen in the unfiltered run come from a later state than the traced call;
+  - or the two runs reach getobj at different points and the traced call is
+    genuinely earlier than step 4.
+
+Resolve by printing game.invent.length at every getobj call in BOTH runs
+before changing anything. The wrong lesson to draw here is "the starting
+inventory table is wrong" -- it is verified correct.
 
 Two consequences worth acting on separately:
   - Do not treat "wiring a correct predicate made the score worse" as evidence

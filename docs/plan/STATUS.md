@@ -879,6 +879,31 @@ mattackm follows every attack with passivemm. Neither is ported:
     s_suffix                   ALREADY PORTED, js/hacklib.js
     mon_hates_silver           ALREADY PORTED, js/dog.js
 
+LANDED SO FAR (the leaves, bottom-up so no call site is a forward reference):
+
+    noises           mhitm.c:27     js/mhitm.js   DONE
+    pre_mm_attack    mhitm.c:40     js/mhitm.js   DONE
+    missmm           mhitm.c:76     js/mhitm.js   DONE
+    could_seduce     mhitu.c:1934   js/mhitu.js   DONE  (new file)
+    poly_gender      polyself.c:2149 js/polyself.js DONE (new file)
+    gender           mondata.c:1180 js/mondata.js DONE
+    pronoun_gender   mondata.c:1191 js/mondata.js DONE
+    mon_nam_too      do_name.c:1191 js/do_name.js DONE
+    You_hear         pline.c:436    js/pline.js   DONE
+
+STILL NEEDED FOR THE MELEE PATH, in dependency order:
+
+    mdamagem       104 lines   hitmm ENDS in this; port before hitmm
+    hitmm           88 lines   then this
+    passivemm      154 lines   mattackm runs it after every attack
+    mattackm       299 lines   the dispatcher, last
+    shade_miss       ? lines   unsized, called by hitmm
+    simpleonames    15 lines   the silver-sear message only
+    map_invisible    ? lines   BLOCKED on the glyph layer, recorded not guessed
+
+That is ~660 lines remaining. Nothing above needs to be guessed at; the leaf
+layer is done and verified by forced execution.
+
 MELEE-ONLY mattackm IS THEREFORE ~800 LINES, not the 400 I recorded. Each
 sizing this session has been an undercount because I sized the function I
 named and not the leaf it returns into. The rule that actually works: size

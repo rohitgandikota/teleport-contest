@@ -170,9 +170,22 @@ map 58. makemon logged only ONE random monster in this room, at (57,4) -- so
 the thing at map 58 is the PET, and the thing at 57 is the random sleeper. C's
 pet is at 56 and ours is at 58: two squares apart, not one.
 
-Next: our pet starts where? makedog places it adjacent to the hero. Compare its
-initial square against C's before assuming dog_move is at fault -- if it starts
-wrong, every subsequent move inherits that.
+js/dog.js makedog() calls
+
+    makemon(mons[pettype], u.ux, u.uy, MM_EDOG | NO_MINVENT)
+
+i.e. at the HERO's own square, and relies on makemon to relocate it because the
+hero is standing there. Check that our makemon actually does that relocation --
+C's makemon calls enexto/goodpos when the requested square is occupied, and
+enexto is one of the functions this port RECORDS rather than implements
+(js/sp_lev.js create_monster has the same gap). If makemon places the pet on
+the hero's square or picks a different free square than C's, every later
+dog_move inherits the error.
+
+At step 4 the hero is at map (55,5) and C's pet is at (56,4), diagonally
+adjacent. Ours is at (58,4) -- three columns away, so it has wandered rather
+than started wrong, OR started wrong and compounded. Distinguish those two by
+dumping the pet's square immediately after makedog, before any move.
 
 Check `topologize` and the wall-drawing path against croom->lx/hx before
 touching room creation. If the walls come from a different source than the

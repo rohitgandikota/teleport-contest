@@ -217,10 +217,29 @@ The hero was at (71,15) at that point, three squares from the newt's
 neighbourhood. So a goal of 77,16 is entirely plausible as a belief about a
 hero who was nearby, and the "sixty-six columns away" argument is void.
 
-WHAT REMAINS TRUE: the newt's chosen square is correct GIVEN its goal, so the
-selection block is not at fault, and the divergence is upstream of it. What is
-NOT established is that the goal is wrong -- that needs comparing against C,
-not against a hero position taken from the wrong step.
+SETTLED, BY THE MAP RATHER THAN BY TIMING. Scanning x 70-79, y 9-20 for
+squares with exactly 7 open neighbours returns exactly ONE:
+
+    OPEN7 75,14
+
+and 75,14 is in the newt's own candidate list:
+
+    poss = [75,12  75,13  75,14  76,14  77,13  77,14]
+                     ^C goes here            ^we go here
+
+So C's newt moves WEST to 75,14 and ours moves EAST to 77,14. Both squares
+were available to both. The hero at that moment is at (71,15), which is WEST
+of the newt: C's newt is moving TOWARD the hero and ours is moving AWAY.
+
+THE GOAL IS WRONG AFTER ALL -- but for a reason the earlier argument got
+backwards. It is not "77,16 is far from the hero at step 41", which compared
+against the wrong step. It is that 77,16 points EAST while the hero, at the
+moment of this move, is WEST. Our newt is walking in the opposite direction
+from C's.
+
+That makes mtmp.mux/muy, the monster's belief about the hero's position, the
+prime suspect, and set_apparxy the function that sets it. set_apparxy DRAWS,
+so if it is wrong it is both a position and an RNG fault.
 
 Note that GAP 1 and GAP 2 above are still real omissions worth closing on
 their own merits, they are simply not this bug. Do not delete those entries.

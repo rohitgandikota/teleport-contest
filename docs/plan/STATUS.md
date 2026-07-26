@@ -34,7 +34,42 @@ TOP OF THE REACH LIST NOW, and it can be trusted for the first time:
      25%  cmd:r / cmd:w               doread 318 lines; dowear 19 but its
                                       chain is unsized.
 
-=== mattackm CHAIN: 2 OF 5 PIECES DONE. mdamagem IS NEXT AND IS SIZED. ===
+=== mattackm CHAIN: THE WHOLE SUPPORT LAYER IS DONE. ONLY mattackm LEFT. ===
+
+COMMITTED, each verified by forced execution with the RNG log on:
+
+    shade_miss        uhitm.c:2016   36L   first test answers for non-shades
+    mhitm_ad_phys     uhitm.c:4128  ~12L   the mhitm branch only
+    mhitm_adtyping    uhitm.c:4782  ~40L   38 arms record by their own name
+    mhitm_knockback   uhitm.c:5247  ~30L   ITS TWO DRAWS ARE THE POINT
+    mdamagem          mhitm.c       ~55L   d(damn,damd) is the damage roll
+    hitmm             mhitm.c:644   ~65L   per-attack-type messages
+
+A jackal biting a newt through hitmm produces draws=3 and deals damage:
+d(damn,damd) + mhitm_knockback's rn2(3) and rn2(chance). That is the exact
+draw signature C produces for an ordinary pet blow.
+
+STILL MISSING for mattackm itself:
+
+    getmattk    135L  mhitu.c   picks WHICH attack of the monster's NATTK
+                                slots is used this pass. Not optional -- the
+                                loop calls it every iteration.
+    passivemm   154L  mhitm.c   the defender's counter-attack, run after
+                                every attack. SIZE ITS BRANCH SPLIT FIRST.
+    mattackm    299L  mhitm.c   the dispatcher itself
+
+mattackm's own head is small and portable: null checks, helpless(magr), the
+grid-bug angle rule, tmp = find_mac(mdef) + m_lev, the mconf/helpless +4, the
+mundetected unhide, mlstmv = moves, skipdrin = FALSE. All of find_mac,
+helpless, newsym, canseemon, sensemon, m_at, DEADMONSTER and distmin are
+ported. The bulk is the NATTK loop's switch, and only the melee arm matters.
+
+DO NOT wire dog_move's attack branch until mattackm can deal damage AND
+monkilled exists -- mdamagem currently deducts hit points without running the
+death path, which is an honest recorded half-state but not something to
+expose to a live session.
+
+
 
 DONE and committed, written against fully ported code:
     mhitm_ad_phys (mhitm branch)   ~12 lines   uhitm.c:4128

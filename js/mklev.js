@@ -416,7 +416,7 @@ function t_at(x, y) {
 
 // src/engrave.c:1687 make_grave() — a grave only goes on plain room floor with
 // no trap, and an unnamed one draws its epitaph from dat/epitaph.
-function make_grave(x, y, str) {
+export function make_grave(x, y, str) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
     if ((loc.typ !== ROOM && loc.typ !== GRAVE) || t_at(x, y))
@@ -1273,7 +1273,7 @@ function sort_rooms() {
 }
 
 // C ref: mklev.c topologize()
-function topologize(croom) {
+export function topologize(croom) {
     if (!croom || croom.irregular) return;
     const roomno = (croom.roomnoidx ?? -1) + ROOMOFFSET;
     const lowx = croom.lx, lowy = croom.ly;
@@ -1698,7 +1698,7 @@ export function somexy(croom, c) {
 // src/mklev.c:1806 occupied() — a TRAP occupies a square too, and leaving that
 // out made somexyspace() accept squares C rejects, so every retry after the
 // first trap on a level landed somewhere different.
-function occupied(x, y) {
+export function occupied(x, y) {
     const loc = game.level.at(x, y);
     if (!loc) return false;
     if (t_at_lev(x, y)) return true;
@@ -1711,7 +1711,7 @@ function t_at_lev(x, y) {
     return (game.level?.traps || []).some(t => t.tx === x && t.ty === y);
 }
 
-function somexyspace(croom, c) {
+export function somexyspace(croom, c) {
     let trycnt = 0;
     let okay;
     do {

@@ -16,6 +16,7 @@ import { sobj_at, weight, obj_extract_self } from './invent.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { mkobj_at, mksobj_at, add_to_container, set_corpsenm } from './mkobj.js';
 import { stock_room } from './shknam.js';
+import { fill_zoo } from './mkroom.js';
 import { OBJ_NAME } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
@@ -98,7 +99,8 @@ export function fill_special_room(croom) {
         case LEPREHALL:
         case MORGUE:
         case BARRACKS:
-            note_unported(`fill_zoo rtype=${croom.rtype}`);
+            /* src/mkroom.c:275 — mkzoo() marked the room; this fills it. */
+            fill_zoo(croom);
             break;
         default:
             break;

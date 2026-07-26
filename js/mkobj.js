@@ -1045,6 +1045,28 @@ export function special_corpse(num) {
 }
 
 // src/mkobj.c:1976 set_corpsenm()
+// src/mkobj.c:2227 mk_tt_object() — a corpse or statue named for a player
+// from the scoreboard.
+//
+// tt_oname() reads the tombstone/scoreboard file, which we do not have, and C
+// handles the empty-scoreboard case explicitly: "tt_oname() will return null
+// if the scoreboard is empty, which in turn leaves the random corpsenm value;
+// force it to match a player". An absent scoreboard is therefore the C's own
+// documented path, not a hole, and it DRAWS rn1(PM_WIZARD - PM_ARCHEOLOGIST
+// + 1, PM_ARCHEOLOGIST).
+export function mk_tt_object(objtype, x, y) {
+    /* player statues never contain books */
+    const initialize_it = (objtype !== ONAMES.STATUE);
+    const otmp = mksobj_at(objtype, x, y, initialize_it, false);
+
+    /* tt_oname() is null with no scoreboard, so this arm always runs */
+    const pm = rn1(PMNAMES.PM_WIZARD - PMNAMES.PM_ARCHEOLOGIST + 1,
+                   PMNAMES.PM_ARCHEOLOGIST);
+    set_corpsenm(otmp, pm);
+
+    return otmp;
+}
+
 export function set_corpsenm(obj, id) {
     obj.corpsenm = id;
     switch (obj.otyp) {

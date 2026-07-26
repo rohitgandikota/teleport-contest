@@ -405,21 +405,31 @@ sides, the loop's skip test passes (4 > 6 and 4 === 6 are both false), and the
 branch gate 4 < MANFOOD(3) is false, which routes to the else-if that draws
 rn2(8). We draw rn2(4) instead, so the loop never sees the object.
 
-INSTRUMENT THE LOOP -- this has been named as the next step for several ticks
-and not yet done:
+INSTRUMENTED AT LAST, AND BOTH EARLIER CANDIDATES ARE WRONG:
 
-    js/dog.js:637   for (const obj of (game.level.objects || []))
+    OBJLOOP n=12 box=x[53,63] y[0,9] objs=70,13 49,3 40,18 71,10 56,4 49,16
 
-Print the iteration count and every object's (ox, oy) on the divergent turn,
-and the bounding box min_x/max_x/min_y/max_y that SQSRCHRADIUS produces. Two
-candidates:
-  - game.level.objects does not contain the gold at all, which would be an
-    object-population bug affecting far more than pets, or
-  - the gold is outside the bounding box because SQSRCHRADIUS or its clamps
-    differ from C's.
+There are 12 objects, the object at (56,4) IS among them, and (56,4) IS
+inside the box. So the loop does reach the gold, and neither
+game.level.objects nor the SQSRCHRADIUS box is at fault.
 
-Use the assert-the-replace-landed pattern; a silent no-op edit has cost two
-ticks in this file already.
+THAT ISOLATES ONE CONDITION. The APPORT arm needs
+
+    (otyp === MANFOOD || m_cansee(mtmp, nx, ny))
+
+and otyp is APPORT (4), not MANFOOD (3), so it hangs entirely on m_cansee.
+js/dog.js:313 defines it as clear_path(mon.mx, mon.my, x, y), and
+js/vision.js:557 clear_path tests viz_clear[row][col].
+
+SO CHECK WHETHER viz_clear IS POPULATED WHEN dog_goal RUNS. If it is empty or
+stale at that moment, is_clear() is false for every square, clear_path returns
+false, m_cansee returns false, and the APPORT arm is skipped -- which is
+exactly the observed behaviour. That would also mean every other m_cansee and
+clear_path caller is silently answering "no line of sight" at that point in
+the turn, so the blast radius is much wider than pets.
+
+Print viz_clear's dimensions and a sample row from inside dog_goal, and
+compare against when vision_recalc last ran.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

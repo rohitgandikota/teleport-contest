@@ -619,7 +619,9 @@ export async function rhack(key) {
         // getobj(). 330 keystrokes across the public corpus, the most of any
         // command we did not handle.
         game.context.move = (await doeat() === ECMD_TIME ? 1 : 0);
-    } else if ('rwqdWPR'.includes(ch)) {
+    } else if (ch === 'd') {
+        game.context.move = (await dodrop() === ECMD_TIME ? 1 : 0);
+    } else if ('rwqWPR'.includes(ch)) {
         // src/cmd.c cmdlist — read, wield, quaff, drop, wear, put on, remove.
         // Every one of them starts with getobj(), which reads the inventory
         // letter. Their effects are unported, but consuming that letter is what

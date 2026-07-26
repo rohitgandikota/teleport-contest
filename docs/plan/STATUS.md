@@ -6,7 +6,36 @@
 Tree clean and pushed. seed8000 matches C call for call (3130 calls) on ported
 code; js/fastforward.js is not on its path.
 
-TOP TARGET, FOUND BY RE-RANKING ON SCREENS RATHER THAN RNG: getobj's prompt.
+NEXT MAJOR TARGET: THE MONSTER NAMING SUBSYSTEM (src/do_name.c x_monnam).
+
+x_monnam is 205 lines and has 396 CALL SITES across the C source. Nothing
+that names a monster can print correctly without it, which is most monster
+messages in the game. js/ has NO monster naming at all right now -- x_monnam,
+mon_nam, y_monnam, Monnam and YMonnam are all absent, which is why every
+message that mentions a monster is currently either recorded or blank.
+
+Found via screendiff on seed0014:
+
+  C     You swap places with your little dog.
+  ours  (blank)
+
+domove_swap_with_pet is ported and the swap HAPPENS; only the message is
+missing, and it is missing because x_monnam(mtmp, ARTICLE_YOUR, ...) does not
+exist. The same gap silences setmangry's "%s gets angry!", passive's messages,
+hmon_hitmon_msg_hit's "You hit %s", growl, wake_msg and every kill message.
+
+This is likely the single largest screen lever left: message lines are row 0
+of a scored 24x80 grid, and they are the FIRST thing that differs on many
+sessions regardless of how well the RNG tracks.
+
+Port order suggestion: x_monnam first (it does the work), then the thin
+wrappers over it -- mon_nam, y_monnam, Monnam, YMonnam, l_monnam -- which are
+a few lines each. Watch the article logic: ARTICLE_YOUR for tame,
+ARTICLE_THE when the monster has no given name and is not a proper-name type,
+ARTICLE_NONE otherwise, and a "peaceful" adjective inserted for peaceful
+non-tame monsters.
+
+PREVIOUS TOP TARGET, NOW DONE: getobj's prompt.
 
 tools/screendiff.mjs on seed2200 step 4 shows exactly this:
 

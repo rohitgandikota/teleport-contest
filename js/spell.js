@@ -40,6 +40,38 @@ export function spell_skilltype(booktype) {
     return game.objects[booktype].oc_subtyp;
 }
 
+// src/spell.c:22 incrnknow()
+const incrnknow = (spell, x) => { game.spl_book[spell].sp_know = KEEN + x; };
+
+// src/spell.c initialspell() — memorise a starting spellbook.
+//
+// u_init calls it for every SPBOOK_CLASS item in the starting inventory that
+// is not blank paper. Without it game.spl_book stays empty, num_spells()
+// returns 0, and getspell() answers "You don't know any spells right now."
+// for a hero who plainly does.
+export function initialspell(obj) {
+    const otyp = obj.otyp;
+    let i;
+
+    for (i = 0; i < MAXSPELL; i++)
+        if (spellid(i) === NO_SPELL || spellid(i) === otyp)
+            break;
+
+    if (i === MAXSPELL) {
+        note_unported_spell('initialspell:too many spells');
+    } else if (spellid(i) !== NO_SPELL) {
+        /* initial inventory should not contain duplicate spellbooks */
+        note_unported_spell('initialspell:duplicate');
+    } else {
+        (game.spl_book ||= [])[i] = {
+            sp_id: otyp,
+            sp_lev: game.objects[otyp].oc_level,
+            sp_know: 0,
+        };
+        incrnknow(i, 0);
+    }
+}
+
 // src/spell.c:115 spell_let_to_idx() — 'a'-'z' then 'A'-'Z'.
 function spell_let_to_idx(ilet) {
     let indx = ilet.charCodeAt(0) - 'a'.charCodeAt(0);

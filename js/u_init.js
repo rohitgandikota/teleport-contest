@@ -27,7 +27,7 @@ import { ART_SNICKERSNEE } from './artilist_data.js';
 import { P_NONE, W_QUIVER, W_WEP } from './const.js';
 import { Is_container } from './obj.js';
 import { skill_init } from './weapon.js';
-import { spell_skilltype } from './spell.js';
+import { spell_skilltype, initialspell } from './spell.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
@@ -537,6 +537,11 @@ export function ini_inv_use_obj(obj) {
     }
     obj.owornmask ||= 0;
     ini_inv_wield(obj);
+
+    /* src/u_init.c:1295 — a starting spellbook is memorised. */
+    if (obj.oclass === OCLASSES.SPBOOK_CLASS
+        && obj.otyp !== ONAMES.SPE_BLANK_PAPER)
+        initialspell(obj);
 }
 
 // src/u_init.c:1281 — a Tourist's darts go into the quiver, which is what

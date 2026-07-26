@@ -35,7 +35,7 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
    Both sides export function DECLARATIONS, which hoist, so each module sees the
    other's bindings by the time anything is called. */
 import { merged, weight } from './invent.js';
-import { OBJ_CONTAINED } from './obj.js';
+import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { depth } from './dungeon.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
@@ -501,10 +501,6 @@ const LIQUID = 1, PAPER = 5, LEATHER = 7, WOOD = 8, DRAGON_HIDE = 10,
 const P_NONE = 0;                 /* include/skills.h */
 const FIRE_RES = 1;               /* include/prop.h:15 */
 
-// include/obj.h:382 Is_candle()
-function Is_candle(otmp) {
-    return otmp.otyp === ONAMES.TALLOW_CANDLE || otmp.otyp === ONAMES.WAX_CANDLE;
-}
 
 // src/mkobj.c is_flammable()
 function is_flammable(otmp, objects) {
@@ -745,13 +741,6 @@ function assign_candy_wrapper(obj) {
         obj.spe = 1 + rn2(N_CANDY_WRAPPERS - 1);
 }
 
-// include/obj.h:327 Is_pudding()
-function Is_pudding(o) {
-    return o.otyp === ONAMES.GLOB_OF_GRAY_OOZE
-        || o.otyp === ONAMES.GLOB_OF_BROWN_PUDDING
-        || o.otyp === ONAMES.GLOB_OF_GREEN_SLIME
-        || o.otyp === ONAMES.GLOB_OF_BLACK_PUDDING;
-}
 
 // src/timeout.c start_glob_timeout() — when the caller passes 0, the shrink
 // time is 25 + rn2(5) - 2.

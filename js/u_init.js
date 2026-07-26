@@ -25,6 +25,7 @@ import { PMNAMES } from './monst_data.js';
 import { skill_tables } from './skills_data.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
 import { P_NONE, W_QUIVER, W_WEP } from './const.js';
+import { Is_container } from './obj.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { TROBJ, UNDEF_TYP, UNDEF_SPE, UNDEF_BLESS } from './uinit_data.js';
 import { discover_object } from './o_init.js';
@@ -132,8 +133,6 @@ const is_graystone = (obj) =>
     obj.otyp === ONAMES.LUCKSTONE || obj.otyp === ONAMES.LOADSTONE
     || obj.otyp === ONAMES.FLINT || obj.otyp === ONAMES.TOUCHSTONE;
 
-const Is_container = (obj) =>
-    obj.otyp >= ONAMES.LARGE_BOX && obj.otyp <= ONAMES.BAG_OF_TRICKS;
 
 // src/u_init.c:1214 ini_inv_adjust_obj() — returns true when the caller should
 // stop making more of this entry.

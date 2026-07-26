@@ -63,3 +63,22 @@ export const OBJ_ONBILL = 7;    /* object on shk bill */
 export const carried = (o) => o.where === OBJ_INVENT;
 // include/obj.h:333
 export const mcarried = (o) => o.where === OBJ_MINVENT;
+
+// include/obj.h:327 Is_pudding() — the four glob types by NAME, not by the
+// globby flag. mksobj sets globby for exactly these, so the two agree today,
+// but the flag is a consequence of being a glob rather than the definition of
+// one.
+export const Is_pudding = (o) =>
+    o.otyp === ONAMES.GLOB_OF_GRAY_OOZE || o.otyp === ONAMES.GLOB_OF_BROWN_PUDDING
+    || o.otyp === ONAMES.GLOB_OF_GREEN_SLIME || o.otyp === ONAMES.GLOB_OF_BLACK_PUDDING;
+
+// include/obj.h:337 Is_container()
+export const Is_container = (o) =>
+    o.otyp >= ONAMES.LARGE_BOX && o.otyp <= ONAMES.BAG_OF_TRICKS;
+
+// include/obj.h:382 Is_candle()
+export const Is_candle = (o) =>
+    o.otyp === ONAMES.TALLOW_CANDLE || o.otyp === ONAMES.WAX_CANDLE;
+
+// include/obj.h:334 Has_contents()
+export const Has_contents = (o) => !!(o.cobj && o.cobj.length);

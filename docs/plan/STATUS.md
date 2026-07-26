@@ -246,11 +246,31 @@ entirely down to PET MOVEMENT, which returns this to dog_move, the function
 this line of investigation started from and which was set aside earlier as
 "not what costs those sessions their screens".
 
-DO THIS FIRST, and it is cheap: run screendiff and look at the EARLIEST step
-where the pet is visible -- ideally step 0 or 1, before any pet turn has
-resolved. If the pet agrees there, placement is fine and the bug is in
-dog_move. If it already differs at step 0, placement is genuinely wrong and
-the earlier analysis can be resumed with a valid reference point.
+SETTLED. screendiff reports seed0030's FIRST differing step as step 4, which
+means steps 0, 1, 2 and 3 match COMPLETELY -- pet included. The pet is placed
+on the correct square and renders correctly for three turns before anything
+diverges.
+
+PET PLACEMENT IS NOT BROKEN. The entire investigation above rested on
+comparing makedog's moves=0 output against a step-4 screen, and the answer
+was available from the divergence step number the whole time.
+
+THE BUG IS IN PET MOVEMENT -- dog_move -- which is where the trail started
+roughly twenty ticks ago before being set aside. What is now known that was
+not known then:
+
+  - js/dog.js:994 holds dog_move (~211 lines, 10 draws); js/dogmove.js does
+    NOT, despite mirroring src/dogmove.c. Do not re-port it.
+  - its scoring loop's sampler is correct: pre-increment rn2(++chcnt) and the
+    j < 0 chcnt reset both verified.
+  - appr, IS_ROOM, the candidate list and the mfndpos ordering were all
+    eliminated by measurement.
+  - the first RNG divergence for seed0030 is call 6276 at obj_resists, far
+    downstream, so dog_move's own draws agree; the difference is in which
+    square it CHOOSES, not what it rolls.
+
+Start from seed0030 step 4 with screendiff, and instrument dog_move's chosen
+square on that specific turn.
 
 One ordering fact to keep in mind: the pet is placed during level generation,
 before the whole-level wallification pass added at js/mklev.js, so the map

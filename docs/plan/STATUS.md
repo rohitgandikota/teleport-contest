@@ -4236,8 +4236,28 @@ likeliest remaining suspects, in order:
   2. The mimic path in mkshobj_at: mkclass(S_MIMIC, 0) and its makemon.
   3. mkobj_at / mksobj_at behaviour for shop stock specifically, since these
      are called with init and artif TRUE in a context nothing else used.
-Instrument the draw sequence for ONE shop against the recorded log rather than
-guessing between these.
+NARROWED (probe on each recorded hole, since reverted). Across seed4500 and
+seed0360:
+
+    mkveggy_at   0 hits
+    rloc         0 hits
+    engraving    0 hits
+    mimic path   5 hits   (4 in seed4500, 1 in seed0360)
+
+So suspects 1 and the engraving are OUT: those holes are never reached, and
+the -36 is entirely inside the mimic path. Five hits, thirty-six draws, is
+about seven draws each, which is the right order for mkclass plus makemon.
+
+Probing further, mkclass(S_MIMIC, 0) returns a valid permonst on every hit
+(pmidx 64 each time), so it is not failing and falling through to the
+get_shop_item branch, which was the obvious guess.
+
+NEXT: the difference is in the DRAW SEQUENCE of mkclass(S_MIMIC, 0) and the
+makemon that follows it, not in which branch is taken. Dump our rn2/rnd calls
+for one of those five hits and diff them against the recorded log at the same
+call index; tools/diverge.mjs gives the index. Check mkclass's probability
+walk first, since S_MIMIC has few members and a wrong member count changes the
+modulus.
 
 STILL OPEN in the special-room area:
   - mktemple (src/mkroom.c:598): needs shrine_pos, induced_align which DRAWS,

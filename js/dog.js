@@ -524,9 +524,21 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
        the follow-player branch and its else arm assign it. */
     let appr = 0;
 
-    /* src/dogmove.c:565 — follow the player.
-       gtyp is UNDEF whenever the object search above found nothing. */
-    if (gtyp === UNDEF) {
+    /* src/dogmove.c:566 — follow the player.
+     *
+     *     if (gg.gtyp == UNDEF || (gg.gtyp != DOGFOOD && gg.gtyp != APPORT
+     *                           && svm.moves < edog->hungrytime)) {
+     *
+     * The second arm is not optional. A goal that is neither DOGFOOD nor
+     * APPORT is something the pet would eat only if it were hungry, so while
+     * it is still full it follows the hero INSTEAD, and follows with an appr
+     * computed here rather than the flat 1 the else arm uses. That changes
+     * dog_move's `j = (ndist - nidist) * appr`: with appr 0 every candidate
+     * gives j == 0 and spends an rn2(++chcnt), and with appr 1 none of them
+     * do. Testing only for UNDEF made the pet march at a corpse it had no
+     * appetite for and skip that whole run of draws. */
+    if (gtyp === UNDEF || (gtyp !== DOGFOOD && gtyp !== APPORT
+                           && game.moves < (edog?.hungrytime ?? 0))) {
         /* src/dogmove.c:566 — gg.gx/gg.gy ARE the goal dog_move steers by
            (GDIST reads them). Writing them into a separate game.gg left the
            local gx/gy at 0,0, so an appr = 1 pet walked toward the top-left

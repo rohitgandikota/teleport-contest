@@ -4929,3 +4929,32 @@ Worth remembering before spending a session on a deep-level subsystem.
 Open loose end still unresolved: the -36 in the shop stocking, narrowed to
 mkclass(S_MIMIC, 0) and its makemon. See the entry above for what was ruled
 out.
+
+## in_your_sanctuary: ATTEMPTED AND REVERTED, blocked by an import cycle
+
+Worth porting -- it draws nothing itself but gates `scared` in distfleeck,
+and a true `scared` fires monflee(mtmp, rnd(rn2(7) ? 10 : 100), ...), which
+DRAWS. It reports 45% on the unported-hits ranking.
+
+Its three missing helpers are all small and were written: temple_occupied,
+findpriest (with histemple_at), and has_shrine. priestini's epri struct
+already carries every field they need (shroom, shralign, shrpos, shrlevel),
+so the temple subsystem ported earlier is sufficient.
+
+WHAT BLOCKED IT: in_your_sanctuary needs in_rooms(), which lives in js/hack.js,
+and importing hack.js from js/monmove.js closes a cycle -- the failure is
+"Cannot access 'add_room_fn' before initialization".
+
+Moving the function to js/priest.js, which IS its C home (src/priest.c) and is
+the architecturally right place regardless, does not help: priest.js importing
+hack.js closes the same cycle by a longer route. Several other symbols had to
+move with it (ALGN_SINNED, is_minion) and other modules import
+in_your_sanctuary from monmove.js, so a re-export was needed too. All reverted.
+
+NEXT: this needs the wire pattern already used for sp_lev_wire and
+mkroom_wire, not another import. Have js/hack.js hand in_rooms to js/priest.js
+at startup the way js/mklev.js hands topologize to js/mkroom.js. Then move
+in_your_sanctuary to priest.js properly, with ALGN_SINNED and is_minion, and
+leave a re-export in monmove.js for its existing callers.
+
+The three helpers were correct as written; the only obstacle is module wiring.

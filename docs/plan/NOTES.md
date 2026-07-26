@@ -1421,6 +1421,28 @@ Before chasing any residual, run tools/diverge.mjs on the sessions involved
 and compare the divergence call number against where the suspect code runs. If
 the code runs downstream, the delta tells you nothing about it.
 
+THIS QUALIFIES THE LOOP RULE IN CLAUDE.md, AND THE TWO OTHERWISE CONFLICT.
+The loop says "RNG must not regress. Screens must not regress. If either
+drops, fix or revert before moving on." Taken literally that rejects any
+faithful port whose code runs after the first divergence, because the delta
+there is arbitrary re-alignment. It happened: linedup's boulder walk was
+ported, cost 1 screen and 17 RNG, was reverted for it, and then had to be
+restored once the check showed it first runs at call 3574 in a session that
+diverges at 2869.
+
+The rule with the qualifier:
+
+    BELOW the first divergence  a delta is signal. Fix or revert.
+    ABOVE it                    a delta is noise. Judge the port on whether
+                                it matches the C, and say so in the commit.
+
+The check is one instrumented print of where the new code first runs, against
+the divergence index diverge.mjs already prints. It costs a minute and it is
+the difference between keeping a correct port and discarding it.
+
+I wrote the entry above and then walked into the same trap two threads later,
+which is why this qualifier is spelled out rather than left implied.
+
 What survives the retraction is worth noting too: set_mimic_sym genuinely was
 an unported stub that every shop mimic reached, and porting it was right. The
 work was correct even though the metric that motivated it was not measuring

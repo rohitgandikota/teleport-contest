@@ -1793,3 +1793,32 @@ Two consequences worth acting on separately:
   - An unbounded input-consuming loop should be suspected whenever an RNG
     delta is far larger than the change could plausibly explain. 45,893 calls
     for a letter-list change was the tell.
+
+## js/optlist.js contains BOTH arms of every #ifdef: 25 duplicated option names
+
+Found while checking whether iflags.menu_overlay is on. include/optlist.h has
+
+    #ifdef TTY_GRAPHICS
+        NHOPTB(menu_overlay, ..., set_in_game,  On,  ...)
+    #else
+        NHOPTB(menu_overlay, ..., set_in_config, Off, ...)
+    #endif
+
+and tools/gen-optlist.mjs emitted BOTH. js/optlist.js has 255 entries of which
+25 NAMES APPEAR TWICE: windowtype, playmode, name, role, race, gender,
+altkeyhandling, altmeta, BIOS, checkpoint, menu_overlay and others.
+
+findOption() returns the FIRST match, so which arm wins is decided by
+declaration order in the generated file rather than by the build
+configuration. For menu_overlay the TTY_GRAPHICS arm happens to come first, so
+the effective value is On, which is correct for a tty build. THAT IS LUCK, NOT
+DESIGN -- for any of the other 24 the wrong arm may be first.
+
+This is a generator bug, not a hand-written one, so the fix belongs in
+tools/gen-optlist.mjs: resolve TTY_GRAPHICS (and any other build flag the
+recorded sessions imply) at generation time and emit one entry per option.
+Regenerate rather than hand-editing js/optlist.js.
+
+Check the other 24 against include/optlist.h before assuming any option's
+default is right. An option whose default silently comes from the wrong
+#ifdef arm changes behaviour with nothing in the port looking wrong.

@@ -11,6 +11,9 @@
 // code and is recorded, not faked.
 
 import { game } from './gstate.js';
+import { You } from './pline.js';
+import { exclam } from './zap.js';
+import { canseemon } from './display.js';
 import { wakeup } from './mon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
@@ -25,12 +28,12 @@ import { worn } from './do_wear.js';
 import { is_orc, unsolid } from './mondata.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
-import { OCLASSES, MATERIALS } from './objects_data.js';
+import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_RINGR, W_RINGL, P_KNIFE } from './const.js';
+         W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -529,13 +532,12 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
 // whether or not ghod_hitsu does anything.
 //
 // hmon_hitmon (the damage itself), ghod_hitsu and angry_guards are recorded.
-export function hmon(mon, obj, thrown, dieroll) {
+export async function hmon(mon, obj, thrown, dieroll) {
     const anger_guards = !!(mon.mpeaceful
                             && (mon.ispriest || mon.isshk
                                 || is_watch(game.mons[mon.mnum])));
 
-    note_unported_uhitm('hmon:hmon_hitmon');
-    const result = true;        /* hmon_hitmon returns whether mon survives */
+    const result = await hmon_hitmon(mon, obj, thrown, dieroll);        /* hmon_hitmon returns whether mon survives */
 
     if (mon.ispriest && !rn2(2))
         note_unported_uhitm('hmon:ghod_hitsu');
@@ -574,7 +576,7 @@ const is_watch = (d) =>
 // poison only if ispoisoned, then the dmg < 1 branch, then exactly one of
 // jousting / stagger / the two-weapon arm, then the kill handling, then pet,
 // splitmon and msg_hit.
-export function hmon_hitmon(mon, obj, thrown, dieroll) {
+export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     const hmd = {
         dmg: 0,
         thrown: thrown,
@@ -654,7 +656,7 @@ export function hmon_hitmon(mon, obj, thrown, dieroll) {
 
     note_unported_uhitm('hmon_hitmon:pet');
     note_unported_uhitm('hmon_hitmon:splitmon');
-    note_unported_uhitm('hmon_hitmon:msg_hit');
+    await hmon_hitmon_msg_hit(hmd, mon, obj);
 
     return hmd.retval;
 }
@@ -933,4 +935,47 @@ function hmon_hitmon_dmg_recalc(hmd, obj) {
 function note_dbon_unported() {
     note_unported_uhitm('dmg_recalc:dbon');
     return 0;
+}
+
+// src/uhitm.c:1637 hmon_hitmon_msg_hit() — the "You hit it!" line.
+//
+// SCREEN-VISIBLE, so unlike the rest of this chain the scoreboard can see it
+// once do_attack is wired.
+//
+// The verb is chosen by what is in your hand, in a fixed priority: a shield
+// or a heavy iron ball BASHES, a whip or wet towel LASHES, a Barbarian
+// SMITES, and everything else HITS. The Barbarian arm is only reached when
+// the object tests fail, so a Barbarian swinging a whip lashes.
+//
+// The punctuation is exclam(dmg), which reports the damage band: "." for 4
+// or less, "!" above. It is only used when you can SEE the monster;
+// otherwise the line ends in a plain period regardless of how hard you hit.
+//
+// The guard is subtle: the message is suppressed when hittxt is already set
+// (a special attack printed its own line) OR when the object was destroyed --
+// except for a multishot volley still in flight, which keeps announcing.
+//
+// mon_nam, mshot_xname, is_shield and is_wet_towel are recorded; the whip
+// and heavy-iron-ball tests are real.
+async function hmon_hitmon_msg_hit(hmd, mon, obj) {
+    if (!hmd.hittxt
+        && (!hmd.destroyed
+            || (hmd.thrown && (game.m_shot?.n ?? 0) > 1
+                && game.m_shot?.o === obj?.otyp))) {
+        if (hmd.thrown) {
+            note_unported_uhitm('msg_hit:mshot_xname');
+        } else if (!game.flags?.verbose) {
+            await You('hit it.');
+        } else {    /* hand_to_hand */
+            const verb =
+                (obj && (note_unported_uhitm('msg_hit:is_shield')
+                         || obj.otyp === ONAMES.HEAVY_IRON_BALL)) ? 'bash'
+                : (obj && (game.objects[obj.otyp].oc_skill === P_WHIP
+                           || note_unported_uhitm('msg_hit:is_wet_towel'))) ? 'lash'
+                  : Role_if(PMNAMES.PM_BARBARIAN) ? 'smite'
+                    : 'hit';
+            note_unported_uhitm('msg_hit:mon_nam');
+            await You(`${verb} it${canseemon(mon) ? exclam(hmd.dmg) : '.'}`);
+        }
+    }
 }

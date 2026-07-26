@@ -29,3 +29,10 @@ export function obj_resists(obj, ochance, achance) {
         return chance < (obj.oartifact ? achance : ochance);
     }
 }
+
+// src/zap.c:3547 exclam() — the punctuation that ends a hit message, and it
+// encodes the damage: "?" for a negative force, "." for 4 or less, "!" above
+// that. force == 0 happens with e.g. a sleep ray.
+export function exclam(force) {
+    return (force < 0) ? '?' : (force <= 4) ? '.' : '!';
+}

@@ -1620,8 +1620,27 @@ exercise. find_roll_to_hit's monster-state bonuses were verified the same way,
 by setting mstun, mflee, msleeping and mcanmove on a live monster and
 measuring the delta (+2, +2, +2, +4).
 
-A STATIC SWEEP WAS TRIED AND ABANDONED. Grepping for SCREAMING_CASE
-identifiers used but not bound per module produces far too many false
-positives: destructured imports, namespace members like OCLASSES.WEAPON_CLASS,
-and names that appear only in comments. It is not worth shipping. Executing
-the arm is slower per function and it is the check that actually works.
+A BROAD STATIC SWEEP WAS TRIED AND ABANDONED. Grepping for every
+SCREAMING_CASE identifier used but not bound per module produces far too many
+false positives: destructured imports, namespace members like
+OCLASSES.WEAPON_CLASS, and names appearing only in comments.
+
+A NARROW ONE WORKS, and the tree is currently clean by it. Match only the
+shape the bug actually had -- a bare constant used as a CASE LABEL:
+
+    /case\s+([A-Z][A-Z0-9_]{2,})\s*:/
+
+against a bound-name set that must recognise all four binding forms, or it
+reports noise:
+    import { A, B }             named imports
+    const { A, B } = X          destructuring
+    const A = 1, B = 2          comma-separated declaration lists
+    function A / class A
+
+Missing the third form alone produced four false positives in dungeon.js,
+makemon.js, plselect.js and role.js. With all four handled the sweep reports
+no unbound case-label constants anywhere in js/.
+
+Executing the arm remains the stronger check, because it also catches a bound
+constant with the WRONG VALUE, which no static pass can see. The sweep is the
+cheap first pass; forcing the input is the one that proves the number.

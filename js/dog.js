@@ -1102,16 +1102,31 @@ export function dog_invent(mtmp, edog, udist) {
         if (obj && !nofetch.includes(obj.oclass)) {
             const edible = dogfood(mtmp, obj);
 
-            if (edible <= CADAVER
-                || (edog.mhpmax_penalty && edible === ACCFOOD)) {
-                /* could_reach_item() and dog_eat() are not ported; dog_eat
-                   draws, so stop here rather than guess. */
+            if ((edible <= CADAVER
+                 /* a starving pet is more aggressive about eating */
+                 || (edog.mhpmax_penalty && edible === ACCFOOD))
+                && could_reach_item(mtmp, obj.ox, obj.oy)) {
+                /* dog_eat() draws; stop rather than guess its numbers. */
                 note_unported('dog_eat');
                 return 0;
             }
-            /* can_carry() itself draws nothing, but it and could_reach_item()
-               decide whether the rn2(20) below happens at all. */
-            note_unported('dog_invent pickup');
+
+            /* src/dogmove.c:443 — the fetch. can_carry() and
+               could_reach_item() draw nothing, but they gate TWO draws that
+               were being skipped entirely: rn2(20) for whether the pet is
+               interested at all, and then rn2(udist) or rn2(apport) for
+               whether it bothers at this distance. */
+            const carryamt = can_carry(mtmp, obj);
+            if (carryamt > 0 && !obj.cursed
+                && could_reach_item(mtmp, obj.ox, obj.oy)) {
+                if (rn2(20) < edog.apport + 3) {
+                    if (rn2(udist) || !rn2(edog.apport)) {
+                        /* splitobj() when carryamt is a partial stack, then
+                           distant_name/pline, mpickobj and mon_wield_item. */
+                        note_unported('dog_invent:pickup');
+                    }
+                }
+            }
         }
     }
     return 0;

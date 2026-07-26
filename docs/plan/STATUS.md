@@ -202,12 +202,29 @@ C's " (end)" comes from: the space is not part of morestr, it is emitted
 ahead of every menu line.
 
 Which means cw.offx here is 20, not 19 -- the 'm' at column 19 is the map
-outside the menu, which C never touches. Check our offx for this window before
-changing the paint: if ours is 19 the whole menu is one column left and the
-leading space is missing, and both have to move together.
+outside the menu, which C never touches.
 
-Do not "fix" this by widening the clear in js/tty/wintty.js:374. Getting the
-offset wrong shifts every menu footer in the corpus, not just this one.
+AND THE CAUSE IS maxcol, NOT THE OFFSET FORMULA. Both of C's branches agree
+on this window:
+
+    H2344_BROKEN (the one we use):
+        min(min(82, cols/2), cols - maxcol - 1) = min(40, 80 - 59 - 1) = 20
+    default:
+        max(10, cols - maxcol - 1)              = max(10, 20)          = 20
+
+Both need maxcol == 59 to produce 20. Ours produces 19, so our maxcol is 60 --
+one too large. The menu is therefore one column left of C's for its whole
+width, and the missing leading space at the footer is a symptom, not the bug.
+
+So: find where cw.maxcol is accumulated in js/tty/wintty.js and compare it
+against C's tty_add_menu/tty_end_menu length arithmetic. An off-by-one there
+moves every menu in the corpus one column, which is worth far more than this
+one cell.
+
+Do NOT widen the clear in js/tty/wintty.js:374 and do NOT switch the offx
+branch -- the comment at js/tty/wintty.js:291 records that the H2344_BROKEN
+branch was chosen deliberately because it matches the chargen recordings, and
+both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 

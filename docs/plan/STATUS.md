@@ -170,6 +170,29 @@ map 58. makemon logged only ONE random monster in this room, at (57,4) -- so
 the thing at map 58 is the PET, and the thing at 57 is the random sleeper. C's
 pet is at 56 and ours is at 58: two squares apart, not one.
 
+**MEASURED, and it is neither placement nor enexto. THE PET NEVER MOVES.**
+
+Dumping the pet's square immediately after makedog on seed0030:
+
+    pet at creation: 58,4   hero=57,4      <- correctly adjacent
+
+and at step 4 the hero has walked to (55,5) while our pet is STILL at (58,4).
+C's pet is at (56,4), diagonally adjacent, having followed. So makedog and
+makemon are fine; the pet simply is not moving.
+
+That reframes everything above: the extra 'f' was never extra, the room bounds
+were never shifted, and enexto was never implicated. Our pet is stationary
+while C's follows the hero.
+
+Check dog_move's return path first: js/monmove.js dochug dispatches pets to
+dog_move, and dog_move's own tail does `remove_monster(omx, omy);
+place_monster(mtmp, nix, niy)` -- verify that it is REACHED and that mmoved
+comes back MMOVE_MOVED. A pet that computes a goal correctly and then never
+commits the move looks exactly like this, and js/dog.js:905 is where the
+commit happens.
+
+Superseded analysis follows.
+
 js/dog.js makedog() calls
 
     makemon(mons[pettype], u.ux, u.uy, MM_EDOG | NO_MINVENT)

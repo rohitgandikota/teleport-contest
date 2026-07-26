@@ -114,11 +114,31 @@ list differs. dog_goal returning the same draws does NOT prove it returned the
 same appr or set the same game.gg -- only that it took the same branches that
 draw.
 
-Next step is to instrument that loop on seed0007 and print, for each
-candidate, (nx, ny, GDIST, nidist, appr, j) at the moment C would draw rn2(1),
-then compare against what C must have had for j to be 0. Do NOT re-port the
-loop; it is present and its sampler is correct (pre-increment and the j < 0
-reset are both there, verified by reading js/dog.js:1152 and :1158).
+INSTRUMENTED AND MEASURED on seed0007. dog_move IS called, DOES reach the
+scoring loop, and DOES draw: 550 candidate evaluations across the session,
+68 of them ties (j == 0) that each spend an rn2(++chcnt). So the loop is
+live and the sampler fires. The divergence is not absence, it is a
+DIFFERENCE at one specific invocation where C ties and we do not.
+
+THE STANDOUT MEASUREMENT: appr is 1 on all 550 evaluations. Never -1, never
+0. In C, dog_goal returns appr = -1 when the pet should move AWAY from the
+goal and 0 when it should not care, and those cases are common (a scared or
+fleeing pet, a pet with no goal). An appr that is always 1 means every square
+is scored as "get closer", which changes j for every candidate and therefore
+which candidates tie. That is the strongest lead and should be checked first:
+read js/dog.js's dog_goal for the paths that should return -1 or 0 and
+confirm whether any is reachable.
+
+HOW TO INSTRUMENT (this cost most of a tick to work out):
+frozen/ps_test_runner.mjs spawnSync's a worker and CAPTURES its stdout and
+stderr, so console.error from inside the game is swallowed. Run the worker
+directly instead:
+
+    DBG_X=1 node frozen/ps_test_runner.mjs --worker-session=sessions/<name>.session.json 2>&1 | grep ...
+
+Do NOT conclude "the function is never called" from silence under the normal
+runner. That exact mistake happened here and briefly looked like movemon,
+dochug and dog_move were all dead.
 
 Things to check in js/dog.js's copy, in order of how quietly they fail:
   - GDIST reads game.gg.gx/gy. A `?? 0` fallback on a missing field makes it

@@ -738,6 +738,14 @@ export function mksobj(otyp, init, artif) {
     default:
         break;
     }
+
+    /* src/mkobj.c:1257 — every object gets its weight cached at creation, and
+       every later reader uses that field rather than recomputing. Omitting it
+       left obj.owt undefined on every object in the game, which made
+       inv_weight() return NaN and silently disabled encumbrance; it also meant
+       the owt assignments in splitobj(), dog_eat() and mkroom's court chest
+       were writing to a field nothing maintained. */
+    otmp.owt = weight(otmp);
     return otmp;
 }
 

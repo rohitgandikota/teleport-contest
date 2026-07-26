@@ -478,10 +478,41 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
         /* wrath of gods for attacking Oracle -- no draw either way */
         note_unported_uhitm('passive:magic_missiles');
         break;
+    case ATTKS.AD_ENCH:     /* KMH -- remove enchantment (disenchanter) */
+        /* The `break`s inside this if leave the SWITCH, not the if, so they
+           skip passive_obj entirely. A kick with no weapon, and any bite,
+           butt or sting, involve no object and get nothing. */
+        if (mhitb) {
+            if (aatyp === ATTKS.AT_KICK) {
+                if (!weapon)
+                    break;
+            } else if (aatyp === ATTKS.AT_BITE || aatyp === ATTKS.AT_BUTT
+                       || (aatyp >= ATTKS.AT_STNG && aatyp < ATTKS.AT_WEAP)) {
+                break;                  /* no object involved */
+            }
+            note_unported_uhitm('passive:passive_obj:ench');
+        }
+        break;
     default:
         note_unported_uhitm(`passive:adtyp=${adtyp}`);
         break;
     }
+
+    /*  These only affect you if they still live.
+     *
+     *  A SECOND switch, and its guard holds an rn2(3) that fires on every
+     *  passive encounter where the monster survives and is not cancelled --
+     *  far more often than any single arm of the switch above. Reading
+     *  passive as one switch loses this draw on essentially every melee
+     *  exchange with a passive monster.
+     */
+    if (malive && !mon.mcan && rn2(3)) {   /* C tests malive, the flag word,
+           not maliveb. M_ATTK_MISS is 0x0 and M_ATTK_HIT is 0x1, so their
+           truthiness is identical and this is behaviourally the same; written
+           as C writes it so a grep for the C line finds this one. */
+        note_unported_uhitm(`passive:alive_switch:adtyp=${adtyp}`);
+    }
+
     return malive | mhit;
 }
 

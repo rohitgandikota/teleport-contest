@@ -11,6 +11,8 @@ import { is_metallic } from './obj.js';
 import { ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { rnd } from './rng.js';
+import { tty_yn_function } from './tty/topl.js';
+import { ECMD_FAIL } from './const.js';
 import { You, Your, You_feel } from './pline.js';
 import { acurr } from './attrib.js';
 import { morehungry } from './eat.js';
@@ -37,6 +39,116 @@ export function spellev(spidx) {
 export function spell_skilltype(booktype) {
     return game.objects[booktype].oc_subtyp;
 }
+
+// src/spell.c:115 spell_let_to_idx() — 'a'-'z' then 'A'-'Z'.
+function spell_let_to_idx(ilet) {
+    let indx = ilet.charCodeAt(0) - 'a'.charCodeAt(0);
+    if (indx >= 0 && indx < 26)
+        return indx;
+    indx = ilet.charCodeAt(0) - 'A'.charCodeAt(0);
+    if (indx >= 0 && indx < 26)
+        return indx + 26;
+    return -1;
+}
+
+// src/spell.c num_spells() — spells are contiguous from slot 0.
+function num_spells() {
+    for (let i = 0; i < MAXSPELL; i++)
+        if (spellid(i) === NO_SPELL)
+            return i;
+    return MAXSPELL;
+}
+
+// src/spell.c:715 getspell() — choose a spell to cast.
+//
+// Only the MENU_TRADITIONAL arm is ported, which is the one the recorded
+// sessions take: seed0501 sends 'Z' then 'a'. It builds the letter range into
+// the prompt, so a hero with three spells is asked "[a-c *?]" and one with a
+// single spell "[a *?]" -- the text differs per hero and is on screen.
+//
+// The retry_limit of 10 is C's, and "That's enough tries." is a real message
+// that ends the loop; '*' or '?' would break out to the menu, which is not
+// ported.
+export async function getspell(spell_noRef) {
+    const nspells = num_spells();
+
+    if (!nspells) {
+        await You("don't know any spells right now.");
+        return false;
+    }
+    if (rejectcasting())
+        return false;
+
+    let lets;
+    if (nspells === 1) lets = 'a';
+    else if (nspells < 27) lets = 'a-' + String.fromCharCode(96 + nspells);
+    else if (nspells === 27) lets = 'a-zA';
+    else lets = 'a-zA-' + String.fromCharCode(64 + nspells - 26);
+
+    const qbuf = `Cast which spell? [${lets} *?]`;
+
+    for (let retry_limit = 0; ; ++retry_limit) {
+        if (retry_limit === 10) {
+            await pline("That's enough tries.");
+            return false;
+        }
+        const ilet = await tty_yn_function(qbuf, null, '\0');
+        if (ilet === '*' || ilet === '?') {
+            note_unported_spell('getspell:dospellmenu');
+            return false;
+        }
+        if (quitchars.includes(ilet)) {
+            await pline('Never mind.');
+            return false;
+        }
+        const idx = spell_let_to_idx(ilet);
+        if (idx < 0 || idx >= nspells) {
+            await You("don't know that spell.");
+            continue;                   /* ask again */
+        }
+        spell_noRef.v = idx;
+        return true;
+    }
+}
+
+// src/spell.c docast() — the 'Z' command.
+export async function docast() {
+    const ref = { v: 0 };
+    if (await getspell(ref)) {
+        /* cmdq_add_key(CQ_REPEAT, spellet(spell_no)) is the repeat queue */
+        return await spelleffects(game.spl_book[ref.v].sp_id, false, false);
+    }
+    return ECMD_FAIL;
+}
+
+// src/spell.c spelleffects() — cast it. Only the pre-flight check is ported;
+// the effects themselves are a per-spell dispatch that needs zap/potion/etc.
+export async function spelleffects(spell_otyp, atme, force) {
+    const spell = spell_idx(spell_otyp);
+    const energy = { v: 0 };
+
+    const r = await spelleffects_check(spell, energy);
+    if (r.rejected)
+        return r.res;
+
+    note_unported_spell('spelleffects:per-spell dispatch');
+    return ECMD_TIME;
+}
+
+// src/spell.c spell_idx() — the slot holding this spell type.
+function spell_idx(spell_otyp) {
+    for (let i = 0; i < MAXSPELL; i++) {
+        if (spellid(i) === spell_otyp)
+            return i;
+        if (spellid(i) === NO_SPELL)
+            break;
+    }
+    return -1;
+}
+
+// include/spell.h MAXSPELL, src/decl.c quitchars
+const MAXSPELL = 52;   /* include/decl.h spl_book[MAXSPELL + 1] */
+const quitchars = ' \r\n\x1b';
 
 // src/spell.c:17 KEEN, include/spell.h:36 SPELL_LEV_PW
 const KEEN = 20000;

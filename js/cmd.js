@@ -43,7 +43,7 @@ import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
          IS_WALL, IS_OBSTRUCTED, IS_DOOR } from './const.js';
 import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
-import { dovspell } from './spell.js';
+import { dovspell, docast } from './spell.js';
 
 // Direction deltas: y u k
 //                   h . l
@@ -392,6 +392,9 @@ export async function rhack(key) {
     if (isMovementKey(ch)) {
         await domove(DIR_DX[ch], DIR_DY[ch]);
         game.context.move = 1;
+    } else if (ch === 'Z') {
+        // src/cmd.c cmdlist — 'Z' is docast.
+        game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x16') {
         // src/cmd.c:1970 — C('v') is wizlevelport / wiz_level_tele.
         game.context.move = ((await wiz_level_tele()) === ECMD_TIME ? 1 : 0);

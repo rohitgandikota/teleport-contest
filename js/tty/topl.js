@@ -11,7 +11,9 @@
 // more() is too, and both are really topl.c functions that should live here.
 
 import { game } from '../gstate.js';
-import { more, TOPLINE_EMPTY, TOPLINE_NEED_MORE } from '../display.js';
+import { more, TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_SPECIAL_PROMPT,
+         _buildScreenOutput } from '../display.js';
+import { nhgetch } from '../input.js';
 
 // win/tty/topl.c:251 update_topl() — put `bp` on the top line.
 //
@@ -107,3 +109,35 @@ function redotoplin(str) {
 
 // include/decl.h TBUFSZ
 const TBUFSZ = 300;
+
+// win/tty/topl.c:365 tty_yn_function() — the generic prompt-and-read-a-key.
+//
+// Only the resp == NULL arm is ported, which is the one getspell() uses:
+// "If resp is NULL, any single character is accepted and returned."
+//
+// The two pieces of state matter more than the read. A pending message is
+// flushed through more() FIRST, so the prompt never lands on top of an
+// unacknowledged line, and toplin goes to TOPLINE_SPECIAL_PROMPT, which is
+// what stops the next message from joining onto the prompt text.
+//
+// Not ported: the resp filter (allowed characters, '#' for digits, an <esc>
+// hiding the tail from the prompt), yn_number, and the doprev/^P history.
+export async function tty_yn_function(query, resp, def) {
+    if (game._toplin === TOPLINE_NEED_MORE)
+        await more();
+
+    if (resp) {
+        (game.unported ||= new Set()).add('tty_yn_function:resp filter');
+    }
+
+    game._pending_message = query;
+    game._toplin = TOPLINE_SPECIAL_PROMPT;
+    _buildScreenOutput();
+
+    const display = game?.nhDisplay;
+    if (display)
+        display.setCursor(Math.min(query.length + 1, (display.cols ?? 80) - 1), 0);
+
+    const c = await nhgetch();
+    return (typeof c === 'string') ? c : String.fromCharCode(c);
+}

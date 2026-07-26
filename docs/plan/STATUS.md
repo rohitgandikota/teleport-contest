@@ -45,7 +45,24 @@ terrain glyphs, and space falling through to "Unknown command".
 
 ## THE BIGGEST REMAINING TARGET: death and restart. Ground truth located.
 
-**seed0030's first death is at step 73.** The exact frames, decoded from the
+**seed0030's first death is CHOKING, not combat.** The message at step 73 is
+`You("die...")` from src/eat.c:285, inside choke():
+
+    } else {
+        You("choke over it.");
+        Strcpy(svk.killer.name, "quick snack");
+    }
+    You("die...");
+    done(CHOKING);
+
+So the route in is the EAT command, not mattacku. That is a far narrower
+subsystem than "combat" and it is already partly reachable -- rhack dispatches
+'e' today. What is missing between the command and the death is doeat/eatfood's
+occupation loop and the choke() gate.
+
+Do not port combat for this. Check src/eat.c's choke() callers first.
+
+**The frames.** The exact frames, decoded from the
 recorded session:
 
     step 73  "You die...--More--"        (top line)

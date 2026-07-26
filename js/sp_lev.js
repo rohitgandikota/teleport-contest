@@ -77,8 +77,10 @@ export function fill_special_room(croom) {
 
     if (croom.needfill === FILL_NORMAL) {
         if (croom.rtype >= SHOPBASE) {
-            /* stock_room() is a separate subsystem (shop inventory); it is
-               not reached by any session that currently gets this far. */
+            /* stock_room() is a separate subsystem (shop inventory). It IS
+               now reached: since the special-room chain landed, makelevel
+               marks real shops and this is the next thing they need. A shop
+               with no stock is a screen difference, not just a missing draw. */
             note_unported('stock_room');
             game.level.flags.has_shop = true;
             return;

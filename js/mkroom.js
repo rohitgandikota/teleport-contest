@@ -14,7 +14,7 @@ import { game } from './gstate.js';
 import { rnd, rn2 } from './rng.js';
 import { OROOM, SHOPBASE, FILL_NORMAL, COURT, ZOO, BEEHIVE, MORGUE,
          BARRACKS, SWAMP, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE,
-         ROOMOFFSET, POOL, SDOOR, IS_ROOM, IS_DOOR, isok,
+         ROOMOFFSET, POOL, SDOOR, ROOM, IS_ROOM, IS_DOOR, isok,
          OBJ_AT } from './const.js';
 import { makemon, mkclass, NO_MM_FLAGS } from './makemon.js';
 import { m_at, t_at } from './mon.js';
@@ -278,19 +278,18 @@ export function has_upstairs(sroom) {
 // src/mkroom.c:1050 invalid_shop_shape() — a shopkeeper standing just inside
 // the door needs somewhere to step aside to.
 function invalid_shop_shape(sroom) {
-    const door = game.doors?.[sroom.fdoor];
+    const door = game.level.doors?.[sroom.fdoor];
     if (!door)
         return true;
     const doorx = door.x, doory = door.y;
     let insidex = 0, insidey = 0, insidect = 0;
-    const ROOM_TYP = 20;    /* include/rm.h ROOM */
 
     /* squares inside the room and next to the door */
     for (let x = Math.max(doorx - 1, sroom.lx);
          x <= Math.min(doorx + 1, sroom.hx); x++)
         for (let y = Math.max(doory - 1, sroom.ly);
              y <= Math.min(doory + 1, sroom.hy); y++)
-            if (game.level.at(x, y)?.typ === ROOM_TYP) {
+            if (game.level.at(x, y)?.typ === ROOM) {
                 insidex = x; insidey = y; insidect++;
             }
 
@@ -306,7 +305,7 @@ function invalid_shop_shape(sroom) {
                  y <= Math.min(insidey + 1, sroom.hy); y++) {
                 if (x === insidex && y === insidey)
                     continue;
-                if (game.level.at(x, y)?.typ === ROOM_TYP)
+                if (game.level.at(x, y)?.typ === ROOM)
                     insidect++;
             }
         if (insidect === 1)

@@ -168,6 +168,24 @@ difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
 
+### seed0501 at 2205 is the spell-casting subsystem
+
+    2203  rnd(9000)  moveloop_preamble   ours matches
+    2204  rnd(30)    moveloop_preamble   ours matches
+    2205  rnd(100)   spelleffects_check(spell.c:1372)   ours draws rn2(12)
+
+The session's first command casts a spell, and we walk straight into
+mcalcmove instead. The entry point is docast -> spelleffects ->
+spelleffects_check (src/spell.c, the check returns TRUE on failure). Its one
+visible draw is `rnd(100) > percent_success(spell)`, and the exercise(A_WIS)
+at attrib.c:509 that follows spends rn2(19).
+
+percent_success() is the real work: it reads the role's spelbase/spelheal, the
+hero's Int or Wis, armour penalties (metal helm, shield, gloves) and the
+spell's level. None of it draws, but all of it decides the comparison.
+
+This is a genuine subsystem, not a missing line. Budget it as one.
+
 ### Every sub-1000 divergence is now cleared; the earliest is 1956
 
     1956  seed0367-priest-quest-tour

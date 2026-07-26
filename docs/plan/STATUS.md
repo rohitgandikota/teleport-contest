@@ -5393,6 +5393,16 @@ Testing only the negative side is worth nothing: every arm returns the base
 value when its condition is false, so a transcription that dropped an arm
 entirely would still pass. Force the condition TRUE.
 
+find_mac, forcing worn armour onto a live monster, since every monster in
+these sessions has an empty inventory:
+    no armour                base ac 4          -> 4    OK
+    ring mail, a_ac 3        4 - 3              -> 1    OK
+    amulet of guarding       4 - 2 (FLAT)       -> 2    OK
+
+The amulet case is the one worth having: it must NOT go through ARM_BONUS, so
+erosion cannot reduce it. With an empty inventory the whole loop is skipped
+and that distinction is untestable.
+
 Two constants that would have been wrong if taken from their names:
 ALIGNLIM is 10 + moves/200, not 10, so it grows as the game runs; and Luck is
 uluck + moreluck entering as sgn(Luck) * ((abs(Luck) + 2) / 3), which differs

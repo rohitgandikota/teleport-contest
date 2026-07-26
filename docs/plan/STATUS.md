@@ -2,7 +2,7 @@
 
 ## Where the score stands
 
-**429/11,405 screens (3.8%), 1/44 sessions, corpus RNG 112,964/792,838 (14.2%).**
+**443/11,405 screens (3.9%), 1/44 sessions, corpus RNG 116,757/792,838 (14.7%).**
 seed8000 still matches C call for call (3130 calls). Tree clean, pushed.
 
 New this stretch, in the order it landed:
@@ -167,6 +167,41 @@ u_calc_moveamt's rn2(3) is being drawn identically and Fast() agrees; the
 difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
+
+### The next blocker, re-measured after level_tele
+
+    6  dog_move (src/dogmove.c:1255)
+    4  obj_resists (src/zap.c:1469)      <- the SAME job as dog_move
+    4  next_ident (src/mkobj.c:521)      <- already ported; caller differs
+    4  getbones (src/bones.c:645)        <- needs level_tele's '?' menu
+    3  somex (src/mkroom.c:668)
+    3  rnd_otyp_by_namedesc (src/objnam.c:3522)
+
+getbones dropped from 7 to 4 when level_tele landed. The remaining 4 all take
+the '?' branch, which is print_dungeon(), the dungeon-overview MENU, and needs
+the tty menu system.
+
+### The pet divergence, traced to the end
+
+seed1500 diverges at call 2300, where C spends three more obj_resists than we
+do. Every layer of that has now been measured:
+
+  - the three extra calls are dog_goal's INVENTORY scan, which calls dogfood()
+    on each carried item (6 of them) looking for something the pet likes
+  - the scan only runs when appr == 0
+  - appr is 0 only when `udist > 1` is false, i.e. the pet is ORTHOGONALLY
+    ADJACENT to the hero
+  - instrumented, our pet is at udist 4 at that moment and C's must be at 1
+
+So the pet is on a different square, and it got there without a single draw
+disagreeing. That means a NON-DRAWING decision differs. mfndpos is no longer a
+candidate: every one of its arms is now ported. What is left is dog_move's own
+selection (the j/chcnt/whappr branch at dogmove.c:1253) and dog_invent, which
+runs BEFORE dog_goal, can move the pet by eating, and still carries
+note_unported for its pickup path.
+
+Look at dog_invent first: it is the only thing that can move the pet before
+the goal is even computed.
 
 ### Where the pet work stands, and the open question
 

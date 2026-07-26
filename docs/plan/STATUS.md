@@ -4268,3 +4268,30 @@ STILL OPEN in the special-room area:
     not yet fill COURT/ZOO/BEEHIVE/ANTHOLE/COCKNEST/MORGUE/BARRACKS. Same
     shape of gap stock_room just closed for shops, and the same test applies:
     probe that a zoo actually gets monsters.
+
+    SCOPED. fill_zoo is ~120 lines and, unlike mkshop, its dependency set is
+    mostly ABSENT. Checked:
+
+        have    make_grave, somexyspace, occupied   (js/mklev.js)
+        have    mkgold                              (js/mkobj.js)
+        MISSING courtmon, squadmon, morguemon, mk_tt_object, sq
+
+    The three *mon() functions each pick a species and DRAW, so they are not
+    optional decoration: courtmon backs COURT, squadmon backs BARRACKS,
+    morguemon backs MORGUE. mk_tt_object backs both the MORGUE corpse and the
+    COCKNEST statue.
+
+    Per-square draws, which is where the volume is. Every eligible square runs
+    one makemon with MM_ASLEEP|MM_NOGRP, then a per-type tail:
+        ZOO, LEPREHALL   mkgold(rn1(i, 10)) with i from the door distance
+        MORGUE           rn2(5), rn2(10), rn2(3), rn2(5)
+        BEEHIVE          rn2(3)
+        BARRACKS         rn2(20), rn2(3)
+        COCKNEST         rn2(3)
+    So a MORGUE spends four rn2 per square on top of the makemon. Getting the
+    tail order wrong desyncs every square of the room.
+
+    ORDER: courtmon, squadmon, morguemon and mk_tt_object first, since
+    fill_zoo cannot run without them, then fill_zoo itself, then wire it into
+    fill_special_room's switch beside the shop branch. antholemon still gates
+    the ANTHOLE arm and is still blocked on ubirthday.

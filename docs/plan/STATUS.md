@@ -77,10 +77,27 @@ aggregate for deciding WHAT to port, because it ranks by how many scored
 sessions actually reach a known gap. Use the aggregate to decide whether a
 change helped.
 
-Read onscary:elbereth (98%) first. onscary() is called from distfleeck(),
-which is where three sessions have their first RNG mismatch, so that entry
-and that divergence are very likely the same bug seen from two directions --
-and it is reached by essentially every session.
+READ THIS BEFORE USING THE TABLE: reach is not incorrectness. A row says the
+path was EXECUTED, not that it returned the wrong answer. The top entries have
+now been checked and most are harmless:
+
+  onscary:elbereth (98%) -- CHECKED, NOT A BUG. Everything except the final
+  sengr_at("Elbereth") test is ported, and our stub returns FALSE, which is
+  exactly what C returns when no Elbereth is engraved. Only 1 of the 45 files
+  in sessions/ mentions Elbereth at all. I had guessed this was the distfleeck
+  divergence, since onscary() is called from distfleeck(); it is not. onscary
+  draws nothing either way.
+
+  moveloop_preamble set_wear/pickup and topl:remember_topl (100%) are
+  unconditional note_unported calls on paths every session takes. They mark
+  work, not failures.
+
+So sort candidates by (reach x likelihood the answer differs), and the second
+factor needs a look at the code. The rows worth checking next on that basis
+are encumber_msg and near_capacity (80%), which are inventory-weight code on
+the movement path and DO change behaviour when wrong, and pet_ranged_attk:
+attack (45%) and dog_move attack branch (43%), which sit in the pet cluster
+that six sessions already diverge in.
 
 encumber_msg and near_capacity at 80% are the next pair and they are related:
 both are inventory-weight code on the movement path.

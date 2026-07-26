@@ -22,6 +22,13 @@
 // If a percentage ever looks impossible for an unconditional path, suspect the
 // harness before the result.
 //
+// REACH IS NOT INCORRECTNESS. A high row means the path executed, not that it
+// returned the wrong answer. onscary:elbereth reports 98% and is harmless: the
+// only unported part is the Elbereth test, our stub returns FALSE, and FALSE
+// is what C returns when nothing is engraved -- which is every session but
+// one. Weigh each row by whether the answer can actually differ before
+// spending a session on it.
+//
 //     node tools/unported-hits.mjs
 //     node tools/unported-hits.mjs <session-file>
 

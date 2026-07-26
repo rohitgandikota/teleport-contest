@@ -5363,6 +5363,25 @@ a faithful-LOOKING transcription with one constant wrong. Do the same for any
 arm of a zero-draw function that the sessions do not naturally exercise --
 force the input, measure the delta, compare against the C by hand.
 
+APPLIED TO THE REST OF THE CHAIN, and it found a real crash.
+
+weapon_hit_bonus, forcing each skill level:
+    restricted -4, unskilled -4, basic 0, skilled 2, expert 3   all OK
+but the FIRST forced level threw: P_SKILLED, P_MASTER and P_GRAND_MASTER were
+used in two switches and never imported. weapon_hit_bonus and
+skill_based_spellbook_id would both have crashed the moment the hero reached
+Skilled. undefined-refs.mjs scans call targets and cannot see a constant; no
+public session reaches Skilled so the scoreboard could not either. Fixed.
+
+abon, forcing each Str band from the C table:
+    str 3 -> -2,  7 -> -1,  10 -> 0,  18 -> 1,  68 -> 2,  118 -> 3   all OK
+Note str 68 is STR18(50) and returns 2, not 1. That is the exact boundary C's
+own comment flags: the test was changed from <= to < specifically so that
+18/50 scores 2, and gnomes and orcs cap there.
+
+find_roll_to_hit, forcing each monster state:
+    mstun +2, mflee +2, msleeping +2, !mcanmove +4   all OK
+
 Two constants that would have been wrong if taken from their names:
 ALIGNLIM is 10 + moves/200, not 10, so it grows as the game runs; and Luck is
 uluck + moreluck entering as sgn(Luck) * ((abs(Luck) + 2) / 3), which differs

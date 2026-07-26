@@ -14,6 +14,7 @@
 // Nothing here draws.
 
 import { game } from './gstate.js';
+import { is_flyer } from './mondata.js';
 
 // include/youprop.h:116 HHallucination — u.uprops[HALLUC].intrinsic.
 // The C comment above it reads "Hallucination is solely a timeout", which is
@@ -62,3 +63,15 @@ export const See_invisible = () => !!game.u?.uprops?.SEE_INVIS;
 // live yet; nothing blocks invisibility today, so this is right for now and
 // the term goes in when uprops grows the struct.
 export const Invis = () => !!game.u?.uprops?.INVIS;
+
+// include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
+export const Levitation = () => !!game.u?.uprops?.LEVITATION;
+
+// include/youprop.h:253 Flying — note the steed term: riding a flying mount
+// counts, which is why this cannot be a plain uprops read.
+export const Flying = () =>
+    !!game.u?.uprops?.FLYING
+    || !!(game.u?.usteed && is_flyer(game.u.usteed.data));
+
+// include/youprop.h Fire_resistance — (HFire_resistance || EFire_resistance).
+export const Fire_resistance = () => !!game.u?.uprops?.FIRE_RES;

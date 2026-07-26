@@ -1,3 +1,6 @@
+import { Levitation, Flying, Fire_resistance } from './youprop.js';
+import { is_pool_or_lava } from './dbridge.js';
+import { is_pool, is_lava, t_at } from './mon.js';
 import { cmdq_clear } from './cmd.js';
 // hack.js — the hero's movement and the terrain predicates that go with it.
 // C ref: src/hack.c
@@ -18,7 +21,7 @@ import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
 
-    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED } from './const.js';
+    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL } from './const.js';
 import { sobj_at } from './invent.js';
 import { done } from './end.js';
 import { DIED } from './const.js';
@@ -248,4 +251,79 @@ export function nomul(nval) {
         game.multi_reason = null, game.multireasonbuf = '';
     end_running(true);
     cmdq_clear(CQ_CANNED);
+}
+
+// src/hack.c:59 Known_wwalking, :63 Known_lwalking — file-local macros, not
+// youprop.h ones, which is why they live here rather than in js/youprop.js.
+//
+// "Known" is the operative word: these ask whether the HERO KNOWS they can
+// walk on the liquid, not whether they actually can. Unidentified water
+// walking boots still work, but the run stops at the water's edge anyway,
+// because the player has no reason to believe it is safe. C's own comment
+// notes this should use cause_known() if anything but boots ever grants it.
+const Known_wwalking = () =>
+    !!(game.uarmf && game.uarmf.otyp === ONAMES.WATER_WALKING_BOOTS
+       && objects[ONAMES.WATER_WALKING_BOOTS]?.oc_name_known
+       && !game.u?.usteed);
+
+const Known_lwalking = () =>
+    !!(Known_wwalking() && Fire_resistance()
+       && game.uarmf.oerodeproof && game.uarmf.rknown);
+
+// src/hack.c:2444 avoid_moving_on_trap() — stop a run at a known trap.
+//
+// The vibrating square is a trap structurally but terrain in spirit, so it is
+// excluded; running across it does not stop.
+export function avoid_moving_on_trap(x, y, msg) {
+    const trap = t_at(x, y);
+
+    if (trap && trap.tseen
+        /* the vibrating square is implemented as a trap but treated as if
+           it were a type of terrain */
+        && trap.ttyp !== VIBRATING_SQUARE) {
+        if (msg && game.flags?.mention_walls) {
+            /* You("stop in front of %s.", an(trapname(trap->ttyp, FALSE)))
+               -- trapname() is not ported and mention_walls defaults Off
+               (js/optlist.js), so this records rather than guessing a name. */
+            (game.unported ||= new Set()).add('hack:avoid_moving_on_trap:msg');
+        }
+        return true;
+    }
+    return false;
+}
+
+// src/hack.c:2463 avoid_moving_on_liquid() — stop a run at water or lava.
+//
+// The first condition is a tangle worth reading carefully: it returns FALSE
+// (safe, keep going) when you are NOT crossing a terrain boundary, OR you are
+// shift-running and the transition is not lava, OR you are travelling -- AND
+// you know you will not fall in -- AND it is not a waterwall or lavawall.
+// Everything else falls through to the stop test.
+export function avoid_moving_on_liquid(x, y, msg) {
+    const in_air = (Levitation() || Flying());
+    const here = game.level?.at?.(game.u.ux, game.u.uy);
+    const there = game.level?.at?.(x, y);
+    if (!there || !here)
+        return false;
+
+    /* don't stop if you're not on a transition between terrain types... */
+    if ((there.typ === here.typ
+         /* or you are using shift-dir running and the transition isn't
+            dangerous... */
+         || ((game.context?.run | 0) < 2 && (!is_lava(x, y) || in_air))
+         || game.context?.travel)
+        /* and you know you won't fall in */
+        && (in_air || Known_lwalking()
+            || (is_pool(x, y) && Known_wwalking()))
+        && !(IS_WATERWALL(there.typ) || there.typ === LAVAWALL)) {
+        return false; /* liquid is safe to traverse */
+    } else if (is_pool_or_lava(x, y) && there.seenv) {
+        if (msg && game.flags?.mention_walls) {
+            /* You("stop at the edge of the %s.", hliquid(...)) -- hliquid()
+               is not ported and mention_walls defaults Off. */
+            (game.unported ||= new Set()).add('hack:avoid_moving_on_liquid:msg');
+        }
+        return true;
+    }
+    return false;
 }

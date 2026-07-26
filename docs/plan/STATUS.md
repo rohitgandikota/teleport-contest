@@ -551,9 +551,29 @@ coordinates can be trusted. dog_goal now runs correctly through droppables,
 but its OUTPUT -- game.gg -- may still differ, and gg is exactly what GDIST
 reads.
 
-NEXT: print game.gg and appr at the top of dog_move's scoring loop for the
-turn containing call 3746, plus nidist's starting value. One of those three
-differs from C; the candidate list is already known to match.
+INSTRUMENTED. Sample from the scoring loop:
+
+    J pet(71,5) cand(71,4) nd=2 nid=1 appr=1 j=1  gg=(70,5) gtyp=6
+    J pet(71,5) cand(72,5) nd=4 nid=5 appr=1 j=-1 gg=(70,5) gtyp=6
+
+NOTE gtyp = 6 = UNDEF. dog_goal found NO object goal and fell back, so gg is
+the default target rather than a chosen one. appr is 1 throughout.
+
+That is the thing to check next: C's dog_goal, on the same turn, may set
+gtyp to APPORT or a food type and steer the pet at an object, which would
+give a different gg and therefore a different j for every candidate --
+producing exactly the observed "C ties where we do not".
+
+The APPORT branch is reachable now that droppables is fixed, so gtyp being
+UNDEF here is not automatically wrong, but it IS the difference worth
+measuring first. Print gtyp and gg from dog_goal itself on that turn, and
+work out what C's gtyp must be for its rn2(1) tie to occur.
+
+WARNING ABOUT THIS SAMPLE: the lines above are the LAST scoring-loop calls of
+the session, not necessarily the turn containing call 3746. Correlate by RNG
+index or turn number before drawing conclusions -- pairing a convenient trace
+line with a distant call index is the exact mistake that cost this
+investigation twenty ticks on seed0030.
 
 USE THE STACK-TRACE TECHNIQUE for anything further on this trail. Instrument
 rn2 to dump a trace on the Nth call (note: diverge.mjs's index N is _rngLog

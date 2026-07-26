@@ -108,10 +108,25 @@ seed0030 diverges on screens at step 4 while its RNG matches to call 6276, so
 the extra monster is placed with draws that happen to line up -- most likely a
 makemon that C makes elsewhere, or one we make twice.
 
-Next: instrument makemon with a per-level counter and compare the count and
-the species against the C rn2 log's makemon tags during level generation. Do
-NOT assume it is the pet; the second 'f' could be a randomly generated kitten
-that C places on another square. C has one 'f' at c55, with the
+**Measured.** A `globalThis` counter inside makemon, over seed0030 segment 0
+with the first six keys, logs exactly three calls:
+
+    random@13,10 | random@51,16 | random@57,4
+
+The third is at (57,4) -- screen row 5, column 57 -- which is EXACTLY where our
+extra 'f' sits. So level generation places a random monster there and C does
+not. All three have ptr == null (a random species), so this is makelevel's
+random-monster fill, not the pet: makedog does not appear in the log at all.
+
+The caution about not assuming it is the pet was right; it is not.
+
+Next: find how many random monsters C's makelevel places on this level and
+where. src/mklev.c's makelevel ends with a loop over rnd(...) monsters; compare
+its count against our three, and check whether our third call is one C never
+makes or one C makes at a different square. The RNG matching to call 6276 means
+the DRAWS line up, so the likeliest cause is a placement difference rather than
+an extra creation -- somexy or the room choice putting it at 57,4 where C puts
+it elsewhere. C has one 'f' at c55, with the
 upstair and floor visible where ours shows the trail.
 
 Where it should be cleared: src/monmove.c:1655 calls `newsym(mtmp->mx,

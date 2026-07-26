@@ -90,7 +90,41 @@ change the RNG, it just freezes the top line. Five call sites had it.
 When making a function async to fix this, the ripple has to go all the way to
 the command dispatcher in js/cmd.js, or the same bug reappears one level up.
 
-### Still open on seed0700: the turn counter is one ahead
+### seed0700 traced to the end: the pet is on the wrong square
+
+The turn counter reading T:3 where C reads T:2 is a SYMPTOM, not the bug. The
+chain, measured:
+
+  moveamt at that turn is 12 for us, so umovement hits 0 after one move and
+  the next (blocked) keypress triggers a new turn. C had 24, so its blocked
+  keypresses cost nothing and the turn holds. Fast() and Very_fast() are
+  correct (true/false for a Samurai) and the rn2(3) is drawn identically, so
+  the moveamt difference is downstream of an earlier divergence, at call 2740:
+
+    2739  rn2(4)  dog_goal(dogmove.c:575)   ours matches
+    2740  rn2(1)  dog_move(dogmove.c:1255)  ours draws rn2(5) instead
+
+  dogmove.c:1255 is `(j == 0 && !rn2(++chcnt))`, where
+  j = (ndist - nidist) * appr. Instrumented, our pet is at 60,3 with appr 1,
+  nidist 4, and its first candidate is at distance 2, so j is -2 and nothing
+  is drawn. For C to draw exactly one rn2(1) there, C's pet must be on a
+  square where exactly ONE candidate sits at the pet's own distance from the
+  goal.
+
+So our pet is on a different square, and it got there without any draw
+disagreeing. That means a NON-DRAWING difference in the choice: mfndpos's
+candidate list (content or order), GDIST, or which branch of dog_move's
+selection wins. mfndpos is the prime suspect and is known incomplete -- it is
+still missing C's onscary/ALLOW_SSM, ALLOW_SANCT, NOGARLIC, ALLOW_ROCK,
+NOTONL/monlineu and trap arms, every one of which REJECTS a square C rejects
+and we accept, which is exactly how a candidate list goes wrong without
+changing a single draw.
+
+Port those arms next. They are pure predicates with no draws of their own, so
+they cannot regress the RNG, and they decide the list every pet and monster
+move is chosen from.
+
+### Previously open on seed0700: the turn counter is one ahead
 
 C shows T:2 where we show T:3 at step 5, so our new-turn block in
 moveloop_core runs one extra time. RNG matches through that point, so

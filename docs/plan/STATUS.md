@@ -71,6 +71,41 @@ js/cmd.js:460 already routes 'e' and reaches floorfood(); what is missing is
 doeat's body, start_eating's occupation, and the choke() gate that ends the
 game. Under 400 lines total for the path that unblocks seed0030's first death.
 
+## THE LAST LINK: the occupation loop. js/allmain.js has none.
+
+doeat -> start_eating -> bite -> choke -> done is PORTED and connected for
+ordinary food. It has not fired yet because multi-turn meals run through the
+OCCUPATION mechanism, and js/allmain.js has no occupation machinery at all --
+grep it for "occupation" or "multi" and there are zero hits.
+
+The C, src/allmain.c:485, inside moveloop_core BEFORE the command read:
+
+    if (gm.multi >= 0 && go.occupation) {
+        if ((*go.occupation)() == 0)
+            go.occupation = 0;
+        if (monster_nearby())
+            stop_occupation();
+        ...
+    }
+
+and set_occupation (11 lines) is just:
+
+    if (xtime) { go.occupation = timed_occupation; timed_occ_fn = fn; }
+    else       { go.occupation = fn; }
+    go.occtxt = txt; go.occtime = 0;
+
+So the work is: an `occupation` slot on game, set_occupation/stop_occupation,
+and the four-line check in moveloop_core. eatfood() is the callback and is 23
+lines with 0 draws.
+
+**This also unblocks the run loop** (gm.multi + lookaround + end_running),
+which is the same `gm.multi >= 0` plumbing and was already on the queued list.
+Two subsystems behind one mechanism.
+
+Be careful: this edits moveloop_core, which every session runs every turn. Land
+the slot and set_occupation first with the loop check absent, verify 352 holds,
+then add the check as its own commit.
+
 **doeat's tail sets everything the death depends on** (src/eat.c, the last
 lines of doeat before `return ECMD_TIME`):
 

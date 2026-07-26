@@ -1,5 +1,43 @@
 
-=== THE WIRING WAS ATTEMPTED AND REVERTED. READ THIS FIRST. ===
+=== WIRING ATTEMPT 2: -7 IMPROVED TO -2, STILL REVERTED. READ THIS FIRST. ===
+
+Second attempt, after porting domove_core's two ordinary run-exit sites
+(hack.c:2846 blocked-move, hack.c:2936 post-move terrain). Those ARE committed
+and are neutral on their own. With them in place the wiring measured:
+
+    attempt 1 (no exits)   -7 screens, RNG  +40
+    attempt 2 (with exits) -2 screens, RNG +243
+
+So the missing terminator really was most of the problem, and the loop is
+mechanically much closer. seed5002 recovered fully (8 -> 8 -> 8). seed4500
+still loses 2 (11 -> 9).
+
+WHAT THE SECOND ATTEMPT RULED OUT, so nobody re-checks it:
+  - The divergence POINT does not move: still call 2869 in m_move, seg 1
+    step 41, identical with and without the wiring. Matched RNG positions on
+    that session went 2941 -> 3203.
+  - seed4500's FIRST screen mismatch is step 8, the unported #jump, which is
+    well before the RNG divergence and unrelated.
+  - hack.c:2766 (a run stops rather than attacking a visible hostile) was
+    ported and is NOT the missing piece: it cost 11 RNG and recovered no
+    screens. Left out.
+  - autoopen is NOT the cause. Removing domove's `context.run = 0` means run
+    is now set during domove, which disables the autoopen branch -- and C has
+    the same `!svc.context.run` guard at hack.c:1097, so the port matches. In
+    C a rush into a closed door does not open it; the door stops the run
+    through test_move failing.
+
+STILL UNPORTED of C's six domove_core nomul sites: 2792 (monster bump), 2816
+(stuck steed), 2854 (swim_move_danger). 2792 is the most likely remaining
+candidate for seed4500's 2 screens -- it fires when the hero bumps a
+non-safe monster, which a knight rushing around a level does often.
+
+Reverted per the no-regression rule rather than committed at -2. The wiring
+itself is a ~30-line diff in js/cmd.js (rush setup at the movement-key site,
+delete the gap block) and js/allmain.js (the multi>0 branch); attempt 3 should
+port 2792 first and then re-apply it.
+
+=== (attempt 1 notes follow) ===
 
 Steps 1-3 below were implemented and MEASURED AT -7 SCREENS (510 -> 503), so
 they were reverted per the no-regression rule. Step 1 (the domove() signature)

@@ -226,15 +226,21 @@ Three things wrong at once, and they are one cause:
   - therefore morestr is "" and the footer falls back to defmorestr
     "--More--", not "(end) ".
 
-So the tutorial prompt is being built with putstr lines where C builds it with
-add_menu entries. The window is two columns right of C's and its footer text
-is wrong; the single stray glyph at column 20 is just the first cell where
-that shows.
+WRONG CONCLUSION, CORRECTED: that FOOT line is NOT the tutorial menu.
+ask_do_tutorial (js/options.js:185) does use tty_add_menu and does call
+tty_end_menu, so its cols is set properly. The window measured above -- an
+NHW_MENU with cols 0, built by putstr -- is the LEGACY window, which
+js/tty/wintty.js:280 already documents as exactly that case.
 
-FIX THERE, not in the paint: find where the tutorial query window is filled
-(js/options.js ask_do_tutorial and whatever it calls) and make it use the
-menu path so tty_end_menu runs. Expect offx to move 22 -> 20 and morestr to
-become "(end) ".
+So the trace captured the wrong window and proves nothing about the tutorial
+menu. The instrumentation has to filter on the window whose footer lands on
+row 6, or key off morestr === "(end) ".
+
+FOUR readings of this one cell have now been wrong: missing leading space,
+maxcol 60 vs 59, offset formula, and putstr-vs-add_menu. Every one was an
+inference from partial data. Do not add a fifth from reasoning. Instrument
+the specific window -- match on footerRow === 6 or on cw.morestr -- print
+offx, cols, maxcol and the entry strings, and only then decide.
 
 This supersedes TWO earlier readings in this file, both wrong: that the cause
 was a missing leading space, and that maxcol was 60 against C's 59. Both were

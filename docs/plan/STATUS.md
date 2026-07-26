@@ -213,12 +213,26 @@ game.coder.croom -- only lspo_room does (js/sp_lev.js:1394). create_altar
 therefore takes its `else` branch and draws rn2(80)/rn2(21), a whole-map
 random, where C draws rn2(8)/rn2(4) within the room.
 
-Two things to check before fixing, because the wrong one is easy to pick:
-whether the themeroom should be dispatched through lspo_room rather than
-lspo_region at all, and whether C's update_croom() (src/sp_lev.c:6323, which
-maintains a tmproomlist STACK with n_subroom) needs porting so croom is
-maintained by the same mechanism C uses rather than by lspo_room's local
-save/restore.
+The dispatch is NOT the problem: dat/themerms.lua:880 filler_region really
+does call des.region({..., contents = themeroom_fill}), so our path matches C.
+C's lspo_region (src/sp_lev.c:5693) pushes the region onto coder->tmproomlist,
+calls update_croom(), runs the contents, then spo_endroom() pops. gc.coder is
+created by create_des_coder() with n_subroom starting at ONE and
+tmproomlist[0] left NULL, which is why update_croom() still yields null at the
+top level and spo_endroom() pops only while n_subroom > 1.
+
+**This was implemented and REVERTED.** Porting create_des_coder, update_croom,
+spo_push_room and spo_endroom, and pushing the region around its contents,
+made seed2600 stand still at 395 and drove seed0015 BACKWARD from 2513 to 359,
+costing 2,286 corpus RNG. game.coder was never created before that change, so
+every `game.coder?.croom` read in the port has always been undefined and a
+good deal of code is presumably written around that. Setting croom for real
+changes get_location, create_monster's placement and the des.* verbs all at
+once.
+
+Do it, but do it in one deliberate pass with the divergence points watched per
+session, not as a one-line enablement. The commit that reverted it is in the
+history if the diff is wanted.
 
 Still unexplained: both seed0013 sessions at 528.
 

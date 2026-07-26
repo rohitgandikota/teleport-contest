@@ -92,6 +92,34 @@ inside the position-scoring loop:
         || (j > 0 && !whappr
             && ((omx == nix && omy == niy && !rn2(3)) || !rn2(12)))) {
 
+MEASURED DIVERGENCE, seed0007, call 2832 (identical shape on seed0017 and
+seed0077):
+
+  2831  C rn2(4)=0   ours rn2(4)=0   ok        @ dog_goal(dogmove.c:575)
+  2832  C rn2(1)=0   ours rn2(5)=2   MISMATCH  @ dog_move(dogmove.c:1255)
+  2833  C rn2(5)=3   ours rn2(5)=3   ok        @ distfleeck(monmove.c:538)
+
+dog_goal agrees exactly, including its own rn2(4). Then C makes ONE draw we
+never make: rn2(1). That is rn2(++chcnt) at the FIRST TIE -- chcnt was 0, the
+pre-increment makes it 1, and rn2(1) is always 0 so that candidate always
+wins. We skip it entirely and fall through to distfleeck.
+
+SO THE BUG IS NOT IN THE SAMPLER, IT IS IN WHAT REACHES IT. C finds a
+candidate square with j == 0; we find none. j is
+
+    j = (GDIST(nx, ny) - nidist) * appr
+
+so either our GDIST differs, our nidist starts differently, or our candidate
+list differs. dog_goal returning the same draws does NOT prove it returned the
+same appr or set the same game.gg -- only that it took the same branches that
+draw.
+
+Next step is to instrument that loop on seed0007 and print, for each
+candidate, (nx, ny, GDIST, nidist, appr, j) at the moment C would draw rn2(1),
+then compare against what C must have had for j to be 0. Do NOT re-port the
+loop; it is present and its sampler is correct (pre-increment and the j < 0
+reset are both there, verified by reading js/dog.js:1152 and :1158).
+
 Things to check in js/dog.js's copy, in order of how quietly they fail:
   - GDIST reads game.gg.gx/gy. A `?? 0` fallback on a missing field makes it
     measure to (0,0) and score every square by closeness to the top-left

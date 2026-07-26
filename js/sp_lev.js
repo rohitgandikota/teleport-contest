@@ -14,7 +14,7 @@ import { rn1, rn2, rnd } from './rng.js';
 import { isok } from './hacklib.js';
 import { sobj_at, weight, obj_extract_self } from './invent.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
-import { mkobj_at, mksobj_at, add_to_container } from './mkobj.js';
+import { mkobj_at, mksobj_at, add_to_container, set_corpsenm } from './mkobj.js';
 import { OBJ_NAME } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
@@ -806,6 +806,12 @@ export function create_object(o, croom) {
             note_unported('create_object:too deeply nested containers');
     }
 
+    /* src/sp_lev.c create_object() — a named montype is applied through
+       set_corpsenm(), which starts the corpse's rot timer (its rnz is five
+       PRNG calls). Skipping it left that timer unset and its draws unspent. */
+    if (o.corpsenm !== undefined && o.corpsenm !== NON_PM)
+        set_corpsenm(otmp, o.corpsenm);
+
     if (!(o.containment & SP_OBJ_CONTENT)) {
         if (o.buried) {
             const dealloced = { v: false };
@@ -859,6 +865,14 @@ export function lspo_object(idOrClass, x, y, opts) {
         o.id = (typeof idOrClass === 'number') ? idOrClass
                                                : find_objtype(idOrClass);
     }
+
+    /* src/sp_lev.c lspo_object() — `montype` names the species a corpse,
+       figurine or egg came from. It is resolved WITHOUT a gender draw here,
+       unlike des.monster()'s id, and create_object hands it to set_corpsenm,
+       which is what starts a corpse's rot timer. */
+    if (opts?.montype !== undefined && opts.montype !== null)
+        o.corpsenm = (typeof opts.montype === 'number')
+                     ? opts.montype : name_to_mon(opts.montype);
 
     if (opts?.buried) o.buried = 1;
     if (opts?.lit)    o.lit = 1;

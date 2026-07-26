@@ -129,14 +129,22 @@ export function start_eating(otmp, already_partly_eaten) {
     v.eating = 1;
 
     if (bite()) {
-        /* survived choking; finish off food that is nearly done */
-        if (++v.usedtime >= v.reqtime)
-            note_unported_eat('start_eating:done_eating');
+        /* survived choking, finish off food that's nearly done;
+           need this to handle cockatrice eggs, fortune cookies, etc */
+        if (++v.usedtime >= v.reqtime) {
+            /* C brackets this call with a save/restore of gn.nomovemsg so
+               that done_eating() does not issue one when the reason we got
+               here is a vomit() from bite(). nomovemsg is not tracked, so the
+               bracketing records; the call itself is real. */
+            note_unported_eat('start_eating:nomovemsg_bracket');
+            done_eating(false);
+        }
         return;
     }
 
     if (++v.usedtime >= v.reqtime) {
-        note_unported_eat('start_eating:done_eating');
+        /* print "finish eating" message if they just resumed -dlc */
+        done_eating((v.reqtime > 1 || already_partly_eaten) ? true : false);
         return;
     }
 

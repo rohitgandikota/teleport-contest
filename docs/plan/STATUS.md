@@ -840,6 +840,33 @@ CURRENT LIST AFTER THOSE:
      39%  bite:nutrition
      39%  start_eating:done_eating
 
+SIZED start_eating:done_eating (39%) -- src/eat.c done_eating, 29 lines
+itself but SIX missing callees:
+
+    useup        12 lines
+    useupf       20 lines
+    carried      (a one-line predicate, not found by size)
+    food_xname   18 lines
+    fpostfx      90 lines
+    cpostfx     199 lines
+                348+ lines
+
+cpostfx alone is 199 lines -- it is the corpse-effect dispatcher (every
+"you feel..." intrinsic, teleportitis, stoning, the lot) and dwarfs the
+function that calls it. fpostfx (90) is its non-corpse twin.
+
+SO THIS IS NOT A 29-LINE ITEM. The useup/useupf/carried/food_xname group is
+about 50 lines and is the mechanical half; the postfx pair is 289 lines and
+is a subsystem. Splitting them is viable: done_eating with both postfx calls
+RECORDED would still remove the object from inventory, end the occupation and
+clear victual, which is most of the observable behaviour.
+
+Worth noting one ordering detail C flags in a comment: occupation is zeroed
+BEFORE newuhs(FALSE) "so newuhs() knows we're done". Zeroing it after would
+have newuhs see an eating occupation that has already finished.
+
+DONE bite:nutrition (was 39%) -- all four functions ported; see below.
+
 SIZED bite:nutrition (39%) -- js/eat.js:205, the tail of src/eat.c bite().
 Four functions, none of them present:
 

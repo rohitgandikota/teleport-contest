@@ -300,7 +300,7 @@ both branches agree here anyway.
 
 One cell, and it gates all 26 screens in the session.
 
-### Three cheap one-cell diffs, and what they are NOT
+### Three cheap one-cell diffs: seed2200 is a MISPLACED MONSTER
 
 Ranked by first-mismatch size, the cheapest remaining screen diffs are:
 
@@ -308,8 +308,32 @@ Ranked by first-mismatch size, the cheapest remaining screen diffs are:
     1 cell  seed2200-wizard-quaff-zap-read step 0   r11 c16 C 'x'  ours '`'
     1 cell  seed0700-samurai-explore-descend
 
-DO NOT read these as "a monster is missing". That was my first conclusion and
-it is unsupported:
+IT IS A MONSTER AFTER ALL. Settled by dumping the row verbatim, which is the
+only screen evidence worth trusting here. seed2200 step 0, columns 8-25:
+
+    r9  " lqqqqqqqqqqqq You"
+    r10 " x~~~~~~~~~~~@ to "
+    r11 " x~~~~~~x(~~~~    "
+    r12 " x~~~~~~~~~~~~ You"
+
+The 'x' at column 9 IS the window border. The 'x' at column 16 sits in the
+middle of the floor ('~' on both sides) with an object '(' beside it, so it is
+a grid bug. C has a monster at map (17,10).
+
+Our level at that moment holds three monsters: 23,10 / 75,6 / 42,4. Note the
+FIRST one -- map y 10, the same row, six columns right of C's. So this is a
+monster at the right row and the wrong column, not a missing one.
+
+That is a strong, cheap probe: same row, wrong column, at step 0 with no
+gameplay in between. Compare the placement draws for that monster against C's
+at level generation.
+
+I retracted this reading once on the grounds that 'x' is a border glyph. That
+retraction was WRONG -- the glyph is ambiguous and only its neighbours settle
+it. Both the original mis-read (scanning glyph classes on a blurb screen) and
+the bad retraction came from not dumping the row.
+
+The superseded caution follows:
 
   - 'x' is the DECgraphics VERTICAL LINE, not a grid bug. In the tty symset a
     window border is lqqqk / x / mqqqj, so an 'x' at a window's edge column is

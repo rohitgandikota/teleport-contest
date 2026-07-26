@@ -168,6 +168,24 @@ difference is in how much umovement a command consumes, i.e. which commands
 set context.move. moves itself starts at 1 and increments plainly, already
 verified against src/u_init.c:645 and src/allmain.c:244.
 
+### seed0101's SCREENS break much earlier, at step 2, on ONE cell
+
+RNG and screens diverge in different places and both are worth chasing. The
+screen break is step 2, the tutorial-prompt menu, at r6 c20:
+
+    C     "                   m (end)"
+    ours  "                   m\u2500(end)"   (a horizontal line at c20)
+
+C's menu footer is the DECgraphics lower-left corner at offx, then a SPACE,
+then "(end)". We draw a border segment in that space. cw.morestr is set to
+"(end) " with a TRAILING space at js/tty/wintty.js:254 and the paint starts at
+offx + 1 for a menu, so the extra glyph is coming from whatever draws the
+bottom border row, not from morestr itself.
+
+One cell, and it gates every later screen in the session (26 of them). Find
+the bottom-border draw in js/tty/wintty.js and compare it against C's
+tty_end_menu / process_menu_window footer handling.
+
 ### seed0101 at 2293 is the THROW subsystem, at step 9
 
     2291  rnd(9000)  moveloop_preamble(allmain.c:72)   ours matches

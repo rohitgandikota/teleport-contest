@@ -506,9 +506,35 @@ NO_MINVENT exists to stop makemon() giving a pony an already-worn saddle. That
 is the first thing to check: does our pony start with a saddle, or any minvent,
 where C's has none?
 
-NEXT: print mtmp.minvent (or whatever droppables() reads) for the pet at that
-turn, and compare against what makedog/makemon should have given it with
-MM_EDOG | NO_MINVENT. This is a pet-inventory bug, not a pet-movement bug.
+FOUND THE DEFECT. js/dog.js:1299:
+
+    function droppables(mtmp) {
+        return (mtmp.minvent && mtmp.minvent.length) ? mtmp.minvent[0] : null;
+    }
+
+That returns the FIRST inventory item unconditionally. src/dogmove.c
+droppables() is 109 LINES and filters:
+  - worn armour and wielded weapons are excluded
+  - animals and mindless monsters keep nothing
+  - intelligent ones RETAIN a pick-axe if they tunnel and need one, a key if
+    they have hands and are not verysmall, and a unicorn horn
+  - a wielded pick-axe or unicorn horn is tracked separately so the spare is
+    the one dropped
+
+Our pony's saddle is WORN -- makedog correctly calls put_saddle_on_mon per
+src/dog.c:260 -- so C's droppables excludes it and returns NULL. Ours returns
+the saddle, so we enter the `if (droppables(mtmp))` block at js/dog.js:1252
+and spend an rn2(udist + 1) that C never spends. udist is 10, hence rn2(11).
+
+THIS IS A STUB THAT LOOKS LIKE AN IMPLEMENTATION -- no note_unported call, no
+TODO, so no tool flagged it and it reads as finished code. Worth grepping for
+other one-line bodies in js/dog.js and js/dogmove.js on the same suspicion.
+
+TO FIX: port droppables properly from src/dogmove.c. It is 109 lines but
+mostly straight-line filtering. The minimum that fixes seed0004 is excluding
+worn and wielded items, but do the whole function rather than the minimum --
+the pick-axe/key/unihorn retention arms decide what a pet drops in every later
+game, and a partial version will read as correct while diverging elsewhere.
 
 This is a much better foothold than seed0030 ever was: one game, one function,
 one draw, and the C's expected value is known (rn2(4)=3).

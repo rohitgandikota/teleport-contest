@@ -407,3 +407,36 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
     note_unported_uhitm(`passive:adtyp=${ptr.mattk[i][1]}`);
     return malive | mhit;
 }
+
+// src/uhitm.c hmon() — the damage entry point.
+//
+// Thin, but not empty: the anger_guards flag is captured BEFORE hmon_hitmon
+// runs, because hmon_hitmon can kill the monster or change its peacefulness,
+// and the guards must be angered based on what it was when struck.
+//
+// The rn2(2) for a priest is unconditional on the priest existing, so it fires
+// whether or not ghod_hitsu does anything.
+//
+// hmon_hitmon (the damage itself), ghod_hitsu and angry_guards are recorded.
+export function hmon(mon, obj, thrown, dieroll) {
+    const anger_guards = !!(mon.mpeaceful
+                            && (mon.ispriest || mon.isshk
+                                || is_watch(game.mons[mon.mnum])));
+
+    note_unported_uhitm('hmon:hmon_hitmon');
+    const result = true;        /* hmon_hitmon returns whether mon survives */
+
+    if (mon.ispriest && !rn2(2))
+        note_unported_uhitm('hmon:ghod_hitsu');
+    if (anger_guards)
+        note_unported_uhitm('hmon:angry_guards');
+
+    return result;
+}
+
+// include/mondata.h:159 is_watch() — an IDENTITY test against two specific
+// permonst entries, not a msound test. The first draft of this wrote it as
+// `d.msound === MFLAGS.MS_WATCH`, and MS_WATCH does not exist, so it would
+// have been silently false for every monster forever.
+const is_watch = (d) =>
+    d.pmidx === PMNAMES.PM_WATCHMAN || d.pmidx === PMNAMES.PM_WATCH_CAPTAIN;

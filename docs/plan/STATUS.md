@@ -5014,3 +5014,37 @@ The superseded suspects, kept only to show they were considered:
 
 Suspect 2 is cheap to check and is a genuine C-vs-JS string-semantics trap.
 Start there.
+
+## searches_for_item (43% on unported-hits): SCOPED, not started
+
+src/muse.c:2706, about 85 lines. A pure predicate -- it DRAWS NOTHING -- but
+it decides whether a monster wants an item on the floor, which feeds m_move's
+goal, which decides where the monster walks. So it is behavioural upstream of
+positions, and positions are what the whole newt thread is about.
+
+Structure: an onscary guard, an is_animal/mindless/ghost early-out, two
+special-cased object types, then a switch over oclass with WAND, POTION,
+SCROLL, AMULET, TOOL and FOOD arms.
+
+Dependencies, checked:
+
+    HAVE     Is_mbag (mkobj), is_floater (mondata), attacktype (makemon),
+             touch_petrifies (dog), resists_ston (mon), onscary (monmove),
+             monsndx, is_unicorn, is_vampshifter
+    MISSING  can_blow, cures_stoning, mcould_eat_tin, needspick, nonliving
+
+The five missing ones are all small mondata-style predicates except
+cures_stoning and mcould_eat_tin, which need the eating rules. A first pass
+could port the WAND, POTION, SCROLL and AMULET arms, which need only
+`nonliving`, and record the TOOL and FOOD arms -- but note that C returns
+FALSE by falling out of the switch, so a recorded arm must return FALSE too,
+not "unknown".
+
+ORDER: nonliving and needspick first (both one-liners over mflags), then the
+four easy arms, then can_blow, then the FOOD arm last since cures_stoning and
+mcould_eat_tin are the only real work.
+
+VERIFY BY PROBE, not by score: the function draws nothing, so the corpus will
+not move even when it is correct. Count how many times it returns TRUE before
+and after, and check that a monster actually walks toward an item it now
+wants.

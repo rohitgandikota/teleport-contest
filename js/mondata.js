@@ -91,6 +91,9 @@ export function num_horns(ptr) {
 
 export const has_horns = (ptr) => num_horns(ptr) > 0;
 
+// include/mondata.h:109 is_domestic() — starts tame at 10 rather than 5.
+export const is_domestic = (ptr) => (ptr.mflags2 & MFLAGS.M2_DOMESTIC) !== 0;
+
 // include/mondata.h:81 perceives() — can this species see invisible?
 export const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
 

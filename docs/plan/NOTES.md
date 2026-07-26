@@ -2243,3 +2243,39 @@ and a failure from it means nothing. I used it as one and briefly concluded a
 reverted change was still broken. Use `node tools/scoreboard.mjs` instead;
 that is the entry point the runner actually uses, and it was reading a correct
 510 the whole time.
+
+## Forced execution proves nothing if you build the fixture from your own reading
+
+Six functions of the mattackm chain were written reading `mattk.aatyp` and
+`mattk.adtyp` as object fields. js/monst_data.js stores each attack as a
+4-ELEMENT ARRAY -- `[2,0,1,2]` is [aatyp, adtyp, damn, damd] -- so every one
+of those reads was `undefined`. The whole chain would have done nothing on
+first contact with a real monster.
+
+Every one of those functions had been "verified by forced execution". The
+tests passed because they did this:
+
+    const bite = { aatyp: ATTKS.AT_BITE, adtyp: ATTKS.AD_PHYS, damn:1, damd:4 };
+
+a fixture built from the same misreading as the code. The test and the code
+agreed with each other and neither agreed with the game. Draw counts, damage
+numbers and return values were all "correct" and all meaningless.
+
+THE RULE: a forced-execution test must take its inputs from the REAL data
+structures -- mons[], objects[], game.level -- not from an object literal
+written while looking at the C. The moment a test needs a hand-built stand-in
+for something the game already has, that is the thing to be suspicious of.
+
+    t('getmattk from REAL table', () => getmattk(mk(PMNAMES.PM_JACKAL), ...))
+
+caught it on the first run.
+
+This does not retire forced execution -- it caught the missing
+pronoun_gender import, the STRAT_WAITMASK arms and the two-draws-before-
+early-return behaviour of mhitm_knockback, none of which a module load would
+have shown. It narrows the claim: forced execution proves the code RUNS, and
+proves its behaviour only to the extent the inputs are real.
+
+Named constants were added (MATTK_AATYP/ADTYP/DAMN/DAMD in js/const.js) so
+the next misread is a visible error rather than a silent undefined. Prefer
+that to raw indices anywhere the C uses a struct field.

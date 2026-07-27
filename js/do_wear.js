@@ -408,3 +408,68 @@ export function Boots_on() {
     }
     return 0;
 }
+
+// src/do_wear.c Helmet_on() — the afternmv callback for putting on a helmet.
+//
+// NO DRAWS, so errors here cost screens rather than the stream.
+//
+// The structural feature to preserve is the FALLTHROUGH: after
+// HELM_OF_OPPOSITE_ALIGNMENT does its uchangealign(), C falls through into
+// DUNCE_CAP, so both helmets share the curse-and-glow block. Collapsing them
+// into separate cases would drop that, and the shared block is where the
+// helm of opposite alignment actually gets cursed.
+//
+// It also guards `if (uarmh && ...)` INSIDE that block, because
+// uchangealign() can drop or destroy the helm -- falling onto a polymorph
+// trap or into water. Keep the null checks; they are not defensive padding.
+export function Helmet_on() {
+    if (!game.u.uarmh)
+        return 0;
+
+    let fell_through = false;
+
+    switch (game.u.uarmh.otyp) {
+    case ONAMES.FEDORA:
+        /* Role_if(PM_ARCHEOLOGIST) -> change_luck(1) */
+        note_unported_do_wear('Helmet_on:fedora_archeologist_luck');
+        break;
+    case ONAMES.HELMET:
+    case ONAMES.DENTED_POT:
+    case ONAMES.ELVEN_LEATHER_HELM:
+    case ONAMES.DWARVISH_IRON_HELM:
+    case ONAMES.ORCISH_HELM:
+    case ONAMES.HELM_OF_TELEPATHY:
+        break;
+    case ONAMES.HELM_OF_CAUTION:
+        note_unported_do_wear('Helmet_on:see_monsters');
+        break;
+    case ONAMES.HELM_OF_BRILLIANCE:
+        note_unported_do_wear('Helmet_on:adj_abon');
+        break;
+    case ONAMES.CORNUTHAUM:
+        /* marked wizards get a CHA bonus, everyone else a penalty */
+        note_unported_do_wear('Helmet_on:cornuthaum_cha');
+        break;
+    case ONAMES.HELM_OF_OPPOSITE_ALIGNMENT:
+        game.u.uarmh.known = 1;  /* here because uarmh could get cleared */
+        note_unported_do_wear('Helmet_on:uchangealign');
+        fell_through = true;     /* C: FALLTHROUGH into DUNCE_CAP */
+        /* fall through */
+    case ONAMES.DUNCE_CAP:
+        /* uarmh may be gone: uchangealign can drop or destroy it */
+        if (game.u.uarmh && !game.u.uarmh.cursed)
+            note_unported_do_wear('Helmet_on:curse_and_glow');
+        note_unported_do_wear('Helmet_on:botl_and_feel_msg');
+        break;
+    default:
+        note_unported_do_wear('Helmet_on:impossible_unknown_type');
+        break;
+    }
+
+    /* uarmh could be null due to uchangealign() */
+    if (game.u.uarmh && !game.u.uarmh.known) {
+        game.u.uarmh.known = 1; /* +/- evident because of status line AC */
+        note_unported_do_wear('Helmet_on:update_inventory');
+    }
+    return 0;
+}

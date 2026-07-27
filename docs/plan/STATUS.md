@@ -9185,3 +9185,41 @@ the four ok-callbacks, `dowear` and `doputon` all follow quickly.
 Everything else on the wear path is now in place: `canwearobj`, `on_msg`,
 `off_msg`, `remove_worn_item`, `setworn`, all seven `<X>_on` and `<X>_off`
 callbacks, `nomul`/`unmul`, `retouch_object`, `makeknown`.
+
+
+### The 'W' command chain is COMPLETE end to end (armor arm)
+
+Three commits this pass, each measured:
+
+1. `js/invent.js getobj_letters()` is now **async** and awaits its callback.
+   This was the blocker recorded in NOTES: an async getobj callback returned a
+   Promise into a sync comparison against `GETOBJ_*`, silently taking the wrong
+   branch. Awaiting a non-Promise is a no-op, so existing sync callbacks are
+   unaffected. Board unchanged, which is the point -- it was a latent trap, not
+   a live bug, because no async callback was wired yet.
+2. `equip_ok` (`src/do_wear.c:3404`), the four getobj callbacks
+   `wear_ok`/`takeoff_ok`/`puton_ok`/`remove_ok`, plus `dowear` (2432) and
+   `doputon` (2454).
+3. **`js/cmd.js` had its OWN `equip_ok` and all four callbacks**, wired into
+   `GETOBJ_CMD`, with `note_unported_cmd('equip_ok:canwearobj')` standing in for
+   the real call. Removed those 61 lines; cmd.js now imports the real ones from
+   `js/do_wear.js`, which is their C home. So the canwearobj arm went from
+   recorded to LIVE as a side effect of the dedup.
+
+Watch for this shape: **a `note_unported` marker can be a placeholder for a
+function that later gets ported somewhere else.** Nothing links them. Grep the
+markers for a name whenever you finish porting that name, or the port sits
+unused while a stub keeps answering.
+
+Still recorded, deliberately:
+- `equip_ok:inaccessible_equipment` -- only reachable with removing=true, so
+  'T'/'R' hit it and 'W'/'P' do not.
+- `accessory_or_armor_on:accessory` -- needs `yn_function`.
+- `on_msg:the`, `accessory_or_armor_on:helm_opposite_quest`,
+  `accessory_or_armor_on:nomovemsg`, `remove_worn_item`'s accessory arms.
+
+### Next
+The take-off side: `armoroff` (`src/do_wear.c:1920`) and `select_off` (2696),
+which `takeoff_ok`/`remove_ok` already route to. Or `yn_function`, which
+unblocks every accessory path at once and is the single highest-leverage
+missing piece in this subsystem.

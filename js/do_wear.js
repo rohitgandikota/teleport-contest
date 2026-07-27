@@ -7,6 +7,8 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { update_inventory } from './invent.js';
+import { observe_object, makeknown } from './o_init.js';
 import { toggle_blindness } from './potion.js';
 import { getobj } from './invent.js';
 import { pline } from './display.js';
@@ -1439,5 +1441,32 @@ export async function Blindf_on(otmp) {
     }
     if (changed) {
         toggle_blindness(); /* potion.c */
+    }
+}
+
+// src/do_wear.c:1193 learnring() — the hero may learn a ring's type and/or
+// enchantment after wearing it.
+export function learnring(ring, observed) {
+    const ringtype = ring.otyp;
+
+    /* if effect was observable then we usually discover the type */
+    if (observed) {
+        /* if we already know the ring type which accomplishes this
+           effect (assumes there is at most one type for each effect),
+           mark this ring as having been seen (no need for makeknown);
+           otherwise if we have seen this ring, discover its type */
+        if (game.objects[ringtype].oc_name_known)
+            observe_object(ring);
+        else if (ring.dknown)
+            makeknown(ringtype);
+        /* the #if 0 else-arm in the C (see learnwand()) is not built */
+    }
+
+    /* make enchantment of charged ring known (might be +0) and update
+       perm invent window if we've seen this ring and know its type */
+    if (ring.dknown && game.objects[ringtype].oc_name_known) {
+        if (game.objects[ringtype].oc_charged)
+            ring.known = 1;
+        update_inventory();
     }
 }

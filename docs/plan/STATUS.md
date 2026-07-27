@@ -7722,3 +7722,33 @@ NEXT: port mon_maybe_unparalyze and double_punch (28 lines together, both
 small), then hitum with known_hitum and passive recorded, and measure. If the
 rnd(20) alone moves the aggregate, the rest can follow against real evidence
 rather than speculatively.
+
+## Next target: doclose ('c'), found by diverge on seed0361
+
+diverge on the CLEAN tree runs in 0.33 s and reports:
+
+    RNG diverges at call 2983
+      C rn2(100)=56   ours rn2(8)=0   @ obj_resists(zap.c:1469)
+      seg 1, step 41 (key "c")
+    Next C function to port: dosearch0 (src/detect.c:2079)
+
+IGNORE THE 'next function' LINE -- it is a heuristic and it is wrong here.
+dosearch0 is ALREADY PORTED, at js/detect.js:18 from src/detect.c:1893. The
+heuristic points at whichever C function sits near the divergent call, not at
+what is actually missing.
+
+THE REAL GAP IS THE KEY. src/cmd.c:1695 binds 'c' to "close a door", and
+js/cmd.js has NO 'c' case at all, so the command falls through unhandled
+while C runs doclose and the two streams part company. doclose is
+src/lock.c:957, 94 LINES.
+
+Size its callees before starting, per the standing rule that every sizing
+this session changed the plan. Grep the BARE NAME of each one -- five
+duplicate ports have already come from grepping "function X" when the
+existing definition was "export const X = ...".
+
+Also note what this session cost: the wield uwep hang absorbed roughly a
+dozen iterations and produced no fix, while a single clean diverge run named
+a concrete missing command in a third of a second. When a change hangs a
+session, SHELVE IT AND RUN DIVERGE ON THE CLEAN TREE instead of building
+tooling to chase the hang.

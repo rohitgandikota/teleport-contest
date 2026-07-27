@@ -2949,7 +2949,10 @@ export function Is_firelevel(uz) { const lev = uz ?? game?.u?.uz; const fl = gam
 export function Is_earthlevel(uz) { const lev = uz ?? game?.u?.uz; const el = game?.earth_level; return !!lev && !!el && lev.dnum === el.dnum && lev.dlevel === el.dlevel; }
 export function Is_airlevel(uz) { const lev = uz ?? game?.u?.uz; const al = game?.air_level; return !!lev && !!al && lev.dnum === al.dnum && lev.dlevel === al.dlevel; }
 export function In_mines(uz) { return (uz ?? game?.u?.uz)?.dnum === game?.mines_dnum; }
-export function In_sokoban(uz) { return (uz ?? game?.u?.uz)?.dnum === game?.sokoban_dnum; }
+/* In_sokoban() removed: it is a src/dungeon.c predicate and lives in
+   js/dungeon.js. The copy here took an optional argument defaulting to the
+   hero's level; C's takes an explicit d_level and every call site already
+   passes one. */
 export function In_V_tower(uz) { return (uz ?? game?.u?.uz)?.dnum === game?.tower_dnum; }
 export function Is_stronghold(uz) { const g = game; return g?.stronghold_level && (uz ?? g?.u?.uz)?.dnum === g.stronghold_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.stronghold_level.dlevel; }
 // C ref: dungeon.c:1637 — Is_botlevel checks if level is the deepest

@@ -15,12 +15,15 @@
 import { game } from './gstate.js';
 import { Teleport_control, Stunned, Confusion } from './youprop.js';
 import { rn2 } from './rng.js';
-import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban } from './const.js';
+import { COLNO, ROWNO, In_endgame, In_quest } from './const.js';
 import { rnl } from './rng.js';
 import { pline } from './display.js';
 import { You, You_feel, You_cant } from './pline.js';
 import { getlin } from './cmd.js';
-import { get_level, depth } from './dungeon.js';
+/* In_sokoban comes from js/dungeon.js, its C home, rather than the
+   defaulting copy in js/const.js -- this file's call site passes
+   game.u.uz explicitly, so the strict signature costs nothing. */
+import { get_level, depth, In_sokoban } from './dungeon.js';
 import { schedule_goto, UTOTYPE_NONE } from './do.js';
 
 // include/hack.h:1204-1210

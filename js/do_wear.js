@@ -187,7 +187,7 @@ export function Armor_on() {
         return 0;
     if (!game.u.uarm.known) {
         game.u.uarm.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Armor_on:update_inventory');
+        update_inventory();
     }
     note_unported_do_wear('Armor_on:dragon_armor_handling');
     note_unported_do_wear('Armor_on:artifact_light');
@@ -285,7 +285,7 @@ export function Shirt_on() {
 
     if (!game.u.uarmu.known) {
         game.u.uarmu.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Shirt_on:update_inventory');
+        update_inventory();
     }
     return 0;
 }
@@ -322,7 +322,7 @@ export function Shield_on() {
 
     if (!game.u.uarms.known) {
         game.u.uarms.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Shield_on:update_inventory');
+        update_inventory();
     }
     return 0;
 }
@@ -372,7 +372,7 @@ export function Gloves_on() {
 
     if (!game.u.uarmg.known) {
         game.u.uarmg.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Gloves_on:update_inventory');
+        update_inventory();
     }
     return 0;
 }
@@ -434,7 +434,7 @@ export function Cloak_on() {
 
     if (!game.u.uarmc.known) {
         game.u.uarmc.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Cloak_on:update_inventory');
+        update_inventory();
     }
     return 0;
 }
@@ -513,7 +513,7 @@ export function Boots_on() {
     /* uarmf could be null here (levitation boots put on over a sink) */
     if (game.u.uarmf && !game.u.uarmf.known) {
         game.u.uarmf.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Boots_on:update_inventory');
+        update_inventory();
     }
     return 0;
 }
@@ -578,7 +578,7 @@ export function Helmet_on() {
     /* uarmh could be null due to uchangealign() */
     if (game.u.uarmh && !game.u.uarmh.known) {
         game.u.uarmh.known = 1; /* +/- evident because of status line AC */
-        note_unported_do_wear('Helmet_on:update_inventory');
+        update_inventory();
     }
     return 0;
 }

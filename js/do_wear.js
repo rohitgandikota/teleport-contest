@@ -7,20 +7,39 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
-import { You, You_cant } from './pline.js';
-import { is_helmet, is_metallic, is_crackable } from './obj.js';
+import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy } from './mondata.js';
+import { welded } from './wield.js';
+import { Glib } from './youprop.js';
+import { silly_thing } from './invent.js';
+import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name } from './objnam.js';
+import { body_part } from './polyself.js';
+import { You, You_cant, Your, pline_The } from './pline.js';
+import { is_helmet, is_metallic, is_crackable, is_cloak, is_shirt, is_suit, is_shield, is_boots, is_gloves, is_flimsy, bimanual, is_sword, WrappingAllowed } from './obj.js';
 /* worn.js imports cancel_doff from here, so this is a 2-cycle -- as in C,
    where do_wear.c and worn.c call each other. Safe because setworn is used
    at CALL time, not at module load. */
-import { setworn } from './worn.js';
+import { setworn, racial_exception } from './worn.js';
 import { rnd } from './rng.js';
-import { mons } from './monst_data.js';
+import { mons, MFLAGS, MONSYMS } from './monst_data.js';
 import { objects, ONAMES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL,
          FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION,
-         FROMOUTSIDE } from './const.js';
+         FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd } from './const.js';
 import { sgn } from './hacklib.js';
+
+// src/do_wear.c:60 fingers_or_gloves() — plural "fingers" or optionally the
+// worn gloves' own word ("gloves" or "gauntlets").
+//
+// NOTE this creates a do_wear -> objnam import edge, and js/objnam.js already
+// imports hard_helmet from here. The cycle is safe because every binding
+// involved is a hoisted function declaration used only inside function bodies,
+// never read at module-init time.
+export function fingers_or_gloves(check_gloves) {
+    return ((check_gloves && game.u.uarmg)
+            ? gloves_simple_name(game.u.uarmg) /* "gloves" or "gauntlets" */
+            : makeplural(body_part(FINGER))); /* "fingers" */
+}
 
 /* src/do_wear.c:9-15 — the file's static message strings. Module-scoped here
    because they are file-static in the C. */
@@ -968,4 +987,183 @@ export function Boots_off() {
 
     t.cancelled_don = false;
     return 0;
+}
+
+/*
+ * src/do_wear.c:2030 canwearobj() — may the hero wear this piece of armor?
+ *
+ * inputs: otmp (the piece of armor)
+ *         noisy (if true give error messages, otherwise be quiet about it)
+ * output: mask — an out-parameter. C takes `long *mask`; here it is an object
+ *         whose .mask field is assigned, so callers pass `{ mask: 0 }` and read
+ *         it back. Only the success paths write it, exactly as in the C.
+ *
+ * Returns !err. No RNG draws anywhere in this function; every branch is either
+ * a validation or a message.
+ *
+ * async because js/pline.js's message helpers are async.
+ */
+export async function canwearobj(otmp, mask, noisy) {
+    let err = 0;
+    let which;
+
+    /* this is the same check as for 'W' (dowear), but different message,
+       in case we get here via 'P' (doputon) */
+    if (verysmall(game.youmonst.data) || nohands(game.youmonst.data)) {
+        if (noisy)
+            await You("can't wear any armor in your current form.");
+        return 0;
+    }
+
+    which = is_cloak(otmp) ? c_cloak
+            : is_shirt(otmp) ? c_shirt
+              : is_suit(otmp) ? c_suit
+                : 0;
+    if (which && cantweararm(game.youmonst.data)
+        /* same exception for cloaks as used in m_dowear() */
+        && (which !== c_cloak
+            || ((otmp.otyp !== ONAMES.MUMMY_WRAPPING)
+                ? game.youmonst.data.msize !== MFLAGS.MZ_SMALL
+                : !WrappingAllowed(game.youmonst.data)))
+        && (racial_exception(game.youmonst, otmp) < 1)) {
+        if (noisy)
+            await pline_The(`${which} will not fit on your body.`);
+        return 0;
+    } else if (otmp.owornmask & W_ARMOR) {
+        if (noisy)
+            await already_wearing(c_that_);
+        return 0;
+    }
+
+    if (welded(game.u.uwep) && bimanual(game.u.uwep)
+        && (is_suit(otmp) || is_shirt(otmp))) {
+        if (noisy)
+            await You(`cannot do that while holding your ${is_sword(game.u.uwep) ? c_sword : c_weapon}.`);
+        return 0;
+    }
+
+    if (is_helmet(otmp)) {
+        if (game.u.uarmh) {
+            if (noisy)
+                await already_wearing(an(helm_simple_name(game.u.uarmh)));
+            err++;
+        } else if (Upolyd(game.u) && has_horns(game.youmonst.data) && !is_flimsy(otmp)) {
+            /* (flimsy exception matches polyself handling) */
+            if (noisy)
+                await pline_The(`${helm_simple_name(otmp)} won't fit over your horn${plur(num_horns(game.youmonst.data))}.`);
+            err++;
+        } else
+            mask.mask = W_ARMH;
+    } else if (is_shield(otmp)) {
+        if (game.u.uarms) {
+            if (noisy)
+                await already_wearing(an(c_shield));
+            err++;
+        } else if (game.u.uwep && bimanual(game.u.uwep)) {
+            if (noisy)
+                await You(`cannot wear a shield while wielding a two-handed ${is_sword(game.u.uwep) ? c_sword : (game.u.uwep.otyp === ONAMES.BATTLE_AXE) ? c_axe : c_weapon}.`);
+            err++;
+        } else if (game.u.twoweap) {
+            if (noisy)
+                await You("cannot wear a shield while wielding two weapons.");
+            err++;
+        } else
+            mask.mask = W_ARMS;
+    } else if (is_boots(otmp)) {
+        if (game.u.uarmf) {
+            if (noisy)
+                await already_wearing(c_boots);
+            err++;
+        } else if (Upolyd(game.u) && slithy(game.youmonst.data)) {
+            if (noisy)
+                await You("have no feet..."); /* not body_part(FOOT) */
+            err++;
+        } else if (Upolyd(game.u) && game.youmonst.data.mlet === MONSYMS.S_CENTAUR) {
+            /* break_armor() pushes boots off for centaurs, so don't let
+               dowear() put them back on;
+               makeplural(body_part(FOOT)) would yield "rear hooves" here,
+               which sounds odd, so use hard-coded "hooves" */
+            if (noisy)
+                await You(`have too many hooves to wear ${c_boots}.`);
+            err++;
+        } else if (game.u.utrap
+                   && (game.u.utraptype === TT_BEARTRAP
+                       || game.u.utraptype === TT_INFLOOR
+                       || game.u.utraptype === TT_LAVA
+                       || game.u.utraptype === TT_BURIEDBALL)) {
+            if (game.u.utraptype === TT_BEARTRAP) {
+                if (noisy)
+                    await Your(`${body_part(FOOT)} is trapped!`);
+            } else if (game.u.utraptype === TT_INFLOOR || game.u.utraptype === TT_LAVA) {
+                /* the message needs surface(u.ux, u.uy), src/dungeon.c:1750,
+                   which is not ported (it needs the swallow/pool/ice/lava/
+                   altar/grave/fountain/stairs terrain stack). Recorded rather
+                   than guessing a surface word. */
+                if (noisy)
+                    note_unported_do_wear('canwearobj:surface');
+            } else { /*TT_BURIEDBALL*/
+                if (noisy)
+                    await Your(`${body_part(LEG)} is attached to the buried ball!`);
+            }
+            err++;
+        } else
+            mask.mask = W_ARMF;
+    } else if (is_gloves(otmp)) {
+        if (game.u.uarmg) {
+            if (noisy)
+                await already_wearing(c_gloves);
+            err++;
+        } else if (welded(game.u.uwep)) {
+            if (noisy)
+                await You(`cannot wear gloves over your ${is_sword(game.u.uwep) ? c_sword : c_weapon}.`);
+            err++;
+        } else if (Glib()) {
+            /* prevent slippery bare fingers from transferring to
+               gloved fingers */
+            if (noisy)
+                await Your(`${fingers_or_gloves(false)} are too slippery to pull on ${gloves_simple_name(otmp)}.`);
+            err++;
+        } else
+            mask.mask = W_ARMG;
+    } else if (is_shirt(otmp)) {
+        if (game.u.uarm || game.u.uarmc || game.u.uarmu) {
+            if (game.u.uarmu) {
+                if (noisy)
+                    await already_wearing(an(c_shirt));
+            } else {
+                if (noisy)
+                    await You_cant(`wear that over your ${(game.u.uarm && !game.u.uarmc) ? c_armor : cloak_simple_name(game.u.uarmc)}.`);
+            }
+            err++;
+        } else
+            mask.mask = W_ARMU;
+    } else if (is_cloak(otmp)) {
+        if (game.u.uarmc) {
+            if (noisy)
+                await already_wearing(an(cloak_simple_name(game.u.uarmc)));
+            err++;
+        } else
+            mask.mask = W_ARMC;
+    } else if (is_suit(otmp)) {
+        if (game.u.uarmc) {
+            if (noisy)
+                await You(`cannot wear armor over a ${cloak_simple_name(game.u.uarmc)}.`);
+            err++;
+        } else if (game.u.uarm) {
+            if (noisy)
+                await already_wearing("some armor");
+            err++;
+        } else
+            mask.mask = W_ARM;
+    } else {
+        /* getobj can't do this after setting its allow_all flag; that
+           happens if you have armor for slots that are covered up or
+           extra armor for slots that are filled */
+        if (noisy)
+            await silly_thing("wear", otmp);
+        err++;
+    }
+    /* the welded(otmp) arm below this in the C is commented out — only weapons
+       and pick-axes weld to your hand now, not armor. Not ported: not built. */
+    return !err ? 1 : 0;
 }

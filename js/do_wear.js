@@ -7,6 +7,9 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { retouch_object } from './artifact.js';
+import { remove_worn_item } from './steal.js';
+import { nomul, unmul } from './hack.js';
 import { prinv } from './invent.js';
 import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy } from './mondata.js';
 import { welded } from './wield.js';
@@ -22,8 +25,8 @@ import { is_helmet, is_metallic, is_crackable, is_cloak, is_shirt, is_suit, is_s
 import { setworn, racial_exception } from './worn.js';
 import { rnd } from './rng.js';
 import { mons, MFLAGS, MONSYMS } from './monst_data.js';
-import { objects, ONAMES } from './objects_data.js';
-import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD } from './const.js';
+import { objects, ONAMES, OCLASSES } from './objects_data.js';
+import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY } from './const.js';
 import { sgn } from './hacklib.js';
 
 // src/do_wear.c:76 on_msg() — for items that involve no delay.
@@ -1205,4 +1208,94 @@ export async function canwearobj(otmp, mask, noisy) {
     /* the welded(otmp) arm below this in the C is commented out — only weapons
        and pick-axes weld to your hand now, not armor. Not ported: not built. */
     return !err ? 1 : 0;
+}
+
+/*
+ * src/do_wear.c:2209 accessory_or_armor_on() — the shared body of 'W' and 'P'.
+ *
+ * The ARMOR arm is ported in full. The ACCESSORY arm (rings, amulets, eyewear)
+ * is recorded, not written: it needs yn_function() for the "Which ring-finger,
+ * Right or Left?" prompt loop, plus Ring_on/Amulet_on/Blindf_on, set_bknown,
+ * is_worn, ansimpleoname and safe_typename. Returning a plausible value there
+ * would silently wear the wrong thing, so it records and returns ECMD_OK.
+ *
+ * async: canwearobj() and the message helpers are.
+ */
+export async function accessory_or_armor_on(obj) {
+    const mask = { mask: 0 };
+    let armor, ring, amulet, eyewear;
+
+    if (obj.owornmask & (W_ACCESSORY | W_ARMOR)) {
+        await already_wearing(c_that_);
+        return ECMD_OK;
+    }
+    armor = (obj.oclass === OCLASSES.ARMOR_CLASS);
+    ring = (obj.oclass === OCLASSES.RING_CLASS || obj.otyp === ONAMES.MEAT_RING);
+    amulet = (obj.oclass === OCLASSES.AMULET_CLASS);
+    eyewear = (obj.otyp === ONAMES.BLINDFOLD || obj.otyp === ONAMES.TOWEL
+               || obj.otyp === ONAMES.LENSES);
+    /* checks which are performed prior to actually touching the item */
+    if (armor) {
+        if (!await canwearobj(obj, mask, true))
+            return ECMD_OK;
+
+        if (obj.otyp === ONAMES.HELM_OF_OPPOSITE_ALIGNMENT) {
+            /* the C also tests qstart_level.dnum == u.uz.dnum (in quest);
+               qstart_level is not ported, so the whole arm is recorded. */
+            note_unported_do_wear('accessory_or_armor_on:helm_opposite_quest');
+        }
+    } else {
+        /* accessory: rings, amulets, eyewear — see the header comment */
+        if (ring || amulet || eyewear)
+            note_unported_do_wear('accessory_or_armor_on:accessory');
+        else
+            await You_cant("wear that!");
+        return ECMD_OK;
+    }
+
+    if (!retouch_object(obj, false))
+        return ECMD_TIME; /* costs a turn even though it didn't get worn */
+
+    /* armor */
+    let delay;
+    /* if the armor is wielded, release it for wearing (won't be
+       welded even if cursed; that only happens for weapons/weptools) */
+    if (obj.owornmask & W_WEAPONS)
+        remove_worn_item(obj, false);
+    /*
+     * Setting obj->known=1 is NOT done here; the C delays it to the afternmv
+     * action so a nymph stealing the armor mid-don doesn't leak its +/-.
+     */
+    game.wasinwater = game.u.uinwater; /* for WWALKING; Boots_on() is too late */
+    setworn(obj, mask.mask);
+    /* if there's no delay, we'll execute 'afternmv' immediately */
+    if (obj === game.u.uarm)
+        game.afternmv = Armor_on;
+    else if (obj === game.u.uarmh)
+        game.afternmv = Helmet_on;
+    else if (obj === game.u.uarmg)
+        game.afternmv = Gloves_on;
+    else if (obj === game.u.uarmf)
+        game.afternmv = Boots_on;
+    else if (obj === game.u.uarms)
+        game.afternmv = Shield_on;
+    else if (obj === game.u.uarmc)
+        game.afternmv = Cloak_on;
+    else if (obj === game.u.uarmu)
+        game.afternmv = Shirt_on;
+    else
+        note_unported_do_wear('accessory_or_armor_on:panic'); /* C panic()s */
+
+    delay = -game.objects[obj.otyp].oc_delay;
+    if (delay) {
+        nomul(delay);
+        game.multi_reason = "dressing up";
+        /* nomovemsg is not tracked in this port; see js/hack.js */
+        note_unported_do_wear('accessory_or_armor_on:nomovemsg');
+    } else {
+        unmul(""); /* call afternmv, clear it+nomovemsg+multi_reason */
+        await on_msg(obj);
+    }
+    game.context.takeoff.mask = game.context.takeoff.what = 0;
+    return ECMD_TIME;
 }

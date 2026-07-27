@@ -635,3 +635,35 @@ export function Armor_off() {
 
     return 0;
 }
+
+// src/do_wear.c Shield_off() — the afternmv callback for removing a shield.
+//
+// Same shape as Shirt_off: mask cleared first, switch that does nothing but
+// catch an unknown otyp, setworn(0, slot) last. The magical shields need no
+// case here for the same reason they need none in Shield_on -- setworn
+// handles their extrinsic, and it does so in both directions now.
+export function Shield_off() {
+    const t = (game.context.takeoff ||= {});
+    t.mask = (t.mask | 0) & ~W_ARMS;
+
+    if (game.u.uarms) {
+        switch (game.u.uarms.otyp) {
+        case ONAMES.SMALL_SHIELD:
+        case ONAMES.SHIELD_OF_DRAIN_RESISTANCE:
+        case ONAMES.SHIELD_OF_SHOCK_RESISTANCE:
+        case ONAMES.ELVEN_SHIELD:
+        case ONAMES.URUK_HAI_SHIELD:
+        case ONAMES.ORCISH_SHIELD:
+        case ONAMES.DWARVISH_ROUNDSHIELD:
+        case ONAMES.LARGE_SHIELD:
+        case ONAMES.SHIELD_OF_REFLECTION:
+            break;
+        default:
+            note_unported_do_wear('Shield_off:impossible_unknown_type');
+            break;
+        }
+    }
+
+    setworn(null, W_ARMS);
+    return 0;
+}

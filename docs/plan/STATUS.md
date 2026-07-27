@@ -8282,6 +8282,22 @@ PORTED AND WIRED THIS SESSION
 NEXT, in priority order
     1. touch_artifact (66 lines, 2 draws) -- 66% reach, unlocks BOTH
        retouch_object/ready_weapon and can_touch_safely
+
+       HEAD START: the artifact DATA is already ported. js/artilist_data.js
+       exists and is populated. What is missing is every accessor around it:
+
+           artilist          PRESENT   js/artilist_data.js
+           ART_NONARTIFACT   MISSING   (the sentinel entry's index)
+           SPFX_DBONUS       MISSING   include/artifact.h constant
+           spec_applies      MISSING   src/artifact.c
+           get_artifact      MISSING
+           bane_applies      MISSING   src/artifact.c:993, 12 lines, no draws
+
+       So the artifact work is accessors over an existing table, not a data
+       port, which is a much better position than it looks. bane_applies in
+       particular is 12 draw-free lines once SPFX_DBONUS and spec_applies
+       exist. Put the SPFX_* constants in js/const.js named as in
+       include/artifact.h, per the architecture rule.
     2. the uprops struct refactor (55 refs, 14 files) -- unlocks setworn's
        extrinsic arms, monstunseesu_prop, w_blocks
     3. mattackm melee path (~400 lines) -- 45% and 41% entries

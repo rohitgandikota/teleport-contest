@@ -2590,8 +2590,28 @@ ECMD_FAIL hangs, and the update_topl trace says a single message cannot block
 on --More--. The remaining suspect is therefore ECMD_FAIL itself -- what the
 command loop does when a command consumes no time. If js/cmd.js re-reads
 without having consumed the key, or moveloop spins waiting for context.move,
-that would exhaust the queue exactly the way observed. CHECK THE ECMD_FAIL
-PATH IN js/cmd.js NEXT, not the message.
+that would exhaust the queue exactly the way observed. CHECKED THE ECMD_FAIL PATH. It is faithful: js/cmd.js:582 sets
+context.move = (dowield() === ECMD_TIME ? 1 : 0), so a failed command
+records no time, which is what C does.
+
+THE USEFUL RESULT IS AN INVARIANT, not a bug. js/allmain.js:591 is
+
+    for (;;) { await moveloop_core(); if (gameover) break; }
+
+and moveloop_core ends at :569 with exactly one `await rhack(0)`, which
+reads exactly one key. SO ONE moveloop_core ITERATION CONSUMES EXACTLY ONE
+KEY, and the count of iterations is the count of keys.
+
+That turns 'it hangs' into a number. A session supplies exactly the keys C
+consumed, so hanging means our iteration count EXCEEDS C's. The question is
+no longer 'what blocks' but 'which command took two iterations where C took
+one'. Instrument by counting moveloop_core entries and comparing against the
+session's key count -- the difference localises the extra read directly,
+without any bisecting.
+
+DO THAT NEXT rather than more theory. Four hypotheses about the wield hang
+have now died (--More--, getobj respin, canletgo retry, ECMD_FAIL) and every
+one of them was reasoning rather than counting.
 
 HOW TO TIME-BOX A RUN HERE. Use the Bash tool's own `timeout` parameter,
 which is enforced by the harness, not by a shell binary. If a shell-level

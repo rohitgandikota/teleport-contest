@@ -179,7 +179,7 @@ export function find_ac() {
 // dragon_armor_handling and the artifact-light branch (begin_burn plus its
 // "begins to shine" message) are recorded; neither fires for ordinary
 // starting armour.
-export function Armor_on() {
+export async function Armor_on() {
     /* reads game.u.uarm, the slot js/worn.js's worn[] table actually writes;
        this read game.uarm, which nothing assigns -- the same defect fixed in
        js/uhitm.js and js/do.js for uwep. */
@@ -218,19 +218,19 @@ export async function set_wear(obj) {
         note_unported_do_wear('set_wear:Amulet_on');
 
     if (!obj ? game.u.uarmu : (obj === game.u.uarmu))
-        Shirt_on();
+        await Shirt_on();
     if (!obj ? game.u.uarm : (obj === game.u.uarm))
-        Armor_on();
+        await Armor_on();
     if (!obj ? game.u.uarmc : (obj === game.u.uarmc))
-        Cloak_on();
+        await Cloak_on();
     if (!obj ? game.u.uarmf : (obj === game.u.uarmf))
-        Boots_on();
+        await Boots_on();
     if (!obj ? game.u.uarmg : (obj === game.u.uarmg))
-        Gloves_on();
+        await Gloves_on();
     if (!obj ? game.u.uarmh : (obj === game.u.uarmh))
-        Helmet_on();
+        await Helmet_on();
     if (!obj ? game.u.uarms : (obj === game.u.uarms))
-        Shield_on();
+        await Shield_on();
 
     game.initial_don = false;
 }
@@ -269,7 +269,7 @@ export function cancel_doff(obj, slotmask) {
 // Ported with that shape intact rather than collapsed to the `known` check,
 // because the empty switch IS the C and a 5.1 shirt with an effect would
 // land in it.
-export function Shirt_on() {
+export async function Shirt_on() {
     if (!game.u.uarmu)
         return 0;
 
@@ -299,7 +299,7 @@ export function Shirt_on() {
 // armor_or_accessory_on() before Shield_on()". That path now works in this
 // port, so a shield of reflection genuinely confers its property before this
 // callback runs.
-export function Shield_on() {
+export async function Shield_on() {
     if (!game.u.uarms)
         return 0;
 
@@ -342,7 +342,7 @@ export function Shield_on() {
 // incr_itimeout is not ported -- the draw happens either way.
 //
 // The other arms need makeknown and adj_abon, neither ported.
-export function Gloves_on() {
+export async function Gloves_on() {
     if (!game.u.uarmg)
         return 0;
 
@@ -390,7 +390,7 @@ export function Gloves_on() {
 // resistance by hand -- see altprop() in src/worn.c, which describes the
 // same workaround. It is portable now that uprops exists, so it is done
 // rather than recorded.
-export function Cloak_on() {
+export async function Cloak_on() {
     if (!game.u.uarmc)
         return 0;
 
@@ -462,7 +462,7 @@ function uprop_dw(p) {
 // have drawn or messaged at all. Note the levitation guard tests
 // BLevitation & FROMOUTSIDE, not just blocked -- an outside-blocked hero
 // takes the float_vs_flight branch instead.
-export function Boots_on() {
+export async function Boots_on() {
     if (!game.u.uarmf)
         return 0;
 
@@ -531,7 +531,7 @@ export function Boots_on() {
 // It also guards `if (uarmh && ...)` INSIDE that block, because
 // uchangealign() can drop or destroy the helm -- falling onto a polymorph
 // trap or into water. Keep the null checks; they are not defensive padding.
-export function Helmet_on() {
+export async function Helmet_on() {
     if (!game.u.uarmh)
         return 0;
 
@@ -1303,7 +1303,7 @@ export async function accessory_or_armor_on(obj) {
         /* nomovemsg is not tracked in this port; see js/hack.js */
         note_unported_do_wear('accessory_or_armor_on:nomovemsg');
     } else {
-        unmul(""); /* call afternmv, clear it+nomovemsg+multi_reason */
+        await unmul(""); /* call afternmv, clear it+nomovemsg+multi_reason */
         await on_msg(obj);
     }
     game.context.takeoff.mask = game.context.takeoff.what = 0;

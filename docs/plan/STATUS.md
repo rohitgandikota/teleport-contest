@@ -8225,7 +8225,28 @@ Porting it would drag in the rumor machinery for a branch almost no session
 takes, and getting its draws wrong would move the stream.
 
 SO ready_weapon HAS EXACTLY ONE REAL BLOCKER LEFT: retouch_object. Everything
-else is either ported or correctly recordable. That makes ready_weapon a
+else is either ported or correctly recordable.
+
+SIZED IT, AND IT BOTTOMS OUT IN THE ARTIFACT SUBSYSTEM:
+
+    retouch_object   src/artifact.c:2508   83 lines   2 draws
+    touch_artifact   src/artifact.c         66 lines   2 draws   ALSO ABSENT
+
+retouch_object's common path is: not the invocation bell, then
+touch_artifact() true, then neither silver-hatred nor bane applies, then
+return 1 and the wield proceeds. So touch_artifact gates it, and
+touch_artifact is the SAME function already recorded elsewhere as
+can_touch_safely:touch_artifact at 66% REACH -- the highest-reach unported
+item that is not a no-op.
+
+THAT CHANGES ITS PRIORITY. touch_artifact is not a wield detail; it sits
+under two separate chains and 66% of sessions reach it. 149 draw-bearing
+lines for the pair, which is real work but unlocks ready_weapon AND the
+can_touch_safely path together.
+
+CAUTION: both functions DRAW (2 each). Unlike ready_weapon's draw-free body,
+a mistake here moves the stream and cascades. Port them against the C
+line-by-line and check the divergence point, not the aggregate. That makes ready_weapon a
 genuinely near-term target rather than the six-dependency wall it looked like
 two entries ago.
 

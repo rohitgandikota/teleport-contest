@@ -3157,3 +3157,42 @@ This is the same family as two other always-true traps found this session:
 uprops[PROP] becoming a truthy object once it is a struct, and
 `(Invis && ...)` where Invis was shadowed from a boolean into an imported
 function. JS turns several kinds of C-obvious mistakes into silent truth.
+
+## The dup-defs pass: 31 cleared, 141 left, and what it actually found
+
+Worked the report down from 172 to 141 differing names. It is not cosmetic
+work -- two of the removals were real defects:
+
+    helpless    js/dog.js carried a THIRD term, (mfrozen | 0) > 0, that
+                include/monst.h:251 does not have. It made frozen-but-mobile
+                monsters read as helpless, changing combat branches, and
+                js/dog.js:1346 calls it in the pet-movement path. Live wrong
+                answer, not dormant code.
+    accessible  js/const.js and js/monmove.js had DIFFERENT bodies -- the
+                const.js one returned early on a missing location and never
+                tested closed_door. Whichever a caller imported changed
+                behaviour silently.
+
+WHERE THE DRIFT LIVES: js/dog.js gave up TWELVE local copies, more than
+every other file combined. It is the largest hand-ported file and predates
+most of the header mirrors, so its author had nowhere canonical to put
+them. Expect the same shape in any similarly old file.
+
+THREE TRAPS THIS PASS SPRANG REPEATEDLY, all now costed:
+
+  1. THE THIRD COPY. Five names -- helpless, is_animal, humanoid,
+     DEADMONSTER, passes_walls -- still reported after the first fix because
+     a third file had one. Re-run dup-defs after every removal; the count is
+     the only honest signal.
+  2. FORMATTING. Copies use aligned spacing (`const is_animal   =`), so a
+     regex written against the canonical form silently misses them. Read the
+     actual line before editing.
+  3. MULTI-LINE IMPORTS. js/mklev.js imported likes_gems from makemon across
+     a line break, invisible to `grep 'likes_gems.*makemon'`. Removing the
+     export broke the board until it was found. Match on the name, then read
+     the import block.
+
+WHAT IS LEFT: 141 differing, of which roughly 48 are export-only
+re-declarations of a const.js constant with the same value -- inert, fix
+last. The other ~93 have genuinely different bodies and are worth reading
+one at a time.

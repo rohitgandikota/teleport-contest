@@ -8652,3 +8652,33 @@ STILL GATED, because these are separate missing pieces rather than uprops:
 NEXT WRITERS, in rough order of reach: potions (quaffing confers
 intrinsics), corpses (eating confers them), level-up. Each is now an
 ordinary edit against a working structure.
+
+## src/worn.c is ported except check_wornmask_slots (deliberately)
+
+js/worn.js now mirrors the file:
+
+    worn[]                 the mask-to-slot table
+    setworn                slot walk + extrinsic bookkeeping (writer)
+    setnotworn             the object-oriented counterpart
+    allunworn              clears pointers WITHOUT unworning, as C does
+    wearmask_to_obj        first matching slot; early return is deliberate
+    wornmask_to_armcat     default 0 means ARM_SUIT, not a sentinel
+    armcat_to_wornmask     default 0 means "no mask" -- opposite meaning
+    wearslot               which slots an item might occupy
+    mon_set_minvis         perminvis/minvis split, exact
+    mon_adjust_speed       the stepping switch, verified arm by arm
+    update_mon_extrinsics  already present; its FAST arms now wired
+    recalc_telepat_range   walks the table
+    w_blocks               pre-existing
+
+NOT PORTED, on purpose: check_wornmask_slots (130 lines). It runs only under
+the `sanity_check` option, so it never executes in a scored session -- it
+would add 130 lines of code the judge never reaches. It also needs
+impossible() and fmt_ptr, neither ported. The worn[] table it walks now
+exists with its w_what field, so it is straightforward whenever someone
+wants it; it is simply not worth context ahead of code that runs.
+
+WHAT THIS UNLOCKED, and it is more than the file: setworn's extrinsic arms
+are the first uprops WRITER, so wearing an item now confers its property and
+removing it revokes it. That was verified end to end with a clairvoyance
+helm.

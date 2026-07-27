@@ -8409,3 +8409,50 @@ before touching the table:
 NEXT: retouch_object (83 lines, artifact.c) then ready_weapon (104 lines,
 draw-free), which closes dowield:twoweapon_and_artifact at 25% reach.
 touch_artifact, its gate, is now in place.
+
+## SESSION CLOSE — the wield/artifact chain is complete
+
+unported-hits now tops out at 23% for anything actionable. Both 25% entries
+and the 66% entry are cleared.
+
+    100%  topl:remember_topl          ^P history, NO SCREEN OUTPUT, ignore
+     23%  getobj:menu
+     23%  dofire:polearm_or_whip
+     23%  goto_level:losedogs
+     23%  level_tele:print_dungeon menu
+     18%  dog_invent:distant_name
+
+WIRED AND VERIFIED THIS SESSION (each executed, not merely imported)
+    doclose, obstructed, stumble_on_door_mimic, block_point      rng +23
+    worn[] table, setworn, setuwep, recalc_telepat_range,
+      set_twoweap, cancel_doff
+    is_sword, empty_handed, TWOWEAPOK, cant_wield_corpse
+    30 SPFX_* bits, 49 AD_* types, 36-record artilist table
+    spec_applies, bane_applies, get_artifact, touch_artifact     66% cleared
+    retouch_object, ready_weapon, untwoweapon, prinv wiring      25% x2 cleared
+    uhitm unarmed flag, do.js drop wielding checks               uwep fix
+
+VERIFICATION AT CLOSE
+    512/11405 screens, 140764/792838 rng, 1/44 sessions, 5 zero-screen
+    generalize CLEAN on 40 non-session seeds
+    undefined-refs 18, all verified false positives
+    tree clean, HEAD == origin/main
+
+NEXT TARGETS, in order
+    1. the uprops struct refactor (55 refs, 14 files) -- unblocks setworn's
+       extrinsic arms, monstunseesu_prop, w_blocks, and the hero-side arms
+       of spec_applies and touch_artifact. Stage it: backward-compatible
+       truthiness first, convert readers file by file, score between each.
+    2. mattackm melee path (~400 lines) -- 45% and 41% entries
+    3. the dogfood phase offset, which is really object placement
+       (~50 missing place_object sites)
+    4. touch_artifact's blast arm needs losehp, Hate_silver, Maybe_Half_Phys
+
+THREE PROCESS RULES THIS SESSION PAID FOR
+    read the tool output before theorising -- the scoreboard ERR column, the
+      module load error and `command -v timeout` each named a bug I instead
+      spent iterations reasoning about
+    run the code, do not import it -- seven defects loaded clean and failed
+      only when their path went live
+    grep for the DEFINITION, not the name -- mentions look like definitions
+      and produced both duplicate ports and phantom dependencies

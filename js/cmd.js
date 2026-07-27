@@ -9,6 +9,7 @@ import { seemimic } from './mon.js';
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
+import { Confusion, Stunned, Fumbling } from './youprop.js';
 import { dodrop } from './do.js';
 import { any_obj_ok } from './invent.js';
 import { dodown, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
@@ -134,7 +135,7 @@ function confdir(force_impairment) {
 
 // src/hack.c u_maybe_impaired()
 function u_maybe_impaired() {
-    return !!(game.u.uprops?.CONFUSION || game.u.uprops?.STUNNED);
+    return !!(Confusion() || Stunned());
 }
 
 // src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.
@@ -744,8 +745,8 @@ export async function domove() {
        step into a doorway. */
     if (closed_door(newx, newy)
         && flags_autoopen() && !game.context.run
-        && !game.u.uprops?.CONFUSION && !game.u.uprops?.STUNNED
-        && !game.u.uprops?.FUMBLING) {
+        && !Confusion() && !Stunned()
+        && !Fumbling()) {
         await doopen_indir(newx, newy);
         game.context.door_opened = !closed_door(newx, newy);
         game.context.move = 0; /* (ux != u.ux || uy != u.uy) */

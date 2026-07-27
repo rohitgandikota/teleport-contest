@@ -8565,6 +8565,22 @@ still yields false. So the accessors are correct BOTH before and after
 uprops exists, and initialising it can no longer flip everything true. What
 was an atomic all-or-nothing commit is now an ordinary additive change.
 
+ONE MORE FAITHFULNESS GAP IN THE ACCESSORS, found while looking at the
+initialisation and worth fixing before any writer lands.
+
+C keys uprops BY NUMBER -- u.uprops[HUNGER] where HUNGER is 28 -- and
+js/const.js ALREADY HAS those numbers: HUNGER 28, INVIS 40, LAST_PROP 68.
+Our accessors key by STRING: H('HUNGER'). That works, but it is a JS-shaped
+structure the C does not have, and it means the eventual uprops is a bag of
+string keys rather than C's array of LAST_PROP+1 entries.
+
+FIX IT BEFORE THE WRITERS, not after: change H/E/B's callers from H('INVIS')
+to H(INVIS) with the constant imported, and initialise uprops as an array
+indexed 0..LAST_PROP. Doing it afterwards means rewriting every writer too.
+It is a mechanical edit across the 23 accessors in one file, and
+score-neutral for the same reason the last one was -- an absent entry still
+reads false either way.
+
 WHAT REMAINS is the writer side, and it is the actual missing subsystem:
     - initialise u.uprops with {intrinsic, extrinsic, blocked} per property
     - make the things that GRANT intrinsics write to it: setworn's extrinsic

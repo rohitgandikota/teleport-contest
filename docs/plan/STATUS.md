@@ -7995,10 +7995,20 @@ with index 242 among them -- both checked. So the table is fine and the
 message means game.objects is UNDEFINED AT THAT MOMENT: in these sessions
 setuwep runs before o_init has populated it.
 
-SO THE BUG IS ORDERING, NOT DATA. Find why o_init has not run by the time
-dowield fires in seed0399 and seed5002. Either o_init is called later than C
-calls objects_init, or these sessions reach dowield through a path that
-skips it.
+AND THE ORDERING IS ALSO RIGHT, so refine again before acting.
+js/allmain.js:135 calls init_objects() inside newgame(), which is exactly
+where C has it (src/allmain.c:783, "must be before u_init()"). So the call
+site is not misplaced.
+
+WHICH LEAVES: those two sessions do not reach newgame() at all by the time
+dowield fires, or they take a path that leaves game.objects unset. Both are
+checkable in one run -- log whether game.objects is defined at the top of
+dowield for seed0399, and if it is undefined, log whether newgame() ran.
+
+Three hypotheses have now been eliminated by checking rather than
+reasoning: missing table data (482 entries, index 242 present), a missing
+assignment (o_init.js:46 does it), and a misplaced call site (allmain.js:135
+matches C). That is the useful part -- the remaining space is small.
 
 DO NOT 'fix' this by guarding is_pole with a null check. That would hide a
 real ordering divergence and leave every other consumer of game.objects

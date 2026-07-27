@@ -8293,6 +8293,24 @@ NEXT, in priority order
 
            ART_* indices     PRESENT   js/artilist_data.js, names only
            artilist table    MISSING   the actual per-artifact records
+
+       THE TABLE IS MECHANICALLY EXTRACTABLE, which makes this a generator
+       job rather than hand-transcription. include/artilist.h is 333 lines
+       holding 36 A(...) macro invocations with positional fields:
+
+           A(name, otyp, spfx, cspfx, mtype, attk, defn, cary, inv, alignment,
+             role, race, cost, color)
+
+       Entry 0 (line 81) is the sentinel A("", STRANGE_OBJECT, 0, 0, 0, ...),
+       which CONFIRMS ART_NONARTIFACT == 0 -- so the ART_NONARTIFACT compare
+       in bane_applies and retouch_object is an index-zero test, not a
+       pointer identity test as the C's `oart != &artilist[ART_NONARTIFACT]`
+       makes it look.
+
+       js/objects_data.js and js/monst_data.js are the precedent for how a
+       generated table lives in this tree; follow their shape. Note that
+       tools/dup-defs.mjs already skips *_data.js files, so a generated
+       artilist_data will not trip it.
            ART_NONARTIFACT   MISSING   (the sentinel entry's index)
            SPFX_DBONUS       MISSING   include/artifact.h constant
            spec_applies      MISSING   src/artifact.c

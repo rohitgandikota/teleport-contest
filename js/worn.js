@@ -11,8 +11,7 @@ import { set_twoweap } from './wield.js';
 import { cancel_doff } from './do_wear.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
-         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM,
-       } from './const.js';
+         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM, MFAST } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
          ARM_CLOAK, ARM_SHIRT } from './obj.js';
@@ -346,7 +345,6 @@ function w_blocks(o, m) {
     return 0;
 }
 
-const MFAST = 2;   /* include/monst.h — permspeed value */
 const MSLOW = 1;   /* include/monst.h — permspeed value */
 
 function note_unported_worn(what) {

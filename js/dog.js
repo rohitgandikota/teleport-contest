@@ -1,5 +1,5 @@
 import { relobj, steal_wire_droppables } from './steal.js';
-import { ROT_ICE_ADJUSTMENT , MTSZ, NON_PM } from './const.js';
+import { ROT_ICE_ADJUSTMENT , MTSZ, NON_PM, SQSRCHRADIUS } from './const.js';
 import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal , flaming , is_demon, is_swimmer, passes_walls , likes_fire } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
@@ -493,7 +493,6 @@ function note_unported(what) {
 // the pet, so it costs one rn2(100) per nearby object before any of its own
 // draws. That is the whole reason obj_resists shows up ahead of dog_goal's
 // rn2(8) in the recordings.
-const SQSRCHRADIUS = 5;
 
 // src/dogmove.c:156 dog_nutrition() — how much food value obj gives mtmp, and
 // how many turns eating it costs (returned through mtmp.meating, as in C).

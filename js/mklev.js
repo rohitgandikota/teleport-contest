@@ -1,4 +1,4 @@
-import { CORPSTAT_NONE } from './const.js';
+import { CORPSTAT_NONE, TAINT_AGE } from './const.js';
 // mklev.js — Level generation.
 // C ref: mklev.c — makelevel, makerooms, makecorridors, generate_stairs.
 // Also includes parts of sp_lev.c (create_room) and mkmap.c (litstate_rnd).
@@ -63,7 +63,6 @@ import { mkroom_table, create_des_coder, spo_push_room,
 // include/permonst.h / include/hack.h:1189-1193, 1404
 const NON_PM = -1;
 const CORPSTAT_INIT = 0x08, CORPSTAT_SPE_VAL = 0x07;
-const TAINT_AGE = 50;
 // Object type and object class constants come from js/objects_data.js, which
 // is generated from the C. They used to be hardcoded literals here and 21 of
 // the 23 object constants and 7 of the 8 class constants were wrong — e.g.

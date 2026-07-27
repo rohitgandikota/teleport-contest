@@ -25,7 +25,7 @@ import { is_neuter } from './mondata.js';
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { Is_rogue_level, NODIR, CORPSTAT_SPE_VAL , FIRE_RES } from './const.js';
+import { Is_rogue_level, NODIR, CORPSTAT_SPE_VAL , FIRE_RES, P_NONE } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -582,7 +582,6 @@ const MZ_SMALL = 1;
 // include/objclass.h:14-32 — object materials.
 const LIQUID = 1, PAPER = 5, LEATHER = 7, WOOD = 8, DRAGON_HIDE = 10,
       IRON = 11, COPPER = 13, MITHRIL = 17, PLASTIC = 18, GLASS = 19;
-const P_NONE = 0;                 /* include/skills.h */
 
 
 // src/mkobj.c is_flammable()

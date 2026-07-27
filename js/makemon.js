@@ -23,14 +23,13 @@ import { get_shop_item } from './shknam.js';
 import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
-    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT } from './const.js';
+    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT, NON_PM } from './const.js';
 import { enexto_core } from './teleport.js';
 
 // include/hack.h:1174-1175
 const GP_CHECKSCARY = 0x00800000, GP_AVOID_MONPOS = 0x01000000;
 
 // include/permonst.h:15,23
-const NON_PM = -1;
 const LOW_PM = NON_PM + 1;                 /* first monster in mons[] */
 const SPECIAL_PM = PMNAMES.PM_LONG_WORM_TAIL;  /* [normal] < ~ < [special] */
 

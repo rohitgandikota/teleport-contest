@@ -2668,10 +2668,23 @@ WE ASKED AT A MOMENT THE RECORDING DOES NOT HAVE A KEY FOR -- an ordinary
 divergence, roughly halfway through the session, that happens to manifest as
 a block instead of a wrong cell.
 
-SO STOP INSTRUMENTING AND USE THE NORMAL TOOL. This is what tools/diverge.mjs
-is for. Apply the wield fix, run diverge against seed0361, and read the
-divergence point directly; it will name the function the way it does for
-every other mismatch. Six theories died here because I treated a block as a
+TRIED THE NORMAL TOOL AND IT CANNOT HELP HERE. Applied the wield fix and ran
+tools/diverge.mjs against seed0361: it produced ZERO BYTES of output in 105
+seconds and had to be killed. diverge replays the session to completion before
+it can compare anything, so a session that blocks takes diverge down with it.
+The tool is useless for exactly the failure mode that most needs it.
+
+THAT IS THE REAL GAP, and it is worth fixing before chasing this bug further.
+diverge needs a step cap or a wall-clock bound so it reports the LAST STEP IT
+REACHED when the run does not terminate. 'Diverged at or before step N' is
+enormously more useful than nothing, and every future hang gets diagnosed in
+one run instead of the six theories this one cost. tools/diverge.mjs is ours,
+not frozen, so this is a legitimate change.
+
+UNTIL THEN the wield fix stays out of the tree. It is a correct fix -- uwep is
+genuinely never written -- but it exposes a defect around key ~180 that no
+current tool can localise, and shipping a change that hangs a session to buy
+a correctness point that scores nothing is a bad trade. Six theories died here because I treated a block as a
 special kind of failure needing special tooling. It is not: it is a
 divergence that shows up at the input layer.
 

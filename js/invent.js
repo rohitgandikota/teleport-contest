@@ -2,9 +2,10 @@
 // C ref: src/invent.c
 
 import { game } from './gstate.js';
+import { pline_The } from './pline.js';
 import { delobj } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at , HANDS_SYM } from './const.js';
+import { u_at , HANDS_SYM, silly_thing_to } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname } from './objnam.js';
@@ -729,4 +730,22 @@ export function update_inventory() {
         return;
 
     note_unported_invent('update_inventory:win_update_inventory');
+}
+
+// src/invent.c:2094 silly_thing() — feedback for using a command on an object
+// it does not apply to.
+//
+// The 'P'/'R' vs 'W'/'T' cross-command advice above it in the C is inside
+// `#ifdef OBSOLETE_HANDLING` and is not compiled, so the live function is only
+// the Amulet special case and the generic fallback. Not ported, because it is
+// not built.
+export async function silly_thing(word, otmp) {
+    /* see comment about Amulet of Yendor in objtyp_is_callable(do_name.c);
+       known fakes yield the silly thing feedback */
+    if (word === "call"
+        && (otmp.otyp === ONAMES.AMULET_OF_YENDOR
+            || (otmp.otyp === ONAMES.FAKE_AMULET_OF_YENDOR && !otmp.known)))
+        await pline_The("Amulet doesn't like being called names.");
+    else
+        await pline(silly_thing_to.replace('%s', word));
 }

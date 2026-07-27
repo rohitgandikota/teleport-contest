@@ -8181,9 +8181,37 @@ line), not stream position.
 
 SO THIS IS A SCREEN-PARITY GAP, NOT A STREAM GAP, and it will stay invisible
 in the rng column while costing screens on any session that wields and reads
-the resulting message. Porting ready_weapon is the fix and it is 104
-draw-free lines, which makes it unusually safe: it cannot move the stream,
-so a mistake shows up as a wrong message rather than a cascade.
+the resulting message. Porting ready_weapon is the fix and its 104 lines are draw-free, which makes
+it unusually safe in one sense: it cannot move the stream, so a mistake shows
+up as a wrong message rather than a cascade.
+
+BUT IT NEEDS SIX ABSENT HELPERS, so "104 draw-free lines" undersells it:
+
+    bimanual          present  js/obj.js
+    prinv             present  js/invent.js
+    begin_burn        present  js/do_wear.js
+    will_weld         present  js/monmove.js
+    is_sword          MISSING
+    retouch_object    MISSING  <-- GATES THE WIELD
+    cant_wield_corpse MISSING
+    empty_handed      MISSING
+    arti_speak        MISSING
+    TWOWEAPOK         MISSING
+
+retouch_object is the one that matters. C reads
+
+    else if (!retouch_object(&wep, FALSE)) res = ECMD_TIME;
+
+so a false return means the weapon is NOT wielded and the turn is still
+spent. It is the cockatrice/gloves check. Porting ready_weapon while
+assuming it returns true would wield things C refuses to wield -- silently,
+and only in the games where it matters. Do not assume it; port it or record
+the arm and decline the wield, which is the same choice passive's arms and
+mattackm's specials already make.
+
+The other five are message-only (is_sword and empty_handed pick wording,
+arti_speak is artifact-only, TWOWEAPOK gates a two-weapon line) and can all
+be recorded without changing what happens.
 
 It is also what dowield:twoweapon_and_artifact (25% reach, top of
 unported-hits) actually needs -- untwoweapon and the artifact checks live in

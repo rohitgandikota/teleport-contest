@@ -8461,10 +8461,28 @@ NEXT TARGETS, in order
        pausable migration I sketched earlier does not work here -- the
        initialisation and the reader conversion MUST land together.
 
-       The safe order is therefore: convert all ~55 readers to test the
-       right FIELD (uprops[PROP].intrinsic etc.) while uprops is still
-       undefined -- optional chaining keeps them all false and the score
-       unchanged -- and only then initialise the structure.
+       The safe order is therefore: convert all ~55 readers FIRST, while
+       uprops is still undefined -- optional chaining keeps them false and
+       the score unchanged -- and only then initialise the structure.
+
+       AND THE READERS SHOULD NOT TEST FIELDS DIRECTLY EITHER. C never reads
+       uprops inline; it uses the include/youprop.h MACROS, and each one
+       combines the three fields differently:
+
+           #define Hunger (HHunger || EHunger)
+           #define Deaf   (HDeaf || EDeaf || u.uroleplay.deaf)
+           #define Invis  ((HInvis || EInvis) && !BInvis)
+
+       Note Invis subtracts a BLOCKED term that Hunger has no equivalent of,
+       and Deaf pulls in a roleplay flag from outside uprops entirely. A
+       blanket `uprops[PROP].intrinsic` conversion would be wrong for most
+       properties and silently so.
+
+       js/youprop.js already exists with 11 accessors and is the right home.
+       So the conversion is: for each of the ~55 reads, port the matching
+       youprop.h macro into js/youprop.js and call it. That is mechanical,
+       checkable one property at a time against the header, and leaves the
+       tree correct at every step.
 
        That is much larger than a refactor and explains several unrelated
        gaps at once: the hero-side arms of spec_applies and touch_artifact,

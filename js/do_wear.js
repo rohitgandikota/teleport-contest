@@ -7,6 +7,9 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { see_monsters, set_mimic_blocking, newsym } from './display.js';
+import { self_invis_message } from './potion.js';
+import { float_vs_flight } from './polyself.js';
 import { extremeattr, ACURR } from './attrib.js';
 import { x_monnam } from './do_name.js';
 import { update_inventory } from './invent.js';
@@ -19,8 +22,8 @@ import { remove_worn_item } from './steal.js';
 import { nomul, unmul } from './hack.js';
 import { prinv } from './invent.js';
 import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy, humanoid } from './mondata.js';
-import { welded } from './wield.js';
-import { Glib, Blind, Punished, Levitation, Flying, H, B } from './youprop.js';
+import { welded, setuwep, setuswapwep, setuqwep } from './wield.js';
+import { Glib, Blind, Punished, Levitation, Flying, H, B, Invis } from './youprop.js';
 import { silly_thing } from './invent.js';
 import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name, doname, xname, obj_is_pname } from './objnam.js';
 import { body_part } from './polyself.js';
@@ -33,7 +36,7 @@ import { setworn, racial_exception } from './worn.js';
 import { rnd } from './rng.js';
 import { mons, MFLAGS, MONSYMS } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
-import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_INACCESS, GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, ECMD_CANCEL, STEALTH, ARTICLE_YOUR, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION } from './const.js';
+import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_INACCESS, GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, ECMD_CANCEL, STEALTH, ARTICLE_YOUR, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, SEE_INVIS, INVIS, A_STR, A_CON, A_CHA } from './const.js';
 import { sgn } from './hacklib.js';
 
 // src/do_wear.c:76 on_msg() — for items that involve no delay.
@@ -1533,4 +1536,119 @@ export function adjust_attrib(obj, which, val) {
     if (observable || !extremeattr(which))
         learnring(obj, observable);
     game.botl = true;
+}
+
+/*
+ * src/do_wear.c:1242 Ring_on() — the ring is already worn in a slot; apply its
+ * effect.
+ *
+ * Three arms are recorded rather than written, each blocked on a subsystem:
+ *   RIN_PROTECTION_FROM_SHAPE_CHAN -> rescham() -> normal_shape() -> newcham(),
+ *     the 257-line polymorph engine.
+ *   RIN_LEVITATION's float_up() (src/trap.c:3937) and spoteffects().
+ * Every other case is real. Most ring types legitimately do nothing here --
+ * the long fallthrough of `break`s at the top is the C's, not a placeholder.
+ */
+export async function Ring_on(obj) {
+    let oldprop = game.u.uprops?.[game.objects[obj.otyp].oc_oprop]?.extrinsic | 0;
+    let observable;
+
+    /* make sure ring isn't wielded; can't use remove_worn_item()
+       here because it has already been set worn in a ring slot */
+    if (obj === game.u.uwep)
+        setuwep(null);
+    else if (obj === game.u.uswapwep)
+        setuswapwep(null);
+    else if (obj === game.u.uquiver)
+        setuqwep(null);
+
+    /* only mask out W_RING when we don't have both
+       left and right rings of the same type */
+    if ((oldprop & W_RING) !== W_RING)
+        oldprop &= ~W_RING;
+
+    switch (obj.otyp) {
+    case ONAMES.RIN_TELEPORTATION:
+    case ONAMES.RIN_REGENERATION:
+    case ONAMES.RIN_SEARCHING:
+    case ONAMES.RIN_HUNGER:
+    case ONAMES.RIN_AGGRAVATE_MONSTER:
+    case ONAMES.RIN_POISON_RESISTANCE:
+    case ONAMES.RIN_FIRE_RESISTANCE:
+    case ONAMES.RIN_COLD_RESISTANCE:
+    case ONAMES.RIN_SHOCK_RESISTANCE:
+    case ONAMES.RIN_CONFLICT:
+    case ONAMES.RIN_TELEPORT_CONTROL:
+    case ONAMES.RIN_POLYMORPH:
+    case ONAMES.RIN_POLYMORPH_CONTROL:
+    case ONAMES.RIN_FREE_ACTION:
+    case ONAMES.RIN_SLOW_DIGESTION:
+    case ONAMES.RIN_SUSTAIN_ABILITY:
+        break;
+    case ONAMES.MEAT_RING:
+        /* wearing a meat ring does not affect vegan conduct */
+        break;
+    case ONAMES.RIN_STEALTH:
+        await toggle_stealth(obj, oldprop, true);
+        break;
+    case ONAMES.RIN_WARNING:
+        see_monsters();
+        break;
+    case ONAMES.RIN_SEE_INVISIBLE:
+        /* can now see invisible monsters */
+        set_mimic_blocking(); /* do special mimic handling */
+        see_monsters();
+
+        if (Invis() && !oldprop && !H(SEE_INVIS) && !Blind()) {
+            newsym(game.u.ux, game.u.uy);
+            await pline("Suddenly you are transparent, but there!");
+            learnring(obj, true);
+        }
+        break;
+    case ONAMES.RIN_INVISIBILITY:
+        if (!oldprop && !H(INVIS) && !B(INVIS) && !Blind()) {
+            learnring(obj, true);
+            newsym(game.u.ux, game.u.uy);
+            await self_invis_message();
+        }
+        break;
+    case ONAMES.RIN_LEVITATION:
+        if (!oldprop && !H(LEVITATION)
+            && !(game.u.uprops?.[LEVITATION]?.blocked & FROMOUTSIDE)) {
+            note_unported_do_wear('Ring_on:float_up');
+            learnring(obj, true);
+            if (Levitation())
+                note_unported_do_wear('Ring_on:spoteffects'); /* for sinks */
+        } else {
+            float_vs_flight(); /* maybe toggle (BFlying & I_SPECIAL) */
+        }
+        break;
+    case ONAMES.RIN_GAIN_STRENGTH:
+        adjust_attrib(obj, A_STR, obj.spe);
+        break;
+    case ONAMES.RIN_GAIN_CONSTITUTION:
+        adjust_attrib(obj, A_CON, obj.spe);
+        break;
+    case ONAMES.RIN_ADORNMENT:
+        adjust_attrib(obj, A_CHA, obj.spe);
+        break;
+    case ONAMES.RIN_INCREASE_ACCURACY: /* KMH */
+        game.u.uhitinc += obj.spe;
+        break;
+    case ONAMES.RIN_INCREASE_DAMAGE:
+        game.u.udaminc += obj.spe;
+        break;
+    case ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN:
+        note_unported_do_wear('Ring_on:rescham');
+        break;
+    case ONAMES.RIN_PROTECTION:
+        /* usually learn enchantment and discover type;
+           won't happen if ring is unseen or if it's +0
+           and the type hasn't been discovered yet */
+        observable = (obj.spe !== 0);
+        learnring(obj, observable);
+        if (obj.spe)
+            find_ac(); /* updates botl */
+        break;
+    }
 }

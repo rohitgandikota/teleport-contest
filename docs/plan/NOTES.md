@@ -3403,3 +3403,43 @@ Generalises: **an un-stubbing that regresses is a finding, not a failure.** It
 localises the real defect to the data the stub was hiding. Record which stub and
 what it cost, then leave the stub in place with a comment, because a stub that
 is documented as wrong is honest, while a "fix" that drops 394 screens is not.
+
+## `enexto()` is ported; wiring it into `create_monster` crashes on a null `pm`
+
+`enexto()` (`src/teleport.c:196`) is now in `js/teleport.js`. It is a two-line
+wrapper over the already-ported `enexto_core`, GP_CHECKSCARY first then
+NO_MM_FLAGS, and the `||` short-circuits so a successful first pass never draws
+the second. `goodpos` is threaded in as a parameter, matching what
+`enexto_core` already does, because `js/makemon.js` owns `goodpos` and
+importing it into teleport.js closes a cycle.
+
+It is deliberately NOT yet wired into `create_monster` (`js/sp_lev.js:1179`,
+`src/sp_lev.c:1977`). Wiring it does close the `create_monster:enexto` gap --
+`generalize` stops reporting it -- but one of the 40 unseen games then dies with
+`Cannot read properties of null (reading 'mlet')`.
+
+Cause: `create_monster` leaves `pm` null for a random-monster spec, and C calls
+`enexto(&cc, x, y, pm)` with that null. `enexto_core` builds a fake monster
+whose `data` is that null, and `goodpos` then reads `mdat->mlet` **with no
+guard at all** (`src/teleport.c`, the `else if (mdat->mlet == S_EEL ...)` arm).
+So the C as written would dereference NULL too.
+
+That contradiction is the open question, and it must be answered by reading,
+not guessing. Either `create_monster` cannot actually reach the call with a null
+`pm` (some earlier arm returns first), or `set_mon_data()` substitutes a real
+permonst for NULL. Read `set_mon_data` and the `pm` assignment path in
+`create_monster` before wiring. Do not paper over it with a null check in
+`goodpos` -- the C has no such check, so inventing one is a divergence.
+
+Wiring it needs three edits, all reverted here and easy to redo: add
+`enexto: () => false` to the `mon_fns` table at `js/sp_lev.js:33`, bind
+`enexto: (cc, xx, yy, mdat) => enexto(cc, xx, yy, mdat, goodpos)` in the
+`sp_lev_wire_mon` call at `js/cmd.js:37` (which already imports `goodpos`), and
+replace the `note_unported` at `js/sp_lev.js:1179` with
+`if (mon_fns.m_at(x, y) && mon_fns.enexto(cc, x, y, pm)) x = cc.x, y = cc.y;`.
+
+Generalises: **`generalize` catches crashes the scoreboard cannot.** This change
+was exactly neutral on all 44 public sessions -- no screen or RNG delta at all --
+while breaking a game on an unseen seed. A neutral scoreboard is not evidence
+that a change is safe; run `tools/generalize.mjs` and read its thrown-error
+counts, not just its unported list.

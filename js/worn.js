@@ -8,7 +8,8 @@ import { game } from './gstate.js';
 import { sgn } from './hacklib.js';
 import { MON_WEP } from './monst.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
-         AC_MAX } from './const.js';
+         W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
+         W_CHAIN, AC_MAX } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
@@ -383,3 +384,40 @@ export function extract_from_minvent(mon, obj, do_extrinsics, silently) {
     }
     obj_extract_self(obj);
 }
+
+// src/worn.c:18 worn[] — the mask-to-slot table.
+//
+// This is the structure setworn() and recalc_telepat_range() are built
+// around: neither names uwep or uarm directly, both walk this array and act
+// on whichever slot the mask selects. Porting either without the table means
+// replacing the walk with an if-chain per slot, which has no C counterpart
+// and would re-diff badly in phase 2.
+//
+// C stores a POINTER to each global (&uarm). JS has no addresses, so the
+// faithful equivalent is the property NAME on the object that holds the
+// slots -- js/u_init.js:558 establishes that as game.u, writing game.u.uwep.
+// Reading and writing through game.u[wp.w_obj] is what dereferencing
+// *(wp->w_obj) does in C.
+//
+// The order is C's order and must stay that way: setworn walks until
+// w_mask is 0, and a mask matching several entries acts on each in sequence.
+export const worn = [
+    { w_mask: W_ARM,     w_obj: 'uarm',     w_what: 'suit' },
+    { w_mask: W_ARMH,    w_obj: 'uarmh',    w_what: 'helmet' },
+    { w_mask: W_ARMS,    w_obj: 'uarms',    w_what: 'shield' },
+    { w_mask: W_ARMG,    w_obj: 'uarmg',    w_what: 'gloves' },
+    { w_mask: W_ARMF,    w_obj: 'uarmf',    w_what: 'boots' },
+    { w_mask: W_ARMU,    w_obj: 'uarmu',    w_what: 'shirt' },
+    { w_mask: W_RINGL,   w_obj: 'uleft',    w_what: 'left ring' },
+    { w_mask: W_RINGR,   w_obj: 'uright',   w_what: 'right ring' },
+    { w_mask: W_WEP,     w_obj: 'uwep',     w_what: 'weapon' },
+    { w_mask: W_SWAPWEP, w_obj: 'uswapwep', w_what: 'alternate weapon' },
+    { w_mask: W_QUIVER,  w_obj: 'uquiver',  w_what: 'quiver' },
+    { w_mask: W_AMUL,    w_obj: 'uamul',    w_what: 'amulet' },
+    { w_mask: W_TOOL,    w_obj: 'ublindf',  w_what: 'facewear' },
+    { w_mask: W_BALL,    w_obj: 'uball',    w_what: 'chained ball' },
+    { w_mask: W_CHAIN,   w_obj: 'uchain',   w_what: 'attached chain' },
+    /* C terminates on { 0, 0, 0 }; JS iterates the array, so the sentinel
+       has no counterpart -- but any loop ported from C must still stop at
+       the same place, which is the end of this array. */
+];

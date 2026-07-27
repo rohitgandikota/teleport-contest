@@ -2813,3 +2813,26 @@ cron runs every two hours, so confirm the row appears rather than assuming.
 GENERAL POINT: local score is not the submission. The port ran clean and
 scored 512 the whole time it was invisible to the contest. Check the fork's
 presence on the board, not just score.sh.
+
+## Two different `worn` exist, and dup-defs is right to flag it
+
+js/worn.js now has `worn`, the mask-to-slot TABLE from src/worn.c:18, which
+setworn() and recalc_telepat_range() are both built around.
+
+js/do_wear.js already had `worn`, a FUNCTION taking a mask and returning the
+inventory object wearing it:
+
+    export function worn(mask) {
+        return (game.invent || []).find(o => (o.owornmask & mask) !== 0) || ...
+
+They are unrelated. No runtime collision today, because ES imports are
+explicit and nothing imports both, but the names are one careless import
+apart from a confusing bug.
+
+THE TABLE HAS THE BETTER CLAIM TO THE NAME AND THE FILE: it is `worn[]` in
+src/worn.c, so js/worn.js is exactly where the architecture rule puts it.
+The do_wear.js function is the one to look at -- check whether it
+corresponds to a real C function (and if so, whether that function is
+actually named `worn`) before either is renamed. Do NOT rename the table to
+dodge the clash; that would move it away from its C name for a reason the C
+does not have.

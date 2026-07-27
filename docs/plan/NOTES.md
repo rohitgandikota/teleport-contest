@@ -3105,8 +3105,25 @@ function from another module. Moving these four to their C homes removes the
 mkobj -> makemon edge outright and should break the cycle, exactly as moving
 is_rider to js/mondata.js unblocked js/attrib.js earlier today.
 
+SCOPED THE FIRST PIECE, so the next session knows what it is walking into.
+is_male and is_female alone touch FOUR files:
+
+    js/makemon.js  defines both (:79, :80) -- to be removed
+    js/mondata.js  their C home -- to receive them
+    js/mkobj.js    imports them from makemon (:32) -- repoint
+    js/sp_lev.js   imports them from makemon (:51) -- repoint
+    js/role.js     has its OWN copies (:356, :357) -- delete, import instead
+
+So five files for two macros, and role.js's copies mean dup-defs will still
+report the names after the move unless they go too. That is the same
+every-site trap helpless and is_animal sprang.
+
+MOVING THESE TWO DOES NOT BREAK THE CYCLE on its own -- the mkobj -> makemon
+edge survives as long as ANY of the four names is still imported from there.
+All four have to land before the cycle opens.
+
 DO THIS EARLY IN A SESSION, not at the end of one. It touches four names
-across at least three files and every consumer of each, and the failure mode
+across at least five files and every consumer of each, and the failure mode
 is a 0/0 board. But it is the same shape of fix that already worked once, and
 it unblocks the findgold consolidation plus whatever else is currently
 routing around the knot.

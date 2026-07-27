@@ -8283,10 +8283,16 @@ NEXT, in priority order
     1. touch_artifact (66 lines, 2 draws) -- 66% reach, unlocks BOTH
        retouch_object/ready_weapon and can_touch_safely
 
-       HEAD START: the artifact DATA is already ported. js/artilist_data.js
-       exists and is populated. What is missing is every accessor around it:
+       CORRECTION -- I FIRST RECORDED THIS AS "the artifact data is already
+       ported" AND THAT IS WRONG. js/artilist_data.js exports only the ART_*
+       INDEX CONSTANTS (34 of them) and an artifact_names list. It does NOT
+       export an artilist table. There is no spfx, no attack data, no
+       alignment -- exactly the fields every accessor needs.
 
-           artilist          PRESENT   js/artilist_data.js
+       So the position is worse than the previous entry claimed:
+
+           ART_* indices     PRESENT   js/artilist_data.js, names only
+           artilist table    MISSING   the actual per-artifact records
            ART_NONARTIFACT   MISSING   (the sentinel entry's index)
            SPFX_DBONUS       MISSING   include/artifact.h constant
            spec_applies      MISSING   src/artifact.c

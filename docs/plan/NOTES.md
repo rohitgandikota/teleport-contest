@@ -3567,3 +3567,25 @@ turns on extrinsics at game start for every role, which will move RNG. Measure
 it on its own commit, not folded into anything else. Note `js/u_init.js:44-45`
 also redefines W_ARM..W_ARMU locally; the values match `js/const.js:2224-2230`,
 so it is a harmless duplicate, but import them rather than keeping a second copy.
+
+## The artilist terminator is the STRING "0", so C loop conditions do not port
+
+`js/artilist_records.js` is generated from `include/artilist.h` and keeps the
+C's sentinel row at index 35, but the generator emits its fields as the string
+`"0"`, not numeric zero.
+
+The C iterates artifacts as `for (a = artilist + 1; a->otyp; a++)`. Transcribed
+literally that becomes `while (artilist[i].typ)`, and `"0"` is TRUTHY in JS, so
+the loop runs one row past the end and reads a row whose `nam` is the string
+`"0"`. It does not throw; it just silently considers a junk artifact named "0".
+
+Ported `artifact_name()` uses `artilist[i].typ !== "0"` plus a length bound.
+Any future artilist walk must do the same. The clean fix would be to make
+`tools/gen-artifacts.mjs` emit a real 0 (or drop the sentinel row and rely on
+array length), but changing the generated shape means re-checking every existing
+reader, so it is recorded here rather than done in passing.
+
+Generalises: **C sentinel-terminated arrays are a porting hazard in JS.** Any
+`for (p = table; p->field; p++)` needs its terminator checked in the generated
+data before the condition is transcribed. Truthiness differs: 0 is falsy, "0"
+is not, and neither is an empty object.

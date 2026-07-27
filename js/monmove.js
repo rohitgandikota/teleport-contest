@@ -10,7 +10,7 @@ import { Conflict, Displaced, Invis } from './youprop.js';
 import { mpickstuff } from './mon.js';
 import { sengr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
-import { MON_WEP } from './monst.js';
+import { MON_WEP , DEADMONSTER } from './monst.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
@@ -69,7 +69,7 @@ const ALGN_SINNED = -4;
 /* include/monst.h:214, include/mondata.h:81,174, include/hack.h:1414 and
    include/monst.h:217,281 — the one-line predicates distfleeck() and onscary()
    test with. Kept as single expressions so each reads like its macro. */
-const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
+/* DEADMONSTER() is include/monst.h:214; it comes from js/monst.js. */
 /* perceives() is an include/mondata.h macro; it comes from js/mondata.js. */
 const unique_corpstat = (ptr) => (ptr.geno & MFLAGS.G_UNIQ) !== 0;
 const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;

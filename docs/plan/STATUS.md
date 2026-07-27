@@ -9155,3 +9155,33 @@ written with them recorded, exactly like `on_msg`.
 
 After that the armor arm of `accessory_or_armor_on` can go in, leaving the
 accessory arm noted until `yn_function` exists.
+
+
+### `accessory_or_armor_on` armor arm is LANDED; `dowear` is blocked on async
+
+Landed: `remove_worn_item` (`src/steal.c:213`) and the ARMOR arm of
+`accessory_or_armor_on` (`src/do_wear.c:2209`) in full. Both gates clean.
+
+The accessory arm records `accessory_or_armor_on:accessory` and returns
+ECMD_OK. It needs `yn_function` (the "Which ring-finger, Right or Left?" prompt
+loop), `Ring_on`/`Amulet_on`/`Blindf_on`, `set_bknown`, `is_worn`,
+`ansimpleoname`, `safe_typename`. `remove_worn_item` similarly records its
+`Amulet_off` / `Ring_gone` / `Blindf_off` / `skinback` / `unpunish` arms.
+
+**`dowear` and `doputon` are BLOCKED, and not on a missing function.** Both are
+short and their only real dependency is `getobj(word, wear_ok, ...)`.
+`wear_ok`/`puton_ok` are one-liners over `equip_ok` (`src/do_wear.c:3404`, 44
+lines), and `equip_ok` calls `canwearobj`, which is async in this port because
+`js/pline.js` is. `js/invent.js:131 getobj_letters()` calls the callback
+SYNCHRONOUSLY and compares against `GETOBJ_*`; an async callback returns a
+Promise, which is truthy and matches no constant, so the filtering silently
+takes the wrong branch with no error.
+
+See the NOTES entry "async contagion from pline() hits a sync callback boundary
+at getobj". **Resolve that first** -- make `getobj_letters` and its callers
+async and await the callback -- as its own measured commit. Then `equip_ok`,
+the four ok-callbacks, `dowear` and `doputon` all follow quickly.
+
+Everything else on the wear path is now in place: `canwearobj`, `on_msg`,
+`off_msg`, `remove_worn_item`, `setworn`, all seven `<X>_on` and `<X>_off`
+callbacks, `nomul`/`unmul`, `retouch_object`, `makeknown`.

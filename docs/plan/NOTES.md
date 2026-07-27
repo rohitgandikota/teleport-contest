@@ -3127,3 +3127,33 @@ across at least five files and every consumer of each, and the failure mode
 is a 0/0 board. But it is the same shape of fix that already worked once, and
 it unblocks the findgold consolidation plus whatever else is currently
 routing around the knot.
+
+## Comparing against an UNPORTED function pointer is silently always-true
+
+C compares function pointers all over the occupation and equipment code:
+
+    if (ga.afternmv == Shirt_on)          donning()
+    if (ga.afternmv == stealarm)          thiefdead()
+    cancelled_don = (ga.afternmv == Cloak_on || ...)   cancel_don()
+
+In C an undefined comparand is a compile error. In JS it is not:
+
+    game.afternmv === Shirt_on     // Shirt_on undefined
+    game.afternmv === undefined    // ... which is TRUE when nothing is armed
+
+So porting one of these functions before its comparands exist does not
+produce a dead branch -- it produces a branch that fires CONSTANTLY, in the
+permissive direction, with no error anywhere. donning() would have reported
+"currently being put on" for every object in six of seven slots.
+
+FOUR SITES HIT THIS SO FAR: donning, doffing, cancel_don, thiefdead.
+
+THE RULE: before porting any function that compares against a function
+pointer, check that every comparand exists. If one does not, either port it
+first or RECORD that arm -- never leave the comparison in. A recorded arm is
+visibly incomplete; an undefined comparison looks finished and is wrong.
+
+This is the same family as two other always-true traps found this session:
+uprops[PROP] becoming a truthy object once it is a struct, and
+`(Invis && ...)` where Invis was shadowed from a boolean into an imported
+function. JS turns several kinds of C-obvious mistakes into silent truth.

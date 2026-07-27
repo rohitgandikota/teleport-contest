@@ -25,7 +25,8 @@ import { is_neuter } from './mondata.js';
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { Is_rogue_level, NODIR, CORPSTAT_SPE_VAL , FIRE_RES, P_NONE, NON_PM } from './const.js';
+import { update_inventory } from './invent.js';
+import { Is_rogue_level, NODIR, CORPSTAT_SPE_VAL , FIRE_RES, P_NONE, NON_PM, OBJ_INVENT } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -1199,4 +1200,16 @@ export function mkcorpstat(objtype, mtmp, ptr, x, y, corpstatflags) {
         otmp.corpsenm = ptr.pmidx;
 
     return otmp;
+}
+
+// src/mkobj.c:1864 set_bknown() — record that the hero knows obj's B/U/C.
+//
+// The moves > 1 guard keeps the inventory window from being redrawn during
+// game setup, when everything is being assigned for the first time.
+export function set_bknown(obj, onoff) {
+    if (obj.bknown !== onoff) {
+        obj.bknown = onoff;
+        if (obj.where === OBJ_INVENT && game.moves > 1)
+            update_inventory();
+    }
 }

@@ -5,7 +5,7 @@ import { game } from './gstate.js';
 import { pline_The } from './pline.js';
 import { delobj } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at , HANDS_SYM, silly_thing_to } from './const.js';
+import { u_at , HANDS_SYM, silly_thing_to, W_ARMOR, W_ACCESSORY, W_SADDLE, W_WEAPONS } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname } from './objnam.js';
@@ -755,4 +755,14 @@ export async function silly_thing(word, otmp) {
         await pline_The("Amulet doesn't like being called names.");
     else
         await pline(silly_thing_to.replace('%s', word));
+}
+
+// src/invent.c:2156 is_worn() — is this object equipped in ANY slot?
+//
+// Note the mask includes W_SADDLE and W_WEAPONS, not just armor and
+// accessories, so a wielded weapon and a saddled steed's saddle both count.
+export function is_worn(otmp) {
+    return (otmp.owornmask & (W_ARMOR | W_ACCESSORY | W_SADDLE | W_WEAPONS))
+            ? true
+            : false;
 }

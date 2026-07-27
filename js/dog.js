@@ -1,6 +1,6 @@
 import { relobj, steal_wire_droppables } from './steal.js';
 import { ROT_ICE_ADJUSTMENT } from './const.js';
-import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal } from './mondata.js';
+import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal , flaming } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
 import { M_ATTK_DEF_DIED } from './const.js';
@@ -188,10 +188,8 @@ const is_elf       = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
 /* include/mondata.h:59,190 — both are explicit species lists, not flag tests.
    There is no M1_FIRE_RES; fire resistance lives in mresists as MR_FIRE, and
    guessing a flag here silently made every monster flaming. */
-const flaming      = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_VORTEX
-                           || ptr.pmidx === PMNAMES.PM_FLAMING_SPHERE
-                           || ptr.pmidx === PMNAMES.PM_FIRE_ELEMENTAL
-                           || ptr.pmidx === PMNAMES.PM_SALAMANDER;
+/* flaming() is include/mondata.h:59; it comes from js/mondata.js. Both
+   copies listed the same four species. */
 const likes_lava   = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_ELEMENTAL
                            || ptr.pmidx === PMNAMES.PM_SALAMANDER;
 

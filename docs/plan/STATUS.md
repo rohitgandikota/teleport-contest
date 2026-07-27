@@ -8754,3 +8754,35 @@ uprops writer that now exists rather than being recorded.
 A REASONABLE ORDER for whoever takes it: port the six _on callbacks (they
 are the ones donning needs), then donning, then the _off set and doffing.
 The occupation mechanism underneath them is done, so nothing else blocks.
+
+## The wear/occupation chain is IN. What it took and what is next.
+
+Built end to end this stretch, each piece verified by executing it:
+
+    js/hack.js      unmul            the occupation completion half; calls
+                                     afternmv, clear-before-call verified
+    js/do_wear.js   Shirt_on         C's empty switch kept deliberately
+                    Shield_on        magical shields handled by setworn
+                    Gloves_on        DRAWS: rnd(20) guard ported exactly
+                    Cloak_on         alchemy smock's 2nd property done
+                    Boots_on         DRAWS: same guard; FROMOUTSIDE branch
+                    Helmet_on        C's FALLTHROUGH preserved
+                    donning          all seven comparands real
+                    doffing          _off halves guarded, not compared
+                    cancel_don       wired into cancel_doff
+                    Armor_on         FIXED: read game.uarm, nothing writes it
+    js/steal.js     somegold         DRAWS: the <50 no-draw arm is the trap
+                    unstolenarm      searches invent, not worn slots
+                    thiefdead        swap RECORDED, stealarm not ported
+
+STEALARM IS THE NEXT ONE AND IT IS NOT A LEAF. Its guards are portable --
+dmgtype, distu, DEADMONSTER, freeinv and mpickobj all exist -- but its
+action block needs subfrombill, monflee, tele_restrict and rloc, and RLOC
+DRAWS. Recording the action block would silently skip draws C makes, so
+port rloc first or leave stealarm alone. Do not half-port it.
+
+THE PATTERN WORTH REUSING: three of these arms only became portable because
+the uprops writer landed earlier in the session -- Shield_on's magical
+shields, Gloves_on's draw guard, Cloak_on's alchemy smock. Recording gaps
+precisely rather than stubbing them is what let them close later without
+anyone re-deriving the context.

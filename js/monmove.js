@@ -16,7 +16,7 @@ import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     IS_OBSTRUCTED, LAVAWALL,
     P_DAGGER, P_KNIFE,
-    AM_SHRINE, Amask2align, ROOMOFFSET, MTSZ } from './const.js';
+    AM_SHRINE, Amask2align, ROOMOFFSET, MTSZ, SQSRCHRADIUS } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn , mindless } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
@@ -376,7 +376,6 @@ function m_search_items(mtmp, goal, st) {
     return false;
 }
 
-const SQSRCHRADIUS = 5;
 const is_mercenary = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;
 
 function objects_at(x, y) {

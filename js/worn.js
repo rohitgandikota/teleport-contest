@@ -8,6 +8,7 @@ import { game } from './gstate.js';
 import { sgn } from './hacklib.js';
 import { MON_WEP } from './monst.js';
 import { set_twoweap } from './wield.js';
+import { cancel_doff } from './do_wear.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
          W_CHAIN, W_ARMOR, AC_MAX, BOLT_LIM } from './const.js';
@@ -459,7 +460,7 @@ export function setworn(obj, mask) {
                    set_artifact_intrinsic all key off oc_oprop */
                 note_unported_worn('setworn:doff_extrinsic');
             }
-            note_unported_worn('setworn:cancel_doff');
+            cancel_doff(oobj, wp.w_mask);
         }
 
         game.u[wp.w_obj] = obj;         /* C: *(wp->w_obj) = obj */

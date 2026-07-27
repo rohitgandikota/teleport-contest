@@ -144,8 +144,8 @@ function note_unported_do_wear(what) {
 export function cancel_doff(obj, slotmask) {
     const t = (game.context.takeoff ||= {});
 
-    if (!((t.mask | 0) & I_SPECIAL))
-        note_unported_do_wear('cancel_doff:donning_cancel_don');
+    if (!((t.mask | 0) & I_SPECIAL) && donning(obj))
+        cancel_don();
 
     t.mask = (t.mask | 0) & ~slotmask;
 }
@@ -552,4 +552,31 @@ export function doffing(otmp) {
         note_unported_do_wear('doffing:afternmv_off_callbacks');
 
     return result;
+}
+
+// src/do_wear.c cancel_don() — the armour being donned/doffed has vanished.
+//
+// Every one of the seven identity tests is a real comparison now. C notes
+// that afternmv never actually holds some of these values, because every
+// item in those categories takes one turn to wear, "but check all of them
+// anyway" -- so the redundant arms are deliberate and stay.
+//
+// cancelled_don is the output: it tells the caller a DON was interrupted
+// rather than a doff, which is what stops donning() from dereferencing a
+// freed object when it would otherwise finish.
+export function cancel_don() {
+    const t = (game.context.takeoff ||= {});
+
+    t.cancelled_don = (game.afternmv === Cloak_on
+                       || game.afternmv === Armor_on
+                       || game.afternmv === Shirt_on
+                       || game.afternmv === Helmet_on
+                       || game.afternmv === Gloves_on
+                       || game.afternmv === Boots_on
+                       || game.afternmv === Shield_on);
+    game.afternmv = null;
+    note_unported_do_wear('cancel_don:nomovemsg');
+    game.multi = 0;
+    t.delay = 0;
+    t.what = 0;
 }

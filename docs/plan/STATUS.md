@@ -8935,3 +8935,28 @@ Remaining ready targets, in order:
    time, and a duplicate can be a symptom of a missing port.
 Baseline to beat: 512/11405 screens, RNG 140764/792838, 1/44 sessions.
 Always `node tools/generalize.mjs` before pushing; it is the anti-overfit gate.
+
+
+### canwearobj dependency chain (in progress)
+
+`canwearobj` (`src/do_wear.c:2030`) is the gate for `accessory_or_armor_on`
+(2209), which is the gate for `dowear`/`doputon` (2432/2454). None of the six
+exist yet. `canwearobj` itself has no RNG draws -- it is pure validation -- so
+it is safe to land ahead of the draw-bearing callers.
+
+Landed for it so far: `lowc`/`strstri` (hacklib), `is_crackable` (obj),
+`hard_helmet` (do_wear), `cloak_/helm_/gloves_/boots_simple_name` (objnam), the
+`c_*` file-static message strings and `already_wearing`/`already_wearing2`
+(do_wear), `Glib` (youprop).
+
+Still missing before `canwearobj` can be written:
+- `racial_exception` (`src/worn.c:1360`) -- needs `raceptr` and
+  `is_elven_armor`, neither ported.
+- `silly_thing` (`src/invent.c:2094`).
+- `fingers_or_gloves` (`src/do_wear.c:60`) -- needs `body_part`
+  (`src/polyself.c`), which is a table-driven function, not a one-liner.
+
+Note the message primitives in `js/pline.js` (`You`, `Your`, `You_cant`,
+`pline_The`) are all **async**, so `canwearobj` and everything above it must be
+async too. That is a real structural constraint on the whole wear path, not a
+detail: the C returns int and the JS must return a promise.

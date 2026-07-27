@@ -7,11 +7,13 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { getobj } from './invent.js';
+import { pline } from './display.js';
 import { retouch_object } from './artifact.js';
 import { remove_worn_item } from './steal.js';
 import { nomul, unmul } from './hack.js';
 import { prinv } from './invent.js';
-import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy } from './mondata.js';
+import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy, humanoid } from './mondata.js';
 import { welded } from './wield.js';
 import { Glib } from './youprop.js';
 import { silly_thing } from './invent.js';
@@ -26,7 +28,7 @@ import { setworn, racial_exception } from './worn.js';
 import { rnd } from './rng.js';
 import { mons, MFLAGS, MONSYMS } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
-import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY } from './const.js';
+import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_INACCESS, GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, ECMD_CANCEL } from './const.js';
 import { sgn } from './hacklib.js';
 
 // src/do_wear.c:76 on_msg() — for items that involve no delay.
@@ -1298,4 +1300,106 @@ export async function accessory_or_armor_on(obj) {
     }
     game.context.takeoff.mask = game.context.takeoff.what = 0;
     return ECMD_TIME;
+}
+
+/* src/do_wear.c:3404 equip_ok() — not a getobj callback; unifies code among
+   the other 4 getobj callbacks.
+ *
+ * async because canwearobj() is. js/invent.js's getobj_letters() awaits its
+ * callback for exactly this reason.
+ */
+async function equip_ok(obj, removing, accessory) {
+    let is_worn_;
+    const dummymask = { mask: 0 };
+
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+
+    /* ignore for putting on if already worn, or removing if not worn */
+    is_worn_ = ((obj.owornmask & (W_ARMOR | W_ACCESSORY)) !== 0);
+    if (removing !== is_worn_)   /* C: removing ^ is_worn, both booleans */
+        return GETOBJ_EXCLUDE_INACCESS;
+
+    /* exclude most object classes outright */
+    if (obj.oclass !== OCLASSES.ARMOR_CLASS && obj.oclass !== OCLASSES.RING_CLASS
+        && obj.oclass !== OCLASSES.AMULET_CLASS) {
+        /* ... except for a few wearable exceptions outside these classes */
+        if (obj.otyp !== ONAMES.MEAT_RING && obj.otyp !== ONAMES.BLINDFOLD
+            && obj.otyp !== ONAMES.TOWEL && obj.otyp !== ONAMES.LENSES)
+            return GETOBJ_EXCLUDE;
+    }
+
+    /* armor with 'P' or 'R' or accessory with 'W' or 'T' */
+    if (accessory !== (obj.oclass !== OCLASSES.ARMOR_CLASS))
+        return GETOBJ_DOWNPLAY;
+
+    /* armor we can't wear, e.g. from polyform */
+    if (obj.oclass === OCLASSES.ARMOR_CLASS && !removing
+        && !await canwearobj(obj, dummymask, false))
+        return GETOBJ_DOWNPLAY;
+
+    /* removing inaccessible equipment. inaccessible_equipment() is not ported
+       and neither is gi.item_action_in_progress, so this arm is recorded. It
+       is unreachable from wear_ok/puton_ok, which pass removing=false. */
+    if (removing)
+        note_unported_do_wear('equip_ok:inaccessible_equipment');
+
+    /* all good to go */
+    return GETOBJ_SUGGEST;
+}
+
+/* src/do_wear.c wear_ok() — getobj callback for W command */
+export async function wear_ok(obj) {
+    return await equip_ok(obj, false, false);
+}
+
+/* src/do_wear.c takeoff_ok() — getobj callback for T command */
+export async function takeoff_ok(obj) {
+    return await equip_ok(obj, true, false);
+}
+
+/* src/do_wear.c puton_ok() — getobj callback for P command */
+export async function puton_ok(obj) {
+    return await equip_ok(obj, false, true);
+}
+
+/* src/do_wear.c remove_ok() — getobj callback for R command */
+export async function remove_ok(obj) {
+    return await equip_ok(obj, true, true);
+}
+
+// src/do_wear.c:2432 dowear() — the #wear command.
+export async function dowear() {
+    let otmp;
+
+    /* cantweararm() checks for suits of armor, not what we want here;
+       verysmall() or nohands() checks for shields, gloves, etc... */
+    if (verysmall(game.youmonst.data) || nohands(game.youmonst.data)) {
+        await pline("Don't even bother.");
+        return ECMD_OK;
+    }
+    if (game.u.uarm && game.u.uarmu && game.u.uarmc && game.u.uarmh
+        && game.u.uarms && game.u.uarmg && game.u.uarmf
+        && game.u.uleft && game.u.uright && game.u.uamul && game.u.ublindf) {
+        /* 'W' message doesn't mention accessories */
+        await You("are already wearing a full complement of armor.");
+        return ECMD_OK;
+    }
+    otmp = await getobj("wear", wear_ok, GETOBJ_NOFLAGS);
+    return otmp ? await accessory_or_armor_on(otmp) : ECMD_CANCEL;
+}
+
+// src/do_wear.c:2454 doputon() — the #puton command.
+export async function doputon() {
+    let otmp;
+
+    if (game.u.uleft && game.u.uright && game.u.uamul && game.u.ublindf
+        && game.u.uarm && game.u.uarmu && game.u.uarmc && game.u.uarmh
+        && game.u.uarms && game.u.uarmg && game.u.uarmf) {
+        /* 'P' message doesn't mention armor */
+        await Your(`${humanoid(game.youmonst.data) ? "ring-" : ""}${fingers_or_gloves(false)} are full, and you're already wearing an amulet and ${(game.u.ublindf.otyp === ONAMES.LENSES) ? "some lenses" : "a blindfold"}.`);
+        return ECMD_OK;
+    }
+    otmp = await getobj("put on", puton_ok, GETOBJ_NOFLAGS);
+    return otmp ? await accessory_or_armor_on(otmp) : ECMD_CANCEL;
 }

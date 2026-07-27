@@ -172,3 +172,28 @@ export const Displaced = () => !!game.u?.uprops?.DISPLACED;
 // use. The !BBlinded term is missing here for the same reason as Invis and
 // Levitation -- no blocked field yet. Fix all three WITH the structure.
 export const Blinded = () => !!game.u?.uprops?.BLINDED;
+
+
+/* ------------------------------------------------------------------------
+   The three field readers every youprop.h macro is built from.
+
+   C does not write u.uprops[X].intrinsic at each call site either; it
+   defines a per-property macro trio and composes those:
+
+       #define HHunger u.uprops[HUNGER].intrinsic
+       #define EHunger u.uprops[HUNGER].extrinsic
+       #define Hunger  (HHunger || EHunger)
+
+   These are the generic form of that trio. They are ADDITIVE and unused so
+   far: the 28 accessors above still read the VALUE, which is correct while
+   uprops is undefined and WRONG the moment it becomes a struct, because an
+   object is truthy.
+
+   The atomic change described in docs/plan/STATUS.md is: rewrite each
+   accessor in terms of H/E/B per its own C macro, add the three missing
+   blocked terms (Invis, Levitation, Blinded), initialise uprops, and score.
+   Until all of that lands together these three are just sitting here.
+   ------------------------------------------------------------------------ */
+export const H = (prop) => !!(game.u?.uprops?.[prop]?.intrinsic);
+export const E = (prop) => !!(game.u?.uprops?.[prop]?.extrinsic);
+export const B = (prop) => !!(game.u?.uprops?.[prop]?.blocked);

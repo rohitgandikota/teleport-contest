@@ -8543,6 +8543,25 @@ WHAT THE PER-MACRO CHECK CAUGHT, and the reason not to have bulk-converted:
   import, grep the file for the bare identifier.
 
 NEXT: initialise u.uprops with C's {intrinsic, extrinsic, blocked} per
-property, and fix the three blocked terms in the same change. The readers
-are now correct in shape, so nothing should flip to true incorrectly -- that
-was the whole point of doing them first.
+property. READ THIS PARAGRAPH FIRST, because the obvious version is a trap.
+
+The 28 accessors currently read the VALUE:
+
+    export const Hunger = () => !!game.u?.uprops?.HUNGER;
+
+The moment uprops[HUNGER] becomes {intrinsic:0, extrinsic:0, blocked:0},
+that is an OBJECT and therefore TRUTHY, so every accessor returns true and
+the hero acquires every property at once. Converting the CALL SITES to
+accessors did NOT by itself make this safe -- it made it fixable in ONE
+PLACE instead of fifty-five, which is a different and smaller claim than
+'the readers are correct in shape'.
+
+SO THE STRUCTURE CHANGE IS ONE ATOMIC COMMIT:
+    1. rewrite all 28 accessors to read FIELDS, each per its C macro --
+       (intrinsic || extrinsic), or intrinsic alone, or with && !blocked
+    2. add the three missing blocked terms (Invis, Levitation, Blinded)
+       while you are in there, since they are the same edit
+    3. initialise u.uprops in the same commit
+    4. full scoreboard; anything that flips to true is a wrong field read
+
+Doing 3 before 1 breaks the whole game and looks like a load failure.

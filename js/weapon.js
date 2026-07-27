@@ -7,7 +7,7 @@
 // array that comparison has no input at all.
 
 import { game } from './gstate.js';
-import { STR18 } from './const.js';
+import { STR18, WT_IRON_BALL_INCR } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { mon_hates_blessings, thick_skinned, passes_walls,
          is_swimmer } from './mondata.js';
@@ -478,7 +478,6 @@ export function dmgval(otmp, mon) {
 
 // include/weight.h:18 WT_IRON_BALL_INCR — verified against the header, not
 // recalled: the value was written from memory first and then checked.
-const WT_IRON_BALL_INCR = 160;
 
 // Predicates dmgval needs that are not ported. Each returns 0/false and is
 // recorded by name, so game.unported says which one a divergence wanted.

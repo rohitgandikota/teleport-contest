@@ -25,7 +25,7 @@ import { is_neuter } from './mondata.js';
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { Is_rogue_level, NODIR, CORPSTAT_SPE_VAL , FIRE_RES, P_NONE } from './const.js';
+import { Is_rogue_level, NODIR, CORPSTAT_SPE_VAL , FIRE_RES, P_NONE, NON_PM } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -45,7 +45,6 @@ import { depth } from './dungeon.js';
 export const SPBOOK_no_NOVEL = -OCLASSES.SPBOOK_CLASS;
 
 // include/permonst.h
-const NON_PM = -1;
 // include/hack.h:1189-1200 — corpse/statue gender is stored in obj.spe.
 const CORPSTAT_INIT = 0x08;
 const CORPSTAT_FEMALE = 1, CORPSTAT_MALE = 2, CORPSTAT_NEUTER = 3;

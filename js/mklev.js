@@ -1,4 +1,4 @@
-import { CORPSTAT_NONE, TAINT_AGE, NON_PM } from './const.js';
+import { CORPSTAT_NONE, TAINT_AGE, NON_PM, XLIM, YLIM } from './const.js';
 // mklev.js — Level generation.
 // C ref: mklev.c — makelevel, makerooms, makecorridors, generate_stairs.
 // Also includes parts of sp_lev.c (create_room) and mkmap.c (litstate_rnd).
@@ -153,8 +153,6 @@ const RANDOM_CLASS = 0;
 // Supply chest items
 const MARK = 6;
 
-const XLIM = 4;
-const YLIM = 3;
 
 // Direction deltas
 const xdir = [-1, -1, 0, 1, 1, 1, 0, -1];

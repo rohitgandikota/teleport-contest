@@ -535,3 +535,51 @@ export function recalc_telepat_range() {
         ? (BOLT_LIM * BOLT_LIM) * nobjs
         : -1;
 }
+
+// src/worn.c:150 setnotworn() — take `obj` out of every slot it occupies.
+//
+// setworn()'s counterpart, and note the difference: setworn walks the table
+// for slots matching a MASK, this one walks it for slots holding a given
+// OBJECT. An object can sit in more than one (a wielded item that is also
+// quivered), so the loop does not stop at the first hit and `unworn`
+// accumulates every mask cleared.
+//
+// Everything the extrinsic bookkeeping needs is here now: oc_oprop is the
+// property number and uprops is keyed by number, so C's lines port directly.
+export function setnotworn(obj) {
+    let unworn = 0;
+
+    if (!obj)
+        return;
+    if (game.u.twoweap && (obj === game.u.uwep || obj === game.u.uswapwep))
+        set_twoweap(false);
+
+    for (const wp of worn) {
+        if (obj !== game.u[wp.w_obj])
+            continue;
+
+        /* in case wearing or removal is in progress, or removal is pending
+           via the 'A' command for multiple items */
+        cancel_doff(obj, wp.w_mask);
+
+        game.u[wp.w_obj] = null;
+        unworn |= wp.w_mask;
+
+        let p = game.objects[obj.otyp].oc_oprop;
+        uprop(p).extrinsic &= ~wp.w_mask;
+        note_unported_worn('setnotworn:monstunseesu_prop');
+        obj.owornmask &= ~wp.w_mask;
+        if (obj.oartifact)
+            note_unported_worn('setnotworn:set_artifact_intrinsic');
+        if ((p = w_blocks(obj, wp.w_mask)) !== 0)
+            uprop(p).blocked &= ~wp.w_mask;
+    }
+
+    if (!game.u.uarm)
+        note_unported_worn('setnotworn:tux_penalty');
+    if (unworn !== 0)
+        note_unported_worn('setnotworn:botl');
+
+    update_inventory();
+    recalc_telepat_range();
+}

@@ -7805,3 +7805,37 @@ NEXT: run diverge on one of the six newly-zeroed sessions with the 'c' case
 applied and read where the streams part. Do NOT re-wire 'c' before that
 number is understood -- the port is faithful line by line and still costs
 131 screens, which is exactly the case the loop rule is written for.
+
+## Next target after doclose: the missing dogfood() call site
+
+diverge on seed0361 now shows the two streams ONE CALL OUT OF PHASE rather
+than making different draws:
+
+    2981   C rn2(100) @ obj_resists     ours rn2(8)   @ dog_goal
+    2982   C rn2(8)   @ dog_goal        ours rn2(100) @ obj_resists
+    2983   C rn2(100) @ obj_resists     ours rn2(8)   @ dog_goal
+
+Same functions, same arguments, shifted by one. So nothing here is
+mis-ported: WE ARE MISSING EXACTLY ONE obj_resists DRAW just before 2981 and
+everything after it reads as garbage because of the offset.
+
+obj_resists IS ported (js/zap.js) and dogfood IS ported (js/dog.js:341) and
+does call it -- the block above dogfood is documentation, not commented-out
+code, and it already states the ordering fact that matters: obj_resists
+arrives BEFORE dog_goal's own rn2(8), because every object the pet looks at
+costs exactly one rn2(100) with ochance 0.
+
+SO THE GAP IS A CALL SITE, NOT A FUNCTION. Something in the pet's turn walks
+a list of objects and calls dogfood on each, and ours walks a shorter list
+(or none) at this point. dog_invent is the prime suspect: an earlier session
+traced a pet-placement divergence to dog_invent rather than dog_move or
+dog_goal, which is the same neighbourhood.
+
+NEXT: find every C call site of dogfood() and check each against ours.
+
+    grep -n "dogfood(" nethack-c/upstream/src/dogmove.c
+
+The offset is one draw, so exactly one site is missing. This is a much
+cheaper shape of bug than it looks -- do not port anything new until the
+missing site is found, because any new draw will move the offset around and
+make the comparison harder to read.

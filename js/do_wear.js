@@ -177,3 +177,40 @@ export function Shirt_on() {
     }
     return 0;
 }
+
+// src/do_wear.c Shield_on() — the afternmv callback for putting on a shield.
+//
+// Same shape as Shirt_on: the switch does nothing for every real shield and
+// exists to catch an unrecognised otyp. C's comment explains why even the
+// MAGICAL shields need no case here -- "the magical shields are handled by
+// setting u.uprops[*].extrinsic in setworn() called by
+// armor_or_accessory_on() before Shield_on()". That path now works in this
+// port, so a shield of reflection genuinely confers its property before this
+// callback runs.
+export function Shield_on() {
+    if (!game.u.uarms)
+        return 0;
+
+    switch (game.u.uarms.otyp) {
+    case ONAMES.SMALL_SHIELD:
+    case ONAMES.SHIELD_OF_DRAIN_RESISTANCE:
+    case ONAMES.SHIELD_OF_SHOCK_RESISTANCE:
+    case ONAMES.ELVEN_SHIELD:
+    case ONAMES.URUK_HAI_SHIELD:
+    case ONAMES.ORCISH_SHIELD:
+    case ONAMES.DWARVISH_ROUNDSHIELD:
+    case ONAMES.LARGE_SHIELD:
+    case ONAMES.SHIELD_OF_REFLECTION:
+        break;
+    default:
+        /* C calls impossible(unknown_type, c_shield, uarms->otyp) */
+        note_unported_do_wear('Shield_on:impossible_unknown_type');
+        break;
+    }
+
+    if (!game.u.uarms.known) {
+        game.u.uarms.known = 1; /* +/- evident because of status line AC */
+        note_unported_do_wear('Shield_on:update_inventory');
+    }
+    return 0;
+}

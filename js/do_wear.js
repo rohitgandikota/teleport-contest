@@ -473,3 +473,83 @@ export function Helmet_on() {
     }
     return 0;
 }
+
+// src/do_wear.c:1574 donning() — is this object currently being PUT ON?
+//
+// A chain of identity tests against ga.afternmv, which is why all seven _on
+// callbacks had to exist first. In C an undefined comparand is a compile
+// error; in JS `game.afternmv === Shirt_on` with Shirt_on undefined becomes
+// `=== undefined`, which is TRUE whenever no occupation is armed -- so a
+// partial port would have reported "donning" for every object in six of
+// seven slots. All seven are ported now, so every arm is a real comparison.
+//
+// doffing() is checked FIRST and short-circuits, matching C: an object being
+// taken off is not being put on.
+export function donning(otmp) {
+    let result = false;
+
+    /* 'W' (or 'P' used for armor) sets ga.afternmv */
+    if (doffing(otmp))
+        result = true;
+    else if (otmp === game.u.uarm)
+        result = (game.afternmv === Armor_on);
+    else if (otmp === game.u.uarmu)
+        result = (game.afternmv === Shirt_on);
+    else if (otmp === game.u.uarmc)
+        result = (game.afternmv === Cloak_on);
+    else if (otmp === game.u.uarmf)
+        result = (game.afternmv === Boots_on);
+    else if (otmp === game.u.uarmh)
+        result = (game.afternmv === Helmet_on);
+    else if (otmp === game.u.uarmg)
+        result = (game.afternmv === Gloves_on);
+    else if (otmp === game.u.uarms)
+        result = (game.afternmv === Shield_on);
+
+    return result;
+}
+
+// src/do_wear.c:1602 doffing() — is this object currently being TAKEN OFF?
+//
+// Same shape, but each armour arm also accepts a takeoff.what match, because
+// the 'A' command queues slots there rather than setting afternmv. The
+// _off callbacks are NOT ported, so those halves are guarded: comparing
+// against an undefined _off would be the exact hazard donning avoids.
+//
+// The 1-turn items -- amulet, rings, blindfold -- test ONLY takeoff.what in
+// C, so their arms are complete rather than partial.
+export function doffing(otmp) {
+    const what = game.context?.takeoff?.what | 0;
+    let result = false;
+
+    /* the _off callbacks are unported; only the takeoff.what half is live */
+    if (otmp === game.u.uarm)
+        result = (what === W_ARM);
+    else if (otmp === game.u.uarmu)
+        result = (what === W_ARMU);
+    else if (otmp === game.u.uarmc)
+        result = (what === W_ARMC);
+    else if (otmp === game.u.uarmf)
+        result = (what === W_ARMF);
+    else if (otmp === game.u.uarmh)
+        result = (what === W_ARMH);
+    else if (otmp === game.u.uarmg)
+        result = (what === W_ARMG);
+    else if (otmp === game.u.uarms)
+        result = (what === W_ARMS);
+    /* these 1-turn items need no afternmv check even in C */
+    else if (otmp === game.u.uamul)
+        result = (what === W_AMUL);
+    else if (otmp === game.u.uleft)
+        result = (what === W_RINGL);
+    else if (otmp === game.u.uright)
+        result = (what === W_RINGR);
+
+    if (!result && otmp && (otmp === game.u.uarm || otmp === game.u.uarmu
+        || otmp === game.u.uarmc || otmp === game.u.uarmf
+        || otmp === game.u.uarmh || otmp === game.u.uarmg
+        || otmp === game.u.uarms))
+        note_unported_do_wear('doffing:afternmv_off_callbacks');
+
+    return result;
+}

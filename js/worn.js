@@ -13,6 +13,8 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
          W_CHAIN, W_ARMOR, AC_MAX, BOLT_LIM } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
+         ARM_CLOAK, ARM_SHIRT } from './obj.js';
 import { is_weptool } from './mkobj.js';
 import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
@@ -596,4 +598,24 @@ export function wearmask_to_obj(wornmask) {
         if (wp.w_mask & wornmask)
             return game.u[wp.w_obj] ?? null;
     return null;
+}
+
+// src/worn.c:218 wornmask_to_armcat() — which armour category a wornmask is.
+//
+// C switches on `mask & W_ARMOR`, so a mask carrying non-armour bits still
+// resolves, and anything that is not an armour slot falls through to 0.
+// Note that 0 is ARM_SUIT, not a sentinel: C returns the same value for
+// "suit" and "no armour slot", and callers rely on having already checked.
+// Do not turn the default into -1.
+export function wornmask_to_armcat(mask) {
+    switch (mask & W_ARMOR) {
+    case W_ARM:   return ARM_SUIT;
+    case W_ARMC:  return ARM_CLOAK;
+    case W_ARMH:  return ARM_HELM;
+    case W_ARMS:  return ARM_SHIELD;
+    case W_ARMG:  return ARM_GLOVES;
+    case W_ARMF:  return ARM_BOOTS;
+    case W_ARMU:  return ARM_SHIRT;
+    default:      return 0;
+    }
 }

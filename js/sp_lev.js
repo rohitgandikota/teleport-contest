@@ -22,7 +22,7 @@ import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
 import { start_timer, TIMER_OBJECT, ROT_ORGANIC } from './timeout.js';
 import { make_engr_at, engr_at } from './engrave.js';
-import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD } from './const.js';
+import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD , AM_SPLEV_RANDOM } from './const.js';
 
 /* is_pool/is_lava/m_at live in js/mon.js, which reaches this file back through
    invent.js -> mkobj.js. A direct import leaves them in TDZ the second time a
@@ -1364,7 +1364,6 @@ export function name_to_mon(name, gender_name_var) {
     return mntmp;
 }
 
-const AM_SPLEV_RANDOM = 0x80;
 const G_NOGEN = 0x0200;
 
 // src/sp_lev.c create_altar() — place one altar from a des.altar spec.

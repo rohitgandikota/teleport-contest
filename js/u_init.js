@@ -24,7 +24,7 @@ import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { skill_tables } from './skills_data.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
-import { P_NONE, W_QUIVER, W_WEP , W_SWAPWEP} from './const.js';
+import { P_NONE, W_QUIVER, W_WEP , W_SWAPWEP, A_CHAOTIC } from './const.js';
 import { Is_container } from './obj.js';
 import { skill_init } from './weapon.js';
 import { spell_skilltype, initialspell, num_spells,
@@ -50,7 +50,6 @@ const {
     COIN_CLASS,
 } = OCLASSES;
 
-const A_CHAOTIC = -1;   /* include/align.h */
 
 // Objects a random starting item must never be. src/u_init.c:1117-1160.
 // src/u_init.c skills_for_role() — the current role's weapon/spell table.

@@ -8,6 +8,7 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { artilist } from './artilist_records.js';
+import { ART_NONARTIFACT } from './artilist_data.js';
 import { SPFX_DBONUS, SPFX_ATTK, SPFX_DMONS, SPFX_DCLAS, SPFX_DFLAG1,
          SPFX_DFLAG2, SPFX_DALIGN, AD_PHYS, AD_FIRE, AD_COLD, AD_ELEC,
          AD_MAGM, AD_STUN, AD_DRST, AD_DRLI, AD_STON,
@@ -108,6 +109,31 @@ export function spec_applies(weap, mtmp) {
             /* C calls impossible("Weird weapon special attack.") */
             note_unported_artifact('spec_applies:weird_special_attack');
         }
+    }
+    return false;
+}
+
+// src/artifact.c:993 bane_applies() — does this artifact's DAMAGE BONUS apply?
+//
+// The copy-and-mask is the whole trick and must not be simplified away:
+//
+//     atmp = *oart;
+//     atmp.spfx &= SPFX_DBONUS;   /* clear other spfx fields */
+//
+// C hands spec_applies a COPY carrying only the damage-bonus bits, so the
+// SPFX_ATTK arm of spec_applies cannot fire even for an artifact that also
+// has a special attack. Passing `oart` straight through would let a
+// dual-flagged artifact take the wrong branch -- which reads as a plausible
+// simplification and is a behaviour change.
+//
+// The C compares `oart != &artilist[ART_NONARTIFACT]` by address; ours is an
+// index test, because ART_NONARTIFACT is index 0 of the same table.
+export function bane_applies(oart, mon) {
+    if (oart && oart !== artilist[ART_NONARTIFACT]
+        && (oart.spfx & SPFX_DBONUS) !== 0) {
+        const atmp = { ...oart, spfx: oart.spfx & SPFX_DBONUS };
+        if (spec_applies(atmp, mon))
+            return true;
     }
     return false;
 }

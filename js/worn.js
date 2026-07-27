@@ -5,6 +5,7 @@ import { obj_extract_self, update_inventory } from './invent.js';
 // Nothing here draws.
 
 import { game } from './gstate.js';
+import { Role_if } from './role.js';
 import { sgn } from './hacklib.js';
 import { MON_WEP } from './monst.js';
 import { set_twoweap } from './wield.js';
@@ -523,8 +524,10 @@ export function setworn(obj, mask) {
     }
 
     if (obj && (obj.owornmask & W_ARMOR) !== 0)
-        note_unported_worn('setworn:nudist');
-    note_unported_worn('setworn:tux_penalty');
+        game.u.uroleplay.nudist = false;
+    /* tux -> tuxedo -> "monkey suit" -> monk's suit */
+    game.iflags.tux_penalty = !!(game.u.uarm && Role_if(PMNAMES.PM_MONK)
+                                 && game.urole.spelarmr);
 
     update_inventory();
     recalc_telepat_range();
@@ -597,7 +600,7 @@ export function setnotworn(obj) {
     }
 
     if (!game.u.uarm)
-        note_unported_worn('setnotworn:tux_penalty');
+        game.iflags.tux_penalty = false;
     if (unworn !== 0)
         note_unported_worn('setnotworn:botl');
 

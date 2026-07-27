@@ -7742,6 +7742,29 @@ js/cmd.js has NO 'c' case at all, so the command falls through unhandled
 while C runs doclose and the two streams part company. doclose is
 src/lock.c:957, 94 LINES.
 
+SIZED, and it splits the way mattackm does. Seven callees are absent:
+
+    obstructed              27   src/lock.c      needed
+    stumble_on_door_mimic   10   src/lock.c      needed
+    block_point             26   src/vision.c    needed
+    update_mapseen_for       4   src/dungeon.c   needed
+    feel_location          163   src/display.c   BLIND-ONLY
+    is_db_wall               ?   macro, not in include/*.h -- grep extern.h
+    is_drawbridge_wall       ?   macro, same
+
+Present already: getdir (js/apply.js), feel_newsym (js/lock.js), nohands and
+verysmall (js/dog.js), u_at and isok (js/const.js), exercise (js/attrib.js).
+
+feel_location is 163 of the 324 total and is reached only when the hero
+cannot see the square. So the sighted path is
+
+    doclose 94 + obstructed 27 + stumble_on_door_mimic 10
+          + block_point 26 + update_mapseen_for 4  =  161 lines
+
+with feel_location recorded by name at its call site the way passive's arms
+and mattackm's specials already are. Blind door-closing then declines
+honestly instead of silently taking the sighted branch.
+
 Size its callees before starting, per the standing rule that every sizing
 this session changed the plan. Grep the BARE NAME of each one -- five
 duplicate ports have already come from grepping "function X" when the

@@ -110,3 +110,33 @@ export const Hunger = () => !!game.u?.uprops?.HUNGER;
 // and deleted rather than left alongside.
 export const Clairvoyant = () =>
     !!game.u?.uprops?.CLAIRVOYANT && !game.u?.uprops?.BLOCKED_CLAIRVOYANT;
+
+// The next block is straight from include/youprop.h. Note the three SHAPES,
+// which is why each is written out rather than generated: some combine
+// intrinsic and extrinsic, some are intrinsic ONLY, and none of these has a
+// blocked term (unlike Invis and Levitation above).
+
+// include/youprop.h:138 Wounded_legs — (HWounded_legs || EWounded_legs)
+export const Wounded_legs = () => !!game.u?.uprops?.WOUNDED_LEGS;
+
+// include/youprop.h:345 Regeneration — (HRegeneration || ERegeneration)
+export const Regeneration = () => !!game.u?.uprops?.REGENERATION;
+
+// include/youprop.h:129 Fumbling — (HFumbling || EFumbling)
+export const Fumbling = () => !!game.u?.uprops?.FUMBLING;
+
+// include/youprop.h:81 Stunned — HStun. INTRINSIC ONLY: there is no EStun
+// term, so an item cannot confer it. The property key is STUNNED while the
+// C intrinsic macro is HStun; do not let the name difference suggest a
+// second property.
+export const Stunned = () => !!game.u?.uprops?.STUNNED;
+
+// include/youprop.h:84 Confusion — HConfusion. Intrinsic only, as Stunned.
+export const Confusion = () => !!game.u?.uprops?.CONFUSION;
+
+// include/youprop.h:108 Sick — u.uprops[SICK].intrinsic. Intrinsic only,
+// and C spells it out rather than going through an HSick macro.
+export const Sick = () => !!game.u?.uprops?.SICK;
+
+// include/youprop.h:111 Vomiting — u.uprops[VOMITING].intrinsic.
+export const Vomiting = () => !!game.u?.uprops?.VOMITING;

@@ -11,7 +11,9 @@
 // the ones that pass, so its count depends on the first six results.
 
 import { game } from './gstate.js';
-import { Clairvoyant, Levitation } from './youprop.js';
+import { Clairvoyant, Levitation, Wounded_legs, Regeneration,
+         Fumbling, Stunned, Confusion, Sick, Vomiting,
+         HHallucination } from './youprop.js';
 import { You, Your } from './pline.js';
 import { UNENCUMBERED, OVERLOADED } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -45,7 +47,7 @@ export function weight_cap() {
         note_unported_attrib('weight_cap:levitation_or_steed');
     if (carrcap > 1000)             /* MAX_CARR_CAP */
         carrcap = 1000;
-    if (game.u.uprops?.WOUNDED_LEGS)
+    if (Wounded_legs())
         note_unported_attrib('weight_cap:wounded_legs');
 
     return Math.max(carrcap, 1);    /* never return 0 */
@@ -387,14 +389,14 @@ export function exerper() {
            is already right when it does. */
         if (Clairvoyant())
             exercise(A_WIS, true);
-        if (game.u.uprops?.REGENERATION)
+        if (Regeneration())
             exercise(A_STR, true);
-        if (game.u.uprops?.SICK || game.u.uprops?.VOMITING)
+        if (Sick() || Vomiting())
             exercise(A_CON, false);
-        if (game.u.uprops?.CONFUSION || game.u.uprops?.HALLUC)
+        if (Confusion() || HHallucination())
             exercise(A_WIS, false);
-        if ((game.u.uprops?.WOUNDED_LEGS && !game.u.usteed)
-            || game.u.uprops?.FUMBLING || game.u.uprops?.STUNNED)
+        if ((Wounded_legs() && !game.u.usteed)
+            || Fumbling() || Stunned())
             exercise(A_DEX, false);
     }
 }

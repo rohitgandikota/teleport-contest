@@ -408,7 +408,7 @@ export async function Cloak_on() {
         makeknown(game.u.uarmc.otyp);
         break;
     case ONAMES.ELVEN_CLOAK:
-        note_unported_do_wear('Cloak_on:toggle_stealth');
+        await toggle_stealth(game.u.uarmc, oldprop, true);
         break;
     case ONAMES.CLOAK_OF_DISPLACEMENT:
         note_unported_do_wear('Cloak_on:toggle_displacement');
@@ -489,7 +489,7 @@ export async function Boots_on() {
             note_unported_do_wear('Boots_on:speed_msg');
         break;
     case ONAMES.ELVEN_BOOTS:
-        note_unported_do_wear('Boots_on:toggle_stealth');
+        await toggle_stealth(game.u.uarmf, oldprop, true);
         break;
     case ONAMES.FUMBLE_BOOTS:
         if (!oldprop && !(HFumbling & ~TIMEOUT)) {
@@ -873,7 +873,7 @@ export async function Cloak_off() {
     case ONAMES.LEATHER_CLOAK:
         break;
     case ONAMES.ELVEN_CLOAK:
-        note_unported_do_wear('_off:toggle_stealth');
+        await toggle_stealth(otmp, oldprop, false);
         break;
     case ONAMES.CLOAK_OF_DISPLACEMENT:
         note_unported_do_wear('Cloak_off:toggle_displacement');
@@ -952,7 +952,7 @@ export async function Gloves_off() {
 
     setworn(null, W_ARMG);
     t.cancelled_don = false;
-    note_unported_do_wear('Gloves_off:encumber_msg');
+    await encumber_msg(); /* immediate feedback for GoP */
 
     /* Glib: slippery fingers must not transfer from gloves to bare hands */
     note_unported_do_wear('Gloves_off:make_glib');
@@ -1009,7 +1009,7 @@ export async function Boots_off() {
             note_unported_do_wear('Boots_off:water_walking_spoteffects');
         break;
     case ONAMES.ELVEN_BOOTS:
-        note_unported_do_wear('_off:toggle_stealth');
+        await toggle_stealth(otmp, oldprop, false);
         break;
     case ONAMES.FUMBLE_BOOTS:
         if (!oldprop && !(HFumbling & ~TIMEOUT)) {

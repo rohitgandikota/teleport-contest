@@ -368,7 +368,7 @@ async function reportOne(r) {
 
 async function main() {
     const argv = process.argv.slice(2);
-    const opts = { window: 8, screens: false, all: false };
+    const opts = { window: 8, screens: false, all: false, maxSeconds: 0 };
     const targets = [];
 
     for (let i = 0; i < argv.length; i++) {

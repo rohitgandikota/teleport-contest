@@ -2691,11 +2691,34 @@ this session then no timeout inside runOurPort can help. Note the pre-change
 run also produced zero bytes in 105s, which fits 'slow before the replay'
 just as well as it fits 'hangs in the replay'.
 
-NEXT, and do this before trusting the flag: time loadCanonical alone on
-seed0361. If it is the slow part, the bound belongs around the WHOLE of
-analyseSession rather than inside runOurPort, and the current change is in
-the wrong place. Do not cite --max-seconds as working until a run has
-actually printed the REPLAY DID NOT TERMINATE block. 'Diverged at or before step N' is
+TIMED IT, AND THE loadCanonical THEORY IS WRONG TOO. On the clean tree
+diverge runs the WHOLE session in 0.33 s and prints a normal report, so
+nothing before the replay is slow. It also gives a real answer, which is
+worth more than this whole investigation:
+
+    RNG diverges at call 2983
+      C rn2(100)=56   ours rn2(8)=0   @ obj_resists(zap.c:1469)
+      seg 1, step 41 (key "c")
+    Next C function to port: dosearch0 (src/detect.c:2079)
+
+THE BOUND STILL DOES NOT FIRE, and I do not know why. Fixed one real defect
+along the way -- diverge has TWO argv parsers and the flag has to be in the
+one inside main() -- but with it correctly parsed a --max-seconds 30 run
+still went past 120 s. Promise.race with a setTimeout should win against a
+promise that never settles, so the working assumption 'the port blocks on
+I/O and timers still fire' must be false somewhere. Possibly the port blocks
+in a way that starves the timer, despite the 0 % CPU reading.
+
+LEAVE THE FLAG IN BUT DO NOT TRUST IT. It is documented as unproven at its
+definition. Anyone picking this up should first check whether a bare
+setTimeout even fires inside a diverge run with the wield fix applied; that
+is a five-line test and it decides whether the approach is salvageable or
+the bound has to be a separate watchdog process.
+
+AND NOTE THE COST: the hang investigation has now consumed many iterations
+and produced no fix, while diverge on the clean tree hands over the next
+target in a third of a second. dosearch0 is that target. GO PORT IT and
+leave the wield hang for a session with a working watchdog. 'Diverged at or before step N' is
 enormously more useful than nothing, and every future hang gets diagnosed in
 one run instead of the six theories this one cost. tools/diverge.mjs is ours,
 not frozen, so this is a legitimate change.

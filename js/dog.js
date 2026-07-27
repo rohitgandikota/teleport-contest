@@ -51,7 +51,7 @@ import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
 
 const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2, rnd } from './rng.js';
-import { dist2, sgn , distmin } from './hacklib.js';
+import { dist2, sgn , distmin , distu } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
@@ -1522,11 +1522,9 @@ function droppables(mtmp) {
    branches. The identical defect was removed from js/uhitm.js earlier; this
    copy survived because dup-defs reports the name, not every site. */
 
-// src/hack.c distu() — squared distance from the hero.
-function distu(x, y) {
-    const dx = x - game.u.ux, dy = y - game.u.uy;
-    return dx * dx + dy * dy;
-}
+/* distu() is include/hack.h:1531 and comes from js/hacklib.js. C defines it
+   as dist2(xx, yy, u.ux, u.uy); the copy here inlined the arithmetic
+   instead, which gave the same value but not the same shape. */
 
 /* hand droppables() to js/steal.js; see its header for why */
 steal_wire_droppables(droppables);

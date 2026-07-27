@@ -9063,3 +9063,37 @@ which is the check that matters (a bad cycle zeroes it to 0/0).
 draw-bearing, unlike everything landed so far in this chain. After that
 `dowear` (2432) and `doputon` (2454) are the command entry points, then
 `armoroff` (1920) and `select_off` (2696) for the take-off side.
+
+
+### `accessory_or_armor_on` — surveyed, NOT yet written, and here is the map
+
+`src/do_wear.c:2209`, 219 lines. Read in full. Eleven dependencies are missing,
+so it cannot be written honestly yet. Landed this pass: `nolimbs`
+(`include/mondata.h:53`), `makeknown` (`include/hack.h:1530`), `off_msg`
+(`src/do_wear.c:66`).
+
+**The function splits cleanly into two arms, and the armor arm is much closer.**
+
+ARMOR arm still needs only:
+- `remove_worn_item` (`src/steal.c:213`)
+- `on_msg` (`src/do_wear.c:76`) — needs `the()` and `obj_is_pname()`; `prinv`,
+  `xname`, `doname`, `body_part`, `an` all exist.
+
+Everything else the armor arm touches is done: `canwearobj`, `setworn`, all
+seven `<X>_on` callbacks, `nomul`, `unmul`, `makeknown`.
+
+ACCESSORY arm needs, and is a much bigger job:
+- `yn_function` — an INTERACTIVE PROMPT (the "Which ring-finger, Right or
+  Left?" loop). This is its own project, not a helper.
+- `Ring_on`, `Amulet_on`, `Blindf_on`, `set_bknown`, `is_worn`,
+  `ansimpleoname`, `safe_typename`.
+
+**`the()` is the next real blocker for `on_msg`.** `src/objnam.c:2171`, ~70
+lines, and it pulls in `CapitalMon`, `fruit_from_name`, `artifact_name` and
+`nextobuf`. `an()`/`An()`/`just_an()` are already in `js/objnam.js`, so it has a
+home; it is the dependency depth that makes it a task rather than a one-liner.
+
+Suggested order from here: `the()` + `obj_is_pname()` -> `on_msg` ->
+`remove_worn_item` -> the ARMOR arm of `accessory_or_armor_on` only, with the
+accessory arm recorded via note_unported. That gets 'W' working end to end
+without waiting on `yn_function`.

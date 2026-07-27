@@ -141,3 +141,33 @@ export function strstri(str, sub) {
 export function strcmpi(a, b) {
     return strncmpi(a, b, -1);
 }
+
+// src/hacklib.c fuzzymatch() — compare two strings for equality, ignoring the
+// presence of specified characters (typically whitespace) and possibly
+// ignoring case.
+//
+// C reads past the end of a JS string as undefined rather than NUL, so the walk
+// uses explicit index bounds and a '\0' sentinel to reproduce the C's exits:
+// the loop stops when EITHER string ends, and the match succeeds only when BOTH
+// ended together.
+export function fuzzymatch(s1, s2, ignore_chars, caseblind) {
+    let i = 0, j = 0;
+    let c1, c2;
+
+    do {
+        do { c1 = (i < s1.length) ? s1[i++] : '\0'; }
+        while (c1 !== '\0' && ignore_chars.includes(c1));
+        do { c2 = (j < s2.length) ? s2[j++] : '\0'; }
+        while (c2 !== '\0' && ignore_chars.includes(c2));
+        if (c1 === '\0' || c2 === '\0')
+            break; /* stop when end of either string is reached */
+
+        if (caseblind) {
+            c1 = lowc(c1);
+            c2 = lowc(c2);
+        }
+    } while (c1 === c2);
+
+    /* match occurs only when the end of both strings has been reached */
+    return c1 === '\0' && c2 === '\0';
+}

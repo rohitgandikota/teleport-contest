@@ -2957,12 +2957,10 @@ export function In_V_tower(uz) { return (uz ?? game?.u?.uz)?.dnum === game?.towe
 export function Is_stronghold(uz) { const g = game; return g?.stronghold_level && (uz ?? g?.u?.uz)?.dnum === g.stronghold_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.stronghold_level.dlevel; }
 // C ref: dungeon.c:1637 — Is_botlevel checks if level is the deepest
 // in its dungeon branch. Each branch has its own num_dunlevs.
-export function Is_botlevel(uz) {
-    const lev = uz ?? game?.u?.uz;
-    if (!lev) return false;
-    const dun = game?.dungeons?.[lev.dnum];
-    return !!dun && lev.dlevel === dun.num_dunlevs;
-}
+/* Is_botlevel() removed: it is include/dungeon.h:126 and lives in
+   js/dungeon.js. The copy here took an optional argument defaulting to the
+   hero's level and nothing imported it -- js/dungeon.js:612 is the only
+   call site and passes its level explicitly. */
 export function Is_rogue_level(uz) { const g = game; return g?.rogue_level && (uz ?? g?.u?.uz)?.dnum === g.rogue_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.rogue_level.dlevel; }
 export function Is_oracle_level(uz) { const g = game; return g?.oracle_level && (uz ?? g?.u?.uz)?.dnum === g.oracle_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.oracle_level.dlevel; }
 export function Is_knox_level(uz) { const g = game; return g?.knox_level && (uz ?? g?.u?.uz)?.dnum === g.knox_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.knox_level.dlevel; }

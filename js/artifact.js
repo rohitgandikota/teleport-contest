@@ -317,3 +317,23 @@ export function artifact_name(name, otyp_p, fuzzy) {
 
     return null;
 }
+
+/* src/artifact.c:73 — static xint16 artidisco[NROFARTIFACTS]. File-static in
+   the C, so module-scoped here. NROFARTIFACTS is the count of REAL artifacts:
+   artilist is [0]=dummy, [1..N]=real, [N+1]=terminator, so it is length - 2. */
+const artidisco = new Array(artilist.length - 2).fill(0);
+
+// src/artifact.c undiscovered_artifact() — has this artifact not been named yet?
+//
+// Walks the discoveries list; hitting an empty slot means undiscovered, because
+// discoveries are appended in order and never leave gaps.
+export function undiscovered_artifact(m) {
+    /* look for this artifact in the discoveries list;
+       if we hit an empty slot then it's undiscovered */
+    for (let i = 0; i < artidisco.length; i++)
+        if (artidisco[i] === m)
+            return false;
+        else if (artidisco[i] === 0)
+            break;
+    return true;
+}

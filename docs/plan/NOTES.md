@@ -2963,3 +2963,35 @@ header or gstate, and it should let js/attrib.js take the youprop import.
 DO THIS BEFORE CONTINUING THE uprops READER CONVERSION -- every remaining
 file may hit the same wall, and fixing it once is cheaper than routing
 around it 40 times.
+
+## Attempted the is_rider move and REVERTED it — what the next attempt needs
+
+Tried the fix recorded above (move is_rider from js/makemon.js to
+js/mondata.js). It zeroed the board and I could not finish it in the context
+I had, so it is reverted; 512 screens restored exactly. The plan is still
+right, but it is bigger than it looks.
+
+WHAT WENT WRONG, so the next attempt does not repeat it:
+
+  1. js/makemon.js USES is_rider itself (at :484), so moving the definition
+     out means makemon must import it back from mondata. Easy to miss when
+     you are thinking of makemon as the source.
+
+  2. THE CONSUMERS ARE NOT ALL ON ONE LINE. js/dog.js:57-58 is
+
+         import {
+             makemon, MM_EDOG, ..., is_rider, mpickobj } from './makemon.js';
+
+     A grep for `is_rider.*makemon` finds this one, but any file whose
+     import splits `is_rider` and `from './makemon.js'` across DIFFERENT
+     lines is invisible to that grep -- and at least one such file exists,
+     because after fixing every match I could find the loader still said
+     "does not provide an export named 'is_rider'".
+
+  3. So find consumers by REMOVING THE EXPORT AND READING THE LOADER, one
+     error at a time, rather than by grepping. The loader names the importing
+     module precisely and cannot miss one.
+
+The payoff is unchanged and still worth it: js/mondata.js is a HEADER mirror
+and must not import from a .c mirror. Fixing it should unblock js/attrib.js
+taking the youprop import, and with it the remaining ~40 uprops reads.

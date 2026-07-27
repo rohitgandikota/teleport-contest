@@ -8307,6 +8307,20 @@ NEXT, in priority order
        pointer identity test as the C's `oart != &artilist[ART_NONARTIFACT]`
        makes it look.
 
+       THE EXISTING ART_* INDICES ARE VERIFIED CORRECT. Compared all 34
+       against the order of the A(...) entries in include/artilist.h: every
+       one lands on the right artifact, so a generated table can be indexed
+       by them directly without re-deriving the order. (C's names carry a
+       "The " prefix the constants drop, which looks like 14 mismatches until
+       you strip it -- do not "fix" that.)
+
+       ONE REAL NAMING DEFECT, worth fixing while porting the table but not
+       urgent: index 32 is "The Platinum Yendorian Express Card" and we call
+       it ART_YENDORIAN_EXPRESS_CARD, dropping "PLATINUM". The index is
+       right; only the name diverges from the header, which the architecture
+       rule ("constants named exactly as in include/*.h") says it should not.
+       Rename with its consumers when the table lands.
+
        js/objects_data.js and js/monst_data.js are the precedent for how a
        generated table lives in this tree; follow their shape. Note that
        tools/dup-defs.mjs already skips *_data.js files, so a generated

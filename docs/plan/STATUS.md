@@ -8314,12 +8314,17 @@ NEXT, in priority order
        "The " prefix the constants drop, which looks like 14 mismatches until
        you strip it -- do not "fix" that.)
 
-       ONE REAL NAMING DEFECT, worth fixing while porting the table but not
-       urgent: index 32 is "The Platinum Yendorian Express Card" and we call
-       it ART_YENDORIAN_EXPRESS_CARD, dropping "PLATINUM". The index is
-       right; only the name diverges from the header, which the architecture
-       rule ("constants named exactly as in include/*.h") says it should not.
-       Rename with its consumers when the table lands.
+       AND THE ONE APPARENT NAMING DEFECT IS NOT ONE -- I recorded it as real
+       and it is not, so DO NOT RENAME ART_YENDORIAN_EXPRESS_CARD. The A()
+       macro's LAST field is the constant suffix, and include/artilist.h:295
+       ends with YENDORIAN_EXPRESS_CARD, so C's generated constant is
+       ART_YENDORIAN_EXPRESS_CARD exactly as ours is. "Platinum" appears only
+       in the DISPLAY name. Every one of the 34 constants is right in both
+       index and name.
+
+       GENERAL LESSON FOR THE TABLE PORT: the A() macro's display name and
+       its constant suffix are DIFFERENT FIELDS and do not always agree.
+       Generate the constant from the last field, never from the name.
 
        js/objects_data.js and js/monst_data.js are the precedent for how a
        generated table lives in this tree; follow their shape. Note that

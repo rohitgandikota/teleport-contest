@@ -236,7 +236,10 @@ export async function doclose() {
             || rn2(25) < Math.trunc((acurrstr() + ACURR(A_DEX) + ACURR(A_CON)) / 3)) {
             note_unported_lock('doclose:door_closes_msg');
             door.doormask = D_CLOSED;
-            feel_newsym(x, y);          /* the hero knows she closed it */
+            /* src/display.c feel_newsym() — mark the square as known by
+               touch. NOT PORTED anywhere in the tree, so it is recorded;
+               calling it threw the moment a door actually closed. */
+            note_unported_lock('doclose:feel_newsym');
             block_point(x, y);          /* vision: no longer see there */
         } else {
             exercise(A_STR, true);

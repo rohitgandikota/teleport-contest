@@ -717,3 +717,25 @@ export function allunworn() {
         game.u[wp.w_obj] = null;
     }
 }
+
+// src/worn.c:474 mon_set_minvis() — make a monster permanently invisible.
+//
+// The perminvis/minvis split is the substance and is ported exactly: a
+// cursed potion sets perminvis to 0, and minvis only follows perminvis when
+// invis_blkd is clear, so a monster whose invisibility is blocked keeps
+// showing while still being "permanently invisible" underneath.
+//
+// newsym() and see_wsegs() are NOT called. Both live in js/display.js, and
+// js/worn.js has no edge to it in either direction today; adding one is the
+// operation that has repeatedly collapsed the module graph in this tree (see
+// NOTES on droppables_fn). So the redraw is recorded, and the monster's
+// disappearance is not painted until that edge is safe to add.
+export function mon_set_minvis(mon, cursed_potion) {
+    mon.perminvis = !cursed_potion ? 1 : 0;
+    if (!mon.invis_blkd) {
+        mon.minvis = mon.perminvis;
+        note_unported_worn('mon_set_minvis:newsym');
+        if (mon.wormno)
+            note_unported_worn('mon_set_minvis:see_wsegs');
+    }
+}

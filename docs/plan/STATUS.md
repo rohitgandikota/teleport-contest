@@ -9264,3 +9264,34 @@ Still needed, in size order:
 
 `Blindf_on` is the cheapest next step and unblocks the eyewear third of the
 accessory arm on its own.
+
+
+### `Blindf_on` landed; `set_wear` is now async
+
+Landed: `js/potion.js` (new file, mirrors `src/potion.c`) with
+`toggle_blindness` (`src/potion.c:336`), and `Blindf_on`
+(`src/do_wear.c:1461`).
+
+`set_wear` had a `note_unported_do_wear('set_wear:Blindf_on')` marker standing
+in for exactly this function — the SECOND time this pass that a marker turned
+out to be a placeholder for something being ported elsewhere (the first was
+`js/cmd.js`'s `equip_ok`). Wired it to the real call.
+
+**`set_wear` is now async**, and `js/allmain.js:306` awaits it. That is the
+async contagion from `js/pline.js` propagating one level further out; it will
+keep happening as the remaining `<X>_on` handlers land, since all of them emit
+messages. `set_wear`'s other markers (`Ring_on:right`, `Ring_on:left`,
+`Amulet_on`, and the armor slots that are still noted) are the next ones to
+flip.
+
+Recorded, deliberately:
+- `Blindf_on:set_bc` — `src/ball.c:380` needs the ball/chain glyph bookkeeping
+  (`bc_order`, `remove_object`, `newsym`, `place_object`); reachable only while
+  Punished.
+- `toggle_blindness:see_monsters` / `:Sting_effects` / `:learn_unseen_invent` —
+  all display refreshes, none ported.
+
+### Next
+`Ring_on` (`src/do_wear.c:1242`, 102 lines) and `Amulet_on` (963, 124 lines)
+are what remain of the accessory arm. `tty_yn_function` exists, so the ring
+prompt is NOT a blocker (see the correction entry above).

@@ -7857,9 +7857,33 @@ rn2(100). And when a square holds SEVERAL objects, C takes the chain HEAD
 when both find something they can inspect different objects. The push-vs-
 unshift defect fixed in mkobj_at earlier is the same family.
 
-VERIFY WHICH, cheaply, before changing anything: log whether find() returns
-undefined at the moment of the offset. If it does, the bug is the object
-store, not dog_invent, and fixing dog_invent alone would paper over it.
+HALF OF THAT IS ALREADY WRONG, and checking the store settled it without
+running anything. js/mkobj.js:1018 does
+
+    (game.level.objects ||= []).unshift(otmp);
+
+so the flat array is NEWEST FIRST, and find() therefore returns the same
+object C's chain head does. The 'both find something but inspect different
+objects' worry does not apply -- the earlier push-versus-unshift fix already
+made this correct. Do not 'fix' the ordering; it is right.
+
+WHICH LEAVES ONE MECHANISM: find() returning undefined because the object is
+NOT IN THE FLAT ARRAY AT ALL. js/mkobj.js:989 records exactly how that
+happens -- objects only reach level.objects via place_object(), and a
+creation path that skips place_object leaves the object invisible to every
+consumer of the store. dog_invent then finds nothing, skips the block, and
+never makes its dogfood() draw.
+
+SO THE BUG IS PROBABLY NOT IN dog_invent AT ALL. It is an object that C has
+on that square and we never placed. Patching dog_invent would hide it and
+would also mis-order every later draw, since the object would still be
+absent from every other consumer.
+
+NEXT, and this is reasoning rather than measurement so verify it first: at
+the moment of the offset, print the square (omx, omy) and what
+game.level.objects holds for it, then compare against what the C recording
+implies is there. If the square is empty in our store, hunt the creation
+path that skipped place_object rather than touching dogmove.
 
 Note also that our condition omits C's SCR_MAIL, is_mines_prize and
 is_soko_prize exclusions. Those would make us draw MORE, not fewer, so they

@@ -11,6 +11,7 @@
 // the ones that pass, so its count depends on the first six results.
 
 import { game } from './gstate.js';
+import { Clairvoyant, Levitation } from './youprop.js';
 import { You, Your } from './pline.js';
 import { UNENCUMBERED, OVERLOADED } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -40,7 +41,7 @@ export function weight_cap() {
     /* include/weight.h:12,14 — WT_WEIGHTCAP_STRCON, WT_WEIGHTCAP_SPARE */
     let carrcap = (25 * (acurrstr() + acurr(A_CON))) + 50;
 
-    if (game.u.uprops?.LEVITATION || game.u.usteed)
+    if (Levitation() || game.u.usteed)
         note_unported_attrib('weight_cap:levitation_or_steed');
     if (carrcap > 1000)             /* MAX_CARR_CAP */
         carrcap = 1000;
@@ -384,7 +385,7 @@ export function exerper() {
            cannot have before the property subsystem lands, so none can fire
            yet. They are written out rather than elided so the order of draws
            is already right when it does. */
-        if (game.u.uprops?.CLAIRVOYANT && !game.u.uprops?.BLOCKED_CLAIRVOYANT)
+        if (Clairvoyant())
             exercise(A_WIS, true);
         if (game.u.uprops?.REGENERATION)
             exercise(A_STR, true);

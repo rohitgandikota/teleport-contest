@@ -412,3 +412,8 @@ function let_to_name(oclass) {
         if (v === oclass && CLASS_NAMES[k]) return CLASS_NAMES[k];
     return '';
 }
+
+// include/hack.h:1530 makeknown() — discover_object(x, TRUE, TRUE, TRUE).
+export function makeknown(x) {
+    return discover_object(x, true, true, true);
+}

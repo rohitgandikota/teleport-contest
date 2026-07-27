@@ -11,7 +11,7 @@ import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy } from '.
 import { welded } from './wield.js';
 import { Glib } from './youprop.js';
 import { silly_thing } from './invent.js';
-import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name } from './objnam.js';
+import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name, doname } from './objnam.js';
 import { body_part } from './polyself.js';
 import { You, You_cant, Your, pline_The } from './pline.js';
 import { is_helmet, is_metallic, is_crackable, is_cloak, is_shirt, is_suit, is_shield, is_boots, is_gloves, is_flimsy, bimanual, is_sword, WrappingAllowed } from './obj.js';
@@ -27,6 +27,12 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION,
          FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd } from './const.js';
 import { sgn } from './hacklib.js';
+
+// src/do_wear.c:66 off_msg()
+export async function off_msg(otmp) {
+    if (game.flags.verbose)
+        await You(`were wearing ${doname(otmp)}.`);
+}
 
 // src/do_wear.c:60 fingers_or_gloves() — plural "fingers" or optionally the
 // worn gloves' own word ("gloves" or "gauntlets").

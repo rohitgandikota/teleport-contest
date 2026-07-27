@@ -2939,3 +2939,27 @@ SCOREBOARD after each -- a module load check passes for the duplicate-import
 case and the per-file cost is the only reliable signal. Files that cannot
 take the import need the cycle broken first, probably by giving js/youprop.js
 no imports beyond js/gstate.js.
+
+## The youprop import cycle traces to a BACKWARDS import of is_rider
+
+Chain, from the attrib.js failure above:
+
+    js/attrib.js -> js/youprop.js -> js/mondata.js -> js/makemon.js -> ...
+
+The bad link is the last one. js/mondata.js:1 is
+
+    import { is_rider } from './makemon.js';
+
+but is_rider is a MACRO IN include/mondata.h:161, so it belongs in
+js/mondata.js itself. A header-mirror importing from a .c-mirror is
+backwards, and it is what drags the whole monster-creation graph into
+anything that merely wants a youprop accessor.
+
+THE FIX: move is_rider from js/makemon.js into js/mondata.js, where the C
+puts it, and update its ~20 consumers. That is the architecture rule applied
+literally, it removes js/mondata.js's only outward import that is not a
+header or gstate, and it should let js/attrib.js take the youprop import.
+
+DO THIS BEFORE CONTINUING THE uprops READER CONVERSION -- every remaining
+file may hit the same wall, and fixing it once is cheaper than routing
+around it 40 times.

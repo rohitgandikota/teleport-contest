@@ -1,4 +1,4 @@
-import { CORPSTAT_NONE, TAINT_AGE, NON_PM, XLIM, YLIM } from './const.js';
+import { CORPSTAT_NONE, TAINT_AGE, NON_PM, XLIM, YLIM, is_hole, is_pit } from './const.js';
 // mklev.js — Level generation.
 // C ref: mklev.c — makelevel, makerooms, makecorridors, generate_stairs.
 // Also includes parts of sp_lev.c (create_room) and mkmap.c (litstate_rnd).
@@ -153,7 +153,6 @@ const RANDOM_CLASS = 0;
 // Supply chest items
 const MARK = 6;
 
-
 // Direction deltas
 const xdir = [-1, -1, 0, 1, 1, 1, 0, -1];
 const ydir = [0, -1, -1, -1, 0, 1, 1, 1];
@@ -169,9 +168,6 @@ import {
     STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP, VIBRATING_SQUARE,
     TRAPPED_DOOR, TRAPPED_CHEST,
 } from './const.js';
-
-function is_hole(t) { return t === HOLE || t === TRAPDOOR; }
-function is_pit(t) { return t === PIT || t === SPIKED_PIT; }
 
 // Stairway list management
 function stairway_add(x, y, up, isladder, dest) {
@@ -264,10 +260,6 @@ function oinit() { /* no-op for contest */ }
 
 let _nextObjId = 1;
 
-
-
-
-
 /* mkgold() lives in js/mkobj.js, where src/mkobj.c has it. */
 
 function add_to_buried(otmp) {
@@ -299,7 +291,6 @@ function mkcorpstat(objtyp, mtmp, pm, x, y, corpstatflags) {
     }
     return otmp;
 }
-
 
 // src/trap.c:508 mk_trap_statue() — the statue that sits on a STATUE_TRAP.
 //

@@ -8452,6 +8452,20 @@ NEXT TARGETS, in order
        per property, then make the things that GRANT intrinsics write to it
        (setworn's extrinsic arms, potions, corpses, level-up).
 
+       THE TRAP, and it is a bad one: you CANNOT initialise uprops first and
+       convert readers afterwards. Every reader is
+       `game.u.uprops?.SOMETHING` used as a boolean, and an object is TRUTHY
+       in JS. The moment uprops[PROP] becomes {intrinsic, extrinsic,
+       blocked}, every one of those ~55 reads flips from false to TRUE and
+       the hero acquires every intrinsic in the game at once. The staged,
+       pausable migration I sketched earlier does not work here -- the
+       initialisation and the reader conversion MUST land together.
+
+       The safe order is therefore: convert all ~55 readers to test the
+       right FIELD (uprops[PROP].intrinsic etc.) while uprops is still
+       undefined -- optional chaining keeps them all false and the score
+       unchanged -- and only then initialise the structure.
+
        That is much larger than a refactor and explains several unrelated
        gaps at once: the hero-side arms of spec_applies and touch_artifact,
        Stone_resistance in cant_wield_corpse, Hate_silver in retouch_object,

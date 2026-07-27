@@ -9223,3 +9223,44 @@ The take-off side: `armoroff` (`src/do_wear.c:1920`) and `select_off` (2696),
 which `takeoff_ok`/`remove_ok` already route to. Or `yn_function`, which
 unblocks every accessory path at once and is the single highest-leverage
 missing piece in this subsystem.
+
+
+### CORRECTION: `yn_function` was never the blocker
+
+An earlier entry called `yn_function` "the single highest-leverage missing
+piece". That was wrong. `tty_yn_function(query, resp, def)` already exists in
+`js/tty/topl.js` and is already used by `js/cmd.js` and `js/invent.js`. In the C
+`yn_function` is just the windowport dispatch macro
+(`include/winprocs.h:176`), so the windowport function IS the thing.
+
+The lesson: **grep the tty/ windowport files before declaring a UI primitive
+missing.** C's `yn_function`/`getlin`/`display_nhwindow` names do not appear in
+our tree at all -- only their `tty_` implementations do -- so a search for the C
+name finds nothing and reads as unported.
+
+One real gap remains there and is recorded in `js/tty/topl.js` itself: the
+`resp` filter (allowed characters, '#' for digits) is not implemented. For the
+ring prompt that is survivable, because the C wraps it in
+`do { ... } while (!mask)` which re-prompts until a valid answer; the filter
+only affects the displayed "[rl or ESC]" hint and the beep on a bad key.
+
+### Accessory arm: what is actually left
+
+Landed this pass toward it: `set_bknown` (`src/mkobj.c:1864`), `is_worn`
+(`src/invent.c:2156`), and the `include/youprop.h` blind family -- `Blind`,
+`Blindfolded`, `Blindfolded_only`, `PermaBlind`, `Punished`.
+
+Note `Blind` is NOT the same as the already-present `Blinded`:
+`Blind == ((HBlinded || EBlinded) && !BBlinded)`. The C explicitly declines to
+write it as `(Blinded || Blindfolded)` even though that is equivalent today,
+and this port follows the C's form.
+
+Still needed, in size order:
+- `Blindf_on` (`src/do_wear.c:1461`, 31 lines) — needs `set_bc` and
+  `toggle_blindness` (potion.c).
+- `Ring_on` (1242, 102 lines).
+- `Amulet_on` (963, 124 lines).
+- `ansimpleoname`, `safe_typename` (objnam.c) for the message arms.
+
+`Blindf_on` is the cheapest next step and unblocks the eyewear third of the
+accessory arm on its own.

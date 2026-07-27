@@ -3192,7 +3192,29 @@ THREE TRAPS THIS PASS SPRANG REPEATEDLY, all now costed:
      export broke the board until it was found. Match on the name, then read
      the import block.
 
-WHAT IS LEFT: 141 differing, of which roughly 48 are export-only
-re-declarations of a const.js constant with the same value -- inert, fix
-last. The other ~93 have genuinely different bodies and are worth reading
-one at a time.
+WHERE THE PASS STANDS: 172 -> 121 differing names.
+
+WHAT IS LEFT AND HOW TO ATTACK IT:
+
+  ~30 inert constant re-declarations whose file ALREADY imports from
+      const.js. These batch safely -- delete the local const, append the
+      name to the existing import. Several can go in one commit.
+
+  A HANDFUL WHOSE FILE HAS NO const.js IMPORT, notably js/role.js
+      (ROLE_ALIGNS, ROLE_GENDERS, ROLE_GENDMASK, ROLE_RACEMASK -- 29
+      references) and js/tty/topl.js (TBUFSZ). Removing these means adding
+      an import edge, which is the operation that has zeroed this board
+      repeatedly. Do them singly with a full scoreboard run, or leave them.
+
+  ~90 with genuinely different bodies. These need reading one at a time --
+      that is where helpless and accessible came from.
+
+THREE IMPORT-BLOCK FORMS BROKE BATCH EDITS, each invisible to the fix for
+the last one:
+    aligned spacing      `const is_animal   =`  defeats a canonical regex
+    multi-line imports   name and path on different lines, so
+                         `grep 'name.*path'` finds nothing
+    trailing comma       inserting before the closing brace yields `,\n, X`
+                         and the file stops parsing
+A batch script must handle all three or verify each file with node --check
+before running the board.

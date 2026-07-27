@@ -14,7 +14,8 @@ import { rn1, rn2, rnd } from './rng.js';
 import { isok } from './hacklib.js';
 import { sobj_at, weight, obj_extract_self } from './invent.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
-import { mkobj_at, mksobj_at, add_to_container, set_corpsenm } from './mkobj.js';
+import { mkobj_at, mksobj_at, add_to_container, set_corpsenm,
+         blessorcurse } from './mkobj.js';
 import { stock_room } from './shknam.js';
 import { fill_zoo } from './mkroom.js';
 import { OBJ_NAME } from './objnam.js';
@@ -995,17 +996,10 @@ export function find_objtype(name) {
 
 // src/mkobj.c blessorcurse() — maybe bless or curse, one chance in `chance`.
 // Returns WITHOUT drawing if the object already has a BUC state.
-function blessorcurse(otmp, chance) {
-    if (otmp.blessed || otmp.cursed)
-        return;
-
-    if (!rn2(chance)) {
-        if (!rn2(2))
-            otmp.cursed = 1;                            /* curse() */
-        else
-            otmp.blessed = 1;                           /* bless() */
-    }
-}
+/* blessorcurse() is src/mkobj.c; it comes from js/mkobj.js. The copy here
+   set otmp.cursed/blessed inline where mkobj's calls curse()/bless(), which
+   do more than set the flag -- both make the same two draws, so the streams
+   agreed, but the object state did not. */
 
 // src/sp_lev.c get_table_buc() — the buc option's seven states, in C's order.
 const BUC_STATES = ['random', 'blessed', 'uncursed', 'cursed',

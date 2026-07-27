@@ -8439,10 +8439,25 @@ VERIFICATION AT CLOSE
     tree clean, HEAD == origin/main
 
 NEXT TARGETS, in order
-    1. the uprops struct refactor (55 refs, 14 files) -- unblocks setworn's
-       extrinsic arms, monstunseesu_prop, w_blocks, and the hero-side arms
-       of spec_applies and touch_artifact. Stage it: backward-compatible
-       truthiness first, convert readers file by file, score between each.
+    1. the uprops work -- AND IT IS NOT THE REFACTOR I DESCRIBED. Checked
+       before starting: game.u.uprops has ZERO WRITE SITES. Nothing in the
+       port ever assigns to it, and nothing initialises it. Every one of the
+       ~55 references is a READ, all of them optional-chained
+       (game.u.uprops?.CLAIRVOYANT), so they all evaluate undefined and every
+       intrinsic silently reads as ABSENT.
+
+       So there is no representation to convert -- the structure does not
+       exist yet. The task is to BUILD the intrinsics system, not reshape it:
+       initialise u.uprops with C's {intrinsic, extrinsic, blocked} struct
+       per property, then make the things that GRANT intrinsics write to it
+       (setworn's extrinsic arms, potions, corpses, level-up).
+
+       That is much larger than a refactor and explains several unrelated
+       gaps at once: the hero-side arms of spec_applies and touch_artifact,
+       Stone_resistance in cant_wield_corpse, Hate_silver in retouch_object,
+       and Blind/Confusion/Stunned in doclose all read uprops and therefore
+       all read false today. They are ONE missing subsystem wearing many
+       hats, which is worth knowing before anyone ports them individually.
     2. mattackm melee path (~400 lines) -- 45% and 41% entries
     3. the dogfood phase offset, which is really object placement
        (~50 missing place_object sites)

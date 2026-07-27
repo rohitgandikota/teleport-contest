@@ -865,3 +865,77 @@ export function Gloves_off() {
 
     return 0;
 }
+
+// src/do_wear.c Boots_off() — the afternmv callback for removing boots.
+//
+// No draws. THE ORDER IS LOAD-BEARING and C spells it out: setworn is called
+// BEFORE the switch because "float_down() returns if Levitation, so we must
+// do a setworn() _before_ the levitation case". If the slot were cleared
+// after, float_down would see the hero still levitating and do nothing --
+// the hero would stay airborne with no boots on.
+//
+// oldprop is therefore read BEFORE setworn, as in Cloak_off.
+//
+// cancelled_don gates four arms here, more than any other callback: speed,
+// water-walking, levitation all check it, because each reverses something
+// the matching _on arm did and an interrupted don never did it.
+export function Boots_off() {
+    const otmp = game.u.uarmf;
+    if (!otmp) {
+        setworn(null, W_ARMF);
+        return 0;
+    }
+    const otyp = otmp.otyp;
+    const prop = game.objects[otyp].oc_oprop;
+    const oldprop = (game.u.uprops?.[prop]?.extrinsic ?? 0) & ~W_ARMF;
+    const HFumbling = game.u.uprops?.[FUMBLING]?.intrinsic ?? 0;
+    const HLevitation = game.u.uprops?.[LEVITATION]?.intrinsic ?? 0;
+    const BLevitation = game.u.uprops?.[LEVITATION]?.blocked ?? 0;
+
+    const t = (game.context.takeoff ||= {});
+    t.mask = (t.mask | 0) & ~W_ARMF;
+
+    /* MUST precede the switch: float_down() returns early if Levitation */
+    setworn(null, W_ARMF);
+
+    switch (otyp) {
+    case ONAMES.SPEED_BOOTS:
+        if (!t.cancelled_don)
+            note_unported_do_wear('Boots_off:speed_msg');
+        break;
+    case ONAMES.WATER_WALKING_BOOTS:
+        if (!t.cancelled_don)
+            note_unported_do_wear('Boots_off:water_walking_spoteffects');
+        break;
+    case ONAMES.ELVEN_BOOTS:
+        note_unported_do_wear('Boots_off:toggle_stealth');
+        break;
+    case ONAMES.FUMBLE_BOOTS:
+        if (!oldprop && !(HFumbling & ~TIMEOUT)) {
+            const u = (game.u.uprops ||= []);
+            const e = (u[FUMBLING] ||= { intrinsic: 0, extrinsic: 0, blocked: 0 });
+            e.intrinsic = 0;      /* HFumbling = EFumbling = 0 */
+            e.extrinsic = 0;
+        }
+        break;
+    case ONAMES.LEVITATION_BOOTS:
+        if (!oldprop && !HLevitation && !(BLevitation & FROMOUTSIDE)
+            && !t.cancelled_don)
+            note_unported_do_wear('Boots_off:float_down');
+        else
+            note_unported_do_wear('Boots_off:float_vs_flight');
+        break;
+    case ONAMES.LOW_BOOTS:
+    case ONAMES.IRON_SHOES:
+    case ONAMES.HIGH_BOOTS:
+    case ONAMES.JUMPING_BOOTS:
+    case ONAMES.KICKING_BOOTS:
+        break;
+    default:
+        note_unported_do_wear('Boots_off:impossible_unknown_type');
+        break;
+    }
+
+    t.cancelled_don = false;
+    return 0;
+}

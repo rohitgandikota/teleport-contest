@@ -20,7 +20,7 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj, place_object } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
-import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn } from './mondata.js';
+import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn, is_armed } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT, NON_PM } from './const.js';
@@ -97,7 +97,7 @@ const { M3_WAITMASK } = MFLAGS;
    monster-creation graph into anything that wanted a header macro. */
 // src/mondata.c attacktype_fordmg() — is_armed(ptr) is attacktype(ptr, AT_WEAP)
 /* attacktype lives in js/mondata.js, its C home (src/mondata.c:54). */
-const is_armed = (ptr) => attacktype(ptr, AT_WEAP);
+/* is_armed() is include/mondata.h:87; it comes from js/mondata.js. */
 
 // include/monst.h:259-265
 const monmax_difficulty = (levdif) => Math.trunc((levdif + (game.u?.ulevel ?? 0)) / 2);

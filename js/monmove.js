@@ -18,7 +18,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     P_DAGGER, P_KNIFE,
     AM_SHRINE, Amask2align, ROOMOFFSET, MTSZ, SQSRCHRADIUS } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn , mindless } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn , mindless, is_armed } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -388,7 +388,7 @@ function objects_at(x, y) {
 /* is_animal() is an include/mondata.h macro; it comes from js/mondata.js. */
 const likes_gold  = (ptr) => (ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0;
 const likes_magic = (ptr) => (ptr.mflags2 & MFLAGS.M2_MAGIC) !== 0;
-const is_armed    = (ptr) => ptr.mattk.some(a => a[0] === ATTKS.AT_WEAP);
+/* is_armed() is include/mondata.h:87; it comes from js/mondata.js. */
 const likes_objs  = (ptr) => (ptr.mflags2 & MFLAGS.M2_COLLECT) !== 0 || is_armed(ptr);
 
 /* include/obj.h:337 Is_container() and :339 Is_mbag(). Both are duplicated

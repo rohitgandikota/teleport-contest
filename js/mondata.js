@@ -341,6 +341,15 @@ export function attacktype_fordmg(ptr, atyp, dtyp) {
     return null;
 }
 
+// include/mondata.h:87 is_armed() — attacktype(ptr, AT_WEAP).
+//
+// Defined THROUGH attacktype rather than by scanning mattk inline. A copy in
+// js/monmove.js used ptr.mattk.some(a => a[0] === AT_WEAP), which drops both
+// of attacktype_fordmg's guards: the NATTK bound and the null-entry skip. On
+// a permonst whose mattk array is longer than NATTK or holds a null slot the
+// two disagree, and the inline form throws rather than returning false.
+export const is_armed = (ptr) => attacktype(ptr, ATTKS.AT_WEAP);
+
 // src/mondata.c:54 attacktype() — does this monster type have such an attack?
 export function attacktype(ptr, atyp) {
     return attacktype_fordmg(ptr, atyp, ATTKS.AD_ANY) !== null;

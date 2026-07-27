@@ -8106,3 +8106,26 @@ itself as the place to split. It unblocks setworn's extrinsic arms,
 monstunseesu_prop, and w_blocks's blocked bookkeeping in one go.
 
 DO NOT bodge it by adding a second parallel map. One structure, matching C.
+
+SIZED THE BLAST RADIUS, because this one is cross-cutting and worth knowing
+before starting:
+
+    55 references to uprops
+    14 files
+    28 distinct properties read
+
+That is not a function port, it is a state-representation change touching a
+seventh of the js/ tree, and every reader has to move in the same commit or
+the tree is half-converted. It needs a session with room to convert all 55
+and re-run the board, not the tail of one.
+
+RECOMMENDED APPROACH when someone takes it:
+  1. grow the struct with BACKWARD-COMPATIBLE reads first -- make
+     uprops[PROP] an object whose truthiness still works, so existing
+     readers keep passing while the struct exists
+  2. convert readers file by file, running frozen/score.sh between each
+  3. only then wire setworn's extrinsic arms, monstunseesu_prop and
+     w_blocks's blocked bookkeeping
+
+Step 1 is what makes this safe: it decouples "the struct exists" from "every
+caller uses it", so a half-finished conversion still scores the same.

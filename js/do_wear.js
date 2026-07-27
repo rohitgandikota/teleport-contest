@@ -7,6 +7,7 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { You, You_cant } from './pline.js';
 import { is_helmet, is_metallic, is_crackable } from './obj.js';
 /* worn.js imports cancel_doff from here, so this is a 2-cycle -- as in C,
    where do_wear.c and worn.c call each other. Safe because setworn is used
@@ -20,6 +21,31 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION,
          FROMOUTSIDE } from './const.js';
 import { sgn } from './hacklib.js';
+
+/* src/do_wear.c:9-15 — the file's static message strings. Module-scoped here
+   because they are file-static in the C. */
+const unknown_type = "Unknown type of %s (%d)";
+const c_armor = "armor", c_suit = "suit",
+      c_shirt = "shirt", c_cloak = "cloak",
+      c_gloves = "gloves", c_boots = "boots",
+      c_helmet = "helmet", c_shield = "shield",
+      c_weapon = "weapon", c_sword = "sword",
+      c_axe = "axe", c_that_ = "that";
+
+// src/do_wear.c:2011 already_wearing()
+//
+// The C tests `cc == c_that_` by POINTER, so only the call that literally
+// passes c_that_ gets the '!'. Comparing by value here is equivalent because
+// c_that_ is the one and only source of the string "that" in these calls; if a
+// caller ever passes a separate "that" literal, this would diverge.
+export async function already_wearing(cc) {
+    await You(`are already wearing ${cc}${cc === c_that_ ? '!' : '.'}`);
+}
+
+// src/do_wear.c:2017 already_wearing2()
+export async function already_wearing2(cc1, cc2) {
+    await You_cant(`wear ${cc1} because you're wearing ${cc2} there already.`);
+}
 
 export function worn(mask) {
     return (game.invent || []).find(o => (o.owornmask & mask) !== 0) || null;

@@ -158,3 +158,9 @@ export const Warn_of_mon = () => !!game.u?.uprops?.WARN_OF_MON;
 
 // include/youprop.h:186 Infravision — (HInfravision || EInfravision)
 export const Infravision = () => !!game.u?.uprops?.INFRAVISION;
+
+// include/youprop.h:218 Conflict — (HConflict || EConflict)
+export const Conflict = () => !!game.u?.uprops?.CONFLICT;
+
+// include/youprop.h:204 Displaced — (HDisplaced || EDisplaced)
+export const Displaced = () => !!game.u?.uprops?.DISPLACED;

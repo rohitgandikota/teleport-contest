@@ -6,6 +6,7 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
+import { Conflict, Displaced, Invis } from './youprop.js';
 import { mpickstuff } from './mon.js';
 import { sengr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
@@ -669,7 +670,8 @@ const Sokoban = () => game.level?.flags?.sokoban_rules === true;
 // reads them the same way the clairvoyance check in js/allmain.js does. There
 // is no source of conflict in the game yet, so it answers false today, but it
 // answers it by LOOKING rather than by assuming.
-const Conflict = () => !!(game.u?.uprops?.CONFLICT);
+/* Conflict was a local copy; it is an include/youprop.h macro and now
+   comes from js/youprop.js like the rest. */
 
 export function m_can_break_boulder(mtmp) {
     return is_rider(mtmp.data)
@@ -772,12 +774,11 @@ export function set_apparxy(mtmp) {
         return;
     }
 
-    const Invis = !!game.u.uprops?.INVIS;
-    const Displaced = !!game.u.uprops?.DISPLACED;
+    const invis = Invis(), displaced = Displaced();
     const Underwater = !!game.u.uinwater;
 
-    const notseen = (!mtmp.mcansee || (Invis && !perceives(game.mons[mtmp.mnum])));
-    const notthere = (Displaced && mtmp.mnum !== PMNAMES.PM_DISPLACER_BEAST);
+    const notseen = (!mtmp.mcansee || (invis && !perceives(game.mons[mtmp.mnum])));
+    const notthere = (displaced && mtmp.mnum !== PMNAMES.PM_DISPLACER_BEAST);
 
     if (Underwater) {
         displ = 1;
@@ -881,7 +882,7 @@ export function distfleeck(mtmp) {
     /* Note: if your image is displaced, the monster sees the Elbereth at your
      * displaced position, thus never attacking your displaced position, but
      * possibly attacking you by accident. */
-    if (!mtmp.mcansee || (game.u.uprops?.INVIS && !perceives(game.mons[mtmp.mnum]))) {
+    if (!mtmp.mcansee || (Invis() && !perceives(game.mons[mtmp.mnum]))) {
         seescaryx = mtmp.mux;
         seescaryy = mtmp.muy;
     } else {
@@ -930,7 +931,7 @@ export function dochug(mtmp) {
         || (mdat.mlet === MONSYMS.S_LEPRECHAUN && !findgold(game.invent)
             && (findgold(mtmp.minvent) || rn2(2)))
         || (is_wanderer(mdat) && !rn2(4))
-        || (game.u.uprops?.CONFLICT && !mtmp.iswiz)
+        || (Conflict() && !mtmp.iswiz)
         || (!mtmp.mcansee && !rn2(4)) || mtmp.mpeaceful) {
 
         /* Possibly cast an undirected spell if not attacking you. castmu()
@@ -990,7 +991,7 @@ export function m_move(mtmp, after) {
                             && (dist2(omx, omy, ggx, ggy) <= 36));
 
         if (!mtmp.mcansee
-            || (should_see && game.u.uprops?.INVIS
+            || (should_see && Invis()
                 && !perceives(ptr) && rn2(11))
             || (mtmp.mpeaceful && !mtmp.isshk) /* allow shks to follow */
             || ((mtmp.mnum === PMNAMES.PM_STALKER

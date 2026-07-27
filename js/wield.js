@@ -373,7 +373,10 @@ export async function ready_weapon(wep) {
             wep.owornmask |= W_WEP;
             if (wep.otyp === ONAMES.AKLYS)
                 note_unported_wield('ready_weapon:aklys_tether_msg');
-            note_unported_wield('ready_weapon:prinv');
+            /* prinv is already imported at the top of this file; C passes a
+               null prefix and 0L quantity, so the line is just the object's
+               inventory description. */
+            await prinv(null, wep, 0);
             wep.owornmask = dummy;
         }
 

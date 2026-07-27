@@ -2874,31 +2874,36 @@ declared in its file nor imported into it is the real thing, and
 feel_newsym was the only one of those. Fixing the tool's parser would be
 nice but is not worth a session; knowing its three blind spots is enough.
 
-## js/wield.js MUST NOT import from js/invent.js — it kills the whole board
+## A DUPLICATE import declaration zeroes the whole board (NOT a cycle)
+
+RETRACTED HEADING, kept for searchability: this was first written up as
+"js/wield.js must not import from js/invent.js". THAT DIAGNOSIS WAS WRONG
+and acting on it would have blocked legitimate imports forever.
 
 Adding `import { prinv } from './invent.js'` to js/wield.js took the
 scoreboard from 512 screens to ZERO, with all 44 sessions failing and the
 step total collapsing to 0/0. Reverting the one import restored it exactly.
 
-The failure is total rather than partial, which is the signature of a MODULE
-GRAPH problem, not a logic bug: js/wield.js already imports js/invent.js's
-ECMD_TIME, and adding a second binding from the same module apparently
-completes a cycle that leaves something in TDZ at load. js/invent.js is
-imported by nearly everything, so the cycle takes the entire game down.
+THE ACTUAL CAUSE: prinv was ALREADY imported at js/wield.js:16. Adding a
+second `import { prinv } from './invent.js'` is a DUPLICATE BINDING, which
+is a SyntaxError -- the module never parses, so every session that touches
+it dies. Nothing to do with cycles.
 
-RELATED AND ALREADY KNOWN: importing js/obj.js directly in a bare harness
-trips a TDZ on droppables_fn (recorded earlier). Same family. This tree has
-real circular-import fragility around invent/obj/wield.
+Calling prinv through the EXISTING import works perfectly: 512 screens, five
+zero-screen sessions, no change. ready_weapon:prinv is now wired.
+
+WHY IT LOOKED LIKE A CYCLE, and this is the part worth remembering: a
+SyntaxError in one widely-imported module produces exactly the same
+scoreboard signature as a load-order problem -- every session fails and the
+step TOTAL collapses to 0/0. The blast radius says nothing about the cause.
 
 PRACTICAL RULES
-  - do NOT add imports from js/invent.js into js/wield.js
-  - a change that zeroes ALL sessions and drops the step TOTAL to 0/0 is an
-    import cycle, not a logic error -- revert first, do not debug forward
-  - always run the full scoreboard after adding a cross-module import, not
-    just a module load check: `node -e "import('./js/wield.js')"` would have
-    passed here
-
-WHAT THIS COSTS: ready_weapon:prinv (25% reach) stays recorded even though
-prinv is fully ported at js/invent.js:586. The fix is to break the cycle,
-probably by moving prinv or the ECMD_* constants somewhere neutral, not by
-adding the import.
+  - CHECK WHETHER A SYMBOL IS ALREADY IMPORTED before adding an import.
+    js/wield.js has three separate import lines from js/invent.js (:5, :16,
+    :22), so grepping only the first one is misleading.
+  - a change that zeroes ALL sessions and drops the step TOTAL to 0/0 is a
+    module that failed to PARSE OR LOAD. Revert, then read the error --
+    `node -e "import('./js/wield.js')"` reports it immediately and names the
+    duplicate identifier.
+  - the earlier droppables_fn TDZ in js/obj.js IS real and unrelated; do not
+    merge the two in your head as I did.

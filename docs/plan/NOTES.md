@@ -3504,3 +3504,31 @@ no description, matching C's NULL. `strstri(0, sub)` does not throw in our port
 `i <= NaN` never runs, so it returns -1. The C would dereference NULL and crash.
 The divergence is benign, and deliberately not "fixed": every real caller passes
 a real description, and porting a crash buys nothing.
+
+## `is_crackable` / `is_rustprone` / `is_weptool` are duplicated ON PURPOSE
+
+`js/mkobj.js` keeps its own copies of several `include/objclass.h` predicates
+with an extra parameter: `is_crackable(o, objs)`, `is_rustprone(o, objs)`,
+`is_weptool(o, objs)`. `js/obj.js` has the same predicates in the normal
+one-argument form reading `game.objects`.
+
+`dup-defs` flags these, and they look like tidy-up bait. They are not. Two
+reasons, both load-bearing:
+
+1. **Different tables.** `js/mkobj.js:660` passes the raw generated `objects`
+   table, not `game.objects`. `game.objects` is the live copy that runtime
+   mutates (`oc_name_known` and friends). They agree on `oc_material` because
+   material never changes, which is why nothing has broken, but the two names
+   do not denote the same object and collapsing them assumes they do.
+2. **A real cycle.** `js/mkobj.js:35` records that `js/invent.js` imports
+   `erosion_matters()` from mkobj, so that edge already closes a loop. The
+   parameter injection is how this file avoids adding more.
+
+Verified while porting `is_crackable` into `js/obj.js` for `hard_helmet`:
+mkobj's copy is CORRECT, carrying both the GLASS material test and the
+`oclass == ARMOR_CLASS` test the C requires. So this is the rarer case where
+both copies are right and the duplication is the design.
+
+Leave them. If a future pass wants to collapse them, the prerequisite is
+proving `objects` and `game.objects` are interchangeable at every mkobj call
+site, not just at the one that happens to be in front of you.

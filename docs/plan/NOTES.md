@@ -2535,9 +2535,34 @@ in for (;;) and re-prompts on an answer it does not accept. If the real uwep
 makes our getobj reject a letter C accepted, it re-prompts, eats the next key,
 rejects again, and walks the queue to exhaustion -- then readKey blocks. That
 fits every symptom (unbounded, key-consuming, only with the real uwep) and it
-is in code we own. VERIFY by logging the loop's iteration count on seed0361
-before changing anything; the last two theories both looked solid and both
-were wrong.
+is in code we own. VERIFIED, AND WRONG -- the third theory in a row to die. Instrumented
+getobj's for(;;) with a counter printing every 25 iterations and ran
+seed0361 with the uwep fix applied. NO loop output at all, and the session
+COMPLETED. getobj does not spin.
+
+AND THE BISECT IS NOW INCONSISTENT, which matters more than the dead theory:
+
+    wield.js:177 + :183 together   HUNG      (original observation)
+    wield.js:177 alone             COMPLETED
+    wield.js:183 alone             HUNG      (70s, no output)
+
+But :183 is 'if (welded(game.u.uwep))', and welded() itself still tests
+'obj === game.uwep' against the undefined global, so the && short-circuits
+and the branch is NOT taken -- behaviour should be IDENTICAL to before the
+edit. An edit that changes no behaviour cannot change whether the run hangs.
+
+SO ONE OF THESE IS TRUE AND THE NEXT SESSION MUST SETTLE IT FIRST:
+  a) the hang is nondeterministic, in which case every bisect result above
+     including the original is untrustworthy
+  b) the instrumented run that 'completed' was completing for a different
+     reason (the counter edit perturbed something)
+  c) my timeout plumbing is misreporting -- 'timeout 70 ... | grep | head'
+     masks the exit status, so 'no output' was read as 'hung' when it may
+     have been a grep miss
+
+DO NOT PORT ANYTHING ON TOP OF THIS UNTIL (c) IS RULED OUT. Re-run each case
+writing the runner's raw exit code to a file, no pipes. The cheap explanation
+is that three 'findings' rest on a shell idiom that cannot report failure.
 
 THIS IS A GENERAL HAZARD, not a wield bug. Any newly-ported message on a
 path a session reaches near the end of its input can hang the runner rather

@@ -442,6 +442,19 @@ export function role_init(initrole, initalign) {
                 if (roles[i].lgod) { game.pantheon = i; break; }
         }
     }
+
+    /* src/role.c:2079 — a role with no gods of its own BORROWS the
+       pantheon's. Only Priest has lgod == 0, so this fires for Priest and
+       nobody else; a role with gods keeps them and ignores the pantheon.
+       Without this, align_gname() reading game.urole.lgod returns nothing
+       for a Priest, which is why js/insight.js grew a copy that indexes
+       roles[pantheon] unconditionally -- correct for Priest, WRONG for
+       every other role. */
+    if (game.urole && !game.urole.lgod) {
+        game.urole.lgod = roles[game.pantheon].lgod;
+        game.urole.ngod = roles[game.pantheon].ngod;
+        game.urole.cgod = roles[game.pantheon].cgod;
+    }
 }
 
 // src/role.c:747 str2role() — match a role by name or filecode.

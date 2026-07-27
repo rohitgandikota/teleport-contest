@@ -2637,3 +2637,36 @@ The uwep storage fix is still right and two thirds of it is committed
 (js/uhitm.js, js/do.js). js/wield.js's three reads stay on game.uwep until
 the --More-- behaviour at end-of-input is understood -- that is a frozen-file
 question (js/terminal.js) and not something to work around in wield.js.
+
+## Why this fork was absent from the leaderboard: no category declared
+
+Nothing had broken. Diagnosis, all verified against live data rather than
+guessed:
+
+  fork is public, not archived, parent davidbau/teleport-contest   OK
+  HEAD == origin/main, module imports clean, score unchanged       OK
+  frozen files untouched                                           OK
+  playability_runner.mjs: playable true, 0.795 ms/move (< 1.0)     OK
+  fork IS discoverable, page 1 of the parent's fork list           OK
+
+The board's own data is fetchable, which is worth knowing for later:
+
+    https://mazesofmenace.ai/leaderboard/data.json          teams + full history
+    https://mazesofmenace.ai/leaderboard/grandfathered.json name -> category
+
+Diffing the two sources settled it: 16 forks exist, 15 teams are listed, and
+the ONLY fork missing was ours. Teams scoring 0 points are listed, so the bar
+is not score.
+
+THE CAUSE: .teleport/repo-metadata.json did not exist. README:72 makes
+`bash frozen/set-category.sh <agentic|transpiled|other>` step ONE of the
+workflow and it was skipped when the fork was set up. Every listed team
+carries a `category` field, and grandfathered.json exists to backfill exactly
+this field for six teams, which is consistent with it being required.
+
+Fixed by declaring `agentic` (README:64 -- LLM-driven workflow). The judge
+cron runs every two hours, so confirm the row appears rather than assuming.
+
+GENERAL POINT: local score is not the submission. The port ran clean and
+scored 512 the whole time it was invisible to the contest. Check the fork's
+presence on the board, not just score.sh.

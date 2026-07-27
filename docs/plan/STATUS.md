@@ -8326,6 +8326,32 @@ NEXT, in priority order
        its constant suffix are DIFFERENT FIELDS and do not always agree.
        Generate the constant from the last field, never from the name.
 
+       THE A() FIELD MAP, so nobody re-derives it. include/artilist.h is an
+       X-MACRO file: it is included several times with a DIFFERENT
+       #define A(...) each time, which is how one table generates the names
+       array, the enum and the records. Seventeen positional fields:
+
+            1 nam    display name        -> artifact_names[]
+            2 typ    object type (otyp)
+            3 s1     spfx                <- what bane_applies/touch_artifact read
+            4 s2     cspfx (carried spfx)
+            5 mt     mtype
+            6 atk    attack     (NO_ATTK or PHYS(...)/DRLI(...)/etc)
+            7 dfn    defence    (NO_DFNS or ...)
+            8 cry    carry      (NO_CARY or CARY(...))
+            9 inv    invoke
+           10 al     alignment
+           11 cl     role       (PM_* or NON_PM)
+           12 rac    race
+           13 gs     gift status
+           14 gv     gift value
+           15 cost
+           16 clr    colour
+           17 bn     CONSTANT SUFFIX     -> ART_##bn
+
+       Fields 6-8 hold nested macros with commas inside parentheses, so a
+       naive split(',') WILL corrupt the table. Match parenthesis depth.
+
        js/objects_data.js and js/monst_data.js are the precedent for how a
        generated table lives in this tree; follow their shape. Note that
        tools/dup-defs.mjs already skips *_data.js files, so a generated

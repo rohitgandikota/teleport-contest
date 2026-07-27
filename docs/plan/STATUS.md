@@ -8556,12 +8556,21 @@ accessors did NOT by itself make this safe -- it made it fixable in ONE
 PLACE instead of fifty-five, which is a different and smaller claim than
 'the readers are correct in shape'.
 
-SO THE STRUCTURE CHANGE IS ONE ATOMIC COMMIT:
-    1. rewrite all 28 accessors to read FIELDS, each per its C macro --
-       (intrinsic || extrinsic), or intrinsic alone, or with && !blocked
-    2. add the three missing blocked terms (Invis, Levitation, Blinded)
-       while you are in there, since they are the same edit
-    3. initialise u.uprops in the same commit
-    4. full scoreboard; anything that flips to true is a wrong field read
+RESOLVED -- STEPS 1 AND 2 ARE DONE, AND THE TRAP IS GONE. All 23
+value-reading accessors now read FIELDS via H/E/B, each per its C shape,
+and Invis, Levitation and Blinded carry their !B term again.
 
-Doing 3 before 1 breaks the whole game and looks like a load failure.
+Because H('X') reads game.u?.uprops?.['X']?.intrinsic, an ABSENT property
+still yields false. So the accessors are correct BOTH before and after
+uprops exists, and initialising it can no longer flip everything true. What
+was an atomic all-or-nothing commit is now an ordinary additive change.
+
+WHAT REMAINS is the writer side, and it is the actual missing subsystem:
+    - initialise u.uprops with {intrinsic, extrinsic, blocked} per property
+    - make the things that GRANT intrinsics write to it: setworn's extrinsic
+      arms (js/worn.js, still recorded), potions, corpses, level-up
+    - the oc_oprop-number to property-key bridge setworn needs
+
+Only then do the hero-side arms recorded in spec_applies, touch_artifact,
+cant_wield_corpse (Stone_resistance), retouch_object (Hate_silver) and
+doclose (Blind/Confusion/Stunned) start returning anything but false.

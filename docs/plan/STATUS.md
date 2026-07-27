@@ -8705,3 +8705,32 @@ SO THE OCCUPATION MECHANISM (ga.afternmv and friends) IS THE COMMON GATE for
 four of these, as it is for donning() in js/do_wear.js. That makes it a
 better target than any individual function behind it: js/cmd.js already has
 reset_occupations as a partial, so there is a starting point.
+
+## The occupation mechanism is IN. donning/doffing now need the callbacks.
+
+js/hack.js:nomul was already ported; unmul is now in beside it, so
+game.afternmv is called when a multi-turn action completes and a callback
+can re-arm it (clear-before-call, verified). That closes the blocker
+recorded separately for donning, thiefdead, stealarm and unstolenarm.
+
+WHAT donning/doffing NEED NOW is not the mechanism but the CALLBACKS they
+compare against. Of the fourteen, exactly ONE exists:
+
+    Armor_on    js/do_wear.js       PRESENT
+    Shirt_on, Cloak_on, Boots_on, Helmet_on, Gloves_on, Shield_on   MISSING
+    Armor_off, Shirt_off, Cloak_off, Boots_off, Helmet_off,
+      Gloves_off, Shield_off                                        MISSING
+
+AND THERE IS A TRAP IN PORTING THEM EARLY. donning is a chain of
+
+    result = (ga.afternmv == Shirt_on);
+
+so if Shirt_on is undefined in JS, that becomes `game.afternmv === undefined`,
+which is TRUE whenever no occupation is armed. Six of seven arms would
+report "currently donning" for every object. Porting donning before its
+callbacks exist is worse than not porting it -- guard each comparison, or
+port the callbacks first.
+
+doffing has the same shape plus a takeoff.what check per slot, and its
+1-turn items (amulet, rings, blindfold) need only takeoff.what, so those
+arms ARE portable today.

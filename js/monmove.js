@@ -19,7 +19,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -70,7 +70,7 @@ const ALGN_SINNED = -4;
    include/monst.h:217,281 — the one-line predicates distfleeck() and onscary()
    test with. Kept as single expressions so each reads like its macro. */
 const DEADMONSTER = (mon) => (mon.mhp ?? 0) < 1;
-const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
+/* perceives() is an include/mondata.h macro; it comes from js/mondata.js. */
 const unique_corpstat = (ptr) => (ptr.geno & MFLAGS.G_UNIQ) !== 0;
 const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
 const is_minion = (ptr) => (ptr.mflags2 & MFLAGS.M2_MINION) !== 0;

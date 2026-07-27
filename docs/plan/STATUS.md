@@ -8831,5 +8831,19 @@ gauntlets of fumbling confer, and Gloves_off clears both halves; an
 interrupted don leaves a cornuthaum's CHA change alone while a completed one
 reverses it.
 
-NEXT: the remaining dup-defs duplicates (150), or accessory_or_armor_on /
-armor_or_accessory_off, which are the callers that arm these callbacks.
+NEXT, and both callers were sized before choosing:
+
+    accessory_or_armor_on   219 lines
+    armor_or_accessory_off   58 lines, NO DRAWS
+
+armor_or_accessory_off looks like the small one and is not worth doing yet:
+all SIX of its dispatch targets are absent -- armoroff, Ring_off,
+Amulet_off, Blindf_off, off_msg and select_off. Its guards are portable and
+real (the "you can't take that off without removing your cloak first"
+behaviour), but with every arm recorded it would return ECMD_TIME while
+nothing actually comes off. Port armoroff and select_off first, or leave it.
+
+SO THE READY WORK IS ELSEWHERE: the remaining 150 dup-defs duplicates, of
+which roughly two thirds have genuinely different bodies. That pass found a
+live bug in js/dog.js's helpless and a silent behaviour divergence in
+accessible, so it is not cosmetic.

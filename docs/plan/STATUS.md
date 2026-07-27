@@ -8620,3 +8620,35 @@ WHAT REMAINS is the writer side, and it is the actual missing subsystem:
 Only then do the hero-side arms recorded in spec_applies, touch_artifact,
 cant_wield_corpse (Stone_resistance), retouch_object (Hate_silver) and
 doclose (Blind/Confusion/Stunned) start returning anything but false.
+
+## uprops: DONE as a subsystem. What it unblocks, and what still gates.
+
+Readers, shape and a first writer all landed. js/youprop.js has exactly
+three direct uprops reads -- H, E and B -- and every accessor composes from
+them the way C's macros compose from their per-property trio.
+
+    keying          BY NUMBER, as C: H(HUNGER), not H('HUNGER')
+    shapes          each accessor per its own youprop.h macro, nine forms
+    blocked terms   restored on Invis, Levitation, Blinded, Clairvoyant,
+                    Flying
+    writer          setworn's extrinsic arms, both don and doff, with
+                    w_blocks feeding the blocked field
+    verified        a helm whose oc_oprop is CLAIRVOYANT makes
+                    Clairvoyant() true while worn and false once removed
+
+THE oc_oprop BRIDGE NEVER NEEDED TO EXIST -- oc_oprop is already a property
+number, and keying uprops by number is what removed the mismatch. It had
+been recorded three times as a blocker.
+
+STILL GATED, because these are separate missing pieces rather than uprops:
+    monstunseesu_prop   needs monstunseesu and cvt_prop_to_mseenres
+    artifact intrinsics needs set_artifact_intrinsic
+    the hero-side arms in spec_applies and touch_artifact need role, race
+                        and alignment tracking, not properties
+    Stone_resistance, Hate_silver  now EXPRESSIBLE -- they are ordinary
+                        properties, so they become accessor calls the
+                        moment someone writes them
+
+NEXT WRITERS, in rough order of reach: potions (quaffing confers
+intrinsics), corpses (eating confers them), level-up. Each is now an
+ordinary edit against a working structure.

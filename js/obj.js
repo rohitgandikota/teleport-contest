@@ -90,6 +90,13 @@ export const is_metallic = (otmp) =>
     game.objects[otmp.otyp].oc_material >= MATERIALS.IRON
     && game.objects[otmp.otyp].oc_material <= MATERIALS.MITHRIL;
 
+// include/objclass.h:201 is_crackable() — GLASS armor only; the oclass test is
+// what keeps glass weapons and gems out. Comment there points at
+// erosion_matters().
+export const is_crackable = (otmp) =>
+    game.objects[otmp.otyp].oc_material === MATERIALS.GLASS
+    && otmp.oclass === OCLASSES.ARMOR_CLASS;
+
 // include/obj.h:435-436 is_mines_prize() / is_soko_prize()
 //
 // One-line identity tests against the object id recorded when the Mines or

@@ -7,6 +7,7 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { is_helmet, is_metallic, is_crackable } from './obj.js';
 /* worn.js imports cancel_doff from here, so this is a 2-cycle -- as in C,
    where do_wear.c and worn.c call each other. Safe because setworn is used
    at CALL time, not at module load. */
@@ -32,6 +33,13 @@ function greatest_erosion(obj) {
 
 // include/hack.h:1526 ARM_BONUS(). include/objclass.h:102 aliases a_ac onto
 // the oc_oc1 union member, which is the name the generated table carries.
+// src/do_wear.c:568 hard_helmet() — hard helms protect against falling rocks.
+export function hard_helmet(obj) {
+    if (!obj || !is_helmet(obj))
+        return false;
+    return (is_metallic(obj) || is_crackable(obj)) ? true : false;
+}
+
 export function ARM_BONUS(obj) {
     const a_ac = objects[obj.otyp].oc_oc1;
     return a_ac + (obj.spe || 0) - Math.min(greatest_erosion(obj), a_ac);

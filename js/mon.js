@@ -26,6 +26,7 @@ import { mdistu } from './monmove.js';
 // with the wrong number of monsters desynchronises on its very first turn.
 
 import { game } from './gstate.js';
+import { touch_artifact } from './artifact.js';
 import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
@@ -646,15 +647,9 @@ function resists_poison(mon) {
     return false;
 }
 
-/* src/artifact.c touch_artifact() — TRUE for anything that is not an artifact,
-   which is every object a rock mole meets on an early level. */
-function touch_artifact(otmp, mon) {
-    if (otmp.oartifact) {
-        note_unported_mon('touch_artifact');
-        return true;
-    }
-    return true;
-}
+/* touch_artifact() now lives in js/artifact.js, where src/artifact.c puts it.
+   The local copy here answered TRUE for a real artifact too, recording the
+   gap; the ported one actually evaluates spfx, class and alignment. */
 
 // src/mon.c:5915 check_gear_next_turn() — flag the monster to reconsider its
 // equipment on its next move.

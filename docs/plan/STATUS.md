@@ -8847,3 +8847,48 @@ SO THE READY WORK IS ELSEWHERE: the remaining 150 dup-defs duplicates, of
 which roughly two thirds have genuinely different bodies. That pass found a
 live bug in js/dog.js's helpless and a silent behaviour divergence in
 accessible, so it is not cosmetic.
+
+## SESSION END STATE
+
+    512/11405 screens (4.5%)   140764/792838 rng (17.8%)   1/44 sessions
+    5 zero-screen sessions     generalize CLEAN on 40 non-session seeds
+    dup-defs 107 (from 172)    undefined-refs 18 (all verified false positives)
+    tree clean, HEAD == origin/main
+
+LANDED THIS SESSION, all verified by executing the code rather than reading it:
+
+    the leaderboard fix       we were the only fork of 16 unlisted, missing
+                              .teleport/repo-metadata.json entirely. Without
+                              it the port scored NOTHING regardless of quality.
+    doclose + 3 helpers       rng +23
+    worn.c complete           13 functions; worn[] table, setworn, setnotworn,
+                              wearslot and the rest
+    the artifact chain        SPFX_/AD_ constants, generated 36-record
+                              artilist, spec_applies, bane_applies,
+                              get_artifact, touch_artifact, retouch_object
+                              -- cleared the 66% reach entry
+    the uprops subsystem      23 accessors in C's H/E/B shape, numeric
+                              keying, blocked terms restored, setworn as
+                              first writer. Wearing an item now confers its
+                              property and removing it revokes it.
+    the wear/take-off chain   unmul, six _on callbacks, seven _off
+                              callbacks, donning, doffing, cancel_don --
+                              21 functions, all unguarded
+    ready_weapon + setuwep    cleared both 25% reach entries
+    62 duplicates removed     including a live bug in the pet-movement path
+
+THREE REAL BUGS FOUND IN EARLIER WORK, none visible to the scoreboard:
+    js/worn.js's worn[] table was MISSING ITS CLOAK ROW -- every cloak
+        operation silently did nothing
+    Armor_on read game.uarm, which nothing writes
+    js/dog.js's helpless carried an extra mfrozen term, changing combat
+        branches in the pet-movement path
+
+NEXT, in order of readiness:
+    1. the ~107 remaining dup-defs, all genuinely different bodies. Three
+       were real defects. Read one at a time.
+    2. accessory_or_armor_on (219 lines) -- the caller that arms the wear
+       callbacks, now that all thirteen exist
+    3. armoroff + select_off, which unblock armor_or_accessory_off
+    4. the mkobj -> makemon cycle break: four wrong-home names, one being
+       mkobj importing its own C file's function

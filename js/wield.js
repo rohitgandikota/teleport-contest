@@ -19,6 +19,7 @@ import { is_missile } from './obj.js';
 import { is_pole } from './u_init.js';
 import { setworn } from './worn.js';
 import { retouch_object } from './artifact.js';
+import { update_inventory } from './invent.js';
 import { bimanual } from './obj.js';
 import { You } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -203,7 +204,7 @@ export async function dowield() {
     if (oldwep && game.u.uwep !== oldwep)
         /* flags.pushweapon moves the old weapon to the swap slot */
         (game.unported ||= new Set()).add('dowield:pushweapon_setuswapwep');
-    (game.unported ||= new Set()).add('dowield:untwoweapon');
+    await untwoweapon();
 
     return result;
 }
@@ -396,4 +397,22 @@ export async function ready_weapon(wep) {
     if (had_wep !== (game.u.uwep != null))
         note_unported_wield('ready_weapon:botl_barehanded');
     return res;
+}
+
+/* src/wield.c:80 — the two messages the two-weapon code shares. Kept as
+   file-scope constants because C keeps them that way and both are used from
+   more than one function. */
+const are_no_longer_twoweap = "are no longer using two weapons at once";
+const can_no_longer_twoweap = "can no longer wield two weapons at once";
+
+// src/wield.c untwoweapon() — stop two-weaponing, if we were.
+//
+// Guarded on u.twoweap, so calling it when not two-weaponing does nothing at
+// all -- which is why dowield's tail can call it unconditionally.
+export async function untwoweapon() {
+    if (game.u.twoweap) {
+        await You(`${can_no_longer_twoweap}.`);
+        set_twoweap(false);                 /* u.twoweap = FALSE */
+        update_inventory();
+    }
 }

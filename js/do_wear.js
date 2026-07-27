@@ -408,7 +408,7 @@ export async function Cloak_on() {
         note_unported_do_wear('Cloak_on:makeknown');
         break;
     case ONAMES.ELVEN_CLOAK:
-        note_unported_do_wear('Cloak_on:toggle_stealth');
+        await toggle_stealth(game.u.uarmc, oldprop, true);
         break;
     case ONAMES.CLOAK_OF_DISPLACEMENT:
         note_unported_do_wear('Cloak_on:toggle_displacement');
@@ -489,7 +489,7 @@ export async function Boots_on() {
             note_unported_do_wear('Boots_on:speed_msg');
         break;
     case ONAMES.ELVEN_BOOTS:
-        note_unported_do_wear('Boots_on:toggle_stealth');
+        await toggle_stealth(game.u.uarmf, oldprop, true);
         break;
     case ONAMES.FUMBLE_BOOTS:
         if (!oldprop && !(HFumbling & ~TIMEOUT)) {
@@ -502,7 +502,7 @@ export async function Boots_on() {
             game.u.uarmf.known = 1;   /* may come off over a sink */
             note_unported_do_wear('Boots_on:float_up');
         } else {
-            note_unported_do_wear('Boots_on:float_vs_flight');
+            float_vs_flight();
         }
         break;
     default:
@@ -846,7 +846,7 @@ export function Helmet_off() {
 // The alchemy smock's second property is cleared here, mirroring Cloak_on:
 // oc_oprop names only poison resistance, so acid resistance is removed by
 // hand.
-export function Cloak_off() {
+export async function Cloak_off() {
     const otmp = game.u.uarmc;
     if (!otmp) {
         setworn(null, W_ARMC);
@@ -873,7 +873,7 @@ export function Cloak_off() {
     case ONAMES.LEATHER_CLOAK:
         break;
     case ONAMES.ELVEN_CLOAK:
-        note_unported_do_wear('Cloak_off:toggle_stealth');
+        await toggle_stealth(otmp, oldprop, false);
         break;
     case ONAMES.CLOAK_OF_DISPLACEMENT:
         note_unported_do_wear('Cloak_off:toggle_displacement');
@@ -980,7 +980,7 @@ export function Gloves_off() {
 // cancelled_don gates four arms here, more than any other callback: speed,
 // water-walking, levitation all check it, because each reverses something
 // the matching _on arm did and an interrupted don never did it.
-export function Boots_off() {
+export async function Boots_off() {
     const otmp = game.u.uarmf;
     if (!otmp) {
         setworn(null, W_ARMF);
@@ -1009,7 +1009,7 @@ export function Boots_off() {
             note_unported_do_wear('Boots_off:water_walking_spoteffects');
         break;
     case ONAMES.ELVEN_BOOTS:
-        note_unported_do_wear('Boots_off:toggle_stealth');
+        await toggle_stealth(otmp, oldprop, false);
         break;
     case ONAMES.FUMBLE_BOOTS:
         if (!oldprop && !(HFumbling & ~TIMEOUT)) {
@@ -1024,7 +1024,7 @@ export function Boots_off() {
             && !t.cancelled_don)
             note_unported_do_wear('Boots_off:float_down');
         else
-            note_unported_do_wear('Boots_off:float_vs_flight');
+            float_vs_flight();
         break;
     case ONAMES.LOW_BOOTS:
     case ONAMES.IRON_SHOES:
@@ -1271,7 +1271,7 @@ export async function accessory_or_armor_on(obj) {
     /* if the armor is wielded, release it for wearing (won't be
        welded even if cursed; that only happens for weapons/weptools) */
     if (obj.owornmask & W_WEAPONS)
-        remove_worn_item(obj, false);
+        await remove_worn_item(obj, false);
     /*
      * Setting obj->known=1 is NOT done here; the C delays it to the afternmv
      * action so a nymph stealing the armor mid-don doesn't leak its +/-.
@@ -1418,7 +1418,7 @@ export async function Blindf_on(otmp) {
     let changed = false;
 
     /* blindfold might be wielded; release it for wearing */
-    remove_worn_item(otmp, false);
+    await remove_worn_item(otmp, false);
     setworn(otmp, W_TOOL);
     await on_msg(otmp);
 

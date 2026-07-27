@@ -161,7 +161,9 @@ export function thiefdead() {
 // src/steal.c:213 remove_worn_item() — take a worn item off, whatever slot.
 //
 // unchain_ball: whether to unpunish or just unwield.
-export function remove_worn_item(obj, unchain_ball) {
+/* async: the <X>_off handlers are, because toggle_stealth() and the message
+   helpers are. */
+export async function remove_worn_item(obj, unchain_ball) {
     let oldinuse;
 
     if (donning(obj))
@@ -186,19 +188,19 @@ export function remove_worn_item(obj, unchain_ball) {
             note_unported_steal('remove_worn_item:skinback');
         }
         if (obj === game.u.uarm)
-            Armor_off();
+            await Armor_off();
         else if (obj === game.u.uarmc)
-            Cloak_off();
+            await Cloak_off();
         else if (obj === game.u.uarmf)
-            Boots_off();
+            await Boots_off();
         else if (obj === game.u.uarmg)
-            Gloves_off();
+            await Gloves_off();
         else if (obj === game.u.uarmh)
-            Helmet_off();
+            await Helmet_off();
         else if (obj === game.u.uarms)
-            Shield_off();
+            await Shield_off();
         else if (obj === game.u.uarmu)
-            Shirt_off();
+            await Shirt_off();
         /* catchall -- should never happen */
         else
             setworn(null, obj.owornmask & W_ARMOR);

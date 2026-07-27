@@ -11,8 +11,9 @@ import { G_FREQ } from './const.js';
 // exception is pronoun_gender() at the bottom, which rolls rn2(4) when the
 // hero is hallucinating.
 
-import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+import { PMNAMES, MONSYMS, MFLAGS, ATTKS, mons } from './monst_data.js';
 import { game } from './gstate.js';
+import { Upolyd } from './const.js';
 import { rn2 } from './rng.js';
 import { Hallucination } from './youprop.js';
 import { canspotmon } from './display.js';
@@ -541,3 +542,14 @@ export function corpse_chance(mon, magr, was_swallowed) {
 
 // include/mondata.h:123 cantwield()
 export const cantwield = (ptr) => nohands(ptr) || verysmall(ptr);
+
+// src/mondata.c:1359 raceptr() — the permonst for a monster's RACE.
+//
+// For the un-polymorphed hero this is the race's monster (human, elf, dwarf,
+// gnome, orc), NOT the role's. Polymorphed, or for any other monster, it is
+// just mtmp->data.
+export function raceptr(mtmp) {
+    if (mtmp === game.youmonst && !Upolyd(game.u))
+        return mons[game.urace.mnum];
+    return mtmp.data;
+}

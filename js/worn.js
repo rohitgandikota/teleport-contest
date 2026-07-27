@@ -14,11 +14,11 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM, MFAST } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
-         ARM_CLOAK, ARM_SHIRT } from './obj.js';
+         ARM_CLOAK, ARM_SHIRT, is_elven_armor } from './obj.js';
 import { is_weptool } from './mkobj.js';
-import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
+import { MFLAGS, MONSYMS, PMNAMES, mons } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
-         has_horns } from './mondata.js';
+         has_horns, raceptr } from './mondata.js';
 import { is_shirt, is_cloak, is_helmet, is_shield, is_gloves, is_boots,
          is_suit, is_flimsy, bimanual, WrappingAllowed } from './obj.js';
 import { ARM_BONUS } from './do_wear.js';
@@ -216,19 +216,31 @@ function extra_pref(mon, obj) {
     return 0;
 }
 
-// src/worn.c racial_exception() — hobbits may wear elven armour (LoTR).
-function racial_exception(mon, obj) {
-    /* raceptr(mon) is the monster's own permonst unless it is the hero */
-    if (game.mons[mon.mnum].pmidx === PMNAMES.PM_HOBBIT && is_elven_armor(obj))
+// src/worn.c:1360 racial_exception() — race/object combinations that override
+// the normal wear rules. 0 normal, 1 acceptable, -1 unacceptable.
+//
+// Goes through raceptr(), which is the whole point of the function: for the
+// UN-polymorphed hero raceptr returns the permonst of their RACE, and only
+// while polymorphed does it return the current form. Reading mon's own species
+// instead (what this used to do) collapses that distinction, so a hero
+// polymorphed into a hobbit was not granted the exception and a hobbit-shaped
+// monster was granted it regardless of the C's intent.
+//
+// The C keeps its -1 arm commented out, so nothing returns -1 today. The
+// three-valued contract is preserved because canwearobj() tests `< 1`.
+export function racial_exception(mon, obj) {
+    const ptr = raceptr(mon);
+
+    /* Acceptable Exceptions: */
+    /* Allow hobbits to wear elven armor - LoTR */
+    if (ptr === mons[PMNAMES.PM_HOBBIT] && is_elven_armor(obj))
         return 1;
+    /* Unacceptable Exceptions: */
+    /* Checks for object that certain races should never use go here */
+    /*  return -1; */
+
     return 0;
 }
-
-// include/obj.h:299 is_elven_armor()
-const is_elven_armor = (o) =>
-    o.otyp === ONAMES.ELVEN_LEATHER_HELM || o.otyp === ONAMES.ELVEN_MITHRIL_COAT
-    || o.otyp === ONAMES.ELVEN_CLOAK || o.otyp === ONAMES.ELVEN_SHIELD
-    || o.otyp === ONAMES.ELVEN_BOOTS;
 
 // src/worn.c:578 update_mon_extrinsics() — grant or revoke what an item confers.
 //

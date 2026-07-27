@@ -268,3 +268,19 @@ export function empty_handed() {
              ? 'bare handed'                      /* hands, no weapon, no gloves */
              : 'not wielding anything';           /* paws, or no hands */
 }
+
+// src/wield.c:75 TWOWEAPOK() — may this object be the SECONDARY weapon?
+//
+// File-local in C and file-local here, deliberately: it is a wield.c macro,
+// not a header one, so exporting it would put a symbol in the tree that the
+// C does not have.
+//
+// Note what it is NOT: it looks like the negation of setuwep's unweapon
+// computation and is not quite. unweapon also excludes polearms on foot
+// (is_pole && !u.usteed); TWOWEAPOK does not, because a polearm is a fine
+// second weapon even though swinging it bashes. Reusing one for the other
+// would be wrong in exactly the case that is hard to notice.
+const TWOWEAPOK = (obj) =>
+    (obj.oclass === OCLASSES.WEAPON_CLASS)
+        ? !(is_launcher(obj) || is_ammo(obj) || is_missile(obj))
+        : is_weptool(obj, game.objects);

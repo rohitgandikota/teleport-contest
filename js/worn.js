@@ -252,8 +252,12 @@ function update_mon_extrinsics(mon, obj, on, silently) {
                     mon.minvis = !mon.invis_blkd;
                     break;
                 case FAST:
-                    /* mon_adjust_speed() needs the speed code */
-                    note_unported_worn('update_mon_extrinsics:mon_adjust_speed');
+                    /* C wraps this in a gi.in_mklev save/restore so that a
+                       `silently` call suppresses the speed message. Our
+                       mon_adjust_speed records its message rather than
+                       printing one, so the wrapper has nothing to suppress
+                       yet -- restore it when the message lands. */
+                    mon_adjust_speed(mon, 0, obj);
                     break;
                 /* handled elsewhere / no effect for monsters / unimplemented */
                 case ANTIMAGIC: case REFLECTING: case PROTECTION:
@@ -271,7 +275,9 @@ function update_mon_extrinsics(mon, obj, on, silently) {
                     mon.minvis = mon.perminvis;
                     break;
                 case FAST:
-                    note_unported_worn('update_mon_extrinsics:mon_adjust_speed');
+                    /* same call as the `on` arm above; C's two FAST cases
+                       are identical, including the in_mklev wrapper. */
+                    mon_adjust_speed(mon, 0, obj);
                     break;
                 case FIRE_RES: case COLD_RES: case SLEEP_RES: case DISINT_RES:
                 case SHOCK_RES: case POISON_RES: case ACID_RES: case STONE_RES: {

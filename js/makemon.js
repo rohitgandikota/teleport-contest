@@ -23,7 +23,7 @@ import { get_shop_item } from './shknam.js';
 import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn, is_armed, is_domestic } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
-    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT, NON_PM } from './const.js';
+    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT, NON_PM, In_endgame } from './const.js';
 import { enexto_core } from './teleport.js';
 
 // include/hack.h:1174-1175
@@ -458,9 +458,16 @@ function golemhp(type) {
     }
 }
 
-function In_endgame() {
-    return game.dungeons?.[game.u?.uz?.dnum]?.dname === 'The Elemental Planes';
-}
+/* In_endgame() is include/dungeon.h:141, ((x)->dnum == astral_level.dnum).
+   The version here compared the dungeon's NAME against 'The Elemental
+   Planes' instead -- a proxy for the same question, not the same test. It
+   comes from js/const.js now, which compares dnum as C does and defaults to
+   u.uz when called with no argument, matching this file's call site.
+
+   This matters more than a tidy-up: js/makemon.js:486 reads
+   In_endgame() ? (8 * basehp) : (4 * basehp + d(basehp, 4)), so the answer
+   decides WHETHER A DRAW HAPPENS. Both forms return false outside the
+   endgame, which no public session reaches, so the streams agree today. */
 
 function is_home_elemental(/* ptr */) {
     /* only true in the endgame planes, which no public session reaches */

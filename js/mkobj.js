@@ -607,7 +607,7 @@ const is_crackable  = (o, objs) => objs[o.otyp].oc_material === GLASS
                                 && o.oclass === ARMOR_CLASS;
 const is_corrodeable = (o, objs) => objs[o.otyp].oc_material === COPPER
                                  || objs[o.otyp].oc_material === IRON;
-const is_damageable = (o, objs) =>
+export const is_damageable = (o, objs) =>
     is_rustprone(o, objs) || is_flammable(o, objs) || is_rottable(o, objs)
     || is_corrodeable(o, objs) || is_crackable(o, objs);
 

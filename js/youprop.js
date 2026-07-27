@@ -140,3 +140,6 @@ export const Sick = () => !!game.u?.uprops?.SICK;
 
 // include/youprop.h:111 Vomiting — u.uprops[VOMITING].intrinsic.
 export const Vomiting = () => !!game.u?.uprops?.VOMITING;
+
+// include/youprop.h Teleport_control — (HTeleport_control || ETeleport_control)
+export const Teleport_control = () => !!game.u?.uprops?.TELEPORT_CONTROL;

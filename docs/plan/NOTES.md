@@ -2457,6 +2457,30 @@ message forces a --More-- because a message is already on the top line.
 keys are exhausted, so it blocks forever. seed0361 ran past every timeout
 I gave it.
 
+MECHANISM, traced to the line. js/input.js:20 nhgetch() throws on an empty
+queue -- but only if nothing else claims the key first:
+
+    if (_inputQueue.length > 0) return _inputQueue.shift();
+    const display = game?.nhDisplay;
+    if (display?.readKey) return await display.readKey(...);   <-- BLOCKS HERE
+    throw new Error('Input queue empty ...');
+
+frozen/playability_runner.mjs:108 sets game.nhDisplay to a js/terminal.js
+terminal, and that class HAS readKey (terminal.js:279). So the throw is
+unreachable under the runner and an exhausted queue waits forever.
+
+AND THAT MAKES A HANG A DIVERGENCE SIGNAL, NOT MERELY AN ANNOYANCE. A
+session's key list is exactly what C consumed. If our port is still asking
+for a key after the list is exhausted, WE ASKED FOR A KEY C DID NOT ASK FOR.
+In the wield case that is precisely what happened: C printed 'You are already
+wielding that!' with no --More--, so it consumed no key there, and we forced
+one. The top line must have been clear in C at that moment and stale in ours.
+
+So the wield hang is not a reason to leave uwep broken -- it is evidence of a
+SECOND bug, in top-line state, that the uwep fix merely exposed. Fixing the
+top line is the prerequisite, and it is in js/display.js (pline/more), not in
+the frozen terminal.
+
 THIS IS A GENERAL HAZARD, not a wield bug. Any newly-ported message on a
 path a session reaches near the end of its input can hang the runner rather
 than merely diverge. The symptom is distinctive and worth recognising: the

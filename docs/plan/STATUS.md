@@ -8503,3 +8503,46 @@ THREE PROCESS RULES THIS SESSION PAID FOR
       only when their path went live
     grep for the DEFINITION, not the name -- mentions look like definitions
       and produced both duplicate ports and phantom dependencies
+
+## The uprops READER conversion is DONE. The structure is the next step.
+
+Every raw `game.u.uprops` read outside js/youprop.js now goes through an
+accessor. js/youprop.js has 28 exports. generalize re-run clean on 40
+non-session seeds. Score-neutral at every step, as a reader conversion
+should be: 512 screens, 140764 rng, five zero-screen sessions throughout.
+
+Converted: sounds, mon, eat, allmain, attrib, teleport, cmd, display,
+monmove, lock, spell.
+
+WHAT THE PER-MACRO CHECK CAUGHT, and the reason not to have bulk-converted:
+
+  EIGHT SHAPES among ~19 macros --
+    intrinsic || extrinsic          Hunger, Wounded_legs, Regeneration,
+                                    Fumbling, Conflict, Displaced, ...
+    intrinsic ONLY                  Stunned, Confusion
+    spelled uprops[X].intrinsic     Sick, Vomiting (no H-macro at all)
+    (H || E) && !B                  Invis, Levitation, Clairvoyant
+    H && !B, no extrinsic           Blinded  -- unique
+    pulls in state outside uprops   Deaf (u.uroleplay.deaf)
+    composed of two others          Hallucination (HHallucination &&
+                                    !Halluc_resistance)
+
+  TWO NAMING TRAPS -- the macro name is not the property key:
+    Stunned        is HStun,          key STUNNED
+    Blind_telepat  is (HTelepat|..),  key TELEPAT, no "Telepat" macro exists
+
+  THREE MISSING BLOCKED TERMS, all flagged at their definitions and all to
+  be fixed WITH the structure: Invis, Levitation, Blinded.
+
+  TWO DUPLICATE LOCAL COPIES removed: js/teleport.js had its own
+  Teleport_control/Stunned/Confusion, js/monmove.js its own Conflict.
+
+  ONE SHADOWING BUG I introduced and caught: js/monmove.js had locals named
+  Invis and Displaced holding booleans; importing same-named accessors made
+  `(Invis && ...)` always true. Renamed the locals. After adding an accessor
+  import, grep the file for the bare identifier.
+
+NEXT: initialise u.uprops with C's {intrinsic, extrinsic, blocked} per
+property, and fix the three blocked terms in the same change. The readers
+are now correct in shape, so nothing should flip to true incorrectly -- that
+was the whole point of doing them first.

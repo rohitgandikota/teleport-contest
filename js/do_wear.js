@@ -7,6 +7,7 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { x_monnam } from './do_name.js';
 import { update_inventory } from './invent.js';
 import { observe_object, makeknown } from './o_init.js';
 import { toggle_blindness } from './potion.js';
@@ -18,7 +19,7 @@ import { nomul, unmul } from './hack.js';
 import { prinv } from './invent.js';
 import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy, humanoid } from './mondata.js';
 import { welded } from './wield.js';
-import { Glib, Blind, Punished } from './youprop.js';
+import { Glib, Blind, Punished, Levitation, Flying, H, B } from './youprop.js';
 import { silly_thing } from './invent.js';
 import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name, doname, xname, obj_is_pname } from './objnam.js';
 import { body_part } from './polyself.js';
@@ -31,7 +32,7 @@ import { setworn, racial_exception } from './worn.js';
 import { rnd } from './rng.js';
 import { mons, MFLAGS, MONSYMS } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
-import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_INACCESS, GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, ECMD_CANCEL } from './const.js';
+import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD, ECMD_OK, ECMD_TIME, W_ACCESSORY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_INACCESS, GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, ECMD_CANCEL, STEALTH, ARTICLE_YOUR, SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION } from './const.js';
 import { sgn } from './hacklib.js';
 
 // src/do_wear.c:76 on_msg() — for items that involve no delay.
@@ -1468,5 +1469,47 @@ export function learnring(ring, observed) {
         if (game.objects[ringtype].oc_charged)
             ring.known = 1;
         update_inventory();
+    }
+}
+
+// src/do_wear.c:107 toggle_stealth() — putting on or taking off an item which
+// confers stealth; give feedback and discover it iff stealth state is changing.
+//
+// Stealth is blocked by riding unless hero+steed fly (handled with BStealth by
+// the mount and dismount routines).
+//
+// oldprop is prop[].extrinsic with obj->owornmask PRE-STRIPPED by the caller,
+// so a nonzero value means some OTHER item is already conferring stealth.
+export async function toggle_stealth(obj, oldprop, on) {
+    if (on ? game.initial_don : game.context.takeoff.cancelled_don)
+        return;
+
+    if (!oldprop /* extrinsic stealth from something else */
+        && !H(STEALTH) /* intrinsic stealth */
+        && !B(STEALTH)) { /* stealth blocked by something */
+        if (obj.otyp === ONAMES.RIN_STEALTH)
+            learnring(obj, true);
+        else /* discover elven cloak or elven boots */
+            makeknown(obj.otyp);
+
+        if (on) {
+            if (!is_boots(obj))
+                await You("move very quietly.");
+            else if (Levitation() || Flying())
+                await You("float imperceptibly.");
+            else
+                await You("walk very quietly.");
+        } else {
+            const riding = (game.u.usteed != null);
+
+            /* C: You("%s%s are noisy.", riding ? "and " : "sure", ...) —
+               so NOT riding gives "You sure are noisy." and riding gives
+               "You and <your steed> are noisy." The "sure"/"and " pair is
+               easy to misread as a typo; it is not. */
+            await You(`${riding ? "and " : "sure"}${riding
+                ? x_monnam(game.u.usteed, ARTICLE_YOUR, null,
+                           (SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION), false)
+                : ""} are noisy.`);
+        }
     }
 }

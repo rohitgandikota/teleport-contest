@@ -12,7 +12,7 @@ import { mons } from './monst_data.js';
 import { objects, ONAMES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL,
-         FUMBLING, TIMEOUT } from './const.js';
+         FUMBLING, TIMEOUT, ACID_RES } from './const.js';
 import { sgn } from './hacklib.js';
 
 export function worn(mask) {
@@ -265,4 +265,73 @@ export function Gloves_on() {
         note_unported_do_wear('Gloves_on:update_inventory');
     }
     return 0;
+}
+
+// src/do_wear.c Cloak_on() — the afternmv callback for putting on a cloak.
+//
+// NO DRAWS anywhere in it, so a mistake here costs screens rather than
+// desyncing the stream. The arms are messages and two toggles, except the
+// last one which does real work:
+//
+//     case ALCHEMY_SMOCK: EAcid_resistance |= WORN_CLOAK;
+//
+// That is the alchemy smock's SECOND property. objects[].oc_oprop can only
+// name one, so setworn() confers poison resistance and this line adds acid
+// resistance by hand -- see altprop() in src/worn.c, which describes the
+// same workaround. It is portable now that uprops exists, so it is done
+// rather than recorded.
+export function Cloak_on() {
+    if (!game.u.uarmc)
+        return 0;
+
+    const prop = game.objects[game.u.uarmc.otyp].oc_oprop;
+    const oldprop = (game.u.uprops?.[prop]?.extrinsic ?? 0) & ~W_ARMC;
+
+    switch (game.u.uarmc.otyp) {
+    case ONAMES.ORCISH_CLOAK:
+    case ONAMES.DWARVISH_CLOAK:
+    case ONAMES.CLOAK_OF_MAGIC_RESISTANCE:
+    case ONAMES.ROBE:
+    case ONAMES.LEATHER_CLOAK:
+        break;
+    case ONAMES.CLOAK_OF_PROTECTION:
+        note_unported_do_wear('Cloak_on:makeknown');
+        break;
+    case ONAMES.ELVEN_CLOAK:
+        note_unported_do_wear('Cloak_on:toggle_stealth');
+        break;
+    case ONAMES.CLOAK_OF_DISPLACEMENT:
+        note_unported_do_wear('Cloak_on:toggle_displacement');
+        break;
+    case ONAMES.MUMMY_WRAPPING:
+        /* already worn, so C cheats here and checks visibility directly */
+        note_unported_do_wear('Cloak_on:mummy_wrapping_msg');
+        break;
+    case ONAMES.CLOAK_OF_INVISIBILITY:
+        if (!oldprop)
+            note_unported_do_wear('Cloak_on:invisibility_msg');
+        break;
+    case ONAMES.OILSKIN_CLOAK:
+        break;
+    case ONAMES.ALCHEMY_SMOCK:
+        /* the smock's second property: oc_oprop names only one */
+        uprop_dw(ACID_RES).extrinsic |= W_ARMC;
+        break;
+    default:
+        note_unported_do_wear('Cloak_on:impossible_unknown_type');
+        break;
+    }
+
+    if (!game.u.uarmc.known) {
+        game.u.uarmc.known = 1; /* +/- evident because of status line AC */
+        note_unported_do_wear('Cloak_on:update_inventory');
+    }
+    return 0;
+}
+
+/* same shape as js/worn.js's uprop(): entries are created on first write,
+   since JS has no zero-initialised global struct. */
+function uprop_dw(p) {
+    const u = (game.u.uprops ||= []);
+    return (u[p] ||= { intrinsic: 0, extrinsic: 0, blocked: 0 });
 }

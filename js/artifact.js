@@ -8,6 +8,7 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { artilist } from './artilist_records.js';
+import { strncmpi, strcmpi, fuzzymatch } from './hacklib.js';
 import { ART_NONARTIFACT, ART_EXCALIBUR } from './artilist_data.js';
 import { SPFX_DBONUS, SPFX_ATTK, SPFX_INTEL, SPFX_RESTR, SPFX_DMONS, SPFX_DCLAS, SPFX_DFLAG1,
          SPFX_DFLAG2, SPFX_DALIGN, AD_PHYS, AD_FIRE, AD_COLD, AD_ELEC,
@@ -285,4 +286,34 @@ export function retouch_object(obj, loseit) {
         note_unported_artifact('retouch_object:drop');
 
     return { ok: 0, obj };
+}
+
+// src/artifact.c:329 artifact_name() — does this player-supplied string name an
+// artifact? Returns the artifact's canonical name, or null.
+//
+// Both the input and the candidate get a leading "the " stripped before
+// comparing, so "the Excalibur" and "Excalibur" both match.
+//
+// TRAP: the C loop is `for (a = artilist + 1; a->otyp; a++)`, terminating on
+// numeric zero. Our generated js/artilist_records.js keeps that terminator as
+// the STRING "0" (index 35), which is truthy in JS, so a literal transcription
+// of the loop condition never stops. The explicit !== "0" test below is why.
+export function artifact_name(name, otyp_p, fuzzy) {
+    if (!strncmpi(name, "the ", 4))
+        name = name.slice(4);
+
+    for (let i = 1; i < artilist.length && artilist[i].typ !== "0"; i++) {
+        const a = artilist[i];
+        let aname = a.nam;
+        if (!strncmpi(aname, "the ", 4))
+            aname = aname.slice(4);
+        if (!fuzzy ? !strcmpi(name, aname)
+                   : fuzzymatch(name, aname, " -", true)) {
+            if (otyp_p)
+                otyp_p.otyp = ONAMES[a.typ];
+            return a.nam;
+        }
+    }
+
+    return null;
 }

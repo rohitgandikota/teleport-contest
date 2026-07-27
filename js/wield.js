@@ -18,6 +18,8 @@ import { W_QUIVER, W_WEP } from './const.js';
 import { is_missile } from './obj.js';
 import { is_pole } from './u_init.js';
 import { setworn } from './worn.js';
+import { retouch_object } from './artifact.js';
+import { bimanual } from './obj.js';
 import { You } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
 
@@ -313,4 +315,76 @@ export function cant_wield_corpse(obj) {
     /* Prevent wielding cockatrice when not wearing gloves --KAA */
     note_unported_wield('cant_wield_corpse:instapetrify');
     return true;
+}
+
+// src/wield.c:169 ready_weapon() — the shared body behind wielding.
+//
+// Separated in C so swapping works easily, and dowield() calls THIS rather
+// than setuwep() directly. It makes NO DRAWS, which is why an error here
+// shows up as a wrong message rather than a desynced stream.
+//
+// The order of the early tests is the logic and must not be rearranged:
+// no-weapon, then corpse, then shield-vs-two-handed, then retouch_object.
+// retouch_object returning false costs a TURN without wielding, which is
+// why it is ECMD_TIME rather than ECMD_FAIL.
+export async function ready_weapon(wep) {
+    let res = ECMD_OK;
+    const was_twoweap = game.u.twoweap, had_wep = (game.u.uwep != null);
+
+    if (!wep) {
+        if (game.u.uwep) {
+            await You(`are ${empty_handed()}.`);
+            setuwep(null);
+            res = ECMD_TIME;
+        } else {
+            await You(`are already ${empty_handed()}.`);
+        }
+    } else if (wep.otyp === ONAMES.CORPSE && cant_wield_corpse(wep)) {
+        /* the hero must have been life-saved to get here; uses a turn */
+        res = ECMD_TIME;                    /* corpse won't be wielded */
+    } else if (game.u.uarms && bimanual(wep)) {
+        note_unported_wield('ready_weapon:two_handed_with_shield_msg');
+        res = ECMD_FAIL;
+    } else if (!retouch_object(wep, false).ok) {
+        res = ECMD_TIME;      /* takes a turn even though it is not wielded */
+    } else {
+        /* the weapon WILL be wielded after this point */
+        res = ECMD_TIME;
+        if (will_weld(wep)) {
+            /* the weld message names the body part and pluralises for a
+               two-handed weapon; xname/aobjnam/body_part are not ported */
+            note_unported_wield('ready_weapon:weld_msg');
+            note_unported_wield('ready_weapon:set_bknown');
+        } else {
+            /* C sets W_WEP on a scratch copy of owornmask so prinv() reads
+               "weapon in hand", then restores it -- the comment calls its
+               own kludge obsolete but the behaviour stays. */
+            const dummy = wep.owornmask;
+            wep.owornmask |= W_WEP;
+            if (wep.otyp === ONAMES.AKLYS)
+                note_unported_wield('ready_weapon:aklys_tether_msg');
+            note_unported_wield('ready_weapon:prinv');
+            wep.owornmask = dummy;
+        }
+
+        setuwep(wep);
+
+        if (was_twoweap && !game.u.twoweap && game.u.uwep)
+            note_unported_wield('ready_weapon:no_longer_twoweap_msg');
+
+        if (wep.oartifact) {
+            /* arti_speak sets the ECMD_TIME bit when the artifact speaks,
+               and DRAWS via getrumor; recorded rather than ported so no
+               draw is invented. */
+            note_unported_wield('ready_weapon:arti_speak');
+        }
+        if (wep.oartifact)
+            note_unported_wield('ready_weapon:artifact_light');
+        if (wep.unpaid)
+            note_unported_wield('ready_weapon:shk_be_careful_msg');
+    }
+
+    if (had_wep !== (game.u.uwep != null))
+        note_unported_wield('ready_weapon:botl_barehanded');
+    return res;
 }

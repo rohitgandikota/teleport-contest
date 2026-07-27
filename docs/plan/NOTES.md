@@ -2551,7 +2551,47 @@ But :183 is 'if (welded(game.u.uwep))', and welded() itself still tests
 and the branch is NOT taken -- behaviour should be IDENTICAL to before the
 edit. An edit that changes no behaviour cannot change whether the run hangs.
 
-SO ONE OF THESE IS TRUE AND THE NEXT SESSION MUST SETTLE IT FIRST:
+RESOLVED, AND IT WAS (c). THERE IS NO `timeout` ON THIS MACHINE.
+
+    $ command -v timeout gtimeout
+    NEITHER PRESENT
+    $ timeout 70 node frozen/ps_test_runner.mjs ... ; echo $?
+    127
+
+Every `timeout N node ...` this session died instantly with 127 having run
+NOTHING, produced no output, and my greps then found nothing -- which I read
+as 'hung' or 'the loop never fired'. macOS ships no timeout; it is GNU
+coreutils, and gtimeout is not installed either.
+
+WHAT THIS INVALIDATES (all three were mine, all three were wrong for the
+same reason):
+  'getobj does not spin'    the instrumented run NEVER EXECUTED
+  'wield.js:177 completed'  never executed
+  'wield.js:183 hung'       never executed
+
+WHAT SURVIVES, because these had no timeout prefix:
+  uhitm unarmed fix alone   ran, 3052 rng / 24 screens, no hang
+  do.js drop fixes          ran, 3052, no hang
+  wield.js all three reads  hung for real -- the Bash TOOL's own 180s
+                            timeout fired, which is a different mechanism
+                            and does work
+
+HOW TO TIME-BOX A RUN HERE. Use the Bash tool's own `timeout` parameter,
+which is enforced by the harness, not by a shell binary. If a shell-level
+limit is genuinely needed, background the job and poll, or use
+`perl -e 'alarm shift; exec @ARGV' 70 node ...`. NEVER write bare `timeout`.
+
+AND THE GENERAL LESSON, which is worth more than the wield bug: a shell
+idiom that cannot report failure will manufacture whatever result you are
+looking for. `timeout ... | grep ... | head -1` reports success no matter
+what happens upstream, because head exits 0. Three consecutive 'measured'
+findings came out of a command that never ran the program. When a bisect
+starts contradicting itself, SUSPECT THE HARNESS BEFORE THE CODE.
+
+The superseded reasoning is kept below because the contradiction it
+describes is what exposed the harness fault.
+
+SO ONE OF THESE WAS TRUE AND THE ANSWER WAS (c):
   a) the hang is nondeterministic, in which case every bisect result above
      including the original is untrustworthy
   b) the instrumented run that 'completed' was completing for a different

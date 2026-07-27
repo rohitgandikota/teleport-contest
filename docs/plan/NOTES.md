@@ -2481,6 +2481,26 @@ SECOND bug, in top-line state, that the uwep fix merely exposed. Fixing the
 top line is the prerequisite, and it is in js/display.js (pline/more), not in
 the frozen terminal.
 
+CHECKED THE OBVIOUS CAUSE AND IT IS NOT IT. js/invent.js never clears the
+message window and src/invent.c has exactly one clear_nhwindow(WIN_MESSAGE),
+at :3930 -- but that is inside dotypeinv() (the 'I' command), not getobj().
+So C does NOT clear the prompt after reading the object letter either, and
+'our getobj leaves its prompt behind' is a WRONG explanation. js/cmd.js:548
+already clears once per command, matching C.
+
+WHAT THE ARITHMETIC SAYS, and this is the next thing to check. update_topl's
+joining branch needs
+
+    n0 + toplines.length + 3 < CO - 8      i.e. < 72
+
+The wield prompt 'What do you want to wield? [- ab or ?*]' is about 40 and
+'You are already wielding that!' is 30, so 40 + 30 + 3 = 73, just over the
+72 threshold, and the join is declined by ONE COLUMN. That is close enough
+that a small error in the prompt text -- an extra space, the wrong inventory
+letters, a missing 'or ?*' -- flips join into --More-- and produces exactly
+the observed hang. MEASURE THE REAL PROMPT STRING before touching anything;
+do not assume the 40.
+
 THIS IS A GENERAL HAZARD, not a wield bug. Any newly-ported message on a
 path a session reaches near the end of its input can hang the runner rather
 than merely diverge. The symptom is distinctive and worth recognising: the

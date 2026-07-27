@@ -20,7 +20,7 @@ import { mattackm } from './mhitm.js';
 
 import { game } from './gstate.js';
 import { which_armor } from './worn.js';
-import { DEADMONSTER, is_vampshifter, MON_WEP } from './monst.js';
+import { DEADMONSTER, is_vampshifter, MON_WEP , helpless } from './monst.js';
 import { m_avoid_kicked_loc, m_avoid_soko_push_loc } from './monmove.js';
 /* include/hack.h:1322 — MMOVE_MOVED is 1 and MMOVE_DIED is 2. This file had
    its own copy with MMOVE_MOVED = 2 (C's DIED value) and no MMOVE_DIED at all,
@@ -1516,10 +1516,12 @@ function droppables(mtmp) {
     return null;                        /* don't drop anything */
 }
 
-/* src/mondata.h helpless() */
-function helpless(mtmp) {
-    return !!(mtmp.msleeping || !mtmp.mcanmove || (mtmp.mfrozen | 0) > 0);
-}
+/* helpless() is include/monst.h:251 and comes from js/monst.js. The copy
+   that was here carried a THIRD term, (mtmp.mfrozen | 0) > 0, which the C
+   macro does not have -- mfrozen is a separate bitfield (monst.h:147). That
+   made any frozen-but-mobile monster read as helpless, which changes combat
+   branches. The identical defect was removed from js/uhitm.js earlier; this
+   copy survived because dup-defs reports the name, not every site. */
 
 // src/hack.c distu() — squared distance from the hero.
 function distu(x, y) {

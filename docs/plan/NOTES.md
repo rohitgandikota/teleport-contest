@@ -2498,8 +2498,27 @@ The wield prompt 'What do you want to wield? [- ab or ?*]' is about 40 and
 72 threshold, and the join is declined by ONE COLUMN. That is close enough
 that a small error in the prompt text -- an extra space, the wrong inventory
 letters, a missing 'or ?*' -- flips join into --More-- and produces exactly
-the observed hang. MEASURE THE REAL PROMPT STRING before touching anything;
-do not assume the 40.
+the observed hang. MEASURED, and it lands EXACTLY on the boundary. js/invent.js:154 builds
+
+    'What do you want to wield?'          26
+    ' [' + lets + ' or ?*]'  with lets='- ab'   13
+                                          --
+                                          39
+
+and 'You are already wielding that!' is 30, so 39 + 30 + 3 = 72 against a
+test of < 72. The join is declined by ONE column, precisely as suspected.
+
+BUT THAT IS NOT THE BUG, AND THE MEASUREMENT IS WHAT SHOWED IT. Both the
+join branch and the more() call are gated on _toplin === TOPLINE_NEED_MORE,
+and js/tty/topl.c:141 tty_yn_function sets _toplin = TOPLINE_SPECIAL_PROMPT
+before returning. With SPECIAL_PROMPT the joining branch is skipped AND the
+more() is skipped, so the arithmetic never runs and NOTHING SHOULD BLOCK.
+
+So the real question is what resets _toplin from SPECIAL_PROMPT to NEED_MORE
+between tty_yn_function returning and the message being printed. Find that
+write. The arithmetic above is a red herring that happens to sit one column
+from mattering, which is exactly why it was worth measuring rather than
+eyeballing.
 
 THIS IS A GENERAL HAZARD, not a wield bug. Any newly-ported message on a
 path a session reaches near the end of its input can hang the runner rather

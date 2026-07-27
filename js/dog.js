@@ -1,5 +1,5 @@
 import { relobj, steal_wire_droppables } from './steal.js';
-import { ROT_ICE_ADJUSTMENT } from './const.js';
+import { ROT_ICE_ADJUSTMENT , MTSZ } from './const.js';
 import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal , flaming , is_demon, is_swimmer, passes_walls , likes_fire } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
@@ -1299,7 +1299,6 @@ export function dog_move(mtmp, after) {
 }
 
 /* include/monst.h MTSZ — how many previous squares a monster remembers. */
-const MTSZ = 4;
 
 /* src/dogmove.c GDIST(x,y) = dist2(x, y, gg.gx, gg.gy) */
 function GDIST(x, y) {

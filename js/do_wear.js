@@ -218,19 +218,19 @@ export async function set_wear(obj) {
         note_unported_do_wear('set_wear:Amulet_on');
 
     if (!obj ? game.u.uarmu : (obj === game.u.uarmu))
-        note_unported_do_wear('set_wear:Shirt_on');
+        Shirt_on();
     if (!obj ? game.u.uarm : (obj === game.u.uarm))
         Armor_on();
     if (!obj ? game.u.uarmc : (obj === game.u.uarmc))
-        note_unported_do_wear('set_wear:Cloak_on');
+        Cloak_on();
     if (!obj ? game.u.uarmf : (obj === game.u.uarmf))
-        note_unported_do_wear('set_wear:Boots_on');
+        Boots_on();
     if (!obj ? game.u.uarmg : (obj === game.u.uarmg))
-        note_unported_do_wear('set_wear:Gloves_on');
+        Gloves_on();
     if (!obj ? game.u.uarmh : (obj === game.u.uarmh))
-        note_unported_do_wear('set_wear:Helmet_on');
+        Helmet_on();
     if (!obj ? game.u.uarms : (obj === game.u.uarms))
-        note_unported_do_wear('set_wear:Shield_on');
+        Shield_on();
 
     game.initial_don = false;
 }

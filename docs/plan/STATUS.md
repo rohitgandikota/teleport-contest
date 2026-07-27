@@ -8372,3 +8372,40 @@ NEXT, in priority order
     3. mattackm melee path (~400 lines) -- 45% and 41% entries
     4. the dogfood phase offset, which is really object placement
        (~50 missing place_object sites)
+
+## The artifact chain is IN. touch_artifact (66% reach) is wired.
+
+Built and wired end to end this stretch, every piece verified by executing
+it rather than importing it:
+
+    js/const.js            30 SPFX_* bits, 49 AD_* damage types, both
+                           script-extracted from the headers
+    js/artilist_records.js 36 records generated from include/artilist.h
+    js/artilist_data.js    now emits ART_NONARTIFACT (generator fixed)
+    js/artifact.js         NEW -- spec_applies, bane_applies, get_artifact,
+                           touch_artifact
+    js/mon.js              local touch_artifact stub REPLACED by the import
+
+can_touch_safely:touch_artifact is cleared. Score is unchanged, which is
+correct: the stub already said yes to every non-artifact and no public
+session has a monster handling a real one. The gain is entirely in held-out
+games, which is what rule 1 asks for.
+
+FOUR DATA-SHAPE DEFECTS WERE FOUND AND FIXED WHILE DOING THIS, all of them
+invisible to the scoreboard, and they are the reason to read this section
+before touching the table:
+
+  1. spfx kept as SOURCE TEXT made `weap.spfx & SPFX_DBONUS` coerce to NaN,
+     so spec_applies silently took its first branch for every artifact.
+     spfx/cspfx must be NUMBERS (bit-wise reads); attk/defn/cary stay
+     STRUCTS with adtyp as an AD_* name (field-wise reads).
+  2. a C comment sits INSIDE the Heart of Ahriman's attack field, so
+     comments must be stripped before parsing or exactly one row is wrong.
+  3. fields 6..8 hold macros with commas inside parens -- split on
+     parenthesis depth, never on commas.
+  4. ART_NONARTIFACT was added BY HAND to a GENERATED file; the fix was in
+     tools/gen-artifacts.mjs, which had skipped index 0.
+
+NEXT: retouch_object (83 lines, artifact.c) then ready_weapon (104 lines,
+draw-free), which closes dowield:twoweapon_and_artifact at 25% reach.
+touch_artifact, its gate, is now in place.

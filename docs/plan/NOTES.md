@@ -3776,3 +3776,50 @@ markers. Re-land them ONE AT A TIME with the hang gate green.
 GENERALISES: **an over-read is a divergence, not a stall.** The session's key
 list is exactly what C consumed. Needing one more key means we printed a prompt
 C did not print. Treat every hang as a wrong-output bug with a specific cause.
+
+## The biggest single divergence cause is dog_move: 7 of 30 sessions
+
+`node tools/diverge.mjs --all` ranks the first-divergence site across sessions:
+
+    dog_move(dogmove.c:1255)          7   <-- biggest single cause
+    obj_resists(zap.c:1469)           3
+    do_attack(uhitm.c:474)            3
+    distfleeck(monmove.c:538)         3
+    getbones(bones.c:645)             3
+    next_ident(mkobj.c:521)           2
+    mount_steed(steed.c:341)          2
+    rnd_otyp_by_namedesc(objnam.c:3522) 2
+
+Fixing dog_move would move more sessions than anything else on the list. Run
+that tool before picking a target -- it is far better aimed than the
+reached-but-unported list, which ranks by REACH not by cost.
+
+**The dog_move symptom, precisely.** On seed0105 at call 2479:
+
+    C     rn2(1)=0      @ dog_move(dogmove.c:1255)
+    ours  rn2(100)=81   @ dog_move(dogmove.c:1255)
+
+`dogmove.c:1255` is `if ((j == 0 && !rn2(++chcnt)) || ...)`, and chcnt starts
+at 0, so C's first call there is `rn2(1)`. Our line (`js/dog.js:1244`) is
+correct. The `rn2(100)` is an obj_resists from `dogfood()` -- **we call dogfood
+one more time than C does** before reaching the chcnt draw.
+
+Checked and NOT the cause:
+- the condition ORDER matches C exactly: `if (obj.cursed) {...} else if
+  (can_reach_food) { dogfood(...) }`, so a cursed object never calls dogfood
+  and can_reach_food short-circuits ahead of it.
+- `js/dog.js:1244` really is `!rn2(++chcnt)`.
+
+TRIED AND REVERTED: `objects_at()` (`js/dog.js:1321`) filters the flat level
+list by ox/oy only, while C's `svl.level.objects[x][y]` chain holds FLOOR
+objects only, and `js/monmove.js:470` does test `where === OBJ_FLOOR`. Adding
+that filter looked obviously right and **lost 58 screens and dropped whole
+sessions** (total steps 11405 -> 10206). So either objects leaving the floor DO
+get removed from the list, or the filter breaks an ordering something else
+depends on. Do not retry it without understanding which.
+
+Next thing to check: whether `objects_at` returns the pile in the same ORDER as
+the ->nexthere chain. place_object prepends, so a filtered flat list is
+newest-first only if nothing ever reorders it. An order difference would spend
+the same NUMBER of draws in a different sequence -- which is not this symptom --
+so more likely there is genuinely one extra object in our pile.

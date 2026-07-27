@@ -7831,11 +7831,40 @@ a list of objects and calls dogfood on each, and ours walks a shorter list
 traced a pet-placement divergence to dog_invent rather than dog_move or
 dog_goal, which is the same neighbourhood.
 
-NEXT: find every C call site of dogfood() and check each against ours.
+CHECKED ALL FIVE SITES AND THEY ALL EXIST, so it is not a missing site:
 
-    grep -n "dogfood(" nethack-c/upstream/src/dogmove.c
+    C dogmove.c:315  dog_eat      ours js/dog.js:619
+    C dogmove.c:435  dog_invent   ours js/dog.js:1364
+    C dogmove.c:531  dog_goal     ours js/dog.js:1213
+    C dogmove.c:587  dog_goal     ours js/dog.js:729
+    C dogmove.c:1221 dog_move     ours js/dog.js:656
 
-The offset is one draw, so exactly one site is missing. This is a much
+THE GAP IS IN HOW dog_invent FINDS THE OBJECT. C reads the head of the
+square's own object chain:
+
+    obj = svl.level.objects[omx][omy]
+
+ours does a linear search over one flat array:
+
+    const obj = (game.level.objects || [])
+                    .find(o => o.ox === omx && o.oy === omy);
+
+Two ways that loses a draw. If the flat array does not actually hold the
+object sitting on that square, find() returns undefined, the whole block is
+skipped and its dogfood() call never happens -- which is exactly one missing
+rn2(100). And when a square holds SEVERAL objects, C takes the chain HEAD
+(most recently placed) while find() takes the earliest array entry, so even
+when both find something they can inspect different objects. The push-vs-
+unshift defect fixed in mkobj_at earlier is the same family.
+
+VERIFY WHICH, cheaply, before changing anything: log whether find() returns
+undefined at the moment of the offset. If it does, the bug is the object
+store, not dog_invent, and fixing dog_invent alone would paper over it.
+
+Note also that our condition omits C's SCR_MAIL, is_mines_prize and
+is_soko_prize exclusions. Those would make us draw MORE, not fewer, so they
+are not this bug -- but they are real and should be recorded when the
+storage question is settled. This is a much
 cheaper shape of bug than it looks -- do not port anything new until the
 missing site is found, because any new draw will move the offset around and
 make the comparison harder to read.

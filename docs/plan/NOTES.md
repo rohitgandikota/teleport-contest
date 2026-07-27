@@ -2674,9 +2674,28 @@ seconds and had to be killed. diverge replays the session to completion before
 it can compare anything, so a session that blocks takes diverge down with it.
 The tool is useless for exactly the failure mode that most needs it.
 
-THAT IS THE REAL GAP, and it is worth fixing before chasing this bug further.
-diverge needs a step cap or a wall-clock bound so it reports the LAST STEP IT
-REACHED when the run does not terminate. 'Diverged at or before step N' is
+ADDED THE BOUND, AND IT IS NOT YET PROVEN TO FIRE. tools/diverge.mjs now
+takes --max-seconds N: it races the replay against a timer, and on timeout
+reads the gstate singleton (the same object the port mutates during the run)
+to report the last move and the rng-call count, then process.exit(3). The
+exit is deliberate -- the blocked readKey keeps a pending promise alive, so
+returning normally leaves node running and the bound looks like it never
+fired.
+
+BUT TWO TEST RUNS AT --max-seconds 40 AND 45 BOTH RAN PAST 150s WITH NO
+OUTPUT, so the bound did not visibly work. Syntax checks clean and maxMs,
+deadline and the Promise.race are all in scope (:138, :140, :164). The
+likeliest explanation is that diverge never reaches runOurPort at all:
+loadCanonical(segments) runs FIRST at :301, and if that is what is slow on
+this session then no timeout inside runOurPort can help. Note the pre-change
+run also produced zero bytes in 105s, which fits 'slow before the replay'
+just as well as it fits 'hangs in the replay'.
+
+NEXT, and do this before trusting the flag: time loadCanonical alone on
+seed0361. If it is the slow part, the bound belongs around the WHOLE of
+analyseSession rather than inside runOurPort, and the current change is in
+the wrong place. Do not cite --max-seconds as working until a run has
+actually printed the REPLAY DID NOT TERMINATE block. 'Diverged at or before step N' is
 enormously more useful than nothing, and every future hang gets diagnosed in
 one run instead of the six theories this one cost. tools/diverge.mjs is ours,
 not frozen, so this is a legitimate change.

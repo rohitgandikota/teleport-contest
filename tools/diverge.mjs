@@ -108,7 +108,7 @@ function loadCanonical(segments) {
 
 // Drive the contestant entry point exactly the way frozen/ps_test_runner.mjs
 // does, so what we measure here is what the scorer measures.
-async function runOurPort(segments) {
+async function runOurPort(segments, maxSeconds = 0) {
     const { runSegment } = await import(join(PROJECT_ROOT, 'js/jsmain.js'));
 
     const store = new Map();
@@ -129,7 +129,19 @@ async function runOurPort(segments) {
     const cursors = [];
     let error = null;
 
-    try {
+    /* A session that BLOCKS used to take diverge down with it: runSegment
+       never returns, so nothing below ever runs and the tool printed zero
+       bytes. That is the one failure where a divergence point matters most.
+       --max-seconds bounds the replay and reports how far it got, read from
+       the gstate singleton, which keeps updating even while runSegment is
+       stuck inside it. */
+    const maxMs = maxSeconds > 0 ? maxSeconds * 1000 : 0;
+    let timedOut = false;
+    const deadline = maxMs
+        ? new Promise((res) => setTimeout(() => { timedOut = true; res('TIMEOUT'); }, maxMs))
+        : null;
+
+    const replay = (async () => {
         for (const seg of segments) {
             const game = await runSegment({
                 seed: seg.seed,
@@ -144,6 +156,33 @@ async function runOurPort(segments) {
             }
             for (const s of game.getScreens?.() || []) screens.push(s);
             for (const c of game.getCursors?.() || []) cursors.push(c);
+        }
+    })();
+
+    try {
+        if (deadline) {
+            const who = await Promise.race([replay.then(() => 'DONE'), deadline]);
+            if (who === 'TIMEOUT') {
+                /* runSegment is still stuck, so its game object never came
+                   back. The gstate singleton is the same object the port has
+                   been mutating all along, so read the progress out of it. */
+                const { game: live } = await import(join(PROJECT_ROOT, 'js/gstate.js'));
+                const drawn = live?._rngLog?.length ?? 0;
+                /* Report HERE and exit. Returning normally is not enough:
+                   the blocked readKey keeps a pending promise on the event
+                   loop, so node never exits on its own and the bound would
+                   look like it had not fired at all. */
+                process.stderr.write(
+                    `\nREPLAY DID NOT TERMINATE within ${maxSeconds}s\n`
+                    + `  last move reached : ${live?.moves ?? '?'}\n`
+                    + `  rng calls drawn   : ${drawn}\n`
+                    + `  => the port blocked at or before rng call ${drawn}.\n`
+                    + `     Re-run without --max-seconds against the C log and\n`
+                    + `     read the divergence at that index.\n`);
+                process.exit(3);
+            }
+        } else {
+            await replay;
         }
     } catch (e) {
         error = e;
@@ -267,7 +306,7 @@ async function analyseSession(sessionPath, opts) {
     const segments = normalizeSession(raw).segments;
 
     const canon = loadCanonical(segments);
-    const ours = await runOurPort(segments);
+    const ours = await runOurPort(segments, opts?.maxSeconds || 0);
 
     const at = firstRngDivergence(canon.rng, ours.rng);
     const matched = rngMatchCount(canon.rng, ours.rng);
@@ -335,6 +374,7 @@ async function main() {
     for (let i = 0; i < argv.length; i++) {
         const a = argv[i];
         if (a === '-w' || a === '--window') opts.window = Number(argv[++i]);
+        else if (a === '--max-seconds') opts.maxSeconds = Number(argv[++i]);
         else if (a === '--screens') opts.screens = true;
         else if (a === '--all') opts.all = true;
         else if (a.startsWith('-')) throw new Error(`unknown flag ${a}`);

@@ -3687,3 +3687,45 @@ checking whether it is already present produces
 `node --check`, so it costs a round-trip, not correctness -- but the fix is to
 dedupe the binding list on every injection, including across separate import
 statements from different modules.
+
+### CORRECTION: the uwep "hang" is a 100x SLOWDOWN, not an infinite loop
+
+Re-investigated the entry above. Its diagnosis ("something loops forever",
+"the remaining bug is a missing give-up") is **wrong**, and the wrong model is
+why the lead went cold.
+
+Measured, single session, `js/wield.js`'s three reads pointed at `game.u.uwep`:
+
+    WITHOUT the fix   0.4 s
+    WITH the fix     45.0 s
+
+It TERMINATES. There is no infinite loop and no missing give-up to find. It is
+a ~100x slowdown, and seed0361 only "hangs" because `frozen/score.sh` runs
+sessions in PARALLEL and 45 s of CPU under that load exceeds the 120 s worker
+timeout. Run alone it finishes every time -- I ran it three times in a row.
+
+That also explains the confusing symptom in the original entry: total steps
+falling 11405 -> 11039 is not a crash, it is seed0361 being dropped for
+timing out. Re-measured today and it reproduces exactly: 11039 steps,
+488 screens (-24), and the session vanishes from the board.
+
+**What this changes for whoever picks it up:** stop looking for a loop with a
+missing exit. Look for something QUADRATIC that only runs once `welded()` starts
+returning 1. `welded()` itself is not the hot path -- instrumenting it with a
+20000-call trip wire never fired. The cost is downstream of welded going live,
+most likely in a caller that now takes a path it never took before and rescans
+inventory or the level per item.
+
+Profiling notes for the next attempt:
+- `frozen/ps_test_runner.mjs` swallows the child's stderr, so `console.error`
+  from inside the game never appears. Use `--worker-session=<path>` to run one
+  session in-process instead.
+- `js/` files are ES modules, so `require('node:fs')` inside them silently
+  throws; a try/catch around it will hide your instrumentation entirely.
+- `node --cpu-prof --cpu-prof-dir=... frozen/ps_test_runner.mjs
+  --worker-session=...` is the right shape but did not finish inside 10
+  minutes under profiling overhead; budget for that or sample instead.
+
+The fix itself is READY and correct -- it is three `game.uwep` -> `game.u.uwep`
+replacements. Do not land it until the slowdown is understood, because it costs
+a whole session on the board.

@@ -2,6 +2,9 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { is_lightblocker_mappear } from './monst.js';
+import { block_point, unblock_point } from './vision.js';
+import { iter_mons } from './mon.js';
 import { See_invisible, Detect_monsters, Blind_telepat, Warn_of_mon,
          Infravision, Confusion, HHallucination, Stunned } from './youprop.js';
 import { ONAMES } from './objects_data.js';
@@ -691,4 +694,21 @@ export function is_safemon(mon) {
     return !!(game.flags?.safe_dog !== false && mon.mpeaceful && canspotmon(mon)
               && !Confusion() && !HHallucination()
               && !Stunned());
+}
+
+// src/display.c:1532 mimic_light_blocking() — iter_mons callback.
+function mimic_light_blocking(mtmp) {
+    if (mtmp.minvis && is_lightblocker_mappear(mtmp)) {
+        if (See_invisible())
+            block_point(mtmp.mx, mtmp.my);
+        else
+            unblock_point(mtmp.mx, mtmp.my);
+    }
+}
+
+// src/display.c:1548 set_mimic_blocking() — a mimic imitating a boulder, wall,
+// closed door or tree blocks light only while it is actually being seen as
+// that thing. Called only when the state of See_invisible changes.
+export function set_mimic_blocking() {
+    iter_mons(mimic_light_blocking);
 }

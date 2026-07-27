@@ -131,3 +131,13 @@ export function strstri(str, sub) {
     }
     return -1; /* not found */
 }
+
+// include/global.h:113 strcmpi() — strncmpi(a, b, -1).
+//
+// The -1 is deliberate in the C: `while (n--)` with n negative never runs out,
+// so the comparison ends only at a NUL. Our strncmpi() reproduces those exits
+// with explicit length tests, so passing -1 through works unchanged rather than
+// needing a separate implementation.
+export function strcmpi(a, b) {
+    return strncmpi(a, b, -1);
+}

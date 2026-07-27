@@ -8129,3 +8129,31 @@ RECOMMENDED APPROACH when someone takes it:
 
 Step 1 is what makes this safe: it decouples "the struct exists" from "every
 caller uses it", so a half-finished conversion still scores the same.
+
+## donning() is blocked on afternmv, and must NOT be stubbed
+
+cancel_doff records 'cancel_doff:donning_cancel_don'. The obvious next step
+is to port donning() (src/do_wear.c:1574) -- do not. Its ENTIRE body is a
+chain of tests against ga.afternmv:
+
+    if (doffing(otmp)) result = TRUE;
+    else if (otmp == uarm)  result = (ga.afternmv == Armor_on);
+    else if (otmp == uarmu) result = (ga.afternmv == Shirt_on);
+    ...
+
+afternmv is ABSENT, and so is doffing. Armor_on, Shirt_on and Cloak_on all
+exist (js/allmain.js), which makes this look closer than it is: without
+afternmv every arm is unreachable and the function can only `return false`.
+That is a stub returning a plausible value, which rule 2 forbids outright,
+and it would be invisible -- a hero mid-don would read as not donning and
+the multi-item 'A' command would silently take the wrong branch.
+
+WHAT afternmv ACTUALLY IS: C's "call this when the multi-turn occupation
+finishes" hook, set by 'W' and by 'P' on armour. Porting it means porting
+the occupation mechanism, not a function. That is the real prerequisite and
+it is shared with several other recorded gaps (reset_occupations already
+exists in js/cmd.js as a partial).
+
+So the honest state of the do_wear chain is: cancel_doff's mask clear is
+live and exact, and its cancel_don arm stays recorded until the occupation
+mechanism lands.

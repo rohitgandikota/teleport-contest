@@ -1,4 +1,4 @@
-import { cantwield } from './mondata.js';
+import { cantwield, humanoid } from './mondata.js';
 import { is_weptool } from './mkobj.js';
 import { pline } from './display.js';
 import { ECMD_TIME } from './invent.js';
@@ -252,4 +252,19 @@ export function set_twoweap(on_off) {
            read twoweap yet, so the refresh is recorded rather than forced. */
         note_unported_wield('set_twoweap:botl');
     }
+}
+
+// src/wield.c:158 empty_handed() — how to describe having no weapon.
+//
+// Three phrasings, and the order is the logic: gloves imply hands, so a
+// gloved hero is "empty handed" even though a pawed one is not; a humanoid
+// without gloves is "bare handed"; anything else gets the neutral phrasing
+// because it may have paws or no hands at all.
+//
+// Used by ready_weapon, #seeweapon (')'), #attributes (^X) and #takeoffall.
+export function empty_handed() {
+    return game.u.uarmg ? 'empty handed'          /* gloves imply hands */
+         : (game.youmonst?.data && humanoid(game.youmonst.data))
+             ? 'bare handed'                      /* hands, no weapon, no gloves */
+             : 'not wielding anything';           /* paws, or no hands */
 }

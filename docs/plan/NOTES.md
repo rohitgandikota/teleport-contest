@@ -3652,3 +3652,38 @@ Generalises: **a comment naming a C constant is not evidence the value matches.*
 `/* FIRST_OBJECT */` next to a literal `1` reads as documentation and was
 actually a wrong-value bug. Check the constant's real value whenever a literal
 is annotated with its name.
+
+## `note_unported` markers double as placeholders for functions ported elsewhere
+
+Three times in one session a marker turned out to be standing in for a function
+that had just been ported into a different file, with nothing linking the two:
+
+- `js/cmd.js` had `note_unported_cmd('equip_ok:canwearobj')` while
+  `canwearobj` was landed in `js/do_wear.js`. cmd.js also had its own private
+  copy of `equip_ok` and all four getobj callbacks.
+- `js/do_wear.js set_wear()` had `note_unported_do_wear('set_wear:Blindf_on')`
+  while `Blindf_on` was being written 1200 lines below it in the same file.
+- The same `set_wear` had `set_wear:Ring_on:right` / `:left` while `Ring_on`
+  landed in that same file.
+
+Nothing errors. The marker keeps answering, the real function sits unused, and
+`generalize`'s reached-but-unported list still shows the gap, so it reads as
+"not done yet" when it is done.
+
+**Habit: after porting a function, `grep -rn "<name>" js/ | grep note_unported`
+before moving on.** It costs one command. All three of these were found by
+accident -- looking for something else -- which means others are probably still
+sitting there.
+
+A cheap tooling improvement would be for `tools/unported-hits.mjs` to flag any
+marker whose text contains the name of an exported function; not done yet.
+
+## Import injection needs to dedupe, every time
+
+Appending a binding to an existing `import { ... } from './x.js'` line without
+checking whether it is already present produces
+`SyntaxError: Identifier 'X' has already been declared`. This bit three times
+(`W_AMUL`, then `LEVITATION`/`W_RING`/`FROMOUTSIDE`). It is caught instantly by
+`node --check`, so it costs a round-trip, not correctness -- but the fix is to
+dedupe the binding list on every injection, including across separate import
+statements from different modules.

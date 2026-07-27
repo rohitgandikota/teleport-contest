@@ -8,12 +8,14 @@
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { artilist } from './artilist_records.js';
-import { ART_NONARTIFACT } from './artilist_data.js';
-import { SPFX_DBONUS, SPFX_ATTK, SPFX_DMONS, SPFX_DCLAS, SPFX_DFLAG1,
+import { ART_NONARTIFACT, ART_EXCALIBUR } from './artilist_data.js';
+import { SPFX_DBONUS, SPFX_ATTK, SPFX_INTEL, SPFX_RESTR, SPFX_DMONS, SPFX_DCLAS, SPFX_DFLAG1,
          SPFX_DFLAG2, SPFX_DALIGN, AD_PHYS, AD_FIRE, AD_COLD, AD_ELEC,
          AD_MAGM, AD_STUN, AD_DRST, AD_DRLI, AD_STON,
          A_NONE } from './const.js';
-import { defended, resists_cold, resists_elec, resists_poison } from './mondata.js';
+import { defended, resists_cold, resists_elec, resists_poison,
+         is_covetous } from './mondata.js';
+import { mon_aligntyp } from './monmove.js';
 /* resists_fire and resists_drli are NOT DEFINED anywhere in the port, and
    resists_ston is a non-exported stub in js/dog.js. An earlier check here
    grepped for the NAMES and found mentions rather than definitions, which is
@@ -136,4 +138,97 @@ export function bane_applies(oart, mon) {
             return true;
     }
     return false;
+}
+
+// src/artifact.c get_artifact() — the record for an object, or the sentinel.
+//
+// Returns the SENTINEL rather than null for an ordinary object, which is why
+// every caller can compare against artilist[ART_NONARTIFACT] instead of
+// null-checking. Keeping that shape matters: a null return here would make
+// touch_artifact's first test read the wrong way round.
+//
+// AFTER_LAST_ARTIFACT is the count of real artifacts plus one; artilist has a
+// terminator entry, so C is careful not to use SIZE(artilist). Our generated
+// table has the same 36 rows, so the bound is artilist.length - 1.
+export function get_artifact(obj) {
+    if (obj) {
+        const artidx = obj.oartifact | 0;
+        if (artidx > 0 && artidx < artilist.length - 1)
+            return artilist[artidx];
+    }
+    return artilist[ART_NONARTIFACT];
+}
+
+// src/artifact.c touch_artifact() — may `mon` handle this artifact?
+//
+// Returns 1 when handling is allowed, 0 when the artifact refuses. The FIRST
+// TEST is the one nearly every call takes: an ordinary object gets the
+// sentinel from get_artifact and returns 1 immediately, which is why this
+// function sits on 66% of sessions without usually doing anything.
+//
+// The blast arm draws -- d((Antimagic ? 2 : 4), (self_willed ? 10 : 4)) and a
+// possible rnd(10) for silver -- and is reached only when a hero actually
+// touches a mismatched artifact. It needs losehp, Hate_silver and
+// Maybe_Half_Phys, none ported, so it is RECORDED rather than approximated:
+// inventing damage here would spend draws C may not spend and desync the
+// stream for the rest of the game.
+/* include/mondata.h is_mplayer() — a fake-player monster. Not ported; the
+   arm it guards lets covetous monsters and fake players touch anything, so
+   treating every monster as NOT a fake player is the conservative reading:
+   a fake player gets the ordinary badclass/badalign tests instead of the
+   permissive branch. Recorded so the divergence is visible. */
+function is_mplayer_ported(mon) {
+    note_unported_artifact('touch_artifact:is_mplayer');
+    return false;
+}
+
+export function touch_artifact(obj, mon) {
+    const oart = get_artifact(obj);
+
+    game.touch_blasted = false;
+    if (oart === artilist[ART_NONARTIFACT])
+        return 1;                      /* the overwhelmingly common case */
+
+    const yours = (mon === game.youmonst);
+    /* all quest artifacts are self-willed */
+    const self_willed = (oart.spfx & SPFX_INTEL) !== 0;
+    let badclass, badalign;
+
+    if (yours) {
+        /* Role_if and Race_if need the hero's role and race, and
+           u.ualign.record needs alignment tracking; both recorded. */
+        note_unported_artifact('touch_artifact:hero_badclass_badalign');
+        badclass = badalign = false;
+    } else if (!is_covetous(mon.data) && !is_mplayer_ported(mon)) {
+        badclass = self_willed && oart.role !== 'NON_PM'
+                   && oart !== artilist[ART_EXCALIBUR];
+        badalign = (oart.spfx & SPFX_RESTR) !== 0 && oart.alignment !== 'A_NONE'
+                   && (oart.alignment !== mon_aligntyp(mon));
+    } else {
+        /* an M3_WANTSxxx monster or a fake player may touch anything that
+           spec_applies does not object to */
+        badclass = badalign = false;
+    }
+
+    /* weapons which attack specific categories of monsters are bad for them
+       even when the alignments happen to match */
+    if (!badalign)
+        badalign = bane_applies(oart, mon);
+
+    if (((badclass || badalign) && self_willed)
+        || (badalign && (!yours || !rn2(4)))) {
+        if (!yours)
+            return 0;
+        /* the blast: message, d(...) damage, silver bonus, losehp, exercise */
+        note_unported_artifact('touch_artifact:blast');
+    }
+
+    /* can pick it up unless totally out of synch with the artifact */
+    if (badclass && badalign && self_willed) {
+        if (yours)
+            note_unported_artifact('touch_artifact:evades_grasp_msg');
+        return 0;
+    }
+
+    return 1;
 }

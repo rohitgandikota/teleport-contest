@@ -794,3 +794,74 @@ export function Cloak_off() {
     }
     return 0;
 }
+
+// src/do_wear.c Gloves_off() — the afternmv callback for removing gloves.
+//
+// No draws. Three details worth keeping:
+//
+// 1. `gloves` is captured BEFORE setworn nulls uarmg, because the cockatrice
+//    checks at the bottom need the object after the slot is empty. C's own
+//    comment says so: "needed after uarmg has been set to Null".
+//
+// 2. on_purpose distinguishes a deliberate removal from gloves falling off,
+//    being stolen or destroyed -- it feeds wielding_corpse, which decides
+//    whether touching a cockatrice corpse is fatal. Captured before the slot
+//    is cleared for the same reason.
+//
+// 3. The fumbling arm CLEARS both halves (HFumbling = EFumbling = 0) rather
+//    than just the extrinsic, under the same guard Gloves_on used to set the
+//    timeout. That is now expressible.
+export function Gloves_off() {
+    const gloves = game.u.uarmg;      /* needed after uarmg becomes null */
+    if (!gloves) {
+        setworn(null, W_ARMG);
+        return 0;
+    }
+    const prop = game.objects[gloves.otyp].oc_oprop;
+    const oldprop = (game.u.uprops?.[prop]?.extrinsic ?? 0) & ~W_ARMG;
+    const HFumbling = game.u.uprops?.[FUMBLING]?.intrinsic ?? 0;
+    /* on_purpose: a deliberate removal, not fallen off / stolen / destroyed */
+    const on_purpose = !game.context?.mon_moving && !gloves.in_use;
+
+    const t = (game.context.takeoff ||= {});
+    t.mask = (t.mask | 0) & ~W_ARMG;
+
+    switch (gloves.otyp) {
+    case ONAMES.LEATHER_GLOVES:
+        break;
+    case ONAMES.GAUNTLETS_OF_FUMBLING:
+        if (!oldprop && !(HFumbling & ~TIMEOUT)) {
+            const u = (game.u.uprops ||= []);
+            const e = (u[FUMBLING] ||= { intrinsic: 0, extrinsic: 0, blocked: 0 });
+            e.intrinsic = 0;      /* HFumbling = EFumbling = 0 */
+            e.extrinsic = 0;
+        }
+        break;
+    case ONAMES.GAUNTLETS_OF_POWER:
+        note_unported_do_wear('Gloves_off:makeknown_and_botl');
+        break;
+    case ONAMES.GAUNTLETS_OF_DEXTERITY:
+        if (!t.cancelled_don)
+            note_unported_do_wear('Gloves_off:adj_abon');
+        break;
+    default:
+        note_unported_do_wear('Gloves_off:impossible_unknown_type');
+        break;
+    }
+
+    setworn(null, W_ARMG);
+    t.cancelled_don = false;
+    note_unported_do_wear('Gloves_off:encumber_msg');
+
+    /* Glib: slippery fingers must not transfer from gloves to bare hands */
+    note_unported_do_wear('Gloves_off:make_glib');
+
+    /* prevent wielding a cockatrice corpse bare-handed */
+    if (game.u.uwep && game.u.uwep.otyp === ONAMES.CORPSE)
+        note_unported_do_wear('Gloves_off:wielding_corpse');
+    if (game.u.twoweap && game.u.uswapwep
+        && game.u.uswapwep.otyp === ONAMES.CORPSE)
+        note_unported_do_wear('Gloves_off:wielding_corpse_swap');
+
+    return 0;
+}

@@ -68,10 +68,13 @@ export function find_ac() {
 // "begins to shine" message) are recorded; neither fires for ordinary
 // starting armour.
 export function Armor_on() {
-    if (!game.uarm)     /* no known instances of !uarm here but play it safe */
+    /* reads game.u.uarm, the slot js/worn.js's worn[] table actually writes;
+       this read game.uarm, which nothing assigns -- the same defect fixed in
+       js/uhitm.js and js/do.js for uwep. */
+    if (!game.u.uarm)   /* no known instances of !uarm here but play it safe */
         return 0;
-    if (!game.uarm.known) {
-        game.uarm.known = 1;   /* +/- evident because of status line AC */
+    if (!game.u.uarm.known) {
+        game.u.uarm.known = 1; /* +/- evident because of status line AC */
         note_unported_do_wear('Armor_on:update_inventory');
     }
     note_unported_do_wear('Armor_on:dragon_armor_handling');
@@ -142,4 +145,35 @@ export function cancel_doff(obj, slotmask) {
         note_unported_do_wear('cancel_doff:donning_cancel_don');
 
     t.mask = (t.mask | 0) & ~slotmask;
+}
+
+// src/do_wear.c Shirt_on() — the afternmv callback for putting on a shirt.
+//
+// C's own comment is the point: "no shirt currently requires special
+// handling when put on, but we keep this uncommented in case somebody adds
+// a new one which does". So the switch does nothing for the two real
+// shirts and exists only to catch an unrecognised otyp.
+//
+// Ported with that shape intact rather than collapsed to the `known` check,
+// because the empty switch IS the C and a 5.1 shirt with an effect would
+// land in it.
+export function Shirt_on() {
+    if (!game.u.uarmu)
+        return 0;
+
+    switch (game.u.uarmu.otyp) {
+    case ONAMES.HAWAIIAN_SHIRT:
+    case ONAMES.T_SHIRT:
+        break;
+    default:
+        /* C calls impossible(unknown_type, c_shirt, uarmu->otyp) */
+        note_unported_do_wear('Shirt_on:impossible_unknown_type');
+        break;
+    }
+
+    if (!game.u.uarmu.known) {
+        game.u.uarmu.known = 1; /* +/- evident because of status line AC */
+        note_unported_do_wear('Shirt_on:update_inventory');
+    }
+    return 0;
 }

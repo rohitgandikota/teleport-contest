@@ -7930,8 +7930,37 @@ Dependencies are almost all present: is_launcher (js/monmove.js), is_ammo and
 is_missile (js/obj.js), is_pole (js/monmove.js), is_weptool and is_wet_towel
 (js/uhitm.js), artifact_light (js/do_wear.js), end_burn (js/worn.js).
 
-ONE IS MISSING AND IT IS THE LOAD-BEARING ONE: setworn (src/worn.c), which
-does the actual equipping. Size it first.
+ONE IS MISSING AND IT IS THE LOAD-BEARING ONE: setworn (src/worn.c:73),
+which does the actual equipping. SIZED IT, and it is 72 lines PLUS four
+absent functions and a table that does not exist yet:
+
+    w_blocks                present  js/worn.js
+    set_artifact_intrinsic  present  js/invent.js
+    update_inventory        present  js/do_wear.js
+    monstunseesu_prop       MISSING
+    cancel_doff             MISSING
+    set_twoweap             MISSING
+    recalc_telepat_range    MISSING
+    the worn[] table        MISSING  -- js/worn.js has no w_mask/w_obj table
+
+THE TABLE IS THE REAL WORK. C's setworn does not know about uwep or uarm
+directly; it walks a static array mapping each W_* bit to the global that
+holds that slot's object, and every arm of the function is driven by that
+walk. Without the table there is nothing to port the loop against, and
+faking it with an if-chain per slot would be precisely the kind of
+structure-with-no-C-counterpart the architecture rule forbids -- it would
+also re-diff badly in Phase 2.
+
+SO THE ORDER IS: worn[] table -> setworn -> setuwep. Roughly 110 lines plus
+whatever the four helpers cost, against three entries worth 25%, 20% and
+20% reach. Still good value, but it is a milestone-sized unit rather than
+the 35-line job the top-level entry suggests.
+
+DO NOT start setuwep before the table exists. The whole point of setuwep is
+its setworn(obj, W_WEP) call, and stubbing that would leave uwep unset while
+the rest of setuwep runs, which is worse than not porting it -- the melee
+path would then read a wielded weapon that the inventory does not agree
+exists.
 
 The artifact arms (Ogresmasher's Con bonus, Sunsword's light ending) are
 artifact-only and should be recorded rather than ported, the way passive's

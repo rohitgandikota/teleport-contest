@@ -3304,3 +3304,27 @@ THE POINT FOR THE NEXT PASS: a duplicate is not a tidiness problem. Read
 both bodies against the C before deleting either -- the wrong one is right
 about half the time, and picking by which file looks more canonical would
 have kept the broken version in three of these seven.
+
+## align_gname: two versions, and which is right depends on role_init
+
+Left unresolved deliberately -- it is the first dup-defs entry this pass
+that could not be settled by reading the C alone.
+
+    C, src/pray.c:2530   switch on alignment, returning gu.urole.lgod /
+                         ngod / cgod, i.e. the HERO'S ROLE's gods
+    js/questpgr.js       same shape, reads game.urole -- matches C
+    js/insight.js        reads game.roles?.[game.pantheon] ?? game.urole,
+                         indexing the role table BY PANTHEON first
+
+C does not consult a pantheon here. But src/role.c's role_init() picks a
+pantheon and can copy that pantheon's gods INTO gu.urole -- so insight's
+version may be compensating for our role_init not doing that copy, in which
+case deleting it would break god names.
+
+TO SETTLE IT: check whether js/role.js's role_init writes lgod/ngod/cgod
+into game.urole from the chosen pantheon. If it does, questpgr's version is
+correct and insight's is redundant. If it does not, insight's is working
+around a gap in role_init and the right fix is in role_init, not here.
+
+DO NOT just delete one. This is the case the pass's own rule was written
+for -- the wrong copy is right about half the time.

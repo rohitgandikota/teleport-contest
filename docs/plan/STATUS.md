@@ -8892,3 +8892,35 @@ NEXT, in order of readiness:
     3. armoroff + select_off, which unblock armor_or_accessory_off
     4. the mkobj -> makemon cycle break: four wrong-home names, one being
        mkobj importing its own C file's function
+
+## dup-defs pass final: 172 -> 101, and NINE real defects
+
+The pass is worth summarising separately from the count, because the count
+undersells it. Nine of the names cleared were genuine defects, none of which
+the scoreboard could see:
+
+    helpless        extra mfrozen term, live in the pet-movement path
+    accessible      returned early on a missing location, skipped closed_door
+    is_armed        inline mattk scan; throws where the real one returns false
+    blessorcurse    set the flag instead of calling curse()/bless()
+    Has_contents    cobj != null on an array initialised to [] -- every EMPTY
+                    container read as full
+    In_endgame      compared the dungeon NAME to a string, and it GATES A DRAW
+    Is_stronghold   returned an && chain rather than a boolean
+    align_gname     BOTH copies wrong; the real defect was three missing lines
+                    in role_init (src/role.c:2079), now ported
+    can_saddle      tested ONE of C's seven conditions
+
+WHAT IS LEFT: ~101 names, all with genuinely different bodies. The inert
+constant re-declarations are exhausted.
+
+THE RULES THIS PASS EARNED, all in NOTES:
+  - a duplicate can be a SYMPTOM of a missing port, not a tidiness problem.
+    align_gname proved it: deleting either copy would have shipped a bug.
+  - read both bodies against the C before deleting either. The wrong copy is
+    right about half the time.
+  - the third copy hides. Five names still reported after the first fix.
+  - importing js/const.js is safe by construction; other modules are not.
+    Check the TARGET's imports before calling an edge risky.
+  - four formatting variants defeat batch edits: aligned spacing, multi-line
+    imports, trailing commas, single- vs multi-line definitions.

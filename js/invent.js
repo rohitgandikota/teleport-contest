@@ -128,12 +128,19 @@ export const GETOBJ_ALLOWCNT = 0x01, GETOBJ_PROMPT = 0x02;
 //
 // Inventory is walked in INVLET order (sortloot with SORTLOOT_INVLET), and
 // each letter is appended FIRST and then removed when the filter rejects it.
-function getobj_letters(obj_ok, ctrlflags) {
+/* async because some getobj callbacks are. equip_ok() (src/do_wear.c:3404) is
+   the shared body of wear_ok/takeoff_ok/puton_ok/remove_ok and it calls
+   canwearobj(), which is async in this port because js/pline.js is. Calling
+   such a callback synchronously yields a Promise, which is truthy and equals
+   none of the GETOBJ_* constants, so every letter decision below would take the
+   wrong branch WITHOUT throwing. Awaiting a non-Promise is a no-op, so sync
+   callbacks are unaffected. */
+async function getobj_letters(obj_ok, ctrlflags) {
     let buf = '';
     const forceprompt = (ctrlflags & GETOBJ_PROMPT) !== 0;
 
     if (forceprompt || !obj_ok) {
-        const v = obj_ok ? obj_ok(null) : GETOBJ_EXCLUDE;
+        const v = obj_ok ? await obj_ok(null) : GETOBJ_EXCLUDE;
         if (v === GETOBJ_SUGGEST)
             buf += HANDS_SYM + ' ';
     }
@@ -142,7 +149,7 @@ function getobj_letters(obj_ok, ctrlflags) {
         .sort((a, b) => String(a.invlet).localeCompare(String(b.invlet)));
 
     for (const otmp of sorted) {
-        const v = obj_ok ? obj_ok(otmp) : GETOBJ_SUGGEST;
+        const v = obj_ok ? await obj_ok(otmp) : GETOBJ_SUGGEST;
         if (v === GETOBJ_SUGGEST)
             buf += otmp.invlet;
     }
@@ -154,7 +161,7 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
        loop already read a key here; routing it through tty_yn_function adds
        the paint without changing which keys are consumed. */
     let qbuf = `What do you want to ${word}?`;
-    const lets = getobj_letters(obj_ok_func, ctrlflags | 0);
+    const lets = await getobj_letters(obj_ok_func, ctrlflags | 0);
     qbuf += lets ? ` [${lets} or ?*]` : ' [*]';
 
     for (;;) {

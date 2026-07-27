@@ -3532,3 +3532,38 @@ both copies are right and the duplication is the design.
 Leave them. If a future pass wants to collapse them, the prerequisite is
 proving `objects` and `game.objects` are interchangeable at every mkobj call
 site, not just at the one that happens to be in front of you.
+
+## `setworn()` is ported but NEVER CALLED, so the whole worn-gear chain is dead
+
+Found while porting `fingers_or_gloves`, which reads `uarmg`. The chain that is
+supposed to make worn gear real has a broken first link.
+
+`js/u_init.js:535` does `obj.owornmask = slot;` for starting armor. The C
+(`src/u_init.c:1262-1281`) calls `setworn(obj, W_ARMS)` and friends instead.
+Those are not the same thing. `setworn()` does THREE things:
+
+1. sets `obj->owornmask`  -- the only one we do
+2. sets `*(wp->w_obj) = obj`, i.e. `uarm = obj`, `uarmg = obj`, ...
+3. ORs in the extrinsic property bits for what the item confers
+
+So `game.u.uarm` / `uarmg` / `uarmc` and the rest are **never assigned**, and no
+starting item ever confers its extrinsic. `grep -rn "setworn(" js/` outside
+`js/worn.js` itself returns nothing: the function is ported and unreachable.
+
+Downstream, `set_wear()` (`js/do_wear.js:137`, called from `js/allmain.js:306`
+every new game) tests each slot and calls the matching `<X>_on()`. Every test
+reads an unset field, so it is a silent no-op and no `_on` callback has ever
+fired. That is why fixing `set_wear`'s field names (below) moved nothing.
+
+**Separately fixed here:** `set_wear` was reading bare `game.uarm` / `game.uarmg`
+etc, 22 of them, where `js/worn.js:423` writes `game.u[wp.w_obj]`. Those reads
+could never have worked even once the chain is connected. There are ~15 more
+bare `game.uXXX` reads elsewhere in `js/`; `js/do_wear.js:275-282` shows the
+correct `game.u.uarmg` form, so the file is internally inconsistent. Same defect
+class as the `game.uwep` entry above.
+
+**Next step, and it is a big one:** make `js/u_init.js` call `setworn()`. That
+turns on extrinsics at game start for every role, which will move RNG. Measure
+it on its own commit, not folded into anything else. Note `js/u_init.js:44-45`
+also redefines W_ARM..W_ARMU locally; the values match `js/const.js:2224-2230`,
+so it is a harmless duplicate, but import them rather than keeping a second copy.

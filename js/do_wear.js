@@ -137,28 +137,28 @@ export function Armor_on() {
 export function set_wear(obj) {
     game.initial_don = !obj;
 
-    if (!obj ? game.ublindf : (obj === game.ublindf))
+    if (!obj ? game.u.ublindf : (obj === game.u.ublindf))
         note_unported_do_wear('set_wear:Blindf_on');
-    if (!obj ? game.uright : (obj === game.uright))
+    if (!obj ? game.u.uright : (obj === game.u.uright))
         note_unported_do_wear('set_wear:Ring_on:right');
-    if (!obj ? game.uleft : (obj === game.uleft))
+    if (!obj ? game.u.uleft : (obj === game.u.uleft))
         note_unported_do_wear('set_wear:Ring_on:left');
-    if (!obj ? game.uamul : (obj === game.uamul))
+    if (!obj ? game.u.uamul : (obj === game.u.uamul))
         note_unported_do_wear('set_wear:Amulet_on');
 
-    if (!obj ? game.uarmu : (obj === game.uarmu))
+    if (!obj ? game.u.uarmu : (obj === game.u.uarmu))
         note_unported_do_wear('set_wear:Shirt_on');
-    if (!obj ? game.uarm : (obj === game.uarm))
+    if (!obj ? game.u.uarm : (obj === game.u.uarm))
         Armor_on();
-    if (!obj ? game.uarmc : (obj === game.uarmc))
+    if (!obj ? game.u.uarmc : (obj === game.u.uarmc))
         note_unported_do_wear('set_wear:Cloak_on');
-    if (!obj ? game.uarmf : (obj === game.uarmf))
+    if (!obj ? game.u.uarmf : (obj === game.u.uarmf))
         note_unported_do_wear('set_wear:Boots_on');
-    if (!obj ? game.uarmg : (obj === game.uarmg))
+    if (!obj ? game.u.uarmg : (obj === game.u.uarmg))
         note_unported_do_wear('set_wear:Gloves_on');
-    if (!obj ? game.uarmh : (obj === game.uarmh))
+    if (!obj ? game.u.uarmh : (obj === game.u.uarmh))
         note_unported_do_wear('set_wear:Helmet_on');
-    if (!obj ? game.uarms : (obj === game.uarms))
+    if (!obj ? game.u.uarms : (obj === game.u.uarms))
         note_unported_do_wear('set_wear:Shield_on');
 
     game.initial_don = false;

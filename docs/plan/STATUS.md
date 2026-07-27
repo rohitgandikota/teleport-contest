@@ -7909,3 +7909,38 @@ storage question is settled. This is a much
 cheaper shape of bug than it looks -- do not port anything new until the
 missing site is found, because any new draw will move the offset around and
 make the comparison harder to read.
+
+## Highest-reach actionable target: setuwep (and setworn under it)
+
+tools/unported-hits.mjs after doclose:
+
+    100%  topl:remember_topl        deprioritised, ^P history, no screen output
+     25%  dowield:setuwep
+     23%  getobj:menu
+     23%  dofire:polearm_or_whip
+     23%  goto_level:losedogs
+     23%  level_tele:print_dungeon menu
+     20%  drop:setuwep
+     20%  dropz:setuwep
+
+setuwep GATES THREE OF THESE -- dowield 25%, drop 20%, dropz 20% -- which is
+the best reach-per-line on the board. src/wield.c:100, 35 LINES.
+
+Dependencies are almost all present: is_launcher (js/monmove.js), is_ammo and
+is_missile (js/obj.js), is_pole (js/monmove.js), is_weptool and is_wet_towel
+(js/uhitm.js), artifact_light (js/do_wear.js), end_burn (js/worn.js).
+
+ONE IS MISSING AND IT IS THE LOAD-BEARING ONE: setworn (src/worn.c), which
+does the actual equipping. Size it first.
+
+The artifact arms (Ogresmasher's Con bonus, Sunsword's light ending) are
+artifact-only and should be recorded rather than ported, the way passive's
+arms and mattackm's specials are. What MUST be exact is the gu.unweapon
+computation at the end -- it decides the bashing message and feeds the melee
+path that js/uhitm.js:780 already reads correctly since the uwep fix.
+
+NOTE THE CONNECTION TO THE SHELVED WIELD WORK: setuwep is what the uwep
+storage fix was ultimately for. Doing setuwep properly may make the
+game.u.uwep reads in js/wield.js meaningful enough to be worth revisiting,
+but the seed0361 block near key 180 is still unexplained, so keep them
+separate and do not re-apply that change alongside this one.

@@ -200,7 +200,9 @@ export async function doclose() {
         if (Confusion() || Stunned())
             res = ECMD_TIME;
 
-        door = game.level?.locations?.[x]?.[y] ?? null;
+        /* the port's accessor for C's levl[x][y]; it bounds-checks, which
+           the raw locations array does not. */
+        door = game.level?.at(x, y) ?? null;
 
         if (Blinded())
             note_unported_lock('doclose:blind_feel_location');

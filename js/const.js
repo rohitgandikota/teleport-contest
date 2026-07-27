@@ -2921,7 +2921,11 @@ export function Upolyd(player) {
 // Canonical macros — previously duplicated as local stubs in 15+ files
 export function u_at(x, y) { return game?.u?.ux === x && game?.u?.uy === y; }
 export function OBJ_AT(x, y) { return game?.level?.objects?.some(o => o.ox === x && o.oy === y) ?? false; }
-export function Has_contents(obj) { return obj?.cobj != null; }
+/* Has_contents() removed: it is include/obj.h:334 and lives in js/obj.js.
+   The version here read `obj?.cobj != null`, which is TRUE for an empty
+   container -- js/mkobj.js:872 initialises cobj to [], not null, so every
+   box reported as having contents. js/obj.js's `!!(o.cobj && o.cobj.length)`
+   is what C's `cobj != 0` means over an array. */
 // include/monst.h:73 M_AP_TYPE() — ((m)->m_ap_type & M_AP_TYPMASK).
 // The mask is not decoration: m_ap_type also carries M_AP_F_DKNOWN (0x8,
 // monst.h:70) in its high bits, so dropping it makes any mimic whose

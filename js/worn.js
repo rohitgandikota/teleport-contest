@@ -13,6 +13,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
          W_CHAIN, W_ARMOR, AC_MAX, BOLT_LIM } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { is_weptool } from './mkobj.js';
 import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
          has_horns } from './mondata.js';
@@ -441,6 +442,15 @@ export const worn = [
 //
 // Also recorded: set_twoweap, cancel_doff, monstunseesu_prop and
 // recalc_telepat_range, none of which are ported.
+/* u.uprops is a C global and therefore zero-initialised; JS has no such
+   thing, so entries are created on first write. Reads go through
+   js/youprop.js's H/E/B, which optional-chain and so still yield false for
+   an entry that does not exist yet. */
+function uprop(p) {
+    const u = (game.u.uprops ||= []);
+    return (u[p] ||= { intrinsic: 0, extrinsic: 0, blocked: 0 });
+}
+
 export function setworn(obj, mask) {
     /* C's (W_ARM | I_SPECIAL) arm is the restore-a-saved-game path, which
        assigns uskin and confers nothing. We never restore, so it cannot be
@@ -456,9 +466,17 @@ export function setworn(obj, mask) {
                 set_twoweap(false);
             oobj.owornmask &= ~wp.w_mask;
             if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER)) {
-                /* extrinsic clear, monstunseesu_prop, w_blocks and
-                   set_artifact_intrinsic all key off oc_oprop */
-                note_unported_worn('setworn:doff_extrinsic');
+                /* oc_oprop IS the property number, and uprops is keyed by
+                   number, so C's line ports directly with no translation. */
+                let p = game.objects[oobj.otyp].oc_oprop;
+                uprop(p).extrinsic &= ~wp.w_mask;
+                /* monstunseesu_prop(p) — needs monstunseesu and
+                   cvt_prop_to_mseenres, neither ported */
+                note_unported_worn('setworn:monstunseesu_prop');
+                if ((p = w_blocks(oobj, mask)) !== 0)
+                    uprop(p).blocked &= ~wp.w_mask;
+                if (oobj.oartifact)
+                    note_unported_worn('setworn:set_artifact_intrinsic_off');
             }
             cancel_doff(oobj, wp.w_mask);
         }
@@ -467,8 +485,19 @@ export function setworn(obj, mask) {
 
         if (obj) {
             obj.owornmask |= wp.w_mask;
-            if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER))
-                note_unported_worn('setworn:don_extrinsic');
+            if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER)) {
+                /* C guards this: wielding a potion must not confer its
+                   property, but weapon-tools and every non-weapon slot do. */
+                if (obj.oclass === OCLASSES.WEAPON_CLASS
+                    || is_weptool(obj, game.objects) || mask !== W_WEP) {
+                    let p = game.objects[obj.otyp].oc_oprop;
+                    uprop(p).extrinsic |= wp.w_mask;
+                    if ((p = w_blocks(obj, mask)) !== 0)
+                        uprop(p).blocked |= wp.w_mask;
+                }
+                if (obj.oartifact)
+                    note_unported_worn('setworn:set_artifact_intrinsic_on');
+            }
         }
     }
 

@@ -20,7 +20,7 @@ import { is_flyer } from './mondata.js';
    structure an array of LAST_PROP+1 entries, as in the C, instead of a
    bag of string keys with no C counterpart. */
 import {
-    BLINDED, CONFLICT, CONFUSION, DEAF, DETECT_MONSTERS, DISPLACED, FIRE_RES, FUMBLING, HALLUC, HALLUC_RES, HUNGER, INFRAVISION, INVIS, LEVITATION, REGENERATION, SEE_INVIS, SICK, STUNNED, TELEPAT, TELEPORT_CONTROL, VOMITING, WARN_OF_MON, WOUNDED_LEGS } from './const.js';
+    CLAIRVOYANT, BLINDED, CONFLICT, CONFUSION, DEAF, DETECT_MONSTERS, DISPLACED, FIRE_RES, FUMBLING, HALLUC, HALLUC_RES, HUNGER, INFRAVISION, INVIS, LEVITATION, REGENERATION, SEE_INVIS, SICK, STUNNED, TELEPAT, TELEPORT_CONTROL, VOMITING, WARN_OF_MON, WOUNDED_LEGS } from './const.js';
 
 export const H = (prop) => !!(game.u?.uprops?.[prop]?.intrinsic);   /* prop is a NUMBER, as in C */
 export const E = (prop) => !!(game.u?.uprops?.[prop]?.extrinsic);
@@ -120,7 +120,7 @@ export const Hunger = () => H(HUNGER) || E(HUNGER);
 // when uprops grows the real struct the pseudo-key must be FOLDED IN here
 // and deleted rather than left alongside.
 export const Clairvoyant = () =>
-    !!game.u?.uprops?.CLAIRVOYANT && !game.u?.uprops?.BLOCKED_CLAIRVOYANT;
+    (H(CLAIRVOYANT) || E(CLAIRVOYANT)) && !B(CLAIRVOYANT);
 
 // The next block is straight from include/youprop.h. Note the three SHAPES,
 // which is why each is written out rather than generated: some combine

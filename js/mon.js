@@ -8,7 +8,9 @@ import { CORPSTAT_MALE } from './const.js';
 import { CORPSTAT_FEMALE } from './const.js';
 import { mkcorpstat } from './mkobj.js';
 import { relobj } from './steal.js';
-import { accessible } from './const.js';
+/* accessible() is a src/monmove.c function, so it comes from
+   js/monmove.js; js/const.js had a second copy with a DIFFERENT body. */
+import { accessible } from './monmove.js';
 import { corpse_chance } from './mondata.js';
 import { mon_offmap } from './monst.js';
 import { dist2 } from './hacklib.js';

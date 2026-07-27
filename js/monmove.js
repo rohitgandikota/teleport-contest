@@ -838,7 +838,7 @@ export function set_apparxy(mtmp) {
 
 // src/monmove.c:2188 accessible() — uses the terrain in front of a closed
 // drawbridge, not the drawbridge itself.
-function accessible(x, y) {
+export function accessible(x, y) {
     const levtyp = game.level.at(x, y)?.typ;
     return ACCESSIBLE(levtyp) && !closed_door_mm(x, y);
 }

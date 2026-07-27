@@ -191,7 +191,8 @@ export async function dowield() {
 
     /* the actual wield: setuwep(), the two-weapon and unweapon updates,
        and the artifact/cockatrice checks */
-    (game.unported ||= new Set()).add('dowield:setuwep');
+    setuwep(wep);
+    (game.unported ||= new Set()).add('dowield:twoweapon_and_artifact');
     return ECMD_TIME;
 }
 

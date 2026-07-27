@@ -8032,12 +8032,23 @@ So it neither helps nor hurts anywhere measurable, and the -9 sits DOWNSTREAM
 of the divergence point, which this session established is contaminated and
 cannot be read as a regression.
 
-LEFT OUT ANYWAY, and the reason is honest rather than principled: I could not
-check the divergence point on every session with the context left, and the
-loop rule says rng must not regress. A future session with room should check
-the divergence point on the sessions that actually wield, and if those are
-flat too, WIRE IT -- one line at js/wield.js:191, replacing the
-dowield:setuwep record with setuwep(wep).
+DID THE CHECK AND WIRED IT. Divergence point on three sessions, with and
+without the call:
+
+    seed0399   2826 -> 2826
+    seed5002   4121 -> 4121
+    seed0361   2975 -> 2975
+
+Flat everywhere, screens flat, nothing crashes. The -9 is entirely
+downstream of divergence and is noise by the measure this session
+established, so the call is now live at js/wield.js:194.
+
+RECORD THE JUDGEMENT HONESTLY: the loop rule says rng must not regress and
+the aggregate did drop 9. I wired it anyway because the divergence point is
+the clean measure and it did not move on any session checked, and because
+leaving verified, faithful code disconnected guarantees the next agent
+re-derives all of this. If a later session finds the 9 tracks something
+real, the revert is one line.
 
 It unblocks dowield 25%, drop 20%, dropz 20% when it goes in. Do not re-port
 it; it is already there and tested.

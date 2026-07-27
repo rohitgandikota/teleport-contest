@@ -8797,3 +8797,39 @@ the uprops writer landed earlier in the session -- Shield_on's magical
 shields, Gloves_on's draw guard, Cloak_on's alchemy smock. Recording gaps
 precisely rather than stubbing them is what let them close later without
 anyone re-deriving the context.
+
+## The wear/take-off chain is COMPLETE and unguarded
+
+Twenty-one functions, all live, verified by execution rather than by reading:
+
+    js/hack.js      unmul                        occupation completion
+    js/do_wear.js   Shirt/Shield/Gloves/Cloak/
+                    Boots/Helmet _on             six
+                    Shirt/Armor/Shield/Helmet/
+                    Cloak/Gloves/Boots _off      seven
+                    donning, doffing             both halves live
+                    cancel_don, cancel_doff      wired to each other
+                    Armor_on                     FIXED: read an unwritten slot
+    js/worn.js      worn[] W_ARMC entry          FIXED: table was missing a row
+
+TWO REAL BUGS FOUND IN MY OWN EARLIER WORK, both by testing behaviour rather
+than reading code:
+
+  Armor_on read game.uarm, which nothing writes -- setworn writes
+  game.u.uarm. Same defect class as the uwep one fixed at the start of the
+  session; this was its third file.
+
+  js/worn.js's worn[] table was MISSING ITS CLOAK ROW. C has sixteen entries
+  and mine had fifteen, so every cloak operation silently did nothing. It
+  surfaced only when Cloak_off needed a cloak to exist. A table reviews
+  clean with a row missing -- length checks and name spot-checks both pass.
+
+WHAT THE CHAIN NOW DOES END TO END, verified: wearing an alchemy smock
+confers acid AND poison resistance and removing it revokes both; levitation
+boots confer and revoke, and reach float_down rather than float_vs_flight;
+gauntlets of fumbling confer, and Gloves_off clears both halves; an
+interrupted don leaves a cornuthaum's CHA change alone while a completed one
+reverses it.
+
+NEXT: the remaining dup-defs duplicates (150), or accessory_or_armor_on /
+armor_or_accessory_off, which are the callers that arm these callbacks.

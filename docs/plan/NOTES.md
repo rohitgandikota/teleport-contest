@@ -2634,8 +2634,33 @@ respin theory. That theory was recorded as disproved, but its disproof was
 one of the runs killed by the missing `timeout` binary and NEVER EXECUTED.
 It is live again and is now the best-supported explanation, not the worst.
 
-RE-RUN THE getobj ITERATION COUNTER, this time with a working invocation.
-The counter code is right; only the way it was launched was broken.
+RE-RAN IT PROPERLY, AND getobj IS CLEARED. With a run that actually
+executed, the counter printed NOTHING -- getobj does not respin. The theory
+is dead for real this time, not by a phantom run.
+
+THEN INSTRUMENTED nhgetch ITSELF, which found something structural:
+
+    QUEUE EMPTY after 1 reads
+    KEY 25 left=0 ... KEY 175 left=0     then blocks, process still alive
+
+js/input.js's _inputQueue IS NEVER POPULATED. Every key in a runner session
+comes from display.readKey() -- the js/terminal.js path -- and _inputQueue
+stays empty from the very first read. So the 'exhausted key queue' framing in
+the entries above is wrong twice over: there is no queue to exhaust, and the
+throw at js/input.js:35 is unreachable for that reason too, not only because
+readKey is checked first.
+
+WHERE IT ACTUALLY STOPS: with the wield fix applied, key reads climb normally
+to roughly 180 and then stop, with the process alive and idle. seed0361
+supplies 365 keys, so we block around HALF WAY through the session, not at
+the end. That kills the last surviving piece of the original story -- this was
+never about running off the end of the input.
+
+NEXT: get the BASELINE key count for comparison. If baseline also reads ~180
+and simply exits cleanly, the fix is not consuming extra keys at all and the
+block is the terminal declining to supply the next one. If baseline reads
+many more, the fix is stalling mid-session. That single number decides which
+half of the system to look at, and it is one instrumented run away.
 
 HOW TO TIME-BOX A RUN HERE. Use the Bash tool's own `timeout` parameter,
 which is enforced by the harness, not by a shell binary. If a shell-level

@@ -619,3 +619,22 @@ export function wornmask_to_armcat(mask) {
     default:      return 0;
     }
 }
+
+// src/worn.c:250 armcat_to_wornmask() — the inverse of wornmask_to_armcat().
+//
+// NOT symmetric with it, and the asymmetry is C's: the default here returns
+// 0, which is NOT a valid wornmask, whereas wornmask_to_armcat's default
+// returns 0 meaning ARM_SUIT. Same literal, opposite meaning, in adjacent
+// functions. Keep both as they are.
+export function armcat_to_wornmask(cat) {
+    switch (cat) {
+    case ARM_SUIT:   return W_ARM;
+    case ARM_CLOAK:  return W_ARMC;
+    case ARM_HELM:   return W_ARMH;
+    case ARM_SHIELD: return W_ARMS;
+    case ARM_GLOVES: return W_ARMG;
+    case ARM_BOOTS:  return W_ARMF;
+    case ARM_SHIRT:  return W_ARMU;
+    default:         return 0;
+    }
+}

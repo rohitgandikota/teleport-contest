@@ -11,7 +11,7 @@ import { set_twoweap } from './wield.js';
 import { cancel_doff } from './do_wear.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
-         W_CHAIN, W_ARMOR, AC_MAX, BOLT_LIM } from './const.js';
+         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
          ARM_CLOAK, ARM_SHIRT } from './obj.js';
@@ -637,4 +637,63 @@ export function armcat_to_wornmask(cat) {
     case ARM_SHIRT:  return W_ARMU;
     default:         return 0;
     }
+}
+
+// src/worn.c:282 wearslot() — the bitmask of slots an item MIGHT occupy.
+//
+// C's own comment matters here: "practically any item can be wielded or
+// quivered; it's up to our caller to handle such things -- we assume normal
+// usage". So this is not a permission check, and returning 0 does not mean
+// the object cannot be held.
+//
+// Two arms are easy to get wrong. A WEAPON only gains W_QUIVER when its
+// objclass entry is oc_merge -- stackable ammo can be quivered, a long sword
+// cannot. And a TOOL splits three ways: blindfold/towel/lenses go to W_TOOL,
+// weapon-tools and the tin opener to the weapon slots, and the saddle to
+// W_SADDLE, which is a monster slot rather than one of the hero's.
+export function wearslot(obj) {
+    const otyp = obj.otyp;
+    let res = 0;                    /* default: can't be worn anywhere */
+
+    switch (obj.oclass) {
+    case OCLASSES.AMULET_CLASS:
+        res = W_AMUL;
+        break;
+    case OCLASSES.RING_CLASS:
+        res = W_RINGL | W_RINGR;
+        break;
+    case OCLASSES.ARMOR_CLASS:
+        res = armcat_to_wornmask(game.objects[otyp].oc_armcat);
+        break;
+    case OCLASSES.WEAPON_CLASS:
+        res = W_WEP | W_SWAPWEP;
+        if (game.objects[otyp].oc_merge)
+            res |= W_QUIVER;
+        break;
+    case OCLASSES.TOOL_CLASS:
+        if (otyp === ONAMES.BLINDFOLD || otyp === ONAMES.TOWEL
+            || otyp === ONAMES.LENSES)
+            res = W_TOOL;
+        else if (is_weptool(obj, game.objects) || otyp === ONAMES.TIN_OPENER)
+            res = W_WEP | W_SWAPWEP;
+        else if (otyp === ONAMES.SADDLE)
+            res = W_SADDLE;
+        break;
+    case OCLASSES.FOOD_CLASS:
+        if (otyp === ONAMES.MEAT_RING)
+            res = W_RINGL | W_RINGR;
+        break;
+    case OCLASSES.GEM_CLASS:
+        res = W_QUIVER;
+        break;
+    case OCLASSES.BALL_CLASS:
+        res = W_BALL;
+        break;
+    case OCLASSES.CHAIN_CLASS:
+        res = W_CHAIN;
+        break;
+    default:
+        break;
+    }
+    return res;
 }

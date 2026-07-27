@@ -667,3 +667,69 @@ export function Shield_off() {
     setworn(null, W_ARMS);
     return 0;
 }
+
+// src/do_wear.c Helmet_off() — the afternmv callback for removing a helmet.
+//
+// No draws. Two structural details worth keeping:
+//
+// 1. The telepathy/caution arm RETURNS EARLY, calling setworn() itself and
+//    then see_monsters(). C's comment says why -- "need to update ability
+//    before calling see_monsters()" -- so the slot must be empty before the
+//    redraw. It does NOT fall through to the shared setworn at the bottom,
+//    and it does not clear cancelled_don either.
+//
+// 2. cancelled_don gates the CORNUTHAUM and HELM_OF_BRILLIANCE arms. Those
+//    reverse a bonus applied when the helm went on, so if the don was
+//    interrupted the bonus was never applied and must not be reversed. That
+//    flag is set by cancel_don(), which is now ported, so the guard is real
+//    rather than decorative.
+export function Helmet_off() {
+    const t = (game.context.takeoff ||= {});
+    t.mask = (t.mask | 0) & ~W_ARMH;
+
+    if (!game.u.uarmh) {
+        setworn(null, W_ARMH);
+        t.cancelled_don = false;
+        return 0;
+    }
+
+    switch (game.u.uarmh.otyp) {
+    case ONAMES.FEDORA:
+        note_unported_do_wear('Helmet_off:fedora_archeologist_luck');
+        break;
+    case ONAMES.HELMET:
+    case ONAMES.DENTED_POT:
+    case ONAMES.ELVEN_LEATHER_HELM:
+    case ONAMES.DWARVISH_IRON_HELM:
+    case ONAMES.ORCISH_HELM:
+        break;
+    case ONAMES.DUNCE_CAP:
+        note_unported_do_wear('Helmet_off:botl');
+        break;
+    case ONAMES.CORNUTHAUM:
+        if (!t.cancelled_don)
+            note_unported_do_wear('Helmet_off:cornuthaum_cha');
+        break;
+    case ONAMES.HELM_OF_TELEPATHY:
+    case ONAMES.HELM_OF_CAUTION:
+        /* ability must be updated before see_monsters(); early return, so
+           cancelled_don is deliberately NOT cleared here */
+        setworn(null, W_ARMH);
+        note_unported_do_wear('Helmet_off:see_monsters');
+        return 0;
+    case ONAMES.HELM_OF_BRILLIANCE:
+        if (!t.cancelled_don)
+            note_unported_do_wear('Helmet_off:adj_abon');
+        break;
+    case ONAMES.HELM_OF_OPPOSITE_ALIGNMENT:
+        note_unported_do_wear('Helmet_off:uchangealign');
+        break;
+    default:
+        note_unported_do_wear('Helmet_off:impossible_unknown_type');
+        break;
+    }
+
+    setworn(null, W_ARMH);
+    t.cancelled_don = false;
+    return 0;
+}

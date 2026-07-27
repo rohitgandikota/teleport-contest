@@ -2609,9 +2609,33 @@ one'. Instrument by counting moveloop_core entries and comparing against the
 session's key count -- the difference localises the extra read directly,
 without any bisecting.
 
-DO THAT NEXT rather than more theory. Four hypotheses about the wield hang
-have now died (--More--, getobj respin, canletgo retry, ECMD_FAIL) and every
-one of them was reasoning rather than counting.
+DID IT, AND THE INVARIANT ABOVE IS WRONG. Counted for real:
+
+    seed0361 supplies                365 keys (segment.moves, 366 steps)
+    baseline moveloop_core reaches   200+ iterations, completes normally
+    WITH the wield fix               STALLS AT 50, never climbs again
+    node CPU while stalled           0.0%
+
+TWO CORRECTIONS FALL OUT.
+
+1. 'One moveloop_core iteration consumes exactly one key' IS FALSE. rhack
+   reads one key, but commands read MORE keys inside themselves -- getobj,
+   yn prompts, menus, --More-- all call nhgetch independently. So iterations
+   and keys are not the same quantity and the count cannot be compared to 365
+   the way I wrote above.
+
+2. It is NOT an unbounded loop. 0.0% CPU means the process is BLOCKED ON
+   I/O, not spinning. Stalling at iteration 50 while 365 keys existed means
+   roughly 50 commands drained the whole queue -- about seven keys per
+   command, far more than C reads.
+
+SO SOMETHING READS KEYS IN A LOOP INSIDE ONE COMMAND, which is the getobj
+respin theory. That theory was recorded as disproved, but its disproof was
+one of the runs killed by the missing `timeout` binary and NEVER EXECUTED.
+It is live again and is now the best-supported explanation, not the worst.
+
+RE-RUN THE getobj ITERATION COUNTER, this time with a working invocation.
+The counter code is right; only the way it was launched was broken.
 
 HOW TO TIME-BOX A RUN HERE. Use the Bash tool's own `timeout` parameter,
 which is enforced by the harness, not by a shell binary. If a shell-level

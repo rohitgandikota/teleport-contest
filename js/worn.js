@@ -416,6 +416,7 @@ export function extract_from_minvent(mon, obj, do_extrinsics, silently) {
 // w_mask is 0, and a mask matching several entries acts on each in sequence.
 export const worn = [
     { w_mask: W_ARM,     w_obj: 'uarm',     w_what: 'suit' },
+    { w_mask: W_ARMC,    w_obj: 'uarmc',    w_what: 'cloak' },
     { w_mask: W_ARMH,    w_obj: 'uarmh',    w_what: 'helmet' },
     { w_mask: W_ARMS,    w_obj: 'uarms',    w_what: 'shield' },
     { w_mask: W_ARMG,    w_obj: 'uarmg',    w_what: 'gloves' },

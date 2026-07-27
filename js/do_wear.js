@@ -733,3 +733,64 @@ export function Helmet_off() {
     t.cancelled_don = false;
     return 0;
 }
+
+// src/do_wear.c Cloak_off() — the afternmv callback for removing a cloak.
+//
+// No draws. THE ORDER IS THE SUBTLE PART and C flags it: oldprop is read
+// BEFORE setworn clears the slot, and setworn is called BEFORE the switch --
+// "For mummy wrapping, taking it off first resets `Invisible'." So the
+// mummy-wrapping and invisibility arms test a state that setworn has
+// already changed. Moving setworn below the switch would invert both.
+//
+// The alchemy smock's second property is cleared here, mirroring Cloak_on:
+// oc_oprop names only poison resistance, so acid resistance is removed by
+// hand.
+export function Cloak_off() {
+    const otmp = game.u.uarmc;
+    if (!otmp) {
+        setworn(null, W_ARMC);
+        return 0;
+    }
+    const otyp = otmp.otyp;
+    const prop = game.objects[otyp].oc_oprop;
+    /* read BEFORE setworn clears the slot */
+    const oldprop = (game.u.uprops?.[prop]?.extrinsic ?? 0) & ~W_ARMC;
+
+    const t = (game.context.takeoff ||= {});
+    t.mask = (t.mask | 0) & ~W_ARMC;
+
+    /* for mummy wrapping, taking it off first resets Invisible */
+    setworn(null, W_ARMC);
+
+    switch (otyp) {
+    case ONAMES.ORCISH_CLOAK:
+    case ONAMES.DWARVISH_CLOAK:
+    case ONAMES.CLOAK_OF_PROTECTION:
+    case ONAMES.CLOAK_OF_MAGIC_RESISTANCE:
+    case ONAMES.OILSKIN_CLOAK:
+    case ONAMES.ROBE:
+    case ONAMES.LEATHER_CLOAK:
+        break;
+    case ONAMES.ELVEN_CLOAK:
+        note_unported_do_wear('Cloak_off:toggle_stealth');
+        break;
+    case ONAMES.CLOAK_OF_DISPLACEMENT:
+        note_unported_do_wear('Cloak_off:toggle_displacement');
+        break;
+    case ONAMES.MUMMY_WRAPPING:
+        note_unported_do_wear('Cloak_off:mummy_wrapping_msg');
+        break;
+    case ONAMES.CLOAK_OF_INVISIBILITY:
+        if (!oldprop)
+            note_unported_do_wear('Cloak_off:invisibility_msg');
+        break;
+    case ONAMES.ALCHEMY_SMOCK:
+        /* the smock's second property: oc_oprop names only one */
+        uprop_dw(ACID_RES).extrinsic &= ~W_ARMC;
+        break;
+    default:
+        note_unported_do_wear('Cloak_off:impossible_unknown_type');
+        break;
+    }
+    return 0;
+}

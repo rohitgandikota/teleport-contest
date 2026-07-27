@@ -20,7 +20,7 @@ import { is_flyer } from './mondata.js';
    structure an array of LAST_PROP+1 entries, as in the C, instead of a
    bag of string keys with no C counterpart. */
 import {
-    CLAIRVOYANT, BLINDED, CONFLICT, CONFUSION, DEAF, DETECT_MONSTERS, DISPLACED, FIRE_RES, FUMBLING, HALLUC, HALLUC_RES, HUNGER, INFRAVISION, INVIS, LEVITATION, REGENERATION, SEE_INVIS, SICK, STUNNED, TELEPAT, TELEPORT_CONTROL, VOMITING, WARN_OF_MON, WOUNDED_LEGS } from './const.js';
+    FLYING, CLAIRVOYANT, BLINDED, CONFLICT, CONFUSION, DEAF, DETECT_MONSTERS, DISPLACED, FIRE_RES, FUMBLING, HALLUC, HALLUC_RES, HUNGER, INFRAVISION, INVIS, LEVITATION, REGENERATION, SEE_INVIS, SICK, STUNNED, TELEPAT, TELEPORT_CONTROL, VOMITING, WARN_OF_MON, WOUNDED_LEGS } from './const.js';
 
 export const H = (prop) => !!(game.u?.uprops?.[prop]?.intrinsic);   /* prop is a NUMBER, as in C */
 export const E = (prop) => !!(game.u?.uprops?.[prop]?.extrinsic);
@@ -96,9 +96,15 @@ export const Levitation = () => (H(LEVITATION) || E(LEVITATION)) && !B(LEVITATIO
 
 // include/youprop.h:253 Flying — note the steed term: riding a flying mount
 // counts, which is why this cannot be a plain uprops read.
+// include/youprop.h:253 Flying — the steed term is INSIDE the parentheses,
+// so a blocked hero is not flying even while riding a flyer:
+//     ((HFlying || EFlying || (u.usteed && is_flyer(...))) && !BFlying)
+// Writing it as `(H || E || steed) ` without the && !B, or as
+// `(H || E) && !B || steed`, both get the riding case wrong.
 export const Flying = () =>
-    !!game.u?.uprops?.FLYING
-    || !!(game.u?.usteed && is_flyer(game.u.usteed.data));
+    (H(FLYING) || E(FLYING)
+     || !!(game.u?.usteed && is_flyer(game.u.usteed.data)))
+    && !B(FLYING);
 
 // include/youprop.h Fire_resistance — (HFire_resistance || EFire_resistance).
 export const Fire_resistance = () => H(FIRE_RES) || E(FIRE_RES);

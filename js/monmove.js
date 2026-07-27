@@ -19,7 +19,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -387,7 +387,7 @@ function objects_at(x, y) {
 /* include/mondata.h:143-146 and friends — what a monster is willing to pick up.
    likes_objs counts an armed monster as a collector. */
 const mindless    = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
-const is_animal   = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
+/* is_animal() is an include/mondata.h macro; it comes from js/mondata.js. */
 const likes_gold  = (ptr) => (ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0;
 const likes_gems  = (ptr) => (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;
 const likes_magic = (ptr) => (ptr.mflags2 & MFLAGS.M2_MAGIC) !== 0;

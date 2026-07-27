@@ -20,7 +20,7 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj, place_object } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
-import { attacktype, is_neuter , is_rider } from './mondata.js';
+import { attacktype, is_neuter , is_rider , is_animal } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
@@ -93,7 +93,7 @@ const is_ndemon = (ptr) =>
 const is_shapeshifter = (ptr) => (ptr.mflags2 & MFLAGS.M2_SHAPESHIFTER) !== 0;
 const verysmall = (ptr) => ptr.msize < 1;        /* MZ_SMALL */
 const nohands = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOHANDS) !== 0;
-const is_animal = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
+/* is_animal() is an include/mondata.h macro; it comes from js/mondata.js. */
 const mindless = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
 const { STRAT_WAITFORU, STRAT_CLOSE, STRAT_APPEARMSG } = STRAT;
 const { M3_WAITMASK } = MFLAGS;

@@ -4,8 +4,10 @@
 // are not. Functions arrive here in C file order as they are needed.
 
 import { game } from './gstate.js';
+import { pline } from './display.js';
 import { vision_recalc } from './vision.js';
-import { Blind, Blind_telepat, Infravision } from './youprop.js';
+import { Blind, Blind_telepat, Infravision, Hallucination,
+         See_invisible } from './youprop.js';
 import { WARN_OF_MON, W_WEP } from './const.js';
 
 function note_unported_potion(what) {
@@ -46,4 +48,12 @@ export function toggle_blindness() {
     /* update dknown flag for inventory picked up while blind */
     if (!Blind())
         note_unported_potion('toggle_blindness:learn_unseen_invent');
+}
+
+// src/potion.c:471 self_invis_message()
+export async function self_invis_message() {
+    await pline(`${Hallucination() ? "Far out, man!  You"
+                                   : "Gee!  All of a sudden, you"} ${
+        See_invisible() ? "can see right through yourself"
+                        : "can't see yourself"}.`);
 }

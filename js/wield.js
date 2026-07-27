@@ -448,3 +448,9 @@ export function uqwepgone() {
         update_inventory();
     }
 }
+
+// src/wield.c:285 setuswapwep()
+export function setuswapwep(obj) {
+    setworn(obj, W_SWAPWEP);
+    return;
+}

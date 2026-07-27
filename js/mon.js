@@ -1502,3 +1502,19 @@ const SPECIAL_CORPSE_ARMS = new Set([
     PMNAMES.PM_STONE_GOLEM, PMNAMES.PM_WOOD_GOLEM, PMNAMES.PM_ROPE_GOLEM,
     PMNAMES.PM_LEATHER_GOLEM, PMNAMES.PM_GOLD_GOLEM, PMNAMES.PM_PAPER_GOLEM,
 ].filter(v => v !== undefined));
+
+// src/mon.c:4527 iter_mons() — call vfunc for every living monster on the
+// current level.
+//
+// The C saves mtmp->nmon BEFORE calling vfunc, because vfunc may unlink or free
+// the monster. Our list is an array, so the equivalent guard is to iterate a
+// SNAPSHOT: a vfunc that removes a monster would otherwise shift the array
+// under the loop and skip its neighbour.
+export function iter_mons(vfunc) {
+    for (const mtmp of [...(game.level?.monsters || [])]) {
+        if (DEADMONSTER(mtmp) || mon_offmap(mtmp))
+            continue;
+        vfunc(mtmp);
+    }
+    return;
+}

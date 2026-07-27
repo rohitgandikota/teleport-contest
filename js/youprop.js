@@ -76,6 +76,11 @@ export const See_invisible = () => !!game.u?.uprops?.SEE_INVIS;
 export const Invis = () => !!game.u?.uprops?.INVIS;
 
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
+//
+// The !BLevitation term is MISSING here, exactly as in Invis above: uprops
+// has no blocked field to read yet. Today every term is false so the answer
+// is right by accident; once uprops is initialised this reports levitation
+// for a hero whose levitation is BLOCKED. Fix it WITH the structure.
 export const Levitation = () => !!game.u?.uprops?.LEVITATION;
 
 // include/youprop.h:253 Flying — note the steed term: riding a flying mount

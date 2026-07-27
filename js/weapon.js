@@ -7,6 +7,7 @@
 // array that comparison has no input at all.
 
 import { game } from './gstate.js';
+import { is_ammo } from './obj.js';
 import { STR18, WT_IRON_BALL_INCR } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { mon_hates_blessings, thick_skinned, passes_walls,
@@ -35,10 +36,7 @@ const practice_needed_to_advance = (level) => level * level * 20;
 
 // include/obj.h:238 is_ammo() — the launcher-fired classes. Ammo alone does
 // not confer skill; skill_init waits until it sees the launcher.
-const is_ammo = (otmp) =>
-    (otmp.oclass === OCLASSES.WEAPON_CLASS || otmp.oclass === OCLASSES.GEM_CLASS)
-    && game.objects[otmp.otyp].oc_skill >= -P_CROSSBOW
-    && game.objects[otmp.otyp].oc_skill <= -P_BOW;
+/* is_ammo() is include/obj.h:238; it comes from js/obj.js. */
 
 // src/weapon.c:1517 weapon_type() — the skill an object trains. A NEGATIVE
 // oc_skill marks ammo, and the sign is dropped here.

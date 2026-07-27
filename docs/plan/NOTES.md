@@ -3623,3 +3623,32 @@ which means it is OUR constraint to absorb, not a property of NetHack.
 Generalises: **when a leaf helper becomes async in this port, walk its callers up
 to the nearest boundary that is called from sync code.** The compiler will not
 tell you; `node --check` passes and the module loads clean.
+
+## `FIRST_OBJECT` is 18, not 1, and `discover_object` had it wrong
+
+`js/o_init.js discover_object()` guarded with `if (oindx < 1) /* FIRST_OBJECT */`.
+The C (`src/o_init.c:460`) is `if (oindx < FIRST_OBJECT) /* don't discover
+generic objects */`, and `FIRST_OBJECT` is `LAST_GENERIC + 1` = **18**
+(`include/objects.h:108`), not 1.
+
+So the JS skipped only STRANGE_OBJECT and happily "discovered" all 17 generic
+objects, which the C deliberately excludes. `include/display.h:184` states the
+intent outright: random_object "won't return STRANGE_OBJECT or the generic
+objects".
+
+The value lives in `ONAMES.FIRST_OBJECT` (generated `js/objects_data.js`), NOT
+in `js/const.js` -- importing it from const.js fails at load with "does not
+provide an export named 'FIRST_OBJECT'". Worth knowing before reaching for it.
+
+Fixing it moved nothing on the board, which is expected: discovering a generic
+object is mostly invisible until something prints its name.
+
+Also found while there: `discover_object` is missing the C's third condition,
+`|| (Role_if(PM_SAMURAI) && Japanese_item_name(oindx, NULL))`. That arm only
+ADDS discoveries, so its absence is a silent under-discovery for Samurai only.
+Recorded as `discover_object:Japanese_item_name`.
+
+Generalises: **a comment naming a C constant is not evidence the value matches.**
+`/* FIRST_OBJECT */` next to a literal `1` reads as documentation and was
+actually a wrong-value bug. Check the constant's real value whenever a literal
+is annotated with its name.

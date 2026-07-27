@@ -1,6 +1,6 @@
 import { relobj, steal_wire_droppables } from './steal.js';
 import { ROT_ICE_ADJUSTMENT } from './const.js';
-import { max_passive_dmg , carnivorous, herbivorous } from './mondata.js';
+import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
 import { M_ATTK_DEF_DIED } from './const.js';
@@ -178,14 +178,13 @@ export const DOGFOOD = 0, CADAVER = 1, ACCFOOD = 2, MANFOOD = 3, APPORT = 4,
    branch changes how far the caller's loop runs before it breaks. */
 /* carnivorous() and herbivorous() are include/mondata.h macros and come
    from js/mondata.js; the copies here were identical. */
-const metallivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_METALLIVORE) !== 0;
+/* metallivorous(), humanoid() and noncorporeal() are include/mondata.h
+   macros and come from js/mondata.js; the copies here matched. */
 const haseyes      = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
-const humanoid     = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
 export const acidic = (ptr) => (ptr.mflags1 & MFLAGS.M1_ACID) !== 0;
 const poisonous    = (ptr) => (ptr.mflags1 & MFLAGS.M1_POIS) !== 0;
 /* is_undead lives in js/mondata.js, its C home (include/mondata.h:95). */
 const is_elf       = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
-const noncorporeal = (ptr) => ptr.mlet === MONSYMS.S_GHOST;
 /* include/mondata.h:59,190 — both are explicit species lists, not flag tests.
    There is no M1_FIRE_RES; fire resistance lives in mresists as MR_FIRE, and
    guessing a flag here silently made every monster flaming. */

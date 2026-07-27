@@ -550,7 +550,7 @@ export async function Helmet_on() {
     case ONAMES.HELM_OF_TELEPATHY:
         break;
     case ONAMES.HELM_OF_CAUTION:
-        note_unported_do_wear('Helmet_on:see_monsters');
+        see_monsters();
         break;
     case ONAMES.HELM_OF_BRILLIANCE:
         note_unported_do_wear('Helmet_on:adj_abon');
@@ -816,7 +816,7 @@ export function Helmet_off() {
         /* ability must be updated before see_monsters(); early return, so
            cancelled_don is deliberately NOT cleared here */
         setworn(null, W_ARMH);
-        note_unported_do_wear('Helmet_off:see_monsters');
+        see_monsters();
         return 0;
     case ONAMES.HELM_OF_BRILLIANCE:
         if (!t.cancelled_don)

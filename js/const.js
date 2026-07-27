@@ -2960,3 +2960,37 @@ export function Is_rogue_level(uz) { const g = game; return g?.rogue_level && (u
 export function Is_oracle_level(uz) { const g = game; return g?.oracle_level && (uz ?? g?.u?.uz)?.dnum === g.oracle_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.oracle_level.dlevel; }
 export function Is_knox_level(uz) { const g = game; return g?.knox_level && (uz ?? g?.u?.uz)?.dnum === g.knox_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.knox_level.dlevel; }
 export function Is_juiblex_level(uz) { return false; /* TODO */ }
+
+/* include/artifact.h — the SPFX_* artifact special-effect bits.
+ * Verbatim from the header, same names and same values. These are the
+ * flags spec_applies(), bane_applies() and touch_artifact() test. */
+export const SPFX_NONE        = 0x00000000;   /* no special effects, just a bonus */
+export const SPFX_NOGEN       = 0x00000001;   /* item is special, bequeathed by gods */
+export const SPFX_RESTR       = 0x00000002;   /* item is restricted - can't be named */
+export const SPFX_INTEL       = 0x00000004;   /* item is self-willed - intelligent */
+export const SPFX_SPEAK       = 0x00000008;   /* item can speak (not implemented) */
+export const SPFX_SEEK        = 0x00000010;   /* item helps you search for things */
+export const SPFX_WARN        = 0x00000020;   /* item warns you of danger */
+export const SPFX_ATTK        = 0x00000040;   /* item has a special attack (attk) */
+export const SPFX_DEFN        = 0x00000080;   /* item has a special defence (defn) */
+export const SPFX_DRLI        = 0x00000100;   /* drains a level from monsters */
+export const SPFX_SEARCH      = 0x00000200;   /* helps searching */
+export const SPFX_BEHEAD      = 0x00000400;   /* beheads monsters */
+export const SPFX_HALRES      = 0x00000800;   /* blocks hallucinations */
+export const SPFX_ESP         = 0x00001000;   /* ESP (like amulet of ESP) */
+export const SPFX_STLTH       = 0x00002000;   /* Stealth */
+export const SPFX_REGEN       = 0x00004000;   /* Regeneration */
+export const SPFX_EREGEN      = 0x00008000;   /* Energy Regeneration */
+export const SPFX_HSPDAM      = 0x00010000;   /* 1/2 spell damage (on player) in combat */
+export const SPFX_HPHDAM      = 0x00020000;   /* 1/2 physical damage (on player) in combat */
+export const SPFX_TCTRL       = 0x00040000;   /* Teleportation Control */
+export const SPFX_LUCK        = 0x00080000;   /* Increase Luck (like Luckstone) */
+export const SPFX_DMONS       = 0x00100000;   /* attack bonus on one monster type */
+export const SPFX_DCLAS       = 0x00200000;   /* attack bonus on monsters w/ symbol mtype */
+export const SPFX_DFLAG1      = 0x00400000;   /* attack bonus on monsters w/ mflags1 flag */
+export const SPFX_DFLAG2      = 0x00800000;   /* attack bonus on monsters w/ mflags2 flag */
+export const SPFX_DALIGN      = 0x01000000;   /* attack bonus on non-aligned monsters */
+export const SPFX_DBONUS      = 0x01F00000;   /* attack bonus mask */
+export const SPFX_XRAY        = 0x02000000;   /* gives X-RAY vision to player */
+export const SPFX_REFLECT     = 0x04000000;   /* Reflection */
+export const SPFX_PROTECT     = 0x08000000;   /* Protection */

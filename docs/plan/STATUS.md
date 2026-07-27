@@ -9408,3 +9408,30 @@ probably not the intended one). The sweep finds candidates, not defects.
 
 Re-run the sweep with the one-liner in the git history of this entry, or better,
 teach `tools/unported-hits.mjs` to emit it.
+
+
+### Marker sweep: 52 -> 31, and the wear path is now fully async
+
+Cleared this pass by reading each against the C first:
+- 7x `<X>_on:update_inventory` -- verified all seven C handlers really do call
+  `update_inventory()` (Helmet_on calls it THREE times; our port has one, so
+  that handler is still short two calls).
+- 4x `toggle_stealth` (Cloak_on/off, Boots_on/off) and 2x `float_vs_flight`
+  (Boots_on/off), all matched against the C's call sites and argument lists.
+
+**The async conversion this forced is the structural news.** `toggle_stealth` is
+async, so in one chain: the seven `<X>_on` handlers became async, `unmul()`
+became async and now `await`s `ga.afternmv`, the `<X>_off` handlers became
+async, and `remove_worn_item()` became async. All callers updated; board and
+generalize unchanged.
+
+`js/hack.js unmul()` is worth a look: the clear-before-call on `afternmv` was
+already documented as load-bearing, and it now reads
+`const f = game.afternmv; game.afternmv = null; await f();` -- the clear still
+happens BEFORE the await, which is what the C guarantees.
+
+Of the 31 remaining candidates, expect a good fraction to be false positives:
+a marker can name an exported function and still be right, because the name may
+resolve to a different local (`uhitm.js:883 hmon_hitmon:is_pole` points at a
+`js/u_init.js` export that is probably not the intended one). **Read the C at
+each site before wiring.** The sweep produces candidates, not defects.

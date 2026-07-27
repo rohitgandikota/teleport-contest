@@ -2829,13 +2829,23 @@ They are unrelated. No runtime collision today, because ES imports are
 explicit and nothing imports both, but the names are one careless import
 apart from a confusing bug.
 
-THE TABLE HAS THE BETTER CLAIM TO THE NAME AND THE FILE: it is `worn[]` in
-src/worn.c, so js/worn.js is exactly where the architecture rule puts it.
-The do_wear.js function is the one to look at -- check whether it
-corresponds to a real C function (and if so, whether that function is
-actually named `worn`) before either is renamed. Do NOT rename the table to
-dodge the clash; that would move it away from its C name for a reason the C
-does not have.
+CHECKED, AND C HAS NO worn() FUNCTION AT ALL. Neither src/*.c nor
+include/extern.h declares one. So js/do_wear.js's worn(mask) is an INVENTED
+helper, which the architecture rule specifically forbids -- "do not invent
+abstractions, helpers, or 'cleaner' designs that have no C counterpart" --
+and phase 2 divides parity by diff size, so invented structure costs twice.
+
+WHAT C DOES INSTEAD: it reads the slot globals directly (uarm, uamul,
+ublindf) and tests owornmask inline where a mask check is wanted, e.g.
+src/do_wear.c:81. Now that js/worn.js has the worn[] table, the faithful
+replacement for worn(mask) is a lookup through that table into game.u --
+which is what C's globals ARE.
+
+DO NOT rip it out casually: it has callers in js/do_wear.js (3) and
+js/spell.js (2+), and js/spell.js uses it to rebuild the whole armour set
+in one line. Converting them means touching real logic, so it is its own
+task, worth doing before phase 2 rather than after. The name clash with the
+table is the visible symptom; the invented helper is the actual defect.
 
 ## undefined-refs.mjs: one real hit in 19, and the other 18 are noise
 

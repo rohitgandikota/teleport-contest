@@ -8596,7 +8596,26 @@ something.
 WHAT REMAINS is the writer side, and it is the actual missing subsystem:
     - make the things that GRANT intrinsics write to it: setworn's extrinsic
       arms (js/worn.js, still recorded), potions, corpses, level-up
-    - the oc_oprop-number to property-key bridge setworn needs
+    - the oc_oprop bridge -- WHICH TURNS OUT NOT TO BE NEEDED. This was
+      recorded three times as the blocker under setworn's extrinsic arms,
+      monstunseesu_prop and w_blocks. It is gone, and keying uprops by
+      NUMBER is what removed it.
+
+      oc_oprop IS ALREADY A PROPERTY NUMBER in the same space const.js uses.
+      Checked: objects_data entry 93 has oc_oprop 35 and CLAIRVOYANT is 35,
+      entry 100 has 30 and TELEPAT is 30, entry 101 has 12 and ANTIMAGIC is
+      12 -- all plausible amulet properties. (A reverse lookup by value is
+      ambiguous because many unrelated constants share numbers, so check
+      forward from a known property, not backward from a value.)
+
+      So C's line ports directly now:
+
+          p = objects[oobj->otyp].oc_oprop;
+          u.uprops[p].extrinsic &= ~wp->w_mask;
+
+      becomes the same thing in JS with no translation layer. setworn's
+      extrinsic arms are a SHORT edit, not a subsystem, and they are the
+      obvious first writer to add -- create uprops in that same change.
 
 Only then do the hero-side arms recorded in spec_applies, touch_artifact,
 cant_wield_corpse (Stone_resistance), retouch_object (Hate_silver) and

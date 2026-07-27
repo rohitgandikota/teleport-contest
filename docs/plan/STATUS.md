@@ -9379,3 +9379,32 @@ Only 3 of `Ring_on`'s 15 dependencies remain:
 `Ring_on` is now close enough to write with 3-4 arms recorded, which is the
 honest shape for it. `see_monsters` itself records `see_wsegs` (worm segments)
 and `Sting_effects` (artifact glow); both are display-only.
+
+
+### Marker sweep: 52 stale placeholders found, 8 cleared
+
+Ran the sweep the NOTES entry called for (markers whose final segment names an
+already-exported function). **52 hits.** That is the accidental-discovery rate
+made systematic -- three were found by luck earlier in the session, and there
+were 52.
+
+Cleared this pass (52 -> 44):
+- the six `set_wear:<X>_on` markers (`Shirt_on`, `Cloak_on`, `Boots_on`,
+  `Gloves_on`, `Helmet_on`, `Shield_on`) -- all seven `<X>_on` callbacks now
+  fire from `set_wear`, joining `Armor_on`, `Blindf_on` and `Ring_on`.
+- `seemimic` (`src/mon.c`) is now real, using the newly-ported `does_block`
+  (`src/vision.c:153`) and `unblock_point`.
+
+Also landed: `does_block` itself, `Ring_on`, `float_vs_flight`,
+`steed_vs_stealth`.
+
+**`does_block` returns 1, 2 or 0, not a boolean.** 1 is a hard blocker, 2 is a
+visible region (gas cloud), and callers distinguish them. Do not collapse it.
+
+The remaining 44 need reading one at a time -- a marker can name an exported
+function and still be correct, because the name may be a DIFFERENT local (e.g.
+`uhitm.js:883 hmon_hitmon:is_pole` resolves to a `js/u_init.js` export that is
+probably not the intended one). The sweep finds candidates, not defects.
+
+Re-run the sweep with the one-liner in the git history of this entry, or better,
+teach `tools/unported-hits.mjs` to emit it.

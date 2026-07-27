@@ -583,3 +583,17 @@ export function setnotworn(obj) {
     update_inventory();
     recalc_telepat_range();
 }
+
+// src/worn.c:206 wearmask_to_obj() — the object in the FIRST slot the mask
+// selects.
+//
+// Returns on the first hit, unlike setworn and setnotworn which walk the
+// whole table. That is deliberate in C: callers pass a single-slot mask and
+// want that slot's object, so table ORDER decides the answer for a mask
+// spanning several slots. Do not "improve" it into a search.
+export function wearmask_to_obj(wornmask) {
+    for (const wp of worn)
+        if (wp.w_mask & wornmask)
+            return game.u[wp.w_obj] ?? null;
+    return null;
+}

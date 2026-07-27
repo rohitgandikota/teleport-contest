@@ -1,6 +1,6 @@
 import { relobj, steal_wire_droppables } from './steal.js';
 import { ROT_ICE_ADJUSTMENT } from './const.js';
-import { max_passive_dmg } from './mondata.js';
+import { max_passive_dmg , carnivorous, herbivorous } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
 import { M_ATTK_DEF_DIED } from './const.js';
@@ -176,8 +176,8 @@ export const DOGFOOD = 0, CADAVER = 1, ACCFOOD = 2, MANFOOD = 3, APPORT = 4,
 /* include/mondata.h and include/objclass.h — the predicates dogfood() sorts
    with. None of them draws; they only decide which branch is taken, and a wrong
    branch changes how far the caller's loop runs before it breaks. */
-const carnivorous  = (ptr) => (ptr.mflags1 & MFLAGS.M1_CARNIVORE) !== 0;
-const herbivorous  = (ptr) => (ptr.mflags1 & MFLAGS.M1_HERBIVORE) !== 0;
+/* carnivorous() and herbivorous() are include/mondata.h macros and come
+   from js/mondata.js; the copies here were identical. */
 const metallivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_METALLIVORE) !== 0;
 const haseyes      = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
 const humanoid     = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;

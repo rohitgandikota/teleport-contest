@@ -143,3 +143,18 @@ export const Vomiting = () => !!game.u?.uprops?.VOMITING;
 
 // include/youprop.h Teleport_control — (HTeleport_control || ETeleport_control)
 export const Teleport_control = () => !!game.u?.uprops?.TELEPORT_CONTROL;
+
+// include/youprop.h:190 Detect_monsters — (HDetect_monsters || EDetect_monsters)
+export const Detect_monsters = () => !!game.u?.uprops?.DETECT_MONSTERS;
+
+// include/youprop.h:156 Blind_telepat — (HTelepat || ETelepat). NOTE THE NAME:
+// the macro is Blind_telepat while the property key is TELEPAT, and there is
+// no separate "Telepat" macro. Reading the key name as the macro name would
+// invent one.
+export const Blind_telepat = () => !!game.u?.uprops?.TELEPAT;
+
+// include/youprop.h:170 Warn_of_mon — (HWarn_of_mon || EWarn_of_mon)
+export const Warn_of_mon = () => !!game.u?.uprops?.WARN_OF_MON;
+
+// include/youprop.h:186 Infravision — (HInfravision || EInfravision)
+export const Infravision = () => !!game.u?.uprops?.INFRAVISION;

@@ -56,7 +56,8 @@ import {
     ALL_TRAPS, NO_TRAP,
     G_GENOD,
 } from './const.js';
-import { is_rider } from './makemon.js';
+
+import { is_rider } from './mondata.js';
 import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          MMOVE_NOMOVES, engulfing_u } from './const.js';
 import { MSOUND } from './monst_data.js';

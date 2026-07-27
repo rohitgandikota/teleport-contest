@@ -55,7 +55,8 @@ import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
-    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
+    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, mpickobj } from './makemon.js';
+import { is_rider } from './mondata.js';
 
 const NON_PM = -1;
 

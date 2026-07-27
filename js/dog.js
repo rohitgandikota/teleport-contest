@@ -1,6 +1,6 @@
 import { relobj, steal_wire_droppables } from './steal.js';
 import { ROT_ICE_ADJUSTMENT } from './const.js';
-import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal , flaming , is_demon, is_swimmer, passes_walls } from './mondata.js';
+import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal , flaming , is_demon, is_swimmer, passes_walls , likes_fire } from './mondata.js';
 import { M_ATTK_MISS } from './const.js';
 import { onscary } from './monmove.js';
 import { M_ATTK_DEF_DIED } from './const.js';
@@ -207,9 +207,8 @@ export const slimeproof = (ptr) => ptr.pmidx === PMNAMES.PM_GREEN_SLIME
                          || flaming(ptr) || noncorporeal(ptr);
 
 // include/mondata.h:196
-const likes_fire = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_VORTEX
-                         || ptr.pmidx === PMNAMES.PM_FLAMING_SPHERE
-                         || likes_lava(ptr);
+/* likes_fire() is an include/mondata.h macro; it comes from
+   js/mondata.js, where its identical twin already lived. */
 
 // include/mondata.h:232
 const vegan = (ptr) =>

@@ -3225,3 +3225,28 @@ the last one:
                          and the file stops parsing
 A batch script must handle all three or verify each file with node --check
 before running the board.
+
+## The dungeon predicates duplicated in const.js differ by SIGNATURE
+
+Several dungeon.c predicates exist in both js/const.js and js/dungeon.js,
+and the two forms are not interchangeable:
+
+    js/const.js    In_sokoban(uz)  { return (uz ?? game?.u?.uz)?.dnum === ... }
+    js/dungeon.js  In_sokoban(lev) { return lev.dnum === ... }
+
+The const.js versions DEFAULT to the hero's level when called with no
+argument; the dungeon.js versions require one and throw on undefined. Same
+name, different contract.
+
+So these cannot be deduplicated by deleting one -- every caller has to be
+checked for which form it relies on. A caller written against the
+defaulting version and repointed at the strict one throws; the reverse
+silently answers about the hero's level instead of the level asked about,
+which is worse.
+
+Is_botlevel has the same split. Expect the rest of the In_*/Is_* family to
+as well.
+
+TO FIX: pick the C signature (an explicit d_level argument, as in
+src/dungeon.c), port that into js/dungeon.js, then convert callers one at a
+time, giving each the argument it needs. Do not start by deleting.

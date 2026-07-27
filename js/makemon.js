@@ -20,7 +20,7 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj, place_object } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
-import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn, is_armed } from './mondata.js';
+import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn, is_armed, is_domestic } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT, NON_PM } from './const.js';
@@ -79,7 +79,7 @@ const always_hostile = (ptr) => (ptr.mflags2 & M2_HOSTILE) !== 0;
 const always_peaceful = (ptr) => (ptr.mflags2 & M2_PEACEFUL) !== 0;
 const is_minion = (ptr) => (ptr.mflags2 & M2_MINION) !== 0;
 const likes_gold = (ptr) => (ptr.mflags2 & M2_GREEDY) !== 0;
-const is_domestic = (ptr) => (ptr.mflags2 & M2_DOMESTIC) !== 0;
+/* is_domestic() is include/mondata.h:109; it comes from js/mondata.js. */
 const race_hostile = (ptr) => (ptr.mflags2 & (game.urace?.hatemask ?? 0)) !== 0;
 const race_peaceful = (ptr) => (ptr.mflags2 & (game.urace?.lovemask ?? 0)) !== 0;
 const is_ndemon = (ptr) =>

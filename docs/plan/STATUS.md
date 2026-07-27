@@ -8960,3 +8960,30 @@ Note the message primitives in `js/pline.js` (`You`, `Your`, `You_cant`,
 `pline_The`) are all **async**, so `canwearobj` and everything above it must be
 async too. That is a real structural constraint on the whole wear path, not a
 detail: the C returns int and the JS must return a promise.
+
+
+### canwearobj chain -- current front (updated)
+
+Now landed: `lowc`/`strstri` (hacklib), `is_crackable` + the four racial-armor
+macros (obj), `hard_helmet` + the `c_*` file statics +
+`already_wearing`/`already_wearing2` (do_wear),
+`cloak_/helm_/gloves_/boots_simple_name` (objnam), `Glib` (youprop),
+`raceptr` (mondata), `silly_thing` + `silly_thing_to` (invent/const), and
+`racial_exception` rewritten to go through `raceptr`.
+
+**Exactly one dependency is left before `canwearobj` can be written:**
+`fingers_or_gloves` (`src/do_wear.c:60`), which needs `body_part`
+(`src/polyself.c:2143`). `body_part` is a one-line wrapper over `mbodypart`
+(`src/polyself.c:1972-2140`, ~168 lines with several static string tables:
+`humanoid_parts`, and siblings for animals, birds, etc). `mbodypart` is the
+real work and should be a session's own task -- it is table-heavy and every
+table entry is a message string that reaches the screen.
+
+Once `mbodypart` lands: `body_part` and `fingers_or_gloves` are both one-liners,
+then `canwearobj` (`src/do_wear.c:2030`, ~180 lines, NO RNG draws) can go in
+whole. After that `accessory_or_armor_on` (2209) is the next gate, and it DOES
+draw.
+
+Reminder recorded above and worth repeating: `js/pline.js`'s message helpers are
+async, so `canwearobj` and everything above it are async functions returning
+promises where the C returns int.

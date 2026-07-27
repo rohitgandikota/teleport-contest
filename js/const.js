@@ -2954,7 +2954,12 @@ export function In_mines(uz) { return (uz ?? game?.u?.uz)?.dnum === game?.mines_
    hero's level; C's takes an explicit d_level and every call site already
    passes one. */
 export function In_V_tower(uz) { return (uz ?? game?.u?.uz)?.dnum === game?.tower_dnum; }
-export function Is_stronghold(uz) { const g = game; return g?.stronghold_level && (uz ?? g?.u?.uz)?.dnum === g.stronghold_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.stronghold_level.dlevel; }
+/* Is_stronghold() removed: it is an include/dungeon.h predicate and lives
+   in js/dungeon.js. Same pattern as In_sokoban and Is_botlevel -- the copy
+   here defaulted to the hero's level, nothing imported it, and
+   js/dungeon.js:618 is the only call site and passes its level. It also
+   returned the && chain rather than a boolean, so a caller comparing
+   === true would have got a different answer. */
 // C ref: dungeon.c:1637 — Is_botlevel checks if level is the deepest
 // in its dungeon branch. Each branch has its own num_dunlevs.
 /* Is_botlevel() removed: it is include/dungeon.h:126 and lives in

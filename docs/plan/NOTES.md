@@ -2995,3 +2995,29 @@ WHAT WENT WRONG, so the next attempt does not repeat it:
 The payoff is unchanged and still worth it: js/mondata.js is a HEADER mirror
 and must not import from a .c mirror. Fixing it should unblock js/attrib.js
 taking the youprop import, and with it the remaining ~40 uprops reads.
+
+## dup-defs sample: `accessible` lives in the wrong file
+
+166 names are reported as defined differently in more than one file. Sampled
+one to see whether the report is signal or noise, and it is signal:
+
+    js/const.js    export function accessible(x, y) { ... ACCESSIBLE(...) }
+    js/monmove.js  function accessible(x, y) { ... ACCESSIBLE(levtyp) && ... }
+
+C has ONE, at src/monmove.c:2188, so js/monmove.js is its correct home and
+the js/const.js copy is the interloper -- const.js mirrors include/*.h and
+should not hold a .c function at all.
+
+NOT FIXED, deliberately. js/mon.js:11 imports the const.js version, so the
+change is: export monmove's, repoint mon.js, delete const's. That is an
+import-graph edit, and import-graph edits zeroed the whole board three
+separate times today (duplicate binding in wield.js, a real cycle in
+attrib.js, the is_rider move). It wants a context with room to run the full
+scoreboard after each step, not the tail of one.
+
+WORTH KNOWING FOR THE OTHER 165: the two bodies here are not
+interchangeable. const.js's reads `game?.level?.at?.(x, y)` and returns
+early on a missing location; monmove.js's reads `.typ` and also tests
+closed_door, which is what the C does. So whichever one a caller imported
+changed behaviour, silently. Do not assume same-name duplicates are
+harmless because the score is unchanged -- check which is faithful first.

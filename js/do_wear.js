@@ -12,7 +12,8 @@ import { mons } from './monst_data.js';
 import { objects, ONAMES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL,
-         FUMBLING, TIMEOUT, ACID_RES } from './const.js';
+         FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION,
+         FROMOUTSIDE } from './const.js';
 import { sgn } from './hacklib.js';
 
 export function worn(mask) {
@@ -334,4 +335,76 @@ export function Cloak_on() {
 function uprop_dw(p) {
     const u = (game.u.uprops ||= []);
     return (u[p] ||= { intrinsic: 0, extrinsic: 0, blocked: 0 });
+}
+
+// src/do_wear.c Boots_on() — the afternmv callback for putting on boots.
+//
+// ONE DRAW, in the fumble-boots arm, with the same guard Gloves_on uses:
+//
+//     if (!oldprop && !(HFumbling & ~TIMEOUT))
+//         incr_itimeout(&HFumbling, rnd(20));
+//
+// Ported exactly for the same reason -- oldprop and HFumbling are readable
+// now, so the rnd(20) fires where C fires it and only the application is
+// recorded.
+//
+// The speed-boots and levitation arms have GUARDS worth porting even though
+// their effects are recorded, because the guards decide whether C would
+// have drawn or messaged at all. Note the levitation guard tests
+// BLevitation & FROMOUTSIDE, not just blocked -- an outside-blocked hero
+// takes the float_vs_flight branch instead.
+export function Boots_on() {
+    if (!game.u.uarmf)
+        return 0;
+
+    const prop = game.objects[game.u.uarmf.otyp].oc_oprop;
+    const oldprop = (game.u.uprops?.[prop]?.extrinsic ?? 0) & ~W_ARMF;
+    const HFumbling = game.u.uprops?.[FUMBLING]?.intrinsic ?? 0;
+    const HFast = game.u.uprops?.[FAST]?.intrinsic ?? 0;
+    const HLevitation = game.u.uprops?.[LEVITATION]?.intrinsic ?? 0;
+    const BLevitation = game.u.uprops?.[LEVITATION]?.blocked ?? 0;
+
+    switch (game.u.uarmf.otyp) {
+    case ONAMES.LOW_BOOTS:
+    case ONAMES.IRON_SHOES:
+    case ONAMES.HIGH_BOOTS:
+    case ONAMES.JUMPING_BOOTS:
+    case ONAMES.KICKING_BOOTS:
+        break;
+    case ONAMES.WATER_WALKING_BOOTS:
+        note_unported_do_wear('Boots_on:water_walking_spoteffects');
+        break;
+    case ONAMES.SPEED_BOOTS:
+        /* speed boots beat intrinsic speed but not potion speed */
+        if (!oldprop && !(HFast & TIMEOUT))
+            note_unported_do_wear('Boots_on:speed_msg');
+        break;
+    case ONAMES.ELVEN_BOOTS:
+        note_unported_do_wear('Boots_on:toggle_stealth');
+        break;
+    case ONAMES.FUMBLE_BOOTS:
+        if (!oldprop && !(HFumbling & ~TIMEOUT)) {
+            rnd(20);        /* incr_itimeout(&HFumbling, rnd(20)) */
+            note_unported_do_wear('Boots_on:incr_itimeout');
+        }
+        break;
+    case ONAMES.LEVITATION_BOOTS:
+        if (!oldprop && !HLevitation && !(BLevitation & FROMOUTSIDE)) {
+            game.u.uarmf.known = 1;   /* may come off over a sink */
+            note_unported_do_wear('Boots_on:float_up');
+        } else {
+            note_unported_do_wear('Boots_on:float_vs_flight');
+        }
+        break;
+    default:
+        note_unported_do_wear('Boots_on:impossible_unknown_type');
+        break;
+    }
+
+    /* uarmf could be null here (levitation boots put on over a sink) */
+    if (game.u.uarmf && !game.u.uarmf.known) {
+        game.u.uarmf.known = 1; /* +/- evident because of status line AC */
+        note_unported_do_wear('Boots_on:update_inventory');
+    }
+    return 0;
 }

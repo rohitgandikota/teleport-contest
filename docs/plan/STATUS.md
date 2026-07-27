@@ -8581,8 +8581,19 @@ It is a mechanical edit across the 23 accessors in one file, and
 score-neutral for the same reason the last one was -- an absent entry still
 reads false either way.
 
+AND DO NOT INITIALISE uprops AS A SEPARATE STEP -- checked, and there is
+nothing to port. src/u_init.c never touches uprops: `u` is a C global, so
+the array is zero-initialised at startup and no code does it explicitly.
+js/gstate.js is just `game = {}`, with game.u populated ad hoc by whoever
+assigns first.
+
+Since the accessors already read false for an absent entry, an empty
+uprops and a zeroed one behave identically. Initialising it on its own is
+INERT -- it adds a structure nothing reads differently and nothing writes.
+Create it in the SAME change as the first writer, where it finally means
+something.
+
 WHAT REMAINS is the writer side, and it is the actual missing subsystem:
-    - initialise u.uprops with {intrinsic, extrinsic, blocked} per property
     - make the things that GRANT intrinsics write to it: setworn's extrinsic
       arms (js/worn.js, still recorded), potions, corpses, level-up
     - the oc_oprop-number to property-key bridge setworn needs

@@ -7,6 +7,7 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { toggle_blindness } from './potion.js';
 import { getobj } from './invent.js';
 import { pline } from './display.js';
 import { retouch_object } from './artifact.js';
@@ -15,7 +16,7 @@ import { nomul, unmul } from './hack.js';
 import { prinv } from './invent.js';
 import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy, humanoid } from './mondata.js';
 import { welded } from './wield.js';
-import { Glib } from './youprop.js';
+import { Glib, Blind, Punished } from './youprop.js';
 import { silly_thing } from './invent.js';
 import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name, doname, xname, obj_is_pname } from './objnam.js';
 import { body_part } from './polyself.js';
@@ -197,11 +198,11 @@ export function Armor_on() {
 // Ring_on, Amulet_on, Shirt_on, Cloak_on, Boots_on, Gloves_on, Helmet_on,
 // Shield_on -- do not exist yet and are recorded by slot, so game.unported
 // names which one a divergence wanted.
-export function set_wear(obj) {
+export async function set_wear(obj) {
     game.initial_don = !obj;
 
     if (!obj ? game.u.ublindf : (obj === game.u.ublindf))
-        note_unported_do_wear('set_wear:Blindf_on');
+        await Blindf_on(game.u.ublindf);
     if (!obj ? game.u.uright : (obj === game.u.uright))
         note_unported_do_wear('set_wear:Ring_on:right');
     if (!obj ? game.u.uleft : (obj === game.u.uleft))
@@ -1402,4 +1403,41 @@ export async function doputon() {
     }
     otmp = await getobj("put on", puton_ok, GETOBJ_NOFLAGS);
     return otmp ? await accessory_or_armor_on(otmp) : ECMD_CANCEL;
+}
+
+// src/do_wear.c:1461 Blindf_on() — put on a blindfold, towel or lenses.
+export async function Blindf_on(otmp) {
+    const already_blind = Blind();
+    let changed = false;
+
+    /* blindfold might be wielded; release it for wearing */
+    remove_worn_item(otmp, false);
+    setworn(otmp, W_TOOL);
+    await on_msg(otmp);
+
+    if (Blind() && !already_blind) {
+        changed = true;
+        if (game.flags.verbose)
+            await You_cant("see any more.");
+        /* set ball&chain variables before the hero goes blind.
+           set_bc() (src/ball.c:380) needs the ball/chain glyph bookkeeping
+           (bc_order, remove_object, newsym, place_object) and is reachable
+           only while Punished, so it is recorded. */
+        if (Punished())
+            note_unported_do_wear('Blindf_on:set_bc');
+    } else if (already_blind && !Blind()) {
+        changed = true;
+        /* "You are now wearing the Eyes of the Overworld." */
+        if (game.u.uroleplay.blind) {
+            /* this can only happen by putting on the Eyes of the Overworld;
+               that shouldn't actually produce a permanent cure, but we
+               can't let the "blind from birth" conduct remain intact */
+            await pline("For the first time in your life, you can see!");
+            game.u.uroleplay.blind = false;
+        } else
+            await You("can see!");
+    }
+    if (changed) {
+        toggle_blindness(); /* potion.c */
+    }
 }

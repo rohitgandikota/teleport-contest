@@ -2836,3 +2836,30 @@ corresponds to a real C function (and if so, whether that function is
 actually named `worn`) before either is renamed. Do NOT rename the table to
 dodge the clash; that would move it away from its C name for a reason the C
 does not have.
+
+## undefined-refs.mjs: one real hit in 19, and the other 18 are noise
+
+It found a genuine latent crash -- doclose calling feel_newsym, which is not
+ported anywhere, so closing a door threw. No public session reaches that
+line, so the scoreboard stayed green while the defect waited for a held-out
+game. THAT is what the tool is for, and it is worth running after any port.
+
+But do not chase the whole list. The reported total is dominated by three
+systematic false positives, all verified:
+
+    function declarations   _statusLine1 IS defined at js/display.js:365;
+                            the tool flags the declaration as "first use"
+    import aliases          ATR_UNDERLINE is imported `as TERM_UNDERLINE`
+                            at js/tty/wintty.js:21
+    class getters           js/game_display.js's cols/rows/grid/spans and
+                            friends are all `get x() { ... }` members --
+                            that is 12 of the 18 on its own
+
+Also noise: `async` (keyword misparse, js/jsmain.js:171 and
+js/plselect.js:558) and `requestAnimationFrame` (browser global).
+
+SO THE USEFUL READING IS: ignore js/game_display.js entirely, ignore `async`
+and browser globals, then look at what is left. A name that is neither
+declared in its file nor imported into it is the real thing, and
+feel_newsym was the only one of those. Fixing the tool's parser would be
+nice but is not worth a session; knowing its three blind spots is enough.

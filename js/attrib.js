@@ -518,7 +518,7 @@ export function extremeattr(attrindx) {
 
     /* upper limit for Str is 25 but its value is encoded differently */
     if (attrindx === A_STR) {
-        hilimit = 100 + 25; /* include/attrib.h:37 STR19(25) == 125 */
+        hilimit = STR19(25); /* 125 */
         /* lower limit for Str can also be 25 */
         if (game.u.uarmg && game.u.uarmg.otyp === ONAMES.GAUNTLETS_OF_POWER)
             lolimit = hilimit;

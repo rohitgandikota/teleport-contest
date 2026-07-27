@@ -7,6 +7,7 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { extremeattr, ACURR } from './attrib.js';
 import { x_monnam } from './do_name.js';
 import { update_inventory } from './invent.js';
 import { observe_object, makeknown } from './o_init.js';
@@ -1512,4 +1513,24 @@ export async function toggle_stealth(obj, oldprop, on) {
                 : ""} are noisy.`);
         }
     }
+}
+
+// src/do_wear.c:1223 adjust_attrib() — a ring of gain/adornment changes an
+// attribute; learn its enchantment iff the change was observable.
+export function adjust_attrib(obj, which, val) {
+    let old_attrib;
+    let observable;
+
+    old_attrib = ACURR(which);
+    /* C: ABON(which) += val, i.e. u.abon.a[which] */
+    game.u.abon.a[which] += val;
+    observable = (old_attrib !== ACURR(which));
+    /* if didn't change, usually means ring is +0 but might
+        be because nonzero couldn't go below min or above max;
+        learn +0 enchantment if attribute value is not stuck
+        at a limit [and ring has been seen and its type is
+        already discovered, both handled by learnring()] */
+    if (observable || !extremeattr(which))
+        learnring(obj, observable);
+    game.botl = true;
 }

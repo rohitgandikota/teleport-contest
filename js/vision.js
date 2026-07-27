@@ -620,3 +620,18 @@ export function block_point(x, y) {
     if (game.viz_array?.[y]?.[x])
         game.vision_full_recalc = 1;
 }
+
+// src/vision.c:899 unblock_point() — make the location transparent to light.
+//
+// The mirror of block_point above. dig_point(y, x) — note the C passes ROW
+// first — is the shadow-map update and is not ported, same as block_point's
+// fill_point, so it is recorded rather than guessed.
+export function unblock_point(x, y) {
+    note_unported_vision('unblock_point:dig_point');
+
+    /* recalc light sources here? */
+
+    if (game.viz_array?.[y]?.[x])
+        game.vision_full_recalc = 1;
+}
+

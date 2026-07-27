@@ -192,11 +192,20 @@ export async function dowield() {
         return ECMD_FAIL;
     }
 
-    /* the actual wield: setuwep(), the two-weapon and unweapon updates,
-       and the artifact/cockatrice checks */
-    setuwep(wep);
-    (game.unported ||= new Set()).add('dowield:twoweapon_and_artifact');
-    return ECMD_TIME;
+    /* src/wield.c dowield() tail. C calls ready_weapon(), NOT setuwep() --
+       setuwep is called from inside it. An earlier version here called
+       setuwep directly, which skipped ready_weapon's whole body; harmless
+       for the stream, since ready_weapon makes no draws, but it skipped
+       every message and check. */
+    const oldwep = game.u.uwep;
+    const result = await ready_weapon(wep);
+
+    if (oldwep && game.u.uwep !== oldwep)
+        /* flags.pushweapon moves the old weapon to the swap slot */
+        (game.unported ||= new Set()).add('dowield:pushweapon_setuswapwep');
+    (game.unported ||= new Set()).add('dowield:untwoweapon');
+
+    return result;
 }
 
 // src/wield.c:100 setuwep() — make `obj` the wielded weapon.

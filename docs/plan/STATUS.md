@@ -8734,3 +8734,23 @@ port the callbacks first.
 doffing has the same shape plus a takeoff.what check per slot, and its
 1-turn items (amulet, rings, blindfold) need only takeoff.what, so those
 arms ARE portable today.
+
+SIZED THE CALLBACKS, since donning needs them ALL before it is safe:
+
+    Shirt_on    16      Gloves_on   27      Shield_on   25
+    Cloak_on    54      Boots_on    72      Helmet_on   81
+                                            ---------------
+                                            275 lines, six functions
+
+plus seven _off counterparts, unsized. And a partial port does NOT help:
+donning's undefined-arm hazard means five defined callbacks and one missing
+still misreports for that one slot. It is all-or-nothing per function.
+
+These are not thin wrappers either -- Helmet_on at 81 lines handles the
+helm of brilliance and opposite alignment, Boots_on at 72 does levitation,
+speed and fumbling. Each confers or removes real effects, so they want the
+uprops writer that now exists rather than being recorded.
+
+A REASONABLE ORDER for whoever takes it: port the six _on callbacks (they
+are the ones donning needs), then donning, then the _off set and doffing.
+The occupation mechanism underneath them is done, so nothing else blocks.

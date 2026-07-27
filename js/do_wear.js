@@ -10,7 +10,7 @@ import { game } from './gstate.js';
 import { see_monsters, set_mimic_blocking, newsym } from './display.js';
 import { self_invis_message } from './potion.js';
 import { float_vs_flight } from './polyself.js';
-import { extremeattr, ACURR } from './attrib.js';
+import { extremeattr, ACURR, encumber_msg } from './attrib.js';
 import { x_monnam } from './do_name.js';
 import { update_inventory } from './invent.js';
 import { observe_object, makeknown } from './o_init.js';
@@ -405,7 +405,7 @@ export async function Cloak_on() {
     case ONAMES.LEATHER_CLOAK:
         break;
     case ONAMES.CLOAK_OF_PROTECTION:
-        note_unported_do_wear('Cloak_on:makeknown');
+        makeknown(game.u.uarmc.otyp);
         break;
     case ONAMES.ELVEN_CLOAK:
         await toggle_stealth(game.u.uarmc, oldprop, true);
@@ -912,7 +912,7 @@ export async function Cloak_off() {
 // 3. The fumbling arm CLEARS both halves (HFumbling = EFumbling = 0) rather
 //    than just the extrinsic, under the same guard Gloves_on used to set the
 //    timeout. That is now expressible.
-export function Gloves_off() {
+export async function Gloves_off() {
     const gloves = game.u.uarmg;      /* needed after uarmg becomes null */
     if (!gloves) {
         setworn(null, W_ARMG);
@@ -952,7 +952,7 @@ export function Gloves_off() {
 
     setworn(null, W_ARMG);
     t.cancelled_don = false;
-    note_unported_do_wear('Gloves_off:encumber_msg');
+    await encumber_msg(); /* immediate feedback for GoP */
 
     /* Glib: slippery fingers must not transfer from gloves to bare hands */
     note_unported_do_wear('Gloves_off:make_glib');

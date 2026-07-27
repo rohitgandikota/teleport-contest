@@ -9295,3 +9295,30 @@ Recorded, deliberately:
 `Ring_on` (`src/do_wear.c:1242`, 102 lines) and `Amulet_on` (963, 124 lines)
 are what remain of the accessory arm. `tty_yn_function` exists, so the ring
 prompt is NOT a blocker (see the correction entry above).
+
+
+### Ring_on dependency set: 4 of 15 landed, deliberately NOT writing Ring_on yet
+
+`Ring_on` (`src/do_wear.c:1242`, 102 lines) was surveyed and left unwritten:
+11 of its 15 dependencies were missing, so it would have been a skeleton whose
+switch arms mostly record. That reads as done without being done. Landing the
+dependencies first instead.
+
+Landed this pass: `observe_object` (`src/o_init.c:442`), `learnring`
+(`src/do_wear.c:1193`), `toggle_stealth` (`src/do_wear.c:107`), `extremeattr`
+(`src/attrib.c:1268`), `adjust_attrib` (`src/do_wear.c:1223`), plus the
+`FIRST_OBJECT` fix in `discover_object` (see NOTES).
+
+Still missing for `Ring_on`: `setuswapwep`, `see_monsters`,
+`set_mimic_blocking`, `self_invis_message`, `float_up`, `spoteffects`,
+`float_vs_flight`, `rescham`. Several are vision/levitation subsystems rather
+than helpers, so `Ring_on` is likely to land with 3-4 arms recorded even when
+the rest exist. That is fine and honest; what is NOT fine is landing it now with
+11.
+
+Two C details worth carrying:
+- `toggle_stealth`'s not-riding message really is `You("sure are noisy.")` --
+  the C's `riding ? "and " : "sure"` looks like a typo and is not.
+- `extremeattr` records `extremeattr:u_wield_art`; without it a hero wielding
+  Ogresmasher is not seen as being at the Con limit, so a +0 ring of gain
+  constitution reports its enchantment where the C stays quiet.

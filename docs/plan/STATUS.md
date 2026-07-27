@@ -9023,3 +9023,43 @@ to the scoreboard both before and after.
 `canwearobj` (`src/do_wear.c:2030`). `mbodypart`/`body_part` landed, so only
 `fingers_or_gloves` (`src/do_wear.c:60`, a one-liner) stands between here and
 writing it. It reads `uarmg`, which now actually gets assigned.
+
+
+### `canwearobj` is LANDED
+
+`src/do_wear.c:2030`, ~180 lines, ported whole. No RNG draws: every branch is a
+validation or a message. Both gates clean, board unchanged (nothing calls it
+yet, which is expected).
+
+Two things about the port worth knowing before touching it:
+
+- **`mask` is an out-parameter.** C takes `long *mask`; the JS takes an object
+  and assigns `mask.mask`. Callers do `const m = { mask: 0 };
+  await canwearobj(otmp, m, noisy);` then read `m.mask`. Only the success paths
+  write it, same as the C.
+- **It is `async`**, because `js/pline.js`'s helpers are. Every caller up the
+  chain inherits that.
+
+One arm is deliberately incomplete and recorded, not faked:
+`canwearobj:surface`. The TT_INFLOOR / TT_LAVA message needs
+`surface(u.ux, u.uy)` (`src/dungeon.c:1750`), which pulls in the whole
+swallow/pool/ice/lava/altar/grave/fountain/stairs terrain stack, about 20
+unported dependencies, to produce one word in one message that requires being
+trapped in a floor while trying to wear boots. Recorded via
+`note_unported_do_wear` rather than guessing a surface word.
+
+Also landed: `fingers_or_gloves` (`src/do_wear.c:60`) and `plur`
+(`include/hack.h:1520`).
+
+**Note a new import cycle exists and is fine:** `js/do_wear.js` imports
+`gloves_simple_name`/`makeplural` from `js/objnam.js`, and `js/objnam.js`
+already imports `hard_helmet` from `js/do_wear.js`. Verified safe -- every
+binding is a hoisted function declaration used only inside function bodies,
+never read at module-init time. The board did not move when the edge was added,
+which is the check that matters (a bad cycle zeroes it to 0/0).
+
+### Next
+`accessory_or_armor_on` (`src/do_wear.c:2209`) is now unblocked and IS
+draw-bearing, unlike everything landed so far in this chain. After that
+`dowear` (2432) and `doputon` (2454) are the command entry points, then
+`armoroff` (1920) and `select_off` (2696) for the take-off side.

@@ -9097,3 +9097,33 @@ Suggested order from here: `the()` + `obj_is_pname()` -> `on_msg` ->
 `remove_worn_item` -> the ARMOR arm of `accessory_or_armor_on` only, with the
 accessory arm recorded via note_unported. That gets 'W' working end to end
 without waiting on `yn_function`.
+
+
+### `the()` is a MUCH deeper chain than it looked; route around it
+
+`the()` (`src/objnam.c:2171`) needs `CapitalMon`, and `CapitalMon`
+(`src/rumors.c:791`) needs `init_CapMons` (`src/rumors.c:829-935`, ~106 lines)
+which builds a cached list from all of `mons[]` plus the ~20 hallucination
+bogon entries. That drags in the rumors/bogusmon subsystem for one predicate.
+`fruit_from_name` (`src/objnam.c:443-519`, 76 lines) is the other blocker.
+
+**Do not port `the()` to get `on_msg`.** `on_msg` only calls it on the
+`obj_is_pname(otmp)` branch, which requires an object that is BOTH an artifact
+AND has a player-assigned name. Ordinary armor -- the whole reason we want
+`on_msg` -- takes the `an()` path, which has been ported for a while. So
+`on_msg` is writable now with the `the()` arm recorded via note_unported.
+
+Landed toward that: `highc`, `strncmpi`, `strcmpi`, `fuzzymatch` (hacklib, all
+with behavioural tests), `artifact_name` (`src/artifact.c:329`), `Is_box`
+(`include/obj.h:338`), and `artidisco` + `undiscovered_artifact`
+(`src/artifact.c`).
+
+`obj_is_pname` still needs `not_fully_identified` (`src/objnam.c:1787`, ~40
+lines), whose remaining gaps are just `is_damageable` / `is_weptool` -- both
+already in `js/mkobj.js` under the injected-table signature (see the NOTES entry
+on why that duplication is deliberate).
+
+Suggested next: `not_fully_identified` -> `obj_is_pname` -> `on_msg` (with the
+`the()` arm noted) -> `remove_worn_item` (`src/steal.c:213`) -> the ARMOR arm of
+`accessory_or_armor_on`, leaving the accessory arm noted until `yn_function`
+exists.

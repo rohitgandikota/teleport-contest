@@ -2873,3 +2873,32 @@ and browser globals, then look at what is left. A name that is neither
 declared in its file nor imported into it is the real thing, and
 feel_newsym was the only one of those. Fixing the tool's parser would be
 nice but is not worth a session; knowing its three blind spots is enough.
+
+## js/wield.js MUST NOT import from js/invent.js — it kills the whole board
+
+Adding `import { prinv } from './invent.js'` to js/wield.js took the
+scoreboard from 512 screens to ZERO, with all 44 sessions failing and the
+step total collapsing to 0/0. Reverting the one import restored it exactly.
+
+The failure is total rather than partial, which is the signature of a MODULE
+GRAPH problem, not a logic bug: js/wield.js already imports js/invent.js's
+ECMD_TIME, and adding a second binding from the same module apparently
+completes a cycle that leaves something in TDZ at load. js/invent.js is
+imported by nearly everything, so the cycle takes the entire game down.
+
+RELATED AND ALREADY KNOWN: importing js/obj.js directly in a bare harness
+trips a TDZ on droppables_fn (recorded earlier). Same family. This tree has
+real circular-import fragility around invent/obj/wield.
+
+PRACTICAL RULES
+  - do NOT add imports from js/invent.js into js/wield.js
+  - a change that zeroes ALL sessions and drops the step TOTAL to 0/0 is an
+    import cycle, not a logic error -- revert first, do not debug forward
+  - always run the full scoreboard after adding a cross-module import, not
+    just a module load check: `node -e "import('./js/wield.js')"` would have
+    passed here
+
+WHAT THIS COSTS: ready_weapon:prinv (25% reach) stays recorded even though
+prinv is fully ported at js/invent.js:586. The fix is to break the cycle,
+probably by moving prinv or the ECMD_* constants somewhere neutral, not by
+adding the import.

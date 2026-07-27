@@ -9322,3 +9322,33 @@ Two C details worth carrying:
 - `extremeattr` records `extremeattr:u_wield_art`; without it a hero wielding
   Ogresmasher is not seen as being at the Con limit, so a +0 ring of gain
   constitution reports its enchantment where the C stays quiet.
+
+
+### Ring_on deps: 8 of 15 landed
+
+Added this pass: `setuswapwep` (`src/wield.c:285`), `self_invis_message`
+(`src/potion.c:471`), `iter_mons` (`src/mon.c:4527`), `unblock_point`
+(`src/vision.c:899`).
+
+`iter_mons` is worth knowing about: the C saves `mtmp->nmon` BEFORE calling
+vfunc because vfunc may unlink or free the monster. Our monster list is an
+ARRAY (`game.level.monsters`), so the equivalent guard is iterating a snapshot
+-- a vfunc that removes a monster would otherwise shift the array under the
+loop and skip its neighbour. Written that way with a comment.
+
+Still missing for `Ring_on`:
+- `set_mimic_blocking` (`src/display.c:1548`, 3 lines) -- blocked on
+  `mimic_light_blocking` (8 lines), which needs `is_lightblocker_mappear`
+  (`include/monst.h:233`), which needs `is_obj_mappear` and the `S_hcdoor` /
+  `S_vcdoor` / `S_ndoor` / `S_tree` symbols. Those `S_*` names are NOT
+  top-level exports of `js/const.js`; find their real home before porting.
+- `rescham` (`src/mon.c:4621`, 3 lines) -- blocked on `normal_shape`
+  (`src/mon.c:4431`, 31 lines).
+- `see_monsters` (`src/display.c:1487`, 42 lines).
+- `float_up` (`src/trap.c:3937`, 69 lines) and `float_vs_flight`
+  (`src/polyself.c:131`, 23 lines).
+- `spoteffects`.
+
+Pattern to note: three of these are 3-to-8 line functions sitting on top of
+20-to-70 line dependencies. Size in the C file is a poor guide to porting cost;
+check the dependency set before picking a target by line count.

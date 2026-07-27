@@ -697,3 +697,23 @@ export function wearslot(obj) {
     }
     return res;
 }
+
+// src/worn.c:188 allunworn() — clear every slot pointer without unworning.
+//
+// Called from game save, after invent has already been freed. C's comment
+// is the whole warning: "object is already gone so we don't/can't update
+// its owornmask". So this deliberately does NOT do what setnotworn does --
+// no owornmask clearing, no extrinsic bookkeeping, no cancel_doff. It is
+// pointer hygiene on a half-destroyed state, not an unequip.
+//
+// Porting it as "call setnotworn for each slot" would touch freed objects
+// in C and, here, would revoke extrinsics on a hero who is about to be
+// serialised. We never save, so nothing calls this yet.
+export function allunworn() {
+    game.u.twoweap = 0;         /* uwep and uswapwep are going away */
+
+    for (const wp of worn) {
+        /* object is already gone so we don't/can't update its owornmask */
+        game.u[wp.w_obj] = null;
+    }
+}

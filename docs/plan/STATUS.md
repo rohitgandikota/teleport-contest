@@ -8253,3 +8253,37 @@ two entries ago.
 It is also what dowield:twoweapon_and_artifact (25% reach, top of
 unported-hits) actually needs -- untwoweapon and the artifact checks live in
 that tail.
+
+## Session close: verification state
+
+Everything below was re-run after the last commit.
+
+    frozen scoreboard   512/11405 screens, 140764/792838 rng, 1/44 sessions
+    zero-screen         5, unchanged all session
+    generalize          CLEAN on 40 non-session seeds -- no crashes, and only
+                        two reached-but-unported paths, both at 3%
+                        (themeroom Water-surrounded vault, create_monster:enexto)
+    undefined-refs      18, all verified false positives; the one real hit
+                        (doclose calling unported feel_newsym) is fixed
+    dup-defs            166 differing, unchanged; the `worn` clash is
+                        documented in NOTES with the reason not to rename
+    tree                clean, HEAD == origin/main
+
+The generalize result is the one that matters for rule 1: nothing ported this
+session keys off a public session, and 40 unseen seeds run without error.
+
+PORTED AND WIRED THIS SESSION
+    doclose, obstructed, stumble_on_door_mimic, block_point   rng +23
+    worn[] table, setworn, setuwep, recalc_telepat_range,
+        set_twoweap, cancel_doff                              25% entry cleared
+    is_sword, empty_handed, TWOWEAPOK, cant_wield_corpse      4 of ready_weapon's 6
+    uhitm unarmed flag, do.js drop wielding checks            uwep fix, 2 of 3 files
+
+NEXT, in priority order
+    1. touch_artifact (66 lines, 2 draws) -- 66% reach, unlocks BOTH
+       retouch_object/ready_weapon and can_touch_safely
+    2. the uprops struct refactor (55 refs, 14 files) -- unlocks setworn's
+       extrinsic arms, monstunseesu_prop, w_blocks
+    3. mattackm melee path (~400 lines) -- 45% and 41% entries
+    4. the dogfood phase offset, which is really object placement
+       (~50 missing place_object sites)

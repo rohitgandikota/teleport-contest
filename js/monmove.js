@@ -16,8 +16,7 @@ import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     IS_OBSTRUCTED, LAVAWALL,
     P_DAGGER, P_KNIFE,
-    AM_SHRINE, Amask2align, ROOMOFFSET
-} from './const.js';
+    AM_SHRINE, Amask2align, ROOMOFFSET, MTSZ } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn , mindless } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
@@ -1164,7 +1163,6 @@ function postmov(mtmp, ptr, omx, omy, mmoved) {
     return mmoved;
 }
 
-const MTSZ = 4;
 /* include/hack.h:1322 — these were declared here with MMOVE_DIED and
    MMOVE_MOVED SWAPPED against the header. js/const.js has them right. */
 

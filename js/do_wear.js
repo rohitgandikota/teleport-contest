@@ -524,23 +524,25 @@ export function donning(otmp) {
 // C, so their arms are complete rather than partial.
 export function doffing(otmp) {
     const what = game.context?.takeoff?.what | 0;
+    const a = game.afternmv;
     let result = false;
 
-    /* the _off callbacks are unported; only the takeoff.what half is live */
+    /* 'T' (or 'R' used for armor) sets ga.afternmv, 'A' sets takeoff.what.
+       Both halves are live now that every _off callback is ported. */
     if (otmp === game.u.uarm)
-        result = (what === W_ARM);
+        result = (a === Armor_off || what === W_ARM);
     else if (otmp === game.u.uarmu)
-        result = (what === W_ARMU);
+        result = (a === Shirt_off || what === W_ARMU);
     else if (otmp === game.u.uarmc)
-        result = (what === W_ARMC);
+        result = (a === Cloak_off || what === W_ARMC);
     else if (otmp === game.u.uarmf)
-        result = (what === W_ARMF);
+        result = (a === Boots_off || what === W_ARMF);
     else if (otmp === game.u.uarmh)
-        result = (what === W_ARMH);
+        result = (a === Helmet_off || what === W_ARMH);
     else if (otmp === game.u.uarmg)
-        result = (what === W_ARMG);
+        result = (a === Gloves_off || what === W_ARMG);
     else if (otmp === game.u.uarms)
-        result = (what === W_ARMS);
+        result = (a === Shield_off || what === W_ARMS);
     /* these 1-turn items need no afternmv check even in C */
     else if (otmp === game.u.uamul)
         result = (what === W_AMUL);
@@ -548,12 +550,6 @@ export function doffing(otmp) {
         result = (what === W_RINGL);
     else if (otmp === game.u.uright)
         result = (what === W_RINGR);
-
-    if (!result && otmp && (otmp === game.u.uarm || otmp === game.u.uarmu
-        || otmp === game.u.uarmc || otmp === game.u.uarmf
-        || otmp === game.u.uarmh || otmp === game.u.uarmg
-        || otmp === game.u.uarms))
-        note_unported_do_wear('doffing:afternmv_off_callbacks');
 
     return result;
 }

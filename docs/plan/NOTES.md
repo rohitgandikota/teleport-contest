@@ -3344,3 +3344,37 @@ A DUPLICATE CAN BE A SYMPTOM OF A MISSING PORT, NOT A TIDINESS PROBLEM.
 When two copies disagree and neither matches the C, do not pick one -- ask
 why someone needed the second. Here the answer was a gap in role_init, and
 deleting either copy first would have shipped a bug.
+
+## can_saddle: makemon's copy tests ONE of C's seven conditions
+
+A real defect, left in place because fixing it needs groundwork. C,
+src/steed.c:26:
+
+    strchr(steeds, ptr->mlet) && ptr->msize >= MZ_MEDIUM
+    && (!humanoid(ptr) || ptr->mlet == S_CENTAUR) && !amorphous(ptr)
+    && !noncorporeal(ptr) && !is_whirly(ptr) && !unsolid(ptr)
+
+    js/steed.js    all seven -- matches C
+    js/makemon.js  return mtmp.data.msize >= 2;   ONE of them
+
+So makemon's answers true for a great many monsters C refuses to saddle.
+
+WHY IT IS DORMANT: js/makemon.js:1525 is
+
+    if (!rn2(100) && is_domestic(ptr) && can_saddle(mtmp))
+        note_unported('put_saddle_on_mon');
+
+The rn2(100) is evaluated FIRST, so the draw happens either way and the
+stream is unaffected. The body only records. It becomes real the moment
+put_saddle_on_mon is ported -- saddles would then appear on monsters C
+leaves bare, and each saddle is an object, which moves every later draw.
+
+WHY NOT JUST IMPORT steed.js's: js/steed.js imports js/mkobj.js, which
+imports js/makemon.js, so makemon -> steed closes a cycle -- the same one
+that blocked the findgold consolidation.
+
+TO FIX, in order: MZ_MEDIUM is not in js/const.js (add it from
+include/monst.h); the `steeds` list is a local const in js/steed.js and
+should move to a shared home; amorphous, noncorporeal, is_whirly and
+unsolid are all in js/mondata.js, which makemon already imports. Then
+makemon's copy can be written to match C without any new edge.

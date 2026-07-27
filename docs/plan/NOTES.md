@@ -3200,11 +3200,18 @@ WHAT IS LEFT AND HOW TO ATTACK IT:
       const.js. These batch safely -- delete the local const, append the
       name to the existing import. Several can go in one commit.
 
-  A HANDFUL WHOSE FILE HAS NO const.js IMPORT, notably js/role.js
-      (ROLE_ALIGNS, ROLE_GENDERS, ROLE_GENDMASK, ROLE_RACEMASK -- 29
-      references) and js/tty/topl.js (TBUFSZ). Removing these means adding
-      an import edge, which is the operation that has zeroed this board
-      repeatedly. Do them singly with a full scoreboard run, or leave them.
+  DONE -- and the thing that unblocked them is worth keeping:
+
+  IMPORTING js/const.js IS SAFE BY CONSTRUCTION. It imports only
+  js/version.js, js/monst_data.js and js/gstate.js -- data and state
+  modules with no logic -- so a const.js edge cannot cycle back into
+  anything. That is not true of any other module here: adding an edge to
+  invent, worn, display, steal or mondata has zeroed the board five times
+  today.
+
+  So "this file has no const.js import" is never a reason to leave a
+  constant duplicated. Check the TARGET module's own imports before
+  deciding an edge is risky; for const.js the answer is always no.
 
   ~90 with genuinely different bodies. These need reading one at a time --
       that is where helpless and accessible came from.

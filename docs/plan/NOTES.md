@@ -3059,7 +3059,20 @@ TWO DIVERGENCES, not one:
 ALSO THE WRONG HOME: findgold is src/steal.c, so neither js/makemon.js nor
 js/monmove.js should own it.
 
-TO FIX: port it into a js/steal.js mirroring src/steal.c, returning the
-object and testing otyp === GOLD_PIECE, then repoint both callers and check
-each uses the return value as an object rather than a boolean. That last
-step is why this was not just deleted.
+TRIED THAT FIX AND REVERTED IT. js/steal.js already exists, so findgold went
+there in C's shape (returns the object, tests otyp === GOLD_PIECE) and both
+callers were repointed. The caller audit was fine -- makemon's site is
+`!findgold(...)`, which reads correctly against an object return.
+
+WHAT BROKE: importing js/steal.js into js/makemon.js and js/monmove.js
+completes a cycle, and the board went to 0/0 with
+
+    Cannot access 'droppables_fn' before initialization
+
+the same TDZ as the js/attrib.js case. Reverted; 512 restored exactly.
+
+SO THIS NEEDS THE CYCLE BROKEN FIRST, like js/attrib.js did. That one was
+fixed by moving is_rider to its header home, which removed
+mondata -> makemon. Find the equivalent bad edge into js/steal.js before
+retrying. The findgold consolidation itself is correct and worth doing --
+it is the import that fails, not the code.

@@ -8052,3 +8052,36 @@ real, the revert is one line.
 
 It unblocks dowield 25%, drop 20%, dropz 20% when it goes in. Do not re-port
 it; it is already there and tested.
+
+## worn.c cluster: done except ONE blocker (not two)
+
+Wired and verified by execution, each one called directly rather than only
+imported:
+
+    worn[]                 the mask-to-slot table, 15 entries
+    setworn                slot walk exact
+    setuwep                unblocked dowield:setuwep, 25% reach
+    recalc_telepat_range   first consumer of the table besides setworn
+    set_twoweap            guarded, so setworn can call it unconditionally
+    cancel_doff            mask clear exact; cancel_don arm recorded
+
+WHAT IS LEFT IN setworn IS A SINGLE BLOCKER, not a list. The uprops arms and
+monstunseesu_prop LOOK like two separate gaps and are not:
+
+    include/monst.h:94
+    #define monstunseesu_prop(prop) monstunseesu(cvt_prop_to_mseenres(prop))
+
+it takes `prop`, which is the NUMERIC oc_oprop -- exactly the value our
+name-keyed uprops cannot supply. So monstunseesu_prop is not independently
+portable; it needs the same oc_oprop-number to property-name bridge the
+extrinsic arms need. (monstunseesu and cvt_prop_to_mseenres are both absent
+too, but that is secondary -- without the number there is nothing to pass
+them.)
+
+SO THE NEXT MOVE ON THIS CLUSTER IS THE MAPPING ITSELF, once, and it unlocks
+every remaining arm at the same time. js/objects_data.js carries oc_oprop as
+a number per object; the uprops names live in js/const.js. Building the
+bridge is a data question, not a porting question, and it should be done
+deliberately rather than guessed -- a wrong mapping silently grants or
+revokes intrinsics on every single equip, which reviews clean and diverges
+on the first draw.

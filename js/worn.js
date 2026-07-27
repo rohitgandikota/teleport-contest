@@ -9,7 +9,7 @@ import { sgn } from './hacklib.js';
 import { MON_WEP } from './monst.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
-         W_CHAIN, W_ARMOR, AC_MAX } from './const.js';
+         W_CHAIN, W_ARMOR, AC_MAX, BOLT_LIM } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
@@ -475,5 +475,32 @@ export function setworn(obj, mask) {
     note_unported_worn('setworn:tux_penalty');
 
     update_inventory();
-    note_unported_worn('setworn:recalc_telepat_range');
+    recalc_telepat_range();
+}
+
+// src/worn.c:50 recalc_telepat_range() — how far unblind telepathy reaches.
+//
+// The first consumer of the worn[] table besides setworn, and the reason the
+// table had to come first: C does not enumerate slots here either, it walks
+// the same array and counts whichever worn objects confer TELEPAT.
+//
+// The artifact term (ETelepat & W_ART, counting every SPFX_ESP artifact as
+// one) needs the extrinsic bitmask that setworn does not maintain yet, so it
+// is recorded. Its absence can only UNDERCOUNT, giving a shorter range or -1
+// where C would give a range -- never a longer one.
+export function recalc_telepat_range() {
+    let nobjs = 0;
+
+    for (const wp of worn) {
+        const oobj = game.u?.[wp.w_obj];
+        if (oobj && game.objects?.[oobj.otyp]?.oc_oprop === TELEPAT)
+            nobjs++;
+    }
+
+    /* C counts all artifacts with SPFX_ESP as one more */
+    note_unported_worn('recalc_telepat_range:artifact_esp');
+
+    game.u.unblind_telepat_range = nobjs
+        ? (BOLT_LIM * BOLT_LIM) * nobjs
+        : -1;
 }

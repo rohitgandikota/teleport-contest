@@ -20,7 +20,7 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj, place_object } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
-import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn, is_armed, is_domestic } from './mondata.js';
+import { attacktype, is_neuter , is_rider , is_animal , mindless , humanoid , is_demon, is_swimmer, passes_walls , likes_gems, is_unicorn, is_armed, is_domestic, amorphous, noncorporeal, is_whirly, unsolid } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U , A_NEUTRAL, ALIGNWEIGHT, NON_PM, In_endgame } from './const.js';
@@ -951,7 +951,26 @@ export function set_mimic_sym(mtmp) {
 }
 function m_initsgrp(mtmp) { note_unported('m_initsgrp'); }
 function m_initlgrp(mtmp) { note_unported('m_initlgrp'); }
-function can_saddle(mtmp) { return mtmp.data.msize >= 2; /* MZ_MEDIUM */ }
+/* src/steed.c:26 can_saddle() — SEVEN conditions, not one. This tested only
+   msize, so it answered true for many monsters C refuses to saddle.
+   js/steed.js has the correct one, but importing it would close a cycle
+   (steed -> mkobj -> makemon), so the conditions are written out here and
+   the two now agree.
+
+   steeds[] is src/steed.c:8, the six classes that can bear a rider.
+   MZ_MEDIUM is 2, which is why the old `msize >= 2` had the right threshold
+   and nothing else. */
+const steeds = [MONSYMS.S_QUADRUPED, MONSYMS.S_UNICORN, MONSYMS.S_ANGEL,
+                MONSYMS.S_CENTAUR, MONSYMS.S_DRAGON, MONSYMS.S_JABBERWOCK];
+
+function can_saddle(mtmp) {
+    const ptr = mtmp.data;
+    return steeds.includes(ptr.mlet)
+        && ptr.msize >= MFLAGS.MZ_MEDIUM
+        && (!humanoid(ptr) || ptr.mlet === MONSYMS.S_CENTAUR)
+        && !amorphous(ptr) && !noncorporeal(ptr)
+        && !is_whirly(ptr) && !unsolid(ptr);
+}
 
 /* m_dowear() now lives in js/worn.js, its C home (src/worn.c:757). The copy
    that stood here short-circuited on an empty minvent and recorded otherwise;

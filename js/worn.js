@@ -11,7 +11,8 @@ import { set_twoweap } from './wield.js';
 import { cancel_doff } from './do_wear.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
-         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM } from './const.js';
+         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM,
+       } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
          ARM_CLOAK, ARM_SHIRT } from './obj.js';
@@ -340,6 +341,7 @@ function w_blocks(o, m) {
 }
 
 const MFAST = 2;   /* include/monst.h — permspeed value */
+const MSLOW = 1;   /* include/monst.h — permspeed value */
 
 function note_unported_worn(what) {
     (game.unported ||= new Set()).add(what);
@@ -738,4 +740,60 @@ export function mon_set_minvis(mon, cursed_potion) {
         if (mon.wormno)
             note_unported_worn('mon_set_minvis:see_wsegs');
     }
+}
+
+// src/worn.c:488 mon_adjust_speed() — change a monster's intrinsic speed.
+//
+// The switch is the whole thing and its arms are NOT a simple scale. +1 and
+// -1 step THROUGH normal rather than past it: a slow monster given +1
+// becomes normal, not fast, and only a normal one becomes fast. +2 and -2
+// set the extreme outright. -3 is petrification and -4 green slime, and both
+// only strip MFAST -- they never make a monster slow.
+//
+// give_msg is cleared by the arms that fire during creation or as part of a
+// larger effect (+2, -2, -4), which is why it is a variable rather than a
+// parameter.
+//
+// The worn-speed-boots check AFTER the switch is what actually sets mspeed:
+// permspeed is the intrinsic, mspeed is the effective one, and boots win.
+//
+// Messages are recorded: canseemon, Monnam, pline_mon and learnwand are all
+// in modules js/worn.js has no edge to. The speed change itself is exact.
+export function mon_adjust_speed(mon, adjust, obj) {
+    let petrify = false;
+    const oldspeed = mon.mspeed;
+
+    switch (adjust) {
+    case 2:
+        mon.permspeed = MFAST;
+        break;                       /* special-case monster creation */
+    case 1:
+        mon.permspeed = (mon.permspeed === MSLOW) ? 0 : MFAST;
+        break;
+    case 0:                          /* just check for worn speed boots */
+        break;
+    case -1:
+        mon.permspeed = (mon.permspeed === MFAST) ? 0 : MSLOW;
+        break;
+    case -2:
+        mon.permspeed = MSLOW;
+        break;
+    case -3:                         /* petrification */
+        /* take away intrinsic speed but do not reduce normal speed */
+        if (mon.permspeed === MFAST)
+            mon.permspeed = 0;
+        petrify = true;
+        break;
+    case -4:                         /* green slime */
+        if (mon.permspeed === MFAST)
+            mon.permspeed = 0;
+        break;
+    }
+
+    const boots = (mon.minvent || []).find(
+        (otmp) => otmp.owornmask && game.objects[otmp.otyp].oc_oprop === FAST);
+    mon.mspeed = boots ? MFAST : mon.permspeed;
+
+    if (mon.mspeed !== oldspeed || petrify)
+        note_unported_worn('mon_adjust_speed:msg');
 }

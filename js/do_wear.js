@@ -211,9 +211,9 @@ export async function set_wear(obj) {
     if (!obj ? game.u.ublindf : (obj === game.u.ublindf))
         await Blindf_on(game.u.ublindf);
     if (!obj ? game.u.uright : (obj === game.u.uright))
-        note_unported_do_wear('set_wear:Ring_on:right');
+        await Ring_on(game.u.uright);
     if (!obj ? game.u.uleft : (obj === game.u.uleft))
-        note_unported_do_wear('set_wear:Ring_on:left');
+        await Ring_on(game.u.uleft);
     if (!obj ? game.u.uamul : (obj === game.u.uamul))
         note_unported_do_wear('set_wear:Amulet_on');
 

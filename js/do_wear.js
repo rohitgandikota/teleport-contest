@@ -209,28 +209,28 @@ export async function set_wear(obj) {
     game.initial_don = !obj;
 
     if (!obj ? game.u.ublindf : (obj === game.u.ublindf))
-        await Blindf_on(game.u.ublindf);
+        note_unported_do_wear('set_wear:Blindf_on');
     if (!obj ? game.u.uright : (obj === game.u.uright))
-        await Ring_on(game.u.uright);
+        note_unported_do_wear('set_wear:Ring_on:right');
     if (!obj ? game.u.uleft : (obj === game.u.uleft))
-        await Ring_on(game.u.uleft);
+        note_unported_do_wear('set_wear:Ring_on:left');
     if (!obj ? game.u.uamul : (obj === game.u.uamul))
         note_unported_do_wear('set_wear:Amulet_on');
 
     if (!obj ? game.u.uarmu : (obj === game.u.uarmu))
-        await Shirt_on();
+        note_unported_do_wear('set_wear:Shirt_on');
     if (!obj ? game.u.uarm : (obj === game.u.uarm))
         await Armor_on();
     if (!obj ? game.u.uarmc : (obj === game.u.uarmc))
-        await Cloak_on();
+        note_unported_do_wear('set_wear:Cloak_on');
     if (!obj ? game.u.uarmf : (obj === game.u.uarmf))
-        await Boots_on();
+        note_unported_do_wear('set_wear:Boots_on');
     if (!obj ? game.u.uarmg : (obj === game.u.uarmg))
-        await Gloves_on();
+        note_unported_do_wear('set_wear:Gloves_on');
     if (!obj ? game.u.uarmh : (obj === game.u.uarmh))
-        await Helmet_on();
+        note_unported_do_wear('set_wear:Helmet_on');
     if (!obj ? game.u.uarms : (obj === game.u.uarms))
-        await Shield_on();
+        note_unported_do_wear('set_wear:Shield_on');
 
     game.initial_don = false;
 }
@@ -408,7 +408,7 @@ export async function Cloak_on() {
         makeknown(game.u.uarmc.otyp);
         break;
     case ONAMES.ELVEN_CLOAK:
-        await toggle_stealth(game.u.uarmc, oldprop, true);
+        note_unported_do_wear('Cloak_on:toggle_stealth');
         break;
     case ONAMES.CLOAK_OF_DISPLACEMENT:
         note_unported_do_wear('Cloak_on:toggle_displacement');
@@ -489,7 +489,7 @@ export async function Boots_on() {
             note_unported_do_wear('Boots_on:speed_msg');
         break;
     case ONAMES.ELVEN_BOOTS:
-        await toggle_stealth(game.u.uarmf, oldprop, true);
+        note_unported_do_wear('Boots_on:toggle_stealth');
         break;
     case ONAMES.FUMBLE_BOOTS:
         if (!oldprop && !(HFumbling & ~TIMEOUT)) {
@@ -873,7 +873,7 @@ export async function Cloak_off() {
     case ONAMES.LEATHER_CLOAK:
         break;
     case ONAMES.ELVEN_CLOAK:
-        await toggle_stealth(otmp, oldprop, false);
+        note_unported_do_wear('_off:toggle_stealth');
         break;
     case ONAMES.CLOAK_OF_DISPLACEMENT:
         note_unported_do_wear('Cloak_off:toggle_displacement');
@@ -952,7 +952,7 @@ export async function Gloves_off() {
 
     setworn(null, W_ARMG);
     t.cancelled_don = false;
-    await encumber_msg(); /* immediate feedback for GoP */
+    note_unported_do_wear('Gloves_off:encumber_msg');
 
     /* Glib: slippery fingers must not transfer from gloves to bare hands */
     note_unported_do_wear('Gloves_off:make_glib');
@@ -1009,7 +1009,7 @@ export async function Boots_off() {
             note_unported_do_wear('Boots_off:water_walking_spoteffects');
         break;
     case ONAMES.ELVEN_BOOTS:
-        await toggle_stealth(otmp, oldprop, false);
+        note_unported_do_wear('_off:toggle_stealth');
         break;
     case ONAMES.FUMBLE_BOOTS:
         if (!oldprop && !(HFumbling & ~TIMEOUT)) {

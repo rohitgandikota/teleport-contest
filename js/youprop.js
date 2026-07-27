@@ -164,3 +164,11 @@ export const Conflict = () => !!game.u?.uprops?.CONFLICT;
 
 // include/youprop.h:204 Displaced — (HDisplaced || EDisplaced)
 export const Displaced = () => !!game.u?.uprops?.DISPLACED;
+
+// include/youprop.h:92 Blinded — (HBlinded && !BBlinded).
+//
+// I first wrote this as "intrinsic only" and that is WRONG: it has a blocked
+// term, and it has no extrinsic half, which is a shape none of the others
+// use. The !BBlinded term is missing here for the same reason as Invis and
+// Levitation -- no blocked field yet. Fix all three WITH the structure.
+export const Blinded = () => !!game.u?.uprops?.BLINDED;

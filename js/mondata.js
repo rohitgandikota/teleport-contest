@@ -558,3 +558,6 @@ export function raceptr(mtmp) {
 // not a non-zero AND: M1_NOLIMBS is two bits (M1_NOTAKE|M1_NOHANDS-ish), so a
 // monster with only one of them is NOT nolimbs.
 export const nolimbs = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOLIMBS) === MFLAGS.M1_NOLIMBS;
+
+// include/mondata.h:96 is_were()
+export const is_were = (ptr) => (ptr.mflags2 & MFLAGS.M2_WERE) !== 0;

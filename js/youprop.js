@@ -93,3 +93,15 @@ export const Fire_resistance = () => !!game.u?.uprops?.FIRE_RES;
 // uprops grows the struct, the two halves become
 // uprops[HUNGER].intrinsic and .extrinsic and nothing else changes.
 export const Hunger = () => !!game.u?.uprops?.HUNGER;
+
+// include/youprop.h:182 Clairvoyant — ((HClairvoyant || EClairvoyant)
+// && !BClairvoyant).
+//
+// This one already had its blocked term modelled, unlike Invis: the call
+// sites in js/allmain.js and js/attrib.js test a SEPARATE pseudo-property
+// key, uprops.BLOCKED_CLAIRVOYANT, standing in for
+// uprops[CLAIRVOYANT].blocked. That is a structure the C does not have, so
+// when uprops grows the real struct the pseudo-key must be FOLDED IN here
+// and deleted rather than left alongside.
+export const Clairvoyant = () =>
+    !!game.u?.uprops?.CLAIRVOYANT && !game.u?.uprops?.BLOCKED_CLAIRVOYANT;

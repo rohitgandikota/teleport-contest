@@ -2576,6 +2576,23 @@ WHAT SURVIVES, because these had no timeout prefix:
                             timeout fired, which is a different mechanism
                             and does work
 
+REDONE WITH A WORKING METHOD, and the answer flips back. Using the Bash
+tool's own timeout (harness-enforced, not a shell binary):
+
+    wield.js:177 alone   HANGS   (150s, no completion, run really executed)
+
+So 'if (wep === game.u.uwep)' -- the 'You are already wielding that!' branch
+-- IS a culprit, which is what the very first hypothesis said before three
+non-runs muddied it. The branch fires, prints, returns ECMD_FAIL.
+
+That leaves the mechanism still open, but now on solid ground: a message plus
+ECMD_FAIL hangs, and the update_topl trace says a single message cannot block
+on --More--. The remaining suspect is therefore ECMD_FAIL itself -- what the
+command loop does when a command consumes no time. If js/cmd.js re-reads
+without having consumed the key, or moveloop spins waiting for context.move,
+that would exhaust the queue exactly the way observed. CHECK THE ECMD_FAIL
+PATH IN js/cmd.js NEXT, not the message.
+
 HOW TO TIME-BOX A RUN HERE. Use the Bash tool's own `timeout` parameter,
 which is enforced by the harness, not by a shell binary. If a shell-level
 limit is genuinely needed, background the job and poll, or use

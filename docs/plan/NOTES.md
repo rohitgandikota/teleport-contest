@@ -2907,3 +2907,35 @@ PRACTICAL RULES
     duplicate identifier.
   - the earlier droppables_fn TDZ in js/obj.js IS real and unrelated; do not
     merge the two in your head as I did.
+
+## js/attrib.js CANNOT import js/youprop.js — a real cycle, unlike the prinv one
+
+Converting attrib.js's uprops reads to the youprop accessors zeroed the
+board (0/0, all 44 sessions). This time the load error names a genuine
+cycle, not a duplicate binding:
+
+    Cannot access 'droppables_fn' before initialization
+
+Same TDZ recorded earlier for importing js/obj.js in a bare harness, but
+here it fires in the REAL APP: js/youprop.js imports js/mondata.js
+(is_flyer), and somewhere along that path the graph reaches back to
+attrib.js while it is still initialising.
+
+TWO DIFFERENT FAILURES WITH THE SAME SCOREBOARD SIGNATURE, and the only way
+to tell them apart is the load error:
+
+    duplicate import binding  -> SyntaxError naming the identifier
+                                 (js/wield.js + prinv, earlier)
+    genuine import cycle      -> "Cannot access X before initialization"
+                                 (js/attrib.js + youprop.js, this one)
+
+Reverting is right in both cases; the DIAGNOSIS differs entirely, and I got
+it backwards the first time by guessing.
+
+CONSEQUENCE FOR THE uprops WORK: the reader conversion is NOT uniformly
+safe. It worked in js/sounds.js, js/mon.js, js/eat.js and js/allmain.js and
+fails in js/attrib.js. Convert one file at a time and RUN THE FULL
+SCOREBOARD after each -- a module load check passes for the duplicate-import
+case and the per-file cost is the only reliable signal. Files that cannot
+take the import need the cycle broken first, probably by giving js/youprop.js
+no imports beyond js/gstate.js.

@@ -8924,3 +8924,14 @@ THE RULES THIS PASS EARNED, all in NOTES:
     Check the TARGET's imports before calling an edge risky.
   - four formatting variants defeat batch edits: aligned spacing, multi-line
     imports, trailing commas, single- vs multi-line definitions.
+### Next action (cold start)
+`in_rooms` un-stubbing is CLOSED (regresses -394 screens, see NOTES). Do not retry.
+Remaining ready targets, in order:
+1. `accessory_or_armor_on` (219 lines, src/do_wear.c) -- unblocked, all 13 wear
+   callbacks now exist.
+2. `armoroff` + `select_off`, which unblock `armor_or_accessory_off`.
+3. ~100 remaining dup-defs names. Rule from the last pass: read BOTH bodies
+   against the C before deleting either; the wrong copy is right about half the
+   time, and a duplicate can be a symptom of a missing port.
+Baseline to beat: 512/11405 screens, RNG 140764/792838, 1/44 sessions.
+Always `node tools/generalize.mjs` before pushing; it is the anti-overfit gate.

@@ -8781,6 +8781,17 @@ action block needs subfrombill, monflee, tele_restrict and rloc, and RLOC
 DRAWS. Recording the action block would silently skip draws C makes, so
 port rloc first or leave stealarm alone. Do not half-port it.
 
+SIZED rloc AND IT IS NOT A LEAF EITHER: src/teleport.c:1799, 96 lines with
+THREE draws, needing tele(), stairway_find_forwiz(), In_W_tower() and
+rloc_pos_ok(). goodpos() exists; the rest do not. So the chain under
+stealarm is at least two functions deep before anything can be ported
+faithfully, and both layers draw.
+
+THAT MAKES stealarm A POOR TARGET, not a near one. Better next moves are
+the ones whose dependencies are already present -- the 157 remaining
+dup-defs duplicates, or the _off callbacks (Armor_off and friends), which
+mirror the _on set that just landed and need only what those needed.
+
 THE PATTERN WORTH REUSING: three of these arms only became portable because
 the uprops writer landed earlier in the session -- Shield_on's magical
 shields, Gloves_on's draw guard, Cloak_on's alchemy smock. Recording gaps

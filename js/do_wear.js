@@ -7,10 +7,12 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { rnd } from './rng.js';
 import { mons } from './monst_data.js';
 import { objects, ONAMES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
-         W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL } from './const.js';
+         W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL,
+         FUMBLING, TIMEOUT } from './const.js';
 import { sgn } from './hacklib.js';
 
 export function worn(mask) {
@@ -211,6 +213,56 @@ export function Shield_on() {
     if (!game.u.uarms.known) {
         game.u.uarms.known = 1; /* +/- evident because of status line AC */
         note_unported_do_wear('Shield_on:update_inventory');
+    }
+    return 0;
+}
+
+// src/do_wear.c Gloves_on() — the afternmv callback for putting on gloves.
+//
+// THE FUMBLING ARM DRAWS, and its guard has to be exact or the stream moves:
+//
+//     if (!oldprop && !(HFumbling & ~TIMEOUT))
+//         incr_itimeout(&HFumbling, rnd(20));
+//
+// oldprop is the extrinsic bits for this glove's property MINUS the gloves
+// slot itself, so it asks "did something else already confer this?". Both it
+// and HFumbling are readable now that uprops exists and is keyed by the
+// property number, so the guard is ported exactly and the rnd(20) fires
+// where C fires it. Only the timeout APPLICATION is recorded, since
+// incr_itimeout is not ported -- the draw happens either way.
+//
+// The other arms need makeknown and adj_abon, neither ported.
+export function Gloves_on() {
+    if (!game.u.uarmg)
+        return 0;
+
+    const prop = game.objects[game.u.uarmg.otyp].oc_oprop;
+    const oldprop = (game.u.uprops?.[prop]?.extrinsic ?? 0) & ~W_ARMG;
+    const HFumbling = game.u.uprops?.[FUMBLING]?.intrinsic ?? 0;
+
+    switch (game.u.uarmg.otyp) {
+    case ONAMES.LEATHER_GLOVES:
+        break;
+    case ONAMES.GAUNTLETS_OF_FUMBLING:
+        if (!oldprop && !(HFumbling & ~TIMEOUT)) {
+            rnd(20);            /* incr_itimeout(&HFumbling, rnd(20)) */
+            note_unported_do_wear('Gloves_on:incr_itimeout');
+        }
+        break;
+    case ONAMES.GAUNTLETS_OF_POWER:
+        note_unported_do_wear('Gloves_on:makeknown_and_botl');
+        break;
+    case ONAMES.GAUNTLETS_OF_DEXTERITY:
+        note_unported_do_wear('Gloves_on:adj_abon');
+        break;
+    default:
+        note_unported_do_wear('Gloves_on:impossible_unknown_type');
+        break;
+    }
+
+    if (!game.u.uarmg.known) {
+        game.u.uarmg.known = 1; /* +/- evident because of status line AC */
+        note_unported_do_wear('Gloves_on:update_inventory');
     }
     return 0;
 }

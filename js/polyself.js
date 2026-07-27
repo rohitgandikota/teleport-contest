@@ -6,9 +6,10 @@
 // reads the ordinary starting form and gives the ordinary answer.
 
 import { game } from './gstate.js';
+import { Flying, Levitation } from './youprop.js';
 import { mons, MONSYMS, PMNAMES, ATTKS } from './monst_data.js';
 import { NO_PART, ARM, EYE, FINGER, FINGERTIP, FOOT, HAND, HANDED,
-         HEAD, LEG, TOE, HAIR, NOSE } from './const.js';
+         HEAD, LEG, TOE, HAIR, NOSE, I_SPECIAL, TT_PIT, LEVITATION, FLYING, STEALTH, FROMOUTSIDE } from './const.js';
 import { is_neuter, humanoid, attacktype, slithy } from './mondata.js';
 
 // src/polyself.c:2149 poly_gender() — the polymorphed hero's gender.
@@ -205,4 +206,47 @@ export function mbodypart(mon, part) {
 // src/polyself.c:2143 body_part() — mbodypart() for the hero.
 export function body_part(part) {
     return mbodypart(game.youmonst, part);
+}
+
+/* u.uprops[p], created on demand. The C's H/E/B macros are lvalues -- BFlying
+   |= I_SPECIAL assigns into the struct -- so these arms need the raw record,
+   not js/youprop.js's boolean readers. */
+function uprop(p) {
+    const up = (game.u.uprops ||= {});
+    return (up[p] ||= { intrinsic: 0, extrinsic: 0, blocked: 0 });
+}
+
+// src/polyself.c:158 steed_vs_stealth() — riding blocks stealth unless
+// hero+steed fly.
+export function steed_vs_stealth() {
+    if (game.u.usteed && !Flying() && !Levitation())
+        uprop(STEALTH).blocked |= FROMOUTSIDE;
+    else
+        uprop(STEALTH).blocked &= ~FROMOUTSIDE;
+}
+
+// src/polyself.c:131 float_vs_flight() — Levitation overrides Flying; set or
+// clear BFlying|I_SPECIAL.
+export function float_vs_flight() {
+    const stuck_in_floor = (game.u.utrap && game.u.utraptype !== TT_PIT);
+
+    /* floating overrides flight; so does being trapped in the floor */
+    if ((uprop(LEVITATION).intrinsic || uprop(LEVITATION).extrinsic)
+        || ((uprop(FLYING).intrinsic || uprop(FLYING).extrinsic) && stuck_in_floor))
+        uprop(FLYING).blocked |= I_SPECIAL;
+    else
+        uprop(FLYING).blocked &= ~I_SPECIAL;
+    /* being trapped on the ground (bear trap, web, molten lava survived
+       with fire resistance, former lava solidified via cold, tethered
+       to a buried iron ball) overrides floating--the floor is reachable */
+    if ((uprop(LEVITATION).intrinsic || uprop(LEVITATION).extrinsic) && stuck_in_floor)
+        uprop(LEVITATION).blocked |= I_SPECIAL;
+    else
+        uprop(LEVITATION).blocked &= ~I_SPECIAL;
+
+    /* riding blocks stealth unless hero+steed fly, so a change in flying
+       might cause a change in stealth */
+    steed_vs_stealth();
+
+    game.botl = true;
 }

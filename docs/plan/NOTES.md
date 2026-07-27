@@ -3033,3 +3033,33 @@ early on a missing location; monmove.js's reads `.typ` and also tests
 closed_door, which is what the C does. So whichever one a caller imported
 changed behaviour, silently. Do not assume same-name duplicates are
 harmless because the score is unchanged -- check which is faithful first.
+
+## findgold: two copies, and NEITHER matches C
+
+Found during the dup-defs pass and left in place, because fixing it needs a
+caller audit rather than a delete.
+
+    C, src/steal.c:45   RETURNS THE OBJECT (or null):
+                          while (chain && chain->otyp != GOLD_PIECE)
+                              chain = chain->nobj;
+                          return chain;
+
+    js/makemon.js       returns a BOOLEAN: minvent.some(o => o.oclass ===
+                        OCLASSES.COIN_CLASS)
+    js/monmove.js       loops and returns the object, closer to C
+
+TWO DIVERGENCES, not one:
+  1. makemon's returns a boolean where C returns an object. Any caller that
+     wants the gold itself gets `true`.
+  2. BOTH test the wrong thing. C compares otyp against GOLD_PIECE; ours
+     compare oclass against COIN_CLASS. Gold is the only COIN_CLASS object
+     in 5.0 so they agree today, but that is a coincidence of the object
+     table, not the same test.
+
+ALSO THE WRONG HOME: findgold is src/steal.c, so neither js/makemon.js nor
+js/monmove.js should own it.
+
+TO FIX: port it into a js/steal.js mirroring src/steal.c, returning the
+object and testing otyp === GOLD_PIECE, then repoint both callers and check
+each uses the return value as an object rather than a boolean. That last
+step is why this was not just deleted.

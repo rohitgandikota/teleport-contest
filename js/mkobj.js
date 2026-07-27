@@ -29,7 +29,7 @@ import { Is_rogue_level, NODIR} from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
-    rndmonnum, level_difficulty, is_male, is_female } from './makemon.js';
+    rndmonnum, level_difficulty, is_male, is_female , Inhell } from './makemon.js';
 import { is_rider } from './mondata.js';
 import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 /* invent.js imports erosion_matters() from here, so this edge closes a cycle.
@@ -1143,9 +1143,10 @@ function note_unported_obj(what) {
    in js/const.js with the other level tests. The copy that used to
    be here tested game.level.flags.is_rogue_level instead, which is a different
    question and a flag nothing sets. */
-function Inhell() {
-    return game.dungeons?.[game.u?.uz?.dnum]?.flags?.hellish === true;
-}
+/* Inhell() is include/dungeon.h:140, In_hell(&u.uz). It is currently
+   exported from js/makemon.js -- the wrong home for a dungeon.h macro, but
+   this file already imports from there, so deduplicating costs no new edge.
+   Move both to js/dungeon.js when someone touches that file. */
 
 // src/mkobj.c:2676 add_to_container() — link an object into a container's cobj
 // chain, or merge it into an identical stack already there.

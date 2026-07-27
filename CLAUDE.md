@@ -115,6 +115,11 @@ produce nothing. Rules:
 2. Port it following `docs/plan/porting-protocol.md`.
 3. Verify: `bash frozen/score.sh` (or a single session for speed —
    `node frozen/ps_test_runner.mjs sessions/<name>.session.json`).
+3a. **If the change can emit a message, run `node tools/hang-gate.mjs` too.**
+   It is a HARD gate. score.sh and generalize both let an end-of-input
+   over-read THROW; the judge's runner BLOCKS on it, and one blocked session
+   burns the judge's entire 900s budget so the fork goes unscored. This has
+   already cost us a full scoring cycle — see NOTES.
 4. RNG must not regress. Screens must not regress. If either drops, fix or revert
    before moving on.
 5. Tick the item, commit, push.

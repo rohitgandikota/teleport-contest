@@ -62,6 +62,17 @@ export const See_invisible = () => !!game.u?.uprops?.SEE_INVIS;
 // The flat uprops map has no blocked slot, so the BInvis term has nowhere to
 // live yet; nothing blocks invisibility today, so this is right for now and
 // the term goes in when uprops grows the struct.
+// include/youprop.h:198 Invis — INCOMPLETE, and deliberately flagged.
+//
+//     #define Invis ((HInvis || EInvis) && !BInvis)
+//
+// The !BInvis term is MISSING here and cannot be written yet: uprops has no
+// {intrinsic, extrinsic, blocked} structure, so there is nothing to read a
+// blocked bit from. Today every term is false so the result is right by
+// accident; the moment uprops is initialised this will report invisibility
+// for a hero whose invisibility is BLOCKED.
+//
+// Fix this WITH the uprops structure, not before and not after.
 export const Invis = () => !!game.u?.uprops?.INVIS;
 
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).

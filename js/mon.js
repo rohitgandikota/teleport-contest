@@ -27,6 +27,7 @@ import { mdistu } from './monmove.js';
 
 import { game } from './gstate.js';
 import { touch_artifact } from './artifact.js';
+import { Invis } from './youprop.js';
 import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
@@ -457,7 +458,7 @@ export function mfndpos(mon, data, flag) {
 
                     /* src/mon.c:2338 — avoid standing in the hero's line.
                        monseeu is the same test onscary's displacement uses. */
-                    const monseeu = (mon.mcansee && !game.u?.uprops?.INVIS);
+                    const monseeu = (mon.mcansee && !Invis());
                     if (monseeu && monlineu(mon, nx, ny)) {
                         if (flag & NOTONL)
                             continue;

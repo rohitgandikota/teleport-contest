@@ -19,7 +19,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -389,11 +389,9 @@ function objects_at(x, y) {
 const mindless    = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
 /* is_animal() is an include/mondata.h macro; it comes from js/mondata.js. */
 const likes_gold  = (ptr) => (ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0;
-const likes_gems  = (ptr) => (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;
 const likes_magic = (ptr) => (ptr.mflags2 & MFLAGS.M2_MAGIC) !== 0;
 const is_armed    = (ptr) => ptr.mattk.some(a => a[0] === ATTKS.AT_WEAP);
 const likes_objs  = (ptr) => (ptr.mflags2 & MFLAGS.M2_COLLECT) !== 0 || is_armed(ptr);
-const is_unicorn  = (ptr) => ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
 
 /* include/obj.h:337 Is_container() and :339 Is_mbag(). Both are duplicated
    here on purpose: js/obj.js has Is_container and js/mkobj.js has a private

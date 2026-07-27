@@ -147,6 +147,14 @@ export const mindless = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
 // include/mondata.h:19,20,27 — placement predicates read by pm_to_humidity().
 export const is_flyer   = (ptr) => (ptr.mflags1 & MFLAGS.M1_FLY) !== 0;
 
+// include/mondata.h:144 likes_gems()
+export const likes_gems = (ptr) => (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;
+
+// include/mondata.h:149 is_unicorn() — defined in terms of likes_gems(),
+// not a flag of its own, so the two belong together.
+export const is_unicorn = (ptr) =>
+    ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
+
 // include/mondata.h:161 is_rider() — Death, Famine or Pestilence.
 //
 // C compares the permonst POINTER against &mons[PM_*]; ours compares pmidx,

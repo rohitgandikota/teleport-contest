@@ -7,13 +7,14 @@ import { CORPSTAT_NONE } from './const.js';
 // Uses the real game PRNG (not a separate layout PRNG) for bit-exact parity.
 
 import { game } from './gstate.js';
+import { is_unicorn } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import {
     mkobj, mksobj, next_ident, blessorcurse, special_corpse, start_corpse_timeout,
 } from './mkobj.js';
 import {
     rndmonnum, rndmonnum_adj, makemon, mkclass, monsndx, level_difficulty,
-    MM_NOGRP, NO_MM_FLAGS, Inhell, likes_gems,
+    MM_NOGRP, NO_MM_FLAGS, Inhell,
 } from './makemon.js';
 import { MM_NOCOUNTBIRTH, MM_NOMSG, SHOPBASE, COURT, LEPREHALL, ZOO, TEMPLE,
          BEEHIVE, MORGUE, ANTHOLE, BARRACKS, SWAMP, COCKNEST,
@@ -341,7 +342,6 @@ function mk_trap_statue(x, y) {
 }
 
 // include/mondata.h:149 is_unicorn()
-const is_unicorn = (ptr) => ptr.mlet === MONSYMS.S_UNICORN && likes_gems(ptr);
 
 // maketrap stub
 // src/trap.c:3083 choose_trapnote() — a squeaky board picks an unused musical

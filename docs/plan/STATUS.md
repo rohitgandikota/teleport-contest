@@ -7973,3 +7973,33 @@ storage fix was ultimately for. Doing setuwep properly may make the
 game.u.uwep reads in js/wield.js meaningful enough to be worth revisiting,
 but the seed0361 block near key 180 is still unexplained, so keep them
 separate and do not re-apply that change alongside this one.
+
+## setuwep is built and verified but BLOCKED on an ordering bug
+
+The chain worn[] table -> setworn -> setuwep is ported and each piece was
+verified by executing it, not merely importing it:
+
+    js/worn.js   worn[]    15 entries, mask -> game.u slot name
+    js/worn.js   setworn   slot walk exact; every u.uprops[] arm recorded
+    js/wield.js  setuwep   slot written; re-wield early return confirmed
+                           to leave unweapon untouched
+
+WIRING IT INTO dowield COSTS 39 SCREENS, so the call is not in the tree. The
+ERR column named the fault immediately:
+
+    Cannot read properties of undefined (reading '242')
+
+js/u_init.js:251 is_pole reads game.objects[otmp.otyp]. game.objects IS
+assigned, at js/o_init.js:46, and js/objects_data.js DOES have 482 entries
+with index 242 among them -- both checked. So the table is fine and the
+message means game.objects is UNDEFINED AT THAT MOMENT: in these sessions
+setuwep runs before o_init has populated it.
+
+SO THE BUG IS ORDERING, NOT DATA. Find why o_init has not run by the time
+dowield fires in seed0399 and seed5002. Either o_init is called later than C
+calls objects_init, or these sessions reach dowield through a path that
+skips it.
+
+DO NOT 'fix' this by guarding is_pole with a null check. That would hide a
+real ordering divergence and leave every other consumer of game.objects
+reading undefined at the same moment -- there are 117 of them.

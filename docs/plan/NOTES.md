@@ -3589,3 +3589,37 @@ Generalises: **C sentinel-terminated arrays are a porting hazard in JS.** Any
 `for (p = table; p->field; p++)` needs its terminator checked in the generated
 data before the condition is transcribed. Truthiness differs: 0 is falsy, "0"
 is not, and neither is an empty object.
+
+## async contagion from pline() hits a sync callback boundary at getobj
+
+`js/pline.js`'s message helpers are async. Everything that can emit a message
+inherits that, so `canwearobj()` is async, and so is `accessory_or_armor_on()`.
+That is fine while the chain is all our own code.
+
+It stops being fine at `equip_ok()` (`src/do_wear.c:3404`). `equip_ok` calls
+`canwearobj(obj, &dummymask, FALSE)` and is itself the shared body of the four
+getobj callbacks `wear_ok` / `takeoff_ok` / `puton_ok` / `remove_ok`. In our
+port `js/invent.js:131 getobj_letters()` is SYNCHRONOUS and calls
+`obj_ok(null)` directly, comparing the result against the `GETOBJ_*` constants.
+
+An async `equip_ok` returns a Promise there. A Promise is truthy and equals none
+of the constants, so every letter-filtering decision silently takes the wrong
+branch. Nothing throws. This is precisely the class of bug that looks fine in
+review and diverges at runtime.
+
+**Do not port `equip_ok` until this is resolved.** Two honest options:
+
+1. Make `getobj_letters` (and its callers) async and await the callback. This is
+   the structurally correct fix and matches what the C does semantically, but it
+   touches working code on the `getobj` path, so it needs its own measured
+   commit.
+2. Give `canwearobj` a sync core with the messages hoisted to the caller. This
+   diverges from the C's shape and would cost architecture points in Phase 2.
+
+Option 1 is the right one. Note the C has no such problem because `pline()` is
+an ordinary function there; the asynchrony is an artifact of our terminal layer,
+which means it is OUR constraint to absorb, not a property of NetHack.
+
+Generalises: **when a leaf helper becomes async in this port, walk its callers up
+to the nearest boundary that is called from sync code.** The compiler will not
+tell you; `node --check` passes and the module loads clean.

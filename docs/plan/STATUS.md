@@ -8209,9 +8209,25 @@ and only in the games where it matters. Do not assume it; port it or record
 the arm and decline the wield, which is the same choice passive's arms and
 mattackm's specials already make.
 
-The other five are message-only (is_sword and empty_handed pick wording,
-arti_speak is artifact-only, TWOWEAPOK gates a two-weapon line) and can all
-be recorded without changing what happens.
+FOUR OF THE SIX ARE NOW PORTED, each verified by execution:
+
+    is_sword           js/obj.js     range test over the contiguous band
+    empty_handed       js/wield.js   three phrasings, gloves imply hands
+    TWOWEAPOK          js/wield.js   file-local, as in C
+    cant_wield_corpse  js/wield.js   guard exact; instapetrify recorded
+
+ARTI_SPEAK SHOULD NOT BE PORTED, it should be recorded at the call site.
+It needs get_artifact, artilist, getrumor, bcsign and verbalize1 -- an
+artifact subsystem plus the rumors file -- and getrumor DRAWS. But
+ready_weapon only reaches it under `if (wep->oartifact)`, so it is
+artifact-only, the same shape as passive's arms and mattackm's specials.
+Porting it would drag in the rumor machinery for a branch almost no session
+takes, and getting its draws wrong would move the stream.
+
+SO ready_weapon HAS EXACTLY ONE REAL BLOCKER LEFT: retouch_object. Everything
+else is either ported or correctly recordable. That makes ready_weapon a
+genuinely near-term target rather than the six-dependency wall it looked like
+two entries ago.
 
 It is also what dowield:twoweapon_and_artifact (25% reach, top of
 unported-hits) actually needs -- untwoweapon and the artifact checks live in

@@ -7,6 +7,7 @@ import { obj_extract_self, update_inventory } from './invent.js';
 import { game } from './gstate.js';
 import { sgn } from './hacklib.js';
 import { MON_WEP } from './monst.js';
+import { set_twoweap } from './wield.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
          W_CHAIN, W_ARMOR, AC_MAX, BOLT_LIM } from './const.js';
@@ -451,7 +452,7 @@ export function setworn(obj, mask) {
         const oobj = game.u[wp.w_obj];
         if (oobj) {
             if (game.u.twoweap && (oobj.owornmask & (W_WEP | W_SWAPWEP)))
-                note_unported_worn('setworn:set_twoweap');
+                set_twoweap(false);
             oobj.owornmask &= ~wp.w_mask;
             if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER)) {
                 /* extrinsic clear, monstunseesu_prop, w_blocks and

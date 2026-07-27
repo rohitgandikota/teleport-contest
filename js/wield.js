@@ -240,3 +240,16 @@ export function setuwep(obj) {
         game.unweapon = true;       /* for the "bare hands" message */
     }
 }
+
+// src/wield.c:834 set_twoweap() — turn two-weapon fighting on or off.
+//
+// Guarded on a real change, so a redundant call touches nothing. That guard
+// is why setworn() can call it unconditionally when unwielding.
+export function set_twoweap(on_off) {
+    if (on_off !== game.u.twoweap) {
+        game.u.twoweap = on_off;
+        /* flags.weaponstatus gates a botl refresh; the status line does not
+           read twoweap yet, so the refresh is recorded rather than forced. */
+        note_unported_wield('set_twoweap:botl');
+    }
+}

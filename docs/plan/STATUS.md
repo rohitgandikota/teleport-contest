@@ -8013,3 +8013,31 @@ matches C). That is the useful part -- the remaining space is small.
 DO NOT 'fix' this by guarding is_pole with a null check. That would hide a
 real ordering divergence and leave every other consumer of game.objects
 reading undefined at the same moment -- there are 117 of them.
+
+## setuwep: built, correct, crash-free, and STILL OUT OF THE TREE
+
+Final state of the worn[] -> setworn -> setuwep chain. All three are ported
+and each was verified by executing it. The crash that blocked wiring was
+mine -- is_weptool(o, objs) takes the objects table as a second argument and
+I passed one -- and is fixed.
+
+Wiring setuwep into dowield now:
+
+    screens            512 -> 512     unchanged
+    zero-screen        5   -> 5       unchanged, nothing crashes
+    rng aggregate      140773 -> 140764   -9
+    divergence point   2826 -> 2826   UNCHANGED (seed0399, 2832 matching)
+
+So it neither helps nor hurts anywhere measurable, and the -9 sits DOWNSTREAM
+of the divergence point, which this session established is contaminated and
+cannot be read as a regression.
+
+LEFT OUT ANYWAY, and the reason is honest rather than principled: I could not
+check the divergence point on every session with the context left, and the
+loop rule says rng must not regress. A future session with room should check
+the divergence point on the sessions that actually wield, and if those are
+flat too, WIRE IT -- one line at js/wield.js:191, replacing the
+dowield:setuwep record with setuwep(wep).
+
+It unblocks dowield 25%, drop 20%, dropz 20% when it goes in. Do not re-port
+it; it is already there and tested.

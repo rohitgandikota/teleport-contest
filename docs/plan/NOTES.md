@@ -3250,3 +3250,26 @@ as well.
 TO FIX: pick the C signature (an explicit d_level argument, as in
 src/dungeon.c), port that into js/dungeon.js, then convert callers one at a
 time, giving each the argument it needs. Do not start by deleting.
+
+## C's "null pointer means empty" does not survive translation to an array
+
+Found via Has_contents, and it will recur wherever a C linked list became a
+JS array.
+
+    C     #define Has_contents(o) ((o)->cobj != 0)
+    ours  js/const.js  obj?.cobj != null        WRONG
+          js/obj.js    !!(o.cobj && o.cobj.length)   right
+
+C's cobj is a list HEAD: null means the list is empty. Our cobj is an ARRAY
+that js/mkobj.js:872 initialises to [] on container creation. An empty array
+is not null, so the direct translation of the C test reports every empty box
+as full.
+
+THE GENERAL FORM: any C test of the shape `ptr != 0` on a list head becomes
+a LENGTH check, not a null check, once the list is an array. The same
+applies to minvent, invent, cobj and level.objects, all of which are arrays
+here and all of which C tests as pointers.
+
+WHERE TO LOOK: a `!= null`, `!== null` or truthiness test on one of those
+fields is suspect. It is silently wrong rather than broken -- the empty case
+answers backwards and nothing throws.

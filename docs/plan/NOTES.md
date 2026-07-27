@@ -3478,3 +3478,29 @@ defect rather than missing work -- `in_rooms`, `align_gname`, now this. The
 shape is worth naming: **when filling a recorded gap makes things worse, the gap
 was load-bearing.** It was holding back a wrong value produced elsewhere. Chase
 what feeds it before completing it.
+
+## Behavioural tests of objnam helpers need `init_objects` first
+
+Importing `js/objects_data.js` and reading `OBJ_NAME(ocl)` / `OBJ_DESCR(ocl)`
+straight out of a bare `node -e` gives `"strange object"` and `0` for every
+object, because `oc_name_idx` and `oc_descr_idx` are assigned at game start by
+`init_objects` (which also shuffles the randomised appearances). They are not
+in the generated table.
+
+So a bare-import test of anything that reads an object's name or description
+answers as if nothing is identified and nothing has a description. That is not
+the function being wrong. `boots_simple_name(LOW_BOOTS)` returning `"boots"` in
+such a test looks like a bug -- the C data at `include/objects.h:700` is
+`BOOTS("low boots", "walking shoes", ...)`, so a real game answers `"shoes"` --
+but it is the harness, not the port.
+
+Either call `init_objects` in the test, or test only the arms that do not depend
+on discovery state. When a bare-import test disagrees with the C data table,
+suspect this before suspecting the port.
+
+Related: `OBJ_DESCR` returns the literal `0` from the table for an object with
+no description, matching C's NULL. `strstri(0, sub)` does not throw in our port
+-- `(0).length` is undefined, `undefined - n` is NaN, `NaN < 0` is false, and
+`i <= NaN` never runs, so it returns -1. The C would dereference NULL and crash.
+The divergence is benign, and deliberately not "fixed": every real caller passes
+a real description, and porting a crash buys nothing.

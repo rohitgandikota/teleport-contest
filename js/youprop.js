@@ -20,7 +20,7 @@ import { is_flyer } from './mondata.js';
    structure an array of LAST_PROP+1 entries, as in the C, instead of a
    bag of string keys with no C counterpart. */
 import {
-    FLYING, CLAIRVOYANT, BLINDED, CONFLICT, CONFUSION, DEAF, DETECT_MONSTERS, DISPLACED, FIRE_RES, FUMBLING, HALLUC, HALLUC_RES, HUNGER, INFRAVISION, INVIS, LEVITATION, REGENERATION, SEE_INVIS, SICK, STUNNED, TELEPAT, TELEPORT_CONTROL, VOMITING, WARN_OF_MON, WOUNDED_LEGS } from './const.js';
+    STONE_RES, FLYING, CLAIRVOYANT, BLINDED, CONFLICT, CONFUSION, DEAF, DETECT_MONSTERS, DISPLACED, FIRE_RES, FUMBLING, HALLUC, HALLUC_RES, HUNGER, INFRAVISION, INVIS, LEVITATION, REGENERATION, SEE_INVIS, SICK, STUNNED, TELEPAT, TELEPORT_CONTROL, VOMITING, WARN_OF_MON, WOUNDED_LEGS } from './const.js';
 
 export const H = (prop) => !!(game.u?.uprops?.[prop]?.intrinsic);   /* prop is a NUMBER, as in C */
 export const E = (prop) => !!(game.u?.uprops?.[prop]?.extrinsic);
@@ -211,3 +211,13 @@ export const Blinded = () => H(BLINDED) && !B(BLINDED);
    blocked terms (Invis, Levitation, Blinded), initialise uprops, and score.
    Until all of that lands together these three are just sitting here.
    ------------------------------------------------------------------------ */
+
+// include/youprop.h:65 Stone_resistance — (HStone_resistance || EStone_resistance)
+export const Stone_resistance = () => H(STONE_RES) || E(STONE_RES);
+
+/* NOT PORTED and NOT A PROPERTY: include/youprop.h:401 is
+       #define Hate_silver (u.ulycn >= LOW_PM || hates_silver(youmonst.data))
+   which reads the hero's LYCANTHROPY and current FORM, not u.uprops. I
+   recorded it once as "an ordinary property awaiting a writer" and that was
+   wrong. It needs u.ulycn and a hates_silver() port, neither of which
+   exists; js/artifact.js records it at its call site. */

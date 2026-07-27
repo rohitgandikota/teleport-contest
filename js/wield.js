@@ -18,6 +18,7 @@ import { W_QUIVER, W_WEP } from './const.js';
 import { is_missile } from './obj.js';
 import { is_pole } from './u_init.js';
 import { setworn } from './worn.js';
+import { Stone_resistance } from './youprop.js';
 import { retouch_object } from './artifact.js';
 import { update_inventory } from './invent.js';
 import { bimanual } from './obj.js';
@@ -318,9 +319,8 @@ export function cant_wield_corpse(obj) {
         || !touch_petrifies(game.mons[obj.corpsenm]))
         return false;
 
-    /* Stone_resistance is not modelled; C returns FALSE for a resistant
-       hero, so a resistant hero here is wrongly refused the wield. */
-    note_unported_wield('cant_wield_corpse:Stone_resistance');
+    if (Stone_resistance())
+        return false;
 
     /* Prevent wielding cockatrice when not wearing gloves --KAA */
     note_unported_wield('cant_wield_corpse:instapetrify');

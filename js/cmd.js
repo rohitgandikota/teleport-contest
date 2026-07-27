@@ -22,7 +22,7 @@ import { is_safemon } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
-import { is_hider, verysmall } from './mondata.js';
+import { is_hider, verysmall , bigmonst } from './mondata.js';
 import { bad_rock, nomul } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE } from './const.js';
@@ -953,7 +953,7 @@ function mundisplaceable(mon) {
 }
 
 // include/mondata.h bigmonst()
-const bigmonst = (ptr) => ptr.msize >= MFLAGS.MZ_LARGE;
+/* bigmonst() is an include/mondata.h macro; it comes from js/mondata.js. */
 
 
 

@@ -19,7 +19,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
@@ -1170,9 +1170,7 @@ const MTSZ = 4;
    MMOVE_MOVED SWAPPED against the header. js/const.js has them right. */
 
 /* include/mondata.h hides_under() */
-function hides_under(ptr) {
-    return (ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0;
-}
+/* hides_under() is an include/mondata.h macro; it comes from js/mondata.js. */
 
 function OBJ_AT(x, y) {
     return (game.level?.objects || []).some(o => o.ox === x && o.oy === y);

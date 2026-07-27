@@ -1,4 +1,5 @@
 import { cantwield, humanoid } from './mondata.js';
+import { touch_petrifies } from './dog.js';
 import { is_weptool } from './mkobj.js';
 import { pline } from './display.js';
 import { ECMD_TIME } from './invent.js';
@@ -23,7 +24,7 @@ import { tty_yn_function } from './tty/topl.js';
 // include/hack.h:1330 ynq()
 const ynq = (query) => tty_yn_function(query, 'ynq', 'q');
 import { ECMD_OK, ECMD_CANCEL, ECMD_FAIL, P_BOW, P_CROSSBOW } from './const.js';
-import { OCLASSES } from './objects_data.js';
+import { OCLASSES, ONAMES } from './objects_data.js';
 
 // src/wield.c ready_ok() — which objects getobj should suggest for the quiver.
 //
@@ -284,3 +285,32 @@ const TWOWEAPOK = (obj) =>
     (obj.oclass === OCLASSES.WEAPON_CLASS)
         ? !(is_launcher(obj) || is_ammo(obj) || is_missile(obj))
         : is_weptool(obj, game.objects);
+
+// src/wield.c cant_wield_corpse() — refuse a petrifying corpse in bare hands.
+//
+// The guard is ported exactly and is the whole of the common path: gloves,
+// a non-corpse, a non-petrifying corpse, or stoning resistance all return
+// FALSE and the wield proceeds.
+//
+// The TRUE branch is where the hero touches a cockatrice corpse bare-handed,
+// and in C that calls instapetrify() -- which usually KILLS. instapetrify,
+// corpse_xname and killer_xname are all absent, so the death is RECORDED and
+// does not happen. The return value still matches C, so the corpse is still
+// refused; what is missing is the hero dying of it.
+//
+// That is a real and deliberate gap, not an approximation: inventing a death
+// path would end games C does not end, which is far worse than failing to end
+// one it does.
+export function cant_wield_corpse(obj) {
+    if (game.u.uarmg || obj.otyp !== ONAMES.CORPSE
+        || !touch_petrifies(game.mons[obj.corpsenm]))
+        return false;
+
+    /* Stone_resistance is not modelled; C returns FALSE for a resistant
+       hero, so a resistant hero here is wrongly refused the wield. */
+    note_unported_wield('cant_wield_corpse:Stone_resistance');
+
+    /* Prevent wielding cockatrice when not wearing gloves --KAA */
+    note_unported_wield('cant_wield_corpse:instapetrify');
+    return true;
+}

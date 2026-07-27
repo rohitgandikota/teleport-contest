@@ -8157,3 +8157,34 @@ exists in js/cmd.js as a partial).
 So the honest state of the do_wear chain is: cancel_doff's mask clear is
 live and exact, and its cancel_don arm stays recorded until the occupation
 mechanism lands.
+
+## The setuwep wiring is structurally wrong, and harmlessly so (for now)
+
+js/wield.js:194 calls setuwep(wep) directly. C DOES NOT. src/wield.c's
+dowield tail is:
+
+    oldwep = uwep;
+    result = ready_weapon(wep);
+    if (flags.pushweapon && oldwep && uwep != oldwep)
+        setuswapwep(oldwep);
+    untwoweapon();
+
+setuwep is called INSIDE ready_weapon (src/wield.c:169, 104 lines), which is
+not ported. So the direct call skips ready_weapon's whole body plus
+setuswapwep and untwoweapon.
+
+WHY IT IS NOT AN RNG PROBLEM TODAY: ready_weapon makes ZERO draws -- grepped
+its body for rn2/rnd/rnl and there are none. That is why the divergence point
+was flat on all three sessions checked. What is skipped is messages and
+checks (cockatrice handling, welded refusal, the "you are now wielding"
+line), not stream position.
+
+SO THIS IS A SCREEN-PARITY GAP, NOT A STREAM GAP, and it will stay invisible
+in the rng column while costing screens on any session that wields and reads
+the resulting message. Porting ready_weapon is the fix and it is 104
+draw-free lines, which makes it unusually safe: it cannot move the stream,
+so a mistake shows up as a wrong message rather than a cascade.
+
+It is also what dowield:twoweapon_and_artifact (25% reach, top of
+unported-hits) actually needs -- untwoweapon and the artifact checks live in
+that tail.

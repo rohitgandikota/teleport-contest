@@ -15,6 +15,10 @@ import {
 import { newsym } from './display.js';
 import { exercise, acurrstr, ACURR } from './attrib.js';
 import { get_adjacent_loc } from './cmd.js';
+import { m_at } from './mon.js';
+import { is_door_mappear } from './monst.js';
+import { canspotmon } from './display.js';
+import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT } from './const.js';
 
 function note_unported_lock(what) {
     (game.unported ||= new Set()).add(what);
@@ -75,4 +79,69 @@ export async function doopen_indir(x, y) {
 // src/lock.c doopen()
 export async function doopen() {
     return doopen_indir(0, 0);
+}
+
+// src/lock.c:759 stumble_on_door_mimic() — a mimic imitating a door.
+//
+// Returns TRUE when the "door" turns out to be a monster, which is what stops
+// doclose() and doopen_indir() from operating on it.
+//
+// stumble_onto_mimic() is NOT ported, so the mimic is detected but the
+// reveal-and-message half does not happen. Recorded rather than approximated:
+// that function wakes the mimic, sets its mappearance and prints, and guessing
+// at it would put draws in the stream that C may not make.
+export function stumble_on_door_mimic(x, y) {
+    const mtmp = m_at(x, y);
+
+    /* Protection_from_shape_changers is an intrinsic we do not model yet; C
+       tests it here and a protected hero sees through the mimic instead. */
+    if (mtmp && is_door_mappear(mtmp)) {
+        note_unported_lock('stumble_on_door_mimic:stumble_onto_mimic');
+        return true;
+    }
+    return false;
+}
+
+// src/lock.c:926 obstructed() — is something standing in the doorway?
+//
+// The mimic arm is the subtle one. A monster mimicking FURNITURE is NOT an
+// obstruction (you close the door on it), a monster mimicking an OBJECT jumps
+// straight to the object branch via C's `goto objhere`, and anything else
+// blocks and is named.
+//
+// Some_Monnam() is unported, so the "%s blocks the way!" text cannot be built
+// faithfully; the message is recorded instead of printed. That matters more
+// than it looks -- a message here forces a --More-- when the top line is
+// occupied, and a --More-- that C does not make consumes a keystroke the
+// session never supplied.
+export function obstructed(x, y, quietly) {
+    const mtmp = m_at(x, y);
+    let objhere = false;
+
+    if (mtmp && M_AP_TYPE(mtmp) !== M_AP_FURNITURE) {
+        if (M_AP_TYPE(mtmp) === M_AP_OBJECT) {
+            objhere = true;                     /* C: goto objhere */
+        } else {
+            if (!quietly) {
+                /* Some_Monnam() -> Monnam, Someone or Something, and a tail
+                   suffix via s_suffix() when the square holds a long worm's
+                   tail rather than its head. */
+                note_unported_lock('obstructed:blocks_the_way_msg');
+            }
+            if (!canspotmon(mtmp))
+                /* src/display.c:378 map_invisible() remembers the unseen
+                   monster as 'I'. Our copy lives in js/mhitm.js and is not
+                   exported; it is a display.c function and belongs in
+                   js/display.js, so it is recorded here rather than imported
+                   across that boundary. */
+                note_unported_lock('obstructed:map_invisible');
+            return true;
+        }
+    }
+    if (objhere || OBJ_AT(x, y)) {
+        if (!quietly)
+            note_unported_lock('obstructed:something_in_the_way_msg');
+        return true;
+    }
+    return false;
 }

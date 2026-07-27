@@ -218,7 +218,7 @@ export function setuwep(obj) {
 
     setworn(obj, W_WEP);
 
-    if (obj && obj.oclass !== OCLASSES.WEAPON_CLASS && !is_weptool(obj))
+    if (obj && obj.oclass !== OCLASSES.WEAPON_CLASS && !is_weptool(obj, game.objects))
         note_unported_wield('setuwep:is_wet_towel');
 
     if (olduwep?.oartifact || obj?.oartifact)
@@ -234,7 +234,7 @@ export function setuwep(obj) {
                exported anywhere in the port, so that arm is recorded. A
                wet towel therefore reads as unweapon where C says it is
                not, which changes only the bashing message. */
-            : !is_weptool(obj);
+            : !is_weptool(obj, game.objects);
     } else {
         game.unweapon = true;       /* for the "bare hands" message */
     }

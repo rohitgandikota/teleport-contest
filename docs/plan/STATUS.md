@@ -9127,3 +9127,31 @@ Suggested next: `not_fully_identified` -> `obj_is_pname` -> `on_msg` (with the
 `the()` arm noted) -> `remove_worn_item` (`src/steal.c:213`) -> the ARMOR arm of
 `accessory_or_armor_on`, leaving the accessory arm noted until `yn_function`
 exists.
+
+
+### `on_msg` is LANDED; `remove_worn_item` is the last gap before the armor arm
+
+Landed this pass: `not_fully_identified` and `obj_is_pname` (`src/objnam.c`),
+`on_msg` (`src/do_wear.c:76`), `uwepgone`/`uswapwepgone`/`uqwepgone`
+(`src/wield.c:873-900`), `Is_box`, `artidisco`+`undiscovered_artifact`, and
+`is_damageable` exported from `js/mkobj.js`.
+
+**A real C detail that would have silently diverged:** `not_fully_identified`
+has an `#ifdef MAIL_STRUCTURES` around its bknown test. MAIL_STRUCTURES IS
+defined (`include/global.h:430`), so the live condition is
+`(!bknown && otyp != SCR_MAIL)`, NOT the plain `!bknown` in the `#else`. Always
+check whether an ifdef is actually on before picking an arm.
+
+`on_msg` records `on_msg:the` on the named-artifact branch only; every ordinary
+object takes `an()`. See the STATUS entry above for why `the()` is not worth
+porting yet.
+
+**Remaining for the ARMOR arm of `accessory_or_armor_on`:**
+`remove_worn_item` (`src/steal.c:213`). All seven armor `<X>_off` callbacks
+exist, and the W_WEAPONS arm now has `uwepgone`/`uswapwepgone`/`uqwepgone`.
+Still missing for ITS other arms: `Amulet_off`, `Ring_gone`, `Blindf_off`,
+`skinback`. Those are accessory/eyewear paths, so `remove_worn_item` can be
+written with them recorded, exactly like `on_msg`.
+
+After that the armor arm of `accessory_or_armor_on` can go in, leaving the
+accessory arm noted until `yn_function` exists.

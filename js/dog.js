@@ -51,7 +51,7 @@ import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
 
 const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2, rnd } from './rng.js';
-import { dist2, sgn } from './hacklib.js';
+import { dist2, sgn , distmin } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
@@ -1315,10 +1315,8 @@ function GDIST(x, y) {
     return dx * dx + dy * dy;
 }
 
-/* src/hack.c distmin() — the Chebyshev distance */
-function distmin(x0, y0, x1, y1) {
-    return Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
-}
+/* distmin() is src/hacklib.c:657 and comes from js/hacklib.js; the copy
+   that was here differed only in parameter names. */
 
 /* src/dogmove.c cursed_object_at() */
 function cursed_object_at(x, y) {

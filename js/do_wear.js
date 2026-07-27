@@ -7,11 +7,12 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+import { prinv } from './invent.js';
 import { verysmall, nohands, cantweararm, has_horns, num_horns, slithy } from './mondata.js';
 import { welded } from './wield.js';
 import { Glib } from './youprop.js';
 import { silly_thing } from './invent.js';
-import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name, doname } from './objnam.js';
+import { gloves_simple_name, makeplural, an, helm_simple_name, cloak_simple_name, doname, xname, obj_is_pname } from './objnam.js';
 import { body_part } from './polyself.js';
 import { You, You_cant, Your, pline_The } from './pline.js';
 import { is_helmet, is_metallic, is_crackable, is_cloak, is_shirt, is_suit, is_shield, is_boots, is_gloves, is_flimsy, bimanual, is_sword, WrappingAllowed } from './obj.js';
@@ -22,11 +23,43 @@ import { setworn, racial_exception } from './worn.js';
 import { rnd } from './rng.js';
 import { mons, MFLAGS, MONSYMS } from './monst_data.js';
 import { objects, ONAMES } from './objects_data.js';
-import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
-         W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL,
-         FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION,
-         FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd } from './const.js';
+import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_RINGL, W_RINGR, W_AMUL, AC_MAX, I_SPECIAL, FUMBLING, TIMEOUT, ACID_RES, FAST, LEVITATION, FROMOUTSIDE, FINGER, W_ARMOR, plur, LEG, FOOT, TT_BEARTRAP, TT_INFLOOR, TT_LAVA, TT_BURIEDBALL, Upolyd, W_RING, W_TOOL, HEAD } from './const.js';
 import { sgn } from './hacklib.js';
+
+// src/do_wear.c:76 on_msg() — for items that involve no delay.
+//
+// on_msg() for rings and amulets just shows add-to-invent feedback [after
+// caller calls setworn(), for suffix: "(on {left|right} hand)" or "(being
+// worn)"]; eyewear too unless giving verbose message below.
+export async function on_msg(otmp) {
+    if ((otmp.owornmask & (W_RING | W_AMUL)) !== 0
+        || ((otmp.owornmask & W_TOOL) !== 0 && !game.flags.verbose)) {
+        await prinv(null, otmp, 0);
+        return;
+    }
+
+    if (game.flags.verbose) {
+        let how;
+        /* call xname() before obj_is_pname(); formatting obj's name
+           might set obj->dknown and that affects the pname test */
+        const otmp_name = xname(otmp);
+
+        how = '';
+        if (otmp.otyp === ONAMES.TOWEL)
+            how = ` around your ${body_part(HEAD)}`;
+        /* the() is only reachable for a NAMED ARTIFACT. It needs CapitalMon,
+           which needs init_CapMons and the whole rumors/bogusmon list, so it
+           is recorded rather than ported; every ordinary object takes an(). */
+        let named;
+        if (obj_is_pname(otmp)) {
+            note_unported_do_wear('on_msg:the');
+            named = otmp_name;
+        } else {
+            named = an(otmp_name);
+        }
+        await You(`are now wearing ${named}${how}.`);
+    }
+}
 
 // src/do_wear.c:66 off_msg()
 export async function off_msg(otmp) {

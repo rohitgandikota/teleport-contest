@@ -2514,11 +2514,30 @@ and js/tty/topl.c:141 tty_yn_function sets _toplin = TOPLINE_SPECIAL_PROMPT
 before returning. With SPECIAL_PROMPT the joining branch is skipped AND the
 more() is skipped, so the arithmetic never runs and NOTHING SHOULD BLOCK.
 
-So the real question is what resets _toplin from SPECIAL_PROMPT to NEED_MORE
-between tty_yn_function returning and the message being printed. Find that
-write. The arithmetic above is a red herring that happens to sit one column
-from mattering, which is exactly why it was worth measuring rather than
-eyeballing.
+TRACED EVERY WRITE TO _toplin, AND THE --More-- THEORY IS DEAD. The only
+write that produces NEED_MORE on this path is redotoplin (js/tty/topl.js:120),
+and it runs at the END of update_topl, after both the join branch and the
+more() call have already been skipped. display.js:611 looks like a candidate
+but forces NEED_MORE only to make the erase happen and lands on EMPTY two
+lines later. So walking the wield message through update_topl with _toplin at
+SPECIAL_PROMPT:
+
+    join branch      requires NEED_MORE   -> skipped
+    await more()     requires NEED_MORE   -> skipped
+    else if (cury)   cury is 0            -> skipped
+    redotoplin                            -> sets NEED_MORE, no blocking
+
+NOTHING BLOCKS. A single message cannot hang, so the --More-- explanation was
+wrong even though the arithmetic sat one column from supporting it.
+
+LEADING HYPOTHESIS, NOT YET VERIFIED: js/invent.js:158 getobj wraps its prompt
+in for (;;) and re-prompts on an answer it does not accept. If the real uwep
+makes our getobj reject a letter C accepted, it re-prompts, eats the next key,
+rejects again, and walks the queue to exhaustion -- then readKey blocks. That
+fits every symptom (unbounded, key-consuming, only with the real uwep) and it
+is in code we own. VERIFY by logging the loop's iteration count on seed0361
+before changing anything; the last two theories both looked solid and both
+were wrong.
 
 THIS IS A GENERAL HAZARD, not a wield bug. Any newly-ported message on a
 path a session reaches near the end of its input can hang the runner rather

@@ -8078,10 +8078,31 @@ extrinsic arms need. (monstunseesu and cvt_prop_to_mseenres are both absent
 too, but that is secondary -- without the number there is nothing to pass
 them.)
 
-SO THE NEXT MOVE ON THIS CLUSTER IS THE MAPPING ITSELF, once, and it unlocks
-every remaining arm at the same time. js/objects_data.js carries oc_oprop as
-a number per object; the uprops names live in js/const.js. Building the
-bridge is a data question, not a porting question, and it should be done
-deliberately rather than guessed -- a wrong mapping silently grants or
-revokes intrinsics on every single equip, which reviews clean and diverges
-on the first draw.
+AND IT IS NOT JUST A NAME MAPPING -- checked, and the framing above was too
+small. TWO things are wrong, and the second is the real one.
+
+1. KEYING. js/const.js already carries the props as NUMBERS matching C's
+   prop.h -- FIRE_RES 1, BLINDED 15, TELEPAT 30, CLAIRVOYANT 35, INVIS 40,
+   STEALTH 42, LEVITATION 48 -- so oc_oprop values line up already. But
+   uprops is read BY NAME everywhere (game.u.uprops.CLAIRVOYANT at
+   js/allmain.js:493, uprops.HALLUC at js/youprop.js:21), i.e. string keys,
+   not those numbers.
+
+2. SHAPE, and this is the blocker. js/youprop.js:24 says it plainly:
+
+       "The port models uprops as a flat prop -> value map rather than C's
+        {intrinsic, extrinsic, blocked} struct ... when uprops grows the
+        struct, split them here."
+
+   setworn needs .extrinsic and .blocked. NEITHER EXISTS. A flat truthy value
+   cannot express "granted by an item in this slot" versus "granted
+   intrinsically", which is exactly the distinction every setworn arm turns
+   on.
+
+SO THE REAL TASK IS: grow uprops into C's three-field struct keyed by the
+numeric prop, then convert its existing readers. That is a defined,
+mechanical refactor rather than a guess, and js/youprop.js:24 already names
+itself as the place to split. It unblocks setworn's extrinsic arms,
+monstunseesu_prop, and w_blocks's blocked bookkeeping in one go.
+
+DO NOT bodge it by adding a second parallel map. One structure, matching C.

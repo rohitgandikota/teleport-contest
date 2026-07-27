@@ -20,7 +20,7 @@ import { m_at } from './mon.js';
 import { is_door_mappear } from './monst.js';
 import { canspotmon } from './display.js';
 import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, ECMD_CANCEL,
-         TT_PIT, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN } from './const.js';
+         TT_PIT, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN, isok } from './const.js';
 import { rn2 } from './rng.js';
 
 import { block_point } from './vision.js';

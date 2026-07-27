@@ -7,6 +7,10 @@
 // moveloop_preamble()'s find_ac() turns that into the real number.
 
 import { game } from './gstate.js';
+/* worn.js imports cancel_doff from here, so this is a 2-cycle -- as in C,
+   where do_wear.c and worn.c call each other. Safe because setworn is used
+   at CALL time, not at module load. */
+import { setworn } from './worn.js';
 import { rnd } from './rng.js';
 import { mons } from './monst_data.js';
 import { objects, ONAMES } from './objects_data.js';
@@ -579,4 +583,55 @@ export function cancel_don() {
     game.multi = 0;
     t.delay = 0;
     t.what = 0;
+}
+
+// src/do_wear.c Shirt_off() — the afternmv callback for taking off a shirt.
+//
+// The _off callbacks share a shape the _on ones do not: they clear their
+// slot from takeoff.mask FIRST and call setworn(0, slot) LAST, so the slot
+// is empty by the time they return. setworn now does the extrinsic
+// bookkeeping, so removing a shirt genuinely revokes whatever it conferred.
+export function Shirt_off() {
+    const t = (game.context.takeoff ||= {});
+    t.mask = (t.mask | 0) & ~W_ARMU;
+
+    if (game.u.uarmu) {
+        switch (game.u.uarmu.otyp) {
+        case ONAMES.HAWAIIAN_SHIRT:
+        case ONAMES.T_SHIRT:
+            break;
+        default:
+            note_unported_do_wear('Shirt_off:impossible_unknown_type');
+            break;
+        }
+    }
+
+    setworn(null, W_ARMU);
+    return 0;
+}
+
+// src/do_wear.c Armor_off() — the afternmv callback for taking off a suit.
+//
+// Note the ORDER C is careful about and its comment explains: the
+// artifact-light change is done BEFORE dragon_armor_handling, because taking
+// off yellow dragon scales can be fatal and "the non-fatal change should be
+// done before the potentially fatal change in case the latter results in
+// bones". Reordering these would put a corpse in the wrong state.
+//
+// It also clears cancelled_don, which cancel_don() sets -- so a don that was
+// interrupted stops being remembered once the suit is actually off.
+export function Armor_off() {
+    const otmp = game.u.uarm;
+    const t = (game.context.takeoff ||= {});
+
+    t.mask = (t.mask | 0) & ~W_ARM;
+    setworn(null, W_ARM);
+    t.cancelled_don = false;
+
+    /* was_arti_light / end_burn: artifact_light exists but end_burn and the
+       message do not, and dragon_armor_handling is unported. */
+    if (otmp)
+        note_unported_do_wear('Armor_off:arti_light_and_dragon_armor');
+
+    return 0;
 }

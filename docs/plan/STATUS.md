@@ -8682,3 +8682,26 @@ WHAT THIS UNLOCKED, and it is more than the file: setworn's extrinsic arms
 are the first uprops WRITER, so wearing an item now confers its property and
 removing it revokes it. That was verified end to end with a clairvoyance
 helm.
+
+## src/steal.c: what is portable and what is not
+
+js/steal.js now has somegold, mdrop_obj, relobj (plus the droppables wire).
+Checked the rest before continuing and stopped, because the next functions
+are all gated on infrastructure rather than on each other:
+
+    thiefdead      needs ga.afternmv -- the OCCUPATION mechanism, unported.
+                   Same blocker as donning() recorded earlier.
+    unresponsive   needs unconscious(), is_fainted() and gm.multi_reason.
+                   None exist; game.multi does, multi_reason does not.
+    unstolenarm    an afternmv callback, so same blocker as thiefdead
+    stealarm       likewise
+    steal          275 lines, and the big one
+    findgold       ALREADY EXISTS TWICE, in js/makemon.js and js/monmove.js,
+                   neither matching C. Consolidating it into js/steal.js is
+                   correct and was tried; it needs the makemon -> steal ->
+                   mkobj -> makemon cycle broken first. See NOTES.
+
+SO THE OCCUPATION MECHANISM (ga.afternmv and friends) IS THE COMMON GATE for
+four of these, as it is for donning() in js/do_wear.js. That makes it a
+better target than any individual function behind it: js/cmd.js already has
+reset_occupations as a partial, so there is a starting point.

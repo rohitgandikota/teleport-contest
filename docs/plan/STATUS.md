@@ -7879,11 +7879,28 @@ on that square and we never placed. Patching dog_invent would hide it and
 would also mis-order every later draw, since the object would still be
 absent from every other consumer.
 
-NEXT, and this is reasoning rather than measurement so verify it first: at
-the moment of the offset, print the square (omx, omy) and what
-game.level.objects holds for it, then compare against what the C recording
-implies is there. If the square is empty in our store, hunt the creation
-path that skipped place_object rather than touching dogmove.
+SURVEYED THE PLACEMENT PATHS, and the gap is broad rather than a single
+missing call. C calls place_object from roughly 60 sites; we have NINE:
+
+    trap.c   12      ball.c   12      mkobj.c   6      mklev.c  5
+    zap.c     4      mon.c     4      hack.c    4      explode.c 4    ...
+
+Even within mkobj.c we have two of the three real sites -- mkobj_at and
+mksobj_at are both correct; the absent one is recreate_pile_at
+(src/mkobj.c:2371), which tears a pile down and rebuilds it so the original
+order is restored and boulders end up on top.
+
+recreate_pile_at is UNLIKELY to be the pet's missing object, so do not port
+it on this evidence alone. The honest reading is that at 4.5% of screens
+most object-placement paths simply are not ported yet, and dog_invent's
+missing draw is one visible symptom of that rather than a discrete bug with
+a discrete fix.
+
+SO THE PRIORITY QUESTION CHANGES: rather than hunting this one draw, find
+which placement path THIS session's square needed. Print (omx, omy) and the
+store contents at the offset, then match the square against the C recording.
+That names one path to port, which is a real milestone-sized target, instead
+of chasing a phase offset whose root cause is 50 missing call sites.
 
 Note also that our condition omits C's SCR_MAIL, is_mines_prize and
 is_soko_prize exclusions. Those would make us draw MORE, not fewer, so they

@@ -1,4 +1,4 @@
-import { obj_extract_self } from './invent.js';
+import { obj_extract_self, update_inventory } from './invent.js';
 // worn.js — what a monster or the hero currently has on.
 // C ref: src/worn.c
 //
@@ -9,7 +9,7 @@ import { sgn } from './hacklib.js';
 import { MON_WEP } from './monst.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
-         W_CHAIN, AC_MAX } from './const.js';
+         W_CHAIN, W_ARMOR, AC_MAX } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
@@ -421,3 +421,59 @@ export const worn = [
        has no counterpart -- but any loop ported from C must still stop at
        the same place, which is the end of this array. */
 ];
+
+// src/worn.c:73 setworn() — put `obj` in every slot `mask` selects.
+//
+// The slot walk is ported exactly, because that is what setuwep() depends on
+// and what makes game.u.uwep actually get written. Everything C does through
+// the u.uprops[] array is RECORDED instead, for a reason worth stating:
+//
+//   C:     p = objects[oobj->otyp].oc_oprop;  u.uprops[p].extrinsic &= ~mask;
+//   ours:  game.u.uprops is keyed BY NAME (uprops.CLAIRVOYANT), not by the
+//          numeric oc_oprop index
+//
+// Bridging that needs an oc_oprop-number to uprops-name mapping which does
+// not exist yet. Guessing at it would silently grant or revoke intrinsics on
+// every equip, which is exactly the kind of wrong-but-plausible behaviour
+// that reviews clean and diverges on the first draw.
+//
+// Also recorded: set_twoweap, cancel_doff, monstunseesu_prop and
+// recalc_telepat_range, none of which are ported.
+export function setworn(obj, mask) {
+    /* C's (W_ARM | I_SPECIAL) arm is the restore-a-saved-game path, which
+       assigns uskin and confers nothing. We never restore, so it cannot be
+       reached; it is recorded rather than written. */
+
+    for (const wp of worn) {
+        if (!(wp.w_mask & mask))
+            continue;
+
+        const oobj = game.u[wp.w_obj];
+        if (oobj) {
+            if (game.u.twoweap && (oobj.owornmask & (W_WEP | W_SWAPWEP)))
+                note_unported_worn('setworn:set_twoweap');
+            oobj.owornmask &= ~wp.w_mask;
+            if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER)) {
+                /* extrinsic clear, monstunseesu_prop, w_blocks and
+                   set_artifact_intrinsic all key off oc_oprop */
+                note_unported_worn('setworn:doff_extrinsic');
+            }
+            note_unported_worn('setworn:cancel_doff');
+        }
+
+        game.u[wp.w_obj] = obj;         /* C: *(wp->w_obj) = obj */
+
+        if (obj) {
+            obj.owornmask |= wp.w_mask;
+            if (wp.w_mask & ~(W_SWAPWEP | W_QUIVER))
+                note_unported_worn('setworn:don_extrinsic');
+        }
+    }
+
+    if (obj && (obj.owornmask & W_ARMOR) !== 0)
+        note_unported_worn('setworn:nudist');
+    note_unported_worn('setworn:tux_penalty');
+
+    update_inventory();
+    note_unported_worn('setworn:recalc_telepat_range');
+}

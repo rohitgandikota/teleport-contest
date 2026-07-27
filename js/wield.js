@@ -13,7 +13,10 @@ import { game } from './gstate.js';
 import { will_weld } from './monmove.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT, prinv } from './invent.js';
-import { W_QUIVER } from './const.js';
+import { W_QUIVER, W_WEP } from './const.js';
+import { is_missile } from './obj.js';
+import { is_pole } from './u_init.js';
+import { setworn } from './worn.js';
 import { You } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
 
@@ -190,4 +193,49 @@ export async function dowield() {
        and the artifact/cockatrice checks */
     (game.unported ||= new Set()).add('dowield:setuwep');
     return ECMD_TIME;
+}
+
+// src/wield.c:100 setuwep() — make `obj` the wielded weapon.
+//
+// The early return is load-bearing and easy to drop: re-wielding what is
+// already wielded returns WITHOUT touching gu.unweapon, so the "bashing"
+// state survives. C comments it as "necessary to not set gu.unweapon".
+//
+// The unweapon computation at the end is the part that matters downstream --
+// js/uhitm.js:780 reads the wielded weapon in the melee path, and unweapon
+// decides whether the hero gets the bashing message. Note the structure: for
+// a WEAPON_CLASS object unweapon is TRUE when the thing is not meant for
+// melee (a launcher, ammo, a missile, or a polearm on foot), and for anything
+// else it is TRUE unless the object is a weapon-tool or a wet towel.
+//
+// Not ported, each recorded: the Ogresmasher botl updates and the Sunsword
+// end_burn, both artifact-only.
+export function setuwep(obj) {
+    const olduwep = game.u.uwep;
+
+    if (obj === game.u.uwep)
+        return;                     /* necessary to not set gu.unweapon */
+
+    setworn(obj, W_WEP);
+
+    if (obj && obj.oclass !== OCLASSES.WEAPON_CLASS && !is_weptool(obj))
+        note_unported_wield('setuwep:is_wet_towel');
+
+    if (olduwep?.oartifact || obj?.oartifact)
+        note_unported_wield('setuwep:artifact_botl_and_light');
+
+    /* Note: explicitly wielding a pick-axe gives no "bashing" message;
+       wielding one via 'a'pplying it does. */
+    if (obj) {
+        game.unweapon = (obj.oclass === OCLASSES.WEAPON_CLASS)
+            ? (is_launcher(obj) || is_ammo(obj) || is_missile(obj)
+               || (is_pole(obj) && !game.u.usteed))
+            /* C also excludes a wet towel here; is_wet_towel is not
+               exported anywhere in the port, so that arm is recorded. A
+               wet towel therefore reads as unweapon where C says it is
+               not, which changes only the bashing message. */
+            : !is_weptool(obj);
+    } else {
+        game.unweapon = true;       /* for the "bare hands" message */
+    }
 }

@@ -9352,3 +9352,30 @@ Still missing for `Ring_on`:
 Pattern to note: three of these are 3-to-8 line functions sitting on top of
 20-to-70 line dependencies. Size in the C file is a poor guide to porting cost;
 check the dependency set before picking a target by line count.
+
+
+### Ring_on deps: 12 of 15 landed
+
+Added: `is_obj_mappear` + `is_lightblocker_mappear` (`include/monst.h:243,233`),
+`mimic_light_blocking` + `set_mimic_blocking` (`src/display.c:1532,1548`),
+`is_were` (`include/mondata.h:96`), `see_monsters` (`src/display.c:1487`), and
+`MON_STILL_ARRIVING` in `js/const.js`.
+
+The mstate family in `js/const.js` was ported but stopped ONE ENTRY SHORT:
+`MON_FLOOR` through `MON_OBLITERATE` were present, `MON_STILL_ARRIVING` (0x100,
+`include/monst.h:67`) was not. Nothing referenced it yet so nothing broke, but a
+truncated constant family is a live trap -- the next user gets `undefined`, and
+`x & undefined` is 0, so the guard silently never fires. **When porting a
+`#define` block, port all of it and check the last line against the header.**
+
+Only 3 of `Ring_on`'s 15 dependencies remain:
+- `rescham` (`src/mon.c:4621`, 3 lines) — blocked on `normal_shape`
+  (`src/mon.c:4431`, 31 lines), itself blocked on `newcham` (`src/mon.c:5278`,
+  **257 lines**, the polymorph engine). This is the deep one.
+- `float_up` (`src/trap.c:3937`, 69 lines) and `float_vs_flight`
+  (`src/polyself.c:131`, 23 lines).
+- `spoteffects`.
+
+`Ring_on` is now close enough to write with 3-4 arms recorded, which is the
+honest shape for it. `see_monsters` itself records `see_wsegs` (worm segments)
+and `Sting_effects` (artifact glow); both are display-only.

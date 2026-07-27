@@ -12,7 +12,7 @@ import { set_twoweap } from './wield.js';
 import { cancel_doff } from './do_wear.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
-         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM, MFAST } from './const.js';
+         W_CHAIN, W_ARMOR, W_SADDLE, AC_MAX, BOLT_LIM, MFAST, W_ART } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS,
          ARM_CLOAK, ARM_SHIRT, is_elven_armor } from './obj.js';
@@ -552,8 +552,9 @@ export function recalc_telepat_range() {
             nobjs++;
     }
 
-    /* C counts all artifacts with SPFX_ESP as one more */
-    note_unported_worn('recalc_telepat_range:artifact_esp');
+    /* count all artifacts with SPFX_ESP as one */
+    if (uprop(TELEPAT).extrinsic & W_ART)
+        nobjs++;
 
     game.u.unblind_telepat_range = nobjs
         ? (BOLT_LIM * BOLT_LIM) * nobjs

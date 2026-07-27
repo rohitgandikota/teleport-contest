@@ -2656,7 +2656,26 @@ supplies 365 keys, so we block around HALF WAY through the session, not at
 the end. That kills the last surviving piece of the original story -- this was
 never about running off the end of the input.
 
-NEXT: get the BASELINE key count for comparison. If baseline also reads ~180
+BASELINE MEASURED: 350 key reads, exits cleanly, 3052 rng. With the wield
+fix: blocks at ~180. SO THE FIX CONSUMES FEWER KEYS, NOT MORE. Every
+'something reads too many keys' theory in this section is now excluded by
+measurement rather than argument.
+
+WHAT THAT LEAVES, and it is a much better place to be. At key ~180 the port
+asks the terminal for a key and does not get one. The runner supplies keys
+against the recorded step sequence, so a request that goes unanswered means
+WE ASKED AT A MOMENT THE RECORDING DOES NOT HAVE A KEY FOR -- an ordinary
+divergence, roughly halfway through the session, that happens to manifest as
+a block instead of a wrong cell.
+
+SO STOP INSTRUMENTING AND USE THE NORMAL TOOL. This is what tools/diverge.mjs
+is for. Apply the wield fix, run diverge against seed0361, and read the
+divergence point directly; it will name the function the way it does for
+every other mismatch. Six theories died here because I treated a block as a
+special kind of failure needing special tooling. It is not: it is a
+divergence that shows up at the input layer.
+
+SUPERSEDED: get the BASELINE key count for comparison. If baseline also reads ~180
 and simply exits cleanly, the fix is not consuming extra keys at all and the
 block is the terminal declining to supply the next one. If baseline reads
 many more, the fix is stalling mid-session. That single number decides which

@@ -19,13 +19,13 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     AM_SHRINE, Amask2align, ROOMOFFSET
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal , hides_under , is_animal , perceives , likes_gems, is_unicorn , mindless } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
 import { sobj_at } from './invent.js';
 import { m_carrying, meatmetal, resists_ston } from './mon.js';
-import { acidic, slimeproof } from './dog.js';
+import { acidic, slimeproof , touch_petrifies } from './dog.js';
 import { Is_mbag } from './mkobj.js';
 import { Is_container } from './obj.js';
 import { is_weptool } from './mkobj.js';
@@ -386,7 +386,7 @@ function objects_at(x, y) {
 
 /* include/mondata.h:143-146 and friends — what a monster is willing to pick up.
    likes_objs counts an armed monster as a collector. */
-const mindless    = (ptr) => (ptr.mflags1 & MFLAGS.M1_MINDLESS) !== 0;
+/* mindless() is an include/mondata.h macro; it comes from js/mondata.js. */
 /* is_animal() is an include/mondata.h macro; it comes from js/mondata.js. */
 const likes_gold  = (ptr) => (ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0;
 const likes_magic = (ptr) => (ptr.mflags2 & MFLAGS.M2_MAGIC) !== 0;
@@ -400,8 +400,9 @@ const likes_objs  = (ptr) => (ptr.mflags2 & MFLAGS.M2_COLLECT) !== 0 || is_armed
    are transcribed from the same C macros. */
 /* Is_container comes from js/obj.js. */
 /* Is_mbag comes from js/mkobj.js. */
-const touch_petrifies = (ptr) => ptr.pmidx === PMNAMES.PM_COCKATRICE
-                              || ptr.pmidx === PMNAMES.PM_CHICKATRICE;
+/* touch_petrifies() is include/mondata.h:200. js/dog.js exports it --
+   the wrong home for a header macro, but js/mon.js already imports it from
+   there, so this follows suit rather than adding a third location. */
 
 // src/monmove.c:991 — the object classes a collector and a magic-user want.
 const practical = [OCLASSES.WEAPON_CLASS, OCLASSES.ARMOR_CLASS,

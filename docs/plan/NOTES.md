@@ -3076,3 +3076,37 @@ fixed by moving is_rider to its header home, which removed
 mondata -> makemon. Find the equivalent bad edge into js/steal.js before
 retrying. The findgold consolidation itself is correct and worth doing --
 it is the import that fails, not the code.
+
+## The droppables_fn TDZ: the cycle is mkobj -> makemon, and it is all wrong-home
+
+droppables_fn has blocked three separate changes today (js/attrib.js taking
+a youprop import, the findgold consolidation, and importing js/obj.js in a
+bare harness). It is not a mysterious fault -- js/steal.js:9 declares it as a
+late-bound hook precisely BECAUSE a cycle already exists there:
+
+    let droppables_fn = null;
+    export function steal_wire_droppables(fn) { droppables_fn = fn; }
+    ... js/dog.js:1528  steal_wire_droppables(droppables);
+
+The loop that detonates is:
+
+    js/makemon.js -> js/steal.js -> js/mkobj.js -> js/makemon.js
+
+and the LAST edge is the fixable one. js/mkobj.js:32 imports four names from
+js/makemon.js, and ALL FOUR are in the wrong file:
+
+    is_male          include/mondata.h:112   -> belongs in js/mondata.js
+    is_female        include/mondata.h:113   -> belongs in js/mondata.js
+    level_difficulty src/dungeon.c:2027      -> belongs in js/dungeon.js
+    rndmonnum        src/mkobj.c:388         -> belongs in js/mkobj.js ITSELF
+
+That last one is the striking part: mkobj.js is importing its OWN C file's
+function from another module. Moving these four to their C homes removes the
+mkobj -> makemon edge outright and should break the cycle, exactly as moving
+is_rider to js/mondata.js unblocked js/attrib.js earlier today.
+
+DO THIS EARLY IN A SESSION, not at the end of one. It touches four names
+across at least three files and every consumer of each, and the failure mode
+is a 0/0 board. But it is the same shape of fix that already worked once, and
+it unblocks the findgold consolidation plus whatever else is currently
+routing around the knot.

@@ -3015,6 +3015,18 @@ separate times today (duplicate binding in wield.js, a real cycle in
 attrib.js, the is_rider move). It wants a context with room to run the full
 scoreboard after each step, not the tail of one.
 
+CHARACTERISED THE WHOLE REPORT, so nobody has to guess how bad it is.
+Of the 165 differing names, comparing the two bodies with `export` stripped:
+
+    48   IDENTICAL once export is ignored -- a local re-declaration of a
+         const.js constant with the same value (A_CHAOTIC = -1 in both).
+         Untidy and against the architecture rule, but behaviourally inert.
+    117  GENUINELY DIFFERENT BODIES. These are the real ones, and
+         `accessible` was one of them.
+
+So roughly two thirds of the report is signal. Fix the 117 first; the 48
+are a tidy-up that can ride along with whatever file they are in.
+
 WORTH KNOWING FOR THE OTHER 165: the two bodies here are not
 interchangeable. const.js's reads `game?.level?.at?.(x, y)` and returns
 early on a missing location; monmove.js's reads `.typ` and also tests

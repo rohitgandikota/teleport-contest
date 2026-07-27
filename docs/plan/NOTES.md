@@ -3192,7 +3192,7 @@ THREE TRAPS THIS PASS SPRANG REPEATEDLY, all now costed:
      export broke the board until it was found. Match on the name, then read
      the import block.
 
-WHERE THE PASS STANDS: 172 -> 121 differing names.
+WHERE THE PASS STANDS: 172 -> 101 differing names.
 
 WHAT IS LEFT AND HOW TO ATTACK IT:
 
@@ -3273,3 +3273,34 @@ here and all of which C tests as pointers.
 WHERE TO LOOK: a `!= null`, `!== null` or truthiness test on one of those
 fields is suspect. It is silently wrong rather than broken -- the empty case
 answers backwards and nothing throws.
+
+## dup-defs pass: SEVEN real defects found, all invisible to the score
+
+Updating the tally, because "deduplication" undersells what this found. Of
+the 71 names cleared, seven were genuine behaviour differences:
+
+    helpless        js/dog.js carried an extra (mfrozen > 0) term the C
+                    macro lacks, in the live pet-movement path
+    accessible      const.js's returned early on a missing location and
+                    never tested closed_door
+    is_armed        monmove's scanned mattk inline, dropping attacktype's
+                    NATTK bound and null-entry skip -- throws where the
+                    real one returns false
+    blessorcurse    sp_lev's set the cursed/blessed FLAG where mkobj's
+                    calls curse()/bless(), which do more. Same draws, so
+                    the rng agreed and the object state did not.
+    Has_contents    const.js's tested cobj != null, but cobj is initialised
+                    to [], so every EMPTY container read as full
+    In_endgame      makemon's compared the dungeon NAME to a string instead
+                    of dnum to astral_level.dnum -- and it gates a draw at
+                    js/makemon.js:486
+    Is_stronghold   const.js's returned an && chain rather than a boolean
+
+NONE of these moved the scoreboard. Five are dormant, two sit on paths no
+public session takes. They would surface in held-out games, one at a time,
+looking like bugs in whatever called them.
+
+THE POINT FOR THE NEXT PASS: a duplicate is not a tidiness problem. Read
+both bodies against the C before deleting either -- the wrong one is right
+about half the time, and picking by which file looks more canonical would
+have kept the broken version in three of these seven.

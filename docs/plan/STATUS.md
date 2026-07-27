@@ -7775,3 +7775,33 @@ dozen iterations and produced no fix, while a single clean diverge run named
 a concrete missing command in a third of a second. When a change hangs a
 session, SHELVE IT AND RUN DIVERGE ON THE CLEAN TREE instead of building
 tooling to chase the hang.
+
+## doclose is ported but NOT WIRED -- wiring it costs 131 screens
+
+js/lock.js now has doclose, obstructed and stumble_on_door_mimic, and
+js/vision.js has block_point. All four load and doclose executes as far as
+getdir. But adding the 'c' case to js/cmd.js regressed the board:
+
+    screens  512 -> 381   (-131)
+    rng      140750 -> 114128   (-26622)
+    zero-screen sessions  5 -> 11
+
+Reverting the cmd.js hunk restored all of it exactly, so the port itself is
+inert and safe in the tree; only the dispatch is harmful.
+
+CAUSE, and it is not a missing constant -- ECMD_CANCEL, TT_PIT,
+DRAWBRIDGE_UP/DOWN, IS_DOOR and D_NODOOR are all present in js/const.js and
+were checked. The problem is the KEYSTREAM. Unhandled, 'c' consumed one key.
+Handled, doclose calls getdir(), which READS A SECOND KEY -- the same hazard
+js/cmd.js already documents for 'r' and 'w' ("calls getobj(), which READS A
+KEY"). Six more sessions fall to zero because every later keystroke is now
+off by one.
+
+C does read a direction here, so reading one is right in principle. What is
+wrong is somewhere in the pair (our getdir vs C's getdir, or these sessions
+pressing 'c' where C does not reach doclose at all).
+
+NEXT: run diverge on one of the six newly-zeroed sessions with the 'c' case
+applied and read where the streams part. Do NOT re-wire 'c' before that
+number is understood -- the port is faithful line by line and still costs
+131 screens, which is exactly the case the loop rule is written for.

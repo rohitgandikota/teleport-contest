@@ -14,11 +14,16 @@ import {
 } from './const.js';
 import { newsym } from './display.js';
 import { exercise, acurrstr, ACURR } from './attrib.js';
-import { get_adjacent_loc } from './cmd.js';
+import { get_adjacent_loc, getdir } from './cmd.js';
+import { nohands } from './mondata.js';
 import { m_at } from './mon.js';
 import { is_door_mappear } from './monst.js';
 import { canspotmon } from './display.js';
-import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT } from './const.js';
+import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, ECMD_CANCEL,
+         TT_PIT, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN } from './const.js';
+import { rn2 } from './rng.js';
+
+import { block_point } from './vision.js';
 
 function note_unported_lock(what) {
     (game.unported ||= new Set()).add(what);
@@ -144,4 +149,100 @@ export function obstructed(x, y, quietly) {
         return true;
     }
     return false;
+}
+
+// src/lock.c:957 doclose() — the 'c' command, close a door.
+//
+// The draw is the last arm: rn2(25) against the average of Strength, Dexterity
+// and Constitution, exactly the shape doopen_indir() uses with rnl(20). A
+// session that closes a door runs one call short of C without it.
+//
+// Not ported, each recorded at its own site rather than lumped together:
+//   is_drawbridge_wall / is_db_wall  src/dbridge.c -- these are FUNCTIONS,
+//       not macros as an earlier note claimed; portcullis handling is absent
+//       so a drawbridge square falls through to the no-door arm
+//   feel_location / update_mapseen_for  the Blind branch, 167 lines between
+//       them, which is why the sighted path was split out first
+export async function doclose() {
+    let res = ECMD_OK;
+
+    if (nohands(game.mons[game.u.umonnum])) {
+        note_unported_lock('doclose:no_hands_msg');
+        return ECMD_OK;
+    }
+
+    if (game.u.utrap && game.u.utraptype === TT_PIT) {
+        note_unported_lock('doclose:pit_edge_msg');
+        return ECMD_OK;
+    }
+
+    if (!(await getdir(null)))
+        return ECMD_CANCEL;
+
+    const x = game.u.ux + game.u.dx;
+    const y = game.u.uy + game.u.dy;
+
+    /* Passes_walls is an intrinsic we do not model; C lets such a hero close
+       a door from inside the square. */
+    if (x === game.u.ux && y === game.u.uy) {
+        note_unported_lock('doclose:in_the_way_msg');
+        return ECMD_TIME;
+    }
+
+    let door = null;
+    if (isok(x, y)) {
+        if (stumble_on_door_mimic(x, y))
+            return ECMD_TIME;
+
+        /* choosing a direction while impaired costs a turn whether or not a
+           door was actually targeted */
+        if (game.u.uprops?.CONFUSION?.intrinsic || game.u.uprops?.STUNNED?.intrinsic)
+            res = ECMD_TIME;
+
+        door = game.level?.locations?.[x]?.[y] ?? null;
+
+        if (game.u.uprops?.BLINDED?.intrinsic)
+            note_unported_lock('doclose:blind_feel_location');
+    }
+
+    if (!door || !IS_DOOR(door.typ)) {
+        /* the drawbridge arms need is_db_wall and is_drawbridge_wall */
+        if (door && (door.typ === DRAWBRIDGE_UP || door.typ === DRAWBRIDGE_DOWN))
+            note_unported_lock('doclose:drawbridge_msg');
+        else
+            note_unported_lock('doclose:no_door_there_msg');
+        return res;
+    }
+
+    if (door.doormask === D_NODOOR) {
+        note_unported_lock('doclose:no_door_in_doorway_msg');
+        return res;
+    } else if (obstructed(x, y, false)) {
+        return res;
+    } else if (door.doormask === D_BROKEN) {
+        note_unported_lock('doclose:broken_msg');
+        return res;
+    } else if (door.doormask & (D_CLOSED | D_LOCKED)) {
+        note_unported_lock('doclose:already_closed_msg');
+        return res;
+    }
+
+    if (door.doormask === D_ISOPEN) {
+        if (verysmall(game.mons[game.u.umonnum]) && !game.u.usteed) {
+            note_unported_lock('doclose:too_small_msg');
+            return res;
+        }
+        if (game.u.usteed
+            || rn2(25) < Math.trunc((acurrstr() + ACURR(A_DEX) + ACURR(A_CON)) / 3)) {
+            note_unported_lock('doclose:door_closes_msg');
+            door.doormask = D_CLOSED;
+            feel_newsym(x, y);          /* the hero knows she closed it */
+            block_point(x, y);          /* vision: no longer see there */
+        } else {
+            exercise(A_STR, true);
+            note_unported_lock('doclose:door_resists_msg');
+        }
+    }
+
+    return ECMD_TIME;
 }

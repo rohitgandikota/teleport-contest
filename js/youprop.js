@@ -16,16 +16,21 @@
 import { game } from './gstate.js';
 import { is_flyer } from './mondata.js';
 
+export const H = (prop) => !!(game.u?.uprops?.[prop]?.intrinsic);
+export const E = (prop) => !!(game.u?.uprops?.[prop]?.extrinsic);
+export const B = (prop) => !!(game.u?.uprops?.[prop]?.blocked);
+
+
 // include/youprop.h:116 HHallucination — u.uprops[HALLUC].intrinsic.
 // The C comment above it reads "Hallucination is solely a timeout", which is
 // why this is .intrinsic and there is no EHallucination to go with it.
-export const HHallucination = () => !!game.u?.uprops?.HALLUC;
+export const HHallucination = () => H('HALLUC');
 
 // include/youprop.h:117 HHalluc_resistance, :118 EHalluc_resistance,
 // :119 Halluc_resistance. The port models uprops as a flat prop -> value map
 // rather than C's {intrinsic, extrinsic, blocked} struct, so the two halves
 // collapse into the one read; when uprops grows the struct, split them here.
-export const Halluc_resistance = () => !!game.u?.uprops?.HALLUC_RES;
+export const Halluc_resistance = () => H('HALLUC_RES') || E('HALLUC_RES');
 
 // include/youprop.h:120 Hallucination()
 export const Hallucination = () => HHallucination() && !Halluc_resistance();
@@ -33,7 +38,7 @@ export const Hallucination = () => HHallucination() && !Halluc_resistance();
 // include/youprop.h:123 HDeaf, :124 EDeaf, :125 Deaf.
 // As with HALLUC above, the flat uprops map collapses intrinsic and extrinsic
 // into one read. u.uroleplay.deaf is the deaf conduct, chosen at startup.
-export const Deaf = () => !!game.u?.uprops?.DEAF || !!game.u?.uroleplay?.deaf;
+export const Deaf = () => H('DEAF') || E('DEAF') || !!game.u?.uroleplay?.deaf;
 
 // include/youprop.h:279 Underwater()
 export const Underwater = () => !!game.u?.uinwater;
@@ -56,7 +61,7 @@ export const Unaware = () => {
 };
 
 // include/youprop.h:152 See_invisible — (HSee_invisible || ESee_invisible).
-export const See_invisible = () => !!game.u?.uprops?.SEE_INVIS;
+export const See_invisible = () => H('SEE_INVIS') || E('SEE_INVIS');
 
 // include/youprop.h:198 Invis — ((HInvis || EInvis) && !BInvis).
 // The flat uprops map has no blocked slot, so the BInvis term has nowhere to
@@ -73,7 +78,7 @@ export const See_invisible = () => !!game.u?.uprops?.SEE_INVIS;
 // for a hero whose invisibility is BLOCKED.
 //
 // Fix this WITH the uprops structure, not before and not after.
-export const Invis = () => !!game.u?.uprops?.INVIS;
+export const Invis = () => (H('INVIS') || E('INVIS')) && !B('INVIS');
 
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
 //
@@ -81,7 +86,7 @@ export const Invis = () => !!game.u?.uprops?.INVIS;
 // has no blocked field to read yet. Today every term is false so the answer
 // is right by accident; once uprops is initialised this reports levitation
 // for a hero whose levitation is BLOCKED. Fix it WITH the structure.
-export const Levitation = () => !!game.u?.uprops?.LEVITATION;
+export const Levitation = () => (H('LEVITATION') || E('LEVITATION')) && !B('LEVITATION');
 
 // include/youprop.h:253 Flying — note the steed term: riding a flying mount
 // counts, which is why this cannot be a plain uprops read.
@@ -90,14 +95,14 @@ export const Flying = () =>
     || !!(game.u?.usteed && is_flyer(game.u.usteed.data));
 
 // include/youprop.h Fire_resistance — (HFire_resistance || EFire_resistance).
-export const Fire_resistance = () => !!game.u?.uprops?.FIRE_RES;
+export const Fire_resistance = () => H('FIRE_RES') || E('FIRE_RES');
 
 // include/youprop.h:147 Hunger — (HHunger || EHunger).
 //
 // No blocked term, unlike Invis, so this one IS complete in shape: when
 // uprops grows the struct, the two halves become
 // uprops[HUNGER].intrinsic and .extrinsic and nothing else changes.
-export const Hunger = () => !!game.u?.uprops?.HUNGER;
+export const Hunger = () => H('HUNGER') || E('HUNGER');
 
 // include/youprop.h:182 Clairvoyant — ((HClairvoyant || EClairvoyant)
 // && !BClairvoyant).
@@ -117,53 +122,53 @@ export const Clairvoyant = () =>
 // blocked term (unlike Invis and Levitation above).
 
 // include/youprop.h:138 Wounded_legs — (HWounded_legs || EWounded_legs)
-export const Wounded_legs = () => !!game.u?.uprops?.WOUNDED_LEGS;
+export const Wounded_legs = () => H('WOUNDED_LEGS') || E('WOUNDED_LEGS');
 
 // include/youprop.h:345 Regeneration — (HRegeneration || ERegeneration)
-export const Regeneration = () => !!game.u?.uprops?.REGENERATION;
+export const Regeneration = () => H('REGENERATION') || E('REGENERATION');
 
 // include/youprop.h:129 Fumbling — (HFumbling || EFumbling)
-export const Fumbling = () => !!game.u?.uprops?.FUMBLING;
+export const Fumbling = () => H('FUMBLING') || E('FUMBLING');
 
 // include/youprop.h:81 Stunned — HStun. INTRINSIC ONLY: there is no EStun
 // term, so an item cannot confer it. The property key is STUNNED while the
 // C intrinsic macro is HStun; do not let the name difference suggest a
 // second property.
-export const Stunned = () => !!game.u?.uprops?.STUNNED;
+export const Stunned = () => H('STUNNED');
 
 // include/youprop.h:84 Confusion — HConfusion. Intrinsic only, as Stunned.
-export const Confusion = () => !!game.u?.uprops?.CONFUSION;
+export const Confusion = () => H('CONFUSION');
 
 // include/youprop.h:108 Sick — u.uprops[SICK].intrinsic. Intrinsic only,
 // and C spells it out rather than going through an HSick macro.
-export const Sick = () => !!game.u?.uprops?.SICK;
+export const Sick = () => H('SICK');
 
 // include/youprop.h:111 Vomiting — u.uprops[VOMITING].intrinsic.
-export const Vomiting = () => !!game.u?.uprops?.VOMITING;
+export const Vomiting = () => H('VOMITING');
 
 // include/youprop.h Teleport_control — (HTeleport_control || ETeleport_control)
-export const Teleport_control = () => !!game.u?.uprops?.TELEPORT_CONTROL;
+export const Teleport_control = () => H('TELEPORT_CONTROL') || E('TELEPORT_CONTROL');
 
 // include/youprop.h:190 Detect_monsters — (HDetect_monsters || EDetect_monsters)
-export const Detect_monsters = () => !!game.u?.uprops?.DETECT_MONSTERS;
+export const Detect_monsters = () => H('DETECT_MONSTERS') || E('DETECT_MONSTERS');
 
 // include/youprop.h:156 Blind_telepat — (HTelepat || ETelepat). NOTE THE NAME:
 // the macro is Blind_telepat while the property key is TELEPAT, and there is
 // no separate "Telepat" macro. Reading the key name as the macro name would
 // invent one.
-export const Blind_telepat = () => !!game.u?.uprops?.TELEPAT;
+export const Blind_telepat = () => H('TELEPAT') || E('TELEPAT');
 
 // include/youprop.h:170 Warn_of_mon — (HWarn_of_mon || EWarn_of_mon)
-export const Warn_of_mon = () => !!game.u?.uprops?.WARN_OF_MON;
+export const Warn_of_mon = () => H('WARN_OF_MON') || E('WARN_OF_MON');
 
 // include/youprop.h:186 Infravision — (HInfravision || EInfravision)
-export const Infravision = () => !!game.u?.uprops?.INFRAVISION;
+export const Infravision = () => H('INFRAVISION') || E('INFRAVISION');
 
 // include/youprop.h:218 Conflict — (HConflict || EConflict)
-export const Conflict = () => !!game.u?.uprops?.CONFLICT;
+export const Conflict = () => H('CONFLICT') || E('CONFLICT');
 
 // include/youprop.h:204 Displaced — (HDisplaced || EDisplaced)
-export const Displaced = () => !!game.u?.uprops?.DISPLACED;
+export const Displaced = () => H('DISPLACED') || E('DISPLACED');
 
 // include/youprop.h:92 Blinded — (HBlinded && !BBlinded).
 //
@@ -171,7 +176,7 @@ export const Displaced = () => !!game.u?.uprops?.DISPLACED;
 // term, and it has no extrinsic half, which is a shape none of the others
 // use. The !BBlinded term is missing here for the same reason as Invis and
 // Levitation -- no blocked field yet. Fix all three WITH the structure.
-export const Blinded = () => !!game.u?.uprops?.BLINDED;
+export const Blinded = () => H('BLINDED') && !B('BLINDED');
 
 
 /* ------------------------------------------------------------------------
@@ -194,6 +199,3 @@ export const Blinded = () => !!game.u?.uprops?.BLINDED;
    blocked terms (Invis, Levitation, Blinded), initialise uprops, and score.
    Until all of that lands together these three are just sitting here.
    ------------------------------------------------------------------------ */
-export const H = (prop) => !!(game.u?.uprops?.[prop]?.intrinsic);
-export const E = (prop) => !!(game.u?.uprops?.[prop]?.extrinsic);
-export const B = (prop) => !!(game.u?.uprops?.[prop]?.blocked);

@@ -3378,3 +3378,28 @@ include/monst.h); the `steeds` list is a local const in js/steed.js and
 should move to a shared home; amorphous, noncorporeal, is_whirly and
 unsolid are all in js/mondata.js, which makemon already imports. Then
 makemon's copy can be written to match C without any new edge.
+## `in_rooms` in mklev.js is a stub, and un-stubbing it regresses
+
+`js/mklev.js:431` defines `function in_rooms(x, y, rtype) { return []; }`. The
+real one is `js/hack.js` (`src/hack.c:3498`). The only consumer is
+`js/mklev.js:1487`, `const shdoor = in_rooms(x, y, 0).length > 0;` inside
+`dosdoor`, so with the stub a shop door is never recognised during level
+creation.
+
+Repointing mklev at the real `in_rooms` is a one-line import and it **loses**
+394 screens, 64k positional RNG and a whole session. Do not "fix" this by
+deleting the stub -- that was tried and reverted.
+
+The stub is therefore masking a bug somewhere else, not being lazy. In the C,
+`dosdoor` runs during level generation and calls the real `in_rooms`, so the
+faithful answer is not `[]`. The regression means `game.level.rooms` is not in
+the state the C's `svr.rooms` is in at that moment: most likely the rooms exist
+but are not yet typed/numbered the way `dosdoor` expects, so the real lookup
+answers `true` where the C answers `false`. The fix is upstream, in when and how
+`game.level.rooms` gets filled during `makelevel`, and only after that does
+un-stubbing become correct.
+
+Generalises: **an un-stubbing that regresses is a finding, not a failure.** It
+localises the real defect to the data the stub was hiding. Record which stub and
+what it cost, then leave the stub in place with a comment, because a stub that
+is documented as wrong is honest, while a "fix" that drops 394 screens is not.

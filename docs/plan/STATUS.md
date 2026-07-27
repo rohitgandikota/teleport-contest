@@ -8987,3 +8987,39 @@ draw.
 Reminder recorded above and worth repeating: `js/pline.js`'s message helpers are
 async, so `canwearobj` and everything above it are async functions returning
 promises where the C returns int.
+
+
+### The worn-gear chain is now LIVE (was entirely dead)
+
+`setworn()` was ported but called from nowhere, so `game.u.uarm` / `uarmg` /
+`uarmc` were never assigned and no starting item conferred an extrinsic.
+Everything downstream was silently inert, including every `<X>_on()` callback
+reached through `set_wear()`.
+
+Fixed in three commits, each measured on its own:
+1. `set_wear()` read bare `game.uarm` (22 sites) where `js/worn.js` writes
+   `game.u[wp.w_obj]`. Neutral on its own -- it could not fire either way.
+2. `js/u_init.js:535` now calls `setworn(obj, slot)` instead of assigning
+   `obj.owornmask`. **RNG +2**, and three previously UNREACHABLE unported
+   markers started firing in 100% of games, which is the real evidence the
+   chain went live.
+3. Those three then ported out: `setworn:nudist`, `setworn:tux_penalty`
+   (plus the `setnotworn` twin) and `recalc_telepat_range:artifact_esp`.
+
+Supporting ports: `Role_if` (`include/you.h:247`) into `js/role.js`, and
+`struct u_roleplay` (`include/you.h:169`) mirrored onto `g.u` in
+`js/jsmain.js`. Nothing assigned `uroleplay` before, so `pauper` still reads
+false exactly as it did; the struct exists so `nudist` has a real field.
+
+`generalize`'s reached-but-unported list is now down to two 3% entries
+(`themeroom Water-surrounded vault`, `create_monster:enexto`).
+
+**Lesson worth carrying:** a marker that fires in 100% of games after a change
+is the strongest available signal that the change connected something real.
+Watch that list, not just the screen count -- all three of these were invisible
+to the scoreboard both before and after.
+
+### Still the next target
+`canwearobj` (`src/do_wear.c:2030`). `mbodypart`/`body_part` landed, so only
+`fingers_or_gloves` (`src/do_wear.c:60`, a one-liner) stands between here and
+writing it. It reads `uarmg`, which now actually gets assigned.

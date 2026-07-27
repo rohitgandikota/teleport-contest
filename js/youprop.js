@@ -86,3 +86,10 @@ export const Flying = () =>
 
 // include/youprop.h Fire_resistance — (HFire_resistance || EFire_resistance).
 export const Fire_resistance = () => !!game.u?.uprops?.FIRE_RES;
+
+// include/youprop.h:147 Hunger — (HHunger || EHunger).
+//
+// No blocked term, unlike Invis, so this one IS complete in shape: when
+// uprops grows the struct, the two halves become
+// uprops[HUNGER].intrinsic and .extrinsic and nothing else changes.
+export const Hunger = () => !!game.u?.uprops?.HUNGER;

@@ -3443,3 +3443,38 @@ was exactly neutral on all 44 public sessions -- no screen or RNG delta at all -
 while breaking a game on an unseen seed. A neutral scoreboard is not evidence
 that a change is safe; run `tools/generalize.mjs` and read its thrown-error
 counts, not just its unported list.
+
+### Resolved: the null `pm` crash is a symptom, not an enexto bug
+
+Answered by reading, per the open question above. Two facts settle it.
+
+`include/extern.h:1860` declares
+`extern void set_mon_data(struct monst *, struct permonst *) NONNULLARG12;`
+-- **both** arguments are declared non-null. And `create_monster`
+(`src/sp_lev.c:1925`) assigns `pm = (struct permonst *) 0` in four separate arms
+(unknown id, extinct unique, `mkclass` failure, and the In_mines your_race
+case). So reaching `enexto(&cc, x, y, pm)` with a null `pm` feeds a
+declared-non-null parameter, and `goodpos` then dereferences `mdat->mlet` with
+no guard. The C has no defined behaviour here at all.
+
+Therefore the branch is unreachable in the real game, and neither answer I was
+weighing was right: `set_mon_data` does not substitute anything, and there is no
+guard to port. The reachability comes from the `&&` -- `enexto` runs only when
+`MON_AT(x, y)` is already true. So a null `pm` AND an occupied target must
+co-occur, and in the C they evidently never do.
+
+Our port reaches it in 1 of 40 unseen games. That means something upstream
+diverges: most likely `m_at` reports a monster where the C reports none, or the
+`get_location_coord` spot differs, or a `pm`-nulling arm fires that should not
+(the extinct-unique and `mkclass` arms both depend on state we may not track).
+**Do not add a null guard.** The C has none, so a guard would hide the real
+divergence and diverge from the C in the same motion.
+
+Next step is to identify which of the 40 seeds crashes, then check at that call
+whether `pm` should be null and whether the square is genuinely occupied.
+
+This is the third time in this stretch that a gap turned out to mark an upstream
+defect rather than missing work -- `in_rooms`, `align_gname`, now this. The
+shape is worth naming: **when filling a recorded gap makes things worse, the gap
+was load-bearing.** It was holding back a wrong value produced elsewhere. Chase
+what feeds it before completing it.

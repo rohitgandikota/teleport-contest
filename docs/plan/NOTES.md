@@ -3326,5 +3326,21 @@ into game.urole from the chosen pantheon. If it does, questpgr's version is
 correct and insight's is redundant. If it does not, insight's is working
 around a gap in role_init and the right fix is in role_init, not here.
 
-DO NOT just delete one. This is the case the pass's own rule was written
-for -- the wrong copy is right about half the time.
+RESOLVED, AND IT WAS NEITHER COPY. src/role.c:2079 copies the pantheon's
+lgod/ngod/cgod into gu.urole, but ONLY when the role has none of its own --
+Priest is the only such role. Our role_init picked a pantheon and never did
+the copy.
+
+So questpgr's version (reads game.urole, matches C) was right for every
+role EXCEPT Priest, and insight's (indexes roles[pantheon] unconditionally)
+was right ONLY for Priest. Both wrong, in complementary ways, because three
+lines upstream were missing.
+
+Ported those three lines into js/role.js, after which questpgr's is correct
+for everything and insight's copy was removed as obsolete.
+
+THE GENERAL LESSON, and it is the most useful thing this pass produced:
+A DUPLICATE CAN BE A SYMPTOM OF A MISSING PORT, NOT A TIDINESS PROBLEM.
+When two copies disagree and neither matches the C, do not pick one -- ask
+why someone needed the second. Here the answer was a gap in role_init, and
+deleting either copy first would have shipped a bug.

@@ -3729,3 +3729,50 @@ Profiling notes for the next attempt:
 The fix itself is READY and correct -- it is three `game.uwep` -> `game.u.uwep`
 replacements. Do not land it until the slowdown is understood, because it costs
 a whole session on the board.
+
+## THE JUDGE TIMED US OUT (900s) — and neither local gate could see it
+
+Mon 27 Jul 2026 20:50 UTC the leaderboard showed:
+
+    Latest scoring run failed
+    The judge could not score this fork: timeout (900s)
+    FAIL: seed0209-tourist-mail-daemon   (held-out)
+    FAIL: seed0300-barb-mixed-bumps      (held-out)
+    FAIL: seed0341-archeologist-gnome-fullmoon (held-out)
+    FAIL: seed0360-wizard-world-tour     (public)
+    FAIL: se...
+    Scores shown are from the last successful run (Sun 26 Jul 16:24 UTC).
+
+Those four COMPLETED with metrics, so the run died on a session shortly after
+seed0360 -- alphabetically seed0361, the session with the known --More-- hang.
+
+**The judge scores 88 sessions (44 public + 44 held-out) under ONE 900s budget.
+A single blocked session eats the whole thing and the fork goes unscored.** The
+displayed points freeze at the last good run, so the cost is every improvement
+since then, not one session.
+
+WHY BOTH LOCAL GATES ARE BLIND TO IT, and this is the important part:
+  - `frozen/score.sh` runs only the 44 PUBLIC sessions.
+  - Under `frozen/ps_test_runner.mjs`, `js/input.js:20 nhgetch()` THROWS
+    "Input queue empty" when the queue drains.
+  - Under the judge's `frozen/playability_runner.mjs:108`, `game.nhDisplay` is a
+    `js/terminal.js` which HAS `readKey()`, so nhgetch falls through to
+    `await display.readKey(...)` and BLOCKS instead of throwing.
+  - `tools/generalize.mjs` hits the throw path too. Its cheerful
+    "40 of 40 games threw: Input queue empty" is the SAME over-read that hangs
+    the judge, reported as benign. I read that line as healthy all session.
+
+**`tools/hang-gate.mjs` now closes this.** It runs each session with a wall
+budget and fails on a block. Validated: it correctly flags seed0361 when the
+uwep change is applied (exit 1), and passes all 44 clean otherwise. ~16s for
+the full set. Run it before every push that adds message output.
+
+WHAT CAUSED IT: this session wired up many dormant message paths at once (all
+seven `<X>_on` handlers via set_wear, on_msg, Ring_on, Blindf_on,
+toggle_stealth, encumber_msg). Reverted in 655e765 -- the ported FUNCTIONS are
+kept, only the calls that can emit a top-line message went back behind their
+markers. Re-land them ONE AT A TIME with the hang gate green.
+
+GENERALISES: **an over-read is a divergence, not a stall.** The session's key
+list is exactly what C consumed. Needing one more key means we printed a prompt
+C did not print. Treat every hang as a wrong-output bug with a specific cause.

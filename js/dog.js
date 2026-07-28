@@ -1267,8 +1267,13 @@ export async function dog_move(mtmp, after) {
        Without this the pet stands still for the whole game and its search box
        drifts further from C's with every turn. */
     if (nix !== omx || niy !== omy) {
+        /* src/dogmove.c:1280 — a pet whose chosen square is the hero's
+           attacks instead of moving (conflict, confusion). */
         if (chi >= 0 && (mfp.info[chi] & ALLOW_U)) {
-            note_unported('mattacku');
+            if (mtmp.mleashed)
+                note_unported('newdogpos:m_unleash');
+            const { mattacku } = await import('./mhitu.js');
+            await mattacku(mtmp);
             return MMOVE_DONE;
         }
         /* src/monmove.c mtrack — remember where we came from, newest first */

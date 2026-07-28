@@ -10573,3 +10573,59 @@ pattern to follow. After that the tour heads downstairs ('>' dodown is
 live) into deeper levels.
 
 Board 1267 (was 1207), passes 6, hang-gate OK, generalize OK.
+
+## 2026-07-28 — mattacku: monsters fight back (board 1273)
+
+Ported the monster-vs-hero melee path end to end:
+
+- `js/mhitu.js` is now a real file: `mattacku()` with `hitmu`, `missmu`,
+  `hitmsg` (with the " again" slot tracking), `mswings`/`mswings_verb`,
+  `wildmiss`, `mdamageu`, `mpoisons_subj`, `passiveum`,
+  `calc_mattacku_vars`, `mtrapped_in_pit`. `getmattk` moved here from
+  mhitm.js (its C home is mhitu.c:310). Special attack forms (gaze, engulf,
+  breath, spit, cast, seduction) are note_unported at their C decision
+  points.
+- `js/weapon.js`: `oselect`, `hwep[]`, `select_hwep`, `mon_wield_item`,
+  `possibly_unwield`, `mwepgone`, `setmnotwielded`.
+- `js/mhitm.js`: mattackm's AT_WEAP arm is real now (mhitm.c:393): wield if
+  needed (spending the action), `possibly_unwield`, `mswingsm` + hitval,
+  fallthrough to melee with the cockatrice-weapon skip and the KMH to-hit
+  un-accumulate. `mswingsm` added.
+- `js/uhitm.js`: `mhitm_ad_phys` grew the mdef==youmonst branch (weapon
+  damage via dmgval, gauntlets of power, hitmsg/M_ATTK_HIT, AC-negative
+  reduction lives in hitmu) and the armed mhitm branch; `rustm` ported
+  (draws only for rust/corr/fire-passive defenders).
+- `js/monmove.js` dochug: PHASE TWO wield block (monmove.c:840), the status
+  switch (panicattk on MMOVE_NOMOVES+scared, ranged break, isgd), PHASE
+  FOUR `mattacku` call, quest_talk/cuss gates (cuss's rn2(5) is live for
+  MS_CUSS monsters). `m_move`'s ALLOW_U arm now redirects nix/niy to
+  mux/muy and returns MMOVE_NOTHING at the hero instead of noting.
+- `js/dog.js` newdogpos ALLOW_U arm calls mattacku (pet under conflict).
+- `js/allmain.js`: `regen_hp` + `interrupt_multi` — the rn2(100) heal roll
+  fires every turn ONCE the hero is below max HP, so it appears mid-session
+  the first time the hero takes damage. `game.youmonst` ({data, mnum}) is
+  now initialized where u.umonnum is set.
+- `js/mondata.js`: `nolimbs`, `noattacks`.
+
+**The debugging lesson that cost most of the session** (also in NOTES): the
+scorer compares rng entries with the call site STRIPPED, so "rn2(5)=0 @
+distfleeck" from the wrong monster aligns silently. seed0360's goblin looked
+ported-correct for 3000 draws while C's goblin had been armed by a
+completely different mechanism: dogmove.c:1157's return attack (pet hits a
+monster -> rn2(4) gate -> mattackm(defender, pet)), whose AT_WEAP arm wields
+for free. Our stubbed AT_WEAP arm never wielded, so our goblin burned its
+first real action wielding while C's attacked. Also: steps are not moves —
+seed0360 spends its first 129 keys on zero-time commands; the first
+mcalcmove batch (5x rn2(12)) marks the first real turn.
+
+seed0360: 136 -> 142 screens; the goblin wield (step 136, joined with the
+kitten bite), the thrust+hit line and the HP:132 status all match. Next gap
+there is step 142: ^v level teleport -> goto_level, getbones' rn2 draws and
+dlvl-2 themed-room fills (mkclass_aligned).
+
+Board: 1273 screens (+6), RNG divergence points same or later everywhere
+(seed0006 +79), passes hold at 6. hang-gate OK, generalize OK (40/40 end at
+input-exhausted, no hangs).
+
+Next: goto_level/getbones for seed0360's descent, or pick a fresh diverge
+target (seed0030 at 68/1953 step ~20s, seed0014 at 3024/59178 step 18 ",").

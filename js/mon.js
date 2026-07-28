@@ -669,7 +669,7 @@ export function m_carrying(mtmp, type) {
     return null;
 }
 
-// include/monst.h:210 MON_WEP() — monsters do not wield in this port yet.
+// include/monst.h NO_WEAPON_WANTED — see js/const.js for the full enum.
 const NO_WEAPON_WANTED = 0;
 
 // include/obj.h:213 is_blade() — a cutting weapon, dagger through saber.
@@ -956,7 +956,7 @@ export function can_carry(mtmp, otmp) {
 // Stubbed to TRUE, it let monsters pick up silver they hate and corpses that
 // petrify them, which changes what can_carry() allows and therefore which
 // square m_search_items() steers them to.
-function can_touch_safely(mtmp, otmp) {
+export function can_touch_safely(mtmp, otmp) {
     const otyp = otmp.otyp;
     const mdat = game.mons[mtmp.mnum];
 

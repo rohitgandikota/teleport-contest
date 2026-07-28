@@ -34,6 +34,21 @@ export const slithy       = (d) => (d.mflags1 & MFLAGS.M1_SLITHY) !== 0;
 export const needspick    = (d) => (d.mflags1 & MFLAGS.M1_NEEDPICK) !== 0;
 
 export const nohands    = (d) => (d.mflags1 & MFLAGS.M1_NOHANDS) !== 0;
+// include/mondata.h:53 nolimbs() — note == rather than != 0: NOLIMBS is
+// NOHANDS|NOFEET, and both bits must be set.
+export const nolimbs    = (d) => (d.mflags1 & MFLAGS.M1_NOLIMBS) === MFLAGS.M1_NOLIMBS;
+
+// src/mondata.c:61 noattacks() — no real attacks; AT_BOOM (gas spore's
+// death explosion) does not count as one.
+export function noattacks(ptr) {
+    for (let i = 0; i < 6; i++) {
+        if (ptr.mattk[i][0] === ATTKS.AT_BOOM)
+            continue;
+        if (ptr.mattk[i][0])
+            return false;
+    }
+    return true;
+}
 export const verysmall  = (d) => d.msize < MFLAGS.MZ_SMALL;
 export const is_giant   = (d) => (d.mflags2 & MFLAGS.M2_GIANT) !== 0;
 // include/mondata.h:114 is_neuter() — was defined in js/makemon.js, which is

@@ -15,7 +15,7 @@ import { game } from './gstate.js';
 import { vegetarian } from './mondata.js';
 import { rn2, rnd } from './rng.js';
 import { mksobj, rnd_class, curse } from './mkobj.js';
-import { Is_candle } from './obj.js';
+import { Is_candle, Is_container } from './obj.js';
 import { is_ammo, is_missile } from './wield.js';
 import { is_weptool, is_rustprone, is_corrodeable, is_flammable,
          is_crackable, is_rottable } from './mkobj.js';
@@ -394,6 +394,17 @@ export function doname(obj) {
         ;                              /* no article */
     else
         prefix = 'a ';                 /* recomputed at the end */
+
+    /* src/objnam.c:1300 — "empty" goes at the beginning: a container known
+       to have no contents (bag of tricks and horn of plenty key on charges
+       instead and are recorded with the charge subsystem) */
+    if (obj.cknown
+        && ((obj.otyp === ONAMES.BAG_OF_TRICKS
+             || obj.otyp === ONAMES.HORN_OF_PLENTY)
+            ? (obj.spe === 0 && !known)
+            : ((Is_container(obj) || obj.otyp === ONAMES.STATUE)
+               && !(obj.cobj && obj.cobj.length))))
+        prefix += 'empty ';
 
     if (bknown && obj.oclass !== COIN_CLASS) {
         if (obj.cursed) prefix += 'cursed ';

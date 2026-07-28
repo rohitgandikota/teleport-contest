@@ -6,6 +6,7 @@ import { ONAMES } from './objects_data.js';
 import { ECMD_OK, ECMD_TIME } from './const.js';
 import { getobj } from './invent.js';
 import { getdir, get_adjacent_loc } from './cmd.js';
+import { pick_lock } from './lock.js';
 import { is_pick, is_axe } from './mon.js';
 import { is_pole } from './u_init.js';
 import { Hallucination, Deaf } from './youprop.js';
@@ -165,14 +166,9 @@ export async function doapply() {
         return ECMD_OK; /* ECMD_CANCEL */
 
     if (LOCK_TOOLS.includes(obj.otyp)) {
-        const cc = { x: 0, y: 0 };
-        if (!await get_adjacent_loc(null, 'Invalid location!',
-                                    game.u.ux, game.u.uy, cc))
-            return ECMD_OK;
-        /* src/apply.c:4288 — ECMD_TIME only when pick_lock() did something,
-           and the lock machinery is not ported. */
-        note_unported_apply('pick_lock');
-        return ECMD_OK;
+        /* src/apply.c:4288 — ECMD_TIME when pick_lock() did anything at all
+           (learned something or started picking), ECMD_OK otherwise */
+        return (await pick_lock(obj, 0, 0, null)) !== 0 ? ECMD_TIME : ECMD_OK;
     }
 
     if (obj.otyp === ONAMES.STETHOSCOPE)

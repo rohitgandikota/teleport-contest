@@ -21,6 +21,9 @@ import { You_cant, You, pline_The } from './pline.js';
 import { getdir } from './cmd.js';
 import { ECMD_CANCEL, TT_PIT, isok, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT } from './const.js';
 import { Monnam } from './do_name.js';
+import { pline, canseemon } from './display.js';
+/* is_drawbridge_wall — drawbridges are not generated yet */
+const is_drawbridge_wall = (x, y) => -1;
 
 function note_unported_lock(what) {
     (game.unported ||= new Set()).add(what);
@@ -189,4 +192,65 @@ export async function doclose() {
     }
 
     return ECMD_TIME;
+}
+
+/* src/lock.c:352 — pick_lock result codes. */
+const PICKLOCK_LEARNED_SOMETHING = -1;  /* time passes */
+const PICKLOCK_DID_NOTHING = 0;         /* no time passes */
+const PICKLOCK_DID_SOMETHING = 1;
+
+// src/lock.c:358 pick_lock() — apply a key, lock pick or credit card.
+//
+// The reachable slice is the door arms: no lock on this terrain, "This
+// doorway has no door.", "You cannot lock an open door.", "This door is
+// broken.", each of which teaches something and so takes the turn. The
+// container arm, the resume-an-interrupted-attempt arm and the real picking
+// occupation (its ynq prompt and chance rolls) are recorded when reached.
+export async function pick_lock(pick, rx, ry, container) {
+    const picktyp = pick.otyp;
+    const cc = { x: 0, y: 0 };
+
+    if (game.xlock?.usedtime && picktyp === game.xlock?.picktyp) {
+        note_unported_lock('pick_lock:resume');
+        return PICKLOCK_LEARNED_SOMETHING;
+    }
+
+    if (!await get_adjacent_loc(null, 'Invalid location!',
+                                game.u.ux, game.u.uy, cc))
+        return PICKLOCK_DID_NOTHING;
+
+    if (cc.x === game.u.ux && cc.y === game.u.uy) {
+        /* pick lock on a container (or complain about the lack of one) */
+        note_unported_lock('pick_lock:container');
+        return PICKLOCK_DID_NOTHING;
+    }
+
+    const mtmp = m_at(cc.x, cc.y);
+    if (mtmp && canseemon(mtmp)) {
+        note_unported_lock('pick_lock:monster_in_the_way');
+        return PICKLOCK_LEARNED_SOMETHING;
+    }
+
+    const door = game.level?.at(cc.x, cc.y);
+    if (!door || !IS_DOOR(door.typ)) {
+        await You(`see no ${is_drawbridge_wall(cc.x, cc.y) >= 0
+                            ? 'lock on the drawbridge' : 'door there'}.`);
+        return PICKLOCK_DID_NOTHING;
+    }
+    switch (door.doormask) {
+    case D_NODOOR:
+        await pline('This doorway has no door.');
+        return PICKLOCK_LEARNED_SOMETHING;
+    case D_ISOPEN:
+        await You('cannot lock an open door.');
+        return PICKLOCK_LEARNED_SOMETHING;
+    case D_BROKEN:
+        await pline('This door is broken.');
+        return PICKLOCK_LEARNED_SOMETHING;
+    default:
+        /* the Unlock/Lock ynq, the chance table and the picklock
+           occupation are the real picking machinery */
+        note_unported_lock('pick_lock:pick_occupation');
+        return PICKLOCK_DID_NOTHING;
+    }
 }

@@ -20,7 +20,7 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul } from './hack.js';
+import { bad_rock, nomul, domove_attackmon_at } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
@@ -835,6 +835,26 @@ export async function domove() {
         const mtmp_bump = m_at(newx, newy);
         if (mtmp_bump && (!is_safemon(mtmp_bump) || game.context.forcefight))
             nomul(0);
+    }
+
+    /* src/hack.c:2790 — domove_attackmon_at() gates walking into an occupied
+       square. Wired for SAFE monsters only: the pet-displacement rn2(7),
+       the flee arm and the frozen-pet arm live in do_attack and draw exactly
+       as C. A HOSTILE target keeps the old blocked path, because do_attack's
+       combat tail (hmon, the kill path, retaliation) is unported and wiring
+       it measured -23 screens pre-reset; that gap stays recorded. */
+    {
+        const mtmp_atk = m_at(newx, newy);
+        if (mtmp_atk && is_safemon(mtmp_atk) && !game.context.forcefight) {
+            const displaceu = { value: false };
+            if (await domove_attackmon_at(mtmp_atk, newx, newy, displaceu)) {
+                /* the move was used up (pet refused to budge, message shown);
+                   C's domove returns here with the turn consumed */
+                return;
+            }
+        } else if (mtmp_atk && !is_safemon(mtmp_atk)) {
+            note_unported_cmd('domove:attack_hostile');
+        }
     }
 
     /* src/hack.c:2846 — the blocked-move exit.

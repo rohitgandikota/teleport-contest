@@ -9928,3 +9928,28 @@ recorder mis-attributes a draw from the end of step 5's follow-up core.
 Divergence at 2754/3018; the tail beyond is the pet round + block.
 
 Board 689/44, passes 4, seven 100%-RNG sessions. Gates clean.
+
+
+### THE WISH CHAIN LANDED (580d835). Board 689 -> 804.
+
+readobjnam's spine + makewish + all three wish entry points (^W,
+#wizwish, WAN_WISHING). The +115 screens came mostly from wizard
+sessions that OPEN with a debug wish: before this, their very first
+command desynchronized the whole session. seed0398: 1 -> 26/87.
+
+The wish-parse coverage: counts/articles/BUC/erodeproof prefixes,
+(N:M)/(lit)/(+N), "<class> of X" and "X <class>" via wrp[], then
+rnd_otyp_by_namedesc with C's probability weighting. Unhandled
+constructs (monster-typed items, corpses, fruits, terrain wishes)
+note_unported and return null -- if a held-out wish uses one, the
+session records the gap instead of guessing.
+
+Next blockers by yield:
+- seed0398 @2785: m_move's mtrack-skip rn2(4*(cnt-j)) shows OUR
+  mfndpos candidate count differs (24 vs 16 => cnt-j 6 vs 4) --
+  the mfndpos ALLOW-flag/terrain sweep needs an audit against C.
+- seed0108 @2778 (step 30): the dochug rn2(4) vs dogfood rn2(100)
+  pet-behavior class again.
+- seed2200's rn2(19) question still open (see previous entry).
+
+Board 804/44, passes 4, seven 100%-RNG sessions. Gates clean.

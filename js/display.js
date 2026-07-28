@@ -53,7 +53,16 @@ function terrain_glyph(loc, x, y) {
     switch (typ) {
     case STONE:     return { ch: ' ', color: NO_COLOR, dec: false };
     case ROOM:      return { ch: '~', color: NO_COLOR, dec: true };  // DEC middle dot
-    case CORR:      return { ch: '#', color: NO_COLOR, dec: false };
+    case CORR: {
+        /* src/display.c:2302 back_to_glyph() picks S_litcorr when the cell
+           was lit or lit_corridor is set; :248 map_background() drops back
+           to S_corr when the cell is neither seen nor waslit. Both share
+           '#', so map_glyphinfo (display.c:2938) paints the lit one
+           CLR_WHITE "to provide a visible difference". */
+        const lit = (loc.waslit || game.flags?.lit_corridor)
+                    && (loc.waslit || cansee(x, y));
+        return { ch: '#', color: lit ? CLR_WHITE : NO_COLOR, dec: false };
+    }
     // src/display.c:2324 — '+' when shut, '-'/'|' when open. The open glyphs
     // read backwards from their names: S_vodoor is '-' and S_hodoor is '|'
     // (include/defsym.h:104-105), so the orientation test is inverted.
@@ -148,22 +157,76 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
 }
 
 // ── newsym ──
+/* include/display.h:894 obj_to_glyph() — a CORPSE does NOT become an object
+   glyph. It becomes `corpsenm + GLYPH_BODY_OFF`, a BODY glyph, and a body
+   glyph takes the colour of the MONSTER it came from rather than
+   objects[CORPSE].oc_color. Drawing every corpse the object's brown was wrong
+   for every species that is not brown: seed1500's first frame differs by
+   exactly one cell, a red '%' we drew brown.
+
+   The symbol is unchanged, because def_oc_syms[FOOD_CLASS] and the body
+   glyph's symbol are both '%'. */
+function floor_object_glyph(obj) {
+    const oc = game.objects?.[obj.otyp];
+    let color = oc?.oc_color ?? NO_COLOR;
+    let sym = def_oc_syms[obj.oclass] || '?';
+
+    /* include/display.h:950 statue_to_glyph() — a STATUE becomes
+       corpsenm + GLYPH_STATUE_*_OFF, i.e. it is drawn with the MONSTER's
+       symbol and colour, not the object's. Unlike a corpse, where only the
+       colour changes because both glyphs use '%', a statue's SYMBOL changes
+       too: we were drawing '`' where C draws the creature's letter. */
+    if (obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0) {
+        /* src/display.c:2829 — the statue takes the MONSTER's symbol
+           but the STATUE OBJECT's colour:
+               sym.symidx = mons[offset].mlet + SYM_OFF_M;
+               obj_color(STATUE);
+           so a grid bug statue is an 'x' in stone grey, not in the
+           grid bug's magenta. */
+        const mptr = game.mons?.[obj.corpsenm];
+        if (mptr)
+            sym = def_monsyms[mptr.mlet] || sym;
+        color = game.objects?.[ONAMES.STATUE]?.oc_color ?? color;
+    } else if (obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0) {
+        color = game.mons?.[obj.corpsenm]?.mcolor ?? color;
+    }
+    return { ch: sym, color, dec: false };
+}
+
 export function newsym(x, y) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
 
     if (game.u?.ux === x && game.u?.uy === y) {
-        // Hero
+        /* Hero. Map memory keeps the topmost non-monster layer, so an object
+           underfoot is what the cell reverts to after stepping off —
+           src/display.c _map_location() sets lev->glyph to the object glyph,
+           and display_self() draws '@' over it. */
         show_glyph_cell(x, y, '@', CLR_WHITE, false);
-        const tg = terrain_glyph(loc, x, y);
+        const under = (game.level?.objects || [])
+                          .find(o => o.ox === x && o.oy === y);
+        const tg = under ? floor_object_glyph(under) : terrain_glyph(loc, x, y);
         loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec };
         return;
     }
 
     // src/display.c newsym() picks in priority order: hero, then monster, then
     // object, then trap, then terrain. Only the cell in sight is redrawn; a
-    // remembered glyph is what the hero recalls of somewhere no longer visible.
+    // remembered glyph is what the hero recalls of somewhere no longer
+    // visible. Memory (lev->glyph in C, _map_location()) stores the object
+    // layer too — a monster is drawn OVER it and is not itself remembered.
     if (cansee(x, y)) {
+        /* C shows the TOP of the pile, and our object list is newest-first
+           (place_object prepends), so the first match is the top. */
+        const obj = (game.level?.objects || [])
+                        .find(o => o.ox === x && o.oy === y);
+        const memg = obj ? floor_object_glyph(obj)
+                         : (engraving_glyph(loc, x, y)
+                            || terrain_glyph(loc, x, y));
+        if (game.level?.flags?.hero_memory)
+            loc.remembered_glyph = { ch: memg.ch, color: memg.color,
+                                     decgfx: memg.dec };
+
         const mon = (game.level?.monsters || [])
                         .find(m => m.mx === x && m.my === y && m.mhp > 0
                                    && !m.msleeping_hidden);
@@ -173,47 +236,8 @@ export function newsym(x, y) {
             return;
         }
 
-        /* C shows the TOP of the pile, and our object list is newest-first
-           (place_object prepends), so the first match is the top. */
-        const obj = (game.level?.objects || [])
-                        .find(o => o.ox === x && o.oy === y);
         if (obj) {
-            /* include/display.h:894 obj_to_glyph() — a CORPSE does NOT become
-               an object glyph. It becomes `corpsenm + GLYPH_BODY_OFF`, a BODY
-               glyph, and a body glyph takes the colour of the MONSTER it came
-               from rather than objects[CORPSE].oc_color. Drawing every corpse
-               the object's brown was wrong for every species that is not
-               brown: seed1500's first frame differs by exactly one cell, a
-               red '%' we drew brown.
-
-               The symbol is unchanged, because def_oc_syms[FOOD_CLASS] and
-               the body glyph's symbol are both '%'. */
-            const oc = game.objects?.[obj.otyp];
-            let color = oc?.oc_color ?? NO_COLOR;
-            let sym = def_oc_syms[obj.oclass] || '?';
-
-            /* include/display.h:950 statue_to_glyph() — a STATUE becomes
-               corpsenm + GLYPH_STATUE_*_OFF, i.e. it is drawn with the
-               MONSTER's symbol and colour, not the object's. Unlike a corpse,
-               where only the colour changes because both glyphs use '%', a
-               statue's SYMBOL changes too: we were drawing '`' where C draws
-               the creature's letter. */
-            if (obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0) {
-                /* src/display.c:2829 — the statue takes the MONSTER's symbol
-                   but the STATUE OBJECT's colour:
-                       sym.symidx = mons[offset].mlet + SYM_OFF_M;
-                       obj_color(STATUE);
-                   so a grid bug statue is an 'x' in stone grey, not in the
-                   grid bug's magenta. */
-                const mptr = game.mons?.[obj.corpsenm];
-                if (mptr)
-                    sym = def_monsyms[mptr.mlet] || sym;
-                color = game.objects?.[ONAMES.STATUE]?.oc_color ?? color;
-            } else if (obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0) {
-                color = game.mons?.[obj.corpsenm]?.mcolor ?? color;
-            }
-
-            show_glyph_cell(x, y, sym, color, false);
+            show_glyph_cell(x, y, memg.ch, memg.color, memg.dec);
             return;
         }
     }
@@ -240,6 +264,12 @@ export function newsym(x, y) {
             loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec };
         }
     } else if (loc.remembered_glyph) {
+        /* src/display.c:852,898 — "Corridors are never felt as lit":
+           a remembered lit corridor reverts to the dark one (S_corr) when
+           the cell is out of sight and not waslit; C rewrites lev->glyph. */
+        if (loc.typ === CORR && loc.remembered_glyph.color === CLR_WHITE
+            && !loc.waslit)
+            loc.remembered_glyph = { ch: '#', color: NO_COLOR, decgfx: false };
         // Out of sight but remembered — show remembered glyph
         show_glyph_cell(x, y, loc.remembered_glyph.ch,
             loc.remembered_glyph.color, loc.remembered_glyph.decgfx);

@@ -4,9 +4,9 @@
 import { game } from './gstate.js';
 import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
-import { delobj } from './mon.js';
+import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE, Never_mind } from './const.js';
+import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname, an } from './objnam.js';
@@ -15,9 +15,9 @@ import { MONSYMS, NUMMONS } from './monst_data.js';
 import { erosion_matters, curse, splitobj } from './mkobj.js';
 import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, Is_container, Is_candle, Is_pudding } from './obj.js';
 import { is_rider, hideunder } from './makemon.js';
-import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
+import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
-import { pline } from './display.js';
+import { pline, docrt } from './display.js';
 import { observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
@@ -29,13 +29,32 @@ export const ECMD_TIME = 1;
 
 // src/invent.c:4104 look_here()
 //
-// Only the empty-square path is ported so far: with no objects, no dungeon
-// feature and not blind, C prints "You see no objects here." and returns
-// ECMD_OK — so looking does NOT consume a turn. Objects, dungeon features and
-// engravings join this function as those subsystems land.
+// The engulfed arm, gas regions, cockatrice touches and Blind feel-arms are
+// gated on state no session can reach yet and are recorded when hit. The
+// dungeon-feature description carries only the stairway arm so far.
 export async function look_here(obj_cnt, lhflags) {
     const Blind = !!game.u?.ublind;
     const verb = Blind ? 'feel' : 'see';
+    const picked_some = (lhflags & LOOKHERE_PICKED_SOME) !== 0;
+    const skip_dfeature = (lhflags & LOOKHERE_SKIP_DFEATURE) !== 0;
+
+    /* default pile_limit is 5; a value of 0 means "never skip" */
+    const pile_limit = game.flags?.pile_limit ?? 5;
+    const skip_objects = (pile_limit > 0 && obj_cnt >= pile_limit);
+
+    if (game.u?.uswallow) {
+        note_unported_invent('look_here:uswallow');
+        return Blind ? ECMD_TIME : ECMD_OK;
+    }
+
+    if (!skip_objects) {
+        /* visible_region_at — gas clouds are absent; a seen trap underfoot
+           would print "There is a(n) <trap> here." and trapname is not
+           ported, so record it rather than guess the text */
+        const trap = t_at(game.u.ux, game.u.uy);
+        if (trap && trap.tseen)
+            note_unported_invent('look_here:trap_here');
+    }
 
     /* src/invent.c:4180 — dfeature_at(). Only the stairway arm is ported;
        the altar/fountain/grave/tree/door arms record when their terrain is
@@ -50,14 +69,77 @@ export async function look_here(obj_cnt, lhflags) {
             || typ === GRAVE || typ === ALTAR || typ === TREE)
             note_unported_invent('look_here:dfeature');
     }
+    if (Blind && dfeature)
+        note_unported_invent('look_here:blind_feel');
 
-    /* src/invent.c:4220-4247 — with a feature and no objects: print
-       "There is <an feature> here." and SUPPRESS the no-objects line unless
-       blind: `if (!skip_objects && (Blind || !dfeature)) You(...)` */
-    if (dfeature)
-        await pline(`There is ${an(dfeature)} here.`);
-    if (Blind || !dfeature)
-        await You(`${verb} no objects here.`);
+    /* src/mkobj.c place_object() puts the newest object at the chain head,
+       and the js place_object unshifts, so the filtered array is already in
+       C's newest-first pile order. */
+    const pile = (game.level?.objects || [])
+        .filter(o => o.ox === game.u.ux && o.oy === game.u.uy);
+
+    if (!pile.length || is_lava(game.u.ux, game.u.uy)
+        || (is_pool(game.u.ux, game.u.uy) && !game.u.uinwater)) {
+        /* src/invent.c:4241 — with a feature and no objects: print
+           "There is <an feature> here." and SUPPRESS the no-objects line
+           unless blind */
+        if (dfeature && !skip_dfeature)
+            await pline(`There is ${an(dfeature)} here.`);
+        if (!skip_objects && (Blind || !dfeature))
+            await You(`${verb} no objects here.`);
+        return Blind ? ECMD_TIME : ECMD_OK;
+    }
+    /* we know there is something here */
+
+    if (skip_objects) {
+        if (dfeature && !skip_dfeature)
+            await pline(`There is ${an(dfeature)} here.`);
+        if (obj_cnt === 1 && pile[0].quan === 1)
+            await pline(`There is ${picked_some ? 'another' : 'an'} object here.`);
+        else
+            await pline(`There are ${
+                (obj_cnt === 2) ? 'two'
+                : (obj_cnt < 5) ? 'a few'
+                  : (obj_cnt < 10) ? 'several'
+                    : 'many'}${picked_some ? ' more' : ''} objects here.`);
+        for (const otmp of pile)
+            if (otmp.otyp === ONAMES.CORPSE)
+                note_unported_invent('look_here:feel_cockatrice');
+    } else if (pile.length === 1) {
+        /* only one object */
+        const otmp = pile[0];
+        if (dfeature && !skip_dfeature)
+            await pline(`There is ${an(dfeature)} here.`);
+        /* doname_with_price() is doname() until shops exist */
+        await You(`${verb} here ${doname(otmp)}.`);
+        if (otmp.otyp === ONAMES.CORPSE)
+            note_unported_invent('look_here:feel_cockatrice');
+    } else {
+        const tmpwin = tty_create_nhwindow(NHW_MENU);
+        if (dfeature && !skip_dfeature) {
+            tty_putstr(tmpwin, 0, `There is ${an(dfeature)} here.`);
+            tty_putstr(tmpwin, 0, '');
+        }
+        tty_putstr(tmpwin, 0, `${picked_some ? 'Other things' : 'Things'} that ${
+            Blind ? 'you feel' : 'are'} here:`);
+        for (const otmp of pile) {
+            if (otmp.otyp === ONAMES.CORPSE)
+                note_unported_invent('look_here:feel_cockatrice');
+            tty_putstr(tmpwin, 0, doname(otmp));
+        }
+        tty_display_nhwindow(tmpwin);
+        await nhgetch();
+        while (tty_next_page(tmpwin))
+            await nhgetch();
+        tty_destroy_nhwindow(tmpwin);
+        await docrt();
+    }
+
+    /* read_engr_at(u.ux, u.uy) */
+    if ((game.level?.engravings || []).some(e => e.engr_x === game.u.ux
+                                            && e.engr_y === game.u.uy))
+        note_unported_invent('look_here:read_engr_at');
+
     return Blind ? ECMD_TIME : ECMD_OK;
 }
 
@@ -314,7 +396,7 @@ export function useupf(obj, numused) {
 export function stackobj(obj) {
     for (const otmp of (game.level?.objects || []))
         if (otmp.ox === obj.ox && otmp.oy === obj.oy
-            && otmp !== obj && merged(obj, otmp))
+            && otmp !== obj && merged({ o: obj }, { o: otmp }))
             break;
     return;
 }
@@ -633,8 +715,9 @@ export function obj_extract_self(obj) {
     obj.where = OBJ_FREE;
 }
 
-// include/obj.h — obj->where values, and the two how_lost values mergable reads.
-const LOST_NONE = 0, LOST_EXPLODING = 1, LOST_THROWN = 2;
+// include/obj.h:481 — how_lost values. These live in js/const.js; the local
+// copy that stood here had LOST_EXPLODING = 1, which is LOST_THROWN's value,
+// so every thrown missile was treated as exploding and never merged.
 
 // include/mondata.h:170 is_reviver()
 const is_reviver = (ptr) => !!ptr && (is_rider(ptr) || ptr.mlet === MONSYMS.S_TROLL);

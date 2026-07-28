@@ -20,7 +20,7 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at } from './hack.js';
+import { bad_rock, nomul, domove_attackmon_at, spoteffects } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
@@ -954,6 +954,11 @@ export async function domove() {
     newsym(oldx, oldy);
     vision_recalc(1);
     newsym(newx, newy);
+
+    /* src/hack.c:2980 — "if (u.umoved) spoteffects(TRUE);". The move above
+       either happened or returned early, so reaching here means umoved. */
+    if (u.ux !== u.ux0 || u.uy !== u.uy0)
+        await spoteffects(true);
 }
 
 // src/hack.c:2098 domove_swap_with_pet() — returns TRUE if places were

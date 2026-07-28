@@ -25,7 +25,9 @@ import { PMNAMES } from './monst_data.js';
 import { skill_tables } from './skills_data.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
 import { P_NONE, W_QUIVER, W_WEP , W_SWAPWEP} from './const.js';
-import { Is_container } from './obj.js';
+import { Is_container, bimanual } from './obj.js';
+import { is_missile } from './wield.js';
+import { is_weptool } from './mkobj.js';
 import { skill_init } from './weapon.js';
 import { spell_skilltype, initialspell, num_spells,
          SPELL_LEV_PW } from './spell.js';
@@ -494,6 +496,8 @@ export function u_init_inventory() {
     game.u.umoney0 = 0;
     u_init_role();
     u_init_race();
+    if (game.discover)
+        ini_inv(TROBJ.Wishing);
     if (game.u.umoney0)
         ini_inv(TROBJ.Money);
 }
@@ -546,15 +550,17 @@ export function ini_inv_use_obj(obj) {
 }
 
 // src/u_init.c:1281 — a Tourist's darts go into the quiver, which is what
-// makes the inventory line read "(at the ready)".
+// makes the inventory line read "(at the ready)". The guard also admits
+// weptools, the tin opener, flint, and rocks: a Caveman's flint stones are
+// GEM_CLASS yet start "(in quiver pouch)".
 function ini_inv_wield(obj) {
-    const ocl = game.objects[obj.otyp];
-    if (obj.oclass !== WEAPON_CLASS) return;
-    /* is_ammo/is_missile: thrown weapons carry a negated skill */
-    const sk = ocl.oc_subtyp;
-    if (sk < 0) {
+    if (!(obj.oclass === WEAPON_CLASS || is_weptool(obj, game.objects)
+          || obj.otyp === ONAMES.TIN_OPENER
+          || obj.otyp === ONAMES.FLINT || obj.otyp === ONAMES.ROCK))
+        return;
+    if (is_ammo(obj) || is_missile(obj)) {
         if (!game.u.uquiver) { obj.owornmask |= W_QUIVER; game.u.uquiver = obj; }
-    } else if (!game.u.uwep) {
+    } else if (!game.u.uwep && (!game.u.uarms || !bimanual(obj))) {
         obj.owornmask |= W_WEP; game.u.uwep = obj;
     } else if (!game.u.uswapwep) {
         /* src/u_init.c:1291 — the SECOND weapon becomes the alternate. A

@@ -13,6 +13,7 @@ import { game, resetGame } from './gstate.js';
 import { initRng, enableRngLog, getRngLog } from './rng.js';
 import { pushKey, nhgetch } from './input.js';
 import { newgame, moveloop_core, maybe_do_tutorial } from './allmain.js';
+import { wd_message } from './unixmain.js';
 import { parseNethackrc, optValue } from './options.js';
 import { flush_screen } from './display.js';
 import { GameDisplay } from './game_display.js';
@@ -156,6 +157,10 @@ export class NethackGame {
 
         // Run game startup
         await newgame();
+
+        /* sys/unix/unixmain.c:317 — "newgame(); wd_message();": the play-mode
+           notice lands between welcome() and the tutorial query. */
+        await wd_message();
 
         /* src/allmain.c moveloop() — the tutorial query sits between
            moveloop_preamble() and the first moveloop_core(). This driver calls

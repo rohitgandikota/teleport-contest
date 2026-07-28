@@ -40,6 +40,43 @@ import { getdir } from './cmd.js';
 // wrong endpoint moves the hero or an object without costing a single PRNG
 // call, which is the kind of divergence the RNG log cannot show.
 
+// src/dothrow.c:39 multishot_class_bonus() — role-based volley bonus.
+//
+// Draws nothing; the Caveman sling/spear arm is what turns a flint volley
+// into rnd(2) at the roll below. `pm` is the role's mnum (string or index).
+export function multishot_class_bonus(pm, ammo, launcher) {
+    let multishot = 0;
+    const skill = game.objects[ammo.otyp].oc_skill;
+    const is = (name) => pm === name || pm === PMNAMES[name];
+
+    if (is('PM_CAVE_DWELLER')) {
+        /* give bonus for low-tech gear */
+        if (skill === -SKILLS.P_SLING || skill === SKILLS.P_SPEAR)
+            multishot++;
+    } else if (is('PM_MONK')) {
+        /* allow higher volley count despite skill limitation */
+        if (skill === -SKILLS.P_SHURIKEN)
+            multishot++;
+    } else if (is('PM_RANGER')) {
+        /* arbitrary; encourage use of other missiles beside daggers */
+        if (skill !== SKILLS.P_DAGGER)
+            multishot++;
+    } else if (is('PM_ROGUE')) {
+        /* possibly should add knives... */
+        if (skill === SKILLS.P_DAGGER)
+            multishot++;
+    } else if (is('PM_NINJA') || is('PM_SAMURAI')) {
+        if (is('PM_NINJA')
+            && (skill === -SKILLS.P_SHURIKEN || skill === -SKILLS.P_DART))
+            multishot++;
+        /* role-specific launcher and its ammo */
+        if (ammo.otyp === ONAMES.YA && launcher
+            && launcher.otyp === ONAMES.YUMI)
+            multishot++;
+    }
+    return multishot;
+}
+
 // src/dothrow.c:100 throw_obj() — ask a direction, then throw.
 //
 // res starts at ECMD_TIME and only a cancelled getdir() changes it, so a
@@ -79,7 +116,7 @@ export async function throw_obj(obj, shotlimit) {
        draws nothing, which is why a hand-thrown arrow is a single shot. */
     let multishot = 1;
     if (obj.quan > 1
-        && (is_ammo(obj) ? ammo_and_launcher(obj, game.uwep)
+        && (is_ammo(obj) ? ammo_and_launcher(obj, game.u.uwep)
                          : obj.oclass === OCLASSES.WEAPON_CLASS)
         && !(u.uprops?.CONFUSION || u.uprops?.STUNNED)) {
         const skill = game.objects[obj.otyp].oc_skill;
@@ -102,16 +139,19 @@ export async function throw_obj(obj, shotlimit) {
         default:
             break;
         }
-        /* multishot_class_bonus and the racial-bow arms need launcher
-           matching that the reachable roles do not trigger; the Elf/Orc
-           bows and gnomish crossbows are recorded when they arise */
+        /* ...or is using a special weapon for their role... */
+        multishot += multishot_class_bonus(mnum, obj, game.u.uwep);
+
+        /* the racial-bow arms need launcher matching that the reachable
+           races do not trigger; the Elf/Orc bows and gnomish crossbows are
+           recorded when they arise */
         if (!weakmultishot
             && (game.urace?.mnum === 'PM_ELF' || game.urace?.mnum === 'PM_ORC'
                 || game.urace?.mnum === 'PM_GNOME'))
             note_unported_dothrow('throw_obj:racial_multishot');
 
         if (multishot > 1 && skill === -SKILLS.P_CROSSBOW
-            && ammo_and_launcher(obj, game.uwep)
+            && ammo_and_launcher(obj, game.u.uwep)
             && acurrstr() < 18)
             multishot = rnd(multishot);
 
@@ -122,7 +162,7 @@ export async function throw_obj(obj, shotlimit) {
             multishot = shotlimit;
     }
 
-    const m_shot_s = ammo_and_launcher(obj, game.uwep);
+    const m_shot_s = ammo_and_launcher(obj, game.u.uwep);
     if (multishot > 1 || shotlimit > 0) {
         await You(`${m_shot_s ? 'shoot' : 'throw'} ${multishot} ${
             multishot === 1 ? singular(obj, xname) : xname(obj)}.`);
@@ -147,7 +187,7 @@ export async function throw_obj(obj, shotlimit) {
     /* src/dothrow.c:290 — undo a pre-existing object split if the leftover
        stack is one of its halves; unsplitobj is not ported and no current
        flow leaves this true. */
-    if (obj && obj !== game.uquiver && save_osplit
+    if (obj && obj !== game.u.uquiver && save_osplit
         && (obj.o_id === save_osplit.parent_oid
             || obj.o_id === save_osplit.child_oid))
         note_unported_dothrow('throw_obj:unsplitobj');
@@ -168,7 +208,7 @@ export async function throwit(obj, wep_mask) {
     /* src/dothrow.c:1526 — a cursed or greased missile can slip */
     if ((obj.cursed || obj.greased) && (u.dx || u.dy) && !rn2(7)) {
         let slipok = true;
-        if (ammo_and_launcher(obj, game.uwep)) {
+        if (ammo_and_launcher(obj, game.u.uwep)) {
             note_unported_dothrow('throwit:misfire_msg');
         } else {
             if (obj.greased || throwing_weapon(obj))
@@ -203,8 +243,8 @@ export async function throwit(obj, wep_mask) {
     }
 
     /* src/dothrow.c:1615 — range from strength and weight */
-    const crossbowing = (ammo_and_launcher(obj, game.uwep)
-                         && weapon_type(game.uwep) === SKILLS.P_CROSSBOW);
+    const crossbowing = (ammo_and_launcher(obj, game.u.uwep)
+                         && weapon_type(game.u.uwep) === SKILLS.P_CROSSBOW);
     let urange = Math.trunc((crossbowing ? 18 : acurrstr()) / 2);
     let range;
     if (obj.otyp === ONAMES.HEAVY_IRON_BALL)
@@ -215,7 +255,7 @@ export async function throwit(obj, wep_mask) {
         range = 1;
 
     if (is_ammo(obj)) {
-        if (ammo_and_launcher(obj, game.uwep)) {
+        if (ammo_and_launcher(obj, game.u.uwep)) {
             if (crossbowing)
                 range = BOLT_LIM;
             else

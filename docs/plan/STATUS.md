@@ -9888,3 +9888,23 @@ leading-attr-space class (recorded, unfixable), seed0501 step 17/22
 Next by divergence: re-rank with tools/diverge.mjs --all; seed2200
 (wizard quaff-zap-read) and seed0007 (rogue) inherit the study_book
 and menu work; seed0398/0900/1150 all sit at 85%+ RNG.
+
+
+### Quaff chain + seer gate landed (8b0c21a). Two calibration facts pinned.
+
+1. The seer/vicinity rn2(31) is INSIDE C's context.move block
+   (allmain.c:409 within :205's braces): it fires only after a
+   time-taking core. Ours ran it every core and mis-fired on
+   prompt-only cores whenever rnd(30) rolled small (seed2200 rolled 1).
+2. TWO frame calibrations are LOAD-BEARING and must not be "fixed"
+   toward C naively: g.moves starts 0 (C: 1) and hero_seq ticks every
+   core (C: only time cores). Changing either wrecks the board (moves:
+   689 -> 499; hero_seq: seed0016's stethoscope free-use breaks). The
+   consumers translate instead. If a future divergence smells like an
+   off-by-one game turn, check these BEFORE touching them.
+
+seed2200 next: the zap of the wand of secret door detection draws
+exercise rn2(19) via findit() (zap.c WAN_SECRET_DOOR_DETECTION arm,
+"You don't find anything."); divergence at 2733, step 7.
+
+Board 688, passes 4, seven 100%-RNG sessions. Gates clean.

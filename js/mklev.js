@@ -177,7 +177,8 @@ function is_pit(t) { return t === PIT || t === SPIKED_PIT; }
 
 // Stairway list management
 function stairway_add(x, y, up, isladder, dest) {
-    const node = { sx: x, sy: y, up, isladder, tolev: { ...dest }, next: game.stairs };
+    const node = { sx: x, sy: y, up, isladder, u_traversed: false,
+                   tolev: { ...dest }, next: game.stairs };
     game.stairs = node;
 }
 
@@ -664,7 +665,16 @@ async function makelevel() {
 
     // Place dungeon branch
     if (branchp) {
+        const prevstairs = g.stairs; /* used to test for place_branch() success */
         place_branch(branchp);
+
+        /* src/mklev.c:1382-1387 — for main dungeon level 1, the stairs up
+           where the hero starts are branch stairs; treat them as if hero had
+           just come down them by marking them as traversed; the most recently
+           created stairway is at the head of g.stairs */
+        if ((g.u?.uz?.dnum ?? 0) === 0 && (g.u?.uz?.dlevel ?? 1) === 1
+            && g.stairs !== prevstairs)
+            g.stairs.u_traversed = true;
     }
 
     /* src/mklev.c:1391-1412 — some levels have specially generated items in

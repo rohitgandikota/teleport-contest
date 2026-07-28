@@ -2,13 +2,14 @@
 // C ref: src/invent.c
 
 import { game } from './gstate.js';
+import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at, CMDQ_INT, CQ_CANNED } from './const.js';
+import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
-import { doname } from './objnam.js';
+import { doname, an } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS } from './monst_data.js';
 import { erosion_matters, curse, splitobj } from './mkobj.js';
@@ -35,8 +36,27 @@ export async function look_here(obj_cnt, lhflags) {
     const Blind = !!game.u?.ublind;
     const verb = Blind ? 'feel' : 'see';
 
-    /* no objects at the hero's square yet, because objects are not ported */
-    await You(`${verb} no objects here.`);
+    /* src/invent.c:4180 — dfeature_at(). Only the stairway arm is ported;
+       the altar/fountain/grave/tree/door arms record when their terrain is
+       underfoot. */
+    let dfeature = null;
+    const stway = stairway_at(game.u.ux, game.u.uy);
+    if (stway) {
+        dfeature = stairs_description(stway, true);
+    } else {
+        const typ = game.level?.at(game.u.ux, game.u.uy)?.typ;
+        if (typ === FOUNTAIN || typ === THRONE || typ === SINK
+            || typ === GRAVE || typ === ALTAR || typ === TREE)
+            note_unported_invent('look_here:dfeature');
+    }
+
+    /* src/invent.c:4220-4247 — with a feature and no objects: print
+       "There is <an feature> here." and SUPPRESS the no-objects line unless
+       blind: `if (!skip_objects && (Blind || !dfeature)) You(...)` */
+    if (dfeature)
+        await pline(`There is ${an(dfeature)} here.`);
+    if (Blind || !dfeature)
+        await You(`${verb} no objects here.`);
     return Blind ? ECMD_TIME : ECMD_OK;
 }
 

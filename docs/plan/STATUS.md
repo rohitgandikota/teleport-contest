@@ -9859,3 +9859,32 @@ Next: seed1800's two answered-prompt boundary screens (mechanism still
 unidentified, see previous entry), seed0016's frozen-serializer screen
 (unfixable), seed0101's apparxy interleave (three open questions),
 then the divergence ranking (seed0501 priest 2208/2238 is close).
+
+
+### seed0501 chain landed: heal-cast, study_book, menustyle, pantheon gods. Board 689.
+
+Commit 07df76c. Load-bearing discoveries this pass:
+
+- getspell is MENUSTYLE-SENSITIVE: the default (MENU_FULL) opens the
+  "Choose which spell to cast" dospellmenu; only menustyle:traditional
+  in the rc uses the topline prompt. Our port had assumed traditional
+  for everyone.
+- The Priest's roles-table god fields are ZEROES; role_init picks
+  game.pantheon and C copies that role's god names into gu.urole
+  (role.c:2079). OUR newgame assigns g.urole AFTER role_init, so the
+  copy must live beside the assignment in allmain.js -- doing it inside
+  role_init writes to an object newgame then replaces. The symptom was
+  the legacy screen reading "Book of 0" and mis-centering.
+- study_book's known arm makes the Refresh y_n; its entry more() eats
+  y/#/t/u/r/n (xwaitforspace) which is exactly what the recording shows
+  frozen for six steps.
+
+Board 689/44, passes 4 (8000, 0102, 0105, 0700), SEVEN 100%-RNG
+sessions (those + 0016 35/36, 1800 24/26, 0501 25/28). The remaining
+screens on the three near-passes: two are the frozen-serializer
+leading-attr-space class (recorded, unfixable), seed0501 step 17/22
+(1 + 44 glyph cells, ^X page), seed1800's boundary prompts.
+
+Next by divergence: re-rank with tools/diverge.mjs --all; seed2200
+(wizard quaff-zap-read) and seed0007 (rogue) inherit the study_book
+and menu work; seed0398/0900/1150 all sit at 85%+ RNG.

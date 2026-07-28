@@ -51,6 +51,7 @@ import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos } from './getpos.js';
+import { dowear, doputon, dotakeoff, doremring } from './do_wear.js';
 import { show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
@@ -511,11 +512,12 @@ function equip_ok(obj, removing, accessory) {
     return GETOBJ_SUGGEST;
 }
 
-/* src/do_wear.c:3451-3475 — the four getobj callbacks over equip_ok. */
-const puton_ok   = (o) => equip_ok(o, false, true);
-const remove_ok  = (o) => equip_ok(o, true,  true);
-const wear_ok    = (o) => equip_ok(o, false, false);
-const takeoff_ok = (o) => equip_ok(o, true,  false);
+/* src/do_wear.c:3451-3475 — the four getobj callbacks over equip_ok.
+   Exported for js/do_wear.js's command layer. */
+export const puton_ok   = (o) => equip_ok(o, false, true);
+export const remove_ok  = (o) => equip_ok(o, true,  true);
+export const wear_ok    = (o) => equip_ok(o, false, false);
+export const takeoff_ok = (o) => equip_ok(o, true,  false);
 
 /* src/cmd.c cmdlist — the verb and object filter each command hands getobj().
    Read from the C, not invented: the word appears verbatim in the prompt
@@ -847,6 +849,14 @@ export async function rhack(key) {
             game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
         else if (ch === 'q')
             game.context.move = ((await dodrink(drink_ok)) === ECMD_TIME ? 1 : 0);
+        else if (ch === 'W')
+            game.context.move = ((await dowear()) === ECMD_TIME ? 1 : 0);
+        else if (ch === 'P')
+            game.context.move = ((await doputon()) === ECMD_TIME ? 1 : 0);
+        else if (ch === 'T')
+            game.context.move = ((await dotakeoff()) === ECMD_TIME ? 1 : 0);
+        else if (ch === 'R')
+            game.context.move = ((await doremring()) === ECMD_TIME ? 1 : 0);
         else
             game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {

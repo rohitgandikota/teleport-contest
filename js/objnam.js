@@ -12,7 +12,7 @@
 // direct check that the o_init port is right.
 
 import { game } from './gstate.js';
-import { vegetarian } from './mondata.js';
+import { vegetarian, name_to_monplus } from './mondata.js';
 import { rn2, rnd } from './rng.js';
 import { mksobj, rnd_class, curse } from './mkobj.js';
 import { Is_candle, Is_container } from './obj.js';
@@ -647,6 +647,58 @@ export function rnd_otyp_by_namedesc(name, oclass, xtra_prob) {
     return 0;
 }
 
+/* src/objnam.c:3376 spellings[] — alternate spellings the wish parser
+   accepts; entries whose difference is only spaces/hyphens or an "of"
+   inversion are handled by wishymatch and are not listed */
+const alt_spellings = [
+    ['pickax', 'PICK_AXE'],
+    ['whip', 'BULLWHIP'],
+    ['saber', 'SILVER_SABER'],
+    ['silver sabre', 'SILVER_SABER'],
+    ['smooth shield', 'SHIELD_OF_REFLECTION'],
+    ['grey dragon scale mail', 'GRAY_DRAGON_SCALE_MAIL'],
+    ['grey dragon scales', 'GRAY_DRAGON_SCALES'],
+    ['iron ball', 'HEAVY_IRON_BALL'],
+    ['lantern', 'BRASS_LANTERN'],
+    ['mattock', 'DWARVISH_MATTOCK'],
+    ['amulet of poison resistance', 'AMULET_VERSUS_POISON'],
+    ['amulet of protection', 'AMULET_OF_GUARDING'],
+    ['amulet of telepathy', 'AMULET_OF_ESP'],
+    ['helm of esp', 'HELM_OF_TELEPATHY'],
+    ['gauntlets of ogre power', 'GAUNTLETS_OF_POWER'],
+    ['gauntlets of giant strength', 'GAUNTLETS_OF_POWER'],
+    ['elven chain mail', 'ELVEN_MITHRIL_COAT'],
+    ['silver shield', 'SHIELD_OF_REFLECTION'],
+    ['potion of sleep', 'POT_SLEEPING'],
+    ['scroll of recharging', 'SCR_CHARGING'],
+    ['recharging', 'SCR_CHARGING'],
+    ['stone', 'ROCK'],
+    ['camera', 'EXPENSIVE_CAMERA'],
+    ['tee shirt', 'T_SHIRT'],
+    ['can', 'TIN'],
+    ['can opener', 'TIN_OPENER'],
+    ['kelp', 'KELP_FROND'],
+    ['eucalyptus', 'EUCALYPTUS_LEAF'],
+    ['lembas', 'LEMBAS_WAFER'],
+    ['tripe', 'TRIPE_RATION'],
+    ['cookie', 'FORTUNE_COOKIE'],
+    ['pie', 'CREAM_PIE'],
+    ['huge meatball', 'ENORMOUS_MEATBALL'],
+    ['huge chunk of meat', 'ENORMOUS_MEATBALL'],
+    ['marker', 'MAGIC_MARKER'],
+    ['hook', 'GRAPPLING_HOOK'],
+    ['grappling iron', 'GRAPPLING_HOOK'],
+    ['grapnel', 'GRAPPLING_HOOK'],
+    ['grapple', 'GRAPPLING_HOOK'],
+    ['protection from shape shifters', 'RIN_PROTECTION_FROM_SHAPE_CHAN'],
+    ['accuracy', 'RIN_INCREASE_ACCURACY'],
+    ['box', 'LARGE_BOX'],
+    ['luck stone', 'LUCKSTONE'],
+    ['load stone', 'LOADSTONE'],
+    ['touch stone', 'TOUCHSTONE'],
+    ['flintstone', 'FLINT'],
+];
+
 /* src/objnam.c:2517 wrp[]/wrpsym[] — the wishable class words */
 const wrp = ['wand', 'ring', 'potion', 'scroll', 'gem',
              'amulet', 'spellbook', 'spell book',
@@ -669,7 +721,7 @@ export function readobjnam(bp) {
     if (/^(nothing|nil|none)$/i.test(bp))
         return 'nothing';
 
-    const d = { cnt: 0, spe: 0, spesgn: 0, rechrg: 0, blessed: 0,
+    const d = { cnt: 0, spe: 0, spesgn: 0, rechrg: 0, blessed: 0, mntmp: -1,
                 iscursed: 0, uncursed: 0, islit: 0, erodeproof: 0,
                 oclass: 0, typ: 0, actualn: null, dn: null, un: null };
 
@@ -742,6 +794,93 @@ export function readobjnam(bp) {
         bp = bp.slice(pm[0].length);
     }
 
+    /* src/objnam.c:4378 — corpse type using "of" (figurine of an orc);
+       don't look inside wand/spellbook/gauntlets/gloves/finger names */
+    {
+        const lower = bp.toLowerCase();
+        if (!lower.includes('wand ') && !lower.includes('spellbook ')
+            && !lower.includes('gauntlets ') && !lower.includes('gloves ')
+            && !lower.includes('finger ')) {
+            if (lower.includes('tin of ')) {
+                note_unported_objnam('readobjnam:tin_of');
+            } else {
+                const ofi = bp.indexOf(' of ');
+                if (ofi >= 0) {
+                    const mon = name_to_monplus(bp.slice(ofi + 4), null);
+                    if (mon >= 0) {
+                        d.mntmp = mon;
+                        bp = bp.slice(0, ofi);
+                    }
+                }
+            }
+        }
+    }
+    /* src/objnam.c:4398 — corpse type w/o "of" (red dragon scale mail,
+       yeti corpse); the excluded strings contain monster or rank names */
+    {
+        const lower = bp.toLowerCase();
+        if (!lower.startsWith('samurai sword')
+            && !lower.startsWith('wizard lock')
+            && !lower.startsWith('death wand')
+            && !lower.startsWith('master key')
+            && !lower.startsWith('ninja-to')
+            && !lower.startsWith('magenta')) {
+            if (d.mntmp < 0 && bp.length > 2) {
+                const rest_box = {};
+                const mon = name_to_monplus(bp, rest_box);
+                if (mon >= 0) {
+                    const obp = bp;
+                    d.mntmp = mon;
+                    bp = bp.slice(rest_box.at);
+                    if (bp[0] === ' ') {
+                        bp = bp.slice(1);
+                    } else if (/^s /.test(bp)) {
+                        bp = bp.slice(2);
+                    } else if (/^es /.test(bp) || /^'s /.test(bp)) {
+                        bp = bp.slice(3);
+                    } else if (!bp && !d.actualn && !d.dn && !d.un
+                               && !d.oclass) {
+                        /* no referent; they don't really mean a monster */
+                        bp = obp;
+                        d.mntmp = -1;
+                    }
+                }
+            }
+        }
+    }
+
+    /* src/objnam.c:4435 — change to singular if necessary */
+    if (bp && bp.toLowerCase() !== 'tricks' && bp.toLowerCase() !== 'clothes') {
+        const sng = makesingular(bp);
+        if (bp !== sng) {
+            if (d.cnt === 1)
+                d.cnt = 2;
+            bp = sng;
+        }
+    }
+
+    /* src/objnam.c:4457 — alternate spellings (pick-ax, silver sabre, &c) */
+    for (const [sp, ob] of alt_spellings) {
+        if (wishymatch(bp, sp, true)) {
+            d.typ = ONAMES[ob];
+            break;
+        }
+    }
+    if (!d.typ) {
+        if (/^grey spell/i.test(bp))
+            bp = bp.slice(0, 2) + 'a' + bp.slice(3);
+        bp = bp.replace(/armour/gi, (m) => m.slice(0, 4) + m[5]);
+
+        /* src/objnam.c:4480 — dragon scales, assumes order of dragons */
+        if (bp.toLowerCase() === 'scales'
+            && d.mntmp >= PMNAMES.PM_GRAY_DRAGON
+            && d.mntmp <= PMNAMES.PM_YELLOW_DRAGON) {
+            d.typ = ONAMES.GRAY_DRAGON_SCALES + d.mntmp
+                - PMNAMES.PM_GRAY_DRAGON;
+            d.mntmp = -1;
+        }
+    }
+
     /* the class-word forms: "<class> of X" and "X <class>" */
     const syms = wrpsym();
     const lowbp = bp.toLowerCase();
@@ -774,12 +913,14 @@ export function readobjnam(bp) {
         d.dn = d.dn || bp;
     }
 
-    /* srch — src/objnam.c:4748 */
-    d.typ = rnd_otyp_by_namedesc(d.actualn, d.oclass, 1)
-            || (d.dn !== d.actualn
-                && rnd_otyp_by_namedesc(d.dn, d.oclass, 1))
-            || rnd_otyp_by_namedesc(d.un, d.oclass, 1)
-            || 0;
+    /* srch — src/objnam.c:4748; skipped when an earlier arm already
+       settled the type (alternate spelling, dragon scales) */
+    if (!d.typ)
+        d.typ = rnd_otyp_by_namedesc(d.actualn, d.oclass, 1)
+                || (d.dn !== d.actualn
+                    && rnd_otyp_by_namedesc(d.dn, d.oclass, 1))
+                || rnd_otyp_by_namedesc(d.un, d.oclass, 1)
+                || 0;
     if (!d.typ && d.actualn) {
         for (const [key, jname] of Object.entries(Japanese_items))
             if (jname.toLowerCase() === d.actualn.toLowerCase()) {
@@ -863,6 +1004,32 @@ export function readobjnam(bp) {
     }
     if (d.oclass === OCLASSES.WAND_CLASS && d.spesgn === 1)
         otmp.recharged = d.rechrg;
+
+    /* src/objnam.c:5191 — set otmp->corpsenm or dragon scale [mail] */
+    if (d.mntmp >= 0) {
+        switch (d.typ) {
+        case ONAMES.TIN:
+        case ONAMES.EGG:
+            note_unported_objnam(`readobjnam:mntmp_typ=${d.typ}`);
+            break;
+        case ONAMES.CORPSE:
+        case ONAMES.FIGURINE:
+        case ONAMES.STATUE:
+            /* the corpse-timer, figurine-transform and statue-contents
+               refinements are not ported; the type itself is */
+            otmp.corpsenm = d.mntmp;
+            break;
+        case ONAMES.SCALE_MAIL:
+            /* Dragon mail - depends on the order of objects & dragons. */
+            if (d.mntmp >= PMNAMES.PM_GRAY_DRAGON
+                && d.mntmp <= PMNAMES.PM_YELLOW_DRAGON)
+                otmp.otyp = ONAMES.GRAY_DRAGON_SCALE_MAIL
+                    + d.mntmp - PMNAMES.PM_GRAY_DRAGON;
+            break;
+        default:
+            break;
+        }
+    }
 
     if (d.iscursed)
         curse(otmp);

@@ -268,10 +268,14 @@ export function adjabil(oldlevel, newlevel) {
     grant(race_abil(game.flags.initrace ?? 0));
 }
 
-// include/youprop.h — Fast is the intrinsic; Very_fast additionally needs
-// speed boots, a potion or a spell, none of which exist yet.
-export const Fast = () => !!game.u.intrinsic?.HFast;
-export const Very_fast = () => false;
+// include/youprop.h:
+//     #define Fast      (HFast || EFast)
+//     #define Very_fast ((HFast & ~INTRINSIC) || EFast)
+// game.u.intrinsic.HFast carries the role/race intrinsic; worn speed boots
+// grant the extrinsic through set_wear's oc_oprop pass (game.u.uprops.FAST).
+// A timed potion/spell HFast would also be Very_fast; no session drinks one.
+export const Fast = () => !!(game.u.intrinsic?.HFast || game.u.uprops?.FAST);
+export const Very_fast = () => !!game.u.uprops?.FAST;
 
 // include/attrib.h:25 ACURRSTR / ACURR(). Exceptional Strength is stored above
 // 18 as 18/xx, and acurrstr() folds that back to a plain number.

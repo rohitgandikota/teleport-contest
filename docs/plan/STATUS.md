@@ -10028,3 +10028,80 @@ Same class as the Ranger displacement-cloak find: 5.0 changed the
 starting kits and ours still carries wrong trop rows or a wrong trquan.
 Compare u_init.c's Tourist/Caveman trop tables + trquan against
 js/u_init.js first thing next iteration.
+
+## 41aa481: explore-mode kit + fire chain + floor merge + object map memory (804 -> 860)
+
+The seed1150/seed0900 step-0 gap was `if (discover) ini_inv(Wishing)`
+(u_init.c:1383) - explore sessions get a wand of wishing whose mksobj draws
+exactly [next_ident, blessorcurse(17)] because WAN_WISHING's spe is set
+without a draw. `game.discover` already existed (jsmain sets it from
+playmode:explore). seed1150 then unwound layer by layer:
+
+1. ini_inv_wield only accepted WEAPON_CLASS, so the Caveman flint never
+   reached the quiver (C admits weptool/TIN_OPENER/FLINT/ROCK and routes
+   is_ammo||is_missile to setuqwep, u_init.c:1281). Without the quiver,
+   'f' never fired.
+2. The 'f' flow: dofire -> fireassist ammo_and_launcher(quiver, uswapwep)
+   -> cmdq [doswapweapon, dofire]. The canned queue and doswapweapon were
+   already ported and worked once the quiver existed. The recorded step
+   pattern is: f = swap msg 1 --More--; ' ' = msg 2 --More-- (swap takes
+   TIME, dog moves mid-More); ' ' = dog drop msg --More-- (a full turn);
+   ' ' = "In what direction?"; direction key = throw.
+3. throw_obj's multishot block read game.uwep (undefined; state is
+   game.u.uwep) so the guard failed silently: no multishot roll. Same bug
+   at six other sites in dothrow.js. Also multishot_class_bonus was
+   missing entirely (Caveman sling/spear +1, dothrow.c:39) - that is what
+   makes the roll rnd(2).
+4. The two landed flints would not merge: stackobj passed raw objects to
+   merged() which expects {o:...} boxes (obj===otmp on undefined), AND
+   invent.js had a local `LOST_NONE=0, LOST_EXPLODING=1, LOST_THROWN=2`
+   - wrong values (obj.h:481 says THROWN=1, EXPLODING=4), so a thrown
+   object was "exploding" and unmergable. Both fixed; import from const.
+5. nextoid's rnd(2) is live and correct (the old comment claiming it was
+   suppressed was stale - the seed0361 scare was the CORPSTAT_NONE crash,
+   see the identification-cluster entry).
+
+Screens then came from three display-side gaps:
+- wd_message (sys/unix/unixmain.c:656, NEW js/unixmain.js) prints "You
+  are in non-scoring explore/discovery mode." between welcome() and the
+  tutorial query. The message is NOT in src/ - it lives in the sys layer.
+- lit_corridor: corridor cells the hero can see render S_litcorr, and
+  because both corridor symbols are '#', map_glyphinfo recolors to
+  CLR_WHITE (display.c:2938). Out-of-sight never-lit corridors revert to
+  the dark form (display.c:852) - the remembered glyph is rewritten.
+- **newsym never wrote objects into map memory.** C's _map_location keeps
+  lev->glyph = topmost non-monster layer (object over engraving over
+  terrain); monsters draw OVER it and are not remembered. Ours stored
+  only terrain (and only via the hero arm), so any object leaving sight
+  reverted to floor. Restructured newsym: memory written in the cansee
+  branch before the monster overlay; hero arm remembers the object
+  underfoot. This alone was worth ~30 screens across the board.
+
+Also new: js/pickup.js (pickup() head + check_here, pickup.c:475/430),
+spoteffects (hack.c:3312) wired after every completed domove ->
+"You see here a food ration." when stepping onto items; look_here now has
+the C object arms (single-item line, pile_limit skip, NHW_MENU listing).
+
+Board 860 (was 804). seed1150: RNG 3137/3137, screens 48/51. seed1800
+25/26 (+1 from map memory). hang-gate clean, generalize clean (3%
+themeroom/enexto unchanged). No session regressed.
+
+### Tooling traps burned into this iteration (do not re-derive)
+- Screen coords: screen col = x - 1, row = y + 1 (map row 1 is y 0;
+  NetHack x starts at 1). The cursor triplets in sessions are [col,row,?].
+  I lost an hour to "the level topology differs" because of this.
+- seg.moves is a STRING with moves[i-1] = steps[i].key (steps[0] is the
+  initial frame, key null). moves.slice(0,N) reproduces steps 1..N.
+- runSegment MUST be called once per process for state probes: gstate is
+  module-scoped, and a second runSegment in the same process inherits the
+  first run's residue. Probe loops over cuts give garbage after the first.
+- Our rng log has no provenance. The fast probe is a 10-line env-gated
+  stack capture patched into js/rng.js rn2/rnd (see scratchpad pattern),
+  run, then restore the file from backup.
+
+### Next
+seed1150's last 3 screens: steps 45-47 around ^X (attributes page 2
+cursor differs) - minor, parked. seed0900 (tourist-explore) now has the
+Wishing fix but still diverges at 2551/2983: next diverge target. Also
+worth re-running diverge on seed1500-rogue-explore-move (2341/2768) -
+rogue explore, likely shares the explore-kit gains.

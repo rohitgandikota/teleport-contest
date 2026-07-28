@@ -10153,3 +10153,39 @@ Board 905. seed0030 35->64 (+29, counted searches now repeat), 0900
 seed0900 screens 15/84 with full RNG: display-side gaps (screendiff it).
 seed1150 48/51 (three ^X attribute-page screens). seed1500 (rogue
 explore) and seed2200 rng tails next. The reorder_invent WATCH above.
+
+## a124591: seed0900 84/84 + seed1150 51/51 FULL PASSES (905 -> 980)
+
+Six sessions now pass whole: 8000, 0102, 0105, 0700, 0900, 1150. The
+closing fixes, each one screendiff-driven:
+
+- Tins: "of newt meat" needs the vegetarian test (eat.c:1453); vegan/
+  vegetarian now in js/mondata.js.
+- getobj letters: C compactifies "[bcdefg]" to "[b-g]" ONLY when more
+  than five letters are suggested (invent.c:1908). Porting compactify
+  without the >5 gate regressed 0016/1800 by one screen each - the gate
+  is load-bearing, not a nicety.
+- postmov now redraws the ARRIVAL square (monmove.c:1656). Moving
+  hostiles were invisible until something else touched their cell; the
+  dog only ever showed because dog_move has its own newsym pair.
+- "Count: N" echo = topline special prompt + cursor parked at text end
+  (cursor [9,0] for "Count: 20"), the same pattern as getlin/yn. A
+  plain pline left the cursor homed to the hero and failed dozens of
+  boundary frames in 0900 (that fix alone took it 20 -> 82).
+- ^X page 2 in explore mode: attributes_enlightenment slice (aligned
+  line via piousness, "warded" via magic_negation now at its mhitu.c
+  home, can-pray via a can_pray/in_trouble slice), plus Misc's
+  "running in explore mode" and bones lines. ublesscnt: init 300
+  (u_init.c:1005), decays once per turn (allmain.c:275). The uprops
+  walk records any set property whose enlightenment line is missing.
+- look_here dfeature: door arm ("doorway"/"open door"/...); class
+  headers "Gems/Stones" and "Iron balls" (both invent.js AND the
+  o_init.js discoveries copy - two copies of that table exist).
+
+Board 980. No regressions (0016 35/36, 1800 25/26, 0501 25/28 intact).
+Gates clean.
+
+### Next targets by rng gap
+seed1500-rogue-explore-move 2341/2768; seed2200 2754/3018; seed0398
+2822/3026; seed0077 3225/3242 (17!); seed0101 2323/2371 (48). Then the
+big tours (0360/0361/0367) whose tails need doors/kicks/levels.

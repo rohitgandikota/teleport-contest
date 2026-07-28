@@ -9474,3 +9474,26 @@ dogfood/obj_resists rn2(100) before C's rn2(++chcnt); condition order and
 chcnt verified correct; suspect one extra object in our floor pile; the
 naive where===OBJ_FLOOR filter LOST 58 screens, see NOTES, do not retry).
 Then obj_resists, do_attack, distfleeck, getbones at 3 each.
+
+
+## 28 Jul, after the reset: first two fixes on the new base
+
+1. **On_stairs** (js/dog.js) read `game.level.stairs`, never written; the
+   stairs live on the `game.stairs` linked list (mklev). Always-false meant
+   every pet turn ran the hero-inventory dogfood scan C skips while the hero
+   stands on stairs (true from turn one). seed0105 AND seed0102 went to 100%
+   RNG; dog_move divergences 7 -> 4. The debugging path that found it is in
+   NOTES-worthy detail in the commit: count the rn2(100)s, they were the
+   INVENT scan, not the floor scan.
+2. **docallcmd + tty_select_menu + overlay message clear.** seed0102 now
+   matches screens through the #name menu and its cancel (miss moved 9 -> 11).
+
+**seed0102 is the closest session to a full PASS: RNG 4485/4485, screens
+fail first at step 11, the `f` (fire) command.** C auto-readies ammo and
+prinv()s it with --More-- ("b - a +1 bow (weapon in right hand).--More--");
+our dofire records 'dofire:empty quiver prompt' and jumps to a direction
+prompt. Port dofire (src/dothrow.c) next: the auto-quiver selection plus the
+prinv message, then the throw itself. seed0101 (97%) is the same family
+(ranger-quiver-throw).
+
+Board: 516 screens (+6 since reset), RNG 140857. All three gates green.

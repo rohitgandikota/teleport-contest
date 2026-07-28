@@ -9683,3 +9683,28 @@ and the whole identification cluster should then move.
 
 Also fixed in passing: CORPSTAT_NONE was never defined in js/mklev.js
 (include/obj.h 0x00); any statue trap crashed the whole session.
+
+
+### 'c' was dispatching CHAT; doclose ported; the m=1 turn-order thread stays open
+
+Landed and verified this pass: the nextoid rnd(2) draw (the seed0361 scare
+was solely the CORPSTAT_NONE crash), nhgetch call-order serialization, the
+'c' -> doclose dispatch fix, and doclose itself (src/lock.c:957 with
+obstructed and stumble_on_door_mimic; drawbridge/Blind/block_point arms
+recorded). Board 570/3, all divergence points intact.
+
+seed0016/0101 STILL diverge at 2493/2293: OUR stream runs the turn-1
+monster machinery (mcalcmove pair at m=1, from the moveloop block near
+js/allmain.js:404) BEFORE the first time-consuming command, while C's
+turn-1 block runs only AFTER one (the eat/quiver action that also splits,
+whose rnd(2) therefore precedes C's mcalc pair). Trace evidence, seed0016:
+ours n=2491-2495 = rnd(9000), rnd(30), rn2(12) mcalc, rn2(12) mcalc,
+rn2(70) maybe_generate, all at m=1 straight out of newgame; C at the same
+positions = the same preamble then rnd(2)@next_ident and mcalc only after.
+
+Next probe: how does moveloop decide to run the monster block on the very
+first iteration -- C gates it on context.move from the PREVIOUS command,
+so a fresh game reaches the input read first. Compare js/allmain.js's loop
+head against src/allmain.c moveloop_core order (mcalcmove/movemon should
+sit inside the `if (context.move)` arm, and ours appears to run it
+unconditionally on entry).

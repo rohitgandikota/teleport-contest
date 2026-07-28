@@ -9607,3 +9607,30 @@ says APPORT for the amulet), can_carry (line-for-line match, load path
 identical), can_reach_location (line-for-line match; the room is open;
 door@21,10 is D_LOCKED=8 but not on the path), edog.apport init, the rn2(8)
 roll, cursed_object_at.
+
+
+## SECOND FULL SESSION PASS: seed0102 (2/44), board 551 screens
+
+The dog "stall" was never a stall. The instrumented chain, in order of what
+it ruled out and found:
+1. movement budget fine, movemon fine, clock advances (m=4 exists);
+2. the pet MOVES exactly like C's (same goal, same squares, same draws);
+3. the DISPLAY never repainted it: C routes a tame monster's move through
+   postmov (monmove.c:1772), whose tail holds the newsym pair (1508). Our
+   dochug called dog_move directly. One repaint pair fixed seed0102's last
+   three screens AND +12 more screens across other pet sessions.
+
+Also landed this iteration: js/stairs.js (stairway_at, known_branch_stairs,
+stairs_description with the level-1 'out of the dungeon' arm), mklev's
+u_traversed marking for the starting branch stairs (mklev.c:1382-1387), and
+look_here's dfeature arm with C's no-objects suppression (invent.c:4246).
+
+Lesson for the next screen-parity hunt: when a monster is 'in the wrong
+place' with a matching RNG stream, check the REPAINT path before the
+movement path. The state was right for three iterations of instrumentation;
+the pixels were stale.
+
+Next targets by diverge ranking: seed0101 (ranger-quiver-throw, 97%,
+next_ident div@2293), seed0077 (99.7%, dog_goal @3230), seed0105 (100% RNG,
+screens still failing -- same stale-frame class? re-run screendiff now that
+postmov repaints), and the throwit chain for the quiver sessions.

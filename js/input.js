@@ -18,6 +18,11 @@ export function pushKeys(keys) {
 // In replay mode, reads from the input queue.
 // In browser mode, waits for a real keypress.
 export async function nhgetch() {
+    /* win/tty/wintty.c:4066 (tty_nhgetch) — reading a fresh key lifts the
+       ESC message suppression. The order matters: more() sets WIN_STOP
+       AFTER its dismissing read returns, so the flag survives exactly until
+       the next read, and tty_yn_function tests it before its own read. */
+    game._win_stop = false;
     // Fire the capture hook before reading the next key
     const hook = game._preNhgetchHook;
     if (hook) await hook();

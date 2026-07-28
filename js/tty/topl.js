@@ -37,21 +37,29 @@ export async function update_topl(bp) {
     /* strncmp(bp, "You die", 7) != 0 */
     const notdied = bp.slice(0, 7) !== 'You die';
 
-    if (game._toplin === TOPLINE_NEED_MORE
+    /* win/tty/topl.c:257 — WIN_STOP means the player pressed ESC at a
+       --More-- this turn: buffer the text but do not paint it and do not
+       prompt again. "You die" lifts the suppression. */
+    let skip = !!game._win_stop;
+
+    if ((game._toplin === TOPLINE_NEED_MORE || skip)
         && cury === 0
         && n0 + toplines.length + 3 < CO - 8   /* room for --More-- */
         && notdied) {
         game._pending_message = toplines + '  ' + bp;
         game._topl_curx = (game._topl_curx || 0) + 2;
-        addtopl(bp);
+        if (!skip)
+            addtopl(bp);
         return;
     }
 
-    if (game._toplin === TOPLINE_NEED_MORE) {
-        await more();
-    } else if (cury) {
-        /* docorner(1, cury + 1, 0) — reset cury to 0 if the screen is redrawn */
-        game._topl_curx = game._topl_cury = 0;
+    if (!skip) {
+        if (game._toplin === TOPLINE_NEED_MORE) {
+            await more();
+        } else if (cury) {
+            /* docorner(1, cury + 1, 0) — reset cury if the screen is redrawn */
+            game._topl_curx = game._topl_cury = 0;
+        }
     }
 
     remember_topl();
@@ -123,8 +131,12 @@ const TBUFSZ = 300;
 // Not ported: the resp filter (allowed characters, '#' for digits, an <esc>
 // hiding the tail from the prompt), yn_number, and the doprev/^P history.
 export async function tty_yn_function(query, resp, def) {
-    if (game._toplin === TOPLINE_NEED_MORE)
+    /* win/tty/topl.c:391-393 — the pending-message more() is SKIPPED while
+       WIN_STOP is set (the player already ESCed this turn's messages), and
+       the flag is lifted either way: a question needs an answer. */
+    if (game._toplin === TOPLINE_NEED_MORE && !game._win_stop)
         await more();
+    game._win_stop = false;
 
     let prompt = query;
     if (resp) {

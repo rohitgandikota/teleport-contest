@@ -47,7 +47,7 @@ import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
 import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
-import { dothrow } from './dothrow.js';
+import { dothrow, dofire } from './dothrow.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -443,29 +443,10 @@ async function docmd_getobj(ch) {
     note_unported_cmd(`cmd:${ch}`);
     return ECMD_TIME;
 }
+/* dofire() lives in js/dothrow.js, its C home (src/dothrow.c:469), with the
+   fireassist launcher-wielding chain. The local stub that only reached
+   getdir() was replaced when the command queue landed. */
 
-// src/dothrow.c:469 dofire() -> throw_obj() -> getdir().
-//
-// The throw itself needs the missile and trajectory code. What is ported is the
-// direction read, because that is what keeps the session in step: C spends a key
-// on it and stays put, so a port that skips it walks the hero instead.
-async function dofire() {
-    /* src/dothrow.c:469 — with a quivered missile C goes straight to
-       throw_obj() and its getdir(). With an EMPTY quiver it instead prompts for
-       something to fire, which reads a different number of keys, so guessing
-       the direction read there would put the session out of step in the other
-       direction. Record that case rather than consume a key for it. */
-    if (!game.u.uquiver) {
-        note_unported_cmd('dofire:empty quiver prompt');
-        return ECMD_OK;
-    }
-
-    if (!await getdir(null))
-        return ECMD_OK;
-
-    note_unported_cmd('dofire:throwit');
-    return ECMD_TIME;
-}
 
 // src/cmd.c:495 doextcmd() — dispatch an extended command.
 //

@@ -1,5 +1,10 @@
 import { game } from './gstate.js';
-import { ECMD_OK, ECMD_TIME } from './const.js';
+import { cmdq_add_ec, cmdq_add_key } from './cmd.js';
+import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
+import { is_pole } from './u_init.js';
+import { You } from './pline.js';
+import { ammo_and_launcher } from './wield.js';
+import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED } from './const.js';
 import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -147,4 +152,114 @@ export function walk_path(src_cc, dest_cc, check_proc, arg) {
     dest_cc.x = prev_x;
     dest_cc.y = prev_y;
     return false;
+}
+
+// src/dothrow.c:447 find_launcher() — the launcher in inventory matching this
+// ammo, preferring one whose B/U/C is known not-cursed; a known-cursed one is
+// skipped outright and an unknown one is the fallback.
+export function find_launcher(ammo) {
+    let oX = null;
+
+    if (!ammo)
+        return null;
+
+    for (const otmp of (game.invent || [])) {
+        if (otmp.cursed && otmp.bknown)
+            continue; /* known to be cursed, so skip */
+        if (ammo_and_launcher(ammo, otmp)) {
+            if (otmp.bknown)
+                return otmp; /* known-B or known-U (known-C won't get here) */
+            if (!oX)
+                oX = otmp; /* unknown-BUC; used if no known-BU item found */
+        }
+    }
+    return oX;
+}
+
+/*
+ * src/dothrow.c:469 dofire() — the 'f' command: fire from the quiver.
+ *
+ * The shot-count prefix (ok_to_throw/shotlimit) cannot arise here because
+ * this port's input path has no count prefixes, so shotlimit is always 0.
+ * The polearm/bullwhip arms, autoquiver, and the throw-and-return artifact
+ * head are recorded where their state can occur.
+ */
+export async function dofire() {
+    const shotlimit = 0;
+    let obj;
+    let skip_fireassist = false;
+    let res = ECMD_OK;
+
+    if (game.u.uwep && game.u.uwep.oartifact)
+        note_unported_dothrow('dofire:AutoReturn');
+
+    obj = game.u.uquiver;
+    if (!obj) {
+        if (!game.flags.autoquiver) {
+            /* if we're wielding a polearm, apply it */
+            if (game.u.uwep && is_pole(game.u.uwep)) {
+                note_unported_dothrow('dofire:use_pole');
+                return ECMD_OK;
+            /* if we're wielding a bullwhip, apply it */
+            } else if (game.u.uwep && game.u.uwep.otyp === ONAMES.BULLWHIP) {
+                note_unported_dothrow('dofire:use_whip');
+                return ECMD_OK;
+            } else if ((game.iflags.fireassist !== false)
+                       && game.u.uswapwep && is_pole(game.u.uswapwep)
+                       && !(game.u.uswapwep.cursed && game.u.uswapwep.bknown)) {
+                /* we have a known not-cursed polearm as swap weapon.
+                   swap to it and retry */
+                cmdq_add_ec(CQ_CANNED, doswapweapon);
+                cmdq_add_ec(CQ_CANNED, dofire);
+                return ECMD_OK; /* haven't taken any time yet */
+            } else {
+                await You("have no ammunition readied.");
+            }
+        } else {
+            note_unported_dothrow('dofire:autoquiver');
+        }
+    }
+
+    /* if autoquiver is disabled or has failed, prompt for missile */
+    if (!obj) {
+        /* this gives its own feedback about populating the quiver slot */
+        res = await doquiver_core("fire");
+        if (res !== ECMD_OK && res !== ECMD_TIME)
+            return res;
+
+        obj = game.u.uquiver;
+    }
+
+    if (game.u.uquiver && is_ammo(game.u.uquiver)
+        && (game.iflags.fireassist !== false) /* optlist.h:309 — default On */
+        && !skip_fireassist) {
+        let olauncher;
+
+        if (game.u.uwep && is_pole(game.u.uwep)) {
+            note_unported_dothrow('dofire:use_pole');
+            return ECMD_OK;
+        }
+        /* Try to find a launcher */
+        if (ammo_and_launcher(game.u.uquiver, game.u.uwep)) {
+            obj = game.u.uquiver;
+        } else if (ammo_and_launcher(game.u.uquiver, game.u.uswapwep)) {
+            /* swap weapons and retry fire */
+            cmdq_add_ec(CQ_CANNED, doswapweapon);
+            cmdq_add_ec(CQ_CANNED, dofire);
+            return res;
+        } else if ((olauncher = find_launcher(game.u.uquiver)) != null) {
+            /* wield launcher, retry fire */
+            if (game.u.uwep && !game.flags.pushweapon)
+                cmdq_add_ec(CQ_CANNED, doswapweapon);
+            cmdq_add_ec(CQ_CANNED, dowield);
+            cmdq_add_key(CQ_CANNED, olauncher.invlet);
+            cmdq_add_ec(CQ_CANNED, dofire);
+            return res;
+        }
+    }
+
+    const altres = obj ? await throw_obj(obj, shotlimit) : ECMD_CANCEL;
+    /* fire can take time by filling quiver (if that causes something which
+       was wielded to be unwielded) even if the throw itself gets cancelled */
+    return (res === ECMD_TIME) ? res : altres;
 }

@@ -2941,3 +2941,6 @@ export function Is_rogue_level(uz) { const g = game; return g?.rogue_level && (u
 export function Is_oracle_level(uz) { const g = game; return g?.oracle_level && (uz ?? g?.u?.uz)?.dnum === g.oracle_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.oracle_level.dlevel; }
 export function Is_knox_level(uz) { const g = game; return g?.knox_level && (uz ?? g?.u?.uz)?.dnum === g.knox_level.dnum && (uz ?? g?.u?.uz)?.dlevel === g.knox_level.dlevel; }
 export function Is_juiblex_level(uz) { return false; /* TODO */ }
+
+// include/hack.h:1520 plur()
+export const plur = (x) => (x === 1 ? "" : "s");

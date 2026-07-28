@@ -593,6 +593,12 @@ export async function more() {
        waiting to be read as a command afterwards. */
     await xwaitforspace('\x1b ');
 
+    /* win/tty/topl.c more():234 — ESC sets WIN_STOP: the player has asked to
+       skip this turn's remaining messages. update_topl drops the paint (but
+       still buffers) and tty_yn_function skips its own more() while set. */
+    if (game.morc === '\x1b')
+        game._win_stop = true;
+
     /* win/tty/wintty.c tty_display_nhwindow(), NHW_MESSAGE:
      *
      *     more();

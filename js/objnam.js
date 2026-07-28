@@ -12,7 +12,10 @@
 // direct check that the o_init port is right.
 
 import { game } from './gstate.js';
-import { W_ARMOR, W_QUIVER, W_WEP } from './const.js';
+import { is_ammo, is_missile } from './wield.js';
+import { is_weptool } from './mkobj.js';
+import { bimanual } from './obj.js';
+import { W_ARMOR, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP } from './const.js';
 import { mons } from './monst_data.js';
 import { OCLASSES, ONAMES, obj_descr } from './objects_data.js';
 
@@ -270,8 +273,50 @@ export function doname(obj) {
         break;
     }
 
-    if (obj.owornmask & W_QUIVER) bp += ' (at the ready)';
-    if (obj.owornmask & W_WEP) bp += ' (weapon in hand)';
+    /* src/objnam.c:1560-1646 — the wield/swap/quiver suffixes. twoweap and
+       the tether/Sting-glow/artifact-light decorations need state this tree
+       does not track; u.twoweap stays falsy throughout. body_part(HAND) is
+       "hand" for every un-polymorphed form and polyself is not ported. */
+    if (obj.owornmask & W_WEP) {
+        /* use alternate phrasing for non-weapons and for wielded ammo
+           (arrows, bolts), or missiles (darts, shuriken, boomerangs) */
+        if (obj.quan !== 1
+            || ((obj.oclass === OCLASSES.WEAPON_CLASS)
+                ? (is_ammo(obj) || is_missile(obj))
+                : !is_weptool(obj, game.objects))) {
+            bp += ' (wielded)';
+        } else {
+            const hand_s = bimanual(obj) ? 'hands'
+                : `${((game.u.uhandedness ?? 0) === 0) ? 'right' : 'left'} hand`; /* URIGHTY; RIGHT_HANDED == 0 */
+            bp += ` (weapon in ${hand_s})`;
+        }
+    }
+    if (obj.owornmask & W_SWAPWEP) {
+        bp += ` (alternate weapon${plur(obj.quan)}; not wielded)`;
+    }
+    if (obj.owornmask & W_QUIVER) {
+        let Qtyp;
+        switch (obj.oclass) {
+        case OCLASSES.WEAPON_CLASS:
+            Qtyp = !is_ammo(obj) ? 3 /* not ammo: "at the ready" */
+                   : (game.objects[obj.otyp].oc_skill !== -P_BOW) ? 2 /* non-bow */
+                     : 1; /* ammo for a bow: "in quiver" */
+            break;
+        case OCLASSES.RING_CLASS:
+        case OCLASSES.AMULET_CLASS:
+        case OCLASSES.WAND_CLASS:
+        case OCLASSES.COIN_CLASS:
+        case OCLASSES.GEM_CLASS:
+            Qtyp = 2; /* small, non-bow: "in quiver pouch" */
+            break;
+        default: /* odd things */
+            Qtyp = 3; /* "at the ready" */
+            break;
+        }
+        bp += ` (${(Qtyp === 1) ? 'in quiver'
+                 : (Qtyp === 2) ? 'in quiver pouch'
+                   : 'at the ready'})`;
+    }
 
     /* src/objnam.c:1527 — recompute the article now that the prefix is
        complete, so "a uncursed" becomes "an uncursed". */

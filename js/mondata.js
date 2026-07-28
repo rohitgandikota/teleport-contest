@@ -417,3 +417,6 @@ export function pronoun_gender(mtmp, pg_flags) {
     return (humanoid(mtmp.data) || (mtmp.data.geno & G_UNIQ)
             || type_is_pname(mtmp.data)) ? (mtmp.female | 0) : 2;
 }
+
+// include/mondata.h:123 cantwield()
+export const cantwield = (ptr) => nohands(ptr) || verysmall(ptr);

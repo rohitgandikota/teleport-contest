@@ -9579,3 +9579,31 @@ nix/niy/j/appr against a hand-trace of the C.
 
 makesingular is recorded (weapon_descr notes it when a name ends in 's');
 the '?' getdir help-retry is recorded; the twoweap skill line is recorded.
+
+
+### seed0102 endgame: two leads, fully instrumented
+
+Steps 22-24 remain. The instrumentation session established, in order:
+
+1. **The dog divergence is OURS STALLING, not ours wandering.** C's pet takes
+   the APPORT goal (amulet of reflection at 23,10, same room, no closed door
+   in the way) and is visibly fetching it by step 23. OUR pet takes the same
+   goal at m=3 (identical draws: apport=3 both sides since acurr() clamps the
+   zeroed CHA to 3 in both C and js; same rn2(8); can_carry and
+   can_reach_location both true) and moves 28,8 -> 27,9 -> 26,10 -- then
+   **dog_move is never called again at m=4/5** (the search turns). The gate
+   that stops it is UPSTREAM: movemon/movemon_singlemon or the pet's movement
+   budget (mcalcmove). Next probe: log movemon_singlemon for the pet at m>=3
+   with its mcalcmove budget and any helpless/meating/mstate flags.
+
+2. **Step 24 (':' on the upstairs) is independent and small.** C:
+   "There is a staircase up out of the dungeon here." Ours: "You see no
+   objects here." dolook's staircase arm needs the same game.stairs chain
+   walk On_stairs got (js/dog.js:751 pattern). Do this one FIRST next
+   iteration; it is a two-line fix against src/invent.c dolook.
+
+Ruled out with evidence, do not re-check: dogfood classification (C also
+says APPORT for the amulet), can_carry (line-for-line match, load path
+identical), can_reach_location (line-for-line match; the room is open;
+door@21,10 is D_LOCKED=8 but not on the path), edog.apport init, the rn2(8)
+roll, cursed_object_at.

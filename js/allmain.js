@@ -591,9 +591,10 @@ export async function moveloop_core() {
             await domove();
         } else {
             --g.multi;
-            /* rhack(gc.cmd_key) — repeating a non-movement command needs the
-               remembered key, which this port does not track yet. */
-            note_unported_main('moveloop:multi repeat non-mv');
+            /* rhack(gc.cmd_key) — repeat the remembered command without
+               reading a key. parse() does not run for repeats, so no count
+               collection and no topline clear happen here. */
+            await rhack(g.cmd_key ? g.cmd_key.charCodeAt(0) : 0);
         }
         return;
     }

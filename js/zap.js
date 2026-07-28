@@ -27,7 +27,7 @@ import { healup } from './potion.js';
 import { findit } from './detect.js';
 import { readobjnam } from './objnam.js';
 import { getlin } from './cmd.js';
-import { prinv } from './invent.js';
+import { prinv, reorder_invent } from './invent.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { rn1 } from './rng.js';
@@ -284,6 +284,7 @@ export async function makewish() {
         if (!used.has(ch)) { otmp.invlet = ch; break; }
     otmp.where = 3;                     /* OBJ_INVENT */
     (game.invent ||= []).push(otmp);
+    reorder_invent();                   /* invlet_constant keeps rank order */
     update_inventory();
     await prinv(null, otmp, 0);
 

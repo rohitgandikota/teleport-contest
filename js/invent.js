@@ -27,6 +27,19 @@ import { You } from './pline.js';
 export const ECMD_OK = 0;
 export const ECMD_TIME = 1;
 
+/* src/invent.c:735 inv_rank() — invlet ^ 040, which sorts '$' (gold) before
+   'a'..'z' before 'A'..'Z'. */
+const inv_rank = (o) => ((o.invlet ? o.invlet.charCodeAt(0) : 0) ^ 0o40);
+
+// src/invent.c:739 reorder_invent() — with flags.invlet_constant (default
+// On), addinv keeps the whole inventory chain in inv_rank order. Every walk
+// of the hero's inventory — dogfood scans, getobj, display — sees gold
+// first, then a..z, then A..Z, and a re-used low letter moves back to its
+// rank position. Draws nothing.
+export function reorder_invent() {
+    (game.invent || []).sort((a, b) => inv_rank(a) - inv_rank(b));
+}
+
 // src/invent.c:4104 look_here()
 //
 // The engulfed arm, gas regions, cockatrice touches and Blind feel-arms are

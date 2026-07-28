@@ -13,13 +13,14 @@ import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
 import {
     mons as MONS_INIT, PMNAMES, NUMMONS, MONSYMS, MSOUND, ATTKS, MFLAGS,
-    MMFLAGS, LIMITS, STRAT,
+    MMFLAGS, LIMITS, STRAT, GROWNUPS,
 } from './monst_data.js';
 import { ONAMES, OCLASSES, SKILLS } from './objects_data.js';
 import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj, place_object } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
+import { canspotmon, newsym } from './display.js';
 import { attacktype, is_neuter } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
@@ -1524,4 +1525,105 @@ export function makemon(ptr, x, y, mmflags) {
     }
 
     return mtmp;
+}
+
+// src/makemon.c:2051 grow_up() — a pet levels up from a kill (or a wraith
+// corpse/gain-level potion, which is the victim-less arm). Returns the
+// monster's (possibly new) permonst, or null if it died growing.
+//
+// The draws: rnd(victim->m_lev + 1) for the max HP gain, then
+// rn2(max_increase) when that is above 1. The genocided-growth death arm and
+// the leash bookkeeping record.
+export function grow_up(mtmp, victim) {
+    if (mtmp.mhp <= 0)
+        return null;
+
+    let ptr = game.mons[mtmp.mnum];
+    const oldtype = mtmp.mnum;
+    let newtype = (oldtype === PMNAMES.PM_KILLER_BEE && !victim)
+                  ? PMNAMES.PM_QUEEN_BEE : little_to_big(oldtype);
+
+    let hp_threshold, lev_limit, max_increase, cur_increase;
+    if (victim) {                       /* killed a monster */
+        hp_threshold = mtmp.m_lev * 8;
+        if (!mtmp.m_lev)
+            hp_threshold = 4;
+        else if (is_golem(ptr))
+            hp_threshold = (Math.trunc(mtmp.mhpmax / 10) + 1) * 10 - 1;
+        /* is_home_elemental needs the plane levels; not reachable */
+        lev_limit = Math.trunc(3 * ptr.mlevel / 2);
+        if (oldtype !== newtype && game.mons[newtype].mlevel > lev_limit)
+            lev_limit = game.mons[newtype].mlevel;
+        max_increase = rnd(victim.m_lev + 1);
+        if (mtmp.mhpmax + max_increase > hp_threshold + 1)
+            max_increase = Math.max((hp_threshold + 1) - mtmp.mhpmax, 0);
+        cur_increase = (max_increase > 1) ? rn2(max_increase) : 0;
+    } else {
+        max_increase = cur_increase = rnd(8);
+        hp_threshold = 0;
+        lev_limit = 50;
+    }
+
+    mtmp.mhpmax += max_increase;
+    mtmp.mhp += cur_increase;
+    if (mtmp.mhpmax <= hp_threshold)
+        return ptr;                     /* doesn't gain a level */
+
+    if (lev_limit < 5)
+        lev_limit = 5;
+    else if (lev_limit > 49)
+        lev_limit = (ptr.mlevel > 49 ? 50 : 49);
+
+    if (++mtmp.m_lev >= game.mons[newtype].mlevel && newtype !== oldtype) {
+        ptr = game.mons[newtype];
+        const fem = mtmp.female | 0;   /* gender forcing needs is_male/is_female flags */
+
+        if ((game.mvitals?.[newtype]?.mvflags ?? 0) & G_GENOD) {
+            note_unported_makemon('grow_up:genocided_growth');
+            mtmp.mnum = newtype;
+            mtmp.data = ptr;
+            const { mondied } = mondied_ref();
+            mondied(mtmp);
+            return null;
+        } else if (canspotmon(mtmp)) {
+            /* pline_mon "%s grows up into %s." */
+            note_unported_makemon('grow_up:growth_msg');
+        }
+        mtmp.mnum = newtype;
+        mtmp.data = ptr;
+        newsym(mtmp.mx, mtmp.my);      /* color may change */
+        lev_limit = mtmp.m_lev;
+        mtmp.female = fem;
+    }
+
+    /* sanity checks */
+    if (mtmp.m_lev > lev_limit) {
+        mtmp.m_lev--;
+        if (mtmp.mhpmax === hp_threshold + 1)
+            mtmp.mhpmax--;
+    }
+    if (mtmp.mhpmax > 50 * 8)
+        mtmp.mhpmax = 50 * 8;
+    if (mtmp.mhp > mtmp.mhpmax)
+        mtmp.mhp = mtmp.mhpmax;
+
+    return ptr;
+}
+
+// src/makemon.c little_to_big() — the GROWNUPS pairs from monst.c.
+function little_to_big(montype) {
+    for (const [littl, big] of GROWNUPS)
+        if (littl === montype)
+            return big;
+    return montype;
+}
+
+/* js/mon.js imports from this file already; a static import back would be an
+   eval-time cycle, so mondied is looked up at call time. */
+function mondied_ref() {
+    return { mondied: game._mondied_ref };
+}
+
+function note_unported_makemon(what) {
+    (game.unported ||= new Set()).add(what);
 }

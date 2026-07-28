@@ -594,7 +594,7 @@ export function mon_track_clear(mtmp) {
 }
 
 // src/mon.c monnear() — adjacent, with no diagonal for NODIAG monsters.
-function monnear(mon, x, y) {
+export function monnear(mon, x, y) {
     const distance = dist2(mon.mx, mon.my, x, y);
 
     if (distance === 2 && NODIAG(mon.mnum))

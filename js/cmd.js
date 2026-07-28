@@ -588,8 +588,10 @@ export async function rhack(key) {
                 key = String(cmdq.key).charCodeAt(0);
         }
     }
+    let live_input = false;
     if (key === 0) {
         // Read key from input
+        live_input = true;
         await flush_screen(1);
         key = await nhgetch();
         // The boundary frame has now been captured with the previous
@@ -608,7 +610,55 @@ export async function rhack(key) {
         game._toplin = TOPLINE_EMPTY;
     }
 
-    const ch = String.fromCharCode(key);
+    let ch0 = String.fromCharCode(key);
+
+    /* src/cmd.c:5009 get_count() via parse() — with !number_pad, typed
+       digits accumulate a repeat count and the first non-digit key is the
+       command. "Count: N" is echoed only once the count reaches two digits
+       (`cnt > 9`), each time on a cleared topline with no history. ESC
+       cancels the count and the command read. parse() then sets
+       gm.multi = count - 1 and remembers gc.cmd_key for the repeat arm. */
+    if (live_input && !game.in_doagain && ch0 >= '0' && ch0 <= '9') {
+        let cnt = 0;
+        while (ch0 >= '0' && ch0 <= '9') {
+            cnt = 10 * cnt + (ch0.charCodeAt(0) - 48);
+            if (cnt > 9) {
+                tty_clear_nhwindow_message(game._topl_cury || 0);
+                game._pending_message = '';
+                game._toplin = TOPLINE_EMPTY;
+                await pline(`Count: ${cnt}`);
+            }
+            await flush_screen(1);
+            key = await nhgetch();
+            ch0 = String.fromCharCode(key);
+        }
+        if (ch0 === '\x1b') {          /* esc cancels count (TH) */
+            tty_clear_nhwindow_message(game._topl_cury || 0);
+            game._pending_message = '';
+            game._toplin = TOPLINE_EMPTY;
+            game.command_count = 0;
+            game.context.move = 0;
+            return;
+        }
+        game.command_count = cnt;
+        /* src/cmd.c:5142 — gm.multi = count; if (multi) multi--; */
+        game.multi = cnt;
+        if (game.multi)
+            game.multi--;
+        /* the count text stays on the topline in C until the command's own
+           output replaces it; rhack's pre-dispatch clear already ran */
+    }
+    game.cmd_key = ch0;
+
+    /* src/cmd.c:1518 do_run_west() and friends — a SHIFTED direction letter
+       is the run form of the move: set_move_cmd(dir, 1) puts context.run = 1
+       and the same domove/moveloop machinery carries the hero until
+       lookaround or a blocked step calls nomul(0). The rush prefix 'g' uses
+       run = 2; the only difference between the modes is how lookaround
+       decides what is interesting enough to stop at. */
+    const ch = 'HJKLYUBN'.includes(ch0) ? ch0.toLowerCase() : ch0;
+    if (ch !== ch0 && isMovementKey(ch) && !game.context.run)
+        game.context.run = 1;
 
     if (isMovementKey(ch)) {
         /* src/cmd.c movecmd() — the key sets u.dx/u.dy, then domove() reads

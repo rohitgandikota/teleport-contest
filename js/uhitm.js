@@ -29,7 +29,7 @@ import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
-import { is_orc, unsolid } from './mondata.js';
+import { is_orc, unsolid, noncorporeal, thick_skinned, attacktype, sticks } from './mondata.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
@@ -1037,3 +1037,59 @@ export function nohandglow(mon) {
     note_unported_uhitm('nohandglow:message');
     game.u.umconf--;
 }
+
+// src/uhitm.c:3981 mhitm_ad_phys() — the AD_PHYS arm of mhitm_adtyping.
+//
+// Only the monster-vs-monster branch is live here (the uhitm and mhitu
+// branches run through their own files' flows). With no wielded monster
+// weapons yet, the mwep arms record; a plain claw/bite deals the rolled
+// damage unchanged.
+export function mhitm_ad_phys(magr, mattk, mdef, mhm) {
+    const A = ATTKS;
+    const pd = game.mons[mdef.mnum];
+
+    /* mhitm branch */
+    if (noncorporeal(pd)) {
+        /* shade_miss */
+        note_unported_uhitm('mhitm_ad_phys:shade');
+        mhm.damage = 0;
+    } else if (mattk[0] === A.AT_KICK && thick_skinned(pd)) {
+        mhm.damage = 0;
+    }
+    /* non-Null mwep arms (weapon damage, poison, artifact hits) are absent:
+       mon_wield_item has no port, so MON_WEP is always empty here */
+}
+
+// src/uhitm.c:5247 mhitm_knockback() — can this hit hurl the defender?
+//
+// The TWO leading draws happen before any qualification test: rn2(3) for
+// the distance and rn2(chance) for the 1-in-6 gate, so every damaging hit
+// spends them even when the attack type can never knock back. The actual
+// hurtle needs subsystems that are absent and is recorded.
+export function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
+    const A = ATTKS;
+    rn2(3);                     /* knockdistance: 67% 1 step, 33% 2 */
+    const chance = 6;           /* Ogresmasher needs an artifact wielder */
+
+    if (rn2(chance))
+        return false;
+
+    /* only certain attacks qualify for knockback */
+    if (!((mattk[1] === A.AD_PHYS)
+          && (mattk[0] === A.AT_CLAW
+              || mattk[0] === A.AT_KICK
+              || mattk[0] === A.AT_BUTT
+              || mattk[0] === A.AT_WEAP)))
+        return false;
+
+    /* don't knockback if attacker also wants to grab or engulf */
+    if (attacktype(game.mons[magr.mnum], A.AT_ENGL)
+        || attacktype(game.mons[magr.mnum], A.AT_HUGS)
+        || sticks(game.mons[magr.mnum]))
+        return false;
+
+    /* the hurtle itself (test_move, mhurtle, messages) is absent */
+    note_unported_uhitm('mhitm_knockback:hurtle');
+    return false;
+}
+

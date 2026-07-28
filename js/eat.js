@@ -13,16 +13,16 @@ import { carnivorous, herbivorous, metallivorous } from './mondata.js';
 import { Unaware, Hallucination } from './youprop.js';
 import { singular, xname, doname } from './objnam.js';
 import { more_experienced, newexplevel } from './exper.js';
-import { You } from './pline.js';
+import { You, You_cant } from './pline.js';
 import { outrumor } from './rumors.js';
 import { BY_COOKIE } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import { done } from './end.js';
 import { set_occupation } from './allmain.js';
 import { rn2, rnd, rn1 } from './rng.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL } from './const.js';
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory } from './invent.js';
+import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory, reorder_invent } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
@@ -179,6 +179,7 @@ function touchfood(otmp) {
             for (const ch of letters)
                 if (!used.has(ch)) { otmp.invlet = ch; break; }
             game.invent.push(otmp);
+            reorder_invent();   /* invlet_constant keeps rank order */
             update_inventory();
         }
     }
@@ -190,6 +191,18 @@ export async function doeat() {
 
     if (!otmp)
         return ECMD_OK;
+
+    /* src/eat.c:2864 — "We have to make non-foods take 1 move to eat,
+       unless..." — an explicitly chosen non-food is rejected without
+       spending the turn. */
+    if (!is_edible(otmp)) {
+        await You('cannot eat that!');
+        return ECMD_OK;
+    } else if ((otmp.owornmask & (W_ARMOR | W_TOOL | W_AMUL | W_SADDLE)) !== 0) {
+        /* let them eat rings */
+        await You_cant(`eat something you're wearing.`);
+        return ECMD_OK;
+    }
 
     /* src/eat.c doeat() tail — the tin, corpse and conduct arms above this
        need their own subsystems; what is ported is the ordinary-food path,

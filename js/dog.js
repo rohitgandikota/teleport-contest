@@ -12,7 +12,7 @@
 import { game } from './gstate.js';
 import { which_armor } from './worn.js';
 import { DEADMONSTER, is_vampshifter, MON_WEP } from './monst.js';
-import { m_avoid_kicked_loc, m_avoid_soko_push_loc } from './monmove.js';
+import { m_avoid_kicked_loc, m_avoid_soko_push_loc, monnear, onscary } from './monmove.js';
 /* include/hack.h:1322 — MMOVE_MOVED is 1 and MMOVE_DIED is 2. This file had
    its own copy with MMOVE_MOVED = 2 (C's DIED value) and no MMOVE_DIED at all,
    so dog_move's death return was an unbound name. */
@@ -20,7 +20,7 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          NEED_WEAPON, NEED_HTH_WEAPON } from './const.js';
 import { acurr } from './attrib.js';
 import { put_saddle_on_mon } from './steed.js';
-import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype } from './mondata.js';
+import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg } from './mondata.js';
 import { sobj_at, eaten_stat, obj_extract_self } from './invent.js';
 import { may_dig } from './hack.js';
 import { is_metallic } from './obj.js';
@@ -49,6 +49,8 @@ import { Monnam, christen_monst } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy } from './monmove.js';
+import { mattackm } from './mhitm.js';
+import { M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
@@ -288,8 +290,8 @@ function hates_silver(ptr) {
 const is_were = (ptr) => (ptr.mflags2 & MFLAGS.M2_WERE) !== 0;
 const is_demon = (ptr) => (ptr.mflags2 & MFLAGS.M2_DEMON) !== 0;
 
-const resists_ston   = (mon) => { note_unported('resists_ston'); return false; };
-const resists_acid   = (mon) => { note_unported('resists_acid'); return false; };
+/* resists_ston / resists_acid — the real Resists_Elem tests live in
+   js/mondata.js now; the note-stubs that stood here always said "no". */
 
 // src/dogmove.c could_reach_item()
 export function could_reach_item(mon, nx, ny) {
@@ -1093,8 +1095,7 @@ export async function dog_move(mtmp, after) {
         if (m_at(nx, ny) && !(mfp.info[i] & (ALLOW_M | ALLOW_MDISP)))
             continue;
 
-        /* src/dogmove.c:1102 — the ALLOW_M attack branch needs mattackm, the
-           monster-vs-monster combat path, which draws. Stop rather than guess.
+        /* src/dogmove.c:1102 — the ALLOW_M attack branch.
 
            ALLOW_U is no longer skipped here, because C does not skip it: it
            handles it at newdogpos (dogmove.c:1280). In practice this changes
@@ -1102,8 +1103,58 @@ export async function dog_move(mtmp, after) {
            ALLOW_U on the non-tame, non-peaceful arm, so a pet never carries
            it -- but matching the C costs nothing and removes a condition that
            would be wrong the moment a conflicted pet did get the flag. */
-        if (mfp.info[i] & ALLOW_M) {
-            note_unported('dog_move attack branch');
+        if ((mfp.info[i] & ALLOW_M) && m_at(nx, ny)) {
+            const mtmp2 = m_at(nx, ny);
+            /* audacity: how much higher-level a foe the pet will start */
+            const balk = mtmp.m_lev
+                         + Math.trunc((5 * mtmp.mhp) / mtmp.mhpmax) - 2;
+
+            if (mtmp2.m_lev >= balk
+                || (mtmp2.mtame && mtmp.mtame /* && !Conflict */)
+                || (max_passive_dmg(mtmp2, mtmp) >= mtmp.mhp)
+                || ((mtmp.mhp * 4 < mtmp.mhpmax
+                     || game.mons[mtmp2.mnum].msound === MSOUND.MS_GUARDIAN
+                     || game.mons[mtmp2.mnum].msound === MSOUND.MS_LEADER)
+                    && mtmp2.mpeaceful /* && !Conflict */)) {
+                continue;
+            }
+            /* src/dogmove.c:1130 — the floating eye / gelatinous cube /
+               petrifier avoidance. The eye and cube arms DRAW rn2(10). */
+            if ((mtmp2.mnum === PMNAMES.PM_FLOATING_EYE && rn2(10)
+                 && mtmp.mcansee && haseyes(game.mons[mtmp.mnum])
+                 && mtmp2.mcansee && !mtmp2.minvis)
+                || (mtmp2.mnum === PMNAMES.PM_GELATINOUS_CUBE && rn2(10))
+                || (touch_petrifies(game.mons[mtmp2.mnum])
+                    && !resists_ston(mtmp))) {
+                /* adjacent, so a ranged attack is never the fallback */
+                continue;
+            }
+
+            if (after)
+                return MMOVE_NOTHING; /* hit only once each move */
+
+            game.bhitpos = { x: nx, y: ny };
+            let mstatus = await mattackm(mtmp, mtmp2);
+
+            /* aggressor (pet) died */
+            if (mstatus & M_ATTK_AGR_DIED)
+                return MMOVE_DIED;
+
+            if ((mstatus & (M_ATTK_HIT | M_ATTK_DEF_DIED)) === M_ATTK_HIT
+                && rn2(4)
+                && mtmp2.mlstmv !== game.moves
+                && !onscary(mtmp.mx, mtmp.my, mtmp2)
+                && monnear(mtmp2, mtmp.mx, mtmp.my)) {
+                game.bhitpos = { x: mtmp.mx, y: mtmp.my };
+                mstatus = await mattackm(mtmp2, mtmp); /* return attack */
+                if (mstatus & M_ATTK_DEF_DIED)
+                    return MMOVE_DIED;
+            }
+            return MMOVE_DONE;
+        }
+        if ((mfp.info[i] & ALLOW_MDISP) && m_at(nx, ny)) {
+            /* mdisplacem — monster displacement is absent */
+            note_unported('dog_move displace branch');
             continue;
         }
 

@@ -54,6 +54,9 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, mpickobj } from './makemon.js';
+import { nonliving, is_neuter } from './mondata.js';
+import { mkcorpstat } from './mklev.js';
+import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE, ACCESSIBLE } from './const.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
@@ -1321,4 +1324,118 @@ export function mpickstuff(mtmp) {
         }
     }
     return false;
+}
+
+/* include/monflag.h:201 — corpse-generation bits, via the MFLAGS table. */
+const { G_NOCORPSE: MC_G_NOCORPSE, G_FREQ: MC_G_FREQ } = MFLAGS;
+
+// src/mon.c:564 make_corpse() — drop the cadaver. The dragon-scale,
+// unicorn-horn, golem and mummy/zombie special arms record when such a
+// creature dies; the ordinary G_NOCORPSE-gated mkcorpstat path is real.
+export function make_corpse(mtmp, corpseflags) {
+    const mdat = game.mons[mtmp.mnum];
+    const mndx = mtmp.mnum;
+    let corpstatflags = corpseflags;
+
+    if (mtmp.female)
+        corpstatflags |= CORPSTAT_FEMALE;
+    else if (!is_neuter(mdat))
+        corpstatflags |= CORPSTAT_MALE;
+
+    /* dragons, unicorns, long worm, vampires, mummies/zombies and golems
+       leave something other than a plain fresh corpse */
+    if ((mndx >= PMNAMES.PM_GRAY_DRAGON && mndx <= PMNAMES.PM_YELLOW_DRAGON)
+        || (mndx >= PMNAMES.PM_WHITE_UNICORN && mndx <= PMNAMES.PM_BLACK_UNICORN)
+        || mndx === PMNAMES.PM_LONG_WORM
+        || mdat.mlet === MONSYMS.S_MUMMY || mdat.mlet === MONSYMS.S_ZOMBIE
+        || mdat.mlet === MONSYMS.S_GOLEM
+        || mndx === PMNAMES.PM_VAMPIRE || mndx === PMNAMES.PM_VAMPIRE_LEADER) {
+        note_unported_mon('make_corpse:special_arm');
+        return null;
+    }
+
+    if ((game.mvitals?.[mndx]?.mvflags ?? 0) & MC_G_NOCORPSE)
+        return null;
+
+    corpstatflags |= CORPSTAT_INIT;
+    /* KEEPTRAITS: shopkeepers, tame, uniques, revivers keep identity */
+    const keep = (mtmp.isshk || mtmp.mtame || is_rider(mdat));
+    const obj = mkcorpstat(ONAMES.CORPSE, keep ? mtmp : null, mndx,
+                           mtmp.mx, mtmp.my, corpstatflags);
+    return obj;
+}
+
+// src/mon.c:3181 corpse_chance() — does the kill leave a corpse at all?
+//
+// The AT_BOOM walk (gas spores) and the lich/Vlad crumble arm are recorded;
+// the ordinary tail is the draw: !rn2(2 + rare + verysmall).
+export function corpse_chance(mon, magr, was_swallowed) {
+    const A = ATTKS;
+    const mdat = game.mons[mon.mnum];
+
+    if (mdat.mlet === MONSYMS.S_LICH) {
+        note_unported_mon('corpse_chance:lich_crumble');
+        return false;
+    }
+
+    for (let i = 0; i < 6; i++) {
+        if (mdat.mattk[i][0] === A.AT_BOOM) {
+            note_unported_mon('corpse_chance:AT_BOOM');
+            return false;
+        }
+    }
+
+    /* LEVEL_SPECIFIC_NOCORPSE — Vlad's tower / astral; no such levels yet */
+
+    if (((bigmonst(mdat) || mon.mnum === PMNAMES.PM_LIZARD) && !mon.mcloned)
+        || mdat.mlet === MONSYMS.S_GOLEM || is_rider(mdat) || mon.isshk)
+        return true;
+    const tmp = 2 + ((mdat.geno & MC_G_FREQ) < 2 ? 1 : 0)
+                + (verysmall(mdat) ? 1 : 0);
+    return !rn2(tmp);
+}
+
+// src/mon.c:3253 mondied() — monster killed by another monster: mondead()
+// plus the corpse. mondead's full detach (worm segments, shop bookkeeping,
+// vault guards, life-saving) is a slice: the map removal, so the fight's
+// survivor can occupy the square.
+export function mondied(mdef) {
+    const mx = mdef.mx, my = mdef.my;
+
+    /* mondead() slice: remove from the map and the monster list */
+    mdef.mhp = 0;
+    remove_monster(mx, my);
+    const idx = (game.level?.monsters || []).indexOf(mdef);
+    if (idx >= 0)
+        game.level.monsters.splice(idx, 1);
+
+    /* "this assumes that the dead monster's map coordinates remain
+       accurate" — corpse placement reads mdef->mx,my after mondead */
+    mdef.mx = mx; mdef.my = my;
+    if (corpse_chance(mdef, null, false)
+        && (ACCESSIBLE(game.level?.at(mx, my)?.typ) || is_pool(mx, my)))
+        make_corpse(mdef, CORPSTAT_NONE);
+
+    newsym(mx, my);
+}
+
+/* js/makemon.js (grow_up) needs mondied but a static import back into this
+   file closes an eval-time cycle; publish on the shared game object, the same
+   shape hack.js uses for in_rooms. */
+game._mondied_ref = mondied;
+
+// src/mon.c:3377 monkilled() — "<Monster> is killed!" when the hero can see
+// it, then mondied(). The golem "May it rust in peace" arms and the
+// disintegration special cases record.
+export async function monkilled(mdef, fltxt, how) {
+    const mptr = game.mons[mdef.mnum];
+
+    if (fltxt !== null && fltxt !== undefined && cansee(mdef.mx, mdef.my))
+        await pline(`${Monnam(mdef)} is ${
+            nonliving(mptr) ? 'destroyed' : 'killed'}${
+            fltxt ? ' by the ' + fltxt : ''}!`);
+    else if (mdef.mtame)
+        note_unported_mon('monkilled:sad_feeling');
+
+    mondied(mdef);
 }

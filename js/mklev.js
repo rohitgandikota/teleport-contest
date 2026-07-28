@@ -288,7 +288,7 @@ function set_corpsenm(otmp, pm) { /* stub */ }
 // mksobj() picks a random one internally whenever init is set, and mkcorpstat
 // then overwrites it. Gating the draw on `pm === null`, as this used to, loses
 // a whole rndmonst_adj() block from the stream.
-function mkcorpstat(objtyp, mtmp, pm, x, y, corpstatflags) {
+export function mkcorpstat(objtyp, mtmp, pm, x, y, corpstatflags) {
     const init = (corpstatflags & CORPSTAT_INIT) !== 0;
     const otmp = mksobj_at(objtyp, x, y, init, false);
 

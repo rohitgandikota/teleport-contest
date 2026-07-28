@@ -20,6 +20,19 @@ import { newsym, canspotmon, pline } from './display.js';
 import { mdistu } from './monmove.js';
 import { Monnam, mon_nam_too } from './do_name.js';
 import { could_seduce } from './mhitu.js';
+import { rn2, rnd, d } from './rng.js';
+import { helpless } from './monst.js';
+import { PMNAMES, MFLAGS } from './monst_data.js';
+import { find_mac } from './worn.js';
+import { canseemon, sensemon } from './display.js';
+import { cansee } from './vision.js';
+import { m_at, monkilled } from './mon.js';
+import { touch_petrifies } from './dog.js';
+import { is_orc, unsolid, resists_ston } from './mondata.js';
+import { distmin, s_suffix } from './hacklib.js';
+import { mhitm_ad_phys, mhitm_knockback } from './uhitm.js';
+import { grow_up } from './makemon.js';
+import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
 
 // src/mhitm.c:27 noises() — the message when a fight happens out of sight.
 //
@@ -107,4 +120,300 @@ export async function missmm(magr, mdef, mattk) {
     } else {
         await noises(magr, mattk);
     }
+}
+
+// include/mondata.h is_elf()
+const is_elf = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
+
+// src/mhitu.c:310 getmattk() — the attack for this slot, with substitutions.
+//
+// Every substitution arm needs state no current fight reaches (succubi,
+// disease pairs, energy drain vs the hero, holder re-grab timing); each is
+// recorded if its condition ever fires so the plain row is visibly a slice.
+function getmattk(magr, mdef, indx, prev_result) {
+    const A = ATTKS;
+    const mptr = game.mons[magr.mnum];
+    const attk = mptr.mattk[indx];
+
+    if (mptr.mattk[0][1] === A.AD_SSEX || attk[1] === A.AD_SSEX)
+        note_unported_mhitm('getmattk:SEDUCE');
+    if (indx > 0 && prev_result[indx - 1] > M_ATTK_MISS
+        && (attk[1] === A.AD_DISE || attk[1] === A.AD_PEST
+            || attk[1] === A.AD_FAMN)
+        && attk[1] === mptr.mattk[indx - 1][1])
+        note_unported_mhitm('getmattk:disease_pair');
+    return attk;
+}
+
+// src/mhitm.c:293 mattackm() — one monster performs all its attacks on
+// another. Returns the M_ATTK_* result bits.
+//
+// The melee arms (claw/kick/bite/sting/touch/butt/tentacle and the hug
+// follow-up) are ported in full; weapon, gaze, explosion, engulf, breath,
+// spit and magic attacks need subsystems that are absent and are recorded
+// when a monster with one gets this far.
+export async function mattackm(magr, mdef) {
+    const A = ATTKS;
+    const res = new Array(6).fill(M_ATTK_MISS);
+    let struck = 0;
+
+    if (!magr || !mdef)
+        return M_ATTK_MISS;
+    if (helpless(magr))
+        return M_ATTK_MISS;
+    const pa = game.mons[magr.mnum], pd = game.mons[mdef.mnum];
+
+    /* Grid bugs cannot attack at an angle. */
+    if (pa === game.mons[PMNAMES.PM_GRID_BUG] && magr.mx !== mdef.mx
+        && magr.my !== mdef.my)
+        return M_ATTK_MISS;
+
+    /* Calculate the armour class differential. */
+    let tmp = find_mac(mdef) + magr.m_lev;
+    if (mdef.mconf || helpless(mdef)) {
+        tmp += 4;
+        mdef.msleeping = 0;
+    }
+
+    /* mundetected monsters become un-hidden if they are attacked */
+    if (mdef.mundetected) {
+        mdef.mundetected = 0;
+        newsym(mdef.mx, mdef.my);
+        if (canseemon(mdef) && !sensemon(mdef))
+            note_unported_mhitm('mattackm:unhide_msg');
+    }
+
+    /* Elves hate orcs. */
+    if (is_elf(pa) && is_orc(pd))
+        tmp++;
+
+    /* Set up the visibility of action */
+    game.vis = ((cansee(magr.mx, magr.my) && canspotmon(magr))
+                || (cansee(mdef.mx, mdef.my) && canspotmon(mdef)));
+
+    /* the attack out of sequence still counts as this round's move */
+    magr.mlstmv = game.moves;
+
+    for (let i = 0; i < 6; i++) {
+        res[i] = M_ATTK_MISS;
+
+        /* target might no longer be there */
+        if (i > 0 && (m_at(game.bhitpos?.x ?? mdef.mx,
+                           game.bhitpos?.y ?? mdef.my) !== mdef
+                      || magr.mhp <= 0 || mdef.mhp <= 0))
+            continue;
+
+        const mattk = getmattk(magr, mdef, i, res);
+        const mwep = null;      /* mon_wield_item is absent; see AT_WEAP */
+        let attk = 1;
+        let strike = 0;
+        let dieroll;
+
+        switch (mattk[0]) {
+        case A.AT_WEAP:
+            /* mon_wield_item / thrwmm are absent */
+            note_unported_mhitm('mattackm:AT_WEAP');
+            strike = 0;
+            attk = 0;
+            break;
+
+        case A.AT_CLAW: case A.AT_KICK: case A.AT_BITE: case A.AT_STNG:
+        case A.AT_TUCH: case A.AT_BUTT: case A.AT_TENT:
+            if (mattk[0] === A.AT_KICK
+                && (game.level?.traps || []).some(t => t.tx === magr.mx
+                        && t.ty === magr.my && magr.mtrapped))
+                continue;
+            if (distmin(magr.mx, magr.my, mdef.mx, mdef.my) > 1)
+                continue;
+            dieroll = rnd(20 + i);
+            strike = (tmp > dieroll) ? 1 : 0;
+            if (strike) {
+                if (unsolid(pd)) {
+                    /* failed_grab: eel wrap vs unsolid target */
+                    note_unported_mhitm('mattackm:failed_grab');
+                    strike = 0;
+                    break;
+                }
+                res[i] = await hitmm(magr, mdef, mattk, mwep, dieroll);
+            } else {
+                await missmm(magr, mdef, mattk);
+            }
+            break;
+
+        case A.AT_HUGS:
+            strike = (i >= 2 && res[i - 1] === M_ATTK_HIT
+                      && res[i - 2] === M_ATTK_HIT) ? 1 : 0;
+            if (strike)
+                res[i] = await hitmm(magr, mdef, mattk, null, 0);
+            break;
+
+        case A.AT_GAZE: case A.AT_EXPL: case A.AT_ENGL:
+        case A.AT_BREA: case A.AT_SPIT: case A.AT_MAGC:
+            note_unported_mhitm(`mattackm:aatyp=${mattk[0]}`);
+            strike = 0;
+            attk = 0;
+            break;
+
+        default: /* no attack */
+            strike = 0;
+            attk = 0;
+            break;
+        }
+
+        if (attk && !(res[i] & M_ATTK_AGR_DIED)
+            && distmin(magr.mx, magr.my, mdef.mx, mdef.my) <= 1)
+            res[i] = await passivemm(magr, mdef, !!strike,
+                                     (res[i] & M_ATTK_DEF_DIED), mwep);
+
+        if (res[i] & M_ATTK_DEF_DIED)
+            return res[i];
+        if (res[i] & M_ATTK_AGR_DIED)
+            return res[i];
+        if ((res[i] & M_ATTK_AGR_DONE) || helpless(magr))
+            return res[i];
+        if (res[i] & M_ATTK_HIT)
+            struck = 1;
+    }
+
+    return struck ? M_ATTK_HIT : M_ATTK_MISS;
+}
+
+// src/mhitm.c:644 hitmm() — a monster's attack lands: the message, then
+// mdamagem() for the damage. The seduction, shade and silver arms are gated
+// on monster types that record when reached.
+export async function hitmm(magr, mdef, mattk, mwep, dieroll) {
+    const A = ATTKS;
+    pre_mm_attack(magr, mdef);
+
+    const compat = !magr.mcan ? could_seduce(magr, mdef, mattk) : 0;
+    if (compat)
+        note_unported_mhitm('hitmm:seduce_msg');
+
+    if (game.vis && !compat) {
+        let buf = '';
+        switch (mattk[0]) {
+        case A.AT_BITE: buf = `${Monnam(magr)} bites`; break;
+        case A.AT_STNG: buf = `${Monnam(magr)} stings`; break;
+        case A.AT_BUTT: buf = `${Monnam(magr)} butts`; break;
+        case A.AT_TUCH: buf = `${Monnam(magr)} touches`; break;
+        case A.AT_TENT: buf = `${s_suffix(Monnam(magr))} tentacles suck`;
+            break;
+        case A.AT_HUGS: buf = `${Monnam(magr)} squeezes`; break;
+        default: buf = `${Monnam(magr)} hits`; break;
+        }
+        await pline(`${buf} ${mon_nam_too(mdef, magr)}.`);
+    } else if (!game.vis) {
+        await noises(magr, mattk);
+    }
+    return await mdamagem(magr, mdef, mattk, mwep, dieroll);
+}
+
+// src/mhitm.c:1016 mdamagem() — roll the damage, apply the damage-type
+// specials, then the hit points. The petrification arm and the non-physical
+// damage types are recorded; AD_PHYS runs the real path.
+export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
+    const A = ATTKS;
+    const pd = game.mons[mdef.mnum];
+    const mhm = {
+        damage: d(mattk[2], mattk[3]),
+        hitflags: M_ATTK_MISS,
+        done: false,
+    };
+
+    if (touch_petrifies(pd) && !resists_ston(magr))
+        note_unported_mhitm('mdamagem:petrify_agr');
+
+    /* mhitm_adtyping: dispatch on the damage type */
+    if (mattk[1] === A.AD_PHYS) {
+        mhitm_ad_phys(magr, mattk, mdef, mhm);
+    } else {
+        note_unported_mhitm(`mdamagem:adtyp=${mattk[1]}`);
+    }
+
+    if (mhitm_knockback(magr, mdef, mattk, mhm, !!mwep)
+        && ((mhm.hitflags & (M_ATTK_DEF_DIED | M_ATTK_HIT)) !== 0))
+        return mhm.hitflags;
+
+    if (mhm.done)
+        return mhm.hitflags;
+
+    if (!mhm.damage)
+        return mhm.hitflags;
+
+    mdef.mhp -= mhm.damage;
+    if (mdef.mhp < 1) {
+        await monkilled(mdef, '', mattk[1]);
+        if (mdef.mhp > 0)
+            return mhm.hitflags;        /* mdef lifesaved */
+        else if (mhm.hitflags === M_ATTK_AGR_DIED)
+            return (M_ATTK_DEF_DIED | M_ATTK_AGR_DIED);
+
+        return (M_ATTK_DEF_DIED
+                | (grow_up(magr, mdef) ? 0 : M_ATTK_AGR_DIED));
+    }
+    return (mhm.hitflags === M_ATTK_AGR_DIED) ? M_ATTK_AGR_DIED : M_ATTK_HIT;
+}
+
+// src/mhitm.c:1304 passivemm() — the defender's passive counterattack.
+//
+// The slot walk lands on the first AT_NONE row, which for a monster without
+// a passive attack is an all-zero row: no damage dice, AD_PHYS, so the only
+// draw is the rn2(3) gate — one per attack against a live defender. The
+// elemental arms are recorded.
+export async function passivemm(magr, mdef, mhitb, mdead, mwep) {
+    const A = ATTKS;
+    const mddat = game.mons[mdef.mnum];
+    const mhit = mhitb ? M_ATTK_HIT : M_ATTK_MISS;
+    let i;
+
+    for (i = 0;; i++) {
+        if (i >= 6)
+            return (mdead | mhit); /* no passive attacks */
+        if (mddat.mattk[i][0] === A.AT_NONE)
+            break;
+    }
+    let tmp;
+    if (mddat.mattk[i][2])
+        tmp = d(mddat.mattk[i][2], mddat.mattk[i][3]);
+    else if (mddat.mattk[i][3])
+        tmp = d(mddat.mlevel + 1, mddat.mattk[i][3]);
+    else
+        tmp = 0;
+
+    /* These affect the enemy even if defender killed */
+    if (mddat.mattk[i][1] === A.AD_ACID) {
+        if (mhitb && !rn2(2))
+            note_unported_mhitm('passivemm:AD_ACID');
+        if (!rn2(30))
+            note_unported_mhitm('passivemm:erode_armor');
+        if (!rn2(6))
+            note_unported_mhitm('passivemm:acid_damage');
+        /* goto assess_dmg — the acid passive damage arm */
+        if (tmp)
+            note_unported_mhitm('passivemm:acid_assess');
+        return (mdead | mhit);
+    } else if (mddat.mattk[i][1] === A.AD_ENCH) {
+        if (mhitb && !mdef.mcan && mwep)
+            note_unported_mhitm('passivemm:AD_ENCH');
+    }
+
+    if (mdead || mdef.mcan)
+        return (mdead | mhit);
+
+    /* These affect the enemy only if defender is still alive */
+    if (rn2(3)) {
+        switch (mddat.mattk[i][1]) {
+        case A.AD_PHYS:
+            break;
+        default:
+            if (mddat.mattk[i][1])
+                note_unported_mhitm(`passivemm:adtyp=${mddat.mattk[i][1]}`);
+            break;
+        }
+    }
+    return (mdead | mhit);
+}
+
+function note_unported_mhitm(what) {
+    (game.unported ||= new Set()).add(what);
 }

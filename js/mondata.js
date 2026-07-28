@@ -420,3 +420,66 @@ export function pronoun_gender(mtmp, pg_flags) {
 
 // include/mondata.h:123 cantwield()
 export const cantwield = (ptr) => nohands(ptr) || verysmall(ptr);
+
+// include/mondata.h:223 — golems that leave nothing behind for the listed
+// damage type.
+export const completelyburns = (ptr) =>
+    ptr === game.mons[PMNAMES.PM_PAPER_GOLEM]
+    || ptr === game.mons[PMNAMES.PM_STRAW_GOLEM];
+export const completelyrots = (ptr) =>
+    ptr === game.mons[PMNAMES.PM_WOOD_GOLEM]
+    || ptr === game.mons[PMNAMES.PM_LEATHER_GOLEM];
+export const completelyrusts = (ptr) =>
+    ptr === game.mons[PMNAMES.PM_IRON_GOLEM];
+
+// src/mondata.c:720 max_passive_dmg() — the worst a defender's passive
+// counterattack could do, times the attacker's number of striking attacks.
+// dog_move reads it to decide whether attacking might be suicide. No draws.
+export function max_passive_dmg(mdef, magr) {
+    const A = ATTKS;
+    let multi2 = 0;
+    const magrAtk = game.mons[magr.mnum].mattk;
+    const mdefData = game.mons[mdef.mnum];
+
+    for (let i = 0; i < 6; i++) {
+        switch (magrAtk[i][0]) {
+        case A.AT_CLAW: case A.AT_BITE: case A.AT_KICK: case A.AT_BUTT:
+        case A.AT_TUCH: case A.AT_STNG: case A.AT_HUGS: case A.AT_ENGL:
+        case A.AT_TENT: case A.AT_WEAP:
+            multi2++;
+            break;
+        default:
+            break;
+        }
+    }
+
+    let dmg = 0;
+    for (let i = 0; i < 6; i++) {
+        const [aatyp, adtyp, damn, damd] = mdefData.mattk[i];
+        if (aatyp === A.AT_NONE || aatyp === A.AT_BOOM) {
+            if ((adtyp === A.AD_FIRE && completelyburns(game.mons[magr.mnum]))
+                || (adtyp === A.AD_DCAY && completelyrots(game.mons[magr.mnum]))
+                || (adtyp === A.AD_RUST && completelyrusts(game.mons[magr.mnum]))) {
+                dmg = magr.mhp;
+            } else if ((adtyp === A.AD_ACID && !resists_acid(magr))
+                       || (adtyp === A.AD_COLD && !resists_cold(magr))
+                       || (adtyp === A.AD_FIRE && !resists_fire(magr))
+                       || (adtyp === A.AD_ELEC && !resists_elec(magr))
+                       || adtyp === A.AD_PHYS) {
+                dmg = damn;
+                if (!dmg)
+                    dmg = mdefData.mlevel + 1;
+                dmg *= damd;
+            }
+            dmg *= multi2;
+            break;
+        }
+    }
+    return dmg;
+}
+
+// src/mondata.c:654 sticks() — grabs and holds its victim.
+export const sticks = (ptr) =>
+    (dmgtype(ptr, ATTKS.AD_STCK)
+     || (dmgtype(ptr, ATTKS.AD_WRAP) && !attacktype(ptr, ATTKS.AT_ENGL))
+     || attacktype(ptr, ATTKS.AT_HUGS));

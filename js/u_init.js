@@ -18,7 +18,7 @@
 // everything after it.
 
 import { game } from './gstate.js';
-import { mergable } from './invent.js';
+import { mergable, reorder_invent } from './invent.js';
 import { rn2, rnd, rne, rn1 } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
@@ -227,6 +227,9 @@ function addinv(obj) {
     }
     assigninvlet(obj);
     game.invent.push(obj);
+    /* src/invent.c:1117 — flags.invlet_constant defaults On, so the chain
+       is kept in inv_rank order (gold first). */
+    reorder_invent();
     return obj;
 }
 

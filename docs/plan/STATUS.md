@@ -9529,3 +9529,31 @@ RNG caution: our stream already matches this session 4485/4485 END TO END
 without any of this, so every piece above must draw ZERO and must not run an
 extra turn inside these steps. Verify with diverge after each piece; any
 change to the call count is a regression even if screens improve.
+
+
+### Fireassist chain LANDED; seed0102 miss 11 -> 15
+
+The whole chain from the previous entry is in: cmdq producers (dofire's
+fireassist queues [doswapweapon] or [dowield,'b',dofire]), the wield.c core
+(setuwep/ready_weapon/dowield/doswapweapon), doname's worn suffixes, and the
+WIN_STOP message-suppression mechanics. seed0102 now matches through the
+--More-- (with both ignored keys) and its ESC dismissal.
+
+Two hard-won mechanics worth knowing:
+- The topline JOIN arithmetic decides whether a second prinv shares the line
+  or forces --More--. The swap-slot suffix "(alternate weapon; not wielded)"
+  is what pushes the dagger line past `len+3 < CO-8`, so C shows the bow line
+  alone. Suffix TEXT changes key consumption, not just pixels.
+- WIN_STOP lifecycle: set by ESC at --More-- (AFTER the read returns), tested
+  by tty_yn_function BEFORE its read, cleared by every fresh nhgetch. Putting
+  the clear in tty_clear_nhwindow_message was self-defeating because more()'s
+  own tail calls it.
+
+NEXT for seed0102 (step 15, key '+'): C shows "cmdassist: Invalid direction
+key!" plus a valid-keys help panel (getdir's rejection path with
+iflags.cmdassist, default On; src/cmd.c help_dir / confdir area). Steps
+16-24 after that are ESC + '\\' (discoveries) + more prompts.
+
+RNG note: the board's positional RNG moved -18 while screens +4; divergence
+POINTS all unchanged (seed0016 @2493, seed0006 @2523). Post-divergence tails
+shifted because message/key handling changed. Judge by the point.

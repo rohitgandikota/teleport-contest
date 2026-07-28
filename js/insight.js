@@ -26,6 +26,8 @@ import { depth } from './dungeon.js';
 import { aligns } from './role_data.js';
 import { A_MAX } from './attrib.js';
 import { rank_of } from './botl.js';
+import { pline } from './display.js';
+import { Fast, Very_fast } from './attrib.js';
 
 // include/attrib.h
 const A_STR = 0, A_INT = 1, A_WIS = 2, A_DEX = 3, A_CON = 4, A_CHA = 5;
@@ -293,4 +295,54 @@ export function enlightenment() {
     out(' Total elapsed playing time is none.');
 
     return lines.slice();
+}
+
+// src/insight.c:3235 piousness() — the alignment-record adverb.
+export function piousness(showneg, suffix) {
+    const rec = game.u.ualign?.record ?? 0;
+    let pio;
+
+    /* note: piousness 20 matches MIN_QUEST_ALIGN (quest.h) */
+    if (rec >= 20)      pio = "piously";
+    else if (rec > 13)  pio = "devoutly";
+    else if (rec > 8)   pio = "fervently";
+    else if (rec > 3)   pio = "stridently";
+    else if (rec === 3) pio = "";
+    else if (rec > 0)   pio = "haltingly";
+    else if (rec === 0) pio = "nominally";
+    else if (!showneg)  pio = "insufficiently";
+    else if (rec >= -3) pio = "strayed";
+    else if (rec >= -8) pio = "sinned";
+    else                pio = "transgressed";
+
+    let buf = pio;
+    if (suffix && (!showneg || rec >= 0)) {
+        if (rec !== 3)
+            buf += " ";
+        buf += suffix;
+    }
+    return buf;
+}
+
+// src/insight.c:3402 ustatusline() — "Status of <name> (<piousness>): ...".
+//
+// The condition suffixes read state that is absent for most fresh heroes and
+// simply contribute nothing; the swallow/engulf and gas-region arms are
+// recorded when their state exists.
+export async function ustatusline() {
+    let info = '';
+    if (game.u.usick_type)      info += ', dying from illness';   /* Sick */
+    if (game.u.uprops?.STONED?.intrinsic)    info += ', solidifying';
+    if (game.u.uprops?.SLIMED?.intrinsic)    info += ', becoming slimy';
+    if (game.u.uprops?.STRANGLED?.intrinsic) info += ', being strangled';
+    if (game.u.uprops?.CONFUSION?.intrinsic) info += ', confused';
+    if (game.u?.ublind)          info += ', blind';
+    if (game.u.uprops?.STUNNED?.intrinsic)   info += ', stunned';
+    if (game.u.utrap)            info += ', trapped';
+    if (Fast())                  info += Very_fast() ? ', very fast' : ', fast';
+    if (game.u.uundetected)      info += ', concealed';
+    if (game.u.ustuck)
+        note_unported_insight('ustatusline:ustuck');
+
+    await pline(`Status of ${game.plname} (${piousness(false, align_str(game.u.ualign?.type ?? 0))}):  Level ${game.u.ulevel}  HP ${game.u.uhp}(${game.u.uhpmax})  AC ${game.u.uac}${info}.`);
 }

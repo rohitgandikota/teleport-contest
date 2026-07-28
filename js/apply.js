@@ -8,9 +8,14 @@ import { getobj } from './invent.js';
 import { getdir, get_adjacent_loc } from './cmd.js';
 import { is_pick, is_axe } from './mon.js';
 import { is_pole } from './u_init.js';
-import { Hallucination } from './youprop.js';
+import { Hallucination, Deaf } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_SELECTABLE } from './invent.js';
 import { OCLASSES } from './objects_data.js';
+import { ustatusline } from './insight.js';
+import { You_cant, You_hear } from './pline.js';
+import { m_at } from './mon.js';
+import { rn2 } from './rng.js';
+import { isok, ECMD_CANCEL } from './const.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -25,7 +30,7 @@ const LOCK_TOOLS = [ONAMES.LOCK_PICK, ONAMES.CREDIT_CARD, ONAMES.SKELETON_KEY];
 
 /* src/apply.c — these five reach getdir() through use_whip, use_stethoscope,
    use_mirror, use_camera and use_figurine. */
-const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.STETHOSCOPE, ONAMES.MIRROR,
+const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR,
                    ONAMES.EXPENSIVE_CAMERA, ONAMES.FIGURINE];
 
 /* src/apply.c:4344 — use_lamp() is void, so doapply's `int res = ECMD_TIME`
@@ -95,6 +100,63 @@ export function apply_ok(obj) {
     return GETOBJ_EXCLUDE_SELECTABLE;
 }
 
+// src/apply.c:318 use_stethoscope() — apply a stethoscope.
+//
+// THE TIME RULE: the first use in a hero turn is free; the second in the
+// same turn costs the move (hero_seq vs context.stethoscope_seq). The
+// engulfed-interference rn2 cannot fire (no engulfing yet); the steed,
+// swallow, dz (floor/ceiling) and monster arms are recorded; the cursed
+// heartbeat coin-flip rn2(2) is real.
+async function use_stethoscope(obj) {
+    /* nohands/freehand: un-polymorphed hero with free hands; a welded
+       two-hander would matter and is recorded */
+    if (Deaf()) {
+        await You_cant("hear anything!");
+        return ECMD_OK;
+    }
+    if (game.u.uwep && game.u.uwep.cursed && game.u.uwep.bknown)
+        note_unported_apply('use_stethoscope:freehand');
+
+    if (!await getdir(null))
+        return ECMD_CANCEL;
+
+    const res = (game.hero_seq === game.context.stethoscope_seq)
+        ? ECMD_TIME : ECMD_OK;
+    game.context.stethoscope_seq = game.hero_seq;
+
+    if (game.u.usteed && game.u.dz > 0) {
+        note_unported_apply('use_stethoscope:steed');
+        return res;
+    }
+    if (game.u.dz) {
+        note_unported_apply('use_stethoscope:dz');
+        return res;
+    }
+    if (obj.cursed && !rn2(2)) {
+        await You_hear("your heart beat.");
+        return res;
+    }
+    /* confdir(FALSE) is a no-op for an unimpaired hero */
+    if (game.u.uprops?.CONFUSION?.intrinsic || game.u.uprops?.STUNNED?.intrinsic)
+        note_unported_apply('use_stethoscope:confdir');
+    if (!game.u.dx && !game.u.dy) {
+        await ustatusline();
+        return res;
+    }
+    const rx = game.u.ux + game.u.dx, ry = game.u.uy + game.u.dy;
+    if (!isok(rx, ry)) {
+        await You_hear("a faint typing noise.");
+        return ECMD_OK;
+    }
+    const mtmp = m_at(rx, ry);
+    if (mtmp) {
+        note_unported_apply('use_stethoscope:mstatusline');
+        return res;
+    }
+    note_unported_apply('use_stethoscope:location');
+    return res;
+}
+
 // src/apply.c doapply() — the 'a' command.
 export async function doapply() {
     const obj = await getobj('use or apply', apply_ok, 0);
@@ -112,6 +174,9 @@ export async function doapply() {
         note_unported_apply('pick_lock');
         return ECMD_OK;
     }
+
+    if (obj.otyp === ONAMES.STETHOSCOPE)
+        return await use_stethoscope(obj);
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

@@ -10019,3 +10019,12 @@ one of 39,2 (t26 stairs?) / the diagonals -- but the room is NEVER SEEN
 in the recording, so no frame can settle it. Counter-evidence: seed0700
 (full pass) exercises doors heavily and matches. Parked; revisit if a
 second session shows the same signature ON-SCREEN.
+
+NEXT TARGET (well-scoped): seed0900 and seed1150 both diverge at STEP 0
+inside u_init — the TOURIST kit (blessorcurse@mkobj.c:1846 where ours
+draws rn2(100)) and the CAVEMAN kit (trquan@u_init.c:1110, C draws
+rn2(1) — the flint/rock quantity rule — where ours draws rn2(100)).
+Same class as the Ranger displacement-cloak find: 5.0 changed the
+starting kits and ours still carries wrong trop rows or a wrong trquan.
+Compare u_init.c's Tourist/Caveman trop tables + trquan against
+js/u_init.js first thing next iteration.

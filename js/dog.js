@@ -48,6 +48,7 @@ import { doname } from './objnam.js';
 import { Monnam } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
+import { set_apparxy } from './monmove.js';
 import { PMNAMES } from './monst_data.js';
 import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
@@ -1207,6 +1208,10 @@ export async function dog_move(mtmp, after) {
            square. */
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+        /* src/dogmove.c:1354 — the move refreshes the pet's idea of where
+           the hero is. A tame monster's set_apparxy draws nothing, but the
+           call belongs here for the day a pet goes feral mid-move. */
+        set_apparxy(mtmp);
         /* src/dogmove.c:1318 — "We have to know if the pet's going to do a
            combined eat and move before moving it, but it can't eat until
            after being moved. Thus the do_eat flag." omx,omy is where the pet

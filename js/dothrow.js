@@ -1,7 +1,25 @@
 import { game } from './gstate.js';
+import { pline } from './display.js';
+import { splitobj, place_object } from './mkobj.js';
+import { freeinv, stackobj } from './invent.js';
+import { encumber_msg, ACURR, acurrstr } from './attrib.js';
+import { A_DEX, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON } from './const.js';
+/* include/objclass.h:79 — oc_dir bits for weapons */
+const PIERCE = 1;
+import { singular, xname, an } from './objnam.js';
+import { skill_name, weapon_descr, weapon_type, P_SKILL } from './weapon.js';
+import { SKILLS, MATERIALS } from './objects_data.js';
+import { rn2, rnd } from './rng.js';
+import { bhit, obj_resists } from './zap.js';
+import { is_pool, is_lava } from './mon.js';
+import { is_blade } from './mon.js';
+import { is_missile, is_sword } from './wield.js';
+import { cansee } from './vision.js';
+import { newsym } from './display.js';
+import { Levitation } from './youprop.js';
 import { cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
-import { is_pole } from './u_init.js';
+import { is_pole, is_spear } from './u_init.js';
 import { You } from './pline.js';
 import { ammo_and_launcher } from './wield.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED } from './const.js';
@@ -9,6 +27,7 @@ import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { throws_rocks } from './mondata.js';
+import { PMNAMES } from './monst_data.js';
 import { getdir } from './cmd.js';
 
 // dothrow.js — throwing, firing, and the path a thrown thing takes.
@@ -21,21 +40,276 @@ import { getdir } from './cmd.js';
 // wrong endpoint moves the hero or an object without costing a single PRNG
 // call, which is the kind of divergence the RNG log cannot show.
 
-// src/dothrow.c throw_obj() — ask a direction, then throw.
+// src/dothrow.c:100 throw_obj() — ask a direction, then throw.
 //
-// res starts at ECMD_TIME and only a cancelled getdir() changes it, so a throw
-// that reaches this point takes a turn. The throw itself needs the multishot,
-// trajectory and damage code; what is ported is the direction read, which is
-// the second of the two extra keys 't' costs.
+// res starts at ECMD_TIME and only a cancelled getdir() changes it, so a
+// throw that reaches this point takes a turn. The artifact arms (Mjollnir)
+// and the petrifying-corpse arm need subsystems that are absent; each is
+// gated on state no current session reaches and recorded if hit.
 export async function throw_obj(obj, shotlimit) {
-    const res = ECMD_TIME;
+    let res = ECMD_TIME;
+    const u = game.u;
+    const save_osplit = game.context.objsplit
+                        ? { ...game.context.objsplit } : null;
 
     /* ask "in what direction?" */
     if (!await getdir(null))
         return ECMD_OK; /* ECMD_CANCEL — no time passes */
 
-    note_unported_dothrow('throw_obj:throwit');
+    if (obj.otyp === ONAMES.BOULDER && !throws_rocks(game.mons?.[u.umonnum])) {
+        await pline("It's too heavy.");
+        return ECMD_TIME;
+    }
+    if (!u.dx && !u.dy && !u.dz) {
+        await You('cannot throw an object at yourself.');
+        return ECMD_OK;
+    }
+    /* u_wipe_engr(2) — draws only when an engraving is underfoot */
+    if ((game.level?.engravings || []).some(e => e.engr_x === u.ux
+                                                && e.engr_y === u.uy))
+        note_unported_dothrow('throw_obj:u_wipe_engr');
+
+    if (obj.otyp === ONAMES.CORPSE && !game.u.uarmg)
+        note_unported_dothrow('throw_obj:petrify_check');
+
+    /* welded(obj) needs cursed-weld state; nothing wields cursed yet */
+
+    /* src/dothrow.c:158 — multishot. Ammo volleys need the matching
+       launcher wielded; a lone item or mismatched launcher stays at 1 and
+       draws nothing, which is why a hand-thrown arrow is a single shot. */
+    let multishot = 1;
+    if (obj.quan > 1
+        && (is_ammo(obj) ? ammo_and_launcher(obj, game.uwep)
+                         : obj.oclass === OCLASSES.WEAPON_CLASS)
+        && !(u.uprops?.CONFUSION || u.uprops?.STUNNED)) {
+        const skill = game.objects[obj.otyp].oc_skill;
+        const mnum = game.urole?.mnum;
+        const role_is = (pm) => mnum === pm || mnum === PMNAMES[pm];
+        const weakmultishot =
+            (role_is('PM_WIZARD') || role_is('PM_CLERIC')
+             || (role_is('PM_HEALER') && skill !== SKILLS.P_KNIFE)
+             || (role_is('PM_TOURIST') && skill !== -SKILLS.P_DART)
+             || u.uprops?.FUMBLING || ACURR(A_DEX) <= 6);
+
+        switch (P_SKILL(weapon_type(obj))) {
+        case SKILLS.P_EXPERT:
+            multishot++;
+            /* FALLTHRU */
+        case SKILLS.P_SKILLED:
+            if (!weakmultishot)
+                multishot++;
+            break;
+        default:
+            break;
+        }
+        /* multishot_class_bonus and the racial-bow arms need launcher
+           matching that the reachable roles do not trigger; the Elf/Orc
+           bows and gnomish crossbows are recorded when they arise */
+        if (!weakmultishot
+            && (game.urace?.mnum === 'PM_ELF' || game.urace?.mnum === 'PM_ORC'
+                || game.urace?.mnum === 'PM_GNOME'))
+            note_unported_dothrow('throw_obj:racial_multishot');
+
+        if (multishot > 1 && skill === -SKILLS.P_CROSSBOW
+            && ammo_and_launcher(obj, game.uwep)
+            && acurrstr() < 18)
+            multishot = rnd(multishot);
+
+        multishot = rnd(multishot);
+        if (multishot > obj.quan)
+            multishot = obj.quan;
+        if (shotlimit > 0 && multishot > shotlimit)
+            multishot = shotlimit;
+    }
+
+    const m_shot_s = ammo_and_launcher(obj, game.uwep);
+    if (multishot > 1 || shotlimit > 0) {
+        await You(`${m_shot_s ? 'shoot' : 'throw'} ${multishot} ${
+            multishot === 1 ? singular(obj, xname) : xname(obj)}.`);
+    }
+
+    const wep_mask = obj.owornmask || 0;
+    for (let i = 1; i <= multishot; i++) {
+        let otmp;
+        if (obj && obj.quan > 1) {
+            otmp = splitobj(obj, 1);
+        } else {
+            otmp = obj;
+            if (otmp.owornmask)
+                note_unported_dothrow('throw_obj:remove_worn_item');
+            obj = null;
+        }
+        freeinv(otmp);
+        await throwit(otmp, wep_mask);
+        await encumber_msg();
+    }
+
+    /* src/dothrow.c:290 — undo a pre-existing object split if the leftover
+       stack is one of its halves; unsplitobj is not ported and no current
+       flow leaves this true. */
+    if (obj && obj !== game.uquiver && save_osplit
+        && (obj.o_id === save_osplit.parent_oid
+            || obj.o_id === save_osplit.child_oid))
+        note_unported_dothrow('throw_obj:unsplitobj');
     return res;
+}
+
+// src/dothrow.c:1510 throwit() — fly the missile and land it.
+//
+// The reachable spine: a horizontal hand-thrown or launched missile that
+// crosses open floor and lands. The swallow, straight-up/down, boomerang
+// and throw-and-return arms are gated on state no session reaches yet.
+export async function throwit(obj, wep_mask) {
+    const u = game.u;
+
+    game.thrownobj = obj;
+    obj.how_lost = LOST_THROWN;
+
+    /* src/dothrow.c:1526 — a cursed or greased missile can slip */
+    if ((obj.cursed || obj.greased) && (u.dx || u.dy) && !rn2(7)) {
+        let slipok = true;
+        if (ammo_and_launcher(obj, game.uwep)) {
+            note_unported_dothrow('throwit:misfire_msg');
+        } else {
+            if (obj.greased || throwing_weapon(obj))
+                note_unported_dothrow('throwit:slip_msg');
+            else
+                slipok = false;
+        }
+        if (slipok) {
+            u.dx = rn2(3) - 1;
+            u.dy = rn2(3) - 1;
+            if (!u.dx && !u.dy)
+                u.dz = 1;
+        }
+    }
+
+    /* the low-stamina drop arm reads encumbrance; calc_capacity stays 0
+       for every current session so the gate is the hp test alone */
+    if (u.uswallow) {
+        note_unported_dothrow('throwit:uswallow');
+        game.thrownobj = null;
+        return;
+    }
+    if (u.dz) {
+        note_unported_dothrow('throwit:vertical_throw');
+        game.thrownobj = null;
+        return;
+    }
+    if (obj.otyp === ONAMES.BOOMERANG) {
+        note_unported_dothrow('throwit:boomerang');
+        game.thrownobj = null;
+        return;
+    }
+
+    /* src/dothrow.c:1615 — range from strength and weight */
+    const crossbowing = (ammo_and_launcher(obj, game.uwep)
+                         && weapon_type(game.uwep) === SKILLS.P_CROSSBOW);
+    let urange = Math.trunc((crossbowing ? 18 : acurrstr()) / 2);
+    let range;
+    if (obj.otyp === ONAMES.HEAVY_IRON_BALL)
+        range = urange - Math.trunc(obj.owt / 100);
+    else
+        range = urange - Math.trunc(obj.owt / 40);
+    if (range < 1)
+        range = 1;
+
+    if (is_ammo(obj)) {
+        if (ammo_and_launcher(obj, game.uwep)) {
+            if (crossbowing)
+                range = BOLT_LIM;
+            else
+                range++;
+        } else if (obj.oclass !== OCLASSES.GEM_CLASS) {
+            range = Math.trunc(range / 2);
+            /* body_part(HAND) is "hand" for every un-polymorphed form */
+            await pline(`You aren't wielding ${
+                an(skill_name(weapon_type(obj)))}, so you throw your ${
+                weapon_descr(obj)} by hand.`);
+        }
+    }
+
+    if (Levitation()) {
+        urange -= range;
+        if (urange < 1) urange = 1;
+        range -= urange;
+        if (range < 1) range = 1;
+    }
+    if (obj.otyp === ONAMES.BOULDER)
+        range = 20;
+
+    const pobjRef = { obj };
+    const mon = bhit(u.dx, u.dy, range, THROWN_WEAPON, null, null, pobjRef);
+
+    if (!pobjRef.obj) {
+        game.thrownobj = null;
+        return;
+    }
+
+    if (mon) {
+        /* throwit_mon_hit: the hit/damage chain (thitmonst) is combat */
+        note_unported_dothrow('throwit:mon_hit');
+        game.thrownobj = null;
+        return;
+    }
+
+    /* src/dothrow.c:1780 — landing: break, splash, or come to rest */
+    const bx = game.bhitpos.x, by = game.bhitpos.y;
+    const btyp = game.level.at(bx, by)?.typ;
+    if ((!IS_SOFT(btyp) && breaktest(obj))
+        || obj.oclass === OCLASSES.VENOM_CLASS) {
+        /* breakmsg + breakobj destroy the missile */
+        note_unported_dothrow('throwit:breakage');
+        game.thrownobj = null;
+        return;
+    }
+    if (is_pool(bx, by) || is_lava(bx, by))
+        note_unported_dothrow('throwit:splash');
+
+    /* flooreffects consumes the object in water/lava/altars; plain floor
+       falls through to placement */
+    game.thrownobj = null;
+    place_object(obj, bx, by);
+    stackobj(obj);
+    if (cansee(bx, by))
+        newsym(bx, by);
+}
+
+// src/dothrow.c:2582 breaktest() — does this object break on impact?
+export function breaktest(obj) {
+    let nonbreakchance = 1;
+
+    if (obj.oclass === OCLASSES.ARMOR_CLASS
+        && game.objects[obj.otyp].oc_material === MATERIALS.GLASS)
+        nonbreakchance = 90;
+
+    if (obj_resists(obj, nonbreakchance, 99))
+        return false;
+    if (game.objects[obj.otyp].oc_material === MATERIALS.GLASS
+        && !obj.oartifact && obj.oclass !== OCLASSES.GEM_CLASS)
+        return true;
+    switch (obj.oclass === OCLASSES.POTION_CLASS ? ONAMES.POT_WATER
+                                                 : obj.otyp) {
+    case ONAMES.EXPENSIVE_CAMERA:
+    case ONAMES.POT_WATER: /* really, all potions */
+    case ONAMES.EGG:
+    case ONAMES.CREAM_PIE:
+    case ONAMES.MELON:
+    case ONAMES.ACID_VENOM:
+    case ONAMES.BLINDING_VENOM:
+        return true;
+    default:
+        return false;
+    }
+}
+
+// src/dothrow.c:63 throwing_weapon() — a weapon meant to be thrown.
+function throwing_weapon(obj) {
+    return (is_missile(obj) || is_spear(obj)
+            /* daggers and knife (excludes scalpel) */
+            || (is_blade(obj) && !is_sword(obj)
+                && (game.objects[obj.otyp].oc_dir & PIERCE) !== 0)
+            || obj.otyp === ONAMES.WAR_HAMMER || obj.otyp === ONAMES.AKLYS);
 }
 
 // src/dothrow.c dothrow() — the 't' command.

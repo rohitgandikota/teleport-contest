@@ -79,6 +79,35 @@ export function Armor_on() {
     return 0;
 }
 
+/* include/prop.h enum prop_types, index -> uprops key. The flat uprops map
+   keys by the C constant's name; setworn's generic property arm (src/worn.c)
+   writes through this table when gear is put on. Index 0 is unused in C. */
+const PROP_KEYS = [null,
+    'FIRE_RES', 'COLD_RES', 'SLEEP_RES', 'DISINT_RES', 'SHOCK_RES',
+    'POISON_RES', 'ACID_RES', 'STONE_RES', 'DRAIN_RES', 'SICK_RES',
+    'INVULNERABLE', 'ANTIMAGIC', 'STUNNED', 'CONFUSION', 'BLINDED', 'DEAF',
+    'SICK', 'STONED', 'STRANGLED', 'VOMITING', 'GLIB', 'SLIMED', 'HALLUC',
+    'HALLUC_RES', 'FUMBLING', 'WOUNDED_LEGS', 'SLEEPY', 'HUNGER',
+    'SEE_INVIS', 'TELEPAT', 'WARNING', 'WARN_OF_MON', 'WARN_UNDEAD',
+    'SEARCHING', 'CLAIRVOYANT', 'INFRAVISION', 'DETECT_MONSTERS', 'BLND_RES',
+    'ADORNED', 'INVIS', 'DISPLACED', 'STEALTH', 'AGGRAVATE_MONSTER',
+    'CONFLICT', 'JUMPING', 'TELEPORT', 'TELEPORT_CONTROL', 'LEVITATION',
+    'FLYING', 'WWALKING', 'SWIMMING', 'MAGICAL_BREATHING', 'PASSES_WALLS',
+    'SLOW_DIGESTION', 'HALF_SPDAM', 'HALF_PHDAM', 'REGENERATION',
+    'ENERGY_REGENERATION', 'PROTECTION', 'PROT_FROM_SHAPE_CHANGERS',
+    'POLYMORPH', 'POLYMORPH_CONTROL', 'UNCHANGING', 'FAST', 'REFLECTING',
+    'FREE_ACTION', 'FIXED_ABIL', 'LIFESAVED'];
+
+/* src/worn.c setworn() — the generic arm: wearing an object grants its
+   oc_oprop as an extrinsic. This is what makes a Ranger's starting cloak of
+   displacement register as Displaced (a 5.0 kit change set_apparxy exposed:
+   monsters aim rn2-scattered guesses at a displaced hero every turn). */
+function apply_worn_oprop(o) {
+    const p = o ? objects[o.otyp].oc_oprop : 0;
+    if (p && PROP_KEYS[p])
+        (game.u.uprops ||= {})[PROP_KEYS[p]] = 1;
+}
+
 // src/do_wear.c set_wear() — apply the on-effects of worn gear.
 //
 // With obj null it walks EVERY worn slot; with an object it does just that
@@ -86,36 +115,45 @@ export function Armor_on() {
 // slot, and the ORDER is fixed: blindfold, right ring, left ring, amulet,
 // then shirt, suit, cloak, boots, gloves, helmet, shield.
 //
-// Only Armor_on is ported. The other nine slot handlers -- Blindf_on,
-// Ring_on, Amulet_on, Shirt_on, Cloak_on, Boots_on, Gloves_on, Helmet_on,
-// Shield_on -- do not exist yet and are recorded by slot, so game.unported
-// names which one a divergence wanted.
+// The property grant each handler relies on comes from setworn and is applied
+// here per slot. The handlers' remaining effects are messages (suppressed at
+// initial don) and side effects like vision recalcs; the slots whose handler
+// does more than the property keep their record.
 export function set_wear(obj) {
     game.initial_don = !obj;
+    const slotobj = (mask) => worn(mask);
 
-    if (!obj ? game.ublindf : (obj === game.ublindf))
+    if (game.ublindf && (!obj || obj === game.ublindf))
         note_unported_do_wear('set_wear:Blindf_on');
-    if (!obj ? game.uright : (obj === game.uright))
-        note_unported_do_wear('set_wear:Ring_on:right');
-    if (!obj ? game.uleft : (obj === game.uleft))
-        note_unported_do_wear('set_wear:Ring_on:left');
-    if (!obj ? game.uamul : (obj === game.uamul))
-        note_unported_do_wear('set_wear:Amulet_on');
+    for (const mask of [W_RINGR, W_RINGL]) {
+        const o = slotobj(mask);
+        if (o && (!obj || obj === o)) {
+            apply_worn_oprop(o);
+            note_unported_do_wear('set_wear:Ring_on');
+        }
+    }
+    {
+        const o = slotobj(W_AMUL);
+        if (o && (!obj || obj === o)) {
+            apply_worn_oprop(o);
+            note_unported_do_wear('set_wear:Amulet_on');
+        }
+    }
 
-    if (!obj ? game.uarmu : (obj === game.uarmu))
-        note_unported_do_wear('set_wear:Shirt_on');
-    if (!obj ? game.uarm : (obj === game.uarm))
-        Armor_on();
-    if (!obj ? game.uarmc : (obj === game.uarmc))
-        note_unported_do_wear('set_wear:Cloak_on');
-    if (!obj ? game.uarmf : (obj === game.uarmf))
-        note_unported_do_wear('set_wear:Boots_on');
-    if (!obj ? game.uarmg : (obj === game.uarmg))
-        note_unported_do_wear('set_wear:Gloves_on');
-    if (!obj ? game.uarmh : (obj === game.uarmh))
-        note_unported_do_wear('set_wear:Helmet_on');
-    if (!obj ? game.uarms : (obj === game.uarms))
-        note_unported_do_wear('set_wear:Shield_on');
+    for (const [mask, arm] of [[W_ARMU, 'Shirt_on'], [W_ARM, 'Armor_on'],
+                               [W_ARMC, 'Cloak_on'], [W_ARMF, 'Boots_on'],
+                               [W_ARMG, 'Gloves_on'], [W_ARMH, 'Helmet_on'],
+                               [W_ARMS, 'Shield_on']]) {
+        const o = slotobj(mask);
+        if (o && (!obj || obj === o)) {
+            apply_worn_oprop(o);
+            if (arm === 'Armor_on')
+                Armor_on();
+            /* the slot handlers' messages are suppressed at initial don
+               (C gates them on gi.initial_don), so the property grant is
+               the whole observable effect for a starting kit */
+        }
+    }
 
     game.initial_don = false;
 }

@@ -14,6 +14,8 @@ import { Unaware, Hallucination } from './youprop.js';
 import { singular, xname, doname } from './objnam.js';
 import { more_experienced, newexplevel } from './exper.js';
 import { You } from './pline.js';
+import { outrumor } from './rumors.js';
+import { BY_COOKIE } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import { done } from './end.js';
 import { set_occupation } from './allmain.js';
@@ -24,7 +26,7 @@ import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_E
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
-import { splitobj } from './mkobj.js';
+import { splitobj, bcsign } from './mkobj.js';
 
 // src/eat.c:3170 gethungry()
 export function gethungry() {
@@ -247,7 +249,7 @@ export async function doeat() {
        moment the meal starts, not re-tested per bite. */
     v.canchoke = (game.u.uhs === SATIATED);
 
-    start_eating(otmp, false);
+    await start_eating(otmp, false);
     return ECMD_TIME;
 }
 
@@ -365,34 +367,76 @@ async function fprefx(otmp) {
     return true;
 }
 
+// src/eat.c:2510 fpostfx() — the food's after-effects. The reachable arms:
+// the fortune cookie's rumor and the apple/pear "core dumped" deferral. The
+// stat-gain foods (royal jelly, giant corpses via cpostfx) and the wolfsbane
+// and carrot cures are gated on state no current hero has.
+async function fpostfx(otmp) {
+    switch (otmp.otyp) {
+    case ONAMES.SPRIG_OF_WOLFSBANE:
+        /* you_unwere needs lycanthropy */
+        break;
+    case ONAMES.CARROT:
+        if (game.u.ucreamed)
+            note_unported_eat('fpostfx:make_blinded');
+        break;
+    case ONAMES.FORTUNE_COOKIE:
+        await outrumor(bcsign(otmp), BY_COOKIE);
+        if (!game.u.ublind)
+            game.u.uconduct = game.u.uconduct || {},
+            game.u.uconduct.literate = (game.u.uconduct.literate || 0) + 1;
+        break;
+    case ONAMES.LUMP_OF_ROYAL_JELLY:
+        note_unported_eat('fpostfx:royal_jelly');
+        break;
+    case ONAMES.EGG:
+        if (otmp.corpsenm >= 0)
+            note_unported_eat('fpostfx:egg_petrify');
+        break;
+    case ONAMES.EUCALYPTUS_LEAF:
+        if (game.u.uprops?.SICK || game.u.uprops?.VOMITING)
+            note_unported_eat('fpostfx:eucalyptus');
+        break;
+    case ONAMES.APPLE:
+        if (otmp.cursed && !game.u.uprops?.SLEEP_RES) {
+            /* the Snow White core joke: sleeping poison */
+            note_unported_eat('fpostfx:cursed_apple_sleep');
+        }
+        break;
+    default:
+        break;
+    }
+}
+
 // src/eat.c start_eating() — begin (or resume) a meal.
 //
 // bite() is called BEFORE usedtime is incremented, so a one-turn meal eaten
 // while Satiated chokes on the very first call rather than after finishing.
-export function start_eating(otmp, already_partly_eaten) {
+export async function start_eating(otmp, already_partly_eaten) {
     const v = game.context.victual;
 
     v.fullwarn = 0;
     v.doreset = 0;
     v.eating = 1;
 
-    if (bite()) {
+    if (await bite()) {
         /* survived choking, finish off food that's nearly done;
            need this to handle cockatrice eggs, fortune cookies, etc */
         if (++v.usedtime >= v.reqtime) {
             /* C brackets this call with a save/restore of gn.nomovemsg so
                that done_eating() does not issue one when the reason we got
-               here is a vomit() from bite(). nomovemsg is not tracked, so the
-               bracketing records; the call itself is real. */
-            note_unported_eat('start_eating:nomovemsg_bracket');
-            done_eating(false);
+               here is a vomit() from bite(). */
+            const save = game.nomovemsg;
+            game.nomovemsg = null;
+            await done_eating(false);
+            game.nomovemsg = save;
         }
         return;
     }
 
     if (++v.usedtime >= v.reqtime) {
         /* print "finish eating" message if they just resumed -dlc */
-        done_eating((v.reqtime > 1 || already_partly_eaten) ? true : false);
+        await done_eating((v.reqtime > 1 || already_partly_eaten) ? true : false);
         return;
     }
 
@@ -447,13 +491,13 @@ export async function choke(food) {
 //     if (victual.canchoke && u.uhunger >= 2000) { choke(piece); return 1; }
 //
 // so the death is a consequence of ACCUMULATED nutrition, not of the meal.
-export function bite() {
+export async function bite() {
     const v = game.context?.victual;
     if (!v)
         return 0;
 
     if (v.canchoke && game.u.uhunger >= 2000) {
-        choke(v.piece);
+        await choke(v.piece);
         return 1;
     }
     if (v.doreset) {
@@ -482,7 +526,7 @@ export function bite() {
 // than < , so the last turn of a meal still takes a bite. Writing it as < , or
 // biting before incrementing, drops that final bite -- and for a Satiated hero
 // that final bite is the one that chokes.
-export function eatfood() {
+export async function eatfood() {
     const v = game.context.victual;
     let food = v?.piece;
 
@@ -497,11 +541,11 @@ export function eatfood() {
         return 0;
 
     if (++v.usedtime <= v.reqtime) {
-        if (bite())
+        if (await bite())
             return 0;
         return 1;                       /* still busy */
     }
-    done_eating(true);
+    await done_eating(true);
     return 0;
 }
 
@@ -514,7 +558,7 @@ const obj_here = (o, x, y) => o.ox === x && o.oy === y;
 // Order matters: go.occupation is cleared BEFORE newuhs(), with the C's own
 // comment "do this early, so newuhs() knows we're done". newuhs recomputes the
 // hunger state, and it reads whether an occupation is running.
-export function done_eating(message) {
+export async function done_eating(message) {
     const v = game.context.victual;
     const piece = v.piece;
 
@@ -523,15 +567,20 @@ export function done_eating(message) {
     game.occupation = null;             /* early, so newuhs knows we're done */
     newuhs(false);
 
-    if (message)
-        note_unported_eat('done_eating:message');
+    if (game.nomovemsg) {
+        if (message)
+            await pline(game.nomovemsg);
+        game.nomovemsg = null;
+    } else if (message) {
+        /* food_xname reduces to doname for everything this port serves */
+        await You(`finish eating ${doname(piece)}.`);
+    }
 
-    /* cpostfx (199 lines) and fpostfx (90) are the food's after-effects and
-       need the corpse and food-effect tables; both stay recorded. */
+    /* cpostfx (199 lines) is the corpse table; still recorded. */
     if (piece && (piece.otyp === ONAMES.CORPSE || piece.globby))
         note_unported_eat('done_eating:cpostfx');
-    else
-        note_unported_eat('done_eating:fpostfx');
+    else if (piece)
+        await fpostfx(piece);
 
     /* the object leaves by one of two doors: useup() when carried, useupf()
        when it is lying on the floor (src/eat.c:568, :570). Both are ported;
@@ -625,13 +674,13 @@ export function newuhs(incr) {
 // `stopping` clears the occupation BEFORE eatfood() runs, which the C notes is
 // "for do_reset_eat" -- eatfood checks the occupation, so leaving it set makes
 // the meal look still-in-progress to its own callback.
-export function maybe_finished_meal(stopping) {
+export async function maybe_finished_meal(stopping) {
     const v = game.context?.victual;
 
     if (game.occupation === eatfood && v && v.usedtime >= v.reqtime) {
         if (stopping)
             game.occupation = null;     /* for do_reset_eat */
-        eatfood();                      /* calls done_eating to use the food up */
+        await eatfood();                /* calls done_eating to use the food up */
         return true;
     }
     return false;

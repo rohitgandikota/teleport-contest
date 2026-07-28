@@ -6,6 +6,14 @@
 // rn2(100) into the stream ahead of the next monster's turn.
 
 import { game } from './gstate.js';
+import { isok } from './hacklib.js';
+import { m_at, t_at } from './mon.js';
+import { cansee } from './vision.js';
+import { newsym } from './display.js';
+import { closed_door } from './cmd.js';
+
+import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
+         THROWN_WEAPON, KICKED_WEAPON, M_AP_TYPE, M_AP_OBJECT } from './const.js';
 import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER } from './monst.js';
 import { killed, shieldeff_mon } from './mon.js';
@@ -161,7 +169,7 @@ export async function zapyourself(obj, ordinary) {
         else
             await You("fall asleep!");
         /* monstunseesu(M_SEEN_SLEEP) — monster memory, recorded */
-        fall_asleep(-rnd(50), true);
+        await fall_asleep(-rnd(50), true);
         break;
     }
     default:
@@ -206,3 +214,99 @@ export async function dozap() {
     }
     return ECMD_TIME;
 }
+
+// src/zap.c:3827 bhit() — walk a missile (or beam) along a line.
+//
+// Only the THROWN_WEAPON spine is live: the flight stops at a monster, a
+// wall (!ZAP_POS), a closed door, a sink, water/lava walls or the map edge,
+// and gb.bhitpos holds the last good square. The rock-skip arm draws rn2(3)
+// for thrown ROCKs only. The tmp_at() flight animation frames are display
+// work this port does not emit yet; recorded so the gap stays visible.
+export function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
+    const obj = pobjRef.obj;
+    let result = null;
+
+    if (weapon === KICKED_WEAPON) {
+        game.bhitpos = { x: game.u.ux + ddx, y: game.u.uy + ddy };
+        range--;
+    } else {
+        game.bhitpos = { x: game.u.ux, y: game.u.uy };
+    }
+
+    let skiprange_start = 0, allow_skip = false;
+    if (weapon === THROWN_WEAPON && obj && obj.otyp === ONAMES.ROCK) {
+        /* skiprange(range, ...) computes bounce points without drawing */
+        skiprange_start = 1;
+        allow_skip = !rn2(3);
+        if (allow_skip)
+            note_unported_zap('bhit:rock_skip');
+    }
+
+    note_unported_zap('bhit:tmp_at_flight');
+
+    while (range-- > 0) {
+        game.bhitpos.x += ddx;
+        game.bhitpos.y += ddy;
+        const x = game.bhitpos.x, y = game.bhitpos.y;
+
+        if (!isok(x, y)) {
+            game.bhitpos.x -= ddx;
+            game.bhitpos.y -= ddy;
+            break;
+        }
+
+        const loc = game.level.at(x, y);
+        const typ = loc?.typ ?? STONE;
+
+        /* WATER aka "wall of water" stops items */
+        if (typ === WATER || typ === LAVAWALL) {
+            if (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+                break;
+        }
+
+        if ((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+            && typ === IRONBARS) {
+            /* hits_bars() breaks some things, rn2(5) unless point-blank */
+            note_unported_zap('bhit:ironbars');
+            game.bhitpos.x -= ddx;
+            game.bhitpos.y -= ddy;
+            break;
+        }
+
+        let mtmp = m_at(x, y);
+        const ttmp = t_at(x, y);
+        if (!mtmp && ttmp && ttmp.ttyp === WEB
+            && (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+            && !rn2(3)) {
+            if (cansee(x, y)) {
+                note_unported_zap('bhit:web_message');
+                ttmp.tseen = true;
+                newsym(x, y);
+            }
+            break;
+        }
+
+        /* a mimic pretending to be an object is not hit by thrown things */
+        if (mtmp && (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+            && M_AP_TYPE(mtmp) === M_AP_OBJECT)
+            mtmp = null;
+
+        if (mtmp) {
+            /* map_invisible when unseen is display bookkeeping */
+            result = mtmp;
+            break;
+        }
+
+        if (!(typ >= POOL) /* !ZAP_POS(typ) */ || closed_door(x, y)) {
+            game.bhitpos.x -= ddx;
+            game.bhitpos.y -= ddy;
+            break;
+        }
+
+        if (IS_SINK(typ) && weapon !== FLASHED_LIGHT_BHIT)
+            break;               /* physical objects fall onto sink */
+    }
+
+    return result;
+}
+const FLASHED_LIGHT_BHIT = 2;    /* include/hack.h bhit_call_types */

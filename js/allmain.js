@@ -26,11 +26,11 @@ export function set_occupation(fn, txt, xtime) {
 }
 
 // src/allmain.c stop_occupation()
-export function stop_occupation() {
+export async function stop_occupation() {
     if (game.occupation) {
         /* src/allmain.c:684 — maybe_finished_meal runs FIRST, and the
            "You stop <occtxt>." message only prints when it returns FALSE. */
-        if (!maybe_finished_meal(true))
+        if (!await maybe_finished_meal(true))
             note_unported_main(`stop_occupation:message:${game.occtxt}`);
         game.occupation = null;
         game.occtxt = null;
@@ -541,7 +541,7 @@ export async function moveloop_core() {
     }
 
     if ((g.multi ?? 0) >= 0 && g.occupation) {
-        if (g.occupation() === 0)
+        if ((await g.occupation()) === 0)
             g.occupation = null;
         note_unported_main('moveloop:monster_nearby');
         g.context.move = 1;             /* the occupation took this turn */

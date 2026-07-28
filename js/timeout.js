@@ -82,8 +82,8 @@ export function start_timer(when, kind, func_index, arg) {
 // The #if 0 deafness block is not compiled in C and is not ported. usleep
 // records WHEN sleep began so combat can wake the hero no earlier than the
 // next monster turn. nomovemsg carries the wake message.
-export function fall_asleep(how_long, wakeup_msg) {
-    stop_occupation();
+export async function fall_asleep(how_long, wakeup_msg) {
+    await stop_occupation();
     nomul(how_long);
     game.multi_reason = "sleeping";
     /* early wakeup from combat won't be possible until next monster turn */

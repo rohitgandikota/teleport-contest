@@ -11,7 +11,7 @@
 // more() is too, and both are really topl.c functions that should live here.
 
 import { game } from '../gstate.js';
-import { more, TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_SPECIAL_PROMPT,
+import { more, TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_NON_EMPTY, TOPLINE_SPECIAL_PROMPT,
          _buildScreenOutput } from '../display.js';
 import { nhgetch } from '../input.js';
 
@@ -157,16 +157,26 @@ export async function tty_yn_function(query, resp, def) {
     if (display)
         display.setCursor(Math.min(prompt.length + 1, (display.cols ?? 80) - 1), 0);
 
+    /* win/tty/topl.c:533 clean_up — the answered prompt (plus the visible
+       form of the answer key) becomes the topline text, flagged NON_EMPTY so
+       the NEXT key read erases it before its boundary frame. */
+    const clean_up = (q) => {
+        const vis = (q >= ' ' && q !== '\x7f') ? q : '';
+        game._pending_message = prompt + vis;
+        game._toplin = TOPLINE_NON_EMPTY;
+        return q;
+    };
+
     /* with a resp string, only the listed characters (plus the quitchars) are
        accepted; anything else re-reads. */
     for (;;) {
         const c = await nhgetch();
         const ch = (typeof c === 'string') ? c : String.fromCharCode(c);
         if (!resp)
-            return ch;
+            return clean_up(ch);
         if (resp.includes(ch))
-            return ch;
+            return clean_up(ch);
         if (ch === '\x1b' || ch === '\r' || ch === '\n' || ch === ' ')
-            return def && def !== '\0' ? def : ch;
+            return clean_up(def && def !== '\0' ? def : ch);
     }
 }

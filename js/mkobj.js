@@ -252,7 +252,7 @@ function is_poisonable(otmp, objects) {
 }
 
 // src/mkobj.c bcsign()
-function bcsign(otmp) {
+export function bcsign(otmp) {
     return (otmp.blessed ? 1 : 0) - (otmp.cursed ? 1 : 0);
 }
 

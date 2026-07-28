@@ -21,7 +21,7 @@ import { tty_yn_function } from './tty/topl.js';
 // include/hack.h:1330 ynq()
 const ynq = (query) => tty_yn_function(query, 'ynq', 'q');
 import { P_BOW, P_CROSSBOW } from './const.js';
-import { OCLASSES, ONAMES } from './objects_data.js';
+import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
 
 // src/wield.c ready_ok() — which objects getobj should suggest for the quiver.
 //
@@ -115,6 +115,12 @@ function note_unported_wield(what) {
 }
 
 /* include/obj.h:245 is_missile() — dart/shuriken/boomerang class throwables. */
+// include/obj.h:223 is_sword()
+export const is_sword = (o) =>
+    o.oclass === OCLASSES.WEAPON_CLASS
+    && game.objects[o.otyp].oc_skill >= SKILLS.P_SHORT_SWORD
+    && game.objects[o.otyp].oc_skill <= SKILLS.P_SABER;
+
 export const is_missile = (o) =>
     (o.oclass === OCLASSES.WEAPON_CLASS || o.oclass === OCLASSES.TOOL_CLASS)
     && game.objects[o.otyp].oc_skill >= -P_BOOMERANG

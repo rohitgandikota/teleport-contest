@@ -9973,3 +9973,29 @@ also compare our m_move's appr/ggx/ggy against C's for the jackal
 
 Probes are stripped from the tree; re-add POSPROBE in monmove.js's
 m_move candidate loop when resuming.
+
+
+### seed0398 narrowed: not mfndpos's arms — a SILENT path split in m_move's selection.
+
+The rn2(16)-vs-rn2(24) factorizations overlap: C's 16 = 4*(cnt-j) fits
+(cnt=6, j=2) as well as (cnt=4, j=0). The flags (mon_allowflags), every
+mfndpos arm (NOGARLIC, traps, boulders, NOTONL, sanctuary), and the
+terrain/object/monster inputs all check out identical, so the candidates
+are the same SIX; what differs is the jackal's mtrack — C's [0] and [1]
+are not candidates while [2] is, meaning C's jackal arrived at 39,3 by a
+different route than ours (38,3). The last two moves diverged WITHOUT
+any draw differing: a deterministic choice in m_move's selection loop
+(the nearer/dist2 comparison against ggx,ggy, the candidate iteration
+order, or the mmoved==MMOVE_NOTHING first-acceptance) differs, or the
+jackal's goal (mux,muy guess) differs silently.
+
+NEXT: diff our m_move selection loop (monmove.js:1086+) against C
+monmove.c:1958-1990 line by line, then instrument BOTH the chosen
+square per round (ours) and reconstruct C's path from its screens
+(the jackal is visible on the recorded frames as it crosses the room:
+read steps 26-29 map cells around rows 2-4 to get C's actual jackal
+positions per step, which pins where the paths split).
+
+Reading C's jackal positions off the recorded screens is the cheap
+decisive probe: no C-side instrumentation exists, but the frames ARE
+the C state.

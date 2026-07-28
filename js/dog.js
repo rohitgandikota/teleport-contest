@@ -1,12 +1,3 @@
-import { relobj, steal_wire_droppables } from './steal.js';
-import { ROT_ICE_ADJUSTMENT , MTSZ, NON_PM, SQSRCHRADIUS } from './const.js';
-import { max_passive_dmg , carnivorous, herbivorous , metallivorous, humanoid, noncorporeal , flaming , is_demon, is_swimmer, passes_walls , likes_fire } from './mondata.js';
-import { M_ATTK_MISS } from './const.js';
-import { onscary } from './monmove.js';
-import { M_ATTK_DEF_DIED } from './const.js';
-import { M_ATTK_HIT } from './const.js';
-import { M_ATTK_AGR_DIED } from './const.js';
-import { mattackm } from './mhitm.js';
 // dog.js — the starting pet.
 // C ref: src/dog.c
 //
@@ -20,7 +11,7 @@ import { mattackm } from './mhitm.js';
 
 import { game } from './gstate.js';
 import { which_armor } from './worn.js';
-import { DEADMONSTER, is_vampshifter, MON_WEP , helpless } from './monst.js';
+import { DEADMONSTER, is_vampshifter, MON_WEP } from './monst.js';
 import { m_avoid_kicked_loc, m_avoid_soko_push_loc } from './monmove.js';
 /* include/hack.h:1322 — MMOVE_MOVED is 1 and MMOVE_DIED is 2. This file had
    its own copy with MMOVE_MOVED = 2 (C's DIED value) and no MMOVE_DIED at all,
@@ -51,13 +42,13 @@ import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
 
 const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2, rnd } from './rng.js';
-import { dist2, sgn , distmin , distu } from './hacklib.js';
+import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { PMNAMES } from './monst_data.js';
 import {
-    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, mpickobj } from './makemon.js';
-import { is_rider } from './mondata.js';
+    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
 
+const NON_PM = -1;
 
 // gu.urole.petnum is a PM_ name in the generated role table.
 function petnumOf(role) {
@@ -175,20 +166,23 @@ export const DOGFOOD = 0, CADAVER = 1, ACCFOOD = 2, MANFOOD = 3, APPORT = 4,
 /* include/mondata.h and include/objclass.h — the predicates dogfood() sorts
    with. None of them draws; they only decide which branch is taken, and a wrong
    branch changes how far the caller's loop runs before it breaks. */
-/* carnivorous() and herbivorous() are include/mondata.h macros and come
-   from js/mondata.js; the copies here were identical. */
-/* metallivorous(), humanoid() and noncorporeal() are include/mondata.h
-   macros and come from js/mondata.js; the copies here matched. */
+const carnivorous  = (ptr) => (ptr.mflags1 & MFLAGS.M1_CARNIVORE) !== 0;
+const herbivorous  = (ptr) => (ptr.mflags1 & MFLAGS.M1_HERBIVORE) !== 0;
+const metallivorous = (ptr) => (ptr.mflags1 & MFLAGS.M1_METALLIVORE) !== 0;
 const haseyes      = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
+const humanoid     = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
 export const acidic = (ptr) => (ptr.mflags1 & MFLAGS.M1_ACID) !== 0;
 const poisonous    = (ptr) => (ptr.mflags1 & MFLAGS.M1_POIS) !== 0;
 /* is_undead lives in js/mondata.js, its C home (include/mondata.h:95). */
 const is_elf       = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
+const noncorporeal = (ptr) => ptr.mlet === MONSYMS.S_GHOST;
 /* include/mondata.h:59,190 — both are explicit species lists, not flag tests.
    There is no M1_FIRE_RES; fire resistance lives in mresists as MR_FIRE, and
    guessing a flag here silently made every monster flaming. */
-/* flaming() is include/mondata.h:59; it comes from js/mondata.js. Both
-   copies listed the same four species. */
+const flaming      = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_VORTEX
+                           || ptr.pmidx === PMNAMES.PM_FLAMING_SPHERE
+                           || ptr.pmidx === PMNAMES.PM_FIRE_ELEMENTAL
+                           || ptr.pmidx === PMNAMES.PM_SALAMANDER;
 const likes_lava   = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_ELEMENTAL
                            || ptr.pmidx === PMNAMES.PM_SALAMANDER;
 
@@ -206,8 +200,9 @@ export const slimeproof = (ptr) => ptr.pmidx === PMNAMES.PM_GREEN_SLIME
                          || flaming(ptr) || noncorporeal(ptr);
 
 // include/mondata.h:196
-/* likes_fire() is an include/mondata.h macro; it comes from
-   js/mondata.js, where its identical twin already lived. */
+const likes_fire = (ptr) => ptr.pmidx === PMNAMES.PM_FIRE_VORTEX
+                         || ptr.pmidx === PMNAMES.PM_FLAMING_SPHERE
+                         || likes_lava(ptr);
 
 // include/mondata.h:232
 const vegan = (ptr) =>
@@ -228,14 +223,8 @@ const is_rustprone = (otmp) => game.objects[otmp.otyp].oc_material === IRON;
    cooking code lands, so recording keeps the gap visible without inventing a
    branch. */
 function peek_at_iced_corpse_age(obj) {
-    let retval = obj.age ?? 0;
-
-    if (obj.otyp === ONAMES.CORPSE && obj.on_ice) {
-        /* Adjust the age; must be same as obj_timer_checks() for off ice */
-        const age = game.moves - (obj.age ?? 0);
-        retval += Math.floor(age * (ROT_ICE_ADJUSTMENT - 1) / ROT_ICE_ADJUSTMENT);
-    }
-    return retval;
+    note_unported('peek_at_iced_corpse_age');
+    return obj.age ?? 0;
 }
 
 function stale_egg(obj) {
@@ -270,6 +259,7 @@ function hates_silver(ptr) {
 }
 
 const is_were = (ptr) => (ptr.mflags2 & MFLAGS.M2_WERE) !== 0;
+const is_demon = (ptr) => (ptr.mflags2 & MFLAGS.M2_DEMON) !== 0;
 
 const resists_ston   = (mon) => { note_unported('resists_ston'); return false; };
 const resists_acid   = (mon) => { note_unported('resists_acid'); return false; };
@@ -313,7 +303,9 @@ function can_reach_location(mon, mx, my, fx, fy) {
     return false;
 }
 
+const is_swimmer   = (ptr) => (ptr.mflags1 & MFLAGS.M1_SWIM) !== 0;
 const throws_rocks = (ptr) => (ptr.mflags2 & MFLAGS.M2_ROCKTHROW) !== 0;
+const passes_walls = (ptr) => (ptr.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
 const tunnels      = (ptr) => (ptr.mflags1 & MFLAGS.M1_TUNNEL) !== 0;
 
 
@@ -493,6 +485,7 @@ function note_unported(what) {
 // the pet, so it costs one rn2(100) per nearby object before any of its own
 // draws. That is the whole reason obj_resists shows up ahead of dog_goal's
 // rn2(8) in the recordings.
+const SQSRCHRADIUS = 5;
 
 // src/dogmove.c:156 dog_nutrition() — how much food value obj gives mtmp, and
 // how many turns eating it costs (returned through mtmp.meating, as in C).
@@ -950,48 +943,8 @@ function pet_ranged_attk(mtmp, forced) {
 
     /* Hungry pets are unlikely to use breath/spit attacks */
     if (mtarg && (!hungry || !rn2(5))) {
-        let mstatus = M_ATTK_MISS;
-
-        if (mtarg === game.youmonst) {
-            /* mattacku() -- a pet attacking the HERO needs the
-               monster-attacks-you path, which is not ported. */
-            note_unported('pet_ranged_attk:mattacku');
-            return MMOVE_NOTHING;
-        }
-
-        game.bhitpos = { x: mtmp.mx, y: mtmp.my };
-        mstatus = mattackm(mtmp, mtarg);
-
-        /* Shouldn't happen, really */
-        if (mstatus & M_ATTK_AGR_DIED)
-            return MMOVE_DIED;
-
-        /* Allow the targeted nasty to strike back - if the targeted beast
-         * doesn't have a ranged attack, nothing will happen. */
-        if ((mstatus & M_ATTK_HIT) && !(mstatus & M_ATTK_DEF_DIED)
-            && rn2(4)) {
-            /* Can monster see?  If it can, it can retaliate even if the pet
-             * is invisible, since it'll see the direction the ranged attack
-             * came from; haseyes() is unported, so only mcansee is tested
-             * here and the eyeless case is recorded. */
-            if (mtarg.mcansee) {
-                note_unported('pet_ranged_attk:haseyes');
-                game.bhitpos = { x: mtmp.mx, y: mtmp.my };
-                const mresp = mattackm(mtarg, mtmp);
-                if (mresp & M_ATTK_DEF_DIED)
-                    return MMOVE_DIED;
-            }
-        }
-
-        /* Only lose the rest of the move if a ranged attack really happened;
-         * best_target never selects a melee-reachable monster, so mattackm
-         * can only have tried ranged options, and returns M_ATTK_MISS when
-         * the monster has none. */
-        if (mstatus !== M_ATTK_MISS)
-            return MMOVE_DONE;
-    } else if (forced) {
-        /* domonnoise() */
-        note_unported('pet_ranged_attk:domonnoise');
+        /* the attack itself needs mattacku / the monster attack code */
+        note_unported('pet_ranged_attk:attack');
     }
     return MMOVE_NOTHING;
 }
@@ -1111,53 +1064,9 @@ export function dog_move(mtmp, after) {
            ALLOW_U on the non-tame, non-peaceful arm, so a pet never carries
            it -- but matching the C costs nothing and removes a condition that
            would be wrong the moment a conflicted pet did get the flag. */
-        if ((mfp.info[i] & ALLOW_M) && m_at(nx, ny)) {
-            const mtmp2 = m_at(nx, ny);
-            /* src/dogmove.c:1119 — how audacious the pet is about attacking
-               a differently-levelled foe, scaled by its fraction of max HP.
-               balk maxes at +3 and is the LOWEST level it refuses, which is
-               why the comparison below is >=. */
-            const balk = mtmp.m_lev + Math.floor((5 * mtmp.mhp) / mtmp.mhpmax) - 2;
-
-            if ((mtmp2.m_lev | 0) >= balk
-                || (mtmp2.mtame && mtmp.mtame)
-                || (max_passive_dmg(mtmp2, mtmp) >= mtmp.mhp)
-                || ((mtmp.mhp * 4 < mtmp.mhpmax
-                     || mtmp2.data.msound === MFLAGS.MS_GUARDIAN
-                     || mtmp2.data.msound === MFLAGS.MS_LEADER)
-                    && mtmp2.mpeaceful)) {
-                continue;
-            }
-
-            if ((mtmp2.data.pmidx === PMNAMES.PM_FLOATING_EYE && rn2(10))
-                || (mtmp2.data.pmidx === PMNAMES.PM_GELATINOUS_CUBE && rn2(10))
-                || (touch_petrifies(mtmp2.data) && !resists_ston(mtmp))) {
-                /* C consults best_target() before giving up, to allow a
-                   ranged attack instead; that is unported, and its own
-                   comment marks ranged_only as not working as intended. */
-                continue;
-            }
-
-            if (after)
-                return MMOVE_NOTHING; /* hit only once each move */
-
-            game.bhitpos = { x: nx, y: ny };
-            const mstatus = mattackm(mtmp, mtmp2);
-
-            /* aggressor (pet) died */
-            if (mstatus & M_ATTK_AGR_DIED)
-                return MMOVE_DIED;
-
-            if ((mstatus & (M_ATTK_HIT | M_ATTK_DEF_DIED)) === M_ATTK_HIT
-                && rn2(4)
-                && mtmp2.mlstmv !== game.moves
-                && !onscary(mtmp.mx, mtmp.my, mtmp2)) {
-                /* the counter-attack; monnear() is unported and only matters
-                   for long worms, which cannot be reached here yet */
-                game.bhitpos = { x: mtmp.mx, y: mtmp.my };
-                mattackm(mtmp2, mtmp); /* return attack */
-            }
-            return MMOVE_DONE;
+        if (mfp.info[i] & ALLOW_M) {
+            note_unported('dog_move attack branch');
+            continue;
         }
 
         /* src/dogmove.c:1182 — keep clear of the square the hero just kicked,
@@ -1297,6 +1206,7 @@ export function dog_move(mtmp, after) {
 }
 
 /* include/monst.h MTSZ — how many previous squares a monster remembers. */
+const MTSZ = 4;
 
 /* src/dogmove.c GDIST(x,y) = dist2(x, y, gg.gx, gg.gy) */
 function GDIST(x, y) {
@@ -1305,8 +1215,10 @@ function GDIST(x, y) {
     return dx * dx + dy * dy;
 }
 
-/* distmin() is src/hacklib.c:657 and comes from js/hacklib.js; the copy
-   that was here differed only in parameter names. */
+/* src/hack.c distmin() — the Chebyshev distance */
+function distmin(x0, y0, x1, y1) {
+    return Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+}
 
 /* src/dogmove.c cursed_object_at() */
 function cursed_object_at(x, y) {
@@ -1341,7 +1253,7 @@ export function dog_invent(mtmp, edog, udist) {
     if (droppables(mtmp)) {
         if (!rn2(udist + 1) || !rn2(edog.apport))
             if (rn2(10) < edog.apport) {
-                relobj(mtmp, mtmp.minvis ? 1 : 0, true);  /* the drop itself */
+                note_unported('relobj');           /* the drop itself */
                 if (edog.apport > 1) edog.apport--;
                 edog.dropdist = udist;
                 edog.droptime = game.moves;
@@ -1506,16 +1418,13 @@ function droppables(mtmp) {
     return null;                        /* don't drop anything */
 }
 
-/* helpless() is include/monst.h:251 and comes from js/monst.js. The copy
-   that was here carried a THIRD term, (mtmp.mfrozen | 0) > 0, which the C
-   macro does not have -- mfrozen is a separate bitfield (monst.h:147). That
-   made any frozen-but-mobile monster read as helpless, which changes combat
-   branches. The identical defect was removed from js/uhitm.js earlier; this
-   copy survived because dup-defs reports the name, not every site. */
+/* src/mondata.h helpless() */
+function helpless(mtmp) {
+    return !!(mtmp.msleeping || !mtmp.mcanmove || (mtmp.mfrozen | 0) > 0);
+}
 
-/* distu() is include/hack.h:1531 and comes from js/hacklib.js. C defines it
-   as dist2(xx, yy, u.ux, u.uy); the copy here inlined the arithmetic
-   instead, which gave the same value but not the same shape. */
-
-/* hand droppables() to js/steal.js; see its header for why */
-steal_wire_droppables(droppables);
+// src/hack.c distu() — squared distance from the hero.
+function distu(x, y) {
+    const dx = x - game.u.ux, dy = y - game.u.uy;
+    return dx * dx + dy * dy;
+}

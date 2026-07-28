@@ -1,5 +1,3 @@
-import { dowield, doquiver_core } from './wield.js';
-import { doread } from './read.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
 // C ref: cmd.c rhack(), hack.c domove().
@@ -9,8 +7,6 @@ import { seemimic } from './mon.js';
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
-import { wear_ok, puton_ok, remove_ok, takeoff_ok } from './do_wear.js';
-import { Confusion, Stunned, Fumbling } from './youprop.js';
 import { dodrop } from './do.js';
 import { any_obj_ok } from './invent.js';
 import { dodown, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
@@ -23,7 +19,7 @@ import { is_safemon } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
-import { is_hider, verysmall , bigmonst } from './mondata.js';
+import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE } from './const.js';
@@ -50,7 +46,7 @@ import {
     NHW_TEXT, NHW_MENU, ATR_NONE,
 } from './tty/wintty.js';
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
-import { doopen, doopen_indir, doclose } from './lock.js';
+import { doopen, doopen_indir } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
 import { doapply } from './apply.js';
@@ -136,7 +132,7 @@ function confdir(force_impairment) {
 
 // src/hack.c u_maybe_impaired()
 function u_maybe_impaired() {
-    return !!(Confusion() || Stunned());
+    return !!(game.u.uprops?.CONFUSION || game.u.uprops?.STUNNED);
 }
 
 // src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.
@@ -357,10 +353,67 @@ function read_ok(obj) {
 
 /* any_obj_ok() lives in js/invent.js, mirroring src/invent.c:1710. */
 
-/* equip_ok() and its four getobj callbacks live in js/do_wear.js, their C home
-   (src/do_wear.c:3404 and 3451-3475). They used to be duplicated here with the
-   canwearobj() arm recorded; canwearobj is ported now, so the real ones are
-   imported instead. */
+/* src/do_wear.c:3404 equip_ok() — the shared filter behind W, T, P and R.
+//
+   The two XORs carry the logic and neither is decorative:
+
+     removing ^ is_worn                  putting ON something already worn,
+                                         or taking OFF something not worn, is
+                                         EXCLUDE_INACCESS -- the item exists
+                                         but the action does not apply.
+     accessory ^ (oclass != ARMOR_CLASS) armor offered to 'P'/'R', or an
+                                         accessory offered to 'W'/'T', is
+                                         DOWNPLAY rather than EXCLUDE: it is
+                                         wearable, just not by this command.
+
+   The class test excludes everything but armor, rings and amulets, THEN
+   re-admits four specific otyps -- MEAT_RING, BLINDFOLD, TOWEL, LENSES --
+   which are wearable while belonging to other classes. Dropping that
+   exception list would make a blindfold unofferable to 'P'.
+
+   canwearobj (polyform restrictions) and inaccessible_equipment (cursed
+   armor covering a ring) are recorded; every other arm is real. */
+function equip_ok(obj, removing, accessory) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+
+    /* ignore for putting on if already worn, or removing if not worn */
+    const is_worn = ((obj.owornmask & (W_ARMOR | W_ACCESSORY)) !== 0);
+    if (!!removing !== is_worn)
+        return GETOBJ_EXCLUDE_INACCESS;
+
+    /* exclude most object classes outright */
+    if (obj.oclass !== OCLASSES.ARMOR_CLASS
+        && obj.oclass !== OCLASSES.RING_CLASS
+        && obj.oclass !== OCLASSES.AMULET_CLASS) {
+        /* ... except for a few wearable exceptions outside these classes */
+        if (obj.otyp !== ONAMES.MEAT_RING && obj.otyp !== ONAMES.BLINDFOLD
+            && obj.otyp !== ONAMES.TOWEL && obj.otyp !== ONAMES.LENSES)
+            return GETOBJ_EXCLUDE;
+    }
+
+    /* armor with 'P' or 'R' or accessory with 'W' or 'T' */
+    if (!!accessory !== (obj.oclass !== OCLASSES.ARMOR_CLASS))
+        return GETOBJ_DOWNPLAY;
+
+    /* armor we can't wear, e.g. from polyform */
+    if (obj.oclass === OCLASSES.ARMOR_CLASS && !removing
+        && !note_unported_cmd('equip_ok:canwearobj'))
+        return GETOBJ_DOWNPLAY;
+
+    /* removing inaccessible equipment */
+    if (removing)
+        note_unported_cmd('equip_ok:inaccessible_equipment');
+
+    /* all good to go */
+    return GETOBJ_SUGGEST;
+}
+
+/* src/do_wear.c:3451-3475 — the four getobj callbacks over equip_ok. */
+const puton_ok   = (o) => equip_ok(o, false, true);
+const remove_ok  = (o) => equip_ok(o, true,  true);
+const wear_ok    = (o) => equip_ok(o, false, false);
+const takeoff_ok = (o) => equip_ok(o, true,  false);
 
 /* src/cmd.c cmdlist — the verb and object filter each command hands getobj().
    Read from the C, not invented: the word appears verbatim in the prompt
@@ -410,19 +463,8 @@ async function dofire() {
        the direction read there would put the session out of step in the other
        direction. Record that case rather than consume a key for it. */
     if (!game.u.uquiver) {
-        /* src/dothrow.c dofire() — with autoquiver off (the default) C says
-           so and then PROMPTS through doquiver_core, which calls getobj and
-           reads a key. Returning here left that key in the stream.
-           The polearm, bullwhip and fireassist arms above the message need
-           use_pole/use_whip and record. */
-        if (game.u.uwep)
-            note_unported_cmd('dofire:polearm_or_whip');
-        await You('have no ammunition readied.');
-        const res = await doquiver_core('fire');
-        if (res !== ECMD_OK && res !== ECMD_TIME)
-            return res;
-        if (!game.u.uquiver)
-            return ECMD_OK;
+        note_unported_cmd('dofire:empty quiver prompt');
+        return ECMD_OK;
     }
 
     if (!await getdir(null))
@@ -450,11 +492,6 @@ export async function doextcmd() {
         return await dojump();
     if (name === 'levelchange')
         return await wiz_level_change();
-    /* #chat reads a direction key through getdir(), so its absence puts the
-       session one keystroke out of step -- exactly the class this dispatch
-       exists to cover. dochat is ported in js/sounds.js. */
-    if (name === 'chat')
-        return await dochat();
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;
@@ -521,17 +558,6 @@ export async function rhack(key) {
     } else if (ch === 'Q') {
         // src/cmd.c cmdlist — 'Q' is dowieldquiver.
         game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'w') {
-        /* src/cmd.c cmdlist — 'w' is dowield, which calls getobj() and so
-           READS A KEY. Same keystream reason as 'r' above. */
-        game.context.move = ((await dowield()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'c') {
-        game.context.move = ((await doclose()) === ECMD_TIME ? 1 : 0);
-    } else if (ch === 'r') {
-        /* src/cmd.c cmdlist — 'r' is doread. It calls getobj(), which READS
-           A KEY, so leaving it undispatched let the inventory letter run as a
-           command and put every later keystroke out of step. */
-        game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Z') {
         // src/cmd.c cmdlist — 'Z' is docast.
         game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);
@@ -689,8 +715,8 @@ export async function domove() {
        step into a doorway. */
     if (closed_door(newx, newy)
         && flags_autoopen() && !game.context.run
-        && !Confusion() && !Stunned()
-        && !Fumbling()) {
+        && !game.u.uprops?.CONFUSION && !game.u.uprops?.STUNNED
+        && !game.u.uprops?.FUMBLING) {
         await doopen_indir(newx, newy);
         game.context.door_opened = !closed_door(newx, newy);
         game.context.move = 0; /* (ux != u.ux || uy != u.uy) */
@@ -897,7 +923,7 @@ function mundisplaceable(mon) {
 }
 
 // include/mondata.h bigmonst()
-/* bigmonst() is an include/mondata.h macro; it comes from js/mondata.js. */
+const bigmonst = (ptr) => ptr.msize >= MFLAGS.MZ_LARGE;
 
 
 

@@ -2,15 +2,6 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
-
-function note_unported_display(what) {
-    (game.unported_display ||= new Set()).add(what);
-}
-import { is_lightblocker_mappear, DEADMONSTER } from './monst.js';
-import { block_point, unblock_point } from './vision.js';
-import { iter_mons } from './mon.js';
-import { See_invisible, Detect_monsters, Blind_telepat, Warn_of_mon,
-         Infravision, Confusion, HHallucination, Stunned } from './youprop.js';
 import { ONAMES } from './objects_data.js';
 import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -24,7 +15,8 @@ import {
     D_NODOOR, D_ISOPEN, D_CLOSED, D_LOCKED, D_BROKEN, SDOOR, ICE,
     IRONBARS, TREE, LADDER, ALTAR, GRAVE, THRONE, SINK, FOUNTAIN,
     POOL, MOAT, WATER, LAVAPOOL, LAVAWALL, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
-    AIR, CLOUD, HI_METAL, HI_GOLD, LA_DOWN, MON_STILL_ARRIVING } from './const.js';
+    AIR, CLOUD, HI_METAL, HI_GOLD, LA_DOWN,
+} from './const.js';
 import { engr_at } from './engrave.js';
 import { nhgetch } from './input.js';
 import { def_monsyms, def_oc_syms } from './drawing_data.js';
@@ -656,7 +648,7 @@ export function tty_clear_nhwindow_message(cury) {
 export function mon_visible(mon) {
     /* The hero can see the monster IF it is not invisible, is not an
        undetected hider, and neither you nor it is buried. */
-    return (!mon.minvis || See_invisible())
+    return (!mon.minvis || game.u.uprops?.SEE_INVIS)
         && !mon.mundetected
         && !(mon.mburied || game.u.uburied);
 }
@@ -665,8 +657,8 @@ export function mon_visible(mon) {
 // arm needs a hero property no early game has; each is recorded rather than
 // assumed, so a session that does have one reports itself.
 export function sensemon(mon) {
-    if (game.u.uswallow || Detect_monsters()
-        || Blind_telepat() || Warn_of_mon())
+    if (game.u.uswallow || game.u.uprops?.DETECT_MONSTERS
+        || game.u.uprops?.TELEPAT || game.u.uprops?.WARN_OF_MON)
         (game.unported ||= new Set()).add('display:sensemon');
     return false;
 }
@@ -675,7 +667,7 @@ export function sensemon(mon) {
 export function canseemon(mon) {
     if (mon.wormno)
         (game.unported ||= new Set()).add('display:canseemon:worm_known');
-    if (Infravision())
+    if (game.u.uprops?.INFRAVISION)
         (game.unported ||= new Set()).add('display:canseemon:see_with_infrared');
     return cansee(mon.mx, mon.my) && mon_visible(mon);
 }
@@ -695,67 +687,6 @@ export function canspotmon(mon) {
 // See NOTES, "Default-On options: read them defensively".
 export function is_safemon(mon) {
     return !!(game.flags?.safe_dog !== false && mon.mpeaceful && canspotmon(mon)
-              && !Confusion() && !HHallucination()
-              && !Stunned());
-}
-
-// src/display.c:1532 mimic_light_blocking() — iter_mons callback.
-function mimic_light_blocking(mtmp) {
-    if (mtmp.minvis && is_lightblocker_mappear(mtmp)) {
-        if (See_invisible())
-            block_point(mtmp.mx, mtmp.my);
-        else
-            unblock_point(mtmp.mx, mtmp.my);
-    }
-}
-
-// src/display.c:1548 set_mimic_blocking() — a mimic imitating a boulder, wall,
-// closed door or tree blocks light only while it is actually being seen as
-// that thing. Called only when the state of See_invisible changes.
-export function set_mimic_blocking() {
-    iter_mons(mimic_light_blocking);
-}
-
-// src/display.c:1487 see_monsters() — redraw every monster; also recount the
-// warn-object total so Sting's glow can be toggled.
-export function see_monsters() {
-    let new_warn_obj_cnt = 0;
-
-    if (game.defer_see_monsters)
-        return;
-
-    /* steed and unseen engulfer/holder/holdee are recognized via touch
-       even if they aren't going to be rendered; other monsters
-       may get flagged as having been seen by display_monster() if it's
-       called by newsym() */
-    if (game.u.usteed)
-        game.u.usteed.meverseen = 1;
-    if (game.u.ustuck)
-        game.u.ustuck.meverseen = 1;
-
-    /* loop through level.monsters (aka fmon) */
-    for (const mon of [...(game.level?.monsters || [])]) {
-        if (DEADMONSTER(mon))
-            continue;
-        if ((mon.mstate & MON_STILL_ARRIVING) !== 0)
-            continue;
-        newsym(mon.mx, mon.my);
-        if (mon.wormno)
-            note_unported_display('see_monsters:see_wsegs');
-        if (Warn_of_mon()
-            && (game.context.warntype?.obj & mon.data.mflags2) !== 0)
-            new_warn_obj_cnt++;
-    }
-
-    /*
-     * Make Sting glow blue or stop glowing if required.
-     */
-    if (new_warn_obj_cnt !== game.warn_obj_cnt) {
-        note_unported_display('see_monsters:Sting_effects');
-        game.warn_obj_cnt = new_warn_obj_cnt;
-    }
-
-    /* when mounted, hero's location gets caught by monster loop */
-    if (!game.u.usteed)
-        newsym(game.u.ux, game.u.uy);
+              && !game.u.uprops?.CONFUSION && !game.u.uprops?.HALLUC
+              && !game.u.uprops?.STUNNED);
 }

@@ -8,7 +8,6 @@ import { A_CON } from './const.js';
 // port that tracks the turn counter correctly still has to make the call.
 
 import { game } from './gstate.js';
-import { Hunger } from './youprop.js';
 import { Race_if } from './u_init.js';
 import { PMNAMES } from './monst_data.js';
 import { done } from './end.js';
@@ -285,8 +284,8 @@ export function done_eating(message) {
        need the corpse and food-effect tables; both stay recorded. */
     if (piece && (piece.otyp === ONAMES.CORPSE || piece.globby))
         note_unported_eat('done_eating:cpostfx');
-    else if (piece)
-        fpostfx(piece);
+    else
+        note_unported_eat('done_eating:fpostfx');
 
     /* the object leaves by one of two doors: useup() when carried, useupf()
        when it is lying on the floor (src/eat.c:568, :570). Both are ported;
@@ -479,7 +478,7 @@ export function lesshungry(num) {
         }
     } else {
         /* report when nearly full so all eating warns before choking */
-        if (game.u.uhunger >= 1500 && !Hunger()
+        if (game.u.uhunger >= 1500 && !game.u.uprops?.HUNGER
             && (!game.context.victual?.eating
                 || !game.context.victual?.fullwarn)) {
             note_unported_eat('lesshungry:hard_time_msg');
@@ -530,28 +529,4 @@ export function consume_oeaten(obj, amt) {
             game.context.victual.reqtime = game.context.victual.usedtime;
         obj.oeaten = 1;         /* smallest possible positive value */
     }
-}
-
-// src/eat.c fpostfx() — a food's after-effects, dispatched on its otyp.
-//
-// Only seven foods have an arm; everything else -- food rations, tripe,
-// cram, k-rations and the rest of what a hero actually eats -- matches no
-// case and the switch does nothing. That is why this can be ported now: the
-// common path is genuinely empty, not merely unimplemented.
-//
-// Each arm records under its own object name so the reach tool can rank
-// them, rather than one lumped fpostfx entry hiding seven different gaps.
-const FPOSTFX_ARMS = [
-    'SPRIG_OF_WOLFSBANE', 'CARROT', 'FORTUNE_COOKIE', 'LUMP_OF_ROYAL_JELLY',
-    'EGG', 'EUCALYPTUS_LEAF', 'APPLE',
-];
-
-export function fpostfx(otmp) {
-    for (const name of FPOSTFX_ARMS) {
-        if (otmp.otyp === ONAMES[name]) {
-            (game.unported ||= new Set()).add(`fpostfx:${name}`);
-            return;
-        }
-    }
-    /* no arm for this food; C's switch falls through and does nothing */
 }

@@ -11,8 +11,7 @@ import { DEADMONSTER } from './monst.js';
 import { killed, shieldeff_mon } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2 } from './rng.js';
-
-import { is_rider } from './mondata.js';
+import { is_rider } from './makemon.js';
 
 // src/zap.c:1459 obj_resists() — does this object survive being destroyed?
 //

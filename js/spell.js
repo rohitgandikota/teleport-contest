@@ -2,7 +2,6 @@
 // C ref: src/spell.c
 
 import { game } from './gstate.js';
-import { Confusion, Stunned } from './youprop.js';
 import { pline } from './display.js';
 import { ECMD_OK, weight } from './invent.js';
 import { worn } from './do_wear.js';
@@ -13,7 +12,7 @@ import { ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { rnd } from './rng.js';
 import { tty_yn_function } from './tty/topl.js';
-import { ECMD_FAIL, NO_SPELL } from './const.js';
+import { ECMD_FAIL } from './const.js';
 import { You, Your, You_feel } from './pline.js';
 import { acurr, exercise } from './attrib.js';
 import { mksobj } from './mkobj.js';
@@ -25,6 +24,7 @@ import { W_ARM, W_ARMC, W_ARMS, W_ARMH, W_ARMG, W_ARMF, W_WEP,
          P_CLERIC_SPELL, P_UNSKILLED, P_ISRESTRICTED } from './const.js';
 
 // src/spell.c — NO_SPELL sentinel and the spell list accessor.
+const NO_SPELL = 0;
 
 // src/spell.c spellid() — the spell in slot `spidx`, or NO_SPELL.
 export function spellid(spidx) {
@@ -218,7 +218,7 @@ function spellknow(spidx) {
 // Returns { rejected, res, energy } because C uses two out-parameters.
 export async function spelleffects_check(spell, energyRef) {
     let res = ECMD_OK;
-    const confused = Confusion();
+    const confused = !!game.u?.uprops?.CONFUSION;
 
     energyRef.v = 0;
 
@@ -305,7 +305,7 @@ export async function spelleffects_check(spell, energyRef) {
 
 // src/spell.c rejectcasting() — Stunned, or no free hands.
 function rejectcasting() {
-    if (Stunned()) {
+    if (game.u?.uprops?.STUNNED) {
         note_unported_spell('rejectcasting:Stunned message');
         return true;
     }

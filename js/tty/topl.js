@@ -11,7 +11,6 @@
 // more() is too, and both are really topl.c functions that should live here.
 
 import { game } from '../gstate.js';
-import { TBUFSZ } from '../const.js';
 import { more, TOPLINE_EMPTY, TOPLINE_NEED_MORE, TOPLINE_SPECIAL_PROMPT,
          _buildScreenOutput } from '../display.js';
 import { nhgetch } from '../input.js';
@@ -95,22 +94,7 @@ function addtopl(bp) {
 }
 
 // win/tty/topl.c:96 remember_topl() — push the current line into ^P history.
-//
-// It is NOT purely history, which is how this was described before. C also
-// clears gt.toplines and advances the ring position:
-//
-//     if (!program_state.in_checkpoint) {
-//         *gt.toplines = '\0';
-//         cw->maxcol = cw->maxrow = (idx + 1) % cw->rows;
-//     }
-//
-// The clear is harmless HERE, and that is the real reason this stays
-// unported rather than "no screen output": update_topl() is the only caller
-// in both C and this port, and it overwrites the message immediately after,
-// so clearing it first changes nothing. The ring position only matters to
-// ^P, which nothing reads yet.
-//
-// If a second caller ever appears, this reasoning expires with it.
+// The history buffer is not modelled yet; nothing reads it.
 function remember_topl() {
     (game.unported ||= new Set()).add('topl:remember_topl');
 }
@@ -124,6 +108,7 @@ function redotoplin(str) {
 }
 
 // include/decl.h TBUFSZ
+const TBUFSZ = 300;
 
 // win/tty/topl.c:365 tty_yn_function() — the generic prompt-and-read-a-key.
 //

@@ -8,7 +8,6 @@
 // draws rn2(300) — the tests are independent `if`s, not a chain.
 
 import { game } from './gstate.js';
-import { Hallucination, Deaf } from './youprop.js';
 import { MFLAGS } from './monst_data.js';
 import { canseemon } from './display.js';
 import { helpless } from './monst.js';
@@ -121,12 +120,12 @@ export function growl(mtmp) {
         return;
 
     /* presumably nearness and soundok checks have already been made */
-    if (Hallucination())
+    if (game.u.uprops?.HALLUC)
         growl_verb = note_sounds_unported('growl:h_sounds');   /* ROLL_FROM */
     else
         growl_verb = note_sounds_unported('growl:growl_sound');
     if (growl_verb) {
-        if (canseemon(mtmp) || !Deaf()) {
+        if (canseemon(mtmp) || !game.u.uprops?.DEAF) {
             note_sounds_unported('growl:pline');
             if (game.context?.run)
                 note_sounds_unported('growl:nomul');

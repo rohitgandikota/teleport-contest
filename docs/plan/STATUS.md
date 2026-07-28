@@ -10545,3 +10545,31 @@ getobj read (seed0360 step 130 proves it), so the old stub was
 mis-consuming a key there; the real command fixed that alignment.
 
 Board 1207, passes 6, hang-gate OK, generalize OK.
+
+## The multi<0 mystery was a missing 'T' in the dispatch gate; board 1267
+
+Correction to the previous entry: the [boundary][phase] inversion was NOT
+a moveloop accounting bug. cmd.js's `'rwqWPR'.includes(ch)` gate simply
+lacked 'T', so dotakeoff never ran and its turn never passed; every later
+turn was attributed one key early. With 'T' added the whole delayed-wear
+stream (setworn -> nomul(-2) -> two helpless turns -> unmul -> Boots_on)
+matches C draw for draw. Lesson recorded: when a turn seems to run in the
+wrong order, first confirm the COMMAND actually dispatched - the
+key-vs-draw correlation probe (rn2 stack dump + nhgetch counter) said
+"no draws at all for this key", which is a dispatch symptom, not a
+sequencing one.
+
+Also landed: adjabil's intrinsic gain/loss messages (gen-roledata now
+carries gainstr/losestr and the previously-missed &HInfravision rows -
+elf sessions may shift; watch seed0101 if elf), and xname's
+observe_object side effect (objnam.c:627) which sets dknown whenever a
+visible object is named - the wish's "q - a cubical amulet." needs it.
+
+seed0360 now 136/833 screens, RNG 3044. Its next gap is monster-vs-hero
+combat: mattacku (mhitu.c:912) with hitmu/dmgval and mhitm_knockback on
+the hero - the goblin fights back after step 140. That is the next
+subsystem; mattackm (mon-vs-mon) already exists in js/mhitm.js as the
+pattern to follow. After that the tour heads downstairs ('>' dodown is
+live) into deeper levels.
+
+Board 1267 (was 1207), passes 6, hang-gate OK, generalize OK.

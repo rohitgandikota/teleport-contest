@@ -10105,3 +10105,51 @@ cursor differs) - minor, parked. seed0900 (tourist-explore) now has the
 Wishing fix but still diverges at 2551/2983: next diverge target. Also
 worth re-running diverge on seed1500-rogue-explore-move (2341/2768) -
 rogue explore, likely shares the explore-kit gains.
+
+## c59ddb3: run keys + counts + inv rank order + m-vs-m combat (860 -> 905)
+
+seed0900 to 100% RNG (2983/2983) via four fixes, each found by diverge:
+
+1. 'H' etc: shifted direction letters run (do_run_west, cmd.c:1518).
+   One-line lowering into the movement arm with context.run = 1.
+2. doeat was missing the is_edible rejection (eat.c:2864): C answers a
+   non-food selection with "You cannot eat that!" and NO time; ours ate
+   darts. The eat draws then landed where C has none.
+3. The dogfood pack scan (dogmove.c:586) walks the hero's inventory in
+   CHAIN order, which with flags.invlet_constant (default On!) is
+   inv_rank order: invlet ^ 040, so GOLD FIRST, then a..z, then A..Z.
+   Our array appended gold last, so the scan's obj_resists count was off
+   by one. reorder_invent (invent.c:739) is now applied at every hero
+   inventory insertion (addinv, touchfood re-slot, wish grant). WATCH:
+   any new insertion site must call it too, or a scan misalignment like
+   this returns.
+4. Typed digits are a repeat count (get_count, cmd.c:5009): "Count: 20"
+   echoes from two digits, ESC cancels, gm.multi = count - 1, and
+   allmain's repeat arm re-dispatches game.cmd_key without reading keys
+   or clearing the topline (parse doesn't run for repeats). Canned-queue
+   digit keys bypass count collection (live_input gate), as C's cmdq
+   path bypasses parse.
+
+Monster-vs-monster combat is IN: mattackm/hitmm/mdamagem/passivemm
+(js/mhitm.js), mhitm_ad_phys + mhitm_knockback (js/uhitm.js, their C
+home), monkilled/mondied + corpse_chance + make_corpse ordinary path
+(js/mon.js), grow_up (js/makemon.js), max_passive_dmg/sticks
+(js/mondata.js), and dogmove's ALLOW_M branch with balk, eye/cube
+avoidance draws and the rn2(4) return attack. Draw shape verified
+against seed0900 step 13: [rnd(20) hit, d(1,6) dmg, knockback rn2(3)
+rn2(6), corpse_chance rn2(2), grow_up rnd(1)] all matching. passivemm
+draws rn2(3) per attack on a live defender EVEN when the defender has
+no passive attack (the slot walk lands on an all-zero row).
+
+Recorded, will bite later: AT_WEAP (mon_wield_item), gaze/engulf/breath
+arms, mdisplacem, make_corpse special cadavers (dragons, golems,
+mummies), mondead's full detach (shop/vault/lifesave), monster
+inventory drops on death (minvent is not dropped!).
+
+Board 905. seed0030 35->64 (+29, counted searches now repeat), 0900
+6->15 screens, 0012 +3, 0060 +3. No session regressed. Gates clean.
+
+### Next
+seed0900 screens 15/84 with full RNG: display-side gaps (screendiff it).
+seed1150 48/51 (three ^X attribute-page screens). seed1500 (rogue
+explore) and seed2200 rng tails next. The reorder_invent WATCH above.

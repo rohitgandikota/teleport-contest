@@ -24,6 +24,10 @@ import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory } from './inve
 import { getdir } from './cmd.js';
 import { fall_asleep } from './timeout.js';
 import { healup } from './potion.js';
+import { findit } from './detect.js';
+import { makeknown, observe_object } from './o_init.js';
+import { more_experienced } from './exper.js';
+import { rn1 } from './rng.js';
 import { pline_The, You, You_feel } from './pline.js';
 import { pline } from './display.js';
 import { nothing_happens, ECMD_TIME, ECMD_CANCEL, NODIR } from './const.js';
@@ -156,6 +160,7 @@ export async function zappable(wand) {
 // other wand records. Returns the retributive damage, 0 for sleep.
 export async function zapyourself(obj, ordinary) {
     let damage = 0;
+    let learn_it = false;
 
     switch (obj.otyp) {
     case ONAMES.WAN_SLEEP:
@@ -175,17 +180,84 @@ export async function zapyourself(obj, ordinary) {
     }
     case ONAMES.SPE_HEALING:
     case ONAMES.SPE_EXTRA_HEALING: {
-        /* src/zap.c:2908 — "(no effect for spells...)" on learn_it */
+        learn_it = true; /* (no effect for spells...) */
         healup(d(6, obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 8 : 4), 0, false,
                (!!obj.blessed || obj.otyp === ONAMES.SPE_EXTRA_HEALING));
         await You_feel(`${obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 'much ' : ''}better.`);
         break;
     }
+    case ONAMES.WAN_SECRET_DOOR_DETECTION:
+    case ONAMES.SPE_DETECT_UNSEEN:
+        /* src/zap.c:2552 — findit() gives sufficient feedback to discover
+           the wand even when it finds nothing */
+        learn_it = !!obj.dknown;
+        await findit();
+        break;
     default:
         note_unported_zap(`zapyourself:otyp=${obj.otyp}`);
         break;
     }
+    if (learn_it)
+        learnwand(obj);
     return damage;
+}
+
+// src/zap.c:2539 zapnodir() — wands that need no direction.
+export async function zapnodir(obj) {
+    let known = false;
+
+    switch (obj.otyp) {
+    case ONAMES.WAN_SECRET_DOOR_DETECTION:
+    case ONAMES.SPE_DETECT_UNSEEN:
+        /* findit() gives sufficient feedback to discover the wand even
+           when blinded or when it fails to find anything */
+        known = !!obj.dknown;
+        await findit();
+        break;
+    case ONAMES.WAN_STASIS: {
+        const tmp_until = game.moves + rn1(21, 10);
+        if (tmp_until > ((game.level.flags ||= {}).stasis_until || 0))
+            game.level.flags.stasis_until = tmp_until;
+        break;
+    }
+    case ONAMES.WAN_CREATE_MONSTER:
+        /* create_critters draws rn2(23) for the count first */
+        note_unported_zap('zapnodir:create_monster');
+        rn2(23);
+        break;
+    case ONAMES.WAN_LIGHT:
+    case ONAMES.SPE_LIGHT:
+    case ONAMES.WAN_WISHING:
+    case ONAMES.WAN_ENLIGHTENMENT:
+        note_unported_zap(`zapnodir:otyp=${obj.otyp}`);
+        break;
+    default:
+        break;
+    }
+
+    if (known) {
+        if (!game.objects[obj.otyp].oc_name_known)
+            more_experienced(0, 10);
+        /* effect was observable; discover the wand type provided
+           that the wand itself has been seen */
+        learnwand(obj);
+    }
+}
+
+// src/zap.c:123 learnwand() — the zap's observable effect identifies the
+// wand type (spells are suppressed so casting can't re-discover a book).
+export function learnwand(obj) {
+    if (obj.oclass !== OCLASSES.SPBOOK_CLASS) {
+        if (game.objects[obj.otyp].oc_name_known) {
+            observe_object(obj);
+        } else {
+            if (!game.u.ublind)
+                observe_object(obj);
+            if (obj.dknown)
+                makeknown(obj.otyp);
+        }
+        update_inventory();
+    }
 }
 
 // src/zap.c:2627 dozap() — the 'z' command.
@@ -203,6 +275,8 @@ export async function dozap() {
     } else if (obj.cursed && !rn2(100)) {   /* WAND_BACKFIRE_CHANCE */
         note_unported_zap('dozap:backfire');
         return ECMD_TIME;
+    } else if (!need_dir) {
+        await zapnodir(obj);
     } else if (need_dir && !(await getdir(null))) {
         if (!game.u?.ublind)
             note_unported_zap('dozap:glows_and_fades');

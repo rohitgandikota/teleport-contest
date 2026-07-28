@@ -12,6 +12,9 @@
 // direct check that the o_init port is right.
 
 import { game } from './gstate.js';
+import { rn2, rnd } from './rng.js';
+import { mksobj, rnd_class, curse } from './mkobj.js';
+import { Is_candle } from './obj.js';
 import { is_ammo, is_missile } from './wield.js';
 import { is_weptool, is_rustprone, is_corrodeable, is_flammable,
          is_crackable, is_rottable } from './mkobj.js';
@@ -488,3 +491,365 @@ export function doname(obj) {
 }
 
 // include/prop.h
+
+// ---------------------------------------------------------------------------
+// The wish parser. C ref: src/objnam.c readobjnam() and helpers.
+// Ported spine: counts and articles, the BUC and erodeproof words, the
+// "(N:M)"/"(lit)" charge suffix, the wrp[] class-word forms, and the
+// rnd_otyp_by_namedesc resolution with its probability-weighted rn2. Wish
+// constructs beyond that (monsters, corpses, fruits, terrain) record and
+// return null so the caller can say nothing fitting exists.
+// ---------------------------------------------------------------------------
+
+function note_unported_objnam(what) {
+    (game.unported ||= new Set()).add('objnam:' + what);
+}
+
+/* src/hacklib.c fuzzymatch() — compare ignoring the given characters */
+function fuzzymatch(s1, s2, ignore_chars, caseblind) {
+    const strip = (s) => {
+        let out = '';
+        for (const ch of s)
+            if (!ignore_chars.includes(ch)) out += ch;
+        return caseblind ? out.toLowerCase() : out;
+    };
+    return strip(s1) === strip(s2);
+}
+
+// src/objnam.c:3243 wishymatch()
+function wishymatch(u_str, o_str, retry_inverted) {
+    if (fuzzymatch(u_str, o_str, ' -', true))
+        return true;
+
+    if (retry_inverted) {
+        const u_of = u_str.indexOf(' of ');
+        const o_of = o_str.indexOf(' of ');
+        if (u_of >= 0 && o_of < 0) {
+            const buf = u_str.slice(u_of + 4) + ' ' + u_str.slice(0, u_of);
+            if (fuzzymatch(buf, o_str, ' -', true))
+                return true;
+        } else if (o_of >= 0 && u_of < 0) {
+            const buf = o_str.slice(o_of + 4) + ' ' + o_str.slice(0, o_of);
+            if (fuzzymatch(u_str, buf, ' -', true))
+                return true;
+        }
+    }
+
+    /* dwarven/elvish/helm/gauntlets/detect variants */
+    if (o_str.startsWith('dwarvish ') && u_str.toLowerCase().startsWith('dwarven '))
+        return fuzzymatch(u_str.slice(8), o_str.slice(9), ' -', true);
+    if (o_str.startsWith('elven ')) {
+        if (u_str.toLowerCase().startsWith('elvish '))
+            return fuzzymatch(u_str.slice(7), o_str.slice(6), ' -', true);
+        if (u_str.toLowerCase().startsWith('elfin '))
+            return fuzzymatch(u_str.slice(6), o_str.slice(6), ' -', true);
+    }
+    if (o_str.includes('helm') && u_str.includes('helmet'))
+        return wishymatch(u_str.replace('helmet', 'helm'), o_str, true);
+    if (o_str.includes('gauntlets') && u_str.includes('gloves'))
+        return wishymatch(u_str.replace('gloves', 'gauntlets'), o_str, true);
+    if (o_str.startsWith('detect ')) {
+        const p = u_str.indexOf(' detection');
+        if (p >= 0)
+            return fuzzymatch('detect ' + u_str.slice(0, p), o_str, ' -', true);
+    } else if (o_str.endsWith(' detection')) {
+        if (u_str.toLowerCase().startsWith('detect '))
+            return fuzzymatch(u_str.slice(7),
+                              o_str.slice(0, -' detection'.length), ' -', true);
+    }
+    return false;
+}
+
+// src/objnam.c:3455 rnd_otyp_by_namedesc()
+export function rnd_otyp_by_namedesc(name, oclass, xtra_prob) {
+    if (!name)
+        return 0;                      /* STRANGE_OBJECT */
+
+    const objects = game.objects;
+    const check_of = !name.includes(' of ');
+    const validobjs = [];
+    let maxprob = 0;
+
+    let lo, hi;
+    if (oclass) {
+        lo = game.bases[oclass];
+        hi = game.bases[oclass + 1] - 1;
+    } else {
+        lo = OCLASSES.MAXOCLASSES ?? 18;
+        hi = objects.length - 1;
+    }
+    for (let i = lo; i <= hi; ++i) {
+        if (!objects[i] || objects[i].oc_class !== (oclass || objects[i].oc_class))
+            continue;
+        let zn = OBJ_NAME(objects[i]);
+        if (!zn)
+            continue;
+        let hit = wishymatch(name, zn, true);
+        if (!hit && check_of && i !== ONAMES.BELL_OF_OPENING
+            && !(i >= ONAMES.GLOB_OF_GRAY_OOZE
+                 && i <= ONAMES.GLOB_OF_BLACK_PUDDING)) {
+            const of = zn.indexOf(' of ');
+            if (of >= 0 && wishymatch(name, zn.slice(of + 4), false))
+                hit = true;
+        }
+        if (!hit) {
+            zn = OBJ_DESCR(objects[i]);
+            if (zn && wishymatch(name, zn, false))
+                hit = true;
+            if (!hit && zn && check_of) {
+                const of = zn.indexOf(' of ');
+                if (of >= 0 && wishymatch(name, zn.slice(of + 4), false))
+                    hit = true;
+            }
+        }
+        if (!hit && objects[i].oc_uname
+            && wishymatch(name, objects[i].oc_uname, false))
+            hit = true;
+        if (hit) {
+            validobjs.push(i);
+            maxprob += (objects[i].oc_prob || 0) + xtra_prob;
+        }
+    }
+
+    if (validobjs.length > 0 && maxprob) {
+        let prob = rn2(maxprob);
+        let i;
+        for (i = 0; i < validobjs.length - 1; i++)
+            if ((prob -= (objects[validobjs[i]].oc_prob || 0) + xtra_prob) < 0)
+                break;
+        return validobjs[i];
+    }
+    return 0;
+}
+
+/* src/objnam.c:2517 wrp[]/wrpsym[] — the wishable class words */
+const wrp = ['wand', 'ring', 'potion', 'scroll', 'gem',
+             'amulet', 'spellbook', 'spell book',
+             'weapon', 'armor', 'tool', 'food', 'comestible'];
+const wrpsym = () => [OCLASSES.WAND_CLASS, OCLASSES.RING_CLASS,
+    OCLASSES.POTION_CLASS, OCLASSES.SCROLL_CLASS, OCLASSES.GEM_CLASS,
+    OCLASSES.AMULET_CLASS, OCLASSES.SPBOOK_CLASS, OCLASSES.SPBOOK_CLASS,
+    OCLASSES.WEAPON_CLASS, OCLASSES.ARMOR_CLASS, OCLASSES.TOOL_CLASS,
+    OCLASSES.FOOD_CLASS, OCLASSES.FOOD_CLASS];
+
+// src/objnam.c:4910 readobjnam() — the reachable spine.
+// Returns the created object, the string 'nothing' for a declined wish, or
+// null when the request needs unported parsing.
+export function readobjnam(bp) {
+    if (bp == null) {
+        note_unported_objnam('readobjnam:random');
+        return null;
+    }
+    bp = bp.replace(/\s+/g, ' ').trim();
+    if (/^(nothing|nil|none)$/i.test(bp))
+        return 'nothing';
+
+    const d = { cnt: 0, spe: 0, spesgn: 0, rechrg: 0, blessed: 0,
+                iscursed: 0, uncursed: 0, islit: 0, erodeproof: 0,
+                oclass: 0, typ: 0, actualn: null, dn: null, un: null };
+
+    /* preparse: leading count, article and quality words */
+    let loop = true;
+    while (loop) {
+        loop = false;
+        const low = bp.toLowerCase();
+        if (/^an? /.test(low)) {
+            d.cnt = 1; bp = bp.replace(/^an? /i, ''); loop = true;
+        } else if (/^the /.test(low)) {
+            bp = bp.slice(4); loop = true;
+        } else if (!d.cnt && /^\d+ /.test(bp)) {
+            d.cnt = parseInt(bp, 10); bp = bp.replace(/^\d+ /, ''); loop = true;
+        } else if (/^blessed |^holy /.test(low)) {
+            d.blessed = 1; bp = bp.replace(/^(blessed|holy) /i, ''); loop = true;
+        } else if (/^cursed |^unholy /.test(low)) {
+            d.iscursed = 1; bp = bp.replace(/^(cursed|unholy) /i, ''); loop = true;
+        } else if (/^uncursed /.test(low)) {
+            d.uncursed = 1; bp = bp.slice(9); loop = true;
+        } else if (/^(rustproof|erodeproof|corrodeproof|fixed|fireproof|rotproof|tempered) /.test(low)) {
+            d.erodeproof = 1; bp = bp.replace(/^\S+ /, ''); loop = true;
+        } else if (/^(greased|partly eaten|historic|diluted|empty) /.test(low)) {
+            note_unported_objnam('readobjnam:prefix');
+            bp = bp.replace(/^\S+ /, '');
+            if (low.startsWith('partly eaten '))
+                bp = bp.replace(/^eaten /, '');
+            loop = true;
+        }
+    }
+    if (!d.cnt)
+        d.cnt = 1;
+
+    /* src/objnam.c:4178 — the trailing "(...)": charges or lit */
+    const par = bp.lastIndexOf('(');
+    if (bp.length > 1 && par > 0) {
+        const inner = bp.slice(par + 1);
+        let head = bp.slice(0, par).trimEnd();
+        if (/^lit\)/.test(inner)) {
+            d.islit = 1;
+            bp = head;
+        } else {
+            const m = inner.match(/^(-?\d+)(?::(-?\d+))?\)/);
+            if (m) {
+                if (m[2] !== undefined) {
+                    d.rechrg = parseInt(m[1], 10);
+                    d.spe = parseInt(m[2], 10);
+                } else {
+                    d.spe = parseInt(m[1], 10);
+                }
+                d.spesgn = 1;
+                bp = head;
+            }
+        }
+    }
+    if (d.spe < 0) {
+        d.spesgn = -1;
+        d.spe = Math.abs(d.spe);
+    }
+    if (d.spe > 99)                     /* SPE_LIM */
+        d.spe = 99;
+    if (d.rechrg < 0 || d.rechrg > 7)
+        d.rechrg = 7;
+
+    /* "+N name" enchantment prefix */
+    const pm = bp.match(/^([+-]\d+) /);
+    if (pm) {
+        d.spe = Math.abs(parseInt(pm[1], 10));
+        d.spesgn = pm[1][0] === '-' ? -1 : 1;
+        bp = bp.slice(pm[0].length);
+    }
+
+    /* the class-word forms: "<class> of X" and "X <class>" */
+    const syms = wrpsym();
+    const lowbp = bp.toLowerCase();
+    for (let i = 0; i < wrp.length; i++) {
+        const w = wrp[i];
+        if (lowbp.startsWith(w) && (lowbp.length === w.length
+                                    || lowbp[w.length] === ' ')) {
+            d.oclass = syms[i];
+            if (d.oclass !== OCLASSES.AMULET_CLASS) {
+                bp = bp.slice(w.length);
+                if (bp.toLowerCase().startsWith(' of '))
+                    d.actualn = bp.slice(4);
+                else
+                    d.actualn = bp.trim() || null;
+            } else {
+                d.actualn = bp;
+            }
+            break;
+        }
+        if (lowbp.endsWith(' ' + w)) {
+            d.oclass = syms[i];
+            if (d.oclass !== OCLASSES.AMULET_CLASS)
+                bp = bp.slice(0, -(w.length + 1));
+            d.actualn = d.dn = bp;
+            break;
+        }
+    }
+    if (!d.oclass) {
+        d.actualn = bp;
+        d.dn = d.dn || bp;
+    }
+
+    /* srch — src/objnam.c:4748 */
+    d.typ = rnd_otyp_by_namedesc(d.actualn, d.oclass, 1)
+            || (d.dn !== d.actualn
+                && rnd_otyp_by_namedesc(d.dn, d.oclass, 1))
+            || rnd_otyp_by_namedesc(d.un, d.oclass, 1)
+            || 0;
+    if (!d.typ && d.actualn) {
+        for (const [key, jname] of Object.entries(Japanese_items))
+            if (jname.toLowerCase() === d.actualn.toLowerCase()) {
+                d.typ = ONAMES[key];
+                break;
+            }
+    }
+    if (!d.typ && !d.oclass) {
+        note_unported_objnam(`readobjnam:unparsed "${bp}"`);
+        return null;
+    }
+    if (!d.typ && d.oclass) {
+        note_unported_objnam('readobjnam:random_of_class');
+        return null;
+    }
+
+    /* typfnd — non-wizard downgrades of unique/nowish items */
+    if (d.typ && !game.wizard) {
+        switch (d.typ) {
+        case ONAMES.AMULET_OF_YENDOR: d.typ = ONAMES.FAKE_AMULET_OF_YENDOR; break;
+        case ONAMES.CANDELABRUM_OF_INVOCATION:
+            d.typ = rnd_class(ONAMES.TALLOW_CANDLE, ONAMES.WAX_CANDLE); break;
+        case ONAMES.BELL_OF_OPENING: d.typ = ONAMES.BELL; break;
+        case ONAMES.SPE_BOOK_OF_THE_DEAD: d.typ = ONAMES.SPE_BLANK_PAPER; break;
+        case ONAMES.MAGIC_LAMP: d.typ = ONAMES.OIL_LAMP; break;
+        default:
+            if (game.objects[d.typ].oc_nowish)
+                return null;
+            break;
+        }
+    }
+
+    /* create the object, then fine-tune it (src/objnam.c:5037) */
+    const otmp = mksobj(d.typ, true, false);
+    d.typ = otmp.otyp;
+    d.oclass = otmp.oclass;
+
+    if (d.cnt > 0 && d.cnt !== 1 && game.objects[d.typ].oc_merge
+        && (game.wizard || d.cnt < rnd(6)
+            || (d.cnt <= 7 && Is_candle(otmp))
+            || (d.cnt <= 20 && (d.typ === ONAMES.ROCK
+                                || d.typ === ONAMES.FLINT))))
+        otmp.quan = d.cnt;
+
+    /* src/objnam.c:5093 — the wished spe */
+    if (d.spesgn === 0) {
+        d.spe = otmp.spe;
+    } else if (game.wizard) {
+        ; /* no restrictions except SPE_LIM */
+    } else if (d.oclass === OCLASSES.ARMOR_CLASS
+               || d.oclass === OCLASSES.WEAPON_CLASS
+               || is_weptool(otmp, game.objects)
+               || (d.oclass === OCLASSES.RING_CLASS
+                   && game.objects[d.typ].oc_charged)) {
+        if (d.spe > rnd(5) && d.spe > otmp.spe)
+            d.spe = 0;
+        if (d.spe > 2 && (game.u.uluck || 0) < 0)
+            d.spesgn = -1;
+    } else {
+        if (d.oclass === OCLASSES.WAND_CLASS
+            || d.typ === ONAMES.CRYSTAL_BALL) {
+            if (d.spe > 1 && d.spesgn === -1)
+                d.spe = 1;
+        } else {
+            if (d.spe > 0 && d.spesgn === -1)
+                d.spe = 0;
+        }
+        if (d.spe > otmp.spe)
+            d.spe = otmp.spe;
+    }
+    if (d.spesgn === -1)
+        d.spe = -d.spe;
+
+    switch (d.typ) {
+    case ONAMES.TIN:
+        note_unported_objnam('readobjnam:tin_contents');
+        break;
+    default:
+        otmp.spe = d.spe;
+        break;
+    }
+    if (d.oclass === OCLASSES.WAND_CLASS && d.spesgn === 1)
+        otmp.recharged = d.rechrg;
+
+    if (d.iscursed)
+        curse(otmp);
+    else if (d.uncursed) {
+        otmp.blessed = 0;
+        otmp.cursed = ((game.u.uluck || 0) < 0 && !game.wizard) ? 1 : 0;
+    } else if (d.blessed) {
+        otmp.blessed = ((game.u.uluck || 0) < 0 && !game.wizard) ? 0 : 1;
+        otmp.cursed = ((game.u.uluck || 0) < 0 && !game.wizard) ? 1 : 0;
+    }
+    if (d.erodeproof)
+        otmp.oerodeproof = ((game.u.uluck || 0) < 0 && !game.wizard) ? 0 : 1;
+
+    return otmp;
+}

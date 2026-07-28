@@ -25,6 +25,9 @@ import { getdir } from './cmd.js';
 import { fall_asleep } from './timeout.js';
 import { healup } from './potion.js';
 import { findit } from './detect.js';
+import { readobjnam } from './objnam.js';
+import { getlin } from './cmd.js';
+import { prinv } from './invent.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { rn1 } from './rng.js';
@@ -225,9 +228,18 @@ export async function zapnodir(obj) {
         note_unported_zap('zapnodir:create_monster');
         rn2(23);
         break;
+    case ONAMES.WAN_WISHING:
+        /* src/zap.c:2585 — Luck + rn2(5) gate, then the wish */
+        if ((game.u.uluck || 0) + rn2(5) < 0) {
+            await pline('Unfortunately, nothing happens.');
+            known = false;
+        } else {
+            known = !!obj.dknown;
+            await makewish();
+        }
+        break;
     case ONAMES.WAN_LIGHT:
     case ONAMES.SPE_LIGHT:
-    case ONAMES.WAN_WISHING:
     case ONAMES.WAN_ENLIGHTENMENT:
         note_unported_zap(`zapnodir:otyp=${obj.otyp}`);
         break;
@@ -242,6 +254,40 @@ export async function zapnodir(obj) {
            that the wand itself has been seen */
         learnwand(obj);
     }
+}
+
+// src/zap.c:6314 makewish() — grant one wish.
+export async function makewish() {
+    if (game.flags?.verbose !== false)
+        await You('may wish for an object.');
+
+    const raw = await getlin('For what do you wish?', null);
+    const wishtext = (raw === '\x1b' || raw === '\u001b') ? ''
+                     : String(raw).replace(/\s+/g, ' ').trim();
+    const otmp = readobjnam(wishtext);
+    if (otmp === 'nothing')
+        return;                         /* declined; keeps wishless conduct */
+    if (!otmp) {
+        /* C allows MAXWISHTRY retries then falls back to a random object;
+           the retry loop re-reads a line, so record rather than guess */
+        await pline('Nothing fitting that description exists in the game.');
+        note_unported_zap('makewish:retry');
+        return;
+    }
+
+    /* wish history and livelog carry no draws */
+
+    /* hold_another_object(): into inventory with the new letter shown */
+    const used = new Set((game.invent || []).map(o => o.invlet));
+    const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (const ch of letters)
+        if (!used.has(ch)) { otmp.invlet = ch; break; }
+    otmp.where = 3;                     /* OBJ_INVENT */
+    (game.invent ||= []).push(otmp);
+    update_inventory();
+    await prinv(null, otmp, 0);
+
+    game.u.ublesscnt = (game.u.ublesscnt || 0) + rn1(100, 50);
 }
 
 // src/zap.c:123 learnwand() — the zap's observable effect identifies the

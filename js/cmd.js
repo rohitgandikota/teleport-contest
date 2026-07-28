@@ -35,7 +35,7 @@ sp_lev_wire_mon({ is_pool, is_lava, m_at });
 mklev_wire_mon({ is_pool, is_lava });
 dokick_wire({ stairway_at, t_at });
 do_wire_dokick(ship_object);
-import { wiz_level_change, wiz_level_tele } from './wizcmds.js';
+import { wiz_level_change, wiz_level_tele, wiz_wish } from './wizcmds.js';
 import { tty_yn_function } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
@@ -552,6 +552,8 @@ export async function doextcmd() {
         return await dojump();
     if (name === 'levelchange')
         return await wiz_level_change();
+    if (name === 'wizwish')
+        return await wiz_wish();
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;
@@ -648,6 +650,9 @@ export async function rhack(key) {
     } else if (ch === '\x16') {
         // src/cmd.c:1970 — C('v') is wizlevelport / wiz_level_tele.
         game.context.move = ((await wiz_level_tele()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x17') {
+        // src/cmd.c:2000 — C('w') is wizwish / wiz_wish.
+        game.context.move = ((await wiz_wish()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '>') {
         // src/cmd.c cmdlist — '>' is dodown.
         game.context.move = (await dodown() === ECMD_TIME ? 1 : 0);

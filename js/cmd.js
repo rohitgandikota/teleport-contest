@@ -42,7 +42,7 @@ import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
-import { doopen, doopen_indir } from './lock.js';
+import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
 import { doapply } from './apply.js';
@@ -701,9 +701,11 @@ export async function rhack(key) {
         // public corpus, and both reads were previously left to run as commands.
         game.context.move = (await dothrow() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'c') {
-        // src/cmd.c cmdlist — 'c' is dochat, whose getdir() consumes a second
-        // key. 107 keystrokes across the public corpus.
-        game.context.move = (await dochat() === ECMD_TIME ? 1 : 0);
+        // src/cmd.c cmdlist — 'c' is doclose (close a door), whose getdir()
+        // consumes a second key. Chat is reachable only as #chat (M-c); this
+        // used to dispatch dochat here, which read the same number of keys
+        // but printed chat responses where C reports about doors.
+        game.context.move = (await doclose() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'a') {
         // src/cmd.c cmdlist — 'a' is doapply. 232 keystrokes across the corpus.
         game.context.move = (await doapply() === ECMD_TIME ? 1 : 0);

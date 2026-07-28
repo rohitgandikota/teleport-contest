@@ -137,6 +137,7 @@ function nextoid(oldobj, newobj) {
         newdif = oid_price_adjustment(newobj, oid);
     } while (newdif !== olddif && --trylimit >= 0);
     game.context.ident = oid;       /* update 'last ident used' */
+    next_ident();                   /* increment context.ident for next use */
     /* C ends with next_ident() here (mkobj.c:549), ONE rnd(2) per split.
        Landing that draw shifted seed0361's LEVEL GEN, which means some
        js caller splits at generation time where C does not -- a phantom

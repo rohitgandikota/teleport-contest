@@ -45,6 +45,7 @@ import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
+import { doread } from './read.js';
 import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
@@ -732,7 +733,10 @@ export async function rhack(key) {
         // Every one of them starts with getobj(), which reads the inventory
         // letter. Their effects are unported, but consuming that letter is what
         // keeps the session in step: skip it and the letter runs as a command.
-        game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
+        if (ch === 'r')
+            game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
+        else
+            game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {
         // src/cmd.c:1930 — '.' is "wait", donull, which returns ECMD_TIME.
         // src/do.c:2351: the only early exit is cmd_safety_prevention, which

@@ -12,6 +12,8 @@ import { NODIR, IMMEDIATE } from './const.js';
 
 import { game } from './gstate.js';
 import { PMNAMES } from './monst_data.js';
+import { exercise } from './attrib.js';
+import { A_WIS } from './const.js';
 import { rn2 } from './rng.js';
 import { obj_typename, OBJ_DESCR as objDescrOf, OBJ_NAME,
          Japanese_item_name } from './objnam.js';
@@ -360,8 +362,13 @@ export function discover_object(oindx, mark_as_known, mark_as_encountered,
 
         if (mark_as_encountered)
             objects[oindx].oc_encountered = 1;
-        if (!objects[oindx].oc_name_known && mark_as_known)
+        if (!objects[oindx].oc_name_known && mark_as_known) {
             objects[oindx].oc_name_known = 1;
+            /* src/o_init.c:478 — learning a NEW type exercises wisdom,
+               one rn2(19); re-knowing draws nothing */
+            if (credit_hero)
+                exercise(A_WIS, true);
+        }
     }
 }
 
@@ -464,4 +471,10 @@ function let_to_name(oclass) {
     for (const [k, v] of Object.entries(OCLASSES))
         if (v === oclass && CLASS_NAMES[k]) return CLASS_NAMES[k];
     return '';
+}
+
+// src/o_init.c makeknown() — fully discover an object type; the wisdom
+// exercise only fires when the type was actually unknown.
+export function makeknown(otyp) {
+    discover_object(otyp, true, true, true);
 }

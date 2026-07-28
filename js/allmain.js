@@ -164,6 +164,14 @@ export async function newgame() {
     // hpadv.inrnd == 0; newpw() draws rnd(enadv.inrnd) per role and race.
     {
         g.urole = roles[g.flags.initrole];
+        /* src/role.c:2079 — a role with no gods of its own (the Priest)
+           borrows the chosen pantheon's. role_init picked game.pantheon
+           above; urole is the shared table record, so copy before writing. */
+        if (!g.urole.lgod)
+            g.urole = { ...g.urole,
+                        lgod: roles[g.pantheon].lgod,
+                        ngod: roles[g.pantheon].ngod,
+                        cgod: roles[g.pantheon].cgod };
         g.urace = races[g.flags.initrace];
         g.u.ulevel = 0;
         /* C's `u` is a static struct, so u.ualign exists before newhp() writes

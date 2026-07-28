@@ -18,12 +18,13 @@ import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER } from './monst.js';
 import { killed, shieldeff_mon } from './mon.js';
 import { ONAMES } from './objects_data.js';
-import { rn2, rnd } from './rng.js';
+import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory } from './invent.js';
 import { getdir } from './cmd.js';
 import { fall_asleep } from './timeout.js';
-import { pline_The, You } from './pline.js';
+import { healup } from './potion.js';
+import { pline_The, You, You_feel } from './pline.js';
 import { pline } from './display.js';
 import { nothing_happens, ECMD_TIME, ECMD_CANCEL, NODIR } from './const.js';
 
@@ -170,6 +171,14 @@ export async function zapyourself(obj, ordinary) {
             await You("fall asleep!");
         /* monstunseesu(M_SEEN_SLEEP) — monster memory, recorded */
         await fall_asleep(-rnd(50), true);
+        break;
+    }
+    case ONAMES.SPE_HEALING:
+    case ONAMES.SPE_EXTRA_HEALING: {
+        /* src/zap.c:2908 — "(no effect for spells...)" on learn_it */
+        healup(d(6, obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 8 : 4), 0, false,
+               (!!obj.blessed || obj.otyp === ONAMES.SPE_EXTRA_HEALING));
+        await You_feel(`${obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 'much ' : ''}better.`);
         break;
     }
     default:

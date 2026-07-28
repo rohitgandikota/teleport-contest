@@ -9741,3 +9741,21 @@ in cmd.js claiming the call 'is NOT wired here yet' is superseded.
 
 Board 570/3 (the -2 screens vs last commit is post-divergence tail noise;
 every point moved later or held).
+
+
+### Zap chain landed; seed0016 remains at 2551 with a characterized ordering gap
+
+The dozap/sleep machinery is in (see commit). seed0016's point held at 2551
+with positional matches climbing (2576 -> 2630): the sleep turns align once
+started, but at the zap step OUR core spends the monsters' banked movement
+(distfleeck) BEFORE the hero's zap command, while C zaps first. The
+move-flag lifetime fix (consume + occupation re-assert) was necessary but
+not sufficient: some command around steps 13-15 sets move=1 in ours where
+C's does not, so a turn block runs ahead of the resumed zap prompt.
+
+Next probe: log context.move transitions per step for steps 12-16 on
+seed0016 and compare which command charges time. Suspects: the eat's
+final-bite accounting (done_eating timing) or the wake-up unmul path
+setting move.
+
+Board 573/3.

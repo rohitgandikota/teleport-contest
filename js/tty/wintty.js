@@ -17,6 +17,7 @@
 // column 0 with the cursor at [9,23].
 
 import { game } from './../gstate.js';
+import { TOPLINE_EMPTY } from './../display.js';
 import { tty_clear_nhwindow_message } from './../display.js';
 import { nhgetch } from './../input.js';
 import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
@@ -506,6 +507,13 @@ export function tty_display_nhwindow(window) {
            same way. */
         game._pending_message = '';
         tty_clear_nhwindow_message(game._topl_cury || 0);
+    } else {
+        /* wintty.c's full-screen arm (offx collapsed to 0): the whole screen
+           region is cleared and `ttyDisplay->toplin = TOPLINE_EMPTY`, so the
+           prompt that was on the topline does not come back after the window
+           is dismissed. */
+        game._pending_message = '';
+        game._toplin = TOPLINE_EMPTY;
     }
 
     /* wintty.c:1944 — `if (cw->data || !cw->maxrow)` picks the text renderer;

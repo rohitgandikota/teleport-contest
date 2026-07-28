@@ -14,6 +14,14 @@
 // spurious line shifts every row below it and costs the whole frame.
 
 import { game } from './gstate.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED } from './const.js';
+import { makeplural } from './objnam.js';
+import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
+import { empty_handed, is_ammo } from './wield.js';
+
+function note_unported_insight(what) {
+    (game.unported ||= new Set()).add('insight:' + what);
+}
 import { depth } from './dungeon.js';
 import { aligns } from './role_data.js';
 import { A_MAX } from './attrib.js';
@@ -210,12 +218,49 @@ function status_enlightenment() {
     /* encumbrance: near_capacity() is UNENCUMBERED with a starting pack */
     you_are('unencumbered');
 
-    /* weapon_insight(): no uwep and no gloves */
-    you_are('bare handed');
+    /* src/insight.c:1270 weapon_insight() — the reachable arms: weaponless
+       (empty_handed) or wielding a plain weapon described by its skill
+       class. The twoweap arm and the shield-of-reflection / wet-towel
+       overrides need state no recorded hero reaches yet. */
+    if (!game.u.uwep) {
+        you_are(empty_handed());
+    } else if (game.u.twoweap) {
+        you_are('wielding two weapons at once');
+    } else {
+        const what = weapon_descr(game.u.uwep);
+        let buf;
+        if (what === 'armor' || what === 'food' || what === 'venom')
+            buf = `wielding some ${what}`;
+        else
+            buf = `wielding ${(game.u.uwep.quan === 1) ? an(what) : makeplural(what)}`;
+        you_are(buf);
+    }
 
-    /* skill with the current weapon: bare handed combat, unskilled.
-       hav is false for unskilled, so it is "You are ... in ..." */
-    you_are('unskilled in bare handed combat');
+    /*
+     * Skill with current weapon (src/insight.c:1310).
+     */
+    {
+        const wtype = weapon_type(game.u.uwep);
+        if (wtype !== P_NONE && (!game.u.uwep || !is_ammo(game.u.uwep))) {
+            const sklvl = P_SKILL(wtype);
+            const hav = (sklvl !== P_UNSKILLED && sklvl !== P_SKILLED);
+            const sklvlbuf = (sklvl === P_ISRESTRICTED)
+                ? 'no' : skill_level_name(wtype).toLowerCase();
+            /* "you have no/basic/expert skill with <skill>" or
+               "you are unskilled/skilled in <skill>" */
+            let buf = `${sklvlbuf} ${hav ? 'skill with' : 'in'} ${skill_name(wtype)}`;
+            if (!game.u.twoweap) {
+                if (can_advance(wtype, false))
+                    buf += ' and can enhance that';
+                if (hav)
+                    you_have(buf);
+                else
+                    you_are(buf);
+            } else {
+                note_unported_insight('weapon_insight:twoweap_skill');
+            }
+        }
+    }
 
     /* C reports 'nudity' when no armour slot is filled. A Tourist wears the
        Hawaiian shirt, so this must NOT fire — emitting it would push every

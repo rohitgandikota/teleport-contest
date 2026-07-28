@@ -128,6 +128,71 @@ function u_maybe_impaired() {
     return !!(game.u.uprops?.CONFUSION || game.u.uprops?.STUNNED);
 }
 
+// src/cmd.c:3919 show_direction_keys() — the compass rose. The default
+// keybindings put the plain letters on the movement commands, so visctrl of
+// each is the letter itself; rebinding is not ported.
+function show_direction_keys(win, centerchar, nodiag) {
+    if (!centerchar)
+        centerchar = ' ';
+
+    if (nodiag) {
+        tty_putstr(win, 0, "             k   ");
+        tty_putstr(win, 0, "             |   ");
+        tty_putstr(win, 0, `          h- ${centerchar} -l`);
+        tty_putstr(win, 0, "             |   ");
+        tty_putstr(win, 0, "             j   ");
+    } else {
+        tty_putstr(win, 0, "          y  k  u");
+        tty_putstr(win, 0, "           \\ | / ");
+        tty_putstr(win, 0, `          h- ${centerchar} -l`);
+        tty_putstr(win, 0, "           / | \\ ");
+        tty_putstr(win, 0, "          b  j  n");
+    }
+}
+
+/*
+ * src/cmd.c:4171 help_dir() — the cmdassist panel for an invalid direction.
+ *
+ * Only the non-prefix arm is reachable: every caller here passes the ESC
+ * spkey, so prefixhandling is false, and getdir always passes sym='\0' (its
+ * caller's prompt never starts with '^'), which skips the are-you-trying-
+ * to-use-^X dowhatdoes arm entirely.
+ */
+async function help_dir(sym, msg) {
+    const win = tty_create_nhwindow(NHW_TEXT);
+    /* include/hack.h:1414 NODIAG() — grid bug only */
+    const nodiag = (game.u.umonnum === PMNAMES.PM_GRID_BUG);
+
+    if (msg) {
+        tty_putstr(win, 0, `cmdassist: ${msg}`);
+        tty_putstr(win, 0, "");
+    }
+
+    tty_putstr(win, 0, `Valid direction keys${nodiag ? " in your current form" : ""} are:`);
+    show_direction_keys(win, '.', nodiag);
+
+    tty_putstr(win, 0, "");
+    tty_putstr(win, 0, "          <  up");
+    tty_putstr(win, 0, "          >  down");
+    /* C: "       %4s  direct at yourself" with visctrl(NHKF_GETDIR_SELF),
+       which is "." under the default bindings */
+    tty_putstr(win, 0, "          .  direct at yourself");
+
+    if (msg) {
+        /* non-null msg means that this wasn't an explicit user request */
+        tty_putstr(win, 0, "");
+        tty_putstr(win, 0,
+               "(Suppress this message with !cmdassist in config file.)");
+    }
+    tty_display_nhwindow(win);
+    await nhgetch();
+    while (tty_next_page(win))
+        await nhgetch();
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return true;
+}
+
 // src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.
 //
 // Only the plain movement-key path is reachable from a recorded session; the
@@ -155,7 +220,21 @@ export async function getdir(s) {
         return true;
     }
     if (!isMovementKey(dirsym)) {
-        /* "What a strange direction!" — no draw, no turn */
+        /* src/cmd.c:4095-4110 — a key in quitchars (" \r\n\033",
+           src/decl.c:96) cancels quietly; anything else gets the cmdassist
+           help panel (iflags.cmdassist is opt_out, default On) or the
+           "What a strange direction!" pline when assistance is off. The
+           '?' help-request retry is recorded; no recorded session asks. */
+        if (!" \r\n\x1b".includes(dirsym)) {
+            let did_help = false;
+            if (dirsym === '?' || (game.iflags.cmdassist !== false)) {
+                did_help = await help_dir('\0', "Invalid direction key!");
+                if (dirsym === '?')
+                    note_unported_cmd('getdir:help_retry');
+            }
+            if (!did_help)
+                await pline("What a strange direction!");
+        }
         return false;
     }
     game.u.dx = DIR_DX[dirsym];

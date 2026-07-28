@@ -9999,3 +9999,9 @@ positions per step, which pins where the paths split).
 Reading C's jackal positions off the recorded screens is the cheap
 decisive probe: no C-side instrumentation exists, but the frames ARE
 the C state.
+
+Screen-probe result: the jackal is OFF-SCREEN in the recorded frames
+(unlit room outside the hero's sight), so C's path cannot be read from
+the recording. The remaining route is the line-by-line diff of m_move's
+selection loop (ours monmove.js:1086+, C monmove.c:1958-1990) plus the
+jackal's ggx/ggy goal derivation.

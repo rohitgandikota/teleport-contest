@@ -111,10 +111,10 @@ const monmin_difficulty = (levdif) => Math.trunc(levdif / 6);
 const montoostrong = (mndx, lev) => game.mons[mndx].difficulty > lev;
 const montooweak = (mndx, lev) => game.mons[mndx].difficulty < lev;
 
-// src/dungeon.c level_difficulty() — the ordinary-dungeon case.
-export function level_difficulty() {
-    return depth(game.u.uz);
-}
+/* level_difficulty() now lives in js/dungeon.js, where src/dungeon.c has it;
+   import for the many uses below and re-export for existing importers. */
+import { level_difficulty } from './dungeon.js';
+export { level_difficulty };
 
 export function Inhell() {
     return game.dungeons?.[game.u?.uz?.dnum]?.flags?.hellish === true;

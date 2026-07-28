@@ -10629,3 +10629,41 @@ input-exhausted, no hangs).
 
 Next: goto_level/getbones for seed0360's descent, or pick a fresh diverge
 target (seed0030 at 68/1953 step ~20s, seed0014 at 3024/59178 step 18 ",").
+
+## 2026-07-28 (later) — ^V dungeon menu, floating Knox, level_difficulty (board 1338)
+
+The wizard ^V level-teleport flow now reaches its destination pick:
+
+- `js/dungeon.js`: `print_dungeon(bymenu)` with `print_branch`, `tport_menu`,
+  `br_string`, `chr_u_on_lvl`, `unplaced_floater`, `unreachable_level` — the
+  "Level teleport to where:" menu, headings inverse, castle tune included,
+  '*' on the hero's level, unreachable rows letterless with 4-space pad.
+- Floating Knox kludge (dungeon.c:1142): after LEVEL_MAP resolution the
+  branch whose end2 is knox_level gets end1.dnum = n_dgns and is re-inserted.
+  Without it our menu listed "Portal to Fort Ludios" where C shows none, and
+  every row after it was one letter off.
+- `js/teleport.js` level_tele: the '?' arm calls print_dungeon, sets
+  force_dest (skipping get_level/validation per C), notes the
+  endgame-Amulet grant, and schedule_goto now carries C's verbose post_msg
+  "You materialize on a different level!".
+- `js/dungeon.js` `level_difficulty()` ported for real (was depth()-only in
+  makemon.js; now re-exported from there): endgame = sanctum depth +
+  ulevel/2, builds-up branch adjustment, aggravate doubling. THE BUG THIS
+  FIXES: picking an Elemental Plane from the menu gave depth() = negative,
+  and a leprechaun's mkmonmoney d(level_difficulty(),30) with negative n
+  looped forever — seed0373 went 41 -> HANG -> 0 before the fix, 50 after.
+  `builds_up()` ported alongside.
+
+Board: 1338 (+65 this pair of changes; every session delta positive:
+0360 +29, 0367 +13, 0373 +9, 0361 +7, plus small gains). Passes 6. Gates OK.
+
+Step 145 of seed0360 ('c' = oracle: 9) is the next wall: goto_level ->
+mklev must dispatch Is_special -> makemaz('oracle') and run the des-file
+special-level pipeline (load shuffle, des.room x5 with statues + delphi +
+Oracle + fountains, sp_lev dig_corridor join, maybe_sdoor doors,
+mineralize, fills, place_lregion arrival). The C draw histogram for that
+step is in the session at step 145; our makelevel currently ordinary-gens
+every level, and ALSO draws the medusa rn2(5) up front where C only draws
+it in the final else-if arm — restructure to C's dispatch when starting
+makemaz. The u_on_rndspot arrival (collect_coords x225) and losedogs pet
+arrival are part of the same wall.

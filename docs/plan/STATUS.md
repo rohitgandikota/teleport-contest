@@ -9726,3 +9726,18 @@ arm is itself a fidelity bug when C's arm can return ECMD_OK.
 seed0016 now diverges at 2500 (next unknown); seed0101's Q-flow analog
 (div@2293) still stands -- likely a doquiver_core detail, same family.
 Board 572/3.
+
+
+### Pet displacement rn2(7) landed; three sessions moved later
+
+The do_attack divergence cluster (0014/0015/0016, all uhitm.c:474) was the
+UNWIRED domove_attackmon_at: our domove swapped with pets directly, skipping
+C's displacement roll. Wired for safe monsters only; hostiles keep the
+blocked path (do_attack's combat tail still unported, the known -23-screen
+gap, now marked domove:attack_hostile).
+
+Points after: 0016 @2551, 0015 @2763, 0014 @3000. The old stale comment
+in cmd.js claiming the call 'is NOT wired here yet' is superseded.
+
+Board 570/3 (the -2 screens vs last commit is post-divergence tail noise;
+every point moved later or held).

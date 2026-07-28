@@ -9659,3 +9659,27 @@ NEXT: seed0101 (ranger-quiver-throw, div@2293 at next_ident) and seed0077
 (div@3230 at dog_goal) are the nearest non-passing sessions; seed0016
 (div@2493 next_ident) and seed0398 (div@2764 rnd_otyp_by_namedesc) share
 the identification-subsystem cluster.
+
+
+### The identification cluster is a PHANTOM GEN-TIME SPLIT, not next_ident
+
+Chain of findings, so nobody re-walks it:
+1. seed0016/0101 diverge by one rnd(2) at next_ident when the hero's first
+   meal/quiver action splits a stack. C's nextoid ENDS with next_ident()
+   (mkobj.c:549) -- one draw per split. Our nextoid draws nothing.
+2. touchfood was missing from doeat entirely (now ported): C splits the
+   eaten item off the stack (eat.c:360, the 'j' apple at seed0016 step 7).
+3. Landing the nextoid draw BROKE seed0361 at level generation: div@0,
+   because something in OUR gen path calls splitobj where C's gen does not.
+   Draw-free it was invisible; drawing it desynced the whole level. The
+   shifted gen also exposed a latent CORPSTAT_NONE crash (fixed).
+
+THE HUNT: find which splitobj caller fires during LEVEL GEN on seed0361.
+Candidates: js/mon.js:1300 and js/dog.js:1299 (mpickstuff carry splits),
+js/invent.js:287 (useupf). Instrument splitobj with a stack dump gated on
+game.moves === undefined/0 (gen time) and run seed0361. Fix the phantom
+split, then re-land the nextoid draw -- both sessions' first-meal rnd(2)
+and the whole identification cluster should then move.
+
+Also fixed in passing: CORPSTAT_NONE was never defined in js/mklev.js
+(include/obj.h 0x00); any statue trap crashed the whole session.

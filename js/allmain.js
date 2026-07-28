@@ -83,6 +83,7 @@ function init_sound_disp_gamewindows() {
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
 import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED } from './mon.js';
 import { dosounds } from './sounds.js';
+import { age_spells } from './spell.js';
 import { gethungry } from './eat.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { depth } from './dungeon.js';
@@ -320,7 +321,6 @@ export async function newgame() {
     // neutral AFTER u_init had computed the right value. Both are gone; the
     // real records from js/role_data.js carry name, rank, noun, adj and the
     // attrmin/attrmax the ^X window needs.
-    g._goldCount = g.u.umoney0;
     /* uhp/uen were hardcoded to 10 and 2 here, overwriting what newhp() and
        newpw() had already computed from the role and race hp tables a few
        dozen lines above. The status line reads them directly, so every
@@ -435,7 +435,7 @@ export async function moveloop_core() {
                all: movement is allotted below, so a single movemon() call per
                command would always find every monster still at zero. */
             do {
-                monscanmove = movemon();
+                monscanmove = await movemon();
                 if (g.u.umovement >= NORMAL_SPEED)
                     break;         /* it's now your turn */
             } while (monscanmove);
@@ -471,6 +471,7 @@ export async function moveloop_core() {
                    runs exerper(), which every tenth move exercises whichever
                    attribute the hunger and encumbrance state calls for, and
                    each of those spends an rn2(19). */
+                age_spells();
                 exerchk();
 
                 /* src/allmain.c:360 */
@@ -574,6 +575,10 @@ export async function moveloop_core() {
         if (g.context.mv) {
             if (g.multi < COLNO && !--g.multi)
                 end_running(true);
+            /* In C the flag is still TRUE here from parse()'s assume-time and
+               nothing cleared it during the run; our consume-clear above wiped
+               it, so re-assert before domove (whose blocked exit clears it). */
+            g.context.move = 1;
             await domove();
         } else {
             --g.multi;

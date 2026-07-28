@@ -23,7 +23,7 @@ import { get_shop_item } from './shknam.js';
 import { attacktype, is_neuter } from './mondata.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
-    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
+    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
 import { enexto_core } from './teleport.js';
 
 // include/hack.h:1174-1175
@@ -563,6 +563,11 @@ export function mongets(mtmp, otyp) {
 export function mpickobj(mtmp, otmp) {
     if (!mtmp.minvent) mtmp.minvent = [];
     mtmp.minvent.push(otmp);
+    /* src/steal.c add_to_minv() — the object's where/ocarry move with it;
+       obj_extract_self's OBJ_MINVENT arm depends on both. Stack merging
+       (merged()) is not ported; each pickup keeps its own object. */
+    otmp.where = OBJ_MINVENT;
+    otmp.ocarry = mtmp;
     return false;
 }
 

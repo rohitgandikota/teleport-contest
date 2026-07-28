@@ -14,7 +14,7 @@
 // spurious line shifts every row below it and costs the whole frame.
 
 import { game } from './gstate.js';
-import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED } from './const.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON } from './const.js';
 import { makeplural } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 import { empty_handed, is_ammo } from './wield.js';
@@ -26,6 +26,7 @@ import { depth } from './dungeon.js';
 import { aligns } from './role_data.js';
 import { A_MAX } from './attrib.js';
 import { rank_of } from './botl.js';
+import { money_cnt } from './invent.js';
 import { pline } from './display.js';
 import { Fast, Very_fast } from './attrib.js';
 
@@ -140,6 +141,19 @@ function background_enlightenment() {
         enlght_line('You ', 'entered ',
                     `the dungeon ${game.moves} turn${plur(game.moves)} ago`, '');
 
+    /* src/insight.c:645 — the midnight/nighttime arms need the wall clock
+       (night(), midnight()); the recorded panels carry neither line. */
+
+    /* src/insight.c:653 — "other environmental factors" */
+    if (game.flags.moonphase === FULL_MOON
+        || game.flags.moonphase === NEW_MOON) {
+        enl_msg('There ', 'is ', 'was ',
+                `a ${game.flags.moonphase === FULL_MOON ? 'full' : 'new'}`
+                + ' moon in effect', '');
+    }
+    if (game.flags.friday13)
+        out(' Bad things can happen on Friday the 13th.');
+
     you_have(`${u.uexp | 0} experience point${plur(u.uexp | 0)}`);
 }
 
@@ -165,7 +179,9 @@ function basics_enlightenment() {
 
     enl_msg('Your armor class ', 'is ', 'was ', `${u.uac}`, '');
 
-    const money = u.umoney0 | 0;
+    /* src/insight.c:781 — money_cnt(gi.invent), the live count, not the
+       starting umoney0 snapshot; hidden_gold (containers) is recorded. */
+    const money = money_cnt(game.invent);
     out(money ? ` Your wallet contains ${money} zorkmid${plur(money)}`
               : ' Your wallet is empty');
     /* C terminates that line here when nothing follows it */
@@ -176,23 +192,37 @@ function basics_enlightenment() {
 }
 
 // src/insight.c:770 one_characteristic()
+/* src/insight.c:287 attrval() — strength between 18 and 18/100 renders in
+   the exceptional "18/xx" notation; 19..25 shed the +100 encoding. */
+function attrval(attrindx, attrvalue) {
+    if (attrindx !== A_STR || attrvalue <= 18)
+        return `${attrvalue}`;
+    if (attrvalue > STR18(100)) /* 19 to 25 */
+        return `${attrvalue - 100}`;
+    return `18/${String(attrvalue - 18).padStart(2, '0')}`;
+}
+
 function one_characteristic(attrindx) {
     const acurrent = game.u.acurr.a[attrindx];
     const abase = acurrent, apeak = game.u.amax.a[attrindx];
     const alimit = game.urace.attrmax[attrindx];
-    let valubuf = `${acurrent}`;
+    let valubuf = attrval(attrindx, acurrent);
 
     const interesting_alimit =
         (alimit !== (attrindx !== A_STR ? 18 : STR18(100)));
     let paren_pfx = ' (current; ';
     if (acurrent !== abase) {
-        valubuf += `${paren_pfx}base:${abase}`; paren_pfx = ', ';
+        valubuf += `${paren_pfx}base:${attrval(attrindx, abase)}`;
+        paren_pfx = ', ';
     }
     if (abase !== apeak) {
-        valubuf += `${paren_pfx}peak:${apeak}`; paren_pfx = ', ';
+        valubuf += `${paren_pfx}peak:${attrval(attrindx, apeak)}`;
+        paren_pfx = ', ';
     }
-    if (interesting_alimit)
-        valubuf += `${paren_pfx}${acurrent > alimit ? 'innate ' : ''}limit:${alimit}`;
+    if (interesting_alimit) {
+        valubuf += `${paren_pfx}${acurrent > alimit ? 'innate ' : ''}`
+                 + `limit:${attrval(attrindx, alimit)}`;
+    }
     if (acurrent !== abase || abase !== apeak || interesting_alimit)
         valubuf += ')';
 

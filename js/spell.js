@@ -8,10 +8,17 @@ import { worn } from './do_wear.js';
 import { ACURR } from './attrib.js';
 import { isqrt } from './hacklib.js';
 import { is_metallic } from './obj.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, SKILLS } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { rnd } from './rng.js';
 import { tty_yn_function } from './tty/topl.js';
+import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+         tty_select_menu, tty_destroy_nhwindow, ATR_NONE,
+         ATR_INVERSE } from './tty/wintty.js';
+import { NO_COLOR } from './terminal.js';
+import { NHW_MENU, MENU_BEHAVE_STANDARD, PICK_ONE, PICK_NONE,
+         MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED } from './const.js';
+import { OBJ_NAME } from './objnam.js';
 import { ECMD_FAIL } from './const.js';
 import { You, Your, You_feel } from './pline.js';
 import { acurr, exercise } from './attrib.js';
@@ -423,12 +430,137 @@ const P_SKILL = (type) => game.u.weapon_skills?.[type]?.skill ?? P_ISRESTRICTED;
 // src/role.c Role_if()
 const Role_if = (pm) => game.urole?.malenum === pm || game.urole?.mnum === pm;
 
+// src/spell.c:25 spellname(), :26 spellet()
+const spellname = (spell) => {
+    const ocl = game.objects[spellid(spell)];
+    return OBJ_NAME(ocl) ?? '';
+};
+const spellet = (spell) =>
+    String.fromCharCode(spell < 26 ? 97 + spell : 65 + spell - 26);
+
+// src/spell.c:669 age_spells() — every pass through the move loop costs one
+// turn of memory for every known spell, whatever the hero is doing.
+export function age_spells() {
+    for (let i = 0; i < MAXSPELL && spellid(i) !== NO_SPELL; i++)
+        if (spellknow(i))
+            game.spl_book[i].sp_know--;         /* decrnknow(i) */
+}
+
+// src/spell.c:832 spelltypemnemonic()
+function spelltypemnemonic(skill) {
+    switch (skill) {
+    case SKILLS.P_ATTACK_SPELL:      return 'attack';
+    case SKILLS.P_HEALING_SPELL:     return 'healing';
+    case SKILLS.P_DIVINATION_SPELL:  return 'divination';
+    case SKILLS.P_ENCHANTMENT_SPELL: return 'enchantment';
+    case SKILLS.P_CLERIC_SPELL:      return 'clerical';
+    case SKILLS.P_ESCAPE_SPELL:      return 'escape';
+    case SKILLS.P_MATTER_SPELL:      return 'matter';
+    default:                         return '';
+    }
+}
+
+// src/spell.c:2295 spellretention() — the "91%-100%" column. The range width
+// depends on the hero's skill in the spell's school.
+function spellretention(idx) {
+    let skill = P_SKILL(spell_skilltype(spellid(idx)));
+    skill = Math.max(skill, P_UNSKILLED); /* restricted same as unskilled */
+    const turnsleft = spellknow(idx);
+
+    if (turnsleft < 1)
+        return '(gone)';
+    if (turnsleft >= KEEN)
+        return '100%';
+    let percent = Math.trunc((turnsleft - 1) / (KEEN / 100)) + 1;
+    const accuracy = (skill === SKILLS.P_EXPERT) ? 2
+                     : (skill === SKILLS.P_SKILLED) ? 5
+                       : (skill === SKILLS.P_BASIC) ? 10
+                         : 25;
+    /* round up to the high end of this range */
+    percent = accuracy * (Math.trunc((percent - 1) / accuracy) + 1);
+    return `${percent - accuracy + 1}%-${percent}%`;
+}
+
+// src/spell.c:2058 SPELLMENU codes (include/spell.h)
+const SPELLMENU_CAST = -2, SPELLMENU_VIEW = -1, SPELLMENU_SORT = -3;
+
+// src/spell.c:2075 dospellmenu()
+async function dospellmenu(prompt, splaction) {
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+
+    /* iflags.menu_tab_sep is off on tty */
+    const header = (splaction === SPELLMENU_DUMP ? '' : '    ')
+        + 'Name'.padEnd(20) + ' Level ' + 'Category'.padEnd(12)
+        + ' Fail Retention';
+    /* C add_menu_heading() stamps iflags.menu_headings — ATR_INVERSE with
+       NO_COLOR (src/options.c:7188) — on the whole line. */
+    tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR, header,
+                 MENU_ITEMFLAGS_NONE);
+    for (let i = 0; i < MAXSPELL && spellid(i) !== NO_SPELL; i++) {
+        const buf = spellname(i).padEnd(20)
+            + '  ' + String(spellev(i)).padStart(2)
+            + '   ' + spelltypemnemonic(spell_skilltype(spellid(i))).padEnd(12)
+            + ' ' + String(100 - percent_success(i)).padStart(3) + '%'
+            + ' ' + spellretention(i).padStart(9);
+        tty_add_menu(win, null, i + 1, spellet(i), 0, ATR_NONE, NO_COLOR,
+                     buf, (i === splaction) ? MENU_ITEMFLAGS_SELECTED
+                                            : MENU_ITEMFLAGS_NONE);
+    }
+    let how = PICK_ONE;
+    if (splaction === SPELLMENU_VIEW) {
+        if (spellid(1) === NO_SPELL) {
+            /* only one spell => nothing to swap with */
+            how = PICK_NONE;
+        } else {
+            /* more than 1 spell, add an extra menu entry */
+            tty_add_menu(win, null, SPELLMENU_SORT + 1, '+', 0, ATR_NONE,
+                         NO_COLOR, '[sort spells]', MENU_ITEMFLAGS_NONE);
+        }
+    }
+    tty_end_menu(win, prompt);
+
+    const picks = await tty_select_menu(win, how);
+    tty_destroy_nhwindow(win);
+    if (picks.length > 0) {
+        let spell_no = picks[0] - 1;
+        if (picks.length > 1 && spell_no === splaction)
+            spell_no = picks[1] - 1;
+        if (spell_no === splaction)
+            return { chosen: false, spell_no };
+        return { chosen: true, spell_no };
+    } else if (splaction >= 0) {
+        /* explicit de-selection of preselected spell means that
+           user is still swapping but not for the current spell */
+        return { chosen: true, spell_no: splaction };
+    }
+    return { chosen: false, spell_no: -1 };
+}
+const SPELLMENU_DUMP = -4;
+
 // src/spell.c:2024 dovspell() — '+', list known spells.
-// Only the "no spells" path is ported; the menu path lands with the tty menu
-// system. A Tourist starts with no spells, which is the case seed8000 hits.
 export async function dovspell() {
     if (spellid(0) === NO_SPELL) {
         await pline("You don't know any spells right now.");
+    } else {
+        for (;;) {
+            const r = await dospellmenu('Currently known spells',
+                                        SPELLMENU_VIEW);
+            if (!r.chosen)
+                break;
+            if (r.spell_no === SPELLMENU_SORT) {
+                /* spellsortmenu() offers the sort orders */
+                note_unported_spell('dovspell:spellsortmenu');
+            } else {
+                const q = `Reordering spells; swap '${spellet(r.spell_no)}' with`;
+                const r2 = await dospellmenu(q, r.spell_no);
+                if (!r2.chosen)
+                    break;
+                const tmp = game.spl_book[r.spell_no];
+                game.spl_book[r.spell_no] = game.spl_book[r2.spell_no];
+                game.spl_book[r2.spell_no] = tmp;
+            }
+        }
     }
     return ECMD_OK;
 }

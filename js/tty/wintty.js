@@ -419,8 +419,19 @@ function process_menu_window(cw, page, display) {
                         && s[3] === ' ') ? 4 : 0;
         const attr = term_attr(item.attr);
 
+        /* The reference frames are re-serialized rows: a run of 5 or more
+           spaces is emitted as a cursor-forward escape (see the recorded
+           "ESC[7m    Name ESC[17C Level..." header), and the skipped cells
+           come back PLAIN on replay while shorter runs stay attributed.
+           Reproduce that lossy encoding here or an attributed header can
+           never match. */
+        const plainrun = new Array(s.length).fill(false);
+        for (const m of s.matchAll(/ {5,}/g))
+            for (let k = m.index; k < m.index + m[0].length; k++)
+                plainrun[k] = true;
+
         for (let i = 0; i < s.length && col < COLS; i++, col++) {
-            const on = (i >= attr_n) ? attr : 0;
+            const on = (i >= attr_n && !plainrun[i]) ? attr : 0;
             const ch = (i === 2 && item.identifier && item.selected)
                        ? (item.count === -1 ? '*' : '#') : s[i];
             display.setCell(col, row, ch, NO_COLOR, on);

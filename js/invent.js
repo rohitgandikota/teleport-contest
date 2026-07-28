@@ -581,6 +581,14 @@ export function merged(potmp, pobj) {
     return 0;
 }
 
+// src/invent.c money_cnt() — total gold carried.
+export function money_cnt(invent) {
+    for (const otmp of invent || [])
+        if (otmp.oclass === OCLASSES.COIN_CLASS)
+            return otmp.quan;
+    return 0;
+}
+
 // src/mkobj.c obj_extract_self() — unlink the object from wherever it lives.
 export function obj_extract_self(obj) {
     switch (obj.where) {

@@ -108,17 +108,17 @@ export function mcalcdistress() {
 }
 
 // src/mon.c:298 movemon() — let every monster take its turn.
-export function movemon() {
+export async function movemon() {
     let somebody_can_move = false;
     for (const mtmp of game.level?.monsters || []) {
         if (mtmp.mhp <= 0) continue;
-        if (movemon_singlemon(mtmp)) somebody_can_move = true;
+        if (await movemon_singlemon(mtmp)) somebody_can_move = true;
     }
     return somebody_can_move;
 }
 
 // src/mon.c:1214 movemon_singlemon()
-function movemon_singlemon(mtmp) {
+async function movemon_singlemon(mtmp) {
     /* A monster only acts once it has banked NORMAL_SPEED of movement.
        src/mon.c:1251 returns FALSE here — NOT "has any movement left". The
        return value becomes somebody_can_move, which drives moveloop_core's
@@ -177,7 +177,7 @@ function movemon_singlemon(mtmp) {
             return false;
     }
 
-    dochug(mtmp);
+    await dochug(mtmp);
     return mtmp.movement >= NORMAL_SPEED;
 }
 

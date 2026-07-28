@@ -9,11 +9,16 @@ import { A_CON } from './const.js';
 
 import { game } from './gstate.js';
 import { Race_if } from './u_init.js';
+import { carnivorous, herbivorous, metallivorous } from './mondata.js';
+import { Unaware, Hallucination } from './youprop.js';
+import { singular, xname, doname } from './objnam.js';
+import { more_experienced, newexplevel } from './exper.js';
+import { You } from './pline.js';
 import { PMNAMES } from './monst_data.js';
 import { done } from './end.js';
 import { set_occupation } from './allmain.js';
-import { rn2 } from './rng.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, A_LAWFUL } from './const.js';
+import { rn2, rnd, rn1 } from './rng.js';
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory } from './invent.js';
 import { pline } from './display.js';
@@ -28,17 +33,30 @@ export function gethungry() {
     if (u.uinvulnerable)
         return;                       /* forced to fast while praying */
 
+    /* src/eat.c:3174 — ordinary food consumption. The Unaware term is a real
+       short circuit: awake heroes never draw here, but a sleeping hero spends
+       one rn2(10) EVERY turn ("slow metabolic rate while asleep") and only
+       digests on a 0. seed0016's wand-of-sleep nap is what exposed it. */
+    const uptr = game.mons?.[u.umonnum];
+    if ((!Unaware() || !rn2(10))
+        && (!uptr || carnivorous(uptr) || herbivorous(uptr)
+            || metallivorous(uptr))
+        && !u.uprops?.SLOW_DIGESTION)
+        u.uhunger--;
+
     /* src/eat.c:3191 — rn2(20) replaces the old (int) (svm.moves % 20L) */
     const accessorytime = rn2(20);
 
     if (accessorytime % 2) {
         /* regeneration and encumbrance burn food; neither is ported */
     } else {
-        /* ring of hunger / slow digestion; not ported */
+        /* ring of hunger / conflict / charged rings; not ported */
     }
+}
 
-    if (u.uhunger !== undefined)
-        u.uhunger--;
+// src/eat.c:3347 is_fainted()
+export function is_fainted() {
+    return game.u.uhs === FAINTED;
 }
 
 // src/eat.c:126 init_uhunger() — the hero starts well fed.
@@ -180,6 +198,9 @@ export async function doeat() {
         return ECMD_TIME;
     }
 
+    /* src/eat.c:2966 — latched BEFORE touchfood(), which sets oeaten. */
+    const already_partly_eaten = otmp.oeaten ? true : false;
+
     /* src/eat.c:2968 — touchfood() BEFORE the victual is set up; it may
        replace otmp with the split-off single. */
     otmp = touchfood(otmp);
@@ -189,6 +210,30 @@ export async function doeat() {
     v.o_id = otmp.o_id;
     v.usedtime = 0;
     v.reqtime = game.objects[otmp.otyp].oc_delay;
+
+    /* src/eat.c:3027 — cursed or old food behaves rotten. The age arm's
+       rn2(7) only draws once the food is over 30 (blessed: 50) turns old,
+       which is why fresh starting food never spends it. nonrotting_food()
+       is lembas or cram (eat.c:65). */
+    if (otmp.otyp !== ONAMES.FORTUNE_COOKIE
+        && (otmp.cursed
+            || (!(otmp.otyp === ONAMES.LEMBAS_WAFER
+                  || otmp.otyp === ONAMES.CRAM_RATION)
+                && (game.moves - (otmp.age || 0)) > (otmp.blessed ? 50 : 30)
+                && (otmp.orotten || !rn2(7))))) {
+        /* rottenfood()'s messages and blindness/stun arms draw rn2(4); the
+           dont_start bracket depends on them. */
+        note_unported_eat('doeat:rottenfood');
+        otmp.orotten = true;
+        consume_oeaten(otmp, 1);        /* oeaten >>= 1 */
+    } else if (!already_partly_eaten) {
+        if (!(await fprefx(otmp))) {
+            do_reset_eat();
+            return ECMD_TIME;
+        }
+    } else {
+        await You(`${v.reqtime === 1 ? "eat" : "begin eating"} ${doname(otmp)}.`);
+    }
 
     /* nutrition units per round eating */
     if (v.reqtime === 0 || !otmp.oeaten)
@@ -204,6 +249,120 @@ export async function doeat() {
 
     start_eating(otmp, false);
     return ECMD_TIME;
+}
+
+// src/eat.c:2099 fprefx() — the "start to eat" feedback for ordinary food.
+// Returns false when the meal is aborted (a pyrolisk egg explodes).
+//
+// The recording pins the build flags: seed0016's apple prints "Delicious!
+// Must be a Macintosh!", which is the #if MACOS arm, so the reference build
+// defines MACOS (and, being macOS, UNIX — the PEAR fallthrough).
+async function fprefx(otmp) {
+    const give_feedback = async () => {
+        await pline(`This ${singular(otmp, xname)} is ${
+            otmp.cursed
+                ? (Hallucination() ? "grody!" : "terrible!")
+                : (otmp.otyp === ONAMES.CRAM_RATION
+                   || otmp.otyp === ONAMES.K_RATION
+                   || otmp.otyp === ONAMES.C_RATION)
+                    ? "bland."
+                    : Hallucination() ? "gnarly!" : "delicious!"}`);
+    };
+    /* include/hack.h:51 CANNIBAL_ALLOWED() */
+    const cannibal_allowed = () =>
+        game.urole?.mnum === 'PM_CAVE_DWELLER'
+        || game.urole?.mnum === PMNAMES.PM_CAVE_DWELLER
+        || Race_if(PMNAMES.PM_ORC);
+
+    switch (otmp.otyp) {
+    case ONAMES.EGG:
+        if (otmp.corpsenm === PMNAMES.PM_PYROLISK) {
+            /* useup + explode(u.ux, u.uy, -11, d(3,6), 0, EXPL_FIERY) */
+            note_unported_eat('fprefx:pyrolisk_egg');
+            return false;
+        }
+        /* stale_egg() reads iced-corpse age bookkeeping; a stale egg makes
+           vomiting with d(10,4). Fresh eggs take the plain feedback. */
+        note_unported_eat('fprefx:stale_egg_check');
+        await give_feedback();
+        break;
+    case ONAMES.FOOD_RATION: /* nutrition 800 */
+        /* 200+800 remains below 1000+1, the satiation threshold */
+        if (game.u.uhunger <= 200)
+            await pline(Hallucination()
+                ? "Oh wow, like, superior, man!"
+                : "This food really hits the spot!");
+        /* 700-1+800 remains below 1500, the choking threshold */
+        else if (game.u.uhunger < 700)
+            /* body_part(STOMACH) — un-polymorphed heroes all say this */
+            await pline("This satiates your stomach!");
+        break;
+    case ONAMES.TRIPE_RATION:
+        /* the carnivorous non-humanoid arm needs a polymorphed hero */
+        if (Race_if(PMNAMES.PM_ORC)) {
+            await pline(Hallucination() ? "Tastes great!  Less filling!"
+                                        : "Mmm, tripe... not bad!");
+        } else {
+            await pline("Yak - dog food!");
+            more_experienced(1, 0);
+            await newexplevel();
+            /* not cannibalism, but we use similar criteria
+               for deciding whether to be sickened by this meal */
+            if (rn2(2) && !cannibal_allowed()) {
+                rn1(game.context.victual.reqtime, 14);
+                note_unported_eat('fprefx:make_vomiting');
+            }
+        }
+        break;
+    case ONAMES.LEMBAS_WAFER:
+        if (Race_if(PMNAMES.PM_ORC)) {
+            await pline("!#?&* elf kibble!");
+            break;
+        } else if (Race_if(PMNAMES.PM_ELF)) {
+            await pline("A little goes a long way.");
+            break;
+        }
+        await give_feedback();
+        break;
+    case ONAMES.MEATBALL:
+    case ONAMES.MEAT_STICK:
+    case ONAMES.ENORMOUS_MEATBALL:
+    case ONAMES.MEAT_RING:
+        await give_feedback();
+        break;
+    case ONAMES.CLOVE_OF_GARLIC:
+        /* the is_undead vomit arm needs a polymorphed hero;
+           iter_mons(garlic_breath) scares nearby vampiric pets */
+        note_unported_eat('fprefx:garlic_breath');
+        /*FALLTHRU*/
+    default:
+        if (otmp.otyp === ONAMES.SLIME_MOLD && !otmp.cursed
+            && otmp.spe === (game.context.current_fruit ?? 1)) {
+            await pline(`My, this is a ${
+                Hallucination() ? "primo" : "yummy"} ${
+                singular(otmp, xname)}!`);
+        } else if (otmp.otyp === ONAMES.APPLE && otmp.cursed
+                   && !game.u.uprops?.SLEEP_RES) {
+            ; /* skip core joke; feedback deferred til fpostfx() */
+        } else if (otmp.otyp === ONAMES.APPLE) {
+            await pline("Delicious!  Must be a Macintosh!");
+        } else if (otmp.otyp === ONAMES.PEAR) {
+            /* the #ifdef UNIX arm; MACOS grabbed APPLE above */
+            if (!Hallucination()) {
+                await pline("Core dumped.");
+            } else {
+                /* based on an old Usenet joke, a fake a.out manual page */
+                const x = rnd(100);
+                await pline(`${(x <= 75) ? "Segmentation fault"
+                              : (x <= 99) ? "Bus error"
+                                : "Yo' mama"} -- core dumped.`);
+            }
+        } else {
+            await give_feedback();
+        }
+        break; /* default */
+    } /* switch */
+    return true;
 }
 
 // src/eat.c start_eating() — begin (or resume) a meal.

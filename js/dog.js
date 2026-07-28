@@ -44,6 +44,10 @@ const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2, rnd } from './rng.js';
 import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
+import { doname } from './objnam.js';
+import { Monnam } from './do_name.js';
+import { pline_xy } from './pline.js';
+import { relobj } from './steal.js';
 import { PMNAMES } from './monst_data.js';
 import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
@@ -629,11 +633,12 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     /* #define DDIST(x, y) (dist2(x, y, omx, omy)) */
     const DDIST = (x, y) => dist2(x, y, omx, omy);
 
-    /* src/dogmove.c — both gate the APPORT branch. couldsee() is real, so use
-       it; droppables() needs monster inventory, and a pet carrying nothing is
-       the reachable state until that lands. */
+    /* src/dogmove.c — both gate the APPORT branch. droppables() reads the
+       real minvent now that dog_invent's fetch arm calls mpickobj, and the
+       flag flips the moment the pet picks something up: the apport rn2(8)
+       stops drawing and the follow block gains its rn2(apport) term. */
     const in_masters_sight = couldsee(omx, omy);
-    const dog_has_minvent = false; /* droppables(mtmp) != 0 */
+    const dog_has_minvent = !!droppables(mtmp);
 
     for (const obj of (game.level.objects || [])) {
         const nx = obj.ox, ny = obj.oy;
@@ -697,9 +702,9 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
         appr = (udist >= 9) ? 1 : (mtmp.mflee ? -1 : 0);
         if (udist > 1) {
             if (!IS_ROOM(game.level.at(game.u.ux, game.u.uy)?.typ)
-                || !rn2(4) || whappr)
+                || !rn2(4) || whappr
+                || (dog_has_minvent && rn2(edog?.apport ?? 0)))
                 appr = 1;
-            /* the dog_has_minvent case needs monster inventory */
         }
 
         /* a pet follows more closely when the hero is carrying its food, is
@@ -1002,7 +1007,7 @@ function dog_hunger(mtmp, edog) {
     return false;
 }
 
-export function dog_move(mtmp, after) {
+export async function dog_move(mtmp, after) {
     const edog = mtmp.mtame ? (mtmp.edog || {}) : null;
     if (!edog) return 0;
 
@@ -1012,7 +1017,7 @@ export function dog_move(mtmp, after) {
     const omx = mtmp.mx, omy = mtmp.my;
     const udist = distu(omx, omy);
 
-    dog_invent(mtmp, edog, udist);
+    await dog_invent(mtmp, edog, udist);
 
     /* src/dogmove.c:1038 — whappr is TRUE for the five turns after the pet was
        whistled for, and edog->whistletime starts at 0, so it is TRUE for the
@@ -1254,7 +1259,7 @@ function objects_at(x, y) {
 /* src/dogmove.c:138 nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS } */
 const nofetch = [OCLASSES.BALL_CLASS, OCLASSES.CHAIN_CLASS, OCLASSES.ROCK_CLASS];
 
-export function dog_invent(mtmp, edog, udist) {
+export async function dog_invent(mtmp, edog, udist) {
     if (helpless(mtmp) || mtmp.meating)
         return 0;
 
@@ -1263,7 +1268,7 @@ export function dog_invent(mtmp, edog, udist) {
     if (droppables(mtmp)) {
         if (!rn2(udist + 1) || !rn2(edog.apport))
             if (rn2(10) < edog.apport) {
-                note_unported('relobj');           /* the drop itself */
+                await relobj(mtmp, mtmp.minvis ? 1 : 0, true);
                 if (edog.apport > 1) edog.apport--;
                 edog.dropdist = udist;
                 edog.droptime = game.moves;
@@ -1298,16 +1303,15 @@ export function dog_invent(mtmp, edog, udist) {
                         if (carryamt !== obj.quan)
                             otmp = splitobj(obj, carryamt);
                         if (cansee(omx, omy)) {
-                            /* C calls distant_name() for its SIDE EFFECTS
-                               even when the result is not printed, and does
-                               so BEFORE the extract, because the chain
-                               distant_name -> doname -> xname -> find_artifact
-                               wants otmp still on the floor. Not ported, so
-                               the side effects are recorded here rather than
-                               being silently skipped. */
-                            note_unported('dog_invent:distant_name');
+                            /* C calls distant_name() BEFORE the extract,
+                               because the chain distant_name -> doname ->
+                               xname -> find_artifact wants otmp still on the
+                               floor; no artifact discovery on this tree, so
+                               doname supplies the printed name. */
+                            const otmpname = doname(otmp);
                             if (game.flags?.verbose)
-                                note_unported('dog_invent:pline_picks_up');
+                                await pline_xy(omx, omy,
+                                    `${Monnam(mtmp)} picks up ${otmpname}.`);
                         }
                         obj_extract_self(otmp);
                         newsym(omx, omy);
@@ -1345,7 +1349,7 @@ export function dog_invent(mtmp, edog, udist) {
 // one", so an animal or mindless monster keeps nothing, and an intelligent
 // one holds a pick-axe only if it tunnels and needs one, a key only if it
 // has hands and is not verysmall.
-function droppables(mtmp) {
+export function droppables(mtmp) {
     const dummy = { otyp: ONAMES.STRANGE_OBJECT, oartifact: 0 };
     const mdat = game.mons[mtmp.mnum];
     const wep = MON_WEP(mtmp);

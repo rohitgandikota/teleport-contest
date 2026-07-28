@@ -22,7 +22,7 @@ import { amorphous, passes_walls, is_floater, nonliving,
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
-import { sobj_at } from './invent.js';
+import { sobj_at, money_cnt } from './invent.js';
 import { m_carrying, meatmetal, resists_ston } from './mon.js';
 import { acidic, slimeproof } from './dog.js';
 import { Is_mbag } from './mkobj.js';
@@ -864,14 +864,6 @@ function can_ooze(mtmp) {
     return true;
 }
 
-// src/invent.c money_cnt()
-function money_cnt(invent) {
-    for (const otmp of invent || [])
-        if (otmp.oclass === OCLASSES.COIN_CLASS)
-            return otmp.quan;
-    return 0;
-}
-
 // src/monmove.c:532 distfleeck()
 export function distfleeck(mtmp) {
     let seescaryx, seescaryy;
@@ -906,7 +898,7 @@ export function distfleeck(mtmp) {
 }
 
 // src/monmove.c:700 dochug() — one monster's turn.
-export function dochug(mtmp) {
+export async function dochug(mtmp) {
     /* src/monmove.c:727 — a sleeping monster still gets a chance to be woken,
        and disturb() DRAWS on the way. Returning early here skipped both the
        draws and the monster's whole turn when it did wake. */
@@ -959,7 +951,7 @@ export function dochug(mtmp) {
         if (!status) {
             if (mtmp.mtame) {
                 const omx = mtmp.mx, omy = mtmp.my;
-                status = dog_move(mtmp, 0);
+                status = await dog_move(mtmp, 0);
                 if (status === MMOVE_MOVED) {
                     newsym(omx, omy); /* update the old position */
                     newsym(mtmp.mx, mtmp.my);

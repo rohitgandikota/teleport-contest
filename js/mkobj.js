@@ -25,7 +25,7 @@ import { is_neuter } from './mondata.js';
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { Is_rogue_level, NODIR} from './const.js';
+import { Is_rogue_level, NODIR, OBJ_FLOOR } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -1021,6 +1021,10 @@ export function mkobj_at(oclass, x, y, artif) {
 export function place_object(otmp, x, y) {
     otmp.ox = x;
     otmp.oy = y;
+    /* src/mkobj.c place_object() tail — without this, an object that was
+       extracted (where == OBJ_FREE) and then re-floored can't be extracted
+       again: obj_extract_self's OBJ_FREE arm leaves it in level.objects. */
+    otmp.where = OBJ_FLOOR;
     (game.level.objects ||= []).unshift(otmp);
 }
 

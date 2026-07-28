@@ -165,7 +165,13 @@ function skill_based_spellbook_id() {
 }
 
 // src/role.c Role_if()
-const Role_if = (pm) => game.urole?.malenum === pm || game.urole?.pmidx === pm;
+/* The role record stores its monster as `mnum` (see js/role_data.js); the
+   old malenum/pmidx reads matched no field at all, so every Role_if here was
+   false and skill_init never granted any role its starting spell skill. */
+const Role_if = (pm) => {
+    const m = game.urole?.mnum;
+    return m === pm || m === PMNAMES[pm];
+};
 
 function note_unported_weapon(what) {
     (game.unported ||= new Set()).add(what);

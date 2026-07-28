@@ -179,3 +179,15 @@ export function m_harmless_trap(mtmp, ttmp) {
 
     return false;
 }
+
+// src/trap.c:6776 unconscious()
+export function unconscious() {
+    if ((game.multi ?? 0) >= 0)
+        return false;
+
+    return !!(game.u.usleep
+              || (game.nomovemsg
+                  && (game.nomovemsg.startsWith("You awake")
+                      || game.nomovemsg.startsWith("You regain con")
+                      || game.nomovemsg.startsWith("You are consci"))));
+}

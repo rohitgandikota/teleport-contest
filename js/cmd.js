@@ -625,8 +625,13 @@ export async function rhack(key) {
             game.u.last_str_turn = 0;
             game.context.mv = true;
         }
-        await domove();
+        /* src/cmd.c:5103 parse() — "assume next command will take game time".
+           The flag is set BEFORE domove() runs, and domove's no-move exits
+           (blocked step, hack.c:2846) clear it. Setting it after the call
+           erased that clear, so a wall bump charged a full turn: seed0016's
+           three bumps put the whole game three turns ahead of C. */
         game.context.move = 1;
+        await domove();
     } else if (ch === 'z') {
         // src/cmd.c cmdlist — 'z' is dozap: getobj for the wand, getdir for
         // the direction, and a self-zap of sleep knocks the hero out for

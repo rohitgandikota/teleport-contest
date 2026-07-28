@@ -17,7 +17,7 @@ import { is_weptool } from './mkobj.js';
 import { bimanual } from './obj.js';
 import { W_ARMOR, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP } from './const.js';
 import { mons } from './monst_data.js';
-import { OCLASSES, ONAMES, obj_descr } from './objects_data.js';
+import { OCLASSES, ONAMES, MATERIALS, obj_descr } from './objects_data.js';
 
 const {
     COIN_CLASS, POTION_CLASS, SCROLL_CLASS, WAND_CLASS, SPBOOK_CLASS,
@@ -33,9 +33,17 @@ export const OBJ_DESCR = (ocl) => obj_descr[ocl.oc_descr_idx]?.oc_descr ?? null;
 export const ARM_SUIT = 0, ARM_SHIELD = 1, ARM_HELM = 2, ARM_GLOVES = 3,
              ARM_BOOTS = 4, ARM_CLOAK = 5, ARM_SHIRT = 6;
 
-const GemStone = (otyp) =>
-    game.objects[otyp].oc_class === GEM_CLASS
-    && game.objects[otyp].oc_material === 8 /* MINERAL */;
+// src/objnam.c:98 GemStone() — gems whose identified name takes " stone".
+// The old form tested oc_material === 8 with a MINERAL comment; 8 is WOOD
+// (MINERAL is 21), and C's macro keys on GEMSTONE anyway, minus the seven
+// jewels whose names stand alone.
+const GemStone = (typ) =>
+    typ === ONAMES.FLINT
+    || (game.objects[typ].oc_material === MATERIALS.GEMSTONE
+        && typ !== ONAMES.DILITHIUM_CRYSTAL && typ !== ONAMES.RUBY
+        && typ !== ONAMES.DIAMOND && typ !== ONAMES.SAPPHIRE
+        && typ !== ONAMES.BLACK_OPAL && typ !== ONAMES.EMERALD
+        && typ !== ONAMES.OPAL);
 
 // src/objnam.c:220 obj_typename()
 export function obj_typename(otyp) {
@@ -201,11 +209,77 @@ export function xname(obj) {
         if (obj.otyp === ONAMES.TIN && obj.known)
             buf += tin_details(obj);
         break;
-    case SPBOOK_CLASS:
-    case RING_CLASS:
-    case WAND_CLASS:
     case AMULET_CLASS:
-    case GEM_CLASS:
+        if (!dknown)
+            buf = 'amulet';
+        else if (obj.otyp === ONAMES.AMULET_OF_YENDOR
+                 || obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR)
+            /* each must be identified individually */
+            buf = obj.known ? actualn : dn;
+        else if (nn)
+            buf = actualn;
+        else if (un)
+            buf = `amulet called ${un}`;
+        else
+            buf = `${dn} amulet`;
+        break;
+    case WAND_CLASS:
+        if (!dknown)
+            buf = 'wand';
+        else if (nn)
+            buf = `wand of ${actualn}`;
+        else if (un)
+            buf = `wand called ${un}`;
+        else
+            buf = `${dn} wand`;
+        break;
+    case SPBOOK_CLASS:
+        if (obj.otyp === ONAMES.SPE_NOVEL) { /* 3.6 tribute */
+            if (!dknown)
+                buf = 'book';
+            else if (nn)
+                buf = actualn;
+            else if (un)
+                buf = `novel called ${un}`;
+            else
+                buf = `${dn} book`;
+        } else if (!dknown) {
+            buf = 'spellbook';
+        } else if (nn) {
+            buf = (obj.otyp !== ONAMES.SPE_BOOK_OF_THE_DEAD
+                   ? 'spellbook of ' : '') + actualn;
+        } else if (un) {
+            buf = `spellbook called ${un}`;
+        } else
+            buf = `${dn} spellbook`;
+        break;
+    case RING_CLASS:
+        if (!dknown)
+            buf = 'ring';
+        else if (nn)
+            buf = `ring of ${actualn}`;
+        else if (un)
+            buf = `ring called ${un}`;
+        else
+            buf = `${dn} ring`;
+        break;
+    case GEM_CLASS: {
+        const rock = (ocl.oc_material === MATERIALS.MINERAL) ? 'stone' : 'gem';
+
+        if (!dknown) {
+            buf = rock;
+        } else if (!nn) {
+            if (un)
+                buf = `${rock} called ${un}`;
+            else
+                buf = `${dn} ${rock}`;
+        } else {
+            buf = actualn;
+            if (GemStone(obj.otyp))
+                buf += ' stone';
+        }
+        break;
+    } /* gem */
     case ROCK_CLASS:
     default:
         buf = obj_typename(obj.otyp);
@@ -216,6 +290,17 @@ export function xname(obj) {
 }
 
 // src/eat.c tin_details() — " of <monster>" or " of spinach".
+// src/objnam.c singular() — name one item of a stack.
+// The CORPSE arm redirects xname to cxname for the monster type; corpses on
+// this tree go through the same xname, so the redirect has nothing to change.
+export function singular(otmp, func) {
+    const savequan = otmp.quan;
+    otmp.quan = 1;
+    const nam = func(otmp);
+    otmp.quan = savequan;
+    return nam;
+}
+
 function tin_details(obj) {
     if (obj.spe === 1) return ' of spinach';
     if (obj.corpsenm !== undefined && obj.corpsenm >= 0) {
@@ -267,6 +352,12 @@ export function doname(obj) {
     case TOOL_CLASS:
         /* charged tools show "(0:n)" once the count is known */
         if (ocl.oc_charged && known)
+            bp += ` (${obj.recharged || 0}:${obj.spe})`;
+        break;
+    case WAND_CLASS:
+        /* src/objnam.c:1483 — a wand always shows its charges once known;
+           unlike tools there is no oc_charged gate. */
+        if (known)
             bp += ` (${obj.recharged || 0}:${obj.spe})`;
         break;
     default:

@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { money_cnt } from './invent.js';
 import { ONAMES } from './objects_data.js';
 import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -279,6 +280,13 @@ export async function docrt() {
                     loc.remembered_glyph.color, loc.remembered_glyph.decgfx);
             }
         }
+    /* src/display.c:1761 — "overlay with monsters": see_monsters() runs a
+       newsym over every live monster, which is what brings the pet back
+       after a menu overlay is dismissed and the map redrawn from memory. */
+    for (const mtmp of game.level.monsters || []) {
+        if (mtmp.mhp <= 0) continue;
+        newsym(mtmp.mx, mtmp.my);
+    }
     if (game.u?.ux > 0) show_glyph_cell(game.u.ux, game.u.uy, '@', CLR_WHITE, false);
 }
 
@@ -398,7 +406,7 @@ function _statusLine2() {
        and BL_TIME only when flags.time is. Both default OFF; seed8000's rc
        happens to turn them on, which is what made hardcoding them look right. */
     const f = game.flags || {};
-    let s = `Dlvl:${u.uz?.dlevel || 1} $:${game._goldCount || 0}`
+    let s = `Dlvl:${u.uz?.dlevel || 1} $:${money_cnt(game.invent)}`
           + ` HP:${u.uhp || 0}(${u.uhpmax || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
           + ` AC:${u.uac ?? 0}`

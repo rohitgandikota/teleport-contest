@@ -743,9 +743,19 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     return appr;
 }
 
-/* src/dungeon.c On_stairs() */
+/* src/stairs.c:148 On_stairs() — stairway_at(x, y) != NULL.
+   The stairs live on the game.stairs LINKED LIST written by mklev
+   (js/mklev.js:181, C's gs.stairs chain). This used to read
+   game.level.stairs, an array nothing ever writes, so it was always false
+   and every pet turn ran the hero-inventory dogfood scan that C skips
+   whenever the hero stands on stairs -- which the hero does from turn one,
+   since the game starts on the upstairs. Four extra rn2(100)s per pet turn
+   from the first move. */
 function On_stairs(x, y) {
-    return (game.level?.stairs || []).some(st => st.sx === x && st.sy === y);
+    for (let st = game.stairs; st; st = st.next)
+        if (st.sx === x && st.sy === y)
+            return true;
+    return false;
 }
 
 // src/dogmove.c:977 dog_move() — the pet's turn.

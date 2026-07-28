@@ -9497,3 +9497,35 @@ prinv message, then the throw itself. seed0101 (97%) is the same family
 (ranger-quiver-throw).
 
 Board: 516 screens (+6 since reset), RNG 140857. All three gates green.
+
+
+### seed0102 step 11 decoded: the fireassist chain, cmdq landed
+
+The `f` at step 11 is C's fireassist: uwep is EMPTY, quiver holds arrows, so
+dofire queues `[dowield, key 'b', dofire]` on CQ_CANNED (src/dothrow.c:571-577)
+and returns. rhack pops the wield, getobj consumes the queued 'b',
+ready_weapon prinv()s "b - a +1 bow (weapon in right hand)." and the retried
+dofire reaches getdir, whose prompt forces --More-- on the pending message.
+Steps 12-13 ("l", "i") are IGNORED by C's xwaitforspace (topl.c: only
+space/return/ESC answer a --More--); ESC at 14 dismisses it; step 15 '+' gets
+"cmdassist: Invalid direction key!" plus the valid-keys help.
+
+LANDED this pass: the command queue itself (cmdq_add_ec/add_key/pop/peek in
+js/cmd.js beside cmdq_clear), rhack's pop site, getobj's queued-key arm.
+Inert until a producer queues -- gates all green, board unchanged.
+
+STILL NEEDED for seed0102 (in dependency order):
+1. `wield_ok` (src/wield.c getobj callback) and `ready_weapon` completion
+   check -- ready_weapon exists in js/wield.js with markers.
+2. `dowield` (src/wield.c:355) and `doswapweapon` (:461). doswapweapon needs
+   nothing new beyond ready_weapon + setuswapwep (both exist).
+3. `find_launcher` + the fireassist block in dofire (src/dothrow.c:557-580).
+   ammo_and_launcher already exists in js/wield.js.
+4. xwaitforspace key filtering in more() (js/display.js:569) -- only
+   space/return/ESC answer a --More--; everything else is ignored.
+5. The cmdassist invalid-direction help window (getdir's else arm).
+
+RNG caution: our stream already matches this session 4485/4485 END TO END
+without any of this, so every piece above must draw ZERO and must not run an
+extra turn inside these steps. Verify with diverge after each piece; any
+change to the call count is a regression even if screens improve.

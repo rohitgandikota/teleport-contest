@@ -9908,3 +9908,23 @@ exercise rn2(19) via findit() (zap.c WAN_SECRET_DOOR_DETECTION arm,
 "You don't find anything."); divergence at 2733, step 7.
 
 Board 688, passes 4, seven 100%-RNG sessions. Gates clean.
+
+
+### zapnodir + findit landed (1ee6bd8). Board 689. One unexplained draw.
+
+OPEN QUESTION, seed2200 @2733 (step 7, the SDD wand zap): C spends
+rn2(19)@exercise(attrib.c:509) as the FIRST draw of the zap command.
+Everything readable says it shouldn't: the wand's uses_known=1 so
+ini_inv sets known and the OBJ_DESCR && known gate discovers the type
+at init with credit_hero=FALSE (no exercise), and learnwand's
+already-known arm only observes. Checked and ruled out: dozap has no
+exercise-gain, findit/findone draw nothing, zapnodir's known tail is
+more_experienced (drawless) + learnwand, do_enlightenment is a
+different wand. Candidate next probes: (a) whether C's ini_inv really
+discovered THIS wand (dump C's o_init discoveries at init via the
+banner screens), (b) whether 5.0's exercise() is called from
+observe_object/update_inventory paths we haven't read, (c) whether the
+recorder mis-attributes a draw from the end of step 5's follow-up core.
+Divergence at 2754/3018; the tail beyond is the pet round + block.
+
+Board 689/44, passes 4, seven 100%-RNG sessions. Gates clean.

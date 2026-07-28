@@ -9834,3 +9834,28 @@ erase mechanism for answered prompts is still unidentified. Do not
 re-try the blanket pre-read clear.
 
 Board 655/44-sessions, 3 passes, hang gate clean, generalize clean.
+
+
+### seed0700 is the FOURTH full pass. Board 667.
+
+The Samurai bundle (commit ccf8885): pet naming (Hachi + the
+x_monnam given-name arm), Japanese_item_name in xname/obj_typename,
+the makeplural as_is[]/"ya" rules, lacquered splint mail
+(erodeproof+rknown at mksobj) with doname's erodeproof prefix, the
+door open/resist messages, and the discoveries window's Samurai forms
+(disco_typename brackets, the interesting/discover Samurai arms,
+observe_object from display_inventory).
+
+TRAP FIXED, worth remembering: the generated obj_descr table stores a
+NUMERIC 0 where C has a null string. OBJ_DESCR's old `?? null` passed
+the 0 through as a truthy description; the moment observe_object
+started inserting carried types into the discoveries list, every
+descriptionless item (gold, darts, food) got listed and ten sessions
+lost a screen each. Any "has a description" test must go through
+OBJ_DESCR/OBJ_NAME (now `|| null`), never raw table reads.
+
+Board 667/44, passes: 8000, 0102, 0105, 0700. Six 100%-RNG sessions.
+Next: seed1800's two answered-prompt boundary screens (mechanism still
+unidentified, see previous entry), seed0016's frozen-serializer screen
+(unfixable), seed0101's apparxy interleave (three open questions),
+then the divergence ranking (seed0501 priest 2208/2238 is close).

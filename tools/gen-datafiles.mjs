@@ -19,7 +19,12 @@ const PROJECT_ROOT = fileURLToPath(new URL('..', import.meta.url));
 const RECORDER = join(PROJECT_ROOT, 'nethack-c/recorder');
 const OUT = join(PROJECT_ROOT, 'js/dat_files.js');
 
-const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon'];
+/* 'data' is the makedefs-built lookup file src/pager.c checkfile() walks for
+   farlook "More info?" and the '/'-command typed-word path: line 1 is a
+   comment record, line 2 the hex offset of the text section, then index
+   patterns with "offset,count" lines, '.' ending the index. Byte offsets
+   matter (checkfile fseeks), so it ships verbatim like the rumor files. */
+const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon', 'data'];
 
 function readDat(name) {
     const path = join(RECORDER, 'dat', name);

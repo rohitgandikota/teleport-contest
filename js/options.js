@@ -211,7 +211,7 @@ export async function ask_do_tutorial() {
             tty_add_menu_str(win, "(Please choose 'y' or 'n'.)");
 
         tty_end_menu(win, 'Do you want a tutorial?');
-        tty_display_nhwindow(win);
+        await tty_display_nhwindow(win);
 
         /* select_menu(win, PICK_ONE) — returns as soon as a selector is typed */
         let answered = null;

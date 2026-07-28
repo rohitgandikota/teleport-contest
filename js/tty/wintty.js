@@ -17,7 +17,7 @@
 // column 0 with the cursor at [9,23].
 
 import { game } from './../gstate.js';
-import { TOPLINE_EMPTY } from './../display.js';
+import { TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './../display.js';
 import { tty_clear_nhwindow_message } from './../display.js';
 import { nhgetch } from './../input.js';
 import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
@@ -496,7 +496,7 @@ export function menu_page_items(window, page) {
 // win/tty/wintty.c tty_display_nhwindow() — menu/text case.
 // Renders the first page. Paging on subsequent keys is driven by the caller
 // consuming keys, matching how C's dmore() blocks inside the window.
-export function tty_display_nhwindow(window) {
+export async function tty_display_nhwindow(window) {
     const cw = windows[window];
     const display = game?.nhDisplay;
     if (!cw || !display) return;
@@ -504,6 +504,16 @@ export function tty_display_nhwindow(window) {
     cw.active = 1;
     cw.offx = compute_offx(cw);
     cw.curr_page = 0;
+
+    /* wintty.c:1966 — an unacknowledged message is flushed with a blocking
+       --More-- BEFORE the window draws:
+           if (ttyDisplay->toplin == TOPLINE_NEED_MORE)
+               tty_display_nhwindow(WIN_MESSAGE, TRUE);
+       That recursive call is the NHW_MESSAGE arm, i.e. more(). It is what
+       puts the --More-- on "Please move the cursor to ..." while the getpos
+       tip window waits behind it. */
+    if (game._toplin === TOPLINE_NEED_MORE)
+        await more();
 
     /* wintty.c tty_display_nhwindow(), the NHW_MENU/NHW_TEXT arm: a menu
        drawn as an OVERLAY first erases the message line --
@@ -551,7 +561,7 @@ export function tty_display_nhwindow(window) {
 export async function tty_select_menu(window, how) {
     const cw = windows[window];
     if (!cw) return [];
-    tty_display_nhwindow(window);
+    await tty_display_nhwindow(window);
     const picks = [];
     for (;;) {
         const c = await nhgetch();

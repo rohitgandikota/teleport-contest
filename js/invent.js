@@ -148,7 +148,7 @@ export async function look_here(obj_cnt, lhflags) {
                 note_unported_invent('look_here:feel_cockatrice');
             tty_putstr(tmpwin, 0, doname(otmp));
         }
-        tty_display_nhwindow(tmpwin);
+        await tty_display_nhwindow(tmpwin);
         await nhgetch();
         while (tty_next_page(tmpwin))
             await nhgetch();

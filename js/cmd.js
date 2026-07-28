@@ -53,12 +53,12 @@ import { dothrow, dofire } from './dothrow.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
-import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY } from './display.js';
+import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
 import { doengrave } from './engrave.js';
-import { dohelp } from './pager.js';
+import { dohelp, dowhatis, doquickwhatis } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
 import { dowieldquiver } from './wield.js';
@@ -189,7 +189,7 @@ async function help_dir(sym, msg) {
         tty_putstr(win, 0,
                "(Suppress this message with !cmdassist in config file.)");
     }
-    tty_display_nhwindow(win);
+    await tty_display_nhwindow(win);
     await nhgetch();
     while (tty_next_page(win))
         await nhgetch();
@@ -288,6 +288,15 @@ export async function getlin(query, hook) {
     let buf = '';
     let pos = 0;
 
+    /* win/tty/getline.c:53 — an unacknowledged message gets its --More--
+       BEFORE the prompt appears:
+           if (ttyDisplay->toplin == TOPLINE_NEED_MORE && !(cw->flags & WIN_STOP))
+               more();
+       "You write in the dust with your fingertip." carries a --More-- for
+       exactly this reason: doengrave's getlin comes right behind it. */
+    if (game._toplin === TOPLINE_NEED_MORE && !game._win_stop)
+        await more();
+
     for (;;) {
         /* win/tty/getline.c hooked_tty_getlin():
          *
@@ -322,6 +331,7 @@ export async function getlin(query, hook) {
                 pos = 0;
                 continue;
             }
+            getlin_cleanup();
             return '\x1b';
         } else if (c === '\n' || c === '\r') {
             /* NEWAUTOCOMP does NOT truncate here, so a completed name is
@@ -346,7 +356,20 @@ export async function getlin(query, hook) {
             }
         }
     }
+    getlin_cleanup();
     return buf;
+}
+
+/* win/tty/getline.c:213 — hooked_tty_getlin's exit:
+       ttyDisplay->toplin = TOPLINE_NON_EMPTY;
+       clear_nhwindow(WIN_MESSAGE);   / * clean up after ourselves * /
+   The prompt (and typed answer) are ERASED the moment the read finishes;
+   whatever the caller plines next starts from a blank top line. */
+function getlin_cleanup() {
+    game._toplin = TOPLINE_SPECIAL_PROMPT; /* non-EMPTY so the erase runs */
+    tty_clear_nhwindow_message(game._topl_cury || 0);
+    game._pending_message = '';
+    game._toplin = TOPLINE_EMPTY;
 }
 
 // src/cmd.c extcmds_match() — the indices of the extended commands matching
@@ -721,9 +744,20 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '?' is dohelp, a menu of viewers.
         game.context.move = 0;
         await dohelp();
+    } else if (ch === '/') {
+        // src/cmd.c cmdlist — '/' is dowhatis, the farlook chain.
+        game.context.move = 0;
+        await dowhatis();
+    } else if (ch === ';') {
+        // src/cmd.c cmdlist — ';' is doquickwhatis.
+        game.context.move = 0;
+        await doquickwhatis();
     } else if (ch === 'E') {
         // src/cmd.c cmdlist — 'E' is doengrave.
         game.context.move = ((await doengrave()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '_') {
+        // src/cmd.c cmdlist — '_' is dotravel.
+        game.context.move = ((await dotravel()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 's') {
         // src/cmd.c cmdlist — 's' is dosearch, which returns ECMD_TIME.
         game.context.move = (dosearch() ? 1 : 0);
@@ -1135,7 +1169,7 @@ async function show_discoveries() {
     const win = tty_create_nhwindow(NHW_TEXT);
     for (const [text, attr] of lines)
         tty_putstr(win, attr, text);
-    tty_display_nhwindow(win);      /* draws the page and parks the cursor */
+    await tty_display_nhwindow(win);      /* draws the page and parks the cursor */
 
     /* dmore(): block here until the player dismisses the window */
     await nhgetch();
@@ -1158,7 +1192,7 @@ async function show_attributes() {
         tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR, l,
                      MENU_ITEMFLAGS_NONE);
     tty_end_menu(win, null);
-    tty_display_nhwindow(win);
+    await tty_display_nhwindow(win);
 
     /* dmore() blocks once per page */
     await nhgetch();
@@ -1186,7 +1220,7 @@ async function show_inventory() {
         tty_add_menu(win, null, it.heading ? 0 : 1, it.invlet || 0, 0,
                      it.attr, NO_COLOR, it.str, MENU_ITEMFLAGS_NONE);
     tty_end_menu(win, null);
-    tty_display_nhwindow(win);
+    await tty_display_nhwindow(win);
 
     await nhgetch();
     while (tty_next_page(win))
@@ -1271,3 +1305,33 @@ export function cmdq_peek(q) {
     const list = (game.command_queue ||= [])[q];
     return (list && list.length) ? list[0] : null;
 }
+
+// src/cmd.c:5299 dotravel() — the '_' command: pick a destination with
+// getpos (force=TRUE, so unknown keys coach rather than abort), then walk
+// there. The walk itself (dotravel_target -> findtravelpath/domove) is the
+// unported half: a session that actually PICKS a spot desyncs there and the
+// gap is recorded. The cached-destination and menu_requested arms need
+// iflags state no session sets.
+export async function dotravel() {
+    const cc = { x: 0, y: 0 };
+    cc.x = game.iflags?.travelcc?.x || 0;
+    cc.y = game.iflags?.travelcc?.y || 0;
+    if (cc.x === 0 && cc.y === 0) {
+        cc.x = game.u.ux;
+        cc.y = game.u.uy;
+    }
+    game.iflags = game.iflags || {};
+    game.iflags.getloc_travelmode = true;
+    await pline('Where do you want to travel to?');
+    if (await getpos(cc, true, 'the desired destination') < 0) {
+        /* user pressed ESC */
+        game.iflags.getloc_travelmode = false;
+        return ECMD_CANCEL_TRAVEL;
+    }
+    game.iflags.getloc_travelmode = false;
+    (game.unported ||= new Set()).add('cmd:dotravel_target');
+    return 0; /* ECMD_OK; the travel movement is the recorded gap above */
+}
+
+/* include/hack.h ECMD_CANCEL */
+const ECMD_CANCEL_TRAVEL = 0x04;

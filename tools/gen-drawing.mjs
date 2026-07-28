@@ -65,6 +65,67 @@ const oclasses = [
         String.raw`^\s+OBJCLASS2\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*\w+,\s*(\w+)`, 'gm')),
 ].sort((a, b) => a.idx - b.idx);
 
+/* the OBJCLASS explanation strings ("weapon", "boulder or statue") — the
+   LAST quoted string of each invocation, which may sit on a wrapped line */
+const oc_explain = [];
+{
+    const re = new RegExp(
+        String.raw`OBJCLASS2?\(\s*(\d+),\s*${CH}[\s\S]*?"([^"]*)"\s*,?\s*"?([^")]*)"?\s*\)`, 'g');
+    /* simpler and safer: join wrapped lines, then match per entry */
+    const joined = src.replace(/,\s*\n\s+/g, ', ');
+    const re2 = new RegExp(
+        String.raw`OBJCLASS2?\(\s*(\d+),\s*${CH},\s*\w+,(?:\s*\w+,)?\s*S_\w+,\s*"[^"]*",\s*"([^"]*)"\s*\)`, 'g');
+    let m;
+    while ((m = re2.exec(joined)) !== null)
+        oc_explain[Number(m[1])] = m[m.length - 1];
+}
+
+/* include/defsym.h PCHAR/PCHAR2 — the cmap: index, default ASCII symbol, and
+   explanation ("staircase up"). PCHAR2's explanation is its FIFTH argument
+   (the fourth is the tile name); PCHAR's is its fourth. Wrapped invocations
+   are joined first. */
+const defsyms = [];
+{
+    const joined = src.replace(/,\s*\n\s+/g, ', ');
+    const re = new RegExp(
+        String.raw`PCHAR(2?)\(\s*(\d+),\s*(${CH}),\s*(S_\w+),\s*"([^"]*)"(?:,\s*"([^"]*)")?`, 'g');
+    let m;
+    while ((m = re.exec(joined)) !== null) {
+        const two = m[1] === '2';
+        const idx = Number(m[2]);
+        let ch = m[3].slice(1, -1);
+        if (ch.startsWith('\\')) ch = ({ '\\\\': '\\', "\\'": "'" })[ch] ?? ch[1];
+        const name = m[5];
+        const explain = two ? (m[7] ?? '') : m[6];
+        /* sym: defsym.h's default ASCII character (what a user types to ask
+           about a feature); ch/dec: the DECgraphics showsym actually drawn */
+        defsyms[idx] = { name, sym: ch, ch, dec: false, explain };
+    }
+}
+
+/* dat/symbols "start: DECgraphics" — the symset the reference build runs
+   with. Each override is a meta byte \xNN; the terminal renders it as the
+   DEC special-graphics character (byte & 0x7f) with the graphics charset
+   shifted in, which this port models as { ch, dec: true }. */
+{
+    const symsrc = readFileSync(join(ROOT, 'nethack-c/upstream/dat/symbols'), 'utf8');
+    const start = symsrc.indexOf('start: DECgraphics');
+    const end = symsrc.indexOf('\nfinish', start);
+    if (start < 0 || end < 0)
+        throw new Error('DECgraphics block not found in dat/symbols');
+    const block = symsrc.slice(start, end);
+    const re = /^\s*(S_\w+):\s*\\x([0-9a-fA-F]{2})/gm;
+    let m;
+    while ((m = re.exec(block)) !== null) {
+        const name = m[1];
+        const byte = parseInt(m[2], 16);
+        const d = defsyms.find(e => e && e.name === name);
+        if (!d) continue;
+        d.ch = String.fromCharCode(byte & 0x7f);
+        d.dec = true;
+    }
+}
+
 if (!monsyms.length || !oclasses.length) {
     console.error('scrape found nothing — defsym.h layout changed');
     process.exit(2);
@@ -101,6 +162,19 @@ export const oclass_names = ${JSON.stringify(
 // MONSYM explanation strings, indexed like def_monsyms ("human or elf");
 // src/pager.c do_screen_description reads these for farlook
 export const monexplain = ${JSON.stringify(monexplain)};
+
+// OBJCLASS explanation strings, indexed like def_oc_syms ("weapon")
+export const oc_explain = ${JSON.stringify(oc_explain)};
+
+// include/defsym.h PCHAR entries with dat/symbols DECgraphics overrides
+// applied: the displayed { ch, dec } pair and the explanation string for
+// each cmap index. This IS gs.showsyms[] plus defsyms[].explanation for the
+// symset the reference build records with.
+export const defsyms = ${JSON.stringify(defsyms)};
+
+// S_* name -> cmap index
+export const cmap_names = ${JSON.stringify(
+    Object.fromEntries(defsyms.map((e, i) => [e.name, i])))};
 `;
 
 writeFileSync(OUT, body);

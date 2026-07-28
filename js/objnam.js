@@ -343,6 +343,18 @@ export function xname(obj) {
         break;
     } /* gem */
     case ROCK_CLASS:
+        /* src/objnam.c:844 — a statue names the monster it depicts:
+           "statue of a grid bug". The historic prefix needs an
+           Archeologist; the unique/pname article refinements need those
+           monsters to be turned to stone. next_boulder needs pushing. */
+        if (obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0) {
+            const statue_pmname = game.mons?.[obj.corpsenm]?.pmnames?.[2]
+                ?? game.mons?.[obj.corpsenm]?.pmnames?.[0] ?? 'monster';
+            buf = `${actualn} of ${just_an(statue_pmname)}${statue_pmname}`;
+        } else {
+            buf = actualn; /* "boulder" or "statue" */
+        }
+        break;
     default:
         buf = obj_typename(obj.otyp);
         break;
@@ -865,4 +877,189 @@ export function readobjnam(bp) {
         otmp.oerodeproof = ((game.u.uluck || 0) < 0 && !game.wizard) ? 0 : 1;
 
     return otmp;
+}
+
+/* src/objnam.c:2662 one_off[] — irregular singular/plural pairs. */
+const one_off = [
+    ['child', 'children'], ['cubus', 'cubi'], ['culus', 'culi'],
+    ['Cyclops', 'Cyclopes'], ['djinni', 'djinn'], ['erinys', 'erinyes'],
+    ['foot', 'feet'], ['fungus', 'fungi'], ['goose', 'geese'],
+    ['knife', 'knives'], ['labrum', 'labra'], ['louse', 'lice'],
+    ['mouse', 'mice'], ['mumak', 'mumakil'], ['nemesis', 'nemeses'],
+    ['ovum', 'ova'], ['ox', 'oxen'], ['passerby', 'passersby'],
+    ['rtex', 'rtices'], ['serum', 'sera'], ['staff', 'staves'],
+    ['tooth', 'teeth'],
+];
+
+/* src/objnam.c:2550 special_subjs[] — vtense() subjects, and an extra as_is
+   set for makesingular during wishing */
+const special_subjs = [
+    'erinys', 'manes', 'Cyclops', 'Hippocrates', 'Pelias', 'aklys',
+    'amnesia', 'detect monsters', 'paralysis', 'shape changers', 'nemesis',
+];
+
+/* src/objnam.c:3194 badman() — *man/*men words that are not man/men pairs;
+   only the makesingular direction's table is needed */
+const no_man = [
+    'abdo', 'acu', 'agno', 'ceru', 'cogno', 'cycla', 'fleh', 'grava',
+    'hegu', 'preno', 'sonar', 'speci', 'dai', 'exa', 'fla', 'sta', 'teg',
+    'tegu', 'vela', 'da', 'hy', 'lu', 'no', 'nu', 'ra', 'ru', 'se', 'vi',
+    'ya', 'o', 'a',
+];
+function badman(basestr, to_plural) {
+    if (!basestr || basestr.length < 4) return false;
+    const low = basestr.toLowerCase();
+    for (const pre of no_man) {
+        const spot = low.length - (pre.length + 3);
+        if (spot < 0) continue;
+        if (low.slice(spot, spot + pre.length) === pre
+            && (spot === 0 || low[spot - 1] === ' '))
+            return true;
+    }
+    return false;
+}
+
+/* src/objnam.c:2783 singplur_compound() — find " of ", " named " &c so the
+   head noun is what gets singularized */
+const sp_compounds = [
+    ' of ', ' labeled ', ' called ', ' named ', ' above',
+    ' versus ', ' from ', ' in ', ' on ', ' a la ', ' with',
+    ' de ', " d'", ' du ', ' au ', '-in-', '-at-',
+];
+function singplur_compound(str) {
+    for (let p = 0; p < str.length; p++) {
+        if (str[p] !== ' ' && str[p] !== '-') continue;
+        for (const cmpd of sp_compounds)
+            if (str.slice(p, p + cmpd.length).toLowerCase()
+                === cmpd.toLowerCase())
+                return p;
+    }
+    return -1;
+}
+
+/* BSTRCMPI(base, ptr, str): true when the tail of base at endlen equals str,
+   guarding against the pointer running off the front */
+function tail_is(base, endlen, str) {
+    const at = endlen - str.length;
+    if (at < 0) return false;
+    return base.slice(at, endlen).toLowerCase() === str.toLowerCase();
+}
+
+/* src/objnam.c:2632 singplur_lookup() — makesingular's half only. Returns
+   the transformed base or null when no as-is/one_off rule applied. */
+function singplur_lookup_sing(base, alt_as_is) {
+    for (const w of as_is)
+        if (tail_is(base, base.length, w)) return base;
+    if (alt_as_is)
+        for (const w of alt_as_is)
+            if (tail_is(base, base.length, w)) return base;
+    if (base.length > 5 && tail_is(base, base.length, 'craft')) return base;
+    if (/^slice$/i.test(base) || /^mongoose$/i.test(base)) return base;
+    if (base.length > 2 && tail_is(base, base.length, 'men')
+        && badman(base, false)) return base;
+    for (const [sing, plur] of one_off) {
+        if (tail_is(base, base.length, sing)) return base;
+        if (tail_is(base, base.length, plur))
+            return base.slice(0, base.length - plur.length) + sing;
+    }
+    return null;
+}
+
+// src/objnam.c:3037 makesingular()
+export function makesingular(oldstr) {
+    let str = String(oldstr ?? '').replace(/^ +/, '');
+    if (!str) return '';
+
+    /* pronouns: "they"/"them" -> "it", "their" -> "its" */
+    const pron = { they: 'it', them: 'it', their: 'its' }[str.toLowerCase()];
+    if (pron)
+        return (str[0] === str[0].toUpperCase())
+            ? pron[0].toUpperCase() + pron.slice(1) : pron;
+
+    /* focus on "foo" of "foo of bar" */
+    const cut = singplur_compound(str);
+    let bp = cut >= 0 ? str.slice(0, cut) : str;
+    const excess = cut >= 0 ? str.slice(cut) : '';
+
+    const looked = singplur_lookup_sing(bp, special_subjs);
+    if (looked !== null)
+        return looked + excess;
+
+    const L = bp.length;
+    const low = bp.toLowerCase();
+    if (L >= 1 && low[L - 1] === 's') {
+        if (L >= 2 && low[L - 2] === 'e') {
+            if (L >= 3 && low[L - 3] === 'i') {          /* "ies" */
+                if (tail_is(bp, L, 'cookies')
+                    || (tail_is(bp, L, 'pies')
+                        && (L === 4 || low[L - 5] === ' '))
+                    || (tail_is(bp, L, 'genies')
+                        && (L === 6 || low[L - 7] === ' '))
+                    || tail_is(bp, L, 'mbies')
+                    || tail_is(bp, L, 'yries'))
+                    return bp.slice(0, L - 1) + excess;  /* just drop s */
+                return bp.slice(0, L - 3) + 'y' + excess; /* ies -> y */
+            }
+            /* wolves &c: [lr or vowel] + "ves" -> f */
+            if (L >= 4 && ('lr'.includes(low[L - 4])
+                           || 'aeiou'.includes(low[L - 4]))
+                && tail_is(bp, L, 'ves')) {
+                if (tail_is(bp, L, 'cloves') || tail_is(bp, L, 'nerves'))
+                    return bp.slice(0, L - 1) + excess;
+                return bp.slice(0, L - 3) + 'f' + excess; /* ves -> f */
+            }
+            if (tail_is(bp, L, 'eses') || tail_is(bp, L, 'oxes')
+                || tail_is(bp, L, 'nxes') || tail_is(bp, L, 'ches')
+                || tail_is(bp, L, 'uses') || tail_is(bp, L, 'shes')
+                || tail_is(bp, L, 'sses') || tail_is(bp, L, 'atoes')
+                || tail_is(bp, L, 'dingoes') || tail_is(bp, L, 'Aleaxes'))
+                return bp.slice(0, L - 2) + excess;       /* drop es */
+            return bp.slice(0, L - 1) + excess;           /* drop s */
+        } else if (tail_is(bp, L, 'us')) {                /* lotus, fungus */
+            if (!tail_is(bp, L, 'tengus') && !tail_is(bp, L, 'hezrous'))
+                return bp + excess;
+            return bp.slice(0, L - 1) + excess;
+        } else if (tail_is(bp, L, 'ss') || tail_is(bp, L, ' lens')
+                   || (L === 4 && low === 'lens')) {
+            return bp + excess;
+        }
+        return bp.slice(0, L - 1) + excess;               /* drop s */
+    }
+
+    /* input doesn't end in 's' */
+    if (tail_is(bp, L, 'men') && !badman(bp, false))
+        return bp.slice(0, L - 2) + 'an' + excess;
+    if (tail_is(bp, L, 'matzot') || tail_is(bp, L, 'ae')
+        || tail_is(bp, L, 'eaux'))
+        return bp.slice(0, L - 1) + excess;               /* drop t/e/x */
+    if (L >= 4 && tail_is(bp, L, 'ia') && 'lr'.includes(low[L - 3])
+        && low[L - 4] === 'e')
+        return bp.slice(0, L - 1) + 'um' + excess;        /* a -> um */
+
+    return bp + excess;
+}
+
+// src/objnam.c the() — prepend "the" unless the name is a proper noun.
+// CapitalMon() and the artifact/fruit refinements need name tables no
+// current caller can reach (farlook passes lowercased or generated names);
+// the capitalized-adjective and "of" branches are the live ones.
+export function the(str) {
+    if (!str) return 'the []';
+    if (/^the /i.test(str))
+        return str[0].toLowerCase() + str.slice(1);
+    if (str[0] < 'A' || str[0] > 'Z')
+        return 'the ' + str;
+    /* probably a proper name; the capitalized-adjective test */
+    const sp = Math.max(str.lastIndexOf(' '), str.lastIndexOf('-'));
+    if (sp >= 0 && (str[sp + 1] < 'A' || str[sp + 1] > 'Z'))
+        return str.includes("'") ? str : 'the ' + str;
+    if (sp >= 0 && str.indexOf(' ') < sp) {
+        const ofi = str.indexOf(' of ');
+        let named = str.indexOf(' named ');
+        const called = str.indexOf(' called ');
+        if (called >= 0 && (named < 0 || called < named)) named = called;
+        if (ofi >= 0 && (named < 0 || ofi < named))
+            return 'the ' + str;
+    }
+    return str;
 }

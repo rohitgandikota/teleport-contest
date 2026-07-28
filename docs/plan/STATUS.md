@@ -9759,3 +9759,41 @@ final-bite accounting (done_eating timing) or the wake-up unmul path
 setting move.
 
 Board 573/3.
+
+
+### The move-charge probe found it: rhack set the flag AFTER domove. Board 640.
+
+The seed0016 ordering gap was not the eat or the wake-up: the three 'h'
+wall bumps at steps 10-12 each charged a full turn. C's parse() sets
+context.move=1 BEFORE dispatch ("assume next command will take game
+time", cmd.c:5103) and domove's blocked exit clears it (hack.c:2846);
+our rhack movement arm called domove() first and THEN set move=1,
+erasing the clear. One-line reorder. The moveloop run arm also
+re-asserts move=1 before its domove, because our consume-clear (a
+divergence C does not have) wipes what parse left behind.
+
+With the clock aligned, seed0016 became a fix ladder, all landed:
+gethungry's Unaware/rn2(10) sleeping-metabolism arm (plus real
+unconscious/is_fainted/Unaware); dog_goal's dog_has_minvent via
+droppables and the rn2(apport) follow term; relobj/mdrop_obj in new
+js/steal.js; the async monster-move chain so pet plines print; docrt's
+see_monsters overlay (fixed 4 screens where the pet vanished after a
+menu); fprefx with the MACOS apple message the recordings prove;
+xname's real wand/book/ring/amulet/gem arms + doname wand charges;
+dospellmenu/dovspell + age_spells; the weapon.js Role_if field bug that
+denied every role its starting spell skill; insight's moon/friday13
+lines and 18/xx strength.
+
+seed0016: RNG 3656/3656 (100%), screens 35/36, cursors 36/36. The last
+screen is UNMATCHABLE without editing frozen files: terminal.js
+serialize() picks firstCol by ch!=' ' and swallows leading attributed
+spaces into ESC[nC, while the C recording paints the spell menu
+header's 4 leading inverse spaces. Recorded in NOTES; do not chase it.
+
+Board 640/44-sessions screens (was 573), 3 full passes, no session
+regressed. Hang gate 44/44 clean, generalize clean. Pushed 370cb40.
+
+Next targets by divergence rank: seed0101 (div@2293, doquiver_core
+family), seed0077 (dog_goal@3230), seed0700 now 41/51, seed1800 and
+seed2200 both close. The getbones cluster (4 sessions) and
+rnd_otyp_by_namedesc (3) stand.

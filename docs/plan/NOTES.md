@@ -3814,12 +3814,41 @@ TRIED AND REVERTED: `objects_at()` (`js/dog.js:1321`) filters the flat level
 list by ox/oy only, while C's `svl.level.objects[x][y]` chain holds FLOOR
 objects only, and `js/monmove.js:470` does test `where === OBJ_FLOOR`. Adding
 that filter looked obviously right and **lost 58 screens and dropped whole
-sessions** (total steps 11405 -> 10206). So either objects leaving the floor DO
-get removed from the list, or the filter breaks an ordering something else
-depends on. Do not retry it without understanding which.
+sessions** (total steps 11405 -> 10206).
+
+RESOLVED (28 Jul): the filter failed because `place_object` never SET
+`where` -- every floor object carried `where === undefined`, so the
+OBJ_FLOOR test matched nothing and emptied every pile. place_object now
+stamps OBJ_FLOOR (and mpickobj stamps OBJ_MINVENT/ocarry, both landed with
+js/steal.js), so the data is trustworthy and the filter is worth retrying
+when a divergence points at pile contents again.
 
 Next thing to check: whether `objects_at` returns the pile in the same ORDER as
 the ->nexthere chain. place_object prepends, so a filtered flat list is
 newest-first only if nothing ever reorders it. An order difference would spend
 the same NUMBER of draws in a different sequence -- which is not this symptom --
 so more likely there is genuinely one extra object in our pile.
+
+
+## The reference pipeline is LOSSY about attrs on spaces; the frozen serializer more so
+
+Two distinct effects, discovered on seed0016's spell menu header
+("    Name                 Level Category     Fail Retention", ATR_INVERSE):
+
+1. The RECORDINGS re-serialize each row and emit runs of >= 5 blank cells
+   as ESC[nC cursor-forward even INSIDE an SGR span. The scorer's
+   normalizeScreen() turns ESC[nC back into literal spaces decoded under
+   the ACTIVE SGR state, so what survives depends on where the run sat.
+   Practical rule mirrored in process_menu_window: runs of 5+ spaces
+   inside an attributed menu line paint attr-0; runs of <= 4 keep the
+   attribute.
+
+2. Our frames go through frozen terminal.js serialize(), which picks each
+   row's firstCol by `ch !== ' '` IGNORING attrs, so leading attributed
+   spaces are swallowed into the initial ESC[nC and decode plain. The C
+   recording paints the header's 4 leading inverse spaces (they follow
+   ESC[7m literally). A menu header that begins with spaces at the row's
+   left edge therefore loses those attr cells NO MATTER WHAT WE PAINT.
+   seed0016 step 26 stays 4 cells short (35/36) for exactly this reason.
+   Do not chase such a screen; check the raw recorded row (session JSON)
+   for "ESC[7m<spaces>" at line start to recognize the class.

@@ -19,6 +19,28 @@ import { fileURLToPath } from 'url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const src = readFileSync(join(ROOT, 'nethack-c/upstream/src/cmd.c'), 'utf8');
 
+// include/defsym.h — the OBJCLASS expansions define basename##_SYM = ch
+// (WEAPON_SYM ')' ...); OBJCLASS2 carries an explicit sname (GOLD_SYM).
+// Some extcmdlist entries use these as their default key.
+const CLASS_SYMS = {};
+{
+    const dsh = readFileSync(join(ROOT, 'nethack-c/upstream/include/defsym.h'), 'utf8');
+    const CH2 = String.raw`'(\\.|[^'\\])'`;
+    for (const m of dsh.matchAll(new RegExp(
+            String.raw`^\s+OBJCLASS\(\s*\d+,\s*(${CH2}),\s*(\w+)`, 'gm'))) {
+        let ch = m[1].slice(1, -1);
+        if (ch.startsWith('\\')) ch = ({ "\\'": "'", '\\\\': '\\' })[ch] ?? ch[1];
+        CLASS_SYMS[`${m[3]}_SYM`] = ch;
+    }
+    for (const m of dsh.matchAll(new RegExp(
+            String.raw`^\s+OBJCLASS2\(\s*\d+,\s*(${CH2}),\s*(\w+),\s*(\w+)`, 'gm'))) {
+        let ch = m[1].slice(1, -1);
+        if (ch.startsWith('\\')) ch = ({ "\\'": "'", '\\\\': '\\' })[ch] ?? ch[1];
+        CLASS_SYMS[`${m[3]}_SYM`] = ch;
+        CLASS_SYMS[m[4]] = ch;
+    }
+}
+
 const start = src.indexOf('struct ext_func_tab extcmdlist[] = {');
 if (start < 0) throw new Error('extcmdlist[] not found');
 const open = src.indexOf('{', start + 'struct ext_func_tab extcmdlist[] ='.length);
@@ -48,7 +70,10 @@ for (const m of hdr.matchAll(/^#define\s+([A-Z0-9_]+)\s+(0x[0-9a-fA-F]+|\d+)\s*(
     FLAGS[m[1]] = Number(m[2]);
 
 const out = [];
-for (const e of entries) {
+for (const eRaw of entries) {
+    /* strip block comments first: the "down" entry's comment says the word
+       MOVEMENTCMD, which the flag scrape below must not read as a flag */
+    const e = eRaw.replace(/\/\*[\s\S]*?\*\//g, ' ');
     // ef_txt is the second field: a string literal after the key.
     const strs = [...e.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map(m => m[1]);
     if (strs.length < 1) continue;
@@ -60,12 +85,24 @@ for (const e of entries) {
     // a command", which is the difference between silence and C's
     // "Unknown command '%s'." message.
     let key = 0;
-    const head = e.slice(0, e.indexOf(','));
+    /* the key patterns below are all anchored, so match against the entry
+       itself — slicing at the first comma broke on the ',' char literal
+       ("pickup"'s default key) */
+    const head = e;
     let km;
     if ((km = /^\s*C\('(.)'\)/.exec(head)))      key = km[1].charCodeAt(0) & 0x1f;
     else if ((km = /^\s*M\('(.)'\)/.exec(head))) key = 0x80 | km[1].charCodeAt(0);
-    else if ((km = /^\s*'\\\\(.)'/.exec(head)))    key = { n: 10, r: 13, t: 9, 0: 0 }[km[1]] ?? 0;
+    else if (/^\s*'\\\\'/.test(head))            key = 92;  /* '\\' backslash */
+    else if ((km = /^\s*'\\([0-7]{1,3})'/.exec(head))) key = parseInt(km[1], 8);
+    else if ((km = /^\s*'\\(.)'/.exec(head)))    key = { n: 10, r: 13, t: 9 }[km[1]] ?? 0;
     else if ((km = /^\s*'(.)'/.exec(head)))       key = km[1].charCodeAt(0);
+    else if ((km = /^\s*([A-Z_]+_SYM)\b/.exec(head))) {
+        /* include/objclass.h class display characters (AMULET_SYM '"', ...) */
+        const sym = CLASS_SYMS[km[1]];
+        if (sym === undefined)
+            throw new Error(`extcmdlist: unknown symbol key ${km[1]}`);
+        key = sym.charCodeAt(0);
+    }
 
     // flags is the field after the function pointer; collect the ALL_CAPS
     // identifiers that name known bits.
@@ -73,7 +110,11 @@ for (const e of entries) {
     for (const m of e.matchAll(/\b([A-Z][A-Z0-9_]{2,})\b/g))
         if (FLAGS[m[1]] !== undefined) flags |= FLAGS[m[1]];
 
-    out.push({ ef_txt, key, flags });
+    /* ef_desc is the third field, the human description dowhatdoes,
+       dokeylist and doextlist print */
+    const ef_desc = strs.length > 1 ? strs[1] : '';
+
+    out.push({ ef_txt, ef_desc, key, flags });
 }
 
 const names = Object.keys(FLAGS).sort();
@@ -88,7 +129,7 @@ ${names.map(n => `    ${n}: ${FLAGS[n]},`).join('\n')}
 // src/cmd.c extcmdlist[] — ef_txt and flags, in table order. extcmds_match()
 // walks this in order and returns the indices that matched.
 export const extcmdlist = [
-${out.map(e => `    { ef_txt: ${JSON.stringify(e.ef_txt)}, key: ${e.key}, flags: ${e.flags} },`).join('\n')}
+${out.map(e => `    { ef_txt: ${JSON.stringify(e.ef_txt)}, ef_desc: ${JSON.stringify(e.ef_desc)}, key: ${e.key}, flags: ${e.flags} },`).join('\n')}
 ];
 `);
 console.log(`wrote ${out.length} extended commands, ${names.length} flag bits`);

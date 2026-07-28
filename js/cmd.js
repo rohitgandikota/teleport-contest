@@ -51,6 +51,8 @@ import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos } from './getpos.js';
+import { show_menu_controls } from './options.js';
+import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
@@ -1335,3 +1337,234 @@ export async function dotravel() {
 
 /* include/hack.h ECMD_CANCEL */
 const ECMD_CANCEL_TRAVEL = 0x04;
+
+/* src/cmd.c:2085 misc_keys[] — the special-key entries dokeylist and
+   key2extcmddesc share. The count prefix is numpad-only and numpad is off. */
+const misc_keys = [
+    { key: 27, desc: 'cancel current prompt or pending prefix' },
+];
+
+// src/cmd.c key2txt() — printable form of a key for the binding lists.
+export function key2txt(c) {
+    if (c === 32) return '<space>';
+    if (c === 27) return '<esc>';
+    if (c === 10) return '<enter>';
+    if (c === 127) return '<del>';
+    return visctrl_key(c);
+}
+
+/* src/hacklib.c visctrl() — '^X' for control chars, 'M-x' for meta */
+function visctrl_key(c) {
+    let out = '';
+    if (c & 0x80) {
+        out += 'M-';
+        c &= 0x7f;
+    }
+    if (c < 0x20) {
+        out += '^';
+        c |= 0x40;
+    } else if (c === 0x7f) {
+        return out + '^?';
+    }
+    return out + String.fromCharCode(c);
+}
+
+/* the default key -> extended command bindings: commands_init() walks
+   extcmdlist and binds each entry's default key, later entries replacing
+   earlier ones on a collision. Its extra bind_key() calls follow; most are
+   number_pad alternates whose keys reset_commands() then rebinds to
+   movement commands for !num_pad (h/j/k/l/N/u, ^L/^N via the ctrl-rush
+   forms), and '5'/M-5/'-' land on MOVEMENTCMD entries the key lists
+   exclude. The two that survive visibly are M-O overview and M-N name —
+   exactly the pair the recorded '?j' listing shows. */
+function cmdbind_table() {
+    const binds = new Map();
+    for (const e of extcmdlist)
+        if (e.key)
+            binds.set(e.key, e);
+    const by_txt = (t) => extcmdlist.find(e => e.ef_txt === t);
+    binds.set('5'.charCodeAt(0), by_txt('run'));
+    binds.set(0x80 | '5'.charCodeAt(0), by_txt('rush'));
+    binds.set('-'.charCodeAt(0), by_txt('fight'));
+    binds.set(0x80 | 'O'.charCodeAt(0), by_txt('overview'));
+    binds.set(0x80 | '2'.charCodeAt(0), by_txt('twoweapon'));
+    binds.set(0x80 | 'N'.charCodeAt(0), by_txt('name'));
+    return binds;
+}
+
+// src/cmd.c keylist_putcmds() — one category's bound keys, then the
+// commands of that category with no key at all.
+function keylist_putcmds(putline, docount, incl_flags, excl_flags, keys_used) {
+    const binds = cmdbind_table();
+    const keys_already_used = keys_used.slice();
+    let count = 0;
+
+    for (let i = 0; i < 256; i++) {
+        if (keys_used[i]) continue;
+        if (i === 32 /* && !flags.rest_on_space */) continue;
+        const cmd = binds.get(i);
+        if (!cmd) continue;
+        if ((incl_flags && !(cmd.flags & incl_flags))
+            || (excl_flags && (cmd.flags & excl_flags)))
+            continue;
+        if (docount) {
+            count++;
+            continue;
+        }
+        putline(`${key2txt(i).padEnd(7)} ${cmd.ef_txt.padEnd(13)} ${cmd.ef_desc}`);
+        keys_used[i] = true;
+    }
+    /* commands that lack key assignments */
+    for (const extcmd of extcmdlist) {
+        if ((incl_flags && !(extcmd.flags & incl_flags))
+            || (excl_flags && (extcmd.flags & excl_flags)))
+            continue;
+        /* keylist_func_has_key: is some not-yet-listed key bound to it? */
+        let has_key = false;
+        for (const [k, cmd] of binds)
+            if (!keys_already_used[k] && cmd === extcmd) {
+                has_key = true;
+                break;
+            }
+        if (has_key) continue;
+        if (docount) {
+            count++;
+            continue;
+        }
+        putline(`#${extcmd.ef_txt.padEnd(20)} ${extcmd.ef_desc}`);
+    }
+    return count;
+}
+
+/* include/func_tab.h flag bundle dokeylist ignores everywhere */
+const KEYLIST_IGNORE = EXTCMD_FLAGS.WIZMODECMD | EXTCMD_FLAGS.INTERNALCMD
+    | EXTCMD_FLAGS.MOVEMENTCMD;
+
+// src/cmd.c dokeylist() — the '?j' full key bindings window.
+export async function dokeylist() {
+    const keys_used = new Array(256).fill(false);
+    const pfx_seen = new Array(256).fill(0);
+    keys_used[3] = true;                        /* ^C, SIGINT */
+    const mov_seen = keys_used.slice();
+    let spkey_gap = false;
+    for (const mk of misc_keys) {
+        if (mk.key && !mov_seen[mk.key] && !pfx_seen[mk.key]) {
+            keys_used[mk.key] = true;
+            pfx_seen[mk.key] = 1;
+        } else {
+            spkey_gap = true;
+        }
+    }
+
+    const win = tty_create_nhwindow(NHW_TEXT);
+    const putline = (s) => tty_putstr(win, 0, s);
+
+    putline('');
+    putline('        ' + '    Full Current Key Bindings List');
+    {
+        /* the "(also commands with no key assignment)" subtitle shows when
+           spkey_gap or any command has no key; the '#'-only commands make
+           it always true here, but test it the way the C does */
+        const binds = cmdbind_table();
+        let any_keyless = spkey_gap;
+        for (const extcmd of extcmdlist) {
+            if (any_keyless) break;
+            let has_key = false;
+            for (const [k, cmd] of binds)
+                if (!keys_used[k] && cmd === extcmd) {
+                    has_key = true;
+                    break;
+                }
+            if (!has_key) any_keyless = true;
+        }
+        if (any_keyless)
+            putline('        ' + '(also commands with no key assignment)');
+    }
+
+    /* directional keys */
+    putline('');
+    putline('Directional keys:');
+    show_direction_keys(win, '.', false);
+
+    putline('');
+    putline('Ctrl+<direction> will run in specified direction until something very');
+    putline('        ' + 'interesting is seen.');
+    putline('Shift+<direction> will run in specified direction until you encounter');
+    putline('        ' + 'an obstacle.');
+
+    putline('');
+    putline('Miscellaneous keys:');
+    for (const mk of misc_keys)
+        if (mk.key && !mov_seen[mk.key] && pfx_seen[mk.key])
+            putline(`${key2txt(mk.key).padEnd(7)} ${mk.desc}`);
+    putline(`${key2txt(3).padEnd(7)} interrupt: break out of NetHack (SIGINT)`);
+
+    putline('');
+    show_menu_controls(putline, true);
+
+    if (keylist_putcmds(putline, true, EXTCMD_FLAGS.GENERALCMD,
+                        KEYLIST_IGNORE, keys_used)) {
+        putline('');
+        putline('General commands:');
+        keylist_putcmds(putline, false, EXTCMD_FLAGS.GENERALCMD,
+                        KEYLIST_IGNORE, keys_used);
+    }
+
+    if (keylist_putcmds(putline, true, 0,
+                        EXTCMD_FLAGS.GENERALCMD | KEYLIST_IGNORE, keys_used)) {
+        putline('');
+        putline('Game commands:');
+        keylist_putcmds(putline, false, 0,
+                        EXTCMD_FLAGS.GENERALCMD | KEYLIST_IGNORE, keys_used);
+    }
+
+    if (game.wizard
+        && keylist_putcmds(putline, true, EXTCMD_FLAGS.WIZMODECMD,
+                           EXTCMD_FLAGS.INTERNALCMD, keys_used)) {
+        putline('');
+        putline('Debug mode commands:');
+        keylist_putcmds(putline, false, EXTCMD_FLAGS.WIZMODECMD,
+                        EXTCMD_FLAGS.INTERNALCMD, keys_used);
+    }
+
+    await tty_display_nhwindow(win);
+    for (;;) {
+        await xwaitforspace(' \r\n\x1b');
+        if (game.morc === '\x1b')
+            break;
+        if (!tty_next_page(win))
+            break;
+    }
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return 0; /* ECMD_OK */
+}
+
+// src/cmd.c key2extcmddesc() — what a key does, for dowhatdoes ('?f').
+export function key2extcmddesc(key) {
+    const ch = String.fromCharCode(key & 0x7f);
+    /* movement commands take precedence over the binding table */
+    if (!(key & 0x80)) {
+        if ('hjklyubn'.includes(ch))
+            return 'move'; /* "move or attack"? */
+        if ('HJKLYUBN'.includes(ch))
+            return 'run';
+    }
+    if (ch >= '0' && ch <= '9')
+        return 'start of, or continuation of, a count';
+    for (const mk of misc_keys)
+        if (key === mk.key)
+            return mk.desc;
+    const cmd = cmdbind_table().get(key);
+    if (cmd && cmd.ef_txt) {
+        let buf = `${cmd.ef_desc} (#${cmd.ef_txt})`;
+        /* reqmenu prefix gets a two-line movement/non-movement form */
+        if (buf.toLowerCase().startsWith('prefix:') && cmd.ef_txt === 'reqmenu')
+            buf = 'movement prefix:'
+                + ' move without autopickup and without attacking'
+                + '\n'
+                + 'non-movement prefix:' + buf.slice(7);
+        return buf;
+    }
+    return null;
+}

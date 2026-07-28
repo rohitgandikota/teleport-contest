@@ -51,6 +51,78 @@ function splitArgs(s) {
     return out;
 }
 
+// The reference recorder build's preprocessor state (macOS unix tty). The
+// About window's compiled-options list is the evidence for most of these:
+// insurance files, mail daemon, news file, restore via menu, status via
+// windowport with highlighting, stack trace + browser reporting. Options in
+// #ifdef blocks outside this set do not exist in the C's allopt[] and must
+// not exist here — the '?g' option_help window shows the table verbatim.
+const DEFINES = new Set([
+    'OPTLIST_H', 'NHOPT_PARSE',
+    'UNIX', 'TTY_GRAPHICS', 'ALTMETA', 'INSURANCE', 'MAIL', 'NEWS',
+    'SELECTSAVED', 'STATUS_HILITES', 'CRASHREPORT', 'PREV_MSGS',
+    'SND_LIB_INTEGRATED', 'BACKWARD_COMPAT',
+]);
+
+// Strip the #if/#else/#endif branches the reference build does not compile.
+// Handles the directive forms optlist.h actually uses: #ifdef X, #ifndef X,
+// #if 0, #if <expr> with defined()/!defined()/||/&&, #else, #endif.
+function preprocess(text) {
+    const evalExpr = (expr) => {
+        expr = expr.replace(/\/\*.*?\*\//g, '').trim();
+        if (/^\d+$/.test(expr)) return Number(expr) !== 0;
+        /* defined(X) / defined X -> truth; bare identifiers likewise */
+        const js = expr
+            .replace(/defined\s*\(\s*(\w+)\s*\)/g, (_, n) =>
+                DEFINES.has(n) ? 'true' : 'false')
+            .replace(/\b([A-Z_][A-Z0-9_]*)\b/g, (_, n) =>
+                DEFINES.has(n) ? 'true' : 'false')
+            .replace(/!/g, '!').replace(/&&/g, '&&').replace(/\|\|/g, '||');
+        try {
+            return !!Function(`"use strict"; return (${js});`)();
+        } catch (e) {
+            throw new Error(`optlist.h: cannot evaluate #if ${expr}`);
+        }
+    };
+
+    const out = [];
+    const stack = []; /* {active, seenTrue} */
+    for (const line of text.split('\n')) {
+        const m = /^\s*#\s*(ifdef|ifndef|if|elif|else|endif)\b(.*)$/.exec(line);
+        if (m) {
+            const parentActive = stack.every(f => f.active);
+            const kw = m[1], rest = m[2].trim();
+            if (kw === 'ifdef') {
+                const v = DEFINES.has(rest.split(/\s/)[0]);
+                stack.push({ active: parentActive && v, seenTrue: v });
+            } else if (kw === 'ifndef') {
+                const v = !DEFINES.has(rest.split(/\s/)[0]);
+                stack.push({ active: parentActive && v, seenTrue: v });
+            } else if (kw === 'if') {
+                const v = evalExpr(rest);
+                stack.push({ active: parentActive && v, seenTrue: v });
+            } else if (kw === 'elif') {
+                const f = stack[stack.length - 1];
+                const above = stack.slice(0, -1).every(x => x.active);
+                const v = !f.seenTrue && evalExpr(rest);
+                f.active = above && v;
+                f.seenTrue = f.seenTrue || v;
+            } else if (kw === 'else') {
+                const f = stack[stack.length - 1];
+                const above = stack.slice(0, -1).every(x => x.active);
+                f.active = above && !f.seenTrue;
+                f.seenTrue = true;
+            } else if (kw === 'endif') {
+                stack.pop();
+            }
+            continue; /* the directive line itself never emits */
+        }
+        if (stack.every(f => f.active))
+            out.push(line);
+    }
+    return out.join('\n');
+}
+
 // Find every NHOPT* invocation that is not a #define, reading the balanced
 // argument list even when it spans several lines.
 function extractInvocations(text) {
@@ -113,11 +185,39 @@ function unquote(tok) {
     const t = tok.trim();
     if (t === 'NoAlias' || t === '(const char *) 0' || t === '0') return null;
     const m = /^"((?:[^"\\]|\\.)*)"$/.exec(t);
-    return m ? m[1] : t;
+    /* C string escapes: the source spells \" for an embedded quote */
+    return m ? m[1].replace(/\\(.)/g, '$1') : t;
 }
 
 function main() {
-    const text = readFileSync(SRC, 'utf8');
+    /* strip block comments so a commented-out NHOPT invocation ("moved to
+       top") cannot be scraped as a real row; quote-aware */
+    const stripComments = (t) => {
+        let out = '', i = 0;
+        while (i < t.length) {
+            const c = t[i];
+            if (c === '"') {
+                out += c; i++;
+                while (i < t.length) {
+                    out += t[i];
+                    if (t[i] === '\\') { i++; out += t[i] ?? ''; i++; continue; }
+                    if (t[i] === '"') { i++; break; }
+                    i++;
+                }
+                continue;
+            }
+            if (c === '/' && t[i + 1] === '*') {
+                i += 2;
+                while (i < t.length && !(t[i] === '*' && t[i + 1] === '/')) i++;
+                i += 2;
+                out += ' ';
+                continue;
+            }
+            out += c; i++;
+        }
+        return out;
+    };
+    const text = stripComments(preprocess(readFileSync(SRC, 'utf8')));
     const invocations = extractInvocations(text);
 
     const entries = invocations.map(({ kind, args }) => {
@@ -126,8 +226,12 @@ function main() {
         fields.forEach((f, i) => { e[f] = args[i] === undefined ? null : args[i].trim(); });
         e.name = unquote(e.displayName ?? e.name);
         e.alias = unquote(e.alias);
+        e.descrQuoted = !!(e.descr && e.descr.startsWith('"'));
         e.descr = unquote(e.descr);
         delete e.displayName;
+        /* keep a marker for '(boolean *) 0' addresses before dropping addr:
+           option_help skips such rows (the platform's compiled-out stubs) */
+        e.noaddr = !!(e.addr && e.addr.replace(/\s+/g, '').includes('(boolean*)0'));
         delete e.addr;
         delete e.termpref;
         return e;
@@ -151,6 +255,13 @@ function main() {
         if (e.hasHandler) parts.push(`hasHandler: ${JSON.stringify(e.hasHandler)}`);
         if (e.pfx) parts.push('pfx: true');
         if (e.alias) parts.push(`alias: ${JSON.stringify(e.alias)}`);
+        /* option_help ('?g') prints each compound option's description */
+        if (e.descrQuoted)
+            parts.push(`descr: ${JSON.stringify(e.descr)}`);
+        /* a null addr marks an option compiled out on this platform; the
+           allopt row exists but option_help skips it (options.c:9476) */
+        if (e.noaddr)
+            parts.push('noaddr: true');
         return `    { ${parts.join(', ')} },`;
     }).join('\n');
 

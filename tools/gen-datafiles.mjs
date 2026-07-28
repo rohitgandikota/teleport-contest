@@ -23,8 +23,13 @@ const OUT = join(PROJECT_ROOT, 'js/dat_files.js');
    farlook "More info?" and the '/'-command typed-word path: line 1 is a
    comment record, line 2 the hex offset of the text section, then index
    patterns with "offset,count" lines, '.' ending the index. Byte offsets
-   matter (checkfile fseeks), so it ships verbatim like the rumor files. */
-const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon', 'data'];
+   matter (checkfile fseeks), so it ships verbatim like the rumor files.
+   The rest are the '?' help-menu viewers: display_file() pages them as
+   NHW_TEXT verbatim (help/hh/history/opthelp/optmenu/usagehlp/license),
+   and dowhatdoes() greps cmdhelp for a key's description. */
+const FILES = ['rumors', 'engrave', 'epitaph', 'bogusmon', 'data',
+               'help', 'hh', 'history', 'opthelp', 'optmenu', 'usagehlp',
+               'license', 'cmdhelp', 'keyhelp', 'wizhelp'];
 
 function readDat(name) {
     const path = join(RECORDER, 'dat', name);

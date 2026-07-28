@@ -17,7 +17,8 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
 import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { pline, glyph_at, docrt, flush_screen } from './display.js';
+import { pline, glyph_at, docrt, flush_screen,
+         tty_clear_nhwindow_message } from './display.js';
 import { DEC_TO_UNICODE, NO_COLOR } from './terminal.js';
 import { m_at, t_at } from './mon.js';
 import { engr_at } from './engrave.js';
@@ -26,10 +27,12 @@ import { ARTICLE_NONE } from './const.js';
 import { an, the, makesingular, singular, xname, doname } from './objnam.js';
 import { pmatch, tabexpand, mungspaces, isok } from './hacklib.js';
 import { data as DATAFILE } from './dat_files.js';
+import * as DAT from './dat_files.js';
 import { getpos, LOOK_QUICK, LOOK_ONCE, LOOK_VERBOSE } from './getpos.js';
 import { tty_yn_function } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
-import { getlin } from './cmd.js';
+import { getlin, key2extcmddesc, key2txt } from './cmd.js';
+import { show_menu_controls } from './options.js';
 import { display_inventory } from './invent.js';
 import { nhl_init } from './nhlua.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
@@ -552,7 +555,7 @@ function add_quoted_engraving(x, y, buf, force) {
     if (!floorengr && !headstone && !force) return { buf, added: false };
     if (ep.eread)
         buf += ` with ${headstone ? 'headstone reading' : 'remembered text'}: `
-            + `"${ep.engr_txt}"`;
+            + `"${ep.engr_txt_remembered ?? ep.engr_txt}"`;
     else
         buf += ` ${headstone ? 'whose headstone' : 'that'} you haven't read`;
     return { buf, added: true };
@@ -1166,6 +1169,101 @@ export async function doextversion() {
     return ECMD_OK;
 }
 
+// win/tty/wintty.c tty_display_file() — page a dat file through an NHW_TEXT
+// window: strip the newline, tabexpand, one putstr per line. ESC at any
+// page's --More-- cancels the remaining pages (WIN_CANCELLED).
+async function display_file(text) {
+    /* tty_clear_nhwindow(WIN_MESSAGE) first */
+    tty_clear_nhwindow_message(game._topl_cury || 0);
+    game._pending_message = '';
+
+    const win = tty_create_nhwindow(NHW_TEXT);
+    const lines = String(text).split('\n');
+    /* a trailing newline yields one empty tail entry, not a blank line */
+    if (lines.length && lines[lines.length - 1] === '')
+        lines.pop();
+    for (let line of lines) {
+        if (line.includes('\t'))
+            line = tabexpand(line);
+        tty_putstr(win, 0, line);
+    }
+    await tty_display_nhwindow(win);
+    for (;;) {
+        await xwaitforspace(quitchars);
+        if (game.morc === '\x1b')
+            break;                      /* cancel remaining pages */
+        if (!tty_next_page(win))
+            break;
+    }
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return ECMD_OK;
+}
+
+// src/pager.c:2957 dohistory() — display_file(HISTORY, TRUE).
+export async function dohistory() {
+    return await display_file(DAT.history);
+}
+
+// src/pager.c:2658 dowhatdoes() — the '?f' viewer: read one key and say
+// what it is bound to.
+let dowhatdoes_once = false;
+export async function dowhatdoes() {
+    if (!dowhatdoes_once) {
+        /* ALTMETA is defined and iflags.altmeta defaults off, so the
+           "(For ESC, type it twice.)" suffix stays empty */
+        await pline("Ask about '&' or '?' to get more info.");
+        dowhatdoes_once = true;
+    }
+    const q = await tty_yn_function('What command?', null, '\0');
+    const reslt = key2extcmddesc(q.charCodeAt(0));
+    if (reslt !== null) {
+        /* dowhatdoes_core: "%-8s%s." with key2txt of the key */
+        const line = `${key2txt(q.charCodeAt(0)).padEnd(8)}${reslt}.`;
+        const p = line.indexOf('\n');
+        if (p < 0) {
+            await pline(line);
+        } else {
+            /* the 'm' prefix answer spans two lines */
+            await pline(line.slice(0, p) + ',');
+            await pline(line.slice(0, 8).padEnd(8) + line.slice(p + 1));
+        }
+    } else {
+        const cc = q.charCodeAt(0);
+        await pline(`No such command '${key2txt(cc)}', char code ${cc} `
+            + `(0${cc.toString(8).padStart(3, '0')} or `
+            + `0x${cc.toString(16).padStart(2, '0')}).`);
+    }
+    return ECMD_OK;
+}
+
+// src/pager.c:2822 domenucontrols() — the '?l' window.
+async function domenucontrols() {
+    const cwin = tty_create_nhwindow(NHW_TEXT);
+    show_menu_controls((s) => tty_putstr(cwin, 0, s), false);
+    await tty_display_nhwindow(cwin);
+    await xwaitforspace(quitchars);
+    tty_destroy_nhwindow(cwin);
+    await docrt();
+}
+
+// src/pager.c:2694 docontact() — the support window. sysopt.support and
+// the SYSCF wizard list are unset in the reference build, so only the
+// devteam block prints.
+async function docontact() {
+    const win = tty_create_nhwindow(NHW_TEXT);
+    tty_putstr(win, 0, 'To contact the NetHack development team directly,');
+    tty_putstr(win, 0,
+        "see the 'Contact' form on our website or email <devteam@nethack.org>.");
+    tty_putstr(win, 0, '');
+    tty_putstr(win, 0, 'For more information on NetHack, or to report a bug,');
+    tty_putstr(win, 0, 'visit our website "https://www.nethack.org/".');
+    await tty_display_nhwindow(win);
+    await xwaitforspace(quitchars);
+    tty_destroy_nhwindow(win);
+    await docrt();
+}
+
 /* src/pager.c:2830 help_menu_items[] — texts exactly as the reference
    displays them ('i' carries the "'#optionsfull' or 'm O'" substitution). */
 const HELP_MENU_ITEMS = [
@@ -1202,12 +1300,48 @@ export async function dohelp() {
     await docrt();
 
     const ch = String.fromCharCode(key);
-    if (ch === 'a') {
+    switch (ch) {
+    case 'a':
         return await doextversion();
-    } else if (ch >= 'b' && ch <= 'o') {
-        note_unported_pager(`dohelp:item_${ch}`);
+    case 'b':
+        return await display_file(DAT.help);      /* dispfile_help */
+    case 'c':
+        return await display_file(DAT.hh);        /* dispfile_shelp */
+    case 'd':
+        return await dohistory();
+    case 'e':
+        return await dowhatis();                  /* hmenu_dowhatis */
+    case 'h':
+        return await display_file(DAT.opthelp);   /* dispfile_optionfile */
+    case 'i':
+        return await display_file(DAT.optmenu);   /* dispfile_optmenu */
+    case 'm':
+        return await display_file(DAT.usagehlp);  /* dispfile_usagehelp */
+    case 'n':
+        return await display_file(DAT.license);   /* dispfile_license */
+    case 'o':
+        await docontact();
+        return ECMD_OK;
+    case 'f':
+        return await dowhatdoes();
+    case 'g': {
+        const { option_help } = await import('./options.js');
+        await option_help();
         return ECMD_OK;
     }
-    /* ESC/space — menu dismissed with no pick */
-    return ECMD_OK;
+    case 'j': {
+        const { dokeylist } = await import('./cmd.js');
+        await dokeylist();
+        return ECMD_OK;
+    }
+    case 'l':
+        await domenucontrols();
+        return ECMD_OK;
+    case 'k':   /* doextlist — its interactive menu is not ported yet */
+        note_unported_pager(`dohelp:item_${ch}`);
+        return ECMD_OK;
+    default:
+        /* ESC/space — menu dismissed with no pick */
+        return ECMD_OK;
+    }
 }

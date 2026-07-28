@@ -108,7 +108,9 @@ export async function newgame() {
         const ir = str2role(g.rc?.opts?.role);
         const ira = str2race(g.rc?.opts?.race);
         const ig = str2gend(g.rc?.opts?.gender);
-        const ia = str2align(g.rc?.opts?.align);
+        /* parseoptions() files every spelling under the table's canonical
+           name, and "align" is an alias of "alignment" (optlist.h:147) */
+        const ia = str2align(g.rc?.opts?.alignment);
         g.flags.initrole = ir;
         g.flags.initrace = ira;
         g.flags.initgend = ig;

@@ -10189,3 +10189,39 @@ Gates clean.
 seed1500-rogue-explore-move 2341/2768; seed2200 2754/3018; seed0398
 2822/3026; seed0077 3225/3242 (17!); seed0101 2323/2371 (48). Then the
 big tours (0360/0361/0367) whose tails need doors/kicks/levels.
+
+## 5f70d7b: pick_lock door arms; seed0077 RNG 100% (980 -> 982)
+
+seed0077's 17-call tail was an apply-lock-pick: 'a' + item 'e' + 'j' as
+the DIRECTION. C's pick_lock on an open door says "You cannot lock an
+open door." and RETURNS PICKLOCK_LEARNED_SOMETHING = time passes
+(lock.c:352,599; apply.c:4288 maps nonzero to ECMD_TIME). Ours consumed
+the direction and did nothing, so every later turn ran one turn behind:
+the "monsters one turn late" phase shift that made the tail unmatchable.
+pick_lock's door arms are ported; container/resume/occupation recorded.
+Also: doname now writes "an empty uncursed sack" (objnam.c:1300).
+
+Debugging notes that cost time here, recorded so they are not repaid:
+- A "turn phase shift" smells like moveloop structure but is usually ONE
+  missed ECMD_TIME somewhere earlier. Find the FIRST time-passing C step
+  (grep steps[].rng for moveloop_core) that ours has no gate for.
+- Serial single-instrument probe runs of the same session are easy to
+  misread as nondeterminism. Instrument once, run twice, diff before
+  concluding anything about races. (Done here: runs are IDENTICAL.)
+- The gate/rhack order: moveloop_core processes the PREVIOUS command's
+  time at its top, then rhacks the next key. A key's turn draws land in
+  the NEXT core call, which shifts what "step N's draws" means for
+  boundary attribution.
+
+### Parked: seed0077 vision gap (13 screens)
+At C's first hero move (step17 'j'), vision reveals a SOUTHERN STRIP of
+the start room: floor column x36 y13..17, east wall x37 segments and the
+door (37,15), corner (37,18). Ours never shows these cells (blank).
+The startup frames match, so this is about what a MOVE recalc reveals vs
+the initial docrt: C's view of a lit irregular room grows after moving;
+compare vision.c view_from/right-angle rules against js/vision.js.
+seed0200 ("2 of 40") and other low-screen sessions may share this class.
+
+### Next
+seed1500-rogue-explore-move (2341/2768); seed2200 (2754/3018); seed0398
+(2822/3026). Then the vision comparison above.

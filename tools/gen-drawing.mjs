@@ -48,6 +48,16 @@ function scrape(re) {
    12 empty and drew gold as '?'. */
 const monsyms = scrape(
     new RegExp(String.raw`^\s+MONSYM\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*(\w+)`, 'gm'));
+
+/* the MONSYM explanation strings ("human or elf"), for farlook */
+const monexplain = [];
+{
+    const re = new RegExp(
+        String.raw`^\s+MONSYM\(\s*(\d+),\s*${CH},\s*\w+,\s*\w+,\s*"([^"]*)"`, 'gm');
+    let m;
+    while ((m = re.exec(src)) !== null)
+        monexplain[Number(m[1])] = m[m.length - 1];
+}
 const oclasses = [
     ...scrape(new RegExp(
         String.raw`^\s+OBJCLASS\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*(\w+)`, 'gm')),
@@ -87,6 +97,10 @@ export const monsym_names = ${JSON.stringify(
 
 export const oclass_names = ${JSON.stringify(
     Object.fromEntries(oclasses.map(r => [r.sym, r.idx])), null, 1)};
+
+// MONSYM explanation strings, indexed like def_monsyms ("human or elf");
+// src/pager.c do_screen_description reads these for farlook
+export const monexplain = ${JSON.stringify(monexplain)};
 `;
 
 writeFileSync(OUT, body);

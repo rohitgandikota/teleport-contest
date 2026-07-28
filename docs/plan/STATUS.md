@@ -10340,3 +10340,44 @@ autodescribe, the 'E' engravings list window) so keys align; then the
 About window engages and the tail should close.
 
 Board 997, six passes, gates clean.
+
+## HANDOFF: the '/' farlook chain is seed2200's tail (steps 34-108, ~70 keys)
+
+No code this pass (analysis only; board stays 997). The full recorded
+shape, so the next agent can port without re-deriving:
+
+1. '/' -> dowhatis (pager.c:1690): NHW_MENU "What do you want to look
+   at:" with entries [/ i ? (blank) m M o O t T e E] (group accels y/n
+   for '/' and '?' since lootabc is off). Recorded step 34.
+2. Picking '/' -> pline "Please move the cursor to a monster, object or
+   location." (pager.c:1905; --More-- because a window follows).
+3. FIRST TIME ONLY: the getpos tip window (dat/nhcore.lua:110,
+   "Tip: Farlooking or selecting a map location" + 6 more lines,
+   "(end)") - a Lua-core once-per-game flag; recorded step 36 verbatim.
+   NOTE: the tip is shown via nhcore Lua, but no rn2 draws accompany it
+   in the recording (nhcore state already exists; no new nhlib load).
+4. getpos loop (getpos.c:771; ours js/getpos.js has the cursor loop):
+   verbose "(For instructions type a '?')" pline, then "Move cursor to
+   a monster, object or location:" goal msg. On every cursor MOVE,
+   iflags.autodescribe paints the description on the topline with NO
+   --More-- (step 46: "branch staircase up").
+5. '.' pick -> look_at (pager.c do_look/do_screen_description):
+   "<sym>        <symbol explanation> (<actual>)--More--" e.g.
+   "@        a human or elf (human wizard called merlin)" and
+   "<        a staircase up or a branch staircase up (branch staircase
+   up)". Then "More info about \"<actual>\"? [yn] (n)" (checkfile gate;
+   'n' recorded) then the loop re-prompts "Pick a monster, object or
+   location." and getpos continues until ESC.
+6. The description engine needs: monexplain strings (defsym.h MONSYM
+   explanations - NOT in our generated data yet; add to
+   tools/gen-drawing.mjs), cmap explanations (defsym.h PCHAR names),
+   the branch-stairs naming, and x_monnam for the hero ("human wizard
+   called merlin" - polyself naming of youmonst + the call-name).
+   Also '?' (something else by symbol/name) and 'i' arms appear later
+   in the session, plus the 'E' seen-engravings list (step 106,
+   "Seen or remembered engravings on this level:").
+
+After this chain, the '?' help About window (ALREADY PORTED, js/pager.js)
+engages at step 109 and the last ~25 RNG calls should close.
+
+Board 997, six passes, gates clean.

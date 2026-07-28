@@ -9435,3 +9435,42 @@ a marker can name an exported function and still be right, because the name may
 resolve to a different local (`uhitm.js:883 hmon_hitmon:is_pole` points at a
 `js/u_init.js` export that is probably not the intended one). **Read the C at
 each site before wiring.** The sweep produces candidates, not defects.
+
+
+## RESET 28 Jul: js/ restored to the judge-validated tree (2a342ff)
+
+The Mon 27 Jul 20:50 UTC judge run timed out at 900s (end-of-input --More--
+block, see NOTES), so the fork went unscored and the board froze at the Sun
+26 Jul 16:24 UTC run. main's js/ is now byte-identical to the tree that run
+scored: local scoreboard reads 510 screens, exactly the judge's 510 public
+points. Cost of the reset: 2 screens, 185 RNG positions.
+
+Everything since lives on **archive/pre-reset-20260728** (55 files, ~6k
+lines): the whole wear subsystem (canwearobj, accessory_or_armor_on armor
+arm, dowear/doputon, equip_ok + callbacks, Ring_on/Blindf_on, on_msg/off_msg,
+toggle_stealth, learnring, adjust_attrib), mbodypart/body_part, artifact_name
+and artilist_records, hacklib string functions, not_fully_identified,
+obj_is_pname, see_monsters, does_block, iter_mons, seemimic, the setworn
+wiring in u_init (+2 RNG), the FIRST_OBJECT fix, racial_exception through
+raceptr, and the async conversion of the wear path. NOTES documents every
+piece.
+
+**Re-application policy** (in force):
+1. Nothing re-lands until a judge cycle confirms this base scores.
+2. Then slices, in risk order, each behind the triple gate (scoreboard
+   no-regression, generalize no-crash, hang-gate no-over-read):
+   a. inert functions nothing calls
+   b. verified-neutral fixes (FIRST_OBJECT, racial_exception, dedups)
+   c. state wiring (setworn in u_init, silent _on handlers)
+   d. message-emitting wiring, ONE AT A TIME, last
+3. The hang gate is a hard gate for anything that can emit a message. It
+   covers only the 44 public sessions; held-out coverage is impossible, which
+   is why (d) waits for clean cycles between lands.
+
+**Work that continues NOW (does not touch the reverted surface):** the
+divergence hunt in live code. tools/diverge.mjs --all ranks first-divergence
+sites; dog_move(dogmove.c:1255) leads with 7 of 30 sessions (one extra
+dogfood/obj_resists rn2(100) before C's rn2(++chcnt); condition order and
+chcnt verified correct; suspect one extra object in our floor pile; the
+naive where===OBJ_FLOOR filter LOST 58 screens, see NOTES, do not retry).
+Then obj_resists, do_attack, distfleeck, getbones at 3 each.

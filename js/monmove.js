@@ -61,6 +61,10 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          MMOVE_NOMOVES, engulfing_u } from './const.js';
 import { MSOUND } from './monst_data.js';
 
+function note_unported_monmove(what) {
+    (game.unported ||= new Set()).add('monmove:' + what);
+}
+
 // src/priest.c:9 ALGN_SINNED — worse than strayed (-1..-3).
 const ALGN_SINNED = -4;
 
@@ -946,10 +950,25 @@ export function dochug(mtmp) {
             }
         }
 
-        /* src/monmove.c:1773 — m_move() dispatches a tame monster to
-           dog_move() before it reaches mfndpos(). */
-        if (!status)
-            status = mtmp.mtame ? dog_move(mtmp, 0) : m_move(mtmp, 0);
+        /* src/monmove.c:1772 — m_move() dispatches a tame monster to
+           `postmov(..., dog_move(mtmp, after), ...)`. postmov is where the
+           display catches up with the move: newsym on the vacated square and
+           on the new one (monmove.c:1508 and the mintrap arm). Without it a
+           pet's move never repaints and the frames show it frozen at its old
+           square. postmov's trap/door arms are recorded. */
+        if (!status) {
+            if (mtmp.mtame) {
+                const omx = mtmp.mx, omy = mtmp.my;
+                status = dog_move(mtmp, 0);
+                if (status === MMOVE_MOVED) {
+                    newsym(omx, omy); /* update the old position */
+                    newsym(mtmp.mx, mtmp.my);
+                    note_unported_monmove('dochug:postmov_pet_mintrap');
+                }
+            } else {
+                status = m_move(mtmp, 0);
+            }
+        }
 
         /* src/monmove.c:915 — distfleeck is RECALCULATED after the move, so
            every monster that takes a turn spends TWO rn2(5) draws, not one. */

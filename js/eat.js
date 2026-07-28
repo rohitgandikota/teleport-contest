@@ -15,10 +15,11 @@ import { set_occupation } from './allmain.js';
 import { rn2 } from './rng.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, A_LAWFUL } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE } from './invent.js';
+import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
+import { splitobj } from './mkobj.js';
 
 // src/eat.c:3170 gethungry()
 export function gethungry() {
@@ -120,8 +121,52 @@ export function eat_ok(obj) {
     return GETOBJ_EXCLUDE_SELECTABLE;
 }
 
+// src/eat.c:325 obj_nutrition()
+function obj_nutrition(otmp) {
+    return (otmp.otyp === ONAMES.CORPSE) ? game.mons[otmp.corpsenm].cnutrit
+           : otmp.globby ? otmp.owt
+             : game.objects[otmp.otyp].oc_nutrition;
+}
+
+// src/eat.c:360 touchfood() — split one item off a stack before eating it and
+// give it its own inventory slot; also latch its full nutrition into oeaten.
+//
+// The split is where the meal's rnd(2) comes from: splitobj -> nextoid ->
+// next_ident. costly_alteration (shop billing) and the 52-slot overflow drop
+// are recorded. The re-slot mirrors C's freeinv + addinv_nomerge using
+// assigninvlet's rule: first unused letter, a-z then A-Z.
+function touchfood(otmp) {
+    if (otmp.quan > 1) {
+        if (!(game.invent || []).includes(otmp))
+            splitobj(otmp, otmp.quan - 1);
+        else
+            otmp = splitobj(otmp, 1);
+    }
+
+    if (!otmp.oeaten) {
+        note_unported_eat('touchfood:costly_alteration');
+        otmp.oeaten = obj_nutrition(otmp);
+    }
+
+    if ((game.invent || []).includes(otmp)) {
+        freeinv(otmp);
+        if ((game.invent || []).length >= 52) {
+            note_unported_eat('touchfood:overflow_drop');
+        } else {
+            /* addinv_nomerge: own slot, no merging back into the stack */
+            const used = new Set((game.invent || []).map(o => o.invlet));
+            const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            for (const ch of letters)
+                if (!used.has(ch)) { otmp.invlet = ch; break; }
+            game.invent.push(otmp);
+            update_inventory();
+        }
+    }
+    return otmp;
+}
+
 export async function doeat() {
-    const otmp = await floorfood('eat', 0);
+    let otmp = await floorfood('eat', 0);
 
     if (!otmp)
         return ECMD_OK;
@@ -134,6 +179,10 @@ export async function doeat() {
         note_unported_eat('doeat:tin_or_corpse');
         return ECMD_TIME;
     }
+
+    /* src/eat.c:2968 — touchfood() BEFORE the victual is set up; it may
+       replace otmp with the split-off single. */
+    otmp = touchfood(otmp);
 
     const v = (game.context.victual ||= {});
     v.piece = otmp;

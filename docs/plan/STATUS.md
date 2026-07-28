@@ -10381,3 +10381,82 @@ After this chain, the '?' help About window (ALREADY PORTED, js/pager.js)
 engages at step 109 and the last ~25 RNG calls should close.
 
 Board 997, six passes, gates clean.
+
+## The farlook chain is live; board 997 -> 1125
+
+The '/' command now runs C's full look pipeline end to end, and seed2200
+climbed 25 -> 147 of 230 screens (RNG 3012/3018). What landed, in the
+order it matters to the next agent:
+
+- js/pager.js is a real port of src/pager.c now: do_look (menu, the
+  '/'/'i'/'?'/m/M/o/O/t/T/e/E arms), do_screen_description +
+  add_cmap_descr + append_str, lookat + self_lookat + look_at_monster +
+  look_at_object, checkfile (chkfil* flags, the More-info y_n, the entry
+  window), look_all/look_traps/look_engrs, waterbody_name.
+- js/getpos.js is the full getpos loop: tip via handle_tip (js/hack.js,
+  context.tips bitfield; the tip text lives in js/nhlua.js as the nhcore
+  callback, displayed exactly as nhl_text builds it - a PICK_NONE menu of
+  add_menu_str lines, NOT an NHW_TEXT page), verbose instructions pline,
+  goal message, autodescribe per cursor move, run-8 shifted moves, the
+  feature-symbol jump search, '.,;:' picks, '@', '#'/'*' toggles.
+  UNPORTED and recorded: gather_locs cycling (m/M/o/O/d/D/x/X/a/A/z/Z),
+  '?' getpos help (consumes ITS OWN keys in C - a session pressing it
+  desyncs), '!' menu, '$' hilite, '"' filter.
+- Message model corrections that everything above depends on:
+  * nhgetch downgrades TOPLINE_NEED_MORE -> NON_EMPTY (wintty.c:4100) -
+    a key read acknowledges the topline; successive plines separated by
+    key reads repaint instead of blocking on --More--.
+  * tty_display_nhwindow (now async, all callers await) and getlin flush
+    a pending NEED_MORE with more() BEFORE showing anything
+    (wintty.c:1966, getline.c:53).
+  * getlin erases prompt+answer at exit (getline.c:213 clear_nhwindow).
+  * update_topl's wrapped messages ('\n' inside _pending_message) paint
+    onto map rows with cl_end semantics; more()'s suffix goes at the end
+    of the LAST line. tty_clear_nhwindow_message already took cury.
+  * curs(WIN_MAP) = game._map_cursor, honored by _buildScreenOutput.
+- Display cells carry glyph provenance now (loc.disp_glyph +
+  remembered_glyph.glyph, C's gbuf model): kind hero/mon/obj/cmap plus
+  refs; glyph_at(x,y) classifies; blank cells read unexplored/nothing via
+  seenv. terrain_glyph emits cmap indices incl. known_branch_stairs()
+  (the dlvl1 '<' IS the tutorial branch stair, u_traversed true from the
+  start-on-it rule, tolev dnum 7 - that is why farlook says "branch
+  staircase up"). The stair COLOR still uses the recorded stair_seen
+  model; the cmap index uses the C rule - reconcile when a session shows
+  a seen non-branch stair in color.
+- Data: tools/gen-drawing.mjs emits defsyms [{name,sym,ch,dec,explain}]
+  (sym = defsym.h ASCII default for typed lookups, ch/dec = DECgraphics
+  showsym) + oc_explain + cmap_names; showsym(S_darkroom)=S_room per
+  display.c:1850 lives in pager.js. tools/gen-datafiles.mjs now embeds
+  the BUILT dat/data (287KB, byte offsets intact); checkfile walks it
+  with pmatch (js/hacklib.js) exactly like the C: index lines, ~skip
+  entries, "offset,count", tab-stripped text, tabexpand.
+- objnam: makesingular (full one_off/as_is/badman/compound port), the(),
+  and xname's statue arm ("statue of a grid bug") which the recorded /o
+  listing requires.
+- cmd.js: '/' -> dowhatis, ';' -> doquickwhatis, '_' -> dotravel FRONT
+  HALF (pline + getpos force=TRUE + ESC cancel; wiz_wish-style). The
+  travel MOVER (dotravel_target/findtravelpath) is a recorded gap; a
+  session that picks a destination desyncs there. seed0101 18 -> 24/27.
+
+KNOWN COSTS, deliberate: seed0012 RNG 3113 -> 3107. Its 'H' run crosses
+several object piles; our run does not stop at objects the way C's
+lookaround does, so look_here fires on squares C never reports. With the
+now-CORRECT statue name the joined topline overflows into a --More-- the
+C never shows. The bug is the run's object-stop rule (hack.c lookaround),
+not the name. Similar class: the seed0012 dog box scan draws 4
+obj_resists vs C's 5 - C's fifth comes from something outside the box
+scan (possibly droppables/dog minvent), worth reading dog_goal again.
+
+NEXT for seed2200 (tail is ~80 screens, all draw-free): the '?' help
+menu viewers b-o. b/c/d/g/h/i/l/m/n are display_file() of dat files
+(help, hh, history, opthelp, optmenu, usehelp?, menuhelp, cmdhelp?,
+license, support?) - embed via gen-datafiles (recorder/dat has them all)
+and page through NHW_TEXT exactly like the About window. f is
+dowhatdoes (reads ONE key, prints that key's description from cmdhelp).
+j is dokeylist (dynamic, builds from the binding table), k is the
+extended-command list (dynamic menu). e re-enters dowhatis (ported).
+After that seed2200's remaining RNG tail is 6 calls at step 228:
+mcalcmove rn2(12)x3 vs our rn2(7)/rnd(10) - a monster speed issue.
+
+Board 1125, six passes, hang-gate OK, generalize OK (40/40 clean
+Input-queue-empty).

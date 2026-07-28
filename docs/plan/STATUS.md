@@ -10460,3 +10460,56 @@ mcalcmove rn2(12)x3 vs our rn2(7)/rnd(10) - a monster speed issue.
 
 Board 1125, six passes, hang-gate OK, generalize OK (40/40 clean
 Input-queue-empty).
+
+## Help viewers landed; seed2200 closes at 229/230; board 1207
+
+All '?' menu items except doextlist are live. Static files (b c d h i m
+n) page via display_file over gen-datafiles-embedded dat text; g is
+option_help rebuilt from the optlist table; j is dokeylist from the
+default binding model; f is dowhatdoes/key2extcmddesc; l is
+show_menu_controls; o is docontact. seed2200's only remaining loss is
+step 220: the spell menu heading's four leading spaces carry
+ATR_INVERSE in the C recording, and the FROZEN serializer skips leading
+blanks regardless of attribute, so the cells cannot round-trip. Do not
+chase it; it is a fixture limit, not a port bug.
+
+Hard-won generator lessons (all in tools/, all verified against the
+recorded windows byte for byte):
+- gen-optlist now PREPROCESSES optlist.h with the reference build's
+  defines (DEFINES set in the script; About-window options list is the
+  evidence base). The old table carried MSDOS/WIN32 rows and rows
+  scraped from comments; one phantom row ("align") was load-bearing:
+  allmain.js read rc.opts.align, which only existed because findOption
+  resolved the phantom instead of the real alias. parseoptions files
+  everything under the CANONICAL name (opts.alignment). If chargen
+  breaks at step 0 after an optlist regen, look here first.
+- Compiled-out option stubs ((boolean *) 0 addr) exist in C's allopt but
+  option_help skips them; they carry noaddr:true now.
+- gen-extcmd: default keys can be *_SYM macros (defsym.h OBJCLASS
+  chars), octal literals ('\177' terrain), or '\\'; entry comments must
+  be stripped before the flag scrape ("down"'s comment names
+  MOVEMENTCMD). cmdbind_table in cmd.js adds commands_init's extra
+  binds that survive !num_pad: '5' run, '-' fight, M-5 rush, M-2
+  twoweapon, M-O overview, M-N name.
+- tty_putstr now does compress_str (collapse space runs when the line
+  is >= 80) then the break-at-last-space wrap, exactly wintty.c:2251
+  and :2411. option_help's config-path line and its padded
+  "`whatis_filter'" row are the visible cases.
+- The option_help config line embeds the recorder's config file path
+  (environment constant, same class as the About build date); only its
+  first 80 columns can ever render.
+
+read_engr_at (engrave.c:314) is ported in js/engrave.js; look_here
+calls it at C's three arms (no-objects, skip_objects, single-object -
+NOT the multi-object menu arm). ':' over the Elbereth square now reads
+it. seed4500 lost 16 tail RNG calls from walk-over engraving messages
+landing differently in its already-diverged stream - not investigated.
+
+Board 1207 (was 1125), passes 6, hang-gate OK, generalize OK.
+
+NEXT candidates, biggest first: seed0360 (123/833, wizard world tour -
+its wish/travel tail), seed0030 (65/1953), seed4500 (9/1814, knight
+coverage), seed0014 (17/714). Run node tools/diverge.mjs on each; the
+parked analyses (seed0077 vision strip, seed1500/0398 gen placement,
+seed0101 apparxy, seed0012 run object-stop rule) are in earlier
+sections.

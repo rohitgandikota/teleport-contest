@@ -17,6 +17,8 @@
 // column 0 with the cursor at [9,23].
 
 import { game } from './../gstate.js';
+import { tty_clear_nhwindow_message } from './../display.js';
+import { nhgetch } from './../input.js';
 import { NO_COLOR, ATR_INVERSE as TERM_INVERSE, ATR_BOLD as TERM_BOLD,
          ATR_UNDERLINE as TERM_UNDERLINE } from './../terminal.js';
 import { MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED } from './../const.js';
@@ -491,6 +493,21 @@ export function tty_display_nhwindow(window) {
     cw.offx = compute_offx(cw);
     cw.curr_page = 0;
 
+    /* wintty.c tty_display_nhwindow(), the NHW_MENU/NHW_TEXT arm: a menu
+       drawn as an OVERLAY first erases the message line --
+       `tty_clear_nhwindow(WIN_MESSAGE)` in the else-arm -- while the
+       full-screen path clears the whole region instead. Without this the
+       prompt that launched the command ("# name") stays painted in the
+       columns left of the menu. */
+    if (cw.offx > 0) {
+        /* the per-frame screen rebuild repaints game._pending_message onto
+           row 0, so clearing the grid alone resurrects the old prompt on the
+           next frame; the more() path in js/display.js clears the pair the
+           same way. */
+        game._pending_message = '';
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+    }
+
     /* wintty.c:1944 — `if (cw->data || !cw->maxrow)` picks the text renderer;
        a window built with add_menu() has no data[] and lands in the menu one. */
     if (cw.mlist) {
@@ -504,6 +521,45 @@ export function tty_display_nhwindow(window) {
 }
 
 // Advance to the next page; returns false when the window is done.
+// win/tty/wintty.c tty_select_menu() — display the menu and run the key loop.
+//
+// PICK_ONE subset: an accelerator (or group accelerator) picks its entry and
+// returns immediately; ESC cancels with no picks; space and return finish
+// (advancing the page first on a multi-page menu). Counts, PICK_ANY
+// toggling and menu search are not reached by any ported caller yet.
+// Returns the identifiers of the picked entries, so the C's
+// `select_menu(...) > 0` test becomes `.length > 0`.
+export async function tty_select_menu(window, how) {
+    const cw = windows[window];
+    if (!cw) return [];
+    tty_display_nhwindow(window);
+    const picks = [];
+    for (;;) {
+        const c = await nhgetch();
+        if (c === 27) {                      /* ESC — cancel */
+            cw.cancelled = true;
+            return [];
+        }
+        if (c === 32 || c === 13 || c === 10) {  /* space / return */
+            if (tty_next_page(window))
+                continue;
+            return picks;
+        }
+        const ch = String.fromCharCode(c);
+        let hit = false;
+        for (let it = cw.mlist; it; it = it.next) {
+            if (it.identifier && (it.selector === ch || it.gselector === ch)) {
+                picks.push(it.identifier);
+                hit = true;
+                break;
+            }
+        }
+        if (hit)
+            return picks;                    /* PICK_ONE: first hit wins */
+        /* unrecognised key: C beeps and keeps reading */
+    }
+}
+
 export function tty_next_page(window) {
     const cw = windows[window];
     const display = game?.nhDisplay;

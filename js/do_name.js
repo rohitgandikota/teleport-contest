@@ -6,6 +6,12 @@
 // creates, so skipping it left two calls unspent in the middle of level
 // generation.
 
+import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+         tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
+import { docrt } from './display.js';
+import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
+         PICK_ONE, ECMD_OK } from './const.js';
+import { ATR_NONE, NO_COLOR } from './terminal.js';
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
@@ -168,4 +174,77 @@ export function upstart(s) { return s ? s[0].toUpperCase() + s.slice(1) : s; }
 function note_do_name_unported(what) {
     (game.unported ||= new Set()).add('do_name:' + what);
     return false;
+}
+
+function note_unported_do_name(what) {
+    (game.unported ||= new Set()).add('do_name:' + what);
+}
+
+// src/do_name.c:499 docallcmd() — the #call / #name command: player can name a
+// monster, an object, or a type of object.
+//
+// The menu and the cancel path are complete. Every switch arm's worker
+// (do_mgivenname, do_oname via getobj, docall, namefloorobj, rename_disco,
+// donamelevel) is unported and recorded, so picking one records and returns.
+// C's cmdq_pop arm services a queued key from a scripted command; this port
+// has no queue producer yet, which in C is the empty-queue fallthrough, so no
+// marker fires for it.
+export async function docallcmd() {
+    let ch = 0;
+    /* if player wants a,b,c instead of i,o when looting, do that here too */
+    const abc = !!game.flags.lootabc;
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    tty_add_menu(win, null, 'm', abc ? 0 : 'm', 'C',
+                 ATR_NONE, NO_COLOR, "a monster", MENU_ITEMFLAGS_NONE);
+    if ((game.invent || []).length) {
+        /* we use y and n as accelerators so that we can accept user's
+           response keyed to old "name an individual object?" prompt */
+        tty_add_menu(win, null, 'i', abc ? 0 : 'i', 'y',
+                     ATR_NONE, NO_COLOR, "a particular object in inventory",
+                     MENU_ITEMFLAGS_NONE);
+        tty_add_menu(win, null, 'o', abc ? 0 : 'o', 'n',
+                     ATR_NONE, NO_COLOR, "the type of an object in inventory",
+                     MENU_ITEMFLAGS_NONE);
+    }
+    tty_add_menu(win, null, 'f', abc ? 0 : 'f', ',',
+                 ATR_NONE, NO_COLOR, "the type of an object upon the floor",
+                 MENU_ITEMFLAGS_NONE);
+    tty_add_menu(win, null, 'd', abc ? 0 : 'd', '\\',
+                 ATR_NONE, NO_COLOR, "the type of an object on discoveries list",
+                 MENU_ITEMFLAGS_NONE);
+    tty_add_menu(win, null, 'a', abc ? 0 : 'a', 'l',
+                 ATR_NONE, NO_COLOR, "record an annotation for the current level",
+                 MENU_ITEMFLAGS_NONE);
+    tty_end_menu(win, "What do you want to name?");
+    const picks = await tty_select_menu(win, PICK_ONE);
+    ch = picks.length > 0 ? picks[0] : 'q';
+    tty_destroy_nhwindow(win);
+    await docrt(); /* restore the map underneath, as the show_* callers do */
+
+    switch (ch) {
+    default:
+    case 'q':
+        break;
+    case 'm': /* name a visible monster */
+        note_unported_do_name('docallcmd:do_mgivenname');
+        break;
+    case 'i': /* name an individual object in inventory */
+        note_unported_do_name('docallcmd:do_oname');
+        break;
+    case 'o': /* name a type of object in inventory */
+        note_unported_do_name('docallcmd:docall');
+        break;
+    case 'f': /* name a type of object visible on the floor */
+        note_unported_do_name('docallcmd:namefloorobj');
+        break;
+    case 'd': /* name a type of object on the discoveries list */
+        note_unported_do_name('docallcmd:rename_disco');
+        break;
+    case 'a': /* annotate level */
+        note_unported_do_name('docallcmd:donamelevel');
+        break;
+    }
+    return ECMD_OK;
 }

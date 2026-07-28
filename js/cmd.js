@@ -24,7 +24,7 @@ import { bad_rock, nomul } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { x_monnam } from './do_name.js';
+import { x_monnam, docallcmd } from './do_name.js';
 import { You } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
@@ -488,6 +488,8 @@ export async function doextcmd() {
     /* src/cmd.c extcmdlist — the command's own function runs here. Only the
        ones that consume further input are wired up so far, because those are
        the ones whose absence puts the whole session out of step. */
+    if (name === 'name')
+        return await docallcmd();
     if (name === 'jump')
         return await dojump();
     if (name === 'levelchange')

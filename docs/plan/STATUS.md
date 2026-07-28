@@ -10319,3 +10319,24 @@ notes can never fire. Harmless but wrong; switch them to engr_at()
 when touching those files next.
 
 Board 997, six passes, gates clean.
+
+## 737568f: '?' help menu + About window ported; board holds 997
+
+The About window (doextversion) is byte-composed from the reference
+build's runtime info, and it draws nhl_init's [rn2(3), rn2(2)] - the
+nhlib.lua align shuffle every Lua state costs. TRAP AVOIDED, worth
+remembering: js/version.js already exists and js/const.js imports from
+it at eval time; adding tty/display imports to version.js closes an
+eval-time cycle that breaks const.js's template literals. doextversion
+therefore lives in js/pager.js with its menu caller.
+
+seed2200's remaining tail (25 calls) does not reach the About path yet:
+ours desyncs KEYS (not draws) around step 105 - the '/' getpos look
+chain ("What do you want to look at:", the 'E' seen-engravings list,
+';' etc.) leaves stale prompts, so subsequent keys land in the wrong
+prompts. RNG keeps matching because none of it draws. NEXT for
+seed2200: port the getpos '/' interaction loop (look-at prompt, the
+autodescribe, the 'E' engravings list window) so keys align; then the
+About window engages and the tail should close.
+
+Board 997, six passes, gates clean.

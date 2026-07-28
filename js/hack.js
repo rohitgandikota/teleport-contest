@@ -18,7 +18,7 @@ import { cmdq_clear, closed_door } from './cmd.js';
 
 import { game } from './gstate.js';
 import { do_attack } from './uhitm.js';
-import { sensemon, is_safemon, mon_visible } from './display.js';
+import { sensemon, is_safemon, mon_visible, pline } from './display.js';
 import { hides_under } from './mondata.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { rn2 } from './rng.js';
@@ -256,6 +256,35 @@ export function nomul(nval) {
         game.multi_reason = null, game.multireasonbuf = '';
     end_running(true);
     cmdq_clear(CQ_CANNED);
+}
+
+// src/hack.c:4177 unmul() — a non-movement multi-turn action has finished.
+//
+// THE CLEAR-BEFORE-CALL on afternmv IS LOAD-BEARING and C comments it: a
+// callback that sets afternmv again must not be clobbered after it returns.
+// The polymorph-reminder arm cannot fire (Upolyd is impossible here) and the
+// life-saving message never arises, so only the plain wake path is live.
+export async function unmul(msg_override) {
+    (game.disp ||= {}).botl = true;
+    game.multi = 0; /* caller will usually have done this already */
+    if (msg_override)
+        game.nomovemsg = msg_override;
+    else if (!game.nomovemsg)
+        game.nomovemsg = "You can move again.";
+    if (game.nomovemsg)
+        await pline(game.nomovemsg);
+    game.nomovemsg = null;
+    if (game.u)
+        game.u.usleep = 0;
+    game.multi_reason = null;
+    game.multireasonbuf = '';
+
+    if (game.afternmv) {
+        const f = game.afternmv;
+        /* clear afternmv BEFORE calling it */
+        game.afternmv = null;
+        await f();
+    }
 }
 
 // src/hack.c:59 Known_wwalking, :63 Known_lwalking — file-local macros, not

@@ -49,7 +49,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
-import { lookaround, end_running } from './hack.js';
+import { lookaround, end_running, unmul } from './hack.js';
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
@@ -476,8 +476,22 @@ export async function moveloop_core() {
                 /* src/allmain.c:360 */
                 if (!rn2(40 + (g.u.acurr.a[3] * 3)))   /* A_DEX */
                     rnd(3);                             /* u_wipe_engr(rnd(3)) */
+
+                /* src/allmain.c:380 — when immobile, count is in turns */
+                if ((g.multi ?? 0) < 0) {
+                    if (++g.multi === 0) { /* finished yet? */
+                        await unmul(null);
+                    }
+                }
             }
         } while (g.u.umovement < NORMAL_SPEED);
+
+        /* the move flag is CONSUMED by the turn block above. C's blocking
+           input reads a whole command before control returns here, so the
+           flag's lifetime is one command -> one turn. Our prompts suspend
+           mid-command; without this clear, the next core call re-reads the
+           stale flag and burns a phantom turn before the prompt resumes. */
+        g.context.move = 0;
     }
 
     /******************************************/
@@ -517,11 +531,20 @@ export async function moveloop_core() {
      *
      * monster_nearby() needs the interrupt checks; without it an occupation
      * runs to completion where C would break it off, so it records. */
+    /* a helpless hero (multi < 0) takes no command; the turn machinery above
+       advanced the count, and context.move stays set so the next core call
+       burns the next helpless turn, exactly like an occupation. */
+    if ((g.multi ?? 0) < 0) {
+        g.context.move = 1;
+        return;
+    }
+
     if ((g.multi ?? 0) >= 0 && g.occupation) {
         if (g.occupation() === 0)
             g.occupation = null;
         note_unported_main('moveloop:monster_nearby');
-        return;                         /* the occupation took this turn */
+        g.context.move = 1;             /* the occupation took this turn */
+        return;
     }
 
     /* src/allmain.c:515 — the run/rush loop. While multi is positive the hero

@@ -58,6 +58,7 @@ import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
 import { dowieldquiver } from './wield.js';
+import { dozap } from './zap.js';
 
 // Direction deltas: y u k
 //                   h . l
@@ -626,6 +627,11 @@ export async function rhack(key) {
         }
         await domove();
         game.context.move = 1;
+    } else if (ch === 'z') {
+        // src/cmd.c cmdlist — 'z' is dozap: getobj for the wand, getdir for
+        // the direction, and a self-zap of sleep knocks the hero out for
+        // rnd(50) helpless turns.
+        game.context.move = ((await dozap()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Q') {
         // src/cmd.c cmdlist — 'Q' is dowieldquiver.
         game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);

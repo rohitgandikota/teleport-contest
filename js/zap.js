@@ -10,8 +10,14 @@ import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER } from './monst.js';
 import { killed, shieldeff_mon } from './mon.js';
 import { ONAMES } from './objects_data.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd } from './rng.js';
 import { is_rider } from './makemon.js';
+import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory } from './invent.js';
+import { getdir } from './cmd.js';
+import { fall_asleep } from './timeout.js';
+import { pline_The, You } from './pline.js';
+import { pline } from './display.js';
+import { nothing_happens, ECMD_TIME, ECMD_CANCEL, NODIR } from './const.js';
 
 // src/zap.c:1459 obj_resists() — does this object survive being destroyed?
 //
@@ -109,3 +115,94 @@ const note_zap_unported = (w) => {
     (game.unported ||= new Set()).add('zap:' + w);
     return false;
 };
+
+function note_unported_zap(what) {
+    (game.unported ||= new Set()).add('zap:' + what);
+}
+
+// src/zap.c:2618 zap_ok() — getobj callback for 'z'.
+export function zap_ok(obj) {
+    if (obj && obj.oclass === OCLASSES.WAND_CLASS)
+        return GETOBJ_SUGGEST;
+    return GETOBJ_EXCLUDE;
+}
+
+// src/zap.c:2514 zappable() — does the wand have a charge to spend?
+//
+// The wrest roll rn2(WAND_WREST_CHANCE=121) fires ONLY at exactly zero
+// charges; a wand with charges pays none.
+export async function zappable(wand) {
+    if (wand.spe < 0 || (wand.spe === 0 && rn2(121)))
+        return 0;
+    if (wand.spe === 0)
+        await You("wrest one last charge from the worn-out wand.");
+    wand.spe--;
+    return 1;
+}
+
+// src/zap.c:2705 zapyourself() — the hero zapped themself.
+//
+// Only the WAN_SLEEP arm is live (Sleep_resistance is absent for every
+// fresh hero except elves, whose resistance field is real when set); every
+// other wand records. Returns the retributive damage, 0 for sleep.
+export async function zapyourself(obj, ordinary) {
+    let damage = 0;
+
+    switch (obj.otyp) {
+    case ONAMES.WAN_SLEEP:
+    case ONAMES.SPE_SLEEP: {
+        if (game.u.uprops?.SLEEP_RES?.intrinsic
+            || game.u.uprops?.SLEEP_RES?.extrinsic) {
+            note_unported_zap('zapyourself:sleep_resisted');
+            break;
+        }
+        if (ordinary)
+            await pline_The("sleep ray hits you!");
+        else
+            await You("fall asleep!");
+        /* monstunseesu(M_SEEN_SLEEP) — monster memory, recorded */
+        fall_asleep(-rnd(50), true);
+        break;
+    }
+    default:
+        note_unported_zap(`zapyourself:otyp=${obj.otyp}`);
+        break;
+    }
+    return damage;
+}
+
+// src/zap.c:2627 dozap() — the 'z' command.
+export async function dozap() {
+    /* nohands/check_capacity cannot fire for a fresh hero */
+    const obj = await getobj("zap", zap_ok, 0);
+    if (!obj)
+        return ECMD_CANCEL;
+
+    /* check_unpaid — shops, recorded when billing exists */
+
+    const need_dir = game.objects[obj.otyp].oc_dir !== NODIR;
+    if (!(await zappable(obj))) {
+        await pline(nothing_happens);
+    } else if (obj.cursed && !rn2(100)) {   /* WAND_BACKFIRE_CHANCE */
+        note_unported_zap('dozap:backfire');
+        return ECMD_TIME;
+    } else if (need_dir && !(await getdir(null))) {
+        if (!game.u?.ublind)
+            note_unported_zap('dozap:glows_and_fades');
+        /* make him pay for knowing !NODIR */
+    } else if (need_dir && !game.u.dx && !game.u.dy && !game.u.dz) {
+        const damage = await zapyourself(obj, true);
+        if (damage) {
+            note_unported_zap('dozap:losehp');
+        }
+    } else {
+        /* weffects(): the directional/beam engine, recorded */
+        note_unported_zap(`dozap:weffects otyp=${obj.otyp}`);
+    }
+    if (obj && obj.spe < 0) {
+        note_unported_zap('dozap:turns_to_dust');
+    } else {
+        update_inventory(); /* maybe used a charge */
+    }
+    return ECMD_TIME;
+}

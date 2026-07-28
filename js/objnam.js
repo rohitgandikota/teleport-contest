@@ -212,6 +212,12 @@ export function Japanese_item_name(otyp, ordinaryname) {
 // src/objnam.c:820 xname() — the object's name without quantity or BUC.
 export function xname(obj) {
     const ocl = game.objects[obj.otyp];
+    /* src/objnam.c:627 — naming an object the hero can see observes it:
+           if (!Blind && !gd.distantname) observe_object(obj);
+       This is where a wished amulet's dknown comes from ("a cubical
+       amulet", not "an amulet"). */
+    if (!game.u?.ublind)
+        observe_object(obj);
     const nn = ocl.oc_name_known;
     let actualn = OBJ_NAME(ocl) ?? 'object?';
     let dn = OBJ_DESCR(ocl) ?? actualn;

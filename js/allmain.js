@@ -247,7 +247,7 @@ export async function newgame() {
     // src/u_init.c — the hero reaches experience level 1, which grants the
     // role's and race's level-1 intrinsics. Draws nothing itself, but Fast
     // makes u_calc_moveamt() draw every turn thereafter.
-    adjabil(0, 1);
+    await adjabil(0, 1);
 
     /* src/u_init.c:1002 — init_uhunger() sits between adjabil() and the spell
        book clear. exerper() consults uhunger every tenth move. */

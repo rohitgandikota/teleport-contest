@@ -311,10 +311,14 @@ function innateTables() {
     let m;
     while ((m = tableRe.exec(src)) !== null) {
         const rows = [];
-        const rowRe = /\{\s*(\d+)\s*,\s*&\(\s*(\w+)\s*\)/g;
+        /* rows are { level, &(HAbility), "gainstr", "losestr" }; the &()
+           parens are optional (dwa_abil/elf_abil write &HInfravision), and
+           adjabil() prints You_feel("<gainstr>!") on gaining one */
+        const rowRe =
+            /\{\s*(\d+)\s*,\s*&\(?\s*(\w+)\s*\)?\s*,\s*"([^"]*)"\s*,\s*"([^"]*)"/g;
         let r;
         while ((r = rowRe.exec(m[2])) !== null)
-            rows.push([Number(r[1]), r[2]]);
+            rows.push([Number(r[1]), r[2], r[3], r[4]]);
         out[m[1]] = rows;
     }
     return out;

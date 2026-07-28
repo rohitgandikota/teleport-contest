@@ -16,6 +16,7 @@ import { UNENCUMBERED, OVERLOADED } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { rn2 } from './rng.js';
 import { role_abil, race_abil } from './role_data.js';
+import { You_feel } from './pline.js';
 import {
     A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA,
     SATIATED, NOT_HUNGRY, HUNGRY, WEAK, FAINTING, FAINTED,
@@ -251,21 +252,35 @@ function adjattrib(ndx, incr, msgflg) {
 // src/attrib.c:990 adjabil() — grant the intrinsics a role or race has earned
 // by reaching `newlevel`. Draws nothing, but what it sets decides whether
 // u_calc_moveamt() draws: Fast costs an rn2(3) every single turn.
-export function adjabil(oldlevel, newlevel) {
+export async function adjabil(oldlevel, newlevel) {
     const u = game.u;
     u.intrinsic ||= {};
 
-    const grant = (table) => {
-        for (const [ulevel, ability] of table) {
-            if (ulevel > oldlevel && ulevel <= newlevel)
+    /* src/attrib.c:1030 — gaining an ability not already held from another
+       source announces You_feel("<gainstr>!"); losing it announces losestr,
+       or "less <gainstr>!" when there is none. Level-1 grants at character
+       creation print nothing because oldlevel is 0 only during u_init, when
+       the message window isn't live yet — C's init path passes (0, 1) before
+       the game windows exist and the recordings show no such lines. */
+    const grant = async (table) => {
+        for (const [ulevel, ability, gainstr, losestr] of table) {
+            if (ulevel > oldlevel && ulevel <= newlevel) {
+                const had = !!u.intrinsic[ability];
                 u.intrinsic[ability] = true;
-            else if (ulevel > newlevel && ulevel <= oldlevel)
+                if (!had && gainstr && oldlevel > 0)
+                    await You_feel(`${gainstr}!`);
+            } else if (ulevel > newlevel && ulevel <= oldlevel) {
                 delete u.intrinsic[ability];
+                if (losestr && newlevel > 0)
+                    await You_feel(`${losestr}!`);
+                else if (gainstr && newlevel > 0)
+                    await You_feel(`less ${gainstr}!`);
+            }
         }
     };
 
-    grant(role_abil(game.flags.initrole ?? 0));
-    grant(race_abil(game.flags.initrace ?? 0));
+    await grant(role_abil(game.flags.initrole ?? 0));
+    await grant(race_abil(game.flags.initrace ?? 0));
 }
 
 // include/youprop.h:

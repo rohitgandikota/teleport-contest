@@ -840,7 +840,7 @@ export async function rhack(key) {
         game.context.move = (await doeat() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'd') {
         game.context.move = (await dodrop() === ECMD_TIME ? 1 : 0);
-    } else if ('rwqWPR'.includes(ch)) {
+    } else if ('rwqWPRT'.includes(ch)) {
         // src/cmd.c cmdlist — read, wield, quaff, drop, wear, put on, remove.
         // Every one of them starts with getobj(), which reads the inventory
         // letter. Their effects are unported, but consuming that letter is what

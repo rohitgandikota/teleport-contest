@@ -9708,3 +9708,21 @@ so a fresh game reaches the input read first. Compare js/allmain.js's loop
 head against src/allmain.c moveloop_core order (mcalcmove/movemon should
 sit inside the `if (context.move)` arm, and ours appears to run it
 unconditionally on entry).
+
+
+### The turn-1 mystery was the STETHOSCOPE time rule; seed0016 2493 -> 2500
+
+The m=1 phantom turn came from doapply's blanket ECMD_TIME for
+direction-taking tools. C's use_stethoscope is FREE on its first use per
+hero turn (hero_seq vs context.stethoscope_seq, apply.c:341). The Healer's
+opening a-c-. sequence is apply stethoscope at self: C prints the
+ustatusline and no time passes; ours charged a move and ran monsters.
+
+Landed: use_stethoscope with the time rule and cursed-coin rn2(2),
+ustatusline + piousness. The moveloop gating itself was CORRECT all along
+(context.move only) -- the lesson is that a recorded ECMD_TIME on a stub
+arm is itself a fidelity bug when C's arm can return ECMD_OK.
+
+seed0016 now diverges at 2500 (next unknown); seed0101's Q-flow analog
+(div@2293) still stands -- likely a doquiver_core detail, same family.
+Board 572/3.

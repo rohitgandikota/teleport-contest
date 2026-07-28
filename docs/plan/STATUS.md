@@ -10268,3 +10268,32 @@ Needs: doread's scroll path (read message + useup), seffects'
 MAGIC_MAPPING arm, do_mapping (magic_map_background per cell writing
 the remembered glyph, our loc.remembered_glyph), and the discovery.
 seed2200 sits at 2831/3018 RNG.
+
+## Magic mapping landed (984 -> 986); seed2200's second exercise still open
+
+do_mapping/show_map_spot/magic_map_background are in (see commit). The
+mapped frame at seed2200 step 10 is now byte-exact. Two findings that
+took real digging, recorded so they stay found:
+
+- Unvisited LIT rooms SHOW their floors on a magic map even though
+  waslit is 0 there; the dark-cell correction in magic_map_background
+  must treat loc.lit as waslit's stand-in or every unvisited room maps
+  as blank. (No C writer sets waslit at room gen, yet the recorded map
+  shows the floors - the correction gate must effectively include lit.)
+- Stairs: directly-seen stairs are YELLOW (SGR 93) and stay yellow in
+  memory; magic-mapped-but-unvisited stairs are DEFAULT. Ported as a
+  per-cell stair_seen flag set on first cansee inside terrain_glyph.
+  Flipping stairs to plain default cost seed1150/0700 41+39 screens
+  before the flag approach restored both to full pass.
+
+OPEN at seed2200 @2773: after do_mapping's exercise matches, C draws a
+SECOND rn2(19)@exercise before the monsters. learnscroll can't fire
+(scroll type already known from init - uses_known=0 items get known=1
+at creation in both trees, so ini_inv discovers scrolls); doread has no
+other exercise; the magic-mapping arms have none. Unresolved - next
+probe: dump C's step-10 tail labels past the divergence and check
+whether the SECOND draw could be from encumber_msg/find_ac or an
+update_inventory-side path, or whether ours mis-times the FIRST one and
+C's pair is [weffects-style prologue + do_mapping].
+
+Board 986, six passes, gates clean.

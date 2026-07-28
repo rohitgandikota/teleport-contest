@@ -7,6 +7,7 @@
 // short of C without it.
 
 import { game } from './gstate.js';
+import { pline_xy } from './pline.js';
 import { rnl } from './rng.js';
 import { A_STR, A_DEX, A_CON, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, D_ISOPEN, D_TRAPPED, IS_DOOR, ECMD_OK, ECMD_TIME } from './const.js';
 import { newsym } from './display.js';
@@ -61,7 +62,7 @@ export async function doopen_indir(x, y) {
 
     /* door is known to be CLOSED */
     if (rnl(20) < Math.trunc((acurrstr() + ACURR(A_DEX) + ACURR(A_CON)) / 3)) {
-        /* pline_The("door opens.") */
+        await pline_xy(cc.x, cc.y, 'The door opens.');
         if (door.doormask & D_TRAPPED) {
             note_unported_lock('doopen_indir:b_trapped');
             door.doormask = D_NODOOR;
@@ -71,7 +72,7 @@ export async function doopen_indir(x, y) {
         newsym(cc.x, cc.y); /* feel_newsym: the hero knows she opened it */
     } else {
         exercise(A_STR, true);
-        /* pline_The("door resists!") */
+        await pline_xy(cc.x, cc.y, 'The door resists!');
     }
 
     return ECMD_TIME;

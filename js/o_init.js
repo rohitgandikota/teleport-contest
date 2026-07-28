@@ -11,8 +11,10 @@ import { NODIR, IMMEDIATE } from './const.js';
 // tools/gen-objects.mjs.
 
 import { game } from './gstate.js';
+import { PMNAMES } from './monst_data.js';
 import { rn2 } from './rng.js';
-import { obj_typename, OBJ_DESCR as objDescrOf } from './objnam.js';
+import { obj_typename, OBJ_DESCR as objDescrOf, OBJ_NAME,
+         Japanese_item_name } from './objnam.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import {
     objects as OBJECTS_INIT, obj_descr as OBJ_DESCR_INIT,
@@ -319,6 +321,17 @@ const disco_orders_descr = [
 
 // src/o_init.c:520 discover_object()
 //
+// src/o_init.c:442 observe_object() — naming an object in view marks its
+// type as encountered. xname() calls this on every use, which is how a
+// starting kit ends up '  listed' rather than '* listed' in discoveries.
+export function observe_object(obj) {
+    const oindx = obj.otyp;
+    if (oindx >= 1 && !game.u?.uprops?.HALLUC) {
+        obj.dknown = 1;
+        discover_object(oindx, false, true, false);
+    }
+}
+
 // svd.disco[] is NOT a flat list: it is indexed by object class, filled from
 // svb.bases[class] upward, so discoveries stay grouped by class in the order
 // they were made. dodiscovered() walks it that way.
@@ -329,7 +342,13 @@ export function discover_object(oindx, mark_as_known, mark_as_encountered,
         return;
 
     if ((!objects[oindx].oc_name_known && mark_as_known)
-        || (!objects[oindx].oc_encountered && mark_as_encountered)) {
+        || (!objects[oindx].oc_encountered && mark_as_encountered)
+        /* src/o_init.c — a Samurai's Japanese-named items go on the
+           discoveries list even when the type is pre-known (a knife has no
+           appearance so ships name_known; "shito [knife]" still lists) */
+        || ((game.urole?.mnum === 'PM_SAMURAI'
+             || game.urole?.mnum === PMNAMES.PM_SAMURAI)
+            && Japanese_item_name(oindx, null))) {
         const acls = objects[oindx].oc_class;
         game.disco ||= [];
 
@@ -348,9 +367,43 @@ export function discover_object(oindx, mark_as_known, mark_as_encountered,
 
 // src/o_init.c:660 interesting_to_discover()
 function interesting_to_discover(i) {
+    /* most players who don't speak Japanese manage to figure out what
+       gunyoki, osaku, and so forth mean, but treat them as pre-discovered
+       to be disclosed by '\' */
+    if ((game.urole?.mnum === 'PM_SAMURAI'
+         || game.urole?.mnum === PMNAMES.PM_SAMURAI)
+        && Japanese_item_name(i, null))
+        return true;
+
     const o = game.objects[i];
     return !!o.oc_uname
         || ((o.oc_name_known || o.oc_encountered) && objDescrOf(o) !== null);
+}
+
+// src/o_init.c:668 disco_typename() — augment obj_typename() with the
+// English explanation of a Japanese item name: "shito [knife]", or spliced
+// before " called"/" (" when those follow.
+function disco_typename(otyp) {
+    let result = obj_typename(otyp);
+
+    if ((game.urole?.mnum === 'PM_SAMURAI'
+         || game.urole?.mnum === PMNAMES.PM_SAMURAI)
+        && Japanese_item_name(otyp, null)) {
+        const actualn =
+            ((otyp !== ONAMES.MAGIC_HARP && otyp !== ONAMES.WOODEN_HARP)
+             || game.objects[otyp].oc_name_known)
+            ? OBJ_NAME(game.objects[otyp]) : 'harp';
+        if (!actualn) {
+            ;
+        } else if (result.includes(' called')) {
+            result = result.replace(' called', ` [${actualn}] called`);
+        } else if (result.includes(' (')) {
+            result = result.replace(' (', ` [${actualn}] (`);
+        } else {
+            result += ` [${actualn}]`;
+        }
+    }
+    return result;
 }
 
 // src/o_init.c:686 dodiscovered() — build the discoveries text.
@@ -382,7 +435,7 @@ export function dodiscovered() {
                     prev_class = oclass;
                 }
                 lines.push([(objects[dis].oc_encountered ? '  ' : '* ')
-                            + obj_typename(dis), ATR_NONE]);
+                            + disco_typename(dis), ATR_NONE]);
             }
         }
     }

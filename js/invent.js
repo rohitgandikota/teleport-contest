@@ -18,6 +18,7 @@ import { is_rider, hideunder } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { pline } from './display.js';
+import { observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
 
@@ -107,9 +108,13 @@ export function display_inventory() {
         if (!items.length) continue;
         /* add_menu_heading(win, class_header) — iflags.menu_headings */
         out.push({ heading: true, str: let_to_name(oclass), attr: ATR_INVERSE });
-        for (const o of items)
+        for (const o of items) {
+            /* src/invent.c:1039 — displaying the item observes its type */
+            if (!game.u?.ublind)
+                observe_object(o);
             out.push({ heading: false, str: doname(o), attr: ATR_NONE,
                        invlet: o.invlet });
+        }
     }
     return out;
 }

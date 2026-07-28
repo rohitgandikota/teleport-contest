@@ -13,10 +13,13 @@
 
 import { game } from './gstate.js';
 import { is_ammo, is_missile } from './wield.js';
-import { is_weptool } from './mkobj.js';
+import { is_weptool, is_rustprone, is_corrodeable, is_flammable,
+         is_crackable, is_rottable } from './mkobj.js';
 import { bimanual } from './obj.js';
 import { W_ARMOR, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP } from './const.js';
-import { mons } from './monst_data.js';
+import { mons, PMNAMES } from './monst_data.js';
+import { observe_object } from './o_init.js';
+const mons_PM_SAMURAI = PMNAMES.PM_SAMURAI;
 import { OCLASSES, ONAMES, MATERIALS, obj_descr } from './objects_data.js';
 
 const {
@@ -26,8 +29,11 @@ const {
 } = OCLASSES;
 
 // include/objclass.h:190-191
-export const OBJ_NAME = (ocl) => obj_descr[ocl.oc_name_idx]?.oc_name ?? null;
-export const OBJ_DESCR = (ocl) => obj_descr[ocl.oc_descr_idx]?.oc_descr ?? null;
+/* The generated obj_descr table stores 0 (a NUMBER) for absent strings, and
+   `?? null` passes 0 through — which made "has a description" tests true for
+   every descriptionless item the moment one entered the discoveries list. */
+export const OBJ_NAME = (ocl) => obj_descr[ocl.oc_name_idx]?.oc_name || null;
+export const OBJ_DESCR = (ocl) => obj_descr[ocl.oc_descr_idx]?.oc_descr || null;
 
 // include/objclass.h:38-44 — armour category, stored in oc_subtyp.
 export const ARM_SUIT = 0, ARM_SHIELD = 1, ARM_HELM = 2, ARM_GLOVES = 3,
@@ -48,8 +54,15 @@ const GemStone = (typ) =>
 // src/objnam.c:220 obj_typename()
 export function obj_typename(otyp) {
     const ocl = game.objects[otyp];
-    const actualn = OBJ_NAME(ocl) ?? 'object?';
-    const dn = OBJ_DESCR(ocl);
+    let actualn = OBJ_NAME(ocl) ?? 'object?';
+    let dn = OBJ_DESCR(ocl);
+    /* src/objnam.c:211 — the Samurai substitution applies here too */
+    if (game.urole?.mnum === 'PM_SAMURAI'
+        || game.urole?.mnum === PMNAMES.PM_SAMURAI) {
+        actualn = Japanese_item_name(otyp, actualn);
+        if (otyp === ONAMES.WOODEN_HARP || otyp === ONAMES.MAGIC_HARP)
+            dn = 'koto';
+    }
     const un = ocl.oc_uname || null;
     const nn = ocl.oc_name_known;
     let buf = '';
@@ -138,10 +151,31 @@ export function An(str) {
 // which is the one that matters for object names: "scroll of magic mapping"
 // pluralises the HEAD noun, giving "scrolls of magic mapping", not
 // "scroll of magic mappings".
+/* src/objnam.c:2689 as_is[] — words whose plural is spelled the same.
+   Only the tail word is tested, matching singplur_lookup's endstring. */
+const as_is = [
+    'boots', 'shoes', 'gloves', 'lenses', 'scales',
+    'eyes', 'gauntlets', 'iron bars',
+    'bison', 'deer', 'elk', 'fish', 'fowl',
+    'tuna', 'yaki', '-hai', 'krill', 'manes',
+    'moose', 'ninja', 'sheep', 'ronin', 'roshi',
+    'shito', 'tengu', 'ki-rin', 'Nazgul', 'gunyoki',
+    'piranha', 'samurai', 'shuriken', 'haggis', 'Bordeaux',
+];
+
 export function makeplural(s) {
     const of = s.indexOf(' of ');
     if (of > 0)
         return makeplural(s.slice(0, of)) + s.slice(of);
+
+    /* src/objnam.c:2911 singplur_lookup + :2916 — "ya" (alone or as the
+       last word) stays "ya"; the as_is[] words are already plural-shaped */
+    const low = s.toLowerCase();
+    for (const w of as_is)
+        if (low.endsWith(w.toLowerCase()))
+            return s;
+    if (low === 'ya' || low.endsWith(' ya'))
+        return s;
 
     const sp = s.lastIndexOf(' ');
     const head = sp >= 0 ? s.slice(0, sp + 1) : '';
@@ -154,12 +188,36 @@ export function makeplural(s) {
     return head + w;
 }
 
+/* src/objnam.c:105 Japanese_items[] — a Samurai sees these names. */
+const Japanese_items = {
+    SHORT_SWORD: 'wakizashi', BROADSWORD: 'ninja-to', FLAIL: 'nunchaku',
+    GLAIVE: 'naginata', LOCK_PICK: 'osaku', WOODEN_HARP: 'koto',
+    MAGIC_HARP: 'magic koto', KNIFE: 'shito', PLATE_MAIL: 'tanko',
+    HELMET: 'kabuto', LEATHER_GLOVES: 'yugake', FOOD_RATION: 'gunyoki',
+    POT_BOOZE: 'sake',
+};
+
+// src/objnam.c:5422 Japanese_item_name()
+export function Japanese_item_name(otyp, ordinaryname) {
+    for (const [key, jname] of Object.entries(Japanese_items))
+        if (ONAMES[key] === otyp)
+            return jname;
+    return ordinaryname;
+}
+
 // src/objnam.c:820 xname() — the object's name without quantity or BUC.
 export function xname(obj) {
     const ocl = game.objects[obj.otyp];
     const nn = ocl.oc_name_known;
-    const actualn = OBJ_NAME(ocl) ?? 'object?';
-    const dn = OBJ_DESCR(ocl) ?? actualn;
+    let actualn = OBJ_NAME(ocl) ?? 'object?';
+    let dn = OBJ_DESCR(ocl) ?? actualn;
+    /* src/objnam.c:605 — a Samurai reads these items in Japanese */
+    if (game.urole?.mnum === 'PM_SAMURAI'
+        || game.urole?.mnum === mons_PM_SAMURAI) {
+        actualn = Japanese_item_name(obj.otyp, actualn);
+        if (obj.otyp === ONAMES.WOODEN_HARP || obj.otyp === ONAMES.MAGIC_HARP)
+            dn = 'koto';
+    }
     const un = ocl.oc_uname || null;
     const pluralize = obj.quan !== 1;
     const dknown = obj.dknown;
@@ -341,6 +399,17 @@ export function doname(obj) {
                       || obj.oclass === RING_CLASS)))
             prefix += 'uncursed ';
     }
+
+    /* src/objnam.c:1183 add_erosion_words — erodeproofing shows once rknown.
+       The eroded (rusty/burnt) words precede this in C; no session carries
+       an eroded item yet. */
+    if (obj.rknown && obj.oerodeproof)
+        prefix += is_rustprone(obj, game.objects) ? 'rustproof '
+                  : is_corrodeable(obj, game.objects) ? 'corrodeproof '
+                    : is_flammable(obj, game.objects) ? 'fireproof '
+                      : is_crackable(obj, game.objects) ? 'tempered '
+                        : is_rottable(obj, game.objects) ? 'rotproof '
+                          : '';
 
     switch (obj.oclass) {
     case ARMOR_CLASS:

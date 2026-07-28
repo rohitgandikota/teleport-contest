@@ -14,10 +14,11 @@ import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
 import { ATR_NONE, NO_COLOR } from './terminal.js';
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
+import { PMNAMES, MFLAGS } from './monst_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
-         SUPPRESS_SADDLE, has_mgivenname } from './const.js';
-import { humanoid, is_animal, mindless, pronoun_gender } from './mondata.js';
+         SUPPRESS_SADDLE, has_mgivenname, MGIVENNAME } from './const.js';
+import { humanoid, is_animal, mindless, pronoun_gender, type_is_pname } from './mondata.js';
 import { canspotmon } from './display.js';
 
 // src/do_name.c:759 ghostnames[] — 34 entries.
@@ -96,10 +97,39 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
         return 'it';
     }
 
-    let buf = pmname(mdat, 2);      /* neutral; Mgender is not ported */
+    /* Put the adjectives in the buffer; invisible/saddled belong here too
+       but their states are recorded above. */
+    let buf = adjective ? adjective + ' ' : '';
+    const has_adjectives = buf !== '';
 
-    if (adjective)
-        buf = adjective + ' ' + buf;
+    /* src/do_name.c:930 — the actual name or type. A given name replaces
+       the species and, standing alone, suppresses the article entirely:
+       "You swap places with Hachi.", never "your Hachi". */
+    let name_at_start;
+    if (has_mgivenname(mtmp)) {
+        const name = MGIVENNAME(mtmp);
+        if (mtmp.mnum === PMNAMES.PM_GHOST) {
+            buf += `${name}'s ghost`;
+            name_at_start = true;
+        } else if (called) {
+            buf += `${pmname(mdat, 2)} called ${name}`;
+            name_at_start = type_is_pname(mdat);
+        } else {
+            /* the mplayer "<name> the <rank>" arm needs is_mplayer */
+            buf += name;
+            name_at_start = true;
+        }
+    } else {
+        buf += pmname(mdat, 2);     /* neutral; Mgender is not ported */
+        name_at_start = type_is_pname(mdat);
+    }
+
+    if (name_at_start && (article === ARTICLE_YOUR || !has_adjectives)) {
+        article = (mtmp.mnum === PMNAMES.PM_WIZARD_OF_YENDOR)
+                  ? ARTICLE_THE : ARTICLE_NONE;
+    } else if ((mdat.geno & MFLAGS.G_UNIQ) !== 0 && article === ARTICLE_A) {
+        article = ARTICLE_THE;
+    }
 
     switch (article) {
     case ARTICLE_YOUR: return 'your ' + buf;
@@ -125,6 +155,14 @@ function just_an(str) {
 export const a_monnam = (mtmp) =>
     x_monnam(mtmp, ARTICLE_A, null, has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0,
              false);
+
+// src/do_name.c:1052 christen_monst() — give a monster its name.
+// C stores it in mextra and truncates to PL_PSIZ-1 (31); the ghost rename
+// arm (a christened ghost keeps "X's ghost" form) lives in x_monnam.
+export function christen_monst(mtmp, name) {
+    mtmp.mgivenname = String(name).slice(0, 31);
+    return mtmp;
+}
 
 // src/do_name.c mon_nam() — ARTICLE_THE, no adjective.
 export const mon_nam = (mtmp) => x_monnam(mtmp, ARTICLE_THE, null, 0, false);

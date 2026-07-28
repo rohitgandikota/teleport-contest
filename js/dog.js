@@ -45,7 +45,7 @@ import { rn2, rnd } from './rng.js';
 import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { doname } from './objnam.js';
-import { Monnam } from './do_name.js';
+import { Monnam, christen_monst } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy } from './monmove.js';
@@ -83,6 +83,24 @@ export function makedog() {
     }
 
     const pettype = game.context.startingpet_typ = pet_type();
+    /* src/dog.c:232 — the rc's DOGNAME/CATNAME/HORSENAME override, else the
+       role defaults; every default name belongs to the little dog. */
+    let petname = (pettype === PMNAMES.PM_LITTLE_DOG) ? (game.dogname || '')
+                  : (pettype === PMNAMES.PM_KITTEN) ? (game.catname || '')
+                    : (pettype === PMNAMES.PM_PONY) ? (game.horsename || '')
+                      : '';
+    if (!petname && pettype === PMNAMES.PM_LITTLE_DOG) {
+        const m = game.urole?.mnum;
+        const role_is = (pm) => m === pm || m === PMNAMES[pm];
+        if (role_is('PM_CAVE_DWELLER'))
+            petname = 'Slasher';        /* The Warrior */
+        if (role_is('PM_SAMURAI'))
+            petname = 'Hachi';          /* Shibuya Station */
+        if (role_is('PM_BARBARIAN'))
+            petname = 'Idefix';         /* Obelix */
+        if (role_is('PM_RANGER'))
+            petname = 'Sirius';         /* Orion's dog */
+    }
 
     /* NO_MINVENT stops makemon() giving a pony an already-worn saddle */
     const mtmp = makemon(game.mons[pettype], game.u.ux, game.u.uy,
@@ -102,6 +120,10 @@ export function makedog() {
         }
         /* see_monster_closeup() is display bookkeeping */
     }
+
+    /* src/dog.c:279 — only the first pet gets the name */
+    if (!game.petname_used++ && petname)
+        christen_monst(mtmp, petname);
 
     initedog(mtmp, true);
     return mtmp;

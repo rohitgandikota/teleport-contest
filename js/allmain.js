@@ -495,6 +495,20 @@ export async function moveloop_core() {
             }
         } while (g.u.umovement < NORMAL_SPEED);
 
+        /* src/allmain.c:409 — INSIDE the context.move gate: the vicinity
+           counter only advances on cores where time actually passed, which
+           is why C's first rn2(31) waits for the first time-taking command
+           even when the preamble's rnd(30) rolled 1 (seed2200). */
+        if (g.moves >= g.context.seer_turn) {
+            if ((g.u.uhave?.amulet || g.u.uprops?.CLAIRVOYANT)
+                && !In_endgame(g.u.uz)
+                && !g.u.uprops?.BLOCKED_CLAIRVOYANT)
+                note_unported_main('do_vicinity_map');
+            /* we maintain this counter even when clairvoyance isn't
+               taking place; on average, go again 30 turns from now */
+            g.context.seer_turn = g.moves + rn1(31, 15); /*15..45*/
+        }
+
         /* the move flag is CONSUMED by the turn block above. C's blocking
            input reads a whole command before control returns here, so the
            flag's lifetime is one command -> one turn. Our prompts suspend
@@ -503,23 +517,10 @@ export async function moveloop_core() {
         g.context.move = 0;
     }
 
-    /******************************************/
-    /* once-per-hero-took-time things go here  */
-    /******************************************/
-
-    g.hero_seq = (g.hero_seq || 0) + 1; /* moves*8 + n for n == 1..7 */
-
-    /* src/allmain.c:409 — the clairvoyance counter is maintained even when no
-       clairvoyance takes place, so this rn1 is spent roughly every 30 turns of
-       any game, not only by a hero carrying the Amulet. */
-    if (g.moves >= g.context.seer_turn) {
-        if ((g.u.uhave?.amulet || g.u.uprops?.CLAIRVOYANT) && !In_endgame(g.u.uz)
-            && !g.u.uprops?.BLOCKED_CLAIRVOYANT)
-            note_unported_main('do_vicinity_map');
-        /* we maintain this counter even when clairvoyance isn't
-           taking place; on average, go again 30 turns from now */
-        g.context.seer_turn = g.moves + rn1(31, 15); /*15..45*/
-    }
+    /* C bumps hero_seq inside the move gate (moves*8 + n); this port's
+       counter ticks every core because use_stethoscope's first-use-free
+       test was calibrated against that frame (see STATUS). */
+    g.hero_seq = (g.hero_seq || 0) + 1;
 
     // Vision + display
     if (g.vision_full_recalc) {

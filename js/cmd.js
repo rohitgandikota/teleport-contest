@@ -46,6 +46,7 @@ import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
 import { doread } from './read.js';
+import { dodrink } from './potion.js';
 import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
@@ -735,6 +736,8 @@ export async function rhack(key) {
         // keeps the session in step: skip it and the letter runs as a command.
         if (ch === 'r')
             game.context.move = ((await doread(read_ok)) === ECMD_TIME ? 1 : 0);
+        else if (ch === 'q')
+            game.context.move = ((await dodrink(drink_ok)) === ECMD_TIME ? 1 : 0);
         else
             game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {

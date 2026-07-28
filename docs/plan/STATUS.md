@@ -10297,3 +10297,25 @@ update_inventory-side path, or whether ours mis-times the FIRST one and
 C's pair is [weffects-style prologue + do_mapping].
 
 Board 986, six passes, gates clean.
+
+## 25c79c7: engraving landed; board 986 -> 997
+
+seed2200's ladder this pass: seffects' "just for trying" exercise
+prologue (read.c:2199 - the SAME shape as weffects' at zap.c:3436;
+when a dispatcher's arms don't explain a leading draw, check the
+dispatcher prologue FIRST); then the whole 'E' dust chain (see commit
+message); then make_engr_at's Elbereth exercise (engrave.c:449).
+seed2200: 2831 -> 2993/3018.
+
+NEXT for seed2200 (@2979, step 109 key 'a'): C draws a LUA shuffle
+[rn2(3), rn2(2)] via nhlib.lua:19 - something applied ('a') runs Lua
+mid-game. Identify what (tin? candy wrapper? theme content?) by
+looking at the step-109 screen and surrounding keys.
+
+ALSO NOTED: js/pickup.js and js/invent.js reference
+game.level.engravings (engr_x/engr_y) for the read_engr_at notes, but
+the REAL store is game.level.lev_engr with {x,y} (js/engrave.js) - the
+notes can never fire. Harmless but wrong; switch them to engr_at()
+when touching those files next.
+
+Board 997, six passes, gates clean.

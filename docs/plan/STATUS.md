@@ -10247,3 +10247,24 @@ compare against the C screens of any session that later walks there;
 also compare mkgold/mkobj somex/somey clamping against C's somexyspace.
 
 Board unchanged at 982 this pass (analysis only).
+
+## 7cd3263: the seed2200 rn2(19) mystery RESOLVED (982 -> 984)
+
+The long-parked "exercise rn2(19) as the SDD zap's first draw" was
+weffects() itself: C opens weffects with exercise(A_WIS, TRUE)
+(zap.c:3436) before ANY dispatch. Every zap draws it. Our dozap inlines
+weffects' dispatch, so the exercise now sits ahead of the zapnodir arm
+and the recorded beam arm. Lesson for the notes: when a mystery draw
+precedes an effect chain, read ONE FRAME UP from where the effect
+dispatches - the draw may be in the dispatcher's prologue, not in any
+arm.
+
+### NEXT (first thing): SCR_MAGIC_MAPPING for seed2200 step 10
+"As you read the scroll, it disappears.  A map coalesces in your
+mind!" then TWO rn2(19) exercises (the do_mapping one, detect.c:1443,
+plus the new-type discovery credit), then the level map is fully
+revealed - which is why ~200 of seed2200's screens currently fail.
+Needs: doread's scroll path (read message + useup), seffects'
+MAGIC_MAPPING arm, do_mapping (magic_map_background per cell writing
+the remembered glyph, our loc.remembered_glyph), and the discovery.
+seed2200 sits at 2831/3018 RNG.

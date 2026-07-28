@@ -9557,3 +9557,25 @@ iflags.cmdassist, default On; src/cmd.c help_dir / confdir area). Steps
 RNG note: the board's positional RNG moved -18 while screens +4; divergence
 POINTS all unchanged (seed0016 @2493, seed0006 @2523). Post-divergence tails
 shifted because message/key handling changed. Judge by the point.
+
+
+### seed0102 miss 15 -> 22; board 534 screens
+
+Landed: help_dir + the getdir cmdassist rejection path, the fullscreen
+NHW_TEXT topline clear, weapon.c's name/skill readers (weapon_descr, P_NAME,
+skill_name/skill_level_name, P_SKILL, can_advance), and insight's real
+weapon arms. The ^X attributes window now reports the auto-wielded bow and
+its Basic skill exactly as C.
+
+REMAINING for seed0102 (steps 22-24, keys s/s/':'): the pet dog stands ONE
+SQUARE off after a search turn (C col 27, ours col 28, row 9) with the RNG
+matching call for call through the entire session. Same draws, different
+square: dog_move's position choice depends on non-draw state (goal gx/gy,
+appr, candidate ordering) somewhere. Suspects, in order: dog_goal's gg
+goal/appr computed differently (check the whappr/udist arms), mfndpos
+candidate ORDER, and the DDIST tie-breaks that pick nix/niy without drawing.
+Instrument dog_move's candidate loop on the turn after step 21 and compare
+nix/niy/j/appr against a hand-trace of the C.
+
+makesingular is recorded (weapon_descr notes it when a name ends in 's');
+the '?' getdir help-retry is recorded; the twoweap skill line is recorded.

@@ -10513,3 +10513,35 @@ coverage), seed0014 (17/714). Run node tools/diverge.mjs on each; the
 parked analyses (seed0077 vision strip, seed1500/0398 gen placement,
 seed0101 apparxy, seed0012 run object-stop rule) are in earlier
 sections.
+
+## Wish monster-prefix + real wear commands; the multi<0 turn order is the blocker
+
+seed0360's wish tail: "gray dragon scale mail" is parsed by C as
+monster "gray dragon" + item "scale mail" (name_to_monplus at
+readobjnam:4398), wished as scale mail - THAT is why the recording
+draws rn2(67): scale mail's oc_prob is 66 - and converted to the
+dragon variant after mksobj. Ported (js/mondata.js name_to_monplus,
+js/objnam.js readobjnam arms). The wear commands W/P/T/R are real now
+(js/do_wear.js command layer; cmd.js dispatches them).
+
+THE OPEN PROBLEM, worth its own session: when doputon wears the
+delay-2 speed boots, C's recorded step-136 stream is
+    [10-draw monster phase][mcalc x5, rn2(70), u_calc rn2(3),
+     dosounds, gethungry, rn2(79)] x ~3
+while ours produces the boundary cluster FIRST and the monster phase
+after - one phase shifted. The multi<0 ++multi/unmul placement matches
+C (allmain.c:380, inside the inner do-while); the difference is in the
+movement-ration accounting (who still has movement when the wear turn
+starts). Investigate youmonst.movement vs monster movement refills in
+our moveloop_core against C allmain.c:315-395. Cost today: net -41
+board RNG (seed0360 and other wear-using sessions trade stub luck for
+real behavior); screens unchanged at 1207. Debug tip that found
+everything above: temporarily add a position-windowed stack dump to
+rn2 in js/rng.js plus a counter in nhgetch, then map draw positions to
+keys; kN labels the draws AFTER key N+1 was read.
+
+Also: dotakeoff's 'T' with one accessible armor autopicks WITHOUT a
+getobj read (seed0360 step 130 proves it), so the old stub was
+mis-consuming a key there; the real command fixed that alignment.
+
+Board 1207, passes 6, hang-gate OK, generalize OK.

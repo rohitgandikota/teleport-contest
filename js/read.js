@@ -13,6 +13,8 @@ import { study_book } from './spell.js';
 import { do_mapping } from './detect.js';
 import { makeknown } from './o_init.js';
 import { useup } from './invent.js';
+import { exercise } from './attrib.js';
+import { A_WIS } from './const.js';
 
 function note_unported_read(what) {
     (game.unported ||= new Set()).add('read:' + what);
@@ -87,6 +89,11 @@ function learnscroll(sobj) {
 // up by its own arm.
 async function seffects(sobj) {
     const otyp = sobj.otyp;
+
+    /* src/read.c:2199 — "just for trying": any magical scroll exercises
+       wisdom before its effect, the same dispatcher prologue weffects has */
+    if (game.objects[otyp].oc_magic)
+        exercise(A_WIS, true);
 
     switch (otyp) {
     case ONAMES.SCR_MAGIC_MAPPING:

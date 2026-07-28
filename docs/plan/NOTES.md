@@ -38,6 +38,26 @@ divergence, later calls can coincidentally realign, so a high RNG percentage can
 hide an early break. `tools/diverge.mjs` prints both the positional count and the
 index of the first divergence — trust the first-divergence index.
 
+**The rng comparison strips the call site** (`normalizeRng` drops everything
+from `@` on), so "rn2(5)=0" matches "rn2(5)=0" even when C drew it in
+distfleeck for monster A and we drew it in distfleeck for monster B. Two
+interchangeable-looking draws (distfleeck's rn2(5), mcalcmove's rn2(12)) can
+therefore keep a stream "matched" for thousands of calls while per-monster
+behavior has already forked. seed0360's goblin looked correct for ~3000 draws
+while C's goblin had been silently armed by dogmove.c:1157's return attack
+(pet HITS a monster -> rn2(4) gate -> mattackm(defender, pet), whose AT_WEAP
+arm wields without costing the defender's own action). When a fight scene
+diverges, check WHOSE turn each aligned draw belongs to before trusting the
+prefix: instrument rn2 with a stack capture and compare against C's recorded
+labels position by position.
+
+**Steps are not moves.** A session can spend its first 100+ keys on zero-time
+commands (menus, farlook, help); no monster acts and no per-turn draws fire
+until the first real action. The first `mcalcmove` batch (one rn2(12) per
+monster) in the recorded rng marks the first real turn. When probing "at
+step N", print `game.moves` too, and remember that probe output gathered
+AFTER the divergence reflects a forked simulation, not the matched prefix.
+
 **Per-session local timeout is 45 s**, from `SESSION_REPLAY_TIMEOUT_MS`
 (`ps_test_runner.mjs:461`). The judge allows 900 s. So a session can pass the
 judge's clock and still time out locally. Raise the env var rather than

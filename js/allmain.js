@@ -250,6 +250,8 @@ export async function newgame() {
     /* src/u_init.c:1002 — init_uhunger() sits between adjabil() and the spell
        book clear. exerper() consults uhunger every tenth move. */
     init_uhunger();
+    /* src/u_init.c:1005 — "no prayers just yet" */
+    g.u.ublesscnt = 300;
 
     // src/allmain.c:816-818 — docrt(); flush_screen(1); bot(); all run BEFORE
     // u_init_skills_discoveries() and the legacy pager, which is why the legacy
@@ -471,6 +473,11 @@ export async function moveloop_core() {
                    `(g.moves || 1) + 1` only happened to agree because the
                    first increment landed on 2 either way. */
                 g.moves++;
+
+                /* src/allmain.c:275 — the prayer timeout ticks down every
+                   turn (it sits beside nh_timeout in the same block). */
+                if (g.u.ublesscnt)
+                    g.u.ublesscnt--;
 
                 dosounds();
                 gethungry();

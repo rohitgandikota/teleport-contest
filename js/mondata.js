@@ -483,3 +483,21 @@ export const sticks = (ptr) =>
     (dmgtype(ptr, ATTKS.AD_STCK)
      || (dmgtype(ptr, ATTKS.AD_WRAP) && !attacktype(ptr, ATTKS.AT_ENGL))
      || attacktype(ptr, ATTKS.AT_HUGS));
+
+// include/mondata.h:232 vegan() / :239 vegetarian() — conduct tests used for
+// corpses, tins and digestion.
+export const vegan = (ptr) =>
+    ptr.mlet === MONSYMS.S_BLOB || ptr.mlet === MONSYMS.S_JELLY
+    || ptr.mlet === MONSYMS.S_FUNGUS || ptr.mlet === MONSYMS.S_VORTEX
+    || ptr.mlet === MONSYMS.S_LIGHT
+    || (ptr.mlet === MONSYMS.S_ELEMENTAL
+        && ptr !== game.mons[PMNAMES.PM_STALKER])
+    || (ptr.mlet === MONSYMS.S_GOLEM
+        && ptr !== game.mons[PMNAMES.PM_FLESH_GOLEM]
+        && ptr !== game.mons[PMNAMES.PM_LEATHER_GOLEM])
+    || noncorporeal(ptr);
+
+export const vegetarian = (ptr) =>
+    vegan(ptr)
+    || (ptr.mlet === MONSYMS.S_PUDDING
+        && ptr !== game.mons[PMNAMES.PM_BLACK_PUDDING]);

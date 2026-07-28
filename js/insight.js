@@ -14,10 +14,11 @@
 // spurious line shifts every row below it and costs the whole frame.
 
 import { game } from './gstate.js';
-import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON } from './const.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK } from './const.js';
 import { makeplural } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 import { empty_handed, is_ammo } from './wield.js';
+import { magic_negation } from './mhitu.js';
 
 function note_unported_insight(what) {
     (game.unported ||= new Set()).add('insight:' + what);
@@ -64,6 +65,7 @@ const enl_msg = (prefix, present, past, suffix, ps) =>
     enlght_line(prefix, present, suffix, ps);
 const you_are = (attr, ps = '') => enl_msg('You ', 'are ', 'were ', attr, ps);
 const you_have = (attr, ps = '') => enl_msg('You ', 'have ', 'had ', attr, ps);
+const you_can = (attr, ps = '') => enl_msg('You ', 'can ', 'could ', attr, ps);
 
 // src/hacklib.c an()
 function an(s) {
@@ -320,11 +322,119 @@ export function enlightenment() {
     characteristics_enlightenment();
     status_enlightenment();
 
+    /* src/insight.c:420 — the intrinsics section is shown for
+       MAGICENLIGHTENMENT, which doattributes grants when wizard or
+       discover; a plain-mode ^X stops at Status. */
+    if (game.wizard || game.discover)
+        attributes_enlightenment();
+
     out('');
     out('Miscellaneous:');
+    /* src/insight.c:428 — wizard/discover reminder plus the bones tally */
+    if (game.wizard || game.discover) {
+        you_are(`running in ${game.wizard ? 'debug' : 'explore'} mode`);
+        if (game.flags?.bones === false) {
+            you_have('disabled loading of bones levels');
+        } else if (!(game.u.uroleplay?.numbones)) {
+            enl_msg('You ', "haven't encountered", "didn't encounter",
+                    ' any bones levels', '');
+        } else {
+            note_unported_insight('enlightenment:bones_count');
+        }
+    }
     out(' Total elapsed playing time is none.');
 
     return lines.slice();
+}
+
+// src/insight.c:1487 attributes_enlightenment() — the "Attributes:" section.
+//
+// For a fresh un-polymorphed hero with no intrinsics almost every arm is
+// silent; the piousness line and the can-pray tail are what show. The long
+// resistance and sense blocks read property state this tree tracks in
+// u.uprops; any set property whose line is not written here records itself.
+function attributes_enlightenment() {
+    const u = game.u;
+
+    out('');
+    out('Attributes:');
+
+    if (u.uevent?.uhand_of_elbereth)
+        note_unported_insight('attributes:hand_of_elbereth');
+
+    const pio = piousness(true, 'aligned');
+    if ((u.ualign?.record ?? 0) >= 0)
+        you_are(pio);
+    else
+        you_have(pio);
+
+    if (game.wizard)
+        enl_msg('Your alignment ', 'is', 'was', ` ${u.ualign?.record ?? 0}`, '');
+
+    /* resistances, senses, movement intrinsics: every arm keys on a
+       property; a hero with any of them set needs the C line ported */
+    for (const k of Object.keys(u.uprops || {}))
+        if (u.uprops[k] && (u.uprops[k].intrinsic || u.uprops[k].extrinsic))
+            note_unported_insight(`attributes:prop:${k}`);
+
+    /* src/insight.c:1799 — the magic cancellation factor from worn armor:
+       "warded" / "guarded" / "protected" for mc 1..3 */
+    const armpro = magic_negation(null);
+    if (armpro > 0) {
+        const mc_types = ['', 'warded', 'guarded', 'protected'];
+        you_are(mc_types[Math.min(armpro, 3)]);
+    }
+
+    if (u.ugangr) {
+        note_unported_insight('attributes:ugangr');
+    } else {
+        /* src/insight.c:1940 — "can [not] safely pray"; suppressed when the
+           game is over */
+        you_can(`${can_pray(false) ? '' : 'not '}safely pray`
+                + (game.wizard ? ` (${u.ublesscnt})` : ''));
+    }
+}
+
+// src/pray.c:2124 can_pray() — the enlightenment approximation: prayer is
+// safe when the timeout has run out, luck and anger are clean, and we are
+// not in Gehennom. The undead-polymorph rn2(10) arm and the altar alignment
+// arms are gated on state that cannot occur yet.
+function can_pray(praying) {
+    const u = game.u;
+    const p_aligntyp = u.ualign?.type ?? 0;   /* on_altar() has no altars yet */
+    const p_trouble = in_trouble();
+    const alignment = u.ualign?.record ?? 0;
+
+    let p_type;
+    if ((p_trouble > 0) ? (u.ublesscnt > 200)
+        : (p_trouble < 0) ? (u.ublesscnt > 100)
+          : (u.ublesscnt > 0))
+        p_type = 0;                     /* too soon... */
+    else if ((u.uluck ?? 0) < 0 || u.ugangr || alignment < 0)
+        p_type = 1;                     /* too naughty... */
+    else
+        p_type = 3;
+
+    return !praying ? (p_type === 3 /* && !Inhell */) : true;
+}
+
+// src/pray.c:76 in_trouble() — the reachable numeric slice: critically low
+// hit points and starvation; the remaining trouble states key on properties
+// and are recorded when set.
+function in_trouble() {
+    const u = game.u;
+
+    /* TROUBLE_HIT (Stoned/Slimed/Strangled/lava/sick) — property-gated */
+    if (u.uprops?.STONED?.intrinsic || u.uprops?.SLIMED?.intrinsic
+        || u.uprops?.STRANGLED?.intrinsic || u.usick_type)
+        note_unported_insight('in_trouble:major_prop');
+
+    if (u.uhp <= 5 || u.uhp * 7 <= u.uhpmax)
+        return 1;                       /* TROUBLE_HIT_POINTS */
+    if (u.uhs >= WEAK)
+        return 1;                       /* TROUBLE_HUNGRY */
+
+    return 0;
 }
 
 // src/insight.c:3235 piousness() — the alignment-record adverb.

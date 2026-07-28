@@ -623,12 +623,21 @@ export async function rhack(key) {
         while (ch0 >= '0' && ch0 <= '9') {
             cnt = 10 * cnt + (ch0.charCodeAt(0) - 48);
             if (cnt > 9) {
+                /* src/cmd.c:5070 — clear_nhwindow(WIN_MESSAGE) then
+                   custompline(SUPPRESS_HISTORY, "Count: %ld"). The cursor
+                   parks at the end of the text (recorded cursor [9,0] for
+                   "Count: 20"), the same shape as the other topline
+                   prompts. */
                 tty_clear_nhwindow_message(game._topl_cury || 0);
-                game._pending_message = '';
-                game._toplin = TOPLINE_EMPTY;
-                await pline(`Count: ${cnt}`);
+                const ctext = `Count: ${cnt}`;
+                game._pending_message = ctext;
+                game._toplin = TOPLINE_SPECIAL_PROMPT;
+                _buildScreenOutput();
+                const display = game?.nhDisplay;
+                if (display)
+                    display.setCursor(
+                        Math.min(ctext.length, (display.cols ?? 80) - 1), 0);
             }
-            await flush_screen(1);
             key = await nhgetch();
             ch0 = String.fromCharCode(key);
         }

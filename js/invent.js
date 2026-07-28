@@ -6,7 +6,7 @@ import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE } from './const.js';
+import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname, an } from './objnam.js';
@@ -69,15 +69,23 @@ export async function look_here(obj_cnt, lhflags) {
             note_unported_invent('look_here:trap_here');
     }
 
-    /* src/invent.c:4180 — dfeature_at(). Only the stairway arm is ported;
-       the altar/fountain/grave/tree/door arms record when their terrain is
-       underfoot. */
+    /* src/invent.c:4037 — dfeature_at(). The door and stairway arms are
+       ported; fountain/throne/sink/grave/altar/tree still record when that
+       terrain is underfoot. */
     let dfeature = null;
     const stway = stairway_at(game.u.ux, game.u.uy);
-    if (stway) {
+    const loc0 = game.level?.at(game.u.ux, game.u.uy);
+    if (loc0 && IS_DOOR(loc0.typ)) {
+        switch (loc0.doormask) {
+        case D_NODOOR: dfeature = 'doorway'; break;
+        case D_ISOPEN: dfeature = 'open door'; break;
+        case D_BROKEN: dfeature = 'broken door'; break;
+        default:       dfeature = 'closed door'; break;
+        }
+    } else if (stway) {
         dfeature = stairs_description(stway, true);
     } else {
-        const typ = game.level?.at(game.u.ux, game.u.uy)?.typ;
+        const typ = loc0?.typ;
         if (typ === FOUNTAIN || typ === THRONE || typ === SINK
             || typ === GRAVE || typ === ALTAR || typ === TREE)
             note_unported_invent('look_here:dfeature');
@@ -179,8 +187,8 @@ const CLASS_NAMES = {
     COIN_CLASS: 'Coins', AMULET_CLASS: 'Amulets', WEAPON_CLASS: 'Weapons',
     ARMOR_CLASS: 'Armor', FOOD_CLASS: 'Comestibles', SCROLL_CLASS: 'Scrolls',
     SPBOOK_CLASS: 'Spellbooks', POTION_CLASS: 'Potions', RING_CLASS: 'Rings',
-    WAND_CLASS: 'Wands', TOOL_CLASS: 'Tools', GEM_CLASS: 'Gems or Stones',
-    ROCK_CLASS: 'Boulders/Statues', BALL_CLASS: 'Iron Balls',
+    WAND_CLASS: 'Wands', TOOL_CLASS: 'Tools', GEM_CLASS: 'Gems/Stones',
+    ROCK_CLASS: 'Boulders/Statues', BALL_CLASS: 'Iron balls',
     CHAIN_CLASS: 'Chains', VENOM_CLASS: 'Venoms',
 };
 function let_to_name(oclass) {
@@ -255,15 +263,57 @@ function getobj_letters(obj_ok, ctrlflags) {
             buf += HANDS_SYM + ' ';
     }
 
-    const sorted = [...(game.invent || [])]
-        .sort((a, b) => String(a.invlet).localeCompare(String(b.invlet)));
-
-    for (const otmp of sorted) {
+    /* the chain is kept in inv_rank order by reorder_invent(), so a plain
+       walk yields the letters in prompt order, as C's gi.invent walk does */
+    let suggested = 0;
+    for (const otmp of (game.invent || [])) {
         const v = obj_ok ? obj_ok(otmp) : GETOBJ_SUGGEST;
-        if (v === GETOBJ_SUGGEST)
+        if (v === GETOBJ_SUGGEST) {
             buf += otmp.invlet;
+            suggested++;
+        }
     }
-    return buf;
+    /* src/invent.c:1908 — "if (suggested > 5) compactify" — five letters
+       stay verbatim, six or more compress */
+    return suggested > 5 ? compactify(buf) : buf;
+}
+
+// src/invent.c:1627 compactify() — "a-e" for 3+ consecutive letters, and
+// "#-#" for 3+ NOINVSYM. A faithful transliteration of the C in-place loop.
+function compactify(str) {
+    if (str.length < 3)
+        return str;
+    const NOINVSYM = '#';
+    const buf = str.split('');
+    let i1 = 1, i2 = 1;
+    let ilet2 = buf[0];
+    let ilet1 = buf[1];
+    buf[++i2] = buf[++i1];
+    let ilet = buf[i1];
+    while (ilet !== undefined) {
+        if (ilet.charCodeAt(0) === ilet1.charCodeAt(0) + 1) {
+            if (ilet1.charCodeAt(0) === ilet2.charCodeAt(0) + 1) {
+                buf[i2 - 1] = ilet1 = '-';
+            } else if (ilet2 === '-') {
+                ilet1 = String.fromCharCode(ilet1.charCodeAt(0) + 1);
+                buf[i2 - 1] = ilet1;
+                buf[i2] = buf[++i1];
+                ilet = buf[i1];
+                continue;
+            }
+        } else if (ilet === NOINVSYM) {
+            if (i2 >= 2 && buf[i2 - 2] === NOINVSYM && buf[i2 - 1] === NOINVSYM)
+                buf[i2 - 1] = '-';
+            else if (i2 >= 3 && buf[i2 - 3] === NOINVSYM && buf[i2 - 2] === '-'
+                     && buf[i2 - 1] === NOINVSYM)
+                --i2;
+        }
+        ilet2 = ilet1;
+        ilet1 = ilet;
+        buf[++i2] = buf[++i1];
+        ilet = buf[i1];
+    }
+    return buf.slice(0, i2).join('');
 }
 
 export async function getobj(word, obj_ok_func, ctrlflags) {

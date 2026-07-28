@@ -11,6 +11,12 @@ import { is_animal, perceives, dmgtype, gender } from './mondata.js';
 import { poly_gender } from './polyself.js';
 import { Invis, See_invisible } from './youprop.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
+import { W_ARMOR, W_AMUL } from './const.js';
+import { ONAMES } from './objects_data.js';
+
+function note_unported_mhitu(what) {
+    (game.unported ||= new Set()).add(what);
+}
 
 // src/sys.c:100 sysopt.seduce — "if it's compiled in, default to on", and the
 // SEDUCE=0 line in sys/unix/sysconf is commented out, so this is 1.
@@ -67,4 +73,31 @@ export function could_seduce(magr, mdef, mattk) {
 
     return (genagr === 1 - gendef) ? 1
          : (pagr.mlet === MONSYMS.S_NYMPH) ? 2 : 0;
+}
+
+// src/mhitu.c:1089 magic_negation() — the magic cancellation factor worn
+// armor gives its wearer; the best a_can among worn pieces. The extrinsic
+// Protection arms (rings, amulet of guarding, divine protection) key on
+// state fresh heroes lack and are recorded when present.
+export function magic_negation(mon) {
+    const is_you = (mon === null || mon === game.u || mon === game.youmonst);
+    let mc = 0;
+
+    const chain = is_you ? (game.invent || []) : (mon.minvent || []);
+    for (const o of chain) {
+        if ((o.owornmask ?? 0) & W_ARMOR) {
+            const armpro = game.objects[o.otyp].a_can | 0;
+            if (armpro > mc)
+                mc = armpro;
+        } else if ((o.owornmask ?? 0) & W_AMUL) {
+            if (o.otyp === ONAMES.AMULET_OF_GUARDING)
+                note_unported_mhitu('magic_negation:amulet_of_guarding');
+        }
+    }
+
+    if (is_you && (game.u.uprops?.PROTECTION?.extrinsic
+                   || game.u.uspellprot))
+        note_unported_mhitu('magic_negation:protection');
+
+    return mc;
 }

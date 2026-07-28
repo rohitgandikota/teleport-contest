@@ -12,6 +12,7 @@
 // direct check that the o_init port is right.
 
 import { game } from './gstate.js';
+import { vegetarian } from './mondata.js';
 import { rn2, rnd } from './rng.js';
 import { mksobj, rnd_class, curse } from './mkobj.js';
 import { Is_candle } from './obj.js';
@@ -367,7 +368,8 @@ function tin_details(obj) {
     if (obj.corpsenm !== undefined && obj.corpsenm >= 0) {
         const m = game.mons[obj.corpsenm];
         const nm = m && (m.pmnames[2] ?? m.pmnames[0] ?? m.pmnames[1]);
-        if (nm) return ` of ${nm}`;
+        /* src/eat.c:1453 — "%s meat" unless the creature is vegetarian */
+        if (nm) return vegetarian(m) ? ` of ${nm}` : ` of ${nm} meat`;
     }
     return '';
 }

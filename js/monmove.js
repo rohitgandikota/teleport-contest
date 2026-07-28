@@ -1149,8 +1149,14 @@ function postmov(mtmp, ptr, omx, omy, mmoved) {
        EVERY path that returns through it, including dog_move's at :1773.
        remove_monster only clears level.monsters[][]; without this the vacated
        square keeps the monster's glyph and a moving pet leaves a trail. */
-    if (mmoved === MMOVE_MOVED)
+    if (mmoved === MMOVE_MOVED) {
         newsym(omx, omy);
+        /* src/monmove.c:1656 — and the arrival square: the engulf arm's else
+           branch draws the monster at its new spot. Without it a hostile
+           walking into view is painted only when something else happens to
+           redraw its cell. */
+        newsym(mtmp.mx, mtmp.my);
+    }
 
     if (mmoved === MMOVE_MOVED || mmoved === MMOVE_DONE) {
         if (OBJ_AT(mtmp.mx, mtmp.my) && mtmp.mcanmove) {

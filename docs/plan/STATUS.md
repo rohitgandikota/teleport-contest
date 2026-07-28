@@ -10225,3 +10225,25 @@ seed0200 ("2 of 40") and other low-screen sessions may share this class.
 ### Next
 seed1500-rogue-explore-move (2341/2768); seed2200 (2754/3018); seed0398
 (2822/3026). Then the vision comparison above.
+
+## seed1500 parked: gen-time object placement differs draw-free
+
+diverge@2300 (step 5 'h'): the kitten's dog_goal box scan from (70,15)
+draws obj_resists per floor object in x65..75,y10..20. C scans FIVE
+objects, ours TWO (gold@72,13, food@68,13; ours' next object is
+gold@76,14, ONE COLUMN outside the box). Same pet position, same box,
+identical RNG to that point: C's level has floor objects at in-box
+positions where ours placed them elsewhere. The visible room's walls
+match the recorded screens, so the difference is in the DARK area east
+(another room), i.e. level-gen placed 2-3 objects at different spots
+with the same draws.
+
+This is the same class as the parked seed0398 mfndpos/terrain suspicion
+and possibly the seed0077 vision strip: a draw-free divergence in level
+STRUCTURE (room bounds or position-pick clamping) that only shows when
+something scans or walks the affected cells. Next probe when picked up:
+dump ours' room rects (level.rooms lx/hx/ly/hy) for the east rooms and
+compare against the C screens of any session that later walks there;
+also compare mkgold/mkobj somex/somey clamping against C's somexyspace.
+
+Board unchanged at 982 this pass (analysis only).

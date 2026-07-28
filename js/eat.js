@@ -13,11 +13,9 @@ import { PMNAMES } from './monst_data.js';
 import { done } from './end.js';
 import { set_occupation } from './allmain.js';
 import { rn2 } from './rng.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK,
-         HUNGRY, FAINTING,
-         A_LAWFUL } from './const.js';
-import { ONAMES } from './objects_data.js';
-import { getobj, weight, useup, useupf } from './invent.js';
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, A_LAWFUL } from './const.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
+import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
@@ -74,7 +72,7 @@ export async function floorfood(verb, corpsecheck) {
         return null;
     }
 
-    return await getobj(verb, null, 0);
+    return await getobj(verb, eat_ok, 0);
 }
 
 // src/eat.c doeat() — the 'e' command.
@@ -82,6 +80,46 @@ export async function floorfood(verb, corpsecheck) {
 // The eating itself needs the nutrition, corpse and tin code. What is ported is
 // the object prompt, because a session that eats and does not have its
 // inventory letter consumed runs that letter as a command instead.
+// src/eat.c:91 is_edible() — can the HERO eat this?
+//
+// The fire-elemental and metallivore arms need a polymorphed youmonst,
+// which this tree does not track; ghoul and gelatinous cube read the real
+// u.umonnum. For every un-polymorphed hero this reduces to the C's tail:
+// not a unique object, and FOOD_CLASS.
+export function is_edible(obj) {
+    /* protect invocation tools but not Rider corpses (handled elsewhere) */
+    if (game.objects[obj.otyp].oc_unique)
+        return false;
+
+    if (game.u.umonnum === PMNAMES.PM_GHOUL) {
+        /* vegan() is not ported; a hero polymorphed into a ghoul cannot
+           arise on this tree (polyself absent), so record if reached */
+        note_unported_eat('is_edible:ghoul_vegan');
+        return obj.otyp === ONAMES.CORPSE || obj.otyp === ONAMES.EGG;
+    }
+
+    return obj.oclass === OCLASSES.FOOD_CLASS;
+}
+
+// src/eat.c:3517 eat_ok() — getobj callback; effectively wraps is_edible().
+//
+// C's getobj_else tracks "floor food declined" to word the refusal as
+// "anything ELSE to eat"; the floor-food prompt machinery is upstream of
+// getobj and recorded there.
+export function eat_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+
+    if (is_edible(obj))
+        return GETOBJ_SUGGEST;
+
+    /* exclude, not downplay, gold: "You cannot eat gold" comes from getobj */
+    if (obj.oclass === OCLASSES.COIN_CLASS)
+        return GETOBJ_EXCLUDE;
+
+    return GETOBJ_EXCLUDE_SELECTABLE;
+}
+
 export async function doeat() {
     const otmp = await floorfood('eat', 0);
 

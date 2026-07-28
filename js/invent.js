@@ -6,7 +6,7 @@ import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE } from './const.js';
+import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE, Never_mind } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname, an } from './objnam.js';
@@ -205,6 +205,14 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
        the paint without changing which keys are consumed. */
     let qbuf = `What do you want to ${word}?`;
     const lets = getobj_letters(obj_ok_func, ctrlflags | 0);
+
+    /* src/invent.c:1911 — nothing suggested, no forced prompt, no '-'
+       choice: refuse up front. The "else " variant needs the inaccessible
+       tracking and is recorded. */
+    if (!lets && obj_ok_func && !(ctrlflags & GETOBJ_PROMPT)) {
+        await You(`don't have anything to ${word}.`);
+        return null;
+    }
     qbuf += lets ? ` [${lets} or ?*]` : ' [*]';
 
     for (;;) {
@@ -215,8 +223,12 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
             note_unported_invent('getobj:count');
             return null;
         }
-        if (quitchars.includes(ilet))
-            return null;                       /* Never mind */
+        if (quitchars.includes(ilet)) {
+            /* src/invent.c:1950 */
+            if (game.flags.verbose)
+                await pline(Never_mind);
+            return null;
+        }
         if (ilet === '-') {
             /* HANDS_SYM — "your hands" as the object */
             note_unported_invent('getobj:hands');
@@ -232,7 +244,9 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         if (otmp)
             return otmp;
 
-        /* C re-prompts on an unrecognised letter, which costs another key. */
+        /* src/invent.c:2059 — an unrecognised letter says so, then the
+           re-issued prompt forces --More-- on the message. */
+        await You("don't have that object.");
     }
 }
 

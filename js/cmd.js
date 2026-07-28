@@ -541,6 +541,8 @@ export async function doextcmd() {
     /* src/cmd.c extcmdlist — the command's own function runs here. Only the
        ones that consume further input are wired up so far, because those are
        the ones whose absence puts the whole session out of step. */
+    if (name === 'chat')
+        return await dochat();
     if (name === 'name')
         return await docallcmd();
     if (name === 'jump')

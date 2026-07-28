@@ -10005,3 +10005,17 @@ Screen-probe result: the jackal is OFF-SCREEN in the recorded frames
 the recording. The remaining route is the line-by-line diff of m_move's
 selection loop (ours monmove.js:1086+, C monmove.c:1958-1990) plus the
 jackal's ggx/ggy goal derivation.
+
+seed0398 final state of knowledge: the jackal's track at the divergent
+turn is exactly [38,3] (spawned at 38,3, one move), so C's rn2(16) can
+only be j=0 -> C's mfndpos cnt = 4 vs our 6 AT THE SAME SQUARE with
+matched flags and (by generation-draw identity) matched terrain. Our
+candidates and dist2-to-goal(54,3): 38,2:257 38,3:256 38,4:257
+39,2:226 39,4:226 40,3:196; goal = mux (gettrack returns null, hero
+track nowhere near). The two C-rejects are undetermined; the top
+remaining suspect is DOOR/TERRAIN STATE derived from the same draws
+differently (e.g. our dosdoor mask mapping) at 40,3 (t23/d0 here) and
+one of 39,2 (t26 stairs?) / the diagonals -- but the room is NEVER SEEN
+in the recording, so no frame can settle it. Counter-evidence: seed0700
+(full pass) exercises doors heavily and matches. Parked; revisit if a
+second session shows the same signature ON-SCREEN.

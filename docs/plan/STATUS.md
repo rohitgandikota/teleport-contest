@@ -9634,3 +9634,28 @@ Next targets by diverge ranking: seed0101 (ranger-quiver-throw, 97%,
 next_ident div@2293), seed0077 (99.7%, dog_goal @3230), seed0105 (100% RNG,
 screens still failing -- same stale-frame class? re-run screendiff now that
 postmov repaints), and the throwit chain for the quiver sessions.
+
+
+## THIRD FULL SESSION PASS: seed0105 (3/44), board 570 screens
+
+The remaining seed0105 misses fell to four small C behaviors, all found by
+reading the expected screen text:
+1. #chat was never dispatched; dochat existed but lacked the wall arm.
+2. 'a' offered the whole inventory; apply_ok excludes everything a fresh
+   Valkyrie carries, and getobj's empty-list refusal prints
+   "You don't have anything to use or apply."
+3. 'e' offered [abcd]; eat_ok/is_edible reduce it to the ration [d].
+4. getobj's unrecognised-letter and ESC paths print
+   "You don't have that object." / "Never mind." (invent.c:2059, 1950).
+
+Verification pattern that worked: scan all steps with screendiff and read
+the C text at each first miss; each message named its own C function.
+
+Board RNG positional moved -560 with screens +19: all 32 divergence POINTS
+byte-identical to the previous table, so the delta is post-divergence tail
+noise (the standing rule: judge by the point).
+
+NEXT: seed0101 (ranger-quiver-throw, div@2293 at next_ident) and seed0077
+(div@3230 at dog_goal) are the nearest non-passing sessions; seed0016
+(div@2493 next_ident) and seed0398 (div@2764 rnd_otyp_by_namedesc) share
+the identification-subsystem cluster.

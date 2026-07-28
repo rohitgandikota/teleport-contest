@@ -9953,3 +9953,23 @@ Next blockers by yield:
 - seed2200's rn2(19) question still open (see previous entry).
 
 Board 804/44, passes 4, seven 100%-RNG sessions. Gates clean.
+
+
+### seed0398 mfndpos audit: warm-start data for the next deep dive.
+
+The divergent draw (@2785, step 29): the JACKAL (pm12, the level's only
+monster once the pet is polymorphed away) at 39,3 walking the mtrack
+skip. OURS: cnt=6, candidates [38,2 38,3 38,4 39,2 39,4 40,3], track[0]
+= 38,3 -> rn2(24). C: rn2(16) => cnt=4 at j=0. Terrain (ours): rows 1-5
+x36-43: 40,3 is a DOORLESS door (t23/d0), 39,2 is t26, rest ROOM/CORR;
+hero at 53,2. Our NOTONL arm matches C (unicorn-only flag); no boulders,
+no other monsters, no scare scrolls near. Two candidates C rejects are
+unidentified — OR C's jackal sits on a different square by now (silent
+path drift from earlier rounds whose draws matched coincidentally).
+NEXT: build the step-aligned side-by-side dump (rngdump.mjs pattern,
+STATUS seed0101 entry) for steps 20-29 and align each monster round;
+also compare our m_move's appr/ggx/ggy against C's for the jackal
+(gx from set_apparxy guesses).
+
+Probes are stripped from the tree; re-add POSPROBE in monmove.js's
+m_move candidate loop when resuming.

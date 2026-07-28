@@ -22,7 +22,7 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul } from './hack.js';
 import { curr_mon_load } from './mon.js';
-import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE } from './const.js';
+import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { x_monnam, docallcmd } from './do_name.js';
 import { You } from './pline.js';
@@ -40,11 +40,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
-import {
-    tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
-    tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
-    NHW_TEXT, NHW_MENU, ATR_NONE,
-} from './tty/wintty.js';
+import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
 import { doopen, doopen_indir } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
@@ -55,12 +51,9 @@ import { dothrow } from './dothrow.js';
 import { getpos } from './getpos.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
-import { newsym, flush_screen, pline, docrt, _buildScreenOutput,
-         tty_clear_nhwindow_message,
-         TOPLINE_SPECIAL_PROMPT , TOPLINE_EMPTY} from './display.js';
+import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY } from './display.js';
 import { vision_recalc } from './vision.js';
-import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED,
-         IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
+import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
@@ -514,6 +507,20 @@ async function dojump() {
 }
 
 export async function rhack(key) {
+    /* src/cmd.c:3642 — queued commands run before any key is read. A
+       CMDQ_EXTCMD entry dispatches its function directly, exactly like the
+       doextcmd arm below; a CMDQ_KEY becomes the command key as if typed. */
+    if (key === 0) {
+        const cmdq = cmdq_pop();
+        if (cmdq) {
+            if (cmdq.typ === CMDQ_EXTCMD && cmdq.fn) {
+                game.context.move = ((await cmdq.fn()) === ECMD_TIME ? 1 : 0);
+                return;
+            }
+            if (cmdq.typ === CMDQ_KEY)
+                key = String(cmdq.key).charCodeAt(0);
+        }
+    }
     if (key === 0) {
         // Read key from input
         await flush_screen(1);
@@ -1051,4 +1058,36 @@ export function reset_occupations() {
 // this clears an empty list exactly as C does when nothing is queued.
 export function cmdq_clear(q) {
     (game.command_queue ||= [])[q] = null;
+}
+
+/* The queue entries mirror C's struct _cmd_queue: {typ, fn} for CMDQ_EXTCMD
+   (the function itself stands in for C's ext_func_tab lookup) and {typ, key}
+   for CMDQ_KEY (key kept as the character, converted at the consumer). The
+   backing store is an array per queue where C uses a singly-linked list with
+   tail append; push/shift preserve the same FIFO order. */
+
+// src/cmd.c:254 cmdq_add_ec() — add extended command function to the queue.
+export function cmdq_add_ec(q, fn) {
+    ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_EXTCMD, fn });
+}
+
+// src/cmd.c:274 cmdq_add_key() — add a key to the command queue.
+export function cmdq_add_key(q, key) {
+    ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_KEY, key });
+}
+
+// src/cmd.c:410 cmdq_pop() — pop the topmost command. The queue popped
+// depends on whether a do-again (^A) replay is in progress.
+export function cmdq_pop() {
+    const q = game.in_doagain ? CQ_REPEAT : CQ_CANNED;
+    const list = (game.command_queue ||= [])[q];
+    if (list && list.length)
+        return list.shift();
+    return null;
+}
+
+// src/cmd.c:421 cmdq_peek() — the top entry without popping it.
+export function cmdq_peek(q) {
+    const list = (game.command_queue ||= [])[q];
+    return (list && list.length) ? list[0] : null;
 }

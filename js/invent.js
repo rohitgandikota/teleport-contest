@@ -2,18 +2,17 @@
 // C ref: src/invent.c
 
 import { game } from './gstate.js';
+import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj } from './mon.js';
 import { costly_spot } from './shk.js';
-import { u_at } from './const.js';
+import { u_at, CMDQ_INT, CQ_CANNED } from './const.js';
 import { hides_under } from './mondata.js';
 import { Hallucination } from './youprop.js';
 import { doname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS } from './monst_data.js';
 import { erosion_matters, curse, splitobj } from './mkobj.js';
-import {
-    carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, Is_container, Is_candle, Is_pudding,
-} from './obj.js';
+import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, Is_container, Is_candle, Is_pudding } from './obj.js';
 import { is_rider, hideunder } from './makemon.js';
 import { ATR_NONE, ATR_INVERSE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
@@ -148,6 +147,39 @@ function getobj_letters(obj_ok, ctrlflags) {
 }
 
 export async function getobj(word, obj_ok_func, ctrlflags) {
+    /* src/invent.c:1779 — a queued CMDQ_KEY picks the object without
+       prompting; a failed lookup discards the rest of the canned queue so a
+       broken script cannot run its tail against the wrong object. The
+       CMDQ_INT partial-stack arm and the HANDS_SYM choice have no producer
+       in this port yet and are recorded when reached. */
+    {
+        const cmdq = cmdq_pop();
+        if (cmdq) {
+            let otmp = null;
+            if (cmdq.typ === CMDQ_KEY) {
+                if (cmdq.key === HANDS_SYM) {
+                    note_unported_invent('getobj:cmdq_hands');
+                } else {
+                    /* there could be more than one match if key is '#';
+                       take first one which passes the obj_ok callback */
+                    for (const o of (game.invent || []))
+                        if (o.invlet === cmdq.key) {
+                            const v = await obj_ok_func(o);
+                            if (v === GETOBJ_SUGGEST || v === GETOBJ_DOWNPLAY) {
+                                otmp = o;
+                                break;
+                            }
+                        }
+                }
+            } else if (cmdq.typ === CMDQ_INT) {
+                note_unported_invent('getobj:cmdq_int');
+            }
+            if (!otmp)              /* didn't find what we were looking for, */
+                cmdq_clear(CQ_CANNED); /* so discard any other queued cmnds */
+            return otmp;
+        }
+    }
+
     /* src/invent.c:1919 — the prompt, then yn_function reads the key. Our
        loop already read a key here; routing it through tty_yn_function adds
        the paint without changing which keys are consumed. */

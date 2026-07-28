@@ -9797,3 +9797,40 @@ Next targets by divergence rank: seed0101 (div@2293, doquiver_core
 family), seed0077 (dog_goal@3230), seed0700 now 41/51, seed1800 and
 seed2200 both close. The getbones cluster (4 sessions) and
 rnd_otyp_by_namedesc (3) stand.
+
+
+### Throw chain + Ranger displacement landed; 655 screens, six 100%-RNG sessions
+
+throw_obj/throwit/breaktest are real (see commit e95d3b4): the multishot
+draws, the split's nextoid rnd(2), bhit's THROWN_WEAPON walk, the
+landing breaktest. The 5.0 kit fact that drove it: RANGERS START WITH A
+CLOAK OF DISPLACEMENT (u_init.c:129; elven rangers swap to elven cloak),
+and set_wear now applies worn oc_oprop extrinsics through a prop.h key
+table, so set_apparxy's Displaced arms draw. The fortune-cookie rumor
+chain landed with the eat-occupation asyncification.
+
+seed1800: 8 -> 24/26, RNG 100%. seed0101: 17 -> 18/27, still diverging
+at step 24 in the apparxy cluster: C's round shows FOUR
+apparxy-draw sequences (positions 2302+ idx 7/10/14/24, the idx-14 one
+displ=2 with four rn2(5) retry pairs) where ours runs THREE (our newt
+gets displ=1, and ours draws an extra post-move distfleeck at idx14 that
+C lacks). Open questions, in order of promise: (1) whether C's fox skips
+its post-move distfleeck recalc because its move-block condition is
+false (would mean our block condition or its inputs differ for the same
+monster), (2) where C's fourth apparxy sequence comes from when only
+three non-pet monsters exist and none has 24 movement, (3) whether the
+first-apparxy guess (mux,muy = 0,0) matters: C's idx-14 monster computes
+displ=2 = couldsee(guess), impossible for 0,0, so some C monster carries
+a non-zero guess ours lacks — check mhitu.c:593 (attack resets guess)
+and monmove.c disturb paths. The side-by-side dump script lives at the
+scratchpad's rngdump.mjs pattern; rebuild it from STATUS if needed.
+
+Also open: seed1800's two last screens are answered-prompt toplines that
+C shows BLANK at the boundary frame (step 11) or joined with a second
+message (step 25). A pre-read clear of NON_EMPTY toplines in nhgetch
+reproduced step 11 but broke six screens across 0016/0102/0105 (real
+messages must survive their boundary frame) and was reverted; C's actual
+erase mechanism for answered prompts is still unidentified. Do not
+re-try the blanket pre-read clear.
+
+Board 655/44-sessions, 3 passes, hang gate clean, generalize clean.

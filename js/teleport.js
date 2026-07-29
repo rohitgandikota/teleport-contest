@@ -123,6 +123,10 @@ function ZAP_POS(x, y) {
 // pass re-collects and therefore re-shuffles the near rings, so its draw count
 // includes them again even though the caller skips those entries.
 export function enexto_core(cc, xx, yy, mdat, entflags, goodpos) {
+    /* src/teleport.c:234 — a null mdat defaults to the hero's original
+       monster type */
+    if (!mdat)
+        mdat = game.mons[game.u.umonster];
     /* src/teleport.c:118 — C builds a dummy monst and set_mon_data()s the
        permonst into it, because goodpos() takes a monster, not a permonst. */
     const fakemon = { data: mdat, wormno: 0 };

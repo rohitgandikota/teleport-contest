@@ -10667,3 +10667,62 @@ every level, and ALSO draws the medusa rn2(5) up front where C only draws
 it in the final else-if arm — restructure to C's dispatch when starting
 makemaz. The u_on_rndspot arrival (collect_coords x225) and losedogs pet
 arrival are part of the same wall.
+
+## 2026-07-28 (third) — the special-level pipeline: oracle generates byte-perfect (board 1457)
+
+seed0360's step 145 ('c' picks "oracle: 9" from the ^V menu) now renders
+all 1920 cells correctly: goto_level -> makemaz('oracle') -> the des-file
+pipeline -> arrival placement, the whole chain.
+
+New machinery:
+- `js/mkmaze.js` (new file): makemaz() with proto resolution and rndlevs,
+  place_lregion()/put_lregion_here()/bad_location(), fixup_special() slice
+  (lregions, updest/dndest capture, branch placement gates).
+- `js/sp_lev.js`: load_special() with the per-load nhlib align shuffle and
+  the C finalize order (link_doors_rooms, remove_boundary_syms,
+  map_cleanup, wallification, flip_level_rnd, count_level_features,
+  fixup_special); lspo_level_flags, lspo_feature, lspo_stair (with
+  set_ok_location_func/good_stair_loc), lspo_random_corridors; lspo_room
+  now takes x/y/xalign/yalign/type-names/chance (build_room semantics:
+  chance roll first, the failed roll DEGRADES rtype to OROOM, not the
+  room); lspo_door matches C exactly (random state draws rnddoor() up
+  front AND still hands the random mask to create_door's cascade; secret
+  is never -1 from the table form); lspo_trap treats an omitted type as
+  RANDOM (-1) so des.trap() rolls traptype_rnd; lspo_object montype
+  single-char goes through mkclass(cls, G_NOGEN|G_IGNORE) and historic
+  statues carry CORPSTAT_HISTORIC; create_monster computes amask
+  (induced_align draw) FIRST per C:1943, then species, then location,
+  and wires enexto for occupied spots.
+- `js/mklev.js`: create_room's POSITIONED arm (sp_lev.c:1580 alignment
+  math; check_room's position edits kept, size edits dropped, exactly as
+  C does); makelevel dispatches Is_special -> makemaz with the medusa
+  rn2(5) moved into its correct final else-if; themerooms_generate now
+  hands contents the mkroom_table view (latent NaN crash fix).
+- `js/dat/oracle.js` + `js/dat/levels.js`: the level registry. NOTE the
+  transcription trap that cost a cycle: oracle.lua has TWO identical
+  {object;trap;monster} rooms back to back — count the des.room calls.
+- `js/makemon.js`: rnd_defensive_item/rnd_misc_item/rnd_offensive_item
+  ported for real (they gate on is_animal/AT_EXPL/mindless/ghost/Kop and
+  DRAW; the old always-0 stubs were seed5006's first divergence);
+  m_initgrp/m_initsgrp/m_initlgrp (group birth with enexto_gpflags);
+  mkmonmoney creates a real GOLD_PIECE in minvent (next_ident draw);
+  align_shift honors Is_special's level alignment (the oracle level is
+  neutral-aligned and weights its monster table accordingly).
+- `js/mkobj.js`: statue contents use SPBOOK_no_NOVEL (999-weight range)
+  and add_to_container, not a dropped full-class roll.
+- Arrival: dungeon.js u_on_rndspot -> place_lregion(whole level);
+  do.js goto_level does keepdogs before leaving, updest/dndest reset,
+  u_on_rndspot for non-stairs arrivals, losedogs, u_collide_m (hero
+  steps aside or mnexto's the squatter), then vision_reset + docrt;
+  dog.js keepdogs/losedogs/mon_arrive (With_you slice; the rn2(10)
+  pet-on-your-square roll); mon.js mnexto.
+- teleport.js enexto_core defaults a null mdat to mons[u.umonster].
+
+Board: 1457 (+119): seed5006 4 -> 111 (the muse pickers), seed0360
+171 -> 178, seed0116 +4, seed0361 +1. Passes 6. Gates clean.
+
+Next for seed0360: step 146+ on the oracle level (kitten swap, then more
+touring — the next ^V destinations need their own level scripts: bigrm,
+rogue, medusa, castle... each is a dat/*.lua port into js/dat/, and the
+'wizard1-3' + Gehennom protos need makemaz('') mazes eventually).
+seed5006's new divergence at 111 is worth a diverge run next.

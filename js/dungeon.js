@@ -781,6 +781,32 @@ export function level_difficulty() {
     return res;
 }
 
+// src/dungeon.c:1605 u_on_rndspot() — place the hero at a random location
+// within the arrival region; an unspecified region (lx == 0) defaults to
+// the entire level. The W-tower arm needs its exclusion region and is
+// recorded.
+export async function u_on_rndspot(upflag) {
+    const up = (upflag & 1), was_in_W_tower = (upflag & 2);
+    const { place_lregion, LR_UPTELE, LR_DOWNTELE } =
+        await import('./mkmaze.js');
+
+    if (was_in_W_tower) {
+        note_unported_dungeon('u_on_rndspot:W_tower');
+    } else if (up) {
+        const r = game.updest || {};
+        place_lregion(r.lx | 0, r.ly | 0, r.hx | 0, r.hy | 0,
+                      r.nlx | 0, r.nly | 0, r.nhx | 0, r.nhy | 0,
+                      LR_UPTELE, null);
+    } else {
+        const r = game.dndest || {};
+        place_lregion(r.lx | 0, r.ly | 0, r.hx | 0, r.hy | 0,
+                      r.nlx | 0, r.nly | 0, r.nhx | 0, r.nhy | 0,
+                      LR_DOWNTELE, null);
+    }
+    /* switch_terrain() — levitation/flight state versus the new square;
+       nothing a fresh arrival needs yet */
+}
+
 // src/dungeon.c:2175 unplaced_floater() — Fort Ludios when its branch has
 // not been placed (end1 in the pseudo-dungeon n_dgns).
 function unplaced_floater(idx) {

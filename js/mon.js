@@ -29,7 +29,9 @@ import { mksobj_at, splitobj } from './mkobj.js';
 import { newsym, canseemon, pline } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
-import { remove_monster } from './makemon.js';
+import { remove_monster, place_monster, goodpos } from './makemon.js';
+import { enexto_core } from './teleport.js';
+import { GP_CHECKSCARY } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
@@ -1438,4 +1440,29 @@ export async function monkilled(mdef, fltxt, how) {
         note_unported_mon('monkilled:sad_feeling');
 
     mondied(mdef);
+}
+
+// src/mon.c:3955 mnexto() — move a monster next to the hero: enexto()'s
+// two-pass search (whose collect_coords ring shuffles are the draws), then
+// rloc_to. Overcrowding sends the monster to limbo; recorded.
+export function mnexto(mtmp, rlocflags) {
+    if (mtmp === game.u.usteed) {
+        mtmp.mx = game.u.ux;
+        mtmp.my = game.u.uy;
+        return;
+    }
+
+    const mm = { x: 0, y: 0 };
+    const mdat = game.mons[mtmp.mnum];
+    if (!(enexto_core(mm, game.u.ux, game.u.uy, mdat, GP_CHECKSCARY, goodpos)
+          || enexto_core(mm, game.u.ux, game.u.uy, mdat, 0, goodpos))
+        || !isok(mm.x, mm.y)) {
+        note_unported_mon('mnexto:deal_with_overcrowding');
+        return;
+    }
+    /* rloc_to_flag(mtmp, mm.x, mm.y, rlocflags) — remove+place+newsym */
+    if (mtmp.mx || mtmp.my)
+        remove_monster(mtmp.mx, mtmp.my);
+    place_monster(mtmp, mm.x, mm.y);
+    newsym(mtmp.mx, mtmp.my);
 }

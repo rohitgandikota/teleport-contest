@@ -10793,3 +10793,44 @@ doread/seffects. The recorded draws: exercise rn2(19) then obj_resists
 rn2(100) pairs over the inventory (a scroll arm walking invent — looks
 like remove curse or identify). js/read.js does not exist yet; check
 what dispatches 'r' in cmd.js first.
+
+## 2026-08-01 (later): takeoff time semantics, status conditions, level-tele scroll, invlet counter — board 1522
+
+The seed5006 blindfold saga resolved into five separate real bugs, all committed as 1969ba2:
+
+1. **Cursed takeoff costs no time.** C's `T` runs select_off() first; a cursed
+   item refuses there ("You can't.  They are cursed." — plural for
+   boots/gloves/LENSES/quan>1 via cursed()) and armor_or_accessory_off returns
+   ECMD_OK BEFORE any time passes. Ours charged ECMD_TIME, so every T on the
+   cursed gloves burned a monster turn C never ran. Ported select_off (ring/
+   glove/boot/suit special checks + basic curse) + cursed() + reset_remarm.
+2. **Status line conditions.** bot2str's tail (Stone/Slime/Strngl/FoodPois/
+   TermIll/hunger/encumbrance/Blind/Deaf/Stun/Conf/Hallu/Lev/Fly/Ride) is now
+   js/botl.js bot_conditions(), wired into _statusLine2. hu_stat keeps C's
+   trailing spaces.
+3. **Confused scroll of teleportation.** seffect_teleportation → level_tele;
+   the '*'/Oops arms now run random_teleport_level() (ported, incl. the
+   wizard-never-defers rn2(3) and quest clamps) and fall through to the
+   existing schedule_goto tail. The unconfused scrolltele arm is recorded.
+4. **mk_knox_portal never drew.** Branch lookup keyed on b.name which our
+   branch records don't carry; C draws rn2(3) whenever the Knox source end is
+   still floating (and wizard mode ignores the defer but still draws). Now
+   keyed on knox_level dnum/dlevel match.
+5. **invlet must advance lastinvnr.** makewish and touchfood hand-rolled
+   "first free letter" assignment; C's assigninvlet continues AFTER the last
+   assigned letter even when earlier ones were freed (rolling gl.lastinvnr).
+   The wished wand of death got 'p' instead of C's 's', so 'z'+'s' zapped
+   nothing and the whole death sequence never ran. assigninvlet/addinv/
+   addinv_nomerge now live exported in js/invent.js; u_init/zap/eat rewired.
+
+seed5006: 147 → 175 of 249. Board 1494 → 1522. Passes hold at 6.
+hang-gate OK, generalize OK (only the water-vault themeroom note remains).
+
+**Next wall (seed5006 step 186):** the death/bones pipeline. 'y' to "Die?"
+draws can_make_bones rn2(1), next_ident, then a rndmonst_adj rn2 ladder
+(2,5,6,7,8,10,11,12,14,15,17,20 — a reservoir over the eligible monster
+table), then 'y' to the bones prompt runs drop_upon_death (rn2(5) curse +
+rn2(8) scatter per item). Port order: done() wizard-mode survive/die flow in
+end.c → can_make_bones → savebones → drop_upon_death. The rndmonst ladder is
+probably the bones ghost's replacement monster — read bones.c:377 region
+before assuming.

@@ -10834,3 +10834,35 @@ rn2(8) scatter per item). Port order: done() wizard-mode survive/die flow in
 end.c → can_make_bones → savebones → drop_upon_death. The rndmonst ladder is
 probably the bones ghost's replacement monster — read bones.c:377 region
 before assuming.
+
+## 2026-08-01 (later still): death pipeline — seed5006 at 183, board 1519
+
+Commit 2f6805b. New files js/bones.js, js/rip.js, js/topten.js; js/end.js is
+now the real done()/really_done() flow (see commit message for the spine).
+Key discoveries for the next agent:
+
+- The tombstone text window is TWO tty pages: 24 content lines (1 blank +
+  15 stone + 2 blank + Goodbye + blank + 3 summary + blank) vs 23 usable
+  rows. Screen 187 = page 1 + --More--, 188 = a blank page 2 + --More--,
+  and steps 189-192 press 'y' at that --More--, which xwaitforspace IGNORES
+  (only space/return/ESC dismiss). Using nhgetch instead of xwaitforspace
+  for the pager loses four screens.
+- done() consumes the session's keys through the prompt chain (Die?, Save
+  bones?) and after really_done the moveloop's gameover guard swallows the
+  rest of the segment; the runner then starts segment 2 as a fresh game,
+  which immediately matched 194/195 to 1 cell.
+- diverge.mjs disagrees with the worker runner near death sequences (its
+  inline harness diverges earlier); trust the worker + targeted probes.
+  seed0360's "regression" 178→167 is post-divergence tail alignment: both
+  Is_botlevel forms first-diverge at the same index (~8655, a doopen_indir
+  rnl(20) vs moveloop rn2(79) misalignment — that is 0360's REAL next wall,
+  predating this iteration).
+- Is_botlevel in 5.0 is a FUNCTION: dlevel == num_dunlevs (dungeon.c:1643).
+  The old `dunlev_ureached ?? num_dunlevs` stub was wrong.
+
+Remaining seed5006 walls: step 193 topten line truncated at col 43 (odd —
+unit test prints the full line; suspect a frame-capture race at segment
+end), step 194+ seg-2 tail (~140-180 cells from ~step 200 on, one attr cell
+at 194: '!' colored 6 vs C default — remembered-object coloring nuance).
+seed0030 (ten diverse deaths, 1953 screens) should now benefit from the
+death flow once its earlier divergence (~7071) is fixed.

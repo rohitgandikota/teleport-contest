@@ -23,7 +23,7 @@ import { mongone } from './mon.js';
 import { sgn } from './hacklib.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
-import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom } from './sp_lev.js';
+import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest } from './sp_lev.js';
 import { walkfrom, mkmaze_wire_mklev } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
@@ -799,6 +799,7 @@ sp_lev_wire_mklev({ mkstairs, makecorridors, wallification,
                     maketrap });
 sp_lev_wire_walkfrom(walkfrom);
 mkmaze_wire_mklev({ mkstairs, place_branch });
+import('./priest.js').then(m => sp_lev_wire_priest(m.priestini));
 
 // C ref: mklev.c makerooms()
 async function makerooms() {

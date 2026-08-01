@@ -321,6 +321,24 @@ export function newsym(x, y) {
      * (js/engrave.js) but drew the plain floor over them, so seed0105's very
      * first frame was one cell wrong and every one of its 30 steps failed.
      */
+    /* src/display.c newsym(), the out-of-sight arm: a dangerous monster the
+       hero cannot see but is Warned of floats above the memory as a digit.
+       display_warning() -> warning_of(): level/4 clamped to 1..5; colors from
+       drawing.c def_warnsyms (1-3 red, 4 magenta, 5 bright magenta). */
+    if (!cansee(x, y)) {
+        const wmon = (game.level?.monsters || [])
+            .find(m => m.mx === x && m.my === y && m.mhp > 0);
+        if (wmon && mon_warning(wmon)) {
+            let wl = ((wmon.m_lev ?? 0) / 4) | 0;
+            if (wl > 5) wl = 5;
+            if (wl < 1) wl = 1;
+            const warncolor = [CLR_WHITE, 1, 1, 1, 5, 13];
+            show_glyph_cell(x, y, String(wl), warncolor[wl], false, 0,
+                            { kind: 'warn', wl });
+            return;
+        }
+    }
+
     const tg = engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y);
     // Only update display/memory if cell is IN_SIGHT (lit and visible)
     if (cansee(x, y)) {
@@ -864,4 +882,17 @@ export function magic_map_background(x, y, show) {
     if (show && tg)
         show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
                         { kind: 'cmap', cmap: tg.cmap });
+}
+
+// include/display.h:64 _mon_warning() — Warning, hostile, within 10 squares,
+// and at least the context warnlevel.
+function mon_warning(mon) {
+    const u = game.u;
+    const Warning = !!(u.uprops?.WARNING || u.intrinsic?.HWarning);
+    if (!Warning || mon.mpeaceful)
+        return false;
+    const dx = mon.mx - u.ux, dy = mon.my - u.uy;
+    if (dx * dx + dy * dy >= 100)
+        return false;
+    return (((mon.m_lev ?? 0) / 4) | 0) >= (game.context_warnlevel ?? 0);
 }

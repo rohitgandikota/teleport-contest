@@ -675,8 +675,15 @@ function m_initinv(mtmp) {
                 if (mndx !== PMNAMES.PM_SOLDIER && !rn2(3))
                     mongets(mtmp, ONAMES.BUGLE);
             }
+        } else if (ptr.msound === MSOUND.MS_PRIEST) {
+            /* src/makemon.c:721 — the priest's robe, shield and purse */
+            mongets(mtmp, rn2(7) ? ONAMES.ROBE
+                                 : rn2(3) ? ONAMES.CLOAK_OF_PROTECTION
+                                          : ONAMES.CLOAK_OF_MAGIC_RESISTANCE);
+            mongets(mtmp, ONAMES.SMALL_SHIELD);
+            mkmonmoney(mtmp, rn1(10, 20));
         } else {
-            /* shopkeepers, priests, prisoners, Croesus: recorded */
+            /* shopkeepers, monks, prisoners, Croesus: recorded */
             note_unported(`m_initinv mlet=${ptr.mlet}`);
         }
         break;

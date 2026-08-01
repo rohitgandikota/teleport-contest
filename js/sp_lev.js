@@ -1453,9 +1453,13 @@ export function create_altar(a, croom) {
             croom_is_temple = false;
     } else {
         pos = get_location_coord(-1, -1, DRY, croom, a.coord);
-        /* in_rooms(x, y, TEMPLE) needs the room-type index; without it we
-           cannot tell a temple from an ordinary room here. */
-        croom_is_temple = false;
+        /* src/sp_lev.c:2455 — in_rooms(x, y, TEMPLE): find the temple room
+           holding the altar */
+        croom = (game.level?.rooms || []).find(r =>
+            r.rtype === TEMPLE && pos.x >= r.lx - 1 && pos.x <= r.hx + 1
+            && pos.y >= r.ly - 1 && pos.y <= r.hy + 1);
+        if (!croom)
+            croom_is_temple = false;
     }
 
     const loc = game.level?.at(pos.x, pos.y);
@@ -1475,8 +1479,19 @@ export function create_altar(a, croom) {
     if (!croom_is_temple || !a.shrine)
         return;
 
-    note_unported('create_altar:shrine');
+    /* src/sp_lev.c:2479 — a shrine or sanctum gets its resident priest */
+    if (a.shrine) {
+        priestini_fn?.(game.u.uz, croom, pos.x, pos.y, a.shrine > 1);
+        loc.altarmask |= 8 /* AM_SHRINE */;
+        if (a.shrine === 2)
+            loc.altarmask |= 16 /* AM_SANCTUM */;
+        game.level.flags.has_temple = true;
+    }
 }
+
+/* priestini lives in js/priest.js, which imports this file; wired. */
+let priestini_fn = null;
+export function sp_lev_wire_priest(fn) { priestini_fn = fn; }
 
 // src/sp_lev.c sp_amask_to_amask() — the three SPLEV pseudo-alignments resolve
 // against the HERO's original alignment, not the level's.

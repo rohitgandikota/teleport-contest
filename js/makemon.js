@@ -9,6 +9,7 @@
 
 import { game } from './gstate.js';
 import { ARM_BONUS } from './do_wear.js';
+import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
 import { weight as weight_fn } from './invent.js';
 import { rndghostname } from './do_name.js';
 import { m_dowear } from './worn.js';
@@ -1770,6 +1771,16 @@ export function makemon(ptr, x, y, mmflags) {
              || mndx === PMNAMES.PM_LONG_WORM || mndx === PMNAMES.PM_GIANT_EEL)
             && !game.u.uhave?.amulet && rn2(5))
             mtmp.msleeping = true;
+    }
+
+    /* src/makemon.c:1404 — a long worm grows a random tail at creation */
+    if (mndx === PMNAMES.PM_LONG_WORM) {
+        worm_wire(goodpos);
+        if ((mtmp.wormno = get_wormno()) !== 0) {
+            initworm(mtmp, !(mmflags & (MMFLAGS.MM_NOTAIL ?? 0)) ? rn2(5) : 0);
+            if (count_wsegs(mtmp))
+                place_worm_tail_randomly(mtmp, x, y);
+        }
     }
 
     set_malign(mtmp);

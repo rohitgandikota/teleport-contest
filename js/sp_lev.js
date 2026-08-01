@@ -2313,8 +2313,7 @@ function rndtrap_sp() {
         case HOLE: case VIBRATING_SQUARE: case MAGIC_PORTAL:
             rtrap = NO_TRAP; break;
         case TRAPDOOR:
-            /* Can_dig_down: hardfloor or bottom level says no */
-            if (game.level.flags?.hardfloor) rtrap = NO_TRAP;
+            if (!Can_dig_down_sp()) rtrap = NO_TRAP;
             break;
         case LEVEL_TELEP: case TELEP_TRAP:
             if (game.level.flags?.noteleport) rtrap = NO_TRAP;
@@ -2375,6 +2374,18 @@ export function fill_empty_maze() {
             mklev_fns?.maketrap?.(mm.x, mm.y, trytrap);
         }
     }
+}
+
+/* src/dungeon.c Can_dig_down() — hardfloor, the dungeon's bottom level,
+   and the invocation level all refuse; the castle is the main dungeon's
+   bottom level, which is what makes its rndtrap re-roll every TRAPDOOR. */
+function Can_dig_down_sp() {
+    if (game.level.flags?.hardfloor) return false;
+    const uz = game.u.uz, dgn = game.dungeons?.[uz.dnum];
+    if (dgn && uz.dlevel === dgn.num_dunlevs) return false; /* Is_botlevel */
+    if (game.inv_pos && uz.dnum === game.inv_pos.dnum
+        && uz.dlevel === game.inv_pos.dlevel) return false;
+    return true;
 }
 
 const is_pit_sp = (t) => t === 11 /* PIT */ || t === 12 /* SPIKED_PIT */;

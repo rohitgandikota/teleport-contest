@@ -40,6 +40,15 @@ async function nhgetch_core() {
        AFTER its dismissing read returns, so the flag survives exactly until
        the next read, and tty_yn_function tests it before its own read. */
     game._win_stop = false;
+    if (process.env.RNGDUMP) {
+        const { getRngLog } = await import('./rng.js');
+        const L = getRngLog();
+        if (!globalThis.__dumped && L.length >= +process.env.RNGDUMP.split('-')[1]) {
+            globalThis.__dumped = true;
+            const [lo, hi] = process.env.RNGDUMP.split('-').map(Number);
+            for (let i = lo; i < Math.min(hi, L.length); i++) console.error(`L[${i}] ${L[i]}`);
+        }
+    }
     // Fire the capture hook before reading the next key
     const hook = game._preNhgetchHook;
     if (hook) await hook();

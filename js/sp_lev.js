@@ -1218,7 +1218,11 @@ export function create_monster(m, croom) {
         /* the G_UNIQ/G_EXTINCT/G_GONE checks read mvitals, which this port
            does not track; nothing is genocided during level generation. */
     } else if (m.class >= 0 || typeof m.class === 'string') {
-        pm = mkclass(m.class, G_NOGEN);
+        /* src/sp_lev.c:1918 — a one-char class string goes through
+           def_char_to_monclass before mkclass */
+        const cls = (typeof m.class === 'string')
+            ? def_monsyms.indexOf(m.class) : m.class;
+        pm = (cls > 0) ? mkclass(cls, G_NOGEN) : null;
         /* pm == 0 here means the class was genocided; settle for random */
     }
 

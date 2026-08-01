@@ -9,6 +9,7 @@
 
 import { game } from './gstate.js';
 import { ARM_BONUS } from './do_wear.js';
+import { weight as weight_fn } from './invent.js';
 import { rndghostname } from './do_name.js';
 import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
@@ -18,7 +19,7 @@ import {
 } from './monst_data.js';
 import { ONAMES, OCLASSES, SKILLS, MATERIALS } from './objects_data.js';
 import { depth } from './dungeon.js';
-import { next_ident, mksobj, mkobj, place_object, curse } from './mkobj.js';
+import { next_ident, mksobj, mkobj, place_object, curse, rnd_class } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
 import { canspotmon, newsym } from './display.js';
@@ -679,13 +680,43 @@ function m_initinv(mtmp) {
         }
         break;
     case S_GIANT:
+        if (monsndx(ptr) === PMNAMES.PM_MINOTAUR) {
+            if (!rn2(8) || (game.in_mklev && false /* Is_earthlevel */))
+                mongets(mtmp, ONAMES.WAN_DIGGING);
+        } else if ((ptr.mflags2 & MFLAGS.M2_GIANT) !== 0) {
+            /* src/makemon.c:743 — giants carry a handful of random gems */
+            for (let cnt = rn2((mtmp.m_lev / 2) | 0); cnt; cnt--) {
+                const gem = mksobj(rnd_class(ONAMES.DILITHIUM_CRYSTAL,
+                                             ONAMES.LUCKSTONE - 1),
+                                   false, false);
+                gem.quan = rn1(2, 3);
+                gem.owt = weight_fn(gem);
+                mpickobj(mtmp, gem);
+            }
+        }
+        break;
     case S_WRAITH:
+        if (monsndx(ptr) === PMNAMES.PM_NAZGUL) {
+            const ring = mksobj(ONAMES.RIN_INVISIBILITY, false, false);
+            curse(ring);
+            mpickobj(mtmp, ring);
+        }
+        break;
     case S_LICH:
+        if (monsndx(ptr) === PMNAMES.PM_MASTER_LICH && !rn2(13)) {
+            mongets(mtmp, rn2(7) ? ONAMES.ATHAME : ONAMES.WAN_NOTHING);
+        } else if (monsndx(ptr) === PMNAMES.PM_ARCH_LICH && !rn2(3)) {
+            const w = mksobj(rn2(3) ? ONAMES.ATHAME : ONAMES.QUARTERSTAFF,
+                             true, rn2(13) ? false : true);
+            if (w.spe < 2) w.spe = rnd(3);
+            if (!rn2(4)) w.oerodeproof = 1;
+            mpickobj(mtmp, w);
+        }
+        break;
     case S_QUANTMECH:
     case S_DEMON:
     case S_GNOME:
-        /* src/makemon.c:711+ — giants, Nazgul, liches, Schroedinger's box,
-           devils, and mine candles; each needs an unported subsystem. */
+        /* Schroedinger's box, devil weapons, mine candles: recorded */
         note_unported(`m_initinv mlet=${ptr.mlet}`);
         break;
     default:

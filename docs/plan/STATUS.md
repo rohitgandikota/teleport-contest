@@ -10866,3 +10866,35 @@ end), step 194+ seg-2 tail (~140-180 cells from ~step 200 on, one attr cell
 at 194: '!' colored 6 vs C default — remembered-object coloring nuance).
 seed0030 (ten diverse deaths, 1953 screens) should now benefit from the
 death flow once its earlier divergence (~7071) is fixed.
+
+## 2026-08-01 (cont.): seed0360 chain — dosounds arms, doorway diagonals, safe_wait — board 1548
+
+Commits 167cc02, d3f2944, 2bc6401. seed0360 now matches through step 158
+(was 146). The chain of five real bugs, each found by the per-step boundary
+compare (STEPTRACE probe in input.js — re-add temporarily when needed,
+always strip before commit):
+
+1. dosounds was missing the temple rn2(200) and oracle-level rn2(400) arms
+   (sounds.c:330/335); every turn ON the oracle level drew one short.
+2. pet_ranged_attk/score_targ were fine — the earlier "missing rnd(5)" was
+   a probe artifact (the DRAWWIN console probe lives in rn2() only, so rnd()
+   draws are invisible to it; diff against getRngLog() instead).
+3. Diagonal moves into/out of an intact doorway are blocked (test_move,
+   hack.c:1140/:1208) — doorless_door ported; open doors still block
+   diagonals.
+4. context.door_opened must clear on every test_move entry (hack.c:1001);
+   ours kept it set from a previous auto-open so a later blocked move
+   retained its turn.
+5. donull runs cmd_safety_prevention (do.c:2325): resting next to a
+   spottable hostile prints "Are you waiting to get hit?..." and costs NO
+   time (flags.safe_wait defaults On; the old comment claimed otherwise).
+
+**Next wall (seed0360 step 159):** the CASTLE level. The ^V menu 'j' lands
+on castle:25; C's gen draws align shuffle, object 4-shuffle, monster
+10-shuffle, then the full castle.lua build (14103 draws). Port
+dat/castle.lua into js/dat/castle.js. Needs NEW sp_lev primitives:
+des.level_init(mazegrid), des.map (ASCII paste), des.teleport_region,
+des.levregion, des.drawbridge, des.engraving, des.mazewalk,
+des.non_diggable, des.region (throne court), and the `place` random
+register with rndcoord. The wand-of-wishing chest + tune are inside.
+seed5006 holds at 183; passes 6; hang-gate/generalize clean.

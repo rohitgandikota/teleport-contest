@@ -10761,3 +10761,35 @@ eventually the next ^V destination's level script (bigrm: dat/bigrm.lua
 has 10 variants picked by rndlevs — makemaz already handles the
 "bigrm-N" name resolution and rnd() draw; the script itself needs
 porting into js/dat/).
+
+## 2026-08-01 — hunger/exercise state, potion of confusion, nh_timeout (board 1494)
+
+State-drift fixes behind seed5006's step-121+ window (screens hold at 147;
+the divergence POINT moved 8437 -> 8443, which is the real progress):
+
+- gethungry: the accessory arms are real now (ring/amulet/Amulet drains on
+  the even accessorytime cases, regeneration + encumbrance on odd), and
+  newuhs(TRUE) runs at the end — it was NEVER called, so u.uhs was stale
+  everywhere.
+- exerper's per-5-move status checks: C reads HClairvoyant/HRegeneration
+  (INTRINSIC masks). Ours read the merged uprops, so a WORN ring of
+  regeneration exercised Strength where C does not. The convention is now
+  explicit: worn grants live in uprops, intrinsics in game.u.intrinsic.
+- peffect_confusion + make_confused (potion.js), HConfusion as an
+  intrinsic timeout mirrored into uprops.CONFUSION, and nh_timeout()
+  (timeout.js) counting intrinsic timers down each turn with the
+  "You feel less confused now." expiry; wired into the moveloop beside
+  ublesscnt.
+
+DEBUGGING TRAP written down after burning most of this iteration on it:
+seed5006 is nearly ALL zero-time commands — the whole 249-step session has
+SIX real turns per segment. "gethungry draws every turn so the turn block
+must be running" was false; always COUNT C's per-turn draw groups in the
+recorded stream before reasoning about per-turn machinery. Also the
+session has TWO segments (save/restore pair) — moves resets mid-log.
+
+Next for seed5006 (call 8443, step 157 'r'): the SCROLLS subsystem —
+doread/seffects. The recorded draws: exercise rn2(19) then obj_resists
+rn2(100) pairs over the inventory (a scroll arm walking invent — looks
+like remove curse or identify). js/read.js does not exist yet; check
+what dispatches 'r' in cmd.js first.

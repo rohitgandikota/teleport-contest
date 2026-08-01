@@ -112,6 +112,10 @@ function flags_autoopen() {
 }
 
 function blocksMove(x, y, dx, dy) {
+    /* src/hack.c:1001 — test_move clears door_opened on entry; without this
+       a door opened two commands ago lets a later blocked move keep its
+       turn and run a monster round C never ran */
+    game.context.door_opened = false;
     const loc = game.level?.at(x, y);
     if (!loc) return true;
     if (loc.typ === STONE) return true;

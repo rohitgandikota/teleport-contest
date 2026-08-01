@@ -881,12 +881,11 @@ export async function rhack(key) {
         else
             game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {
-        // src/cmd.c:1930 — '.' is "wait", donull, which returns ECMD_TIME.
-        // src/do.c:2351: the only early exit is cmd_safety_prevention, which
-        // fires on a paranoid-confirmation option none of the recorded rc
-        // files set. So this rests one move and CONSUMES A TURN; leaving it
-        // unhandled made the hero stand still for free while C's clock moved.
-        game.context.move = 1;
+        // src/cmd.c:1930 — '.' is "wait", donull. cmd_safety_prevention
+        // (flags.safe_wait, default On) refuses the rest next to a spottable
+        // hostile with "Are you waiting to get hit?" and NO time passes.
+        const { donull } = await import('./do.js');
+        game.context.move = ((await donull()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'f') {
         // src/cmd.c cmdlist — 'f' is dofire, which reaches throw_obj() and
         // getdir(). C consumes the direction key there and the hero does NOT

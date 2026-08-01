@@ -460,3 +460,28 @@ export function canletgo(obj, word) {
     }
     return true;
 }
+
+// src/do.c:2325 cmd_safety_prevention() — refuse a no-op command next to a
+// spottable hostile (flags.safe_wait defaults On).
+async function cmd_safety_prevention(ucverb, cmddesc, act) {
+    if ((game.flags?.safe_wait ?? true) && !game.iflags_menu_requested
+        && !(game.multi ?? 0)) {
+        const { monster_nearby } = await import('./hack.js');
+        /* iflags.cmdassist defaults On, so the hint suffix always prints */
+        const buf = `  Use 'm' prefix to force ${cmddesc}.`;
+        if (monster_nearby()) {
+            await pline(`${act}${buf}`);
+            return true;
+        }
+        /* danger_uprops(): Stoned/Slimed/Strangled/Sick — none tracked */
+    }
+    return false;
+}
+
+// src/do.c:2350 donull() — the '.' command: do nothing == rest.
+export async function donull() {
+    if (await cmd_safety_prevention('Waiting', 'a no-op (to rest)',
+                                    'Are you waiting to get hit?'))
+        return ECMD_OK;
+    return ECMD_TIME; /* Do nothing, but let other things happen */
+}

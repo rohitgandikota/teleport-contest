@@ -2301,10 +2301,11 @@ function maze1xy(humidity) {
 }
 
 // src/sp_lev.c:1159 rndtrap() — a random trap legal for this level.
+// The trap ids come from include/trap.h's enum, via js/const.js.
 function rndtrap_sp() {
-    const TRAPNUM = 26, HOLE = 12, VIBRATING_SQUARE = 25, MAGIC_PORTAL = 17,
-          TRAPDOOR = 13, LEVEL_TELEP = 16, TELEP_TRAP = 15,
-          ROLLING_BOULDER_TRAP = 9, ROCKTRAP = 3, NO_TRAP = 0;
+    const HOLE = 13, VIBRATING_SQUARE = 23, MAGIC_PORTAL = 17,
+          TRAPDOOR = 14, LEVEL_TELEP = 16, TELEP_TRAP = 15,
+          ROLLING_BOULDER_TRAP = 7, ROCKTRAP = 3, NO_TRAP = 0, TRAPNUM = 26;
     let rtrap;
     do {
         rtrap = rnd(TRAPNUM - 1);
@@ -2376,8 +2377,8 @@ export function fill_empty_maze() {
     }
 }
 
-const is_pit_sp = (t) => t === 10 /* PIT */ || t === 11 /* SPIKED_PIT */;
-const is_hole_sp = (t) => t === 12 /* HOLE */ || t === 13 /* TRAPDOOR */;
+const is_pit_sp = (t) => t === 11 /* PIT */ || t === 12 /* SPIKED_PIT */;
+const is_hole_sp = (t) => t === 13 /* HOLE */ || t === 14 /* TRAPDOOR */;
 
 // src/sp_lev.c lspo_non_diggable() — W_NONDIGGABLE on every wall in the area
 // (absolute selection).

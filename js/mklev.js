@@ -23,7 +23,8 @@ import { mongone } from './mon.js';
 import { sgn } from './hacklib.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
-import { fill_special_room, sp_lev_wire_mklev } from './sp_lev.js';
+import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom } from './sp_lev.js';
+import { walkfrom } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
 import { GP_CHECKSCARY as GP_CHECKSCARY_MK } from './const.js';
@@ -776,7 +777,17 @@ sp_lev_wire_mklev({ mkstairs, makecorridors, wallification,
                        an unrestricted one */
                     enexto: (cc, xx, yy, mdat) =>
                         enexto_core(cc, xx, yy, mdat, GP_CHECKSCARY_MK, goodpos)
-                        || enexto_core(cc, xx, yy, mdat, 0, goodpos) });
+                        || enexto_core(cc, xx, yy, mdat, 0, goodpos),
+                    /* the castle's typed regions and maze fill */
+                    add_room_return: (lx, ly, hx, hy, lit, rtype, special) => {
+                        add_room(lx, ly, hx, hy, lit, rtype, special);
+                        return game.level.rooms[game.level.nroom - 1];
+                    },
+                    makemon_at: (pm, x, y) =>
+                        makemon(pm == null ? null : game.mons[pm], x, y, 0),
+                    mkgold: (amt, x, y) => mkgold(amt, x, y),
+                    maketrap });
+sp_lev_wire_walkfrom(walkfrom);
 
 // C ref: mklev.c makerooms()
 async function makerooms() {

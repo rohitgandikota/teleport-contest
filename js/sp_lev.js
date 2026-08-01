@@ -1680,6 +1680,13 @@ export function lspo_door(opts) {
        (which then passes the still-random mask to create_door anyway). */
     const typ = (msk === -1) ? rnddoor() : msk;
 
+    /* src/sp_lev.c:4704 — the coordinate form stamps the door directly */
+    if (opts?.x != null && opts?.y != null) {
+        const x = opts.x + (game.xstart | 0), y = opts.y + (game.ystart | 0);
+        sel_set_door(x, y, typ);
+        return;
+    }
+
     /* src/sp_lev.c:4715 — secret is 1 only for state "secret", NEVER the
        -1 that would make create_door roll rn2(2) for it. */
     const dd = {
@@ -1693,6 +1700,25 @@ export function lspo_door(opts) {
     if (!broom)
         return;
     create_door(dd, broom);
+}
+
+// src/sp_lev.c:4647 sel_set_door()
+function sel_set_door(x, y, typ) {
+    const loc = game.level.at(x, y);
+    if (!loc) return;
+    if (!IS_DOOR(loc.typ) && loc.typ !== SDOOR)
+        loc.typ = (typ & D_SECRET) ? SDOOR : DOOR;
+    if (typ & D_SECRET) {
+        typ &= ~D_SECRET;
+        if (typ < D_CLOSED)
+            typ = D_CLOSED;
+    }
+    /* set_door_orientation() */
+    const left = game.level.at(x - 1, y), right = game.level.at(x + 1, y);
+    loc.horizontal = !!((left && (IS_WALL(left.typ) || left.horizontal))
+                        || (right && (IS_WALL(right.typ) || right.horizontal)));
+    loc.doormask = typ;
+    SpLev_Map_set(x, y);
 }
 
 // src/sp_lev.c:1148 rnddoor() — ROLL_FROM the five plain door states.
@@ -2012,4 +2038,397 @@ export async function load_special(name) {
 
     game.coder = null;
     return true;
+}
+
+/* ==== the map-based special-level verbs the castle needs ==== */
+
+import { W_NONDIGGABLE, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
+         DB_NORTH, DB_SOUTH, DB_WEST, DB_EAST, DB_MOAT,
+         IS_DOOR as C_IS_DOOR, IS_WALL as C_IS_WALL } from './const.js';
+const C_STONE = STONE, C_HWALL = HWALL, C_ROOM = ROOM, C_CORR = CORR,
+      C_MAX_TYPE = MAX_TYPE;
+
+/* decl.c g_init_x/y — the maze bounds are static */
+export const x_maze_max = 78;   /* (COLNO - 1) & ~1 */
+export const y_maze_max = 20;   /* (ROWNO - 1) & ~1 */
+
+// src/sp_lev.c:358 lvlfill_maze_grid()
+function lvlfill_maze_grid(x1, y1, x2, y2, filling) {
+    for (let x = x1; x <= x2; x++)
+        for (let y = y1; y <= y2; y++) {
+            const loc = game.level.at(x, y);
+            if (!loc) continue;
+            if (game.level.flags?.corrmaze)
+                loc.typ = C_STONE;
+            else
+                loc.typ = (y < 2 || ((x % 2) && (y % 2))) ? C_STONE : filling;
+        }
+}
+
+// src/sp_lev.c:3837 lspo_level_init() — the mazegrid and solidfill styles.
+export function lspo_level_init(opts) {
+    game.splev_init_present = true;
+    const style = opts.style;
+    if (style === 'mazegrid') {
+        const bg = CHAR2TYP[opts.bg ?? '-'] ?? C_HWALL;
+        lvlfill_maze_grid(2, 0, x_maze_max, y_maze_max, bg);
+    } else if (style === 'solidfill') {
+        let lit = opts.lit ?? -1;
+        if (lit === -1) lit = rn2(2);
+        const fg = CHAR2TYP[opts.fg ?? ' '] ?? C_STONE;
+        for (let x = 2; x <= x_maze_max; x++)
+            for (let y = 0; y <= y_maze_max; y++) {
+                const loc = game.level.at(x, y);
+                if (!loc) continue;
+                loc.typ = fg; loc.lit = !!lit;
+                loc.flags = 0; loc.horizontal = false;
+                loc.roomno = 0; loc.edge = 0;
+            }
+    } else {
+        note_unported(`lspo_level_init:${style}`);
+    }
+}
+
+// src/sp_lev.c:6074 lspo_map(), plain-string form: centered on the maze
+// bounds with odd-parity nudging, no draws.
+export function lspo_map_full(mapstr, contents) {
+    const lines = mapstr.replace(/^\n/, '').replace(/\n$/, '').split('\n');
+    const wid = Math.max(...lines.map(l => l.length));
+    const hei = lines.length;
+
+    /* SPLEV_CENTER placement (sp_lev.c:6203/6215) */
+    let xstart = 2 + (((x_maze_max - 2 - wid) / 2) | 0);
+    let ystart = 2 + (((y_maze_max - 2 - hei) / 2) | 0);
+    if (!(xstart % 2)) xstart++;
+    if (!(ystart % 2)) ystart++;
+    if (ystart < 0 || ystart + hei > 21) {
+        ystart += (ystart > 0) ? -2 : 2;
+        if (ystart < 0 || ystart + hei > 21) ystart = 0;
+    }
+
+    for (let y = ystart; y < Math.min(21, ystart + hei); y++)
+        for (let x = xstart; x < Math.min(80, xstart + wid); x++) {
+            const ch = lines[y - ystart][x - xstart] ?? ' ';
+            const mptyp = CHAR2TYP[ch] ?? C_MAX_TYPE;
+            if (mptyp >= C_MAX_TYPE) continue;
+            const loc = game.level.at(x, y);
+            if (!loc) continue;
+            loc.flags = 0; loc.doormask = 0; loc.wall_info = 0;
+            loc.ladder = 0; loc.drawbridgemask = 0; loc.altarmask = 0;
+            loc.horizontal = false; loc.roomno = 0; loc.edge = 0;
+            SpLev_Map_set(x, y);
+            sel_set_ter(x, y, mptyp);
+        }
+
+    game.xstart = xstart; game.ystart = ystart;
+    game.xsize = wid; game.ysize = hei;
+
+    if (contents) contents({ width: wid, height: hei });
+}
+
+// src/sp_lev.c:5405 lspo_teleport_region() / :5449 lspo_levregion() share
+// l_get_lregion + levregion_add; regions without *_islev are map-relative.
+function levregion_add(tmpl) {
+    const abs = (pt, islev) => islev ? pt : pt + 0; /* adjusted below */
+    if (!tmpl.in_islev) {
+        tmpl.inarea.x1 += game.xstart; tmpl.inarea.y1 += game.ystart;
+        tmpl.inarea.x2 += game.xstart; tmpl.inarea.y2 += game.ystart;
+    }
+    if (!tmpl.del_islev) {
+        tmpl.delarea.x1 += game.xstart; tmpl.delarea.y1 += game.ystart;
+        tmpl.delarea.x2 += game.xstart; tmpl.delarea.y2 += game.ystart;
+    }
+    (game.lregions ||= []).push(tmpl);
+}
+
+function l_get_lregion(opts) {
+    const r = opts.region;
+    const e = opts.exclude || [-1, -1, -1, -1];
+    const tmpl = {
+        inarea: { x1: r[0], y1: r[1], x2: r[2], y2: r[3] },
+        delarea: { x1: e[0], y1: e[1], x2: e[2], y2: e[3] },
+        in_islev: !!opts.region_islev,
+        del_islev: !!opts.exclude_islev,
+    };
+    if (e[0] < 0)
+        tmpl.del_islev = true;
+    return tmpl;
+}
+
+export function lspo_teleport_region(opts) {
+    const dirs = { both: 0 /* LR_TELE */, down: 2 /* LR_DOWNTELE */,
+                   up: 1 /* LR_UPTELE */ };
+    const tmpl = l_get_lregion(opts);
+    tmpl.rtype = dirs[opts.dir ?? 'both'] ?? 0;
+    tmpl.padding = 0;
+    levregion_add(tmpl);
+}
+
+export function lspo_levregion(opts) {
+    const types = { 'stair-down': 6, 'stair-up': 5, 'portal': 3, 'branch': 4,
+                    'teleport': 0, 'teleport-up': 1, 'teleport-down': 2 };
+    const tmpl = l_get_lregion(opts);
+    tmpl.rtype = types[opts.type ?? 'stair-down'] ?? 6;
+    tmpl.padding = opts.padding ?? 0;
+    tmpl.rname = opts.name ?? null;
+    levregion_add(tmpl);
+}
+
+// src/dbridge.c create_drawbridge() — terrain only, no draws.
+export function lspo_drawbridge(opts) {
+    const dirs2i = { north: DB_NORTH, south: DB_SOUTH,
+                     west: DB_WEST, east: DB_EAST };
+    let x = (opts.x ?? opts.coord?.[0]) + game.xstart;
+    let y = (opts.y ?? opts.coord?.[1]) + game.ystart;
+    const dir = dirs2i[opts.dir] ?? DB_EAST;
+    let db_open = opts.state === 'open' ? 1 : opts.state === 'closed' ? 0 : -1;
+    if (db_open === -1) db_open = !rn2(2) ? 1 : 0;
+
+    /* src/dbridge.c:394 create_drawbridge() — x,y is the span; x2,y2 the
+       gate (portcullis) square, one step in `dir` */
+    let x2 = x, y2 = y;
+    if (dir === DB_NORTH) y2--;
+    else if (dir === DB_SOUTH) y2++;
+    else if (dir === DB_WEST) x2--;
+    else x2++;
+
+    const span = game.level.at(x, y), gate = game.level.at(x2, y2);
+    if (!span || !gate) return;
+    if (db_open) {
+        span.typ = DRAWBRIDGE_DOWN;
+        gate.typ = DOOR;
+        gate.doormask = D_NODOOR;
+    } else {
+        span.typ = DRAWBRIDGE_UP;
+        gate.typ = DBWALL;
+        gate.horizontal = (dir === DB_NORTH || dir === DB_SOUTH);
+    }
+    span.drawbridgemask = (dir | (db_open ? 0 : 0)) | DB_MOAT;
+    SpLev_Map_set(x, y);
+}
+
+// src/sp_lev.c:5769 lspo_mazewalk()
+export function lspo_mazewalk(mx, my, dirname) {
+    const mwdirs2i = { north: W_NORTH, south: W_SOUTH,
+                       east: W_EAST, west: W_WEST };
+    let ftyp = game.level.flags?.corrmaze ? C_CORR : C_ROOM;
+    let dir = mwdirs2i[dirname];
+    let x = mx + game.xstart, y = my + game.ystart;
+
+    /* castle passes absolute-ish edge coords relative to the map; C's
+       get_location_coord with ANY_LOC adds xstart/ystart the same way */
+
+    if (dir == null) dir = W_EAST;
+
+    if (dir === W_NORTH) --y;
+    else if (dir === W_SOUTH) y++;
+    else if (dir === W_EAST) x++;
+    else --x;
+
+    const first = game.level.at(x, y);
+    if (first && !C_IS_DOOR(first.typ)) {
+        first.typ = ftyp;
+        first.flags = 0;
+    }
+
+    /* odd-parity adjustment for walkfrom */
+    if (!(x % 2)) {
+        if (dir === W_EAST) x++;
+        else x--;
+        const loc = game.level.at(x, y);
+        if (loc) { loc.typ = ftyp; loc.flags = 0; }
+    }
+    if (!(y % 2)) {
+        if (dir === W_SOUTH) y++;
+        else y--;
+    }
+
+    walkfrom_fn(x, y, ftyp);
+    fill_empty_maze();
+}
+
+let walkfrom_fn = null;
+export function sp_lev_wire_walkfrom(fn) { walkfrom_fn = fn; }
+
+// src/sp_lev.c:2900 maze1xy() — random untouched maze spot.
+function maze1xy(humidity) {
+    let x, y, tryct = 2000;
+    do {
+        x = rn1(x_maze_max - 3, 3);
+        y = rn1(y_maze_max - 3, 3);
+        if (--tryct < 0) break;
+    } while (!(x % 2) || !(y % 2) || SpLev_Map_get(x, y)
+             || !is_ok_location(x, y, humidity));
+    return { x, y };
+}
+
+// src/sp_lev.c:1159 rndtrap() — a random trap legal for this level.
+function rndtrap_sp() {
+    const TRAPNUM = 26, HOLE = 12, VIBRATING_SQUARE = 25, MAGIC_PORTAL = 17,
+          TRAPDOOR = 13, LEVEL_TELEP = 16, TELEP_TRAP = 15,
+          ROLLING_BOULDER_TRAP = 9, ROCKTRAP = 3, NO_TRAP = 0;
+    let rtrap;
+    do {
+        rtrap = rnd(TRAPNUM - 1);
+        switch (rtrap) {
+        case HOLE: case VIBRATING_SQUARE: case MAGIC_PORTAL:
+            rtrap = NO_TRAP; break;
+        case TRAPDOOR:
+            /* Can_dig_down: hardfloor or bottom level says no */
+            if (game.level.flags?.hardfloor) rtrap = NO_TRAP;
+            break;
+        case LEVEL_TELEP: case TELEP_TRAP:
+            if (game.level.flags?.noteleport) rtrap = NO_TRAP;
+            break;
+        case ROLLING_BOULDER_TRAP: case ROCKTRAP:
+            /* In_endgame: not reachable here */
+            break;
+        }
+    } while (rtrap === NO_TRAP);
+    return rtrap;
+}
+
+// src/sp_lev.c:2926 fill_empty_maze()
+export function fill_empty_maze() {
+    const DRY = 0x1;
+    let mapcountmax, mapcount, mapfact;
+    mapcountmax = mapcount = (x_maze_max - 2) * (y_maze_max - 2);
+    mapcountmax = (mapcountmax / 2) | 0;
+
+    for (let x = 2; x < x_maze_max; x++)
+        for (let y = 0; y < y_maze_max; y++)
+            if (SpLev_Map_get(x, y))
+                mapcount--;
+
+    if (mapcount > ((mapcountmax / 10) | 0)) {
+        mapfact = ((mapcount * 100) / mapcountmax) | 0;
+        for (let x = rnd(((20 * mapfact) / 100) | 0); x; x--) {
+            const mm = maze1xy(DRY);
+            mkobj_at(rn2(2) ? OCLASSES.GEM_CLASS : 0 /* RANDOM_CLASS */,
+                     mm.x, mm.y, true);
+        }
+        for (let x = rnd(((12 * mapfact) / 100) | 0); x; x--) {
+            const mm = maze1xy(DRY);
+            const ttmp = (game.level.traps || [])
+                .find(t => t.tx === mm.x && t.ty === mm.y);
+            if (ttmp && (is_pit_sp(ttmp.ttyp) || is_hole_sp(ttmp.ttyp)))
+                continue;
+            mksobj_at(ONAMES.BOULDER, mm.x, mm.y, true, false);
+        }
+        for (let x = rn2(2); x; x--) {
+            const mm = maze1xy(DRY);
+            mklev_fns?.makemon_at?.(PMNAMES.PM_MINOTAUR, mm.x, mm.y);
+        }
+        for (let x = rnd(((12 * mapfact) / 100) | 0); x; x--) {
+            const mm = maze1xy(DRY);
+            mklev_fns?.makemon_at?.(null, mm.x, mm.y);
+        }
+        for (let x = rn2(((15 * mapfact) / 100) | 0); x; x--) {
+            const mm = maze1xy(DRY);
+            mklev_fns?.mkgold?.(0, mm.x, mm.y);
+        }
+        for (let x = rn2(((15 * mapfact) / 100) | 0); x; x--) {
+            const mm = maze1xy(DRY);
+            let trytrap = rndtrap_sp();
+            if (sobj_at(ONAMES.BOULDER, mm.x, mm.y))
+                while (is_pit_sp(trytrap) || is_hole_sp(trytrap))
+                    trytrap = rndtrap_sp();
+            mklev_fns?.maketrap?.(mm.x, mm.y, trytrap);
+        }
+    }
+}
+
+const is_pit_sp = (t) => t === 10 /* PIT */ || t === 11 /* SPIKED_PIT */;
+const is_hole_sp = (t) => t === 12 /* HOLE */ || t === 13 /* TRAPDOOR */;
+
+// src/sp_lev.c lspo_non_diggable() — W_NONDIGGABLE on every wall in the area
+// (absolute selection).
+export function lspo_non_diggable(x1, y1, x2, y2) {
+    for (let x = x1 + game.xstart; x <= x2 + game.xstart; x++)
+        for (let y = y1 + game.ystart; y <= y2 + game.ystart; y++) {
+            const loc = game.level.at(x, y);
+            if (loc && (C_IS_WALL(loc.typ) || loc.typ === DBWALL
+                        || loc.typ === SDOOR))
+                loc.wall_info = (loc.wall_info | 0) | W_NONDIGGABLE;
+        }
+}
+
+// src/sp_lev.c:5584 lspo_region(), the two castle forms: a plain lit/unlit
+// area, or a typed room record with a fill mode.
+export function lspo_region_full(opts) {
+    if (Array.isArray(opts.area)) {
+        /* region(selection.area(...), "lit"/"unlit") */
+        const [ax1, ay1, ax2, ay2] = opts.area;
+        const rlit = opts.lit ? 1 : 0;
+        let x1 = ax1 + game.xstart, y1 = ay1 + game.ystart,
+            x2 = ax2 + game.xstart, y2 = ay2 + game.ystart;
+        if (rlit) {   /* selection_do_grow(W_ANY) then sel_set_lit */
+            x1 = Math.max(x1 - 1, 1); x2 = Math.min(x2 + 1, 79);
+            y1 = Math.max(y1 - 1, 0); y2 = Math.min(y2 + 1, 20);
+        }
+        for (let x = x1; x <= x2; x++)
+            for (let y = y1; y <= y2; y++) {
+                const loc = game.level.at(x, y);
+                if (loc) loc.lit = !!rlit;
+            }
+        return;
+    }
+
+    /* region({ region={x1,y1,x2,y2}, lit=1, type=..., filled=N }) */
+    const [rx1, ry1, rx2, ry2] = opts.region;
+    const rtypeMap = { ordinary: 0, throne: COURT, barracks: BARRACKS,
+                       swamp: SWAMP, court: COURT, morgue: MORGUE,
+                       beehive: BEEHIVE, zoo: ZOO, temple: TEMPLE };
+    const rtype = rtypeMap[opts.type ?? 'ordinary'] ?? 0;
+    const needfill = opts.filled ?? 0;
+    let rlit = opts.lit ?? -1;
+    if (rlit === -1) rlit = (rnd(1 + Math.abs(depth(game.u.uz))) < 11
+                             && rn2(77)) ? 1 : 0;   /* litstate_rnd */
+    const dx1 = rx1 + game.xstart, dy1 = ry1 + game.ystart;
+    const dx2 = rx2 + game.xstart, dy2 = ry2 + game.ystart;
+
+    /* room_not_needed shortcut: a plain lit rectangle */
+    if (rtype === 0) {
+        /* light_region() */
+        let lowx = dx1, hix = dx2, lowy = dy1, hiy = dy2;
+        if (rlit) {
+            lowx = Math.max(lowx - 1, 1); hix = Math.min(hix + 1, 79);
+            lowy = Math.max(lowy - 1, 0); hiy = Math.min(hiy + 1, 20);
+        }
+        for (let x = lowx; x <= hix; x++)
+            for (let y = lowy; y <= hiy; y++) {
+                const loc = game.level.at(x, y);
+                if (loc) loc.lit = !!rlit;
+            }
+        return;
+    }
+
+    /* a real room record: add_room + needfill for the later fill sweep */
+    const troom = mklev_fns?.add_room_return?.(dx1, dy1, dx2, dy2,
+                                               !!rlit, rtype, true);
+    if (troom) {
+        troom.needfill = needfill;
+        game.level.flags.is_maze_lev = true;
+    }
+}
+
+// l_selection: selection.area(x1,y1,x2,y2):rndcoord(1) — one rn2 draw over
+// the remaining points; '1' removes the picked point from the selection.
+export function selection_area_obj(x1, y1, x2, y2) {
+    const pts = [];
+    for (let y = y1; y <= y2; y++)
+        for (let x = x1; x <= x2; x++)
+            pts.push({ x, y });
+    return {
+        pts,
+        set(x, y) { this.pts.push({ x, y }); },
+        rndcoord(removeit) {
+            if (!this.pts.length) return { x: -1, y: -1 };
+            const i = rn2(this.pts.length);
+            const c = this.pts[i];
+            if (removeit) this.pts.splice(i, 1);
+            /* the coord is map-relative like every other script coord */
+            return { x: c.x, y: c.y };
+        },
+    };
 }

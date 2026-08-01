@@ -11,7 +11,7 @@ import { game } from './gstate.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { Is_special, depth } from './dungeon.js';
 import { load_special } from './sp_lev.js';
-import { COLNO, ROWNO, ROOM, CORR, AIR } from './const.js';
+import { COLNO, ROWNO, ROOM, CORR, AIR, STONE, IS_DOOR } from './const.js';
 import { occupied } from './mklev.js';
 import { t_at, m_at } from './mon.js';
 
@@ -229,4 +229,59 @@ function Is_branchlev_here() {
             return br;
     }
     return null;
+}
+
+// src/mkmaze.c:32 mz_move()
+function mz_move(c, dir) {
+    switch (dir) {
+    case 0: --c.y; break;
+    case 1: c.x++; break;
+    case 2: c.y++; break;
+    case 3: --c.x; break;
+    }
+}
+
+// src/mkmaze.c:297 okay() — can the maze walk step two cells this way?
+function okay(x, y, dir) {
+    const c = { x, y };
+    mz_move(c, dir);
+    mz_move(c, dir);
+    if (c.x < 3 || c.y < 3 || c.x > 78 /* x_maze_max */
+        || c.y > 20 /* y_maze_max */
+        || game.level.at(c.x, c.y)?.typ !== STONE)
+        return false;
+    return true;
+}
+
+// src/mkmaze.c:1279 walkfrom() — the recursive maze carver (the non-MICRO
+// build); the draw order of its rn2(q) picks depends on this exact shape.
+export function walkfrom(x, y, typ) {
+    if (!typ)
+        typ = game.level.flags?.corrmaze ? CORR : ROOM;
+
+    const loc0 = game.level.at(x, y);
+    if (loc0 && !IS_DOOR(loc0.typ)) {
+        loc0.typ = typ;
+        loc0.flags = 0;
+    }
+
+    for (;;) {
+        const dirs = [];
+        for (let a = 0; a < 4; a++)
+            if (okay(x, y, a))
+                dirs.push(a);
+        if (!dirs.length)
+            return;
+        const dir = dirs[rn2(dirs.length)];
+        const c = { x, y };
+        mz_move(c, dir);
+        const mid = game.level.at(c.x, c.y);
+        if (mid) { mid.typ = typ; }
+        mz_move(c, dir);
+        walkfrom(c.x, c.y, typ);
+        /* C's mz_move MACRO mutates the local x,y, so after the recursive
+           call the while(1) continues from the MOVED position, not the
+           frame's original one. The draw order depends on this. */
+        x = c.x; y = c.y;
+    }
 }

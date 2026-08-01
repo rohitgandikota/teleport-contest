@@ -37,6 +37,8 @@ export function rn2(x) {
     if (x <= 0) return 0;
     const val = RND(x);
     if (_rngLogEnabled) _rngLog.push(`rn2(${x})=${val}`);
+    if (_rngLogEnabled && process.env.DRAWWIN && _rngLog.length >= +process.env.DRAWWIN && _rngLog.length <= +process.env.DRAWWIN + 8)
+        console.error('DRAW', _rngLog.length, `rn2(${x})=${val}`, new Error().stack.split('\n').slice(2,5).map(s=>s.trim().replace(/file:.*\/js\//,'').replace(/ \(.*/,'')).join(' < '));
     return val;
 }
 

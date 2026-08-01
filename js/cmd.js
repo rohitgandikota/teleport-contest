@@ -51,7 +51,7 @@ import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos } from './getpos.js';
-import { dowear, doputon, dotakeoff, doremring } from './do_wear.js';
+import { dowear, doputon, dotakeoff, doremring, canwearobj_core } from './do_wear.js';
 import { show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
@@ -499,9 +499,9 @@ function equip_ok(obj, removing, accessory) {
     if (!!accessory !== (obj.oclass !== OCLASSES.ARMOR_CLASS))
         return GETOBJ_DOWNPLAY;
 
-    /* armor we can't wear, e.g. from polyform */
+    /* armor we can't wear (slot occupied, poly form, ...) */
     if (obj.oclass === OCLASSES.ARMOR_CLASS && !removing
-        && !note_unported_cmd('equip_ok:canwearobj'))
+        && !canwearobj_core(obj).mask)
         return GETOBJ_DOWNPLAY;
 
     /* removing inaccessible equipment */

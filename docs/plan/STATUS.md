@@ -10726,3 +10726,38 @@ touring — the next ^V destinations need their own level scripts: bigrm,
 rogue, medusa, castle... each is a dat/*.lua port into js/dat/, and the
 'wizard1-3' + Gehennom protos need makemaz('') mazes eventually).
 seed5006's new divergence at 111 is worth a diverge run next.
+
+## 2026-07-28 (fourth) — wear filters, blindfold on/off, ring suffixes (board 1494)
+
+seed5006's post-111 wall was three do_wear gaps:
+
+- `equip_ok`'s canwearobj arm was a note-stub that returned "can't wear"
+  for EVERY armor, so 'W' said "You don't have anything to wear." while C
+  prompted [m]. canwearobj is now split: sync `canwearobj_core(otmp)` ->
+  {mask, msg-thunk} used by the getobj filter (src/do_wear.c:3413), async
+  `canwearobj(otmp, noisy)` wrapper printing the failure. The wear then
+  cascaded wrong: our T autopicked the shirt where C listed [jm].
+- Eyewear: `Blindf_on`/`Blindf_off` ported (W_TOOL slot, u.ublind toggle,
+  "You can't see any more." / "You can see again.", ublindf conflict
+  messages, vision_full_recalc). armor_or_accessory_off dispatches W_TOOL
+  with the cursed refusal. dotakeoff's [jm] prompt accepts the DOWNPLAYed
+  blindfold letter exactly as C's takeoff_ok does.
+- doname: rings show " (on right hand)"/" (on left hand)" and +N charge
+  prefix; worn tools show " (being worn)".
+
+Board 1494 (+37): seed5006 111 -> 147, seed0361 +1. Passes 6. Gates OK.
+
+seed5006's next divergence (call 8437, step 127): C draws the u_wipe_engr
+rn2(76) where we draw an extra exercise rn2(19) — exerper's branch fired
+for us but not C, i.e. hunger-state (uhs) or AEXE accumulator state has
+drifted somewhere earlier despite matching draws. Suspects: exerchk's
+AEXE(i) reset/halving after an attrib check, or u.uhunger crossing a
+threshold at a different moment. Second-order state, needs a focused
+probe of AEXE/uhunger at moves ~N vs C's implied branch.
+
+seed0360 (178) continues at the oracle level; next there is the post-
+arrival play (kitten swap step 146 matched already in spot checks) and
+eventually the next ^V destination's level script (bigrm: dat/bigrm.lua
+has 10 variants picked by rndlevs — makemaz already handles the
+"bigrm-N" name resolution and rnd() draw; the script itself needs
+porting into js/dat/).

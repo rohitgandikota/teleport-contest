@@ -10898,3 +10898,33 @@ des.levregion, des.drawbridge, des.engraving, des.mazewalk,
 des.non_diggable, des.region (throne court), and the `place` random
 register with rndcoord. The wand-of-wishing chest + tune are inside.
 seed5006 holds at 183; passes 6; hang-gate/generalize clean.
+
+## 2026-08-01 (castle iteration): the Castle generates — seed0360 rng 8909 → 18418
+
+Commits abe5c77, 7bcf1ff, and the giant/class-char commit. The castle level
+(js/dat/castle.js) now runs end to end. New primitives in sp_lev.js are listed
+in abe5c77's message. Bugs found while aligning, all general:
+
+- attach_egg_hatch_timeout: EVERY egg creation draws rnd(i) for i=151..200
+  until one exceeds 150 (set_corpsenm EGG arm claimed "no draws").
+- find_objtype must strip "potion of"/"scroll of"/"wand of"... prefixes and
+  fall back to object DESCRIPTIONS; "potion of gain level" resolved to
+  STRANGE_OBJECT and made a random object.
+- lspo_object: accept the table-only call form and coord:[x,y] arrays.
+- create_monster class chars ('D', the court letters) must map through
+  def_monsyms.indexOf before mkclass; the raw string never matched a numeric
+  mlet so every class monster fell to rndmonst. mkclass_aligned itself was
+  already correct (per-candidate rn2(9)).
+- m_initinv: full mercenary armor kit; giants' rnd_class gem handfuls;
+  Nazgul ring; master/arch-lich weapons.
+- C's recursive walkfrom continues its while(1) from the MUTATED x,y after
+  the recursive call (mz_move is a macro writing the caller's locals) — the
+  draw order depends on this, see js/mkmaze.js walkfrom.
+
+**Next wall (seed0360 ~17880):** fill_empty_maze phase shift — our maze1xy
+pair count differs from C's, almost certainly SpLev_Map coverage: C marks
+SpLev_Map in create_object/create_monster/create_trap placements too, ours
+only marks the map cells + doors + drawbridge. Compare mapcount/mapfact and
+the per-batch loop counts (rnd(20*mapfact/100) etc.). After that the gen
+should complete (~22924 total for step 159) and the castle screens start
+counting. seed5006 183, board 1548, passes 6, gates clean.

@@ -10951,3 +10951,25 @@ Established facts for the next attempt:
   (3,11) as a ROCK_CLASS boulder?), or a missing SpLev/typ difference at one
   cell in the EAST maze affecting an earlier batch item count.
 seed0360 rng 18418, board 1548, passes 6, gates clean.
+
+## 2026-08-01 (castle complete): full castle gen matches — seed0360 rng 23142
+
+Commits: rndtrap ids, Can_dig_down/worm creation, fill-sweep fallthrough
+(23473fa). The whole castle generation (step 159, 14k draws) is now
+byte-identical: the "boulder re-roll" was rndtrap's TRAPDOOR arm needing the
+real Can_dig_down (the castle is the main dungeon's BOTTOM level →
+Is_botlevel → every TRAPDOOR re-rolls); the fills were missing because our
+makelevel returned after makemaz instead of falling through to the
+fill_special_room sweep; the stair/branch lregions now place real stairs
+(mkmaze_wire_mklev). js/worm.js holds long-worm creation.
+
+seed0360 next: the arrival screens after the gen (rng 23142+, screens stuck
+at 184 — the hero lands via the teleport_region updest; check the arrival
+draw alignment then the castle screen render, DECgraphics moat/walls).
+seed0361/4500 diverge early (~3050) on other subsystems. Board 1548.
+
+Debug pattern that finally worked here (add to your toolbox): dump OUR
+worker rngLog via the input.js RNGDUMP hook and diff directly against the
+session's C rows index-by-index; diverge.mjs's inline harness lies near
+these regions. Strip the hook before committing (it is in the tree right
+now — STRIP IT).

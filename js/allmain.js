@@ -553,7 +553,7 @@ export async function moveloop_core() {
                                      : (g.u.mh < g.u.mhmax)))
                     await regen_hp(near_capacity());
 
-                dosounds();
+                await dosounds();
                 gethungry();
 
                 /* src/allmain.c:354 — age_spells() then exerchk(). exerchk

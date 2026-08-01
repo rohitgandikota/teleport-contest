@@ -58,7 +58,7 @@ import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
 import { vision_recalc } from './vision.js';
-import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
+import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
 import { doengrave } from './engrave.js';
 import { dohelp, dowhatis, doquickwhatis } from './pager.js';
@@ -111,13 +111,30 @@ function flags_autoopen() {
     return game.flags?.autoopen !== false;
 }
 
-function blocksMove(x, y) {
+function blocksMove(x, y, dx, dy) {
     const loc = game.level?.at(x, y);
     if (!loc) return true;
     if (loc.typ === STONE) return true;
     if (IS_WALL(loc.typ)) return true;
     if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))) return true;
+    /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway
+       are not allowed (block_door boulder check needs Sokoban state) */
+    if (dx && dy && IS_DOOR(loc.typ) && !doorless_door(x, y)) return true;
+    /* src/hack.c:1208 — nor diagonal moves OUT of one */
+    const ust = game.level?.at(game.u.ux, game.u.uy);
+    if (dx && dy && ust && IS_DOOR(ust.typ)
+        && !doorless_door(game.u.ux, game.u.uy)) return true;
     return false;
+}
+
+// src/hack.c:4063 doorless_door() — no physical door in the frame. Rogue
+// level doors count as present to keep diagonals blocked there.
+function doorless_door(x, y) {
+    const lev_p = game.level?.at(x, y);
+    if (!lev_p || !IS_DOOR(lev_p.typ))
+        return false;
+    /* Is_rogue_level: the rogue level is not modelled yet */
+    return !(lev_p.doormask & ~(D_NODOOR | D_BROKEN));
 }
 
 // C ref: cmd.c rhack — main command dispatcher
@@ -1010,7 +1027,7 @@ export async function domove() {
      *
      * The door_opened guard matters: walking into a closed door with autoopen
      * opens it and consumes the turn, and that must NOT stop a run. */
-    if (blocksMove(newx, newy)) {
+    if (blocksMove(newx, newy, dx, dy)) {
         // Can't move there
         if (!game.context.door_opened) {
             game.context.move = 0;

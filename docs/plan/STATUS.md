@@ -10987,3 +10987,14 @@ baalz (33), Vlad 1-3, orcus (40), wizard1-3, fakewiz, sanctum, the planes;
 plus bigrm/rogue/medusa/sokoban/mines fills earlier in the list.
 Also still open: seed0360 screens 188 (the valley arrival screens next),
 seed0361 (~3056), seed4500 (~3043), seed5006 183, seed0030 deaths.
+
+## 2026-08-01 (vampires + irregular morgues): seed0360 rng 29122
+
+Commits d22a1da + the irregular-region one. Shapechangers now take their
+creation form (newcham/pickvampshape/mgender — M2 gender bits are
+0x10000-0x40000); irregular typed regions flood-fill roomno before
+add_room. Next 0360 wall ~29050: our morgue fill picks a different-length
+mkclass(S_ZOMBIE) ladder than C (C draws ~8 rn2(9)s + rnd(18); ours ends
+early and creates a d(15,8) monster instead) — check init_mongen_order's
+sort vs C qsort on (difficulty | mlet<<8) and the zombie section's
+contiguity, plus the montoostrong rn2(2) break condition. Board 1552.

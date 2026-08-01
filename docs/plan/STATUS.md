@@ -10973,3 +10973,17 @@ worker rngLog via the input.js RNGDUMP hook and diff directly against the
 session's C rows index-by-index; diverge.mjs's inline harness lies near
 these regions. Strip the hook before committing (it is in the tree right
 now — STRIP IT).
+
+## 2026-08-01 (valley iteration): valley + shrine priests — seed0360 rng 28724, board 1552
+
+Commit fd65d7b. The tour's next stops each need their dat/ script; the
+primitive set is now rich enough that valley.js took one pass. Pattern for
+the next agent porting a level: transcribe the lua verbatim (shuffles via
+the nhlib Fisher-Yates already in castle.js, percent() = rn2(100)<n),
+register in js/dat/levels.js, then worker-diff with the input.js RNGDUMP
+hook (re-add temporarily; STRIP before commit) against the C rows.
+Remaining tour levels in the ^V menu order: asmodeus (27), juiblex (31),
+baalz (33), Vlad 1-3, orcus (40), wizard1-3, fakewiz, sanctum, the planes;
+plus bigrm/rogue/medusa/sokoban/mines fills earlier in the list.
+Also still open: seed0360 screens 188 (the valley arrival screens next),
+seed0361 (~3056), seed4500 (~3043), seed5006 183, seed0030 deaths.

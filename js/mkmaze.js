@@ -122,10 +122,10 @@ function put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev) {
         break;
     case LR_DOWNSTAIR:
     case LR_UPSTAIR:
-        note_unported_mkmaze('put_lregion_here:mkstairs');
+        mkmaze_mklev_fns?.mkstairs?.(x, y, rtype === LR_UPSTAIR ? 1 : 0, null);
         break;
     case LR_BRANCH:
-        note_unported_mkmaze('put_lregion_here:place_branch');
+        mkmaze_mklev_fns?.place_branch?.(Is_branchlev_here(), x, y);
         break;
     }
     return true;
@@ -136,7 +136,8 @@ function put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev) {
 export function place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev) {
     if (!lx) { /* default to whole level */
         if (rtype === LR_BRANCH && game.level.nroom) {
-            note_unported_mkmaze('place_lregion:place_branch');
+            /* let place_branch choose, avoiding corridors */
+            mkmaze_mklev_fns?.place_branch?.(Is_branchlev_here(), 0, 0);
             return;
         }
         lx = 1;
@@ -168,6 +169,11 @@ export function place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev) {
 
     note_unported_mkmaze('place_lregion:failed');
 }
+
+/* mkstairs/place_branch live in js/mklev.js, which imports this file;
+   wired to keep the import one-way. */
+let mkmaze_mklev_fns = null;
+export function mkmaze_wire_mklev(fns) { mkmaze_mklev_fns = fns; }
 
 // src/mkmaze.c:570 fixup_special() — post-script placement of lregions and
 // the per-level oddities. The water/air setup, medusa statues, cleric

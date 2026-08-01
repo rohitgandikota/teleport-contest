@@ -24,7 +24,7 @@ import { sgn } from './hacklib.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom } from './sp_lev.js';
-import { walkfrom } from './mkmaze.js';
+import { walkfrom, mkmaze_wire_mklev } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
 import { GP_CHECKSCARY as GP_CHECKSCARY_MK } from './const.js';
@@ -571,18 +571,28 @@ async function makelevel() {
     const slev = Is_special(g.u.uz);
     const dgn = g.dungeons?.[g.u.uz.dnum];
     const medusa = g.medusa_level;
+    let special_done = false;
     if (slev && !g.level?.flags?.is_rogue_level) {
-        if (await makemaz(slev.proto)) return;
+        special_done = await makemaz(slev.proto);
     } else if (dgn?.proto) {
-        if (await makemaz('')) return;
+        special_done = await makemaz('');
     } else if (dgn?.fill_lvl) {
-        if (await makemaz(dgn.fill_lvl)) return;
+        special_done = await makemaz(dgn.fill_lvl);
     } else if (g.u.uz.dnum === g.quest_dnum) {
         note_unported_lev('makelevel:quest_fill');
     } else if (dgn?.flags?.hellish
                || (rn2(5) && g.u?.uz?.dnum === medusa?.dnum
                    && depth_of_level(g.u.uz) > depth_of_level(medusa))) {
-        if (await makemaz('')) return;
+        special_done = await makemaz('');
+    }
+    if (special_done) {
+        /* src/mklev.c:1415 — the special-room fill sweep runs for special
+           and proto levels too; makemaz FALLS THROUGH to it in C. The
+           room-building middle and fill_ordinary_room are regular-only. */
+        for (let i = 0; i < g.level.nroom; i++)
+            fill_special_room(g.level.rooms[i]);
+        post_level_generate();
+        return;
     }
 
     // Regular level generation
@@ -788,6 +798,7 @@ sp_lev_wire_mklev({ mkstairs, makecorridors, wallification,
                     mkgold: (amt, x, y) => mkgold(amt, x, y),
                     maketrap });
 sp_lev_wire_walkfrom(walkfrom);
+mkmaze_wire_mklev({ mkstairs, place_branch });
 
 // C ref: mklev.c makerooms()
 async function makerooms() {
@@ -2064,16 +2075,24 @@ function is_branchlev() {
 }
 
 function find_branch_room(mp) {
+    /* src/mklev.c:1660 — the somex/somey fallback runs when somexyspace
+       cannot find a free square */
     const croom = generate_stairs_find_room();
-    if (croom) somexyspace(croom, mp);
+    if (croom && !somexyspace(croom, mp)) {
+        mp.x = somex(croom);
+        mp.y = somey(croom);
+    }
     return croom;
 }
 
-function place_branch(branchp) {
+export function place_branch(branchp, bx, by) {
     const g = game;
-    const mp = { x: 0, y: 0 };
-    const croom = find_branch_room(mp);
-    if (croom && mp.x > 0) {
+    if (!branchp || g.made_branch)
+        return;
+    const mp = { x: bx | 0, y: by | 0 };
+    if (!mp.x)
+        find_branch_room(mp);
+    if (mp.x > 0) {
         const on_end1 = (branchp.end1?.dnum === g.u?.uz?.dnum
             && branchp.end1?.dlevel === g.u?.uz?.dlevel);
         const dest = on_end1 ? branchp.end2 : branchp.end1;

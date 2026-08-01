@@ -44,14 +44,27 @@ async function makevtele() {
 // whenever the branch's source end has not been placed yet, which on an
 // ordinary early level it has not.
 function mk_knox_portal(x, y) {
-    const br = (game.branches || []).find(b => b.name === 'Fort Ludios');
-    if (!br) return;
+    /* dungeon_branch("Fort Ludios") — the branch whose Knox end matches
+       knox_level; branch records carry no name field */
     const knox = game.special_levels?.knox_level;
-    const source = (knox && br.end1.dnum === knox.dnum
-                    && br.end1.dlevel === knox.dlevel) ? br.end2 : br.end1;
-    if (source !== br.end2 && is_branchlev())
-        return;   /* disallow Knox on a level that already has a branch */
-    if (source.dnum < game.n_dgns || rn2(3))
+    const br = knox && (game.branches || []).find(
+        b => (b.end1.dnum === knox.dnum && b.end1.dlevel === knox.dlevel)
+             || (b.end2.dnum === knox.dnum && b.end2.dlevel === knox.dlevel));
+    if (!br) return;
+    const on_knox_end1 = br.end1.dnum === knox.dnum
+                         && br.end1.dlevel === knox.dlevel;
+    let source;
+    if (on_knox_end1) {
+        source = br.end2;
+    } else {
+        /* disallow Knox branch on a level with one branch already */
+        if (is_branchlev())
+            return;
+        source = br.end1;
+    }
+    /* Already set or 2/3 chance of deferring until a later level;
+       wizard mode never defers but the roll still burns */
+    if (source.dnum < game.n_dgns || (rn2(3) && !game.wizard))
         return;
     note_unported_lev('mk_knox_portal placement');
 }

@@ -10,11 +10,14 @@ import { game } from './gstate.js';
 import { mons } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
-         W_RINGL, W_RINGR, W_AMUL, AC_MAX, ECMD_TIME } from './const.js';
+         W_RINGL, W_RINGR, W_AMUL, W_WEP, AC_MAX, ECMD_TIME,
+         TT_BEARTRAP, TT_INFLOOR } from './const.js';
+import { welded, is_sword } from './wield.js';
+import { bimanual } from './obj.js';
 import { sgn } from './hacklib.js';
 import { pline } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
-import { an, xname, doname } from './objnam.js';
+import { an, xname, doname, the, gloves_simple_name } from './objnam.js';
 import { makeknown } from './o_init.js';
 import { prinv, update_inventory, ECMD_OK } from './invent.js';
 import { nomul, unmul } from './hack.js';
@@ -568,16 +571,107 @@ export async function Blindf_on(otmp) {
     }
 }
 
+// src/do_wear.c:1893 cursed() — check if something worn is cursed _and_
+// unremovable; prints the refusal and learns bknown.
+export async function cursed(otmp) {
+    const uwep = worn(W_WEP);
+    if ((otmp === uwep) ? welded(otmp) : !!otmp.cursed) {
+        const use_plural = is_boots(otmp) || is_gloves(otmp)
+                           || otmp.otyp === ONAMES.LENSES || otmp.quan > 1;
+        /* Glib (slippery fingers) arm omitted: Glib is not tracked yet */
+        await You(`can't.  ${use_plural ? 'They are' : 'It is'} cursed.`);
+        otmp.bknown = 1;
+        return 1;
+    }
+    return 0;
+}
+
+// src/do_wear.c:2696 select_off() — vet removal and accumulate the takeoff
+// mask; a refusal prints its reason and leaves the mask empty.
+async function select_off(otmp) {
+    if (!otmp) return 0;
+    const uwep = worn(W_WEP), uarmg = worn(W_ARMG), uarmc = worn(W_ARMC),
+          uarm = worn(W_ARM);
+    const uleft = worn(W_RINGL), uright = worn(W_RINGR);
+    if (!game.context_takeoff) game.context_takeoff = { mask: 0 };
+
+    /* special ring checks; RING_ON_PRIMARY is the right hand (righty) */
+    if (otmp === uright || otmp === uleft) {
+        let buf = null, why = null;
+        if (welded(uwep) && (otmp === uright || bimanual(uwep))) {
+            buf = 'free a weapon hand';
+            why = uwep;
+        } else if (uarmg && uarmg.cursed) {
+            buf = `take off your ${gloves_simple_name(uarmg)}`;
+            why = uarmg;
+        }
+        if (why) {
+            await You(`cannot ${buf} to remove the ring.`);
+            why.bknown = 1;
+            return 0;
+        }
+    }
+    /* special glove checks */
+    if (otmp === uarmg) {
+        if (welded(uwep)) {
+            await You('are unable to take off your gloves'
+                      + ` while wielding that ${is_sword(uwep) ? 'sword' : 'weapon'}.`);
+            uwep.bknown = 1;
+            return 0;
+        }
+        /* Glib arm and better_not_take_that_off (stoning-corpse paranoia
+           prompt) omitted: Glib and that prompt are not tracked yet */
+    }
+    /* special boot checks */
+    if (otmp === worn(W_ARMF)) {
+        if (game.u.utrap && game.u.utraptype === TT_BEARTRAP) {
+            await pline('The bear trap prevents you from pulling your foot out.');
+            return 0;
+        } else if (game.u.utrap && game.u.utraptype === TT_INFLOOR) {
+            await You('are stuck in the floor, and cannot pull your feet out.');
+            return 0;
+        }
+    }
+    /* special suit and shirt checks */
+    if (otmp === uarm || otmp === worn(W_ARMU)) {
+        let buf = null, why = null;
+        if (uarmc && uarmc.cursed) {
+            buf = `remove your ${cloak_simple_name(uarmc)}`;
+            why = uarmc;
+        } else if (otmp === worn(W_ARMU) && uarm && uarm.cursed) {
+            buf = 'remove your suit';
+            why = uarm;
+        } else if (welded(uwep) && bimanual(uwep)) {
+            buf = `release your ${is_sword(uwep) ? 'sword' : 'weapon'}`;
+            why = uwep;
+        }
+        if (why) {
+            await You(`cannot ${buf} to take off ${the(xname(otmp))}.`);
+            why.bknown = 1;
+            return 0;
+        }
+    }
+    /* basic curse check */
+    if (await cursed(otmp))
+        return 0;
+
+    game.context_takeoff.mask |= otmp.owornmask
+        & (W_ARM | W_ARMC | W_ARMF | W_ARMG | W_ARMH | W_ARMS | W_ARMU
+           | W_RINGL | W_RINGR | W_AMUL | W_TOOL | W_WEP);
+    return 0;
+}
+
+// src/do_wear.c:3016 reset_remarm()
+function reset_remarm() {
+    game.context_takeoff = { mask: 0 };
+}
+
 // src/do_wear.c:76 armoroff()
 async function armoroff(otmp) {
     const delay = -(objects[otmp.otyp].oc_delay || 0);
 
-    if (otmp.cursed) {
-        /* cursed(): "You can't.  It is cursed." and learn it */
-        otmp.bknown = 1;
-        await You("can't.  It is cursed.");
+    if (await cursed(otmp))
         return 0;
-    }
     const cat = objects[otmp.otyp].oc_subtyp;
     const names = ['suit', 'shield', 'helmet', 'gloves', 'boots',
                    'cloak', 'shirt'];
@@ -612,7 +706,7 @@ async function slot_off(otmp) {
 // src/do_wear.c:1771 armor_or_accessory_off()
 export async function armor_or_accessory_off(obj) {
     if (!(obj.owornmask & (W_ARM | W_ARMC | W_ARMH | W_ARMS | W_ARMG | W_ARMF
-                           | W_ARMU | W_RINGL | W_RINGR | W_AMUL))) {
+                           | W_ARMU | W_RINGL | W_RINGR | W_AMUL | W_TOOL))) {
         await You('are not wearing that.');
         return ECMD_OK;
     }
@@ -628,32 +722,22 @@ export async function armor_or_accessory_off(obj) {
         return ECMD_OK;
     }
 
-    /* select_off() cursed checks: a cursed item refuses in armoroff/its
-       accessory arm below */
+    reset_remarm(); /* clear context.takeoff.mask */
+    await select_off(obj);
+    if (!game.context_takeoff.mask)
+        return ECMD_OK;
+    /* none of armoroff()/Ring_/Amulet/Blindf_off() use context.takeoff.mask */
+    reset_remarm();
+
     if (obj.owornmask & (W_ARM | W_ARMC | W_ARMH | W_ARMS | W_ARMG | W_ARMF
                          | W_ARMU)) {
         await armoroff(obj);
     } else if (obj.owornmask & (W_RINGL | W_RINGR)) {
-        if (obj.cursed) {
-            obj.bknown = 1;
-            await You("can't.  It is cursed.");
-            return ECMD_TIME;
-        }
         await off_msg(obj);
         await Ring_off(obj);
     } else if (obj.owornmask & W_AMUL) {
-        if (obj.cursed) {
-            obj.bknown = 1;
-            await You("can't.  It is cursed.");
-            return ECMD_TIME;
-        }
         await Amulet_off();
     } else if (obj.owornmask & W_TOOL) {
-        if (obj.cursed) {
-            obj.bknown = 1;
-            await You("can't.  It is cursed.");
-            return ECMD_TIME;
-        }
         await Blindf_off(obj);
     }
     return ECMD_TIME;

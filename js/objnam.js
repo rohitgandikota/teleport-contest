@@ -1248,3 +1248,16 @@ export function the(str) {
     }
     return str;
 }
+
+// src/objnam.c:5532 gloves_simple_name() — gloves vs gauntlets; depends upon
+// discovery state.
+export function gloves_simple_name(gloves) {
+    if (gloves && gloves.dknown) {
+        const ocl = objects[gloves.otyp];
+        const actualn = OBJ_NAME(ocl), descrpn = OBJ_DESCR(ocl);
+        const shown = ocl.oc_name_known ? actualn : descrpn;
+        if (shown && shown.toLowerCase().includes('gauntlets'))
+            return 'gauntlets';
+    }
+    return 'gloves';
+}

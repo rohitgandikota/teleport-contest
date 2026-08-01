@@ -7,7 +7,7 @@ import { ONAMES } from './objects_data.js';
 import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
-import { rank } from './botl.js';
+import { rank, bot_conditions } from './botl.js';
 import { cansee } from './vision.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -517,6 +517,7 @@ function _statusLine2() {
           + ` Xp:${u.ulevel || 1}`;
     if (f.showexp) s += `/${u.uexp || 0}`;
     if (f.time) s += ` T:${game.moves || 1}`;
+    s += bot_conditions();
     return s;
 }
 

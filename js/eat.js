@@ -22,7 +22,7 @@ import { set_occupation } from './allmain.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory, reorder_invent } from './invent.js';
+import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory, reorder_invent, addinv_nomerge } from './invent.js';
 import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
@@ -232,12 +232,7 @@ function touchfood(otmp) {
             note_unported_eat('touchfood:overflow_drop');
         } else {
             /* addinv_nomerge: own slot, no merging back into the stack */
-            const used = new Set((game.invent || []).map(o => o.invlet));
-            const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            for (const ch of letters)
-                if (!used.has(ch)) { otmp.invlet = ch; break; }
-            game.invent.push(otmp);
-            reorder_invent();   /* invlet_constant keeps rank order */
+            addinv_nomerge(otmp);
             update_inventory();
         }
     }

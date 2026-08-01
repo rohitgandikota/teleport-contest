@@ -27,7 +27,7 @@ import { healup } from './potion.js';
 import { findit } from './detect.js';
 import { readobjnam } from './objnam.js';
 import { getlin } from './cmd.js';
-import { prinv, reorder_invent } from './invent.js';
+import { prinv, reorder_invent, addinv } from './invent.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { exercise } from './attrib.js';
@@ -266,7 +266,7 @@ export async function makewish() {
     const raw = await getlin('For what do you wish?', null);
     const wishtext = (raw === '\x1b' || raw === '\u001b') ? ''
                      : String(raw).replace(/\s+/g, ' ').trim();
-    const otmp = readobjnam(wishtext);
+    let otmp = readobjnam(wishtext);
     if (otmp === 'nothing')
         return;                         /* declined; keeps wishless conduct */
     if (!otmp) {
@@ -280,13 +280,7 @@ export async function makewish() {
     /* wish history and livelog carry no draws */
 
     /* hold_another_object(): into inventory with the new letter shown */
-    const used = new Set((game.invent || []).map(o => o.invlet));
-    const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    for (const ch of letters)
-        if (!used.has(ch)) { otmp.invlet = ch; break; }
-    otmp.where = 3;                     /* OBJ_INVENT */
-    (game.invent ||= []).push(otmp);
-    reorder_invent();                   /* invlet_constant keeps rank order */
+    otmp = addinv(otmp);
     update_inventory();
     await prinv(null, otmp, 0);
 

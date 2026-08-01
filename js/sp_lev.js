@@ -17,7 +17,7 @@ import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { mkobj_at, mksobj_at, add_to_container, set_corpsenm } from './mkobj.js';
 import { stock_room } from './shknam.js';
 import { fill_zoo } from './mkroom.js';
-import { OBJ_NAME } from './objnam.js';
+import { OBJ_NAME, OBJ_DESCR } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
 import { start_timer, TIMER_OBJECT, ROT_ORGANIC } from './timeout.js';
@@ -672,8 +672,8 @@ export function lspo_engraving(opts) {
     let x = -1, y = -1;
 
     if (opts?.coord) {
-        x = opts.coord.x;
-        y = opts.coord.y;
+        x = Array.isArray(opts.coord) ? opts.coord[0] : opts.coord.x;
+        y = Array.isArray(opts.coord) ? opts.coord[1] : opts.coord.y;
     } else if (opts?.x !== undefined || opts?.y !== undefined) {
         x = opts.x ?? -1;
         y = opts.y ?? -1;
@@ -856,6 +856,12 @@ export function create_object(o, croom) {
 
 // src/sp_lev.c:3557 lspo_object() — the des.object() verb, simple forms.
 export function lspo_object(idOrClass, x, y, opts) {
+    /* des.object({ id=..., coord=... }) — the whole table as the only arg */
+    if (idOrClass && typeof idOrClass === 'object'
+        && !Array.isArray(idOrClass)) {
+        opts = idOrClass;
+        idOrClass = opts.id ?? opts.class;
+    }
     const o = {
         class: -1, id: STRANGE_OBJECT, spe: -127, curse_state: 0,
         containment: 0,
@@ -864,10 +870,10 @@ export function lspo_object(idOrClass, x, y, opts) {
         coord: 0,
     };
 
-    /* `coord = {x,y}` in the option table is the same thing as positional x,y */
+    /* `coord = {x,y}` or `coord = [x,y]` is the same as positional x,y */
     if (opts?.coord) {
-        x = opts.coord.x;
-        y = opts.coord.y;
+        x = Array.isArray(opts.coord) ? opts.coord[0] : opts.coord.x;
+        y = Array.isArray(opts.coord) ? opts.coord[1] : opts.coord.y;
     }
     o.coord = (x === undefined || x === -1) && (y === undefined || y === -1)
               ? SP_COORD_PACK_RANDOM(0)
@@ -1014,11 +1020,39 @@ function spo_pop_container() {
 
 // src/sp_lev.c find_objtype() — an object name to its index.
 export function find_objtype(name) {
-    const want = String(name).toLowerCase();
+    let want = String(name).toLowerCase();
 
+    /* src/sp_lev.c:3480 — class prefixes disambiguate names like
+       "teleportation"; strip the prefix and pin the class */
+    let klass = 0;
+    if (want.includes(' of ')) {
+        const prefixes = [
+            ['ring of ', OCLASSES.RING_CLASS],
+            ['potion of ', OCLASSES.POTION_CLASS],
+            ['scroll of ', OCLASSES.SCROLL_CLASS],
+            ['spellbook of ', OCLASSES.SPBOOK_CLASS],
+            ['wand of ', OCLASSES.WAND_CLASS],
+        ];
+        for (const [p, c] of prefixes)
+            if (want.startsWith(p)) {
+                klass = c;
+                want = want.slice(p.length);
+                break;
+            }
+    }
+
+    /* find by object name */
     for (let i = 1; i < game.objects.length; i++)
-        if ((OBJ_NAME(game.objects[i]) || '').toLowerCase() === want)
+        if ((!klass || klass === game.objects[i].oc_class)
+            && (OBJ_NAME(game.objects[i]) || '').toLowerCase() === want)
             return i;
+    /* find by object description */
+    for (let i = 1; i < game.objects.length; i++) {
+        const d = OBJ_DESCR(game.objects[i]);
+        if ((!klass || klass === game.objects[i].oc_class)
+            && d && d.toLowerCase() === want)
+            return i;
+    }
     return STRANGE_OBJECT;
 }
 

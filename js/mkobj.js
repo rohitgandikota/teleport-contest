@@ -25,6 +25,7 @@ import { is_neuter } from './mondata.js';
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
+import { attach_egg_hatch_timeout } from './timeout.js';
 import { Is_rogue_level, NODIR, OBJ_FLOOR, In_quest } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
@@ -1111,9 +1112,14 @@ export function set_corpsenm(obj, id) {
     case ONAMES.CORPSE:
         start_corpse_timeout(obj);
         break;
+    case ONAMES.EGG:
+        /* src/mkobj.c:1360 — the hatch-decision loop DRAWS one rnd(i) per
+           candidate age, so it cannot be skipped */
+        if (obj.corpsenm !== NON_PM && !dead_species(obj.corpsenm, true))
+            attach_egg_hatch_timeout(obj, 0);
+        break;
     default:
-        /* FIGURINE and EGG attach their own timers; both need the timer
-           subsystem, which is not ported. Neither draws. */
+        /* FIGURINE attaches its own timer; needs carried state */
         break;
     }
 }

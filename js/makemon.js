@@ -8,6 +8,7 @@
 // changes the number of draws, not just their values.
 
 import { game } from './gstate.js';
+import { ARM_BONUS } from './do_wear.js';
 import { rndghostname } from './do_name.js';
 import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
@@ -17,7 +18,7 @@ import {
 } from './monst_data.js';
 import { ONAMES, OCLASSES, SKILLS, MATERIALS } from './objects_data.js';
 import { depth } from './dungeon.js';
-import { next_ident, mksobj, mkobj, place_object } from './mkobj.js';
+import { next_ident, mksobj, mkobj, place_object, curse } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
 import { canspotmon, newsym } from './display.js';
@@ -601,16 +602,90 @@ function m_initinv(mtmp) {
         mkmonmoney(mtmp, d(level_difficulty(), 30));
         break;
     case S_HUMAN:
+        if (is_mercenary(ptr)) {
+            /* src/makemon.c:603 — the mercenary armor kit */
+            const mndx = monsndx(ptr);
+            let mac = mndx === PMNAMES.PM_GUARD ? -1
+                    : mndx === PMNAMES.PM_SOLDIER ? 3
+                    : mndx === PMNAMES.PM_SERGEANT ? 0
+                    : mndx === PMNAMES.PM_LIEUTENANT ? -2
+                    : mndx === PMNAMES.PM_CAPTAIN ? -3
+                    : mndx === PMNAMES.PM_WATCHMAN ? 3
+                    : mndx === PMNAMES.PM_WATCH_CAPTAIN ? -2 : 0;
+            let otmp = null;
+            const add_ac = () => {
+                if (otmp) mac += ARM_BONUS(otmp);
+                otmp = null;
+            };
+
+            /* round 1: body armor */
+            if (mac < -1 && rn2(5))
+                otmp = mongets(mtmp, rn2(5) ? ONAMES.PLATE_MAIL
+                                            : ONAMES.CRYSTAL_PLATE_MAIL);
+            else if (mac < 3 && rn2(5))
+                otmp = mongets(mtmp, rn2(3) ? ONAMES.SPLINT_MAIL
+                                            : ONAMES.BANDED_MAIL);
+            else if (rn2(5))
+                otmp = mongets(mtmp, rn2(3) ? ONAMES.RING_MAIL
+                                            : ONAMES.STUDDED_LEATHER_ARMOR);
+            else
+                otmp = mongets(mtmp, ONAMES.LEATHER_ARMOR);
+            add_ac();
+            /* round 2: helmets */
+            if (mac < 10 && rn2(3))
+                otmp = mongets(mtmp, ONAMES.HELMET);
+            else if (mac < 10 && rn2(2))
+                otmp = mongets(mtmp, ONAMES.DENTED_POT);
+            add_ac();
+            /* round 3: shields */
+            if (mac < 10 && rn2(3))
+                otmp = mongets(mtmp, ONAMES.SMALL_SHIELD);
+            else if (mac < 10 && rn2(2))
+                otmp = mongets(mtmp, ONAMES.LARGE_SHIELD);
+            add_ac();
+            /* round 4: boots */
+            if (mac < 10 && rn2(3))
+                otmp = mongets(mtmp, ONAMES.LOW_BOOTS);
+            else if (mac < 10 && rn2(2))
+                otmp = mongets(mtmp, ONAMES.HIGH_BOOTS);
+            add_ac();
+            /* round 5: gloves + cloak */
+            if (mac < 10 && rn2(3))
+                otmp = mongets(mtmp, ONAMES.LEATHER_GLOVES);
+            else if (mac < 10 && rn2(2))
+                otmp = mongets(mtmp, ONAMES.LEATHER_CLOAK);
+            add_ac();
+
+            if (mndx === PMNAMES.PM_WATCH_CAPTAIN) {
+                ; /* better weapon rather than extra gear here */
+            } else if (mndx === PMNAMES.PM_WATCHMAN) {
+                if (rn2(3)) /* most watchmen carry a whistle */
+                    mongets(mtmp, ONAMES.TIN_WHISTLE);
+            } else if (mndx === PMNAMES.PM_GUARD) {
+                const wh = mksobj(ONAMES.TIN_WHISTLE, true, false);
+                curse(wh);
+                mpickobj(mtmp, wh);
+            } else { /* soldiers and their officers */
+                if (!rn2(3))
+                    mongets(mtmp, ONAMES.K_RATION);
+                if (!rn2(2))
+                    mongets(mtmp, ONAMES.C_RATION);
+                if (mndx !== PMNAMES.PM_SOLDIER && !rn2(3))
+                    mongets(mtmp, ONAMES.BUGLE);
+            }
+        } else {
+            /* shopkeepers, priests, prisoners, Croesus: recorded */
+            note_unported(`m_initinv mlet=${ptr.mlet}`);
+        }
+        break;
     case S_GIANT:
     case S_WRAITH:
     case S_LICH:
     case S_QUANTMECH:
     case S_DEMON:
     case S_GNOME:
-        /* src/makemon.c:601-711 — mercenaries, shopkeepers, priests, giants,
-           Nazgul, liches, Schroedinger's box, devils, and mine candles. Each
-           arm needs a subsystem that is not ported (mkmonmoney variants,
-           curse(), rnd_class(), containers). None can be generated yet. */
+        /* src/makemon.c:711+ — giants, Nazgul, liches, Schroedinger's box,
+           devils, and mine candles; each needs an unported subsystem. */
         note_unported(`m_initinv mlet=${ptr.mlet}`);
         break;
     default:

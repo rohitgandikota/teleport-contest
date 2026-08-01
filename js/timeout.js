@@ -11,6 +11,7 @@
 // (bury_an_obj spends rnd(250) for ROT_ORGANIC). Only the bookkeeping is here.
 
 import { game } from './gstate.js';
+import { rnd } from './rng.js';
 import { stop_occupation } from './allmain.js';
 import { nomul } from './hack.js';
 
@@ -130,4 +131,19 @@ export async function nh_timeout() {
 
 function note_unported_timeout(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/timeout.c:981 attach_egg_hatch_timeout() — decide if and when the egg
+// hatches: one rnd(i) per age 151..200 until a roll exceeds 150.
+export function attach_egg_hatch_timeout(egg, when = 0) {
+    /* stop_timer: no previous timer exists at creation */
+    if (!when) {
+        for (let i = (200 - 50) + 1; i <= 200; i++)
+            if (rnd(i) > 150) {
+                when = i;
+                break;
+            }
+    }
+    if (when)
+        start_timer(when, TIMER_OBJECT, HATCH_EGG, egg);
 }

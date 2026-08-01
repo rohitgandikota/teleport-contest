@@ -112,6 +112,22 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     game.u.uz = { dnum: newlevel.dnum, dlevel: newlevel.dlevel };
     (game.visited_ledgers ||= new Set());
 
+    /* src/do.c:1678 — track the deepest level reached in this dungeon
+       (builds_up dungeons track their SHALLOWEST dlevel instead) */
+    {
+        const dgn = game.dungeons?.[game.u.uz.dnum];
+        const { builds_up } = await import('./dungeon.js');
+        if (dgn) {
+            if (!builds_up(game.u.uz)) {
+                if (game.u.uz.dlevel > (dgn.dunlev_ureached ?? 0))
+                    dgn.dunlev_ureached = game.u.uz.dlevel;
+            } else if (!dgn.dunlev_ureached
+                       || game.u.uz.dlevel < dgn.dunlev_ureached) {
+                dgn.dunlev_ureached = game.u.uz.dlevel;
+            }
+        }
+    }
+
     /* src/do.c:1690 — reset the default level change destination areas;
        the special level code may override these */
     game.updest = { lx: 0, ly: 0, hx: 0, hy: 0,

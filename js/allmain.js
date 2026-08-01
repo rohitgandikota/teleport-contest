@@ -488,6 +488,15 @@ function maybe_generate_rnd_mon() {
 export async function moveloop_core() {
     const g = game;
 
+    /* src/end.c nh_terminate(): after really_done the process has exited;
+       a replayed segment's remaining keys reach a dead terminal and are
+       swallowed without any game reaction. */
+    if (g.program_state_gameover) {
+        const { nhgetch } = await import('./input.js');
+        await nhgetch();
+        return;
+    }
+
     if (g.context?.move) {
         /* src/allmain.c:205 — actual time passed */
         g.u.umovement = (g.u.umovement || 0) - NORMAL_SPEED;

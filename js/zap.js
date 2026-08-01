@@ -183,6 +183,21 @@ export async function zapyourself(obj, ordinary) {
         await fall_asleep(-rnd(50), true);
         break;
     }
+    case ONAMES.WAN_DEATH:
+    case ONAMES.SPE_FINGER_OF_DEATH: {
+        /* nonliving()/is_demon() hero forms are not reachable un-polymorphed */
+        learn_it = true;
+        game.killer ||= {};
+        game.killer.name = `shot ${game.flags?.female ? 'her' : 'him'}self`
+                           + ' with a death ray';
+        game.killer.format = 2; /* NO_KILLER_PREFIX */
+        await pline('You irradiate yourself with pure energy!');
+        await pline('You die.');
+        /* They might survive with an amulet of life saving */
+        const { done, DIED } = await import('./end.js');
+        await done(DIED);
+        break;
+    }
     case ONAMES.SPE_HEALING:
     case ONAMES.SPE_EXTRA_HEALING: {
         learn_it = true; /* (no effect for spells...) */

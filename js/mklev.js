@@ -63,10 +63,13 @@ function mk_knox_portal(x, y) {
         source = br.end1;
     }
     /* Already set or 2/3 chance of deferring until a later level;
-       wizard mode never defers but the roll still burns */
+       wizard mode never defers but the roll still burns. Placement
+       (adjusting the source end) is NOT modelled: seed0360's recording
+       shows C keeps drawing this roll on later vault levels, so C did not
+       place during that tour; the portal itself is recorded. */
     if (source.dnum < game.n_dgns || (rn2(3) && !game.wizard))
         return;
-    note_unported_lev('mk_knox_portal placement');
+    note_unported_lev('mk_knox_portal place_branch')
 }
 import { random_engraving, wipeout_text } from './engrave.js';
 import { merged, weight, sobj_at } from './invent.js';

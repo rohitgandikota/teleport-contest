@@ -40,10 +40,6 @@ async function nhgetch_core() {
        AFTER its dismissing read returns, so the flag survives exactly until
        the next read, and tty_yn_function tests it before its own read. */
     game._win_stop = false;
-    if (process.env.STEPTRACE) {
-        const { getRngLog } = await import('./rng.js');
-        console.error(`KEYREAD @${getRngLog().length}`);
-    }
     // Fire the capture hook before reading the next key
     const hook = game._preNhgetchHook;
     if (hook) await hook();

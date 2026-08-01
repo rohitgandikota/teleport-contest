@@ -37,12 +37,6 @@ export function rn2(x) {
     if (x <= 0) return 0;
     const val = RND(x);
     if (_rngLogEnabled) _rngLog.push(`rn2(${x})=${val}`);
-    if (process.env.DRAWWIN && _rngLogEnabled) {
-        const n = _rngLog.length;
-        const [lo, hi] = process.env.DRAWWIN.split('-').map(Number);
-        if (n >= lo && n <= hi)
-            console.error(`#${n} rn2(${x})=${val}\n` + new Error().stack.split('\n').slice(2, 6).join('\n'));
-    }
     return val;
 }
 

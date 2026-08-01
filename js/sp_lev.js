@@ -2469,8 +2469,28 @@ export function lspo_region_full(opts) {
     }
 
     /* a real room record: add_room + needfill for the later fill sweep */
-    const troom = mklev_fns?.add_room_return?.(dx1, dy1, dx2, dy2,
-                                               !!rlit, rtype, true);
+    let troom;
+    if (opts.irregular) {
+        /* src/sp_lev.c:5676 — flood-fill the connected floor from the
+           region's corner to paint roomno, then add the bounding room
+           marked irregular so fills skip non-room squares */
+        const g = game;
+        g.min_rx = g.max_rx = dx1;
+        g.min_ry = g.max_ry = dy1;
+        g.smeq = g.smeq || {};
+        g.smeq[g.level.nroom] = g.level.nroom;
+        flood_fill_rm(dx1, dy1, g.level.nroom + ROOMOFFSET, rlit, true);
+        troom = mklev_fns?.add_room_return?.(g.min_rx, g.min_ry,
+                                             g.max_rx, g.max_ry,
+                                             false, rtype, true);
+        if (troom) {
+            troom.rlit = rlit;
+            troom.irregular = true;
+        }
+    } else {
+        troom = mklev_fns?.add_room_return?.(dx1, dy1, dx2, dy2,
+                                             !!rlit, rtype, true);
+    }
     if (troom) {
         troom.needfill = needfill;
         game.level.flags.is_maze_lev = true;

@@ -90,3 +90,44 @@ export async function fall_asleep(how_long, wakeup_msg) {
     game.u.usleep = game.moves;
     game.nomovemsg = wakeup_msg ? "You wake up." : "You can move again.";
 }
+
+// src/timeout.c:660 nh_timeout() — the per-turn countdown of intrinsic
+// timeouts. Only the intrinsic-timer loop is live; the luck rebalancing,
+// storm/fumaroles arms and most expiry cases need absent state and are
+// recorded when their trigger appears.
+export async function nh_timeout() {
+    const intr = game.u.intrinsic;
+    if (game.u.uluck)
+        note_unported_timeout('nh_timeout:luck_rebalance');
+    if (!intr)
+        return;
+
+    for (const key of Object.keys(intr)) {
+        const v = intr[key];
+        if (typeof v !== 'number' || v <= 0)
+            continue;
+        intr[key] = v - 1;
+        if (intr[key] > 0)
+            continue;
+        /* the timeout just ran out */
+        switch (key) {
+        case 'HConfusion': {
+            const { make_confused } = await import('./potion.js');
+            intr.HConfusion = 1; /* so make_confused works properly */
+            await make_confused(0, true);
+            if (!game.u.uprops?.CONFUSION) {
+                const { stop_occupation } = await import('./allmain.js');
+                await stop_occupation();
+            }
+            break;
+        }
+        default:
+            note_unported_timeout(`nh_timeout:${key}`);
+            break;
+        }
+    }
+}
+
+function note_unported_timeout(what) {
+    (game.unported ||= new Set()).add(what);
+}

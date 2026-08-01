@@ -84,6 +84,7 @@ function init_sound_disp_gamewindows() {
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
 import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED } from './mon.js';
 import { dosounds } from './sounds.js';
+import { nh_timeout } from './timeout.js';
 import { age_spells } from './spell.js';
 import { gethungry } from './eat.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
@@ -529,8 +530,9 @@ export async function moveloop_core() {
                    first increment landed on 2 either way. */
                 g.moves++;
 
-                /* src/allmain.c:275 — the prayer timeout ticks down every
-                   turn (it sits beside nh_timeout in the same block). */
+                /* src/allmain.c:275 — nh_timeout() then the prayer
+                   timeout, every turn. */
+                await nh_timeout();
                 if (g.u.ublesscnt)
                     g.u.ublesscnt--;
 

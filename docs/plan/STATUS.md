@@ -10928,3 +10928,26 @@ only marks the map cells + doors + drawbridge. Compare mapcount/mapfact and
 the per-batch loop counts (rnd(20*mapfact/100) etc.). After that the gen
 should complete (~22924 total for step 159) and the castle screens start
 counting. seed5006 183, board 1548, passes 6, gates clean.
+
+## 2026-08-01 (fill-align iteration): rndtrap ids fixed; boulder attribution open
+
+rndtrap_sp's trap ids were guesses and all wrong; now from include/trap.h
+(commit above). The castle fill still strictly diverges at ~17877: C re-rolls
+trap3's rndtrap because C has a BOULDER at (3,11); ours has boulders at
+(5,3),(3,17),(7,13),(7,3) — same accepted trap spots, same draw values.
+Established facts for the next attempt:
+- Value streams can match while ITEM ATTRIBUTION differs: maze1xy rejection
+  flips reassign which item gets which spot without changing the pair draws,
+  as long as total pair counts line up. Do NOT assume matching draws imply
+  matching placements in these batches.
+- Our west-maze carve and is_ok_location (SPACE_POS + boulder rejection)
+  match the C's shape; the trap spots (7,9),(7,9),(3,11) match C's
+  reconstruction exactly.
+- Next probe idea: reconstruct C's OBJECT batch spots (count rnd(8)?, the
+  mkobj otyp sequence is in the log) and boulder batch with the REAL
+  rejection model (parity + SpLev + is_ok incl. boulder cells), then find
+  which single rejection flips. Suspect candidates: our object-batch
+  mkobj_at(RANDOM_CLASS) placements vs C's (does C's random object land at
+  (3,11) as a ROCK_CLASS boulder?), or a missing SpLev/typ difference at one
+  cell in the EAST maze affecting an earlier batch item count.
+seed0360 rng 18418, board 1548, passes 6, gates clean.

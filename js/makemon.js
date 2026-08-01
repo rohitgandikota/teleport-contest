@@ -10,6 +10,7 @@
 import { game } from './gstate.js';
 import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
+import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn } from './invent.js';
 import { rndghostname } from './do_name.js';
 import { m_dowear } from './worn.js';
@@ -1612,7 +1613,7 @@ function m_initweap(mtmp) {
 export function makemon(ptr, x, y, mmflags) {
     let mndx, mitem;
     const anymon = !ptr;
-    const allow_minvent = ((mmflags & NO_MINVENT) === 0);
+    let allow_minvent = ((mmflags & NO_MINVENT) === 0);
     const countbirth = ((mmflags & MM_NOCOUNTBIRTH) === 0);
 
     if (game.iflags?.debug_mongen || (!game.level?.flags?.rndmongen && !ptr))
@@ -1767,8 +1768,19 @@ export function makemon(ptr, x, y, mmflags) {
     /* pm_to_cham()/newcham() and the Wizard-of-Yendor branch sit here in C;
        every species that reaches them is G_NOGEN or G_UNIQ and so cannot be
        produced by rndmonst() during ordinary level generation. */
-    if (is_shapeshifter(ptr) || mndx === PMNAMES.PM_WIZARD_OF_YENDOR)
+    /* src/makemon.c:1355 — a shapechanger takes a starting form via
+       newcham(); Vlad keeps his own shape for the Candelabrum */
+    mtmp.cham = -1;
+    if (is_shapeshifter(ptr)) {
+        const mcham = mndx;    /* pm_to_cham: M2_SHAPESHIFTER means itself */
+        mtmp.cham = mcham;
+        mon_wire_cham({ newmonhp, rndmonst });
+        if (mndx !== PMNAMES.PM_VLAD_THE_IMPALER
+            && newcham(mtmp, null, 0))
+            allow_minvent = false;
+    } else if (mndx === PMNAMES.PM_WIZARD_OF_YENDOR) {
         note_unported(`makemon shapechanger/wizard mndx=${mndx}`);
+    }
 
     if (mitem && allow_minvent)
         mongets(mtmp, mitem);

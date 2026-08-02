@@ -15711,3 +15711,41 @@ value-based filter has had to be retracted.
 seed2200 remains 228/230 with the cause genuinely unknown. Given four failed
 approaches, consider parking it and spending the iterations on the .lua
 special-level family instead, which is a much larger and better-understood block.
+
+## iter 101 — parked seed2200; ported bigrm-9 (RNG +183)
+
+Board 2249, passes 7, tree clean. Committed 7a925bd.
+
+**seed2200 is PARKED.** Five iterations, four retractions, cause still unknown.
+Everything measured about it is in iters 96-100; the remaining unknown is
+whether the captured frame precedes or follows _buildScreenOutput's clear. Do
+not resume without first adding a per-keystroke step counter to gstate and
+gating probes on it — every value-based filter used on this session produced a
+wrong answer.
+
+**Started the .lua special-level family, which is the largest remaining block.**
+`node tools/unported-hits.mjs` ranks the gaps:
+
+    11%  makemaz:soko1-2        9%  makemaz:tower1
+    11%  goto_level:reload_level_file
+     9%  makemaz:x-strt         9%  makemaz:x-loca
+     9%  makelevel:quest_fill   7%  makemaz:soko1-1
+     7%  makemaz:x-goal         7%  makemaz:check_ransacked
+     5%  makemaz:bigrm-9   <- DONE
+
+Registry is js/dat/levels.js; four levels were ported (bigrm-7, oracle, castle,
+valley) and bigrm-9 makes five.
+
+**bigrm-9 was the right first pick and the pattern is now proven twice:** copy
+the .lua verbatim into a template that mirrors js/dat/bigrm-7.js — the `des`
+shim object, the map as a template literal, then the calls in C's exact order.
+bigrm-9 differs from bigrm-7 only in taking ("mazelevel", "noflip") and having
+NO replace_terrain, so it draws nothing before the object/trap/monster loops.
+RNG matched +183 and makemaz stops recording it.
+
+**Next, in value order:** the other bigrm variants are the cheapest remaining
+(same template, and bigrm-1..13 exist in nethack-c/upstream/dat/); after those,
+soko1-2 and soko1-1 are the highest-percentage single levels but Sokoban levels
+carry more furniture and their own flags, so budget a full iteration each.
+Screens will not move until a session's OTHER divergences are also fixed — judge
+these ports by RNG matched and by the unported-hits list shrinking.

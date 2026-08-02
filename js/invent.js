@@ -848,14 +848,19 @@ export function obj_extract_self(obj) {
 // include/mondata.h:170 is_reviver()
 const is_reviver = (ptr) => !!ptr && (is_rider(ptr) || ptr.mlet === MONSYMS.S_TROLL);
 
-/* Blind/Hallucination/Role_if and erosion_matters need property and shop state
-   that is not ported; all three only ever make mergable STRICTER, so a false
-   here can merge two stacks C would keep apart in those rare states. */
-function Blind() { return false; }
-function Role_if(role) { return false; }
-/* erosion_matters() is fully ported in js/mkobj.js (its C home is
-   src/mkobj.c); it was stubbed here by mistake. */
-const PM_CLERIC = 0;
+/* Blind() needs the blindness property plumbing; it only ever makes mergable
+   STRICTER, so a false here can merge two stacks C would keep apart while the
+   hero is blind. */
+function Blind() { return !!game.u?.ublind; }
+
+/* src/role.c Role_if() — this used to be hardcoded `return false`, which
+   silently disabled every role test in this file. C switches on a PM number;
+   our role table carries the display name, and PM_CLERIC's role is spelled
+   "Priest". */
+function Role_if(role) {
+    return game.urole?.name?.m === role;
+}
+const PM_CLERIC = 'Priest';
 
 function note_unported_invent(what) {
     (game.unported ||= new Set()).add(what);

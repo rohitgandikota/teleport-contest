@@ -2102,6 +2102,17 @@ export function flip_level(flp, extras) {
         if (flp & 2) st.sx = FlipX(st.sx);
     }
 
+    /* This port also records the up/down stair coordinates separately on the
+       level (js/mklev.js sets level.upstair / level.dnstair) and the display
+       keys the '<' vs '>' glyph off them, so they have to move too. C reads
+       the stairway list for that and has no such record. */
+    for (const key of ['upstair', 'dnstair']) {
+        const st = game.level?.[key];
+        if (!st || !inFlipArea(st.x, st.y)) continue;
+        if (flp & 1) st.y = FlipY(st.y);
+        if (flp & 2) st.x = FlipX(st.x);
+    }
+
     /* traps */
     for (const t of (game.level?.traps || [])) {
         if (!inFlipArea(t.tx, t.ty)) continue;

@@ -14129,3 +14129,43 @@ path -- the `already_killed` flag and the kill call are the candidates, and
 the newly-wired `mhitm_knockback()` returns into that same block.
 
 `dbon()` and the `game.uwep` accessor bug are settled; do not re-check them.
+
+## Iteration 63 — hmon_hitmon always reported the monster dead
+
+Board 2172 -> **2173**, passes 6, no regressions. Commit `e89f29d`.
+seed0002 step 90 now matches C exactly (25 draws both sides).
+
+### The bug
+
+`hmon_hitmon()` ended with `return hmd.retval`. `retval` is initialised
+**false** and set true on exactly one path (hit_no_harm). C returns
+`hmd.destroyed ? FALSE : TRUE` (uhitm.c:1934).
+
+So **every ordinary hit told known_hitum the defender had died**, and its
+entire post-hit block -- the `rn2(25)` flee check and everything after --
+was unreachable.
+
+With that fixed, the `hmd.unarmed` correction lands with no regression:
+
+    unarmed: !game.u.uwep && !worn(W_ARM) && !worn(W_ARMS)
+
+Both are now in. The knockback arm fires and spends C's rn2(3)/rn2(6).
+
+### Correcting iterations 60-62
+
+The -2 screens on seed0360 that made me revert `unarmed` twice were caused
+by THIS bug, not by the unarmed fix: with every hit reported fatal, turning
+on the armed branches just changed which wrong path ran. Two iterations went
+into a damage hypothesis that was never true (`dmgval` matches C exactly;
+`dbon` was worth porting but irrelevant here).
+
+**The lesson that actually cracked it:** probe at a KNOWN RNG POSITION, not
+on every call. Computing step 90's global draw offset (5955, so index 7 is
+5962) and gating the probe on `getRngLog()` filtered length turned an
+ambiguous stream of prints into two lines that located the bug immediately:
+
+    HD rng=5960 destroyed=false ...   <- hmon says alive
+    KH rng=5962 malive=false          <- known_hitum sees dead
+
+The filter must match `frozen/ps_test_runner.mjs`'s `isRngCall`
+(`/^(?:rn2|rnd|rn1|rnl|rne|rnz|d)\(/`) or the index will not line up.

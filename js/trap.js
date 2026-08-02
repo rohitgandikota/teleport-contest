@@ -17,8 +17,9 @@ import { You, You_hear } from './pline.js';
 import { an } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
+import { exercise } from './attrib.js';
 import { ONAMES } from './objects_data.js';
-import { KILLED_BY_AN } from './const.js';
+import { KILLED_BY_AN, A_STR } from './const.js';
 
 /* src/trap.h — trapeffect_*() return values. */
 const Trap_Effect_Finished = 0, Trap_Is_Gone = 2;
@@ -304,6 +305,7 @@ export async function thitu(tlev, dam, objp, name) {
         await You(`are hit by ${onm}${exclam(dam)}`);
 
     losehp(dam, name, KILLED_BY_AN);
+    exercise(A_STR, false);
     return 1;
 }
 

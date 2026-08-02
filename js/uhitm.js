@@ -47,6 +47,8 @@ import { is_weptool } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
+import { STR18 } from './const.js';
+import { ACURR } from './attrib.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
          W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP, XKILL_NOMSG,
@@ -1125,7 +1127,7 @@ function hmon_hitmon_dmg_recalc(hmd, obj) {
         if (hmd.thrown !== HMON_THROWN
             || !obj || !game.uwep
             || !note_unported_uhitm('dmg_recalc:ammo_and_launcher')) {
-            strbonus = note_dbon_unported();
+            strbonus = dbon();
             absbonus = Math.abs(strbonus);
             if (hmd.twohits)
                 strbonus = (((3 * absbonus + 2) / 4) | 0) * sgn(strbonus);
@@ -1153,11 +1155,31 @@ function hmon_hitmon_dmg_recalc(hmd, obj) {
         hmd.dmg = 1;
 }
 
-// src/attrib.c dbon() — strength damage bonus. Not ported; returns 0 so the
-// scaling above is exercised but adds nothing.
-function note_dbon_unported() {
-    note_unported_uhitm('dmg_recalc:dbon');
-    return 0;
+// src/weapon.c:993 dbon() — the Strength damage bonus. A weak hero takes a
+// PENALTY, which is why stubbing this at 0 made light hits kill monsters C
+// leaves alive.
+function dbon() {
+    const str = ACURR(A_STR);
+
+    if (game.Upolyd)
+        return 0;
+
+    if (str < 6)
+        return -1;
+    else if (str < 16)
+        return 0;
+    else if (str < 18)
+        return 1;
+    else if (str === 18)
+        return 2;                       /* up to 18 */
+    else if (str <= STR18(75))
+        return 3;                       /* up to 18/75 */
+    else if (str <= STR18(90))
+        return 4;                       /* up to 18/90 */
+    else if (str < STR18(100))
+        return 5;                       /* up to 18/99 */
+    else
+        return 6;
 }
 
 // src/uhitm.c:1637 hmon_hitmon_msg_hit() — the "You hit it!" line.

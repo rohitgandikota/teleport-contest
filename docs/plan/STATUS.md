@@ -12345,3 +12345,31 @@ a second copy of the message.
 are the object-identity question from the potion investigation — a different
 potion type at the same square, with identical rng. Not the shuffle; that was
 proved correct.
+
+## Survey: what now blocks each large session
+
+Board 1950 -> 1951, passes 6. One commit (doloot).
+
+Spent most of this pass surveying rather than fixing, because the top of the
+deficit table has hardened. First screen divergence per session, and what it
+needs:
+
+| session  | deficit | blocked at | needs |
+|----------|---------|-----------|-------|
+| seed5002 | 320 | step 88 | **`buzz`** — the ray engine (bolt of fire bounces off a wall and hits the hero) |
+| seed0399 | 490 | step 42 | **level save/restore** — level teleport onto a VISITED level; our goto_level records `reload_level_file` and draws nothing |
+| seed0014 | 685 | step 25 | **`doset`** — the full options menu, and nine keystrokes navigate inside it |
+| seed0106 | 256 | step 10 | **`dopray`** — no js/pray.js at all; the confirmation alone will not carry the following steps because the prayer OUTCOME drives them |
+| seed0007 | 282 | step 20 | (unexamined, 572 cells — likely a map/level issue) |
+| seed0012 | 280 | step 24 | `#loot` — **fixed this pass** |
+
+**The cheap-message era is over for the big sessions.** Four of the five
+remaining large deficits need a real subsystem: the ray engine, level
+save/restore, the options menu, or prayer. Each is a multi-iteration port,
+and each unlocks one session's tail.
+
+**Ranking by value if picking one:** `buzz` is the most reusable — rays are
+wands, spells, dragon breath and traps, so it pays across the held-out set
+rather than one session. Level save/restore is second (every session that
+revisits a level). The options menu is worth least: it is pure UI, gates one
+session, and has to match C's layout exactly.

@@ -11426,3 +11426,29 @@ without spending draws (deterministic movement earlier in the level).
 Next: dump our full monster list (mnum + x,y) at the start of step 41 and
 compare against what C's subsequent draws imply; the divergence is
 upstream of mfndpos, not inside it.
+
+## 2026-08-01 (seed4500, cont. 2): m_at now reads the grid; wall unchanged
+
+Commit b0b10ef. Board 1552/6, gates clean.
+
+**Fixed (faithfulness, no score change):** our m_at scanned the fmon chain
+by mx/my; C's reads the level.monsters[][] GRID, which holds a long worm at
+every tail square, not just its head. Ours therefore answered "no monster
+here" on worm tails, which would let mfndpos offer extra candidates. The
+grid (game.level.monAt) is maintained by place_monster/remove_monster and
+place_worm_seg, so the two stores now agree. No session currently has a
+worm adjacent to a mover, hence no score movement — but this would have
+bitten later, and it pairs with the worm_cross fix from two iterations ago.
+
+**Also verified faithful this iteration:** monlineu (= online2, exact) and
+the NOTONL arm around it.
+
+**seed4500 still diverges at rng 2869, cnt-j: C 7 vs ours 8.** The
+arithmetic admits two readings and I could not yet separate them:
+  (a) both cnt=8, C's j=1 and ours j=0 — C's monster matched its track
+      entry from TWO moves ago, meaning C's mtrack is longer/different;
+  (b) C's cnt=7 and ours 8 with j=0 both — one candidate square differs.
+jcnt = min(MTSZ=4, cnt-1) so both are possible. To separate: log our own
+(cnt, j, jcnt, track[]) at exactly this call — the MTK probe used earlier
+does this, re-add it and read the values for the mon=322 call at 76,14
+rather than the first few calls it happened to print.

@@ -14412,3 +14412,44 @@ so both use 5, and the cells are inside that circle. That leaves
 `couldsee()` — do_clear_area filters on couldsee, and ours is likely more
 permissive than C's around wall corners. Next step: compare js/vision.js
 couldsee against vision.c for the squares above, with the hero at (70,11).
+
+## iter 69 — no score change; seed0030 (the #1 loss) localised to a pet-timing bug
+
+Board unchanged at 2185. Everything this iteration was probing; all probes are
+reverted and the tree is clean. What it bought is a precise diagnosis of the
+biggest single block on the board.
+
+**seed0002's remainder is a vision bug, and it is NOT couldsee's definition.**
+Our `couldsee` is `(viz_array[y][x] & COULD_SEE) != 0`, byte-identical to
+vision.h:29, so the discrepancy is in **viz_array itself** (vision_recalc).
+Parked: it is a real subsystem dig, not a one-liner.
+
+**seed0030: 1866 lost, 87 matched — the largest block on the board.**
+- First differing SCREEN is step 33: we print "Your kitten eats a newt corpse.",
+  C prints nothing on the message row.
+- First differing DRAW is step 30: C has TWO `rn2(100) @ obj_resists(zap.c:1469)`
+  and we have one; every later draw in the step is shifted by that one.
+- `obj_resists` here is `dogfood()` (dog.c:1004, `obj_resists(obj, 0, 95)`),
+  which runs once per object the pet evaluates. C evaluates two, we evaluate one.
+- **Our dog_invent and dog_goal are both faithful** — I read them against
+  dogmove.c:400 and :495 and the loops match, including the cursed-item
+  `continue` and the APPORT arm.
+- The real cause is upstream: **our pet reaches the corpse and starts eating one
+  turn before C's.** Position-gated probe (step 30's global offset is 10608)
+  shows our dogfood calls at n=10603 (dog_goal) and 10607 (dog_move) land in
+  step 29, and step 30's single call comes from dog_eat — i.e. by step 30 our
+  pet is already eating, so dog_invent returns early on `mtmp.meating` and its
+  dogfood never runs. C's pet is still deciding.
+- Corroborating positions: our pet is (47,17) after 28 moves and (47,18) after
+  29, sitting on the newt corpse (otyp 265, the level's object count goes
+  18 -> 19 at step 29). At step 34 C's kitten is at (45,17) and ours at (46,18).
+
+So this is a **draw-neutral behaviour divergence** in pet movement somewhere at
+or before step 29, of exactly the kind NOTES warns about: steps 25-29 all report
+SAME draw counts while the state has already diverged. Per the `meating`
+precedent, look for a COUNTER OR FLAG C ticks that we do not, in dog_move's
+path between choosing a goal and committing to a square — not for a missing
+draw. `mtmp.meating`, `edog->whistletime`/`hungrytime`, and the
+`mtmp->movement` accounting are the candidates.
+
+Do NOT start from step 30's missing obj_resists; it is the symptom.

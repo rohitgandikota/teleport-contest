@@ -16032,3 +16032,47 @@ from ABSENCE — a missing grep hit, a missing annotation, a missing screen
 region. Before concluding "C doesn't do X", check that doing X would leave a
 visible trace. And gate probes on an explicit step counter, never on incidental
 field values.
+
+## iter 109 — REDIRECT: special levels are NOT the biggest block; read the whole list
+
+Board 2249, passes 7, tree clean, everything pushed. No code change.
+
+**I had been reading `tools/unported-hits.mjs` filtered to `makemaz:` lines and
+calling special levels "the largest remaining class". That is wrong.** The
+unfiltered head of the list:
+
+    100%  topl:remember_topl
+     45%  freeinv_core:uhave_artifacts
+     34%  pet_ranged_attk:attack
+     27%  uhitm:passive:adtyp=0
+     27%  mattacku:thrwmu
+     25%  uhitm:dmg_recalc:weapon_dam_bonus
+     25%  uhitm:dmg_recalc:use_skill
+     25%  uhitm:hmon_hitmon:pet
+     25%  uhitm:hmon_hitmon:splitmon
+     25%  useupall:setnotworn / useupall:obfree
+     25%  mdrop_obj:flooreffects
+
+Every special level sits at 11% or below. **The combat and inventory paths are
+where the reach is.** Several of the 25% entries are in code already ported and
+exercised every fight (uhitm's damage recalc, useupall's teardown), so they are
+likely small, well-scoped additions rather than new subsystems.
+
+**`topl:remember_topl` is reached by 100% of sessions and is a stub**
+(js/tty/topl.js:106 just records the gap). C (win/tty/topl.c:96) pushes
+gt.toplines into the ^P history AND — the load-bearing part —
+`*gt.toplines = '\0'` clears it, which is what decides whether the next message
+overwrites or appends. It draws nothing, so porting it cannot move the RNG; it
+can only affect message display. Note iter 85 already split the recall buffer
+out as `game._toplines`, so the plumbing is half there.
+
+**Recommended order for the next agent:**
+1. `topl:remember_topl` — 100% reach, no draws, small, and message-line bugs
+   have repeatedly been worth screens this session.
+2. The 25% `uhitm:dmg_recalc:*` pair — both inside a function already ported.
+3. `useupall:setnotworn` / `obfree` — likewise.
+4. Special levels LAST. They are lower reach and, as iters 103-108 showed,
+   expensive to get exactly right.
+
+Sokoban's state and restart instructions remain in iter 108. Everything from
+iters 103-108 is committed; the working tree is clean at 2249 with 7 passes.

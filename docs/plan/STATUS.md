@@ -12681,3 +12681,56 @@ first place to look, not the last.
 Next: find where the spear is decided. Check `u_init()`'s Valkyrie block
 against src/u_init.c in the 5.0 tree, and confirm whether this is starting
 inventory or something picked up later.
+
+## Iteration 29 — racial starting gear; a guard that could never fire
+
+Board 1978 -> **1979**, passes 6. Commit `e299f0f`. seed0014 43 -> 45 matching
+through step 47.
+
+### The bug: a stub whose guard compared a number to a string
+
+`ini_inv_obj_substitution()` (u_init.c:1181) was stubbed in js/u_init.js with:
+
+    if (game.urace.mnum === 'PM_ELF' || game.urace.mnum === 'PM_ORC')
+        note_unported('ini_inv_obj_substitution');
+
+`urace.mnum` is a NUMBER (dwarf = 44, elf = 264). The comparison against the
+STRINGS 'PM_ELF' / 'PM_ORC' could never be true for any race, so the gap was
+never even recorded -- and PM_DWARF and PM_GNOME were missing from the test
+regardless. A dwarven Valkyrie therefore started with a plain SPEAR where C
+gives DWARVISH_SPEAR.
+
+**This is the third time this exact shape has cost us** (see the PM_CLERIC
+entry: C switches on PM numbers, our tables carry names or numbers depending
+on the table). When writing a guard against a PM value, use `Race_if()` /
+`Role_if()`, which already handle both spellings -- never compare
+`.mnum` to a literal.
+
+Now ported in full: `inv_subs[]` (u_init.c:222, all 26 live rows plus the two
+the C itself comments out) and `ini_inv_obj_substitution()`, called from the
+same point in `ini_inv()` C calls it -- after the nocreate block, before
+`ini_inv_adjust_obj()`.
+
+### RNG "regression" that was not one
+
+seed0007 and seed0009 each lost 3 RNG matches. Their **first divergence index
+is unchanged** (2832 and 3337). `normalizeRng` strips call sites, so
+everything after the wall matches by coincidence and its count is noise.
+**Judge an RNG change by the first divergence index, never by the total.**
+`node tools/diverge.mjs <session> | grep 'diverges at'` is the check.
+
+### Next: seed0014's wall is now in dog movement
+
+RNG diverges at call **3204**, right after breakchestlock spills the chest:
+
+    3204  C rn2(100) @ obj_resists(zap.c:1469)   ours rn2(5) @ distfleeck
+    3206  C rn2(100) @ obj_resists(zap.c:1469)   ours rn2(8) @ dog_goal
+
+C's dog evaluates the objects just dumped on the floor (the metallic-item
+test at js/mon.js:629 is our equivalent, reached from m_move's post-move
+block) and spends two rn2(100) on obj_resists. Ours goes straight to
+distfleeck/dog_goal, so our dog is not seeing that pile. The chest contents
+themselves look right: the two rn2(3) draws inside breakchestlock (3202,
+3203) both match.
+
+Start at m_move's post-move object block and dog_goal's APPORT branch.

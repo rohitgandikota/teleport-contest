@@ -506,9 +506,16 @@ export function doname(obj) {
         if (obj.cursed) prefix += 'cursed ';
         else if (obj.blessed) prefix += 'blessed ';
         else if (!game.flags.implicit_uncursed
+                 /* src/objnam.c:1339 — the trailing terms of C's condition.
+                    A Priest senses BUC innately, so "uncursed" is never
+                    printed for one; the two Amulet types are also excluded.
+                    Role_if(PM_CLERIC) is the role whose name is "Priest". */
                  || ((!known || !ocl.oc_charged
                       || obj.oclass === ARMOR_CLASS
-                      || obj.oclass === RING_CLASS)))
+                      || obj.oclass === RING_CLASS)
+                     && obj.otyp !== ONAMES.FAKE_AMULET_OF_YENDOR
+                     && obj.otyp !== ONAMES.AMULET_OF_YENDOR
+                     && game.urole?.name?.m !== 'Priest'))
             prefix += 'uncursed ';
     }
 

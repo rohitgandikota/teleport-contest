@@ -6,6 +6,7 @@
 // The actual pick-up machinery (query_objlist, pickup_object, autopickup
 // exceptions) is absent and recorded, never faked.
 
+import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name } from './invent.js';
 import { observe_object } from './o_init.js';
@@ -122,9 +123,14 @@ export async function pickup(what) {
 
     /* src/pickup.c:1085 query_objlist() — with AUTOSELECT_SINGLE set, a
        single candidate is taken WITHOUT a menu; two or more raise one. */
-    const here = (game.level?.objects || [])
+    let here = (game.level?.objects || [])
         .filter(o => o.ox === game.u.ux && o.oy === game.u.uy
                      && o !== game.uchain);
+    /* src/pickup.c:975 autopick() — autopickup takes the eligible objects
+       with no menu at all, so the class filter has to run here or every
+       object on the square gets grabbed regardless of pickup_types. */
+    if (autopickup)
+        here = here.filter(o => autopick_testobj(o));
     if (here.length === 0)
         return 0;
     if (here.length > 1) {
@@ -137,6 +143,22 @@ export async function pickup(what) {
     }
 
     return (await pickup_object(here[0], here[0].quan, false)) > 0 ? 1 : 0;
+}
+
+// src/pickup.c:930 autopick_testobj() — is this object eligible for
+// autopickup? Only the pickup_types test is live: costly_spot() needs shop
+// floors, and the pickup_thrown / pickup_stolen / dropped_nopick overrides
+// need obj.how_lost, which nothing sets yet.
+function autopick_testobj(otmp) {
+    const otypes = game.flags?.pickup_types || '';
+
+    if (otmp.how_lost)
+        note_unported_pickup('autopick_testobj:how_lost');
+    if (game.apelist)
+        note_unported_pickup('autopick_testobj:exceptions');
+
+    /* check for pickup_types */
+    return !otypes || otypes.includes(def_oc_syms[otmp.oclass]);
 }
 
 // src/pickup.c:1025 query_objlist() — the PICK_ANY menu over a pile.

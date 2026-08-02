@@ -14670,3 +14670,45 @@ implies; if j=1 for C, the divergence is one entry of movement history, which
 points at an earlier turn where this monster moved and we did not (or moved
 somewhere else). This is a NON-PET monster, so the pet analysis in iters 71-73
 was the wrong subsystem entirely.
+
+## iter 75 — mtrack ring dumped; in_rooms stub removed (no board movement)
+
+Board 2200, RNG unchanged, tree clean. Committed 572fc15.
+
+**seed0030 step 36, measured.** The monster is at (56,5) with
+`mtrack = [(57,5), (58,5), (59,5), (60,4)]` — it came in from the east. Its
+candidate (57,5) matches `mtrack[0]`, so j=0 and we draw `rn2(4*(6-0)) = 24`.
+C draws `rn2(20)`. With the SAME track, j=0 is forced for that candidate, so
+**C's cnt must be 5, not 6** — C excludes one square we include. Of our six
+((55,4) (55,5) (56,4) (56,6) (57,4) (57,5)) the only non-ROOM one is (56,6), a
+DOOR (typ 23) whose doormask we have as 0 (D_NODOOR).
+
+That made the door's mask the prime suspect, which led to a real bug, though
+not this one:
+
+**js/mklev.js had `function in_rooms(x, y, rtype) { return []; }`** — a stub
+always returning empty, shadowing the real in_rooms in js/hack.js (src/hack.c).
+`dosdoor`'s `shdoor` was therefore permanently false, so a shop doorway got
+D_NODOOR instead of D_ISOPEN and a shop wall-door got the rn2(5) roll instead
+of D_LOCKED. The call also passed 0 instead of SHOPBASE, and hack.js's
+in_rooms treats 0 as "any room", so removing the stub alone would have flipped
+shdoor true everywhere. Both fixed. No board movement — none of the 44 public
+sessions reaches a shop door — but it removes a stub returning a plausible
+value, which rule 2 forbids.
+
+**Still open, and now precisely stated:** why does C exclude one of those six
+squares? The mtrack explanation is dead (track is identical in shape and the
+match is forced to j=0). Candidates, in order:
+- our doormask at (56,6) is wrong (C has D_CLOSED/D_LOCKED there and excludes
+  it via mfndpos's `(doormask & D_CLOSED) && !(flag & OPENDOOR)` arm). The
+  level build at step 28 matched on all 3736 draws, so if the mask is wrong it
+  is a DRAW-NEUTRAL storage bug in dosdoor/okdoor, not a generation-order one.
+  Note the screen cannot settle this: that area is far from the hero and never
+  drawn.
+- or we are missing an mfndpos exclusion unrelated to doors. Worth diffing our
+  mfndpos against mon.c's arm by arm; I only checked the door and diagonal
+  arms this iteration.
+
+Grep the level for the door: dump `game.level.at(56,6)` right after the step-28
+descent and compare its doormask against what dosdoor should have produced for
+that square given the (matching) draw sequence.

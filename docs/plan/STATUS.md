@@ -13074,3 +13074,46 @@ seed0030 is now the biggest at 1868 lost, but its wall (call 10609) is the
 SAME three-obj_resists-vs-two shape as the parked seed0014 pet bug, so it is
 likely the same root cause and should not be opened without a new
 instrument. Take seed0360 (645 lost, wall at 28316) or re-run the table.
+
+## Iteration 37 — two leads opened, neither closed
+
+Board **2037**, tree clean, no commit. Ranking re-run (total lost 9368):
+
+    1868  seed0030-ten-diverse-deaths      (parked shape, see iter 35)
+    1683  seed4500-knight-coverage
+     668  seed0014-dequa-fountain-explore  (parked)
+     645  seed0360-wizard-world-tour
+     550  seed0002-healer-reflection-drummer
+
+### Lead A — seed4500, wall now 3188: we draw an EXTRA call
+
+    3187  C rn2(67) moveloop_core   ours ok
+    3188  C rn2(5)  distfleeck      ours rnd(8)   MISMATCH
+    3189  C rn2(20) m_move          ours rnd(2)
+
+C goes straight from moveloop_core into monster movement; we spend an
+`rnd(8)` then an `rnd(2)` first. Something on our end draws twice where C
+draws nothing. Find the call site, then delete it.
+
+### Lead B — seed0360, wall 28316: a skipped blessorcurse
+
+    28314  rnd(1000) mkobj(mkobj.c:289)     ok   (random object being made)
+    28315  rnd(2)    next_ident              ok
+    28316  C rn2(17) blessorcurse            ours rn2(76) get_location
+
+`blessorcurse(otmp, 17)` is called from exactly two places, SPBOOK_CLASS
+(mkobj.c:1083) and WAND_CLASS (mkobj.c:1125), and **both are present and
+correct in js/mkobj.js** -- so that is not the gap. `blessorcurse()` returns
+without drawing when `otmp->blessed || otmp->cursed` is already set, and our
+stream shows NO draw at all in the class arm, so either our object arrived
+pre-blessed/cursed or mksobj() gave it a class whose arm draws nothing.
+Next step: dump the otyp/oclass/blessed/cursed of the object created at that
+point and compare against what a chance-17 arm implies (spellbook or wand).
+
+### Tooling trap that cost this iteration
+
+`tools/diverge.mjs` indexes the **filtered** RNG log (only rn2/rnd/rn1/rnl/
+rne/rnz/d entries -- see `isRngCall` in frozen/ps_test_runner.mjs), but
+`getRngLog().length` inside js/rng.js counts **every** entry. A probe keyed on
+the raw length never fires at the reported divergence index. Either filter the
+same way inside the probe, or key on something else entirely.

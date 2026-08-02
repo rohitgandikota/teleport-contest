@@ -5,12 +5,18 @@ this 10-segment save/restore session: at seg1 step 22 the probe hero
 stands at (33,11) in solid stone while the runner (and C) agree on
 (63,11). Every pet-gate/pile conclusion drawn from those probes is
 void; the apport-gate and m_cansee analyses were of the wrong world.
-WHAT REMAINS VALID: anything derived from ps_test_runner itself —
-diverge.mjs, screendiff, stepdraws (it uses the same runSegment inputs
-BUT ALSO RAW SEGMENTS, so re-verify stepdraws1 against the runner
-before trusting seg>=1 output). RULE FOR FUTURE PROBES: build on
-frozen/session_loader.mjs normalizeSession() + the runner's exact
-per-segment loop, never on raw session JSON.
+CORRECTED MECHANISM: the loader is NOT the issue (replayInputFor
+passes exactly seed/datetime/nethackrc/moves + shared storage, same as
+the probes). The flaw is STEP-vs-CHAR alignment: steps are not one char
+each — seg1 opens with death/restore prompt steps whose keys span
+multiple chars (and moves[0] is a bare ' ' that appears in no step key),
+so moves.slice(0, N) for 'step N' cuts mid-prompt and replays a garbage
+world. stepdraws' PER-STEP rng slices come from the runner's own
+getRngSlices and stay trustworthy; only my truncation-by-count probes
+were wrong. RELIABLE TRUNCATION RECIPE: binary-search the char cut
+until the probe's cursor/hero position equals the recorded step's
+cursor (screendiff prints both), or replay FULL moves and snapshot at a
+step boundary via a step-indexed hook instead of truncating.
 
 === seed0030 BOTTOM: WALL SEEN-VECTOR SPILL AT SEG1 STEP 21 ===
 The apport-gate finding stands but is DOWNSTREAM. screendiff's first

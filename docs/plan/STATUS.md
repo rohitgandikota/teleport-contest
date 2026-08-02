@@ -12592,3 +12592,50 @@ seed0014 diverges at step 40: `do_loot_cont()` should print "Hmmm, the chest
 turns out to be locked." The arm is already ported in js/pickup.js; find why
 doloot() is not reaching it (check `Is_container` and the `#loot` extended
 command dispatch). ~674 screens behind it.
+
+## Iteration 27 — seed0014 traced to #force; a process warning
+
+Board **1975**, passes 6, tree clean. No code change this iteration.
+
+### Process warning: re-run screendiff after every fix
+
+Most of this iteration went into "why doesn't doloot print the locked-chest
+message", chasing a `tools/screendiff.mjs` result captured BEFORE the previous
+commit's autopickup fix. doloot was already correct: probes showed
+`buf="loot"`, `here=1`, `olocked=true`, and row 0 at the capture boundary
+holding "Hmmm, the chest turns out to be locked." exactly as C has it.
+
+**screendiff reflects the working tree at the moment you run it. Re-run it
+after every change; never reason from an earlier iteration's output.**
+
+Second, smaller trap hit the same hour: `grep -rn 'X' js/*.js | head -4`
+truncated its output and made an import look missing when it was present.
+Do not pipe a "does this exist" grep through `head`.
+
+### seed0014's real blocker: `#force`
+
+Steps 0-42 now match. Step 43 is the first miss:
+
+    C:  There is a locked chest here; force its lock? [ynq] (q)
+    us: (blank)
+
+`doforce()` (src/lock.c:676) is not ported, and `doextcmd` has no 'force' arm,
+so it records and prints nothing. The recorded continuation is:
+
+    44  You start bashing it with your dwarvish spear.--More--
+    45  You succeed in forcing the lock.--More--
+    46  In fact, you've totally destroyed the chest.--More--
+    47  A spellbook is torn to shreds!
+
+So this needs the real thing, not just the prompt: `doforce()`, then
+`forcelock()` (the occupation, which DRAWS) and the container-destruction
+path that shreds the contents. `set_occupation()` already exists in
+js/allmain.js:16. There is no js/lock.js yet -- create it, mirroring
+src/lock.c.
+
+Prompt detail: C builds it with
+`safe_qbuf(qbuf, "There is ", " here; force its lock?", otmp, doname, ...)`
+then `ynq(qbuf)`, and `doname(otmp)` there is "a locked chest" (lknown is set
+just before). There is no `ynq()` in this port yet.
+
+~670 screens sit behind this in seed0014 alone.

@@ -16,7 +16,7 @@ const def_oc_syms_name = ["", "illegal objects", "weapons", "armor", "rings",
     "coins", "rocks", "large stones", "iron balls", "chains", "venoms"];
 import { STR18, P_SKILL_LIMIT, P_LAST_WEAPON, P_UNSKILLED, P_BASIC, P_EXPERT, P_ISRESTRICTED, P_SLING, P_FLAIL, P_PICK_AXE } from './const.js';
 import { MONSYMS } from './monst_data.js';
-import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype, is_wooden, hates_light } from './mondata.js';
+import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype, is_wooden, hates_light, throws_rocks, mindless, is_animal } from './mondata.js';
 import { is_axe } from './obj.js';
 import { greatest_erosion } from './do_wear.js';
 import { ATTKS } from './monst_data.js';
@@ -39,7 +39,7 @@ import { W_ARMS, W_ARMG, W_WEP, NO_WEAPON_WANTED, NEED_WEAPON,
 import { ACURR } from './attrib.js';
 import { A_STR, A_DEX } from './const.js';
 import { AKLYS_LIM } from './const.js';
-import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { ONAMES, OCLASSES, MATERIALS, SKILLS } from './objects_data.js';
 import { bigmonst } from './mondata.js';
 import { rnd, d } from './rng.js';
 import { spell_skilltype } from './spell.js';

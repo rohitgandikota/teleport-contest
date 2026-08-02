@@ -15,7 +15,7 @@ import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
 import { newsym, pline } from './display.js';
 import { You, You_hear, You_feel, Your } from './pline.js';
-import { an } from './objnam.js';
+import { an, the, doname, mshot_xname } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { exercise } from './attrib.js';
@@ -289,7 +289,15 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
 // The rnd(20) is spent whatever the outcome; everything after it is message
 // and damage. Returns 1 on a hit.
 export async function thitu(tlev, dam, objp, name) {
-    const onm = an(name);
+    const obj = objp ? objp.obj : null;
+
+    /* src/mthrowu.c:87 — a null name comes from m_throw; format the missile
+       itself, "the Nth arrow" during a volley. C panics when both are null. */
+    if (!name)
+        name = (obj && obj.quan > 1) ? doname(obj) : mshot_xname(obj);
+    const onm = (obj && obj.oartifact) ? the(name)
+                : (obj && obj.quan > 1) ? name
+                  : an(name);
     const dieroll = rnd(20);
 
     if (game.u.uac + tlev <= dieroll) {

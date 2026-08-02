@@ -228,7 +228,7 @@ function leppie_avoidance(mtmp) {
 // The hero-concealment arm draws rn2(25) but is gated on Upolyd, which no
 // recorded session reaches. Everything else is geometry, now that clear_path
 // exists to answer linedup()'s line-of-sight test.
-function lined_up(mtmp) {
+export function lined_up(mtmp) {
     const tx = mtmp.mux, ty = mtmp.muy;
     const ignore_boulders = throws_rocks(game.mons[mtmp.mnum])
                          || m_carrying(mtmp, ONAMES.WAN_STRIKING);
@@ -247,6 +247,9 @@ function lined_up(mtmp) {
 // line counting boulders; mode 2 then draws rn2(2 + boulderspots).
 function linedup(ax, ay, bx, by, boulderhandling) {
     const tbx = ax - bx, tby = ay - by;
+    /* C stores the deltas in gt.tbx/gt.tby; monshoot reads their signs */
+    game.tbx = tbx;
+    game.tby = tby;
 
     /* displacement can make a monster think you are at its own location */
     if (!tbx && !tby)

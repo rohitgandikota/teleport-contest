@@ -11976,3 +11976,31 @@ So two things differ, and the second is the cleaner lead:
 terms against ours directly rather than continuing to chase object counts.
 If that does not resolve it, switch to `thrwmu` (mthrowu.c:1174, 58 hits,
 draws) from the audit shortlist rather than spending a fifth pass here.
+
+## The cursed-object check, and the dart trap
+
+Board 1752 -> 1764, passes 6. Commits e722187, and the dart-trap pair.
+
+**The APPORT lead paid off, and it was a correction of my own earlier call.**
+The five guard terms matched C exactly, so the difference was upstream:
+`dog_goal` was missing dogmove.c:536's cursed-object skip. js/dog.js already
+had `cursed_object_at` ported — the loop just never called it. I had looked
+at this gap several iterations ago and dismissed it as draw-neutral because
+the `continue` comes after `dogfood`. **That was wrong: the continue also
+skips the APPORT arm, whose `edog->apport > rn2(8)` is a draw.** C walks past
+a cursed pile without spending it; we spent it on the first object every
+time. seed0002 wall 3583 -> 3732 (+3 screens), seed1500 +7.
+
+**`dotrap` was recorded, so the port stepped over every trap in the game.**
+Ported the dispatch plus the dart arm (trap.c:1250). Draw order: the
+once/tseen `rn2(15)` disarm check, `t_missile`'s mksobj, the `rn2(6)` poison
+roll, `dmgval`, then `thitu`'s `rnd(20)`. New alongside it: `seetrap`,
+`deltrap`, `t_missile` and `thitu` (mthrowu.c:96). Every other trap type
+still records.
+
+Then one more draw: `thitu` calls `exercise(A_STR, FALSE)` immediately after
+`losehp` on the hit path (mthrowu.c:150). seed0002 wall 3746 -> 3766.
+
+**Next:** seed0002's wall is 3766. The remaining trap types are the obvious
+follow-on — arrow and rock traps share `t_missile`/`thitu` and are nearly
+free now; squeaky board, bear trap and pits need their own effects.

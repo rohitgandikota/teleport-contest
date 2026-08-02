@@ -13972,3 +13972,43 @@ see whether ours are a permutation of C's (a flip/ordering bug) or genuinely
 different objects. If it is a permutation, look at `place_object()`'s list
 order, since flip_level walks that list and this port prepends where C
 appends.
+
+## Iteration 59 — parked seed0399's tail; potion of paralysis ported
+
+Board 2171 -> **2172**, passes 6, no regressions. Commit `5e5d6a7`.
+
+### PARKED: seed0399's last 7 cells
+
+Four iterations went into this thread. It produced real work -- the level
+build went from 65 to 7133 of 7133 matching draws and the screen from 838
+differing cells to 7 -- but **seed0399 scores nothing until that screen is
+exact**, and the last 7 cells have resisted.
+
+Ruled out, cumulatively: Hallucination (off at that point), the description
+shuffle (o_init does permute oc_color), object POSITION (every glyph
+matches), the gem selection machinery (walk, `oclass_prob_totals`=1000 and
+`bases[GEM_CLASS]`=439 all match C), and **pile order** (each mismatched
+square holds exactly ONE object, and place_object prepends in both).
+
+What is left: our gems and potions are a PERMUTATION of C's across squares
+of the same class. Only `flip_level` permutes positions, and it looks right.
+**Do not reopen without a new instrument** -- the same rule that eventually
+cracked the pet bug.
+
+### Shipped instead
+
+`peffect_paralysis` (potion.c). Quaffing paralysis freezes the hero for
+rn1(10, 25) turns -- longer cursed, shorter blessed -- while monsters keep
+moving, so C spent **1232 draws** on that one keystroke where we spent 37.
+seed0002 step 86 now matches exactly.
+
+Also added `surface()` in js/dungeon.js (its C home), with only the plain
+floor answer live.
+
+### seed0002 is the productive seam right now
+
+It has gone 45 -> 75 -> 76 over three iterations, each time a single
+unported potion arm or prompt on the critical path. Its `peffects()` switch
+still handles only CONFUSION, OIL, FRUIT_JUICE/SEE_INVISIBLE and PARALYSIS;
+every other potion type falls to the recorded default. Keep walking it with
+`node tools/stepdraws.mjs seed0002 <lo> <hi>`.

@@ -11605,3 +11605,40 @@ which points at C's mtrack holding (76,13) at index 1 — i.e. C's monster
 reached (76,14) via one more move than ours. Note C's mtrack is a fixed
 4-entry array of zeros, not a growing list; that does not change the match
 index here but is worth remembering.
+
+## symset: 103 screens from honouring OPTIONS=symset
+
+Board 1588 -> 1691, passes 6.
+
+Six of the 44 public sessions have no `OPTIONS=symset:DECgraphics` in their
+nethackrc (seed0103, seed0104, seed0106, seed0107, seed0108, seed0200). We
+painted the map straight from the DEC line-drawing column regardless, so each
+of them diverged on the first frame showing a wall and sat at 1-3 matched
+screens. New `js/symbols.js` mirrors src/symbols.c's showsyms table:
+`init_showsyms()` fills it from `defsyms[].sym` (the ASCII defaults in
+include/defsym.h) and `assign_graphics()` installs the DECgraphics column when
+the rc asks. display.js now splits `back_to_glyph()` (cmap + colour,
+display.c:2302) from `terrain_glyph()`, which applies the symset the way
+`map_glyphinfo()` does at display.c:2938.
+
+**This was a generalization bug, not a session bug** — held-out sessions will
+have the same split, so the real gain is larger than the 103 local screens.
+Worth sweeping for other config options we ignore.
+
+## The hero's kill path is one function short of live
+
+`xkilled()` was a `note_unported` stub, so the hero killing anything produced
+no message, no corpse, no death drop and no experience. Ported its spine in
+C's order (message, mondead, the rn2(6) treasure drop with the food and size
+filters, corpse_chance + make_corpse, the luck adjustment, experience) and
+added `experience()` to js/exper.js. Also fixed `known_hitum()`, which noted
+`hmon` instead of calling it, and added C's `if (DEADMONSTER(mon)) destroyed =
+TRUE` (uhitm.c:1863) without which the branch calling `killed()` was
+unreachable.
+
+**Still dead code:** `hitum()` has no caller. `do_attack()` stops at
+`note_unported_uhitm('do_attack:combat')` where C runs `attack_checks()` and
+then `hitum(mtmp, youmonst.data->mattk)`. Wiring hitum without attack_checks
+would skip its draws, so attack_checks is the next thing to port. That single
+function unlocks kill messages, corpses, death drops and Xp across nearly
+every session — seed0200 alone shows "You kill the goblin!" missing at step 14.

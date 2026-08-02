@@ -1,3 +1,10 @@
+=== thrwmu CHAIN COMPLETE AND LIVE. RNG 195825 (+69), zero errors ===
+m_throw, monshoot and thrwmu landed; mattacku's AT_WEAP range2 arm now
+calls thrwmu on every non-rogue level. mattacku:thrwmu is off the ledger.
+Two import-crash lessons from landing it (throws_rocks, SKILLS): a module
+that loads clean can still die at CALL time on a bare identifier —
+score.sh's error field is the fastest detector, check it before diverge.
+
 === thrwmu CHAIN: ONLY m_throw + monshoot + thrwmu WIRING REMAIN ===
 DONE: select_rwep (weapon.js), monmulti + drop_throw + ohitmon
 (js/mthrowu.js), should_mulch_missile + omon_adj (dothrow.js), hit/miss

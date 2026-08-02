@@ -14223,3 +14223,54 @@ Suggested next step: port the helper set above (most are small objnam/pline
 formatters), then `chwepon` and `seffect_enchant_weapon` together. Enchant
 weapon and enchant armor share `strange_feeling` + `costly_alteration`, so the
 same helpers unlock read.c:1120's `seffect_enchant_armor` too.
+
+## iter 65 — the objnam verb/name family (chwepon groundwork, part 1)
+
+Started the chwepon port scoped in iter 64 and hit the real obstacle: the
+object-naming formatters chwepon builds every one of its messages from did not
+exist. Ported them this iteration as a self-contained unit (808f29a). Board
+holds at 2173, RNG unchanged, no over-read.
+
+Landed in `js/objnam.js`, in C order: `cxname` (1924), `aobjnam` (2244),
+`yobjnam` (2262), `Yobjnam2` (2280), `Tobjnam` (2290), `otense` (2531),
+`vtense` (2563), `The`, plus `is_plural` (obj.h:421), `obj_is_pname` (331), a
+char-level `highc` and `vowels` (decl.c:111).
+
+Three things worth knowing before touching this again:
+
+- **`special_subjs` was already in the file**, declared next to makesingular's
+  word lists. C has exactly ONE such table shared by vtense() and
+  makesingular(), so vtense references the existing one rather than adding a
+  second copy. The module-level `const` is in TDZ at definition time but fine at
+  call time; do not "fix" this by duplicating the table.
+- **`obj_is_pname` and `undiscovered_artifact` record their artifact arms**
+  via note_unported instead of guessing. Nothing ported generates an artifact,
+  so `not_fully_identified()` and the artidisco[] scan would change the ANSWER,
+  not just a message. `artidisco` does not exist in the tree at all.
+- **`js/objnam.js` cannot be imported standalone** — `node -e 'import("./js/objnam.js")'`
+  dies with "Cannot access 'mon_fns' before initialization". This is a
+  PRE-EXISTING import cycle, present on HEAD before this change; it is not
+  caused by the new `artilist_data.js` import. To unit-test anything in
+  objnam.js, import `./js/jsmain.js` FIRST and then objnam.js. I lost time
+  mistaking this for my own breakage.
+
+vtense was checked against C's rules rather than assumed: are/is, have/has,
+fly/flies, go/goes, twitch/twitches, crash/crashes, fix/fixes, buzz/buzzes all
+correct; "potions of healing" reads plural through the " of " head-word scan,
+"a dagger" reads singular off the article, "erinys" and "nemesis" stay singular
+via special_subjs. On real inventory: "Your 3 potions of healing glow" vs
+"Your scalpel glows".
+
+**Still needed before chwepon (part 2, next):** `mbodypart` (polyself.c, the
+table-driven one behind `body_part(HAND)`), `hcolor` (do_name.c — note it draws
+from `rn2_on_display_rng`, NOT the scored stream, so it costs no draws),
+`will_weld` (wield.c:68 macro, one line), `is_elven_weapon` (obj.h:360 macro),
+`cap_spe` (read.c), `strange_feeling` (potion.c — its trycall/useup deps both
+exist), `minimal_xname` + `simpleonames` (objnam.c:1038, needed only by
+chwepon's worm-tooth/crysknife branches). The shop calls `costly_alteration`
+and `alter_cost` should be note_unported: no shop subsystem exists.
+
+Then `chwepon` (wield.c:918, goes in js/wield.js before `welded()` to keep C
+order) and `seffect_enchant_weapon` (read.c:1627). The payoff is seed0002
+step 96's missing `exercise(A_DEX, TRUE)` rn2(19), and the same helpers unlock
+`seffect_enchant_armor` (read.c:1120).

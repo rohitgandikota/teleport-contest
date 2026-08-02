@@ -1,7 +1,7 @@
 import { mon_offmap } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
-import { is_hider, perceives } from './mondata.js';
+import { is_hider, perceives, is_human, is_unicorn } from './mondata.js';
 import { ceiling_hider } from './mondata.js';
 import { sensemon } from './display.js';
 import { mdistu } from './monmove.js';
@@ -20,22 +20,23 @@ import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
 import { sengr_at } from './engrave.js';
-import { Monnam } from './do_name.js';
+import { Monnam, mon_nam, x_monnam } from './do_name.js';
 import { hot_pursuit } from './shk.js';
 import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
-import { mksobj_at, splitobj } from './mkobj.js';
-import { newsym, canseemon, pline } from './display.js';
+import { mksobj_at, splitobj, mkobj, place_object } from './mkobj.js';
+import { newsym, canseemon, canspotmon, pline } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
 import { enexto_core } from './teleport.js';
 import { GP_CHECKSCARY } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
-         M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL } from './const.js';
-import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+         M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
+         XKILL_NOMSG, XKILL_NOCORPSE } from './const.js';
+import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
 
 import { has_ceiling } from './dungeon.js';
 import { in_rooms } from './hack.js';
@@ -55,6 +56,8 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
     is_clinger, is_flyer, is_floater, mindless, dmgtype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { You, You_feel } from './pline.js';
+import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, mpickobj } from './makemon.js';
 import { nonliving, is_neuter } from './mondata.js';
@@ -1241,7 +1244,7 @@ export async function xkilled(mtmp, xkill_flags) {
     /* dispose of monster and make cadaver */
     if (game.stoned)
         note_unported_mon('xkilled:monstone');
-    mondead(mtmp);
+    await mondead(mtmp);
 
     if (be_sad)
         await You('have a sad feeling for a moment, then it passes.');
@@ -1258,10 +1261,10 @@ export async function xkilled(mtmp, xkill_flags) {
             && mdat.mlet !== MONSYMS.S_KOP
             /* no items from cloned monsters */
             && !mtmp.mcloned) {
-            const otmp = mkobj(RANDOM_CLASS, true);
+            const otmp = mkobj(OCLASSES.RANDOM_CLASS, true);
             /* don't create large objects from small monsters */
             const otyp = otmp.otyp;
-            if (otmp.oclass === FOOD_CLASS && !(mdat.mflags2 & MC_M2_COLLECT)
+            if (otmp.oclass === OCLASSES.FOOD_CLASS && !(mdat.mflags2 & MFLAGS.M2_COLLECT)
                 && !otmp.oartifact) {
                 /* newly created permafood from kills makes too much
                    nutrition in the late game */
@@ -1303,8 +1306,8 @@ export async function xkilled(mtmp, xkill_flags) {
     more_experienced(tmp, 0);
     await newexplevel(); /* will decide if you go up */
 
-    if (mtmp.ispriest || mdat.msound === MS_NEMESIS
-        || mdat.msound === MS_GUARDIAN)
+    if (mtmp.ispriest || mdat.msound === MSOUND.MS_NEMESIS
+        || mdat.msound === MSOUND.MS_GUARDIAN)
         note_unported_mon('xkilled:alignment_arms');
 }
 
@@ -1527,27 +1530,33 @@ export function corpse_chance(mon, magr, was_swallowed) {
 // plus the corpse. mondead's full detach (worm segments, shop bookkeeping,
 // vault guards, life-saving) is a slice: the map removal, so the fight's
 // survivor can occupy the square.
-export async function mondied(mdef) {
+// src/mon.c:3086 mondead() — the monster dies, WITHOUT a corpse. The slice
+// ported is the map and list removal plus m_detach()'s relobj (mon.c:2779),
+// which drops what the creature carried at the square it died on.
+export async function mondead(mdef) {
     const mx = mdef.mx, my = mdef.my;
 
-    /* mondead() slice: remove from the map and the monster list */
     mdef.mhp = 0;
     remove_monster(mx, my);
     const idx = (game.level?.monsters || []).indexOf(mdef);
     if (idx >= 0)
         game.level.monsters.splice(idx, 1);
 
-    /* src/mon.c:2779 m_detach() — release (drop onto the map) everything the
-       creature was carrying, at the coordinates it died on. */
+    /* "this assumes that the dead monster's map coordinates remain accurate":
+       both relobj and any corpse read mx,my after this point */
     mdef.mx = mx; mdef.my = my;
     if ((mdef.minvent || []).length) {
         const { relobj } = await import('./steal.js');
         await relobj(mdef, 1, false);
     }
+}
 
-    /* "this assumes that the dead monster's map coordinates remain
-       accurate" — corpse placement reads mdef->mx,my after mondead */
-    mdef.mx = mx; mdef.my = my;
+// src/mon.c:3253 mondied() — mondead() plus, maybe, a corpse.
+export async function mondied(mdef) {
+    const mx = mdef.mx, my = mdef.my;
+
+    await mondead(mdef);
+
     if (corpse_chance(mdef, null, false)
         && (ACCESSIBLE(game.level?.at(mx, my)?.typ) || is_pool(mx, my)))
         make_corpse(mdef, CORPSTAT_NONE);

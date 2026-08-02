@@ -7,7 +7,9 @@ import { Levitation, Flying, Fire_resistance } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at } from './mon.js';
 import { pickup } from './pickup.js';
-import { is_pit } from './const.js';
+import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER } from './const.js';
+import { near_capacity } from './attrib.js';
+import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door } from './cmd.js';
 // hack.js — the hero's movement and the terrain predicates that go with it.
 // C ref: src/hack.c
@@ -702,4 +704,25 @@ export function u_locomotion(def) {
     return game.u.uprops?.LEVITATION ? (capitalize ? 'Float' : 'float')
          : game.u.uprops?.FLYING ? (capitalize ? 'Fly' : 'fly')
          : def;
+}
+
+
+// src/hack.c:4399 check_capacity() — refuse an action when overloaded.
+export function check_capacity(str) {
+    if (near_capacity() >= EXT_ENCUMBER) {
+        note_unported_hack('check_capacity:message');
+        return 1;
+    }
+    return 0;
+}
+
+// src/hack.c:3051 overexertion() — the hunger tick an attack costs.
+//
+// gethungry() DRAWS, so this is the reason attacking a monster spends more
+// from the stream than stepping onto an empty square does.
+export async function overexertion() {
+    gethungry();
+    if ((game.moves % 3) !== 0 && near_capacity() >= HVY_ENCUMBER)
+        note_unported_hack('overexertion:overexert_hp');
+    return game.multi < 0; /* might have fainted */
 }

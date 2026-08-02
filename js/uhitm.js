@@ -23,8 +23,8 @@ import { hitmsg } from './mhitu.js';
 import { You } from './pline.js';
 import { mon_nam } from './do_name.js';
 import { exclam } from './zap.js';
-import { canseemon } from './display.js';
-import { wakeup, killed, xkilled } from './mon.js';
+import { canseemon, canspotmon, glyph_at, sensemon, newsym } from './display.js';
+import { wakeup, killed, xkilled, seemimic } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
@@ -37,6 +37,10 @@ import { abon, hitval, weapon_hit_bonus, dmgval } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, thick_skinned, attacktype, sticks } from './mondata.js';
+import { hides_under } from './mondata.js';
+import { MONSYMS } from './monst_data.js';
+import { u_wipe_engr } from './engrave.js';
+import { check_capacity, overexertion } from './hack.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
@@ -44,7 +48,8 @@ import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP, XKILL_NOMSG } from './const.js';
+         W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP, XKILL_NOMSG,
+         STRAT_WAITMASK, engulfing_u } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 
@@ -69,7 +74,7 @@ const is_longworm = (ptr) =>
 //
 // Returning FALSE is what lets the caller swap places with the monster, so the
 // three arms below are "you stop", "it doesn't budge", and "go ahead and swap".
-export function do_attack(mtmp) {
+export async function do_attack(mtmp) {
     if (is_safemon(mtmp) && !game.context?.forcefight) {
         /* u_wield_art(ART_STORMBRINGER) — no artifact is wielded this early */
         const mdat = game.mons[mtmp.mnum];
@@ -112,9 +117,127 @@ export function do_attack(mtmp) {
         }
     }
 
-    /* everything past here is attack_checks() and the combat code */
-    note_unported_uhitm('do_attack:combat');
+    /* possibly set in attack_checks; examined in known_hitum */
+    game.override_confirmation = false;
+    /* attack_checks() reads gb.bhitpos, which might map an invisible
+       monster there */
+    game.bhitpos = { x: game.u.ux + game.u.dx, y: game.u.uy + game.u.dy };
+    game.notonhead = (game.bhitpos.x !== mtmp.mx || game.bhitpos.y !== mtmp.my);
+    if (await attack_checks(mtmp, game.u.uwep))
+        return true;
+
+    if (game.u.umonnum !== undefined && game.Upolyd)
+        note_unported_uhitm('do_attack:polyd');
+
+    /* src/uhitm.c:530 — check_capacity() prints and returns 1 when the hero
+       is overloaded; overexertion() calls gethungry(), which DRAWS, so an
+       attack costs a hunger tick the plain step does not. */
+    if (check_capacity('You cannot fight while so heavily loaded.')
+        || await overexertion())
+        return true;                            /* goto atk_done */
+
+    if (game.u.twoweap)
+        note_unported_uhitm('do_attack:can_twoweapon');
+
+    if (game.unweapon) {
+        game.unweapon = false;
+        if (game.flags?.verbose)
+            note_unported_uhitm('do_attack:unweapon_message');
+    }
+    exercise(A_STR, true);  /* you're exercising muscles */
+    /* andrew@orca: prevent unlimited pick-axe attacks */
+    u_wipe_engr(3);
+
+    /* Is the "it died" check actually correct? */
+    if (mdat_of(mtmp).mlet === MONSYMS.S_LEPRECHAUN && !mtmp.mfrozen
+        && !helpless(mtmp) && !mtmp.mconf && mtmp.mcansee && !rn2(7))
+        note_unported_uhitm('do_attack:leprechaun_dodge');
+
+    await hitum(mtmp, game.mons[game.u.umonnum ?? 0]);
+
+    if (game.context?.forcefight && !DEADMONSTER(mtmp) && !canspotmon(mtmp))
+        note_unported_uhitm('do_attack:forcefight_map_invisible');
     return true;
+}
+
+const mdat_of = (mtmp) => game.mons[mtmp.mnum];
+
+// src/uhitm.c:189 attack_checks() — everything that can stop an attack before
+// it starts. Returns TRUE when the hero's move is used up without a blow.
+//
+// It draws NOTHING: every arm is a message or a state change. The forcefight
+// arm returns early, which is why a forced attack on an empty square never
+// asks anything.
+async function attack_checks(mtmp, wep) {
+    /* if you're close enough to attack, alert any waiting monster */
+    mtmp.mstrategy &= ~STRAT_WAITMASK;
+
+    if (engulfing_u(mtmp))
+        return false;
+
+    if (game.context?.forcefight)
+        return false;
+
+    /* cache the shown glyph; the cases that CHANGE it all return without
+       looking at it again */
+    const glyph = glyph_at(game.bhitpos.x, game.bhitpos.y);
+    const glyph_is_warning = (g) => g?.kind === 'warning';
+    const glyph_is_invisible = (g) => g?.kind === 'invisible';
+
+    if (!canspotmon(mtmp)
+        && !glyph_is_warning(glyph) && !glyph_is_invisible(glyph)
+        && !(!game.u.ublind && mtmp.mundetected
+             && hides_under(mdat_of(mtmp)))) {
+        await pline("Wait!  There's something there you can't see!");
+        note_unported_uhitm('attack_checks:map_invisible');
+        if (mtmp.m_ap_type)
+            note_unported_uhitm('attack_checks:invisible_mimic');
+        /* always necessary; also un-mimics mimics */
+        await wakeup(mtmp, true);
+        return true;
+    }
+
+    if (mtmp.m_ap_type && !sensemon(mtmp) && !glyph_is_warning(glyph)) {
+        if (glyph_is_invisible(glyph)) {
+            seemimic(mtmp);
+            return false;
+        }
+        note_unported_uhitm('attack_checks:stumble_onto_mimic');
+        return true;
+    }
+
+    if (mtmp.mundetected && !canseemon(mtmp) && !glyph_is_warning(glyph)
+        && (hides_under(mdat_of(mtmp))
+            || mdat_of(mtmp).mlet === MONSYMS.S_EEL)) {
+        mtmp.mundetected = mtmp.msleeping = 0;
+        newsym(mtmp.mx, mtmp.my);
+        if (glyph_is_invisible(glyph)) {
+            seemimic(mtmp);
+            return false;
+        }
+        if (!sensemon(mtmp)) {
+            note_unported_uhitm('attack_checks:hidden_monster_message');
+            return true;
+        }
+    }
+
+    /* wake a monster from the above cases if the hero can sense it */
+    if ((mtmp.mundetected || mtmp.m_ap_type) && sensemon(mtmp)) {
+        mtmp.mundetected = 0;
+        await wakeup(mtmp, true);
+    }
+
+    if (game.flags?.confirm !== false && mtmp.mpeaceful
+        && !game.u.uprops?.CONFUSION && !game.u.uprops?.HALLUC
+        && !game.u.uprops?.STUNNED) {
+        /* is_art(wep, ART_STORMBRINGER) — no artifact is wielded this early */
+        if (canspotmon(mtmp)) {
+            note_unported_uhitm('attack_checks:really_attack_query');
+            return true;
+        }
+    }
+
+    return false;
 }
 
 // src/uhitm.c:331 check_caitiff() — a Knight's chivalry and a Samurai's giri.

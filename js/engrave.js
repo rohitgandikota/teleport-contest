@@ -7,6 +7,7 @@
 
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
+import { can_reach_floor } from './pickup.js';
 import { getrumor, get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
 import { DUST, ENGRAVE, BURN, MARK, HEADSTONE, ENGR_BLOOD, N_ENGRAVE, ECMD_OK, ECMD_TIME, ECMD_CANCEL } from './const.js';
 import { getobj, GETOBJ_PROMPT, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, hands_obj } from './invent.js';
@@ -259,6 +260,12 @@ export function make_engr_at(x, y, s, pristine_s, e_time, e_type) {
     }
 
     (game.level.lev_engr ||= []).push(ep);
+}
+
+// src/engrave.c:250 u_wipe_engr() — rub out part of what is under the hero.
+export function u_wipe_engr(cnt) {
+    if (can_reach_floor(true))
+        wipe_engr_at(game.u.ux, game.u.uy, cnt, false);
 }
 
 // src/engrave.c wipe_engr_at() — age an engraving by rubbing out `cnt` of its

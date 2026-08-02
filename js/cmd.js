@@ -1031,22 +1031,17 @@ async function domove_core() {
     }
 
     /* src/hack.c:2790 — domove_attackmon_at() gates walking into an occupied
-       square. Wired for SAFE monsters only: the pet-displacement rn2(7),
-       the flee arm and the frozen-pet arm live in do_attack and draw exactly
-       as C. A HOSTILE target keeps the old blocked path, because do_attack's
-       combat tail (hmon, the kill path, retaliation) is unported and wiring
-       it measured -23 screens pre-reset; that gap stays recorded. */
+       square, for a hostile target as well as a safe one. do_attack's combat
+       tail runs attack_checks(), the overexertion() hunger tick, u_wipe_engr
+       and hitum(), so the whole hero-attacks-monster chain is live. */
     {
         const mtmp_atk = m_at(newx, newy);
-        if (mtmp_atk && is_safemon(mtmp_atk) && !game.context.forcefight) {
+        if (mtmp_atk) {
             const displaceu = { value: false };
             if (await domove_attackmon_at(mtmp_atk, newx, newy, displaceu)) {
-                /* the move was used up (pet refused to budge, message shown);
-                   C's domove returns here with the turn consumed */
+                /* the move was used up; C's domove returns here */
                 return;
             }
-        } else if (mtmp_atk && !is_safemon(mtmp_atk)) {
-            note_unported_cmd('domove:attack_hostile');
         }
     }
 

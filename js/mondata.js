@@ -627,3 +627,11 @@ export function name_to_monplus(in_str, rest_box) {
     if (rest_box) rest_box.at = skipped + len;
     return mntmp;
 }
+
+
+// include/mondata.h:101 is_human()
+export const is_human = (ptr) => (ptr.mflags2 & MFLAGS.M2_HUMAN) !== 0;
+
+// include/mondata.h:149 is_unicorn() — the unicorn class AND likes_gems().
+export const is_unicorn = (ptr) =>
+    ptr.mlet === MONSYMS.S_UNICORN && (ptr.mflags2 & MFLAGS.M2_JEWELS) !== 0;

@@ -15366,3 +15366,43 @@ dump its mnum at that probe point.
 - sengr_at's `strict` selects exact-vs-substring; in C BOTH arms are substring
   and `strict` picks actual-vs-remembered text. Fix this AFTER the above, since
   substring matches more often than exact.
+
+## iter 92 — onscary's Elbereth arm was missing both of C's guard clauses
+
+Board 2249, passes 7, RNG +6, tree clean. Committed 4bee195.
+
+The final arm of js/monmove.js onscary() was a bare
+`return !!sengr_at("Elbereth", x, y, true);` with a dead `return false;` after
+it. C (monmove.c, end of onscary) has TWO further clauses:
+
+    return ((ep = sengr_at("Elbereth", x, y, TRUE)) != 0
+            && (u_at(x, y)
+                || (Displaced && mtmp->mux == x && mtmp->muy == y)
+                || (ep->guardobjects && vobj_at(x, y)))
+            && !(mtmp->isshk || mtmp->isgd || !mtmp->mcansee
+                 || mtmp->mpeaceful
+                 || mtmp->data == &mons[PM_MINOTAUR]
+                 || Inhell || In_endgame(&u.uz)));
+
+Both now ported. **`mtmp->mpeaceful` was seed2200's step 228**: we scared a
+peaceful monster, which sent distfleeck into
+`monflee(mtmp, rnd(rn2(7) ? 10 : 100), TRUE, TRUE)` and spent two draws C never
+makes. Step 228 now matches exactly, 17 draws both sides.
+
+**seed2200 is still 228/230** — the draws align but its two lost screens are
+elsewhere. Re-locate them; the earlier per-step sweep was never finished for
+this session (230 steps). `tools/diverge.mjs seed2200` reports the first RNG
+divergence quickly and is the right first call now that 228 is clean.
+
+**Trail of corrections on this one, worth reading as a whole:** iter 88 blamed a
+phantom secret door (wrong — dumped the neighbours, none); iter 90 blamed
+engraving degradation (wrong — wired u_wipe_engr in iter 91 and the wipe does
+not fire in the 12 moves available); iter 92 found it in the guard list. The
+lesson each time was the same: I reasoned forward from a plausible mechanism
+instead of reading the C function to its end. onscary's last statement had the
+answer the whole time.
+
+**Still open from iter 90, unchanged:** sengr_at's `strict` selects
+exact-vs-substring where C uses it to pick actual-vs-remembered text and BOTH
+arms are substring. Real, and now safe to fix — the onscary guards no longer
+depend on the match being narrow.

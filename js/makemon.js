@@ -738,7 +738,16 @@ function m_initinv(mtmp) {
         }
         break;
     case S_QUANTMECH:
+        /* src/makemon.c:776 — a quantum mechanic may carry Schroedinger's
+           box. The draw happens for every S_QUANTMECH; the box and its
+           cat corpse are recorded. */
+        if (!rn2(20) && ptr.pmidx === PMNAMES.PM_QUANTUM_MECHANIC)
+            note_unported('m_initinv:schroedingers_box');
+        break;
     case S_DEMON:
+        /* src/makemon.c:786 — devil weapons */
+        note_unported(`m_initinv mlet=${ptr.mlet}`);
+        break;
     case S_GNOME:
         /* src/makemon.c:809 — a gnome sometimes carries a lit candle; in the
            Mines during level creation it is far more likely. */

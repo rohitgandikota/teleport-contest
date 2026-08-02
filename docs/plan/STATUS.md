@@ -15485,3 +15485,37 @@ clear together.
 
 seed2200 stays the best near-pass on the board: 228/230, both losses on this
 single frame.
+
+## iter 95 — CORRECTION: the "C truncates its menu text" claim was my own artifact
+
+Board 2249, passes 7, tree clean, no code change.
+
+**Retract the width hypothesis from iter 94.** I reported that C truncates
+"d - an uncursed ring of " where we print the full line, and inferred our menu
+was wider. That was **my `cut -c1-72` in the inspection command**, not the game.
+Re-read without it:
+
+    C     14 >|         └────────── d - an uncursed ring of poison resistance
+    ours  14 >|                     d - an uncursed ring of poison resistance
+
+The menu text is IDENTICAL, character for character, on every row. maxcol is not
+the difference and there is no clipping bug. Lesson: never pipe a frame
+comparison through `cut`/`head` and then reason about the content — the same
+truncation trap that has now cost time three separate ways (grep | head -5, a
++150-line window, and this).
+
+**What still stands, and it is the whole finding:** at step 83 we compute
+`maxrow=24 npages=2`, which trips `maxrow >= ROWS` -> `offx = 0` ->
+`clearScreen()`, wiping the map C keeps. C's rule and its
+`maxrow = rows = lmax + 1` assignment are identical (wintty.c:1924, :2769), so
+**C must be reaching that code with maxrow < 24, i.e. npages == 1.** Our menu
+has more ROWS than C's while having the same text.
+
+**Next probe:** dump our menu's `nitems` and the full item list at step 83 and
+count what C's frame implies. Since the visible text matches, the extra rows are
+most likely an entry C does not list at all, or a class heading we emit for an
+empty class — compare against the `display_inventory()` path (js/invent.js), NOT
+`display_pickinv()`; the 'i' command uses the former and only the latter got the
+lazy-heading fix in iter 67.
+
+seed2200 is still 228/230, both losses on this one frame.

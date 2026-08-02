@@ -12409,3 +12409,39 @@ says so.
 at step 44, immediately after the door message). That is now four sessions
 touched by it — seed0004, seed4500, seed0006 and, by the same shape, likely
 others. Its value has gone up since it was parked.
+
+## The wall-revelation bug is abandoned, for good
+
+Board 1951 -> 1953, passes 6. One commit.
+
+**Decision: stop working the wall bug.** I said last iteration I would
+instrument rather than read, and then spent this iteration reading vision.c
+and display.c again — a fourth pass. What I found was one more link I had not
+read (`_map_location` gates on seenv too, display.c:419), and it did not
+resolve the contradiction: every link in C's chain says the wall should be
+drawn, and C's recorded screen says it is not.
+
+The only instrument that could settle it is building the C and printing
+viz_array, which is not feasible inside this loop. **Do not open this again.**
+It costs an iteration each time and has now cost four. It affects 2 cells per
+occurrence in seed0004, seed4500 and seed0006 — real but small, and bounded.
+
+**What was actually delivered:** trapeffect_magic_trap and domagictrap
+(trap.c:4356). fate = rnd(20) drives everything; only the pure message arms
+are live.
+
+**Two import bugs surfaced by reaching that code, both worth noting:**
+- js/mon.js used `stackobj` in xkilled's treasure drop WITHOUT importing it.
+  That path had never been exercised by any session until this trap fired, so
+  it had been latent since xkilled was ported.
+- js/trap.js's `stackobj` import resolved to undefined through the cycle
+  `trap -> invent -> pickup -> hack -> trap`. pickup.js gained its hack.js
+  import earlier this session, which closed that loop. Bound at call time
+  instead. **Adding an import can silently break an unrelated module's
+  bindings through a cycle** — if a symbol is suddenly undefined, suspect a
+  newly-closed cycle before suspecting the symbol.
+
+**Next target: `doset`.** Six sessions press 'O' and at least two are blocked
+on it now (~970 screens). Its layout is fully determined by js/optlist.js,
+which is already generated, so this is mechanical rather than uncertain --
+unlike the vision work.

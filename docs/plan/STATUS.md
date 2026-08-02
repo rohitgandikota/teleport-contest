@@ -14453,3 +14453,37 @@ draw. `mtmp.meating`, `edog->whistletime`/`hungrytime`, and the
 `mtmp->movement` accounting are the candidates.
 
 Do NOT start from step 30's missing obj_resists; it is the symptom.
+
+## iter 70 — m_consume_obj never deleted eaten food (+15)
+
+Board **2185 -> 2200**, RNG **+652** (bda7b08). seed0030 +14, seed0104 +1.
+
+`m_consume_obj()`'s corpse/glob/egg/carrot arm returned early with a
+note_unported for the polyfood/mlevelgain/mhealup/mstoning consequences and
+skipped `delobj()` on the way out. C computes those four flags first — they are
+pure predicates with no draws — then calls **delobj() unconditionally**, and
+only afterwards applies newcham/grow_up/monstone/mon_givit. Recording the
+effects is right; skipping the deletion was not. A monster could eat the same
+food forever: seed0030's kitten ate one newt corpse at step 30 and again at
+step 33, with the level's object count stuck at 19 from step 29 through 34.
+Each repeat re-ran dogfood()'s obj_resists and dog_eat, so the streams drifted
+further with every one.
+
+**Two corrections to iter 69, both worth reading before trusting that entry.**
+
+1. I wrote that our pet ate a turn EARLY. It ate three steps LATE — or rather,
+   it ate on time at step 30 (screens 29-32 all match) and then ate a SECOND
+   time at step 33. Reading C's message row per step (`screendiff | sed -n 4p`)
+   settles this in one command and I should have done it first.
+2. I concluded from a silent probe that `dog_invent` was never called. The
+   probe was faulty — it called `helpless()`, which is not in scope in dog.js,
+   so it threw and produced nothing. `dog_invent` runs 33 times. **When a probe
+   prints nothing, verify the probe before believing the absence**: put an
+   unconditional marker at the top of the same function first.
+
+The general shape is one to remember: an `else { note_unported(); return; }`
+that skips a side effect the C performs on EVERY path. Worth grepping for other
+early returns that sit in front of a delobj/free/extract call.
+
+**Next:** re-bisect seed0030 (still the largest block at ~1852 lost). Its first
+differing screen has moved past 33.

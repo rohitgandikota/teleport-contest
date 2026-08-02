@@ -1,3 +1,23 @@
+=== seed0030 STEP 21 = ONE-STEP-EARLY WALL REVEAL; right_side IS CLEAN ===
+Closed questions: geometry is IDENTICAL (C draws the same vwall/blcorner
+at the same terminal cells at step 22; my raw decodeScreen diffs compare
+translated-vs-raw DEC chars and are NOISE — trust screendiff only). The
+map layer never writes those cells (cell-watch shows only blanks); the
+early glyphs come from vision marking (64,9)/(64,11) COULD_SEE|IN_SIGHT
+at hero (63,10) — one hero-step before C does. right_side() was compared
+LINE FOR LINE against C vision.c:1666-1760 including the right_mark+1
+corner kludge: identical. REMAINING SUSPECTS, in order: (1) view_from's
+START-ROW span marking (what right/left marks it passes to the first
+right_side/left_side calls for rows 9 and 11 — C vision.c ~1450-1560);
+(2) left_side()'s mirrored opaque arm (port vision.js:288 — verify the
+left_mark-1 kludge parity); (3) right_ptrs/left_ptrs construction
+(vision_reset run-length pointers; an off-by-one in run ends changes
+right_edge). The reveal is symmetric (both (64,9) N and (64,11) S), so
+whatever it is applies to both scan directions equally — favoring (1)
+or (3) over a single-sided bug in (2).
+Probe kit: __step_snapshot (jsmain), __cell_watch (display.js),
+__rng_trace_sites (rng.js); align0030/firstghost/diffcount in scratch.
+
 === seed0030 STEP 21: TWO STALE TERMINAL CELLS, WRITER UNKNOWN ===
 Alignment nailed (scratchpad/align0030.mjs; terminal row = map y + 1,
 terminal col = map x; screendiff/diverge's 'seg 1' is 1-BASED =

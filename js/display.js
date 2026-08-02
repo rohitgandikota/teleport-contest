@@ -251,6 +251,12 @@ export function gbuf_at(x, y) {
 export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr = 0, glyph = undefined) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
+    /* Debug-only cell watch (never set during scoring): log who writes a
+       watched map cell. globalThis.__cell_watch = {cells: [[x,y],...]} */
+    if (globalThis.__cell_watch
+        && globalThis.__cell_watch.cells.some(([wx, wy]) => wx === x && wy === y))
+        console.error(`CELLWATCH (${x},${y}) ch=${JSON.stringify(ch)} dec=${!!decgfx}\n`
+            + (new Error().stack || '').split('\n').slice(2, 6).join('\n'));
     const rows = (game.gbuf ||= []);
     (rows[y] ||= [])[x] = {
         disp_ch: ch,

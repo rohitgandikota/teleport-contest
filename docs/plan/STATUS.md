@@ -14012,3 +14012,47 @@ unported potion arm or prompt on the critical path. Its `peffects()` switch
 still handles only CONFUSION, OIL, FRUIT_JUICE/SEE_INVISIBLE and PARALYSIS;
 every other potion type falls to the recorded default. Keep walking it with
 `node tools/stepdraws.mjs seed0002 <lo> <hi>`.
+
+## Iteration 60 — a real bug found, deliberately NOT applied yet
+
+Board **2172** (unchanged), passes 6. Commit `ca9f987`.
+
+### hmd.unarmed has always been true
+
+`hmon_hitmon` computes
+
+    unarmed: !game.uwep && !game.uarm && !game.uarms
+
+and **none of those three fields exists** in this port -- the accessors are
+`game.u.uwep` and `worn(W_ARM)` / `worn(W_ARMS)`. So `unarmed` is
+permanently true and **every armed branch of hmon_hitmon is dead code**,
+including the one that sets `maybe_knockback`.
+
+This is the same accessor trap as `game.uwep` in the lock port: a field that
+reads `undefined` makes a negated test silently always-true.
+
+Wired this iteration: `maybe_knockback` and the `mhitm_knockback()` call in
+hmon_hitmon's tail (uhitm.c:1926), which were also missing.
+
+### Why the fix is not applied
+
+Correcting `unarmed` makes seed0002's step-90 knockback draws match C
+exactly (rn2(3) at uhitm.c:5258, rn2(6) at :5269) -- and then diverges one
+draw later: C spends `rn2(25)` in known_hitum's monflee check, we do not,
+because `malive` is false. **Our monster dies where C's survives**, so the
+damage that an ARMED hit deals must also be wrong somewhere in hmon_hitmon.
+
+Net effect measured: **-2 screens** (seed0360 188 -> 186). Under the
+no-regression rule it is reverted, with the exact correct line and this
+explanation left in the code comment.
+
+**Next iteration should apply the `unarmed` fix and the damage fix
+together**, using `node tools/stepdraws.mjs seed0002 90 90` -- with
+`unarmed` corrected, the first divergence is index 7, known_hitum's
+rn2(25), and the question is why our monster is already dead there.
+
+### Also noted
+
+seed0360's own first divergence (step 164, draw 5392) is
+`blessorcurse(mkobj.c:1846)` with rn2(17) -- the SPBOOK/WAND arm flagged
+back in iteration 37 and still open. It is unrelated to the above.

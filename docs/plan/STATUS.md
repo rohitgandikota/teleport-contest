@@ -13688,3 +13688,50 @@ then the bigrm set.
 `splev_initlev`, i.e. in the loader preamble, not in bigrm-7.lua itself.
 Reproducing a level exactly means reproducing that preamble too -- check
 what oracle/castle/valley do about it before porting a fourth.
+
+## Iteration 52 — special-level pipeline verified; replace_terrain ported
+
+Board **2171**, no regressions. Commit `ecf666b`.
+
+### The loader preamble is already correct
+
+Iteration 51 flagged a mystery shuffle before `splev_initlev`. Resolved:
+**dat/nhlib.lua:24-25 does `align = {"law","neutral","chaos"}; shuffle(align)`
+at load time**, so every special-level load spends rn2(3), rn2(2) before
+anything in the level file runs. `js/sp_lev.js` load_special() **already
+replicates this** (search "align shuffle"), and `lspo_level_init()` already
+draws the `rn2(2)` that solidfill's BOOL_RANDOM lit costs.
+
+So C's first five draws of a bigrm build map exactly onto machinery we have:
+
+    0  rn2(3)  getbones            already correct
+    1  rnd(13) makemaz             already correct (picks bigrm-7)
+    2  rn2(3)  nhlib align shuffle load_special has it
+    3  rn2(2)  nhlib align shuffle load_special has it
+    4  rn2(2)  splev_initlev       lspo_level_init has it
+    5  rn2(4)  bigrm-7.lua:32      needs the level file
+
+**Only the level DATA is missing.** One caveat: load_special() returns false
+for an unported name BEFORE reaching the align shuffle, so an unported level
+also loses those two draws.
+
+### Ported this iteration
+
+`lspo_replace_terrain()` (sp_lev.c:5055) -- the last opcode bigrm-* needs.
+Every matching square draws rn2(100) even at the default chance of 100.
+
+### bigrm-7 spec, ready to write
+
+dat/bigrm-7.lua is 53 lines. In order: `level_init(solidfill, fg=" ")`,
+`level_flags("mazelevel")`, `map(...)` (19 rows), then
+`math.random(1,#terrain)` over `{"L","T","{","."}` -> rn2(4),
+`replace_terrain({region={0,0,74,18}, fromterrain="L", toterrain=...})`
+(the map has 4 'L' cells, so 4 x rn2(100)), `region(area(1,1,73,17),"lit")`,
+`stair("up")`, `stair("down")`, `non_diggable()`, then 15 `object()`,
+6 `trap()`, 28 `monster()` -- all random, all drawing.
+
+Model it on js/dat/castle.js (map-based, 217 lines) rather than oracle.js
+(room-based). Register it in js/dat/levels.js.
+
+Validate with `node tools/stepdraws.mjs seed0399 42 42` -- C spends 7133
+draws there; every one should line up once the level is right.

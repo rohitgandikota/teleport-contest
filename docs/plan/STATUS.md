@@ -15749,3 +15749,40 @@ soko1-2 and soko1-1 are the highest-percentage single levels but Sokoban levels
 carry more furniture and their own flags, so budget a full iteration each.
 Screens will not move until a session's OTHER divergences are also fixed — judge
 these ports by RNG matched and by the unported-hits list shrinking.
+
+## iter 102 — bigrm-10 ported (RNG +14); bigrm family done for the public corpus
+
+Board 2249, passes 7, tree clean. Committed 221218b.
+
+bigrm-10, the "fog maze": interior lattice of 'C' cloud squares. Unlike
+bigrm-7/9 this one is not a plain map — it exercises `percent`,
+`replace_terrain` twice, `teleport_region`, `levregion` and `mazewalk`. **All
+of those builders already existed in js/sp_lev.js; no new ones were needed**,
+which is the useful news for the rest of the family.
+
+Draw order is C's and is the part to get right: `percent(40)` spends one
+rn2(100) UNCONDITIONALLY, and only inside that branch does
+`math.random(1, #terrain)` spend its rn2(5) and the two replace_terrain passes
+run. Writing the percent inside the branch, or hoisting the terrain pick, would
+shift every later draw on the level.
+
+No bigrm variant is recorded as unported by any public session now. Registry
+(js/dat/levels.js) holds six: bigrm-7, bigrm-9, bigrm-10, oracle, castle,
+valley.
+
+**Remaining, from `node tools/unported-hits.mjs`:**
+
+    9%  makemaz:soko1-2     9%  makemaz:soko1-1    9%  makemaz:tower1
+    9%  makemaz:x-strt      9%  makemaz:x-loca     9%  makelevel:quest_fill
+    7%  makemaz:check_ransacked                    7%  makemaz:x-goal
+    5%  makemaz:minend-1    5%  makemaz:soko2-1    5%  makemaz:medusa-2
+
+The x-* family (x-strt, x-loca, x-goal) is the QUEST branch and pairs with
+`makelevel:quest_fill`; those four are ~34% between them and are probably one
+coherent piece of work. Sokoban (soko1-1, soko1-2, soko2-1) is ~23% and carries
+more furniture plus its own flags. Either is a reasonable next block; take
+Sokoban first if you want single-file wins, the quest branch if you want the
+bigger total.
+
+**Judge these by RNG matched and by unported-hits shrinking, not by screens** —
+a session only gains screens once ALL its divergences are fixed.

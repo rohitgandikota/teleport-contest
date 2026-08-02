@@ -41,7 +41,7 @@ import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
@@ -221,6 +221,17 @@ async function help_dir(sym, msg) {
     tty_destroy_nhwindow(win);
     await docrt();
     return true;
+}
+
+// src/cmd.c:1386 set_move_cmd() — a movement command records its direction
+// on `u` before it runs, which is what makes u.dz nonzero for '>' and '<'.
+export function set_move_cmd(dir, run) {
+    game.u.dz = zdir[dir];
+    game.u.dx = xdir[dir];
+    game.u.dy = ydir[dir];
+    game.context.travel = game.context.travel1 = 0;
+    game.context.run = run;
+    game.context.nopick = 0;
 }
 
 // src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.

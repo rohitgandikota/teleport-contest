@@ -186,15 +186,37 @@ function terrain_glyph(loc, x, y) {
 // its buffer (gbuf) and every classifier (glyph_is_monster & friends) reads
 // it back; this port keeps a descriptor object: { kind: 'hero'|'mon'|'obj'
 // |'cmap'|'nothing', mon?, obj?, cmap? }.
+// src/display.c gbuf[][] — what is currently PAINTED, kept apart from the
+// level so that switching levels does not silently repaint the screen. Only
+// clear_glyph_buffer() empties it, which is what leaves the old map under
+// the "You descend the stairs.--More--" prompt.
+export function gbuf_at(x, y) {
+    const rows = (game.gbuf ||= []);
+    return (rows[y] ||= [])[x];
+}
+
 export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr = 0, glyph = undefined) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
+    const rows = (game.gbuf ||= []);
+    (rows[y] ||= [])[x] = {
+        disp_ch: ch,
+        disp_color: color,
+        disp_decgfx: !!decgfx,
+        disp_attr: attr | 0,
+        disp_glyph: glyph,
+    };
     loc.disp_ch = ch;
     loc.disp_color = color;
     loc.disp_decgfx = !!decgfx;
     loc.disp_attr = attr | 0;
     loc.disp_glyph = glyph;
     loc.gnew = 1;
+}
+
+// src/display.c:2159 clear_glyph_buffer()
+export function clear_glyph_buffer() {
+    game.gbuf = [];
 }
 
 // C glyph_at() (display.h:200) — what the glyph buffer holds for the spot.
@@ -391,6 +413,13 @@ function engraving_glyph(loc, x, y) {
 // ── docrt ──
 export async function docrt() {
     if (!game.level) return;
+
+    /* src/display.c:1739 — docrt_flags() clears first unless docrtNocls.
+       cls() flushes the message window, so an unacknowledged message gets
+       its --More-- BEFORE the map is wiped and repainted; that is why C
+       shows the old level under "You descend the stairs.--More--". */
+    await cls();
+
     for (let y = 0; y < ROWNO; y++)
         for (let x = 1; x < COLNO; x++) {
             const loc = game.level.at(x, y);
@@ -417,7 +446,7 @@ function render_map_row(y) {
     if (!game.level) return '';
     let firstCol = -1, lastCol = -1;
     for (let x = 1; x < COLNO; x++) {
-        const loc = game.level.at(x, y);
+        const loc = gbuf_at(x, y);
         if (loc?.disp_ch && loc.disp_ch !== ' ') {
             if (firstCol < 0) firstCol = x;
             lastCol = x;
@@ -435,7 +464,7 @@ function render_map_row(y) {
     else if (gap > 0) output += ' '.repeat(gap);
 
     for (let x = firstCol; x <= lastCol; x++) {
-        const loc = game.level.at(x, y);
+        const loc = gbuf_at(x, y);
         const ch = loc?.disp_ch ?? ' ';
         const color = term_start_color(loc?.disp_color ?? NO_COLOR);
         const dec = !!loc?.disp_decgfx;
@@ -443,7 +472,7 @@ function render_map_row(y) {
         if (ch === ' ') {
             // Space runs
             let run = 1;
-            while (x + run <= lastCol && (game.level.at(x + run, y)?.disp_ch ?? ' ') === ' ') run++;
+            while (x + run <= lastCol && (gbuf_at(x + run, y)?.disp_ch ?? ' ') === ' ') run++;
             if (activeDec) { output += '\x0f'; activeDec = false; }
             if (run > 4) output += `\x1b[${run}C`;
             else output += ' '.repeat(run);
@@ -605,7 +634,7 @@ export function _buildScreenOutput() {
         for (let y = 0; y < ROWNO; y++) {
             if (y + 2 <= msgLines.length) continue;
             for (let x = 1; x < COLNO; x++) {
-                const loc = game.level?.at(x, y);
+                const loc = gbuf_at(x, y);
                 if (!loc?.disp_ch || loc.disp_ch === ' ') continue;
                 const ch = loc.disp_decgfx ? (DEC_TO_UNICODE[loc.disp_ch] || loc.disp_ch) : loc.disp_ch;
                 display.setCell(x - 1, y + 1, ch,
@@ -654,7 +683,8 @@ export async function cls() {
         return;
     game._in_cls = true;
 
-    /* display_nhwindow(WIN_MESSAGE, FALSE) */
+    /* display_nhwindow(WIN_MESSAGE, FALSE) — the more() comes FIRST, while
+       the previous map is still painted; only then is the map cleared. */
     if (game._toplin === TOPLINE_NEED_MORE) {
         await more();
         game._toplin = TOPLINE_NEED_MORE;   /* more() reset it; force the erase */
@@ -663,6 +693,8 @@ export async function cls() {
     game._pending_message = '';
     game._toplin = TOPLINE_EMPTY;
 
+    /* clear_nhwindow(WIN_MAP) and clear_glyph_buffer() */
+    clear_glyph_buffer();
     const display = game?.nhDisplay;
     if (display?.clearScreen) display.clearScreen();
 

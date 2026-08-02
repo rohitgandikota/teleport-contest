@@ -691,3 +691,15 @@ export function monster_nearby() {
     }
     return false;
 }
+
+// src/hack.c:1817 u_locomotion() — the verb for the hero's own movement.
+//
+// Levitation and Flying override the polyform's; locomotion() would need the
+// hero's monster data, which for an unpolymorphed hero always yields `def`.
+export function u_locomotion(def) {
+    const capitalize = (def[0] === def[0].toUpperCase());
+
+    return game.u.uprops?.LEVITATION ? (capitalize ? 'Float' : 'float')
+         : game.u.uprops?.FLYING ? (capitalize ? 'Fly' : 'fly')
+         : def;
+}

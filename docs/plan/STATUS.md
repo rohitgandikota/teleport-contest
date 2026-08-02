@@ -15989,3 +15989,46 @@ that alone would account for the blowout: the level places 19 traps, 4 doors and
 **Concrete next step:** re-add the level behind the registry, run seed4500, and
 diff its build step's draws against C's recorded list. Do not judge by the board
 until the first differing draw is identified.
+
+## iter 108 — lspo_trap cleared as the soko1-2 suspect; Sokoban needs a fresh start
+
+Board 2249, passes 7, tree clean, everything pushed. No code change.
+
+Checked the first suspect from iter 107. **lspo_trap is not the blowout.**
+create_trap() only reaches get_location_coord() when the coord is RANDOM
+(SP_COORD_PACK_RANDOM), and soko1-2 passes explicit coordinates for all 19
+traps; mktrap then draws only for trap types that need it (the one rolling
+boulder, not the eighteen holes). That accounts for a handful of draws, not
+13556.
+
+**Honest assessment: Sokoban is not converging and should be restarted with a
+full context budget, not continued in slices.** Across iters 103-108 it has
+produced one large regression (-310, reverted) and two retracted diagnoses. The
+useful residue is all recorded:
+
+- the two builders it needs are landed and independently verified (189af78);
+- the level's content, boulder list and end-of-level draw order are in iter 103;
+- lspo_trap is cleared (this iter);
+- the remaining draw-bearing constructs are the filled zoo region (35 squares,
+  the biggest by far), the two `appear_as` mimics, the six `{class=...}` random
+  objects, and the rndcoord/percent pair.
+
+**When restarting, do it in this order and do NOT register the level until the
+end:** call the level builder directly from a scratch script with the RNG log
+enabled, compare its draw list against C's for seed4500's build step, and fix
+the first divergence before adding a second construct. Registering early is what
+turned a wrong level into a 310-screen regression.
+
+**Safer alternatives if the next agent wants forward motion instead:**
+- `medusa-1` also shows up in seed4500's unported set and is map-based;
+- the remaining quest levels (x-strt, x-loca, x-goal) plus makelevel:quest_fill
+  are ~34% combined and were never surveyed;
+- `js/mkmaze.js:66 makemaz:random_maze` — the ordinary maze fallback — is
+  recorded as unported and would affect every maze level rather than one branch.
+
+**Standing method note for this whole session, worth reading before any new
+investigation:** four wrong conclusions here all came from inferring
+from ABSENCE — a missing grep hit, a missing annotation, a missing screen
+region. Before concluding "C doesn't do X", check that doing X would leave a
+visible trace. And gate probes on an explicit step counter, never on incidental
+field values.

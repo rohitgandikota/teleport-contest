@@ -767,6 +767,15 @@ async function doset_simple_menu() {
                    routing it through parseoptions() updated game.rc.opts and
                    left the menu showing the old value. */
                 game.flags[allopt[k].name] = !bool_optval(allopt[k]);
+            } else if (allopt[k].hasHandler !== 'Yes') {
+                /* src/options.c:8672 — a compound option with no handler
+                   asks for its value outright. C then re-enters
+                   parseoptions() with "name:value"; our live store is
+                   game.flags, so the value lands there. */
+                const { getlin } = await import('./cmd.js');
+                const abuf = await getlin(`Set ${allopt[k].name} to what?`);
+                if (abuf !== null && abuf !== '\x1b')
+                    game.flags[allopt[k].name] = abuf;
             } else if (allopt[k].name === 'pickup_types') {
                 /* compound option with a handler: src/options.c:6114
                    handler_pickup_types() just re-enters parseoptions with a

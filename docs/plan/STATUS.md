@@ -15447,3 +15447,41 @@ and at maxcol/clipping, so check the clip width too.
 
 seed2200 remains the best near-pass: 228/230, both losses on this one frame
 (step 83's cells and, presumably, its cursor row).
+
+## iter 94 — seed2200 step 83: our inventory menu clears the screen, C's does not
+
+Board 2249, passes 7, tree clean, no code change. Measured facts only; the
+cause is now one probe away.
+
+**Cause 2 from iter 93 is RULED OUT without probing:** step 82 matches on all
+1920 cells and the map is visible in that frame, so our map memory HAS the room.
+The blank at step 83 is us over-clearing.
+
+**Measured menu geometry at step 83:**
+
+    MENU offx=0 offy=0 maxcol=55 maxrow=24 npages=2
+
+`maxrow=24` equals ROWS, so js/tty/wintty.js:346 `if (cw.maxrow >= ROWS) offx = 0`
+fires, offx becomes 0, and wintty.js:448 `if (!cw.offx) display.clearScreen()`
+wipes the map. C has the same rule (wintty.c:1924/1927,
+`cw->maxrow >= (int) ttyDisplay->rows`) and the same assignment
+(wintty.c:2769, `cw->maxrow = cw->rows = lmax + 1` for npages > 1), so the
+FORMULA is not the difference.
+
+**Therefore the difference is upstream: our menu paginates where C's does not,
+or is wider.** With npages > 1 both sides get maxrow = lmax + 1 = 24 and clear;
+with npages == 1 maxrow = nitems + 1, which for this inventory is under 24 and
+leaves the map alone. Corroborating evidence from the frames: C truncates its
+item text at "d - an uncursed ring of " while we print the full
+"d - an uncursed ring of poison resistance", so **our menu is wider than C's**
+(maxcol=55 on our side) — a wider menu with the same items can still paginate
+differently, and the width itself is a second, independent mismatch.
+
+**Next probe, cheap and decisive:** count our menu's nitems at step 83 and
+compare against what C must have had for npages == 1. Then find why our lines
+are longer — likely doname() emitting a suffix C omits, or the menu not
+clipping to its window width. Fixing the width may fix the pagination and the
+clear together.
+
+seed2200 stays the best near-pass on the board: 228/230, both losses on this
+single frame.

@@ -11238,3 +11238,35 @@ MAXMONNO, and check whether our mvitals ghost entry is being incremented
 at all — mkclass/morguemon return the permonst directly, so if our
 propagate is keyed on a different mndx for ghosts the born counter would
 never reach the limit.
+
+## 2026-08-01 (morgue, cont. 7): THE SCALE — we run 6 fill_zoo calls, C runs 3
+
+No code change (diagnosis only). Board 1552/6, gates clean, tree clean.
+
+**The number that matters, measured properly this time.** Total newmonhp
+draws inside step 164 (the valley), both sides:
+    C: 156   ours: 235
+Split of C's 156: 124 created inside fill_zoo, 32 from the script/other.
+And the fill_zoo invocation count on the valley:
+    ours: 6 calls — MORGUE(21,2-29,9), MORGUE(12,15-19,19),
+                    MORGUE(40,10-49,15), **ZOO(65,14-74,18)**,
+                    **ZOO(60,15-70,18)**, **BEEHIVE(42,6-45,8)**
+    C: 3 (the three morgues the script declares)
+**The valley script declares no zoo and no beehive.** Those three extra
+rooms are ours alone, and they are what inflates the monster count and
+occupies squares differently.
+
+**Ruled out this iteration:** ghost extinction (C creates only 8 ghosts all
+game vs MAXMONNO=120), mvitals init (our reset_mvitals matches allmain.c:781
+exactly), and species-specific rejection (C's 9 skipped morguemon calls span
+ghost, wraith AND zombie arms, so it is not about ghosts).
+
+**Next step — find who creates the ZOO/BEEHIVE rooms.** lspo_region only
+ever produces the correct types (verified: throne, barracks×2, temple,
+morgue×3). clear_level_structures does empty level.rooms. So the extra
+rooms are added DURING the valley build. Prime suspect: makelevel's regular
+-level room-type block (js/mklev.js ~line 680: do_mkroom(SHOPBASE/COURT/
+LEPREHALL/ZOO/TEMPLE...)) running even though makemaz took the special
+path — check whether special_done short-circuits BEFORE that block, or
+whether mkroom.c's own do_mkroom is reachable from the fill sweep. Log
+每 add_room/do_mkroom call on the valley with a stack to catch it.

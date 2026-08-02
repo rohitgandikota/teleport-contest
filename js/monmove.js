@@ -19,7 +19,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal } from './mondata.js';
-import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED } from './const.js';
+import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym } from './display.js';
 import { sobj_at, money_cnt } from './invent.js';
@@ -726,9 +726,37 @@ export function onscary(x, y, mtmp) {
     if (sobj_at(ONAMES.SCR_SCARE_MONSTER, x, y))
         return true;
 
-    /* src/monmove.c — the last arm: an engraved Elbereth scares it. */
-    return !!sengr_at("Elbereth", x, y, true);
-    return false;
+    /*
+     * src/monmove.c — creatures who don't (or can't) fear a written Elbereth:
+     * all the above plus shopkeepers (even if poly'd into non-human), vault
+     * guards (also even if poly'd), blind or peaceful monsters, humans and
+     * elves, and minotaurs.
+     *
+     * If the player isn't actually on the square OR the player's image isn't
+     * displaced to the square, no protection is being granted.
+     *
+     * Elbereth doesn't work in Gehennom, the Elemental Planes, or the Astral
+     * Plane; the influence of the Valar only reaches so far.
+     *
+     * This used to be a bare `return !!sengr_at(...)`, which scared every
+     * monster that merely looked at a square carrying the engraving —
+     * PEACEFUL ones included, and from anywhere on the level.
+     */
+    const ep = sengr_at("Elbereth", x, y, true);
+    return !!ep
+        && ((game.u.ux === x && game.u.uy === y)
+            || (game.u.uprops?.DISPLACED && mtmp.mux === x && mtmp.muy === y)
+            || (ep.guardobjects && !!(game.level?.objects || [])
+                                        .find(o => o.ox === x && o.oy === y)))
+        && !(mtmp.isshk || mtmp.isgd || !mtmp.mcansee
+             || mtmp.mpeaceful
+             || mtmp.mnum === PMNAMES.PM_MINOTAUR
+             /* include/dungeon.h In_hell(); the helper is private to
+                trap.js and mklev.js (duplicate-definition debt in NOTES),
+                so the one-liner is used directly rather than adding a third
+                copy. */
+             || game.u.uz?.dnum === game.hell_dnum
+             || In_endgame(game.u.uz));
 }
 
 // src/monmove.c:462 monflee() — begin fleeing for fleetime turns.

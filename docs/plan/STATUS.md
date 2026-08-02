@@ -15035,3 +15035,51 @@ draw. Remaining candidates, none yet tested:
 Test cheaply by logging the monster's (mx,my) every turn from step 200 to 233
 on seed4500 and finding the first turn its position differs from what C's draw
 pattern implies.
+
+## iter 84 — RETARGET to the near-pass sessions; getdir prompt is left painted
+
+Board 2247, tree clean, no code change. **Parked the seed0030/seed4500 mtrack
+chase** — three iterations in, it has not converged and each step costs a full
+probe cycle. It is well documented in iters 81-83; come back to it with fresh
+context, not by grinding.
+
+**Better ROI: five sessions are 1-3 screens from PASSING.** Passes are currently
+6; these are the cheapest points on the board:
+
+    lost  matched/total  session
+       1    25/26        seed1800-tourist-eat-throw
+       1    35/36        seed0016-healer-newmoon-eat-za
+       2   228/230       seed2200-wizard-quaff-zap-read
+       3    24/27        seed0101-ranger-quiver-throw-t
+       3    25/28        seed0501-priest-cast-read-turn
+
+**seed1800's single bad screen is step 11, and the cause is precise.** We paint
+`In what direction?j` on the message row; C paints NOTHING. 17 cells, all on
+row 0.
+
+C's `tty_yn_function` (win/tty/topl.c:533 `clean_up:`) does this:
+
+    /* addtopl(rtmp); -- rewrite gt.toplines instead */
+    Sprintf(gt.toplines, "%s%s", prompt, rtmp);
+    ...
+    ttyDisplay->toplin = TOPLINE_NON_EMPTY;
+    if (wins[WIN_MESSAGE]->cury)
+        tty_clear_nhwindow(WIN_MESSAGE);
+
+The `addtopl` is COMMENTED OUT ON PURPOSE: C writes prompt+answer into
+`gt.toplines`, which is the ^P recall BUFFER, and never paints the answer. Our
+js/tty/topl.js:172 `clean_up` conflates the two — it sets
+`game._pending_message = prompt + vis`, and _pending_message is what gets
+painted. So we echo the answer key where C does not.
+
+That alone does not explain an EMPTY row 0 on C's side, so there is a second
+half: C also clears WIN_MESSAGE when `cury` is non-zero, and whatever runs after
+getdir returns must be clearing it. Work out both halves before editing —
+changing `_pending_message` to just `prompt` would still leave
+"In what direction?" painted where C shows nothing, so a half-fix will not close
+the screen.
+
+This same prompt path is likely behind the other four near-passes (they are all
+eat/throw/quaff/zap/cast sessions that use getdir or getobj prompts). Check
+seed0016 step-by-step next; if it is the same 17-cell row-0 signature, one fix
+takes several sessions from 1-3 lost to passing.

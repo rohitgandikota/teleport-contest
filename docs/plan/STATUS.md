@@ -14834,3 +14834,40 @@ All three characters here are Wizards ("Evoker"), so start by dumping
 urole.attrbase, urole.attrdist and urace.attrmin/attrmax for the Wizard and
 diffing them against role.c / u_init.c. Note `stepdraws` only reaches segment 1,
 so compare with a direct probe rather than that tool.
+
+## iter 79 — elves had no u_init_race arm (+47); the retarget paid off
+
+Board **2200 -> 2247** (60adcd2). seed0030 +47. The segment-first-screen
+retarget from iter 78 was the right call.
+
+`u_init_race()` implemented ONLY the orc arm. C's PM_ELF case (u_init.c:800)
+gives a non-warrior elf (Cleric or Wizard) a random non-magic instrument, and
+`ROLL_FROM(trotyp)` is `trotyp[rn2(SIZE(trotyp))]` — so the arm spends one
+rn2(6) plus ini_inv's own draws BEFORE anything after it. Missing it started an
+elven wizard's `rnd_attr` rolls four draws early, so the character rolled
+different characteristics and the segment's very first screen was already
+wrong. Also added the eleven `knows_object()` calls for elvish gear (no draws,
+but they decide naming).
+
+seed0030 segment 3 now matches C exactly on its first step, 2261 draws on both
+sides.
+
+**Method note worth keeping.** The instrument that cracked this was running ONE
+segment in isolation and diffing the whole draw list against
+`segments[i].steps[0].rng`:
+
+    enableRngLog(); runSegment({seed: sg.seed, ..., moves: sg.moves.slice(0,1)})
+    compare getRngLog().filter(isRngCall) against steps[0].rng
+
+`tools/stepdraws.mjs` only reaches segment 1, which is why this went unseen for
+so long. Any multi-segment session should get this treatment before anything
+else — a wrong first screen invalidates the entire segment.
+
+**RNG matched count moved -10 while screens moved +47.** Do not treat that as a
+regression: fixing the early draws pushes several segments to a later, different
+divergence point. Screens are the scored metric.
+
+**Next:** re-sample every segment's first screen for seed0030 and the other
+multi-segment sessions (`seed4500`, `seed0014`, `seed0360` are the next biggest
+losers). Same one-segment-in-isolation diff. seed0030 seg7 (step 1021) is a MAP
+difference, not attributes, so it is a separate bug.

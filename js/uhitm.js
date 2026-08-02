@@ -17,7 +17,7 @@ import { game } from './gstate.js';
 import { helpless, MON_WEP } from './monst.js';
 import { rn1 } from './rng.js';
 import { dmgtype } from './mondata.js';
-import { touch_petrifies } from './dog.js';
+import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor } from './worn.js';
 import { hitmsg, magic_negation } from './mhitu.js';
 import { You, Your } from './pline.js';
@@ -843,7 +843,15 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     if (DEADMONSTER(mon))
         hmd.destroyed = true;
 
-    note_unported_uhitm('hmon_hitmon:pet');
+    /* src/uhitm.c hmon_hitmon_pet() — abuse and flight, even if the pet is
+       being killed (affects revival) */
+    if (mon.mtame && hmd.dmg > 0) {
+        await abuse_dog(mon); /* reduces tameness */
+        /* flee if still alive and still tame */
+        if (mon.mtame && !hmd.destroyed)
+            monflee(mon, 10 * rnd(hmd.dmg), false, false);
+    }
+
     note_unported_uhitm('hmon_hitmon:splitmon');
     await hmon_hitmon_msg_hit(hmd, mon, obj);
 

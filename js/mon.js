@@ -1157,7 +1157,7 @@ export async function wakeup(mtmp, via_attack) {
         const was_peaceful = mtmp.mpeaceful;
 
         if (was_sleeping)
-            growl(mtmp);
+            await growl(mtmp);
         await setmangry(mtmp, true);
         if (was_peaceful) {
             if (mtmp.ispriest && in_rooms(mtmp.mx, mtmp.my, TEMPLE)?.length)
@@ -1209,7 +1209,7 @@ export async function setmangry(mtmp, via_attack) {
         if (couldsee(mtmp.mx, mtmp.my))
             await pline(`${Monnam(mtmp)} gets angry!`);
     } else {
-        growl(mtmp);
+        await growl(mtmp);
     }
 
     /* attacking your own quest leader will anger his or her guardians */

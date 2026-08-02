@@ -28,6 +28,7 @@ import { is_metallic } from './obj.js';
 import { obj_resists } from './zap.js';
 import { newsym, canspotmon, mon_visible, pline } from './display.js';
 import { splitobj } from './mkobj.js';
+import { yelp, growl } from './sounds.js';
 import { m_consume_obj, is_pick, check_gear_next_turn } from './mon.js';
 import {
     mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at, t_at,
@@ -1687,4 +1688,36 @@ function mon_arrive(mtmp, with_you) {
 // src/monmove.c:88 mon_track_clear()
 function mon_track_clear_dog(mtmp) {
     mtmp.mtrack = [];
+}
+
+// src/dog.c abuse_dog() — hitting your own pet reduces tameness.
+export async function abuse_dog(mtmp) {
+    if (!mtmp.mtame)
+        return;
+
+    if (game.u.uprops?.AGGRAVATE_MONSTER || game.u.uprops?.CONFLICT)
+        mtmp.mtame = (mtmp.mtame / 2) | 0;
+    else
+        mtmp.mtame--;
+
+    if (mtmp.mtame && !mtmp.isminion && mtmp.edog)
+        mtmp.edog.abuse++;
+
+    if (!mtmp.mtame && mtmp.mleashed)
+        note_unported('abuse_dog:m_unleash');
+
+    /* don't make a sound if pet is in the middle of leaving the level */
+    /* newsym isn't necessary in this case either */
+    if (mtmp.mx !== 0) {
+        if (mtmp.mtame && rn2(mtmp.mtame))
+            await yelp(mtmp);
+        else
+            await growl(mtmp); /* give them a moment's worry */
+
+        if (!mtmp.mtame) {
+            newsym(mtmp.mx, mtmp.my);
+            if (mtmp.wormno)
+                note_unported('abuse_dog:redraw_worm');
+        }
+    }
 }

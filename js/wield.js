@@ -88,7 +88,7 @@ export const is_ammo = (o) =>
     && game.objects[o.otyp].oc_skill <= -P_BOW;
 
 // include/obj.h:243 matching_launcher() and :244 ammo_and_launcher()
-const matching_launcher = (a, l) =>
+export const matching_launcher = (a, l) =>
     !!l && game.objects[a.otyp].oc_skill === -game.objects[l.otyp].oc_skill;
 export const ammo_and_launcher = (a, l) => is_ammo(a) && matching_launcher(a, l);
 

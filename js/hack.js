@@ -790,3 +790,24 @@ export function inv_cnt(incl_gold) {
             ct++;
     return ct;
 }
+
+// src/hack.c:4551 rounddiv() — divide and round to nearest, sign-aware.
+export function rounddiv(x, y) {
+    let divsgn = 1;
+
+    /* C panics on y == 0 */
+    if (y < 0) {
+        divsgn = -divsgn;
+        y = -y;
+    }
+    if (x < 0) {
+        divsgn = -divsgn;
+        x = -x;
+    }
+    let r = Math.trunc(x / y);
+    const m = x % y;
+    if (2 * m >= y)
+        r++;
+
+    return divsgn * r;
+}

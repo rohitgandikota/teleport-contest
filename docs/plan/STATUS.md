@@ -14487,3 +14487,48 @@ early returns that sit in front of a delobj/free/extract call.
 
 **Next:** re-bisect seed0030 (still the largest block at ~1852 lost). Its first
 differing screen has moved past 33.
+
+## iter 71 — seed0030's next divergence: dog_move's candidate loop at step 44
+
+No code change this iteration; board holds at 2200 and seed0030 is now 101
+matched (up from 87). Probes reverted, tree clean. This is a precise handoff.
+
+After the delobj fix, seed0030's first differing SCREEN moved from 33 to 46,
+but the real first divergence is the DRAW count at **step 44** (C=25, ours=21).
+Step 45 is the `>` to Dlvl 3 and its level build is then wildly different
+(C=3022 draws, ours=2153) purely because the stream was already shifted — do
+not chase step 45, it is downstream.
+
+**Step 44, draw index 2.** C spends `rn2(1)=0 @ dog_move(dogmove.c:1255)` and
+we spend nothing. That line is
+`if ((j == 0 && !rn2(++chcnt)) || j < 0 || ...)`, so C's FIRST candidate square
+gave `j == 0` and paid the `rn2(++chcnt)` with chcnt 0 -> 1. Ours gives j = -4
+and takes the `j < 0` arm, which is free.
+
+`j = (ndist - nidist) * appr`, so C's first candidate is EQUIDISTANT from the
+goal with the pet's own square. Measured state on our side at that exact
+position (step 44's global filtered offset is 10835; the loop starts at 10837):
+
+    pet (43,15)   hero (37,18)   goal (37,18) gtyp=6   appr=1   nidist=45
+    candidates in order: (42,14) ndist41 j-4, (42,15) 34, (42,16) 29,
+                         (43,14) 52, (43,16) 40, (44,14) 65, (44,16) 53
+
+None of those has ndist == 45, so C is NOT working from the same
+(goal, candidate-order) pair. `appr` is definitely not 0 on C's side either:
+with appr 0 every candidate gives j == 0 and the draws would run
+rn2(1), rn2(2), rn2(3)..., but C's next draws are rn2(12), rn2(12), rn2(12).
+So suspect either **mfndpos's candidate ORDER** or **dog_goal's chosen goal**
+(its one draw, `rn2(4) @ dogmove.c:575`, matches in value, which proves
+nothing about the goal it picked — matching draws never imply matching state).
+
+Note the screen at step 44 still matches, so the pet ends up on the same
+square by a different route. Screen-first bisect will NOT find this one; it is
+a draw-only divergence, which is exactly when stepdraws is the right tool.
+
+**Probe hygiene, third time this has cost me time.** Two probes printed nothing
+this iteration for reasons that had nothing to do with the hypothesis: one
+referenced `gx`, which is local to dog_goal and not in scope in dog_move; the
+other added a second `import { getRngLog }` when dog.js:46 already imports it,
+which is a load-time SyntaxError. Both fail silently through the runner. Always
+confirm a probe fires with an unconditional marker before reading anything into
+its silence.

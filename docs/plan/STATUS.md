@@ -14788,3 +14788,49 @@ generation with doormask 0. Our `dosdoor` also matches mklev.c arm for arm
    is now: dokick.js:291/296/300, detect.js:56/96, lock.js:82/84/196,
    mklev.js:1649-1656. Audit those against their C counterparts — lock.js:82
    (`door.doormask = D_NODOOR`) is the next one I would read.
+
+## iter 78 — RETARGET: character creation attributes diverge on segment FIRST screens
+
+Board 2200, tree clean, no code change. **Stop working seed0030 step 36.** It is
+in segment 1 of 10 and, even with the door excluded, steps 39/41/44 still
+diverge — it cannot unlock much. Segment boundaries for seed0030:
+
+    seg1 0-78, seg2 79-202, seg3 203-295, seg4 296-586, seg5 587-784,
+    seg6 785-1020, seg7 1021-1273, seg8 1274-1445, seg9 1446-1484,
+    seg10 1485-1952
+
+Each segment is a SEPARATE game, so a segment-1 bug cannot explain the other
+1800 lost screens. Sampling each segment's first screens found a far better
+target.
+
+**Segments 3, 4 and 5 differ on their VERY FIRST screen, in the status row's
+attributes.** Nothing else on those screens is wrong.
+
+    seg3 step 203  C: St:8  Dx:13 Co:13 In:20 Wi:12 Ch:9
+                 ours: St:8  Dx:14 Co:12 In:20 Wi:13 Ch:8
+    seg4 step 296  C: St:10 Dx:13 Co:12 In:20 Wi:8  Ch:12
+                 ours: St:11 Dx:14 Co:13 In:18 Wi:8  Ch:11
+    seg5 step 587  one cell, also an attribute digit
+
+seg3's totals are equal (75 both sides), so the POINTS ARE THE SAME and only
+their distribution differs. seg4 differs in In as well (20 vs 18), so it is not
+purely a permutation there.
+
+This is the highest-value lead on the board right now: a wrong first screen
+makes every subsequent screen in that segment wrong, it hits at least 3 of
+seed0030's 10 segments, and character creation runs in EVERY session including
+all 44 held-out ones.
+
+**Where to look.** `init_attr` (attrib.c:714) and C's copy are identical, and I
+checked `adjattrib` and `vary_init_attr` against attrib.c this iteration — both
+faithful. That leaves:
+- `init_attr_role_redist()` / `rnd_attr()` — the attrdist-weighted loop,
+- the race caps `ATTRMIN/ATTRMAX` (`game.urace.attrmin/attrmax`), which gate
+  every redistribution step and, per the note at the top of js/attrib.js, change
+  the DRAW COUNT when wrong,
+- or `urole.attrbase[]` / `urole.attrdist[]` for the Wizard.
+
+All three characters here are Wizards ("Evoker"), so start by dumping
+urole.attrbase, urole.attrdist and urace.attrmin/attrmax for the Wizard and
+diffing them against role.c / u_init.c. Note `stepdraws` only reaches segment 1,
+so compare with a direct probe rather than that tool.

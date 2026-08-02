@@ -13404,3 +13404,38 @@ we do not. Draw-neutral state is invisible to every RNG-based tool.
 seed0030 and seed0014 are still 1866 and 663 behind. Re-run stepdraws on
 each -- the next divergence in both is likely another draw-neutral state
 difference, and the same instrument now applies.
+
+## Iteration 45 — seed0030 step 30 narrowed further (no fix)
+
+Board **2141**, tree clean, no commit. Diagnosis only.
+
+After the meating fix, seed0030's first divergent step is still 30:
+
+    step 29  C 34 draws, ours 34   SAME   (C has 2 obj_resists here)
+    step 30  C 11 draws, ours 10   DIFF   (C has 2 obj_resists, ours 1)
+
+C's full step 30: `obj_resists, obj_resists, distfleeck, mcalcmove x4,
+maybe_generate_rnd_mon, dosounds, gethungry, moveloop_core`.
+
+Probes placed this iteration (all removed):
+- `dog_invent()`'s edible arm fires at **mv=29 and mv=32 only** -- with
+  `edible=1 (CADAVER)`, `reach=true`, `meating=0`. So our pet eats at mv=29
+  and again at mv=32, and is digesting in between.
+- `dog_goal()`'s SQSRCHRADIUS box scan **never runs at mv 29-32** -- dog_move
+  returns through dog_invent's eat before reaching it.
+
+So our one remaining step-30 `dogfood` comes from neither of those; by
+elimination it is dog_move's per-candidate pile walk. C's second call is
+still unaccounted for.
+
+Worth noting the move counter and the step index are NOT aligned -- several
+game moves can fall inside one input step, which is what makes "mv=29" and
+"step 30" hard to reason about together. Probe by `game.moves` for state,
+but confirm against `tools/stepdraws.mjs` for draws.
+
+### Next
+
+Instrument every `dogfood()` call site (box scan / pile walk / dog_invent /
+dog_eat reward) with a tag and dump them for step 30, then compare the four
+counts against C's two. That distinguishes "we skip a call" from "we make a
+different call" without further guessing.

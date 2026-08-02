@@ -8,7 +8,7 @@
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
 import { getrumor, get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
-import { DUST, BURN, HEADSTONE, ENGR_BLOOD, N_ENGRAVE, ECMD_OK, ECMD_TIME, ECMD_CANCEL } from './const.js';
+import { DUST, ENGRAVE, BURN, MARK, HEADSTONE, ENGR_BLOOD, N_ENGRAVE, ECMD_OK, ECMD_TIME, ECMD_CANCEL } from './const.js';
 import { getobj, GETOBJ_PROMPT, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, hands_obj } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { is_pool, is_lava } from './mon.js';
@@ -158,10 +158,17 @@ export async function read_engr_at(x, y) {
                     + `${false ? 'melted' : 'burned'} into the ${eloc} here.`);
             }
             break;
+        case ENGRAVE:
         case HEADSTONE:
             if (!game.u.ublind) {
                 sensed = 1;
                 await pline(`Something is engraved here on the ${eloc}.`);
+            }
+            break;
+        case MARK:
+            if (!game.u.ublind) {
+                sensed = 1;
+                await pline(`There's some graffiti on the ${eloc} here.`);
             }
             break;
         case ENGR_BLOOD:
@@ -171,12 +178,8 @@ export async function read_engr_at(x, y) {
             }
             break;
         default:
-            /* ENGRAVE and MARK share the shapes above; only the types the
-               port can create are spelled out */
-            if (!game.u.ublind) {
-                sensed = 1;
-                await pline(`Something is engraved here on the ${eloc}.`);
-            }
+            /* impossible("%s is written in a very strange way.") */
+            sensed = 1;
             break;
         }
 

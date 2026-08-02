@@ -7,6 +7,7 @@
 // exceptions) is absent and recorded, never faked.
 
 import { game } from './gstate.js';
+import { read_engr_at } from './engrave.js';
 import { rn2 } from './rng.js';
 import { OBJ_AT, LOOKHERE_NOFLAGS, LOOKHERE_PICKED_SOME } from './const.js';
 import { You } from './pline.js';
@@ -57,11 +58,7 @@ export async function check_here(picked_some) {
         await flush_screen(1);
         await look_here(ct, lhflags);
     } else {
-        /* read_engr_at(u.ux, u.uy) — draws and prints only when an engraving
-           is underfoot */
-        if ((game.level?.engravings || []).some(e => e.engr_x === game.u.ux
-                                                && e.engr_y === game.u.uy))
-            note_unported_pickup('check_here:read_engr_at');
+        await read_engr_at(game.u.ux, game.u.uy);
     }
 }
 
@@ -86,9 +83,7 @@ export async function pickup(what) {
                            || is_lava(game.u.ux, game.u.uy))) {
             if (game.flags?.mention_decor)
                 note_unported_pickup('pickup:describe_decor');
-            if ((game.level?.engravings || []).some(e => e.engr_x === game.u.ux
-                                                    && e.engr_y === game.u.uy))
-                note_unported_pickup('pickup:read_engr_at');
+            await read_engr_at(game.u.ux, game.u.uy);
             return 0;
         }
         /* no pickup if levitating & not on air or water level */

@@ -24,7 +24,7 @@ import { is_weptool, is_rustprone, is_corrodeable, is_flammable,
          is_crackable, is_rottable } from './mkobj.js';
 import { bimanual } from './obj.js';
 import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP,
-         MALE, FEMALE, NEUTER, CORPSTAT_MALE, CORPSTAT_FEMALE } from './const.js';
+         MALE, FEMALE, NEUTER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ART_ORB_OF_DETECTION, ART_EYES_OF_THE_OVERWORLD } from './artilist_data.js';
@@ -441,6 +441,60 @@ export function corpse_xname(otmp, adjective, cxn_flags) {
     }
 
     return any_prefix ? an(nambuf) : nambuf;
+}
+
+// src/objnam.c:1038 minimal_xname() — the object's plain type name, with the
+// hero's own naming, discovery state and per-object details suppressed.
+//
+// C temporarily zeroes objects[otyp].oc_uname / oc_name_known, builds a bare
+// obj on the stack and runs xname() over it; both the override and the restore
+// are ported literally because xname() reads the shared objects[] entry.
+export function minimal_xname(obj) {
+    const otyp = obj.otyp;
+    const ocl = game.objects[otyp];
+
+    /* suppress user-supplied name */
+    const save_uname = ocl.oc_uname;
+    ocl.oc_uname = 0;
+    /* suppress actual name if object's description is unknown */
+    const save_name_known = ocl.oc_name_known;
+    if (!obj.dknown)
+        ocl.oc_name_known = 0;
+
+    /* caveat: this makes a lot of assumptions about which fields are
+       required in order for xname() to yield a sensible result */
+    const bareobj = {
+        otyp: otyp,
+        oclass: obj.oclass,
+        dknown: obj.dknown ? 1 : 0,
+        /* suppress known except for amulets (needed for fakes and real
+           A-of-Y); default is "on" for types which don't use it */
+        known: (obj.oclass === OCLASSES.AMULET_CLASS)
+            ? obj.known : !ocl.oc_uses_known,
+        quan: 1,                        /* don't want plural */
+        /* for a boulder, leave corpsenm as 0; non-zero produces
+           "next boulder" */
+        corpsenm: (otyp !== ONAMES.BOULDER) ? NON_PM : 0,
+        spe: (obj.otyp === ONAMES.SLIME_MOLD) ? obj.spe : 0,
+    };
+
+    let bufp = xname(bareobj);
+    /* undo forced setting of bareobj.blessed for cleric (priest[ess]) */
+    if (bufp.startsWith('uncursed '))
+        bufp = bufp.slice(9);
+
+    ocl.oc_uname = save_uname;
+    ocl.oc_name_known = save_name_known;
+    return bufp;
+}
+
+// src/objnam.c simpleonames() — minimal_xname(), pluralised for a stack.
+export function simpleonames(obj) {
+    let simpleoname = minimal_xname(obj);
+
+    if (obj.quan !== 1)
+        simpleoname = makeplural(simpleoname);
+    return simpleoname;
 }
 
 // src/objnam.c:1924 cxname() — xname(), except a corpse names its monster.

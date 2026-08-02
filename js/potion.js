@@ -4,6 +4,7 @@
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
 import { fruitname } from './objnam.js';
+import { trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
 import { pline } from './display.js';
@@ -240,4 +241,26 @@ async function peffect_paralysis(otmp) {
     game.multi_reason = 'frozen by a potion';
     game.nomovemsg = 'You can move again.';
     exercise(A_DEX, false);
+}
+
+// src/potion.c strange_feeling() — the "nothing obvious happened" path shared
+// by scrolls and potions whose effect could not apply.
+//
+// C's `!txt` arm also covers flags.beginner. The dknown test gates trycall(),
+// which is what lets the hero name an object that just failed to do anything.
+export async function strange_feeling(obj, txt) {
+    if (game.flags?.beginner || !txt)
+        await You(`have a ${game.u?.intrinsic?.HHallucination
+                            || game.u?.uprops?.HALLUC ? 'normal' : 'strange'}`
+                  + ' feeling for a moment, then it passes.');
+    else
+        await pline(txt);
+
+    if (!obj)                   /* e.g., crystal ball finds no traps */
+        return;
+
+    if (obj.dknown)
+        await trycall(obj);
+
+    useup(obj);
 }

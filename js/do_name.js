@@ -15,7 +15,7 @@ import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          PICK_ONE, ECMD_OK } from './const.js';
 import { ATR_NONE, NO_COLOR } from './terminal.js';
 import { game } from './gstate.js';
-import { rn2 } from './rng.js';
+import { rn2, rn2_on_display_rng } from './rng.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
@@ -353,4 +353,37 @@ export async function trycall(obj) {
    when its player-given name is cleared. Not ported; recorded. */
 function note_undiscover(otyp) {
     (game.unported ||= new Set()).add('do_name:undiscover_object');
+}
+
+/* src/do_name.c:1441 hcolors[] — the hallucinatory colour list. */
+const hcolors = [
+    "ultraviolet", "infrared", "bluish-orange", "reddish-green", "dark white",
+    "light black", "sky blue-pink", "pinkish-cyan", "indigo-chartreuse",
+    "salty", "sweet", "sour", "bitter", "umami", /* basic tastes */
+    "striped", "spiral", "swirly", "plaid", "checkered", "argyle", "paisley",
+    "blotchy", "guernsey-spotted", "polka-dotted", "square", "round",
+    "triangular", "cabernet", "sangria", "fuchsia", "wisteria", "lemon-lime",
+    "strawberry-banana", "peppermint", "romantic", "incandescent",
+    "octarine", /* Discworld: the Colour of Magic */
+    "excitingly dull", "mauve", "electric",
+    "neon", "fluorescent", "phosphorescent", "translucent", "opaque",
+    "psychedelic", "iridescent", "rainbow-colored", "polychromatic",
+    "colorless", "colorless green",
+    "dancing", "singing", "loving", "loudy", "noisy", "clattery", "silent",
+    "apocyan", "infra-pink", "opalescent", "violant", "tuneless",
+    "viridian", "aureolin", "cinnabar", "purpurin", "gamboge", "madder",
+    "bistre", "ecru", "fulvous", "tekhelet", "selective yellow",
+];
+
+// src/do_name.c:1460 hcolor() — `colorpref`, or a hallucinatory colour.
+//
+// The draw goes to the DISPLAY rng, not the core one, so this costs no scored
+// draw however often it is called. Hallucination is the full macro
+// (intrinsic OR extrinsic), the same convention botl.js uses.
+export function hcolor(colorpref) {
+    const Hallucination = game.u?.intrinsic?.HHallucination
+                          || game.u?.uprops?.HALLUC;
+    return (Hallucination || !colorpref)
+        ? hcolors[rn2_on_display_rng(hcolors.length)]
+        : colorpref;
 }

@@ -6,10 +6,13 @@
 
 import { game } from './gstate.js';
 import { getobj, GETOBJ_PROMPT, ECMD_TIME, ECMD_OK } from './invent.js';
-import { ECMD_CANCEL } from './const.js';
+import { ECMD_CANCEL, SPE_LIM } from './const.js';
+import { sgn } from './hacklib.js';
+import { chwepon } from './wield.js';
+import { erosion_matters } from './mkobj.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { pline } from './display.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd } from './rng.js';
 import { getlin } from './cmd.js';
 import { name_to_monplus } from './mondata.js';
 import { makemon } from './makemon.js';
@@ -115,6 +118,8 @@ async function seffects(sobj) {
         break;
     case ONAMES.SCR_IDENTIFY:
         return await seffect_identify(sobj);
+    case ONAMES.SCR_ENCHANT_WEAPON:
+        return await seffect_enchant_weapon(sobj);
     default:
         note_unported_read(`seffects:otyp=${otyp}`);
         break;
@@ -130,6 +135,48 @@ function learnscrolltyp(scrolltyp) {
         return true;
     }
     return false;
+}
+
+// src/read.c:1627 seffect_enchant_weapon() — the scroll of enchant weapon.
+//
+// The confused arm rustproofs the weapon instead of enchanting it, and returns
+// before chwepon(); erosion_matters() plus the ARMOR_CLASS exclusion is what
+// keeps it to actual weapons. `s` guards its own uwep tests against a null
+// pointer, which is why the !uwep case yields 1 rather than reading uwep->spe.
+async function seffect_enchant_weapon(sobj) {
+    const scursed = sobj.cursed;
+    const confused = !!(game.u?.intrinsic?.HConfusion
+                        || game.u?.uprops?.CONFUSION);
+    const sblessed = sobj.blessed;
+    const uwep = game.u.uwep;
+    let s;
+
+    /* [What about twoweapon mode?  Proofing/repairing/enchanting both
+       would be too powerful, but shouldn't we choose randomly between
+       primary and secondary instead of always acting on primary?] */
+    if (confused && uwep && erosion_matters(uwep, game.objects)
+        && uwep.oclass !== OCLASSES.ARMOR_CLASS) {
+        note_unported_read('seffect_enchant_weapon:erodeproof');
+        return false;
+    }
+    s = scursed ? -1
+        : !uwep ? 1                     /* guard the tests below against null */
+        : (uwep.spe >= 9) ? (rn2(uwep.spe) === 0)  /* usually 0, maybe 1 */
+        : sblessed ? rnd(3 - Math.trunc(uwep.spe / 3)) /* >=9 prevents rnd(0) */
+        : 1;                            /* uncursed */
+    /* nothing enchanted: strange_feeling -> useup */
+    const used_up = !(await chwepon(sobj, s));
+    if (uwep)
+        cap_spe(uwep);
+    return used_up;
+}
+
+// src/read.c cap_spe() — clamp enchantment to the +/-SPE_LIM band.
+function cap_spe(obj) {
+    if (obj) {
+        if (Math.abs(obj.spe) > SPE_LIM)
+            obj.spe = sgn(obj.spe) * SPE_LIM;
+    }
 }
 
 // src/read.c:2055 seffect_identify() — the scroll arm.

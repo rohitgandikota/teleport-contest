@@ -13363,3 +13363,44 @@ Next: probe `objects_at()` for the pet's candidate squares at seed0030
 step 30 and compare with the pile C must have. This is one step, one
 square, two objects -- much smaller than anything the four earlier passes
 were working with, which is why reopening is justified.
+
+## Iteration 44 — the parked pet bug is FIXED
+
+Board 2134 -> **2141**, passes 6, no regressions. Commit `e236332`.
+seed0030 85 -> 87, seed0014 46 -> 51.
+
+### The bug, after five passes
+
+`mtmp.meating` was set when a pet ate and **never decremented**. `dog_invent()`
+returns 0 immediately when `meating` is non-zero, so a pet that had eaten
+once could never eat or fetch again. seed0030's kitten sat at `meating=3`
+from move 28 onward.
+
+The countdown is at the TOP of `m_move` (monmove.c:1745) and is the only
+per-turn one in the C. Our `dochug()` dispatched tame monsters straight to
+`dog_move()`, bypassing it -- C calls `m_move()` for **every** monster and
+dispatches to `dog_move()` inside it at :1772, after the mtrapped and
+meating blocks. Pets now go through `m_move`, which also hands them the
+already-trapped `mintrap` re-trigger they never had. Added
+`finish_meating()` (dogmove.c:1448).
+
+### Why four earlier passes missed it
+
+Every pass compared the RNG stream, and **this bug draws nothing**. The
+symptom was always "the pet is in the wrong place" or "the pet ate one turn
+late", and the instrument in hand (`tools/diverge.mjs`) only shows the first
+mismatch in a 100k-call stream, which was always somewhere downstream.
+
+`tools/stepdraws.mjs`, added last iteration, made it findable in one pass by
+localizing to a single step and naming C's call sites there. **Reach for
+stepdraws before diverge.mjs.**
+
+The general lesson worth carrying: when a divergence is positional or
+behavioural rather than numeric, look for a COUNTER OR FLAG that C ticks and
+we do not. Draw-neutral state is invisible to every RNG-based tool.
+
+### Follow-on
+
+seed0030 and seed0014 are still 1866 and 663 behind. Re-run stepdraws on
+each -- the next divergence in both is likely another draw-neutral state
+difference, and the same instrument now applies.

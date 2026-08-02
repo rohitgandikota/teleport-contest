@@ -11642,3 +11642,41 @@ then `hitum(mtmp, youmonst.data->mattk)`. Wiring hitum without attack_checks
 would skip its draws, so attack_checks is the next thing to port. That single
 function unlocks kill messages, corpses, death drops and Xp across nearly
 every session — seed0200 alone shows "You kill the goblin!" missing at step 14.
+
+## The hero's attack chain is live
+
+Board 1691 -> 1701, passes 6. Commits a9f313f, 26dd87b.
+
+`do_attack()` stopped at a note where C runs `attack_checks()` then `hitum()`,
+and cmd.js routed a HOSTILE target away from `domove_attackmon_at()`
+entirely, so the hero never damaged anything through hmon and `killed()` was
+unreachable. Ported `attack_checks` (uhitm.c:189 — it draws nothing: the
+forcefight and engulf exits, the "Wait! There's something there you can't
+see!" arm, the mimic and hides-under arms, the sensemon wakeup, the peaceful
+confirmation), then do_attack's tail: bhitpos/notonhead, check_capacity,
+overexertion, exercise(A_STR), u_wipe_engr(3), the leprechaun gate, hitum.
+
+`overexertion()` calls `gethungry()`, which DRAWS. Attacking costs a hunger
+tick that stepping does not; that was missing from every fight.
+
+Also split `mondead()` out of `mondied()` as mon.c does (xkilled wants the
+no-corpse form), and added `u_wipe_engr`, `check_capacity`, `overexertion`,
+`is_human`, `is_unicorn`.
+
+**Two bugs found while wiring it, both worth remembering:**
+
+1. `do_attack` was handing `hitum()` a permonst where C passes
+   `gy.youmonst.data->mattk`. `uattk->aatyp` was undefined, so
+   `find_roll_to_hit` skipped the AT_WEAP branch and lost the entire weapon
+   hit bonus.
+
+2. **uhitm.js had its own `Role_if` reading `urole.malenum` and
+   `urole.pmidx`, neither of which js/role_data.js defines.** Every role test
+   in the file was permanently false: check_caitiff's Knight and Samurai
+   arms, find_roll_to_hit's Monk bonus, and `martial_bonus()`, which is why a
+   Monk's bare hand rolled rnd(2) where C rolls rnd(4). weapon.js's copy
+   reads `urole.mnum` and was right. **Duplicated helpers that drifted apart
+   are a live risk here — worth grepping for other mirrored definitions.**
+
+**Next:** seed0200's wall is 3384, inside `hmon_hitmon_stagger(uhitm.c:1576)`
+where C draws rnd(100) and we draw something else.

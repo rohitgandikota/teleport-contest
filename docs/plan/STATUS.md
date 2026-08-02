@@ -15324,3 +15324,45 @@ whether we model actual vs remembered text at all (we appear to store a single
 
 Fix order matters: correcting sub-bug 2 alone makes this case WORSE (substring
 matches more often than exact). Do the degradation first.
+
+## iter 91 — u_wipe_engr was never called; seed2200 still open at onscary
+
+Board 2249, passes 7, tree clean. Committed cbbc0e0.
+
+**Found and fixed:** js/allmain.js read `rnd(3); /* u_wipe_engr(rnd(3)) */` —
+we spent allmain.c:360's `!rn2(40 + ACURR(A_DEX)*3)` gate AND the rnd(3), then
+threw the result away. So the hero never scuffed what was written underfoot and
+a dust engraving stayed pristine for an entire game. `u_wipe_engr` already
+existed at js/engrave.js:266 and was simply never called. No board movement (the
+gate is ~1-in-60 per turn) but discarding a computed draw is a real defect.
+
+**seed2200 step 228 is still DIFF (C=17, ours=19), and my degradation theory
+was wrong.** With u_wipe_engr wired, the wipe still does not fire in the twelve
+moves before step 228, so C's engraving is pristine too. The state at that
+point, measured:
+
+    hero (23,9), moves=12
+    lev_engr (23,9) type=1 DUST time=9 txt="Elbereth"
+    SCARED at(23,9) sawscary=true flees=false peaceful=1 sanct=false
+
+Both sides have an intact "Elbereth" under the hero, so `sengr_at` is NOT the
+discriminator. C's onscary must return FALSE for another reason. C's first arm
+is a bail-out list we may not fully implement:
+
+    if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || mtmp->ispriest
+        || is_lminion(mtmp) || mtmp->data == &mons[PM_ANGEL]
+        || unique_corpstat(mtmp->data) || is_rider(mtmp->data))
+        return FALSE;
+
+Ours (js/monmove.js) checks iswiz / is_lminion / PM_ANGEL and has separate
+`magical_scare` / `auditory_scare` arms — **verify it against monmove.c arm by
+arm**, paying attention to `unique_corpstat` and `is_rider`, and to whether the
+monster here (mpeaceful=1) hits a C arm we lack. Identify the monster first:
+dump its mnum at that probe point.
+
+**Still-open sub-bugs from iter 90, both real, neither the cause:**
+- onscary drops C's position clause (`&& ((u.ux==x && u.uy==y) || (Displaced &&
+  mtmp->mux==x && mtmp->muy==y))`) and has a dead `return false;` after it.
+- sengr_at's `strict` selects exact-vs-substring; in C BOTH arms are substring
+  and `strict` picks actual-vs-remembered text. Fix this AFTER the above, since
+  substring matches more often than exact.

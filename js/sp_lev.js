@@ -64,7 +64,7 @@ import {
     TLWALL, TRWALL, DBWALL, AIR, CLOUD, FOUNTAIN, THRONE, SINK, MOAT, POOL,
     LAVAPOOL, LAVAWALL, ICE, WATER, TREE, IRONBARS,
     MAX_TYPE, MATCH_WALL, INVALID_TYPE, NO_ROOM, ROOMOFFSET, D_CLOSED,
-    MAXNROFROOMS, IS_WALL, IS_DOOR, IS_OBSTRUCTED,
+    MAXNROFROOMS, IS_WALL, IS_DOOR, IS_OBSTRUCTED, IS_STWALL,
     D_ISOPEN, D_NODOOR, D_BROKEN, D_SECRET,
 } from './const.js';
 
@@ -396,9 +396,19 @@ export function lspo_replace_terrain(opts) {
     const rx2 = r[2] + game.xstart, ry2 = r[3] + game.ystart;
 
     for (let x = Math.max(1, rx1); x <= Math.min(rx2, COLNO - 1); x++)
-        for (let y = ry1; y <= ry2; y++) {
+        for (let y = Math.max(0, ry1); y <= Math.min(ry2, ROWNO - 1); y++) {
             const loc = game.level?.at(x, y);
-            if (!loc || loc.typ !== fromtyp)
+            if (!loc)
+                continue;
+            /* src/sp_lev.c:5130 — the match is
+                   (fromtyp == MATCH_WALL && IS_STWALL(levl[x][y].typ))
+                   || levl[x][y].typ == fromtyp
+               A plain equality test misses MATCH_WALL, the wildcard a level
+               file uses to mean "any stone or wall". That made the scan match
+               a handful of squares where C matches the whole wall run, so we
+               spent one rn2(100) where C spends dozens. */
+            if (!((fromtyp === MATCH_WALL && IS_STWALL(loc.typ))
+                  || loc.typ === fromtyp))
                 continue;
             if (rn2(100) < chance)
                 loc.typ = totyp;

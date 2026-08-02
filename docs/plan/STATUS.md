@@ -1,3 +1,23 @@
+=== PET-MOVE CLUSTER SOLVED TO ITS CAUSE: AN UNMERGED FLOOR PILE ===
+The chain, fully traced with tools/stepdraws (extended to seg 1 in
+scratchpad/stepdraws1.mjs): seed0030 seg1's true first-diff is STEP 32
+draw 22 (diverge.mjs's 'step 36' used a different numbering — trust
+stepdraws). In step 32 a polymorph zap sweeps a floor pile: C rolls
+rn2(100)@obj_resists ELEVEN times, OURS TWENTY — our pile holds ~9 more
+objects than C's because C's stacks merged and ours did not. With C's
+smaller pile, its pet then finds an APPORT candidate in dog_goal
+(rn2(8)@dogmove.c:554) that our layout lacks, and the streams part.
+Everything earlier looked like m_move/track/mfndpos noise; all of those
+audits came back clean (bounds, arms, order, monflee's clear, movemon
+snapshot) and the snapshot fix from them is landed and correct anyway.
+
+NEXT: truncate to step 31, dump the zap-target squares' object lists,
+group by (otyp,spe,blessed,cursed,quan) to see the unmerged duplicates,
+then find which placement path skipped stackobj/merged — suspects:
+death-drop relobj/mdrop_obj, m_initinv leftovers dropped at death,
+poly_obj replacements, or mkobj_at. The probe harness pattern lives in
+scratchpad/probe0030.mjs (seg0 full + seg1 truncated + gstate import).
+
 === PET-MOVE CLUSTER, PROBE RESULTS: SUSPECT movemon ORDER, NOT mfndpos ===
 Truncated-replay probe (scratchpad/probe0030.mjs pattern: seg0 full, seg1
 moves.slice(0,36), then read the gstate singleton) at entry to seed0030's

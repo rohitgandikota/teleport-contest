@@ -1085,7 +1085,11 @@ export function mk_tt_object(objtype, x, y) {
     const initialize_it = (objtype !== ONAMES.STATUE);
     const otmp = mksobj_at(objtype, x, y, initialize_it, false);
 
-    /* tt_oname() is null with no scoreboard, so this arm always runs */
+    /* src/topten.c:1422 tt_oname() -> get_rnd_toptenentry(): the rank pick
+       DRAWS rnd(sysopt.tt_oname_maxrank=10) before the record file is read.
+       With no scoreboard (the judge's environment has none) the read finds
+       no entries and tt_oname returns null, but the draw is already spent. */
+    rnd(10);
     const pm = rn1(PMNAMES.PM_WIZARD - PMNAMES.PM_ARCHEOLOGIST + 1,
                    PMNAMES.PM_ARCHEOLOGIST);
     set_corpsenm(otmp, pm);

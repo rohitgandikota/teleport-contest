@@ -15943,3 +15943,49 @@ unlike a level port it can only help.
 
 The two builders from iter 104 remain landed and correct; soko1-2 itself stays
 UNREGISTERED, which is the honest state.
+
+## iter 107 — RETRACT iter 106: absence of lspo_* annotations proves nothing
+
+Board 2249, passes 7, tree clean, no code change.
+
+**Iter 106 concluded the soko1-2 gap was a level-SELECTION bug, on the grounds
+that seed4500's recorded draws contain no Sokoban builders. That inference is
+invalid.** Ran seed4500 to completion and dumped our unported set:
+
+    seed4500 level-related unported: ["makemaz:medusa-1", "makemaz:soko1-2"]
+
+We DO reach Sokoban in seed4500, and makemaz resolves the proto name correctly
+(mkmaze.js:38 builds it from `dungeons[dnum].proto` + dunlev + rndlevs, which
+gives "soko1-2"). Nothing about level selection is wrong.
+
+The reason C's log shows no Sokoban builders is simply that **Sokoban's
+placements are almost all FIXED** — `des.object("boulder",4,4)`,
+`des.trap("hole",6,1)`, `des.door("closed",17,10)` and so on take explicit
+coordinates and draw NOTHING. A level can be built entirely without appearing
+in a draw-site histogram. Scanning for `@ lspo_*` annotations only finds
+builders that happen to roll dice.
+
+That is the same mistake as iters 94-96 and 105 in a new costume: **treating the
+absence of a signal as evidence, without first checking whether that signal
+would exist if the hypothesis were false.** Three retractions in this session
+now trace to it. Before concluding "C doesn't do X because I see no X", verify
+that doing X would leave a trace at all.
+
+**So iter 105's framing was right after all: soko1-2 IS needed, and my port of
+it was simply wrong.** The -13556 RNG delta says our build draws far more than
+C's. Given the above, the suspects narrow usefully — the parts of my port that
+DRAW are the parts to check first:
+
+    des.region(... type="zoo", filled=1, irregular=1)   fills a zoo: many draws
+    des.monster({id="giant mimic", appear_as=...}) x2   placement draws
+    des.object({class="%"}) x4, {class="="}, {class="/"} random type + place
+    selection.rndcoord(place), percent(25)              1 draw each
+
+Everything else in the level is fixed-coordinate and should draw zero. If our
+lspo_trap/lspo_door/lspo_object draw anything for an explicit-coordinate call,
+that alone would account for the blowout: the level places 19 traps, 4 doors and
+20 boulders at fixed spots.
+
+**Concrete next step:** re-add the level behind the registry, run seed4500, and
+diff its build step's draws against C's recorded list. Do not judge by the board
+until the first differing draw is identified.

@@ -14749,3 +14749,42 @@ on all 3736 draws, a wrong mask would be a DRAW-NEUTRAL storage bug — read
 dosdoor/okdoor's assignment path for a wall-door on a horizontal wall rather
 than re-deriving the draw order. The screen cannot arbitrate: (56,6) is far
 from the hero and never rendered in this stretch.
+
+## iter 77 — PROVED C excludes (56,6); cvt_sdoor_to_door fixed (not the same bug)
+
+Board 2200, tree clean. Committed a27771c.
+
+**Proved by experiment, not inference.** Temporarily adding `continue` for the
+single square (56,6) in mfndpos makes seed0030 **step 36 go SAME**. So C's cnt
+really is 5 and that door really is excluded on C's side. The diagnostic was
+reverted; do not re-derive this.
+
+Note steps 39, 41 and 44 stay DIFF even with the exclusion, so seed0030 has at
+least three more independent divergences after 36 — fixing the door alone will
+not make this session take off.
+
+**Found and fixed a real bug hunting the cause, though it is NOT this one.**
+`dosearch0`'s SDOOR arm inlined `typ = DOOR; doormask = D_NODOOR`. C calls
+`cvt_sdoor_to_door()` (detect.c), which keeps D_LOCKED if set and otherwise ORs
+in **D_CLOSED** — a newly exposed secret door is CLOSED, not a doorway; only
+the rogue level gives D_NODOOR. The correct `cvt_sdoor_to_door` already existed
+at js/detect.js:84 and simply was not called. This matters beyond the glyph:
+mfndpos excludes a D_CLOSED square, so a found secret door left as D_NODOOR
+hands every nearby monster an extra candidate. No board or RNG movement, since
+no public session searches out a secret door near a monster decision.
+
+**Ruled out for (56,6) specifically:** it is not a converted secret door — the
+fix above changes nothing at step 36, so the square was a plain DOOR from level
+generation with doormask 0. Our `dosdoor` also matches mklev.c arm for arm
+(including the mimic/D_TRAPPED demotion and the SDOOR else-branch), and step
+28's build matched on all 3736 draws.
+
+**So the remaining possibilities are narrow:**
+1. C has no DOOR at (56,6) at all — our door placement put one where C has
+   wall. `dodoor()` is `dosdoor(x, y, aroom, okdoor(x, y) || !rn2(5) ? DOOR : SDOOR)`
+   and the `||` short-circuits, so a wrong `okdoor` would usually change the
+   draw count too; it did not, which weakens but does not kill this.
+2. Something after generation clears the mask. Every doormask write in the tree
+   is now: dokick.js:291/296/300, detect.js:56/96, lock.js:82/84/196,
+   mklev.js:1649-1656. Audit those against their C counterparts — lock.js:82
+   (`door.doormask = D_NODOOR`) is the next one I would read.

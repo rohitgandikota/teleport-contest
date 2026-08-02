@@ -144,7 +144,10 @@ export async function dopotion(otmp) {
             makeknown(otmp.otyp);
             more_experienced(0, 10);
         } else {
-            note_unported_potion('dopotion:trycall');
+            /* src/potion.c:1473 — offer to name the type we still cannot
+               identify. */
+            const { trycall } = await import('./do_name.js');
+            await trycall(otmp);
         }
     }
     useup(otmp);

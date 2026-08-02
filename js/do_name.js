@@ -9,6 +9,8 @@
 import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
 import { docrt } from './display.js';
+import { discover_object } from './o_init.js';
+import { an, xname } from './objnam.js';
 import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          PICK_ONE, ECMD_OK } from './const.js';
 import { ATR_NONE, NO_COLOR } from './terminal.js';
@@ -296,4 +298,59 @@ export async function docallcmd() {
         break;
     }
     return ECMD_OK;
+}
+
+// src/do_name.c:636 docall() — "Call a <object>:" after using an unidentified
+// item. The name is stored on the object TYPE (objects[otyp].oc_uname), so it
+// shows on every future one of that kind.
+//
+// The sink-water kludge (obj->fromsink) and the EDIT_GETLIN default response
+// are not reached by anything ported.
+export async function docall(obj) {
+    if (!obj.dknown)
+        return; /* probably blind */
+
+    /* safe_qbuf(qbuf, "Call ", ":", obj, docall_xname, simpleonames, "thing")
+       — docall_xname() strips quantity and BUC so the prompt names the TYPE,
+       not this particular item. */
+    const qbuf = `Call ${docall_xname(obj)}:`;
+    const { getlin } = await import('./cmd.js');
+    const buf = await getlin(qbuf);
+    if (buf === null || buf === '' || buf === '\x1b')
+        return;
+
+    const oc = game.objects[obj.otyp];
+    const had_name = !!oc.oc_uname;
+    /* mungspaces(): all-spaces uncalls the item */
+    const name = buf.trim().replace(/\s+/g, ' ');
+    if (!name) {
+        if (had_name) {
+            oc.oc_uname = null;
+            note_undiscover(obj.otyp);
+        }
+    } else {
+        oc.oc_uname = name;
+        discover_object(obj.otyp, false, true, true);
+    }
+}
+
+/* src/do_name.c docall_xname() — the object named as its type: one of them,
+   no blessed/cursed prefix. */
+function docall_xname(obj) {
+    const otemp = { ...obj, quan: 1, blessed: 0, cursed: 0, oextra: null };
+    return an(xname(otemp));
+}
+
+// src/do.c:395 trycall() — offer to name a type the hero has just used and
+// still cannot identify.
+export async function trycall(obj) {
+    const oc = game.objects[obj.otyp];
+    if (!oc.oc_name_known && !oc.oc_uname)
+        await docall(obj);
+}
+
+/* src/o_init.c undiscover_object() — drop a type from the discoveries list
+   when its player-given name is cleared. Not ported; recorded. */
+function note_undiscover(otyp) {
+    (game.unported ||= new Set()).add('do_name:undiscover_object');
 }

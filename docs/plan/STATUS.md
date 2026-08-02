@@ -13593,3 +13593,43 @@ several sessions at once even though only seed0002 shows a gain today
 Backticks inside a `git commit -m` string get expanded by the shell and the
 word vanishes from the message. Use `git commit -F -` with a heredoc when
 the message mentions identifiers.
+
+## Iteration 50 — seed0004 traced to mfndpos returning too few squares
+
+Board **2171**, tree clean, no commit. Diagnosis only.
+
+Ranking after the getobj fix (total lost 9234):
+
+    1866  seed0030-ten-diverse-deaths
+    1586  seed4500-knight-coverage
+     663  seed0014-dequa-fountain-explore
+     645  seed0360-wizard-world-tour
+     520  seed0002-healer-reflection-drummer
+     490  seed0399-wizard-hallu-actions
+     387  seed0004-feeding-pony        <- matches only 22 of 409
+     316  seed5002-wizard-coverage-pair
+
+seed0399 shows **no** step-level draw divergence in its first 40 steps, so
+its loss is screen-only -- worth a separate screendiff pass.
+
+### seed0004: dog_move scores one candidate fewer than C
+
+First divergent step is 22. Position-by-position (a new scratch helper, not
+committed -- stepdraws only prints the first six):
+
+     11    C rn2(3)=0   ours rn2(3)=0    dog_move(dogmove.c:1257)
+     12  * C rn2(12)=0  ours rn2(5)=0    dog_move(dogmove.c:1257)
+     13  * C rn2(5)=0   ours rn2(12)=0   distfleeck
+
+C spends TWO draws at dogmove.c:1257 -- the
+`(omx==nix && omy==niy && !rn2(3)) || !rn2(12)` arm, once per candidate
+square. Ours spends one and then falls through to distfleeck, so **our
+candidate loop has fewer squares to score**.
+
+Probing `mfndpos()` at that point gives cnt values of 1-3 for the pony
+(e.g. `pet=77,15 cnt=1 poss=77,14`). C must see at least one more.
+
+Next: compare `mfndpos()`'s rejection tests against src/mon.c for a LARGE
+pet -- seed0004's pet is a pony, and this port has already been bitten by
+size/`verysmall` predicates. Check `mon_allowflags()` too; a missing ALLOW_
+bit would trim candidates the same way.

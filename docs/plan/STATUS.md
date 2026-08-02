@@ -13633,3 +13633,58 @@ Next: compare `mfndpos()`'s rejection tests against src/mon.c for a LARGE
 pet -- seed0004's pet is a pony, and this port has already been bitten by
 size/`verysmall` predicates. Check `mon_allowflags()` too; a missing ALLOW_
 bit would trim candidates the same way.
+
+## Iteration 51 — the biggest remaining class: unported .lua special levels
+
+Board **2171**, tree clean, no commit. Diagnosis, but this one reframes the
+remaining work.
+
+### seed0399 is not a save/restore problem
+
+Earlier notes called seed0399's step-42 block "level save/restore". It is
+not. The hero level-teleports to Dlvl 12, `makemaz()` picks big-room variant
+7 (`rnd(13)=7`, matching C), and calls `load_special("bigrm-7")` --
+**which returns false, because only three special levels are ported**:
+
+    js/dat/levels.js  SPECIAL_LEVELS = { oracle, castle, valley }
+
+So we fall back to an ordinary room-and-corridor level. Our map is not
+blank (9 rooms, hero placed, 69 cells remembered) -- it is a DIFFERENT
+level, and every one of the 7133 draws C spends generating bigrm-7 diverges
+from ours after the first two.
+
+The machinery is all there: `js/nhlua.js` is a Lua interpreter, `sp_lev.js`
+has the `lspo_*` builders, and `load_special()` dispatches from a registry.
+What is missing is the level DATA.
+
+### How much this costs, measured across all 44 sessions
+
+Counting `makemaz:<protofile>` records per session:
+
+      5 sessions  soko1-1          4 sessions  tower1
+      4 sessions  x-strt           4 sessions  x-loca
+      3 sessions  soko1-2          3 sessions  x-goal
+      2 sessions  bigrm-9          2 sessions  bigrm-10
+      2 sessions  soko2-1          2 sessions  soko3-1
+      2 sessions  soko4-1          3 sessions  check_ransacked
+
+**Sokoban and the Quest are the two biggest, then the tower and big rooms.**
+A session that reaches an unported special level diverges completely from
+that point, which is why several of the worst offenders on the lost-screens
+table lose almost everything.
+
+### Why this is tractable
+
+`dat/bigrm-7.lua` is 53 lines -- a map, one `replace_terrain`, a lit region,
+two stairs, `non_diggable`, then 15 objects / 6 traps / 28 monsters. Our
+`js/dat/oracle.js` is 86 lines. These are comparable in size, so each level
+is roughly one iteration, and the loader already exists.
+
+Ordering by sessions unblocked: soko1-1, then tower1, then x-strt/x-loca,
+then the bigrm set.
+
+**Caveat before starting:** C's draws 2-3 of the level build are a
+`shuffle()` from nhlib.lua (rn2(3), rn2(2)) that happens BEFORE
+`splev_initlev`, i.e. in the loader preamble, not in bigrm-7.lua itself.
+Reproducing a level exactly means reproducing that preamble too -- check
+what oracle/castle/valley do about it before porting a fourth.

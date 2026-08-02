@@ -11937,3 +11937,42 @@ hero takes both points of shock damage (mdamageu fires twice, uhp 13 -> 12 ->
 11), so the gap is that we heal it back and C does not. Look at
 `regen_hp`/the moveloop healing arm in allmain.c against ours; a Healer at
 XL1 should regenerate far more slowly than we are.
+
+## Probe hygiene failure, and a sharper read on the pet object scan
+
+Board holds at 1752, passes 6. Commit b01b3fa.
+
+**I committed three debug probes.** A `DOGPROBE` object dump in `dog_goal`
+went in with the query_objlist commit, and two `NHTRACE` writes had been
+sitting in jsmain's newgame path. None changed output with the variable
+unset, but they are scaffolding and the protocol is to strip them. Found by
+`grep -rn "process.env" js/` — **run that before every commit**; `git status`
+does not catch it once the probe is already in a commit you are amending or
+following.
+
+**The seed0002 HP lead was a false trail.** Our `regen_hp` matches
+allmain.c:625 line for line, including the `(ulevel + ACURR(A_CON)) >
+rn2(100)` draw. The HP difference at step 50 is downstream of the rng wall,
+not its own bug. Checking the mechanic against the C before chasing it cost
+one grep and saved the iteration.
+
+**The wall at 3583, read properly this time.** C's sequence is three
+`obj_resists` (dogfood, once per object in the pet's 5-square box), then
+`rn2(4)` at dogmove.c:575 — which is the follow-player `appr` decision AFTER
+the loop. Ours is one `obj_resists`, then `rn2(8)`, which is
+`edog->apport > rn2(8)` INSIDE the loop's APPORT arm.
+
+So two things differ, and the second is the cleaner lead:
+1. C's box holds 3 objects; ours holds more (a probe showed 7, including a
+   gold pile at the box's far corner).
+2. **C never reaches the APPORT arm for its first object and we do.** In C
+   that arm is guarded by `gtyp == UNDEF && in_masters_sight &&
+   !dog_has_minvent && (!lit(pet) || lit(hero)) && (otyp == MANFOOD ||
+   m_cansee(...))` before the `apport > rn2(8)` draw. One of those terms is
+   false in C and true for us — that is a bounded thing to check, unlike the
+   object-count question which has now resisted four passes.
+
+**Recommendation for the next iteration:** check those five APPORT guard
+terms against ours directly rather than continuing to chase object counts.
+If that does not resolve it, switch to `thrwmu` (mthrowu.c:1174, 58 hits,
+draws) from the audit shortlist rather than spending a fifth pass here.

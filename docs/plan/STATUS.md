@@ -12204,3 +12204,43 @@ read it, so the next pass should INSTRUMENT rather than re-read**: dump our
 viz_array COULD_SEE/IN_SIGHT and seenv for (73,5) at seed0004 step 16, then
 work out which of the four C would have to skip to produce a blank cell.
 Re-reading the C has now failed twice on this bug; measure instead.
+
+## Abandoning the wall hunt paid for itself immediately
+
+Board 1798 -> 1883, passes 6. Commit f7710df.
+
+**First, the wall bug, parked with a genuine contradiction recorded.**
+Measured when C actually reveals (73,5) in seed0004: **step 22, when the hero
+reaches (74,7) INSIDE the room** — not at step 16 standing at (72,5) in the
+corridor beside it. So C does not reveal a wall adjacent to the hero in a
+dark corridor.
+
+But C's own code, as far as I can read it, says it should:
+`right_ptrs[5][72] = 73` (the first blocked column), `view_from` marks
+`left..right` inclusive so (73,5) gets COULD_SEE, `u.nv_range = 1` and
+`has_night_vision` is on so the nv circle ORs IN_SIGHT, the update loop then
+sets `seenv`, and back_to_glyph draws a wall whose seenv is set. Every one of
+those five steps is verified against the source. **The chain predicts a wall
+and C draws blank, so one link behaves differently than it reads.** I have
+now spent three iterations reading this. Do not read it a fourth time —
+either instrument the C (build it and print viz_array), or leave it.
+
+**Then, the point of this entry: I stopped and looked at where the points
+were.** Screen-diffed the two biggest untouched sessions and both had a small
+concrete bug within 20 steps:
+
+- **seed5002 (+71).** Stairs were coloured by an invented `stair_seen` flag,
+  yellow once looked at. C has no such rule: defsym.h:120 gives S_upstair and
+  S_dnstair CLR_GRAY, S_brupstair/S_brdnstair CLR_YELLOW. **The colour is a
+  property of the SYMBOL** — a branch staircase is yellow the moment it is
+  drawn. This was a "recorded behaviour" model I invented from screens
+  instead of reading defsym.h, and it was wrong.
+- **seed0014 (+1, and +13 on seed0030).** `dotogglepickup`'s ON branch was a
+  note where C builds "ON, for %s objects" from `oc_to_str(pickup_types)`;
+  empty types mean "all". I had written that note two iterations ago rather
+  than spending the two minutes to finish it.
+
+**Two lessons worth keeping.** Invented models that fit the screens (like
+`stair_seen`) are worse than reading the header — they look right until a
+session with different history exposes them. And a `note_unported` left on a
+five-line message is a debt that costs more than it saves.

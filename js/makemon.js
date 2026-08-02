@@ -1930,6 +1930,13 @@ export function makemon(ptr, x, y, mmflags) {
             mtmp.mstrategy |= STRAT_APPEARMSG;
     }
 
+    /* src/makemon.c:1472 — "make sure the mon shows up". A monster created
+       mid-game is drawn immediately; during level generation nothing is on
+       screen yet. The arrival MESSAGE that follows this in C is emitted by
+       the create_particular caller instead, because our makemon is sync. */
+    if (!game.in_mklev)
+        newsym(mtmp.mx, mtmp.my);
+
     return mtmp;
 }
 

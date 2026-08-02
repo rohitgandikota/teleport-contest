@@ -28,6 +28,7 @@ import { walkfrom, mkmaze_wire_mklev } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
 import { GP_CHECKSCARY as GP_CHECKSCARY_MK } from './const.js';
+import { breaktest } from './dothrow.js';
 import {
     mkgold, place_object, mkobj_at, mksobj_at, add_to_container, curse,
 } from './mkobj.js';
@@ -2240,18 +2241,30 @@ function mktrap_victim(trap) {
 
     /* Not all trap types drop an item; only the ones that kill in a way
        that is obvious after the fact. */
+    let otmp = null;
     switch (kind) {
-    case ARROW_TRAP: mksobj(ONAMES.ARROW, true, false); break;
-    case DART_TRAP: mksobj(ONAMES.DART, true, false); break;
-    case ROCKTRAP: mksobj(ONAMES.ROCK, true, false); break;
-    default: break;
+    case ARROW_TRAP:
+        otmp = mksobj(ONAMES.ARROW, true, false);
+        otmp.opoisoned = 0;
+        break;
+    case DART_TRAP: otmp = mksobj(ONAMES.DART, true, false); break;
+    case ROCKTRAP: otmp = mksobj(ONAMES.ROCK, true, false); break;
+    default: break;                     /* no item dropped by the trap */
     }
+    if (otmp)
+        place_object(otmp, x, y);
 
     /* Place a random possession: weapon, tool, food or gem. */
     do {
         const poss_class = [WEAPON_CLASS, TOOL_CLASS, FOOD_CLASS, GEM_CLASS][rn2(4)];
-        const otmp = mkobj(poss_class, false);
+        otmp = mkobj(poss_class, false);
         curse(otmp);
+        /* for mktrap_victim(), PIT is actually an exploded LANDMINE: a
+           fragile object created there was destroyed by the blast */
+        if (trap.ttyp === PIT && breaktest(otmp))
+            ;                           /* dealloc_obj(otmp) */
+        else
+            place_object(otmp, x, y);
         /* 20% chance of placing an additional item, recursively */
     } while (!rn2(5));
 
@@ -2268,11 +2281,16 @@ function mktrap_victim(trap) {
     case 3: case 4: case 5: victim_mnum = PMNAMES.PM_ORC; break;
     case 6: case 7: case 8: case 9:
         victim_mnum = PMNAMES.PM_GNOME;
+        /* 10% chance of a candle too */
         if (!rn2(10)) {
-            const otmp = mksobj(rn2(4) ? ONAMES.TALLOW_CANDLE
-                                       : ONAMES.WAX_CANDLE, true, false);
+            otmp = mksobj(rn2(4) ? ONAMES.TALLOW_CANDLE
+                                 : ONAMES.WAX_CANDLE, true, false);
             otmp.quan = 1;
+            otmp.owt = weight(otmp);
             curse(otmp);
+            place_object(otmp, x, y);
+            if (!g.level.at(x, y)?.lit)
+                note_unported_lev('mktrap_victim:begin_burn');
         }
         break;
     default: victim_mnum = PMNAMES.PM_HUMAN; break;
@@ -2281,7 +2299,7 @@ function mktrap_victim(trap) {
     if (victim_mnum === PMNAMES.PM_HUMAN && rn2(25))
         victim_mnum = rn1(PMNAMES.PM_WIZARD - PMNAMES.PM_ARCHEOLOGIST,
                           PMNAMES.PM_ARCHEOLOGIST);
-    const otmp = mkcorpstat(CORPSE, null, victim_mnum, x, y, CORPSTAT_INIT);
+    otmp = mkcorpstat(CORPSE, null, victim_mnum, x, y, CORPSTAT_INIT);
     otmp.age -= (TAINT_AGE + 1); /* died too long ago to safely eat */
 }
 

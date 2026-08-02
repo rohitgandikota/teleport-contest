@@ -15195,3 +15195,41 @@ sweep is slower; do it with a coarse bisect first.
 screen, permanently 35/36) and seed0501 (2 of its 3). Both parked. The
 signature to recognise instantly: differing cells are attribute-only, on SPACE
 characters, at the START of a row. Confirm the paint loop sets them, then stop.
+
+## iter 88 — seed2200: we search a secret door C does not have
+
+Board 2249, passes 7, tree clean, no code change.
+
+seed2200 (2 lost of 230) diverges at **step 228, key "s"** (search). Draws 0-9
+match exactly (a pet turn); the break is at index 10:
+
+    C   : rn2(12)=11 @ mcalcmove(mon.c:1164)
+    ours: rn2(7)=3
+    C   : rn2(12)=9  @ mcalcmove
+    ours: rnd(10)=10
+
+C spends **zero** draws in dosearch0 on that keystroke and goes straight to the
+per-monster mcalcmove block. We spend two draws first. dosearch0's only
+randomness is `rnl(7 - fund)` per adjacent SDOOR/SCORR and `rnl(8)` per adjacent
+unseen trap (js/detect.js:52, :64), so **we have a secret door, secret corridor
+or unseen trap next to the hero that C does not have.**
+
+This is very likely the same underlying problem as seed0030's step 36, where C
+excluded the DOOR at (56,6) from mfndpos and we did not (iter 77 proved the
+exclusion by experiment but never found its cause; the candidates left there
+were "C has no door at that square" or "our doormask is wrong"). Two sessions
+now point at our door/secret-door placement differing from C's WITHOUT changing
+the level-build draw count — seed0030 seg1's build matched all 3736 draws and
+seed2200's first 227 steps match exactly.
+
+**Next step, and it is a concrete one:** dump the hero's 8 neighbours at
+seed2200 step 228 (typ + doormask) and see which one is SDOOR/SCORR. Then work
+backwards through how that square was made — `dosdoor`/`dodoor`/`okdoor` in
+js/mklev.js — looking for a draw-neutral difference in WHICH square gets the
+door, not in the door's state. `dodoor()` is
+`dosdoor(x, y, aroom, okdoor(x, y) || !rn2(5) ? DOOR : SDOOR)` and the `||`
+short-circuits, so an okdoor that is wrong in the TRUE direction costs no draw
+and silently turns an SDOOR into a DOOR or vice versa. That is exactly the shape
+of a draw-neutral placement bug.
+
+seed2200 is 2 screens from passing, so this one is worth finishing.

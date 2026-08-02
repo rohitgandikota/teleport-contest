@@ -1,3 +1,16 @@
+=== thrwmu CHAIN: ONLY m_throw + monshoot + thrwmu WIRING REMAIN ===
+DONE: select_rwep (weapon.js), monmulti + drop_throw + ohitmon
+(js/mthrowu.js), should_mulch_missile + omon_adj (dothrow.js), hit/miss
+(zap.js), mshot_xname + distant_name (objnam.js), hliquid (do_name.js),
+stone_missile/is_poisonable (obj.js), mhim (mondata.js), ordin (hacklib).
+REMAINING: m_throw (C mthrowu.c:572; flight loop — tmp_at/nh_delay_output
+are note-only tree-wide, follow zap's 'tmp_at_flight' idiom; the hero-hit
+branch needs thitu (js/trap.js), ucatchgem/u_catch_thrown_obj (gate-note),
+potionhit (gate-note), poisoned/can_blnd/make_blinded (gate-note),
+MT_FLIGHTCHECK needs closed_door (cmd.js) + hits_bars (gate-note));
+monshoot (C:262, uses game.m_shot + singular()); thrwmu (C:1174, already
+read in full); then mattacku's AT_WEAP range2 arm calls thrwmu.
+
 === thrwmu CHAIN IN PROGRESS: select_rwep + monmulti DONE, m_throw NEXT ===
 js/mthrowu.js exists now (monmulti, with its rnd(multishot) volley roll);
 select_rwep landed in weapon.js with the rwep/pwep tables, game.propellor

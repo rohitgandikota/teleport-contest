@@ -764,7 +764,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
            known_hitum's rn2(25) because our monster dies where C's lives.
            Net -2 screens (seed0360), so it is reverted until that
            downstream gap is fixed with it. See docs/plan/STATUS.md. */
-        unarmed: !game.uwep && !game.uarm && !game.uarms,
+        unarmed: !game.u.uwep && !worn(W_ARM) && !worn(W_ARMS),
         hand_to_hand: (thrown === HMON_MELEE
                        /* not grapnels; applied implies uwep */
                        || (thrown === HMON_APPLIED && is_pole(game.uwep))),
@@ -869,10 +869,14 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         if (maybe_knockback)
             mhitm_knockback(game.youmonst, mon,
                             game.youmonst.data.mattk, {}, true);
-        note_unported_uhitm('hmon_hitmon:maybe_knockback');
     }
 
-    return hmd.retval;
+    /* src/uhitm.c:1934 — `return hmd.destroyed ? FALSE : TRUE`. This used to
+       return hmd.retval, which is initialised false and only set true on the
+       hit_no_harm path, so EVERY ordinary hit reported the monster dead and
+       known_hitum's whole post-hit block (its rn2(25) flee check among
+       others) was unreachable. */
+    return hmd.destroyed ? false : true;
 }
 
 /* include/obj.h is_pole() — the real predicate lives in js/u_init.js; this

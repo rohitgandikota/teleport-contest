@@ -1113,6 +1113,18 @@ async function domove_core() {
      * opens it and consumes the turn, and that must NOT stop a run. */
     if (blocksMove(newx, newy, dx, dy)) {
         // Can't move there
+        /* src/hack.c:1058 — with mention_walls the blocked move says what
+           stopped it, naming the background glyph. Only the solid-stone and
+           wall cases are reachable here; anything else records. */
+        if (game.flags?.mention_walls && !game.context.door_opened) {
+            const loc = game.level?.at(newx, newy);
+            if (!loc || loc.typ === STONE)
+                await pline("It's solid stone.");
+            else if (IS_WALL(loc.typ))
+                await pline("It's a wall.");
+            else
+                note_unported_cmd('test_move:mention_walls_other');
+        }
         if (!game.context.door_opened) {
             game.context.move = 0;
             nomul(0);

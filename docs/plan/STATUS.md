@@ -12777,3 +12777,52 @@ the C for that one turn. Note our `dog_invent()` uses
 `objects.find(o => o.ox === omx && o.oy === omy)`, which returns the first
 match in array order, while C reads `svl.level.objects[omx][omy]`, the TOP of
 the pile -- worth fixing while in there, though it is not this bug.
+
+## Iteration 31 — seed0014 pet divergence localized to one turn (no fix yet)
+
+Board **1979**, passes 6, tree clean. No commit this iteration.
+
+### Tooling correction: strip SI/SO before scanning a DECgraphics screen
+
+A scan for glyph positions in seed0014's recorded screens gave columns two
+off. seed0014 runs `symset:DECgraphics`, so the recorded rows carry `\x0e`
+/ `\x0f` markers around line-drawing spans. Stripping only SGR and expanding
+CUF is NOT enough. The correct minimal decode for position work is:
+
+    t.replace(/\x1b\[[0-9;]*m/g,'').replace(/[\x0e\x0f]/g,'')
+     .split('\n').map(L => L.replace(/\x1b\[(\d+)C/g,(m,n)=>' '.repeat(+n)))
+
+`tools/screendiff.mjs` already handles this; hand-rolled scans do not.
+
+### What is established about the pet
+
+C's pet, in GAME coords (screen (c,r) maps to game (c+1, r-1)):
+
+    steps 44-46  (48,4)     <- these steps all MATCH ours
+    step 47      (49,3)
+    step 48      (48,2)
+
+Ours diverges at step 47, moving west/south instead of north-east.
+**Every RNG call through 3203 matches**, so this is a non-drawing decision.
+
+The goal machinery is present and looks right: `dog_goal()` writes
+`game.gg = {gx, gy, gtyp}` (dogmove.c's shared `gg` struct) and `GDIST()`
+reads it. A probe on the diverging turn shows ours choosing
+`gtyp=APPORT (4)` with the goal set to the hero's own square -- that is C's
+"master in sight" fallback at dogmove.c:505-507. C's pet demonstrably went
+somewhere else, so C picked a different branch or a different goal square.
+
+### Next step, concretely
+
+Probe by STEP, not by `game.moves` -- they do not line up, which is what
+made this iteration's last measurement unreadable. Capture `gtyp/gx/gy/appr`
+plus the chosen `nix,niy` on the single turn whose capture boundary is step
+47, then walk C's `dog_goal()` (dogmove.c:483-560) branch by branch against
+ours for those exact inputs. The spilled spellbook sits on the hero's square,
+so the object-scan branch and the master-in-sight fallback both point at
+(hero.x, hero.y) and cannot by themselves explain a move to (49,3).
+
+Also still worth fixing while in this file: `dog_invent()` uses
+`objects.find(...)` (first match in array order) where C reads
+`svl.level.objects[omx][omy]`, the TOP of the pile. `objects_at()` already
+exists in js/dog.js and returns the pile in the right order.

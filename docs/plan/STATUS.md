@@ -1,3 +1,19 @@
+=== THE PET-MOVE CLUSTER: OUR mfndpos ADMITS ONE EXTRA CANDIDATE ===
+The first-divergence aggregate says 11 of 33 failing sessions die in
+m_move/dog_move/distfleeck. seed0030's div@10701 is rn2(24) vs C rn2(20)
+at m_move's track loop: modulus 4*(cnt-j) with j=0 means OUR mfndpos
+returned cnt=6 where C returned 5 — we ADMIT a square C rejects, silently
+(mfndpos draws nothing). AUDITED against C mon.c:2140: the port's arm
+sequence matches EXCEPT the poison-gas-region skip (C mon.c mfndpos
+'avoid poison gas', needs visible_region_at which is absent tree-wide;
+seed0030 does read scrolls — check whether a stinking cloud region exists
+at that turn). Also missing before this entry: m_move's kicked-loc and
+MDISP skips (now landed, draw-free). NEXT PROBE: scratch-harness seed0030
+with the rng log enabled, snapshot the acting monster and its 8 neighbor
+squares at call 10701, and diff each square's typ/door/trap against the
+mfndpos arms. The one that should have been skipped names the missing
+arm. dog_move's :1255/:1257 cluster (4+3 sessions) likely shares it.
+
 === dmg_recalc SKILL BLOCK LANDED UNDER THE FIRST-DIVERGENCE PROTOCOL ===
 weapon_dam_bonus + use_skill re-landed together (iter-111's revert), and
 mon_wield_item's ranged arm wields game.propellor. THE MEASUREMENT THAT

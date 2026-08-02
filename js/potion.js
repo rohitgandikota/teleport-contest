@@ -9,6 +9,10 @@ import { game } from './gstate.js';
 import { pline } from './display.js';
 import { You, You_feel } from './pline.js';
 import { exercise } from './attrib.js';
+import { A_DEX } from './const.js';
+import { Your } from './pline.js';
+import { nomul } from './hack.js';
+import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { Unaware, Hallucination } from './youprop.js';
 import { rn2, rn1 } from './rng.js';
@@ -118,6 +122,9 @@ async function peffects(otmp) {
     case ONAMES.POT_CONFUSION:
         await peffect_confusion(otmp);
         break;
+    case ONAMES.POT_PARALYSIS:
+        await peffect_paralysis(otmp);
+        break;
     case ONAMES.POT_FRUIT_JUICE:
     case ONAMES.POT_SEE_INVISIBLE:
         await peffect_see_invisible(otmp);
@@ -212,4 +219,25 @@ async function peffect_see_invisible(otmp) {
         return;
     }
     note_unported_potion('peffect_see_invisible:see_invisible');
+}
+
+// src/potion.c peffect_paralysis() — the hero freezes for rn1(10, 25) turns,
+// longer when the potion is cursed and shorter when blessed.
+//
+// Free_action, Levitation and riding change only the message; none is
+// reachable yet, so those arms are recorded.
+async function peffect_paralysis(otmp) {
+    if (game.u.uprops?.FREE_ACTION?.intrinsic) {
+        note_unported_potion('peffect_paralysis:free_action');
+        return;
+    }
+    if (game.u.uprops?.LEVITATION || game.u.usteed) {
+        note_unported_potion('peffect_paralysis:suspended_or_steed');
+    } else {
+        await Your(`feet are frozen to the ${surface(game.u.ux, game.u.uy)}!`);
+    }
+    nomul(-(rn1(10, 25 - 12 * bcsign(otmp))));
+    game.multi_reason = 'frozen by a potion';
+    game.nomovemsg = 'You can move again.';
+    exercise(A_DEX, false);
 }

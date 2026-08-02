@@ -1989,7 +1989,7 @@ export function grow_up(mtmp, victim) {
             mtmp.mnum = newtype;
             mtmp.data = ptr;
             const { mondied } = mondied_ref();
-            mondied(mtmp);
+            mondied(mtmp);   /* grow_up is sync in C's call chain */
             return null;
         } else if (canspotmon(mtmp)) {
             /* pline_mon "%s grows up into %s." */

@@ -1421,7 +1421,7 @@ export function corpse_chance(mon, magr, was_swallowed) {
 // plus the corpse. mondead's full detach (worm segments, shop bookkeeping,
 // vault guards, life-saving) is a slice: the map removal, so the fight's
 // survivor can occupy the square.
-export function mondied(mdef) {
+export async function mondied(mdef) {
     const mx = mdef.mx, my = mdef.my;
 
     /* mondead() slice: remove from the map and the monster list */
@@ -1430,6 +1430,14 @@ export function mondied(mdef) {
     const idx = (game.level?.monsters || []).indexOf(mdef);
     if (idx >= 0)
         game.level.monsters.splice(idx, 1);
+
+    /* src/mon.c:2779 m_detach() — release (drop onto the map) everything the
+       creature was carrying, at the coordinates it died on. */
+    mdef.mx = mx; mdef.my = my;
+    if ((mdef.minvent || []).length) {
+        const { relobj } = await import('./steal.js');
+        await relobj(mdef, 1, false);
+    }
 
     /* "this assumes that the dead monster's map coordinates remain
        accurate" — corpse placement reads mdef->mx,my after mondead */
@@ -1459,7 +1467,7 @@ export async function monkilled(mdef, fltxt, how) {
     else if (mdef.mtame)
         note_unported_mon('monkilled:sad_feeling');
 
-    mondied(mdef);
+    await mondied(mdef);
 }
 
 // src/mon.c:3955 mnexto() — move a monster next to the hero: enexto()'s

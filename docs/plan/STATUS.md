@@ -11056,3 +11056,30 @@ accumulate loop letting an out-of-class/zero-freq index through: check
 nums[] indices are being written with MONSi(last) but READ with a
 different index. Print (first,last,MONSi(first),nums[]) for the failing
 call specifically — the earlier probe only sampled successful ones.
+
+## 2026-08-01 (morgue, cont.): the divergence is a PLACEMENT difference, not a species one
+
+No code change this iteration; the valley morgue mismatch at rng 29147 is
+now fully characterised, so the next agent can go straight at it.
+
+**Established by direct instrumentation:**
+- mkclass NEVER returns an out-of-class species (checked every call in the
+  run with an assert-style probe: zero hits). The earlier "mons[287] is
+  wrong" reading was my own misreading — 287 IS PM_GHOST, mlet 54 = S_GHOST,
+  and morguemon's i<20 arm returning it is correct.
+- C's own morguemon values in this region: i=0 -> ghost (creates), i=11 ->
+  ghost (creates), **i=16 -> ghost (creates NOTHING)**. Same branch, same
+  species, different outcome — so the rejection is POSITIONAL.
+- Ghost naming (rndghostname's rn2(7)+rn2(34)) is already ported and fires.
+- Our MON_AT gate fires 3 times in the valley, at (24,3), (24,6), (26,6) —
+  but NOT at (22,6), which is the square C rejects. So in C that square is
+  occupied and in ours it is free.
+
+**Conclusion:** an earlier monster in this same fill lands on a different
+square in ours than in C, leaving (22,6) free for us. The fill visits
+squares in a fixed order, so the culprit is an earlier makemon whose final
+position differs — most likely one that went through enexto (our MON_AT
+gate's enexto arm, or m_initsgrp/m_initlgrp group placement) and picked a
+different neighbour. Next step: log (species, requested x,y, FINAL x,y) for
+every makemon in the valley fill and find the first whose final position
+could differ; compare against which squares C must have occupied.

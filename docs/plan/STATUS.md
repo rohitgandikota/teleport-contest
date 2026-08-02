@@ -16076,3 +16076,36 @@ out as `game._toplines`, so the plumbing is half there.
 
 Sokoban's state and restart instructions remain in iter 108. Everything from
 iters 103-108 is committed; the working tree is clean at 2249 with 7 passes.
+
+## iter 110 — remember_topl ported; unported list head drops from 100% to 45%
+
+Board 2249, passes 7, tree clean. Committed d6f2d3a.
+
+Ported `remember_topl` (win/tty/topl.c:96), the single highest-reach unported
+path — hit by 100% of the 44 sessions. `gt.toplines` maps to
+`game._pending_message` (update_topl already says so in a comment). The history
+ring is inert until something reads ^P, but the load-bearing half is the CLEAR:
+C banks the line, empties toplines and advances maxrow/maxcol around the ring.
+Leaving it set kept a retired message live where it could be appended to or
+re-painted.
+
+Draws nothing, board unchanged, no over-read. `topl:remember_topl` is gone from
+`tools/unported-hits.mjs`, whose head is now:
+
+    45%  freeinv_core:uhave_artifacts
+    34%  pet_ranged_attk:attack
+    27%  uhitm:passive:adtyp=0     27%  mattacku:thrwmu
+    25%  uhitm:dmg_recalc:weapon_dam_bonus / use_skill
+    25%  uhitm:hmon_hitmon:pet / splitmon
+    25%  useupall:setnotworn / obfree      25%  mdrop_obj:flooreffects
+
+**Continue down this list, not the makemaz one.** Order from iter 109 still
+holds: the 25% `uhitm:dmg_recalc:*` pair and `useupall:*` sit inside functions
+already ported and exercised every fight, so they should be small.
+
+**A note on judging these:** a flat board is the EXPECTED result for a
+zero-draw fix like this one. The signal that it worked is the unported entry
+disappearing plus no regression. Do not read consecutive +0 commits as no
+progress — but equally, do not keep landing zero-draw fixes indefinitely
+without checking whether any of them unblock a screen; if three in a row move
+nothing, switch to a draw-bearing target.

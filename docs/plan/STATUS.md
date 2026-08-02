@@ -12004,3 +12004,47 @@ Then one more draw: `thitu` calls `exercise(A_STR, FALSE)` immediately after
 **Next:** seed0002's wall is 3766. The remaining trap types are the obvious
 follow-on — arrow and rock traps share `t_missile`/`thitu` and are nearly
 free now; squeaky board, bear trap and pits need their own effects.
+
+## Trap census, and seed0004's wall is positional
+
+Board holds at 1764, passes 6. No code change this pass — the two leads I
+followed both ended in "not that", and both are worth writing down so nobody
+re-walks them.
+
+**Trap census.** Counting `@ trapeffect_*` and `@ mintrap` annotations across
+all 44 recorded streams gives the only ranking that matters for trap work:
+
+     108  mintrap              (monsters triggering traps)
+      10  trapeffect_magic_trap
+       9  trapeffect_bear_trap
+       5  trapeffect_dart_trap   <- ported
+       3  trapeffect_slp_gas_trap
+       2  trapeffect_pit / landmine / fire_trap
+       1  trapeffect_rocktrap / rust_trap
+
+Arrow and rock traps are almost absent, so the "cheap follow-on" I expected
+last iteration is not worth doing for its own sake. **mintrap dominates, but
+94 of its 98 draws are in seed0004 alone** — one monster stuck in a trap for
+many turns. And both its draw sites (`!rn2(40)` escape at trap.c:3751,
+`already_seen && rn2(4)` at 3812) only fire once a monster is ALREADY
+trapped, which needs the bear-trap and pit effects for monsters first. So
+mintrap is a chain, not a quick win, and it is worth little outside seed0004.
+
+**seed0004's wall (3848) is not the traps.** Its first trap draw is at 4013,
+downstream. The wall is `dog_move`'s candidate loop: C runs at least two more
+iterations than we do, so C's `mfndpos` returns more positions for the pet.
+Probed it: our pet is at (72,6) with cnt=5, correctly excluding (73,5) and
+(73,6) as walls and (73,7) as an open door on a diagonal (mon.c's diagonal
+rule rejects `IS_DOOR(ntyp) && doormask & ~D_BROKEN`). The recorded map
+agrees with ours on all three squares. **So either C's pet is somewhere else
+entirely by that turn — making this positional and downstream of an earlier
+divergence — or the difference is in a candidate we both have and rank
+differently.** The mfndpos rules themselves check out.
+
+This is the third session (with seed4500 and seed0002) whose wall is a
+pet-movement candidate count. They are probably one bug, and chasing them
+one session at a time has not worked. **Suggested next approach: instrument
+mfndpos to dump cnt and poss for the PET on every call in seed4500, and
+compare against the C draw bounds `rn2(4 * (cnt - j))` at monmove.c:1963,
+which reveal C's cnt directly. That gives a per-turn cnt comparison instead
+of a single snapshot.**

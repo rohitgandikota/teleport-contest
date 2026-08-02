@@ -20,8 +20,9 @@ import { pline, newsym } from './display.js';
 import { You, You_cant } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, VIBRATING_SQUARE } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
+import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
@@ -144,10 +145,27 @@ export async function dodown() {
         ladder_down = !stairs_down;
     }
 
-    /* levitation, being stuck, u_rooted, trapdoors and holes each have their
-       own arm above this in C; none is reachable without those subsystems */
+    /* levitation, being stuck, u_rooted and the hider arms sit above this
+       in C; none is reachable without those subsystems */
     if (!stairs_down && !ladder_down) {
-        note_unported_do('dodown:not_on_stairs');
+        const trap = t_at(game.u.ux, game.u.uy);
+        if (trap && is_pit(trap.ttyp) && trap.tseen) {
+            /* C: uteetering_at_seen_pit/uescaped_shaft -> dotrap(TOOKPLUNGE) */
+            note_unported_do('dodown:pit_plunge');
+            return ECMD_TIME;
+        } else if (!trap || !is_hole(trap.ttyp) || !trap.tseen) {
+            if (game.flags.autodig && !game.context?.nopick
+                && game.u.uwep && is_pick(game.u.uwep)) {
+                note_unported_do('dodown:autodig');
+                return ECMD_OK;
+            } else {
+                await You_cant(`go down here${
+                    (trap && trap.ttyp === VIBRATING_SQUARE) ? ' yet' : ''}.`);
+                return ECMD_OK;
+            }
+        }
+        /* a seen hole or trapdoor: the descent needs goto_level's fall arm */
+        note_unported_do('dodown:fall_through_hole');
         return ECMD_OK;
     }
 

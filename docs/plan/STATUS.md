@@ -12088,3 +12088,45 @@ the game actually diverged. The loop is one line:
 glyphs ('┐' and '│' at x=60, y=16 and 18) and C draws blank. We are revealing
 wall squares C has not shown, so it is a vision/wall-seeing rule, not a
 message.
+
+## The screen-diff method applied to seed0004 and seed0002
+
+Board holds at 1798, passes 6. No code change — this pass located two bugs
+precisely rather than fixing either, and the locations are worth more than a
+guess would have been.
+
+Ran the step-by-step screen diff on both stuck sessions. Both diverge far
+earlier than their rng walls, confirming the method generalises:
+
+| session  | rng wall | first screen divergence |
+|----------|----------|-------------------------|
+| seed0004 | 3848     | **step 16**             |
+| seed0002 | 3583     | **step 9**              |
+
+### 1. We reveal walls C keeps dark (seed0004 step 16, seed4500 step 57)
+
+Same bug in two sessions. seed0004: hero at (72,5) in a dark CORRIDOR; we
+draw the wall glyph at (73,5) and (73,6), C draws blank. seed4500 step 57 is
+the identical shape at (60,16) and (60,18).
+
+Traced it: `newsym` draws them because `cansee(73,5)` is true for us, which
+means `viz_array` has IN_SIGHT. Ruled out the obvious suspects:
+- Our night-vision block is guarded by COULD_SEE exactly as C's is
+  (`if (next_row[col]) next_row[col] |= IN_SIGHT` at vision.c:687).
+- `u.nv_range = 1` for every hero (u_init.c:1019), so C really does light
+  the 8 neighbours — the range is not the difference.
+
+**So the difference is COULD_SEE itself: our `view_from` shadow cast marks
+these wall squares and C's does not.** That is vision.c's
+`view_from`/`right_side`/`left_side` algorithm, specifically which BLOCKED
+squares adjacent to a clear region get marked. This is real algorithm work,
+not a missing call, and it is the first divergence for two large sessions —
+worth an iteration on its own.
+
+### 2. Object colour (seed0002 step 9)
+
+One cell: a '!' potion at (51,8) renders colour 11 for us and default for C.
+An object's colour comes from its randomised description, so this is likely
+an o_init shuffle or description-assignment difference rather than a display
+bug. Cheaper to chase than the vision algorithm; check what description our
+potion got versus what C's colour implies.

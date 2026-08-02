@@ -12826,3 +12826,50 @@ Also still worth fixing while in this file: `dog_invent()` uses
 `objects.find(...)` (first match in array order) where C reads
 `svl.level.objects[omx][omy]`, the TOP of the pile. `objects_at()` already
 exists in js/dog.js and returns the pile in the right order.
+
+## Iteration 32 — seed0014 pet: the missing draw is NOT the pet's
+
+Board **1979**, tree clean, no commit. Diagnosis only, but the target is now
+one call wide.
+
+### What the turn actually looks like
+
+On the turn whose capture boundary is step 47, the pet is at game (48,4) in
+BOTH C and this port (steps 44-46 match). Probes on that turn give:
+
+    appr = 0, gtyp = UNDEF, goal = hero's square, udist = 5
+    mfndpos candidates (C's order, ours matches exactly, cnt=8):
+        47,3  47,4  47,5  48,3  48,5  49,3  49,4  49,5
+
+With `appr == 0` every candidate scores `j == 0`, so dog_move picks by
+RESERVOIR SAMPLE -- `(j == 0 && !rn2(++chcnt))` (dogmove.c:1254). The choice
+is therefore decided entirely by WHICH rn2 VALUES arrive, not by any
+comparison. C lands on index 5 (49,3); we land on index 2 (47,5).
+
+### The one missing call
+
+    C:     rn2(100) obj_resists | rn2(5) distfleeck | rn2(100) obj_resists | rn2(8)
+    ours:                         rn2(5) distfleeck | rn2(100) obj_resists | rn2(8)
+
+We are missing exactly ONE `obj_resists` (i.e. one `dogfood()` call) BEFORE
+distfleeck. Everything after is our stream running one draw behind, which is
+why the reservoir picks a different square.
+
+Things now RULED OUT, so nobody re-checks them:
+- `mfndpos` scan order (nx outer, ny inner) -- matches C exactly.
+- The `gg` goal struct and `GDIST` -- present and wired correctly.
+- dog_goal's SQSRCHRADIUS box: x[43,53] y[0,9], and the spilled spellbook at
+  (47,2) IS inside it. Our dog_goal's own dogfood call happens and draws.
+- The pet's own `dog_invent()`: the pet stands on (48,4) and there is no
+  object there, in either build, so its `dogfood` arm correctly does nothing.
+
+**So the missing draw belongs to a DIFFERENT monster's turn, processed before
+the pet's.** movemon walks the monster list; one of the other three monsters
+evaluates an object in C and does not here. Candidates worth checking, in
+order: monster list ORDER (C's fmon is newest-first; ours is
+game.level.monsters, also unshifted -- verify it actually matches at this
+point), then `meatobj`/`meatmetal` (both call `obj_resists(otmp, 5, 95)`)
+for the two hostiles, then anything else on m_move's post-move object path.
+
+Note the earlier entry in this file that says "our dog is not seeing that
+pile" is WRONG and superseded by this one: our dog_goal does see it.

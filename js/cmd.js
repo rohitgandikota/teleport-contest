@@ -41,7 +41,7 @@ import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
@@ -60,7 +60,8 @@ import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwin
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
-import { doengrave } from './engrave.js';
+import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
+import { rnd } from './rng.js';
 import { dohelp, dowhatis, doquickwhatis } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
@@ -919,7 +920,30 @@ export async function rhack(key) {
 }
 
 // C ref: hack.c domove — execute a movement
+// src/hack.c:2694 domove() — the wrapper around domove_core(). It records
+// where the hero started and, if the move actually happened, smudges any
+// engraving on the square left behind and the one arrived at.
 export async function domove() {
+    const ux1 = game.u.ux, uy1 = game.u.uy;
+    await domove_core();
+    /* gd.domove_succeeded & (DOMOVE_RUSH | DOMOVE_WALK): the move counts as
+       taken when the hero's position actually changed */
+    if (game.u.ux !== ux1 || game.u.uy !== uy1)
+        await maybe_smudge_engr(ux1, uy1, game.u.ux, game.u.uy);
+}
+
+// src/hack.c:3020 maybe_smudge_engr()
+async function maybe_smudge_engr(x1, y1, x2, y2) {
+    /* can_reach_floor(TRUE): true for an ordinary walking hero */
+    let ep = engr_at(x1, y1);
+    if (ep && ep.engr_type !== HEADSTONE)
+        wipe_engr_at(x1, y1, rnd(5), false);
+    if ((x2 !== x1 || y2 !== y1)
+        && (ep = engr_at(x2, y2)) && ep.engr_type !== HEADSTONE)
+        wipe_engr_at(x2, y2, rnd(5), false);
+}
+
+async function domove_core() {
     const u = game.u;
     /* C's domove() takes no arguments and reads u.dx/u.dy, which movecmd()
        set from the key. moveloop's run branch calls it the same way, so the

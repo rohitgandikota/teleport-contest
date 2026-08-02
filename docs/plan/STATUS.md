@@ -11009,3 +11009,24 @@ draw short. Verified our dat_files epitaph embedding is byte-exact
 (filechunksize 24075 matches C's rn2(24075)).
 Next: continue the valley fill (still ~29350), then the remaining tour
 levels. Board 1552, passes 6, gates clean.
+
+## 2026-08-01 (occupied squares): makemon MON_AT gate — board 1552
+
+Commit 207c3af. makemon was missing C's MON_AT rejection entirely
+(makemon.c:1194): a monster already on the square kills the creation unless
+MM_ADJACENTOK. That silently doubled zoo/morgue populations everywhere.
+
+**seed0360's valley morgue fill is still off at ~29147** and the shape of the
+mismatch is now well characterised: C's fill_zoo runs morguemon, gets a
+species, and its makemon then draws NOTHING (no next_ident/newmonhp) — so
+C's makemon bailed at a guard ours passes. Ruled out this iteration:
+morguemon itself (values match: i=16 hd=11 -> the S_ZOMBIE arm), uncommon(),
+mkclass_aligned's ladder, the epitaph plumbing, the map xstart/ystart (3,1
+is correct — the valley map is 20 rows, not 21), the irregular-region
+flood-fill (matches sp_lev.c:5676 line for line), and rmno.
+**Next suspects, in order:** (1) mvitals G_EXTINCT — C's mvitals[].born
+counter reaching the birth limit makes uncommon() true partway through a
+fill (we never increment born); (2) propagate()'s G_EXTINCT marking; (3) the
+zombie species C picks being one whose mvitals already hit MAXMONNO.
+Instrument mvitals[].born across the fill and compare the count at the
+failing square.

@@ -39,6 +39,7 @@ import {
     curr_mon_load, max_mon_load,
 } from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
+import { M_AP_TYPE, M_AP_NOTHING } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { couldsee, cansee, clear_path } from './vision.js';
 import { gettrack } from './track.js';
@@ -976,17 +977,7 @@ export async function dochug(mtmp) {
            pet's move never repaints and the frames show it frozen at its old
            square. postmov's trap/door arms are recorded. */
         if (!status) {
-            if (mtmp.mtame) {
-                const omx = mtmp.mx, omy = mtmp.my;
-                status = await dog_move(mtmp, 0);
-                if (status === MMOVE_MOVED) {
-                    newsym(omx, omy); /* update the old position */
-                    newsym(mtmp.mx, mtmp.my);
-
-                }
-            } else {
-                status = await m_move(mtmp, 0);
-            }
+            status = await m_move(mtmp, 0);
         }
 
         /* src/monmove.c:915 — distfleeck is RECALCULATED after the move, so
@@ -1096,10 +1087,40 @@ export async function m_move(mtmp, after) {
     const ptr = mtmp.data;
     const omx = mtmp.mx, omy = mtmp.my;
 
-    /* mtrapped / meating / hides_under all come first in C; the first two
-       draw nothing here and the third needs an object underfoot. */
+    /* src/monmove.c:1733 — a monster that starts its turn already caught in
+       a trap re-triggers it; postmov() handles the ARRIVAL case. */
+    if (mtmp.mtrapped) {
+        const { mintrap } = await import('./trap.js');
+        const i = await mintrap(mtmp, 0 /* NO_TRAP_FLAGS */);
+        if (i === 3 /* Trap_Killed_Mon */) {
+            newsym(mtmp.mx, mtmp.my);
+            return MMOVE_DIED;
+        }
+        if (i === 1 /* Trap_Caught_Mon */)
+            return MMOVE_NOTHING;   /* still in trap, so didn't move */
+    }
+
+    /* src/monmove.c:1745 — digest the meal. This is the ONLY per-turn
+       countdown of meating, and m_move() is the common entry for pets too
+       (it dispatches to dog_move() further down), so leaving it out froze
+       meating forever: dog_invent() then bailed on every turn and a pet
+       that had eaten once could never eat again. */
+    if (mtmp.meating) {
+        mtmp.meating--;
+        if (mtmp.meating <= 0)
+            finish_meating(mtmp);
+        return MMOVE_DONE;         /* still eating */
+    }
+
+    /* hides_under comes next in C; it needs an object underfoot. */
     if (hides_under(ptr) && OBJ_AT(omx, omy) && rn2(10))
         return MMOVE_NOTHING;      /* do not leave hiding place */
+
+    /* src/monmove.c:1772 — my dog gets special treatment. Routing pets here
+       rather than straight from dochug() is what puts them through the
+       mtrapped and meating blocks above, exactly as C does. */
+    if (mtmp.mtame)
+        return await postmov(mtmp, ptr, omx, omy, await dog_move(mtmp, after));
 
     let ggx = mtmp.mux, ggy = mtmp.muy;
     const prange = { min: 0, max: 0 };
@@ -1523,4 +1544,16 @@ function blocking_terrain(x, y) {
         || lev.typ === LAVAWALL)
         return true;
     return false;
+}
+
+// src/dogmove.c:1448 finish_meating() — the meal ends.
+function finish_meating(mtmp) {
+    mtmp.meating = 0;
+    if (M_AP_TYPE(mtmp) !== M_AP_NOTHING
+        && game.mons[mtmp.mnum].mlet !== MONSYMS.S_MIMIC) {
+        /* was eating a mimic and now appearance needs resetting */
+        mtmp.m_ap_type = M_AP_NOTHING;
+        mtmp.mappearance = 0;
+        newsym(mtmp.mx, mtmp.my);
+    }
 }

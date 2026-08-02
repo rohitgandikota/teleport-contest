@@ -4,7 +4,7 @@ import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn } from './mondata.js';
 import { ceiling_hider } from './mondata.js';
 import { sensemon } from './display.js';
-import { mdistu } from './monmove.js';
+import { mdistu, mon_track_clear } from './monmove.js';
 // mon.js — monster bookkeeping.
 // C ref: src/mon.c
 //
@@ -1814,8 +1814,16 @@ function wake_nearto_core(x, y, distance, petcall) {
                 mtmp.mstrategy &= ~STRAT_WAITMASK; /* wake 'meditation' */
             if (game.context?.mon_moving || !petcall)
                 continue;
-            if (mtmp.mtame)
-                note_unported_mon('wake_nearto_core:whistletime');
+            if (mtmp.mtame) {
+                if (!mtmp.isminion)
+                    (mtmp.edog ||= {}).whistletime = game.moves;
+                /* src/mon.c:4393 — "Fix up a pet who is stuck 'fleeing' its
+                   master". Skipping this left the pet's mtrack ring holding
+                   stale squares, and m_move's backtrack test reads the INDEX
+                   of the matching entry: `rn2(4 * (cnt - j))`. A stale ring
+                   matches at the wrong j and draws the wrong modulus. */
+                mon_track_clear(mtmp);
+            }
         }
     }
     /* disturb_buried_zombies() needs buried monsters, which nothing makes */

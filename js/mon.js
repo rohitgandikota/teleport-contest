@@ -1,7 +1,7 @@
 import { mon_offmap } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
-import { is_hider } from './mondata.js';
+import { is_hider, perceives } from './mondata.js';
 import { ceiling_hider } from './mondata.js';
 import { sensemon } from './display.js';
 import { mdistu } from './monmove.js';
@@ -378,7 +378,17 @@ export function mfndpos(mon, data, flag) {
                     /* src/mon.c:2277 — Displacement moves the square the
                        scare check is made on, as long as the hero is visible
                        to this monster. Not modelled, so dispx/dispy are nx/ny. */
-                    const dispx = nx, dispy = ny;
+                    /* src/mon.c:2264 — with Displacement the monster tests
+                       the square it BELIEVES the hero occupies against the
+                       hero's real one, so scary checks read u.ux/u.uy. */
+                    const monseeu = (mon.mcansee
+                                     && (!game.u.uprops?.INVIS || perceives(mdat)));
+                    let dispx = nx, dispy = ny;
+                    if (game.u.uprops?.DISPLACED && monseeu
+                        && mon.mux === nx && mon.muy === ny) {
+                        dispx = game.u.ux;
+                        dispy = game.u.uy;
+                    }
 
                     /* src/mon.c:2278 — a scary square (Elbereth, a scroll of
                        scare monster) is rejected unless the monster ignores
@@ -451,9 +461,8 @@ export function mfndpos(mon, data, flag) {
                         info |= ALLOW_ROCK;
                     }
 
-                    /* src/mon.c:2338 — avoid standing in the hero's line.
-                       monseeu is the same test onscary's displacement uses. */
-                    const monseeu = (mon.mcansee && !game.u?.uprops?.INVIS);
+                    /* src/mon.c:2338 — avoid standing in the hero's line;
+                       reuses the monseeu computed above, as C does. */
                     if (monseeu && monlineu(mon, nx, ny)) {
                         if (flag & NOTONL)
                             continue;

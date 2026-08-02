@@ -11083,3 +11083,35 @@ gate's enexto arm, or m_initsgrp/m_initlgrp group placement) and picked a
 different neighbour. Next step: log (species, requested x,y, FINAL x,y) for
 every makemon in the valley fill and find the first whose final position
 could differ; compare against which squares C must have occupied.
+
+## 2026-08-01 (morgue, cont. 2): placement ruled out; the arms straddle squares
+
+No code change. Board 1552/6 passes, gates clean. More eliminations:
+
+- **Placement is NOT the cause.** Logged requested-vs-final (x,y) for every
+  makemon on the valley: all 40+ script monsters land exactly where asked,
+  no enexto displacement at all. The last iteration's "an earlier monster
+  landed elsewhere" hypothesis is dead.
+- flood_fill_rm is faithful (C's flood is also unbounded and also marks
+  walls edge=1 + roomno; verified line by line against mkmap.c).
+- The morgue region corners ARE floor in the map text (script (19,1) is '.'),
+  so the flood starts correctly. Our room boxes (21,2-29,9 etc.) legitimately
+  exceed the script's region rectangles because C's flood does the same.
+
+**The real shape of it, finally decoded.** C's per-square draw group in the
+valley morgue reads:
+    384 rn2(5)   corpse test     <- square N
+    386 rn2(10)  buried-box test <- square N
+    389 rn2(5)   grave test      <- square N
+    (+ rn2(24075) epitaph when the grave test passes)
+    480 morguemon rn2(100), rn2(26)  <- square N+1's monster
+i.e. the arms of square N are logged BEFORE square N+1's morguemon, and the
+counts differ (384:14, 386:14, 389:20) because the tail squares run their
+object arms after the last monster. Our port runs makemon FIRST then the
+object arms, which is what the C SOURCE reads (mkroom.c:344 makemon, then
+the switch at :382) — but the recorded stream says otherwise for this level.
+**Next step:** find why. Either fill_zoo is entered twice per square in 5.0,
+or (more likely) our reading of which square each logged group belongs to is
+off by one and the real difference is the count of squares that reach
+makemon at all. Count our own 384/386/389 firings and compare 14/14/20
+directly before changing any order.

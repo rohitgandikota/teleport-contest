@@ -13776,3 +13776,40 @@ last piece for seed0399's 490 screens.
 rn2(79) then rn2(21), i.e. C picks within the region's actual bounds and we
 are picking over the whole map. Compare our js/mkmaze.js place_lregion
 against the C.
+
+## Iteration 54 — seed0399's level build now matches C EXACTLY
+
+Board **2171**, no regressions. Commit `f300baa`.
+
+    node tools/stepdraws.mjs seed0399 42 42
+    step 42 key="e" C=7133 ours=7133 SAME
+
+and no draw divergence for the twenty steps after it. The build went
+65 -> 2697 -> 7085 -> **7133 of 7133** across two iterations.
+
+The last fix: **`mineralize()` had no level check.** C (mklev.c:1472)
+returns before doing anything on hell / Vlad / rogue / arboreal levels and
+on every SPECIAL level except the Oracle and mines towns. We mineralized a
+des-built level and spent gem/rock draws C never spends.
+
+### What still blocks the 490 screens: flip_level()
+
+`js/sp_lev.js` flip_level_rnd() spends the two rn2(2) correctly but then
+calls `note_unported('flip_level')`. **Both draws come up 1 in seed0399, so
+C mirrors the level on BOTH axes and we do not** -- every object, monster,
+trap and stair sits at a mirrored coordinate, which is exactly the 106-cell
+screen difference that remains.
+
+Port `flip_level()` (src/sp_lev.c, just above flip_level_rnd at :967). It
+has to mirror: the terrain grid, objects, monsters, traps, stairways,
+regions/lregions, engravings, and the recorded xstart/ystart bounds. This
+is mechanical but wide -- everything positional on the level.
+
+Once it lands, seed0399 should go from 42 matched to something near its
+532 total, and the same code serves every other flippable special level.
+
+### Two duplicates now noted in the tree
+
+`In_hell()` exists in js/trap.js and (as of this commit) js/mklev.js.
+Earlier: `wake_nearby()` in mon.js/dokick.js, `u_on_newpos()` in
+teleport.js/mklev.js. C has one of each.

@@ -11536,3 +11536,39 @@ approximation.
 object in the box near (53,8). Our dlvl-2 object list at that moment is 12
 entries, two of them in the box (a corpse at 52,8 and an object at 57,7); C
 has three. Find the missing object.
+
+## Trap victims, monster drops, and the pet's meal
+
+Board 1561 -> 1563 (from 1558 at the start of the previous entry), passes 6.
+Three commits: c9f2b0e trap victim items, 55be25e relobj on death, and the
+dog_eat unblock.
+
+1. **`mktrap_victim` never placed anything.** It created the arrow/dart/rock,
+   the cursed possessions and the candle with all the right draws and then
+   dropped them on the floor of the function — `place_object` was never
+   called, so only the corpse (which `mkcorpstat` places itself) reached the
+   map. Every trap victim's gear was missing from every level. Added the
+   arrow's `opoisoned` reset, the candle's `owt`, and the
+   PIT-means-exploded-landmine `breaktest` arm.
+
+2. **`mondied` never dropped the dead monster's inventory.** C's `m_detach`
+   ends with `relobj(mtmp, 1, FALSE)`. Our mondead slice removed the monster
+   and stopped.
+
+3. **The pet could not eat from its own square.** `dog_invent`'s edible arm
+   was stubbed with `note_unported('dog_eat')` on the grounds that dog_eat
+   draws — but dog_eat has been ported for a while, the call site just never
+   reached it. `dog_move` also discarded `dog_invent`'s return value, so the
+   "ate or fetched something, turn is over" exits never fired. dog_eat itself
+   was missing its whole message block; added it plus `noit_Monnam`.
+
+**Still open: seed0030 rng 10609.** C spends three `obj_resists` (dogfood)
+where we spend two, in the group that follows `dog_move`'s move loop. The
+group is dog_invent's one call plus dog_goal's two. Our dlvl-2 object list at
+that moment is 14 objects, exactly two of them inside the pet's 5-square box:
+the newt corpse at 52,8 (confirmed created — `corpse_chance` draws
+`rn2(3)=0` at 10583 and we match it) and otyp 475 at 57,7. C has a third
+object in that box that we do not create. Ruled out: the newt corpse itself,
+trap-victim gear, dropped monster inventory, and the pet's own position. Next
+candidate to check is an object created with NO draws during dlvl-2
+generation, since every drawing creation on that level already matches.

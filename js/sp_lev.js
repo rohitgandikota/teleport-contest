@@ -2155,7 +2155,10 @@ export function lspo_map_full(mapstr, contents) {
     if (!(xstart % 2)) xstart++;
     if (!(ystart % 2)) ystart++;
     if (ystart < 0 || ystart + hei > 21) {
+        /* src/sp_lev.c:6233 — try to move the start a bit, but a
+           full-height map goes flush to the top */
         ystart += (ystart > 0) ? -2 : 2;
+        if (hei === 21) ystart = 0;
         if (ystart < 0 || ystart + hei > 21) ystart = 0;
     }
 

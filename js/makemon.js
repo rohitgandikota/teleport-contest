@@ -125,6 +125,12 @@ export function Inhell() {
     return game.dungeons?.[game.u?.uz?.dnum]?.flags?.hellish === true;
 }
 
+/* src/mon.c MON_AT() — a live monster on the square */
+function m_at_mk(x, y) {
+    const m = game.level?.monAt?.get(`${x},${y}`);
+    return (m && m.mhp > 0) ? m : null;
+}
+
 // src/makemon.c:1593 uncommon()
 function uncommon(mndx) {
     const m = game.mons[mndx];
@@ -1640,6 +1646,15 @@ export function makemon(ptr, x, y, mmflags) {
 
     if (!isok(x, y))
         return null;
+
+    /* src/makemon.c:1194 — a monster already standing there rejects the
+       creation outright unless MM_ADJACENTOK lets enexto find a neighbour */
+    if (m_at_mk(x, y)) {
+        if (!(mmflags & MMFLAGS.MM_ADJACENTOK)
+            || !enexto_core(cc, x, y, ptr, gpflags, goodpos))
+            return null;
+        x = cc.x; y = cc.y;
+    }
 
     if (ptr) {
         mndx = monsndx(ptr);

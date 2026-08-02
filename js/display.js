@@ -21,6 +21,7 @@ import {
 import { engr_at } from './engrave.js';
 import { nhgetch } from './input.js';
 import { def_monsyms, def_oc_syms, cmap_names } from './drawing_data.js';
+import { showsym } from './symbols.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, DEC_TO_UNICODE } from './terminal.js';
 
@@ -62,8 +63,19 @@ export function known_branch_stairs(sway) {
 
 const CM = cmap_names;
 
-// ── Terrain to display character + color + DEC flag ──
+// src/display.c:2938 map_glyphinfo() — a glyph becomes a symbol by looking its
+// cmap index up in the ACTIVE symbol set. back_to_glyph() below picks the cmap
+// index and a colour; this applies gs.showsyms[] on top, which is what makes a
+// configuration without OPTIONS=symset:DECgraphics draw '-', '|' and '.'
+// instead of the DEC line-drawing set.
 function terrain_glyph(loc, x, y) {
+    const g = back_to_glyph(loc, x, y);
+    const sym = (g.cmap !== undefined) ? showsym(g.cmap) : null;
+    return sym ? { ...g, ch: sym.ch, dec: sym.dec } : g;
+}
+
+// ── src/display.c:2302 back_to_glyph() — terrain to cmap index + colour ──
+function back_to_glyph(loc, x, y) {
     const typ = loc.typ;
     switch (typ) {
     case STONE:     return { ch: ' ', color: NO_COLOR, dec: false, cmap: CM.S_stone };
@@ -890,7 +902,7 @@ export function magic_map_background(x, y, show) {
        blank only the unlit ones, so the lit bit stands in for waslit here
        (an unvisited room can never have waslit set). */
     if (!cansee(x, y) && !loc.waslit && !loc.lit) {
-        if (loc.typ === ROOM && tg.ch === '~' && tg.dec)
+        if (loc.typ === ROOM && tg.cmap === cmap_names.S_room)
             tg = null;                          /* GLYPH_NOTHING */
         else if (loc.typ === CORR)
             tg = { ch: '#', color: NO_COLOR, dec: false,

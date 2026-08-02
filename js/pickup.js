@@ -9,9 +9,16 @@
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name } from './invent.js';
 import { observe_object } from './o_init.js';
-import { doname } from './objnam.js';
+import { doname, xname, the } from './objnam.js';
+import { Is_container } from './obj.js';
+import { check_capacity } from './hack.js';
+import { ECMD_OK, ECMD_TIME } from './const.js';
+import { upstart } from './do_name.js';
+
+/* src/hacklib.c The() — the() with the first letter capitalised. */
+const The = (s2) => upstart(the(s2));
 import { ONAMES } from './objects_data.js';
-import { newsym } from './display.js';
+import { newsym, pline } from './display.js';
 import { UNENCUMBERED } from './const.js';
 import { costly_spot } from './shk.js';
 import { near_capacity } from './attrib.js';
@@ -220,4 +227,61 @@ function pick_obj(otmp) {
 // src/pickup.c pickup_prinv() — "k - a goblin corpse."
 async function pickup_prinv(obj, count) {
     await prinv(null, obj, count);
+}
+
+
+// src/pickup.c:2075 do_loot_cont() / loot_container() — open one container.
+//
+// The locked arm is what a chest the hero has not opened before hits: the
+// message differs by whether its locked state was already known, and either
+// way lknown becomes set. autounlock, the chest trap and use_container's
+// menu are recorded.
+async function do_loot_cont(cobj, ccount, ci) {
+    if (!cobj)
+        return false;
+    if (cobj.olocked) {
+        if (cobj.lknown)
+            await pline(`${The(xname(cobj))} is locked.`);
+        else
+            await pline(`Hmmm, ${the(xname(cobj))} turns out to be locked.`);
+        cobj.lknown = 1;
+        if (game.flags?.autounlock)
+            note_unported_pickup('do_loot_cont:autounlock');
+        return false;
+    }
+    cobj.lknown = 1;
+    note_unported_pickup('do_loot_cont:use_container');
+    return false;
+}
+
+// src/pickup.c:2166 doloot() — the #loot command.
+//
+// Only the container-underfoot path is ported. The confused arm, the blind
+// cockatrice check, the multi-container menu, grave digging and the
+// directional monster-looting tail are recorded.
+export async function doloot() {
+    if (check_capacity(null))
+        return ECMD_OK;
+
+    if (game.u.uprops?.CONFUSION) {
+        note_unported_pickup('doloot:confused');
+        return ECMD_OK;
+    }
+
+    const here = (game.level?.objects || [])
+        .filter(o => o.ox === game.u.ux && o.oy === game.u.uy
+                     && Is_container(o));
+
+    if (here.length > 1) {
+        note_unported_pickup('doloot:multiple_containers');
+        return ECMD_OK;
+    }
+    if (here.length === 1) {
+        const timepassed = await do_loot_cont(here[0], 1, 1);
+        return timepassed ? ECMD_TIME : ECMD_OK;
+    }
+
+    /* the grave arm and the directional "Loot in what direction?" tail */
+    note_unported_pickup('doloot:nothing_underfoot');
+    return ECMD_OK;
 }

@@ -27,7 +27,7 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { xname, doname, singular, An, the, yname } from './objnam.js';
 import { useup, obj_extract_self, stackobj } from './invent.js';
 import { place_object } from './mkobj.js';
-import { is_blade, is_pick, wake_nearby } from './mon.js';
+import { is_blade, is_pick, wake_nearby, delobj } from './mon.js';
 import { can_reach_floor } from './pickup.js';
 import { set_occupation } from './allmain.js';
 import { obj_resists } from './zap.js';
@@ -381,17 +381,7 @@ async function breakchestlock(box, destroyit) {
     delobj(box);
 }
 
-/* src/mkobj.c delobj() — take the object off the level for good. */
-function delobj(obj) {
-    obj_extract_self(obj);
-    const objs = game.level?.objects;
-    if (objs) {
-        const i = objs.indexOf(obj);
-        if (i >= 0) objs.splice(i, 1);
-    }
-    if (obj === game.xlock?.box)
-        reset_pick();
-}
+
 
 // src/lock.c:216 forcelock() — the occupation doforce() installs.
 export async function forcelock() {

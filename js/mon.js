@@ -48,6 +48,7 @@ import { hastrack } from './track.js';
 const fixed_tele_trap = (t) => t.ttyp === TELEP_TRAP
                             && isok(t.teledest?.x, t.teledest?.y);
 import { sobj_at, obj_extract_self, stackobj } from './invent.js';
+import { OBJ_FLOOR } from './obj.js';
 import { online2, isok } from './hacklib.js';
 /* onscary() and in_your_sanctuary() are src/monmove.c and src/priest.c
    functions living in js/monmove.js, which imports this file. Both sides
@@ -601,10 +602,28 @@ export function m_consume_obj(mtmp, otmp) {
 
 // src/mkobj.c delobj() — take the object off the floor and free it.
 export function delobj(obj) {
+    delobj_core(obj, false);
+}
+
+// src/invent.c:1438 delobj_core() — destroy an object; `force` is for reviving
+// Rider corpses. The obj_resists() guard DRAWS rn2(100) on every call, which
+// is why deleting an object is never draw-neutral.
+export function delobj_core(obj, force) {
+    /* obj_resists(obj,0,0) protects the Amulet, the invocation tools,
+       and Rider corpses */
+    if (!force && obj_resists(obj, 0, 0)) {
+        obj.in_use = 0; /* in case caller has set this to 1 */
+        return;
+    }
+    const update_map = (obj.where === OBJ_FLOOR);
+    obj_extract_self(obj);
     const objs = game.level?.objects;
-    if (!objs) return;
-    const i = objs.indexOf(obj);
-    if (i >= 0) objs.splice(i, 1);
+    if (objs) {
+        const i = objs.indexOf(obj);
+        if (i >= 0) objs.splice(i, 1);
+    }
+    if (update_map)  /* floor object's coordinates are always up to date */
+        newsym(obj.ox, obj.oy);
 }
 
 // src/mon.c:1465 meatmetal() — a rock mole or similar eats the topmost metal

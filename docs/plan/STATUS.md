@@ -1,3 +1,24 @@
+=== seed0030 STEP 21: TWO STALE TERMINAL CELLS, WRITER UNKNOWN ===
+Alignment nailed (scratchpad/align0030.mjs; terminal row = map y + 1,
+terminal col = map x; screendiff/diverge's 'seg 1' is 1-BASED =
+segments[0] — every earlier probe ran the wrong segment; the jsmain
+__step_snapshot seam at boundary 20/21 now gives exact worlds):
+  hero (63,10) T:17-18, corridor row y=10 heading east to a door at
+  (65,10); room west wall is COLUMN 65 (y8 DOOR, y9 VWALL, y10 DOOR,
+  y11 BLCORNER); (64,9) and (64,11) are STONE, seenv 0x40/0x01.
+  C's screen and OURS agree on every cell except terminal (r10,c64) and
+  (r12,c64): ours hold '|' and 'L' (DEC vwall/blcorner) where C has
+  blank. Our own map says STONE there and STONE renders blank, so the
+  glyphs are STALE WRITES — something (probably rendering the y9
+  VWALL/y11 BLCORNER of column 65) wrote one column LEFT at an earlier
+  step and nothing erased it.
+NEXT: catch the writer — wrap the tty write path (js/tty/wintty.js
+print/curs functions, NOT frozen terminal.js) with an opt-in watch on
+cells (r10,c64)/(r12,c64) during steps 0..21 of seed0030 seg0 and log
+the call stack + map coords passed. Suspects: wintty's cursor
+addressing for DEC graphics runs, or a newsym/print_glyph call that
+passes x-1, or docrt/cls partial redraw of the door columns.
+
 === PROBE CAVEAT, IMPORTANT: RAW-SEGMENT REPLAYS DIVERGE FROM THE RUNNER ===
 The truncated probes (probe0030/gate0030/pile0030/vis0030) replayed RAW
 session segments and produced a DIFFERENT world from ps_test_runner for

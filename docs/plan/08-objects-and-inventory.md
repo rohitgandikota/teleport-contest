@@ -56,7 +56,12 @@ plausible-but-wrong names that are hard to spot in a diff.
 
 - [ ] `src/do_wear.c`: wear, take off, put on, remove, cursed-item resistance,
       the multi-turn delays
-- [ ] `src/wield.c`, `src/worn.c`: wield, exchange, two-weapon toggle
+- [x] `src/wield.c`, `src/worn.c`: wield and exchange — the worn[] table,
+      setworn/setnotworn, setuwep/setuqwep/setuswapwep through it, dowield
+      with the quiver-split prompts, doswapweapon, welded/weldmsg,
+      set_twoweap/untwoweapon, and the 'w' key wired to dowield
+- [ ] `src/wield.c`: the #twoweapon toggle itself — dotwoweapon needs
+      can_twoweapon (Glib, cursed-swapwep, shield and form checks)
 - [ ] **5.0:** dragon scale mail grants two extrinsic resistances; black adds
       drain resistance, green adds sickness immunity, gold is a light source
 

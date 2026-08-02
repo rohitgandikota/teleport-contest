@@ -159,7 +159,7 @@ export async function mswings(mtmp, otemp, bash) {
 export function mpoisons_subj(mtmp, mattk) {
     const A = ATTKS;
     if (mattk[0] === A.AT_WEAP) {
-        const mwep = (mtmp === game.youmonst) ? game.uwep : MON_WEP(mtmp);
+        const mwep = (mtmp === game.youmonst) ? game.u.uwep : MON_WEP(mtmp);
         /* "Foo's attack was poisoned." is pretty lame, but at least
            it's better than "sting" when not a stinging attack... */
         return (!mwep || !mwep.opoisoned) ? 'attack' : 'weapon';

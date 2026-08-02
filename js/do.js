@@ -1,4 +1,4 @@
-import { setuqwep } from './wield.js';
+import { setuqwep, setuwep, setuswapwep, weldmsg } from './wield.js';
 import { impact_disturbs_zombies } from './hack.js';
 import { stackobj } from './invent.js';
 // do.js — commands that move the hero between levels, and the level change
@@ -342,12 +342,12 @@ export async function deferred_goto() {
 // ball dropping, shop selling, stackobj and the blind-levitation map_object
 // are recorded.
 export function dropz(obj, with_impact) {
-    if (obj === game.uwep)
-        note_unported_do('dropz:setuwep');
-    if (obj === game.uquiver)
-        setuqwep(null);         /* src/do.c -- ported at wield.js:113 */
-    if (obj === game.uswapwep)
-        note_unported_do('dropz:setuswapwep');
+    if (obj === game.u.uwep)
+        setuwep(null);          /* src/do.c:810 */
+    if (obj === game.u.uquiver)
+        setuqwep(null);         /* src/do.c:812 */
+    if (obj === game.u.uswapwep)
+        setuswapwep(null);      /* src/do.c:814 */
 
     if (game.u.uswallow) {
         note_unported_do('dropz:engulfer_branch');
@@ -410,7 +410,7 @@ export function dropx(obj) {
 // The engulfed branch, the Heart of Ahriman levitation dance (ELevitation is
 // forced so hitfloor happens before float_down), doname messages, canletgo,
 // welded/weldmsg and hitfloor are recorded.
-export function drop(obj) {
+export async function drop(obj) {
     if (!obj)
         return ECMD_FAIL;
     if (!canletgo(obj, 'drop'))
@@ -418,17 +418,17 @@ export function drop(obj) {
     if (obj.otyp === ONAMES.CORPSE
         && note_unported_do('drop:better_not_try_to_drop_that'))
         return ECMD_FAIL;
-    if (obj === game.uwep) {
-        if (welded(obj)) {
-            note_unported_do('drop:weldmsg');
+    if (obj === game.u.uwep) {
+        if (welded(game.u.uwep)) {
+            await weldmsg(obj);
             return ECMD_FAIL;
         }
-        note_unported_do('drop:setuwep');
+        setuwep(null);          /* src/do.c:727 */
     }
-    if (obj === game.uquiver)
-        setuqwep(null);         /* src/do.c -- ported at wield.js:113 */
-    if (obj === game.uswapwep)
-        note_unported_do('drop:setuswapwep');
+    if (obj === game.u.uquiver)
+        setuqwep(null);
+    if (obj === game.u.uswapwep)
+        setuswapwep(null);
 
     if (game.u.uswallow) {
         note_unported_do('drop:engulfed_branch');
@@ -448,7 +448,7 @@ export function drop(obj) {
 export async function dodrop() {
     if (game.u.ushops?.length)
         note_unported_do('dodrop:sellobj_state:DELIBERATE');
-    const result = drop(await getobj('drop', any_obj_ok,
+    const result = await drop(await getobj('drop', any_obj_ok,
                                      GETOBJ_PROMPT | GETOBJ_ALLOWCNT));
     if (game.u.ushops?.length)
         note_unported_do('dodrop:sellobj_state:NORMAL');
@@ -483,7 +483,7 @@ export function canletgo(obj, word) {
         if (word) note_unported_do('canletgo:wearing_msg');
         return false;
     }
-    if (obj === game.uwep && welded(game.uwep)) {
+    if (obj === game.u.uwep && welded(game.u.uwep)) {
         /* no weldmsg(), so uwep bknown might become set silently */
         if (word) note_unported_do('canletgo:welded_msg');
         return false;

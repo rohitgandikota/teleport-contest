@@ -8,7 +8,12 @@
 
 import { game } from './gstate.js';
 import { OBJ_NAME, doname, xname, the } from './objnam.js';
-import { def_oc_syms } from './drawing_data.js';
+/* include/defsym.h OBJCLASS rows, the `name` column — C's def_oc_syms[].name
+   (js/drawing_data.js keeps only the symbol chars). Index = oclass. Used by
+   weapon_descr() below, same as C's object_detect(). */
+const def_oc_syms_name = ["", "illegal objects", "weapons", "armor", "rings",
+    "amulets", "tools", "food", "potions", "scrolls", "spellbooks", "wands",
+    "coins", "rocks", "large stones", "iron balls", "chains", "venoms"];
 import { STR18, P_SKILL_LIMIT, P_LAST_WEAPON, P_UNSKILLED, P_BASIC, P_EXPERT, P_ISRESTRICTED, P_SLING, P_FLAIL, P_PICK_AXE } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype } from './mondata.js';
@@ -356,7 +361,7 @@ export function weapon_descr(obj) {
                  || obj.otyp === ONAMES.BOULDER || obj.otyp === ONAMES.TOWEL
                  || obj.otyp === ONAMES.TIN_OPENER)
                 ? OBJ_NAME(game.objects[obj.otyp])
-                : def_oc_syms[obj.oclass].name;
+                : def_oc_syms_name[obj.oclass];
         break;
     case P_SLING:
         if (is_ammo(obj))
@@ -364,7 +369,7 @@ export function weapon_descr(obj) {
                         ? "stone"
                         : (obj.oclass === OCLASSES.GEM_CLASS)
                             ? "gem"
-                            : def_oc_syms[obj.oclass].name;
+                            : def_oc_syms_name[obj.oclass];
         break;
     case P_BOW:
         if (is_ammo(obj))

@@ -92,6 +92,7 @@ import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { depth } from './dungeon.js';
 import { rnd } from './rng.js';
 import { find_ac } from './do_wear.js';
+import { clear_splitobjs } from './mkobj.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
@@ -603,6 +604,14 @@ export async function moveloop_core() {
            stale flag and burns a phantom turn before the prompt resumes. */
         g.context.move = 0;
     }
+
+    /* src/allmain.c:441-453 — once-per-player-input things: forget the last
+       splitobj() pair, then re-derive the hero's AC from what is worn now.
+       This per-input find_ac() is what makes AC changes from multi-turn
+       dressing show on the status line the turn they complete. The amulet
+       wish arm needs makewish and is not ported. */
+    clear_splitobjs();
+    find_ac();
 
     /* C bumps hero_seq inside the move gate (moves*8 + n); this port's
        counter ticks every core because use_stethoscope's first-use-free

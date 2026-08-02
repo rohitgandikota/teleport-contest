@@ -1222,3 +1222,10 @@ export async function identify_pack(id_limit, learning_id) {
         note_unported_invent('identify_pack:menu');
     }
 }
+
+// src/invent.c:1664 splittable() — can this stack be split off from?
+import { welded } from './wield.js';
+export function splittable(obj) {
+    return !((obj.otyp === ONAMES.LOADSTONE && obj.cursed)
+             || (obj === game.u.uwep && welded(game.u.uwep)));
+}

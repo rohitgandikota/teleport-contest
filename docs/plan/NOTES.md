@@ -3923,3 +3923,25 @@ post-wall alignment, which `normalizeRng` cannot distinguish.
 Baseline at commit 90e3dd9 (board 2249, 7 passes): 11/44 sessions match end to
 end. Save `node tools/diverge.mjs --all > before.txt` before an experiment and
 diff the div@ column after.
+
+## The hero's worn-slot pointer fields are real now; game.uwep-style reads are bugs
+
+Since the worn[] table landed in js/worn.js, setworn() maintains all sixteen
+hero slot fields as `game.u.<name>` (uwep, uarm, uleft, ublindf, ...), matching
+where the C keeps its globals in this port. Before that, fourteen of them were
+never written and reads of them were silent undefineds — welded() returned 0
+forever because it compared `game.uwep`, which no code ever set. Two rules
+follow. New code reads slots as `game.u.<field>` (or worn(mask) where the C
+scans); any surviving bare `game.uwep`/`game.uarm*` read found in review is a
+bug to fix, not a convention to copy. And uprops entries written by setworn
+hold C's extrinsic W_* mask as the value (deleted at zero), so truthiness
+reads keep working but `=== 1` comparisons would not; none exist today, keep
+it that way.
+
+Two shape traps found while wiring this, both crashed sessions at startup:
+js/drawing_data.js def_oc_syms is an array of symbol CHARS, not C's
+{sym,name,explain} structs — the name column now lives as def_oc_syms_name in
+js/weapon.js; and src/allmain.c:453's find_ac() is ONCE PER PLAYER INPUT in
+the moveloop, not a preamble one-shot — misreading it as preamble-only cost
+seed5006 66 screens (stale AC after multi-turn dressing) because the deleted
+reduced-setworn had been calling find_ac on every wear as a side effect.

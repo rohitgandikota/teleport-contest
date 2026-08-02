@@ -8,7 +8,7 @@ import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at } from './mon.js';
 import { pickup, can_reach_floor } from './pickup.js';
 import { dotrap } from './trap.js';
-import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT } from './const.js';
+import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door } from './cmd.js';
@@ -780,4 +780,13 @@ export async function dopickup() {
     }
     /* else ret == -1 */
     return (await pickup(-count)) ? ECMD_TIME : ECMD_OK;
+}
+
+// src/hack.c:4496 inv_cnt() — number of carried items, gold optional.
+export function inv_cnt(incl_gold) {
+    let ct = 0;
+    for (const otmp of game.invent || [])
+        if (incl_gold || otmp.invlet !== GOLD_SYM)
+            ct++;
+    return ct;
 }

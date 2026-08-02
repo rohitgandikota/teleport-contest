@@ -1,3 +1,47 @@
+=== worn[] TABLE + setworn + THE WHOLE WIELD CHAIN LANDED. 'w' IS LIVE ===
+Score: 195684 RNG (+45), 2251 screens (+2), 7/44 passes, hang-gate OK.
+
+WHAT LANDED (one change set):
+  js/worn.js    worn[] table over game.u.<field> for all 16 slots, C-faithful
+                setworn()/setnotworn() (extrinsics as W_* mask values in the
+                flat uprops, delete-at-zero keeps truthiness readers exact),
+                recalc_telepat_range, w_blocks' missing Eyes/W_TOOL arm.
+  js/wield.js   setuwep/setuqwep/setuswapwep through setworn; weldmsg and the
+                weld announcement for real; set_twoweap/untwoweapon; dowield's
+                hands_obj arm, quiver-split prompts (splittable/inv_cnt/
+                finish_splitting), welded() FIXED (compared game.uwep, a field
+                that never existed, so it always returned 0).
+  js/do_wear.js reduced setworn/setnotworn deleted; donning/doffing/
+                cancel_don/cancel_doff ported; *_off sites now setworn(null,
+                mask) exactly as C.
+  js/u_init.js  starting gear dressed through setworn/setuwep/setuqwep/
+                setuswapwep per src/u_init.c:1264-1293. This is what makes
+                game.u.uarms/uarmg real from turn 1.
+  js/allmain.js src/allmain.c:441-453 once-per-input clear_splitobjs() +
+                find_ac(). THE OLD COMMENT MISREAD 453 AS PREAMBLE-ONLY; the
+                reduced setworn's find_ac was silently compensating, and
+                seed5006 lost 66 screens (AC:10 vs AC:9 after multi-turn
+                dressing) until the per-input call landed.
+  small ports   set_bknown+clear_splitobjs (mkobj), splittable (invent),
+                inv_cnt (hack), is_plural/pair_of (obj), invlet_basic (const),
+                def_oc_syms_name in weapon.js (drawing_data keeps chars only;
+                weapon_descr crashed on def_oc_syms[..].name).
+
+LEDGER: unported-hits no longer lists dowield:setuwep or cmd:w. The three
+startup crashes found while landing this (GETOBJ_EXCLUDE not imported in
+wield_ok; uconduct.weaphit reset unguarded in uhitm.js; weapon_descr's
+def_oc_syms shape) are all fixed; each was pre-existing and newly reachable.
+
+TWO SMALL DIPS, UNDERSTOOD SHAPE, NOT CHASED: seed0030 11164->11159 and
+seed0014 3892->3889. Both are rn2(4*(cnt-j)) modulus shifts in m_move
+(monmove.c:1963) via pet pathing, i.e. a non-drawing dogmove decision moved
+because worn state is now real. diverge.mjs pins seed0030 at call 10701,
+seg 1 step 36. Chase only if a dogmove item is next anyway.
+
+NEXT, in order of blocked value: dotwoweapon needs can_twoweapon (~60L);
+the dowear chain items (getobj:menu still needs the tty menu subsystem);
+goto_level:losedogs still needs mydogs/migrating_mons.
+
 === BROWSER PLAYABILITY: ROOT CAUSE WAS A RACE; FIXED FOR REAL THIS TIME ===
 The leaderboard showed "Play disabled ... browser load FAILED: Cannot access
 'add_room_fn' before initialization" while timing was fine (1.18 ms/move vs

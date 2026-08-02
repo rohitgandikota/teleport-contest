@@ -26,7 +26,7 @@ import { is_neuter } from './mondata.js';
 
 import { game } from './gstate.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
-import { Is_rogue_level, NODIR, OBJ_FLOOR, In_quest } from './const.js';
+import { Is_rogue_level, NODIR, OBJ_FLOOR, OBJ_INVENT, In_quest } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -36,7 +36,7 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 /* invent.js imports erosion_matters() from here, so this edge closes a cycle.
    Both sides export function DECLARATIONS, which hoist, so each module sees the
    other's bindings by the time anything is called. */
-import { merged, weight } from './invent.js';
+import { merged, weight, update_inventory } from './invent.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { depth } from './dungeon.js';
 
@@ -255,6 +255,21 @@ function is_poisonable(otmp, objects) {
 // src/mkobj.c bcsign()
 export function bcsign(otmp) {
     return (otmp.blessed ? 1 : 0) - (otmp.cursed ? 1 : 0);
+}
+
+// src/mkobj.c:626 clear_splitobjs() — forget the last splitobj() pair.
+export function clear_splitobjs() {
+    game.context.objsplit = { parent_oid: 0, child_oid: 0 };
+}
+
+// src/mkobj.c:1864 set_bknown() — set the bless/curse-state known flag.
+// bknown is a 1-bit field in C, so an absent flag compares as 0.
+export function set_bknown(obj, onoff) {
+    if ((obj.bknown ? 1 : 0) !== onoff) {
+        obj.bknown = onoff;
+        if (obj.where === OBJ_INVENT && game.moves > 1)
+            update_inventory();
+    }
 }
 
 // src/mkobj.c:1783 curse() and :1745 bless(). Both return early for gold,

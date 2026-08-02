@@ -72,7 +72,7 @@ import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
-import { dowieldquiver } from './wield.js';
+import { dowieldquiver, dowield } from './wield.js';
 import { dozap } from './zap.js';
 
 // Direction deltas: y u k
@@ -565,14 +565,11 @@ export const takeoff_ok = (o) => equip_ok(o, true,  false);
    is offered. A missing filter offers the WHOLE inventory, which is what
    js/cmd.js used to do by passing null.
 
-   'q', 'r' and 'd' carry their real filters. 'w', 'W', 'P' and 'R' all route
-   through C's equip_ok(obj, taking_off, is_accessory), which is a larger
-   function and is not ported, so they stay null and still offer the whole
-   inventory; their VERBS are correct. */
+   'q', 'r' and 'd' carry their real filters. 'w' is dispatched to dowield()
+   and no longer routes through here. */
 const GETOBJ_CMD = {
     q: { word: 'drink',   ok: drink_ok, flags: GETOBJ_NOFLAGS },
     r: { word: 'read',    ok: read_ok,  flags: GETOBJ_PROMPT },
-    w: { word: 'wield',   ok: null,      flags: GETOBJ_PROMPT | GETOBJ_ALLOWCNT },
     W: { word: 'wear',    ok: wear_ok,   flags: GETOBJ_NOFLAGS },
     P: { word: 'put on',  ok: puton_ok,  flags: GETOBJ_NOFLAGS },
     R: { word: 'remove',  ok: remove_ok, flags: GETOBJ_NOFLAGS },
@@ -995,6 +992,9 @@ export async function rhack(key) {
             game.context.move = ((await dotakeoff()) === ECMD_TIME ? 1 : 0);
         else if (ch === 'R')
             game.context.move = ((await doremring()) === ECMD_TIME ? 1 : 0);
+        else if (ch === 'w')
+            // src/cmd.c cmdlist — 'w' is dowield.
+            game.context.move = ((await dowield()) === ECMD_TIME ? 1 : 0);
         else
             game.context.move = (await docmd_getobj(ch) === ECMD_TIME ? 1 : 0);
     } else if (ch === '.') {

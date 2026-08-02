@@ -463,7 +463,8 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
                damage was applied. */
             if (mon.mhp === oldhp) {
                 mhit[0] = 0;
-                game.u.uconduct.weaphit = oldweaphit;  /* a miss is not a hit */
+                /* a miss is not a hit; uconduct is a zeroed struct in C */
+                (game.u.uconduct ||= {}).weaphit = oldweaphit;
             }
             if (mon.wormno && mhit[0])
                 note_unported_uhitm('known_hitum:cutworm');
@@ -994,7 +995,7 @@ function hmon_hitmon_barehands(hmd, mon) {
     }
 
     /* gloves shadow rings; two silver rings do not stack */
-    const spcdmgflg = game.uarmg ? W_ARMG
+    const spcdmgflg = game.u.uarmg ? W_ARMG
                     : (((hmd.twohits === 0 || hmd.twohits === 1) ? W_RINGR : 0)
                        | ((hmd.twohits === 0 || hmd.twohits === 2) ? W_RINGL : 0));
     note_unported_uhitm('hmon_hitmon:special_dmgval');

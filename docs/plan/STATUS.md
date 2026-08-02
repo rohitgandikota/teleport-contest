@@ -11750,3 +11750,43 @@ broken.** Two iterations in a row the real gap was a missing entry in rhack
 ('>' needed set_move_cmd, ',' was absent entirely) rather than the mechanic
 the divergence pointed at. Worth auditing rhack against C's cmdlist for other
 keys the recorded sessions use.
+
+## rhack dispatch audit
+
+Board 1734 (unchanged by this work), passes 6. Commits 2e6fd1b and the '<'
+follow-up.
+
+Acting on the lesson from the ',' find, I audited rhack's dispatch directly:
+temporarily instrumented the "Unknown command" fallback to log its key, ran
+all 44 sessions, and counted. **C never prints "Unknown command" for a real
+command, so every hit is a missing dispatch entry.** Result, by frequency:
+
+     697  " "     correct — space really is unbound with rest_on_space off
+      33  "\n"    mostly consumed by prompts; the rest need checking
+      29  "\x04"  ^D dokick          <- biggest real gap
+      14  "p"     dopay (shops)
+      13  "\r"
+      11  "\x14"  ^T (teleport)
+       6  "@"     dotogglepickup     <- wired
+       6  "<"     doup               <- wired
+       4  "O"     doset
+       4  "$"     dogold
+       3  "x"     doswapweapon
+       3  "S"     dosave
+       3  "="/"*"/"\"" display cmds  <- wired
+       2  "!"     shell
+
+Wired this pass: the six equipment-display commands (doprwep, doprarm,
+doprring, dopramulet, doprtool, doprinuse), dotogglepickup, and doup. None
+draws, so the board did not move — but each was printing a message C never
+prints, which would have diverged any held-out session that presses them.
+
+**Re-run this audit whenever a session stalls early.** The probe is three
+lines: log `ch` at the fallback in js/cmd.js rhack, loop the sessions with
+`--worker-session`, sort and count.
+
+**Next: `dokick` (dokick.c:1257), 29 presses.** Structure: a chain of
+no-kick refusals (nolimbs, verysmall, steed, wounded legs, encumbrance,
+lizard, underwater rn2(2), traps, boulder) each printing and returning
+ECMD_FAIL after a --More--; then `getdir`; then the avrg_attrib roll,
+the swallowed rn2(3), the Levitation arm, and `maybe_kick_monster`.

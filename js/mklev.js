@@ -22,6 +22,7 @@ import { do_mkroom, antholemon, mkroom_wire } from './mkroom.js';
 import { SPBOOK_no_NOVEL } from './mkobj.js';
 import { mongone } from './mon.js';
 import { sgn } from './hacklib.js';
+import { set_wall_state } from './display.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, reset_xystart_size } from './sp_lev.js';
@@ -2760,7 +2761,6 @@ function bound_digging() {
         }
 }
 
-function set_wall_state() { /* no-op for contest */ }
 
 function level_finalize_topology() {
     bound_digging();

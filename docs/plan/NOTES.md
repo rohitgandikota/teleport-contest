@@ -3945,3 +3945,31 @@ js/weapon.js; and src/allmain.c:453's find_ac() is ONCE PER PLAYER INPUT in
 the moveloop, not a preamble one-shot — misreading it as preamble-only cost
 seed5006 66 screens (stale AC after multi-turn dressing) because the deleted
 reduced-setworn had been calling find_ac on every wear as a side effect.
+
+## Screen col = map x MINUS ONE, and walls have MODES the skeleton dropped
+
+Two lessons from the seed0030 "one-step-early wall reveal" hunt, which
+burned three sessions on the wrong suspect because of the first one.
+
+Coordinates: a session screen's row r, col c holds map cell (x = c + 1,
+y = r - 1). The hero glyph at screen col 63 is standing at map x 64. An
+earlier STATUS entry recorded "terminal col = map x", and every probe
+built on it read the wrong column: the "mystery" cells at (64,9)/(64,11)
+were really (65,9)/(65,11), the room's doorway column. When a probe's
+world model and the screen disagree by exactly one column, check this
+before inventing a stale-write theory. The `` ` `` glyph on a room floor
+is an ENGRAVING (5.0's S_engroom), not a boulder; boulders are ROCK_CLASS
+backticks too, so look at the typ/object dump, not the glyph.
+
+Wall display: C walls are NOT "seenv ? glyph : blank". set_wall_state()
+(display.c:3329) stamps a WM_* mode into every wall square's wall_info at
+mklev time, and wall_angle() (display.c:3513) intersects the square's
+seenv with a per-mode mask to decide vwall/hwall/corner/tee/crosswall OR
+S_stone = draw nothing. A room's boundary wall seen only from the outside
+diagonal fails its mask and stays invisible until the hero gets a proper
+angle on it. The skeleton shipped set_wall_state as a no-op and a
+mode-0-only wall_glyph, which over-reveals walls one step early all over
+the dungeon — it was the head of the 11-session movement cluster's screen
+divergence. If a wall appears in ours and not in C with identical
+geometry, suspect the MODE, not the vision scans: the scans (COULD_SEE,
+IN_SIGHT via nv range 1) matched C the whole time.

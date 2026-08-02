@@ -1,4 +1,4 @@
-import { mon_offmap } from './monst.js';
+import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn } from './mondata.js';
@@ -16,7 +16,7 @@ import { mdistu, mon_track_clear } from './monmove.js';
 import { game } from './gstate.js';
 import { worm_cross } from './worm.js';
 import { adjalign } from './attrib.js';
-import { couldsee, cansee } from './vision.js';
+import { couldsee, cansee, does_block, unblock_point } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
 import { sengr_at } from './engrave.js';
@@ -1390,10 +1390,10 @@ export function wake_msg(mtmp, interesting) {
 // standing somewhere that blocks light on its own account, and in that case
 // the point stays blocked.
 //
-// is_lightblocker_mappear, has_mcorpsenm, freemcorpsenm, does_block and
-// unblock_point are recorded; the appearance reset and the redraw are real.
+// has_mcorpsenm/freemcorpsenm are still recorded (oextra is not modelled);
+// everything else is real.
 export function seemimic(mtmp) {
-    const is_blocker_appear = note_unported_mon('seemimic:is_lightblocker_mappear');
+    const is_blocker_appear = is_lightblocker_mappear(mtmp);
 
     note_unported_mon('seemimic:mcorpsenm');
 
@@ -1402,8 +1402,8 @@ export function seemimic(mtmp) {
 
     /*  Discovered mimics don't block light. */
     if (is_blocker_appear
-        && !note_unported_mon('seemimic:does_block'))
-        note_unported_mon('seemimic:unblock_point');
+        && !does_block(mtmp.mx, mtmp.my, game.level.at(mtmp.mx, mtmp.my)))
+        unblock_point(mtmp.mx, mtmp.my);
 
     newsym(mtmp.mx, mtmp.my);
 }

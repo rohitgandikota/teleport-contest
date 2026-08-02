@@ -39,6 +39,7 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 import { merged, weight, update_inventory } from './invent.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { depth } from './dungeon.js';
+import { block_point } from './vision.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
@@ -1040,8 +1041,20 @@ export function mkobj_at(oclass, x, y, artif) {
 // it calling dogfood() on each, and dogfood() draws, so the order is part of
 // the PRNG contract.
 export function place_object(otmp, x, y) {
+    /* src/mkobj.c:2328 — otmp2 is the head of the cell's pile chain; in the
+       flat floor list the first entry at (x,y) plays that role. */
+    const otmp2 = (game.level.objects || []).find(o => o.ox === x && o.oy === y);
+
     otmp.ox = x;
     otmp.oy = y;
+
+    /* src/mkobj.c:2331 — a boulder landing on a cell that doesn't already
+       show a boulder makes the point opaque. */
+    if (otmp.otyp === ONAMES.BOULDER) {
+        if (!otmp2 || otmp2.otyp !== ONAMES.BOULDER)
+            block_point(x, y); /* vision */
+    }
+
     /* src/mkobj.c place_object() tail — without this, an object that was
        extracted (where == OBJ_FREE) and then re-floored can't be extracted
        again: obj_extract_self's OBJ_FREE arm leaves it in level.objects. */

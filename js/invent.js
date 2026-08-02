@@ -27,6 +27,7 @@ import { pline, docrt } from './display.js';
 import { observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
+import { recalc_block_point } from './vision.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
@@ -908,6 +909,10 @@ export function obj_extract_self(obj) {
             const i = objs.indexOf(obj);
             if (i >= 0) objs.splice(i, 1);
         }
+        /* src/mkobj.c:2517 remove_object() — a boulder leaving the floor may
+           open the point up again (or not, if another boulder remains). */
+        if (obj.otyp === ONAMES.BOULDER)
+            recalc_block_point(obj.ox, obj.oy); /* vision */
         break;
     }
     }

@@ -35,6 +35,7 @@ import { overexertion } from './hack.js';
 
 import { attack_checks } from './uhitm.js';
 import { getdir } from './cmd.js';
+import { recalc_block_point, unblock_point } from './vision.js';
 
 /* src/dokick.c:8 martial() — Samurai and Monk get the bonus, as do bigfoot
    forms and anyone wearing kicking boots. */
@@ -302,8 +303,7 @@ async function kick_door(x, y, avrg_attrib, maploc) {
             maploc.doormask = D_BROKEN;
         }
         newsym(x, y);           /* feel_newsym: we know we broke it */
-        /* unblock_point() needs the vision shadow map */
-        note_unported_dokick('kick_door:unblock_point');
+        recalc_block_point(x, y); /* vision */
     } else {
         if (game.u.ublind)
             note_unported_dokick('kick_door:feel_location');

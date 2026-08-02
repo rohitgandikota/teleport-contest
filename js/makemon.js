@@ -26,7 +26,7 @@ import { next_ident, mksobj, mkobj, place_object, curse, rnd_class } from './mko
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
 import { canspotmon, newsym } from './display.js';
-import { cansee } from './vision.js';
+import { cansee, does_block, block_point } from './vision.js';
 import { COLNO, ROWNO } from './const.js';
 import { attacktype, is_neuter, is_floater, emits_light } from './mondata.js';
 import { is_vampshifter } from './monst.js';
@@ -1183,6 +1183,11 @@ export function set_mimic_sym(mtmp) {
         note_unported('set_mimic_sym:altar_align');
         rn2(3);                 /* algn = rn2(3) - 1; the draw is spent */
     }
+
+    /* src/makemon.c:2548 — a mimic that now looks like a wall, door,
+       boulder or tree makes its square opaque. */
+    if (does_block(mx, my, game.level.at(mx, my)))
+        block_point(mx, my);
 }
 // src/makemon.c:79 m_initgrp() — populate a monster's birth group. rnd(n)
 // first, the low-level swarm reduction, then one enexto_gpflags (which

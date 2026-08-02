@@ -1,3 +1,50 @@
+=== seed0030 STEP 21 SOLVED: the missing subsystem was WALL MODES ===
+Root cause of the "one-step-early wall reveal": the skeleton stubbed
+display.c's wall-mode machinery (mklev.js set_wall_state was a no-op,
+wall_glyph drew every wall as mode 0 "seenv?glyph:blank"). C computes a
+WM_* mode per wall square at mklev (set_wall_state -> xy_set_wall_state
+-> set_wall/set_twall/set_corn/set_crosswall) and wall_angle() combines
+mode + seenv to decide the visible glyph; a room boundary wall seen only
+from the OUTSIDE diagonal (e.g. SV6 against WM_W_LEFT's SV1..SV5 mask)
+renders S_stone = blank. That is exactly why C hid (65,9) VWALL and
+(65,11) BLCORNER from hero (64,10) at step 21 and showed them from
+(65,10) at step 22. The scans were never wrong: COULD_SEE and even
+IN_SIGHT (nv range 1, u_init.c:1019) match C; the DISPLAY filters them.
+LANDED (this commit):
+- display.js: check_pos/more_than_one/set_wall/set_twall/set_corn/
+  set_crosswall/xy_set_wall_state/set_wall_state + wall_matrix/
+  cross_matrix + full wall_angle (T/V/H/SDOOR/corners/crosswall all
+  modes); wall_glyph now `seenv ? wall_angle(loc) : S_stone` and all
+  eleven wall-typ arms plus SDOOR route through it.
+- mklev.js: no-op set_wall_state deleted, real one imported from
+  display.js at the C call position (mklev.c:1569).
+- vision.js: new_angle() ported (vision.c:414, was MISSING despite an
+  earlier claim it existed) and wired at all three seenv-apply sites;
+  seenv_matrix center fixed 0 -> SVALL (C display.c:3355).
+- vision.js: _blocks replaced by real does_block (vision.c:153: TREE,
+  closed doors, CLOUD/waterwall/lavawall, Underwater moat, BOULDERS,
+  light-blocking mimics, visible_region_at) + dig_point/fill_point/
+  block_point/unblock_point/recalc_block_point (vision.c:865-1130).
+  Callers wired: place_object boulder arm (mkobj.c:2331),
+  obj_extract_self floor arm = remove_object (mkobj.c:2517), doopen_indir
+  (lock.c:915), doclose (lock.c:1043), kick_door (dokick.c:952), seemimic
+  real is_lightblocker/does_block/unblock (mon.c:4409), set_mimic_sym
+  tail (makemon.c:2548). NEW js/region.js (inside_rect/inside_region/
+  visible_region_at over an always-empty-so-far game.regions) and
+  dbridge.js is_moat; monst.js is_obj_mappear/is_lightblocker_mappear.
+GATES: seed0030 first screen divergence moved 21 -> 28 (a '>' descend
+step, different bug); 8/44 passing (was 7); screens 2242 -> 2279 (+37);
+diverge.mjs --all: NO first-divergence index moved on any session (only
+post-div noise); hang-gate OK; all cycle entry orders load clean.
+CAVEAT that cost an hour: screen col = map x - 1 (terminal col 63 = map
+x 64). The earlier STATUS entries saying "terminal col = map x" are
+WRONG - the cells in the last two entries are really (65,9)/(65,11),
+the door column, not (64,*). NOTES updated.
+NEXT: seed0030 step 28 (descend-stairs divergence) or the next
+first-divergence head from diverge.mjs; wall modes may also have moved
+other sessions' screen heads - re-run screendiff per session before
+picking.
+
 === seed0030 STEP 21 = ONE-STEP-EARLY WALL REVEAL; right_side IS CLEAN ===
 Closed questions: geometry is IDENTICAL (C draws the same vwall/blcorner
 at the same terminal cells at step 22; my raw decodeScreen diffs compare

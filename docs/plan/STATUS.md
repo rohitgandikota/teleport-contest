@@ -13439,3 +13439,44 @@ Instrument every `dogfood()` call site (box scan / pile walk / dog_invent /
 dog_eat reward) with a tag and dump them for step 30, then compare the four
 counts against C's two. That distinguishes "we skip a call" from "we make a
 different call" without further guessing.
+
+## Iteration 46 — seed0030: our pet eats one turn EARLY
+
+Board **2141**, tree clean, no commit. Diagnosis only, but the statement is
+now sharp.
+
+Tagged all five `dogfood()` call sites (dog_eat reward, dog_goal box scan,
+dog_goal hero-inventory scan, dog_move pile walk, dog_invent) and dumped
+them per game move.
+
+**At moves 30 and 31 our port makes ZERO dogfood calls.** So the single
+`rn2(100)` in our step 30 is not a pet call at all -- it is `delobj()`'s
+`obj_resists` (the one added in iteration 33). C's two step-30 draws ARE pet
+calls.
+
+Sequence, per move:
+
+    ours  mv=29  dogfood(invent) + dogfood(reward)   <- the pet EATS here
+          mv=30  none      (meating=2, digesting)
+          mv=31  none      (meating=1, digesting)
+          mv=32  dogfood(invent) + dogfood(reward)   <- eats again
+
+    C     step29 obj_resists, dog_move rn2(1)+rn2(12)x2, obj_resists
+          step30 obj_resists x2                       <- the kitten eats here
+                 ("Your kitten eats a newt corpse.")
+
+C's step-29 pair straddles dog_move's scoring draws, so C's first call is
+the pile walk inside the candidate loop, not dog_invent -- C's pet MOVES and
+then eats. Ours calls dog_invent first, finds the corpse underfoot, and eats
+without moving.
+
+**So our pet eats one turn early.** Everything downstream (the two-step
+message lag, the digesting gap) follows from that single turn.
+
+### Next
+
+Find why our pet is already standing on the corpse at mv=29 when C's still
+has to move onto it. Compare our dog_move call order against
+src/dogmove.c:1032 onward -- specifically whether dog_invent() is reached
+before or after the candidate scoring loop, since C's draw order says the
+pile walk runs first.

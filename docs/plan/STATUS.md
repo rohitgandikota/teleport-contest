@@ -14951,3 +14951,47 @@ Gehennom level files, so a held-out session will hit it.
 3. Single-segment sessions with big losses: seed4500 (1586), seed0014 (663),
    seed0360 (645). These need the ordinary screen-diff-first walk; their
    segment-1 first steps are all clean, so the divergence is later in play.
+
+## iter 82 — seed4500 diverges at the SAME call site as seed0030: mtrack history
+
+Board 2247, tree clean, no code change.
+
+seed4500 (1586 lost, the biggest single-segment loser) first diverges at
+**step 233**, draw index 15:
+
+    C   : rn2(12)=8 @ m_move(monmove.c:1963)
+    ours: rn2(20)=0
+
+That is `rn2(4 * (cnt - j))`, the mfndpos backtrack check — **the identical call
+site that breaks seed0030 at step 36.** Two independent sessions, same
+signature. This is a systematic problem, not a level quirk.
+
+**For seed4500 it is provably `j`, not `cnt`.** Measured at step 233's global
+offset 7859 (draw 7874):
+
+    monster @(54,16)  cnt=5  j=0  cand=(55,16)
+    poss = (53,16) (53,17) (54,17) (55,16) (55,17)
+    terrain = ALL typ 25 (ROOM), doormask 0
+
+All five candidates are plain room floor, so no mfndpos arm can exclude any of
+them and cnt=5 is forced on both sides. C's rn2(12) therefore means
+`cnt - j == 3`, i.e. **j == 2**. Our first backtrack match is at j=0 (our
+mtrack[0] is (55,16)); C's first match is at j=2, so C's two most recent
+remembered squares are NOT adjacent to (54,16) while ours is.
+
+So the monster's MOVEMENT HISTORY has drifted, without changing any draw count
+up to that point (steps 0-232 are all SAME apart from the harmless step-0/step-2
+attribution swap below). Same conclusion the seed0030 chase reached, now
+confirmed on a second session — which makes it worth solving properly rather
+than per-session.
+
+**Where to look:** `mon_track_add` is called from js/monmove.js:1286 (m_move)
+and js/dog.js:1317 (dog_move), mirroring monmove.c:2062 and dogmove.c:1313.
+Check whether C has OTHER mon_track_add call sites we lack, and whether any
+path that moves a monster in our port skips it (rloc, teleport, trap-exit,
+worm_move, the mintrap re-entry). A monster moved without recording its track
+keeps a stale ring and every later backtrack test reads the wrong j.
+
+**Not a bug, do not chase:** step 0 is +2 draws and step 2 is -2. It is the SAME
+two draws attributed to a different step; screens match either side. The same
++2 shows in seed0360, seed0013, seed5002 and seed5006.

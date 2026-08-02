@@ -14532,3 +14532,46 @@ other added a second `import { getRngLog }` when dog.js:46 already imports it,
 which is a load-time SyntaxError. Both fail silently through the runner. Always
 confirm a probe fires with an unconditional marker before reading anything into
 its silence.
+
+## iter 72 — seed0030 step 44 narrowed: the pet is ONE TURN BEHIND C's
+
+No code change; board 2200, tree clean. This refines iter 71 to a single
+sentence of cause, so start here rather than there.
+
+**Measured.** During step 44's dog_move our pet is at (43,15). At the END of
+step 44 it is at (41,16). C's pet is already at (41,16) DURING step 44 — that
+is what makes its draws differ. Our pet is one turn behind C's.
+
+The draw difference falls out of that position, it is not a separate bug:
+
+- From (43,15) the SQSRCHRADIUS=5 box is x 38..48. The level's only nearby
+  objects are at (36,18), (36,17) and (35,17), all outside it, so dog_goal
+  finds nothing, returns gtyp=UNDEF, and sets the goal to the hero (37,18)
+  with appr=1.
+- With goal (37,18) and the pet on (43,15), NO neighbour can give `j == 0`:
+  that needs dist2 == 45, and (6,3) is the only solution, i.e. the pet's own
+  square. Hence we never pay C's `rn2(1) @ dogmove.c:1255`.
+- From (41,16) the box is x 36..46 and DOES contain those objects, so C's
+  dog_goal picks an object goal, which makes an equidistant first candidate
+  possible. This is consistent and needs no second explanation.
+
+**Ruled out this iteration:**
+- mfndpos candidate ORDER. C is `for x = mx-1..mx+1 { for y = my-1..my+1 }`
+  and ours produced exactly that order: (42,14) (42,15) (42,16) (43,14)
+  (43,16) (44,14) (44,16). (44,15) is absent because it is blocked, not
+  mis-ordered.
+- `appr == 0` on C's side: with appr 0 every candidate gives j == 0 and the
+  draws would be rn2(1), rn2(2), rn2(3)...; C's are rn2(1) then three rn2(12).
+- The `meating` countdown. js/monmove.js:1108 is character-for-character
+  monmove.c:1745, including the `<= 0` finish_meating and the MMOVE_DONE.
+  dog_nutrition's `meating = 3 + (cwt >> 6)` also matches.
+
+**So: find where the pet loses a turn.** It is draw-neutral (steps 33-43 all
+report SAME), so it is a counter or an early return, not a missing rn2. The
+untested candidates are the movement-point accounting — `mtmp.movement`,
+mcalcmove's allotment, and the `monscanmove` loop in js/allmain.js around :515
+— and any extra MMOVE_DONE/MMOVE_NOTHING return in our m_move that C does not
+take. Instrument by logging the pet's (mx,my) once per step for steps 30-44 and
+finding the first step where it falls behind; do not bisect on screens, the pet
+is out of the hero's sight for much of this stretch so the screens agree while
+the state does not.

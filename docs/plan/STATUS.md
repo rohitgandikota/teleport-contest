@@ -11452,3 +11452,33 @@ jcnt = min(MTSZ=4, cnt-1) so both are possible. To separate: log our own
 (cnt, j, jcnt, track[]) at exactly this call — the MTK probe used earlier
 does this, re-add it and read the values for the mon=322 call at 76,14
 rather than the first few calls it happened to print.
+
+## 2026-08-01 (seed0030): maybe_smudge_engr ported; engraving presence is upstream
+
+Commit 4e0e558. Board 1552/6, gates clean.
+
+**Ported:** domove's wrapper (hack.c:2694). C's domove() calls
+domove_core() and then, if the hero moved, maybe_smudge_engr(ux1,uy1,
+u.ux,u.uy) which rubs out part of any engraving on BOTH the square left
+and the square entered — rnd(5) each. Our domove was domove_core only, so
+those draws never appeared. Verified the new wrapper runs on all 395 hero
+moves in seed0030.
+
+**seed0030's wall is unchanged (rng 6732) and is now clearly upstream.**
+C draws rnd(5) @maybe_smudge_engr; ours goes straight on to distfleeck.
+The wrapper fires correctly on that move — but engr_at() is false for both
+squares in OUR game, so no smudge happens. **C has an engraving where we
+have none.** So the divergence is in engraving CREATION or persistence,
+not in the smudge. Next: find which engraving C has near the hero at
+seed0030 step 25 — candidates are a headstone from a grave (excluded by
+the HEADSTONE guard, so not this), an engrave-type from level generation
+(mklev's make_engr_at for trap warnings, "ad aerarium"), or a dust
+engraving written earlier in the session. Grep C's earlier draws for
+make_engr_at / random_engraving and compare with ours.
+
+**seed4500 note (parked for now):** definitive values captured at its
+failing call — ours cnt=8, j=0, jcnt=4, track=[76,13], candidate 76,13.
+C's rn2(28) means cnt-j=7. So either C's cnt is 7, or C's track is longer
+and matched at j=1. Our monster reached 76,14 from 76,13; C's monster may
+have taken a different (draw-free) path, since appr==1 movement picks the
+nearest square by dist2 without consuming RNG.

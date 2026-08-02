@@ -23,6 +23,7 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup } from './hack.js';
 import { curr_mon_load } from './mon.js';
+import { ECMD_FAIL, ECMD_CANCEL } from './const.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { x_monnam, docallcmd } from './do_name.js';
@@ -52,7 +53,7 @@ import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos, getpos_sethilite } from './getpos.js';
-import { get_valid_jump_position } from './apply.js';
+import { get_valid_jump_position, is_valid_jump_pos } from './apply.js';
 import { dowear, doputon, dotakeoff, doremring, canwearobj_core } from './do_wear.js';
 import { show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -636,7 +637,12 @@ async function dojump() {
     getpos_sethilite(null, get_valid_jump_position);
 
     if (await getpos(cc, true, 'the desired position') < 0)
-        return ECMD_OK; /* ECMD_CANCEL — user pressed ESC */
+        return ECMD_CANCEL; /* user pressed ESC */
+
+    /* src/apply.c:2065 — the same validator again, this time with its
+       messages; a rejected target ends the command without a turn. */
+    if (!(await is_valid_jump_pos(cc.x, cc.y, game.jumping_is_magic, true)))
+        return ECMD_FAIL;
 
     note_unported_cmd('jump:movement');
     return ECMD_OK;

@@ -966,6 +966,7 @@ export async function rhack(key) {
     } else {
         // src/cmd.c rhack() — genuinely unrecognised key.
         game.context.move = 0;
+        if (process.env.UNKPROBE) console.error('UNK ' + JSON.stringify(ch) + ' moves=' + game.moves);
         await pline(`Unknown command '${ch}'.`);
     }
 }

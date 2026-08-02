@@ -20,7 +20,7 @@ import { dmgtype } from './mondata.js';
 import { touch_petrifies } from './dog.js';
 import { which_armor } from './worn.js';
 import { hitmsg } from './mhitu.js';
-import { You } from './pline.js';
+import { You, Your } from './pline.js';
 import { mon_nam } from './do_name.js';
 import { exclam } from './zap.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym } from './display.js';
@@ -391,14 +391,19 @@ export function double_punch() {
 // recorded here rather than approximated. Approximating it by just clearing
 // msleeping would leave a peaceful monster peaceful after being attacked,
 // which is a worse wrong answer than doing nothing.
-export function missum(mdef, mattk, wouldhavehit) {
+export async function missum(mdef, mattk, wouldhavehit) {
     if (wouldhavehit)   /* a monk missing due to the body-armour penalty */
-        note_unported_uhitm('missum:cumbersome_armor_message');
+        await Your('armor is rather cumbersome...');
 
-    note_unported_uhitm('missum:miss_message');
+    /* could_seduce() needs the succubus/incubus arms; nothing ported can be
+       one, so the middle branch is recorded rather than guessed */
+    if (canspotmon(mdef) && game.flags?.verbose !== false)
+        await You(`miss ${mon_nam(mdef)}.`);
+    else
+        await You('miss it.');
 
     if (!helpless(mdef))
-        note_unported_uhitm('missum:wakeup');
+        await wakeup(mdef, true);
 }
 
 // src/uhitm.c known_hitum() — resolve a hit or miss that the hero knows about.
@@ -427,7 +432,7 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
         note_unported_uhitm('known_hitum:bloodthirsty_blade_message');
 
     if (!mhit[0]) {
-        missum(mon, uattk, (rollneeded + armorpenalty > dieroll));
+        await missum(mon, uattk, (rollneeded + armorpenalty > dieroll));
     } else {
         const oldhp = mon.mhp;
         const oldweaphit = game.u.uconduct?.weaphit ?? 0;
@@ -1209,6 +1214,33 @@ export function nohandglow(mon) {
 // and is recorded. Within the mhitu branch, the corpse-petrification, silver,
 // pudding-clone and poison arms need absent subsystems and are recorded at
 // their C decision points.
+// src/uhitm.c:2684 mhitm_ad_elec() — a shock attack.
+//
+// The mhitu branch is the one a grid bug takes against the hero: the hit
+// message first, then "You get zapped!", then the resistance test and, when
+// the attacker is high enough level, destroy_items with an rn2(20) gate.
+export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
+    const orig_dmg = mhm.damage;
+
+    if (magr === game.youmonst) {
+        note_unported_uhitm('mhitm_ad_elec:uhitm');
+    } else if (mdef === game.youmonst) {
+        /* mhitu */
+        await hitmsg(magr, mattk, mhm.indx);
+        /* mhitm_mgc_atk_negated needs the cancellation rules; an
+           uncancelled monster is the ordinary case */
+        await You('get zapped!');
+        if (game.u.uprops?.SHOCK_RES) {
+            note_unported_uhitm('mhitm_ad_elec:shock_resistance');
+            mhm.damage = 0;
+        }
+        if (magr.m_lev > rn2(20))
+            note_unported_uhitm('mhitm_ad_elec:destroy_items');
+    } else {
+        note_unported_uhitm('mhitm_ad_elec:mhitm');
+    }
+}
+
 export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
     const A = ATTKS;
     const pd = game.mons[mdef.mnum];

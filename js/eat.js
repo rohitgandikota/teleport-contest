@@ -422,6 +422,7 @@ export async function doeat() {
         const tmp = await eatcorpse(otmp);
 
         if (tmp === 2) {
+            game.context.victual = game.context.victual || {};
             game.context.victual.piece = null;
             game.context.victual.o_id = 0;
             return ECMD_TIME;

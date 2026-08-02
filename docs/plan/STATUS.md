@@ -10998,3 +10998,14 @@ mkclass(S_ZOMBIE) ladder than C (C draws ~8 rn2(9)s + rnd(18); ours ends
 early and creates a d(15,8) monster instead) — check init_mongen_order's
 sort vs C qsort on (difficulty | mlet<<8) and the zombie section's
 contiguity, plus the montoostrong rn2(2) break condition. Board 1552.
+
+## 2026-08-01 (morgue corpses): mk_tt_object rank draw — seed0360 rng 29347
+
+Commit 70c92c6. tt_oname()'s get_rnd_toptenentry draws rnd(10) for the
+scoreboard rank BEFORE opening the (nonexistent) record file; the fallback
+random-class path then runs, so the draw is invisible in the result but real
+in the stream. Every morgue corpse and player statue in the game was one
+draw short. Verified our dat_files epitaph embedding is byte-exact
+(filechunksize 24075 matches C's rn2(24075)).
+Next: continue the valley fill (still ~29350), then the remaining tour
+levels. Board 1552, passes 6, gates clean.

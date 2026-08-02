@@ -15557,3 +15557,43 @@ clear, and confirm the clear is even coming from there rather than from the
 command wrapper around doinventory. The menu content needs no changes at all.
 
 seed2200: 228/230, both losses on this one frame.
+
+## iter 97 — seed2200 step 83: the clear is _buildScreenOutput's, NOT the menu's
+
+Board 2249, passes 7, tree clean, no code change. The culprit is identified;
+the next agent should NOT touch js/tty/wintty.js.
+
+Stack-traced every `display.clearScreen()` during step 83 (instrumented
+GameDisplay.clearScreen in js/game_display.js, reverted afterwards). The LAST
+clear before the captured frame is:
+
+    CLR
+      at GameDisplay.clearScreen (js/game_display.js:59)
+      at _buildScreenOutput      (js/display.js:714)
+      at flush_screen            (js/display.js:751)
+
+**So the menu path is innocent.** wintty.js:446's `if (!cw.offx)
+display.clearScreen()` is not what wipes the map — iters 94-96 were all aimed at
+the wrong file. `_buildScreenOutput` unconditionally does
+`display.clearScreen()` at display.js:714 and then repaints message + map +
+status into the grid.
+
+This is the architecture NOTES already flags: `bot()` is a no-op and
+_buildScreenOutput paints message, map and status together. For an ordinary
+frame that is fine. For a MENU frame it is wrong: C overlays a menu on the
+existing screen (iflags.menu_overlay) and leaves the map and both status rows
+alone, whereas our path clears the grid and then only the menu gets drawn over
+it — so everything outside the menu comes out blank.
+
+**Careful — this is the trap that bit twice before.** STATUS records two earlier
+attempts to narrow _buildScreenOutput's paint call sites (a flush_screen model
+and a `_buildTopLineOnly`), and BOTH regressed and were reverted (-10 on
+seed2200 among others). Do not "just skip the clear when a menu is up" without
+measuring the whole board; the same instinct has already cost two reverts. The
+right shape is probably to make the menu window composite over the existing grid
+rather than to weaken _buildScreenOutput, but verify against the full score
+either way.
+
+seed2200: 228/230, both losses on this frame. Every other lead on it is now
+closed: content identical (iter 96), width not involved (iter 95), pagination
+not involved (iter 96), menu geometry not involved (this iter).

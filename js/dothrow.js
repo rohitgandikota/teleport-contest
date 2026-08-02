@@ -29,7 +29,9 @@ import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { throws_rocks } from './mondata.js';
-import { PMNAMES } from './monst_data.js';
+import { PMNAMES, MFLAGS } from './monst_data.js';
+import { is_weptool } from './mkobj.js';
+import { hitval } from './weapon.js';
 import { getdir } from './cmd.js';
 
 // dothrow.js — throwing, firing, and the path a thrown thing takes.
@@ -601,4 +603,43 @@ export function should_mulch_missile(obj) {
         broken = false;
 
     return broken;
+}
+
+// src/dothrow.c:1913 omon_adj() — to-hit adjustment for a monster target.
+// The !rn2(10) wake-up is a draw, fired only for a frozen mover that is
+// allowed to notice.
+export function omon_adj(mon, obj, mon_notices) {
+    const mdat = game.mons[mon.mnum];
+    let tmp = 0;
+
+    /* size of target affects the chance of hitting */
+    tmp += mdat.msize - MFLAGS.MZ_MEDIUM; /* -2..+5 */
+    /* sleeping target is more likely to be hit */
+    if (mon.msleeping)
+        tmp += 2;
+    /* ditto for immobilized target */
+    if (!mon.mcanmove || !mdat.mmove) {
+        tmp += 4;
+        if (mon_notices && mdat.mmove && !rn2(10)) {
+            mon.mcanmove = 1;
+            mon.mfrozen = 0;
+        }
+    }
+    /* some objects are more likely to hit than others */
+    switch (obj.otyp) {
+    case ONAMES.HEAVY_IRON_BALL:
+        if (obj !== game.u.uball)
+            tmp += 2;
+        break;
+    case ONAMES.BOULDER:
+        tmp += 6;
+        break;
+    default:
+        if (obj.oclass === OCLASSES.WEAPON_CLASS
+            || is_weptool(obj, game.objects)
+            || obj.oclass === OCLASSES.GEM_CLASS)
+            tmp += hitval(obj, mon);
+        break;
+    }
+    return tmp;
 }

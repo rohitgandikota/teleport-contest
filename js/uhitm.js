@@ -985,7 +985,7 @@ async function hmon_hitmon_do_hit(hmd, mon, obj) {
 
 // include/mondata.h:208 passes_rocks() — a header macro with no JS home yet.
 // Both halves exist: passes_walls is in this file, unsolid in js/mondata.js.
-const passes_rocks = (ptr) => passes_walls(ptr) && !unsolid(ptr);
+export const passes_rocks = (ptr) => passes_walls(ptr) && !unsolid(ptr);
 
 // src/dothrow.c stone_missile() /
 // src/uhitm.c shade_aware() — recorded.

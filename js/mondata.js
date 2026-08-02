@@ -685,3 +685,9 @@ export const is_prince = (ptr) => (ptr.mflags2 & MFLAGS.M2_PRINCE) !== 0;
 // include/mondata.h:157 is_mplayer() — the fake-player range of mons[].
 export const is_mplayer = (ptr) =>
     ptr.pmidx >= PMNAMES.PM_ARCHEOLOGIST && ptr.pmidx <= PMNAMES.PM_WIZARD;
+
+// include/you.h:323 mhim() — object-case pronoun for a monster.
+export function mhim(mtmp) {
+    return genders_tbl[pronoun_gender(mtmp, PRONOUN_HALLU)].him;
+}
+import { genders as genders_tbl } from './role_data.js';

@@ -131,3 +131,18 @@ export const is_axe = (otmp) =>
     (otmp.oclass === OCLASSES.WEAPON_CLASS
      || otmp.oclass === OCLASSES.TOOL_CLASS)
     && objects[otmp.otyp].oc_skill === SKILLS.P_AXE;
+
+// include/obj.h:274 stone_missile() — gemstone/mineral thing that can be
+// launched; rings are excluded even when made of gemstone.
+export const stone_missile = (o) =>
+    (objects[o.otyp].oc_material === MATERIALS.GEMSTONE
+     || objects[o.otyp].oc_material === MATERIALS.MINERAL)
+    && o.oclass !== OCLASSES.RING_CLASS;
+
+// include/obj.h:264 is_poisonable() — launcher ammo classes only.
+// permapoisoned() reads an artifact property table that is not ported; it
+// is false for every ordinary object, so the || term is vacuous for now.
+export const is_poisonable = (otmp) =>
+    otmp.oclass === OCLASSES.WEAPON_CLASS
+    && objects[otmp.otyp].oc_skill >= -SKILLS.P_SHURIKEN
+    && objects[otmp.otyp].oc_skill <= -SKILLS.P_BOW;

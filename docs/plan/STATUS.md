@@ -11482,3 +11482,57 @@ C's rn2(28) means cnt-j=7. So either C's cnt is 7, or C's track is longer
 and matched at j=1. Our monster reached 76,14 from 76,13; C's monster may
 have taken a different (draw-free) path, since appr==1 movement picks the
 nearest square by dist2 without consuming RNG.
+
+## seed0030: room graffiti, ambient monsters, and the descent screen
+
+Board 1552 -> 1558, passes 6. Five commits: 1ecaaf0, 3fdb8bf, baf7cc2,
+7a0a4a6, 6544d19.
+
+**Five real gaps found by walking seed0030 from step 23.**
+
+1. `fill_ordinary_room` picked a random engraving and chose a spot but never
+   called `make_engr_at`, so no room graffiti ever existed. A local
+   `const MARK = 6` in mklev.js was also shadowing const.js's MARK; 6 is
+   HEADSTONE. (1ecaaf0)
+
+2. `makemon` had no `x == 0 && y == 0` branch, so every ambient monster from
+   `maybe_generate_rnd_mon` hit the `isok(0,0)` check and returned null
+   without drawing. Ported `makemon_rnd_goodpos` (makemon.c:1075) whole,
+   including the two-pass whole-map sweep and the stairway pick between the
+   passes. seed0030 rng 7035 -> 10884. (3fdb8bf)
+
+3. C runs `reset_xystart_size()` before Lua's `post_level_generate`, and
+   `l_selection_rndcoord` calls `update_croom()` before converting to
+   relative coordinates. Without either, `make_a_trap` compared its teleport
+   destination against the wrong origin and never took the retry arm.
+   (baf7cc2)
+
+4. `pickup()` and `check_here()` both had `read_engr_at` replaced by an
+   unported note. Wired both, and gave `read_engr_at` the MARK arm.
+   `redotoplin()` also prompts on its own whenever the message wrapped, so a
+   two-line message carries its own --More--. (7a0a4a6)
+
+5. `dodown()` opens with `set_move_cmd(DIR_DOWN, 0)`; without it `u.dz` was 0
+   and goto_level's arrival message tree printed nothing. DIR_DOWN/DIR_UP
+   were also swapped against the movementdirs enum. `docrt()` now calls
+   `cls()`. The painted map moved off the level's cells into `game.gbuf`,
+   mirroring display.c, so swapping levels no longer repaints the screen.
+   (6544d19)
+
+**Parked: the terminal is not the glyph buffer.** seed0030 step 28 is down to
+38 differing cells from 133, but the tail needs C's real split. In C, `newsym`
+writes `gbuf` and NOTHING reaches the terminal until `flush_screen()`;
+`flush_screen(-1)` toggles `delay_flushing` so goto_level can hold the
+departure screen. I implemented that split (snapshot map+status in
+flush_screen, replay it in _buildScreenOutput) and the board fell 1558 ->
+1215, because this port does not call `flush_screen` at anywhere near all the
+points C does — the map froze in 33 sessions. Reverted. Doing this properly
+means auditing every C `flush_screen` call site FIRST, then flipping the
+model. Until then `_buildScreenOutput` reading gbuf directly is the right
+approximation.
+
+**Next.** seed0030's wall is rng 10609: C spends one more `obj_resists`
+(dogfood) than we do in the pet's 5-square scan, so C has one more floor
+object in the box near (53,8). Our dlvl-2 object list at that moment is 12
+entries, two of them in the box (a corpse at 52,8 and an object at 57,7); C
+has three. Find the missing object.

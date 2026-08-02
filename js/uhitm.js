@@ -153,7 +153,9 @@ export async function do_attack(mtmp) {
         && !helpless(mtmp) && !mtmp.mconf && mtmp.mcansee && !rn2(7))
         note_unported_uhitm('do_attack:leprechaun_dodge');
 
-    await hitum(mtmp, game.mons[game.u.umonnum ?? 0]);
+    /* C passes gy.youmonst.data->mattk, i.e. the FIRST attack row; hitum
+       reads uattk->aatyp from it. */
+    await hitum(mtmp, mattk_row(game.youmonst.data.mattk[0]));
 
     if (game.context?.forcefight && !DEADMONSTER(mtmp) && !canspotmon(mtmp))
         note_unported_uhitm('do_attack:forcefight_map_invisible');
@@ -268,7 +270,16 @@ export function check_caitiff(mtmp) {
 }
 
 // src/role.c Role_if()
-const Role_if = (pm) => game.urole?.malenum === pm || game.urole?.pmidx === pm;
+//
+// The role's monster number lives in urole.mnum; this used to read malenum
+// and pmidx, neither of which js/role_data.js defines, so EVERY Role_if in
+// this file was false. That silently disabled check_caitiff's Knight and
+// Samurai arms, find_roll_to_hit's Monk bonus, and martial_bonus() -- which
+// is why a Monk's bare hand rolled rnd(2) where C rolls rnd(4).
+const Role_if = (pm) => {
+    const m = game.urole?.mnum;
+    return m === pm || m === PMNAMES[pm];
+};
 
 // src/uhitm.c find_roll_to_hit() — the number the d20 must beat.
 //
@@ -469,6 +480,10 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
 // Not ported, each recorded: hitum_cleave (wielded Cleaver), passive (the
 // monster's counter-attack, 256 lines and it draws), and the exercise(A_DEX)
 // on a successful hit.
+
+/* monst_data stores each attack as [aatyp, adtyp, damn, damd]; the C reads
+   them as named fields. */
+const mattk_row = (a) => ({ aatyp: a[0], adtyp: a[1], damn: a[2], damd: a[3] });
 export async function hitum(mon, uattk) {
     const wepbefore = game.u.uwep;
     const secondwep = game.u.twoweap ? game.u.uswapwep : null;

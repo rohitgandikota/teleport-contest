@@ -535,8 +535,13 @@ function monlineu(mon, nx, ny) {
 
 /* src/mon.c m_at() */
 export function m_at(x, y) {
-    return (game.level?.monsters || []).find(m => m.mx === x && m.my === y
-                                                  && m.mhp > 0) || null;
+    /* src/rm.h level.monsters[][] — C reads the GRID, not the fmon chain,
+       and the grid holds a long worm at every one of its tail squares as
+       well as at its head. Scanning the chain by mx/my finds only the head,
+       so mfndpos saw tail squares as free and offered a monster more
+       candidate positions than C does. */
+    const m = game.level?.monAt?.get(`${x},${y}`);
+    return (m && m.mhp > 0) ? m : null;
 }
 
 /* src/trap.c t_at() */

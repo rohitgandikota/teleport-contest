@@ -982,7 +982,12 @@ export async function dochug(mtmp) {
                 if (status === MMOVE_MOVED) {
                     newsym(omx, omy); /* update the old position */
                     newsym(mtmp.mx, mtmp.my);
-                    note_unported_monmove('dochug:postmov_pet_mintrap');
+                    /* src/trap.c mintrap() returns at once when there is no
+                       trap under the monster, so only record when one is
+                       actually there — otherwise the note fires on every pet
+                       step and buries the case that matters. */
+                    if (t_at(mtmp.mx, mtmp.my))
+                        note_unported_monmove('dochug:postmov_pet_mintrap');
                 }
             } else {
                 status = m_move(mtmp, 0);

@@ -660,8 +660,7 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
         }
         break;
     default:
-        note_unported_uhitm(`passive:adtyp=${adtyp}`);
-        break;
+        break;      /* C's default arm is empty (src/uhitm.c passive()) */
     }
 
     /*  These only affect you if they still live.
@@ -676,7 +675,19 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
            not maliveb. M_ATTK_MISS is 0x0 and M_ATTK_HIT is 0x1, so their
            truthiness is identical and this is behaviourally the same; written
            as C writes it so a grep for the C line finds this one. */
-        note_unported_uhitm(`passive:alive_switch:adtyp=${adtyp}`);
+        switch (adtyp) {
+        case ATTKS.AD_PLYS:
+        case ATTKS.AD_COLD:
+        case ATTKS.AD_STUN:
+        case ATTKS.AD_FIRE:
+        case ATTKS.AD_ELEC:
+            /* the five arms of C's second switch (paralysis, brown mold or
+               blue jelly chill, yellow mold stun, fire, shock) */
+            note_unported_uhitm(`passive:alive_switch:adtyp=${adtyp}`);
+            break;
+        default:
+            break;  /* C's default arm is empty */
+        }
     }
 
     return malive | mhit;

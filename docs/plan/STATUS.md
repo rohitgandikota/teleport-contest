@@ -14871,3 +14871,46 @@ divergence point. Screens are the scored metric.
 multi-segment sessions (`seed4500`, `seed0014`, `seed0360` are the next biggest
 losers). Same one-segment-in-isolation diff. seed0030 seg7 (step 1021) is a MAP
 difference, not attributes, so it is a separate bug.
+
+## iter 80 — swept every multi-segment session; two clean targets left
+
+Board 2247, tree clean, no code change. Built the per-segment first-step diff as
+a reusable script and ran it over every multi-segment session. **Only 4 of the
+44 public sessions have more than one segment**: seed0030 (10), seed0013 (2),
+seed5002 (2), seed5006 (2). Results:
+
+    seed0030  seg1-6 OK, seg7 DIVERGES, seg8/10 +2 (artifact), seg9 OK
+    seed0013  seg1 +2 (artifact), seg2 DIVERGES BADLY
+    seed5002  seg1 +2 (artifact), seg2 OK
+    seed5006  seg1 +2, seg2 +2 (both artifact)
+
+**The "+2 extra draws at the end" is an ARTIFACT, not a bug.** firstdiff is -1
+in every one of those cases — the common prefix matches exactly. It appears
+because the probe feeds `moves.slice(0,1)` and our step-0 boundary runs two
+draws past C's, which ends at vary_init_attr. Do not chase it.
+
+**Real target 1 — seed0030 seg7 (step 1021+, 253 steps).** Diverges at draw 344:
+
+    C  343 rn2(100)=58 @ lspo_replace_terrain(sp_lev.c:5132)
+    C  344 rn2(100)=51 @ lspo_replace_terrain
+    ours 344 rnd(2)=2
+
+C's preceding draws are `lspo_map(sp_lev.c:6164)`, then nhlib.lua's
+`percent()` and `shuffle()`, then a RUN of rn2(100) from lspo_replace_terrain
+(one per matching square). So this is a **special .lua level** whose
+replace_terrain region we walk with different geometry — we stop after 343 and
+start drawing something else. `lspo_replace_terrain` is ported; compare its
+region bounds and its `get_location()` xstart/ystart offset against
+sp_lev.c:5132. seed0030 seg7's first screen showed a MAP difference, which fits.
+
+**Real target 2 — seed0013 seg2 is a SAVE/RESTORE.** C spends exactly **2**
+draws in that segment's first step (the nhlib.lua shuffle preamble); we spend
+**2794** because we rebuild the level from scratch. The session name says it:
+`friday13-save-then-fullmoon-restore`. Restoring a saved game is not ported at
+all, so we regenerate where C loads. That is a whole subsystem, but the signal
+is unambiguous and it is worth knowing it exists — a held-out session that
+saves and restores will behave the same way.
+
+Both are recorded rather than started because context ran out this iteration.
+The segdiff script lives in the scratchpad; it is ~25 lines and worth promoting
+to tools/ if the next agent uses it twice.

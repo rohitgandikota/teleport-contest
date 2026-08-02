@@ -11030,3 +11030,29 @@ fill (we never increment born); (2) propagate()'s G_EXTINCT marking; (3) the
 zombie species C picks being one whose mvitals already hit MAXMONNO.
 Instrument mvitals[].born across the fill and compare the count at the
 failing square.
+
+## 2026-08-01 (mongen_order audit): valley morgue still open, more suspects cleared
+
+Commits e838628 (mongen_order fills from index 0) and e5c2446 (probe strip).
+No score change; the morgue divergence at ~29147 survives.
+
+**Cleared this iteration** (do not re-investigate):
+- propagate()/mvitals.born — our port is line-for-line C, born increments,
+  G_EXTINCT marking, the lim comparison. NOT the cause.
+- mongen_order — verified the runtime permutation IS correct: the zombie
+  window is order[239..248] then 264, exactly the sorted key order. The
+  earlier "identity permutation" reading was a probe artifact.
+- The first morgue square's whole fill sequence (rng 29038-29061) matches C
+  draw for draw, so fill_zoo's structure, morguemon, mkclass_aligned's
+  ladder and the grave/corpse arms are all right in the common case.
+
+**The live fact:** at rng 29147, square (22,6), OUR morguemon returns
+mons[287] (mlet 54, G_FREQ 0, difficulty 12) — a monster mkclass should
+never return, since nums[] is only set for entries with freq>0 or the
+zero_freq_for_entire_class fallback. C's makemon at that point draws
+nothing, i.e. C got NULL there. So the bug is inside mkclass_aligned's
+accumulate loop letting an out-of-class/zero-freq index through: check
+`last`'s termination (is our loop running past the mlet run?) and whether
+nums[] indices are being written with MONSi(last) but READ with a
+different index. Print (first,last,MONSi(first),nums[]) for the failing
+call specifically — the earlier probe only sampled successful ones.

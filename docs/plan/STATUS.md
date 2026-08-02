@@ -12168,3 +12168,39 @@ TYPE was created, with the same rng, during level generation.
 The vision bug from the previous entry (`view_from` marking wall squares
 COULD_SEE that C leaves dark, blocking seed0004 and seed4500) remains the
 higher-value target and is untouched.
+
+## The wall-revelation bug: seenv gate ported, root cause narrowed further
+
+Board holds at 1798, passes 6. Commit 5bc8ece.
+
+**Ported a real rule.** back_to_glyph's eleven wall arms are all
+`ptr->seenv ? wall_angle(ptr) : S_stone` (display.c:2336). We drew the wall
+glyph unconditionally. Every wall now obeys the gate; it did not move the
+board because the two cells that prompted it have seenv SET in our port.
+
+**Eliminations this pass, all verified rather than assumed:**
+
+- **Not a map difference.** C DOES draw '│' at (73,5) by step 40 and keeps it
+  through step 200. Same wall, revealed later. (Check: read column 72 of
+  screen row 6 in C's half of `screendiff seed0004 <step>`.)
+- **Not the seenv update rule.** Our vision.js block matches vision.c's
+  main loop line for line. C's `new_angle()` only adds bits for
+  CROSSWALL..TRWALL; VWALL (typ 1) returns `*sv` unchanged, so ours is
+  equivalent here.
+- **Not `right_ptrs`.** C builds them the same way we do:
+  `right_ptrs[y][i] = x` where x is the FIRST BLOCKED column, so a clear run
+  ending at 72 with a wall at 73 gives right_ptrs = 73 in BOTH. Our probe
+  confirmed ours is 73 and `viz_clear[5][73] = 0`.
+- **Not `view_from`'s start row.** It matches vision.c, and it marks
+  `left..right` INCLUSIVE, so both mark (73,5) COULD_SEE.
+- **Not night vision being off.** `has_night_vision` is 1 unless underwater,
+  and `u.nv_range = 1` for every hero (u_init.c:1019).
+
+**What that leaves.** By C's own code the sequence should be: view_from marks
+(73,5) COULD_SEE, the nv circle ORs IN_SIGHT, the update loop sets seenv, and
+back_to_glyph draws the wall — yet C's screen is blank at step 16 and drawn
+by step 40. **One of those four steps must behave differently than I have
+read it, so the next pass should INSTRUMENT rather than re-read**: dump our
+viz_array COULD_SEE/IN_SIGHT and seenv for (73,5) at seed0004 step 16, then
+work out which of the four C would have to skip to produce a blank cell.
+Re-reading the C has now failed twice on this bug; measure instead.

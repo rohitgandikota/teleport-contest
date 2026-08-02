@@ -17,10 +17,10 @@ import { encumber_msg } from './attrib.js';
 import { freeinv, getobj, any_obj_ok } from './invent.js';
 import { place_object } from './mkobj.js';
 import { pline, newsym } from './display.js';
-import { You } from './pline.js';
+import { You, You_cant } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER } from './const.js';
 import { rn2, rnd } from './rng.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -53,6 +53,29 @@ export function stairway_at(x, y) {
 // Only the plain staircase path is ported. dodown's own two draws are the
 // !rn2(3) / rnd(4) pair for falling through a trapdoor, which is a different
 // branch; the staircase path spends none.
+// src/do.c:1660 doup() — the '<' command.
+//
+// The pit climb, stuck-steed, held-by-monster and no-return confirmation arms
+// are recorded. prev_level() needs goto_level's reload path, which is not
+// ported, so climbing an actual staircase records; the common
+// "You can't go up here." is real.
+export async function doup() {
+    const stway = stairway_at(game.u.ux, game.u.uy);
+
+    set_move_cmd(DIR_UP, 0);
+
+    if (!stway || !stway.up) {
+        await You_cant('go up here.');
+        return ECMD_OK;
+    }
+    if (near_capacity() > SLT_ENCUMBER) {
+        note_unported_do('doup:load_too_heavy');
+        return ECMD_TIME;
+    }
+    note_unported_do('doup:prev_level');
+    return ECMD_TIME;
+}
+
 export async function dodown() {
     set_move_cmd(DIR_DOWN, 0);
 

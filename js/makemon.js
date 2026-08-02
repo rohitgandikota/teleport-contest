@@ -12,6 +12,7 @@ import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
 import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn } from './invent.js';
+import { In_mines } from './const.js';
 import { rndghostname } from './do_name.js';
 import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
@@ -739,8 +740,16 @@ function m_initinv(mtmp) {
     case S_QUANTMECH:
     case S_DEMON:
     case S_GNOME:
-        /* Schroedinger's box, devil weapons, mine candles: recorded */
-        note_unported(`m_initinv mlet=${ptr.mlet}`);
+        /* src/makemon.c:809 — a gnome sometimes carries a lit candle; in the
+           Mines during level creation it is far more likely. */
+        if (!rn2((In_mines(game.u.uz) && game.in_mklev) ? 20 : 60)) {
+            const otmp = mksobj(rn2(4) ? ONAMES.TALLOW_CANDLE
+                                       : ONAMES.WAX_CANDLE, true, false);
+            otmp.quan = 1;
+            otmp.owt = weight_fn(otmp);
+            if (!mpickobj(mtmp, otmp) && !game.level.at(mtmp.mx, mtmp.my)?.lit)
+                note_unported('m_initinv:begin_burn');
+        }
         break;
     default:
         break;

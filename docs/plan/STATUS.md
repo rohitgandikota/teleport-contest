@@ -1,3 +1,25 @@
+=== BROWSER PLAYABILITY: ROOT CAUSE WAS A RACE; FIXED FOR REAL THIS TIME ===
+The leaderboard showed "Play disabled ... browser load FAILED: Cannot access
+'add_room_fn' before initialization" while timing was fine (1.18 ms/move vs
+5 ms threshold — the timing was NEVER the problem; both checks must pass and
+the LOAD was the failure). ab6a415's declaration-hoisting fix did not work:
+the browser still threw the same error from a cold origin.
+
+Real mechanism: index.html boots five dynamic imports in parallel; evaluation
+order of the shared graph is a fetch-timing race, and on the unlucky order
+mklev.js's body runs before sp_lev.js's body, so mklev's top-level
+sp_lev_wire() call assigns into `let` bindings still in their dead zone.
+Position in the file is irrelevant; "verified in a browser" was one lucky
+race. Fix: ALL wire holders assigned from a module top level are now bare
+`var` (16 holders across sp_lev/mkroom/dokick/mklev/mkmaze/do). Full write-up
++ the deterministic no-browser reproducer in NOTES ("Wire holders must be
+bare `var`"). Every module is now standalone-importable; keep it that way.
+
+Verified: fresh-origin browser boot plays (chargen -> map -> status line);
+node import of BOTH cycle sides clean; score.sh unchanged at 7/44, RNG
+195639, screens 2249, speed 35+0.20/turn; hang-gate OK. Pushed — the judge
+cron rescoring (<= 2h) should flip PLAYABLE to yes with no point change.
+
 === THE TOP FOUR ENTRIES ALL NEED STRUCTURES, NOT TRANSLATIONS ===
 512/11405 screens, RNG 140750/792838. Checked all four; none is a quick port.
 

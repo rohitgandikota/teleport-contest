@@ -30,7 +30,8 @@ import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD } from './const.js';
    level is generated, so they come in through a wire like somexy and okdoor.
    Declared here, above every use, because a `let` used before its declaration
    line is itself a TDZ error. */
-let mon_fns = { is_pool: () => false, is_lava: () => false, m_at: () => null };
+/* var, not let: wired from cmd.js's top level (see the add_room_fn note). */
+var mon_fns;
 export function sp_lev_wire_mon(fns) { mon_fns = fns; }
 import { NON_PM, SPACE_POS, ALTAR, STAIRS, LADDER, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
          W_EAST, W_WEST, D_LOCKED, D_TRAPPED } from './const.js';
@@ -69,15 +70,22 @@ import {
 } from './const.js';
 
 /* mklev.js owns add_room/add_door/somexy; they are wired in by sp_lev_wire()
-   at load time to avoid an import cycle. These `let` bindings MUST be declared
-   ABOVE every use and every assignment: mklev.js imports this file and this
-   file's helpers are reachable while it is still evaluating, so a declaration
-   further down leaves a temporal-dead-zone window. In Node the evaluation
-   order happened to dodge it; the BROWSER hit it and threw
-   "Cannot access 'add_room_fn' before initialization" out of the dynamic
-   import in index.html, which is what made the fork unplayable. */
-let add_room_fn = () => {}, add_door_fn = () => {};
-let somexy_fn = null;
+   from mklev.js's TOP LEVEL to avoid an import cycle. This file also sits in
+   a cycle with mklev.js through other imports, so WHICH body evaluates first
+   is not fixed: index.html boots through Promise.all of five parallel
+   dynamic imports, and whichever import's traversal reaches the shared
+   subgraph first sets the evaluation order — a fetch-timing race that
+   varies run to run and between Node and the browser. On the unlucky order
+   mklev.js's body runs while this module's body has not evaluated at all,
+   and a `let` here is still in its temporal dead zone AT ANY POSITION IN
+   THE FILE, so the wire assignment throws "Cannot access 'add_room_fn'
+   before initialization" — which is what made the fork unplayable. Every
+   holder assigned by a top-level wire call MUST therefore be a bare `var`:
+   var bindings exist from module instantiation, before any body in the
+   graph runs, so the assignment is legal in every order; and no initializer
+   means this body evaluating second cannot clobber a value the wire already
+   installed. One clean load proves nothing — the order is a race. */
+var add_room_fn, add_door_fn, somexy_fn;
 
 // src/sp_lev.c:2731 fill_special_room()
 export function fill_special_room(croom) {
@@ -760,7 +768,9 @@ export function lspo_engraving(opts) {
 
 /* mktrap() lives in js/mklev.js, which imports this file; routed through the
    wire for the same cycle reason as somexy. */
-let mktrap_fn = null;
+/* var, not let: wired from mklev.js's top level, which can run before this
+   body evaluates in the browser's module order (see add_room_fn above). */
+var mktrap_fn;
 export function sp_lev_wire_mktrap(fn) { mktrap_fn = fn; }
 
 // src/sp_lev.c:3662 — the class/id fixup lspo_object applies AFTER parsing all
@@ -1849,16 +1859,18 @@ function rnddoor() {
     return state[rn2(state.length)];
 }
 
-/* okdoor() lives in js/mklev.js; routed through the wire like somexy. */
-let okdoor_fn = () => true;
+/* okdoor() lives in js/mklev.js; routed through the wire like somexy.
+   var, not let, for all three below: wired from mklev.js's top level
+   (see the add_room_fn note). */
+var okdoor_fn;
 export function sp_lev_wire_okdoor(fn) { okdoor_fn = fn; }
 
-let create_subroom_fn = null;
+var create_subroom_fn;
 export function sp_lev_wire_subroom(fn) { create_subroom_fn = fn; }
 
 /* makecorridors/wallification/mkstairs/litstate live in js/mklev.js; routed
    through the wire like somexy, for the same import-cycle reason. */
-let mklev_fns = {};
+var mklev_fns;
 export function sp_lev_wire_mklev(fns) { mklev_fns = fns; }
 
 // src/sp_lev.c:3759 lspo_level_flags()
@@ -2484,7 +2496,8 @@ export function lspo_mazewalk(mx, my, dirname) {
     fill_empty_maze();
 }
 
-let walkfrom_fn = null;
+/* var, not let: wired from mklev.js's top level (see the add_room_fn note). */
+var walkfrom_fn;
 export function sp_lev_wire_walkfrom(fn) { walkfrom_fn = fn; }
 
 // src/sp_lev.c:2900 maze1xy() — random untouched maze spot.

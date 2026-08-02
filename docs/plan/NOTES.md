@@ -2256,13 +2256,47 @@ t_at that way and ship_object is wired into dropx with no regression. When a
 port keeps three near-identical wiring helpers around, that repetition is
 telling you something structural about the module rather than being cruft.
 
-THE CORRECTION: `node -e "import('./js/do.js')"` FAILS ON A CLEAN TREE. It has
-always failed. do.js is not standalone-importable by design -- it is loaded
-through cmd.js, which does the wiring -- so that command is NOT a health check
-and a failure from it means nothing. I used it as one and briefly concluded a
-reverted change was still broken. Use `node tools/scoreboard.mjs` instead;
-that is the entry point the runner actually uses, and it was reading a correct
-510 the whole time.
+THE CORRECTION: `node -e "import('./js/do.js')"` used to FAIL ON A CLEAN TREE,
+because do.js's wire holders were `let` and any entry that re-entered do.js
+mid-init hit their dead zone. Since the bare-`var` conversion (see the next
+entry, "Wire holders must be bare `var`"), every module in the repo is
+standalone-importable, and a failure from such an import is a REAL regression
+again. For scoring health checks still prefer `node tools/scoreboard.mjs`,
+the entry point the runner actually uses.
+
+## Wire holders must be bare `var` — browser module order is a RACE
+
+The leaderboard's "browser load FAILED: Cannot access 'add_room_fn' before
+initialization" was NOT fixed by hoisting declarations to the top of
+sp_lev.js (the first attempt, which even "verified in a browser"). The truth:
+
+  - index.html boots via Promise.all of FIVE parallel dynamic imports. Which
+    import's traversal reaches the shared subgraph first decides the module
+    evaluation order. That is a fetch-timing race: it varies run to run, and
+    a clean load in YOUR browser proves nothing about the judge's load.
+  - sp_lev.js and mklev.js sit in an import cycle (through other modules),
+    so on the unlucky order mklev.js's body runs while sp_lev.js's body has
+    not run at all. Then EVERY `let` in sp_lev.js is in its temporal dead
+    zone regardless of position in the file, and mklev.js's top-level
+    `sp_lev_wire(...)` call throws on the assignment.
+  - Therefore: every holder assigned by a `*_wire*()` setter that is CALLED
+    FROM A MODULE'S TOP LEVEL must be a bare `var` (no initializer). `var`
+    exists from instantiation, so assignment is legal in every order; no
+    initializer means the holder's own body evaluating later cannot clobber
+    a value the wire already installed. Runtime-called wires (worm_wire,
+    mon_wire_cham) and microtask-timed ones (sp_lev_wire_priest via dynamic
+    import .then) are exempt — all sync evaluation is done by then.
+  - Deterministic reproducer, no browser needed: import the cycle member
+    that should evaluate LAST as the ENTRY. `node -e "import('./js/sp_lev.js')"`
+    forces mklev.js's body to run first and threw `mon_fns` TDZ on the old
+    tree. After touching imports or wires, run standalone imports of BOTH
+    cycle sides; both must load.
+
+Converted in this pass: add_room_fn/add_door_fn/somexy_fn/mktrap_fn/mon_fns/
+okdoor_fn/create_subroom_fn/mklev_fns/walkfrom_fn (sp_lev.js), _topologize
+(mkroom.js), stairway_at_fn/t_at_fn (dokick.js), mklev_mon (mklev.js),
+mkmaze_mklev_fns (mkmaze.js), mklev_fn/ship_object_fn (do.js). Any NEW wire
+must follow the same rule, and the reproducer above is the gate.
 
 ## Forced execution proves nothing if you build the fixture from your own reading
 

@@ -12734,3 +12734,46 @@ themselves look right: the two rn2(3) draws inside breakchestlock (3202,
 3203) both match.
 
 Start at m_move's post-move object block and dog_goal's APPORT branch.
+
+## Iteration 30 — wake_nearby fixed; seed0014's wall is a PET POSITION bug
+
+Board **1979** (unchanged), passes 6. Commit `cf08793`.
+
+### wake_nearby was iterating a list that does not exist
+
+The `wake_nearby()` added in iteration 28 walked `game.fmon`. **This port has
+no `game.fmon`** -- the monster list is `game.level.monsters`, an array kept
+newest-first (see the `unshift` in js/makemon.js). The loop body never ran,
+which in turn hid an unimported `G_UNIQ` and an `mtmp.data` access that should
+be `game.mons[mtmp.mnum]`. Both surfaced the moment the loop started running.
+
+Fixed. Board-neutral, but bashing a chest now actually wakes monsters.
+
+**js/sounds.js:71 still walks `game.fmon` as a LINKED LIST (`mtmp.nmon`).**
+That is a separate pre-existing bug, deliberately left alone. When touching
+monster iteration anywhere, the correct form is:
+
+    for (const mtmp of (game.level?.monsters || []))
+
+### seed0014: the wall at 3204 is a symptom, not the cause
+
+C spends two `rn2(100)` in `obj_resists`, called from `dogfood()`
+(dog.c:1004), which our `dogfood` also has. The reason ours does not draw
+them is simpler and worse: **our pet is standing somewhere else.**
+
+At the step-47 boundary, C's pet is at map (48,3) and ours is at (47,5) --
+that is exactly the 2-cell glyph difference at step 47 (`r4c48` vs `r6c46`).
+With no object underfoot, our `dog_invent()` finds nothing, calls no
+`dogfood()`, and spends no `obj_resists`.
+
+The hard part: **every RNG call up to 3203 matches.** So the pet's position
+diverged through a NON-DRAWING decision somewhere in dog_goal/dog_move -- a
+goal choice or a movement tie-break -- not a missing or extra draw.
+
+Next iteration: find the first screen where the pet glyph 'd' sits on a
+different square (steps 0-46 all match, 47 is the first), then read
+`dog_goal()`'s goal selection and `dog_move()`'s candidate ordering against
+the C for that one turn. Note our `dog_invent()` uses
+`objects.find(o => o.ox === omx && o.oy === omy)`, which returns the first
+match in array order, while C reads `svl.level.objects[omx][omy]`, the TOP of
+the pile -- worth fixing while in there, though it is not this bug.

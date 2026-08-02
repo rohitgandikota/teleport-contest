@@ -37,7 +37,7 @@ export function worn(mask) {
 }
 
 // include/obj.h:126 greatest_erosion()
-function greatest_erosion(obj) {
+export function greatest_erosion(obj) {
     const a = obj.oeroded || 0, b = obj.oeroded2 || 0;
     return a > b ? a : b;
 }

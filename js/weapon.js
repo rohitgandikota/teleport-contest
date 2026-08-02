@@ -16,7 +16,9 @@ const def_oc_syms_name = ["", "illegal objects", "weapons", "armor", "rings",
     "coins", "rocks", "large stones", "iron balls", "chains", "venoms"];
 import { STR18, P_SKILL_LIMIT, P_LAST_WEAPON, P_UNSKILLED, P_BASIC, P_EXPERT, P_ISRESTRICTED, P_SLING, P_FLAIL, P_PICK_AXE } from './const.js';
 import { MONSYMS } from './monst_data.js';
-import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype } from './mondata.js';
+import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype, is_wooden, hates_light } from './mondata.js';
+import { is_axe } from './obj.js';
+import { greatest_erosion } from './do_wear.js';
 import { ATTKS } from './monst_data.js';
 import { is_spear } from './u_init.js';
 import { is_pool, is_pick, m_carrying, can_touch_safely, resists_ston } from './mon.js';
@@ -620,13 +622,14 @@ export function dmgval(otmp, mon) {
 
         if (otmp.blessed && mon_hates_blessings(mon))
             bonus += rnd(4);
-        if (note_dmgval_unported('is_axe') && note_dmgval_unported('is_wooden'))
+        if (is_axe(otmp) && is_wooden(ptr))
             bonus += rnd(4);
-        if (oc.oc_material === MATERIALS.SILVER
-            && note_dmgval_unported('mon_hates_silver'))
+        if (oc.oc_material === MATERIALS.SILVER && mon_hates_silver(mon))
             bonus += rnd(20);
-        if (note_dmgval_unported('artifact_light') && otmp.lamplit
-            && note_dmgval_unported('hates_light'))
+        /* artifact_light() is true only for lit Sunsword; gate the record on
+           the pieces that exist so it cannot fire for ordinary weapons */
+        if (otmp.oartifact && otmp.lamplit && hates_light(ptr)
+            && note_dmgval_unported('artifact_light'))
             bonus += rnd(8);
 
         /* if the weapon is going to get a double damage bonus, adjust this
@@ -639,7 +642,7 @@ export function dmgval(otmp, mon) {
     }
 
     if (tmp > 0) {
-        tmp -= note_dmgval_unported('greatest_erosion') ? 1 : 0;
+        tmp -= greatest_erosion(otmp);
         if (tmp < 1)
             tmp = 1;
     }

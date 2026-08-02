@@ -657,3 +657,8 @@ export const touch_petrifies = (d) =>
     || d === game.mons?.[PMNAMES.PM_CHICKATRICE];
 export const flesh_petrifies = (d) =>
     touch_petrifies(d) || d === game.mons?.[PMNAMES.PM_MEDUSA];
+
+// include/mondata.h:68 is_wooden() / :215 hates_light() — C compares
+// &mons[PM_x] pointers; pmidx is this port's identity for the same test.
+export const is_wooden = (ptr) => ptr.pmidx === PMNAMES.PM_WOOD_GOLEM;
+export const hates_light = (ptr) => ptr.pmidx === PMNAMES.PM_GREMLIN;

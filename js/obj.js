@@ -9,7 +9,7 @@
 // Nothing here draws.
 
 import { game } from './gstate.js';
-import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
+import { OCLASSES, ONAMES, MATERIALS, SKILLS, objects } from './objects_data.js';
 import { MFLAGS, PMNAMES, MONSYMS } from './monst_data.js';
 import { humanoid, noncorporeal } from './mondata.js';
 
@@ -125,3 +125,9 @@ function undiscovered_artifact_obj(m) {
 // include/obj.h:427 pair_of()
 export const pair_of = (o) =>
     o.otyp === ONAMES.LENSES || is_gloves(o) || is_boots(o);
+
+// include/obj.h:217 is_axe()
+export const is_axe = (otmp) =>
+    (otmp.oclass === OCLASSES.WEAPON_CLASS
+     || otmp.oclass === OCLASSES.TOOL_CLASS)
+    && objects[otmp.otyp].oc_skill === SKILLS.P_AXE;

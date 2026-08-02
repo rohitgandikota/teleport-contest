@@ -13519,3 +13519,44 @@ tail (potion.c:1906-1911) instead calls `potionbreathe()` OR `trycall()`
 depending on distance and breathlessness, and the quaff path
 (potion.c:637) has its own trycall. Check WHICH C call site produces
 seed0002's prompt before adjusting the guard -- there are three.
+
+## Iteration 48 — fruit juice ported; seed0002 blocked earlier than thought
+
+Board **2142** (unchanged), passes 6, no regressions. Commit `419a2a7`.
+
+### Found the trycall guard
+
+Last iteration's question was which of C's three `trycall()` sites produces
+seed0002's "Call a ruby potion:". Answer: **potion.c:637, the quaff path**,
+and our js/potion.js wiring was already at the matching site. The guard was
+not the problem.
+
+The real cause: `peffects()` handled only POT_CONFUSION and POT_OIL. Fruit
+juice fell to the recorded default, so `potion_unkn` never incremented and
+dopotion's tail took the `makeknown` branch instead of `trycall`. Ported
+`peffect_see_invisible()` (potion.c:840, which is also the fruit-juice arm
+and returns early after its hunger bump) and `fruitname()` (objnam.c).
+
+seed0002 steps 56 and 57 now match C's draw counts.
+
+### But the session is blocked EARLIER
+
+Chasing the prompt exposed that step 56 is already wrong on screen:
+
+    step 54  "q"  What do you want to drink? [d-gnq or ?*]   both OK
+    step 55  "?"  C: the Potions menu
+    step 56  "q"  C: "This tastes like slime mold juice.--More--"
+             ours: still "What do you want to drink? [d-gnq or ?*]"
+
+So our `?` does not put up the object-class menu inside getobj, and the
+following 'q' is read as a fresh inventory letter rather than a menu pick.
+Every draw count matches through here because none of it draws -- which is
+why stepdraws showed SAME and only the screen comparison caught it.
+
+**Lesson: matching draw counts do not mean matching behaviour. When
+stepdraws says SAME but the session is still wrong, switch to screendiff
+for that step.**
+
+Next: port getobj's '?' branch (the "or ?*" menu). It is on the critical
+path for any session that answers a getobj prompt with '?', which the
+"[d-gnq or ?*]" suffix advertises in many sessions.

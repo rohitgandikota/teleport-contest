@@ -11790,3 +11790,37 @@ no-kick refusals (nolimbs, verysmall, steed, wounded legs, encumbrance,
 lizard, underwater rn2(2), traps, boulder) each printing and returning
 ECMD_FAIL after a --More--; then `getdir`; then the avrg_attrib roll,
 the swallowed rn2(3), the Levitation arm, and `maybe_kick_monster`.
+
+## dokick wired; the unknown-command list is down to seven keys
+
+Board 1734 -> 1740, passes 6. Commits 0fc7795, 35f06fa.
+
+**`dokick` (^D, 29 presses)** was absent from rhack. Ported the spine in C's
+order, which matters because the refusal chain runs BEFORE any direction is
+read and ends with a blocking --More--: encumbrance, the in-water rn2(2), the
+trap and boulder arms, then `getdir`, then the swallowed rn2(3) and
+Levitation arms, then `maybe_kick_monster`. That last forces
+`context.forcefight` on for a hostile or unseen target so `attack_checks`
+does not raise "Really attack?", and calls `overexertion()`, which DRAWS.
+`attack_checks` is now exported from uhitm.js. `wake_nearby` (mon.c:4367) is
+new and draws nothing. Kicking objects, doors and terrain, and
+`kick_monster`'s damage path, are recorded. seed0200 +5, seed4500 +1.
+
+Also wired `doprgold` ('$') and `currency()`.
+
+**Re-ran the fallback probe. What still reaches "Unknown command":**
+
+     696  " "     correct (space is unbound with rest_on_space off)
+      34  "\n"    needs checking — are these prompt keys we fail to consume?
+      13  "p"     dopay      (needs shops)
+      13  "\r"    needs checking, same question as "\n"
+      11  "\x14"  ^T dotele  (teleport.js exists; the command does not)
+       4  "O"     doset      (options menu)
+       4  "$"     <- now wired
+       3  "x"     doswapweapon
+       3  "S"     dosave
+
+**Next, in order of expected value:** "\n" and "\r" together are 47 hits and
+are probably NOT missing commands but prompts we fail to consume — worth
+checking first because a mis-consumed key desynchronises everything after it.
+Then ^T, then doswapweapon.

@@ -11720,3 +11720,33 @@ earlier in the session.
 (key "k", answering the "e" prompt from step 22) and we do not, so the eat
 prompt is still not consuming that key. Check what our floorfood asks and
 what key the recorded session expects.
+
+## The ',' command was never wired
+
+Board 1706 -> 1734, passes 6. Commit 6effc22.
+
+seed0200's eat wall turned out not to be an eat bug at all. C's hero picks
+the corpse up at step 21 (key ",") and eats it from inventory as letter k;
+our port printed **"Unknown command ','"** — the key was not in rhack's
+dispatch. Every pickup in every session was a no-op.
+
+Ported `dopickup` (hack.c:3876) and `pickup_checks` (hack.c:3788, draws
+nothing), and gave `pickup()` its single-object path. The key detail:
+`query_objlist` auto-selects a LONE candidate without raising a menu
+(AUTOSELECT_SINGLE), so the common case needs none of the menu machinery —
+only two-or-more objects do, and that is recorded.
+
+Corpses also printed as a bare "corpse". Ported `corpse_xname`
+(objnam.c:1824), the doname FOOD_CLASS arm that calls it, `the_unique_pm`,
+and `obj_pmname`'s gender selection — the corpse's own CORPSTAT_GENDER bits
+in `obj->spe` pick the `pmnames[]` slot. Note pmnames is
+[male, female, neutral] and NEUTRAL is index 2, so indexing [0] silently
+yields the male form or, for a monster with no male entry, nothing.
+
+Six sessions gained and none lost: seed0002 +15, seed0200 +7, seed0014 +3.
+
+**Lesson: check the command dispatch before assuming the subsystem is
+broken.** Two iterations in a row the real gap was a missing entry in rhack
+('>' needed set_move_cmd, ',' was absent entirely) rather than the mechanic
+the divergence pointed at. Worth auditing rhack against C's cmdlist for other
+keys the recorded sessions use.

@@ -13241,3 +13241,44 @@ blank there and we redraw it. Same family as the iteration-33 finding that
 `docrt()` repaints the map but NOT the status until the next `bot()` --
 something in our menu teardown or getlin is calling bot() when C does not.
 Start there; it is worth ~100 cells across several steps.
+
+## Iteration 41 — a reverted experiment, and seed4500's wall identified
+
+Board **2133** (unchanged), passes 6, tree clean. No commit.
+
+### REVERTED: painting only the top line in getlin
+
+seed4500 step 238 differs on ROW 22 alone -- C leaves the status blank while
+a full-screen menu owns the screen; we redraw it. Root cause found and it is
+architectural: **`bot()` in js/display.js is a no-op**; our status is painted
+by `_buildScreenOutput()`, which repaints message + map + status together and
+is called from getlin (js/cmd.js:359) and the count prompt (:782). C's
+getlin writes only the message window.
+
+Tried a `_buildTopLineOnly()` for those two call sites. Result: seed4500's
+step 238 improved 101 -> 71 cells but **seed2200 lost 10 screens**, board
+2133 -> 2123. Reverted.
+
+The lesson is the same one the flush_screen attempt taught in an earlier
+iteration: this port paints whole screens where C paints incrementally, and
+other sessions have come to depend on the repaint. **Do not narrow a paint
+call site in isolation.** Fixing this properly means giving `bot()` real
+behaviour and making nothing else touch rows 22-23 -- a single coordinated
+change, measured board-wide, not a per-call-site patch.
+
+### seed4500's wall is `mintrap`
+
+    7836  C rn2(5)  distfleeck                 ok
+    7837  C rn2(21) trapeffect_magic_trap      ours rn2(5)   MISMATCH
+
+C's `trapeffect_magic_trap()` has a MONSTER branch (trap.c:2314): a monster
+that steps on a magic trap draws `rn2(21)` and is usually immune. **Our
+trapeffect_magic_trap already has that branch** -- it is never reached,
+because `mintrap()` is not ported. js/monmove.js:989 records
+`dochug:postmov_pet_mintrap` when a monster lands on a trap and does nothing
+else.
+
+Next: port `mintrap()` (src/trap.c) and its dispatch to the per-trap
+`trapeffect_*` functions for monsters. Most monster arms are short
+("usually immune") but each carries its own draw, so port the dispatch plus
+the arms the sessions actually land on, and record the rest.

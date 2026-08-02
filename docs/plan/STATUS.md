@@ -14324,3 +14324,50 @@ of every session, C gets a chance to discover adjacent traps and hidden doors.
 `find_trap` + `mfind0` there and call it from the moveloop at allmain.c:344.
 Note row 11 also shows the pet `d` one column off, so there may be a second,
 independent divergence on this step; fix autosearch first and re-measure.
+
+## iter 67 — trap map layer + getobj menu filter (+10); the step-96 lesson
+
+Board **2174 -> 2183** (0f22c69). Two independent bugs, both found by dropping
+the RNG chase and going back to screen-diff first, which is what my own notes
+say to do.
+
+**My iter-66 conclusion was also wrong, and it is worth knowing why.** I traced
+seed0002 step 96's missing rn2(19) to `find_trap` and concluded the gap was
+intrinsic autosearch. Two things kill that: C gates `dosearch0(1)` on the
+`Searching` intrinsic (allmain.c:342), which this Healer does not have, and the
+trap `^` is already on C's screen at step 87, well before 96. `dosearch0`
+already exists at detect.js:25 anyway. The trap was NOT being discovered at
+step 96; it had been discovered long before and we simply never DREW it.
+
+Lesson, now twice over: **an RNG divergence at step N does not mean the bug is
+at step N.** Find the first differing SCREEN first. For seed0002 that is step
+85, eleven steps earlier.
+
+**Bug 1 — newsym() had no TRAP layer.** display.c:455 `_map_location()` orders
+layers object -> trap (`tseen && !covers_traps`) -> engraving -> background.
+Ours went object -> engraving -> background, so a trap the hero had already
+discovered was never drawn. Our own comment listed "then trap" in the priority
+order while the code skipped it. Added `trap_glyph` (rm.h:497 `trap_to_defsym`
+= `S_arrow_trap + ttyp - 1`) and `covers_traps` (display.h:222 = covers_objects,
+pool/moat/water/lava). Trap colours are transcribed from defsym.h:157 because
+`tools/gen-drawing.mjs` does not emit defsyms' colour column — worth fixing in
+the generator, since any other cmap span will hit the same wall.
+
+**Bug 2 — display_pickinv listed every class.** invent.c:3273 applies the
+`lets` filter FIRST and adds the class heading lazily, gated on `!classcount`,
+so a heading appears immediately before the first item of its class that
+survived the filter. We emitted all headings up front, so quaffing showed
+Coins/Weapons/Armor/Comestibles/... around a lone Potions section. Also
+invent.c:3378 ends the menu with `(query && *query) ? query : NULL` and getobj
+passes an empty menuquery for '?' and '*'; we hardcoded "Select an item",
+adding a phantom first row.
+
+**Gotcha for the next agent:** `t_at` exists THREE times — exported from
+mon.js:553, private in mklev.js:443, and its actual C home is trap.c:6502, i.e.
+js/trap.js, where it does not exist. display.js now imports the mon.js one. If
+someone consolidates these, put it in trap.js and update all three call sites.
+
+**Next:** seed0002's first divergence has moved past 87. Re-run the bisect
+(`for s in ...; do node tools/screendiff.mjs seed0002 $s | grep -c '^ *[0-9]* >'`)
+to find it, then keep walking. Do NOT go back to step 96's rn2(19) until the
+screens before it match.

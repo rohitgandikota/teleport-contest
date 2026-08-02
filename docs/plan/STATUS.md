@@ -44,6 +44,12 @@ doswapweapon's tail now runs C's real can_twoweapon test). 195747 RNG,
 2306 screens, 7/44, hang-gate OK. seed0107-samurai-twoweapon-enhance
 jumped 33 -> 88 screens.
 
+LEDGER RE-RANKED (post-wield): freeinv uhave arms and Armor_on/useupall
+records cleared or gated (6b212c3, e4ddee5). Fresh top of unported-hits:
+pet_ranged_attk:attack 34%, uhitm:passive adtyp=0 27%, mattacku:thrwmu 27%,
+uhitm:hmon_hitmon pet/splitmon 25%, weapon:dmgval trio 23%. The combat
+fidelity cluster (uhitm passive + dmgval arms) is now the widest lane.
+
 NEXT, in order of blocked value:
 the dowear chain items (getobj:menu still needs the tty menu subsystem);
 goto_level:losedogs still needs mydogs/migrating_mons.

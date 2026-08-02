@@ -13158,3 +13158,40 @@ Re-run the lost-screens table first. seed4500 still has ~1612 lost, and its
 next divergence is worth checking straight away -- a session this far from
 done usually has several unwired commands in a row, and each is cheap.
 The seed0360 blessorcurse lead from iteration 37 is still open and untouched.
+
+## Iteration 39 — jump movement ported; +22 board
+
+Board 2108 -> **2130**, passes 6, no regressions. Commit `b9f8b15`.
+seed4500 202 -> 224 (still ~1590 lost, so keep going there).
+
+`dojump()` validated the target and then hit a recorded note, so a jump
+never moved the hero or spent a turn. Ported apply.c:2116-2162: the
+jump-in-place arms, `walk_path()`/`hurtle_jump()`, `teleds()`, `nomul(-1)`
+and `morehungry(rnd(25))`. `hurtle_step()`'s only draw is `rnd(2 + range)`
+on the wall/crevice arm, which a clear jump never reaches, so the
+obstructed and monster-occupied paths are recorded.
+
+Two pieces already in the tree made this cheap: `walk_path()` in
+js/dothrow.js, and `teleds()` from the ^T port one iteration earlier.
+
+### Two failed tooling experiments, so nobody repeats them
+
+**1. Sweeping all sessions for "Unknown command" in our output.** Looked
+like a cheap way to find every unwired key at once. It reported `' '` in 27
+sessions -- all FALSE POSITIVES. With `rest_on_space` off (the default),
+**C itself prints "Unknown command ' '."**; js/cmd.js:94 already documents
+this. The tell is only useful when C's screen at the SAME step disagrees,
+and after the first divergence our step i no longer corresponds to C's.
+
+**2. A "first diverging screen per session" table.** Compared raw screen
+strings, so it flagged sessions at step 0 that actually match. The scorer
+normalizes (canonSGR, CUF expansion, DEC translation) via
+`screensVisuallyEqual`; a raw `!==` is not the same test.
+**Use `tools/screendiff.mjs` per step -- it already does the right
+comparison.** Bisecting steps with it costs a few calls and is reliable.
+
+### Next
+
+Keep walking seed4500 with screendiff: it has gone 75 -> 131 -> 202 -> 224
+in three iterations, each time a single unported command on the critical
+path. Its next divergence is after step 224.

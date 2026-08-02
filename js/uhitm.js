@@ -734,6 +734,7 @@ const is_watch = (d) =>
 // jousting / stagger / the two-weapon arm, then the kill handling, then pet,
 // splitmon and msg_hit.
 export async function hmon_hitmon(mon, obj, thrown, dieroll) {
+    let maybe_knockback = false;
     const hmd = {
         dmg: 0,
         thrown: thrown,
@@ -750,6 +751,17 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         jousting: 0,
         hittxt: false,
         get_dmg_bonus: true,
+        /* src/uhitm.c:1779 — `!uwep && !uarm && !uarms`.
+           KNOWN WRONG, deliberately left as-is for now: game.uwep,
+           game.uarm and game.uarms do NOT exist (the real accessors are
+           game.u.uwep and worn(W_ARM)/worn(W_ARMS)), so this is always
+           true and every armed branch below is dead. Correcting it to
+              !game.u.uwep && !worn(W_ARM) && !worn(W_ARMS)
+           makes hmon_hitmon's knockback arm fire, which matches C's draws
+           at uhitm.c:5258/5269 -- and then diverges one draw later at
+           known_hitum's rn2(25) because our monster dies where C's lives.
+           Net -2 screens (seed0360), so it is reverted until that
+           downstream gap is fixed with it. See docs/plan/STATUS.md. */
         unarmed: !game.uwep && !game.uarm && !game.uarms,
         hand_to_hand: (thrown === HMON_MELEE
                        /* not grapnels; applied implies uwep */
@@ -787,7 +799,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         hmon_hitmon_stagger(hmd, mon, obj);
     } else if (!hmd.unarmed && hmd.dmg > 1 && !thrown && !game.Upolyd
                && !game.u.twoweap && game.u.uwep) {
-        note_unported_uhitm('hmon_hitmon:knockback');
+        maybe_knockback = true;
     }
 
     if (!hmd.already_killed) {
@@ -849,6 +861,12 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
        Both are ported, so this is a real call chain. */
     if (!hmd.destroyed && !hmd.offmap) {
         await wakeup(mon, true);
+        /* src/uhitm.c:1926 — a solid weapon hit can hurl the defender. The
+           two leading draws inside mhitm_knockback happen unconditionally,
+           so skipping the call loses them for every armed hit. */
+        if (maybe_knockback)
+            mhitm_knockback(game.youmonst, mon,
+                            game.youmonst.data.mattk, {}, true);
         note_unported_uhitm('hmon_hitmon:maybe_knockback');
     }
 

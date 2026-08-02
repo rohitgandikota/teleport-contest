@@ -27,6 +27,10 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './disp
 import { wakeup, killed, xkilled, seemimic } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
+import { is_ammo, is_missile } from './wield.js';
+import { yname } from './objnam.js';
+import { mintrap } from './trap.js';
+import { clone_mon } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
@@ -852,7 +856,32 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
             monflee(mon, 10 * rnd(hmd.dmg), false, false);
     }
 
-    note_unported_uhitm('hmon_hitmon:splitmon');
+    /* src/uhitm.c hmon_hitmon_splitmon() — puddings split on iron/metal
+       melee hits from the wielded weapon (or either hand when twoweap) */
+    if ((hmd.mdat === game.mons[PMNAMES.PM_BLACK_PUDDING]
+         || hmd.mdat === game.mons[PMNAMES.PM_BROWN_PUDDING])
+        /* pudding is alive and healthy enough to split */
+        && mon.mhp > 1 && !mon.mcan && !hmd.offmap
+        && obj && (obj === game.u.uwep
+                   || (game.u.twoweap && obj === game.u.uswapwep))
+        && ((hmd.material === MATERIALS.IRON
+             /* allow scalpel and tsurugi to split puddings */
+             || hmd.material === MATERIALS.METAL)
+            /* but not bashing with darts, arrows or ya */
+            && !(is_ammo(obj) || is_missile(obj)))
+        && hmd.hand_to_hand) {
+        const mclone = clone_mon(mon, 0, 0);
+
+        if (mclone) {
+            let withwhat = '';
+            if (game.u.twoweap && game.flags.verbose)
+                withwhat = ` with ${yname(obj)}`;
+            await pline(`${Monnam(mon)} divides as you hit it${withwhat}!`);
+            hmd.hittxt = true;
+            /* mintrap(mclone, NO_TRAP_FLAGS) */
+            await mintrap(mclone, 0);
+        }
+    }
     await hmon_hitmon_msg_hit(hmd, mon, obj);
 
     /* src/uhitm.c:1897 -- the kill/survive tail.

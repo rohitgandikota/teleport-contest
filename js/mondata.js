@@ -665,3 +665,13 @@ export const hates_light = (ptr) => ptr.pmidx === PMNAMES.PM_GREMLIN;
 
 // include/mondata.h:46 haseyes()
 export const haseyes = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
+
+// include/mondata.h:178 emits_light() — 1-square light radius for these.
+export const emits_light = (ptr) =>
+    (ptr.mlet === MONSYMS.S_LIGHT
+     || ptr.pmidx === PMNAMES.PM_FLAMING_SPHERE
+     || ptr.pmidx === PMNAMES.PM_SHOCKING_SPHERE
+     || ptr.pmidx === PMNAMES.PM_BABY_GOLD_DRAGON
+     || ptr.pmidx === PMNAMES.PM_FIRE_VORTEX) ? 1
+    : (ptr.pmidx === PMNAMES.PM_FIRE_ELEMENTAL
+       || ptr.pmidx === PMNAMES.PM_GOLD_DRAGON) ? 1 : 0;

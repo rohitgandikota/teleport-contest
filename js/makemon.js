@@ -13,7 +13,7 @@ import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire 
 import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn } from './invent.js';
 import { In_mines } from './const.js';
-import { rndghostname } from './do_name.js';
+import { rndghostname, christen_monst } from './do_name.js';
 import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
 import {
@@ -28,12 +28,13 @@ import { get_shop_item } from './shknam.js';
 import { canspotmon, newsym } from './display.js';
 import { cansee } from './vision.js';
 import { COLNO, ROWNO } from './const.js';
-import { attacktype, is_neuter, is_floater } from './mondata.js';
+import { attacktype, is_neuter, is_floater, emits_light } from './mondata.js';
 import { is_vampshifter } from './monst.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
-import { enexto_core } from './teleport.js';
+import { enexto_core, enexto } from './teleport.js';
+import { mon_track_clear } from './monmove.js';
 
 // include/hack.h:1174-1175
 const GP_CHECKSCARY = 0x00800000, GP_AVOID_MONPOS = 0x01000000;
@@ -2057,4 +2058,92 @@ function mondied_ref() {
 
 function note_unported_makemon(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/makemon.c clone_mon() — split a new monster off `mon`, at (x,y) or
+// nearby. The rnd(2) inside next_ident() and the tame/peaceful rn2 draws
+// are the RNG shape; keep their order exactly.
+export function clone_mon(mon, x, y) {
+    const mm = { x: 0, y: 0 };
+
+    /* may be too weak or have been extinguished for population control */
+    if (mon.mhp <= 1
+        || ((game.mvitals?.[mon.mnum]?.mvflags ?? 0) & MFLAGS.G_EXTINCT) !== 0)
+        return null;
+
+    if (x === 0) {
+        mm.x = mon.mx;
+        mm.y = mon.my;
+    } else {
+        mm.x = x;
+        mm.y = y;
+    }
+    if (!isok(mm.x, mm.y)) { /* paranoia; C: impossible() */
+        return null;
+    }
+    if (m_at(mm.x, mm.y)) { /* (always True for the x==0 case) */
+        if (!enexto(mm, mm.x, mm.y, game.mons[mon.mnum]) || m_at(mm.x, mm.y))
+            return null;
+    }
+
+    const m2 = { ...mon };      /* newmonst() + *m2 = *mon */
+    /* m2->mextra = 0: the clone keeps no name, edog or minion state */
+    m2.mgivenname = undefined;
+    m2.edog = null;
+    m2.emin = null;
+    (game.level.monsters ||= []).unshift(m2);   /* m2->nmon = fmon; fmon = m2 */
+    m2.m_id = next_ident();
+    m2.mx = mm.x;
+    m2.my = mm.y;
+
+    m2.mundetected = 0;
+    m2.mtrapped = 0;
+    m2.mcloned = 1;
+    m2.minvent = null;          /* objects don't clone */
+    m2.mleashed = 0;
+    /* Max HP the same, but current HP halved for both. When current HP is
+       odd, the original keeps the extra point. */
+    m2.mhpmax = mon.mhpmax;
+    m2.mhp = Math.trunc(mon.mhp / 2);
+    mon.mhp -= m2.mhp;
+
+    /* clone doesn't have mextra so mustn't retain special monster flags */
+    m2.isshk = 0;
+    m2.isgd = 0;
+    m2.ispriest = 0;
+
+    /* clone shouldn't be reluctant to move on spots 'parent' just moved on */
+    mon_track_clear(m2);
+
+    place_monster(m2, m2.mx, m2.my);
+    if (emits_light(game.mons[m2.mnum]))
+        note_unported_makemon('clone_mon:new_light_source');
+    /* if 'parent' is named, give the clone the same name */
+    if (mon.mgivenname) {
+        christen_monst(m2, mon.mgivenname);
+    } else if (mon.isshk) {
+        note_unported_makemon('clone_mon:shkname');
+    }
+
+    /* not all clones caused by player are tame or peaceful */
+    if (!game.context?.mon_moving && mon.mpeaceful) {
+        if (mon.mtame)
+            m2.mtame = rn2(Math.max(2 + (game.u.uluck || 0), 2)) ? mon.mtame : 0;
+        else if (mon.mpeaceful)
+            m2.mpeaceful = rn2(Math.max(2 + (game.u.uluck || 0), 2)) ? 1 : 0;
+    }
+    /* isminion takes precedence over mtame */
+    if (m2.isminion) {
+        note_unported_makemon('clone_mon:newemin');
+    } else if (m2.mtame) {
+        /* C zeroes mtame then re-tames through tamedog() and copies EDOG;
+           tamedog is not ported, so the clone ends up untame and the gap
+           is recorded */
+        m2.mtame = 0;
+        note_unported_makemon('clone_mon:tamedog');
+    }
+    set_malign(m2);
+    newsym(m2.mx, m2.my); /* display the new monster */
+
+    return m2;
 }

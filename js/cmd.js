@@ -957,9 +957,13 @@ export async function rhack(key) {
         // src/cmd.c:1868 cmdlist — GOLD_SYM is doprgold.
         game.context.move = ((await doprgold()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '@') {
-        // src/options.c:9256 dotogglepickup — flips flags.pickup and says so.
-        game.flags.pickup = !game.flags.pickup;
-        if (game.flags.pickup) {
+        /* src/options.c:9256 dotogglepickup — flips flags.pickup and says
+           so. C's FIELD is flags.pickup but the rc OPTION is named
+           "autopickup", and our option parser stores it under the option
+           name, so flags.autopickup is the one field; toggling a separate
+           flags.pickup left pickup() reading the untouched rc value. */
+        game.flags.autopickup = !game.flags.autopickup;
+        if (game.flags.autopickup) {
             /* src/options.c:9262 — oc_to_str(flags.pickup_types) is empty
                when no types are configured, and C then says "all". The
                autopickup-exception suffix needs an apelist, which no

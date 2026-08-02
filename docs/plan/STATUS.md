@@ -1,3 +1,22 @@
+=== PET-MOVE CLUSTER, PROBE RESULTS: SUSPECT movemon ORDER, NOT mfndpos ===
+Truncated-replay probe (scratchpad/probe0030.mjs pattern: seg0 full, seg1
+moves.slice(0,36), then read the gstate singleton) at entry to seed0030's
+divergent step 36 shows, hero @(39,4) T:34:
+  mon 158 hostile @(39,6), full 4-slot track, all-ROOM neighbors;
+  mon 32 pet, tame 10, mflee=1, track full;
+  TWO mnum-116 monsters at (47,11) and (48,11) — a FOLLOWING PAIR: the
+  leader's track[0] IS the follower's current square.
+The 24-vs-20 draw fits cnt differing by ONE for whichever twin moves
+second: the shared square is vacated-or-blocked depending on WHO MOVES
+FIRST. mfndpos itself audited clean against C (all arms match; monflee
+does clear the track; m_move's kicked/MDISP skips landed). NEXT PROBE:
+compare our movemon iteration order (game.level.monsters, unshift =
+fmon-prepend) against C's fmon order for these two — creation order,
+and every splice on death/migration, can silently flip neighbors.
+C movemon: mon.c, iterates fmon; deaths mark DEADMONSTER and dmonsfree
+sweeps AFTER the loop — if the port splices mid-loop, later movers shift.
+CHECK js movemon's removal discipline first; that alone can reorder.
+
 === THE PET-MOVE CLUSTER: OUR mfndpos ADMITS ONE EXTRA CANDIDATE ===
 The first-divergence aggregate says 11 of 33 failing sessions die in
 m_move/dog_move/distfleeck. seed0030's div@10701 is rn2(24) vs C rn2(20)

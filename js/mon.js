@@ -122,8 +122,13 @@ export function mcalcdistress() {
 // src/mon.c:298 movemon() — let every monster take its turn.
 export async function movemon() {
     let somebody_can_move = false;
-    for (const mtmp of game.level?.monsters || []) {
-        if (mtmp.mhp <= 0) continue;
+    /* src/mon.c:4500 iter_mons_safe() — C snapshots fmon into itermonarr[]
+       and iterates THAT, so a mid-loop death (mondead splices our array) or
+       a mid-loop birth (clone_mon unshifts) cannot skip or repeat a mover.
+       Iterating the live array skipped the monster that shifted into a
+       spliced slot, which desynced follower pairs from C. */
+    for (const mtmp of [...(game.level?.monsters || [])]) {
+        if (mtmp.mhp <= 0) continue;   /* died earlier in this sweep */
         if (await movemon_singlemon(mtmp)) somebody_can_move = true;
     }
     return somebody_can_move;

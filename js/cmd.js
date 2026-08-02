@@ -794,6 +794,10 @@ export async function rhack(key) {
     } else if (ch === ',') {
         // src/cmd.c:1799 cmdlist — ',' is dopickup.
         game.context.move = (await dopickup() === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'O') {
+        // src/cmd.c:1780 cmdlist — 'O' is doset_simple.
+        const { doset_simple } = await import('./options.js');
+        game.context.move = (await doset_simple() === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x04') {
         // src/cmd.c cmdlist — C('d') is dokick.
         game.context.move = (await dokick() === ECMD_TIME ? 1 : 0);

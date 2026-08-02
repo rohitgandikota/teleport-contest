@@ -20,6 +20,8 @@ import { condtests } from './botl.js';
 import {
     gs_symset, gc_currentgraphics, known_handling, PRIMARYSET,
 } from './symbols.js';
+import { def_char_to_objclass } from './sp_lev.js';
+import { OCLASSES } from './objects_data.js';
 
 function note_unported_options(what) {
     (game.unported ||= new Set()).add('options:' + what);
@@ -635,6 +637,7 @@ function get_option_value(o) {
         const ocl = game.flags?.pickup_types || '';
         return ocl ? ocl : 'all';
     }
+
     case 'statuslines':             /* src/options.c:4099 optfn_statuslines */
         return ((game.iflags?.wc2_statuslines | 0) < 3) ? '2' : '3';
     case 'symset': {                /* src/options.c:4205 optfn_symset */
@@ -758,8 +761,13 @@ async function doset_simple_menu() {
                 /* boolean option */
                 parseoptions(`${bool_optval(allopt[k]) ? '!' : ''}${
                                  allopt[k].name}`, false, false, game.rc);
+            } else if (allopt[k].name === 'pickup_types') {
+                /* compound option with a handler: src/options.c:6114
+                   handler_pickup_types() just re-enters parseoptions with a
+                   bare "pickup_types", which takes optfn_pickup_types()'s
+                   do_set arm and prompts. */
+                await optfn_pickup_types_do_set();
             } else {
-                /* compound option: its handler, or a getlin for the value */
                 note_unported_options(`doset_simple:set=${allopt[k].name}`);
             }
         }
@@ -800,4 +808,51 @@ export async function doset_simple() {
            owes C is the blocker for adding it (see docs/plan/NOTES.md). */
     } while (pickedone > 0);
     return ECMD_OK;
+}
+
+/* src/options.c:118 def_inv_order[] — the object classes in the order the
+   pickup-types menu offers them. C holds class numbers; this port holds the
+   symbols throughout (oc_to_str() converts one to the other at every C
+   display site, and nothing here needs the numbers), so the table is spelled
+   with the symbols def_oc_syms[] gives those classes. */
+const def_inv_order = '$")[%?+!=/(*`0_';
+
+// src/options.c:3321 optfn_pickup_types(), the do_set arm reached with no
+// value: put up the class menu and rebuild flags.pickup_types from the picks.
+//
+// Only the menu branch is live. C falls back to a getlin prompt when
+// menu_style is MENU_TRADITIONAL or MENU_COMBINATION; the default style takes
+// the menu, and no recorded rc changes it.
+async function optfn_pickup_types_do_set() {
+    const { choose_classes_menu } = await import('./windows.js');
+
+    /* oc_to_str(flags.pickup_types, tbuf); flags.pickup_types[0] = 0 */
+    const tbuf = { s: game.flags?.pickup_types || '' };
+    game.flags.pickup_types = '';
+
+    if (game.flags?.menu_style === 'traditional'
+        || game.flags?.menu_style === 'combination') {
+        note_unported_options('pickup_types:getlin_prompt');
+        game.flags.pickup_types = tbuf.s;
+        return;
+    }
+    /* the wizard-mode VENOM_SYM addition is skipped: no recorded game with
+       wizard mode opens this menu */
+    if (game.wizard)
+        note_unported_options('pickup_types:venom_sym');
+    await choose_classes_menu('Autopickup what?', 1, true, def_inv_order, tbuf);
+    let op = tbuf.s;
+
+    while (op[0] === ' ')
+        op = op.slice(1);
+    if (op[0] !== 'a' && op[0] !== 'A') {
+        let types = '';
+        for (const ch of op) {
+            const oc_sym = def_char_to_objclass(ch);
+            /* make sure all are valid obj symbols occurring once */
+            if (oc_sym !== OCLASSES.MAXOCLASSES && !types.includes(ch))
+                types += ch;
+        }
+        game.flags.pickup_types = types;
+    }
 }

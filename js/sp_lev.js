@@ -1156,7 +1156,7 @@ const is_organic = (o) => game.objects[o.otyp].oc_material <= MATERIALS.WOOD;
 const STRANGE_OBJECT = 0;
 
 // src/drawing.c def_char_to_objclass() — a class symbol to its class index.
-function def_char_to_objclass(ch) {
+export function def_char_to_objclass(ch) {
     for (let i = 1; i < OCLASSES.MAXOCLASSES; i++)
         if (def_oc_syms[i] === ch)
             return i;

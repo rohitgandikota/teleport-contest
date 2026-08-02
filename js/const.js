@@ -1039,6 +1039,8 @@ export const NUM_MOUSE_BUTTONS = 2;
 export const WIN_ERR = (-1);
 export const MENU_FIRST_PAGE = '^';
 export const MENU_LAST_PAGE = '|';
+/* include/defsym.h:479 OBJCLASS2(12, '$', COIN, GOLD_SYM, ...) */
+export const GOLD_SYM = '$';
 export const MENU_NEXT_PAGE = '>';
 export const MENU_PREVIOUS_PAGE = '<';
 export const MENU_SELECT_ALL = '.';

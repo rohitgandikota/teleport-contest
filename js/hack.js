@@ -727,7 +727,7 @@ export function check_capacity(str) {
 // gethungry() DRAWS, so this is the reason attacking a monster spends more
 // from the stream than stepping onto an empty square does.
 export async function overexertion() {
-    gethungry();
+    await gethungry();
     if ((game.moves % 3) !== 0 && near_capacity() >= HVY_ENCUMBER)
         note_unported_hack('overexertion:overexert_hp');
     return game.multi < 0; /* might have fainted */

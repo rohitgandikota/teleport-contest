@@ -517,7 +517,7 @@ async function dotele(break_the_rules) {
     /* next_to_u() drags adjacent pets along */
     note_unported_teleport('dotele:next_to_u');
 
-    morehungry(100);
+    await morehungry(100);
     return 1;
 }
 

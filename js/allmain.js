@@ -556,7 +556,7 @@ export async function moveloop_core() {
                     await regen_hp(near_capacity());
 
                 await dosounds();
-                gethungry();
+                await gethungry();
 
                 /* src/allmain.c:354 — age_spells() then exerchk(). exerchk
                    runs exerper(), which every tenth move exercises whichever

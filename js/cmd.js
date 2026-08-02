@@ -686,7 +686,7 @@ async function dojump() {
     nomul(-1);
     game.multi_reason = 'jumping around';
     game.nomovemsg = '';
-    morehungry(rnd(25));
+    await morehungry(rnd(25));
     return ECMD_TIME;
 }
 

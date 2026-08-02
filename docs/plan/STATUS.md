@@ -11572,3 +11572,36 @@ object in that box that we do not create. Ruled out: the newt corpse itself,
 trap-victim gear, dropped monster inventory, and the pet's own position. Next
 candidate to check is an object created with NO draws during dlvl-2
 generation, since every drawing creation on that level already matches.
+
+## The jump prompt: one missing pline worth 25 screens
+
+Board 1563 -> 1588, passes 6.
+
+`dojump()` had `pline("Where do you want to jump?")` sitting in a COMMENT.
+C prints it at apply.c:2058 immediately before `getpos()`, and getpos' first
+act is `handle_tip(TIP_GETPOS)` -> `nh.text` -> a menu window, whose display
+path flushes a pending message with a --More-- (wintty.c's NHW_MENU arm:
+`if (toplin == TOPLINE_NEED_MORE) tty_display_nhwindow(WIN_MESSAGE, TRUE)`).
+With no prompt pending there was nothing to flush, so the getpos tip window
+arrived a full step early and every screen after it was off by one.
+seed4500 went 8 -> 33 screens and rng 3056 -> 7406.
+
+**Lesson worth generalising:** seed4500 matched only 8 of 1814 screens while
+its rng matched 3000+ calls. A large screen deficit with a healthy rng match
+means a MESSAGE is missing, not a mechanic. Ranking by
+`missing screens / rng-matched` finds these fast. Sessions still showing that
+shape: seed0108 (3/303), seed5002 (10/410), seed0002 (9/595), seed0014
+(17/714).
+
+**seed4500's next wall is rng 2938**: C spends a second `gethungry` rn2(20)
+where we spend a `distfleeck` rn2(5), so C's turn advanced and ours did not.
+
+**seed4500's old m_move puzzle is sharpened, not solved.** At the previous
+wall (2869) C drew `rn2(4 * (cnt - j)) = rn2(28)` and we drew `rn2(32)`. Our
+probe showed the monster (mnum 322) at (76,14) with all 8 neighbours legal
+room floor, one track entry (76,13) matching at j=0, so cnt=8. C needs either
+cnt=7 with j=0 or cnt=8 with j=1. The map rules out any 8th-square rejection,
+which points at C's mtrack holding (76,13) at index 1 — i.e. C's monster
+reached (76,14) via one more move than ours. Note C's mtrack is a fixed
+4-entry array of zeros, not a growing list; that does not change the match
+index here but is worth remembering.

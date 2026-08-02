@@ -12873,3 +12873,56 @@ for the two hostiles, then anything else on m_move's post-move object path.
 
 Note the earlier entry in this file that says "our dog is not seeing that
 pile" is WRONG and superseded by this one: our dog_goal does see it.
+
+## Iteration 33 — found it: delobj() must draw
+
+Board 1979 -> **1981**, passes 6, no regressions. Commit `867930b`.
+seed0014 44 -> 46; its RNG wall moved 3204 -> **3261** (+57 calls, and
+matched positions 3395 -> 4095).
+
+### The bug
+
+`delobj()` just spliced the object out of the level list. C's
+`delobj_core()` (**src/invent.c:1438**) opens with
+
+    if (!force && obj_resists(obj, 0, 0)) { obj->in_use = 0; return; }
+
+which protects the Amulet, the invocation tools and Rider corpses -- and
+**draws rn2(100) every single call**. Deleting an object is never
+draw-neutral.
+
+That one draw was the whole seed0014 pet mystery from the last three
+iterations: `breakchestlock()`'s `delobj(box)` left our stream one call
+behind, and since the pet was wandering with `appr == 0` (a reservoir sample
+over its candidate squares) the shifted values steered it to a different
+square. **The pet code was never wrong.** Chasing dog_goal/dog_move for two
+iterations was the wrong tree; the tell was that the missing draw landed
+immediately after breakchestlock's own rn2(3) pair, not inside the pet's turn.
+
+Generalizable: when a draw goes missing right after a subsystem finishes,
+suspect that subsystem's CLEANUP (delobj / obfree / useup), not the code that
+runs next.
+
+Also removed the duplicate `delobj` I had added to js/lock.js in iteration 28.
+The shared one lives in **js/mon.js though C has it in invent.c** -- mis-homed,
+worth moving when something else touches that file.
+
+### Next: the same shape, one turn later
+
+The new wall at 3261 is again a missing `obj_resists`, and the surrounding
+window makes it legible:
+
+    3254-3256  C obj_resists x3   ours x3   (dog_goal evaluating 3 objects)
+    3257       rn2(8)  dog_goal   ok
+    3258       rn2(4)  dog_goal   ok
+    3259-3261  C obj_resists x3   ours only 2, then MISMATCH
+
+So on this pass **C's dog_goal sees three objects in its SQSRCHRADIUS box and
+ours sees two** -- our floor is missing one object, or our scan skips one.
+Since every in-box object calls `dogfood()` before any filtering, a skipped
+filter cannot explain it; the object itself is absent.
+
+Prime suspect: the goblin corpse. C's step 48 reads "You kill the goblin!
+Your little dog eats a goblin corpse." Check what our kill leaves behind
+(mon.js xkilled's corpse_chance / make_corpse path) and whether the corpse
+lands on the right square.

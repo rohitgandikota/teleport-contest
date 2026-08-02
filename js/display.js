@@ -8,7 +8,7 @@ import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
-import { cansee } from './vision.js';
+import { cansee, vision_recalc } from './vision.js';
 import { t_at } from './mon.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -727,6 +727,7 @@ export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr
         disp_decgfx: !!decgfx,
         disp_attr: attr | 0,
         disp_glyph: glyph,
+        gnew: 1,       /* src/display.c gbuf_entry.gnew — not yet flushed */
     };
     loc.disp_ch = ch;
     loc.disp_color = color;
@@ -995,6 +996,14 @@ export async function docrt() {
     if (game.u?.ux > 0)
         show_glyph_cell(game.u.ux, game.u.uy, '@', CLR_WHITE, false, 0,
                         { kind: 'hero' });
+
+    /* C's docrt() only refills the glyph buffer; the physical paint comes
+       from the flush its caller always reaches before the next input (the
+       moveloop, pline(), or wintty's erase arm). Many port call sites were
+       written without that trailing flush, so docrt flushes here itself —
+       inside goto_level's flush_screen(-1) bracket this is a no-op and the
+       old level stays painted, exactly as in C. */
+    await flush_screen(0);
 }
 
 // ── Serialize a map row with DEC line-drawing and ANSI colors ──
@@ -1152,72 +1161,95 @@ export function serialize_terminal_grid(display) {
 }
 
 // ── Build screen output ──
-export function _buildScreenOutput() {
+/* Paint one gbuf cell to the terminal grid. The DEC→Unicode translation
+   is for the browser-facing grid; the frozen serializer re-encodes it. */
+function _paint_map_cell(display, x, y) {
+    const g = gbuf_at(x, y);
+    if (!g) return;
+    const raw = g.disp_ch || ' ';
+    const ch = g.disp_decgfx ? (DEC_TO_UNICODE[raw] || raw) : raw;
+    display.setCell(x - 1, y + 1, ch,
+                    term_start_color(g.disp_color ?? NO_COLOR),
+                    g.disp_attr ?? 0);
+}
+
+// src/display.c:2147 row_refresh() — repaint map row y, columns start..stop,
+// from the glyph buffer. Cells never drawn to stay blank, like C's
+// GLYPH_UNEXPLORED skip.
+export function row_refresh(start, stop, y) {
+    const display = game?.nhDisplay;
+    if (!display) return;
+    for (let x = start; x <= stop; x++)
+        _paint_map_cell(display, x, y);
+}
+
+/* win/tty/topl.c putsyms()/cl_end() — paint the pending topline text into
+   the terminal grid. A wrapped message overlays map rows below row 0, and
+   each painted row is blanked to the right edge, exactly the tty behavior.
+   Painting is IMMEDIATE in C (pline writes to the terminal at once); the
+   map, in contrast, only reaches the terminal at flush_screen(). */
+export function paint_topline() {
+    const display = game?.nhDisplay;
+    if (!display) return;
+    const CO = display.cols ?? 80;
+    const msgLines = (game._pending_message || '').split('\n');
+    for (let r = 0; r < msgLines.length && r < 24; r++) {
+        const line = msgLines[r];
+        for (let c = 0; c < CO; c++)
+            display.setCell(c, r, c < line.length ? line[c] : ' ',
+                            NO_COLOR, 0);
+    }
+}
+
+// src/display.c:1912 flush_screen() — push every not-yet-flushed gbuf
+// cell to the terminal, then park the cursor on the hero (any non-zero
+// cursor_on_u does, as in C, where -1 is truthy). Until this runs, newsym
+// writes are invisible: that is what leaves the OLD level on screen under
+// the "You descend the stairs.--More--" prompt during goto_level.
+export async function flush_screen(cursor_on_u) {
     const display = game?.nhDisplay;
     if (!display) return;
 
-    let output = '';
-    // Row 0: message. update_topl() wraps a long message by replacing a
-    // space with '\n' (win/tty/topl.c), and the tty paints the continuation
-    // on the NEXT row, over the map, with cl_end() erasing the rest of that
-    // row. Model the overlay the same way.
-    const msgLines = (game._pending_message || '').split('\n');
-    output += msgLines[0] + '\n';
+    /* src/display.c:1922 — cursor_on_u == -1 TOGGLES delayed flushing.
+       goto_level brackets its body in a pair of flush_screen(-1) calls so
+       that plines inside the level switch cannot repaint the map early;
+       the closing call flips the flag back and falls through to a real
+       flush. While delayed, bot() is suppressed too: the status row keeps
+       the old level's Dlvl under "You descend the stairs.--More--". */
+    if (cursor_on_u === -1)
+        game._delay_flushing = !game._delay_flushing;
+    if (game._delay_flushing)
+        return;
+    if (game._flushing)
+        return;
+    game._flushing = true;
 
-    // Rows 1-21: map (rendered with DEC + ANSI, per-row SO/SI)
+    /* src/display.c:1939 — if (disp.botl || disp.botlx) bot();
+       The port repaints unconditionally: the botl dirty flags are not
+       tracked everywhere C sets them, and the repaint is idempotent. */
+    await bot();
+
+    const rows = game.gbuf || [];
     for (let y = 0; y < ROWNO; y++) {
-        if (y + 2 <= msgLines.length)
-            output += msgLines[y + 1] + '\n';   /* message spill + cl_end */
-        else
-            output += render_map_row(y) + '\n';
-    }
-
-    // Row 22-23: status
-    output += _statusLine1() + '\n';
-    output += _statusLine2();
-
-    game._screen_output = output;
-
-    // Also write to grid for serialize_terminal_grid
-    if (display.grid) {
-        display.clearScreen();
-        // Message line(s) — a wrapped message overlays map rows from row 1
-        for (let r = 0; r < msgLines.length && r < 24; r++)
-            for (let c = 0; c < Math.min(msgLines[r].length, display.cols); c++)
-                display.setCell(c, r, msgLines[r][c], NO_COLOR, 0);
-        // Map — write characters to grid (DEC → Unicode for browser display).
-        // A row a wrapped message spilled onto stays the message's (cl_end).
-        for (let y = 0; y < ROWNO; y++) {
-            if (y + 2 <= msgLines.length) continue;
-            for (let x = 1; x < COLNO; x++) {
-                const loc = gbuf_at(x, y);
-                if (!loc?.disp_ch || loc.disp_ch === ' ') continue;
-                const ch = loc.disp_decgfx ? (DEC_TO_UNICODE[loc.disp_ch] || loc.disp_ch) : loc.disp_ch;
-                display.setCell(x - 1, y + 1, ch,
-                                term_start_color(loc.disp_color ?? NO_COLOR),
-                                loc.disp_attr ?? 0);
+        const row = rows[y];
+        if (!row) continue;
+        for (let x = 1; x < COLNO; x++) {
+            const g = row[x];
+            if (g && g.gnew) {
+                _paint_map_cell(display, x, y);
+                g.gnew = 0;
             }
         }
-        // Status lines
-        const s1 = _statusLine1().replace(/\x1b\[[0-9;]*[A-Za-z]/g, m =>
-            m.match(/\x1b\[\d+C/) ? ' '.repeat(parseInt(m.slice(2))) : '');
-        for (let c = 0; c < Math.min(s1.length, display.cols); c++)
-            display.setCell(c, 22, s1[c], NO_COLOR, 0);
-        const s2 = _statusLine2();
-        for (let c = 0; c < Math.min(s2.length, display.cols); c++)
-            display.setCell(c, 23, s2[c], NO_COLOR, 0);
-        // Cursor at hero — unless getpos has parked it elsewhere on the map
-        // (C's curs(WIN_MAP, cx, cy): the tty cursor follows the picker).
+    }
+
+    if (cursor_on_u) {
+        /* curs_on_u() — unless getpos has parked the cursor elsewhere */
         if (game._map_cursor)
             display.setCursor(game._map_cursor.col, game._map_cursor.row);
         else if (game.u?.ux > 0)
             display.setCursor(game.u.ux - 1, game.u.uy + 1);
     }
-}
-
-// ── flush_screen ──
-export async function flush_screen(mode) {
-    _buildScreenOutput();
+    game._flushing = false;
 }
 
 // src/display.c:2189 cls()
@@ -1249,7 +1281,10 @@ export async function cls() {
     game._pending_message = '';
     game._toplin = TOPLINE_EMPTY;
 
-    /* clear_nhwindow(WIN_MAP) and clear_glyph_buffer() */
+    /* clear_nhwindow(WIN_MAP) — wintty's NHW_MAP arm falls through to
+       clear_screen(): the WHOLE terminal blanks, status rows included, and
+       context.botlx makes bot() repaint them before the next boundary.
+       clear_glyph_buffer() empties the logical buffer. */
     clear_glyph_buffer();
     const display = game?.nhDisplay;
     if (display?.clearScreen) display.clearScreen();
@@ -1257,9 +1292,23 @@ export async function cls() {
     game._in_cls = false;
 }
 
-// ── bot ──
+// src/botl.c bot() — repaint the two status rows. C gates the call on
+// context.botl/botlx in moveloop; the repaint itself is unconditional and
+// idempotent, so calling it every turn draws the same rows C would. The
+// rows persist between calls: a blocking prompt inside a command (the
+// goto_level --More--) shows the PREVIOUS turn's status, as C does.
 export async function bot() {
-    // Status line updates happen in _buildScreenOutput
+    const display = game?.nhDisplay;
+    if (!display) return;
+    const CO = display.cols ?? 80;
+
+    const s1 = _statusLine1().replace(/\x1b\[[0-9;]*[A-Za-z]/g, m =>
+        m.match(/\x1b\[\d+C/) ? ' '.repeat(parseInt(m.slice(2))) : '');
+    for (let c = 0; c < CO; c++)
+        display.setCell(c, 22, c < s1.length ? s1[c] : ' ', NO_COLOR, 0);
+    const s2 = _statusLine2();
+    for (let c = 0; c < CO; c++)
+        display.setCell(c, 23, c < s2.length ? s2[c] : ' ', NO_COLOR, 0);
 }
 
 // include/wintty.h:85 — toplin states. NEED_MORE is 1 and NON_EMPTY is 2, the
@@ -1278,6 +1327,15 @@ const defmorestr = '--More--';
 // is read by whatever comes next — which is how the tutorial menu ended up on
 // its second pass.
 export async function pline(msg) {
+    /* src/pline.c:266-274 — a message settles any pending vision recalc and
+       flushes the screen FIRST, so the map and status under it are current.
+       During goto_level's flush_screen(-1) bracket the flush is a no-op and
+       the old level stays painted, exactly as in C. */
+    if (game.vision_full_recalc)
+        vision_recalc(0);
+    if (game.u?.ux)
+        await flush_screen(1);
+
     /* src/pline.c vpline() -> putstr(WIN_MESSAGE) -> tty_putstr() ->
        update_topl(). Assigning the message straight into the top line skipped
        the state machine entirely: a second message overwrote the first instead
@@ -1298,12 +1356,10 @@ export async function pline(msg) {
 // space, and wraps to the next row only when that column is within 8 of the
 // right edge.
 export async function more() {
-    /* C has already painted the message and the map by the time more() runs —
-       pline() writes straight to the tty and the map was drawn by docrt. This
-       port defers both to _buildScreenOutput(), so bring the screen up to date
-       before appending the suffix, or the frame captured inside the wait shows
-       the suffix alone. */
-    _buildScreenOutput();
+    /* C has already painted the message by the time more() runs — pline()
+       writes straight to the tty. The map is NOT brought up to date here:
+       whatever flush_screen last pushed is what sits under the --More--. */
+    paint_topline();
 
     const display = game?.nhDisplay;
     const msg = game._pending_message || '';
@@ -1374,9 +1430,17 @@ export function tty_clear_nhwindow_message(cury) {
     const display = game?.nhDisplay;
     if (display) {
         const CO = display.cols ?? 80;
-        for (let r = 0; r <= (cury || 0); r++)
+        /* row 0 is the message window's own row: blank it */
+        for (let c = 0; c < CO; c++)
+            display.setCell(c, 0, ' ', NO_COLOR, 0);
+        /* rows a wrapped message spilled onto belong to the map: C's
+           docorner() repaints them from the glyph buffer */
+        for (let r = 1; r <= (cury || 0); r++) {
             for (let c = 0; c < CO; c++)
                 display.setCell(c, r, ' ', NO_COLOR, 0);
+            for (let x = 1; x < COLNO; x++)
+                _paint_map_cell(display, x, r - 1);
+        }
     }
     game._toplin = TOPLINE_EMPTY;
 }

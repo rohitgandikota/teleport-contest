@@ -250,6 +250,19 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* entering this level for the first time; make it now */
     await mklev_fn();
 
+    /* src/do.c:1716-1720 — do this prior to level-change pline messages:
+       clear the old level's line-of-sight and POSTPONE all map flushes.
+       Every pline between here and the closing flush_screen(-1) paints its
+       text over the OLD level's map, which is what the recordings show
+       under "You descend the stairs.--More--". */
+    {
+        const { vision_reset } = await import('./vision.js');
+        const { flush_screen } = await import('./display.js');
+        vision_reset();
+        game.vision_full_recalc = 0;
+        await flush_screen(-1);
+    }
+
     if (at_stairs) {
         u_on_dnstairs();
 

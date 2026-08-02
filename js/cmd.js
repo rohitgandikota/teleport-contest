@@ -61,7 +61,7 @@ import { show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
-import { newsym, flush_screen, pline, docrt, _buildScreenOutput, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
+import { newsym, flush_screen, pline, docrt, paint_topline, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
@@ -258,6 +258,12 @@ export async function getdir(s) {
     const dirsym = await tty_yn_function(
         (s && s[0] !== '^') ? s : 'In what direction?', null, '\0');
 
+    /* src/cmd.c:4011 — "remove the prompt string so caller won't have to":
+       clear_nhwindow(WIN_MESSAGE) physically blanks the topline on every
+       exit path, so the answered prompt is gone by the next boundary. */
+    tty_clear_nhwindow_message(game._topl_cury || 0);
+    game._pending_message = '';
+
     if (dirsym === '.' || dirsym === 's') {
         game.u.dx = game.u.dy = game.u.dz = 0;
         return true;
@@ -356,7 +362,7 @@ export async function getlin(query, hook) {
          */
         game._pending_message = `${query} ${buf}`;
         game._toplin = TOPLINE_SPECIAL_PROMPT;
-        _buildScreenOutput();
+        paint_topline();
         const display = game?.nhDisplay;
         if (display) {
             const CO = display.cols ?? 80;
@@ -778,7 +784,7 @@ export async function rhack(key) {
                 const ctext = `Count: ${cnt}`;
                 game._pending_message = ctext;
                 game._toplin = TOPLINE_SPECIAL_PROMPT;
-                _buildScreenOutput();
+                paint_topline();
                 const display = game?.nhDisplay;
                 if (display)
                     display.setCursor(

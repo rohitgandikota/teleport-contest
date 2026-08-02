@@ -1,3 +1,54 @@
+=== PHYSICAL TERMINAL PIPELINE: flush_screen/pline/docrt now C-shaped ===
+The port used to rebuild the whole grid from live game state at every
+paint request (_buildScreenOutput). C's recorded screen is the PHYSICAL
+terminal: newsym writes stop at the glyph buffer and only reach the
+screen at flush points. Consequences the recordings actually show:
+goto_level's "You descend the stairs.--More--" sits over the OLD level
+and OLD Dlvl status; a mid-command --More-- shows the map exactly as of
+the last flush.
+LANDED (this commit):
+- display.js flush_screen(cursor_on_u): C display.c:1912 — walks gbuf
+  gnew entries only, paints them to the grid, cursor on hero for any
+  non-zero mode. cursor_on_u === -1 TOGGLES game._delay_flushing
+  (goto_level's bracket; while delayed everything including bot() is
+  suppressed). bot() runs inside flush (C gates on botl flags; port
+  repaints unconditionally, idempotent).
+- pline() pre-flushes: src/pline.c:266-274 — vision_recalc if pending,
+  then flush_screen(1), THEN the message paints. This is why C maps are
+  always current under a message, and stale during goto_level.
+- do.js goto_level: opening flush_screen(-1) after the level load (C
+  do.c:1716-1720, with vision_reset + vision_full_recalc=0), closing one
+  already existed at the tail.
+- paint_topline() replaces _buildScreenOutput for message rows; painted
+  immediately from redotoplin/addtopl-join/yn/getline/count prompts (the
+  C tty paints toplines at write time). bot() paints status rows 22/23.
+- cls() physically clears the whole terminal (wintty NHW_MAP arm falls
+  through to clear_screen()), message flush (More) still comes first.
+- wintty erase_menu_or_text: real C arms (wintty.c:966) — offy: cl_eos;
+  clear: full wipe; else: C docrt+flush restructured sync = wipe +
+  row_refresh(all rows from gbuf) + bot + cursor. docorner now refreshes
+  the map under the erased region (row_refresh) and redraws status when
+  ymax >= 22 — inventory-menu dismissal used to leave a blank stripe.
+- display.js row_refresh(start, stop, y): C display.c:2147.
+- cmd.js getdir tail: clear_nhwindow(WIN_MESSAGE) (C cmd.c:4011,
+  "remove the prompt string") — physically erases the answered
+  direction prompt.
+- docrt() tail-flushes (flush_screen(0)): C relies on every docrt caller
+  reaching a flush before input; ~20 port call sites (rebuild-era) do
+  not. Inside the goto_level bracket the tail flush is a no-op. The
+  stray docrt call sites (pager.js etc.) can be pruned later; harmless.
+GATES: 8/44 passing; screens 2267 (pre-refactor 2279; every delta beyond
+the first divergence — seed0006 step-46 and seed0014 step-25 first
+mismatches are IDENTICAL at 22d05f1, verified in a worktree; seed2200
+went 228 -> 229/230, seed0030 152 -> 154 with first screen mismatch now
+step 46, was step 21 at iteration start); diverge.mjs --all: ZERO div@
+movement; hang gate OK.
+DEBT: _statusLine1/_statusLine2 still render from live state at bot()
+time (C snapshots via the status window); fine while bot() runs at C's
+cadence. Stray docrts to prune. seed1800's step-11 fix pattern (physical
+prompt erase) may be needed at other prompt exits if screens show stale
+prompts.
+
 === seed0030 STEP 21 SOLVED: the missing subsystem was WALL MODES ===
 Root cause of the "one-step-early wall reveal": the skeleton stubbed
 display.c's wall-mode machinery (mklev.js set_wall_state was a no-op,

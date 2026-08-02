@@ -12926,3 +12926,52 @@ Prime suspect: the goblin corpse. C's step 48 reads "You kill the goblin!
 Your little dog eats a goblin corpse." Check what our kill leaves behind
 (mon.js xkilled's corpse_chance / make_corpse path) and whether the corpse
 lands on the right square.
+
+## Iteration 34 — divergence narrowed to the third dogfood after the pet eats
+
+Board **1981**, tree clean, no new commit (the delobj fix from iteration 33
+is `867930b`). Diagnosis only.
+
+### Measured facts about seed0014's wall at 3261
+
+The pet is at (49,3). Three objects sit in its search box:
+
+    otyp 265 @ (48,2)   goblin CORPSE (corpsenm=70)
+    otyp  90 @ (48,2)
+    otyp 374 @ (47,2)   the spellbook spilled from the chest
+
+Draw-by-draw, ours vs C:
+
+    3254,3255,3256   dog_goal's box scan, 3 x dogfood     BOTH ok
+    3257  rn2(8)     dog_goal APPORT                      ok
+    3258  rn2(4)     dog_goal                             ok
+    3259  dogfood(corpse) from dog_move's per-candidate
+                     pile walk, pet still at (49,3)       ok
+    3260  dogfood(corpse) again, pet now at (48,2)        ok
+    3261  C makes a THIRD dogfood call; we stop           MISMATCH
+
+Our `dogfood()` returns **CADAVER (1)** for the goblin corpse, so
+`otyp < MANFOOD && otyp < ACCFOOD` holds, `do_eat` fires and the pet eats:
+`edog.hungrytime` jumps 1000 -> 1600 between draws 3259 and 3260.
+
+Verified identical to C and NOT the bug:
+- dog_move's per-candidate pile walk (dogmove.c:1214) -- same structure,
+  same short-circuit order, and it does walk the whole pile.
+- dogfood's CORPSE branch (dog.c:1062-1085) -- transcribed correctly.
+- The object set: all three objects exist on our floor at the right squares,
+  so the earlier guess that "a floor object is missing" was WRONG.
+
+### The remaining question
+
+Both builds eat the corpse. C then makes ONE MORE `dogfood` call and we do
+not. So the extra call comes from whatever C runs AFTER `dog_eat()` returns
+-- most likely `dog_invent()` re-examining the square, or `dog_eat` itself
+evaluating the next object in the pile. Read `dog_eat()` (dogmove.c) and the
+code path C takes on returning from it, and compare with ours in js/dog.js.
+Note object 90 is still on that square, unevaluated by us.
+
+Probe recipe that produced the table above (all removed from the tree):
+wrap `dogfood()` in a logger keyed on `getRngLog().length`, printing
+`obj.otyp`, `obj.corpsenm`, the return value and `edog.hungrytime`. Keying on
+the RNG length rather than `game.moves` or a step index is what finally made
+these turns readable.

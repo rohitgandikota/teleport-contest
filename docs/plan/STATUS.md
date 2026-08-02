@@ -11340,3 +11340,31 @@ arrive by MOVEMENT or relocation, not creation: check whether anything on
 this level runs rloc/mnexto/m_move between the script phase and the fill
 (e.g. u_collide_m, or the arrival code placing the hero/pets), and whether
 C's fill of morgue #1 is preceded by a monster stepping onto (22,6).
+
+## 2026-08-01 (pivot): worm_cross ported; seed0360 morgue PARKED
+
+Commit 90a5e15. Board 1552/6, gates clean.
+
+**Parking the seed0360 valley morgue hunt after ~9 iterations.** Final state
+of that investigation is in the entries above; everything measurable has
+been excluded and the last hypothesis (an occupant arriving by movement) is
+also dead — there are ZERO movement draws (rloc/mnexto/enexto/m_move/
+movemon/dochug) anywhere in the valley generation before the failing draw.
+The one remaining unexplained fact: C's makemon returns NULL for a PM_GHOST
+at (22,6) with every input identical to ours. Worth at most a few screens;
+revisit only if it turns out to block something bigger.
+
+**Pivoted to the biggest screen deficits instead.** Ranked by missed
+screens: seed0030 1885, seed4500 1806, seed0014 697, seed0360 645,
+seed0002 586, seed0399 490, seed5002 400, seed0004 391.
+
+seed4500 diverges at rng 2869 on ONE draw: C rn2(28) vs ours rn2(32) in
+m_move's mtrack loop, i.e. mfndpos gave us 8 free squares where C had 7.
+Cause found and fixed: mfndpos's diagonal test was missing C's long-worm
+clause (mon.c:2252) — a monster may ATTACK diagonally past two adjacent
+segments of the same worm but may not MOVE between them. Ported with
+worm_cross (worm.c:898) into js/worm.js.
+
+Note the fix did not move seed4500's own numbers (still 3047/8) because its
+divergence is now one draw later; re-run diverge.mjs on it next and keep
+walking. This is the right target: 1806 screens behind one early wall.

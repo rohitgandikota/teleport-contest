@@ -1,3 +1,17 @@
+=== PROBE CAVEAT, IMPORTANT: RAW-SEGMENT REPLAYS DIVERGE FROM THE RUNNER ===
+The truncated probes (probe0030/gate0030/pile0030/vis0030) replayed RAW
+session segments and produced a DIFFERENT world from ps_test_runner for
+this 10-segment save/restore session: at seg1 step 22 the probe hero
+stands at (33,11) in solid stone while the runner (and C) agree on
+(63,11). Every pet-gate/pile conclusion drawn from those probes is
+void; the apport-gate and m_cansee analyses were of the wrong world.
+WHAT REMAINS VALID: anything derived from ps_test_runner itself —
+diverge.mjs, screendiff, stepdraws (it uses the same runSegment inputs
+BUT ALSO RAW SEGMENTS, so re-verify stepdraws1 against the runner
+before trusting seg>=1 output). RULE FOR FUTURE PROBES: build on
+frozen/session_loader.mjs normalizeSession() + the runner's exact
+per-segment loop, never on raw session JSON.
+
 === seed0030 BOTTOM: WALL SEEN-VECTOR SPILL AT SEG1 STEP 21 ===
 The apport-gate finding stands but is DOWNSTREAM. screendiff's first
 mismatch for seed0030 is seg 1 step 21, exactly two cells: we draw the

@@ -982,15 +982,10 @@ export async function dochug(mtmp) {
                 if (status === MMOVE_MOVED) {
                     newsym(omx, omy); /* update the old position */
                     newsym(mtmp.mx, mtmp.my);
-                    /* src/trap.c mintrap() returns at once when there is no
-                       trap under the monster, so only record when one is
-                       actually there — otherwise the note fires on every pet
-                       step and buries the case that matters. */
-                    if (t_at(mtmp.mx, mtmp.my))
-                        note_unported_monmove('dochug:postmov_pet_mintrap');
+
                 }
             } else {
-                status = m_move(mtmp, 0);
+                status = await m_move(mtmp, 0);
             }
         }
 
@@ -1097,7 +1092,7 @@ function resist_conflict_absent(mtmp) {
 
 // src/monmove.c:1720 m_move() — a non-tame monster's turn. The tame case is
 // dispatched to dog_move() above, exactly as C does at :1773.
-export function m_move(mtmp, after) {
+export async function m_move(mtmp, after) {
     const ptr = mtmp.data;
     const omx = mtmp.mx, omy = mtmp.my;
 
@@ -1178,7 +1173,7 @@ export function m_move(mtmp, after) {
         const st = { mmoved: MMOVE_NOTHING, appr };
         if (m_search_items(mtmp, goal, st)) {
             /* src/monmove.c:1799 — C returns through postmov() here too. */
-            return postmov(mtmp, ptr, omx, omy, MMOVE_DONE);
+            return await postmov(mtmp, ptr, omx, omy, MMOVE_DONE);
         }
         ggx = goal.x; ggy = goal.y; appr = st.appr;
     }
@@ -1270,7 +1265,7 @@ export function m_move(mtmp, after) {
         mon_track_add(mtmp, omx, omy);
     }
 
-    return postmov(mtmp, ptr, omx, omy, mmoved);
+    return await postmov(mtmp, ptr, omx, omy, mmoved);
 }
 
 // src/monmove.c:1455 postmov() — everything a monster does after arriving.
@@ -1281,7 +1276,7 @@ export function m_move(mtmp, after) {
 // wiring meatmetal() in changed nothing: the block was there but unreachable
 // on the paths that mattered. :1773 is the pet path, so dog_move()'s result
 // goes through here too.
-function postmov(mtmp, ptr, omx, omy, mmoved) {
+async function postmov(mtmp, ptr, omx, omy, mmoved) {
     /* src/monmove.c:1508 — "update the old position", inside postmov and so on
        EVERY path that returns through it, including dog_move's at :1773.
        remove_monster only clears level.monsters[][]; without this the vacated
@@ -1293,6 +1288,18 @@ function postmov(mtmp, ptr, omx, omy, mmoved) {
            walking into view is painted only when something else happens to
            redraw its cell. */
         newsym(mtmp.mx, mtmp.my);
+    }
+
+    /* src/monmove.c:1509 — the arrival square's trap fires here, for pets and
+       hostiles alike. */
+    if (mmoved === MMOVE_MOVED) {
+        const { mintrap } = await import('./trap.js');
+        const trapret = await mintrap(mtmp, 0 /* NO_TRAP_FLAGS */);
+        if (trapret === 3 /* Trap_Killed_Mon */ || trapret === 4 /* Moved */) {
+            if (mtmp.mx)
+                newsym(mtmp.mx, mtmp.my);
+            return MMOVE_DIED;
+        }
     }
 
     if (mmoved === MMOVE_MOVED || mmoved === MMOVE_DONE) {

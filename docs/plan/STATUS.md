@@ -15825,3 +15825,36 @@ square. The three `place:set()` coords are (16,10), (16,12), (16,14).
 
 Suggested split: land the two builders in one iteration with a score check, then
 the level itself in the next.
+
+## iter 104 — lspo_non_passwall and lspo_exclusion landed; soko1-2 unblocked
+
+Board 2249, passes 7, RNG unchanged, tree clean. Committed 189af78.
+
+Both builders soko1-2 needs are in. Neither draws, so board and RNG are
+untouched by design — landing them separately means the level port that follows
+can be measured on its own.
+
+- `lspo_non_passwall(x1,y1,x2,y2)` mirrors C's set_wallprop_in_selection() with
+  W_NONPASSWALL. Per-cell test is sel_set_wall_property()'s (sp_lev.c:986):
+  `IS_STWALL(typ) || IS_TREE(typ) || typ == IRONBARS`.
+- `lspo_exclusion(opts)` pushes onto `game.exclusion_zones` with C's four
+  zonetypes (teleport / teleport-up / teleport-down / monster-generation);
+  corners take the xstart/ystart offset as get_location_coord does.
+
+**Found while doing it, NOT fixed — needs its own measured change:** our
+existing `lspo_non_diggable` uses a different per-cell test
+(`C_IS_WALL(typ) || typ === DBWALL || typ === SDOOR`) from the one C applies
+through the very same helper. C flags stone walls, trees and iron bars; we flag
+walls, drawbridge walls and secret doors. That is likely a real divergence, but
+non_diggable runs on levels that currently match, so it must be changed and
+scored on its own rather than folded into a level port.
+
+There is also a signature mismatch to resolve when writing soko1-2: our
+non_diggable/non_passwall take `(x1,y1,x2,y2)` while the .lua passes
+`selection.area(...)`. bigrm-7 calls `des.non_diggable()` with no arguments, so
+its shim never exercised the selection form. Either add a selection-accepting
+wrapper in the level's `des` shim or widen the builders — pick one and be
+consistent across levels.
+
+**soko1-2 is now unblocked.** All its other calls exist. Level content and the
+end-of-level draw order are recorded in iter 103.

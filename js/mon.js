@@ -33,6 +33,7 @@ import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
 import { enexto_core } from './teleport.js';
 import { GP_CHECKSCARY } from './const.js';
+import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
          XKILL_NOMSG, XKILL_NOCORPSE } from './const.js';
@@ -1770,14 +1771,16 @@ export function wake_nearby(petcall) {
 }
 
 function wake_nearto_core(x, y, distance, petcall) {
-    for (const mtmp of (game.fmon || [])) {
+    /* C walks the fmon chain; this port keeps it as game.level.monsters,
+       newest-first (see makemon.js's unshift). There is no game.fmon. */
+    for (const mtmp of (game.level?.monsters || [])) {
         if (DEADMONSTER(mtmp))
             continue;
         if (distance === 0 || dist2(mtmp.mx, mtmp.my, x, y) < distance) {
             /* sleep for N turns uses mtmp->mfrozen, but so does paralysis
                so we leave mfrozen monsters alone */
             mtmp.msleeping = 0; /* wake indeterminate sleep */
-            if (!(mtmp.data.geno & G_UNIQ))
+            if (!(game.mons[mtmp.mnum].geno & G_UNIQ))
                 mtmp.mstrategy &= ~STRAT_WAITMASK; /* wake 'meditation' */
             if (game.context?.mon_moving || !petcall)
                 continue;

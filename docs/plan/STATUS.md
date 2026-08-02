@@ -14169,3 +14169,57 @@ ambiguous stream of prints into two lines that located the bug immediately:
 
 The filter must match `frozen/ps_test_runner.mjs`'s `isRngCall`
 (`/^(?:rn2|rnd|rn1|rnl|rne|rnz|d)\(/`) or the index will not line up.
+
+## iter 64 — starting-stack owt, exerper's dead confusion arm, and the chwepon lead
+
+Walked seed0002 forward from the step-90 fix. `node tools/stepdraws.mjs
+seed0002 90 200` puts the next divergence at **step 96** (C=37 draws, ours=36),
+missing ONE draw at index 1. Both of C's first two draws are
+`rn2(19) @ exercise(attrib.c:509)`, and attrib.c:509 only draws rn2(19) on the
+INCREMENT side (`inc_or_dec ? rn2(19) > ACURR(i) : -rn2(2)`), so C makes two
+increment exercises where we make one.
+
+Two real bugs found and fixed on the way, neither of which is the step-96 cause.
+Both are committed (f7fe567); board holds at 2173, RNG and screens unchanged.
+
+**1. Every starting stack weighed one item.** `ini_inv_adjust_obj` never ran
+u_init.c:1248's `obj->owt = weight(obj)` (it sits OUTSIDE the `if` in the C,
+after otyp+quan+blessedness are all set). Probe at step 96 showed
+`8 apples owt=2`, `3 potions of healing owt=20`, `1218 gold pieces owt=1`.
+`weight()` itself was correct all along — only the cached `owt` was stale, and
+`inv_weight()` reads the cache exactly as C does. Consequence: carried weight
+ran low everywhere, so `near_capacity()` could return UNENCUMBERED for a
+Burdened hero, silently deleting exerper's encumbrance `exercise()` every tenth
+move in every session. Gold now reads 12 instead of 1.
+
+**2. exerper's confusion arm could never fire.** It tested
+`uprops.CONFUSION || uprops.HALLUC`, but timed confusion lands in
+`intrinsic.HConfusion` — the same field botl.js:107 reads to print "Conf". So
+the arm was dead even with the status line showing the hero confused. Now uses
+botl's convention, `intr.HX || props.X`. Note attrib.c:582 tests plain `HStun`,
+not `Stunned`, so that one stays intrinsic-only on purpose.
+
+**The actual step-96 cause, for the next agent: `chwepon()` is unported.**
+Step 96 is `r` on a scroll of enchant weapon (otyp 328). A position-gated probe
+(step 96's global filtered offset is 6186 — see the technique note in iter 63)
+showed our single draw is `exercise(A_WIS, TRUE)` from `seffects` (read.js:105 =
+read.c:2200, "just for trying"). C then enters
+`seffect_enchant_weapon` (read.c:1627) which calls `chwepon(sobj, s)` —
+and **chwepon lives in wield.c:918, not read.c**, which is why grepping read.c
+for the second exercise finds nothing. Its only rn2(19) is
+`exercise(A_DEX, amount >= 0)` on the empty-handed branch (wield.c:945): with no
+weapon (or a non-weapon) wielded, `s` is 1, so the exercise is an increment.
+That is C's missing draw.
+
+Not attempted this iteration because the dependency list is long and porting it
+half-way would be worse than leaving it absent: `strange_feeling`, `will_weld`,
+`hcolor`, `Yobjnam2`, `body_part`, `costly_alteration`, `alter_cost`,
+`is_elven_weapon`, `u_wield_art` are all missing from the tree. `uncurse`,
+`useupall`, `makeknown`, `makeplural`, `is_weptool` do exist. `js/wield.js`
+exists and already has `setuwep`/`ready_weapon`/`welded`, so chwepon has a
+correct home; it belongs right before `welded()` to keep C's order.
+
+Suggested next step: port the helper set above (most are small objnam/pline
+formatters), then `chwepon` and `seffect_enchant_weapon` together. Enchant
+weapon and enchant armor share `strange_feeling` + `costly_alteration`, so the
+same helpers unlock read.c:1120's `seffect_enchant_armor` too.

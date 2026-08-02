@@ -421,7 +421,7 @@ function teleok(x, y, trapok) {
 // Only the plain path is live: an unpunished, unswallowed hero with no ball
 // and chain. The ball/chain drag, the mimic un-hide and the vault-guard arms
 // are recorded.
-async function teleds(nux, nuy, teleds_flags) {
+export async function teleds(nux, nuy, teleds_flags) {
     const is_teleport = !(teleds_flags & TELEDS_ALLOW_DRAG);
 
     if (game.uball || game.u.uswallow || game.u.utrap)
@@ -442,7 +442,7 @@ async function teleds(nux, nuy, teleds_flags) {
 }
 
 /* src/teleport.h TELEDS_* */
-const TELEDS_NO_FLAGS = 0, TELEDS_ALLOW_DRAG = 1, TELEDS_TELEPORT = 2;
+export const TELEDS_NO_FLAGS = 0, TELEDS_ALLOW_DRAG = 1, TELEDS_TELEPORT = 2;
 
 // src/teleport.c:850 scrolltele() — the controlled-teleport prompt.
 //

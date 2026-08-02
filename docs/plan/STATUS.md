@@ -12543,3 +12543,52 @@ the end of the screen and WOULD produce exactly the observed screen); and
 is the likely answer and it is checkable.
 
 Once steps 26-34 land, seed0014 should go from 30 to roughly 700.
+
+## Iteration 26 — the screen behind a dismissed menu; autopickup filter
+
+Board 1958 -> **1975**, passes 6. Commits `63b5a13`, `af7b51b`.
+No regressions. seed0014 29 -> 40, seed0006 44 -> 51.
+
+### Resolved: what blanks the screen behind the class menu
+
+`erase_menu_or_text()`'s `offx == 0` arm is `docrt(); flush_screen(1);`
+(win/tty/wintty.c). This port was skipping it -- the comment in
+`erase_menu_or_text()` said docrt() was "the caller's business" and no caller
+ever did it, so a dismissed full-screen menu stayed painted behind whatever
+opened next.
+
+The confusing part, now settled: **docrt() repaints the MAP only.** The status
+rows stay however the full-screen menu left them (blank, because that menu
+cleared the screen) until the next `bot()`. That is exactly what the
+recordings show -- seed0014 step 26 has blank status rows, step 36 has them
+back because the command completed and bot() ran. Do not "fix" that by
+repainting the status in docrt().
+
+docrt() is async here while `tty_dismiss_nhwindow()` is reached from sync
+destroy sites, so the arm runs at the `tty_select_menu()` boundary instead,
+guarded on `offx === 0 && !offy && !in_role_selection`.
+
+**seed0014's entire options interaction now matches** (steps 26-36; step 35 is
+down to the 2 unmatchable heading cells).
+
+Also note for later: our `compute_offx()` uses C's **H2344_BROKEN** formula
+(`min(min(82, cols/2), cols - maxcol - 1)`), while the default build uses
+`max(10, cols - maxcol - 1)` plus a collapse-to-0 at `offx == 10`
+(wintty.c:1914-1931). They agree on the menus we have hit so far. If a menu
+ever lands at the wrong column, that is the first thing to check.
+
+### autopick_testobj
+
+`pickup()` ignored `pickup_types` completely: with autopickup on it took every
+object underfoot, so a chest was grabbed where C says "You see here a chest.".
+Ported `autopick_testobj()` (pickup.c:930) onto the autopickup path. Only the
+pickup_types test is live; `costly_spot()` and the pickup_thrown /
+pickup_stolen / dropped_nopick overrides need `obj.how_lost`, which nothing
+sets yet, and are recorded.
+
+### Next
+
+seed0014 diverges at step 40: `do_loot_cont()` should print "Hmmm, the chest
+turns out to be locked." The arm is already ported in js/pickup.js; find why
+doloot() is not reaching it (check `Is_container` and the `#loot` extended
+command dispatch). ~674 screens behind it.

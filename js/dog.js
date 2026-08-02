@@ -695,6 +695,12 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
             /* skip inferior goals */
             if (otyp > gtyp || otyp === UNDEF)
                 continue;
+            /* src/dogmove.c:536 — avoid cursed items unless starving. This
+               `continue` is NOT draw-neutral: it skips the APPORT arm below,
+               whose `apport > rn2(8)` is a draw. */
+            if (cursed_object_at(nx, ny)
+                && !(mtmp.edog?.mhpmax_penalty && otyp < MANFOOD))
+                continue;
             if (!could_reach_item(mtmp, nx, ny)
                 || !can_reach_location(mtmp, mtmp.mx, mtmp.my, nx, ny))
                 continue;

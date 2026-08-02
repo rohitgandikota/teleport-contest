@@ -12048,3 +12048,43 @@ mfndpos to dump cnt and poss for the PET on every call in seed4500, and
 compare against the C draw bounds `rn2(4 * (cnt - j))` at monmove.c:1963,
 which reveal C's cnt directly. That gives a per-turn cnt comparison instead
 of a single snapshot.**
+
+## Diffing screens instead of following the rng wall
+
+Board 1764 -> 1798, passes 6. Three commits, all on seed4500.
+
+**The method change is the point of this entry.** seed4500's rng wall has sat
+at 2869 for several iterations and resisted every attack. Diffing its SCREENS
+step by step instead found the first divergence at **step 17** — over 2800
+draws earlier. The rng wall is where the streams first disagree; the screen
+divergence is where the GAME first disagrees, and non-drawing bugs only show
+up in the second. All three fixes below were invisible to the rng wall.
+
+1. **`(invalid target)`** — getpos' auto_describe appends it when the command
+   that opened the prompt installed a validator (getpos.c:655). dojump
+   installs one. Ported `get_valid_jump_position` and the tests of
+   `is_valid_jump_pos` (apply.c:1997), plus `getpos_sethilite`.
+
+2. **The jump refusal messages** — dojump discarded getpos' result, so a
+   rejected target printed nothing where C says why. Ported the message arms
+   in C's order plus `check_jump` (apply.c:1980); `walk_path` in dothrow.js
+   already supported it. Added `There()` to pline.js.
+
+   Note on shape: C prints inline and returns FALSE, but our pline is async
+   and `get_valid_jump_position` is called from a SYNC path. So the tests
+   live in a sync `jump_pos_failure()` returning the message C would print,
+   and `is_valid_jump_pos()` prints it. Tests and order are C's exactly.
+
+3. **`mention_walls`** (+30 alone) — with that option a blocked move names
+   what stopped it (hack.c:1058). seed4500's rc sets it; we printed nothing,
+   so every wall the hero walked into desynchronised the message line.
+
+**Do this for the other stuck sessions.** seed0004 and seed0002 both have
+walls I have called "positional"; a step-by-step screen diff will say where
+the game actually diverged. The loop is one line:
+`for s in $(seq 1 N); do node tools/screendiff.mjs <sess> $s | grep '^cells'; done`
+
+**seed4500's next divergence is step 57**: two map cells where we draw wall
+glyphs ('┐' and '│' at x=60, y=16 and 18) and C draws blank. We are revealing
+wall squares C has not shown, so it is a vision/wall-seeing rule, not a
+message.

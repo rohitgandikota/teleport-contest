@@ -12244,3 +12244,32 @@ concrete bug within 20 steps:
 `stair_seen`) are worse than reading the header — they look right until a
 session with different history exposes them. And a `note_unported` left on a
 five-line message is a debt that costs more than it saves.
+
+## Walking seed0014 forward, three fixes
+
+Board 1883 -> 1891, passes 6. Three commits.
+
+Kept screen-diffing rather than chasing rng walls. seed0014 gave up a bug
+every few steps:
+
+1. **`dotogglepickup` toggled the wrong field** (step 21). C's field is
+   `flags.pickup` but the rc OPTION is spelled "autopickup", and our option
+   parser stores options under their own name — so `flags.autopickup` is the
+   single field the port has. Toggling a separate `flags.pickup` printed the
+   right message while `pickup()` kept reading the untouched rc value, so '@'
+   announced autopickup was on and nothing was ever picked up. **Watch for
+   this shape: C field name != rc option name.**
+
+2. **`seffect_identify`** (step 23). The identify scroll fell to seffects'
+   default note. Ported read.c:2055; the scroll is used up BEFORE the
+   messages, and the cval roll only fires on the blessed-or-lucky path
+   `sblessed || (!scursed && !rn2(5))`. Added `learnscrolltyp` (read.c:58).
+
+3. **`identify_pack`'s already-identified arm** (step 24), with
+   `count_unidentified` and `not_fully_identified` (objnam.c:1787).
+
+**The method is holding up.** Since switching from rng walls to step-by-step
+screen diffs the board has gone 1764 -> 1891. Every fix has been small and
+local, and each one exposes the next within a few steps. Keep walking
+seed0014 — it is at 27/714 and the divergences are coming one per step or
+two, which suggests a long run of cheap wins rather than one big blocker.

@@ -1,3 +1,27 @@
+=== LOOP CYCLE: PLAYABLE=YES ON THE BOARD; COMBAT/DROP FIDELITY SWEEP ===
+The leaderboard rescored at 3:14 PM: PLAYABLE flipped to yes (the module-
+order race fix held on the judge's Chromium). Points still show the old
+2,248 run; later cycles pick up today's commits.
+
+Landed since the wield chain, one commit each, all gates green each time:
+  ff6dc90  peek_at_iced_corpse_age -> mkobj.js (real ice math)
+  7deeabe  abuse_dog + yelp + growl_sound; hmon_hitmon pet arm
+  0f2427d  passive(): both C default arms are empty; phantom records gone
+  823a667  pet_ranged_attk attack arm through mattacku/mattackm
+  1872509  dmgval axe/silver/erosion arms (held-out coverage)
+  e4ddee5/6b212c3  useupall setnotworn; freeinv uhave arms; record gating
+  343380d  clone_mon + enexto wrapper; pudding split wired in hmon_hitmon
+  4acfc7d  flooreffects dispatch; dropz/mdrop_obj wired through it
+
+Public totals steady at 195756 RNG / 2306 screens / 7 passes; most of the
+above is held-out armor (puddings, silver, pets, iced corpses, lava/water
+drops). Ledger top now: mattacku:thrwmu 27% (needs select_rwep + monshoot,
+a real multishot chain), dmg_recalc pair 23% (weapon_dam_bonus was ONCE
+REVERTED at RNG -17: re-derive by first-divergence index, do not re-land
+blind), hmon_hitmon:saved_oname 20%, m_initinv mlet=53 16% (measured
+non-phantom). clone_mon exists now: gremlins and shapeshifter splits are
+unblocked when their callers arrive.
+
 === worn[] TABLE + setworn + THE WHOLE WIELD CHAIN LANDED. 'w' IS LIVE ===
 Score: 195684 RNG (+45), 2251 screens (+2), 7/44 passes, hang-gate OK.
 

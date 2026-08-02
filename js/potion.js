@@ -3,6 +3,8 @@
 //
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
+import { fruitname } from './objnam.js';
+import { newuhs } from './eat.js';
 import { game } from './gstate.js';
 import { pline } from './display.js';
 import { You, You_feel } from './pline.js';
@@ -116,6 +118,10 @@ async function peffects(otmp) {
     case ONAMES.POT_CONFUSION:
         await peffect_confusion(otmp);
         break;
+    case ONAMES.POT_FRUIT_JUICE:
+    case ONAMES.POT_SEE_INVISIBLE:
+        await peffect_see_invisible(otmp);
+        break;
     case ONAMES.POT_OIL:
         await peffect_oil(otmp);
         break;
@@ -188,4 +194,22 @@ export async function dodrink(drink_ok) {
         return ECMD_TIME;
     }
     return dopotion(otmp);
+}
+
+// src/potion.c:840 peffect_see_invisible() — also the fruit-juice arm, which
+// returns early after its hunger bump. The see-invisible effects proper are
+// recorded.
+async function peffect_see_invisible(otmp) {
+    game.potion_unkn++;
+    if (otmp.cursed)
+        await pline('Yecch!  This tastes rotten.');
+    else
+        await pline(`This tastes like ${otmp.odiluted ? 'reconstituted ' : ''}${
+            fruitname(true)}.`);
+    if (otmp.otyp === ONAMES.POT_FRUIT_JUICE) {
+        game.u.uhunger += (otmp.odiluted ? 5 : 10) * (2 + bcsign(otmp));
+        await newuhs(false);
+        return;
+    }
+    note_unported_potion('peffect_see_invisible:see_invisible');
 }

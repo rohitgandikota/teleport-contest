@@ -451,6 +451,14 @@ export function yname(obj) {
     return `${carried(obj) ? 'your' : 'the'} ${xname(obj)}`;
 }
 
+/* src/objnam.c fruitname() — the hero's fruit, optionally as juice. */
+export function fruitname(juice) {
+    const pl_fruit = game.svp?.pl_fruit || 'slime mold';
+    const i = pl_fruit.indexOf(' of ');
+    const fruit_nam = (i >= 0) ? pl_fruit.slice(i + 4) : pl_fruit;
+    return makesingular(fruit_nam) + (juice ? ' juice' : '');
+}
+
 export function singular(otmp, func) {
     const savequan = otmp.quan;
     otmp.quan = 1;

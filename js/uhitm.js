@@ -778,9 +778,10 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     if (hmd.jousting) {
         note_unported_uhitm('hmon_hitmon:jousting');
     } else if (hmd.unarmed && hmd.dmg > 1 && !thrown && !obj && !game.Upolyd) {
-        note_unported_uhitm('hmon_hitmon:stagger');
-    } else if (!hmd.unarmed && hmd.dmg > 1 && !thrown && !game.Upolyd) {
-        note_unported_uhitm('hmon_hitmon:twoweap_arm');
+        hmon_hitmon_stagger(hmd, mon, obj);
+    } else if (!hmd.unarmed && hmd.dmg > 1 && !thrown && !game.Upolyd
+               && !game.u.twoweap && game.u.uwep) {
+        note_unported_uhitm('hmon_hitmon:knockback');
     }
 
     if (!hmd.already_killed) {
@@ -919,6 +920,22 @@ function note_stone_missile_unported(obj) {
     return false;
 }
 const shade_aware = (o) => { note_unported_uhitm('hmon_hitmon:shade_aware'); return false; };
+
+// src/uhitm.c:1570 hmon_hitmon_stagger() — a very small chance of stunning an
+// unarmed opponent. The rnd(100) is spent BEFORE the size and hide tests, so
+// it costs a draw on every qualifying bare-handed hit whatever the target is.
+function hmon_hitmon_stagger(hmd, mon, obj) {
+    const sk = game.u.weapon_skills;
+    const P_SKILL = (t) => sk[t].skill;
+
+    if (rnd(100) < P_SKILL(P_BARE_HANDED_COMBAT) && !bigmonst(hmd.mdat)
+        && !thick_skinned(hmd.mdat)) {
+        if (canspotmon(mon))
+            note_unported_uhitm('hmon_hitmon_stagger:message');
+        note_unported_uhitm('hmon_hitmon_stagger:mhurtle_to_doom');
+        hmd.hittxt = true;
+    }
+}
 
 // src/uhitm.c:838 hmon_hitmon_barehands() — the bare-handed damage roll.
 //

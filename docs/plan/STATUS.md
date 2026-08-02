@@ -1,3 +1,14 @@
+=== dmg_recalc SKILL BLOCK LANDED UNDER THE FIRST-DIVERGENCE PROTOCOL ===
+weapon_dam_bonus + use_skill re-landed together (iter-111's revert), and
+mon_wield_item's ranged arm wields game.propellor. THE MEASUREMENT THAT
+DECIDED IT: tools/diverge.mjs --all before and after — all 44 first-
+divergence indices UNCHANGED (0 later, 0 earlier). Totals moved RNG -20 /
+screens -49, purely post-divergence accidental re-syncs; the standing
+rules say keep the C-correct block and do not chase accidental matches.
+Running totals: RNG 195805, screens 2257, 7/44, hang-gate clean, and the
+first-divergence table is the metric to watch from here, not raw totals.
+Ledger top now: hmon_hitmon:saved_oname 20%, m_initinv mlet=53 16%.
+
 === thrwmu CHAIN COMPLETE AND LIVE. RNG 195825 (+69), zero errors ===
 m_throw, monshoot and thrwmu landed; mattacku's AT_WEAP range2 arm now
 calls thrwmu on every non-rogue level. mattacku:thrwmu is off the ledger.

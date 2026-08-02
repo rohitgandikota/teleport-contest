@@ -303,18 +303,32 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
 
     const win = tty_create_nhwindow(W_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    /* src/invent.c:3273 — C applies the `lets` filter FIRST and only then adds
+       the class heading, gated on `!classcount`, so a heading appears just
+       before the first item of its class that survived the filter. Emitting
+       headings up front instead listed every empty class: quaffing showed
+       Coins/Weapons/Armor/... around a lone Potions section. */
+    let pending_heading = null;
     for (const e of display_inventory()) {
         if (e.heading) {
-            tty_add_menu(win, null, 0, 0, 0, A_INV, NO_COLOR, e.str,
-                         MENU_ITEMFLAGS_NONE);
+            pending_heading = e;
             continue;
         }
+        /* for showing a set of specific letters, skip ones not in the set */
         if (allowed_choices && !allowed_choices.includes(e.invlet))
             continue;
+        if (pending_heading) {
+            tty_add_menu(win, null, 0, 0, 0, A_INV, NO_COLOR,
+                         pending_heading.str, MENU_ITEMFLAGS_NONE);
+            pending_heading = null;
+        }
         tty_add_menu(win, null, e.invlet.charCodeAt(0), e.invlet, 0,
                      A_NONE, NO_COLOR, e.str, MENU_ITEMFLAGS_NONE);
     }
-    tty_end_menu(win, 'Select an item');
+    /* src/invent.c:3378 — `end_menu(win, (query && *query) ? query : NULL)`.
+       getobj passes its menuquery through, which is empty for '?' and '*', so
+       this window has NO title; the hardcoded one added a phantom first row. */
+    tty_end_menu(win, (menuquery && menuquery.length) ? menuquery : null);
 
     const picks = await tty_select_menu(win, PICK_ONE);
     const cancelled = !!tty_get_nhwindow(win)?.cancelled;

@@ -13735,3 +13735,44 @@ Model it on js/dat/castle.js (map-based, 217 lines) rather than oracle.js
 
 Validate with `node tools/stepdraws.mjs seed0399 42 42` -- C spends 7133
 draws there; every one should line up once the level is right.
+
+## Iteration 53 — bigrm-7 ported; level build 65 -> 7085 of 7133 draws
+
+Board **2171** (unchanged), passes 6, no regressions.
+Commits `471bac3` (bigrm-7), `4943...`/`5e5c9cc` (m_initinv arms).
+
+seed0399's Dlvl-12 build now tracks C almost exactly:
+
+    before  65 of 7133 draws matched
+    after   7085 of 7133
+
+Three fixes got there:
+
+1. **js/dat/bigrm-7.js** — the level itself, modelled on castle.js and
+   registered in js/dat/levels.js. The map is lifted verbatim from
+   dat/bigrm-7.lua (19 rows, 75 wide, four 'L' squares).
+
+2. **lspo_replace_terrain was scanning the wrong columns.** C runs both
+   region corners through `get_location()`, which applies the map's
+   xstart/ystart offset. Without it we missed one of the four 'L' squares
+   and spent three rn2(100) where C spends four.
+
+3. **m_initinv's S_GNOME candle arm** (makemon.c:809) was recorded, so we
+   skipped its rn2(60). Porting it exposed a second bug I introduced:
+   S_QUANTMECH, S_DEMON and S_GNOME shared ONE recorded note, so the gnome
+   body ran for all three. **When replacing a shared recorded arm, split the
+   cases first** -- C has separate bodies for each.
+
+### Board did not move, and why that is expected
+
+The remaining 48 draws diverge at `place_lregion` (mkmaze.c:396), which is
+where the hero and the up/down stairs get placed. Until that matches, the
+hero lands somewhere different and every screen still differs. This is the
+last piece for seed0399's 490 screens.
+
+### Next
+
+`place_lregion()` (src/mkmaze.c:396) — ours draws rn2(1000) where C draws
+rn2(79) then rn2(21), i.e. C picks within the region's actual bounds and we
+are picking over the whole map. Compare our js/mkmaze.js place_lregion
+against the C.

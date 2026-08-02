@@ -13,6 +13,8 @@ import { rn2 } from './rng.js';
 import { getlin } from './cmd.js';
 import { name_to_monplus } from './mondata.js';
 import { makemon } from './makemon.js';
+import { canseemon } from './display.js';
+import { Amonnam } from './do_name.js';
 import { MM_NOEXCLAM } from './const.js';
 import { study_book } from './spell.js';
 import { do_mapping } from './detect.js';
@@ -238,7 +240,18 @@ export async function create_particular() {
         const mndx = name_to_monplus(bufp, box);
         if (mndx !== undefined && mndx !== null && mndx >= 0) {
             /* MM_NOEXCLAM: "<mon> appears." rather than "appears!" */
-            makemon(game.mons[mndx], game.u.ux, game.u.uy, MM_NOEXCLAM);
+            const mtmp = makemon(game.mons[mndx], game.u.ux, game.u.uy,
+                                 MM_NOEXCLAM);
+            /* src/makemon.c:1472 — C announces the arrival from inside
+               makemon(), which cannot print here because our makemon is
+               sync and has 23 call sites. The message is emitted at this
+               caller instead; the other callers do not announce yet. */
+            if (mtmp && canseemon(mtmp)) {
+                const near = (Math.abs(mtmp.mx - game.u.ux) <= 1
+                              && Math.abs(mtmp.my - game.u.uy) <= 1);
+                await pline(`${Amonnam(mtmp)} appears${
+                    near ? ' next to you' : ''}.`);
+            }
             return true;
         }
 

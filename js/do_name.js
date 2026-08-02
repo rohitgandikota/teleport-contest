@@ -152,6 +152,8 @@ function just_an(str) {
 // The SUPPRESS_SADDLE when the monster has a given name is not decoration:
 // x_monnam appends "saddled" otherwise, and a named steed would read
 // "a saddled Fido" instead of "a Fido".
+export const Amonnam = (mtmp) => upstart(a_monnam(mtmp));
+
 export const a_monnam = (mtmp) =>
     x_monnam(mtmp, ARTICLE_A, null, has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0,
              false);

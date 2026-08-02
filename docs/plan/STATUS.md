@@ -13852,3 +13852,43 @@ suppresses colour under Hallucination before assuming a display bug.
 seed0399 needs the screen to match EXACTLY before any of its 490 screens
 score, so 8 cells and 0 cells are worth the same today. Both remaining
 causes are named above.
+
+## Iteration 56 — seed0399 step 42 down to 7 colour-only cells
+
+Board **2171**, no regressions. Commit `b7360bd`.
+
+`flip_level()` also has to move **level.upstair / level.dnstair**. The
+display picks '<' vs '>' from those records (js/mklev.js writes them), not
+from the stairway list C reads, so flipping the list alone left the glyphs
+swapped even though both staircases sat at C's exact coordinates. Verified
+by probe: our stairs were already at game (35,6) and (28,7), which map to
+C's screen (34,7) and (27,8).
+
+**Every glyph on that screen now matches.** 8 cells -> 7, all colour-only:
+
+    r 8 c31  C '*' default   ours '*' color 9
+    r 8 c35  C 'B' default   ours 'B' color 0
+    r 9 c22  C '!' default   ours '!' color 15
+    r10 c10  C '*' default   ours '*' color 2
+    r13 c37  C '!' default   ours '!' color 2
+    r14 c21  C '*' default   ours '*' color 15
+    r14 c58  C 'u' default   ours 'u' color 0
+
+### What is ruled out
+
+- **Not a global colour switch.** seed0399's rc does not set `!color`, and
+  C's own step-42 screen uses SGR 91/94/32/93/33/97/90/35/36/34 freely.
+- **Not glyph randomisation.** Our glyphs match C's exactly, so whatever
+  picks the appearance already agrees.
+- **Not the STATUE hallucination path** (display.c:358) -- that swaps the
+  remembered GLYPH for statues, not the colour, and only for statues.
+
+### Next
+
+Take one cell -- screen (31,8) is game (32,7) -- find the object our level
+holds there, and work out what C would colour it. The candidates are that C
+renders these through a path that drops colour (remembered-but-unseen, or a
+detected/mapped object) while ours renders the live object. seed0399 is the
+hallucination session, so also check whether Hallucination suppresses
+object colour in 5.0; that is a 5.0-delta question and must be read from the
+C, not assumed from 3.6 behaviour.

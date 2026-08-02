@@ -3872,3 +3872,20 @@ Two distinct effects, discovered on seed0016's spell menu header
    seed0016 step 26 stays 4 cells short (35/36) for exactly this reason.
    Do not chase such a screen; check the raw recorded row (session JSON)
    for "ESC[7m<spaces>" at line start to recognize the class.
+
+## tools/diverge.mjs --all is the first-divergence instrument
+
+`node tools/diverge.mjs --all` prints, per session, the RNG match count and
+`div@<index>` with the C annotation of the first differing draw, plus a count
+of sessions matching end to end. That is the correct way to judge any change
+that shifts the RNG rather than growing it.
+
+**Judge an RNG-affecting change by whether div@ moves LATER, not by the total
+matched count.** The total can fall while the port gets more correct, because
+fixing an early divergence exposes a later one that was previously unreachable
+(iter 79: RNG -10, screens +47). Conversely a total can rise from coincidental
+post-wall alignment, which `normalizeRng` cannot distinguish.
+
+Baseline at commit 90e3dd9 (board 2249, 7 passes): 11/44 sessions match end to
+end. Save `node tools/diverge.mjs --all > before.txt` before an experiment and
+diff the div@ column after.

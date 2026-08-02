@@ -1,3 +1,39 @@
+=== seed0101 head DIAGNOSED to the turn-seam: monster order in multi-turn
+occupations (dog_move cluster). Instruments + facts for the next attack ===
+seed0101 div@2316 sits INSIDE step 24 ('s' search with an occupation
+running several game turns in one input step). Verified facts:
+- Our set_apparxy port is line-faithful (gotu draws, displ arms, loop);
+  its draws DO run (scratch draws.mjs shows our sites monmove.js:848/860/
+  861 matching C through relative index 13 of the step).
+- The step's relative index 14: C draws a monster's gotu rn2(4) then a
+  displ=2 loop (rn2(5)s: couldsee(mux)=TRUE for a mux set to (28,3) by
+  the PREVIOUS turn's displ=1 loop); ours inserts an extra distfleeck
+  rn2(5) first and then runs displ=1 (rn2(3)s). Our viz_array[3][28]=3
+  at the boundary, so couldsee(28,3) is TRUE here too — the loop-arg
+  difference means OUR monster at that slot is a DIFFERENT monster (or
+  the same one at a different point in the turn interleave), not a
+  vision bug.
+- game.moves stays 2 across input steps 10..23 (menu/prompt steps
+  consume no time) and C matches draw-for-draw there, so the freeze is
+  correct; everything interesting happens inside step 24's several
+  turns: per-turn movement grants (mcalcmove), the movemon
+  do-while re-scan, and monster list order decide WHICH monster acts
+  next at each seam, and ours reorders around the third turn.
+- Do NOT re-chase couldsee for this head. The extra rn2(5) is a
+  distfleeck of an adjacent silent-apparxy monster (mux==u_at early
+  return draws nothing), i.e. an ORDERING signature, not a probability
+  one.
+TOOLING: scratch draws.mjs <session> <step> — per-step C-vs-ours draw
+table with OUR real JS callsites (needs __rng_trace_sites; already
+handles the string rng format). Beware instrumenting with a throttled
+console.error that counts ALL lines — it silently swallowed later logs
+and burned half this iteration on a phantom "set_apparxy never runs".
+NEXT: log our per-turn action order inside step 24 (monster mnum +
+movement bank at each movemon pass) and reconstruct C's from the draw
+shapes; then diff mcalcmove grants (mon.c:1164 variance draws — check
+which of our monsters draw rn2(12) there) and the movemon somebody_can_
+move loop against C mon.c:1230-1260.
+
 === dokick: kick_nondoor + kick_ouch + kickstr ported; seed0200 RNG-CLEAN ===
 seed0200's head (98.6%, div@3761, exercise attrib.c:509) was a kick at
 empty space: 'j' after ^D routed to a 'dokick:kick_nondoor' stub, so C

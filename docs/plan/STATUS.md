@@ -15858,3 +15858,47 @@ consistent across levels.
 
 **soko1-2 is now unblocked.** All its other calls exist. Level content and the
 end-of-level draw order are recorded in iter 103.
+
+## iter 105 — soko1-2 port REGRESSED badly (-310) and was reverted
+
+Board back to 2249, passes 7, tree clean. Nothing committed to js/.
+
+Wrote js/dat/soko1-2.js and registered it. Result:
+
+    screens 2249 -> 1939  (-310)
+    rng   195639 -> 182083 (-13556)
+      -228  seed4500-knight-coverage
+       -50  seed0373-barbarian-quest-tour
+       -32  seed0108-wizard-extcmd-wishlist
+
+Reverted the file and the registry entry; board confirmed restored to 2249.
+
+**This is the failure mode CLAUDE.md warns about and iter 103 predicted:** with
+the name registered, load_special stops recording the gap and builds a WRONG
+level instead, and every draw after it diverges. An absent level is strictly
+better than an inexact one. The three sessions above were previously getting
+their soko1-2 recorded as unported and were matching far more than my port
+allowed.
+
+**Do not re-attempt soko1-2 by transcribing the .lua and hoping.** The -13556
+RNG says the build diverges early and hard. Diagnose first:
+
+1. Find a session that reaches soko1-2 (seed4500 is the biggest, -228) and get
+   the step where it builds the level.
+2. Compare the recorded draw list for that step against ours with the
+   per-segment/step tooling, and find the FIRST differing draw. C's annotations
+   name the lspo_* function, which points straight at the wrong builder call.
+3. Likely suspects, in order: the `des.region(... type="zoo", filled=1,
+   irregular=1)` form (filled zoos populate monsters and draw a lot);
+   `lspo_trap` called 19 times with explicit coords; `lspo_object` with the
+   `{class=...}` form; and the non_diggable/non_passwall signature bridge, which
+   iter 104 flagged as unresolved and which I guessed at by passing an array.
+
+The two builders from iter 104 (lspo_non_passwall, lspo_exclusion, commit
+189af78) stay — they draw nothing, are independently correct, and were verified
+at +0 before this attempt.
+
+**Cheaper alternative if soko1-2 stays hard:** the remaining bigrm-style levels
+are pure map data with no zoo/trap/door machinery, and both bigrm ports landed
+first time. Prefer those, or diagnose soko1-2 properly with a full iteration
+budgeted for the draw comparison rather than the transcription.

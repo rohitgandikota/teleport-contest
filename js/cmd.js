@@ -24,7 +24,8 @@ import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup } from './hack.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
-import { ECMD_FAIL, ECMD_CANCEL } from './const.js';
+import { ECMD_FAIL, ECMD_CANCEL, A_DEX } from './const.js';
+import { ACURR } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { x_monnam, docallcmd } from './do_name.js';
@@ -1134,11 +1135,21 @@ async function domove_core() {
         /* src/hack.c:1058 — with mention_walls the blocked move says what
            stopped it, naming the background glyph. Only the solid-stone and
            wall cases are reachable here; anything else records. */
-        if (game.flags?.mention_walls && !game.context.door_opened) {
-            const loc = game.level?.at(newx, newy);
-            if (!loc || loc.typ === STONE)
+        const bloc = game.level?.at(newx, newy);
+        /* src/hack.c:1113 — an orthogonal walk into a closed door that
+           autoopen did not handle (autoopen is off while running) says so,
+           unless the hero is clumsy enough to walk into it instead. */
+        if (closed_door(newx, newy) && !game.context.door_opened
+            && (newx === u.ux || newy === u.uy)) {
+            if (u.ublind || game.u.uprops?.STUNNED || ACURR(A_DEX) < 10
+                || game.u.uprops?.FUMBLING)
+                note_unported_cmd('test_move:walk_into_door');
+            else
+                await pline('That door is closed.');
+        } else if (game.flags?.mention_walls && !game.context.door_opened) {
+            if (!bloc || bloc.typ === STONE)
                 await pline("It's solid stone.");
-            else if (IS_WALL(loc.typ))
+            else if (IS_WALL(bloc.typ))
                 await pline("It's a wall.");
             else
                 note_unported_cmd('test_move:mention_walls_other');

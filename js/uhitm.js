@@ -26,6 +26,7 @@ import { exclam } from './zap.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym } from './display.js';
 import { wakeup, killed, xkilled, seemimic } from './mon.js';
 import { DEADMONSTER } from './monst.js';
+import { is_pole } from './u_init.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
@@ -849,13 +850,8 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     return hmd.retval;
 }
 
-// include/obj.h is_pole() — a polearm or lance, the applied weapons that
-// still count as hand-to-hand.
-const is_pole = (o) => !!o && note_is_pole_unported();
-function note_is_pole_unported() {
-    note_unported_uhitm('hmon_hitmon:is_pole');
-    return false;
-}
+/* include/obj.h is_pole() — the real predicate lives in js/u_init.js; this
+   file used to carry a stub that always returned false after recording. */
 
 // src/uhitm.c:1387 hmon_hitmon_do_hit() — routes the blow by what is in hand.
 //

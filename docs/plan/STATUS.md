@@ -15083,3 +15083,41 @@ This same prompt path is likely behind the other four near-passes (they are all
 eat/throw/quaff/zap/cast sessions that use getdir or getobj prompts). Check
 seed0016 step-by-step next; if it is the same 17-cell row-0 signature, one fix
 takes several sessions from 1-3 lost to passing.
+
+## iter 85 — answered prompts must not echo the key (+1 screen, +1 PASS)
+
+Board **2247 -> 2248**, passes **6 -> 7** (9d45565). seed1800 now passes.
+
+`tty_yn_function`'s clean_up set `_pending_message = prompt + answer`, so an
+answered prompt stayed painted with the key appended — "In what direction?j"
+where C shows an EMPTY message row. C's win/tty/topl.c:533 does the opposite on
+purpose:
+
+    /* addtopl(rtmp); -- rewrite gt.toplines instead */
+    Sprintf(gt.toplines, "%s%s", prompt, rtmp);
+
+`addtopl` is commented out in the C source. prompt+answer goes to `gt.toplines`,
+the ^P recall BUFFER, and is never painted. Split the two: recall text now lives
+in `game._toplines`, and nothing is left pending to paint.
+
+Confirmed against C's own frames for seed1800: step 9 "What do you want to
+throw?", step 10 "In what direction?", step 11 EMPTY, step 12 the next prompt.
+Note step 11's gutter is `0 >` not `0*` — the cursor is off row 0, which is
+itself a tell that no prompt is live.
+
+**The other four near-passes are NOT this bug.** seed0016's single bad screen is
+step 26, 4 cells, all colour/attribute:
+
+    r2 c20..c23   C: ' ' inverse     ours: ' ' default
+
+That is the spell menu's column header. C builds it as
+`"    " + "%-20s Level %-12s Fail Retention"` (spell.c:2102) — four LITERAL
+leading spaces standing in for the "a - " prefix on item lines — and
+add_menu_heading stamps ATR_INVERSE across the whole string. **Our header string
+already contains those four spaces** (js/spell.js:611), so the bug is in the
+PAINTING: the inverse attribute is not reaching the leading whitespace, or
+tty_add_menu trims it when computing the item start column. Look at
+js/tty/wintty.js's menu line rendering, not at spell.js.
+
+Remaining near-passes to check with the same per-step sweep:
+seed2200 (2 lost of 230), seed0101 (3 of 27), seed0501 (3 of 28).

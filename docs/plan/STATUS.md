@@ -15635,3 +15635,36 @@ among others). Measure the full board before keeping anything here.
 
 seed2200: 228/230, both losses on this frame. Content, width, pagination and
 menu geometry are all now excluded by measurement.
+
+## iter 99 — seed2200 step 83 SOLVED (diagnosis): the menu is painted TWICE
+
+Board 2249, passes 7, tree clean, no code change. Probes reverted. The mechanism
+is now fully pinned; only the fix remains.
+
+Dumped the grid row under the menu immediately before each menu paint at step 83:
+
+    BEFORE menu paint row12[5..25]="    │·············· "   <- map INTACT
+    BEFORE menu paint row12[5..25]="                    "   <- grid already CLEARED
+
+**The inventory menu is painted twice, and a `_buildScreenOutput` clear runs
+between the two.** The first paint sits on the correct screen — map present,
+exactly like C. Then _buildScreenOutput clears the grid, and we paint the menu a
+second time onto a blank background. The captured frame is the SECOND one, which
+is why everything outside the menu is empty.
+
+That also explains why nothing about the menu itself was ever wrong: content,
+width, pagination and geometry all matched (iters 95-98) because the FIRST paint
+was already correct.
+
+**The fix is to stop the second paint (or the clear between), not to change the
+menu.** Find why tty_display_nhwindow / the menu path runs twice for one 'i'
+command — likely a redraw after selection or a doubled call in the command
+wrapper. C paints once.
+
+**Standing warning, still applies:** two earlier attempts to narrow
+_buildScreenOutput regressed and were reverted (-10 on seed2200 among others).
+Prefer removing the duplicate PAINT over suppressing the clear, and measure the
+full board either way.
+
+seed2200: 228/230, both losses on this frame. This is the closest any near-pass
+has been to a one-line fix.

@@ -13560,3 +13560,36 @@ for that step.**
 Next: port getobj's '?' branch (the "or ?*" menu). It is on the critical
 path for any session that answers a getobj prompt with '?', which the
 "[d-gnq or ?*]" suffix advertises in many sessions.
+
+## Iteration 49 — getobj's '?' menu ported: +29
+
+Board 2142 -> **2171**, passes 6, no regressions. Commit `d568b36`.
+seed0002 46 -> 75.
+
+`getobj()` recorded the `'?'`/`'*'` branch. Answering an object prompt with
+'?' therefore left the key unconsumed, and **every later keystroke ran as
+the wrong command** -- the same failure mode as an unwired command key, but
+hidden inside a prompt.
+
+Ported `display_pickinv()` (invent.c:3220) on top of the existing
+`display_inventory()` entry list and the tty menu machinery, and wired
+getobj's branch (invent.c:1963): '?' restricts the listing to the letters
+the command accepts, '*' lists everything. `getobj`'s `ilet` had to become
+mutable -- C reassigns it from the menu result.
+
+Recorded: the hands entry, force_invmenu's extra query line, the count
+field, and the menu's own '?'/'*' redo.
+
+### Why this was worth more than it looked
+
+The "or ?*" suffix appears in every getobj prompt across the corpus, so any
+session whose player answers a prompt with '?' was desynchronised from that
+point on. Worth re-running the lost-screens table now -- this may have moved
+several sessions at once even though only seed0002 shows a gain today
+(others are blocked earlier).
+
+### Shell note
+
+Backticks inside a `git commit -m` string get expanded by the shell and the
+word vanishes from the message. Use `git commit -F -` with a heredoc when
+the message mentions identifiers.

@@ -12373,3 +12373,39 @@ wands, spells, dragon breath and traps, so it pays across the held-out set
 rather than one session. Level save/restore is second (every session that
 revisits a level). The options menu is worth least: it is pure UI, gates one
 session, and has to match C's layout exactly.
+
+## Correction: the options menu gates SIX sessions, not one
+
+Board 1951, passes 6. One commit (the closed-door message).
+
+**I mis-ranked `doset` last iteration.** I wrote that it "gates one session"
+and ranked it below `buzz`. Counting actual 'O' keypresses across the corpus:
+
+    seed0006, seed0007, seed0012, seed0014, seed2200, seed4500
+
+**Six sessions press it.** seed0007 (282 missing) is blocked at step 20 by
+exactly this, the same as seed0014 (685). That does not make doset trivially
+the best target — 'O' has to be the LIVE blocker in each session, and for
+seed0012 and seed0006 it is not yet — but "gates one session" was wrong and
+the ranking built on it was wrong.
+
+**Revised view of the four subsystems:**
+- `doset` — 6 sessions press it; at least 2 are blocked on it right now
+  (~970 screens). Pure UI, must match C's layout exactly, but the layout is
+  fully determined by optlist.js which we already generate.
+- `buzz` — 1 session blocked (320) but the most REUSABLE: rays are wands,
+  spells, dragon breath and traps, so it pays on held-out sessions that no
+  public session exercises.
+- level save/restore — 1 session blocked (490), needed by anything revisiting
+  a level.
+- `dopray` — 1 session (256); the outcome drives everything after, so the
+  confirmation alone buys nothing.
+
+**Also this pass:** ported the "That door is closed." arm (hack.c:1113) —
+autoopen is suppressed while running, so an orthogonal run into a closed door
+says so.
+
+**And a data point on the parked wall bug:** it also blocks seed0006 (2 cells
+at step 44, immediately after the door message). That is now four sessions
+touched by it — seed0004, seed4500, seed0006 and, by the same shape, likely
+others. Its value has gone up since it was parked.

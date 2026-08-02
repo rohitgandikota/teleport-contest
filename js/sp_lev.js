@@ -2497,6 +2497,10 @@ export function lspo_region_full(opts) {
     if (troom) {
         troom.needfill = needfill;
         game.level.flags.is_maze_lev = true;
+        /* src/sp_lev.c:5710 — a region's room record collects the doors
+           bordering it; fill_zoo's irregular arm skips squares within one
+           step of svd.doors[fdoor], so an unlinked room fills too many. */
+        add_doors_to_room(troom);
     }
 }
 

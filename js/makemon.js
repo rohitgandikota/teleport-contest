@@ -1635,14 +1635,15 @@ export function makemon(ptr, x, y, mmflags) {
        outside level generation, find a nearby spot instead. enexto_core()
        shuffles collect_coords()' rings, which is a substantial draw. */
     const byyou = (x === game.u.ux && y === game.u.uy);
+    /* src/makemon.c:1162 — gpflags carries MM_IGNOREWATER THROUGH from
+       the caller's mmflags; it is not just the two GP_ bits. A caller
+       that passes MM_IGNOREWATER wants goodpos to accept water, and
+       dropping it here makes those placements scan differently. Both this
+       and cc are FUNCTION scoped in C; the MON_AT gate below uses them. */
+    const gpflags = ((mmflags & MM_IGNOREWATER) ? MM_IGNOREWATER : 0)
+                    | GP_CHECKSCARY | GP_AVOID_MONPOS;
+    const cc = { x: 0, y: 0 };
     if (byyou && !game.in_mklev) {
-        const cc = { x: 0, y: 0 };
-        /* src/makemon.c:1162 — gpflags carries MM_IGNOREWATER THROUGH from
-           the caller's mmflags; it is not just the two GP_ bits. A caller
-           that passes MM_IGNOREWATER wants goodpos to accept water, and
-           dropping it here makes those placements scan differently. */
-        const gpflags = ((mmflags & MM_IGNOREWATER) ? MM_IGNOREWATER : 0)
-                        | GP_CHECKSCARY | GP_AVOID_MONPOS;
         if (!enexto_core(cc, game.u.ux, game.u.uy, ptr, gpflags, goodpos)
             && !enexto_core(cc, game.u.ux, game.u.uy, ptr,
                             gpflags & ~GP_CHECKSCARY, goodpos))

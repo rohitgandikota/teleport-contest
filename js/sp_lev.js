@@ -951,7 +951,7 @@ export function create_des_coder() {
 }
 
 // src/sp_lev.c:6323 update_croom() — croom is the top of the room stack.
-function update_croom() {
+export function update_croom() {
     if (!game.coder)
         return;
     const n = game.coder.n_subroom || 0;
@@ -1005,6 +1005,17 @@ export function cvt_to_relcoord(c) {
         c.x -= game.xstart ?? 0;
         c.y -= game.ystart ?? 0;
     }
+}
+
+// src/sp_lev.c:4763 reset_xystart_size() — back to the whole map. Called
+// before the themeroom postprocess handlers run, so a coordinate handed to
+// Lua there is offset by the map origin (1,0) rather than by whichever
+// themeroom happened to be current when generation ended.
+export function reset_xystart_size() {
+    game.xstart = 1; /* column [0] is off limits */
+    game.ystart = 0;
+    game.xsize = COLNO - 1; /* 1..COLNO-1 */
+    game.ysize = ROWNO; /* 0..ROWNO-1 */
 }
 
 // src/sp_lev.c:3040 spo_pop_container() — close the innermost container.

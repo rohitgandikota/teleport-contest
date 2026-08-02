@@ -23,7 +23,7 @@ import { mongone } from './mon.js';
 import { sgn } from './hacklib.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
-import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest } from './sp_lev.js';
+import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, reset_xystart_size } from './sp_lev.js';
 import { walkfrom, mkmaze_wire_mklev } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
@@ -592,6 +592,7 @@ async function makelevel() {
            room-building middle and fill_ordinary_room are regular-only. */
         for (let i = 0; i < g.level.nroom; i++)
             fill_special_room(g.level.rooms[i]);
+        reset_xystart_size();
         post_level_generate();
         return;
     }
@@ -758,7 +759,10 @@ async function makelevel() {
 
     /* src/mklev.c:1420 themerooms_post_level_generate() — drain the handlers
        the fills queued. It runs AFTER every room is filled, which is the point:
-       make_a_trap picks its teleport destination from the finished map. */
+       make_a_trap picks its teleport destination from the finished map.
+       src/mklev.c:1183 resets xstart/ystart first, so the coordinates the
+       handlers get back are measured from the map origin. */
+    reset_xystart_size();
     post_level_generate();
 
     /* src/mklev.c:1190 — the WHOLE-LEVEL wallification pass, run after the

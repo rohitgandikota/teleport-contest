@@ -625,9 +625,10 @@ export async function doextcmd() {
 // trap plumbing; what is ported is the getpos() call at src/apply.c:2063, which
 // is where a session's cursor keys and pick go.
 async function dojump() {
+    await pline('Where do you want to jump?');
+
     const cc = { x: game.u.ux, y: game.u.uy };
 
-    /* pline("Where do you want to jump?") */
     if (await getpos(cc, true, 'the desired position') < 0)
         return ECMD_OK; /* ECMD_CANCEL — user pressed ESC */
 

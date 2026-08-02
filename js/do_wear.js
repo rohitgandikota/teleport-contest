@@ -18,6 +18,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual } from './obj.js';
+import { Is_dragon_armor } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { pline } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
@@ -92,8 +93,14 @@ export function Armor_on() {
         game.u.uarm.known = 1; /* +/- evident because of status line AC */
         note_unported_do_wear('Armor_on:update_inventory');
     }
-    note_unported_do_wear('Armor_on:dragon_armor_handling');
-    note_unported_do_wear('Armor_on:artifact_light');
+    /* C calls dragon_armor_handling(uarm, TRUE, TRUE) unconditionally, but
+       the function is a switch over dragon scale types and does nothing for
+       any other suit; the artifact-light branch needs artifact_light().
+       Both record only when they could actually act. */
+    if (Is_dragon_armor(game.u.uarm))
+        note_unported_do_wear('Armor_on:dragon_armor_handling');
+    if (game.u.uarm.oartifact)
+        note_unported_do_wear('Armor_on:artifact_light');
     return 0;
 }
 

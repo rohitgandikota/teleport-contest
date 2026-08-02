@@ -207,7 +207,8 @@ const Is_dragon_scales = (obj) => obj.otyp >= ONAMES.GRAY_DRAGON_SCALES
                                && obj.otyp <= ONAMES.YELLOW_DRAGON_SCALES;
 const Is_dragon_mail = (obj) => obj.otyp >= ONAMES.GRAY_DRAGON_SCALE_MAIL
                              && obj.otyp <= ONAMES.YELLOW_DRAGON_SCALE_MAIL;
-const Is_dragon_armor = (obj) => Is_dragon_scales(obj) || Is_dragon_mail(obj);
+export const Is_dragon_armor = (obj) =>
+    Is_dragon_scales(obj) || Is_dragon_mail(obj);
 
 // src/mondata.c:91 defended() — is `mon` protected against `adtyp` by an
 // artifact it wields or by dragon scales it wears?

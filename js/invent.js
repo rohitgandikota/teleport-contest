@@ -994,7 +994,20 @@ function freeinv_core(obj) {
         (game.disp ||= {}).botl = true;
         return;
     }
-    note_unported_invent('freeinv_core:uhave_artifacts');
+    else if (obj.otyp === ONAMES.AMULET_OF_YENDOR) {
+        /* C: impossible("don't have amulet?") when the flag is unset */
+        (game.u.uhave ||= {}).amulet = 0;
+    } else if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
+        (game.u.uhave ||= {}).menorah = 0;
+    } else if (obj.otyp === ONAMES.BELL_OF_OPENING) {
+        (game.u.uhave ||= {}).bell = 0;
+    } else if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+        (game.u.uhave ||= {}).book = 0;
+    } else if (obj.oartifact) {
+        /* is_quest_artifact/u.uhave.questart and set_artifact_intrinsic
+           need the artifact tables; reached only for artifacts. */
+        note_unported_invent('freeinv_core:uhave_artifacts');
+    }
 
     if (obj.otyp === ONAMES.LOADSTONE)
         curse(obj);

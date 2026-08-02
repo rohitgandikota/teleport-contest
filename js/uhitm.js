@@ -171,7 +171,7 @@ const mdat_of = (mtmp) => game.mons[mtmp.mnum];
 // It draws NOTHING: every arm is a message or a state change. The forcefight
 // arm returns early, which is why a forced attack on an empty square never
 // asks anything.
-async function attack_checks(mtmp, wep) {
+export async function attack_checks(mtmp, wep) {
     /* if you're close enough to attack, alert any waiting monster */
     mtmp.mstrategy &= ~STRAT_WAITMASK;
 

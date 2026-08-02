@@ -11,7 +11,7 @@ import { dodrop } from './do.js';
 import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
          doprinuse } from './invent.js';
 import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
-import { dokick_wire, ship_object } from './dokick.js';
+import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
 import { sp_lev_wire_mon } from './sp_lev.js';
 import { is_pool, is_lava, m_at, t_at } from './mon.js';
@@ -779,6 +779,9 @@ export async function rhack(key) {
     } else if (ch === ',') {
         // src/cmd.c:1799 cmdlist — ',' is dopickup.
         game.context.move = (await dopickup() === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x04') {
+        // src/cmd.c cmdlist — C('d') is dokick.
+        game.context.move = (await dokick() === ECMD_TIME ? 1 : 0);
     } else if (ch === '<') {
         // src/cmd.c cmdlist — '<' is doup.
         game.context.move = (await doup() === ECMD_TIME ? 1 : 0);

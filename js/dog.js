@@ -27,7 +27,7 @@ import { may_dig } from './hack.js';
 import { is_metallic } from './obj.js';
 import { obj_resists } from './zap.js';
 import { newsym, canspotmon, mon_visible, pline } from './display.js';
-import { splitobj } from './mkobj.js';
+import { splitobj, peek_at_iced_corpse_age } from './mkobj.js';
 import { yelp, growl } from './sounds.js';
 import { m_consume_obj, is_pick, check_gear_next_turn } from './mon.js';
 import {
@@ -253,10 +253,7 @@ const is_rustprone = (otmp) => game.objects[otmp.otyp].oc_material === IRON;
    through a corpse, egg or tin, none of which exists before the death-drop and
    cooking code lands, so recording keeps the gap visible without inventing a
    branch. */
-function peek_at_iced_corpse_age(obj) {
-    note_unported('peek_at_iced_corpse_age');
-    return obj.age ?? 0;
-}
+/* peek_at_iced_corpse_age() now lives in js/mkobj.js (its src/mkobj.c home) */
 
 function stale_egg(obj) {
     note_unported('stale_egg');

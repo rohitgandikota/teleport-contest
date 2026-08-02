@@ -1209,3 +1209,20 @@ export function add_to_container(container, obj) {
     return obj;
 }
 
+
+/* src/mkobj.c:2391 — rotting on ice takes 2 times as long */
+const ROT_ICE_ADJUSTMENT = 2;
+
+// src/mkobj.c:2394 peek_at_iced_corpse_age() — the age a corpse on ice
+// reports, without modifying it. C's integer division floors toward zero.
+export function peek_at_iced_corpse_age(otmp) {
+    let retval = otmp.age ?? 0;
+
+    if (otmp.otyp === ONAMES.CORPSE && otmp.on_ice) {
+        /* Adjust the age; must be same as obj_timer_checks() for off ice */
+        const age = game.moves - (otmp.age ?? 0);
+        retval += Math.trunc(age * (ROT_ICE_ADJUSTMENT - 1)
+                             / ROT_ICE_ADJUSTMENT);
+    }
+    return retval;
+}

@@ -11304,3 +11304,39 @@ C creation landed there by walking its newmonhp groups and matching against
 our own placement list square by square. The two lists agree in species and
 count up to this point, so the FIRST square where the two placement lists
 disagree is the answer, and it must be at or before (22,6).
+
+## 2026-08-01 (morgue, cont. 9): fill fully accounted; the gap is ONE rejected creation
+
+No code change. Board 1552/6, gates clean, tree clean.
+
+**The fill is now completely accounted for on both sides.** With no
+lookahead cap (an earlier 400-draw cap produced three phantom "skipped"
+squares — the corpse arm's mk_tt_object runs a full rndmonst ladder that can
+exceed 400 draws):
+    C valley morgue squares: 122
+    of those, calling morguemon: 121
+    the one exception is square #122, the LAST one — the fill simply ends
+    there and generation moves on to place_lregion.
+So effectively all 122 squares call morguemon in BOTH ports, and our square
+list, visit order and species picks all match.
+
+**Total accounting:** C 156 newmonhp on the valley, ours 155. Of C's fill
+calls, exactly one (its morguemon #9, i=16 hd=11, the `i<20` ghost arm at
+square (22,6)) creates NOTHING while the identical arm creates ghosts on the
+squares either side of it. Our port creates there. Every other creation on
+the level lines up.
+
+**What is definitively excluded now** (all measured, not reasoned):
+mkclass out-of-class returns, mongen_order, propagate/mvitals/born,
+ghost extinction, morguemon's own branch selection, the three object arms,
+the square list and visit order, fill_zoo invocation count, placement
+(requested==final for every script monster), group placement (none occur),
+shapechanger creation (draw-for-draw identical incl. the second newmonhp).
+
+**The remaining hypothesis, and it is now the only one standing:** C's
+makemon rejected that ghost via MON_AT — meaning C had a monster on (22,6)
+that we do not. Since every *creation* lines up, the extra C occupant must
+arrive by MOVEMENT or relocation, not creation: check whether anything on
+this level runs rloc/mnexto/m_move between the script phase and the fill
+(e.g. u_collide_m, or the arrival code placing the hero/pets), and whether
+C's fill of morgue #1 is preceded by a monster stepping onto (22,6).

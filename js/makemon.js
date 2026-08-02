@@ -586,16 +586,10 @@ export function mongets(mtmp, otyp) {
 }
 
 // src/mon.c mpickobj() — returns true when otmp was freed by merging.
-export function mpickobj(mtmp, otmp) {
-    if (!mtmp.minvent) mtmp.minvent = [];
-    mtmp.minvent.push(otmp);
-    /* src/steal.c add_to_minv() — the object's where/ocarry move with it;
-       obj_extract_self's OBJ_MINVENT arm depends on both. Stack merging
-       (merged()) is not ported; each pickup keeps its own object. */
-    otmp.where = OBJ_MINVENT;
-    otmp.ocarry = mtmp;
-    return false;
-}
+/* mpickobj() moved to js/steal.js, its src/steal.c home, with add_to_minv
+   merging; this file re-imports it for mongets. */
+import { mpickobj } from './steal.js';
+export { mpickobj };
 
 // src/makemon.c:589 m_initinv() — species-specific starting inventory.
 //

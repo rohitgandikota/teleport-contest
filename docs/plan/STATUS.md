@@ -11146,3 +11146,32 @@ in particular the mmflags/gpflags path (fill_zoo passes MM_ASLEEP|MM_NOGRP)
 and whether goodpos rejects a ghost on that square for a reason ours does
 not model (ghosts pass through walls; check the ACCESSIBLE/IS_ROCK test in
 goodpos against a square our flood marked roomno but C left as wall edge).
+
+## 2026-08-01 (morgue, cont. 4): two latent bugs fixed; the rejection guard is still unfound
+
+Commit 3cdb512. Board 1552/6, gates clean. Two real (if currently latent)
+faults fixed while auditing:
+- makemon declared `cc` and `gpflags` INSIDE the `byyou` branch, so the
+  MON_AT gate's enexto arm referenced both out of scope — it would have
+  thrown the first time a caller passed MM_ADJACENTOK onto an occupied
+  square. Now function-scoped as in C.
+- lspo_region's room path never called add_doors_to_room (sp_lev.c:5710),
+  so flood-built rooms had doorct=0 and fill_zoo's door-proximity skip
+  could never fire. Wired. (On the valley the three morgues genuinely
+  border no doors, so this changes nothing there — but it would have on
+  any map whose irregular region touches a door.)
+
+**Still open, and now quite constrained.** For the valley morgue at rng
+29147, square (22,6): C's makemon returns NULL, ours creates a ghost.
+Confirmed by reading the C: for a GIVEN ptr, makemon's only early returns
+before creation are (a) debug_mongen / !rndmongen, (b) MON_AT without
+MM_ADJACENTOK, (c) mvitals G_GENOD. No goodpos test runs on the ptr path
+at a fixed square. So C must be failing (b) — the square IS occupied in C
+— yet our own occupancy of that square differs even though every script
+monster lands identically and the fill visits the same 122 squares in the
+same order. The remaining candidate is a monster C placed that we never
+create at all (or place elsewhere): specifically the m_initsgrp/m_initlgrp
+GROUP followers, which spread via enexto around their leader and are the
+one placement path not yet audited. Next: log every group-member creation
+(leader species, member count, each member's final x,y) in the valley and
+check whether any lands on (22,6).

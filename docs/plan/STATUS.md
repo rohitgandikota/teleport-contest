@@ -12130,3 +12130,41 @@ An object's colour comes from its randomised description, so this is likely
 an o_init shuffle or description-assignment difference rather than a display
 bug. Cheaper to chase than the vision algorithm; check what description our
 potion got versus what C's colour implies.
+
+## The potion colour: object identity ruled out, four ways
+
+Board holds at 1798, passes 6. No code change; this pass is an elimination,
+and the eliminations are worth recording because each one looked like the
+answer.
+
+seed0002 step 9 shows a '!' at (51,8) coloured 11 by us and default (CLR_GRAY,
+7) by C. It is our object POT_PARALYSIS. Chased and ruled out, in order:
+
+1. **Base colour table.** C's objects.h gives POT_PARALYSIS CLR_BRIGHT_GREEN
+   (10); ours says 10. Dumped all 26 pre-shuffle potion colours and compared
+   against the CLR_* names in objects.h: **byte-identical**
+   (1,13,9,11,10,2,6,6,12,5,5,1,15,3,15,7,15,7,0,11,3,6,0,15,3,6).
+
+2. **The shuffle algorithm.** js/o_init.js `shuffle()` matches o_init.c:113
+   statement for statement, and `obj_shuffle_range` matches for POTION_CLASS
+   (`bases[POTION_CLASS]` .. `POT_WATER - 1`).
+
+3. **The shuffle RESULT — proved, not assumed.** Extracted C's own 25 potion
+   shuffle draws from the recorded stream (indices 18..42, bounds 25 down to
+   1), simulated C's algorithm over our pre-shuffle table, and got our
+   post-shuffle array EXACTLY. **So C's POT_PARALYSIS is colour 11 too.**
+
+4. **Probabilities.** All 26 `oc_prob` values match C's objects.h.
+
+**Therefore C's object at (51,8) is a DIFFERENT potion than ours** — one whose
+post-shuffle colour is 7, i.e. the 17th or 18th potion in class order. The
+object types diverge with no draw difference, which means the divergence is
+upstream in whatever placed it, not in the potion tables at all.
+
+**Do not re-chase the shuffle.** The simulation in (3) is conclusive and
+cheap to re-run if ever doubted. The open question is why a different potion
+TYPE was created, with the same rng, during level generation.
+
+The vision bug from the previous entry (`view_from` marking wall squares
+COULD_SEE that C leaves dark, blocking seed0004 and seed4500) remains the
+higher-value target and is untouched.

@@ -13,6 +13,13 @@ import { multishot_class_bonus } from './dothrow.js';
 import { is_prince, is_lord, is_mplayer, is_elf, is_orc,
          is_gnome } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { should_mulch_missile } from './dothrow.js';
+import { delobj, m_at } from './mon.js';
+import { down_gate, ship_object } from './dokick.js';
+import { flooreffects } from './do.js';
+import { place_object } from './mkobj.js';
+import { stackobj } from './invent.js';
+import { u_at } from './const.js';
 
 // src/mthrowu.c:198 monmulti() — how many missiles this volley holds.
 //
@@ -69,4 +76,42 @@ export function monmulti(mtmp, otmp, mwep) {
     if (multishot < 1)
         multishot = 1;
     return multishot;
+}
+
+// src/mthrowu.c drop_throw() — the missile lands (or breaks). Returns
+// whether the object is gone. passive_obj (rot/corrode the missile against
+// the target's passive defense) records, gated on an actual hit.
+export async function drop_throw(obj, ohit, x, y) {
+    let broken;
+
+    if (obj.otyp === ONAMES.CREAM_PIE || obj.oclass === OCLASSES.VENOM_CLASS
+        || (ohit && obj.otyp === ONAMES.EGG)) {
+        broken = true;
+    } else {
+        broken = !!(ohit && should_mulch_missile(obj));
+    }
+
+    if (broken) {
+        delobj(obj);
+    } else {
+        if (down_gate(x, y) !== -1)
+            broken = !!ship_object(obj, x, y, false);
+        if (!broken) {
+            let mtmp = m_at(x, y);
+            if (!(broken = await flooreffects(obj, x, y, 'fall'))) {
+                place_object(obj, x, y);
+                if (!mtmp && u_at(x, y))
+                    mtmp = game.youmonst;
+                if (mtmp && ohit)
+                    note_unported_mthrowu('drop_throw:passive_obj');
+                stackobj(obj);
+            }
+        }
+    }
+    game.thrownobj = null;
+    return broken;
+}
+
+function note_unported_mthrowu(what) {
+    (game.unported ||= new Set()).add('mthrowu:' + what);
 }

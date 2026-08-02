@@ -19,6 +19,8 @@ import { newsym } from './display.js';
 import { Levitation } from './youprop.js';
 import { cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
+import { greatest_erosion } from './do_wear.js';
+import { rnl } from './rng.js';
 import { is_pole, is_spear } from './u_init.js';
 import { You } from './pline.js';
 import { ammo_and_launcher } from './wield.js';
@@ -576,4 +578,27 @@ export async function dofire() {
     /* fire can take time by filling quiver (if that causes something which
        was wielded to be unwielded) even if the throw itself gets cancelled */
     return (res === ECMD_TIME) ? res : altres;
+}
+
+// src/dothrow.c should_mulch_missile() — does fired/thrown ammo break?
+export function should_mulch_missile(obj) {
+    /* only ammo (excluding magic stones) or missiles will break */
+    if (!obj || !(is_ammo(obj) || is_missile(obj))
+        || obj.otyp === ONAMES.BOOMERANG
+        || game.objects[obj.otyp].oc_magic)
+        return false;
+
+    /* we need ammo to stay around longer on average */
+    const chance = 3 + greatest_erosion(obj) - (obj.spe || 0);
+    let broken = chance > 1 ? !!rn2(chance) : !rn2(4);
+    if (obj.blessed && (game.context?.mon_moving ? !rn2(3) : !rnl(4)))
+        broken = false;
+
+    /* Flint and hard gems don't break easily */
+    if (((obj.oclass === OCLASSES.GEM_CLASS && game.objects[obj.otyp].oc_tough)
+         || obj.otyp === ONAMES.FLINT)
+        && !rn2(2))
+        broken = false;
+
+    return broken;
 }

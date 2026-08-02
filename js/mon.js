@@ -1190,16 +1190,122 @@ export async function setmangry(mtmp, via_attack) {
 // src/mon.c:3470 killed() — the hero killed this monster, with a message.
 // Three lines in C and a pure delegation; xkilled (263 lines) does the work
 // and is recorded.
-export function killed(mtmp) {
-    xkilled(mtmp, XKILL_GIVEMSG);
+export async function killed(mtmp) {
+    await xkilled(mtmp, XKILL_GIVEMSG);
 }
 
-// src/mon.c:3477 xkilled() — 263 lines: the death message, the corpse and
-// death drop, experience, vanquished-monster bookkeeping, and the special
-// cases for shopkeepers, guards, quest leaders and Riders. Not ported.
-// Recorded with its flags so game.unported says which caller wanted it.
-export function xkilled(mtmp, xkill_flags) {
-    note_unported_mon(`xkilled:flags=${xkill_flags}`);
+// src/mon.c:3477 xkilled() — the hero killed this monster.
+//
+// The spine is the death message, mondead(), the "treasure drop" rn2(6), the
+// corpse, the luck adjustments and the experience award, in that order; the
+// order matters because three of those draw. Petrification (monstone), the
+// engulfer expel, quest leaders, priests, shopkeepers and the murder penalty
+// are recorded.
+export async function xkilled(mtmp, xkill_flags) {
+    const x = mtmp.mx, y = mtmp.my;
+    const nomsg = (xkill_flags & XKILL_NOMSG) !== 0;
+    let nocorpse = (xkill_flags & XKILL_NOCORPSE) !== 0;
+
+    /* potential pet message; always clear global flag */
+    const be_sad = game.iflags?.sad_feeling;
+    if (game.iflags) game.iflags.sad_feeling = false;
+
+    mtmp.mhp = 0; /* caller will usually have already done this */
+
+    if (engulfing_u(mtmp))
+        note_unported_mon('xkilled:wasinside');
+
+    if (!nomsg) {
+        const namedpet = mtmp.mgivenname && !game.u.uprops?.HALLUC;
+        await You(`${nonliving(game.mons[mtmp.mnum]) ? 'destroy' : 'kill'} ${
+            !canspotmon(mtmp) ? 'it'
+              : !mtmp.mtame ? mon_nam(mtmp)
+                : x_monnam(mtmp, namedpet ? ARTICLE_NONE : ARTICLE_THE,
+                           'poor', namedpet ? SUPPRESS_SADDLE : 0, false)}!`);
+    }
+
+    if (mtmp.mtrapped) {
+        const t = t_at(x, y);
+        if (t && is_pit(t.ttyp)) {
+            if (sobj_at(ONAMES.BOULDER, x, y))
+                nocorpse = true;
+            if (m_carrying(mtmp, ONAMES.BOULDER))
+                note_unported_mon('xkilled:burycorpse');
+        }
+    }
+
+    /* your pet knows who just killed it...watch out */
+    if (mtmp.mtame && !mtmp.isminion && mtmp.edog)
+        mtmp.edog.killed_by_u = 1;
+
+    /* dispose of monster and make cadaver */
+    if (game.stoned)
+        note_unported_mon('xkilled:monstone');
+    mondead(mtmp);
+
+    if (be_sad)
+        await You('have a sad feeling for a moment, then it passes.');
+
+    const mdat = game.mons[mtmp.mnum]; /* mondead can change mtmp->data */
+    const mndx = mtmp.mnum;
+
+    if (!nocorpse && (ACCESSIBLE(game.level?.at(x, y)?.typ) || is_pool(x, y))) {
+        /* illogical but traditional "treasure drop" */
+        if (!rn2(6) && !((game.mvitals?.[mndx]?.mvflags ?? 0) & MC_G_NOCORPSE)
+            /* no extra item from swallower or steed */
+            && (x !== game.u.ux || y !== game.u.uy)
+            /* no extra item from kops--too easy to abuse */
+            && mdat.mlet !== MONSYMS.S_KOP
+            /* no items from cloned monsters */
+            && !mtmp.mcloned) {
+            const otmp = mkobj(RANDOM_CLASS, true);
+            /* don't create large objects from small monsters */
+            const otyp = otmp.otyp;
+            if (otmp.oclass === FOOD_CLASS && !(mdat.mflags2 & MC_M2_COLLECT)
+                && !otmp.oartifact) {
+                /* newly created permafood from kills makes too much
+                   nutrition in the late game */
+                delobj(otmp);
+            } else if (mdat.msize < MZ_HUMAN && otyp !== ONAMES.FIGURINE
+                       && (otmp.owt > 30 || game.objects[otyp].oc_big)) {
+                delobj(otmp);
+            } else {
+                /* flooreffects(otmp, x, y, "fall") is recorded; on ordinary
+                   floor it is false and the object simply lands */
+                place_object(otmp, x, y);
+                stackobj(otmp);
+            }
+        }
+        /* corpse--none if hero was inside the monster */
+        if (corpse_chance(mtmp, null, false))
+            make_corpse(mtmp, CORPSTAT_NONE);
+    }
+
+    /* monster is gone, corpse or other object might now be visible */
+    newsym(x, y);
+
+    /* Punish bad behavior. */
+    if (is_human(mdat) && !mtmp.mpeaceful)
+        ; /* the murder arm needs always_hostile/malign; hostile is clear */
+    else if (is_human(mdat))
+        note_unported_mon('xkilled:murder');
+
+    if ((mtmp.mpeaceful && !rn2(2)) || mtmp.mtame)
+        change_luck(-1);
+    if (is_unicorn(mdat)
+        && sgn(game.u.ualign.type) === sgn(mdat.maligntyp)) {
+        change_luck(-5);
+        await You_feel('guilty...');
+    }
+
+    /* give experience points */
+    const tmp = experience(mtmp, game.mvitals?.[mndx]?.died ?? 0);
+    more_experienced(tmp, 0);
+    await newexplevel(); /* will decide if you go up */
+
+    if (mtmp.ispriest || mdat.msound === MS_NEMESIS
+        || mdat.msound === MS_GUARDIAN)
+        note_unported_mon('xkilled:alignment_arms');
 }
 
 // src/mon.c:6058 shieldeff_mon() — the "resists!" flash.

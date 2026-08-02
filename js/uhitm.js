@@ -25,6 +25,7 @@ import { mon_nam } from './do_name.js';
 import { exclam } from './zap.js';
 import { canseemon } from './display.js';
 import { wakeup, killed, xkilled } from './mon.js';
+import { DEADMONSTER } from './monst.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee } from './monmove.js';
@@ -281,7 +282,7 @@ export function missum(mdef, mattk, wouldhavehit) {
 // Without hmon the monster takes no damage, so mhp stays equal to oldhp and
 // the Vorpal-miss branch fires every time; that is noted at the branch so the
 // behaviour is not mistaken for a bug later.
-export function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
+export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
                             uattk, dieroll) {
     let malive = true;
     /* hmon() might destroy the weapon; remember the aspect for cutworm */
@@ -303,8 +304,9 @@ export function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
             game.u.uconduct.weaphit = oldweaphit + 1;
         }
 
-        /* hmon() applies the damage and may kill the monster */
-        note_unported_uhitm('known_hitum:hmon');
+        /* src/uhitm.c:1039 — hmon() applies the damage and may kill the
+           monster; it returns whether the monster survived. */
+        malive = await hmon(mon, weapon, HMON_MELEE, dieroll);
 
         if (malive) {
             if (!rn2(25) && mon.mhp < mon.mhpmax / 2 && !game.u.uswallow) {
@@ -344,7 +346,7 @@ export function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
 // Not ported, each recorded: hitum_cleave (wielded Cleaver), passive (the
 // monster's counter-attack, 256 lines and it draws), and the exercise(A_DEX)
 // on a successful hit.
-export function hitum(mon, uattk) {
+export async function hitum(mon, uattk) {
     const wepbefore = game.u.uwep;
     const secondwep = game.u.twoweap ? game.u.uswapwep : null;
     const x = game.u.ux + game.u.dx, y = game.u.uy + game.u.dy;
@@ -364,7 +366,7 @@ export function hitum(mon, uattk) {
     if (tmp > dieroll)
         exercise(A_DEX, true);          /* src/uhitm.c hitum() */
 
-    let malive = known_hitum(mon, game.u.uwep, mhit, tmp,
+    let malive = await known_hitum(mon, game.u.uwep, mhit, tmp,
                              out.role_roll_penalty, uattk, dieroll);
     const wep_was_destroyed = !!(wepbefore && !game.u.uwep);
     passive(mon, game.u.uwep, mhit[0], malive, ATTKS.AT_WEAP,
@@ -380,7 +382,7 @@ export function hitum(mon, uattk) {
         mon_maybe_unparalyze(mon);
         dieroll = rnd(20);
         mhit[0] = (tmp > dieroll || game.u.uswallow) ? 1 : 0;
-        malive = known_hitum(mon, secondwep, mhit, tmp,
+        malive = await known_hitum(mon, secondwep, mhit, tmp,
                              out.role_roll_penalty, uattk, dieroll);
         /* the second counter-attack only happens if the second hit lands */
         if (mhit[0])
@@ -665,6 +667,11 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     if (mon.mhp > mon.mhpmax)
         mon.mhp = mon.mhpmax;
 
+    /* src/uhitm.c:1863 — the flag the kill tail below reads. Without it the
+       hero's melee kills never reached killed(). */
+    if (DEADMONSTER(mon))
+        hmd.destroyed = true;
+
     note_unported_uhitm('hmon_hitmon:pet');
     note_unported_uhitm('hmon_hitmon:splitmon');
     await hmon_hitmon_msg_hit(hmd, mon, obj);
@@ -678,11 +685,11 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     if (hmd.poiskilled) {
         note_unported_uhitm('hmon_hitmon:poison_deadly');
         if (!hmd.already_killed)
-            xkilled(mon, XKILL_NOMSG);
+            await xkilled(mon, XKILL_NOMSG);
         hmd.destroyed = true;
     } else if (hmd.destroyed) {
         if (!hmd.already_killed)
-            killed(mon);
+            await killed(mon);
     } else if (game.u.umconf && hmd.hand_to_hand) {
         /* confused-touch: resist() DRAWS */
         nohandglow(mon);

@@ -14056,3 +14056,35 @@ rn2(25), and the question is why our monster is already dead there.
 seed0360's own first divergence (step 164, draw 5392) is
 `blessorcurse(mkobj.c:1846)` with rn2(17) -- the SPBOOK/WAND arm flagged
 back in iteration 37 and still open. It is unrelated to the above.
+
+## Iteration 61 — dbon ported; the armed-damage gap is NOT dbon
+
+Board **2172** (unchanged), passes 6. Commit `6a337f4`.
+
+`dbon()` (weapon.c:993) was stubbed at 0. C returns **-1 below STR 6** and
+up to +6 at exceptional Strength, so the stub removed both the penalty and
+the bonus from every weapon hit. Now ported.
+
+### It does not fix the armed-hit gap
+
+Measured, with `hmd.unarmed` corrected:
+
+    our hit  dmg=3 against a monster at mhp 3/4  -> monster dies
+    C        spends rn2(25) in known_hitum       -> monster lives
+
+seed0002's hero is in the STR 6..15 band, where dbon() is 0 either way, so
+porting it changed nothing here. **The over-count is elsewhere in dmgval()
+or the bonus chain**, and until it is found the `unarmed` correction still
+costs 2 screens on seed0360 and stays reverted (the exact line and reason
+are in the code comment at js/uhitm.js).
+
+### Next
+
+Probe `dmgval()`'s return directly for that hit and compare against what C
+implies: C draws `rnd(3)=2` at weapon.c:265 and its total must be <= 2, so
+if our dmgval already returns 3 the extra comes from inside dmgval, not
+from the dmgbonus chain. Check the enchantment (`obj->spe`) and
+`objects[otyp].oc_wsdam` handling first -- those are the two additions C
+makes there.
+
+Do NOT re-port dbon or re-check the accessor bug; both are settled.

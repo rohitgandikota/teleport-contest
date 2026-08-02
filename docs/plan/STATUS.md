@@ -14712,3 +14712,40 @@ match is forced to j=0). Candidates, in order:
 Grep the level for the door: dump `game.level.at(56,6)` right after the step-28
 descent and compare its doormask against what dosdoor should have produced for
 that square given the (matching) draw sequence.
+
+## iter 76 — mfndpos audited arm by arm; door mask is the last suspect standing
+
+No code change; board 2200, tree clean.
+
+**Audited our mfndpos against mon.c arm by arm.** Every exclusion is present
+and faithful: IS_OBSTRUCTED, the rockok arm, IS_WATERWALL, IRONBARS, IS_DOOR
+closed/locked, the diagonal/tight-squeeze block, LAVAWALL, the poolok/lavaok
+wrapper, the hero (ALLOW_U) arm, the **MON_AT block** (mm_aggression / ALLOW_M /
+ALLOW_TM, then mm_displacement / ALLOW_MDISP) and ALLOW_SANCT.
+
+**The ONLY arm we lack is C's poison-gas check** (`!poisongas_ok && !in_poisongas
+&& visible_region_at(nx,ny)->glyph == gas_glyph`). No gas region exists here, so
+it cannot be this divergence — but it IS a real missing arm and should be ported
+when regions land.
+
+**Correction, mid-iteration:** I first concluded our mfndpos had no MON_AT block
+at all. It does, at roughly 150 lines into the function. I had grepped a
+`+150`-line window from the function header and the block fell just past the
+edge. That is the SECOND truncated-search mistake in two iterations (the other
+was `| head -5`). When auditing a long function, read it or grep the whole
+file — never a fixed-size window anchored at the definition.
+
+**Also ruled out this iteration:** no monster occupies (55,5) at decision time.
+The monster list after 35 moves has our mover at (56,5) and nothing at (55,5);
+it is the mover itself that ends up on (55,5) after step 36. So the MON_AT arm
+is not what trims C's list.
+
+**Last suspect standing: the door mask at (56,6).** We store typ 23 (DOOR),
+doormask 0 (D_NODOOR), horizontal true. If C has D_CLOSED or D_LOCKED there,
+mfndpos's door arm excludes it, cnt becomes 5, and `rn2(4*(5-0)) = rn2(20)`
+matches C exactly. Everything else in the candidate list is plain ROOM and
+cannot be excluded by any arm we both have. Since step 28's level build matched
+on all 3736 draws, a wrong mask would be a DRAW-NEUTRAL storage bug — read
+dosdoor/okdoor's assignment path for a wall-door on a horizontal wall rather
+than re-deriving the draw order. The screen cannot arbitrate: (56,6) is far
+from the hero and never rendered in this stretch.

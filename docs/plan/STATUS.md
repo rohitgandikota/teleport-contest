@@ -13282,3 +13282,35 @@ Next: port `mintrap()` (src/trap.c) and its dispatch to the per-trap
 `trapeffect_*` functions for monsters. Most monster arms are short
 ("usually immune") but each carries its own draw, so port the dispatch plus
 the arms the sessions actually land on, and record the rest.
+
+## Iteration 42 — mintrap ported
+
+Board 2133 -> **2134**, passes 6, no regressions. Commit `4dff1e2`.
+seed4500 227 -> 228, RNG wall 7837 -> 7874.
+
+A monster stepping onto a trap did nothing at all: js/monmove.js recorded
+the case, so `trapeffect_magic_trap()`'s monster branch -- which was already
+written and draws `rn2(21)` -- could never be reached. **A ported function
+behind an unported caller is invisible; grep for the caller, not just the
+function.**
+
+Ported: `mintrap()` (trap.c:3733), `trapeffect_selector()`,
+`mon_knows_traps()` / `mon_learns_traps()` (mondata.c:1617),
+`fixed_tele_trap()`. The call goes in `postmov()`, which is where C calls it
+(monmove.c:1509) and therefore covers pets and hostiles from one site rather
+than two. `postmov()` and `m_move()` became async.
+
+Recorded: mintrap's already-trapped half (the rn2(40) escape and its
+boulder / metallivore / eel branches), and every trapeffect arm except dart
+and magic.
+
+Only +1 screen, but the wall moved 37 calls and the dispatch now exists for
+every trap type, so each future `trapeffect_*` port becomes reachable for
+monsters the moment it lands.
+
+### Standing debt (unchanged, worth doing when convenient)
+
+- `bot()` is a no-op; status painting lives in `_buildScreenOutput()`. See
+  iteration 41 -- fix it as ONE coordinated change or not at all.
+- Duplicate `wake_nearby()` in js/mon.js and js/dokick.js.
+- Duplicate `u_on_newpos()` in js/teleport.js (C's home) and js/mklev.js.

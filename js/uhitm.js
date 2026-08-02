@@ -19,11 +19,11 @@ import { rn1 } from './rng.js';
 import { dmgtype } from './mondata.js';
 import { touch_petrifies } from './dog.js';
 import { which_armor } from './worn.js';
-import { hitmsg } from './mhitu.js';
+import { hitmsg, magic_negation } from './mhitu.js';
 import { You, Your } from './pline.js';
-import { mon_nam } from './do_name.js';
+import { mon_nam, Monnam } from './do_name.js';
 import { exclam } from './zap.js';
-import { canseemon, canspotmon, glyph_at, sensemon, newsym } from './display.js';
+import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './display.js';
 import { wakeup, killed, xkilled, seemimic } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
@@ -1214,6 +1214,30 @@ export function nohandglow(mon) {
 // and is recorded. Within the mhitu branch, the corpse-petrification, silver,
 // pudding-clone and poison arms need absent subsystems and are recorded at
 // their C decision points.
+// src/uhitm.c:75 mhitm_mgc_atk_negated() — magical cancellation.
+//
+// It DRAWS: rn2(10) against three times the defender's magic negation, and
+// the draw happens whatever that value is. An attacker that has itself been
+// cancelled returns early WITHOUT drawing.
+export async function mhitm_mgc_atk_negated(magr, mdef, verbosely) {
+    /* mcan doesn't apply to youmonst; the hero can't be cancelled */
+    if (magr !== game.youmonst && magr.mcan)
+        return true;                    /* no message; attacker cancelled */
+
+    const armpro = magic_negation(mdef === game.youmonst ? null : mdef);
+    const negated = !(rn2(10) >= 3 * armpro);
+    if (negated) {
+        if (verbosely) {
+            if (mdef === game.youmonst)
+                await You('avoid harm.');
+            else if (canseemon(mdef))
+                await pline(`${Monnam(mdef)} avoids harm.`);
+        }
+        return true;
+    }
+    return false;
+}
+
 // src/uhitm.c:2684 mhitm_ad_elec() — a shock attack.
 //
 // The mhitu branch is the one a grid bug takes against the hero: the hit
@@ -1227,15 +1251,17 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
     } else if (mdef === game.youmonst) {
         /* mhitu */
         await hitmsg(magr, mattk, mhm.indx);
-        /* mhitm_mgc_atk_negated needs the cancellation rules; an
-           uncancelled monster is the ordinary case */
-        await You('get zapped!');
-        if (game.u.uprops?.SHOCK_RES) {
-            note_unported_uhitm('mhitm_ad_elec:shock_resistance');
+        if (!(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            await You('get zapped!');
+            if (game.u.uprops?.SHOCK_RES) {
+                note_unported_uhitm('mhitm_ad_elec:shock_resistance');
+                mhm.damage = 0;
+            }
+            if (magr.m_lev > rn2(20))
+                note_unported_uhitm('mhitm_ad_elec:destroy_items');
+        } else {
             mhm.damage = 0;
         }
-        if (magr.m_lev > rn2(20))
-            note_unported_uhitm('mhitm_ad_elec:destroy_items');
     } else {
         note_unported_uhitm('mhitm_ad_elec:mhitm');
     }

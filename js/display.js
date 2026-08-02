@@ -332,6 +332,17 @@ export function newsym(x, y) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
 
+    /* src/display.c:967 — `lev->waslit = (lev->lit != 0)`, inside newsym's
+       cansee() branch and BEFORE the hero-specific handling, so the hero's own
+       square is updated too. C deliberately uses lev->lit rather than
+       templit(): otherwise a non-permanently lit area just out of sight would
+       stay remembered as lit ("the light pool problem"). Without this, a
+       square that a scroll of light had just lit kept waslit clear, so
+       back_to_glyph picked S_corr over S_litcorr and the corridor stayed
+       default-coloured instead of white. */
+    if (cansee(x, y))
+        loc.waslit = loc.lit ? 1 : 0;
+
     if (game.u?.ux === x && game.u?.uy === y) {
         /* Hero. Map memory keeps the topmost non-monster layer, so an object
            underfoot is what the cell reverts to after stepping off —

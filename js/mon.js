@@ -14,6 +14,7 @@ import { mdistu } from './monmove.js';
 // with the wrong number of monsters desynchronises on its very first turn.
 
 import { game } from './gstate.js';
+import { worm_cross } from './worm.js';
 import { adjalign } from './attrib.js';
 import { couldsee, cansee } from './vision.js';
 import { finish_meating } from './dogmove.js';
@@ -359,7 +360,12 @@ export function mfndpos(mon, data, flag) {
                         /* no diagonal in or out of a doorway on the Rogue
                            level, where the display is the 1980 original */
                         || ((IS_DOOR(nowtyp) || IS_DOOR(ntyp))
-                            && Is_rogue_level())))
+                            && Is_rogue_level())
+                        /* mustn't pass between adjacent long worm segments,
+                           but can attack that way */
+                        || (m_at(x, ny) && m_at(nx, y)
+                            && worm_cross(x, y, nx, ny) && !m_at(nx, ny)
+                            && (nx !== game.u.ux || ny !== game.u.uy))))
                     continue;
 
                 if ((!lavaok || !(flag & ALLOW_WALL)) && ntyp === LAVAWALL)

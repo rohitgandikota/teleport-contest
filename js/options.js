@@ -758,9 +758,15 @@ async function doset_simple_menu() {
                 game.simple_options_help = !game.simple_options_help;
                 toggled_help = true;
             } else if (allopt[k].type === 'BoolOpt') {
-                /* boolean option */
-                parseoptions(`${bool_optval(allopt[k]) ? '!' : ''}${
-                                 allopt[k].name}`, false, false, game.rc);
+                /* boolean option. C builds "name" or "!name" and hands it to
+                   parseoptions(), which writes straight through
+                   allopt[k].addr to the live variable. Our parseoptions only
+                   fills a config result object, and the live store is
+                   game.flags keyed by option name (see the note at
+                   js/cmd.js dotogglepickup), so the flip happens here --
+                   routing it through parseoptions() updated game.rc.opts and
+                   left the menu showing the old value. */
+                game.flags[allopt[k].name] = !bool_optval(allopt[k]);
             } else if (allopt[k].name === 'pickup_types') {
                 /* compound option with a handler: src/options.c:6114
                    handler_pickup_types() just re-enters parseoptions with a

@@ -1073,3 +1073,27 @@ export async function doprinuse() {
         note_unported_invent('doprinuse:dispinv_with_action');
     return ECMD_OK;
 }
+
+
+// src/invent.c:1546 currency() — "zorkmid"/"zorkmids"; the hallucinatory
+// currency roll is recorded because it DRAWS.
+export function currency(amount) {
+    if (game.u.uprops?.HALLUC)
+        note_unported_invent('currency:hallucinatory');
+    return amount !== 1 ? 'zorkmids' : 'zorkmid';
+}
+
+// src/invent.c doprgold() — the '$' command. No draws.
+export async function doprgold() {
+    const umoney = money_cnt(game.invent || []);
+    /* hidden_gold(FALSE) — gold inside carried containers; containers are
+       not carried on this tree, so it is zero */
+    if (game.flags?.verbose !== false) {
+        const buf = !umoney ? 'Your wallet is empty'
+                            : `Your wallet contains ${umoney} ${currency(umoney)}`;
+        await pline(`${buf}.`);
+    } else {
+        note_unported_invent('doprgold:terse');
+    }
+    return ECMD_OK;
+}

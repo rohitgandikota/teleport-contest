@@ -9,7 +9,7 @@ import { seemimic } from './mon.js';
 import { game } from './gstate.js';
 import { dodrop } from './do.js';
 import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
-         doprinuse } from './invent.js';
+         doprinuse, doprgold } from './invent.js';
 import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
 import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
@@ -942,6 +942,9 @@ export async function rhack(key) {
     } else if (ch === '*') {
         // src/cmd.c cmdlist — '*' is doprinuse.
         game.context.move = ((await doprinuse()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '$') {
+        // src/cmd.c:1868 cmdlist — GOLD_SYM is doprgold.
+        game.context.move = ((await doprgold()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '@') {
         // src/options.c:9256 dotogglepickup — flips flags.pickup and says so.
         game.flags.pickup = !game.flags.pickup;

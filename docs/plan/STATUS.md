@@ -14620,3 +14620,53 @@ Instrument: log the pet's (mx,my) and movement at every dog_move entry for
 steps 34-44 and find the first turn where the number of moves differs from
 C's, which you can read off C's draw list by counting dog_goal draws per step
 (one per dog_move call).
+
+## iter 74 — seed0030's TRUE first divergence is step 36, not 44
+
+No code change; board 2200, tree clean. The delobj fix moved things, so the
+step-44 analysis in iters 71-73 was aimed downstream. Re-run of
+`node tools/stepdraws.mjs seed0030 28 46` now gives:
+
+    28-35 SAME, 36 DIFF (C=27 ours=27), 37-38 SAME, 39 DIFF, 40 SAME,
+    41 DIFF, 42-43 SAME, 44 DIFF, 45 DIFF (level build), 46 DIFF
+
+**Step 36 is the earliest, and it is a same-count/different-value divergence** —
+exactly the case where the count column tells you nothing. Draw index 7:
+
+    C   : rn2(20)=14 @ m_move(monmove.c:1963)
+    ours: rn2(24)=6
+
+Same call site, different modulus. monmove.c:1961 is
+`for (j = 0; j < jcnt; mtrk++, j++) ... if (rn2(4 * (cnt - j))) goto nxti;` —
+the backtrack check against the monster's mtrack ring. So C has
+`cnt - j == 5` and we have 6.
+
+Measured on our side (step 36's global filtered offset is 10694, the draw is
+index 10701), for the monster at (56,5):
+
+    cnt=6  j=0  jcnt=4  arg=24
+    poss = (55,4) (55,5) (56,4) (56,6) (57,4) (57,5)
+    terrain: (55,6) and (57,6) are HWALL and correctly excluded;
+             (56,6) is DOOR typ 23 with doormask 0 (D_NODOOR);
+             the rest are ROOM typ 25.  info[] all zero.
+
+So C is either `cnt=5, j=0` (it excludes one of our six) or `cnt=6, j=1` (its
+mtrack ring holds different history). Both are live; do not assume the first.
+If it is the exclusion, (56,6) is the only unusual square, but I checked
+mon.c's mfndpos door arm and a D_NODOOR doorway is NOT excluded — the closed/
+locked test needs D_CLOSED or D_LOCKED, and the diagonal-doorway test needs
+`nx != x && ny != y`, while (56,6) is orthogonal from (56,5). So the mtrack
+hypothesis is currently the stronger one.
+
+**Ruled out:** `mon_track_add` IS called from our m_move, at js/monmove.js:1286,
+mirroring monmove.c:2062. I briefly believed it missing because I ran
+`grep -n mon_track_add js/*.js | head -5` and the call was the sixth hit —
+the exact truncation trap CLAUDE.md warns about. Never pipe an existence grep
+through head.
+
+**Next:** dump both mtrack rings. Log `mtmp.mtrack` for the monster at (56,5)
+at the moment of the draw, and work out from C's rn2(20) which (cnt, j) pair it
+implies; if j=1 for C, the divergence is one entry of movement history, which
+points at an earlier turn where this monster moved and we did not (or moved
+somewhere else). This is a NON-PET monster, so the pet analysis in iters 71-73
+was the wrong subsystem entirely.

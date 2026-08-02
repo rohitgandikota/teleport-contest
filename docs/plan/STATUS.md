@@ -13021,3 +13021,56 @@ pass here. Ranked by screens behind them:
 - `buzz` (ray engine) -- seed5002 step 88, ~320 screens, most reusable.
 - level save/restore -- seed0399 step 42, ~490 screens.
 - `dopray` -- seed0106 step 10, ~256 screens; no js/pray.js exists yet.
+
+## Iteration 36 — kick_door ported; +56 board
+
+Board 1981 -> **2037**, passes 6, no regressions. Commit `e4571ab`.
+seed4500 75 -> 131; its RNG wall moved 3020 -> 3188.
+
+Switching off the parked pet bug was the right call: this was found and
+fixed inside one iteration.
+
+### Re-rank first, then pick
+
+Before starting the ray engine on the old survey I re-measured screens LOST
+per session. That changed the answer completely:
+
+    LOST  match  total  session
+    1868     85   1953  seed0030-ten-diverse-deaths
+    1739     75   1814  seed4500-knight-coverage
+     668     46    714  seed0014-dequa-fountain-explore
+     645    188    833  seed0360-wizard-world-tour
+     550     45    595  seed0002-healer-reflection-drummer
+     490     42    532  seed0399-wizard-hallu-actions
+     387     22    409  seed0004-feeding-pony
+     316     94    410  seed5002-wizard-coverage-pair   <- buzz, the old pick
+    total lost 9424
+
+`buzz` was 8th, not 1st. **Re-run this table before choosing a target**;
+it costs one command and the ranking drifts every few fixes.
+
+### What was wrong
+
+`dokick()` fell through to `note_unported('dokick:kick_terrain_or_object')`
+before ever reaching the terrain tests, so kicking a door did nothing at all.
+Ported the tail in C's order (pool/lava splash, OBJ_AT, IS_DOOR ->
+kick_door, else kick_nondoor) plus `kick_door()` (dokick.c:910),
+`kick_dumb()` (dokick.c:890), `avrg_attrib` (dokick.c:1328) and the
+`martial()` macro (dokick.c:8). `kick_object()` and `kick_nondoor()` are
+still recorded.
+
+The specific missing draw was `exercise(A_DEX, TRUE)` immediately before
+kick_door's `rnl(35)` (dokick.c:926).
+
+### Noticed, not fixed
+
+`js/dokick.js` has its own local `wake_nearby()` (line ~104), a duplicate of
+the one in js/mon.js. They may not agree; C has one. Worth reconciling when
+something else touches that file.
+
+### Next
+
+seed0030 is now the biggest at 1868 lost, but its wall (call 10609) is the
+SAME three-obj_resists-vs-two shape as the parked seed0014 pet bug, so it is
+likely the same root cause and should not be opened without a new
+instrument. Take seed0360 (645 lost, wall at 28316) or re-run the table.

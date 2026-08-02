@@ -11175,3 +11175,32 @@ GROUP followers, which spread via enexto around their leader and are the
 one placement path not yet audited. Next: log every group-member creation
 (leader species, member count, each member's final x,y) in the valley and
 check whether any lands on (22,6).
+
+## 2026-08-01 (morgue, cont. 5): C creates MORE monsters earlier — count mismatch located
+
+No code change. Board 1552/6, gates clean, tree clean.
+
+**Ruled out this iteration:**
+- Group placement (m_initsgrp/m_initlgrp): ZERO group creations happen on
+  the valley at all. Dead end, do not revisit.
+- The (22,4)/(22,7) "mnum=129 already there" reading is NOT a bug: those
+  squares hold chameleons (226/227 are M2_SHAPESHIFTER) that newcham
+  correctly shifted into mnum 129 at creation. Our shapechanger path is
+  behaving.
+
+**The measurement that matters.** Counting monster creations (newmonhp is
+one per created monster) from the valley step's start to rng 29147:
+    C has created 35 monsters. We have created 31.
+Our 31st IS the (22,6) ghost; C's 35th is already past it. So C creates
+FOUR MORE monsters than we do before this point in the fill, which is why
+its squares fill up sooner and (22,6) is occupied for it.
+
+**Next step (concrete):** dump both creation lists head-to-head for the
+valley — ours via a place_monster counter (species + x,y), C's by walking
+its rng rows and reading each newmonhp group's preceding context — and find
+the first index where the lists diverge. The four extra C monsters are
+created BEFORE the morgue fill reaches (22,6), so they are most likely in
+the script section (des.monster calls) or an earlier room's fill. Note the
+valley script's monsters are all `des.monster("ghost")`-style with NO
+coordinates, i.e. random placement via get_location — a path that can
+easily create a different NUMBER of monsters if any placement fails.

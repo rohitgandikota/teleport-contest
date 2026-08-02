@@ -18,7 +18,7 @@
 // everything after it.
 
 import { game } from './gstate.js';
-import { mergable, reorder_invent, assigninvlet, addinv } from './invent.js';
+import { mergable, reorder_invent, assigninvlet, addinv, weight } from './invent.js';
 import { rn2, rnd, rne, rn1 } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
@@ -176,6 +176,14 @@ function ini_inv_adjust_obj(trop, obj) {
         if (trop.trbless !== UNDEF_BLESS)
             obj.blessed = trop.trbless;
     }
+    /* src/u_init.c:1248 — "defined after setting otyp+quan + blessedness".
+       Outside the `if` on purpose, exactly as in the C. Missing this left
+       every starting stack carrying the weight of a single item (8 apples
+       weighed 2, 4 potions weighed 20), so inv_weight() ran low and
+       near_capacity() reported UNENCUMBERED when the hero was Burdened.
+       That silently deleted exerper()'s encumbrance exercise() every tenth
+       move, in every session. */
+    obj.owt = weight(obj);
     return stop;
 }
 

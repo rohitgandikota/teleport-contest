@@ -34,8 +34,7 @@ import { obj_resists } from './zap.js';
 import { There } from './pline.js';
 import { block_point, recalc_block_point } from './vision.js';
 import { tty_yn_function } from './tty/topl.js';
-/* is_drawbridge_wall — drawbridges are not generated yet */
-const is_drawbridge_wall = (x, y) => -1;
+import { is_drawbridge_wall } from './dbridge.js';
 
 function note_unported_lock(what) {
     (game.unported ||= new Set()).add(what);

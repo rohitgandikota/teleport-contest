@@ -715,6 +715,11 @@ export function get_level(newlevel, levnum) {
     newlevel.dlevel = levnum;
 }
 
+// src/dungeon.c:1325 dunlev() — how deep inside its own dungeon branch.
+export function dunlev(lev) {
+    return lev.dlevel;
+}
+
 // src/dungeon.c dunlevs_in_dungeon()
 export function dunlevs_in_dungeon(lev) {
     return game.dungeons[lev.dnum].num_dunlevs;

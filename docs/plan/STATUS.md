@@ -1,3 +1,40 @@
+=== dokick: kick_nondoor + kick_ouch + kickstr ported; seed0200 RNG-CLEAN ===
+seed0200's head (98.6%, div@3761, exercise attrib.c:509) was a kick at
+empty space: 'j' after ^D routed to a 'dokick:kick_nondoor' stub, so C
+drew kick_dumb()'s leading exercise(A_DEX, FALSE) rn2(2) and we drew
+nothing. Ported (this commit):
+- kick_nondoor (dokick.c:974): SDOOR (real cvt_sdoor_to_door + unblock),
+  SCORR, THRONE (mkgold/rn1/rnd_class/mksobj_at arms real; fall_through
+  noted), ALTAR (altar_wrath noted), FOUNTAIN (water_damage noted),
+  GRAVE (adjalign/mksobj_at ROCK real; disturb_grave/del_engr_at noted),
+  IRONBARS, TREE (buzz warning + swarm arm REAL: rnl(4)+enexto+makemon
+  KILLER_BEE; treefruit arm noted), SINK (klunk/pudding/dish-washer arms
+  real incl. poly_gender + MM_MALE/FEMALE; sink_backs_up noted),
+  STAIRS/LADDER/STWALL (stairway_at down -> kick_dumb, else kick_ouch),
+  plain floor -> kick_dumb.
+- kick_ouch (dokick.c:881): Ouch pline, two exercises, drawbridge check,
+  wake_nearto(25), rn2(3)+rnd(5) wounded-legs draws (state noted), rnd
+  damage + losehp(kickstr, KILLED_BY). kick_door's Levitation arm now
+  calls it for real.
+- kickstr (dokick.c:1596). dunlev (dungeon.c:1325) added to dungeon.js.
+- is_drawbridge_wall (dbridge.c:47) ported for real into dbridge.js;
+  lock.js's local -1 stub replaced with the import.
+GATES: seed0200 RNG 3822/3822 NO DIVERGENCE (screens 33->37/40, tail is
+the step-23 corpse-eat message join); seed0060 (same kick shape) div
+moved 2979 -> 3033, now blocked on dog_move like the rest of the pet
+cluster. No other div@ moved. 8/44, screens 2273, rng 195803, hang gate
+OK.
+Prompt-erase note: seed1800's step-11 stale "In what direction?" was
+getdir missing C's clear_nhwindow(WIN_MESSAGE) at cmd.c:4011 - fixed
+last commit; the same physical-erase pattern may be needed at other
+prompt exits if a session shows a stale prompt on row 0 under the
+physical pipeline.
+NEXT heads (div_after9): seed0101 set_apparxy(monmove.c:2239) 98.0%;
+dog_move cluster (0107/0060/...); seed0103 mount_steed; m_move
+(0398/0017); seed1500 next_ident; seed0009 getbones. seed2200/seed0016
+final screens are the KNOWN frozen-serializer leading-attr-space loss -
+do not chase.
+
 === PHYSICAL TERMINAL PIPELINE: flush_screen/pline/docrt now C-shaped ===
 The port used to rebuild the whole grid from live game state at every
 paint request (_buildScreenOutput). C's recorded screen is the PHYSICAL

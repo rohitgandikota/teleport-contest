@@ -28,7 +28,10 @@ import { wakeup, killed, xkilled, seemimic } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual } from './obj.js';
-import { is_ammo, is_missile, ammo_and_launcher } from './wield.js';
+import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
+import { useup } from './invent.js';
+import { rnl } from './rng.js';
+import { ART_SNICKERSNEE } from './artilist_data.js';
 import { yname, cxname } from './objnam.js';
 import { mintrap } from './trap.js';
 import { clone_mon } from './makemon.js';
@@ -52,7 +55,7 @@ import { u_wipe_engr } from './engrave.js';
 import { check_capacity, overexertion } from './hack.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool } from './mkobj.js';
-import { OCLASSES, MATERIALS, ONAMES } from './objects_data.js';
+import { OCLASSES, MATERIALS, ONAMES, SKILLS } from './objects_data.js';
 import { sgn } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { STR18 } from './const.js';
@@ -977,7 +980,7 @@ async function hmon_hitmon_do_hit(hmd, mon, obj) {
 
         if (obj.oclass === OCLASSES.WEAPON_CLASS || is_weptool(obj, game.objects)
             || obj.oclass === OCLASSES.GEM_CLASS) {
-            hmon_hitmon_weapon(hmd, mon, obj);
+            await hmon_hitmon_weapon(hmd, mon, obj);
             if (hmd.doreturn)
                 return;
         /* attacking with non-weapons */
@@ -1126,17 +1129,19 @@ function hmon_hitmon_barehands(hmd, mon) {
 // recorded, so today every weapon blow routes to the melee arm -- which is
 // the correct behaviour for an ordinary weapon and wrong only for the four
 // cases above, none of which can arise before those predicates exist.
-function hmon_hitmon_weapon(hmd, mon, obj) {
+async function hmon_hitmon_weapon(hmd, mon, obj) {
     /* is it not a melee weapon? */
-    if (note_pred('is_launcher', obj)
-        || (!hmd.thrown && (note_pred('is_missile', obj)
-                            || note_pred('is_ammo', obj)))
-        || (!hmd.thrown && !game.u.usteed && note_pred('is_pole', obj)
-            && !note_pred('is_art:SNICKERSNEE', obj))
-        || (note_pred('is_ammo', obj)
-            && (hmd.thrown !== HMON_THROWN
-                || !note_pred('ammo_and_launcher', obj)))) {
-        note_unported_uhitm('hmon_hitmon:weapon_ranged');
+    if (/* if you strike with a bow... */
+        is_launcher_w(obj)
+        /* or strike with a missile in your hand... */
+        || (!hmd.thrown && (is_missile(obj) || is_ammo(obj)))
+        /* or use a pole at short range and not mounted... */
+        || (!hmd.thrown && !game.u.usteed && is_pole(obj)
+            && obj.oartifact !== ART_SNICKERSNEE)
+        /* or throw a missile without the proper bow... */
+        || (is_ammo(obj) && (hmd.thrown !== HMON_THROWN
+                             || !ammo_and_launcher(obj, game.u.uwep)))) {
+        await hmon_hitmon_weapon_ranged(hmd, mon, obj);
     } else {
         hmon_hitmon_weapon_melee(hmd, mon, obj);
         if (hmd.doreturn)
@@ -1144,12 +1149,40 @@ function hmon_hitmon_weapon(hmd, mon, obj) {
     }
 }
 
-// The object predicates this routing needs, none of them ported. Each is
-// recorded by name so game.unported says which one a divergence wanted.
-function note_pred(name, obj) {
-    note_unported_uhitm('hmon_hitmon:' + name);
-    return false;
+// src/uhitm.c:891 hmon_hitmon_weapon_ranged() — 1-2 points, no skill use.
+async function hmon_hitmon_weapon_ranged(hmd, mon, obj) {
+    /* shade_glare() (silver/blessed passes) is recorded; a shade takes 0 */
+    if (hmd.mdat === game.mons[PMNAMES.PM_SHADE]
+        && !shade_aware(obj))
+        hmd.dmg = 0;
+    else
+        hmd.dmg = rnd(2);
+    if (hmd.material === MATERIALS.SILVER && mon_hates_silver(mon)) {
+        hmd.silvermsg = hmd.silverobj = true;
+        /* if it will already inflict dmg, make it worse */
+        hmd.dmg += rnd(hmd.dmg ? 20 : 10);
+    }
+    if (!hmd.thrown && obj === game.u.uwep
+        && obj.otyp === ONAMES.BOOMERANG && rnl(4) === 4 - 1) {
+        const more_than_1 = (obj.quan > 1);
+
+        await pline(`As you hit ${mon_nam(mon)}, `
+                    + `${more_than_1 ? 'one of ' : ''}${yname(obj)}`
+                    + ` breaks into splinters.`);
+        if (!more_than_1)
+            uwepgone(); /* set gu.unweapon */
+        useup(obj);
+        hmd.hittxt = true;
+        if (hmd.mdat !== game.mons[PMNAMES.PM_SHADE])
+            hmd.dmg++;
+    }
 }
+
+/* include/obj.h:235 is_launcher() — same one-liner js/wield.js keeps. */
+const is_launcher_w = (o) =>
+    o.oclass === OCLASSES.WEAPON_CLASS
+    && game.objects[o.otyp].oc_skill >= SKILLS.P_BOW
+    && game.objects[o.otyp].oc_skill <= SKILLS.P_CROSSBOW;
 
 // src/uhitm.c:934 hmon_hitmon_weapon_melee() — "normal" weapon usage.
 //

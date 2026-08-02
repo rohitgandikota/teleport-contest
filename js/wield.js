@@ -742,3 +742,14 @@ export async function weldmsg(obj) {
     await pline(`${Yobjnam2(obj, 'are')} welded to your ${hand}!`);
     obj.owornmask = savewornmask;
 }
+
+// src/wield.c:872 uwepgone() — the wielded weapon is gone (broken, eaten).
+export function uwepgone() {
+    if (game.u.uwep) {
+        if (game.u.uwep.oartifact && game.u.uwep.lamplit)
+            note_unported_wield('uwepgone:artifact_light');
+        setworn(null, W_WEP);
+        game.unweapon = true;
+        update_inventory();
+    }
+}

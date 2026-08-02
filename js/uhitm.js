@@ -27,7 +27,8 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './disp
 import { wakeup, killed, xkilled, seemimic } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
-import { is_ammo, is_missile } from './wield.js';
+import { bimanual } from './obj.js';
+import { is_ammo, is_missile, ammo_and_launcher } from './wield.js';
 import { yname } from './objnam.js';
 import { mintrap } from './trap.js';
 import { clone_mon } from './makemon.js';
@@ -38,7 +39,7 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          NATTK } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
-import { abon, hitval, weapon_hit_bonus, dmgval } from './weapon.js';
+import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, thick_skinned, attacktype, sticks } from './mondata.js';
@@ -802,7 +803,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         return hmd.retval;
 
     if (hmd.dmg > 0)
-        hmon_hitmon_dmg_recalc(hmd, obj);
+        await hmon_hitmon_dmg_recalc(hmd, obj);
 
     if (hmd.ispoisoned)
         note_unported_uhitm('hmon_hitmon:poison');
@@ -1170,7 +1171,7 @@ function hmon_hitmon_weapon_melee(hmd, mon, obj) {
 //
 // dbon, weapon_dam_bonus, ammo_and_launcher, PROJECTILE, weapon_type,
 // uwep_skill_type and use_skill are recorded.
-function hmon_hitmon_dmg_recalc(hmd, obj) {
+async function hmon_hitmon_dmg_recalc(hmd, obj) {
     let dmgbonus = 0, strbonus, absbonus;
 
     if (hmd.get_dmg_bonus) {
@@ -1178,27 +1179,37 @@ function hmon_hitmon_dmg_recalc(hmd, obj) {
            weapons use it as-is */
         dmgbonus = game.u.udaminc || 0;
         if (hmd.thrown !== HMON_THROWN
-            || !obj || !game.uwep
-            || !note_unported_uhitm('dmg_recalc:ammo_and_launcher')) {
+            || !obj || !game.u.uwep
+            || !ammo_and_launcher(obj, game.u.uwep)) {
             strbonus = dbon();
             absbonus = Math.abs(strbonus);
             if (hmd.twohits)
                 strbonus = (((3 * absbonus + 2) / 4) | 0) * sgn(strbonus);
-            else if (hmd.thrown === HMON_MELEE && game.uwep
-                     && note_unported_uhitm('dmg_recalc:bimanual'))
+            else if (hmd.thrown === HMON_MELEE && game.u.uwep
+                     && bimanual(game.u.uwep))
                 strbonus = (((3 * absbonus + 1) / 2) | 0) * sgn(strbonus);
             dmgbonus += strbonus;
         }
     }
 
     if (hmd.use_weapon_skill) {
-        note_unported_uhitm('dmg_recalc:weapon_dam_bonus');
+        let skillwep = obj;
+
+        /* PROJECTILE() null-guards in C: bare-handed hits pass obj null */
+        if (obj && (is_ammo(obj) || is_missile(obj))
+            && ammo_and_launcher(obj, game.u.uwep))
+            skillwep = game.u.uwep;
+        dmgbonus += weapon_dam_bonus(skillwep);
 
         /* hit for more than minimal damage (before being adjusted for
            damage or skill bonus) trains the skill toward future
            enhancement */
-        if (hmd.train_weapon_skill)
-            note_unported_uhitm('dmg_recalc:use_skill');
+        if (hmd.train_weapon_skill) {
+            /* [this assumes that `!thrown' implies wielded...] */
+            const wtype = hmd.thrown ? weapon_type(skillwep)
+                                     : uwep_skill_type();
+            await use_skill(wtype, 1);
+        }
     }
 
     /* apply combined damage+strength and skill bonuses */

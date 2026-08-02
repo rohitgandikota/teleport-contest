@@ -37,6 +37,8 @@ import { W_ARMS, W_ARMG, W_WEP, NO_WEAPON_WANTED, NEED_WEAPON,
          NEED_RANGED_WEAPON, NEED_HTH_WEAPON, NEED_PICK_AXE, NEED_AXE,
          NEED_PICK_OR_AXE } from './const.js';
 import { ACURR } from './attrib.js';
+import { You_feel } from './pline.js';
+import { P_LAST_SPELL } from './const.js';
 import { A_STR, A_DEX } from './const.js';
 import { AKLYS_LIM } from './const.js';
 import { ONAMES, OCLASSES, MATERIALS, SKILLS } from './objects_data.js';
@@ -1055,3 +1057,108 @@ export function setmnotwielded(mon, obj) {
         mon.mw = null; /* MON_NOWEP */
     obj.owornmask = (obj.owornmask ?? 0) & ~W_WEP;
 }
+
+// src/weapon.c uwep_skill_type()
+function uwep_skill_type() {
+    if (game.u.twoweap)
+        return P_TWO_WEAPON_COMBAT;
+    return weapon_type(game.u.uwep);
+}
+
+// src/weapon.c weapon_dam_bonus() — the DAMAGE adjustment from skill.
+// Draws nothing; three ladders plus the riding rider.
+export function weapon_dam_bonus(weapon) {
+    let type, skill, bonus = 0;
+
+    const wep_type = weapon_type(weapon);
+    /* use two weapon skill only if attacking with one of the wielded ones */
+    type = (game.u.twoweap
+            && (weapon === game.u.uwep || weapon === game.u.uswapwep))
+               ? P_TWO_WEAPON_COMBAT
+               : wep_type;
+    if (type === P_NONE) {
+        bonus = 0;
+    } else if (type <= P_LAST_WEAPON) {
+        switch (P_SKILL(type)) {
+        default: /* impossible("weapon_dam_bonus: bad skill") */
+        case P_ISRESTRICTED:
+        case P_UNSKILLED:
+            bonus = -2;
+            break;
+        case P_BASIC:
+            bonus = 0;
+            break;
+        case P_SKILLED:
+            bonus = 1;
+            break;
+        case P_EXPERT:
+            bonus = 2;
+            break;
+        }
+    } else if (type === P_TWO_WEAPON_COMBAT) {
+        skill = P_SKILL(P_TWO_WEAPON_COMBAT);
+        if (P_SKILL(wep_type) < skill)
+            skill = P_SKILL(wep_type);
+        switch (skill) {
+        default:
+        case P_ISRESTRICTED:
+        case P_UNSKILLED:
+            bonus = -3;
+            break;
+        case P_BASIC:
+            bonus = -1;
+            break;
+        case P_SKILLED:
+            bonus = 0;
+            break;
+        case P_EXPERT:
+            bonus = 1;
+            break;
+        }
+    } else if (type === P_BARE_HANDED_COMBAT) {
+        bonus = P_SKILL(type);
+        bonus = Math.max(bonus, P_UNSKILLED) - 1; /* unskilled => 0 */
+        bonus = Math.trunc((bonus + 1) * (martial_bonus() ? 3 : 1) / 2);
+    }
+
+    /* KMH -- Riding gives some thrusting damage */
+    if (game.u.usteed && type !== P_TWO_WEAPON_COMBAT) {
+        switch (P_SKILL(P_RIDING)) {
+        case P_ISRESTRICTED:
+        case P_UNSKILLED:
+            break;
+        case P_BASIC:
+            break;
+        case P_SKILLED:
+            bonus += 1;
+            break;
+        case P_EXPERT:
+            bonus += 2;
+            break;
+        }
+    }
+
+    return bonus;
+}
+
+// src/weapon.c:1130 give_may_advance_msg()
+async function give_may_advance_msg(skill) {
+    await You_feel(`more confident in your ${
+        (skill === P_NONE) ? ''
+            : (skill <= P_LAST_WEAPON) ? 'weapon '
+                : (skill <= P_LAST_SPELL) ? 'spell casting '
+                    : 'fighting '}skills.`);
+}
+
+// src/weapon.c use_skill() — practice toward the next skill level.
+export async function use_skill(skill, degree) {
+    if (skill !== P_NONE
+        && P_SKILL(skill) !== P_ISRESTRICTED) {
+        const advance_before = can_advance(skill, false);
+        game.u.weapon_skills[skill].advance += degree;
+        if (!advance_before && can_advance(skill, false))
+            await give_may_advance_msg(skill);
+    }
+}
+
+export { uwep_skill_type };

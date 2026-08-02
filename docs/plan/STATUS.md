@@ -14371,3 +14371,44 @@ someone consolidates these, put it in trap.js and update all three call sites.
 (`for s in ...; do node tools/screendiff.mjs seed0002 $s | grep -c '^ *[0-9]* >'`)
 to find it, then keep walking. Do NOT go back to step 96's rn2(19) until the
 screens before it match.
+
+## iter 68 — scroll of light, do_clear_area, waslit (+2; iter total 2173 -> 2185)
+
+Board **2183 -> 2185** (99bd8fa), RNG **+57**. seed0002 step 96 now matches on
+all 1920 cells. Screen-diff-first worked again: after the trap/menu fixes the
+first divergence moved to step 96, which turned out to be the SCR_LIGHT effect
+we were recording as unported.
+
+Landed: `seffect_light`, `litroom` (read.c:2491), `set_lit`, and
+`do_clear_area` (vision.c:2107). Radius 5, or 9 blessed. Recorded rather than
+guessed: do_clear_area's off-hero arm (needs `view_from`, and it would change
+WHICH squares are affected), litroom's darkening arm, the confused
+yellow/black-light arm, set_lit's gremlin list.
+
+`circle_data`/`circle_start` ALREADY existed at the top of js/vision.js as the
+full tables — I added a duplicate and had to remove it. js/detect.js separately
+carries a TRUNCATED copy (`circle_data_findit`, radii 0..8) for findit(). Three
+copies of a C single-source table is the same trap as `special_subjs` and
+`t_at`; check before adding tables.
+
+`newsym()` never updated `waslit`. display.c:967 does
+`lev->waslit = (lev->lit != 0)` inside the cansee() branch and BEFORE the
+hero-specific handling, so the hero's own square is covered too. C uses
+`lev->lit` and not `templit()` deliberately, to stop an out-of-sight light pool
+being remembered as lit. Without it, squares the scroll had just lit kept
+waslit clear and back_to_glyph chose S_corr over S_litcorr.
+
+**Verified equivalent, do not "fix":** our CORR rule
+`(waslit || lit_corridor) && (waslit || cansee)` is exactly C's
+back_to_glyph (display.c:2302) plus map_background's downgrade
+(display.c:242, `if (!cansee && !waslit)`). I checked all four cases.
+
+**The open lead: our lit area is bigger than C's.** From step 98 on, four
+corridor cells (r8c69, r9c69, r11c66, r11c67) are S_litcorr for us and S_corr
+for C, and at step 105 we additionally reveal a wall run at row 6 and show an
+OPEN door where C shows a closed one. All of it says we lit/revealed squares C
+did not. Radius is NOT the cause: the scroll is uncursed (blessed=0, cursed=0)
+so both use 5, and the cells are inside that circle. That leaves
+`couldsee()` — do_clear_area filters on couldsee, and ours is likely more
+permissive than C's around wall corners. Next step: compare js/vision.js
+couldsee against vision.c for the squares above, with the hero at (70,11).

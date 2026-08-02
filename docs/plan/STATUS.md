@@ -15272,3 +15272,55 @@ search js/monmove.js and js/mon.js for `rn2(7)` and `rnd(10)` and see which
 post-move path fires them.
 
 seed2200 is 2 screens from passing; this remains worth finishing.
+
+## iter 90 — seed2200 traced to onscary/Elbereth; two concrete sub-bugs named
+
+Board 2249, passes 7, tree clean, no code change. Probes reverted.
+
+**Traced seed2200's two extra draws to their exact source** by stack-tracing
+rn2/rnd at the known draw index (step 228's global offset is 3001, so the extras
+are 3011 and 3012):
+
+    DRAW n=3011 rn2(7)   at distfleeck (js/monmove.js:900)
+    DRAW n=3012 rnd(10)  at distfleeck (js/monmove.js:900)
+
+That line is `monflee(mtmp, rnd(rn2(7) ? 10 : 100), true, true)`, which is C's
+verbatim. The draws are correct FOR THAT BRANCH — the bug is that we ENTER it.
+A probe on the condition gives:
+
+    SCARED at(23,9) sawscary=true flees=false bravegrem=false peaceful=1 sanct=false
+
+So `onscary(hero's square)` is true for us and false for C, i.e. we believe
+there is an "Elbereth" engraving under the hero and C does not.
+
+**Sub-bug 1 — onscary is missing C's position clause.** C ends with
+
+    return (sengr_at("Elbereth", x, y, TRUE)
+            && ((u.ux == x && u.uy == y)
+                || (Displaced && mtmp->mux == x && mtmp->muy == y)));
+
+js/monmove.js just returns `!!sengr_at(...)`. An Elbereth ANYWHERE scares a
+monster looking at that square, not only one under the hero (or under the
+monster's displaced image). Real bug; does not explain THIS case, since x,y
+here IS the hero's square. (There is also a dead `return false;` after it.)
+
+**Sub-bug 2 — sengr_at's `strict` means the wrong thing.** C:
+
+    strict ? (strstri(ep->engr_txt[actual_text], s) != 0)
+           : (strstri(ep->engr_txt[remembered_text], s) != 0)
+
+BOTH arms are substring searches; `strict` selects WHICH TEXT — actual versus
+remembered — not exact-vs-substring. js/engrave.js does
+`strict ? exact-equality : includes`, which is a different predicate entirely.
+
+**But neither explains the divergence, and this matters:** our exact-match is
+STRICTER than C's substring, so it cannot make us return true where C returns
+false. The remaining explanation is that **our engraving text has not degraded
+the way C's has** — C's actual text is presumably scuffed (e.g. "Elber th") so
+its strstri fails, while ours is still a pristine "Elbereth". Look at
+wipe_engr_at / the walk-over degradation path in js/engrave.js next, and at
+whether we model actual vs remembered text at all (we appear to store a single
+`engr_txt` string).
+
+Fix order matters: correcting sub-bug 2 alone makes this case WORSE (substring
+matches more often than exact). Do the degradation first.

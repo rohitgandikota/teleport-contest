@@ -11204,3 +11204,37 @@ the script section (des.monster calls) or an earlier room's fill. Note the
 valley script's monsters are all `des.monster("ghost")`-style with NO
 coordinates, i.e. random placement via get_location — a path that can
 easily create a different NUMBER of monsters if any placement fails.
+
+## 2026-08-01 (morgue, cont. 6): shapechangers confirmed; retracting the "4 monsters" count
+
+No code change. Board 1552/6, gates clean, tree clean.
+
+**Retracting last entry's "C creates 35, we create 31".** Those two counts
+used DIFFERENT start bounds (I counted C from bounds[164] and ours from the
+level's first creation). Recounted properly, both sides' newmonhp sequences
+have the SAME shape through the whole region, including the paired
+shapechanger draws:
+    C#31 d(15,8) [chameleon] -> C#32 d(7,8) [its new form]
+    ours NMH#31 mndx=226     -> NMH#32 mndx=129
+and a direct rng dump of 29075-29146 matches C draw for draw, INCLUDING
+pickvampshape, mgender_from_permonst and the second newmonhp. The
+shapechanger port is correct; there is no missing-monster deficit.
+
+**The divergence is exactly one draw wide.** Everything matches through
+29146. At 29147:
+    C:    rn2(5) @ fill_zoo:384   (i.e. C moved on to the NEXT square)
+    ours: rnd(2) @ next_ident     (i.e. we created the ghost)
+C's morguemon at 29145/6 returned i=16, hd=11 -> the `i < 20` arm ->
+PM_GHOST, same as ours, and then C's makemon spent NOTHING. Re-verified
+that for a given ptr, C's makemon has only three early returns:
+debug_mongen/!rndmongen (needs !ptr — not our case), MON_AT without
+MM_ADJACENTOK, and mvitals G_GENOD.
+**So C's mvitals[PM_GHOST].mvflags must have G_GENOD/G_EXTINCT set by this
+point.** propagate() sets G_EXTINCT when born >= mbirth_limit. Ghosts are
+G_NOGEN, and propagate's extinct arm is gated on `!(geno & G_NOGEN)` — but
+the G_GENOD check in makemon is not. NEXT: count how many ghosts C has
+created on this level before 29147 (grep its rndghostname pairs) versus
+MAXMONNO, and check whether our mvitals ghost entry is being incremented
+at all — mkclass/morguemon return the permonst directly, so if our
+propagate is keyed on a different mndx for ghosts the born counter would
+never reach the limit.

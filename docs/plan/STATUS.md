@@ -14575,3 +14575,48 @@ take. Instrument by logging the pet's (mx,my) once per step for steps 30-44 and
 finding the first step where it falls behind; do not bisect on screens, the pet
 is out of the hero's sight for much of this stretch so the screens agree while
 the state does not.
+
+## iter 73 — correction: C's goal IS the hero; the pet's POSITION is what differs
+
+No code change; board 2200, tree clean.
+
+**Correction to iter 72.** I wrote that C's dog_goal found an object goal while
+ours returned UNDEF. It did not. C's step 44 draw list contains **no
+obj_resists at all** (25 draws: distfleeck, dog_goal rn2(4), then dog_move and
+mcalcmove only). dogfood() draws one obj_resists per object it evaluates, so
+zero obj_resists proves C's dog_goal found NO object in its box either — its
+goal is the hero, gtyp UNDEF, exactly like ours. Ignore the "C found an object
+goal" paragraph in iter 72; the SQSRCHRADIUS box reasoning there was built on
+that wrong premise.
+
+**What is actually different is the pet's square, and it can be pinned exactly.**
+mfndpos yields the first candidate as (px-1, py-1). Requiring j == 0 there,
+with goal (37,18) and appr 1:
+
+    (a-1)^2 + (b-1)^2 == a^2 + b^2,  a = px-37, b = py-18
+    =>  a + b == 1  =>  px + py == 56
+
+Our pet is at (43,15), so px+py = 58. C's pet is on the px+py == 56 diagonal —
+(41,15), (42,14) or (40,16) — i.e. **one diagonal step ahead of ours**, not two
+turns and not a goal difference. (42,16), where our second dog_move of step 44
+starts, is 58 as well, so the lag persists across both of our moves that turn.
+
+Other facts from C's step 44 worth having: it makes TWO dog_move sequences
+(draws 2-7 and 11-16), so C's pet also moves twice that turn; draw 11 is
+`rn2(3)`, the `omx == nix && omy == niy && !rn2(3)` arm, so C's second move
+began before the pet had committed anywhere. C spends **3** mcalcmove draws
+(18,19,20), i.e. 3 monsters on the level at step 44.
+
+**Where to look next.** Draw counts AND values match through step 43
+(`stepdraws seed0030 33 43` is all SAME), so the position drift is draw-neutral
+and happened without changing a single random number. Candidates, in the order
+I would test them: the pet's `movement` accounting (our trace shows movement
+flipping 12/24 across steps 40-44, and a pet with 24 gets two moves — an
+off-by-one there shifts the whole schedule), then any extra
+MMOVE_DONE/MMOVE_NOTHING return in our m_move, then dog_move's `nix/niy`
+commit when several candidates tie.
+
+Instrument: log the pet's (mx,my) and movement at every dog_move entry for
+steps 34-44 and find the first turn where the number of moves differs from
+C's, which you can read off C's draw list by counting dog_goal draws per step
+(one per dog_move call).

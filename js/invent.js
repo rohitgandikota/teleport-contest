@@ -1097,3 +1097,51 @@ export async function doprgold() {
     }
     return ECMD_OK;
 }
+
+
+// src/objnam.c:1787 not_fully_identified() — is anything about this object
+// still unknown? The rknown tail (erosion-proofing) needs the erodeable
+// predicates and is recorded.
+export function not_fully_identified(otmp) {
+    /* gold doesn't have any interesting attributes */
+    if (otmp.oclass === OCLASSES.COIN_CLASS)
+        return false;
+    if (!otmp.known || !otmp.dknown || !otmp.bknown
+        || !game.objects[otmp.otyp].oc_name_known)
+        return true;
+    /* include/obj.h:338 Is_box() */
+    const Is_box = (o) => o.otyp === ONAMES.LARGE_BOX || o.otyp === ONAMES.CHEST;
+    if ((!otmp.cknown && Is_container(otmp))
+        || (!otmp.lknown && Is_box(otmp)))
+        return true;
+    if (otmp.oartifact)
+        note_unported_invent('not_fully_identified:artifact');
+    return false;
+}
+
+// src/invent.c:2698 count_unidentified()
+export function count_unidentified(objchn) {
+    let unid_cnt = 0;
+    for (const obj of objchn || [])
+        if (not_fully_identified(obj))
+            ++unid_cnt;
+    return unid_cnt;
+}
+
+// src/invent.c:2711 identify_pack() — identify up to id_limit items.
+//
+// id_limit 0 means all. The "already identified" line is the one an
+// identify scroll hits once the pack is clean; the selection paths
+// (ggetobj and menu_identify) are recorded.
+export async function identify_pack(id_limit, learning_id) {
+    const unid_cnt = count_unidentified(game.invent);
+
+    if (!unid_cnt) {
+        await You(`have already identified ${
+            !learning_id ? 'all' : 'the rest'} of your possessions.`);
+    } else if (!id_limit || id_limit >= unid_cnt) {
+        note_unported_invent('identify_pack:identify_everything');
+    } else {
+        note_unported_invent('identify_pack:menu');
+    }
+}

@@ -15,7 +15,7 @@ import { do_mapping } from './detect.js';
 import { makeknown } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { You } from './pline.js';
-import { useup } from './invent.js';
+import { useup, identify_pack } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
 
@@ -160,7 +160,7 @@ async function seffect_identify(sobj) {
             if (cval === 1 && sblessed && (game.u.uluck | 0) > 0)
                 ++cval;
         }
-        note_unported_read('seffect_identify:identify_pack');
+        await identify_pack(cval, !already_known);
     }
     return true;
 }

@@ -15,7 +15,7 @@ import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     IS_OBSTRUCTED, LAVAWALL,
     P_DAGGER, P_KNIFE,
-    AM_SHRINE, Amask2align, ROOMOFFSET
+    AM_SHRINE, Amask2align, ROOMOFFSET, ALLOW_MDISP, ALLOW_M
 } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal } from './mondata.js';
@@ -1254,8 +1254,22 @@ export async function m_move(mtmp, after) {
 
     let mmoved = MMOVE_NOTHING;
 
+    /* src/monmove.c:1945 should_displace() — displacing another monster is
+       only worth it when every non-displacing path is longer. Vacuous until
+       mfndpos sets ALLOW_MDISP, but the loop below tests it as C does. */
+    const better_with_displacing = should_displace(mtmp, mfp, ggx, ggy, cnt);
+
     for (let i = 0; i < cnt; i++) {
         const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
+
+        /* src/monmove.c:1953 — a peaceful or tame monster avoids the square
+           the hero just kicked it from */
+        if (m_avoid_kicked_loc(mtmp, nx, ny))
+            continue;
+
+        if (m_at(nx, ny) && (mfp.info[i] & ALLOW_MDISP)
+            && !(mfp.info[i] & ALLOW_M) && !better_with_displacing)
+            continue;
 
         if (appr !== 0) {
             const track = mtmp.mtrack || [];
@@ -1318,6 +1332,29 @@ export async function m_move(mtmp, after) {
     }
 
     return await postmov(mtmp, ptr, omx, omy, mmoved);
+}
+
+// src/monmove.c:1070 should_displace() — is displacing a monster the only
+// way (or the shortest way) toward the goal? undesirable_disp is recorded
+// through the same gate C reads it in.
+function should_displace(mtmp, data, ggx, ggy, cnt) {
+    let shortest_with = -1, shortest_without = -1, count_without = 0;
+
+    for (let i = 0; i < cnt; i++) {
+        const nx = data.poss[i].x, ny = data.poss[i].y;
+        const ndist = dist2(nx, ny, ggx, ggy);
+        if (m_at(nx, ny) && (data.info[i] & ALLOW_MDISP)
+            && !(data.info[i] & ALLOW_M)) {
+            if (shortest_with === -1 || ndist < shortest_with)
+                shortest_with = ndist;
+        } else {
+            if (shortest_without === -1 || ndist < shortest_without)
+                shortest_without = ndist;
+            count_without++;
+        }
+    }
+    return shortest_with > -1
+           && (shortest_with < shortest_without || !count_without);
 }
 
 // src/monmove.c:1455 postmov() — everything a monster does after arriving.

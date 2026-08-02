@@ -12975,3 +12975,49 @@ wrap `dogfood()` in a logger keyed on `getRngLog().length`, printing
 `obj.otyp`, `obj.corpsenm`, the return value and `edog.hungrytime`. Keying on
 the RNG length rather than `game.moves` or a step index is what finally made
 these turns readable.
+
+## Iteration 35 — seed0014 pet: PARKED after a fourth pass
+
+Board **1981**, tree clean, no commit. **Stop working this bug.**
+
+### Where it stands (all measured, not inferred)
+
+At the wall (call 3261) the pet is at (49,3); square (48,2) holds exactly two
+objects, `CORPSE` (otyp 265, the goblin) and `ORCISH_HELM` (otyp 90), and
+(47,2) holds `SPE_HEALING` (374).
+
+Our two dogfood calls:
+
+    draw 3259  dog_move per-candidate pile walk, corpse, hungrytime 1000
+               -> CADAVER, so do_eat fires and the pet eats
+    draw 3260  dog_eat's reward check, corpse, hungrytime now 1600
+
+C makes three (3259, 3260, 3261). The arithmetic only works if C's pile at
+(48,2) has the HELM on top: helm (not food, loop continues) -> corpse (eat)
+-> dog_eat reward = 3.
+
+### The contradiction that stopped this
+
+C's `xkilled()` (mon.c:3477) runs `mondead()` (which drops inventory) at
++73, the `!rn2(6)` death-drop at +111, and `make_corpse()` LAST at +142.
+`place_object()` prepends, so the corpse ends up on TOP -- exactly the order
+we have. Every reading of the C says our pile order is right, and the draw
+count says it cannot be.
+
+This is the same shape as the wall-revelation bug: repeated C reads that each
+look correct and still contradict the recording. Per the rule that episode
+produced, **do not open this again without a new instrument.** Four passes
+have gone into it. Two produced real fixes (`delobj`'s missing obj_resists,
+`wake_nearby`'s bogus list); the last two produced nothing.
+
+Confirmed correct and not worth re-reading: `dog_eat`'s reward `dogfood`
+call, `dog_move`'s per-candidate pile walk, `dogfood`'s CORPSE branch,
+`dog_goal`'s box scan, `mfndpos` ordering, the `gg` goal struct.
+
+### Next target
+
+Go back to the STATUS survey and pick a fresh subsystem rather than a fifth
+pass here. Ranked by screens behind them:
+- `buzz` (ray engine) -- seed5002 step 88, ~320 screens, most reusable.
+- level save/restore -- seed0399 step 42, ~490 screens.
+- `dopray` -- seed0106 step 10, ~256 screens; no js/pray.js exists yet.

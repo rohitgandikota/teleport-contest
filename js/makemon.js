@@ -692,16 +692,34 @@ function m_initinv(mtmp) {
                 if (mndx !== PMNAMES.PM_SOLDIER && !rn2(3))
                     mongets(mtmp, ONAMES.BUGLE);
             }
-        } else if (ptr.msound === MSOUND.MS_PRIEST) {
+        } else if (ptr.pmidx === PMNAMES.PM_SHOPKEEPER) {
+            /* src/makemon.c:702 — key plus the healing/wand fall-through */
+            mongets(mtmp, ONAMES.SKELETON_KEY);
+            switch (rn2(4)) {
+            /* MAJOR fall through ... */
+            case 0:
+                mongets(mtmp, ONAMES.WAN_MAGIC_MISSILE);
+                /* FALLTHRU */
+            case 1:
+                mongets(mtmp, ONAMES.POT_EXTRA_HEALING);
+                /* FALLTHRU */
+            case 2:
+                mongets(mtmp, ONAMES.POT_HEALING);
+                /* FALLTHRU */
+            case 3:
+                mongets(mtmp, ONAMES.WAN_STRIKING);
+            }
+        } else if (ptr.msound === MSOUND.MS_PRIEST
+                   || quest_mon_represents_role(ptr, 'Priest')) {
             /* src/makemon.c:721 — the priest's robe, shield and purse */
             mongets(mtmp, rn2(7) ? ONAMES.ROBE
                                  : rn2(3) ? ONAMES.CLOAK_OF_PROTECTION
                                           : ONAMES.CLOAK_OF_MAGIC_RESISTANCE);
             mongets(mtmp, ONAMES.SMALL_SHIELD);
             mkmonmoney(mtmp, rn1(10, 20));
-        } else {
-            /* shopkeepers, monks, prisoners, Croesus: recorded */
-            note_unported(`m_initinv mlet=${ptr.mlet}`);
+        } else if (quest_mon_represents_role(ptr, 'Monk')) {
+            mongets(mtmp, rn2(11) ? ONAMES.ROBE
+                                  : ONAMES.CLOAK_OF_MAGIC_RESISTANCE);
         }
         break;
     case S_GIANT:
@@ -995,6 +1013,13 @@ const may_passwall = () => false;   /* needs level.flags.noteleport wall data */
 // src/quest.c quest_info() — the quest leader/nemesis for the hero's role.
 // Both are G_NOGEN, so neither can appear from rndmonst(); the lookups exist so
 // the gender branches read as C does.
+/* src/makemon.c:11 quest_mon_represents_role() — this game's quest leader
+   or nemesis standing in for a role's class monster. Role_if follows the
+   urole.name.m convention established in js/invent.js. */
+const quest_mon_represents_role = (mptr, roleName) =>
+    mptr.mlet === MONSYMS.S_HUMAN && game.urole?.name?.m === roleName
+    && (mptr.msound === MS_LEADER || mptr.msound === MS_NEMESIS);
+
 const quest_info_leader = () => pmIndexOf(game.urole?.ldrnum);
 const quest_info_nemesis = () => pmIndexOf(game.urole?.neminum);
 function pmIndexOf(name) {
@@ -1219,9 +1244,9 @@ const strongmonst = (ptr) => (ptr.mflags2 & M2_STRONG) !== 0;
 const is_lord = (ptr) => (ptr.mflags2 & MFLAGS.M2_LORD) !== 0;
 const is_prince = (ptr) => (ptr.mflags2 & MFLAGS.M2_PRINCE) !== 0;
 
-// src/quest.c — true when this monster stands in for the given role's quest
-// guardian. Every such species is G_NOGEN, so rndmonst() cannot produce one.
-const quest_mon_represents_role = () => false;
+/* quest_mon_represents_role() now has its real body above (makemon.c:11);
+   the old always-false stub assumed quest leaders could never be generated,
+   but the quest-tour sessions walk right up to them. */
 
 // src/makemon.c:481 m_initthrow() — a stack of missiles.
 function m_initthrow(mtmp, otyp, oquan) {

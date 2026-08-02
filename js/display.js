@@ -74,6 +74,13 @@ function terrain_glyph(loc, x, y) {
     return sym ? { ...g, ch: sym.ch, dec: sym.dec } : g;
 }
 
+/* src/display.c:2336 — the wall arms of back_to_glyph(). */
+function wall_glyph(loc, ch, cmap) {
+    return loc.seenv
+        ? { ch, color: NO_COLOR, dec: true, cmap }
+        : { ch: ' ', color: NO_COLOR, dec: false, cmap: CM.S_stone };
+}
+
 // ── src/display.c:2302 back_to_glyph() — terrain to cmap index + colour ──
 function back_to_glyph(loc, x, y) {
     const typ = loc.typ;
@@ -131,17 +138,21 @@ function back_to_glyph(loc, x, y) {
                  cmap: branch ? CM.S_brdnstair : CM.S_dnstair };
     }
     // Wall types → DEC line-drawing characters
-    case HWALL:     return { ch: 'q', color: NO_COLOR, dec: true, cmap: CM.S_hwall };  // ─
-    case VWALL:     return { ch: 'x', color: NO_COLOR, dec: true, cmap: CM.S_vwall };  // │
-    case TLCORNER:  return { ch: 'l', color: NO_COLOR, dec: true, cmap: CM.S_tlcorn };  // ┌
-    case TRCORNER:  return { ch: 'k', color: NO_COLOR, dec: true, cmap: CM.S_trcorn };  // ┐
-    case BLCORNER:  return { ch: 'm', color: NO_COLOR, dec: true, cmap: CM.S_blcorn };  // └
-    case BRCORNER:  return { ch: 'j', color: NO_COLOR, dec: true, cmap: CM.S_brcorn };  // ┘
-    case CROSSWALL: return { ch: 'n', color: NO_COLOR, dec: true, cmap: CM.S_crwall };  // ┼
-    case TUWALL:    return { ch: 'v', color: NO_COLOR, dec: true, cmap: CM.S_tuwall };  // ┴
-    case TDWALL:    return { ch: 'w', color: NO_COLOR, dec: true, cmap: CM.S_tdwall };  // ┬
-    case TLWALL:    return { ch: 'u', color: NO_COLOR, dec: true, cmap: CM.S_tlwall };  // ┤
-    case TRWALL:    return { ch: 't', color: NO_COLOR, dec: true, cmap: CM.S_trwall };  // ├
+    /* src/display.c:2336 — every wall arm is `ptr->seenv ? wall_angle(ptr)
+       : S_stone`. A wall the hero has never seen a FACE of draws as blank,
+       even while it is in sight: walking down a dark corridor lights the
+       corridor squares but leaves the rock beside them unmapped. */
+    case HWALL:     return wall_glyph(loc, 'q', CM.S_hwall);   // ─
+    case VWALL:     return wall_glyph(loc, 'x', CM.S_vwall);   // │
+    case TLCORNER:  return wall_glyph(loc, 'l', CM.S_tlcorn);  // ┌
+    case TRCORNER:  return wall_glyph(loc, 'k', CM.S_trcorn);  // ┐
+    case BLCORNER:  return wall_glyph(loc, 'm', CM.S_blcorn);  // └
+    case BRCORNER:  return wall_glyph(loc, 'j', CM.S_brcorn);  // ┘
+    case CROSSWALL: return wall_glyph(loc, 'n', CM.S_crwall);  // ┼
+    case TUWALL:    return wall_glyph(loc, 'v', CM.S_tuwall);  // ┴
+    case TDWALL:    return wall_glyph(loc, 'w', CM.S_tdwall);  // ┬
+    case TLWALL:    return wall_glyph(loc, 'u', CM.S_tlwall);  // ┤
+    case TRWALL:    return wall_glyph(loc, 't', CM.S_trwall);  // ├
     // src/display.c:2304 — a SECRET door looks exactly like the wall it hides
     // in, so it falls through to the HWALL/VWALL case.
     /* The rest of the terrain, from include/defsym.h with dat/symbols'

@@ -11115,3 +11115,34 @@ or (more likely) our reading of which square each logged group belongs to is
 off by one and the real difference is the count of squares that reach
 makemon at all. Count our own 384/386/389 firings and compare 14/14/20
 directly before changing any order.
+
+## 2026-08-01 (morgue, cont. 3): fill structure CONFIRMED correct; correcting my own bad data
+
+No code change. Board 1552/6, gates clean, tree clean.
+
+**Correcting the previous entry:** the "C fires the arms 14/14/20" figure was
+WRONG — it came from a hand-picked rng window (28900-30600) that cut the
+valley fill in half. Measured properly over step 164's full range
+(rng 22924-37665): **C fires 384=122, 386=122, 389=122 grave tests + 32
+epitaph draws (=154 annotated 389 lines). Ours fires 384/386/389 = 122 each.
+The square counts MATCH EXACTLY.** So fill_zoo's structure, the square
+list, the visit order and the room boxes are all correct, and the previous
+entry's "the arms straddle squares / source disagrees with the stream"
+reading was an artifact of the same truncated window. Ignore it.
+
+**Method note for future windows:** always derive the step's rng range from
+the session's own per-step draw counts (bounds[i] = sum of prior steps'
+rng lengths) instead of eyeballing a window; a short window silently
+produces convincing but false counts. This has now caused two wrong
+conclusions in a row.
+
+**Where it actually stands:** both sides visit the same 122 squares in the
+same order, all three object arms line up, and the monster species picked
+per square line up too — the divergence at rng 29147 is a single makemon
+call that C rejects and we accept. Placement, mkclass, propagate,
+mongen_order, morguemon and the fill loop are all cleared. What has NOT
+been checked: makemon's remaining early-return guards after MON_AT —
+in particular the mmflags/gpflags path (fill_zoo passes MM_ASLEEP|MM_NOGRP)
+and whether goodpos rejects a ghost on that square for a reason ours does
+not model (ghosts pass through walls; check the ACCESSIBLE/IS_ROCK test in
+goodpos against a square our flood marked roomno but C left as wall edge).

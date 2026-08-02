@@ -15786,3 +15786,42 @@ bigger total.
 
 **Judge these by RNG matched and by unported-hits shrinking, not by screens** —
 a session only gains screens once ALL its divergences are fixed.
+
+## iter 103 — soko1-2 scoped; two builders missing, port NOT started
+
+Board 2249, passes 7, tree clean, no code change. Scoping only — I ran the
+context down doing the survey and deliberately did not start a 113-line level
+port I could not finish and verify in the same iteration. A half-written
+special level is worse than none: load_special would find the name registered
+and build a wrong map instead of recording the gap.
+
+**soko1-2 (dat/soko1-2.lua, 113 lines) needs exactly two new builders:**
+
+    lspo_exclusion      MISSING   des.exclusion({type="monster-generation",
+                                                  region={5,1, 23,1}})
+    lspo_non_passwall   MISSING   des.non_passwall(selection.area(0,0,25,16))
+
+Everything else it uses already exists: lspo_door, lspo_engraving,
+selection_new, selection_rndcoord, lspo_object, lspo_trap, lspo_region_full
+(it needs the `type="zoo", filled=1, irregular=1` form), lspo_monster with
+`appear_as`, and `percent`.
+
+**lspo_non_passwall is a near-copy of lspo_non_diggable** (js/sp_lev.js) — same
+loop over the region applying a wall_info bit, with W_NONPASSWALL (0x10,
+js/const.js:1158) instead of W_NONDIGGABLE (0x08). Note the existing signature
+is `lspo_non_diggable(x1, y1, x2, y2)`, NOT a selection object, while the .lua
+passes `selection.area(...)`; check how bigrm-7's shim bridges that before
+copying it, because bigrm-7 calls `des.non_diggable()` with no arguments and may
+be masking the mismatch.
+
+**Neither builder draws**, so adding them cannot shift the RNG on its own —
+they are safe to land and measure separately from the level.
+
+**Level content notes for whoever writes it:** the draw order at the end
+matters — `selection.rndcoord(place)` is spent BEFORE `percent(25)`, and the
+percent chooses bag-of-holding vs amulet-of-reflection at that same coord; the
+Elbereth burn engraving and the cursed scare-monster scroll then go on the same
+square. The three `place:set()` coords are (16,10), (16,12), (16,14).
+
+Suggested split: land the two builders in one iteration with a score check, then
+the level itself in the next.

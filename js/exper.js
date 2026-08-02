@@ -15,6 +15,10 @@ import { find_mac } from './worn.js';
 // level 0, so not exercised at character creation.
 function enermod(en) {
     switch (game.urole?.name?.m) {
+    /* src/exper.c:28 — PM_CLERIC doubles alongside PM_WIZARD. The role's
+       male name is "Priest", not "Cleric", which is how this arm went
+       missing: the C switches on the role's PM number, not its name. */
+    case 'Priest':
     case 'Wizard':
         return 2 * en;
     case 'Healer':

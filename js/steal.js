@@ -13,6 +13,7 @@ import { pline_xy } from './pline.js';
 import { newsym } from './display.js';
 import { place_object } from './mkobj.js';
 import { stackobj, obj_extract_self } from './invent.js';
+import { flooreffects } from './do.js';
 import { droppables } from './dog.js';
 import { costly_spot } from './shk.js';
 import { W_SADDLE } from './const.js';
@@ -48,11 +49,12 @@ export async function mdrop_obj(mon, obj, verbosely) {
         /* pline_mon(mon, ...) — a message anchored at the monster */
         await pline_xy(omx, omy, `${Monnam(mon)} drops ${obj_name}.`);
 
-    /* flooreffects(obj, x, y, "fall") consumes the object when it lands in
-       water, lava or on an altar; every current drop square is plain floor. */
-    note_unported_steal('mdrop_obj:flooreffects');
-    place_object(obj, omx, omy);
-    stackobj(obj);
+    /* src/steal.c — flooreffects(obj, x, y, "fall") consumes the object when
+       it lands in water, lava or a pit; only place it when it survived */
+    if (!await flooreffects(obj, omx, omy, 'fall')) {
+        place_object(obj, omx, omy);
+        stackobj(obj);
+    }
 
     /* removing worn gear adjusts the monster's properties */
     if (mon.mhp > 0 && unwornmask)

@@ -20,7 +20,10 @@ import { pline, newsym } from './display.js';
 import { You, You_cant } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE } from './const.js';
+import { t_at, m_at, is_pool, is_lava } from './mon.js';
+import { cansee } from './vision.js';
+import { OCLASSES } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -41,6 +44,57 @@ export function do_wire_dokick(fn) { ship_object_fn = fn; }
 
 function note_unported_do(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/do.c:162 flooreffects() — what happens to an object landing at (x,y).
+// Returns true when the object is consumed (drowned, burned, plugged a pit,
+// shattered), so the caller must not place it. The common case, plain floor,
+// takes no arm, draws nothing, and returns false.
+//
+// The deep arms record, each gated on the terrain or object that would need
+// it: boulder_hits_pool and the pit-plugging boulder block, lava_damage,
+// water_damage, the teetering-hero tumble, glob merging, doaltarobj, and the
+// 5.0 hot-ground potion shatter (level.flags.temperature > 0, Gehennom).
+export async function flooreffects(obj, x, y, verb) {
+    let t, res = false;
+
+    /* C: panic("flooreffects: obj not free") */
+    /* make sure things like water_damage() have no pointers to follow;
+       this port's objects have no nobj/nexthere chain links to clear */
+    const save_bhitpos = game.bhitpos;
+    game.bhitpos = { x, y };
+
+    if (obj.otyp === ONAMES.BOULDER && (is_pool(x, y) || is_lava(x, y))) {
+        note_unported_do('flooreffects:boulder_hits_pool');
+    } else if (obj.otyp === ONAMES.BOULDER && (t = t_at(x, y)) != null
+               && (is_pit(t.ttyp) || is_hole(t.ttyp))) {
+        /* the trapped-victim damage, the plug message and delfloortrap */
+        note_unported_do('flooreffects:boulder_plug');
+    } else if (is_lava(x, y)) {
+        note_unported_do('flooreffects:lava_damage');
+    } else if (is_pool(x, y)) {
+        note_unported_do('flooreffects:water_damage');
+    } else if (u_at(x, y) && (t = t_at(x, y)) != null
+               && (is_pit(t.ttyp) || is_hole(t.ttyp))) {
+        /* C gates on uteetering_at_seen_pit(t) || uescaped_shaft(t) */
+        if (is_pit(t.ttyp)) {
+            note_unported_do('flooreffects:pit_tumble_msg');
+        } else if (ship_object_fn && ship_object_fn(obj, x, y, false)) {
+            /* ship_object prints "the item falls through the hole" */
+            res = true;
+        }
+    } else if (obj.globby) {
+        note_unported_do('flooreffects:obj_meld');
+    } else if (game.context?.mon_moving
+               && IS_ALTAR(game.level.at(x, y)?.typ) && cansee(x, y)) {
+        note_unported_do('flooreffects:doaltarobj');
+    } else if (obj.oclass === OCLASSES.POTION_CLASS
+               && (game.level?.flags?.temperature ?? 0) > 0) {
+        note_unported_do('flooreffects:hot_ground_potion');
+    }
+
+    game.bhitpos = save_bhitpos;
+    return res;
 }
 
 // src/dungeon.c stairway_at() — the staircase on this square, or null.
@@ -341,7 +395,7 @@ export async function deferred_goto() {
 // The engulfer branch, flooreffects, container impact, zombie disturbance,
 // ball dropping, shop selling, stackobj and the blind-levitation map_object
 // are recorded.
-export function dropz(obj, with_impact) {
+export async function dropz(obj, with_impact) {
     if (obj === game.u.uwep)
         setuwep(null);          /* src/do.c:810 */
     if (obj === game.u.uquiver)
@@ -352,7 +406,7 @@ export function dropz(obj, with_impact) {
     if (game.u.uswallow) {
         note_unported_do('dropz:engulfer_branch');
     } else {
-        if (note_unported_do('dropz:flooreffects'))
+        if (await flooreffects(obj, game.u.ux, game.u.uy, 'drop'))
             return;
         place_object(obj, game.u.ux, game.u.uy);
         if (with_impact)
@@ -369,8 +423,8 @@ export function dropz(obj, with_impact) {
 }
 
 // src/do.c dropy() — dropz with no impact.
-export function dropy(obj) {
-    dropz(obj, false);
+export async function dropy(obj) {
+    await dropz(obj, false);
 }
 
 // src/do.c dropx() — take it out of inventory, then put it down.
@@ -379,7 +433,7 @@ export function dropy(obj) {
 // an object on a Sokoban or level-teleporter square and RETURNS EARLY, so
 // nothing reaches the floor there; doaltarobj sets bknown when it lands on
 // an altar.
-export function dropx(obj) {
+export async function dropx(obj) {
     freeinv(obj);
     if (!game.u.uswallow) {
         /* src/do.c:298 — ship_object() sends the object down a hole or
@@ -390,7 +444,7 @@ export function dropx(obj) {
         if (IS_ALTAR(game.level.at(game.u.ux, game.u.uy)?.typ))
             note_unported_do('dropx:doaltarobj');   /* sets bknown */
     }
-    dropy(obj);
+    await dropy(obj);
 }
 
 // src/do.c drop() — the guards, then dropx().
@@ -436,7 +490,7 @@ export async function drop(obj) {
         note_unported_do('drop:levitation_and_message');
     }
     obj.how_lost = LOST_DROPPED;
-    dropx(obj);
+    await dropx(obj);
     return ECMD_TIME;
 }
 

@@ -436,6 +436,13 @@ export function pronoun_gender(mtmp, pg_flags) {
 // include/mondata.h:123 cantwield()
 export const cantwield = (ptr) => nohands(ptr) || verysmall(ptr);
 
+// include/mondata.h:129 could_twoweap() — more than one AT_WEAP attack.
+// mattk entries are 4-element arrays: [aatyp, adtyp, damn, damd].
+export const could_twoweap = (ptr) =>
+    ((ptr.mattk[0][0] === ATTKS.AT_WEAP ? 1 : 0)
+     + (ptr.mattk[1][0] === ATTKS.AT_WEAP ? 1 : 0)
+     + (ptr.mattk[2][0] === ATTKS.AT_WEAP ? 1 : 0)) > 1;
+
 // include/mondata.h:223 — golems that leave nothing behind for the listed
 // damage type.
 export const completelyburns = (ptr) =>

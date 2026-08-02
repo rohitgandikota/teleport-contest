@@ -551,6 +551,12 @@ export function Tobjnam(otmp, verb) {
 /* src/objnam.c yname() — "your <name>" when carried, "the <name>" otherwise.
    C routes the prefix through shk_your(), whose shop-ownership, monster-
    ownership and unique-corpse arms are not reached by anything ported. */
+// src/objnam.c:2378 Yname2() — capitalized variant of yname().
+export function Yname2(obj) {
+    const s = yname(obj);
+    return s ? s[0].toUpperCase() + s.slice(1) : s;   /* *s = highc(*s) */
+}
+
 export function yname(obj) {
     return `${carried(obj) ? 'your' : 'the'} ${xname(obj)}`;
 }

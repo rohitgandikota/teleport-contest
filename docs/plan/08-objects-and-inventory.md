@@ -60,8 +60,8 @@ plausible-but-wrong names that are hard to spot in a diff.
       setworn/setnotworn, setuwep/setuqwep/setuswapwep through it, dowield
       with the quiver-split prompts, doswapweapon, welded/weldmsg,
       set_twoweap/untwoweapon, and the 'w' key wired to dowield
-- [ ] `src/wield.c`: the #twoweapon toggle itself — dotwoweapon needs
-      can_twoweapon (Glib, cursed-swapwep, shield and form checks)
+- [x] `src/wield.c`: the #twoweapon toggle — can_twoweapon with every
+      refusal message, drop_uswapwep, dotwoweapon on 'X' and #twoweapon
 - [ ] **5.0:** dragon scale mail grants two extrinsic resistances; black adds
       drain resistance, green adds sickness immunity, gold is a light source
 

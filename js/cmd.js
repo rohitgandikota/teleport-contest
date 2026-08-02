@@ -72,7 +72,7 @@ import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
-import { dowieldquiver, dowield } from './wield.js';
+import { dowieldquiver, dowield, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
 
 // Direction deltas: y u k
@@ -618,6 +618,8 @@ export async function doextcmd() {
     }
     if (name === 'chat')
         return await dochat();
+    if (name === 'twoweapon')
+        return await dotwoweapon();
     if (name === 'name')
         return await docallcmd();
     if (name === 'jump')
@@ -847,6 +849,9 @@ export async function rhack(key) {
     } else if (ch === 'Q') {
         // src/cmd.c cmdlist — 'Q' is dowieldquiver.
         game.context.move = ((await dowieldquiver()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'X') {
+        // src/cmd.c:1913 cmdlist — 'X' is dotwoweapon.
+        game.context.move = ((await dotwoweapon()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Z') {
         // src/cmd.c cmdlist — 'Z' is docast.
         game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);

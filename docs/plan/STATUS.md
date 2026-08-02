@@ -38,7 +38,13 @@ seed0014 3892->3889. Both are rn2(4*(cnt-j)) modulus shifts in m_move
 because worn state is now real. diverge.mjs pins seed0030 at call 10701,
 seg 1 step 36. Chase only if a dogmove item is next anyway.
 
-NEXT, in order of blocked value: dotwoweapon needs can_twoweapon (~60L);
+UPDATE, same session: can_twoweapon/drop_uswapwep/dotwoweapon landed too,
+wired to 'X' and #twoweapon (could_twoweap and Yname2 ported with them;
+doswapweapon's tail now runs C's real can_twoweapon test). 195747 RNG,
+2306 screens, 7/44, hang-gate OK. seed0107-samurai-twoweapon-enhance
+jumped 33 -> 88 screens.
+
+NEXT, in order of blocked value:
 the dowear chain items (getobj:menu still needs the tty menu subsystem);
 goto_level:losedogs still needs mydogs/migrating_mons.
 

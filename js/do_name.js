@@ -17,7 +17,7 @@ import { rn2 } from './rng.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
-         SUPPRESS_SADDLE, has_mgivenname, MGIVENNAME } from './const.js';
+         SUPPRESS_SADDLE, SUPPRESS_IT, has_mgivenname, MGIVENNAME } from './const.js';
 import { humanoid, is_animal, mindless, pronoun_gender, type_is_pname } from './mondata.js';
 import { canspotmon } from './display.js';
 
@@ -171,9 +171,18 @@ export const mon_nam = (mtmp) => x_monnam(mtmp, ARTICLE_THE, null, 0, false);
 // for anything not tame.
 export const y_monnam = (mtmp) => x_monnam(mtmp, ARTICLE_YOUR, null, 0, false);
 
+// src/do_name.c:1054 noit_mon_nam() — ARTICLE_YOUR with "it" suppressed, so
+// an unseen pet still reads as "your kitten" rather than "it".
+export const noit_mon_nam = (mtmp) =>
+    x_monnam(mtmp, ARTICLE_YOUR, null,
+             has_mgivenname(mtmp) ? (SUPPRESS_SADDLE | SUPPRESS_IT)
+                                  : SUPPRESS_IT,
+             false);
+
 // src/do_name.c Monnam() / YMonnam() — the capitalised forms.
 export const Monnam  = (mtmp) => upstart(mon_nam(mtmp));
 export const YMonnam = (mtmp) => upstart(y_monnam(mtmp));
+export const noit_Monnam = (mtmp) => upstart(noit_mon_nam(mtmp));
 
 // src/do_name.c:1191 mon_nam_too() — name `mon`, except that when it IS
 // `other_mon` the reflexive pronoun is used instead.

@@ -15121,3 +15121,45 @@ js/tty/wintty.js's menu line rendering, not at spell.js.
 
 Remaining near-passes to check with the same per-step sweep:
 seed2200 (2 lost of 230), seed0101 (3 of 27), seed0501 (3 of 28).
+
+## iter 86 — seed0016 is UNFIXABLE: frozen-serializer limitation, PARKED
+
+Board 2248, passes 7, tree clean, no code change. This iteration proves a
+negative, which is worth as much as a fix here because it stops the next agent
+burning an iteration on it.
+
+seed0016's single remaining screen (step 26, 4 cells) is **not a bug in our
+renderer.** Probed the menu paint loop directly:
+
+    HDR offx=19 attr=1 item.attr=7
+      i=0 col=20 on=1 plainrun=false attr_n=0
+      i=1 col=21 on=1 ...  i=2 col=22 on=1 ...  i=3 col=23 on=1 ...
+
+We DO set inverse on cols 20-23. The spell header string is
+`"    Name                 Level Category     Fail Retention"`, exactly C's
+(spell.c:2102), leading four spaces included, and `attr_n` correctly stays 0 for
+a heading. The attribute is applied and then LOST in serialization:
+
+    js/terminal.js:679  let firstCol = 0;
+                  :681  if (this.grid[r][c].ch !== ' ') { firstCol = c; break; }
+                  :683  if (firstCol > 4) out += `\x1b[${firstCol}C`;
+
+`Terminal.serialize()` starts each row at its first non-space cell, so leading
+inverse SPACES cannot survive the round trip — our four inverse blanks at 20-23
+are skipped and replay plain, while C's reference frame (captured from real C
+output, not through this serializer) has them attributed. js/terminal.js is
+FROZEN, so there is no legitimate fix.
+
+This is the limitation NOTES already records for the options menu
+("a leading inverse space is unrepresentable"); seed0016 is a second instance.
+**PARKED — do not reopen.** seed0016 will sit at 35/36 permanently.
+
+Any future screen whose ONLY differences are attribute-on-space cells at the
+START of a row is the same thing. Check the paint loop once, confirm the cells
+are set, then park it rather than hunting further.
+
+**Near-passes still worth checking** (may or may not be the same class):
+seed2200 (2 lost of 230), seed0101 (3 of 27), seed0501 (3 of 28). Sweep each
+with `for s in $(seq 0 N); do node tools/screendiff.mjs <sess> $s ...` and look
+at whether the differing cells are glyph or attribute-only; glyph differences
+are real bugs, attribute-on-leading-space ones are not.

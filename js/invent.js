@@ -9,6 +9,10 @@ import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { costly_spot } from './shk.js';
 import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN } from './const.js';
 import { hides_under } from './mondata.js';
+import { worn } from './do_wear.js';
+import { empty_handed } from './wield.js';
+import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
+         W_RINGL, W_RINGR, W_AMUL } from './const.js';
 import { Hallucination } from './youprop.js';
 import { doname, an } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -1000,4 +1004,72 @@ export function update_inventory() {
         return;
 
     note_unported_invent('update_inventory:win_update_inventory');
+}
+
+
+// src/invent.c:4550 doprwep() — the ')' command. No draws.
+export async function doprwep() {
+    if (!game.u.uwep) {
+        await You(`are ${empty_handed()}.`);
+    } else {
+        await prinv(null, game.u.uwep, 0);
+        if (game.u.twoweap)
+            await prinv(null, game.u.uswapwep, 0);
+    }
+    return ECMD_OK;
+}
+
+// src/invent.c:4601 doprarm() — the '[' command.
+export async function doprarm() {
+    const lets = [W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU]
+        .map(m => worn(m)).filter(Boolean);
+
+    if (!lets.length) {
+        /* noarmor(TRUE) */
+        await You('are not wearing any armor.');
+    } else {
+        note_unported_invent('doprarm:dispinv_with_action');
+    }
+    return ECMD_OK;
+}
+
+// src/invent.c:4642 doprring() — the '=' command.
+export async function doprring() {
+    if (!worn(W_RINGL) && !worn(W_RINGR))
+        await You('are not wearing any rings.');
+    else
+        note_unported_invent('doprring:dispinv_with_action');
+    return ECMD_OK;
+}
+
+// src/invent.c:4679 dopramulet() — the '"' command.
+export async function dopramulet() {
+    if (!worn(W_AMUL))
+        await You('are not wearing an amulet.');
+    else
+        note_unported_invent('dopramulet:dispinv_with_action');
+    return ECMD_OK;
+}
+
+// src/invent.c:4715 doprtool() — the '(' command.
+export async function doprtool() {
+    const ct = (game.invent || []).filter(o => o.owornmask
+                                               || o.lamplit).length;
+    if (!ct)
+        await You('are not using any tools.');
+    else
+        note_unported_invent('doprtool:dispinv_with_action');
+    return ECMD_OK;
+}
+
+// src/invent.c:4740 doprinuse() — the '*' command: everything in use.
+export async function doprinuse() {
+    const ct = (game.invent || []).filter(o => o.owornmask
+                                               || o === game.u.uwep
+                                               || o.lamplit).length;
+    if (!ct)
+        await You('are not wearing or wielding anything.');
+    else
+        note_unported_invent('doprinuse:dispinv_with_action');
+    return ECMD_OK;
 }

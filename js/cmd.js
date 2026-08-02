@@ -8,7 +8,8 @@ import { seemimic } from './mon.js';
 
 import { game } from './gstate.js';
 import { dodrop } from './do.js';
-import { any_obj_ok } from './invent.js';
+import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
+         doprinuse } from './invent.js';
 import { dodown, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
 import { dokick_wire, ship_object } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
@@ -917,6 +918,32 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — 'o' is doopen. It reads a direction key of its
         // own, so skipping it would put the whole session out of step.
         game.context.move = (await doopen() === ECMD_TIME ? 1 : 0);
+    } else if (ch === ')') {
+        // src/cmd.c cmdlist — ')' is doprwep.
+        game.context.move = ((await doprwep()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '[') {
+        // src/cmd.c cmdlist — '[' is doprarm.
+        game.context.move = ((await doprarm()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '=') {
+        // src/cmd.c cmdlist — '=' is doprring.
+        game.context.move = ((await doprring()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '"') {
+        // src/cmd.c cmdlist — '"' is dopramulet.
+        game.context.move = ((await dopramulet()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '(') {
+        // src/cmd.c cmdlist — '(' is doprtool.
+        game.context.move = ((await doprtool()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '*') {
+        // src/cmd.c cmdlist — '*' is doprinuse.
+        game.context.move = ((await doprinuse()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '@') {
+        // src/options.c:9256 dotogglepickup — flips flags.pickup and says so.
+        game.flags.pickup = !game.flags.pickup;
+        if (game.flags.pickup)
+            note_unported_cmd('dotogglepickup:types_string');
+        else
+            await pline('Autopickup: OFF.');
+        game.context.move = 0;
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.

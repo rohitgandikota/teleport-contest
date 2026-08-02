@@ -14995,3 +14995,43 @@ keeps a stale ring and every later backtrack test reads the wrong j.
 **Not a bug, do not chase:** step 0 is +2 draws and step 2 is -2. It is the SAME
 two draws attributed to a different step; screens match either side. The same
 +2 shows in seed0360, seed0013, seed5002 and seed5006.
+
+## iter 83 — mon_track audit complete; the drift is NOT a missing clear
+
+Board 2247, tree clean. Committed c939cdb.
+
+**Audited every mon_track call site in C against ours (full grep, no window):**
+
+    C mon_track_add:   monmove.c:2062 (m_move)      -> ported js/monmove.js:1286
+                       dogmove.c:1313 (dog_move)    -> ported js/dog.js:1317
+    C mon_track_clear: monmove.c:529                -> ported js/monmove.js:762
+                       dog.c:458                    -> ported js/dog.js:1630
+                       mon.c:4394 (wake_nearto_core) -> WAS MISSING, fixed
+                       teleport.c:1683 (rloc_to_core) -> rloc not ported at all
+                       makemon.c:896 (clone_mon)      -> clone_mon not ported
+                       vault.c:226 (findgd)           -> vault not ported
+
+So the only reachable gap was wake_nearto_core, now fixed. The other three sit
+inside functions that do not exist in this tree, so there is nothing to miss
+there yet — but when rloc/clone_mon/vault land, their mon_track_clear must land
+with them. **Conclusion: the seed0030/seed4500 mtrack drift is NOT caused by a
+missing clear.** That hypothesis is closed.
+
+**Fixed anyway (c939cdb):** wake_nearto_core's tame arm was replaced wholesale
+by a note_unported, dropping BOTH `EDOG(mtmp)->whistletime = svm.moves` and
+`mon_track_clear(mtmp)`. No board movement — the arm needs petcall, which no
+public session reaches — but a held-out session that whistles for a pet will.
+
+**What that leaves for the shared mfndpos divergence.** Since the ring is
+maintained and cleared correctly, C's j=2 vs our j=0 at seed4500 step 233 means
+the monster genuinely walked a different route earlier, without changing any
+draw. Remaining candidates, none yet tested:
+- the `nix/niy` commit when several candidates tie on `j` (our loop keeps the
+  LAST best; check C keeps the same one — `chcnt`/`chi` bookkeeping),
+- `mfndpos`'s poss[] ORDER when a square is added by a later arm,
+- an earlier m_move that returned without moving where C moved (or vice versa),
+  which would shift the whole ring by one entry.
+
+Test cheaply by logging the monster's (mx,my) every turn from step 200 to 233
+on seed4500 and finding the first turn its position differs from what C's draw
+pattern implies.

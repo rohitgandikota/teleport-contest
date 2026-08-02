@@ -1,3 +1,20 @@
+=== seed0030 BOTTOM: WALL SEEN-VECTOR SPILL AT SEG1 STEP 21 ===
+The apport-gate finding stands but is DOWNSTREAM. screendiff's first
+mismatch for seed0030 is seg 1 step 21, exactly two cells: we draw the
+wall pieces at (64,10) '|' and (64,12) 'L-corner' that C leaves BLANK —
+C has not seen those wall segments yet (seenv per-segment discipline);
+we reveal them. By step 31 the same class of map/vision divergence has
+let identical keys produce hero positions 7 columns apart (C @29,5 vs
+ours @36,5 — blocked movement differs), which is what finally flips
+dog_goal's m_cansee/apport gate and parts the RNG at step 32.
+ROOT WORK ITEM: port C's wall seen-vector rules (set_seenv /
+set_wall_state, vision.c+display.c) for walls entered via corridors and
+doors; verify with screendiff seed0030 step 21 going clean, then the
+whole 11-session pet cluster and the position drift should collapse
+together. The probe kit: scratchpad/{stepdraws1,gate0030,screens0030,
+pile0030,probe0030}.mjs plus rng site tracing
+(globalThis.__rng_trace_sites).
+
 === PET CLUSTER, FINAL DIAGNOSIS: A SILENT VISION/LIT GATE, NOT PILES ===
 The 20-vs-11 obj_resists count was MISREAD (both sides matched 1+10+1
 dogfood scans across the pet's multiple move slots — pet speed 18 gives

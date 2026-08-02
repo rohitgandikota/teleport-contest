@@ -959,10 +959,18 @@ export async function rhack(key) {
     } else if (ch === '@') {
         // src/options.c:9256 dotogglepickup — flips flags.pickup and says so.
         game.flags.pickup = !game.flags.pickup;
-        if (game.flags.pickup)
-            note_unported_cmd('dotogglepickup:types_string');
-        else
+        if (game.flags.pickup) {
+            /* src/options.c:9262 — oc_to_str(flags.pickup_types) is empty
+               when no types are configured, and C then says "all". The
+               autopickup-exception suffix needs an apelist, which no
+               recorded rc defines. */
+            const ocl = game.flags.pickup_types || '';
+            if (game.apelist)
+                note_unported_cmd('dotogglepickup:exceptions');
+            await pline(`Autopickup: ON, for ${ocl || 'all'} objects.`);
+        } else {
             await pline('Autopickup: OFF.');
+        }
         game.context.move = 0;
     } else if (ch === ':') {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not

@@ -120,17 +120,13 @@ function back_to_glyph(loc, x, y) {
                      cmap: loc.horizontal ? CM.S_hcdoor : CM.S_vcdoor };
         return { ch: '~', color: NO_COLOR, dec: true, cmap: CM.S_ndoor };
     case STAIRS: {
-        /* Recorded behavior: a staircase the hero has SEEN renders yellow
-           (seed1150 '<' carries SGR 93) and stays yellow in memory, while
-           one known only from a magic map is default (seed2200 step 10's
-           unvisited '>'). Track first direct sight on the cell. */
-        if (cansee(x, y))
-            loc.stair_seen = 1;
-        const scol = loc.stair_seen ? CLR_YELLOW : NO_COLOR;
-        /* src/display.c:2345 back_to_glyph() — the cmap index does come
-           from known_branch_stairs(); only the paint keeps the recorded
-           stair_seen colour model above. */
+        /* include/defsym.h:120 — S_upstair and S_dnstair are CLR_GRAY;
+           S_brupstair and S_brdnstair are CLR_YELLOW. The colour is a
+           property of the SYMBOL, not of whether the hero has seen it: a
+           branch staircase is yellow the moment it is drawn. This used to
+           key off a `stair_seen` flag, which is not a thing C has. */
         const branch = known_branch_stairs(stairway_at(x, y));
+        const scol = branch ? CLR_YELLOW : NO_COLOR;
         if (game.level?.upstair?.x === x && game.level?.upstair?.y === y)
             return { ch: '<', color: scol, dec: false,
                      cmap: branch ? CM.S_brupstair : CM.S_upstair };

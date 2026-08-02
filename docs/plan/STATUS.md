@@ -12273,3 +12273,42 @@ screen diffs the board has gone 1764 -> 1891. Every fix has been small and
 local, and each one exposes the next within a few steps. Keep walking
 seed0014 — it is at 27/714 and the divergences are coming one per step or
 two, which suggests a long run of cheap wins rather than one big blocker.
+
+## PM_CLERIC: one root cause, three bugs
+
+Board 1891 -> 1937, passes 6. Three commits.
+
+**C switches on a PM number; our tables carry a display NAME — and the role
+whose C constant is PM_CLERIC is spelled "Priest".** That mismatch produced
+three separate bugs, two of them visible:
+
+1. **`enermod` (+45).** exper.c:28 lists PM_CLERIC alongside PM_WIZARD in the
+   2x arm. Our switch had only 'Wizard', so every Priest gained HALF the
+   spell energy C gives at each level. seed0367's status line was Pw:9(9)
+   where C had Pw:11(11).
+
+2. **`doname`'s uncursed rule (+1).** The tail of C's implicit_uncursed test
+   (objnam.c:1339) was missing three terms: both Amulet of Yendor types and
+   `!Role_if(PM_CLERIC)`. A Priest senses BUC innately so C never prints
+   "uncursed" for one; we printed it on every uncursed item.
+
+3. **`invent.js` had `Role_if` HARDCODED to `return false`** with
+   `PM_CLERIC = 0`, so every role test in that file was dead — including
+   merged()'s Priest exemption. `Blind()` was hardcoded false beside it.
+   Board did not move (no public session merges stacks while blind) but both
+   were silently wrong.
+
+Found (3) by auditing all 33 PM_CLERIC sites in the C after (1) and (2) came
+from the same root. Remaining sites worth a look if a Priest session stalls:
+invent.c:2759 and :3554/:3594, do_wear.c:487, weapon.c:1766, pickup.c,
+dothrow.c, do_name.c.
+
+**Swept for other constant-return stubs.** Only three remain
+(`is_quest_artifact`, `nartifact_exist`, `in_shop`) and each is accurate
+given the absent subsystem, unlike Role_if which had a populated role table
+sitting right there.
+
+**Also this pass:** seed0014 is now blocked at step 25 by the `O` options
+menu (doset) — a large UI port gating ~690 screens of one session, and the
+following nine keystrokes navigate inside it. Deferred as poor value per
+effort against the remaining cheap wins.

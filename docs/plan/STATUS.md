@@ -1,3 +1,14 @@
+=== thrwmu CHAIN IN PROGRESS: select_rwep + monmulti DONE, m_throw NEXT ===
+js/mthrowu.js exists now (monmulti, with its rnd(multishot) volley roll);
+select_rwep landed in weapon.js with the rwep/pwep tables, game.propellor
+trichotomy and mwelded gating. STILL NEEDED to clear mattacku:thrwmu (27%,
+the top ledger row): monshoot (C mthrowu.c:262, ~55L, uses gm.m_shot state
++ singular/obj_is_pname/some_mon_nam), m_throw (C:572, 274L flight loop),
+ohitmon (C:321), then thrwmu itself (C:1174, already read: weapon_check /
+polearm arm with dmgval+thitu — thitu EXISTS in js/trap.js — / autoreturn
+/ lined_up gate with URETREATING rn2(BOLT_LIM-dist)). lined_up is in
+js/monmove.js. Wire the AT_WEAP range2 arm of mattacku last.
+
 === LOOP CYCLE: PLAYABLE=YES ON THE BOARD; COMBAT/DROP FIDELITY SWEEP ===
 The leaderboard rescored at 3:14 PM: PLAYABLE flipped to yes (the module-
 order race fix held on the judge's Chromium). Points still show the old

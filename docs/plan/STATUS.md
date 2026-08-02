@@ -13934,3 +13934,41 @@ Next: dump our shuffled gem/potion description->colour table right after
 o_init and compare against what C's screen implies (a gray `*` and two
 colourless `!`). If the tables differ despite matching draws, the shuffle
 ALGORITHM differs (which permutation index maps where), not its inputs.
+
+## Iteration 58 — seed0399: the gem SELECTION machinery is correct
+
+Board **2171**, tree clean, no commit. Diagnosis.
+
+C's uncoloured `*` is a **gray stone** -- colour 7 (CLR_GRAY) belongs to
+LUCKSTONE (470), LOADSTONE (471), TOUCHSTONE (472), FLINT (473) and
+GENERIC_GEM. Ours at that square is WORTHLESS_ORANGE_GLASS (465). So the
+object TYPES differ, not their colours.
+
+### Ruled out this iteration
+
+Everything the selection depends on matches C:
+
+- the probability walk is character-for-character C's
+  (`while ((prob -= objects[i].oc_prob) > 0) ++i;`, mkobj.c:290 /
+  js/mkobj.js:225);
+- at runtime `oclass_prob_totals[GEM_CLASS]` is **1000** and
+  `bases[GEM_CLASS]` is **439** (FIRST_REAL_GEM), which is what C builds;
+- the gem table is in C's order -- real gems 439-460, glass 461-469, then
+  luckstone / loadstone / touchstone / flint;
+- and every draw in the whole 7133-draw level build matches.
+
+Same draw + same table + same walk = same otyp. So the object was CHOSEN
+correctly and something later put the wrong one on that square.
+
+### Where that leaves it
+
+The remaining suspect is placement or the flip. All glyphs match, so every
+square holds the right CLASS; only which individual object landed where is
+off, in 7 of ~50 cases.
+
+Next: dump our full post-build object list (otyp + x,y) and compare against
+C's screen colour-by-colour -- the colours identify C's types well enough to
+see whether ours are a permutation of C's (a flip/ordering bug) or genuinely
+different objects. If it is a permutation, look at `place_object()`'s list
+order, since flip_level walks that list and this port prepends where C
+appends.

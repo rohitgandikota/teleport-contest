@@ -12312,3 +12312,36 @@ sitting right there.
 menu (doset) — a large UI port gating ~690 screens of one session, and the
 following nine keystrokes navigate inside it. Deferred as poor value per
 effort against the remaining cheap wins.
+
+## Wizard genesis, and makemon's missing newsym
+
+Board 1937 -> 1950, passes 6. Three commits.
+
+1. **`^G` wiz_genesis was absent from rhack**, so the wizard create-monster
+   command printed "Unknown command" and the monster NAME the session typed
+   then ran as commands. Ported `create_particular`'s prompt/getlin loop, the
+   name lookup and the makemon (read.c:3372) plus `wiz_genesis`
+   (wizcmds.c:203). The modifier prefixes (leading count, saddled/sleeping/
+   invisible/hidden, tame/peaceful/hostile, gender terms, class and random
+   syntax) are recorded. **+10.**
+
+2. **`makemon` never drew the monster it created.** makemon.c:1472 newsyms
+   whenever `!in_mklev` — "make sure the mon shows up". A monster created
+   during play existed and acted but stayed invisible until an unrelated
+   redraw. **+3, and this one is not wizard-specific**: any mid-game creation
+   was affected.
+
+3. Added `Amonnam` (do_name.c:1152's capitalised a_monnam).
+
+**One honest deviation, marked in the code.** C prints the "<Monster>
+appears next to you." line from INSIDE makemon. Our makemon is sync with 23
+call sites, so converting it would ripple much further than this was worth;
+the message is emitted at the create_particular caller instead and the
+comment says so. Other makemon callers still do not announce — if a session
+ever needs one to, the right fix is to make makemon async rather than to add
+a second copy of the message.
+
+**Still parked:** seed0002's remaining single-cell colour diffs (steps 39+)
+are the object-identity question from the potion investigation — a different
+potion type at the same square, with identical rng. Not the shuffle; that was
+proved correct.

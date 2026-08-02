@@ -13892,3 +13892,45 @@ detected/mapped object) while ours renders the live object. seed0399 is the
 hallucination session, so also check whether Hallucination suppresses
 object colour in 5.0; that is a 5.0-delta question and must be read from the
 C, not assumed from 3.6 behaviour.
+
+## Iteration 57 — seed0399's 7 cells are an object-COLOUR question, not layout
+
+Board **2171**, tree clean, no commit. Diagnosis.
+
+What sits at the seven mismatched cells in our level:
+
+    (32,7)  WORTHLESS_ORANGE_GLASS  oc_color 9    C shows no colour
+    (23,8)  POT_MONSTER_DETECTION   oc_color 15   C shows no colour
+    (11,9)  WORTHLESS_GREEN_GLASS   oc_color 2    C shows no colour
+    (38,12) POT_HALLUCINATION       oc_color 6    C shows no colour
+    (22,13) FIRST_GLASS_GEM         oc_color 15   C shows no colour
+    (36,7), (59,13)  monsters 129 and 103
+
+C's raw row 8 makes the rendering rule clear:
+
+    ESC[97m ? ESC[39m  ~~ > ~~~ * ~~~ ESC[90m B ESC[39m ...
+
+C colours plenty on this screen (97, 90, 32, 33, 35) and leaves the `*` and
+the `>` with NO SGR at all -- i.e. **C's gem there is CLR_GRAY**, which the
+tty writes as default. Ours is orange.
+
+### Ruled out this iteration
+
+- **Not Hallucination.** `game.u.uprops.HALLUC` is false at that point in
+  our run, and the session's hallucination starts later.
+- **Not a missing description shuffle.** js/o_init.js DOES permute
+  `oc_color` alongside the descriptions (o_init.js:90 and :140-142), and our
+  display reads the shuffled `oc_color` (display.js:265).
+- **Not position.** Every glyph on the screen matches C, so each object is
+  on the right square; only its colour differs.
+
+### So the question is narrow
+
+Same class, same square, different colour => our object at that square is a
+different TYPE than C's, or the shuffled colour assigned to that type
+differs. Both are decided at game start, where every draw already matches.
+
+Next: dump our shuffled gem/potion description->colour table right after
+o_init and compare against what C's screen implies (a gray `*` and two
+colourless `!`). If the tables differ despite matching draws, the shuffle
+ALGORITHM differs (which permutation index maps where), not its inputs.

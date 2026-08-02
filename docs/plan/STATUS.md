@@ -13117,3 +13117,44 @@ rne/rnz/d entries -- see `isRngCall` in frozen/ps_test_runner.mjs), but
 `getRngLog().length` inside js/rng.js counts **every** entry. A probe keyed on
 the raw length never fires at the reported divergence index. Either filter the
 same way inside the probe, or key on something else entirely.
+
+## Iteration 38 — ^T teleport ported; +71 board
+
+Board 2037 -> **2108**, passes 6, no regressions. Commit `9b84d1d`.
+seed4500 131 -> 202.
+
+### The screen-diff method beat the RNG probe again
+
+Last iteration I burned the whole slot trying to instrument the RNG position
+of seed4500's extra `rnd(8)`. This iteration I ignored the RNG entirely,
+found the first diverging SCREEN (step 134), and it said:
+
+    C:  Where do you want to be teleported?
+    us: Unknown command ''.
+
+`^T` was never wired. **"Unknown command" in our output is the cheapest
+possible tell** -- C never prints it for a real command. Check the first
+diverging screen before instrumenting anything.
+
+Ported from src/teleport.c: `dotelecmd()` (:919) wizard path, `dotele()`
+(:1035) with break_the_rules, `tele()` (:842), `scrolltele()` (:850)
+controlled arm and its getpos, `teleok()`, and the plain path of `teleds()`.
+seed4500 runs `playmode:debug`, so wizard-mode ^T skips every restriction.
+
+Recorded, not guessed: teleds' ball-and-chain drag / swallowed / mimic arms;
+scrolltele's Amulet disorientation and uncontrolled destination;
+dotele's trap and non-wizard energy gates; dotelecmd's 'm'-prefix menu;
+next_to_u().
+
+### Duplicate to consolidate
+
+`u_on_newpos()` now exists in js/teleport.js (its C home) AND privately in
+js/mklev.js. Same for `wake_nearby()` in js/mon.js and js/dokick.js. Neither
+pair is known to disagree, but C has one of each.
+
+### Next
+
+Re-run the lost-screens table first. seed4500 still has ~1612 lost, and its
+next divergence is worth checking straight away -- a session this far from
+done usually has several unwired commands in a row, and each is cheap.
+The seed0360 blessorcurse lead from iteration 37 is still open and untouched.

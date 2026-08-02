@@ -15597,3 +15597,41 @@ either way.
 seed2200: 228/230, both losses on this frame. Every other lead on it is now
 closed: content identical (iter 96), width not involved (iter 95), pagination
 not involved (iter 96), menu geometry not involved (this iter).
+
+## iter 98 — seed2200 step 83: sequence measured; the menu really does not clear
+
+Board 2249, passes 7, tree clean, no code change. Probes reverted.
+
+Instrumented BOTH the menu paint and _buildScreenOutput's clear with a sequence
+marker for step 83. Order observed:
+
+    SEQ buildScreenOutput+clear      (x3)
+    SEQ menu paint offx=39 maxrow=15 npages=1     <- some earlier menu
+    SEQ menu paint offx=20 maxrow=21 npages=1     <- the inventory
+    SEQ buildScreenOutput+clear
+
+**Confirms iter 97 and kills the last of the geometry theories:** the inventory
+menu has **offx=20, maxrow=21, npages=1**, so `if (!cw.offx)
+display.clearScreen()` is FALSE and the menu path never clears. (This also
+finally supersedes the bogus `maxrow=24 npages=2` reading from iter 94 — that
+probe was reading a different window, as suspected in iter 96.)
+
+So the blanking is entirely _buildScreenOutput's. What is NOT yet explained, and
+is the next thing to pin down: a `_buildScreenOutput` clear runs BEFORE the menu
+paint and repaints message+map+status into the grid, so the map SHOULD be
+present underneath the menu — yet rows 8-14 come out blank to the left of it.
+Either that repaint is not covering the map area at this point, or the trailing
+`_buildScreenOutput` (which may belong to step 84) is what the frame captures.
+
+**Do this next:** print `game._screen_output`'s map rows immediately after the
+pre-menu _buildScreenOutput at step 83, and separately confirm which
+_buildScreenOutput call the captured frame corresponds to (add a step counter to
+the marker). That distinguishes "map repaint is empty" from "we capture the
+wrong rebuild", and they need different fixes.
+
+**Standing warning, unchanged:** two previous attempts to narrow
+_buildScreenOutput's paint sites regressed and were reverted (-10 on seed2200
+among others). Measure the full board before keeping anything here.
+
+seed2200: 228/230, both losses on this frame. Content, width, pagination and
+menu geometry are all now excluded by measurement.

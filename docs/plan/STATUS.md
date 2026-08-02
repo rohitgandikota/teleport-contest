@@ -11824,3 +11824,35 @@ Also wired `doprgold` ('$') and `currency()`.
 are probably NOT missing commands but prompts we fail to consume — worth
 checking first because a mis-consumed key desynchronises everything after it.
 Then ^T, then doswapweapon.
+
+## Miss messages, the shock attack, and a draw I wrongly assumed away
+
+Board 1740 -> 1752, passes 6. Commits a11edc7, and the mgc_atk_negated
+follow-up.
+
+Chasing the "\n"/"\r" unknown-command hits led somewhere better. Those keys
+turn out to be mostly character-generation prompts that already match; the
+real find was seed0002's first screen mismatch at step 31.
+
+1. **`missum`** had its whole message block replaced by notes, so a missed
+   melee blow said nothing at all. Ported C's three-way choice (seduction,
+   the verbose "You miss <mon>.", the unseen "You miss it.") and the wakeup.
+
+2. **`mhitm_ad_elec`** is new — the grid bug's attack on the hero. hitmu was
+   noting the entire damage type instead of dispatching it.
+
+3. **`mhitm_mgc_atk_negated` DRAWS, and I had assumed it did not.** I first
+   wrote the elec arm with a comment saying cancellation "needs the
+   cancellation rules" and skipped the call. It spends `rn2(10)` against
+   three times the defender's magic negation, unconditionally except when the
+   ATTACKER is cancelled. That one missing draw put the stream one short from
+   the first shock attack onward. Porting it moved seed0002's wall 3054 ->
+   3583 and gained 11 screens.
+
+**The lesson, again and more sharply: a helper that "just decides something"
+is exactly where an unnoticed draw hides.** Before recording a call as
+unported, grep its body for rn2/rnd/d(. The cost of checking is one grep; the
+cost of missing it is every session that reaches the call.
+
+Also fixed: doeat's corpse arm wrote through `context.victual` when
+`eatcorpse` returned 2 (tainted, used up) before that object existed.

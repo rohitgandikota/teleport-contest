@@ -388,9 +388,13 @@ export function lspo_replace_terrain(opts) {
     const fromtyp = splev_chr2typ(opts.fromterrain);
     const chance = (opts.chance === undefined) ? 100 : opts.chance;
     const r = opts.region || [];
-    const [rx1, ry1, rx2, ry2] = r;
+    /* C runs both corners through get_location(), which applies the map's
+       xstart/ystart offset; without it the scan covers the wrong columns and
+       misses matching squares at the map's right edge. */
+    const rx1 = r[0] + game.xstart, ry1 = r[1] + game.ystart;
+    const rx2 = r[2] + game.xstart, ry2 = r[3] + game.ystart;
 
-    for (let x = Math.max(1, rx1); x <= rx2; x++)
+    for (let x = Math.max(1, rx1); x <= Math.min(rx2, COLNO - 1); x++)
         for (let y = ry1; y <= ry2; y++) {
             const loc = game.level?.at(x, y);
             if (!loc || loc.typ !== fromtyp)

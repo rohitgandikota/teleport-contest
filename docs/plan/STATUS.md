@@ -13813,3 +13813,42 @@ Once it lands, seed0399 should go from 42 matched to something near its
 `In_hell()` exists in js/trap.js and (as of this commit) js/mklev.js.
 Earlier: `wake_nearby()` in mon.js/dokick.js, `u_on_newpos()` in
 teleport.js/mklev.js. C has one of each.
+
+## Iteration 55 — flip_level ported: seed0399 step 42 down to 8 cells
+
+Board **2171**, no regressions. Commit `f4d539a`.
+
+`flip_level()` (sp_lev.c:533) is ported. seed0399's step 42 went
+**106 differing cells -> 8**, with the level build still matching C exactly
+(7133 draws both sides).
+
+Two things that mattered:
+
+- This port keeps objects and monsters in FLAT LISTS, so C's grid swap of
+  `level.objects[][]` / `level.monsters[][]` is implicit once their
+  coordinates are flipped. Only the terrain cells need exchanging.
+- **The cell swap alone leaves every corner glyph mirrored.** C follows it
+  with `fix_wall_spines(1, 0, COLNO-1, ROWNO-1)`, which recomputes corner
+  and T-junction types from the neighbours. That single call took the
+  difference from 62 cells to 8.
+
+### The last 8 cells on that screen
+
+    r 7 c34   C '<'  ours '>'        the up/down stairs are swapped
+    7 more    colour-only differences on objects and monsters
+              (C shows them with DEFAULT colour, we show real colours)
+
+The stairs live on the `game.stairs` linked list, which flip_level does
+walk, and every draw matches -- so they were placed at the same coordinates
+pre-flip. Worth probing their positions either side of the flip rather than
+reasoning further.
+
+The seven colour-only cells are all objects/monsters that C renders
+colourless. seed0399 is the **hallucination** session, so check whether C
+suppresses colour under Hallucination before assuming a display bug.
+
+### Board still 2171
+
+seed0399 needs the screen to match EXACTLY before any of its 490 screens
+score, so 8 cells and 0 cells are worth the same today. Both remaining
+causes are named above.

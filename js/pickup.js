@@ -7,7 +7,9 @@
 // exceptions) is absent and recorded, never faked.
 
 import { game } from './gstate.js';
-import { addinv, prinv, obj_extract_self } from './invent.js';
+import { addinv, prinv, obj_extract_self, inv_order, let_to_name } from './invent.js';
+import { observe_object } from './o_init.js';
+import { doname } from './objnam.js';
 import { ONAMES } from './objects_data.js';
 import { newsym } from './display.js';
 import { UNENCUMBERED } from './const.js';
@@ -119,11 +121,60 @@ export async function pickup(what) {
     if (here.length === 0)
         return 0;
     if (here.length > 1) {
-        note_unported_pickup('pickup:multi_object_menu');
-        return 0;
+        const picked = await query_objlist('Pick up what?', here);
+        let n_picked = 0;
+        for (const obj of picked)
+            if ((await pickup_object(obj, obj.quan, false)) > 0)
+                n_picked++;
+        return n_picked ? 1 : 0;
     }
 
     return (await pickup_object(here[0], here[0].quan, false)) > 0 ? 1 : 0;
+}
+
+// src/pickup.c:1025 query_objlist() — the PICK_ANY menu over a pile.
+//
+// C sorts the list into class order with a heading per class, exactly as the
+// inventory menu does, and assigns a,b,c... down the list rather than reusing
+// any inventory letter. Returns the chosen objects in menu order.
+async function query_objlist(qstr, olist) {
+    const { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+            tty_display_nhwindow, tty_select_menu, tty_destroy_nhwindow,
+            ATR_NONE, ATR_INVERSE, NHW_MENU } = await import('./tty/wintty.js');
+    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, NO_COLOR, PICK_ANY }
+        = await import('./const.js');
+    const { docrt } = await import('./display.js');
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+
+    /* sortloot's class grouping: C walks flags.inv_order and emits a heading
+       for each class that has anything in the pile */
+    const bylet = new Map();
+    let let_ = 'a';
+    for (const oclass of inv_order()) {
+        const items = olist.filter(o => o.oclass === oclass);
+        if (!items.length)
+            continue;
+        tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
+                     let_to_name(oclass), MENU_ITEMFLAGS_NONE);
+        for (const o of items) {
+            if (!game.u?.ublind)
+                observe_object(o);
+            bylet.set(let_, o);
+            tty_add_menu(win, null, let_.charCodeAt(0), let_, 0, ATR_NONE,
+                         NO_COLOR, doname(o), MENU_ITEMFLAGS_NONE);
+            let_ = String.fromCharCode(let_.charCodeAt(0) + 1);
+        }
+    }
+    tty_end_menu(win, qstr);
+    await tty_display_nhwindow(win);
+
+    const ids = await tty_select_menu(win, PICK_ANY);
+    tty_destroy_nhwindow(win);
+    await docrt();
+
+    return ids.map(id => bylet.get(String.fromCharCode(id))).filter(Boolean);
 }
 
 // src/pickup.c:1803 pickup_object() — take one object off the floor.

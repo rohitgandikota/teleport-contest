@@ -233,7 +233,7 @@ export async function dolook() {
 // ---------------------------------------------------------------------------
 
 // src/decl.c flags.inv_order — the default packorder.
-function inv_order() {
+export function inv_order() {
     const O = OCLASSES;
     return [O.COIN_CLASS, O.AMULET_CLASS, O.WEAPON_CLASS, O.ARMOR_CLASS,
             O.FOOD_CLASS, O.SCROLL_CLASS, O.SPBOOK_CLASS, O.POTION_CLASS,
@@ -249,7 +249,7 @@ const CLASS_NAMES = {
     ROCK_CLASS: 'Boulders/Statues', BALL_CLASS: 'Iron balls',
     CHAIN_CLASS: 'Chains', VENOM_CLASS: 'Venoms',
 };
-function let_to_name(oclass) {
+export function let_to_name(oclass) {
     for (const [k, v] of Object.entries(OCLASSES))
         if (v === oclass && CLASS_NAMES[k]) return CLASS_NAMES[k];
     return '';

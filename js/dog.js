@@ -688,6 +688,12 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     const in_masters_sight = couldsee(omx, omy);
     const dog_has_minvent = !!droppables(mtmp);
 
+    if (process.env.DOGPROBE) {
+        const inbox = (game.level.objects || []).filter(o =>
+            o.ox >= min_x && o.ox <= max_x && o.oy >= min_y && o.oy <= max_y);
+        console.error('DG@' + omx + ',' + omy + ' n=' + inbox.length + ' '
+            + JSON.stringify(inbox.map(o => [o.otyp, o.ox, o.oy])));
+    }
     for (const obj of (game.level.objects || [])) {
         const nx = obj.ox, ny = obj.oy;
         if (nx >= min_x && nx <= max_x && ny >= min_y && ny <= max_y) {

@@ -1,3 +1,23 @@
+=== PET CLUSTER, FINAL DIAGNOSIS: A SILENT VISION/LIT GATE, NOT PILES ===
+The 20-vs-11 obj_resists count was MISREAD (both sides matched 1+10+1
+dogfood scans across the pet's multiple move slots — pet speed 18 gives
+two dog_moves some turns). The REAL first difference, attributed with
+the new opt-in rng site tracing (globalThis.__rng_trace_sites, added to
+js/rng.js, off during scoring): at the pet's LAST scanned object C draws
+dog_goal's apport gate rn2(8)@dogmove.c:554 — WHICH FAILS ANYWAY
+(apport=1 vs roll 6, so C's pet ALSO follows the hero) — while our
+short-circuit dies before the draw. The candidates that differ silently:
+in_masters_sight = couldsee(omx,omy), the LIT flags of the pet's and
+hero's squares ((!levl[omx][omy].lit || levl[u.ux][u.uy].lit)), or
+m_cansee(mtmp,nx,ny). All are non-drawing display/vision state; a lit
+divergence anywhere upstream never shows in the RNG stream until a gate
+like this one reads it.
+NEXT PROBE: truncate to 32, evaluate each gate term for the pet and the
+final scanned object; then diff the lit map row-by-row against what C's
+level gen must have produced (mklev lit fields), starting with the
+room/corridor lit bits around pet (35..37,4..6). Fix the lit source, and
+the whole 11-session pet cluster should move together.
+
 === PET-MOVE CLUSTER SOLVED TO ITS CAUSE: AN UNMERGED FLOOR PILE ===
 The chain, fully traced with tools/stepdraws (extended to seg 1 in
 scratchpad/stepdraws1.mjs): seed0030 seg1's true first-diff is STEP 32

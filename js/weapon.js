@@ -943,8 +943,8 @@ export async function mon_wield_item(mon) {
         obj = select_hwep(mon);
         break;
     case NEED_RANGED_WEAPON:
-        note_unported_weapon('mon_wield_item:select_rwep');
-        obj = null;
+        select_rwep(mon);
+        obj = game.propellor;
         break;
     case NEED_PICK_AXE:
         obj = m_carrying(mon, ONAMES.PICK_AXE);
@@ -976,7 +976,7 @@ export async function mon_wield_item(mon) {
         /* impossible("weapon_check %d for %s?") */
         return 0;
     }
-    if (obj) {
+    if (obj && obj !== hands_obj) {
         const mw_tmp = MON_WEP(mon);
 
         if (mw_tmp && mw_tmp.otyp === obj.otyp) {

@@ -105,8 +105,12 @@ export async function doquiver_core(verb) {
             note_unported_wield('doquiver_core:decline message');
             return ECMD_OK;
         }
-        /* quivering the alternate weapon, so no more uswapwep */
-        game.u.uswapwep = null;
+        /* src/wield.c:648 — quivering the alternate weapon, so no more
+           uswapwep. This must go through setuswapwep(), which clears
+           W_SWAPWEP from the object's owornmask; nulling the pointer alone
+           left the mask set, so doname kept appending
+           "(alternate weapon; not wielded)" alongside "(at the ready)". */
+        setuswapwep(null);
         note_unported_wield('doquiver_core:untwoweapon');
     }
 

@@ -11,6 +11,7 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
+import { carried } from './obj.js';
 import { game } from './gstate.js';
 import { vegetarian, name_to_monplus, type_is_pname } from './mondata.js';
 import { MFLAGS } from './monst_data.js';
@@ -443,6 +444,13 @@ export function corpse_xname(otmp, adjective, cxn_flags) {
 
 // The CORPSE arm redirects xname to cxname for the monster type; corpses on
 // this tree go through the same xname, so the redirect has nothing to change.
+/* src/objnam.c yname() — "your <name>" when carried, "the <name>" otherwise.
+   C routes the prefix through shk_your(), whose shop-ownership, monster-
+   ownership and unique-corpse arms are not reached by anything ported. */
+export function yname(obj) {
+    return `${carried(obj) ? 'your' : 'the'} ${xname(obj)}`;
+}
+
 export function singular(otmp, func) {
     const savequan = otmp.quan;
     otmp.quan = 1;
@@ -470,6 +478,9 @@ function tin_details(obj) {
 // or enchantment is KNOWN and which is oc_charged — unless it is armour or a
 // ring. That is why a +2 dart and an expensive camera show no BUC while a
 // credit card and a food ration do.
+/* include/obj.h:338 Is_box() */
+const Is_box = (o) => o.otyp === ONAMES.LARGE_BOX || o.otyp === ONAMES.CHEST;
+
 export function doname(obj) {
     const ocl = game.objects[obj.otyp];
     const known = obj.known, bknown = obj.bknown, dknown = obj.dknown;
@@ -517,6 +528,20 @@ export function doname(obj) {
                      && obj.otyp !== ONAMES.AMULET_OF_YENDOR
                      && game.urole?.name?.m !== 'Priest'))
             prefix += 'uncursed ';
+    }
+
+    /* src/objnam.c:1358 — a box whose lock state is known says so. This
+       runs after the BUC words and before greased, which is where C has it. */
+    if (obj.lknown && Is_box(obj)) {
+        if (obj.obroken)
+            /* 3.6.0 used "unlockable" here but that could be misunderstood
+               to mean "capable of being unlocked" rather than the intended
+               "not capable of being locked" */
+            prefix += 'broken ';
+        else if (obj.olocked)
+            prefix += 'locked ';
+        else
+            prefix += 'unlocked ';
     }
 
     /* src/objnam.c:1183 add_erosion_words — erodeproofing shows once rknown.

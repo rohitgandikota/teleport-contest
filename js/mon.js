@@ -1762,4 +1762,33 @@ export function newcham(mtmp, mdat, ncflags) {
     return 1;
 }
 
+// src/mon.c:4367 wake_nearby() / wake_nearto_core() — noise wakes monsters
+// within u.ulevel*20 squared distance. Draw-neutral, but the waking matters:
+// a monster left asleep moves differently on every later turn.
+export function wake_nearby(petcall) {
+    wake_nearto_core(game.u.ux, game.u.uy, game.u.ulevel * 20, petcall);
+}
 
+function wake_nearto_core(x, y, distance, petcall) {
+    for (const mtmp of (game.fmon || [])) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        if (distance === 0 || dist2(mtmp.mx, mtmp.my, x, y) < distance) {
+            /* sleep for N turns uses mtmp->mfrozen, but so does paralysis
+               so we leave mfrozen monsters alone */
+            mtmp.msleeping = 0; /* wake indeterminate sleep */
+            if (!(mtmp.data.geno & G_UNIQ))
+                mtmp.mstrategy &= ~STRAT_WAITMASK; /* wake 'meditation' */
+            if (game.context?.mon_moving || !petcall)
+                continue;
+            if (mtmp.mtame)
+                note_unported_mon('wake_nearto_core:whistletime');
+        }
+    }
+    /* disturb_buried_zombies() needs buried monsters, which nothing makes */
+}
+
+// src/mon.c:4402 wake_nearto()
+export function wake_nearto(x, y, distance) {
+    wake_nearto_core(x, y, distance, false);
+}

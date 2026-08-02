@@ -613,6 +613,10 @@ export async function doextcmd() {
        the ones whose absence puts the whole session out of step. */
     if (name === 'loot')
         return await doloot();
+    if (name === 'force') {
+        const { doforce } = await import('./lock.js');
+        return await doforce();
+    }
     if (name === 'chat')
         return await dochat();
     if (name === 'name')

@@ -29,7 +29,7 @@ import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher } from './wield.js';
-import { yname } from './objnam.js';
+import { yname, cxname } from './objnam.js';
 import { mintrap } from './trap.js';
 import { clone_mon } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -42,7 +42,10 @@ import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
-import { is_orc, unsolid, noncorporeal, thick_skinned, attacktype, sticks } from './mondata.js';
+import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype, sticks } from './mondata.js';
+import { mon_hates_silver } from './dog.js';
+import { s_suffix } from './hacklib.js';
+import { vtense } from './objnam.js';
 import { hides_under } from './mondata.js';
 import { MONSYMS } from './monst_data.js';
 import { u_wipe_engr } from './engrave.js';
@@ -885,6 +888,9 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     }
     await hmon_hitmon_msg_hit(hmd, mon, obj);
 
+    if (hmd.silvermsg)
+        await hmon_hitmon_msg_silver(hmd, mon, obj);
+
     /* src/uhitm.c:1897 -- the kill/survive tail.
        poiskilled and destroyed are separate branches, and BOTH check
        already_killed again before calling the kill, because an earlier stage
@@ -961,8 +967,13 @@ async function hmon_hitmon_do_hit(hmd, mon, obj) {
             hmd.retval = true;
             return;
         }
-        /* remember obj's name since it might end up being destroyed */
-        note_unported_uhitm('hmon_hitmon:saved_oname');
+        /* remember obj's name since it might end up being destroyed and
+           we'll want to use it after that. bare_artifactname needs a lit
+           artifact light, which no object here can be yet. */
+        if (obj.oartifact && obj.lamplit)
+            note_unported_uhitm('hmon_hitmon:bare_artifactname');
+        else
+            hmd.saved_oname = cxname(obj);
 
         if (obj.oclass === OCLASSES.WEAPON_CLASS || is_weptool(obj, game.objects)
             || obj.oclass === OCLASSES.GEM_CLASS) {
@@ -995,6 +1006,34 @@ function note_stone_missile_unported(obj) {
     return false;
 }
 const shade_aware = (o) => { note_unported_uhitm('hmon_hitmon:shade_aware'); return false; };
+
+// src/uhitm.c:1663 hmon_hitmon_msg_silver() — "Your silver X sears ...".
+async function hmon_hitmon_msg_silver(hmd, mon, obj) {
+    let fmt_head;
+    let whom = mon_nam(mon);
+
+    if (canspotmon(mon)) {
+        if (hmd.barehand_silver_rings === 1)
+            fmt_head = 'Your silver ring sears ';
+        else if (hmd.barehand_silver_rings === 2)
+            fmt_head = 'Your silver rings sear ';
+        else if (hmd.silverobj && hmd.saved_oname) {
+            fmt_head = `Your ${hmd.saved_oname.includes('silver') ? ''
+                              : 'silver '}${hmd.saved_oname} `
+                       + `${vtense(hmd.saved_oname, 'sear')} `;
+        } else
+            fmt_head = 'The silver sears ';
+    } else {
+        whom = whom[0].toUpperCase() + whom.slice(1); /* "it" -> "It" */
+        fmt_head = null; /* "%s is seared!" */
+    }
+    if (!noncorporeal(hmd.mdat) && !amorphous(hmd.mdat))
+        whom = s_suffix(whom) + ' flesh';
+    if (fmt_head === null)
+        await pline(`${whom} is seared!`);
+    else
+        await pline(`${fmt_head}${whom}!`);
+}
 
 // src/uhitm.c:1570 hmon_hitmon_stagger() — a very small chance of stunning an
 // unarmed opponent. The rnd(100) is spent BEFORE the size and hide tests, so
@@ -1148,6 +1187,13 @@ function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     } else {
         note_unported_uhitm('hmon_hitmon:special_attacks');
     }
+
+    /* src/uhitm.c:1035 — silver weapon against a silver-hater flags the
+       sear message; the extra damage itself came from dmgval's rnd(20) */
+    if (hmd.material === MATERIALS.SILVER && mon_hates_silver(mon))
+        hmd.silvermsg = hmd.silverobj = true;
+    if (obj.oartifact && obj.lamplit)
+        note_unported_uhitm('hmon_hitmon:lightobj'); /* artifact_light */
 }
 
 // src/uhitm.c:1436 hmon_hitmon_dmg_recalc() — damage, strength and skill

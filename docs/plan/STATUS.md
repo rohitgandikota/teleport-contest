@@ -13195,3 +13195,49 @@ comparison.** Bisecting steps with it costs a few calls and is reliable.
 Keep walking seed4500 with screendiff: it has gone 75 -> 131 -> 202 -> 224
 in three iterations, each time a single unported command on the critical
 path. Its next divergence is after step 224.
+
+## Iteration 40 — three fixes on seed4500's options path
+
+Board 2130 -> **2133**, passes 6, no regressions. Commits `6f04007`,
+(toggle), `652e56c`. seed4500 224 -> 227.
+
+Only the first moved the score; the other two are real correctness fixes on
+screens that still carry the two unmatchable heading cells, so they show up
+as cell-count improvements rather than points.
+
+### 1. `unmul()` collapsed NULL and "" (scored: +3)
+
+C tests the POINTER to decide whether to install the default message
+(`if (!gn.nomovemsg)`) and DEREFERENCES it to decide whether to print
+(`if (*gn.nomovemsg)`). Three states: NULL = use default, "" = say nothing,
+"text" = say text. JS has only falsy, so `!""` was true and an explicitly
+empty message got overwritten with "You can move again." and announced.
+**Every caller that sets `nomovemsg = ""` to stay silent was affected**;
+jump is one, which is how it surfaced.
+
+This is a general C-to-JS trap: wherever C tests a `char *` both as a
+pointer and as `*p`, the port needs `== null` for the first and truthiness
+for the second.
+
+### 2. The options menu's boolean toggle never took effect
+
+`doset_simple_menu()` built "name"/"!name" and called `parseoptions()`.
+C's parseoptions writes through `allopt[k].addr` to the live variable; ours
+only fills a config-result object, so the toggle updated `game.rc.opts` and
+the menu redrew with the old value. Now flips `game.flags[name]`, this
+port's single store for option values.
+
+### 3. Compound options with no handler now prompt
+
+C (options.c:8672) asks "Set <name> to what?" through getlin for any
+compound option whose `hasHandler` is No -- `fruit` is the one seed4500
+uses. Was recorded; now ported. seed4500 steps 238-242 went from 447
+differing cells to 101.
+
+### Next
+
+seed4500 step 238 still differs on ROW 22 only: C leaves the status line
+blank there and we redraw it. Same family as the iteration-33 finding that
+`docrt()` repaints the map but NOT the status until the next `bot()` --
+something in our menu teardown or getlin is calling bot() when C does not.
+Start there; it is worth ~100 cells across several steps.

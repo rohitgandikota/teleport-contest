@@ -15519,3 +15519,41 @@ empty class — compare against the `display_inventory()` path (js/invent.js), N
 lazy-heading fix in iter 67.
 
 seed2200 is still 228/230, both losses on this one frame.
+
+## iter 96 — seed2200 step 83: the menus are IDENTICAL; we clear, C overlays
+
+Board 2249, passes 7, tree clean, no code change. Another correction, and the
+finding is now unambiguous.
+
+**Dumped both frames' menu content in full.** Rows 0-20 are character-identical
+between C and us — same 21 entries, same order, same text, and both end with the
+footer `(end)`, which is the **single-page** footer. So:
+
+- **npages is 1 at render time on both sides.** My iter-94/95 pagination theory
+  is wrong; the probe that printed `npages=2 maxrow=24` must have fired for a
+  different window (two MENU lines were printed and I read the last two without
+  checking which window they belonged to). Do not trust that measurement.
+- maxcol/width is not it either (iter 95 retracted that).
+
+**What actually differs is only what is AROUND the menu:**
+
+    C     rows 8-14  : map visible to the LEFT of the menu
+          rows 22-23 : the STATUS lines are still there
+                       "St:12 Dx:12 Co:13 In:18 Wi:12 Ch:8 Neutral"
+                       "Pw:8(8) AC:9 Xp:1"
+    ours  rows 8-14  : blank left of the menu
+          rows 22-23 : blank
+
+We blank the whole screen outside the menu, including the two status rows;
+C overlays the menu on the existing screen. That is `iflags.menu_overlay`
+behaviour (wintty.c:1927-1934): C only reaches `clear_screen()` when
+`cw->offx == 10 || cw->maxrow >= rows || !iflags.menu_overlay`, and with a
+21-row menu none of those hold.
+
+**Next step:** find what clears in our path. js/tty/wintty.js:448 is
+`if (!cw.offx) display.clearScreen();` — instrument it (and any `cls()`/`docrt()`
+on the 'i' path) to print WHICH window and WHAT offx/maxrow at the moment of the
+clear, and confirm the clear is even coming from there rather than from the
+command wrapper around doinventory. The menu content needs no changes at all.
+
+seed2200: 228/230, both losses on this one frame.

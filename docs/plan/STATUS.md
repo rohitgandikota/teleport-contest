@@ -11270,3 +11270,37 @@ LEPREHALL/ZOO/TEMPLE...)) running even though makemaz took the special
 path — check whether special_done short-circuits BEFORE that block, or
 whether mkroom.c's own do_mkroom is reachable from the fill sweep. Log
 每 add_room/do_mkroom call on the valley with a stack to catch it.
+
+## 2026-08-01 (morgue, cont. 8): retracting the "6 fills / 79 extra monsters" claim
+
+No code change. Board 1552/6, gates clean, tree clean.
+
+**Retraction (third bad count in this hunt — see the method note below).**
+Last entry claimed we run 6 fill_zoo calls on the valley vs C's 3, and
+create 235 monsters vs 156. Both figures were filtered on `uz.dnum === 1`,
+which is ALL OF GEHENNOM, not the valley. Filtered correctly on
+`dnum===1 && dlevel===1`:
+    our valley fill_zoo calls: 3 (three morgues) — same as C
+    our valley newmonhp:     155  vs  C's 156
+The zoo/beehive fills are on Gehennom levels 18/20/22, generated later in
+the same session, and are not evidence of anything.
+
+**METHOD NOTE — read this before measuring anything here.** Three times now
+a hand-rolled count has produced a confident wrong conclusion in this hunt
+(the 14/14/20 window, the 35-vs-31 bounds mismatch, and now dnum-vs-dlevel).
+Every count must state and verify its filter: the rng range from the
+session's own per-step bounds, AND the level from both dnum and dlevel.
+
+**Where it stands — the entire divergence is ONE monster.** C creates 156
+on the valley, we create 155... but ours is the one that should not exist:
+C's morguemon call #9 (i=16, hd=11) creates NOTHING while #8 (i=11) and #10
+(i=3) both create ghosts from the same `i < 20` arm. Verified the hd value
+cannot change the arm taken (hd only gates the demon arm at hd>10&&i<10 and
+the vampire arm at hd>8&&i>85; i=16 satisfies neither). So C's makemon
+rejected a PM_GHOST at square (22,6) for a positional reason while ours
+accepted it, and C then makes up the count with a later creation.
+**Next:** dump C's own occupancy of (22,6) indirectly — find which earlier
+C creation landed there by walking its newmonhp groups and matching against
+our own placement list square by square. The two lists agree in species and
+count up to this point, so the FIRST square where the two placement lists
+disagree is the answer, and it must be at or before (22,6).

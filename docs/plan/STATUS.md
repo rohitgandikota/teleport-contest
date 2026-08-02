@@ -13480,3 +13480,42 @@ has to move onto it. Compare our dog_move call order against
 src/dogmove.c:1032 onward -- specifically whether dog_invent() is reached
 before or after the candidate scoring loop, since C's draw order says the
 pile walk runs first.
+
+## Iteration 47 — eatcorpse fix (+1), docall ported but not yet reaching
+
+Board 2141 -> **2142**, passes 6, no regressions.
+Commits `0d2e177` (eatcorpse), `7fa8f51` (docall/trycall).
+
+### Switched off seed0030 after three iterations
+
+C's dog_move order is `dog_invent` then `dog_goal` -- the SAME as ours
+(dogmove.c:1032), so the ordering hypothesis from iteration 46 is wrong.
+The meating fix came out of that line of work, but the remaining
+one-turn-early question is fiddly; moved to a fresh session instead.
+
+### eatcorpse's mildly-ill arm (scored +1, and closed a 754-draw step)
+
+`stepdraws seed0002 53` showed C drawing `rn2(5) @ eatcorpse:1939` then
+`rnd(8) @ eatcorpse:1942` where we drew only the rn2(5). Our arm recorded
+instead of calling `losehp(rnd(8), "cadaver")`, and its guard was missing
+C's `&& !Sick_resistance` term. **Step 53 now matches exactly, 754 draws
+on both sides.**
+
+### docall/trycall: ported, wired, still not firing
+
+seed0002 step 58: C shows `Call a ruby potion: l` and draws NOTHING (it is
+sitting in getlin); we draw 42 and execute the 'l' as a movement. So a
+whole prompt is missing and every later key is off by one command.
+
+Ported `docall()` (do_name.c:636), `docall_xname()` and `trycall()`
+(do.c:395), and wired the potion path (potion.c:1473) where js/potion.js
+had `note_unported_potion('dopotion:trycall')`. Board unchanged -- the
+branch still is not taken, so **the condition that reaches it differs**,
+not the prompt itself.
+
+Next: in js/potion.js the arm is guarded by
+`otmp.dknown && !oc_name_known` and then `game.potion_unkn`. C's dopotion
+tail (potion.c:1906-1911) instead calls `potionbreathe()` OR `trycall()`
+depending on distance and breathlessness, and the quaff path
+(potion.c:637) has its own trycall. Check WHICH C call site produces
+seed0002's prompt before adjusting the guard -- there are three.

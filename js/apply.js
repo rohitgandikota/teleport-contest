@@ -16,7 +16,9 @@ import { ustatusline } from './insight.js';
 import { You_cant, You_hear } from './pline.js';
 import { m_at } from './mon.js';
 import { rn2 } from './rng.js';
-import { isok, ECMD_CANCEL } from './const.js';
+import { isok, ECMD_CANCEL, ACCESSIBLE } from './const.js';
+import { dist2 } from './hacklib.js';
+import { cansee } from './vision.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -186,4 +188,37 @@ export async function doapply() {
 
     note_unported_apply(`apply:otyp=${obj.otyp}`);
     return ECMD_OK;
+}
+
+
+// src/apply.c:1997 is_valid_jump_pos() — can the hero jump to <x,y>?
+//
+// The first arm is the one every recorded jump takes: without a jumping
+// intrinsic the destination must be a knight's move away, distu == 5. The
+// door-trajectory tail (which decides whether a diagonal jump can leave or
+// enter a doorway) is recorded.
+export function is_valid_jump_pos(x, y, magic, showmsg) {
+    const distu = dist2(x, y, game.u.ux, game.u.uy);
+
+    if (!magic && !game.u.uprops?.JUMPING && distu !== 5)
+        return false;
+    if (distu > (magic ? 6 + magic * 3 : 9))
+        return false;
+    if (!isok(x, y))
+        return false;
+    if (!cansee(x, y))
+        return false;
+
+    const dx = x - game.u.ux, dy = y - game.u.uy;
+    if (dx && dy)
+        note_unported_apply('is_valid_jump_pos:door_trajectory');
+    return true;
+}
+
+// src/apply.c:2035 get_valid_jump_position()
+export function get_valid_jump_position(x, y) {
+    return isok(x, y)
+           && (ACCESSIBLE(game.level?.at(x, y)?.typ)
+               || game.u.uprops?.PASSES_WALLS)
+           && is_valid_jump_pos(x, y, game.jumping_is_magic, false);
 }

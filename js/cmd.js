@@ -51,7 +51,8 @@ import { dodrink } from './potion.js';
 import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
-import { getpos } from './getpos.js';
+import { getpos, getpos_sethilite } from './getpos.js';
+import { get_valid_jump_position } from './apply.js';
 import { dowear, doputon, dotakeoff, doremring, canwearobj_core } from './do_wear.js';
 import { show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -629,6 +630,10 @@ async function dojump() {
     await pline('Where do you want to jump?');
 
     const cc = { x: game.u.ux, y: game.u.uy };
+    /* src/apply.c:2062 — the cursor marks squares the jump cannot reach.
+       display_jump_positions (the tmp_at beam) is not ported; the validator
+       is, because getpos' auto-describe prints "(invalid target)" from it. */
+    getpos_sethilite(null, get_valid_jump_position);
 
     if (await getpos(cc, true, 'the desired position') < 0)
         return ECMD_OK; /* ECMD_CANCEL — user pressed ESC */

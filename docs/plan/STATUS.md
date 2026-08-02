@@ -11907,3 +11907,33 @@ more `obj_resists` (dogfood) than we do — the pet scans one more floor
 object. Same shape as the parked seed0030 puzzle, but the object sets have
 changed since pickup and corpses started working, so it is worth re-deriving
 rather than assuming it is the same cause.
+
+## The pickup menu, and where seed0002 goes next
+
+Board holds at 1752, passes 6. Commit: query_objlist.
+
+seed0002's wall at 3583 (C scanning one more floor object than us) was NOT
+the seed0030 puzzle again. Following the first differing SCREEN instead of
+the rng wall found the real gap at step 48: C raises a "Pick up what?" menu
+over a pile of three and we raised nothing, because `pickup()` handled a lone
+object and recorded every other case.
+
+Ported `query_objlist` (pickup.c:1025). The pile is grouped into
+`flags.inv_order` classes with an inverse-video heading per class; selectors
+run a,b,c... down the list rather than reusing inventory letters. seed0002
+step 48 now renders C's menu exactly and its rng match went 4525 -> 4688.
+
+**Two API traps hit while wiring it, both worth knowing:**
+- `ATR_NONE`/`ATR_INVERSE` live in **js/tty/wintty.js**, not js/const.js.
+  Importing them from const.js yields `undefined`, which silently renders
+  headings without inverse video.
+- `tty_add_menu(win, glyphinfo, identifier, ch, ...)` wants the selector
+  CHARACTER in `ch` and a truthy `identifier`; passing the char code in `ch`
+  prints "97 - 11 darts".
+
+**Next, precisely located:** seed0002 step 50 differs in ONE cell — the
+status line reads `HP:11(13)` in C and `HP:13(13)` for us. Probes confirm our
+hero takes both points of shock damage (mdamageu fires twice, uhp 13 -> 12 ->
+11), so the gap is that we heal it back and C does not. Look at
+`regen_hp`/the moveloop healing arm in allmain.c against ours; a Healer at
+XL1 should regenerate far more slowly than we are.

@@ -9,11 +9,11 @@
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
 import { mksobj, place_object } from './mkobj.js';
-import { weight, stackobj } from './invent.js';
+import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
 import { newsym, pline } from './display.js';
-import { You, You_hear } from './pline.js';
+import { You, You_hear, You_feel, Your } from './pline.js';
 import { an } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
@@ -274,6 +274,9 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
         place_object(otmp, game.u.ux, game.u.uy);
         if (!game.u.ublind)
             observe_object(otmp);
+        /* js/invent.js is reached through a cycle from here (trap -> invent
+           -> pickup -> hack -> trap), so stackobj is bound at call time. */
+        const { stackobj } = await import('./invent.js');
         stackobj(otmp);
         newsym(game.u.ux, game.u.uy);
     }
@@ -320,7 +323,64 @@ export async function dotrap(trap, trflags) {
     game.u.utrap = 0;                   /* reset_utrap() */
     if (ttype === DART_TRAP)
         return await trapeffect_dart_trap(game.youmonst, trap, trflags);
+    if (ttype === MAGIC_TRAP)
+        return await trapeffect_magic_trap(game.youmonst, trap, trflags);
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
+    return Trap_Effect_Finished;
+}
+
+
+// src/trap.c:4356 domagictrap() — the magic trap's effect roll.
+//
+// fate = rnd(20) drives everything. Under 10 is the blinding flash (which
+// wakes nearby monsters); 10..19 are the individual arms. Only the pure
+// message arms are live; the rest record, so a session that lands on one is
+// visibly incomplete rather than silently wrong.
+async function domagictrap() {
+    const fate = rnd(20);
+
+    if (fate < 10) {
+        note_unported_trap('domagictrap:blinding_flash');
+        return;
+    }
+
+    switch (fate) {
+    case 13:  /* odd feelings */
+        await pline('A shiver runs up and down your spine!');
+        break;
+    case 14:
+        await You_hear('distant howling.');
+        break;
+    case 16:
+        await Your('pack shakes violently!');
+        break;
+    case 17:
+        await You('smell charred flesh.');
+        break;
+    case 18:
+        await You_feel('tired.');
+        break;
+    default:
+        note_unported_trap(`domagictrap:fate=${fate}`);
+        break;
+    }
+}
+
+// src/trap.c:2565 trapeffect_magic_trap() — the hero's arm.
+async function trapeffect_magic_trap(mtmp, trap, trflags) {
+    if (mtmp !== game.youmonst) {
+        if (!rn2(21))
+            note_unported_trap('trapeffect_magic_trap:monster_fire');
+        return Trap_Effect_Finished;
+    }
+
+    seetrap(trap);
+    if (!rn2(30)) {
+        note_unported_trap('trapeffect_magic_trap:explosion');
+        return Trap_Effect_Finished;
+    }
+    await domagictrap();
+    /* steedintrap() — no steed on this tree */
     return Trap_Effect_Finished;
 }

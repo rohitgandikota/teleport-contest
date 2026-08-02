@@ -46,7 +46,7 @@ import { hastrack } from './track.js';
 // include/trap.h:125 fixed_tele_trap()
 const fixed_tele_trap = (t) => t.ttyp === TELEP_TRAP
                             && isok(t.teledest?.x, t.teledest?.y);
-import { sobj_at, obj_extract_self } from './invent.js';
+import { sobj_at, obj_extract_self, stackobj } from './invent.js';
 import { online2, isok } from './hacklib.js';
 /* onscary() and in_your_sanctuary() are src/monmove.c and src/priest.c
    functions living in js/monmove.js, which imports this file. Both sides

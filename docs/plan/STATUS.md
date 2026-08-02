@@ -15406,3 +15406,44 @@ answer the whole time.
 exact-vs-substring where C uses it to pick actual-vs-remembered text and BOTH
 arms are substring. Real, and now safe to fix — the onscary guards no longer
 depend on the match being narrow.
+
+## iter 93 — seed2200's 2 remaining screens are the INVENTORY overlay at step 83
+
+Board 2249, passes 7, tree clean, no code change. Context ran out mid-analysis;
+this is the handoff.
+
+With step 228 fixed (iter 92), `tools/diverge.mjs seed2200` now reports the
+first screen miss at **step 83** (key "i", inventory). Steps 82 and 84 both
+match on all 1920 cells, so it is the inventory frame ITSELF, not a lasting
+state divergence.
+
+What differs — C keeps the map visible to the LEFT of the menu, we blank it:
+
+    C     10 >|         │·········· Potions
+          11 >|         │······x(·f f - an uncursed potion of polymorph
+          14 >|         └────────── d - an uncursed ring of
+    ours  10 >|                     Potions
+          11 >|                     f - an uncursed potion of polymorph
+          14 >|                     d - an uncursed ring of poison resistance
+
+~116 cells, all in columns left of the menu. The menu text itself lines up
+exactly (both start at col 21), so **offx is correct and this is not menu
+geometry**.
+
+Two candidate causes, untested:
+1. We clear more than C does. js/tty/wintty.js:448 is
+   `if (!cw.offx) display.clearScreen();` and offx here is ~21, so that guard
+   should prevent the clear — verify it actually does, and check whether
+   anything else (docrt/cls on menu open) blanks the map first.
+2. Our map MEMORY genuinely lacks that room, and the blank is honest. Rule this
+   out first, it is cheaper: dump `remembered_glyph` for rows 10-14, cols 9-18
+   at step 83. If memory HAS the room, cause 1; if not, we have a
+   draw-neutral exploration/memory divergence somewhere before step 83.
+
+Note ours prints the FULL line "d - an uncursed ring of poison resistance"
+where C truncates at "d - an uncursed ring of " — consistent with C's window
+being clipped to its right edge while ours runs wider. That points at cause 1
+and at maxcol/clipping, so check the clip width too.
+
+seed2200 remains the best near-pass: 228/230, both losses on this one frame
+(step 83's cells and, presumably, its cursor row).

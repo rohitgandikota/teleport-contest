@@ -51,7 +51,7 @@ import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy, mon_track_add } from './monmove.js';
 import { mattackm } from './mhitm.js';
-import { M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
+import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
@@ -1001,7 +1001,7 @@ function best_target(mtmp, forced) {
 // dog_move calls this AFTER its position loop and BEFORE committing the move
 // (src/dogmove.c:1273). We were not calling it at all, which is why seed0102
 // and seed0105 both stop at score_targ's rnd(5).
-function pet_ranged_attk(mtmp, forced) {
+async function pet_ranged_attk(mtmp, forced) {
     let hungry = false;
 
     /* How hungry is the pet? */
@@ -1012,8 +1012,49 @@ function pet_ranged_attk(mtmp, forced) {
 
     /* Hungry pets are unlikely to use breath/spit attacks */
     if (mtarg && (!hungry || !rn2(5))) {
-        /* the attack itself needs mattacku / the monster attack code */
-        note_unported('pet_ranged_attk:attack');
+        let mstatus = M_ATTK_MISS;
+
+        if (mtarg === game.youmonst) {
+            /* same dynamic import this file already uses for mattacku */
+            const { mattacku } = await import('./mhitu.js');
+            if (await mattacku(mtmp))
+                return MMOVE_DIED;
+            /* Treat this as the pet having initiated an attack even if it
+             * didn't, so it will lose its move. */
+            mstatus = M_ATTK_HIT;
+        } else {
+            game.bhitpos = { x: mtmp.mx, y: mtmp.my };
+            game.notonhead = false;
+            mstatus = await mattackm(mtmp, mtarg);
+
+            /* Shouldn't happen, really */
+            if (mstatus & M_ATTK_AGR_DIED)
+                return MMOVE_DIED;
+
+            /* Allow the targeted nasty to strike back - if
+             * the targeted beast doesn't have a ranged attack,
+             * nothing will happen. */
+            if ((mstatus & M_ATTK_HIT) && !(mstatus & M_ATTK_DEF_DIED)
+                && rn2(4) && mtarg !== game.youmonst) {
+                /* if it can see, it can retaliate even if the pet is
+                   invisible: it saw the direction the attack came from */
+                if (mtarg.mcansee && haseyes(game.mons[mtarg.mnum])) {
+                    game.bhitpos = { x: mtmp.mx, y: mtmp.my };
+                    game.notonhead = false;
+                    const mresp = await mattackm(mtarg, mtmp);
+                    if (mresp & M_ATTK_DEF_DIED)
+                        return MMOVE_DIED;
+                }
+            }
+        }
+        /* Only return MMOVE_DONE if the pet actually made a ranged attack,
+         * and thus should lose the rest of its move. */
+        if (mstatus !== M_ATTK_MISS)
+            return MMOVE_DONE;
+    } else if (forced) {
+        /* domonnoise() (src/sounds.c) is not ported; only #chat-forced
+           calls pass forced=TRUE and none does yet */
+        note_unported('pet_ranged_attk:domonnoise');
     }
     return MMOVE_NOTHING;
 }
@@ -1292,7 +1333,7 @@ export async function dog_move(mtmp, after) {
     if (!do_eat) {      /* C's `goto newdogpos` at dogmove.c:1231 jumps OVER
                            this call, so a pet that is about to eat never
                            reaches it and never spends score_targ's rnd(5) */
-        const i = pet_ranged_attk(mtmp, false);
+        const i = await pet_ranged_attk(mtmp, false);
         if (i !== MMOVE_NOTHING)
             return i;
     }

@@ -662,3 +662,6 @@ export const flesh_petrifies = (d) =>
 // &mons[PM_x] pointers; pmidx is this port's identity for the same test.
 export const is_wooden = (ptr) => ptr.pmidx === PMNAMES.PM_WOOD_GOLEM;
 export const hates_light = (ptr) => ptr.pmidx === PMNAMES.PM_GREMLIN;
+
+// include/mondata.h:46 haseyes()
+export const haseyes = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;

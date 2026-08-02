@@ -49,7 +49,7 @@ import { doname } from './objnam.js';
 import { Monnam, christen_monst } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
-import { set_apparxy } from './monmove.js';
+import { set_apparxy, mon_track_add } from './monmove.js';
 import { mattackm } from './mhitm.js';
 import { M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
 import { PMNAMES } from './monst_data.js';
@@ -1277,10 +1277,9 @@ export async function dog_move(mtmp, after) {
             await mattacku(mtmp);
             return MMOVE_DONE;
         }
-        /* src/monmove.c mtrack — remember where we came from, newest first */
-        mtmp.mtrack = mtmp.mtrack || [];
-        mtmp.mtrack.unshift({ x: omx, y: omy });
-        if (mtmp.mtrack.length > MTSZ) mtmp.mtrack.length = MTSZ;
+        /* src/dogmove.c:1313 mon_track_add() — remember where we came
+           from, newest first */
+        mon_track_add(mtmp, omx, omy);
 
         /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
            the move. Writing mx/my alone leaves m_at() answering with the old

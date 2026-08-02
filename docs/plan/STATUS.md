@@ -15902,3 +15902,44 @@ at +0 before this attempt.
 are pure map data with no zoo/trap/door machinery, and both bigrm ports landed
 first time. Prefer those, or diagnose soko1-2 properly with a full iteration
 budgeted for the draw comparison rather than the transcription.
+
+## iter 106 — the soko1-2 gap may be a LEVEL-SELECTION bug, not a missing level
+
+Board 2249, passes 7, tree clean, no code change.
+
+Followed up on iter 105's regression instead of retrying the port, and the
+result changes the target. Scanned seed4500's ENTIRE recorded draw list for
+lspo_* / sokoban / makemaz annotations:
+
+    seed4500: {"lspo_gold":29, "lspo_replace_terrain":1374, "makemaz":3}
+
+**C never runs a single Sokoban builder in seed4500** — no lspo_trap, no
+lspo_door, no zoo region, nothing. Yet seed4500 is one of the sessions whose
+makemaz records `soko1-2` as unported on OUR side, and registering the level
+cost it 228 screens.
+
+So for this session we are ASKING FOR THE WRONG LEVEL. C builds something whose
+signature is 1374 replace_terrain draws (a mines or big-room shaped level, not
+Sokoban), and we resolve the same slot to soko1-2 and record a gap. Writing
+soko1-2 correctly would not have helped seed4500 at all; it would still build
+the wrong level, just more expensively.
+
+**This reinterprets the whole unported-hits list.** `makemaz:<name>` entries are
+what OUR makemaz asked for. They are evidence a level is missing ONLY if C
+builds that same level at that point. Before porting any further level, confirm
+C actually builds it:
+
+    node -e '...scan the session rng for lspo_* annotations...'
+
+and check the level's signature matches (Sokoban => lspo_trap/lspo_door/zoo;
+big rooms => replace_terrain; mines => lspo_map + gold).
+
+**Revised next step:** find why our makemaz resolves seed4500's slot to
+soko1-2. Look at js/mklev.js makemaz()'s proto-name selection and the dungeon
+branch data (js/dungeon.js, dat/dungeon.lua) — a wrong branch or dlevel
+comparison would send us into Sokoban's name range on an ordinary dungeon
+level. That single bug may account for several of the 9% entries at once, and
+unlike a level port it can only help.
+
+The two builders from iter 104 remain landed and correct; soko1-2 itself stays
+UNREGISTERED, which is the honest state.

@@ -14,6 +14,7 @@ import {
     rndmonnum, rndmonnum_adj, makemon, mkclass, monsndx, level_difficulty,
     MM_NOGRP, NO_MM_FLAGS, Inhell, likes_gems,
 } from './makemon.js';
+import { in_rooms } from './hack.js';
 import { MM_NOCOUNTBIRTH, MM_NOMSG, SHOPBASE, COURT, LEPREHALL, ZOO, TEMPLE,
          BEEHIVE, MORGUE, ANTHOLE, BARRACKS, SWAMP, COCKNEST,
          G_GONE } from './const.js';
@@ -459,8 +460,11 @@ export function make_grave(x, y, str) {
     make_engr_at(x, y, str, null, 0, HEADSTONE);
 }
 
-// in_rooms stub
-function in_rooms(x, y, rtype) { return []; }
+/* in_rooms() lives in js/hack.js, its C home (src/hack.c). This file used to
+   carry a stub that always returned empty, so dosdoor's `shdoor` was
+   permanently false and every shop door got the non-shop mask: C gives a shop
+   doorway D_ISOPEN and a shop wall-door D_LOCKED, we gave D_NODOOR and the
+   rn2(5) roll. */
 
 // ============================================================
 // Core mklev functions (ported from main project's mklev.js)
@@ -1637,7 +1641,7 @@ function dosdoor(x, y, aroom, type) {
     const map = game.level;
     const loc = map.at(x, y);
     if (!loc) return;
-    const shdoor = in_rooms(x, y, 0).length > 0;
+    const shdoor = in_rooms(x, y, SHOPBASE).length > 0;
     if (!IS_WALL(loc.typ)) type = DOOR;
     loc.typ = type;
     if (type === DOOR) {

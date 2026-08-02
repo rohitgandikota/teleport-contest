@@ -11680,3 +11680,43 @@ no-corpse form), and added `u_wipe_engr`, `check_capacity`, `overexertion`,
 
 **Next:** seed0200's wall is 3384, inside `hmon_hitmon_stagger(uhitm.c:1576)`
 where C draws rnd(100) and we draw something else.
+
+## stagger, drifted helpers, eatcorpse
+
+Board 1701 -> 1706, passes 6. Commits d0b724b, 255deb4, f9e25b4.
+
+1. **`hmon_hitmon_stagger`** (uhitm.c:1570) was a note. C spends `rnd(100)`
+   there on every qualifying bare-handed hit, BEFORE the bigmonst and
+   thick_skinned tests, so skipping it shifted the stream by one draw from
+   the first punch onward. seed0200's wall went 3384 -> 3565, +5 screens.
+
+2. **The duplicate-helper audit** the Role_if bug suggested. Script: extract
+   every one-line `const NAME = (...) => ...` across js/, group by name, flag
+   names whose bodies differ. 248 names are duplicated; most differences are
+   import style (`M2_DEMON` vs `MFLAGS.M2_DEMON`). Two were real:
+   - uhitm.js carried an `is_pole` STUB that recorded and returned false,
+     while js/u_init.js has the faithful predicate. uhitm now imports it.
+   - do_wear.js defined is_suit/is_shield/is_helmet/is_gloves as a bare
+     `oc_subtyp` comparison. C tests the object class too (obj.h:278), and
+     oc_subtyp is a union field holding the WEAPON SKILL for a weapon, so a
+     weapon whose skill equalled 1 read as a shield.
+
+   **Re-run that audit after any large port.** The pattern to watch is a
+   helper defined locally "to avoid a cycle" and then drifting.
+
+3. **`eatcorpse`** (eat.c:1855) and **floorfood's floor prompts**. doeat's
+   corpse arm was a note and floorfood refused to offer anything underfoot,
+   so eating a corpse off the floor never happened. Both ported; the effects
+   behind eatcorpse's arms (make_sick, losehp, poison_strdmg, rottenfood) are
+   recorded, as are floorfood's metallivore arms.
+
+**Method note that cost time this iteration:** I read "seed0200 15 screens"
+from a stale runner invocation and spent effort chasing a gain that had
+already landed. Always re-read the CURRENT score.sh output before and after,
+and diff the two JSON files, rather than trusting a single-session run from
+earlier in the session.
+
+**Next:** seed0200's wall is still 3565 — C calls eatcorpse during step 23
+(key "k", answering the "e" prompt from step 22) and we do not, so the eat
+prompt is still not consuming that key. Check what our floorfood asks and
+what key the recorded session expects.

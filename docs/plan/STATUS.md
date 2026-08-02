@@ -11856,3 +11856,54 @@ cost of missing it is every session that reaches the call.
 
 Also fixed: doeat's corpse arm wrote through `context.victual` when
 `eatcorpse` returned 2 (tainted, used up) before that object existed.
+
+## Audit: which recorded-as-unported paths are actually reached, and which draw
+
+Board holds at 1752, passes 6.
+
+Acting on last iteration's mistake (assuming `mhitm_mgc_atk_negated` did not
+draw), I ran the audit two ways and intersected them.
+
+**(a) Which notes name a C function that draws.** Parse every
+`note_unported_*('X:y')` tag out of js/, build a rough name->body map of
+`nethack-c/upstream/src/*.c`, and test each body for `rn2(`/`rnd(`/`rn1(`/`d(`.
+48 of 460 tags name a drawing function.
+
+**(b) Which notes actually FIRE.** Temporarily wrap every
+`(game.unported ||= new Set()).add(...)` with a console.error behind
+NOTEPROBE, run all 44 sessions, sort and count. Revert with `git checkout`.
+
+**The reached list, most-hit first** (full list regenerable with the recipe
+above):
+
+    2173  monmove:dochug:postmov_pet_mintrap   <- FIXED: see below
+    2052  topl:remember_topl                   (history buffer; no draws)
+     812  peek_at_iced_corpse_age              (no draws)
+     413  polyfood
+     128  pluslvl:achievements_livelog
+     106  m_consume_obj:corpse_effects
+      89  inhishop
+      83  domove:forcefight attack
+      80  start_timer:zombify-mon
+      68  freeinv_core:uhave_artifacts
+      61  pet_ranged_attk:attack
+      58  mattacku:thrwmu                      <- DRAWS, worth porting
+      52  getpos:auto_describe:travelmode
+
+**Fixed this pass:** `postmov_pet_mintrap` was the loudest entry purely
+because `mintrap` returns at once when `t_at` finds no trap under the
+monster. The note now fires only when a trap is actually there, so the
+signal is real and the case that matters is no longer buried. **A note placed
+before its own guard measures the wrong thing** — worth checking the other
+loud entries for the same shape.
+
+**Best remaining candidate from the intersection: `thrwmu`** (mthrowu.c:1174,
+58 hits). It draws `rn2(BOLT_LIM - distmin(...))` on the retreat gate and
+then calls monshoot for the multishot roll. Porting it needs select_rwep,
+monshoot and m_throw.
+
+**Next measured target:** seed0002's wall is rng 3583, where C spends one
+more `obj_resists` (dogfood) than we do — the pet scans one more floor
+object. Same shape as the parked seed0030 puzzle, but the object sets have
+changed since pickup and corpses started working, so it is worth re-deriving
+rather than assuming it is the same cause.

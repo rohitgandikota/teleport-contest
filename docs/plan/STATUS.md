@@ -15668,3 +15668,46 @@ full board either way.
 
 seed2200: 228/230, both losses on this frame. This is the closest any near-pass
 has been to a one-line fix.
+
+## iter 100 — RETRACTION: iter 99's "painted twice" conclusion is WRONG
+
+Board 2249, passes 7, tree clean, no code change.
+
+**Iter 99 claimed seed2200 step 83 was SOLVED — the inventory menu painted twice
+with a clear between. That is not what the probe showed.** I filtered menu
+paints on `cw.offx === 20` and got two hits, one with the map intact and one on
+a cleared grid, and read them as the same menu painted twice. Stack-tracing both
+shows they are DIFFERENT MENUS at different times:
+
+    PAINT #1  process_menu_window <- tty_display_nhwindow <- ask_do_tutorial
+              (js/options.js:227) <- maybe_do_tutorial — the STARTUP tutorial
+              prompt, long before step 83
+    PAINT #2  process_menu_window <- tty_display_nhwindow <- tty_select_menu
+              <- display_inventory_pickone (js/pager.js:949) <- do_look
+
+Neither is step 83's 'i' inventory. `offx === 20` is simply a common value.
+**Strike the iter-99 entry.** Nothing about a duplicate paint has been
+demonstrated, and the "closest to a one-line fix" note there is unfounded.
+
+**What still holds from iters 96-98, which WAS measured correctly:**
+- the menu's content, width, pagination and geometry all match C exactly;
+- the inventory menu at step 83 reports offx=20 maxrow=21 npages=1, so
+  `if (!cw.offx) display.clearScreen()` does NOT fire for it;
+- a `_buildScreenOutput` clear (display.js:714, via flush_screen) does run
+  around that step.
+
+**What is still unknown:** whether the frame we capture is painted before or
+after that clear, and why the map is absent underneath the menu.
+
+**Probe hygiene — the recurring failure in this whole seed2200 chase.** Four
+separate wrong turns now, every one a measurement artifact rather than a code
+problem: `cut -c1-72` invented truncation (iter 95); a probe read the wrong
+window's maxrow/npages (iter 94); `grep | head -5` hid a call site (iter 76); and
+now an `offx` filter conflated three unrelated menus. **Gate probes on the STEP,
+not on incidental field values.** Add an explicit per-keystroke counter to
+gstate and filter on that; every conclusion in this session drawn from a
+value-based filter has had to be retracted.
+
+seed2200 remains 228/230 with the cause genuinely unknown. Given four failed
+approaches, consider parking it and spending the iterations on the .lua
+special-level family instead, which is a much larger and better-understood block.

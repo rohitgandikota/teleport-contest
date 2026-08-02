@@ -7,6 +7,13 @@
 // exceptions) is absent and recorded, never faked.
 
 import { game } from './gstate.js';
+import { addinv, prinv, obj_extract_self } from './invent.js';
+import { ONAMES } from './objects_data.js';
+import { newsym } from './display.js';
+import { UNENCUMBERED } from './const.js';
+import { costly_spot } from './shk.js';
+import { near_capacity } from './attrib.js';
+import { In_sokoban } from './dungeon.js';
 import { read_engr_at } from './engrave.js';
 import { rn2 } from './rng.js';
 import { OBJ_AT, LOOKHERE_NOFLAGS, LOOKHERE_PICKED_SOME } from './const.js';
@@ -104,7 +111,62 @@ export async function pickup(what) {
             nomul(0);
     }
 
-    /* the real picking flows: menus, counts, autopickup exceptions */
-    note_unported_pickup('pickup:pick_flow');
-    return 0;
+    /* src/pickup.c:1085 query_objlist() — with AUTOSELECT_SINGLE set, a
+       single candidate is taken WITHOUT a menu; two or more raise one. */
+    const here = (game.level?.objects || [])
+        .filter(o => o.ox === game.u.ux && o.oy === game.u.uy
+                     && o !== game.uchain);
+    if (here.length === 0)
+        return 0;
+    if (here.length > 1) {
+        note_unported_pickup('pickup:multi_object_menu');
+        return 0;
+    }
+
+    return (await pickup_object(here[0], here[0].quan, false)) > 0 ? 1 : 0;
+}
+
+// src/pickup.c:1803 pickup_object() — take one object off the floor.
+//
+// The Sokoban boulder, loadstone, artifact-touch, cockatrice and scroll of
+// scare monster arms are recorded; lift_object's encumbrance messages too.
+export async function pickup_object(obj, count, telekinesis) {
+    if (obj.quan < count)
+        return 0;                       /* impossible() in C */
+
+    if (obj === game.uchain)
+        return 0;                       /* do not pick up attached chain */
+    if (obj.oartifact || obj.otyp === ONAMES.SCR_SCARE_MONSTER
+        || obj.otyp === ONAMES.LOADSTONE
+        || (obj.otyp === ONAMES.BOULDER && In_sokoban(game.u.uz))) {
+        note_unported_pickup('pickup_object:special_object');
+        return 0;
+    }
+    if (obj.otyp === ONAMES.CORPSE)
+        note_unported_pickup('pickup_object:corpse_checks');
+
+    /* lift_object(obj, NULL, &count, telekinesis) — its weight arms print
+       and can refuse; the plain case returns 1 */
+    if (near_capacity() > UNENCUMBERED)
+        note_unported_pickup('pickup_object:lift_object_encumbered');
+
+    obj = pick_obj(obj);
+    await pickup_prinv(obj, count);
+    return 1;
+}
+
+// src/pickup.c:1897 pick_obj() — off the floor and into inventory.
+function pick_obj(otmp) {
+    const ox = otmp.ox, oy = otmp.oy;
+
+    if (costly_spot(ox, oy))
+        note_unported_pickup('pick_obj:shop');
+    obj_extract_self(otmp);
+    newsym(ox, oy);
+    return addinv(otmp);
+}
+
+// src/pickup.c pickup_prinv() — "k - a goblin corpse."
+async function pickup_prinv(obj, count) {
+    await prinv(null, obj, count);
 }

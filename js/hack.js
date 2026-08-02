@@ -6,8 +6,8 @@ import { dist2 } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at } from './mon.js';
-import { pickup } from './pickup.js';
-import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER } from './const.js';
+import { pickup, can_reach_floor } from './pickup.js';
+import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door } from './cmd.js';
@@ -725,4 +725,53 @@ export async function overexertion() {
     if ((game.moves % 3) !== 0 && near_capacity() >= HVY_ENCUMBER)
         note_unported_hack('overexertion:overexert_hp');
     return game.multi < 0; /* might have fainted */
+}
+
+
+// src/hack.c:3788 pickup_checks() — everything that can stop a pickup before
+// it starts. Returns 0 or 1 to mean "handled, that many moves", -2 to loot an
+// engulfer's inventory, and -1 for "go ahead and pick up".
+//
+// Draws nothing; every arm is a message.
+function pickup_checks() {
+    if (game.u.uswallow) {
+        note_unported_hack('pickup_checks:uswallow');
+        return 1;
+    }
+    if (is_pool(game.u.ux, game.u.uy) || is_lava(game.u.ux, game.u.uy)) {
+        note_unported_hack('pickup_checks:pool_or_lava');
+        return 0;
+    }
+    if (!OBJ_AT(game.u.ux, game.u.uy)) {
+        const lev = game.level?.at(game.u.ux, game.u.uy);
+        /* the furniture arms each have their own line; only the plain case
+           is reachable without those subsystems */
+        if (lev && (IS_FURNITURE(lev.typ) || lev.typ === STAIRS))
+            note_unported_hack('pickup_checks:furniture_message');
+        else
+            note_unported_hack('pickup_checks:nothing_here');
+        return 0;
+    }
+    const traphere = t_at(game.u.ux, game.u.uy);
+    if (!can_reach_floor(!!(traphere && is_pit(traphere.ttyp)))) {
+        note_unported_hack('pickup_checks:cannot_reach');
+        return 0;
+    }
+    return -1; /* can do normal pickup */
+}
+
+// src/hack.c:3876 dopickup() — the ',' command.
+export async function dopickup() {
+    const count = game.command_count | 0;
+    game.multi = 0; /* always reset */
+
+    const ret = pickup_checks();
+    if (ret >= 0)
+        return ret ? ECMD_TIME : ECMD_OK;
+    if (ret === -2) {
+        note_unported_hack('dopickup:loot_mon');
+        return ECMD_OK;
+    }
+    /* else ret == -1 */
+    return (await pickup(-count)) ? ECMD_TIME : ECMD_OK;
 }

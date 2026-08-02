@@ -20,7 +20,7 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at, spoteffects } from './hack.js';
+import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup } from './hack.js';
 import { curr_mon_load } from './mon.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
@@ -775,6 +775,9 @@ export async function rhack(key) {
     } else if (ch === '\x17') {
         // src/cmd.c:2000 — C('w') is wizwish / wiz_wish.
         game.context.move = ((await wiz_wish()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === ',') {
+        // src/cmd.c:1799 cmdlist — ',' is dopickup.
+        game.context.move = (await dopickup() === ECMD_TIME ? 1 : 0);
     } else if (ch === '>') {
         // src/cmd.c cmdlist — '>' is dodown.
         game.context.move = (await dodown() === ECMD_TIME ? 1 : 0);

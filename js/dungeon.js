@@ -335,7 +335,12 @@ function correct_branch_type(tbr) {
 // src/dungeon.c:460 insert_branch() — the list is ordered by end1 dungeon and
 // level, then end2. Order does not affect parent_dlevel's search (it only asks
 // whether *any* branch sits on a level), but keep it faithful for later use.
-function insert_branch(new_branch) {
+export function insert_branch(new_branch, extract_first) {
+    if (extract_first) {
+        const i = game.branches.indexOf(new_branch);
+        if (i >= 0)
+            game.branches.splice(i, 1);
+    }
     const val = (b) => ((b.end1.dnum * MAXLEVEL + b.end1.dlevel) * (MAXDUNGEON * MAXLEVEL)
                       + (b.end2.dnum * MAXLEVEL + b.end2.dlevel));
     const nv = val(new_branch);

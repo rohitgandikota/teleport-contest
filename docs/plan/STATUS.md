@@ -13314,3 +13314,52 @@ monsters the moment it lands.
   iteration 41 -- fix it as ONE coordinated change or not at all.
 - Duplicate `wake_nearby()` in js/mon.js and js/dokick.js.
 - Duplicate `u_on_newpos()` in js/teleport.js (C's home) and js/mklev.js.
+
+## Iteration 43 — a new instrument, and the parked bug is worth reopening
+
+Board **2134**, tree clean. Commit `be11fdf` adds `tools/stepdraws.mjs`.
+
+### tools/stepdraws.mjs — use this before diverge.mjs from now on
+
+The recorded sessions carry a **per-step `rng` array annotated with the C
+function that made each draw** (`sg.steps[i].rng`), and our runner exposes
+the same shape via `getRngSlices()`. Diffing them per step localizes a
+divergence to ONE step and names the C function we failed to call.
+
+    node tools/stepdraws.mjs seed0030 28 33
+
+`tools/diverge.mjs` only ever shows the FIRST mismatch in a 100k-call
+stream, which is why the pet bug resisted four passes. This shows every
+step's draws side by side, so a step that matches in count but differs in
+content is visible too.
+
+### Reopen the pet bug: it gates 2536 screens, not 668
+
+seed0030 (1868 lost, the board's largest) diverges at **step 32**, and the
+cause is the parked pet bug, not the RNG wall at 10609:
+
+    C  step 30: "Your kitten eats a newt corpse."
+    us step 32:  same message, two steps late
+
+stepdraws pins it exactly:
+
+    step 29  C 34 draws, ours 34   SAME
+    step 30  C 11 draws, ours 10   DIFF
+       C   : rn2(100) obj_resists | rn2(100) obj_resists | rn2(5) distfleeck ...
+       ours: rn2(100)              | rn2(5)  distfleeck ...
+
+**Our FIRST rn2(100) matches C's exactly (=60), so both evaluate the same
+object with dogfood. C then calls dogfood a SECOND time on that same pile
+and eats; we stop after one.** Verified this iteration: our `dogfood()`
+returns CADAVER(1) for the newt corpse with `carni=true`, so the food
+classification is right -- the second call is simply never made.
+
+That means the pile at the pet's chosen square holds at least two objects
+in C and our `objects_at()` walk sees fewer, OR our loop exits after the
+first. js/dog.js's per-candidate loop only breaks on `do_eat`, so if the
+first object returned APPORT it should continue to the corpse.
+
+Next: probe `objects_at()` for the pet's candidate squares at seed0030
+step 30 and compare with the pile C must have. This is one step, one
+square, two objects -- much smaller than anything the four earlier passes
+were working with, which is why reopening is justified.

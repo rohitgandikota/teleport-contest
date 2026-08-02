@@ -2265,7 +2265,7 @@ export async function load_special(name) {
 
 /* ==== the map-based special-level verbs the castle needs ==== */
 
-import { W_NONDIGGABLE, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
+import { W_NONDIGGABLE, W_NONPASSWALL, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
          DB_NORTH, DB_SOUTH, DB_WEST, DB_EAST, DB_MOAT,
          IS_DOOR as C_IS_DOOR, IS_WALL as C_IS_WALL } from './const.js';
 const C_STONE = STONE, C_HWALL = HWALL, C_ROOM = ROOM, C_CORR = CORR,
@@ -2578,6 +2578,38 @@ function Can_dig_down_sp() {
 
 const is_pit_sp = (t) => t === 11 /* PIT */ || t === 12 /* SPIKED_PIT */;
 const is_hole_sp = (t) => t === 13 /* HOLE */ || t === 14 /* TRAPDOOR */;
+
+// src/sp_lev.c:1006 lspo_non_passwall() — W_NONPASSWALL over a selection.
+//
+// C routes both this and non_diggable through set_wallprop_in_selection(), so
+// the per-cell test is sel_set_wall_property()'s (sp_lev.c:986):
+//     IS_STWALL(typ) || IS_TREE(typ) || typ == IRONBARS
+// Draws nothing.
+export function lspo_non_passwall(x1, y1, x2, y2) {
+    for (let x = x1 + game.xstart; x <= x2 + game.xstart; x++)
+        for (let y = y1 + game.ystart; y <= y2 + game.ystart; y++) {
+            const loc = game.level.at(x, y);
+            if (loc && (IS_STWALL(loc.typ) || loc.typ === TREE
+                        || loc.typ === IRONBARS))
+                loc.wall_info = (loc.wall_info | 0) | W_NONPASSWALL;
+        }
+}
+
+/* src/sp_lev.c:1090 lspo_exclusion() — record an exclusion zone. C keeps these
+   on sve.exclusion_zones and consults them when placing monsters, teleport
+   destinations and so on (sp_lev.c:877). Draws nothing; the region corners go
+   through get_location_coord, i.e. the map's xstart/ystart offset. */
+const EZ_TYPES = { teleport: 0, 'teleport-up': 1, 'teleport-down': 2,
+                   'monster-generation': 3 };
+
+export function lspo_exclusion(opts) {
+    const r = opts.region || [];
+    (game.exclusion_zones ||= []).push({
+        zonetype: EZ_TYPES[opts.type ?? 'teleport'] ?? 0,
+        lx: r[0] + game.xstart, ly: r[1] + game.ystart,
+        hx: r[2] + game.xstart, hy: r[3] + game.ystart,
+    });
+}
 
 // src/sp_lev.c lspo_non_diggable() — W_NONDIGGABLE on every wall in the area
 // (absolute selection).

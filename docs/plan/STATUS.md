@@ -14088,3 +14088,44 @@ from the dmgbonus chain. Check the enchantment (`obj->spe`) and
 makes there.
 
 Do NOT re-port dbon or re-check the accessor bug; both are settled.
+
+## Iteration 62 — dmgval is NOT the over-count; probes were mis-attributed
+
+Board **2172**, tree clean, no commit.
+
+Chased the armed-hit damage gap into `dmgval()` and came back with a
+correction to my own iteration-61 note.
+
+Measured directly:
+
+- the hero's weapon is a **SCALPEL** (otyp 39, `oc_wsdam` 3, `spe` 0), and
+  it is NOT in C's `tmp++` weapon list (mace, war hammer, flail, ...);
+- our `dmgval()` therefore returns `rnd(3)` + 0, exactly C's formula;
+- `dmgbonus` is **0** (`u.udaminc` undefined, `dbon()` 0 in the STR 6..15
+  band).
+
+So for the hit that matters -- the one where C draws `rnd(3)=2` at
+weapon.c:265 and we draw the same -- **our damage is 2, the same as C's**.
+
+### Where I went wrong
+
+The `dmg=3` I reported in iteration 61 came from a DIFFERENT hit. Several
+attacks interleave inside one step (two hits per turn, plus other monsters),
+and a probe that just prints on every call cannot be attributed to a
+specific draw index. **Correlate probe output with the RNG position** (see
+the getRngLog note in iteration 37) or the numbers will mislead.
+
+So the premise of the last two iterations -- "our monster dies because our
+damage is too high" -- is unproven. What IS established: with `unarmed`
+corrected, seed0002 step 90 matches through the knockback draws and then
+diverges at index 7, where C spends `known_hitum`'s `rn2(25)` and we do not
+because `malive` is false.
+
+### Next
+
+Find out why `malive` is false WITHOUT assuming damage. `hmon()` returns
+`hmd.destroyed ? FALSE : TRUE`, so check what sets `hmd.destroyed` on that
+path -- the `already_killed` flag and the kill call are the candidates, and
+the newly-wired `mhitm_knockback()` returns into that same block.
+
+`dbon()` and the `game.uwep` accessor bug are settled; do not re-check them.

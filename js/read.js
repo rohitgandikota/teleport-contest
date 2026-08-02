@@ -10,6 +10,10 @@ import { ECMD_CANCEL } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { pline } from './display.js';
 import { rn2 } from './rng.js';
+import { getlin } from './cmd.js';
+import { name_to_monplus } from './mondata.js';
+import { makemon } from './makemon.js';
+import { MM_NOEXCLAM } from './const.js';
 import { study_book } from './spell.js';
 import { do_mapping } from './detect.js';
 import { makeknown } from './o_init.js';
@@ -204,4 +208,63 @@ async function seffect_magic_mapping(sobj) {
     /* notice_mon_off/_on wrap the mapping so newly drawn monsters are not
        announced */
     do_mapping();
+}
+
+
+// src/read.c:3372 create_particular() — the wizard-mode monster maker.
+//
+// The recorded uses type a plain monster name, so what is ported is the
+// prompt/getlin loop, the name lookup and the makemon. The modifier prefixes
+// (a leading count, "saddled ", "sleeping ", "invisible ", "hidden ", the
+// tame/peaceful/hostile words and the gender terms) are recorded, as is the
+// monster-class and random-monster syntax.
+export async function create_particular() {
+    const CP_TRYLIM = 5;
+    let tryct = CP_TRYLIM, altmsg = 0;
+    let prompt = 'Create what kind of monster?';
+
+    do {
+        const buf = await getlin(prompt);
+        if (buf === null || buf === '\x1b')
+            return false;
+        const bufp = buf.trim().replace(/\s+/g, ' ');
+
+        /* create_particular_parse()'s modifier scan is recorded; the plain
+           "<monster name>" form is the one every recorded use takes. */
+        if (/^\d|saddled |sleeping |invisible |hidden |tame |peaceful |hostile |male |female /.test(bufp))
+            note_unported_read('create_particular:modifiers');
+
+        const box = {};
+        const mndx = name_to_monplus(bufp, box);
+        if (mndx !== undefined && mndx !== null && mndx >= 0) {
+            /* MM_NOEXCLAM: "<mon> appears." rather than "appears!" */
+            makemon(game.mons[mndx], game.u.ux, game.u.uy, MM_NOEXCLAM);
+            return true;
+        }
+
+        /* no good; try again... */
+        if (bufp || altmsg || tryct < 2) {
+            await pline("I've never heard of such monsters.");
+        } else {
+            await pline('Try again (type * for random, ESC to cancel).');
+            ++altmsg;
+        }
+        if (tryct === CP_TRYLIM)
+            prompt += ' [type name or symbol]';
+    } while (--tryct > 0);
+
+    return false;
+}
+
+// src/wizcmds.c:203 wiz_genesis() — the ^G command.
+export async function wiz_genesis() {
+    if (game.wizard) {
+        const mongen_saved = game.iflags?.debug_mongen;
+        if (game.iflags) game.iflags.debug_mongen = false;
+        await create_particular();
+        if (game.iflags) game.iflags.debug_mongen = mongen_saved;
+    } else {
+        note_unported_read('wiz_genesis:unavailcmd');
+    }
+    return ECMD_OK;
 }

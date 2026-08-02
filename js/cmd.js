@@ -47,7 +47,7 @@ import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir,
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
-import { doread } from './read.js';
+import { doread, wiz_genesis } from './read.js';
 import { dodrink } from './potion.js';
 import { doapply } from './apply.js';
 import { dochat } from './sounds.js';
@@ -793,6 +793,9 @@ export async function rhack(key) {
     } else if (ch === '\x04') {
         // src/cmd.c cmdlist — C('d') is dokick.
         game.context.move = (await dokick() === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x07') {
+        // src/cmd.c:1962 cmdlist — C('g') is wiz_genesis.
+        game.context.move = ((await wiz_genesis()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '<') {
         // src/cmd.c cmdlist — '<' is doup.
         game.context.move = (await doup() === ECMD_TIME ? 1 : 0);

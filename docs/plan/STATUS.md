@@ -15233,3 +15233,42 @@ and silently turns an SDOOR into a DOOR or vice versa. That is exactly the shape
 of a draw-neutral placement bug.
 
 seed2200 is 2 screens from passing, so this one is worth finishing.
+
+## iter 89 — CORRECTION: seed2200's extra draws are NOT dosearch0
+
+Board 2249, passes 7, tree clean, no code change.
+
+**Iter 88's hypothesis is wrong.** I said we must have a secret door/corridor or
+unseen trap adjacent to the hero at seed2200 step 228. Dumped all eight
+neighbours at that exact point (hero is at 23,9):
+
+    (22,8) typ=2 HWALL    (22,9) typ=26 STAIRS   (22,10) typ=25 ROOM
+    (23,8) typ=2 HWALL                            (23,10) typ=25 ROOM
+    (24,8) typ=4 TRCORNER (24,9) typ=1 VWALL     (24,10) typ=1 VWALL
+
+No SDOOR (14), no SCORR (15), and no trap within one square. dosearch0 correctly
+draws NOTHING there. **Ignore the "spurious secret door" paragraph in iter 88,
+and with it the suggested link to seed0030's (56,6) door — that connection was
+built on this wrong premise.**
+
+**Where the two extra draws actually sit.** Our step 228 inserts `rn2(7)` then
+`rnd(10)` at indices 10-11, immediately BEFORE the per-monster mcalcmove block
+that C runs there. In allmain.c the order is
+`mcalcdistress()` -> the `mcalcmove` allotment loop -> `maybe_generate_rnd_mon()`,
+so anything extra just before mcalcmove belongs to mcalcdistress or to the tail
+of the last monster's turn.
+
+**js/mon.js:117 mcalcdistress() is an empty stub** — its comment claims
+"none of them draw for a monster with no such state". C's mcalcdistress calls
+`mon_regen(mtmp, FALSE)` for every monster unconditionally, plus minliquid() for
+mmove==0 monsters and the cham/mblinded/mfrozen/mfleetim countdowns. So the stub
+is only correct if mon_regen never draws, which is NOT established — read
+mon_regen (src/mon.c) before assuming it.
+
+That said, mcalcdistress being empty means it draws ZERO, and we are drawing TWO
+EXTRA — so the extra draws come from somewhere else, most likely the tail of the
+preceding monster's turn. rn2(7) and rnd(10) are the fingerprint to grep for:
+search js/monmove.js and js/mon.js for `rn2(7)` and `rnd(10)` and see which
+post-move path fires them.
+
+seed2200 is 2 screens from passing; this remains worth finishing.

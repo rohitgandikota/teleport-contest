@@ -11368,3 +11368,29 @@ worm_cross (worm.c:898) into js/worm.js.
 Note the fix did not move seed4500's own numbers (still 3047/8) because its
 divergence is now one draw later; re-run diverge.mjs on it next and keep
 walking. This is the right target: 1806 screens behind one early wall.
+
+## 2026-08-01 (seed4500): mtrack ruled out; cnt really is 8 vs C's 7
+
+Commit 882b74d (refactor only, no behaviour change). Board 1552/6.
+
+seed4500's wall is rng 2869: C rn2(28) vs ours rn2(32) in m_move's
+mtrack loop, `rn2(4 * (cnt - j))`.
+
+**Ruled out this iteration:**
+- mtrack maintenance. Both m_move and dog_move already pushed the track
+  (open-coded); adding a second mon_track_add DOUBLED entries (observed
+  `track=55,17 | 55,17`) and made things worse. Reverted, then routed both
+  through the named mon_track_add for legibility. j is 0 on both sides.
+- So with j=0 on both, **cnt genuinely differs: C 7, ours 8.**
+- The 8 candidate squares our mfndpos returns for monster 322 at (76,14)
+  are all plain floor with no monster and no trap: 75,13 75,14 75,15 76,13
+  76,15(STAIRS) 77,13 77,14 77,15. Verified our trap arm (mon_knows_traps /
+  m_harmless_trap / fixed_tele_trap) is complete, and C's mfndpos has NO
+  stairs exclusion, so the STAIRS square is not it either.
+
+**Next:** find which of those 8 C drops. Ports of mfndpos guards not yet
+verified against C line-by-line: the IS_OBSTRUCTED/may_dig/treeok/rockok
+block, the intelligent-peaceful shop/temple wall rule, IS_WATERWALL vs
+is_swimmer, IRONBARS + W_NONDIGGABLE, the poison-gas region test, and
+ALLOW_SSM/NOTONL/ALLOW_SANCT flag handling. Diff our mfndpos against
+mon.c:2200-2300 clause by clause — one of them is missing or inverted.

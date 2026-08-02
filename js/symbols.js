@@ -25,6 +25,19 @@ export const gs_showsyms = { P: null };
    by anything ported, so only the primary set is modelled. */
 export const PRIMARYSET = 0;
 
+/* src/symbols.c:376 known_handling[] — indexed by symset[].handling. */
+export const known_handling = ['UNKNOWN', 'IBM', 'DEC', 'CURS'];
+export const H_UNK = 0, H_IBM = 1, H_DEC = 2, H_CURS = 3;
+
+/* src/decl.c gs.symset[] — which set was loaded and how it is handled.
+   optfn_symset() reports these back in the options menu. `name` stays null
+   for the built-in default, which is what makes that menu row read
+   "default". */
+export const gs_symset = [{ name: null, handling: H_UNK }];
+
+/* src/decl.c gc.currentgraphics — the set assign_graphics() last installed. */
+export const gc_currentgraphics = { set: PRIMARYSET };
+
 // src/symbols.c:94 init_showsyms() — the ASCII defaults from defsym.h.
 export function init_showsyms() {
     gs_showsyms.P = defsyms.map(d => ({ ch: d.sym, dec: false }));
@@ -40,6 +53,11 @@ export function assign_graphics(dec) {
     if (dec)
         for (let i = 0; i < defsyms.length; i++)
             gs_showsyms.P[i] = { ch: defsyms[i].ch, dec: defsyms[i].dec };
+    /* dat/symbols' DECgraphics block carries "handling:DEC"; the built-in
+       default set has no name and no handler. */
+    gs_symset[PRIMARYSET] = dec ? { name: 'DECgraphics', handling: H_DEC }
+                                : { name: null, handling: H_UNK };
+    gc_currentgraphics.set = PRIMARYSET;
 }
 
 // The lookup src/display.c map_glyphinfo() performs: a cmap index becomes the

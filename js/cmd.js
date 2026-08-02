@@ -802,6 +802,10 @@ export async function rhack(key) {
         // src/cmd.c:1780 cmdlist — 'O' is doset_simple.
         const { doset_simple } = await import('./options.js');
         game.context.move = (await doset_simple() === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x14') {
+        // src/cmd.c:1890 cmdlist — C('t') is dotelecmd.
+        const { dotelecmd } = await import('./teleport.js');
+        game.context.move = (await dotelecmd() === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x04') {
         // src/cmd.c cmdlist — C('d') is dokick.
         game.context.move = (await dokick() === ECMD_TIME ? 1 : 0);

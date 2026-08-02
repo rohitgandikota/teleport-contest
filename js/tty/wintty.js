@@ -725,8 +725,19 @@ export async function tty_select_menu(window, how) {
     /* win/tty/wintty.c:2794 — dismiss (not destroy) before returning, so the
        screen underneath is restored while the caller still holds the window.
        Skipping this leaves the menu painted behind whatever the caller opens
-       next, e.g. doset_simple_menu()'s handler menus. */
+       next, e.g. doset_simple_menu()'s handler menus.
+
+       erase_menu_or_text()'s offx==0 arm is `docrt(); flush_screen(1);`, but
+       docrt() is async here while tty_dismiss_nhwindow() is called from sync
+       destroy sites, so that arm runs at this boundary instead. It repaints
+       the MAP only -- the status rows stay as the full-screen menu left them
+       until the next bot(), which is what C's recordings show. */
+    const full_screen = (cw.offx === 0 && !cw.offy && !game.in_role_selection);
     tty_dismiss_nhwindow(window);
+    if (full_screen) {
+        const { docrt } = await import('./../display.js');
+        await docrt();
+    }
 
     if (cw.cancelled)
         return [];

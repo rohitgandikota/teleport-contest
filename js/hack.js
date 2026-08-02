@@ -7,6 +7,7 @@ import { Levitation, Flying, Fire_resistance } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at } from './mon.js';
 import { pickup, can_reach_floor } from './pickup.js';
+import { dotrap } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
@@ -232,7 +233,7 @@ export async function spoteffects(pick) {
     if (pick && !pit)
         await pickup(1);
     if (trap)
-        note_unported_hack('spoteffects:dotrap');
+        await dotrap(trap, 0);
     if (pick && pit)
         await pickup(1);
 

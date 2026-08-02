@@ -12501,3 +12501,45 @@ page 1). That is fine and not a reason to skip the work -- the prize is the
 ~689 downstream screens in seed0014, which only need the menu interaction to
 consume the right keys and leave the right state. Do not spend another
 iteration trying to make the heading row match.
+
+## Iteration 25 — O wired, class menu, PICK_ANY
+
+Board 1953 -> **1958**, passes 6, RNG +56. Commit `993fcee`. No regressions;
+gains in seed0014 (+1) and seed0002 (+4, from the menu-dismiss fix).
+
+Landed: `js/windows.js` with `choose_classes_menu()` (windows.c:1644); the
+`do_set` arm of `optfn_pickup_types()` (options.c:3321); a real key loop in
+`tty_select_menu()` mirroring `process_menu_window()` (group accelerators via
+`invert_all`, PICK_ANY toggling, commit on return, space pages then finishes,
+ESC deselects); `tty_prev_page()`; `GOLD_SYM` in const.js; `'O'` wired in
+rhack. `def_char_to_objclass` is now exported from js/sp_lev.js.
+
+**seed0014 now matches from step 36 onward** — the options interaction leaves
+the right game state, and step 35 (the second options menu) is down to just
+the 2 unmatchable heading cells. Steps 26-34 are the remaining gap.
+
+### The one open question: what blanks the screen behind the class menu
+
+Steps 26-34 differ by 243 cells and **the class menu's own contents are
+byte-correct on every line**. The whole difference is that C's screen is
+otherwise BLANK while ours still shows the options menu underneath, to the
+left of column 25.
+
+What is known:
+- C's step 26 serializes to 22 rows: the class menu and nothing else. Rows
+  22-23 (the status lines) are blank, so `docrt()` did NOT run.
+- `erase_menu_or_text()` (wintty.c) with `offx == 0 && !offy && !clear` calls
+  `docrt(); flush_screen(1);` — which WOULD have repainted the status. So the
+  options window did not take that branch.
+- The class menu's own `process_menu_window()` only clears when `offx == 0`,
+  and its text starts at column 25, so it is not the clearer either.
+
+So the next agent must find which branch actually fires. Check, in order:
+`compute_offx()`'s collapse rule against C's real `cw->offx` for a full-width
+menu; whether `cw->offy` is non-zero for the options window (that branch does
+`tty_curs(window,1,0); cl_eos()`, which blanks from the window's top row to
+the end of the screen and WOULD produce exactly the observed screen); and
+`iflags.window_inited`. Do not guess and paint a clear: the `cl_eos()` branch
+is the likely answer and it is checkable.
+
+Once steps 26-34 land, seed0014 should go from 30 to roughly 700.

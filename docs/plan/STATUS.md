@@ -15163,3 +15163,35 @@ seed2200 (2 lost of 230), seed0101 (3 of 27), seed0501 (3 of 28). Sweep each
 with `for s in $(seq 0 N); do node tools/screendiff.mjs <sess> $s ...` and look
 at whether the differing cells are glyph or attribute-only; glyph differences
 are real bugs, attribute-on-leading-space ones are not.
+
+## iter 87 — near-pass sweep: one real fix (+1), two sessions provably blocked
+
+Board **2248 -> 2249** (e667603), passes 7, tree clean. Swept the three
+remaining near-passes and sorted every differing cell into "real bug" vs the
+parked frozen-serializer class.
+
+**seed0101 — real bug, FIXED.** Step 6 read
+`b - a +1 bow (alternate weapon; not wielded) (at the ready).` where C prints
+`b - a +1 bow (at the ready).` doquiver_core nulled `game.u.uswapwep` directly;
+C calls `setuswapwep((struct obj *) 0)` (wield.c:648), which also clears
+W_SWAPWEP from the object's owornmask. With the mask left set, doname kept
+appending the alternate-weapon clause. Step 6 now matches on all 1920 cells.
+
+seed0101 still has steps 25 and 26 (2 glyph cells each): a pet 'd' one square
+off — the SAME movement-history class as seed0030/seed4500 (iters 81-83). It
+cannot pass until that lands.
+
+**seed0501 — PROVABLY BLOCKED, park it.** Of its 3 lost screens, steps 4 and 18
+are both `r2 c20..c23  C: ' ' inverse  ours: ' ' default` — the identical spell
+menu header signature proven unfixable in iter 86 (js/terminal.js's serialize()
+starts each row at the first non-space cell, so leading inverse spaces cannot
+round-trip; the file is frozen). Step 17 is 31 glyph cells and may be real, but
+fixing it alone cannot make the session pass.
+
+**seed2200** (2 lost of 230) not yet swept — it is 230 steps so the per-step
+sweep is slower; do it with a coarse bisect first.
+
+**Running tally of what the frozen serializer has now cost:** seed0016 (1
+screen, permanently 35/36) and seed0501 (2 of its 3). Both parked. The
+signature to recognise instantly: differing cells are attribute-only, on SPACE
+characters, at the START of a row. Confirm the paint loop sets them, then stop.

@@ -68,6 +68,17 @@ import {
     D_ISOPEN, D_NODOOR, D_BROKEN, D_SECRET,
 } from './const.js';
 
+/* mklev.js owns add_room/add_door/somexy; they are wired in by sp_lev_wire()
+   at load time to avoid an import cycle. These `let` bindings MUST be declared
+   ABOVE every use and every assignment: mklev.js imports this file and this
+   file's helpers are reachable while it is still evaluating, so a declaration
+   further down leaves a temporal-dead-zone window. In Node the evaluation
+   order happened to dodge it; the BROWSER hit it and threw
+   "Cannot access 'add_room_fn' before initialization" out of the dynamic
+   import in index.html, which is what made the fork unplayable. */
+let add_room_fn = () => {}, add_door_fn = () => {};
+let somexy_fn = null;
+
 // src/sp_lev.c:2731 fill_special_room()
 export function fill_special_room(croom) {
     if (!croom)
@@ -342,7 +353,7 @@ function maybe_add_door(x, y, croom) {
 }
 
 /* mklev.js owns add_room/add_door; wired at load to avoid an import cycle */
-let add_room_fn = () => {}, add_door_fn = () => {};
+/* add_room_fn/add_door_fn/somexy_fn are declared at the top of this file */
 export function sp_lev_wire(addRoom, addDoor, someXY) {
     add_room_fn = addRoom;
     add_door_fn = addDoor;
@@ -352,7 +363,7 @@ export function sp_lev_wire(addRoom, addDoor, someXY) {
 /* somexy() lives in js/mklev.js and mklev.js imports this file, so importing it
    back directly is a cycle: it resolves to a TDZ error on this module's own
    consts. The established fix here is the wire above, same as add_room. */
-let somexy_fn = null;
+/* somexy_fn declared at the top of this file (see note above) */
 
 // src/sp_lev.c:4978 lspo_terrain() — set the terrain of every square in a
 // selection. `des.terrain(sel, "I")` is the argc == 2 form.

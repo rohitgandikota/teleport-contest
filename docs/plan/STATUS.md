@@ -12639,3 +12639,45 @@ then `ynq(qbuf)`, and `doname(otmp)` there is "a locked chest" (lknown is set
 just before). There is no `ynq()` in this port yet.
 
 ~670 screens sit behind this in seed0014 alone.
+
+## Iteration 28 — #force ported; a real object-identity divergence found
+
+Board 1975 -> **1978**, passes 6, no regressions. Commit `be6684b`.
+seed0014 40 -> 43.
+
+Ported into js/lock.js (which already existed for doopen/doclose/pick_lock):
+`doforce()` (lock.c:676), the `forcelock()` occupation (lock.c:216),
+`breakchestlock()` (lock.c:162), `chest_shatter_msg()`, `reset_pick()`,
+`u_have_forceable_weapon()`, and `ynq()` over `tty_yn_function`.
+`wake_nearby()`/`wake_nearto()` (mon.c:4367) went into js/mon.js -- they are
+draw-neutral, but leaving a monster asleep changes every later move.
+`yname()` added to js/objnam.js.
+
+Two objnam bugs fixed on the way, both worth knowing:
+- `doname()` never emitted the **locked / broken / unlocked** prefix a box
+  gets once `lknown` is set (objnam.c:1358). It sits after the BUC words and
+  before "greased".
+- `chest_shatter_msg()` depends on C temporarily setting `HBlinded=1,
+  BBlinded=0` around `singular()` so the item names its TYPE, not its
+  unidentified appearance: "a spellbook", never "a white spellbook".
+
+### seed0014's hero wields the wrong object
+
+Step 44 still differs:
+
+    C:  You start bashing it with your dwarvish spear.
+    us: You start bashing it with your spear.
+
+`game.u.uwep.otyp` is 27 (SPEAR); C's is DWARVISH_SPEAR (30). This is an
+object-IDENTITY divergence, not a naming one -- the same shape as seed0002's
+potion difference already parked in this file.
+
+It survived undetected through 43 matching screens because the weapon's name
+never reached the screen before this message. **That is the important part:
+a wrong starting object can hide for dozens of screens.** CLAUDE.md's 5.0
+delta list calls out "Valkyrie starting gear" specifically, so u_init is the
+first place to look, not the last.
+
+Next: find where the spear is decided. Check `u_init()`'s Valkyrie block
+against src/u_init.c in the 5.0 tree, and confirm whether this is starting
+inventory or something picked up later.

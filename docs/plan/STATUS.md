@@ -14914,3 +14914,40 @@ saves and restores will behave the same way.
 Both are recorded rather than started because context ran out this iteration.
 The segdiff script lives in the scratchpad; it is ~25 lines and worth promoting
 to tools/ if the next agent uses it twice.
+
+## iter 81 — seed0030 seg7 is an UNPORTED .lua level, not a replace_terrain bug
+
+Board 2247, tree clean. Committed a96e4ac.
+
+**Corrects iter 80's read of seg7.** I attributed the seg7 divergence to
+lspo_replace_terrain's geometry. It is not: a probe on that function shows
+**`lspo_replace_terrain` is never called at all** in our seg7 build. Our
+matching rn2(100) at draw 343 was a coincidence from a different function.
+`load_special()` returns false for the level's name, so we fall back to a
+random level while C builds the special one — every draw after that is
+unrelated. seg7's first screen showing a MAP difference fits that, not a
+geometry bug.
+
+So seed0030 seg7 (253 steps, 1021-1273) is blocked on the SAME thing as the
+rest of the `.lua` family: the level data is missing. C's draw trail names the
+builders in order — `lspo_map(sp_lev.c:6164)`, then nhlib.lua `percent()` and
+`shuffle()`, then a long run of `lspo_replace_terrain` — which is a useful
+fingerprint for identifying WHICH level file it is.
+
+**Landed anyway (a96e4ac), because it is a real bug found on the way:**
+`lspo_replace_terrain` tested `typ == fromtyp` only. C's match is
+`(fromtyp == MATCH_WALL && IS_STWALL(typ)) || typ == fromtyp` (sp_lev.c:5130).
+MATCH_WALL is the 'w' wildcard a level file uses for "any stone or wall", so
+such a region matched nothing here and skipped every rn2(100) C spends on it.
+Also added C's `max(ry1, 0)` / `min(ry2, ROWNO - 1)` clamps. No board movement
+— no public session uses the wildcard — but it is common in the mines and
+Gehennom level files, so a held-out session will hit it.
+
+**Current standing target list, in value order:**
+1. The `.lua` special-level family — still the largest class. seed0030 seg7 is
+   one more instance. Registry is js/dat/levels.js; the builders exist, only
+   DATA is missing.
+2. seed0013 seg2 — save/restore, entirely unported (iter 80).
+3. Single-segment sessions with big losses: seed4500 (1586), seed0014 (663),
+   seed0360 (645). These need the ordinary screen-diff-first walk; their
+   segment-1 first steps are all clean, so the divergence is later in play.

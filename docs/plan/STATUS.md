@@ -11394,3 +11394,35 @@ block, the intelligent-peaceful shop/temple wall rule, IS_WATERWALL vs
 is_swimmer, IRONBARS + W_NONDIGGABLE, the poison-gas region test, and
 ALLOW_SSM/NOTONL/ALLOW_SANCT flag handling. Diff our mfndpos against
 mon.c:2200-2300 clause by clause — one of them is missing or inverted.
+
+## 2026-08-01 (seed4500, cont.): mfndpos audited clause by clause
+
+Commit 9da0f55. Board 1552/6, gates clean.
+
+Diffed our mfndpos against mon.c:2145-2300 clause by clause. Findings:
+
+**Fixed:** the Displacement arm (mon.c:2264). With Displacement a monster
+that thinks the hero is on the candidate square tests the hero's REAL
+position for scariness. We hardcoded the candidate. Also collapsed a
+duplicate `monseeu` (the second copy omitted C's perceives() term).
+
+**Verified identical:** the head (wantpool/poolok/lavaok/thrudoor/nodiag/
+rockok/treeok incl. the cursed-pick and mattock-vs-shield arms),
+IS_OBSTRUCTED + may_dig, the intelligent-peaceful shop/temple wall rule,
+IS_WATERWALL vs is_swimmer, IRONBARS + W_NONDIGGABLE + AD_RUST/AD_CORR,
+the door clause (amorphous/can_fog/engulfing_u, D_CLOSED/OPENDOOR,
+D_LOCKED/UNLOCKDOOR, thrudoor), the whole trap arm, onscary/ALLOW_SSM,
+ALLOW_U/mux-muy, and the diagonal test (now including worm_cross).
+
+**Not portable:** the poison-gas clause (mon.c:2240) needs NhRegion /
+visible_region_at, which this port does not model at all. No gas clouds
+can exist, so the clause is inert — noted, not stubbed.
+
+**seed4500 still diverges at the same draw (2869) with cnt 8 vs C's 7 and
+j=0 on both sides.** Since every clause now matches, the remaining
+explanation is that C's monster is in a different STATE than ours at that
+moment — different position, or a different monster entirely — reached
+without spending draws (deterministic movement earlier in the level).
+Next: dump our full monster list (mnum + x,y) at the start of step 41 and
+compare against what C's subsequent draws imply; the divergence is
+upstream of mfndpos, not inside it.

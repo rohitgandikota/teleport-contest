@@ -589,15 +589,26 @@ export function m_consume_obj(mtmp, otmp) {
     }
 
     const corpsenm = (otmp.otyp === ONAMES.CORPSE) ? otmp.corpsenm : NON_PM;
-    if (corpsenm !== NON_PM || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
-        || otmp.otyp === ONAMES.EGG || otmp.otyp === ONAMES.CARROT) {
+    const has_effects = (corpsenm !== NON_PM
+                         || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
+                         || otmp.otyp === ONAMES.EGG
+                         || otmp.otyp === ONAMES.CARROT);
+
+    /* src/mon.c — C computes polyfood/mlevelgain/mhealup/mstoning (all pure
+       predicates, no draws), then calls delobj() UNCONDITIONALLY, and only
+       then applies the consequences. This used to return before delobj on the
+       corpse arm, so the corpse was never eaten: seed0030's kitten "ate" the
+       same newt corpse at step 30 and again at step 33, and the level's object
+       count never dropped. The effects still need newcham/grow_up/monstone/
+       mon_givit and are recorded, but the object must go either way. */
+    delobj(otmp); /* munch */
+
+    if (has_effects) {
         /* polyfood/mlevelgain/mhealup/mstoning and their newcham, grow_up,
            monstone and mon_givit consequences; all draw. */
         note_unported_mon('m_consume_obj:corpse_effects');
         return;
     }
-
-    delobj(otmp); /* munch */
 }
 
 // src/mkobj.c delobj() — take the object off the floor and free it.

@@ -12445,3 +12445,59 @@ are live.
 on it now (~970 screens). Its layout is fully determined by js/optlist.js,
 which is already generated, so this is mechanical rather than uncertain --
 unlike the vision work.
+
+## Iteration 24 — doset_simple menu ported, not yet wired
+
+Board 1953 (unchanged), passes 6. Commit `e98ba0b`.
+
+**seed0014 diverges at exactly step 25, the `O` options menu, with 714 total
+screens.** Steps 0-24 all match. That makes it the single largest gated
+session on the board.
+
+There are TWO options menus and only one of them matters:
+- `doset_simple()` (options.c:8707), title "Options" — pressed by seed0006
+  (step 49), seed0012 (58), seed0014 (25), seed4500 (234).
+- `doset()` (options.c:8758), title "Set what options?" — only seed0007,
+  one screen. Ignore it.
+
+Ported this iteration: `doset_simple`, `doset_simple_menu`,
+`longest_option_name`, `OptS_type[]`, `unlocktypes[]`, the get_val arms for
+fruit/number_pad/autounlock/pickup_types/statuslines/symset and the four
+`(N currently set)` options; `condtests[]` in js/botl.js (its `enabled`
+column is what makes count_cond() return 16); `gs_symset`/
+`gc_currentgraphics` in js/symbols.js.
+
+**Verified: every option row and value in C's recorded menu matches ours,
+cell for cell.** The pad width is `longest_option_name(set_gameview,
+set_in_game)` = 23, confirmed against `"fruit" + 19 spaces + "["`.
+
+### `O` is deliberately NOT wired yet
+
+Wiring it cost 4 screens (1953 -> 1949) because seed0014 immediately picks
+`o` (pickup_types), whose handler opens the "Autopickup what?" class menu.
+Without it the key stream `#"?+!$=/\r\r` is eaten by a re-rendered options
+menu and everything desyncs. Next iteration must land, in order:
+1. `choose_classes_menu()` (windows.c:1644) in a new js/windows.js.
+2. The `do_set` arm of `optfn_pickup_types` (options.c:3321).
+3. PICK_ANY toggling + group accelerators in `tty_select_menu`
+   (js/tty/wintty.js:599 currently returns on the first hit and says so).
+Then wire `'O'` in rhack to `doset_simple`.
+
+`def_inv_order` (options.c:118) is `$ " ) [ % ? + ! = / ( * ` 0 _`, exactly
+the class order the recorded menu shows, and js/drawing_data.js already has
+`oc_explain` with the matching text.
+
+### Frozen-serializer limit: an inverse SPACE at the start of a row
+
+`add_menu_heading()` formats as `" %-30s "`, so C paints an inverse space at
+column 1 of every section heading. Our `Terminal.serialize()` (frozen)
+computes `firstCol` as the first cell whose **ch !== ' '** and emits every
+leading space plain, so that cell can never carry the attribute. The
+comparator's `observableState()` (frozen/screen-decode.mjs:152) treats
+inverse-on-space as visible, so it is a real 1-cell miss per heading row.
+
+**Consequence: options-menu screens themselves can never match** (2 cells on
+page 1). That is fine and not a reason to skip the work -- the prize is the
+~689 downstream screens in seed0014, which only need the menu interaction to
+consume the right keys and leave the right state. Do not spend another
+iteration trying to make the heading row match.

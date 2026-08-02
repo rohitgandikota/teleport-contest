@@ -14274,3 +14274,53 @@ Then `chwepon` (wield.c:918, goes in js/wield.js before `welded()` to keep C
 order) and `seffect_enchant_weapon` (read.c:1627). The payoff is seed0002
 step 96's missing `exercise(A_DEX, TRUE)` rn2(19), and the same helpers unlock
 `seffect_enchant_armor` (read.c:1120).
+
+## iter 66 — chwepon landed; seed0002 step 96 is AUTOSEARCH, not the scroll
+
+Finished the chwepon port (a258317): `chwepon` (wield.c:918),
+`seffect_enchant_weapon` (read.c:1627) and `cap_spe` wired into seffects, plus
+`mbodypart`/`body_part` (polyself.c:1972, all twelve shape tables and
+not_claws), `hcolor`/`hcolors` (do_name.c:1441), `NH_*` colour names
+(decl.h:17), `rn2_on_display_rng` (rnd.c:70), `strange_feeling` (potion.c),
+`minimal_xname`/`simpleonames` (objnam.c:1038), `is_elven_weapon` (obj.h:360).
+Board 2173, **RNG +44**, no over-read. `will_weld` already existed in
+monmove.js; `trycall`, `useup`, `erosion_matters`, `uncurse` all existed.
+
+**But chwepon was NOT the step-96 cause, and my iter-64 diagnosis was wrong.**
+Recording the whole elimination so nobody repeats it:
+
+- The scroll read at step 96 is otyp 332 = SCR_LIGHT, NOT the otyp 328
+  SCR_ENCHANT_WEAPON I read off an inventory dump. Keys 93..97 are `,rtyk`:
+  step 95 is `r`, step 96 is the letter `t`. C's screen confirms SCR_LIGHT —
+  "A lit field surrounds you!". Our otyp is correct.
+- `uwep` IS the scalpel (otyp 39, WEAPON_CLASS, spe 0), so chwepon takes its
+  ordinary path, which draws NOTHING. The empty-handed `exercise(A_DEX)` arm I
+  built the theory on is never reached here.
+- The move counter is NOT drifting. I checked every one of our
+  `moves % 10 == 0` exerper positions against C's flat draw log: **9 of 9 land
+  exactly on a C `exercise(attrib.c:509)` draw, 0 mismatches.** Our turn
+  ordering matches C too — each intervening exerper sits precisely on C's
+  `rn2(61) @ moveloop_core(allmain.c:360)` (that rn2(61) is
+  `!rn2(40 + ACURR(A_DEX)*3)` with DEX 7). Do not re-open the drift theory
+  without new evidence.
+- Ruled out by reading the C: `seffect_light`, `litroom` (read.c:2491),
+  `lightdamage` (zap.c:3026) contain no exercise at all; read.c's last
+  exercise call site is 2456. timeout.c's exercises are all decrements
+  (rn2(2)), not rn2(19).
+
+**The actual cause.** C's missing draw is an rn2(19) INCREMENT, and
+`exercise()` only draws rn2(19) on the increment side (attrib.c:509:
+`inc_or_dec ? rn2(19) > ACURR(i) : -rn2(2)`). The only increment on a
+trap-reveal path is `find_trap()` (detect.c:1935), which does
+`exercise(A_WIS, TRUE)`. The screens prove it: C's step-96 row 13 is
+`│·····^··│` and ours is `│········│` — C has revealed a trap we have not.
+`find_trap` is called from `dosearch0` (detect.c:2016) and dokick.c:524, and
+**`dosearch0(1)` is the intrinsic autosearch C runs EVERY TURN at
+allmain.c:344**. We do not run it at all.
+
+So the target is autosearch, and it is much bigger than one scroll: every turn
+of every session, C gets a chance to discover adjacent traps and hidden doors.
+`js/detect.js` exists (it has do_mapping). Port `dosearch0(aflag)` +
+`find_trap` + `mfind0` there and call it from the moveloop at allmain.c:344.
+Note row 11 also shows the pet `d` one column off, so there may be a second,
+independent divergence on this step; fix autosearch first and re-measure.

@@ -131,6 +131,7 @@ import { rn2, rnd, rn1 } from './rng.js';
 import { init_rect, rnd_rect, get_rect, split_rects } from './rect.js';
 import { themerooms, themeroom_fills } from './themerms_data.js';
 import { make_engr_at, wipe_engr_at, engr_at, del_engr } from './engrave.js';
+import { MARK } from './const.js';
 import { get_rnd_text, MD_PAD_RUMORS } from './rumors.js';
 import { DUST, HEADSTONE, OBJ_CONTAINED } from './const.js';
 import { hole_destination } from './trap.js';
@@ -171,8 +172,8 @@ const RANDOM_CLASS = 0;
 // wands where C generates spellbooks, in 3 of the 10 table slots.
 /* SPBOOK_no_NOVEL is imported from js/mkobj.js, where it lives. */
 
-// Supply chest items
-const MARK = 6;
+/* MARK (engrave.h:29) comes from js/const.js; a local `const MARK = 6`
+   used to shadow it here, and 6 is HEADSTONE, not MARK. */
 
 const XLIM = 4;
 const YLIM = 3;
@@ -2541,12 +2542,19 @@ async function fill_ordinary_room(croom, bonus_items) {
     }
     // Graffiti
     if (!rn2(27 + 3 * Math.abs(depth_of_level(g.u.uz)))) {
-        const { text: engrText } = random_engraving();
+        const { text: engrText, pristine } = random_engraving();
         if (engrText) {
+            /* src/mklev.c:1147 — pick a spot, retrying while it is not
+               plain room floor; the rn2(40) is the retry gate, so the loop
+               exits either on ROOM or on a failed roll. */
+            let x, y;
             do {
                 somexyspace(croom, pos);
-                if (g.level?.at(pos.x, pos.y)?.typ === ROOM) break;
-            } while (!rn2(40));
+                x = pos.x;
+                y = pos.y;
+            } while (g.level?.at(x, y)?.typ !== ROOM && !rn2(40));
+            if (g.level?.at(x, y)?.typ === ROOM)
+                make_engr_at(x, y, engrText, pristine, 0, MARK);
         }
     }
     /* src/mklev.c:1156 — random objects. Plain `!rn2(3)`, with NO Amulet

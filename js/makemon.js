@@ -253,14 +253,20 @@ function init_mongen_order() {
         return;
     mongen_order = [];
     mclass_maxf = new Array(MAXMCLASSES).fill(0);
-    for (let i = LOW_PM; i < NUMMONS; i++) {
+    for (let i = 0; i < NUMMONS; i++) {
         mongen_order[i] = i;
         const mlet = game.mons[i].mlet;
         const freq = game.mons[i].geno & G_FREQ;
         if (freq > mclass_maxf[mlet])
             mclass_maxf[mlet] = freq;
     }
+    /* src/makemon.c:1823 — qsort over the FIRST SPECIAL_PM entries on
+       (difficulty | mlet<<8). LOW_PM is 1, so slot 0 is never filled by the
+       loop above; slicing from 0 dragged an `undefined` into the sort and
+       JS's comparator then left the whole array in place, so mongen_order
+       stayed the identity and mkclass walked the wrong species window. */
     const key = (i) => (game.mons[i].difficulty | (game.mons[i].mlet << 8));
+    mongen_order[0] = 0;
     const head = mongen_order.slice(0, SPECIAL_PM).sort((a, b) => key(a) - key(b));
     for (let i = 0; i < SPECIAL_PM; i++)
         mongen_order[i] = head[i];

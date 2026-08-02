@@ -16109,3 +16109,38 @@ disappearing plus no regression. Do not read consecutive +0 commits as no
 progress — but equally, do not keep landing zero-draw fixes indefinitely
 without checking whether any of them unblock a screen; if three in a row move
 nothing, switch to a draw-bearing target.
+
+## iter 111 — weapon_dam_bonus written, verified-correct, but REVERTED on RNG -17
+
+Board 2249, RNG 195639, passes 7, tree clean. Nothing committed to js/.
+
+Wrote `weapon_dam_bonus` (src/weapon.c) into js/weapon.js and wired it into
+`hmon_hitmon_dmg_recalc`, replacing the `dmg_recalc:weapon_dam_bonus` stub
+(25% of sessions). Result: screens +0, **RNG -17**. Reverted per the standing
+rule that RNG must not regress.
+
+**The port itself looks right, and that is why this is worth writing down
+rather than discarding:**
+- it is C's function transcribed arm for arm (the -2/0/+1/+2 weapon ladder, the
+  -3/-1/0/+1 two-weapon ladder, the bare-handed `max(bonus, P_UNSKILLED) - 1`
+  then `((bonus+1) * (martial ? 3 : 1)) / 2`), with the riding arm recorded;
+- it draws nothing;
+- **the inputs are real**: probed mid-session, `game.u.weapon_skills` has 38
+  entries and the wielded weapon resolves to P_BASIC (2), so it returns 0 there
+  rather than falling through to the `default:` -2. The skill system is
+  genuinely populated.
+
+So the -17 is most likely a divergence SHIFT, not a loss — the same shape as
+iter 79, where RNG fell 10 while screens rose 47. I could not confirm that this
+iteration: the right check is first-divergence INDEX per session, not the
+total, and I had no context left to run it.
+
+**Next agent: re-apply and check properly before judging.** The change is small
+enough to retype from this entry, or recover from the reflog. Compare
+first-divergence index per session before and after; if it moves LATER
+anywhere, keep it. Also port `use_skill` (skill training) at the same time —
+they are one C block and splitting them may itself be what costs the 17, since
+C trains the skill on the same hit whose damage it just adjusted.
+
+Everything else from iters 109-110 stands; the unported list head is
+freeinv_core:uhave_artifacts at 45%.

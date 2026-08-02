@@ -368,6 +368,38 @@ export function lspo_terrain(sel, mapchr) {
     selection_iterate(sel, sel_set_ter, ter);
 }
 
+// src/sp_lev.c:5055 lspo_replace_terrain() — swap one terrain type for
+// another across a region.
+//
+// **Every MATCHING square draws rn2(100)**, even with the default chance of
+// 100 where the replacement always happens. Skipping the draw for a level
+// that uses this desynchronises the whole build.
+//
+// The mapfrag (`mapfragment`) and explicit-`selection` forms are recorded;
+// the region + fromterrain form is what the level files use.
+export function lspo_replace_terrain(opts) {
+    const totyp = splev_chr2typ(opts.toterrain);
+    if (totyp === INVALID_TYPE)
+        return;
+    if (opts.mapfragment || opts.selection) {
+        note_unported('replace_terrain:mapfragment_or_selection');
+        return;
+    }
+    const fromtyp = splev_chr2typ(opts.fromterrain);
+    const chance = (opts.chance === undefined) ? 100 : opts.chance;
+    const r = opts.region || [];
+    const [rx1, ry1, rx2, ry2] = r;
+
+    for (let x = Math.max(1, rx1); x <= rx2; x++)
+        for (let y = ry1; y <= ry2; y++) {
+            const loc = game.level?.at(x, y);
+            if (!loc || loc.typ !== fromtyp)
+                continue;
+            if (rn2(100) < chance)
+                loc.typ = totyp;
+        }
+}
+
 // src/sp_lev.c:3059 l_push_mkroom_table() — the shape a `contents` function
 // actually receives.
 //

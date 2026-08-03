@@ -911,11 +911,6 @@ function can_ooze(mtmp) {
 // src/monmove.c:532 distfleeck()
 export function distfleeck(mtmp) {
     let seescaryx, seescaryy;
-    if (globalThis.__t17_log) {
-        const { rngLogLength } = globalThis.__rng_mod || {};
-        const i = rngLogLength ? rngLogLength() : -1;
-        if (i >= 4300 && i <= 4325) console.error(`DFL idx=${i} mnum=${mtmp.mnum}`);
-    }
     const bravegremlin = (rn2(5) === 0);
 
     const inrange = dist2(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy)
@@ -948,11 +943,6 @@ export function distfleeck(mtmp) {
 
 // src/monmove.c:700 dochug() — one monster's turn.
 export async function dochug(mtmp) {
-    if (globalThis.__t17_log) {
-        const { rngLogLength } = globalThis.__rng_mod || {};
-        const i = rngLogLength ? rngLogLength() : -1;
-        if (i >= 4300 && i <= 4325) console.error(`CHUG idx=${i} mnum=${mtmp.mnum} sleep=${mtmp.msleeping|0} trapped=${mtmp.mtrapped|0}`);
-    }
     /* src/monmove.c:727 — a sleeping monster still gets a chance to be woken,
        and disturb() DRAWS on the way. Returning early here skipped both the
        draws and the monster's whole turn when it did wake. */

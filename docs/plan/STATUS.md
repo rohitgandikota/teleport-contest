@@ -1,3 +1,26 @@
+=== doopen_indir refusal messages ported ("This door is locked." etc.);
+suite screens 2450 ===
+seed0004's FIRST SCREEN mismatch was step 17: walking into a locked
+door with autoopen prints "This door is locked." (lock.c:855-876's
+switch: broken / way has no door / already open / locked). The port's
+doopen_indir returned silently for every non-closed doormask. Ported
+with the autounlock arms note-gated (no recorded rc sets autounlock).
+Fires in EVERY session with locked doors — +11 screens on seed0004
+alone, suite 2447 -> 2450.
+KOBOLD DRIFT CONTEXT (still open, div@4338): our mon-59 kobold is
+TRAPPED at (71,6) with cnt=6 chasing a stale mux (67,2) while C's
+counterpart evolved elsewhere; C's screens show three kobolds by step
+25 (ours: screendiff says screens matched through step 16, so the
+early k-counts DID match; my find-'k' probe disagreed with screendiff —
+trust screendiff). The backtrack-roll arg mismatch (rn2(8) vs rn2(24))
+is a downstream symptom of the silent m_move accepts diverging; note
+the kobold's mux=(67,2) means ITS mcansee was 0 at some apparxy (gotu
+loop ran) — check WHERE kobolds get blinded/asleep states and whether
+our mcansee tracking matches (sleeping monsters woken by disturb keep
+mcansee?).
+GATES: rng 203859, screens 2450, 9/44; no head moved except seed0004's
+screens; hang gate OK; probes stripped from monmove.js.
+
 === seed0004 round 4: reluctant-step message ported (+396); head now at
 m_move's hostile backtrack roll ===
 C blocks eleven recorded 'b' presses behind "Your saddled pony steps

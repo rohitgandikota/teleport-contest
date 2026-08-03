@@ -71,8 +71,32 @@ export async function doopen_indir(x, y) {
     if (!door || !IS_DOOR(door.typ))
         return res;
 
-    if (!(door.doormask & D_CLOSED))
-        return res; /* broken / doorless / already open / locked messages */
+    if (!(door.doormask & D_CLOSED)) {
+        /* src/lock.c:855-876 — say why the door won't open. */
+        let mesg;
+        let locked = false;
+        switch (door.doormask) {
+        case D_BROKEN:
+            mesg = ' is broken';
+            break;
+        case D_NODOOR:
+            mesg = 'way has no door';
+            break;
+        case D_ISOPEN:
+            mesg = ' is already open';
+            break;
+        default:
+            mesg = ' is locked';
+            locked = true;
+            break;
+        }
+        await pline_xy(cc.x, cc.y, `This door${mesg}.`);
+        /* flags.autounlock (apply key / kick prompts): no recorded rc sets
+           autounlock, and the arms prompt, so record if one ever does. */
+        if (locked && game.flags?.autounlock)
+            note_unported_lock('doopen_indir:autounlock');
+        return res;
+    }
 
     /* door is known to be CLOSED */
     if (rnl(20) < Math.trunc((acurrstr() + ACURR(A_DEX) + ACURR(A_CON)) / 3)) {

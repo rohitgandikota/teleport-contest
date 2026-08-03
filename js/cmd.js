@@ -67,7 +67,7 @@ import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
 import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
-import { rnd } from './rng.js';
+import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis } from './pager.js';
@@ -652,6 +652,42 @@ export async function doextcmd() {
     if (name === 'pray') {
         const { dopray } = await import('./pray.js');
         return await dopray();
+    }
+    if (name === 'dip') {
+        const { dodip } = await import('./potion.js');
+        return await dodip();
+    }
+    if (name === 'annotate') {
+        /* src/dungeon.c:2571 donamelevel() -> query_annotation(): the
+           getlin consumes the annotation text; skipping it fed the typed
+           annotation to the command loop as keystrokes. */
+        const nbuf = await getlin(
+            'What do you want to call this dungeon level?');
+        if (nbuf != null && nbuf !== '' && nbuf !== '\x1b') {
+            const t = nbuf.trim().replace(/ {2,}/g, ' ');
+            if (t && t !== ' ')
+                (game.level_annotations ||= {})[
+                    `${game.u.uz.dnum}:${game.u.uz.dlevel}`] = t;
+        }
+        return ECMD_OK;
+    }
+    if (name === 'version') {
+        /* src/version.c:169 doextversion() — the options text substitutes
+           :LUAVERSION:, and get_lua_version() boots a Lua state the FIRST
+           time, which loads nhlib.lua and spends its 3-item align shuffle
+           (rn2(3), rn2(2)). Cached in gl.lua_ver afterwards. The pager
+           display itself is recorded. */
+        if (!game._lua_ver_known) {
+            game._lua_ver_known = true;
+            const themedAlign = [0, 1, 2];
+            for (let i = themedAlign.length; i > 1; i--) {
+                const j = rn2(i);
+                [themedAlign[i - 1], themedAlign[j]] =
+                    [themedAlign[j], themedAlign[i - 1]];
+            }
+        }
+        note_unported_cmd('extcmd:version_display');
+        return ECMD_OK;
     }
     if (name === 'wizwish')
         return await wiz_wish();

@@ -600,7 +600,7 @@ export async function mattacku(mtmp) {
 }
 
 /* include/obj.h is_pole() */
-function is_pole(obj) {
+export function is_pole(obj) {
     return game.objects[obj.otyp].oc_skill === P_POLEARMS
            || obj.otyp === ONAMES.LANCE;
 }

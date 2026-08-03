@@ -31,6 +31,13 @@ import { d, rn1 } from './rng.js';
 import { exercise } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { KILLED_BY_AN, A_STR } from './const.js';
+import { W_SADDLE, NO_TRAP_FLAGS } from './const.js';
+import { is_pool, is_lava } from './mon.js';
+import { encumber_msg } from './attrib.js';
+import { nomul } from './hack.js';
+import { pickup } from './pickup.js';
+import { surface, In_sokoban } from './dungeon.js';
+import { Is_airlevel, Is_waterlevel } from './const.js';
 
 /* src/trap.h — trapeffect_*() return values. */
 /* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
@@ -404,7 +411,7 @@ export async function thitu(tlev, dam, objp, name) {
     else
         await You(`are hit by ${onm}${exclam(dam)}`);
 
-    losehp(dam, name, KILLED_BY_AN);
+    await losehp(dam, name, KILLED_BY_AN);
     exercise(A_STR, false);
     return 1;
 }
@@ -508,7 +515,7 @@ function m_in_air(mtmp) {
 }
 
 // include/mondata.h:23 grounded()
-function grounded(ptr) {
+export function grounded(ptr) {
     return !is_flyer(ptr) && !is_floater(ptr)
            && (!is_clinger(ptr) || !has_ceiling(game.u.uz));
 }
@@ -613,7 +620,7 @@ async function trapeffect_bear_trap(mtmp, trap, trflags) {
             } else {
                 await set_wounded_legs(rn2(2) ? RIGHT_SIDE : LEFT_SIDE,
                                        rn1(10, 10));
-                losehp(dmg, 'bear trap', KILLED_BY_AN);
+                await losehp(dmg, 'bear trap', KILLED_BY_AN);
             }
         }
         exercise(A_DEX, false);
@@ -844,6 +851,108 @@ function fixed_tele_trap(trap) {
 export function is_pit_ttyp(ttyp) {
     return is_pit(ttyp);
 }
+// src/trap.c:4024 float_down() — return the hero to the surface when
+// levitation ends (or, with emask W_SADDLE, when dismounting). The
+// levitation-specific arms (BLevitation, BFlying, Punished ball-drag,
+// drown/lava) belong to state the port does not carry yet and record
+// themselves; the dismount path used today runs the trap check and the
+// pickup(1) tail for real.
+export async function float_down(hmask, emask) {
+    let trap = null;
+    let no_msg = false;
+
+    /* HLevitation &= ~hmask; ELevitation &= ~emask; — the flat uprops map
+       has one LEVITATION slot; clear it only when a mask was given and it
+       was set (nothing grants levitation yet, so this is bookkeeping). */
+    if ((hmask || emask) && game.u.uprops?.LEVITATION)
+        note_unported_trap('float_down:levitation_sources');
+    if (game.u.uprops?.LEVITATION)
+        return 0; /* maybe another ring/potion/boots */
+
+    game.disp ||= {};
+    game.disp.botl = true;
+    nomul(0); /* stop running or resting */
+
+    if (game.u.uswallow) {
+        note_unported_trap('float_down:uswallow');
+        await encumber_msg();
+        return 1;
+    }
+
+    if (game.uball)
+        note_unported_trap('float_down:punished_ball_drop');
+
+    /* check for falling into pool - added by GAN 10/20/86 */
+    const Flying = !!game.u.uprops?.FLYING
+        || !!(game.u.usteed && is_flyer(game.u.usteed.data));
+    if (!Flying) {
+        if (!game.u.uswallow && game.u.ustuck) {
+            note_unported_trap('float_down:ustuck_release');
+        }
+        if (is_pool(game.u.ux, game.u.uy) && !game.u.uinwater)
+            note_unported_trap('float_down:drown');
+        if (is_lava(game.u.ux, game.u.uy)) {
+            note_unported_trap('float_down:lava_effects');
+            no_msg = true;
+        }
+    }
+    if (!trap) {
+        trap = t_at_mon(game.u.ux, game.u.uy);
+        if (Is_airlevel(game.u.uz)) {
+            await You('begin to tumble in place.');
+        } else if (Is_waterlevel(game.u.uz) && !no_msg) {
+            await You_feel('heavier.');
+        } else if (!game.u.uinwater && !no_msg) {
+            if (!(emask & W_SADDLE)) {
+                if (In_sokoban(game.u.uz) && trap) {
+                    await You('fall over.');
+                    await losehp(rnd(2), 'dangerous winds', 0 /* KILLED_BY */);
+                    if (game.u.usteed) {
+                        const { dismount_steed } = await import('./steed.js');
+                        await dismount_steed(1 /* DISMOUNT_FELL */);
+                    }
+                    note_unported_trap('float_down:selftouch');
+                } else if (game.u.usteed && (is_floater(game.u.usteed.data)
+                                             || is_flyer(game.u.usteed.data))) {
+                    await You('settle more firmly in the saddle.');
+                } else {
+                    await You(`float gently to the ${surface(game.u.ux, game.u.uy)}.`);
+                }
+            }
+        }
+    }
+
+    /* levitation gives maximum carrying capacity, so having it end
+       potentially triggers greater encumbrance; do this after
+       'come down' messages, before trap activation or autopickup */
+    await encumber_msg();
+
+    const current_dungeon_level = { dnum: game.u.uz.dnum,
+                                    dlevel: game.u.uz.dlevel };
+    if (trap) {
+        switch (trap.ttyp) {
+        case STATUE_TRAP:
+            break;
+        case HOLE:
+        case TRAPDOOR:
+            /* Can_fall_thru(&u.uz) — every level in the sessions can */
+            if (game.u.ustuck)
+                break;
+            /* FALLTHRU */
+        default:
+            if (!game.u.utrap) /* not already in the trap */
+                await dotrap(trap, NO_TRAP_FLAGS);
+        }
+    }
+    /* on_level(&u.uz, &current_dungeon_level) — dungeon.h macro, inline */
+    if (!Is_airlevel(game.u.uz) && !Is_waterlevel(game.u.uz)
+        && !game.u.uswallow
+        && game.u.uz.dnum === current_dungeon_level.dnum
+        && game.u.uz.dlevel === current_dungeon_level.dlevel)
+        await pickup(1);
+    return 1;
+}
+
 
 // src/trap.c:4183 climb_pit() — the hero struggles out of a pit. The
 // Passes_walls, boulder-crevice and flying arms are gated; the ordinary

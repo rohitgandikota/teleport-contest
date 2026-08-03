@@ -668,6 +668,10 @@ async function dog_eat(mtmp, obj, x, y, devour) {
 }
 
 export function dog_goal(mtmp, edog, after, udist, whappr) {
+    /* src/dogmove.c:495 — steeds don't move on their own will */
+    if (mtmp === game.u.usteed)
+        return -2;
+
     const omx = mtmp.mx, omy = mtmp.my;
 
     const min_x = Math.max(omx - SQSRCHRADIUS, 1);
@@ -1164,7 +1168,19 @@ export async function dog_move(mtmp, after) {
         return MMOVE_DIED;
 
     const omx = mtmp.mx, omy = mtmp.my;
-    const udist = distu(omx, omy);
+    let udist = distu(omx, omy);
+
+    /* src/dogmove.c:1016 — let steeds eat and maybe throw rider during
+       Conflict; a steed shares the hero's square so distu()==0, and C forces
+       udist to 1 instead of taking the !udist early return. */
+    if (mtmp === game.u.usteed) {
+        if (game.u.uprops?.CONFLICT)
+            note_unported('dog_move:steed_conflict_throw');
+        udist = 1;
+    } else if (!udist) {
+        /* maybe we tamed him while being swallowed --jgm */
+        return MMOVE_NOTHING;
+    }
 
     /* src/dogmove.c:1032 — a pet that ate or picked something up is done for
        the turn; `goto newdogpos` with nix,niy still at omx,omy, so the

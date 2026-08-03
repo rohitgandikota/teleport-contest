@@ -884,7 +884,7 @@ export function set_apparxy(mtmp) {
 
 // src/monmove.c:2188 accessible() — uses the terrain in front of a closed
 // drawbridge, not the drawbridge itself.
-function accessible(x, y) {
+export function accessible(x, y) {
     const levtyp = game.level.at(x, y)?.typ;
     return ACCESSIBLE(levtyp) && !closed_door_mm(x, y);
 }
@@ -900,7 +900,7 @@ function closed_door_mm(x, y) {
 // src/monmove.c:2356 can_ooze() — squeeze under a door.
 // stuff_prevents_passage() needs the inventory-bulk rules; it is recorded
 // rather than assumed, since assuming FALSE would let a laden monster ooze.
-function can_ooze(mtmp) {
+export function can_ooze(mtmp) {
     if (!amorphous(game.mons[mtmp.mnum]))
         return false;
     if (mtmp.minvent && mtmp.minvent.length)

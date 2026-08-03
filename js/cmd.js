@@ -21,7 +21,7 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove } from './hack.js';
+import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door } from './hack.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, A_DEX } from './const.js';
@@ -45,7 +45,7 @@ import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
@@ -139,14 +139,22 @@ function blocksMove(x, y, dx, dy) {
     return false;
 }
 
-// src/hack.c:4063 doorless_door() — no physical door in the frame. Rogue
-// level doors count as present to keep diagonals blocked there.
-function doorless_door(x, y) {
-    const lev_p = game.level?.at(x, y);
-    if (!lev_p || !IS_DOOR(lev_p.typ))
-        return false;
-    /* Is_rogue_level: the rogue level is not modelled yet */
-    return !(lev_p.doormask & ~(D_NODOOR | D_BROKEN));
+/* doorless_door() moved to js/hack.js, its C home (src/hack.c:4063). */
+
+// src/cmd.c:3847 xytodir() — convert an x,y delta into a direction code.
+export function xytodir(x, y) {
+    for (let dd = 0; dd < N_DIRS; dd++)
+        if (x === xdir[dd] && y === ydir[dd])
+            return dd;
+    return DIR_ERR;
+}
+
+// src/cmd.c:3859 dirtocoord() — convert a direction code into an x,y pair.
+export function dirtocoord(cc, dd) {
+    if (dd > DIR_ERR && dd < N_DIRS_Z) {
+        cc.x = xdir[dd];
+        cc.y = ydir[dd];
+    }
 }
 
 // C ref: cmd.c rhack — main command dispatcher
@@ -632,6 +640,10 @@ export async function doextcmd() {
         return await dojump();
     if (name === 'levelchange')
         return await wiz_level_change();
+    if (name === 'ride') {
+        const { doride } = await import('./steed.js');
+        return await doride();
+    }
     if (name === 'wizwish')
         return await wiz_wish();
 

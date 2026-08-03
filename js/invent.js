@@ -549,6 +549,15 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
 // It was stubbed to a bare `false` in two files. Everything that asks "is there
 // a boulder here" (mfndpos' Sokoban arm, a pet's dig check) or "is there a
 // scroll of scare monster here" (onscary) got NO from a function that had never
+// src/invent.c:1495 carrying() — first inventory object of the given type.
+export function carrying(type) {
+    for (const otmp of game.invent) {
+        if (otmp.otyp === type)
+            return otmp;
+    }
+    return null;
+}
+
 // looked, which is a wrong answer rather than a missing one.
 export function sobj_at(otyp, x, y) {
     for (const otmp of (game.level.objects || []))

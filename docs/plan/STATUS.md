@@ -1,3 +1,41 @@
+=== movemon rebuilt to C's flag discipline; seed0101 needs an actor-order
+reconstruction (plan below) ===
+LANDED (this commit), all measured behavior-neutral on the public set
+but C-correct for any session that hits them:
+- js/mon.js movemon/movemon_singlemon now mirror mon.c:1214-1330:
+  gs_somebody_can_move is a module global set the moment a monster's
+  ration is subtracted and NORMAL_SPEED remains banked; every early-exit
+  arm (equip, hider, eel) keeps the flag, so the monster's extra action
+  happens THIS turn's re-sweep, not next turn. The per-monster body's
+  TRUE return is only the u.utotype abort (stops the sweep). Also added:
+  per-monster `if (vision_full_recalc) vision_recalc(0)` (mon.c:1259),
+  clear_splitobjs per monster, and the fog-cloud m_everyturn_effect
+  note. dochugw's occupation-interrupt half is still unported (noted in
+  code comment).
+seed0101 RECONSTRUCTION FACTS (from scratch draws.mjs step 24):
+- Pass 1 of the step's monster phase matches C exactly (relative slots
+  0-13: pet block, silent-apparxy hostile, gotu=0 hostile, gotu=3 +
+  displ-1 loop hostile landing mux=(28,3)).
+- Divergence at slot 14 = the SECOND-ACTION ordering: C's next actor
+  draws gotu rn2(4)=2 then a displ=2 loop (couldsee((28,3)) TRUE — that
+  is the monster that JUST set mux=(28,3), i.e. m322 acting again);
+  ours instead runs a SILENT apparxy + distfleeck (m13, exact mux from
+  slot 7) before m322. So C's re-sweep reaches m322 before m13, ours the
+  reverse — OR C's m322 held 24 movement while ours held 12 (our
+  boundary-23 dump: pet 24, m12/m13/m322 all 12). Since sweeps visit in
+  list order [pet,12,13,322] in both engines, the bank hypothesis is the
+  live one: check the QUANTIZED grants each monster got at the LAST
+  new-turn block before the freeze (steps ~5-9), i.e. whether our m322's
+  rn2(12) grant quantized to 12 where C's implied 24. mcalcmove port is
+  line-identical; suspect the monster's mmove/mspeed DATA (species speed
+  for mnum 322 in monst_data) or an MSLOW/MFAST state difference.
+NEXT CONCRETE STEP: node scratch draws.mjs <0101> for steps 5..10, find
+the turn whose grant block precedes the freeze, count which monsters
+acted in the following sweeps in C (apparxy signatures identify them),
+and compare implied banks against ours (instrument movemon_singlemon
+with an opt-in globalThis.__movemon_log printing mnum+bank). Verify
+mnum 322's mmove in js/monst_data.js against C's monsters.h entry.
+
 === seed0101 head DIAGNOSED to the turn-seam: monster order in multi-turn
 occupations (dog_move cluster). Instruments + facts for the next attack ===
 seed0101 div@2316 sits INSIDE step 24 ('s' search with an occupation

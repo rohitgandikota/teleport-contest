@@ -1,3 +1,39 @@
+=== seed1500 head DECODED: pet's mux was (71,14) at mfndpos time, not the
+hero's (70,13) — NOTONL marks prove it algebraically ===
+At the step-27 fork (pet at (69,13), hero (70,13), same tie rolls, both
+engines choose candidate #1): OUR candidate list was
+(68,13)+ALLOW_TRAPS, then (68,14)/(69,14)/(70,13) each marked NOTONL.
+Those NOTONL marks are only consistent with monlineu against
+mux=(71,14): dy=0 lines for the 14-row cells and the (70,13) diagonal,
+while (68,13) is off-line. A tame pet's mux should be the hero exactly
+(set_apparxy tame arm runs BOTH at dochug:951 and at m_move's head), so
+something between those calls and mfndpos rewrites mux to (71,14) —
+candidates: (a) mfndpos's OWN hero-square arm writes mon.mux when
+scanning (u.ux,u.uy) — check whether our port writes it somewhere wrong
+(e.g. the `else if (nx === mon.mux)` arm mutating), (b) dog_goal/gg
+paths, (c) the pet acted through a path skipping both apparxy calls.
+VERIFICATION PLAN: re-add the DOGPOS probe printing mtmp.mux at
+mfndpos-entry inside dog_move for idx 2510-2520; then diff C's implied
+candidate REJECTIONS: C chose (70,14) as tie #1, so C rejected
+(68,13),(68,14),(69,14) — under mux=hero, (68,13) horizontal-line and
+(69,14) diagonal-line are NOTONL-marked but NOT rejected (pets lack
+flag&NOTONL)... unless C's DOG loop rejects NOTONL squares in
+dogmove.c (grep NOTONL there found NOTHING — so C's rejections came
+from something else entirely: check C's dog candidate loop arms in
+order for (68,*) rejects: leash? guardian STRAT? m_at?). ALTERNATIVE
+READ: C's pet list may be ordered differently because C's cnt was
+SMALLER (rejects) — reconstruct by counting C's tie draws (4 ✓ same
+count!) — so C had exactly 4 candidates too, FIRST = (70,14):
+ascending scan order then requires (68,13),(68,14),(69,13-self),
+(69,14),(70,12?),(70,13) all rejected — walls row 12, hero (70,13)
+rejected (no ALLOW_U ✓), so C rejected (68,13),(68,14),(69,14) — THREE
+rejects ours kept. What rejects those in C but not us, with pets
+having no NOTONL flag? in_your_sanctuary? kicked_loc(no)? m_at (other
+monsters standing there in C's world?!) — C's world at that boundary
+had matching SCREENS (step 26 clean), so no visible monsters there;
+INVISIBLE/undetected ones possible.
+GATES unchanged from ce597e0 (rng 204075, screens 2466, 15 clean).
+
 === ARROW TRAP + dart monster arm ported; postmov trap codes fixed;
 seed0015 RNG-CLEAN (15 sessions at 100%) ===
 seed1500's head: the pet stepped on an unseen arrow trap; C fired it

@@ -1,3 +1,24 @@
+=== seed0004 round 4: reluctant-step message ported (+396); head now at
+m_move's hostile backtrack roll ===
+C blocks eleven recorded 'b' presses behind "Your saddled pony steps
+reluctantly onto an orc corpse.--More--" (dogmove.c:1298: pet moves
+onto a pile with a cursed object; the message names the TOP remembered
+item, gated on !Hallucination + hero_memory + remembered-glyph-is-
+object). We printed nothing, so those keys became real turns. Ported at
+the exact position (after place_monster, before mon_track_add), with
+wasseen = canseemon before the move as C has it.
+NEW HEAD div@4338: C rn2(8) vs ours rn2(24) at m_move's backtrack
+lessen (monmove.c:1963, rn2(4*(cnt-j))): for the SAME stream position C
+has cnt-j=2 and ours 6, so the hostile's mfndpos candidate count and/or
+its mtrack contents differ — position-history drift for mon 59. Next:
+dump our mon-59 mtrack + mfndpos cnt at that turn and reconstruct C's
+from its rn2 args upstream (the args encode cnt-j at each backtrack
+draw). Note m_move's track loop bounds: `j < jcnt` with jcnt =
+min(MTSZ, cnt-1)?? — verify the port's jcnt formula against
+monmove.c:1957 while there.
+GATES: seed0004 4382 -> 4778 matched (div 4311 -> 4338); suite screens
+2447, rng 203859; no other heads moved; hang gate OK.
+
 === STACK WEIGHTS FIXED SUITE-WIDE: addinv merged via merged(); status
 line prints ACURR; seed0004 trap sequence now matches C byte-for-byte ===
 The 31-unit encumbrance gap was addinv: its inline merge did quan +=

@@ -2,6 +2,46 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-02 (later) — 21/44 RNG-clean; sit/pray/rush/rust-trap/bigrm-12
+
+Landed since the riding entry (each pushed, gates clean):
+- dosit (js/sit.js) — #sit was free, shifted every later key (seed0107 100%).
+- Ctrl+direction = RUSH (run=3), reset_commands C(dirchar) binding: ^J etc.
+  Rejecting it desynced hero position silently (seed0398 +54 head).
+- trapeffect_rust_trap + water_damage + erode_obj (trap.js); RUST_TRAP in
+  dotrap + selector. seed0398 94.3%.
+- dat/bigrm-12 (two hexagons) ported verbatim; sp_lev replace_terrain and
+  non_diggable now handle the C no-region whole-map default (bigrm-7's
+  no-arg non_diggable had been a NaN no-op). seed0383 +7700; seed0013-rogue
+  100% RNG.
+- m_search_items: missing m_cansee gate (monmove.c:1403) — monsters walked
+  to items they could not see; kobold silent-drift root cause (seed0004
+  div 4338→5263, seed0017 96%).
+- x_monnam "saddled" adjective + mon_nam/y_monnam SUPPRESS_SADDLE flags.
+- pray.js NEW: dopray/can_pray/in_trouble/worst_cursed_item/prayer_done
+  p_type-0 arm/angrygods msg arms. seed0017 100% RNG.
+- u.uluck/u.moreluck init 0 (change_luck was making NaN; friday13 sessions
+  are full-moon+friday so net 0 masked it; held-out single-modifier dates
+  were silently wrong).
+- losehp is async now — death inside it reaches can_make_bones in order.
+
+**21/44 RNG-clean.** Score 10/44 (screens lag RNG; seed0017 is 2/67 screens
+with 100% RNG — display-side, investigate separately).
+
+**Known next heads (diverge.mjs --all):**
+- seed0398 div@2852 weffects(zap.c:3448) — wand-at-pile zap: bhitpile/bhito/
+  poly_obj machinery. 94.3%, biggest single-session win available.
+- seed0383 div@9666 create_gas_cloud(region.c:1303) — region subsystem.
+- seed0009 div@3337 getbones(bones.c:645); seed0013-save div@4802 = RESTORE
+  (no save/restore machinery yet — segment 2 boots a fresh game; that whole
+  subsystem is unstarted and matters for held-out too).
+- dog_move tails: seed0002 div@6999 (dogmove.c:1257), seed0007/0012/0106
+  (dogmove.c:1255).
+- seed0006 div@2768 doopen_indir(lock.c:904).
+- seed5006 div@10952 u_maybe_impaired; seed2600 find_random_launch_coord;
+  seed5002 stock_room; quest-tour trio (0361 dosearch0/0367 dochug:745/0373
+  splev_initlev).
+
 ## 2026-08-02 (late) — riding subsystem landed; 18/44 RNG-clean
 
 **Done this session:**

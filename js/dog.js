@@ -21,12 +21,12 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          NEED_WEAPON, NEED_HTH_WEAPON } from './const.js';
 import { acurr } from './attrib.js';
 import { put_saddle_on_mon } from './steed.js';
-import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg } from './mondata.js';
+import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater } from './mondata.js';
 import { sobj_at, eaten_stat, obj_extract_self } from './invent.js';
 import { may_dig } from './hack.js';
 import { is_metallic } from './obj.js';
 import { obj_resists } from './zap.js';
-import { newsym, canspotmon, mon_visible, pline } from './display.js';
+import { newsym, canspotmon, mon_visible, pline, canseemon } from './display.js';
 import { splitobj, peek_at_iced_corpse_age } from './mkobj.js';
 import { yelp, growl } from './sounds.js';
 import { m_consume_obj, is_pick, check_gear_next_turn } from './mon.js';
@@ -47,7 +47,9 @@ import { rn2, rnd, getRngLog } from './rng.js';
 import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { doname } from './objnam.js';
-import { Monnam, noit_Monnam, christen_monst } from './do_name.js';
+import { Monnam, noit_Monnam, christen_monst, x_monnam } from './do_name.js';
+import { ARTICLE_YOUR } from './const.js';
+import { Hallucination } from './youprop.js';
 import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy, mon_track_add } from './monmove.js';
@@ -1412,8 +1414,24 @@ export async function dog_move(mtmp, after) {
         /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
            the move. Writing mx/my alone leaves m_at() answering with the old
            square. */
+        const wasseen = canseemon(mtmp);
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+        /* src/dogmove.c:1298 — the pet moved onto a pile it dislikes (a
+           cursed object somewhere in it): describe the TOP remembered item
+           of the pile, not the cursed item itself. */
+        if (cursemsg[chi] && (wasseen || canseemon(mtmp))) {
+            const loc = game.level.at(nix, niy);
+            const memobj = (!Hallucination()
+                            && loc?.remembered_glyph?.glyph?.kind === 'obj')
+                ? (game.level.objects || []).find(o => o.ox === nix && o.oy === niy)
+                : null;
+            const what = memobj ? doname(memobj) : 'something';
+            await pline(`${x_monnam(mtmp, ARTICLE_YOUR, null, 0, false)
+                .replace(/^./, c => c.toUpperCase())} steps reluctantly ${
+                (is_flyer(mtmp.data) || is_floater(mtmp.data)) ? 'over' : 'onto'
+                } ${what}.`);
+        }
         /* src/dogmove.c:1354 — the move refreshes the pet's idea of where
            the hero is. A tame monster's set_apparxy draws nothing, but the
            call belongs here for the day a pet goes feral mid-move. */

@@ -1,3 +1,22 @@
+=== ARROW TRAP + dart monster arm ported; postmov trap codes fixed;
+seed0015 RNG-CLEAN (15 sessions at 100%) ===
+seed1500's head: the pet stepped on an unseen arrow trap; C fired it
+(next_ident + mksobj ARROW with multigen rn1(6,6) init + thitm(8)) and
+we noted it. Ported trapeffect_arrow_trap (both arms) and filled the
+dart trap's monster arm (same shape, tlev 7, rn2(6) poison). thitm's
+missile placement is real now (unfired/force-hit missiles land and
+stack; struck ones are consumed).
+CRITICAL LATENT FIX: postmov compared mintrap's result against 3/4 for
+Killed/Moved, but trap.h says Killed=2, Moved=3 — so a monster KILLED
+by an arrival trap never returned MMOVE_DIED. Correcting it made
+seed0015 (pit-killed pet) fully RNG-clean: 8563/8563.
+GATES: seed1500 2526 -> 2702/2768 (screens 15 -> 31); seed0015
+8563/8563 NO DIVERGENCE; suite screens 2466, rng 204075; 15/44 sessions
+RNG-clean; hang gate OK; no regressions; probes stripped.
+NEXT heads: seed1500 @2702 (distfleeck — likely the post-trap-kill
+world; check what died), seed0004 kobold drift, mount_steed (0103),
+m_move (0398/0017), getbones (0009).
+
 === doopen_indir refusal messages ported ("This door is locked." etc.);
 suite screens 2450 ===
 seed0004's FIRST SCREEN mismatch was step 17: walking into a locked

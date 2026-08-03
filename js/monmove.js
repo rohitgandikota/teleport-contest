@@ -1403,7 +1403,8 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
     if (mmoved === MMOVE_MOVED) {
         const { mintrap } = await import('./trap.js');
         const trapret = await mintrap(mtmp, 0 /* NO_TRAP_FLAGS */);
-        if (trapret === 3 /* Trap_Killed_Mon */ || trapret === 4 /* Moved */) {
+        /* include/trap.h:101-102 — Trap_Killed_Mon = 2, Trap_Moved_Mon = 3 */
+        if (trapret === 2 /* Trap_Killed_Mon */ || trapret === 3 /* Moved */) {
             if (mtmp.mx)
                 newsym(mtmp.mx, mtmp.my);
             return MMOVE_DIED;

@@ -265,10 +265,81 @@ function t_missile(otyp, trap) {
 //
 // Draw order: the once/tseen rn2(15) disarm check, then t_missile's mksobj,
 // then the rn2(6) poison roll, then dmgval, then thitu's rnd(20).
+// src/trap.c trapeffect_arrow_trap()
+async function trapeffect_arrow_trap(mtmp, trap, trflags) {
+    if (mtmp === game.youmonst) {
+        if (trap.once && trap.tseen && !rn2(15)) {
+            await You_hear('a loud click!');
+            deltrap(trap);
+            newsym(game.u.ux, game.u.uy);
+            return Trap_Is_Gone;
+        }
+        trap.once = 1;
+        seetrap(trap);
+        await pline('An arrow shoots out at you!');
+        const otmp = t_missile(ONAMES.ARROW, trap);
+        const dam = dmgval(otmp, game.youmonst);
+        /* u.usteed && !rn2(2) && steedintrap: no steeds in the traps yet */
+        if (await thitu(8, dam, { obj: otmp }, 'arrow')) {
+            /* obfree(otmp) — the arrow is destroyed */
+        } else {
+            place_object(otmp, game.u.ux, game.u.uy);
+            if (!game.u.ublind)
+                observe_object(otmp);
+            const { stackobj } = await import('./invent.js');
+            stackobj(otmp);
+            newsym(game.u.ux, game.u.uy);
+        }
+        return Trap_Effect_Finished;
+    }
+
+    const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+    const see_it = cansee(mtmp.mx, mtmp.my);
+    let trapkilled = false;
+
+    if (trap.once && trap.tseen && !rn2(15)) {
+        if (in_sight && see_it)
+            await pline(`${Monnam(mtmp)} triggers a trap but nothing happens.`);
+        deltrap(trap);
+        newsym(mtmp.mx, mtmp.my);
+        return Trap_Is_Gone;
+    }
+    trap.once = 1;
+    const otmp = t_missile(ONAMES.ARROW, trap);
+    if (in_sight)
+        seetrap(trap);
+    if (await thitm(8, mtmp, otmp, 0, false))
+        trapkilled = true;
+
+    return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
+        ? Trap_Caught_Mon : Trap_Effect_Finished;
+}
+
 async function trapeffect_dart_trap(mtmp, trap, trflags) {
     if (mtmp !== game.youmonst) {
-        note_unported_trap('trapeffect_dart_trap:monster');
-        return Trap_Effect_Finished;
+        /* src/trap.c dart monster arm */
+        const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+        const see_it = cansee(mtmp.mx, mtmp.my);
+        let trapkilled = false;
+
+        if (trap.once && trap.tseen && !rn2(15)) {
+            if (in_sight && see_it)
+                await pline(`${Monnam(mtmp)} triggers a trap but nothing happens.`);
+            deltrap(trap);
+            newsym(mtmp.mx, mtmp.my);
+            return Trap_Is_Gone;
+        }
+        trap.once = 1;
+        const otmp = t_missile(ONAMES.DART, trap);
+        if (!rn2(6))
+            otmp.opoisoned = 1;
+        if (in_sight)
+            seetrap(trap);
+        if (await thitm(7, mtmp, otmp, 0, false))
+            trapkilled = true;
+
+        return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
+            ? Trap_Caught_Mon : Trap_Effect_Finished;
     }
 
     if (trap.once && trap.tseen && !rn2(15)) {
@@ -347,6 +418,8 @@ export async function dotrap(trap, trflags) {
     const ttype = trap.ttyp;
 
     game.u.utrap = 0;                   /* reset_utrap() */
+    if (ttype === ARROW_TRAP)
+        return await trapeffect_arrow_trap(game.youmonst, trap, trflags);
     if (ttype === DART_TRAP)
         return await trapeffect_dart_trap(game.youmonst, trap, trflags);
     if (ttype === MAGIC_TRAP)
@@ -499,10 +572,13 @@ async function thitm(tlev, mon, obj, d_override, nocorpse) {
             }
         }
     }
-    /* the missile place/stack arm needs a real obj; none of the live
-       callers pass one */
-    if (obj)
-        note_unported_trap('thitm:missile_placement');
+    /* src/trap.c:3955 — an unfired or force-hit missile lands on the
+       monster's square; a normally-striking one is used up. */
+    if (obj && (!strike || d_override)) {
+        place_object(obj, mon.mx, mon.my);
+        const { stackobj } = await import('./invent.js');
+        stackobj(obj);
+    } /* else dealloc_obj(obj): dropped reference is the JS equivalent */
 
     return trapkilled;
 }
@@ -646,6 +722,8 @@ function mselftouch_would_fire(mon) {
 // session that lands on one is visibly incomplete rather than silently wrong.
 async function trapeffect_selector(mtmp, trap, trflags) {
     switch (trap.ttyp) {
+    case ARROW_TRAP:
+        return await trapeffect_arrow_trap(mtmp, trap, trflags);
     case DART_TRAP:
         return await trapeffect_dart_trap(mtmp, trap, trflags);
     case MAGIC_TRAP:

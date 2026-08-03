@@ -352,6 +352,13 @@ function m_search_items(mtmp, goal, st) {
                     continue;
                 }
 
+                /* src/monmove.c:1403 — avoid getting stuck on eg. items in
+                   niches; the monster must be able to SEE the square. This
+                   was missing, and a kobold walked toward a scroll two dark
+                   rooms away while C's kept chasing the hero (seed0004). */
+                if (!clear_path(omx, omy, xx, yy))
+                    continue;
+
                 /* look through the items on this location */
                 for (const otmp of objects_at(xx, yy)) {
                     /* monsters may pick rocks up, but won't go out of their
@@ -1295,8 +1302,10 @@ export async function m_move(mtmp, after) {
             let skip = false;
             for (let j = 0; j < jcnt; j++)
                 if (track[j] && nx === track[j].x && ny === track[j].y) {
-                    if (globalThis.__mm_probe)
-                        console.error('MMPROBE', JSON.stringify({ mon: mtmp.mnum, at: [mtmp.mx, mtmp.my], cnt, j, jcnt, nx, ny, poss: (mfp.poss||[]).slice(0, cnt) }));
+                    if (globalThis.__mm_probe) {
+                        const { rngLogLength } = globalThis.__rng_mod || {};
+                        console.error('MMPROBE', JSON.stringify({ idx: rngLogLength ? rngLogLength() : -1, mon: mtmp.mnum, at: [mtmp.mx, mtmp.my], appr, gg: [ggx, ggy], mux: [mtmp.mux, mtmp.muy], flee: mtmp.mflee || 0, cnt, j, nx, ny }));
+                    }
                     if (rn2(4 * (cnt - j))) { skip = true; break; }
                 }
             if (skip) continue;

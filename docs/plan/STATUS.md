@@ -1,3 +1,27 @@
+=== seed1500 PASSES (10/44): feel_location + lastseentyp learning ===
+The final piece: applying a lock pick at a non-door square FEELS the
+location (lock.c:578-593) and returns PICKLOCK_LEARNED_SOMETHING (time
+passes!) when the hero's map memory changed — including the
+lastseentyp half: feeling a never-seen square records its terrain type
+even when the visible glyph doesn't change, and that alone costs the
+turn. Our pick_lock returned DID_NOTHING unconditionally, so C ran a
+61-draw turn on the 'l' direction answer and we ran none.
+PORTED: display.js set_seenv (display.c:3365, its real home) and
+feel_location (display.c:746 — seen vector + memory write from level
+truth: top object, else seen trap, else engraving/terrain; levitation
+feel rules gated), loc.lastseentyp recorded at the map write;
+lock.js pick_lock's no-door arm does the before/after comparison.
+DEBUGGING LESSON RECORDED: the "mux=(70,14) anomaly" was an
+index-window illusion — the probe's rngLogLength gate caught a
+DIFFERENT (earlier) turn than C's divergence index, because our stream
+was already 105 draws short by then. When our cum falls behind C's,
+absolute-index probe windows select different game moments in the two
+engines; anchor probes to boundaries (step_snapshot), not to indices,
+once the streams have different lengths.
+GATES: seed1500 2768/2768 + 40/40 (PASS — 10/44 now, 16 RNG-clean);
+suite screens 2475, rng 204141; no other head moved; hang gate OK;
+all probes stripped.
+
 === seed1500 head DECODED: pet's mux was (71,14) at mfndpos time, not the
 hero's (70,13) — NOTONL marks prove it algebraically ===
 At the step-27 fork (pet at (69,13), hero (70,13), same tie rolls, both

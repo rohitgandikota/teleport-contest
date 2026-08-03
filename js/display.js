@@ -1176,6 +1176,54 @@ function _paint_map_cell(display, x, y) {
                     g.disp_attr ?? 0);
 }
 
+// src/display.c:3365 set_seenv() — set the seen vector of lev as if seen
+// from (x0,y0) to (x,y). Note dy is inverted, as in C.
+const seenv_matrix_d = [
+    [SV2, SV1,   SV0],
+    [SV3, 0xFF,  SV7],   /* SVALL center */
+    [SV4, SV5,   SV6],
+];
+export function set_seenv(lev, x0, y0, x, y) {
+    const dx = x - x0, dy = y0 - y;
+    lev.seenv = (lev.seenv || 0)
+        | seenv_matrix_d[Math.sign(dy) + 1][Math.sign(dx) + 1];
+}
+
+// src/display.c:746 feel_location() — the hero maps a square by touch:
+// seen vector set as if seen, then the memory written from the level's
+// truth (top object, else seen trap, else engraving/terrain), regardless
+// of vision. The levitation feel rules and the underwater arm are gated.
+export function feel_location(x, y) {
+    if (!isok(x, y))
+        return;
+    const loc = game.level?.at(x, y);
+    if (!loc)
+        return;
+
+    set_seenv(loc, game.u.ux, game.u.uy, x, y);
+
+    if (game.u.uprops?.LEVITATION)
+        (game.unported ||= new Set()).add('feel_location:levitation');
+
+    /* _map_location(x, y, 1) */
+    const obj = (game.level?.objects || [])
+                    .find(o => o.ox === x && o.oy === y);
+    const trap = t_at(x, y);
+    const memg = obj ? floor_object_glyph(obj)
+        : (trap && trap.tseen) ? trap_glyph(trap)
+        : (engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y));
+    if (game.level?.flags?.hero_memory)
+        loc.remembered_glyph = { ch: memg.ch, color: memg.color,
+                                 decgfx: memg.dec,
+                                 glyph: memg.glyph
+                                     ?? { kind: 'cmap', cmap: memg.cmap } };
+    /* map_background()/map_location() record the terrain type the hero
+       has last seen here (svl.lastseentyp); callers compare it to learn
+       whether feeling the spot taught the hero anything. */
+    loc.lastseentyp = loc.typ;
+    newsym(x, y);
+}
+
 // src/display.c:2147 row_refresh() — repaint map row y, columns start..stop,
 // from the glyph buffer. Cells never drawn to stay blank, like C's
 // GLYPH_UNEXPLORED skip.

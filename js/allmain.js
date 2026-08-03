@@ -560,7 +560,7 @@ export async function moveloop_core() {
             if (!monscanmove && g.u.umovement < NORMAL_SPEED) {
                 /* src/allmain.c:222 — both hero and monsters are out of
                    steam this round, so set up a new turn */
-                mcalcdistress();
+                await mcalcdistress();
 
                 /* src/allmain.c:232 — reallocate movement rations */
                 for (const mtmp of g.level?.monsters || [])

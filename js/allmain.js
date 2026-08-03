@@ -199,6 +199,11 @@ export async function newgame() {
         /* src/decl.c go.oldcap — zero-initialised; encumber_msg() compares
            against it and undefined breaks the first transition message. */
         g.oldcap = 0;
+        /* src/decl.c u.uluck/u.moreluck — zero-initialised; change_luck()
+           adds to them, and the moon/friday13 start bonuses go through it,
+           so undefined turns the whole luck system into NaN. */
+        g.u.uluck = 0;
+        g.u.moreluck = 0;
         // src/mondata.c set_uasmon() — gy.youmonst.data = &mons[u.umonnum].
         // The hero-as-monster struct: combat code passes it to the same
         // functions that take a real monster (dmgval, mhitm_ad_phys,

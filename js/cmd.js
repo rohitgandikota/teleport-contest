@@ -649,6 +649,10 @@ export async function doextcmd() {
         const { dosit } = await import('./sit.js');
         return await dosit();
     }
+    if (name === 'pray') {
+        const { dopray } = await import('./pray.js');
+        return await dopray();
+    }
     if (name === 'wizwish')
         return await wiz_wish();
 

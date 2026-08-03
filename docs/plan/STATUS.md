@@ -1,3 +1,131 @@
+# STATUS — live handoff board
+
+*(newest entry first; keep the top entry current)*
+
+## 2026-08-02 (late) — riding subsystem landed; 18/44 RNG-clean
+
+**Done this session:**
+- **Full riding subsystem** (js/steed.js): doride, mount_steed (slip roll
+  `u.ulevel + mtame < rnd(20)`, slip damage rn1(5,10), success path
+  maybewakesteed → usteed= → remove_monster → teleds), landing_spot
+  (three-pass scan, rn2(viable) reservoir), dismount_steed (by-choice path
+  complete), exercise_steed, can_ride. seed0103 100% RNG.
+- **test_move** (hack.c:991) now lives in js/hack.js with all four modes;
+  could_move_onto_boulder, cant_squeeze_thru (hero arm with
+  inv_weight()+weight_cap()), doorless_door moved from cmd.js.
+  cmd.js domove still uses its inline blocked() — migrating it to
+  test_move(DO_MOVE) is future work, do NOT do it casually: the inline
+  version passes 18 sessions.
+- **float_down** (trap.c:4024) in js/trap.js — dismount tail, W_SADDLE
+  emask suppresses the float message, pickup(1) at the end.
+- **u.umoved** now real: cleared at allmain.c:513 position, set in domove
+  tail (hack.c:2968). u_calc_moveamt's `usteed && umoved` arm draws
+  mcalcmove(steed) — this was seed0104's div@2654.
+- **mattacku usteed arm** (mhitu.c:529): orcs rn2(2) / others rn2(4) to
+  attack the steed via mattackm + steed retaliation. seed0104 100% RNG.
+- **Steed exclusion from pet AI** is dog_goal's head guard
+  (dogmove.c:495 `return -2`) plus dog_move's udist=1 arm
+  (dogmove.c:1016). movemon does NOT skip the steed — C doesn't either.
+- **losehp is now async** and awaited everywhere; a death inside losehp
+  reaches done(DIED) → can_make_bones's rn2 draw in order.
+- **DISMOUNT_* constants in const.js were WRONG** (invented values);
+  fixed to include/hack.h:346. If old code compared raw numbers, recheck.
+- block_door/block_entry (shk.c:5791/:5826) ported with C's
+  IS_SHOP(roomno-with-ROOMOFFSET) quirk kept as-is; shopkeeper-state arms
+  note_unported.
+
+**Suite state:** 18/44 sessions RNG-clean end-to-end; 10/44 fully passing
+(screens still lag RNG on: 0103 39/60, 0104 ?/43, 0015 41/44, 0016 35/36,
+0060 38/41, 0200 37/40, 0501 25/28, 2200 229/230 known-unfixable).
+Latest commit 512ede0, pushed.
+
+**Screens next for the RNG-clean set:** seed0103 is 39/60 — the misses
+start at the death sequence (DYWYPI / rip screen?) and possibly the
+"--More--" after mount messages. Compare with
+`node tools/screendiff.mjs seed0103 <step>` before touching display code.
+
+**Queued divergence heads (div@ from tools/diverge.mjs --all):**
+- seed0107 div@2891 distfleeck — 99.6%, likely small.
+- seed0398 div@2785 / seed0017 div@3109 / seed0004 div@4338 — all
+  m_move(monmove.c:1963) rn2(32)-family: the backtrack rn2(4*(cnt-j))
+  argument mismatch documented earlier (cnt-j 2 vs 6).
+- seed0009 div@3337 getbones(bones.c:645) — death tail, needs getbones.
+- seed0013 pair div@3885 distfleeck.
+- seed0002 div@6999 dog_move(dogmove.c:1257).
+- seed0006 div@2768 doopen_indir(lock.c:904).
+- seed2600 div@3084 find_random_launch_coord (rolling boulder trap).
+- seed5006 div@10952 u_maybe_impaired(hack.c:2420).
+- seed5002 div@4138 stock_room — shop generation.
+- KNOWN UNFIXABLE, do not chase: seed2200 229/230, seed0016 35/36
+  (frozen-serializer leading-attr-space).
+
+**Hard gates unchanged:** score.sh + tools/hang-gate.mjs (HARD — judge
+blocks on over-read) + diverge.mjs --all div@ comparison before/after
+every change. Commit+push each landed improvement; push IS the
+submission.
+
+---
+
+=== seed1500 PASSES (10/44): feel_location + lastseentyp learning ===
+The final piece: applying a lock pick at a non-door square FEELS the
+location (lock.c:578-593) and returns PICKLOCK_LEARNED_SOMETHING (time
+passes!) when the hero's map memory changed — including the
+lastseentyp half: feeling a never-seen square records its terrain type
+even when the visible glyph doesn't change, and that alone costs the
+turn. Our pick_lock returned DID_NOTHING unconditionally, so C ran a
+61-draw turn on the 'l' direction answer and we ran none.
+PORTED: display.js set_seenv (display.c:3365, its real home) and
+feel_location (display.c:746 — seen vector + memory write from level
+truth: top object, else seen trap, else engraving/terrain; levitation
+feel rules gated), loc.lastseentyp recorded at the map write;
+lock.js pick_lock's no-door arm does the before/after comparison.
+DEBUGGING LESSON RECORDED: the "mux=(70,14) anomaly" was an
+index-window illusion — the probe's rngLogLength gate caught a
+DIFFERENT (earlier) turn than C's divergence index, because our stream
+was already 105 draws short by then. When our cum falls behind C's,
+absolute-index probe windows select different game moments in the two
+engines; anchor probes to boundaries (step_snapshot), not to indices,
+once the streams have different lengths.
+GATES: seed1500 2768/2768 + 40/40 (PASS — 10/44 now, 16 RNG-clean);
+suite screens 2475, rng 204141; no other head moved; hang gate OK;
+all probes stripped.
+
+=== seed1500 head DECODED: pet's mux was (71,14) at mfndpos time, not the
+hero's (70,13) — NOTONL marks prove it algebraically ===
+At the step-27 fork (pet at (69,13), hero (70,13), same tie rolls, both
+engines choose candidate #1): OUR candidate list was
+(68,13)+ALLOW_TRAPS, then (68,14)/(69,14)/(70,13) each marked NOTONL.
+Those NOTONL marks are only consistent with monlineu against
+mux=(71,14): dy=0 lines for the 14-row cells and the (70,13) diagonal,
+while (68,13) is off-line. A tame pet's mux should be the hero exactly
+(set_apparxy tame arm runs BOTH at dochug:951 and at m_move's head), so
+something between those calls and mfndpos rewrites mux to (71,14) —
+candidates: (a) mfndpos's OWN hero-square arm writes mon.mux when
+scanning (u.ux,u.uy) — check whether our port writes it somewhere wrong
+(e.g. the `else if (nx === mon.mux)` arm mutating), (b) dog_goal/gg
+paths, (c) the pet acted through a path skipping both apparxy calls.
+VERIFICATION PLAN: re-add the DOGPOS probe printing mtmp.mux at
+mfndpos-entry inside dog_move for idx 2510-2520; then diff C's implied
+candidate REJECTIONS: C chose (70,14) as tie #1, so C rejected
+(68,13),(68,14),(69,14) — under mux=hero, (68,13) horizontal-line and
+(69,14) diagonal-line are NOTONL-marked but NOT rejected (pets lack
+flag&NOTONL)... unless C's DOG loop rejects NOTONL squares in
+dogmove.c (grep NOTONL there found NOTHING — so C's rejections came
+from something else entirely: check C's dog candidate loop arms in
+order for (68,*) rejects: leash? guardian STRAT? m_at?). ALTERNATIVE
+READ: C's pet list may be ordered differently because C's cnt was
+SMALLER (rejects) — reconstruct by counting C's tie draws (4 ✓ same
+count!) — so C had exactly 4 candidates too, FIRST = (70,14):
+ascending scan order then requires (68,13),(68,14),(69,13-self),
+(69,14),(70,12?),(70,13) all rejected — walls row 12, hero (70,13)
+rejected (no ALLOW_U ✓), so C rejected (68,13),(68,14),(69,14) — THREE
+rejects ours kept. What rejects those in C but not us, with pets
+having no NOTONL flag? in_your_sanctuary? kicked_loc(no)? m_at (other
+monsters standing there in C's world?!) — C's world at that boundary
+had matching SCREENS (step 26 clean), so no visible monsters there;
+INVISIBLE/undetected ones possible.
+GATES unchanged from ce597e0 (rng 204075, screens 2466, 15 clean).
+
 === seed1500 PASSES (10/44): feel_location + lastseentyp learning ===
 The final piece: applying a lock pick at a non-door square FEELS the
 location (lock.c:578-593) and returns PICKLOCK_LEARNED_SOMETHING (time

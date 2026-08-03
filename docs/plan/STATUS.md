@@ -2,6 +2,35 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-03 — 22/44 RNG-clean; zap-poly, dip, catch, annotate
+
+Since the last entry (all pushed, gates clean each time):
+- seed0398 100%: weffects/bhito/poly_obj/bhitpile/do_osshock/obj_shudders
+  (zap.js); poly_obj's delobj tail draws obj_resists(0,0) every time —
+  that was the extra rn2(100) per polymorphed object. #wizgenesis was
+  already ported in read.js, just needed doextcmd dispatch.
+- seed0106 100%: pray relearn arm (godvoice rn2(4) + adjattrib(A_WIS
+  — INDEX 2, not 3; 3 is DEX and the scuff-gate arg exposes it) +
+  losexp), domonnoise animal arms (chatting a pet costs the turn),
+  u_catch_thrown_obj rn2(100-DEX), dipfountain/dryup + dodip,
+  #annotate's getlin (typed annotation was running as commands!),
+  #version's first-call nhlib align shuffle (get_lua_version boots Lua).
+- seed0017 100%: dopray/can_pray/prayer_done p_type-0; u.uluck init.
+- m_search_items m_cansee gate (monmove.c:1403) — kobold silent drift.
+- bigrm-12 des level; sp_lev whole-map no-region defaults.
+- ctrl+dir = rush (run=3); ^J was rejected as unknown before.
+- rust trap + water_damage + erode_obj; losehp async everywhere.
+
+**22/44 RNG-clean; 10/44 full pass (screens lag: seed0106 35/267 —
+prompt/pager rendering, seed0017 2/67 — same family; a display session
+should chase tty prompt painting next).**
+
+Latest commit 8c4d1ec pushed. Heads remaining: see diverge --all; big
+ones: dog_move tails (0002/0007/0012), getbones (0009), save/restore
+(0013-save — whole subsystem missing), create_gas_cloud (0383 region),
+were_change (0399), u_maybe_impaired (5006), stock_room (5002),
+find_random_launch_coord (2600), quest-tour trio early heads.
+
 ## 2026-08-02 (later) — 21/44 RNG-clean; sit/pray/rush/rust-trap/bigrm-12
 
 Landed since the riding entry (each pushed, gates clean):

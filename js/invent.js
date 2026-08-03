@@ -78,11 +78,13 @@ export function assigninvlet(otmp) {
 // otherwise take the next inventory letter.
 export function addinv(obj) {
     game.invent ||= [];
+    /* src/invent.c addinv_core0 — merging goes through merged(), which
+       recomputes the stack's owt. The old inline quan += left every
+       merged stack carrying a single item's weight, which under-read
+       inv_weight() and hid encumbrance transitions. */
     for (const otmp of game.invent) {
-        if (mergable(otmp, obj)) {
-            otmp.quan += obj.quan;
+        if (merged({ o: otmp }, { o: obj }))
             return otmp;
-        }
     }
     return addinv_nomerge(obj);
 }

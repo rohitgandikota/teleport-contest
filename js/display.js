@@ -9,6 +9,7 @@ import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
 import { cansee, vision_recalc } from './vision.js';
+import { ACURR } from './attrib.js';
 import { t_at } from './mon.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
@@ -1072,7 +1073,7 @@ function render_map_row(y) {
 // "St:19" where C shows "St:18/01" — the value was right, the rendering wasn't.
 function get_strength_str() {
     const STR18 = (x) => 18 + x;
-    const st = game.u.acurr?.a?.[0] ?? 0;   /* A_STR */
+    const st = ACURR(0);                    /* ACURR(A_STR) as in C botl.c */
 
     if (st > 18) {
         if (st > STR18(100))
@@ -1104,7 +1105,9 @@ function _statusLine1() {
        which only worked while the values were a hardcoded array already
        written in display order. */
     const A_STR = 0, A_INT = 1, A_WIS = 2, A_DEX = 3, A_CON = 4, A_CHA = 5;
-    const at = (i) => u.acurr?.a?.[i] ?? '?';
+    /* src/botl.c:87 prints ACURR(x), never the raw array: abon and atemp
+       (wounded legs' temporary Dex loss) are part of the shown value. */
+    const at = (i) => (game.u?.acurr ? ACURR(i) : '?');
     const stats = `St:${get_strength_str()} Dx:${at(A_DEX)} Co:${at(A_CON)} `
                 + `In:${at(A_INT)} Wi:${at(A_WIS)} Ch:${at(A_CHA)}`;
     const align = u.ualign?.type === 0 ? 'Neutral' : u.ualign?.type > 0 ? 'Lawful' : 'Chaotic';

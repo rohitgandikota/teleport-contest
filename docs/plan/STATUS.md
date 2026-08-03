@@ -1,3 +1,25 @@
+=== STACK WEIGHTS FIXED SUITE-WIDE: addinv merged via merged(); status
+line prints ACURR; seed0004 trap sequence now matches C byte-for-byte ===
+The 31-unit encumbrance gap was addinv: its inline merge did quan +=
+WITHOUT recomputing owt, so every merged stack in every inventory
+carried a single item's weight (13 apples weighed 2). C's addinv_core0
+merges through merged(), which re-runs weight(). Fixed; the knight now
+tips into Burdened at the bear trap exactly like C ("Your movements are
+slowed slightly because of your load." behind the trap's --More--), and
+the double turn-cycles follow.
+ALSO: the status line printed u.acurr.a[] raw — the SECOND instance of
+the raw-array bug (the wipe gate was the first). It now prints ACURR()
+like botl.c:87, so the wounded-legs Dx drop (9->8) shows. Strength goes
+through ACURR too. grep '\.acurr\.a\[' still has one hit in
+insight.js (attribute-enlightenment display, C uses acurr there too —
+check when insight sessions appear).
+GATES: seed0004 div 4253 -> 4311 (+58); suite screens 2439 -> 2445, rng
+203463; no other heads moved; hang gate OK.
+HELD-OUT NOTE: the addinv owt fix is global — any session where a hero
+merges picked-up stacks (arrows, food, gems) now weighs correctly, so
+encumbrance transitions and exerper's encumbrance draws fire at C's
+times everywhere, not just in seed0004.
+
 === seed0004 round 2: wounded-legs exercise arm, weight_cap leg reduction,
 encumber_msg wiring; remaining gap = pickup at the trap square ===
 LANDED: exerper's %5 status arm now reads the REAL wounded-legs state

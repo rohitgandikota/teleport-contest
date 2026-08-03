@@ -851,6 +851,21 @@ function fixed_tele_trap(trap) {
 export function is_pit_ttyp(ttyp) {
     return is_pit(ttyp);
 }
+// src/trap.c:6648 uteetering_at_seen_pit() — escaped a pit and standing on
+// the precipice.
+export function uteetering_at_seen_pit(trap) {
+    return !!(trap && is_pit(trap.ttyp) && trap.tseen
+              && game.u.ux === trap.tx && game.u.uy === trap.ty
+              && !(game.u.utrap && game.u.utraptype === TT_PIT));
+}
+
+// src/trap.c:6660 uescaped_shaft() — didn't fall through a hole / didn't
+// release a trap door.
+export function uescaped_shaft(trap) {
+    return !!(trap && is_hole(trap.ttyp) && trap.tseen
+              && game.u.ux === trap.tx && game.u.uy === trap.ty);
+}
+
 // src/trap.c:4024 float_down() — return the hero to the surface when
 // levitation ends (or, with emask W_SADDLE, when dismounting). The
 // levitation-specific arms (BLevitation, BFlying, Punished ball-drag,

@@ -645,6 +645,10 @@ export async function doextcmd() {
         const { doride } = await import('./steed.js');
         return await doride();
     }
+    if (name === 'sit') {
+        const { dosit } = await import('./sit.js');
+        return await dosit();
+    }
     if (name === 'wizwish')
         return await wiz_wish();
 

@@ -15,7 +15,7 @@ import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
 import { newsym, pline } from './display.js';
 import { You, You_hear, You_feel, Your } from './pline.js';
-import { an, the, doname, mshot_xname } from './objnam.js';
+import { an, the, doname, mshot_xname, xname } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { monkilled } from './mon.js';
@@ -27,7 +27,7 @@ import { has_ceiling } from './dungeon.js';
 import { Monnam } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
 import { W_ARMF, A_DEX } from './const.js';
-import { d } from './rng.js';
+import { d, rn1 } from './rng.js';
 import { exercise } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { KILLED_BY_AN, A_STR } from './const.js';
@@ -50,6 +50,11 @@ import { In_quest, TOOKPLUNGE, VIASITTING, HURTLING,
          WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP,
          VIBRATING_SQUARE } from './const.js';
 import { MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
+import { is_pit, is_hole, TT_BEARTRAP, Upolyd, LEFT_SIDE,
+         RIGHT_SIDE } from './const.js';
+import { set_wounded_legs } from './do.js';
+import { sobj_at } from './invent.js';
+import { metallivorous } from './mondata.js';
 import { amorphous, is_whirly, unsolid, is_clinger, is_floater, is_flyer,
          webmaker, defended, resists_fire, resists_sleep,
          resists_magm } from './mondata.js';
@@ -346,6 +351,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_dart_trap(game.youmonst, trap, trflags);
     if (ttype === MAGIC_TRAP)
         return await trapeffect_magic_trap(game.youmonst, trap, trflags);
+    if (ttype === BEAR_TRAP)
+        return await trapeffect_bear_trap(game.youmonst, trap, trflags);
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
     return Trap_Effect_Finished;
@@ -435,8 +442,20 @@ function grounded(ptr) {
 
 // src/trap.c:1098 wearing_iron_shoes() — hero or monster wearing iron boots.
 function wearing_iron_shoes(mtmp) {
-    const armf = which_armor(mtmp, W_ARMF);
+    const armf = (mtmp === game.youmonst) ? (game.u.uarmf || null)
+                                          : which_armor(mtmp, W_ARMF);
     return !!(armf && game.objects[armf.otyp].oc_material === MATERIALS.IRON);
+}
+
+/* Yname2(uarmf) — "Your <boots>"; xname through the hero's boots. */
+function yname_boots() {
+    return 'Your ' + xname(game.u.uarmf);
+}
+
+// src/trap.c:3570 feeltrap() — like seetrap() but works when blind.
+export function feeltrap(trap) {
+    trap.tseen = 1;
+    newsym(trap.tx, trap.ty);
 }
 
 // src/trap.c:3898 thitm() — a trap (or trap missile) hits a monster. Only
@@ -491,8 +510,40 @@ async function thitm(tlev, mon, obj, d_override, nocorpse) {
 // src/trap.c:1478 trapeffect_bear_trap() — monster arm only; the hero arm
 // is reached via dotrap and stays recorded until a session steps in one.
 async function trapeffect_bear_trap(mtmp, trap, trflags) {
+    const is_you = (mtmp === game.youmonst);
     const forcetrap = ((trflags & FORCETRAP) !== 0
-                       || (trflags & FAILEDUNTRAP) !== 0);
+                       || (trflags & FAILEDUNTRAP) !== 0
+                       || (is_you && (trflags & VIASITTING) !== 0));
+
+    if (is_you) {
+        const dmg = d(2, 4);    /* drawn before the escape gates, as in C */
+
+        if ((game.u.uprops?.LEVITATION || game.u.uprops?.FLYING) && !forcetrap)
+            return Trap_Effect_Finished;
+        feeltrap(trap);
+        /* amorphous/whirly/unsolid and the MZ_SMALL escape need polyself;
+           an unpolymorphed hero is human-sized and solid */
+        if (Upolyd(game.u))
+            note_unported_trap('trapeffect_bear_trap:poly_escapes');
+        game.u.utrap = rn1(4, 4);       /* set_utrap((unsigned) rn1(4, 4), */
+        game.u.utraptype = TT_BEARTRAP; /*           TT_BEARTRAP);         */
+        if (game.u.usteed) {
+            note_unported_trap('trapeffect_bear_trap:steed');
+        } else {
+            await pline(`${trap.madeby_u ? 'Your' : 'A'} bear trap closes on your foot!`);
+            /* owlbear/bugbear howl needs polyself */
+            if (wearing_iron_shoes(mtmp)) {
+                await pline(`${yname_boots()} protects your leg.`);
+            } else {
+                set_wounded_legs(rn2(2) ? RIGHT_SIDE : LEFT_SIDE,
+                                 rn1(10, 10));
+                losehp(dmg, 'bear trap', KILLED_BY_AN);
+            }
+        }
+        exercise(A_DEX, false);
+        return Trap_Effect_Finished;
+    }
+
     const mptr = mtmp.data;
     const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
     let trapkilled = false;
@@ -569,6 +620,19 @@ async function trapeffect_pit(mtmp, trap, trflags) {
         ? Trap_Caught_Mon : Trap_Effect_Finished;
 }
 
+// src/trap.c:1817 m_easy_escape_pit()
+function m_easy_escape_pit(mtmp) {
+    return (mtmp.mnum === PMNAMES.PM_PIT_FIEND
+            || mtmp.data.msize >= MFLAGS.MZ_HUGE);
+}
+
+/* src/trap.c:5624 fill_pit() — a boulder on the square settles into the
+   pit through flooreffects. Reached only from the boulder escape arm,
+   which needs a boulder in the pit; record until one exists. */
+function fill_pit_note(x, y) {
+    note_unported_trap('mintrap:fill_pit');
+}
+
 /* src/trap.c mselftouch() fires only for a monster wielding a petrifying
    corpse bare-handed; nothing generated yet can. The gate keeps the note
    honest. */
@@ -610,7 +674,49 @@ export async function mintrap(mtmp, mintrapflags) {
     if (!trap) {
         mtmp.mtrapped = 0;      /* perhaps teleported? */
     } else if (mtmp.mtrapped) { /* is currently in the trap */
-        note_unported_trap('mintrap:escape');
+        if (!trap.tseen && cansee(mtmp.mx, mtmp.my) && canseemon(mtmp)
+            && (is_pit(trap.ttyp) || trap.ttyp === BEAR_TRAP
+                || trap.ttyp === HOLE
+                || trap.ttyp === WEB)) {
+            /* If you come upon an obviously trapped monster, then
+               you must be able to see the trap it's in too. */
+            seetrap(trap);
+        }
+
+        if (!rn2(40) || (is_pit(trap.ttyp) && m_easy_escape_pit(mtmp))) {
+            if (sobj_at(ONAMES.BOULDER, mtmp.mx, mtmp.my)
+                && is_pit(trap.ttyp)) {
+                if (!rn2(2)) {
+                    mtmp.mtrapped = 0;
+                    if (canseemon(mtmp))
+                        await pline(`${Monnam(mtmp)} pulls free...`);
+                    fill_pit_note(mtmp.mx, mtmp.my);
+                }
+            } else {
+                if (canseemon(mtmp)) {
+                    if (is_pit(trap.ttyp))
+                        await pline(`${Monnam(mtmp)} climbs ${
+                            m_easy_escape_pit(mtmp) ? 'easily ' : ''}out of the pit.`);
+                    else if (trap.ttyp === BEAR_TRAP || trap.ttyp === WEB)
+                        await pline(`${Monnam(mtmp)} pulls free of the ${
+                            trap.ttyp === BEAR_TRAP ? 'bear trap' : 'web'}.`);
+                }
+                mtmp.mtrapped = 0;
+            }
+        } else if (metallivorous(mtmp.data)) {
+            if (trap.ttyp === BEAR_TRAP) {
+                if (canseemon(mtmp))
+                    await pline(`${Monnam(mtmp)} eats a bear trap!`);
+                deltrap(trap);
+                mtmp.meating = 5;
+                mtmp.mtrapped = 0;
+            } else if (trap.ttyp === SPIKED_PIT) {
+                if (canseemon(mtmp))
+                    await pline(`${Monnam(mtmp)} munches on some spikes!`);
+                trap.ttyp = PIT;
+                mtmp.meating = 5;
+            }
+        }
         trap_result = mtmp.mtrapped ? Trap_Caught_Mon : Trap_Effect_Finished;
     } else {
         const tt = trap.ttyp;

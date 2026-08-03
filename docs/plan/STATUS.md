@@ -1,3 +1,27 @@
+=== trap subsystem round 1: pit/spiked-pit/bear-trap monster arms, hero
+bear-trap arm, mintrap escape arm, REAL wounded legs ===
+LANDED: trapeffect_pit + trapeffect_bear_trap monster arms (trap.c:1826/
+1478) with thitm (d_override arm live), wearing_iron_shoes, m_in_air,
+grounded; mintrap's trapped-monster escape arm (rn2(40),
+m_easy_escape_pit, boulder fill_pit noted, metallivore eats-trap arms);
+hero bear-trap arm (d(2,4) drawn BEFORE the levitation gate, rn1(4,4)
+utrap, set_wounded_legs, losehp); set_wounded_legs/heal_legs ported for
+real into do.js (5.0 keeps the Dex loss in ATEMP(A_DEX)-- inside
+set_wounded_legs, NOT in acurr's A_DEX arm — acurr has no dex special
+case in 5.0); nh_timeout heals legs when HWounded_legs runs out.
+BUG FIXED ALONG THE WAY: allmain's engraving-wipe gate read
+g.u.acurr.a[3] RAW, bypassing abon+atemp, so the wounded hero kept
+drawing rn2(67) where C drew rn2(64). Any ACURR-style read that grabs
+u.acurr directly is wrong for the same reason — grep for `.acurr.a[`
+when an attribute-shaped divergence shows a constant 3*k offset.
+GATES: seed0015 8502->8523/8563 (99.5%, head now mcalcmove tail);
+seed0004 3985->4065 matched, head 4013->4039 (now dochug monmove.c:886,
+rn2(4) — next target); rng 203145 (+45), screens 2437 (-2 post-div
+noise); no other heads moved; hang gate OK.
+NOTE: seed0004's C stream is 12084 calls but ours ends at 4472 — after
+the divergence our hero/game state forks hard (likely dies or blocks);
+expect big recovery once 4039's head falls.
+
 === DOG CLUSTER BROKEN: dog_goal's trail-follow block ported (+7219 RNG,
 +153 screens in one change) ===
 The cluster bug was dogmove.c:611-641, entirely absent: when the goal is

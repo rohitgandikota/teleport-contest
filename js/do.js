@@ -17,10 +17,10 @@ import { encumber_msg } from './attrib.js';
 import { freeinv, getobj, any_obj_ok } from './invent.js';
 import { place_object } from './mkobj.js';
 import { pline, newsym } from './display.js';
-import { You, You_cant } from './pline.js';
+import { You, You_cant, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, VIBRATING_SQUARE } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, VIBRATING_SQUARE, A_DEX, BOTH_SIDES } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -618,4 +618,43 @@ export async function donull() {
                                     'Are you waiting to get hit?'))
         return ECMD_OK;
     return ECMD_TIME; /* Do nothing, but let other things happen */
+}
+
+
+// src/do.c:2426 set_wounded_legs() — wound the hero's leg(s): one temporary
+// Dex point the first time, a recovery timer (kept at the max of old and
+// new), and which side, tracked with the worn-ring bits.
+export function set_wounded_legs(side, timex) {
+    game.disp ||= {};
+    game.disp.botl = true;
+    const intr = (game.u.intrinsic ||= {});
+    const wounded = (intr.HWounded_legs || 0) > 0 || (game.u.EWounded_legs || 0);
+    if (!wounded)
+        game.u.atemp.a[A_DEX]--;
+
+    if (!wounded || (intr.HWounded_legs || 0) < timex)
+        intr.HWounded_legs = timex;
+    game.u.EWounded_legs = (game.u.EWounded_legs || 0) | side;
+    /* encumber_msg(): carrying capacity shifts with the Dex change */
+}
+
+// src/do.c:2449 heal_legs() — 0: ordinary, 1: dismounting, 2: petrifying.
+export async function heal_legs(how) {
+    const intr = game.u.intrinsic || {};
+    const wounded = (intr.HWounded_legs || 0) > 0 || (game.u.EWounded_legs || 0);
+    if (wounded) {
+        game.disp ||= {};
+        game.disp.botl = true;
+        if (game.u.atemp.a[A_DEX] < 0)
+            game.u.atemp.a[A_DEX]++;
+
+        if (!game.u.usteed && how !== 2) {
+            const both = (game.u.EWounded_legs & BOTH_SIDES) === BOTH_SIDES;
+            const legs = both ? 'legs' : 'leg';
+            await Your(`${legs} ${both ? 'feel' : 'feels'} better.`);
+        }
+
+        intr.HWounded_legs = 0;
+        game.u.EWounded_legs = 0;
+    }
 }

@@ -47,7 +47,7 @@ import { phase_of_the_moon, friday_13th } from './calendar.js';
 import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, MOD_ENCUMBER,
-         UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER,
+         UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
          Upolyd } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
@@ -603,7 +603,7 @@ export async function moveloop_core() {
                    degraded: an "Elbereth" stayed pristine forever and kept
                    scaring monsters through onscary(), which C's scuffed copy
                    no longer matches. */
-                if (!rn2(40 + (g.u.acurr.a[3] * 3)))   /* A_DEX */
+                if (!rn2(40 + (ACURR(A_DEX) * 3)))
                     u_wipe_engr(rnd(3));
 
                 /* src/allmain.c:380 — when immobile, count is in turns */

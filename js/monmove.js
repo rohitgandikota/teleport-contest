@@ -1147,6 +1147,13 @@ export async function m_move(mtmp, after) {
     if (hides_under(ptr) && OBJ_AT(omx, omy) && rn2(10))
         return MMOVE_NOTHING;      /* do not leave hiding place */
 
+    /* src/monmove.c:1761 — "Where does 'mtmp' think you are?  Not necessary
+       if m_move() called from this file, but needed for other calls." C runs
+       it unconditionally, so a monster whose guess is stale re-rolls it (and
+       DRAWS the gotu/candidate dice) at the top of every move, pets included,
+       before the tame dispatch below. */
+    set_apparxy(mtmp);
+
     /* src/monmove.c:1772 — my dog gets special treatment. Routing pets here
        rather than straight from dochug() is what puts them through the
        mtrapped and meating blocks above, exactly as C does. */

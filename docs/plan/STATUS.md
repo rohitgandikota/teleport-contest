@@ -1,3 +1,25 @@
+=== seed0101 PASSES: m_move was missing its set_apparxy re-roll ===
+The actor-order mystery dissolved: C's m_move() re-runs set_apparxy at
+its head (monmove.c:1761, before the tame dispatch), so every monster
+move re-rolls the gotu/candidate dice when the guess is stale. With the
+hero Displaced every hostile drew extra rn2(4)/rn2(5)s there that we
+never made; the "extra distfleeck" in the step-24 slice was C's m_move
+apparxy block, not a different actor. One inserted call: seed0101 went
+2323/2371 -> 2371/2371 RNG and 27/27 screens (9/44 passing, 13 sessions
+RNG-clean). diverge --all: only seed0101 changed; hang gate OK.
+Also landed this iteration (C-correct, behavior-neutral on the public
+set): u_calc_moveamt's encumbrance switch (allmain.c:118 — Burdened
+heroes get <12 movement and force double turn-cycles; our ranger was
+unencumbered so it didn't matter HERE, but any burdened held-out session
+needs it) and its u.usteed arm (mcalcmove of the steed).
+LESSON for the cluster: when C draws "extra" monster-turn blocks,
+check m_move/dochug INTERNAL re-rolls before hypothesizing about banks
+or actor order; dochug -> [apparxy, distfleeck] then m_move -> [apparxy
+again] is the C shape per moving monster.
+NEXT heads (div_after11): seed0107 dog_move(dogmove.c:1257) 94.4%;
+seed0103 mount_steed(steed.c:341) 93.2%; seed0398/0017 m_move
+(monmove.c:1963); seed1500 next_ident; seed0009 getbones.
+
 === movemon rebuilt to C's flag discipline; seed0101 needs an actor-order
 reconstruction (plan below) ===
 LANDED (this commit), all measured behavior-neutral on the public set

@@ -2,6 +2,21 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-03 (cont) — death-turn unwind; bones is next
+
+- done() now throws C's nh_terminate unwind (dying turn stopped drawing
+  exerchk after death). confdir/u_maybe_impaired/impaired_movement real.
+- DEAD END AVOIDED, do not rediscover: multi-death sessions are MULTI
+  SEGMENT (seed0030 = 10 segments, seed+1 and a different role each);
+  there is NO in-segment restart. I built and reverted one (67afac6).
+- seed5006 98.4% (13698/13923). Its head is now getbones LOADING: seg 0
+  is a wizard-mode death ('Die? y' then 'Save bones? y' — wizard skips
+  the !rn2 gate in can_make_bones), whose savebones draws are the 42 at
+  10984-11025 (resetobjs/next_ident/ghost makemon); seg 1 (Knight,
+  seed 5007) rolls getbones rn2(3)=0 and loads them through storage.
+  NEXT: port savebones + getbones round-trip via the storage KV.
+  seed0009's div@3337 is the same family.
+
 ## 2026-08-03 — 22/44 RNG-clean; zap-poly, dip, catch, annotate
 
 Since the last entry (all pushed, gates clean each time):

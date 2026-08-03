@@ -655,6 +655,8 @@ export async function doextcmd() {
     }
     if (name === 'wizwish')
         return await wiz_wish();
+    if (name === 'wizgenesis')
+        return await wiz_genesis();
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;

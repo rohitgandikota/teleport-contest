@@ -102,8 +102,17 @@ function new_angle(lev, sv, row, col) {
     return res;
 }
 
+/* src/vision.c:1143-1144 — set by view_from() for the quadrant scans.
+   When vis_func is set the scans report positions to it instead of
+   painting the could-see rows (do_clear_area's area walk). */
+var vis_func = null, varg = null;
+
 function mark_visible_range(row, left, right) {
     if (left > right) return;
+    if (vis_func) {
+        for (let i = left; i <= right; i++) vis_func(i, row, varg);
+        return;
+    }
     const rowp = game.cs_rows?.[row];
     if (!rowp) return;
     for (let i = left; i <= right; i++) rowp[i] = COULD_SEE;
@@ -613,12 +622,14 @@ function left_side(row, left_mark, right, limitsIdx) {
 }
 
 // C ref: vision.c view_from()
-function view_from(srow, scol, cs_rows, cs_left, cs_right, range = 0) {
+function view_from(srow, scol, cs_rows, cs_left, cs_right, range = 0, func = null, arg = null) {
     game.vis_start_col = scol;
     game.vis_start_row = srow;
     game.cs_rows = cs_rows;
     game.cs_left = cs_left;
     game.cs_right = cs_right;
+    vis_func = func;
+    varg = arg;
 
     let left, right;
     if (viz_clear[srow][scol]) {
@@ -869,14 +880,15 @@ function circle_ptr(z) {
 }
 
 // src/vision.c:2107 do_clear_area() — apply `func` to every square within
-// `range` of (scol,srow) that the hero could see.
-//
-// Only the hero-centred arm is ported. The off-hero arm needs view_from(),
-// which this tree does not have; it is recorded rather than approximated
-// because it would change WHICH squares are affected, not just a message.
+// `range` of (scol,srow) that can be seen from there. An off-hero center
+// runs the real view_from() scan with the callback (dog_goal's wantdoor
+// walk); the hero-centred arm reads viz_array directly. The detecting()
+// underwater override needs detection callbacks that do not exist yet.
 export function do_clear_area(scol, srow, range, func, arg) {
     if (scol !== game.u.ux || srow !== game.u.uy) {
-        (game.unported ||= new Set()).add('vision:do_clear_area:view_from');
+        view_from(srow, scol, null, null, null, range, func, arg);
+        vis_func = null;
+        varg = null;
         return;
     }
     if (range > MAX_RADIUS || range < 1)

@@ -1,3 +1,34 @@
+=== DOG CLUSTER BROKEN: dog_goal's trail-follow block ported (+7219 RNG,
++153 screens in one change) ===
+The cluster bug was dogmove.c:611-641, entirely absent: when the goal is
+the hero but the master cannot see the pet (in_masters_sight ==
+couldsee(pet)), C retargets to (1) the hero's trail point adjacent to
+the pet (gettrack), else (2) the remembered edog->ogoal, else (3) the
+point of the pet's own sight area closest to the hero — wantdoor over
+do_clear_area(pet, 9), in practice the room exit — storing it in ogoal;
+only from a vault does it fall back to the hero's actual square. Our pet
+beelined at the hero, so the j-signs in dog_move's candidate loop
+differed and the whole pet path (and every draw it makes) forked.
+HOW IT WAS FOUND: the recorded C screens carry the pet ('d' glyph) —
+decoding steps 27-32 gave C's pet path and track; C's step-32 draw
+pattern [rn2(20), rn2(12)x3] was then solvable for the goal: it needs
+GDIST(53,16) > GDIST(53,15), impossible for goal=(46,16)=hero, satisfied
+by (46,15)=the room-exit point. That pinned the missing block.
+ALSO PORTED: vision.js view_from/mark_visible_range vis_func callback
+plumbing (vision.c:1143 statics) and do_clear_area's off-hero arm now
+runs the REAL view_from scan (stale "no view_from in this tree" comment
+deleted); dokick/cmd: gk.kickedloc is cleared by any time-consuming
+non-kick command (cmd.c:3824) and at every domove tail (hack.c:2708) —
+stale kicked squares no longer poison pet pathing forever.
+GATES: 9/44 passing; screens 2273 -> 2426; RNG 195876 -> 203095;
+seed0060 3626/3626 NO DIVERGENCE (14 sessions RNG-clean now);
+seed0107 2740 -> 2891; seed0004/0015 moved from dog_move to
+trapeffect_bear_trap/trapeffect_pit (trap subsystem is the next
+cluster); hang gate OK; no session regressed.
+NEXT heads: trapeffect_* (0004, 0015), remaining dog_move tails
+(0002/0014/0107 deeper), mount_steed (0103), m_move monmove.c:1963
+(0398/0017), next_ident (1500), getbones (0009).
+
 === seed0101 PASSES: m_move was missing its set_apparxy re-roll ===
 The actor-order mystery dissolved: C's m_move() re-runs set_apparxy at
 its head (monmove.c:1761, before the tame dispatch), so every monster

@@ -51,6 +51,8 @@ import { Monnam, noit_Monnam, christen_monst } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy, mon_track_add } from './monmove.js';
+import { gettrack } from './track.js';
+import { do_clear_area } from './vision.js';
 import { mattackm } from './mhitm.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
 import { PMNAMES } from './monst_data.js';
@@ -793,11 +795,63 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     if (mtmp.mconf)
         appr = 0;
 
+    /* src/dogmove.c:611-641 — the goal is the hero but the master cannot
+       see the pet: aim at the hero's trail instead, then at the remembered
+       ogoal, then at the point of the pet's sight area nearest the hero
+       (wantdoor over do_clear_area radius 9 — in practice the room exit),
+       and only give up and target the hero directly from a vault. */
+    const FARAWAY = COLNO + 2; /* position outside screen */
+    if (gx === game.u.ux && gy === game.u.uy && !in_masters_sight) {
+        const cp = gettrack(omx, omy);
+        if (cp) {
+            gx = cp.x;
+            gy = cp.y;
+            if (edog)
+                edog.ogoal = { x: 0, y: 0 };
+        } else {
+            /* assume master hasn't moved far, and reuse previous goal */
+            if (edog && edog.ogoal && edog.ogoal.x
+                && (edog.ogoal.x !== omx || edog.ogoal.y !== omy)) {
+                gx = edog.ogoal.x;
+                gy = edog.ogoal.y;
+                edog.ogoal = { x: 0, y: 0 };
+            } else {
+                const fard = { dist: FARAWAY * FARAWAY, x: FARAWAY, y: FARAWAY };
+                do_clear_area(omx, omy, 9, wantdoor, fard);
+                gx = fard.x;
+                gy = fard.y;
+
+                /* here gx == FARAWAY e.g. when dog is in a vault */
+                if (gx === FARAWAY || (gx === omx && gy === omy)) {
+                    gx = game.u.ux;
+                    gy = game.u.uy;
+                } else if (edog) {
+                    edog.ogoal = { x: gx, y: gy };
+                }
+            }
+        }
+    } else if (edog) {
+        edog.ogoal = { x: 0, y: 0 };
+    }
+
     /* src/dogmove.c — gg is ONE struct shared by dog_goal and dog_move; our
        dog_move reads it through GDIST(), so publish the goal rather than
        leaving the two halves out of step. */
     game.gg = { gx, gy, gtyp };
     return appr;
+}
+
+// src/dogmove.c:1470 wantdoor() — do_clear_area callback: remember the
+// position closest to the hero. C writes straight into gg.gx/gg.gy; the
+// port carries them in the arg so dog_goal's locals stay the source of
+// truth until it publishes game.gg.
+function wantdoor(x, y, dd) {
+    const ndist = distu(x, y);
+    if (dd.dist > ndist) {
+        dd.x = x;
+        dd.y = y;
+        dd.dist = ndist;
+    }
 }
 
 /* src/stairs.c:148 On_stairs() — stairway_at(x, y) != NULL.

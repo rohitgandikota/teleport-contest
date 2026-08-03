@@ -881,6 +881,7 @@ export async function rhack(key) {
     } else if (ch === '\x04') {
         // src/cmd.c cmdlist — C('d') is dokick.
         game.context.move = (await dokick() === ECMD_TIME ? 1 : 0);
+        game._cmd_was_kick = true;
     } else if (ch === '\x07') {
         // src/cmd.c:1962 cmdlist — C('g') is wiz_genesis.
         game.context.move = ((await wiz_genesis()) === ECMD_TIME ? 1 : 0);
@@ -1085,6 +1086,14 @@ export async function rhack(key) {
         game.context.move = 0;
         await pline(`Unknown command '${ch}'.`);
     }
+
+    /* src/cmd.c:3820-3825 — "hero did something else than kicking a
+       location; reset the location, so pets don't avoid it". Without this
+       the square of a long-ago kick stayed poisoned forever and every pet
+       pathfinding pass silently skipped it as a candidate. */
+    if (game.context.move && !game._cmd_was_kick)
+        game.kickedloc = { x: 0, y: 0 };
+    game._cmd_was_kick = false;
 }
 
 // C ref: hack.c domove — execute a movement
@@ -1094,6 +1103,9 @@ export async function rhack(key) {
 export async function domove() {
     const ux1 = game.u.ux, uy1 = game.u.uy;
     await domove_core();
+    /* src/hack.c:2708 — the tail of C's domove() zeroes gk.kickedloc on
+       every hero move attempt, kick follow-through over. */
+    game.kickedloc = { x: 0, y: 0 };
     /* gd.domove_succeeded & (DOMOVE_RUSH | DOMOVE_WALK): the move counts as
        taken when the hero's position actually changed */
     if (game.u.ux !== ux1 || game.u.uy !== uy1)

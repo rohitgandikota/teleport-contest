@@ -834,9 +834,20 @@ export async function rhack(key) {
        lookaround or a blocked step calls nomul(0). The rush prefix 'g' uses
        run = 2; the only difference between the modes is how lookaround
        decides what is interesting enough to stop at. */
-    const ch = 'HJKLYUBN'.includes(ch0) ? ch0.toLowerCase() : ch0;
+    let ch = 'HJKLYUBN'.includes(ch0) ? ch0.toLowerCase() : ch0;
     if (ch !== ch0 && isMovementKey(ch) && !game.context.run)
         game.context.run = 1;
+
+    /* src/cmd.c:3467 reset_commands() — with !num_pad, C(dirchar) binds the
+       MV_RUSH form: do_rush_south() etc. call set_move_cmd(dir, 3). This is
+       what makes ^J rush south (and ^L rush east, overriding the default
+       redraw binding, ^N rush southeast overriding annotate). */
+    const CTRL_DIR = { '\x08': 'h', '\x19': 'y', '\x0b': 'k', '\x15': 'u',
+                       '\x0c': 'l', '\x0e': 'n', '\x0a': 'j', '\x02': 'b' };
+    if (CTRL_DIR[ch0] !== undefined && !game.context.run) {
+        ch = CTRL_DIR[ch0];
+        game.context.run = 3;
+    }
 
     if (isMovementKey(ch)) {
         /* src/cmd.c movecmd() — the key sets u.dx/u.dy, then domove() reads

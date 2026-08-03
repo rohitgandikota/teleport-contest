@@ -1294,8 +1294,11 @@ export async function m_move(mtmp, after) {
             const track = mtmp.mtrack || [];
             let skip = false;
             for (let j = 0; j < jcnt; j++)
-                if (track[j] && nx === track[j].x && ny === track[j].y)
+                if (track[j] && nx === track[j].x && ny === track[j].y) {
+                    if (globalThis.__mm_probe)
+                        console.error('MMPROBE', JSON.stringify({ mon: mtmp.mnum, at: [mtmp.mx, mtmp.my], cnt, j, jcnt, nx, ny, poss: (mfp.poss||[]).slice(0, cnt) }));
                     if (rn2(4 * (cnt - j))) { skip = true; break; }
+                }
             if (skip) continue;
         }
 

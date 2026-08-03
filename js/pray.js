@@ -18,7 +18,7 @@ import { change_luck, near_capacity, exercise } from './attrib.js';
 import { which_armor } from './worn.js';
 import { IS_ALTAR, Amask2align, A_NONE, A_LAWFUL, A_NEUTRAL, A_CHAOTIC,
          ECMD_OK, ECMD_TIME, W_SADDLE, TT_LAVA, TT_BURIEDBALL, WEAK, HUNGRY,
-         EXT_ENCUMBER, A_MAX, A_STR, TIMEOUT, Upolyd } from './const.js';
+         EXT_ENCUMBER, A_MAX, A_STR, A_WIS, TIMEOUT, Upolyd } from './const.js';
 import { ONAMES } from './objects_data.js';
 
 function note_unported_pray(what) {
@@ -254,9 +254,19 @@ async function angrygods(resp_god) {
         await You_feel(`that ${align_gname(resp_god)} is ${game.u.uprops?.HALLUC ? 'bummed' : 'displeased'}.`);
         break;
     case 2:
-    case 3:
-        note_unported_pray('angrygods:relearn_lessons');
+    case 3: {
+        await godvoice(resp_god, null);
+        /* ugod_is_angry(): ualign.record < 0 */
+        await pline(`"Thou ${(game.u.ualign.record < 0
+                              && resp_god === game.u.ualign.type)
+                             ? 'hast strayed from the path' : 'art arrogant'}, mortal."`);
+        await pline('"Thou must relearn thy lessons!"');
+        const { adjattrib } = await import('./attrib.js');
+        await adjattrib(A_WIS, -1, 0);
+        const { losexp } = await import('./exper.js');
+        await losexp(null);
         break;
+    }
     case 6:
         note_unported_pray('angrygods:punish');
         break;
@@ -276,6 +286,16 @@ async function angrygods(resp_god) {
     const new_ublesscnt = rnz(300);
     if (new_ublesscnt > u.ublesscnt)
         u.ublesscnt = new_ublesscnt;
+}
+
+/* src/pray.c:60 godvoices[] */
+const godvoices = ['booms out', 'thunders', 'rings out', 'booms'];
+
+// src/pray.c:1415 godvoice() — ROLL_FROM(godvoices) draws the rn2(4).
+async function godvoice(g_align, words) {
+    const quot = words ? '"' : '';
+    words = words || '';
+    await pline_The(`voice of ${align_gname(g_align)} ${godvoices[rn2(godvoices.length)]}: ${quot}${words}${quot}`);
 }
 
 // src/pray.c:2276 prayer_done()

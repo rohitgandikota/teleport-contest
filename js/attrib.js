@@ -230,7 +230,7 @@ export function vary_init_attr() {
 // src/attrib.c:31 adjattrib() — the only draw is the rn2() that decides how
 // much of the excess to take off AMAX when a decrease would go below the
 // racial minimum.
-function adjattrib(ndx, incr, msgflg) {
+export function adjattrib(ndx, incr, msgflg) {
     if (!incr)
         return false;
 

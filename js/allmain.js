@@ -688,6 +688,11 @@ export async function moveloop_core() {
         return;
     }
 
+    /* src/allmain.c:513 — cleared before each command; domove sets it back
+       when the hero's position actually changed. u_calc_moveamt reads it to
+       decide whether a mounted hero's budget comes from the steed. */
+    g.u.umoved = false;
+
     /* src/allmain.c:515 — the run/rush loop. While multi is positive the hero
        keeps moving WITHOUT reading another key, which is what makes one
        'g'+direction cover several squares instead of one.

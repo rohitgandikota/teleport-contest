@@ -22,6 +22,7 @@ import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door } from './hack.js';
+import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, A_DEX } from './const.js';
@@ -1307,6 +1308,10 @@ async function domove_core() {
         }
     }
 
+    /* src/hack.c:2934 — full re-position after the tentative move; this is
+       where a ridden steed's mx,my get synced to the hero. */
+    u_on_newpos(u.ux, u.uy);
+
     /* src/hack.c:2936 — the post-move run check.
      *
      *     reset_occupations();
@@ -1335,6 +1340,11 @@ async function domove_core() {
     newsym(oldx, oldy);
     vision_recalc(1);
     newsym(newx, newy);
+
+    /* src/hack.c:2968 — u.umoved = TRUE when the position changed; read by
+       u_calc_moveamt (steed budget) and the encumbrance exhaustion arm. */
+    if (u.ux !== u.ux0 || u.uy !== u.uy0)
+        game.u.umoved = true;
 
     /* src/hack.c:2980 — "if (u.umoved) spoteffects(TRUE);". The move above
        either happened or returned early, so reaching here means umoved. */

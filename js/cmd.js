@@ -159,19 +159,27 @@ export function dirtocoord(cc, dd) {
 }
 
 // C ref: cmd.c rhack — main command dispatcher
-// src/cmd.c confdir() — a confused or stunned hero moves in a random direction.
-// u_maybe_impaired() is false while the property subsystem is absent, so this
-// draws nothing yet; it is written out so the draw lands in the right place
-// when Confusion becomes reachable.
-function confdir(force_impairment) {
+// src/cmd.c:4300 confdir() — a confused or stunned hero moves in a random
+// direction: dirs_ord[rn2(8)] (cardinals first), halved for grid bugs.
+const dirs_ord_cmd = [0, 2, 4, 6, 1, 3, 5, 7]; /* W N E S NW NE SE SW */
+export function confdir(force_impairment) {
     if (force_impairment || u_maybe_impaired()) {
-        note_unported_cmd('confdir:impaired');
+        const kmax = (game.u.umonnum === PMNAMES.PM_GRID_BUG)
+            ? (N_DIRS / 2) : N_DIRS;
+        const k = dirs_ord_cmd[rn2(kmax)];
+        game.u.dx = xdir[k];
+        game.u.dy = ydir[k];
     }
 }
 
-// src/hack.c u_maybe_impaired()
-function u_maybe_impaired() {
-    return !!(game.u.uprops?.CONFUSION || game.u.uprops?.STUNNED);
+// src/hack.c:2418 u_maybe_impaired() — Stunned, or Confusion with the
+// 4-in-5 roll. The rn2(5) draws EVERY move while merely confused.
+export function u_maybe_impaired() {
+    const Stunned = (game.u.intrinsic?.HStun || 0) > 0
+        || !!game.u.uprops?.STUNNED;
+    const Confusion = (game.u.intrinsic?.HConfusion || 0) > 0
+        || !!game.u.uprops?.CONFUSION;
+    return !!(Stunned || (Confusion && !rn2(5)));
 }
 
 // src/cmd.c:3919 show_direction_keys() — the compass rose. The default
@@ -275,6 +283,10 @@ export async function getdir(s) {
 
     if (dirsym === '.' || dirsym === 's') {
         game.u.dx = game.u.dy = game.u.dz = 0;
+        /* src/cmd.c:4116 — getdir's tail runs confdir(FALSE) for every
+           !u.dz result, INCLUDING the self-direction: while confused the
+           rn2(5) inside u_maybe_impaired still draws here. */
+        confdir(false);
         return true;
     }
     if (dirsym === '<' || dirsym === '>') {
@@ -1198,6 +1210,25 @@ async function domove_core() {
     /* C's domove() takes no arguments and reads u.dx/u.dy, which movecmd()
        set from the key. moveloop's run branch calls it the same way, so the
        direction has to live on `u` rather than in a parameter. */
+
+    /* src/hack.c:2747 impaired_movement() — a stunned (always) or confused
+       (4 in 5) hero moves in a random viable direction; the rn2(5) inside
+       u_maybe_impaired() draws on EVERY move while merely confused, and
+       each confdir retry draws rn2(8). */
+    if (u_maybe_impaired()) {
+        let tries = 0;
+        let ix, iy;
+        do {
+            if (tries++ > 50) {
+                nomul(0);
+                return;
+            }
+            confdir(true);
+            ix = u.ux + u.dx;
+            iy = u.uy + u.dy;
+        } while (!isok(ix, iy) || bad_rock(game.youmonst.data, ix, iy));
+    }
+
     const dx = u.dx, dy = u.dy;
     const newx = u.ux + dx;
     const newy = u.uy + dy;

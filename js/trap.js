@@ -14,7 +14,7 @@ import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
 import { newsym, pline } from './display.js';
-import { You, You_hear, You_feel, Your } from './pline.js';
+import { You, You_hear, You_feel, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
@@ -759,4 +759,35 @@ export async function mintrap(mtmp, mintrapflags) {
 /* src/trap.c fixed_tele_trap() — a vault or level teleporter always fires. */
 function fixed_tele_trap(trap) {
     return (trap.ttyp === LEVEL_TELEP || (trap.ttyp === TELEP_TRAP && trap.once));
+}
+
+
+/* is_pit by trap type, exported for trapmove's adjacent-pit check. */
+export function is_pit_ttyp(ttyp) {
+    return is_pit(ttyp);
+}
+
+// src/trap.c:4183 climb_pit() — the hero struggles out of a pit. The
+// Passes_walls, boulder-crevice and flying arms are gated; the ordinary
+// escape is the --utrap roll.
+export async function climb_pit() {
+    if (!game.u.utrap || game.u.utraptype !== TT_PIT)
+        return;
+
+    if (game.u.uprops?.WWALKING /* Passes_walls */) {
+        note_unported_trap('climb_pit:passes_walls');
+    } else if (!rn2(2) && sobj_at(ONAMES.BOULDER, game.u.ux, game.u.uy)) {
+        await Your('leg gets stuck in a crevice.');
+        await You('free your leg.');
+    } else if (game.u.uprops?.FLYING && !Sokoban()) {
+        note_unported_trap('climb_pit:flying');
+    } else if (!(--game.u.utrap)) {
+        game.u.utrap = 0;
+        game.u.utraptype = 0;   /* reset_utrap(FALSE) */
+        await You('crawl to the edge of the pit.');
+        fill_pit_note(game.u.ux, game.u.uy);
+        game.vision_full_recalc = 1; /* vision limits change */
+    } else if (game.u.dz || game.flags?.verbose !== false) {
+        await Norep('You are still in a pit.');
+    }
 }

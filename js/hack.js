@@ -1,5 +1,5 @@
 import { is_flimsy } from './obj.js';
-import { You, pline_xy, pline_The, set_msg_xy } from './pline.js';
+import { You, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { a_monnam, upstart } from './do_name.js';
 import { is_door_mappear, helpless } from './monst.js';
 import { dist2 } from './hacklib.js';
@@ -8,7 +8,7 @@ import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at } from './mon.js';
 import { pickup, can_reach_floor } from './pickup.js';
 import { dotrap } from './trap.js';
-import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM } from './const.js';
+import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
 import { near_capacity } from './attrib.js';
 import { gethungry } from './eat.js';
 import { cmdq_clear, closed_door } from './cmd.js';
@@ -810,4 +810,54 @@ export function rounddiv(x, y) {
         r++;
 
     return divsgn * r;
+}
+
+
+// src/hack.c:1550 trapmove() — the hero is stuck in a trap and tries to
+// move: TRUE means the move may proceed, FALSE means the struggle consumed
+// it. The bear-trap and pit arms are live; web's Sting shortcut, lava,
+// in-floor and buried-ball need subsystems that are recorded at the exact
+// C position.
+export async function trapmove(x, y, desttrap) {
+    if (!game.u.utrap)
+        return true; /* sanity check */
+
+    switch (game.u.utraptype) {
+    case TT_BEARTRAP:
+        if (game.flags?.verbose !== false) {
+            await Norep('You are caught in a bear trap.');
+        }
+        /* [why does diagonal movement give quickest escape?] */
+        if ((game.u.dx && game.u.dy) || !rn2(5))
+            game.u.utrap--;
+        if (!game.u.utrap) {
+            await You('finally wriggle free.');
+        }
+        break;
+    case TT_PIT: {
+        const { is_pit_ttyp, climb_pit } = await import('./trap.js');
+        if (desttrap && desttrap.tseen && is_pit_ttyp(desttrap.ttyp))
+            return true; /* move into adjacent pit */
+        /* try to escape; position stays same regardless of success */
+        await climb_pit();
+        break;
+    }
+    case TT_WEB:
+        /* u_wield_art(ART_STING) cuts free; no artifact exists yet */
+        if (--game.u.utrap) {
+            if (game.flags?.verbose !== false)
+                await Norep('You are stuck to the web.');
+        } else {
+            await You('disentangle yourself.');
+        }
+        break;
+    case TT_LAVA:
+    case TT_INFLOOR:
+    case TT_BURIEDBALL:
+        (game.unported ||= new Set()).add('trapmove:' + game.u.utraptype);
+        break;
+    default:
+        break;
+    }
+    return false;
 }

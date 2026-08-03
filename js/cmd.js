@@ -21,7 +21,7 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup } from './hack.js';
+import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove } from './hack.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, A_DEX } from './const.js';
@@ -1211,6 +1211,20 @@ async function domove_core() {
                 return;
             }
         }
+    }
+
+    /* src/hack.c:2831 — when u.utrap is true the struggle may consume the
+       move: trapmove() returns FALSE to stay put (time passes), TRUE when
+       the hero escaped or may proceed. */
+    if (game.u.utrap) {
+        const desttrap = t_at(newx, newy);
+        const moved = await trapmove(newx, newy, desttrap);
+        if (!game.u.utrap) {
+            (game.disp ||= {}).botl = true;
+            game.u.utraptype = 0;   /* reset_utrap */
+        }
+        if (!moved)
+            return;
     }
 
     /* src/hack.c:2846 — the blocked-move exit.

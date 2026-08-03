@@ -1,3 +1,28 @@
+=== trapmove ported: the trapped hero STRUGGLES now (seed0004 +214) ===
+The hero's bear trap (utrap=rn1(4,4)) was cosmetic: domove never checked
+u.utrap, so our hero walked free instantly while C burned several
+struggle turns ("You are caught in a bear trap.", diagonal-or-rn2(5)
+escape roll per attempt) with the pony's approach happening DURING
+those turns. That was the "pony visible one boundary early / nearby
+false at the divergent gate" confusion: our turn STRUCTURE around the
+trap was wrong, not the pony's pathing.
+LANDED: trapmove (hack.c:1550) with live TT_BEARTRAP and TT_WEB arms and
+TT_PIT via a real climb_pit (trap.c:4183: the boulder-crevice rn2(2),
+the --utrap crawl-out, Norep still-in-pit); wired at C's exact
+domove_core position (hack.c:2831, after the attack gate, before
+test_move), with reset_utrap on escape. Norep ported into pline.js
+(compares against gt.toplines == game._toplines, now tracked in
+update_topl) so struggle messages don't stack --More--s.
+DIAGNOSTIC NOTE for future turn-structure bugs: when a monster's
+position seems to fork with matched draws AND the session has a trapped
+hero, check the hero's OWN turn consumption first (trapmove, nomul,
+multi) before chasing monster pathing. The pony was never wrong.
+GATES: seed0004 4065->4279 matched (div 4039->4169); rng 203359 (+214);
+screens 2437; no other heads moved; hang gate OK. rngLogLength() debug
+accessor added to rng.js (probe use only).
+NEXT: seed0004's new head at 4169; seed0015 mcalcmove tail (99.5%);
+mount_steed (0103); m_move heads (0398/0017); next_ident (1500).
+
 === trap subsystem round 1: pit/spiked-pit/bear-trap monster arms, hero
 bear-trap arm, mintrap escape arm, REAL wounded legs ===
 LANDED: trapeffect_pit + trapeffect_bear_trap monster arms (trap.c:1826/

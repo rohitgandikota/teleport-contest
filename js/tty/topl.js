@@ -65,6 +65,7 @@ export async function update_topl(bp) {
     }
 
     remember_topl();
+    game._toplines = bp;    /* gt.toplines: strncpy(gt.toplines, bp, TBUFSZ) */
 
     /* C wraps a message longer than CO by REPLACING a space with '\n', walking
        back from column CO - 1 to find one; a token longer than the whole line

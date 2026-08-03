@@ -1,3 +1,32 @@
+=== seed0004 round 2: wounded-legs exercise arm, weight_cap leg reduction,
+encumber_msg wiring; remaining gap = pickup at the trap square ===
+LANDED: exerper's %5 status arm now reads the REAL wounded-legs state
+(intrinsic.HWounded_legs / EWounded_legs — it was testing a uprops key
+that nothing sets; +252 matched on the spot); weight_cap subtracts
+WT_WOUNDEDLEG_REDUCT (100) per wounded side unless Flying (hack.c:4332,
+EWounded_legs ring bits); set_wounded_legs/heal_legs now call
+encumber_msg() as C does (do.c:2445/2483); game.oldcap zero-initialised
+at hero init (undefined < n is always false, so the FIRST encumbrance
+transition message never fired).
+DECODED C SEQUENCE at the bear trap square with an item pile
+(hack.c:3376 "If not a pit, pickup before triggering trap"):
+pickup/look window BLOCKS (boundary shows "Things that are here:"),
+dismissal runs dotrap (4 draws: rn1(4,4), rn2(2), rn2(10), exercise) and
+BLOCKS at "A bear trap closes on your foot!--More--" with the
+encumbrance pline QUEUED; the next space releases "Your movements are
+slowed slightly..." and the turn's monster phase (63-draw double-cycle:
+the Burdened hero banks 9 movement). Our engine matches the window and
+the trap draws but never prints the encumbrance line: our inv weight at
+that moment is 544 vs carrcap 575 (measured), so C's hero must be ~31+
+units heavier — ALMOST CERTAINLY items picked up at that pile square
+that our pickup(1) did not take (autopickup content mismatch).
+NEXT: compare C's inventory (the session has later 'i' screens) against
+ours at that point; diff pickup(1)/autopickup type gating; the head
+stays at 4253 (the pony-gate skip is downstream of the hero's early
+escape which is downstream of the missing double-cycles).
+GATES: seed0004 div 4169 -> 4253; rng 203455; screens 2439; no other
+heads moved; hang gate OK.
+
 === trapmove ported: the trapped hero STRUGGLES now (seed0004 +214) ===
 The hero's bear trap (utrap=rn1(4,4)) was cosmetic: domove never checked
 u.utrap, so our hero walked free instantly while C burned several

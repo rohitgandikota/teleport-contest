@@ -196,6 +196,9 @@ export async function newgame() {
         // src/u_init.c:991 — u.umonnum = u.umonster = urole.mnum. find_ac()
         // starts from mons[u.umonnum].ac, so a hero without it has no base AC.
         g.u.umonnum = g.u.umonster = g.urole.mnum;
+        /* src/decl.c go.oldcap — zero-initialised; encumber_msg() compares
+           against it and undefined breaks the first transition message. */
+        g.oldcap = 0;
         // src/mondata.c set_uasmon() — gy.youmonst.data = &mons[u.umonnum].
         // The hero-as-monster struct: combat code passes it to the same
         // functions that take a real monster (dmgval, mhitm_ad_phys,

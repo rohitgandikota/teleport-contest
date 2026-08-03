@@ -535,8 +535,8 @@ async function trapeffect_bear_trap(mtmp, trap, trflags) {
             if (wearing_iron_shoes(mtmp)) {
                 await pline(`${yname_boots()} protects your leg.`);
             } else {
-                set_wounded_legs(rn2(2) ? RIGHT_SIDE : LEFT_SIDE,
-                                 rn1(10, 10));
+                await set_wounded_legs(rn2(2) ? RIGHT_SIDE : LEFT_SIDE,
+                                       rn1(10, 10));
                 losehp(dmg, 'bear trap', KILLED_BY_AN);
             }
         }

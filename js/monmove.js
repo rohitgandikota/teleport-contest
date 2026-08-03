@@ -808,6 +808,12 @@ export function set_apparxy(mtmp) {
        know where you are don't suddenly forget, if you haven't moved away */
     if (mtmp.mtame || mtmp === game.u.ustuck
         || (game.u.ux === mx && game.u.uy === my)) {
+        if (globalThis.__gate_log && mtmp.mnum === 100) {
+            const { rngLogLength } = globalThis.__rng_mod || {};
+            const idx = rngLogLength ? rngLogLength() : -1;
+            if (idx >= 4150 && idx <= 4260)
+                console.error(`APX idx=${idx} u=(${game.u.ux},${game.u.uy}) stack=${new Error().stack.split('\n')[2].trim()}`);
+        }
         mtmp.mux = game.u.ux;
         mtmp.muy = game.u.uy;
         return;
@@ -975,6 +981,12 @@ export async function dochug(mtmp) {
         }
     }
 
+    if (globalThis.__gate_log) {
+        const { rngLogLength } = await import('./rng.js');
+        const idx = rngLogLength();
+        if (idx >= 4240 && idx <= 4260)
+            console.error(`GATE idx=${idx} mnum=${mtmp.mnum} at(${mtmp.mx},${mtmp.my}) mux=(${mtmp.mux},${mtmp.muy}) nearby=${nearby} inrange=${inrange} tame=${mtmp.mtame|0} peaceful=${mtmp.mpeaceful|0}`);
+    }
     /* src/monmove.c:882 — a monster only gets to move if it passes this. Each
        arm that draws does so ONLY because the arms before it were false, so
        dropping the whole condition (as we did) loses a draw on any turn a

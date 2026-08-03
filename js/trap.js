@@ -18,12 +18,24 @@ import { You, You_hear, You_feel, Your } from './pline.js';
 import { an, the, doname, mshot_xname } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
+import { monkilled } from './mon.js';
+import { find_mac, which_armor } from './worn.js';
+import { canseemon } from './display.js';
+import { cansee } from './vision.js';
+import { passes_walls } from './mondata.js';
+import { has_ceiling } from './dungeon.js';
+import { Monnam } from './do_name.js';
+import { MATERIALS } from './objects_data.js';
+import { W_ARMF, A_DEX } from './const.js';
+import { d } from './rng.js';
 import { exercise } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { KILLED_BY_AN, A_STR } from './const.js';
 
 /* src/trap.h — trapeffect_*() return values. */
-const Trap_Effect_Finished = 0, Trap_Caught_Mon = 1, Trap_Is_Gone = 2;
+/* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
+const Trap_Effect_Finished = 0, Trap_Is_Gone = 0,
+      Trap_Caught_Mon = 1, Trap_Killed_Mon = 2;
 
 function note_unported_trap(what) {
     (game.unported ||= new Set()).add(what);
@@ -395,7 +407,7 @@ async function trapeffect_magic_trap(mtmp, trap, trflags) {
 }
 
 /* include/hack.h:1306 */
-const FORCETRAP = 0x01, FORCEBUNGLE = 0x08;
+const FORCETRAP = 0x01, FORCEBUNGLE = 0x08, FAILEDUNTRAP = 0x40;
 
 // src/mondata.c:1617 mon_knows_traps() — mtrapseen is a bitmask of trap types
 // this monster has already walked into.
@@ -408,6 +420,163 @@ function mon_learns_traps(mtmp, ttyp) {
     mtmp.mtrapseen = (mtmp.mtrapseen | 0) | (1 << (ttyp - 1));
 }
 
+// src/mon.c:2130 m_in_air()
+function m_in_air(mtmp) {
+    return (is_flyer(mtmp.data) || is_floater(mtmp.data)
+            || (is_clinger(mtmp.data)
+                && has_ceiling(game.u.uz) && mtmp.mundetected));
+}
+
+// include/mondata.h:23 grounded()
+function grounded(ptr) {
+    return !is_flyer(ptr) && !is_floater(ptr)
+           && (!is_clinger(ptr) || !has_ceiling(game.u.uz));
+}
+
+// src/trap.c:1098 wearing_iron_shoes() — hero or monster wearing iron boots.
+function wearing_iron_shoes(mtmp) {
+    const armf = which_armor(mtmp, W_ARMF);
+    return !!(armf && game.objects[armf.otyp].oc_material === MATERIALS.IRON);
+}
+
+// src/trap.c:3898 thitm() — a trap (or trap missile) hits a monster. Only
+// the d_override arm is live here: pits and bear traps force the hit and
+// pass no missile, so the to-hit rnd(20) and the missile bookkeeping never
+// run for them.
+async function thitm(tlev, mon, obj, d_override, nocorpse) {
+    let strike;
+    let trapkilled = false;
+
+    if (d_override)
+        strike = 1;
+    else if (obj)
+        strike = (find_mac(mon) + tlev + obj.spe <= rnd(20)) ? 1 : 0;
+    else
+        strike = (find_mac(mon) + tlev <= rnd(20)) ? 1 : 0;
+
+    if (!strike) {
+        if (obj && cansee(mon.mx, mon.my))
+            await pline(`${Monnam(mon)} is almost hit by ${doname(obj)}!`);
+    } else {
+        let dam = 1;
+
+        if (obj && cansee(mon.mx, mon.my))
+            await pline(`${Monnam(mon)} is hit by ${doname(obj)}!`);
+        if (d_override) {
+            dam = d_override;
+        } else if (obj) {
+            dam = dmgval(obj, mon);
+            if (dam < 1)
+                dam = 1;
+        }
+        mon.mhp -= dam;
+        if (mon.mhp <= 0) {
+            const xx = mon.mx, yy = mon.my;
+
+            await monkilled(mon, '', 0 /* AD_PHYS; nocorpse callers absent */);
+            if (mon.mhp <= 0) {
+                newsym(xx, yy);
+                trapkilled = true;
+            }
+        }
+    }
+    /* the missile place/stack arm needs a real obj; none of the live
+       callers pass one */
+    if (obj)
+        note_unported_trap('thitm:missile_placement');
+
+    return trapkilled;
+}
+
+// src/trap.c:1478 trapeffect_bear_trap() — monster arm only; the hero arm
+// is reached via dotrap and stays recorded until a session steps in one.
+async function trapeffect_bear_trap(mtmp, trap, trflags) {
+    const forcetrap = ((trflags & FORCETRAP) !== 0
+                       || (trflags & FAILEDUNTRAP) !== 0);
+    const mptr = mtmp.data;
+    const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+    let trapkilled = false;
+
+    if (mptr.msize > MFLAGS.MZ_SMALL && !amorphous(mptr) && !m_in_air(mtmp)
+        && !is_whirly(mptr) && !unsolid(mptr)) {
+        mtmp.mtrapped = 1;
+        if (in_sight) {
+            await pline(`${Monnam(mtmp)} is caught in ${trap.madeby_u ? 'your' : 'a'} bear trap!`);
+            seetrap(trap);
+        } else {
+            if (mtmp.mnum === PMNAMES.PM_OWLBEAR
+                || mtmp.mnum === PMNAMES.PM_BUGBEAR)
+                await You_hear('the roaring of an angry bear!');
+        }
+    } else if (forcetrap) {
+        if (in_sight) {
+            await pline(`${Monnam(mtmp)} evades ${trap.madeby_u ? 'your' : 'a'} bear trap!`);
+            seetrap(trap);
+        }
+    }
+    if (mtmp.mtrapped && !wearing_iron_shoes(mtmp))
+        trapkilled = await thitm(0, mtmp, null, d(2, 4), false);
+
+    return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
+        ? Trap_Caught_Mon : Trap_Effect_Finished;
+}
+
+// src/trap.c:1826 trapeffect_pit() — monster arm only.
+async function trapeffect_pit(mtmp, trap, trflags) {
+    const ttype = trap.ttyp;
+    let relevant_spikes = (ttype === SPIKED_PIT);
+    const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+    let trapkilled = false;
+    const forcetrap = ((trflags & FORCETRAP) !== 0);
+    const inescapable = (forcetrap || (Sokoban() && !trap.madeby_u));
+    const mptr = mtmp.data;
+    let fallverb = 'falls';
+
+    if (!grounded(mptr)
+        || (mtmp.wormno
+            && !note_unported_trap('trapeffect_pit:count_wsegs'))) {
+        if (forcetrap && !Sokoban()) {
+            /* openfallingtrap; not inescapable here */
+            if (in_sight) {
+                seetrap(trap);
+                await pline(`${Monnam(mtmp)} doesn't fall into the pit.`);
+            }
+            return Trap_Effect_Finished;
+        }
+        if (!inescapable)
+            return Trap_Effect_Finished; /* avoids trap */
+        fallverb = 'is dragged'; /* sokoban pit */
+    }
+    if (!passes_walls(mptr))
+        mtmp.mtrapped = 1;
+    if (in_sight) {
+        await pline(`${Monnam(mtmp)} ${fallverb} into ${trap.madeby_u ? 'your' : 'a'} pit!`);
+        if (mtmp.mnum === PMNAMES.PM_PIT_VIPER
+            || mtmp.mnum === PMNAMES.PM_PIT_FIEND)
+            await pline("How pitiful.  Isn't that the pits?");
+        seetrap(trap);
+    }
+    /* mselftouch: only bites when the monster wields a petrifying corpse */
+    if (mselftouch_would_fire(mtmp))
+        note_unported_trap('trapeffect_pit:mselftouch');
+    if (wearing_iron_shoes(mtmp))
+        relevant_spikes = false;
+    if (mtmp.mhp <= 0
+        || await thitm(0, mtmp, null, rnd(relevant_spikes ? 10 : 6), false))
+        trapkilled = true;
+
+    return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
+        ? Trap_Caught_Mon : Trap_Effect_Finished;
+}
+
+/* src/trap.c mselftouch() fires only for a monster wielding a petrifying
+   corpse bare-handed; nothing generated yet can. The gate keeps the note
+   honest. */
+function mselftouch_would_fire(mon) {
+    const mwep = mon.mw;
+    return !!(mwep && mwep.otyp === ONAMES.CORPSE);
+}
+
 // src/trap.c trapeffect_selector() — dispatch one trap's effect for whoever
 // stepped on it. Only the arms this port has are wired; the rest record so a
 // session that lands on one is visibly incomplete rather than silently wrong.
@@ -417,6 +586,11 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_dart_trap(mtmp, trap, trflags);
     case MAGIC_TRAP:
         return await trapeffect_magic_trap(mtmp, trap, trflags);
+    case BEAR_TRAP:
+        return await trapeffect_bear_trap(mtmp, trap, trflags);
+    case PIT:
+    case SPIKED_PIT:
+        return await trapeffect_pit(mtmp, trap, trflags);
     default:
         note_unported_trap(`trapeffect_selector:ttyp=${trap.ttyp}`);
         return Trap_Effect_Finished;

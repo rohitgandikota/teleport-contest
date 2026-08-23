@@ -998,7 +998,8 @@ export function monster_nearby() {
             if (mtmp
                 && M_AP_TYPE(mtmp) !== M_AP_FURNITURE
                 && M_AP_TYPE(mtmp) !== M_AP_OBJECT
-                && !mtmp.mpeaceful && !noattacks(game.mons[mtmp.mnum])
+                && (Hallucination()
+                    || (!mtmp.mpeaceful && !noattacks(game.mons[mtmp.mnum])))
                 && (!is_hider(game.mons[mtmp.mnum]) || !mtmp.mundetected)
                 && !helpless(mtmp)
                 && !onscary(u.ux, u.uy, mtmp) && canspotmon(mtmp))

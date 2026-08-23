@@ -25,16 +25,18 @@ export function set_occupation(fn, txt, xtime) {
     game.occtime = 0;
 }
 
-// src/allmain.c stop_occupation()
+// src/allmain.c:684 stop_occupation()
 export async function stop_occupation() {
     if (game.occupation) {
-        /* src/allmain.c:684 — maybe_finished_meal runs FIRST, and the
-           "You stop <occtxt>." message only prints when it returns FALSE. */
-        if (!await maybe_finished_meal(true))
-            note_unported_main(`stop_occupation:message:${game.occtxt}`);
+        /* maybe_finished_meal runs FIRST, and the "You stop <occtxt>."
+           message only prints when it returns FALSE. */
+        if (!await maybe_finished_meal(true)) {
+            const { You } = await import('./pline.js');
+            await You(`stop ${game.occtxt}.`);
+        }
         game.occupation = null;
         game.occtxt = null;
-        /* nomul(0) */
+        (game.disp ||= {}).botl = true; /* in case u.uhs changed */
     }
     game.multi = 0;
 }
@@ -51,7 +53,8 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          Upolyd } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
-import { lookaround, end_running, unmul, nomul } from './hack.js';
+import { lookaround, end_running, unmul, nomul,
+         monster_nearby } from './hack.js';
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
@@ -687,9 +690,7 @@ export async function moveloop_core() {
      *         if ((*go.occupation)() == 0) go.occupation = 0;
      *         if (monster_nearby()) stop_occupation();
      *     }
-     *
-     * monster_nearby() needs the interrupt checks; without it an occupation
-     * runs to completion where C would break it off, so it records. */
+     */
     /* a helpless hero (multi < 0) takes no command; the turn machinery above
        advanced the count, and context.move stays set so the next core call
        burns the next helpless turn, exactly like an occupation. */
@@ -701,7 +702,14 @@ export async function moveloop_core() {
     if ((g.multi ?? 0) >= 0 && g.occupation) {
         if ((await g.occupation()) === 0)
             g.occupation = null;
-        note_unported_main('moveloop:monster_nearby');
+        if (monster_nearby()) {
+            await stop_occupation();
+            /* reset_eat(): only matters when the occupation was eating,
+               which sets its own context; noted until eating occupations
+               are ported */
+            if (g.context?.victual?.piece)
+                note_unported_main('moveloop:reset_eat');
+        }
         g.context.move = 1;             /* the occupation took this turn */
         return;
     }

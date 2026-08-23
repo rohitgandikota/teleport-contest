@@ -61,7 +61,10 @@ const DEFINES = new Set([
     'OPTLIST_H', 'NHOPT_PARSE',
     'UNIX', 'TTY_GRAPHICS', 'ALTMETA', 'INSURANCE', 'MAIL', 'NEWS',
     'SELECTSAVED', 'STATUS_HILITES', 'CRASHREPORT', 'PREV_MSGS',
-    'SND_LIB_INTEGRATED', 'BACKWARD_COMPAT',
+    'BACKWARD_COMPAT',
+    /* SND_LIB_INTEGRATED is NOT defined: the reference binary shows
+       "sounds [off]" in the 'm O' doset() menu (seed0007 step 29), which is
+       the #else branch of optlist.h:696 (opt_in, initval Off). */
 ]);
 
 // Strip the #if/#else/#endif branches the reference build does not compile.
@@ -233,7 +236,11 @@ function main() {
            option_help skips such rows (the platform's compiled-out stubs) */
         e.noaddr = !!(e.addr && e.addr.replace(/\s+/g, '').includes('(boolean*)0'));
         delete e.addr;
-        delete e.termpref;
+        /* termpref (Term_False default) picks the true/false vs on/off vs
+           excluded-from-build wording in term_for_boolean(); only keep the
+           non-default values so the table stays readable */
+        if (e.termpref === 'Term_False')
+            delete e.termpref;
         return e;
     });
 
@@ -252,6 +259,7 @@ function main() {
             `dupok: ${JSON.stringify(e.dupok)}`,
         ];
         if (e.type === 'BoolOpt') parts.push(`initval: ${JSON.stringify(e.initval)}`);
+        if (e.termpref) parts.push(`termpref: ${JSON.stringify(e.termpref)}`);
         if (e.hasHandler) parts.push(`hasHandler: ${JSON.stringify(e.hasHandler)}`);
         if (e.pfx) parts.push('pfx: true');
         if (e.alias) parts.push(`alias: ${JSON.stringify(e.alias)}`);

@@ -59,6 +59,10 @@ export function rn2(x) {
     if (x <= 0) return 0;
     const val = RND(x);
     if (_rngLogEnabled) _rngLog.push(_site(`rn2(${x})=${val}`));
+    if (globalThis.__rng_stack_at !== undefined
+        && _rngLog.length - 1 === globalThis.__rng_stack_at)
+        console.error('RNGSTACK', _rngLog.length - 1,
+                      new Error('x').stack.split('\n').slice(2, 8).join('\n'));
     return val;
 }
 

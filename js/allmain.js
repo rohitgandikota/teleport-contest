@@ -134,6 +134,19 @@ export async function newgame() {
        run before anything prints plname. */
     set_playmode();
 
+    /* sys/unix/unixmain.c — after the name is final, try to restore a
+       saved game. A successful recover reinstalls the whole game state;
+       the only draws are nhlib.lua's align shuffle from the fresh Lua
+       core, and play continues where the save left off. */
+    {
+        const { dorecover } = await import('./save.js');
+        if (dorecover()) {
+            l_nhcore_init();
+            await docrt();
+            return;
+        }
+    }
+
     // src/allmain.c:780 — seed mvitals from each species' G_NOCORPSE bit,
     // before init_objects(). propagate() and uncommon() both read this.
     reset_mvitals();

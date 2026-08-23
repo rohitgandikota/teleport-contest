@@ -1108,6 +1108,11 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '#' is doextcmd, which reads the command name
         // off the input before doing anything.
         game.context.move = (await doextcmd() === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'S') {
+        // src/cmd.c cmdlist — 'S' is dosave: "Really save?", write the
+        // state to storage, and exit the process like C's nh_terminate.
+        const { dosave } = await import('./save.js');
+        game.context.move = (await dosave() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'o') {
         // src/cmd.c cmdlist — 'o' is doopen. It reads a direction key of its
         // own, so skipping it would put the whole session out of step.

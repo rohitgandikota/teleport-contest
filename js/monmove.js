@@ -1377,12 +1377,24 @@ export async function m_move(mtmp, after) {
 
     let mmoved = MMOVE_NOTHING;
 
+    /* src/monmove.c:1939 — on noteleport levels a unicorn perhaps cannot
+       avoid the hero: when any candidate is off the hero's line, skip the
+       on-line ones. */
+    let avoid = false;
+    if (is_unicorn(ptr) && game.level?.flags?.noteleport) {
+        for (let i = 0; i < cnt; i++)
+            if (!(mfp.info[i] & NOTONL))
+                avoid = true;
+    }
+
     /* src/monmove.c:1945 should_displace() — displacing another monster is
        only worth it when every non-displacing path is longer. Vacuous until
        mfndpos sets ALLOW_MDISP, but the loop below tests it as C does. */
     const better_with_displacing = should_displace(mtmp, mfp, ggx, ggy, cnt);
 
     for (let i = 0; i < cnt; i++) {
+        if (avoid && (mfp.info[i] & NOTONL))
+            continue;
         const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
 
         /* src/monmove.c:1953 — a peaceful or tame monster avoids the square

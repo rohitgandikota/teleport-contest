@@ -961,8 +961,12 @@ export function mkbox_cnts(box) {
                 }
             }
         }
-        box.cobj.push(otmp);
+        /* C add_to_container() — merging matters: two gold stacks rolled
+           for the same box must become one, or the take-out menu lists
+           "70 gold pieces" and "48 gold pieces" where C shows 118 */
+        add_to_container(box, otmp);
     }
+    /* caller will update box->owt */
 }
 
 // src/mon.c:417 undead_to_corpse() — a zombie or mummy leaves its living

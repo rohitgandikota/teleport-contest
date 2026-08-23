@@ -19,10 +19,16 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     TEMPLE
 , STRAT_WAITFORU, STRAT_WAITMASK } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
-         attacktype, can_blow, needspick, flaming, noncorporeal } from './mondata.js';
+         attacktype, can_blow, needspick, flaming, noncorporeal,
+         tunnels, nohands as nohands_mm,
+         verysmall as verysmall_mm } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame } from './const.js';
 import { is_vampshifter } from './monst.js';
-import { newsym } from './display.js';
+import { newsym, canseemon, canspotmon, pline } from './display.js';
+import { You_see, You_hear } from './pline.js';
+import { Monnam } from './do_name.js';
+import { Deaf } from './youprop.js';
+import { Is_rogue_level as IRL_const, D_TRAPPED } from './const.js';
 import { sobj_at, money_cnt } from './invent.js';
 import { m_carrying, meatmetal, resists_ston } from './mon.js';
 import { acidic, slimeproof } from './dog.js';
@@ -42,7 +48,8 @@ import {
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
 import { M_AP_TYPE, M_AP_NOTHING } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
-import { couldsee, cansee, clear_path } from './vision.js';
+import { couldsee, cansee, clear_path, recalc_block_point,
+         vision_recalc } from './vision.js';
 import { gettrack } from './track.js';
 import { distmin , isok, sgn, distu, dist2} from './hacklib.js';
 import { acurrstr } from './attrib.js';
@@ -1478,6 +1485,90 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
             if (mtmp.mx)
                 newsym(mtmp.mx, mtmp.my);
             return MMOVE_DIED;
+        }
+
+        /* src/monmove.c:1520 — open a door, or crash through it, if 'mtmp'
+           can. C computes can_tunnel/can_open/can_unlock in m_move() and
+           passes them in; they are pure predicates of the monster, so
+           computing them here keeps our postmov signature unchanged. */
+        const here = game.level.at(mtmp.mx, mtmp.my);
+        const can_tunnel = !IRL_const(game.u.uz) && tunnels(ptr);
+        const can_open = !(nohands_mm(ptr) || verysmall_mm(ptr));
+        /* monhaskey(mtmp, TRUE): credit card ok for unlocking */
+        const can_unlock = ((can_open
+                             && (m_carrying(mtmp, ONAMES.CREDIT_CARD)
+                                 || m_carrying(mtmp, ONAMES.SKELETON_KEY)
+                                 || m_carrying(mtmp, ONAMES.LOCK_PICK)))
+                            || mtmp.iswiz);
+        if (here && DOOR === here.typ /* IS_DOOR */
+            && !passes_walls(ptr) && !can_tunnel) {
+            const btrapped = (here.doormask & D_TRAPPED) !== 0;
+            const canseeit = cansee(mtmp.mx, mtmp.my);
+
+            /* magic-key disarm: no monster carries the Key yet */
+            const openit = async (what) => {
+                here.doormask = what;
+                newsym(mtmp.mx, mtmp.my);
+                recalc_block_point(mtmp.mx, mtmp.my);
+                vision_recalc(0);
+            };
+            if ((here.doormask & (D_LOCKED | D_CLOSED)) !== 0
+                && amorphous(ptr)) {
+                if (game.flags?.verbose && canseemon(mtmp))
+                    await pline(`${Monnam(mtmp)} ${
+                        ptr.mlet === MONSYMS.S_LIGHT ? 'flows'
+                                                     : 'oozes'} under the door.`);
+            } else if ((here.doormask & D_LOCKED) !== 0 && can_unlock) {
+                if (btrapped) {
+                    note_unported('postmov:mb_trapped');
+                } else {
+                    await openit(4 /* D_ISOPEN */);
+                    if (game.flags?.verbose) {
+                        if (canseeit && canspotmon(mtmp))
+                            await pline(`${Monnam(mtmp)} unlocks and opens a door.`);
+                        else if (canseeit)
+                            await You_see('a door unlock and open.');
+                        else if (!Deaf())
+                            await You_hear('a door unlock and open.');
+                    }
+                }
+            } else if (here.doormask === D_CLOSED && can_open) {
+                if (btrapped) {
+                    note_unported('postmov:mb_trapped');
+                } else {
+                    await openit(4 /* D_ISOPEN */);
+                    if (game.flags?.verbose) {
+                        if (canseeit && canspotmon(mtmp))
+                            await pline(`${Monnam(mtmp)} opens a door.`);
+                        else if (canseeit)
+                            await You_see('a door open.');
+                        else if (!Deaf())
+                            await You_hear('a door open.');
+                    }
+                }
+            } else if ((here.doormask & (D_LOCKED | D_CLOSED)) !== 0) {
+                /* mfndpos guarantees this must be a doorbuster */
+                const mask = (btrapped
+                              || ((here.doormask & D_LOCKED) !== 0
+                                  && !rn2(2)))
+                             ? 1 /* D_NODOOR */ : 2 /* D_BROKEN */;
+                if (btrapped) {
+                    note_unported('postmov:mb_trapped');
+                } else {
+                    await openit(mask);
+                    if (game.flags?.verbose) {
+                        if (canseeit && canspotmon(mtmp))
+                            await pline(`${Monnam(mtmp)} smashes down a door.`);
+                        else if (canseeit)
+                            await You_see('a door crash open.');
+                        else if (!Deaf())
+                            await You_hear('a door crash open.');
+                    }
+                    /* if it's a shop door, schedule repair */
+                    if (mask === 1)
+                        note_unported('postmov:doorbuster_shop_damage');
+                }
+            }
         }
     }
 

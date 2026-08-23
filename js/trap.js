@@ -919,15 +919,18 @@ export function is_rottable(otmp) {
 }
 
 /* include/objclass.h:200 is_rustprone(), :201 is_crackable(),
-   :204 is_corrodeable() */
-const is_rustprone = (otmp) =>
+   :204 is_corrodeable(), :206 is_damageable() */
+export const is_rustprone = (otmp) =>
     game.objects[otmp.otyp].oc_material === MATERIALS.IRON;
-const is_crackable = (otmp) =>
+export const is_crackable = (otmp) =>
     game.objects[otmp.otyp].oc_material === MATERIALS.GLASS
     && otmp.oclass === OCLASSES.ARMOR_CLASS;
-const is_corrodeable = (otmp) =>
+export const is_corrodeable = (otmp) =>
     game.objects[otmp.otyp].oc_material === MATERIALS.COPPER
     || game.objects[otmp.otyp].oc_material === MATERIALS.IRON;
+export const is_damageable = (otmp) =>
+    is_rustprone(otmp) || is_flammable(otmp) || is_rottable(otmp)
+    || is_corrodeable(otmp) || is_crackable(otmp);
 
 // src/trap.c:171 erode_obj() — generic erode-item function. Draws only the
 // rnl(4) blessed-protection roll. The shop-billing (EF_PAY) and destroy-arm

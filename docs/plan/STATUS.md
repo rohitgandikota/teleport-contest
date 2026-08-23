@@ -2,6 +2,36 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-23 (cont) — seed0007 82% RNG / 83% screens; moverock chain
+
+All pushed through 34f1806. Suite: 24/44 RNG-clean, 10/44 pass,
+237,770 RNG / 3,077 screens.
+
+seed0007 walked from head 2832 (options menu) to 13492/16373 in one
+day. The chain, in order, each unblocking the next: doset menu ->
+locked door autounlock+picklock -> tribute stock_room draw -> level
+revisit (saved_levels + mon_catchup + per-level hero track) ->
+use_container UI -> destroy-armor scroll -> monster door-opening ->
+MOVEROCK (the big one: the hero had been walking ONTO boulders; every
+monster path after step ~135 was silently displaced) -> dochug's
+flee-teleport rn2(40)/regain-courage rn2(25) -> cpostfx corpse
+intrinsics (newt buzz) -> sortloot menu order -> erosion adjectives ->
+run-stop messages -> count-prefix keeping the topline.
+
+- TRAP for the next agent: rhack's pre-dispatch topline clear is now
+  DEFERRED past count digits (cmd.js clear_before_dispatch). C only
+  clears when the command dispatches.
+- Current heads: seed0007 13399 (dog_move candidate order: our dog's
+  first candidate is in its mtrack, C's is equal-dist chcnt — dog
+  mtrack contents drifted, likely off the step-250 turn where C has a
+  newt adjacent that we have elsewhere); seed0012 7227 (dog food-scan
+  count); seed0014 4069, seed0116 5556 (same dog/monster family);
+  seed0004 5263; seed0030 10863; seed4500 7897.
+- A subagent is porting dat/Bar-strt.lua (barbarian quest start) for
+  seed0373 head 2552; js/dat pattern per tut-1.js. Its questpgr.js
+  edits were briefly inconsistent mid-flight during a suite run; if a
+  suite shows mass import errors, re-run before believing it.
+
 ## 2026-08-23 — doset menu, lock picking, shk/priest AI, level revisit
 
 All pushed (339df95, c5c4902), gates clean. Suite: 24/44 RNG-clean,

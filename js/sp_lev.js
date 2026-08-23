@@ -23,7 +23,8 @@ import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
 import { start_timer, TIMER_OBJECT, ROT_ORGANIC } from './timeout.js';
 import { make_engr_at, engr_at } from './engrave.js';
-import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD } from './const.js';
+import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD, STRAT_WAITFORU,
+         MM_NOCOUNTBIRTH } from './const.js';
 
 /* is_pool/is_lava/m_at live in js/mon.js, which reaches this file back through
    invent.js -> mkobj.js. A direct import leaves them in TDZ the second time a
@@ -520,6 +521,8 @@ export function get_location(x, y, humidity, croom) {
         x += mx;
         y += my;
     } else {                            /* random location */
+        if (globalThis.__loc_probe)
+            console.error('LOCPROBE', new Error().stack.split('\n').slice(2, 6).map(l=>l.trim().replace(/.*\/js\//, '')).join(' <- '));
         let found = false;
 
         do {
@@ -708,6 +711,13 @@ export function create_trap(t, croom) {
 // FALSE. The string and (string, x, y) forms leave them all at those defaults;
 // only the table form can change them.
 export function lspo_trap(type, x, y, opts) {
+    /* the table form carries coord (and type) inside opts */
+    if (opts?.coord) {
+        x = Array.isArray(opts.coord) ? opts.coord[0] : opts.coord.x;
+        y = Array.isArray(opts.coord) ? opts.coord[1] : opts.coord.y;
+    }
+    if ((type === undefined || type === null) && opts?.type !== undefined)
+        type = opts.type;
     const t = {
         /* src/sp_lev.c:4430 — an omitted type is -1, RANDOM (mktrap rolls
            traptype_rnd); only an unknown NAME is an error */
@@ -1367,6 +1377,16 @@ export function create_monster(m, croom) {
         if (m.asleep > BOOL_RANDOM)
             mtmp.msleeping = m.asleep;
 
+        /* src/sp_lev.c:2143 — explicit peacefulness overrides makemon's */
+        if (m.peaceful >= 0) {
+            mtmp.mpeaceful = m.peaceful;
+            /* set_malign draws nothing */
+        }
+        /* src/sp_lev.c:2160 — a waiting monster stands still until it can
+           see the hero (STRAT_WAITFORU) */
+        if (m.waiting)
+            mtmp.mstrategy = (mtmp.mstrategy || 0) | STRAT_WAITFORU;
+
         if (m.appear_as) {
             /* "obj:chest" -> M_AP_OBJECT with the object's index */
             const [kind, what] = m.appear_as.split(':');
@@ -1428,6 +1448,12 @@ function find_montype(s, mgender) {
 
 // src/sp_lev.c:3214 lspo_monster() — the des.monster() verb, simple forms.
 export function lspo_monster(idOrClass, x, y, opts) {
+    /* single-table form: des.monster({ id = ..., coord = ... }) */
+    if (idOrClass !== null && typeof idOrClass === 'object'
+        && !Array.isArray(idOrClass)) {
+        opts = idOrClass;
+        idOrClass = opts.id ?? opts.class;
+    }
     const m = {
         id: NON_PM, class: -1, coord: 0,
         sp_amask: AM_SPLEV_RANDOM,
@@ -1445,12 +1471,29 @@ export function lspo_monster(idOrClass, x, y, opts) {
     }
 
     if (opts?.class) m.class = opts.class;
+    if (opts?.id !== undefined && m.id === NON_PM && m.class === -1) {
+        const mgend = { v: NEUTRAL };
+        m.id = find_montype(opts.id, mgend);
+        m.mgender = mgend.v;
+    }
+    /* the table form carries coord inside opts */
+    if (opts?.coord) {
+        x = Array.isArray(opts.coord) ? opts.coord[0] : opts.coord.x;
+        y = Array.isArray(opts.coord) ? opts.coord[1] : opts.coord.y;
+    }
     m.coord = (x === undefined || x === -1) && (y === undefined || y === -1)
               ? SP_COORD_PACK_RANDOM(0)
               : SP_COORD_PACK(x, y);
 
     m.asleep = (opts?.asleep === undefined) ? BOOL_RANDOM : (opts.asleep ? 1 : 0);
     m.appear_as = opts?.appear_as ?? null;
+    m.waiting = !!opts?.waiting;
+    if (opts?.peaceful !== undefined)
+        m.peaceful = opts.peaceful ? 1 : 0;
+    /* countbirth=false: don't tick mvitals born (sp_lev.c passes
+       MM_NOCOUNTBIRTH through mm_flags) */
+    if (opts?.countbirth === false)
+        m.mm_flags |= MM_NOCOUNTBIRTH;
 
     return create_monster(m, game.coder?.croom ?? null);
 }

@@ -16,7 +16,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     IS_OBSTRUCTED, LAVAWALL,
     P_DAGGER, P_KNIFE,
     AM_SHRINE, Amask2align, ROOMOFFSET, ALLOW_MDISP, ALLOW_M
-} from './const.js';
+, STRAT_WAITFORU, STRAT_WAITMASK } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame } from './const.js';
@@ -950,6 +950,19 @@ export function distfleeck(mtmp) {
 
 // src/monmove.c:700 dochug() — one monster's turn.
 export async function dochug(mtmp) {
+    /* src/monmove.c:711 — a waiting monster stops waiting once it can see
+       the hero or has been hurt. */
+    if ((mtmp.mstrategy & STRAT_WAITFORU)
+        && (m_canseeu(mtmp) || mtmp.mhp < mtmp.mhpmax))
+        mtmp.mstrategy &= ~STRAT_WAITFORU;
+
+    /* src/monmove.c:717 — frozen or strategically waiting monsters do
+       nothing at all this turn (BEFORE the sleep/disturb check). */
+    if (!(mtmp.mcanmove ?? 1) || (mtmp.mstrategy & STRAT_WAITMASK)) {
+        /* STRAT_CLOSE pop-out arm needs the covetous machinery */
+        return 0;
+    }
+
     /* src/monmove.c:727 — a sleeping monster still gets a chance to be woken,
        and disturb() DRAWS on the way. Returning early here skipped both the
        draws and the monster's whole turn when it did wake. */
@@ -1304,7 +1317,7 @@ export async function m_move(mtmp, after) {
                 if (track[j] && nx === track[j].x && ny === track[j].y) {
                     if (globalThis.__mm_probe) {
                         const { rngLogLength } = globalThis.__rng_mod || {};
-                        console.error('MMPROBE', JSON.stringify({ idx: rngLogLength ? rngLogLength() : -1, mon: mtmp.mnum, at: [mtmp.mx, mtmp.my], appr, gg: [ggx, ggy], mux: [mtmp.mux, mtmp.muy], flee: mtmp.mflee || 0, cnt, j, nx, ny }));
+                        console.error('MMPROBE', JSON.stringify({ idx: rngLogLength ? rngLogLength() : -1, mon: mtmp.mnum, at: [mtmp.mx, mtmp.my], appr, gg: [ggx, ggy], cnt, j, nx, ny, poss: (mfp.poss||[]).slice(0, cnt) }));
                     }
                     if (rn2(4 * (cnt - j))) { skip = true; break; }
                 }

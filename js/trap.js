@@ -449,6 +449,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_bear_trap(game.youmonst, trap, trflags);
     if (ttype === RUST_TRAP)
         return await trapeffect_rust_trap(game.youmonst, trap, trflags);
+    if (ttype === HOLE || ttype === TRAPDOOR)
+        return await trapeffect_hole(game.youmonst, trap, trflags);
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
     return Trap_Effect_Finished;
@@ -1282,6 +1284,75 @@ function completelyrusts_tr(mptr) {
 /* include/obj.h bimanual() — two-handed weapon or polearm */
 function bimanual_tr(obj) {
     return !!game.objects[obj.otyp]?.oc_bimanual;
+}
+
+// src/trap.c:602 fall_through() — the hero falls through a trap door or
+// hole. The Sokoban, levitation, huge-form and pet-jerk refusal arms read
+// real state; impact_drop and shop digging record. Ends with
+// schedule_goto, so the level change happens at the moveloop seam exactly
+// as C defers it.
+export async function fall_through(td, ftflags) {
+    let dont_fall = null;
+    let t = null;
+
+    if (game.u.ublind && game.u.uprops?.LEVITATION)
+        return;
+
+    let newlevel = game.u.uz.dlevel + 1;
+
+    if (td) {
+        t = t_at_mon(game.u.ux, game.u.uy);
+        feeltrap(t);
+        if (!(ftflags & TOOKPLUNGE)) {
+            if (t.ttyp === TRAPDOOR)
+                await pline('A trap door opens up under you!');
+            else
+                await pline("There's a gaping hole under you!");
+        }
+    } else {
+        const { surface } = await import('./dungeon.js');
+        await pline_The(`${surface(game.u.ux, game.u.uy)} opens up under you!`);
+    }
+
+    /* Sokoban / Can_fall_thru: ordinary dungeon levels can */
+    if (game.u.uprops?.LEVITATION || game.u.ustuck) {
+        dont_fall = "don't fall in.";
+    } else if (game.mons[game.u.umonnum]?.msize >= MFLAGS.MZ_HUGE) {
+        dont_fall = "don't fit through.";
+    }
+    /* next_to_u() pet-jerk arm — pets always count adjacent for now, the
+       same simplification js/teleport.js documents */
+    if (dont_fall) {
+        await You(dont_fall);
+        note_unported_trap('fall_through:impact_drop');
+        return;
+    }
+
+    /* shopdig / Is_stronghold(find_hell): no shops or castle here yet */
+    const dtmp = { dnum: game.u.uz.dnum, dlevel: newlevel };
+    if (t && t.dst && t.dst.dnum >= 0) {
+        dtmp.dnum = t.dst.dnum;
+        dtmp.dlevel = t.dst.dlevel;
+    }
+    const dist = dtmp.dlevel - game.u.uz.dlevel;
+    if (dist > 1)
+        await You(`fall down a ${dist > 3 ? 'very ' : ''}${dist > 2 ? 'deep ' : ''}shaft!`);
+
+    const { schedule_goto, UTOTYPE_FALLING, UTOTYPE_NONE } =
+        await import('./do.js');
+    schedule_goto(dtmp,
+                  !game.u.uprops?.FLYING ? UTOTYPE_FALLING : UTOTYPE_NONE,
+                  null, null);
+}
+
+// src/trap.c:2013 trapeffect_hole() — hero falls; the monster arm records.
+async function trapeffect_hole(mtmp, trap, trflags) {
+    if (mtmp === game.youmonst) {
+        await fall_through(true, trflags & TOOKPLUNGE);
+        return Trap_Effect_Finished;
+    }
+    note_unported_trap('trapeffect_hole:monster');
+    return Trap_Effect_Finished;
 }
 
 // src/trap.c:4024 float_down() — return the hero to the surface when

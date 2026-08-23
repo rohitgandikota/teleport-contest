@@ -191,6 +191,14 @@ function strip_mons(list) {
         const copy = { ...m };
         delete copy.data;
         copy.minvent = strip_objs(m.minvent);
+        /* src/bones.c:544 — per-monster bones sanitization: pets go feral,
+           movement bookkeeping resets, hero observations are wiped. Trap
+           tseen and madeby_u resets are handled with the trap snapshot. */
+        copy.mlstmv = 0;
+        if (copy.mtame)
+            copy.mtame = copy.mpeaceful = 0;
+        copy.seen_resistance = 0;
+        delete copy.edog;
         return copy;
     });
 }
@@ -214,12 +222,18 @@ function write_bonesfile() {
         flags: { ...(lvl.flags || {}) },
         rooms: (lvl.rooms || []).map(r => ({ ...r })),
         doors: (lvl.doors || []).map(d => ({ ...d })),
-        traps: (lvl.traps || []).map(t => ({ ...t })),
+        traps: (lvl.traps || []).map(t => ({ ...t, madeby_u: 0,
+            /* unhideable_trap: holes, and not much else on these levels */
+            tseen: false })),
         stairs: (lvl.stairs || []).map(st => ({ ...st })),
         engravings: (game.engravings || []).map(e => ({ ...e })),
         objects: strip_objs((lvl.objects || [])
             .filter(o => o.where === 1 /* OBJ_FLOOR */ || o.where === 0)),
+        buried: strip_objs(lvl.buriedobjs || []),
         monsters: strip_mons((lvl.monsters || []).filter(m => m.mhp > 0)),
+        /* src/bones.c newbones() cemetery record — who died here. The
+           bones_include_name() match wants "name-" as a prefix. */
+        bonesinfo: { who: `${game.plname}-${game.urole?.filecode || 'Xxx'}` },
     };
     try {
         game.storage.setItem(bones_key(), JSON.stringify(snap));
@@ -279,6 +293,7 @@ export async function getbones_load() {
     lvl.stairs = snap.stairs || [];
     game.engravings = snap.engravings || [];
     lvl.objects = rewire_objs(snap.objects, null, null);
+    lvl.buriedobjs = rewire_objs(snap.buried || [], null, null);
     lvl.monsters = snap.monsters || [];
     for (const m of lvl.monsters) {
         m.data = game.mons[m.mnum];
@@ -302,10 +317,24 @@ export async function getbones_load() {
         }
     };
     renumber(lvl.objects);
+    renumber(lvl.buriedobjs);
     for (const m of lvl.monsters)
         renumber(m.minvent);
+    /* monsters' m_ids come from the same counter: one next_ident each */
+    for (const m of lvl.monsters)
+        m.m_id = next_ident();
+
+    /* the cemetery record: goto_level's familiar_level_msg reads it */
+    lvl.bonesinfo = snap.bonesinfo || null;
 
     /* the bones file is deleted once used */
     try { game.storage.removeItem(bones_key()); } catch (e) {}
     return true;
+}
+
+// src/bones.c:762 bones_include_name() — did this hero (by name) die in
+// any of the bones lives on this level?
+export function bones_include_name(name) {
+    const bp = game.level?.bonesinfo;
+    return !!(bp && bp.who && bp.who.startsWith(name + '-'));
 }

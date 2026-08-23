@@ -779,10 +779,23 @@ function note_unported_main(what) {
 
 // src/allmain.c maybe_do_tutorial()
 export async function maybe_do_tutorial() {
+    const g = game;
+    /* src/allmain.c:569 find_level("tut-1") */
+    const sp = (g.sp_levchn || []).find(s => s.proto === 'tut-1');
+    if (!sp)
+        return;
+
     if (await ask_do_tutorial()) {
-        /* schedule_goto(tut-1) + deferred_goto() builds the tutorial level.
-           Not ported: the special-level loader for tut-1, and goto_level's
-           save/restore of the level being left. */
-        note_unported_main('tutorial level (tut-1)');
+        g.u.ucamefrom = { dnum: g.u.uz.dnum, dlevel: g.u.uz.dlevel };
+        g.iflags.nofollowers = true;
+        const { schedule_goto, deferred_goto, UTOTYPE_NONE } =
+            await import('./do.js');
+        schedule_goto(sp.dlevel, UTOTYPE_NONE,
+                      'Entering the tutorial.', null);
+        await deferred_goto();
+        const { vision_recalc } = await import('./vision.js');
+        vision_recalc(0);
+        await docrt();
+        g.iflags.nofollowers = false;
     }
 }

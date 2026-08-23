@@ -210,7 +210,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1585 keepdogs() — adjacent followers leave the map with the
        hero BEFORE the old level is left */
     const { keepdogs, losedogs } = await import('./dog.js');
-    keepdogs(false);
+    /* src/do.c:1623 — the tutorial transition sets iflags.nofollowers so
+       the pet stays behind */
+    if (!game.iflags?.nofollowers)
+        keepdogs(false);
 
     game.u.uz = { dnum: newlevel.dnum, dlevel: newlevel.dlevel };
     (game.visited_ledgers ||= new Set());
@@ -297,6 +300,25 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     const collider = m_at(game.u.ux, game.u.uy);
     if (collider)
         await u_collide_m(collider, m_at, mnexto);
+
+    /* src/do.c:1879 — arriving on a bones level a same-named hero died
+       on gives the deja-vu message; rn2(4) picks it (index 3 is silent). */
+    {
+        const { bones_include_name } = await import('./bones.js');
+        if (game.level?.bonesinfo && bones_include_name(game.plname)) {
+            const fam_msgs = [
+                'You have a sense of deja vu.',
+                "You feel like you've been here before.",
+                'This place %s familiar...', null ];
+            /* halu variants recorded with the rest of Hallucination */
+            let mesg = fam_msgs[rn2(4)];
+            if (mesg && mesg.includes('%s'))
+                mesg = mesg.replace('%s',
+                                    !game.u.ublind ? 'looks' : 'seems');
+            if (mesg)
+                await pline(mesg);
+        }
+    }
 
     /* src/do.c:1837 — reset the screen: vision blockages for the new
        map, then a full redraw with vision recalc */

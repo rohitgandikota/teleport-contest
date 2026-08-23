@@ -994,12 +994,34 @@ function undead_to_corpse(mndx) {
     return UNDEAD_TO_CORPSE.get(mndx) ?? mndx;
 }
 
+// src/mkobj.c:828 dknowns[] — the classes whose appearance is not fully
+// obvious at a glance, so a new object starts with dknown 0.
+const dknowns = [
+    OCLASSES.WAND_CLASS, OCLASSES.RING_CLASS, OCLASSES.POTION_CLASS,
+    OCLASSES.SCROLL_CLASS, OCLASSES.GEM_CLASS, OCLASSES.SPBOOK_CLASS,
+    OCLASSES.WEAPON_CLASS, OCLASSES.TOOL_CLASS, OCLASSES.VENOM_CLASS,
+];
+
+// src/mkobj.c:835 clear_dknown() — set obj->dknown to 0 for most types of
+// objects, to 1 otherwise.  Deliberately not observe_object(): this is an
+// unobserving.
+function clear_dknown(obj) {
+    obj.dknown = dknowns.includes(obj.oclass) ? 0 : 1;
+    if ((obj.otyp >= ONAMES.ELVEN_SHIELD && obj.otyp <= ONAMES.ORCISH_SHIELD)
+        || obj.otyp === ONAMES.SHIELD_OF_REFLECTION
+        || game.objects[obj.otyp].oc_merge)
+        obj.dknown = 0;
+    /* globs always have dknown flag set (to maximize merging) */
+    if (Is_pudding(obj))
+        obj.dknown = 1;
+}
+
 // src/mkobj.c:1090 unknow_object() — "set up dknown and known: non-0 for some
 // things". The last line is the one that matters here: object types that do NOT
 // use the known flag get it set TRUE, which is what makes a starting scroll or
 // potion eligible for discovery in ini_inv_use_obj().
 function unknow_object(obj) {
-    obj.dknown = 0;
+    clear_dknown(obj);
     obj.bknown = obj.rknown = 0;
     obj.cknown = obj.lknown = 0;
     obj.tknown = 0;

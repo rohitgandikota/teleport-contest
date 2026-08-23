@@ -3,13 +3,15 @@
 
 import { game } from './gstate.js';
 import { money_cnt } from './invent.js';
-import { ONAMES } from './objects_data.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
 import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
-import { Infravision } from './youprop.js';
+import { Infravision, Hallucination } from './youprop.js';
+import { observe_object } from './o_init.js';
+import { distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
 import { t_at } from './mon.js';
 import {
@@ -766,7 +768,29 @@ export function glyph_at(x, y) {
 
    The symbol is unchanged, because def_oc_syms[FOOD_CLASS] and the body
    glyph's symbol are both '%'. */
-function floor_object_glyph(obj) {
+// include/display.h:806 obj_is_generic() — an undetailed (!dknown) potion,
+// real/glass gem, or spellbook displays as its CLASS's generic glyph.
+function obj_is_generic(obj) {
+    return !obj.dknown
+           && (obj.oclass === OCLASSES.POTION_CLASS
+               || (obj.otyp >= ONAMES.FIRST_REAL_GEM
+                   && obj.otyp <= ONAMES.LAST_GLASS_GEM)
+               || (obj.otyp >= ONAMES.FIRST_SPELL
+                   && obj.otyp <= ONAMES.LAST_SPELL));
+}
+
+function floor_object_glyph(obj, x, y) {
+    /* src/display.c:340 _map_location() — if the object would display as
+       generic but the hero can see the spot from nearby (same radius as
+       distant_name(): r = max(u.xray_range, 2), neardist = 2r²−r), mark
+       it as seen up close first; it is then drawn as the specific object. */
+    if (x !== undefined && obj_is_generic(obj) && cansee(x, y)
+        && !Hallucination()) {
+        const r = ((game.u?.xray_range ?? -1) > 2) ? game.u.xray_range : 2;
+        const neardist = r * r * 2 - r;
+        if (distu(x, y) <= neardist)
+            observe_object(obj);
+    }
     const oc = game.objects?.[obj.otyp];
     let color = oc?.oc_color ?? NO_COLOR;
     let sym = def_oc_syms[obj.oclass] || '?';
@@ -796,8 +820,48 @@ function floor_object_glyph(obj) {
         color = game.objects?.[ONAMES.STATUE]?.oc_color ?? color;
     } else if (obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0) {
         color = game.mons?.[obj.corpsenm]?.mcolor ?? color;
+    } else if (obj_is_generic(obj)) {
+        /* include/display.h:940 generic_obj_to_glyph() — the generic glyph
+           is oclass + GLYPH_OBJ_OFF, whose colour comes from the dummy
+           class entry objects[oclass] (grey), not from the shuffled
+           description of the specific otyp. */
+        color = game.objects?.[obj.oclass]?.oc_color ?? color;
+        gdesc.generic = true;
     }
     return { ch: sym, color, dec: false, glyph: gdesc };
+}
+
+// src/display.c:1574 see_nearby_objects() — mark the top object of nearby
+// stacks as having been seen, and if that object was being displayed as
+// generic, redisplay it as specific.  Called from u_on_newpos() whenever the
+// hero moves on the same level.
+export function see_nearby_objects() {
+    const x = game.u.ux, y = game.u.uy;
+    /* these 'r' and 'neardist' calculations match distant_name(objnam.c) */
+    const r = ((game.u?.xray_range ?? -1) > 2) ? game.u.xray_range : 2;
+    const neardist = r * r * 2 - r;
+
+    for (let iy = y - r; iy <= y + r; ++iy)
+        for (let ix = x - r; ix <= x + r; ++ix) {
+            if (!isok(ix, iy))
+                continue;
+            /* skip if no object or the object has already been marked as
+               having been seen up close */
+            const obj = (game.level?.objects || [])
+                            .find(o => o.ox === ix && o.oy === iy);
+            if (!obj || obj.dknown)
+                continue;
+            /* skip if the spot can't be seen or is too far (diagonal) */
+            if (!cansee(ix, iy) || distu(ix, iy) > neardist)
+                continue;
+
+            const was_generic = obj_is_generic(obj);
+            observe_object(obj);
+            /* C tests the remembered glyph: only a generic-displayed
+               object needs a redisplay after being observed */
+            if (was_generic)
+                newsym(ix, iy);
+        }
 }
 
 export function newsym(x, y) {
@@ -823,7 +887,8 @@ export function newsym(x, y) {
         show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
         const under = (game.level?.objects || [])
                           .find(o => o.ox === x && o.oy === y);
-        const tg = under ? floor_object_glyph(under) : terrain_glyph(loc, x, y);
+        const tg = under ? floor_object_glyph(under, x, y)
+                         : terrain_glyph(loc, x, y);
         loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                                  glyph: tg.glyph
                                      ?? { kind: 'cmap', cmap: tg.cmap } };
@@ -840,7 +905,7 @@ export function newsym(x, y) {
            (place_object prepends), so the first match is the top. */
         const obj = (game.level?.objects || [])
                         .find(o => o.ox === x && o.oy === y);
-        const memg = obj ? floor_object_glyph(obj)
+        const memg = obj ? floor_object_glyph(obj, x, y)
                          : (engraving_glyph(loc, x, y)
                             || terrain_glyph(loc, x, y));
         if (game.level?.flags?.hero_memory)
@@ -1230,7 +1295,7 @@ export function feel_location(x, y) {
     const obj = (game.level?.objects || [])
                     .find(o => o.ox === x && o.oy === y);
     const trap = t_at(x, y);
-    const memg = obj ? floor_object_glyph(obj)
+    const memg = obj ? floor_object_glyph(obj, x, y)
         : (trap && trap.tseen) ? trap_glyph(trap)
         : (engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y));
     if (game.level?.flags?.hero_memory)

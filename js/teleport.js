@@ -17,7 +17,8 @@ import { rn2 } from './rng.js';
 import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          NO_MM_FLAGS } from './const.js';
 import { rnl } from './rng.js';
-import { pline } from './display.js';
+import { pline, see_nearby_objects } from './display.js';
+import { Hallucination } from './youprop.js';
 import { You, You_feel, You_cant } from './pline.js';
 import { getlin } from './cmd.js';
 import { get_level, depth, print_dungeon, dunlevs_in_dungeon } from './dungeon.js';
@@ -395,6 +396,11 @@ export function u_on_newpos(x, y) {
         game.u.usteed.mx = game.u.ux;
         game.u.usteed.my = game.u.uy;
     }
+    /* src/dungeon.c:1594 — still on same level; might have come close
+       enough to generic object(s) to redisplay them as specific objects
+       (level changes take the map_location() arm instead) */
+    if (!game.u.ublind && !Hallucination() && !game.u.uswallow)
+        see_nearby_objects();
 }
 
 // src/teleport.c teleok() — may the hero teleport onto <x,y>?

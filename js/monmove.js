@@ -218,6 +218,9 @@ function inhistemple(mtmp) {
     return has_shrine(mtmp);
 }
 
+// include/mondata.h:82 can_teleport()
+const can_teleport = (ptr) => (ptr.mflags1 & MFLAGS.M1_TPORT) !== 0;
+
 // include/mondata.h:115 is_wanderer()
 const is_wanderer = (ptr) => (ptr.mflags2 & MFLAGS.M2_WANDER) !== 0;
 
@@ -990,6 +993,35 @@ export async function dochug(mtmp) {
        draws and the monster's whole turn when it did wake. */
     if (mtmp.msleeping && !disturb(mtmp))
         return 0;
+
+    /* src/monmove.c:735 — confused monsters get unconfused with small
+       probability */
+    if (mtmp.mconf && !rn2(50))
+        mtmp.mconf = 0;
+
+    /* stunned monsters get un-stunned with larger probability */
+    if (mtmp.mstun && !rn2(10))
+        mtmp.mstun = 0;
+
+    /* src/monmove.c:744 — some monsters teleport. Teleportation costs a
+       turn. The rn2(40) is spent by EVERY fleeing monster; only one that
+       can actually teleport then rloc()s. */
+    if (mtmp.mflee && !rn2(40) && can_teleport(game.mons[mtmp.mnum])
+        && !mtmp.iswiz
+        && !(game.level?.flags?.noteleport)) {
+        /* rloc(mtmp, RLOC_MSG) + leppie_stash */
+        note_unported('dochug:flee_teleport_rloc');
+        return 0;
+    }
+
+    /* m_respond(): the shrieker/medusa special responses are recorded */
+
+    /* src/monmove.c:757 — fleeing monsters might regain courage */
+    if (mtmp.mflee && !mtmp.mfleetim
+        && mtmp.mhp === mtmp.mhpmax && !rn2(25))
+        mtmp.mflee = 0;
+
+    /* release_hero(): conflict-induced swallow/grab needs engulfing */
 
     /* src/monmove.c:778 — must run after the hero moves and before the monster
        does, because inrange/nearby in distfleeck() are measured against the

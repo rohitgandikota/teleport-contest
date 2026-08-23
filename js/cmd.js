@@ -21,7 +21,9 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door } from './hack.js';
+import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door, could_move_onto_boulder } from './hack.js';
+import { In_sokoban } from './dungeon.js';
+import { Hallucination } from './youprop.js';
 import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
@@ -1378,6 +1380,35 @@ async function domove_core() {
             nomul(0);
         }
         return;
+    }
+
+    /* src/hack.c:1230 — test_move()'s boulder arm, the DO_MOVE slice:
+       walking into a boulder tries to push it (moverock, hack.c:336), and
+       a failed push blocks the move exactly like terrain. */
+    if (sobj_at(ONAMES.BOULDER, newx, newy)
+        && (In_sokoban(game.u.uz) || !game.u.uprops?.PASSES_WALLS)) {
+        if (!(u.ublind || Hallucination()) && (game.context.run | 0) >= 2
+            && !could_move_onto_boulder(newx, newy)) {
+            if (game.flags?.mention_walls)
+                await pline('A boulder blocks your path.');
+            game.context.move = 0;
+            nomul(0);
+            return;
+        }
+        /* tunneling monsters chew before pushing; the un-polymorphed hero
+           never tunnels */
+        const { moverock } = await import('./hack.js');
+        if ((await moverock()) < 0) {
+            if (!game.context.door_opened) {
+                game.context.move = 0;
+                nomul(0);
+            }
+            return;
+        }
+        /* push succeeded (or squeezed): if a boulder still remains on the
+           target square after moverock() returned 0, C's test_move lets
+           the move proceed only for could_move_onto_boulder cases; the
+           vacated-square case just walks on */
     }
 
     // Move the hero

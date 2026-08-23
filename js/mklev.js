@@ -495,13 +495,16 @@ export function make_grave(x, y, str) {
 // Core mklev functions (ported from main project's mklev.js)
 // ============================================================
 
-// C ref: bones.c getbones()
-function getbones() {
-    const flags = game.flags || {};
+// C ref: bones.c:626 getbones() — the gate half; the load lives in
+// js/bones.js getbones_load(). The rn2(3) draws for wizard too (C's
+// `rn2(3) && !wizard` evaluates the roll first).
+async function getbones() {
     if (game.discover) return false;      /* src/bones.c:639 */
-    if (flags.bones === false) return false;
-    if (rn2(3) && !game.flags?.debug) return false;
-    return false;
+    if ((game.flags || {}).bones === false) return false;
+    if (rn2(3) && !game.wizard) return false;
+    /* no_bones_level: the early levels the sessions reach all allow them */
+    const { getbones_load } = await import('./bones.js');
+    return await getbones_load();
 }
 
 // C ref: allmain.c l_nhcore_init()
@@ -512,7 +515,7 @@ export { l_nhcore_init } from './nhlua.js';
 // C ref: mklev.c mklev()
 export async function mklev() {
     const g = game;
-    if (getbones()) return;
+    if (await getbones()) return;
     g.in_mklev = true;
     await makelevel();
     recount_level_features();

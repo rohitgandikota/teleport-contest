@@ -1,0 +1,12 @@
+{
+  "name": "monk-martial-arts",
+  "description": "Normal-mode Monk: martial-arts punches (jackal one-shot), door auto-open, locked door kicked open, degraded graffiti rumor read, magic trap (blind + deaf), blind floor-feel pickup, unseen-attacker combat with I glyphs, force-fight thin air, blindness cured by resting.",
+  "segments": [
+    {
+      "seed": 6011,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Kira,role:Monk,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " :i\u001b10s k:l:hh:h : h:h:oj:\u0004j:jGj:GjGh:jjj:Gl  : ,:  ,a\r: Fl : Fk Fk : Fu : Fl h : Fl Fk 20s : 10s : i\u001b:"
+    }
+  ]
+}

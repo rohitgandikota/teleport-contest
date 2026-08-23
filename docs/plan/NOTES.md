@@ -74,6 +74,20 @@ edit to `js/storage.js` would pass CI and fail the judge. Do not edit it.
 
 ## The recorder
 
+**We can mint our own ground-truth sessions — pipeline in `tools/gen-sessions/`.**
+`tools/gen-sessions/record.mjs` turns a recipe (seed, datetime, nethackrc, key
+string) into a `.session.json` via the recorder; `render.mjs` shows any step's
+screen as plain text for composing key plans. Verified 2026-08-23: seed0077
+re-recorded from only its recipe fields is byte-identical to the canonical file
+(3,242 rng entries, all screens/cursors, no normalization), and all 11 generated
+starter sessions are byte-identical across repeated recordings. The starter
+batch (seeds 6001-6501) covers wishes, kicks, fountain quaff/dip, wear/remove,
+striking-at-door, Elbereth engraving, martial arts, angry-god prayer, and a
+save/restore pair — see `tools/gen-sessions/README.md` for the coverage table
+and the authoring gotchas (--More-- eats non-space keys; a debug-mode twin of a
+normal seed generates a DIFFERENT map, so scout by extending the real keyplan).
+Generated files live in `tools/gen-sessions/generated/`, never in `sessions/`.
+
 **`make install` does not install `sysconf`, and without it the recorder exits
 before the first frame.**
 The binary is built with `SYSCF` enabled (`include/config.h:232-234` defines

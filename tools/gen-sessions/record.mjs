@@ -116,7 +116,14 @@ async function main() {
     for (const a of args) {
         console.log(`=== ${path.basename(a)} ===`);
         try {
-            if (!await generateOne(path.resolve(a))) fails += 1;
+            // Accept a path relative to cwd, or a bare/relative recipe
+            // name resolved against tools/gen-sessions/recipes/.
+            let p = path.resolve(a);
+            try { await fs.access(p); } catch {
+                p = path.join(RECIPES, path.basename(a));
+                if (!p.endsWith('.json')) p += '.json';
+            }
+            if (!await generateOne(p)) fails += 1;
         } catch (e) {
             console.error(`[fail] ${a}: ${e.message}`);
             fails += 1;

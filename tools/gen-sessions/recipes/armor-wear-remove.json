@@ -1,0 +1,12 @@
+{
+  "name": "armor-wear-remove",
+  "description": "Debug Valkyrie: wishes for plate mail, gloves, ring of protection; five-turn plate donning interrupted by a jackal fight, ring-finger prompt, auto-remove of single ring, g-prefix error message, multi-turn take-off, floor ring mail picked up and worn.",
+  "segments": [
+    {
+      "seed": 6005,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :\u0017plate mail\r:\u0017pair of leather gloves\r:\u0017ring of protection\r:i\u001bWe    :k k k k k k :Wf:Pgr:Rg:Tf:Te:nnl:,:Wh:i\u001b:"
+    }
+  ]
+}

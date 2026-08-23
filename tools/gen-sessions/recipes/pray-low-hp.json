@@ -1,0 +1,12 @@
+{
+  "name": "pray-low-hp",
+  "description": "Debug Valkyrie: two sickness potions drop HP 16 to 4 with Sick status, #pray with extended-command completion, wizard-mode \"Force the gods\" prompt declined, Tyr angered twice, lightning bolt, wide-angle disintegration beam destroys the shield, three Die? refusals, \"You survived that attempt on your life.\"",
+  "segments": [
+    {
+      "seed": 6013,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :\u00174 potions of sickness\r:qe :qe :#pray\ry n  :10s :#pray\ry n    n   n :i\u001b:"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "wand-striking-door",
+  "description": "Debug Wizard: wished wand of striking (unidentified appearance), newt melee, two \"door crashes open\" zaps (adjacent and across-room ray), failed close on a broken door, black potion quaffed (\"That was smooth!\"), count-prefix search.",
+  "segments": [
+    {
+      "seed": 6006,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :\u0017wand of striking\r:i\u001b:l:l l :zol:,Gl:llGlGl:cl:zol:uk,:qq :10s:i\u001b:"
+    }
+  ]
+}

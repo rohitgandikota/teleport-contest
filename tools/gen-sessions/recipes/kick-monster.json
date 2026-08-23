@@ -1,0 +1,12 @@
+{
+  "name": "kick-monster",
+  "description": "Debug Samurai: ^G creates newt/kobold/hill orc/bugbear; kicks kill each (bugbear takes three and grants XP level 2), gold pile and corpses kicked (Thump!), pet-attack confirmation declined, kick at empty space.",
+  "segments": [
+    {
+      "seed": 6003,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :i\u001b\u0007newt\r:\u0004u:\u0004yn:\u0004k:\u0007kobold\r:\u0004k:\u0004k:\u0007hill orc\r:\u0004y:\u0007bugbear\r:\u0004h :\u0004h :\u0004h :\u0004b:i\u001b:"
+    }
+  ]
+}

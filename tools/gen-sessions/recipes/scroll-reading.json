@@ -1,0 +1,12 @@
+{
+  "name": "scroll-reading",
+  "description": "Debug Wizard: three ^W wishes typed in full (quantity + blessed), blessed identify identifies the whole inventory chain, cursed blank paper, scroll of teleportation with wizard-mode controlled teleport (getpos cursor, autodescribe, Tip window), reading the blank scroll.",
+  "segments": [
+    {
+      "seed": 6004,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :\u00172 blessed scrolls of identify\r:\u0017scroll of teleportation\r:\u0017scroll of blank paper\r:ro   :rp   kkkh. :rq :i\u001b:"
+    }
+  ]
+}

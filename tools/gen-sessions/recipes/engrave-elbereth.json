@@ -1,0 +1,12 @@
+{
+  "name": "engrave-elbereth",
+  "description": "Debug Wizard: dust-engraves Elbereth (read back degraded \"Elbere5h\"), burns Elbereth into the floor with a wished wand of fire (identifies the wand by engraving), walking degrades the dust copy further, level-generated graffiti nearby, kitten-vs-rat interruptions.",
+  "segments": [
+    {
+      "seed": 6007,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :\u0017wand of fire\r:E- Elbereth\r: h:En  Elbereth\r: l: i\u001b: jj:10s :"
+    }
+  ]
+}

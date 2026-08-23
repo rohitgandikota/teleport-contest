@@ -1,0 +1,12 @@
+{
+  "name": "ranger-chargen",
+  "description": "Normal-mode Ranger chargen through the pick menus (role R, race, gender, alignment), then bow fire with fireassist messages, grid-bug melee, arrow pickup into quiver, G-runs, floor food ration eaten over multiple turns, count-prefix searches, discoveries and attributes windows.",
+  "segments": [
+    {
+      "seed": 6001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=!autopickup\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": "Robin\rnRhfcy  ni\u001bf  ullllGuGlfk:Gkk k k,GlGuGl: l l llllll:jn,:GlGj:Ghh:k:ey 10s:\\\u001b\u0018 \u001b10s:"
+    }
+  ]
+}

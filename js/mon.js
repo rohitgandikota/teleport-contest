@@ -1,7 +1,7 @@
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
-import { is_hider, perceives, is_human, is_unicorn , regenerates } from './mondata.js';
+import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
 import { ceiling_hider } from './mondata.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear } from './monmove.js';
@@ -1902,4 +1902,38 @@ function wake_nearto_core(x, y, distance, petcall) {
 // src/mon.c:4402 wake_nearto()
 export function wake_nearto(x, y, distance) {
     wake_nearto_core(x, y, distance, false);
+}
+
+// src/mon.c:4649 restore_cham() — reloaded shapechanger bookkeeping.
+export function restore_cham(mon) {
+    if (/* Protection_from_shape_changers: no source yet || */ mon.mcan) {
+        /* force chameleon or mimic to revert to its natural shape */
+        (game.unported ||= new Set()).add('mon:restore_cham:normal_shape');
+    } else if ((mon.cham ?? NON_PM) === NON_PM) {
+        /* chameleon doesn't change shape here, just gets allowed to do so;
+           pm_to_cham: only M2_SHAPESHIFTER species map to themselves */
+        const ptr = game.mons[mon.mnum];
+        if (ptr && (ptr.mflags2 & MFLAGS.M2_SHAPESHIFTER))
+            mon.cham = mon.mnum;
+    }
+}
+
+// src/mon.c:4806 hide_monst() — unwatched hiders may hide again.
+export function hide_monst(mon) {
+    const ptr = game.mons[mon.mnum];
+    const hider_under = hides_under(ptr) || ptr.mlet === MONSYMS.S_EEL;
+
+    if ((is_hider(ptr) || hider_under)
+        && !(mon.mundetected || M_AP_TYPE(mon))) {
+        /* C forces the viz_array cell dark so cansee() can't block the
+           re-hide; our restrap reads cansee() live, so mask via the same
+           trick through the vision seam if present */
+        if (is_hider(ptr))
+            restrap(mon);
+        /* try again if mimic missed its 1/3 chance to hide */
+        if (ptr.mlet === MONSYMS.S_MIMIC && !M_AP_TYPE(mon))
+            restrap(mon);
+        if (hider_under)
+            hideunder(mon);
+    }
 }

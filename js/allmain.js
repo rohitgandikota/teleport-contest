@@ -54,7 +54,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
 import { lookaround, end_running, unmul, nomul,
-         monster_nearby } from './hack.js';
+         monster_nearby, in_rooms } from './hack.js';
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
@@ -149,6 +149,18 @@ export async function newgame() {
             return;
         }
     }
+
+    /* src/allmain.c:776 — "turn on 3.6 tributes". stock_room's
+       specialspot = rnd(stockcount) draw for the novel is gated on this,
+       so it is load-bearing for every level with a bookstore-eligible
+       shop. */
+    game.context.tribute = { enabled: true, bookstock: false };
+
+    /* js/hack.js publishes in_rooms on the game object for js/monmove.js
+       (a cycle-breaking seam), but resetGame() REPLACES the game object at
+       the start of every segment, so the module-load assignment only ever
+       reached the first object. Republish on the live one. */
+    game.in_rooms = in_rooms;
 
     // src/allmain.c:780 — seed mvitals from each species' G_NOCORPSE bit,
     // before init_objects(). propagate() and uncommon() both read this.

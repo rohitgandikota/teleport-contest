@@ -21,6 +21,7 @@ import { You_cant, You, pline_The } from './pline.js';
 import { getdir } from './cmd.js';
 import { ECMD_CANCEL, TT_PIT, isok, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT } from './const.js';
 import { Monnam, mon_nam } from './do_name.js';
+import { Levitation } from './youprop.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY, AUTOUNLOCK_KICK,
          OBJ_FLOOR } from './const.js';
 import { unblock_point } from './vision.js';
@@ -31,7 +32,7 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { xname, doname, singular, An, the, yname } from './objnam.js';
 import { useup, obj_extract_self, stackobj } from './invent.js';
 import { place_object } from './mkobj.js';
-import { is_blade, is_pick, wake_nearby, delobj } from './mon.js';
+import { is_blade, is_pick, wake_nearby, delobj, is_pool, is_lava } from './mon.js';
 import { can_reach_floor } from './pickup.js';
 import { set_occupation } from './allmain.js';
 import { obj_resists } from './zap.js';
@@ -403,8 +404,118 @@ export async function pick_lock(pick, rx, ry, container) {
 
     if (cc.x === game.u.ux && cc.y === game.u.uy) {
         /* pick lock on a container (or complain about the lack of one) */
-        note_unported_lock('pick_lock:container');
-        return PICKLOCK_DID_NOTHING;
+        if (game.u.dz < 0 && !autounlock) {
+            await There(`isn't any sort of lock up ${
+                Levitation() ? 'here' : 'there'}.`);
+            return PICKLOCK_LEARNED_SOMETHING;
+        } else if (is_lava(game.u.ux, game.u.uy)) {
+            await pline(`Doing that would probably melt ${yname(pick)}.`);
+            return PICKLOCK_LEARNED_SOMETHING;
+        } else if (is_pool(game.u.ux, game.u.uy) && !game.u.uinwater) {
+            await pline_The('water has no lock.');
+            return PICKLOCK_LEARNED_SOMETHING;
+        }
+
+        let count = 0;
+        let c = 'n'; /* in case there are no boxes here */
+        let ch = 0;
+        let box = null;
+        for (const otmp of (game.level?.objects || [])
+                 .filter(o => o.ox === cc.x && o.oy === cc.y)) {
+            /* autounlock on boxes: only the one that was just discovered
+               to be locked; don't include any other boxes here */
+            if (autounlock && otmp !== container)
+                continue;
+            if (!Is_box(otmp))
+                continue;
+            ++count;
+            if (!can_reach_floor(true)) {
+                await You_cant(`reach ${the(xname(otmp))} from up here.`);
+                return PICKLOCK_LEARNED_SOMETHING;
+            }
+            let it = 0;
+            let verb;
+            if (otmp.obroken)
+                verb = 'fix';
+            else if (!otmp.olocked)
+                verb = 'lock', it = 1;
+            else if (picktyp !== ONAMES.LOCK_PICK)
+                verb = 'unlock', it = 1;
+            else
+                verb = 'pick';
+
+            const au = game.flags?.autounlock ?? AUTOUNLOCK_APPLY_KEY;
+            if (autounlock && (au & AUTOUNLOCK_UNTRAP) !== 0) {
+                /* could_untrap/untrap on containers is not ported; the
+                   default autounlock setting never includes Untrap */
+                note_unported_lock('pick_lock:container_untrap');
+            }
+            if (autounlock && (au & AUTOUNLOCK_APPLY_KEY) !== 0) {
+                c = 'q';
+                if (pick) {
+                    c = await ynq(`Unlock it with ${yname(pick)}?`);
+                }
+                if (c !== 'y')
+                    return PICKLOCK_DID_NOTHING;
+            } else {
+                /* "There is <a box> here; <verb> <it|its lock>?" */
+                otmp.lknown = 1;
+                c = await ynq(`There is ${doname(otmp)} here; `
+                              + `${verb} ${it ? 'it' : 'its lock'}?`);
+                if (c === 'q')
+                    return PICKLOCK_DID_NOTHING;
+                if (c === 'n')
+                    continue; /* try next box */
+            }
+
+            if (otmp.obroken) {
+                /* You_cant("fix its broken lock with %s.",
+                   ansimpleoname(pick)) — ansimpleoname is not in
+                   js/objnam.js yet */
+                note_unported_lock('pick_lock:fix_broken_lock');
+                return PICKLOCK_LEARNED_SOMETHING;
+            } else if (picktyp === ONAMES.CREDIT_CARD && !otmp.olocked) {
+                /* credit cards are only good for unlocking;
+                   simple_typename is not in js/objnam.js yet */
+                note_unported_lock('pick_lock:credit_card_lock');
+                return PICKLOCK_LEARNED_SOMETHING;
+            }
+            /* touch_artifact: 'pick' is never an artifact yet */
+            switch (picktyp) {
+            case ONAMES.CREDIT_CARD:
+                ch = ACURR(A_DEX) + 20 * (Role_if_rogue() ? 1 : 0);
+                break;
+            case ONAMES.LOCK_PICK:
+                ch = 4 * ACURR(A_DEX) + 25 * (Role_if_rogue() ? 1 : 0);
+                break;
+            case ONAMES.SKELETON_KEY:
+                ch = 75 + ACURR(A_DEX);
+                break;
+            default:
+                ch = 0;
+            }
+            if (otmp.cursed)
+                ch = Math.trunc(ch / 2);
+
+            box = otmp;
+            break;
+        }
+        if (c !== 'y') {
+            if (!count)
+                await There("doesn't seem to be any sort of lock here.");
+            return PICKLOCK_LEARNED_SOMETHING; /* decided against all boxes */
+        }
+        const xl = game.xlock || (game.xlock = {});
+        xl.box = box;
+        xl.door = null;
+
+        game.context.move = 0;
+        xl.chance = ch;
+        xl.picktyp = picktyp;
+        xl.magic_key = false;       /* is_magic_key(): no artifacts yet */
+        xl.usedtime = 0;
+        set_occupation(picklock, lock_action(), 0);
+        return PICKLOCK_DID_SOMETHING;
     }
 
     /* not the hero's location; pick the lock in an adjacent door */

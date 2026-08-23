@@ -12,6 +12,8 @@ import { addinv, prinv, obj_extract_self, inv_order, let_to_name } from './inven
 import { observe_object } from './o_init.js';
 import { doname, xname, the } from './objnam.js';
 import { Is_container } from './obj.js';
+import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
+         AUTOUNLOCK_FORCE } from './const.js';
 import { check_capacity } from './hack.js';
 import { ECMD_OK, ECMD_TIME } from './const.js';
 import { upstart } from './do_name.js';
@@ -262,14 +264,33 @@ async function do_loot_cont(cobj, ccount, ci) {
     if (!cobj)
         return false;
     if (cobj.olocked) {
+        let res = false;
         if (cobj.lknown)
             await pline(`${The(xname(cobj))} is locked.`);
         else
             await pline(`Hmmm, ${the(xname(cobj))} turns out to be locked.`);
         cobj.lknown = 1;
-        if (game.flags?.autounlock)
-            note_unported_pickup('do_loot_cont:autounlock');
-        return false;
+
+        /* src/pickup.c:2112 — flags.autounlock defaults to APPLY_KEY */
+        const autounlock = game.flags?.autounlock ?? AUTOUNLOCK_APPLY_KEY;
+        if (autounlock) {
+            const { autokey, pick_lock } = await import('./lock.js');
+            const ox = cobj.ox, oy = cobj.oy;
+            let unlocktool = null;
+
+            game.u.dz = 0; /* #loot isn't a move command; pick_lock cares */
+            if (((autounlock & AUTOUNLOCK_APPLY_KEY) !== 0
+                 && (unlocktool = autokey(true)) != null)
+                || (autounlock & AUTOUNLOCK_UNTRAP) !== 0) {
+                /* pass ox and oy to avoid direction prompt */
+                if (await pick_lock(unlocktool, ox, oy, cobj))
+                    res = true;
+                return res;
+            }
+            if ((autounlock & AUTOUNLOCK_FORCE) !== 0)
+                note_unported_pickup('do_loot_cont:autounlock_force');
+        }
+        return res;
     }
     cobj.lknown = 1;
     note_unported_pickup('do_loot_cont:use_container');

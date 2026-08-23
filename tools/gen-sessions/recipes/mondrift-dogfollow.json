@@ -1,0 +1,12 @@
+{
+  "name": "mondrift-dogfollow",
+  "description": "Silent-drift reproducer for dog_move: normal-mode Valkyrie with a dog walks a long path (east, south, west) and rests, forcing 60+ consecutive dog_move turns with goal changes; recorded screens pin the pet's exact path each step.",
+  "segments": [
+    {
+      "seed": 6021,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Drifter,role:Valkyrie,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!tutorial,pettype:dog\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " lllllllllljjjjjhhhhhhhhhh10skkkkklllll10s:i\u001b:"
+    }
+  ]
+}

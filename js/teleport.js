@@ -442,7 +442,9 @@ export async function teleds(nux, nuy, teleds_flags) {
     vision_recalc(0);           /* vision before effects */
 
     if (is_teleport && game.flags?.verbose)
-        await You('materialize in %s different place.', 'a');
+        await You(`materialize in ${
+            (nux === ux0 && nuy === uy0) ? 'the same'
+                                         : 'a different'} location!`);
 
     await spoteffects(true);
 }
@@ -495,6 +497,48 @@ async function scrolltele(scroll) {
         return;
     }
     await pline('Sorry...');
+
+    /* src/teleport.c:914 — an unusable choice falls through to a random
+       destination */
+    await safe_teleds(TELEDS_TELEPORT);
+}
+
+// src/teleport.c:713 safe_teleds() — 40 fully random tries (rnd(COLNO-1),
+// rn2(ROWNO)), then the shuffled ring-pair candidate list near the hero.
+export async function safe_teleds(teleds_flags) {
+    let nux, nuy;
+
+    for (let tcnt = 0; tcnt < 40; ++tcnt) {
+        nux = rnd(COLNO - 1);
+        nuy = rn2(ROWNO);
+        if (teleok(nux, nuy, false)) {
+            await teleds(nux, nuy, teleds_flags);
+            return true;
+        }
+    }
+
+    /* get a shuffled list of candidate locations, starting with spots
+       1 or 2 steps from hero, then 3 or 4, on up */
+    let cc_flags = CC_RING_PAIRS | CC_SKIP_MONS;
+    if (!game.u.uprops?.PASSES_WALLS)
+        cc_flags |= CC_SKIP_INACCS;
+    const candy = collect_coords(game.u.ux, game.u.uy, 0, cc_flags, null);
+    let backupspot = null;
+    /* skip trap locations but remember the first acceptable trap spot */
+    for (let tcnt = 0; tcnt < candy.length; ++tcnt) {
+        nux = candy[tcnt].x; nuy = candy[tcnt].y;
+        if (teleok(nux, nuy, false)) {
+            await teleds(nux, nuy, teleds_flags);
+            return true;
+        }
+        if (!backupspot && teleok(nux, nuy, true))
+            backupspot = { x: nux, y: nuy };
+    }
+    if (backupspot) {
+        await teleds(backupspot.x, backupspot.y, teleds_flags);
+        return true;
+    }
+    return false;
 }
 
 // src/teleport.c:842 tele()

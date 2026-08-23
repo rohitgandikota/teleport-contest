@@ -48,7 +48,7 @@ import { settrack, initrack } from './track.js';
 import { phase_of_the_moon, friday_13th } from './calendar.js';
 import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
-         FULL_MOON, NEW_MOON, COLNO, A_CON, MOD_ENCUMBER,
+         FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
          UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
          Upolyd } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
@@ -495,6 +495,33 @@ function u_calc_moveamt(wtcap) {
     if (game.u.umovement < 0) game.u.umovement = 0;
 }
 
+// src/allmain.c:599 regen_pw() — maybe regenerate some magical energy.
+// The rn1(upper, 1) draws only when uen is below max and the level-scaled
+// move gate passes, so the stream changes shape once the hero first loses
+// Pw (an anti-magic field, casting).
+async function regen_pw(wtcap) {
+    const u = game.u;
+    const MAXULEV = 30;
+    const wizard_role = game.urole?.mnum === 'PM_WIZARD'
+                        || game.urole?.name?.m === 'Wizard';
+    if (u.uen < u.uenmax
+        && ((wtcap < MOD_ENCUMBER
+             && (!(game.moves % Math.trunc((MAXULEV + 8 - u.ulevel)
+                                           * (wizard_role ? 3 : 4) / 6))))
+            || u.uprops?.ENERGY_REGENERATION)) {
+        let upper = Math.trunc((ACURR(A_WIS) + ACURR(A_INT)) / 15) + 1;
+
+        /* EMagical_breathing: amulet of magical breathing worn — absent */
+
+        u.uen += rn1(upper, 1);
+        if (u.uen > u.uenmax)
+            u.uen = u.uenmax;
+        (game.disp ||= {}).botl = true;
+        if (u.uen === u.uenmax)
+            await interrupt_multi('You feel full of energy.');
+    }
+}
+
 // src/allmain.c:625 regen_hp() — the hero's per-turn heal check. The
 // !Upolyd arm draws rn2(100) every turn the hero is below max HP, so the
 // stream changes shape the moment the hero first takes damage. The Upolyd
@@ -631,6 +658,12 @@ export async function moveloop_core() {
                     && (!Upolyd(g.u) ? (g.u.uhp < g.u.uhpmax)
                                      : (g.u.mh < g.u.mhmax)))
                     await regen_hp(near_capacity());
+
+                /* src/allmain.c:298 — overexert_hp when heavily encumbered
+                   and moving; no session gets that loaded yet */
+
+                /* src/allmain.c:305 — regen_pw runs unconditionally */
+                await regen_pw(near_capacity());
 
                 await dosounds();
                 await gethungry();

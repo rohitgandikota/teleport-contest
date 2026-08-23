@@ -451,9 +451,77 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_rust_trap(game.youmonst, trap, trflags);
     if (ttype === HOLE || ttype === TRAPDOOR)
         return await trapeffect_hole(game.youmonst, trap, trflags);
+    if (ttype === ANTI_MAGIC)
+        return await trapeffect_anti_magic(game.youmonst, trap, trflags);
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
     return Trap_Effect_Finished;
+}
+
+// src/trap.c:2323 trapeffect_anti_magic() — the hero's arm: drain 2d6 Pw,
+// with half (rounded down) coming from max when max exceeds the drain.
+// The iron-shoes and Antimagic-implosion arms need states not yet
+// reachable; the monster arm records.
+async function trapeffect_anti_magic(mtmp, trap, trflags) {
+    if (mtmp === game.youmonst) {
+        const u = game.u;
+        let exclaim_it = false;
+
+        seetrap(trap);
+        if (u.uprops?.ANTIMAGIC || u.uprops?.MAGIC_RES) {
+            /* the rnd(4)-per-source implosion damage + losehp */
+            note_unported_trap('trapeffect_anti_magic:antimagic_implosion');
+            return Trap_Effect_Finished;
+        }
+
+        let drain = d(2, 6); /* 2d6 => 2..12 */
+        const halfd = rnd(Math.trunc(drain / 2)); /* 1..drain/2 */
+        if (u.uenmax > drain) {
+            u.uenmax -= halfd; /* drain_en() will set context.botl */
+            drain -= halfd;
+            exclaim_it = true;
+        }
+        await drain_en(drain, exclaim_it);
+    } else {
+        note_unported_trap('trapeffect_anti_magic:monster');
+    }
+    return Trap_Effect_Finished;
+}
+
+// src/trap.c:5202 drain_en() — reduce current magical energy.
+async function drain_en(n, max_already_drained) {
+    const u = game.u;
+    let mesg;
+    let punct = max_already_drained ? '!' : '.';
+
+    if (u.uenmax < 1) {
+        /* energy is completely gone */
+        if (u.uen || u.uenmax) { /* paranoia */
+            u.uen = u.uenmax = 0;
+            (game.disp ||= {}).botl = true;
+        }
+        mesg = 'momentarily lethargic';
+    } else {
+        /* throttle further loss a bit when there's not much left to lose */
+        if (n > Math.trunc((u.uen + u.uenmax) / 3))
+            n = rnd(n);
+
+        mesg = 'your magical energy drain away';
+        if (n > u.uen)
+            punct = '!';
+
+        u.uen -= n;
+        if (u.uen < 0) {
+            u.uenmax -= rnd(-u.uen);
+            if (u.uenmax < 0)
+                u.uenmax = 0;
+            u.uen = 0;
+        } else if (u.uen > u.uenmax) {
+            u.uen = u.uenmax;
+        }
+        (game.disp ||= {}).botl = true;
+    }
+    await You_feel(`${mesg}${punct}`);
 }
 
 

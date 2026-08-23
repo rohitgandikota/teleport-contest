@@ -2,6 +2,49 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-23 — doset menu, lock picking, shk/priest AI, level revisit
+
+All pushed (339df95, c5c4902), gates clean. Suite: 24/44 RNG-clean,
+10/44 full pass, 227,869 RNG matched / 2,898 screens.
+
+- 'm O' options menu (doset) is fully live: 7 recorded pages byte-exact
+  for seed0007 including compound values (~35 new get_val arms in
+  js/options.js), wc/wc2 capability filtering, per-page selectors, pick
+  application with side effects and "'x' option toggled on." plines, and
+  the pickup_types class-menu handler. optlist.js regenerated WITH
+  termpref and WITHOUT SND_LIB_INTEGRATED (recorded page 4 shows
+  "sounds [off]" — the #else branch; generator DEFINES fixed).
+- Locked doors and boxes: walking into a locked door runs autounlock
+  (autokey scan -> "Unlock it with your lock pick?" -> picklock
+  occupation, chance 3*DEX+30*Rogue for doors, 4*DEX+25 for boxes);
+  do_loot_cont wires the same for "Hmmm, the large box turns out to be
+  locked."; monster_nearby() interrupts occupations for real.
+- Shopkeeper/priest movement: m_move dispatches isshk->shk_move,
+  ispriest->pri_move (both via priest.c move_special); inhishop and
+  inhistemple real; tribute.enabled init makes stock_room draw its
+  novel specialspot rnd; dosounds shop/fountain/sink messages live.
+- Level revisit: goto_level stores the outgoing level in
+  game.saved_levels and '<' (real prev_level) restores it with getlev's
+  catchup (mon_catchup_elapsed_time, restore_cham, elapsed>rnd(10)
+  hide_monst). Ascent lands on the DOWN staircase.
+- TRAP FIXED, remember this one: resetGame() REPLACES the game object,
+  so anything published on it at module load (game.in_rooms) vanished
+  every segment. It is now republished in newgame(); if you add another
+  cycle-breaking publication, do it there too.
+- Latent import bugs in eat.js faint path (nomul/stop_occupation/
+  STARVED) fixed — they were unreachable until occupation interrupts.
+
+**seed0007 head 7463/16373 (was 2832 at session start): next is the
+"Take out what?" container UI — use_container/out_container in
+pickup.c, the same subsystem seed0012's ice box needs ("Do what with
+the ice box?"). After that seed0007 continues into shop billing.**
+
+Private eval set: tools/gen-sessions/ (11 recipe sessions, seeds
+6001-6501, verified bit-exact against the in-tree C recorder; see its
+README). Baseline for them in the 2026-08-23 commit message: save pair
+already RNG-clean; scroll-reading (322/2785, wishes), armor-wear
+(503/3762), kick (642/3617) are the big untapped subsystems.
+
 ## 2026-08-03 (cont) — death-turn unwind; bones is next
 
 - done() now throws C's nh_terminate unwind (dying turn stopped drawing

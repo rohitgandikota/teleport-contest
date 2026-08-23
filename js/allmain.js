@@ -281,6 +281,9 @@ export async function newgame() {
     // seed-specific topology.
     g.u = g.u || {};
     g.u.uz = { dnum: 0, dlevel: 1 };
+    /* src/u_init.c:979/984 + src/allmain.c:97 — u.uz0 starts on the same
+       level; onquest()'s Not_firsttime reads it. */
+    g.u.uz0 = { dnum: 0, dlevel: 1 };
     g.flags = g.flags || {};
 
     // Real mklev generates the level with correct room positions

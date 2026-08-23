@@ -39,6 +39,12 @@ function note_unported(what) {
     (game.unported ||= new Set()).add(what);
 }
 
+// src/questpgr.c:67 is_quest_artifact() — the CURRENT role's quest artifact
+// only; other roles' artifacts do not count. Pure state test, no draw.
+export function is_quest_artifact(otmp) {
+    return (otmp.oartifact ?? 0) === game.urole.questarti;
+}
+
 // src/pray.c:2530 align_gname() — a leading '_' marks a goddess and is not
 // part of the name.
 export function align_gname(alignment) {

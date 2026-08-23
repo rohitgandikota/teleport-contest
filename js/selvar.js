@@ -169,7 +169,11 @@ export function selection_filter_percent(ov, percent) {
 }
 
 // src/selvar.c:726 selection_iterate() — same walk order as filter_percent,
-// with an extra isok() guard.
+// with an extra isok() guard. The callback receives ABSOLUTE map
+// coordinates: this is the C-internal walk that lspo_terrain's sel_set_ter
+// and its siblings run on. The map-relative variant the Lua sees is
+// l_selection_iterate() below, and conflating the two painted every
+// des.terrain selection shifted by the map origin.
 export function selection_iterate(ov, func, arg) {
     if (!ov)
         return;
@@ -179,12 +183,27 @@ export function selection_iterate(ov, func, arg) {
 
     for (let x = rect.lx; x <= rect.hx; x++)
         for (let y = rect.ly; y <= rect.hy; y++)
-            if (isok(x, y) && selection_getpoint(x, y, ov)) {
-                /* src/nhlsel.c:939 — the callback is handed RELATIVE
-                   coordinates; get_location() adds the room origin back. */
+            if (isok(x, y) && selection_getpoint(x, y, ov))
+                func(x, y, arg);
+}
+
+// src/nhlsel.c:924 l_selection_iterate() — `sel:iterate(func)`. The Lua
+// callback is handed RELATIVE coordinates (cvt_to_relcoord), and the walk is
+// Y OUTER with x clamped to 1, the OPPOSITE of selection_iterate() above.
+// Both differences order the callback's own draws, so they are load-bearing.
+export function l_selection_iterate(sel, func) {
+    if (!sel)
+        return;
+
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    selection_getbounds(sel, rect);
+
+    for (let y = rect.ly; y <= rect.hy; y++)
+        for (let x = Math.max(1, rect.lx); x <= rect.hx; x++)
+            if (selection_getpoint(x, y, sel)) {
                 const c = { x, y };
                 cvt_to_relcoord(c);
-                func(c.x, c.y, arg);
+                func(c.x, c.y);
             }
 }
 
@@ -330,4 +349,115 @@ function match_maptyps(typ, levltyp) {
     if (typ < MAX_TYPE && typ !== levltyp)
         return false;
     return true;
+}
+
+// src/selvar.c:65 selection_clone()
+export function selection_clone(sel) {
+    return {
+        wid: sel.wid,
+        hei: sel.hei,
+        bounds_dirty: sel.bounds_dirty,
+        bounds: { ...sel.bounds },
+        map: sel.map.slice(),
+    };
+}
+
+/* src/selvar.c:370 — the floodfill match callback, installed by
+   set_floodfillchk_match_under() (sp_lev.c) before each fill. */
+let selection_flood_check_func = null;
+
+// src/selvar.c:372 set_selection_floodfillchk()
+export function set_selection_floodfillchk(f) {
+    selection_flood_check_func = f;
+}
+
+// src/selvar.c:379 sel_flood_havepoint() — is <x,y> already queued?
+function sel_flood_havepoint(x, y, xs, ys, n) {
+    while (n > 0) {
+        --n;
+        if (xs[n] === x && ys[n] === y)
+            return true;
+    }
+    return false;
+}
+
+// src/selvar.c:395 selection_floodfill() — no draws; the check func decides
+// membership and `tmp` keeps the fill from revisiting squares. The stack is
+// LIFO (pop from the end), which fixes the visit order; the resulting SET is
+// order-independent but the shape of the walk is kept as C has it.
+export function selection_floodfill(ov, x, y, diagonals) {
+    const tmp = selection_new();
+    const dx = [], dy = [];
+    const SEL_FLOOD = (nx, ny) => { dx.push(nx); dy.push(ny); };
+    const SEL_FLOOD_CHKDIR = (mx, my, sel) => {
+        if (isok(mx, my)
+            && selection_flood_check_func(mx, my)
+            && !selection_getpoint(mx, my, sel)
+            && !sel_flood_havepoint(mx, my, dx, dy, dx.length))
+            SEL_FLOOD(mx, my);
+    };
+
+    if (!selection_flood_check_func)
+        return;
+    SEL_FLOOD(x, y);
+    do {
+        x = dx.pop();
+        y = dy.pop();
+        if (isok(x, y)) {
+            selection_setpoint(x, y, ov, 1);
+            selection_setpoint(x, y, tmp, 1);
+        }
+        SEL_FLOOD_CHKDIR(x + 1, y, tmp);
+        SEL_FLOOD_CHKDIR(x - 1, y, tmp);
+        SEL_FLOOD_CHKDIR(x, y + 1, tmp);
+        SEL_FLOOD_CHKDIR(x, y - 1, tmp);
+        if (diagonals) {
+            SEL_FLOOD_CHKDIR(x + 1, y + 1, tmp);
+            SEL_FLOOD_CHKDIR(x - 1, y - 1, tmp);
+            SEL_FLOOD_CHKDIR(x - 1, y + 1, tmp);
+            SEL_FLOOD_CHKDIR(x + 1, y - 1, tmp);
+        }
+    } while (dx.length > 0);
+}
+
+// src/selvar.c:683 selection_do_randline() — recursive midpoint displacement.
+//
+// This DRAWS: each split spends an rn2(rough) PAIR per attempt of the
+// do-while, retrying while the midpoint lands off the map. The rough
+// shrinking (`rough * 2 / 3`) and the recursion depth cap of 12 both bound
+// how many pairs one call can cost, and the C's exact retry condition is
+// what keeps the count right.
+export function selection_do_randline(x1, y1, x2, y2, rough, rec, ov) {
+    let mx, my, dx, dy;
+
+    if (rec < 1 || (x2 === x1 && y2 === y1))
+        return;
+
+    if (rough > Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)))
+        rough = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+
+    if (rough < 2) {
+        mx = ((x1 + x2) / 2) | 0;
+        my = ((y1 + y2) / 2) | 0;
+    } else {
+        do {
+            dx = rn2(rough) - ((rough / 2) | 0);
+            dy = rn2(rough) - ((rough / 2) | 0);
+            mx = (((x1 + x2) / 2) | 0) + dx;
+            my = (((y1 + y2) / 2) | 0) + dy;
+        } while ((mx > COLNO - 1 || mx < 0 || my < 0 || my > ROWNO - 1));
+    }
+
+    if (!selection_getpoint(mx, my, ov)) {
+        selection_setpoint(mx, my, ov, 1);
+    }
+
+    rough = ((rough * 2) / 3) | 0;
+
+    rec--;
+
+    selection_do_randline(x1, y1, mx, my, rough, rec, ov);
+    selection_do_randline(mx, my, x2, y2, rough, rec, ov);
+
+    selection_setpoint(x2, y2, ov, 1);
 }

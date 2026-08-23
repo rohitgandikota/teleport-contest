@@ -13,6 +13,7 @@ import { bigrm12_level } from './bigrm-12.js';
 import { tut1_level } from './tut-1.js';
 import { castle_level } from './castle.js';
 import { valley_level } from './valley.js';
+import { barstrt_level } from './bar-strt.js';
 
 export const SPECIAL_LEVELS = {
     'bigrm-7': bigrm7_level,
@@ -23,4 +24,7 @@ export const SPECIAL_LEVELS = {
     oracle: oracle_level,
     castle: castle_level,
     valley: valley_level,
+    /* quest levels: the "x-" proto names take the hero's role filecode
+       (src/dungeon.c:1136), so the key is the substituted name */
+    'Bar-strt': barstrt_level,
 };

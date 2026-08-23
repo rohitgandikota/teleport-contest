@@ -26,6 +26,8 @@ import { LOST_NONE, LOST_THROWN, LOST_DROPPED, LOST_STOLEN,
 import { ONAMES } from './objects_data.js';
 import { droppables } from './dog.js';
 import { costly_spot } from './shk.js';
+import { obj_resists } from './zap.js';
+import { is_quest_artifact } from './questpgr.js';
 import { W_SADDLE } from './const.js';
 
 function note_unported_steal(what) {
@@ -69,6 +71,26 @@ export async function mdrop_obj(mon, obj, verbosely) {
     /* removing worn gear adjusts the monster's properties */
     if (mon.mhp > 0 && unwornmask)
         note_unported_steal('mdrop_obj:update_mon_extrinsics');
+}
+
+// src/steal.c:852 mdrop_special_objs() — rescue the Amulet, invocation
+// tools, Rider corpses and the current role's quest artifact before a pack
+// is discarded.
+//
+// The DRAW is obj_resists(obj, 0, 0): one rn2(100) per ordinary object even
+// though a 0% chance can never pass, so scanning a monster's pack costs one
+// call per item. The rescue arm itself (mdrop_obj / rloco) is only reachable
+// when one of those unique objects is actually carried — never during quest
+// START generation — and is recorded rather than half-done, because
+// mdrop_obj is async and this runs inside the synchronous create_monster.
+export function mdrop_special_objs(mon) {
+    /* C caches obj->nobj before the body because the drop unlinks obj;
+       walking a snapshot of the chain is the same traversal. */
+    for (const obj of [...(mon.minvent || [])]) {
+        if (obj_resists(obj, 0, 0) || is_quest_artifact(obj)) {
+            note_unported_steal('mdrop_special_objs:rescue');
+        }
+    }
 }
 
 // src/steal.c:875 relobj() — release the objects the creature is carrying.

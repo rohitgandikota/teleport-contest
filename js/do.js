@@ -265,6 +265,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         initrack();
     }
 
+    /* src/do.c:1674 — u.uz0 holds the level being left until the tail's
+       "reset u.uz0" catches it up; onquest() and the arrival messages
+       read it to tell a fresh arrival from a revisit. */
+    game.u.uz0 = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel };
     game.u.uz = { dnum: newlevel.dnum, dlevel: newlevel.dlevel };
     (game.visited_ledgers ||= new Set());
 
@@ -421,6 +425,18 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     vision_recalc(0);
     await docrt();
     await flush_screen(-1);
+
+    /* src/do.c:1879 — special location arrival messages/events. Only the
+       quest arm is wired; the endgame, Knox, Mines and Sokoban arms are
+       achievements and alarms that no ported session reaches yet, and the
+       quest-portal call from the leader needs at_dgn_entrance(). */
+    if (game.u.uz.dnum === game.quest_dnum) {   /* In_quest(&u.uz) */
+        const { onquest } = await import('./quest.js');
+        await onquest();
+    }
+
+    /* src/do.c:1967 — reset u.uz0 */
+    game.u.uz0 = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel };
 }
 
 // src/do.c:1411 u_collide_m() — the hero and a monster landed on the same

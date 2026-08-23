@@ -10,7 +10,10 @@
 
 import { game } from './gstate.js';
 import { get_level_extends, fix_wall_spines } from './mklev.js';
-import { selection_iterate } from './selvar.js';
+import { selection_iterate, selection_new, selection_clone,
+         selection_getpoint, selection_setpoint, selection_getbounds,
+         selection_floodfill, set_selection_floodfillchk,
+         selection_do_randline } from './selvar.js';
 import { rn1, rn2, rnd } from './rng.js';
 import { isok } from './hacklib.js';
 import { sobj_at, weight, obj_extract_self } from './invent.js';
@@ -51,7 +54,10 @@ import { NO_TRAP, VIBRATING_SQUARE,
 import { litstate_rnd, flood_fill_rm } from './mkmap.js';
 import { depth, induced_align } from './dungeon.js';
 import { mkgold } from './mkobj.js';
-import { mkclass, makemon, is_male, is_female } from './makemon.js';
+import { mkclass, makemon, is_male, is_female, mpickobj } from './makemon.js';
+import { m_dowear } from './worn.js';
+import { mdrop_special_objs } from './steal.js';
+import { discard_minvent } from './mkobj.js';
 import { MFLAGS as MFLAGS_SP } from './monst_data.js';
 const G_IGNORE_SP = MFLAGS_SP.G_IGNORE;
 import { def_monsyms } from './drawing_data.js';
@@ -877,12 +883,23 @@ export function create_object(o, croom) {
        SP_OBJ_CONTAINER opens this one for the objects its contents closure
        makes. The stack is what lets `des.object({contents=...})` nest.
 
-       C's outer test is `SP_OBJ_CONTENT || invent_carrying_monster`, and the
-       empty-stack arm then either drops the object on the floor or hands it to
-       that monster. invent_carrying_monster is not modelled, so the arm this
-       port can reach is the floor one, which does nothing. */
-    if (o.containment & SP_OBJ_CONTENT) {
-        if (container_obj.length) {
+       With no container open, an object made while a monster's `inventory`
+       closure runs goes to that monster instead of the floor. */
+    if (o.containment & SP_OBJ_CONTENT || invent_carrying_monster) {
+        if (!container_obj.length) {
+            if (!invent_carrying_monster) {
+                /* don't complain, the monster may be gone legally;
+                   ['otmp' remains on floor] */
+            } else {
+                obj_extract_self(otmp);     /* remove_object() */
+                if (otmp.otyp === ONAMES.SADDLE)
+                    /* can_saddle + put_saddle_on_mon; no ported des level
+                       hands a monster a saddle */
+                    note_unported('create_object:put_saddle_on_mon');
+                else
+                    mpickobj(invent_carrying_monster, otmp);
+            }
+        } else {
             const cobj = container_obj[container_obj.length - 1];
 
             obj_extract_self(otmp);     /* remove_object() */
@@ -992,12 +1009,22 @@ export function lspo_object(idOrClass, x, y, opts) {
         }
     }
 
+    /* src/sp_lev.c:3634 — `spe`; -127 stays "not random", i.e. keep what
+       mksobj rolled. */
+    if (opts?.spe !== undefined)
+        o.spe = opts.spe;
+
     /* src/sp_lev.c:3707 — statues and corpses carry CORPSTAT flags in spe */
     if (opts?.historic)
         o.spe = CORPSTAT_HISTORIC;
 
     if (opts?.buried) o.buried = 1;
     if (opts?.lit)    o.lit = 1;
+
+    /* src/sp_lev.c:3725 — an object made while a container is open is its
+       content, whether or not the script says so */
+    if (container_obj.length)
+        o.containment |= SP_OBJ_CONTENT;
 
     if (opts?.contents) o.containment |= SP_OBJ_CONTAINER;
     if (opts?.inContainer) o.containment |= SP_OBJ_CONTENT;
@@ -1103,6 +1130,15 @@ export function reset_xystart_size() {
     game.ysize = ROWNO; /* 0..ROWNO-1 */
 }
 
+// src/sp_lev.c:3031 spo_end_moninvent() — close a monster's `inventory`
+// closure: dress the monster in whatever wearable it was handed (m_dowear
+// draws nothing) and clear the carrier.
+function spo_end_moninvent() {
+    if (invent_carrying_monster)
+        m_dowear(invent_carrying_monster, true);
+    invent_carrying_monster = null;
+}
+
 // src/sp_lev.c:3040 spo_pop_container() — close the innermost container.
 //
 // C decrements the index and NULLS the slot; it does not shrink an array. That
@@ -1180,6 +1216,14 @@ const SP_OBJ_CONTENT = 0x01, SP_OBJ_CONTAINER = 0x02;
 // src/sp_lev.c:195 MAX_CONTAINMENT
 const MAX_CONTAINMENT = 10;
 const container_obj = [];
+
+// src/sp_lev.c:198 invent_carrying_monster — the monster whose des.monster
+// `inventory` closure is currently running; create_object hands it every
+// object made while it is set.
+let invent_carrying_monster = null;
+
+// include/sp_lev.h:78 — has_invent states for a des.monster spec.
+const NO_INVENT = 0, CUSTOM_INVENT = 0x01, DEFAULT_INVENT = 0x02;
 
 // src/dig.c bury_an_obj() — move an object into the buried list.
 //
@@ -1371,6 +1415,10 @@ export function create_monster(m, croom) {
     const mtmp = makemon(pm, x, y, m.mm_flags);
 
     if (mtmp) {
+        /* src/sp_lev.c:2125 — the gender find_montype settled (its rn2(2)
+           already spent) overrides what makemon rolled. Plain state. */
+        mtmp.female = m.female ?? mtmp.female;
+
         /* src/sp_lev.c create_monster() — both are plain state, no draws.
            BOOL_RANDOM is -1 (include/global.h:103), so "leave it to makemon"
            and "explicitly awake" are DIFFERENT values and the test is `>`. */
@@ -1402,6 +1450,19 @@ export function create_monster(m, croom) {
             } else {
                 note_unported(`create_monster:appear_as:${kind}`);
             }
+        }
+
+        /* src/sp_lev.c:2176 — custom inventory: throw away what makemon
+           gave (its creation draws already happened; mdrop_special_objs
+           spends one rn2(100) per item) and let the script's `inventory`
+           closure hand over replacements via invent_carrying_monster. Kept
+           LAST in the mtmp block, as in C, so its draws follow any others. */
+        if (!(m.has_invent & DEFAULT_INVENT)) {
+            mdrop_special_objs(mtmp);
+            discard_minvent(mtmp, true);
+        }
+        if (m.has_invent & CUSTOM_INVENT) {
+            invent_carrying_monster = mtmp;
         }
     }
     return mtmp;
@@ -1449,8 +1510,9 @@ function find_montype(s, mgender) {
 // src/sp_lev.c:3214 lspo_monster() — the des.monster() verb, simple forms.
 export function lspo_monster(idOrClass, x, y, opts) {
     /* single-table form: des.monster({ id = ..., coord = ... }) */
-    if (idOrClass !== null && typeof idOrClass === 'object'
-        && !Array.isArray(idOrClass)) {
+    const table_form = (idOrClass !== null && typeof idOrClass === 'object'
+                        && !Array.isArray(idOrClass));
+    if (table_form) {
         opts = idOrClass;
         idOrClass = opts.id ?? opts.class;
     }
@@ -1458,23 +1520,33 @@ export function lspo_monster(idOrClass, x, y, opts) {
         id: NON_PM, class: -1, coord: 0,
         sp_amask: AM_SPLEV_RANDOM,
         mm_flags: 0, peaceful: -1, asleep: BOOL_RANDOM, appear_as: null,
+        female: 0, has_invent: DEFAULT_INVENT,
     };
+    let mgend = NEUTRAL;
 
     if (typeof idOrClass === 'string' && idOrClass.length === 1)
         m.class = idOrClass;
     else if (typeof idOrClass === 'number')
         m.id = idOrClass;
     else if (idOrClass) {
-        const mgend = { v: NEUTRAL };
-        m.id = find_montype(idOrClass, mgend);
-        m.mgender = mgend.v;
+        const g = { v: NEUTRAL };
+        m.id = find_montype(idOrClass, g);
+        mgend = g.v;
+        m.mgender = mgend;
     }
+    /* src/sp_lev.c:3255 — the POSITIONAL name forms settle female right
+       here. find_montype left mgend MALE or FEMALE for any resolved name,
+       so the rn2(2) arm only fires for an unresolvable one. */
+    if (!table_form && typeof idOrClass === 'string' && idOrClass.length > 1)
+        m.female = (mgend === FEMALE) ? FEMALE
+                   : (mgend === MALE) ? MALE : rn2(2);
 
     if (opts?.class) m.class = opts.class;
     if (opts?.id !== undefined && m.id === NON_PM && m.class === -1) {
-        const mgend = { v: NEUTRAL };
-        m.id = find_montype(opts.id, mgend);
-        m.mgender = mgend.v;
+        const g = { v: NEUTRAL };
+        m.id = find_montype(opts.id, g);
+        mgend = g.v;
+        m.mgender = mgend;
     }
     /* the table form carries coord inside opts */
     if (opts?.coord) {
@@ -1495,7 +1567,46 @@ export function lspo_monster(idOrClass, x, y, opts) {
     if (opts?.countbirth === false)
         m.mm_flags |= MM_NOCOUNTBIRTH;
 
-    return create_monster(m, game.coder?.croom ?? null);
+    if (table_form) {
+        /* src/sp_lev.c:3300 female option, :3348 the mgend merge: the
+           settled gender wins unless the script pinned one AND the species
+           allows it. All plain state; find_montype's draw already spent. */
+        m.female = (opts.female === undefined) ? BOOL_RANDOM
+                   : (opts.female ? 1 : 0);
+        if (mgend !== NEUTRAL
+            && (m.female === BOOL_RANDOM
+                || (m.id >= 0 && (is_female(game.mons[m.id])
+                                  || is_male(game.mons[m.id])))))
+            m.female = mgend;
+        if (m.female === BOOL_RANDOM)
+            m.female = 0;
+
+        /* src/sp_lev.c:3360 — an `inventory` closure replaces the species'
+           default inventory unless keep_default_invent asks for both. */
+        const keep_default_invent = (opts.keep_default_invent === undefined)
+                                    ? -1 : (opts.keep_default_invent ? 1 : 0);
+        if (opts.inventory !== undefined && opts.inventory !== null) {
+            m.has_invent = CUSTOM_INVENT;
+            if (keep_default_invent === 1)
+                m.has_invent |= DEFAULT_INVENT;
+        } else {
+            if (keep_default_invent === 0)
+                m.has_invent = NO_INVENT;
+        }
+    }
+
+    const mtmp = create_monster(m, game.coder?.croom ?? null);
+
+    /* src/sp_lev.c:3390 — the inventory closure runs with the monster as
+       carrier; it runs even when the monster could not be made (its objects
+       then stay on the floor), and spo_end_moninvent dresses the carrier. */
+    if ((m.has_invent & CUSTOM_INVENT)
+        && typeof opts?.inventory === 'function') {
+        opts.inventory();
+        spo_end_moninvent();
+    }
+
+    return mtmp;
 }
 
 // include/align.h:44 AM_SPLEV_RANDOM, include/monflag.h:197 G_NOGEN.
@@ -2210,11 +2321,37 @@ export function flip_level(flp, extras) {
         if (flp & 2) o.ox = FlipX(o.ox);
     }
 
+    /* sp_lev.c:520 Flip_coord() — only inside the flip area, and never a
+       zeroed coordinate */
+    const Flip_coord = (cc) => {
+        if (cc && cc.x && inFlipArea(cc.x, cc.y)) {
+            if (flp & 1) cc.y = FlipY(cc.y);
+            if (flp & 2) cc.x = FlipX(cc.x);
+        }
+    };
+
+    /* buried objects */
+    for (const o of (game.level?.buriedobjs || [])) {
+        if (!inFlipArea(o.ox, o.oy)) continue;
+        if (flp & 1) o.oy = FlipY(o.oy);
+        if (flp & 2) o.ox = FlipX(o.ox);
+    }
+
     /* monsters */
     for (const m of (game.level?.monsters || [])) {
         if (!inFlipArea(m.mx, m.my)) continue;
         if (flp & 1) m.my = FlipY(m.my);
         if (flp & 2) m.mx = FlipX(m.mx);
+
+        /* mgoal is not modelled; worm segments cannot exist at creation */
+        if (m.ispriest) {
+            Flip_coord(m.epri?.shrpos);
+        } else if (m.isshk) {
+            Flip_coord(m.eshk?.shk);
+            /* eshk.shd ALIASES the door record in level.doors, which the
+               doors pass below already flips; C's shd is a value copy and
+               needs its own Flip_coord, ours must not flip it twice. */
+        }
     }
 
     /* engravings */
@@ -2222,6 +2359,54 @@ export function flip_level(flp, extras) {
         if (flp & 1) e.y = FlipY(e.y);
         if (flp & 2) e.x = FlipX(e.x);
     }
+
+    /* level (teleport) regions — sp_lev.c:697. The branch/portal arrival
+       region must mirror with the terrain or fixup_special places it on
+       the wrong side of the map. */
+    for (const r of (game.lregions || [])) {
+        for (const area of [r.inarea, r.delarea]) {
+            if (!area) continue;
+            if (flp & 1) {
+                area.y1 = FlipY(area.y1);
+                area.y2 = FlipY(area.y2);
+                if (area.y1 > area.y2) {
+                    const t = area.y1; area.y1 = area.y2; area.y2 = t;
+                }
+            }
+            if (flp & 2) {
+                area.x1 = FlipX(area.x1);
+                area.x2 = FlipX(area.x2);
+                if (area.x1 > area.x2) {
+                    const t = area.x1; area.x1 = area.x2; area.x2 = t;
+                }
+            }
+        }
+    }
+
+    /* regions (poison clouds, etc, sp_lev.c:735) cannot exist during level
+       creation; the port has no region list to flip. */
+
+    /* rooms — sp_lev.c:764; subrooms flip with their parents */
+    const flip_room = (sroom) => {
+        if (flp & 1) {
+            sroom.ly = FlipY(sroom.ly);
+            sroom.hy = FlipY(sroom.hy);
+            if (sroom.ly > sroom.hy) {
+                const t = sroom.ly; sroom.ly = sroom.hy; sroom.hy = t;
+            }
+        }
+        if (flp & 2) {
+            sroom.lx = FlipX(sroom.lx);
+            sroom.hx = FlipX(sroom.hx);
+            if (sroom.lx > sroom.hx) {
+                const t = sroom.lx; sroom.lx = sroom.hx; sroom.hx = t;
+            }
+        }
+        for (const rroom of (sroom.sbrooms || []))
+            flip_room(rroom);
+    };
+    for (const sroom of (game.level?.rooms || []))
+        flip_room(sroom);
 
     /* doors */
     for (const d of (game.level?.doors || [])) {
@@ -2283,7 +2468,10 @@ export async function load_special(name) {
     game.splev_map = new Set();
     game.lregions = [];
 
-    /* sp_level_coder_init() — level flag defaults for a des level */
+    /* sp_level_coder_init() — container/carrier resets and level flag
+       defaults for a des level (src/sp_lev.c:6360-6365) */
+    container_obj.length = 0;
+    invent_carrying_monster = null;
     game.level.flags.is_maze_lev = 0;
     game.level.flags.temperature =
         (game.dungeons?.[game.u.uz.dnum]?.flags?.hellish) ? 1 : 0;
@@ -2340,7 +2528,8 @@ export async function load_special(name) {
 
 import { W_NONDIGGABLE, W_NONPASSWALL, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
          DB_NORTH, DB_SOUTH, DB_WEST, DB_EAST, DB_MOAT,
-         IS_DOOR as C_IS_DOOR, IS_WALL as C_IS_WALL } from './const.js';
+         IS_DOOR as C_IS_DOOR, IS_WALL as C_IS_WALL,
+         IS_TREE } from './const.js';
 const C_STONE = STONE, C_HWALL = HWALL, C_ROOM = ROOM, C_CORR = CORR,
       C_MAX_TYPE = MAX_TYPE;
 
@@ -2688,25 +2877,25 @@ export function lspo_exclusion(opts) {
 // src/sp_lev.c lspo_non_diggable() — W_NONDIGGABLE on every wall in the area
 // (absolute selection).
 export function lspo_non_diggable(x1, y1, x2, y2) {
+    /* src/sp_lev.c:986 sel_set_wall_property() — stone/walls, trees and
+       iron bars take the flag; doors (secret ones included) do not. */
+    const flagit = (x, y) => {
+        const loc = game.level.at(x, y);
+        if (loc && (IS_STWALL(loc.typ) || IS_TREE(loc.typ)
+                    || loc.typ === IRONBARS))
+            loc.wall_info = (loc.wall_info | 0) | W_NONDIGGABLE;
+    };
     /* C with no selection argument stamps the whole map (selection_clear
        with value 1), raw coordinates, no xstart shift. */
     if (x1 === undefined) {
         for (let x = 1; x < COLNO; x++)
-            for (let y = 0; y < ROWNO; y++) {
-                const loc = game.level.at(x, y);
-                if (loc && (C_IS_WALL(loc.typ) || loc.typ === DBWALL
-                            || loc.typ === SDOOR))
-                    loc.wall_info = (loc.wall_info | 0) | W_NONDIGGABLE;
-            }
+            for (let y = 0; y < ROWNO; y++)
+                flagit(x, y);
         return;
     }
     for (let x = x1 + game.xstart; x <= x2 + game.xstart; x++)
-        for (let y = y1 + game.ystart; y <= y2 + game.ystart; y++) {
-            const loc = game.level.at(x, y);
-            if (loc && (C_IS_WALL(loc.typ) || loc.typ === DBWALL
-                        || loc.typ === SDOOR))
-                loc.wall_info = (loc.wall_info | 0) | W_NONDIGGABLE;
-        }
+        for (let y = y1 + game.ystart; y <= y2 + game.ystart; y++)
+            flagit(x, y);
 }
 
 // src/sp_lev.c:5584 lspo_region(), the two castle forms: a plain lit/unlit
@@ -2790,6 +2979,93 @@ export function lspo_region_full(opts) {
            step of svd.doors[fdoor], so an unlinked room fills too many. */
         add_doors_to_room(troom);
     }
+}
+
+// src/sp_lev.c:4584 floodfillchk_match_under() — the floodfill membership
+// test selection.floodfill() installs: same terrain as the start square.
+let floodfillchk_match_under_typ = 0;
+
+// src/sp_lev.c:4587 floodfillchk_match_under()
+function floodfillchk_match_under(x, y) {
+    return (floodfillchk_match_under_typ === game.level.at(x, y)?.typ);
+}
+
+// src/sp_lev.c:4593 set_floodfillchk_match_under()
+export function set_floodfillchk_match_under(typ) {
+    floodfillchk_match_under_typ = typ;
+    set_selection_floodfillchk(floodfillchk_match_under);
+}
+
+// src/nhlsel.c:591 l_selection_randline() — both endpoints run through
+// get_location_coord (ANY_LOC, current room), which applies the map frame's
+// xstart/ystart, then selection_do_randline draws the midpoints. C works on
+// a CLONE of the passed selection and returns it.
+export function l_selection_randline(sel, x1, y1, x2, y2, roughness) {
+    let a = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                               SP_COORD_PACK(x1, y1));
+    let b = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                               SP_COORD_PACK(x2, y2));
+
+    const ret = selection_clone(sel);
+    selection_do_randline(a.x, a.y, b.x, b.y, roughness, 12, ret);
+    return ret;
+}
+
+// src/nhlsel.c:725 l_selection_flood() — selection.floodfill(x,y): flood
+// from the (map-relative) start square across same-typ terrain. No draws.
+export function l_selection_flood(x, y, diagonals) {
+    const sel = selection_new();
+    const c = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x, y));
+
+    if (isok(c.x, c.y)) {
+        set_floodfillchk_match_under(game.level.at(c.x, c.y).typ);
+        selection_floodfill(sel, c.x, c.y, !!diagonals);
+    }
+    return sel;
+}
+
+// src/nhlsel.c:281 l_selection_and() — the `&` operator on two selections:
+// pointwise AND over the union of their bounds. No draws.
+export function l_selection_and(sela, selb) {
+    const selr = selection_new();
+    const recta = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    const rectb = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+
+    selection_getbounds(sela, recta);
+    selection_getbounds(selb, rectb);
+    /* src/rect.c:134 rect_bounds() — the union of the two rects */
+    rect.lx = Math.min(recta.lx, rectb.lx);
+    rect.ly = Math.min(recta.ly, rectb.ly);
+    rect.hx = Math.max(recta.hx, rectb.hx);
+    rect.hy = Math.max(recta.hy, rectb.hy);
+
+    for (let x = rect.lx; x <= rect.hx; x++)
+        for (let y = rect.ly; y <= rect.hy; y++) {
+            const val = (selection_getpoint(x, y, sela)
+                         & selection_getpoint(x, y, selb));
+
+            selection_setpoint(x, y, selr, val);
+        }
+
+    return selr;
+}
+
+// src/nhlsel.c:632 l_selection_fillrect() (selection.area alias) — each
+// corner through get_location_coord, then every square of the rectangle.
+// selection_setpoint clamps points off the map, exactly as C's does.
+export function l_selection_fillrect(x1, y1, x2, y2) {
+    const sel = selection_new();
+    const a = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x1, y1));
+    const b = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x2, y2));
+
+    for (let y = a.y; y <= b.y; y++)
+        for (let x = a.x; x <= b.x; x++)
+            selection_setpoint(x, y, sel, 1);
+    return sel;
 }
 
 // l_selection: selection.area(x1,y1,x2,y2):rndcoord(1) — one rn2 draw over

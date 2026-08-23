@@ -72,3 +72,8 @@ export const Flying = () =>
 
 // include/youprop.h Fire_resistance — (HFire_resistance || EFire_resistance).
 export const Fire_resistance = () => !!game.u?.uprops?.FIRE_RES;
+
+// include/youprop.h:186 Infravision — HInfravision || EInfravision.
+// The intrinsic half comes from the hero's race via set_uasmon().
+export const Infravision = () => !!(game.u?.intrinsic?.HInfravision
+                                    || game.u?.uprops?.INFRAVISION);

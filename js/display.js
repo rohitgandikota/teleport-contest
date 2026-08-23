@@ -8,7 +8,8 @@ import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
-import { cansee, vision_recalc } from './vision.js';
+import { cansee, couldsee, vision_recalc } from './vision.js';
+import { Infravision } from './youprop.js';
 import { ACURR } from './attrib.js';
 import { t_at } from './mon.js';
 import {
@@ -862,6 +863,19 @@ export function newsym(x, y) {
             show_glyph_cell(x, y, memg.ch, memg.color, memg.dec, 0, memg.glyph);
             return;
         }
+    } else {
+        /* src/display.c newsym(), the can't-see branch: a monster the hero
+           senses, or sees with infravision, is still displayed */
+        const mon = (game.level?.monsters || [])
+                        .find(m => m.mx === x && m.my === y && m.mhp > 0
+                                   && !m.msleeping_hidden);
+        if (mon && (sensemon(mon)
+                    || (see_with_infrared(mon) && mon_visible(mon)))) {
+            show_glyph_cell(x, y, def_monsyms[mon.data.mlet] || '?',
+                            mon.data.mcolor ?? NO_COLOR, false, 0,
+                            { kind: 'mon', mon });
+            return;
+        }
     }
 
     /* src/display.c:455 _map_location() — the TRAP layer sits between the
@@ -940,6 +954,13 @@ export function newsym(x, y) {
         show_glyph_cell(x, y, loc.remembered_glyph.ch,
             loc.remembered_glyph.color, loc.remembered_glyph.decgfx, 0,
             loc.remembered_glyph.glyph);
+    } else {
+        /* src/display.c map_location(): out of sight with NO memory is
+           GLYPH_UNEXPLORED — painted blank. Without this, a glyph drawn
+           here by the sensed/infravision arm above survives after the
+           monster leaves. */
+        show_glyph_cell(x, y, ' ', NO_COLOR, false, 0,
+                        { kind: 'unexplored' });
     }
 }
 
@@ -1519,13 +1540,24 @@ export function sensemon(mon) {
     return false;
 }
 
+// include/display.h:106 _see_with_infrared() — caller must check
+// invisibility; infravision doesn't see invisible monsters.
+export function see_with_infrared(mon) {
+    return !game.u.ublind && Infravision()
+           && infravisible(game.mons[mon.mnum])
+           && couldsee(mon.mx, mon.my);
+}
+
+/* include/mondata.h:155 infravisible() */
+const infravisible = (ptr) => !!(ptr
+                                 && (ptr.mflags3 & 512 /* M3_INFRAVISIBLE */));
+
 // include/display.h:117 _canseemon()
 export function canseemon(mon) {
     if (mon.wormno)
         (game.unported ||= new Set()).add('display:canseemon:worm_known');
-    if (game.u.uprops?.INFRAVISION)
-        (game.unported ||= new Set()).add('display:canseemon:see_with_infrared');
-    return cansee(mon.mx, mon.my) && mon_visible(mon);
+    return (cansee(mon.mx, mon.my) || see_with_infrared(mon))
+           && mon_visible(mon);
 }
 
 // include/display.h:129 canspotmon()

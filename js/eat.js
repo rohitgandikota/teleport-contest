@@ -290,10 +290,12 @@ function food_xname(food, the_pfx) {
     let result;
 
     if (food.otyp === ONAMES.CORPSE) {
-        /* corpse_xname(food, NULL, CXN_SINGULAR) */
-        const mnam = game.mons[food.corpsenm]?.pmnames?.[0]
-                     ?? game.mons[food.corpsenm]?.mname
-                     ?? 'monster';
+        /* corpse_xname(food, NULL, CXN_SINGULAR); pmname() prefers the
+           NEUTRAL spelling and falls back to MALE — pmnames is
+           [male, female, neutral] and species like the jackal only fill
+           the neutral slot */
+        const pmn = game.mons[food.corpsenm]?.pmnames || [];
+        const mnam = pmn[2] ?? pmn[0] ?? pmn[1] ?? 'monster';
         result = `${mnam} corpse`;
         if (type_is_pname(game.mons[food.corpsenm]))
             the_pfx = false;
@@ -829,8 +831,8 @@ export async function done_eating(message) {
             await pline(game.nomovemsg);
         game.nomovemsg = null;
     } else if (message) {
-        /* food_xname reduces to doname for everything this port serves */
-        await You(`finish eating ${doname(piece)}.`);
+        /* You("finish eating %s.", food_xname(piece, TRUE)) */
+        await You(`finish eating ${food_xname(piece, true)}.`);
     }
 
     /* cpostfx (199 lines) is the corpse table; still recorded. */

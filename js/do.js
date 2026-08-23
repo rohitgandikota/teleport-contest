@@ -249,8 +249,20 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (game.level) {
         for (const mtmp of game.level.monsters || [])
             mtmp.mlstmv = game.moves;
+        /* src/save.c:553 save_track() — the hero's track is saved WITH
+           the level and cleared (track.c:88); getlev's rest_track()
+           restores it on a return visit. Trackers (jackals, pets) read
+           it via gettrack(), so both halves matter: leaving must blank
+           it, returning must bring the old points back. */
+        game.level._saved_track = {
+            utcnt: game.utcnt | 0,
+            utpnt: game.utpnt | 0,
+            utrack: (game.utrack || []).map(p => ({ x: p.x, y: p.y })),
+        };
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
+        const { initrack } = await import('./track.js');
+        initrack();
     }
 
     game.u.uz = { dnum: newlevel.dnum, dlevel: newlevel.dlevel };
@@ -306,6 +318,14 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             /* give hiders a chance to hide before their next move */
             if (elapsed > 0 && elapsed > rnd(10))
                 hide_monst(mtmp);
+        }
+        /* restore.c:1228 rest_track() — bring back the track saved with
+           this level */
+        const st = game.level._saved_track;
+        if (st) {
+            game.utcnt = st.utcnt;
+            game.utpnt = st.utpnt;
+            game.utrack = st.utrack.map(p => ({ x: p.x, y: p.y }));
         }
     } else {
         game.visited_ledgers.add(ledger);

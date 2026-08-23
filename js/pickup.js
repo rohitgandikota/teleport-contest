@@ -136,18 +136,30 @@ export async function pickup(what) {
        object on the square gets grabbed regardless of pickup_types. */
     if (autopickup)
         here = here.filter(o => autopick_testobj(o));
-    if (here.length === 0)
-        return 0;
-    if (here.length > 1) {
+    let n_picked = 0, n_tried = 0;
+    if (here.length > 1 && !autopickup) {
         const picked = await query_objlist('Pick up what?', here);
-        let n_picked = 0;
-        for (const obj of picked)
+        for (const obj of picked) {
+            n_tried++;
             if ((await pickup_object(obj, obj.quan, false)) > 0)
                 n_picked++;
-        return n_picked ? 1 : 0;
+        }
+    } else {
+        /* autopick(): no menu, take every eligible object */
+        for (const obj of here) {
+            n_tried++;
+            if ((await pickup_object(obj, obj.quan, false)) > 0)
+                n_picked++;
+        }
     }
 
-    return (await pickup_object(here[0], here[0].quan, false)) > 0 ? 1 : 0;
+    /* src/pickup.c:903 — check if there's anything else here after
+       auto-pickup is done; this is what prints "You see here a jackal
+       corpse." when autopickup took nothing */
+    if (autopickup && !game.u.uswallow)
+        await check_here(n_picked > 0);
+
+    return n_tried > 0 ? 1 : 0;
 }
 
 // src/pickup.c:930 autopick_testobj() — is this object eligible for
@@ -556,28 +568,32 @@ async function query_category(qstr, olist, qflags) {
         tty_add_menu_str(win, '');
     if (do_unpaid)
         tty_add_menu(win, null, 'u'.charCodeAt(0), 'u', 0, ATR_NONE,
-                     NO_COLOR, 'Unpaid items', MENU_ITEMFLAGS_NONE);
+                     NO_COLOR, 'Unpaid items', MENU_ITEMFLAGS_SKIPINVERT);
+    /* the BUCX cluster is in alphabetical order (B, C, U, X), reversing
+       the usual U/C sequence, and every entry skips bulk inverts */
     if (do_blessed)
         tty_add_menu(win, null, 'B'.charCodeAt(0), 'B', 0, ATR_NONE,
                      NO_COLOR, 'Items known to be Blessed',
-                     MENU_ITEMFLAGS_NONE);
-    if (do_uncursed)
-        tty_add_menu(win, null, 'U'.charCodeAt(0), 'U', 0, ATR_NONE,
-                     NO_COLOR, 'Items known to be Uncursed',
-                     MENU_ITEMFLAGS_NONE);
+                     MENU_ITEMFLAGS_SKIPINVERT);
     if (do_cursed)
         tty_add_menu(win, null, 'C'.charCodeAt(0), 'C', 0, ATR_NONE,
                      NO_COLOR, 'Items known to be Cursed',
-                     MENU_ITEMFLAGS_NONE);
+                     MENU_ITEMFLAGS_SKIPINVERT);
+    if (do_uncursed)
+        tty_add_menu(win, null, 'U'.charCodeAt(0), 'U', 0, ATR_NONE,
+                     NO_COLOR, 'Items known to be Uncursed',
+                     MENU_ITEMFLAGS_SKIPINVERT);
     if (do_buc_unknown)
         tty_add_menu(win, null, 'X'.charCodeAt(0), 'X', 0, ATR_NONE,
                      NO_COLOR, 'Items of unknown Bless/Curse status',
-                     MENU_ITEMFLAGS_NONE);
+                     MENU_ITEMFLAGS_SKIPINVERT);
     if (num_justpicked) {
-        const buf = (num_justpicked === 1) ? 'Just picked up: 1 item'
-                    : `Just picked up: last ${num_justpicked} items`;
+        const jp = olist.find(o => o.pickup_prev);
+        const buf = (num_justpicked === 1 && jp)
+                    ? `Just picked up: ${doname(jp)}`
+                    : 'Items you just picked up';
         tty_add_menu(win, null, 'P'.charCodeAt(0), 'P', 0, ATR_NONE,
-                     NO_COLOR, buf, MENU_ITEMFLAGS_NONE);
+                     NO_COLOR, buf, MENU_ITEMFLAGS_SKIPINVERT);
     }
     tty_end_menu(win, qstr);
     await tty_display_nhwindow(win);
@@ -943,39 +959,36 @@ export async function use_container(obj, held, more_containers) {
     return used;
 }
 
-// src/invent.c container_contents slice — the ':' look-inside listing.
+// src/invent.c container_contents() — the ':' look-inside listing: a
+// plain text window (putstr lines, --More--), sorted in loot order, with
+// no class headings and no selectors.
 async function container_contents(obj) {
-    const { tty_create_nhwindow, tty_start_menu, tty_add_menu,
-            tty_add_menu_str, tty_end_menu, tty_display_nhwindow,
-            tty_select_menu, tty_destroy_nhwindow, ATR_NONE, ATR_INVERSE,
-            NHW_MENU } = await import('./tty/wintty.js');
-    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, NO_COLOR, PICK_NONE }
-        = await import('./const.js');
+    const { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
+            tty_dismiss_nhwindow, tty_destroy_nhwindow, ATR_NONE, NHW_MENU }
+        = await import('./tty/wintty.js');
+    const { nhgetch } = await import('./input.js');
     const { docrt } = await import('./display.js');
 
     obj.cknown = 1;
     if (!Has_contents(obj)) {
-        await pline(`${upstart(yname(obj))} is empty.`);
+        /* pline("%s is empty.", upstart(thesimpleoname(box))) */
+        await pline(`${upstart(thesimpleoname(obj))} is empty.`);
         return;
     }
-    /* C uses a menu window titled "Contents of <the box>:" */
     const win = tty_create_nhwindow(NHW_MENU);
-    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    tty_putstr(win, 0, `Contents of ${the(xname(obj))}:`);
+    tty_putstr(win, 0, '');
+    /* buf[0] = buf[1] = ' ' — two leading spaces on every item line */
     for (const oclass of inv_order()) {
-        const items = (obj.cobj || []).filter(o => o.oclass === oclass);
-        if (!items.length)
-            continue;
-        tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
-                     let_to_name(oclass), MENU_ITEMFLAGS_NONE);
-        for (const o of items) {
+        for (const o of (obj.cobj || []).filter(c => c.oclass === oclass)) {
             if (!game.u?.ublind)
                 observe_object(o);
-            tty_add_menu_str(win, doname(o));
+            tty_putstr(win, 0, `  ${doname(o)}`);
         }
     }
-    tty_end_menu(win, `Contents of ${the(xname(obj))}:`);
     await tty_display_nhwindow(win);
-    await tty_select_menu(win, PICK_NONE);
+    await nhgetch();            /* the --More-- acknowledgement */
+    tty_dismiss_nhwindow(win);
     tty_destroy_nhwindow(win);
     await docrt();
 }

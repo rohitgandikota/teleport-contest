@@ -237,6 +237,15 @@ export async function newgame() {
         // functions that take a real monster (dmgval, mhitm_ad_phys,
         // could_seduce), which read .data and .mnum.
         g.youmonst = { data: g.mons[g.u.umonnum], mnum: g.u.umonnum };
+        /* set_uasmon()'s PROPSET(INFRAVISION) — infravision is a property
+           of the hero's physical race (mondata.c:838): orcs, elves,
+           dwarves and gnomes see warm monsters in the dark */
+        {
+            const racemon = g.mons[g.urace?.mnum];
+            (g.u.intrinsic ||= {}).HInfravision =
+                !!(racemon
+                   && (racemon.mflags3 & 256 /* M3_INFRAVISION */));
+        }
         g.u.ulevel = g.u.ulevelmax = 1;
         /* type and record were filled by newhp() above, where C sets them. */
         // src/u_init.c:1006 — ualignbase[A_CURRENT] and [A_ORIGINAL] track the

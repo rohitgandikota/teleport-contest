@@ -36,7 +36,7 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 /* invent.js imports erosion_matters() from here, so this edge closes a cycle.
    Both sides export function DECLARATIONS, which hoist, so each module sees the
    other's bindings by the time anything is called. */
-import { merged, weight, update_inventory } from './invent.js';
+import { merged, weight, update_inventory, obj_extract_self } from './invent.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
@@ -1202,6 +1202,25 @@ function note_unported_obj(what) {
    question and a flag nothing sets. */
 function Inhell() {
     return game.dungeons?.[game.u?.uz?.dnum]?.flags?.hellish === true;
+}
+
+// src/mkobj.c:2525 discard_minvent() — the monster's whole pack leaves the
+// game. C loops extract_from_minvent + obfree; the unlink is obj_extract_self
+// on the OBJ_MINVENT chain, and dropping the last reference is JS's obfree.
+// No draws. A random ARTIFACT cannot be in a freshly made monster's pack
+// (m_initinv/m_initweap create with artif=FALSE), so uncreating one is
+// recorded rather than modelled.
+export function discard_minvent(mtmp, uncreate_artifacts) {
+    let otmp;
+
+    while ((otmp = (mtmp.minvent || [])[0]) !== undefined) {
+        /* extract_from_minvent(mtmp, otmp, TRUE, TRUE) */
+        otmp.owornmask = 0;
+        obj_extract_self(otmp);
+        if (uncreate_artifacts && otmp.oartifact)
+            note_unported_obj('discard_minvent:artifact_exists');
+        /* obfree(otmp, NULL) — no other reference remains */
+    }
 }
 
 // src/mkobj.c:2676 add_to_container() — link an object into a container's cobj

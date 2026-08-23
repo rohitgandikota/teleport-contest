@@ -11,7 +11,7 @@ import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, update_inventory, weight } from './invent.js';
 import { observe_object } from './o_init.js';
-import { doname, xname, the, yname } from './objnam.js';
+import { doname, xname, the, yname, singular } from './objnam.js';
 import { Is_container, Has_contents, carried } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
@@ -201,7 +201,7 @@ async function query_objlist(qstr, olist) {
     let id = 1;
     const byid = new Map();
     for (const oclass of inv_order()) {
-        const items = olist.filter(o => o.oclass === oclass);
+        const items = sortloot_items(olist.filter(o => o.oclass === oclass));
         if (!items.length)
             continue;
         tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
@@ -980,7 +980,8 @@ async function container_contents(obj) {
     tty_putstr(win, 0, '');
     /* buf[0] = buf[1] = ' ' — two leading spaces on every item line */
     for (const oclass of inv_order()) {
-        for (const o of (obj.cobj || []).filter(c => c.oclass === oclass)) {
+        for (const o of sortloot_items(
+                 (obj.cobj || []).filter(c => c.oclass === oclass))) {
             if (!game.u?.ublind)
                 observe_object(o);
             tty_putstr(win, 0, `  ${doname(o)}`);
@@ -991,4 +992,109 @@ async function container_contents(obj) {
     tty_dismiss_nhwindow(win);
     tty_destroy_nhwindow(win);
     await docrt();
+}
+
+/* ---- sortloot's within-class ordering: src/invent.c:149-500 ---- */
+
+/* src/invent.c:184 loot_classify(), the subclass arm. Armor uses armcat
+   remapping; weapons group by skill family; food and gems have their own
+   fixed groupings; everything else is one group. */
+function loot_subclass(obj) {
+    const otyp = obj.otyp, oclass = obj.oclass;
+    const od = game.objects[otyp] || {};
+    switch (oclass) {
+    case OCLASSES.ARMOR_CLASS: {
+        /* armcat[helm]=1 gloves=2 boots=3 shield=4 cloak=5 shirt=6 suit=7 */
+        const armcat = { 2: 1, 3: 2, 4: 3, 1: 4, 5: 5, 6: 6, 0: 7 };
+        let k = od.oc_armcat ?? od.oc_subtyp ?? 7;
+        if (k < 0 || k >= 7) k = 7;
+        return armcat[k] ?? 8;
+    }
+    case OCLASSES.WEAPON_CLASS: {
+        const k = od.oc_skill | 0;
+        /* P_BOW..P_CROSSBOW are 24..28ish; mirror the C banding */
+        const P_BOW = 24, P_CROSSBOW = 28, P_SPEAR = 6, P_DAGGER = 1,
+              P_KNIFE = 2;
+        return (k < 0) ? ((k >= -P_CROSSBOW && k <= -P_BOW) ? 1 : 3)
+               : ((k >= P_BOW && k <= P_CROSSBOW) ? 2
+                  : (k === P_SPEAR || k === P_DAGGER || k === P_KNIFE) ? 4
+                    : (od.oc_skill !== 20 /* !is_pole approximation via
+                         P_POLEARMS/P_LANCE families */) ? 5 : 6);
+    }
+    case OCLASSES.TOOL_CLASS: {
+        const seen = !!obj.dknown, discovered = !!od.oc_name_known;
+        if (seen && discovered
+            && (otyp === ONAMES.BAG_OF_TRICKS || otyp === ONAMES.HORN_OF_PLENTY))
+            return 2;
+        if (Is_container(obj))
+            return 1;
+        switch (otyp) {
+        case ONAMES.WOODEN_FLUTE: case ONAMES.MAGIC_FLUTE:
+        case ONAMES.TOOLED_HORN: case ONAMES.FROST_HORN:
+        case ONAMES.FIRE_HORN: case ONAMES.WOODEN_HARP:
+        case ONAMES.MAGIC_HARP: case ONAMES.BUGLE:
+        case ONAMES.LEATHER_DRUM: case ONAMES.DRUM_OF_EARTHQUAKE:
+        case ONAMES.HORN_OF_PLENTY:
+            return 3;
+        default:
+            return 4;
+        }
+    }
+    case OCLASSES.FOOD_CLASS:
+        switch (otyp) {
+        case ONAMES.SLIME_MOLD: return 1;
+        case ONAMES.TIN:        return 3;
+        case ONAMES.EGG:        return 4;
+        case ONAMES.CORPSE:     return 5;
+        default:                return obj.globby ? 6 : 2;
+        }
+    case OCLASSES.GEM_CLASS: {
+        const seen = !!obj.dknown, discovered = !!od.oc_name_known;
+        const GEMSTONE = 18, GLASS = 16; /* objclass.h materials */
+        switch (od.oc_material) {
+        case GEMSTONE: return !seen ? 1 : !discovered ? 2 : 3;
+        case GLASS:    return !seen ? 1 : !discovered ? 2 : 4;
+        default:       return !seen ? 5
+                              : (otyp !== ONAMES.ROCK)
+                                ? (!discovered ? 6 : 7) : 8;
+        }
+    }
+    default:
+        return 1;
+    }
+}
+
+/* src/invent.c:297 — discovery status rank */
+function loot_disco(obj) {
+    const od = game.objects[obj.otyp] || {};
+    const seen = !!obj.dknown;
+    const discovered = !!od.oc_name_known;
+    return !seen ? 1
+           : (discovered || !od.oc_descr) ? 4
+             : od.oc_uname ? 3 : 2;
+}
+
+// src/invent.c:403 sortloot_cmp(), the slice active for container and
+// pile menus (SORTLOOT_LOOT|SORTLOOT_PACK, class already grouped by the
+// caller): subclass, then discovery, then case-insensitive name, then
+// BUCX descending.
+export function sortloot_items(items) {
+    return items
+        .map((obj, idx) => ({ obj, idx,
+                              sub: loot_subclass(obj),
+                              disco: loot_disco(obj),
+                              nam: singular(obj, xname).toLowerCase() }))
+        .sort((a, b) => {
+            if (a.sub !== b.sub) return a.sub - b.sub;
+            if (a.disco !== b.disco) return a.disco - b.disco;
+            const nc = a.nam < b.nam ? -1 : a.nam > b.nam ? 1 : 0;
+            if (nc) return nc;
+            const v1 = a.obj.bknown ? (a.obj.blessed ? 3
+                                       : !a.obj.cursed ? 2 : 1) : 0;
+            const v2 = b.obj.bknown ? (b.obj.blessed ? 3
+                                       : !b.obj.cursed ? 2 : 1) : 0;
+            if (v1 !== v2) return v2 - v1;
+            return a.idx - b.idx;   /* stable */
+        })
+        .map(e => e.obj);
 }

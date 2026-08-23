@@ -809,9 +809,23 @@ export function doname(obj) {
             prefix += 'unlocked ';
     }
 
-    /* src/objnam.c:1183 add_erosion_words — erodeproofing shows once rknown.
-       The eroded (rusty/burnt) words precede this in C; no session carries
-       an eroded item yet. */
+    /* src/objnam.c:1150 add_erosion_words — the eroded words come first:
+       "very burnt", "thoroughly rusty", &c. (is_damageable gate: every
+       reachable eroded item passes it, and !is_damageable items never
+       gain oeroded bits in this port) */
+    if (obj.oeroded) {
+        prefix += (obj.oeroded === 2) ? 'very '
+                  : (obj.oeroded === 3) ? 'thoroughly ' : '';
+        prefix += is_rustprone(obj, game.objects) ? 'rusty '
+                  : is_crackable(obj, game.objects) ? 'cracked '
+                    : 'burnt ';
+    }
+    if (obj.oeroded2) {
+        prefix += (obj.oeroded2 === 2) ? 'very '
+                  : (obj.oeroded2 === 3) ? 'thoroughly ' : '';
+        prefix += is_corrodeable(obj, game.objects) ? 'corroded '
+                  : 'rotted ';
+    }
     if (obj.rknown && obj.oerodeproof)
         prefix += is_rustprone(obj, game.objects) ? 'rustproof '
                   : is_corrodeable(obj, game.objects) ? 'corrodeproof '

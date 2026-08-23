@@ -814,25 +814,18 @@ export async function rhack(key) {
         }
     }
     let live_input = false;
+    let clear_before_dispatch = false;
     if (key === 0) {
         // Read key from input
         live_input = true;
         await flush_screen(1);
         key = await nhgetch();
-        // The boundary frame has now been captured with the previous
-        // command's message on it, so it is safe to clear for this command.
-        //
-        // win/tty/wintty.c tty_clear_nhwindow(), NHW_MESSAGE, clears the FLAG
-        // as well as the text. Dropping the text alone left toplin at
-        // TOPLINE_NEED_MORE with nothing behind it, and update_topl's joining
-        // branch then glued the next message onto an empty string, indenting
-        // it by the two spaces the join inserts.
-        /* js/display.js:606 records this same defect on seed0360: clearing
-           the text without erasing the cells leaves the old prompt painted
-           in the grid for whatever draws next to land on top of. */
-        tty_clear_nhwindow_message(game._topl_cury || 0);
-        game._pending_message = '';
-        game._toplin = TOPLINE_EMPTY;
+        /* NOTE: the pre-dispatch topline clear happens BELOW, after the
+           count-prefix digits are collected — a digit key leaves the
+           previous message visible (seed0007 step 231: "You swap places
+           with your kitten." survives the '9' of "9s"), and only the
+           actual command dispatch clears it. */
+        clear_before_dispatch = true;
     }
 
     let ch0 = String.fromCharCode(key);
@@ -882,6 +875,16 @@ export async function rhack(key) {
         /* the count text stays on the topline in C until the command's own
            output replaces it; rhack's pre-dispatch clear already ran */
     }
+    /* the deferred pre-dispatch clear (see the note at the key read):
+       win/tty/wintty.c tty_clear_nhwindow(), NHW_MESSAGE, clears the FLAG
+       as well as the text; dropping the text alone left toplin at
+       TOPLINE_NEED_MORE with nothing behind it. */
+    if (clear_before_dispatch) {
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+        game._pending_message = '';
+        game._toplin = TOPLINE_EMPTY;
+    }
+
     game.cmd_key = ch0;
 
     /* src/cmd.c:1518 do_run_west() and friends — a SHIFTED direction letter

@@ -1,4 +1,5 @@
 import { obj_extract_self } from './invent.js';
+import { place_object } from './mkobj.js';
 import { exercise } from './attrib.js';
 import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
          LEVEL_TELEP, TELEP_TRAP, ROLLING_BOULDER_TRAP } from './const.js';
@@ -1210,13 +1211,13 @@ async function dopush(sx, sy, rx, ry, otmp, costly) {
 
     /* Move the boulder *after* the message. */
     otmp.next_boulder = 0;
-    /* movobj(): remove + place + newsym both squares */
+    /* movobj(): remove + place + newsym both squares. place_object() is
+       what re-blocks vision at the boulder's new square; skipping it let
+       the hero see straight into the room the boulder was pushed toward. */
+    const osx = otmp.ox, osy = otmp.oy;
     obj_extract_self(otmp);
-    newsym(otmp.ox, otmp.oy);
-    otmp.ox = rx;
-    otmp.oy = ry;
-    game.level.objects.unshift(otmp);
-    otmp.where = 1; /* OBJ_FLOOR */
+    newsym(osx, osy);
+    place_object(otmp, rx, ry);
     newsym(rx, ry);
     /* the shop-bill adjustments need billing; costly is false until then */
     if (costly)

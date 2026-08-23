@@ -998,6 +998,14 @@ export async function rhack(key) {
         game.context.move = ((await dotravel()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 's') {
         // src/cmd.c cmdlist — 's' is dosearch, which returns ECMD_TIME.
+        /* src/cmd.c:3728 — a counted command whose cmdlist entry carries
+           f_text ("searching") becomes a TIMED OCCUPATION, so a nearby
+           monster interrupts it with "You stop searching." */
+        if (game.multi && !game.occupation) {
+            const { set_occupation } = await import('./allmain.js');
+            set_occupation(async () => { dosearch(); }, 'searching',
+                           game.multi);
+        }
         game.context.move = (dosearch() ? 1 : 0);
     } else if (ch === '+') {
         // src/cmd.c cmdlist — '+' is dovspell.
@@ -1101,6 +1109,13 @@ export async function rhack(key) {
         // (flags.safe_wait, default On) refuses the rest next to a spottable
         // hostile with "Are you waiting to get hit?" and NO time passes.
         const { donull } = await import('./do.js');
+        /* src/cmd.c:3728 — counted '.' becomes the "waiting" timed
+           occupation, same as counted 's' */
+        if (game.multi && !game.occupation) {
+            const { set_occupation } = await import('./allmain.js');
+            set_occupation(async () => { await donull(); }, 'waiting',
+                           game.multi);
+        }
         game.context.move = ((await donull()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'f') {
         // src/cmd.c cmdlist — 'f' is dofire, which reaches throw_obj() and

@@ -15,12 +15,20 @@ import { maybe_finished_meal } from './eat.js';
 // run loop uses, so porting it unblocks both.
 export function set_occupation(fn, txt, xtime) {
     if (xtime) {
-        /* timed_occupation wraps fn and counts down xtime */
-        game.occupation = null;
-        (game.unported ||= new Set()).add('set_occupation:timed_occupation');
-        return;
+        /* src/cmd.c:172 timed_occupation() — wraps fn and counts down
+           gm.multi; a counted command with f_text ("20s") repeats through
+           the occupation slot so monster_nearby() can interrupt it with
+           "You stop searching." */
+        game._timed_occ_fn = fn;
+        game.occupation = async function timed_occupation() {
+            await game._timed_occ_fn();
+            if (game.multi > 0)
+                game.multi--;
+            return game.multi > 0 ? 1 : 0;
+        };
+    } else {
+        game.occupation = fn;
     }
-    game.occupation = fn;
     game.occtxt = txt;
     game.occtime = 0;
 }

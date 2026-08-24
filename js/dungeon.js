@@ -560,6 +560,12 @@ export function init_dungeons() {
         const x = find_level(name);
         if (x) {
             game.special_levels[key] = { ...x.dlevel };
+            /* C's file-scope d_level globals (astral_level, water_level,
+               valley_level, ...): In_endgame/Is_waterlevel and friends read
+               game.<key> directly, which stayed undefined and made every
+               such test false — level_tele never conjured the endgame
+               Amulet, the status line never named a Plane. */
+            game[key] = game.special_levels[key];
             /* src/dungeon.c:1136 — the quest levels' proto names get the
                role's filecode: "x-strt" becomes "Bar-strt". C reads
                gu.urole, set by role_init(); this port assigns game.urole

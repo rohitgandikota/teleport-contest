@@ -32,12 +32,14 @@ import { rn1, rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
 import { enexto_core } from './teleport.js';
-import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum } from './const.js';
+import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
+         G_GENOD } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
          XKILL_NOMSG, XKILL_NOCORPSE } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
+import { def_monsyms } from './drawing_data.js';
 
 import { has_ceiling } from './dungeon.js';
 import { in_rooms } from './hack.js';
@@ -63,7 +65,7 @@ import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
 import { mpickobj } from './steal.js';
-import { nonliving, is_neuter } from './mondata.js';
+import { nonliving, is_neuter, is_animal, is_mplayer, has_head } from './mondata.js';
 import { mkcorpstat } from './mklev.js';
 import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE, ACCESSIBLE } from './const.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
@@ -1743,16 +1745,19 @@ export function mnexto(mtmp, rlocflags) {
 
 /* ==== shapechanger creation (src/mon.c) ==== */
 
-/* animal_list for pick_animal(): every is_animal permonst, built once */
+/* animal_list for pick_animal(): every is_animal permonst, built once.
+   src/mon.c:4837 — LOW_PM to SPECIAL_PM (330), is_animal is M1_ANIMAL
+   (0x40000); this list held 62 entries instead of C's 98 because it used a
+   wrong bit and a wrong bound, so every chameleon form re-roll drew a
+   different modulus. */
 let _animal_list = null;
 function mon_animal_list() {
     _animal_list = [];
-    for (let i = 0; i < SPECIAL_PM_MON; i++)
-        if (game.mons[i] && (game.mons[i].mflags1 & M1_ANIMAL_MON))
+    for (let i = 0; i < PMNAMES.SPECIAL_PM; i++)
+        if (game.mons[i] && is_animal(game.mons[i]))
             _animal_list.push(i);
 }
-const SPECIAL_PM_MON = 381;   /* PM_LONG_WORM_TAIL */
-const M1_ANIMAL_MON = 0x10000;  /* include/monflag.h M1_ANIMAL */
+const SPECIAL_PM_MON = PMNAMES?.SPECIAL_PM ?? 330;
 
 // src/mon.c:4855 pick_animal()
 function pick_animal() {
@@ -1920,13 +1925,71 @@ function select_newcham_form(mon) {
         break;
     }
     /* the NON_PM dragon-armor arm needs worn dragon scales */
+
+    /* src/mon.c:5213 — "if no form was specified above, pick one at random
+       now". The modulus is the whole non-special monster table; the loop
+       repeats only while the rogue-level uppercase clause holds, so off
+       that level a single draw stands even when validspecmon rejects it
+       (newcham's own accept loop re-rolls). */
     if (mndx === -1) {
-        /* "if no form was specified above, pick one at random now" —
-           rndmonst via the makemon wire */
-        const pm = mon_fns_cham?.rndmonst?.();
-        mndx = pm ? game.mons.indexOf(pm) : -1;
+        let tryct = 50;
+        do {
+            mndx = rn1(SPECIAL_PM_MON - 0 /* LOW_PM */, 0);
+        } while (--tryct > 0 && !validspecmon(mon, mndx)
+                 && (tryct > 40 && Is_rogue_level(game.u.uz)
+                     && !/[A-Z]/.test(def_monsyms[game.mons[mndx].mlet] ?? '')));
     }
     return mndx;
+}
+
+// src/mon.c:5015 isspecmon() — nonshapechangers who warrant special
+// polymorph handling.
+function isspecmon(mon) {
+    return (mon.isshk || mon.ispriest || mon.isgd
+            || mon.m_id === game.quest_status?.leader_m_id);
+}
+
+// src/mon.c:5024 validspecmon()
+function validspecmon(mon, mndx) {
+    if (mndx === NON_PM)
+        return true; /* caller wants random */
+
+    if (!accept_newcham_form(mon, mndx))
+        return false; /* geno'd or !polyok */
+
+    if (isspecmon(mon)) {
+        const ptr = game.mons[mndx];
+
+        /* reject notake because object manipulation is expected
+           and nohead because speech capability is expected */
+        if (notake(ptr) || !has_head(ptr))
+            return false;
+    }
+    return true; /* potential new form is ok */
+}
+
+// src/mon.c:5228 accept_newcham_form() — mdat or null.
+function accept_newcham_form(mon, mndx) {
+    if (mndx === NON_PM || mndx < 0)
+        return null;
+    const mdat = game.mons[mndx];
+    if (((game.mvitals?.[mndx]?.mvflags ?? 0) & G_GENOD) !== 0)
+        return null;
+    if (mndx === PMNAMES.PM_ORC || mndx === PMNAMES.PM_GIANT
+        || mndx === PMNAMES.PM_ELF || mndx === PMNAMES.PM_HUMAN)
+        return null; /* is_placeholder */
+    /* select_newcham_form() might deliberately pick a player
+       character type (random selection never does) which
+       polyok() rejects, so we need a special case here */
+    if (is_mplayer(mdat))
+        return mdat;
+    /* shapeshifters are rejected by polyok() but allow a shapeshifter
+       to take on its 'natural' form */
+    if ((mdat.mflags2 & MFLAGS.M2_SHAPESHIFTER) !== 0
+        && (mon.cham ?? NON_PM) >= 0 && mndx === mon.cham)
+        return mdat;
+    /* polyok() rules out M2_NOPOLY */
+    return polyok(mdat) ? mdat : null;
 }
 
 // src/mon.c:5255 mgender_from_permonst()
@@ -1959,13 +2022,9 @@ export function newcham(mtmp, mdat, ncflags) {
         let tryct = 20;
         do {
             mndx = select_newcham_form(mtmp);
-            /* accept_newcham_form: genocided or !polyok rejects */
-            if (mndx >= 0
-                && !((game.mvitals?.[mndx]?.mvflags ?? 0) & 0x02)) {
-                mdat = game.mons[mndx];
+            mdat = accept_newcham_form(mtmp, mndx);
+            if (mdat)
                 break;
-            }
-            mdat = null;
         } while (--tryct > 0);
         if (!mdat)
             return 0;

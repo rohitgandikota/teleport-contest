@@ -39,6 +39,8 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
    other's bindings by the time anything is called. */
 import { merged, weight, update_inventory, obj_extract_self } from './invent.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
+import { oname, noveltitle } from './do_name.js';
+import { ONAME_NO_FLAGS } from './const.js';
 import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
 
@@ -767,6 +769,15 @@ export function mksobj(otyp, init, artif) {
     case ONAMES.BOULDER:
         otmp.next_boulder = 0;
         break;
+    case ONAMES.SPE_NOVEL: {
+        /* src/mkobj.c:1246 — every novel gets a Discworld title at
+           creation; the rn2 over the title table is in the stream */
+        otmp.novelidx = -1; /* "none of the above"; will be changed */
+        const box = { idx: otmp.novelidx };
+        oname(otmp, noveltitle(box), ONAME_NO_FLAGS);
+        otmp.novelidx = box.idx;
+        break;
+    }
     default:
         break;
     }

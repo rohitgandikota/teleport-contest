@@ -11,8 +11,12 @@ import { game } from './gstate.js';
 import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
 import { newcham, mon_wire_cham } from './mon.js';
-import { weight as weight_fn } from './invent.js';
+import { weight as weight_fn, sobj_at } from './invent.js';
 import { In_mines } from './const.js';
+import { Levitation, Flying } from './youprop.js';
+import { closed_door } from './cmd.js';
+import { may_passwall } from './hack.js';
+import { sengr_at } from './engrave.js';
 import { rndghostname, christen_monst } from './do_name.js';
 import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
@@ -28,19 +32,19 @@ import { get_shop_item } from './shknam.js';
 import { canspotmon, newsym } from './display.js';
 import { cansee, does_block, block_point } from './vision.js';
 import { COLNO, ROWNO } from './const.js';
-import { attacktype, is_neuter, is_floater, emits_light } from './mondata.js';
+import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
+         amorphous, throws_rocks, haseyes } from './mondata.js';
 import { is_vampshifter } from './monst.js';
-import { t_at } from './mon.js';
+import { t_at, is_pool, is_lava, m_in_air } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
-    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
+    BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U, GP_CHECKSCARY, GP_AVOID_MONPOS, MM_IGNORELAVA,
+    IS_WATERWALL, IS_ALTAR, Is_waterlevel } from './const.js';
 import { enexto_core, enexto, noteleport_level } from './teleport.js';
-import { mon_track_clear } from './monmove.js';
+import { mon_track_clear, onscary } from './monmove.js';
 /* questpgr.js has no imports back into makemon.js at module level except
    through the mkclass wire below (set at this module's top level). */
 import { qt_montype, questpgr_wire_mkclass } from './questpgr.js';
 
-// include/hack.h:1174-1175
-const GP_CHECKSCARY = 0x00800000, GP_AVOID_MONPOS = 0x01000000;
 
 // include/permonst.h:15,23
 const NON_PM = -1;
@@ -944,6 +948,33 @@ export function place_monster(mtmp, x, y) {
 export function remove_monster(x, y) {
     game.level.monAt?.delete(`${x},${y}`);
 }
+// src/teleport.c:53 goodpos_onscary() — onscary() without monst fields,
+// for fake monsters during creation and teleport destination checks.
+function goodpos_onscary(x, y, mptr) {
+    /* onscary() checks Angels and lawful minions; this oversimplifies */
+    if (mptr.mlet === MONSYMS.S_HUMAN || mptr.mlet === MONSYMS.S_ANGEL
+        || is_rider(mptr) || (mptr.geno & G_UNIQ) !== 0 /* unique_corpstat */)
+        return false;
+    /* onscary() checks for vampshifted vampire bats/fog clouds/wolves too */
+    const loc = game.level?.at(x, y);
+    if (loc && IS_ALTAR(loc.typ) && mptr.mlet === MONSYMS.S_VAMPIRE)
+        return true;
+    /* scare monster scroll doesn't have any of the below restrictions,
+       being its own source of power */
+    if (sobj_at(ONAMES.SCR_SCARE_MONSTER, x, y))
+        return true;
+    /* engraved Elbereth doesn't work in Gehennom or the end-game */
+    /* include/dungeon.h:139 In_hell — the dungeon's hellish flag */
+    if (game.dungeons?.[game.u.uz?.dnum]?.flags?.hellish
+        || In_endgame(game.u.uz))
+        return false;
+    /* creatures who don't (or can't) fear a written Elbereth and weren't
+       caught by the minions check */
+    if (mptr.pmidx === PMNAMES.PM_MINOTAUR || !haseyes(mptr))
+        return false;
+    return !!sengr_at('Elbereth', x, y, true);
+}
+
 
 // src/teleport.c goodpos() — can this monster stand here?
 //
@@ -996,26 +1027,56 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
         if (mtmp2 && (mtmp2 !== mtmp || mtmp.wormno))
             return false;
 
-        if (loc.typ === POOL && !ignorewater) {
-            return is_swimmer(ptr);
+        if (is_pool(x, y) && !ignorewater) {
+            /* src/teleport.c:135 — MOAT and WATER count, not just POOL, and
+               a flyer/floater over ordinary water is a good position. */
+            if (mtmp === game.youmonst)
+                return !!(game.u.uprops?.SWIMMING || game.u.uprops?.AMPHIBIOUS
+                          || (!Is_waterlevel(game.u.uz)
+                              && !(IS_WATERWALL(loc.typ))
+                              && (Levitation() || Flying()
+                                  || game.u.uprops?.WWALKING)));
+            else
+                return (is_swimmer(ptr)
+                        || (!Is_waterlevel(game.u.uz)
+                            && !(IS_WATERWALL(loc.typ))
+                            && m_in_air(mtmp)));
         } else if (ptr.mlet === S_EEL && rn2(13) && !ignorewater) {
             return false;
-        } else if (loc.typ === LAVAPOOL) {
-            return false;
+        } else if (is_lava(x, y) && !(gpflags & MM_IGNORELAVA)) {
+            /* 3.6.3: floating eye can levitate over lava but it avoids
+               that due the effect of the heat causing it to dry out */
+            if (ptr.pmidx === PMNAMES.PM_FLOATING_EYE)
+                return false;
+            else if (mtmp === game.youmonst)
+                return !!(Levitation() || Flying()
+                          || (game.u.uprops?.FIRE_RES && game.u.uprops?.WWALKING
+                              && game.uarmf?.oerodeproof));
+            else
+                return (m_in_air(mtmp) || likes_lava(ptr));
         }
         if (passes_walls(ptr) && may_passwall(x, y))
             return true;
+        if (amorphous(ptr) && closed_door(x, y))
+            return true;
+        /* avoid onscary() if caller has specified that restriction */
+        if ((gpflags & GP_CHECKSCARY) && (mtmp.m_id ? onscary(x, y, mtmp)
+                                                    : goodpos_onscary(x, y, ptr)))
+            return false;
     }
-    if (!ACCESSIBLE(loc.typ))
+    if (!ACCESSIBLE(loc.typ)) {
+        if (!(is_pool(x, y) && ignorewater)
+            && !(is_lava(x, y) && (gpflags & MM_IGNORELAVA)))
+            return false;
+    }
+    /* skip boulder locations for most creatures */
+    if (sobj_at(ONAMES.BOULDER, x, y) && (!ptr || !throws_rocks(ptr)))
         return false;
-    /* src/teleport.c also rejects boulder squares for non-rock-throwers;
-       sobj_at() is not ported, so that rejection cannot be evaluated yet. */
     return true;
 }
 
 const is_swimmer = (ptr) => (ptr.mflags1 & MFLAGS.M1_SWIM) !== 0;
 const passes_walls = (ptr) => (ptr.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
-const may_passwall = () => false;   /* needs level.flags.noteleport wall data */
 
 // src/quest.c quest_info() — the quest leader/nemesis for the hero's role.
 // Both are G_NOGEN, so neither can appear from rndmonst(); the lookups exist so

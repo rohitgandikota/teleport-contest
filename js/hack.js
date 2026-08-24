@@ -1609,8 +1609,12 @@ export async function findtravelpath(mode) {
                             if (nx === ux && ny === uy) {
                                 if (mode === TRAVP_TRAVEL
                                     || mode === TRAVP_VALID) {
+                                    /* selvar.c:168 selection_getpoint
+                                       returns 0 for a null selection: nomul
+                                       (via mattacku etc.) can free the map
+                                       mid-search, exactly as in C */
                                     const visited = game.travelmap
-                                        .has(`${x},${y}`);
+                                        ?.has(`${x},${y}`) ?? false;
                                     u.dx = x - ux;
                                     u.dy = y - uy;
                                     if (mode === TRAVP_TRAVEL
@@ -1625,7 +1629,9 @@ export async function findtravelpath(mode) {
                                         else
                                             game.iflags.travelcc = { x: 0, y: 0 };
                                     }
-                                    game.travelmap.add(`${u.ux},${u.uy}`);
+                                    /* selvar.c:181 selection_setpoint is
+                                       a no-op for a null selection */
+                                    game.travelmap?.add(`${u.ux},${u.uy}`);
                                     return true;
                                 }
                             } else if (!travel[nx][ny]) {
@@ -1671,7 +1677,8 @@ export async function findtravelpath(mode) {
                     u.dx = Math.sign(u.tx - u.ux);
                     u.dy = Math.sign(u.ty - u.uy);
                     if (await test_move(u.ux, u.uy, u.dx, u.dy, TEST_MOVE)) {
-                        game.travelmap.add(`${u.ux},${u.uy}`);
+                        /* selvar.c:181 — no-op when the map was freed */
+                        game.travelmap?.add(`${u.ux},${u.uy}`);
                         return true;
                     }
                     break; /* goto found */

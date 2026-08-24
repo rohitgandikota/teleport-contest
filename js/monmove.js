@@ -10,6 +10,7 @@ import { mpickstuff } from './mon.js';
 import { sengr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
+import { find_offensive } from './muse.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
@@ -1150,7 +1151,7 @@ export async function dochug(mtmp) {
             if (!nearby
                 && (ranged_attk_available(mtmp)
                     || attacktype(mdat, ATTKS.AT_WEAP)
-                    || dochug_find_offensive(mtmp)))
+                    || find_offensive(mtmp)))
                 break;
             /* a monster that's digesting you can move at the
              * same time -dlc
@@ -1195,17 +1196,6 @@ export async function dochug(mtmp) {
     return (status === MMOVE_DIED) ? 1 : 0;
 }
 
-/* src/muse.c find_offensive() — same recorded absence as in js/mhitu.js:
-   scan for the item classes muse would consider. */
-function dochug_find_offensive(mtmp) {
-    for (const o of (mtmp.minvent || [])) {
-        const cl = o.oclass;
-        if (cl === OCLASSES.WAND_CLASS || cl === OCLASSES.POTION_CLASS
-            || cl === OCLASSES.SCROLL_CLASS || cl === OCLASSES.TOOL_CLASS)
-            return true;
-    }
-    return false;
-}
 
 /* src/weapon.c select_rwep() — the throwing subsystem is absent; reaching
    this guard (a trapped weapon-monster out of melee range) is recorded. */

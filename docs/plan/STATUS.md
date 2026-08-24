@@ -2,6 +2,47 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-24 (early) — engulf, regions, artifacts-touch, dosearch, mimics
+
+All pushed through 4ad0da4. Suite: ~278,305 RNG / ~3,464 screens (and
+climbing as two level agents land work). Since the night entry:
+
+- 57a244f dosearch0 complete (hidden door/passage messages, mfind0,
+  'I' markers, rnl(8) trap find, moveloop autosearch for Archeologists)
+  + touch_artifact/retouch_object over generated artilist records.
+  seed0361 51->151 screens.
+- aca0dcb engulf: gulpmu/expels/swallowed-display/uswallow gate;
+  m_everyturn_effect is the fog vapor's real home; stinking-cloud
+  scroll. seed0383 +969.
+- e10bf88 regions (create_gas_cloud/run_regions), doppelganger and
+  sandestin newcham forms (js/wizard.js pick_nasty, topten tt_doppel),
+  flip_level monAt re-keying (fill_zoo was stacking monsters on
+  flipped squares), valley's missing second '+' object.
+- a745842 (agent) bigrm 1-13 complete + Tower2/3 + create_maze +
+  mkroll_launch (rolling boulder traps carry boulders now).
+- 4ad0da4 set_mimic_sym maze/Delphi/egg/altar arms; 2d9473d dog floor-
+  chain filters; d7642a6 mpickobj unknow_object (top generalize item).
+
+TOOLS: tools/petdrift.mjs — pet-position bisector against recorded
+screens (hero-@-gated, two-miss persistence). On seed0012 it proves the
+dog is POSITIONALLY correct until a few turns before the head; the
+divergence mechanism is a same-args masked window where C's dog ends up
+farther from the hero (udist>1) than ours (udist=1). Next tool per
+NOTES: replay C's candidate-loop draws through our candidate list.
+
+IN FLIGHT (two agents): Gehennom/dungeon specials (orcus, medusa-1..4,
+minetn, minend, soko, juiblex/asmodeus/baalz/sanctum, knox, fakewiz,
+wizard1-3) and role quest levels (Arc first, then Pri/Val/Wiz/Sam/...,
+registry via js/dat/quest-levels.js spread). Both verify with worktree
+suites + hang-gate; commit their file sets separately after their
+reports, checking heads.
+
+Current heads: seed0373 22653 (another unported des level — agents),
+seed0360 ~37667+ (moving as Gehennom agent lands), seed0012 7227 /
+seed4500 7897 / seed0007 13399 (the masked dog/mtrack family, parked
+with tooling notes), seed0367 1975 (kitten mflee, parked), seed0383
+10358 (post-swallow monster-order fine drift).
+
 ## 2026-08-23 (night) — generic objects, mkmap caverns, quest+tower levels, wishes
 
 All pushed through c65e243. Suite: 252,943 RNG / 3,352 screens (from

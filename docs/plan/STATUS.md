@@ -2,6 +2,61 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-24 (mid) — both level agents landed; askname; corpse weight
+
+All pushed through 4e33567. Suite: 12/44 passing, ~284,875 RNG /
+~3,580 screens. hang-gate OK.
+
+- c99cb1a (agent) Gehennom/dungeon specials: 34 dat files (orcus,
+  sanctum, juiblex/asmodeus/baalz, fakewiz1-2, wizard1-3, medusa-1..4,
+  minetn-1..7, minend-1..3, soko*, knox) + nhlib helpers + verbs
+  (lspo_gold, ensure_way_out, solidify_map, lvlfill_swamp, region
+  room_types, premap_detect, baalz_fixup, temperature_shift...).
+  seed0360 37667->41677.
+- 77b8431 (agent) ALL twelve role quest branches, 60 dat files, maps
+  byte-verified. Per-role reproducer sessions committed under
+  tools/gen-sessions (recipes/quest-*.json, seeds 6101-6113): Val, Ran,
+  Mon, Tou, Hea replay 100% RNG-clean end-to-end; Wiz 98%. Plus fixes:
+  maketrap refusal arms, mktrap hardfloor, keepdogs PREPENDS (arrival
+  order), fill_zoo makemon(NULL) + ndemon, Tourist sightseeing XP.
+- Corpse weight: set_corpsenm and the real mkcorpstat (mkobj.js) refresh
+  owt after the species override; the stale mklev.js duplicate is gone.
+  A pet's can_carry now sees an orc corpse at 850, not base 400.
+  seed0004 5263->5275 (now the dog_goal masked-goal drift again).
+- 0e3505c plnamesuffix: set_playmode THEN askname when the rc leaves
+  plname empty (unixmain.c:193-198), independent of role menus.
+  seed0017 2/67 -> FULL PASS. ^X Autopickup scope line ported.
+- 4e33567 decide_to_shapeshift (vampshifter cycle); in_town() positional
+  mine-town test for set_mimic_sym; gen-shknam strips platform #ifdef
+  names (shktools is 40 on unix, was 67 — every tool-shop shk name draw).
+  seed0360 41677->43164.
+
+NEXT BLOCKERS, diagnosed and cheap first (from the quest agent's
+report, each with exact C site):
+1. goodpos (makemon.js) only special-cases POOL — C teleport.c:134
+   is_pool covers MOAT/WATER, accepts swimmers and m_in_air flyers,
+   is_lava arm. Blocks Arc-strt reproducer AND any watery level.
+2. pick_animal table: our mon_animal_list has 62 entries, C has 98
+   (chameleon forms). Blocks quest-rog reproducer.
+3. m_initweap/m_initinv MS_PRIEST + quest_mon_represents_role arms
+   (makemon.c:263,721) — blocks quest-pri.
+4. mk_mplayer (mplayer.c:117) — blocks Kni/Sam strt/loca and Wiz-goal.
+5. seed0360@43164: one extra C rn2(5) distfleeck — a monster of ours
+   returns MMOVE_DIED (or skips) where C's takes a full turn near the
+   minetn digging window; roster probe harness in scratchpad/m360.mjs.
+6. Display-layer (quest screens everywhere): S_pool marked dec:true in
+   drawing_data (renders diamond, C shows blue backtick); status line
+   shows Dlvl:n where quest wants Home n; submerged eels drawn.
+
+Masked dog-goal family unchanged: 0004@5275, 0012@7227, 4500@7897,
+0002@6999, 0007@13399, 0014@4069, 0116@5556. NOTES has the
+candidate-replay tool design. Known unfixable: 2200 229/230, 0016
+35/36 (frozen serializer).
+
+TOOLS: tools/petdrift.mjs (pet drift vs recorded screens);
+js/rng.js __rng_probe_at {at,cb} seam (state dump at an exact draw
+index — see scratchpad carry*.mjs/m360.mjs harnesses).
+
 ## 2026-08-24 (early) — engulf, regions, artifacts-touch, dosearch, mimics
 
 All pushed through 4ad0da4. Suite: ~278,305 RNG / ~3,464 screens (and

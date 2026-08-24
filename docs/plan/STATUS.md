@@ -19,7 +19,15 @@ five general fixes in a row:
   dog_move post-goal, and mon_allowflags (daad250). seed0004's hero
   wears a ring of conflict from ~turn 340.
 
-NEXT on seed0004 @10377 (10399 matched): ours runs the LICHEN m158's
+UPDATE (later): 288-289 fixed via tty_message_menu single-candidate
+getobj (7501216); uncontrolled scrolltele teleports now. seed0004
+screens to 298, rng 10412. At 298 (travel '.' pick, 93 draws): our
+CURSOR lands with C at [19,11] but the '@' GLYPH stays painted at the
+old square (16,10) and the erase never happens — the travel movement
+loop misses a newsym pair on its final step. Also the lichen 'F' shows
+at (21,11) in C, not in ours (the m158 energy-phase thread below).
+
+OLD-NEXT on seed0004 @10377 (10399 matched): ours runs the LICHEN m158's
 action one turn earlier than C (extra mon_allowflags conflict rnd(20)
 before C's mcalcmove boundary trio). Speed-1 monster: its 12-energy
 bank phase differs by one grant somewhere — instrument mcalcmove per

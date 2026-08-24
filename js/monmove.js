@@ -23,7 +23,7 @@ import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal,
          tunnels, nohands as nohands_mm,
          verysmall as verysmall_mm , sticks } from './mondata.js';
-import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame, NOTONL } from './const.js';
+import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, D_ISOPEN, In_endgame, NOTONL } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
 import { You_see, You_hear } from './pline.js';
@@ -1588,7 +1588,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
                 if (btrapped) {
                     note_unported('postmov:mb_trapped');
                 } else {
-                    await openit(4 /* D_ISOPEN */);
+                    await openit(D_ISOPEN);
                     if (game.flags?.verbose) {
                         if (canseeit && canspotmon(mtmp))
                             await pline(`${Monnam(mtmp)} unlocks and opens a door.`);
@@ -1602,7 +1602,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
                 if (btrapped) {
                     note_unported('postmov:mb_trapped');
                 } else {
-                    await openit(4 /* D_ISOPEN */);
+                    await openit(D_ISOPEN);
                     if (game.flags?.verbose) {
                         if (canseeit && canspotmon(mtmp))
                             await pline(`${Monnam(mtmp)} opens a door.`);

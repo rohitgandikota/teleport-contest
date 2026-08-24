@@ -1213,6 +1213,15 @@ export async function dog_move(mtmp, after) {
     const mfp = {};
     const cnt = mfndpos(mtmp, mfp, mon_allowflags(mtmp));
 
+    /* Debug-only trace (never set during scoring): log the pet's goal and
+       candidate squares. globalThis.__dog_trace = true */
+    if (globalThis.__dog_trace)
+        console.error(`DOGTRACE turn=${game.moves} pet(${omx},${omy})`
+            + ` goal=(${game.gg?.gtyp},${game.gg?.gx},${game.gg?.gy})`
+            + ` appr=${appr} cnt=${cnt} poss=${(mfp.poss || []).slice(0, cnt)
+                  .map((p, i) => `${p.x},${p.y}:${(mfp.info[i] || 0).toString(16)}`)
+                  .join(' ')}`);
+
     /* Dogs normally avoid cursed items, so count the clean squares first;
        the count is the bound of the rn2 below. */
     let uncursedcnt = 0;
@@ -1415,6 +1424,10 @@ export async function dog_move(mtmp, after) {
         if (i !== MMOVE_NOTHING)
             return i;
     }
+
+    if (globalThis.__dog_trace)
+        console.error(`DOGCHOSE turn=${game.moves} (${omx},${omy})->` +
+            `(${nix},${niy}) chi=${chi} do_eat=${do_eat} hero(${game.u.ux},${game.u.uy})`);
 
     /* src/dogmove.c:1276 newdogpos — apply the move. Draws nothing: it is
        remove_monster() followed by place_monster(), which for us is just the

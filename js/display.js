@@ -27,7 +27,7 @@ import {
     WM_C_OUTER, WM_C_INNER, WM_T_LONG, WM_T_BL, WM_T_BR,
     WM_X_TL, WM_X_TR, WM_X_BL, WM_X_BR, WM_X_TLBR, WM_X_BLTR,
     SV0, SV1, SV2, SV3, SV4, SV5, SV6, SV7,
-    M_AP_FURNITURE, M_AP_OBJECT, M_AP_TYPE, ACCESSIBLE,
+    M_AP_FURNITURE, M_AP_OBJECT, M_AP_TYPE, ACCESSIBLE, Is_rogue_level,
 } from './const.js';
 import { engr_at } from './engrave.js';
 import { visible_region_at } from './region.js';
@@ -731,6 +731,27 @@ export function back_to_glyph(loc, x, y) {
     }
 }
 
+// include/flag.h flags.dark_room && iflags.use_color — dark_room defaults ON
+// in 5.0 (optlist.h:264) and the tty runs in color.
+function dark_room_color() {
+    return game.flags?.dark_room !== false;
+}
+
+// include/display.h DARKROOMSYM — S_darkroom when dark_room+color, else
+// S_stone. S_darkroom renders through the active symset, where
+// assign_graphics() has copied S_room's symbol into its slot
+// (display.c:1851): the DEC middle dot under DECgraphics, '.' otherwise.
+// defsym.h's CLR_BLACK collapses to the default foreground, so the cell
+// records identically to a plain floor except for its memory identity.
+function darkroomsym_cell() {
+    if (!dark_room_color())
+        return { ch: ' ', color: NO_COLOR, decgfx: false,
+                 glyph: { kind: 'cmap', cmap: cmap_names.S_stone } };
+    const s = showsym(cmap_names.S_darkroom);
+    return { ch: s ? s.ch : '.', color: CLR_BLACK, decgfx: s ? !!s.dec : false,
+             glyph: { kind: 'cmap', cmap: cmap_names.S_darkroom } };
+}
+
 // ── show_glyph_cell ──
 // `glyph` is the provenance of what is displayed — C keeps a glyph NUMBER in
 // its buffer (gbuf) and every classifier (glyph_is_monster & friends) reads
@@ -1155,13 +1176,45 @@ export function newsym(x, y) {
                                      glyph: { kind: 'cmap', cmap: tg.cmap } };
         }
     } else if (loc.remembered_glyph) {
-        /* src/display.c:852,898 — "Corridors are never felt as lit":
-           a remembered lit corridor reverts to the dark one (S_corr) when
-           the cell is out of sight and not waslit; C rewrites lev->glyph. */
-        if (loc.typ === CORR && loc.remembered_glyph.color === CLR_WHITE
-            && !loc.waslit)
-            loc.remembered_glyph = { ch: '#', color: NO_COLOR, decgfx: false,
-                                     glyph: { kind: 'cmap', cmap: CM.S_corr } };
+        /* src/display.c:1058 — memory of a dark place that was displayed lit
+           (night vision, or darkened out of sight) is manually corrected to
+           match waslit once the spot is out of sight:
+           - the rogue level uses S_stone for both dark floor and corridor;
+           - otherwise !waslit reverts S_litcorr to S_corr and S_room to
+             DARKROOMSYM, which with dark_room off is S_stone — the classic
+             "dark room floors vanish when you leave". C rewrites lev->glyph
+             and shows it. */
+        const remcmap = loc.remembered_glyph.glyph?.cmap;
+        if (Is_rogue_level(game.u.uz)) {
+            if (remcmap === CM.S_litcorr && loc.typ === CORR)
+                loc.remembered_glyph = { ch: '#', color: NO_COLOR,
+                                         decgfx: false,
+                                         glyph: { kind: 'cmap',
+                                                  cmap: CM.S_corr } };
+            else if (remcmap === CM.S_room && loc.typ === ROOM
+                     && !loc.waslit)
+                loc.remembered_glyph = { ch: ' ', color: NO_COLOR,
+                                         decgfx: false,
+                                         glyph: { kind: 'cmap',
+                                                  cmap: CM.S_stone } };
+        } else if (!loc.waslit || dark_room_color()) {
+            /* flags.dark_room defaults ON in 5.0 (optlist.h:264 opt_out On),
+               so a remembered floor out of sight becomes DARKROOMSYM ==
+               S_darkroom. It is wire-invisible: init_showsyms copies
+               showsyms[S_room] into showsyms[S_darkroom] (display.c:1851)
+               and its CLR_BLACK collapses to the default foreground, so the
+               cell still records as an uncoloured '·'. The IDENTITY matters
+               to code that compares memory, e.g. pick_lock's learned test. */
+            if (loc.typ === CORR && (remcmap === CM.S_litcorr
+                                     || (loc.remembered_glyph.color
+                                         === CLR_WHITE)))
+                loc.remembered_glyph = { ch: '#', color: NO_COLOR,
+                                         decgfx: false,
+                                         glyph: { kind: 'cmap',
+                                                  cmap: CM.S_corr } };
+            else if (remcmap === CM.S_room && loc.typ === ROOM)
+                loc.remembered_glyph = darkroomsym_cell();
+        }
         // Out of sight but remembered — show remembered glyph
         show_glyph_cell(x, y, loc.remembered_glyph.ch,
             loc.remembered_glyph.color, loc.remembered_glyph.decgfx, 0,
@@ -1502,11 +1555,31 @@ export function feel_location(x, y) {
                                  decgfx: memg.dec,
                                  glyph: memg.glyph
                                      ?? { kind: 'cmap', cmap: memg.cmap } };
+
     /* map_background()/map_location() record the terrain type the hero
        has last seen here (svl.lastseentyp); callers compare it to learn
        whether feeling the spot taught the hero anything. */
     update_lastseentyp(x, y);
     newsym(x, y);
+
+    /* src/display.c:894 — "Floor spaces are dark if unlit": with dark_room
+       on (5.0 default) a felt room floor is remembered as S_darkroom even
+       when waslit; an unlit felt corridor drops its lit form. The rewrite
+       is what makes pick_lock's "did the hero learn anything" comparison
+       come out true on a plain floor square. It runs AFTER the repaint
+       (C's fixup follows _map_location), so the newsym above must not
+       clobber it. */
+    {
+        const rg = loc.remembered_glyph;
+        if (loc.typ === ROOM && rg?.glyph?.cmap === CM.S_room
+            && (!loc.waslit || dark_room_color()))
+            loc.remembered_glyph = darkroomsym_cell();
+        else if (loc.typ === CORR && rg?.glyph?.cmap === CM.S_litcorr
+                 && !loc.waslit)
+            loc.remembered_glyph = { ch: '#', color: NO_COLOR, decgfx: false,
+                                     glyph: { kind: 'cmap',
+                                              cmap: CM.S_corr } };
+    }
 }
 
 // src/display.c:2147 row_refresh() — repaint map row y, columns start..stop,

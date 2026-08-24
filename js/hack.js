@@ -620,17 +620,23 @@ export async function spoteffects(pick) {
     if (inspecial)
         note_unported_hack('spoteffects:check_special_room');
 
-    /*
-     * If not a pit, pickup before triggering trap.
-     * If pit, trigger trap before pickup.
-     */
-    const pit = !!(trap && is_pit(trap.ttyp));
-    if (pick && !pit)
-        await pickup(1);
-    if (trap)
-        await dotrap(trap, 0);
-    if (pick && pit)
-        await pickup(1);
+    /* src/hack.c:3355 — "if dismounting, check again later": the whole
+       pickup/trap block is skipped so that only float_down()'s pickup runs;
+       without the gate a dismount onto a pile shows the pile window TWICE
+       and eats an extra dismissal key. */
+    if (!game.in_steed_dismounting) {
+        /*
+         * If not a pit, pickup before triggering trap.
+         * If pit, trigger trap before pickup.
+         */
+        const pit = !!(trap && is_pit(trap.ttyp));
+        if (pick && !pit)
+            await pickup(1);
+        if (trap)
+            await dotrap(trap, 0);
+        if (pick && pit)
+            await pickup(1);
+    }
 
     /* hidden monster at the same spot (hides_under, piercers) */
     const mtmp = m_at(game.u.ux, game.u.uy);

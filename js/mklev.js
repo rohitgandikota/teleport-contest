@@ -998,6 +998,18 @@ async function themerooms_generate(difficulty) {
             }
         };
         break;
+    case 'Fake Delphi':
+        /* dat/themerms.lua:292 — an 11x9 room with a 3x3 room at its
+           center, the inner one door'd; both filled */
+        roomW = 11;
+        roomH = 9;
+        contents = () => {
+            lspo_room({ type: 'ordinary', x: 4, y: 3, w: 3, h: 3, filled: 1,
+                        contents: () => {
+                lspo_door({ state: 'random', wall: 'all' });
+            } }, create_room, topologize);
+        };
+        break;
     case 'Nesting rooms':
         /* dat/themerms.lua:344 — three levels deep. The middle room's size
            comes from math.random(floor(width/2), width-2), which the nhlib
@@ -1355,7 +1367,13 @@ export function add_subroom(proom, lowx, lowy, hix, hiy, lit, rtype, special) {
         doorct: 0, fdoor: g.level.doorindex,
         irregular: false, needjoining: !special,
         nsubrooms: 0, sbrooms: [],
-        roomnoidx: -1,                  /* subrooms are not in svr.rooms */
+        /* include/mkroom.h — svr.subrooms IS the top half of svr.rooms
+           (&rooms[MAXNROFROOMS+1]), so a subroom's roomno is its slot there
+           plus ROOMOFFSET. With -1 here topologize() no-opped (roomno below
+           ROOMOFFSET) and subroom squares kept the parent's roomno, which
+           made somexy()'s irregular arm accept picks inside the subroom
+           that C rejects. */
+        roomnoidx: MAXNROFROOMS + 1 + (g.level.subrooms?.length ?? 0),
         needfill: 0,
     };
     do_room_or_subroom(croom, lowx, lowy, hix, hiy, lit, rtype, special, false);

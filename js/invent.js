@@ -32,6 +32,7 @@ import { dropy, dropx } from './do.js';
 import { is_missile, ammo_and_launcher, setuqwep } from './wield.js';
 import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
+import { xwaitforspace } from './tty/getline.js';
 import { pline, docrt } from './display.js';
 import { observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -228,9 +229,12 @@ export async function look_here(obj_cnt, lhflags) {
             tty_putstr(tmpwin, 0, doname(otmp));
         }
         await tty_display_nhwindow(tmpwin);
-        await nhgetch();
+        /* win/tty dmore(): the window waits for quitchars (space, enter,
+           ESC); any other key is ignored, which is why a ':' typed while
+           the pile overlay shows does not dismiss it */
+        await xwaitforspace(' \r\n\x1b');
         while (tty_next_page(tmpwin))
-            await nhgetch();
+            await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(tmpwin);
         await docrt();
     }

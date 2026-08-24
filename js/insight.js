@@ -28,6 +28,7 @@ import { aligns } from './role_data.js';
 import { A_MAX } from './attrib.js';
 import { rank_of } from './botl.js';
 import { money_cnt } from './invent.js';
+import { costly_spot } from './shk.js';
 import { pline } from './display.js';
 import { Fast, Very_fast } from './attrib.js';
 
@@ -189,8 +190,26 @@ function basics_enlightenment() {
     /* C terminates that line here when nothing follows it */
     lines[lines.length - 1] += '.';
 
-    enl_msg('Autopickup ', 'is ', 'was ',
-            game.flags.autopickup ? 'on' : 'off', '');
+    /* src/insight.c:804 — the "on" arm reports scope: shop suspension, the
+       pickup_types symbols (or "all types"), pickup_thrown, exceptions. */
+    let buf;
+    if (game.flags.autopickup) {
+        buf = 'on';
+        if (costly_spot(u.ux, u.uy)) {
+            /* being in a shop inhibits autopickup, even 'pickup_thrown' */
+            buf += ', but temporarily disabled while inside the shop';
+        } else {
+            const ocl = game.flags.pickup_types || '';
+            buf += ` for ${ocl ? `'${ocl}'` : 'all types'}`;
+            if (game.flags.pickup_thrown && ocl)
+                buf += ' plus thrown'; /* show when not 'all types' */
+            if (game.apelist?.length)
+                buf += ', with exceptions';
+        }
+    } else {
+        buf = 'off';
+    }
+    enl_msg('Autopickup ', 'is ', 'was ', buf, '');
 }
 
 // src/insight.c:770 one_characteristic()

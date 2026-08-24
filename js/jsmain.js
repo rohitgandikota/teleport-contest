@@ -125,7 +125,10 @@ export class NethackGame {
         /* src/optlist.h — both are opt_out with initval On, so they are set
            unless the rc negates them. implicit_uncursed decides whether
            doname() prints "uncursed" on a charged, identified item. */
+        /* pickup_thrown is opt_out initval On (optlist.h:579), like the
+           other two defaults */
         g.flags = { verbose: true, implicit_uncursed: true, legacy: true,
+                    pickup_thrown: true,
                     ...rc.opts };
         g.iflags = {};
         const pettype = optValue(rc, 'pettype');

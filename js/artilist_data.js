@@ -5,6 +5,7 @@
 // A("") dummy, which is why oartifact==0 means "not an artifact" and is_art()
 // on an ordinary object is always false.
 
+export const ART_NONARTIFACT = 0;
 export const ART_EXCALIBUR = 1;
 export const ART_STORMBRINGER = 2;
 export const ART_MJOLLNIR = 3;
@@ -78,4 +79,45 @@ export const artifact_names = [
  "The Platinum Yendorian Express Card",
  "The Orb of Fate",
  "The Eye of the Aethiopica"
+];
+
+// Base object type of each artifact (artilist.h's second A() field), as the
+// ONAMES key. Index 0 is the dummy's STRANGE_OBJECT, which is how
+// `for (a = artilist + 1; a->otyp; a++)` loops know where the list ends.
+export const artifact_otyps = [
+ "STRANGE_OBJECT",
+ "LONG_SWORD",
+ "RUNESWORD",
+ "WAR_HAMMER",
+ "BATTLE_AXE",
+ "ORCISH_DAGGER",
+ "ELVEN_BROADSWORD",
+ "ELVEN_DAGGER",
+ "ATHAME",
+ "LONG_SWORD",
+ "LONG_SWORD",
+ "BROADSWORD",
+ "SILVER_MACE",
+ "SILVER_SABER",
+ "SILVER_SABER",
+ "LONG_SWORD",
+ "WAR_HAMMER",
+ "MORNING_STAR",
+ "LONG_SWORD",
+ "KATANA",
+ "LONG_SWORD",
+ "CRYSTAL_BALL",
+ "LUCKSTONE",
+ "MACE",
+ "CRYSTAL_BALL",
+ "QUARTERSTAFF",
+ "MIRROR",
+ "LENSES",
+ "HELM_OF_BRILLIANCE",
+ "BOW",
+ "SKELETON_KEY",
+ "TSURUGI",
+ "CREDIT_CARD",
+ "CRYSTAL_BALL",
+ "AMULET_OF_ESP"
 ];

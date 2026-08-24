@@ -39,7 +39,10 @@ import { nomul } from './hack.js';
 import { t_at, is_pool, is_lava } from './mon.js';
 import { unconscious } from './trap.js';
 import { is_pit } from './const.js';
-import { Levitation } from './youprop.js';
+import { Levitation, Stone_resistance } from './youprop.js';
+import { st_gloves, st_corpse, st_petrifies, st_resists, W_ARMG } from './const.js';
+import { worn } from './do_wear.js';
+import { touch_petrifies } from './mondata.js';
 
 function note_unported_pickup(what) {
     (game.unported ||= new Set()).add(what);
@@ -56,6 +59,19 @@ export function can_reach_floor(check_pit) {
     if (Levitation())
         return false;
     return true;
+}
+
+// src/pickup.c:272 u_safe_from_fatal_corpse() — can the hero touch this
+// (cockatrice) corpse and live? 'tests' selects which outs apply (st_all
+// checks gloves, corpse-ness, petrification and stoning resistance).
+export function u_safe_from_fatal_corpse(obj, tests) {
+    if (((tests & st_gloves) && worn(W_ARMG))
+        || ((tests & st_corpse) && obj.otyp !== ONAMES.CORPSE)
+        || ((tests & st_petrifies)
+            && !touch_petrifies(game.mons[obj.corpsenm]))
+        || ((tests & st_resists) && Stone_resistance()))
+        return true;
+    return false;
 }
 
 // src/pickup.c:430 check_here() — look at the objects at our location.
@@ -258,7 +274,7 @@ export async function pickup_object(obj, count, telekinesis) {
     if (near_capacity() > UNENCUMBERED)
         note_unported_pickup('pickup_object:lift_object_encumbered');
 
-    obj = pick_obj(obj);
+    obj = await pick_obj(obj);
     await pickup_prinv(obj, count);
     return 1;
 }
@@ -692,7 +708,7 @@ async function out_container(obj) {
         && costly_spot(current_container.ox, current_container.oy))
         note_unported_pickup('out_container:addtobill');
 
-    const otmp = addinv(obj);
+    const otmp = await addinv(obj);
     await prinv(null, otmp, count);
 
     if (is_gold)

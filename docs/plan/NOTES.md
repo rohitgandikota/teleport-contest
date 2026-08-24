@@ -3987,3 +3987,52 @@ the dungeon — it was the head of the 11-session movement cluster's screen
 divergence. If a wall appears in ours and not in C with identical
 geometry, suspect the MODE, not the vision scans: the scans (COULD_SEE,
 IN_SIGHT via nv range 1) matched C the whole time.
+
+## The wish flow (readobjnam/makewish) and what its port surfaced
+
+The wizard-mode wish is fully ported: js/objnam.js mirrors the C's six-phase
+shape (readobjnam_init/preparse/parse_charges/postparse1/2/3 + readobjnam)
+and js/zap.js makewish carries the MAXWISHTRY retry loop, wishcmdassist, and
+the hold_another_object tail. mondrift-objects passes 2308/2308 RNG and
+41/41 screens on the back of it. Things the next agent should not rediscover:
+
+- **A recorded --More-- eats every key that is not space/\r/ESC.** In
+  mondrift-objects the recipe's "d%\r" (a drop) never dropped anything in C:
+  the wish's "You learn more about your items by comparing them.--More--"
+  swallowed 'd' and '%', and '\r' just dismissed it. Later the dog stepped
+  on a squeaky board mid-turn, the You_hear forced a More, and C then ate
+  FIFTEEN keys (steps 24-38) before the recipe's ESC dismissed it — with the
+  turn's remaining 8 draws (mcalcmove etc.) landing on the ESC's step. When
+  a generated session's rng-per-step counts show a run of zeros, look for an
+  unacknowledged More, not a hang.
+
+- **merged() (js/invent.js) returns 1|0 normally but a Promise resolving to
+  1 when its discovery pline must print.** The message is gated on
+  otmp.where == OBJ_INVENT, so the sync callers (stackobj on floor piles,
+  mpickobj/steal on minvent) can never receive the promise; addinv can, and
+  returns `r.then(() => otmp)` which its async callers await. Do not "fix"
+  merged to be uniformly async — steal.js and mkobj.js call it from sync
+  code and a bare Promise is truthy, which would turn every failed merge
+  into a phantom success there.
+
+- **wish_history / wish_history_menu are #ifdef DEBUG and the contest build
+  does not define DEBUG** (include/config.h never sets it), so the history
+  list stays empty and ^W always goes straight to getlin. The js port keeps
+  the empty array and a no-op wish_history_add to mirror that.
+
+- **js/artilist_data.js now also carries artifact_otyps** (second A() field,
+  scraped by tools/gen-artifacts.mjs) and js/artifact.js holds the wish
+  slice of artifact.c: artifact_name, exist_artifact, artifact_exists,
+  artifact_origin, nartifact_exist, permapoisoned, with creation state in
+  game.artiexist. mkobj.js's old `nartifact_exist() { return 0; }` stub is
+  gone — mksobj's `rn2(20 + 10 * nartifact_exist())` shifts once a wish
+  (e.g. seed0108's Mjollnir) creates an artifact, as in C.
+
+- **const.js ONAME_* flags were 3.6 values; 5.0 reserves 0x0001 for
+  'exists'** and starts ONAME_VIA_NAMING at 0x0002 (hack.h:1271). Fixed —
+  anything comparing raw ONAME literals against these must use the consts.
+
+- prinv(prefix, obj, quan) now honors C's partial-stack form: quan <
+  obj->quan drops the trailing period and appends " (N in total)." only
+  under flags.verbose — wiz_wish runs with verbose off, which is why the
+  recorded wish line is "d - 3 uncursed food rations" with no period.

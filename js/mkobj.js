@@ -1,4 +1,5 @@
 import { is_neuter } from './mondata.js';
+import { nartifact_exist } from './artifact.js';
 // mkobj.js — object creation.
 // C ref: src/mkobj.c
 //
@@ -298,8 +299,8 @@ export function blessorcurse(otmp, chance) {
     }
 }
 
-// No artifacts are generated yet, so none exist.
-function nartifact_exist() { return 0; }
+/* src/artifact.c nartifact_exist() — imported so mksobj_init's
+   `rn2(20 + 10 * nartifact_exist())` shifts once a wish creates one. */
 
 // src/mkobj.c:869 mksobj_init() — per-class initialisation.
 //
@@ -800,7 +801,7 @@ const lays_eggs = (ptr) => (ptr.mflags1 & MFLAGS.M1_OVIPAROUS) !== 0;
 const BREEDER_EGG = () => !rn2(77);
 
 // src/mkobj.c can_be_hatched()
-function can_be_hatched(mnum) {
+export function can_be_hatched(mnum) {
     if (mnum === PMNAMES.PM_SCORPIUS)
         mnum = PMNAMES.PM_SCORPION;
 
@@ -818,7 +819,7 @@ function can_be_hatched(mnum) {
 
 // src/mon.c dead_species() — genociding either the baby or the adult form
 // kills the eggs of both. Extinction by overpopulation does not.
-function dead_species(m_idx, egg) {
+export function dead_species(m_idx, egg) {
     if (m_idx < 0)
         return true;
     const alt_idx = egg ? big_to_little(m_idx) : m_idx;
@@ -835,7 +836,7 @@ const N_CANDY_WRAPPERS = 13;
 
 // src/eat.c set_tin_variety() — only the SPINACH_TIN and RANDOM_TIN paths are
 // reachable from mksobj_init(); HEALTHY_TIN comes from eating code.
-function set_tin_variety(obj, forcetype) {
+export function set_tin_variety(obj, forcetype) {
     let r;
     const mnum = obj.corpsenm;
 

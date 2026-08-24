@@ -69,7 +69,13 @@ import { In_quest, TOOKPLUNGE, VIASITTING, HURTLING,
          ROLLING_BOULDER_TRAP, SLP_GAS_TRAP, RUST_TRAP, FIRE_TRAP, PIT,
          SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL,
          WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP,
-         VIBRATING_SQUARE } from './const.js';
+         VIBRATING_SQUARE, BOLT_LIM } from './const.js';
+import { just_an } from './objnam.js';
+import { Deaf, Levitation, Flying, Hallucination } from './youprop.js';
+import { mindless } from './mondata.js';
+import { couldsee } from './vision.js';
+import { mdistu } from './monmove.js';
+import { wake_nearby, wake_nearto } from './mon.js';
 import { MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
 import { is_pit, is_hole, TT_BEARTRAP, Upolyd, LEFT_SIDE,
          RIGHT_SIDE } from './const.js';
@@ -443,6 +449,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_arrow_trap(game.youmonst, trap, trflags);
     if (ttype === DART_TRAP)
         return await trapeffect_dart_trap(game.youmonst, trap, trflags);
+    if (ttype === SQKY_BOARD)
+        return await trapeffect_sqky_board(game.youmonst, trap, trflags);
     if (ttype === MAGIC_TRAP)
         return await trapeffect_magic_trap(game.youmonst, trap, trflags);
     if (ttype === BEAR_TRAP)
@@ -455,6 +463,72 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_anti_magic(game.youmonst, trap, trflags);
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
+    return Trap_Effect_Finished;
+}
+
+// src/trap.c:3063 trapnote() — the name of the note a squeaky board plays,
+// optionally with "a"/"an" prefixed.
+function trapnote(trap, noprefix) {
+    const tnnames = [
+        'C note',  'D flat', 'D note',  'E flat',
+        'E note',  'F note', 'F sharp', 'G note',
+        'G sharp', 'A note', 'B flat',  'B note',
+    ];
+    const tn = tnnames[trap.tnote];
+    return noprefix ? tn : just_an(tn) + tn;
+}
+
+// src/trap.c:1403 trapeffect_sqky_board() — a squeaky board plays its note.
+// No draws in either arm; Soundeffect() is audio-only.
+async function trapeffect_sqky_board(mtmp, trap, trflags) {
+    const forcetrap = ((trflags & FORCETRAP) !== 0
+                       || (trflags & FAILEDUNTRAP) !== 0
+                       || (Flying() && (trflags & VIASITTING) !== 0));
+
+    if (mtmp === game.youmonst) {
+        if ((Levitation() || Flying()) && !forcetrap) {
+            if (!game.u.ublind) {
+                seetrap(trap);
+                if (Hallucination())
+                    await You('notice a crease in the linoleum.');
+                else
+                    await You('notice a loose board below you.');
+            }
+        } else {
+            seetrap(trap);
+            await pline(`A board beneath you ${
+                Deaf() ? 'vibrates' : 'squeaks '}${
+                Deaf() ? '' : trapnote(trap, false)}${
+                Deaf() ? '' : ' loudly'}.`);
+            wake_nearby(false);
+        }
+    } else {
+        const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+
+        if (m_in_air(mtmp))
+            return Trap_Effect_Finished;
+        /* stepped on a squeaky board */
+        if (in_sight) {
+            if (!Deaf()) {
+                await pline(`A board beneath ${mon_nam(mtmp)} squeaks ${
+                    trapnote(trap, false)} loudly.`);
+                seetrap(trap);
+            } else if (!mindless(mtmp.data)) {
+                await pline(
+                    `${Monnam(mtmp)} stops momentarily and appears to cringe.`);
+            }
+        } else {
+            /* same near/far threshold as mzapmsg() */
+            const range = couldsee(mtmp.mx, mtmp.my) /* 9 or 5 */
+                ? (BOLT_LIM + 1) : (BOLT_LIM - 3);
+
+            await You_hear(`${trapnote(trap, false)} squeak ${
+                (mdistu(mtmp) <= range * range)
+                    ? 'nearby' : 'in the distance'}.`);
+        }
+        /* wake up nearby monsters */
+        wake_nearto(mtmp.mx, mtmp.my, 40);
+    }
     return Trap_Effect_Finished;
 }
 
@@ -819,6 +893,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_arrow_trap(mtmp, trap, trflags);
     case DART_TRAP:
         return await trapeffect_dart_trap(mtmp, trap, trflags);
+    case SQKY_BOARD:
+        return await trapeffect_sqky_board(mtmp, trap, trflags);
     case MAGIC_TRAP:
         return await trapeffect_magic_trap(mtmp, trap, trflags);
     case BEAR_TRAP:

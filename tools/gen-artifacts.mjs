@@ -30,6 +30,7 @@ const src = readFileSync(SRC, 'utf8');
    The tag is the last top-level field. */
 const names = [];
 const tags = [];
+const otyps = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
     if (/\w/.test(src[i - 1] || '')) continue;
@@ -54,6 +55,10 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     }
     fields.push(body.slice(last));
     tags.push(fields[fields.length - 1].trim());
+    /* The second field is the base object type macro (WAR_HAMMER, ...),
+       possibly with a trailing comment. artifact_name(objnam.c wishes)
+       resolves it through ONAMES at load time. */
+    otyps.push(fields[1].replace(/\/\*[^]*?\*\//g, '').trim());
 }
 
 if (names.length < 20) {
@@ -85,6 +90,11 @@ ${consts}
 // Names in list order including the empty dummy at 0, so this indexes directly
 // by oartifact the way C's artifact_names[] does.
 export const artifact_names = ${JSON.stringify(names, null, 1)};
+
+// Base object type of each artifact (artilist.h's second A() field), as the
+// ONAMES key. Index 0 is the dummy's STRANGE_OBJECT, which is how
+// \`for (a = artilist + 1; a->otyp; a++)\` loops know where the list ends.
+export const artifact_otyps = ${JSON.stringify(otyps, null, 1)};
 `);
 
 console.log(`wrote ${OUT}: ${names.length} artifacts`);

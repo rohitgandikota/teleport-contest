@@ -242,10 +242,50 @@ export function eat_ok(obj) {
 }
 
 // src/eat.c:325 obj_nutrition()
-function obj_nutrition(otmp) {
+export function obj_nutrition(otmp) {
     return (otmp.otyp === ONAMES.CORPSE) ? game.mons[otmp.corpsenm].cnutrit
            : otmp.globby ? otmp.owt
              : game.objects[otmp.otyp].oc_nutrition;
+}
+
+/* src/eat.c:137 tintxts[] — tin types
+   [SPINACH_TIN = -1, overrides corpsenm, nut==600] */
+const tintxts = [
+    { txt: 'rotten', nut: -50, fodder: 0, greasy: 0 },  /* ROTTEN_TIN = 0 */
+    { txt: 'homemade', nut: 50, fodder: 1, greasy: 0 }, /* HOMEMADE_TIN = 1 */
+    { txt: 'soup made from', nut: 20, fodder: 1, greasy: 0 },
+    { txt: 'french fried', nut: 40, fodder: 0, greasy: 1 },
+    { txt: 'pickled', nut: 40, fodder: 1, greasy: 0 },
+    { txt: 'boiled', nut: 50, fodder: 1, greasy: 0 },
+    { txt: 'smoked', nut: 50, fodder: 1, greasy: 0 },
+    { txt: 'dried', nut: 55, fodder: 1, greasy: 0 },
+    { txt: 'deep fried', nut: 60, fodder: 0, greasy: 1 },
+    { txt: 'szechuan', nut: 70, fodder: 1, greasy: 0 },
+    { txt: 'broiled', nut: 80, fodder: 0, greasy: 0 },
+    { txt: 'stir fried', nut: 80, fodder: 0, greasy: 1 },
+    { txt: 'sauteed', nut: 95, fodder: 0, greasy: 0 },
+    { txt: 'candied', nut: 100, fodder: 1, greasy: 0 },
+    { txt: 'pureed', nut: 500, fodder: 1, greasy: 0 },
+    { txt: '', nut: 0, fodder: 0, greasy: 0 },
+];
+const TTSZ = tintxts.length;
+
+// src/eat.c:1405 tin_variety_txt() — does 's' begin with a tin variety
+// word ("pickled ", "boiled ", ...)? Returns the number of characters to
+// skip past it (0 for no match); tinvariety is a {v} out-box.
+export function tin_variety_txt(s, tinvariety) {
+    if (s && tinvariety) {
+        tinvariety.v = -1;
+        for (let k = 0; k < TTSZ - 1; ++k) {
+            const l = tintxts[k].txt.length;
+            if (s.toLowerCase().startsWith(tintxts[k].txt.toLowerCase())
+                && s.length > l && s[l] === ' ') {
+                tinvariety.v = k;
+                return l + 1;
+            }
+        }
+    }
+    return 0;
 }
 
 // src/eat.c:360 touchfood() — split one item off a stack before eating it and

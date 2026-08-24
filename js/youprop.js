@@ -37,6 +37,13 @@ export const Hallucination = () => HHallucination() && !Halluc_resistance();
 // into one read. u.uroleplay.deaf is the deaf conduct, chosen at startup.
 export const Deaf = () => !!game.u?.uprops?.DEAF || !!game.u?.uroleplay?.deaf;
 
+// include/youprop.h:65 Stone_resistance — flat uprops map collapses the
+// intrinsic and extrinsic halves into one read.
+export const Stone_resistance = () => !!game.u?.uprops?.STONE_RES;
+
+// include/youprop.h:129 Fumbling
+export const Fumbling = () => !!game.u?.uprops?.FUMBLING;
+
 // include/youprop.h:279 Underwater()
 export const Underwater = () => !!game.u?.uinwater;
 

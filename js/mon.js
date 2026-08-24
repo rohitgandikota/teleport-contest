@@ -763,7 +763,7 @@ function resists_poison(mon) {
 
 /* src/artifact.c touch_artifact() — TRUE for anything that is not an artifact,
    which is every object a rock mole meets on an early level. */
-function touch_artifact(otmp, mon) {
+export function touch_artifact(otmp, mon) {
     if (otmp.oartifact) {
         note_unported_mon('touch_artifact');
         return true;

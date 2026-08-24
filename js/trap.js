@@ -1629,3 +1629,119 @@ export async function climb_pit() {
         await Norep('You are still in a pit.');
     }
 }
+
+/* ==== the rolling-boulder launch machinery (maketrap's last gap) ==== */
+
+import { xdir, ydir, ZAP_POS, is_xport } from './const.js';
+import { closed_door } from './cmd.js';
+import { is_pool_or_lava } from './dbridge.js';
+import { stackobj } from './invent.js';
+import { isok } from './hacklib.js';
+
+// src/trap.c:3695 isclearpath() — may a boulder roll `distance` squares
+// from cc along (dx,dy)? Walks the squares; on success cc is advanced to
+// the far end. No draws.
+function isclearpath(cc, distance, dx, dy) {
+    let x = cc.x, y = cc.y;
+
+    while (distance-- > 0) {
+        x += dx;
+        y += dy;
+        if (!isok(x, y))
+            return false;
+        const typ = game.level.at(x, y).typ;
+        if (!ZAP_POS(typ) || closed_door(x, y))
+            return false;
+        const t = t_at_mon(x, y);
+        if (t && (is_pit(t.ttyp) || is_hole(t.ttyp) || is_xport(t.ttyp)))
+            return false;
+    }
+    cc.x = x;
+    cc.y = y;
+    return true;
+}
+
+// src/trap.c:3599 find_random_launch_coord() — pick where the boulder
+// waits. Exactly two draws when reached: rn1(5,4) for the distance and
+// rn2(8) for the first direction tried; the retry loop itself spends
+// nothing. A rolling-boulder trap needs the path clear BOTH ways.
+function find_random_launch_coord(ttmp, cc) {
+    let success = false;
+    const bcc = { x: 0, y: 0 };
+    let mindist = 4;
+    let trycount = 0;
+
+    if (!ttmp || !cc || Sokoban())
+        return false;
+
+    const x = ttmp.tx;
+    const y = ttmp.ty;
+
+    /* gl.launchplace is nonzero only for a des file's launchfrom= option,
+       which no registered level uses; with (0,0) bcc is the trap's own
+       square and linedup(x,y,x,y,1) is FALSE (mthrowu.c: !tbx && !tby). */
+    const lp = game.launchplace ?? { x: 0, y: 0 };
+    if (lp.x || lp.y)
+        note_unported_trap('find_random_launch_coord:launchplace');
+
+    if (ttmp.ttyp === ROLLING_BOULDER_TRAP)
+        mindist = 2;
+    let distance = rn1(5, 4); /* 4..8 away */
+    let tmp = rn2(8);         /* randomly pick a direction to try first */
+    while (distance >= mindist) {
+        const dx = xdir[tmp];
+        const dy = ydir[tmp];
+        cc.x = x;
+        cc.y = y;
+        /* Prevent boulder from being placed on water */
+        if (ttmp.ttyp === ROLLING_BOULDER_TRAP
+            && is_pool_or_lava(x + distance * dx, y + distance * dy))
+            success = false;
+        else
+            success = isclearpath(cc, distance, dx, dy);
+        if (ttmp.ttyp === ROLLING_BOULDER_TRAP) {
+            bcc.x = x;
+            bcc.y = y;
+            const success_otherway = isclearpath(bcc, distance, -dx, -dy);
+            if (!success_otherway)
+                success = false;
+        }
+        if (success)
+            break;
+        if (++tmp > 7)
+            tmp = 0;
+        if ((++trycount % 8) === 0)
+            --distance;
+    }
+    return success;
+}
+
+// src/trap.c:3659 mkroll_launch() — set the trap's launch point(s) and, if
+// a spot was found, create the waiting boulder there (mksobj draws). On
+// failure the launch point IS the trap square, which is also what tells
+// mktrap's victim roll to skip this trap.
+export function mkroll_launch(ttmp, x, y, otyp, ocount) {
+    const cc = { x: 0, y: 0 };
+
+    const success = find_random_launch_coord(ttmp, cc);
+
+    if (!success) {
+        /* create the trap without any ammo, launch pt at trap location */
+        cc.x = x;
+        cc.y = y;
+    } else {
+        const otmp = mksobj(otyp, true, false);
+        otmp.quan = ocount;
+        otmp.owt = weight(otmp);
+        place_object(otmp, cc.x, cc.y);
+        stackobj(otmp);
+    }
+    ttmp.launch = { x: cc.x, y: cc.y };
+    if (ttmp.ttyp === ROLLING_BOULDER_TRAP) {
+        ttmp.launch2 = { x: x - (cc.x - x), y: y - (cc.y - y) };
+    } else {
+        ttmp.launch_otyp = otyp;
+    }
+    newsym(ttmp.launch.x, ttmp.launch.y);
+    return 1;
+}

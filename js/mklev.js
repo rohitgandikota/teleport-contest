@@ -99,6 +99,7 @@ function mk_knox_portal(x, y) {
 }
 import { random_engraving, wipeout_text } from './engrave.js';
 import { merged, weight, sobj_at } from './invent.js';
+import { mkroll_launch } from './trap.js';
 import { themeroom_fill_contents, post_level_generate } from './themerms.js';
 import { mkroom_table, create_des_coder, spo_push_room,
          spo_endroom } from './sp_lev.js';
@@ -437,8 +438,9 @@ function maketrap(x, y, typ) {
     case STATUE_TRAP:
         mk_trap_statue(x, y);
         break;
-    case ROLLING_BOULDER_TRAP:
-        note_unported_lev('mkroll_launch');
+    case ROLLING_BOULDER_TRAP: /* boulder will roll towards trigger */
+        /* src/trap.c:512 — (void) mkroll_launch(ttmp, x, y, BOULDER, 1L) */
+        mkroll_launch(trap, x, y, BOULDER, 1);
         break;
     case PIT:
     case SPIKED_PIT:

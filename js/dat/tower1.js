@@ -48,7 +48,9 @@ export async function tower1_level() {
         door: (state, x, y) => lspo_door({ state, x, y }),
         monster: at(lspo_monster),
         object: at(lspo_object),
-        non_diggable: lspo_non_diggable,
+        /* selection.area() here is the [x1,y1,x2,y2] shim; spread it, or
+           lspo_non_diggable sees an array as x1 and stamps nothing */
+        non_diggable: (s) => lspo_non_diggable(s[0], s[1], s[2], s[3]),
     };
     const selection = { area: (x1, y1, x2, y2) => [x1, y1, x2, y2] };
 

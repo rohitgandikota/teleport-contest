@@ -18,10 +18,11 @@
 // 0 from one that is not.
 
 import { game } from './gstate.js';
-import { COLNO, ROWNO, ROOMOFFSET, MAX_TYPE, MATCH_WALL, IS_STWALL } from './const.js';
+import { COLNO, ROWNO, ROOMOFFSET, MAX_TYPE, MATCH_WALL, IS_STWALL,
+         W_RANDOM, W_NORTH, W_SOUTH, W_EAST, W_WEST } from './const.js';
 import { rn2 } from './rng.js';
 import { isok } from './hacklib.js';
-import { cvt_to_relcoord, update_croom } from './sp_lev.js';
+import { cvt_to_relcoord, update_croom, random_wdir } from './sp_lev.js';
 
 // src/selvar.c:15 selection_new()
 export function selection_new() {
@@ -342,8 +343,9 @@ export function selection_filter_mapchar(ov, typ, lit) {
     return ret;
 }
 
-// src/sp_lev.c:217 match_maptyps()
-function match_maptyps(typ, levltyp) {
+// src/sp_lev.c:217 match_maptyps() — exported for mapfrag_match() (the
+// selection.match() pattern overlay in sp_lev.js).
+export function match_maptyps(typ, levltyp) {
     if (typ === MATCH_WALL && !IS_STWALL(levltyp))
         return false;
     if (typ < MAX_TYPE && typ !== levltyp)
@@ -360,6 +362,59 @@ export function selection_clone(sel) {
         bounds: { ...sel.bounds },
         map: sel.map.slice(),
     };
+}
+
+// src/selvar.c:321 selection_do_grow() — expand the selection by one square
+// in the given directions, IN PLACE.
+//
+// Draws only when dir is W_RANDOM (one rn2(4) via random_wdir); every level
+// script here grows with the default "all" = W_ANY. The scan covers the
+// bounds inflated by one, and a square joins when a set neighbour lies in
+// any requested direction; diagonals only when both flanking orthogonals
+// are requested (W_ANY includes all four, so W_ANY grows diagonally too).
+export function selection_do_grow(ov, dir) {
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+
+    if (!ov)
+        return;
+
+    const tmp = selection_new();
+
+    if (dir === W_RANDOM)
+        dir = random_wdir();
+
+    selection_getbounds(ov, rect);
+
+    for (let x = Math.max(0, rect.lx - 1);
+         x <= Math.min(COLNO - 1, rect.hx + 1); x++)
+        for (let y = Math.max(0, rect.ly - 1);
+             y <= Math.min(ROWNO - 1, rect.hy + 1); y++) {
+            /* note:  dir is a mask of multiple directions, but the only
+               way to specify diagonals is by including the two adjacent
+               orthogonal directions, which effectively specifies three-
+               way growth [WEST|NORTH => WEST plus WEST|NORTH plus NORTH] */
+            if (((dir & W_WEST) && selection_getpoint(x + 1, y, ov))
+                || (((dir & (W_WEST | W_NORTH)) === (W_WEST | W_NORTH))
+                    && selection_getpoint(x + 1, y + 1, ov))
+                || ((dir & W_NORTH) && selection_getpoint(x, y + 1, ov))
+                || (((dir & (W_NORTH | W_EAST)) === (W_NORTH | W_EAST))
+                    && selection_getpoint(x - 1, y + 1, ov))
+                || ((dir & W_EAST) && selection_getpoint(x - 1, y, ov))
+                || (((dir & (W_EAST | W_SOUTH)) === (W_EAST | W_SOUTH))
+                    && selection_getpoint(x - 1, y - 1, ov))
+                || ((dir & W_SOUTH) && selection_getpoint(x, y - 1, ov))
+                || (((dir & (W_SOUTH | W_WEST)) === (W_SOUTH | W_WEST))
+                    && selection_getpoint(x + 1, y - 1, ov))) {
+                selection_setpoint(x, y, tmp, 1);
+            }
+        }
+
+    selection_getbounds(tmp, rect);
+
+    for (let x = rect.lx; x <= rect.hx; x++)
+        for (let y = rect.ly; y <= rect.hy; y++)
+            if (selection_getpoint(x, y, tmp))
+                selection_setpoint(x, y, ov, 1);
 }
 
 /* src/selvar.c:370 — the floodfill match callback, installed by
@@ -418,6 +473,61 @@ export function selection_floodfill(ov, x, y, diagonals) {
             SEL_FLOOD_CHKDIR(x + 1, y - 1, tmp);
         }
     } while (dx.length > 0);
+}
+
+// src/selvar.c:626 selection_do_line() — bresenham line. No draws; the
+// walk order of the setpoints does not matter, but the endpoint handling
+// does: (x1,y1) is set before the loop and the loop runs until it REACHES
+// the far endpoint, so a single-point line sets exactly one square.
+export function selection_do_line(x1, y1, x2, y2, ov) {
+    let d0, dx, dy, ai, bi, xi, yi;
+
+    if (x1 < x2) {
+        xi = 1;
+        dx = x2 - x1;
+    } else {
+        xi = -1;
+        dx = x1 - x2;
+    }
+    if (y1 < y2) {
+        yi = 1;
+        dy = y2 - y1;
+    } else {
+        yi = -1;
+        dy = y1 - y2;
+    }
+
+    selection_setpoint(x1, y1, ov, 1);
+
+    if (!dx && !dy) {
+        /* single point - already all done */
+    } else if (dx > dy) {
+        ai = (dy - dx) * 2;
+        bi = dy * 2;
+        d0 = bi - dx;
+        do {
+            if (d0 >= 0) {
+                y1 += yi;
+                d0 += ai;
+            } else
+                d0 += bi;
+            x1 += xi;
+            selection_setpoint(x1, y1, ov, 1);
+        } while (x1 !== x2);
+    } else {
+        ai = (dx - dy) * 2;
+        bi = dx * 2;
+        d0 = bi - dy;
+        do {
+            if (d0 >= 0) {
+                x1 += xi;
+                d0 += ai;
+            } else
+                d0 += bi;
+            y1 += yi;
+            selection_setpoint(x1, y1, ov, 1);
+        } while (y1 !== y2);
+    }
 }
 
 // src/selvar.c:683 selection_do_randline() — recursive midpoint displacement.

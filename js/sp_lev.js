@@ -290,11 +290,20 @@ export function lspo_map(mf, contents) {
     if (contents) contents();
 }
 
-// src/sp_lev.c sel_set_ter()
-function sel_set_ter(x, y, typ) {
+// src/sp_lev.c:4609 sel_set_ter() — C's arg is a terrain {ter, tlit}; the
+// map loaders pass tlit 0 (their `lit` option defaults FALSE), which the
+// original port folded into an unconditional `lit = false`. des.terrain
+// passes SET_LIT_NOCHANGE (sp_lev.c:4986), which must leave lit alone —
+// bigrm-3/-11 replace walls AFTER the region lighting pass. Lava is always
+// lit no matter what (src/mkmaze.c:100 set_levltyp()); SET_LIT_RANDOM
+// would draw rn2(2) (src/mkmaze.c:139) but no ported caller passes it.
+function sel_set_ter(x, y, typ, tlit = 0) {
     const loc = game.level.at(x, y);
     loc.typ = typ;
-    loc.lit = false;
+    if (IS_LAVA(typ))
+        loc.lit = true;
+    else if (tlit !== SET_LIT_NOCHANGE)
+        loc.lit = (tlit === SET_LIT_RANDOM) ? !!rn2(2) : !!tlit;
     if (loc.typ === SDOOR || IS_DOOR(loc.typ)) {
         if (loc.typ === SDOOR) loc.doormask = D_CLOSED;
         const left = game.level.at(x - 1, y);
@@ -394,7 +403,9 @@ export function lspo_terrain(sel, mapchr) {
     if (ter === INVALID_TYPE)
         return;                             /* nhl_error("Erroneous map char") */
 
-    selection_iterate(sel, sel_set_ter, ter);
+    /* sp_lev.c:4986 — tmpterrain.tlit = SET_LIT_NOCHANGE: des.terrain never
+       touches the lit state of the squares it retypes */
+    selection_iterate(sel, (x, y) => sel_set_ter(x, y, ter, SET_LIT_NOCHANGE));
 }
 
 // src/sp_lev.c:5055 lspo_replace_terrain() — swap one terrain type for
@@ -410,12 +421,35 @@ export function lspo_replace_terrain(opts) {
     const totyp = splev_chr2typ(opts.toterrain);
     if (totyp === INVALID_TYPE)
         return;
-    if (opts.mapfragment || opts.selection) {
-        note_unported('replace_terrain:mapfragment_or_selection');
+    if (opts.mapfragment) {
+        note_unported('replace_terrain:mapfragment');
         return;
     }
     const fromtyp = splev_chr2typ(opts.fromterrain);
     const chance = (opts.chance === undefined) ? 100 : opts.chance;
+    if (opts.selection) {
+        /* src/sp_lev.c:5108 — an explicit selection (its points are already
+           absolute) instead of a region: walk its bounds with x clamped to
+           1, and spend the rn2(100) on every set square whose terrain
+           matches, exactly like the region arm below. */
+        const sel = opts.selection;
+        const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+        selection_getbounds(sel, rect);
+        for (let x = Math.max(1, rect.lx); x <= rect.hx; x++)
+            for (let y = rect.ly; y <= rect.hy; y++) {
+                if (!selection_getpoint(x, y, sel))
+                    continue;
+                const loc = game.level?.at(x, y);
+                if (!loc)
+                    continue;
+                if (!((fromtyp === MATCH_WALL && IS_STWALL(loc.typ))
+                      || loc.typ === fromtyp))
+                    continue;
+                if (rn2(100) < chance)
+                    loc.typ = totyp;
+            }
+        return;
+    }
     const r = opts.region || [];
     /* C runs both corners through get_location(), which applies the map's
        xstart/ystart offset; without it the scan covers the wrong columns and
@@ -2411,11 +2445,16 @@ export function flip_level(flp, extras) {
         if (flp & 2) o.ox = FlipX(o.ox);
     }
 
-    /* monsters */
+    /* monsters. Re-key the positional grid: m_at()/MON_AT reads
+       level.monAt, and a stale key makes makemon() see the flipped
+       square as free (fill_zoo then creates a monster on top). */
     for (const m of (game.level?.monsters || [])) {
         if (!inFlipArea(m.mx, m.my)) continue;
+        if (game.level.monAt?.get(`${m.mx},${m.my}`) === m)
+            game.level.monAt.delete(`${m.mx},${m.my}`);
         if (flp & 1) m.my = FlipY(m.my);
         if (flp & 2) m.mx = FlipX(m.mx);
+        (game.level.monAt ||= new Map()).set(`${m.mx},${m.my}`, m);
 
         /* mgoal is not modelled; worm segments cannot exist at creation */
         if (m.ispriest) {
@@ -2541,7 +2580,12 @@ export async function load_special(name) {
     create_des_coder();
     game.splev_map = new Set();
     game.lregions = [];
+    game.splev_init_present = false;  /* sp_lev.c:6349 */
     game.splev_icedpools = false;   /* sp_lev.c:6351 */
+    /* sp_lev.c:6372 sp_level_coder_init() ends with reset_xystart_size();
+       a script with no des.map (bigrm-11) otherwise inherits the previous
+       level's map frame for every relative coordinate */
+    reset_xystart_size();
 
     /* sp_level_coder_init() — container/carrier resets and level flag
        defaults for a des level (src/sp_lev.c:6360-6365) */
@@ -2689,6 +2733,10 @@ function splev_initlev(linit) {
     case 'mazegrid':
         lvlfill_maze_grid(2, 0, x_maze_max, y_maze_max, linit.bg);
         break;
+    case 'maze':
+        /* src/sp_lev.c:2999 — LVLINIT_MAZE */
+        create_maze_fn(linit.corrwid, linit.wallthick, linit.rm_deadends);
+        break;
     case 'mines':
         if (linit.lit === BOOL_RANDOM)
             linit.lit = rn2(2);
@@ -2698,11 +2746,16 @@ function splev_initlev(linit) {
         mkmap(linit);
         break;
     default:
-        /* maze, rogue, swamp styles have no ported caller yet */
+        /* rogue, swamp styles have no ported caller yet */
         note_unported(`splev_initlev:${linit.init_style}`);
         break;
     }
 }
+
+/* create_maze() lives in js/mkmaze.js, which imports this module; the wire
+   avoids the cycle the same way walkfrom's does (see the var note above). */
+var create_maze_fn;
+export function sp_lev_wire_create_maze(fn) { create_maze_fn = fn; }
 
 // src/sp_lev.c:3837 lspo_level_init()
 export function lspo_level_init(opts) {
@@ -3267,4 +3320,250 @@ export function selection_area_obj(x1, y1, x2, y2) {
             return { x: c.x, y: c.y };
         },
     };
+}
+
+/* ==== the selection primitives the big rooms and towers need ==== */
+
+import { selection_do_line, selection_do_grow,
+         selection_recalc_bounds, match_maptyps } from './selvar.js';
+import { IS_LAVA, SET_LIT_NOCHANGE, SET_LIT_RANDOM } from './const.js';
+
+// src/sp_lev.c:4578 random_wdir() — one rn2(4). Only reached by
+// selection_do_grow(W_RANDOM); every ported grow uses "all".
+export function random_wdir() {
+    const wdirs = [W_NORTH, W_SOUTH, W_EAST, W_WEST];
+    return wdirs[rn2(4)];
+}
+
+// src/sp_lev.c:227 mapfrag_fromstr() — a selection.match() pattern: digits
+// stripped (hacklib.c:521 stripdigits), width is the longest line, height
+// counts '\n'-separated lines the way C's scanner does (a trailing newline
+// does NOT add an empty last line).
+export function mapfrag_fromstr(str) {
+    const data = String(str).replace(/[0-9]/g, '');
+    const rows = [];
+    let s = data;
+    while (s && s.length) {
+        const i = s.indexOf('\n');
+        if (i >= 0) {
+            rows.push(s.slice(0, i));
+            s = s.slice(i + 1);
+        } else {
+            rows.push(s);
+            s = '';
+        }
+    }
+    return { rows, wid: Math.max(...rows.map((l) => l.length)),
+             hei: rows.length };
+}
+
+// src/sp_lev.c:330 mapfrag_canmatch() — only odd-by-odd patterns have a
+// center square to anchor on.
+export function mapfrag_canmatch(mf) {
+    return (mf.wid % 2) && (mf.hei % 2);
+}
+
+// src/sp_lev.c:280 mapfrag_error()
+export function mapfrag_error(mf) {
+    if (!mf)
+        return 'mapfragment error';
+    if (!mapfrag_canmatch(mf))
+        return 'mapfragment needs to have odd height and width';
+    const center = mapfrag_get(mf, (mf.wid / 2) | 0, (mf.hei / 2) | 0);
+    if (center === MAX_TYPE || center === INVALID_TYPE)  /* TYP_CANNOT_MATCH */
+        return 'mapfragment center must be valid terrain';
+    return null;
+}
+
+// src/sp_lev.c:297 mapfrag_match() — overlay the pattern centered on <x,y>;
+// squares off the map read as STONE. A pattern char with no terrain mapping
+// (INVALID_TYPE >= MAX_TYPE, e.g. '[' and ']' in bigrm-3's "[.w.]") is
+// transparent and matches anything.
+export function mapfrag_match(mf, x, y) {
+    const hw = (mf.wid / 2) | 0, hh = (mf.hei / 2) | 0;
+    for (let rx = -hw; rx <= hw; rx++)
+        for (let ry = -hh; ry <= hh; ry++) {
+            const mapc = mapfrag_get(mf, rx + hw, ry + hh);
+            const levc = isok(x + rx, y + ry)
+                         ? game.level.at(x + rx, y + ry).typ : STONE;
+            if (!match_maptyps(mapc, levc))
+                return false;
+        }
+    return true;
+}
+
+// src/nhlsel.c:306 l_selection_or() — the Lua `|` (and `+`) operator:
+// pointwise OR over the union of the two operands' bounds, and the result's
+// bounds are set to that union rect. No draws.
+export function l_selection_or(sela, selb) {
+    const selr = selection_new();
+    const recta = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    const rectb = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    const rect = { lx: 0, ly: 0, hx: 0, hy: 0 };
+
+    selection_getbounds(sela, recta);
+    selection_getbounds(selb, rectb);
+    /* src/rect.c:134 rect_bounds() — the union of the two rects */
+    rect.lx = Math.min(recta.lx, rectb.lx);
+    rect.ly = Math.min(recta.ly, rectb.ly);
+    rect.hx = Math.max(recta.hx, rectb.hx);
+    rect.hy = Math.max(recta.hy, rectb.hy);
+
+    for (let x = rect.lx; x <= rect.hx; x++)
+        for (let y = rect.ly; y <= rect.hy; y++) {
+            const val = (selection_getpoint(x, y, sela)
+                         | selection_getpoint(x, y, selb));
+
+            selection_setpoint(x, y, selr, val);
+        }
+    selr.bounds = { ...rect };
+
+    return selr;
+}
+
+/* sel:percentage(p) — src/nhlsel.c:225 l_selection_filter_percent() is a
+   bare wrapper over selection_filter_percent() (selvar.c:224, one rn2(100)
+   per SET point); level files import that worker from selvar.js directly. */
+
+// src/nhlsel.c:508 l_selection_line() — both endpoints through
+// get_location_coord (map frame / current room), then a bresenham line into
+// a fresh selection. No draws.
+export function l_selection_line(x1, y1, x2, y2) {
+    const a = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x1, y1));
+    const b = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x2, y2));
+
+    const sel = selection_new();
+    selection_do_line(a.x, a.y, b.x, b.y, sel);
+    return sel;
+}
+
+// src/nhlsel.c:529 l_selection_rect() — the rectangle OUTLINE, four
+// selection_do_line calls. No draws.
+export function l_selection_rect(x1, y1, x2, y2) {
+    const a = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x1, y1));
+    const b = get_location_coord(-1, -1, ANY_LOC, game.coder?.croom ?? null,
+                                 SP_COORD_PACK(x2, y2));
+
+    const sel = selection_new();
+    selection_do_line(a.x, a.y, b.x, a.y, sel);
+    selection_do_line(a.x, a.y, a.x, b.y, sel);
+    selection_do_line(b.x, a.y, b.x, b.y, sel);
+    selection_do_line(a.x, b.y, b.x, b.y, sel);
+    return sel;
+}
+
+// src/nhlsel.c:634 l_selection_grow() — sel:grow([dir]): works on a CLONE,
+// the receiver is untouched. Draws only for "random" (see random_wdir).
+export function l_selection_grow(sel, dirname) {
+    const growdirs2i = { all: W_ANY, random: W_RANDOM, north: W_NORTH,
+                         west: W_WEST, east: W_EAST, south: W_SOUTH };
+    const dir = growdirs2i[dirname ?? 'all'] ?? W_ANY;
+
+    const ret = selection_clone(sel);
+    selection_do_grow(ret, dir);
+    return ret;
+}
+
+// src/nhlsel.c:681 l_selection_match() — selection.match(pattern): every
+// map square where the pattern overlay matches. The C loop runs y to
+// sel->hei INCLUSIVE and x from 1; the out-of-range writes fall off the
+// map via selection_setpoint's clamp. No draws.
+export function l_selection_match(mapstr) {
+    const sel = selection_new();
+    const mf = mapfrag_fromstr(mapstr);
+
+    if (mapfrag_error(mf) !== null)
+        return sel;                     /* nhl_error(): aborts the script */
+
+    for (let y = 0; y <= sel.hei; y++)
+        for (let x = 1; x < sel.wid; x++)
+            selection_setpoint(x, y, sel, mapfrag_match(mf, x, y) ? 1 : 0);
+
+    /* unless the (0, 1) coordinate is a match, this would wind up with a
+       selection with lx=COLNO, hx=0, etc, so fix the boundaries */
+    selection_recalc_bounds(sel);
+
+    return sel;
+}
+
+// src/sp_lev.c:5613 lspo_region(), the argc == 2 form:
+// des.region(selection, "lit"/"unlit"). Works on a CLONE of the selection;
+// "lit" first grows it one square in every direction so the surrounding
+// walls light up too, then sel_set_lit (sp_lev.c:5535) stamps every square,
+// keeping lava lit even for "unlit". No room record, no draws.
+export function lspo_region_sel(sel, litname) {
+    create_des_coder();
+    const rlit = (litname === 'unlit') ? 0 : 1;
+    const tmp = selection_clone(sel);
+
+    if (rlit)
+        selection_do_grow(tmp, W_ANY);
+    selection_iterate(tmp, (x, y) => {
+        const loc = game.level.at(x, y);
+        loc.lit = !!(IS_LAVA(loc.typ) || rlit);
+    });
+}
+
+// src/sp_lev.c:6169 lspo_map(), the x,y/coord arm (halign/valign "none"):
+// des.map({ coord = {x, y}, map = [[...]], contents = ... }). The
+// coordinates are used as-is (outside a room), there is no parity nudge and
+// no themeroom collision test; the footprint simply overwrites. After a
+// `contents` closure runs, the map frame is reset to the whole level
+// (sp_lev.c:6313) — which is why bigrm-13 gives every pillar an empty
+// contents function. No draws.
+export function lspo_map_coord(opts) {
+    create_des_coder();
+    const mapstr = opts.map;
+    const lit = opts.lit ? 1 : 0;
+    const contents = opts.contents ?? null;
+    let x = Array.isArray(opts.coord) ? opts.coord[0] : (opts.x ?? -1);
+    let y = Array.isArray(opts.coord) ? opts.coord[1] : (opts.y ?? -1);
+
+    const lines = mapstr.replace(/^\n/, '').replace(/\n$/, '').split('\n');
+    const wid = Math.max(...lines.map(l => l.length));
+    const hei = lines.length;
+
+    if (!isok(x, y))
+        return;                 /* nhl_error("Map requires x,y or halign") */
+
+    /* sp_lev.c:6180 — the globals are set BEFORE the load; nothing
+       re-assigns them afterwards, so the tiny-map reset arm sticks */
+    game.xstart = x; game.ystart = y;
+    game.xsize = wid; game.ysize = hei;
+
+    if (game.ystart < 0 || game.ystart + game.ysize > ROWNO) {
+        /* src/sp_lev.c:6233 — try to move the start a bit */
+        game.ystart += (game.ystart > 0) ? -2 : 2;
+        if (game.ysize === ROWNO) game.ystart = 0;
+        if (game.ystart < 0 || game.ystart + game.ysize > ROWNO)
+            game.ystart = 0;
+    }
+
+    if (game.xsize <= 1 && game.ysize <= 1) {
+        reset_xystart_size();
+    } else {
+        const xstart = game.xstart, ystart = game.ystart;
+        for (let yy = ystart; yy < Math.min(ROWNO, ystart + game.ysize); yy++)
+            for (let xx = xstart;
+                 xx < Math.min(COLNO, xstart + game.xsize); xx++) {
+                const ch = lines[yy - ystart][xx - xstart] ?? ' ';
+                const mptyp = CHAR2TYP[ch] ?? C_MAX_TYPE;
+                if (mptyp >= C_MAX_TYPE) continue;
+                const loc = game.level.at(xx, yy);
+                if (!loc) continue;
+                loc.flags = 0; loc.doormask = 0; loc.wall_info = 0;
+                loc.ladder = 0; loc.drawbridgemask = 0; loc.altarmask = 0;
+                loc.horizontal = false; loc.roomno = 0; loc.edge = 0;
+                SpLev_Map_set(xx, yy);
+                sel_set_ter(xx, yy, mptyp, lit);
+            }
+    }
+
+    if (contents) {
+        contents({ width: game.xsize, height: game.ysize });
+        reset_xystart_size();
+    }
 }

@@ -441,6 +441,9 @@ export async function newgame() {
                                                 : g.urole.name.m);
         await pline(`${Hello(null)} ${g.plname}, welcome to NetHack! `
                     + ` You are a${buf}.`);
+        /* src/allmain.c:920 — guarantee the 'major' log is never empty */
+        const { livelog_add } = await import('./pline.js');
+        livelog_add(`${g.plname} the${buf} entered the dungeon`);
     }
 
     // src/allmain.c:56 moveloop_preamble() — "side-effects from the real

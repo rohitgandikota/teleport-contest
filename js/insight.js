@@ -31,6 +31,7 @@ import { rank_of } from './botl.js';
 import { money_cnt } from './invent.js';
 import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
+import { type_is_pname } from './mondata.js';
 import { inv_weight } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { pline } from './display.js';
@@ -638,4 +639,185 @@ export async function ustatusline() {
         note_unported_insight('ustatusline:ustuck');
 
     await pline(`Status of ${game.plname} (${piousness(false, align_str(game.u.ualign?.type ?? 0))}):  Level ${game.u.ulevel}  HP ${game.u.uhp}(${game.u.uhpmax})  AC ${game.u.uac}${info}.`);
+}
+
+
+// src/insight.c:2560 show_gamelog() / :2532 do_gamelog() — the #chronicle
+// window.
+export async function do_gamelog() {
+    if ((game.gamelog || []).length) {
+        const {
+            tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr,
+            tty_display_nhwindow, tty_next_page, NHW_TEXT,
+        } = await import('./tty/wintty.js');
+        const { nhgetch } = await import('./input.js');
+        const { docrt } = await import('./display.js');
+        const win = tty_create_nhwindow(NHW_TEXT);
+        tty_putstr(win, 0, 'Logged events:');
+        let eventcnt = 0;
+        for (const e of game.gamelog) {
+            if (!eventcnt++)
+                tty_putstr(win, 0, ' Turn');
+            tty_putstr(win, 0, `${String(e.turn).padStart(5)}: ${e.text}`);
+        }
+        await tty_display_nhwindow(win);
+        await nhgetch();
+        while (tty_next_page(win))
+            await nhgetch();
+        tty_destroy_nhwindow(win);
+        await docrt();
+    } else {
+        await pline('No chronicled events.');
+    }
+    return 0; /* ECMD_OK */
+}
+
+
+// src/insight.c:2089 show_conduct() — the #conduct window. The arms whose
+// state no session reaches (blind/deaf/pauper/nudist rolls, wish details)
+// stay silent exactly as C's would with zeroed fields.
+export async function show_conduct() {
+    const {
+        tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr,
+        tty_display_nhwindow, tty_next_page, NHW_MENU,
+    } = await import('./tty/wintty.js');
+    const { nhgetch } = await import('./input.js');
+    const { docrt } = await import('./display.js');
+    const { xwaitforspace } = await import('./tty/getline.js');
+    const c = game.u.uconduct || {};
+    const win = tty_create_nhwindow(NHW_MENU);
+    const put = (s) => tty_putstr(win, 0, s);
+
+    put('Voluntary challenges:');
+    /* u.uroleplay.reroll is never enabled in a recorded rc */
+    put(' Character rerolling was not enabled.');
+
+    if (!c.food)
+        put(' You have gone without food.');
+    else if (!c.unvegan)
+        put(' You have followed a strict vegan diet.');
+    else if (!c.unvegetarian)
+        put(' You have been vegetarian.');
+
+    if (!c.gnostic)
+        put(' You have been an atheist.');
+
+    if (!c.weaphit)
+        put(' You have never hit with a wielded weapon.');
+    else if (game.wizard)
+        put(` You have hit with a wielded weapon ${c.weaphit} time${
+            c.weaphit === 1 ? '' : 's'}.`);
+    if (!c.killer)
+        put(' You have been a pacifist.');
+
+    if (!c.literate)
+        put(' You have been illiterate.');
+    else if (game.wizard)
+        put(` You have read items or engraved ${c.literate} time${
+            c.literate === 1 ? '' : 's'}.`);
+
+    if (!c.pets)
+        put(' You have never had a pet.');
+
+    /* num_genocides() is always 0 so far */
+    put(' You have never genocided any monsters.');
+
+    if (!c.polypiles)
+        put(' You have never polymorphed an object.');
+    else if (game.wizard)
+        put(` You have polymorphed ${c.polypiles} item${
+            c.polypiles === 1 ? '' : 's'}.`);
+
+    if (!c.polyselfs)
+        put(' You have never changed form.');
+    else if (game.wizard)
+        put(` You have changed form ${c.polyselfs} time${
+            c.polyselfs === 1 ? '' : 's'}.`);
+
+    if (!c.wishes)
+        put(' You have used no wishes.');
+    else
+        put(` You have used ${c.wishes} wish${c.wishes > 1 ? 'es' : ''}.`);
+
+    await tty_display_nhwindow(win);
+    await xwaitforspace(' \r\n\x1b');
+    while (tty_next_page(win))
+        await xwaitforspace(' \r\n\x1b');
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return 0;
+}
+
+
+// src/insight.c:2784 list_vanquished() — the #vanquished window; default
+// sort is by monster level high-to-low with index tiebreak (VANQ_MLVL_MNDX).
+export async function list_vanquished(defquery, ask) {
+    const mindx = [];
+    let total_killed = 0;
+    for (let i = 0; i < (game.mvitals || []).length; i++) {
+        const nk = game.mvitals[i]?.died | 0;
+        if (!nk)
+            continue;
+        mindx.push(i);
+        total_killed += nk;
+    }
+    const ntypes = mindx.length;
+
+    if (ntypes) {
+        let c = defquery;
+        if (ask) {
+            const { tty_yn_function } = await import('./tty/topl.js');
+            c = await tty_yn_function(
+                'Do you want an account of creatures vanquished?',
+                'ynq', defquery || 'n');
+        }
+        if (c === 'q')
+            game.done_stopprint = (game.done_stopprint | 0) + 1;
+        if (c !== 'y')
+            return;
+        const {
+            tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr,
+            tty_display_nhwindow, tty_next_page, NHW_MENU,
+        } = await import('./tty/wintty.js');
+        const { xwaitforspace } = await import('./tty/getline.js');
+        const { docrt } = await import('./display.js');
+        const { makeplural } = await import('./objnam.js');
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_putstr(win, 0, 'Vanquished creatures:');
+        tty_putstr(win, 0, '');
+
+        mindx.sort((a, b) =>
+            (game.mons[b].mlevel - game.mons[a].mlevel) || (a - b));
+        for (const i of mindx) {
+            const nk = game.mvitals[i].died | 0;
+            const nam = game.mons[i].pmnames?.filter(Boolean)[0]
+                        ?? game.mons[i].pmnames?.[0];
+            let buf;
+            if ((game.mons[i].geno ?? 0) & 0x1000 /* G_UNIQ */) {
+                buf = `${!type_is_pname(game.mons[i]) ? 'the ' : ''}${nam}`;
+            } else if (nk === 1) {
+                buf = an(nam);
+            } else {
+                buf = `${String(nk).padStart(3)} ${makeplural(nam)}`;
+            }
+            /* leading spaces to match a 3-digit prefix */
+            const pfx = buf.startsWith('the ') ? 0
+                      : buf.startsWith('an ') ? 1
+                        : buf.startsWith('a ') ? 2
+                          : !/[0-9]/.test(buf[2] ?? '') ? 4 : 0;
+            tty_putstr(win, 0, `${' '.repeat(pfx)}${buf}`);
+        }
+        if (ntypes > 1) {
+            tty_putstr(win, 0, '');
+            tty_putstr(win, 0, `${total_killed} creatures vanquished.`);
+        }
+        await tty_display_nhwindow(win);
+        await xwaitforspace(' \r\n\x1b');
+        while (tty_next_page(win))
+            await xwaitforspace(' \r\n\x1b');
+        tty_destroy_nhwindow(win);
+        await docrt();
+    } else if (ask) {
+        await pline('No creatures have been vanquished.');
+    }
 }

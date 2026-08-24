@@ -187,6 +187,9 @@ function initedog(mtmp, everything) {
        when taming magic affects an already-tame monster */
     if ((edogp.hungrytime ?? 0) < minhungry)
         edogp.hungrytime = minhungry;
+    /* src/dog.c:87 — pets-conduct counter; #conduct and the Astral
+       guardian-angel gift read it */
+    (game.u.uconduct ||= {}).pets = ((game.u.uconduct.pets | 0) + 1);
 }
 
 // ---------------------------------------------------------------------------

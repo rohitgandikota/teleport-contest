@@ -286,8 +286,14 @@ export function xname(obj) {
         if (obj.odiluted && dknown) buf = 'diluted ';
         buf += 'potion';
         if (dknown) {
-            if (nn) buf += ` of ${actualn}`;
-            else if (un) buf += ` called ${un}`;
+            if (nn) {
+                /* src/objnam.c:841 — known blessed/cursed water reads
+                   "potion of holy/unholy water" */
+                const holy = (obj.otyp === ONAMES.POT_WATER && obj.bknown
+                              && (obj.blessed || obj.cursed))
+                    ? (obj.blessed ? 'holy ' : 'unholy ') : '';
+                buf += ` of ${holy}${actualn}`;
+            } else if (un) buf += ` called ${un}`;
             else buf = `${dn} potion`;
         }
         break;
@@ -800,7 +806,12 @@ export function doname(obj) {
                && !(obj.cobj && obj.cobj.length))))
         prefix += 'empty ';
 
-    if (bknown && obj.oclass !== COIN_CLASS) {
+    if (bknown && obj.oclass !== COIN_CLASS
+        /* src/objnam.c:1319 — known holy/unholy water carries the state in
+           its NAME, so the blessed/cursed prefix is suppressed */
+        && (obj.otyp !== ONAMES.POT_WATER
+            || !game.objects[ONAMES.POT_WATER].oc_name_known
+            || (!obj.cursed && !obj.blessed))) {
         if (obj.cursed) prefix += 'cursed ';
         else if (obj.blessed) prefix += 'blessed ';
         else if (!game.flags.implicit_uncursed

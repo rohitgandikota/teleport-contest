@@ -43,6 +43,10 @@ sp_lev_wire_mon({ is_pool, is_lava, m_at, newcham, resists_ston, mongone });
 mklev_wire_mon({ is_pool, is_lava });
 dokick_wire({ stairway_at, t_at });
 do_wire_dokick(ship_object);
+/* js/dungeon.js surface() needs stairway_at (do.c home) without importing
+   do.js into the dungeon module graph */
+import { dungeon_wire_stairway_at } from './dungeon.js';
+dungeon_wire_stairway_at(stairway_at);
 import { wiz_level_change, wiz_level_tele, wiz_wish } from './wizcmds.js';
 import { tty_yn_function } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
@@ -648,6 +652,76 @@ export async function doextcmd() {
         const { enhance_weapon_skill } = await import('./weapon.js');
         return await enhance_weapon_skill();
     }
+    if (name === 'terrain') {
+        /* src/pager.c doterrain() — the "View which?" menu; only the menu
+           and its cancel are reachable (the map views record) */
+        const {
+            tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu,
+            tty_add_menu, tty_end_menu, tty_select_menu, NHW_MENU,
+        } = await import('./tty/wintty.js');
+        const { NO_COLOR } = await import('./terminal.js');
+        const { MENU_ITEMFLAGS_SELECTED } = await import('./const.js');
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_start_menu(win, 0);
+        tty_add_menu(win, null, 1, 'a', 0, 0, NO_COLOR,
+                     'known map without monsters, objects, and traps',
+                     MENU_ITEMFLAGS_SELECTED);
+        tty_add_menu(win, null, 2, 'b', 0, 0, NO_COLOR,
+                     'known map without monsters and objects', 0);
+        tty_add_menu(win, null, 3, 'c', 0, 0, NO_COLOR,
+                     'known map without monsters', 0);
+        tty_end_menu(win, 'View which?');
+        const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
+        tty_destroy_nhwindow(win);
+        if (picks && picks.length)
+            (game.unported ||= new Set()).add('cmd:doextcmd:terrain_view');
+        return ECMD_OK;
+    }
+    if (name === 'adjust') {
+        const { doorganize } = await import('./invent.js');
+        return await doorganize();
+    }
+    if (name === 'genocided') {
+        /* src/insight.c list_genocided() — nothing is ever genocided in a
+           recorded session, so only the empty-list line is live */
+        const { pline } = await import('./display.js');
+        await pline('No creatures have been genocided.');
+        return ECMD_OK;
+    }
+    if (name === 'vanquished') {
+        const { list_vanquished } = await import('./insight.js');
+        await list_vanquished('y', false);
+        return ECMD_OK;
+    }
+    if (name === 'conduct') {
+        const { show_conduct } = await import('./insight.js');
+        return await show_conduct();
+    }
+    if (name === 'chronicle') {
+        const { do_gamelog } = await import('./insight.js');
+        return await do_gamelog();
+    }
+    if (name === 'overview') {
+        /* src/dungeon.c:3339 show_overview() — the ^O window */
+        const { show_overview } = await import('./dungeon.js');
+        await show_overview();
+        return ECMD_OK;
+    }
+    if (name === 'offer') {
+        /* src/pray.c:1854 dosacrifice() — only the not-on-an-altar arm is
+           reachable without altars underfoot; the rite itself records */
+        const { ALTAR } = await import('./const.js');
+        const loc = game.level?.at(game.u.ux, game.u.uy);
+        if (!loc || loc.typ !== ALTAR || game.u.uswallow) {
+            const { You } = await import('./pline.js');
+            const airborne = game.u.uprops?.LEVITATION
+                             || game.u.uprops?.FLYING;
+            await You(`are not ${airborne ? 'over' : 'on'} an altar.`);
+            return ECMD_OK;
+        }
+        (game.unported ||= new Set()).add('cmd:doextcmd:offer_rite');
+        return ECMD_OK;
+    }
     if (name === 'loot')
         return await doloot();
     if (name === 'force') {
@@ -709,7 +783,22 @@ export async function doextcmd() {
                     [themedAlign[j], themedAlign[i - 1]];
             }
         }
-        note_unported_cmd('extcmd:version_display');
+        /* the pager window: banner line, then the compiled-options text
+           (build data, js/version_data.js) */
+        {
+            const { VERSION_BANNER_LINE, VERSION_OPTIONS_TEXT } =
+                await import('./version_data.js');
+            const win = tty_create_nhwindow(NHW_TEXT);
+            tty_putstr(win, 0, VERSION_BANNER_LINE);
+            for (const line of VERSION_OPTIONS_TEXT)
+                tty_putstr(win, 0, line);
+            await tty_display_nhwindow(win);
+            await nhgetch();
+            while (tty_next_page(win))
+                await nhgetch();
+            tty_destroy_nhwindow(win);
+            await docrt();
+        }
         return ECMD_OK;
     }
     if (name === 'wizwish')

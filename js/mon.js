@@ -1348,6 +1348,16 @@ export async function xkilled(mtmp, xkill_flags) {
 
     mtmp.mhp = 0; /* caller will usually have already done this */
 
+    /* src/mon.c:3499 — KMH, conduct: the first kill is chronicled */
+    if (!(xkill_flags & 0x4 /* XKILL_NOCONDUCT */)) {
+        game.u.uconduct ||= {};
+        if (!game.u.uconduct.killer) {
+            const { livelog_add } = await import('./pline.js');
+            livelog_add('killed for the first time');
+        }
+        game.u.uconduct.killer = (game.u.uconduct.killer | 0) + 1;
+    }
+
     if (engulfing_u(mtmp))
         note_unported_mon('xkilled:wasinside');
 
@@ -1670,6 +1680,13 @@ export async function mondead(mdef) {
     const mx = mdef.mx, my = mdef.my;
 
     mdef.mhp = 0;
+    /* src/mon.c:3134 — mvitals[].died doubles as the total-dead count and
+       the experience factor; #vanquished reads it */
+    {
+        const mv = (game.mvitals ||= [])[mdef.mnum] ||= {};
+        if ((mv.died | 0) < 255)
+            mv.died = (mv.died | 0) + 1;
+    }
     remove_monster(mx, my);
     const idx = (game.level?.monsters || []).indexOf(mdef);
     if (idx >= 0)

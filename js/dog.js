@@ -1715,12 +1715,16 @@ export function keepdogs(pets_only) {
                 note_unported('keepdogs:stay_behind');
                 continue;
             }
-            /* mon_leave/relmon: off the map, onto mydogs */
+            /* mon_leave/relmon: off the map, onto mydogs. C PREPENDS
+               (relmon: mtmp->nmon = gm.mydogs; gm.mydogs = mtmp) and
+               losedogs pops the head, so arrivals run in REVERSE of the
+               fmon scan order: the pet (newest, scanned first) lands
+               last. Pushing here played them forwards. */
             remove_monster(mtmp.mx, mtmp.my);
             const idx = game.level.monsters.indexOf(mtmp);
             if (idx >= 0)
                 game.level.monsters.splice(idx, 1);
-            (game.mydogs ||= []).push(mtmp);
+            (game.mydogs ||= []).unshift(mtmp);
             mtmp.mx = mtmp.my = 0; /* mx==0 implies migrating */
             mtmp.mlstmv = game.moves;
         } else if (mtmp.iswiz || mtmp.isshk || mtmp.ispriest || mtmp.isgd) {

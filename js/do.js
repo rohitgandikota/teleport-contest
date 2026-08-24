@@ -296,6 +296,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
                     nlx: 0, nly: 0, nhx: 0, nhy: 0 };
 
     const ledger = `${newlevel.dnum}:${newlevel.dlevel}`;
+    let familiar_level = true;
     /* C's test is "does the level file exist" (do.c:1706); the in-memory
        map is that file store. (visited_ledgers alone is wrong for the
        FIRST level, which newgame's mklev creates without registering.) */
@@ -332,6 +333,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             game.utrack = st.utrack.map(p => ({ x: p.x, y: p.y }));
         }
     } else {
+        familiar_level = false;         /* src/do.c "new" is the inverse */
         game.visited_ledgers.add(ledger);
 
         /* entering this level for the first time; make it now */
@@ -433,6 +435,16 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (game.u.uz.dnum === game.quest_dnum) {   /* In_quest(&u.uz) */
         const { onquest } = await import('./quest.js');
         await onquest();
+    }
+
+    /* src/do.c:1942 — first visit to a level: the livelog entry itself is
+       invisible, but a TOURIST gains sightseeing experience for it, and
+       that can level the hero up (newhp/newpw draws). */
+    if (!familiar_level && game.urole?.name?.m === 'Tourist') {
+        const { more_experienced, newexplevel } = await import('./exper.js');
+        const { level_difficulty } = await import('./dungeon.js');
+        more_experienced(level_difficulty(), 0);
+        await newexplevel();
     }
 
     /* src/do.c:1967 — reset u.uz0 */

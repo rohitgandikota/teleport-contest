@@ -1,0 +1,12 @@
+{
+  "name": "quest-hea",
+  "description": "quest-level reproducer: wizmode levelport through the whole Healer quest branch (strt, fila, loca, filb, goal)",
+  "segments": [
+    {
+      "seed": 6112,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\n y  :\u0016?\nb  :\u0016?\n z  :\u00162\n  :\u00164\n  :\u0016?\n A  :"
+    }
+  ]
+}

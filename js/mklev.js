@@ -196,6 +196,7 @@ import {
     ICE, MOAT, POOL, WATER, LAVAPOOL, LAVAWALL, DBWALL,
     A_LAWFUL, Align2amask,
     LR_UPTELE,
+    LADDER, DRAWBRIDGE_UP, IS_AIR,
 } from './const.js';
 
 // Object/class constants (normally from objects.js, not in contest template)
@@ -400,16 +401,55 @@ function choose_trapnote(ttmp) {
 // up to lspo_region() to be async too, which is what blocked the themeroom
 // fills from calling des.trap at all.
 function maketrap(x, y, typ) {
-    const trap = {
-        ttyp: typ, tx: x, ty: y,
-        tseen: (typ === HOLE),          /* unhideable_trap() */
-        once: 0, madeby_u: 0,
-        launch: { x: -1, y: -1 },
-        dst: { dnum: -1, dlevel: -1 },
-    };
-    if (!game.level) return trap;
-    if (!game.level.traps) game.level.traps = [];
-    game.level.traps.push(trap);
+    /* src/trap.c:463 — the refusal arms. A trap request can FAIL, and the
+       caller (mktrap) turns that into kind = NO_TRAP, which short-circuits
+       the victim gate before its rnd(4). Creating unconditionally made the
+       port draw a victim roll C never spends (first seen on Wiz-strt, whose
+       replace_terrain clouds reject traps via IS_AIR). */
+    if (typ === TRAPPED_DOOR || typ === TRAPPED_CHEST)
+        return null;
+    if (!game.level) return null;
+    const lev = game.level.at(x, y);
+    let trap = t_at(x, y);
+    let oldplace = false;
+    if (trap) {
+        /* undestroyable_trap(): MAGIC_PORTAL or VIBRATING_SQUARE */
+        if (trap.ttyp === MAGIC_PORTAL || trap.ttyp === VIBRATING_SQUARE)
+            return null;
+        oldplace = true;
+        /* src/trap.c:470 — u.utrap retyping only matters when the hero is
+           standing in the replaced trap; unreachable during level gen */
+    } else if (!lev
+               || lev.typ === STAIRS || lev.typ === LADDER
+               /* CAN_OVERWRITE_TERRAIN(); debug_overwrite_stairs is a
+                  wizard-mode option the sessions never set */
+               || IS_POOL(lev.typ) || lev.typ === LAVAPOOL
+               || (IS_FURNITURE(lev.typ) && typ !== PIT && typ !== HOLE)
+               || (lev.typ === DRAWBRIDGE_UP && typ === MAGIC_PORTAL)
+               || (IS_AIR(lev.typ) && typ !== MAGIC_PORTAL)
+               || (typ === LEVEL_TELEP
+                   && game.u?.uz?.dnum === game.special_levels?.knox_level?.dnum)) {
+        return null;
+    }
+
+    if (!oldplace) {
+        trap = {
+            ttyp: typ, tx: x, ty: y,
+            tseen: (typ === HOLE),          /* unhideable_trap() */
+            once: 0, madeby_u: 0,
+            launch: { x: -1, y: -1 },
+            dst: { dnum: -1, dlevel: -1 },
+        };
+        if (!game.level.traps) game.level.traps = [];
+        game.level.traps.push(trap);
+    } else {
+        /* src/trap.c — reuse the existing trap record in place */
+        trap.ttyp = typ;
+        trap.tseen = (typ === HOLE);
+        trap.once = 0; trap.madeby_u = 0;
+        trap.launch = { x: -1, y: -1 };
+        trap.dst = { dnum: -1, dlevel: -1 };
+    }
 
     switch (typ) {
     case SQKY_BOARD:

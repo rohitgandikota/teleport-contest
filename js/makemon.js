@@ -777,8 +777,14 @@ function m_initinv(mtmp) {
             note_unported('m_initinv:schroedingers_box');
         break;
     case S_DEMON:
-        /* src/makemon.c:786 — devil weapons */
-        note_unported(`m_initinv mlet=${ptr.mlet}`);
+        /* src/makemon.c:800 — moved here from m_initweap() because these
+           don't have AT_WEAP so m_initweap() is not called for them */
+        if (ptr.pmidx === PMNAMES.PM_ICE_DEVIL && !rn2(4)) {
+            mongets(mtmp, ONAMES.SPEAR);
+        } else if (ptr.pmidx === PMNAMES.PM_ASMODEUS) {
+            mongets(mtmp, ONAMES.WAN_COLD);
+            mongets(mtmp, ONAMES.WAN_FIRE);
+        }
         break;
     case S_GNOME:
         /* src/makemon.c:809 — a gnome sometimes carries a lit candle; in the
@@ -1086,11 +1092,16 @@ const passes_walls = (ptr) => (ptr.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
 // Both are G_NOGEN, so neither can appear from rndmonst(); the lookups exist so
 // the gender branches read as C does.
 /* src/makemon.c:11 quest_mon_represents_role() — this game's quest leader
-   or nemesis standing in for a role's class monster. Role_if follows the
-   urole.name.m convention established in js/invent.js. */
-const quest_mon_represents_role = (mptr, roleName) =>
-    mptr.mlet === MONSYMS.S_HUMAN && game.urole?.name?.m === roleName
-    && (mptr.msound === MS_LEADER || mptr.msound === MS_NEMESIS);
+   or nemesis standing in for a role's class monster. C's second argument is
+   a PM_ role index for Role_if(); callers here pass either that index or
+   the role's name string, so accept both. */
+const quest_mon_represents_role = (mptr, role) => {
+    const role_ok = (typeof role === 'number')
+        ? pmIndexOf(game.urole?.mnum) === role          /* Role_if(role_pm) */
+        : game.urole?.name?.m === role;
+    return mptr.mlet === MONSYMS.S_HUMAN && role_ok
+        && (mptr.msound === MS_LEADER || mptr.msound === MS_NEMESIS);
+};
 
 const quest_info_leader = () => pmIndexOf(game.urole?.ldrnum);
 const quest_info_nemesis = () => pmIndexOf(game.urole?.neminum);

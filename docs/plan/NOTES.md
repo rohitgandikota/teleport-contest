@@ -4052,3 +4052,58 @@ each dog_move's chosen (nix,niy) alongside the mfndpos candidate list
 and replay C's recorded candidate-loop draws through OUR candidate list
 to find the first turn where the same draws select a different square
 (candidate ORDER or COUNT drift, most likely from mfndpos gates).
+
+## The recorder is INSTRUMENTABLE — printf in C beats black-box inference (24 Aug)
+
+The masked-divergence debugging pattern changed. The recorder build at
+nethack-c/recorder is our own; a temporary fprintf(stderr,...) in any C
+function, `make nethack` in recorder/src (then cp the binary over
+recorder/install/games/lib/nethackdir/nethack — there is no install
+target), and a throwaway recipe distilled from the shipped session
+(seed/datetime/nethackrc/moves concatenated from its steps) prints the
+C-side truth for exactly the frames we replay. record.mjs passes stderr
+through, so the debug lines interleave with its progress output and
+never touch the session JSON. REVERT the C edits and rebuild+reinstall
+afterwards; the judge never sees this tree but a dirty recorder would
+poison future generated sessions with un-shippable state.
+
+This settled seed1500 in one shot after hours of state-diff guesswork:
+PICKDBG in pick_lock showed oldglyph 3992 -> 3993 (S_room -> S_darkroom),
+which no amount of our-side probing could reveal because the whole
+difference lived in C's memory-glyph identity.
+
+Use it next on the masked dog-goal family: DRKDBG-style prints in
+dogmove.c dog_goal/dog_move (goal, candidate list, chosen square) lined
+up against our __dog_trace output (globalThis.__dog_trace = true).
+
+## dark_room defaults ON in 5.0, and S_darkroom is a wire-invisible IDENTITY
+
+optlist.h:264: dark_room is opt_out On in 5.0 (3.6 had it off). Three
+consequences, all invisible on screen and all real in memory:
+
+- newsym's out-of-sight branch converts remembered S_room floors to
+  S_darkroom (even waslit ones, because the condition is
+  `!waslit || (dark_room && use_color)`), and feel_location's
+  dark-if-unlit tail does the same for FELT floors.
+- assign_graphics copies S_room's SYMBOL into S_darkroom's slot
+  (display.c:1851), so it renders as the same middle dot (0xfe) under
+  DECgraphics and '.' under the plain set; its defsym colour CLR_BLACK
+  goes through the same hilites collapse as gray (termcap.js), so the
+  serialized cell is identical to a plain floor.
+- The identity surfaces wherever C COMPARES memory glyphs. pick_lock's
+  "did the hero learn anything" test is one: applying a lock pick at a
+  plain floor square rewrites S_room->S_darkroom, the compare says the
+  hero learned something, and the attempt consumes a turn. seed1500's
+  entire divergence was that one turn of timing.
+
+Related: seed0104 has NO symset line in its rc — it is a plain-ASCII
+session ('-','|','.') and passes because the paint path resolves through
+showsym() per rc. Do not assume every session is DECgraphics.
+
+## CLR_BLACK collapses to the default foreground (termcap.js)
+
+The recorder build renders CLR_BLACK cells (carnivorous ape, vampire
+bat, raven, S_darkroom) with no distinguishing escape the serializer
+keeps — recorded cells read as uncoloured. term_start_color folds
+CLR_BLACK into the same NO_COLOR collapse as CLR_GRAY. Verified on
+seed0373's 'Y' and 'B' monsters and the S_darkroom floors.

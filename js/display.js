@@ -27,9 +27,11 @@ import {
     WM_C_OUTER, WM_C_INNER, WM_T_LONG, WM_T_BL, WM_T_BR,
     WM_X_TL, WM_X_TR, WM_X_BL, WM_X_BR, WM_X_TLBR, WM_X_BLTR,
     SV0, SV1, SV2, SV3, SV4, SV5, SV6, SV7,
-    M_AP_FURNITURE, M_AP_OBJECT,
+    M_AP_FURNITURE, M_AP_OBJECT, M_AP_TYPE, ACCESSIBLE,
 } from './const.js';
 import { engr_at } from './engrave.js';
+import { visible_region_at } from './region.js';
+import { is_pool_or_lava } from './dbridge.js';
 import { nhgetch } from './input.js';
 import { update_lastseentyp } from './dungeon.js';
 import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
@@ -952,6 +954,23 @@ export function newsym(x, y) {
        default-coloured instead of white. */
     if (cansee(x, y))
         loc.waslit = loc.lit ? 1 : 0;
+
+    /* src/display.c:993 — a visible gas-cloud region covers the spot:
+       normal region shown only on accessible positions, but poison clouds
+       and steam clouds also shown above lava, pools and moats. Sensed or
+       adjacent-visible monsters take precedence over the cloud. */
+    if (cansee(x, y)) {
+        const reg = visible_region_at(x, y);
+        if (reg && (ACCESSIBLE(loc.typ)
+                    || (reg.visible && is_pool_or_lava(x, y)))) {
+            const mon0 = (game.level?.monsters || [])
+                .find(m => m.mx === x && m.my === y && m.mhp > 0);
+            if (!mon_overrides_region(mon0 || null, x, y)) {
+                show_region(reg, x, y);
+                return;
+            }
+        }
+    }
 
     if (game.u?.ux === x && game.u?.uy === y) {
         /* Hero. Map memory keeps the topmost non-monster layer, so an object
@@ -1920,6 +1939,48 @@ export function magic_map_background(x, y, show) {
     if (show && tg)
         show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
                         { kind: 'cmap', cmap: tg.cmap });
+}
+
+// src/region.c:732 show_region() — paint the region's cloud glyph over the
+// spot. include/defsym.h: S_cloud is '#' CLR_GRAY, S_poisoncloud is '#'
+// CLR_BRIGHT_GREEN; neither has a DECgraphics override.
+export function show_region(reg, x, y) {
+    const cmap = reg.glyph_cmap ?? cmap_names.S_cloud;
+    show_glyph_cell(x, y, '#',
+                    cmap === cmap_names.S_poisoncloud ? CLR_BRIGHT_GREEN
+                                                      : CLR_GRAY,
+                    false, 0, { kind: 'cmap', cmap });
+}
+
+// src/display.c:668 mon_overrides_region() — used by newsym() to decide
+// whether to show a monster or a visible gas cloud region when both are at
+// the same spot; caller deals with the region.
+function mon_overrides_region(mon, mx, my) {
+    const u = game.u;
+
+    /* this is redundant because newsym() doesn't call us when swallowed */
+    if (u.uswallow && (!mon || mon !== u.ustuck))
+        return false;
+
+    if (mon) {
+        /* when not a worm tail, show mon if sensed rather than seen */
+        if (mx === mon.mx && my === mon.my
+            && (sensemon(mon) || mon_warning(mon)))
+            return true;
+
+        /* check whether the spot is adjacent and 'mon' would be visible
+           there if the gas cloud wasn't interfering with normal vision */
+        const r = ((u.xray_range ?? -1) > 1) ? u.xray_range : 1;
+        if (!u.ublind && mon_visible(mon)
+            && M_AP_TYPE(mon) !== M_AP_FURNITURE
+            && M_AP_TYPE(mon) !== M_AP_OBJECT
+            && distu(mx, my) <= r * (r + 1))
+            return true;
+    }
+
+    /* if not overriding region for current mon, propagate "remembered,
+       unseen monster" */
+    return glyph_is_invisible_at(mx, my);
 }
 
 // include/display.h:64 _mon_warning() — Warning, hostile, within 10 squares,

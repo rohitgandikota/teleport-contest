@@ -2,7 +2,8 @@ import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
-import { ceiling_hider } from './mondata.js';
+import { ceiling_hider, emits_light } from './mondata.js';
+import { new_light_source, del_light_source, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear, m_everyturn_effect,
          set_apparxy as set_apparxy_ref } from './monmove.js';
@@ -1138,6 +1139,10 @@ export function m_detach(mtmp, mptr, due_to_death) {
         || due_to_death)
         (game.unported ||= new Set()).add('mon:m_detach');
 
+    /* src/mon.c:2744 — a glowing monster takes its light with it */
+    if (mtmp.mx > 0 && emits_light(mptr))
+        del_light_source(LS_MONSTER, mtmp.m_id);
+
     /* mon_leaving_level() — off the map, but still on the fmon chain */
     if (mtmp.mx > 0)
         remove_monster(mtmp.mx, mtmp.my);
@@ -2220,10 +2225,20 @@ export function newcham(mtmp, mdat, ncflags) {
         mtmp.mhp = 1;
 
     /* take on the new form */
+    const olddata = game.mons[mtmp.mnum];
     mtmp.mnum = mndx;
     mtmp.data = mdat;
 
-    /* light sources, leashes, mimicry, worm shrink: recorded when reached */
+    /* src/mon.c:5397 — used to give light, now doesn't, or vice versa */
+    if (emits_light(olddata) !== emits_light(mdat)) {
+        if (emits_light(olddata))
+            del_light_source(LS_MONSTER, mtmp.m_id);
+        if (emits_light(mdat))
+            new_light_source(mtmp.mx, mtmp.my, emits_light(mdat),
+                             LS_MONSTER, mtmp.m_id);
+    }
+
+    /* leashes, mimicry, worm shrink: recorded when reached */
     return 1;
 }
 

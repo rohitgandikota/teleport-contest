@@ -8,6 +8,7 @@
 // changes the number of draws, not just their values.
 
 import { game } from './gstate.js';
+import { new_light_source, LS_MONSTER } from './light.js';
 import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
 import { newcham, mon_wire_cham } from './mon.js';
@@ -2083,6 +2084,12 @@ export function makemon(ptr, x, y, mmflags) {
     default:
         break;
     }
+    /* src/makemon.c:1348 — glowing monsters carry their own light */
+    {
+        const ct = emits_light(ptr);
+        if (ct > 0)
+            new_light_source(mtmp.mx, mtmp.my, ct, LS_MONSTER, mtmp.m_id);
+    }
 
     mitem = 0; /* STRANGE_OBJECT */
     if (mndx === PMNAMES.PM_VLAD_THE_IMPALER)
@@ -2345,8 +2352,10 @@ export function clone_mon(mon, x, y) {
     mon_track_clear(m2);
 
     place_monster(m2, m2.mx, m2.my);
+    /* src/makemon.c:899 — the clone glows like the original */
     if (emits_light(game.mons[m2.mnum]))
-        note_unported_makemon('clone_mon:new_light_source');
+        new_light_source(m2.mx, m2.my, emits_light(game.mons[m2.mnum]),
+                         LS_MONSTER, m2.m_id);
     /* if 'parent' is named, give the clone the same name */
     if (mon.mgivenname) {
         christen_monst(m2, mon.mgivenname);

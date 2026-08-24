@@ -828,6 +828,14 @@ export async function bite() {
 // than < , so the last turn of a meal still takes a bite. Writing it as < , or
 // biting before incrementing, drops that final bite -- and for a Satiated hero
 // that final bite is the one that chokes.
+/* src/eat.c:1571 opentin() — the tin-opening occupation. Not ported yet;
+   newhungry() compares occupation pointers against it, so the symbol must
+   exist for that test even while nothing can ever set it. */
+function opentin() {
+    (game.unported ||= new Set()).add('eat:opentin');
+    return 0;
+}
+
 export async function eatfood() {
     const v = game.context.victual;
     let food = v?.piece;

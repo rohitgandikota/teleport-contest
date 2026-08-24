@@ -29,6 +29,9 @@ import { A_MAX } from './attrib.js';
 import { rank_of } from './botl.js';
 import { money_cnt } from './invent.js';
 import { costly_spot } from './shk.js';
+import { newuexp } from './exper.js';
+import { inv_weight } from './attrib.js';
+import { ONAMES } from './objects_data.js';
 import { pline } from './display.js';
 import { Fast, Very_fast } from './attrib.js';
 
@@ -157,7 +160,18 @@ function background_enlightenment() {
     if (game.flags.friday13)
         out(' Bad things can happen on Friday the 13th.');
 
-    you_have(`${u.uexp | 0} experience point${plur(u.uexp | 0)}`);
+    {
+        let buf = `${u.uexp | 0} experience point${plur(u.uexp | 0)}`;
+        /* src/insight.c:702 — wizard mode (or final disclosure) appends the
+           delta to the next level; "to attain" below 18, "for" above */
+        const ulvl = u.ulevel | 0;
+        if (ulvl < 30 && game.wizard) {
+            const nxtlvl = newuexp(ulvl), delta = nxtlvl - (u.uexp | 0);
+            buf += `, ${delta} ${(u.uexp > 0) ? 'more ' : ''}needed ${
+                (ulvl < 18) ? 'to attain' : 'for'} level ${ulvl + 1}`;
+        }
+        you_have(buf);
+    }
 }
 
 // src/insight.c:600 basics_enlightenment()
@@ -265,11 +279,13 @@ function status_enlightenment() {
     out('Status:');
 
     /* hunger: hu_stat[] is empty for the normal state, and C substitutes
-       "not hungry", which the contraction turns into "aren't hungry" */
-    you_are('not hungry');
+       "not hungry", which the contraction turns into "aren't hungry";
+       wizard mode reveals u.uhunger (insight.c:1208) */
+    you_are('not hungry' + (game.wizard ? ` <${game.u.uhunger}>` : ''));
 
-    /* encumbrance: near_capacity() is UNENCUMBERED with a starting pack */
-    you_are('unencumbered');
+    /* encumbrance: near_capacity() is UNENCUMBERED with a starting pack;
+       wizard mode reveals inv_weight() (insight.c:1245) */
+    you_are('unencumbered' + (game.wizard ? ` <${inv_weight()}>` : ''));
 
     /* src/insight.c:1270 weapon_insight() — the reachable arms: weaponless
        (empty_handed) or wielding a plain weapon described by its skill
@@ -396,12 +412,32 @@ function attributes_enlightenment() {
         if (u.uprops[k] && (u.uprops[k].intrinsic || u.uprops[k].extrinsic))
             note_unported_insight(`attributes:prop:${k}`);
 
+    /* src/insight.c:1524 — Antimagic, with from_what() naming the source in
+       wizard mode; the one source a recorded hero has is the worn cloak */
+    if (game.u.uarmc?.otyp === ONAMES.CLOAK_OF_MAGIC_RESISTANCE)
+        you_are('magic-protected',
+                game.wizard ? ' because of your cloak of magic resistance'
+                            : '');
+
     /* src/insight.c:1799 — the magic cancellation factor from worn armor:
        "warded" / "guarded" / "protected" for mc 1..3 */
     const armpro = magic_negation(null);
     if (armpro > 0) {
         const mc_types = ['', 'warded', 'guarded', 'protected'];
         you_are(mc_types[Math.min(armpro, 3)]);
+    }
+
+    /* src/insight.c:1909 — Luck; the zero line is wizard-mode only */
+    const luck = (game.u.uluck ?? 0) + (game.u.moreluck ?? 0);
+    if (luck) {
+        const ltmp = Math.abs(luck);
+        let lbuf = `${ltmp >= 10 ? 'extremely ' : ltmp >= 5 ? 'very ' : ''}${
+            luck < 0 ? 'un' : ''}lucky`;
+        if (game.wizard)
+            lbuf += ` (${luck})`;
+        you_are(lbuf);
+    } else if (game.wizard) {
+        enl_msg('Your luck ', 'is', 'was', ' zero', '');
     }
 
     if (u.ugangr) {

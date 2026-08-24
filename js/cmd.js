@@ -892,6 +892,19 @@ export async function rhack(key) {
 
     game.cmd_key = ch0;
 
+    /* src/options.c:7669 bind_key() — a BIND=key:command line replaces the
+       key's default binding. The dispatch chain below is keyed by each
+       command's DEFAULT key, so translating the bound key to that default
+       reaches the same function C rebinds to. */
+    {
+        const boundname = game.rc_key_bindings?.[ch0];
+        if (boundname !== undefined) {
+            const e = extcmdlist.find((x) => x.ef_txt === boundname);
+            if (e && e.key)
+                ch0 = String.fromCharCode(e.key);
+        }
+    }
+
     /* src/cmd.c:1518 do_run_west() and friends — a SHIFTED direction letter
        is the run form of the move: set_move_cmd(dir, 1) puts context.run = 1
        and the same domove/moveloop machinery carries the hero until

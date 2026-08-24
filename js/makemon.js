@@ -35,7 +35,11 @@ import { COLNO, ROWNO } from './const.js';
 import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
          amorphous, throws_rocks, haseyes } from './mondata.js';
 import { is_vampshifter } from './monst.js';
-import { t_at, is_pool, is_lava, m_in_air } from './mon.js';
+import { t_at, is_pool, is_lava, m_in_air, resists_ston } from './mon.js';
+import { touch_petrifies } from './mondata.js';
+import { can_hide_under_obj } from './monmove.js';
+import { couldsee } from './vision.js';
+import { is_pit, OBJ_FLOOR } from './const.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U, GP_CHECKSCARY, GP_AVOID_MONPOS, MM_IGNORELAVA,
     IS_WATERWALL, IS_ALTAR, Is_waterlevel } from './const.js';
@@ -1122,9 +1126,57 @@ function mkobj_at(oclass, x, y, artif) {
     return otmp;
 }
 
-// src/mon.c hideunder() — positional only during mklev (seeit is 0), no draw.
+// src/mon.c:4726 hideunder() — try to hide the monster at its own spot.
+// No draws; the messages need seeit, which is 0 during mklev. This was a
+// stub that always set mundetected = 0, so a swamp snake created over its
+// starter object stood in plain sight where C's is hidden.
 export function hideunder(mtmp) {
-    mtmp.mundetected = 0;
+    let undetected = false;
+    const x = mtmp.mx, y = mtmp.my;
+    const ptr = game.mons[mtmp.mnum];
+    let t2;
+
+    if (mtmp === game.u.ustuck) {
+        /* undetected==FALSE; can't hide if holding you or held by you */
+    } else if (mtmp.mtrapped
+               || ((t2 = t_at(x, y)) != null && !is_pit(t2.ttyp))) {
+        /* undetected==FALSE; can't hide while trapped or on/in/under
+           any non-pit trap when not trapped */
+    } else if (ptr.mlet === MONSYMS.S_EEL) {
+        /* aquatic creatures only hide under water, not under objects */
+        undetected = (is_pool(x, y) && !Is_waterlevel(game.u.uz)
+                      && (!game.u.uprops?.UNDERWATER || !couldsee(x, y)));
+    } else if ((ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0 /* hides_under */) {
+        /* hider-underers only hide under objects */
+        const chain = (game.level?.objects || []).filter(
+            (o) => o.ox === x && o.oy === y
+                && (o.where === undefined || o.where === OBJ_FLOOR));
+        let oi = 0;
+        if (chain.length
+            && can_hide_under_obj(chain[0])
+            /* pets won't hide under a cursed item or an item of any BUC
+               state that shares a pile with one or more cursed items */
+            && (!mtmp.mtame || !chain.some((o) => o.cursed))
+            /* aquatic creatures don't reach here; other swimmers
+               shouldn't hide beneath underwater objects */
+            && !(is_pool(x, y) || is_lava(x, y))) {
+            /* most monsters won't hide under a cockatrice corpse but they
+               can hide under a pile containing more than just such corpses */
+            if (!resists_ston(mtmp))
+                while (oi < chain.length
+                       && chain[oi].otyp === ONAMES.CORPSE
+                       && touch_petrifies(game.mons[chain[oi].corpsenm]))
+                    oi++;
+            if (oi < chain.length)
+                undetected = true;
+        }
+    }
+
+    const oldundetctd = !!mtmp.mundetected;
+    mtmp.mundetected = undetected ? 1 : 0;
+    if (undetected !== oldundetctd)
+        newsym(x, y);
+    return undetected;
 }
 
 // The remaining makemon() callees all draw, and none can be reached by a

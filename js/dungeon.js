@@ -595,6 +595,20 @@ export function init_dungeons() {
     game.tower_dnum = dname_to_dnum("Vlad's Tower");
     game.tutorial_dnum = dname_to_dnum('The Tutorial');
 
+    /* src/dungeon.c:1171 — one special fixup for the dummy surface level:
+       the whole reason for having it is to make the Plane of Earth sit at
+       depth -1 instead of 0, so shift the endgame dungeon up one. Without
+       this the ^V overview lists the Planes one level too deep. */
+    {
+        const x = find_level('dummy');
+        if (x) {
+            const i = x.dlevel.dnum;
+            const dgn = game.dungeons[i];
+            if (dgn.num_dunlevs > 1 - dgn.depth_start)
+                dgn.depth_start -= 1;
+        }
+    }
+
     init_castle_tune();
 
     game.proto_dungeon = pd;

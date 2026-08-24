@@ -19,7 +19,27 @@ five general fixes in a row:
   dog_move post-goal, and mon_allowflags (daad250). seed0004's hero
   wears a ring of conflict from ~turn 340.
 
-UPDATE (lichen thread, precise): head 10377 (10421 matched), step 286
+UPDATE (lichen thread SOLVED-DOWN-TO-ONE-CALL, continue here): the
+extra ours-draw at 10377 is a resist_conflict rnd(20) fired by dochug
+PHASE FOUR for the PONY's SECOND action of turn ~356. Established
+facts, all instrumented: C's lichen never acts the whole session (its
+rn2(12)<1 grant never hits; C DOCHUG prints show only m100); C's pony
+runs TWO dochugs that turn; the second ends DRAW-FREE after its
+distfleeck (10376) — its dog_move must exit with MMOVE_DONE so C's
+phase-four gate `status != MMOVE_DONE && (!mpeaceful || (Conflict &&
+!resist_conflict))` never evaluates the roll. OURS: the same second
+action's dog_move returns NOTHING/MOVED draw-free, phase four
+evaluates, and the tame pony (mpeaceful) reaches the conflict roll.
+FIND: which draw-free dog_move exit returns MMOVE_DONE in C for a pet
+whose first action already ran (the `after` argument? dog_invent
+mon_offmap? pet_ranged_attk MMOVE_DONE?) — instrument C dog_move's
+return value for m100 at t355-357 and mirror it. After that the t357
+grant flip (our lichen wrongly gets 12 from the shifted raw) heals
+itself. Recorder still has DOCHUG/L158/ROSTER/GRANT prints — REVERT
+nethack-c/recorder/src (allmain.c monmove.c mon.c dogmove.c) and
+rebuild+reinstall before recording anything real.
+
+UPDATE (lichen thread, precise — superseded by the above): head 10377 (10421 matched), step 286
 ('r' finishing the conflict-ring put-on), turn 354. Sequence: pony's
 dog action draws 10370-75, then 10376 distfleeck = the LICHEN m158's
 dochug. C's lichen dochug ends there draw-free (next C call is the

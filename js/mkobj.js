@@ -51,6 +51,7 @@ export const SPBOOK_no_NOVEL = -OCLASSES.SPBOOK_CLASS;
 const NON_PM = -1;
 // include/hack.h:1189-1200 — corpse/statue gender is stored in obj.spe.
 const CORPSTAT_INIT = 0x08;
+const CORPSTAT_SPE_VAL = 0x07;
 const CORPSTAT_FEMALE = 1, CORPSTAT_MALE = 2, CORPSTAT_NEUTER = 3;
 // include/hack.h:1404-1406
 const TAINT_AGE = 50, TROLL_REVIVE_CHANCE = 37, ROT_AGE = 250;
@@ -1126,6 +1127,49 @@ export function special_corpse(num) {
 }
 
 // src/mkobj.c:1976 set_corpsenm()
+// src/mkobj.c:2148 mkcorpstat() — a corpse or statue, optionally carrying a
+// dead monster's traits. The level-generation callers pass a fixed spot and
+// no monster; <0,0> means random placement via rloco().
+export function mkcorpstat(objtype, mtmp, ptr, x, y, corpstatflags) {
+    const init = (corpstatflags & CORPSTAT_INIT) !== 0;
+    let otmp;
+
+    /* C passes &mons[mndx]; our callers pass the index (NON_PM = C's NULL) */
+    if (typeof ptr === 'number')
+        ptr = (ptr >= 0) ? game.mons[ptr] : null;
+
+    if (x === 0 && y === 0) {
+        otmp = mksobj(objtype, init, false);
+        note_unported_obj('mkcorpstat:rloco');
+    } else {
+        otmp = mksobj_at(objtype, x, y, init, false);
+    }
+    /* record gender and 'historic statue' in overloaded enchantment field */
+    otmp.spe = corpstatflags & CORPSTAT_SPE_VAL;
+
+    if (mtmp) {
+        /* save_mtraits() keeps the individual's stats with the remains */
+        note_unported_obj('mkcorpstat:save_mtraits');
+        if (!ptr)
+            ptr = mtmp.data;
+    }
+
+    /* override mkobjs()'s initialization of a random monster type */
+    if (ptr) {
+        const old_corpsenm = otmp.corpsenm;
+
+        otmp.corpsenm = ptr.pmidx ?? game.mons.indexOf(ptr);
+        otmp.owt = weight(otmp);
+        if (otmp.otyp === ONAMES.CORPSE
+            && (special_corpse(old_corpsenm)
+                || special_corpse(otmp.corpsenm))) {
+            /* obj_stop_timers + start_corpse_timeout */
+            start_corpse_timeout(otmp);
+        }
+    }
+    return otmp;
+}
+
 // src/mkobj.c:2227 mk_tt_object() — a corpse or statue named for a player
 // from the scoreboard.
 //
@@ -1170,6 +1214,10 @@ export function set_corpsenm(obj, id) {
     switch (obj.otyp) {
     case ONAMES.CORPSE:
         start_corpse_timeout(obj);
+        /* src/mkobj.c:1351 — the corpse takes the SPECIES' weight; without
+           this an orc corpse keeps the 400 base CORPSE weight and a pet's
+           can_carry() load check passes where C's fails */
+        obj.owt = weight(obj);
         break;
     case ONAMES.EGG:
         /* src/mkobj.c:1360 — the hatch-decision loop DRAWS one rnd(i) per

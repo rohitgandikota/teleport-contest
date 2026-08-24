@@ -1727,6 +1727,53 @@ export function is_safemon(mon) {
               && !game.u.uprops?.STUNNED);
 }
 
+// src/display.c:258 map_background() — remember and (optionally) show the
+// background glyph for one cell, with none of magic mapping's dark-room
+// corrections. premap_detect() sets waslit first, so the plain form is what
+// the sokoban pre-map needs.
+export function map_background(x, y, show) {
+    const loc = game.level?.at(x, y);
+    if (!loc) return;
+    const tg = terrain_glyph(loc, x, y);
+    if (game.level?.flags?.hero_memory)
+        loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
+                                 glyph: tg.glyph
+                                     ?? { kind: 'cmap', cmap: tg.cmap } };
+    if (show)
+        show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
+                        tg.glyph ?? { kind: 'cmap', cmap: tg.cmap });
+}
+
+// src/display.c:295 map_object() — remember and (optionally) show one
+// object's glyph at its own location.
+export function map_object(obj, show) {
+    const x = obj.ox, y = obj.oy;
+    const loc = game.level?.at(x, y);
+    if (!loc) return;
+    const og = floor_object_glyph(obj, x, y);
+    if (game.level?.flags?.hero_memory)
+        loc.remembered_glyph = { ch: og.ch, color: og.color, decgfx: og.dec,
+                                 glyph: og.glyph
+                                     ?? { kind: 'cmap', cmap: og.cmap } };
+    if (show)
+        show_glyph_cell(x, y, og.ch, og.color, og.dec, 0,
+                        og.glyph ?? { kind: 'cmap', cmap: og.cmap });
+}
+
+// src/display.c:276 map_trap() — remember and (optionally) show one trap.
+export function map_trap(trap, show) {
+    const x = trap.tx, y = trap.ty;
+    const loc = game.level?.at(x, y);
+    if (!loc) return;
+    const tg = trap_glyph(trap);
+    if (game.level?.flags?.hero_memory)
+        loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: !!tg.dec,
+                                 glyph: { kind: 'cmap', cmap: tg.cmap } };
+    if (show)
+        show_glyph_cell(x, y, tg.ch, tg.color, !!tg.dec, 0,
+                        { kind: 'cmap', cmap: tg.cmap });
+}
+
 // src/display.c:233 magic_map_background() — write the true terrain into map
 // memory for one cell, with the dark-cell corrections: an unlit unseen room
 // floor is remembered as NOTHING (dark rooms stay blank on a magic map) and

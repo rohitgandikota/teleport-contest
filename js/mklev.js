@@ -9,6 +9,7 @@ import { game } from './gstate.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import {
     mkobj, mksobj, next_ident, blessorcurse, special_corpse, start_corpse_timeout,
+    mkcorpstat,
 } from './mkobj.js';
 import {
     rndmonnum, rndmonnum_adj, makemon, mkclass, monsndx, level_difficulty,
@@ -25,7 +26,7 @@ import { sgn } from './hacklib.js';
 import { set_wall_state } from './display.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
-import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, reset_xystart_size } from './sp_lev.js';
+import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, sp_lev_wire_roamer, reset_xystart_size } from './sp_lev.js';
 import { walkfrom, mkmaze_wire_mklev } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
@@ -332,31 +333,10 @@ function add_to_buried(otmp) {
     (game.level.buriedobjs ||= []).push(otmp);
 }
 function dealloc_obj(otmp) { /* stub */ }
-// set_corpsenm stub
-function set_corpsenm(otmp, pm) { /* stub */ }
 
-// mkcorpstat stub
-// src/mkobj.c:2060 mkcorpstat() — make a corpse or statue.
-//
-// `pm` is a monster index or null. The species draw is NOT conditional on pm:
-// mksobj() picks a random one internally whenever init is set, and mkcorpstat
-// then overwrites it. Gating the draw on `pm === null`, as this used to, loses
-// a whole rndmonst_adj() block from the stream.
-export function mkcorpstat(objtyp, mtmp, pm, x, y, corpstatflags) {
-    const init = (corpstatflags & CORPSTAT_INIT) !== 0;
-    const otmp = mksobj_at(objtyp, x, y, init, false);
-
-    otmp.spe = (corpstatflags & CORPSTAT_SPE_VAL);
-
-    if (pm !== null && pm !== undefined && pm !== NON_PM) {
-        const old_corpsenm = otmp.corpsenm;
-        otmp.corpsenm = pm;
-        if (otmp.otyp === CORPSE
-            && (special_corpse(old_corpsenm) || special_corpse(otmp.corpsenm)))
-            start_corpse_timeout(otmp);
-    }
-    return otmp;
-}
+/* mkcorpstat lives in mkobj.js (src/mkobj.c:2148); re-exported for the
+   existing importers that reach it through this module */
+export { mkcorpstat };
 
 
 // src/trap.c:508 mk_trap_statue() — the statue that sits on a STATUE_TRAP.
@@ -851,8 +831,9 @@ sp_lev_wire_mklev({ mkstairs, makecorridors, wallification,
                     mkgold: (amt, x, y) => mkgold(amt, x, y),
                     maketrap });
 sp_lev_wire_walkfrom(walkfrom);
-mkmaze_wire_mklev({ mkstairs, place_branch });
-import('./priest.js').then(m => sp_lev_wire_priest(m.priestini));
+mkmaze_wire_mklev({ mkstairs, place_branch, wallification });
+import('./priest.js').then(m => { sp_lev_wire_priest(m.priestini);
+                                  sp_lev_wire_roamer(m.mk_roamer); });
 
 // C ref: mklev.c makerooms()
 async function makerooms() {
@@ -1832,8 +1813,8 @@ function makecorridors() {
 // Room helper functions
 // ============================================================
 
-function somex(croom) { return rn1(croom.hx - croom.lx + 1, croom.lx); }
-function somey(croom) { return rn1(croom.hy - croom.ly + 1, croom.ly); }
+export function somex(croom) { return rn1(croom.hx - croom.lx + 1, croom.lx); }
+export function somey(croom) { return rn1(croom.hy - croom.ly + 1, croom.ly); }
 
 export function somexy(croom, c) {
     /* src/mkroom.c:744 — an IRREGULAR room is not a rectangle, so a raw
@@ -2146,6 +2127,7 @@ export function place_branch(branchp, bx, by) {
     const mp = { x: bx | 0, y: by | 0 };
     if (!mp.x)
         find_branch_room(mp);
+
     if (mp.x > 0) {
         const on_end1 = (branchp.end1?.dnum === g.u?.uz?.dnum
             && branchp.end1?.dlevel === g.u?.uz?.dlevel);
@@ -2195,8 +2177,13 @@ function extend_spine(locale, wall_there, dx, dy) {
 function wall_cleanup(x1, y1, x2, y2) {
     const map = game.level;
     if (!map) return;
+    /* src/mkmaze.c:211 — squares inside the baalz bughack region keep
+       their free-standing walls (the insect's legs) */
+    const bh = game.bughack?.inarea;
     for (let x = x1; x <= x2; x++)
         for (let y = y1; y <= y2; y++) {
+            if (bh && x >= bh.x1 && x <= bh.x2 && y >= bh.y1 && y <= bh.y2)
+                continue;
             const loc = map.at(x, y);
             const typ = loc?.typ ?? STONE;
             if (!(IS_WALL(typ) && typ !== DBWALL)) continue;
@@ -2218,10 +2205,16 @@ export function fix_wall_spines(x1, y1, x2, y2) {
             const loc = map.at(x, y);
             const typ = loc?.typ ?? STONE;
             if (!(IS_WALL(typ) && typ !== DBWALL)) continue;
+            /* src/mkmaze.c:262 — inside the baalz bughack region the
+               neighbor test is iswall(), not iswall_or_stone() */
+            const bh2 = game.bughack?.inarea;
+            const loc_f = (bh2 && x >= bh2.x1 && x <= bh2.x2
+                           && y >= bh2.y1 && y <= bh2.y2)
+                          ? isWallTile : isWallOrStone;
             const locale = [
-                [isWallOrStone(x-1,y-1), isWallOrStone(x-1,y), isWallOrStone(x-1,y+1)],
-                [isWallOrStone(x,y-1), 0, isWallOrStone(x,y+1)],
-                [isWallOrStone(x+1,y-1), isWallOrStone(x+1,y), isWallOrStone(x+1,y+1)],
+                [loc_f(x-1,y-1), loc_f(x-1,y), loc_f(x-1,y+1)],
+                [loc_f(x,y-1), 0, loc_f(x,y+1)],
+                [loc_f(x+1,y-1), loc_f(x+1,y), loc_f(x+1,y+1)],
             ];
             const bits = (extend_spine(locale, isWallTile(x,y-1), 0, -1) << 3)
                 | (extend_spine(locale, isWallTile(x,y+1), 0, 1) << 2)
@@ -2345,7 +2338,7 @@ function mktrap_victim(trap) {
             otmp.owt = weight(otmp);
             curse(otmp);
             place_object(otmp, x, y);
-            if (!g.level.at(x, y)?.lit)
+            if (!game.level.at(x, y)?.lit)
                 note_unported_lev('mktrap_victim:begin_burn');
         }
         break;
@@ -2388,9 +2381,11 @@ export function mktrap(num, mktrapflags, croom, tm) {
         do { kind = traptype_rnd(mktrapflags); } while (kind === NO_TRAP);
     }
 
-    const dungeon = game.dungeons?.[game.u?.uz?.dnum ?? 0];
-    const canFallThru = (game.u?.uz?.dlevel ?? 1) < (dungeon?.num_dunlevs ?? 1);
-    if (is_hole(kind) && !canFallThru)
+    /* src/mklev.c:2079 — the real Can_fall_thru: hardfloor levels (quest
+       start levels among others) turn a rolled hole/trapdoor into a
+       falling-rock trap BEFORE maketrap can spend hole_destination()'s
+       draw. The depth-only approximation this replaced missed hardfloor. */
+    if (is_hole(kind) && !Can_fall_thru(game.u.uz))
         kind = ROCKTRAP;
 
     if (tm) {

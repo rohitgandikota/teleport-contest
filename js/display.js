@@ -611,7 +611,7 @@ function covers_traps(x, y) {
 }
 
 // ── src/display.c:2302 back_to_glyph() — terrain to cmap index + colour ──
-function back_to_glyph(loc, x, y) {
+export function back_to_glyph(loc, x, y) {
     const typ = loc.typ;
     switch (typ) {
     case STONE:     return { ch: ' ', color: NO_COLOR, dec: false, cmap: CM.S_stone };

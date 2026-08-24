@@ -1237,8 +1237,9 @@ export async function domove() {
     game.kickedloc = { x: 0, y: 0 };
     /* gd.domove_succeeded & (DOMOVE_RUSH | DOMOVE_WALK): the move counts as
        taken when the hero's position actually changed */
-    if (game.u.ux !== ux1 || game.u.uy !== uy1)
+    if (game.u.ux !== ux1 || game.u.uy !== uy1) {
         await maybe_smudge_engr(ux1, uy1, game.u.ux, game.u.uy);
+    }
 }
 
 // src/hack.c:3020 maybe_smudge_engr()
@@ -1286,7 +1287,16 @@ async function domove_core() {
        does NOT move and the turn is still spent. */
     if (game.context.forcefight) {
         game.context.forcefight = 0;
-        note_unported_cmd('domove:forcefight attack');
+        const target = m_at(newx, newy);
+        if (!target) {
+            /* src/hack.c:2228 domove_fight_empty() — "harmlessly attack" */
+            const { domove_fight_empty } = await import('./hack.js');
+            await domove_fight_empty(newx, newy);
+        } else {
+            /* attacking a real monster this way needs do_attack routed
+               through the forcefight gate; recorded until then */
+            note_unported_cmd('domove:forcefight attack');
+        }
         game.context.move = 1;
         return;
     }

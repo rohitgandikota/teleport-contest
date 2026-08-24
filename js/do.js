@@ -26,6 +26,7 @@ import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
+import { can_reach_floor } from './pickup.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
    A dynamic import() here hits the same partially-initialised module the
@@ -261,6 +262,15 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         };
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
+        /* src/save.c savelev() — leaving a Plane of Water/Air parks the
+           bubble/cloud list with the level (and frees the live copy) */
+        {
+            const { Is_waterlevel, Is_airlevel } = await import('./const.js');
+            if (Is_waterlevel(game.u.uz) || Is_airlevel(game.u.uz)) {
+                const { save_waterlevel } = await import('./mkmaze.js');
+                save_waterlevel();
+            }
+        }
         const { initrack } = await import('./track.js');
         initrack();
     }
@@ -332,6 +342,16 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             game.utpnt = st.utpnt;
             game.utrack = st.utrack.map(p => ({ x: p.x, y: p.y }));
         }
+        /* src/restore.c getlev() — a returned-to Plane of Water/Air
+           rebuilds its bubbles (mv_bubble(...,TRUE) per bubble, which on
+           the Air plane draws the rn2(6) cloud-speed gate like C) */
+        {
+            const { Is_waterlevel, Is_airlevel } = await import('./const.js');
+            if (Is_waterlevel(game.u.uz) || Is_airlevel(game.u.uz)) {
+                const { restore_waterlevel } = await import('./mkmaze.js');
+                await restore_waterlevel();
+            }
+        }
     } else {
         familiar_level = false;         /* src/do.c "new" is the inverse */
         game.visited_ledgers.add(ledger);
@@ -399,6 +419,20 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (collider)
         await u_collide_m(collider, m_at, mnexto);
 
+    /* src/do.c:1830 — initial movement of bubbles (Plane of Water) or
+       clouds (Plane of Air), or fumarole gas (Plane of Fire), just before
+       vision_recalc */
+    {
+        const { Is_waterlevel, Is_airlevel } = await import('./const.js');
+        if (Is_waterlevel(game.u.uz) || Is_airlevel(game.u.uz)) {
+            const { movebubbles } = await import('./mkmaze.js');
+            await movebubbles();
+        } else if (game.level.flags?.fumaroles) {
+            const { fumaroles } = await import('./mkmaze.js');
+            await fumaroles();
+        }
+    }
+
     /* src/do.c:1879 — arriving on a bones level a same-named hero died
        on gives the deja-vu message; rn2(4) picks it (index 3 is silent). */
     {
@@ -427,6 +461,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     vision_recalc(0);
     await docrt();
     await flush_screen(-1);
+
+    /* src/do.c:1858 — special levels can have a custom arrival message */
+    {
+    }
 
     /* src/do.c:1879 — special location arrival messages/events. Only the
        quest arm is wired; the endgame, Knox, Mines and Sokoban arms are
@@ -660,7 +698,17 @@ export async function drop(obj) {
     if (game.u.uswallow) {
         note_unported_do('drop:engulfed_branch');
     } else {
-        note_unported_do('drop:levitation_and_message');
+        /* src/do.c:747 — the sink-ring and can't-reach-floor (levitation)
+           arms come first; on the ordinary path the drop is announced
+           unless it lands on an altar (doaltarobj speaks there) */
+        if (!can_reach_floor(true)) {
+            note_unported_do('drop:levitation');
+        } else if (!IS_ALTAR(game.level.at(game.u.ux, game.u.uy)?.typ)
+                   && game.flags?.verbose !== false) {
+            const { You } = await import('./pline.js');
+            const { doname } = await import('./objnam.js');
+            await You(`drop ${await doname(obj)}.`);
+        }
     }
     obj.how_lost = LOST_DROPPED;
     await dropx(obj);

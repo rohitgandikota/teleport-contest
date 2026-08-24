@@ -2,6 +2,53 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-24 (later) — 16/44 passing; all 12 quests clean; planes agent in flight
+
+All pushed through 5ddac4f. Suite: 16/44 passing, ~292k RNG, ~3,700
+screens. hang-gate OK at every commit.
+
+New passes this stretch: seed0017 (askname + ^X autopickup), seed0398
+(earlier), seed0107 (#enhance + twoweap doname/insight), seed0015 (^X
+gender word rule), seed0060 (orc full gear knowledge), seed0013-rogue
+(drop message + pickup denials + domove_fight_empty), seed2600 37/38 and
+seed0501 26/28 and seed0200 39/40 at their serializer ceilings.
+
+ALL TWELVE role-quest reproducers replay 100% RNG-clean end-to-end
+(tools/gen-sessions/generated/quest-*.session.json). The unlocks:
+goodpos water/lava arms + goodpos_onscary; select_newcham_form's real
+rn1(SPECIAL_PM) fallback + accept_newcham_form; mon_animal_list 98
+entries (bit+bound were wrong); noveltitle; mk_mplayer + create_mplayers
+(js/mplayer.js) wired from sp_lev create_monster; m_initinv S_DEMON arm;
+quest_mon_represents_role Role_if form; Fake Delphi themeroom; subrooms
+take their own roomno (MAXNROFROOMS+1+slot) so somexy excludes them.
+
+KNOWN-UNFIXABLE frame class: menu headings whose leading spaces carry
+ATR_INVERSE ("    Name..." in spell/skill menus). The frozen serializer
+strips leading spaces by ch only, so their attr cannot round-trip.
+Costs one frame each in 2600/0501/0200-class sessions. Same family as
+seed2200 229/230 and seed0016 35/36.
+
+IN FLIGHT: endgame-planes agent (earth/air/fire/water/astral + bubbles
+machinery). It edits shared files (cmd.js maybe_adjust_hero_bubble,
+do.js deliver_splev_message, mkmaze.js, display.js) — the working tree
+is TRANSIENTLY BROKEN while it works; verify and commit via isolated
+worktrees (git hash-object -w + update-index --cacheinfo pattern, see
+5ddac4f). Its targets: seed0373 head 30067 (tour enters a plane there),
+seed0360 head 43164.
+
+Masked dog-goal family unchanged: 0004@5275, 0012@7227, 4500@7897,
+0002@6999, 0007@13399, 0014@4069, 0116@5556, 0030@12701. NOTES has the
+candidate-replay tool design. seed0360@43164 = one extra C rn2(5)
+distfleeck near the minetn digging window (movemon order/death,
+scratchpad/m360.mjs roster probe).
+
+Wide-reach fixes to keep in mind when debugging: wall colors per
+dungeon (display.js wall_color_here, recording-verified); newsym gates
+monsters on canspotmon with mimic-appearance arms; the comparator DEC
+subset (CMP_DEC_MAP) — do NOT widen to DEC_TO_UNICODE; describe_level
+status line (depth()/Home/planes); BIND= keys; per-dungeon d_level
+globals now published (game.astral_level etc.).
+
 ## 2026-08-24 (mid) — both level agents landed; askname; corpse weight
 
 All pushed through 4e33567. Suite: 12/44 passing, ~284,875 RNG /

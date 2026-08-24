@@ -2,6 +2,45 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-24 (late night) — 20/44; instrumented-recorder technique cracks the masked dog family
+
+All pushed through 77b299d. Suite: 20/44 passing. hang-gate OK at every
+commit. Passing adds this stretch: seed0373 (endgame ^X, weight_cap Air
+arm, Amulet-wish flush, adjabil source bits, from_what), seed1500
+(dark_room 5.0 default + S_darkroom memory identity — see NOTES).
+
+THE TECHNIQUE THAT CHANGED THE GAME: printf-instrument the recorder's C
+(nethack-c/recorder/src), rebuild (`make nethack` in src, then cp the
+binary over recorder/install/games/lib/nethackdir/nethack), distill a
+recipe from the shipped session, and read C's internal truth for the
+exact frames we replay. NOTES has the full protocol. ALWAYS revert the
+C edits and rebuild+reinstall after (done; tree is pristine).
+
+Fixed via that technique:
+- seed1500 (PASSES): pick_lock at a bare floor square consumes the turn
+  because feel_location rewrites memory S_room -> S_darkroom under 5.0's
+  dark_room default; the whole session was one turn of timing shift.
+- seed0004 head 5916 -> 9271: dog_move's STAY case returns MMOVE_MOVED
+  (dogmove.c:1356), so postmov runs mintrap on the square the pet
+  stands on — a pony camped on a seen bear trap draws the already-seen
+  rn2(4) dodge every stay-action. Plus dotrap's full preamble
+  (already-seen rn2(5) escape roll!), mons_see_trap, FORCEBUNGLE=0x04.
+
+NEXT on seed0004 (@9183, step 214): our hero kills a jackal one step
+early — C's jackal has 1 more hp at that moment. The hit/knockback
+draws match (mhitm_knockback rn2(6) at uhitm.c:5269), so an earlier
+damage-bookkeeping delta. Probe with rng_trace_sites
+(globalThis.__rng_trace_sites) and the instrumented recorder.
+
+Other live threads: light.c+region painting landed (planes-tour
+reproducer passes 122/122); seed0360@43769 same old distfleeck-window
+question, now attackable with the recorder technique; serializer
+ceilings unchanged (0016/0106/0200/0501/2200/2600).
+
+Debug seams now available: __dog_trace (dog goal/candidates/choice),
+__step_snapshot step:'*' (fire every step), __rng_trace_sites (tag our
+draws with js callers), __rng_probe_at, __cell_watch.
+
 ## 2026-08-24 (night) — 18/44; friday13 save/restore session passes; #terrain + getpos landed
 
 All pushed through 25282b2. Suite: 18/44 passing. hang-gate OK.

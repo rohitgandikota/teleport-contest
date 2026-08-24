@@ -828,7 +828,7 @@ function rnd_item_ineligible(mtmp) {
 
 // src/muse.c:1222 rnd_defensive_item() — the escape/heal item a monster is
 // born carrying.
-function rnd_defensive_item(mtmp) {
+export function rnd_defensive_item(mtmp) {
     const O = ONAMES;
     const difficulty = game.mons[monsndx(mtmp.data)].difficulty;
     let trycnt = 0;
@@ -878,7 +878,7 @@ function rnd_defensive_item(mtmp) {
 }
 
 // src/muse.c:2654 rnd_misc_item()
-function rnd_misc_item(mtmp) {
+export function rnd_misc_item(mtmp) {
     const O = ONAMES;
     const difficulty = game.mons[monsndx(mtmp.data)].difficulty;
 
@@ -1412,7 +1412,7 @@ function m_initthrow(mtmp, otyp, oquan) {
 }
 
 // src/muse.c:2035 rnd_offensive_item()
-function rnd_offensive_item(mtmp) {
+export function rnd_offensive_item(mtmp) {
     const O = ONAMES;
     const pm = mtmp.data;
     const difficulty = game.mons[monsndx(pm)].difficulty;

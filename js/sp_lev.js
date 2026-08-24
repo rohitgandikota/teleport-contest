@@ -9,6 +9,7 @@
 // itself.
 
 import { game } from './gstate.js';
+import { mk_mplayer } from './mplayer.js';
 import { get_level_extends, fix_wall_spines, stairway_add } from './mklev.js';
 import { selection_iterate, selection_new, selection_clone,
          selection_getpoint, selection_setpoint, selection_getbounds,
@@ -1583,8 +1584,8 @@ export function create_monster(m, croom) {
         }
         mtmp = mk_roamer_fn(pm, Amask2align_sp(amask), x, y, m.peaceful !== 0);
     } else if (m.id >= PMNAMES.PM_ARCHEOLOGIST && m.id <= PMNAMES.PM_WIZARD) {
-        note_unported('create_monster:mk_mplayer');
-        return null;
+        /* src/sp_lev.c:1986 — player-class monsters take the mplayer path */
+        mtmp = mk_mplayer(pm, x, y, false);
     } else {
         mtmp = makemon(pm, x, y, m.mm_flags);
     }

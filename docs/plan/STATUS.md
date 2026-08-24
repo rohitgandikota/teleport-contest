@@ -1,4 +1,39 @@
 # STATUS — live handoff board
+## 2026-08-24 (late): seed0004 PASSES — 21/44
+
+seed0004-feeding-pony is a full pass (12084/12084 RNG, 409/409 screens).
+The lichen thread's answer, for the record: our find_offensive stand-in
+returned true for a pony carrying apport junk, sending a MOVED pet into
+dochug phase four for a ghost resist_conflict roll (C stops moved
+no-ranged monsters at the MMOVE_MOVED case's `return 0`). After that:
+learnscroll was note_unported in scrolltele so the discover_object
+exercise(A_WIS) draw was missing; the pty line discipline keeps ICRNL,
+so the C binary NEVER sees 0x0D — a recorded RET is 0x0A = ^J = rush
+south (input.js translates now; seed0007 13399→15168, and its travel
+crash — nulled travelmap deref — is fixed with C's selection_*point
+null-guard semantics); a finished travel left context.run=8 which made
+the next plain walk RUN (movement now routes through the real
+set_move_cmd with C's domove_attempting guard); fightm() (mhitm.c:106)
++ the mon.c:1306 movemon gate were absent — under Conflict a monster
+may spend its action fighting a neighbor, and its head resist_conflict
+roll was the final missing draw. Screens then needed: is_swallow_sym in
+do_screen_description (DEC wall glyph doubles as swallow border),
+"#<name>: unknown extended command." from get_ext_cmd, doapply's real
+default arm ("Sorry, I don't know how to use that."), and ESC quitting
+a multi-page inventory menu.
+
+Recorder C tree still carries instrumentation (monmove.c DOCHUG/RC967/
+LKA windows, mon.c ROSTER/GRANT/LICH, attrib.c EXE+backtrace, dogmove.c
+RC1046/CGOAL/CCHOSE, teleport.c SCRTELE, allmain.c GRANT/ROSTER, uhitm
+DMG): REVERT + rebuild + reinstall before any real recording. Verify
+with: strings nethack | grep -cE "DOCHUG|RC967|CGOAL|SCRTELE|ROSTER".
+
+Next targets, in order of expected value: seed0009 (3591/3713, small
+tail), seed5006 (13814/13923), seed0016/0200/0501/2200/2600/0106 (the
+serializer-frame ceilings, known unfixable), then the masked family
+0002@6999 / 0014@4069 / 0030 / 0012 / 0116 with the instrumented-
+recorder protocol (NOTES has it), and seed0360@43785.
+
 
 *(newest entry first; keep the top entry current)*
 

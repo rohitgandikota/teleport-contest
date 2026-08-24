@@ -1,4 +1,30 @@
 # STATUS — live handoff board
+## 2026-08-24 (end of stretch): 21/44, screens 5120/11405
+
+Landed after the pristine-recorder rebuild: make_corpse's full
+special-case switch, the postmov D_ISOPEN constant fix (monsters were
+"opening" doors to CLOSED - worth +2960 on seed0006 and +2485 on
+seed0014, and it broke the long-parked 0014@4069 head), drinkfountain
+with dowaterdemon/dowaternymph.
+
+Per-session heads now: 0006@6660 (summonmu, mhitu.c:968 - the water
+demon's minion summon; js/minion.js exists untracked from an earlier
+stretch, check it before starting), 0014@6315, 0002@6999, 0012@7332,
+0030@14344, 0360@43164, 5006@13808 (dog/mtrack masked family),
+0007@15168, 5002, 0116, 0108, 0399, 0383@10358.
+
+Screen-only ceilings that are NOT rng bugs: wall_angle corners
+(seed0009 steps 29/40 - two cells each), the stale-status death frame
+(0009 step 62, needs real botl dirty-flag tracking), and the known
+serializer inverse-leading-space frames (0016 35/36, 0106 266/267,
+0200 39/40, 0501 26/28, 2200 229/230, 2600 37/38).
+
+The C recorder tree is CLEAN (rebuilt from patches). To instrument
+again: edit nethack-c/recorder/src/*.c, `make nethack` in that dir, cp
+to ../install/games/lib/nethackdir/nethack, run tools/gen-sessions/
+record.mjs FROM THE REPO ROOT, then `bash nethack-c/build-recorder.sh`
+to restore.
+
 ## 2026-08-24 (night): recorder tree pristine again; drift-tool note
 
 The C recorder tree is REVERTED: bash nethack-c/build-recorder.sh

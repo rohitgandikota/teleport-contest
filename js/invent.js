@@ -1307,6 +1307,19 @@ export async function doprwep() {
     return ECMD_OK;
 }
 
+
+// src/invent.c:2963 dispinv_with_action() — one item prints as a pline
+// ("c - an uncursed +1 leather armor (being worn)."), more open the menu.
+async function dispinv_with_action(objs) {
+    if (objs.length === 1) {
+        const o = objs[0];
+        await pline(`${o.invlet} - ${doname(o)}.`);
+    } else {
+        note_unported_invent('dispinv_with_action:menu');
+    }
+    return ECMD_OK;
+}
+
 // src/invent.c:4601 doprarm() — the '[' command.
 export async function doprarm() {
     const lets = [W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU]
@@ -1316,7 +1329,7 @@ export async function doprarm() {
         /* noarmor(TRUE) */
         await You('are not wearing any armor.');
     } else {
-        note_unported_invent('doprarm:dispinv_with_action');
+        return await dispinv_with_action(lets);
     }
     return ECMD_OK;
 }
@@ -1326,7 +1339,8 @@ export async function doprring() {
     if (!worn(W_RINGL) && !worn(W_RINGR))
         await You('are not wearing any rings.');
     else
-        note_unported_invent('doprring:dispinv_with_action');
+        return await dispinv_with_action(
+            [worn(W_RINGL), worn(W_RINGR)].filter(Boolean));
     return ECMD_OK;
 }
 
@@ -1335,7 +1349,7 @@ export async function dopramulet() {
     if (!worn(W_AMUL))
         await You('are not wearing an amulet.');
     else
-        note_unported_invent('dopramulet:dispinv_with_action');
+        return await dispinv_with_action([worn(W_AMUL)]);
     return ECMD_OK;
 }
 

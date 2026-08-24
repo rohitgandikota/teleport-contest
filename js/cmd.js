@@ -652,31 +652,8 @@ export async function doextcmd() {
         const { enhance_weapon_skill } = await import('./weapon.js');
         return await enhance_weapon_skill();
     }
-    if (name === 'terrain') {
-        /* src/pager.c doterrain() — the "View which?" menu; only the menu
-           and its cancel are reachable (the map views record) */
-        const {
-            tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu,
-            tty_add_menu, tty_end_menu, tty_select_menu, NHW_MENU,
-        } = await import('./tty/wintty.js');
-        const { NO_COLOR } = await import('./terminal.js');
-        const { MENU_ITEMFLAGS_SELECTED } = await import('./const.js');
-        const win = tty_create_nhwindow(NHW_MENU);
-        tty_start_menu(win, 0);
-        tty_add_menu(win, null, 1, 'a', 0, 0, NO_COLOR,
-                     'known map without monsters, objects, and traps',
-                     MENU_ITEMFLAGS_SELECTED);
-        tty_add_menu(win, null, 2, 'b', 0, 0, NO_COLOR,
-                     'known map without monsters and objects', 0);
-        tty_add_menu(win, null, 3, 'c', 0, 0, NO_COLOR,
-                     'known map without monsters', 0);
-        tty_end_menu(win, 'View which?');
-        const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
-        tty_destroy_nhwindow(win);
-        if (picks && picks.length)
-            (game.unported ||= new Set()).add('cmd:doextcmd:terrain_view');
-        return ECMD_OK;
-    }
+    if (name === 'terrain')
+        return await doterrain();
     if (name === 'adjust') {
         const { doorganize } = await import('./invent.js');
         return await doorganize();
@@ -808,6 +785,82 @@ export async function doextcmd() {
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;
+}
+
+// src/cmd.c:1098 doterrain() — #terrain command, show known map, inspired by
+// crawl's '|' command. Default key is DEL (cmd.c:1895, '\177').
+export async function doterrain() {
+    const {
+        tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu,
+        tty_add_menu, tty_end_menu, tty_select_menu, tty_get_nhwindow,
+        NHW_MENU,
+    } = await import('./tty/wintty.js');
+    const { NO_COLOR } = await import('./terminal.js');
+    const { MENU_ITEMFLAGS_SELECTED } = await import('./const.js');
+    const { recalc_mapseen } = await import('./dungeon.js');
+    const { reveal_terrain } = await import('./detect.js');
+    const { TER_MAP, TER_TRP, TER_OBJ, TER_FULL } = await import('./const.js');
+
+    /* this used to be done each time vision was recalculated, so would
+       always be up to date (hopefully); now we do it on demand instead */
+    recalc_mapseen();
+
+    /* normal play: choose between known map without mons, obj, and traps,
+       or known map without mons and objs, or known map without mons;
+       explore mode: normal choices plus full map;
+       wizard mode: those plus the levl[][].typ dumps */
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, 0);
+    tty_add_menu(win, null, 1, 'a', 0, 0, NO_COLOR,
+                 'known map without monsters, objects, and traps',
+                 MENU_ITEMFLAGS_SELECTED);
+    tty_add_menu(win, null, 2, 'b', 0, 0, NO_COLOR,
+                 'known map without monsters and objects', 0);
+    tty_add_menu(win, null, 3, 'c', 0, 0, NO_COLOR,
+                 'known map without monsters', 0);
+    if (game.discover || game.wizard) {
+        tty_add_menu(win, null, 4, 'd', 0, 0, NO_COLOR,
+                     'full map without monsters, objects, and traps', 0);
+        if (game.wizard) {
+            tty_add_menu(win, null, 5, 'e', 0, 0, NO_COLOR,
+                         'internal levl[][].typ codes in base-36', 0);
+            tty_add_menu(win, null, 6, 'f', 0, 0, NO_COLOR,
+                         'legend of base-36 levl[][].typ codes', 0);
+        }
+    }
+    tty_end_menu(win, 'View which?');
+
+    const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
+    const cancelled = !!tty_get_nhwindow(win)?.cancelled;
+    tty_destroy_nhwindow(win);
+    /* n < 0: ESC; n == 0: preselected entry explicitly toggled off;
+       n == 1: preselected chosen via <space>|<enter>;
+       n == 2: another entry explicitly chosen, so skip preselected one */
+    let which = cancelled ? -1 : (picks.length === 0) ? 1 : picks[0];
+    if (picks.length > 1 && which === 1)
+        which = picks[1];
+
+    switch (which) {
+    case 1: /* known map */
+        await reveal_terrain(TER_MAP);
+        break;
+    case 2: /* known map with known traps */
+        await reveal_terrain(TER_MAP | TER_TRP);
+        break;
+    case 3: /* known map with known traps and objects */
+        await reveal_terrain(TER_MAP | TER_TRP | TER_OBJ);
+        break;
+    case 4: /* full map */
+        await reveal_terrain(TER_MAP | TER_FULL);
+        break;
+    case 5: /* map internals: wiz_map_levltyp() */
+    case 6: /* internal details: wiz_levltyp_legend() */
+        note_unported_cmd('doterrain:wiz_levltyp');
+        break;
+    default:
+        break;
+    }
+    return ECMD_OK; /* no time elapses */
 }
 
 // src/apply.c:1847 dojump() -> jump(0). The jump itself needs the movement and
@@ -1293,6 +1346,10 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — ':' is dolook. It returns ECMD_OK when not
         // blind, so looking does not consume a turn.
         game.context.move = ((await dolook()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x7f') {
+        /* src/cmd.c:1895 cmdlist — \177 == <del> aka <delete> aka <rubout>
+           is the default key for #terrain */
+        game.context.move = ((await doterrain()) === ECMD_TIME ? 1 : 0);
     } else if (KNOWN_UNPORTED.has(ch)) {
         // C recognises these keys and does real work for them; we have not
         // ported that work yet. Emitting "Unknown command" here would be
@@ -1746,10 +1803,11 @@ async function show_attributes() {
     tty_end_menu(win, null);
     await tty_display_nhwindow(win);
 
-    /* dmore() blocks once per page */
-    await nhgetch();
+    /* dmore() blocks once per page and accepts ONLY the quitchars: any
+       other key (a ^O pressed early) is swallowed while the window stays */
+    await xwaitforspace(' \r\n\x1b');
     while (tty_next_page(win))
-        await nhgetch();
+        await xwaitforspace(' \r\n\x1b');
 
     tty_destroy_nhwindow(win);
     await docrt();

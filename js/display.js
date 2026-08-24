@@ -31,6 +31,7 @@ import {
 } from './const.js';
 import { engr_at } from './engrave.js';
 import { nhgetch } from './input.js';
+import { update_lastseentyp } from './dungeon.js';
 import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
 import { PMNAMES } from './monst_data.js';
 import { showsym } from './symbols.js';
@@ -595,7 +596,7 @@ const trap_cmap_color = {
 };
 
 // include/rm.h:497 trap_to_defsym() — S_arrow_trap + ttyp - 1.
-function trap_glyph(trap) {
+export function trap_glyph(trap) {
     const cmap = CM.S_arrow_trap + trap.ttyp - 1;
     const sym = showsym(cmap);
     return { ch: sym ? sym.ch : '^', color: trap_cmap_color[cmap] ?? NO_COLOR,
@@ -604,7 +605,7 @@ function trap_glyph(trap) {
 
 // include/display.h:218 covers_objects() / :222 covers_traps() — a pool or
 // lava square hides what is under it.
-function covers_traps(x, y) {
+export function covers_traps(x, y) {
     const loc = game.level?.at(x, y);
     return !!loc && (loc.typ === POOL || loc.typ === MOAT || loc.typ === WATER
                      || loc.typ === LAVAPOOL || loc.typ === LAVAWALL);
@@ -973,6 +974,7 @@ export function newsym(x, y) {
         loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                                  glyph: tg.glyph
                                      ?? { kind: 'cmap', cmap: tg.cmap } };
+        update_lastseentyp(x, y);   /* _map_location(x, y, !see_self) */
         return;
     }
 
@@ -994,6 +996,7 @@ export function newsym(x, y) {
                                      decgfx: memg.dec,
                                      glyph: memg.glyph
                                          ?? { kind: 'cmap', cmap: memg.cmap } };
+        update_lastseentyp(x, y);   /* _map_location(x, y, 1) */
 
         const mon = (game.level?.monsters || [])
                         .find(m => m.mx === x && m.my === y && m.mhp > 0
@@ -1451,7 +1454,7 @@ export function feel_location(x, y) {
     /* map_background()/map_location() record the terrain type the hero
        has last seen here (svl.lastseentyp); callers compare it to learn
        whether feeling the spot taught the hero anything. */
-    loc.lastseentyp = loc.typ;
+    update_lastseentyp(x, y);
     newsym(x, y);
 }
 
@@ -1834,6 +1837,7 @@ export function map_background(x, y, show) {
     if (show)
         show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, 0,
                         tg.glyph ?? { kind: 'cmap', cmap: tg.cmap });
+    update_lastseentyp(x, y);   /* src/display.c:257 */
 }
 
 // src/display.c:295 map_object() — remember and (optionally) show one

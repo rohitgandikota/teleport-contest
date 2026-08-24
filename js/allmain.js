@@ -164,6 +164,32 @@ export async function newgame() {
         if (dorecover()) {
             l_nhcore_init();
             await docrt();
+            /* src/allmain.c:914 welcome(FALSE) — align and gender words
+               appear only when changed since chargen; neither can change
+               yet, so the greeting is race + role. */
+            {
+                const currentgend = g.flags.female ? 1 : 0;
+                const role_name = (currentgend && g.urole.name.f)
+                    ? g.urole.name.f : g.urole.name.m;
+                await pline(`${Hello(null)} ${g.plname}, the ${g.urace.adj} `
+                            + `${role_name}, welcome back to NetHack!`);
+            }
+            /* src/allmain.c:56 moveloop_preamble() — the real-world side
+               effects fire on restore too; the restore rc pins a different
+               datetime (full moon) exactly to exercise this */
+            g.flags.moonphase = phase_of_the_moon();
+            if (g.flags.moonphase === FULL_MOON) {
+                await You('are lucky!  Full moon tonight.');
+                change_luck(1);
+            } else if (g.flags.moonphase === NEW_MOON) {
+                await pline('Be careful!  New moon tonight.');
+            }
+            g.flags.friday13 = friday_13th();
+            if (g.flags.friday13) {
+                await pline('Watch out!  Bad things can happen on '
+                            + 'Friday the 13th.');
+                change_luck(-1);
+            }
             return;
         }
     }

@@ -1,4 +1,30 @@
 # STATUS — live handoff board
+## 2026-08-24 (later): 21/44 + death-tail machinery
+
+seed0004 PASSES (12084/12084, 409/409). seed0009 full RNG (3713/3713,
+70/73 screens; leftovers are wall_angle corners at steps 29/40 and one
+stale-status frame at 62 needing true botl dirty-flag tracking).
+Landed since the last entry: fightm + the movemon Conflict gate, the
+C-shaped run/attempting lifecycle in cmd.js (set_move_cmd guard, rhack
+head resets, domove_succeeded gating maybe_smudge), the pty ICRNL
+translation (code-point compare!), lspo_door coord form, tutorial
+nh.gamestate stash/restore, drown/lava_effects, the swim guard
+(paranoid_confirm defaults include swim), goto_level tail pickup(1),
+the whole death-disclosure tail (final-tense enlightenment, conduct,
+overview with resting-place lines, topten outheader/outentry, killer
+verbs), describe_decor with prev_decor, disclose rc gating ('-' skips
+prompts, keyless like C: that was seed5006's 13814->11087 regression,
+now healed), data-backed NHW windows render text-style per
+wintty.c:1943.
+
+Recorder C tree STILL instrumented (monmove/mon/attrib/dogmove/teleport/
+hack windows) — revert+rebuild before any real recording; verify with
+strings nethack | grep -cE "DOCHUG|RC967|CGOAL|SCRTELE|ROSTER|LKA|EXE".
+
+Next: seed5006 tail (13814/13923, ~109 calls — look at the seg2 head),
+seed0399 (10232/11409), seed0006 (3198/6736), then the masked family
+with the instrumented-recorder protocol.
+
 ## 2026-08-24 (late): seed0004 PASSES — 21/44
 
 seed0004-feeding-pony is a full pass (12084/12084 RNG, 409/409 screens).

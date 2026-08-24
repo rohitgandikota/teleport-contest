@@ -22,7 +22,7 @@ import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal,
          tunnels, nohands as nohands_mm,
          verysmall as verysmall_mm } from './mondata.js';
-import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame } from './const.js';
+import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame, NOTONL } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
 import { You_see, You_hear } from './pline.js';

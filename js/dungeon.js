@@ -1087,6 +1087,21 @@ export function dungeon_wire_stairway_at(fn) { stairway_at_fn = fn; }
 
 /* ==== mapseen — the #overview database (src/dungeon.c:2755+) ==== */
 
+// src/dungeon.c:3410 endgamelevelname() — the name of an endgame level by
+// its (negative) depth; topten.c does something similar.
+export function endgamelevelname(indx) {
+    let planename = null;
+    switch (indx) {
+    case -5: return 'Astral Plane';
+    case -4: planename = 'Water'; break;
+    case -3: planename = 'Fire'; break;
+    case -2: planename = 'Air'; break;
+    case -1: planename = 'Earth'; break;
+    default: break;
+    }
+    return planename ? `Plane of ${planename}` : `unknown plane #${indx}`;
+}
+
 // src/dungeon.c:2927 update_lastseentyp() — the terrain type the hero last
 // saw at x,y. C calls this from map_background() and _map_location() on
 // every mapping, so it stays current for any square being displayed from

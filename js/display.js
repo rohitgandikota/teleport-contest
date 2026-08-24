@@ -32,6 +32,7 @@ import {
 import { engr_at } from './engrave.js';
 import { visible_region_at } from './region.js';
 import { is_pool_or_lava } from './dbridge.js';
+import { is_pool } from './mon.js';
 import { nhgetch } from './input.js';
 import { update_lastseentyp } from './dungeon.js';
 import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
@@ -605,12 +606,18 @@ export function trap_glyph(trap) {
              cmap };
 }
 
-// include/display.h:218 covers_objects() / :222 covers_traps() — a pool or
-// lava square hides what is under it.
+// include/display.h:218 covers_objects() — what is really at the location
+// "covers" any objects that might be there: water (unless the hero is under
+// it too) and lava.
+export function covers_objects(x, y) {
+    const typ = game.level?.at(x, y)?.typ;
+    return (is_pool(x, y) && !game.u?.uinwater)
+           || typ === LAVAPOOL || typ === LAVAWALL;
+}
+
+// include/display.h:222 covers_traps()
 export function covers_traps(x, y) {
-    const loc = game.level?.at(x, y);
-    return !!loc && (loc.typ === POOL || loc.typ === MOAT || loc.typ === WATER
-                     || loc.typ === LAVAPOOL || loc.typ === LAVAWALL);
+    return covers_objects(x, y);
 }
 
 // ── src/display.c:2302 back_to_glyph() — terrain to cmap index + colour ──
@@ -941,6 +948,14 @@ export function see_nearby_objects() {
 }
 
 export function newsym(x, y) {
+    /* src/display.c:926 — don't try to produce map output when level is in
+       a state of flux (_suppress_map_output: in_mklev, saving, restoring).
+       Without this, an object placed during level GENERATION could pass the
+       cansee() test against the PREVIOUS level's vision array and write
+       itself into the new level's map memory: seed0373's sokoban arrival
+       remembered a spellbook in a dark room the hero had never seen. */
+    if (game.in_mklev)
+        return;
     const loc = game.level?.at(x, y);
     if (!loc) return;
 
@@ -986,8 +1001,9 @@ export function newsym(x, y) {
                             { kind: 'hero' });
         else
             show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
-        const under = (game.level?.objects || [])
-                          .find(o => o.ox === x && o.oy === y);
+        const under = covers_objects(x, y) ? null
+            : (game.level?.objects || [])
+                  .find(o => o.ox === x && o.oy === y);
         const tg = under ? floor_object_glyph(under, x, y)
                          : terrain_glyph(loc, x, y);
         loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
@@ -1004,9 +1020,12 @@ export function newsym(x, y) {
     // layer too — a monster is drawn OVER it and is not itself remembered.
     if (cansee(x, y)) {
         /* C shows the TOP of the pile, and our object list is newest-first
-           (place_object prepends), so the first match is the top. */
-        const obj = (game.level?.objects || [])
-                        .find(o => o.ox === x && o.oy === y);
+           (place_object prepends), so the first match is the top.
+           _map_location: vobj_at(x,y) && !covers_objects(x,y) — a pool or
+           lava square hides what floats... sinks under it. */
+        const obj = covers_objects(x, y) ? null
+            : (game.level?.objects || [])
+                  .find(o => o.ox === x && o.oy === y);
         const memg = obj ? floor_object_glyph(obj, x, y)
                          : (engraving_glyph(loc, x, y)
                             || terrain_glyph(loc, x, y));
@@ -1471,8 +1490,9 @@ export function feel_location(x, y) {
         (game.unported ||= new Set()).add('feel_location:levitation');
 
     /* _map_location(x, y, 1) */
-    const obj = (game.level?.objects || [])
-                    .find(o => o.ox === x && o.oy === y);
+    const obj = covers_objects(x, y) ? null
+        : (game.level?.objects || [])
+              .find(o => o.ox === x && o.oy === y);
     const trap = t_at(x, y);
     const memg = obj ? floor_object_glyph(obj, x, y)
         : (trap && trap.tseen) ? trap_glyph(trap)

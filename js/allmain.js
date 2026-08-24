@@ -806,8 +806,13 @@ export async function moveloop_core() {
        triggers it too) */
     if (g.u.uhave?.amulet && !g.u.uevent?.amulet_wish) {
         (g.u.uevent ||= {}).amulet_wish = 1;
-        /* display_nhwindow(WIN_MESSAGE, TRUE) — flush pending messages */
-        const { pline } = await import('./display.js');
+        /* display_nhwindow(WIN_MESSAGE, TRUE) — a BLOCKING flush: an
+           unacknowledged topline ("It is hot here." on the fire-plane
+           arrival) gets its --More-- and eats a key BEFORE the wish text;
+           skipping it glued both messages onto one line */
+        const { pline, more, TOPLINE_NEED_MORE } = await import('./display.js');
+        if (g._toplin === TOPLINE_NEED_MORE)
+            await more();
         await pline('The Amulet is bestowing a wish upon you!');
         const { makewish } = await import('./zap.js');
         await makewish();

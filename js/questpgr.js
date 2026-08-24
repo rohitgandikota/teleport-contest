@@ -86,8 +86,11 @@ function align_str(alignment) {
 
 
 function monname(idx) {
+    /* C reads mons[i].pmnames[NEUTRAL] — index 2; the male/female slots are
+       null for ungendered monsters like Pelias */
     const pm = mons[idx];
-    return (type_is_pname(pm) ? '' : 'the ') + pm.pmnames[0];
+    return (type_is_pname(pm) ? '' : 'the ')
+           + (pm.pmnames[2] ?? pm.pmnames[0] ?? pm.pmnames[1]);
 }
 
 // src/questpgr.c:50 ldrname(), :121 neminame(), :131 guardname()

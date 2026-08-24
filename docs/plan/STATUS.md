@@ -19,7 +19,16 @@ five general fixes in a row:
   dog_move post-goal, and mon_allowflags (daad250). seed0004's hero
   wears a ring of conflict from ~turn 340.
 
-UPDATE (later): 288-289 fixed via tty_message_menu single-candidate
+UPDATE (travel landed, 26b27cf): findtravelpath + dotravel_target
+ported whole; the hero really travels now. seed0004 rng total 10421.
+Remaining at step 298: our travel run stops ONE STEP before C's at a
+corridor fork — (19,10) vs (20,10) heading to t=(42,7) — so the
+lookaround() stop rules for run==8 differ by one square. Compare our
+lookaround's corridor-branch arm against C hack.c lookaround() (the
+travel exemptions and the corridor continuation logic). TRAV debug
+print in domove's travel hook shows each step under __dog_trace.
+
+EARLIER: 288-289 fixed via tty_message_menu single-candidate
 getobj (7501216); uncontrolled scrolltele teleports now. seed0004
 screens to 298, rng 10412. At 298 (travel '.' pick, 93 draws): our
 CURSOR lands with C at [19,11] but the '@' GLYPH stays painted at the

@@ -1415,6 +1415,8 @@ async function domove_core() {
             = await import('./hack.js');
         if (!await findtravelpath(TRAVP_TRAVEL))
             await findtravelpath(TRAVP_GUESS);
+        if (globalThis.__dog_trace)
+            console.error(`TRAV at(${game.u.ux},${game.u.uy}) d(${game.u.dx},${game.u.dy}) t(${game.u.tx},${game.u.ty}) multi=${game.multi} run=${game.context.run}`);
         game.context.travel1 = 0;
     }
 

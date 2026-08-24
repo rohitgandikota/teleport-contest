@@ -1409,6 +1409,15 @@ async function domove_core() {
        set from the key. moveloop's run branch calls it the same way, so the
        direction has to live on `u` rather than in a parameter. */
 
+    /* src/hack.c:2724 — travel picks this step's direction */
+    if (game.context.travel) {
+        const { findtravelpath, TRAVP_TRAVEL, TRAVP_GUESS }
+            = await import('./hack.js');
+        if (!await findtravelpath(TRAVP_TRAVEL))
+            await findtravelpath(TRAVP_GUESS);
+        game.context.travel1 = 0;
+    }
+
     /* src/hack.c:2747 impaired_movement() — a stunned (always) or confused
        (4 in 5) hero moves in a random viable direction; the rn2(5) inside
        u_maybe_impaired() draws on EVERY move while merely confused, and
@@ -1942,9 +1951,46 @@ export async function dotravel() {
         game.iflags.getloc_travelmode = false;
         return ECMD_CANCEL_TRAVEL;
     }
+    /* src/cmd.c:5340 — iflags.travelcc.x = u.tx = cc.x */
+    game.iflags.travelcc = { x: cc.x, y: cc.y };
+    game.u.tx = cc.x;
+    game.u.ty = cc.y;
+    return await dotravel_target();
+}
+
+// src/cmd.c:5348 dotravel_target() — install the travel state and take the
+// first step.
+async function dotravel_target() {
+    const cc = game.iflags?.travelcc || { x: 0, y: 0 };
+    if (!isok(cc.x, cc.y)) {
+        await pline('No travel destination set.');
+        return ECMD_OK;
+    } else if (game.u.ux === cc.x && game.u.uy === cc.y) {
+        const { You } = await import('./pline.js');
+        await You('are already here.');
+        game.iflags.travelcc = { x: 0, y: 0 };
+        return ECMD_OK;
+    }
+
     game.iflags.getloc_travelmode = false;
-    (game.unported ||= new Set()).add('cmd:dotravel_target');
-    return 0; /* ECMD_OK; the travel movement is the recorded gap above */
+
+    game.context.travel = 1;
+    game.context.travel1 = 1;
+    game.context.run = 8;
+    game.context.nopick = 1;
+
+    if (!game.multi)
+        game.multi = Math.max(COLNO, ROWNO);
+    game.u.last_str_turn = 0;
+    game.context.mv = true;
+
+    /* u.tx/u.ty — the destination findtravelpath floods from */
+    game.u.tx = cc.x;
+    game.u.ty = cc.y;
+    (game.travelmap ||= new Set()).clear();
+
+    await domove();
+    return ECMD_TIME;
 }
 
 /* include/hack.h ECMD_CANCEL */

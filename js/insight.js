@@ -14,7 +14,8 @@
 // spurious line shifts every row below it and costs the whole frame.
 
 import { game } from './gstate.js';
-import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK } from './const.js';
+import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK,
+         P_TWO_WEAPON_COMBAT } from './const.js';
 import { makeplural } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 import { empty_handed, is_ammo } from './wield.js';
@@ -326,7 +327,99 @@ function status_enlightenment() {
                 else
                     you_are(buf);
             } else {
-                note_unported_insight('weapon_insight:twoweap_skill');
+                /* src/insight.c:1334 — the two-weapon comparisons: each of
+                   primary and secondary against the two-weapon skill */
+                const also_ = 'also ';
+                const wtype2 = weapon_type(game.u.uswapwep);
+                const sklvl2 = P_SKILL(wtype2);
+                const hav2 = (sklvl2 !== P_UNSKILLED && sklvl2 !== P_SKILLED);
+                let twoskl = P_SKILL(P_TWO_WEAPON_COMBAT);
+                let twobuf;
+                if (twoskl === P_ISRESTRICTED) {
+                    twoskl = P_UNSKILLED;
+                    twobuf = 'restricted';
+                } else {
+                    twobuf = skill_level_name(P_TWO_WEAPON_COMBAT)
+                                 .toLowerCase();
+                }
+
+                let pfx = '', sfx = '', also = '', also2 = '', also3 = null;
+                if (twoskl < sklvl) {
+                    pfx = `Your skill in ${skill_name(wtype)} `;
+                    sfx = ` limited by being ${twobuf} with two weapons`;
+                    also = also_;
+                } else if (twoskl > sklvl) {
+                    pfx = 'Your two weapon skill ';
+                    sfx = ' limited by '
+                        + ((sklvl > P_ISRESTRICTED)
+                           ? `being ${sklvlbuf}` : 'having no skill')
+                        + ` with ${skill_name(wtype)}`;
+                    also2 = also_;
+                } else {
+                    buf += ' and two weapons';
+                    also3 = also_;
+                }
+                if (pfx)
+                    enl_msg(pfx, 'is', 'was', sfx, '');
+                else if (hav)
+                    you_have(buf);
+                else
+                    you_are(buf);
+
+                /* skip the secondary comparison if identical to primary's */
+                if (wtype2 !== wtype) {
+                    const sknambuf2 = skill_name(wtype2);
+                    const sklvlbuf2 = skill_level_name(wtype2).toLowerCase();
+                    let verb_present = 'is', verb_past = 'was';
+                    pfx = ''; sfx = ''; buf = '';
+                    if (twoskl < sklvl2) {
+                        pfx = `Your skill in ${sknambuf2} `;
+                        sfx = ` ${also}limited by being ${twobuf}`
+                            + ' with two weapons';
+                    } else if (twoskl > sklvl2) {
+                        pfx = 'Your two weapon skill ';
+                        sfx = ` ${also2}limited by `
+                            + ((sklvl2 > P_ISRESTRICTED)
+                               ? `being ${sklvlbuf2}` : 'having no skill')
+                            + ` with ${sknambuf2}`;
+                    } else {
+                        buf = `${sklvlbuf2} ${hav2 ? 'skill with' : 'in'} `
+                            + `${sknambuf2} and two weapons`;
+                        if (also3) {
+                            pfx = 'You also ';
+                            sfx = ` ${buf}`; buf = '';
+                            verb_present = hav2 ? 'have' : 'are';
+                            verb_past = hav2 ? 'had' : 'were';
+                        }
+                    }
+                    if (pfx)
+                        enl_msg(pfx, verb_present, verb_past, sfx, '');
+                    else if (hav2)
+                        you_have(buf);
+                    else
+                        you_are(buf);
+                }
+
+                /* src/insight.c:1436 — the "You can enhance skill(s) with
+                   ..." hint when any of the three is advanceable */
+                const a1 = can_advance(wtype, false);
+                const a2 = (wtype2 !== wtype) ? can_advance(wtype2, false)
+                                              : false;
+                const ab = can_advance(P_TWO_WEAPON_COMBAT, false);
+                if (a1 || a2 || ab) {
+                    const also_wik_ = ' and also with ';
+                    const n = (a1 ? 1 : 0) + (a2 ? 1 : 0) + (ab ? 1 : 0);
+                    const hint = ` skill${n > 1 ? 's' : ''} with `
+                        + `${a1 ? skill_name(wtype) : ''}`
+                        + `${(a1 && a2 && ab) ? ', '
+                             : (a1 && (a2 || ab)) ? also_wik_ : ''}`
+                        + `${a2 ? skill_name(wtype2) : ''}`
+                        + `${(a1 && a2 && ab) ? ', and '
+                             : (a2 && ab) ? also_wik_ : ''}`
+                        + `${ab ? 'two weapons' : ''}`;
+                    enl_msg('You ', 'can enhance', 'could have enhanced',
+                            hint, '');
+                }
             }
         }
     }

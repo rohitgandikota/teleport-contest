@@ -644,6 +644,10 @@ export async function doextcmd() {
         const { done2 } = await import('./end.js');
         return await done2();
     }
+    if (name === 'enhance') {
+        const { enhance_weapon_skill } = await import('./weapon.js');
+        return await enhance_weapon_skill();
+    }
     if (name === 'loot')
         return await doloot();
     if (name === 'force') {

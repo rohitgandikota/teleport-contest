@@ -905,11 +905,19 @@ export function doname(obj) {
         } else {
             const hand_s = bimanual(obj) ? 'hands'
                 : `${((game.u.uhandedness ?? 0) === 0) ? 'right' : 'left'} hand`; /* URIGHTY; RIGHT_HANDED == 0 */
-            bp += ` (weapon in ${hand_s})`;
+            /* src/objnam.c:1593 — while twoweaponing the primary reads
+               "wielded in", matching the secondary's phrasing */
+            const twoweap_primary = !!game.u.twoweap;
+            bp += ` (${twoweap_primary ? 'wielded in' : 'weapon in'} ${hand_s})`;
         }
     }
     if (obj.owornmask & W_SWAPWEP) {
-        bp += ` (alternate weapon${plur(obj.quan)}; not wielded)`;
+        /* src/objnam.c:1615 — the off hand while twoweaponing */
+        if (game.u.twoweap)
+            bp += ` (wielded in ${
+                ((game.u.uhandedness ?? 0) === 0) ? 'left' : 'right'} hand)`;
+        else
+            bp += ` (alternate weapon${plur(obj.quan)}; not wielded)`;
     }
     if (obj.owornmask & W_QUIVER) {
         let Qtyp;

@@ -78,6 +78,36 @@ export function start_timer(when, kind, func_index, arg) {
     return true;
 }
 
+// src/timeout.c:2222 run_timers() — fire every timer whose time has come.
+// The list is ordered; we are done when the first element is in the future.
+// Runs from nh_timeout()'s tail (timeout.c:947) and from goto_level.
+export async function run_timers() {
+    const base = (game.timer_base ||= []);
+    while (base.length && base[0].timeout <= (game.moves ?? 0)) {
+        const curr = base.shift();
+        if (curr.kind === TIMER_OBJECT && curr.arg)
+            curr.arg.timed = Math.max(0, (curr.arg.timed ?? 1) - 1);
+        switch (curr.func_index) {
+        case ROT_CORPSE: {
+            const { rot_corpse } = await import('./dig.js');
+            await rot_corpse(curr.arg);
+            break;
+        }
+        case ROT_ORGANIC: {
+            const { rot_organic } = await import('./dig.js');
+            rot_organic(curr.arg);
+            break;
+        }
+        default:
+            /* hatch_egg, burn_object, revive_mon... — each is its own
+               subsystem; record which one fired unported */
+            (game.unported ||= new Set())
+                .add('timeout:run_timers:' + curr.func_index);
+            break;
+        }
+    }
+}
+
 // src/timeout.c:951 fall_asleep() — put the hero to sleep for -how_long turns.
 //
 // The #if 0 deafness block is not compiled in C and is not ported. usleep
@@ -134,6 +164,9 @@ export async function nh_timeout() {
             break;
         }
     }
+
+    /* src/timeout.c:947 — expired timers fire at the end of nh_timeout */
+    await run_timers();
 }
 
 function note_unported_timeout(what) {

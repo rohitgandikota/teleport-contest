@@ -33,8 +33,11 @@ import { is_vampshifter } from './monst.js';
 import { t_at } from './mon.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U } from './const.js';
-import { enexto_core, enexto } from './teleport.js';
+import { enexto_core, enexto, noteleport_level } from './teleport.js';
 import { mon_track_clear } from './monmove.js';
+/* questpgr.js has no imports back into makemon.js at module level except
+   through the mkclass wire below (set at this module's top level). */
+import { qt_montype, questpgr_wire_mkclass } from './questpgr.js';
 
 // include/hack.h:1174-1175
 const GP_CHECKSCARY = 0x00800000, GP_AVOID_MONPOS = 0x01000000;
@@ -195,6 +198,12 @@ function temperature_shift(ptr) {
 export function rndmonst_adj(minadj, maxadj) {
     let ptr;
     let weight, totalweight, selected_mndx, zlevel, minmlev, maxmlev;
+
+    /* makemon.c:1666 — in the quest branch, usually pick one of the
+       role's signature enemies instead of the weighted table */
+    if (game.u?.uz?.dnum === game.quest_dnum && rn2(7)
+        && (ptr = qt_montype()) != null)
+        return ptr;
 
     zlevel = level_difficulty();
     minmlev = monmin_difficulty(zlevel) + minadj;
@@ -815,7 +824,9 @@ function rnd_defensive_item(mtmp) {
                     + (difficulty > 8 ? 1 : 0))) {
         case 6:
         case 9:
-            if (game.level?.flags?.noteleport && ++trycnt < 2)
+            /* muse.c:1236 noteleport_level(mtmp) — covetous monsters
+               (Vlad) bypass a natural noteleport level */
+            if (noteleport_level(mtmp) && ++trycnt < 2)
                 continue; /* try_again */
             if (!rn2(3))
                 return O.WAN_TELEPORTATION;
@@ -2171,3 +2182,6 @@ export function clone_mon(mon, x, y) {
 
     return m2;
 }
+
+/* wire mkclass into questpgr's qt_montype (cycle avoidance) */
+questpgr_wire_mkclass(mkclass);

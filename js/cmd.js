@@ -14,7 +14,7 @@ import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.j
 import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
 import { sp_lev_wire_mon } from './sp_lev.js';
-import { is_pool, is_lava, m_at, t_at } from './mon.js';
+import { is_pool, is_lava, m_at, t_at, newcham } from './mon.js';
 import { do_attack } from './uhitm.js';
 import { is_safemon } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
@@ -38,7 +38,7 @@ import { You } from './pline.js';
    are cycles when imported directly, so cmd.js -- which already pulls in every
    one of them -- does the wiring. */
 do_wire_mklev(mklev);
-sp_lev_wire_mon({ is_pool, is_lava, m_at });
+sp_lev_wire_mon({ is_pool, is_lava, m_at, newcham });
 mklev_wire_mon({ is_pool, is_lava });
 dokick_wire({ stairway_at, t_at });
 do_wire_dokick(ship_object);

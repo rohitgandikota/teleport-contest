@@ -19,6 +19,7 @@ import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects } from './display.js';
 import { Hallucination } from './youprop.js';
+import { is_demon, is_lord, is_prince, is_covetous } from './mondata.js';
 import { You, You_feel, You_cant } from './pline.js';
 import { getlin } from './cmd.js';
 import { get_level, depth, print_dungeon, dunlevs_in_dungeon } from './dungeon.js';
@@ -401,6 +402,38 @@ export function u_on_newpos(x, y) {
        (level changes take the map_location() arm instead) */
     if (!game.u.ublind && !Hallucination() && !game.u.uswallow)
         see_nearby_objects();
+}
+
+/* include/mondata.h:140 is_dlord/is_dprince, include/dungeon.h In_hell */
+const is_dlord = (ptr) => is_demon(ptr) && is_lord(ptr);
+const is_dprince = (ptr) => is_demon(ptr) && is_prince(ptr);
+const In_hell = (lev) => (lev ?? game.u?.uz)?.dnum === game.hell_dnum;
+
+// src/teleport.c:21 m_blocks_teleporting() — a demon lord or prince in
+// residence blocks others' teleports in Gehennom.
+function m_blocks_teleporting(mtmp) {
+    return is_dlord(mtmp.data) || is_dprince(mtmp.data);
+}
+
+// src/teleport.c:30 noteleport_level() — teleporting is prevented on this
+// level for this monster?
+export function noteleport_level(mon) {
+    /* demon court in Gehennom prevent others from teleporting */
+    if (In_hell(game.u.uz) && !(is_dlord(mon.data) || is_dprince(mon.data)))
+        if ((game.level?.monsters || []).some(
+                m => m.mhp > 0 && m_blocks_teleporting(m)))
+            return true;
+
+    /* natural no-teleport level; covetous monsters can bypass these */
+    if (game.level?.flags?.noteleport && !is_covetous(mon.data))
+        return true;
+
+    /* wand of stasis prevents teleportation while the effect is active
+       (even for covetous monsters) */
+    if ((game.level?.flags?.stasis_until ?? 0) >= game.moves)
+        return true;
+
+    return false;
 }
 
 // src/teleport.c teleok() — may the hero teleport onto <x,y>?

@@ -9,7 +9,7 @@
 // itself.
 
 import { game } from './gstate.js';
-import { get_level_extends, fix_wall_spines } from './mklev.js';
+import { get_level_extends, fix_wall_spines, stairway_add } from './mklev.js';
 import { selection_iterate, selection_new, selection_clone,
          selection_getpoint, selection_setpoint, selection_getbounds,
          selection_floodfill, set_selection_floodfillchk,
@@ -26,6 +26,8 @@ import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
 import { start_timer, TIMER_OBJECT, ROT_ORGANIC } from './timeout.js';
 import { make_engr_at, engr_at } from './engrave.js';
+import { oname, christen_monst } from './do_name.js';
+import { ONAME_LEVEL_DEF } from './const.js';
 import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD, STRAT_WAITFORU,
          MM_NOCOUNTBIRTH } from './const.js';
 
@@ -38,7 +40,7 @@ import { DUST, ENGRAVE, BURN, MARK, ENGR_BLOOD, STRAT_WAITFORU,
 var mon_fns;
 export function sp_lev_wire_mon(fns) { mon_fns = fns; }
 import { NON_PM, SPACE_POS, ALTAR, STAIRS, LADDER, W_RANDOM, W_ANY, W_NORTH, W_SOUTH,
-         W_EAST, W_WEST, D_LOCKED, D_TRAPPED } from './const.js';
+         W_EAST, W_WEST, D_LOCKED, D_TRAPPED, LA_UP, LA_DOWN } from './const.js';
 import { MONSYMS, PMNAMES, NUMMONS } from './monst_data.js';
 import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
          noncorporeal, likes_fire } from './mondata.js';
@@ -51,7 +53,7 @@ import { NO_TRAP, VIBRATING_SQUARE,
          ROLLING_BOULDER_TRAP, SLP_GAS_TRAP, RUST_TRAP, FIRE_TRAP, PIT,
          SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL,
          WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP } from './const.js';
-import { litstate_rnd, flood_fill_rm } from './mkmap.js';
+import { litstate_rnd, flood_fill_rm, mkmap } from './mkmap.js';
 import { depth, induced_align } from './dungeon.js';
 import { mkgold } from './mkobj.js';
 import { mkclass, makemon, is_male, is_female, mpickobj } from './makemon.js';
@@ -72,7 +74,7 @@ import {
     TLWALL, TRWALL, DBWALL, AIR, CLOUD, FOUNTAIN, THRONE, SINK, MOAT, POOL,
     LAVAPOOL, LAVAWALL, ICE, WATER, TREE, IRONBARS,
     MAX_TYPE, MATCH_WALL, INVALID_TYPE, NO_ROOM, ROOMOFFSET, D_CLOSED,
-    MAXNROFROOMS, IS_WALL, IS_DOOR, IS_OBSTRUCTED, IS_STWALL,
+    MAXNROFROOMS, IS_WALL, IS_DOOR, IS_OBSTRUCTED, IS_STWALL, IS_ROOM,
     D_ISOPEN, D_NODOOR, D_BROKEN, D_SECRET,
 } from './const.js';
 
@@ -878,6 +880,17 @@ export function create_object(o, croom) {
         break;                                  /* keep what mkobj gave us */
     }
 
+    /* src/sp_lev.c:2266 — a supplied name renames the object (the artifact
+       path is how The Heart of Ahriman gets made on quest goal levels) */
+    if (named)
+        otmp = oname(otmp, o.name, ONAME_LEVEL_DEF);
+
+    /* src/sp_lev.c:2298 — explicit quantity for mergeable object types */
+    if (o.quan > 0 && game.objects[otmp.otyp]?.oc_merge) {
+        otmp.quan = o.quan;
+        otmp.owt = weight(otmp);
+    }
+
     /* src/sp_lev.c:2304 create_object() — containment.
        SP_OBJ_CONTENT puts this object INSIDE the innermost open container;
        SP_OBJ_CONTAINER opens this one for the objects its contents closure
@@ -949,8 +962,8 @@ export function create_object(o, croom) {
         }
     }
 
-    /* quantity, lit, eroded, locked, trapped and name still record. */
-    if (o.quan > 0 || o.lit)
+    /* lit, eroded, locked, trapped options still record. */
+    if (o.lit)
         note_unported('create_object:options');
 
     return otmp;
@@ -967,15 +980,20 @@ export function lspo_object(idOrClass, x, y, opts) {
     const o = {
         class: -1, id: STRANGE_OBJECT, spe: -127, curse_state: 0,
         containment: 0,
-        quan: -1, buried: 0, lit: 0, name: opts?.name ?? null,
+        quan: opts?.quantity ?? -1, buried: 0, lit: 0,
+        name: opts?.name ?? null,
         contents: opts?.contents ?? null,
         coord: 0,
     };
 
-    /* `coord = {x,y}` or `coord = [x,y]` is the same as positional x,y */
+    /* get_table_xy_or_coord(): `x = N, y = N` or `coord = {x,y}`/[x,y]
+       are the same as positional x,y */
     if (opts?.coord) {
         x = Array.isArray(opts.coord) ? opts.coord[0] : opts.coord.x;
         y = Array.isArray(opts.coord) ? opts.coord[1] : opts.coord.y;
+    } else if (opts?.x !== undefined || opts?.y !== undefined) {
+        x = opts.x;
+        y = opts.y;
     }
     o.coord = (x === undefined || x === -1) && (y === undefined || y === -1)
               ? SP_COORD_PACK_RANDOM(0)
@@ -1419,6 +1437,10 @@ export function create_monster(m, croom) {
            already spent) overrides what makemon rolled. Plain state. */
         mtmp.female = m.female ?? mtmp.female;
 
+        /* src/sp_lev.c:1994 — a supplied name christens the monster */
+        if (m.name)
+            christen_monst(mtmp, m.name);
+
         /* src/sp_lev.c create_monster() — both are plain state, no draws.
            BOOL_RANDOM is -1 (include/global.h:103), so "leave it to makemon"
            and "explicitly awake" are DIFFERENT values and the test is `>`. */
@@ -1431,9 +1453,21 @@ export function create_monster(m, croom) {
             /* set_malign draws nothing */
         }
         /* src/sp_lev.c:2160 — a waiting monster stands still until it can
-           see the hero (STRAT_WAITFORU) */
-        if (m.waiting)
+           see the hero (STRAT_WAITFORU); a vampire that got created already
+           shifted into bat/fog/wolf form shifts back to vampire */
+        if (m.waiting) {
             mtmp.mstrategy = (mtmp.mstrategy || 0) | STRAT_WAITFORU;
+            /* monst.h:220 vampshifted(): is_vampshifter (cham is one of
+               the vampire species) and not currently in a vampire
+               (S_VAMPIRE) form */
+            const vampcham = [PMNAMES.PM_VAMPIRE,
+                              PMNAMES.PM_VAMPIRE_LEADER,
+                              PMNAMES.PM_VLAD_THE_IMPALER];
+            if (vampcham.includes(mtmp.cham)
+                && mtmp.data?.mlet !== MONSYMS.S_VAMPIRE
+                && m.appear !== 3 /* M_AP_MONSTER, monst.h:55 */)
+                mon_fns.newcham?.(mtmp, game.mons[mtmp.cham], 0);
+        }
 
         if (m.appear_as) {
             /* "obj:chest" -> M_AP_OBJECT with the object's index */
@@ -1488,9 +1522,13 @@ const LOW_PM = 0;
 // name_to_monplus() is name_to_mon() plus the gender-prefix parsing; no
 // themeroom name currently carries one.
 function find_montype(s, mgender) {
-    let mgend = NEUTRAL;
-
-    const i = name_to_mon(s, mgender);
+    /* C passes &mgend into name_to_monplus, so a GENDERED NAME SLOT match
+       ("vampire lady" = pmnames[FEMALE] of the vampire-leader species)
+       settles the gender without the rn2(2); the roll only fires when the
+       name matched a neuter slot of a two-gendered species. */
+    const gv = { v: NEUTRAL };
+    const i = name_to_mon(s, gv);
+    let mgend = gv.v;
     if (i >= LOW_PM && i < NUMMONS) {
         const ptr = game.mons[i];
         if (is_male(ptr) || is_female(ptr))
@@ -1548,10 +1586,13 @@ export function lspo_monster(idOrClass, x, y, opts) {
         mgend = g.v;
         m.mgender = mgend;
     }
-    /* the table form carries coord inside opts */
+    /* get_table_xy_or_coord(): the table form carries x/y or coord */
     if (opts?.coord) {
         x = Array.isArray(opts.coord) ? opts.coord[0] : opts.coord.x;
         y = Array.isArray(opts.coord) ? opts.coord[1] : opts.coord.y;
+    } else if (opts?.x !== undefined || opts?.y !== undefined) {
+        x = opts.x;
+        y = opts.y;
     }
     m.coord = (x === undefined || x === -1) && (y === undefined || y === -1)
               ? SP_COORD_PACK_RANDOM(0)
@@ -1560,6 +1601,7 @@ export function lspo_monster(idOrClass, x, y, opts) {
     m.asleep = (opts?.asleep === undefined) ? BOOL_RANDOM : (opts.asleep ? 1 : 0);
     m.appear_as = opts?.appear_as ?? null;
     m.waiting = !!opts?.waiting;
+    m.name = opts?.name ?? null;
     if (opts?.peaceful !== undefined)
         m.peaceful = opts.peaceful ? 1 : 0;
     /* countbirth=false: don't tick mvitals born (sp_lev.c passes
@@ -2061,6 +2103,7 @@ export function lspo_level_flags(...flags) {
         case 'nomongen': game.level.flags.rndmongen = 0; break;
         case 'nodeathdrops': game.level.flags.deathdrops = 0; break;
         case 'noautosearch': game.level.flags.noautosearch = 1; break;
+        case 'icedpools': game.splev_icedpools = true; break;
         default:
             note_unported(`lspo_level_flags:${s}`);
             break;
@@ -2123,6 +2166,37 @@ export function lspo_stair(dir, x, y) {
         mklev_fns.mkstairs(c.x, c.y, up, game.coder?.croom);
     else
         note_unported('lspo_stair:mkstairs');
+}
+
+// src/sp_lev.c:4231 lspo_ladder() — l_create_stairway(L, TRUE): same
+// placement as a stair, but the square becomes LADDER terrain and the
+// stairway is registered with isladder set.
+export function lspo_ladder(dir, x, y) {
+    create_des_coder();
+
+    const up = (dir === 'up') ? 1 : 0;
+    let scoord;
+    if (x === undefined || (x === -1 && y === -1)) {
+        scoord = SP_COORD_PACK_RANDOM(0);
+        set_ok_location_func(good_stair_loc);
+    } else
+        scoord = SP_COORD_PACK(x, y);
+
+    const c = get_location_coord(-1, -1, DRY, game.coder?.croom, scoord);
+    set_ok_location_func(null);
+    SpLev_Map_set(c.x, c.y);
+
+    const loc = game.level.at(c.x, c.y);
+    loc.typ = LADDER;
+    if (up) {
+        const dest = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel - 1 };
+        stairway_add(c.x, c.y, true, true, dest);
+        loc.ladder = LA_UP;
+    } else {
+        const dest = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel + 1 };
+        stairway_add(c.x, c.y, false, true, dest);
+        loc.ladder = LA_DOWN;
+    }
 }
 
 /* src/sp_lev.c good_stair_loc() — a stair spot is a room/ice square that is
@@ -2467,6 +2541,7 @@ export async function load_special(name) {
     create_des_coder();
     game.splev_map = new Set();
     game.lregions = [];
+    game.splev_icedpools = false;   /* sp_lev.c:6351 */
 
     /* sp_level_coder_init() — container/carrier resets and level flag
        defaults for a des level (src/sp_lev.c:6360-6365) */
@@ -2550,40 +2625,145 @@ function lvlfill_maze_grid(x1, y1, x2, y2, filling) {
         }
 }
 
-// src/sp_lev.c:3837 lspo_level_init() — the mazegrid and solidfill styles.
-export function lspo_level_init(opts) {
-    game.splev_init_present = true;
-    const style = opts.style;
-    if (style === 'mazegrid') {
-        const bg = CHAR2TYP[opts.bg ?? '-'] ?? C_HWALL;
-        lvlfill_maze_grid(2, 0, x_maze_max, y_maze_max, bg);
-    } else if (style === 'solidfill') {
-        let lit = opts.lit ?? -1;
-        if (lit === -1) lit = rn2(2);
-        const fg = CHAR2TYP[opts.fg ?? ' '] ?? C_STONE;
-        for (let x = 2; x <= x_maze_max; x++)
-            for (let y = 0; y <= y_maze_max; y++) {
-                const loc = game.level.at(x, y);
-                if (!loc) continue;
-                loc.typ = fg; loc.lit = !!lit;
-                loc.flags = 0; loc.horizontal = false;
-                loc.roomno = 0; loc.edge = 0;
-            }
-    } else {
-        note_unported(`lspo_level_init:${style}`);
+// src/sp_lev.c:374 lvlfill_solid() — fill the maze area with one terrain.
+function lvlfill_solid(filling, lit) {
+    for (let x = 2; x <= x_maze_max; x++)
+        for (let y = 0; y <= y_maze_max; y++) {
+            const loc = game.level.at(x, y);
+            if (!loc) continue;
+            loc.typ = filling; loc.lit = !!lit;
+            loc.flags = 0; loc.horizontal = false;
+            loc.roomno = 0; loc.edge = 0;
+        }
+}
+
+// src/sp_lev.c:2865 wallify_map() — convert STONE cells adjacent to rooms
+// into HWALL/VWALL.
+export function wallify_map(x1, y1, x2, y2) {
+    y1 = Math.max(y1, 0);
+    x1 = Math.max(x1, 1);
+    y2 = Math.min(y2, ROWNO - 1);
+    x2 = Math.min(x2, COLNO - 1);
+    for (let y = y1; y <= y2; y++) {
+        const lo_yy = (y > 0) ? y - 1 : 0;
+        const hi_yy = (y < y2) ? y + 1 : y2;
+        for (let x = x1; x <= x2; x++) {
+            if (game.level.at(x, y).typ !== STONE)
+                continue;
+            const lo_xx = (x > 1) ? x - 1 : 1;
+            const hi_xx = (x < x2) ? x + 1 : x2;
+            outer:
+            for (let yy = lo_yy; yy <= hi_yy; yy++)
+                for (let xx = lo_xx; xx <= hi_xx; xx++)
+                    if (IS_ROOM(game.level.at(xx, yy).typ)
+                        || game.level.at(xx, yy).typ === CROSSWALL) {
+                        game.level.at(x, y).typ = (yy !== y) ? HWALL : VWALL;
+                        break outer;
+                    }
+        }
     }
 }
 
-// src/sp_lev.c:6074 lspo_map(), plain-string form: centered on the maze
-// bounds with odd-parity nudging, no draws.
+// src/sp_lev.c:5964 lspo_wallify() — des.wallify(): wall in the map area
+// (or an explicit rectangle).
+export function lspo_wallify(opts) {
+    let dx1 = -1, dy1 = -1, dx2 = -1, dy2 = -1;
+    if (opts && typeof opts === 'object') {
+        dx1 = opts.x1; dy1 = opts.y1; dx2 = opts.x2; dy2 = opts.y2;
+    }
+    wallify_map(dx1 < 0 ? (game.xstart - 1) : dx1,
+                dy1 < 0 ? (game.ystart - 1) : dy1,
+                dx2 < 0 ? (game.xstart + game.xsize + 1) : dx2,
+                dy2 < 0 ? (game.ystart + game.ysize + 1) : dy2);
+}
+
+// src/sp_lev.c:2981 splev_initlev() — dispatch a level_init style.
+// BOOL_RANDOM (-1) is declared with the monster helpers above.
+function splev_initlev(linit) {
+    switch (linit.init_style) {
+    case 'solidfill':
+        if (linit.lit === BOOL_RANDOM)
+            linit.lit = rn2(2);
+        lvlfill_solid(linit.filling, linit.lit);
+        break;
+    case 'mazegrid':
+        lvlfill_maze_grid(2, 0, x_maze_max, y_maze_max, linit.bg);
+        break;
+    case 'mines':
+        if (linit.lit === BOOL_RANDOM)
+            linit.lit = rn2(2);
+        if (linit.filling > -1)
+            lvlfill_solid(linit.filling, 0);
+        linit.icedpools = !!game.splev_icedpools;
+        mkmap(linit);
+        break;
+    default:
+        /* maze, rogue, swamp styles have no ported caller yet */
+        note_unported(`splev_initlev:${linit.init_style}`);
+        break;
+    }
+}
+
+// src/sp_lev.c:3837 lspo_level_init()
+export function lspo_level_init(opts) {
+    game.splev_init_present = true;
+
+    const init_lev = {};
+    init_lev.init_style = opts.style ?? 'solidfill';
+    init_lev.fg = CHAR2TYP[opts.fg ?? '.'] ?? C_ROOM;
+    init_lev.bg = (opts.bg !== undefined)
+        ? (CHAR2TYP[opts.bg] ?? INVALID_TYPE) : INVALID_TYPE;
+    init_lev.smoothed = opts.smoothed ?? false;
+    init_lev.joined = opts.joined ?? false;
+    init_lev.lit = (opts.lit !== undefined) ? (opts.lit ? 1 : 0) : BOOL_RANDOM;
+    init_lev.walled = opts.walled ?? false;
+    init_lev.filling = (opts.filling !== undefined)
+        ? (CHAR2TYP[opts.filling] ?? init_lev.fg) : init_lev.fg;
+    init_lev.corrwid = opts.corrwid ?? -1;
+    init_lev.wallthick = opts.wallthick ?? -1;
+    init_lev.rm_deadends = !(opts.deadends ?? true);
+
+    if (game.coder) game.coder.lvl_is_joined = init_lev.joined;
+
+    if (init_lev.bg === INVALID_TYPE)
+        init_lev.bg = (init_lev.init_style === 'swamp') ? MOAT : C_STONE;
+
+    splev_initlev(init_lev);
+}
+
+// src/sp_lev.c:6074 lspo_map(): the plain-string form centers on the maze
+// bounds; the table form ({halign=..., valign=..., map=...}) places by
+// alignment (sp_lev.c:6192-6222). Both nudge to odd parity. No draws.
 export function lspo_map_full(mapstr, contents) {
+    let halign = 'center', valign = 'center';
+    if (mapstr && typeof mapstr === 'object') {
+        const opts = mapstr;
+        halign = opts.halign ?? 'center';
+        valign = opts.valign ?? 'center';
+        contents = opts.contents ?? contents;
+        mapstr = opts.map;
+    }
     const lines = mapstr.replace(/^\n/, '').replace(/\n$/, '').split('\n');
     const wid = Math.max(...lines.map(l => l.length));
     const hei = lines.length;
 
-    /* SPLEV_CENTER placement (sp_lev.c:6203/6215) */
-    let xstart = 2 + (((x_maze_max - 2 - wid) / 2) | 0);
-    let ystart = 2 + (((y_maze_max - 2 - hei) / 2) | 0);
+    /* sp_lev.c:6193 — place map starting at halign,valign */
+    let xstart;
+    switch (halign) {
+    case 'left':       xstart = game.splev_init_present ? 1 : 3; break;
+    case 'half-left':  xstart = 2 + (((x_maze_max - 2 - wid) / 4) | 0); break;
+    case 'center':     xstart = 2 + (((x_maze_max - 2 - wid) / 2) | 0); break;
+    case 'half-right': xstart = 2 + (((x_maze_max - 2 - wid) * 3 / 4) | 0); break;
+    case 'right':      xstart = x_maze_max - wid - 1; break;
+    default:           xstart = 2 + (((x_maze_max - 2 - wid) / 2) | 0); break;
+    }
+    let ystart;
+    switch (valign) {
+    case 'top':        ystart = 3; break;
+    case 'center':     ystart = 2 + (((y_maze_max - 2 - hei) / 2) | 0); break;
+    case 'bottom':     ystart = y_maze_max - hei - 1; break;
+    default:           ystart = 2 + (((y_maze_max - 2 - hei) / 2) | 0); break;
+    }
     if (!(xstart % 2)) xstart++;
     if (!(ystart % 2)) ystart++;
     if (ystart < 0 || ystart + hei > 21) {

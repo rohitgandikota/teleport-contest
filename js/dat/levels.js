@@ -14,6 +14,12 @@ import { tut1_level } from './tut-1.js';
 import { castle_level } from './castle.js';
 import { valley_level } from './valley.js';
 import { barstrt_level } from './bar-strt.js';
+import { barfila_level } from './bar-fila.js';
+import { barfilb_level } from './bar-filb.js';
+import { barloca_level } from './bar-loca.js';
+import { bargoal_level } from './bar-goal.js';
+import { minefill_level } from './minefill.js';
+import { tower1_level } from './tower1.js';
 
 export const SPECIAL_LEVELS = {
     'bigrm-7': bigrm7_level,
@@ -27,4 +33,10 @@ export const SPECIAL_LEVELS = {
     /* quest levels: the "x-" proto names take the hero's role filecode
        (src/dungeon.c:1136), so the key is the substituted name */
     'Bar-strt': barstrt_level,
+    'Bar-fila': barfila_level,
+    'Bar-filb': barfilb_level,
+    'Bar-loca': barloca_level,
+    'Bar-goal': bargoal_level,
+    minefill: minefill_level,
+    tower1: tower1_level,
 };

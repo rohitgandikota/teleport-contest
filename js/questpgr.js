@@ -303,3 +303,34 @@ export async function qt_pager(msgid) {
         return com_pager_core('common', msgid, true);
     return true;
 }
+
+// src/questpgr.c:637 qt_montype() — the quest branch's biased random
+// monster: usually one of the role's two signature enemies, otherwise a
+// random member of that enemy's class.
+export function qt_montype() {
+    let qpm;
+
+    if (rn2(5)) {
+        qpm = pmIndex(game.urole.enemy1num);
+        if (qpm !== -1 && rn2(5)
+            && !((game.mvitals?.[qpm]?.mvflags ?? 0) & 0x02 /* G_GENOD */))
+            return game.mons[qpm];
+        return mkclass_fn ? mkclass_fn(game.urole.enemy1sym, 0) : null;
+    }
+    qpm = pmIndex(game.urole.enemy2num);
+    if (qpm !== -1 && rn2(5)
+        && !((game.mvitals?.[qpm]?.mvflags ?? 0) & 0x02 /* G_GENOD */))
+        return game.mons[qpm];
+    return mkclass_fn ? mkclass_fn(game.urole.enemy2sym, 0) : null;
+}
+
+/* enemy1num in the generated role table may be a PM_ name or an index */
+function pmIndex(v) {
+    if (typeof v === 'number') return v;
+    return -1;
+}
+
+/* makemon.js imports qt_montype from here; mkclass comes back through this
+   wire to avoid the import cycle. */
+let mkclass_fn = null;
+export function questpgr_wire_mkclass(fn) { mkclass_fn = fn; }

@@ -1119,8 +1119,14 @@ export function newsym(x, y) {
        never drawn: seed0002 knew about the dart trap at (75,12) with tseen
        set from step 87 on and still painted plain floor there. */
     {
+        /* _map_location's chain: the OBJECT arm comes first, so a trap under
+           a visible object never reaches map_trap — the corpse on seed0004's
+           bear trap keeps showing '%' after the trap is found. */
         const trap = t_at(x, y);
-        if (trap && trap.tseen && !covers_traps(x, y)) {
+        const objhere = !covers_objects(x, y)
+            && (game.level?.objects || [])
+                   .some(o => o.ox === x && o.oy === y);
+        if (!objhere && trap && trap.tseen && !covers_traps(x, y)) {
             const tg = trap_glyph(trap);
             if (game.level?.flags?.hero_memory)
                 loc.remembered_glyph = { ch: tg.ch, color: tg.color,

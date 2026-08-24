@@ -1220,6 +1220,11 @@ export async function dog_move(mtmp, after) {
 
     /* Debug-only trace (never set during scoring): log the pet's goal and
        candidate squares. globalThis.__dog_trace = true */
+    if (globalThis.__dog_trace) {
+        const trk = (mtmp.mtrack || []);
+        console.error(`DOGTRK t=${game.moves} (${omx},${omy}) trk=` +
+            [0,1,2,3].map(i => `${trk[i]?.x ?? 0},${trk[i]?.y ?? 0}`).join(' '));
+    }
     if (globalThis.__dog_trace)
         console.error(`DOGTRACE turn=${game.moves} pet(${omx},${omy})`
             + ` goal=(${game.gg?.gtyp},${game.gg?.gx},${game.gg?.gy})`
@@ -1234,12 +1239,20 @@ export async function dog_move(mtmp, after) {
         const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
         /* src/dogmove.c:1073 — a square holding a monster the pet may not
            attack or displace is not a free square, so it does not count. */
-        if (m_at(nx, ny) && !(mfp.info[i] & (ALLOW_M | ALLOW_MDISP)))
+        if (m_at(nx, ny) && !(mfp.info[i] & (ALLOW_M | ALLOW_MDISP))) {
+            if (globalThis.__dog_trace)
+                console.error(`DOGUNC skip-mon (${nx},${ny}) info=${(mfp.info[i]|0).toString(16)} ALLOW_M=${ALLOW_M.toString(16)}`);
             continue;
-        if (cursed_object_at(nx, ny))
+        }
+        if (cursed_object_at(nx, ny)) {
+            if (globalThis.__dog_trace)
+                console.error(`DOGUNC skip-curse (${nx},${ny})`);
             continue;
+        }
         uncursedcnt++;
     }
+    if (globalThis.__dog_trace)
+        console.error(`DOGUNC t=${game.moves} uncursedcnt=${uncursedcnt}`);
 
     let nix = omx, niy = omy, chi = -1, chcnt = 0;
     /* src/dogmove.c:1010 — do_eat and the obj it refers to are function-scope

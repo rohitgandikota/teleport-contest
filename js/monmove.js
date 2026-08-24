@@ -1537,11 +1537,6 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
        square keeps the monster's glyph and a moving pet leaves a trail. */
     if (mmoved === MMOVE_MOVED) {
         newsym(omx, omy);
-        /* src/monmove.c:1656 — and the arrival square: the engulf arm's else
-           branch draws the monster at its new spot. Without it a hostile
-           walking into view is painted only when something else happens to
-           redraw its cell. */
-        newsym(mtmp.mx, mtmp.my);
     }
 
     /* src/monmove.c:1509 — the arrival square's trap fires here, for pets and
@@ -1646,6 +1641,13 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
             if (await mdig_tunnel(mtmp))
                 return MMOVE_DIED; /* mon died */
         }
+
+        /* src/monmove.c:1656 — the arrival square is painted LAST in the
+           MMOVE_MOVED block, after mintrap and the door arms. Painting it
+           at the top put the pet on screen before its own "steps
+           reluctantly" --More--, one frame earlier than C (seed0004
+           screen 39). The engulf arm is handled by its own machinery. */
+        newsym(mtmp.mx, mtmp.my);
     }
 
     if (mmoved === MMOVE_MOVED || mmoved === MMOVE_DONE) {

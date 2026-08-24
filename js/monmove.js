@@ -37,6 +37,7 @@ import { Is_mbag } from './mkobj.js';
 import { Is_container } from './obj.js';
 import { is_weptool } from './mkobj.js';
 import { metallivorous, corpse_eater } from './mondata.js';
+import { may_dig } from './hack.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
 import {
@@ -1624,6 +1625,13 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
                         note_unported('postmov:doorbuster_shop_damage');
                 }
             }
+        }
+
+        /* src/monmove.c:1644 — possibly dig */
+        if (can_tunnel && may_dig(mtmp.mx, mtmp.my)) {
+            const { mdig_tunnel } = await import('./dig.js');
+            if (await mdig_tunnel(mtmp))
+                return MMOVE_DIED; /* mon died */
         }
     }
 

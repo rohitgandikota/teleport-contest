@@ -24,7 +24,7 @@ import { put_saddle_on_mon } from './steed.js';
 import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater, regenerates } from './mondata.js';
 import { sobj_at, eaten_stat, obj_extract_self } from './invent.js';
 import { may_dig } from './hack.js';
-import { is_metallic } from './obj.js';
+import { is_metallic, OBJ_FLOOR } from './obj.js';
 import { obj_resists } from './zap.js';
 import { newsym, canspotmon, mon_visible, pline, canseemon } from './display.js';
 import { splitobj, peek_at_iced_corpse_age } from './mkobj.js';
@@ -695,6 +695,11 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     const dog_has_minvent = !!droppables(mtmp);
 
     for (const obj of (game.level.objects || [])) {
+        /* C walks fobj, the FLOOR chain: an object the hero picked up
+           (where OBJ_INVENT, ox/oy stale) or a contained one must not be
+           scanned — dogfood() draws, so a phantom entry desyncs the pet. */
+        if (obj.where !== undefined && obj.where !== OBJ_FLOOR)
+            continue;
         const nx = obj.ox, ny = obj.oy;
         if (nx >= min_x && nx <= max_x && ny >= min_y && ny <= max_y) {
             const otyp = dogfood(mtmp, obj);
@@ -1491,7 +1496,12 @@ function cursed_object_at(x, y) {
    order gives newest-first, which is the order the chain has. Every caller
    that draws per object depends on that order. */
 function objects_at(x, y) {
-    return (game.level?.objects || []).filter(o => o.ox === x && o.oy === y);
+    /* C's svl.level.objects[x][y] nexthere chain holds FLOOR objects only;
+       a contained/buried object at the same coords must not be scanned.
+       (Retried per NOTES now that place_object stamps where=OBJ_FLOOR.) */
+    return (game.level?.objects || [])
+        .filter(o => o.ox === x && o.oy === y
+                     && (o.where === undefined || o.where === OBJ_FLOOR));
 }
 
 // src/dogmove.c:410 dog_invent() — the pet drops what it carries, or picks up

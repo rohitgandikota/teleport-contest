@@ -97,6 +97,7 @@ const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
 import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED } from './mon.js';
 import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
+import { dosearch0 } from './detect.js';
 import { nh_timeout } from './timeout.js';
 import { age_spells } from './spell.js';
 import { gethungry } from './eat.js';
@@ -675,6 +676,12 @@ export async function moveloop_core() {
 
                 /* src/allmain.c:305 — regen_pw runs unconditionally */
                 await regen_pw(near_capacity());
+
+                /* src/allmain.c:342 — intrinsic Searching autosearches
+                   every turn (Archeologists have it from level 1) */
+                if ((g.u.intrinsic?.HSearching || g.u.uprops?.SEARCHING)
+                    && !g.level?.flags?.noautosearch && (g.multi ?? 0) >= 0)
+                    await dosearch0(1);
 
                 await dosounds();
                 await gethungry();

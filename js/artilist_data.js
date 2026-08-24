@@ -121,3 +121,325 @@ export const artifact_otyps = [
  "CRYSTAL_BALL",
  "AMULET_OF_ESP"
 ];
+
+// Per-artifact records touch_artifact/spec_applies need: spfx bits, the
+// monster type bonus target, attack/defense macro heads (their name IS the
+// damage type: PHYS/DRLI/COLD/FIRE/ELEC/STUN/DFNS...), alignment, role and
+// race as written in artilist.h.
+export const artifact_records = [
+ {
+  "spfx": 0,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 663,
+  "mtype": "0",
+  "attk": "PHYS(5, 10)",
+  "defn": "DRLI(0, 0)",
+  "align": "A_LAWFUL",
+  "role": "PM_KNIGHT",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 454,
+  "mtype": "0",
+  "attk": "DRLI(5, 2)",
+  "defn": "DRLI(0, 0)",
+  "align": "A_CHAOTIC",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 66,
+  "mtype": "0",
+  "attk": "ELEC(5, 24)",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "PM_VALKYRIE",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 2,
+  "mtype": "0",
+  "attk": "PHYS(3, 6)",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "PM_BARBARIAN",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 8388642,
+  "mtype": "M2_ELF",
+  "attk": "PHYS(2, 6)",
+  "defn": "POIS(0,0)",
+  "align": "A_CHAOTIC",
+  "role": "NON_PM",
+  "race": "PM_ORC"
+ },
+ {
+  "spfx": 8388640,
+  "mtype": "M2_ORC",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_CHAOTIC",
+  "role": "NON_PM",
+  "race": "PM_ELF"
+ },
+ {
+  "spfx": 8388640,
+  "mtype": "M2_ORC",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_CHAOTIC",
+  "role": "NON_PM",
+  "race": "PM_ELF"
+ },
+ {
+  "spfx": 194,
+  "mtype": "0",
+  "attk": "STUN(3, 4)",
+  "defn": "DFNS(AD_MAGM)",
+  "align": "A_NEUTRAL",
+  "role": "PM_WIZARD",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 194,
+  "mtype": "0",
+  "attk": "COLD(5, 0)",
+  "defn": "COLD(0, 0)",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 194,
+  "mtype": "0",
+  "attk": "FIRE(5, 0)",
+  "defn": "FIRE(0, 0)",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 69206018,
+  "mtype": "S_DRAGON",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 8388610,
+  "mtype": "M2_DEMON",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "PM_CLERIC",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 8388610,
+  "mtype": "M2_WERE",
+  "attk": "PHYS(5, 0)",
+  "defn": "DFNS(AD_WERE)",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 2050,
+  "mtype": "0",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 8388610,
+  "mtype": "M2_GIANT",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 2097154,
+  "mtype": "S_OGRE",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 2113538,
+  "mtype": "S_TROLL",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_NONE",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 1026,
+  "mtype": "0",
+  "attk": "PHYS(5, 1)",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 2,
+  "mtype": "0",
+  "attk": "PHYS(0, 8)",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "PM_SAMURAI",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 8388610,
+  "mtype": "M2_UNDEAD",
+  "attk": "PHYS(5, 0)",
+  "defn": "DFNS(AD_BLND)",
+  "align": "A_LAWFUL",
+  "role": "NON_PM",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 7,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "PM_ARCHEOLOGIST",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 7,
+  "mtype": "0",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "PM_BARBARIAN",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 16777223,
+  "mtype": "0",
+  "attk": "PHYS(5, 0)",
+  "defn": "DFNS(AD_MAGM)",
+  "align": "A_LAWFUL",
+  "role": "PM_CAVE_DWELLER",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 7,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_CHAOTIC",
+  "role": "NON_PM",
+  "race": "PM_ELF"
+ },
+ {
+  "spfx": 16711,
+  "mtype": "0",
+  "attk": "DRLI(0, 0)",
+  "defn": "DRLI(0, 0)",
+  "align": "A_NEUTRAL",
+  "role": "PM_HEALER",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 15,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "PM_KNIGHT",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 33554439,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "DFNS(AD_MAGM)",
+  "align": "A_NEUTRAL",
+  "role": "PM_MONK",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 142606343,
+  "mtype": "M2_UNDEAD",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "PM_CLERIC",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 67108871,
+  "mtype": "0",
+  "attk": "PHYS(5, 0)",
+  "defn": "NO_DFNS",
+  "align": "A_CHAOTIC",
+  "role": "PM_RANGER",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 15,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_CHAOTIC",
+  "role": "PM_ROGUE",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 134743047,
+  "mtype": "0",
+  "attk": "PHYS(0, 8)",
+  "defn": "NO_DFNS",
+  "align": "A_LAWFUL",
+  "role": "PM_SAMURAI",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 135,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "PM_TOURIST",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 524295,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "NO_DFNS",
+  "align": "A_NEUTRAL",
+  "role": "PM_VALKYRIE",
+  "race": "NON_PM"
+ },
+ {
+  "spfx": 7,
+  "mtype": "0",
+  "attk": "NO_ATTK",
+  "defn": "DFNS(AD_MAGM)",
+  "align": "A_NEUTRAL",
+  "role": "PM_WIZARD",
+  "race": "NON_PM"
+ }
+];

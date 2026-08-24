@@ -24,6 +24,15 @@ const OUT = join(ROOT, 'js/artilist_data.js');
 
 const src = readFileSync(SRC, 'utf8');
 
+/* SPFX_* values scraped from include/artifact.h */
+const artifactH = readFileSync(join(ROOT, 'nethack-c/upstream/include/artifact.h'), 'utf8');
+const spfxTable = [...artifactH.matchAll(/#define (SPFX_\w+)\s+0x([0-9A-Fa-f]+)L?/g)]
+    .map(m => [m[1], parseInt(m[2], 16)]);
+const SPFX = Object.fromEntries(spfxTable);
+const spfxval = (expr) => expr.split('|')
+    .map(t => t.replace(/[()\s]/g, '').replace(/(\d)L$/, '$1'))
+    .reduce((a, t) => a | (SPFX[t] ?? (Number(t) || 0)), 0);
+
 /* An A() entry is matched by balancing parens, not by a lazy regex: the fields
    contain their own calls — PHYS(0, 8), DFNS(AD_BLND) — so "first \w+ before a
    close paren" lands inside one of those and yields a number instead of the tag.
@@ -31,6 +40,8 @@ const src = readFileSync(SRC, 'utf8');
 const names = [];
 const tags = [];
 const otyps = [];
+const spfxs = [], mtypes = [], attks = [], defns = [],
+      aligns = [], roles = [], races = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
     if (/\w/.test(src[i - 1] || '')) continue;
@@ -59,6 +70,20 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
        possibly with a trailing comment. artifact_name(objnam.c wishes)
        resolves it through ONAMES at load time. */
     otyps.push(fields[1].replace(/\/\*[^]*?\*\//g, '').trim());
+
+    /* A(nam, typ, s1, s2, mt, atk, dfn, cry, inv, al, cl, rac, gs, gv,
+       cost, clr, bn) — fields after the name, 0-based: 0=typ 1=spfx
+       2=cspfx 3=mtype 4=attk 5=defn 6=cary 7=inv_prop 8=alignment 9=role
+       10=race. touch_artifact/spec_applies read spfx, alignment, role,
+       race, and the attk/defn/cary damage types. */
+    const clean = (s) => s.replace(/\/\*[^]*?\*\//g, '').replace(/\s+/g, ' ').trim();
+    spfxs.push(clean(fields[2] ?? '0'));
+    mtypes.push(clean(fields[4] ?? '0'));
+    attks.push(clean(fields[5] ?? 'NO_ATTK'));
+    defns.push(clean(fields[6] ?? 'NO_DFNS'));
+    aligns.push(clean(fields[9] ?? 'A_NONE'));
+    roles.push(clean(fields[10] ?? 'NON_PM'));
+    races.push(clean(fields[11] ?? 'NON_PM'));
 }
 
 if (names.length < 20) {
@@ -95,6 +120,20 @@ export const artifact_names = ${JSON.stringify(names, null, 1)};
 // ONAMES key. Index 0 is the dummy's STRANGE_OBJECT, which is how
 // \`for (a = artilist + 1; a->otyp; a++)\` loops know where the list ends.
 export const artifact_otyps = ${JSON.stringify(otyps, null, 1)};
+
+// Per-artifact records touch_artifact/spec_applies need: spfx bits, the
+// monster type bonus target, attack/defense macro heads (their name IS the
+// damage type: PHYS/DRLI/COLD/FIRE/ELEC/STUN/DFNS...), alignment, role and
+// race as written in artilist.h.
+export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
+    spfx: spfxval(spfxs[i] ?? '0'),
+    mtype: mtypes[i],
+    attk: attks[i],
+    defn: defns[i],
+    align: aligns[i],
+    role: roles[i],
+    race: races[i],
+})), null, 1)};
 `);
 
 console.log(`wrote ${OUT}: ${names.length} artifacts`);

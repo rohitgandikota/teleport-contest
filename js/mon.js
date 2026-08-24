@@ -761,15 +761,11 @@ function resists_poison(mon) {
     return false;
 }
 
-/* src/artifact.c touch_artifact() — TRUE for anything that is not an artifact,
-   which is every object a rock mole meets on an early level. */
-export function touch_artifact(otmp, mon) {
-    if (otmp.oartifact) {
-        note_unported_mon('touch_artifact');
-        return true;
-    }
-    return true;
-}
+/* src/artifact.c:907 touch_artifact() — the real check lives in
+   js/artifact.js; imported and re-exported to keep the established path
+   while this file's own callers still see a local binding. */
+import { touch_artifact } from './artifact.js';
+export { touch_artifact };
 
 // src/mon.c:5915 check_gear_next_turn() — flag the monster to reconsider its
 // equipment on its next move.

@@ -1003,10 +1003,10 @@ export async function rhack(key) {
            monster interrupts it with "You stop searching." */
         if (game.multi && !game.occupation) {
             const { set_occupation } = await import('./allmain.js');
-            set_occupation(async () => { dosearch(); }, 'searching',
+            set_occupation(async () => { await dosearch(); }, 'searching',
                            game.multi);
         }
-        game.context.move = (dosearch() ? 1 : 0);
+        game.context.move = ((await dosearch()) ? 1 : 0);
     } else if (ch === '+') {
         // src/cmd.c cmdlist — '+' is dovspell.
         game.context.move = ((await dovspell()) === ECMD_TIME ? 1 : 0);

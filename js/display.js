@@ -1630,6 +1630,36 @@ export function canspotmon(mon) {
     return canseemon(mon) || sensemon(mon);
 }
 
+// src/display.c map_invisible() — remember an 'I' marker for an unseen
+// monster the hero bumped into or found by searching.
+export function map_invisible(x, y) {
+    if (x !== game.u.ux || y !== game.u.uy) {
+        const loc = game.level?.at(x, y);
+        if (game.level?.flags?.hero_memory && loc)
+            loc.remembered_glyph = { ch: 'I', color: NO_COLOR, decgfx: false,
+                                     glyph: { kind: 'invis' } };
+        show_glyph_cell(x, y, 'I', NO_COLOR, false, 0, { kind: 'invis' });
+    }
+}
+
+/* include/display.h glyph_is_invisible(levl[x][y].glyph) on the REMEMBERED
+   glyph */
+export function glyph_is_invisible_at(x, y) {
+    return game.level?.at(x, y)?.remembered_glyph?.glyph?.kind === 'invis';
+}
+
+// src/display.c unmap_invisible() — clear a stale 'I' marker.
+export function unmap_invisible(x, y) {
+    if (isok(x, y) && glyph_is_invisible_at(x, y)) {
+        const loc = game.level.at(x, y);
+        /* unmap_object(): memory reverts to the background */
+        const tg = terrain_glyph(loc, x, y);
+        loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
+                                 glyph: { kind: 'cmap', cmap: tg.cmap } };
+        newsym(x, y);
+    }
+}
+
 // src/display.c:215 is_safemon() / include/display.h:159 _is_safemon()
 //
 // Note it is mpeaceful, NOT mtame: it covers peacefuls as well as pets, which

@@ -2,6 +2,33 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-25 (early) — 20/44; seed0004 at 10399/12084; corpse rot + conflict landed
+
+All pushed through daad250. Suite 20/44, hang-gate OK at every commit.
+The seed0004 grind (instrumented-recorder protocol, see NOTES) landed
+five general fixes in a row:
+
+- dog stay-actions return MMOVE_MOVED -> postmov -> mintrap (77b299d)
+- known_hitum flee gate C-integer division (ec4a3b0)
+- postmov paints arrival LAST; object layer covers seen traps (9dc044a)
+- corpses actually rot: run_timers + rot_corpse/rot_organic in js/dig.js,
+  start_corpse_timeout now schedules (7420e22). Timer args hold OBJECT
+  REFS (pre-existing convention from egg timers); if save/restore of a
+  timered object ever misbehaves, look here.
+- resist_conflict (mondata.c:1607) rolls at dochug phase four,
+  dog_move post-goal, and mon_allowflags (daad250). seed0004's hero
+  wears a ring of conflict from ~turn 340.
+
+NEXT on seed0004 @10377 (10399 matched): ours runs the LICHEN m158's
+action one turn earlier than C (extra mon_allowflags conflict rnd(20)
+before C's mcalcmove boundary trio). Speed-1 monster: its 12-energy
+bank phase differs by one grant somewhere — instrument mcalcmove per
+monster in the recorder (DOGNRG pattern, mon.c movemon_singlemon gate)
+and diff bank trajectories for m158. Turn labels shift between worlds
+(bucketing); align by action sequence, not by turn number.
+
+seed0004 remaining after that: ~1700 calls. Screens 295/409.
+
 ## 2026-08-24 (late night) — 20/44; instrumented-recorder technique cracks the masked dog family
 
 All pushed through 77b299d. Suite: 20/44 passing. hang-gate OK at every

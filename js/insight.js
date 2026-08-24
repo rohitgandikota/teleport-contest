@@ -15,7 +15,7 @@
 
 import { game } from './gstate.js';
 import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK,
-         P_TWO_WEAPON_COMBAT } from './const.js';
+         P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE } from './const.js';
 import { makeplural } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 import { empty_handed, is_ammo } from './wield.js';
@@ -108,8 +108,13 @@ function background_enlightenment() {
     out('Background:');
 
     /* "%s, a level %d %s%s %s" — an(rank), level, gender adj, race adj, role */
+    /* src/insight.c:512 — the gender word only when the role name has no
+       female variant AND the role allows both genders (or the current gender
+       differs from chargen's); a Valkyrie gets neither. */
     let tmpbuf = '';
-    if (!game.urole.name.f)
+    if (!game.urole.name.f
+        && ((game.urole.allow & ROLE_GENDMASK) === (ROLE_MALE | ROLE_FEMALE)
+            || (female ? 1 : 0) !== (game.flags.initgend ?? (female ? 1 : 0))))
         tmpbuf = (female ? 'female' : 'male') + ' ';
     let buf;
     if (rank_titl.toLowerCase() === role_titl.toLowerCase())

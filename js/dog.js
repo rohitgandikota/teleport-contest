@@ -1194,10 +1194,13 @@ export async function dog_move(mtmp, after) {
        the turn; `goto newdogpos` with nix,niy still at omx,omy, so the
        movement block reduces to the leash kludge and it returns MMOVE_MOVED. */
     const j_inv = await dog_invent(mtmp, edog, udist);
-    if (j_inv === 2)
+    if (j_inv === 2) {
+        if (globalThis.__dog_trace) console.error('DOGPRE invent2');
         return DEADMONSTER(mtmp) ? MMOVE_DIED : MMOVE_DONE;
-    else if (j_inv === 1)
+    } else if (j_inv === 1) {
+        if (globalThis.__dog_trace) console.error('DOGPRE invent1');
         return MMOVE_MOVED;
+    }
 
     /* src/dogmove.c:1038 — whappr is TRUE for the five turns after the pet was
        whistled for, and edog->whistletime starts at 0, so it is TRUE for the
@@ -1206,8 +1209,10 @@ export async function dog_move(mtmp, after) {
        — a completely different path from C's, drawn with the same numbers. */
     const whappr = (game.moves - (edog.whistletime || 0)) < 5 ? 1 : 0;
     const appr = dog_goal(mtmp, edog, after, udist, whappr);
-    if (appr === -2)
+    if (appr === -2) {
+        if (globalThis.__dog_trace) console.error('DOGPRE goal-2');
         return MMOVE_NOTHING;
+    }
 
     /* src/dogmove.c:1062 — the squares the pet may move to */
     const mfp = {};
@@ -1483,7 +1488,12 @@ export async function dog_move(mtmp, after) {
         }
         return MMOVE_MOVED;
     }
-    return MMOVE_NOTHING;
+    /* src/dogmove.c:1356 — the STAY case also returns MMOVE_MOVED: the pet
+       spent its action, and postmov() then runs mintrap() on the square it
+       is standing on. A pony camped on a seen bear trap draws the
+       already-seen rn2(4) dodge on every stay-action; returning
+       MMOVE_NOTHING here silently skipped all of them (seed0004's head). */
+    return MMOVE_MOVED;
 }
 
 /* include/monst.h MTSZ — how many previous squares a monster remembers. */

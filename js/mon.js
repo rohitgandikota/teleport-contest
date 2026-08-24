@@ -201,6 +201,8 @@ async function movemon_singlemon(mtmp) {
        vapor where they stand, before the movement-energy gate */
     m_everyturn_effect(mtmp);
 
+    if (globalThis.__dog_trace && mtmp.mtame)
+        console.error(`DOGNRG turn=${game.moves} mv=${mtmp.movement}`);
     if (mtmp.movement < NORMAL_SPEED)
         return false;
     mtmp.movement -= NORMAL_SPEED;

@@ -4036,3 +4036,19 @@ the hold_another_object tail. mondrift-objects passes 2308/2308 RNG and
   obj->quan drops the trailing period and appends " (N in total)." only
   under flags.verbose — wiz_wish runs with verbose off, which is why the
   recorded wish line is "d - 3 uncursed food rations" with no period.
+
+## petdrift narrows the dog family to a masked pre-head window (23 Aug)
+
+tools/petdrift.mjs (recorded-screen ground truth, hero-@-gated, two-miss
+persistence filter) clears seed0012's dog through step 117; at the head
+(draw 7227, step 118) OUR dog is adjacent to the hero (udist 1 -> the
+dogmove.c:586 invent scan draws rn2(100) per carried item) while C's dog
+is >1 away (the follow block short-circuits on !IS_ROOM or distance and
+draws nothing). dogfood classification, hungrytime, and the floor-chain
+scan were all verified equal first (dogfood(GOLD_PIECE)=APPORT both).
+So the position split happens within a few turns before the head, in a
+window where every draw matches by argument AND value. Next tool: log
+each dog_move's chosen (nix,niy) alongside the mfndpos candidate list
+and replay C's recorded candidate-loop draws through OUR candidate list
+to find the first turn where the same draws select a different square
+(candidate ORDER or COUNT drift, most likely from mfndpos gates).

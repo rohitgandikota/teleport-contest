@@ -22,7 +22,14 @@ const UPSTREAM = join(PROJECT_ROOT, 'nethack-c/upstream');
 const OUT = join(PROJECT_ROOT, 'js/shknam_data.js');
 
 const base = existsSync(join(RECORDER, 'src/shknam.c')) ? RECORDER : UPSTREAM;
-const src = readFileSync(join(base, 'src/shknam.c'), 'utf8');
+let src = readFileSync(join(base, 'src/shknam.c'), 'utf8');
+
+/* The name lists carry #ifdef OVERLAY/WIN32/MACOS9/AMIGA/TOS/OS2/VMS blocks
+   for other platforms' developers. None of those macros is defined for the
+   unix tty build the recordings come from, so the names inside them do NOT
+   exist at runtime — and each list's length is an rn2() modulus, so keeping
+   them shifted every shopkeeper-name draw (shktools: 67 vs C's 40). */
+src = src.replace(/^#ifdef \w+\n[\s\S]*?^#endif\n/gm, '');
 
 /* static const char *const shkfoo[] = { "a", "b", 0 }; */
 const lists = {};

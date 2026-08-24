@@ -599,6 +599,7 @@ export function mongets(mtmp, otyp) {
 /* mpickobj() moved to js/steal.js, its src/steal.c home, with add_to_minv
    merging; this file re-imports it for mongets. */
 import { mpickobj } from './steal.js';
+import { in_town } from './hack.js';
 export { mpickobj };
 
 // src/makemon.c:589 m_initinv() — species-specific starting inventory.
@@ -1113,10 +1114,11 @@ export function set_mimic_sym(mtmp) {
         appear = connects ? MONSYMS.S_hcdoor : MONSYMS.S_vcdoor;
     } else if (game.level.flags.is_maze_lev
                && !(game.u?.uz?.dnum === game.mines_dnum
-                    && game.level.flags?.town)
+                    && in_town(game.u.ux, game.u.uy))
                && game.u?.uz?.dnum !== game.sokoban_dnum
                && rn2(2)) {
-        /* src/makemon.c:2441 — maze levels favor statue mimics */
+        /* src/makemon.c:2441 — maze levels favor statue mimics; a mine-town
+           square (in_town is positional, hack.c:3564) is exempt */
         ap_type = M_AP_OBJECT;
         appear = ONAMES.STATUE;
     } else if (roomno < 0 && !t_at(mx, my)) {

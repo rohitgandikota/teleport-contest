@@ -32,7 +32,7 @@ import { rn1, rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
 import { enexto_core } from './teleport.js';
-import { GP_CHECKSCARY } from './const.js';
+import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
@@ -61,7 +61,7 @@ import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { You, You_feel } from './pline.js';
 import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
-import { is_rider, set_mimic_sym, hideunder } from './makemon.js';
+import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
 import { mpickobj } from './steal.js';
 import { nonliving, is_neuter } from './mondata.js';
 import { mkcorpstat } from './mklev.js';
@@ -136,7 +136,7 @@ async function m_calcdistress(mtmp) {
 
     /* possibly polymorph shapechangers and lycanthropes */
     if (mtmp.cham != null && mtmp.cham >= 0)
-        note_unported_mon('m_calcdistress:decide_to_shapeshift');
+        await decide_to_shapeshift(mtmp);
     {
         const { were_change } = await import('./were.js');
         await were_change(mtmp);
@@ -1759,6 +1759,85 @@ function pick_animal() {
     if (!_animal_list)
         mon_animal_list();
     return _animal_list[rn2(_animal_list.length)];
+}
+
+// src/mon.c:4872 decide_to_shapeshift() — once per turn from m_calcdistress:
+// a regular shapeshifter re-rolls its form when mspec_used is spent; a
+// vampshifter manages the vampire/bat/fog/wolf cycle by health.
+export async function decide_to_shapeshift(mon) {
+    let ptr = null;
+    let mndx;
+    const was_female = mon.female;
+    let dochng = false;
+
+    if (!is_vampshifter_mon(mon)) {
+        /* regular shapeshifter; 'ptr' is Null */
+        if (!mon.mspec_used && !rn2(6)) {
+            dochng = true;
+            mon.mspec_used = 3 + rn2(10);
+        }
+    } else if (!(mon.mstrategy & STRAT_WAITFORU)) {
+        /* The vampire has to be in good health (mhp) to maintain
+         * its shifted form.
+         *
+         * If we're shifted and getting low on hp, maybe shift back, or
+         * if we're a fog cloud at full hp, maybe pick a different shape.
+         * If we're not already shifted and in good health, maybe shift.
+         */
+        if (game.mons[mon.mnum].mlet !== MONSYMS.S_VAMPIRE) {
+            if ((mon.mhp <= Math.trunc((mon.mhpmax + 5) / 6)) && rn2(4)
+                && ismnum(mon.cham)) {
+                ptr = game.mons[mon.cham];
+                dochng = true;
+            } else if (mon.mnum === PMNAMES.PM_FOG_CLOUD
+                       && mon.mhp === mon.mhpmax && !rn2(4)
+                       && (!canseemon(mon)
+                           || mdistu(mon) > BOLT_LIM * BOLT_LIM)) {
+                /* if a fog cloud, maybe change to wolf or vampire bat;
+                   those are more likely to take damage--at least when
+                   tame--and then switch back to vampire; they'll also
+                   switch to fog cloud if they encounter a closed door */
+                mndx = pickvampshape(mon);
+                if (ismnum(mndx)) {
+                    ptr = game.mons[mndx];
+                    dochng = (mndx !== mon.mnum);
+                }
+            }
+            const { closed_door } = await import('./cmd.js');
+            if (dochng && amorphous(game.mons[mon.mnum])
+                && closed_door(mon.mx, mon.my)) {
+                /* mon.c:4917 — an amorphous form re-solidifying inside a
+                   closed doorway is teleported off it first: enexto()'s
+                   collect_coords shuffles draw, then rloc_to(). */
+                const new_xy = { x: 0, y: 0 };
+                const { enexto } = await import('./teleport.js');
+                if (enexto(new_xy, mon.mx, mon.my, ptr)) {
+                    /* rloc_to(mon, new_xy.x, new_xy.y) */
+                    remove_monster(mon.mx, mon.my);
+                    const oldx = mon.mx, oldy = mon.my;
+                    place_monster(mon, new_xy.x, new_xy.y);
+                    newsym(oldx, oldy);
+                    newsym(mon.mx, mon.my);
+                }
+            }
+        } else {
+            if (mon.mhp >= Math.trunc(9 * mon.mhpmax / 10) && !rn2(6)
+                && (!canseemon(mon)
+                    || mdistu(mon) > BOLT_LIM * BOLT_LIM))
+                dochng = true; /* 'ptr' stays Null */
+        }
+    }
+    if (dochng) {
+        if (newcham(mon, ptr, NC_SHOW_MSG)) {
+            /* for vampshift, override the 10% chance for sex change
+               (by forcing original gender in case that occurred) */
+            if (is_vampshifter_mon(mon)) {
+                ptr = game.mons[mon.mnum];
+                if (!is_male(ptr) && !is_female(ptr) && !is_neuter(ptr))
+                    mon.female = was_female;
+            }
+        }
+    }
 }
 
 // src/mon.c:4941 pickvampshape()

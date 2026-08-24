@@ -58,6 +58,7 @@ import { done } from './end.js';
 import { DIED } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { In_sokoban } from './dungeon.js';
+import { inside_room } from './sp_lev.js';
 import { tunnels, needspick, passes_walls, passes_bars, dmgtype,
          metallivorous, throws_rocks, verysmall, bigmonst, amorphous,
          is_whirly, noncorporeal, slithy } from './mondata.js';
@@ -484,6 +485,27 @@ export function in_rooms(x, y, typewanted) {
    a cycle, and adding the import to the entry point perturbs module init order
    (see STATUS). Publishing on the shared game object avoids both. */
 game.in_rooms = in_rooms;
+
+// src/hack.c:3564 in_town() — is (x,y) in a town? A room with subrooms is
+// assumed to be the town; with no subrooms anywhere the whole level is.
+export function in_town(x, y) {
+    let has_subrooms = false;
+
+    if (!game.level?.flags?.has_town)
+        return false;
+
+    for (const sroom of (game.level.rooms || [])) {
+        if (sroom.hx <= 0)
+            break;
+        if ((sroom.nsubrooms ?? 0) > 0) {
+            has_subrooms = true;
+            if (inside_room(sroom, x, y))
+                return true;
+        }
+    }
+
+    return !has_subrooms;
+}
 
 // src/hack.c domove_attackmon_at() — the gate between walking into a square
 // and attacking what is standing on it.

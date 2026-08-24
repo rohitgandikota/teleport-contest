@@ -74,8 +74,11 @@ async function nhgetch_core() {
        NL (0x0A) -- the game itself never sees '\r'. That is what makes RET
        act as ^J (rush south) at the top-level prompt: seed0004 step 299.
        Model the same translation here so every reader downstream sees what
-       the C's read() saw. */
-    if (key === '\r')
+       the C's read() saw. The queue holds char codes; readKey may hand back
+       a string. */
+    if (key === 0x0d)
+        key = 0x0a;
+    else if (key === '\r')
         key = '\n';
 
     return key;

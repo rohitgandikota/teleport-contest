@@ -22,7 +22,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal,
          tunnels, nohands as nohands_mm,
-         verysmall as verysmall_mm } from './mondata.js';
+         verysmall as verysmall_mm , sticks } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame, NOTONL } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
@@ -1209,6 +1209,17 @@ function select_rwep_absent(mtmp) {
 /* src/mondata.c:1607 resist_conflict() — now the real port */
 function resist_conflict_absent(mtmp) {
     return resist_conflict(mtmp);
+}
+
+// src/monmove.c:1053 itsstuck() — a poly'd hero that sticks keeps hold of
+// the monster it grabbed.
+export async function itsstuck(mtmp) {
+    if (sticks(game.mons[game.u.umonnum]) && mtmp === game.u.ustuck
+        && !game.u.uswallow) {
+        await pline(`${Monnam(mtmp)} cannot escape from you!`);
+        return true;
+    }
+    return false;
 }
 
 // src/monmove.c:1720 m_move() — a non-tame monster's turn. The tame case is

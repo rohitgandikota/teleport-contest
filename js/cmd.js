@@ -53,7 +53,7 @@ import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
 import { dodiscovered } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { doeat } from './eat.js';
@@ -87,6 +87,10 @@ import { dozap } from './zap.js';
 //                   h . l
 //                   b j n
 const DIR_DX = { h: -1, l: 1, j: 0, k: 0, y: -1, u: 1, b: -1, n: 1 };
+/* include/hack.h — sdir order "hykulnjb" indexes xdir/ydir; the same DIR
+   codes set_move_cmd() receives from the do_move_/do_run_/do_rush_ family. */
+const KEY_TO_DIR = { h: DIR_W, y: DIR_NW, k: DIR_N, u: DIR_NE,
+                     l: DIR_E, n: DIR_SE, j: DIR_S, b: DIR_SW };
 const DIR_DY = { h: 0, l: 0, j: 1, k: -1, y: -1, u: -1, b: 1, n: 1 };
 
 function isMovementKey(ch) {
@@ -260,9 +264,19 @@ export function set_move_cmd(dir, run) {
     game.u.dz = zdir[dir];
     game.u.dx = xdir[dir];
     game.u.dy = ydir[dir];
+    /* #reqmenu -prefix disables autopickup during movement */
+    if (game.iflags?.menu_requested)
+        game.context.nopick = 1;
     game.context.travel = game.context.travel1 = 0;
-    game.context.run = run;
-    game.context.nopick = 0;
+    /* src/cmd.c:1395 — a pending prefix (g/G) owns context.run; a bare
+       movement key sets it, which is also what clears a stale run=8 left
+       behind by a finished travel (its arrival arm re-asserts 8 after
+       nomul, and C only clears it at the next set_move_cmd or
+       reset_cmd_vars). */
+    if (!game.domove_attempting && !game.u.dz) {
+        game.context.run = run;
+        game.domove_attempting |= (!run ? DOMOVE_WALK : DOMOVE_RUSH);
+    }
 }
 
 // src/cmd.c getdir() — read a direction key and set u.dx/u.dy/u.dz.
@@ -498,8 +512,13 @@ async function get_ext_cmd() {
 
     if (buf === '' || buf === '\x1b')
         return null;
-    /* extcmds_match with ECM_EXACTMATCH: the hook has already completed the
-       text, so C matches the whole name. */
+    /* extcmds_match with ECM_IGNOREAC | ECM_EXACTMATCH: the hook has already
+       completed the text, so C matches the whole name; anything else is
+       "<initiator><input>: unknown extended command." and returns -1. */
+    if (!extcmdlist.some((e) => e.ef_txt === buf)) {
+        await pline(`#${buf.slice(0, 60)}: unknown extended command.`);
+        return null;
+    }
     return buf;
 }
 
@@ -950,6 +969,16 @@ function bad_rock_at(x, y) {
 }
 
 export async function rhack(key) {
+    /* src/cmd.c:3635 — every command begins with the menu-request and
+       no-pickup markers cleared; set_move_cmd() re-raises nopick from
+       menu_requested for the m-prefix case. C's prefixes loop inside one
+       rhack() call (goto got_prefix_input) so the reset runs once per
+       command; ours span two rhack() calls, so a pending prefix skips it. */
+    if (!game._cmd_prefix_pending) {
+        game.iflags.menu_requested = false;
+        game.context.nopick = 0;
+    }
+    game._cmd_prefix_pending = false;
     /* src/cmd.c:3642 — queued commands run before any key is read. A
        CMDQ_EXTCMD entry dispatches its function directly, exactly like the
        doextcmd arm below; a CMDQ_KEY becomes the command key as if typed. */
@@ -1057,40 +1086,44 @@ export async function rhack(key) {
        lookaround or a blocked step calls nomul(0). The rush prefix 'g' uses
        run = 2; the only difference between the modes is how lookaround
        decides what is interesting enough to stop at. */
-    let ch = 'HJKLYUBN'.includes(ch0) ? ch0.toLowerCase() : ch0;
-    if (ch !== ch0 && isMovementKey(ch) && !game.context.run)
-        game.context.run = 1;
-
-    /* src/cmd.c:3467 reset_commands() — with !num_pad, C(dirchar) binds the
-       MV_RUSH form: do_rush_south() etc. call set_move_cmd(dir, 3). This is
-       what makes ^J rush south (and ^L rush east, overriding the default
-       redraw binding, ^N rush southeast overriding annotate). */
+    /* src/cmd.c:1440-1567 do_move_/do_run_/do_rush_ family — the shifted letter
+       is the MV_RUN form (set_move_cmd(dir, 1)) and the C(dirchar) control
+       form is MV_RUSH (set_move_cmd(dir, 3)), the ^J/^L/^N bindings that
+       override redraw and annotate under !num_pad. */
     const CTRL_DIR = { '\x08': 'h', '\x19': 'y', '\x0b': 'k', '\x15': 'u',
                        '\x0c': 'l', '\x0e': 'n', '\x0a': 'j', '\x02': 'b' };
-    if (CTRL_DIR[ch0] !== undefined && !game.context.run) {
+    let movemode = 0;
+    let ch = ch0;
+    if ('HJKLYUBN'.includes(ch0)) {
+        ch = ch0.toLowerCase();
+        movemode = 1;
+    } else if (CTRL_DIR[ch0] !== undefined) {
         ch = CTRL_DIR[ch0];
-        game.context.run = 3;
+        movemode = 3;
     }
 
     if (isMovementKey(ch)) {
-        /* src/cmd.c movecmd() — the key sets u.dx/u.dy, then domove() reads
-           them. Keeping the direction on `u` is what lets moveloop's run
-           branch call domove() again without re-reading a key. */
-        game.u.dx = DIR_DX[ch];
-        game.u.dy = DIR_DY[ch];
-        /* src/cmd.c:3792 DOMOVE_RUSH — seed multi with max(COLNO, ROWNO) as
-           the upper bound on how far one command can carry the hero. The run
-           does NOT end by counting down: moveloop's guard is
-           (multi < COLNO && !--multi) and multi starts AT COLNO, so it never
-           decrements for a rush. It ends through nomul(0), from lookaround or
-           from domove bumping a monster, being blocked, or stepping onto a
-           door. */
+        /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
+           prefix is pending, context.run. Keeping the direction on `u` is
+           what lets moveloop's run branch call domove() again without
+           re-reading a key. */
+        set_move_cmd(KEY_TO_DIR[ch], movemode);
+        /* src/cmd.c:3792 rhack's DOMOVE_RUSH arm — seed multi with
+           max(COLNO, ROWNO) as the upper bound on how far one command can
+           carry the hero. The run does NOT end by counting down: moveloop's
+           guard is (multi < COLNO && !--multi) and multi starts AT COLNO, so
+           it never decrements for a rush. It ends through nomul(0), from
+           lookaround or from domove bumping a monster, being blocked, or
+           stepping onto a door. */
         if (game.context.run) {
             if (!game.multi)
                 game.multi = Math.max(COLNO, ROWNO);
             game.u.last_str_turn = 0;
-            game.context.mv = true;
         }
+        /* src/cmd.c:3787 — the WALK arm sets mv only when a count is up;
+           the RUSH arm always does. run != 0 covers both rush forms. */
+        if (game.context.run || game.multi)
+            game.context.mv = true;
         /* src/cmd.c:5103 parse() — "assume next command will take game time".
            The flag is set BEFORE domove() runs, and domove's no-move exits
            (blocked step, hack.c:2846) clear it. Setting it after the call
@@ -1192,11 +1225,14 @@ export async function rhack(key) {
         // rather than take one step. It reads no extra key, so this does not
         // misalign the keystream; it moves the hero a different DISTANCE, which
         // is a larger positional divergence than the fight prefix causes.
-        if (game.context.run) {
+        if (game.domove_attempting & DOMOVE_RUSH) {
             /* "Double rush prefix, canceled." */
             game.context.run = 0;
+            game.domove_attempting = 0;
         } else {
             game.context.run = 2;
+            game.domove_attempting |= DOMOVE_RUSH;
+            game._cmd_prefix_pending = true;
         }
         game.context.move = 0;
     } else if (ch === 'm') {
@@ -1209,6 +1245,7 @@ export async function rhack(key) {
             game.iflags.menu_requested = false;
         } else {
             game.iflags.menu_requested = true;
+            game._cmd_prefix_pending = true;
         }
         game.context.move = 0;
     } else if (ch === 'F') {
@@ -1368,6 +1405,8 @@ export async function rhack(key) {
        pathfinding pass silently skipped it as a candidate. */
     if (game.context.move && !game._cmd_was_kick)
         game.kickedloc = { x: 0, y: 0 };
+    /* src/hack.c:2706 — every move attempt consumes the walk/rush marker */
+    game.domove_attempting = 0;
     game._cmd_was_kick = false;
 }
 
@@ -1847,9 +1886,12 @@ async function show_inventory() {
     tty_end_menu(win, null);
     await tty_display_nhwindow(win);
 
-    await nhgetch();
-    while (tty_next_page(win))
-        await nhgetch();
+    /* win/tty/wintty.c process_menu_window — ESC quits the menu even when
+       more pages remain; any other key pages forward. */
+    let key = await nhgetch();
+    while (key !== 0x1b && String.fromCharCode(key) !== '\x1b'
+           && tty_next_page(win))
+        key = await nhgetch();
 
     tty_destroy_nhwindow(win);
     await docrt();

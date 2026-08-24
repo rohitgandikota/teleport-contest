@@ -266,12 +266,24 @@ async function movemon_singlemon(mtmp) {
             return false;
     }
 
+    /* src/mon.c:1306 — under Conflict a monster that can see the hero and
+       is within bolt range may spend its action fighting a neighbor
+       instead. fightm's head rolls resist_conflict, so the call order
+       against dochug is draw-visible. The call to fightm() must be _last_:
+       the monster might have died if it returns 1. */
+    if (game.u.uprops?.CONFLICT && !mtmp.iswiz && m_canseeu(mtmp)) {
+        if (cansee(mtmp.mx, mtmp.my)
+            && (mdistu(mtmp) <= BOLT_LIM * BOLT_LIM)
+            && await fightm(mtmp))
+            return false; /* mon might have died */
+    }
     await dochug(mtmp);   /* C: dochugw(mtmp, TRUE) — the occupation
                              interrupt half of dochugw is not ported */
     return false;
 }
 
-import { dochug } from './monmove.js';
+import { dochug, m_canseeu } from './monmove.js';
+import { fightm } from './mhitm.js';
 
 // include/you.h:560 m_next2u() — distu((m)->mx, (m)->my) <= 2.
 // Its C home is you.h; kept here because restrap() below is its only user so

@@ -413,6 +413,16 @@ export async function losehp(n, knam, k_format) {
 
     if (game.u.uhp < 1) {
         game.killer = { format: k_format, name: knam };
+        /* src/hack.c:4287 — urgent_pline("You die...") BEFORE done().
+           urgent_pline FLUSHES: the status repaint (bot, HP clamped to 0)
+           lands before the pending-message More blocks, which is why the
+           "You slip...--More--" frame already reads HP:0. Plain pline/more
+           do NOT flush -- see the descend More keeping the old Dlvl. */
+        {
+            const { bot } = await import('./display.js');
+            await bot();
+        }
+        await pline('You die...');
         await done(DIED);
     }
 }

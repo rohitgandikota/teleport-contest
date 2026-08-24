@@ -956,8 +956,16 @@ export function newsym(x, y) {
         /* Hero. Map memory keeps the topmost non-monster layer, so an object
            underfoot is what the cell reverts to after stepping off —
            src/display.c _map_location() sets lev->glyph to the object glyph,
-           and display_self() draws '@' over it. */
-        show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
+           and display_self() draws '@' over it.
+           include/display.h:246 maybe_display_usteed() — while riding, the
+           hero's square shows the STEED's glyph, not '@'. */
+        const steed = game.u.usteed;
+        if (steed && mon_visible(steed))
+            show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
+                            steed.data.mcolor ?? NO_COLOR, false, 0,
+                            { kind: 'hero' });
+        else
+            show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
         const under = (game.level?.objects || [])
                           .find(o => o.ox === x && o.oy === y);
         const tg = under ? floor_object_glyph(under, x, y)
@@ -1335,7 +1343,8 @@ function _statusLine2() {
         }
     }
     let s = `${lvldesc} $:${money_cnt(game.invent)}`
-          + ` HP:${u.uhp || 0}(${u.uhpmax || 0})`
+          /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
+          + ` HP:${Math.max(u.uhp | 0, 0)}(${u.uhpmax || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
           + ` AC:${u.uac ?? 0}`
           + ` Xp:${u.ulevel || 1}`;

@@ -11,7 +11,7 @@ import { doname } from './objnam.js';
 import { Monnam } from './do_name.js';
 import { pline_xy } from './pline.js';
 import { newsym } from './display.js';
-import { place_object } from './mkobj.js';
+import { place_object, unknow_object } from './mkobj.js';
 import { stackobj, obj_extract_self } from './invent.js';
 import { flooreffects } from './do.js';
 /* src/light.c obj_sheds_light() == obj_is_burning(): a lit lamp/candle/
@@ -136,7 +136,7 @@ export function mpickobj(mtmp, otmp) {
     /* some object handling is only done if mtmp isn't a pet */
     if (!mtmp.mtame) {
         if (!canseemon(mtmp) && mtmp !== game.u.ustuck)
-            note_unported_steal('mpickobj:unknow_object');
+            unknow_object(otmp);   /* hero loses knowledge of it */
         if (otmp.how_lost === LOST_THROWN)
             otmp.how_lost = LOST_STOLEN;
         else if (otmp.how_lost === LOST_DROPPED)

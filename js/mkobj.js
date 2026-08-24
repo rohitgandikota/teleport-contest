@@ -1021,7 +1021,7 @@ function clear_dknown(obj) {
 // things". The last line is the one that matters here: object types that do NOT
 // use the known flag get it set TRUE, which is what makes a starting scroll or
 // potion eligible for discovery in ini_inv_use_obj().
-function unknow_object(obj) {
+export function unknow_object(obj) {
     clear_dknown(obj);
     obj.bknown = obj.rknown = 0;
     obj.cknown = obj.lknown = 0;

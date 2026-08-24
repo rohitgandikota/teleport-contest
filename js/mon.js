@@ -28,7 +28,7 @@ import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs } from './mkobj.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
-import { rn2, rnd } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
 import { enexto_core } from './teleport.js';
@@ -766,6 +766,15 @@ function resists_poison(mon) {
    while this file's own callers still see a local binding. */
 import { touch_artifact } from './artifact.js';
 export { touch_artifact };
+import { pick_nasty } from './wizard.js';
+import { tt_doppel } from './topten.js';
+/* include/mondata.h:93 polyok() */
+const polyok = (ptr) => (ptr.mflags2 & MFLAGS.M2_NOPOLY) === 0;
+/* gu.urole.guardnum — role table carries it as a PM index */
+function guardnum_of_urole() {
+    const g = game.urole?.guardnum;
+    return (typeof g === 'string') ? PMNAMES[g] : (g ?? -1);
+}
 
 // src/mon.c:5915 check_gear_next_turn() — flag the monster to reconsider its
 // equipment on its next move.
@@ -1768,8 +1777,31 @@ function select_newcham_form(mon) {
     let mndx = -1;
     switch (mon.cham) {
     case PMNAMES.PM_SANDESTIN:
+        if (rn2(7))
+            mndx = pick_nasty(game.mons[PMNAMES.PM_ARCHON].difficulty - 1);
+        break;
     case PMNAMES.PM_DOPPELGANGER:
-        note_unported_mon(`select_newcham_form:cham=${mon.cham}`);
+        if (!rn2(7)) {
+            mndx = pick_nasty(
+                game.mons[PMNAMES.PM_JABBERWOCK].difficulty - 1);
+        } else if (rn2(3)) { /* role monsters */
+            mndx = tt_doppel(mon);
+        } else if (!rn2(3)) { /* quest guardians */
+            mndx = rn1(PMNAMES.PM_APPRENTICE - PMNAMES.PM_STUDENT + 1,
+                       PMNAMES.PM_STUDENT);
+            /* avoid own role's guardian */
+            if (mndx === guardnum_of_urole())
+                mndx = -1;
+        } else { /* general humanoids */
+            let tryct = 5;
+            do {
+                mndx = rn1(SPECIAL_PM_MON - 0 /* LOW_PM */, 0);
+                if (humanoid(game.mons[mndx]) && polyok(game.mons[mndx]))
+                    break;
+            } while (--tryct > 0);
+            if (!tryct)
+                mndx = -1;
+        }
         break;
     case PMNAMES.PM_CHAMELEON:
         if (!rn2(3))

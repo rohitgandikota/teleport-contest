@@ -26,6 +26,7 @@ import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, In_endgame } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
 import { You_see, You_hear } from './pline.js';
+import { create_gas_cloud, visible_region_at } from './region.js';
 import { Monnam } from './do_name.js';
 import { Deaf } from './youprop.js';
 import { Is_rogue_level as IRL_const, D_TRAPPED } from './const.js';
@@ -819,6 +820,13 @@ export function monflee(mtmp, fleetime, first, fleemsg) {
         }
         if (!mtmp.mflee && fleemsg)
             note_unported('monflee:fleemsg');
+
+        /* src/monmove.c:521 — a vrock covers its escape in a stench cloud */
+        if (mtmp.mnum === PMNAMES.PM_VROCK && !mtmp.mspec_used) {
+            mtmp.mspec_used = 75 + rn2(25);
+            create_gas_cloud(mtmp.mx, mtmp.my, 5, 8);
+        }
+
         mtmp.mflee = 1;
     }
     /* ignore recently-stepped spaces when made to flee */
@@ -1455,6 +1463,9 @@ export async function m_move(mtmp, after) {
             mtmp.muy = game.u.uy;
             return MMOVE_NOTHING;
         }
+        /* src/monmove.c:2047 — postmove effects run BEFORE the location
+           changes (monsters have no "previous location" field) */
+        m_postmove_effect(mtmp);
         /* src/monmove.c:2051 — remove then place, so level.monsters[][] tracks
            the move. Writing mx/my alone leaves m_at() answering with the old
            square. */
@@ -1848,5 +1859,24 @@ function finish_meating(mtmp) {
         mtmp.m_ap_type = M_AP_NOTHING;
         mtmp.mappearance = 0;
         newsym(mtmp.mx, mtmp.my);
+    }
+}
+
+// src/monmove.c:672 m_postmove_effect() — effects a monster leaves at the
+// square it is ABOUT to vacate: hezrou stench, steam-vortex vapor, and the
+// harmless vapor trail of a fog cloud (which is what fills the Valley with
+// drifting mist).
+export function m_postmove_effect(mtmp) {
+    const x = mtmp.mx, y = mtmp.my;
+
+    if (mtmp.mnum === PMNAMES.PM_HEZROU)        /* stench */
+        create_gas_cloud(x, y, 1, 8);
+    else if (mtmp.mnum === PMNAMES.PM_STEAM_VORTEX && !mtmp.mcan)
+        create_gas_cloud(x, y, 1, 0);           /* harmless vapor */
+    else if (mtmp.mnum === PMNAMES.PM_FOG_CLOUD) {
+        /* don't leave a vapor cloud if some other gas cloud is already
+           present, or when flowing under closed doors */
+        if (!closed_door_mm(x, y) && !visible_region_at(x, y))
+            create_gas_cloud(x, y, 1, 0);       /* harmless vapor */
     }
 }

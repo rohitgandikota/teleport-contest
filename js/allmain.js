@@ -98,6 +98,7 @@ import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED } from './mon.js';
 import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
 import { dosearch0 } from './detect.js';
+import { run_regions } from './region.js';
 import { nh_timeout } from './timeout.js';
 import { age_spells } from './spell.js';
 import { gethungry } from './eat.js';
@@ -660,6 +661,7 @@ export async function moveloop_core() {
                 /* src/allmain.c:275 — nh_timeout() then the prayer
                    timeout, every turn. */
                 await nh_timeout();
+                run_regions();      /* src/allmain.c:274 */
                 if (g.u.ublesscnt)
                     g.u.ublesscnt--;
 

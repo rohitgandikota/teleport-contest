@@ -203,6 +203,8 @@ async function movemon_singlemon(mtmp) {
 
     if (globalThis.__dog_trace && mtmp.mtame)
         console.error(`DOGNRG turn=${game.moves} mv=${mtmp.movement}`);
+    if (globalThis.__dog_trace && mtmp.mnum === 158)
+        console.error(`LICH t=${game.moves} mv=${mtmp.movement}`);
     if (mtmp.movement < NORMAL_SPEED)
         return false;
     mtmp.movement -= NORMAL_SPEED;

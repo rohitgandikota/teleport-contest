@@ -677,8 +677,11 @@ export async function moveloop_core() {
                 await mcalcdistress();
 
                 /* src/allmain.c:232 — reallocate movement rations */
-                for (const mtmp of g.level?.monsters || [])
+                for (const mtmp of g.level?.monsters || []) {
                     mtmp.movement = (mtmp.movement || 0) + mcalcmove(mtmp, true);
+                    if (globalThis.__dog_trace && g.moves >= 344 && g.moves <= 362)
+                        console.error(`GRANT t=${g.moves} m${mtmp.mnum} -> ${mtmp.movement} hero=${g.u.umovement}`);
+                }
 
                 /* src/allmain.c:238 — after allotment, so a new monster
                    effectively loses its first turn */

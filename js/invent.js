@@ -343,6 +343,29 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
     if (handsbuf || menuquery)
         note_unported_invent('display_pickinv:hands_or_forcemenu');
 
+    /* src/invent.c:3130 — count 0, 1, or more-than-1 candidates. With
+       exactly one item of interest C uses a message-line "menu" instead of
+       a window: the single xprname line gets a --More-- whose dismissal
+       accepts the item's letter (tty_message_menu), which is why reading
+       with one scroll shows "o - a scroll labeled X.--More--" rather than
+       opening a menu. force_invmenu defaults off. */
+    {
+        const n = allowed_choices ? allowed_choices.length
+                  : !game.invent?.length ? 0 : game.invent.length === 1 ? 1 : 2;
+        if (n === 1 && allowed_choices) {
+            const otmp = (game.invent || [])
+                .find(o => o.invlet === allowed_choices[0]);
+            if (otmp) {
+                const { tty_message_menu } = await import('./tty/wintty.js');
+                /* xprname(otmp, NULL, lets[0], TRUE, 0, 0) */
+                const line = `${otmp.invlet} - ${doname(otmp)}.`;
+                const r = await tty_message_menu(otmp.invlet,
+                                                 1 /* PICK_ONE */, line);
+                return (r === '\0' || r === 0) ? 0 : r;
+            }
+        }
+    }
+
     const win = tty_create_nhwindow(W_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
     /* src/invent.c:3273 — C applies the `lets` filter FIRST and only then adds

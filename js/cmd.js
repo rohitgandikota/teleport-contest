@@ -1405,8 +1405,6 @@ export async function rhack(key) {
        pathfinding pass silently skipped it as a candidate. */
     if (game.context.move && !game._cmd_was_kick)
         game.kickedloc = { x: 0, y: 0 };
-    /* src/hack.c:2706 — every move attempt consumes the walk/rush marker */
-    game.domove_attempting = 0;
     game._cmd_was_kick = false;
 }
 
@@ -1416,13 +1414,16 @@ export async function rhack(key) {
 // engraving on the square left behind and the one arrived at.
 export async function domove() {
     const ux1 = game.u.ux, uy1 = game.u.uy;
+    game.domove_succeeded = 0;
     await domove_core();
     /* src/hack.c:2708 — the tail of C's domove() zeroes gk.kickedloc on
        every hero move attempt, kick follow-through over. */
     game.kickedloc = { x: 0, y: 0 };
-    /* gd.domove_succeeded & (DOMOVE_RUSH | DOMOVE_WALK): the move counts as
-       taken when the hero's position actually changed */
-    if (game.u.ux !== ux1 || game.u.uy !== uy1) {
+    /* src/hack.c:2706 — every move attempt consumes the walk/rush marker */
+    game.domove_attempting = 0;
+    /* src/hack.c:2701 — smudge/bubble evaluation keys on domove_succeeded,
+       which stays 0 for a run's continuation moves (attempting is 0 then) */
+    if ((game.domove_succeeded & (DOMOVE_RUSH | DOMOVE_WALK)) !== 0) {
         await maybe_smudge_engr(ux1, uy1, game.u.ux, game.u.uy);
         /* src/hack.c:2704 — one rn2(2) after every actual hero move on the
            Plane of Water: the hero's bubble may take the hero's heading */
@@ -1585,6 +1586,18 @@ async function domove_core() {
             return;
     }
 
+    /* src/hack.c:2852 — is it dangerous to swim in water or lava? The
+       swim guard refuses a bare move into known liquid (paranoid_confirm
+       includes swim by default) and costs no time. */
+    {
+        const { swim_move_danger } = await import('./hack.js');
+        if (await swim_move_danger(newx, newy)) {
+            game.context.move = 0;
+            nomul(0);
+            return;
+        }
+    }
+
     /* src/hack.c:2846 — the blocked-move exit.
      *
      *     if (!test_move(u.ux, u.uy, x - u.ux, y - u.uy, DO_MOVE)) {
@@ -1715,10 +1728,16 @@ async function domove_core() {
     vision_recalc(1);
     newsym(newx, newy);
 
-    /* src/hack.c:2968 — u.umoved = TRUE when the position changed; read by
-       u_calc_moveamt (steed budget) and the encumbrance exhaustion arm. */
-    if (u.ux !== u.ux0 || u.uy !== u.uy0)
+    /* src/hack.c:2964 — position changed: mark success for domove()'s
+       smudge/bubble tail and set u.umoved, read by u_calc_moveamt (steed
+       budget) and the encumbrance exhaustion arm. The attempting mask is 0
+       during a run's continuation moves, so those never mark success and
+       never smudge engravings. */
+    if (u.ux !== u.ux0 || u.uy !== u.uy0) {
+        game.domove_succeeded |= ((game.domove_attempting | 0)
+                                  & (DOMOVE_RUSH | DOMOVE_WALK));
         game.u.umoved = true;
+    }
 
     /* src/hack.c:2980 — "if (u.umoved) spoteffects(TRUE);". The move above
        either happened or returned early, so reaching here means umoved. */

@@ -36,7 +36,7 @@ import { acidic, slimeproof } from './dog.js';
 import { Is_mbag } from './mkobj.js';
 import { Is_container } from './obj.js';
 import { is_weptool } from './mkobj.js';
-import { metallivorous, corpse_eater } from './mondata.js';
+import { metallivorous, corpse_eater, is_covetous } from './mondata.js';
 import { may_dig } from './hack.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
@@ -210,7 +210,7 @@ export function inhishop(mtmp) {
 }
 
 // src/priest.c:161 inhistemple()
-function inhistemple(mtmp) {
+export function inhistemple(mtmp) {
     /* make sure we have a priest */
     if (!mtmp || !mtmp.ispriest)
         return false;
@@ -1037,6 +1037,18 @@ export async function dochug(mtmp) {
        does, because inrange/nearby in distfleeck() are measured against the
        monster's guess at the hero's position, not the hero's real one. */
     set_apparxy(mtmp);
+
+    /* src/monmove.c:782 — monsters that want to acquire things may
+       teleport, so do it before inrange is set. This costs a turn only if
+       mstate is set. */
+    if (is_covetous(game.mons[mtmp.mnum])) {
+        const { tactics } = await import('./wizard.js');
+        await tactics(mtmp);
+        /* tactics -> mnexto -> deal_with_overcrowding */
+        if (mtmp.mstate)
+            return 0;
+        set_apparxy(mtmp);
+    }
 
     /* src/monmove.c:791 */
     let { inrange, nearby, scared } = distfleeck(mtmp);

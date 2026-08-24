@@ -1,0 +1,12 @@
+{
+  "name": "planes-tour",
+  "description": "endgame reproducer: wizmode levelport through all five Elemental Planes (earth, air, fire, water, astral) with a few turns of bubble/cloud/fumarole machinery on each",
+  "segments": [
+    {
+      "seed": 6120,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug,suppress_alert:3.4.3,symset:DECgraphics\nOPTIONS=!autopickup\n",
+      "moves": "  n#levelchange\n20\n                   \u0016?\n  N       \u001bsss  \u0016-2\n      sss  \u0016-3\n      sss  \u0016-4\n      sss  \u0016-5\n        sss    "
+    }
+  ]
+}

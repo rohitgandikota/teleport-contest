@@ -1167,6 +1167,10 @@ function engraving_glyph(loc, x, y) {
 export async function docrt() {
     if (!game.level) return;
 
+    /* src/display.c:1740 — "shut down vision" so the recalc below sees an
+       empty previous state and newsyms every in-sight square */
+    vision_recalc(2);
+
     /* src/display.c:1739 — docrt_flags() clears first unless docrtNocls.
        cls() flushes the message window, so an unacknowledged message gets
        its --More-- BEFORE the map is wiped and repainted; that is why C
@@ -1182,6 +1186,14 @@ export async function docrt() {
                     loc.remembered_glyph.glyph);
             }
         }
+
+    /* src/display.c:1750 — "see what is to be seen": the live view paints
+       OVER the memory sweep; against the emptied vision state every
+       in-sight square gets a newsym. On a hero_memory level the two agree,
+       but the endgame planes keep a one-glyph backdrop as memory and only
+       this pass shows the hero's actual surroundings. */
+    vision_recalc(0);
+
     /* src/display.c:1761 — "overlay with monsters": see_monsters() runs a
        newsym over every live monster, which is what brings the pet back
        after a menu overlay is dismissed and the map redrawn from memory. */

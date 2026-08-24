@@ -499,7 +499,12 @@ export function mksobj_init(otmp, artif) {
         break;
 
     case AMULET_CLASS:
+        /* mkobj.c:1061 — creating the real Amulet flips the flag covetous
+           monsters' strategy() keys on */
+        if (otmp.otyp === ONAMES.AMULET_OF_YENDOR)
+            (game.context ||= {}).made_amulet = true;
         if (rn2(10) && (otmp.otyp === ONAMES.AMULET_OF_STRANGULATION
+                        || otmp.otyp === ONAMES.AMULET_OF_CHANGE
                         || otmp.otyp === ONAMES.AMULET_OF_RESTFUL_SLEEP))
             curse(otmp);
         else

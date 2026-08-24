@@ -58,7 +58,7 @@ import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
          UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
-         Upolyd } from './const.js';
+         Upolyd, Is_waterlevel, Is_airlevel } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
 import { lookaround, end_running, unmul, nomul,
@@ -99,7 +99,7 @@ import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
 import { dosearch0 } from './detect.js';
 import { run_regions } from './region.js';
-import { nh_timeout } from './timeout.js';
+import { nh_timeout, do_storms } from './timeout.js';
 import { age_spells } from './spell.js';
 import { gethungry } from './eat.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
@@ -723,6 +723,9 @@ export async function moveloop_core() {
                     await dosearch0(1);
 
                 await dosounds();
+                /* src/allmain.c:353 do_storms() — draws only on a stormy
+                   level (the Plane of Air) */
+                await do_storms();
                 await gethungry();
 
                 /* src/allmain.c:354 — age_spells() then exerchk(). exerchk
@@ -732,6 +735,14 @@ export async function moveloop_core() {
                 age_spells();
                 exerchk();
 
+                /* src/allmain.c:358 — invault() needs the vault-guard
+                   subsystem (pre-existing gap); the Amulet check runs for
+                   any hero carrying it (the endgame tour does) */
+                if (g.u.uhave?.amulet) {
+                    const { amulet } = await import('./wizard.js');
+                    await amulet();
+                }
+
                 /* src/allmain.c:360 — the hero scuffs what is written under
                    their feet. This used to spend the rnd(3) and DISCARD it
                    without calling u_wipe_engr(), so a dust engraving never
@@ -740,6 +751,18 @@ export async function moveloop_core() {
                    no longer matches. */
                 if (!rn2(40 + (ACURR(A_DEX) * 3)))
                     u_wipe_engr(rnd(3));
+
+                /* src/allmain.c:374 — vision will be updated as bubbles
+                   move: the Planes of Water and Air redraw their bubbles
+                   and clouds every turn, and a fumaroles level (Plane of
+                   Fire) vents poison gas */
+                if (Is_waterlevel(g.u.uz) || Is_airlevel(g.u.uz)) {
+                    const { movebubbles } = await import('./mkmaze.js');
+                    await movebubbles();
+                } else if (g.level?.flags?.fumaroles) {
+                    const { fumaroles } = await import('./mkmaze.js');
+                    await fumaroles();
+                }
 
                 /* src/allmain.c:380 — when immobile, count is in turns */
                 if ((g.multi ?? 0) < 0) {
@@ -775,9 +798,21 @@ export async function moveloop_core() {
     /* src/allmain.c:441-453 — once-per-player-input things: forget the last
        splitobj() pair, then re-derive the hero's AC from what is worn now.
        This per-input find_ac() is what makes AC changes from multi-turn
-       dressing show on the status line the turn they complete. The amulet
-       wish arm needs makewish and is not ported. */
+       dressing show on the status line the turn they complete. */
     clear_splitobjs();
+
+    /* src/allmain.c:446 — the Amulet of Yendor gives a wish when initially
+       picked up (a 5.0 feature; the wizmode endgame levelport grant
+       triggers it too) */
+    if (g.u.uhave?.amulet && !g.u.uevent?.amulet_wish) {
+        (g.u.uevent ||= {}).amulet_wish = 1;
+        /* display_nhwindow(WIN_MESSAGE, TRUE) — flush pending messages */
+        const { pline } = await import('./display.js');
+        await pline('The Amulet is bestowing a wish upon you!');
+        const { makewish } = await import('./zap.js');
+        await makewish();
+    }
+
     find_ac();
 
     /* C bumps hero_seq inside the move gate (moves*8 + n); this port's

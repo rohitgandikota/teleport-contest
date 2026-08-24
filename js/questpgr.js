@@ -229,6 +229,23 @@ function convert_line(in_line) {
     return out;
 }
 
+// src/questpgr.c:423 deliver_by_pline() — one pline per newline-separated
+// line, each through convert_line()'s %-code expansion.
+async function deliver_by_pline(str) {
+    const { pline } = await import('./display.js');
+    for (const line of String(str).split('\n'))
+        await pline(convert_line(line));
+}
+
+// src/questpgr.c:655 deliver_splev_message() — special levels can include a
+// custom arrival message (des.message); display it once, then discard it.
+export async function deliver_splev_message() {
+    if (game.lev_message) {
+        await deliver_by_pline(game.lev_message);
+        game.lev_message = null;
+    }
+}
+
 // src/questpgr.c:438 deliver_by_window()
 async function deliver_by_window(msg, how) {
     const win = tty_create_nhwindow(how);

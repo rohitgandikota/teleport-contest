@@ -257,6 +257,12 @@ export async function dosearch0(aflag) {
 
 // src/detect.c dosearch()
 export async function dosearch() {
+    /* src/detect.c:2097 — the safe_wait gate: plain 's' next to a spotted
+       monster refuses (no time) unless m-prefixed */
+    const { cmd_safety_prevention } = await import('./do.js');
+    if (await cmd_safety_prevention('Searching', 'another search',
+                                    'You already found a monster.'))
+        return 0;                      /* ECMD_OK — no time passes */
     return dosearch0(0);
 }
 

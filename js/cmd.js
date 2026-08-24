@@ -1385,6 +1385,10 @@ export async function domove() {
        taken when the hero's position actually changed */
     if (game.u.ux !== ux1 || game.u.uy !== uy1) {
         await maybe_smudge_engr(ux1, uy1, game.u.ux, game.u.uy);
+        /* src/hack.c:2704 — one rn2(2) after every actual hero move on the
+           Plane of Water: the hero's bubble may take the hero's heading */
+        const { maybe_adjust_hero_bubble } = await import('./mkmaze.js');
+        maybe_adjust_hero_bubble();
     }
 }
 

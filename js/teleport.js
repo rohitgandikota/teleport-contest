@@ -282,8 +282,18 @@ export async function level_tele() {
         return;
     }
 
-    if (In_endgame(game.u.uz)) {
-        note_unported_tele('level_tele:endgame');
+    if (In_endgame(game.u.uz)) { /* must already be wizard */
+        /* src/teleport.c:1308 — planes are addressed as negative numbers
+           counting down from the dungeon's top */
+        const llimit = dunlevs_in_dungeon(game.u.uz);
+
+        if (newlev >= 0 || newlev <= -llimit) {
+            await You_cant('get there from here.');
+            return;
+        }
+        newlevel.dnum = game.u.uz.dnum;
+        newlevel.dlevel = llimit + newlev;
+        schedule_goto(newlevel, 0 /* UTOTYPE_NONE */, null, null);
         return;
     }
 

@@ -8,7 +8,10 @@ import { game } from './gstate.js';
 import { getobj, GETOBJ_PROMPT, ECMD_TIME, ECMD_OK } from './invent.js';
 import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR,
          A_STR, A_CON } from './const.js';
-import { sgn } from './hacklib.js';
+import { sgn, distu } from './hacklib.js';
+import { valid_cloud_pos } from './region.js';
+import { cansee } from './vision.js';
+import { bcsign } from './mkobj.js';
 import { chwepon } from './wield.js';
 import { erosion_matters } from './mkobj.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -126,6 +129,9 @@ async function seffects(sobj) {
         return await seffect_light(sobj);
     case ONAMES.SCR_DESTROY_ARMOR:
         return await seffect_destroy_armor(sobj);
+    case ONAMES.SCR_STINKING_CLOUD:
+        await seffect_stinking_cloud(sobj);
+        break;
     default:
         note_unported_read(`seffects:otyp=${otyp}`);
         break;
@@ -140,6 +146,52 @@ async function seffects(sobj) {
 // a read scroll yet; they record. The plain arm runs destroy_arm() with
 // its rn2(4)+1 hit rolls, or gives the "Your skin itches." strange
 // feeling with no armor.
+// src/read.c:1080 can_center_cloud()
+function can_center_cloud(x, y) {
+    if (!valid_cloud_pos(x, y))
+        return false;
+    return cansee(x, y) && distu(x, y) < 32;
+}
+
+// src/read.c:3081 do_stinking_cloud() — prompt for the center, then grow
+// the cloud; the size and damage scale with the scroll's beatitude.
+async function do_stinking_cloud(sobj, mention_stinking) {
+    const cc = { x: game.u.ux, y: game.u.uy };
+
+    await pline(`Where do you want to center the ${
+        mention_stinking ? 'stinking ' : ''}cloud?`);
+    /* getpos_sethilite(display_stinking_cloud_positions, can_center_cloud):
+       the highlight pass draws nothing */
+    const { getpos } = await import('./getpos.js');
+    if (await getpos(cc, true, 'the desired position') < 0) {
+        await pline('Never mind.');
+        return;
+    } else if (!can_center_cloud(cc.x, cc.y)) {
+        if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
+            await pline('Ugh... someone cut the cheese.');
+        else
+            await pline(`${sobj.oclass === OCLASSES.SCROLL_CLASS
+                ? 'The scroll crumbles with' : 'You smell'
+                } a whiff of rotten eggs.`);
+        return;
+    }
+    const { create_gas_cloud } = await import('./region.js');
+    create_gas_cloud(cc.x, cc.y, 15 + 10 * bcsign(sobj),
+                     8 + 4 * bcsign(sobj));
+}
+
+// src/read.c:1991 seffect_stinking_cloud()
+async function seffect_stinking_cloud(sobj) {
+    const otyp = sobj.otyp;
+    const already_known = (sobj.oclass === OCLASSES.SPBOOK_CLASS
+                           || game.objects[otyp].oc_name_known);
+
+    if (!already_known)
+        await You('have found a scroll of stinking cloud!');
+    game.known = true;
+    await do_stinking_cloud(sobj, already_known);
+}
+
 async function seffect_destroy_armor(sobj) {
     const { destroy_arm } = await import('./do_wear.js');
     const { strange_feeling } = await import('./potion.js');

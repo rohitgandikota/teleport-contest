@@ -831,6 +831,59 @@ function floor_object_glyph(obj, x, y) {
     return { ch: sym, color, dec: false, glyph: gdesc };
 }
 
+/* swallowed() state: last drawn position (C statics) */
+let swallowed_lastx = 0, swallowed_lasty = 0;
+
+// src/display.c:1332 swallowed() — display the hero surrounded by the
+// engulfer's interior. first=1 clears the screen and redraws the status
+// line; later calls just erase the old 3x3 patch.
+export async function swallowed(first) {
+    const u = game.u;
+
+    if (first) {
+        await cls();
+        bot();
+    } else {
+        for (let y = swallowed_lasty - 1; y <= swallowed_lasty + 1; y++)
+            for (let x = swallowed_lastx - 1; x <= swallowed_lastx + 1; x++)
+                if (isok(x, y))
+                    show_glyph_cell(x, y, ' ', NO_COLOR, false, 0,
+                                    { kind: 'unexplored' });
+    }
+
+    const swallower = u.ustuck ? game.mons[u.ustuck.mnum] : null;
+    const swcolor = swallower?.mcolor ?? NO_COLOR;
+    const sw = (name) => {
+        const idx = defsyms.findIndex(d => d.name === name);
+        const s = showsym(idx);
+        return { ch: s ? s.ch : '?', dec: s ? s.dec : false, cmap: idx };
+    };
+    const put = (x, y, name) => {
+        const g = sw(name);
+        show_glyph_cell(x, y, g.ch, swcolor, g.dec, 0,
+                        { kind: 'swallow', cmap: g.cmap });
+    };
+    const left_ok = isok(u.ux - 1, u.uy);
+    const rght_ok = isok(u.ux + 1, u.uy);
+
+    if (isok(u.ux, u.uy - 1)) {
+        if (left_ok) put(u.ux - 1, u.uy - 1, 'S_sw_tl');
+        put(u.ux, u.uy - 1, 'S_sw_tc');
+        if (rght_ok) put(u.ux + 1, u.uy - 1, 'S_sw_tr');
+    }
+    if (left_ok) put(u.ux - 1, u.uy, 'S_sw_ml');
+    show_glyph_cell(u.ux, u.uy, '@', CLR_WHITE, false, 0, { kind: 'hero' });
+    if (rght_ok) put(u.ux + 1, u.uy, 'S_sw_mr');
+    if (isok(u.ux, u.uy + 1)) {
+        if (left_ok) put(u.ux - 1, u.uy + 1, 'S_sw_bl');
+        put(u.ux, u.uy + 1, 'S_sw_bc');
+        if (rght_ok) put(u.ux + 1, u.uy + 1, 'S_sw_br');
+    }
+
+    swallowed_lastx = u.ux;
+    swallowed_lasty = u.uy;
+}
+
 // src/display.c:1574 see_nearby_objects() — mark the top object of nearby
 // stacks as having been seen, and if that object was being displayed as
 // generic, redisplay it as specific.  Called from u_on_newpos() whenever the

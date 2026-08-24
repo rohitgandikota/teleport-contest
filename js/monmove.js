@@ -1862,10 +1862,24 @@ function finish_meating(mtmp) {
     }
 }
 
+// src/monmove.c:650 m_everyturn_effect() — called every turn for each
+// living monster (and the hero): a fog cloud sheds a harmless vapor trail
+// where it stands (this is what fills the Valley with drifting mist).
+export function m_everyturn_effect(mtmp) {
+    const is_u = (mtmp === game.youmonst);
+    const x = is_u ? game.u.ux : mtmp.mx,
+          y = is_u ? game.u.uy : mtmp.my;
+
+    if (mtmp.mnum === PMNAMES.PM_FOG_CLOUD || (is_u && false /* Upolyd fog */)) {
+        /* don't leave a vapor cloud if some other gas cloud is already
+           present, or when flowing under closed doors */
+        if (!closed_door_mm(x, y) && !visible_region_at(x, y))
+            create_gas_cloud(x, y, 1, 0);       /* harmless vapor */
+    }
+}
+
 // src/monmove.c:672 m_postmove_effect() — effects a monster leaves at the
-// square it is ABOUT to vacate: hezrou stench, steam-vortex vapor, and the
-// harmless vapor trail of a fog cloud (which is what fills the Valley with
-// drifting mist).
+// square it is ABOUT to vacate: hezrou stench and steam-vortex vapor.
 export function m_postmove_effect(mtmp) {
     const x = mtmp.mx, y = mtmp.my;
 
@@ -1873,10 +1887,4 @@ export function m_postmove_effect(mtmp) {
         create_gas_cloud(x, y, 1, 8);
     else if (mtmp.mnum === PMNAMES.PM_STEAM_VORTEX && !mtmp.mcan)
         create_gas_cloud(x, y, 1, 0);           /* harmless vapor */
-    else if (mtmp.mnum === PMNAMES.PM_FOG_CLOUD) {
-        /* don't leave a vapor cloud if some other gas cloud is already
-           present, or when flowing under closed doors */
-        if (!closed_door_mm(x, y) && !visible_region_at(x, y))
-            create_gas_cloud(x, y, 1, 0);       /* harmless vapor */
-    }
 }

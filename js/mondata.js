@@ -706,3 +706,7 @@ export function mhim(mtmp) {
     return genders_tbl[pronoun_gender(mtmp, PRONOUN_HALLU)].him;
 }
 import { genders as genders_tbl } from './role_data.js';
+
+// include/mondata.h:71 digests() — swallow-and-digest engulfer (purple worm).
+export const digests = (ptr) =>
+    dmgtype_fromattack(ptr, ATTKS.AD_DGST, ATTKS.AT_ENGL) != null;

@@ -1,4 +1,24 @@
 # STATUS — live handoff board
+## 2026-08-24 (night): recorder tree pristine again; drift-tool note
+
+The C recorder tree is REVERTED: bash nethack-c/build-recorder.sh
+regenerates recorder/src from upstream+patches (rsync + patch series)
+and rebuilds; `strings recorder/src/nethack` shows zero debug markers.
+Instrument freely next time and just re-run the script to clean up.
+
+make_corpse now carries the full special-case switch (commit 79a8c70);
+seed0006 3198->3613. Its NEXT head (rng 3584, step 89 'K') is a
+door-state divergence: ours has a closed '+' at ~(65,5) on dlvl2 where
+C's hero runs straight through an open doorway - some C monster opened
+it draw-free while ours' twin wandered elsewhere; monster-path drift
+family, needs the recorder loop.
+
+Drift-hunting tool note (cost a false lead today): the __step_snapshot
+callback fires AFTER key[n] is consumed, so compare steps[n].cursor
+(cursor col+1, row-1 = hero) against the hero AT MARKER n, and only for
+frames whose key is a movement key - menu/getpos frames park the cursor
+off-hero and cursors during chargen are meaningless.
+
 ## 2026-08-24 (later): 21/44 + death-tail machinery
 
 seed0004 PASSES (12084/12084, 409/409). seed0009 full RNG (3713/3713,

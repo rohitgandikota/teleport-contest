@@ -19,6 +19,19 @@ five general fixes in a row:
   dog_move post-goal, and mon_allowflags (daad250). seed0004's hero
   wears a ring of conflict from ~turn 340.
 
+UPDATE (lichen thread, precise): head 10377 (10421 matched), step 286
+('r' finishing the conflict-ring put-on), turn 354. Sequence: pony's
+dog action draws 10370-75, then 10376 distfleeck = the LICHEN m158's
+dochug. C's lichen dochug ends there draw-free (next C call is the
+mcalcmove boundary); ours continues into m_move -> mon_allowflags ->
+conflict rnd(20). Find C's draw-free exit between dochug's distfleeck
+and m_move for a far-away hides_under lichen: instrument C dochug/
+m_move for mnum 158 (the hides_under rn2(10) arm did NOT draw in C, so
+its OBJ_AT gate must be false; check mundetected handling and the
+phase-three gates). The travel one-step-short at 298 turned out to be
+the SAME lichen positioned differently, not a lookaround bug —
+lookaround matches C.
+
 UPDATE (travel landed, 26b27cf): findtravelpath + dotravel_target
 ported whole; the hero really travels now. seed0004 rng total 10421.
 Remaining at step 298: our travel run stops ONE STEP before C's at a

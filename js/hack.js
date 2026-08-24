@@ -690,6 +690,9 @@ export function end_running(and_travel) {
 // a caller asking for a SHORTER helplessness than the one already in effect is
 // ignored, so the longest wins rather than the latest.
 export function nomul(nval) {
+    if (globalThis.__dog_trace && game.context?.travel)
+        console.error('NOMUL during travel:', (new Error().stack || '')
+            .split('\n')[2]?.trim());
     if (game.multi < nval)
         return;              /* This is a bug fix by ab@unido */
     (game.disp ||= {}).botl ||= (game.multi >= 0);

@@ -2,6 +2,45 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-23 (night) — generic objects, mkmap caverns, quest+tower levels, wishes
+
+All pushed through c65e243. Suite: 252,943 RNG / 3,352 screens (from
+237,770 / 3,077 this morning). Four commits landed:
+
+- 9027700 display: 5.0's obj_is_generic — a !dknown potion/gem/spellbook
+  draws as the grey class-generic glyph until observed (proximity arm in
+  floor_object_glyph, see_nearby_objects() from u_on_newpos,
+  clear_dknown per-class starting dknown). seed0106 37->241 screens.
+  TRAP: any new object-creation path must go through unknow_object/
+  clear_dknown or floor potions render wrongly colored.
+- f39affa quest: Bar-strt + selection machinery (subagent). Two latent
+  bugs fixed: selection_iterate was absolute where nhlsel is relative
+  (shifted every des.terrain by map origin), flip_level ignored
+  lregions/rooms.
+- 56201fb mkmap: the whole cellular cavern generator + splev_initlev
+  solidfill/mines arms; makelevel quest-filler dispatch; dat/minefill,
+  Bar-fila/filb/loca/goal, Tower1. Faithful-bug notes IN the commit
+  message (d_flags.align 3-bit truncation, covetous noteleport_level,
+  find_montype gendered name slots, waiting vampshift revert,
+  traptype_rnd level_difficulty, mineralize mines/quest scaling,
+  qt_montype). seed0373 4187->15592 RNG; seed0030 minefill +1809.
+- c65e243 wishes: readobjnam + makewish + artifact.c wish slice
+  (subagent). mondrift-objects reproducer passes byte-exact.
+  ONAME_* flag values were 3.6's and are now 5.0's.
+
+Current heads: seed0360 28316 (blessorcurse vs our location pick — a
+des level we still miss on the world tour); seed0361 2975 (dosearch0
+rnl(8) hidden-trap roll — being ported now); seed0367 1975 (dochug
+mflee drift, pre-existing); seed0373 15574 (bigrm-8 — subagent porting
+all missing bigrm variants + tower2/3, running); seed0007 13399,
+seed0012 7227, seed0004 5263, seed0014 4069, seed0116 5556 (the
+dog/monster silent-drift family, see below); seed0030 now past
+minefill; seed4500 7897; seed0108 2778 (dog_move floor-object family).
+
+A subagent is porting bigrm-1..6/8/11/13 + tower2/3 (needs
+selection.line/rect/fillrect/match/grow/union primitives). Its files:
+js/dat/bigrm-*.js, tower2/3.js, additive selvar/sp_lev changes.
+
 ## 2026-08-23 (cont) — seed0007 82% RNG / 83% screens; moverock chain
 
 All pushed through 34f1806. Suite: 24/44 RNG-clean, 10/44 pass,

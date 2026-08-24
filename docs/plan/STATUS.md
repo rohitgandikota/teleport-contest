@@ -2,6 +2,52 @@
 
 *(newest entry first; keep the top entry current)*
 
+## 2026-08-24 (night) — 18/44; friday13 save/restore session passes; #terrain + getpos landed
+
+All pushed through 25282b2. Suite: 18/44 passing. hang-gate OK.
+seed0013-friday13-save-then-fullmoon-restore passes end to end (99/99
+screens, rng 4804/4804) — the first save→restore session to pass.
+
+What landed in 25282b2 (verified in an isolated worktree, then
+blob-staged; main tree still carries the planes agent's edits):
+- Save flow: Really-save default n; save-exit clearScreen + "Be seeing
+  you..."; restore welcome-back + moon/friday13 preamble; snapshot
+  SKIP_KEYS excludes transient topline state.
+- doterrain (cmd.c:1098) + its DEL ('\177') key binding; reveal_terrain
+  and reveal_terrain_getglyph (detect.c:2167+); browse_map /
+  map_redisplay / un+reconstrain (detect.c top); wired through the
+  ALREADY-PORTED getpos() (js/getpos.js, complete) and the getpos tip
+  window (js/nhlua.js show_getpos_tip — its trailing docrt() removed:
+  C restores the under-window rows from the glyph buffer, and the docrt
+  was repainting the REAL map over a terrain view).
+- update_lastseentyp (dungeon.c:2927) now runs at every mapping site
+  like C's _map_location; cmap_to_type (mkroom.c:912) and db_under_typ
+  (dbridge.c:116) ported for its mimic/drawbridge arms. This is what
+  makes reveal_terrain's `lastseentyp == typ` arm show doorways as
+  S_ndoor and strip remembered objects to terrain.
+- tty_select_menu cancel vs empty-commit: callers that need C's n<0
+  read `tty_get_nhwindow(win).cancelled` BEFORE tty_destroy_nhwindow
+  (doterrain does).
+- Menu/text page waits are xwaitforspace(' \r\n\x1b') — quitchars only,
+  other keys swallowed (this is C dmore; the tip window eats a whole
+  blind-typed "#vanquished" in the recording).
+- dispinv_with_action single-item pline for doprarm/doprring/dopramulet.
+
+Head movement vs the previous board (all better, none worse): 0360
+43164→43592, 0004 5275→5916, 0030 12701→13082, 0002 6999→7548, 0014
+4069→4529, 4500 7897→8040, 0012 7227→7332, 0116 5556→5711, 0007
+13399→13492, 0373 30067→30068.
+
+PLANES AGENT FAILED (API 529) with its work UNCOMMITTED in the main
+tree: js/dat/{air,astral,earth,fire,water}.js, js/minion.js, edits to
+mkmaze/cmd/do/mon/wizard/allmain/timeout/etc, plus a planes-tour
+recipe + generated session under tools/gen-sessions. Its last words:
+"All five planes recorded from real C. Now run our port against it."
+Next agent: verify that generated session replays, then commit its work
+file-by-file through a worktree (do NOT lose it, do NOT commit it
+blind — the main tree currently fails to run because of half-landed
+imports).
+
 ## 2026-08-24 (later) — 16/44 passing; all 12 quests clean; planes agent in flight
 
 All pushed through 5ddac4f. Suite: 16/44 passing, ~292k RNG, ~3,700

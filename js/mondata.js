@@ -12,12 +12,14 @@
 
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
 import { game } from './gstate.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd } from './rng.js';
 import { Hallucination } from './youprop.js';
 import { canspotmon } from './display.js';
 import { G_UNIQ, PRONOUN_NO_IT, PRONOUN_HALLU } from './const.js';
 import { dist2 } from './hacklib.js';
 import { clear_path } from './vision.js';
+import { ACURR } from './attrib.js';
+import { A_CHA } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { is_vampshifter } from './monst.js';
 import { NATTK } from './const.js';
@@ -161,6 +163,15 @@ export const is_animal = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;
 // remember it. Runs from dotrap() and mintrap() whenever a trap actually
 // fires; the learned bit is what makes a pet's later step draw the
 // already-seen rn2(4) dodge in mintrap.
+// src/mondata.c:1607 resist_conflict() — can a monster resist conflict
+// caused by the hero? High-CHA heroes 'convince' monsters more easily.
+export function resist_conflict(mtmp) {
+    /* always a small chance at 19 */
+    const resist_chance = Math.min(19,
+        (ACURR(A_CHA) - (mtmp.m_lev ?? 0) + (game.u.ulevel ?? 1)));
+    return (rnd(20) > resist_chance);
+}
+
 export function mons_see_trap(ttmp) {
     const tx = ttmp.tx, ty = ttmp.ty;
     const lit = game.level?.at(tx, ty)?.lit;

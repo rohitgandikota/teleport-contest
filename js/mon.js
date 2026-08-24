@@ -2,7 +2,7 @@ import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
-import { ceiling_hider, emits_light } from './mondata.js';
+import { ceiling_hider, emits_light, resist_conflict } from './mondata.js';
 import { new_light_source, del_light_source, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear, m_everyturn_effect,
@@ -909,6 +909,11 @@ export function mon_allowflags(mtmp) {
     else if (mtmp.mpeaceful)
         allowflags |= ALLOW_SANCT | ALLOW_SSM;
     else
+        allowflags |= ALLOW_U;
+    /* src/mon.c:2086 — a conflicted monster that fails to resist may
+       attack the hero; the roll fires for every monster while the ring
+       is worn */
+    if (game.u.uprops?.CONFLICT && !resist_conflict(mtmp))
         allowflags |= ALLOW_U;
 
     if (mtmp.isshk) allowflags |= ALLOW_SSM;

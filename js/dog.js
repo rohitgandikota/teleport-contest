@@ -21,7 +21,7 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          NEED_WEAPON, NEED_HTH_WEAPON } from './const.js';
 import { acurr } from './attrib.js';
 import { put_saddle_on_mon } from './steed.js';
-import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater, regenerates } from './mondata.js';
+import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater, regenerates, resist_conflict } from './mondata.js';
 import { sobj_at, eaten_stat, obj_extract_self } from './invent.js';
 import { may_dig } from './hack.js';
 import { is_metallic, OBJ_FLOOR } from './obj.js';
@@ -1212,6 +1212,14 @@ export async function dog_move(mtmp, after) {
     if (appr === -2) {
         if (globalThis.__dog_trace) console.error('DOGPRE goal-2');
         return MMOVE_NOTHING;
+    }
+
+    /* src/dogmove.c:1046 — a conflicted pet rolls resist_conflict every
+       action; an edog that fails just keeps going (the non-edog guardian
+       angel arm needs minions) */
+    if (game.u.uprops?.CONFLICT && !resist_conflict(mtmp)) {
+        if (!edog)
+            (game.unported ||= new Set()).add('dog_move:lose_guardian_angel');
     }
 
     /* src/dogmove.c:1062 — the squares the pet may move to */

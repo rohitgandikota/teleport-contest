@@ -36,7 +36,8 @@ import { acidic, slimeproof } from './dog.js';
 import { Is_mbag } from './mkobj.js';
 import { Is_container } from './obj.js';
 import { is_weptool } from './mkobj.js';
-import { metallivorous, corpse_eater, is_covetous } from './mondata.js';
+import { metallivorous, corpse_eater, is_covetous,
+         resist_conflict } from './mondata.js';
 import { may_dig } from './hack.js';
 import { place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd } from './rng.js';
@@ -1215,9 +1216,9 @@ function select_rwep_absent(mtmp) {
 
 /* src/priest.c resist_conflict() — conflict resistance check for priests;
    only reachable under Conflict, which is recorded state already. */
+/* src/mondata.c:1607 resist_conflict() — now the real port */
 function resist_conflict_absent(mtmp) {
-    note_unported_monmove('dochug:resist_conflict');
-    return false;
+    return resist_conflict(mtmp);
 }
 
 // src/monmove.c:1720 m_move() — a non-tame monster's turn. The tame case is

@@ -25,7 +25,12 @@ if (!arg) {
     console.error('usage: node tools/petdrift.mjs <session> [glyphchars]');
     process.exit(2);
 }
-const petchars = (process.argv[3] || 'dfu').split('');
+/* default: pets. Pass a glyph list, or 'ALL' to compare every monster
+   letter on screen against our live monster set (multiset per char). */
+const petarg = process.argv[3] || 'dfu';
+const ALLMODE = petarg === 'ALL';
+const petchars = ALLMODE ? [] : petarg.split('');
+const isMonChar = (ch) => /[a-zA-Z:;&']/.test(ch) && ch !== 'I';
 const sessPath = arg.includes('/') ? arg : join(PROJECT_ROOT, 'sessions', arg);
 const sess = JSON.parse(readFileSync(sessPath, 'utf8'));
 const seg = (sess.segments ?? [sess])[0];
@@ -41,14 +46,22 @@ function recordedPets(stepIdx) {
         const row = grid[r];
         if (!row) continue;
         for (let c = 0; c < row.length; c++) {
-            const ch = row[c]?.ch;
-            if (ch && petchars.includes(ch))
-                out.push({ x: c + 1, y: r - 1, ch }); /* tty col = map x-1 */
-            else if (ch === '@')
+            const cell = row[c];
+            const ch = cell?.ch;
+            if (!ch) continue;
+            if (cell.decgfx) continue;   /* DEC line-drawing, not a monster */
+            if (ch === '@') {
                 hero = { x: c + 1, y: r - 1 };
+            } else if (ALLMODE ? isMonChar(ch) : petchars.includes(ch)) {
+                out.push({ x: c + 1, y: r - 1, ch }); /* tty col = map x-1 */
+            }
         }
     }
     out.hero = hero;
+    /* a frame carrying dozens of letter glyphs is a text overlay (menus,
+       tutorial prompts), not a live map */
+    if (ALLMODE && out.length > 22)
+        return null;
     return out;
 }
 
@@ -57,7 +70,7 @@ const capture = (g, step) => {
     if (firstDrift >= 0 && step > firstDrift + 6)
         return; /* stop re-arming: enough context reported */
     const pets = (g.level?.monsters ?? [])
-        .filter(m => m.mhp > 0 && (m.mtame || m.edog))
+        .filter(m => m.mhp > 0 && (ALLMODE || m.mtame || m.edog))
         .map(m => ({ x: m.mx, y: m.my,
                      n: g.mons[m.mnum]?.pmnames?.filter(Boolean)[0] }));
     const rec = recordedPets(step);
@@ -66,17 +79,34 @@ const capture = (g, step) => {
     if (rec && pets.length && rec.hero
         && rec.hero.x === g.u.ux && rec.hero.y === g.u.uy) {
         let missNow = false;
-        for (const p of pets) {
-            if (!rec.some(r => r.x === p.x && r.y === p.y) && rec.length) {
+        if (ALLMODE) {
+            /* the reliable direction: a monster glyph on the recorded
+               screen with NO monster of ours at that spot (invisible
+               monsters can't create false positives; out-of-sight ones
+               simply aren't recorded) */
+            const orphans = rec.filter(r =>
+                !pets.some(q => q.x === r.x && q.y === r.y));
+            if (orphans.length) {
                 missNow = true;
-                /* a single-step miss is usually a run/occupation display
-                   transient; only a SECOND consecutive miss is drift */
                 if (prevMiss) {
-                    console.error(`DRIFT step ${step}: our ${p.n} at (${p.x},${
-                        p.y}); recorded: ${
-                        rec.map(r => `${r.ch}@(${r.x},${r.y})`).join(' ')}`);
+                    console.error(`DRIFT step ${step}: recorded ${
+                        orphans.map(r => `${r.ch}@(${r.x},${r.y})`).join(' ')
+                        } has no monster of ours there`);
                     if (firstDrift < 0) firstDrift = step;
                     reports++;
+                }
+            }
+        } else {
+            for (const p of pets) {
+                if (!rec.some(r => r.x === p.x && r.y === p.y) && rec.length) {
+                    missNow = true;
+                    if (prevMiss) {
+                        console.error(`DRIFT step ${step}: our ${p.n} at (${
+                            p.x},${p.y}); recorded: ${
+                            rec.map(r => `${r.ch}@(${r.x},${r.y})`).join(' ')}`);
+                        if (firstDrift < 0) firstDrift = step;
+                        reports++;
+                    }
                 }
             }
         }

@@ -862,6 +862,10 @@ export async function doextcmd() {
         return await wiz_wish();
     if (name === 'wizgenesis')
         return await wiz_genesis();
+    if (name === 'wizintrinsic') {
+        const { wiz_intrinsic } = await import('./wizcmds.js');
+        return await wiz_intrinsic();
+    }
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;

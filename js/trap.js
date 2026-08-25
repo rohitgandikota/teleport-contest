@@ -28,7 +28,8 @@ import { mksobj, place_object, splitobj } from './mkobj.js';
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
-import { canspotmon, display_object_at, newsym, pline } from './display.js';
+import { canspotmon, display_object_at, newsym, pline,
+         temporary_object_glyph } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
@@ -2751,7 +2752,8 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
        pline() would repaint the floor over this temporary glyph. */
     if (game.vision_full_recalc)
         vision_recalc(0);
-    display_object_at(singleobj, x1, y1);
+    const launchedGlyph = temporary_object_glyph(singleobj);
+    display_object_at(singleobj, x1, y1, launchedGlyph);
 
     let dist = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
     let x = x1, y = y1;
@@ -2774,7 +2776,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
            object being tested for impact. */
         if (x !== tmpx || y !== tmpy) {
             newsym(tmpx, tmpy);
-            display_object_at(singleobj, x, y);
+            display_object_at(singleobj, x, y, launchedGlyph);
             tmpx = x;
             tmpy = y;
         }

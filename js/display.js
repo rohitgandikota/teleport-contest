@@ -2,6 +2,7 @@
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
 import { game } from './gstate.js';
+import { rn2_on_display_rng } from './rng.js';
 import { money_cnt } from './invent.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { update_topl } from './tty/topl.js';
@@ -38,7 +39,7 @@ import { is_pool } from './mon.js';
 import { nhgetch } from './input.js';
 import { update_lastseentyp } from './dungeon.js';
 import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
-import { PMNAMES, mons } from './monst_data.js';
+import { PMNAMES, mons, NUMMONS } from './monst_data.js';
 import { showsym } from './symbols.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, CLR_BLACK,
@@ -871,6 +872,22 @@ function pile_attr(glyph) {
 }
 
 function floor_object_glyph(obj, x, y, piletop = true) {
+    /* include/display.h random_obj_to_glyph(): every object is shown as a
+       random object while hallucinating. CORPSE is the one random type that
+       needs another display-RNG draw to choose the body species. */
+    if (Hallucination()) {
+        const otyp = rn2_on_display_rng(
+            ONAMES.NUM_OBJECTS - ONAMES.FIRST_OBJECT) + ONAMES.FIRST_OBJECT;
+        obj = {
+            otyp,
+            oclass: game.objects?.[otyp]?.oc_class,
+            corpsenm: otyp === ONAMES.CORPSE
+                ? rn2_on_display_rng(NUMMONS) : -1,
+            quan: 1,
+            dknown: 1,
+        };
+        piletop = false;
+    }
     /* src/display.c:340 _map_location() — if the object would display as
        generic but the hero can see the spot from nearby (same radius as
        distant_name(): r = max(u.xray_range, 2), neardist = 2r²−r), mark
@@ -1227,7 +1244,9 @@ export function newsym(x, y) {
         const wmon = (game.level?.monsters || [])
             .find(m => m.mx === x && m.my === y && m.mhp > 0);
         if (wmon && mon_warning(wmon)) {
-            let wl = ((wmon.m_lev ?? 0) / 4) | 0;
+            let wl = Hallucination()
+                ? rn2_on_display_rng(5) + 1
+                : ((wmon.m_lev ?? 0) / 4) | 0;
             if (wl > 5) wl = 5;
             if (wl < 1) wl = 1;
             const warncolor = [CLR_WHITE, 1, 1, 1, 5, 13];
@@ -2017,6 +2036,17 @@ export function canspotmon(mon) {
     return canseemon(mon) || sensemon(mon);
 }
 
+// src/display.c:1487 see_monsters() redraws every live monster, then the
+// hero. Callers use this when a sensing property changes or needs refreshing.
+export function see_monsters() {
+    for (const mon of game.level?.monsters || []) {
+        if (mon.mhp > 0)
+            newsym(mon.mx, mon.my);
+    }
+    if (!game.u?.usteed)
+        newsym(game.u.ux, game.u.uy);
+}
+
 // win/tty/wintty.c tty_print_glyph(), MG_PET with hilite_pet. NetHack's
 // attribute numbers differ from the terminal grid's bit flags.
 function pet_terminal_attr(mon) {
@@ -2239,5 +2269,5 @@ function mon_warning(mon) {
     const dx = mon.mx - u.ux, dy = mon.my - u.uy;
     if (dx * dx + dy * dy >= 100)
         return false;
-    return (((mon.m_lev ?? 0) / 4) | 0) >= (game.context_warnlevel ?? 0);
+    return (((mon.m_lev ?? 0) / 4) | 0) >= (game.context?.warnlevel ?? 1);
 }

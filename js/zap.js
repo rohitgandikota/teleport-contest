@@ -10,7 +10,8 @@ import { isok } from './hacklib.js';
 import { m_at, t_at } from './mon.js';
 import { cansee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
-import { display_cmap_at, map_invisible, newsym, unmap_invisible } from './display.js';
+import { display_cmap_at, display_object_at, map_invisible, newsym,
+         temporary_object_glyph, unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
 
 import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
@@ -1669,8 +1670,7 @@ export async function dozap() {
 // Only the THROWN_WEAPON spine is live: the flight stops at a monster, a
 // wall (!ZAP_POS), a closed door, a sink, water/lava walls or the map edge,
 // and gb.bhitpos holds the last good square. The rock-skip arm draws rn2(3)
-// for thrown ROCKs only. The tmp_at() flight animation frames are display
-// work this port does not emit yet; recorded so the gap stays visible.
+// for thrown ROCKs only.
 export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
     const obj = pobjRef.obj;
     let result = null;
@@ -1691,7 +1691,18 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
             note_unported_zap('bhit:rock_skip');
     }
 
-    note_unported_zap('bhit:tmp_at_flight');
+    /* src/zap.c:3868 tmp_at(DISP_FLASH, obj_to_glyph(...)). Capture the
+       glyph once even when the hero cannot see the flight. Hallucination
+       therefore consumes one display-RNG draw before the first square. */
+    const flightGlyph = (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+        && obj ? temporary_object_glyph(obj) : null;
+    let flightPos = null;
+    const endFlight = () => {
+        if (flightPos) {
+            newsym(flightPos.x, flightPos.y);
+            flightPos = null;
+        }
+    };
 
     while (range-- > 0) {
         game.bhitpos.x += ddx;
@@ -1794,10 +1805,21 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
             break;
         }
 
+        if (flightGlyph) {
+            endFlight();
+            if (cansee(x, y)) {
+                display_object_at(obj, x, y, flightGlyph);
+                flightPos = { x, y };
+            }
+            if (game.animationFrame)
+                await game.animationFrame();
+        }
+
         if (IS_SINK(typ) && weapon !== FLASHED_LIGHT_BHIT)
             break;               /* physical objects fall onto sink */
     }
 
+    endFlight();
     return result;
 }
 const FLASHED_LIGHT_BHIT = 2;    /* include/hack.h bhit_call_types */

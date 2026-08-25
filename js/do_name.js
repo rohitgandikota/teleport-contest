@@ -50,6 +50,27 @@ export function rndghostname() {
     return rn2(7) ? ghostnames[rn2(ghostnames.length)] : game.plname;
 }
 
+// src/do_name.c:1389 rndmonnam() -- choose a display-only hallucinated
+// monster name. Real monsters use a second display-RNG draw for gender.
+// Bogus monsters come from a data file in C; keep their fallback name while
+// recording that data-file selection is still missing.
+export function rndmonnam() {
+    const special = PMNAMES.SPECIAL_PM;
+    let name;
+
+    do {
+        name = rn2_on_display_rng(special + 100);
+    } while (name < special
+             && (type_is_pname(game.mons[name])
+                 || (game.mons[name].geno & MFLAGS.G_NOGEN)));
+
+    if (name >= special) {
+        (game.unported ||= new Set()).add('rndmonnam:bogusmon');
+        return 'bogon';
+    }
+    return pmname(game.mons[name], rn2_on_display_rng(2));
+}
+
 // src/mondata.h pmname() — pick from pmnames[male, female, neutral]. The
 // neutral form is index 2 and is the fallback when a gendered entry is null.
 export function pmname(ptr, gender) {

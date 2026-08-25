@@ -33,7 +33,7 @@ import { Monnam, y_monnam, upstart } from './do_name.js';
 import { Deaf } from './youprop.js';
 import { Is_rogue_level as IRL_const, D_TRAPPED } from './const.js';
 import { sobj_at, money_cnt } from './invent.js';
-import { m_carrying, meatmetal, resists_ston } from './mon.js';
+import { is_pool, m_carrying, meatmetal, meatobj, resists_ston } from './mon.js';
 import { acidic, slimeproof } from './dog.js';
 import { Is_mbag } from './mkobj.js';
 import { Is_container } from './obj.js';
@@ -1611,6 +1611,7 @@ export async function m_move(mtmp, after) {
            square. */
         remove_monster(omx, omy);
         place_monster(mtmp, nix, niy);
+        maybe_unhide_at_mon(mtmp);
         /* the newsym for the vacated square is in postmov(), not here --
            src/monmove.c:1508 sits inside postmov so that EVERY path returning
            through it redraws, including dog_move's at :1773. */
@@ -1623,6 +1624,21 @@ export async function m_move(mtmp, after) {
     }
 
     return await postmov(mtmp, ptr, omx, omy, mmoved);
+}
+
+// src/mon.c:4698 maybe_unhide_at(), monster arm. A concealed monster which
+// leaves its covering object must be revealed before postmov() decides
+// whether to roll for hiding again at the destination.
+function maybe_unhide_at_mon(mtmp) {
+    if (!mtmp.mundetected)
+        return;
+    const ptr = game.mons[mtmp.mnum];
+    const obj = (game.level?.objects || []).find(
+        (o) => o.ox === mtmp.mx && o.oy === mtmp.my);
+    if ((hides_under(ptr)
+         && (!obj || mtmp.mtrapped || !can_hide_under_obj(obj)))
+        || (ptr.mlet === MONSYMS.S_EEL && !is_pool(mtmp.mx, mtmp.my)))
+        hideunder(mtmp);
 }
 
 // src/monmove.c:1108 m_digweapon_check() lets a tunneling monster ready the
@@ -1811,8 +1827,10 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
             }
 
             /* Maybe a cube ate just about anything */
-            if (ptr.pmidx === PMNAMES.PM_GELATINOUS_CUBE)
-                note_unported('postmov:meatobj');
+            if (ptr.pmidx === PMNAMES.PM_GELATINOUS_CUBE) {
+                if (await meatobj(mtmp) === 2)
+                    return MMOVE_DIED;
+            }
 
             /* Maybe a purple worm ate a corpse */
             if (corpse_eater(ptr))

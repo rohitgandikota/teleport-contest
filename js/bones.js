@@ -231,6 +231,14 @@ function write_bonesfile() {
             .filter(o => o.where === 1 /* OBJ_FLOOR */ || o.where === 0)),
         buried: strip_objs(lvl.buriedobjs || []),
         monsters: strip_mons((lvl.monsters || []).filter(m => m.mhp > 0)),
+        /* savelev() writes the hero trail as part of the level. A tracking
+           monster on a later bones load follows that old trail before it can
+           see the new hero. */
+        track: {
+            utcnt: game.utcnt | 0,
+            utpnt: game.utpnt | 0,
+            utrack: (game.utrack || []).map(p => ({ x: p.x, y: p.y })),
+        },
         /* src/bones.c newbones() cemetery record — who died here. The
            bones_include_name() match wants "name-" as a prefix. */
         bonesinfo: { who: `${game.plname}-${game.urole?.filecode || 'Xxx'}` },
@@ -298,6 +306,12 @@ export async function getbones_load() {
     for (const m of lvl.monsters) {
         m.data = game.mons[m.mnum];
         rewire_objs(m.minvent, m, null);
+    }
+    if (snap.track) {
+        game.utcnt = snap.track.utcnt | 0;
+        game.utpnt = snap.track.utpnt | 0;
+        game.utrack = (snap.track.utrack || [])
+            .map(p => ({ x: p.x, y: p.y }));
     }
     if (lvl.monAt) {
         lvl.monAt.clear();

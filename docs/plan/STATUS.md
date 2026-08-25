@@ -9,11 +9,12 @@ damage, sink-water killer wording, and the hallucination cure. The public
 including its one hit point loss and the random stream that follows.
 
 Public local improved by 73 screens to 5,208/11,405 and by 2,647 RNG positions
-to 315,079/792,838. Passing sessions remain 21/44. No public or supplemental
-session lost a screen, and all 44 hang checks pass. The supplemental corpus
-remains at 1,747/3,646 screens, 328,555/465,629 RNG positions, and 11/38
-passing. Full-game coverage remains 68 covered, 6 partial, and 30 gaps out of
-104 requirements.
+to 315,079/792,838. Passing sessions remain 21/44. No public session lost a
+screen, and all 44 hang checks pass. The supplemental corpus gained four
+screens through its independent ordinary-sickness trace and is now at
+1,751/3,646 screens, 328,554/465,629 RNG positions, and 11/38 passing.
+Full-game coverage remains 68 covered, 6 partial, and 30 gaps out of 104
+requirements.
 
 The focused `seed0014` session moved from 6,881 to 9,528 matched RNG positions
 and from 140 to 213 identical screens. Its next first RNG divergence is now

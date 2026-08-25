@@ -1474,9 +1474,11 @@ function _statusLine2() {
         else
             delete game._deferred_status_money;
     }
+    const shownHp = game._deferred_status_hp_until_more
+        ?? Math.max(u.uhp | 0, 0);
     let s = `${lvldesc} $:${shownMoney}`
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
-          + ` HP:${Math.max(u.uhp | 0, 0)}(${u.uhpmax || 0})`
+          + ` HP:${shownHp}(${u.uhpmax || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
           + ` AC:${u.uac ?? 0}`
           + ` Xp:${u.ulevel || 1}`;
@@ -1826,6 +1828,7 @@ export async function more() {
        and waits again, so a movement key pressed at a --More-- is still
        waiting to be read as a command afterwards. */
     await xwaitforspace('\x1b ');
+    delete game._deferred_status_hp_until_more;
 
     /* win/tty/topl.c more():234 — ESC sets WIN_STOP: the player has asked to
        skip this turn's remaining messages. update_topl drops the paint (but

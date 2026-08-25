@@ -314,4 +314,3 @@ export async function runSegment(input) {
 
     return nhGame;
 }
-

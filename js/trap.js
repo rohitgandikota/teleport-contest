@@ -1784,8 +1784,10 @@ export async function lava_effects() {
 
         /* s/he died... burn to death */
         for (let burncount = 0; burncount < 2; ++burncount) {
+            const shownHp = u.uhp;
             u.uhp = -1;
             game.killer = { format: KILLED_BY, name: 'molten lava' };
+            game._deferred_status_hp_until_more = shownHp;
             await pline('You burn to a crisp...'); /* urgent_pline */
             await done(BURNING);
             if (await safe_teleds(TELEDS_ALLOW_DRAG | TELEDS_TELEPORT))

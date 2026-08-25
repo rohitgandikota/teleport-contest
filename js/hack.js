@@ -13,7 +13,7 @@ import { You, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { feel_location } from './display.js';
 import { can_ooze } from './monmove.js';
 import { worm_cross } from './worm.js';
-import { block_door, block_entry } from './shk.js';
+import { block_door, block_entry, u_entered_shop } from './shk.js';
 import { curr_mon_load } from './mon.js';
 import { inv_weight, weight_cap } from './attrib.js';
 import { carrying } from './invent.js';
@@ -794,11 +794,13 @@ export async function spoteffects(pick) {
 
     move_update(false);
 
-    /* check_special_room(FALSE) — announces shops, zoos, temples */
+    /* check_special_room(FALSE): shops are the live special-room arm. */
+    if (game.u.ushops_entered)
+        await u_entered_shop(game.u.ushops_entered);
     const inspecial = (game.level?.rooms || []).some(r => r.rtype
         && game.u.ux >= r.lx - 1 && game.u.ux <= r.hx + 1
         && game.u.uy >= r.ly - 1 && game.u.uy <= r.hy + 1);
-    if (inspecial)
+    if (inspecial && !game.u.ushops_entered)
         note_unported_hack('spoteffects:check_special_room');
 
     /* src/hack.c:3355 — "if dismounting, check again later": the whole
@@ -893,7 +895,7 @@ export function nomul(nval) {
 export async function unmul(msg_override) {
     (game.disp ||= {}).botl = true;
     game.multi = 0; /* caller will usually have done this already */
-    if (msg_override)
+    if (msg_override !== undefined && msg_override !== null)
         game.nomovemsg = msg_override;
     /* C tests the POINTER here (`!gn.nomovemsg`), so only an unset message
        gets the default; an explicitly EMPTY string survives. */

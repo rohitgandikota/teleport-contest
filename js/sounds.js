@@ -34,7 +34,7 @@ import { poly_gender } from './polyself.js';
 // src/sounds.c:202 dosounds()
 export async function dosounds() {
     const u = game.u;
-    if (u.uswallow || u.Underwater)
+    if (Deaf() || u.uswallow || u.Underwater)
         return;
     if (game.flags?.acoustics === false)
         return;

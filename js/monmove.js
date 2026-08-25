@@ -1754,7 +1754,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
             if (corpse_eater(ptr))
                 note_unported('postmov:meatcorpse');
 
-            mpickstuff(mtmp);
+            await mpickstuff(mtmp);
         }
 
         /* src/monmove.c:1692, concealment-capable monsters and eels

@@ -46,6 +46,13 @@ const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR,
    survives and applying a lamp takes a turn. */
 const LAMPS = [ONAMES.OIL_LAMP, ONAMES.MAGIC_LAMP, ONAMES.BRASS_LANTERN];
 
+const MUSICAL_INSTRUMENTS = [
+    ONAMES.WOODEN_FLUTE, ONAMES.MAGIC_FLUTE, ONAMES.TOOLED_HORN,
+    ONAMES.FROST_HORN, ONAMES.FIRE_HORN, ONAMES.WOODEN_HARP,
+    ONAMES.MAGIC_HARP, ONAMES.BUGLE, ONAMES.LEATHER_DRUM,
+    ONAMES.DRUM_OF_EARTHQUAKE,
+];
+
 /* src/apply.c:4268 ordinary containers open the same interaction used by
    #loot.  A bag of tricks has its own effect and is intentionally omitted. */
 const APPLIED_CONTAINERS = [ONAMES.LARGE_BOX, ONAMES.CHEST, ONAMES.ICE_BOX,
@@ -197,6 +204,11 @@ export async function doapply() {
 
     if (LAMPS.includes(obj.otyp))
         return ECMD_TIME;
+
+    if (MUSICAL_INSTRUMENTS.includes(obj.otyp)) {
+        const { do_play_instrument } = await import('./music.js');
+        return await do_play_instrument(obj);
+    }
 
     if (APPLIED_CONTAINERS.includes(obj.otyp)) {
         const { use_container } = await import('./pickup.js');

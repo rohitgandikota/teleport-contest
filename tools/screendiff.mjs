@@ -153,6 +153,18 @@ async function main() {
         return c[0] === j[0] && c[1] === j[1] && c[2] === j[2];
     };
 
+    if (argv.includes('--list')) {
+        const matching = [], mismatching = [];
+        for (let i = 0; i < cScreens.length; i++) {
+            const target = cellsDiffer(i).bad.length || !cursorOk(i)
+                ? mismatching : matching;
+            target.push(i);
+        }
+        console.log(`matching (${matching.length}): ${matching.join(',')}`);
+        console.log(`mismatching (${mismatching.length}): ${mismatching.join(',')}`);
+        process.exit(mismatching.length ? 1 : 0);
+    }
+
     let index;
     if (wantFirst) {
         index = -1;

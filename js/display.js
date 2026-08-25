@@ -2062,6 +2062,17 @@ export function display_object_at(obj, x, y) {
                     og.glyph ?? { kind: 'cmap', cmap: og.cmap });
 }
 
+// src/display.c tmp_at() glyph display. Paint one cmap symbol temporarily
+// without changing map memory; the caller restores it with newsym().
+export function display_cmap_at(cmap, x, y, color = NO_COLOR,
+                                kind = 'cmap') {
+    const sym = showsym(cmap) || defsyms[cmap];
+    if (!sym)
+        return;
+    show_glyph_cell(x, y, sym.ch ?? sym.sym, color, !!sym.dec, 0,
+                    { kind, cmap });
+}
+
 // src/display.c:276 map_trap() — remember and (optionally) show one trap.
 export function map_trap(trap, show) {
     const x = trap.tx, y = trap.ty;

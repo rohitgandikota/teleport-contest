@@ -34,14 +34,14 @@ import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
 import { night, midnight } from './calendar.js';
 import { type_is_pname } from './mondata.js';
-import { inv_weight } from './attrib.js';
+import { inv_weight, near_capacity } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { pline } from './display.js';
 import { Fast, Very_fast, from_what } from './attrib.js';
 import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Shock_resistance, Poison_resistance, Stealth, Searching,
          Warning, Teleport_control, See_invisible,
-         Infravision } from './youprop.js';
+         Infravision, Deaf } from './youprop.js';
 
 // include/attrib.h
 const A_STR = 0, A_INT = 1, A_WIS = 2, A_DEX = 3, A_CON = 4, A_CHA = 5;
@@ -320,6 +320,9 @@ function status_enlightenment() {
     out('');
     out(`${en_final ? 'Final ' : ''}Status:`);
 
+    if (Deaf())
+        you_are('deaf');
+
     /* src/insight.c:1181, restful sleep and other Sleepy sources. */
     if ((game.u.intrinsic?.HSleepy || game.u.uprops?.SLEEPY))
         enl_msg('You ', 'fall', 'fell', ' asleep uncontrollably', '');
@@ -329,9 +332,19 @@ function status_enlightenment() {
        wizard mode reveals u.uhunger (insight.c:1208) */
     you_are('not hungry' + (game.wizard ? ` <${game.u.uhunger}>` : ''));
 
-    /* encumbrance: near_capacity() is UNENCUMBERED with a starting pack;
-       wizard mode reveals inv_weight() (insight.c:1245) */
-    you_are('unencumbered' + (game.wizard ? ` <${inv_weight()}>` : ''));
+    /* src/insight.c:1211 encumbrance. */
+    const cap = near_capacity();
+    if (cap > 0) {
+        const enc = ['unencumbered', 'burdened', 'stressed', 'strained',
+                     'overtaxed', 'overloaded'];
+        const adj = ['?', 'slightly', 'moderately', 'very', 'extremely',
+                     'not possible'];
+        let state = enc[cap] + (game.wizard ? ` <${inv_weight()}>` : '');
+        state += `; movement is ${adj[cap]}${cap < 5 ? ' slowed' : ''}`;
+        you_are(state);
+    } else {
+        you_are('unencumbered' + (game.wizard ? ` <${inv_weight()}>` : ''));
+    }
 
     /* src/insight.c:1270 weapon_insight() — the reachable arms: weaponless
        (empty_handed) or wielding a plain weapon described by its skill

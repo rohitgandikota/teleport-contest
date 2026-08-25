@@ -1,14 +1,13 @@
 // fountain.js — fountains.
 // C ref: src/fountain.c
 //
-// dipfountain() and dryup() so far: the dip effects that draw (the rnd(30)
-// table, the dryup rn2(3)) run for real, with the summon/gem/gush arms
-// recorded until their machinery lands. drinkfountain() is not here yet.
+// Fountain and sink interactions.  The implemented arms preserve the C
+// source's draw order; unavailable side effects remain explicitly recorded.
 
 import { game } from './gstate.js';
 import { rn1, rn2, rnd } from './rng.js';
 import { pline } from './display.js';
-import { You, You_feel, Your, pline_The } from './pline.js';
+import { You, You_feel, You_hear, Your, pline_The } from './pline.js';
 import { newsym } from './display.js';
 import { IS_FOUNTAIN, ROOM, POOL, A_WIS, A_CON, IS_DOOR, SDOOR, isok,
          SQKY_BOARD, BEAR_TRAP, LANDMINE, FIRE_TRAP, PIT, SPIKED_PIT,
@@ -17,7 +16,8 @@ import { IS_FOUNTAIN, ROOM, POOL, A_WIS, A_CON, IS_DOOR, SDOOR, isok,
 import { ONAMES } from './objects_data.js';
 import { OCLASSES } from './objects_data.js';
 import { deltrap, water_damage, water_damage_chain } from './trap.js';
-import { exercise } from './attrib.js';
+import { ACURR, exercise } from './attrib.js';
+import { morehungry, vomit } from './eat.js';
 import { update_inventory, money_cnt } from './invent.js';
 import { curse, uncurse } from './mkobj.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -27,6 +27,7 @@ import { m_at, t_at } from './mon.js';
 import { sobj_at } from './invent.js';
 import { del_engr, engr_at } from './engrave.js';
 import { somegold } from './steal.js';
+import { hliquid } from './do_name.js';
 
 function note_unported_fountain(what) {
     (game.unported ||= new Set()).add('fountain:' + what);
@@ -358,6 +359,59 @@ export async function drinkfountain() {
         }
     }
     await dryup(u.ux, u.uy, true);
+}
+
+// src/fountain.c:595 drinksink() -- quaff from the sink underfoot.
+// Start with the no-side-effect arms used by the reference corpus.  The
+// remaining outcomes are kept as named gaps until their dependent mechanics
+// can be ported without changing C's RNG stream.
+export async function drinksink() {
+    if (game.u.uprops?.LEVITATION) {
+        await You('are floating high above the sink.');
+        return;
+    }
+
+    const outcome = rn2(20);
+    switch (outcome) {
+    case 0:
+        await You(`take a sip of very cold ${hliquid('water')}.`);
+        break;
+    case 1:
+        await You(`take a sip of very warm ${hliquid('water')}.`);
+        break;
+    case 11:
+        await You_hear('clanking from the pipes...');
+        break;
+    case 12:
+        await You_hear('snatches of song from among the sewers...');
+        break;
+    case 19:
+        if (game.u.intrinsic?.HHallucination || game.u.uprops?.HALLUC) {
+            await pline('From the murky drain, a hand reaches up... --oops--');
+            break;
+        }
+        /* FALLTHRU */
+    default:
+        await You(`take a sip of ${rn2(3) ? (rn2(2) ? 'cold' : 'warm')
+                                         : 'hot'} ${hliquid('water')}.`);
+        break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 10:
+    case 13:
+        note_unported_fountain(`drinksink:outcome=${outcome}`);
+        break;
+    case 9:
+        await pline('Gaggg... this tastes like sewage!  You vomit.');
+        await morehungry(rn1(30 - ACURR(A_CON), 11));
+        await vomit();
+        break;
+    }
 }
 
 // src/fountain.c:394 dipfountain() — dip an object into a fountain.

@@ -432,6 +432,23 @@ function disco_typename(otyp) {
     return result;
 }
 
+// src/shk.c:454 append_price_quote(), used unconditionally by discoveries.
+function append_price_quote(otyp) {
+    const oc = game.objects[otyp];
+    const parts = [];
+    if ((oc.oc_buy_minseen ?? -1) >= 0) {
+        parts.push(oc.oc_buy_minseen === oc.oc_buy_maxseen
+            ? `buy ${oc.oc_buy_minseen}`
+            : `buy ${oc.oc_buy_minseen}-${oc.oc_buy_maxseen}`);
+    }
+    if ((oc.oc_sell_minseen ?? -1) >= 0) {
+        parts.push(oc.oc_sell_minseen === oc.oc_sell_maxseen
+            ? `sell ${oc.oc_sell_minseen}`
+            : `sell ${oc.oc_sell_minseen}-${oc.oc_sell_maxseen}`);
+    }
+    return parts.length ? ` {${parts.join(' ')}}` : '';
+}
+
 // src/o_init.c:686 dodiscovered() — build the discoveries text.
 //
 // Returns the lines rather than pushing them into a window, so the caller
@@ -461,7 +478,8 @@ export function dodiscovered() {
                     prev_class = oclass;
                 }
                 lines.push([(objects[dis].oc_encountered ? '  ' : '* ')
-                            + disco_typename(dis), ATR_NONE]);
+                            + disco_typename(dis) + append_price_quote(dis),
+                            ATR_NONE]);
             }
         }
     }

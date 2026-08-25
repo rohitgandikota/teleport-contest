@@ -6,7 +6,7 @@ import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
-import { costly_spot } from './shk.js';
+import { costly_spot, doname_with_price } from './shk.js';
 import { u_at, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN } from './const.js';
 import { hides_under } from './mondata.js';
@@ -246,8 +246,7 @@ export async function look_here(obj_cnt, lhflags) {
         if (dfeature && !skip_dfeature)
             await pline(`There is ${an(dfeature)} here.`);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
-        /* doname_with_price() is doname() until shops exist */
-        await You(`${verb} here ${doname(otmp)}.`);
+        await You(`${verb} here ${doname_with_price(otmp)}.`);
         if (otmp.otyp === ONAMES.CORPSE)
             note_unported_invent('look_here:feel_cockatrice');
     } else {
@@ -261,7 +260,7 @@ export async function look_here(obj_cnt, lhflags) {
         for (const otmp of pile) {
             if (otmp.otyp === ONAMES.CORPSE)
                 note_unported_invent('look_here:feel_cockatrice');
-            tty_putstr(tmpwin, 0, doname(otmp));
+            tty_putstr(tmpwin, 0, doname_with_price(otmp));
         }
         await tty_display_nhwindow(tmpwin);
         /* win/tty dmore(): the window waits for quitchars (space, enter,
@@ -476,7 +475,14 @@ function getobj_letters(obj_ok, ctrlflags) {
     }
     /* src/invent.c:1908 — "if (suggested > 5) compactify" — five letters
        stay verbatim, six or more compress */
-    return suggested > 5 ? compactify(buf) : buf;
+    /* src/invent.c:1907 copies the complete letter list into `lets` before
+       compactifying `buf` for the one-line prompt.  The menu must receive
+       the complete list: treating a prompt range such as "d-g" as literal
+       characters silently drops e and f from the inventory window. */
+    return {
+        choices: buf,
+        prompt: suggested > 5 ? compactify(buf) : buf,
+    };
 }
 
 // src/invent.c:1627 compactify() — "a-e" for 3+ consecutive letters, and
@@ -555,7 +561,8 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
        loop already read a key here; routing it through tty_yn_function adds
        the paint without changing which keys are consumed. */
     let qbuf = `What do you want to ${word}?`;
-    const lets = getobj_letters(obj_ok_func, ctrlflags | 0);
+    const { choices: lets, prompt: promptLets } =
+        getobj_letters(obj_ok_func, ctrlflags | 0);
 
     /* src/invent.c:1911 — nothing suggested, no forced prompt, no '-'
        choice: refuse up front. The "else " variant needs the inaccessible
@@ -564,7 +571,7 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         await You(`don't have anything to ${word}.`);
         return null;
     }
-    qbuf += lets ? ` [${lets} or ?*]` : ' [*]';
+    qbuf += promptLets ? ` [${promptLets} or ?*]` : ' [*]';
 
     for (;;) {
         let ilet = await tty_yn_function(qbuf, null, '\0');

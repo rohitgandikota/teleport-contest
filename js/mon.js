@@ -67,6 +67,7 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
     is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { distant_name, doname } from './objnam.js';
 import { You, You_feel } from './pline.js';
 import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, mon_hates_silver, could_reach_item } from './dog.js';
@@ -1591,7 +1592,7 @@ export function seemimic(mtmp) {
 // Returns after the FIRST object taken; C's comment says "pick only one".
 //
 // distant_name/doname, mpickobj and check_gear_next_turn are recorded.
-export function mpickstuff(mtmp) {
+export async function mpickstuff(mtmp) {
     const mdat = game.mons[mtmp.mnum];
 
     /* prevent shopkeepers from leaving the door of their shop */
@@ -1617,7 +1618,6 @@ export function mpickstuff(mtmp) {
         if (is_mines_prize(otmp) || is_soko_prize(otmp))
             continue;
 
-        /* Nymphs take everything.  Most monsters don't pick up corpses. */
         if (mon_would_take_item(mtmp, otmp)) {
             /* Nymphs take everything.  Most monsters don't pick up corpses. */
             if (otmp.otyp === ONAMES.CORPSE && mdat.mlet !== MONSYMS.S_NYMPH
@@ -1639,9 +1639,9 @@ export function mpickstuff(mtmp) {
             if (cansee(mtmp.mx, mtmp.my)) {
                 /* C calls distant_name() for its SIDE EFFECTS even when the
                    result is not printed, and does so BEFORE the extract */
-                note_unported_mon('mpickstuff:distant_name');
+                const otmpname = distant_name(otmp, doname);
                 if (game.flags?.verbose)
-                    note_unported_mon('mpickstuff:pline_picks_up');
+                    await pline(`${Monnam(mtmp)} picks up ${otmpname}.`);
             }
             obj_extract_self(otmp3);        /* remove from floor */
             /* src/steal.c:618 mpickobj() — may merge and free otmp3.

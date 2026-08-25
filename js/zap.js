@@ -9,14 +9,14 @@ import { game } from './gstate.js';
 import { isok } from './hacklib.js';
 import { m_at, t_at } from './mon.js';
 import { cansee } from './vision.js';
-import { map_invisible, newsym, unmap_invisible } from './display.js';
+import { display_cmap_at, map_invisible, newsym, unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
 
 import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, M_AP_TYPE,
          M_AP_OBJECT, ICE, Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
-         ZAP_POS } from './const.js';
+         ZAP_POS, W_ARM, W_ARMS, W_WEP, W_AMUL, HI_ZAP } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
 import { u_safe_from_fatal_corpse } from './pickup.js';
@@ -60,6 +60,10 @@ import { MATERIALS } from './objects_data.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { defended, resists_cold, resists_fire, resists_magm } from './mondata.js';
 import { find_mac } from './worn.js';
+import { Reflecting, Sleep_resistance } from './youprop.js';
+import { cmap_names } from './drawing_data.js';
+import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
+         CLR_YELLOW } from './terminal.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -1041,6 +1045,47 @@ function bounce_dir(sx, sy, delta, bounceback) {
     }
 }
 
+const zap_colors = [
+    HI_ZAP, CLR_ORANGE, CLR_WHITE, HI_ZAP,
+    CLR_BLACK, CLR_WHITE, CLR_GREEN, CLR_YELLOW,
+];
+
+// src/display.c:2461 zapdir_to_glyph(). A zap type changes the color, while
+// these four cmap entries supply the active symbol-set character.
+function zapdir_cmap(dx, dy) {
+    if (dx === dy)
+        return cmap_names.S_lslant;
+    if (dx && dy)
+        return cmap_names.S_rslant;
+    return dx ? cmap_names.S_hbeam : cmap_names.S_vbeam;
+}
+
+// src/muse.c:2836 ureflects(), outermost equipment first.
+async function ureflects() {
+    const mask = game.u.uprops?.REFLECTING | 0;
+    let source = null;
+    let identify = 0;
+
+    if (mask & W_ARMS) {
+        source = 'shield';
+        identify = ONAMES.SHIELD_OF_REFLECTION;
+    } else if (mask & W_WEP) {
+        source = 'weapon';
+    } else if (mask & W_AMUL) {
+        source = 'medallion';
+        identify = ONAMES.AMULET_OF_REFLECTION;
+    } else if (mask & W_ARM) {
+        source = game.u.uskin ? 'luster' : 'armor';
+    }
+    if (!source) {
+        note_unported_zap('ureflects:source');
+        source = 'body';
+    }
+    await pline(`But it reflects from your ${source}!`);
+    if (identify)
+        makeknown(identify);
+}
+
 // src/zap.c:4780 dobuzz(). This ports the lateral beam walk, monster hit,
 // death, and ordinary terrain bounce spine used by wand and spell rays.
 async function dobuzz(type, nd, startx, starty, ddx, ddy) {
@@ -1054,57 +1099,96 @@ async function dobuzz(type, nd, startx, starty, ddx, ddy) {
         range = 1;
     let sx = startx, sy = starty;
     const delta = { dx: ddx, dy: ddy };
+    const beam_cells = [];
+    const damgtype = zaptype(type) % 10;
 
-    while (range-- > 0) {
-        const lsx = sx, lsy = sy;
-        sx += delta.dx;
-        sy += delta.dy;
-        let loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;
+    try {
+        while (range-- > 0) {
+            const lsx = sx, lsy = sy;
+            sx += delta.dx;
+            sy += delta.dy;
+            let loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;
 
-        if (loc && loc.typ !== STONE) {
-            let mon = m_at(sx, sy);
-            if (cansee(sx, sy)) {
-                if (mon && !canspotmon(mon))
-                    map_invisible(sx, sy);
-                else if (!mon)
-                    unmap_invisible(sx, sy);
-            }
-
-            if (loc.typ === WATER || loc.typ === POOL || loc.typ === ICE)
-                note_unported_zap('dobuzz:zap_over_floor');
-
-            if (mon) {
-                if (type >= 0)
-                    mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITMASK;
-                if (zap_hit(find_mac(mon), type >= 10 && type < 20 ? type : 0)) {
-                    const damage = zhitm(mon, type, nd);
-                    if (DEADMONSTER(mon)) {
-                        if (type < 0)
-                            note_unported_zap('dobuzz:monkilled');
-                        else
-                            await killed(mon);
-                    } else {
-                        if (canspotmon(mon))
-                            await pline_The(`${flash_str(type)} hits ${
-                                mon_nam(mon)}${exclam(damage)}`);
-                        if (zaptype(type) % 10 !== 3)
-                            await wakeup(mon, type >= 0);
+            if (loc && loc.typ !== STONE) {
+                let mon = m_at(sx, sy);
+                if (cansee(sx, sy)) {
+                    if (mon && !canspotmon(mon))
+                        map_invisible(sx, sy);
+                    else if (!mon)
+                        unmap_invisible(sx, sy);
+                    if (ZAP_POS(loc.typ)
+                        || (isok(lsx, lsy) && cansee(lsx, lsy))) {
+                        display_cmap_at(zapdir_cmap(delta.dx, delta.dy),
+                                        sx, sy,
+                                        zap_colors[damgtype] ?? HI_ZAP, 'zap');
+                        beam_cells.push([sx, sy]);
                     }
-                    range -= 2;
+                    await game.animationFrame();
                 }
-            } else if (game.u.ux === sx && game.u.uy === sy && range >= 0) {
-                note_unported_zap('dobuzz:hit_hero');
+
+                if (loc.typ === WATER || loc.typ === POOL || loc.typ === ICE)
+                    note_unported_zap('dobuzz:zap_over_floor');
+
+                if (mon) {
+                    if (type >= 0)
+                        mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITMASK;
+                    if (zap_hit(find_mac(mon), type >= 10 && type < 20 ? type : 0)) {
+                        const damage = zhitm(mon, type, nd);
+                        if (DEADMONSTER(mon)) {
+                            if (type < 0)
+                                note_unported_zap('dobuzz:monkilled');
+                            else
+                                await killed(mon);
+                        } else {
+                            if (canspotmon(mon))
+                                await pline_The(`${flash_str(type)} hits ${
+                                    mon_nam(mon)}${exclam(damage)}`);
+                            if (damgtype !== 3)
+                                await wakeup(mon, type >= 0);
+                        }
+                        range -= 2;
+                    }
+                } else if (game.u.ux === sx && game.u.uy === sy && range >= 0) {
+                    const { nomul } = await import('./hack.js');
+                    nomul(0);
+                    if (zap_hit(game.u.uac | 0, 0)) {
+                        range -= 2;
+                        await pline(`${The(flash_str(type))} hits you!`);
+                        if (Reflecting()) {
+                            await ureflects();
+                            delta.dx = -delta.dx;
+                            delta.dy = -delta.dy;
+                        } else if (damgtype === 3) {
+                            if (Sleep_resistance())
+                                await You("don't feel sleepy.");
+                            else
+                                await fall_asleep(-d(nd, 25), true);
+                        } else {
+                            note_unported_zap(`dobuzz:zhitu=${damgtype}`);
+                        }
+                    } else if (!game.u.uprops?.BLINDED) {
+                        await pline(`${The(flash_str(type))} whizzes by you!`);
+                    }
+                    if (game.occupation) {
+                        const { stop_occupation } = await import('./allmain.js');
+                        await stop_occupation();
+                    }
+                    nomul(0);
+                }
+            }
+
+            loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;
+            if (!loc || loc.typ === STONE || !ZAP_POS(loc.typ)
+                || (closed_door(sx, sy) && range >= 0)) {
+                const bchance = (!loc || loc.typ === STONE) ? 10 : 75;
+                if (--range > 0 && isok(lsx, lsy) && cansee(lsx, lsy))
+                    await pline_The(`${flash_str(type)} bounces!`);
+                bounce_dir(sx, sy, delta, bchance);
             }
         }
-
-        loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;
-        if (!loc || loc.typ === STONE || !ZAP_POS(loc.typ)
-            || (closed_door(sx, sy) && range >= 0)) {
-            const bchance = (!loc || loc.typ === STONE) ? 10 : 75;
-            if (--range > 0 && isok(lsx, lsy) && cansee(lsx, lsy))
-                await pline_The(`${flash_str(type)} bounces!`);
-            bounce_dir(sx, sy, delta, bchance);
-        }
+    } finally {
+        for (const [x, y] of beam_cells)
+            newsym(x, y);
     }
 }
 

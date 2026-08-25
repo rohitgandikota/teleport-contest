@@ -50,7 +50,8 @@ export async function stop_occupation() {
 }
 
 import { rn2, rn1 } from './rng.js';
-import { exerchk, change_luck, ACURR, near_capacity } from './attrib.js';
+import { encumber_msg, exerchk, change_luck, ACURR,
+         near_capacity } from './attrib.js';
 import { init_uhunger } from './eat.js';
 import { settrack, initrack } from './track.js';
 import { phase_of_the_moon, friday_13th } from './calendar.js';
@@ -666,6 +667,8 @@ export async function moveloop_core() {
         do {                       /* src/allmain.c:207 hero-can't-move loop */
             let monscanmove;
 
+            await encumber_msg();
+
             /* src/allmain.c:211 — monsters keep taking turns until none of
                them has movement left, or until the hero has banked enough to
                act. This inner loop is the whole reason a pet gets to move at
@@ -785,6 +788,10 @@ export async function moveloop_core() {
                 }
             }
         } while (g.u.umovement < NORMAL_SPEED);
+
+        /* src/allmain.c:403 checks again after timeout and monster actions,
+           so inventory changes made by the hero get immediate feedback. */
+        await encumber_msg();
 
         /* src/allmain.c:409 — INSIDE the context.move gate: the vicinity
            counter only advances on cores where time actually passed, which

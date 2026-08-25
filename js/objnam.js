@@ -31,7 +31,7 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP, plur, P_BOW
          CORPSTAT_RANDOM, CORPSTAT_NEUTER, CORPSTAT_HISTORIC, NON_PM, LOW_PM,
          ismnum, SPE_LIM, RANDOM_TIN, GOLD_SYM, WT_IRON_BALL_INCR,
          P_POLEARMS, P_HAMMER, ONAME_WISH, ONAME_NO_FLAGS,
-         HAND } from './const.js';
+         HAND, ROOMOFFSET } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -41,8 +41,7 @@ const mons_PM_SAMURAI = PMNAMES.PM_SAMURAI;
 import { OCLASSES, ONAMES, MATERIALS, obj_descr,
          NUM_OBJECTS } from './objects_data.js';
 import { strstri, strsubst, fuzzymatch, mungspaces } from './hacklib.js';
-import { weight } from './invent.js';
-import { hands_obj } from './invent.js';
+import { currency, hands_obj, weight } from './invent.js';
 import { tin_variety_txt, tintxts, obj_nutrition,
          consume_oeaten } from './eat.js';
 import { is_were, counter_were } from './were.js';
@@ -254,7 +253,7 @@ export function xname(obj) {
            if (!Blind && !gd.distantname) observe_object(obj);
        This is where a wished amulet's dknown comes from ("a cubical
        amulet", not "an amulet"). */
-    if (!game.u?.ublind)
+    if (!game.u?.ublind && !game.distantname)
         observe_object(obj);
     const nn = ocl.oc_name_known;
     let actualn = OBJ_NAME(ocl) ?? 'object?';
@@ -1071,6 +1070,24 @@ export function doname(obj) {
         bp += ` (${(Qtyp === 1) ? 'in quiver'
                  : (Qtyp === 2) ? 'in quiver pouch'
                    : 'at the ready'})`;
+    }
+
+    /* src/objnam.c:1654: carried shop stock shows the price stored when it
+       was added to the current shopkeeper's bill. */
+    if (obj.unpaid) {
+        let quotedprice = 0;
+        for (const room of game.u.ushops || '') {
+            const shkp = game.level?.rooms?.[
+                room.charCodeAt(0) - ROOMOFFSET]?.resident;
+            const bill = shkp?.eshk?.bill_p;
+            const entry = Array.isArray(bill)
+                ? bill.find(bp_ => bp_.bo_id === obj.o_id) : null;
+            if (entry) {
+                quotedprice = entry.price * obj.quan;
+                break;
+            }
+        }
+        bp += ` (unpaid, ${quotedprice} ${currency(quotedprice)})`;
     }
 
     /* src/objnam.c:1527 — recompute the article now that the prefix is

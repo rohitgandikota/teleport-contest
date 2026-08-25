@@ -1,16 +1,16 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-25T04:05:40.885Z. Local commit: `fb3b1c2`.
+Last refreshed: 2026-08-25T04:23:27.096Z. Local commit: `918ee57`.
 Leaderboard snapshot: 2026-08-25T02:38:10.937Z. Fork last scored: 2026-08-25T01:59:17.748Z.
 
 ## Score summary
 
 | Corpus | Identical screens | Screen rate | Sessions passing | RNG | Animation |
 |---|---:|---:|---:|---:|---:|
-| Public local | 5120/11405 | 44.89% | 21/44 | 312405/792838 (39.40%) | 0/1483 |
+| Public local | 5123/11405 | 44.92% | 21/44 | 312431/792838 (39.41%) | 0/1483 |
 | Public leaderboard | 5120/11405 | 44.89% | 21/44 | 39.40% | 0/1483 |
 | Held-out leaderboard | 3438/11265 | 30.52% | 1/44 | 15.98% | 0/2959 |
-| Supplemental C suite | 1649/3438 | 47.96% | 11/35 | 321575/452854 (71.01%) | 0/65 |
+| Supplemental C suite | 1740/3552 | 48.99% | 11/36 | 324491/455980 (71.16%) | 0/65 |
 
 ## Contest position and generalization
 
@@ -24,9 +24,9 @@ Leaderboard snapshot: 2026-08-25T02:38:10.937Z. Fork last scored: 2026-08-25T01:
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 5125/11405 | 1649/3438 |
-| Cursor positions | 7247/11405 | 2422/3438 |
-| Startup and per-turn estimate | 56+0.27/turn | 61+0.40/turn |
+| Cells only | 5128/11405 | 1740/3552 |
+| Cursor positions | 7247/11405 | 2528/3552 |
+| Startup and per-turn estimate | 65+0.26/turn | 59+0.43/turn |
 
 ## Judge health
 
@@ -40,6 +40,7 @@ Leaderboard snapshot: 2026-08-25T02:38:10.937Z. Fork last scored: 2026-08-25T01:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-25T04:23:27.096Z | `918ee57` | 5123/11405 | 1740/3552 | 3438/11265 | 5 |
 | 2026-08-25T04:04:11.639Z | `fb3b1c2` | 5120/11405 | 1649/3438 | 3438/11265 | 5 |
 | 2026-08-25T03:53:33.645Z | `fb3b1c2` | 5120/11405 | 1041/1762 | 3438/11265 | 5 |
 

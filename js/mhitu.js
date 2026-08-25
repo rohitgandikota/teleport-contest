@@ -31,7 +31,7 @@ import { Monnam } from './do_name.js';
 import { You_hear } from './pline.js';
 import { attacktype_fordmg, dmgtype_fromattack } from './mondata.js';
 import { mon_nam } from './do_name.js';
-import { remove_monster, place_monster } from './makemon.js';
+import { Inhell, remove_monster, place_monster } from './makemon.js';
 import { swallowed } from './display.js';
 import { vision_recalc } from './vision.js';
 import { ACURR, exercise } from './attrib.js';
@@ -454,7 +454,12 @@ export async function mattacku(mtmp) {
        demons can summon more demons and were creatures can summon critters */
     if ((mtmp.cham ?? NON_PM) === NON_PM && !mtmp.mcan && !v.range2
         && (is_demon(mdat) || (mdat.mflags2 & MFLAGS.M2_WERE) !== 0)) {
-        note_unported_mhitu('mattacku:summonmu');
+        const already_fleeing = !!mtmp.mflee;
+
+        await summonmu(mtmp, v.youseeit);
+        if (mtmp.mflee && !already_fleeing)
+            return 0;
+        mdat = mtmp.data;
     }
 
     if (game.u.uinvulnerable) { /* in the midst of successful prayer */
@@ -655,6 +660,25 @@ export async function mattacku(mtmp) {
         /* sum[i] == 0: unsuccessful attack */
     }
     return 0;
+}
+
+// src/mhitu.c:956 summonmu() demon arm
+async function summonmu(mtmp, youseeit) {
+    const mdat = mtmp.data;
+
+    if (is_demon(mdat)) {
+        if (mdat !== game.mons[PMNAMES.PM_BALROG]
+            && mdat !== game.mons[PMNAMES.PM_AMOROUS_DEMON]) {
+            if (!rn2(Inhell() ? 10 : 16)) {
+                const { msummon } = await import('./minion.js');
+                await msummon(mtmp);
+            }
+        }
+        return;
+    }
+
+    if ((mdat.mflags2 & MFLAGS.M2_WERE) !== 0)
+        note_unported_mhitu('summonmu:were');
 }
 
 /* include/obj.h is_pole() */

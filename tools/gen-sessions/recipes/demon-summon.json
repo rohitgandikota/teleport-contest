@@ -1,0 +1,20 @@
+{
+  "name": "demon-summon",
+  "description": "Debug level-30 Valkyrie: creates a bone devil and survives repeated adjacent attacks through summonmu and msummon, including summoned monster placement and messaging.",
+  "coverage": [
+    "mode.debug",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.hero-melee",
+    "monster.spells",
+    "combat.melee"
+  ],
+  "segments": [
+    {
+      "seed": 6130,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n30\n                             \u0007bone devil\nj   b   h   h   h   h   k   k   l   l   l   l   l   j  "
+    }
+  ]
+}

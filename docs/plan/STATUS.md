@@ -1,5 +1,27 @@
 # STATUS — live handoff board
 
+## 2026-08-25: demon summoning and 36-session C suite
+
+The `summonmu()` demon arm and `msummon()` family now follow the pinned C
+control flow, including Demonbane suppression, aligned demon and Angel
+selection, unique and extinct fallbacks, placement, minion state, and the
+summon message. The focused public water-demon replay improved from
+6,707/6,736 to 6,735/6,736 matched RNG positions and from 68/123 to 71/123
+identical screens.
+
+The new `demon-summon` C scenario reaches a real bone-devil summon and records
+the skeleton placement and message. The supplemental corpus now has 36
+sessions, 3,552 screens, and 455,980 scored RNG positions. The port matches
+1,740/3,552 screens and 324,491/455,980 RNG positions, with 11/36 sessions
+passing. Conservative full-game coverage is 67 covered, 6 partial, and 31
+gaps out of 104 requirements.
+
+Public local is 5,123/11,405 identical screens, 312,431/792,838 RNG positions,
+and 21/44 sessions passing. All 44 hang checks pass. The live leaderboard still
+shows the last pushed build at 5,120/11,405 public and 3,438/11,265 held-out,
+rank 5/18. The next exposed public mismatch is fatal monster damage failing to
+enter `done_in_by()`.
+
 ## 2026-08-25: 35-session C suite and live score dashboard
 
 The supplemental corpus now has 35 C-recorded sessions, 3,438 scored screens,

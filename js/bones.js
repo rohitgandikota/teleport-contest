@@ -15,6 +15,7 @@ import { obj_extract_self } from './invent.js';
 import { curse, place_object } from './mkobj.js';
 import { MAGIC_PORTAL } from './const.js';
 import { PMNAMES, MMFLAGS } from './monst_data.js';
+import { NO_COLOR } from './terminal.js';
 
 function note_unported_bones(what) {
     (game.unported ||= new Set()).add('bones:' + what);
@@ -133,7 +134,24 @@ export function drop_upon_death(mtmp, cont, x, y) {
 export async function savebones(how, corpse) {
     const u = game.u;
 
-    /* open_bonesfile(): none exists in this tree, straight to make_bones */
+    /* src/bones.c:418 open_bonesfile(). A second death on this level asks
+       a wizard whether to replace the existing bones file. */
+    if (game.storage?.getItem(bones_key()) != null) {
+        if (!game.wizard)
+            return;
+        const { tty_yn_function } = await import('./tty/topl.js');
+        const ans = await tty_yn_function(
+            'Bones file already exists.  Replace it?', 'yn', 'n');
+        if (ans !== 'y')
+            return;
+        try {
+            game.storage.removeItem(bones_key());
+        } catch (e) {
+            const { pline } = await import('./display.js');
+            await pline('Cannot unlink old bones.');
+            return;
+        }
+    }
 
     /* unleash_all / unpunish / dismount: none modelled for these heroes */
     /* remove_mon_from_bones + dmonsfree: unique-monster cleanup */
@@ -208,6 +226,25 @@ function write_bonesfile() {
     if (!game.storage)
         return;
     const lvl = game.level;
+    /* src/bones.c:563: a future hero inherits the level, not the dead
+       hero's explored map or remembered glyphs. */
+    for (let x = 1; x < 80; x++) {
+        for (let y = 0; y < 21; y++) {
+            const loc = lvl.at(x, y);
+            if (!loc)
+                continue;
+            loc.seenv = 0;
+            loc.waslit = 0;
+            loc.lastseentyp = 0;
+            delete loc.remembered_glyph;
+            delete loc.disp_glyph;
+            loc.disp_ch = ' ';
+            loc.disp_color = NO_COLOR;
+            loc.disp_decgfx = false;
+            loc.disp_attr = 0;
+            loc.gnew = 0;
+        }
+    }
     const cells = [];
     for (let x = 0; x < 80; x++) {
         const col = [];
@@ -274,8 +311,11 @@ export async function getbones_load() {
         return false;
 
     if (game.wizard) {
+        /* y_n() flushes pending map cells before drawing this prompt. */
+        const { flush_screen } = await import('./display.js');
+        await flush_screen(0);
         const { tty_yn_function } = await import('./tty/topl.js');
-        const ans = await tty_yn_function('Get bones?', 'yn', null);
+        const ans = await tty_yn_function('Get bones?', 'yn', 'n');
         if (ans !== 'y')
             return false;
     }
@@ -290,9 +330,8 @@ export async function getbones_load() {
     const lvl = game.level;
     for (let x = 0; x < 80; x++)
         for (let y = 0; y < 21; y++) {
-            const loc = lvl.at(x, y);
-            if (loc && snap.cells[x][y])
-                Object.assign(loc, snap.cells[x][y]);
+            if (snap.cells[x][y])
+                lvl.locations[x][y] = { ...snap.cells[x][y] };
         }
     lvl.flags = snap.flags || {};
     lvl.rooms = snap.rooms || [];
@@ -341,8 +380,19 @@ export async function getbones_load() {
     /* the cemetery record: goto_level's familiar_level_msg reads it */
     lvl.bonesinfo = snap.bonesinfo || null;
 
-    /* the bones file is deleted once used */
-    try { game.storage.removeItem(bones_key()); } catch (e) {}
+    /* src/bones.c:744: debug mode lets the wizard keep a loaded bones file
+       so another game can encounter the same level. */
+    if (game.wizard) {
+        const { tty_yn_function } = await import('./tty/topl.js');
+        const ans = await tty_yn_function('Unlink bones?', 'yn', 'n');
+        if (ans !== 'y')
+            return true;
+    }
+    try {
+        game.storage.removeItem(bones_key());
+    } catch (e) {
+        return false;
+    }
     return true;
 }
 

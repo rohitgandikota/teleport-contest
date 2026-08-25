@@ -58,7 +58,8 @@ import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_D
 export async function noises(magr, mattk) {
     const farq = (mdistu(magr) > 15);
 
-    if (!Deaf() && (farq !== game.far_noise || game.moves - (game.noisetime | 0) > 10)) {
+    if (!Deaf() && (farq !== (game.far_noise ?? false)
+                    || game.moves - (game.noisetime | 0) > 10)) {
         game.far_noise = farq;
         game.noisetime = game.moves;
         await You_hear(

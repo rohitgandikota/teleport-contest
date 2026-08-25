@@ -275,6 +275,12 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
        the pet stays behind */
     if (!game.iflags?.nofollowers)
         keepdogs(false);
+    /* src/do.c:1634: clear old visibility after followers leave. This
+       redraws their former squares while the bones prompt is onscreen. */
+    {
+        const { vision_recalc } = await import('./vision.js');
+        vision_recalc(2);
+    }
 
     /* src/do.c:1660 savelev() — keep the outgoing level so a return
        restores it instead of regenerating. update_mlstmv() (dog.c:294)
@@ -495,25 +501,6 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         }
     }
 
-    /* src/do.c:1879 — arriving on a bones level a same-named hero died
-       on gives the deja-vu message; rn2(4) picks it (index 3 is silent). */
-    {
-        const { bones_include_name } = await import('./bones.js');
-        if (game.level?.bonesinfo && bones_include_name(game.plname)) {
-            const fam_msgs = [
-                'You have a sense of deja vu.',
-                "You feel like you've been here before.",
-                'This place %s familiar...', null ];
-            /* halu variants recorded with the rest of Hallucination */
-            let mesg = fam_msgs[rn2(4)];
-            if (mesg && mesg.includes('%s'))
-                mesg = mesg.replace('%s',
-                                    !game.u.ublind ? 'looks' : 'seems');
-            if (mesg)
-                await pline(mesg);
-        }
-    }
-
     /* src/do.c:1837 — reset the screen: vision blockages for the new
        map, then a full redraw with vision recalc */
     const { vision_reset, vision_recalc } = await import('./vision.js');
@@ -537,6 +524,25 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     {
         const { deliver_splev_message } = await import('./questpgr.js');
         await deliver_splev_message();
+    }
+
+    /* src/do.c:1879: after the new map and deferred arrival message, a
+       same-named bones level gives one randomly chosen deja-vu message. */
+    {
+        const { bones_include_name } = await import('./bones.js');
+        if (game.level?.bonesinfo && bones_include_name(game.plname)) {
+            const fam_msgs = [
+                'You have a sense of deja vu.',
+                "You feel like you've been here before.",
+                'This place %s familiar...', null ];
+            /* halu variants recorded with the rest of Hallucination */
+            let mesg = fam_msgs[rn2(4)];
+            if (mesg && mesg.includes('%s'))
+                mesg = mesg.replace('%s',
+                                    !game.u.ublind ? 'looks' : 'seems');
+            if (mesg)
+                await pline(mesg);
+        }
     }
 
     /* src/do.c:1879 — special location arrival messages/events. The

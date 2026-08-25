@@ -691,6 +691,35 @@ export function vision_recalc(control = 0) {
         view_from(u.uy, u.ux, next, next_rmin, next_rmax);
     }
 
+    /* src/vision.c:552. A blind hero still has COULD_SEE geometry so
+       monsters can see the hero, but none of those cells are IN_SIGHT. */
+    if (u.ublind && control !== 2) {
+        const old_array = game.viz_array;
+        const old_rmin = game._viz_rmin;
+        const old_rmax = game._viz_rmax;
+        game.viz_array = next;
+        game.active_buf = game.active_buf === 0 ? 1 : 0;
+        if (old_array && game.level) {
+            for (let row = 0; row < ROWNO; row++) {
+                const start = old_rmin
+                    ? Math.min(old_rmin[row], next_rmin[row])
+                    : next_rmin[row];
+                const stop = old_rmax
+                    ? Math.max(old_rmax[row], next_rmax[row])
+                    : next_rmax[row];
+                for (let col = start; col <= stop; col++) {
+                    if (col > 0 && (old_array[row][col] & IN_SIGHT))
+                        newsym(col, row);
+                }
+            }
+        }
+        if (u.ux > 0)
+            newsym(u.ux, u.uy);
+        game._viz_rmin = next_rmin;
+        game._viz_rmax = next_rmax;
+        return;
+    }
+
     /* src/vision.c:703 — set the correct bits for all light sources */
     do_light_sources(next);
 
@@ -736,7 +765,7 @@ export function vision_recalc(control = 0) {
 
     const old_rmin = game._viz_rmin;
     const old_rmax = game._viz_rmax;
-    if (old_array && control !== 2 && game.level) {
+    if (old_array && game.level) {
         for (let row = 0; row < ROWNO; row++) {
             const old_row = old_array[row];
             const next_row = next[row];

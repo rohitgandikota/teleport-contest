@@ -989,6 +989,30 @@ export function money_cnt(invent) {
     return 0;
 }
 
+// src/shk.c:3046 contained_gold() and src/vault.c:1257 hidden_gold().
+// Unknown nested containers only contribute when the caller requests all
+// hidden gold, as end-of-game scoring does.
+export function contained_gold(obj, even_if_unknown = false) {
+    let value = 0;
+    for (const otmp of obj?.cobj || []) {
+        if (otmp.oclass === OCLASSES.COIN_CLASS)
+            value += otmp.quan;
+        else if ((otmp.cobj || []).length
+                 && (otmp.cknown || even_if_unknown))
+            value += contained_gold(otmp, even_if_unknown);
+    }
+    return value;
+}
+
+export function hidden_gold(invent, even_if_unknown = false) {
+    let value = 0;
+    for (const obj of invent || []) {
+        if ((obj.cobj || []).length && (obj.cknown || even_if_unknown))
+            value += contained_gold(obj, even_if_unknown);
+    }
+    return value;
+}
+
 // src/mkobj.c obj_extract_self() — unlink the object from wherever it lives.
 export function obj_extract_self(obj) {
     switch (obj.where) {

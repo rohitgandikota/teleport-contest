@@ -80,6 +80,12 @@ export async function doread(read_ok) {
                              && scroll.cursed));
     await pline(nodisappear ? 'You read the scroll.'
                             : 'As you read the scroll, it disappears.');
+    if (game.u.uprops?.CONFUSION || game.u.intrinsic?.HConfusion) {
+        if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
+            await pline('Being so trippy, you screw up...');
+        else
+            await pline('Being confused, you mispronounce the magic words...');
+    }
 
     if (!await seffects(scroll)) {
         if (!game.objects[otyp].oc_name_known) {

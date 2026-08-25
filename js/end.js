@@ -10,7 +10,7 @@
 import { game } from './gstate.js';
 import { pline, canspotmon } from './display.js';
 import { You } from './pline.js';
-import { money_cnt } from './invent.js';
+import { hidden_gold, money_cnt } from './invent.js';
 import { depth, dunlevs_in_dungeon } from './dungeon.js';
 import { G_GENOD, G_UNIQ, In_endgame, In_quest, KILLED_BY_AN, KILLED_BY,
          LOW_PM, M_AP_MONSTER, M_AP_TYPE, MGIVENNAME, NHW_TEXT, NHW_MENU,
@@ -240,6 +240,12 @@ export async function done(how) {
     /* force full status update */
     game.disp = game.disp || {};
     game.disp.botlx = true;
+    /* src/end.c:1045: draw the final live status before fatal damage sets
+       current HP to zero (skipped for 'q' to "Really quit?") */
+    if (!(how === QUIT && game.done_stopprint)) {
+        const { bot } = await import('./display.js');
+        await bot();
+    }
 
     if (how === ASCENDED || (!game.killer.name && how === GENOCIDED))
         game.killer.format = 2; /* NO_KILLER_PREFIX */
@@ -254,12 +260,6 @@ export async function done(how) {
             u.uhp = 0;
             game.disp.botl = true;
         }
-    }
-    /* src/end.c:1045 — force a full status update before anything else the
-       death sequence shows (skipped for 'q' to "Really quit?") */
-    if (!(how === QUIT && game.done_stopprint)) {
-        const { bot } = await import('./display.js');
-        await bot();
     }
     /* Lifesaved (amulet of life saving): no session wears one yet */
     if (u.uprops?.LIFESAVED && how <= GENOCIDED)
@@ -369,8 +369,8 @@ async function really_done(how) {
     {
         const deepest = deepest_lev_reached();
         umoney = money_cnt(game.invent || []);
+        umoney += hidden_gold(game.invent || [], true);
         let tmp = u.umoney0 ?? 0;
-        /* hidden_gold(): no containers with gold modelled */
         tmp = umoney - tmp;            /* net gain */
         if (tmp < 0)
             tmp = 0;

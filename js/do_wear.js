@@ -668,6 +668,13 @@ export async function accessory_or_armor_on(obj) {
 // src/do_wear.c:1461 Blindf_on() — wear a blindfold/towel/lenses. The
 // wielded-release, ball&chain and Eyes-of-the-Overworld arms need absent
 // state; the blindness toggle itself is the live path.
+async function toggle_blindness() {
+    (game.disp ||= {}).botl = true;
+    game.vision_full_recalc = 1;
+    const { vision_recalc } = await import('./vision.js');
+    vision_recalc(0);
+}
+
 export async function Blindf_on(otmp) {
     const already_blind = !!game.u.ublind;
 
@@ -681,11 +688,10 @@ export async function Blindf_on(otmp) {
     if (game.u.ublind && !already_blind) {
         if (game.flags?.verbose)
             await You_cant('see any more.');
-        /* toggle_blindness() — vision swap for the new state */
-        game.vision_full_recalc = 1;
+        await toggle_blindness();
     } else if (already_blind && !game.u.ublind) {
         await You('can see!');
-        game.vision_full_recalc = 1;
+        await toggle_blindness();
     }
 }
 
@@ -878,11 +884,11 @@ export async function Blindf_off(otmp) {
         } else {
             await You_cant('see anything now!');
         }
-        game.vision_full_recalc = 1;
+        await toggle_blindness();
     } else if (was_blind) {
         /* gulp_blnd_check() needs the engulfed state; absent */
         await You('can see again.');
-        game.vision_full_recalc = 1;
+        await toggle_blindness();
     }
 }
 

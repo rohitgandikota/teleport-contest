@@ -23,6 +23,7 @@ import {
     IRONBARS, TREE, LADDER, ALTAR, GRAVE, THRONE, SINK, FOUNTAIN,
     POOL, MOAT, WATER, LAVAPOOL, LAVAWALL, DRAWBRIDGE_UP, DRAWBRIDGE_DOWN,
     AIR, CLOUD, HI_METAL, HI_GOLD, LA_DOWN, IS_DOOR,
+    DB_MOAT, DB_LAVA, DB_ICE, DB_FLOOR, DB_UNDER,
     SCORR, isok, IS_STWALL, IS_SDOOR,
     WM_MASK, WM_W_TOP, WM_W_BOTTOM, WM_W_LEFT, WM_W_RIGHT,
     WM_C_OUTER, WM_C_INNER, WM_T_LONG, WM_T_BL, WM_T_BR,
@@ -740,9 +741,20 @@ export function back_to_glyph(loc, x, y) {
     case DRAWBRIDGE_DOWN:                                  /* S_[vh]odbridge */
         return { ch: '~', color: CLR_BROWN, dec: true,
                  cmap: loc.horizontal ? CM.S_hodbridge : CM.S_vodbridge };
-    case DRAWBRIDGE_UP:                                    /* S_[vh]cdbridge */
-        return { ch: '#', color: CLR_BROWN, dec: false,
-                 cmap: loc.horizontal ? CM.S_hcdbridge : CM.S_vcdbridge };
+    case DRAWBRIDGE_UP:
+        /* display.c:2396: a raised bridge displays the terrain beneath it,
+           not the closed-bridge symbol used by the adjacent DBWALL gate. */
+        switch (loc.drawbridgemask & DB_UNDER) {
+        case DB_MOAT:
+            return { ch: '`', color: CLR_BLUE, dec: true, cmap: CM.S_pool };
+        case DB_LAVA:
+            return { ch: '`', color: CLR_RED, dec: true, cmap: CM.S_lava };
+        case DB_ICE:
+            return { ch: '~', color: CLR_CYAN, dec: true, cmap: CM.S_ice };
+        case DB_FLOOR:
+        default:
+            return { ch: '.', color: CLR_GRAY, dec: true, cmap: CM.S_room };
+        }
     case AIR:       return { ch: ' ', color: CLR_CYAN, dec: false, cmap: CM.S_air };
     case CLOUD:     return { ch: '#', color: CLR_GRAY, dec: false, cmap: CM.S_cloud };
     case SDOOR:     return wall_glyph(loc);

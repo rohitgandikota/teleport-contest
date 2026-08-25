@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-25T20:18:48.347Z. Local commit: `3b40d57`.
+Last refreshed: 2026-08-25T21:06:15.255Z. Local commit: `d982795`.
 Leaderboard snapshot: 2026-08-25T19:39:15.748Z. Fork last scored: 2026-08-25T19:03:55.987Z.
 
 ## Score summary
@@ -10,7 +10,7 @@ Leaderboard snapshot: 2026-08-25T19:39:15.748Z. Fork last scored: 2026-08-25T19:
 | Public local | 8713/11405 | 76.40% | 39/44 | 513664/792838 (64.79%) | 6/1483 |
 | Public leaderboard | 8713/11405 | 76.40% | 39/44 | 64.79% | 6/1483 |
 | Held-out leaderboard | 4884/11265 | 43.36% | 3/44 | 20.85% | 0/2959 |
-| Supplemental C suite | 2340/3739 | 62.58% | 32/40 | 383908/470994 (81.51%) | 0/75 |
+| Supplemental C suite | 2383/3739 | 63.73% | 33/40 | 384444/470994 (81.62%) | 0/75 |
 
 ## Contest position and generalization
 
@@ -24,9 +24,9 @@ Leaderboard snapshot: 2026-08-25T19:39:15.748Z. Fork last scored: 2026-08-25T19:
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 8717/11405 | 2340/3739 |
-| Cursor positions | 9765/11405 | 2985/3739 |
-| Startup and per-turn estimate | 74+0.36/turn | 58+0.49/turn |
+| Cells only | 8717/11405 | 2383/3739 |
+| Cursor positions | 9765/11405 | 3002/3739 |
+| Startup and per-turn estimate | 65+0.33/turn | 54+0.48/turn |
 
 ## Judge health
 
@@ -40,6 +40,7 @@ Leaderboard snapshot: 2026-08-25T19:39:15.748Z. Fork last scored: 2026-08-25T19:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-25T21:06:15.255Z | `d982795` | 8713/11405 | 2383/3739 | 4884/11265 | 3 |
 | 2026-08-25T20:18:48.347Z | `3b40d57` | 8713/11405 | 2340/3739 | 4884/11265 | 3 |
 | 2026-08-25T20:09:21.899Z | `4c84890` | 8713/11405 | 2297/3739 | 4884/11265 | 3 |
 | 2026-08-25T20:03:55.828Z | `203dd4f` | 8713/11405 | 2268/3739 | 4884/11265 | 3 |
@@ -49,7 +50,6 @@ Leaderboard snapshot: 2026-08-25T19:39:15.748Z. Fork last scored: 2026-08-25T19:
 | 2026-08-25T19:28:12.104Z | `531317a` | 8713/11405 | 2042/3739 | 4256/11265 | 5 |
 | 2026-08-25T19:20:30.734Z | `2c4e650` | 8713/11405 | 2039/3739 | 4256/11265 | 5 |
 | 2026-08-25T19:16:58.255Z | `ee969a2` | 8713/11405 | 2033/3739 | 4256/11265 | 5 |
-| 2026-08-25T19:10:27.504Z | `2c7ee7b` | 8713/11405 | 2027/3739 | 4256/11265 | 5 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

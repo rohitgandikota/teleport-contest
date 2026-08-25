@@ -95,22 +95,42 @@ export function assigninvlet(otmp) {
 // otherwise take the next inventory letter.
 export function addinv(obj) {
     game.invent ||= [];
+    if (obj.how_lost === LOST_EXPLODING)
+        return null;
+
+    /* src/invent.c:1069-1078. Floor-shop state and the reason an object left
+       inventory do not survive pickup. In particular, a returning missile
+       must lose LOST_THROWN before mergable() compares it with the quiver. */
+    obj.no_charge = 0;
+    obj.how_lost = LOST_NONE;
+
     /* src/invent.c addinv_core0 — merging goes through merged(), which
        recomputes the stack's owt. The old inline quan += left every
        merged stack carrying a single item's weight, which under-read
        inv_weight() and hid encumbrance transitions. */
-    for (const otmp of game.invent) {
+    const merge_into = (otmp) => {
         const r = merged({ o: otmp }, { o: obj });
-        if (r) {
-            /* src/invent.c:1142 marks the resulting stack, including a
-               merged stack, as the most recently picked-up object. */
-            otmp.pickup_prev = 1;
-            /* merged() hands back a promise when its discovery pline must
-               be awaited; addinv's async callers await the result either
-               way, and the sync init-time path never merges stacks whose
-               identification states differ */
-            return (r instanceof Promise) ? r.then(() => otmp) : otmp;
-        }
+        if (!r)
+            return null;
+        otmp.pickup_prev = 1;
+        return (r instanceof Promise) ? r.then(() => otmp) : otmp;
+    };
+
+    /* src/invent.c:1098. Prefer the readied stack even when another wielded
+       or loose stack could also accept the object. */
+    const quiver = game.u?.uquiver;
+    if (quiver) {
+        const result = merge_into(quiver);
+        if (result)
+            return result;
+    }
+
+    for (const otmp of game.invent) {
+        if (otmp === quiver)
+            continue;
+        const result = merge_into(otmp);
+        if (result)
+            return result;
     }
     return addinv_nomerge(obj);
 }

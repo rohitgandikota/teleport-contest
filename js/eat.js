@@ -1283,8 +1283,7 @@ export function adj_victual_nutrition() {
 // newuhs(FALSE) runs unconditionally at the end: the hunger STATE is
 // recomputed whether or not anything was said.
 //
-// reset_eat and paranoid_query are not ported and are recorded; the messages
-// need nomovemsg/multi plumbing and are recorded too.
+// The warning and its delayed completion message share gn.nomovemsg in C.
 export async function lesshungry(num) {
     /* see comments in newuhs() for discussion on force_save_hs */
     const iseating = (game.occupation === eatfood) || game.force_save_hs;
@@ -1305,14 +1304,22 @@ export async function lesshungry(num) {
         if (game.u.uhunger >= 1500 && !game.u.uprops?.HUNGER
             && (!game.context.victual?.eating
                 || !game.context.victual?.fullwarn)) {
-            note_unported_eat('lesshungry:hard_time_msg');
+            await pline("You're having a hard time getting all of it down.");
+            game.nomovemsg = "You're finally finished.";
             if (!game.context.victual?.eating) {
-                note_unported_eat('lesshungry:multi');
+                nomul(-2);
             } else {
+                game.context.victual.fullwarn = 1;
                 if (game.context.victual.canchoke
                     && (game.context.victual.reqtime
-                        - game.context.victual.usedtime) > 1)
-                    note_unported_eat('lesshungry:paranoid_query');
+                        - game.context.victual.usedtime) > 1) {
+                    const answer = await tty_yn_function(
+                        'Continue eating?', 'yn', 'n');
+                    if (answer !== 'y') {
+                        do_reset_eat();
+                        game.nomovemsg = null;
+                    }
+                }
             }
         }
     }

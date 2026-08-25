@@ -30,7 +30,7 @@ import { depth, dunlev, endgamelevelname } from './dungeon.js';
 import { In_endgame, In_quest, Is_knox_level } from './const.js';
 import { aligns } from './role_data.js';
 import { A_MAX } from './attrib.js';
-import { rank_of } from './botl.js';
+import { hu_stat, rank_of } from './botl.js';
 import { money_cnt } from './invent.js';
 import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
@@ -363,10 +363,15 @@ function status_enlightenment() {
     if ((game.u.intrinsic?.HSleepy || game.u.uprops?.SLEEPY))
         enl_msg('You ', 'fall', 'fell', ' asleep uncontrollably', '');
 
-    /* hunger: hu_stat[] is empty for the normal state, and C substitutes
-       "not hungry", which the contraction turns into "aren't hungry";
-       wizard mode reveals u.uhunger (insight.c:1208) */
-    you_are('not hungry' + (game.wizard ? ` <${game.u.uhunger}>` : ''));
+    /* hunger: hu_stat[] is blank for the normal state. */
+    let hunger = (hu_stat[game.u.uhs] || '').trim().toLowerCase();
+    if (!hunger)
+        hunger = 'not hungry';
+    else if (hunger === 'weak')
+        hunger += ' from severe hunger';
+    else if (hunger.startsWith('faint'))
+        hunger += ' due to starvation';
+    you_are(hunger + (game.wizard ? ` <${game.u.uhunger}>` : ''));
 
     /* src/insight.c:1211 encumbrance. */
     const cap = near_capacity();

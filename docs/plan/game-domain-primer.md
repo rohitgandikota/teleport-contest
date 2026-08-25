@@ -12,6 +12,10 @@ Where this document and `nethack-c/upstream/` disagree, the C wins and this file
 gets corrected. Never port from this primer; port from the C, and use the primer
 to know *where to look* and *what to expect*.
 
+For the complete inventory of game elements, mechanics, contest rules, source
+audit, and supplemental-test requirements, see
+[`full-game-coverage-spec.md`](full-game-coverage-spec.md).
+
 ---
 
 ## 1. Read this part twice: 5.0 is not 3.6

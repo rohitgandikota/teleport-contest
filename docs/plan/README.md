@@ -68,6 +68,7 @@ Reproduce with `node tools/scoreboard.mjs`; history in
 |---|---|
 | [00-strategy.md](00-strategy.md) | How scoring actually works, what wins, why the architecture is what it is. Read once. |
 | [game-domain-primer.md](game-domain-primer.md) | What NetHack is, the command set, the subsystem-to-C-file map, and **what changed in 5.0 versus 3.6**. Read once, before your first milestone. |
+| [full-game-coverage-spec.md](full-game-coverage-spec.md) | Complete game-element, mechanic, contest-rule, source-audit, and supplemental-test coverage contract. |
 | [porting-protocol.md](porting-protocol.md) | The repeatable per-function recipe. Read before your first port, then keep it open. |
 | [coverage-map.md](coverage-map.md) | Which public session exercises which subsystem. Produced by M1. |
 

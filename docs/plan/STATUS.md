@@ -1,4 +1,26 @@
 # STATUS — live handoff board
+
+## 2026-08-24 (coverage expansion): baseline preserved, full-game spec added
+
+The exact clean baseline at `79ed734` is preserved and pushed as
+`codex/last-working-2026-08-24`. Main remains at the same commit while the new
+coverage work is prepared.
+
+Added `docs/plan/full-game-coverage-spec.md` after auditing the complete live
+contest rules, Traveler's Companion, official Guidebook, generated inventories,
+and pinned C source. It records every game-element family, the authority order,
+NetHack 5.0 differences, and a concrete definition of supplemental coverage.
+
+Reproduced baselines at `79ed734`:
+
+- public: 21/44, 5120/11405 screens, 312405/792838 RNG positions;
+- supplemental C corpus: 9/28, 1041/1807 screens, 266118/282098 RNG positions;
+- hidden leaderboard: 1/44, 3438/11265 screens, 15.98% RNG, rank 5/18.
+
+Held-out/public points = 0.67. Next: create the machine-readable coverage
+manifest, add focused C-recorder recipes for uncovered families, then resume at
+the highest-impact real C divergence with all three corpora as regression gates.
+
 ## 2026-08-24 (end of stretch): 21/44, screens 5120/11405
 
 Landed after the pristine-recorder rebuild: make_corpse's full

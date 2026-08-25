@@ -1,5 +1,25 @@
 # STATUS — live handoff board
 
+## 2026-08-25: potion of sickness parity
+
+`peffect_sickness()` now follows the pinned C paths for blessed, ordinary, and
+cursed potions, including Healer immunity, poison resistance, attribute loss,
+damage, sink-water killer wording, and the hallucination cure. The public
+`seed0014` trace now matches the two-message blessed-potion sequence exactly,
+including its one hit point loss and the random stream that follows.
+
+Public local improved by 73 screens to 5,208/11,405 and by 2,647 RNG positions
+to 315,079/792,838. Passing sessions remain 21/44. No public or supplemental
+session lost a screen, and all 44 hang checks pass. The supplemental corpus
+remains at 1,747/3,646 screens, 328,555/465,629 RNG positions, and 11/38
+passing. Full-game coverage remains 68 covered, 6 partial, and 30 gaps out of
+104 requirements.
+
+The focused `seed0014` session moved from 6,881 to 9,528 matched RNG positions
+and from 140 to 213 identical screens. Its next first RNG divergence is now
+`study_book()` at step 227. The live judge had not yet scored this change at
+the time of the local measurement.
+
 ## 2026-08-25: fatal monster damage and death coverage
 
 `mdamageu()` now enters the C `done_in_by()` path when a monster reduces the

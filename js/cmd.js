@@ -1389,18 +1389,17 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
-    } else if (ch === 'g') {
-        // src/cmd.c:1839 do_rush — a PREFIX that sets context.run = 2, making
-        // the direction that follows RUN until something interesting appears
-        // rather than take one step. It reads no extra key, so this does not
-        // misalign the keystream; it moves the hero a different DISTANCE, which
-        // is a larger positional divergence than the fight prefix causes.
+    } else if (ch === 'g' || ch === 'G') {
+        // src/cmd.c:1588 do_rush()/do_run(): PREFIX commands. Lowercase g
+        // sets context.run = 2 and uppercase G sets it to 3; the following
+        // direction then carries the hero until something interesting stops
+        // the run. Neither prefix consumes game time by itself.
         if (game.domove_attempting & DOMOVE_RUSH) {
-            /* "Double rush prefix, canceled." */
+            /* "Double rush/run prefix, canceled." */
             game.context.run = 0;
             game.domove_attempting = 0;
         } else {
-            game.context.run = 2;
+            game.context.run = (ch === 'g') ? 2 : 3;
             game.domove_attempting |= DOMOVE_RUSH;
             game._cmd_prefix_pending = true;
         }

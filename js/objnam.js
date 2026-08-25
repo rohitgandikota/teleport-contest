@@ -413,7 +413,21 @@ export function xname(obj) {
         break;
     }
 
-    return pluralize ? makeplural(buf) : buf;
+    if (pluralize)
+        buf = makeplural(buf);
+
+    /* src/objnam.c:998: a per-object name follows the ordinary type name.
+       Artifact names use the same storage; undiscovered artifacts therefore
+       read "a war hammer named Mjollnir", not "the Mjollnir". */
+    if (has_oname(obj) && dknown) {
+        let oname = obj.oname;
+        if (obj.oartifact && oname.startsWith('The '))
+            oname = 'the ' + oname.slice(4);
+        buf += ` named ${oname}`;
+    }
+    if (/^the /i.test(buf))
+        buf = buf.slice(4);
+    return buf;
 }
 
 // src/eat.c tin_details() — " of <monster>" or " of spinach".
@@ -699,7 +713,20 @@ const has_oname = (obj) => obj.oname != null;
 function obj_is_pname(obj) {
     if (!obj.oartifact || !has_oname(obj))
         return false;
-    note_unported_objnam('obj_is_pname:not_fully_identified');
+    if (!game.program_state_gameover && !game.iflags?.override_ID) {
+        const ocl = game.objects[obj.otyp];
+        if (!obj.known || !obj.dknown || !obj.bknown || !ocl.oc_name_known
+            || (obj.oartifact && undiscovered_artifact(obj.oartifact)))
+            return false;
+        if ((!obj.cknown && (Is_container(obj) || obj.otyp === ONAMES.STATUE))
+            || (!obj.lknown && Is_box(obj)))
+            return false;
+        if (!obj.rknown
+            && (obj.oclass === ARMOR_CLASS || obj.oclass === WEAPON_CLASS
+                || is_weptool(obj, game.objects))
+            && is_damageable(obj))
+            return false;
+    }
     return true;
 }
 

@@ -27,6 +27,7 @@ import {
     LUCKMIN, LUCKMAX,
 } from './const.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
+import { Upolyd } from './const.js';
 
 // include/you.h:247 Role_if()
 function Role_if(pm) {
@@ -44,7 +45,16 @@ export function weight_cap() {
     /* include/weight.h:12,14 — WT_WEIGHTCAP_STRCON, WT_WEIGHTCAP_SPARE */
     let carrcap = (25 * (acurrstr() + acurr(A_CON))) + 50;
 
-    /* Upolyd scaling needs polyself, which nothing reaches yet */
+    if (Upolyd(game.u)) {
+        const ptr = game.youmonst.data;
+        if (ptr.mlet === MONSYMS.S_NYMPH) {
+            carrcap = 1000;
+        } else if (!ptr.cwt) {
+            carrcap = Math.trunc(carrcap * ptr.msize / 2);
+        } else if (!strongmonst(ptr) || ptr.cwt > 1450) {
+            carrcap = Math.trunc(carrcap * ptr.cwt / 1450);
+        }
+    }
 
     /* src/hack.c:4325 — levitating, on the Plane of Air, or riding a
        strong steed lifts the cap to MAX_CARR_CAP outright */
@@ -213,6 +223,21 @@ function init_attr_role_redist(np, addition) {
         np -= adj;
     }
     return np;
+}
+
+// src/attrib.c:740 redist_attr(): polymorph leaves Int and Wis alone and
+// perturbs the other four racial maxima by -2..+2.
+export function redist_attr() {
+    for (let i = 0; i < A_MAX; i++) {
+        if (i === A_INT || i === A_WIS)
+            continue;
+        const oldmax = AMAX(i);
+        const newmax = Math.max(ATTRMIN(i),
+            Math.min(ATTRMAX(i), oldmax + rn2(5) - 2));
+        setAMAX(i, newmax);
+        setABASE(i, Math.max(ATTRMIN(i),
+            Math.trunc(ABASE(i) * newmax / oldmax)));
+    }
 }
 
 // src/attrib.c:714 init_attr()

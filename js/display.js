@@ -8,6 +8,7 @@ import { update_topl } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
+import { Upolyd } from './const.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
 import { Infravision, Hallucination, Invis, See_invisible } from './youprop.js';
 import { observe_object } from './o_init.js';
@@ -36,7 +37,7 @@ import { is_pool } from './mon.js';
 import { nhgetch } from './input.js';
 import { update_lastseentyp } from './dungeon.js';
 import { def_monsyms, def_oc_syms, cmap_names, defsyms } from './drawing_data.js';
-import { PMNAMES } from './monst_data.js';
+import { PMNAMES, mons } from './monst_data.js';
 import { showsym } from './symbols.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, CLR_BLACK,
@@ -580,21 +581,22 @@ function wall_glyph(loc) {
     return { ch: d.ch, color: wall_color_here(), dec: d.dec, cmap: idx };
 }
 
-/* src/display.c:2947 reset_glyphmap's per-dungeon wall ranges +
-   wallcolors[]. The shipped 5.0 binary colors them main=gray,
-   mines=CLR_BROWN, gehennom=CLR_RED, knox=gray, sokoban=CLR_BLUE —
-   verified against the seed0360 tour recording ([39m/[33m/[31m/[34m
-   before wall runs), which the vendored source's all-gray initializer
-   does not reproduce. */
+/* src/display.c:2947 reset_glyphmap's per-dungeon wall ranges start gray.
+   dat/symbols applies the branch colors below only for DECgraphics (and its
+   curses approximation). The default ASCII set therefore keeps gray walls. */
 function wall_color_here() {
     const uz = game.u?.uz;
     if (!uz) return NO_COLOR;
+    if (!showsym(CM.S_vwall)?.dec)
+        return NO_COLOR;
     if (game.sokoban_dnum !== undefined && uz.dnum === game.sokoban_dnum)
         return CLR_BLUE;
     if (game.mines_dnum !== undefined && uz.dnum === game.mines_dnum)
         return CLR_BROWN;
     if (game.dungeons?.[uz.dnum]?.flags?.hellish)
         return CLR_RED;
+    if (game.dungeons?.[uz.dnum]?.dname === 'Fort Ludios')
+        return CLR_YELLOW;
     return NO_COLOR;
 }
 
@@ -1055,8 +1057,14 @@ export function newsym(x, y) {
             show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
                             steed.data.mcolor ?? NO_COLOR, false, 0,
                             { kind: 'hero', mon: steed });
-        else if (canspotself())
-            show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
+        else if (canspotself()) {
+            const self = game.youmonst?.data;
+            show_glyph_cell(x, y,
+                            Upolyd(game.u)
+                                ? (def_monsyms[self.mlet] || '?') : '@',
+                            Upolyd(game.u) ? self.mcolor : CLR_WHITE,
+                            false, 0, { kind: 'hero' });
+        }
         else
             show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, pile_attr(tg.glyph),
                             tg.glyph ?? { kind: 'cmap', cmap: tg.cmap });
@@ -1443,7 +1451,13 @@ function _statusLine1() {
     /* src/botl.c rank() — the status line shows the RANK for the hero's
        experience level, not the role name. This read urole.rank.m, which only
        worked against the stub role record that used to be installed here. */
-    const role = rank();
+    const polyname = Upolyd(u)
+        ? (mons[u.umonnum].pmnames[game.flags.female ? 1 : 0]
+           || mons[u.umonnum].pmnames[2] || mons[u.umonnum].pmnames[0])
+        : '';
+    const role = Upolyd(u)
+        ? polyname.replace(/\b\w/g, c => c.toUpperCase())
+        : rank();
     const title = `${name} the ${role}`;
     /* src/botl.c:87 — u.acurr.a[] is indexed by the include/attrib.h enum
        (A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA), which is NOT the order the
@@ -1505,14 +1519,19 @@ function _statusLine2() {
             delete game._deferred_status_money;
     }
     const shownHp = game._deferred_status_hp_until_more
-        ?? Math.max(u.uhp | 0, 0);
+        ?? Math.max((Upolyd(u) ? u.mh : u.uhp) | 0, 0);
+    const maxHp = Upolyd(u) ? u.mhmax : u.uhpmax;
     let s = `${lvldesc} $:${shownMoney}`
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
-          + ` HP:${shownHp}(${u.uhpmax || 0})`
+          + ` HP:${shownHp}(${maxHp || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
-          + ` AC:${u.uac ?? 0}`
-          + ` Xp:${u.ulevel || 1}`;
-    if (f.showexp) s += `/${u.uexp || 0}`;
+          + ` AC:${u.uac ?? 0}`;
+    if (Upolyd(u))
+        s += ` HD:${mons[u.umonnum].mlevel}`;
+    else {
+        s += ` Xp:${u.ulevel || 1}`;
+        if (f.showexp) s += `/${u.uexp || 0}`;
+    }
     if (f.time) s += ` T:${game.moves || 1}`;
     s += bot_conditions();
     return s;

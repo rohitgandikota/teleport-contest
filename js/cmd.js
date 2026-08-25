@@ -781,6 +781,36 @@ export async function doextcmd() {
         const { dodip } = await import('./potion.js');
         return await dodip();
     }
+    if (name === 'rub') {
+        const { dorub } = await import('./apply.js');
+        return await dorub();
+    }
+    if (name === 'wipe') {
+        const { dowipe } = await import('./do.js');
+        return await dowipe();
+    }
+    if (name === 'polyself') {
+        const { wiz_polyself } = await import('./polyself.js');
+        return await wiz_polyself();
+    }
+    if (name === 'monster') {
+        const { domonability } = await import('./polyself.js');
+        return await domonability();
+    }
+    if (name === 'invoke') {
+        const { doinvoke } = await import('./artifact.js');
+        return await doinvoke();
+    }
+    if (name === 'untrap') {
+        const { dountrap } = await import('./trap.js');
+        return await dountrap();
+    }
+    if (name === 'tip') {
+        const { dotip } = await import('./pickup.js');
+        return await dotip();
+    }
+    if (name === 'herecmdmenu')
+        return await doherecmdmenu();
     if (name === 'annotate') {
         /* src/dungeon.c:2571 donamelevel() -> query_annotation(): the
            getlin consumes the annotation text; skipping it fed the typed
@@ -834,6 +864,108 @@ export async function doextcmd() {
         return await wiz_genesis();
 
     note_unported_cmd(`extcmd:${name}`);
+    return ECMD_OK;
+}
+
+// src/cmd.c:4332 doherecmdmenu() and there_cmd_menu_self(). The command
+// presents actions available on the hero's square, then queues the selected
+// action so the normal command loop runs it on the next pass.
+async function doherecmdmenu() {
+    const { Is_container } = await import('./obj.js');
+    const { doname } = await import('./objnam.js');
+    const { num_spells } = await import('./spell.js');
+    const { can_reach_floor, dotip } = await import('./pickup.js');
+    const { dountrap } = await import('./trap.js');
+    const { donull } = await import('./do.js');
+    const {
+        FOUNTAIN, SINK, THRONE, ALTAR, VIBRATING_SQUARE,
+    } = await import('./const.js');
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    const actions = new Map();
+    let nextId = 1;
+    const add = (text, fn, ...keys) => {
+        const id = nextId++;
+        actions.set(id, { fn, keys });
+        tty_add_menu(win, null, id, 0, 0, ATR_NONE, NO_COLOR, text,
+                     MENU_ITEMFLAGS_NONE);
+    };
+
+    const u = game.u;
+    const loc = game.level?.at(u.ux, u.uy);
+    const typ = loc?.typ;
+    if ((typ === FOUNTAIN || typ === SINK) && can_reach_floor(false)) {
+        add(`Drink from the ${typ === FOUNTAIN ? 'fountain' : 'sink'}`,
+            () => dodrink(drink_ok), 'y');
+    }
+    if (typ === FOUNTAIN && can_reach_floor(false)) {
+        const { dodip } = await import('./potion.js');
+        add('Dip something into the fountain', dodip);
+    }
+    if (typ === THRONE) {
+        const { dosit } = await import('./sit.js');
+        add('Sit on the throne', dosit);
+    }
+    if (typ === ALTAR)
+        add('Sacrifice something on the altar',
+            () => doextcmd_named_offer());
+
+    const stway = stairway_at(u.ux, u.uy);
+    if (stway) {
+        const kind = stway.isladder ? 'ladder' : 'stairs';
+        add(`Go ${stway.up ? 'up' : 'down'} the ${kind}`,
+            stway.up ? doup : dodown);
+    }
+
+    const floor = (game.level?.objects || [])
+        .filter(o => o.ox === u.ux && o.oy === u.uy);
+    if (floor.length) {
+        const obj = floor[0];
+        add(`Pick up ${floor.length > 1 ? 'items' : doname(obj)}`, dopickup);
+        if (Is_container(obj)) {
+            add(`Loot ${doname(obj)}`, doloot);
+            add(`Tip ${doname(obj)}`, dotip, 'y');
+        }
+        if (obj.oclass === OCLASSES.FOOD_CLASS)
+            add(`Eat ${doname(obj)}`, doeat, 'y');
+    }
+
+    if ((game.invent || []).length) {
+        add('Inventory', show_inventory);
+        add('Drop items', dodrop);
+    }
+    add('Rest one turn', donull);
+    add('Search around you', dosearch);
+    add('Look at what is here', dolook);
+    if (num_spells() > 0)
+        add('Cast a spell', docast);
+
+    const trap = t_at(u.ux, u.uy);
+    if (trap?.tseen && trap.ttyp !== VIBRATING_SQUARE)
+        add('Attempt to disarm trap', dountrap);
+
+    tty_end_menu(win, 'What do you want to do?');
+    const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
+    tty_destroy_nhwindow(win);
+    if (picks.length) {
+        const action = actions.get(picks[0]);
+        if (action) {
+            cmdq_add_ec(CQ_CANNED, action.fn);
+            for (const key of action.keys)
+                cmdq_add_key(CQ_CANNED, key);
+        }
+    }
+    return ECMD_OK;
+}
+
+async function doextcmd_named_offer() {
+    const loc = game.level?.at(game.u.ux, game.u.uy);
+    if (!loc || loc.typ !== (await import('./const.js')).ALTAR) {
+        await You('are not on an altar.');
+        return ECMD_OK;
+    }
+    note_unported_cmd('cmd:doextcmd:offer_rite');
     return ECMD_OK;
 }
 

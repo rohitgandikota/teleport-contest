@@ -105,8 +105,20 @@ import { set_wounded_legs } from './do.js';
 import { obj_extract_self, sobj_at } from './invent.js';
 import { metallivorous } from './mondata.js';
 import { amorphous, is_whirly, unsolid, is_clinger, is_floater, is_flyer,
-         webmaker, defended, resists_fire, resists_sleep, breathless,
+         webmaker, nohands, defended, resists_fire, resists_sleep, breathless,
          resists_magm } from './mondata.js';
+import { ECMD_OK } from './const.js';
+
+// src/trap.c:5250 dountrap() and the preliminary could_untrap() checks.
+export async function dountrap() {
+    const mdat = game.youmonst.data;
+    if ((nohands(mdat) && !webmaker(mdat)) || !mdat.mmove) {
+        await pline('And just how do you expect to do that?');
+        return ECMD_OK;
+    }
+    (game.unported ||= new Set()).add('trap:dountrap');
+    return ECMD_OK;
+}
 
 // include/rm.h:538 Sokoban — the level flag, not the dungeon branch.
 // (lspo_level_flags stores 1, not true, so no strict-equality test here.)

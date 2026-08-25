@@ -524,7 +524,7 @@ function u_calc_moveamt(wtcap) {
         /* your speed doesn't augment steed's speed */
         moveamt = mcalcmove(game.u.usteed, true);
     } else {
-        moveamt = 12;                 /* youmonst.data->mmove */
+        moveamt = game.youmonst.data.mmove;
 
         if (Very_fast()) {            /* speed boots, potion, or spell */
             if (rn2(3) !== 0) moveamt += NORMAL_SPEED;

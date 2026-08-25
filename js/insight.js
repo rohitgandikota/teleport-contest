@@ -490,7 +490,9 @@ function status_enlightenment() {
 }
 
 function wearing_any_armor() {
-    return (game.invent || []).some(o => o.owornmask);
+    const u = game.u;
+    return !!(u.uarm || u.uarmu || u.uarmc || u.uarms
+              || u.uarmg || u.uarmf || u.uarmh);
 }
 
 // src/insight.c:200 enlightenment() — returns the lines for the caller to put

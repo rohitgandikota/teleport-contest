@@ -50,7 +50,7 @@ import {
     curr_mon_load, max_mon_load,
 } from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
-import { M_AP_TYPE, M_AP_NOTHING } from './const.js';
+import { M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { is_pit } from './const.js';
 import { couldsee, cansee, clear_path, recalc_block_point,
@@ -271,18 +271,21 @@ function leppie_avoidance(mtmp) {
 // shoot, and it draws nothing.
 // src/mthrowu.c:1398 lined_up() = m_lined_up(&youmonst, mtmp)
 //
-// The hero-concealment arm draws rn2(25) but is gated on Upolyd, which no
-// recorded session reaches. Everything else is geometry, now that clear_path
-// exists to answer linedup()'s line-of-sight test.
+// The hero-concealment arm draws rn2(25) whenever the hero is polymorphed.
+// It suppresses the shot only when the hero is also concealed.
 export function lined_up(mtmp) {
     const tx = mtmp.mux, ty = mtmp.muy;
     const ignore_boulders = throws_rocks(game.mons[mtmp.mnum])
                          || m_carrying(mtmp, ONAMES.WAN_STRIKING);
 
     if (game.u.umonnum !== game.u.umonster) {
-        /* Upolyd: the concealment test draws rn2(25) */
-        note_unported('m_lined_up:polyd concealment');
-        return false;
+        const concealment_roll = rn2(25);
+        const appearance = M_AP_TYPE(game.youmonst);
+        if (concealment_roll
+            && (game.u.uundetected
+                || (appearance !== M_AP_NOTHING
+                    && appearance !== M_AP_MONSTER)))
+            return false;
     }
 
     return linedup(tx, ty, mtmp.mx, mtmp.my, ignore_boulders ? 1 : 2);

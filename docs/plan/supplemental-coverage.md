@@ -8,16 +8,16 @@ not mean the JavaScript port passes them. Static rows are checked by
 `node tools/game-inventory.mjs`. Dynamic parity is measured by the frozen
 runner. RNG annotations only observe C functions that draw randomness.
 
-Requirements: **104**. Covered: **67**.
-Partial: **6**. Gaps: **31**.
+Requirements: **104**. Covered: **68**.
+Partial: **6**. Gaps: **30**.
 
 ## Corpus inventory
 
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 36 | 3552 | 442155 | 63 | 273 |
-| Union | 80 | 14957 | 1209915 | 76 | 382 |
+| Supplemental | 38 | 3646 | 451142 | 63 | 275 |
+| Union | 82 | 15051 | 1218902 | 76 | 383 |
 
 ## Static inventory
 
@@ -42,8 +42,8 @@ Partial: **6**. Gaps: **31**.
 |---|---|---|---|
 | covered | `chargen.full-menu` | 1 session(s), including normal mode | `ranger-chargen` |
 | covered | `chargen.restricted-path` | 1 session(s), including normal mode | `barb-chargen` |
-| covered | `mode.normal` | 3 session(s), including normal mode | `barb-chargen`, `fountain-quaff`, `mondrift-dogfollow`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `variant-steed`, `variant-twoweapon` |
-| covered | `mode.debug` | 3 session(s) | `armor-wear-remove`, `demon-summon`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
+| covered | `mode.normal` | 3 session(s), including normal mode | `barb-chargen`, `death-disclosure-normal`, `fountain-quaff`, `mondrift-dogfollow`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `variant-steed`, `variant-twoweapon` |
+| covered | `mode.debug` | 3 session(s) | `armor-wear-remove`, `death-disclosure-debug`, `demon-summon`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
 | covered | `options.rc-bindings` | 1 session(s) | `variant-custom-bindings` |
 
 ## Input and display
@@ -72,7 +72,7 @@ Partial: **6**. Gaps: **31**.
 
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
-| covered | `level.ordinary` | 3 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `demon-summon`, `engrave-elbereth`, `fountain-quaff`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `pray-low-hp`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `wand-striking-door` |
+| covered | `level.ordinary` | 3 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `death-disclosure-debug`, `death-disclosure-normal`, `demon-summon`, `engrave-elbereth`, `fountain-quaff`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `pray-low-hp`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `wand-striking-door` |
 | gap | `level.themed` | 2 session(s), including normal mode | none |
 | covered | `level.special-variants` | 2 session(s) | `planes-tour`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `variant-world-tour` |
 | gap | `level.mines` | 1 session(s) | none |
@@ -103,7 +103,7 @@ Partial: **6**. Gaps: **31**.
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
 | covered | `monster.movement` | 3 session(s), including normal mode | `barb-chargen`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `ranger-chargen` |
-| covered | `monster.hero-melee` | 3 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `demon-summon`, `kick-monster`, `mondrift-chase`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `wand-striking-door` |
+| covered | `monster.hero-melee` | 3 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `death-disclosure-debug`, `death-disclosure-normal`, `demon-summon`, `kick-monster`, `mondrift-chase`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `wand-striking-door` |
 | gap | `monster.ranged` | 1 session(s) | none |
 | covered | `monster.spells` | 1 session(s) | `demon-summon` |
 | gap | `monster.special-effects` | 2 session(s) | none |
@@ -179,7 +179,7 @@ Partial: **6**. Gaps: **31**.
 |---|---|---|---|
 | covered | `persistence.save-restore` | 1 session(s), including normal mode | `save-restore-pair` |
 | gap | `persistence.bones` | 1 session(s), including normal mode | none |
-| gap | `ending.death-disclosure` | 2 session(s), including normal mode | none |
+| covered | `ending.death-disclosure` | 2 session(s), including normal mode | `death-disclosure-debug`, `death-disclosure-normal` |
 | gap | `ending.topten` | 1 session(s), including normal mode | none |
 | gap | `ending.conduct-achievement` | 1 session(s), including normal mode | none |
 
@@ -199,6 +199,8 @@ Partial: **6**. Gaps: **31**.
 |---|---|---:|---|---|
 | `armor-wear-remove` | debug | 111 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `monster.hero-melee`, `object.armor`, `object.buc-enchant-erosion`, `object.identification`, `object.rings`, `turn.occupation-interrupt`, `ui.getlin`, `ui.menus`, `ui.more-paging` |
 | `barb-chargen` | normal | 96 | present | `chargen.restricted-path`, `combat.melee`, `combat.unarmed-kick`, `level.ordinary`, `mode.normal`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.food-corpses`, `object.weapons`, `survival.hunger`, `survival.regen-exercise`, `survival.timed-status`, `terrain.doors-locks`, `traps.projectile-physical`, `turn.occupation-interrupt`, `turn.speed-energy`, `turn.timers`, `ui.count-repeat`, `ui.map-memory-vision`, `ui.menus` |
+| `death-disclosure-debug` | debug | 62 | present | `ending.death-disclosure`, `level.ordinary`, `mode.debug`, `monster.hero-melee` |
+| `death-disclosure-normal` | normal | 30 | present | `ending.death-disclosure`, `level.ordinary`, `mode.normal`, `monster.hero-melee` |
 | `demon-summon` | debug | 113 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `monster.hero-melee`, `monster.spells`, `turn.speed-energy` |
 | `engrave-elbereth` | debug | 63 | present | `level.ordinary`, `mode.debug`, `monster.movement`, `monster.pets`, `monster.vs-monster`, `object.buc-enchant-erosion`, `object.identification`, `object.wands`, `terrain.engraving-elbereth`, `turn.timers`, `ui.getlin`, `ui.map-memory-vision` |
 | `fountain-quaff` | normal | 85 | present | `level.ordinary`, `mode.normal`, `object.buc-enchant-erosion`, `object.gems-stones`, `object.identification`, `object.potions`, `object.weapons`, `survival.regen-exercise`, `terrain.furniture`, `ui.getpos`, `ui.map-memory-vision` |
@@ -265,7 +267,6 @@ Partial: **6**. Gaps: **31**.
 - **gap:** `social.shops-billing`: Stock, price, credit, debt, selling, theft, damage, and pursuit
 - **gap:** `social.vault-guard`: Vault discovery, guard conversation, escort, and hostility
 - **gap:** `persistence.bones`: Bones creation, storage, eligibility, loading, and sanitization
-- **gap:** `ending.death-disclosure`: Death, inventory, attributes, conduct, overview, tombstone, and killer text
 - **gap:** `ending.topten`: Score calculation, record persistence, and top-ten rendering
 - **gap:** `ending.conduct-achievement`: Conduct counters, roleplay state, achievements, and disclosure
 - **gap:** `endgame.quest-events`: Quest call, entry checks, leader, nemesis, artifact, and completion

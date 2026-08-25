@@ -1,0 +1,18 @@
+{
+  "name": "death-disclosure-normal",
+  "description": "Normal-mode Tourist waits for a wandering goblin to kill him, then exercises the default disclosure prompts and final game-over screens.",
+  "coverage": [
+    "mode.normal",
+    "level.ordinary",
+    "monster.hero-melee",
+    "ending.death-disclosure"
+  ],
+  "segments": [
+    {
+      "seed": 6140,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mora,role:Tourist,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "  999s 999s s s s s s s s s s "
+    }
+  ]
+}

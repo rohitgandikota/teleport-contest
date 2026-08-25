@@ -770,7 +770,7 @@ async function hitmu(mtmp, mattk, indx) {
 
     if ((Upolyd(game.u) ? game.u.mh : game.u.uhp) < 1) {
         /* already dead? call rehumanize() or done_in_by() as appropriate */
-        mdamageu(mtmp, 1);
+        await mdamageu(mtmp, 1);
         mhm.damage = 0;
     }
 
@@ -792,7 +792,7 @@ async function hitmu(mtmp, mattk, indx) {
             note_unported_mhitu('hitmu:permdmg');
         }
 
-        mdamageu(mtmp, mhm.damage);
+        await mdamageu(mtmp, mhm.damage);
     }
 
     if (mhm.damage)
@@ -812,7 +812,7 @@ function midnight() {
 }
 
 // src/mhitu.c:1902 mdamageu() — apply n points of damage to the hero.
-export function mdamageu(mtmp, n) {
+export async function mdamageu(mtmp, n) {
     if (n < 0)
         n = 0;
 
@@ -829,8 +829,10 @@ export function mdamageu(mtmp, n) {
         showdamage(n);
         if (game.u.uhp > game.u.uhpmax)
             game.u.uhp = game.u.uhpmax;
-        if (game.u.uhp < 1)
-            note_unported_mhitu('mdamageu:done_in_by');
+        if (game.u.uhp < 1) {
+            const { done_in_by, DIED } = await import('./end.js');
+            await done_in_by(mtmp, DIED);
+        }
     }
 }
 
@@ -1157,7 +1159,7 @@ async function gulpmu(mtmp, mattk) {
     }
 
     game.mswallower = mtmp;
-    mdamageu(mtmp, tmp);
+    await mdamageu(mtmp, tmp);
     game.mswallower = null;
     if (tmp)
         await stop_occupation();

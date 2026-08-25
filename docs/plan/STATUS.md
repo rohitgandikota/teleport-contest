@@ -1,5 +1,27 @@
 # STATUS — live handoff board
 
+## 2026-08-25: fatal monster damage and death coverage
+
+`mdamageu()` now enters the C `done_in_by()` path when a monster reduces the
+hero below one HP. The port covers the normal killer-name rules, unique and
+named monsters, ghosts, invisibility and hallucination descriptions, mimic and
+vampire forms, shopkeepers, undead grave forms, and the handoff to `done()`.
+Priest and minion titles, missing shopkeeper names, and helpless-reason
+truncation remain explicit unported markers.
+
+Public local improved by 12 screens to 5,135/11,405, with 21/44 sessions
+passing and 312,432/792,838 matched RNG positions. `seed0006` is now
+6,736/6,736 RNG-perfect and its fatal water-demon frame is cell and cursor
+exact. No public session lost a screen, and all 44 hang checks pass.
+
+Two new C traces cover normal and debug death flows. The normal goblin-death
+trace is 3,615/3,615 RNG-perfect and its final killer score entry is exact. The
+supplemental corpus now has 38 sessions and 3,646 screens. The port matches
+1,747/3,646 screens and 328,555/465,629 RNG positions, with 11/38 sessions
+passing. Full-game coverage is 68 covered, 6 partial, and 30 gaps out of 104.
+The live leaderboard still reflects the older pushed build at 5,120 public and
+3,438 held-out screens, rank 5/18.
+
 ## 2026-08-25: demon summoning and 36-session C suite
 
 The `summonmu()` demon arm and `msummon()` family now follow the pinned C

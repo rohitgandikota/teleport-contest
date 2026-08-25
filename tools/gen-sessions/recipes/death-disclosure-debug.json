@@ -1,0 +1,18 @@
+{
+  "name": "death-disclosure-debug",
+  "description": "Debug-mode Tourist creates a water demon, refuses three Die confirmations, accepts the fourth, and continues through disclosure and game-over screens.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.hero-melee",
+    "ending.death-disclosure"
+  ],
+  "segments": [
+    {
+      "seed": 6141,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Wizard,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007water demon\ns s s s s s s s s s s s s s s s s s s s y       "
+    }
+  ]
+}

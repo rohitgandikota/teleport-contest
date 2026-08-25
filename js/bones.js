@@ -170,7 +170,8 @@ export async function savebones(how, corpse) {
         game.in_mklev = false;
         if (!mtmp)
             return;
-        mtmp.mname = game.plname; /* christen_monst */
+        const { christen_monst } = await import('./do_name.js');
+        christen_monst(mtmp, game.plname);
         if (corpse)
             note_unported_bones('savebones:obj_attach_mid');
 

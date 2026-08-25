@@ -409,13 +409,37 @@ export async function getlin(query, hook) {
          * any of that left the prompt invisible: seed0360's '#' never
          * appeared and the cursor sat out on the map.
          */
-        game._pending_message = `${query} ${buf}`;
+        const promptText = `${query} ${buf}`;
         game._toplin = TOPLINE_SPECIAL_PROMPT;
-        paint_topline();
         const display = game?.nhDisplay;
+        const CO = display?.cols ?? 80;
+        /* win/tty/topl.c topl_putsym() reserves the final terminal
+           column. When curx reaches CO - 1, it moves to the next row
+           before painting the following character. */
+        const lineWidth = Math.max(CO - 1, 1);
+        const lines = [];
+        for (let start = 0; start < promptText.length; start += lineWidth)
+            lines.push(promptText.slice(start, start + lineWidth));
+        if (!lines.length)
+            lines.push('');
+
+        const oldCury = game._topl_cury || 0;
+        const newCury = lines.length - 1;
+        if (oldCury > newCury)
+            tty_clear_nhwindow_message(oldCury);
+
+        game._pending_message = lines.join('\n');
+        game._topl_cury = newCury;
+        paint_topline();
+
         if (display) {
-            const CO = display.cols ?? 80;
-            display.setCursor(Math.min(query.length + 1 + pos, CO - 1), 0);
+            const logicalPos = query.length + 1 + pos;
+            let cursorRow = 0, cursorCol = logicalPos;
+            if (logicalPos > lineWidth) {
+                cursorRow = Math.floor((logicalPos - 1) / lineWidth);
+                cursorCol = ((logicalPos - 1) % lineWidth) + 1;
+            }
+            display.setCursor(cursorCol, cursorRow);
         }
 
         const c = String.fromCharCode(await nhgetch());

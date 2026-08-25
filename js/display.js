@@ -2068,10 +2068,16 @@ export function map_object(obj, show) {
                         og.glyph ?? { kind: 'cmap', cmap: og.cmap });
 }
 
+// include/display.h obj_to_glyph(). Capture the glyph tmp_at() will retain
+// for an object's entire flight.
+export function temporary_object_glyph(obj) {
+    return floor_object_glyph(obj, undefined, undefined, false);
+}
+
 // src/display.c tmp_at() object display. Paint an object glyph at a temporary
 // coordinate without changing floor-object memory or the object's location.
-export function display_object_at(obj, x, y) {
-    const og = floor_object_glyph(obj, x, y, false);
+export function display_object_at(obj, x, y, capturedGlyph = null) {
+    const og = capturedGlyph ?? floor_object_glyph(obj, x, y, false);
     show_glyph_cell(x, y, og.ch, og.color, og.dec, og.attr,
                     og.glyph ?? { kind: 'cmap', cmap: og.cmap });
 }

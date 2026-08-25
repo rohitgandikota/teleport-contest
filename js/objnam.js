@@ -255,6 +255,10 @@ export function xname(obj) {
        amulet", not "an amulet"). */
     if (!game.u?.ublind && !game.distantname)
         observe_object(obj);
+    /* src/objnam.c:629. Priests know an object's beatitude on sight. */
+    if (game.urole?.mnum === 'PM_CLERIC'
+        || game.urole?.mnum === PMNAMES.PM_CLERIC)
+        obj.bknown = 1;
     const nn = ocl.oc_name_known;
     let actualn = OBJ_NAME(ocl) ?? 'object?';
     let dn = OBJ_DESCR(ocl) ?? actualn;
@@ -883,8 +887,9 @@ const Is_box = (o) => o.otyp === ONAMES.LARGE_BOX || o.otyp === ONAMES.CHEST;
 
 export function doname(obj) {
     const ocl = game.objects[obj.otyp];
-    const known = obj.known, bknown = obj.bknown, dknown = obj.dknown;
     let bp = xname(obj);
+    /* xname() can update the object's observed and Priest-known flags. */
+    const known = obj.known, bknown = obj.bknown, dknown = obj.dknown;
     let prefix = '';
 
     if (obj.quan !== 1)

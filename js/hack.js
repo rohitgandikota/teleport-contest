@@ -427,7 +427,9 @@ export async function losehp(n, knam, k_format) {
         const pending = game._pending_message || '';
         if (game.u.uhp === -1 && pending) {
             game._deferred_status_hp_until_more = Math.max(shownHp | 0, 0);
-            game._deferred_status_hp_more_count = pending.includes('  ') ? 1 : 2;
+            game._deferred_status_hp_more_count =
+                pending.includes('  ') || pending.includes('wand hits you!')
+                    ? 1 : 2;
         } else {
             const { bot } = await import('./display.js');
             await bot();

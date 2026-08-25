@@ -806,10 +806,17 @@ export async function bhito(obj, otmp) {
             learn_it = true;
             break;
         case ONAMES.WAN_STRIKING:
-        case ONAMES.SPE_FORCE_BOLT:
-            note_unported_zap('bhito:striking');
+        case ONAMES.SPE_FORCE_BOLT: {
+            /* src/zap.c:2297: even an ordinary floor object which does not
+               break still goes through breaktest(), whose obj_resists()
+               check spends rn2(100). Monster-fired striking wands use this
+               path too, so omitting it shifts the whole turn stream. */
+            const { breaktest } = await import('./dothrow.js');
+            if (breaktest(obj))
+                note_unported_zap('bhito:striking_breakage');
             res = 0;
             break;
+        }
         case ONAMES.WAN_CANCELLATION:
         case ONAMES.SPE_CANCELLATION:
             note_unported_zap('bhito:cancellation');

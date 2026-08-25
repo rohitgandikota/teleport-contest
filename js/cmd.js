@@ -23,7 +23,7 @@ import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door, could_move_onto_boulder } from './hack.js';
-import { In_sokoban } from './dungeon.js';
+import { In_sokoban, surface } from './dungeon.js';
 import { Hallucination } from './youprop.js';
 import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
@@ -2137,6 +2137,11 @@ async function show_item_actions(obj) {
         add_item_action(win, 'C', `Call the type for ${simpleName}`);
     if (!wornItem)
         add_item_action(win, 'd', `Drop this ${obj.quan > 1 ? 'stack' : 'item'}`);
+    if (obj.oclass === OCLASSES.RING_CLASS) {
+        const verb = game.objects[obj.otyp].oc_tough ? 'Engrave' : 'Write';
+        add_item_action(win, 'E', `${verb} on the ${surface(game.u.ux, game.u.uy)} `
+                        + `with ${obj.quan > 1 ? 'one of these items' : 'this item'}`);
+    }
     if (obj.oclass !== OCLASSES.COIN_CLASS)
         add_item_action(win, 'i', 'Adjust inventory by assigning new letter');
     if (obj.quan > 1 && obj.oclass !== OCLASSES.COIN_CLASS)
@@ -2145,6 +2150,9 @@ async function show_item_actions(obj) {
         add_item_action(win, 'r', 'Study this spellbook');
     else if (obj.oclass === OCLASSES.SCROLL_CLASS)
         add_item_action(win, 'r', 'Read this scroll to activate its magic');
+    if (!wornItem && obj.oclass === OCLASSES.RING_CLASS)
+        add_item_action(win, 'P', !game.u.uleft || !game.u.uright
+            ? 'Put this ring on' : '[both ring fingers in use]');
     if (!wornItem)
         add_item_action(win, 't', obj.quan === 1
             ? 'Throw this item' : 'Throw one of these');
@@ -2174,6 +2182,8 @@ function queue_item_action(action, obj) {
     switch (action) {
     case 'c': push(docallcmd, 'i', obj.invlet); break;
     case 'd': push(dodrop, obj.invlet); break;
+    case 'E': push(doengrave, obj.invlet); break;
+    case 'P': push(doputon, obj.invlet); break;
     case 'r': push(() => doread(read_ok), obj.invlet); break;
     case 't': push(dothrow, obj.invlet); break;
     case 'w': push(dowield, obj.invlet); break;

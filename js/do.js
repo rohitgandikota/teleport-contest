@@ -934,7 +934,7 @@ export function canletgo(obj, word) {
 // src/do.c:2325 cmd_safety_prevention() — refuse a no-op command next to a
 // spottable hostile (flags.safe_wait defaults On).
 export async function cmd_safety_prevention(ucverb, cmddesc, act) {
-    if ((game.flags?.safe_wait ?? true) && !game.iflags_menu_requested
+    if ((game.flags?.safe_wait ?? true) && !game.iflags?.menu_requested
         && !(game.multi ?? 0)) {
         const { monster_nearby } = await import('./hack.js');
         /* iflags.cmdassist defaults On, so the hint suffix always prints */

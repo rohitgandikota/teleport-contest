@@ -630,10 +630,11 @@ export async function doeat() {
                   || otmp.otyp === ONAMES.CRAM_RATION)
                 && (game.moves - (otmp.age || 0)) > (otmp.blessed ? 50 : 30)
                 && (otmp.orotten || !rn2(7))))) {
-        /* rottenfood()'s messages and blindness/stun arms draw rn2(4); the
-           dont_start bracket depends on them. */
-        note_unported_eat('doeat:rottenfood');
-        otmp.orotten = true;
+        /* rottenfood()'s messages and status arms draw in source order. */
+        if (await rottenfood(otmp)) {
+            otmp.orotten = true;
+            dont_start = true;
+        }
         consume_oeaten(otmp, 1);        /* oeaten >>= 1 */
     } else if (!already_partly_eaten) {
         if (!(await fprefx(otmp))) {
@@ -656,7 +657,10 @@ export async function doeat() {
        moment the meal starts, not re-tested per bite. */
     v.canchoke = (game.u.uhs === SATIATED);
 
-    await start_eating(otmp, false);
+    if (!dont_start)
+        await start_eating(otmp, false);
+    else
+        otmp.owt = weight(otmp);
     return ECMD_TIME;
 }
 

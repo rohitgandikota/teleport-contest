@@ -39,6 +39,7 @@ import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
 import { recalc_block_point } from './vision.js';
+import { surface } from './dungeon.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
@@ -181,7 +182,7 @@ export async function look_here(obj_cnt, lhflags) {
     const Blind = !!game.u?.ublind;
     const verb = Blind ? 'feel' : 'see';
     const picked_some = (lhflags & LOOKHERE_PICKED_SOME) !== 0;
-    const skip_dfeature = (lhflags & LOOKHERE_SKIP_DFEATURE) !== 0;
+    let skip_dfeature = (lhflags & LOOKHERE_SKIP_DFEATURE) !== 0;
 
     /* default pile_limit is 5; a value of 0 means "never skip" */
     const pile_limit = game.flags?.pile_limit ?? 5;
@@ -202,8 +203,28 @@ export async function look_here(obj_cnt, lhflags) {
     }
 
     const dfeature = dfeature_at(game.u.ux, game.u.uy);
-    if (Blind && dfeature)
-        note_unported_invent('look_here:blind_feel');
+
+    /* src/invent.c:4185-4217: a blind hero describes reaching toward the
+       surface before inspecting the object pile.  A following menu flushes
+       this message through its own --More-- boundary. */
+    if (Blind) {
+        const loc = game.level?.at(game.u.ux, game.u.uy);
+        if (loc?.typ === ICE) {
+            await You('try to feel what is on it.');
+            skip_dfeature = true;
+        } else {
+            const can_reach = can_reach_floor(true);
+            const floor = surface(game.u.ux, game.u.uy);
+            await You(`try to feel what is ${can_reach
+                ? `lying here on the ${floor}` : 'lying beneath you'}.`);
+            if (dfeature === floor)
+                skip_dfeature = true;
+        }
+        if (!can_reach_floor(true)) {
+            await pline("But you can't reach it!");
+            return ECMD_OK;
+        }
+    }
 
     /* src/mkobj.c place_object() puts the newest object at the chain head,
        and the js place_object unshifts, so the filtered array is already in

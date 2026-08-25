@@ -14,7 +14,7 @@ import { Infravision, Hallucination, Invis, See_invisible } from './youprop.js';
 import { observe_object } from './o_init.js';
 import { distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
-import { t_at } from './mon.js';
+import { m_at, t_at } from './mon.js';
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
     HWALL, VWALL, TLCORNER, TRCORNER, BLCORNER, BRCORNER,
@@ -1628,6 +1628,12 @@ export function feel_location(x, y) {
         return;
     const loc = game.level?.at(x, y);
     if (!loc)
+        return;
+
+    /* src/display.c:761: keep an accurately remembered invisible-monster
+       marker. Search relies on this early return to avoid finding and
+       exercising Wisdom from the same unseen monster every turn. */
+    if (glyph_is_invisible_at(x, y) && m_at(x, y))
         return;
 
     set_seenv(loc, game.u.ux, game.u.uy, x, y);

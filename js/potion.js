@@ -34,7 +34,7 @@ import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE } from './invent.js';
 import { doname, short_oname, thesimpleoname, Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
 import { breathless, haseyes } from './mondata.js';
-import { cansee } from './vision.js';
+import { cansee, vision_recalc } from './vision.js';
 const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
 
 function note_unported_potion(what) {
@@ -223,6 +223,48 @@ export async function make_confused(xtime, talk) {
         (game.u.uprops ||= {}).CONFUSION = 1;
     else if (game.u.uprops)
         delete game.u.uprops.CONFUSION;
+}
+
+// src/potion.c:261 make_blinded(), common temporary-blindness path.
+// u.ublind is this port's aggregate Blind flag; HBlinded retains the timer
+// so nh_timeout() can restore sight on the right turn.
+export async function make_blinded(xtime, talk) {
+    const u = game.u;
+    const intr = (u.intrinsic ||= {});
+    const was_blind = !!u.ublind;
+    const blindfolded = !!u.ublindf
+        && (u.ublindf.otyp === ONAMES.BLINDFOLD
+            || u.ublindf.otyp === ONAMES.TOWEL);
+
+    if (Unaware())
+        talk = false;
+
+    const new_timeout = Math.max(0, xtime | 0);
+    const blind_now = !!new_timeout || blindfolded;
+
+    if (was_blind && !blind_now && talk) {
+        if (Hallucination())
+            await pline('Far out!  Everything is all cosmic again!');
+        else
+            await You('can see again.');
+    } else if (!was_blind && blind_now && talk) {
+        if (Hallucination())
+            await pline('Oh, bummer!  Everything is dark!  Help!');
+        else
+            await pline('A cloud of darkness falls upon you.');
+    }
+
+    /* C does not change HBlinded until after the transition message. If that
+       message first blocks on an older --More-- prompt, the old Blind status
+       remains visible throughout the wait. */
+    intr.HBlinded = new_timeout;
+    u.ublind = blind_now ? 1 : 0;
+
+    if (was_blind !== blind_now) {
+        (game.disp ||= {}).botl = true;
+        game.vision_full_recalc = 1;
+        vision_recalc(0);
+    }
 }
 
 // include/hack.h itimeout_incr() — add to a timeout, clamping at TIMEOUT.

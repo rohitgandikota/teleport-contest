@@ -3478,7 +3478,7 @@ export function lspo_region_full(opts) {
         for (let x = x1; x <= x2; x++)
             for (let y = y1; y <= y2; y++) {
                 const loc = game.level.at(x, y);
-                if (loc) loc.lit = !!rlit;
+                if (loc) loc.lit = !!(IS_LAVA(loc.typ) || rlit);
             }
         return;
     }
@@ -3521,7 +3521,7 @@ export function lspo_region_full(opts) {
         for (let x = lowx; x <= hix; x++)
             for (let y = lowy; y <= hiy; y++) {
                 const loc = game.level.at(x, y);
-                if (loc) loc.lit = !!rlit;
+                if (loc) loc.lit = !!(IS_LAVA(loc.typ) || rlit);
             }
         return;
     }

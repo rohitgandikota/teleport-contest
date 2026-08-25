@@ -59,8 +59,11 @@ function Is_branchlev_bones(lev) {
 function no_bones_level(lev) {
     const sl = game.special_levels || {};
     const on = (l) => l && lev.dnum === l.dnum && lev.dlevel === l.dlevel;
-    /* C checks: sstairs level, dungeon flags.no_bones (Vlad's, endgame),
-       oracle, Sokoban gift level, Knox, quest start */
+    /* Multiway branch levels do not leave bones; dungeon level 1 is exempt. */
+    if (lev.dlevel > 1 && Is_branchlev_bones(lev))
+        return true;
+    /* C also checks the dungeon boneid, bottom level, and other special
+       levels. The named special levels represented by this port are below. */
     return on(sl.oracle_level) || on(sl.knox_level) || on(sl.qstart_level);
 }
 

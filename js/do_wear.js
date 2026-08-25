@@ -415,6 +415,15 @@ export async function Amulet_on(amul) {
     case ONAMES.AMULET_OF_REFLECTION:
     case ONAMES.FAKE_AMULET_OF_YENDOR:
         break;
+    case ONAMES.AMULET_OF_RESTFUL_SLEEP: {
+        const intrinsic = (game.u.intrinsic ||= {});
+        const oldnap = (intrinsic.HSleepy || 0) & TIMEOUT;
+        const newnap = rnd(98) + 2;
+        if (newnap < oldnap || oldnap === 0)
+            intrinsic.HSleepy = ((intrinsic.HSleepy || 0) & ~TIMEOUT)
+                                | newnap;
+        break;
+    }
     default:
         note_unported_do_wear(`Amulet_on:otyp=${amul.otyp}`);
         break;

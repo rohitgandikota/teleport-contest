@@ -1535,6 +1535,24 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
     }
 }
 
+// src/uhitm.c:3122 mhitm_ad_drst(), poison carried by a natural attack.
+// Magical cancellation is checked before the one-in-eight poison gate.
+export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
+    const negated = await mhitm_mgc_atk_negated(magr, mdef, false);
+
+    if (magr === game.youmonst) {
+        if (!negated && !rn2(8))
+            note_unported_uhitm('mhitm_ad_drst:uhitm_poison');
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        mhm.hitflags |= M_ATTK_HIT;
+        if (!negated && !rn2(8))
+            note_unported_uhitm('mhitm_ad_drst:mhitu_poisoned');
+    } else if (!negated && !rn2(8)) {
+        note_unported_uhitm('mhitm_ad_drst:mhitm_really_poison');
+    }
+}
+
 export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
     const A = ATTKS;
     const pd = game.mons[mdef.mnum];

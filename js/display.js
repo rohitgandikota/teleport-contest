@@ -1828,7 +1828,12 @@ export async function more() {
        and waits again, so a movement key pressed at a --More-- is still
        waiting to be read as a command afterwards. */
     await xwaitforspace('\x1b ');
-    delete game._deferred_status_hp_until_more;
+    if ((game._deferred_status_hp_more_count | 0) > 1) {
+        game._deferred_status_hp_more_count--;
+    } else {
+        delete game._deferred_status_hp_until_more;
+        delete game._deferred_status_hp_more_count;
+    }
 
     /* win/tty/topl.c more():234 — ESC sets WIN_STOP: the player has asked to
        skip this turn's remaining messages. update_topl drops the paint (but

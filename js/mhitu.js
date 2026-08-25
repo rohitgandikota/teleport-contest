@@ -43,7 +43,8 @@ import { xname } from './objnam.js';
 import { nomul } from './hack.js';
 import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
-import { mhitm_ad_phys, mhitm_ad_elec, mhitm_knockback } from './uhitm.js';
+import { mhitm_ad_phys, mhitm_ad_elec, mhitm_ad_drst,
+         mhitm_knockback } from './uhitm.js';
 import { t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { find_offensive } from './muse.js';
@@ -753,6 +754,9 @@ async function hitmu(mtmp, mattk, indx) {
     } else if (mattk[1] === A.AD_ELEC) {
         mhm.indx = indx;
         await mhitm_ad_elec(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_DRST || mattk[1] === A.AD_DRDX
+               || mattk[1] === A.AD_DRCO) {
+        await mhitm_ad_drst(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_SITM || mattk[1] === A.AD_SEDU) {
         mhm.damage = 0;
         if (is_animal(mtmp.data)) {
@@ -851,11 +855,20 @@ export async function mdamageu(mtmp, n) {
         if (game.u.mh < 1)
             note_unported_mhitu('mdamageu:rehumanize');
     } else {
+        const shownHp = game.u.uhp;
         game.u.uhp -= n;
         showdamage(n);
         if (game.u.uhp > game.u.uhpmax)
             game.u.uhp = game.u.uhpmax;
         if (game.u.uhp < 1) {
+            /* When this hit follows another message on the same top line,
+               both that joined line and the death line keep the status HP
+               painted by the earlier message. A lone fatal hit is repainted
+               to zero immediately. */
+            if ((game._pending_message || '').includes('  ')) {
+                game._deferred_status_hp_until_more = Math.max(shownHp | 0, 0);
+                game._deferred_status_hp_more_count = 2;
+            }
             const { done_in_by, DIED } = await import('./end.js');
             await done_in_by(mtmp, DIED);
         }

@@ -320,6 +320,10 @@ function status_enlightenment() {
     out('');
     out(`${en_final ? 'Final ' : ''}Status:`);
 
+    /* src/insight.c:1181, restful sleep and other Sleepy sources. */
+    if ((game.u.intrinsic?.HSleepy || game.u.uprops?.SLEEPY))
+        enl_msg('You ', 'fall', 'fell', ' asleep uncontrollably', '');
+
     /* hunger: hu_stat[] is empty for the normal state, and C substitutes
        "not hungry", which the contraction turns into "aren't hungry";
        wizard mode reveals u.uhunger (insight.c:1208) */

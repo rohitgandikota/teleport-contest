@@ -26,7 +26,7 @@ import { is_weptool, is_rustprone, is_corrodeable, is_flammable,
          is_crackable, is_rottable } from './mkobj.js';
 import { is_damageable } from './trap.js';
 import { bimanual } from './obj.js';
-import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP,
+import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP,
          MALE, FEMALE, NEUTER, NEUTRAL, CORPSTAT_MALE, CORPSTAT_FEMALE,
          CORPSTAT_RANDOM, CORPSTAT_NEUTER, CORPSTAT_HISTORIC, NON_PM, LOW_PM,
          ismnum, SPE_LIM, RANDOM_TIN, GOLD_SYM, WT_IRON_BALL_INCR,
@@ -43,7 +43,8 @@ import { OCLASSES, ONAMES, MATERIALS, obj_descr,
 import { strstri, strsubst, fuzzymatch, mungspaces } from './hacklib.js';
 import { weight } from './invent.js';
 import { hands_obj } from './invent.js';
-import { tin_variety_txt, obj_nutrition, consume_oeaten } from './eat.js';
+import { tin_variety_txt, tintxts, obj_nutrition,
+         consume_oeaten } from './eat.js';
 import { is_were, counter_were } from './were.js';
 import { is_male, is_female } from './makemon.js';
 import { def_char_to_objclass } from './sp_lev.js';
@@ -318,7 +319,7 @@ export function xname(obj) {
         buf = actualn;
         /* src/objnam.c tin_details(): a tin names its contents once known */
         if (obj.otyp === ONAMES.TIN && obj.known)
-            buf += tin_details(obj);
+            buf = tin_details(obj);
         break;
     case AMULET_CLASS:
         if (!dknown)
@@ -846,14 +847,28 @@ export function singular(otmp, func) {
 }
 
 function tin_details(obj) {
-    if (obj.spe === 1) return ' of spinach';
-    if (obj.corpsenm !== undefined && obj.corpsenm >= 0) {
-        const m = game.mons[obj.corpsenm];
-        const nm = m && (m.pmnames[2] ?? m.pmnames[0] ?? m.pmnames[1]);
-        /* src/eat.c:1453 — "%s meat" unless the creature is vegetarian */
-        if (nm) return vegetarian(m) ? ` of ${nm}` : ` of ${nm} meat`;
+    if (obj.spe === 1)
+        return 'tin of spinach';
+    if (obj.corpsenm === undefined || obj.corpsenm < 0)
+        return 'empty tin';
+
+    let variety = obj.cursed ? 0
+                : obj.spe < 0 ? -obj.spe - 1
+                : rn2(tintxts.length - 1);
+    const m = game.mons[obj.corpsenm];
+    if (variety === 0
+        && (obj.corpsenm === PMNAMES.PM_LIZARD
+            || obj.corpsenm === PMNAMES.PM_LICHEN))
+        variety = 1;
+
+    const nm = m && (m.pmnames[2] ?? m.pmnames[0] ?? m.pmnames[1]);
+    const contents = vegetarian(m) ? nm : `${nm} meat`;
+    if ((obj.cknown || game.iflags?.override_ID) && obj.spe < 0) {
+        if (variety === 0 || variety === 1)
+            return `${tintxts[variety].txt} tin of ${contents}`;
+        return `tin of ${tintxts[variety].txt} ${contents}`;
     }
-    return '';
+    return `tin of ${contents}`;
 }
 
 // src/objnam.c:1063 doname_base()
@@ -963,6 +978,10 @@ export function doname(obj) {
                           : '';
 
     switch (obj.oclass) {
+    case AMULET_CLASS:
+        if (obj.owornmask & W_AMUL)
+            bp += ' (being worn)';
+        break;
     case ARMOR_CLASS:
         if (obj.owornmask & W_ARMOR) bp += ' (being worn)';
         /* FALLTHRU */

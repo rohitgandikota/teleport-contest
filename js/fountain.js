@@ -6,7 +6,7 @@
 // recorded until their machinery lands. drinkfountain() is not here yet.
 
 import { game } from './gstate.js';
-import { rn2, rnd } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import { pline } from './display.js';
 import { You, You_feel, Your, pline_The } from './pline.js';
 import { newsym } from './display.js';
@@ -74,6 +74,36 @@ export async function dryup(x, y, isyou) {
             game.level.flags.nfountains =
                 Math.max(0, (game.level.flags.nfountains || 1) - 1);
         newsym(x, y);
+    }
+}
+
+// src/fountain.c:40 dowatersnakes()
+async function dowatersnakes() {
+    const num = rn1(5, 2);
+    const { makemon } = await import('./makemon.js');
+    const { PMNAMES } = await import('./monst_data.js');
+    const { MM_NOMSG, NO_TRAP_FLAGS } = await import('./const.js');
+    const { mintrap } = await import('./trap.js');
+    const G_GONE = 0x03;
+
+    if (!((game.mvitals?.[PMNAMES.PM_WATER_MOCCASIN]?.mvflags ?? 0)
+          & G_GONE)) {
+        if (!game.u.ublind) {
+            if (game.u.uprops?.HALLUC)
+                note_unported_fountain('dowatersnakes:hallucination_name');
+            await pline('An endless stream of snakes pours forth!');
+        } else {
+            const { You_hear } = await import('./pline.js');
+            await You_hear('something hissing!');
+        }
+        for (let i = 0; i < num; ++i) {
+            const mtmp = makemon(game.mons[PMNAMES.PM_WATER_MOCCASIN],
+                                 game.u.ux, game.u.uy, MM_NOMSG);
+            if (mtmp && t_at(mtmp.mx, mtmp.my))
+                await mintrap(mtmp, NO_TRAP_FLAGS);
+        }
+    } else {
+        await pline_The('fountain bubbles furiously for a moment, then calms.');
     }
 }
 
@@ -259,7 +289,7 @@ export async function drinkfountain() {
             note_unported_fountain('drinkfountain:poisonous');
             break;
         case 22: /* Fountain of snakes! */
-            note_unported_fountain('drinkfountain:watersnakes');
+            await dowatersnakes();
             break;
         case 23: /* Water demon */
             await dowaterdemon();
@@ -371,7 +401,7 @@ export async function dipfountain(obj) {
         await dowaternymph();
         break;
     case 23: /* an Endless Stream of Snakes */
-        note_unported_fountain('dipfountain:dowatersnakes');
+        await dowatersnakes();
         break;
     case 24: /* Find a gem */
         note_unported_fountain('dipfountain:dofindgem');

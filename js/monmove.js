@@ -40,7 +40,7 @@ import { is_weptool } from './mkobj.js';
 import { metallivorous, corpse_eater, is_covetous,
          resist_conflict } from './mondata.js';
 import { may_dig, in_town } from './hack.js';
-import { place_monster, remove_monster } from './makemon.js';
+import { place_monster, remove_monster, hideunder } from './makemon.js';
 import { rn2, rnd } from './rng.js';
 import {
     dog_move, could_reach_item, dogfood, MANFOOD, ACCFOOD,
@@ -1733,6 +1733,15 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
                 note_unported('postmov:meatcorpse');
 
             mpickstuff(mtmp);
+        }
+
+        /* src/monmove.c:1692, concealment-capable monsters and eels
+           reconsider hiding after every move. The rn2(5) is spent even
+           when there is no object or pool at the destination. */
+        if (hides_under(ptr) || ptr.mlet === MONSYMS.S_EEL) {
+            if (mtmp.mundetected || (!helpless(mtmp) && rn2(5)))
+                hideunder(mtmp);
+            newsym(mtmp.mx, mtmp.my);
         }
     }
     return mmoved;

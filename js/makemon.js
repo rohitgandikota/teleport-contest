@@ -1118,7 +1118,9 @@ export function goodpos(x, y, mtmp, gpflags = 0) {
                                                     : goodpos_onscary(x, y, ptr)))
             return false;
     }
-    if (!ACCESSIBLE(loc.typ)) {
+    /* src/monmove.c accessible(): a closed or locked door is not an
+       accessible destination even though DOOR is an accessible map type. */
+    if (!ACCESSIBLE(loc.typ) || closed_door(x, y)) {
         if (!(is_pool(x, y) && ignorewater)
             && !(is_lava(x, y) && (gpflags & MM_IGNORELAVA)))
             return false;

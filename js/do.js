@@ -299,6 +299,9 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             utpnt: game.utpnt | 0,
             utrack: (game.utrack || []).map(p => ({ x: p.x, y: p.y })),
         };
+        /* The stairway chain belongs to this level. savelev() writes it
+           with the map, and getlev() restores it before arrival handling. */
+        game.level._saved_stairs = game.stairs;
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
         /* src/save.c savelev() — leaving a Plane of Water/Air parks the
@@ -355,6 +358,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the same state; the visible cost is restore.c:1190's monster
            catchup against the time spent away. */
         game.level = game.saved_levels.get(ledger);
+        game.stairs = game.level._saved_stairs || null;
         const { oinit } = await import('./o_init.js');
         oinit();
         const { DEADMONSTER } = await import('./monst.js');

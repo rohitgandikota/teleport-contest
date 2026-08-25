@@ -339,6 +339,8 @@ async function really_done(how) {
         obj.known = obj.bknown = obj.dknown = obj.rknown = 1;
         if (Is_container(obj))
             obj.cknown = 1;
+        if (obj.otyp === END_ONAMES.TIN)
+            obj.cknown = 1;
         if (obj.otyp === END_ONAMES.LARGE_BOX || obj.otyp === END_ONAMES.CHEST)
             obj.lknown = 1;
     }

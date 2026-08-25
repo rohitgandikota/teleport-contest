@@ -254,7 +254,7 @@ export function obj_nutrition(otmp) {
 
 /* src/eat.c:137 tintxts[] — tin types
    [SPINACH_TIN = -1, overrides corpsenm, nut==600] */
-const tintxts = [
+export const tintxts = [
     { txt: 'rotten', nut: -50, fodder: 0, greasy: 0 },  /* ROTTEN_TIN = 0 */
     { txt: 'homemade', nut: 50, fodder: 1, greasy: 0 }, /* HOMEMADE_TIN = 1 */
     { txt: 'soup made from', nut: 20, fodder: 1, greasy: 0 },

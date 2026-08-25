@@ -9,14 +9,15 @@
 
 import { game } from './gstate.js';
 import { pline, canspotmon } from './display.js';
-import { You } from './pline.js';
-import { hidden_gold, money_cnt } from './invent.js';
+import { You, Your, You_feel, pline_The } from './pline.js';
+import { hidden_gold, money_cnt, useup } from './invent.js';
 import { depth, dunlevs_in_dungeon } from './dungeon.js';
 import { G_GENOD, G_UNIQ, In_endgame, In_quest, KILLED_BY_AN, KILLED_BY,
          LOW_PM, M_AP_MONSTER, M_AP_TYPE, MGIVENNAME, NHW_TEXT, NHW_MENU,
          OBJ_FREE,
-         NON_PM, has_mgivenname } from './const.js';
+         NON_PM, A_CON, has_mgivenname } from './const.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
+import { ONAMES } from './objects_data.js';
 import { pmname } from './do_name.js';
 import { gender, type_is_pname } from './mondata.js';
 import { is_vampshifter } from './monst.js';
@@ -26,6 +27,8 @@ import { Race_if } from './u_init.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_destroy_nhwindow } from './tty/wintty.js';
 import { tty_yn_function } from './tty/topl.js';
+import { makeknown } from './o_init.js';
+import { ACURR, adjattrib } from './attrib.js';
 
 function note_unported_end(what) {
     (game.unported ||= new Set()).add('end:' + what);
@@ -207,8 +210,7 @@ export function formatkiller(how, incl_helpless) {
 // src/end.c:704 savelife() — explore/wizard "OK, so you don't die."
 function savelife(how) {
     const u = game.u;
-    const A_CON = 2;
-    const acon = u.acurr?.a?.[A_CON] ?? 10;
+    const acon = ACURR(A_CON);
     const givehp = 50 + 10 * ((acon / 2) | 0);
 
     if (u.ulevel < 1)
@@ -222,9 +224,15 @@ function savelife(how) {
         u.uhs = 1;         /* NOT_HUNGRY */
     }
     game.nomovemsg = 'You survived that attempt on your life.';
+    (game.context ||= {}).move = 0;
     game.multi = -1; /* can't move again during the current turn */
+    game.multi_reason = game.urole?.mnum === PMNAMES.PM_TOURIST
+        ? 'being toyed with by Fate' : 'attempting to cheat Death';
     game.disp = game.disp || {};
     game.disp.botl = true;
+    u.ugrave_arise = NON_PM;
+    if (u.uprops)
+        delete u.uprops.UNCHANGING;
 }
 
 // src/end.c done() — the hero's game is over.
@@ -263,9 +271,25 @@ export async function done(how) {
             game.disp.botl = true;
         }
     }
-    /* Lifesaved (amulet of life saving): no session wears one yet */
-    if (u.uprops?.LIFESAVED && how <= GENOCIDED)
-        note_unported_end('done:lifesaved');
+    if (u.uprops?.LIFESAVED && how <= GENOCIDED) {
+        await pline('But wait...');
+        makeknown(ONAMES.AMULET_OF_LIFE_SAVING);
+        await Your(`medallion ${u.ublind ? 'feels warm' : 'begins to glow'}!`);
+        if (how === CHOKING)
+            await You('vomit ...');
+        await You_feel('much better!');
+        await pline_The('medallion crumbles to dust!');
+        if (u.uamul)
+            useup(u.uamul);
+
+        await adjattrib(A_CON, -1, true);
+        savelife(how);
+        if (how === GENOCIDED) {
+            await pline('Unfortunately you are still genocided...');
+        } else {
+            survive = true;
+        }
+    }
 
     /* explore and wizard modes offer player the option to keep playing */
     if (!survive && (game.wizard || game.discover) && how <= GENOCIDED) {

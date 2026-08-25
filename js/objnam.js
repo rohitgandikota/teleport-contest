@@ -3175,7 +3175,7 @@ export function suit_simple_name(suit) {
 // discovery state.
 export function gloves_simple_name(gloves) {
     if (gloves && gloves.dknown) {
-        const ocl = objects[gloves.otyp];
+        const ocl = game.objects[gloves.otyp];
         const actualn = OBJ_NAME(ocl), descrpn = OBJ_DESCR(ocl);
         const shown = ocl.oc_name_known ? actualn : descrpn;
         if (shown && shown.toLowerCase().includes('gauntlets'))

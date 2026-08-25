@@ -35,7 +35,7 @@ import { newsym, canseemon, canspotmon, pline,
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
-import { enexto_core, enexto } from './teleport.js';
+import { enexto_core, enexto, noteleport_level } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE,
          SUPPRESS_SADDLE } from './const.js';
@@ -65,7 +65,7 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
          Is_astralevel, has_emin, has_epri, has_eshk, RLOC_NOMSG,
          MON_OBLITERATE } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid } from './mondata.js';
+    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname } from './objnam.js';
 import { You, You_feel } from './pline.js';
@@ -915,11 +915,16 @@ export function mon_allowflags(mtmp) {
     const d = mtmp.data;
 
     const can_open = !(nohands(d) || verysmall(d));
-    /* monhaskey() needs monster inventory; iswiz and is_rider are enough
-       for anything the public corpus generates this early. */
-    const can_unlock = (mtmp.iswiz || is_rider(d));
+    const haskey = (mtmp.minvent || []).some((obj) =>
+        obj.otyp === ONAMES.CREDIT_CARD || obj.otyp === ONAMES.SKELETON_KEY
+        || obj.otyp === ONAMES.LOCK_PICK);
+    const can_unlock = (can_open && haskey) || mtmp.iswiz || is_rider(d);
     const doorbuster = is_giant(d);
-    const can_tunnel = tunnels(d);
+    let can_tunnel = tunnels(d) && !Is_rogue_level(game.u.uz);
+    if (can_tunnel && needspick(d)
+        && ((!mtmp.mpeaceful || game.u.uprops?.CONFLICT)
+            && dist2(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy) <= 8))
+        can_tunnel = false;
 
     if (mtmp.mtame)
         allowflags |= ALLOW_M | ALLOW_TRAPS | ALLOW_SANCT | ALLOW_SSM;
@@ -941,7 +946,19 @@ export function mon_allowflags(mtmp) {
     if (doorbuster) allowflags |= BUSTDOOR;
     if (can_open) allowflags |= OPENDOOR;
     if (can_unlock) allowflags |= UNLOCKDOOR;
-    if (passes_bars(d)) allowflags |= ALLOW_BARS;
+    if (passes_bars(d)
+        && (mtmp !== game.u.ustuck
+            || unsolid(game.youmonst.data) || verysmall(game.youmonst.data)))
+        allowflags |= ALLOW_BARS;
+    if ((d.mflags2 & MFLAGS.M2_MINION) || is_rider(d))
+        allowflags |= ALLOW_SANCT;
+    if (is_unicorn(d) && !noteleport_level(mtmp))
+        allowflags |= NOTONL;
+    if (is_human(d) || d.pmidx === PMNAMES.PM_MINOTAUR)
+        allowflags |= ALLOW_SSM;
+    if ((is_undead(d) && d.mlet !== MONSYMS.S_GHOST)
+        || is_vampshifter_mon(mtmp))
+        allowflags |= NOGARLIC;
 
     return allowflags;
 }

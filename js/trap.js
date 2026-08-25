@@ -67,6 +67,7 @@ import { nomul } from './hack.js';
 import { pickup } from './pickup.js';
 import { surface, In_sokoban } from './dungeon.js';
 import { Is_airlevel, Is_waterlevel } from './const.js';
+import { count_wsegs } from './worm.js';
 
 /* src/trap.h — trapeffect_*() return values. */
 /* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
@@ -94,7 +95,7 @@ import { mindless } from './mondata.js';
 import { couldsee } from './vision.js';
 import { mdistu } from './monmove.js';
 import { wake_nearby, wake_nearto } from './mon.js';
-import { MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
+import { MFLAGS, PMNAMES, ATTKS, MONSYMS } from './monst_data.js';
 import { is_pit, is_hole, TT_BEARTRAP, TT_PIT, Upolyd, LEFT_SIDE,
          RIGHT_SIDE } from './const.js';
 import { defsyms, cmap_names } from './drawing_data.js';
@@ -106,7 +107,7 @@ import { obj_extract_self, sobj_at } from './invent.js';
 import { metallivorous } from './mondata.js';
 import { amorphous, is_whirly, unsolid, is_clinger, is_floater, is_flyer,
          webmaker, nohands, defended, resists_fire, resists_sleep, breathless,
-         resists_magm } from './mondata.js';
+         resists_magm, flaming, acidic } from './mondata.js';
 import { ECMD_OK } from './const.js';
 
 // src/trap.c:5250 dountrap() and the preliminary could_untrap() checks.
@@ -1171,6 +1172,82 @@ async function trapeffect_pit(mtmp, trap, trflags) {
         ? Trap_Caught_Mon : Trap_Effect_Finished;
 }
 
+// src/trap.c:972 mu_maybe_destroy_web(), monster arm.
+async function mu_maybe_destroy_web(mtmp, domsg, trap) {
+    const mptr = mtmp.data;
+    if (!(amorphous(mptr) || is_whirly(mptr) || flaming(mptr)
+          || unsolid(mptr) || mtmp.mnum === PMNAMES.PM_GELATINOUS_CUBE))
+        return false;
+
+    const article = trap.madeby_u ? 'your' : 'a';
+    if (flaming(mptr) || acidic(mptr)) {
+        if (domsg)
+            await pline(`${Monnam(mtmp)} ${flaming(mptr) ? 'burns' : 'dissolves'} ${article} spider web!`);
+        deltrap(trap);
+        newsym(trap.tx, trap.ty);
+    } else if (domsg) {
+        await pline(`${Monnam(mtmp)} flows through ${article} spider web.`);
+        seetrap(trap);
+    }
+    return true;
+}
+
+// src/trap.c:2106 trapeffect_web(), monster arm.
+async function trapeffect_web(mtmp, trap, trflags) {
+    if (mtmp === game.youmonst) {
+        note_unported_trap('trapeffect_web:hero');
+        return Trap_Effect_Finished;
+    }
+
+    const in_sight = canseemon(mtmp) || mtmp === game.u.usteed;
+    const forcetrap = (trflags & FORCETRAP) !== 0;
+    const mptr = mtmp.data;
+    const article = trap.madeby_u ? 'your' : 'a';
+    if (webmaker(mptr))
+        return Trap_Effect_Finished;
+    if (await mu_maybe_destroy_web(mtmp, in_sight, trap))
+        return Trap_Effect_Finished;
+
+    let tear_web = false;
+    const alwaysTears = [
+        PMNAMES.PM_TITANOTHERE, PMNAMES.PM_BALUCHITHERIUM,
+        PMNAMES.PM_PURPLE_WORM, PMNAMES.PM_JABBERWOCK,
+        PMNAMES.PM_IRON_GOLEM, PMNAMES.PM_BALROG, PMNAMES.PM_KRAKEN,
+        PMNAMES.PM_MASTODON, PMNAMES.PM_ORION, PMNAMES.PM_NORN,
+        PMNAMES.PM_CYCLOPS, PMNAMES.PM_LORD_SURTUR,
+    ];
+    const bear = mtmp.mnum === PMNAMES.PM_OWLBEAR
+        || mtmp.mnum === PMNAMES.PM_BUGBEAR;
+    if (bear && !in_sight) {
+        await You_hear('the roaring of a confused bear!');
+        mtmp.mtrapped = 1;
+    } else if (alwaysTears.includes(mtmp.mnum)) {
+        tear_web = true;
+    } else if (mptr.mlet === MONSYMS.S_GIANT
+               || (mptr.mlet === MONSYMS.S_DRAGON
+                   && (mptr.mflags2 & MFLAGS.M2_NASTY))
+               || (mtmp.wormno && count_wsegs(mtmp) > 5)) {
+        tear_web = true;
+    } else {
+        if (in_sight) {
+            await pline(`${Monnam(mtmp)} is caught in ${article} spider web.`);
+            seetrap(trap);
+        }
+        mtmp.mtrapped = 1;
+    }
+
+    if (tear_web) {
+        if (in_sight)
+            await pline(`${Monnam(mtmp)} tears through ${article} spider web!`);
+        deltrap(trap);
+        newsym(mtmp.mx, mtmp.my);
+    } else if (forcetrap && !mtmp.mtrapped && in_sight) {
+        await pline(`${Monnam(mtmp)} avoids ${article} spider web!`);
+        seetrap(trap);
+    }
+    return mtmp.mtrapped ? Trap_Caught_Mon : Trap_Effect_Finished;
+}
+
 // src/trap.c:1817 m_easy_escape_pit()
 function m_easy_escape_pit(mtmp) {
     return (mtmp.mnum === PMNAMES.PM_PIT_FIEND
@@ -1225,6 +1302,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_rolling_boulder_trap(mtmp, trap, trflags);
     case TELEP_TRAP:
         return await trapeffect_telep_trap(mtmp, trap, trflags);
+    case WEB:
+        return await trapeffect_web(mtmp, trap, trflags);
     default:
         note_unported_trap(`trapeffect_selector:ttyp=${trap.ttyp}`);
         return Trap_Effect_Finished;

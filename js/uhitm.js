@@ -1,4 +1,4 @@
-import { exercise } from './attrib.js';
+import { exercise, poisoned } from './attrib.js';
 import { A_DEX, A_STR, ERODE_NONE, ERODE_BURN, ERODE_RUST,
          ERODE_CORRODE } from './const.js';
 // uhitm.js — the hero attacking, or declining to attack, a monster.
@@ -1622,8 +1622,14 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
     } else if (mdef === game.youmonst) {
         await hitmsg(magr, mattk, mhm.indx);
         mhm.hitflags |= M_ATTK_HIT;
-        if (!negated && !rn2(8))
-            note_unported_uhitm('mhitm_ad_drst:mhitu_poisoned');
+        if (!negated && !rn2(8)) {
+            const ptmp = mattk[1] === ATTKS.AD_DRDX ? A_DEX
+                       : mattk[1] === ATTKS.AD_DRCO ? A_CON : A_STR;
+            const reason = `${s_suffix(Monnam(magr))} ${
+                (await import('./mhitu.js')).mpoisons_subj(magr, mattk)}`;
+            await poisoned(reason, ptmp,
+                pmname(game.mons[magr.mnum], magr.female ? 1 : 0), 30, false);
+        }
     } else if (!negated && !rn2(8)) {
         note_unported_uhitm('mhitm_ad_drst:mhitm_really_poison');
     }

@@ -401,7 +401,7 @@ function choose_trapnote(ttmp) {
 // awaits in it; the async marker was invented here and it forced every caller
 // up to lspo_region() to be async too, which is what blocked the themeroom
 // fills from calling des.trap at all.
-function maketrap(x, y, typ) {
+export function maketrap(x, y, typ) {
     /* src/trap.c:463 — the refusal arms. A trap request can FAIL, and the
        caller (mktrap) turns that into kind = NO_TRAP, which short-circuits
        the victim gate before its rnd(4). Creating unconditionally made the

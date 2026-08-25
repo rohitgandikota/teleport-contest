@@ -14,7 +14,8 @@ import { find_offensive, find_misc, use_misc } from './muse.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
-    IS_OBSTRUCTED, IS_STWALL, IS_TREE, LAVAWALL,
+    IS_OBSTRUCTED, IS_STWALL, IS_TREE, LAVAWALL, STAIRS, LADDER, IRONBARS,
+    WEB,
     P_DAGGER, P_KNIFE,
     AM_SHRINE, Amask2align, ROOMOFFSET, ALLOW_MDISP, ALLOW_M, SHOPBASE,
     TEMPLE, RLOC_MSG
@@ -22,13 +23,13 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal,
          tunnels, nohands as nohands_mm,
-         verysmall as verysmall_mm , sticks } from './mondata.js';
+         verysmall as verysmall_mm, sticks, webmaker } from './mondata.js';
 import { ACCESSIBLE, DOOR, D_LOCKED, D_CLOSED, D_ISOPEN, In_endgame, NOTONL } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
 import { You_see, You_hear } from './pline.js';
 import { create_gas_cloud, visible_region_at } from './region.js';
-import { Monnam } from './do_name.js';
+import { Monnam, y_monnam, upstart } from './do_name.js';
 import { Deaf } from './youprop.js';
 import { Is_rogue_level as IRL_const, D_TRAPPED } from './const.js';
 import { sobj_at, money_cnt } from './invent.js';
@@ -41,7 +42,7 @@ import { metallivorous, corpse_eater, is_covetous,
          resist_conflict } from './mondata.js';
 import { may_dig, in_town } from './hack.js';
 import { place_monster, remove_monster, hideunder } from './makemon.js';
-import { rn2, rnd } from './rng.js';
+import { rn2, rnd, d } from './rng.js';
 import {
     dog_move, could_reach_item, dogfood, MANFOOD, ACCFOOD,
 } from './dog.js';
@@ -732,6 +733,66 @@ const next2u = (px, py) => distu(px, py) <= 2;
 
 // include/rm.h:538 Sokoban — the level flag.
 const Sokoban = () => !!game.level?.flags?.sokoban_rules;
+
+// src/monmove.c:1230 holds_up_web() through maybe_spin_web().
+function holds_up_web(x, y) {
+    const lev = game.level?.at(x, y);
+    let upStairs = false;
+
+    if (lev && (lev.typ === STAIRS || lev.typ === LADDER)) {
+        for (let st = game.stairs; st; st = st.next) {
+            if (st.sx === x && st.sy === y) {
+                upStairs = !!st.up;
+                break;
+            }
+        }
+    }
+    return !isok(x, y) || !lev || IS_OBSTRUCTED(lev.typ)
+        || upStairs || lev.typ === IRONBARS;
+}
+
+function count_webbing_walls(x, y) {
+    return Number(holds_up_web(x, y - 1))
+        + Number(holds_up_web(x + 1, y))
+        + Number(holds_up_web(x, y + 1))
+        + Number(holds_up_web(x - 1, y));
+}
+
+function soko_allow_web(mon) {
+    if (!Sokoban())
+        return true;
+    for (let st = game.stairs; st; st = st.next)
+        if (st.up)
+            return clear_path(mon.mx, mon.my, st.sx, st.sy);
+    return false;
+}
+
+async function maybe_spin_web(mtmp) {
+    const ptr = mtmp.data ?? game.mons[mtmp.mnum];
+    if (!webmaker(ptr) || helpless(mtmp) || mtmp.mspec_used
+        || t_at(mtmp.mx, mtmp.my) || !soko_allow_web(mtmp))
+        return;
+
+    const webCount = (game.level?.traps || [])
+        .filter((trap) => trap.ttyp === WEB).length;
+    const prob = (ptr.pmidx === PMNAMES.PM_GIANT_SPIDER ? 15 : 5)
+        * (count_webbing_walls(mtmp.mx, mtmp.my) + 1) - 3 * webCount;
+    if (rn2(1000) >= prob)
+        return;
+
+    const { maketrap } = await import('./mklev.js');
+    const trap = maketrap(mtmp.mx, mtmp.my, WEB);
+    if (!trap)
+        return;
+    mtmp.mspec_used = d(4, 4);
+    if (cansee(mtmp.mx, mtmp.my)) {
+        const name = canspotmon(mtmp) ? y_monnam(mtmp) : 'something';
+        await pline(`${upstart(name)} spins a web.`);
+        trap.tseen = 1;
+    }
+    if (game.in_rooms?.(mtmp.mx, mtmp.my, SHOPBASE))
+        note_unported('postmov:spin_web_shop_damage');
+}
 
 // include/youprop.h:218 Conflict — (HConflict || EConflict), the intrinsic or
 // the extrinsic. The port keeps the hero's properties on u.uprops, so this
@@ -1759,6 +1820,8 @@ async function postmov(mtmp, ptr, omx, omy, mmoved) {
 
             await mpickstuff(mtmp);
         }
+
+        await maybe_spin_web(mtmp);
 
         /* src/monmove.c:1692, concealment-capable monsters and eels
            reconsider hiding after every move. The rn2(5) is spent even

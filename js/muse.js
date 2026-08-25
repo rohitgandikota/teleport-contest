@@ -632,6 +632,42 @@ export async function use_misc(mtmp) {
         }
         return 2;
     }
+    case MUSE_POT_SPEED: {
+        if (!obj)
+            return 0;
+        const [{ canseemon, pline }, { You_hear }, { Deaf }, { Monnam },
+               { singular, doname }, { observe_object }, { learnwand }]
+            = await Promise.all([
+                import('./display.js'), import('./pline.js'),
+                import('./youprop.js'), import('./do_name.js'),
+                import('./objnam.js'), import('./o_init.js'),
+                import('./zap.js'),
+            ]);
+        const seen = canseemon(mtmp);
+
+        if (seen) {
+            observe_object(obj);
+            await pline(`${Monnam(mtmp)} drinks ${singular(obj, doname)}!`);
+        } else if (!Deaf()) {
+            await You_hear('a chugging sound.');
+        }
+
+        const oldspeed = mtmp.mspeed ?? 0;
+        mtmp.permspeed = (mtmp.permspeed === MSLOW) ? 0 : MFAST;
+        const speedBoots = (mtmp.minvent || []).some((item) =>
+            item.otyp === ONAMES.SPEED_BOOTS && item.owornmask);
+        mtmp.mspeed = speedBoots ? MFAST : mtmp.permspeed;
+        if (seen && mtmp.mspeed !== oldspeed && mtmp.data.mmove
+            && !mtmp.mfrozen && !mtmp.msleeping) {
+            const howmuch = (mtmp.mspeed + oldspeed === MFAST + MSLOW)
+                            ? 'much ' : '';
+            await pline(`${Monnam(mtmp)} is suddenly moving ${howmuch}faster.`);
+            learnwand(obj);
+        }
+
+        m_useup_misc(mtmp, obj);
+        return 2;
+    }
     case MUSE_POT_INVISIBILITY: {
         if (!obj)
             return 0;

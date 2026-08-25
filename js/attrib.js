@@ -17,14 +17,14 @@ import { UNENCUMBERED, OVERLOADED , LEFT_SIDE, RIGHT_SIDE,
          FROMEXPER, FROMRACE, FROMOUTSIDE, Is_airlevel } from './const.js';
 import { strongmonst } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { rn2, rn1 } from './rng.js';
+import { rn2, rn1, rnd, d } from './rng.js';
 import { role_abil, race_abil } from './role_data.js';
 import { You_feel } from './pline.js';
 import {
     A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA,
     SATIATED, NOT_HUNGRY, HUNGRY, WEAK, FAINTING, FAINTED,
     MOD_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER,
-    LUCKMIN, LUCKMAX,
+    LUCKMIN, LUCKMAX, G_UNIQ, KILLED_BY_AN, KILLED_BY, DIED, POISONING,
 } from './const.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { Upolyd } from './const.js';
@@ -371,6 +371,105 @@ export async function poison_strdmg(strloss, damage, knam, k_format) {
     await losestr(strloss, knam, k_format);
     const { losehp } = await import('./hack.js');
     await losehp(damage, knam, k_format);
+}
+
+// src/attrib.c:294 poisontell() and :317 poisoned(). Natural attacks,
+// poisoned missiles, traps, and poison gas all reach this one outcome table.
+async function poisontell(typ, exclaim) {
+    const effects = [
+        [You_feel, 'weaker'],
+        [Your, 'brain is on fire'],
+        [Your, 'judgement is impaired'],
+        [Your, "muscles won't obey you"],
+        [You_feel, 'very sick'],
+        [You, 'break out in hives'],
+    ];
+    const effect = effects[typ];
+    if (!effect)
+        return;
+
+    let msg = effect[1];
+    if (typ === A_STR && ACURR(A_STR) === 125) /* STR19(25) */
+        msg = 'innately weaker';
+    else if (typ === A_CON && ACURR(A_CON) === 25)
+        msg = 'sick inside';
+    await effect[0](`${msg}${exclaim ? '!' : '.'}`);
+}
+
+export async function poisoned(reason, typ, pkiller, fatal, thrown_weapon) {
+    const blast = reason === 'blast';
+
+    if (!blast && !/poison/i.test(reason)) {
+        const plural = reason.endsWith('s');
+        await pline(`${/^[A-Z]/.test(reason) ? '' : 'The '}${reason} ${
+            plural ? 'were' : 'was'} poisoned!`);
+    }
+    const { Poison_resistance } = await import('./youprop.js');
+    if (Poison_resistance()) {
+        if (blast)
+            note_unported_attrib('poisoned:shieldeff');
+        const { pline_The } = await import('./pline.js');
+        await pline_The("poison doesn't seem to affect you.");
+        return;
+    }
+
+    let killer = pkiller;
+    let kprefix = KILLED_BY_AN;
+    const lowerKiller = pkiller.toLowerCase();
+    const killerPtr = (game.mons || []).find((ptr) =>
+        ptr?.pmnames?.some((name) => name?.toLowerCase() === lowerKiller));
+    if (killerPtr && (killerPtr.geno & G_UNIQ)) {
+        kprefix = KILLED_BY;
+        const { type_is_pname } = await import('./mondata.js');
+        if (!type_is_pname(killerPtr))
+            killer = `the ${killer}`;
+    } else if (/^(?:the |an |a )/i.test(killer)) {
+        kprefix = KILLED_BY;
+    }
+
+    const outcome = !fatal ? 1 : rn2(fatal + (thrown_weapon ? 20 : 0));
+    if (outcome === 0 && typ !== A_CHA) {
+        let loss = 6 + d(4, 6);
+        if (game.u.uhp <= loss) {
+            game.u.uhp = -1;
+            (game.disp ||= {}).botl = true;
+            const { pline_The } = await import('./pline.js');
+            await pline_The('poison was deadly...');
+        } else {
+            const olduhp = game.u.uhp;
+            const newuhpmax = game.u.uhpmax - Math.trunc(loss / 2);
+            const { setuhpmax } = await import('./exper.js');
+            setuhpmax(Math.max(newuhpmax, Math.max(game.u.ulevel, 3)), true);
+            if (game.u.uhp < olduhp)
+                loss -= olduhp - game.u.uhp;
+            loss = Math.max(loss, 1);
+
+            const { losehp } = await import('./hack.js');
+            await losehp(loss, killer, kprefix);
+            if (await adjattrib(A_CON, typ !== A_CON ? -1 : -3, true))
+                await poisontell(A_CON, true);
+            if (typ !== A_CON && await adjattrib(typ, -3, true))
+                await poisontell(typ, true);
+        }
+    } else if (outcome > 5) {
+        let loss = thrown_weapon ? rnd(6) : rn1(10, 6);
+        if ((blast || reason === 'gas cloud')
+            && game.u.uprops?.HALF_GAS_DAMAGE)
+            loss = Math.trunc((loss + 1) / 2);
+        const { losehp } = await import('./hack.js');
+        await losehp(loss, killer, kprefix);
+    } else {
+        const loss = (thrown_weapon || !fatal) ? 1 : d(2, 2);
+        if (await adjattrib(typ, -loss, true))
+            await poisontell(typ, true);
+    }
+
+    if (game.u.uhp < 1) {
+        game.killer = { format: kprefix, name: killer };
+        const { done } = await import('./end.js');
+        await done(/poison/i.test(killer) ? DIED : POISONING);
+    }
+    await encumber_msg();
 }
 
 // src/attrib.c:990 adjabil() — grant the intrinsics a role or race has earned

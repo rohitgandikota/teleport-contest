@@ -674,11 +674,13 @@ export async function moveloop_core() {
                act. This inner loop is the whole reason a pet gets to move at
                all: movement is allotted below, so a single movemon() call per
                command would always find every monster still at zero. */
+            g.context.mon_moving = true;
             do {
                 monscanmove = await movemon();
                 if (g.u.umovement >= NORMAL_SPEED)
                     break;         /* it's now your turn */
             } while (monscanmove);
+            g.context.mon_moving = false;
 
             if (!monscanmove && g.u.umovement < NORMAL_SPEED) {
                 /* src/allmain.c:222 — both hero and monsters are out of

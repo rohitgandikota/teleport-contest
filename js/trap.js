@@ -11,7 +11,7 @@ import { inv_cnt, crawl_destination, unmul, in_rooms } from './hack.js';
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING,
          WATER, FIRE_RES } from './const.js';
-import { goodpos } from './makemon.js';
+import { goodpos, remove_monster } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
 import { Teleport_control, Unaware, Sleep_resistance } from './youprop.js';
@@ -38,7 +38,7 @@ import { find_mac, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
 import { passes_walls, likes_lava, throws_rocks } from './mondata.js';
-import { has_ceiling } from './dungeon.js';
+import { has_ceiling, Can_fall_thru } from './dungeon.js';
 import { Monnam } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
 import { W_ARMF, A_DEX } from './const.js';
@@ -86,7 +86,7 @@ import { In_quest, TOOKPLUNGE, VIASITTING, HURTLING,
          WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP,
          VIBRATING_SQUARE, BOLT_LIM, WT_ELF, VAULT, TEMPLE, SHOPBASE,
          Is_firelevel, Is_earthlevel, IS_AIR, IS_ROOM,
-         IS_WALL, IS_DOOR, SDOOR } from './const.js';
+         IS_WALL, IS_DOOR, SDOOR, MIGR_RANDOM, MON_MIGRATING } from './const.js';
 import { just_an } from './objnam.js';
 import { Deaf, Levitation, Flying, Hallucination, Underwater } from './youprop.js';
 import { mindless } from './mondata.js';
@@ -1190,6 +1190,9 @@ async function trapeffect_selector(mtmp, trap, trflags) {
     case PIT:
     case SPIKED_PIT:
         return await trapeffect_pit(mtmp, trap, trflags);
+    case HOLE:
+    case TRAPDOOR:
+        return await trapeffect_hole(mtmp, trap, trflags);
     case RUST_TRAP:
         return await trapeffect_rust_trap(mtmp, trap, trflags);
     case ROLLING_BOULDER_TRAP:
@@ -2120,14 +2123,69 @@ export async function fall_through(td, ftflags) {
                   null, null);
 }
 
-// src/trap.c:2013 trapeffect_hole() — hero falls; the monster arm records.
+// src/trap.c:2013 trapeffect_hole().
 async function trapeffect_hole(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
         await fall_through(true, trflags & TOOKPLUNGE);
         return Trap_Effect_Finished;
     }
-    note_unported_trap('trapeffect_hole:monster');
-    return Trap_Effect_Finished;
+
+    if (!Can_fall_thru(game.u.uz) || mtmp === game.u.ustuck)
+        return Trap_Effect_Finished;
+
+    const in_sight = canseemon(mtmp) || mtmp === game.u.usteed;
+    const forcetrap = (trflags & FORCETRAP) !== 0;
+    const inescapable = forcetrap || (Sokoban() && !trap.madeby_u);
+    const too_large = mtmp.data.msize >= MFLAGS.MZ_HUGE;
+    const long_worm = !!mtmp.wormno;
+
+    if (!grounded(mtmp.data) || long_worm || too_large) {
+        if (long_worm)
+            note_unported_trap('trapeffect_hole:count_wsegs');
+        if (forcetrap && !Sokoban()) {
+            if (in_sight) {
+                seetrap(trap);
+                if (trap.ttyp === TRAPDOOR)
+                    await pline(`A trap door opens, but ${mon_nam(mtmp)} doesn't fall through.`);
+                else
+                    await pline(`${Monnam(mtmp)} doesn't fall through the hole.`);
+            }
+            return Trap_Effect_Finished;
+        }
+        if (!inescapable)
+            return Trap_Effect_Finished;
+        if (in_sight) {
+            await pline(`${Monnam(mtmp)} seems to be yanked down!`);
+            seetrap(trap);
+        }
+    }
+
+    if (in_sight) {
+        await pline(`Suddenly, ${mon_nam(mtmp)} ${
+            trap.ttyp === HOLE ? 'falls into a hole'
+                               : 'falls through a trap door'}.`);
+        seetrap(trap);
+    }
+
+    const mx = mtmp.mx, my = mtmp.my;
+    const dest = (trap.dst?.dnum ?? -1) >= 0
+        ? { dnum: trap.dst.dnum, dlevel: trap.dst.dlevel }
+        : { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel + 1 };
+    remove_monster(mx, my);
+    const at = (game.level.monsters || []).indexOf(mtmp);
+    if (at >= 0)
+        game.level.monsters.splice(at, 1);
+    mtmp.mstate = (mtmp.mstate || 0) | MON_MIGRATING;
+    mtmp.mtrack ||= [{}, {}, {}];
+    mtmp.mtrack[2] = { x: game.u.uz.dnum, y: game.u.uz.dlevel };
+    mtmp.mtrack[1] = { x: mx, y: my };
+    mtmp.mtrack[0] = { x: MIGR_RANDOM, y: 0 };
+    mtmp.mux = dest.dnum;
+    mtmp.muy = dest.dlevel;
+    mtmp.mx = mtmp.my = 0;
+    mtmp.mlstmv = game.moves;
+    (game.migrating_mons ||= []).unshift(mtmp);
+    return Trap_Moved_Mon;
 }
 
 // src/trap.c:4024 float_down() — return the hero to the surface when

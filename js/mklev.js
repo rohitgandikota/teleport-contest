@@ -168,7 +168,7 @@ import { Can_fall_thru } from './dungeon.js';
 import { lspo_map, lspo_region, sp_lev_wire, sp_lev_wire_mktrap,
          sp_lev_wire_okdoor, sp_lev_wire_subroom,
          lspo_room, lspo_door, lspo_object, lspo_monster, lspo_exclusion,
-         inside_room } from './sp_lev.js';
+         inside_room, lspo_replace_terrain } from './sp_lev.js';
 import { percent } from './nhlua.js';
 import { lua_shuffle } from './nhlua.js';
 
@@ -1173,7 +1173,11 @@ function themeroom_contents(pick, mf) {
             if (percent(30)) {
                 const terr = ['-', 'P'];
                 lua_shuffle(terr);
-                note_unported_lev('des.replace_terrain');
+                lspo_replace_terrain({
+                    region: [1, 1, 9, 9],
+                    fromterrain: 'L',
+                    toterrain: terr[0],
+                });
             }
             filler_region(1, 1);
         });

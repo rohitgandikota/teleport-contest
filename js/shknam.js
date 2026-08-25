@@ -176,7 +176,8 @@ function shkinit(shp, sroom) {
     set_malign(shk);
     shk.msleeping = 0;
     shk.eshk = {
-        shoproom: game.level.rooms.indexOf(sroom) + ROOMOFFSET,
+        shoproom: ((sroom.roomnoidx ?? game.level.rooms.indexOf(sroom))
+                   + ROOMOFFSET),
         shoptype: sroom.rtype,
         shd: game.level.doors[sh],
         shk: { x: sx, y: sy },

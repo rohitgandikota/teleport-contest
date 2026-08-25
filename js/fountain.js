@@ -8,16 +8,25 @@
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
 import { pline } from './display.js';
-import { You, You_feel, pline_The } from './pline.js';
+import { You, You_feel, Your, pline_The } from './pline.js';
 import { newsym } from './display.js';
-import { IS_FOUNTAIN, ROOM, A_WIS, A_CON } from './const.js';
+import { IS_FOUNTAIN, ROOM, POOL, A_WIS, A_CON, IS_DOOR, SDOOR, isok,
+         SQKY_BOARD, BEAR_TRAP, LANDMINE, FIRE_TRAP, PIT, SPIKED_PIT,
+         HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, WEB, MAGIC_TRAP,
+         ANTI_MAGIC } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { OCLASSES } from './objects_data.js';
-import { water_damage } from './trap.js';
+import { deltrap, water_damage, water_damage_chain } from './trap.js';
 import { exercise } from './attrib.js';
-import { update_inventory } from './invent.js';
+import { update_inventory, money_cnt } from './invent.js';
 import { curse, uncurse } from './mkobj.js';
 import { tty_yn_function } from './tty/topl.js';
+import { distmin } from './hacklib.js';
+import { do_clear_area } from './vision.js';
+import { m_at, t_at } from './mon.js';
+import { sobj_at } from './invent.js';
+import { del_engr, engr_at } from './engrave.js';
+import { somegold } from './steal.js';
 
 function note_unported_fountain(what) {
     (game.unported ||= new Set()).add('fountain:' + what);
@@ -110,6 +119,89 @@ async function dowaternymph() {
     }
 }
 
+function nexttodoor(x, y) {
+    for (let dx = -1; dx <= 1; ++dx)
+        for (let dy = -1; dy <= 1; ++dy) {
+            const nx = x + dx, ny = y + dy;
+            if (!isok(nx, ny))
+                continue;
+            const typ = game.level.at(nx, ny)?.typ;
+            if (IS_DOOR(typ) || typ === SDOOR)
+                return true;
+        }
+    return false;
+}
+
+const gush_floor_traps = new Set([
+    SQKY_BOARD, BEAR_TRAP, LANDMINE, FIRE_TRAP, PIT, SPIKED_PIT, HOLE,
+    TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, WEB, MAGIC_TRAP, ANTI_MAGIC,
+]);
+
+function delete_gush_trap(ttmp) {
+    if (!gush_floor_traps.has(ttmp.ttyp))
+        return false;
+    const mon = m_at(ttmp.tx, ttmp.ty);
+    if (mon)
+        mon.mtrapped = 0;
+    deltrap(ttmp);
+    return true;
+}
+
+// src/fountain.c:134 gush(). The distance roll precedes the terrain, boulder,
+// and door checks, so even an ineligible visible square can spend a draw.
+async function gush(x, y, state) {
+    if ((x + y) % 2 || (game.u.ux === x && game.u.uy === y)
+        || rn2(1 + distmin(game.u.ux, game.u.uy, x, y))
+        || game.level.at(x, y)?.typ !== ROOM
+        || sobj_at(ONAMES.BOULDER, x, y) || nexttodoor(x, y))
+        return;
+
+    const trap = t_at(x, y);
+    if (trap && !delete_gush_trap(trap))
+        return;
+
+    if (state.madepool++ === 0)
+        await pline('Water gushes forth from the overflowing fountain!');
+
+    const loc = game.level.at(x, y);
+    loc.typ = POOL;
+    loc.flags = 0;
+    const engraving = engr_at(x, y);
+    if (engraving)
+        del_engr(engraving);
+
+    const floor_objects = (game.level.objects || [])
+        .filter(obj => obj.ox === x && obj.oy === y);
+    await water_damage_chain(floor_objects, true);
+
+    if (m_at(x, y)) {
+        /* minliquid() is only relevant for a monster on a newly made pool.
+           Keep the flood and draw order exact while its drowning branches
+           remain isolated as a tracked gap. */
+        note_unported_fountain('gush:minliquid');
+    } else {
+        newsym(x, y);
+    }
+}
+
+// src/fountain.c:121 dogushforth(). do_clear_area supplies C's exact visible
+// coordinate order; process the collected coordinates serially for water
+// damage messages and draws.
+async function dogushforth(drinking) {
+    const coords = [];
+    do_clear_area(game.u.ux, game.u.uy, 7,
+                  (x, y) => coords.push([x, y]), null);
+    const state = { madepool: 0 };
+    for (const [x, y] of coords)
+        await gush(x, y, state);
+    if (!state.madepool) {
+        if (drinking)
+            await Your('thirst is quenched.');
+        else
+            await pline('Water sprays all over you.');
+    }
+}
+
 // src/fountain.c:243 drinkfountain() — quaff from the fountain underfoot.
 export async function drinkfountain() {
     const u = game.u;
@@ -197,7 +289,7 @@ export async function drinkfountain() {
             }
             break;
         case 30: /* Gushing forth in this room */
-            note_unported_fountain('drinkfountain:dogushforth');
+            await dogushforth(true);
             break;
         default:
             await pline('This tepid water is tasteless.');
@@ -255,7 +347,7 @@ export async function dipfountain(obj) {
         note_unported_fountain('dipfountain:dowaterdemon');
         break;
     case 22: /* Water Nymph */
-        note_unported_fountain('dipfountain:dowaternymph');
+        await dowaternymph();
         break;
     case 23: /* an Endless Stream of Snakes */
         note_unported_fountain('dipfountain:dowatersnakes');
@@ -264,7 +356,7 @@ export async function dipfountain(obj) {
         note_unported_fountain('dipfountain:dofindgem');
         break;
     case 25: /* Water gushes forth */
-        note_unported_fountain('dipfountain:dogushforth');
+        await dogushforth(false);
         break;
     case 26: /* Strange feeling */
         await pline('A strange tingling runs up your arm.');
@@ -274,7 +366,29 @@ export async function dipfountain(obj) {
         break;
     case 28: /* Strange feeling */
         await pline('An urge to take a bath overwhelms you.');
-        note_unported_fountain('dipfountain:gold_bath');
+        {
+            let money = money_cnt(game.invent);
+            if (money > 10) {
+                money = Math.trunc(somegold(money) / 10);
+                for (const coin of [...(game.invent || [])]) {
+                    if (money <= 0)
+                        break;
+                    if (coin.oclass !== OCLASSES.COIN_CLASS)
+                        continue;
+                    const denomination = game.objects[coin.otyp].oc_cost;
+                    const coin_loss = Math.min(
+                        Math.trunc((money + denomination - 1) / denomination),
+                        coin.quan);
+                    coin.quan -= coin_loss;
+                    money -= coin_loss * denomination;
+                    if (!coin.quan)
+                        game.invent.splice(game.invent.indexOf(coin), 1);
+                }
+                await You('lost some of your gold in the fountain!');
+                game.level.at(game.u.ux, game.u.uy).looted &= ~1;
+                exercise(A_WIS, false);
+            }
+        }
         break;
     case 29: /* You see coins */
         note_unported_fountain('dipfountain:see_coins');

@@ -72,7 +72,12 @@ export function assigninvlet(otmp) {
         const c = o.invlet;
         if (c >= 'a' && c <= 'z') inuse[c.charCodeAt(0) - 97] = true;
         else if (c >= 'A' && c <= 'Z') inuse[c.charCodeAt(0) - 65 + 26] = true;
+        if (c === otmp.invlet)
+            otmp.invlet = null;
     }
+    if ((otmp.invlet >= 'a' && otmp.invlet <= 'z')
+        || (otmp.invlet >= 'A' && otmp.invlet <= 'Z'))
+        return;
     let i;
     const last = game.lastinvnr ?? -1;
     for (i = last + 1; i !== last; i++) {

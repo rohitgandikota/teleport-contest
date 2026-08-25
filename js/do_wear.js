@@ -14,7 +14,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          ECMD_TIME, TT_BEARTRAP, TT_INFLOOR, I_SPECIAL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
-         LEFT_RING, RIGHT_RING } from './const.js';
+         LEFT_RING, RIGHT_RING, TIMEOUT } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
@@ -23,7 +23,7 @@ import { sgn } from './hacklib.js';
 import { erode_obj, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
 import { erosion_matters } from './mkobj.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd } from './rng.js';
 import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
          ERODE_NONE, EF_PAY, EF_DESTROY, ER_NOTHING,
          ER_DESTROYED } from './const.js';
@@ -307,6 +307,7 @@ async function on_msg(otmp) {
 export async function Boots_on() {
     const uarmf = worn(W_ARMF);
     if (!uarmf) return;
+    const oldprop = (game.u.uprops?.FUMBLING || 0) & ~WORN_BOOTS;
     switch (uarmf.otyp) {
     case ONAMES.LOW_BOOTS:
     case ONAMES.IRON_SHOES:
@@ -326,11 +327,23 @@ export async function Boots_on() {
         break;
     case ONAMES.WATER_WALKING_BOOTS:
     case ONAMES.ELVEN_BOOTS:
-    case ONAMES.FUMBLE_BOOTS:
     case ONAMES.LEVITATION_BOOTS:
     default:
         note_unported_do_wear(`Boots_on:otyp=${uarmf.otyp}`);
         break;
+    case ONAMES.FUMBLE_BOOTS: {
+        const intrinsic = (game.u.intrinsic ||= {});
+        const old = intrinsic.HFumbling || 0;
+        if (!oldprop && !(old & ~TIMEOUT)) {
+            const timeout = Math.min(TIMEOUT, (old & TIMEOUT) + rnd(20));
+            intrinsic.HFumbling = (old & ~TIMEOUT) | timeout;
+        }
+        break;
+    }
+    }
+    if (game.u.uarmf && !game.u.uarmf.known) {
+        game.u.uarmf.known = 1;
+        update_inventory();
     }
 }
 

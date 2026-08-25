@@ -29,7 +29,7 @@ import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, A_DEX } from './const.js';
-import { ACURR } from './attrib.js';
+import { ACURR, exercise } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { x_monnam, docallcmd } from './do_name.js';
@@ -1626,10 +1626,19 @@ async function domove_core() {
         if (closed_door(newx, newy) && !game.context.door_opened
             && (newx === u.ux || newy === u.uy)) {
             if (u.ublind || game.u.uprops?.STUNNED || ACURR(A_DEX) < 10
-                || game.u.uprops?.FUMBLING)
-                note_unported_cmd('test_move:walk_into_door');
-            else
+                || game.u.uprops?.FUMBLING) {
+                if (u.usteed) {
+                    note_unported_cmd('test_move:steed_into_door');
+                } else {
+                    await pline('Ouch!  You bump into a door.');
+                    exercise(A_DEX, false);
+                }
+                game.context.door_opened = true;
+                game.context.move = 1;
+                nomul(0);
+            } else {
                 await pline('That door is closed.');
+            }
         } else if (game.flags?.mention_walls && !game.context.door_opened) {
             if (!bloc || bloc.typ === STONE)
                 await pline("It's solid stone.");

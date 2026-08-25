@@ -6,7 +6,7 @@ import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
 import { the, xname } from './objnam.js';
 import { costly_spot } from './shk.js';
 import { You_hear, There } from './pline.js';
-import { newsym } from './display.js';
+import { map_invisible, newsym } from './display.js';
 import { YMonnam } from './do_name.js';
 import { is_flimsy } from './obj.js';
 import { You, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
@@ -21,7 +21,7 @@ import { a_monnam, upstart } from './do_name.js';
 import { is_door_mappear, helpless } from './monst.js';
 import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
-         Hallucination } from './youprop.js';
+         Hallucination, Deaf } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at, is_pick } from './mon.js';
 import { hliquid } from './do_name.js';
@@ -54,7 +54,7 @@ import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
 
-    ROOMOFFSET, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR,
+    ROOMOFFSET, MAXNROFROOMS, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR,
     THRONE, SINK, GRAVE, FOUNTAIN, ALTAR, D_ISOPEN, ACCESSIBLE, IS_SDOOR,
     M_AP_OBJECT, M_AP_FURNITURE, M_AP_TYPE, isok, u_at,
     IRONBARS, IS_DOOR, D_NODOOR, D_BROKEN, WT_SQUEEZABLE_INV,
@@ -451,10 +451,15 @@ export function in_rooms(x, y, typewanted) {
        so reading it here made every TYPE-FILTERED lookup fail -- in_rooms(x,
        y, SHOPBASE) and in_rooms(x, y, TEMPLE) always returned empty. */
     const rooms = game.level?.rooms || [];
+    const subrooms = game.level?.subrooms || [];
     const goodtype = (rno) => {
         if (!typewanted)
             return true;
-        const typefound = rooms[rno - ROOMOFFSET]?.rtype;
+        const roomidx = rno - ROOMOFFSET;
+        const room = roomidx <= MAXNROFROOMS
+            ? rooms[roomidx]
+            : subrooms.find(r => r.roomnoidx === roomidx);
+        const typefound = room?.rtype;
         return typefound === typewanted
             || (typewanted === SHOPBASE && typefound > SHOPBASE);
     };
@@ -1581,7 +1586,9 @@ async function moverock_core(sx, sy) {
                     deliver_part1 = true;
                 } else {
                     await You_hear(`a monster behind ${the(xname(otmp))}.`);
-                    note_unported_hack('moverock:map_invisible');
+                    if (!Deaf())
+                        deliver_part1 = true;
+                    map_invisible(rx, ry);
                 }
                 if (game.flags?.verbose !== false) {
                     const you_or_steed = game.u.usteed

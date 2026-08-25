@@ -19,8 +19,8 @@ import { place_object } from './mkobj.js';
 import { pline, newsym } from './display.js';
 import { You, You_cant, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
-import { u_locomotion } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, VIBRATING_SQUARE, A_DEX, BOTH_SIDES } from './const.js';
+import { u_locomotion, losehp } from './hack.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, VIBRATING_SQUARE, A_DEX, BOTH_SIDES, KILLED_BY } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -229,9 +229,8 @@ export async function next_level(at_stairs) {
 //
 // Three of goto_level's four draws are the Mysterious Force
 // (rn2(4 + mysteryforce), rn2(odds), rn2(diff + 2)), which fires only in the
-// Quest, and the fourth is rnd(3) falling damage. A plain staircase descent
-// spends none of them, so this path adds no draws of its own -- everything it
-// changes in the stream comes from mklev() running at all.
+// Quest. The fourth is rnd(3) falling damage for an encumbered, punished, or
+// fumbling hero. A plain staircase descent spends no draw of its own.
 export async function goto_level(newlevel, at_stairs, falling, portal) {
     let up = (depth_do(newlevel) < depth_do(game.u.uz));
 
@@ -407,19 +406,38 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             u_on_dnstairs();
         }
 
-        /* src/do.c:1774 — the arrival message. Levitation, Flying and the
-           encumbered/Punished/Fumbling fall are all recorded; the ordinary
-           descent is the one every recorded game takes. `at_ladder` is
-           false for a staircase. */
+        /* src/do.c:1774 — arrival message and stair-fall damage. `at_ladder`
+           is false for this staircase path. */
         if (!game.u.dz) {
             ; /* stayed on same level? (no transit effects) */
         } else if (up) {
             if (game.flags?.verbose)
                 await pline(`You ${u_locomotion('climb')} up the stairs.`);
-        } else if (game.u.uprops?.FLYING || game.u.uprops?.LEVITATION
-                   || near_capacity() > UNENCUMBERED || game.uball
-                   || game.u.uprops?.FUMBLING) {
-            note_unported_do('goto_level:fly_or_fall_arrival');
+        } else if (game.u.uprops?.FLYING) {
+            if (game.flags?.verbose)
+                await You('fly down the stairs.');
+        } else if (near_capacity() > UNENCUMBERED || game.uball
+                   || game.u.uprops?.FUMBLING
+                   || game.u.intrinsic?.HFumbling) {
+            await You('fall down the stairs.');
+            if (game.uball)
+                note_unported_do('goto_level:drag_down');
+            if (game.u.usteed) {
+                const { dismount_steed } = await import('./steed.js');
+                await dismount_steed(1 /* DISMOUNT_FELL */);
+            } else {
+                let damage = rnd(3);
+                if (game.u.uprops?.HALF_PHDAM)
+                    damage = Math.trunc((damage + 1) / 2);
+                await losehp(damage, 'tumbling down a flight of stairs',
+                             KILLED_BY);
+            }
+            /* selftouch("Falling, you") draws nothing unless a petrifying
+               corpse is wielded; that fatal branch remains explicit. */
+            if (game.u.uwep?.otyp === ONAMES.CORPSE
+                || (game.u.twoweap
+                    && game.u.uswapwep?.otyp === ONAMES.CORPSE))
+                note_unported_do('goto_level:selftouch');
         } else { /* ordinary descent */
             if (game.flags?.verbose)
                 await You('descend the stairs.');

@@ -23,7 +23,7 @@ import { outrumor } from './rumors.js';
 import { BY_COOKIE } from './const.js';
 import { PMNAMES, MFLAGS as MFLAGS_EAT, ATTKS } from './monst_data.js';
 import { done } from './end.js';
-import { end_running, nomul } from './hack.js';
+import { end_running, nomul, rounddiv } from './hack.js';
 import { sgn } from './hacklib.js';
 import { ACURR } from './attrib.js';
 import { bot } from './display.js';
@@ -31,7 +31,7 @@ import { A_STR, STARVING, STARVED, FIRE_RES, SLEEP_RES, COLD_RES,
          DISINT_RES, SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
          TELEPORT_CONTROL, TELEPAT, LAST_PROP, FROMOUTSIDE } from './const.js';
 import { set_occupation, stop_occupation } from './allmain.js';
-import { rn2, rnd, rn1 } from './rng.js';
+import { rn2, rnd, rn1, d } from './rng.js';
 import { You_feel, Your } from './pline.js';
 import { losehp } from './hack.js';
 import { SICK_RES, KILLED_BY_AN } from './const.js';
@@ -42,6 +42,10 @@ import { pline } from './display.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
 import { splitobj, bcsign } from './mkobj.js';
+import { is_rottable } from './trap.js';
+import { body_part } from './polyself.js';
+import { LIGHT_HEADED, Is_airlevel, Is_waterlevel } from './const.js';
+import { surface } from './dungeon.js';
 
 // src/eat.c:3170 gethungry()
 export async function gethungry() {
@@ -368,6 +372,74 @@ async function violated_vegetarian() {
     }
 }
 
+/* src/eat.c:2491 foodwords[]; indices are enum obj_material_types. */
+const foodwords = [
+    'meal', 'liquid', 'wax', 'food', 'meat', 'paper', 'cloth', 'leather',
+    'wood', 'bone', 'scale', 'metal', 'metal', 'metal', 'silver', 'gold',
+    'platinum', 'mithril', 'plastic', 'glass', 'rich food', 'stone',
+];
+
+function foodword(otmp) {
+    if (otmp.oclass === OCLASSES.FOOD_CLASS)
+        return 'food';
+    return foodwords[game.objects[otmp.otyp].oc_material] || 'food';
+}
+
+// src/eat.c:1799 Hear_again(), called after rotten-food unconsciousness.
+async function Hear_again() {
+    if (!rn2(2)) {
+        (game.u.intrinsic ||= {}).HDeaf = 0;
+        (game.disp ||= {}).botl = true;
+    }
+    return 0;
+}
+
+// src/eat.c:1812 rottenfood(). All three conditional draws and their effects
+// are kept in source order because a harmless rotten bite still spends them.
+async function rottenfood(obj) {
+    await pline(`Blecch!  ${is_rottable(obj) ? 'Rotten' : 'Awful'} ${
+        foodword(obj)}!`);
+    if (!rn2(4)) {
+        await You_feel(`rather ${Hallucination() ? 'trippy'
+                                                : body_part(LIGHT_HEADED)}.`);
+        const { make_confused } = await import('./potion.js');
+        await make_confused((game.u.intrinsic?.HConfusion | 0) + d(2, 4),
+                            false);
+    } else if (!rn2(4) && !game.u.ublind) {
+        await pline('Everything suddenly goes dark.');
+        const intr = (game.u.intrinsic ||= {});
+        intr.HBlinded = (intr.HBlinded | 0) + d(2, 10);
+        game.u.ublind = 1;
+        game.vision_full_recalc = 1;
+        (game.disp ||= {}).botl = true;
+    } else if (!rn2(3)) {
+        const duration = rnd(10);
+        let what, where;
+
+        if (!game.u.ublind) {
+            what = 'goes';
+            where = 'dark';
+        } else if (game.u.uprops?.LEVITATION || Is_airlevel(game.u.uz)
+                   || Is_waterlevel(game.u.uz)) {
+            what = 'you lose control of';
+            where = 'yourself';
+        } else {
+            what = 'you slap against the';
+            where = game.u.usteed ? 'saddle' : surface(game.u.ux, game.u.uy);
+        }
+        await pline(`The world spins and ${what} ${where}.`);
+        const intr = (game.u.intrinsic ||= {});
+        intr.HDeaf = (intr.HDeaf | 0) + duration;
+        (game.disp ||= {}).botl = true;
+        nomul(-duration);
+        game.multi_reason = 'unconscious from rotten food';
+        game.nomovemsg = 'You are conscious again.';
+        game.afternmv = Hear_again;
+        return 1;
+    }
+    return 0;
+}
+
 async function eatcorpse(otmp) {
     let retcode = 0, tp = 0;
     const mnum = otmp.corpsenm;
@@ -420,9 +492,10 @@ async function eatcorpse(otmp) {
         3 + ((!glob ? mdat.cwt : otmp.owt) >> 6);
 
     if (!tp && !nonrotting_corpse(mnum) && (otmp.orotten || !rn2(7))) {
-        note_unported_eat('eatcorpse:rottenfood');
-        otmp.orotten = true;
-        retcode = 1;
+        if (await rottenfood(otmp)) {
+            otmp.orotten = true;
+            retcode = 1;
+        }
 
         if (!mdat.cnutrit) {
             note_unported_eat('eatcorpse:rots_away');
@@ -490,25 +563,30 @@ export async function doeat() {
 
     let dont_start = false;
     if (otmp.otyp === ONAMES.CORPSE || otmp.globby) {
-        /* src/eat.c:2946 — eatcorpse() sets up victual.reqtime itself unless
-           the corpse was used up (2) or a message already landed (1). */
-        const tmp = await eatcorpse(otmp);
-
-        if (tmp === 2) {
-            game.context.victual = game.context.victual || {};
-            game.context.victual.piece = null;
-            game.context.victual.o_id = 0;
-            return ECMD_TIME;
-        } else if (tmp) {
-            dont_start = true;
-        }
+        /* src/eat.c:2966 — touchfood() precedes eatcorpse(), so oeaten has
+           the full corpse nutrition before rottenfood divides it. */
+        const already_partly_eaten = !!otmp.oeaten;
+        otmp = touchfood(otmp);
         const v0 = (game.context.victual ||= {});
         v0.piece = otmp;
         v0.o_id = otmp.o_id;
         v0.usedtime = 0;
+
+        /* eatcorpse() sets the unscaled delay and may reduce oeaten. */
+        const tmp = await eatcorpse(otmp);
+
+        if (tmp === 2) {
+            v0.piece = null;
+            v0.o_id = 0;
+            return ECMD_TIME;
+        } else if (tmp) {
+            dont_start = true;
+        }
+
+        const basenutrit = obj_nutrition(otmp);
+        v0.reqtime = basenutrit === 0 ? 0
+                     : rounddiv(v0.reqtime * otmp.oeaten, basenutrit);
         v0.canchoke = (game.u.uhs === SATIATED);
-        if (!otmp.oeaten)
-            otmp.oeaten = game.mons[otmp.corpsenm]?.cnutrit ?? 0;
         if (v0.reqtime === 0 || !otmp.oeaten)
             v0.nmod = 0;
         else if (otmp.oeaten >= v0.reqtime)
@@ -516,7 +594,9 @@ export async function doeat() {
         else
             v0.nmod = v0.reqtime % otmp.oeaten;
         if (!dont_start)
-            await start_eating(otmp, false);
+            await start_eating(otmp, already_partly_eaten);
+        else
+            otmp.owt = weight(otmp);
         return ECMD_TIME;
     }
 

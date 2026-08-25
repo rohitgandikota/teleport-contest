@@ -999,8 +999,10 @@ export function newsym(x, y) {
         const reg = visible_region_at(x, y);
         if (reg && (ACCESSIBLE(loc.typ)
                     || (reg.visible && is_pool_or_lava(x, y)))) {
-            const mon0 = (game.level?.monsters || [])
-                .find(m => m.mx === x && m.my === y && m.mhp > 0);
+            const mon0 = game.level?.monAt instanceof Map
+                ? game.level.monAt.get(`${x},${y}`)
+                : (game.level?.monsters || [])
+                    .find(m => m.mx === x && m.my === y && m.mhp > 0);
             if (!mon_overrides_region(mon0 || null, x, y)) {
                 show_region(reg, x, y);
                 return;
@@ -1040,6 +1042,18 @@ export function newsym(x, y) {
     // visible. Memory (lev->glyph in C, _map_location()) stores the object
     // layer too — a monster is drawn OVER it and is not itself remembered.
     if (cansee(x, y)) {
+        const mon = game.level?.monAt instanceof Map
+            ? game.level.monAt.get(`${x},${y}`)
+            : (game.level?.monsters || [])
+                .find(m => m.mx === x && m.my === y && m.mhp > 0
+                           && !m.msleeping_hidden);
+        /* src/display.c:1031 — an 'I' stays mapped until some action proves
+           that it is stale. Merely seeing the square again is not proof. */
+        if (!(mon && canspotmon(mon)) && glyph_is_invisible_at(x, y)) {
+            map_invisible(x, y);
+            return;
+        }
+
         /* C shows the TOP of the pile, and our object list is newest-first
            (place_object prepends), so the first match is the top.
            _map_location: vobj_at(x,y) && !covers_objects(x,y) — a pool or
@@ -1057,9 +1071,6 @@ export function newsym(x, y) {
                                          ?? { kind: 'cmap', cmap: memg.cmap } };
         update_lastseentyp(x, y);   /* _map_location(x, y, 1) */
 
-        const mon = (game.level?.monsters || [])
-                        .find(m => m.mx === x && m.my === y && m.mhp > 0
-                                   && !m.msleeping_hidden);
         /* src/display.c:1420 newsym() — the monster arm is gated on
            canspotmon(): an undetected hider (snake under a corpse, eel under
            water) shows the layer beneath it, not its letter. Disguised

@@ -194,6 +194,8 @@ export async function newgame() {
         }
     }
 
+    game.context.next_attrib_check = 600;
+
     /* src/allmain.c:776 — "turn on 3.6 tributes". stock_room's
        specialspot = rnd(stockcount) draw for the novel is gated on this,
        so it is load-bearing for every level with a bookstore-eligible
@@ -736,7 +738,7 @@ export async function moveloop_core() {
                    attribute the hunger and encumbrance state calls for, and
                    each of those spends an rn2(19). */
                 age_spells();
-                exerchk();
+                await exerchk();
 
                 /* src/allmain.c:358 — invault() needs the vault-guard
                    subsystem (pre-existing gap); the Amulet check runs for
@@ -845,14 +847,6 @@ export async function moveloop_core() {
      *         if (monster_nearby()) stop_occupation();
      *     }
      */
-    /* a helpless hero (multi < 0) takes no command; the turn machinery above
-       advanced the count, and context.move stays set so the next core call
-       burns the next helpless turn, exactly like an occupation. */
-    if ((g.multi ?? 0) < 0) {
-        g.context.move = 1;
-        return;
-    }
-
     if ((g.multi ?? 0) >= 0 && g.occupation) {
         if ((await g.occupation()) === 0)
             g.occupation = null;
@@ -872,6 +866,15 @@ export async function moveloop_core() {
        when the hero's position actually changed. u_calc_moveamt reads it to
        decide whether a mounted hero's budget comes from the steed. */
     g.u.umoved = false;
+
+    /* a helpless hero (multi < 0) takes no command; the turn machinery above
+       advanced the count, and context.move stays set so the next core call
+       burns the next helpless turn, exactly like an occupation. C clears
+       u.umoved before reaching this state. */
+    if ((g.multi ?? 0) < 0) {
+        g.context.move = 1;
+        return;
+    }
 
     /* src/allmain.c:515 — the run/rush loop. While multi is positive the hero
        keeps moving WITHOUT reading another key, which is what makes one

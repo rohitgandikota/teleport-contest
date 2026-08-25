@@ -17,7 +17,7 @@ import { UNENCUMBERED, OVERLOADED , LEFT_SIDE, RIGHT_SIDE,
          FROMEXPER, FROMRACE, FROMOUTSIDE, Is_airlevel } from './const.js';
 import { strongmonst } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { rn2 } from './rng.js';
+import { rn2, rn1 } from './rng.js';
 import { role_abil, race_abil } from './role_data.js';
 import { You_feel } from './pline.js';
 import {
@@ -557,17 +557,49 @@ export function exerper() {
 }
 
 // src/attrib.c exerchk() — apply the accumulated exercise when due.
-export function exerchk() {
+export async function exerchk() {
     globalThis.__EC = (globalThis.__EC ?? 0) + 1;
     /*  Check out the periodic accumulations */
     exerper();
 
     /*  Are we ready for a test? */
     if (game.moves >= game.context.next_attrib_check && !game.multi) {
-        /* The test itself adjusts attributes through adjattrib() and needs
-           ATTRMIN/ATTRMAX plus the poly rules; it draws only through
-           attrcurse(), which no reachable state triggers yet. */
-        note_unported_attrib('exerchk:test');
+        for (let i = 0; i < A_MAX; i++) {
+            let ax = AEXE(i);
+            if (!ax)
+                continue;
+
+            const mod_val = Math.sign(ax);
+            const lolim = ATTRMIN(i);
+            const hilim = Math.min(ATTRMAX(i), 18);
+            if (ax < 0 ? ABASE(i) <= lolim : ABASE(i) >= hilim) {
+                setAEXE(i, Math.trunc(Math.abs(ax) / 2) * mod_val);
+                continue;
+            }
+            if (game.u.umonnum !== game.u.umonster && i !== A_WIS) {
+                setAEXE(i, Math.trunc(Math.abs(ax) / 2) * mod_val);
+                continue;
+            }
+
+            const target = i !== A_WIS
+                ? Math.trunc(Math.abs(ax) * 2 / 3) : Math.abs(ax);
+            if (rn2(AVAL) <= target
+                && await adjattrib(i, mod_val, -1)) {
+                setAEXE(i, 0);
+                ax = 0;
+                await You(`${mod_val > 0 ? 'must have been' : "haven't been"} ${
+                    [
+                        ['exercising diligently', 'exercising properly'],
+                        [null, null],
+                        ['very observant', 'paying attention'],
+                        ['working on your reflexes', 'working on reflexes lately'],
+                        ['leading a healthy life-style', 'watching your health'],
+                        [null, null],
+                    ][i][mod_val > 0 ? 0 : 1]}.`);
+            }
+            setAEXE(i, Math.trunc(Math.abs(ax) / 2) * mod_val);
+        }
+        game.context.next_attrib_check += rn1(200, 800);
     }
 }
 

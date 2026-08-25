@@ -14,7 +14,8 @@ import { helpless, DEADMONSTER } from './monst.js';
 import { rn2 } from './rng.js';
 import { ECMD_OK, ECMD_TIME, IS_WALL, SDOOR, isok, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, STRAT_WAITMASK,
-         ANY_SHOP, ROOMOFFSET } from './const.js';
+         ANY_SHOP, ROOMOFFSET, VAULT } from './const.js';
+import { ONAMES } from './objects_data.js';
 import { search_special } from './mkroom.js';
 import { tended_shop, noisy_shop } from './shk.js';
 import { MSOUND } from './monst_data.js';
@@ -22,7 +23,7 @@ import { canspotmon } from './display.js';
 import { getdir } from './cmd.js';
 import { m_at } from './mon.js';
 import { Deaf, Hallucination } from './youprop.js';
-import { pline_The, You_hear } from './pline.js';
+import { pline_The, You, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { Monnam } from './do_name.js';
 import { vtense } from './objnam.js';
@@ -57,10 +58,51 @@ export async function dosounds() {
         note_unported('dosounds throne room');
     }
     if (f.has_swamp && !rn2(200)) {
-        note_unported('dosounds swamp');
+        const swamp_msg = [
+            'hear mosquitoes!', 'smell marsh gas!', 'hear Donald Duck!',
+        ];
+        await You(swamp_msg[rn2(2) + hallu]);
+        return;
     }
     if (f.has_vault && !rn2(200)) {
-        note_unported('dosounds vault');
+        const sroom = search_special(VAULT);
+        if (!sroom) {
+            f.has_vault = 0;
+            return;
+        }
+        if (!vault_occupied(game.u.urooms) && !findgd()) {
+            switch (rn2(2) + hallu) {
+            case 1: {
+                let gold_in_vault = false;
+                for (let x = sroom.lx; x <= sroom.hx; x++) {
+                    for (let y = sroom.ly; y <= sroom.hy; y++) {
+                        if ((game.level?.objects || []).some(
+                                obj => obj.ox === x && obj.oy === y
+                                    && obj.otyp === ONAMES.GOLD_PIECE))
+                            gold_in_vault = true;
+                    }
+                }
+                const roomno = game.level.rooms.indexOf(sroom) + ROOMOFFSET;
+                if (vault_occupied(game.u.urooms) !== roomno) {
+                    if (gold_in_vault) {
+                        await You_hear(hallu
+                            ? 'the quarterback calling the play.'
+                            : 'someone counting gold coins.');
+                    } else {
+                        await You_hear('someone searching.');
+                    }
+                    break;
+                }
+            }
+            case 0:
+                await You_hear('the footsteps of a guard on patrol.');
+                break;
+            case 2:
+                await You_hear('Ebenezer Scrooge!');
+                break;
+            }
+        }
+        return;
     }
     if (f.has_beehive && !rn2(200)) {
         note_unported('dosounds beehive');
@@ -123,6 +165,21 @@ export async function dosounds() {
 function Is_oracle_level() {
     const o = game.special_levels?.oracle_level;
     return !!(o && game.u.uz.dnum === o.dnum && game.u.uz.dlevel === o.dlevel);
+}
+
+// src/vault.c:244 vault_occupied() and :1272 gd_sound().
+function vault_occupied(urooms) {
+    for (const ch of urooms || '') {
+        const roomno = ch.charCodeAt(0);
+        if (game.level?.rooms?.[roomno - ROOMOFFSET]?.rtype === VAULT)
+            return roomno;
+    }
+    return 0;
+}
+
+function findgd() {
+    return (game.level?.monsters || []).find(
+        mon => mon.isgd && !DEADMONSTER(mon)) || null;
 }
 
 function note_unported(what) {

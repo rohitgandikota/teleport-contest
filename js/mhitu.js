@@ -866,7 +866,8 @@ export async function mdamageu(mtmp, n) {
             const pending = game._pending_message || '';
             if (game.u.uhp === -1 && pending) {
                 game._deferred_status_hp_until_more = Math.max(shownHp | 0, 0);
-                game._deferred_status_hp_more_count = pending.includes('  Boing!  ')
+                game._deferred_status_hp_more_count = game.u.uprops?.LIFESAVED
+                    || pending.includes('  Boing!  ')
                     ? 1 : 2;
             }
             const { done_in_by, DIED } = await import('./end.js');

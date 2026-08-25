@@ -1268,7 +1268,8 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
         drop_it = true;
     } else {
         const oquan = obj.quan;
-        let prev_encumbr = near_capacity(); /* before addinv() */
+        const old_encumbr = near_capacity(); /* before addinv() */
+        let prev_encumbr = old_encumbr;
 
         /* encumbrance limit is max( current_state, pickup_burden );
            this used to use hardcoded MOD_ENCUMBER (stressed) instead
@@ -1285,6 +1286,13 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
                 obj = splitobj(obj, oquan);
             drop_it = true;
         } else {
+            if (near_capacity() !== old_encumbr) {
+                /* C does not repaint the new capacity condition until
+                   encumber_msg() has announced it. Keep the pre-add status
+                   while prinv() is blocked at a More prompt. */
+                game._encumber_status_stale = true;
+                game._deferred_status_capacity = old_encumbr;
+            }
             if (game.flags?.autoquiver && !game.uquiver && !obj.owornmask
                 && (is_missile(obj) || ammo_and_launcher(obj, game.uwep)
                     || ammo_and_launcher(obj, game.uswapwep)))

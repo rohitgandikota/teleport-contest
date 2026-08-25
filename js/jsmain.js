@@ -197,6 +197,9 @@ export class NethackGame {
 
         // Run game startup
         await newgame();
+        /* src/allmain.c moveloop_preamble() sets this before the first
+           command. Attribute changes use it to announce load changes. */
+        g.program_state.in_moveloop = true;
 
         /* sys/unix/unixmain.c:317 — "newgame(); wd_message();": the play-mode
            notice lands between welcome() and the tutorial query. */

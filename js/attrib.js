@@ -335,8 +335,9 @@ export async function adjattrib(ndx, incr, msgflg) {
     (game.disp ||= {}).botl = true;
     if (msgflg <= 0)
         await You_feel(`${(incr > 1 || incr < -1) ? 'very ' : ''}${attrstr}!`);
-    /* encumber_msg() for STR/CON changes needs the encumbrance message
-       machinery; noted where it lands */
+    if (game.program_state?.in_moveloop
+        && (ndx === A_STR || ndx === A_CON))
+        await encumber_msg();
     return true;
 }
 

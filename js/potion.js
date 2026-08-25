@@ -577,6 +577,7 @@ export async function dodip() {
     /* inaccessible_equipment — cursed worn gear check, records via getobj */
 
     const shortestname = (obj.quan > 1) ? 'them' : 'it';
+    const obuf = short_oname(obj, doname, thesimpleoname, 49);
 
     if (at_fountain || at_pool || at_sink) {
         /* can_reach_floor is true for an unimpaired hero */
@@ -584,7 +585,6 @@ export async function dodip() {
             /* src/potion.c:2301: reserve room for the longest possible
                second-stage dip prompt, then shorten the object name by the
                same sequence C uses. */
-            const obuf = short_oname(obj, doname, thesimpleoname, 49);
             const q = `Dip ${game.flags?.verbose === false ? shortestname
                              : obuf} into the fountain?`;
             const ans = await tty_yn_function(q, 'yn', 'n');
@@ -602,6 +602,13 @@ export async function dodip() {
     }
 
     /* "What do you want to dip <obj> into?" — the potion-mixing arm */
-    note_unported_potion('dodip:interdip');
+    const potion = await getobj(
+        `dip ${game.flags?.verbose === false ? shortestname : obuf} into`,
+        candidate => candidate?.oclass === OCLASSES.POTION_CLASS
+            ? GETOBJ_SUGGEST : GETOBJ_EXCLUDE,
+        GETOBJ_NOFLAGS);
+    if (!potion)
+        return ECMD_CANCEL;
+    note_unported_potion('dodip:potion_dip');
     return ECMD_OK;
 }

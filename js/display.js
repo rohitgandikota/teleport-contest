@@ -9,7 +9,7 @@ import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
-import { Infravision, Hallucination } from './youprop.js';
+import { Infravision, Hallucination, Invis, See_invisible } from './youprop.js';
 import { observe_object } from './o_init.js';
 import { distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
@@ -67,6 +67,19 @@ const ANSI_COLOR = [
     96,  // CLR_BRIGHT_CYAN   14
     97,  // CLR_WHITE     15
 ];
+
+/* include/display.h canspotself().  Blind heroes can locate themselves by
+   touch; otherwise intrinsic invisibility hides the hero glyph unless they
+   can see invisible. */
+function canspotself() {
+    const u = game.u;
+    if (!u)
+        return false;
+    const invisible = Invis() && !See_invisible();
+    return !!u.ublind || !!u.uswallow
+           || (!invisible && !u.uundetected)
+           || !!u.uprops?.DETECT_MONSTERS;
+}
 
 /* src/stairs.c:180 known_branch_stairs() and stairway_at() — needed to pick
    S_brupstair over S_upstair for the displayed glyph, the same test
@@ -1032,18 +1045,21 @@ export function newsym(x, y) {
            and display_self() draws '@' over it.
            include/display.h:246 maybe_display_usteed() — while riding, the
            hero's square shows the STEED's glyph, not '@'. */
-        const steed = game.u.usteed;
-        if (steed && mon_visible(steed))
-            show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
-                            steed.data.mcolor ?? NO_COLOR, false, 0,
-                            { kind: 'hero', mon: steed });
-        else
-            show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
         const under = covers_objects(x, y) ? null
             : (game.level?.objects || [])
                   .find(o => o.ox === x && o.oy === y);
         const tg = under ? floor_object_glyph(under, x, y)
                          : terrain_glyph(loc, x, y);
+        const steed = game.u.usteed;
+        if (canspotself() && steed && mon_visible(steed))
+            show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
+                            steed.data.mcolor ?? NO_COLOR, false, 0,
+                            { kind: 'hero', mon: steed });
+        else if (canspotself())
+            show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
+        else
+            show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, pile_attr(tg.glyph),
+                            tg.glyph ?? { kind: 'cmap', cmap: tg.cmap });
         loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
                                  glyph: tg.glyph
                                      ?? { kind: 'cmap', cmap: tg.cmap } };
@@ -1326,7 +1342,7 @@ export async function docrt() {
         if (mtmp.mhp <= 0) continue;
         newsym(mtmp.mx, mtmp.my);
     }
-    if (game.u?.ux > 0)
+    if (game.u?.ux > 0 && canspotself())
         show_glyph_cell(game.u.ux, game.u.uy, '@', CLR_WHITE, false, 0,
                         { kind: 'hero' });
 

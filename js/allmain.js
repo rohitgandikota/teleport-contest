@@ -46,7 +46,11 @@ export async function stop_occupation() {
         game.occtxt = null;
         (game.disp ||= {}).botl = true; /* in case u.uhs changed */
     }
-    game.multi = 0;
+    /* nomul(0) preserves a negative multi value.  That matters when a
+       monster attacks while the hero is dressing or disrobing: the attack
+       stops an occupation, but it must not cancel the separate afternmv
+       countdown. */
+    nomul(0);
 }
 
 import { rn2, rn1 } from './rng.js';

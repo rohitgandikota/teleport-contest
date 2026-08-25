@@ -88,7 +88,8 @@ import { In_quest, TOOKPLUNGE, VIASITTING, HURTLING,
          Is_firelevel, Is_earthlevel, IS_AIR, IS_ROOM,
          IS_WALL, IS_DOOR, SDOOR, MIGR_RANDOM, MON_MIGRATING } from './const.js';
 import { just_an } from './objnam.js';
-import { Deaf, Levitation, Flying, Hallucination, Underwater } from './youprop.js';
+import { Deaf, Levitation, Flying, Hallucination, Underwater,
+         See_invisible, Invis } from './youprop.js';
 import { mindless } from './mondata.js';
 import { couldsee } from './vision.js';
 import { mdistu } from './monmove.js';
@@ -834,6 +835,19 @@ async function domagictrap() {
     }
 
     switch (fate) {
+    case 11: { /* toggle intrinsic invisibility */
+        await You_hear('a low hum.');
+        const was_invisible = Invis();
+        if (!was_invisible && !game.u.ublind) {
+            await pline(`${Hallucination() ? 'Far out, man!  You'
+                                           : 'Gee!  All of a sudden, you'} ${
+                See_invisible() ? 'can see right through yourself'
+                                : "can't see yourself"}.`);
+        }
+        (game.u.uprops ||= {}).INVIS = !was_invisible;
+        newsym(game.u.ux, game.u.uy);
+        break;
+    }
     case 13:  /* odd feelings */
         await pline('A shiver runs up and down your spine!');
         break;

@@ -199,68 +199,79 @@ export function find_offensive(mtmp) {
     /* this picks the last viable item rather than prioritizing choices */
     for (const obj of (mtmp.minvent || [])) {
         if (!reflection_skip) {
-            if (!nomore(MUSE_WAN_DEATH)
-                && obj.otyp === ONAMES.WAN_DEATH && obj.spe > 0
+            if (nomore(MUSE_WAN_DEATH))
+                continue;
+            if (obj.otyp === ONAMES.WAN_DEATH && obj.spe > 0
                 && !m_seenres(mtmp, M_SEEN_MAGR)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_WAN_DEATH;
             }
-            if (!nomore(MUSE_WAN_SLEEP)
-                && obj.otyp === ONAMES.WAN_SLEEP && obj.spe > 0
+            if (nomore(MUSE_WAN_SLEEP))
+                continue;
+            if (obj.otyp === ONAMES.WAN_SLEEP && obj.spe > 0
                 && game.multi >= 0
                 && !m_seenres(mtmp, M_SEEN_SLEEP)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_WAN_SLEEP;
             }
-            if (!nomore(MUSE_WAN_FIRE)
-                && obj.otyp === ONAMES.WAN_FIRE && obj.spe > 0
+            if (nomore(MUSE_WAN_FIRE))
+                continue;
+            if (obj.otyp === ONAMES.WAN_FIRE && obj.spe > 0
                 && !m_seenres(mtmp, M_SEEN_FIRE)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_WAN_FIRE;
             }
-            if (!nomore(MUSE_FIRE_HORN)
-                && obj.otyp === ONAMES.FIRE_HORN && obj.spe > 0
+            if (nomore(MUSE_FIRE_HORN))
+                continue;
+            if (obj.otyp === ONAMES.FIRE_HORN && obj.spe > 0
                 && can_blow(mtmp)
                 && !m_seenres(mtmp, M_SEEN_FIRE)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_FIRE_HORN;
             }
-            if (!nomore(MUSE_WAN_COLD)
-                && obj.otyp === ONAMES.WAN_COLD && obj.spe > 0
+            if (nomore(MUSE_WAN_COLD))
+                continue;
+            if (obj.otyp === ONAMES.WAN_COLD && obj.spe > 0
                 && !m_seenres(mtmp, M_SEEN_COLD)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_WAN_COLD;
             }
-            if (!nomore(MUSE_FROST_HORN)
-                && obj.otyp === ONAMES.FROST_HORN && obj.spe > 0
+            if (nomore(MUSE_FROST_HORN))
+                continue;
+            if (obj.otyp === ONAMES.FROST_HORN && obj.spe > 0
                 && can_blow(mtmp)
                 && !m_seenres(mtmp, M_SEEN_COLD)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_FROST_HORN;
             }
-            if (!nomore(MUSE_WAN_LIGHTNING)
-                && obj.otyp === ONAMES.WAN_LIGHTNING && obj.spe > 0
+            if (nomore(MUSE_WAN_LIGHTNING))
+                continue;
+            if (obj.otyp === ONAMES.WAN_LIGHTNING && obj.spe > 0
                 && !m_seenres(mtmp, M_SEEN_ELEC)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_WAN_LIGHTNING;
             }
-            if (!nomore(MUSE_WAN_MAGIC_MISSILE)
-                && obj.otyp === ONAMES.WAN_MAGIC_MISSILE && obj.spe > 0
+            if (nomore(MUSE_WAN_MAGIC_MISSILE))
+                continue;
+            if (obj.otyp === ONAMES.WAN_MAGIC_MISSILE && obj.spe > 0
                 && !m_seenres(mtmp, M_SEEN_MAGR)) {
                 game.m.offensive = obj;
                 game.m.has_offense = MUSE_WAN_MAGIC_MISSILE;
             }
         }
-        if (!nomore(MUSE_WAN_UNDEAD_TURNING))
-            m_use_undead_turning(mtmp, obj);
-        if (!nomore(MUSE_WAN_STRIKING)
-            && obj.otyp === ONAMES.WAN_STRIKING && obj.spe > 0
+        if (nomore(MUSE_WAN_UNDEAD_TURNING))
+            continue;
+        m_use_undead_turning(mtmp, obj);
+        if (nomore(MUSE_WAN_STRIKING))
+            continue;
+        if (obj.otyp === ONAMES.WAN_STRIKING && obj.spe > 0
             && !m_seenres(mtmp, M_SEEN_MAGR)) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_WAN_STRIKING;
         }
-        if (!nomore(MUSE_WAN_TELEPORTATION)
-            && obj.otyp === ONAMES.WAN_TELEPORTATION && obj.spe > 0
+        if (nomore(MUSE_WAN_TELEPORTATION))
+            continue;
+        if (obj.otyp === ONAMES.WAN_TELEPORTATION && obj.spe > 0
             /* don't give controlled hero a free teleport */
             && !Teleport_control()
             /* same hack as MUSE_WAN_TELEPORTATION_SELF */
@@ -274,30 +285,35 @@ export function find_offensive(mtmp) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_WAN_TELEPORTATION;
         }
-        if (!nomore(MUSE_POT_PARALYSIS)
-            && obj.otyp === ONAMES.POT_PARALYSIS && game.multi >= 0) {
+        if (nomore(MUSE_POT_PARALYSIS))
+            continue;
+        if (obj.otyp === ONAMES.POT_PARALYSIS && game.multi >= 0) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_POT_PARALYSIS;
         }
-        if (!nomore(MUSE_POT_BLINDNESS)
-            && obj.otyp === ONAMES.POT_BLINDNESS
+        if (nomore(MUSE_POT_BLINDNESS))
+            continue;
+        if (obj.otyp === ONAMES.POT_BLINDNESS
             && !attacktype(mdat, ATTKS.AT_GAZE)) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_POT_BLINDNESS;
         }
-        if (!nomore(MUSE_POT_CONFUSION)
-            && obj.otyp === ONAMES.POT_CONFUSION) {
+        if (nomore(MUSE_POT_CONFUSION))
+            continue;
+        if (obj.otyp === ONAMES.POT_CONFUSION) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_POT_CONFUSION;
         }
-        if (!nomore(MUSE_POT_SLEEPING)
-            && obj.otyp === ONAMES.POT_SLEEPING
+        if (nomore(MUSE_POT_SLEEPING))
+            continue;
+        if (obj.otyp === ONAMES.POT_SLEEPING
             && !m_seenres(mtmp, M_SEEN_SLEEP)) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_POT_SLEEPING;
         }
-        if (!nomore(MUSE_POT_ACID)
-            && obj.otyp === ONAMES.POT_ACID
+        if (nomore(MUSE_POT_ACID))
+            continue;
+        if (obj.otyp === ONAMES.POT_ACID
             && !m_seenres(mtmp, M_SEEN_ACID)) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_POT_ACID;
@@ -306,8 +322,9 @@ export function find_offensive(mtmp) {
          * are in a 1 square radius are a subset of the locations that
          * are in wand or throwing range (in other words, always lined_up())
          */
-        if (!nomore(MUSE_SCR_EARTH)
-            && obj.otyp === ONAMES.SCR_EARTH
+        if (nomore(MUSE_SCR_EARTH))
+            continue;
+        if (obj.otyp === ONAMES.SCR_EARTH
             && (hard_helmet(mtmp_helmet) || mtmp.mconf
                 || amorphous(mdat) || passes_walls(mdat)
                 || noncorporeal(mdat) || unsolid(mdat)
@@ -319,8 +336,9 @@ export function find_offensive(mtmp) {
             game.m.offensive = obj;
             game.m.has_offense = MUSE_SCR_EARTH;
         }
-        if (!nomore(MUSE_CAMERA)
-            && obj.otyp === ONAMES.EXPENSIVE_CAMERA
+        if (nomore(MUSE_CAMERA))
+            continue;
+        if (obj.otyp === ONAMES.EXPENSIVE_CAMERA
             && ((!game.u.ublind && !resists_blnd(null))
                 || hates_light(game.mons[game.u.umonnum]))
             && dist2(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy) <= 2
@@ -383,6 +401,8 @@ export async function use_offensive(mtmp) {
                 if (game.u.uprops?.HALF_SPDAM)
                     damage = Math.trunc((damage + 1) / 2);
                 await losehp(damage, 'wand', KILLED_BY_AN);
+                if (seen)
+                    makeknown(obj.otyp);
             } else {
                 await pline_The('wand misses you.');
             }

@@ -953,7 +953,7 @@ const DMG_DESTROY_SCALE = 5;
 // src/zap.c:5965 destroy_items(). The damage cap is calculated before the
 // inventory is scanned, so its rn2(5) is spent even when the target carries
 // nothing. Item-class damage remains an explicit gap for occupied inventories.
-function destroy_items(mon, osym, dmg_in) {
+export function destroy_items(mon, osym, dmg_in) {
     let limit = Math.trunc(dmg_in / DMG_DESTROY_SCALE);
     if (dmg_in % DMG_DESTROY_SCALE > rn2(DMG_DESTROY_SCALE))
         ++limit;

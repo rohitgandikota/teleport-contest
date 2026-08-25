@@ -1,0 +1,21 @@
+{
+  "name": "spellbook-study-failure",
+  "description": "Debug Valkyrie attempts difficult and cursed spellbooks, covering comprehension failure, cursed-book side effects, study-time helplessness, and possible book destruction.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "object.spellbooks-spells",
+    "object.identification",
+    "survival.timed-status"
+  ],
+  "segments": [
+    {
+      "seed": 6142,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :\u0017uncursed spellbook of fireball\r:rf .:"
+    }
+  ]
+}

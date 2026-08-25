@@ -678,7 +678,8 @@ span.terminal-cursor {
             if (lastCol < 0) { if (r < lastRow) out += '\n'; continue; }
             let firstCol = 0;
             for (let c = 0; c <= lastCol; c++) {
-                if (this.grid[r][c].ch !== ' ') { firstCol = c; break; }
+                const cell = this.grid[r][c];
+                if (cell.ch !== ' ' || cell.attr) { firstCol = c; break; }
             }
             if (firstCol > 4) out += `\x1b[${firstCol}C`;
             else if (firstCol > 0) out += ' '.repeat(firstCol);

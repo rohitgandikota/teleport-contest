@@ -1,5 +1,34 @@
 # STATUS — live handoff board
 
+## 2026-08-25: spellbook study, controlled teleport, and menu parity
+
+`study_book()` and its `learn()` occupation now follow the pinned C paths for
+normal successful study, comprehension failure, the core cursed-book effects,
+study delays, learning, relearning, retention, and books fading to blank paper.
+The Book of the Dead, novels, shop billing, and glove corrosion remain marked
+specialized gaps. Controlled
+teleport now accepts the hero's current square, matching C `goodpos()`. The
+screen serializer now preserves styled leading spaces, which fixes the known
+inverse-video menu-heading ceiling across the public corpus. Out-of-sight
+`newsym()` calls no longer reveal known traps before their square has been
+seen.
+
+Two independent C recordings cover successful and failed spellbook study.
+Both reproduce byte-for-byte on a second recording and both now pass exactly:
+93/93 screens, 93/93 cursors, and 5,365/5,365 RNG calls. The expanded
+supplemental corpus is at 1,845/3,739 screens, 333,919/470,994 RNG positions,
+and 14/40 passing. Coverage is now 69 covered, 6 partial, and 29 gaps out of
+104 requirements.
+
+Public local is now 5,270/11,405 identical screens, 319,803/792,838 RNG
+positions, and 27/44 sessions passing. That is a gain of 33 screens, 19 RNG
+positions, and six exact sessions over the preceding spellbook checkpoint.
+No public session lost a screen, and all 44 hang checks pass. The focused
+`seed0014` trace is at 244/714 screens and 14,244/59,178 RNG positions. Its
+next first RNG divergence is the missing fountain-sound `rn2(2)` call in
+`dosounds()` at step 290. The live leaderboard still reflects an older build
+until the contest judge processes this push.
+
 ## 2026-08-25: potion of sickness parity
 
 `peffect_sickness()` now follows the pinned C paths for blessed, ordinary, and

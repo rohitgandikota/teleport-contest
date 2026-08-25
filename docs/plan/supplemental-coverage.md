@@ -8,16 +8,16 @@ not mean the JavaScript port passes them. Static rows are checked by
 `node tools/game-inventory.mjs`. Dynamic parity is measured by the frozen
 runner. RNG annotations only observe C functions that draw randomness.
 
-Requirements: **104**. Covered: **68**.
-Partial: **6**. Gaps: **30**.
+Requirements: **104**. Covered: **69**.
+Partial: **6**. Gaps: **29**.
 
 ## Corpus inventory
 
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 38 | 3646 | 451142 | 63 | 275 |
-| Union | 82 | 15051 | 1218902 | 76 | 383 |
+| Supplemental | 40 | 3739 | 455951 | 64 | 277 |
+| Union | 84 | 15144 | 1223711 | 76 | 383 |
 
 ## Static inventory
 
@@ -43,17 +43,17 @@ Partial: **6**. Gaps: **30**.
 | covered | `chargen.full-menu` | 1 session(s), including normal mode | `ranger-chargen` |
 | covered | `chargen.restricted-path` | 1 session(s), including normal mode | `barb-chargen` |
 | covered | `mode.normal` | 3 session(s), including normal mode | `barb-chargen`, `death-disclosure-normal`, `fountain-quaff`, `mondrift-dogfollow`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `variant-steed`, `variant-twoweapon` |
-| covered | `mode.debug` | 3 session(s) | `armor-wear-remove`, `death-disclosure-debug`, `demon-summon`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
+| covered | `mode.debug` | 3 session(s) | `armor-wear-remove`, `death-disclosure-debug`, `demon-summon`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `spellbook-study-failure`, `spellbook-study-success`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
 | covered | `options.rc-bindings` | 1 session(s) | `variant-custom-bindings` |
 
 ## Input and display
 
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
-| covered | `ui.menus` | 2 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `ranger-chargen`, `save-restore-pair`, `scroll-reading` |
-| covered | `ui.getlin` | 2 session(s) | `armor-wear-remove`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `variant-world-tour`, `wand-striking-door` |
+| covered | `ui.menus` | 2 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `spellbook-study-success` |
+| covered | `ui.getlin` | 2 session(s) | `armor-wear-remove`, `engrave-elbereth`, `kick-monster`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `spellbook-study-failure`, `spellbook-study-success`, `variant-world-tour`, `wand-striking-door` |
 | covered | `ui.getpos` | 1 session(s) | `fountain-quaff`, `scroll-reading` |
-| covered | `ui.more-paging` | 1 session(s), including normal mode | `armor-wear-remove`, `pray-low-hp`, `save-restore-pair`, `scroll-reading` |
+| covered | `ui.more-paging` | 1 session(s), including normal mode | `armor-wear-remove`, `pray-low-hp`, `save-restore-pair`, `scroll-reading`, `spellbook-study-failure`, `spellbook-study-success` |
 | covered | `ui.cancel-invalid` | 1 session(s), including normal mode | `kick-monster`, `monk-martial-arts`, `scroll-reading`, `variant-custom-bindings` |
 | covered | `ui.count-repeat` | 1 session(s), including normal mode | `barb-chargen`, `monk-martial-arts`, `ranger-chargen` |
 | covered | `ui.map-memory-vision` | 2 session(s), including normal mode | `barb-chargen`, `engrave-elbereth`, `fountain-quaff`, `monk-martial-arts`, `planes-tour`, `ranger-chargen`, `variant-custom-bindings`, `variant-world-tour` |
@@ -72,7 +72,7 @@ Partial: **6**. Gaps: **30**.
 
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
-| covered | `level.ordinary` | 3 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `death-disclosure-debug`, `death-disclosure-normal`, `demon-summon`, `engrave-elbereth`, `fountain-quaff`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `pray-low-hp`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `wand-striking-door` |
+| covered | `level.ordinary` | 3 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `death-disclosure-debug`, `death-disclosure-normal`, `demon-summon`, `engrave-elbereth`, `fountain-quaff`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `pray-low-hp`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `spellbook-study-failure`, `spellbook-study-success`, `wand-striking-door` |
 | gap | `level.themed` | 2 session(s), including normal mode | none |
 | covered | `level.special-variants` | 2 session(s) | `planes-tour`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `variant-world-tour` |
 | gap | `level.mines` | 1 session(s) | none |
@@ -126,10 +126,10 @@ Partial: **6**. Gaps: **30**.
 | covered | `object.potions` | 2 session(s) | `fountain-quaff`, `pray-low-hp`, `wand-striking-door` |
 | gap | `object.alchemy` | 1 session(s) | none |
 | covered | `object.scrolls` | 2 session(s) | `scroll-reading`, `variant-hallucination` |
-| gap | `object.spellbooks-spells` | 2 session(s) | none |
+| covered | `object.spellbooks-spells` | 2 session(s) | `spellbook-study-failure`, `spellbook-study-success` |
 | covered | `object.wands` | 2 session(s) | `engrave-elbereth`, `variant-wandpoly`, `wand-striking-door` |
 | partial | `object.gems-stones` | 2 session(s) | `fountain-quaff` |
-| covered | `object.identification` | 2 session(s) | `armor-wear-remove`, `engrave-elbereth`, `fountain-quaff`, `scroll-reading`, `variant-wandpoly`, `wand-striking-door` |
+| covered | `object.identification` | 2 session(s) | `armor-wear-remove`, `engrave-elbereth`, `fountain-quaff`, `scroll-reading`, `spellbook-study-failure`, `spellbook-study-success`, `variant-wandpoly`, `wand-striking-door` |
 | covered | `object.buc-enchant-erosion` | 2 session(s) | `armor-wear-remove`, `engrave-elbereth`, `fountain-quaff`, `scroll-reading` |
 | gap | `object.artifacts` | 2 session(s) | none |
 
@@ -150,9 +150,9 @@ Partial: **6**. Gaps: **30**.
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
 | covered | `survival.hunger` | 2 session(s), including normal mode | `barb-chargen`, `mondrift-objects`, `ranger-chargen` |
-| covered | `survival.timed-status` | 2 session(s) | `barb-chargen`, `monk-martial-arts`, `pray-low-hp`, `variant-hallucination` |
+| covered | `survival.timed-status` | 2 session(s) | `barb-chargen`, `monk-martial-arts`, `pray-low-hp`, `spellbook-study-failure`, `variant-hallucination` |
 | partial | `survival.instant-deaths` | 2 session(s) | `pray-low-hp` |
-| covered | `survival.regen-exercise` | 1 session(s), including normal mode | `barb-chargen`, `fountain-quaff`, `monk-martial-arts` |
+| covered | `survival.regen-exercise` | 1 session(s), including normal mode | `barb-chargen`, `fountain-quaff`, `monk-martial-arts`, `spellbook-study-success` |
 | gap | `survival.encumbrance` | 1 session(s), including normal mode | none |
 
 ## Religion and luck
@@ -228,6 +228,8 @@ Partial: **6**. Gaps: **30**.
 | `ranger-chargen` | normal | 90 | present | `chargen.full-menu`, `combat.melee`, `combat.ranged`, `level.ordinary`, `mode.normal`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.food-corpses`, `object.weapons`, `survival.hunger`, `turn.occupation-interrupt`, `turn.speed-energy`, `ui.count-repeat`, `ui.map-memory-vision`, `ui.menus` |
 | `save-restore-pair` | normal | 33 | present | `level.ordinary`, `mode.normal`, `monster.hero-melee`, `persistence.save-restore`, `religion.luck-calendar`, `ui.menus`, `ui.more-paging` |
 | `scroll-reading` | debug | 109 | present | `level.ordinary`, `mode.debug`, `object.buc-enchant-erosion`, `object.identification`, `object.scrolls`, `ui.cancel-invalid`, `ui.getlin`, `ui.getpos`, `ui.menus`, `ui.more-paging` |
+| `spellbook-study-failure` | debug | 40 | present | `level.ordinary`, `mode.debug`, `object.identification`, `object.spellbooks-spells`, `survival.timed-status`, `ui.getlin`, `ui.more-paging` |
+| `spellbook-study-success` | debug | 51 | present | `level.ordinary`, `mode.debug`, `object.identification`, `object.spellbooks-spells`, `survival.regen-exercise`, `ui.getlin`, `ui.menus`, `ui.more-paging` |
 | `variant-custom-bindings` | debug | 37 | present | `mode.debug`, `options.rc-bindings`, `ui.cancel-invalid`, `ui.map-memory-vision` |
 | `variant-hallucination` | debug | 531 | present | `mode.debug`, `object.amulets`, `object.scrolls`, `survival.timed-status`, `ui.animation`, `ui.hallucination` |
 | `variant-steed` | normal | 42 | present | `combat.melee`, `mode.normal`, `monster.steeds`, `social.chat`, `turn.speed-energy` |
@@ -252,7 +254,6 @@ Partial: **6**. Gaps: **30**.
 - **gap:** `monster.covetous`: Covetous goals, warping, healing, and invocation-item theft
 - **gap:** `object.tools-containers`: Tools, containers, nested contents, locks, traps, and magical bags
 - **gap:** `object.alchemy`: Blessed, uncursed, cursed, diluted, and smock-modified alchemy outcomes
-- **gap:** `object.spellbooks-spells`: Learning, reading delay, failure, retention, and all spell schools
 - **partial:** `object.gems-stones`: Gems, glass, luckstones, loadstones, touchstones, and flint
 - **gap:** `object.artifacts`: Touch, blast, carried, wielded, invoked, gift, and wish artifact paths
 - **gap:** `combat.knockback`: Hurtle distance, collision, traps, and animation

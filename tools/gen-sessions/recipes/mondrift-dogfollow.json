@@ -1,6 +1,13 @@
 {
   "name": "mondrift-dogfollow",
   "description": "Silent-drift reproducer for dog_move: normal-mode Valkyrie with a dog walks a long path (east, south, west) and rests, forcing 60+ consecutive dog_move turns with goal changes; recorded screens pin the pet's exact path each step.",
+  "coverage": [
+    "mode.normal",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.pets"
+  ],
   "segments": [
     {
       "seed": 6021,

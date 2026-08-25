@@ -1,6 +1,28 @@
 {
   "name": "monk-martial-arts",
   "description": "Normal-mode Monk: martial-arts punches (jackal one-shot), door auto-open, locked door kicked open, degraded graffiti rumor read, magic trap (blind + deaf), blind floor-feel pickup, unseen-attacker combat with I glyphs, force-fight thin air, blindness cured by resting.",
+  "coverage": [
+    "mode.normal",
+    "ui.cancel-invalid",
+    "ui.count-repeat",
+    "ui.map-memory-vision",
+    "turn.speed-energy",
+    "turn.occupation-interrupt",
+    "turn.timers",
+    "level.ordinary",
+    "terrain.doors-locks",
+    "terrain.engraving-elbereth",
+    "traps.projectile-physical",
+    "traps.magical",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.death-corpse-revival",
+    "object.food-corpses",
+    "combat.melee",
+    "combat.unarmed-kick",
+    "survival.timed-status",
+    "survival.regen-exercise"
+  ],
   "segments": [
     {
       "seed": 6011,

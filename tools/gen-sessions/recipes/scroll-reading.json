@@ -1,6 +1,18 @@
 {
   "name": "scroll-reading",
   "description": "Debug Wizard: three ^W wishes typed in full (quantity + blessed), blessed identify identifies the whole inventory chain, cursed blank paper, scroll of teleportation with wizard-mode controlled teleport (getpos cursor, autodescribe, Tip window), reading the blank scroll.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.menus",
+    "ui.more-paging",
+    "ui.cancel-invalid",
+    "level.ordinary",
+    "object.scrolls",
+    "object.identification",
+    "object.buc-enchant-erosion"
+  ],
   "segments": [
     {
       "seed": 6004,

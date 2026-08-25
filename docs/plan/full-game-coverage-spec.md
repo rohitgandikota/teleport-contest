@@ -656,7 +656,7 @@ At commit `79ed734`:
 | Corpus | Sessions passing | Screens | Screen rate | RNG positions |
 |---|---:|---:|---:|---:|
 | Public local | 21/44 | 5,120/11,405 | 44.89% | 312,405/792,838 |
-| Supplemental C recorder | 9/28 | 1,041/1,807 | 57.61% | 266,118/282,098 |
+| Supplemental C recorder | 9/28 | 1,041/1,762 | 59.08% | 266,118/282,098 |
 | Held-out leaderboard | 1/44 | 3,438/11,265 | 30.52% | 15.98% |
 
 The held-out to public screen-point ratio is 0.67. The leaderboard rank was

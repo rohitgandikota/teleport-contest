@@ -1,5 +1,29 @@
 # STATUS — live handoff board
 
+## 2026-08-25: 35-session C suite and live score dashboard
+
+The supplemental corpus now has 35 C-recorded sessions, 3,438 scored screens,
+and 452,854 RNG positions. It includes all 13 role Quest maps plus independent
+seed variants for custom bindings, hallucination, steeds, two-weapon combat,
+wand polymorph, and the deep-level world tour. The current port matches
+1,649/3,438 screens and 321,575/452,854 RNG positions, with 11/35 sessions
+passing.
+
+`docs/plan/supplemental-coverage.md` is generated from the machine-readable
+104-requirement matrix. Current dynamic and static coverage is 66 covered,
+6 partial, and 32 gaps. `tools/game-inventory.mjs` verifies the static counts
+directly against the generated tables and pinned C enums.
+
+`docs/plan/contest-dashboard.md` is the running score artifact. Its current
+snapshot records public 5,120/11,405 screens and 21/44 passing, held-out
+3,438/11,265 and 1/44 passing, rank 5/18, public RNG 39.40%, held-out RNG
+15.98%, and a 44/44 hang-gate pass. Refresh it with
+`node tools/contest-dashboard.mjs` after each verified implementation change.
+
+The recorder was rebuilt from pinned source and patches after a stale `ROSTER`
+probe was found. The rebuilt binary has no known debug markers, and the
+canonical `seed0077` rerecord canary passes exactly.
+
 ## 2026-08-24 (coverage expansion): baseline preserved, full-game spec added
 
 The exact clean baseline at `79ed734` is preserved and pushed as
@@ -14,7 +38,7 @@ NetHack 5.0 differences, and a concrete definition of supplemental coverage.
 Reproduced baselines at `79ed734`:
 
 - public: 21/44, 5120/11405 screens, 312405/792838 RNG positions;
-- supplemental C corpus: 9/28, 1041/1807 screens, 266118/282098 RNG positions;
+- supplemental C corpus: 9/28, 1041/1762 screens, 266118/282098 RNG positions;
 - hidden leaderboard: 1/44, 3438/11265 screens, 15.98% RNG, rank 5/18.
 
 Held-out/public points = 0.67. Next: create the machine-readable coverage

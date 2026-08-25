@@ -1,6 +1,20 @@
 {
   "name": "armor-wear-remove",
   "description": "Debug Valkyrie: wishes for plate mail, gloves, ring of protection; five-turn plate donning interrupted by a jackal fight, ring-finger prompt, auto-remove of single ring, g-prefix error message, multi-turn take-off, floor ring mail picked up and worn.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "turn.occupation-interrupt",
+    "level.ordinary",
+    "monster.hero-melee",
+    "object.armor",
+    "object.rings",
+    "object.identification",
+    "object.buc-enchant-erosion",
+    "combat.melee"
+  ],
   "segments": [
     {
       "seed": 6005,

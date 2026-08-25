@@ -1,6 +1,15 @@
 {
   "name": "save-restore-pair",
   "description": "Two segments, normal-mode Rogue: segment 0 fights a newt and saves (S y, \"Be seeing you...\"); segment 1 restores the save under a different seed and datetime (\"welcome back\", new-moon warning), then explores and reads discoveries.",
+  "coverage": [
+    "mode.normal",
+    "ui.menus",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.hero-melee",
+    "persistence.save-restore",
+    "religion.luck-calendar"
+  ],
   "segments": [
     {
       "seed": 6500,

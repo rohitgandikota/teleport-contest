@@ -1,6 +1,17 @@
 {
   "name": "planes-tour",
   "description": "endgame reproducer: wizmode levelport through all five Elemental Planes (earth, air, fire, water, astral) with a few turns of bubble/cloud/fumarole machinery on each",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.animation",
+    "level.special-variants",
+    "level.planes",
+    "level.astral",
+    "terrain.water-lava",
+    "terrain.air-cloud"
+  ],
   "segments": [
     {
       "seed": 6120,

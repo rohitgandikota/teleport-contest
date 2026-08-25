@@ -1,6 +1,20 @@
 {
   "name": "wand-striking-door",
   "description": "Debug Wizard: wished wand of striking (unidentified appearance), newt melee, two \"door crashes open\" zaps (adjacent and across-room ray), failed close on a broken door, black potion quaffed (\"That was smooth!\"), count-prefix search.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.animation",
+    "level.ordinary",
+    "terrain.doors-locks",
+    "monster.hero-melee",
+    "monster.death-corpse-revival",
+    "object.potions",
+    "object.wands",
+    "object.identification",
+    "combat.melee",
+    "combat.ranged"
+  ],
   "segments": [
     {
       "seed": 6006,

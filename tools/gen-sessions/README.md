@@ -43,12 +43,25 @@ A recipe names only the inputs:
 {
   "name": "fountain-quaff",
   "description": "what this covers",
+  "coverage": ["terrain.furniture", "object.potions"],
   "segments": [
     { "seed": 6002, "datetime": "20000110090000",
       "nethackrc": "OPTIONS=...\n", "moves": "..." }
   ]
 }
 ```
+
+`coverage` tags come from `coverage-requirements.json`. Generate the live gap
+report with:
+
+```bash
+node tools/gen-sessions/coverage-report.mjs
+node tools/game-inventory.mjs
+```
+
+The first command writes `docs/plan/supplemental-coverage.md`. A covered dynamic
+row means enough tagged C traces exist in the required modes. It does not mean
+the JavaScript port passes those traces.
 
 `moves` is the raw key string, one char per key, exactly as in
 `sessions/*.session.json` (JSON escapes: `\r` Enter, `\u001b` ESC,

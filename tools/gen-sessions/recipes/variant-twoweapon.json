@@ -1,0 +1,19 @@
+{
+  "name": "variant-twoweapon",
+  "description": "Independent-seed normal Samurai two-weapon, enhancement, chat, and movement command plan.",
+  "coverage": [
+    "mode.normal",
+    "combat.twoweapon",
+    "object.weapons",
+    "social.chat",
+    "turn.speed-energy"
+  ],
+  "segments": [
+    {
+      "seed": 20107,
+      "datetime": "20000211130000",
+      "nethackrc": "OPTIONS=name:Bushi,role:Samurai,race:human,gender:male,align:lawful\n",
+      "moves": "  ns#twoweapon\nbbbbbbbbbhHHHkhhbjbhhhhykk#enhance\n\u001b#twoweapon\n#twoweapon\n#chat\nl#sit\ni\u001b+\u001b\\\u001b\u0018 \u001bss:"
+    }
+  ]
+}

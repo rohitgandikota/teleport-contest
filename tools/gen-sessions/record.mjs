@@ -10,6 +10,7 @@
 //   {
 //     "name": "fountain-quaff",
 //     "description": "what this session covers",
+//     "coverage": ["terrain.furniture", "object.potions"],
 //     "segments": [
 //       { "seed": 6101, "datetime": "20000110090000",
 //         "nethackrc": "OPTIONS=...\n", "moves": "hjkl..." }
@@ -42,8 +43,9 @@ const GENERATED = path.join(HERE, 'generated');
 const RECIPES = path.join(HERE, 'recipes');
 
 function recipeToSessionInput(recipe) {
-    if (!recipe.name || !Array.isArray(recipe.segments)) {
-        throw new Error('recipe needs {name, segments:[{seed,datetime,nethackrc,moves}]}');
+    if (!recipe.name || !Array.isArray(recipe.coverage)
+        || !Array.isArray(recipe.segments)) {
+        throw new Error('recipe needs {name, coverage:[], segments:[{seed,datetime,nethackrc,moves}]}');
     }
     return {
         version: 5,
@@ -59,6 +61,7 @@ function recipeToSessionInput(recipe) {
             tool: 'tools/gen-sessions/record.mjs',
             spec: `${recipe.name}.json`,
         },
+        coverage: [...new Set(recipe.coverage)].sort(),
     };
 }
 

@@ -1,6 +1,19 @@
 {
   "name": "fountain-quaff",
   "description": "Same seed as barb-chargen, routed to the fountain: five quaffs (dex gain, vapor wisp, cool draught, monster detection with farlook browse, self-knowledge enlightenment, bad breath + fountain dries up), #dip rusts the battle-axe and finds a gem, dip refusal after dryup.",
+  "coverage": [
+    "mode.normal",
+    "ui.getpos",
+    "ui.map-memory-vision",
+    "level.ordinary",
+    "terrain.furniture",
+    "object.weapons",
+    "object.potions",
+    "object.gems-stones",
+    "object.identification",
+    "object.buc-enchant-erosion",
+    "survival.regen-exercise"
+  ],
   "segments": [
     {
       "seed": 6002,

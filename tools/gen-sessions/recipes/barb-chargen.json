@@ -1,6 +1,30 @@
 {
   "name": "barb-chargen",
   "description": "Normal-mode orcish Barbarian chargen (chaotic-only role skips the alignment menu), pet kills a jackal, arrow trap fires, multi-item pickup menu, squeaky board message, locked door kicked to pieces, newt melee, rotten garlic confusion, interrupted multi-turn search.",
+  "coverage": [
+    "chargen.restricted-path",
+    "mode.normal",
+    "ui.menus",
+    "ui.count-repeat",
+    "ui.map-memory-vision",
+    "turn.speed-energy",
+    "turn.occupation-interrupt",
+    "turn.timers",
+    "level.ordinary",
+    "terrain.doors-locks",
+    "traps.projectile-physical",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "object.weapons",
+    "object.food-corpses",
+    "combat.melee",
+    "combat.unarmed-kick",
+    "survival.hunger",
+    "survival.timed-status",
+    "survival.regen-exercise"
+  ],
   "segments": [
     {
       "seed": 6002,

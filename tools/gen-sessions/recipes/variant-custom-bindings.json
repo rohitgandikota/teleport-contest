@@ -1,0 +1,18 @@
+{
+  "name": "variant-custom-bindings",
+  "description": "Independent-seed replay of the public custom-binding command plan. It changes the map and initial state while retaining option parsing, symbol overrides, and the remapped inventory key.",
+  "coverage": [
+    "mode.debug",
+    "options.rc-bindings",
+    "ui.cancel-invalid",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 22600,
+      "datetime": "20000211130000",
+      "nethackrc": "OPTIONS=name:Binder,role:Wizard,race:human,gender:male,align:neutral\nOPTIONS=playmode:debug,showexp,time,color,lit_corridor\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nSYMBOLS=S_pool:~,S_fountain:{\nBIND=v:inventory\n",
+      "moves": "   ny v hjlhh...\u0016?\ne\u0016?\n Bi\u001b+\u001b\\\u001b\u0018 \u001bss:"
+    }
+  ]
+}

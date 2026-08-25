@@ -1,0 +1,19 @@
+{
+  "name": "variant-steed",
+  "description": "Independent-seed normal Knight riding and combat command plan with the starting pony.",
+  "coverage": [
+    "mode.normal",
+    "monster.steeds",
+    "social.chat",
+    "turn.speed-energy",
+    "combat.melee"
+  ],
+  "segments": [
+    {
+      "seed": 20104,
+      "datetime": "20000211130000",
+      "nethackrc": "OPTIONS=name:Sir,role:Knight,race:human,gender:male,align:lawful\n",
+      "moves": "  ns#ride\nlLLnnnnljnll#ride\n  i\u001b+\u001b\\\u001b\u0018 \u001bss:"
+    }
+  ]
+}

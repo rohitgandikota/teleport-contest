@@ -1,0 +1,18 @@
+{
+  "name": "variant-wandpoly",
+  "description": "Independent-seed wizard wand-of-polymorph pile and monster-creation plan, used to separate real polymorph behavior from one public map.",
+  "coverage": [
+    "mode.debug",
+    "forms.polymorph",
+    "object.wands",
+    "object.identification"
+  ],
+  "segments": [
+    {
+      "seed": 20398,
+      "datetime": "20000211130000",
+      "nethackrc": "OPTIONS=name:Polly,role:Wizard,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!verbose,!legacy,!tutorial,!splash_screen\nOPTIONS=pettype:none\nOPTIONS=symset:DECgraphics\nOPTIONS=playmode:debug\n",
+      "moves": "\u0017wand of polymorph (0:30)\ndf\ndg\ndh\ndi\ndj\ndk\nlzoh  h: #wizgenesis\njackal\n zoh #quit\nyi\u001b"
+    }
+  ]
+}

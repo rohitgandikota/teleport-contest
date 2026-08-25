@@ -1,6 +1,12 @@
 {
   "name": "quest-cav",
   "description": "quest-level reproducer: wizmode levelport through the whole Caveman quest branch (strt, fila, loca, filb, goal)",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.special-variants",
+    "level.quest"
+  ],
   "segments": [
     {
       "seed": 6106,

@@ -1,6 +1,17 @@
 {
   "name": "mondrift-fight",
   "description": "Monster-vs-monster reproducer: debug Samurai with a dog creates two jackals and a newt via ^G, then rests while the pet fights them (mattackm chains, corpse drops, grow_up); pins the seed0006 kitten-kill family.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.vs-monster",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "combat.melee"
+  ],
   "segments": [
     {
       "seed": 6022,

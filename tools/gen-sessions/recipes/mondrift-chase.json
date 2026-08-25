@@ -1,6 +1,14 @@
 {
   "name": "mondrift-chase",
   "description": "Silent-drift reproducer: debug Samurai creates a jackal adjacent, wizard-teleports 10 east, then rests 40 turns while the jackal chases across the level; every recorded screen pins the jackal's exact per-turn path so the port's first divergent monster step is localized. Second phase repeats with a newt (cold-blooded, unseen-by-infravision class).",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee"
+  ],
   "segments": [
     {
       "seed": 6020,

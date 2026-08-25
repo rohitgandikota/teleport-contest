@@ -1,6 +1,25 @@
 {
   "name": "ranger-chargen",
   "description": "Normal-mode Ranger chargen through the pick menus (role R, race, gender, alignment), then bow fire with fireassist messages, grid-bug melee, arrow pickup into quiver, G-runs, floor food ration eaten over multiple turns, count-prefix searches, discoveries and attributes windows.",
+  "coverage": [
+    "chargen.full-menu",
+    "mode.normal",
+    "ui.menus",
+    "ui.count-repeat",
+    "ui.map-memory-vision",
+    "turn.speed-energy",
+    "turn.occupation-interrupt",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "object.weapons",
+    "object.food-corpses",
+    "combat.melee",
+    "combat.ranged",
+    "survival.hunger"
+  ],
   "segments": [
     {
       "seed": 6001,

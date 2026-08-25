@@ -1,6 +1,20 @@
 {
   "name": "engrave-elbereth",
   "description": "Debug Wizard: dust-engraves Elbereth (read back degraded \"Elbere5h\"), burns Elbereth into the floor with a wished wand of fire (identifies the wand by engraving), walking degrades the dust copy further, level-generated graffiti nearby, kitten-vs-rat interruptions.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "turn.timers",
+    "level.ordinary",
+    "terrain.engraving-elbereth",
+    "monster.movement",
+    "monster.vs-monster",
+    "monster.pets",
+    "object.wands",
+    "object.identification",
+    "object.buc-enchant-erosion"
+  ],
   "segments": [
     {
       "seed": 6007,

@@ -1,6 +1,19 @@
 {
   "name": "pray-low-hp",
   "description": "Debug Valkyrie: two sickness potions drop HP 16 to 4 with Sick status, #pray with extended-command completion, wizard-mode \"Force the gods\" prompt declined, Tyr angered twice, lightning bolt, wide-angle disintegration beam destroys the shield, three Die? refusals, \"You survived that attempt on your life.\"",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "ui.animation",
+    "level.ordinary",
+    "object.armor",
+    "object.potions",
+    "combat.resist-reflect",
+    "survival.timed-status",
+    "survival.instant-deaths",
+    "religion.prayer"
+  ],
   "segments": [
     {
       "seed": 6013,

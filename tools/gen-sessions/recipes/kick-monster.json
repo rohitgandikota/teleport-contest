@@ -1,6 +1,20 @@
 {
   "name": "kick-monster",
   "description": "Debug Samurai: ^G creates newt/kobold/hill orc/bugbear; kicks kill each (bugbear takes three and grants XP level 2), gold pile and corpses kicked (Thump!), pet-attack confirmation declined, kick at empty space.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.cancel-invalid",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "object.weapons",
+    "combat.melee",
+    "combat.unarmed-kick"
+  ],
   "segments": [
     {
       "seed": 6003,

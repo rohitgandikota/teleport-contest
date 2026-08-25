@@ -1,6 +1,17 @@
 {
   "name": "mondrift-objects",
   "description": "dog_goal/apport reproducer: debug Valkyrie wishes 3 food rations via ^W, drops them, walks off and rests while the dog evaluates/fetches (dogfood rolls, apport rn2(8), edog hunger) - the seed0012/0002 dog food-scan family.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "turn.timers",
+    "level.ordinary",
+    "monster.movement",
+    "monster.pets",
+    "object.food-corpses",
+    "survival.hunger"
+  ],
   "segments": [
     {
       "seed": 6023,

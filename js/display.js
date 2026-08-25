@@ -645,7 +645,10 @@ export function back_to_glyph(loc, x, y) {
     /* src/display.c:2294 -- a secret corridor is displayed as unexplored
        stone until searching converts it to CORR. */
     case SCORR:
-    case STONE:     return { ch: ' ', color: NO_COLOR, dec: false, cmap: CM.S_stone };
+    case STONE:
+        return game.level?.flags?.arboreal
+            ? { ch: 'g', color: CLR_GREEN, dec: true, cmap: CM.S_tree }
+            : { ch: ' ', color: NO_COLOR, dec: false, cmap: CM.S_stone };
     case ROOM:      return { ch: '~', color: NO_COLOR, dec: true, cmap: CM.S_room };  // DEC middle dot
     case CORR: {
         /* src/display.c:2302 back_to_glyph() picks S_litcorr when the cell

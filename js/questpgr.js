@@ -309,8 +309,7 @@ export async function com_pager_core(section, msgid, showerror) {
         output = 2;
 
     if (output === 0 || output === 1) {
-        /* deliver_by_pline() — one pline per line */
-        note_unported(`com_pager pline ${section}/${msgid}`);
+        await deliver_by_pline(text);
     } else {
         await deliver_by_window(text, (output === 3) ? NHW_MENU : NHW_TEXT);
     }

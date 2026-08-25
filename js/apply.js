@@ -3,19 +3,20 @@
 
 import { game } from './gstate.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
-         nothing_happens } from './const.js';
+         nothing_happens, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
+         M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
+         SUPPRESS_INVISIBLE } from './const.js';
 import { getobj } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
-import { is_pick, is_axe, delobj } from './mon.js';
+import { is_pick, is_axe, delobj, m_at, seemimic } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
 import { Hallucination, Deaf } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_SELECTABLE } from './invent.js';
 import { OCLASSES } from './objects_data.js';
-import { ustatusline } from './insight.js';
+import { mstatusline, ustatusline } from './insight.js';
 import { You_cant, You_hear } from './pline.js';
-import { m_at } from './mon.js';
 import { rn2, rnd } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN } from './const.js';
 import { walk_path } from './dothrow.js';
@@ -29,7 +30,10 @@ import { cansee } from './vision.js';
 import { wield_tool } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE } from './const.js';
-import { xname, the, makeplural } from './objnam.js';
+import { OBJ_NAME, xname, the, makeplural } from './objnam.js';
+import { pmname, x_monnam } from './do_name.js';
+import { defsyms } from './drawing_data.js';
+import { is_boots, is_gloves } from './obj.js';
 import { splitobj } from './mkobj.js';
 
 function note_unported_apply(what) {
@@ -75,6 +79,17 @@ const APPLIED_CONTAINERS = [ONAMES.LARGE_BOX, ONAMES.CHEST, ONAMES.ICE_BOX,
 const is_graystone = (o) =>
     o.otyp === ONAMES.LUCKSTONE || o.otyp === ONAMES.LOADSTONE
     || o.otyp === ONAMES.FLINT || o.otyp === ONAMES.TOUCHSTONE;
+
+// src/write.c:61 write_ok() selects blank scrolls and spellbooks first.
+function write_ok(obj) {
+    if (!obj || (obj.oclass !== OCLASSES.SCROLL_CLASS
+                 && obj.oclass !== OCLASSES.SPBOOK_CLASS))
+        return GETOBJ_EXCLUDE;
+    if (obj.otyp === ONAMES.SCR_BLANK_PAPER
+        || obj.otyp === ONAMES.SPE_BLANK_PAPER)
+        return GETOBJ_SUGGEST;
+    return GETOBJ_DOWNPLAY;
+}
 
 // src/apply.c:1772 rub_ok(): objects accepted by #rub.
 export function rub_ok(obj) {
@@ -264,10 +279,37 @@ async function use_stethoscope(obj) {
     }
     const mtmp = m_at(rx, ry);
     if (mtmp) {
-        note_unported_apply('use_stethoscope:mstatusline');
+        if (mtmp.mundetected) {
+            note_unported_apply('use_stethoscope:hidden_monster');
+            mtmp.mundetected = 0;
+        } else if (mtmp.mappearance) {
+            let what = 'thing', use_plural = false;
+            switch (M_AP_TYPE(mtmp)) {
+            case M_AP_OBJECT: {
+                const otyp = mtmp.mappearance;
+                const fake = { otyp, oclass: game.objects[otyp]?.oc_class };
+                what = OBJ_NAME(game.objects[otyp]) || 'thing';
+                use_plural = is_boots(fake) || is_gloves(fake)
+                             || otyp === ONAMES.LENSES;
+                break;
+            }
+            case M_AP_MONSTER:
+                what = pmname(game.mons[mtmp.mappearance], mtmp.female ? 1 : 0);
+                break;
+            case M_AP_FURNITURE:
+                what = defsyms[mtmp.mappearance]?.explain || 'thing';
+                break;
+            }
+            seemimic(mtmp);
+            const mnm = x_monnam(mtmp, ARTICLE_A, null,
+                                 SUPPRESS_IT | SUPPRESS_INVISIBLE, false);
+            await pline(`${use_plural ? 'Those' : 'That'} ${what} `
+                        + `${use_plural ? 'are' : 'is'} really ${mnm}.`);
+        }
+        await mstatusline(mtmp);
         return res;
     }
-    note_unported_apply('use_stethoscope:location');
+    await You('hear nothing special.');
     return res;
 }
 
@@ -289,6 +331,16 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);
+
+    if (obj.otyp === ONAMES.MAGIC_MARKER) {
+        /* src/write.c dowrite(): selecting the paper is the entire observed
+           path when the player chooses an ineligible inventory letter. */
+        const paper = await getobj('write on', write_ok, GETOBJ_NOFLAGS);
+        if (!paper)
+            return ECMD_CANCEL;
+        note_unported_apply('dowrite:paper');
+        return ECMD_TIME;
+    }
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

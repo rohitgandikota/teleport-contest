@@ -712,6 +712,8 @@ export async function moveloop_core() {
                    `(g.moves || 1) + 1` only happened to agree because the
                    first increment landed on 2 either way. */
                 g.moves++;
+                /* allmain.c:260: begin this turn's hero movement sequence. */
+                g.hero_seq = g.moves * 8;
 
                 /* src/allmain.c:275 — nh_timeout() then the prayer
                    timeout, every turn. */
@@ -795,6 +797,10 @@ export async function moveloop_core() {
             }
         } while (g.u.umovement < NORMAL_SPEED);
 
+        /* allmain.c:396: one distinct sequence number per action that takes
+           time, including extra actions by a fast hero in the same turn. */
+        g.hero_seq++;
+
         /* src/allmain.c:403 checks again after timeout and monster actions,
            so inventory changes made by the hero get immediate feedback. */
         await encumber_msg();
@@ -845,11 +851,6 @@ export async function moveloop_core() {
     }
 
     find_ac();
-
-    /* C bumps hero_seq inside the move gate (moves*8 + n); this port's
-       counter ticks every core because use_stethoscope's first-use-free
-       test was calibrated against that frame (see STATUS). */
-    g.hero_seq = (g.hero_seq || 0) + 1;
 
     // Vision + display
     if (g.vision_full_recalc) {

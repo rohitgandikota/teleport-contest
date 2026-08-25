@@ -307,6 +307,11 @@ async function really_done(how) {
     /* src/end.c:1144 — the game is now over; disclosure windows read this
        (add_menu_heading drops its highlight, hallucination stops, &c) */
     game.program_state_gameover = true;
+    {
+        const { night, midnight } = await import('./calendar.js');
+        (game.iflags ||= {}).at_night = night();
+        game.iflags.at_midnight = midnight();
+    }
 
     /* achievements, dumplog, signal handlers: none modelled */
 
@@ -326,8 +331,16 @@ async function really_done(how) {
     /* paybill/paygd: no shop bill or vault gold for these heroes */
 
     /* discover everything in inventory for disclosure and dumplog */
+    const { discover_object } = await import('./o_init.js');
+    const { Is_container } = await import('./obj.js');
+    const { ONAMES: END_ONAMES } = await import('./objects_data.js');
     for (const obj of game.invent || []) {
+        discover_object(obj.otyp, true, true, false);
         obj.known = obj.bknown = obj.dknown = obj.rknown = 1;
+        if (Is_container(obj))
+            obj.cknown = 1;
+        if (obj.otyp === END_ONAMES.LARGE_BOX || obj.otyp === END_ONAMES.CHEST)
+            obj.lknown = 1;
     }
 
     await disclose(how);
@@ -547,7 +560,28 @@ async function disclose(how, taken) {
         c = ask ? await tty_yn_function(qbuf, 'ynq', defquery) : defquery;
         if (c === 'y') {
             const { display_inventory } = await import('./invent.js');
-            await display_inventory(null, true);
+            const { tty_start_menu, tty_add_menu, tty_end_menu,
+                    tty_next_page } = await import('./tty/wintty.js');
+            const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE } =
+                await import('./const.js');
+            const { NO_COLOR } = await import('./terminal.js');
+            const { nhgetch } = await import('./input.js');
+            const { docrt } = await import('./display.js');
+            const win = tty_create_nhwindow(NHW_MENU);
+            tty_start_menu(win, MENU_BEHAVE_STANDARD);
+            for (const item of display_inventory()) {
+                tty_add_menu(win, null, item.heading ? 0 : 1,
+                             item.invlet || 0, 0, 0, NO_COLOR, item.str,
+                             MENU_ITEMFLAGS_NONE);
+            }
+            tty_end_menu(win, null);
+            await tty_display_nhwindow(win);
+            let key = await nhgetch();
+            while (String.fromCharCode(key) !== '\x1b'
+                   && tty_next_page(win))
+                key = await nhgetch();
+            tty_destroy_nhwindow(win);
+            await docrt();
             /* container_contents: no dead hero carries a container yet */
         }
         if (c === 'q')
@@ -586,12 +620,9 @@ async function disclose(how, taken) {
     }
 
     if (!game.done_stopprint) {
-        /* list_vanquished(defquery, ask) prompts only when something died */
         const { ask, defquery } = should_query_disclose_option('v');
-        if ((game.u.nkilled_total | 0) > 0) {
-            if (ask || defquery !== 'n')
-                note_unported_end('disclose:list_vanquished');
-        }
+        const { list_vanquished } = await import('./insight.js');
+        await list_vanquished(defquery, ask);
     }
 
     /* list_genocided: nothing is ever genocided in a recorded session */

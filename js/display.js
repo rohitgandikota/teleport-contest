@@ -41,7 +41,9 @@ import { showsym } from './symbols.js';
 import { NO_COLOR, CLR_GRAY, CLR_BROWN, CLR_WHITE, CLR_YELLOW, CLR_BRIGHT_BLUE,
          CLR_GREEN, CLR_BLUE, CLR_RED, CLR_ORANGE, CLR_CYAN, CLR_BLACK,
          CLR_MAGENTA, CLR_BRIGHT_MAGENTA, CLR_BRIGHT_GREEN,
-         DEC_TO_UNICODE } from './terminal.js';
+         DEC_TO_UNICODE, ATR_INVERSE as TERM_INVERSE,
+         ATR_BOLD as TERM_BOLD,
+         ATR_UNDERLINE as TERM_UNDERLINE } from './terminal.js';
 
 // ── ANSI color codes ──
 // Maps CLR_* constants (0-15) to ANSI SGR color codes.
@@ -1021,7 +1023,7 @@ export function newsym(x, y) {
         if (steed && mon_visible(steed))
             show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
                             steed.data.mcolor ?? NO_COLOR, false, 0,
-                            { kind: 'hero' });
+                            { kind: 'hero', mon: steed });
         else
             show_glyph_cell(x, y, '@', CLR_WHITE, false, 0, { kind: 'hero' });
         const under = covers_objects(x, y) ? null
@@ -1532,9 +1534,10 @@ function _paint_map_cell(display, x, y) {
     if (!g) return;
     const raw = g.disp_ch || ' ';
     const ch = g.disp_decgfx ? (CMP_DEC_MAP[raw] || raw) : raw;
+    const attr = (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyph?.mon);
     display.setCell(x - 1, y + 1, ch,
                     term_start_color(g.disp_color ?? NO_COLOR),
-                    g.disp_attr ?? 0);
+                    attr);
 }
 
 // src/display.c:3365 set_seenv() — set the seen vector of lev as if seen
@@ -1931,6 +1934,19 @@ export function canseemon(mon) {
 // include/display.h:129 canspotmon()
 export function canspotmon(mon) {
     return canseemon(mon) || sensemon(mon);
+}
+
+// win/tty/wintty.c tty_print_glyph(), MG_PET with hilite_pet. NetHack's
+// attribute numbers differ from the terminal grid's bit flags.
+function pet_terminal_attr(mon) {
+    if (!mon?.mtame || !game.flags?.hilite_pet)
+        return 0;
+    switch (game.iflags?.wc2_petattr ?? 7 /* ATR_INVERSE */) {
+    case 1: return TERM_BOLD;
+    case 4: return TERM_UNDERLINE;
+    case 7: return TERM_INVERSE;
+    default: return 0;
+    }
 }
 
 // src/display.c map_invisible() — remember an 'I' marker for an unseen

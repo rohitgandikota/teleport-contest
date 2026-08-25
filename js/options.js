@@ -1138,7 +1138,7 @@ function boolopt_side_effects(name) {
         if (bool_optval(findOption('color')))
             game.opt_need_redraw = true;
         break;
-    case 'showrace': case 'use_inverse': case 'hilite_pile':
+    case 'showrace': case 'use_inverse': case 'hilite_pet': case 'hilite_pile':
     case 'color':
         game.opt_need_redraw = true;
         break;

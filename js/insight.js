@@ -32,6 +32,7 @@ import { rank_of } from './botl.js';
 import { money_cnt } from './invent.js';
 import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
+import { night, midnight } from './calendar.js';
 import { type_is_pname } from './mondata.js';
 import { inv_weight } from './attrib.js';
 import { ONAMES } from './objects_data.js';
@@ -179,15 +180,20 @@ function background_enlightenment() {
         enlght_line('You ', 'entered ',
                     `the dungeon ${game.moves} turn${plur(game.moves)} ago`, '');
 
-    /* src/insight.c:645 — the midnight/nighttime arms need the wall clock
-       (night(), midnight()); the recorded panels carry neither line. */
+    /* really_done() freezes these values before the disclosure prompts so
+       waiting at a prompt cannot change the final report. */
+    if (en_final ? game.iflags?.at_midnight : midnight())
+        enl_msg('It ', 'is ', 'was ', 'the midnight hour', '');
+    else if (en_final ? game.iflags?.at_night : night())
+        enl_msg('It ', 'is ', 'was ', 'nighttime', '');
 
     /* src/insight.c:653 — "other environmental factors" */
     if (game.flags.moonphase === FULL_MOON
         || game.flags.moonphase === NEW_MOON) {
         enl_msg('There ', 'is ', 'was ',
                 `a ${game.flags.moonphase === FULL_MOON ? 'full' : 'new'}`
-                + ' moon in effect', '');
+                + ` moon in effect${en_final
+                    ? ' when your adventure ended' : ''}`, '');
     }
     if (game.flags.friday13)
         out(` Bad things ${!en_final ? 'can happen'
@@ -882,11 +888,11 @@ export async function list_vanquished(defquery, ask) {
             const { tty_yn_function } = await import('./tty/topl.js');
             c = await tty_yn_function(
                 'Do you want an account of creatures vanquished?',
-                'ynq', defquery || 'n');
+                ntypes > 1 ? 'ynaq' : 'ynq', defquery || 'n');
         }
         if (c === 'q')
             game.done_stopprint = (game.done_stopprint | 0) + 1;
-        if (c !== 'y')
+        if (c !== 'y' && c !== 'a')
             return;
         const {
             tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr,
@@ -930,7 +936,7 @@ export async function list_vanquished(defquery, ask) {
             await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(win);
         await docrt();
-    } else if (ask) {
+    } else if (ask && !game.program_state_gameover) {
         await pline('No creatures have been vanquished.');
     }
 }

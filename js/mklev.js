@@ -961,13 +961,16 @@ async function themerooms_generate(difficulty) {
         return !game.themeroom_failed;
 
     let rtype = OROOM, rlit = -1, contents = null;
+    let needfill = FILL_NORMAL;
     let roomW = -1, roomH = -1;
     switch (pick.name) {
     case 'default': break;
     case 'Default room with themed fill':
-        rtype = THEMEROOM; contents = themeroom_fill; break;
+        rtype = THEMEROOM; contents = themeroom_fill; needfill = FILL_NONE; break;
     case 'Unlit room with themed fill':
-        rtype = THEMEROOM; contents = themeroom_fill; rlit = 0; break;
+        rtype = THEMEROOM; contents = themeroom_fill; rlit = 0;
+        needfill = FILL_NONE;
+        break;
     case 'Room with both normal contents and themed fill':
         rtype = THEMEROOM; contents = themeroom_fill; break;
     case 'Room in a room':
@@ -1058,7 +1061,9 @@ async function themerooms_generate(difficulty) {
         const aroom = game.level.rooms[game.level.nroom - 1];
         if (aroom) {
             topologize(aroom);
-            aroom.needfill = FILL_NORMAL;
+            /* Theme-room des.room defaults to unfilled unless its Lua table
+               explicitly says filled=1. */
+            aroom.needfill = needfill;
             /* This is our inline equivalent of the des.room{} the themeroom
                Lua actually writes, so it owes the same bookkeeping lspo_room
                does: push the room as the coder's croom around the contents
@@ -1105,8 +1110,8 @@ function fill_eligible(fill, rm, difficulty) {
     if (fill.mindiff != null && difficulty < fill.mindiff) return false;
     if (fill.maxdiff != null && difficulty > fill.maxdiff) return false;
     if (rm != null && fill.eligible) {
-        if (fill.eligible === 'return rm.lit == true;') return !!rm.rlit;
-        if (fill.eligible === 'return rm.lit == false;') return !rm.rlit;
+        if (fill.eligible === 'return rm.lit == true;') return !!rm.lit;
+        if (fill.eligible === 'return rm.lit == false;') return !rm.lit;
         note_unported_lev(`fill eligible ${fill.name}`);
         return true;
     }
@@ -1135,7 +1140,7 @@ function themeroom_fill(rm) {
        transcribed in js/themerms.js. */
     const contents = themeroom_fill_contents[pick.name];
     if (contents)
-        contents(mkroom_table(rm));     /* sp_lev.c:5704 — Lua sees a table */
+        contents(rm);                   /* sp_lev.c:5704, already a Lua table */
     else
         note_unported_lev(`themeroom_fill ${pick.name}`);
 }

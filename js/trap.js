@@ -7,7 +7,7 @@
 // finds it in the file its C twin lives in.
 
 import { m_at, t_at as t_at_mon } from './mon.js';
-import { inv_cnt, crawl_destination, unmul } from './hack.js';
+import { inv_cnt, crawl_destination, unmul, in_rooms } from './hack.js';
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING,
          WATER, FIRE_RES } from './const.js';
@@ -30,7 +30,7 @@ import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
 import { canspotmon, display_object_at, newsym, pline } from './display.js';
 import { You, You_hear, You_feel, Your, Norep } from './pline.js';
-import { an, the, doname, mshot_xname, xname } from './objnam.js';
+import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { monkilled } from './mon.js';
@@ -58,7 +58,7 @@ import { MON_WEP, DEADMONSTER, helpless } from './monst.js';
 import { erosion_matters } from './mkobj.js';
 import { cxname, vtense, suit_simple_name,
          gloves_simple_name } from './objnam.js';
-import { helm_simple_name, cloak_simple_name } from './do_wear.js';
+import { helm_simple_name, cloak_simple_name, hard_helmet } from './do_wear.js';
 import { update_inventory } from './invent.js';
 import { OCLASSES } from './objects_data.js';
 import { is_pool, is_lava } from './mon.js';
@@ -84,9 +84,11 @@ import { In_quest, TOOKPLUNGE, VIASITTING, HURTLING,
          ROLLING_BOULDER_TRAP, SLP_GAS_TRAP, RUST_TRAP, FIRE_TRAP, PIT,
          SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL,
          WEB, STATUE_TRAP, MAGIC_TRAP, ANTI_MAGIC, POLY_TRAP,
-         VIBRATING_SQUARE, BOLT_LIM, WT_ELF } from './const.js';
+         VIBRATING_SQUARE, BOLT_LIM, WT_ELF, VAULT, TEMPLE, SHOPBASE,
+         Is_firelevel, Is_earthlevel, IS_AIR, IS_ROOM,
+         IS_WALL, IS_DOOR, SDOOR } from './const.js';
 import { just_an } from './objnam.js';
-import { Deaf, Levitation, Flying, Hallucination } from './youprop.js';
+import { Deaf, Levitation, Flying, Hallucination, Underwater } from './youprop.js';
 import { mindless } from './mondata.js';
 import { couldsee } from './vision.js';
 import { mdistu } from './monmove.js';
@@ -419,6 +421,103 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
+// src/dungeon.c:1714 ceiling(), used by the falling-rock message.
+function trap_ceiling(x, y) {
+    const lev = game.level?.at(x, y);
+
+    if (in_rooms(x, y, VAULT))
+        return "vault's ceiling";
+    if (in_rooms(x, y, TEMPLE))
+        return "temple's ceiling";
+    if (in_rooms(x, y, SHOPBASE))
+        return "shop's ceiling";
+    if (Is_waterlevel(game.u.uz))
+        return 'water above';
+    if (lev && IS_AIR(lev.typ))
+        return 'sky';
+    if (Is_firelevel(game.u.uz))
+        return 'flames above';
+    if (In_quest(game.u.uz))
+        return 'expanse above';
+    if (Underwater())
+        return "water's surface";
+    if (lev && ((IS_ROOM(lev.typ) && !Is_earthlevel(game.u.uz))
+                || IS_WALL(lev.typ) || IS_DOOR(lev.typ)
+                || lev.typ === SDOOR))
+        return 'ceiling';
+    return 'rock cavern';
+}
+
+// src/trap.c:1324 trapeffect_rocktrap(). The missile is always created before
+// the 2d6 damage roll for monsters, and it lands on the monster's square.
+async function trapeffect_rocktrap(mtmp, trap, trflags) {
+    if (mtmp === game.youmonst) {
+        if (trap.once && trap.tseen && !rn2(15)) {
+            await pline(`A trap door in ${the(trap_ceiling(game.u.ux, game.u.uy))} opens, but nothing falls out!`);
+            deltrap(trap);
+            newsym(game.u.ux, game.u.uy);
+            return Trap_Effect_Finished;
+        }
+
+        let dmg = d(2, 6);
+        let harmless = false;
+        trap.once = 1;
+        feeltrap(trap);
+        const otmp = t_missile(ONAMES.ROCK, trap);
+        place_object(otmp, game.u.ux, game.u.uy);
+
+        await pline(`A trap door in ${the(trap_ceiling(game.u.ux, game.u.uy))} opens and ${an(xname(otmp))} falls on your ${body_part(HEAD)}!`);
+        const uarmh = game.u.uarmh;
+        const passes_rocks = passes_walls(game.youmonst.data)
+                              && !unsolid(game.youmonst.data);
+        if (uarmh) {
+            if (passes_rocks) {
+                await pline(`Unfortunately, you are wearing ${an(helm_simple_name(uarmh))}.`);
+                dmg = 2;
+            } else if (hard_helmet(uarmh)) {
+                await pline('Fortunately, you are wearing a hard helmet.');
+                dmg = 2;
+            } else if (game.flags?.verbose !== false) {
+                await pline(`${Yname2(uarmh)} does not protect you.`);
+            }
+        } else if (passes_rocks) {
+            await pline('It passes harmlessly through you.');
+            harmless = true;
+        }
+        if (!game.u.ublind)
+            observe_object(otmp);
+        const { stackobj } = await import('./invent.js');
+        stackobj(otmp);
+        newsym(game.u.ux, game.u.uy);
+
+        if (!harmless) {
+            if (game.u.uprops?.HALF_PHDAM)
+                dmg = Math.trunc((dmg + 1) / 2);
+            await losehp(dmg, 'falling rock', KILLED_BY_AN);
+            exercise(A_STR, false);
+        }
+        return Trap_Effect_Finished;
+    }
+
+    const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+    const see_it = cansee(mtmp.mx, mtmp.my);
+    if (trap.once && trap.tseen && !rn2(15)) {
+        if (in_sight && see_it)
+            await pline(`A trap door above ${mon_nam(mtmp)} opens, but nothing falls out!`);
+        deltrap(trap);
+        newsym(mtmp.mx, mtmp.my);
+        return Trap_Is_Gone;
+    }
+
+    trap.once = 1;
+    const otmp = t_missile(ONAMES.ROCK, trap);
+    if (in_sight)
+        seetrap(trap);
+    const trapkilled = await thitm(0, mtmp, otmp, d(2, 6), false);
+    return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
+        ? Trap_Caught_Mon : Trap_Effect_Finished;
+}
+
 // src/mthrowu.c:96 thitu() — does a trap's or monster's missile hit the hero?
 //
 // The rnd(20) is spent whatever the outcome; everything after it is message
@@ -564,6 +663,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_arrow_trap(game.youmonst, trap, trflags);
     if (ttype === DART_TRAP)
         return await trapeffect_dart_trap(game.youmonst, trap, trflags);
+    if (ttype === ROCKTRAP)
+        return await trapeffect_rocktrap(game.youmonst, trap, trflags);
     if (ttype === SQKY_BOARD)
         return await trapeffect_sqky_board(game.youmonst, trap, trflags);
     if (ttype === MAGIC_TRAP)
@@ -1074,6 +1175,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_arrow_trap(mtmp, trap, trflags);
     case DART_TRAP:
         return await trapeffect_dart_trap(mtmp, trap, trflags);
+    case ROCKTRAP:
+        return await trapeffect_rocktrap(mtmp, trap, trflags);
     case SQKY_BOARD:
         return await trapeffect_sqky_board(mtmp, trap, trflags);
     case MAGIC_TRAP:

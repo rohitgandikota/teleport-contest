@@ -47,7 +47,7 @@ import { mhitm_ad_phys, mhitm_ad_elec, mhitm_ad_drst,
          mhitm_knockback } from './uhitm.js';
 import { t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
-import { find_offensive } from './muse.js';
+import { find_offensive, use_offensive } from './muse.js';
 import { steal } from './steal.js';
 
 function note_unported_mhitu(what) {
@@ -475,7 +475,9 @@ export async function mattacku(mtmp) {
 
     /* Unlike defensive stuff, don't let them use item _and_ attack. */
     if (find_offensive(mtmp)) {
-        note_unported_mhitu('mattacku:use_offensive');
+        const offended = await use_offensive(mtmp);
+        if (offended)
+            return offended === 1 ? 1 : 0;
     }
 
     game.skipdrin = false; /* [see mattackm(mhitm.c)] */

@@ -355,7 +355,7 @@ export function lspo_region(dx1, dy1, rtype, irregular, needfill, contents,
     create_des_coder();
     if (contents) {
         spo_push_room(troom);
-        contents(troom);
+        contents(mkroom_table(troom));
         spo_endroom();
     }
     add_doors_to_room(troom);

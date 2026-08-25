@@ -142,8 +142,7 @@ function blocksMove(x, y, dx, dy) {
     game.context.door_opened = false;
     const loc = game.level?.at(x, y);
     if (!loc) return true;
-    if (loc.typ === STONE) return true;
-    if (IS_WALL(loc.typ)) return true;
+    if (IS_OBSTRUCTED(loc.typ)) return true;
     if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))) return true;
     /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway
        are not allowed (block_door boulder check needs Sokoban state) */
@@ -1138,7 +1137,10 @@ export async function rhack(key) {
            erased that clear, so a wall bump charged a full turn: seed0016's
            three bumps put the whole game three turns ahead of C. */
         game.context.move = 1;
+        const was_forcefight = !!game.context.forcefight;
         await domove();
+        if (was_forcefight)
+            game.context.forcefight = 0;
     } else if (ch === 'z') {
         // src/cmd.c cmdlist — 'z' is dozap: getobj for the wand, getdir for
         // the direction, and a self-zap of sleep knocks the hero out for
@@ -1498,18 +1500,12 @@ async function domove_core() {
        square instead of moving onto it, whether or not anything is there. The
        attack itself needs the combat code; what matters here is that the hero
        does NOT move and the turn is still spent. */
-    if (game.context.forcefight) {
-        game.context.forcefight = 0;
-        const target = m_at(newx, newy);
-        if (!target) {
-            /* src/hack.c:2228 domove_fight_empty() — "harmlessly attack" */
-            const { domove_fight_empty } = await import('./hack.js');
-            await domove_fight_empty(newx, newy);
-        } else {
-            /* attacking a real monster this way needs do_attack routed
-               through the forcefight gate; recorded until then */
-            note_unported_cmd('domove:forcefight attack');
-        }
+    if (game.context.forcefight && !m_at(newx, newy)) {
+        /* src/hack.c:2228 domove_fight_empty() handles the no-target case.
+           A real target continues through domove_attackmon_at below while
+           forcefight is still set, bypassing the peaceful-monster prompt. */
+        const { domove_fight_empty } = await import('./hack.js');
+        await domove_fight_empty(newx, newy);
         game.context.move = 1;
         return;
     }

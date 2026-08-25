@@ -490,8 +490,9 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
                 break;
 
             if (singleobj.oclass === OCLASSES.POTION_CLASS) {
-                /* potionhit needs potion smash; records, missile stops */
-                note_unported_mthrowu('m_throw:potionhit');
+                const { potionhit } = await import('./potion.js');
+                const { POTHIT_MONST_THROW } = await import('./const.js');
+                await potionhit(game.youmonst, singleobj, POTHIT_MONST_THROW);
                 break;
             }
 

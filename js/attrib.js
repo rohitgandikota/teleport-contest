@@ -315,6 +315,39 @@ export async function adjattrib(ndx, incr, msgflg) {
     return true;
 }
 
+// src/attrib.c:221 losestr() and :274 poison_strdmg(). Strength loss which
+// would cross the racial floor becomes 3..6 HP damage per point. Those rolls
+// happen before the remaining attribute reduction.
+export async function losestr(num, knam, k_format) {
+    if (num <= 0 || ABASE(A_STR) < ATTRMIN(A_STR))
+        return;
+
+    let ustr = ABASE(A_STR) - num;
+    let damage = 0;
+    while (ustr < ATTRMIN(A_STR)) {
+        ++ustr;
+        --num;
+        damage += rn1(4, 3);
+    }
+
+    if (damage) {
+        const { losehp } = await import('./hack.js');
+        await losehp(damage, knam || 'terminal frailty', knam ? k_format : 0);
+        if (game.u.uhpmax > 1)
+            game.u.uhpmax = Math.max(game.u.uhpmax - damage, 1);
+        (game.disp ||= {}).botl = true;
+    }
+
+    if (num > 0)
+        await adjattrib(A_STR, -num, 1);
+}
+
+export async function poison_strdmg(strloss, damage, knam, k_format) {
+    await losestr(strloss, knam, k_format);
+    const { losehp } = await import('./hack.js');
+    await losehp(damage, knam, k_format);
+}
+
 // src/attrib.c:990 adjabil() — grant the intrinsics a role or race has earned
 // by reaching `newlevel`. Draws nothing, but what it sets decides whether
 // u_calc_moveamt() draws: Fast costs an rn2(3) every single turn.

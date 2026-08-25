@@ -10,8 +10,8 @@
 // the offensive slice at its head exactly as C does.
 
 import { game } from './gstate.js';
-import { rn2 } from './rng.js';
-import { sgn, dist2 } from './hacklib.js';
+import { rn2, rn1, rnd, d } from './rng.js';
+import { sgn, dist2, distmin } from './hacklib.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
@@ -25,13 +25,13 @@ import { noteleport_level } from './teleport.js';
 import { stairway_at } from './stairs.js';
 import { carrying, sobj_at } from './invent.js';
 import { m_at, t_at } from './mon.js';
-import { linedup_callback } from './mthrowu.js';
+import { linedup_callback, m_throw } from './mthrowu.js';
 import { Teleport_control, See_invisible } from './youprop.js';
 import { xytodir, dirtocoord } from './cmd.js';
 import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          M_SEEN_COLD, M_SEEN_ELEC, M_SEEN_ACID, TELEP_TRAP, N_DIRS,
-         Is_rogue_level, In_endgame, Is_earthlevel, W_ARMF, MFAST, NON_PM,
-         POLY_TRAP, u_at } from './const.js';
+         Is_rogue_level, In_endgame, Is_earthlevel, W_ARMF, MSLOW, MFAST, NON_PM,
+         POLY_TRAP, u_at, KILLED_BY_AN } from './const.js';
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
 import { MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
@@ -332,6 +332,94 @@ export function find_offensive(mtmp) {
     return !!game.m.has_offense;
 }
 
+// src/muse.c:1824 use_offensive(), offensive potion arm. Potions bypass the
+// wand precheck and are thrown directly along the line selected above.
+export async function use_offensive(mtmp) {
+    const obj = game.m?.offensive || null;
+
+    if (!obj)
+        return 0;
+    switch (game.m?.has_offense || 0) {
+    case MUSE_WAN_STRIKING: {
+        const [{ canseemon, pline }, { couldsee }, { You_hear },
+               { Monnam }, { an, xname }, { unknow_object }, { makeknown },
+               { stop_occupation }, { nomul, losehp }, { pline_The }]
+            = await Promise.all([
+                import('./display.js'), import('./vision.js'),
+                import('./pline.js'), import('./do_name.js'),
+                import('./objnam.js'), import('./mkobj.js'),
+                import('./o_init.js'), import('./allmain.js'),
+                import('./hack.js'), import('./pline.js'),
+            ]);
+        const seen = canseemon(mtmp);
+
+        if (!seen) {
+            const range = couldsee(mtmp.mx, mtmp.my) ? 9 : 5;
+            const nearby = dist2(mtmp.mx, mtmp.my, game.u.ux, game.u.uy)
+                           <= range * range;
+            await You_hear(`a ${nearby ? 'nearby' : 'distant'} zap.`);
+            unknow_object(obj);
+        } else {
+            await pline(`${Monnam(mtmp)} zaps ${an(xname(obj))}!`);
+            await stop_occupation();
+        }
+        obj.spe--;
+
+        /* mbhit() always chooses its range before applying the wand at the
+           adjacent hero square. */
+        rn1(8, 6);
+        if (game.u.uprops?.ANTIMAGIC || game.u.uprops?.MAGIC_RES) {
+            mtmp.seen_resistance = (mtmp.seen_resistance ?? 0) | M_SEEN_MAGR;
+            await pline('Boing!');
+            if (seen)
+                makeknown(obj.otyp);
+        } else {
+            const hit = rnd(20) < 10 + (game.u.uac ?? 0) && !!mtmp.mwandexp;
+            if (hit) {
+                mtmp.seen_resistance = (mtmp.seen_resistance ?? 0)
+                                       & ~M_SEEN_MAGR;
+                await pline_The('wand hits you!');
+                let damage = d(2, 12);
+                if (game.u.uprops?.HALF_SPDAM)
+                    damage = Math.trunc((damage + 1) / 2);
+                await losehp(damage, 'wand', KILLED_BY_AN);
+            } else {
+                await pline_The('wand misses you.');
+            }
+        }
+        await stop_occupation();
+        nomul(0);
+        mtmp.mwandexp = true;
+        return 2;
+    }
+    case MUSE_POT_PARALYSIS:
+    case MUSE_POT_BLINDNESS:
+    case MUSE_POT_CONFUSION:
+    case MUSE_POT_SLEEPING:
+    case MUSE_POT_ACID: {
+        const [{ cansee }, { observe_object }, { pline }, { Monnam },
+               { singular, doname }] = await Promise.all([
+            import('./vision.js'), import('./o_init.js'),
+            import('./display.js'), import('./do_name.js'),
+            import('./objnam.js'),
+        ]);
+
+        if (cansee(mtmp.mx, mtmp.my)) {
+            observe_object(obj);
+            await pline(`${Monnam(mtmp)} hurls ${singular(obj, doname)}!`);
+        }
+        await m_throw(mtmp, mtmp.mx, mtmp.my,
+                      sgn(mtmp.mux - mtmp.mx), sgn(mtmp.muy - mtmp.my),
+                      distmin(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy), obj);
+        return 2;
+    }
+    default:
+        (game.unported ||= new Set()).add(
+            `use_offensive:action=${game.m?.has_offense || 0}`);
+        return 0;
+    }
+}
+
 // src/muse.c:2095 find_misc() selects the last viable utility item in a
 // monster's inventory. The condition order matters because carried containers
 // spend rn2(5) even when another item has already been selected.
@@ -487,6 +575,43 @@ export async function use_misc(mtmp) {
     const obj = game.m?.misc || null;
 
     switch (game.m?.has_misc || 0) {
+    case MUSE_WAN_SPEED_MONSTER: {
+        if (!obj || obj.spe < 1)
+            return 0;
+        const [{ canseemon, pline }, { couldsee }, { You_hear },
+               { Monnam }, { doname }, { unknow_object }, { learnwand }]
+            = await Promise.all([
+                import('./display.js'), import('./vision.js'),
+                import('./pline.js'), import('./do_name.js'),
+                import('./objnam.js'), import('./mkobj.js'),
+                import('./zap.js'),
+            ]);
+        const seen = canseemon(mtmp);
+
+        if (!seen) {
+            const range = couldsee(mtmp.mx, mtmp.my) ? 9 : 5;
+            const nearby = dist2(mtmp.mx, mtmp.my, game.u.ux, game.u.uy)
+                           <= range * range;
+            await You_hear(`a ${nearby ? 'nearby' : 'distant'} zap.`);
+            unknow_object(obj);
+        } else {
+            const self = mtmp.female ? 'herself' : 'himself';
+            await pline(`${Monnam(mtmp)} zaps ${self} with ${doname(obj)}!`);
+        }
+        obj.spe--;
+
+        const oldspeed = mtmp.mspeed ?? 0;
+        mtmp.permspeed = (mtmp.permspeed === MSLOW) ? 0 : MFAST;
+        mtmp.mspeed = mtmp.permspeed;
+        if (seen && mtmp.mspeed !== oldspeed && mtmp.data.mmove
+            && !mtmp.mfrozen && !mtmp.msleeping) {
+            const howmuch = (mtmp.mspeed + oldspeed === MFAST + MSLOW)
+                            ? 'much ' : '';
+            await pline(`${Monnam(mtmp)} is suddenly moving ${howmuch}faster.`);
+            learnwand(obj);
+        }
+        return 2;
+    }
     case MUSE_POT_INVISIBILITY: {
         if (!obj)
             return 0;

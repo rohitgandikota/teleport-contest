@@ -1866,7 +1866,7 @@ async function mon_explodes(mon, mattk) {
                     continue;
                 if (cansee(xx, yy))
                     await pline(`${Monnam(mtmp)} is caught in the ${blast}!`);
-                const itemdmg = destroy_items(mtmp, ATTKS.AD_PHYS, dam);
+                const itemdmg = await destroy_items(mtmp, ATTKS.AD_PHYS, dam);
                 let mdam = dam;
                 if (resist(mtmp, MON_EXPLODE, 0, false))
                     mdam = Math.trunc((dam + 1) / 2);
@@ -1880,7 +1880,7 @@ async function mon_explodes(mon, mattk) {
 
         if (Math.abs(game.u.ux - x) <= 1 && Math.abs(game.u.uy - y) <= 1) {
             await You(`are caught in the ${blast}!`);
-            destroy_items(game.youmonst, ATTKS.AD_PHYS, dam);
+            await destroy_items(game.youmonst, ATTKS.AD_PHYS, dam);
             game.u.uhp -= dam;
             (game.disp ||= {}).botl = true;
             exercise(A_STR, false);

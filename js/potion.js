@@ -83,7 +83,7 @@ export function bottlename() {
 }
 
 // src/potion.c:1932 potionbreathe(), common offensive-potion vapors.
-async function potionbreathe(obj) {
+export async function potionbreathe(obj) {
     let kn = 0;
     const already_in_use = !!obj.in_use;
     obj.in_use = true;
@@ -100,6 +100,14 @@ async function potionbreathe(obj) {
                 await You_feel('somewhat dizzy.');
             await make_confused(itimeout_incr(game.u.intrinsic?.HConfusion,
                                               rnd(5)), false);
+            break;
+        case ONAMES.POT_INVISIBILITY:
+            if (!game.u.ublind && !game.u.uprops?.INVIS) {
+                kn++;
+                await pline(`For an instant you ${
+                    game.u.uprops?.SEE_INVIS ? 'could see right through yourself'
+                                             : "couldn't see yourself"}!`);
+            }
             break;
         case ONAMES.POT_PARALYSIS:
             kn++;

@@ -1600,6 +1600,87 @@ export async function erode_obj(otmp, ostr, type, ef_flags) {
     }
 }
 
+// src/trap.c:85 burnarmor(). Fire chooses one armor slot repeatedly until it
+// either finds something it can affect or reaches the torso arm, which always
+// finishes the search. A torso hit lets the caller burn carried items too.
+export async function burnarmor(victim) {
+    if (!victim)
+        return false;
+    const hitting_u = victim === game.youmonst;
+
+    const towels = (hitting_u ? game.invent : victim.minvent || [])
+        .filter((obj) => obj.otyp === ONAMES.TOWEL && (obj.spe | 0) > 0);
+    for (const item of towels) {
+        const oldspe = item.spe | 0;
+        const newspe = rn2(oldspe + 1);
+        if (newspe < oldspe) {
+            item.spe = newspe;
+            if (hitting_u)
+                await pline(`${Yname2(item)} dries${newspe ? '' : ' out'}.`);
+            else if (canseemon(victim))
+                await pline(`${Monnam(victim)}'s ${xname(item)} dries${
+                    newspe ? '' : ' out'}.`);
+            break;
+        }
+    }
+
+    const armor = (slot) => hitting_u ? game.u[slot]
+        : which_armor(victim, {
+            uarmh: W_ARMH, uarmc: W_ARMC, uarm: W_ARM, uarmu: W_ARMU,
+            uarms: W_ARMS, uarmg: W_ARMG, uarmf: W_ARMF,
+        }[slot]);
+    const burn = async (obj, descr) =>
+        await erode_obj(obj, descr, ERODE_BURN, EF_GREASE);
+    const materialNames = [
+        'mysterious', 'liquid', 'wax', 'organic', 'flesh', 'paper', 'cloth',
+        'leather', 'wooden', 'bone', 'dragonhide', 'iron', 'metal', 'copper',
+        'silver', 'gold', 'platinum', 'mithril', 'plastic', 'glass',
+        'gemstone', 'stone',
+    ];
+
+    for (;;) {
+        let item;
+        switch (rn2(5)) {
+        case 0:
+            item = armor('uarmh');
+            if (!await burn(item, item
+                ? `${materialNames[game.objects[item.otyp].oc_material]} ${
+                    helm_simple_name(item)}` : 'helmet'))
+                continue;
+            break;
+        case 1:
+            item = armor('uarmc');
+            if (item) {
+                await burn(item, cloak_simple_name(item));
+                return true;
+            }
+            item = armor('uarm');
+            if (item) {
+                await burn(item, xname(item));
+                return true;
+            }
+            item = armor('uarmu');
+            if (item)
+                await burn(item, 'shirt');
+            return true;
+        case 2:
+            if (!await burn(armor('uarms'), 'wooden shield'))
+                continue;
+            break;
+        case 3:
+            if (!await burn(armor('uarmg'), 'gloves'))
+                continue;
+            break;
+        case 4:
+            if (!await burn(armor('uarmf'), 'boots'))
+                continue;
+            break;
+        }
+        break;
+    }
+    return false;
+}
+
 /* include/obj.h carried() — obj is in hero inventory */
 function carried_tr(obj) {
     return obj.where === 3 /* OBJ_INVENT */ || game.invent.includes(obj);

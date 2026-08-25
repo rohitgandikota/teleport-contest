@@ -362,7 +362,8 @@ function m_cansee(mon, x, y) {
 // dog_goal's own rn2(8) rather than after it, even though the C line that names
 // can_carry() sits later in the same condition.
 export function dogfood(mon, obj) {
-    if (obj.opoisoned && !resists_poison(mon))
+    // NetHack aliases opoisoned to otrapped for non-food objects in obj.h.
+    if ((obj.opoisoned || obj.otrapped) && !resists_poison(mon))
         return POISON;
     if (is_quest_artifact(obj) || obj_resists(obj, 0, 95))
         return obj.cursed ? TABU : APPORT;

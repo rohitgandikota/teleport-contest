@@ -279,8 +279,8 @@ export function set_bknown(obj, onoff) {
     }
 }
 
-// src/mkobj.c:1783 curse() and :1745 bless(). Both return early for gold,
-// which is neither blessed nor cursed, and both clear the opposite flag. The
+// src/mkobj.c:1783 curse(), :1745 bless(), and :1767 unbless(). Blessing and
+// cursing return early for gold and clear the opposite flag. The
 // lamplit/arti_light_radius bookkeeping needs the light-source subsystem.
 export function curse(otmp) {
     if (otmp.oclass === OCLASSES.COIN_CLASS)
@@ -293,6 +293,11 @@ export function bless(otmp) {
         return;
     otmp.cursed = 0;
     otmp.blessed = 1;
+}
+export function unbless(otmp) {
+    otmp.blessed = 0;
+    if (otmp.otyp === ONAMES.BAG_OF_HOLDING)
+        otmp.owt = weight(otmp);
 }
 
 // src/mkobj.c:1846 blessorcurse()

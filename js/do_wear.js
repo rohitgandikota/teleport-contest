@@ -581,7 +581,7 @@ export async function accessory_or_armor_on(obj) {
 
     if (obj.owornmask & (W_ARM | W_ARMC | W_ARMH | W_ARMS | W_ARMG | W_ARMF
                          | W_ARMU | W_RINGL | W_RINGR | W_AMUL)) {
-        await You('are already wearing that.');
+        await You('are already wearing that!');
         return ECMD_OK;
     }
 

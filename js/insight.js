@@ -18,7 +18,7 @@ import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WE
          P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE,
          ARTICLE_YOUR, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK,
          MSLOW, MFAST, A_NONE } from './const.js';
-import { makeplural } from './objnam.js';
+import { makeplural, minimal_xname } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 import { empty_handed, is_ammo } from './wield.js';
 import { magic_negation } from './mhitu.js';
@@ -41,11 +41,43 @@ import { ONAMES } from './objects_data.js';
 import { pline } from './display.js';
 import { x_monnam } from './do_name.js';
 import { find_mac } from './worn.js';
-import { Fast, Very_fast, from_what } from './attrib.js';
+import { Fast, Very_fast, from_what as innate_source } from './attrib.js';
 import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Shock_resistance, Poison_resistance, Stealth, Searching,
          Warning, Teleport_control, See_invisible,
          Infravision, Deaf } from './youprop.js';
+
+const EXTRINSIC_KEYS = {
+    HFire_resistance: 'FIRE_RES',
+    HCold_resistance: 'COLD_RES',
+    HSleep_resistance: 'SLEEP_RES',
+    HShock_resistance: 'SHOCK_RES',
+    HPoison_resistance: 'POISON_RES',
+    HSee_invisible: 'SEE_INVIS',
+    HWarning: 'WARNING',
+    HSearching: 'SEARCHING',
+    HInfravision: 'INFRAVISION',
+    HStealth: 'STEALTH',
+    HTeleport_control: 'TELEPORT_CONTROL',
+    HFast: 'FAST',
+};
+
+// src/attrib.c:905 from_what(), equipment arm. The flat extrinsic value is a
+// worn-slot mask, so it identifies the inventory object conveying the property.
+function from_what(abilKey) {
+    const innate = innate_source(abilKey);
+    if (innate || !game.wizard)
+        return innate;
+
+    const mask = game.u.uprops?.[EXTRINSIC_KEYS[abilKey]] | 0;
+    const obj = mask && (game.invent || []).find(
+        (candidate) => ((candidate.owornmask | 0) & mask) !== 0);
+    if (!obj)
+        return '';
+
+    const name = minimal_xname(obj).replace(/\bpair of /i, '');
+    return ` because of your ${name}`;
+}
 
 // include/attrib.h
 const A_STR = 0, A_INT = 1, A_WIS = 2, A_DEX = 3, A_CON = 4, A_CHA = 5;

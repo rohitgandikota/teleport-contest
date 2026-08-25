@@ -1489,7 +1489,8 @@ export async function weffects(obj) {
         await zapnodir(obj);
     } else {
         if (otyp === ONAMES.WAN_DIGGING || otyp === ONAMES.SPE_DIG) {
-            note_unported_zap('weffects:zap_dig');
+            const { zap_dig } = await import('./dig.js');
+            await zap_dig();
         } else if (otyp >= ONAMES.SPE_MAGIC_MISSILE
                    && otyp <= ONAMES.SPE_FINGER_OF_DEATH) {
             await ubuzz(10 + (otyp - ONAMES.SPE_MAGIC_MISSILE),

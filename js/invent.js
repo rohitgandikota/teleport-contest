@@ -100,12 +100,16 @@ export function addinv(obj) {
        inv_weight() and hid encumbrance transitions. */
     for (const otmp of game.invent) {
         const r = merged({ o: otmp }, { o: obj });
-        if (r)
+        if (r) {
+            /* src/invent.c:1142 marks the resulting stack, including a
+               merged stack, as the most recently picked-up object. */
+            otmp.pickup_prev = 1;
             /* merged() hands back a promise when its discovery pline must
                be awaited; addinv's async callers await the result either
                way, and the sync init-time path never merges stacks whose
                identification states differ */
             return (r instanceof Promise) ? r.then(() => otmp) : otmp;
+        }
     }
     return addinv_nomerge(obj);
 }
@@ -116,6 +120,7 @@ export function addinv_nomerge(obj) {
     game.invent ||= [];
     assigninvlet(obj);
     obj.where = 3;                      /* OBJ_INVENT */
+    obj.pickup_prev = 1;
     game.invent.push(obj);
     /* src/invent.c:1117 — flags.invlet_constant defaults On, so the chain
        is kept in inv_rank order (gold first). */

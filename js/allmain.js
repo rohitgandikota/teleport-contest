@@ -107,6 +107,7 @@ import { depth } from './dungeon.js';
 import { rnd } from './rng.js';
 import { find_ac } from './do_wear.js';
 import { clear_splitobjs } from './mkobj.js';
+import { pickup } from './pickup.js';
 
 // C ref: allmain.c newgame()
 export async function newgame() {
@@ -194,6 +195,7 @@ export async function newgame() {
         }
     }
 
+    game.context.ident = 2;  /* id 1 is reserved for gy.youmonst */
     game.context.next_attrib_check = 600;
 
     /* src/allmain.c:776 — "turn on 3.6 tributes". stock_room's
@@ -404,12 +406,9 @@ export async function newgame() {
     // hero-can't-move loop starts at -NORMAL_SPEED instead of 0 and runs its
     // new-turn block twice per command, advancing the turn counter twice.
     g.context.rndencode = rnd(9000);
-    /* src/allmain.c:73 — a NEW game calls set_wear((struct obj *) 0) here,
-       "for side-effects of starting gear", and nothing else. The
-       read_engr_at() on line 87 is in the `if (resuming)` branch and only
-       runs when RESTORING a save, so it is not on this path at all; an
-       earlier comment here claimed pickup(1), which C does not call either.
-       set_wear is 30 lines in src/do_wear.c but is a DISPATCHER, not a leaf:
+    /* src/allmain.c:73 calls set_wear((struct obj *) 0) here for the side
+       effects of starting gear. set_wear is 30 lines in src/do_wear.c but is
+       a dispatcher, not a leaf:
        it calls Blindf_on, Ring_on, Amulet_on, Shirt_on, Armor_on, Cloak_on,
        Boots_on, Gloves_on, Helmet_on and Shield_on, and NONE of those ten
        exist in js/ yet. Porting it means porting whichever of them the
@@ -420,6 +419,11 @@ export async function newgame() {
        tools/unported-hits.mjs has this reached by 100% of sessions, but the
        reach figure counts the CALL, not the work behind it. */
     set_wear(null);   /* for side-effects of starting gear */
+    /* src/allmain.c:74-75 clears the flags set while creating starting
+       inventory, then performs the initial-square autopickup. */
+    for (const obj of (g.invent || []))
+        obj.pickup_prev = 0;
+    await pickup(1);
     g.context.seer_turn = rnd(30);
     g.u.umovement = NORMAL_SPEED;
 
@@ -740,9 +744,13 @@ export async function moveloop_core() {
                 age_spells();
                 await exerchk();
 
-                /* src/allmain.c:358 — invault() needs the vault-guard
-                   subsystem (pre-existing gap); the Amulet check runs for
-                   any hero carrying it (the endgame tour does) */
+                /* src/allmain.c:357 vault occupancy and guard arrival. */
+                {
+                    const { invault } = await import('./vault.js');
+                    await invault();
+                }
+
+                /* The Amulet check runs for any hero carrying it. */
                 if (g.u.uhave?.amulet) {
                     const { amulet } = await import('./wizard.js');
                     await amulet();

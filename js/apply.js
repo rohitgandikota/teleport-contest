@@ -46,6 +46,12 @@ const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR,
    survives and applying a lamp takes a turn. */
 const LAMPS = [ONAMES.OIL_LAMP, ONAMES.MAGIC_LAMP, ONAMES.BRASS_LANTERN];
 
+/* src/apply.c:4268 ordinary containers open the same interaction used by
+   #loot.  A bag of tricks has its own effect and is intentionally omitted. */
+const APPLIED_CONTAINERS = [ONAMES.LARGE_BOX, ONAMES.CHEST, ONAMES.ICE_BOX,
+                            ONAMES.SACK, ONAMES.BAG_OF_HOLDING,
+                            ONAMES.OILSKIN_SACK];
+
 // src/apply.c:4151 apply_ok() — the getobj filter for 'a'.
 //
 // The graystone dknown/touchstone refinement needs discovery state that is
@@ -191,6 +197,11 @@ export async function doapply() {
 
     if (LAMPS.includes(obj.otyp))
         return ECMD_TIME;
+
+    if (APPLIED_CONTAINERS.includes(obj.otyp)) {
+        const { use_container } = await import('./pickup.js');
+        return await use_container(obj, true, false);
+    }
 
     /* src/apply.c doapply's switch: an otyp with a real case whose handler
        is not ported yet is recorded; anything else falls to C's default

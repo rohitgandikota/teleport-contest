@@ -507,6 +507,36 @@ export function in_rooms(x, y, typewanted) {
     return out;
 }
 
+// src/hack.c:3588 move_update() tracks the rooms and shops which touch the
+// hero's current square.  Vault timing and ambient sounds read u.urooms.
+export function move_update(newlev) {
+    const u = game.u;
+    u.urooms0 = u.urooms || '';
+    u.ushops0 = u.ushops || '';
+    if (newlev) {
+        u.urooms = u.uentered = u.ushops = u.ushops_entered = '';
+        u.ushops_left = u.ushops0;
+        return;
+    }
+
+    u.urooms = in_rooms(u.ux, u.uy, 0);
+    u.uentered = '';
+    u.ushops = '';
+    u.ushops_entered = '';
+    for (const ch of u.urooms) {
+        if (!u.urooms0.includes(ch))
+            u.uentered += ch;
+        const rtype = game.level?.rooms?.[ch.charCodeAt(0) - ROOMOFFSET]?.rtype;
+        if (rtype >= SHOPBASE) {
+            u.ushops += ch;
+            if (!u.ushops0.includes(ch))
+                u.ushops_entered += ch;
+        }
+    }
+    u.ushops_left = [...u.ushops0]
+        .filter(ch => !u.ushops.includes(ch)).join('');
+}
+
 /* js/monmove.js needs in_rooms() but cannot import this file without closing
    a cycle, and adding the import to the entry point perturbs module init order
    (see STATUS). Publishing on the shared game object avoids both. */
@@ -761,6 +791,8 @@ export async function spoteffects(pick) {
        water or lava (drown/lava_effects moved them), the rest is skipped */
     if (await pooleffects(true))
         return;
+
+    move_update(false);
 
     /* check_special_room(FALSE) — announces shops, zoos, temples */
     const inspecial = (game.level?.rooms || []).some(r => r.rtype

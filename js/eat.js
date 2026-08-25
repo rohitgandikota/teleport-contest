@@ -11,7 +11,7 @@ import { game } from './gstate.js';
 import { Race_if } from './u_init.js';
 import { carnivorous, herbivorous, metallivorous, acidic, poisonous,
          flesh_petrifies, vegan, vegetarian, type_is_pname, dmgtype,
-         attacktype } from './mondata.js';
+         attacktype, cantvomit } from './mondata.js';
 import { can_reach_floor } from './pickup.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -34,7 +34,7 @@ import { set_occupation, stop_occupation } from './allmain.js';
 import { rn2, rnd, rn1, d } from './rng.js';
 import { You_feel, Your } from './pline.js';
 import { losehp } from './hack.js';
-import { SICK_RES, KILLED_BY_AN } from './const.js';
+import { SICK_RES, SICK_VOMITABLE, KILLED_BY_AN } from './const.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, freeinv, update_inventory, reorder_invent, addinv_nomerge } from './invent.js';
@@ -1186,6 +1186,29 @@ export async function maybe_finished_meal(stopping) {
 export async function morehungry(num) {
     game.u.uhunger -= num;
     await newuhs(true);
+}
+
+// src/eat.c:3736 vomit() -- ordinary vomiting immobilizes the hero for two
+// turns. Polymorph-only acid breath and terrain side effects are not live in
+// the reference corpus yet.
+export async function vomit() {
+    const mdat = game.mons[game.u.umonnum];
+    if (cantvomit(mdat)) {
+        await Your('jaw gapes convulsively.');
+    } else {
+        if (game.u.usick_type & SICK_VOMITABLE)
+            note_unported_eat('vomit:make_sick');
+        if (game.u.uhs >= FAINTING)
+            await Your('stomach heaves convulsively!');
+        else if (acidic(mdat))
+            note_unported_eat('vomit:acidic_form');
+    }
+
+    if ((game.multi ?? 0) >= -2) {
+        nomul(-2);
+        game.multi_reason = 'vomiting';
+        game.nomovemsg = 'You can move again.';
+    }
 }
 
 // src/eat.c recalc_wt() — the piece being eaten gets lighter.

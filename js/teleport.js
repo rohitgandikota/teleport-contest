@@ -16,7 +16,7 @@ import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          NO_MM_FLAGS, RLOC_MSG, RLOC_NOMSG, RLOC_ERR,
-         BOLT_LIM } from './const.js';
+         BOLT_LIM, VAULT } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
          sensemon } from './display.js';
@@ -748,6 +748,21 @@ export async function safe_teleds(teleds_flags) {
         return true;
     }
     return false;
+}
+
+// src/teleport.c:768 vault_tele() -- a one-shot teleport trap sends the hero
+// into the level's vault when that room has a valid free square.
+export async function vault_tele() {
+    const { search_special } = await import('./mkroom.js');
+    const { somexyspace } = await import('./mklev.js');
+    const croom = search_special(VAULT);
+    const c = { x: 0, y: 0 };
+
+    if (croom && somexyspace(croom, c) && teleok(c.x, c.y, false)) {
+        await teleds(c.x, c.y, TELEDS_TELEPORT);
+        return;
+    }
+    await tele();
 }
 
 // src/teleport.c:842 tele()

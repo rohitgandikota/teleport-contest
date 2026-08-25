@@ -71,7 +71,7 @@ import { Is_airlevel, Is_waterlevel } from './const.js';
 /* src/trap.h — trapeffect_*() return values. */
 /* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
 const Trap_Effect_Finished = 0, Trap_Is_Gone = 0,
-      Trap_Caught_Mon = 1, Trap_Killed_Mon = 2;
+      Trap_Caught_Mon = 1, Trap_Killed_Mon = 2, Trap_Moved_Mon = 3;
 
 function note_unported_trap(what) {
     (game.unported ||= new Set()).add(what);
@@ -578,6 +578,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_hole(game.youmonst, trap, trflags);
     if (ttype === ANTI_MAGIC)
         return await trapeffect_anti_magic(game.youmonst, trap, trflags);
+    if (ttype === TELEP_TRAP)
+        return await trapeffect_telep_trap(game.youmonst, trap, trflags);
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
     return Trap_Effect_Finished;
@@ -1089,10 +1091,37 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_rust_trap(mtmp, trap, trflags);
     case ROLLING_BOULDER_TRAP:
         return await trapeffect_rolling_boulder_trap(mtmp, trap, trflags);
+    case TELEP_TRAP:
+        return await trapeffect_telep_trap(mtmp, trap, trflags);
     default:
         note_unported_trap(`trapeffect_selector:ttyp=${trap.ttyp}`);
         return Trap_Effect_Finished;
     }
+}
+
+// src/trap.c:2070 trapeffect_telep_trap(), hero path. A one-shot trap is the
+// vault teleporter; ordinary traps use the level's normal random teleport.
+async function trapeffect_telep_trap(mtmp, trap, trflags) {
+    if (mtmp !== game.youmonst) {
+        note_unported_trap('trapeffect_telep_trap:monster');
+        return Trap_Moved_Mon;
+    }
+
+    seetrap(trap);
+    const { noteleport_level, tele, vault_tele } =
+        await import('./teleport.js');
+    if (game.u.uprops?.ANTIMAGIC || noteleport_level(game.youmonst)) {
+        await You_feel('a wrenching sensation.');
+    } else if (trap.once) {
+        deltrap(trap);
+        newsym(game.u.ux, game.u.uy);
+        await vault_tele();
+    } else if (isok(trap.teledest?.x ?? 0, trap.teledest?.y ?? 0)) {
+        note_unported_trap('trapeffect_telep_trap:fixed_destination');
+    } else {
+        await tele();
+    }
+    return Trap_Effect_Finished;
 }
 
 // src/trap.c:3733 mintrap() — a monster steps onto a trap.

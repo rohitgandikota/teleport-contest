@@ -626,6 +626,9 @@ export function covers_traps(x, y) {
 export function back_to_glyph(loc, x, y) {
     const typ = loc.typ;
     switch (typ) {
+    /* src/display.c:2294 -- a secret corridor is displayed as unexplored
+       stone until searching converts it to CORR. */
+    case SCORR:
     case STONE:     return { ch: ' ', color: NO_COLOR, dec: false, cmap: CM.S_stone };
     case ROOM:      return { ch: '~', color: NO_COLOR, dec: true, cmap: CM.S_room };  // DEC middle dot
     case CORR: {
@@ -832,7 +835,12 @@ function obj_is_generic(obj) {
                    && obj.otyp <= ONAMES.LAST_SPELL));
 }
 
-function floor_object_glyph(obj, x, y) {
+function pile_attr(glyph) {
+    return glyph?.pile && game.flags?.hilite_pile
+           && game.flags?.use_inverse !== false ? TERM_INVERSE : 0;
+}
+
+function floor_object_glyph(obj, x, y, piletop = true) {
     /* src/display.c:340 _map_location() — if the object would display as
        generic but the hero can see the spot from nearby (same radius as
        distant_name(): r = max(u.xray_range, 2), neardist = 2r²−r), mark
@@ -854,6 +862,10 @@ function floor_object_glyph(obj, x, y) {
                     corpsenm: obj.corpsenm,
                     statue: obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0,
                     body: obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0 };
+    if (piletop && (game.level?.objects || []).includes(obj)
+        && (game.level.objects || []).filter(
+            o => o.ox === x && o.oy === y).length > 1)
+        gdesc.pile = true;
 
     /* include/display.h:950 statue_to_glyph() — a STATUE becomes
        corpsenm + GLYPH_STATUE_*_OFF, i.e. it is drawn with the MONSTER's
@@ -881,7 +893,8 @@ function floor_object_glyph(obj, x, y) {
         color = game.objects?.[obj.oclass]?.oc_color ?? color;
         gdesc.generic = true;
     }
-    return { ch: sym, color, dec: false, glyph: gdesc };
+    return { ch: sym, color, dec: false, glyph: gdesc,
+             attr: pile_attr(gdesc) };
 }
 
 /* swallowed() state: last drawn position (C statics) */
@@ -1085,8 +1098,8 @@ export function newsym(x, y) {
                                oclass: game.objects?.[mon.mappearance]?.oc_class,
                                corpsenm: mon.mcorpsenm ?? PMNAMES.PM_TENGU,
                                quan: 1, dknown: 0 };
-                const g = floor_object_glyph(fake, x, y);
-                show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, 0,
+                const g = floor_object_glyph(fake, x, y, false);
+                show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, g.attr,
                                 g.glyph ?? { kind: 'obj', otyp: fake.otyp });
                 return;
             }
@@ -1106,7 +1119,8 @@ export function newsym(x, y) {
         }
 
         if (obj) {
-            show_glyph_cell(x, y, memg.ch, memg.color, memg.dec, 0, memg.glyph);
+            show_glyph_cell(x, y, memg.ch, memg.color, memg.dec,
+                            memg.attr, memg.glyph);
             return;
         }
     } else {
@@ -1235,7 +1249,8 @@ export function newsym(x, y) {
         }
         // Out of sight but remembered — show remembered glyph
         show_glyph_cell(x, y, loc.remembered_glyph.ch,
-            loc.remembered_glyph.color, loc.remembered_glyph.decgfx, 0,
+            loc.remembered_glyph.color, loc.remembered_glyph.decgfx,
+            pile_attr(loc.remembered_glyph.glyph),
             loc.remembered_glyph.glyph);
     } else {
         /* src/display.c map_location(): out of sight with NO memory is
@@ -1291,7 +1306,8 @@ export async function docrt() {
             const loc = game.level.at(x, y);
             if (loc?.remembered_glyph) {
                 show_glyph_cell(x, y, loc.remembered_glyph.ch,
-                    loc.remembered_glyph.color, loc.remembered_glyph.decgfx, 0,
+                    loc.remembered_glyph.color, loc.remembered_glyph.decgfx,
+                    pile_attr(loc.remembered_glyph.glyph),
                     loc.remembered_glyph.glyph);
             }
         }
@@ -1913,8 +1929,11 @@ export function mon_visible(mon) {
 // arm needs a hero property no early game has; each is recorded rather than
 // assumed, so a session that does have one reports itself.
 export function sensemon(mon) {
-    if (game.u.uswallow || game.u.uprops?.DETECT_MONSTERS
-        || game.u.uprops?.TELEPAT || game.u.uprops?.WARN_OF_MON)
+    if (game.u.uprops?.DETECT_MONSTERS
+        && (!game.u.uswallow || mon === game.u.ustuck))
+        return true;
+    if (game.u.uswallow || game.u.uprops?.TELEPAT
+        || game.u.uprops?.WARN_OF_MON)
         (game.unported ||= new Set()).add('display:sensemon');
     return false;
 }
@@ -2031,15 +2050,15 @@ export function map_object(obj, show) {
                                  glyph: og.glyph
                                      ?? { kind: 'cmap', cmap: og.cmap } };
     if (show)
-        show_glyph_cell(x, y, og.ch, og.color, og.dec, 0,
+        show_glyph_cell(x, y, og.ch, og.color, og.dec, og.attr,
                         og.glyph ?? { kind: 'cmap', cmap: og.cmap });
 }
 
 // src/display.c tmp_at() object display. Paint an object glyph at a temporary
 // coordinate without changing floor-object memory or the object's location.
 export function display_object_at(obj, x, y) {
-    const og = floor_object_glyph(obj, x, y);
-    show_glyph_cell(x, y, og.ch, og.color, og.dec, 0,
+    const og = floor_object_glyph(obj, x, y, false);
+    show_glyph_cell(x, y, og.ch, og.color, og.dec, og.attr,
                     og.glyph ?? { kind: 'cmap', cmap: og.cmap });
 }
 

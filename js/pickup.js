@@ -11,7 +11,7 @@ import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, update_inventory, weight } from './invent.js';
 import { observe_object } from './o_init.js';
-import { doname, xname, the, yname, singular, an } from './objnam.js';
+import { doname, xname, cxname, the, yname, singular, an } from './objnam.js';
 import { Is_container, Has_contents, carried } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
@@ -156,6 +156,13 @@ export async function describe_decor() {
 const is_pool_typ = (t) => t === POOL || t === MOAT || t === WATER;
 const LAVAPOOL_TYP = LAVAPOOL;
 
+// src/pickup.c:616 reset_justpicked() -- a new successful pickup attempt
+// replaces the previous "just picked up" inventory group.
+function reset_justpicked() {
+    for (const obj of game.invent || [])
+        obj.pickup_prev = 0;
+}
+
 export async function pickup(what) {
     const autopickup = what > 0;
 
@@ -205,6 +212,8 @@ export async function pickup(what) {
     let n_picked = 0, n_tried = 0;
     if (here.length > 1 && !autopickup) {
         const picked = await query_objlist('Pick up what?', here);
+        if (picked.length)
+            reset_justpicked();
         for (const obj of picked) {
             n_tried++;
             if ((await pickup_object(obj, obj.quan, false)) > 0)
@@ -212,6 +221,8 @@ export async function pickup(what) {
         }
     } else {
         /* autopick(): no menu, take every eligible object */
+        if (here.length)
+            reset_justpicked();
         for (const obj of here) {
             n_tried++;
             if ((await pickup_object(obj, obj.quan, false)) > 0)
@@ -625,7 +636,8 @@ async function query_category(qstr, olist, qflags) {
     for (const oclass of pack) {
         if (!olist.some(o => o.oclass === oclass))
             continue;
-        tty_add_menu(win, null, oclass, invlet, 0, ATR_NONE, NO_COLOR,
+        tty_add_menu(win, null, oclass, invlet, def_oc_syms[oclass],
+                     ATR_NONE, NO_COLOR,
                      let_to_name(oclass), MENU_ITEMFLAGS_NONE);
         invlet = String.fromCharCode(invlet.charCodeAt(0) + 1);
     }
@@ -1149,7 +1161,7 @@ export function sortloot_items(items) {
         .map((obj, idx) => ({ obj, idx,
                               sub: loot_subclass(obj),
                               disco: loot_disco(obj),
-                              nam: singular(obj, xname).toLowerCase() }))
+                              nam: singular(obj, cxname).toLowerCase() }))
         .sort((a, b) => {
             if (a.sub !== b.sub) return a.sub - b.sub;
             if (a.disco !== b.disco) return a.disco - b.disco;

@@ -92,8 +92,19 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
         note_do_name_unported('x_monnam:priestname');
     if (M_AP_TYPE(mtmp) === M_AP_MONSTER)
         note_do_name_unported('x_monnam:mappearance');
-    if (mtmp.isshk)
-        note_do_name_unported('x_monnam:shkname');
+    if (mtmp.isshk && !Hallucination() && !M_AP_TYPE(mtmp)) {
+        const raw = mtmp.shknam || mtmp.eshk?.shknam
+            || mtmp.mextra?.eshk?.shknam;
+        if (raw) {
+            const shkname = /^[-+_|]/.test(raw) ? raw.slice(1) : raw;
+            if (mtmp.data === game.mons[PMNAMES.PM_SHOPKEEPER]
+                && !mtmp.minvis)
+                return shkname;
+            note_do_name_unported('x_monnam:unusual_shopkeeper');
+        } else {
+            note_do_name_unported('x_monnam:shkname');
+        }
+    }
     if (mtmp.minvis)
         note_do_name_unported('x_monnam:invisible');
     /* src/do_name.c:875 — unseen monsters read as "it". do_it is guarded on

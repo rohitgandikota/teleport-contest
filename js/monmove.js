@@ -58,6 +58,7 @@ import { couldsee, cansee, clear_path, recalc_block_point,
 import { gettrack } from './track.js';
 import { distmin , isok, sgn, distu, dist2} from './hacklib.js';
 import { acurrstr } from './attrib.js';
+import { Hallucination } from './youprop.js';
 
 // include/mondata.h throws_rocks()
 const throws_rocks = (ptr) => (ptr.mflags2 & MFLAGS.M2_ROCKTHROW) !== 0;
@@ -1229,6 +1230,28 @@ export async function dochug(mtmp) {
     return (status === MMOVE_DIED) ? 1 : 0;
 }
 
+// src/monmove.c:204 dochugw() -- move a monster, then interrupt an active
+// occupation when a hostile threat has newly come into view nearby.
+export async function dochugw(mtmp, chug) {
+    const x = mtmp.mx, y = mtmp.my;
+    const already_saw_mon = !!(chug && game.occupation && canspotmon(mtmp));
+    const rd = chug ? await dochug(mtmp) : 0;
+
+    if (game.occupation && !rd
+        && (Hallucination()
+            || (!mtmp.mpeaceful && !noattacks(game.mons[mtmp.mnum])))
+        && mdistu(mtmp) <= (BOLT_LIM + 1) * (BOLT_LIM + 1)
+        && (!already_saw_mon || !couldsee(x, y)
+            || dist2(x, y, game.u.ux, game.u.uy)
+                > (BOLT_LIM + 1) * (BOLT_LIM + 1))
+        && canspotmon(mtmp) && couldsee(mtmp.mx, mtmp.my)
+        && (mtmp.mcanmove ?? 1) && !onscary(game.u.ux, game.u.uy, mtmp)) {
+        const { stop_occupation } = await import('./allmain.js');
+        await stop_occupation();
+    }
+    return rd;
+}
+
 
 /* src/weapon.c select_rwep() — the throwing subsystem is absent; reaching
    this guard (a trapped weapon-monster out of melee range) is recorded. */
@@ -1313,9 +1336,8 @@ export async function m_move(mtmp, after) {
             const { shk_move } = await import('./shk.js');
             xm = await shk_move(mtmp);
         } else if (mtmp.isgd) {
-            /* gd_move(): the vault guard walk is not ported yet */
-            note_unported_monmove('m_move:gd_move');
-            xm = 0;
+            const { gd_move } = await import('./vault.js');
+            xm = await gd_move(mtmp);
         } else {
             const { pri_move } = await import('./priest.js');
             xm = await pri_move(mtmp);

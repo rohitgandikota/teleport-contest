@@ -283,7 +283,12 @@ export async function drinkfountain() {
             note_unported_fountain('drinkfountain:self_knowledge');
             break;
         case 20: /* Foul water */
-            note_unported_fountain('drinkfountain:foul_water');
+            {
+                await pline_The('water is foul!  You gag and vomit.');
+                const { morehungry, vomit } = await import('./eat.js');
+                await morehungry(rn1(20, 11));
+                await vomit();
+            }
             break;
         case 21: /* Poisonous */
             note_unported_fountain('drinkfountain:poisonous');
@@ -317,7 +322,12 @@ export async function drinkfountain() {
             note_unported_fountain('drinkfountain:see_invisible');
             break;
         case 26: /* See Monsters */
-            note_unported_fountain('drinkfountain:monster_detect');
+            {
+                const { monster_detect } = await import('./detect.js');
+                if (await monster_detect(null, 0))
+                    await pline_The('water tastes like nothing.');
+                exercise(A_WIS, true);
+            }
             break;
         case 27: /* Find a gem in the sparkling waters. */
             if (!(loc.looted & 1 /* F_LOOTED */)) {

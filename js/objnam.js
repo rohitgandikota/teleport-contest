@@ -977,6 +977,11 @@ export function doname(obj) {
                         : is_rottable(obj, game.objects) ? 'rotproof '
                           : '';
 
+    /* src/objnam.c:1373 -- once a container's contents are known, doname()
+       reports the number of separate stacks it holds. */
+    if (obj.cknown && obj.cobj?.length)
+        bp += ` containing ${obj.cobj.length} item${plur(obj.cobj.length)}`;
+
     switch (obj.oclass) {
     case AMULET_CLASS:
         if (obj.owornmask & W_AMUL)

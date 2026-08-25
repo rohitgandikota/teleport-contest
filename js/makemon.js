@@ -2031,6 +2031,16 @@ export function makemon(ptr, x, y, mmflags) {
         minvent: null, mgold: 0, data: ptr, mnum: mndx,
         cham: NON_PM, mstrategy: 0,
     };
+    /* src/makemon.c:1237-1246 allocates requested extended records before
+       assigning the monster id.  The records themselves consume no RNG. */
+    if (mmflags & (MM_EGD | MM_EPRI | MM_ESHK | MM_EMIN | MM_EDOG)) {
+        mtmp.mextra = { mcorpsenm: NON_PM };
+        if (mmflags & MM_EGD)  mtmp.mextra.egd = {};
+        if (mmflags & MM_EPRI) mtmp.mextra.epri = {};
+        if (mmflags & MM_ESHK) mtmp.mextra.eshk = {};
+        if (mmflags & MM_EMIN) mtmp.mextra.emin = {};
+        if (mmflags & MM_EDOG) mtmp.mextra.edog = {};
+    }
     if (mmflags & MM_ASLEEP)
         mtmp.msleeping = 1;
     /* src/makemon.c:1249 — C prepends to fmon here, not in place_monster(), so

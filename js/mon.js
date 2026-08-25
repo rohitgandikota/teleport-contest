@@ -280,12 +280,11 @@ async function movemon_singlemon(mtmp) {
             && await fightm(mtmp))
             return false; /* mon might have died */
     }
-    await dochug(mtmp);   /* C: dochugw(mtmp, TRUE) — the occupation
-                             interrupt half of dochugw is not ported */
+    await dochugw(mtmp, true);
     return false;
 }
 
-import { dochug, m_canseeu } from './monmove.js';
+import { dochugw, m_canseeu } from './monmove.js';
 import { fightm } from './mhitm.js';
 
 // include/you.h:560 m_next2u() — distu((m)->mx, (m)->my) <= 2.

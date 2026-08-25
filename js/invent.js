@@ -193,12 +193,12 @@ export async function look_here(obj_cnt, lhflags) {
     }
 
     if (!skip_objects) {
-        /* visible_region_at — gas clouds are absent; a seen trap underfoot
-           would print "There is a(n) <trap> here." and trapname is not
-           ported, so record it rather than guess the text */
+        /* visible_region_at for gas clouds remains separate. */
         const trap = t_at(game.u.ux, game.u.uy);
-        if (trap && trap.tseen)
-            note_unported_invent('look_here:trap_here');
+        if (trap && trap.tseen) {
+            const { trapname } = await import('./trap.js');
+            await pline(`There is ${an(trapname(trap.ttyp, false))} here.`);
+        }
     }
 
     const dfeature = dfeature_at(game.u.ux, game.u.uy);

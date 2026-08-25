@@ -571,7 +571,7 @@ export async function thitu(tlev, dam, objp, name) {
 
 // src/trap.c:7100 trapname() — the display name of a trap type; the
 // hallucination riff list draws on the display rng and is recorded.
-function trapname(ttyp, override) {
+export function trapname(ttyp, override) {
     if (Hallucination() && !override)
         note_unported_trap('trapname:hallucination');
     return defsyms[CM_S_arrow_trap + ttyp - 1].explain;

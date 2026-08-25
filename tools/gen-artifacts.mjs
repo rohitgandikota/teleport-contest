@@ -22,7 +22,28 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const SRC = join(ROOT, 'nethack-c/upstream/include/artilist.h');
 const OUT = join(ROOT, 'js/artilist_data.js');
 
-const src = readFileSync(SRC, 'utf8');
+function stripIfZeroBlocks(text) {
+    const kept = [];
+    let depth = 0;
+    for (const line of text.split('\n')) {
+        if (/^\s*#\s*if\s+0(?:\s|$)/.test(line)) {
+            depth = 1;
+            continue;
+        }
+        if (depth > 0) {
+            if (/^\s*#\s*(?:if|ifdef|ifndef)\b/.test(line)) depth++;
+            else if (/^\s*#\s*endif\b/.test(line)) depth--;
+            continue;
+        }
+        kept.push(line);
+    }
+    return kept.join('\n');
+}
+
+// Match the active C list. In particular, artilist.h retains the obsolete
+// Palantir inside a #if 0 block, so scraping the raw file shifts every later
+// artifact number away from C's enum artifacts_nums.
+const src = stripIfZeroBlocks(readFileSync(SRC, 'utf8'));
 
 /* SPFX_* values scraped from include/artifact.h */
 const artifactH = readFileSync(join(ROOT, 'nethack-c/upstream/include/artifact.h'), 'utf8');
@@ -40,7 +61,7 @@ const spfxval = (expr) => expr.split('|')
 const names = [];
 const tags = [];
 const otyps = [];
-const spfxs = [], mtypes = [], attks = [], defns = [],
+const spfxs = [], mtypes = [], attks = [], defns = [], carys = [],
       aligns = [], roles = [], races = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
@@ -81,6 +102,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     mtypes.push(clean(fields[4] ?? '0'));
     attks.push(clean(fields[5] ?? 'NO_ATTK'));
     defns.push(clean(fields[6] ?? 'NO_DFNS'));
+    carys.push(clean(fields[7] ?? 'NO_CARY'));
     aligns.push(clean(fields[9] ?? 'A_NONE'));
     roles.push(clean(fields[10] ?? 'NON_PM'));
     races.push(clean(fields[11] ?? 'NON_PM'));
@@ -130,6 +152,7 @@ export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     mtype: mtypes[i],
     attk: attks[i],
     defn: defns[i],
+    cary: carys[i],
     align: aligns[i],
     role: roles[i],
     race: races[i],

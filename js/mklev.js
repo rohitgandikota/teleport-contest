@@ -18,7 +18,7 @@ import {
 import { in_rooms } from './hack.js';
 import { MM_NOCOUNTBIRTH, MM_NOMSG, SHOPBASE, COURT, LEPREHALL, ZOO, TEMPLE,
          BEEHIVE, MORGUE, ANTHOLE, BARRACKS, SWAMP, COCKNEST,
-         G_GONE } from './const.js';
+         G_GONE, BR_NO_END1, BR_NO_END2, BR_PORTAL } from './const.js';
 import { do_mkroom, antholemon, mkroom_wire } from './mkroom.js';
 import { SPBOOK_no_NOVEL } from './mkobj.js';
 import { mongone } from './mon.js';
@@ -27,7 +27,7 @@ import { set_wall_state } from './display.js';
 import { obj_extract_self } from './invent.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, sp_lev_wire_roamer, reset_xystart_size } from './sp_lev.js';
-import { walkfrom, mkmaze_wire_mklev } from './mkmaze.js';
+import { walkfrom, mkmaze_wire_mklev, mkportal } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
 import { GP_CHECKSCARY as GP_CHECKSCARY_MK,
@@ -2268,15 +2268,22 @@ export function place_branch(branchp, bx, by) {
         const on_end1 = (branchp.end1?.dnum === g.u?.uz?.dnum
             && branchp.end1?.dlevel === g.u?.uz?.dlevel);
         const dest = on_end1 ? branchp.end2 : branchp.end1;
-        const goes_up = on_end1 ? !!branchp.end1_up : !branchp.end1_up;
-        const loc = g.level?.at(mp.x, mp.y);
-        if (loc) {
-            loc.typ = STAIRS;
-            loc.ladder = goes_up ? 1 : 2;
+        const make_stairs = branchp.type !== (on_end1 ? BR_NO_END1
+                                                       : BR_NO_END2);
+        if (branchp.type === BR_PORTAL) {
+            mkportal(mp.x, mp.y, dest?.dnum ?? 0, dest?.dlevel ?? 0);
+        } else if (make_stairs) {
+            const goes_up = on_end1 ? !!branchp.end1_up : !branchp.end1_up;
+            const loc = g.level?.at(mp.x, mp.y);
+            if (loc) {
+                loc.typ = STAIRS;
+                loc.ladder = goes_up ? 1 : 2;
+            }
+            stairway_add(mp.x, mp.y, goes_up, false,
+                         dest || { dnum: 0, dlevel: 0 });
+            if (goes_up) g.level.upstair = { x: mp.x, y: mp.y };
+            else g.level.dnstair = { x: mp.x, y: mp.y };
         }
-        stairway_add(mp.x, mp.y, goes_up, false, dest || { dnum: 0, dlevel: 0 });
-        if (goes_up) g.level.upstair = { x: mp.x, y: mp.y };
-        else g.level.dnstair = { x: mp.x, y: mp.y };
     }
     g.made_branch = true;
 }

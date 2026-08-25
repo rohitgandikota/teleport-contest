@@ -14,6 +14,7 @@ import { hidden_gold, money_cnt } from './invent.js';
 import { depth, dunlevs_in_dungeon } from './dungeon.js';
 import { G_GENOD, G_UNIQ, In_endgame, In_quest, KILLED_BY_AN, KILLED_BY,
          LOW_PM, M_AP_MONSTER, M_AP_TYPE, MGIVENNAME, NHW_TEXT, NHW_MENU,
+         OBJ_FREE,
          NON_PM, has_mgivenname } from './const.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { pmname } from './do_name.js';
@@ -283,6 +284,31 @@ export async function done(how) {
     await really_done(how);
 }
 
+// src/end.c:851 done_object_cleanup() -- a fatal hit can interrupt an object
+// while it is OBJ_FREE in flight. Put that projectile back on the map before
+// disclosure and bones saving so it is not lost from the level snapshot.
+async function done_object_cleanup() {
+    const u = game.u;
+    const { isok } = await import('./hacklib.js');
+    const { accessible } = await import('./monmove.js');
+    const { place_object } = await import('./mkobj.js');
+    const { stackobj } = await import('./invent.js');
+    let ox = u.ux + (u.dx || 0), oy = u.uy + (u.dy || 0);
+
+    if (!isok(ox, oy) || !accessible(ox, oy)) {
+        ox = u.ux;
+        oy = u.uy;
+    }
+    for (const field of ['thrownobj', 'kickedobj']) {
+        const obj = game[field];
+        if (obj && (obj.where ?? OBJ_FREE) === OBJ_FREE) {
+            place_object(obj, ox, oy);
+            stackobj(obj);
+            game[field] = null;
+        }
+    }
+}
+
 // src/dungeon.c deepest_lev_reached() — deepest ledger depth the hero saw.
 function deepest_lev_reached() {
     let deepest = 1;
@@ -307,6 +333,8 @@ async function really_done(how) {
     /* src/end.c:1144 — the game is now over; disclosure windows read this
        (add_menu_heading drops its highlight, hallucination stops, &c) */
     game.program_state_gameover = true;
+    if (!game.program_state?.panicking)
+        await done_object_cleanup();
     {
         const { night, midnight } = await import('./calendar.js');
         (game.iflags ||= {}).at_night = night();

@@ -8,7 +8,8 @@
 import { game } from './gstate.js';
 import { isok } from './hacklib.js';
 import { m_at, t_at } from './mon.js';
-import { cansee } from './vision.js';
+import { cansee, block_point, unblock_point, recalc_block_point,
+         vision_recalc } from './vision.js';
 import { display_cmap_at, map_invisible, newsym, unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
 
@@ -18,7 +19,9 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
          ZAP_POS, W_ARM, W_ARMS, W_WEP, W_AMUL, HI_ZAP,
          W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR,
-         KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING } from './const.js';
+         KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
+         D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
+         IS_DOOR, SHOPBASE } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
 import { u_safe_from_fatal_corpse } from './pickup.js';
@@ -28,7 +31,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_destroy_nhwindow, NHW_TEXT } from './tty/wintty.js';
 import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER } from './monst.js';
-import { killed, shieldeff_mon, wakeup } from './mon.js';
+import { killed, shieldeff_mon, wakeup, wake_nearto } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
@@ -45,7 +48,7 @@ import { more_experienced } from './exper.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
-import { pline_The, You, You_feel } from './pline.js';
+import { pline_The, You, You_feel, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { The, vtense, xname, Yname2, yname, makeplural,
          Yobjnam2, otense } from './objnam.js';
@@ -66,7 +69,7 @@ import { breathless, defended, haseyes, resists_cold, resists_elec,
          resists_fire, resists_magm } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance,
-         Shock_resistance } from './youprop.js';
+         Shock_resistance, Deaf, Unaware } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -907,6 +910,107 @@ export async function bhitm(mtmp, otmp) {
     return 0;
 }
 
+// src/lock.c:1103 doorlock(): apply opening, locking, or striking magic to
+// a door.  bhit() calls this after monsters and floor piles, matching C's
+// order so a broken door opens vision before the zap continues beyond it.
+export async function doorlock(otmp, x, y) {
+    const door = game.level?.at(x, y);
+    if (!door)
+        return false;
+
+    if (door.typ === SDOOR) {
+        switch (otmp.otyp) {
+        case ONAMES.WAN_OPENING:
+        case ONAMES.SPE_KNOCK:
+        case ONAMES.WAN_STRIKING:
+        case ONAMES.SPE_FORCE_BOLT:
+            door.typ = DOOR;
+            door.doormask = D_CLOSED | (door.doormask & D_TRAPPED);
+            newsym(x, y);
+            if (cansee(x, y))
+                await pline('A door appears in the wall!');
+            if (otmp.otyp === ONAMES.WAN_OPENING
+                || otmp.otyp === ONAMES.SPE_KNOCK)
+                return true;
+            break;
+        default:
+            return false;
+        }
+    } else if (!IS_DOOR(door.typ)) {
+        return false;
+    }
+
+    let msg = null;
+    let loudness = 0;
+    switch (otmp.otyp) {
+    case ONAMES.WAN_LOCKING:
+    case ONAMES.SPE_WIZARD_LOCK:
+        switch (door.doormask & ~D_TRAPPED) {
+        case D_CLOSED:
+            msg = 'The door locks!';
+            break;
+        case D_ISOPEN:
+            msg = 'The door swings shut, and locks!';
+            break;
+        case D_BROKEN:
+            msg = 'The broken door reassembles and locks!';
+            break;
+        case D_NODOOR:
+            msg = 'A cloud of dust springs up and assembles itself into a door!';
+            break;
+        default:
+            return false;
+        }
+        door.doormask = D_LOCKED | (door.doormask & D_TRAPPED);
+        block_point(x, y);
+        newsym(x, y);
+        break;
+    case ONAMES.WAN_OPENING:
+    case ONAMES.SPE_KNOCK:
+        if (!(door.doormask & D_LOCKED))
+            return false;
+        msg = 'The door unlocks!';
+        door.doormask = D_CLOSED | (door.doormask & D_TRAPPED);
+        break;
+    case ONAMES.WAN_STRIKING:
+    case ONAMES.SPE_FORCE_BOLT: {
+        if (!(door.doormask & (D_LOCKED | D_CLOSED)))
+            return false;
+        if (door.doormask & D_TRAPPED) {
+            door.doormask = D_NODOOR;
+            unblock_point(x, y);
+            newsym(x, y);
+            note_unported_zap('doorlock:trapped_door');
+            loudness = 40;
+            break;
+        }
+        const sawit = cansee(x, y);
+        door.doormask = D_BROKEN;
+        recalc_block_point(x, y);
+        const seeit = cansee(x, y);
+        newsym(x, y);
+        if (game.flags?.verbose !== false) {
+            if ((sawit || seeit) && !Unaware())
+                await pline_The('door crashes open!');
+            else if (!Deaf())
+                await You_hear('a crashing sound.');
+        }
+        if (game.vision_full_recalc)
+            vision_recalc(0);
+        loudness = 20;
+        break;
+    }
+    default:
+        return false;
+    }
+
+    if (msg && cansee(x, y))
+        await pline(msg);
+    if (loudness)
+        wake_nearto(x, y, loudness);
+    return true;
+}
+
 // src/zap.c:3628 zap_map() — per-square terrain effects of a lateral zap.
 // Trap explosion applies to cancellation only; the engraving arm fires for
 // down zaps only; secret-door reveals belong to striking/opening/locking.
@@ -1662,8 +1766,27 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
                 range--;
         }
 
-        /* src/zap.c — ZAPPED_WAND door arm (opening/locking/striking)
-           records inside zap_map/bhito already */
+        if (weapon === ZAPPED_WAND && (IS_DOOR(typ) || typ === SDOOR)) {
+            switch (obj.otyp) {
+            case ONAMES.WAN_OPENING:
+            case ONAMES.WAN_LOCKING:
+            case ONAMES.WAN_STRIKING:
+            case ONAMES.SPE_KNOCK:
+            case ONAMES.SPE_WIZARD_LOCK:
+            case ONAMES.SPE_FORCE_BOLT:
+                if (await doorlock(obj, x, y)) {
+                    if (cansee(x, y)
+                        || (obj.otyp === ONAMES.WAN_STRIKING && !Deaf()))
+                        learnwand(obj);
+                    if (game.level.at(x, y).doormask === D_BROKEN
+                        && (game.in_rooms?.(x, y, SHOPBASE) ?? '').length)
+                        note_unported_zap('bhit:shop_door_damage');
+                }
+                break;
+            default:
+                break;
+            }
+        }
 
         if (!(typ >= POOL) /* !ZAP_POS(typ) */ || closed_door(x, y)) {
             game.bhitpos.x -= ddx;

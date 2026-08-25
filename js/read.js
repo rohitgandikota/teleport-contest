@@ -65,9 +65,14 @@ export async function doread(read_ok) {
         return ECMD_OK;
     }
 
-    /* literate conduct bump — no draw, no message */
-    game.u.uconduct = game.u.uconduct || {};
-    game.u.uconduct.literate = (game.u.uconduct.literate || 0) + 1;
+    /* Blank paper and the two special books do not break illiterate conduct. */
+    if (otyp !== ONAMES.SCR_BLANK_PAPER
+        && otyp !== ONAMES.SPE_BLANK_PAPER
+        && otyp !== ONAMES.SPE_BOOK_OF_THE_DEAD
+        && otyp !== ONAMES.SPE_NOVEL) {
+        game.u.uconduct = game.u.uconduct || {};
+        game.u.uconduct.literate = (game.u.uconduct.literate || 0) + 1;
+    }
 
     if (scroll.oclass === OCLASSES.SPBOOK_CLASS)
         return (await study_book(scroll)) ? ECMD_TIME : ECMD_OK;
@@ -75,16 +80,18 @@ export async function doread(read_ok) {
     /* src/read.c:617 — the scroll path. Blind and confused readings need
        state no session reaches yet. */
     game.known = false;
-    const nodisappear = (otyp === ONAMES.SCR_FIRE
-                         || (otyp === ONAMES.SCR_REMOVE_CURSE
-                             && scroll.cursed));
-    await pline(nodisappear ? 'You read the scroll.'
-                            : 'As you read the scroll, it disappears.');
-    if (game.u.uprops?.CONFUSION || game.u.intrinsic?.HConfusion) {
-        if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
-            await pline('Being so trippy, you screw up...');
-        else
-            await pline('Being confused, you mispronounce the magic words...');
+    if (otyp !== ONAMES.SCR_BLANK_PAPER) {
+        const nodisappear = (otyp === ONAMES.SCR_FIRE
+                             || (otyp === ONAMES.SCR_REMOVE_CURSE
+                                 && scroll.cursed));
+        await pline(nodisappear ? 'You read the scroll.'
+                                : 'As you read the scroll, it disappears.');
+        if (game.u.uprops?.CONFUSION || game.u.intrinsic?.HConfusion) {
+            if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
+                await pline('Being so trippy, you screw up...');
+            else
+                await pline('Being confused, you mispronounce the magic words...');
+        }
     }
 
     if (!await seffects(scroll)) {
@@ -132,6 +139,13 @@ async function seffects(sobj) {
         break;
     case ONAMES.SCR_IDENTIFY:
         return await seffect_identify(sobj);
+    case ONAMES.SCR_BLANK_PAPER:
+        if (game.u.ublind)
+            await You("don't remember there being any magic words on this scroll.");
+        else
+            await pline('This scroll seems to be blank.');
+        game.known = true;
+        break;
     case ONAMES.SCR_ENCHANT_WEAPON:
         return await seffect_enchant_weapon(sobj);
     case ONAMES.SCR_LIGHT:

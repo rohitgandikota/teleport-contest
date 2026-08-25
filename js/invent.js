@@ -35,7 +35,7 @@ import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhw
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
 import { pline, docrt } from './display.js';
-import { observe_object } from './o_init.js';
+import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
 import { recalc_block_point } from './vision.js';
@@ -1522,6 +1522,26 @@ export function count_unidentified(objchn) {
     return unid_cnt;
 }
 
+// src/invent.c:2673 fully_identify_obj() and :2687 identify().
+// identify() gives immediate feedback after updating every object-level flag.
+export function fully_identify_obj(otmp) {
+    makeknown(otmp.otyp);
+    if (otmp.oartifact)
+        note_unported_invent('fully_identify_obj:artifact');
+    observe_object(otmp);
+    otmp.known = otmp.bknown = otmp.rknown = 1;
+    if (Is_container(otmp) || otmp.otyp === ONAMES.STATUE)
+        otmp.cknown = otmp.lknown = 1;
+    if (otmp.otyp === ONAMES.EGG && (otmp.corpsenm ?? -1) >= 0)
+        note_unported_invent('fully_identify_obj:egg_type');
+}
+
+export async function identify(otmp) {
+    fully_identify_obj(otmp);
+    await prinv(null, otmp, 0);
+    return 1;
+}
+
 // src/invent.c:2711 identify_pack() — identify up to id_limit items.
 //
 // id_limit 0 means all. The "already identified" line is the one an
@@ -1534,10 +1554,18 @@ export async function identify_pack(id_limit, learning_id) {
         await You(`have already identified ${
             !learning_id ? 'all' : 'the rest'} of your possessions.`);
     } else if (!id_limit || id_limit >= unid_cnt) {
-        note_unported_invent('identify_pack:identify_everything');
+        let remaining = unid_cnt;
+        for (const obj of game.invent || []) {
+            if (not_fully_identified(obj)) {
+                await identify(obj);
+                if (--remaining < 1)
+                    break;
+            }
+        }
     } else {
         note_unported_invent('identify_pack:menu');
     }
+    update_inventory();
 }
 
 // src/invent.c:1664 splittable() — can this stack be split off from?

@@ -6,7 +6,7 @@ import { A_STR, LANDMINE, SPIKED_PIT, PIT, HOLE, TRAPDOOR,
 import { the, xname } from './objnam.js';
 import { costly_spot } from './shk.js';
 import { You_hear, There } from './pline.js';
-import { map_invisible, newsym } from './display.js';
+import { glyph_at, map_invisible, newsym } from './display.js';
 import { YMonnam } from './do_name.js';
 import { is_flimsy } from './obj.js';
 import { You, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
@@ -69,6 +69,7 @@ import { DIED } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { In_sokoban } from './dungeon.js';
 import { inside_room } from './sp_lev.js';
+import { cmap_names } from './drawing_data.js';
 import { tunnels, needspick, passes_walls, passes_bars, dmgtype,
          metallivorous, throws_rocks, verysmall, bigmonst, amorphous,
          is_whirly, noncorporeal, slithy } from './mondata.js';
@@ -1648,6 +1649,31 @@ async function moverock_core(sx, sy) {
 
 /* include/hack.h TRAVP_* — findtravelpath modes */
 export const TRAVP_TRAVEL = 0, TRAVP_GUESS = 1, TRAVP_VALID = 2;
+
+// src/hack.c:1526 is_valid_travelpt(): can travel's pathfinder reach this
+// map square? Unseen stone is rejected before the path search.
+export async function is_valid_travelpt(x, y) {
+    const u = game.u;
+    if (u_at(x, y))
+        return true;
+
+    const glyph = glyph_at(x, y);
+    const loc = game.level?.at(x, y);
+    if (isok(x, y)
+        && (glyph?.kind === 'unexplored'
+            || (glyph?.kind === 'cmap'
+                && glyph.cmap === cmap_names.S_stone))
+        && !loc?.seenv)
+        return false;
+
+    const tx = u.tx, ty = u.ty;
+    u.tx = x;
+    u.ty = y;
+    const result = await findtravelpath(TRAVP_VALID);
+    u.tx = tx;
+    u.ty = ty;
+    return result;
+}
 
 // src/hack.c:4079 crawl_destination() — is <x,y> a spot the hero could
 // crawl to (used for the travel-to-adjacent shortcut)?

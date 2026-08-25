@@ -8,7 +8,7 @@
 // draws rn2(300) — the tests are independent `if`s, not a chain.
 
 import { game } from './gstate.js';
-import { MFLAGS, PMNAMES } from './monst_data.js';
+import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { canseemon } from './display.js';
 import { helpless, DEADMONSTER } from './monst.js';
 import { rn2 } from './rng.js';
@@ -29,6 +29,7 @@ import { Monnam } from './do_name.js';
 import { vtense } from './objnam.js';
 import { wake_nearto } from './mon.js';
 import { nomul } from './hack.js';
+import { poly_gender } from './polyself.js';
 
 // src/sounds.c:202 dosounds()
 export async function dosounds() {
@@ -344,6 +345,24 @@ export async function domonnoise(mtmp) {
         break;
     case MSOUND.MS_MOO:
         pline_msg = 'moos.';
+        break;
+    case MSOUND.MS_SEDUCE:
+        if (ptr.mlet !== MONSYMS.S_NYMPH) {
+            /* Succubi and incubi can enter the full seduction interaction. */
+            note_unported_sounds('domonnoise:doseduce');
+            break;
+        }
+        switch (poly_gender() !== (mtmp.female | 0) ? rn2(3) : 0) {
+        case 2:
+            verbl_msg = 'Hello, sailor.';
+            break;
+        case 1:
+            pline_msg = 'comes on to you.';
+            break;
+        default:
+            pline_msg = 'cajoles you.';
+            break;
+        }
         break;
     default:
         note_unported_sounds(`domonnoise:msound=${msound}`);

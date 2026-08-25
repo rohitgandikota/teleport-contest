@@ -30,7 +30,7 @@ import { OCLASSES } from './objects_data.js';
 import { tty_yn_function } from './tty/topl.js';
 import { GETOBJ_NOFLAGS } from './const.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE } from './invent.js';
-import { doname } from './objnam.js';
+import { doname, short_oname, thesimpleoname } from './objnam.js';
 const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
 
 function note_unported_potion(what) {
@@ -397,10 +397,12 @@ export async function dodip() {
     if (at_fountain || at_pool || at_sink) {
         /* can_reach_floor is true for an unimpaired hero */
         if (at_fountain) {
-            /* src/potion.c:2301 — obuf is short_oname(obj, doname, ...):
-               the full name when verbose, the pronoun otherwise */
+            /* src/potion.c:2301: reserve room for the longest possible
+               second-stage dip prompt, then shorten the object name by the
+               same sequence C uses. */
+            const obuf = short_oname(obj, doname, thesimpleoname, 49);
             const q = `Dip ${game.flags?.verbose === false ? shortestname
-                             : doname(obj)} into the fountain?`;
+                             : obuf} into the fountain?`;
             const ans = await tty_yn_function(q, 'yn', 'n');
             if (ans === 'y') {
                 obj.pickup_prev = 0;

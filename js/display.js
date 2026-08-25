@@ -1728,6 +1728,8 @@ export async function cls() {
 // rows persist between calls: a blocking prompt inside a command (the
 // goto_level --More--) shows the PREVIOUS turn's status, as C does.
 export async function bot() {
+    if (game.bot_disabled)
+        return;
     const display = game?.nhDisplay;
     if (!display) return;
     const CO = display.cols ?? 80;

@@ -209,6 +209,14 @@ export function makeplural(s) {
             return s;
     if (low === 'ya' || low.endsWith(' ya'))
         return s;
+    for (const [singular, plural] of one_off) {
+        if (low.endsWith(singular.toLowerCase())) {
+            const start = s.length - singular.length;
+            const replacement = /^[A-Z]/.test(s.slice(start))
+                ? plural.charAt(0).toUpperCase() + plural.slice(1) : plural;
+            return s.slice(0, start) + replacement;
+        }
+    }
 
     const sp = s.lastIndexOf(' ');
     const head = sp >= 0 ? s.slice(0, sp + 1) : '';
@@ -525,6 +533,76 @@ export function simpleonames(obj) {
     if (obj.quan !== 1)
         simpleoname = makeplural(simpleoname);
     return simpleoname;
+}
+
+// src/objnam.c:2474 thesimpleoname(): the shortest form used when a query
+// cannot fit the normal object description.
+export function thesimpleoname(obj) {
+    return the(simpleonames(obj));
+}
+
+// src/objnam.c:2009 short_oname(): progressively shorten an object name to
+// fit a query. User-supplied names are clipped first. If that is not enough,
+// hide BUC, erosion-proofing, grease, and erosion details, then fall back to
+// the caller's minimal formatter.
+export function short_oname(obj, func, altfunc, lenlimit) {
+    let out = func(obj);
+    if (out.length <= lenlimit)
+        return out;
+
+    const ocl = game.objects[obj.otyp];
+    const savedUname = ocl.oc_uname;
+    const savedOname = obj.oname;
+    const shortUname = (typeof savedUname === 'string'
+                        && savedUname.length >= 12)
+                       ? savedUname.slice(0, 8) + '...' : savedUname;
+    const shortOname = (typeof savedOname === 'string'
+                        && savedOname.length >= 12)
+                       ? savedOname.slice(0, 8) + '...' : savedOname;
+
+    if (shortUname !== savedUname) {
+        ocl.oc_uname = shortUname;
+        out = func(obj);
+        ocl.oc_uname = savedUname;
+        if (out.length <= lenlimit)
+            return out;
+    }
+    if (shortOname !== savedOname) {
+        obj.oname = shortOname;
+        out = func(obj);
+        obj.oname = savedOname;
+        if (out.length <= lenlimit)
+            return out;
+    }
+    if (shortUname !== savedUname && shortOname !== savedOname) {
+        ocl.oc_uname = shortUname;
+        obj.oname = shortOname;
+        out = func(obj);
+        ocl.oc_uname = savedUname;
+        obj.oname = savedOname;
+        if (out.length <= lenlimit)
+            return out;
+    }
+
+    const saved = {
+        bknown: obj.bknown, rknown: obj.rknown, greased: obj.greased,
+        oeroded: obj.oeroded, oeroded2: obj.oeroded2,
+    };
+    ocl.oc_uname = shortUname;
+    if (shortOname !== undefined)
+        obj.oname = shortOname;
+    obj.bknown = obj.rknown = obj.greased = 0;
+    obj.oeroded = obj.oeroded2 = 0;
+    out = func(obj);
+    if (altfunc && out.length > lenlimit)
+        out = altfunc(obj);
+    Object.assign(obj, saved);
+    ocl.oc_uname = savedUname;
+    if (savedOname === undefined)
+        delete obj.oname;
+    else
+        obj.oname = savedOname;
+    return out;
 }
 
 // src/objnam.c:1924 cxname() — xname(), except a corpse names its monster.

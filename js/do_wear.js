@@ -112,6 +112,25 @@ export function Armor_on() {
     return 0;
 }
 
+/* Every armor-slot on-handler ends by revealing the item's enchantment: the
+   status-line AC change makes its +/- value evident. Slot-specific magical
+   effects remain in their dedicated handlers; these common tails cover the
+   ordinary armor paths. */
+function reveal_worn_armor(mask) {
+    const obj = worn(mask);
+    if (obj && !obj.known) {
+        obj.known = 1;
+        update_inventory();
+    }
+    return 0;
+}
+
+function Cloak_on()  { return reveal_worn_armor(W_ARMC); }
+function Helmet_on() { return reveal_worn_armor(W_ARMH); }
+function Gloves_on() { return reveal_worn_armor(W_ARMG); }
+function Shield_on() { return reveal_worn_armor(W_ARMS); }
+function Shirt_on()  { return reveal_worn_armor(W_ARMU); }
+
 /* include/prop.h enum prop_types, index -> uprops key. The flat uprops map
    keys by the C constant's name; setworn's generic property arm (src/worn.c)
    writes through this table when gear is put on. Index 0 is unused in C. */
@@ -214,9 +233,18 @@ export function donning(otmp) {
         result = true;
     else if (otmp === game.u.uarm)
         result = (game.afternmv === Armor_on);
+    else if (otmp === game.u.uarmc)
+        result = (game.afternmv === Cloak_on);
+    else if (otmp === game.u.uarmh)
+        result = (game.afternmv === Helmet_on);
+    else if (otmp === game.u.uarmg)
+        result = (game.afternmv === Gloves_on);
     else if (otmp === game.u.uarmf)
         result = (game.afternmv === Boots_on);
-    /* Shirt_on/Cloak_on/Helmet_on/Gloves_on/Shield_on are not ported */
+    else if (otmp === game.u.uarms)
+        result = (game.afternmv === Shield_on);
+    else if (otmp === game.u.uarmu)
+        result = (game.afternmv === Shirt_on);
 
     return result;
 }
@@ -267,7 +295,12 @@ export function cancel_don() {
        corresponding armor category takes 1 turn to wear, but check all of
        them anyway (only the ported handlers can appear on this tree) */
     tk.cancelled_don = (game.afternmv === Armor_on
-                        || game.afternmv === Boots_on);
+                        || game.afternmv === Cloak_on
+                        || game.afternmv === Helmet_on
+                        || game.afternmv === Gloves_on
+                        || game.afternmv === Boots_on
+                        || game.afternmv === Shield_on
+                        || game.afternmv === Shirt_on);
     game.afternmv = null;
     game.nomovemsg = null;
     game.multi = 0;
@@ -602,9 +635,12 @@ export async function accessory_or_armor_on(obj) {
         setworn(obj, mask);
         let afternmv = null;
         if (mask === W_ARM) afternmv = Armor_on;
+        else if (mask === W_ARMC) afternmv = Cloak_on;
+        else if (mask === W_ARMH) afternmv = Helmet_on;
+        else if (mask === W_ARMG) afternmv = Gloves_on;
         else if (mask === W_ARMF) afternmv = Boots_on;
-        /* the other slots' handlers reduce to their property grant, which
-           setworn has already applied */
+        else if (mask === W_ARMS) afternmv = Shield_on;
+        else if (mask === W_ARMU) afternmv = Shirt_on;
 
         const delay = -(objects[obj.otyp].oc_delay || 0);
         if (delay) {

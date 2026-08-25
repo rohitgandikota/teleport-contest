@@ -103,6 +103,7 @@ import { random_engraving, wipeout_text } from './engrave.js';
 import { merged, weight, sobj_at } from './invent.js';
 import { mkroll_launch } from './trap.js';
 import { themeroom_fill_contents, post_level_generate } from './themerms.js';
+import { oinit } from './o_init.js';
 import { mkroom_table, create_des_coder, spo_push_room,
          spo_endroom } from './sp_lev.js';
 
@@ -313,9 +314,6 @@ export function u_on_upstairs() {
     // Random placement via place_lregion
     place_lregion(0, 0, 0, 0, 0, 0, 0, 0, LR_UPTELE, null);
 }
-
-// oinit stub (level-dependent object probability reset)
-function oinit() { /* no-op for contest */ }
 
 /* level_difficulty() now comes from js/makemon.js, which is where src/dungeon.c
    puts it; the local copy here duplicated it. */

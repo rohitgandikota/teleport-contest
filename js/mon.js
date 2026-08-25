@@ -30,7 +30,8 @@ import { which_armor } from './worn.js';
 import { obj_resists } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold, undead_to_corpse } from './mkobj.js';
 import { weight } from './invent.js';
-import { newsym, canseemon, canspotmon, pline } from './display.js';
+import { newsym, canseemon, canspotmon, pline,
+         unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
@@ -1864,6 +1865,10 @@ export async function mondead(mdef) {
         if ((mv.died | 0) < 255)
             mv.died = (mv.died | 0) + 1;
     }
+    /* src/mon.c:3170, death proves the remembered invisible marker stale.
+       Clear it before detaching so the corpse or dropped object can replace
+       it on the same screen boundary. */
+    unmap_invisible(mx, my);
     remove_monster(mx, my);
     const idx = (game.level?.monsters || []).indexOf(mdef);
     if (idx >= 0)

@@ -26,7 +26,7 @@ import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { genders } from './role_data.js';
 import { pline, canspotmon, canseemon, mon_visible, sensemon, bot,
-         newsym } from './display.js';
+         map_invisible, newsym } from './display.js';
 import { cansee } from './vision.js';
 import { Monnam } from './do_name.js';
 import { You_hear } from './pline.js';
@@ -261,11 +261,6 @@ async function wildmiss(mtmp, mattk) {
         else
             await pline(`${Monst_name} is fooled by water reflections and misses!`);
     }
-}
-
-// src/display.c map_invisible() — remembered 'I' marker; absent, recorded.
-function map_invisible(x, y) {
-    note_unported_mhitu('display:map_invisible');
 }
 
 // src/mhitu.c:310 getmattk() — the attack for this slot, with substitutions.

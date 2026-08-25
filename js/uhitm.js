@@ -33,7 +33,7 @@ import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
 import { useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
-import { yname, cxname, xname, The } from './objnam.js';
+import { yname, cxname, xname, The, makeplural } from './objnam.js';
 import { mintrap } from './trap.js';
 import { clone_mon } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -47,7 +47,7 @@ import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uw
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
-         sticks, haseyes } from './mondata.js';
+         sticks, haseyes, cantwield } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -68,8 +68,8 @@ import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          STRAT_WAITMASK, engulfing_u } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
-import { FACE } from './const.js';
-import { mbodypart } from './polyself.js';
+import { FACE, HAND } from './const.js';
+import { body_part, mbodypart } from './polyself.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -165,8 +165,17 @@ export async function do_attack(mtmp) {
 
     if (game.unweapon) {
         game.unweapon = false;
-        if (game.flags?.verbose)
-            note_unported_uhitm('do_attack:unweapon_message');
+        if (game.flags?.verbose) {
+            if (game.u.uwep) {
+                await You(`begin bashing monsters with ${yname(game.u.uwep)}.`);
+            } else if (!cantwield(game.youmonst.data)) {
+                const action = Role_if(PMNAMES.PM_MONK)
+                    ? 'striking' : 'bashing';
+                await You(`begin ${action} monsters with your ${
+                    game.u.uarmg ? 'gloved' : 'bare'} ${
+                    makeplural(body_part(HAND))}.`);
+            }
+        }
     }
     exercise(A_STR, true);  /* you're exercising muscles */
     /* andrew@orca: prevent unlimited pick-axe attacks */

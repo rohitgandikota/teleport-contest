@@ -28,7 +28,7 @@ import { mksobj, place_object, splitobj } from './mkobj.js';
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
-import { canspotmon, newsym, pline } from './display.js';
+import { canspotmon, display_object_at, newsym, pline } from './display.js';
 import { You, You_hear, You_feel, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname } from './objnam.js';
 import { upstart } from './do_name.js';
@@ -2267,9 +2267,18 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
         obj_extract_self(singleobj);
     }
     newsym(x1, y1);
+    /* src/trap.c:3321 tmp_at(DISP_FLASH, obj_to_glyph(...)); tmp_at(x,y).
+       The temporary boulder is visible while a later hit message pauses on
+       --More--, even though it has already been unlinked from the floor.
+       Removing a boulder schedules a vision update, so settle that first or
+       pline() would repaint the floor over this temporary glyph. */
+    if (game.vision_full_recalc)
+        vision_recalc(0);
+    display_object_at(singleobj, x1, y1);
 
     let dist = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
     let x = x1, y = y1;
+    let tmpx = x1, tmpy = y1;
     let finalx = x2, finaly = y2;
     const dx = Math.sign(x2 - x1), dy = Math.sign(y2 - y1);
     const rolling = (style & ROLL) !== 0;
@@ -2283,6 +2292,15 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
     style &= ~(LAUNCH_UNSEEN | LAUNCH_KNOWN);
 
     while (dist-- > 0 && !used_up) {
+        /* C advances tmp_at at the start of each animation iteration. If a
+           collision message pauses, the glyph remains one square behind the
+           object being tested for impact. */
+        if (x !== tmpx || y !== tmpy) {
+            newsym(tmpx, tmpy);
+            display_object_at(singleobj, x, y);
+            tmpx = x;
+            tmpy = y;
+        }
         if (!isok(game.bhitpos.x + dx, game.bhitpos.y + dy)) {
             finalx = x;
             finaly = y;
@@ -2364,6 +2382,8 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
         }
     }
 
+    /* End the tmp_at display; the final placement is redrawn below. */
+    newsym(tmpx, tmpy);
     if (!used_up) {
         singleobj.otrapped = 0;
         place_object(singleobj, finalx, finaly);

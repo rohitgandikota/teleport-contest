@@ -83,6 +83,10 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
         article = ARTICLE_THE;
 
     const mdat = game.mons[mtmp.mnum];
+    /* src/do_name.c mon_pmname(), ordinary monster names use Mgender(),
+       with pmname() falling back to the neutral slot when that sex has no
+       distinct spelling. The sex is already settled by makemon(). */
+    const pm_name = pmname(mdat, mtmp.female ? 1 : 0);
 
     if (mtmp.ispriest || mtmp.isminion)
         note_do_name_unported('x_monnam:priestname');
@@ -125,7 +129,7 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
             buf += `${name}'s ghost`;
             name_at_start = true;
         } else if (called) {
-            buf += `${pmname(mdat, 2)} called ${name}`;
+            buf += `${pm_name} called ${name}`;
             name_at_start = type_is_pname(mdat);
         } else {
             /* the mplayer "<name> the <rank>" arm needs is_mplayer */
@@ -133,7 +137,7 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
             name_at_start = true;
         }
     } else {
-        buf += pmname(mdat, 2);     /* neutral; Mgender is not ported */
+        buf += pm_name;
         name_at_start = type_is_pname(mdat);
     }
 

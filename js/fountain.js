@@ -37,7 +37,28 @@ export async function dryup(x, y, isyou) {
     const loc = game.level.at(x, y);
     if (IS_FOUNTAIN(loc.typ)
         && (!rn2(3) || (loc.looted & 2 /* F_WARNED */))) {
-        /* in_town watchman warning — towns are not modelled */
+        const { in_town } = await import('./hack.js');
+        if (isyou && in_town(x, y) && !(loc.looted & 2 /* F_WARNED */)) {
+            const { couldsee } = await import('./vision.js');
+            const { PMNAMES } = await import('./monst_data.js');
+            const watch = (game.level.monsters || []).find(mtmp =>
+                (mtmp.data?.pmidx === PMNAMES.PM_WATCHMAN
+                 || mtmp.data?.pmidx === PMNAMES.PM_WATCH_CAPTAIN)
+                && couldsee(mtmp.mx, mtmp.my) && mtmp.mpeaceful);
+
+            loc.looted |= 2; /* F_WARNED */
+            const { Deaf } = await import('./youprop.js');
+            if (watch && !Deaf()) {
+                const { Amonnam } = await import('./do_name.js');
+                await pline(`${Amonnam(watch)} yells:`);
+                await pline('"Hey, stop using that fountain!"');
+            } else if (!watch) {
+                await pline_The('flow reduces to a trickle.');
+            } else {
+                note_unported_fountain('dryup:deaf_watchman_warning');
+            }
+            return;
+        }
         if (isyou && game.wizard) {
             const ans = await tty_yn_function('Dry up fountain?', 'yn', 'n');
             if (ans === 'n')
@@ -369,6 +390,10 @@ export async function dipfountain(obj) {
         {
             let money = money_cnt(game.invent);
             if (money > 10) {
+                game._deferred_status_money = {
+                    value: money,
+                    throughMove: (game.moves ?? 0) + 1,
+                };
                 money = Math.trunc(somegold(money) / 10);
                 for (const coin of [...(game.invent || [])]) {
                     if (money <= 0)

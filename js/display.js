@@ -1464,7 +1464,15 @@ function _statusLine2() {
             lvldesc = `Dlvl:${dep}`;
         }
     }
-    let s = `${lvldesc} $:${money_cnt(game.invent)}`
+    let shownMoney = money_cnt(game.invent);
+    const deferredMoney = game._deferred_status_money;
+    if (deferredMoney) {
+        if ((game.moves ?? 0) <= deferredMoney.throughMove)
+            shownMoney = deferredMoney.value;
+        else
+            delete game._deferred_status_money;
+    }
+    let s = `${lvldesc} $:${shownMoney}`
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
           + ` HP:${Math.max(u.uhp | 0, 0)}(${u.uhpmax || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
@@ -2001,6 +2009,14 @@ export function map_object(obj, show) {
     if (show)
         show_glyph_cell(x, y, og.ch, og.color, og.dec, 0,
                         og.glyph ?? { kind: 'cmap', cmap: og.cmap });
+}
+
+// src/display.c tmp_at() object display. Paint an object glyph at a temporary
+// coordinate without changing floor-object memory or the object's location.
+export function display_object_at(obj, x, y) {
+    const og = floor_object_glyph(obj, x, y);
+    show_glyph_cell(x, y, og.ch, og.color, og.dec, 0,
+                    og.glyph ?? { kind: 'cmap', cmap: og.cmap });
 }
 
 // src/display.c:276 map_trap() — remember and (optionally) show one trap.

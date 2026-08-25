@@ -63,8 +63,17 @@ export function setgemprobs(dlev) {
     const objects = game.objects;
     let j, first, lev, sum = 0;
 
-    if (dlev) lev = dlev.ledger_no > dlev.maxledgerno ? dlev.maxledgerno : dlev.ledger_no;
-    else lev = 0;
+    if (dlev) {
+        const dgn = game.dungeons?.[dlev.dnum];
+        const ledger = (dgn?.ledger_start ?? 0) + dlev.dlevel;
+        const last = game.dungeons?.[game.dungeons.length - 1];
+        const maxledger = last
+            ? last.ledger_start + last.num_dunlevs
+            : ledger;
+        lev = Math.min(ledger, maxledger);
+    } else {
+        lev = 0;
+    }
     first = game.bases[GEM_CLASS];
 
     for (j = 0; j < 9 - Math.trunc(lev / 3); j++)
@@ -78,6 +87,11 @@ export function setgemprobs(dlev) {
     for (j = game.bases[GEM_CLASS]; j < game.bases[GEM_CLASS + 1]; j++)
         sum += objects[j].oc_prob;
     game.oclass_prob_totals[GEM_CLASS] = sum;
+}
+
+// src/o_init.c:369 oinit(), level-dependent object probabilities.
+export function oinit() {
+    setgemprobs(game.u.uz);
 }
 
 // src/o_init.c:85 randomize_gem_colors()

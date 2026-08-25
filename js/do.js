@@ -107,6 +107,17 @@ export function stairway_at(x, y) {
     return null;
 }
 
+// src/stairs.c:55 stairway_find_from(), find the arrival staircase whose
+// remote end is the level the hero just left.
+function stairway_find_from(fromdlev, isladder) {
+    for (let s = game.stairs; s; s = s.next)
+        if (s.tolev?.dnum === fromdlev?.dnum
+            && s.tolev?.dlevel === fromdlev?.dlevel
+            && !!s.isladder === !!isladder)
+            return s;
+    return null;
+}
+
 // src/do.c dodown() — the '>' command.
 //
 // Only the plain staircase path is ported. dodown's own two draws are the
@@ -257,6 +268,9 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1585 keepdogs() — adjacent followers leave the map with the
        hero BEFORE the old level is left */
     const { keepdogs, losedogs } = await import('./dog.js');
+    /* src/do.c:1607 - a destination belongs to the level being left. */
+    game.iflags = game.iflags || {};
+    game.iflags.travelcc = { x: 0, y: 0 };
     /* src/do.c:1623 — the tutorial transition sets iflags.nofollowers so
        the pet stays behind */
     if (!game.iflags?.nofollowers)
@@ -335,6 +349,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            the same state; the visible cost is restore.c:1190's monster
            catchup against the time spent away. */
         game.level = game.saved_levels.get(ledger);
+        const { oinit } = await import('./o_init.js');
+        oinit();
         const { DEADMONSTER } = await import('./monst.js');
         const { mon_catchup_elapsed_time } = await import('./dog.js');
         const { restore_cham, hide_monst } = await import('./mon.js');
@@ -393,7 +409,15 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     }
 
     if (at_stairs) {
-        if (up) {
+        /* src/do.c:1747/1765, prefer the stair whose remote end is the
+           level just left. Besides choosing the exact branch stair, C marks
+           the arrival side traversed so known branch stairs turn yellow. */
+        const arrival_stair = stairway_find_from(game.u.uz0, false);
+        if (arrival_stair) {
+            game.u.ux = arrival_stair.sx;
+            game.u.uy = arrival_stair.sy;
+            arrival_stair.u_traversed = true;
+        } else if (up) {
             /* src/do.c — arriving from below lands on the DOWN staircase
                of the upper level (C u_on_dnstairs()) */
             const dn = game.level?.dnstair;

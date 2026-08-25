@@ -21,6 +21,7 @@ import { selection_from_mkroom, l_selection_iterate, selection_rndcoord,
 import { ROOM } from './const.js';
 import { lspo_engraving, lspo_terrain, lspo_trap, get_traptype_byname,
          lspo_object, lspo_monster, lspo_altar } from './sp_lev.js';
+import { create_gas_cloud_selection } from './region.js';
 
 function note_unported_themerms(what) {
     (game.unported ||= new Set()).add(what);
@@ -227,7 +228,7 @@ export function fill_cloud_room(rm) {
     for (let i = 1; i <= limit; i++)
         lspo_monster('fog cloud', undefined, undefined, { asleep: true });
 
-    note_unported_themerms('des.gas_cloud');
+    create_gas_cloud_selection(fog, 0);
 }
 
 // dat/themerms.lua:225 "Ghost of an Adventurer"

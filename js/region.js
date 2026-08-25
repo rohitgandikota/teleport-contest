@@ -1,9 +1,8 @@
 // region.js — gas clouds and other timed area effects.
 // C ref: src/region.c
 //
-// Only the point-membership queries are ported so far; nothing that creates
-// a region exists yet, so game.regions stays empty until create_gas_cloud()
-// and friends arrive. The queries still run for real: does_block() asks
+// Point clouds can be built either by runtime effects or directly from a
+// special-level selection. The queries run for real: does_block() asks
 // visible_region_at() for every map square during vision recalculation.
 
 import { game } from './gstate.js';
@@ -39,6 +38,7 @@ import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 import { ACCESSIBLE } from './const.js';
 import { cmap_names } from './drawing_data.js';
+import { selection_getbounds, selection_getpoint } from './selvar.js';
 
 /* region.c MAX_CLOUD_SIZE */
 const MAX_CLOUD_SIZE = 150;
@@ -152,6 +152,32 @@ export function create_gas_cloud(x, y, cloudsize, damage) {
     cloud.ttl = rn1(3, 4);
     /* a cloud constrained in a small space lives longer */
     cloud.ttl = Math.trunc((cloud.ttl * cloudsize) / newidx);
+
+    make_gas_cloud(cloud, damage, false);
+    return cloud;
+}
+
+// src/region.c:1315 create_gas_cloud_selection(). Special-level clouds have
+// no random lifetime: create_region() leaves ttl at -1, so they persist.
+export function create_gas_cloud_selection(sel, damage) {
+    const bounds = { lx: 0, ly: 0, hx: 0, hy: 0 };
+    selection_getbounds(sel, bounds);
+    const cloud = {
+        rects: [], nrects: 0,
+        bounding_box: { lx: 999, ly: 999, hx: -1, hy: -1 },
+        ttl: -1, n_monst: 0, monsters: [],
+    };
+
+    for (let x = bounds.lx; x <= bounds.hx; x++)
+        for (let y = bounds.ly; y <= bounds.hy; y++)
+            if (selection_getpoint(x, y, sel)) {
+                cloud.rects.push({ lx: x, hx: x, ly: y, hy: y });
+                cloud.nrects++;
+                cloud.bounding_box.lx = Math.min(cloud.bounding_box.lx, x);
+                cloud.bounding_box.ly = Math.min(cloud.bounding_box.ly, y);
+                cloud.bounding_box.hx = Math.max(cloud.bounding_box.hx, x);
+                cloud.bounding_box.hy = Math.max(cloud.bounding_box.hy, y);
+            }
 
     make_gas_cloud(cloud, damage, false);
     return cloud;

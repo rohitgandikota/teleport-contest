@@ -176,6 +176,7 @@ export async function done_in_by(mtmp, how) {
 export function formatkiller(how, incl_helpless) {
     const k = game.killer || {};
     let name = k.name || deaths[how] || 'died';
+    name = name.replaceAll(',', ';').replaceAll('=', '_').replaceAll('\t', ' ');
     /* src/topten.c:103 killed_by_prefix[] — the verb depends on `how` */
     const killed_by_prefix = [
         /* DIED, CHOKING, POISONING, STARVING, */
@@ -329,6 +330,8 @@ async function really_done(how) {
     const u = game.u;
     let corpse = null;
     let umoney;
+    let taken = false;
+    let repos = null;
 
     /* src/end.c:1144 — the game is now over; disclosure windows read this
        (add_menu_heading drops its highlight, hallucination stops, &c) */
@@ -343,7 +346,7 @@ async function really_done(how) {
 
     /* achievements, dumplog, signal handlers: none modelled */
 
-    const { can_make_bones, savebones } = await import('./bones.js');
+    const { can_make_bones, savebones, drop_upon_death } = await import('./bones.js');
     const bones_ok = (how < GENOCIDED) && can_make_bones();
 
     /* maintain ugrave_arise even for !bones_ok */
@@ -356,7 +359,50 @@ async function really_done(how) {
     else
         u.ugrave_arise = u.ugrave_arise ?? -1;   /* NON_PM */
 
-    /* paybill/paygd: no shop bill or vault gold for these heroes */
+    if (how === QUIT || how === ESCAPED || how === PANICKED)
+        game.killer.format = 2; /* NO_KILLER_PREFIX */
+
+    /* src/shk.c paybill()/inherits(): the resident or pursuing shopkeeper
+       gets first claim on a dead hero's inventory.  The full billing walk
+       reduces to these two early-game cases when there is one local keeper:
+       peaceful inheritance inside the shop, or confiscation by an angry or
+       unpaid keeper. */
+    if (how !== PANICKED && (game.invent || []).length) {
+        const ushops = u.ushops || '';
+        const shks = (game.level?.monsters || []).filter(m => m.isshk);
+        const priority = (shkp) => {
+            const eshk = shkp.eshk || shkp.mextra?.eshk || {};
+            const inside = ushops.includes(String.fromCharCode(eshk.shoproom || 0));
+            const owed = !!((eshk.billct | 0) || eshk.bill_p?.length
+                            || (eshk.debit | 0) || (eshk.robbed | 0));
+            if (inside && owed) return 0;
+            if (inside) return 1;
+            if (owed) return 2;
+            if (eshk.following || !shkp.mpeaceful) return 3;
+            return 4;
+        };
+        shks.sort((a, b) => priority(a) - priority(b));
+        const shkp = shks[0];
+        if (shkp) {
+            const eshk = shkp.eshk || shkp.mextra?.eshk || {};
+            const inside = ushops.includes(String.fromCharCode(eshk.shoproom || 0));
+            const owed = !!((eshk.billct | 0) || eshk.bill_p?.length
+                            || (eshk.debit | 0) || (eshk.robbed | 0));
+            const raw = shkp.shknam || eshk.shknam || 'the shopkeeper';
+            const shkname = /^[-+_|]/.test(raw) ? raw.slice(1) : raw;
+            const cleanInheritance = inside && shkp.mpeaceful
+                && !owed && !eshk.following && u.ugrave_arise < LOW_PM;
+            if (cleanInheritance) {
+                await pline(`${shkname} gratefully inherits all your possessions.`);
+                taken = true;
+            } else if (inside || owed || eshk.following || !shkp.mpeaceful) {
+                await pline(`${shkname} takes all your possessions.`);
+                taken = true;
+            }
+            if (taken)
+                repos = { x: u.ux || u.ux0, y: u.uy || u.uy0 };
+        }
+    }
 
     /* discover everything in inventory for disclosure and dumplog */
     const { discover_object } = await import('./o_init.js');
@@ -373,9 +419,12 @@ async function really_done(how) {
             obj.lknown = 1;
     }
 
-    await disclose(how);
+    await disclose(how, taken);
 
     /* dump_everything: dumplog disabled */
+
+    if (bones_ok && taken)
+        drop_upon_death(null, null, repos.x, repos.y);
 
     /* grave creation after disclosure */
     if (bones_ok && u.ugrave_arise === -1
@@ -398,6 +447,7 @@ async function really_done(how) {
     /* calculate score, before creating bones [container gold] */
     {
         const deepest = deepest_lev_reached();
+        game.deepest_lev_reached_depth = deepest;
         umoney = money_cnt(game.invent || []);
         umoney += hidden_gold(game.invent || [], true);
         let tmp = u.umoney0 ?? 0;

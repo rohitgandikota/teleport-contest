@@ -17,7 +17,7 @@ import { sp_lev_wire_mon } from './sp_lev.js';
 import { is_pool, is_lava, m_at, t_at, newcham, resists_ston,
          mongone } from './mon.js';
 import { do_attack } from './uhitm.js';
-import { is_safemon, mon_visible, sensemon } from './display.js';
+import { is_safemon, mon_visible, sensemon, unmap_invisible } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
@@ -1604,6 +1604,12 @@ async function domove_core() {
             }
         }
     }
+
+    /* src/hack.c:2813: reaching an apparently empty destination proves
+       that a remembered invisible-monster marker there is stale. This must
+       run before boulder handling so a boulder pushed onto that square can
+       replace the marker in map memory. */
+    unmap_invisible(newx, newy);
 
     /* src/hack.c:2831 — when u.utrap is true the struggle may consume the
        move: trapmove() returns FALSE to stay put (time passes), TRUE when

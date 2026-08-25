@@ -1108,7 +1108,7 @@ export function newsym(x, y) {
            mimics stay spottable (mundetected 0) and display_monster() draws
            the DISGUISE (display.c:533). */
         if (mon && canspotmon(mon)) {
-            if (mon.m_ap_type === M_AP_OBJECT && mon.mappearance) {
+            if (mon.m_ap_type === M_AP_OBJECT) {
                 /* display.c:564 — a fake object sent to map_object() */
                 const fake = { otyp: mon.mappearance, ox: x, oy: y,
                                oclass: game.objects?.[mon.mappearance]?.oc_class,
@@ -1119,7 +1119,7 @@ export function newsym(x, y) {
                                 g.glyph ?? { kind: 'obj', otyp: fake.otyp });
                 return;
             }
-            if (mon.m_ap_type === M_AP_FURNITURE && mon.mappearance) {
+            if (mon.m_ap_type === M_AP_FURNITURE) {
                 /* display.c:543 — poor man's map_background of the S_ sym */
                 const s = showsym(mon.mappearance);
                 show_glyph_cell(x, y, s ? s.ch : '?',
@@ -1253,9 +1253,7 @@ export function newsym(x, y) {
                and its CLR_BLACK collapses to the default foreground, so the
                cell still records as an uncoloured '·'. The IDENTITY matters
                to code that compares memory, e.g. pick_lock's learned test. */
-            if (loc.typ === CORR && (remcmap === CM.S_litcorr
-                                     || (loc.remembered_glyph.color
-                                         === CLR_WHITE)))
+            if (loc.typ === CORR && remcmap === CM.S_litcorr)
                 loc.remembered_glyph = { ch: '#', color: NO_COLOR,
                                          decgfx: false,
                                          glyph: { kind: 'cmap',

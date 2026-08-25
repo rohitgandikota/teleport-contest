@@ -1968,7 +1968,7 @@ export function tty_clear_nhwindow_message(cury) {
 export function mon_visible(mon) {
     /* The hero can see the monster IF it is not invisible, is not an
        undetected hider, and neither you nor it is buried. */
-    return (!mon.minvis || game.u.uprops?.SEE_INVIS)
+    return (!mon.minvis || See_invisible())
         && !mon.mundetected
         && !(mon.mburied || game.u.uburied);
 }

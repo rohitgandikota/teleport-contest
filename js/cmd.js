@@ -1265,6 +1265,21 @@ export async function rhack(key) {
         movemode = 3;
     }
 
+    /* src/cmd.c:3693-3723 -- g/G only modify movement commands.  C loops
+       for the second key inside one rhack() call; this port spans two calls,
+       so reject a nonmovement command before its normal dispatch.  Another
+       prefix is allowed through, matching PREFIXCMD. */
+    if ((game.domove_attempting & DOMOVE_RUSH) && !isMovementKey(ch)
+            && !'gGmF'.includes(ch)) {
+        const prefix = game.context.run === 3 ? 'G' : 'g';
+        const vertical = ch === '<' || ch === '>';
+        game.context.run = 0;
+        game.domove_attempting = 0;
+        game.context.move = 0;
+        await pline(`The '${prefix}' prefix should be followed by a movement command${vertical ? ' other than up or down' : ''}.`);
+        return;
+    }
+
     if (isMovementKey(ch)) {
         /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
            prefix is pending, context.run. Keeping the direction on `u` is

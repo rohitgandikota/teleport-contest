@@ -148,7 +148,8 @@ export function fill_massacre(rm) {
     for (let i = 1; i <= n; i++) {
         if (percent(10))
             idx = nh_random(1, mon.length);
-        note_unported_themerms('des.object:corpse');
+        lspo_object('corpse', undefined, undefined,
+                    { montype: mon[idx - 1] });
     }
 }
 

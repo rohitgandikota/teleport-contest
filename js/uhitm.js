@@ -343,8 +343,13 @@ export async function attack_checks(mtmp, wep) {
         && !game.u.uprops?.STUNNED) {
         /* is_art(wep, ART_STORMBRINGER) — no artifact is wielded this early */
         if (canspotmon(mtmp)) {
-            note_unported_uhitm('attack_checks:really_attack_query');
-            return true;
+            const { tty_yn_function } = await import('./tty/topl.js');
+            const answer = await tty_yn_function(
+                `Really attack ${mon_nam(mtmp)}?`, 'yn', 'n');
+            if (answer !== 'y') {
+                game.context.move = 0;
+                return true;
+            }
         }
     }
 

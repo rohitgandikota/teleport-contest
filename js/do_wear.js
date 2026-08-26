@@ -580,10 +580,10 @@ function bimanual_obj(o) {
 }
 
 export function helm_simple_name(h) {
-    /* "hat" for flimsy headgear, else "helmet" */
+    /* "hat" for flimsy headgear, else "helm" */
     if (!h)
         return 'hat';
-    return objects[h.otyp].oc_material <= 3 ? 'hat' : 'helmet';
+    return hard_helmet(h) ? 'helm' : 'hat';
 }
 export function cloak_simple_name(c) {
     if (c) {

@@ -26,7 +26,7 @@ import {
     MOD_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER,
     LUCKMIN, LUCKMAX, G_UNIQ, KILLED_BY_AN, KILLED_BY, DIED, POISONING,
 } from './const.js';
-import { PMNAMES, MONSYMS } from './monst_data.js';
+import { ATTKS, MFLAGS, PMNAMES, MONSYMS } from './monst_data.js';
 import { Upolyd } from './const.js';
 
 // include/you.h:247 Role_if()
@@ -836,7 +836,36 @@ export function change_luck(n) {
 // value is genuinely lower, while a positive one raises the record and caps it
 // at ALIGNLIM. It is not `record += n`.
 //
-// adj_erinys() summons a fury on heavy abuse; it is recorded rather than faked.
+// src/mon.c:5922 adj_erinys() makes erinyes progressively more dangerous as
+// alignment abuse rises. game.mons is only a shallow copy of MONS_INIT, so
+// clone mattk before changing it to keep the next game at its baseline values.
+export function adj_erinys(abuse) {
+    const pm = game.mons[PMNAMES.PM_ERINYS];
+
+    pm.mattk = pm.mattk.map(attack => [...attack]);
+    if (abuse > 5)
+        pm.mflags1 |= MFLAGS.M1_SEE_INVIS;
+    if (abuse > 10)
+        pm.mflags1 |= MFLAGS.M1_AMPHIBIOUS;
+    if (abuse > 15)
+        pm.mflags1 |= MFLAGS.M1_FLY;
+    if (abuse > 20)
+        pm.mattk[0][2] = 3;
+    if (abuse > 25)
+        pm.mflags1 |= MFLAGS.M1_REGEN;
+    if (abuse > 30)
+        pm.mflags1 |= MFLAGS.M1_TPORT_CNTRL;
+    if (abuse > 35)
+        pm.mattk[1] = [ATTKS.AT_WEAP, ATTKS.AD_DRST, 3, 4];
+    if (abuse > 40)
+        pm.mflags1 |= MFLAGS.M1_TPORT;
+    if (abuse > 50)
+        pm.mattk[2] = [ATTKS.AT_MAGC, ATTKS.AD_SPEL, 3, 4];
+
+    pm.mlevel = Math.min(7 + abuse, 50);
+    pm.difficulty = Math.min(10 + Math.trunc(abuse / 3), 25);
+}
+
 export function adjalign(n) {
     const ua = game.u.ualign;
     const newalign = ua.record + n;
@@ -848,7 +877,7 @@ export function adjalign(n) {
             ua.record = newalign;
         if (newabuse > (ua.abuse || 0)) {
             ua.abuse = newabuse;
-            note_unported_attrib('adjalign:adj_erinys');
+            adj_erinys(newabuse);
         }
     } else if (newalign > ua.record) {
         ua.record = newalign;

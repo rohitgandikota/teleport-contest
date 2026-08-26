@@ -56,7 +56,7 @@ import { The, vtense, xname, Yname2, yname, makeplural,
 import { mon_nam } from './do_name.js';
 import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
-import { nothing_happens, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
+import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
          OBJ_FLOOR } from './const.js';
 import { splitobj, mkobj, mksobj, rnd_class, set_corpsenm,
          erosion_matters } from './mkobj.js';
@@ -67,7 +67,7 @@ import { is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_cold, resists_elec,
-         resists_fire, resists_magm } from './mondata.js';
+         resists_fire, resists_magm, nohands } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance,
          Shock_resistance, Deaf, Unaware } from './youprop.js';
@@ -251,11 +251,21 @@ export async function zapyourself(obj, ordinary) {
         await done(DIED);
         break;
     }
+    case ONAMES.WAN_POLYMORPH:
+    case ONAMES.SPE_POLYMORPH:
+        if (!game.u.uprops?.UNCHANGING) {
+            learn_it = true;
+            const { polyself } = await import('./polyself.js');
+            await polyself();
+        }
+        break;
     case ONAMES.SPE_HEALING:
     case ONAMES.SPE_EXTRA_HEALING: {
         learn_it = true; /* (no effect for spells...) */
-        healup(d(6, obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 8 : 4), 0, false,
-               (!!obj.blessed || obj.otyp === ONAMES.SPE_EXTRA_HEALING));
+        await healup(d(6, obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 8 : 4),
+                     0, false,
+                     (!!obj.blessed
+                      || obj.otyp === ONAMES.SPE_EXTRA_HEALING));
         await You_feel(`${obj.otyp === ONAMES.SPE_EXTRA_HEALING ? 'much ' : ''}better.`);
         break;
     }
@@ -1669,7 +1679,10 @@ export async function weffects(obj) {
 
 // src/zap.c:2627 dozap() — the 'z' command.
 export async function dozap() {
-    /* nohands/check_capacity cannot fire for a fresh hero */
+    if (nohands(game.youmonst.data)) {
+        await You("aren't able to zap anything in your current form.");
+        return ECMD_OK;
+    }
     const obj = await getobj("zap", zap_ok, 0);
     if (!obj)
         return ECMD_CANCEL;

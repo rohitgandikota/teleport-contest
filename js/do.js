@@ -435,6 +435,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         /* The stairway chain belongs to this level. savelev() writes it
            with the map, and getlev() restores it before arrival handling. */
         game.level._saved_stairs = game.stairs;
+        /* src/save.c savelev() stores both special-level arrival regions
+           alongside the map. Restoring only the terrain made revisits use
+           the whole level instead of the scripted destination area. */
+        game.level._saved_updest = { ...(game.updest || {}) };
+        game.level._saved_dndest = { ...(game.dndest || {}) };
         (game.saved_levels ||= new Map())
             .set(`${game.u.uz.dnum}:${game.u.uz.dlevel}`, game.level);
         /* src/save.c savelev() — leaving a Plane of Water/Air parks the
@@ -492,6 +497,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            catchup against the time spent away. */
         game.level = game.saved_levels.get(ledger);
         game.stairs = game.level._saved_stairs || null;
+        game.updest = { ...(game.level._saved_updest || game.updest) };
+        game.dndest = { ...(game.level._saved_dndest || game.dndest) };
         const { oinit } = await import('./o_init.js');
         oinit();
         const { DEADMONSTER } = await import('./monst.js');

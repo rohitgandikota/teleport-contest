@@ -24,7 +24,7 @@ import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLO
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
-import { Blind } from './youprop.js';
+import { Blind, Levitation } from './youprop.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
 import { can_reach_floor } from './pickup.js';
@@ -642,8 +642,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         if (!game.u.dz) {
             ; /* stayed on same level? (no transit effects) */
         } else if (up) {
-            if (game.flags?.verbose)
-                await pline(`You ${u_locomotion('climb')} up the stairs.`);
+            const great_effort = !!game.u.uball && !Levitation();
+            if (game.flags?.verbose || great_effort) {
+                await pline(`${great_effort ? 'With great effort, you' : 'You'} `
+                            + `${u_locomotion('climb')} up the stairs.`);
+            }
         } else if (game.u.uprops?.FLYING) {
             if (game.flags?.verbose)
                 await You('fly down the stairs.');

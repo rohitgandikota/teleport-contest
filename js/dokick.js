@@ -217,7 +217,7 @@ async function kickdmg(mon, clumsy) {
 
     if (M_AP_TYPE(mon))
         seemimic(mon);
-    check_caitiff(mon);
+    await check_caitiff(mon);
 
     if (mon.mtame) {
         await abuse_dog(mon);

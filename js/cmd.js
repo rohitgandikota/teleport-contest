@@ -17,8 +17,8 @@ import { sp_lev_wire_mon } from './sp_lev.js';
 import { is_pool, is_lava, m_at, t_at, newcham, resists_ston,
          mongone } from './mon.js';
 import { do_attack } from './uhitm.js';
-import { glyph_is_invisible_at, is_safemon, mon_visible, sensemon,
-         unmap_invisible } from './display.js';
+import { back_to_glyph, glyph_is_invisible_at, is_safemon, mon_visible,
+         sensemon, unmap_invisible } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
@@ -35,7 +35,8 @@ import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
 import { ACURR, exercise, near_capacity } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { cxname, simpleonames, the } from './objnam.js';
+import { an, cxname, simpleonames, the } from './objnam.js';
+import { cmap_names, defsyms } from './drawing_data.js';
 import { x_monnam, docallcmd, donamelevel } from './do_name.js';
 import { You } from './pline.js';
 
@@ -77,7 +78,7 @@ import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt, map_object, paint_topline, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
 import { vision_recalc } from './vision.js';
-import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
+import { COLNO, ROWNO, STONE, DOOR, DBWALL, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
 import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
 import { rnd, rn2 } from './rng.js';
@@ -2261,13 +2262,18 @@ async function domove_core() {
             } else {
                 await pline('That door is closed.');
             }
+        } else if (bloc?.typ === DBWALL) {
+            await pline('That drawbridge is up!');
         } else if (game.flags?.mention_walls && !game.context.door_opened) {
-            if (!bloc || bloc.typ === STONE)
+            const glyph = bloc ? back_to_glyph(bloc, newx, newy) : null;
+            const cmap = glyph?.cmap;
+            if (!bloc || cmap === cmap_names.S_stone) {
                 await pline("It's solid stone.");
-            else if (IS_WALL(bloc.typ))
-                await pline("It's a wall.");
-            else
+            } else if (Number.isInteger(cmap) && defsyms[cmap]?.explain) {
+                await pline(`It's ${an(defsyms[cmap].explain)}.`);
+            } else {
                 note_unported_cmd('test_move:mention_walls_other');
+            }
         }
         if (!game.context.door_opened) {
             game.context.move = 0;

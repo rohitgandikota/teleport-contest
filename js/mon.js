@@ -204,6 +204,15 @@ export async function movemon() {
     }
     clear_splitobjs();
     dmonsfree();
+
+    /* src/mon.c:1343, a monster can schedule the hero's departure, notably
+       when a quest leader expels the hero. Finish it at the end of this
+       monster sweep so no command is read on the level being left. */
+    if (game.u?.utotype) {
+        const { deferred_goto } = await import('./do.js');
+        await deferred_goto();
+        gs_somebody_can_move = false;
+    }
     return gs_somebody_can_move;
 }
 

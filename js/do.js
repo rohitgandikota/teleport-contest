@@ -20,7 +20,7 @@ import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -558,7 +558,22 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         await flush_screen(-1);
     }
 
-    if (at_stairs) {
+    const { In_endgame } = await import('./const.js');
+    if (portal && !In_endgame(game.u.uz)) {
+        /* src/do.c:1722, portal travel lands on the matching portal without
+           a random-position draw. Quest expulsion relies on this path. */
+        const portal_trap = (game.level?.traps || [])
+            .find(trap => trap.ttyp === MAGIC_PORTAL);
+        if (portal_trap) {
+            const { seetrap } = await import('./trap.js');
+            const { u_on_newpos } = await import('./teleport.js');
+            seetrap(portal_trap);
+            u_on_newpos(portal_trap.tx, portal_trap.ty);
+        } else {
+            const { u_on_rndspot } = await import('./dungeon.js');
+            await u_on_rndspot(0);
+        }
+    } else if (at_stairs && !In_endgame(game.u.uz)) {
         /* src/do.c:1747/1765, prefer the stair whose remote end is the
            level just left. Besides choosing the exact branch stair, C marks
            the arrival side traversed so known branch stairs turn yellow. */

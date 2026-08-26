@@ -13,8 +13,9 @@ import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
 import { exercise } from './attrib.js';
 import { align_str } from './role.js';
+import { rn2 } from './rng.js';
 import { A_WIS, A_CURRENT, A_ORIGINAL, MIN_QUEST_ALIGN,
-         MIN_QUEST_LEVEL } from './const.js';
+         MIN_QUEST_LEVEL, STRAT_WAITMASK } from './const.js';
 import { MSOUND } from './monst_data.js';
 
 /* include/quest.h:8 struct q_score — zero-initialized at game start */
@@ -25,6 +26,27 @@ function Qstat() {
 /* include/dungeon.h:129 Lcheck() via on_level() */
 const on_level = (a, b) => !!a && !!b && a.dnum === b.dnum
                            && a.dlevel === b.dlevel;
+
+// src/quest.c:184 expulsion(), schedule a return through the Quest branch
+// portal after the leader rejects the hero.
+async function expulsion(seal) {
+    const br = (game.branches || []).find(
+        branch => branch.end2.dnum === game.quest_dnum);
+    if (!br)
+        throw new Error('expulsion: no branch to The Quest');
+    const dest = br.end1.dnum === game.u.uz.dnum ? br.end2 : br.end1;
+    const qevent = game.u.uevent || (game.u.uevent = {});
+    const { nomul } = await import('./hack.js');
+    const { schedule_goto, UTOTYPE_NONE, UTOTYPE_PORTAL,
+            UTOTYPE_RMPORTAL } = await import('./do.js');
+    nomul(0);
+    let flags = qevent.qexpelled ? UTOTYPE_NONE : UTOTYPE_PORTAL;
+    if (seal)
+        flags |= UTOTYPE_RMPORTAL;
+    schedule_goto(dest, flags, null, null);
+    if (seal)
+        qevent.qexpelled = 1;
+}
 
 // src/quest.c:153 is_pure() checks the alignment needed for quest access.
 // Debug mode offers to raise only the alignment record, just as C does.
@@ -76,22 +98,69 @@ async function chat_with_leader(mtmp) {
         if (game.u.ulevel < MIN_QUEST_LEVEL) {
             await qt_pager('badlevel');
             exercise(A_WIS, true);
-            (game.unported ||= new Set()).add('quest:expulsion');
+            await expulsion(false);
         } else {
             const purity = await is_pure(true);
             if (purity < 0) {
-                (game.unported ||= new Set()).add('quest:banished');
+                if (!q.pissed_off) {
+                    const { com_pager } = await import('./questpgr.js');
+                    await com_pager('banished');
+                    q.pissed_off = true;
+                    await expulsion(false);
+                }
             } else if (purity === 0) {
                 await qt_pager('badalign');
                 q.not_ready = 1;
                 exercise(A_WIS, true);
-                (game.unported ||= new Set()).add('quest:expulsion');
+                await expulsion(false);
             } else {
                 await qt_pager('assignquest');
                 exercise(A_WIS, true);
                 q.got_quest = true;
             }
         }
+    }
+}
+
+// src/quest.c:367 leader_speaks() and :495 quest_talk(), used when a
+// strategically waiting leader becomes adjacent during monster movement.
+async function leader_speaks(mtmp) {
+    const q = Qstat();
+    if (!mtmp.mpeaceful) {
+        if (!q.pissed_off)
+            await qt_pager('leader_last');
+        q.pissed_off = true;
+        mtmp.mstrategy &= ~STRAT_WAITMASK;
+    }
+    if (!on_level(game.u.uz, game.special_levels?.qstart_level))
+        return;
+    if (!q.pissed_off)
+        await chat_with_leader(mtmp);
+}
+
+export async function quest_talk(mtmp) {
+    const q = Qstat();
+    const msound = game.mons[mtmp.mnum].msound;
+    if (mtmp.m_id === q.leader_m_id) {
+        await leader_speaks(mtmp);
+    } else if (msound === MSOUND.MS_NEMESIS) {
+        if (!q.in_battle) {
+            if (game.u.uhave?.questart)
+                await qt_pager('nemesis_wantsit');
+            else if ((q.made_goal ?? 0) === 1 || !q.met_nemesis)
+                await qt_pager('nemesis_first');
+            else if ((q.made_goal ?? 0) < 4)
+                await qt_pager('nemesis_next');
+            else if ((q.made_goal ?? 0) < 7)
+                await qt_pager('nemesis_other');
+            else if (!rn2(5))
+                await qt_pager('discourage');
+            if ((q.made_goal ?? 0) < 7)
+                q.made_goal = (q.made_goal ?? 0) + 1;
+        } else if (!rn2(5)) {
+            await qt_pager('discourage');
+        }
+        q.met_nemesis = true;
     }
 }
 

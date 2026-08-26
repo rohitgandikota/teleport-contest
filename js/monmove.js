@@ -10,7 +10,8 @@ import { mpickstuff, mondied, wake_nearto } from './mon.js';
 import { sengr_at, wipe_engr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP } from './monst.js';
-import { find_offensive, find_misc, use_misc } from './muse.js';
+import { find_offensive, find_defensive, use_defensive,
+         find_misc, use_misc } from './muse.js';
 import { is_launcher, is_pole } from './u_init.js';
 import { ammo_and_launcher } from './wield.js';
 import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
@@ -19,7 +20,7 @@ import { MON_POLE_DIST, OBJ_FLOOR, RAY, MFAST, NON_PM, W_ARMG, W_WEP,
     P_DAGGER, P_KNIFE,
     AM_SHRINE, Amask2align, ROOMOFFSET, ALLOW_MDISP, ALLOW_M, SHOPBASE,
     TEMPLE, RLOC_MSG
-, STRAT_WAITFORU, STRAT_WAITMASK } from './const.js';
+, STRAT_WAITFORU, STRAT_WAITMASK, STRAT_CLOSE } from './const.js';
 import { amorphous, passes_walls, is_floater, nonliving,
          attacktype, can_blow, needspick, flaming, noncorporeal,
          tunnels, nohands as nohands_mm,
@@ -1092,7 +1093,11 @@ export async function dochug(mtmp) {
     /* src/monmove.c:717 — frozen or strategically waiting monsters do
        nothing at all this turn (BEFORE the sleep/disturb check). */
     if (!(mtmp.mcanmove ?? 1) || (mtmp.mstrategy & STRAT_WAITMASK)) {
-        /* STRAT_CLOSE pop-out arm needs the covetous machinery */
+        if (mtmp.mcanmove && (mtmp.mstrategy & STRAT_CLOSE)
+            && !mtmp.msleeping && monnear(mtmp, game.u.ux, game.u.uy)) {
+            const { quest_talk } = await import('./quest.js');
+            await quest_talk(mtmp);
+        }
         return 0;
     }
 
@@ -1162,10 +1167,11 @@ export async function dochug(mtmp) {
     let status = 0;
     let panicattk = false;
 
-    /* src/monmove.c:794 checks defensive items first. That selector remains
-       outside the common early-game path, but find_misc() must still run for
-       carried containers because its failed rn2(5) check is observable. */
-    if (find_misc(mtmp)) {
+    /* src/monmove.c:794, defensive actions take priority over utility. */
+    if (find_defensive(mtmp, false)) {
+        await use_defensive(mtmp);
+        return 0;
+    } else if (find_misc(mtmp)) {
         await use_misc(mtmp);
         return 0;
     }
@@ -1518,8 +1524,11 @@ export async function m_move(mtmp, after) {
     const flag = mon_allowflags(mtmp);
     const mfp = {};
     const cnt = mfndpos(mtmp, mfp, flag);
-    if (cnt === 0)
+    if (cnt === 0) {
+        if (find_defensive(mtmp, true) && await use_defensive(mtmp))
+            return MMOVE_DONE;
         return MMOVE_NOMOVES;
+    }
 
     let chcnt = 0;
     const jcnt = Math.min(MTSZ, cnt - 1);

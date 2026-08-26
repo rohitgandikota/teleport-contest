@@ -1,5 +1,25 @@
 # STATUS — live handoff board
 
+## 2026-08-26: ranged monster attacks
+
+The three-segment `monster-ranged` C oracle uses independent seeds 6910
+through 6912. It records a red dragon breathing fire at the hero, a cobra
+spitting venom through an occupied projectile path, and a soldier throwing a
+knife with the bad-grip variant. Three recordings produced the same SHA-256,
+`d8d0df43147baf807dc799906a2f4b09e09c11b3bb6d90faec28180e72abc0e7`.
+The port matches all 112/112 screens, 112/112 cursors, and 8,029/8,029 RNG
+calls.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus now has 53
+sessions and 5,583 frames. It is 5,578/5,583 cell-exact and
+1,031,482/1,031,482 RNG-exact, with 5,200/5,583 formally exact screens and
+52/53 formal session passes. The sole formal failure remains the
+recorder-corrupted `gehennom-tour` cursor data. All 44 public hang checks
+pass. Conservative full-game coverage is now 80 covered, 6 partial, and 18
+gaps out of 104. `monster.ranged` is now covered by independent breath, spit,
+and thrown-weapon traces.
+
 ## 2026-08-26: normal-mode shop transactions and wrapped prompts
 
 The walking-only `shop-normal` oracle starts a normal female Tourist on seed

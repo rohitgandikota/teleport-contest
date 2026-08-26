@@ -1,0 +1,35 @@
+{
+  "name": "monster-ranged",
+  "description": "Debug Valkyrie setup for independent C traces of monster-thrown missiles, breath weapons, and spit attacks across a clear firing line.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.animation",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.ranged",
+    "combat.ranged"
+  ],
+  "segments": [
+    {
+      "seed": 6910,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0007red dragon\r\u0014 hhhkkk.10s"
+    },
+    {
+      "seed": 6911,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0007cobra\r\u0014 kkkk.s\u0014 l.s\u0014 l.s\u0014 ll.smsms\u0014 h.ms\u0014 l.ms\u0014 l.ms"
+    },
+    {
+      "seed": 6912,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0007soldier\r\u0014 khhhhh.msmsmsms"
+    }
+  ]
+}

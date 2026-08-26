@@ -102,6 +102,21 @@ export function known_branch_stairs(sway) {
 
 const CM = cmap_names;
 
+const rogue_obj_syms = [...def_oc_syms];
+rogue_obj_syms[OCLASSES.ARMOR_CLASS] = ']';
+rogue_obj_syms[OCLASSES.AMULET_CLASS] = ',';
+rogue_obj_syms[OCLASSES.FOOD_CLASS] = ':';
+rogue_obj_syms[OCLASSES.COIN_CLASS] = def_oc_syms[OCLASSES.GEM_CLASS];
+
+function rogue_cmap_sym(cmap) {
+    if (cmap === CM.S_ndoor || cmap === CM.S_vodoor
+        || cmap === CM.S_hodoor)
+        return '+';
+    if (cmap === CM.S_upstair || cmap === CM.S_dnstair)
+        return '%';
+    return defsyms[cmap]?.sym;
+}
+
 // src/display.c:2938 map_glyphinfo() — a glyph becomes a symbol by looking its
 // cmap index up in the ACTIVE symbol set. back_to_glyph() below picks the cmap
 // index and a colour; this applies gs.showsyms[] on top, which is what makes a
@@ -824,6 +839,16 @@ export function gbuf_at(x, y) {
 export function show_glyph_cell(x, y, ch, color = NO_COLOR, decgfx = false, attr = 0, glyph = undefined) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
+    if (Is_rogue_level(game.u?.uz)) {
+        color = NO_COLOR;
+        decgfx = false;
+        if (glyph?.cmap !== undefined)
+            ch = rogue_cmap_sym(glyph.cmap) ?? ch;
+        else if (glyph?.kind === 'obj' && !glyph.statue) {
+            const oclass = glyph.body ? OCLASSES.FOOD_CLASS : glyph.oclass;
+            ch = rogue_obj_syms[oclass] ?? ch;
+        }
+    }
     /* Debug-only cell watch (never set during scoring): log who writes a
        watched map cell. globalThis.__cell_watch = {cells: [[x,y],...]} */
     if (globalThis.__cell_watch
@@ -1647,7 +1672,7 @@ function _statusLine2() {
     const shownHp = game._deferred_status_hp_until_more
         ?? Math.max((Upolyd(u) ? u.mh : u.uhp) | 0, 0);
     const maxHp = Upolyd(u) ? u.mhmax : u.uhpmax;
-    let s = `${lvldesc} $:${shownMoney}`
+    let s = `${lvldesc} ${Is_rogue_level(u.uz) ? '*' : '$'}:${shownMoney}`
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
           + ` HP:${shownHp}(${maxHp || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`

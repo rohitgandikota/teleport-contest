@@ -13,7 +13,7 @@ import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
 import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn, sobj_at } from './invent.js';
-import { In_mines } from './const.js';
+import { In_mines, Is_rogue_level } from './const.js';
 import { Levitation, Flying } from './youprop.js';
 import { closed_door } from './cmd.js';
 import { may_passwall } from './hack.js';
@@ -669,6 +669,9 @@ export { mpickobj };
 // yet be generated, and reaching one is recorded rather than approximated.
 function m_initinv(mtmp) {
     const ptr = mtmp.data;
+
+    if (Is_rogue_level(game.u.uz))
+        return;
 
     switch (ptr.mlet) {
     case S_NYMPH:

@@ -20,6 +20,8 @@ import { defsyms, cmap_names } from './drawing_data.js';
 import { do_screen_description, is_cmap_wall, is_cmap_room, is_cmap_corr,
          is_cmap_door, is_cmap_engraving } from './pager.js';
 import { handle_tip, is_valid_travelpt, TIP_GETPOS } from './hack.js';
+import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
+         tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 
 const CM = cmap_names;
 
@@ -47,6 +49,73 @@ const CTRL_DIR = {
 
 function note_unported_getpos(what) {
     (game.unported ||= new Set()).add('getpos:' + what);
+}
+
+/* src/hacklib.c visctrl(), used for keys embedded in getpos feedback. */
+function visctrl(ch) {
+    let c = typeof ch === 'number' ? ch : ch.charCodeAt(0);
+    let out = '';
+    if (c & 0x80) {
+        out = 'M-';
+        c &= 0x7f;
+    }
+    if (c < 0x20)
+        return out + '^' + String.fromCharCode(c | 0x40);
+    if (c === 0x7f)
+        return out + '^?';
+    return out + String.fromCharCode(c);
+}
+
+// src/getpos.c:167 getpos_help(), the '?' window inside the position picker.
+async function getpos_help(force, goal) {
+    const win = tty_create_nhwindow(NHW_MENU);
+    const put = (line) => tty_putstr(win, 0, line);
+    const fastmode = game.iflags?.getloc_moveskip
+        ? 'skipping same glyphs' : '8 units at a time';
+    const nextmode = game.iflags?.getloc_moveskip
+        ? '8 units at a time' : 'skipping same glyphs';
+    const usemenu = !!game.iflags?.getloc_usemenu;
+    const filter = ['', ' in view', ' in this area'][
+        game.iflags?.getloc_filter | 0] || '';
+    const pair = (lo, hi, description, menuDescription = description) => {
+        put(`Use '${lo}'/'${hi}' to ${usemenu ? 'get a menu of '
+            : 'move the cursor to '}${usemenu ? menuDescription
+            : description}${filter}.`);
+    };
+
+    put(`Use 'h', 'j', 'k', 'l' to move the cursor to ${goal}.`);
+    put(`Use 'H', 'J', 'K', 'L' to fast-move the cursor, ${fastmode}.`);
+    put("(or prefix normal move with 'G' or 'g' to fast-move)");
+    put("Or enter a background symbol (ex. '<').");
+    put("Use '@' to move the cursor on yourself.");
+    pair('m', 'M', 'next/previous monster', 'monsters');
+    if (goal !== 'a monster') {
+        pair('o', 'O', 'next/previous object', 'objects');
+        pair('d', 'D', 'next/previous door or doorway', 'doors or doorways');
+        if (usemenu) {
+            let shortFilter = filter.replace('this area', 'area');
+            put(`Use 'x'/'X' to get a menu of locations next to unexplored locations${shortFilter}.`);
+        } else {
+            put(`Use 'x'/'X' to move the cursor next to an unexplored location${filter}.`);
+        }
+        pair('a', 'A', 'anything interesting', 'anything interesting');
+    }
+    put(`Use '*' to change fast-move mode to ${nextmode}.`);
+    put("Use '!' to toggle menu listing for possible targets.");
+    put("Use '\"' to change the mode of limiting possible targets.");
+    if (getpos_getvalid)
+        put("Use 'z' or 'Z' to move to valid locations.");
+    put("Use '#' to toggle automatic description.");
+    put("Type a '.' when you are at the right place.");
+    if (!force)
+        put("Type Space or Escape when you're done.");
+    put('');
+
+    await tty_display_nhwindow(win);
+    await nhgetch();
+    while (tty_next_page(win))
+        await nhgetch();
+    tty_destroy_nhwindow(win);
 }
 
 // C curs(WIN_MAP, cx, cy) — park the terminal cursor on the map square.
@@ -188,10 +257,7 @@ export async function getpos(ccp, force, goal) {
             const dir = CTRL_DIR[ch] ?? ch.toLowerCase();
             truncate_to_map(c, 8 * DIR_DX[dir], 8 * DIR_DY[dir]);
         } else if (ch === '?') {
-            /* getpos_help() puts up its own window and consumes its own
-               dismiss keys; unported, and recorded loudly because a session
-               that reaches it will desync */
-            note_unported_getpos('help');
+            await getpos_help(force, goal);
             show_goal_msg = true;
         } else if (ch === '#') {
             /* NHKF_GETPOS_AUTODESC — toggle */
@@ -290,7 +356,7 @@ export async function getpos(ccp, force, goal) {
                     const note = !force
                         ? 'aborted'
                         : "use 'h', 'j', 'k', 'l' or '.'";
-                    await pline(`Unknown direction: '${ch}' (${note}).`);
+                    await pline(`Unknown direction: '${visctrl(ch)}' (${note}).`);
                     msg_given = true;
                 }
                 curs_map(c.x, c.y);

@@ -435,7 +435,10 @@ export function u_on_newpos(x, y) {
 /* include/mondata.h:140 is_dlord/is_dprince, include/dungeon.h In_hell */
 const is_dlord = (ptr) => is_demon(ptr) && is_lord(ptr);
 const is_dprince = (ptr) => is_demon(ptr) && is_prince(ptr);
-const In_hell = (lev) => (lev ?? game.u?.uz)?.dnum === game.hell_dnum;
+const In_hell = (lev) => {
+    const where = lev ?? game.u?.uz;
+    return game.dungeons?.[where?.dnum]?.flags?.hellish === true;
+};
 
 // src/teleport.c:21 m_blocks_teleporting() — a demon lord or prince in
 // residence blocks others' teleports in Gehennom.

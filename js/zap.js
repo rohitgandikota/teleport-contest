@@ -69,7 +69,7 @@ import { ATTKS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_cold, resists_elec,
          resists_fire, resists_magm, nohands } from './mondata.js';
 import { find_mac } from './worn.js';
-import { Reflecting, Sleep_resistance, Fire_resistance,
+import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Deaf, Unaware } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
@@ -1394,6 +1394,18 @@ async function zhitu(type, nd, fltxt, sx, sy) {
             if (!rn2(3))
                 note_unported_zap('zhitu:ignite_items');
         }
+        break;
+    }
+    case 2: { /* ZT_COLD */
+        const origDamage = d(nd, 6);
+        if (Cold_resistance()) {
+            note_unported_zap('zhitu:cold_shieldeff_golem');
+            await You("don't feel cold.");
+        } else {
+            damage = origDamage;
+        }
+        if (!rn2(3))
+            await destroy_items(game.youmonst, ATTKS.AD_COLD, origDamage);
         break;
     }
     default:

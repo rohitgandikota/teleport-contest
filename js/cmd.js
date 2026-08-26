@@ -7,7 +7,7 @@ import { seemimic } from './mon.js';
 // wear, wield, drop, throw, pray, cast, and all other commands.
 
 import { game } from './gstate.js';
-import { dodrop } from './do.js';
+import { dodrop, doddrop } from './do.js';
 import { any_obj_ok, doprwep, doprarm, doprring, dopramulet, doprtool,
          doprinuse, doprgold, obj_extract_self } from './invent.js';
 import { dodown, doup, do_wire_mklev, do_wire_dokick, stairway_at } from './do.js';
@@ -23,7 +23,9 @@ import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
-import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door, could_move_onto_boulder } from './hack.js';
+import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
+         dopickup, trapmove, doorless_door,
+         could_move_onto_boulder } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
 import { Blind, Hallucination } from './youprop.js';
 import { u_on_newpos } from './teleport.js';
@@ -1497,6 +1499,8 @@ export async function rhack(key) {
         // getobj(). 330 keystrokes across the public corpus, the most of any
         // command we did not handle.
         game.context.move = (await doeat() === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'D') {
+        game.context.move = (await doddrop() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'd') {
         game.context.move = (await dodrop() === ECMD_TIME ? 1 : 0);
     } else if ('rwqWPRT'.includes(ch)) {
@@ -1545,6 +1549,11 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '#' is doextcmd, which reads the command name
         // off the input before doing anything.
         game.context.move = (await doextcmd() === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x06' && game.wizard) {
+        /* src/cmd.c:1982, debug-mode ^F is the default binding for
+           #wizmap. It reveals the level without consuming a turn. */
+        const { wiz_map } = await import('./wizcmds.js');
+        game.context.move = ((await wiz_map()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'S') {
         // src/cmd.c cmdlist — 'S' is dosave: "Really save?", write the
         // state to storage, and exit the process like C's nh_terminate.
@@ -2280,6 +2289,24 @@ async function domove_core() {
             nomul(0);
         }
         return;
+    }
+
+    /* src/hack.c:1153, a tight diagonal is rejected after the destination's
+       own terrain check but before its boulder's moverock path. */
+    if (dx && dy && bad_rock(game.youmonst.data, u.ux, newy)
+        && bad_rock(game.youmonst.data, newx, u.uy)) {
+        const why = cant_squeeze_thru(game.youmonst);
+        switch (why) {
+        case 3: await You('cannot pass that way.'); break;
+        case 2: await You('are carrying too much to get through.'); break;
+        case 1: await pline('Your body is too large to fit through.'); break;
+        default: break;
+        }
+        if (why) {
+            game.context.move = 0;
+            nomul(0);
+            return;
+        }
     }
 
     /* src/hack.c:1230 — test_move()'s boulder arm, the DO_MOVE slice:

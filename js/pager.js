@@ -44,6 +44,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_add_menu_str, tty_end_menu, tty_select_menu, tty_dismiss_nhwindow,
          NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
+import { ok_to_quest } from './quest.js';
 
 function note_unported_pager(what) {
     (game.unported ||= new Set()).add('pager:' + what);
@@ -815,8 +816,15 @@ export function do_screen_description(cc, looked, sym) {
     if (looked && (found > 1 || need_to_look)) {
         let { buf: look_buf, monbuf, pm: lookpm } = lookat(cc.x, cc.y);
         pm = lookpm;
-        /* ice_descr and the blocked-quest-staircase refinements need
-           states no session reaches */
+        /* src/pager.c:1603, the Quest start staircase remains visible while
+           the leader's access gate is still closed. */
+        if (look_buf === 'staircase down') {
+            const qstart = game.special_levels?.qstart_level;
+            if (qstart && game.u?.uz?.dnum === qstart.dnum
+                && game.u.uz.dlevel === qstart.dlevel
+                && !ok_to_quest())
+                look_buf = 'blocked staircase down';
+        }
         if (look_buf) {
             state.firstmatch = look_buf;
             let temp_buf = ` (${state.firstmatch}`;

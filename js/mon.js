@@ -2,7 +2,7 @@ import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
-import { ceiling_hider, emits_light, resist_conflict } from './mondata.js';
+import { ceiling_hider, emits_light, resist_conflict, resists_fire } from './mondata.js';
 import { new_light_source, del_light_source, any_light_source,
          LS_OBJECT, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
@@ -29,14 +29,15 @@ import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists, destroy_items, resist } from './zap.js';
-import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold, undead_to_corpse } from './mkobj.js';
+import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
+         undead_to_corpse, discard_minvent } from './mkobj.js';
 import { weight } from './invent.js';
 import { newsym, canseemon, canspotmon, pline,
          unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
-import { enexto_core, enexto, noteleport_level,
+import { enexto_core, enexto, noteleport_level, rloc, tele_restrict,
          rloc_to_flag } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE,
@@ -139,8 +140,9 @@ export async function mcalcdistress() {
 // src/mon.c:1180 m_calcdistress() — once per turn per monster: regenerate,
 // shapeshift, and time out temporary maladies.
 async function m_calcdistress(mtmp) {
-    /* non-moving monsters get a liquid check here; minliquid is drawn-free
-       for everything the sessions hold */
+    /* non-moving monsters get a liquid check here */
+    if (mtmp.data.mmove === 0 && await minliquid(mtmp))
+        return;
     /* src/monmove.c:307 mon_regen(mtmp, FALSE) */
     if (game.moves % 20 === 0 || regenerates(game.mons[mtmp.mnum]))
         healmon(mtmp, 1, 0);
@@ -261,7 +263,7 @@ async function movemon_singlemon(mtmp) {
     clear_splitobjs();
 
     /* src/mon.c:1265 minliquid() runs for every moving monster. */
-    if (minliquid(mtmp))
+    if (await minliquid(mtmp))
         return false;
 
     /* src/mon.c:1268 — after losing equipment, try to put on replacement.
@@ -316,15 +318,65 @@ async function movemon_singlemon(mtmp) {
     return false;
 }
 
-// src/mon.c:957 minliquid(), including the dry-land eel arm.
-export function minliquid(mtmp) {
-    if (is_pool(mtmp.mx, mtmp.my) || is_lava(mtmp.mx, mtmp.my)) {
-        (game.unported ||= new Set()).add('minliquid:pool_or_lava');
+// src/mon.c:947 minliquid(), including lava and the dry-land eel arm.
+export async function minliquid(mtmp) {
+    const ptr = mtmp.data;
+
+    const inlava = is_lava(mtmp.mx, mtmp.my)
+        && !(is_flyer(ptr) || is_floater(ptr));
+    if (inlava && !is_clinger(ptr) && !likes_lava(ptr)) {
+        const canTeleport = (ptr.mflags1 & MFLAGS.M1_TPORT) !== 0;
+        if (canTeleport && !await tele_restrict(mtmp)
+            && await rloc(mtmp, RLOC_MSG))
+            return 0;
+
+        if (!resists_fire(mtmp)) {
+            if (cansee(mtmp.mx, mtmp.my)) {
+                let fate = 'burns to a crisp';
+                if (mtmp.mnum === PMNAMES.PM_WATER_ELEMENTAL
+                    || mtmp.mnum === PMNAMES.PM_FOG_CLOUD
+                    || mtmp.mnum === PMNAMES.PM_STEAM_VORTEX)
+                    fate = 'boils away';
+                else if (mtmp.mnum === PMNAMES.PM_ICE_VORTEX
+                         || mtmp.mnum === PMNAMES.PM_GLASS_GOLEM)
+                    fate = 'melts away';
+                await pline(`${Monnam(mtmp)} ${fate}.`);
+            }
+            const x = mtmp.mx, y = mtmp.my;
+            await mondead(mtmp);
+            newsym(x, y);
+        } else {
+            mtmp.mhp--;
+            if (DEADMONSTER(mtmp)) {
+                if (cansee(mtmp.mx, mtmp.my))
+                    await pline(`${Monnam(mtmp)} surrenders to the fire.`);
+                const x = mtmp.mx, y = mtmp.my;
+                await mondead(mtmp);
+                newsym(x, y);
+            } else if (cansee(mtmp.mx, mtmp.my)) {
+                await pline(`${Monnam(mtmp)} burns slightly.`);
+            }
+        }
+
+        if (!DEADMONSTER(mtmp)) {
+            if (!m_in_air(mtmp) && !likes_lava(mtmp.data)) {
+                if ((mtmp.minvent || []).length)
+                    note_unported_mon('minliquid:fire_damage_chain');
+                if (!await rloc(mtmp, RLOC_MSG))
+                    note_unported_mon('minliquid:deal_with_overcrowding');
+            }
+            return 0;
+        }
+        return 1;
+    }
+
+    if (is_pool(mtmp.mx, mtmp.my)) {
+        note_unported_mon('minliquid:pool');
         return 0;
     }
 
-    if (mtmp.data.mlet === MONSYMS.S_EEL && !Is_waterlevel(game.u.uz)
-        && !breathless(mtmp.data)) {
+    if (ptr.mlet === MONSYMS.S_EEL && !Is_waterlevel(game.u.uz)
+        && !breathless(ptr)) {
         if (mtmp.mhp > 1 && rn2(mtmp.mhp) > rn2(8))
             mtmp.mhp--;
         monflee(mtmp, 2, false, false);
@@ -1352,11 +1404,22 @@ export function mongone(mdef) {
 
     if (mdef.isgd)
         (game.unported ||= new Set()).add('mon:mongone:grddead');
-    /* unstuck() and mdrop_special_objs() are no-ops for a monster that has
-       never acted; the Amulet case cannot arise at level generation. */
+    /* src/mon.c mdrop_special_objs() checks every carried object. Ordinary
+       objects fail obj_resists(obj, 0, 0), but each check still draws
+       rn2(100). Orcus-town removes its two shopkeepers after stocking their
+       shops, so omitting these checks shifts the rest of level generation. */
+    for (const obj of [...(mdef.minvent || [])]) {
+        const protected_ = obj_resists(obj, 0, 0)
+            || ((obj.oartifact ?? 0) === game.urole.questarti);
+        if (!protected_)
+            continue;
+        obj_extract_self(obj);
+        place_object(obj, mdef.mx, mdef.my);
+        stackobj(obj);
+    }
 
     /* discard_minvent(mdef, FALSE) — the pack leaves the game entirely */
-    mdef.minvent = [];
+    discard_minvent(mdef, false);
 
     m_detach(mdef, mdef.data, false);
 }

@@ -31,7 +31,7 @@ function note_unported_insight(what) {
 import { depth, dunlev, endgamelevelname } from './dungeon.js';
 import { In_endgame, In_quest, Is_knox_level } from './const.js';
 import { aligns } from './role_data.js';
-import { A_MAX } from './attrib.js';
+import { A_MAX, ACURR } from './attrib.js';
 import { hu_stat, rank_of } from './botl.js';
 import { money_cnt } from './invent.js';
 import { costly_spot } from './shk.js';
@@ -65,6 +65,7 @@ const EXTRINSIC_KEYS = {
     HInfravision: 'INFRAVISION',
     HTelepat: 'TELEPAT',
     HStealth: 'STEALTH',
+    HDisplaced: 'DISPLACED',
     HTeleport_control: 'TELEPORT_CONTROL',
     HFast: 'FAST',
     HReflecting: 'REFLECTING',
@@ -83,7 +84,8 @@ function from_what(abilKey) {
             return ' because of a potion or spell';
         if ((mask & W_ARMF) && game.u.uarmf?.dknown
             && game.objects[game.u.uarmf.otyp]?.oc_name_known)
-            return ` because of your ${minimal_xname(game.u.uarmf)}`;
+            return ` because of your ${minimal_xname(game.u.uarmf)
+                .replace(/\bpair of /i, '')}`;
         if (mask)
             return ' because of worn equipment';
     }
@@ -364,8 +366,8 @@ function attrval(attrindx, attrvalue) {
 }
 
 function one_characteristic(attrindx) {
-    const acurrent = game.u.acurr.a[attrindx];
-    const abase = acurrent, apeak = game.u.amax.a[attrindx];
+    const acurrent = ACURR(attrindx);
+    const abase = game.u.acurr.a[attrindx], apeak = game.u.amax.a[attrindx];
     const alimit = game.urace.attrmax[attrindx];
     let valubuf = attrval(attrindx, acurrent);
 
@@ -708,6 +710,8 @@ function attributes_enlightenment() {
         you_have('infravision', from_what('HInfravision'));
 
     /*** Appearance and behavior (insight.c:1670) ***/
+    if (u.uprops?.DISPLACED)
+        you_are('displaced', from_what('HDisplaced'));
     if (Stealth())
         you_are('stealthy', from_what('HStealth'));
 

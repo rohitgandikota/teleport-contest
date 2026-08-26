@@ -20,14 +20,15 @@ import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, BC_BALL, BC_CHAIN } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { Blind, Levitation } from './youprop.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
-import { can_reach_floor } from './pickup.js';
+import { can_reach_floor, add_valid_menu_class, allow_category,
+         query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -401,6 +402,22 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             } else if (game.u.uz.dnum === game.tutorial_dnum) {
                 tutorial(false); /* leaving tutorial */
                 up = false; /* re-enter level 1 as if starting new game */
+            }
+        }
+    }
+    /* src/do.c:1577, the Quest start level blocks every descent within the
+       same dungeon until the leader grants access. This also applies to a
+       wizard-mode level teleport selected from the dungeon overview. */
+    {
+        const qstart = game.special_levels?.qstart_level;
+        const atQstart = qstart && game.u.uz.dnum === qstart.dnum
+                         && game.u.uz.dlevel === qstart.dlevel;
+        const newdungeon = game.u.uz.dnum !== newlevel.dnum;
+        if (atQstart && !newdungeon) {
+            const { ok_to_quest } = await import('./quest.js');
+            if (!await ok_to_quest()) {
+                await pline('A mysterious force prevents you from descending.');
+                return;
             }
         }
     }
@@ -791,6 +808,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             const { onquest } = await import('./quest.js');
             await onquest();
         } else {
+            if (!familiar_level && Is_rogue_level(game.u.uz))
+                await You('enter what seems to be an older, more primitive world.');
             /* src/do.c:1918, the first arrival at the main-dungeon side
                of the Quest portal carries the leader's telepathic call. */
             const { at_dgn_entrance } = await import('./dungeon.js');
@@ -1131,6 +1150,63 @@ export async function dodrop() {
     if (result)
         reset_occupations();
 
+    return result;
+}
+
+// src/do.c:924 doddrop() and :980 menu_drop(), the 'D' command.
+export async function doddrop() {
+    if (!game.invent?.length) {
+        await You('have nothing to drop.');
+        return ECMD_OK;
+    }
+
+    add_valid_menu_class(0);
+    if (game.u.ushops?.length)
+        note_unported_do('doddrop:sellobj_state:DELIBERATE');
+
+    let result = ECMD_OK;
+    if ((game.flags?.menu_style ?? MENU_FULL) === MENU_FULL) {
+        let all_categories = false;
+        let drop_everything = false;
+        let autopick = false;
+        const categories = await query_drop_categories(game.invent);
+
+        for (const category of categories) {
+            if (category === ALL_TYPES_SELECTED) {
+                all_categories = true;
+            } else if (category === 'A'.charCodeAt(0)) {
+                drop_everything = autopick = true;
+            } else {
+                add_valid_menu_class(category);
+                drop_everything = false;
+            }
+        }
+
+        let dropped = 0;
+        if (autopick) {
+            for (const obj of [...game.invent]) {
+                if (drop_everything || all_categories || allow_category(obj))
+                    dropped += (await drop(obj)) === ECMD_TIME ? 1 : 0;
+            }
+        } else if (categories.length) {
+            const eligible = game.invent.filter(
+                (obj) => all_categories || allow_category(obj));
+            const objects = await query_objlist(
+                'What would you like to drop?', eligible, true);
+            for (const obj of objects) {
+                if (game.invent.includes(obj))
+                    dropped += (await drop(obj)) === ECMD_TIME ? 1 : 0;
+            }
+        }
+        result = dropped ? ECMD_TIME : ECMD_OK;
+    } else {
+        note_unported_do('doddrop:non_full_menu_style');
+    }
+
+    if (game.u.ushops?.length)
+        note_unported_do('doddrop:sellobj_state:NORMAL');
+    if (result)
+        reset_occupations();
     return result;
 }
 

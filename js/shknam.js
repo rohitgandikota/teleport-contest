@@ -15,7 +15,7 @@ import { isok, ROOMOFFSET, IS_ROOM, D_NODOOR, D_ISOPEN, D_LOCKED, D_TRAPPED,
          RLOC_NOMSG } from './const.js';
 import { makemon, mkclass, mkmonmoney, mongets, set_malign } from './makemon.js';
 import { mkobj_at, mksobj_at, set_tin_variety } from './mkobj.js';
-import { m_at } from './mon.js';
+import { m_at, mongone } from './mon.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { rnd as _rnd } from './rng.js';
 import { distmin } from './hacklib.js';
@@ -387,6 +387,16 @@ export async function stock_room(shp_indx, sroom) {
                 stockcount++;
                 mkshobj_at(shp, sx, sy, stockcount === specialspot);
             }
+
+    /* src/shknam.c stock_room() removes Orcus-town's shopkeepers after the
+       abandoned shops have been stocked. mongone() also performs the
+       protected-inventory checks which consume one draw per ordinary item. */
+    const orcus = game.special_levels?.orcus_level;
+    if (orcus && game.u.uz.dnum === orcus.dnum
+        && game.u.uz.dlevel === orcus.dlevel) {
+        mongone(sroom.resident);
+        sroom.resident = null;
+    }
 
     game.level.flags.has_shop = true;
 }

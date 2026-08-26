@@ -1794,7 +1794,12 @@ function levl_follower(mtmp) {
         return true;
     if (mtmp.iswiz)
         return true; /* (amulet check is inside the wiz arm in C) */
-    if (mtmp.mtame || mtmp.isshk)
+    /* is_fshk() means a shopkeeper who is actively following the customer,
+       not every shopkeeper. Ordinary peaceful shopkeepers stay with their
+       shop when the hero changes levels. */
+    if (mtmp.mtame
+        || (mtmp.isshk
+            && !!(mtmp.eshk || mtmp.mextra?.eshk)?.following))
         return true;
     return (game.mons[mtmp.mnum].mflags2 & MFLAGS.M2_STALK) !== 0
         && (!mtmp.mflee || game.u.uhave?.amulet);

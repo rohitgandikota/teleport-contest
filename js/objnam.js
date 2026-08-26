@@ -3159,9 +3159,15 @@ export function The(str) {
 }
 
 // src/objnam.c:5471 suit_simple_name() — "mail"/"jacket"/"suit"; dragon
-// armor names need Is_dragon_mail, recorded when it first matters.
+// src/objnam.c suit_simple_name(), collapse dragon armor to its generic name.
 export function suit_simple_name(suit) {
     if (suit) {
+        if (suit.otyp >= ONAMES.GRAY_DRAGON_SCALE_MAIL
+            && suit.otyp <= ONAMES.YELLOW_DRAGON_SCALE_MAIL)
+            return 'dragon mail';
+        if (suit.otyp >= ONAMES.GRAY_DRAGON_SCALES
+            && suit.otyp <= ONAMES.YELLOW_DRAGON_SCALES)
+            return 'dragon scales';
         const suitnm = OBJ_NAME(game.objects[suit.otyp]) || '';
         if (suitnm.length > 5 && suitnm.endsWith(' mail'))
             return 'mail';

@@ -435,6 +435,12 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         /* The stairway chain belongs to this level. savelev() writes it
            with the map, and getlev() restores it before arrival handling. */
         game.level._saved_stairs = game.stairs;
+        /* src/save.c:550 save_regions() stores regions with this level and
+           clears the live list. Regions from one level must never block or
+           paint cells on the next one. */
+        game.level._saved_regions = game.regions || [];
+        game.level._saved_regions_moves = game.moves;
+        game.regions = [];
         /* src/save.c savelev() stores both special-level arrival regions
            alongside the map. Restoring only the terrain made revisits use
            the whole level instead of the scripted destination area. */
@@ -487,6 +493,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
 
     const ledger = `${newlevel.dnum}:${newlevel.dlevel}`;
     let familiar_level = true;
+    game.regions = [];
     /* C's test is "does the level file exist" (do.c:1706); the in-memory
        map is that file store. (visited_ledgers alone is wrong for the
        FIRST level, which newgame's mklev creates without registering.) */
@@ -497,6 +504,17 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
            catchup against the time spent away. */
         game.level = game.saved_levels.get(ledger);
         game.stairs = game.level._saved_stairs || null;
+        /* src/region.c rest_regions() subtracts the turns spent away and
+           silently drops expired regions before the restored map is shown. */
+        {
+            const elapsed = Math.max(
+                0, game.moves - (game.level._saved_regions_moves ?? game.moves));
+            game.regions = (game.level._saved_regions || []).filter(reg => {
+                if (reg.ttl >= 0)
+                    reg.ttl = reg.ttl > elapsed ? reg.ttl - elapsed : 0;
+                return reg.ttl !== 0 && reg.ttl !== -2;
+            });
+        }
         game.updest = { ...(game.level._saved_updest || game.updest) };
         game.dndest = { ...(game.level._saved_dndest || game.dndest) };
         const { oinit } = await import('./o_init.js');

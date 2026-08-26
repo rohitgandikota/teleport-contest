@@ -17,8 +17,10 @@ import { game } from './gstate.js';
 import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK,
          P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE,
          ARTICLE_YOUR, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK,
-         MSLOW, MFAST, A_NONE } from './const.js';
-import { makeplural, minimal_xname } from './objnam.js';
+         MSLOW, MFAST, A_NONE, TIMEOUT, W_ARM, W_ARMC, W_ARMH, W_ARMS,
+         W_ARMG, W_ARMF, W_ARMU, W_AMUL, W_RINGL, W_RINGR,
+         W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART } from './const.js';
+import { makeplural, minimal_xname, suit_simple_name } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
 import { empty_handed, is_ammo } from './wield.js';
 import { magic_negation } from './mhitu.js';
@@ -61,6 +63,7 @@ const EXTRINSIC_KEYS = {
     HWarning: 'WARNING',
     HSearching: 'SEARCHING',
     HInfravision: 'INFRAVISION',
+    HTelepat: 'TELEPAT',
     HStealth: 'STEALTH',
     HTeleport_control: 'TELEPORT_CONTROL',
     HFast: 'FAST',
@@ -75,6 +78,15 @@ function from_what(abilKey) {
         return innate;
 
     const mask = game.u.uprops?.[EXTRINSIC_KEYS[abilKey]] | 0;
+    if (abilKey === 'HFast' && Very_fast()) {
+        if ((game.u.intrinsic?.HFast | 0) & TIMEOUT)
+            return ' because of a potion or spell';
+        if ((mask & W_ARMF) && game.u.uarmf?.dknown
+            && game.objects[game.u.uarmf.otyp]?.oc_name_known)
+            return ` because of your ${minimal_xname(game.u.uarmf)}`;
+        if (mask)
+            return ' because of worn equipment';
+    }
     const obj = mask && (game.invent || []).find(
         (candidate) => ((candidate.owornmask | 0) & mask) !== 0);
     if (!obj)
@@ -83,6 +95,37 @@ function from_what(abilKey) {
     const name = obj.oartifact ? artifact_names[obj.oartifact]
                                : minimal_xname(obj).replace(/\bpair of /i, '');
     return ` because of ${obj.oartifact ? '' : 'your '}${name}`;
+}
+
+function item_what(mask) {
+    if (!game.wizard || !mask)
+        return '';
+    if ((mask & W_ARM) && game.u.uarm)
+        return ` by your ${suit_simple_name(game.u.uarm)}`;
+    const slots = [
+        [W_ARMC, 'uarmc'], [W_ARMU, 'uarmu'], [W_ARMH, 'uarmh'],
+        [W_ARMG, 'uarmg'], [W_ARMF, 'uarmf'], [W_ARMS, 'uarms'],
+        [W_AMUL, 'uamul'], [W_TOOL, 'ublindf'], [W_RINGL, 'uleft'],
+        [W_RINGR, 'uright'], [W_WEP, 'uwep'],
+    ];
+    for (const [slotmask, field] of slots) {
+        const obj = game.u[field];
+        if ((mask & slotmask) && obj)
+            return ` by your ${minimal_xname(obj).replace(/\bpair of /i, '')}`;
+    }
+    return '';
+}
+
+function item_resistance_message(propKey, protMessage) {
+    const mask = game.u.uprops?.[propKey] | 0;
+    let protection = mask & (W_ARMOR | W_ACCESSORY | W_WEP | W_ART) ? 99 : 0;
+    if (!protection && game.u.uarmc?.otyp === ONAMES.DWARVISH_CLOAK
+        && (propKey === 'FIRE_RES' || propKey === 'COLD_RES'))
+        protection = 90;
+    if (protection)
+        enl_msg('Your items ', protection < 99 ? 'are somewhat' : 'are',
+                protection < 99 ? 'were somewhat' : 'were',
+                protMessage, item_what(mask));
 }
 
 // include/attrib.h
@@ -644,6 +687,7 @@ function attributes_enlightenment() {
         you_are('sleep resistant', from_what('HSleep_resistance'));
     if (Shock_resistance())
         you_are('shock resistant', from_what('HShock_resistance'));
+    item_resistance_message('SHOCK_RES', ' protected from electric shocks');
     if (Poison_resistance())
         you_are('poison resistant', from_what('HPoison_resistance'));
     if (Halluc_resistance())
@@ -654,6 +698,8 @@ function attributes_enlightenment() {
     if (See_invisible())
         enl_msg('You ', 'see ', 'saw ', 'invisible',
                 from_what('HSee_invisible'));
+    if (u.intrinsic?.HTelepat || u.uprops?.TELEPAT)
+        you_are('telepathic', from_what('HTelepat'));
     if (Warning())
         you_are('warned', from_what('HWarning'));
     if (Searching())

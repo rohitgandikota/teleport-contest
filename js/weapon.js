@@ -7,7 +7,7 @@
 // array that comparison has no input at all.
 
 import { game } from './gstate.js';
-import { OBJ_NAME, doname, xname, the } from './objnam.js';
+import { OBJ_NAME, doname, xname, the, makesingular } from './objnam.js';
 /* include/defsym.h OBJCLASS rows, the `name` column — C's def_oc_syms[].name
    (js/drawing_data.js keeps only the symbol chars). Index = oclass. Used by
    weapon_descr() below, same as C's object_detect(). */
@@ -551,14 +551,7 @@ export function weapon_descr(obj) {
     default:
         break;
     }
-    /* C finishes with makesingular(descr) (src/objnam.c, ~120 lines of
-       plural handling). Every name reachable here is already singular except
-       the odd_skill_names plurals ("polearms", "... spells"), so the
-       singularization is recorded when it would actually change the text
-       rather than half-ported. */
-    if (descr.endsWith('s'))
-        note_unported_weapon('weapon_descr:makesingular');
-    return descr;
+    return makesingular(descr);
 }
 
 // src/weapon.c:1092 skill_level_name()

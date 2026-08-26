@@ -19,7 +19,7 @@ import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          BOLT_LIM, VAULT, STRAT_APPEARMSG } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
-         sensemon } from './display.js';
+         sensemon, see_monsters } from './display.js';
 import { Blind, Hallucination } from './youprop.js';
 import { is_demon, is_lord, is_prince, is_covetous,
          passes_walls } from './mondata.js';
@@ -653,6 +653,7 @@ export async function teleds(nux, nuy, teleds_flags) {
     u_on_newpos(nux, nuy);
 
     newsym(ux0, uy0);           /* clear the old position */
+    see_monsters();             /* clear or redraw old sensing glyphs */
     vision_recalc(0);           /* vision before effects */
 
     if (is_teleport && game.flags?.verbose)

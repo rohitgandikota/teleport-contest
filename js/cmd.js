@@ -257,7 +257,6 @@ async function help_dir(sym, msg) {
     while (tty_next_page(win))
         await xwaitforspace('\x1b ');
     tty_destroy_nhwindow(win);
-    await docrt();
     return true;
 }
 

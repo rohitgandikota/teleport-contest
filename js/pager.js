@@ -19,6 +19,7 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
 import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { PMNAMES } from './monst_data.js';
 import { pline, glyph_at, docrt, flush_screen,
          tty_clear_nhwindow_message } from './display.js';
 import { DEC_TO_UNICODE, NO_COLOR } from './terminal.js';
@@ -178,7 +179,7 @@ function look_at_monster(mtmp, x, y) {
 
 // src/pager.c:560 waterbody_name() — 5.0 moved it here from mkmaze.c.
 // The hallucination variants and the Medusa/Juiblex/Samurai-quest moat
-// flavors need level state no session reaches.
+// flavors use the current special-level globals.
 export function waterbody_name(x, y) {
     if (!isok(x, y)) return 'drink';
     return waterbody_name_typ(game.level?.at(x, y)?.typ, x, y);
@@ -192,8 +193,22 @@ function waterbody_name_typ(ltyp, x, y) {
     if (ltyp === ICE)
         return hallucinate ? `frozen ${hliquid('water')}` : 'ice';
     if (ltyp === POOL) return `pool of ${hliquid('water')}`;
-    if (ltyp === MOAT)
-        return hallucinate ? `deep ${hliquid('water')}` : 'moat';
+    if (ltyp === MOAT) {
+        if (hallucinate)
+            return `deep ${hliquid('water')}`;
+        const on_level = (a, b) => !!a && !!b
+            && a.dnum === b.dnum && a.dlevel === b.dlevel;
+        if (on_level(game.u?.uz, game.medusa_level))
+            return 'shallow sea';
+        if (on_level(game.u?.uz, game.juiblex_level))
+            return 'swamp';
+        const role = game.urole?.mnum;
+        if ((role === PMNAMES.PM_SAMURAI
+             || role === 'PM_SAMURAI')
+            && on_level(game.u?.uz, game.qstart_level))
+            return 'pond';
+        return 'moat';
+    }
     if (ltyp === WATER) return `wall of ${hliquid('water')}`;
     if (ltyp === LAVAWALL) return `wall of ${hliquid('lava')}`;
     return 'water';

@@ -629,6 +629,11 @@ function bool_optval(o) {
     return (v === undefined) ? (o.initval === 'On') : !!v;
 }
 
+export function boolean_option(name) {
+    const o = findOption(name);
+    return !!o && o.type === 'BoolOpt' && bool_optval(o);
+}
+
 /* src/options.c:9179 count_cond() */
 function count_cond() {
     let cnt = 0;

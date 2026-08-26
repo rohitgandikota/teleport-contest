@@ -72,7 +72,7 @@ import { dothrow, dofire } from './dothrow.js';
 import { getpos, getpos_sethilite } from './getpos.js';
 import { get_valid_jump_position, is_valid_jump_pos } from './apply.js';
 import { dowear, doputon, dotakeoff, doremring, canwearobj_core } from './do_wear.js';
-import { show_menu_controls } from './options.js';
+import { boolean_option, show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -330,7 +330,7 @@ export async function getdir(s) {
            '?' help-request retry is recorded; no recorded session asks. */
         if (!" \r\n\x1b".includes(dirsym)) {
             let did_help = false;
-            if (dirsym === '?' || (game.iflags.cmdassist !== false)) {
+            if (dirsym === '?' || boolean_option('cmdassist')) {
                 did_help = await help_dir('\0', "Invalid direction key!");
                 if (dirsym === '?')
                     note_unported_cmd('getdir:help_retry');

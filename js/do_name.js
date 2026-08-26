@@ -374,9 +374,8 @@ export function oname(obj, name, oflgs) {
 // src/do_name.c:499 docallcmd() — the #call / #name command: player can name a
 // monster, an object, or a type of object.
 //
-// The menu and the cancel path are complete. Every switch arm's worker
-// (do_mgivenname, do_oname via getobj, docall, namefloorobj, rename_disco,
-// donamelevel) is unported and recorded, so picking one records and returns.
+// The menu, cancel path, and level annotation arm are complete. The other
+// workers are recorded when selected.
 // C's cmdq_pop arm services a queued key from a scripted command; this port
 // has no queue producer yet, which in C is the empty-queue fallthrough, so no
 // marker fires for it.
@@ -434,9 +433,31 @@ export async function docallcmd() {
         note_unported_do_name('docallcmd:rename_disco');
         break;
     case 'a': /* annotate level */
-        note_unported_do_name('docallcmd:donamelevel');
+        await donamelevel();
         break;
     }
+    return ECMD_OK;
+}
+
+// src/dungeon.c:2520 query_annotation() and :2571 donamelevel().
+export async function donamelevel() {
+    const key = `${game.u.uz.dnum}:${game.u.uz.dlevel}`;
+    const old = game.level_annotations?.[key] || '';
+    const prompt = old
+        ? `Replace annotation "${old.slice(0, 30)}${old.length > 30 ? '...' : ''}" with?`
+        : 'What do you want to call this dungeon level?';
+    const { getlin } = await import('./cmd.js');
+    const raw = await getlin(prompt);
+
+    if (raw == null || raw === '' || raw[0] === '\x1b')
+        return ECMD_OK;
+
+    const annotation = raw.replace(/[ \t]+/g, ' ').trim();
+    const annotations = (game.level_annotations ||= {});
+    if (annotation)
+        annotations[key] = annotation;
+    else
+        delete annotations[key];
     return ECMD_OK;
 }
 

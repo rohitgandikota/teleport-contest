@@ -13,9 +13,10 @@ import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
          TIMEOUT }
     from './const.js';
 import { getlin } from './cmd.js';
-import { docrt, pline, see_monsters, swallowed } from './display.js';
+import { docrt, map_trap, pline, see_monsters, swallowed } from './display.js';
 import { pluslvl } from './exper.js';
 import { level_tele } from './teleport.js';
+import { do_mapping } from './detect.js';
 import { NO_COLOR } from './terminal.js';
 import {
     ATR_NONE, NHW_MENU, tty_add_menu, tty_add_menu_str,
@@ -42,6 +43,41 @@ export async function wiz_wish() {
     } else {
         note_unported_wizcmds('wiz_wish:unavailcmd');
     }
+    return ECMD_OK;
+}
+
+// src/wizcmds.c:176 wiz_map(): reveal the level, traps, and engravings.
+export function wiz_map() {
+    if (!game.wizard) {
+        note_unported_wizcmds('wiz_map:unavailcmd');
+        return ECMD_OK;
+    }
+
+    const u = game.u;
+    const intrinsic = (u.intrinsic ||= {});
+    const uprops = (u.uprops ||= {});
+    const saved = {
+        hconf: intrinsic.HConfusion,
+        hhallu: intrinsic.HHallucination,
+        conf: uprops.CONFUSION,
+        hallu: uprops.HALLUC,
+    };
+    delete intrinsic.HConfusion;
+    delete intrinsic.HHallucination;
+    delete uprops.CONFUSION;
+    delete uprops.HALLUC;
+
+    for (const trap of game.level?.traps || []) {
+        trap.tseen = 1;
+        map_trap(trap, true);
+    }
+    /* show_map_spot() maps engravings while do_mapping() scans the level. */
+    do_mapping();
+
+    if (saved.hconf !== undefined) intrinsic.HConfusion = saved.hconf;
+    if (saved.hhallu !== undefined) intrinsic.HHallucination = saved.hhallu;
+    if (saved.conf !== undefined) uprops.CONFUSION = saved.conf;
+    if (saved.hallu !== undefined) uprops.HALLUC = saved.hallu;
     return ECMD_OK;
 }
 

@@ -34,7 +34,7 @@ import { ACURR, exercise, near_capacity } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { cxname, simpleonames, the } from './objnam.js';
-import { x_monnam, docallcmd } from './do_name.js';
+import { x_monnam, docallcmd, donamelevel } from './do_name.js';
 import { You } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
@@ -84,7 +84,7 @@ import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
-import { dowieldquiver, dowield, dotwoweapon } from './wield.js';
+import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
 import { dist2, distmin } from './hacklib.js';
 import { place_object } from './mkobj.js';
@@ -817,18 +817,7 @@ export async function doextcmd() {
     if (name === 'herecmdmenu')
         return await doherecmdmenu();
     if (name === 'annotate') {
-        /* src/dungeon.c:2571 donamelevel() -> query_annotation(): the
-           getlin consumes the annotation text; skipping it fed the typed
-           annotation to the command loop as keystrokes. */
-        const nbuf = await getlin(
-            'What do you want to call this dungeon level?');
-        if (nbuf != null && nbuf !== '' && nbuf !== '\x1b') {
-            const t = nbuf.trim().replace(/ {2,}/g, ' ');
-            if (t && t !== ' ')
-                (game.level_annotations ||= {})[
-                    `${game.u.uz.dnum}:${game.u.uz.dlevel}`] = t;
-        }
-        return ECMD_OK;
+        return await donamelevel();
     }
     if (name === 'version') {
         /* src/version.c:169 doextversion() — the options text substitutes
@@ -870,6 +859,10 @@ export async function doextcmd() {
     if (name === 'wizintrinsic') {
         const { wiz_intrinsic } = await import('./wizcmds.js');
         return await wiz_intrinsic();
+    }
+    if (name === 'wizmap') {
+        const { wiz_map } = await import('./wizcmds.js');
+        return await wiz_map();
     }
 
     note_unported_cmd(`extcmd:${name}`);
@@ -1332,6 +1325,9 @@ export async function rhack(key) {
     } else if (ch === 'X') {
         // src/cmd.c:1913 cmdlist — 'X' is dotwoweapon.
         game.context.move = ((await dotwoweapon()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'x') {
+        // src/cmd.c cmdlist: 'x' is doswapweapon.
+        game.context.move = ((await doswapweapon()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'Z') {
         // src/cmd.c cmdlist — 'Z' is docast.
         game.context.move = ((await docast()) === ECMD_TIME ? 1 : 0);

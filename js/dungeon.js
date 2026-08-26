@@ -1120,7 +1120,7 @@ export function surface(x, y) {
         return 'wall'; /* 'surface' during Passes_walls */
     if (IS_DOOR(levtyp))
         return 'doorway'; /* even for closed door */
-    if (levtyp === ROOM || levtyp === CORR || levtyp === ICE)
+    if (levtyp === ROOM)
         return 'floor';
     return 'ground';
 }

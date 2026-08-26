@@ -216,6 +216,7 @@ export async function tty_yn_function(query, resp, def) {
        row, even though the visible cells contain only the question text. */
     const columns = game?.nhDisplay?.cols ?? 80;
     const renderedPrompt = wrap_topline(prompt + ' ', columns);
+    game._topline_physical_prefix = '';
     game._pending_message = prompt;
     game._toplin = TOPLINE_SPECIAL_PROMPT;
     paint_topline();

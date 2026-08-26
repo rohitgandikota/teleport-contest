@@ -119,6 +119,9 @@ export async function dountrap() {
         await pline('And just how do you expect to do that?');
         return ECMD_OK;
     }
+    const { getdir } = await import('./cmd.js');
+    if (!(await getdir(null)))
+        return ECMD_OK;
     (game.unported ||= new Set()).add('trap:dountrap');
     return ECMD_OK;
 }

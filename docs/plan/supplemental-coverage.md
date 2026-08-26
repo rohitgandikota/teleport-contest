@@ -8,16 +8,16 @@ not mean the JavaScript port passes them. Static rows are checked by
 `node tools/game-inventory.mjs`. Dynamic parity is measured by the frozen
 runner. RNG annotations only observe C functions that draw randomness.
 
-Requirements: **104**. Covered: **78**.
-Partial: **7**. Gaps: **19**.
+Requirements: **104**. Covered: **79**.
+Partial: **6**. Gaps: **19**.
 
 ## Corpus inventory
 
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 51 | 5397 | 990742 | 65 | 294 |
-| Union | 95 | 16802 | 1758502 | 76 | 392 |
+| Supplemental | 52 | 5471 | 996225 | 65 | 294 |
+| Union | 96 | 16876 | 1763985 | 76 | 392 |
 
 ## Static inventory
 
@@ -42,7 +42,7 @@ Partial: **7**. Gaps: **19**.
 |---|---|---|---|
 | covered | `chargen.full-menu` | 1 session(s), including normal mode | `ranger-chargen` |
 | covered | `chargen.restricted-path` | 1 session(s), including normal mode | `barb-chargen` |
-| covered | `mode.normal` | 3 session(s), including normal mode | `barb-chargen`, `death-disclosure-normal`, `fountain-quaff`, `mondrift-dogfollow`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `themed-room-normal`, `variant-steed`, `variant-twoweapon` |
+| covered | `mode.normal` | 3 session(s), including normal mode | `barb-chargen`, `death-disclosure-normal`, `fountain-quaff`, `mondrift-dogfollow`, `monk-martial-arts`, `ranger-chargen`, `save-restore-pair`, `shop-normal`, `themed-room-normal`, `variant-steed`, `variant-twoweapon` |
 | covered | `mode.debug` | 3 session(s) | `alchemy-mixing`, `armor-wear-remove`, `artifact-invoke`, `artifact-knockback`, `container-bag-holding`, `container-loot`, `death-disclosure-debug`, `demon-summon`, `engrave-elbereth`, `gehennom-tour`, `kick-monster`, `mines-tour`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `shop-billing`, `sokoban-tour`, `spellbook-study-failure`, `spellbook-study-success`, `themed-room`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
 | covered | `options.rc-bindings` | 1 session(s) | `variant-custom-bindings` |
 
@@ -72,7 +72,7 @@ Partial: **7**. Gaps: **19**.
 
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
-| covered | `level.ordinary` | 3 session(s), including normal mode | `alchemy-mixing`, `armor-wear-remove`, `artifact-invoke`, `artifact-knockback`, `barb-chargen`, `container-bag-holding`, `container-loot`, `death-disclosure-debug`, `death-disclosure-normal`, `demon-summon`, `engrave-elbereth`, `fountain-quaff`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `pray-low-hp`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `shop-billing`, `spellbook-study-failure`, `spellbook-study-success`, `themed-room-normal`, `themed-room`, `wand-striking-door` |
+| covered | `level.ordinary` | 3 session(s), including normal mode | `alchemy-mixing`, `armor-wear-remove`, `artifact-invoke`, `artifact-knockback`, `barb-chargen`, `container-bag-holding`, `container-loot`, `death-disclosure-debug`, `death-disclosure-normal`, `demon-summon`, `engrave-elbereth`, `fountain-quaff`, `kick-monster`, `mondrift-chase`, `mondrift-dogfollow`, `mondrift-fight`, `mondrift-objects`, `monk-martial-arts`, `pray-low-hp`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `shop-billing`, `shop-normal`, `spellbook-study-failure`, `spellbook-study-success`, `themed-room-normal`, `themed-room`, `wand-striking-door` |
 | covered | `level.themed` | 2 session(s), including normal mode | `themed-room-normal`, `themed-room` |
 | covered | `level.special-variants` | 2 session(s) | `gehennom-tour`, `mines-tour`, `planes-tour`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `sokoban-tour`, `variant-world-tour` |
 | covered | `level.mines` | 1 session(s) | `mines-tour` |
@@ -169,7 +169,7 @@ Partial: **7**. Gaps: **19**.
 
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
-| partial | `social.shops-billing` | 2 session(s), including normal mode | `shop-billing` |
+| covered | `social.shops-billing` | 2 session(s), including normal mode | `shop-billing`, `shop-normal` |
 | gap | `social.vault-guard` | 1 session(s), including normal mode | none |
 | covered | `social.chat` | 2 session(s), including normal mode | `variant-steed`, `variant-twoweapon` |
 
@@ -236,6 +236,7 @@ Partial: **7**. Gaps: **19**.
 | `save-restore-pair` | normal | 33 | present | `level.ordinary`, `mode.normal`, `monster.hero-melee`, `persistence.save-restore`, `religion.luck-calendar`, `ui.menus`, `ui.more-paging` |
 | `scroll-reading` | debug | 109 | present | `level.ordinary`, `mode.debug`, `object.buc-enchant-erosion`, `object.identification`, `object.scrolls`, `ui.cancel-invalid`, `ui.getlin`, `ui.getpos`, `ui.menus`, `ui.more-paging` |
 | `shop-billing` | debug | 142 | present | `level.ordinary`, `mode.debug`, `social.shops-billing`, `ui.map-memory-vision` |
+| `shop-normal` | normal | 73 | present | `level.ordinary`, `mode.normal`, `social.shops-billing` |
 | `sokoban-tour` | debug | 250 | present | `level.sokoban`, `level.special-variants`, `mode.debug`, `ui.getlin`, `ui.map-memory-vision`, `ui.menus` |
 | `spellbook-study-failure` | debug | 40 | present | `level.ordinary`, `mode.debug`, `object.identification`, `object.spellbooks-spells`, `survival.timed-status`, `ui.getlin`, `ui.more-paging` |
 | `spellbook-study-success` | debug | 51 | present | `level.ordinary`, `mode.debug`, `object.identification`, `object.spellbooks-spells`, `survival.regen-exercise`, `ui.getlin`, `ui.menus`, `ui.more-paging` |
@@ -267,7 +268,6 @@ Partial: **7**. Gaps: **19**.
 - **gap:** `religion.sacrifice`: Sacrifice value, freshness, gifts, conversion, and special corpses
 - **gap:** `religion.priest-donation`: Priest chat, donation, protection, anger, and cheapskate state
 - **gap:** `religion.altars-crowning`: Altar alignment, conversion, crowning, and Hand of Elbereth
-- **partial:** `social.shops-billing`: Stock, price, credit, debt, selling, theft, damage, and pursuit
 - **gap:** `social.vault-guard`: Vault discovery, guard conversation, escort, and hostility
 - **gap:** `persistence.bones`: Bones creation, storage, eligibility, loading, and sanitization
 - **gap:** `ending.topten`: Score calculation, record persistence, and top-ten rendering

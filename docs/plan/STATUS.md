@@ -1,5 +1,30 @@
 # STATUS — live handoff board
 
+## 2026-08-26: normal-mode shop transactions and wrapped prompts
+
+The walking-only `shop-normal` oracle starts a normal female Tourist on seed
+6901, walks through the ordinary first level, descends to a naturally
+generated general store, buys a tripe ration, sells a tin, and leaves the shop
+with the bill settled. It uses no wizard command or debug mode. Two recordings
+produced the same SHA-256,
+`d0e51bed8d56ac133eb15c5c2e4c2ce0c97a726a82d20bb373c6e694c95843b3`.
+The port matches all 74/74 screens, 74/74 cursors, and 5,941/5,941 RNG calls.
+
+This independent path exposed two general defects. Walking into a peaceful
+shopkeeper in a tended shop now enters payment handling like C instead of
+trying to swap places. Long yes/no prompts now preserve their wrapped
+continuation text and cursor, then restore any covered map rows before the
+next message.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus now has 52
+sessions and 5,471 frames. It is 5,466/5,471 cell-exact and
+1,023,453/1,023,453 RNG-exact, with 51/52 formal session passes. The sole
+formal failure remains the recorder-corrupted `gehennom-tour` cursor data.
+All 44 public hang checks pass. Conservative full-game coverage is now 79
+covered, 6 partial, and 19 gaps out of 104. `social.shops-billing` is covered
+by independent debug and normal-mode transaction scenarios.
+
 ## 2026-08-26: independent shop billing, credit, robbery, and Kops
 
 The new two-segment `shop-billing` C oracle uses seed 6901 outside the public

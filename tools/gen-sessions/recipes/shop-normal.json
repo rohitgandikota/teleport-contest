@@ -1,0 +1,17 @@
+{
+  "name": "shop-normal",
+  "description": "Normal Tourist reaches a naturally generated shop and exercises ordinary transactions without wizard commands.",
+  "coverage": [
+    "level.ordinary",
+    "mode.normal",
+    "social.shops-billing"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Shopper,role:Tourist,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " johhhkhhhkhhkhhohhhk> johhhhhjhhjjhjjjjjlllljlllolllllkkjl , pa\r dc yyhh"
+    }
+  ]
+}

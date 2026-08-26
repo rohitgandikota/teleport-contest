@@ -48,7 +48,7 @@ import { monflee, set_apparxy } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
-         FORCEBUNGLE, HURTLING, IS_DOOR } from './const.js';
+         FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
@@ -126,15 +126,30 @@ export async function do_attack(mtmp) {
                        || (IS_OBSTRUCTED(game.level.at(game.u.ux, game.u.uy)?.typ)
                            && !passes_walls(mdat)));
 
-        /* the in-shop check only runs when foo is false; it needs the shop
-           bookkeeping and is recorded rather than guessed */
+        /* The in-shop check only runs when foo is false. Peaceful monsters
+           cannot be displaced inside a tended shop, and bumping the resident
+           shopkeeper starts payment when this is an ordinary move. */
         let inshop = false;
-        if (!foo && mtmp.isshk)
-            note_unported_uhitm('do_attack:tended_shop');
+        if (!foo) {
+            const [{ in_rooms }, { tended_shop }] = await Promise.all([
+                import('./hack.js'), import('./shk.js'),
+            ]);
+            for (const roomno of in_rooms(mtmp.mx, mtmp.my, SHOPBASE) || '') {
+                const room = game.level?.rooms?.[roomno.charCodeAt(0) - ROOMOFFSET];
+                if (room && tended_shop(room)) {
+                    inshop = true;
+                    break;
+                }
+            }
+        }
 
         if (inshop || foo) {
-            if (mtmp.isshk)
-                note_unported_uhitm('do_attack:dopay');
+            if (!game.context?.travel && !game.context?.run
+                && canspotmon(mtmp) && mtmp.isshk) {
+                const { dopay } = await import('./shk.js');
+                await dopay();
+                return true;
+            }
             if (mtmp.mtame)     /* see 'additional considerations' in the C */
                 monflee(mtmp, rnd(6), false, false);
             /* You("stop.  %s is in the way!", highc(y_monnam(mtmp))) */

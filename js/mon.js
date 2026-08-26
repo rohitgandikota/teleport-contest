@@ -4,7 +4,7 @@ import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
 import { ceiling_hider, emits_light, resist_conflict } from './mondata.js';
 import { new_light_source, del_light_source, any_light_source,
-         LS_MONSTER } from './light.js';
+         LS_OBJECT, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear, m_everyturn_effect,
          set_apparxy as set_apparxy_ref, monflee } from './monmove.js';
@@ -204,8 +204,9 @@ export async function movemon() {
         if (await movemon_singlemon(mtmp)) break;
     }
     /* src/mon.c:1332. Object light sources can move with their monster
-       carriers. Recalculate after the sweep even when no terrain changed. */
-    if (any_light_source())
+       carriers. Monster-source parity still depends on missing movement
+       cases, so only enable the fully resolved object arm for now. */
+    if (any_light_source(LS_OBJECT))
         game.vision_full_recalc = 1;
     clear_splitobjs();
     dmonsfree();
@@ -2092,6 +2093,10 @@ export async function mondead(mdef) {
        Clear it before detaching so the corpse or dropped object can replace
        it on the same screen boundary. */
     unmap_invisible(mx, my);
+    /* src/mon.c:3177 m_detach(). A dead glowing monster must not leave an
+       orphaned source that forces vision recalculation on later turns. */
+    if (mx > 0 && emits_light(mdef.data))
+        del_light_source(LS_MONSTER, mdef.m_id);
     remove_monster(mx, my);
     const idx = (game.level?.monsters || []).indexOf(mdef);
     if (idx >= 0)

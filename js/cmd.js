@@ -1648,6 +1648,22 @@ async function domove_core() {
         game.context.travel1 = 0;
     }
 
+    /* src/hack.c:2733. A direction while swallowed attacks the engulfer
+       from the shared square instead of moving the hero. */
+    if (u.uswallow) {
+        u.dx = u.dy = 0;
+        const mtmp = u.ustuck;
+        if (!mtmp)
+            return;
+        u_on_newpos(mtmp.mx, mtmp.my);
+        u.ux0 = u.ux;
+        u.uy0 = u.uy;
+        nomul(0);
+        const displaceu = { value: false };
+        await domove_attackmon_at(mtmp, mtmp.mx, mtmp.my, displaceu);
+        return;
+    }
+
     /* src/hack.c:2747 impaired_movement() — a stunned (always) or confused
        (4 in 5) hero moves in a random viable direction; the rn2(5) inside
        u_maybe_impaired() draws on EVERY move while merely confused, and
@@ -2077,7 +2093,6 @@ async function show_discoveries() {
     await nhgetch();
 
     tty_destroy_nhwindow(win);
-    await docrt();                  /* restore the map underneath */
 }
 
 
@@ -2099,11 +2114,10 @@ async function show_attributes() {
     /* dmore() blocks once per page and accepts ONLY the quitchars: any
        other key (a ^O pressed early) is swallowed while the window stays */
     await xwaitforspace(' \r\n\x1b');
-    while (tty_next_page(win))
+    while (game.morc !== '\x1b' && tty_next_page(win))
         await xwaitforspace(' \r\n\x1b');
 
     tty_destroy_nhwindow(win);
-    await docrt();
 }
 
 
@@ -2120,7 +2134,7 @@ async function show_inventory() {
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
     for (const it of items)
-        tty_add_menu(win, null,
+        tty_add_menu(win, it.glyphinfo ?? null,
                      it.heading ? 0 : it.invlet.charCodeAt(0),
                      it.invlet || 0, 0,
                      it.attr, NO_COLOR, it.str, MENU_ITEMFLAGS_NONE);

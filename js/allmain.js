@@ -71,7 +71,9 @@ import { lookaround, end_running, unmul, nomul,
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
-    docrt, cls, bot, flush_screen, pline, see_monsters, TOPLINE_EMPTY,
+    docrt, cls, bot, flush_screen, pline, see_monsters, see_objects,
+    see_traps, swallowed,
+    TOPLINE_EMPTY,
 } from './display.js';
 import { Hallucination } from './youprop.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
@@ -856,9 +858,17 @@ export async function moveloop_core() {
 
     // Vision + display
     const Warning = !!(g.u.uprops?.WARNING || g.u.intrinsic?.HWarning);
-    if ((!g.context.mv || g.u.ublind) && Warning
-        && (!Hallucination() || g.u.ublind))
-        see_monsters();
+    if (!g.context.mv || g.u.ublind) {
+        if (Hallucination()) {
+            see_monsters();
+            see_objects();
+            see_traps();
+            if (g.u.uswallow)
+                await swallowed(0);
+        } else if (Warning) {
+            see_monsters();
+        }
+    }
     if (g.vision_full_recalc) {
         vision_recalc(0);
         g.vision_full_recalc = 0;

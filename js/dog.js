@@ -59,7 +59,8 @@ import { mattackm } from './mhitm.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import {
-    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj } from './makemon.js';
+    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider,
+    mpickobj, set_malign } from './makemon.js';
 
 const NON_PM = -1;
 
@@ -159,7 +160,7 @@ function initedog(mtmp, everything) {
     mtmp.mtame = Math.max(minimumtame, mtmp.mtame || 0);
     mtmp.mpeaceful = 1;
     mtmp.mavenge = 0;
-    /* set_malign() recalculates alignment now that it is tamed; no draw */
+    set_malign(mtmp);
 
     if (everything) {
         mtmp.mleashed = 0;

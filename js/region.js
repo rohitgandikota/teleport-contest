@@ -38,6 +38,7 @@ import { rn1, rn2 } from './rng.js';
 import { isok } from './hacklib.js';
 import { ACCESSIBLE } from './const.js';
 import { cmap_names } from './drawing_data.js';
+import { PMNAMES } from './monst_data.js';
 import { selection_getbounds, selection_getpoint } from './selvar.js';
 
 /* region.c MAX_CLOUD_SIZE */
@@ -195,5 +196,15 @@ export function run_regions() {
     for (const reg of (game.regions || [])) {
         if (reg.ttl > 0)
             reg.ttl--;
+        /* src/region.c:1091 inside_gas_cloud(). Fog clouds sustain any
+           gas cloud around them, including harmless vapor trails. */
+        if (reg.inside_f === 'INSIDE_GAS_CLOUD' && reg.ttl < 20) {
+            for (const mon of (game.level?.monsters || [])) {
+                if (mon.mhp > 0 && mon.mnum === PMNAMES.PM_FOG_CLOUD
+                    && inside_region(reg, mon.mx, mon.my)) {
+                    reg.ttl += 5;
+                }
+            }
+        }
     }
 }

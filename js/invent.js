@@ -34,7 +34,7 @@ import { is_missile, ammo_and_launcher, setuqwep } from './wield.js';
 import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
-import { pline, docrt } from './display.js';
+import { pline, docrt, temporary_object_glyph } from './display.js';
 import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
@@ -359,10 +359,12 @@ export function let_to_name(oclass) {
 // selector and no identifier, an item carries its inventory letter. The "a - "
 // prefix is NOT built here; tty_add_menu() builds it, exactly as in C, which is
 // what makes the +2 in tty_end_menu()'s width the right rule for this window.
-export function display_inventory() {
+export function display_inventory(allowed_choices = null) {
     const out = [];
     for (const oclass of inv_order()) {
-        const items = (game.invent || []).filter(o => o.oclass === oclass);
+        const items = (game.invent || []).filter(
+            o => o.oclass === oclass
+                 && (!allowed_choices || allowed_choices.includes(o.invlet)));
         if (!items.length) continue;
         /* add_menu_heading(win, class_header) — iflags.menu_headings */
         out.push({ heading: true, str: let_to_name(oclass), attr: ATR_INVERSE });
@@ -370,8 +372,11 @@ export function display_inventory() {
             /* src/invent.c:1039 — displaying the item observes its type */
             if (!game.u?.ublind)
                 observe_object(o);
+            /* src/invent.c:3320. obj_to_glyph() precedes doname(), even when
+               the tty window never renders the supplied glyph. */
+            const glyphinfo = temporary_object_glyph(o);
             out.push({ heading: false, str: doname(o), attr: ATR_NONE,
-                       invlet: o.invlet });
+                       invlet: o.invlet, glyphinfo });
         }
     }
     return out;
@@ -429,7 +434,7 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
        headings up front instead listed every empty class: quaffing showed
        Coins/Weapons/Armor/... around a lone Potions section. */
     let pending_heading = null;
-    for (const e of display_inventory()) {
+    for (const e of display_inventory(allowed_choices)) {
         if (e.heading) {
             pending_heading = e;
             continue;
@@ -442,7 +447,7 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
                          pending_heading.str, MENU_ITEMFLAGS_NONE);
             pending_heading = null;
         }
-        tty_add_menu(win, null, e.invlet.charCodeAt(0), e.invlet, 0,
+        tty_add_menu(win, e.glyphinfo, e.invlet.charCodeAt(0), e.invlet, 0,
                      A_NONE, NO_COLOR, e.str, MENU_ITEMFLAGS_NONE);
     }
     /* src/invent.c:3378 — `end_menu(win, (query && *query) ? query : NULL)`.

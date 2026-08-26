@@ -12,7 +12,7 @@ import { encumber_msg } from './attrib.js';
 import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY }
     from './const.js';
 import { getlin } from './cmd.js';
-import { docrt, pline, see_monsters } from './display.js';
+import { docrt, pline, see_monsters, swallowed } from './display.js';
 import { pluslvl } from './exper.js';
 import { level_tele } from './teleport.js';
 import { NO_COLOR } from './terminal.js';
@@ -216,7 +216,10 @@ export async function wiz_intrinsic() {
             uprops.HALLUC = oldtimeout + 30;
             (game.u.intrinsic ||= {}).HHallucination = oldtimeout + 30;
             if (!oldtimeout && !uprops.HALLUC_RES) {
-                see_monsters();
+                if (game.u.uswallow)
+                    await swallowed(0);
+                else
+                    see_monsters();
                 (game.disp ||= {}).botl = true;
                 await pline(`Oh wow!  Everything ${game.u.ublind
                     ? 'feels' : 'looks'} so cosmic!`);

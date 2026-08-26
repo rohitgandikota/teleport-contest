@@ -69,6 +69,7 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
+import { Hallucination } from './youprop.js';
 import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, slimeproof, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
@@ -1622,7 +1623,9 @@ export async function xkilled(mtmp, xkill_flags) {
             adjalign(Math.trunc(alignlim / 4));
     } else if (mtmp.mtame) {
         adjalign(-15);
-        note_unported_mon('xkilled:tame_message');
+        await You_hear(Hallucination()
+            ? 'the studio audience applaud!'
+            : 'the rumble of distant thunder...');
     } else if (mtmp.mpeaceful) {
         adjalign(-5);
     }

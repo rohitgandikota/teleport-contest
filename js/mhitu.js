@@ -47,7 +47,7 @@ import { xname } from './objnam.js';
 import { nomul } from './hack.js';
 import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
-import { mhitm_ad_phys, mhitm_ad_elec, mhitm_ad_drst,
+import { mhitm_ad_phys, mhitm_ad_cold, mhitm_ad_elec, mhitm_ad_drst,
          mhitm_knockback } from './uhitm.js';
 import { t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
@@ -445,9 +445,8 @@ async function gazemu(mtmp, mattk) {
 
 // src/mhitu.c:310 getmattk() — the attack for this slot, with substitutions.
 //
-// Every substitution arm needs state no current fight reaches (succubi,
-// disease pairs, energy drain vs the hero, holder re-grab timing); each is
-// recorded if its condition ever fires so the plain row is visibly a slice.
+// The holder cooldown substitution is live because unstuck() sets mspec_used.
+// The remaining substitutions are recorded when their conditions fire.
 export function getmattk(magr, mdef, indx, prev_result) {
     const A = ATTKS;
     const mptr = game.mons[magr.mnum];
@@ -460,6 +459,31 @@ export function getmattk(magr, mdef, indx, prev_result) {
             || attk[1] === A.AD_FAMN)
         && attk[1] === mptr.mattk[indx - 1][1])
         note_unported_mhitu('getmattk:disease_pair');
+
+    /* src/mhitu.c:368, a holder or engulfer which just released its target
+       temporarily substitutes a weak touch or claw attack. */
+    if (magr.mspec_used && (attk[0] === A.AT_ENGL
+                            || attk[0] === A.AT_HUGS
+                            || attk[1] === A.AD_STCK
+                            || attk[1] === A.AD_POLY)) {
+        const alt = [...attk];
+        const wimpy = alt[3] === 0;
+
+        if (alt[1] === A.AD_ACID || alt[1] === A.AD_ELEC
+            || alt[1] === A.AD_COLD || alt[1] === A.AD_FIRE) {
+            alt[0] = A.AT_TUCH;
+        } else {
+            alt[0] = A.AT_CLAW;
+            alt[1] = A.AD_PHYS;
+        }
+        alt[2] = 1;
+        alt[3] = 6;
+        if (wimpy && alt[0] === A.AT_CLAW) {
+            alt[0] = A.AT_TUCH;
+            alt[2] = alt[3] = 0;
+        }
+        return alt;
+    }
     return attk;
 }
 
@@ -932,6 +956,8 @@ async function hitmu(mtmp, mattk, indx) {
     /* mhitm_adtyping: dispatch on the damage type */
     if (mattk[1] === A.AD_PHYS) {
         await mhitm_ad_phys(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_COLD) {
+        await mhitm_ad_cold(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_ELEC) {
         mhm.indx = indx;
         await mhitm_ad_elec(mtmp, mattk, game.youmonst, mhm);

@@ -30,7 +30,8 @@ import {
     WM_C_OUTER, WM_C_INNER, WM_T_LONG, WM_T_BL, WM_T_BR,
     WM_X_TL, WM_X_TR, WM_X_BL, WM_X_BR, WM_X_TLBR, WM_X_BLTR,
     SV0, SV1, SV2, SV3, SV4, SV5, SV6, SV7,
-    M_AP_FURNITURE, M_AP_OBJECT, M_AP_TYPE, ACCESSIBLE, Is_rogue_level,
+    M_AP_FURNITURE, M_AP_OBJECT, M_AP_MONSTER, M_AP_TYPE,
+    ACCESSIBLE, Is_rogue_level,
 } from './const.js';
 import { engr_at } from './engrave.js';
 import { visible_region_at } from './region.js';
@@ -973,7 +974,10 @@ export async function swallowed(first) {
     };
     const put = (x, y, name) => {
         const g = sw(name);
-        show_glyph_cell(x, y, g.ch, swcolor, g.dec, 0,
+        const color = Hallucination()
+            ? (game.mons?.[rn2_on_display_rng(NUMMONS)]?.mcolor ?? NO_COLOR)
+            : swcolor;
+        show_glyph_cell(x, y, g.ch, color, g.dec, 0,
                         { kind: 'swallow', cmap: g.cmap });
     };
     const left_ok = isok(u.ux - 1, u.uy);
@@ -1041,6 +1045,20 @@ export function newsym(x, y) {
         return;
     const loc = game.level?.at(x, y);
     if (!loc) return;
+
+    /* src/display.c:939. The swallowed view owns the map. Ordinary
+       newsym() calls may repaint only the hero's center cell. */
+    if (game.u?.uswallow) {
+        if (game.u.ux === x && game.u.uy === y) {
+            const self = game.youmonst?.data;
+            show_glyph_cell(x, y,
+                            Upolyd(game.u)
+                                ? (def_monsyms[self.mlet] || '?') : '@',
+                            Upolyd(game.u) ? self.mcolor : CLR_WHITE,
+                            false, 0, { kind: 'hero' });
+        }
+        return;
+    }
 
     /* src/display.c:967 — `lev->waslit = (lev->lit != 0)`, inside newsym's
        cansee() branch and BEFORE the hero-specific handling, so the hero's own
@@ -1168,8 +1186,12 @@ export function newsym(x, y) {
                                 { kind: 'cmap', cmap: mon.mappearance });
                 return;
             }
-            show_glyph_cell(x, y, def_monsyms[mon.data.mlet] || '?',
-                            mon.data.mcolor ?? NO_COLOR, false, 0,
+            const shown = game.mons[Hallucination()
+                ? rn2_on_display_rng(NUMMONS)
+                : (mon.m_ap_type === M_AP_MONSTER
+                    ? mon.mappearance : mon.mnum)];
+            show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
+                            shown.mcolor ?? NO_COLOR, false, 0,
                             { kind: 'mon', mon });
             return;
         }
@@ -1187,8 +1209,10 @@ export function newsym(x, y) {
                                    && !m.msleeping_hidden);
         if (mon && (sensemon(mon)
                     || (see_with_infrared(mon) && mon_visible(mon)))) {
-            show_glyph_cell(x, y, def_monsyms[mon.data.mlet] || '?',
-                            mon.data.mcolor ?? NO_COLOR, false, 0,
+            const shown = game.mons[Hallucination()
+                ? rn2_on_display_rng(NUMMONS) : mon.mnum];
+            show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
+                            shown.mcolor ?? NO_COLOR, false, 0,
                             { kind: 'mon', mon });
             return;
         }
@@ -1344,8 +1368,38 @@ function engraving_glyph(loc, x, y) {
 }
 
 // ── docrt ──
+// Synchronous map-buffer half of docrt(), used by the tty window port when a
+// full-screen menu is dismissed. The tty call itself is synchronous, but C
+// still performs the complete vision shutdown, memory pass, and live overlay.
+export function docrt_sync_rebuild() {
+    if (!game.level || game.u?.uswallow)
+        return;
+
+    vision_recalc(2);
+    clear_glyph_buffer();
+    for (let x = 1; x < COLNO; x++)
+        for (let y = 0; y < ROWNO; y++) {
+            const loc = game.level.at(x, y);
+            if (loc?.remembered_glyph) {
+                show_glyph_cell(x, y, loc.remembered_glyph.ch,
+                    loc.remembered_glyph.color, loc.remembered_glyph.decgfx,
+                    pile_attr(loc.remembered_glyph.glyph),
+                    loc.remembered_glyph.glyph);
+            }
+        }
+    vision_recalc(0);
+    see_monsters();
+}
+
 export async function docrt() {
     if (!game.level) return;
+
+    /* src/display.c:1726. swallowed() owns the complete map display. */
+    if (game.u?.uswallow) {
+        await swallowed(1);
+        await flush_screen(0);
+        return;
+    }
 
     /* src/display.c:1740 — "shut down vision" so the recalc below sees an
        empty previous state and newsyms every in-sight square */
@@ -1357,8 +1411,8 @@ export async function docrt() {
        shows the old level under "You descend the stairs.--More--". */
     await cls();
 
-    for (let y = 0; y < ROWNO; y++)
-        for (let x = 1; x < COLNO; x++) {
+    for (let x = 1; x < COLNO; x++)
+        for (let y = 0; y < ROWNO; y++) {
             const loc = game.level.at(x, y);
             if (loc?.remembered_glyph) {
                 show_glyph_cell(x, y, loc.remembered_glyph.ch,
@@ -2045,6 +2099,30 @@ export function see_monsters() {
     }
     if (!game.u?.usteed)
         newsym(game.u.ux, game.u.uy);
+}
+
+// src/display.c:1558 see_objects() redraws the top object at every occupied
+// floor location while hallucinating.
+export function see_objects() {
+    const objects = game.level?.objects || [];
+    const seen = new Set();
+    for (const obj of objects) {
+        const key = `${obj.ox},${obj.oy}`;
+        if (seen.has(key))
+            continue;
+        seen.add(key);
+        newsym(obj.ox, obj.oy);
+    }
+}
+
+// src/display.c:1611 see_traps() refreshes traps which are currently the
+// topmost displayed layer.
+export function see_traps() {
+    for (const trap of game.level?.traps || []) {
+        const glyph = gbuf_at(trap.tx, trap.ty)?.disp_glyph;
+        if (glyph?.kind === 'cmap' && glyph.cmap in trap_cmap_color)
+            newsym(trap.tx, trap.ty);
+    }
 }
 
 // win/tty/wintty.c tty_print_glyph(), MG_PET with hilite_pet. NetHack's

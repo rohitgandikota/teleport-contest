@@ -509,11 +509,10 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
 
     /* src/do.c:1837 — reset the screen: vision blockages for the new
        map, then a full redraw with vision recalc */
-    const { vision_reset, vision_recalc } = await import('./vision.js');
+    const { vision_reset } = await import('./vision.js');
     const { docrt, flush_screen } = await import('./display.js');
     vision_reset();
     game.vision_full_recalc = 1;
-    vision_recalc(0);
     await docrt();
     await flush_screen(-1);
 

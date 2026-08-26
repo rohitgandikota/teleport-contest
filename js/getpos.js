@@ -215,8 +215,10 @@ export async function getpos(ccp, force, goal) {
             await pline(`${game.iflags.getloc_moveskip ? 'S' : 'Not s'}`
                 + 'kipping over similar terrain when fastmoving the cursor.');
             msg_given = true;
-        } else if ('mMoOdDxXaAzZ'.includes(ch) || ch === '!'
-                   || ch === '$' || ch === '"') {
+        } else if (ch === '$') {
+            note_unported_getpos(`key:${ch}`);
+            show_goal_msg = true;
+        } else if ('mMoOdDxXaAzZ'.includes(ch) || ch === '!' || ch === '"') {
             /* gather_locs cycling, the menu, hilite and the view filter —
                each consumes only its own key */
             note_unported_getpos(`key:${ch}`);

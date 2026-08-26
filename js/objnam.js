@@ -54,6 +54,7 @@ import { is_quest_artifact } from './questpgr.js';
 import { body_part } from './polyself.js';
 import { pline } from './display.js';
 import { tty_yn_function } from './tty/topl.js';
+import { Blind } from './youprop.js';
 
 const {
     COIN_CLASS, POTION_CLASS, SCROLL_CLASS, WAND_CLASS, SPBOOK_CLASS,
@@ -252,7 +253,7 @@ export function xname(obj) {
            if (!Blind && !gd.distantname) observe_object(obj);
        This is where a wished amulet's dknown comes from ("a cubical
        amulet", not "an amulet"). */
-    if (!game.u?.ublind && !game.distantname)
+    if (!Blind() && !game.distantname)
         observe_object(obj);
     /* src/objnam.c:629. Priests know an object's beatitude on sight. */
     if (game.urole?.mnum === 'PM_CLERIC'

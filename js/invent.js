@@ -1281,7 +1281,7 @@ export function freeinv(obj) {
 export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
     let drop_it = false;
 
-    if (!game.u.ublind)
+    if (!Blind())
         observe_object(obj); /* maximize mergeability */
     if (obj.oartifact) {
         /* place_object may change these */

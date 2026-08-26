@@ -646,14 +646,9 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         } else if (up) {
             /* src/do.c — arriving from below lands on the DOWN staircase
                of the upper level (C u_on_dnstairs()) */
-            const dn = game.level?.dnstair;
-            if (dn) {
-                game.u.ux = dn.x;
-                game.u.uy = dn.y;
-            } else
-                note_unported_do('goto_level:up_arrival_no_dnstair');
+            await u_on_dnstairs();
         } else {
-            u_on_dnstairs();
+            await u_on_upstairs();
         }
 
         /* src/do.c:1774 — arrival message and stair-fall damage. `at_ladder`
@@ -982,16 +977,40 @@ async function final_level() {
     await gain_guardian_angel();
 }
 
-// src/do.c u_on_dnstairs() — put the hero on the down staircase of the new
-// level. C uses the UP staircase when arriving from above.
-function u_on_dnstairs() {
-    const up = game.level?.upstair;
-    if (up) {
-        game.u.ux = up.x;
-        game.u.uy = up.y;
-        return;
+// src/stairs.c u_on_sstairs(), u_on_upstairs(), u_on_dnstairs().
+async function u_on_sstairs(upflag) {
+    for (let stway = game.stairs; stway; stway = stway.next) {
+        if (stway.tolev?.dnum !== game.u.uz.dnum
+            && !!stway.up !== !!upflag) {
+            game.u.ux = stway.sx;
+            game.u.uy = stway.sy;
+            return;
+        }
     }
-    note_unported_do('u_on_dnstairs:no_upstair');
+    const { u_on_rndspot } = await import('./dungeon.js');
+    await u_on_rndspot(upflag);
+}
+
+async function u_on_upstairs() {
+    for (let stway = game.stairs; stway; stway = stway.next) {
+        if (stway.up) {
+            game.u.ux = stway.sx;
+            game.u.uy = stway.sy;
+            return;
+        }
+    }
+    await u_on_sstairs(0);
+}
+
+async function u_on_dnstairs() {
+    for (let stway = game.stairs; stway; stway = stway.next) {
+        if (!stway.up) {
+            game.u.ux = stway.sx;
+            game.u.uy = stway.sy;
+            return;
+        }
+    }
+    await u_on_sstairs(1);
 }
 
 // include/you.h:354 enum utotypes

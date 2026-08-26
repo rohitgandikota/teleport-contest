@@ -16,8 +16,8 @@ Partial: **6**. Gaps: **12**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 59 | 6788 | 1060916 | 66 | 314 |
-| Union | 103 | 18193 | 1828676 | 76 | 402 |
+| Supplemental | 60 | 6807 | 1069973 | 66 | 315 |
+| Union | 104 | 18212 | 1837733 | 76 | 403 |
 
 ## Static inventory
 
@@ -43,20 +43,20 @@ Partial: **6**. Gaps: **12**.
 | covered | `chargen.full-menu` | 1 session(s), including normal mode | `ranger-chargen` |
 | covered | `chargen.restricted-path` | 1 session(s), including normal mode | `barb-chargen` |
 | covered | `mode.normal` | 3 session(s), including normal mode | `barb-chargen`, `death-disclosure-normal`, `fountain-quaff`, `mondrift-dogfollow`, `monk-martial-arts`, `monster-trap-normal`, `ranger-chargen`, `save-restore-pair`, `shop-normal`, `themed-room-normal`, `variant-steed`, `variant-twoweapon` |
-| covered | `mode.debug` | 3 session(s) | `alchemy-mixing`, `armor-wear-remove`, `artifact-invoke`, `artifact-knockback`, `container-bag-holding`, `container-loot`, `death-disclosure-debug`, `demon-summon`, `engrave-elbereth`, `gehennom-tour`, `kick-monster`, `mines-tour`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `monster-covetous`, `monster-ranged`, `monster-special-drain`, `monster-special-gaze`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `shop-billing`, `sokoban-tour`, `spellbook-study-failure`, `spellbook-study-success`, `themed-room`, `trap-door-container`, `trap-movement`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
+| covered | `mode.debug` | 3 session(s) | `alchemy-mixing`, `armor-wear-remove`, `artifact-invoke`, `artifact-knockback`, `container-bag-holding`, `container-loot`, `death-disclosure-debug`, `demon-summon`, `engrave-elbereth`, `gehennom-tour`, `invocation-ritual`, `kick-monster`, `mines-tour`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `monster-covetous`, `monster-ranged`, `monster-special-drain`, `monster-special-gaze`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `shop-billing`, `sokoban-tour`, `spellbook-study-failure`, `spellbook-study-success`, `themed-room`, `trap-door-container`, `trap-movement`, `variant-custom-bindings`, `variant-hallucination`, `variant-wandpoly`, `variant-world-tour`, `wand-striking-door` |
 | covered | `options.rc-bindings` | 1 session(s) | `variant-custom-bindings` |
 
 ## Input and display
 
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
-| covered | `ui.menus` | 2 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `container-bag-holding`, `container-loot`, `gehennom-tour`, `mines-tour`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `sokoban-tour`, `spellbook-study-success` |
+| covered | `ui.menus` | 2 session(s), including normal mode | `armor-wear-remove`, `barb-chargen`, `container-bag-holding`, `container-loot`, `gehennom-tour`, `invocation-ritual`, `mines-tour`, `ranger-chargen`, `save-restore-pair`, `scroll-reading`, `sokoban-tour`, `spellbook-study-success` |
 | covered | `ui.getlin` | 2 session(s) | `alchemy-mixing`, `armor-wear-remove`, `artifact-invoke`, `artifact-knockback`, `container-bag-holding`, `container-loot`, `engrave-elbereth`, `gehennom-tour`, `kick-monster`, `mines-tour`, `mondrift-chase`, `mondrift-fight`, `mondrift-objects`, `monster-ranged`, `monster-special-drain`, `monster-special-gaze`, `planes-tour`, `pray-low-hp`, `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz`, `scroll-reading`, `sokoban-tour`, `spellbook-study-failure`, `spellbook-study-success`, `trap-door-container`, `trap-movement`, `variant-world-tour`, `wand-striking-door` |
-| covered | `ui.getpos` | 1 session(s) | `fountain-quaff`, `monster-ranged`, `scroll-reading` |
+| covered | `ui.getpos` | 1 session(s) | `fountain-quaff`, `invocation-ritual`, `monster-ranged`, `scroll-reading` |
 | covered | `ui.more-paging` | 1 session(s), including normal mode | `armor-wear-remove`, `pray-low-hp`, `save-restore-pair`, `scroll-reading`, `spellbook-study-failure`, `spellbook-study-success` |
 | covered | `ui.cancel-invalid` | 1 session(s), including normal mode | `kick-monster`, `monk-martial-arts`, `scroll-reading`, `variant-custom-bindings` |
 | covered | `ui.count-repeat` | 1 session(s), including normal mode | `barb-chargen`, `monk-martial-arts`, `ranger-chargen`, `themed-room-normal` |
-| covered | `ui.map-memory-vision` | 2 session(s), including normal mode | `barb-chargen`, `engrave-elbereth`, `fountain-quaff`, `gehennom-tour`, `mines-tour`, `monk-martial-arts`, `planes-tour`, `ranger-chargen`, `shop-billing`, `sokoban-tour`, `themed-room`, `trap-movement`, `variant-custom-bindings`, `variant-world-tour` |
+| covered | `ui.map-memory-vision` | 2 session(s), including normal mode | `barb-chargen`, `engrave-elbereth`, `fountain-quaff`, `gehennom-tour`, `invocation-ritual`, `mines-tour`, `monk-martial-arts`, `planes-tour`, `ranger-chargen`, `shop-billing`, `sokoban-tour`, `themed-room`, `trap-movement`, `variant-custom-bindings`, `variant-world-tour` |
 | covered | `ui.hallucination` | 1 session(s) | `trap-door-container`, `variant-hallucination` |
 | covered | `ui.animation` | 2 session(s) | `monster-ranged`, `planes-tour`, `pray-low-hp`, `variant-hallucination`, `wand-striking-door` |
 
@@ -79,7 +79,7 @@ Partial: **6**. Gaps: **12**.
 | covered | `level.sokoban` | 1 session(s) | `sokoban-tour` |
 | covered | `level.quest` | 13 session(s) | `quest-arc`, `quest-bar`, `quest-cav`, `quest-hea`, `quest-kni`, `quest-mon`, `quest-pri`, `quest-ran`, `quest-rog`, `quest-sam`, `quest-tou`, `quest-val`, `quest-wiz` |
 | covered | `level.castle` | 1 session(s) | `gehennom-tour` |
-| covered | `level.gehennom` | 1 session(s) | `gehennom-tour` |
+| covered | `level.gehennom` | 1 session(s) | `gehennom-tour`, `invocation-ritual` |
 | covered | `level.planes` | 1 session(s) | `planes-tour` |
 | covered | `level.astral` | 1 session(s) | `planes-tour` |
 
@@ -210,6 +210,7 @@ Partial: **6**. Gaps: **12**.
 | `engrave-elbereth` | debug | 63 | present | `level.ordinary`, `mode.debug`, `monster.movement`, `monster.pets`, `monster.vs-monster`, `object.buc-enchant-erosion`, `object.identification`, `object.wands`, `terrain.engraving-elbereth`, `turn.timers`, `ui.getlin`, `ui.map-memory-vision` |
 | `fountain-quaff` | normal | 85 | present | `level.ordinary`, `mode.normal`, `object.buc-enchant-erosion`, `object.gems-stones`, `object.identification`, `object.potions`, `object.weapons`, `survival.regen-exercise`, `terrain.furniture`, `ui.getpos`, `ui.map-memory-vision` |
 | `gehennom-tour` | debug | 485 | present | `level.castle`, `level.gehennom`, `level.special-variants`, `mode.debug`, `ui.getlin`, `ui.map-memory-vision`, `ui.menus` |
+| `invocation-ritual` | debug | 18 | present | `level.gehennom`, `mode.debug`, `ui.getpos`, `ui.map-memory-vision`, `ui.menus` |
 | `kick-monster` | debug | 78 | present | `combat.melee`, `combat.unarmed-kick`, `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.weapons`, `turn.speed-energy`, `ui.cancel-invalid`, `ui.getlin` |
 | `mines-tour` | debug | 91 | present | `level.mines`, `level.special-variants`, `mode.debug`, `ui.getlin`, `ui.map-memory-vision`, `ui.menus` |
 | `mondrift-chase` | debug | 53 | present | `level.ordinary`, `mode.debug`, `monster.hero-melee`, `monster.movement`, `turn.speed-energy`, `ui.getlin` |

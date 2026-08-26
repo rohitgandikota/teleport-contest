@@ -254,7 +254,7 @@ export function stairway_add(x, y, up, isladder, dest) {
 
 // ── Stairway lookup ──
 
-function stairway_find_dir(up) {
+export function stairway_find_dir(up) {
     for (let s = game.stairs; s; s = s.next)
         if (s.up === up) return s;
     return null;

@@ -642,6 +642,18 @@ export function hcolor(colorpref) {
         : colorpref;
 }
 
+// src/do_name.c:1470 rndcolor(), a random real color unless hallucinating.
+export function rndcolor() {
+    const colors = [
+        'black', 'red', 'green', 'brown', 'blue', 'magenta', 'cyan', 'gray',
+        'transparent', 'orange', 'bright green', 'yellow', 'bright blue',
+        'bright magenta', 'bright cyan', 'white',
+    ];
+    const k = rn2(colors.length);
+    return Hallucination() ? hcolor(null)
+                           : k === NO_COLOR ? 'colorless' : colors[k];
+}
+
 /* src/do_name.c:1478 hliquids[] */
 const hliquids = [
     "yoghurt", "oobleck", "clotted blood", "diluted water", "purified water",

@@ -17,8 +17,8 @@ import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, IS_FOUNTAIN, IS_SINK } from './const.js';
-import { Unaware, Hallucination, Poison_resistance,
-         Sleep_resistance } from './youprop.js';
+import { Unaware, Hallucination, Halluc_resistance, Blind,
+         Poison_resistance, Sleep_resistance } from './youprop.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
@@ -26,7 +26,7 @@ import { OBJ_DESCR } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { freeinv, getobj, hold_another_object, useup, useupall,
-         ECMD_TIME, ECMD_OK, GETOBJ_PROMPT } from './invent.js';
+         update_inventory, ECMD_TIME, ECMD_OK, GETOBJ_PROMPT } from './invent.js';
 import { is_pool, wake_nearto } from './mon.js';
 import { OCLASSES } from './objects_data.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -285,6 +285,46 @@ export async function make_stunned(xtime, talk) {
         (game.u.uprops ||= {}).STUNNED = 1;
     else if (game.u.uprops)
         delete game.u.uprops.STUNNED;
+}
+
+// src/potion.c:369 make_hallucinated(), timed hallucination without an
+// equipment-resistance mask. Both fields are kept because display predicates
+// read uprops while timeout and status code read the intrinsic counter.
+export async function make_hallucinated(xtime, talk, mask = 0) {
+    if (Unaware())
+        talk = false;
+    if (mask) {
+        note_unported_potion('make_hallucinated:resistance_mask');
+        return false;
+    }
+
+    const intr = (game.u.intrinsic ||= {});
+    const props = (game.u.uprops ||= {});
+    const old = intr.HHallucination | 0;
+    const changed = !Halluc_resistance() && (!!old !== !!xtime);
+    if (xtime) {
+        intr.HHallucination = xtime;
+        props.HALLUC = xtime;
+    } else {
+        delete intr.HHallucination;
+        delete props.HALLUC;
+    }
+
+    if (changed) {
+        (game.disp ||= {}).botl = true;
+        const { see_monsters, see_objects, see_traps } =
+            await import('./display.js');
+        see_monsters();
+        see_objects();
+        see_traps();
+        update_inventory();
+        if (talk) {
+            await pline(!xtime
+                ? `Everything ${Blind() ? 'feels' : 'looks'} SO boring now.`
+                : `Oh wow!  Everything ${Blind() ? 'feels' : 'looks'} so cosmic!`);
+        }
+    }
+    return changed;
 }
 
 // src/potion.c:261 make_blinded(), common temporary-blindness path.

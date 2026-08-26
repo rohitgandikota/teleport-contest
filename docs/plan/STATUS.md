@@ -1,5 +1,32 @@
 # STATUS — live handoff board
 
+## 2026-08-26: trapped doors and container traps
+
+The six-segment `trap-door-container` C oracle uses independent seeds 6920,
+6921, 7000, 7008, 7011, and 7037. It exercises trapped-door detection and
+opening, a luck-based harmless chest discharge, electric damage, colored gas
+with stun and hallucination, paralysis with multi-turn recovery, and a fire
+trap that lights a carried oil lamp. Two fresh recordings were byte-identical,
+with SHA-256
+`f1114b5f3ddf8c242c685794e6e6a06a222e220f54482f0f89b08032ca225055`.
+
+The port matches all 319/319 screens, 319/319 cursors, and 16,870/16,870 RNG
+calls. The implementation adds C-faithful trapped-door explosions, chest-trap
+selection and effects, trap detection for doors and floor containers, timed
+stun, hallucination and paralysis behavior, fire and electric inventory
+effects, plus the minimal debug wishes needed to construct the oracle. The
+rare explosion, noxious-gas, and poison-needle chest branches are implemented
+from the pinned C source even though they are not selected by these six seeds.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus now has 57
+sessions and 6,165 frames. It is 6,160/6,165 cell-exact and
+1,079,157/1,079,157 RNG-exact, with 5,782/6,165 formally exact screens and
+56/57 formal session passes. The sole formal failure remains the
+recorder-corrupted `gehennom-tour` cursor data. All 44 public hang checks pass.
+Conservative full-game coverage is now 83 covered, 6 partial, and 15 gaps out
+of 104. `traps.door-container` is now covered.
+
 ## 2026-08-26: trap movement, remembered-trap listing, and portals
 
 The five-segment `trap-movement` C oracle uses independent seeds 6915

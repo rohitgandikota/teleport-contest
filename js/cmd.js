@@ -83,7 +83,7 @@ import { nhgetch } from './input.js';
 import { newsym, flush_screen, pline, docrt, map_object, paint_topline, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, DBWALL, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
-import { dosearch } from './detect.js';
+import { dosearch, findit } from './detect.js';
 import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
 import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
@@ -1369,6 +1369,13 @@ export async function rhack(key) {
     } else if (ch === '\x17') {
         // src/cmd.c:2000 — C('w') is wizwish / wiz_wish.
         game.context.move = ((await wiz_wish()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x05') {
+        // src/cmd.c:1953, C('e') is wizdetect / wiz_detect.
+        if (game.wizard)
+            await findit();
+        else
+            await pline("Unavailable command 'wizdetect'.");
+        game.context.move = 0;
     } else if (ch === ',') {
         // src/cmd.c:1799 cmdlist — ',' is dopickup.
         game.context.move = (await dopickup() === ECMD_TIME ? 1 : 0);

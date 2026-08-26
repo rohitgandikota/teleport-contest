@@ -1,0 +1,52 @@
+{
+  "name": "trap-door-container",
+  "description": "Independent debug segments create and trigger a trapped door plus luck-safe, electric, hallucinating gas, paralysis, and fire chest traps.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.hallucination",
+    "level.ordinary",
+    "terrain.doors-locks",
+    "object.tools-containers",
+    "survival.timed-status",
+    "traps.door-container"
+  ],
+  "segments": [
+    {
+      "seed": 6920,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017wall\r\u0017trapped closed door\rl\u0005oh..\u0006"
+    },
+    {
+      "seed": 6921,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed trapped unlocked empty chest\ri\u001bdp\u0005#loot\r ....\u0006"
+    },
+    {
+      "seed": 7000,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed trapped unlocked empty chest\rdf\u0005#loot\r ....\u0006"
+    },
+    {
+      "seed": 7008,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed trapped unlocked empty chest\rdf\u0005#loot\r  ....\u0006"
+    },
+    {
+      "seed": 7011,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed trapped unlocked empty chest\rdf\u0005#loot\r ....\u0006"
+    },
+    {
+      "seed": 7037,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed trapped unlocked empty chest\rdf\u0005#loot\r ....\u0006"
+    }
+  ]
+}

@@ -1042,8 +1042,16 @@ export async function use_container(obj, held, more_containers) {
             await You('must put it down to unlock.');
         return ECMD_OK;
     } else if (obj.otrapped) {
-        /* chest_trap() and the paralysis follow-up */
-        note_unported_pickup('use_container:chest_trap');
+        if (held)
+            await You(`open ${the(xname(obj))}...`);
+        const { chest_trap } = await import('./trap.js');
+        const { HAND } = await import('./const.js');
+        await chest_trap(obj, HAND, false);
+        if ((game.multi ?? 0) >= 0) {
+            nomul(-1);
+            game.multi_reason = 'opening a container';
+            game.nomovemsg = '';
+        }
         return ECMD_TIME;
     }
 

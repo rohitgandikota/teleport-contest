@@ -11,7 +11,7 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
-import { carried, is_poisonable } from './obj.js';
+import { carried, is_poisonable, Has_contents } from './obj.js';
 import { game } from './gstate.js';
 import { vegetarian, name_to_monplus, type_is_pname, verysmall,
          is_neuter, is_human } from './mondata.js';
@@ -33,7 +33,9 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          ismnum, SPE_LIM, RANDOM_TIN, GOLD_SYM, WT_IRON_BALL_INCR,
          P_POLEARMS, P_HAMMER, ONAME_WISH, ONAME_NO_FLAGS,
          HAND, ROOMOFFSET, NO_TRAP, TRAPNUM, ROCKTRAP, MAGIC_PORTAL,
-         is_hole } from './const.js';
+         is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
+         D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
+         D_TRAPPED } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -2480,6 +2482,62 @@ async function wiztrapwish(d) {
     return null;
 }
 
+// src/objnam.c:3554 wizterrainwish(), wall and regular-door arms.
+// These two states provide deterministic setup for trapped-door tests and
+// preserve the same debug-mode terrain controls exposed by the C game.
+async function wizterrainwish(d) {
+    const x = game.u.ux, y = game.u.uy;
+    const lev = game.level?.at(x, y);
+    const wanted = d.bp.toLowerCase();
+    if (!lev)
+        return null;
+
+    if (wanted === 'wall') {
+        const north = game.level.at(x, y - 1);
+        const south = game.level.at(x, y + 1);
+        lev.typ = ((north && IS_WALL(north.typ))
+                   || (south && IS_WALL(south.typ))) ? VWALL : HWALL;
+        lev.flags = 0;
+        lev.horizontal = lev.typ === HWALL;
+        const { fix_wall_spines } = await import('./mklev.js');
+        fix_wall_spines(Math.max(0, x - 1), Math.max(0, y - 1),
+                        Math.min(79, x + 1), Math.min(20, y + 1));
+        lev.horizontal = lev.typ === HWALL;
+        await pline('A wall.');
+    } else if (wanted === 'door') {
+        if (!(lev.typ === DOOR || lev.typ === SDOOR || IS_WALL(lev.typ)
+              || lev.typ === IRONBARS)) {
+            await pline('Door requires door or wall location.');
+            return hands_obj;
+        }
+        lev.typ = DOOR;
+        let mask = d.locked ? D_LOCKED
+                   : d.doorless ? D_NODOOR
+                     : d.open ? D_ISOPEN
+                       : d.broken ? D_BROKEN : D_CLOSED;
+        if (d.trapped === 1 && (mask & (D_LOCKED | D_CLOSED)))
+            mask |= D_TRAPPED;
+        lev.doormask = mask;
+        const words = [];
+        if (mask & D_TRAPPED) words.push('trapped');
+        if (mask & D_LOCKED) words.push('locked');
+        else if (mask & D_CLOSED) words.push('closed');
+        else if (mask & D_ISOPEN) words.push('open');
+        else if (mask & D_BROKEN) words.push('broken');
+        else words.push('doorless');
+        words.push(mask === D_NODOOR ? 'doorway' : 'door');
+        await pline(`${An(words.join(' '))}.`);
+    } else {
+        return null;
+    }
+
+    const { newsym } = await import('./display.js');
+    const { recalc_block_point } = await import('./vision.js');
+    newsym(x, y);
+    recalc_block_point(x, y);
+    return hands_obj;
+}
+
 /*
  * Return something wished for.  Specifying a null pointer for
  * the user request string results in a random object.  Otherwise,
@@ -2568,7 +2626,10 @@ export async function readobjnam(bp, no_wish) {
             const wishedTrap = await wiztrapwish(d);
             if (wishedTrap)
                 return wishedTrap;
-            /* The remaining wizterrainwish paths replace terrain. */
+            const wishedTerrain = await wizterrainwish(d);
+            if (wishedTerrain)
+                return wishedTerrain;
+            /* The remaining wizterrainwish paths replace other terrain. */
             note_unported_objnam('readobjnam:wizterrainwish');
         }
 

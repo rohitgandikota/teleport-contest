@@ -113,9 +113,9 @@ export function bot_conditions() {
         || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_NOEYES)))
         cond += ' Blind';
     if (intr.HDeaf || props.DEAF) cond += ' Deaf';
+    if (intr.HHallucination) cond += ' Hallu';
     if (intr.HStun || props.STUNNED) cond += ' Stun';
     if (intr.HConfusion || props.CONFUSION) cond += ' Conf';
-    if (intr.HHallucination) cond += ' Hallu';
     if (props.LEVITATION || intr.HLevitation) cond += ' Lev';
     else if (props.FLYING || intr.HFlying
              || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY)))

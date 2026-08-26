@@ -1,7 +1,7 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-26T20:34:17.199Z. Local commit: `0ce4393`.
-Leaderboard snapshot: 2026-08-26T14:00:33.654Z. Fork last scored: 2026-08-26T13:23:40.913Z.
+Last refreshed: 2026-08-26T21:29:26.757Z. Local commit: `dcd21fd`.
+Leaderboard snapshot: 2026-08-26T20:46:06.095Z. Fork last scored: 2026-08-26T20:10:00.451Z.
 
 ## Score summary
 
@@ -9,14 +9,14 @@ Leaderboard snapshot: 2026-08-26T14:00:33.654Z. Fork last scored: 2026-08-26T13:
 |---|---:|---:|---:|---:|---:|
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
-| Held-out leaderboard | 5795/11265 | 51.44% | 8/44 | 41.78% | 0/2959 |
-| Supplemental C suite | 6061/6444 | 94.06% | 57/58 | 1086522/1086522 (100.00%) | 7/196 |
+| Held-out leaderboard | 5852/11265 | 51.95% | 9/44 | 42.15% | 0/2959 |
+| Supplemental C suite | 6405/6788 | 94.36% | 58/59 | 1094715/1094715 (100.00%) | 7/259 |
 
 ## Contest position and generalization
 
 - Held-out rank: **3/18**.
 - Public rank: **6/18**.
-- Held-out/public identical-screen ratio: **0.508**.
+- Held-out/public identical-screen ratio: **0.513**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
 
@@ -24,14 +24,14 @@ Leaderboard snapshot: 2026-08-26T14:00:33.654Z. Fork last scored: 2026-08-26T13:
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 6439/6444 |
-| Cursor positions | 11405/11405 | 6061/6444 |
-| Startup and per-turn estimate | 72+0.81/turn | 91+2.08/turn |
+| Cells only | 11405/11405 | 6783/6788 |
+| Cursor positions | 11405/11405 | 6405/6788 |
+| Startup and per-turn estimate | 59+0.42/turn | 37+0.79/turn |
 
 ## Judge health
 
 - Playable: true. Browser: true.
-- Speed: 2.518 ms per move, limit 5 ms.
+- Speed: 2.581 ms per move, limit 5 ms.
 - Sessions skipped: 0. Sessions killed: 0.
 - Early abort: false. Total scored moves: 18402.
 - Local hang gate: PASS. OK: no session over-read (44 checked).
@@ -40,6 +40,7 @@ Leaderboard snapshot: 2026-08-26T14:00:33.654Z. Fork last scored: 2026-08-26T13:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-26T21:29:26.757Z | `dcd21fd` | 11405/11405 | 6405/6788 | 5852/11265 | 3 |
 | 2026-08-26T20:34:17.199Z | `0ce4393` | 11405/11405 | 6061/6444 | 5795/11265 | 3 |
 | 2026-08-26T20:17:23.420Z | `0ca99d6` | 11405/11405 | 5782/6165 | 5795/11265 | 3 |
 | 2026-08-26T19:45:27.825Z | `d45b837` | 11405/11405 | 5463/5846 | 5795/11265 | 3 |
@@ -49,7 +50,6 @@ Leaderboard snapshot: 2026-08-26T14:00:33.654Z. Fork last scored: 2026-08-26T13:
 | 2026-08-26T18:15:06.474Z | `ffd3fbc` | 11405/11405 | 5014/5397 | 5795/11265 | 3 |
 | 2026-08-26T16:57:56.297Z | `81efd08` | 11405/11405 | 4870/5253 | 5795/11265 | 3 |
 | 2026-08-26T16:05:21.349Z | `edc04f5` | 11405/11405 | 4763/4763 | 5795/11265 | 3 |
-| 2026-08-26T15:48:47.499Z | `fc65dda` | 11405/11405 | 4503/4503 | 5795/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

@@ -65,6 +65,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, OBJ_FLOOR } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
+import { count_unidentified } from './invent.js';
 import { doeat } from './eat.js';
 import { doread, wiz_genesis } from './read.js';
 import { dodrink } from './potion.js';
@@ -718,6 +719,8 @@ export async function doextcmd() {
         const { doorganize } = await import('./invent.js');
         return await doorganize();
     }
+    if (name === 'wizidentify')
+        return await show_wiz_identify();
     if (name === 'genocided') {
         /* src/insight.c list_genocided() — nothing is ever genocided in a
            recorded session, so only the empty-list line is live */
@@ -2534,10 +2537,39 @@ async function show_discoveries() {
         tty_putstr(win, attr, text);
     await tty_display_nhwindow(win);      /* draws the page and parks the cursor */
 
-    /* dmore(): block here until the player dismisses the window */
-    await nhgetch();
+    /* dmore(): block once per page until the player dismisses the window. */
+    await xwaitforspace(' \r\n\x1b');
+    while (game.morc !== '\x1b' && tty_next_page(win))
+        await xwaitforspace(' \r\n\x1b');
 
     tty_destroy_nhwindow(win);
+}
+
+// src/wizcmds.c wiz_identify(), empty-selection arm of display_inventory().
+async function show_wiz_identify() {
+    if (!game.wizard) {
+        await pline("Unavailable command '#wizidentify'.");
+        return ECMD_OK;
+    }
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR,
+                 'Debug Identify', MENU_ITEMFLAGS_NONE);
+    const unid = count_unidentified(game.invent || []);
+    if (!unid) {
+        tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR,
+                     '(all items are permanently identified already)',
+                     MENU_ITEMFLAGS_NONE);
+    } else {
+        tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR,
+                     `select ${unid === 1 ? 'it' : 'any or all of them'} to permanently identify`,
+                     MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, null);
+    await tty_select_menu(win, 0 /* PICK_NONE */);
+    tty_destroy_nhwindow(win);
+    return ECMD_OK;
 }
 
 

@@ -1680,7 +1680,7 @@ export async function doorganize() {
             other.invlet = obj.invlet;
         obj.invlet = let_;
         reorder_invent();
-        await prinv(null, obj, 0);
+        await prinv('Moving:', obj, 0);
         return ECMD_OK;
     }
 }

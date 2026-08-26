@@ -322,7 +322,8 @@ export async function dosearch() {
        monster refuses (no time) unless m-prefixed */
     const { cmd_safety_prevention } = await import('./do.js');
     if (await cmd_safety_prevention('Searching', 'another search',
-                                    'You already found a monster.'))
+                                    'You already found a monster.',
+                                    'already_found_flag'))
         return 0;                      /* ECMD_OK — no time passes */
     return dosearch0(0);
 }

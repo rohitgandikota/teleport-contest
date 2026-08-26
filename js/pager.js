@@ -1374,7 +1374,10 @@ const HELP_MENU_ITEMS = [
 export async function dohelp() {
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    HELP_MENU_ITEMS.forEach((text, i) => {
+    const items = game.wizard
+        ? [...HELP_MENU_ITEMS, 'List of wizard-mode commands.']
+        : HELP_MENU_ITEMS;
+    items.forEach((text, i) => {
         tty_add_menu(win, null, String.fromCharCode(97 + i), 0, 0, ATR_NONE,
                      NO_COLOR, text, MENU_ITEMFLAGS_NONE);
     });
@@ -1408,6 +1411,8 @@ export async function dohelp() {
     case 'o':
         await docontact();
         return ECMD_OK;
+    case 'p':
+        return await display_file(DAT.wizhelp);
     case 'f':
         return await dowhatdoes();
     case 'g': {

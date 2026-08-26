@@ -1264,13 +1264,17 @@ export function canletgo(obj, word) {
 
 // src/do.c:2325 cmd_safety_prevention() — refuse a no-op command next to a
 // spottable hostile (flags.safe_wait defaults On).
-export async function cmd_safety_prevention(ucverb, cmddesc, act) {
+export async function cmd_safety_prevention(ucverb, cmddesc, act,
+                                            flagname = 'did_nothing_flag') {
     if ((game.flags?.safe_wait ?? true) && !game.iflags?.menu_requested
         && !(game.multi ?? 0)) {
         const { monster_nearby } = await import('./hack.js');
-        /* iflags.cmdassist defaults On, so the hint suffix always prints */
-        const buf = `  Use 'm' prefix to force ${cmddesc}.`;
+        const { boolean_option } = await import('./options.js');
+        const first = !(game[flagname] | 0);
+        const buf = (boolean_option('cmdassist') || first)
+            ? `  Use 'm' prefix to force ${cmddesc}.` : '';
         if (monster_nearby()) {
+            game[flagname] = (game[flagname] | 0) + 1;
             /* C uses Norep: back-to-back refusals print only once */
             const { Norep } = await import('./pline.js');
             await Norep(`${act}${buf}`);
@@ -1278,6 +1282,7 @@ export async function cmd_safety_prevention(ucverb, cmddesc, act) {
         }
         /* danger_uprops(): Stoned/Slimed/Strangled/Sick — none tracked */
     }
+    game[flagname] = 0;
     return false;
 }
 

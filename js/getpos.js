@@ -15,7 +15,7 @@ import { COLNO, ROWNO } from './const.js';
 import { sgn, isok } from './hacklib.js';
 import { nhgetch } from './input.js';
 import { pline, pline_nohistory_no_cursor, flush_screen, glyph_at,
-         tty_clear_nhwindow_message, TOPLINE_EMPTY } from './display.js';
+         tty_clear_nhwindow_message, TOPLINE_EMPTY, docrt } from './display.js';
 import { defsyms, cmap_names } from './drawing_data.js';
 import { do_screen_description, is_cmap_wall, is_cmap_room, is_cmap_corr,
          is_cmap_door, is_cmap_engraving } from './pager.js';
@@ -256,8 +256,11 @@ export async function getpos(ccp, force, goal) {
                squares. */
             const dir = CTRL_DIR[ch] ?? ch.toLowerCase();
             truncate_to_map(c, 8 * DIR_DX[dir], 8 * DIR_DY[dir]);
-        } else if (ch === '?') {
-            await getpos_help(force, goal);
+        } else if (ch === '?' || ch === '\x12') {
+            if (ch === '\x12')
+                await docrt();
+            else
+                await getpos_help(force, goal);
             show_goal_msg = true;
         } else if (ch === '#') {
             /* NHKF_GETPOS_AUTODESC — toggle */

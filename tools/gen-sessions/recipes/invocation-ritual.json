@@ -1,11 +1,20 @@
 {
   "name": "invocation-ritual",
-  "description": "Debug Gehennom setup reaches the penultimate floor from the Sanctum and validates invocation-level generation, vibrating-square placement, and random arrival without a down staircase.",
+  "description": "Debug Wizard climbs from the Sanctum to the invocation level, finds the vibrating square, wishes for and prepares the Bell, Candelabrum, candles, and Book of the Dead, then performs the complete ritual. The trace covers relic timing and discovery, six terrain-animation rings, fire traps, new moats, monster drowning and corpse creation, experience gain, and the new stair to the Sanctum.",
   "coverage": [
+    "endgame.invocation",
     "level.gehennom",
     "mode.debug",
+    "monster.death-corpse-revival",
+    "object.spellbooks-spells",
+    "object.tools-containers",
+    "terrain.water-lava",
+    "traps.magical",
+    "ui.animation",
+    "ui.getlin",
     "ui.getpos",
     "ui.map-memory-vision",
+    "ui.more-paging",
     "ui.menus"
   ],
   "segments": [
@@ -13,7 +22,7 @@
       "seed": 7300,
       "datetime": "20000112090000",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
-      "moves": " \u0016?\r v\u001b\u0006\u0014lkkkk.<\u001b\u0006"
+      "moves": " \u0016?\r v\u001b\u0006\u0014lkkkk.<\u001b\u0006\u0014LLLLLlllllllkkkkkk.\u001b\u0017blessed Bell of Opening\r\u0017blessed Candelabrum of Invocation\r\u00177 blessed wax candles\r\u0017blessed Book of the Dead\raqyap\u001bao\u001brr\u001b\u001b\u0006"
     }
   ]
 }

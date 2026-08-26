@@ -1047,6 +1047,11 @@ export function doname(obj) {
         /* src/objnam.c:1486 — a worn tool (blindfold, lenses, towel) */
         if (obj.owornmask & W_TOOL)
             bp += ' (being worn)';
+        if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
+            const suffix = `${plur(obj.spe)}${obj.lamplit ? ', lit' : ' attached'}`;
+            bp += ` (${obj.spe} of 7 candle${suffix})`;
+            break;
+        }
         /* charged tools show "(0:n)" once the count is known */
         if (ocl.oc_charged && known)
             bp += ` (${obj.recharged || 0}:${obj.spe})`;

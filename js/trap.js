@@ -888,6 +888,11 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_telep_trap(game.youmonst, trap, trflags);
     if (ttype === MAGIC_PORTAL)
         return await trapeffect_magic_portal(game.youmonst, trap, trflags);
+    if (ttype === VIBRATING_SQUARE) {
+        trap.tseen = 1;                 /* feeltrap() */
+        newsym(trap.tx, trap.ty);
+        return Trap_Effect_Finished;
+    }
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
     return Trap_Effect_Finished;

@@ -35,7 +35,7 @@ import { unconscious } from './trap.js';
 import { goodpos, remove_monster, place_monster } from './makemon.js';
 import { newsym } from './display.js';
 import { vision_recalc, couldsee } from './vision.js';
-import { spoteffects } from './hack.js';
+import { spoteffects, invocation_message } from './hack.js';
 import { morehungry } from './eat.js';
 import { getpos } from './getpos.js';
 import { Amonnam, Monnam, mon_nam } from './do_name.js';
@@ -688,6 +688,7 @@ export async function teleds(nux, nuy, teleds_flags) {
                                          : 'a different'} location!`);
 
     await spoteffects(true);
+    await invocation_message();
 }
 
 /* src/teleport.h TELEDS_* */

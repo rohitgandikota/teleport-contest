@@ -68,7 +68,7 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
          Is_astralevel, has_emin, has_epri, has_eshk, RLOC_NOMSG,
          RLOC_MSG, MON_OBLITERATE } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless } from './mondata.js';
+    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless, amphibious } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
@@ -370,12 +370,36 @@ export async function minliquid(mtmp) {
         return 1;
     }
 
-    if (is_pool(mtmp.mx, mtmp.my)) {
-        note_unported_mon('minliquid:pool');
+    const inpool = is_pool(mtmp.mx, mtmp.my)
+        && (!(is_flyer(ptr) || is_floater(ptr)) || Is_waterlevel(game.u.uz));
+    if (inpool && !is_clinger(ptr)
+        && !(is_swimmer(ptr) || amphibious(ptr) || breathless(ptr))) {
+        const canTeleport = (ptr.mflags1 & MFLAGS.M1_TPORT) !== 0;
+        if (canTeleport && !await tele_restrict(mtmp)
+            && await rloc(mtmp, RLOC_MSG))
+            return 0;
+
+        if (cansee(mtmp.mx, mtmp.my)) {
+            if (game.context?.mon_moving)
+                await pline(`${Monnam(mtmp)} drowns.`);
+            else
+                await You(`drown ${mon_nam(mtmp)}.`);
+        }
+        if (game.context?.mon_moving)
+            await mondied(mtmp);
+        else
+            await xkilled(mtmp, XKILL_NOMSG);
+        if (DEADMONSTER(mtmp))
+            return 1;
+
+        if (!m_in_air(mtmp)) {
+            if (!await rloc(mtmp, RLOC_NOMSG))
+                note_unported_mon('minliquid:deal_with_overcrowding');
+        }
         return 0;
     }
 
-    if (ptr.mlet === MONSYMS.S_EEL && !Is_waterlevel(game.u.uz)
+    if (!inpool && ptr.mlet === MONSYMS.S_EEL && !Is_waterlevel(game.u.uz)
         && !breathless(ptr)) {
         if (mtmp.mhp > 1 && rn2(mtmp.mhp) > rn2(8))
             mtmp.mhp--;

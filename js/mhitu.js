@@ -8,7 +8,7 @@
 // exact C decision point, so game.unported names what a divergence wanted.
 
 import { game } from './gstate.js';
-import { thrwmu } from './mthrowu.js';
+import { thrwmu, spitmm } from './mthrowu.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_animal, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
@@ -790,7 +790,7 @@ export async function mattacku(mtmp) {
             break;
         case A.AT_SPIT:
             if (v.range2)
-                note_unported_mhitu('mattacku:spitmu');
+                sum[i] = await spitmm(mtmp, mattk, game.youmonst);
             break;
         case A.AT_WEAP:
             if (v.range2) {

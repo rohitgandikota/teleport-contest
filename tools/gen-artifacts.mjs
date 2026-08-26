@@ -62,7 +62,7 @@ const names = [];
 const tags = [];
 const otyps = [];
 const spfxs = [], mtypes = [], attks = [], defns = [], carys = [],
-      aligns = [], roles = [], races = [];
+      aligns = [], roles = [], races = [], genSpes = [], giftValues = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
     if (/\w/.test(src[i - 1] || '')) continue;
@@ -95,8 +95,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* A(nam, typ, s1, s2, mt, atk, dfn, cry, inv, al, cl, rac, gs, gv,
        cost, clr, bn) — fields after the name, 0-based: 0=typ 1=spfx
        2=cspfx 3=mtype 4=attk 5=defn 6=cary 7=inv_prop 8=alignment 9=role
-       10=race. touch_artifact/spec_applies read spfx, alignment, role,
-       race, and the attk/defn/cary damage types. */
+       10=race, 11=gen_spe, 12=gift_value. */
     const clean = (s) => s.replace(/\/\*[^]*?\*\//g, '').replace(/\s+/g, ' ').trim();
     spfxs.push(clean(fields[2] ?? '0'));
     mtypes.push(clean(fields[4] ?? '0'));
@@ -106,6 +105,8 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     aligns.push(clean(fields[9] ?? 'A_NONE'));
     roles.push(clean(fields[10] ?? 'NON_PM'));
     races.push(clean(fields[11] ?? 'NON_PM'));
+    genSpes.push(Number(clean(fields[12] ?? '0')) || 0);
+    giftValues.push(Number(clean(fields[13] ?? '0')) || 0);
 }
 
 if (names.length < 20) {
@@ -143,10 +144,7 @@ export const artifact_names = ${JSON.stringify(names, null, 1)};
 // \`for (a = artilist + 1; a->otyp; a++)\` loops know where the list ends.
 export const artifact_otyps = ${JSON.stringify(otyps, null, 1)};
 
-// Per-artifact records touch_artifact/spec_applies need: spfx bits, the
-// monster type bonus target, attack/defense macro heads (their name IS the
-// damage type: PHYS/DRLI/COLD/FIRE/ELEC/STUN/DFNS...), alignment, role and
-// race as written in artilist.h.
+// Per-artifact records used by generation, touch checks, and combat.
 export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     spfx: spfxval(spfxs[i] ?? '0'),
     mtype: mtypes[i],
@@ -156,6 +154,8 @@ export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     align: aligns[i],
     role: roles[i],
     race: races[i],
+    gen_spe: genSpes[i],
+    gift_value: giftValues[i],
 })), null, 1)};
 `);
 

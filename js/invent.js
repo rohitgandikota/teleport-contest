@@ -34,7 +34,7 @@ import { is_missile, ammo_and_launcher, setuqwep } from './wield.js';
 import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
-import { pline, docrt, temporary_object_glyph } from './display.js';
+import { pline, display_nhwindow_message, temporary_object_glyph } from './display.js';
 import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
@@ -291,6 +291,11 @@ export async function look_here(obj_cnt, lhflags) {
         if (otmp.otyp === ONAMES.CORPSE)
             note_unported_invent('look_here:feel_cockatrice');
     } else {
+        /* src/invent.c:4289 flushes WIN_MESSAGE before constructing the
+           multi-object popup.  For an acknowledged no-history getpos
+           description, the tty marks the message logically empty but leaves
+           its pixels under the menu overlay. */
+        await display_nhwindow_message();
         const tmpwin = tty_create_nhwindow(NHW_MENU);
         if (dfeature && !skip_dfeature) {
             tty_putstr(tmpwin, 0, `There is ${an(dfeature)} here.`);
@@ -311,7 +316,6 @@ export async function look_here(obj_cnt, lhflags) {
         while (tty_next_page(tmpwin))
             await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(tmpwin);
-        await docrt();
     }
 
     /* C's multi-object menu arm does not call read_engr_at; the other three

@@ -257,6 +257,14 @@ export async function nh_timeout() {
             await make_blinded(0, true);
             break;
         }
+        case 'HFast': {
+            const { Fast, Very_fast } = await import('./attrib.js');
+            if (!Very_fast()) {
+                const { You_feel } = await import('./pline.js');
+                await You_feel(`yourself slow down${Fast() ? ' a bit' : ''}.`);
+            }
+            break;
+        }
         case 'HFumbling': {
             const { Levitation, Flying, Deaf } = await import('./youprop.js');
             if (game.u.umoved && !(Levitation() || Flying())) {

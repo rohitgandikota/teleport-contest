@@ -2102,6 +2102,13 @@ function generate_stairs_find_room() {
 
 function mkstairs(x, y, up, croom) {
     const g = game;
+    const uz = g.u?.uz;
+    const dungeonLevels = uz && g.dungeons?.[uz.dnum]?.num_dunlevs;
+    /* src/mklev.c:2183: a special-level map can specify a regular stair
+       beyond either end of its dungeon.  The coordinate selection still
+       happens, but the square and stairway list must remain unchanged. */
+    if (uz && uz.dlevel === (up ? 1 : dungeonLevels))
+        return;
     const loc = g.level.at(x, y);
     if (loc) {
         loc.typ = STAIRS;

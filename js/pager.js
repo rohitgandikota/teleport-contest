@@ -26,7 +26,8 @@ import { m_at, t_at } from './mon.js';
 import { engr_at } from './engrave.js';
 import { x_monnam, upstart, pmname, hliquid } from './do_name.js';
 import { ARTICLE_NONE } from './const.js';
-import { an, the, makesingular, singular, xname, doname } from './objnam.js';
+import { an, the, makesingular, singular, xname, doname,
+         simpleonames } from './objnam.js';
 import { pmatch, tabexpand, mungspaces, isok } from './hacklib.js';
 import { data as DATAFILE } from './dat_files.js';
 import * as DAT from './dat_files.js';
@@ -97,6 +98,8 @@ export function self_lookat() {
     let outbuf = `${invis ? 'invisible ' : ''}${race}`
         + `${pmname(game.mons[game.u.umonnum], game.flags?.female ? 1 : 0)}`
         + ` called ${game.plname}`;
+    if (game.u.uball)
+        outbuf += `, chained to ${an(simpleonames(game.u.uball))}`;
     if (game.u.usteed)
         note_unported_pager('self_lookat:steed');
     if (game.u.utrap)

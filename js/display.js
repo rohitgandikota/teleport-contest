@@ -5,7 +5,7 @@ import { game } from './gstate.js';
 import { rn2_on_display_rng } from './rng.js';
 import { money_cnt } from './invent.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { update_topl } from './tty/topl.js';
+import { update_topl, show_topl_nohistory } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
@@ -1811,7 +1811,9 @@ export function paint_topline() {
     const display = game?.nhDisplay;
     if (!display) return;
     const CO = display.cols ?? 80;
-    const msgLines = (game._pending_message || '').split('\n');
+    const painted = (game._topline_physical_prefix || '')
+        + (game._pending_message || '');
+    const msgLines = painted.split('\n');
     for (let r = 0; r < msgLines.length && r < 24; r++) {
         const line = msgLines[r];
         for (let c = 0; c < CO; c++)
@@ -1977,6 +1979,18 @@ export async function pline(msg) {
     game._prevmsg = msg;
 }
 
+// custompline(SUPPRESS_HISTORY | OVERRIDE_MSGTYPE | NO_CURS_ON_U).
+// getpos uses this for automatic descriptions so they do not enter message
+// history and do not move the terminal cursor back onto the hero.
+export async function pline_nohistory_no_cursor(msg) {
+    if (game.vision_full_recalc)
+        vision_recalc(0);
+    if (game.u?.ux)
+        await flush_screen(0);
+    show_topl_nohistory(msg);
+    game._prevmsg = msg;
+}
+
 // src/pline.c:315 urgent_pline().  The tty lifts ESC message suppression only
 // after pline's vision and screen flush.  Doing it earlier briefly painted a
 // suppressed spell message before the urgent polymorph-reversion message.
@@ -2009,7 +2023,8 @@ export async function more() {
     paint_topline();
 
     const display = game?.nhDisplay;
-    const msg = game._pending_message || '';
+    const msg = (game._topline_physical_prefix || '')
+        + (game._pending_message || '');
     /* cury must outlive the paint block: tty_clear_nhwindow() erases through
        cw->cury, and that is set here by the same test that wraps the suffix.
        A message update_topl wrapped with '\n' already sits on multiple rows;
@@ -2064,6 +2079,18 @@ export async function more() {
     game._toplin = TOPLINE_EMPTY;
 }
 
+// win/tty/wintty.c tty_display_nhwindow(WIN_MESSAGE, FALSE).  A message
+// which still needs acknowledgement blocks and is erased by more().  An
+// already-seen message is only marked empty, leaving its terminal pixels in
+// place until later output overwrites them.
+export async function display_nhwindow_message() {
+    if (game._toplin === TOPLINE_NEED_MORE)
+        await more();
+    else
+        game._toplin = TOPLINE_EMPTY;
+    game._topl_curx = game._topl_cury = 0;
+}
+
 // win/tty/wintty.c tty_clear_nhwindow(), the NHW_MESSAGE arm:
 //
 //     if (ttyDisplay->toplin != TOPLINE_EMPTY) {
@@ -2095,6 +2122,7 @@ export function tty_clear_nhwindow_message(cury) {
                 _paint_map_cell(display, x, r - 1);
         }
     }
+    game._topline_physical_prefix = '';
     game._toplin = TOPLINE_EMPTY;
 }
 

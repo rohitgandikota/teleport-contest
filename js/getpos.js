@@ -14,8 +14,8 @@ import { game } from './gstate.js';
 import { COLNO, ROWNO } from './const.js';
 import { sgn, isok } from './hacklib.js';
 import { nhgetch } from './input.js';
-import { pline, flush_screen, glyph_at, tty_clear_nhwindow_message,
-         TOPLINE_EMPTY } from './display.js';
+import { pline, pline_nohistory_no_cursor, flush_screen, glyph_at,
+         tty_clear_nhwindow_message, TOPLINE_EMPTY } from './display.js';
 import { defsyms, cmap_names } from './drawing_data.js';
 import { do_screen_description, is_cmap_wall, is_cmap_room, is_cmap_corr,
          is_cmap_door, is_cmap_engraving } from './pager.js';
@@ -73,7 +73,8 @@ async function auto_describe(cx, cy) {
         const noTravelPath = (game.iflags?.getloc_travelmode
                               && !(await is_valid_travelpt(cx, cy)))
                              ? ' (no travel path)' : '';
-        await pline(`${res.firstmatch}${invalid}${noTravelPath}`);
+        await pline_nohistory_no_cursor(
+            `${res.firstmatch}${invalid}${noTravelPath}`);
         curs_map(cx, cy);
         flush_screen(0);
     }

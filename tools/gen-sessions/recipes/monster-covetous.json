@@ -1,0 +1,33 @@
+{
+  "name": "monster-covetous",
+  "description": "Debug endgame setup exercises Wizard of Yendor targeting, warping, Amulet pursuit, and recovery behavior.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.covetous",
+    "object.amulets",
+    "endgame.amulet-wizard"
+  ],
+  "segments": [
+    {
+      "seed": 7200,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0017real Amulet of Yendor\r  food ration\r do\u0014 ll.\u0007Wizard of Yendor\ry msmsmsms"
+    },
+    {
+      "seed": 7201,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0017real Amulet of Yendor\r  food ration\r \u0007Wizard of Yendor\ry m. m. m. m. m. m. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 7083,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0017wand of striking (0:30)\r \u0014 llllllllll.\u0007Wizard of Yendor\ryznbm."
+    }
+  ]
+}

@@ -25,7 +25,7 @@ import { rank_of } from './botl.js';
 import { an, An, makeplural } from './objnam.js';
 import { s_suffix } from './hacklib.js';
 import { mons } from './monst_data.js';
-import { artifact_names } from './artilist_data.js';
+import { ART_ORB_OF_DETECTION, artifact_names } from './artilist_data.js';
 import { A_LAWFUL, A_NEUTRAL, A_CHAOTIC, A_NONE, A_ORIGINAL,
          MIN_QUEST_LEVEL, M2_PNAME } from './const.js';
 import {
@@ -44,6 +44,12 @@ function note_unported(what) {
 // only; other roles' artifacts do not count. Pure state test, no draw.
 export function is_quest_artifact(otmp) {
     return (otmp.oartifact ?? 0) === game.urole.questarti;
+}
+
+// include/obj.h any_quest_artifact(), every role's quest artifact occupies
+// the contiguous artifact range beginning with the Orb of Detection.
+export function any_quest_artifact(otmp) {
+    return (otmp.oartifact ?? 0) >= ART_ORB_OF_DETECTION;
 }
 
 // src/pray.c:2530 align_gname() — a leading '_' marks a goddess and is not

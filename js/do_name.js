@@ -24,7 +24,8 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
          SUPPRESS_SADDLE, SUPPRESS_IT, SUPPRESS_INVISIBLE,
-         SUPPRESS_HALLUCINATION, SUPPRESS_MAPPEARANCE, MD_PAD_BOGONS,
+         SUPPRESS_HALLUCINATION, SUPPRESS_MAPPEARANCE, AUGMENT_IT,
+         MD_PAD_BOGONS,
          has_mgivenname, MGIVENNAME, W_SADDLE } from './const.js';
 import { humanoid, is_animal, mindless, pronoun_gender, type_is_pname } from './mondata.js';
 import { canspotmon } from './display.js';
@@ -199,18 +200,17 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
     }
     if (mtmp.minvis)
         note_do_name_unported('x_monnam:invisible');
-    /* src/do_name.c:875 — unseen monsters read as "it". do_it is guarded on
-       ARTICLE_YOUR too, so a pet is still named even when unseen, and on
-       usteed and engulfer for the same reason. SUPPRESS_IT and AUGMENT_IT
-       are not modelled, so augment_it is false and the "someone"/"something"
-       arm cannot fire -- that arm's rn2(2) under Hallucination is therefore
-       not spent, which matches C only while Hallucination is unported. */
+    /* src/do_name.c:875, unseen monsters read as "it". AUGMENT_IT asks for
+       "someone" for a thinking humanoid and "something" otherwise; while
+       hallucinating, rn2(2) may invert that choice. */
     const do_it = !canspotmon(mtmp) && article !== ARTICLE_YOUR
                   && mtmp !== game.u.usteed && !is_engulfer
                   && !((suppress || 0) & SUPPRESS_IT);
     if (do_it) {
-        note_do_name_unported('x_monnam:augment_it');
-        return 'it';
+        if (!((suppress || 0) & AUGMENT_IT))
+            return 'it';
+        const someone = humanoid(mdat) && !is_animal(mdat) && !mindless(mdat);
+        return (!do_hallu ? someone : !rn2(2)) ? 'someone' : 'something';
     }
 
     /* Put the adjectives in the buffer; the invisible state is recorded
@@ -319,10 +319,18 @@ export const noit_mon_nam = (mtmp) =>
                                   : SUPPRESS_IT,
              false);
 
+// src/do_name.c:1065 some_mon_nam(). Like mon_nam(), except an unseen
+// monster is "someone" or "something" instead of "it".
+export const some_mon_nam = (mtmp) =>
+    x_monnam(mtmp, ARTICLE_THE, null,
+             (has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0) | AUGMENT_IT,
+             false);
+
 // src/do_name.c Monnam() / YMonnam() — the capitalised forms.
 export const Monnam  = (mtmp) => upstart(mon_nam(mtmp));
 export const YMonnam = (mtmp) => upstart(y_monnam(mtmp));
 export const noit_Monnam = (mtmp) => upstart(noit_mon_nam(mtmp));
+export const Some_Monnam = (mtmp) => upstart(some_mon_nam(mtmp));
 
 // src/do_name.c:1191 mon_nam_too() — name `mon`, except that when it IS
 // `other_mon` the reflexive pronoun is used instead.

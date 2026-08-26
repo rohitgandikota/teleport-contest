@@ -1193,6 +1193,20 @@ export function newsym(x, y) {
                             && (mon.mx !== x || mon.my !== y));
         const spotMon = !!(mon && (mon_visible(mon)
                                    || (!wormTail && sensemon(mon))));
+        /* src/display.c:1029, a warning glyph takes precedence over a
+           remembered invisible-monster marker. */
+        if (!spotMon && mon && mon_warning(mon) && !wormTail) {
+            let wl = Hallucination()
+                ? rn2_on_display_rng(5) + 1
+                : ((mon.m_lev ?? 0) / 4) | 0;
+            if (wl > 5) wl = 5;
+            if (wl < 1) wl = 1;
+            const warncolor = [CLR_WHITE, 1, 1, 1, 5, 13];
+            clear_invisible_memory(x, y);
+            show_glyph_cell(x, y, String(wl), warncolor[wl], false, 0,
+                            { kind: 'warn', wl });
+            return;
+        }
         /* src/display.c:1031 — an 'I' stays mapped until some action proves
            that it is stale. Merely seeing the square again is not proof. */
         if (!spotMon && glyph_is_invisible_at(x, y)) {
@@ -1251,20 +1265,6 @@ export function newsym(x, y) {
             show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
                             shown.mcolor ?? NO_COLOR, false, 0,
                             { kind: 'mon', mon });
-            return;
-        }
-
-        /* src/display.c:1029: warning still marks an unseen monster whose
-           square itself is visible, such as a submerged eel in clear water. */
-        if (mon && mon_warning(mon)) {
-            let wl = Hallucination()
-                ? rn2_on_display_rng(5) + 1
-                : ((mon.m_lev ?? 0) / 4) | 0;
-            if (wl > 5) wl = 5;
-            if (wl < 1) wl = 1;
-            const warncolor = [CLR_WHITE, 1, 1, 1, 5, 13];
-            show_glyph_cell(x, y, String(wl), warncolor[wl], false, 0,
-                            { kind: 'warn', wl });
             return;
         }
 
@@ -2505,7 +2505,7 @@ function mon_overrides_region(mon, mx, my) {
 
 // include/display.h:64 _mon_warning() — Warning, hostile, within 10 squares,
 // and at least the context warnlevel.
-function mon_warning(mon) {
+export function mon_warning(mon) {
     const u = game.u;
     const Warning = !!(u.uprops?.WARNING || u.intrinsic?.HWarning);
     if (!Warning || mon.mpeaceful)

@@ -1344,8 +1344,10 @@ export async function dochug(mtmp) {
         note_unported_monmove('dochug:quest_talk');
     /* extra emotional attack for vile monsters */
     if (inrange && mdat.msound === MSOUND.MS_CUSS && !mtmp.mpeaceful
-        && couldsee(mtmp.mx, mtmp.my) && !mtmp.minvis && !rn2(5))
-        note_unported_monmove('dochug:cuss');
+        && couldsee(mtmp.mx, mtmp.my) && !mtmp.minvis && !rn2(5)) {
+        const { cuss } = await import('./wizard.js');
+        await cuss(mtmp);
+    }
 
     /* note: can't get here when monster is dead, so this always returns 0 */
     return (status === MMOVE_DIED) ? 1 : 0;

@@ -1,5 +1,32 @@
 # STATUS — live handoff board
 
+## 2026-08-26: covetous Wizard and Amulet behavior
+
+The three-segment `monster-covetous` C oracle uses seeds 7200, 7201, and
+7083. It records a Wizard warping to a dropped real Amulet and taking it, the
+one-in-twenty special attack stealing a carried Amulet, Wizard curse, stun,
+invisibility, and taunt behavior, and a striking hit that makes the wounded
+Wizard warp to distant stairs and spend the explicit `rnd(8)` healing roll.
+Two fresh recordings were byte-identical, with SHA-256
+`24dc076f06591fc6473cc8cdfecac990c013d4f6e8c83e3e155ec53034ee07ae`.
+
+The port matches all 344/344 screens, 344/344 cursors, and 8,193/8,193 RNG
+calls. The implementation updates `u.uhave` for the Amulet, invocation tools,
+and quest artifacts; ports covetous goal selection, warping, recovery, and
+special-object theft; ports the exercised Wizard spells and taunts; and adds
+the striking-on-monster branch. The source-defined multi-artifact selection,
+disguised-mimic striking, and Knight double-damage branches are included even
+though the three recorded segments do not select them.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The supplemental corpus now has 59 sessions
+and 6,788 frames. It is 6,783/6,788 cell-exact and
+1,094,715/1,094,715 RNG-exact, with 6,405/6,788 formally exact screens and
+58/59 formal session passes. The sole formal failure remains the
+recorder-corrupted `gehennom-tour` cursor data. All 44 public hang checks pass.
+Conservative full-game coverage is now 86 covered, 6 partial, and 12 gaps out
+of 104. `monster.covetous` and `endgame.amulet-wizard` are now covered.
+
 ## 2026-08-26: normal-mode monster trap behavior
 
 The two-segment `monster-trap-normal` C oracle uses fresh normal-mode seeds

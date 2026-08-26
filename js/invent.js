@@ -91,17 +91,41 @@ export function assigninvlet(otmp) {
     game.lastinvnr = i;
 }
 
-// src/invent.c:960 addinv_core1(), artifact arm. Quest-artifact text is
-// asynchronous in the tty port, so addinv() waits for it before assigning an
-// inventory letter and printing the ordinary pickup message.
+// src/invent.c:960 addinv_core1(). Special invocation objects update u.uhave
+// before entering inventory. Quest-artifact text is asynchronous in the tty
+// port, so addinv() waits for it before assigning an inventory letter and
+// printing the ordinary pickup message.
 function addinv_core1(obj) {
+    if (obj.oclass === OCLASSES.COIN_CLASS) {
+        (game.disp ||= {}).botl = true;
+        return null;
+    }
+
+    const uhave = (game.u.uhave ||= {});
+    if (obj.otyp === ONAMES.AMULET_OF_YENDOR) {
+        uhave.amulet = 1;
+        return null;
+    }
+    if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
+        uhave.menorah = 1;
+        return null;
+    }
+    if (obj.otyp === ONAMES.BELL_OF_OPENING) {
+        uhave.bell = 1;
+        return null;
+    }
+    if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+        uhave.book = 1;
+        return null;
+    }
+
     if (!obj.oartifact)
         return null;
 
     return (async () => {
         const { is_quest_artifact } = await import('./questpgr.js');
         if (is_quest_artifact(obj)) {
-            (game.u.uhave ||= {}).questart = 1;
+            uhave.questart = 1;
             const { artitouch } = await import('./quest.js');
             await artitouch(obj);
         }
@@ -1263,9 +1287,10 @@ function freeinv_core(obj) {
     } else if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
         (game.u.uhave ||= {}).book = 0;
     } else if (obj.oartifact) {
-        /* is_quest_artifact/u.uhave.questart and set_artifact_intrinsic
-           need the artifact tables; reached only for artifacts. */
-        note_unported_invent('freeinv_core:uhave_artifacts');
+        if (obj.oartifact === game.urole?.questarti)
+            (game.u.uhave ||= {}).questart = 0;
+        /* set_artifact_intrinsic needs the artifact tables. */
+        note_unported_invent('freeinv_core:set_artifact_intrinsic');
     }
 
     if (obj.otyp === ONAMES.LOADSTONE)

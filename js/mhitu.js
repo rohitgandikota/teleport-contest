@@ -49,7 +49,7 @@ import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
 import { mhitm_ad_phys, mhitm_ad_cold, mhitm_ad_elec, mhitm_ad_drst,
          mhitm_ad_blnd, mhitm_ad_ston, mhitm_ad_drli,
-         mhitm_knockback } from './uhitm.js';
+         mhitm_ad_samu, mhitm_knockback } from './uhitm.js';
 import { is_pool, t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { find_offensive, use_offensive } from './muse.js';
@@ -1020,6 +1020,8 @@ async function hitmu(mtmp, mattk, indx) {
         await mhitm_ad_ston(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_DRLI) {
         await mhitm_ad_drli(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_SAMU) {
+        await mhitm_ad_samu(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_LEGS) {
         const side = rn2(2) ? RIGHT_SIDE : LEFT_SIDE;
         const sidestr = side === RIGHT_SIDE ? 'right' : 'left';

@@ -1,0 +1,42 @@
+{
+  "name": "themed-room",
+  "description": "Debug Wizard maps a fresh ordinary level containing a generated themed room.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "level.themed",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 6301,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006"
+    },
+    {
+      "seed": 6361,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006"
+    },
+    {
+      "seed": 6389,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006"
+    },
+    {
+      "seed": 6392,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006"
+    },
+    {
+      "seed": 6443,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006"
+    }
+  ]
+}

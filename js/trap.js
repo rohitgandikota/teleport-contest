@@ -2459,7 +2459,7 @@ export async function fall_through(td, ftflags) {
 // src/dog.c:887 migrate_to_level(), reduced to the shared bookkeeping used
 // by trap-driven migration. Destination coordinates live in mux/muy while
 // off-level, and mtrack carries the arrival mode, origin, and prior level.
-function migrate_monster(mtmp, dest, xyloc, cc = null) {
+export function migrate_monster(mtmp, dest, xyloc, cc = null) {
     const mx = mtmp.mx, my = mtmp.my;
     remove_monster(mx, my);
     const at = (game.level.monsters || []).indexOf(mtmp);

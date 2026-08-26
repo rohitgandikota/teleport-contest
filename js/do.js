@@ -702,8 +702,9 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     if (game.u.uball)
         await placebc();
 
-    /* obj_delivery() — migrating objects; none exist yet */
-    losedogs();
+    /* C runs ordinary migrating-object delivery here before monster arrivals.
+       Species-targeted loot is delivered through makemon()/mon_arrive(). */
+    await losedogs();
 
     /* src/do.c:1826 — hero might be arriving at a spot containing a
        monster; u_collide_m moves one or the other */

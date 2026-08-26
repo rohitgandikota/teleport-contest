@@ -17,7 +17,7 @@ import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          ONAME_KNOW_ARTI } from './const.js';
 import { ATR_NONE, NO_COLOR } from './terminal.js';
 import { game } from './gstate.js';
-import { rn2, rn2_on_display_rng } from './rng.js';
+import { rn1, rn2, rn2_on_display_rng } from './rng.js';
 import { Hallucination } from './youprop.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -54,6 +54,41 @@ const ghostnames = [
 // draw happens. ROLL_FROM is include/hack.h:1493, array[rn2(SIZE(array))].
 export function rndghostname() {
     return rn2(7) ? ghostnames[rn2(ghostnames.length)] : game.plname;
+}
+
+// src/do_name.c:1539 rndorcname() and :1556 christen_orc(). Orcish Town
+// uses these for the raiding gang, its local members, and later delivery of
+// the gang's migrating loot.
+export function rndorcname() {
+    const vowels = ['a', 'ai', 'og', 'u'];
+    const sounds = ['gor', 'gris', 'un', 'bane', 'ruk', 'oth',
+                    'ul', 'z', 'thos', 'akh', 'hai'];
+    const count = rn1(2, 3);
+    let vowelNext = rn2(2);
+    let name = '';
+
+    for (let i = 0; i < count; i++) {
+        vowelNext = 1 - vowelNext;
+        if (i > 0 && !rn2(30))
+            name += '-';
+        name += vowelNext ? vowels[rn2(vowels.length)]
+                          : sounds[rn2(sounds.length)];
+    }
+    return name;
+}
+
+export function christen_orc(mtmp, gang, other) {
+    const orcname = rndorcname();
+    let name = null;
+
+    if (gang != null)
+        name = `${upstart(orcname)} of ${upstart(gang)}`;
+    else if (other != null)
+        name = `${upstart(orcname)}${other}`;
+
+    if (name != null && name.length < 256)
+        return christen_monst(mtmp, name);
+    return mtmp;
 }
 
 // src/do_name.c:1424 roguename(), the name used by the Rogue-level ghost.

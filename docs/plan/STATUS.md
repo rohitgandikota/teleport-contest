@@ -1,5 +1,26 @@
 # STATUS — live handoff board
 
+## 2026-08-26: complete Mines variant matrix and Orcish Town migration
+
+The supplemental C oracle now covers all seven Minetown layouts and all three
+Mines' End layouts in one seven-segment matrix. Two independent C recordings
+produced the same SHA-256,
+`6fccd780412b8092bbb07bf59f81b8cec961c82e576ae50e814d3c444f6ffa4e`.
+The JavaScript port matches all 98/98 screens, 98/98 cursors, and
+49,155/49,155 RNG calls in that matrix.
+
+This checkpoint adds the five missing monsters in `minend-3`, ports Orcish
+Town's `stolen_booty()` postprocessing, creates and names its raiding gang,
+migrates its stolen items and monsters, delivers species-targeted loot, and
+applies special-level arrival-region limits. General migrating-monster arrival
+now runs when changing levels, while companion behavior remains exact.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded C-reference suite grows to
+4,503/4,503 screens, 552,151/552,151 RNG calls, and 48/48 exact sessions, with
+all cells and cursors exact. All 44 public hang checks pass. Conservative
+full-game coverage is now 75 covered, 6 partial, and 23 gaps out of 104.
+
 ## 2026-08-25: spellbook study, controlled teleport, and menu parity
 
 `study_book()` and its `learn()` occupation now follow the pinned C paths for

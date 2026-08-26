@@ -594,8 +594,15 @@ export async function check_special_room(newlev) {
     if (!game.u.uentered && !game.u.ushops_entered)
         return;
 
-    if (game.u.ushops_entered)
+    if (game.u.ushops_entered) {
         await u_entered_shop(game.u.ushops_entered);
+        const seen = (game.level._mapseen_rooms ||= []);
+        for (const ch of game.u.ushops_entered) {
+            const roomno = ch.charCodeAt(0) - ROOMOFFSET;
+            if (!seen.includes(roomno))
+                seen.push(roomno);
+        }
+    }
 
     for (const ch of game.u.uentered) {
         const roomno = ch.charCodeAt(0) - ROOMOFFSET;
@@ -618,6 +625,11 @@ export async function check_special_room(newlev) {
                 game.level.flags.has_morgue = false;
         } else if (room.rtype !== OROOM) {
             note_unported_hack('check_special_room:other');
+        }
+        if (room.rtype !== OROOM) {
+            const seen = (game.level._mapseen_rooms ||= []);
+            if (!seen.includes(roomno))
+                seen.push(roomno);
         }
     }
 }

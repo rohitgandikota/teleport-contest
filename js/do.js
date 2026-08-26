@@ -421,6 +421,12 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
        the pet stays behind */
     if (!game.iflags?.nofollowers)
         keepdogs(false);
+    /* src/do.c:1625, preserve the overview information from the level
+       being left before its visibility and live structures are replaced. */
+    {
+        const { recalc_mapseen } = await import('./dungeon.js');
+        recalc_mapseen();
+    }
     /* src/do.c:1634: clear old visibility after followers leave. This
        redraws their former squares while the bones prompt is onscreen. */
     {
@@ -478,6 +484,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
        "reset u.uz0" catches it up; onquest() and the arrival messages
        read it to tell a fresh arrival from a revisit. */
     game.u.uz0 = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel };
+    if ((at_stairs || falling || portal)
+        && game.u.uz.dnum !== newlevel.dnum) {
+        const { recbranch_mapseen } = await import('./dungeon.js');
+        recbranch_mapseen(game.u.uz, newlevel);
+    }
     game.u.uz = { dnum: newlevel.dnum, dlevel: newlevel.dlevel };
     (game.visited_ledgers ||= new Set());
 
@@ -834,6 +845,13 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
 
     /* src/do.c:1967 — reset u.uz0 */
     game.u.uz0 = { dnum: game.u.uz.dnum, dlevel: game.u.uz.dlevel };
+
+    /* src/do.c:1974, a saved overview annotation is repeated on arrival,
+       before room messages and the automatic pickup pass. */
+    {
+        const { print_level_annotation } = await import('./dungeon.js');
+        await print_level_annotation();
+    }
 
     /* src/do.c:1985: deliver one-time room and shop entry messages after
        all level-specific arrival messages, before pickup feedback. */

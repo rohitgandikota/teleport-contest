@@ -481,8 +481,8 @@ export function show_map_spot(x, y, cnf) {
         const t = t_at(x, y);
         if (t && t.tseen) {
             map_trap(t, 1);
-        } else if ((game.level?.engravings || [])
-                       .some(e => e.engr_x === x && e.engr_y === y)) {
+        } else if ((game.level?.lev_engr || [])
+                       .some(e => e.x === x && e.y === y)) {
             /* map_engraving(ep, 1) — engraving_glyph via newsym covers the
                visible case; write the engraving into memory too */
             const eg = { ch: loc.typ === CORR ? '#' : '`',

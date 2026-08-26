@@ -14,14 +14,15 @@ import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire 
 import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn, sobj_at } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
-         has_mgivenname } from './const.js';
+         W_SADDLE, has_mgivenname } from './const.js';
 import { Levitation, Flying } from './youprop.js';
 import { closed_door } from './cmd.js';
 import { may_passwall } from './hack.js';
 import { sengr_at } from './engrave.js';
 import { rndghostname, christen_monst, christen_orc,
          y_monnam } from './do_name.js';
-import { m_dowear } from './worn.js';
+import { m_dowear, which_armor } from './worn.js';
+import { can_saddle, put_saddle_on_mon } from './steed.js';
 import { rn2, rnd, rn1, d } from './rng.js';
 import {
     mons as MONS_INIT, PMNAMES, NUMMONS, MONSYMS, MSOUND, ATTKS, MFLAGS,
@@ -1557,8 +1558,6 @@ function m_initgrp(mtmp, x, y, n, mmflags) {
 /* include/makemon.h m_initsgrp()/m_initlgrp() */
 function m_initsgrp(mtmp, x, y, mmf) { m_initgrp(mtmp, x, y, 3, mmf); }
 function m_initlgrp(mtmp, x, y, mmf) { m_initgrp(mtmp, x, y, 10, mmf); }
-function can_saddle(mtmp) { return mtmp.data.msize >= 2; /* MZ_MEDIUM */ }
-
 /* m_dowear() now lives in js/worn.js, its C home (src/worn.c:757). The copy
    that stood here short-circuited on an empty minvent and recorded otherwise;
    the real one does the slot walk. */
@@ -2319,8 +2318,9 @@ export function makemon(ptr, x, y, mmflags) {
         m_initinv(mtmp);
         m_dowear(mtmp, true);
 
-        if (!rn2(100) && is_domestic(ptr) && can_saddle(mtmp))
-            note_unported('put_saddle_on_mon');
+        if (!rn2(100) && is_domestic(ptr)
+            && can_saddle(mtmp) && !which_armor(mtmp, W_SADDLE))
+            put_saddle_on_mon(null, mtmp);
     }
 
     if (ptr.mflags3 && !(mmflags & MM_NOWAIT)) {

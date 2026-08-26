@@ -1,0 +1,74 @@
+{
+  "name": "sokoban-tour",
+  "description": "Debug Wizard levelports across a seed matrix covering both variants of all four Sokoban tiers and maps each puzzle.",
+  "coverage": [
+    "mode.debug",
+    "level.sokoban",
+    "level.special-variants",
+    "ui.getlin",
+    "ui.menus",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 6701,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6702,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6703,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6705,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6706,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6707,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6708,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6709,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    },
+    {
+      "seed": 6710,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r B\u0006\u0016?\r C\u0006\u0016?\r D\u0006\u0016?\r E\u0006"
+    }
+  ]
+}

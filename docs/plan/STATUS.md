@@ -1,5 +1,26 @@
 # STATUS — live handoff board
 
+## 2026-08-26: Sokoban orientation matrix and generated saddles
+
+A ten-seed C oracle now visits and maps all four Sokoban tiers across their
+layout choices, mirror states, flip states, prize choices, boulders, holes,
+zoos, and random inhabitants. Two independent recordings produced the same
+SHA-256,
+`4004907cc4141f2e1a07b71f03f49c4f9a30f32d317d5553cbf0daf3de3d6d7d`.
+The JavaScript port matches all 260/260 screens, 260/260 cursors, and
+85,996/85,996 RNG calls in the matrix.
+
+Seed 6710 exposed the rare `makemon()` arm where a domestic, saddle-capable
+monster passes its one-percent saddle roll. C creates and equips a real saddle,
+which spends one object identifier draw. The port now calls the existing
+`put_saddle_on_mon()` implementation instead of recording an unported marker.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded C-reference suite grows to
+4,763/4,763 screens, 638,147/638,147 RNG calls, and 49/49 exact sessions, with
+all cells and cursors exact. All 44 public hang checks pass. Conservative
+full-game coverage is now 76 covered, 6 partial, and 22 gaps out of 104.
+
 ## 2026-08-26: complete Mines variant matrix and Orcish Town migration
 
 The supplemental C oracle now covers all seven Minetown layouts and all three

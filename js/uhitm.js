@@ -76,6 +76,7 @@ import { body_part, mbodypart } from './polyself.js';
 import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
+import { spec_dbon } from './artifact.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -1387,6 +1388,9 @@ function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     } else {
         note_unported_uhitm('hmon_hitmon:special_attacks');
     }
+
+    if (obj.oartifact)
+        hmd.dmg += spec_dbon(obj, mon, hmd.dmg);
 
     /* src/uhitm.c:1035 — silver weapon against a silver-hater flags the
        sear message; the extra damage itself came from dmgval's rnd(20) */

@@ -1013,7 +1013,7 @@ export function doname(obj) {
     if (obj.cknown && obj.cobj?.length)
         bp += ` containing ${obj.cobj.length} item${plur(obj.cobj.length)}`;
 
-    switch (obj.oclass) {
+    switch (is_weptool(obj, game.objects) ? WEAPON_CLASS : obj.oclass) {
     case AMULET_CLASS:
         if (obj.owornmask & W_AMUL)
             bp += ' (being worn)';

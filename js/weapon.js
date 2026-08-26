@@ -49,6 +49,7 @@ import { spell_skilltype } from './spell.js';
 import { discover_object } from './o_init.js';
 import { P_NONE, P_NUM_SKILLS, P_BARE_HANDED_COMBAT, P_RIDING, P_HEALING_SPELL, P_CLERIC_SPELL, P_TWO_WEAPON_COMBAT, P_SKILLED, P_MASTER, P_GRAND_MASTER, P_ATTACK_SPELL, P_ENCHANTMENT_SPELL, P_BOW, P_CROSSBOW } from './const.js';
 import { PMNAMES } from './monst_data.js';
+import { spec_abon } from './artifact.js';
 
 // include/skills.h:106 practice_needed_to_advance()
 const practice_needed_to_advance = (level) => level * level * 20;
@@ -443,7 +444,7 @@ export function hitval(otmp, mon) {
         tmp += 2;
 
     if (otmp.oartifact)
-        note_unported_weapon('hitval:spec_abon');
+        tmp += spec_abon(otmp, mon);
 
     return tmp;
 }

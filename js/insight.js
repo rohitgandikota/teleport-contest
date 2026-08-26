@@ -45,7 +45,9 @@ import { Fast, Very_fast, from_what as innate_source } from './attrib.js';
 import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Shock_resistance, Poison_resistance, Stealth, Searching,
          Warning, Teleport_control, See_invisible,
-         Infravision, Deaf, Hallucination } from './youprop.js';
+         Infravision, Deaf, Hallucination, Halluc_resistance,
+         Reflecting } from './youprop.js';
+import { artifact_names } from './artilist_data.js';
 
 const EXTRINSIC_KEYS = {
     HFire_resistance: 'FIRE_RES',
@@ -53,6 +55,7 @@ const EXTRINSIC_KEYS = {
     HSleep_resistance: 'SLEEP_RES',
     HShock_resistance: 'SHOCK_RES',
     HPoison_resistance: 'POISON_RES',
+    HHalluc_resistance: 'HALLUC_RES',
     HAntimagic: 'ANTIMAGIC',
     HSee_invisible: 'SEE_INVIS',
     HWarning: 'WARNING',
@@ -61,6 +64,7 @@ const EXTRINSIC_KEYS = {
     HStealth: 'STEALTH',
     HTeleport_control: 'TELEPORT_CONTROL',
     HFast: 'FAST',
+    HReflecting: 'REFLECTING',
 };
 
 // src/attrib.c:905 from_what(), equipment arm. The flat extrinsic value is a
@@ -76,8 +80,9 @@ function from_what(abilKey) {
     if (!obj)
         return '';
 
-    const name = minimal_xname(obj).replace(/\bpair of /i, '');
-    return ` because of your ${name}`;
+    const name = obj.oartifact ? artifact_names[obj.oartifact]
+                               : minimal_xname(obj).replace(/\bpair of /i, '');
+    return ` because of ${obj.oartifact ? '' : 'your '}${name}`;
 }
 
 // include/attrib.h
@@ -641,6 +646,9 @@ function attributes_enlightenment() {
         you_are('shock resistant', from_what('HShock_resistance'));
     if (Poison_resistance())
         you_are('poison resistant', from_what('HPoison_resistance'));
+    if (Halluc_resistance())
+        enl_msg('You ', 'resist', 'resisted', ' hallucinations',
+                from_what('HHalluc_resistance'));
 
     /*** Vision and senses (insight.c:1566) ***/
     if (See_invisible())
@@ -672,6 +680,8 @@ function attributes_enlightenment() {
     /* src/insight.c:1898 — Fast, between the mc line and Luck */
     if (Fast())
         you_are(Very_fast() ? 'very fast' : 'fast', from_what('HFast'));
+    if (Reflecting())
+        you_have('reflection', from_what('HReflecting'));
     if (u.uprops?.LIFESAVED)
         enl_msg('Your life ', 'will be', 'would have been', ' saved', '');
 

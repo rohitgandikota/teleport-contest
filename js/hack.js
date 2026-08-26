@@ -54,7 +54,7 @@ import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
 
-    ROOMOFFSET, MAXNROFROOMS, OROOM, MORGUE, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR,
+    ROOMOFFSET, MAXNROFROOMS, OROOM, MORGUE, TEMPLE, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR,
     THRONE, SINK, GRAVE, FOUNTAIN, ALTAR, D_ISOPEN, ACCESSIBLE, IS_SDOOR,
     M_AP_OBJECT, M_AP_FURNITURE, M_AP_TYPE, isok, u_at,
     IRONBARS, IS_DOOR, D_NODOOR, D_BROKEN, WT_SQUEEZABLE_INV,
@@ -564,7 +564,10 @@ export async function check_special_room(newlev) {
         const room = game.level?.rooms?.[roomno];
         if (!room || room.rtype >= SHOPBASE)
             continue;
-        if (room.rtype === MORGUE) {
+        if (room.rtype === TEMPLE) {
+            const { intemple } = await import('./priest.js');
+            await intemple(ch.charCodeAt(0));
+        } else if (room.rtype === MORGUE) {
             const { midnight } = await import('./calendar.js');
             if (midnight()) {
                 const run = u_locomotion('Run');

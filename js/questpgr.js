@@ -97,7 +97,10 @@ function monname(idx) {
 // src/questpgr.c:50 ldrname(), :121 neminame(), :131 guardname()
 function ldrname() { return monname(game.urole.ldrnum); }
 function neminame() { return monname(game.urole.neminum); }
-function guardname() { return monname(game.urole.guardnum); }
+function guardname() {
+    const pm = mons[game.urole.guardnum];
+    return pm.pmnames[2] ?? pm.pmnames[0] ?? pm.pmnames[1];
+}
 function intermed() { return game.urole.intermed; }
 function homebase() { return game.urole.homebase; }
 

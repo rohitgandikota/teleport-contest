@@ -714,8 +714,7 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
 
     /* src/do.c:1879 — special location arrival messages/events. The
        endgame and quest arms are wired; the Knox, Mines and Sokoban arms
-       are achievements and alarms that no ported session reaches yet, and
-       the quest-portal call from the leader needs at_dgn_entrance(). */
+       are achievements and alarms that no ported session reaches yet. */
     {
         const { In_endgame, Is_astralevel } = await import('./const.js');
         const newdungeon = (game.u.uz0.dnum !== game.u.uz.dnum);
@@ -731,6 +730,25 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         } else if (game.u.uz.dnum === game.quest_dnum) { /* In_quest() */
             const { onquest } = await import('./quest.js');
             await onquest();
+        } else {
+            /* src/do.c:1918, the first arrival at the main-dungeon side
+               of the Quest portal carries the leader's telepathic call. */
+            const { at_dgn_entrance } = await import('./dungeon.js');
+            const old_was_quest = game.u.uz0.dnum === game.quest_dnum;
+            const qevent = game.u.uevent || (game.u.uevent = {});
+            const qstat = game.quest_status || (game.quest_status = {});
+            if (!old_was_quest && at_dgn_entrance('The Quest')
+                && !(qevent.qcompleted || qevent.qexpelled
+                     || qstat.leader_is_dead)) {
+                const { com_pager } = await import('./questpgr.js');
+                if (!qevent.qcalled) {
+                    qevent.qcalled = 1;
+                    await com_pager('quest_portal');
+                } else {
+                    await com_pager(game.urole.filecode === 'Rog'
+                        ? 'quest_portal_demand' : 'quest_portal_again');
+                }
+            }
         }
     }
 

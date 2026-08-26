@@ -167,10 +167,16 @@ function uncommon(mndx) {
 
 // src/makemon.c:1611 align_shift()
 function align_shift(ptr) {
-    /* src/makemon.c:1621 — a special level's own alignment overrides the
-       dungeon's (the C caches Is_special() per move; the lookup here is
-       cheap enough to do per call) */
-    const slev = Is_special(game.u.uz);
+    /* src/makemon.c:1613, C caches the special-level pointer for the whole
+       move. Debug level teleports do not advance moves, so the cached level
+       deliberately survives several level changes in a world-tour turn. */
+    const cache = game._align_shift_cache
+                  || (game._align_shift_cache = { moves: null, slev: null });
+    if (cache.moves !== game.moves) {
+        cache.moves = game.moves;
+        cache.slev = Is_special(game.u.uz);
+    }
+    const slev = cache.slev;
     const dgnAlign = (slev ? slev.flags?.align
                            : game.dungeons?.[game.u?.uz?.dnum]?.flags?.align)
                      ?? AM_NONE;
@@ -2051,6 +2057,8 @@ export function makemon(ptr, x, y, mmflags) {
        mcalcmove allotment loop) visits monsters in reverse creation order. */
     (game.level.monsters ||= []).unshift(mtmp);
     mtmp.m_id = next_ident();
+    if (ptr.msound === MS_LEADER && quest_info_leader() === mndx)
+        (game.quest_status ||= {}).leader_m_id = mtmp.m_id;
 
     /* set up level and hit points */
     newmonhp(mtmp, mndx);

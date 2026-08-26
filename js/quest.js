@@ -9,6 +9,13 @@
 
 import { game } from './gstate.js';
 import { qt_pager } from './questpgr.js';
+import { tty_yn_function } from './tty/topl.js';
+import { You } from './pline.js';
+import { exercise } from './attrib.js';
+import { align_str } from './role.js';
+import { A_WIS, A_CURRENT, A_ORIGINAL, MIN_QUEST_ALIGN,
+         MIN_QUEST_LEVEL } from './const.js';
+import { MSOUND } from './monst_data.js';
 
 /* include/quest.h:8 struct q_score — zero-initialized at game start */
 function Qstat() {
@@ -18,6 +25,89 @@ function Qstat() {
 /* include/dungeon.h:129 Lcheck() via on_level() */
 const on_level = (a, b) => !!a && !!b && a.dnum === b.dnum
                            && a.dlevel === b.dlevel;
+
+// src/quest.c:153 is_pure() checks the alignment needed for quest access.
+// Debug mode offers to raise only the alignment record, just as C does.
+async function is_pure(talk) {
+    const u = game.u;
+    const original = u.ualignbase?.[A_ORIGINAL] ?? u.ualign.type;
+    const current = u.ualignbase?.[A_CURRENT] ?? u.ualign.type;
+
+    if (game.wizard && talk) {
+        if (u.ualign.type !== original) {
+            await You(`are currently ${align_str(u.ualign.type)} instead of ${align_str(original)}.`);
+        } else if (current !== original) {
+            await You('have converted.');
+        } else if (u.ualign.record < MIN_QUEST_ALIGN) {
+            await You(`are currently ${u.ualign.record} and require ${MIN_QUEST_ALIGN}.`);
+            if (await tty_yn_function('adjust?', null, 'y') === 'y')
+                u.ualign.record = MIN_QUEST_ALIGN;
+        }
+    }
+    return (u.ualign.record >= MIN_QUEST_ALIGN
+            && u.ualign.type === original && current === original)
+        ? 1 : (current !== original) ? -1 : 0;
+}
+
+// src/quest.c:306 chat_with_leader() and quest_chat().
+async function chat_with_leader(mtmp) {
+    const q = Qstat();
+    if (!mtmp.mpeaceful || q.pissed_off)
+        return;
+
+    if (q.got_thanks) {
+        await qt_pager('posthanks');
+    } else if (game.u.uhave?.questart) {
+        (game.unported ||= new Set()).add('quest:chat_with_leader:finish_quest');
+    } else if (q.got_quest) {
+        await qt_pager('encourage');
+    } else {
+        if (!q.met_leader) {
+            await qt_pager('leader_first');
+            q.met_leader = true;
+            q.not_ready = 0;
+        } else {
+            await qt_pager('leader_next');
+        }
+
+        if (!on_level(game.u.uz, game.special_levels?.qstart_level))
+            return;
+
+        if (game.u.ulevel < MIN_QUEST_LEVEL) {
+            await qt_pager('badlevel');
+            exercise(A_WIS, true);
+            (game.unported ||= new Set()).add('quest:expulsion');
+        } else {
+            const purity = await is_pure(true);
+            if (purity < 0) {
+                (game.unported ||= new Set()).add('quest:banished');
+            } else if (purity === 0) {
+                await qt_pager('badalign');
+                q.not_ready = 1;
+                exercise(A_WIS, true);
+                (game.unported ||= new Set()).add('quest:expulsion');
+            } else {
+                await qt_pager('assignquest');
+                exercise(A_WIS, true);
+                q.got_quest = true;
+            }
+        }
+    }
+}
+
+export async function quest_chat(mtmp) {
+    const q = Qstat();
+    const msound = game.mons[mtmp.mnum].msound;
+    if (mtmp.m_id === q.leader_m_id || msound === MSOUND.MS_LEADER) {
+        await chat_with_leader(mtmp);
+    } else if (msound === MSOUND.MS_NEMESIS) {
+        await qt_pager('discourage');
+        q.met_nemesis = true;
+    } else if (msound === MSOUND.MS_GUARDIAN) {
+        await qt_pager(game.u.uhave?.questart && q.killed_nemesis
+            ? 'guardtalk_after' : 'guardtalk_before');
+    }
+}
 
 // src/quest.c:25 on_start()
 async function on_start() {

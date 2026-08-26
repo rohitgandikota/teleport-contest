@@ -670,6 +670,17 @@ function dname_to_dnum(nam) {
     return i;
 }
 
+// src/dungeon.c:1897 at_dgn_entrance() -- is the hero standing on the
+// parent level which contains the branch into the named dungeon?
+export function at_dgn_entrance(nam) {
+    const dnum = dname_to_dnum(nam);
+    const br = (game.branches || []).find(b => b.end2.dnum === dnum);
+    if (!br)
+        throw new Error(`at_dgn_entrance: no branch to "${nam}"`);
+    return game.u.uz.dnum === br.end1.dnum
+           && game.u.uz.dlevel === br.end1.dlevel;
+}
+
 // src/dungeon.c:540 add_level() — insert into the special-level chain in level
 // order within a dungeon. find_level() depends on this ordering later.
 function add_level(new_lev) {

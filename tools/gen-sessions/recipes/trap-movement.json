@@ -1,0 +1,44 @@
+{
+  "name": "trap-movement",
+  "description": "Independent debug segments exercise hero movement through teleport traps, level teleporters, trap doors, holes, and magic portals.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "turn.speed-energy",
+    "level.ordinary",
+    "traps.movement"
+  ],
+  "segments": [
+    {
+      "seed": 6915,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017teleportation trap\rjkj."
+    },
+    {
+      "seed": 6916,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017level teleporter\rjk 2\r \u0006"
+    },
+    {
+      "seed": 6917,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017trap door\rjk \u0006"
+    },
+    {
+      "seed": 6918,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017hole\rjky \u0006"
+    },
+    {
+      "seed": 6919,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r y  \u0006/T \u0014HHHHhhhkkkk.ky \u0006"
+    }
+  ]
+}

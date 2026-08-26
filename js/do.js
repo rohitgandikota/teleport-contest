@@ -26,7 +26,7 @@ import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { Blind, Levitation } from './youprop.js';
 import { OCLASSES } from './objects_data.js';
-import { rn2, rnd } from './rng.js';
+import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
@@ -387,7 +387,9 @@ export async function next_level(at_stairs) {
 // Quest. The fourth is rnd(3) falling damage for an encumbered, punished, or
 // fumbling hero. A plain staircase descent spends no draw of its own.
 export async function goto_level(newlevel, at_stairs, falling, portal) {
+    const dist = depth_do(newlevel) - depth_do(game.u.uz);
     let up = (depth_do(newlevel) < depth_do(game.u.uz));
+    let do_fall_dmg = false;
 
     /* src/do.c:1502 — dungeon-change arms. In_tutorial(lev) is
        lev.dnum == tutorial_dnum; entering stashes the whole game state
@@ -697,6 +699,15 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     } else { /* trap door or level_tele or In_endgame */
         const { u_on_rndspot } = await import('./dungeon.js');
         await u_on_rndspot(up ? 1 : 0);
+        if (falling) {
+            if (game.u.uball)
+                note_unported_do('goto_level:ballfall');
+            if (game.u.uwep?.otyp === ONAMES.CORPSE
+                || (game.u.twoweap
+                    && game.u.uswapwep?.otyp === ONAMES.CORPSE))
+                note_unported_do('goto_level:selftouch');
+            do_fall_dmg = true;
+        }
     }
 
     if (game.u.uball)
@@ -896,6 +907,13 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     /* src/do.c:1985: deliver one-time room and shop entry messages after
        all level-specific arrival messages, before pickup feedback. */
     await check_special_room(false);
+
+    /* src/do.c:1989, a trapdoor or hole inflicts impact damage only after
+       the new level is drawn and its arrival messages have been handled. */
+    if (do_fall_dmg) {
+        await losehp(maybe_half_physical(d(Math.max(dist, 1), 6)),
+                     'falling down a mine shaft', KILLED_BY);
+    }
 
     /* src/do.c:1996 — the arrival square gets its pickup pass, which is
        also what prints look_here/read_engr_at feedback on arrival */

@@ -1,5 +1,32 @@
 # STATUS — live handoff board
 
+## 2026-08-26: trap movement, remembered-trap listing, and portals
+
+The five-segment `trap-movement` C oracle uses independent seeds 6915
+through 6919. It exercises an ordinary teleportation trap, a controlled level
+teleporter, a trap door, a seen hole with paranoid confirmation, and the real
+Valkyrie quest portal. The portal segment also checks the complete `/T`
+remembered-trap listing, controlled intra-level placement beside the portal,
+the portal message and stun timeout, deferred level transition, destination
+portal placement, and destination map restoration. Two fresh recordings were
+byte-identical, with SHA-256
+`f7ef54f975ff4b4ef4e6a40ba5a805a25eb702ce8ce33928c189ea90c86f8d01`.
+
+The port matches all 121/121 screens, 121/121 cursors, and 25,215/25,215 RNG
+calls. The implementation adds debug trap wishes, the default paranoid trap
+prompt, controlled level-teleporter handling, trap-door and hole impact
+damage, hero magic-portal traversal, stun timeout handling, and the
+remembered-trap text window.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus now has 56
+sessions and 5,846 frames. It is 5,841/5,846 cell-exact and
+1,062,287/1,062,287 RNG-exact, with 5,463/5,846 formally exact screens and
+55/56 formal session passes. The sole formal failure remains the
+recorder-corrupted `gehennom-tour` cursor data. All 44 public hang checks pass.
+Conservative full-game coverage is now 82 covered, 6 partial, and 16 gaps out
+of 104. `traps.movement` is now covered.
+
 ## 2026-08-26: confusion gaze and life drain
 
 Two independent C oracles close the `monster.special-effects` coverage gap.

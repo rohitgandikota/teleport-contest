@@ -36,7 +36,7 @@ import { GETOBJ_EXCLUDE_INACCESS } from './invent.js';
 import { doname, otense, short_oname, simpleonames, thesimpleoname,
          Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
-import { breathless, haseyes } from './mondata.js';
+import { breathless, haseyes, stagger } from './mondata.js';
 import { cansee, vision_recalc } from './vision.js';
 import { hcolor } from './do_name.js';
 import { mkobj, splitobj } from './mkobj.js';
@@ -258,6 +258,33 @@ export async function make_confused(xtime, talk) {
         (game.u.uprops ||= {}).CONFUSION = 1;
     else if (game.u.uprops)
         delete game.u.uprops.CONFUSION;
+}
+
+// src/potion.c:107 make_stunned(), set or clear the stun timeout.
+export async function make_stunned(xtime, talk) {
+    const old = game.u.intrinsic?.HStun || 0;
+
+    if (Unaware())
+        talk = false;
+
+    if (!xtime && old && talk) {
+        await You_feel(`${Hallucination() ? 'less wobbly'
+                                         : 'a bit steadier'} now.`);
+    }
+    if (xtime && !old && talk) {
+        if (game.u.usteed)
+            await You('wobble in the saddle.');
+        else
+            await You(`${stagger(game.youmonst.data, 'stagger')}...`);
+    }
+    if ((!xtime && old) || (xtime && !old))
+        (game.disp ||= {}).botl = true;
+
+    (game.u.intrinsic ||= {}).HStun = xtime;
+    if (xtime)
+        (game.u.uprops ||= {}).STUNNED = 1;
+    else if (game.u.uprops)
+        delete game.u.uprops.STUNNED;
 }
 
 // src/potion.c:261 make_blinded(), common temporary-blindness path.

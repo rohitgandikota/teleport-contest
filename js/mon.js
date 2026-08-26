@@ -35,7 +35,8 @@ import { newsym, canseemon, canspotmon, pline,
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos } from './makemon.js';
-import { enexto_core, enexto, noteleport_level } from './teleport.js';
+import { enexto_core, enexto, noteleport_level,
+         rloc_to_flag } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE,
          SUPPRESS_SADDLE } from './const.js';
@@ -63,7 +64,7 @@ import { online2, isok } from './hacklib.js';
 import { onscary, in_your_sanctuary, m_can_break_boulder, mon_knows_traps, can_fog, inhishop, mon_would_take_item } from './monmove.js';
 import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
          Is_astralevel, has_emin, has_epri, has_eshk, RLOC_NOMSG,
-         MON_OBLITERATE } from './const.js';
+         RLOC_MSG, MON_OBLITERATE } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
     is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
@@ -2233,7 +2234,11 @@ export function mnexto(mtmp, rlocflags) {
         note_unported_mon('mnexto:deal_with_overcrowding');
         return;
     }
-    /* rloc_to_flag(mtmp, mm.x, mm.y, rlocflags) — remove+place+newsym */
+    if ((rlocflags & RLOC_MSG) !== 0)
+        return rloc_to_flag(mtmp, mm.x, mm.y, rlocflags);
+
+    /* rloc_to_flag(mtmp, mm.x, mm.y, rlocflags): the no-message path is
+       kept synchronous for level-arrival callers which do not await it. */
     if (mtmp.mx || mtmp.my)
         remove_monster(mtmp.mx, mtmp.my);
     place_monster(mtmp, mm.x, mm.y);
@@ -2281,13 +2286,7 @@ export async function mnearto(mtmp, x, y, move_other, rlocflags) {
         newx = mm.x;
         newy = mm.y;
     }
-    /* rloc_to_flag(mtmp, newx, newy, rlocflags) */
-    if (mtmp.mx || mtmp.my)
-        remove_monster(mtmp.mx, mtmp.my);
-    mon_track_clear(mtmp);
-    place_monster(mtmp, newx, newy);
-    newsym(newx, newy);
-    set_apparxy_ref(mtmp);          /* orient monster */
+    await rloc_to_flag(mtmp, newx, newy, rlocflags);
 
     if (move_other && othermon) {
         res = 2; /* moving another monster out of the way */

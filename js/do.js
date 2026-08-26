@@ -17,7 +17,7 @@ import { encumber_msg, exercise, weight_cap } from './attrib.js';
 import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
 import { place_object } from './mkobj.js';
 import { cls, pline, newsym } from './display.js';
-import { pline_The, You, You_cant, Your } from './pline.js';
+import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
 import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE } from './const.js';
@@ -673,6 +673,26 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         await deliver_splev_message();
     }
 
+    /* src/do.c:1860: announce the first transition into Gehennom. */
+    {
+        const wasInHell = game.dungeons?.[game.u.uz0.dnum]?.flags?.hellish
+                          === true;
+        const inHell = game.dungeons?.[game.u.uz.dnum]?.flags?.hellish
+                       === true;
+        const valley = game.valley_level;
+        const isValley = !!valley
+            && game.u.uz.dnum === valley.dnum
+            && game.u.uz.dlevel === valley.dlevel;
+
+        if (!wasInHell && inHell && isValley) {
+            await You('arrive at the Valley of the Dead...');
+            await pline_The('odor of burnt flesh and decay pervades the air.');
+            await You_hear('groans and moans everywhere.');
+        }
+        if (inHell && !isValley)
+            (game.u.uevent ||= {}).gehennom_entered = 1;
+    }
+
     /* src/do.c:1879: after the new map and deferred arrival message, a
        same-named bones level gives one randomly chosen deja-vu message. */
     {
@@ -722,11 +742,15 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             if (temp) {
                 /* hellish_smoke_mesg() (do.c:2003) */
                 await pline(`It is ${temp > 0 ? 'hot' : 'cold'} here.`);
-                if (game.u.uz.dnum === game.hell_dnum && temp > 0)
-                    await You('smell smoke...');
+                if (game.dungeons?.[game.u.uz.dnum]?.flags?.hellish
+                    && temp > 0) {
+                    const { olfaction } = await import('./mondata.js');
+                    await You(`${olfaction(game.youmonst.data)
+                        ? 'smell' : 'sense'} smoke...`);
+                }
             } else if (prev_temperature > 0) {
                 await pline(`The heat ${
-                    game.u.uz0.dnum === game.hell_dnum
+                    game.dungeons?.[game.u.uz0.dnum]?.flags?.hellish
                         ? 'and smoke are' : 'is'} gone.`);
             } else if (prev_temperature < 0) {
                 await You('are out of the cold.');

@@ -18,7 +18,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
-import { Is_dragon_armor, nolimbs } from './mondata.js';
+import { Is_dragon_armor, nolimbs, nohands, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { erode_obj, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
@@ -1006,6 +1006,10 @@ export async function doremring() {
 
 // src/do_wear.c:2432 dowear() — the 'W' command.
 export async function dowear() {
+    if (verysmall(game.youmonst.data) || nohands(game.youmonst.data)) {
+        await pline("Don't even bother.");
+        return ECMD_OK;
+    }
     const { getobj } = await import('./invent.js');
     const { wear_ok } = await import('./cmd.js');
     const otmp = await getobj('wear', wear_ok, 0);

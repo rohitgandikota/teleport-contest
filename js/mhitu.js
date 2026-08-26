@@ -53,6 +53,7 @@ import { is_pool, t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { find_offensive, use_offensive } from './muse.js';
 import { steal } from './steal.js';
+import { castmu } from './mcastu.js';
 
 function note_unported_mhitu(what) {
     (game.unported ||= new Set()).add(what);
@@ -484,6 +485,21 @@ export function getmattk(magr, mdef, indx, prev_result) {
         }
         return alt;
     }
+
+    /* src/mhitu.c:416: a lich uses weaker physical touch damage when its
+       target resists cold, unless the target is a shade. */
+    const cold_resistant_target = mdef === game.youmonst
+        ? Cold_resistance() : resists_cold(mdef);
+    if (indx === 0 && attk[0] === A.AT_TUCH && attk[1] === A.AD_COLD
+        && cold_resistant_target
+        && mdef.data.pmidx !== PMNAMES.PM_SHADE) {
+        const alt = [...attk];
+        alt[1] = A.AD_PHYS;
+        alt[2] = Math.trunc((alt[2] + 1) / 2);
+        if (alt[3] === 10)
+            alt[3] = 6;
+        return alt;
+    }
     return attk;
 }
 
@@ -839,7 +855,7 @@ export async function mattacku(mtmp) {
             if (v.range2)
                 note_unported_mhitu('mattacku:buzzmu');
             else
-                note_unported_mhitu('mattacku:castmu');
+                sum[i] = await castmu(mtmp, mattk, true, v.foundyou);
             break;
 
         default: /* no attack */
@@ -1108,8 +1124,10 @@ export async function mdamageu(mtmp, n) {
         showdamage(n);
         if (game.u.mh > game.u.mhmax)
             game.u.mh = game.u.mhmax;
-        if (game.u.mh < 1)
-            note_unported_mhitu('mdamageu:rehumanize');
+        if (game.u.mh < 1) {
+            const { rehumanize } = await import('./polyself.js');
+            await rehumanize();
+        }
     } else {
         const shownHp = game.u.uhp;
         game.u.uhp -= n;

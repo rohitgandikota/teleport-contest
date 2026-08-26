@@ -77,7 +77,7 @@ import { is_rider } from './makemon.js';
 import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          MMOVE_NOMOVES, engulfing_u, NEED_WEAPON, NEED_HTH_WEAPON,
          NEED_PICK_AXE, NEED_AXE, NEED_PICK_OR_AXE,
-         Upolyd, u_at } from './const.js';
+         Upolyd, u_at, M_ATTK_HIT } from './const.js';
 import { mon_wield_item } from './weapon.js';
 import { mattacku } from './mhitu.js';
 import { noattacks } from './mondata.js';
@@ -1225,7 +1225,9 @@ export async function dochug(mtmp) {
             for (const a of mdat.mattk) {
                 if (a[0] === ATTKS.AT_MAGC
                     && (a[1] === ATTKS.AD_SPEL || a[1] === ATTKS.AD_CLRC)) {
-                    note_unported('castmu');
+                    const { castmu } = await import('./mcastu.js');
+                    if ((await castmu(mtmp, a, false, false)) & M_ATTK_HIT)
+                        status = MMOVE_DONE;
                     break;
                 }
             }

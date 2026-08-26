@@ -32,7 +32,7 @@ import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
 import { canspotmon, newsym } from './display.js';
 import { cansee, does_block, block_point } from './vision.js';
-import { COLNO, ROWNO } from './const.js';
+import { COLNO, ROWNO, MFAST } from './const.js';
 import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
          amorphous, throws_rocks, haseyes, is_flyer, is_whirly,
          noncorporeal } from './mondata.js';
@@ -100,6 +100,9 @@ export const {
 
 // include/mondata.h predicates, one line each as in C.
 const is_golem = (ptr) => ptr.mlet === S_GOLEM;
+const is_bat = (ptr) => ptr.pmidx === PMNAMES.PM_BAT
+                     || ptr.pmidx === PMNAMES.PM_GIANT_BAT
+                     || ptr.pmidx === PMNAMES.PM_VAMPIRE_BAT;
 export const is_male = (ptr) => (ptr.mflags2 & M2_MALE) !== 0;
 export const is_female = (ptr) => (ptr.mflags2 & M2_FEMALE) !== 0;
 const always_hostile = (ptr) => (ptr.mflags2 & M2_HOSTILE) !== 0;
@@ -2020,7 +2023,7 @@ export function makemon(ptr, x, y, mmflags) {
         /* C zeroes the whole struct (cg.zeromonst); movement in particular
            must start at 0, or movemon() lets the monster act on turn 1 when
            C makes it wait for its first allotment. */
-        movement: 0, mspeed: 0,
+        movement: 0, mspeed: 0, permspeed: 0,
         /* mux/muy are where the monster THINKS the hero is. set_apparxy()
            assigns them each turn and is not ported; until it is, they have to
            read as C's zeroed 0 rather than undefined, because monlineu() feeds
@@ -2110,7 +2113,9 @@ export function makemon(ptr, x, y, mmflags) {
             mtmp.mpeaceful = true;
         break;
     case S_BAT:
-        /* Inhell only; mon_adjust_speed draws nothing */
+        /* src/makemon.c:1344: true bats are permanently fast in Gehennom. */
+        if (Inhell() && is_bat(ptr))
+            mtmp.mspeed = mtmp.permspeed = MFAST;
         break;
     default:
         break;

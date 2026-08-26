@@ -1914,7 +1914,7 @@ const defmorestr = '--More--';
 // "--More--" and CONSUMES A KEY. Without that, the key meant for the --More--
 // is read by whatever comes next — which is how the tutorial menu ended up on
 // its second pass.
-export async function pline(msg) {
+async function prepare_pline() {
     /* src/pline.c:266-274 — a message settles any pending vision recalc and
        flushes the screen FIRST, so the map and status under it are current.
        During goto_level's flush_screen(-1) bracket the flush is a no-op and
@@ -1923,6 +1923,10 @@ export async function pline(msg) {
         vision_recalc(0);
     if (game.u?.ux)
         await flush_screen(1);
+}
+
+export async function pline(msg) {
+    await prepare_pline();
 
     /* src/pline.c vpline() -> putstr(WIN_MESSAGE) -> tty_putstr() ->
        update_topl(). Assigning the message straight into the top line skipped
@@ -1932,6 +1936,19 @@ export async function pline(msg) {
     /* src/pline.c vpline() records the most recent individual message after
        the tty has accepted it. Norep compares against this, not against the
        combined top line that update_topl may have built. */
+    game._prevmsg = msg;
+}
+
+// src/pline.c:315 urgent_pline().  The tty lifts ESC message suppression only
+// after pline's vision and screen flush.  Doing it earlier briefly painted a
+// suppressed spell message before the urgent polymorph-reversion message.
+export async function urgent_pline(msg) {
+    await prepare_pline();
+    if (game._win_stop) {
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+        game._win_stop = false;
+    }
+    await update_topl(msg);
     game._prevmsg = msg;
 }
 

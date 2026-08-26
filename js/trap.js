@@ -1398,6 +1398,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_hole(mtmp, trap, trflags);
     case RUST_TRAP:
         return await trapeffect_rust_trap(mtmp, trap, trflags);
+    case FIRE_TRAP:
+        return await trapeffect_fire_trap(mtmp, trap, trflags);
     case ROLLING_BOULDER_TRAP:
         return await trapeffect_rolling_boulder_trap(mtmp, trap, trflags);
     case TELEP_TRAP:

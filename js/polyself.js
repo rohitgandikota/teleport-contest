@@ -311,6 +311,53 @@ async function newman() {
     return 1;
 }
 
+// src/polyself.c:1367 rehumanize() and :200 polyman(). Restore the saved
+// attributes and base form when a polymorphed body runs out of hit points.
+export async function rehumanize() {
+    const u = game.u;
+    if (!Upolyd(u))
+        return;
+
+    if (u.uprops?.UNCHANGING) {
+        (game.unported ||= new Set()).add('rehumanize:unchanging');
+        return;
+    }
+
+    const { Blind } = await import('./youprop.js');
+    const was_blind = Blind();
+
+    u.acurr = clone_attr(u.macurr);
+    u.amax = clone_attr(u.mamax);
+    u.umonnum = u.umonster;
+    game.flags.female = !!u.mfemale;
+    game.youmonst.data = game.mons?.[u.umonster] || mons[u.umonster];
+    game.youmonst.mnum = u.umonster;
+    u.mh = u.mhmax = 0;
+    u.mtimedone = 0;
+    u.uundetected = 0;
+
+    const { find_ac } = await import('./do_wear.js');
+    find_ac();
+    const { newsym, see_monsters, urgent_pline } = await import('./display.js');
+    newsym(u.ux, u.uy);
+    await urgent_pline(`You return to ${game.urace.adj} form!`);
+
+    if (was_blind && !Blind()) {
+        (u.intrinsic ||= {}).HBlinded = 1;
+        u.ublind = 1;
+        const { make_blinded } = await import('./potion.js');
+        await make_blinded(0, true);
+    }
+
+    const { nomul } = await import('./hack.js');
+    nomul(0);
+    (game.disp ||= {}).botl = true;
+    game.vision_full_recalc = 1;
+    see_monsters();
+    const { encumber_msg } = await import('./attrib.js');
+    await encumber_msg();
+}
+
 // src/polyself.c:735 polymon(): install a monster form. The shared state,
 // hit-dice, armor-fit and wielded-object paths are live for every form; rare
 // form-specific effects remain recorded at their trigger.

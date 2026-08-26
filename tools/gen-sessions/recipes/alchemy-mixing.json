@@ -1,0 +1,19 @@
+{
+  "name": "alchemy-mixing",
+  "description": "Debug Wizard mixes healing and speed potions, including cursed and smock-modified alchemy.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "object.potions",
+    "object.alchemy"
+  ],
+  "segments": [
+    {
+      "seed": 6205,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of healing\r\u0017uncursed potion of speed\r#dip\ref \u001b\u0017uncursed potion of healing\r\u0017uncursed potion of speed\r#dip\rgh  \u0017cursed potion of healing\r\u0017uncursed potion of speed\r#dip\rij \u001b\u0017uncursed alchemy smock\rWk\u0017blessed potion of healing\r\u0017uncursed potion of speed\r#dip\rlm  "
+    }
+  ]
+}

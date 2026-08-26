@@ -8,7 +8,7 @@
 
 import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
-import { docrt, pline } from './display.js';
+import { docrt, flush_screen, pline } from './display.js';
 import { discover_object } from './o_init.js';
 import { an, xname } from './objnam.js';
 import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
@@ -524,6 +524,10 @@ export async function donamelevel() {
 export async function docall(obj) {
     if (!obj.dknown)
         return; /* probably blind */
+
+    /* src/do_name.c:644 flushes pending status changes before either the
+       acknowledgement prompt or the naming prompt captures a frame. */
+    await flush_screen(1);
 
     /* safe_qbuf(qbuf, "Call ", ":", obj, docall_xname, simpleonames, "thing")
        — docall_xname() strips quantity and BUC so the prompt names the TYPE,

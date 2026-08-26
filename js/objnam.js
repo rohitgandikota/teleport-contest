@@ -309,7 +309,7 @@ export function xname(obj) {
                     ? (obj.blessed ? 'holy ' : 'unholy ') : '';
                 buf += ` of ${holy}${actualn}`;
             } else if (un) buf += ` called ${un}`;
-            else buf = `${dn} potion`;
+            else buf = `${obj.odiluted ? 'diluted ' : ''}${dn} potion`;
         }
         break;
     case SCROLL_CLASS:

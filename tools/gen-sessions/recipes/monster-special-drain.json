@@ -1,0 +1,22 @@
+{
+  "name": "monster-special-drain",
+  "description": "Debug level-20 Valkyrie creates a wraith and survives repeated draining touches to exercise life drain, experience loss, and maximum-stat updates.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "combat.melee"
+  ],
+  "segments": [
+    {
+      "seed": 6914,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0007wraith\rmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsms"
+    }
+  ]
+}

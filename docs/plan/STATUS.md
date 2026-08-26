@@ -1,5 +1,27 @@
 # STATUS — live handoff board
 
+## 2026-08-26: confusion gaze and life drain
+
+Two independent C oracles close the `monster.special-effects` coverage gap.
+`monster-special-gaze` uses seed 6913 to exercise the umber hulk's timed
+confusion gaze. `monster-special-drain` uses seed 6914 to exercise repeated
+wraith touches, the one-in-three drain gate, magical cancellation, experience
+level loss, intrinsic rollback, and role-specific farewell text. Two fresh
+recordings of each fixture were byte-identical. Their SHA-256 values are
+`2d1997ec0e2edd323c803e16af800d6c69da0fe4916f5b79b0c86e3d67c5a515`
+and `91176e4737aaabc869a5f70d99977eab5e65bcb67a4edc640bbf42eb5a8d5fb5`.
+
+The port matches the gaze fixture at 61/61 screens, 61/61 cursors, and
+2,596/2,596 RNG calls. It matches the drain fixture at 81/81 screens, 81/81
+cursors, and 2,994/2,994 RNG calls. Public local remains perfect at
+11,405/11,405 screens, 792,838/792,838 RNG calls, and 44/44 exact sessions.
+The expanded supplemental corpus now has 55 sessions and 5,725 frames. It is
+5,720/5,725 cell-exact and 1,037,072/1,037,072 RNG-exact, with 5,342/5,725
+formally exact screens and 54/55 formal session passes. The sole formal
+failure remains the recorder-corrupted `gehennom-tour` cursor data. All 44
+public hang checks pass. Conservative full-game coverage is now 81 covered,
+6 partial, and 17 gaps out of 104.
+
 ## 2026-08-26: ranged monster attacks
 
 The three-segment `monster-ranged` C oracle uses independent seeds 6910

@@ -1657,6 +1657,24 @@ export async function mhitm_mgc_atk_negated(magr, mdef, verbosely) {
     return false;
 }
 
+// src/uhitm.c:2445 mhitm_ad_drli(), a monster draining the hero's life.
+// The one-in-three gate precedes drain resistance and magical cancellation,
+// so most successful touches do not spend the cancellation draw.
+export async function mhitm_ad_drli(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        note_unported_uhitm('mhitm_ad_drli:uhitm');
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!rn2(3) && !game.u.uprops?.DRAIN_RES
+            && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            const { losexp } = await import('./exper.js');
+            await losexp('life drainage');
+        }
+    } else {
+        note_unported_uhitm('mhitm_ad_drli:mhitm');
+    }
+}
+
 // src/uhitm.c:2626 mhitm_ad_cold(), a cold touch against the hero.
 export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
     const orig_dmg = mhm.damage;

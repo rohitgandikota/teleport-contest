@@ -1668,6 +1668,45 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
     }
 }
 
+// src/mondata.c:305 can_blnd(), restricted to a monster's physical
+// blindness attack against the hero. Ravens use AT_CLAW; facewear and a
+// visored helmet protect the hero's eyes.
+function can_blnd_u(magr, mattk) {
+    if (!haseyes(game.youmonst.data))
+        return false;
+    if (mattk[0] === ATTKS.AT_CLAW) {
+        if (game.u.ublindf)
+            return false;
+        const helm = game.u.uarmh;
+        if (helm && game.objects[helm.otyp]?.oc_descr === 'visored helmet')
+            return false;
+    } else if ((mattk[0] === ATTKS.AT_TUCH
+                || mattk[0] === ATTKS.AT_STNG) && magr.mcan) {
+        return false;
+    }
+    return true;
+}
+
+// src/uhitm.c:2958 mhitm_ad_blnd(), monster against hero arm.
+export async function mhitm_ad_blnd(magr, mattk, mdef, mhm) {
+    if (mdef !== game.youmonst) {
+        note_unported_uhitm('mhitm_ad_blnd:nonhero');
+        mhm.damage = 0;
+        return;
+    }
+
+    if (can_blnd_u(magr, mattk)) {
+        if (!game.u.ublind)
+            await pline(`${Monnam(magr)} blinds you!`);
+        const intr = (game.u.intrinsic ||= {});
+        const { make_blinded } = await import('./potion.js');
+        await make_blinded((intr.HBlinded | 0) + mhm.damage, false);
+        if (!game.u.ublind)
+            await Your('vision clears.');
+    }
+    mhm.damage = 0;
+}
+
 export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {
     const A = ATTKS;
     const pd = game.mons[mdef.mnum];

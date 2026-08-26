@@ -1929,6 +1929,10 @@ export async function pline(msg) {
        the state machine entirely: a second message overwrote the first instead
        of either joining it or raising --More-- and waiting for a key. */
     await update_topl(msg);
+    /* src/pline.c vpline() records the most recent individual message after
+       the tty has accepted it. Norep compares against this, not against the
+       combined top line that update_topl may have built. */
+    game._prevmsg = msg;
 }
 
 // win/tty/topl.c more() — draw the suffix, block for a key, clear the top line.

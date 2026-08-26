@@ -17,7 +17,8 @@ import { sp_lev_wire_mon } from './sp_lev.js';
 import { is_pool, is_lava, m_at, t_at, newcham, resists_ston,
          mongone } from './mon.js';
 import { do_attack } from './uhitm.js';
-import { is_safemon, mon_visible, sensemon, unmap_invisible } from './display.js';
+import { glyph_is_invisible_at, is_safemon, mon_visible, sensemon,
+         unmap_invisible } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
@@ -1282,6 +1283,19 @@ export async function rhack(key) {
         return;
     }
 
+    /* src/cmd.c:3693-3723 applies the same prefix validation to do_fight.
+       A nonmovement key is consumed by the rejected F command rather than
+       dispatched as its ordinary command. */
+    if (game.context.forcefight && !isMovementKey(ch)
+            && !'gGmF'.includes(ch)) {
+        const vertical = ch === '<' || ch === '>';
+        game.context.forcefight = 0;
+        game.context.move = 0;
+        await pline("The 'F' prefix should be followed by a movement command"
+                    + `${vertical ? ' other than up or down' : ''}.`);
+        return;
+    }
+
     if (isMovementKey(ch)) {
         /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
            prefix is pending, context.run. Keeping the direction on `u` is
@@ -1449,6 +1463,7 @@ export async function rhack(key) {
             game.context.move = 0;
         } else {
             game.context.forcefight = 1;
+            game._cmd_prefix_pending = true;
             game.context.move = 0;
         }
     } else if (ch === 't') {
@@ -1912,11 +1927,14 @@ async function domove_core() {
     const newx = u.ux + dx;
     const newy = u.uy + dy;
 
-    /* src/hack.c:2242 — with the fight prefix set, the hero attacks the target
-       square instead of moving onto it, whether or not anything is there. The
-       attack itself needs the combat code; what matters here is that the hero
-       does NOT move and the turn is still spent. */
-    if (game.context.forcefight && !m_at(newx, newy)) {
+    /* src/hack.c:2242: force-fighting an empty square, or walking into a stale
+       invisible-monster marker without nopick, attacks the square instead of
+       moving onto it. */
+    const empty_target = !m_at(newx, newy);
+    const stale_invisible = empty_target
+        && glyph_is_invisible_at(newx, newy)
+        && !game.context.nopick;
+    if (empty_target && (game.context.forcefight || stale_invisible)) {
         /* src/hack.c:2228 domove_fight_empty() handles the no-target case.
            A real target continues through domove_attackmon_at below while
            forcefight is still set, bypassing the peaceful-monster prompt. */

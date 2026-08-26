@@ -8,7 +8,7 @@
 // exact C decision point, so game.unported names what a divergence wanted.
 
 import { game } from './gstate.js';
-import { thrwmu, spitmm } from './mthrowu.js';
+import { breamm, thrwmu, spitmm } from './mthrowu.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_animal, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
@@ -48,7 +48,7 @@ import { nomul } from './hack.js';
 import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
 import { mhitm_ad_phys, mhitm_ad_cold, mhitm_ad_elec, mhitm_ad_drst,
-         mhitm_knockback } from './uhitm.js';
+         mhitm_ad_blnd, mhitm_knockback } from './uhitm.js';
 import { t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { find_offensive, use_offensive } from './muse.js';
@@ -786,7 +786,7 @@ export async function mattacku(mtmp) {
             break;
         case A.AT_BREA:
             if (v.range2)
-                note_unported_mhitu('mattacku:breamu');
+                sum[i] = await breamm(mtmp, mattk, game.youmonst);
             break;
         case A.AT_SPIT:
             if (v.range2)
@@ -964,6 +964,8 @@ async function hitmu(mtmp, mattk, indx) {
     } else if (mattk[1] === A.AD_DRST || mattk[1] === A.AD_DRDX
                || mattk[1] === A.AD_DRCO) {
         await mhitm_ad_drst(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_BLND) {
+        await mhitm_ad_blnd(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_LEGS) {
         const side = rn2(2) ? RIGHT_SIDE : LEFT_SIDE;
         const sidestr = side === RIGHT_SIDE ? 'right' : 'left';

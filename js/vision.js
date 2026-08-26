@@ -362,6 +362,12 @@ export function recalc_block_point(x, y) {
         unblock_point(x, y);
 }
 
+/* region.js is imported above by does_block(), so importing vision.js back
+   from region.js would close the module cycle. Publish the two incremental
+   update hooks after initialization, as mon.js does for mondied(). */
+game._block_point_ref = block_point;
+game._recalc_block_point_ref = recalc_block_point;
+
 // Bresenham quadrant path functions (C ref: vision.c q1-q4_path)
 function q1_path(srow, scol, y2, x2) {
     let x = scol, y = srow;
@@ -818,6 +824,10 @@ export function init_vision_globals() {
     game.cs_rows = null;
     game.cs_left = null;
     game.cs_right = null;
+    /* init_game() clears the shared state object between sessions. Restore
+       the region hooks each time along with the other vision globals. */
+    game._block_point_ref = block_point;
+    game._recalc_block_point_ref = recalc_block_point;
 }
 
 // src/vision.c:1612 clear_path() — is there an unobstructed straight line from

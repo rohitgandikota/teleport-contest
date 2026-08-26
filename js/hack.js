@@ -640,6 +640,11 @@ export async function domove_fight_empty(x, y) {
         } else {
             buf = 'thin air';
         }
+        /* src/hack.c removes a stale invisible-monster marker before drawing
+           and reporting the empty-square attack. newsym restores any real
+           terrain or object which was hidden underneath it. */
+        unmap_invisible(x, y);
+        newsym(x, y);
         const solid_or_boulder = !!(boulder || solid);
         await You(`${solid_or_boulder ? 'harmlessly ' : ''}attack ${buf}.`);
         nomul(0);

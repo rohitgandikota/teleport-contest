@@ -1402,6 +1402,7 @@ export function set_mimic_sym(mtmp) {
         mtmp.mcorpsenm = mndx;
     } else if (ap_type === M_AP_OBJECT && appear === ONAMES.SLIME_MOLD) {
         mtmp.mcorpsenm = game.context.current_fruit;
+        game.flags.made_fruit = true;
     } else if (ap_type === M_AP_FURNITURE && appear === MONSYMS.S_altar) {
         const algn = rn2(3) - 1; /* -1 chaos, 0 neutral, +1 law */
         const inhell = game.u?.uz?.dnum === game.hell_dnum;

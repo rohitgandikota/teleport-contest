@@ -1101,7 +1101,7 @@ export function newsym(x, y) {
                 ? game.level.monAt.get(`${x},${y}`)
                 : (game.level?.monsters || [])
                     .find(m => m.mx === x && m.my === y && m.mhp > 0);
-            if (!mon_overrides_region(mon0 || null, x, y)) {
+            if (!mon_overrides_region(mon0?.mhp > 0 ? mon0 : null, x, y)) {
                 show_region(reg, x, y);
                 return;
             }
@@ -1149,11 +1149,12 @@ export function newsym(x, y) {
     // visible. Memory (lev->glyph in C, _map_location()) stores the object
     // layer too — a monster is drawn OVER it and is not itself remembered.
     if (cansee(x, y)) {
-        const mon = game.level?.monAt instanceof Map
+        const mon0 = game.level?.monAt instanceof Map
             ? game.level.monAt.get(`${x},${y}`)
             : (game.level?.monsters || [])
                 .find(m => m.mx === x && m.my === y && m.mhp > 0
                            && !m.msleeping_hidden);
+        const mon = mon0?.mhp > 0 ? mon0 : null;
         /* src/display.c:1031 — an 'I' stays mapped until some action proves
            that it is stale. Merely seeing the square again is not proof. */
         if (!(mon && canspotmon(mon)) && glyph_is_invisible_at(x, y)) {
@@ -1468,9 +1469,14 @@ export async function docrt() {
         if (mtmp.mhp <= 0) continue;
         newsym(mtmp.mx, mtmp.my);
     }
-    if (game.u?.ux > 0 && canspotself())
-        show_glyph_cell(game.u.ux, game.u.uy, '@', CLR_WHITE, false, 0,
-                        { kind: 'hero' });
+    if (game.u?.ux > 0 && canspotself()) {
+        const self = game.youmonst?.data;
+        show_glyph_cell(game.u.ux, game.u.uy,
+                        Upolyd(game.u)
+                            ? (def_monsyms[self.mlet] || '?') : '@',
+                        Upolyd(game.u) ? self.mcolor : CLR_WHITE,
+                        false, 0, { kind: 'hero' });
+    }
 
     /* C's docrt() only refills the glyph buffer; the physical paint comes
        from the flush its caller always reaches before the next input (the
@@ -2333,20 +2339,26 @@ export function map_trap(trap, show) {
 
 // src/display.c:233 magic_map_background() — write the true terrain into map
 // memory for one cell, with the dark-cell corrections: an unlit unseen room
-// floor is remembered as NOTHING (dark rooms stay blank on a magic map) and
-// an unlit unseen corridor is the dark form. Memory is only overwritten when
-// it currently holds background (never a remembered object).
+// floor is remembered as DARKROOMSYM when dark-room display is enabled and as
+// NOTHING otherwise; an unlit unseen corridor is the dark form. Memory is only
+// overwritten when it currently holds background (never a remembered object).
 export function magic_map_background(x, y, show) {
     const loc = game.level?.at(x, y);
     if (!loc) return;
 
     let tg = terrain_glyph(loc, x, y);
-    /* The recorded magic maps SHOW the floors of unvisited LIT rooms and
-       blank only the unlit ones, so the lit bit stands in for waslit here
-       (an unvisited room can never have waslit set). */
-    if (!cansee(x, y) && !loc.waslit && !loc.lit) {
-        if (loc.typ === ROOM && tg.cmap === cmap_names.S_room)
-            tg = null;                          /* GLYPH_NOTHING */
+    /* src/display.c:242: out-of-sight room and corridor memory follows what
+       the hero remembers, not the square's current light bit. */
+    if (!cansee(x, y) && !loc.waslit) {
+        if (loc.typ === ROOM && tg.cmap === cmap_names.S_room) {
+            if (dark_room_color()) {
+                const dr = darkroomsym_cell();
+                tg = { ch: dr.ch, color: dr.color, dec: dr.decgfx,
+                       cmap: cmap_names.S_darkroom };
+            } else {
+                tg = null;                      /* GLYPH_NOTHING */
+            }
+        }
         else if (loc.typ === CORR)
             tg = { ch: '#', color: NO_COLOR, dec: false,
                    cmap: cmap_names.S_corr };   /* dark corr */

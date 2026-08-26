@@ -231,7 +231,6 @@ export async function getpos(ccp, force, goal) {
                         || sidx === CM.S_ndoor)
                         continue;
                     const ds = defsyms[sidx];
-                    if (!ds.explain) continue;
                     if (ch === ds.sym
                         || (ch === ds.ch && !ds.dec)
                         || (ch === '^' && sidx >= CM.S_arrow_trap

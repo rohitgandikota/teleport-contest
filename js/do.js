@@ -20,10 +20,11 @@ import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, BC_BALL, BC_CHAIN } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
+import { Blind } from './youprop.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
 import { can_reach_floor } from './pickup.js';
@@ -50,7 +51,7 @@ function note_unported_do(what) {
 }
 
 // src/ball.c:147 unplacebc_core(): detach punishment pieces from this level.
-function unplacebc() {
+export function unplacebc() {
     const u = game.u;
     const ball = u.uball;
     const chain = u.uchain;
@@ -60,15 +61,26 @@ function unplacebc() {
     if (ball.where !== OBJ_INVENT) {
         const bx = ball.ox, by = ball.oy;
         obj_extract_self(ball);
+        if (Blind() && ((u.bc_felt | 0) & BC_BALL)) {
+            const loc = game.level?.at(bx, by);
+            if (loc)
+                loc.remembered_glyph = u.bglyph;
+        }
         newsym(bx, by);
     }
     const cx = chain.ox, cy = chain.oy;
     obj_extract_self(chain);
+    if (Blind() && ((u.bc_felt | 0) & BC_CHAIN)) {
+        const loc = game.level?.at(cx, cy);
+        if (loc)
+            loc.remembered_glyph = u.cglyph;
+    }
     newsym(cx, cy);
+    u.bc_felt = 0;
 }
 
 // src/ball.c:120 placebc_core(): put punishment pieces under the arriving hero.
-async function placebc() {
+export async function placebc() {
     const u = game.u;
     const ball = u.uball;
     const chain = u.uchain;
@@ -84,6 +96,7 @@ async function placebc() {
         u.bc_order = 1; /* BCPOS_CHAIN */
     }
     place_object(chain, u.ux, u.uy);
+    u.bglyph = u.cglyph = game.level?.at(u.ux, u.uy)?.remembered_glyph;
     newsym(u.ux, u.uy);
 }
 

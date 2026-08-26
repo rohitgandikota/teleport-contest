@@ -25,7 +25,7 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, nomul, domove_attackmon_at, spoteffects, dopickup, trapmove, doorless_door, could_move_onto_boulder } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
-import { Hallucination } from './youprop.js';
+import { Blind, Hallucination } from './youprop.js';
 import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
@@ -75,7 +75,7 @@ import { show_menu_controls } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
-import { newsym, flush_screen, pline, docrt, paint_topline, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
+import { newsym, flush_screen, pline, docrt, map_object, paint_topline, tty_clear_nhwindow_message, TOPLINE_SPECIAL_PROMPT, TOPLINE_EMPTY, TOPLINE_NEED_MORE, more } from './display.js';
 import { vision_recalc } from './vision.js';
 import { COLNO, ROWNO, STONE, DOOR, D_CLOSED, D_LOCKED, D_NODOOR, D_BROKEN, IS_WALL, IS_OBSTRUCTED, IS_DOOR, IS_FURNITURE } from './const.js';
 import { dosearch } from './detect.js';
@@ -1679,6 +1679,56 @@ function punishmentOrder(ball, chain, ballOnFloor) {
     return BCPOS_DIFFER;
 }
 
+// src/ball.c:380 set_bc(): preserve what lies beneath the punishment pieces
+// just before sight is lost, then mark the pieces as felt.
+export function set_bc(alreadyBlind = false) {
+    const u = game.u;
+    const ball = u.uball;
+    const chain = u.uchain;
+    if (!ball || !chain)
+        return;
+
+    const ballOnFloor = ball.where === OBJ_FLOOR;
+    u.bc_order = punishmentOrder(ball, chain, ballOnFloor);
+    u.bc_felt = ballOnFloor ? BC_BALL | BC_CHAIN : BC_CHAIN;
+
+    const memoryAt = (x, y) => game.level?.at(x, y)?.remembered_glyph;
+    if (alreadyBlind || u.uswallow) {
+        u.cglyph = u.bglyph = memoryAt(u.ux, u.uy);
+        return;
+    }
+
+    obj_extract_self(chain);
+    if (ballOnFloor)
+        obj_extract_self(ball);
+
+    newsym(chain.ox, chain.oy);
+    u.cglyph = memoryAt(chain.ox, chain.oy);
+
+    if (u.bc_order === BCPOS_DIFFER) {
+        place_object(chain, chain.ox, chain.oy);
+        newsym(chain.ox, chain.oy);
+        if (ballOnFloor) {
+            newsym(ball.ox, ball.oy);
+            u.bglyph = memoryAt(ball.ox, ball.oy);
+            place_object(ball, ball.ox, ball.oy);
+            newsym(ball.ox, ball.oy);
+        }
+    } else {
+        u.bglyph = u.cglyph;
+        if (u.bc_order === BCPOS_CHAIN) {
+            if (ballOnFloor)
+                place_object(ball, ball.ox, ball.oy);
+            place_object(chain, chain.ox, chain.oy);
+        } else {
+            place_object(chain, chain.ox, chain.oy);
+            if (ballOnFloor)
+                place_object(ball, ball.ox, ball.oy);
+        }
+        newsym(chain.ox, chain.oy);
+    }
+}
+
 function chainRock(x, y) {
     const loc = game.level?.at?.(x, y);
     return !loc || IS_OBSTRUCTED(loc.typ) || closed_door(x, y);
@@ -1855,11 +1905,13 @@ async function preparePunishmentMove(x, y) {
         }
     }
 
-    obj_extract_self(chain);
-    newsym(chain.ox, chain.oy);
-    if (ballOnFloor) {
-        obj_extract_self(ball);
-        newsym(ball.ox, ball.oy);
+    if (!Blind()) {
+        obj_extract_self(chain);
+        newsym(chain.ox, chain.oy);
+        if (ballOnFloor) {
+            obj_extract_self(ball);
+            newsym(ball.ox, ball.oy);
+        }
     }
     return state;
 }
@@ -1867,6 +1919,71 @@ async function preparePunishmentMove(x, y) {
 function finishPunishmentMove(state) {
     if (!state)
         return;
+
+    if (Blind()) {
+        const u = game.u;
+        const { ball, chain } = state;
+        const memoryAt = (x, y) => game.level?.at(x, y)?.remembered_glyph;
+        const setMemory = (x, y, glyph) => {
+            const loc = game.level?.at(x, y);
+            if (loc)
+                loc.remembered_glyph = glyph;
+        };
+        const moveObject = (obj, x, y) => {
+            obj_extract_self(obj);
+            place_object(obj, x, y);
+        };
+        const control = state.control;
+
+        if ((control & BC_BALL) && (control & BC_CHAIN)) {
+            if ((u.bc_felt | 0) & BC_BALL)
+                setMemory(ball.ox, ball.oy, u.bglyph);
+            if ((u.bc_felt | 0) & BC_CHAIN)
+                setMemory(chain.ox, chain.oy, u.cglyph);
+            u.bc_felt = 0;
+            u.bglyph = memoryAt(state.ballx, state.bally);
+            u.cglyph = memoryAt(state.chainx, state.chainy);
+            moveObject(ball, state.ballx, state.bally);
+            moveObject(chain, state.chainx, state.chainy);
+        } else if (control & BC_BALL) {
+            if ((u.bc_felt | 0) & BC_BALL) {
+                if (u.bc_order === BCPOS_DIFFER) {
+                    setMemory(ball.ox, ball.oy, u.bglyph);
+                } else if (u.bc_order === BCPOS_BALL) {
+                    if ((u.bc_felt | 0) & BC_CHAIN)
+                        map_object(chain, 0);
+                    else
+                        setMemory(ball.ox, ball.oy, u.bglyph);
+                }
+                u.bc_felt &= ~BC_BALL;
+            }
+            u.bglyph = (state.ballx !== state.chainx
+                        || state.bally !== state.chainy)
+                ? memoryAt(state.ballx, state.bally) : u.cglyph;
+            moveObject(ball, state.ballx, state.bally);
+        } else if (control & BC_CHAIN) {
+            if ((u.bc_felt | 0) & BC_CHAIN) {
+                if (u.bc_order === BCPOS_DIFFER) {
+                    setMemory(chain.ox, chain.oy, u.cglyph);
+                } else if (u.bc_order === BCPOS_CHAIN) {
+                    if ((u.bc_felt | 0) & BC_BALL)
+                        map_object(ball, 0);
+                    else
+                        setMemory(chain.ox, chain.oy, u.cglyph);
+                }
+                u.bc_felt &= ~BC_CHAIN;
+            }
+            u.cglyph = (state.ballx !== state.chainx
+                        || state.bally !== state.chainy)
+                ? memoryAt(state.chainx, state.chainy) : u.bglyph;
+            moveObject(chain, state.chainx, state.chainy);
+        }
+
+        u.bc_order = punishmentOrder(ball, chain,
+                                     ball.where === OBJ_FLOOR);
+        return;
+    }
+
     const chainOnTop = (state.control & BC_CHAIN)
                        || (!state.control && state.order === BCPOS_CHAIN);
     if (chainOnTop) {

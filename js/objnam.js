@@ -26,7 +26,8 @@ import { is_weptool, is_rustprone, is_corrodeable, is_flammable,
          is_crackable, is_rottable } from './mkobj.js';
 import { is_damageable } from './trap.js';
 import { bimanual } from './obj.js';
-import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP, plur, P_BOW, W_SWAPWEP,
+import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
+         W_BALL, W_CHAIN, plur, P_BOW, W_SWAPWEP,
          MALE, FEMALE, NEUTER, NEUTRAL, CORPSTAT_MALE, CORPSTAT_FEMALE,
          CORPSTAT_RANDOM, CORPSTAT_NEUTER, CORPSTAT_HISTORIC, NON_PM, LOW_PM,
          ismnum, SPE_LIM, RANDOM_TIN, GOLD_SYM, WT_IRON_BALL_INCR,
@@ -57,7 +58,7 @@ import { tty_yn_function } from './tty/topl.js';
 const {
     COIN_CLASS, POTION_CLASS, SCROLL_CLASS, WAND_CLASS, SPBOOK_CLASS,
     RING_CLASS, AMULET_CLASS, ARMOR_CLASS, GEM_CLASS, WEAPON_CLASS,
-    TOOL_CLASS, FOOD_CLASS, VENOM_CLASS, CHAIN_CLASS, ROCK_CLASS,
+    TOOL_CLASS, FOOD_CLASS, VENOM_CLASS, BALL_CLASS, CHAIN_CLASS, ROCK_CLASS,
     MAXOCLASSES,
 } = OCLASSES;
 
@@ -180,10 +181,8 @@ export function An(str) {
     return t.charAt(0).toUpperCase() + t.slice(1);
 }
 
-// src/objnam.c makeplural() — only the regular rules plus the "X of Y" case,
-// which is the one that matters for object names: "scroll of magic mapping"
-// pluralises the HEAD noun, giving "scrolls of magic mapping", not
-// "scroll of magic mappings".
+// src/objnam.c makeplural(), compound suffixes stay singular while the head
+// noun changes: "scrolls labeled KIRJE", not "scroll labeled KIRJEs".
 /* src/objnam.c:2689 as_is[] — words whose plural is spelled the same.
    Only the tail word is tested, matching singplur_lookup's endstring. */
 const as_is = [
@@ -197,9 +196,9 @@ const as_is = [
 ];
 
 export function makeplural(s) {
-    const of = s.indexOf(' of ');
-    if (of > 0)
-        return makeplural(s.slice(0, of)) + s.slice(of);
+    const compound = singplur_compound(s);
+    if (compound > 0)
+        return makeplural(s.slice(0, compound)) + s.slice(compound);
 
     /* src/objnam.c:2911 singplur_lookup + :2916 — "ya" (alone or as the
        last word) stays "ya"; the as_is[] words are already plural-shaped */
@@ -278,6 +277,9 @@ export function xname(obj) {
     case COIN_CLASS:
     case CHAIN_CLASS:
         buf = actualn;
+        break;
+    case BALL_CLASS:
+        buf = `${obj.owt > ocl.oc_weight ? 'very ' : ''}heavy iron ball`;
         break;
     case WEAPON_CLASS:
         if (obj.opoisoned) buf = 'poisoned ';
@@ -1046,6 +1048,11 @@ export function doname(obj) {
            unlike tools there is no oc_charged gate. */
         if (known)
             bp += ` (${obj.recharged || 0}:${obj.spe})`;
+        break;
+    case BALL_CLASS:
+    case CHAIN_CLASS:
+        if (obj.owornmask & (W_BALL | W_CHAIN))
+            bp += ` (${obj.owornmask & W_BALL ? 'chained' : 'attached'} to you)`;
         break;
     default:
         break;

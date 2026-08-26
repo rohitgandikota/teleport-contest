@@ -254,6 +254,13 @@ export async function make_blinded(xtime, talk) {
             await pline('A cloud of darkness falls upon you.');
     }
 
+    /* src/potion.c:308: capture the glyphs under an attached ball and chain
+       before the blindness flag changes. */
+    if (!was_blind && blind_now && u.uball && u.uchain) {
+        const { set_bc } = await import('./cmd.js');
+        set_bc(false);
+    }
+
     /* C does not change HBlinded until after the transition message. If that
        message first blocks on an older --More-- prompt, the old Blind status
        remains visible throughout the wait. */

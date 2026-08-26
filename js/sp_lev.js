@@ -105,14 +105,14 @@ import {
 var add_room_fn, add_door_fn, somexy_fn;
 
 // src/sp_lev.c:2731 fill_special_room()
-export function fill_special_room(croom) {
+export async function fill_special_room(croom) {
     if (!croom)
         return;
 
     /* subrooms first, so an unfilled outer room does not block a special
        subroom and vice versa */
     for (const sub of croom.sbrooms || [])
-        fill_special_room(sub);
+        await fill_special_room(sub);
 
     if (croom.rtype === OROOM || croom.rtype === THEMEROOM
         || croom.needfill === FILL_NONE)
@@ -122,7 +122,7 @@ export function fill_special_room(croom) {
         if (croom.rtype >= SHOPBASE) {
             /* src/mklev.c fill_special_room() — a shop's stock and its
                shopkeeper. stock_room sets has_shop itself. */
-            stock_room(croom.rtype - SHOPBASE, croom);
+            await stock_room(croom.rtype - SHOPBASE, croom);
             return;
         }
 

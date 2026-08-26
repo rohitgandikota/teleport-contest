@@ -3,7 +3,8 @@ import { dist2 } from './hacklib.js';
 import { m_dowear } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
 import { ceiling_hider, emits_light, resist_conflict } from './mondata.js';
-import { new_light_source, del_light_source, LS_MONSTER } from './light.js';
+import { new_light_source, del_light_source, any_light_source,
+         LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear, m_everyturn_effect,
          set_apparxy as set_apparxy_ref, monflee } from './monmove.js';
@@ -202,6 +203,10 @@ export async function movemon() {
         if (mtmp.mhp <= 0) continue;   /* died earlier in this sweep */
         if (await movemon_singlemon(mtmp)) break;
     }
+    /* src/mon.c:1332. Object light sources can move with their monster
+       carriers. Recalculate after the sweep even when no terrain changed. */
+    if (any_light_source())
+        game.vision_full_recalc = 1;
     clear_splitobjs();
     dmonsfree();
 

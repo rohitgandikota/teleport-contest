@@ -667,7 +667,7 @@ async function makelevel() {
            and proto levels too; makemaz FALLS THROUGH to it in C. The
            room-building middle and fill_ordinary_room are regular-only. */
         for (let i = 0; i < g.level.nroom; i++)
-            fill_special_room(g.level.rooms[i]);
+            await fill_special_room(g.level.rooms[i]);
         reset_xystart_size();
         post_level_generate();
         return;
@@ -736,7 +736,7 @@ async function makelevel() {
                 vaultRoom.needfill = FILL_NORMAL;
                 /* fills the vault with gold: one rn1(depth*100, 51) and one
                    next_ident per square */
-                fill_special_room(vaultRoom);
+                await fill_special_room(vaultRoom);
             }
             mk_knox_portal(vx.v + vw.v, vy.v + vh.v);
             if (!g.level.flags.noteleport && !rn2(3))
@@ -831,7 +831,7 @@ async function makelevel() {
        this is a special level, a proto level or an ordinary one. This is a
        SECOND fill_special_room() call site; the vault above is the first. */
     for (let i = 0; i < g.level.nroom; i++)
-        fill_special_room(g.level.rooms[i]);
+        await fill_special_room(g.level.rooms[i]);
 
     /* src/mklev.c:1420 themerooms_post_level_generate() — drain the handlers
        the fills queued. It runs AFTER every room is filled, which is the point:

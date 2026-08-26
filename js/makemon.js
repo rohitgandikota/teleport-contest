@@ -8,7 +8,7 @@
 // changes the number of draws, not just their values.
 
 import { game } from './gstate.js';
-import { new_light_source, LS_MONSTER } from './light.js';
+import { new_light_source, LS_OBJECT, LS_MONSTER } from './light.js';
 import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
 import { newcham, mon_wire_cham } from './mon.js';
@@ -45,7 +45,8 @@ import { is_pit, OBJ_FLOOR } from './const.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U, GP_CHECKSCARY, GP_AVOID_MONPOS, MM_IGNORELAVA,
     IS_WATERWALL, IS_ALTAR, Is_waterlevel, Is_airlevel, Is_firelevel,
-    Is_earthlevel, Is_astralevel, In_endgame as In_endgame_uz } from './const.js';
+    Is_earthlevel, Is_astralevel, In_sokoban,
+    In_endgame as In_endgame_uz } from './const.js';
 import { enexto_core, enexto, noteleport_level } from './teleport.js';
 import { mon_track_clear, onscary } from './monmove.js';
 /* questpgr.js has no imports back into makemon.js at module level except
@@ -846,8 +847,17 @@ function m_initinv(mtmp) {
                                        : ONAMES.WAX_CANDLE, true, false);
             otmp.quan = 1;
             otmp.owt = weight_fn(otmp);
-            if (!mpickobj(mtmp, otmp) && !game.level.at(mtmp.mx, mtmp.my)?.lit)
-                note_unported('m_initinv:begin_burn');
+            if (!mpickobj(mtmp, otmp)
+                && !game.level.at(mtmp.mx, mtmp.my)?.lit) {
+                /* src/timeout.c:1712 begin_burn(). A single candle has
+                   radius 2. Its 125- or 325-turn burn timer is longer than
+                   level-generation arrivals need, but the active object
+                   light source must exist immediately. */
+                otmp.lamplit = 1;
+                new_light_source(mtmp.mx, mtmp.my, 2, LS_OBJECT, otmp.o_id);
+                game.vision_full_recalc = 1;
+                note_unported('m_initinv:begin_burn_timer');
+            }
         }
         break;
     default:
@@ -2020,7 +2030,10 @@ export function makemon(ptr, x, y, mmflags) {
         do {
             if (!(ptr = rndmonst()))
                 return null;
-        } while (++tryct <= 50 && !goodpos(x, y, { data: ptr, wormno: 0 }));
+        } while (++tryct <= 50
+                 && ((tryct === 1 && throws_rocks(ptr)
+                      && In_sokoban(game.u.uz))
+                     || !goodpos(x, y, { data: ptr, wormno: 0 })));
         mndx = monsndx(ptr);
     }
     propagate(mndx, countbirth, false);

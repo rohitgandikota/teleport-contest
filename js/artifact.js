@@ -11,7 +11,11 @@ import { artifact_names, artifact_otyps, artifact_records,
          ART_GRIMTOOTH, ART_EXCALIBUR,
          ART_SUNSWORD } from './artilist_data.js';
 import { PMNAMES, MFLAGS, MONSYMS, ATTKS as ADTYPES } from './monst_data.js';
-import { is_covetous, is_mplayer } from './mondata.js';
+import { is_covetous, is_mplayer, defended, resists_fire, resists_cold,
+         resists_elec, resists_poison, resists_ston } from './mondata.js';
+import { is_vampshifter } from './monst.js';
+import { Fire_resistance, Cold_resistance, Shock_resistance,
+         Poison_resistance, Stone_resistance } from './youprop.js';
 import { rn2, rnd } from './rng.js';
 import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
@@ -360,10 +364,8 @@ export function defends_when_carried(adtyp, otmp) {
     return false;
 }
 
-// src/artifact.c:1009 spec_applies(), the DBONUS slice bane_applies uses.
-// The SPFX_ATTK resistance arms need resists_* which are not all ported;
-// bane_applies clears SPFX_ATTK before calling, so they cannot be reached
-// from touch_artifact.
+// src/artifact.c:1009 spec_applies(), shared by special attack bonuses and
+// the DBONUS slice used by bane_applies().
 function spec_applies(weap, mon) {
     if (!(weap.spfx & (SPFX_DBONUS | SPFX_ATTK)))
         return weap.attk.startsWith('PHYS');
@@ -387,6 +389,42 @@ function spec_applies(weap, mon) {
         return yours ? (game.u.ualign?.type !== rec_align(weap))
                      : (ptr.maligntyp === -128
                         || Math.sign(ptr.maligntyp) !== rec_align(weap));
+    else if (weap.spfx & SPFX_ATTK) {
+        const adtyp = arti_adtyp(weap.attk);
+        if (defended(yours ? null : mon, adtyp))
+            return false;
+
+        switch (adtyp) {
+        case ADTYPES.AD_FIRE:
+            return !(yours ? Fire_resistance() : resists_fire(mon));
+        case ADTYPES.AD_COLD:
+            return !(yours ? Cold_resistance() : resists_cold(mon));
+        case ADTYPES.AD_ELEC:
+            return !(yours ? Shock_resistance() : resists_elec(mon));
+        case ADTYPES.AD_MAGM:
+        case ADTYPES.AD_STUN:
+            return !(yours
+                ? (game.u.intrinsic?.HAntimagic || game.u.uprops?.ANTIMAGIC)
+                : rn2(100) < (ptr.mr | 0));
+        case ADTYPES.AD_DRST:
+            return !(yours ? Poison_resistance() : resists_poison(mon));
+        case ADTYPES.AD_DRLI: {
+            const bodyResists = ((ptr.mflags2 | 0)
+                    & (MFLAGS.M2_UNDEAD | MFLAGS.M2_DEMON | MFLAGS.M2_WERE))
+                || ptr.pmidx === PMNAMES.PM_DEATH
+                || (!yours && is_vampshifter(mon));
+            const heroResists = yours
+                && (game.u.intrinsic?.HDrain_resistance
+                    || game.u.uprops?.DRAIN_RES
+                    || (game.u.ulycn ?? -1) >= 0);
+            return !(bodyResists || heroResists);
+        }
+        case ADTYPES.AD_STON:
+            return !(yours ? Stone_resistance() : resists_ston(mon));
+        default:
+            return false;
+        }
+    }
     return false;
 }
 

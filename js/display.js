@@ -1269,6 +1269,7 @@ export function newsym(x, y) {
                     || (see_with_infrared(mon) && mon_visible(mon)))) {
             const shown = game.mons[Hallucination()
                 ? rn2_on_display_rng(NUMMONS) : mon.mnum];
+            clear_invisible_memory(x, y);
             show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
                             shown.mcolor ?? NO_COLOR, false, 0,
                             { kind: 'mon', mon });
@@ -1332,6 +1333,7 @@ export function newsym(x, y) {
             if (wl > 5) wl = 5;
             if (wl < 1) wl = 1;
             const warncolor = [CLR_WHITE, 1, 1, 1, 5, 13];
+            clear_invisible_memory(x, y);
             show_glyph_cell(x, y, String(wl), warncolor[wl], false, 0,
                             { kind: 'warn', wl });
             return;
@@ -2295,14 +2297,19 @@ export function glyph_is_invisible_at(x, y) {
     return game.level?.at(x, y)?.remembered_glyph?.glyph?.kind === 'invis';
 }
 
+function clear_invisible_memory(x, y) {
+    if (!isok(x, y) || !glyph_is_invisible_at(x, y))
+        return false;
+    const loc = game.level.at(x, y);
+    const tg = terrain_glyph(loc, x, y);
+    loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
+                             glyph: { kind: 'cmap', cmap: tg.cmap } };
+    return true;
+}
+
 // src/display.c unmap_invisible() — clear a stale 'I' marker.
 export function unmap_invisible(x, y) {
-    if (isok(x, y) && glyph_is_invisible_at(x, y)) {
-        const loc = game.level.at(x, y);
-        /* unmap_object(): memory reverts to the background */
-        const tg = terrain_glyph(loc, x, y);
-        loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
-                                 glyph: { kind: 'cmap', cmap: tg.cmap } };
+    if (clear_invisible_memory(x, y)) {
         newsym(x, y);
     }
 }

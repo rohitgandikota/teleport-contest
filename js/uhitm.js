@@ -27,7 +27,7 @@ import { mon_nam, Monnam, y_monnam, upstart, a_monnam, x_monnam,
 import { destroy_items, exclam } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './display.js';
-import { wakeup, killed, xkilled, seemimic, setmangry } from './mon.js';
+import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, is_plural } from './obj.js';
@@ -76,7 +76,8 @@ import { body_part, mbodypart } from './polyself.js';
 import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
-import { spec_dbon } from './artifact.js';
+import { get_artifact, spec_dbon } from './artifact.js';
+import { cansee } from './vision.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -294,7 +295,7 @@ export async function attack_checks(mtmp, wep) {
     /* cache the shown glyph; the cases that CHANGE it all return without
        looking at it again */
     const glyph = glyph_at(game.bhitpos.x, game.bhitpos.y);
-    const glyph_is_warning = (g) => g?.kind === 'warning';
+    const glyph_is_warning = (g) => g?.kind === 'warn';
     const glyph_is_invisible = (g) => g?.kind === 'invis';
 
     if (!canspotmon(mtmp)
@@ -1311,7 +1312,7 @@ async function hmon_hitmon_weapon(hmd, mon, obj) {
                              || !ammo_and_launcher(obj, game.u.uwep)))) {
         await hmon_hitmon_weapon_ranged(hmd, mon, obj);
     } else {
-        hmon_hitmon_weapon_melee(hmd, mon, obj);
+        await hmon_hitmon_weapon_melee(hmd, mon, obj);
         if (hmd.doreturn)
             return;
     }
@@ -1368,7 +1369,7 @@ const is_launcher_w = (o) =>
 // monster is holding you, or you are two-weaponing, or the weapon is
 // Cleaver. Porting the arms as independent ifs would let several fire at
 // once and would draw where C draws nothing.
-function hmon_hitmon_weapon_melee(hmd, mon, obj) {
+async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     /* "normal" weapon usage */
     hmd.use_weapon_skill = true;
     hmd.dmg = dmgval(obj, mon);
@@ -1389,8 +1390,20 @@ function hmon_hitmon_weapon_melee(hmd, mon, obj) {
         note_unported_uhitm('hmon_hitmon:special_attacks');
     }
 
-    if (obj.oartifact)
-        hmd.dmg += spec_dbon(obj, mon, hmd.dmg);
+    if (obj.oartifact
+        && await artifact_hit_u(hmd, mon, obj)) {
+        if (DEADMONSTER(mon)) {
+            hmd.doreturn = true;
+            hmd.retval = false;
+            return;
+        }
+        if (hmd.dmg === 0) {
+            hmd.doreturn = true;
+            hmd.retval = true;
+            return;
+        }
+        hmd.hittxt = true;
+    }
 
     /* src/uhitm.c:1035 — silver weapon against a silver-hater flags the
        sear message; the extra damage itself came from dmgval's rnd(20) */
@@ -1398,6 +1411,37 @@ function hmon_hitmon_weapon_melee(hmd, mon, obj) {
         hmd.silvermsg = hmd.silverobj = true;
     if (obj.oartifact && obj.lamplit)
         note_unported_uhitm('hmon_hitmon:lightobj'); /* artifact_light */
+}
+
+// src/artifact.c:1447 artifact_hit(), hero-attacker slice. Mjollnir prints its
+// own hit message when the target square is visible, then consumes an item
+// destruction roll even when it is not. Other artifact attacks retain their
+// damage bonus here and stay recorded until their individual effects land.
+async function artifact_hit_u(hmd, mon, obj) {
+    const art = get_artifact(obj);
+    const attack = /^([A-Z_]+)/.exec(art.attk || '')?.[1] || 'PHYS';
+    const hittee = mon_nam(mon);
+
+    hmd.dmg += spec_dbon(obj, mon, hmd.dmg);
+
+    if (attack !== 'ELEC') {
+        if (attack !== 'PHYS')
+            note_unported_uhitm(`artifact_hit:${attack}`);
+        return false;
+    }
+
+    const applies = !!game.spec_dbon_applies;
+    const realizes_damage = cansee(mon.mx, mon.my) || mon === game.u.ustuck;
+    if (realizes_damage) {
+        await pline(`The massive hammer hits${
+            applies ? '!  Lightning strikes' : ''} ${hittee}${
+            applies ? '!' : '.'}`);
+    }
+    if (applies)
+        wake_nearto(mon.mx, mon.my, 4 * 4);
+    if (!rn2(5))
+        hmd.dmg += await destroy_items(mon, ATTKS.AD_ELEC, hmd.dmg);
+    return realizes_damage;
 }
 
 // src/uhitm.c:1436 hmon_hitmon_dmg_recalc() — damage, strength and skill

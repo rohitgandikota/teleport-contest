@@ -1,0 +1,25 @@
+{
+  "name": "monster-trap-normal",
+  "description": "Normal-mode pets exercise natural-pit triggering, repeated escape checks, successful escape, and known-trap avoidance.",
+  "coverage": [
+    "mode.normal",
+    "level.ordinary",
+    "monster.movement",
+    "monster.pets",
+    "traps.monster"
+  ],
+  "segments": [
+    {
+      "seed": 7148,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=symset:DECgraphics\n",
+      "moves": "Tetra\ryy  nkkklLuujjllnnJj  bbbbbbbbbbbbbbbb kkkkkykkkkkyhhhhjjJhhhbhhhhHhhhyhhykKhhhh,hhHjjjbBHjjJbBhbbb,hhhhHKyh,bjjmsmsmsmsmsmsmskkmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsms "
+    },
+    {
+      "seed": 7053,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=symset:DECgraphics\n",
+      "moves": "Tetra\ryy  nkkklLuujjllnnJj  bbbbbbbbbbbbbbbb kkkkkykkkkkyhhhhjjJhhhbhhhh"
+    }
+  ]
+}

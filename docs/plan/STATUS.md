@@ -1,5 +1,29 @@
 # STATUS — live handoff board
 
+## 2026-08-26: normal-mode monster trap behavior
+
+The two-segment `monster-trap-normal` C oracle uses fresh normal-mode seeds
+7148 and 7053. The first segment visibly records a little dog falling into a
+naturally generated pit, remaining trapped through repeated one-in-forty
+escape checks, and eventually climbing out. The second independently records
+the known-trap avoidance gate for ordinary monster movement. Two fresh
+recordings were byte-identical, with SHA-256
+`53a6eb63c1698ce1f781597a34b19432e85df57e8e647d59323ad47354a9f65b`.
+
+The existing source-based monster-trap implementation passes the new oracle
+without a code change at 279/279 screens, 279/279 cursors, and 7,365/7,365 RNG
+calls. This is an independent generalization result, not a public-session
+replay or a fixture-specific adjustment.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus now has 58
+sessions and 6,444 frames. It is 6,439/6,444 cell-exact and
+1,086,522/1,086,522 RNG-exact, with 6,061/6,444 formally exact screens and
+57/58 formal session passes. The sole formal failure remains the
+recorder-corrupted `gehennom-tour` cursor data. All 44 public hang checks pass.
+Conservative full-game coverage is now 84 covered, 6 partial, and 14 gaps out
+of 104. `traps.monster` is now covered in normal mode.
+
 ## 2026-08-26: trapped doors and container traps
 
 The six-segment `trap-door-container` C oracle uses independent seeds 6920,

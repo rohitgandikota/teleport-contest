@@ -14,7 +14,7 @@
 // Nothing here draws.
 
 import { game } from './gstate.js';
-import { is_flyer } from './mondata.js';
+import { haseyes, is_flyer } from './mondata.js';
 import { Upolyd } from './const.js';
 import { unconscious } from './trap.js';
 import { is_fainted } from './eat.js';
@@ -39,6 +39,12 @@ export const Hallucination = () => HHallucination() && !Halluc_resistance();
 export const Deaf = () => !!game.u?.intrinsic?.HDeaf
                          || !!game.u?.uprops?.DEAF
                          || !!game.u?.uroleplay?.deaf;
+
+// include/youprop.h:103 Blind. An eyeless polymorph form contributes the
+// FROMFORM half of HBlinded in C, alongside timed and equipment blindness.
+export const Blind = () => !!game.u?.ublind
+                         || !!(Upolyd(game.u) && game.youmonst?.data
+                               && !haseyes(game.youmonst.data));
 
 // include/youprop.h:65 Stone_resistance — flat uprops map collapses the
 // intrinsic and extrinsic halves into one read.

@@ -296,9 +296,10 @@ async function newman() {
 
     const { find_ac } = await import('./do_wear.js');
     find_ac();
-    const { newsym } = await import('./display.js');
+    const { newsym, see_monsters } = await import('./display.js');
     newsym(u.ux, u.uy);
     game.vision_full_recalc = 1;
+    see_monsters();
     (game.disp ||= {}).botl = true;
 
     const form = game.flags.female
@@ -465,9 +466,10 @@ export async function polymon(mntmp) {
 
     const { find_ac } = await import('./do_wear.js');
     find_ac();
-    const { newsym } = await import('./display.js');
+    const { newsym, see_monsters } = await import('./display.js');
     newsym(u.ux, u.uy);
     game.vision_full_recalc = 1;
+    see_monsters();
     (game.disp ||= {}).botl = true;
     await encumber_msg();
 

@@ -18,7 +18,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
-import { Is_dragon_armor } from './mondata.js';
+import { Is_dragon_armor, nolimbs } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { erode_obj, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
@@ -619,6 +619,10 @@ export async function accessory_or_armor_on(obj) {
         if (!mask)
             return ECMD_OK;
     } else if (ring) {
+        if (nolimbs(game.youmonst.data)) {
+            await You('cannot make the ring stick to your body.');
+            return ECMD_OK;
+        }
         const uleft = worn(W_RINGL), uright = worn(W_RINGR);
         if (uleft && uright) {
             await pline('There are no more ring-fingers to fill.');

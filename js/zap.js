@@ -1683,6 +1683,9 @@ export async function dozap() {
         await You("aren't able to zap anything in your current form.");
         return ECMD_OK;
     }
+    const { check_capacity } = await import('./hack.js');
+    if (await check_capacity(null))
+        return ECMD_OK;
     const obj = await getobj("zap", zap_ok, 0);
     if (!obj)
         return ECMD_CANCEL;

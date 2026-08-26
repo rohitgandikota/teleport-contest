@@ -6,7 +6,7 @@ import { ceiling_hider, emits_light, resist_conflict } from './mondata.js';
 import { new_light_source, del_light_source, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear, m_everyturn_effect,
-         set_apparxy as set_apparxy_ref } from './monmove.js';
+         set_apparxy as set_apparxy_ref, monflee } from './monmove.js';
 // mon.js — monster bookkeeping.
 // C ref: src/mon.c
 //
@@ -65,7 +65,7 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
          Is_astralevel, has_emin, has_epri, has_eshk, RLOC_NOMSG,
          MON_OBLITERATE } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid } from './mondata.js';
+    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
@@ -244,12 +244,9 @@ async function movemon_singlemon(mtmp) {
     /* src/mon.c:1263-1264 — reset obj bypasses, forget the splitobj pair */
     clear_splitobjs();
 
-    /* src/mon.c:1265 minliquid() — drowning, burning and fountain effects.
-       162 lines in minliquid_core, and every arm is gated on inpool, inlava
-       or infountain, so a monster on dry floor draws nothing and this is
-       recorded rather than ported. A monster standing in water WILL diverge. */
-    if (is_pool(mtmp.mx, mtmp.my) || is_lava(mtmp.mx, mtmp.my))
-        (game.unported ||= new Set()).add('movemon_singlemon:minliquid');
+    /* src/mon.c:1265 minliquid() runs for every moving monster. */
+    if (minliquid(mtmp))
+        return false;
 
     /* src/mon.c:1268 — after losing equipment, try to put on replacement.
        C's comment: "hostiles only try to equip things if they think hero
@@ -301,6 +298,22 @@ async function movemon_singlemon(mtmp) {
     }
     await dochugw(mtmp, true);
     return false;
+}
+
+// src/mon.c:957 minliquid(), including the dry-land eel arm.
+export function minliquid(mtmp) {
+    if (is_pool(mtmp.mx, mtmp.my) || is_lava(mtmp.mx, mtmp.my)) {
+        (game.unported ||= new Set()).add('minliquid:pool_or_lava');
+        return 0;
+    }
+
+    if (mtmp.data.mlet === MONSYMS.S_EEL && !Is_waterlevel(game.u.uz)
+        && !breathless(mtmp.data)) {
+        if (mtmp.mhp > 1 && rn2(mtmp.mhp) > rn2(8))
+            mtmp.mhp--;
+        monflee(mtmp, 2, false, false);
+    }
+    return 0;
 }
 
 import { dochugw, m_canseeu } from './monmove.js';

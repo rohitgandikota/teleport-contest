@@ -20,12 +20,12 @@ import { dmgtype } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor } from './worn.js';
 import { hitmsg, magic_negation } from './mhitu.js';
-import { You, Your } from './pline.js';
+import { You, Your, You_hear } from './pline.js';
 import { end_running } from './hack.js';
 import { mon_nam, Monnam, y_monnam, upstart, a_monnam, x_monnam,
          pmname } from './do_name.js';
 import { destroy_items, exclam } from './zap.js';
-import { Cold_resistance } from './youprop.js';
+import { Blind, Cold_resistance, Deaf, Hallucination } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './display.js';
 import { wakeup, killed, xkilled, seemimic, setmangry } from './mon.js';
 import { DEADMONSTER } from './monst.js';
@@ -68,7 +68,7 @@ import { ACURR } from './attrib.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
          W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP, XKILL_NOMSG,
-         STRAT_WAITMASK, engulfing_u } from './const.js';
+         STRAT_WAITMASK, engulfing_u, NEW_MOON } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
@@ -162,7 +162,7 @@ export async function do_attack(mtmp) {
     /* src/uhitm.c:530 — check_capacity() prints and returns 1 when the hero
        is overloaded; overexertion() calls gethungry(), which DRAWS, so an
        attack costs a hunger tick the plain step does not. */
-    if (check_capacity('You cannot fight while so heavily loaded.')
+    if (await check_capacity('You cannot fight while so heavily loaded.')
         || await overexertion())
         return true;                            /* goto atk_done */
 
@@ -1705,6 +1705,35 @@ export async function mhitm_ad_blnd(magr, mattk, mdef, mhm) {
             await Your('vision clears.');
     }
     mhm.damage = 0;
+}
+
+// src/uhitm.c:4203 mhitm_ad_ston(), the cockatrice hiss attack.
+export async function mhitm_ad_ston(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        note_unported_uhitm('mhitm_ad_ston:uhitm');
+        mhm.damage = 0;
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!rn2(3)) {
+            if (magr.mcan) {
+                if (!Deaf())
+                    await You_hear(`a cough from ${mon_nam(magr)}!`);
+            } else {
+                if (Hallucination() && !Blind()) {
+                    await You_hear('hissing.');
+                    await pline(`${Monnam(magr)} appears to be blowing you a kiss...`);
+                } else if (!Deaf()) {
+                    await You_hear(`${s_suffix(mon_nam(magr))} hissing!`);
+                } else if (!Blind()) {
+                    await pline(`${Monnam(magr)} seems to grimace.`);
+                }
+                if (!rn2(10) || game.flags?.moonphase === NEW_MOON)
+                    note_unported_uhitm('mhitm_ad_ston:do_stone_u');
+            }
+        }
+    } else {
+        note_unported_uhitm('mhitm_ad_ston:mhitm');
+    }
 }
 
 export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {

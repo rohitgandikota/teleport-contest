@@ -29,8 +29,9 @@ import { Hallucination } from './youprop.js';
 import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
-import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, M_AP_TYPE, M_AP_FURNITURE,
-         M_AP_OBJECT } from './const.js';
+import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
+         M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
+         Upolyd } from './const.js';
 import { ACURR, exercise, near_capacity } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
@@ -738,6 +739,16 @@ export async function doextcmd() {
         /* src/dungeon.c:3339 show_overview() — the ^O window */
         const { show_overview } = await import('./dungeon.js');
         await show_overview();
+        return ECMD_OK;
+    }
+    if (name === 'wizwhere') {
+        const { print_dungeon } = await import('./dungeon.js');
+        if (game.wizard)
+            await print_dungeon(false, null);
+        else {
+            const { pline } = await import('./display.js');
+            await pline("Unavailable command '#wizwhere'.");
+        }
         return ECMD_OK;
     }
     if (name === 'offer') {
@@ -1887,6 +1898,27 @@ async function domove_core() {
         if (globalThis.__dog_trace)
             console.error(`TRAV at(${game.u.ux},${game.u.uy}) d(${game.u.dx},${game.u.dy}) t(${game.u.tx},${game.u.ty}) multi=${game.multi} run=${game.context.run}`);
         game.context.travel1 = 0;
+    }
+
+    /* src/hack.c:2730 checks encumbrance before terrain, monsters, and even
+       swallowed movement. An overloaded attempt into solid rock still spends
+       a turn and reports the collapse rather than the wall. */
+    {
+        const wtcap = near_capacity();
+        if ((wtcap >= OVERLOADED
+             || (wtcap > SLT_ENCUMBER
+                 && (Upolyd(u) ? (u.mh < 5 && u.mh !== u.mhmax)
+                                : (u.uhp < 10 && u.uhp !== u.uhpmax))))
+            && !Is_airlevel(u.uz)) {
+            if (wtcap < OVERLOADED) {
+                await You("don't have enough stamina to move.");
+                exercise(A_CON, false);
+            } else {
+                await You('collapse under your load.');
+            }
+            nomul(0);
+            return;
+        }
     }
 
     /* src/hack.c:2733. A direction while swallowed attacks the engulfer

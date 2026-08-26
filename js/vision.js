@@ -13,7 +13,7 @@ import { newsym } from './display.js';
 import { ONAMES } from './objects_data.js';
 import { m_at } from './mon.js';
 import { is_lightblocker_mappear } from './monst.js';
-import { See_invisible, Underwater } from './youprop.js';
+import { Blind, See_invisible, Underwater } from './youprop.js';
 import { is_moat } from './dbridge.js';
 import { visible_region_at } from './region.js';
 import { do_light_sources } from './light.js';
@@ -665,7 +665,7 @@ export function vision_recalc(control = 0) {
 
     /* src/vision.c:552. A blind hero still has COULD_SEE geometry so
        monsters can see the hero, but none of those cells are IN_SIGHT. */
-    if (u.ublind && control !== 2) {
+    if (Blind() && control !== 2) {
         const old_array = game.viz_array;
         const old_rmin = game._viz_rmin;
         const old_rmax = game._viz_rmax;

@@ -1343,9 +1343,12 @@ export function u_locomotion(def) {
 
 
 // src/hack.c:4399 check_capacity() — refuse an action when overloaded.
-export function check_capacity(str) {
+export async function check_capacity(str) {
     if (near_capacity() >= EXT_ENCUMBER) {
-        note_unported_hack('check_capacity:message');
+        if (str)
+            await pline(str);
+        else
+            await You("can't do that while carrying so much stuff.");
         return 1;
     }
     return 0;

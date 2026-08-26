@@ -11,7 +11,7 @@ import { term_start_color } from './tty/termcap.js';
 import { rank, bot_conditions } from './botl.js';
 import { Upolyd } from './const.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
-import { Infravision, Hallucination, Invis, See_invisible } from './youprop.js';
+import { Blind, Infravision, Hallucination, Invis, See_invisible } from './youprop.js';
 import { observe_object } from './o_init.js';
 import { distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
@@ -80,7 +80,7 @@ function canspotself() {
     if (!u)
         return false;
     const invisible = Invis() && !See_invisible();
-    return !!u.ublind || !!u.uswallow
+    return Blind() || !!u.uswallow
            || (!invisible && !u.uundetected)
            || !!u.uprops?.DETECT_MONSTERS;
 }
@@ -2072,7 +2072,7 @@ export function sensemon(mon) {
 // include/display.h:106 _see_with_infrared() — caller must check
 // invisibility; infravision doesn't see invisible monsters.
 export function see_with_infrared(mon) {
-    return !game.u.ublind && Infravision()
+    return !Blind() && Infravision()
            && infravisible(game.mons[mon.mnum])
            && couldsee(mon.mx, mon.my);
 }
@@ -2329,7 +2329,7 @@ function mon_overrides_region(mon, mx, my) {
         /* check whether the spot is adjacent and 'mon' would be visible
            there if the gas cloud wasn't interfering with normal vision */
         const r = ((u.xray_range ?? -1) > 1) ? u.xray_range : 1;
-        if (!u.ublind && mon_visible(mon)
+        if (!Blind() && mon_visible(mon)
             && M_AP_TYPE(mon) !== M_AP_FURNITURE
             && M_AP_TYPE(mon) !== M_AP_OBJECT
             && distu(mx, my) <= r * (r + 1))

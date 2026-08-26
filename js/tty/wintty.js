@@ -759,8 +759,24 @@ export async function tty_select_menu(window, how) {
     while (!finished) {
         const c = await nhgetch();
         const morc = String.fromCharCode(c);
+        const explicitItems = menu_page_items(window, cw.curr_page);
+        const explicitIndex = explicitItems.findIndex(
+            item => item.identifier && item.selector === morc);
 
-        if (morc === '\x1b') {                  /* cancel */
+        /* wintty.c checks the page's response characters before mapping menu
+           commands, so ':' selects a ':' entry instead of opening search. */
+        if (explicitIndex >= 0) {
+            const curr = explicitItems[explicitIndex];
+            if (curr.selected) {
+                curr.selected = false;
+                curr.count = -1;
+            } else {
+                curr.selected = true;
+            }
+            set_item_state(window, explicitIndex, curr);
+            if (how === PICK_ONE)
+                finished = true;
+        } else if (morc === '\x1b') {           /* cancel */
             for (let curr = cw.mlist; curr; curr = curr.next) {
                 curr.selected = false;
                 curr.count = -1;

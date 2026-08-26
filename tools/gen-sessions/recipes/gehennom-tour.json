@@ -1,0 +1,45 @@
+{
+  "name": "gehennom-tour",
+  "description": "Debug Wizard levelports across five seeds through the Castle, Valley, demon lairs, Wizard levels, Orcus, Sanctum, and Vlad's Tower, clearing arrival messages and mapping every level.",
+  "coverage": [
+    "level.castle",
+    "level.gehennom",
+    "level.special-variants",
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 6801,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rj\u001b\u0006\u0016?\rk\u001b\u0006\u0016?\rl\u001b\u0006\u0016?\rm\u001b\u0006\u0016?\rn\u001b\u0006\u0016?\ro\u001b\u0006\u0016?\rq\u001b\u0006\u0016?\rr\u001b\u0006\u0016?\rs\u001b\u0006\u0016?\r t\u001b\u0006\u0016?\r u\u001b\u0006\u0016?\r v\u001b\u0006\u0016?\r G\u001b\u0006\u0016?\r H\u001b\u0006\u0016?\r I\u001b\u0006"
+    },
+    {
+      "seed": 6802,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rj\u001b\u0006\u0016?\rk\u001b\u0006\u0016?\rl\u001b\u0006\u0016?\rm\u001b\u0006\u0016?\rn\u001b\u0006\u0016?\ro\u001b\u0006\u0016?\rq\u001b\u0006\u0016?\rr\u001b\u0006\u0016?\rs\u001b\u0006\u0016?\r t\u001b\u0006\u0016?\r u\u001b\u0006\u0016?\r v\u001b\u0006\u0016?\r G\u001b\u0006\u0016?\r H\u001b\u0006\u0016?\r I\u001b\u0006"
+    },
+    {
+      "seed": 6803,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rj\u001b\u0006\u0016?\rk\u001b\u0006\u0016?\rl\u001b\u0006\u0016?\rm\u001b\u0006\u0016?\rn\u001b\u0006\u0016?\ro\u001b\u0006\u0016?\rq\u001b\u0006\u0016?\rr\u001b\u0006\u0016?\rs\u001b\u0006\u0016?\r t\u001b\u0006\u0016?\r u\u001b\u0006\u0016?\r v\u001b\u0006\u0016?\r G\u001b\u0006\u0016?\r H\u001b\u0006\u0016?\r I\u001b\u0006"
+    },
+    {
+      "seed": 6804,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rj\u001b\u0006\u0016?\rk\u001b\u0006\u0016?\rl\u001b\u0006\u0016?\rm\u001b\u0006\u0016?\rn\u001b\u0006\u0016?\ro\u001b\u0006\u0016?\rq\u001b\u0006\u0016?\rr\u001b\u0006\u0016?\rs\u001b\u0006\u0016?\r t\u001b\u0006\u0016?\r u\u001b\u0006\u0016?\r v\u001b\u0006\u0016?\r G\u001b\u0006\u0016?\r H\u001b\u0006\u0016?\r I\u001b\u0006"
+    },
+    {
+      "seed": 6805,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rj\u001b\u0006\u0016?\rk\u001b\u0006\u0016?\rl\u001b\u0006\u0016?\rm\u001b\u0006\u0016?\rn\u001b\u0006\u0016?\ro\u001b\u0006\u0016?\rq\u001b\u0006\u0016?\rr\u001b\u0006\u0016?\rs\u001b\u0006\u0016?\r t\u001b\u0006\u0016?\r u\u001b\u0006\u0016?\r v\u001b\u0006\u0016?\r G\u001b\u0006\u0016?\r H\u001b\u0006\u0016?\r I\u001b\u0006"
+    }
+  ]
+}

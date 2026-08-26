@@ -41,7 +41,7 @@ import { block_point, unblock_point, recalc_block_point,
 import { obj_extract_self, stackobj, weight } from './invent.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_BRIGHT_BLUE, CLR_CYAN, CLR_GRAY } from './terminal.js';
-import { RLOC_NOMSG } from './const.js';
+import { RLOC_ERR, RLOC_NOMSG } from './const.js';
 
 function note_unported_mkmaze(what) {
     (game.unported ||= new Set()).add(what);
@@ -486,7 +486,7 @@ export async function fixup_special() {
         game.level.flags.graveyard = 1;
     } else if (on_lev('baalzebub_level')) {
         /* custom wallify the "beetle" portion of the level */
-        baalz_fixup();
+        await baalz_fixup();
     } else if (game.u.uz.dnum === game.mines_dnum && game.ransacked) {
         await stolen_booty();
     }
@@ -503,7 +503,7 @@ export async function fixup_special() {
 // spots needing the post-wallify corner fixes, and the iron-bar "eyes" get
 // diggable columns in front of them. Draws only if a monster stands on a
 // pool spot (rloc).
-function baalz_fixup() {
+async function baalz_fixup() {
     const g = game;
     let x, y, lastx, lasty;
 
@@ -581,8 +581,10 @@ function baalz_fixup() {
                                ? BRCORNER : BLCORNER;
         g.level.at(x, y + 1).typ = HWALL;
         const mtmp = m_at(x, y);
-        if (mtmp) /* something at temporary pool... rloc(RLOC_ERR|NOMSG) */
-            note_unported_mkmaze('baalz_fixup:rloc');
+        if (mtmp) { /* something at temporary pool... */
+            const { rloc } = await import('./teleport.js');
+            await rloc(mtmp, RLOC_ERR | RLOC_NOMSG);
+        }
     }
 
     x = bughack.delarea.x2; y = bughack.delarea.y2;
@@ -594,8 +596,10 @@ function baalz_fixup() {
                                ? TRCORNER : TLCORNER;
         g.level.at(x, y - 1).typ = HWALL;
         const mtmp = m_at(x, y);
-        if (mtmp) /* something at temporary pool... rloc(RLOC_ERR|NOMSG) */
-            note_unported_mkmaze('baalz_fixup:rloc');
+        if (mtmp) { /* something at temporary pool... */
+            const { rloc } = await import('./teleport.js');
+            await rloc(mtmp, RLOC_ERR | RLOC_NOMSG);
+        }
     }
 
     /* reset bughack region; set low end to <COLNO,ROWNO> so that

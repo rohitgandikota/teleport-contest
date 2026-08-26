@@ -142,7 +142,7 @@ function dunlev(lev) {
 
 // include/dungeon.h In_hell() — the Gehennom branch.
 function In_hell(lev) {
-    return lev.dnum === game.hell_dnum;
+    return game.dungeons?.[lev.dnum]?.flags?.hellish === true;
 }
 
 // src/trap.c:418 dng_bottom() — how far down a hole can reach, stopping at the

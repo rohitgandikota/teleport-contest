@@ -155,13 +155,21 @@ async function main() {
 
     if (argv.includes('--list')) {
         const matching = [], mismatching = [];
+        const cellMatching = [], cellMismatching = [];
+        const cursorMatching = [], cursorMismatching = [];
         for (let i = 0; i < cScreens.length; i++) {
-            const target = cellsDiffer(i).bad.length || !cursorOk(i)
-                ? mismatching : matching;
-            target.push(i);
+            const cellsOk = cellsDiffer(i).bad.length === 0;
+            const cursOk = cursorOk(i);
+            (cellsOk ? cellMatching : cellMismatching).push(i);
+            (cursOk ? cursorMatching : cursorMismatching).push(i);
+            (cellsOk && cursOk ? matching : mismatching).push(i);
         }
         console.log(`matching (${matching.length}): ${matching.join(',')}`);
         console.log(`mismatching (${mismatching.length}): ${mismatching.join(',')}`);
+        console.log(`cell matching (${cellMatching.length}): ${cellMatching.join(',')}`);
+        console.log(`cell mismatching (${cellMismatching.length}): ${cellMismatching.join(',')}`);
+        console.log(`cursor matching (${cursorMatching.length}): ${cursorMatching.join(',')}`);
+        console.log(`cursor mismatching (${cursorMismatching.length}): ${cursorMismatching.join(',')}`);
         process.exit(mismatching.length ? 1 : 0);
     }
 

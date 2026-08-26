@@ -1,5 +1,35 @@
 # STATUS — live handoff board
 
+## 2026-08-26: Castle and Gehennom special-level matrix
+
+A five-seed C oracle now visits and maps the Castle, Valley of the Dead,
+Juiblex, Asmodeus, Baalzebub, all three Wizard levels, Orcus Town, both fake
+Wizard towers, the Sanctum, and all three floors of Vlad's Tower. It covers
+the randomized Gehennom filler prefabs, special-level mirrors, monster and
+object cleanup on liquid, drawbridges, arrival regions, and long-worm bodies.
+Two recordings produced the same SHA-256,
+`61733fce0555b13766a0130f5cca40344515de44d9a2b361bdb621cb0e8d2dca`.
+
+The JavaScript port matches all 366,071/366,071 RNG calls and 485/490 cell
+grids. The five remaining cell misses are invalid OSC recorder bytes in two C
+boundaries, at steps 215 through 217 and 314 through 315. The same recording
+contains out-of-range C cursor integers after each first mapped level, so the
+formal combined screen count is 107/490 even though every valid cell grid is
+exact.
+
+This checkpoint ports all ten Gehennom filler prefabs, corrects special-map
+selection and cleanup rules, renders closed drawbridges and Sanctum altars,
+handles Baalzebub's pool relocations, applies the real hellish-dungeon flag to
+hole placement, and mirrors long-worm body coordinates with their level.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus has 50
+sessions and 5,253 frames. It is 5,248/5,253 cell-exact and
+1,004,218/1,004,218 RNG-exact, with 49/50 formal session passes after the
+recorder-corrupted Gehennom cursor data is counted. All 44 public hang checks
+pass. Conservative full-game coverage is now 78 covered, 6 partial, and 20
+gaps out of 104.
+
 ## 2026-08-26: Sokoban orientation matrix and generated saddles
 
 A ten-seed C oracle now visits and maps all four Sokoban tiers across their

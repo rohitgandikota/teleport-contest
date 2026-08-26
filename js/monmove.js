@@ -6,7 +6,7 @@
 // awake monsters spends after the movement allotment.
 
 import { game } from './gstate.js';
-import { mpickstuff, mondied, wake_nearto } from './mon.js';
+import { mpickstuff, mondied, wake_nearto, wake_msg } from './mon.js';
 import { sengr_at, wipe_engr_at } from './engrave.js';
 import { autoreturn_weapon } from './weapon.js';
 import { MON_WEP, mon_offmap } from './monst.js';
@@ -44,7 +44,8 @@ import { is_weptool } from './mkobj.js';
 import { metallivorous, corpse_eater, is_covetous,
          resist_conflict } from './mondata.js';
 import { may_dig, in_town } from './hack.js';
-import { place_monster, remove_monster, hideunder } from './makemon.js';
+import { place_monster, remove_monster, hideunder,
+         hideunder_with_message } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
 import {
     dog_move, could_reach_item, dogfood, MANFOOD, ACCFOOD,
@@ -1134,7 +1135,7 @@ export async function dochug(mtmp) {
     /* src/monmove.c:727 — a sleeping monster still gets a chance to be woken,
        and disturb() DRAWS on the way. Returning early here skipped both the
        draws and the monster's whole turn when it did wake. */
-    if (mtmp.msleeping && !disturb(mtmp))
+    if (mtmp.msleeping && !(await disturb(mtmp)))
         return 0;
 
     /* src/monmove.c:732: active monsters scuff any engraving beneath them
@@ -1999,7 +2000,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel) {
            when there is no object or pool at the destination. */
         if (hides_under(ptr) || ptr.mlet === MONSYMS.S_EEL) {
             if (mtmp.mundetected || (!helpless(mtmp) && rn2(5)))
-                hideunder(mtmp);
+                await hideunder_with_message(mtmp);
             newsym(mtmp.mx, mtmp.my);
         }
     }
@@ -2064,7 +2065,7 @@ function note_unported(what) {
 //   ettin + stealthy hero        -> rn2(10)
 //   nymph, jabberwock, leprechaun-> rn2(50)
 //   anything not a dog or human  -> rn2(7)
-function disturb(mtmp) {
+async function disturb(mtmp) {
     const d = mtmp.data;
 
     if (!(couldsee(mtmp.mx, mtmp.my) && mdistu(mtmp) <= 100))
@@ -2079,6 +2080,7 @@ function disturb(mtmp) {
           || !rn2(7)))
         return 0;
 
+    await wake_msg(mtmp, !mtmp.mpeaceful);
     mtmp.msleeping = 0;
     return 1;
 }

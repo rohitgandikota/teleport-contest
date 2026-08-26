@@ -570,6 +570,8 @@ export async function doeat() {
         return ECMD_TIME;
     }
 
+    (game.u.uconduct ||= {}).food = (game.u.uconduct.food | 0) + 1;
+
     let dont_start = false;
     if (otmp.otyp === ONAMES.CORPSE || otmp.globby) {
         /* src/eat.c:2966 — touchfood() precedes eatcorpse(), so oeaten has

@@ -18,7 +18,7 @@ import { Levitation, Flying } from './youprop.js';
 import { closed_door } from './cmd.js';
 import { may_passwall } from './hack.js';
 import { sengr_at } from './engrave.js';
-import { rndghostname, christen_monst } from './do_name.js';
+import { rndghostname, christen_monst, y_monnam } from './do_name.js';
 import { m_dowear } from './worn.js';
 import { rn2, rnd, rn1, d } from './rng.js';
 import {
@@ -30,18 +30,18 @@ import { depth } from './dungeon.js';
 import { next_ident, mksobj, mkobj, place_object, curse, rnd_class, can_be_hatched } from './mkobj.js';
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
-import { canspotmon, newsym } from './display.js';
+import { canseemon, canspotmon, newsym } from './display.js';
 import { cansee, does_block, block_point } from './vision.js';
 import { COLNO, ROWNO, MFAST } from './const.js';
 import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
          amorphous, throws_rocks, haseyes, is_flyer, is_whirly,
-         noncorporeal } from './mondata.js';
+         noncorporeal, locomotion } from './mondata.js';
 import { is_vampshifter } from './monst.js';
 import { t_at, is_pool, is_lava, m_in_air, resists_ston } from './mon.js';
 import { touch_petrifies } from './mondata.js';
 import { can_hide_under_obj } from './monmove.js';
 import { couldsee } from './vision.js';
-import { is_pit, OBJ_FLOOR } from './const.js';
+import { is_pit, OBJ_FLOOR, PLNMSG_HIDE_UNDER } from './const.js';
 import { ACCESSIBLE, POOL, LAVAPOOL,
     BLCORNER, CROSSWALL, DELPHI, FODDERSHOP, HWALL, IS_DOOR, IS_WALL, M_AP_FURNITURE, M_AP_OBJECT, OBJ_AT, OBJ_MINVENT, SCORR, SDOOR, SHOPBASE, TDWALL, TLCORNER, TRWALL, TUWALL, TEMPLE, VAULT, ZOO, ROOMOFFSET, GP_ALLOW_U, GP_CHECKSCARY, GP_AVOID_MONPOS, MM_IGNORELAVA,
     IS_WATERWALL, IS_ALTAR, Is_waterlevel, Is_airlevel, Is_firelevel,
@@ -1224,7 +1224,7 @@ function mkobj_at(oclass, x, y, artif) {
 // No draws; the messages need seeit, which is 0 during mklev. This was a
 // stub that always set mundetected = 0, so a swamp snake created over its
 // starter object stood in plain sight where C's is hidden.
-export function hideunder(mtmp) {
+export function hideunder(mtmp, defer_newsym = false) {
     let undetected = false;
     const x = mtmp.mx, y = mtmp.my;
     const ptr = game.mons[mtmp.mnum];
@@ -1268,6 +1268,43 @@ export function hideunder(mtmp) {
 
     const oldundetctd = !!mtmp.mundetected;
     mtmp.mundetected = undetected ? 1 : 0;
+    if (undetected !== oldundetctd && !defer_newsym)
+        newsym(x, y);
+    return undetected;
+}
+
+// src/mon.c:4726 hideunder(), including its runtime visibility message.
+// Delaying newsym until after You_see() preserves the tty image beneath a
+// --More-- prompt when the new message first has to flush an older one.
+export async function hideunder_with_message(mtmp) {
+    const x = mtmp.mx, y = mtmp.my;
+    const ptr = game.mons[mtmp.mnum];
+    const seeit = !game.in_mklev && canseemon(mtmp);
+    const seenmon = seeit ? y_monnam(mtmp) : null;
+    let seenobj = null, locomo = null;
+
+    if (seeit && ptr.mlet === MONSYMS.S_EEL) {
+        seenobj = 'the water';
+        locomo = 'dive';
+    } else if (seeit && (ptr.mflags1 & MFLAGS.M1_CONCEAL) !== 0) {
+        const shelter = (game.level?.objects || []).find(
+            (o) => o.ox === x && o.oy === y
+                && (o.where === undefined || o.where === OBJ_FLOOR));
+        if (shelter) {
+            const { ansimpleoname } = await import('./objnam.js');
+            seenobj = ansimpleoname(shelter);
+        }
+    }
+
+    const oldundetctd = !!mtmp.mundetected;
+    const undetected = hideunder(mtmp, true);
+    if (undetected && seenmon && seenobj) {
+        const { You_see, set_msg_xy } = await import('./pline.js');
+        set_msg_xy(x, y);
+        await You_see(`${seenmon} ${locomo || locomotion(ptr, 'hide')} under ${seenobj}.`);
+        (game.iflags ||= {}).last_msg = PLNMSG_HIDE_UNDER;
+        (game.gl ||= {}).last_hider = mtmp.m_id;
+    }
     if (undetected !== oldundetctd)
         newsym(x, y);
     return undetected;

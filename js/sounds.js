@@ -27,7 +27,7 @@ import { pline_The, You, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { Monnam } from './do_name.js';
 import { vtense } from './objnam.js';
-import { wake_nearto } from './mon.js';
+import { wake_nearto_with_messages } from './mon.js';
 import { nomul } from './hack.js';
 import { poly_gender } from './polyself.js';
 
@@ -490,7 +490,8 @@ export async function growl(mtmp) {
                 nomul(0);
         }
         /* OUTSIDE the canseemon check on purpose */
-        wake_nearto(mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 18);
+        await wake_nearto_with_messages(
+            mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 18);
     }
 }
 
@@ -531,7 +532,8 @@ export async function yelp(mtmp) {
         await pline(`${Monnam(mtmp)} ${vtense(null, yelp_verb)}!`);
         if (game.context?.run)
             nomul(0);
-        wake_nearto(mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 12);
+        await wake_nearto_with_messages(
+            mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 12);
     }
 }
 

@@ -374,7 +374,7 @@ export function display_inventory(allowed_choices = null) {
         out.push({ heading: true, str: let_to_name(oclass), attr: ATR_INVERSE });
         for (const o of items) {
             /* src/invent.c:1039 — displaying the item observes its type */
-            if (!game.u?.ublind)
+            if (!Blind())
                 observe_object(o);
             /* src/invent.c:3320. obj_to_glyph() precedes doname(), even when
                the tty window never renders the supplied glyph. */

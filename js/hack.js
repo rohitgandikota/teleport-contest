@@ -591,6 +591,15 @@ export async function check_special_room(newlev) {
             note_unported_hack('check_special_room:u_left_shop');
         return;
     }
+
+    const achieveo = ((game.context ||= {}).achieveo ||= {});
+    if (game.level?.flags?.has_town && !achieveo.minetn_reached
+        && game.u.uz.dnum === game.mines_dnum
+        && in_town(game.u.ux, game.u.uy)) {
+        const { ACH_TOWN, record_achievement } = await import('./insight.js');
+        record_achievement(ACH_TOWN);
+        achieveo.minetn_reached = true;
+    }
     if (!game.u.uentered && !game.u.ushops_entered)
         return;
 

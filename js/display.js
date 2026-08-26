@@ -1893,7 +1893,11 @@ export async function flush_screen(cursor_on_u) {
         }
     }
 
-    if (cursor_on_u) {
+    if (game._flush_cursor_override) {
+        display.setCursor(game._flush_cursor_override.col,
+                          game._flush_cursor_override.row);
+        game._flush_cursor_override = null;
+    } else if (cursor_on_u) {
         /* curs_on_u() — unless getpos has parked the cursor elsewhere */
         if (game._map_cursor)
             display.setCursor(game._map_cursor.col, game._map_cursor.row);

@@ -1498,7 +1498,7 @@ export async function unstuck(mtmp) {
 export async function wakeup(mtmp, via_attack) {
     const was_sleeping = mtmp.msleeping;
 
-    wake_msg(mtmp, via_attack);
+    await wake_msg(mtmp, via_attack);
     mtmp.msleeping = 0;
     if (M_AP_TYPE(mtmp) !== M_AP_NOTHING) {
         /* mimics come out of hiding, but disguised Wizard doesn't
@@ -1766,9 +1766,12 @@ export function shieldeff_mon(mtmp) {
 //
 // `interesting` (wakeup's via_attack) only picks the punctuation: "!" for an
 // attack, "." otherwise. A flesh golem additionally gets " It's alive!".
-export function wake_msg(mtmp, interesting) {
-    if (mtmp.msleeping && canseemon(mtmp))
-        note_unported_mon('wake_msg:pline');
+export async function wake_msg(mtmp, interesting) {
+    if (mtmp.msleeping && canseemon(mtmp)) {
+        const alive = mtmp.mnum === PMNAMES.PM_FLESH_GOLEM
+            ? " It's alive!" : '';
+        await pline(`${Monnam(mtmp)} wakes up${interesting ? '!' : '.'}${alive}`);
+    }
 }
 
 // src/mon.c:4409 seemimic() — a mimic is discovered and drops its disguise.
@@ -2744,6 +2747,21 @@ function wake_nearto_core(x, y, distance, petcall) {
 // src/mon.c:4402 wake_nearto()
 export function wake_nearto(x, y, distance) {
     wake_nearto_core(x, y, distance, false);
+}
+
+// src/mon.c:4402 wake_nearto(), including visible wake-up messages. Async
+// callers use this form because wake_msg can fill the tty topline and block.
+export async function wake_nearto_with_messages(x, y, distance) {
+    for (const mtmp of (game.level?.monsters || [])) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        if (distance === 0 || dist2(mtmp.mx, mtmp.my, x, y) < distance) {
+            await wake_msg(mtmp, false);
+            mtmp.msleeping = 0;
+            if (!(game.mons[mtmp.mnum].geno & G_UNIQ))
+                mtmp.mstrategy &= ~STRAT_WAITMASK;
+        }
+    }
 }
 
 // src/mon.c:4649 restore_cham() — reloaded shapechanger bookkeeping.

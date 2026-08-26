@@ -766,6 +766,11 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             await pline_The('odor of burnt flesh and decay pervades the air.');
             await You_hear('groans and moans everywhere.');
         }
+        if (!wasInHell && inHell) {
+            const { ACH_HELL, record_achievement } =
+                await import('./insight.js');
+            record_achievement(ACH_HELL);
+        }
         if (inHell && !isValley)
             (game.u.uevent ||= {}).gehennom_entered = 1;
     }
@@ -807,6 +812,18 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         } else if (game.u.uz.dnum === game.quest_dnum) { /* In_quest() */
             const { onquest } = await import('./quest.js');
             await onquest();
+        } else if (game.u.uz.dnum === game.mines_dnum) {
+            if (newdungeon) {
+                const { ACH_MINE, record_achievement } =
+                    await import('./insight.js');
+                record_achievement(ACH_MINE);
+            }
+        } else if (game.u.uz.dnum === game.sokoban_dnum) {
+            if (newdungeon) {
+                const { ACH_SOKO, record_achievement } =
+                    await import('./insight.js');
+                record_achievement(ACH_SOKO);
+            }
         } else {
             if (!familiar_level && Is_rogue_level(game.u.uz))
                 await You('enter what seems to be an older, more primitive world.');

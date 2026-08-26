@@ -15,7 +15,8 @@ import { COLNO, ROWNO } from './const.js';
 import { sgn, isok } from './hacklib.js';
 import { nhgetch } from './input.js';
 import { pline, pline_nohistory_no_cursor, flush_screen, glyph_at,
-         tty_clear_nhwindow_message, TOPLINE_EMPTY, docrt } from './display.js';
+         tty_clear_nhwindow_message, TOPLINE_EMPTY, docrt,
+         newsym } from './display.js';
 import { defsyms, cmap_names } from './drawing_data.js';
 import { do_screen_description, is_cmap_wall, is_cmap_room, is_cmap_corr,
          is_cmap_door, is_cmap_engraving } from './pager.js';
@@ -154,7 +155,30 @@ let getpos_getvalid = null;
 
 // src/getpos.c:1560 getpos_sethilite()
 export function getpos_sethilite(gp_hilitefunc, gp_getvalidfunc) {
-    getpos_getvalid = gp_getvalidfunc || null;
+    const old_getvalid = getpos_getvalid;
+    const new_getvalid = gp_getvalidfunc || null;
+    getpos_getvalid = new_getvalid;
+
+    /* C redraws the union of locations accepted by the old and new
+       validators. flush_screen() paints those forced glyphs by row, so the
+       tty cursor ends at the last location in row-major order. This is
+       observable if a tip asks for input before getpos parks the cursor on
+       the hero. */
+    if (new_getvalid !== old_getvalid) {
+        let last = null;
+        for (let x = 1; x < COLNO; x++) {
+            for (let y = 0; y < ROWNO; y++) {
+                if ((old_getvalid && old_getvalid(x, y))
+                    || (new_getvalid && new_getvalid(x, y))) {
+                    newsym(x, y);
+                    if (!last || y > last.y || (y === last.y && x > last.x))
+                        last = { x, y };
+                }
+            }
+        }
+        if (last && new_getvalid)
+            game._flush_cursor_override = { col: last.x, row: last.y + 1 };
+    }
 }
 
 // src/getpos.c:729 truncate_to_map() — clamp a step to the map, adjusting the
@@ -192,6 +216,8 @@ function truncate_to_map(c, dx, dy) {
 export async function getpos(ccp, force, goal) {
     let result = 0;
     const c = { x: ccp.x, y: ccp.y };
+    const gathered = new Array(4).fill(null);
+    const gatherIndex = new Array(4).fill(0);
     /* boolean msg_given = TRUE: clear message window by default */
     let msg_given = true;
     let show_goal_msg = false;
@@ -287,7 +313,43 @@ export async function getpos(ccp, force, goal) {
         } else if (ch === '$') {
             note_unported_getpos(`key:${ch}`);
             show_goal_msg = true;
-        } else if ('mMoOdDxXaAzZ'.includes(ch) || ch === '!' || ch === '"') {
+        } else if ((ch === 'd' || ch === 'D')
+                   && !game.iflags?.getloc_usemenu) {
+            const gloc = 2;
+            if (!gathered[gloc]) {
+                const doors = [];
+                for (let x = 1; x < COLNO; x++) {
+                    for (let y = 0; y < ROWNO; y++) {
+                        const glyph = glyph_at(x, y);
+                        const cmap = glyph.kind === 'cmap' ? glyph.cmap : -1;
+                        const isDoor = is_cmap_door(cmap)
+                            || (cmap >= CM.S_vodbridge
+                                && cmap <= CM.S_hcdbridge)
+                            || cmap === CM.S_ndoor;
+                        if ((x === game.u.ux && y === game.u.uy) || isDoor)
+                            doors.push({ x, y });
+                    }
+                }
+                doors.sort((a, b) => {
+                    const ad = Math.max(Math.abs(game.u.ux - a.x),
+                                        Math.abs(game.u.uy - a.y));
+                    const bd = Math.max(Math.abs(game.u.ux - b.x),
+                                        Math.abs(game.u.uy - b.y));
+                    return ad !== bd ? ad - bd
+                        : a.y !== b.y ? a.y - b.y : a.x - b.x;
+                });
+                gathered[gloc] = doors;
+                gatherIndex[gloc] = 0;
+            }
+            const doors = gathered[gloc];
+            if (ch === 'd')
+                gatherIndex[gloc] = (gatherIndex[gloc] + 1) % doors.length;
+            else
+                gatherIndex[gloc] = (gatherIndex[gloc] + doors.length - 1)
+                    % doors.length;
+            c.x = doors[gatherIndex[gloc]].x;
+            c.y = doors[gatherIndex[gloc]].y;
+        } else if ('mMoOxXaAzZ'.includes(ch) || ch === '!' || ch === '"') {
             /* gather_locs cycling, the menu, hilite and the view filter —
                each consumes only its own key */
             note_unported_getpos(`key:${ch}`);

@@ -556,6 +556,19 @@ export function simpleonames(obj) {
     return simpleoname;
 }
 
+// src/objnam.c:2446 ansimpleoname(), minimal name with its article.
+export function ansimpleoname(obj) {
+    const simpleoname = simpleonames(obj);
+    let otyp = obj.otyp;
+
+    if (otyp === ONAMES.FAKE_AMULET_OF_YENDOR)
+        otyp = ONAMES.AMULET_OF_YENDOR;
+    const ocl = game.objects[otyp];
+    if (ocl.oc_unique && OBJ_NAME(ocl) && simpleoname === OBJ_NAME(ocl))
+        return the(simpleoname);
+    return obj.quan === 1 ? an(simpleoname) : simpleoname;
+}
+
 // src/objnam.c:2474 thesimpleoname(): the shortest form used when a query
 // cannot fit the normal object description.
 export function thesimpleoname(obj) {
@@ -1049,6 +1062,10 @@ export function doname(obj) {
            unlike tools there is no oc_charged gate. */
         if (known)
             bp += ` (${obj.recharged || 0}:${obj.spe})`;
+        break;
+    case FOOD_CLASS:
+        if (obj.oeaten)
+            prefix += 'partly eaten ';
         break;
     case BALL_CLASS:
     case CHAIN_CLASS:

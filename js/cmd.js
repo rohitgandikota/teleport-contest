@@ -37,7 +37,7 @@ import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, 
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { an, cxname, simpleonames, the } from './objnam.js';
 import { cmap_names, defsyms } from './drawing_data.js';
-import { x_monnam, docallcmd, donamelevel } from './do_name.js';
+import { x_monnam, YMonnam, docallcmd, donamelevel } from './do_name.js';
 import { You } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
@@ -2448,7 +2448,7 @@ async function domove_swap_with_pet(mtmp, x, y) {
                && (!goodpos(game.u.ux0, game.u.uy0, mtmp, 0)
                    || t_at(game.u.ux0, game.u.uy0) !== null
                    || mundisplaceable(mtmp))) {
-        note_unported_cmd('domove_swap_with_pet:wont_swap_msg');
+        await You(`stop.  ${YMonnam(mtmp)} doesn't want to swap places.`);
         didnt_move = true;
     } else {
         mtmp.mtrapped = 0;

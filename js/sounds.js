@@ -27,7 +27,7 @@ import { pline_The, You, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { Monnam } from './do_name.js';
 import { vtense } from './objnam.js';
-import { wake_nearto, wake_nearto_with_messages } from './mon.js';
+import { wake_nearto } from './mon.js';
 import { nomul } from './hack.js';
 import { poly_gender } from './polyself.js';
 
@@ -488,8 +488,7 @@ export async function growl(mtmp) {
                 nomul(0);
         }
         /* OUTSIDE the canseemon check on purpose */
-        await wake_nearto_with_messages(
-            mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 18);
+        wake_nearto(mtmp.mx, mtmp.my, game.mons[mtmp.mnum].mlevel * 18);
     }
 }
 

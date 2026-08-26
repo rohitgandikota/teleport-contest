@@ -9,7 +9,8 @@
 import { game } from './gstate.js';
 import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
-import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY }
+import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
+         TIMEOUT }
     from './const.js';
 import { getlin } from './cmd.js';
 import { docrt, pline, see_monsters, swallowed } from './display.js';
@@ -171,6 +172,8 @@ const WIZ_INTRINSICS = [
 function wiz_intrinsic_timeout(key) {
     if (key === 'HALLUC')
         return Number(game.u.uprops?.HALLUC) || 0;
+    if (key === 'FAST')
+        return (game.u.intrinsic?.HFast | 0) & TIMEOUT;
     return Number(game.u.wiz_intrinsic_timeouts?.[key]) || 0;
 }
 
@@ -224,6 +227,14 @@ export async function wiz_intrinsic() {
                 await pline(`Oh wow!  Everything ${game.u.ublind
                     ? 'feels' : 'looks'} so cosmic!`);
             }
+        } else if (key === 'FAST') {
+            const intr = (game.u.intrinsic ||= {});
+            const word = intr.HFast | 0;
+            intr.HFast = (word & ~TIMEOUT)
+                         | Math.min(TIMEOUT, oldtimeout + 30);
+            (game.disp ||= {}).botl = true;
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} 30.`);
         } else {
             (game.u.wiz_intrinsic_timeouts ||= {})[key] = oldtimeout + 30;
             (game.disp ||= {}).botl = true;

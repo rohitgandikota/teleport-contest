@@ -14,7 +14,7 @@ import { game } from './gstate.js';
 import { You, Your } from './pline.js';
 import { pline } from './display.js';
 import { UNENCUMBERED, OVERLOADED , LEFT_SIDE, RIGHT_SIDE,
-         FROMEXPER, FROMRACE, FROMOUTSIDE, Is_airlevel } from './const.js';
+         FROMEXPER, FROMRACE, FROMOUTSIDE, Is_airlevel, TIMEOUT } from './const.js';
 import { strongmonst } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { rn2, rn1, rnd, d } from './rng.js';
@@ -578,11 +578,11 @@ export function from_what(abilKey) {
 // include/youprop.h:
 //     #define Fast      (HFast || EFast)
 //     #define Very_fast ((HFast & ~INTRINSIC) || EFast)
-// game.u.intrinsic.HFast carries the role/race intrinsic; worn speed boots
-// grant the extrinsic through set_wear's oc_oprop pass (game.u.uprops.FAST).
-// A timed potion/spell HFast would also be Very_fast; no session drinks one.
+// game.u.intrinsic.HFast carries role/race source bits and any timeout.
+// Worn speed boots set uprops.FAST. Either a timeout or boots is very fast.
 export const Fast = () => !!(game.u.intrinsic?.HFast || game.u.uprops?.FAST);
-export const Very_fast = () => !!game.u.uprops?.FAST;
+export const Very_fast = () => !!(((game.u.intrinsic?.HFast | 0) & TIMEOUT)
+                                  || game.u.uprops?.FAST);
 
 // include/attrib.h:25 ACURRSTR / ACURR(). Exceptional Strength is stored above
 // 18 as 18/xx, and acurrstr() folds that back to a plain number.

@@ -598,7 +598,9 @@ export function can_advance(skill, speedy) {
         || (game.u.skills_advanced | 0) >= P_SKILL_LIMIT)
         return false;
 
-    /* the wizard-mode speedy arm is unreachable here */
+    if (game.wizard && speedy)
+        return true;
+
     return (sk.advance | 0) >= practice_needed_to_advance(sk.skill)
            && (game.u.weapon_slots | 0) >= slots_required(skill);
 }
@@ -1328,9 +1330,10 @@ export async function enhance_weapon_skill() {
                         await You_feel('you could be more dangerous!');
                     }
                     more++;
+                    break;
                 }
             }
-            if (more)
+            if (speedy && more)
                 continue;
         }
         break;

@@ -703,6 +703,10 @@ export async function doextcmd() {
         const { enhance_weapon_skill } = await import('./weapon.js');
         return await enhance_weapon_skill();
     }
+    if (name === 'turn') {
+        const { doturn } = await import('./pray.js');
+        return await doturn();
+    }
     if (name === 'terrain')
         return await doterrain();
     if (name === 'adjust') {

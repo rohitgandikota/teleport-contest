@@ -1063,8 +1063,10 @@ export async function dropz(obj, with_impact) {
         impact_disturbs_zombies(obj, with_impact);
         if (obj === game.uball)
             note_unported_do('dropz:drop_ball');
-        else if (game.level?.flags?.has_shop)
-            note_unported_do('dropz:sellobj');
+        else if (game.level?.flags?.has_shop) {
+            const { sellobj } = await import('./shk.js');
+            await sellobj(obj, game.u.ux, game.u.uy);
+        }
         stackobj(obj);
         newsym(game.u.ux, game.u.uy);   /* remap location under self */
     }
@@ -1083,7 +1085,10 @@ export async function dropy(obj) {
 // nothing reaches the floor there; doaltarobj sets bknown when it lands on
 // an altar.
 export async function dropx(obj) {
+    const oldcap = near_capacity();
     freeinv(obj);
+    if (near_capacity() !== oldcap)
+        game._encumber_status_stale = true;
     if (!game.u.uswallow) {
         /* src/do.c:298 — ship_object() sends the object down a hole or
            stairs and returns TRUE when it did, in which case dropy() must
@@ -1159,12 +1164,16 @@ export async function drop(obj) {
 // DELIBERATE sale rather than an accidental one, and is restored afterwards
 // whether or not anything was dropped.
 export async function dodrop() {
-    if (game.u.ushops?.length)
-        note_unported_do('dodrop:sellobj_state:DELIBERATE');
+    if (game.u.ushops?.length) {
+        const { sellobj_state } = await import('./shk.js');
+        sellobj_state(1); // SELL_DELIBERATE
+    }
     const result = await drop(await getobj('drop', any_obj_ok,
                                      GETOBJ_PROMPT | GETOBJ_ALLOWCNT));
-    if (game.u.ushops?.length)
-        note_unported_do('dodrop:sellobj_state:NORMAL');
+    if (game.u.ushops?.length) {
+        const { sellobj_state } = await import('./shk.js');
+        sellobj_state(0); // SELL_NORMAL
+    }
     if (result)
         reset_occupations();
 
@@ -1179,8 +1188,10 @@ export async function doddrop() {
     }
 
     add_valid_menu_class(0);
-    if (game.u.ushops?.length)
-        note_unported_do('doddrop:sellobj_state:DELIBERATE');
+    if (game.u.ushops?.length) {
+        const { sellobj_state } = await import('./shk.js');
+        sellobj_state(1); // SELL_DELIBERATE
+    }
 
     let result = ECMD_OK;
     if ((game.flags?.menu_style ?? MENU_FULL) === MENU_FULL) {
@@ -1221,8 +1232,10 @@ export async function doddrop() {
         note_unported_do('doddrop:non_full_menu_style');
     }
 
-    if (game.u.ushops?.length)
-        note_unported_do('doddrop:sellobj_state:NORMAL');
+    if (game.u.ushops?.length) {
+        const { sellobj_state } = await import('./shk.js');
+        sellobj_state(0); // SELL_NORMAL
+    }
     if (result)
         reset_occupations();
     return result;

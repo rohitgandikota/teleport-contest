@@ -1,5 +1,37 @@
 # STATUS — live handoff board
 
+## 2026-08-26: independent shop billing, credit, robbery, and Kops
+
+The new two-segment `shop-billing` C oracle uses seed 6901 outside the public
+corpus. It buys an item with cash, rejects one sale, accepts another sale,
+establishes shop credit with gold, buys with that credit, then independently
+leaves a shop with unpaid armor to exercise robbery, pursuit, the alarm, and
+Keystone Kop placement. A clean rerecord has SHA-256
+`f28d7dc870f180aaaa6ed98d50fb55dcd32e5c417660862aad0605d96a8a1ee2`.
+
+The fixture started at 104/144 matching screens, 126/144 matching cursors, and
+5,599/13,294 matching RNG calls. It now passes at 144/144 screens, 144/144
+cursors, and 13,294/13,294 RNG calls. The implementation ports ordinary sale
+offers, rejected and accepted sales, shopkeeper cash transfers, gold and
+credit settlement, bill removal, unpaid departure, robbery bookkeeping,
+surcharges, pursuit, alarms, and Kops. Container-specific billing, shop damage,
+and several unusual pricing cases remain explicit gaps.
+
+The final 53-call RNG mismatch exposed a general stair-selection defect. The
+JavaScript implementation filtered out branch stairs, while C
+`stairway_find_type_dir()` does not filter by destination dungeon. Removing
+that filter made both Kop clusters exact.
+
+Public local remains perfect at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 exact sessions. The expanded supplemental corpus now has 51
+sessions and 5,397 frames. It is 5,392/5,397 cell-exact and
+1,017,512/1,017,512 RNG-exact, with 50/51 formal session passes. The sole
+formal failure remains the recorder-corrupted `gehennom-tour` cursor data.
+All 44 public hang checks pass. Conservative full-game coverage is now 78
+covered, 7 partial, and 19 gaps out of 104. `social.shops-billing` moves from a
+gap to partial because this first independent fixture is debug mode and the
+coverage criterion also requires a normal-mode scenario.
+
 ## 2026-08-26: Castle and Gehennom special-level matrix
 
 A five-seed C oracle now visits and maps the Castle, Valley of the Dead,

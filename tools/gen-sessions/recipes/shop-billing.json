@@ -1,0 +1,24 @@
+{
+  "name": "shop-billing",
+  "description": "Debug Wizard visits an independently seeded shop and exercises buying, payment, selling, credit, and theft handling.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "social.shops-billing",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  ,i\u001bp\u00171000 gold pieces\rpa\r dc\u0017leather armor\r do y d$j,  pa\r  "
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , \u00163\r   "
+    }
+  ]
+}

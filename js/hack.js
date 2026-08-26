@@ -13,7 +13,7 @@ import { You, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { feel_location } from './display.js';
 import { can_ooze } from './monmove.js';
 import { worm_cross } from './worm.js';
-import { block_door, block_entry, u_entered_shop } from './shk.js';
+import { block_door, block_entry, u_entered_shop, u_left_shop } from './shk.js';
 import { curr_mon_load } from './mon.js';
 import { inv_weight, weight_cap } from './attrib.js';
 import { carrying } from './invent.js';
@@ -588,9 +588,12 @@ export async function check_special_room(newlev) {
 
     if (newlev) {
         if (game.u.ushops0)
-            note_unported_hack('check_special_room:u_left_shop');
+            await u_left_shop(game.u.ushops_left, true);
         return;
     }
+
+    if (game.u.ushops0)
+        await u_left_shop(game.u.ushops_left, false);
 
     const achieveo = ((game.context ||= {}).achieveo ||= {});
     if (game.level?.flags?.has_town && !achieveo.minetn_reached

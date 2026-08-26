@@ -1,0 +1,19 @@
+{
+  "name": "container-bag-holding",
+  "description": "Debug Wizard applies a carried bag of holding and transfers an item in and back out.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers"
+  ],
+  "segments": [
+    {
+      "seed": 6204,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed bag of holding\raoif\rf\raooc\ra\r"
+    }
+  ]
+}

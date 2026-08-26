@@ -1,0 +1,19 @@
+{
+  "name": "container-loot",
+  "description": "Debug Wizard creates an unlocked chest and exercises floor looting and item transfer.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers"
+  ],
+  "segments": [
+    {
+      "seed": 6203,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed unlocked chest\ri\u001bdo#loot\rba\r f\rf\r\u0017uncursed skeleton key\raq.yaq.yaq.yzcnzcjaq.y"
+    }
+  ]
+}

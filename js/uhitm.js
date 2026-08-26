@@ -22,42 +22,47 @@ import { which_armor } from './worn.js';
 import { hitmsg, magic_negation } from './mhitu.js';
 import { You, Your, You_hear } from './pline.js';
 import { end_running } from './hack.js';
-import { mon_nam, Monnam, y_monnam, upstart, a_monnam, x_monnam,
+import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
          pmname } from './do_name.js';
 import { destroy_items, exclam } from './zap.js';
-import { Blind, Cold_resistance, Deaf, Hallucination } from './youprop.js';
+import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
+         Levitation } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './display.js';
-import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry } from './mon.js';
+import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
+         is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
-import { bimanual, is_plural } from './obj.js';
+import { bimanual, is_plural, is_flimsy } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
 import { useup } from './invent.js';
 import { rnl } from './rng.js';
-import { ART_SNICKERSNEE } from './artilist_data.js';
+import { ART_SNICKERSNEE, ART_GIANTSLAYER,
+         ART_OGRESMASHER } from './artilist_data.js';
 import { yname, cxname, xname, The, makeplural, simpleonames,
          otense } from './objnam.js';
 import { mintrap } from './trap.js';
-import { clone_mon } from './makemon.js';
+import { clone_mon, goodpos, place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
-import { monflee } from './monmove.js';
+import { monflee, set_apparxy } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
-         NATTK } from './const.js';
+         M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
+         MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
+         FORCEBUNGLE, HURTLING, IS_DOOR } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
-         sticks, haseyes, cantwield } from './mondata.js';
+         sticks, haseyes, cantwield, is_flyer, is_floater } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
 import { hides_under } from './mondata.js';
 import { MONSYMS } from './monst_data.js';
 import { u_wipe_engr } from './engrave.js';
-import { check_capacity, overexertion } from './hack.js';
+import { check_capacity, overexertion, doorless_door } from './hack.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool, mksobj } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES, SKILLS } from './objects_data.js';
@@ -1044,8 +1049,9 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
            two leading draws inside mhitm_knockback happen unconditionally,
            so skipping the call loses them for every armed hit. */
         if (maybe_knockback)
-            mhitm_knockback(game.youmonst, mon,
-                            game.youmonst.data.mattk, {}, true);
+            await mhitm_knockback(game.youmonst, mon,
+                                  game.youmonst.data.mattk[0],
+                                  { hitflags: M_ATTK_HIT }, true);
     }
 
     /* src/uhitm.c:1934 — `return hmd.destroyed ? FALSE : TRUE`. This used to
@@ -1919,35 +1925,200 @@ function rustm(mdef, obj) {
         note_unported_uhitm('rustm:erode_obj');
 }
 
-// src/uhitm.c:5247 mhitm_knockback() — can this hit hurl the defender?
-//
-// The TWO leading draws happen before any qualification test: rn2(3) for
-// the distance and rn2(chance) for the 1-in-6 gate, so every damaging hit
-// spends them even when the attack type can never knock back. The actual
-// hurtle needs subsystems that are absent and is recorded.
-export function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
+// src/uhitm.c:5218 m_is_steadfast(). Grounded Giantslayer wielders and
+// loadstone carriers resist knockback.
+function m_is_steadfast(mtmp) {
+    const is_u = mtmp === game.youmonst;
+    const mdat = mtmp.data || game.mons[mtmp.mnum];
+    const wep = is_u ? game.u.uwep : MON_WEP(mtmp);
+
+    if ((is_u ? (Flying() || Levitation())
+              : (is_flyer(mdat) || is_floater(mdat)))
+        || Is_airlevel(game.u.uz)
+        || (Is_waterlevel(game.u.uz) && !is_pool(game.u.ux, game.u.uy)))
+        return false;
+
+    if (wep?.oartifact === ART_GIANTSLAYER)
+        return true;
+    if (is_u) {
+        const invent = game.invent || game.u.invent || [];
+        if (invent.some((obj) => obj.otyp === ONAMES.LOADSTONE))
+            return true;
+    } else if (m_carrying(mtmp, ONAMES.LOADSTONE)) {
+        return true;
+    }
+    return !!(game.u.usteed && mtmp === game.u.usteed
+              && (game.invent || game.u.invent || [])
+                     .some((obj) => obj.otyp === ONAMES.LOADSTONE));
+}
+
+function is_blunt_weapon(obj) {
+    return !!obj
+        && (obj.oclass === OCLASSES.WEAPON_CLASS
+            || is_weptool(obj, game.objects))
+        && !!(game.objects[obj.otyp].oc_dir & 4 /* WHACK */);
+}
+
+// src/dothrow.c:957 will_hurtle(). This is the destination predicate used by
+// the message and by each actual hurtle step.
+function will_hurtle(mon, x, y) {
+    if (!isok(x, y))
+        return false;
+    if ((mon.data || game.mons[mon.mnum]).msize >= MFLAGS.MZ_HUGE
+        || mon === game.u.ustuck || mon.mtrapped)
+        return false;
+    return goodpos(x, y, mon, MM_IGNOREWATER | MM_IGNORELAVA);
+}
+
+// src/dothrow.c:1118 mhurtle(). Move a monster along a straight path. The
+// collision and region edge cases remain recorded, but the ordinary open
+// path, including trap checks, is live.
+async function mhurtle(mon, dx, dy, range) {
+    await wakeup(mon, !game.context?.mon_moving);
+    mon.movement = 0;
+    mon.mstun = 1;
+
+    if ((mon.data || game.mons[mon.mnum]).msize >= MFLAGS.MZ_HUGE
+        || mon === game.u.ustuck || mon.mtrapped) {
+        if (canseemon(mon))
+            await pline(`${Monnam(mon)} doesn't budge!`);
+        return;
+    }
+
+    dx = sgn(dx);
+    dy = sgn(dy);
+    if (!range || (!dx && !dy))
+        return;
+    if (dx && dy && mon.mnum === PMNAMES.PM_GRID_BUG) {
+        note_unported_uhitm('mhurtle:nodiag');
+        return;
+    }
+
+    if (mon.mundetected) {
+        mon.mundetected = 0;
+        newsym(mon.mx, mon.my);
+    }
+    if (M_AP_TYPE(mon))
+        seemimic(mon);
+
+    for (let step = 0; step < range; step++) {
+        const x = mon.mx + dx;
+        const y = mon.my + dy;
+        if (!will_hurtle(mon, x, y)) {
+            if (m_at(x, y))
+                note_unported_uhitm('mhurtle:monster_collision');
+            else if (x === game.u.ux && y === game.u.uy)
+                note_unported_uhitm('mhurtle:hero_collision');
+            break;
+        }
+
+        const ox = mon.mx, oy = mon.my;
+        remove_monster(ox, oy);
+        /* newsym's sensed-monster arm scans the monster chain, so move the
+           coordinates before repainting the vacated square. C's m_at grid
+           alone is authoritative here; this ordering gives JS the same
+           answer while place_monster installs the new grid entry below. */
+        mon.mx = x;
+        mon.my = y;
+        newsym(ox, oy);
+        place_monster(mon, x, y);
+        newsym(x, y);
+        set_apparxy(mon);
+        if (await mintrap(mon, HURTLING))
+            break;
+    }
+
+    if (!DEADMONSTER(mon)) {
+        if (t_at(mon.mx, mon.my))
+            await mintrap(mon, FORCEBUNGLE);
+        else
+            note_unported_uhitm('mhurtle:minliquid');
+    }
+}
+
+// src/uhitm.c:5247 mhitm_knockback(). Can this hit hurl the defender?
+// The two leading draws precede every qualification test. Message variation
+// draws also precede the blocking pline, matching C's argument evaluation.
+export async function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
     const A = ATTKS;
-    rn2(3);                     /* knockdistance: 67% 1 step, 33% 2 */
-    const chance = 6;           /* Ogresmasher needs an artifact wielder */
+    const attack = Array.isArray(mattk?.[0]) ? mattk[0] : mattk;
+    const u_agr = magr === game.youmonst;
+    const u_def = mdef === game.youmonst;
+    const magrdata = magr.data || game.mons[magr.mnum];
+    const mdefdata = mdef.data || game.mons[mdef.mnum];
+    const wep = weapon_used ? (u_agr ? game.u.uwep : MON_WEP(magr)) : null;
+    const knockdistance = rn2(3) ? 1 : 2;
+    const chance = wep?.oartifact === ART_OGRESMASHER ? 2 : 6;
 
     if (rn2(chance))
         return false;
-
-    /* only certain attacks qualify for knockback */
-    if (!((mattk[1] === A.AD_PHYS)
-          && (mattk[0] === A.AT_CLAW
-              || mattk[0] === A.AT_KICK
-              || mattk[0] === A.AT_BUTT
-              || mattk[0] === A.AT_WEAP)))
+    if (!(attack?.[1] === A.AD_PHYS
+          && (attack[0] === A.AT_CLAW || attack[0] === A.AT_KICK
+              || attack[0] === A.AT_BUTT || attack[0] === A.AT_WEAP)))
+        return false;
+    if (attacktype(magrdata, A.AT_ENGL) || attacktype(magrdata, A.AT_HUGS)
+        || sticks(magrdata))
         return false;
 
-    /* don't knockback if attacker also wants to grab or engulf */
-    if (attacktype(game.mons[magr.mnum], A.AT_ENGL)
-        || attacktype(game.mons[magr.mnum], A.AT_HUGS)
-        || sticks(game.mons[magr.mnum]))
+    const defx = u_def ? game.u.ux : mdef.mx;
+    const defy = u_def ? game.u.uy : mdef.my;
+    const agrx = u_agr ? game.u.ux : magr.mx;
+    const agry = u_agr ? game.u.uy : magr.my;
+    const dx = sgn(defx - agrx), dy = sgn(defy - agry);
+
+    if (!isok(defx + dx, defy + dy))
+        return false;
+    if (u_def) {
+        note_unported_uhitm('mhitm_knockback:test_move_u');
+        return false;
+    } else if (IS_DOOR(game.level.at(defx, defy).typ)
+               && (defx - agrx) && (defy - agry)
+               && !doorless_door(defx, defy)) {
+        return false;
+    }
+
+    if ((!u_agr && DEADMONSTER(magr)) || DEADMONSTER(mdef))
+        return false;
+    if (!(magrdata.msize > mdefdata.msize + 1))
+        return false;
+    if (wep && (is_flimsy(wep) || !is_blunt_weapon(wep)))
+        return false;
+    if (unsolid(magrdata))
+        return false;
+    if (u_agr && !(mhm.hitflags & M_ATTK_HIT))
         return false;
 
-    /* the hurtle itself (test_move, mhurtle, messages) is absent */
-    note_unported_uhitm('mhitm_knockback:hurtle');
-    return false;
+    if (m_is_steadfast(mdef)) {
+        if (canseemon(mdef))
+            await pline(`${Monnam(mdef)} doesn't budge.`);
+        return false;
+    }
+
+    const knockedhow = will_hurtle(mdef, defx + dx, defy + dy)
+        ? 'backward' : 'back';
+    if (canseemon(mdef)) {
+        const magrbuf = u_agr ? 'You' : Monnam(magr);
+        const mdefbuf = y_monnam(mdef);
+        const force = rn2(2) ? 'forceful' : 'powerful';
+        const hitkind = rn2(2) ? 'blow' : 'strike';
+        await pline(`${magrbuf} ${vtense(magrbuf, 'knock')} ${mdefbuf} ${
+            knockedhow} with a ${force} ${hitkind}!`);
+    } else if (u_agr) {
+        await You(`feel ${m_monnam(mdef)} be knocked ${knockedhow}!`);
+    }
+
+    if (game.u.ustuck && u_agr)
+        set_ustuck(null);
+
+    await mhurtle(mdef, dx, dy, knockdistance);
+    if (!u_agr)
+        mhm.hitflags |= M_ATTK_HIT;
+    if (DEADMONSTER(mdef)) {
+        mhm.hitflags |= M_ATTK_DEF_DIED;
+    } else if (!rn2(4)) {
+        mdef.mstun = 1;
+    }
+    if (!u_agr && DEADMONSTER(magr))
+        mhm.hitflags |= M_ATTK_AGR_DIED;
+    return true;
 }

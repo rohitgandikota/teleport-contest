@@ -24,7 +24,7 @@ import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
-         dopickup, trapmove, doorless_door,
+         domove_bump_mon, dopickup, trapmove, doorless_door,
          could_move_onto_boulder } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
 import { Blind, Hallucination } from './youprop.js';
@@ -2184,6 +2184,8 @@ async function domove_core() {
         const mtmp_bump = m_at(newx, newy);
         if (mtmp_bump && (!is_safemon(mtmp_bump) || game.context.forcefight))
             nomul(0);
+        if (mtmp_bump && await domove_bump_mon(mtmp_bump, newx, newy))
+            return;
     }
 
     /* src/hack.c:2790 — domove_attackmon_at() gates walking into an occupied

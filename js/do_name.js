@@ -24,7 +24,7 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
          SUPPRESS_SADDLE, SUPPRESS_IT, SUPPRESS_INVISIBLE,
-         SUPPRESS_HALLUCINATION, MD_PAD_BOGONS,
+         SUPPRESS_HALLUCINATION, SUPPRESS_MAPPEARANCE, MD_PAD_BOGONS,
          has_mgivenname, MGIVENNAME, W_SADDLE } from './const.js';
 import { humanoid, is_animal, mindless, pronoun_gender, type_is_pname } from './mondata.js';
 import { canspotmon } from './display.js';
@@ -260,6 +260,13 @@ export function christen_monst(mtmp, name) {
 export const mon_nam = (mtmp) =>
     x_monnam(mtmp, ARTICLE_THE, null,
              has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0, false);
+
+// src/do_name.c:1110 m_monnam(), the monster's exact own name without an
+// article, hallucination, visibility, appearance, or saddle decoration.
+export const m_monnam = (mtmp) =>
+    x_monnam(mtmp, ARTICLE_NONE, null,
+             SUPPRESS_IT | SUPPRESS_INVISIBLE | SUPPRESS_HALLUCINATION
+             | SUPPRESS_SADDLE | SUPPRESS_MAPPEARANCE, false);
 
 // src/do_name.c:1117 y_monnam() — ARTICLE_YOUR, which x_monnam downgrades
 // to THE for anything not tame. "saddled" is redundant when mounted, so the

@@ -1065,7 +1065,8 @@ async function hitmu(mtmp, mattk, indx) {
         mhm.hitflags |= M_ATTK_HIT;
     }
 
-    mhitm_knockback(mtmp, game.youmonst, mattk, mhm, (MON_WEP(mtmp) != null));
+    await mhitm_knockback(mtmp, game.youmonst, mattk, mhm,
+                          (MON_WEP(mtmp) != null));
 
     if (mhm.done)
         return mhm.hitflags;

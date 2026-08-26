@@ -7,7 +7,7 @@ import { the, xname } from './objnam.js';
 import { costly_spot } from './shk.js';
 import { You_hear, There } from './pline.js';
 import { glyph_at, map_invisible, newsym, unmap_invisible } from './display.js';
-import { YMonnam } from './do_name.js';
+import { YMonnam, m_monnam, mon_nam } from './do_name.js';
 import { is_flimsy } from './obj.js';
 import { You, pline_xy, pline_The, set_msg_xy, Norep } from './pline.js';
 import { feel_location } from './display.js';
@@ -23,7 +23,7 @@ import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
          Hallucination, Deaf } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
-import { is_pool, is_lava, t_at, m_at, is_pick } from './mon.js';
+import { is_pool, is_lava, t_at, m_at, is_pick, seemimic } from './mon.js';
 import { hliquid } from './do_name.js';
 import { Is_waterlevel, WATER, LAVAPOOL, POOL } from './const.js';
 import { waterbody_name } from './pager.js';
@@ -809,6 +809,26 @@ export async function swim_move_danger(x, y) {
                 return true;
             }
         }
+    }
+    return false;
+}
+
+// src/hack.c:1925 domove_bump_mon(). Moving without pickup does not attack a
+// monster the hero senses or already has marked on the map. It spends the
+// move and reports the collision before domove_attackmon_at() can run.
+export async function domove_bump_mon(mtmp, x, y) {
+    const glyph = glyph_at(x, y);
+    if (game.context?.nopick && !game.context?.travel
+        && (canspotmon(mtmp) || glyph?.kind === 'invis'
+            || glyph?.kind === 'warn')) {
+        if (M_AP_TYPE(mtmp) && !sensemon(mtmp)) {
+            seemimic(mtmp);
+        } else if (mtmp.mpeaceful && !Hallucination()) {
+            await pline(`Pardon me, ${m_monnam(mtmp)}.`);
+        } else {
+            await You(`move right into ${mon_nam(mtmp)}.`);
+        }
+        return true;
     }
     return false;
 }

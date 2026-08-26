@@ -301,7 +301,7 @@ export function tin_variety_txt(s, tinvariety) {
 // assigninvlet's rule: first unused letter, a-z then A-Z.
 function touchfood(otmp) {
     if (otmp.quan > 1) {
-        if (!(game.invent || []).includes(otmp))
+        if (!carried(otmp))
             splitobj(otmp, otmp.quan - 1);
         else
             otmp = splitobj(otmp, 1);
@@ -312,7 +312,7 @@ function touchfood(otmp) {
         otmp.oeaten = obj_nutrition(otmp);
     }
 
-    if ((game.invent || []).includes(otmp)) {
+    if (carried(otmp)) {
         freeinv(otmp);
         if ((game.invent || []).length >= 52) {
             note_unported_eat('touchfood:overflow_drop');

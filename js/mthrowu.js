@@ -8,31 +8,31 @@
 import { game } from './gstate.js';
 import { rnd } from './rng.js';
 import { rounddiv } from './hack.js';
-import { is_ammo, matching_launcher, ammo_and_launcher } from './wield.js';
+import { is_ammo, matching_launcher, ammo_and_launcher, welded } from './wield.js';
 import { multishot_class_bonus } from './dothrow.js';
 import { is_prince, is_lord, is_mplayer, is_elf, is_orc,
-         is_gnome } from './mondata.js';
+         is_gnome, is_unicorn, nohands } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { should_mulch_missile } from './dothrow.js';
 import { delobj, m_at } from './mon.js';
 import { down_gate, ship_object } from './dokick.js';
-import { flooreffects } from './do.js';
+import { dropy, flooreffects } from './do.js';
 import { place_object, mksobj } from './mkobj.js';
-import { stackobj } from './invent.js';
+import { hold_another_object, stackobj } from './invent.js';
 import { u_at, M_AP_MONSTER, XKILL_NOMSG, SLT_ENCUMBER,
          A_DEX, WATER, LAVAWALL } from './const.js';
 import { calc_capacity, ACURR } from './attrib.js';
 import { MON_WEP } from './monst.js';
 import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { cansee } from './vision.js';
-import { observe_object } from './o_init.js';
+import { makeknown, observe_object } from './o_init.js';
 import { find_mac } from './worn.js';
 import { omon_adj } from './dothrow.js';
 import { hit, miss, exclam } from './zap.js';
-import { distant_name, mshot_xname, xname, an, the } from './objnam.js';
+import { distant_name, mshot_xname, simpleonames, xname, an, the } from './objnam.js';
 import { pline, canspotmon, display_object_at, temporary_object_glyph,
          newsym } from './display.js';
-import { pline_The } from './pline.js';
+import { pline_The, You } from './pline.js';
 import { seemimic, setmangry, xkilled, mondied } from './mon.js';
 import { dmgval } from './weapon.js';
 import { resists_acid, resists_poison, resists_ston, noncorporeal,
@@ -41,7 +41,7 @@ import { mon_nam, Monnam, hliquid } from './do_name.js';
 import { mhim } from './mondata.js';
 import { s_suffix } from './hacklib.js';
 import { mon_hates_silver, touch_petrifies } from './dog.js';
-import { stone_missile, is_poisonable } from './obj.js';
+import { bimanual, stone_missile, is_poisonable } from './obj.js';
 import { passes_rocks } from './uhitm.js';
 import { obj_extract_self } from './invent.js';
 import { MATERIALS } from './objects_data.js';
@@ -373,21 +373,52 @@ function mt_flightcheck(pre, singleobj, dx, dy) {
 // The rn2(catch_chance) draw happens whenever the hero is unimpaired with a
 // free hand and the object light enough; the actual catch (1 in ~90) then
 // adds it to inventory.
+function freehand() {
+    const u = game.u;
+    return !u.uwep || !welded(u.uwep)
+        || (!bimanual(u.uwep) && (!u.uarms || !u.uarms.cursed));
+}
+
+// src/mthrowu.c:497 ucatchgem(): unicorn forms catch real and glass gems.
+async function ucatchgem(gem, mon) {
+    if (gem.otyp > ONAMES.LAST_GLASS_GEM
+        || !is_unicorn(game.youmonst.data))
+        return false;
+
+    const gemName = xname(gem);
+    const owner = s_suffix(mon_nam(mon));
+    if (gem.otyp >= ONAMES.FIRST_GLASS_GEM) {
+        await You(`catch the ${gemName}.`);
+        await You(`are not interested in ${owner} junk.`);
+        makeknown(gem.otyp);
+        await dropy(gem);
+    } else {
+        await You(`accept ${owner} gift in the spirit in which it was intended.`);
+        await hold_another_object(gem, 'You catch, but drop, %s.', gemName,
+                                  'You catch:');
+    }
+    return true;
+}
+
 async function u_catch_thrown_obj(otmp) {
+    const roleName = game.urole?.name?.m ?? game.urole?.name;
     const catch_chance = 100 - ACURR(A_DEX)
-        - ((game.urole?.name === 'Monk' || game.urole?.name === 'Rogue')
+        - ((roleName === 'Monk' || roleName === 'Rogue')
            ? 20 : 0);
 
     const impaired = game.u.ublind
         || game.u.intrinsic?.HConfusion || game.u.uprops?.CONFUSION
-        || game.u.uprops?.STUNNED || game.u.uprops?.FUMBLING;
-    /* nohands/freehand: hero forms without hands are not modelled; a
-       welded shield/weapon combination is (freehand is uwep-welded test) */
+        || game.u.intrinsic?.HStun || game.u.uprops?.STUNNED
+        || game.u.uprops?.FUMBLING;
     if (!impaired
         && otmp.oclass !== OCLASSES.VENOM_CLASS
+        && !nohands(game.youmonst.data) && freehand()
         && calc_capacity(otmp.owt) <= SLT_ENCUMBER
         && !rn2(catch_chance)) {
-        note_unported_mthrowu('u_catch_thrown_obj:hold_another_object');
+        const simpleName = simpleonames(otmp);
+        await hold_another_object(otmp,
+                                  'You catch, but drop, the %s.', simpleName,
+                                  `You catch the ${simpleName}!`);
         return true;
     }
     return false;
@@ -486,9 +517,8 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
             if (game.multi)
                 nomul(0);
 
-            /* hero might be poly'd into a unicorn — ucatchgem needs that */
-            if (singleobj.oclass === OCLASSES.GEM_CLASS) {
-                note_unported_mthrowu('m_throw:ucatchgem');
+            if (singleobj.oclass === OCLASSES.GEM_CLASS
+                && await ucatchgem(singleobj, mon)) {
                 break;
             }
 

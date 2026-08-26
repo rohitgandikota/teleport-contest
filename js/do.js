@@ -13,14 +13,14 @@ import { game } from './gstate.js';
 import { reset_occupations, set_move_cmd } from './cmd.js';
 import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
-import { encumber_msg } from './attrib.js';
-import { freeinv, getobj, any_obj_ok } from './invent.js';
+import { encumber_msg, exercise, weight_cap } from './attrib.js';
+import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
 import { place_object } from './mkobj.js';
-import { pline, newsym } from './display.js';
-import { You, You_cant, Your } from './pline.js';
+import { cls, pline, newsym } from './display.js';
+import { pline_The, You, You_cant, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, VIBRATING_SQUARE, A_DEX, BOTH_SIDES, KILLED_BY, FACE } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -47,6 +47,135 @@ export function do_wire_dokick(fn) { ship_object_fn = fn; }
 
 function note_unported_do(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/ball.c:147 unplacebc_core(): detach punishment pieces from this level.
+function unplacebc() {
+    const u = game.u;
+    const ball = u.uball;
+    const chain = u.uchain;
+    if (!ball || !chain || u.uswallow)
+        return;
+
+    if (ball.where !== OBJ_INVENT) {
+        const bx = ball.ox, by = ball.oy;
+        obj_extract_self(ball);
+        newsym(bx, by);
+    }
+    const cx = chain.ox, cy = chain.oy;
+    obj_extract_self(chain);
+    newsym(cx, cy);
+}
+
+// src/ball.c:120 placebc_core(): put punishment pieces under the arriving hero.
+async function placebc() {
+    const u = game.u;
+    const ball = u.uball;
+    const chain = u.uchain;
+    if (!ball || !chain)
+        return;
+
+    await flooreffects(chain, u.ux, u.uy, '');
+    if (ball.where === OBJ_INVENT) {
+        u.bc_order = 0; /* BCPOS_DIFFER */
+    } else {
+        await flooreffects(ball, u.ux, u.uy, '');
+        place_object(ball, u.ux, u.uy);
+        u.bc_order = 1; /* BCPOS_CHAIN */
+    }
+    place_object(chain, u.ux, u.uy);
+    newsym(u.ux, u.uy);
+}
+
+function maybe_half_physical(damage) {
+    return game.u.uprops?.HALF_PHDAM
+        ? Math.trunc((damage + 1) / 2)
+        : damage;
+}
+
+// src/ball.c:966 litter(): the ball can knock carried objects down the stairs.
+async function litter() {
+    const capacity = weight_cap();
+    const { setnotworn } = await import('./worn.js');
+    const { yname, otense } = await import('./objnam.js');
+
+    // C saves nextobj before removing the current object. A snapshot has the
+    // same traversal semantics for this port's flat inventory array.
+    for (const obj of [...(game.invent || [])]) {
+        if (obj === game.u.uball || rnd(capacity) > obj.owt)
+            continue;
+        if (!canletgo(obj, ''))
+            continue;
+
+        await You(`drop ${yname(obj)} and ${obj.quan === 1 ? 'it' : 'they'} `
+                  + `${otense(obj, 'fall')} down the stairs with you.`);
+        setnotworn(obj);
+        freeinv(obj);
+        // hitfloor(obj, FALSE) reaches dropz(obj, TRUE) on ordinary stair
+        // terrain. The existing drop path records a downward shipping gate.
+        if (ship_object_fn
+            && ship_object_fn(obj, game.u.ux, game.u.uy, false))
+            continue;
+        await dropz(obj, true);
+    }
+}
+
+// src/ball.c:990 drag_down(): punishment damage during stair descent.
+async function drag_down() {
+    const u = game.u;
+    const ball = u.uball;
+    let dragchance = 3;
+    const carried = ball?.where === OBJ_INVENT;
+    const forward = carried
+        && (u.uwep === ball || !u.uwep || !rn2(3));
+
+    if (carried && !welded(ball))
+        await You('lose your grip on the iron ball.');
+
+    await cls();
+
+    if (forward) {
+        if (rn2(6)) {
+            await pline_The('iron ball drags you downstairs!');
+            await losehp(maybe_half_physical(rnd(6)),
+                         'dragged downstairs by an iron ball',
+                         NO_KILLER_PREFIX);
+            await litter();
+        }
+    } else {
+        if (rn2(2)) {
+            await pline_The('iron ball smacks into you!');
+            await losehp(maybe_half_physical(rnd(20)),
+                         'iron ball collision', KILLED_BY_AN);
+            exercise(A_STR, false);
+            dragchance -= 2;
+        }
+        if (dragchance >= rnd(6)) {
+            await pline_The('iron ball drags you downstairs!');
+            await losehp(maybe_half_physical(rnd(3)),
+                         'dragged downstairs by an iron ball',
+                         NO_KILLER_PREFIX);
+            exercise(A_STR, false);
+            await litter();
+        }
+    }
+}
+
+// src/ball.c:23 ballrelease(FALSE): let go without placing the ball yet.
+async function ballrelease() {
+    const u = game.u;
+    const ball = u.uball;
+    if (!ball || ball.where !== OBJ_INVENT || welded(ball))
+        return;
+
+    if (u.uwep === ball)
+        setuwep(null);
+    if (u.uswapwep === ball)
+        setuswapwep(null);
+    if (u.uquiver === ball)
+        setuqwep(null);
+    freeinv(ball);
+    await encumber_msg();
 }
 
 // src/do.c:162 flooreffects() — what happens to an object landing at (x,y).
@@ -273,6 +402,8 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
     game.iflags = game.iflags || {};
     game.iflags.travelcc = { x: 0, y: 0 };
     await check_special_room(true);
+    if (game.u.uball)
+        unplacebc();
     /* src/do.c:1623 — the tutorial transition sets iflags.nofollowers so
        the pet stays behind */
     if (!game.iflags?.nofollowers)
@@ -452,20 +583,21 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         } else if (game.u.uprops?.FLYING) {
             if (game.flags?.verbose)
                 await You('fly down the stairs.');
-        } else if (near_capacity() > UNENCUMBERED || game.uball
+        } else if (near_capacity() > UNENCUMBERED || game.u.uball
                    || game.u.uprops?.FUMBLING
                    || game.u.intrinsic?.HFumbling) {
             await You('fall down the stairs.');
-            if (game.uball)
-                note_unported_do('goto_level:drag_down');
+            if (game.u.uball) {
+                await drag_down();
+                if (!welded(game.u.uball))
+                    await ballrelease();
+            }
             if (game.u.usteed) {
                 const { dismount_steed } = await import('./steed.js');
                 await dismount_steed(1 /* DISMOUNT_FELL */);
             } else {
-                let damage = rnd(3);
-                if (game.u.uprops?.HALF_PHDAM)
-                    damage = Math.trunc((damage + 1) / 2);
-                await losehp(damage, 'tumbling down a flight of stairs',
+                await losehp(maybe_half_physical(rnd(3)),
+                             'tumbling down a flight of stairs',
                              KILLED_BY);
             }
             /* selftouch("Falling, you") draws nothing unless a petrifying
@@ -482,6 +614,9 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         const { u_on_rndspot } = await import('./dungeon.js');
         await u_on_rndspot(up ? 1 : 0);
     }
+
+    if (game.u.uball)
+        await placebc();
 
     /* obj_delivery() — migrating objects; none exist yet */
     losedogs();

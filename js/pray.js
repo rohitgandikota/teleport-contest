@@ -36,6 +36,7 @@ import { mdistu, monflee } from './monmove.js';
 import { set_malign, Inhell } from './makemon.js';
 import { killed } from './mon.js';
 import { aggravate } from './wizard.js';
+import { setuhpmax } from './exper.js';
 
 function note_unported_pray(what) {
     (game.unported ||= new Set()).add('pray:' + what);
@@ -172,6 +173,31 @@ function in_trouble() {
 }
 
 function TROUBLE_CURSED_BLINDFOLD_() { return -12; }
+
+// src/pray.c:382 fix_worst_trouble(), implemented as each state becomes live.
+async function fix_worst_trouble(trouble) {
+    const u = game.u;
+
+    switch (trouble) {
+    case TROUBLE_HIT: {
+        await You_feel('much better.');
+        if (Upolyd(u)) {
+            u.mhmax = Math.max((u.mhmax || 0) + rnd(5), 6);
+            u.mh = u.mhmax;
+        }
+        let maxhp = u.uhpmax;
+        if (maxhp < u.ulevel * 5 + 11)
+            maxhp += rnd(5);
+        setuhpmax(Math.max(maxhp, 6), true);
+        u.uhp = u.uhpmax;
+        (game.disp ||= {}).botl = true;
+        return true;
+    }
+    default:
+        note_unported_pray(`fix_worst_trouble:${trouble}`);
+        return false;
+    }
+}
 
 // src/pray.c:2530 align_gname()
 export function align_gname(alignment) {
@@ -577,7 +603,7 @@ async function god_zaps_you(resp_god) {
 // record the missing state change.
 async function pleased(g_align) {
     const u = game.u;
-    const trouble = in_trouble();
+    let trouble = in_trouble();
     let pat_on_head = false;
     const hallucinating = !!u.uprops?.HALLUC;
 
@@ -606,10 +632,41 @@ async function pleased(g_align) {
         if (u.ualign.record < STRIDENT)
             action = (u.ualign.record > 0 || !rnl(2)) ? 1 : 0;
 
-        if (trouble || action > 1)
-            note_unported_pray(`pleased:action=${Math.min(action, 5)}:trouble=${trouble}`);
-        if (action >= 5)
+        switch (Math.min(action, 5)) {
+        case 5:
             pat_on_head = true;
+            // Fall through to fixing every trouble.
+        case 4:
+            while (trouble) {
+                if (!(await fix_worst_trouble(trouble)))
+                    break;
+                trouble = in_trouble();
+            }
+            break;
+        case 3: {
+            await fix_worst_trouble(trouble);
+            let tryct = 0;
+            while ((trouble = in_trouble()) > 0 && ++tryct < 10) {
+                if (!(await fix_worst_trouble(trouble)))
+                    break;
+            }
+            break;
+        }
+        case 2: {
+            let tryct = 0;
+            while ((trouble = in_trouble()) > 0 && ++tryct < 10) {
+                if (!(await fix_worst_trouble(trouble)))
+                    break;
+            }
+            break;
+        }
+        case 1:
+            if (trouble > 0)
+                await fix_worst_trouble(trouble);
+            break;
+        default:
+            break;
+        }
     }
 
     if (pat_on_head) {

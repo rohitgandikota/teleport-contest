@@ -173,6 +173,21 @@ async function m_calcdistress(mtmp) {
    turn and reordered every monster interleave at occupation seams. */
 var gs_somebody_can_move = false;
 
+// src/mon.c:2487 dmonsfree(): unlink monsters detached during the sweep.
+function dmonsfree() {
+    const monsters = game.level?.monsters;
+    if (!monsters)
+        return;
+
+    for (let i = monsters.length - 1; i >= 0; --i) {
+        const mtmp = monsters[i];
+        if (DEADMONSTER(mtmp) && !mtmp.isgd)
+            monsters.splice(i, 1);
+    }
+    if (game.iflags)
+        game.iflags.purge_monsters = 0;
+}
+
 export async function movemon() {
     gs_somebody_can_move = false;
     /* src/mon.c:4500 iter_mons_safe() — C snapshots fmon into itermonarr[]
@@ -186,6 +201,8 @@ export async function movemon() {
         if (mtmp.mhp <= 0) continue;   /* died earlier in this sweep */
         if (await movemon_singlemon(mtmp)) break;
     }
+    clear_splitobjs();
+    dmonsfree();
     return gs_somebody_can_move;
 }
 

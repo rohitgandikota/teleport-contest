@@ -62,7 +62,8 @@ const names = [];
 const tags = [];
 const otyps = [];
 const spfxs = [], mtypes = [], attks = [], defns = [], carys = [],
-      aligns = [], roles = [], races = [], genSpes = [], giftValues = [];
+      invProps = [], aligns = [], roles = [], races = [], genSpes = [],
+      giftValues = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
     if (/\w/.test(src[i - 1] || '')) continue;
@@ -102,6 +103,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     attks.push(clean(fields[5] ?? 'NO_ATTK'));
     defns.push(clean(fields[6] ?? 'NO_DFNS'));
     carys.push(clean(fields[7] ?? 'NO_CARY'));
+    invProps.push(clean(fields[8] ?? '0'));
     aligns.push(clean(fields[9] ?? 'A_NONE'));
     roles.push(clean(fields[10] ?? 'NON_PM'));
     races.push(clean(fields[11] ?? 'NON_PM'));
@@ -151,6 +153,7 @@ export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     attk: attks[i],
     defn: defns[i],
     cary: carys[i],
+    inv_prop: invProps[i] === '0' ? 0 : invProps[i],
     align: aligns[i],
     role: roles[i],
     race: races[i],

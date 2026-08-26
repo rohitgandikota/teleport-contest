@@ -16,11 +16,11 @@ import { is_covetous, is_mplayer, defended, resists_fire, resists_cold,
 import { is_vampshifter } from './monst.js';
 import { Fire_resistance, Cold_resistance, Shock_resistance,
          Poison_resistance, Stone_resistance } from './youprop.js';
-import { rn2, rnd } from './rng.js';
+import { rn2, rnd, rnz, d } from './rng.js';
 import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
          ONAME_KNOW_ARTI, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
-         nothing_happens, W_WEP } from './const.js';
+         nothing_happens, W_WEP, W_ARTI } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -564,6 +564,71 @@ export function retouch_object(obj, loseit) {
     return 0;
 }
 
+// src/artifact.c:2131 arti_invoke(), ordinary property powers. These toggle
+// an extrinsic bit immediately. Turning one off starts its cooldown; trying
+// to turn it back on too soon spends 3d10 more cooldown and has no effect.
+async function invoke_property(obj, prop) {
+    const props = (game.u.uprops ||= {});
+    let eprop = (props[prop] || 0) ^ W_ARTI;
+    if (eprop)
+        props[prop] = eprop;
+    else
+        delete props[prop];
+    const on = (eprop & W_ARTI) !== 0;
+
+    if (on && (obj.age || 0) > game.moves) {
+        eprop ^= W_ARTI;
+        if (eprop)
+            props[prop] = eprop;
+        else
+            delete props[prop];
+        const { xname, the, otense } = await import('./objnam.js');
+        const { You_feel } = await import('./pline.js');
+        await You_feel(`that ${the(xname(obj))} ${otense(obj, 'are')} ignoring you.`);
+        obj.age += d(3, 10);
+        return ECMD_TIME;
+    }
+    if (!on)
+        obj.age = game.moves + rnz(100);
+
+    if ((eprop & ~W_ARTI) || game.u.intrinsic?.[prop]) {
+        note_unported_art('arti_invoke:property_already_present');
+        return ECMD_TIME;
+    }
+
+    const { You, You_feel, Your } = await import('./pline.js');
+    switch (prop) {
+    case 'CONFLICT':
+        if (on)
+            await You_feel('like a rabble-rouser.');
+        else
+            await You_feel('the tension decrease around you.');
+        break;
+    case 'LEVITATION':
+        if (on) {
+            await You('start to float in the air!');
+            const { encumber_msg } = await import('./attrib.js');
+            await encumber_msg();
+            const { spoteffects } = await import('./hack.js');
+            await spoteffects(false);
+        } else {
+            const { float_down } = await import('./trap.js');
+            await float_down(0, W_ARTI);
+        }
+        break;
+    case 'INVIS':
+        if (on)
+            await Your('body takes on a strange transparency...');
+        else
+            await Your('body seems to unfade...');
+        break;
+    default:
+        note_unported_art(`arti_invoke:property=${prop}`);
+        break;
+    }
+    return ECMD_TIME;
+}
+
 // src/artifact.c:1727 doinvoke() and its invoke_ok() getobj callback.
 export async function doinvoke() {
     /* artifact.js is below invent.js through mon.js in the module graph, so
@@ -597,6 +662,10 @@ export async function doinvoke() {
         return ECMD_TIME;
     }
 
-    note_unported_art('arti_invoke:special_power');
+    if (oart.inv_prop === 'CONFLICT' || oart.inv_prop === 'LEVITATION'
+        || oart.inv_prop === 'INVIS')
+        return invoke_property(obj, oart.inv_prop);
+
+    note_unported_art(`arti_invoke:special_power=${oart.inv_prop}`);
     return ECMD_TIME;
 }

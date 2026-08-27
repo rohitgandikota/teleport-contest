@@ -8,6 +8,7 @@
 // exact C decision point, so game.unported names what a divergence wanted.
 
 import { game } from './gstate.js';
+import { midnight } from './calendar.js';
 import { breamm, thrwmu, spitmm } from './mthrowu.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { is_animal, perceives, dmgtype, gender, pronoun_gender,
@@ -1295,14 +1296,6 @@ async function hitmu(mtmp, mattk, indx) {
         res = M_ATTK_HIT;
     await stop_occupation();
     return res;
-}
-
-/* include/hack.h midnight() — the in-game clock (svh.hour) is not tracked;
-   an undead attacker at real midnight would double its dice. Recorded when
-   the guard is reached so the gap is visible. */
-function midnight() {
-    note_unported_mhitu('hitmu:midnight');
-    return false;
 }
 
 // src/mhitu.c:1902 mdamageu() — apply n points of damage to the hero.

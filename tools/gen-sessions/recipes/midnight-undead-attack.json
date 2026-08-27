@@ -1,0 +1,26 @@
+{
+  "name": "midnight-undead-attack",
+  "description": "A wraith attacks a debug hero at midnight and at noon to exercise the undead double-damage clock rule and its daytime control.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee",
+    "religion.luck-calendar"
+  ],
+  "segments": [
+    {
+      "seed": 8936,
+      "datetime": "20000712000000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0007hostile wraith\rm.m."
+    },
+    {
+      "seed": 8936,
+      "datetime": "20000712120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0007hostile wraith\rm.m."
+    }
+  ]
+}

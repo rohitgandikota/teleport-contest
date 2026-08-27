@@ -1,0 +1,20 @@
+{
+  "name": "artifact-cleaver",
+  "description": "Debug Barbarian wields Cleaver beside a cluster of newts to exercise its three-cell melee arc and alternating swing order.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.hero-melee",
+    "object.artifacts",
+    "combat.melee"
+  ],
+  "segments": [
+    {
+      "seed": 6933,
+      "datetime": "20000112091500",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +3 Cleaver\rwe\u0007newt\r\u0007newt\r\u0007newt\r\u0007newt\r\u0007newt\rl:\u0007grid bug\r\u0007lichen\r\u0007gecko\r\u0007jackal\r\u0007fox\rl :"
+    }
+  ]
+}

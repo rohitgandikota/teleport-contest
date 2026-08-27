@@ -28,7 +28,7 @@ import { destroy_items, exclam, hit } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
          Levitation } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
-         flush_screen } from './display.js';
+         flush_screen, glyph_is_invisible_at, unmap_invisible } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
@@ -37,7 +37,7 @@ import { bimanual, is_plural, is_flimsy, stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
 import { useup } from './invent.js';
 import { rnl } from './rng.js';
-import { ART_SNICKERSNEE, ART_GIANTSLAYER,
+import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { yname, cxname, xname, The, makeplural, simpleonames,
          otense, mshot_xname } from './objnam.js';
@@ -50,7 +50,7 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
          FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET,
-         TEST_MOVE, ROOM, CORR } from './const.js';
+         TEST_MOVE, ROOM, CORR, xdir, ydir } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
@@ -638,13 +638,64 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
 // callees read it, which is why it is game state rather than a local. It is
 // set to 2 before the second hit and cleared at the end.
 //
-// Not ported, each recorded: hitum_cleave (wielded Cleaver), passive (the
-// monster's counter-attack, 256 lines and it draws), and the exercise(A_DEX)
-// on a successful hit.
+// Passive monster counter-attacks are only partly ported below.
 
 /* monst_data stores each attack as [aatyp, adtyp, damn, damd]; the C reads
    them as named fields. */
 const mattk_row = (a) => ({ aatyp: a[0], adtyp: a[1], damn: a[2], damd: a[3] });
+
+// src/uhitm.c hitum_cleave(). Attack the primary square and the adjacent
+// squares on either side, reversing the sweep direction on each Cleaver hit.
+async function hitum_cleave(target, uattk) {
+    let i = xdir.findIndex((dx, dir) => dx === game.u.dx
+                                        && ydir[dir] === game.u.dy);
+    if (i < 0)
+        return true;
+
+    const clockwise = !!game.cleave_clockwise;
+    i = (i + (clockwise ? 6 : 2)) % 8;
+    const oldumort = game.u.umortality || 0;
+    const save_bhitpos = { ...game.bhitpos };
+    const save_notonhead = game.notonhead;
+
+    for (let count = 0; count < 3; count++) {
+        i = (i + (clockwise ? 1 : 7)) % 8;
+        const tx = game.u.ux + xdir[i];
+        const ty = game.u.uy + ydir[i];
+        if (!isok(tx, ty))
+            continue;
+
+        const mtmp = m_at(tx, ty);
+        if (!mtmp) {
+            if (glyph_is_invisible_at(tx, ty))
+                unmap_invisible(tx, ty);
+            continue;
+        }
+
+        const out = { attk_count: 0, role_roll_penalty: 0 };
+        const tmp = await find_roll_to_hit(mtmp, uattk.aatyp,
+                                           game.u.uwep, out);
+        mon_maybe_unparalyze(mtmp);
+        const dieroll = rnd(20);
+        const mhit = [(tmp > dieroll) ? 1 : 0];
+        game.bhitpos = { x: tx, y: ty };
+        game.notonhead = (mtmp.mx !== tx || mtmp.my !== ty);
+        await known_hitum(mtmp, game.u.uwep, mhit, tmp,
+                          out.role_roll_penalty, uattk, dieroll);
+        passive(mtmp, game.u.uwep, mhit[0], !DEADMONSTER(mtmp),
+                ATTKS.AT_WEAP, !game.u.uwep);
+
+        if (!game.u.uwep || (game.multi || 0) < 0
+            || (game.u.umortality || 0) > oldumort)
+            break;
+    }
+
+    game.cleave_clockwise = !clockwise;
+    game.bhitpos = save_bhitpos;
+    game.notonhead = save_notonhead;
+    return !(target && DEADMONSTER(target));
+}
+
 export async function hitum(mon, uattk) {
     const wepbefore = game.u.uwep;
     const secondwep = game.u.twoweap ? game.u.uswapwep : null;
@@ -652,8 +703,10 @@ export async function hitum(mon, uattk) {
     const oldumort = game.u.umortality || 0;
     const out = { attk_count: 0, role_roll_penalty: 0 };
 
-    if (game.u.uwep && game.u.uwep.oartifact)
-        note_unported_uhitm('hitum:cleaver_check');
+    if (game.u.uwep?.oartifact === ART_CLEAVER && !game.u.twoweap
+        && !game.u.uswallow && !game.u.ustuck
+        && game.u.umonnum !== PMNAMES.PM_GRID_BUG)
+        return hitum_cleave(mon, uattk);
 
     /* 0: single hit, 1: first of two; hmon_hitmon reads it downstream */
     game.twohits = (game.u.uwep ? game.u.twoweap : double_punch()) ? 1 : 0;
@@ -1443,7 +1496,7 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
 
     /* special attack actions -- an if/else ladder: at most one fires */
     if (!hmd.train_weapon_skill || mon === game.u.ustuck || game.u.twoweap
-        || (hmd.hand_to_hand && note_unported_uhitm('hmon_hitmon:is_art_CLEAVER'))) {
+        || (hmd.hand_to_hand && obj.oartifact === ART_CLEAVER)) {
         ;   /* no special bonuses */
     } else {
         note_unported_uhitm('hmon_hitmon:special_attacks');

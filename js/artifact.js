@@ -221,6 +221,32 @@ function mtype_value(rec) {
 const ALIGNS = { A_LAWFUL: 1, A_NEUTRAL: 0, A_CHAOTIC: -1, A_NONE: -128 };
 const rec_align = (rec) => ALIGNS[rec.align] ?? -128;
 
+/* src/artifact.c hack_artifacts(). C mutates its process-local artilist after
+   role selection. Replays share this module, so derive the same values from
+   the current game instead of mutating the generated table across segments. */
+function role_matches(role) {
+    return role === game.urole?.mnum || PMNAMES[role] === game.urole?.mnum;
+}
+
+function artifact_role(rec, artinum) {
+    if (artinum === game.urole?.questarti)
+        return game.urole?.mnum;
+    if (artinum === ART_EXCALIBUR && !role_matches('PM_KNIGHT'))
+        return 'NON_PM';
+    return rec.role;
+}
+
+function artifact_alignment(rec, artinum) {
+    const alignment = rec_align(rec);
+    if (artinum === game.urole?.questarti
+        || (alignment !== -128 && role_matches(rec.role))) {
+        return game.u.ualignbase?.[0]
+               ?? game.u.ualign?.type
+               ?? alignment;
+    }
+    return alignment;
+}
+
 /* include/artifact.h SPFX_* bits used below */
 const SPFX_INTEL = 0x04, SPFX_RESTR = 0x02, SPFX_WARN = 0x20,
       SPFX_ATTK = 0x40, SPFX_SEARCH = 0x00000200,
@@ -373,7 +399,7 @@ export function defends_when_carried(adtyp, otmp) {
 
 // src/artifact.c:1009 spec_applies(), shared by special attack bonuses and
 // the DBONUS slice used by bane_applies().
-function spec_applies(weap, mon) {
+function spec_applies(weap, mon, artinum = artifact_records.indexOf(weap)) {
     if (!(weap.spfx & (SPFX_DBONUS | SPFX_ATTK)))
         return weap.attk.startsWith('PHYS');
 
@@ -392,10 +418,12 @@ function spec_applies(weap, mon) {
     else if (weap.spfx & SPFX_DFLAG2)
         return ((ptr.mflags2 & mt) !== 0)
                || (yours && ((game.urace?.selfmask ?? 0) & mt) !== 0);
-    else if (weap.spfx & SPFX_DALIGN)
-        return yours ? (game.u.ualign?.type !== rec_align(weap))
+    else if (weap.spfx & SPFX_DALIGN) {
+        const alignment = artifact_alignment(weap, artinum);
+        return yours ? (game.u.ualign?.type !== alignment)
                      : (ptr.maligntyp === -128
-                        || Math.sign(ptr.maligntyp) !== rec_align(weap));
+                        || Math.sign(ptr.maligntyp) !== alignment);
+    }
     else if (weap.spfx & SPFX_ATTK) {
         const adtyp = arti_adtyp(weap.attk);
         if (defended(yours ? null : mon, adtyp))
@@ -477,7 +505,7 @@ export function spec_dbon(obj, mon, tmp) {
 function bane_applies(oart, mon) {
     if (oart !== artifact_records[0] && (oart.spfx & SPFX_DBONUS) !== 0) {
         const atmp = { ...oart, spfx: oart.spfx & SPFX_DBONUS };
-        if (spec_applies(atmp, mon))
+        if (spec_applies(atmp, mon, artifact_records.indexOf(oart)))
             return true;
     }
     return false;
@@ -487,6 +515,9 @@ function bane_applies(oart, mon) {
 // touch (pick up or wield) an artifact. 0 means it refuses.
 export function touch_artifact(obj, mon) {
     const oart = get_artifact(obj);
+    const artinum = obj?.oartifact ?? 0;
+    const role = artifact_role(oart, artinum);
+    const alignment = artifact_alignment(oart, artinum);
     let badclass, badalign;
 
     if (oart === artifact_records[0])
@@ -496,27 +527,23 @@ export function touch_artifact(obj, mon) {
     /* all quest artifacts are self-willed */
     const self_willed = (oart.spfx & SPFX_INTEL) !== 0;
     if (yours) {
-        const role_pm = (typeof game.urole?.mnum === 'string')
-            ? game.urole.mnum : null;
-        const role_match = oart.role === 'NON_PM'
-            || oart.role === role_pm
-            || PMNAMES[oart.role] === game.urole?.mnum;
+        const role_match = role === 'NON_PM' || role_matches(role);
         const race_match = oart.race === 'NON_PM'
             || PMNAMES[oart.race] === game.urace?.mnum
             || oart.race === game.urace?.mnum;
         badclass = self_willed
-                   && ((oart.role !== 'NON_PM' && !role_match)
+                   && ((role !== 'NON_PM' && !role_match)
                        || (oart.race !== 'NON_PM' && !race_match));
         badalign = (oart.spfx & SPFX_RESTR) !== 0
-                   && rec_align(oart) !== -128
-                   && (rec_align(oart) !== (game.u.ualign?.type ?? 0)
+                   && alignment !== -128
+                   && (alignment !== (game.u.ualign?.type ?? 0)
                        || (game.u.ualign?.record ?? 0) < 0);
     } else if (!is_covetous(mon.data) && !is_mplayer(mon.data)) {
-        badclass = self_willed && oart.role !== 'NON_PM'
+        badclass = self_willed && role !== 'NON_PM'
                    && oart !== artifact_records[ART_EXCALIBUR];
         badalign = (oart.spfx & SPFX_RESTR) !== 0
-                   && rec_align(oart) !== -128
-                   && rec_align(oart) !== Math.sign(mon.data.maligntyp);
+                   && alignment !== -128
+                   && alignment !== Math.sign(mon.data.maligntyp);
     } else { /* an M3_WANTSxxx monster or a fake player */
         badclass = badalign = false;
     }

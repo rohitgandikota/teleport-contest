@@ -143,6 +143,9 @@ export async function u_entered_shop(enterstring) {
         return;
     }
 
+    const { ACH_SHOP, record_achievement } = await import('./insight.js');
+    record_achievement(ACH_SHOP);
+
     const eshk = shkp.eshk || ESHK(shkp);
     if (!Array.isArray(eshk.bill_p))
         eshk.bill_p = [];

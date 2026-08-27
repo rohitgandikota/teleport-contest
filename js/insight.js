@@ -155,7 +155,7 @@ export const ENL_GAMEINPROGRESS = 0, ENL_GAMEOVERALIVE = 1,
 export const BASICENLIGHTENMENT = 1, MAGICENLIGHTENMENT = 2;
 export const ACH_HELL = 2, ACH_INVK = 5, ACH_ENDG = 7, ACH_ASTR = 8,
              ACH_UWIN = 9, ACH_MINE = 15, ACH_TOWN = 16,
-             ACH_SOKO = 21, ACH_RNK1 = 23;
+             ACH_SHOP = 17, ACH_SOKO = 21, ACH_RNK1 = 23;
 let en_final = 0;
 
 export function record_achievement(achidx) {
@@ -1108,6 +1108,8 @@ export async function show_conduct(final) {
                 have_X('entered the Gnomish Mines');
             } else if (ach === ACH_TOWN) {
                 have_X('entered Minetown');
+            } else if (ach === ACH_SHOP) {
+                have_X('entered a shop');
             } else if (ach === ACH_SOKO) {
                 have_X('entered Sokoban');
             }

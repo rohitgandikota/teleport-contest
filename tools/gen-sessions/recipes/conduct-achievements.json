@@ -1,0 +1,18 @@
+{
+  "name": "conduct-achievements",
+  "description": "Normal-mode Tourist enters a shop to earn an achievement, completes a transaction, and opens the conduct and achievement report.",
+  "coverage": [
+    "mode.normal",
+    "level.ordinary",
+    "social.shops-billing",
+    "ending.conduct-achievement"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Shopper,role:Tourist,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " johhhkhhhkhhkhhohhhk> johhhhhjhhjjhjjjjjlllljlllolllllkkjl , pa\r dc yyhh#conduct\r msmsmsmsmsmsmsmsmsmsmsms  nny n  "
+    }
+  ]
+}

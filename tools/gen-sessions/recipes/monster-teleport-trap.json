@@ -1,0 +1,20 @@
+{
+  "name": "monster-teleport-trap",
+  "description": "A natural normal-mode level lets a monster enter an ordinary teleport trap and relocate while visible.",
+  "coverage": [
+    "mode.normal",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "traps.monster",
+    "traps.movement"
+  ],
+  "segments": [
+    {
+      "seed": 28905,
+      "datetime": "20260725120000",
+      "nethackrc": "OPTIONS=name:Gen,role:Archeologist,race:human,gender:male,align:lawful,!legacy,!tutorial,!tips,pettype:none,!safe_wait,symset:DECgraphics\n",
+      "moves": " ................................................................................"
+    }
+  ]
+}

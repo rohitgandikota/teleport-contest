@@ -193,9 +193,9 @@ export function mklev_wire_mon(fns) { mklev_mon = fns; }
 import { depth as depth_of_level, Is_special, insert_branch } from './dungeon.js';
 import { Is_oracle_level, Is_rogue_level, In_mines } from './const.js';
 
-/* include/dungeon.h In_hell() — the Gehennom branch. js/trap.js has a private
-   copy of this; C has one, and they should be consolidated. */
-const In_hell = (lev) => (lev ?? game.u?.uz)?.dnum === game.hell_dnum;
+/* include/dungeon.h In_hell(): any dungeon flagged hellish. */
+const In_hell = (lev) =>
+    game.dungeons?.[(lev ?? game.u?.uz)?.dnum]?.flags?.hellish === true;
 import {
     COLNO, ROWNO, STONE, ROOM, CORR, DOOR, STAIRS,
     HWALL, VWALL, TLCORNER, TRCORNER, BLCORNER, BRCORNER,

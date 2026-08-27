@@ -323,10 +323,8 @@ function stairway_find_from(fromdlev, isladder) {
 // branch; the staircase path spends none.
 // src/do.c:1660 doup() — the '<' command.
 //
-// The pit climb, stuck-steed, held-by-monster and no-return confirmation arms
-// are recorded. prev_level() needs goto_level's reload path, which is not
-// ported, so climbing an actual staircase records; the common
-// "You can't go up here." is real.
+// The ordinary staircase and top-level no-return confirmation paths are
+// ported. Pit climbing, stuck steeds, and monster holds remain separate arms.
 export async function doup() {
     const stway = stairway_at(game.u.ux, game.u.uy);
 
@@ -339,6 +337,15 @@ export async function doup() {
     if (near_capacity() > SLT_ENCUMBER) {
         note_unported_do('doup:load_too_heavy');
         return ECMD_TIME;
+    }
+    if (!game.u.uz.dnum && game.u.uz.dlevel === 1) {
+        if (game.iflags?.debug_fuzzer)
+            return ECMD_OK;
+        const { tty_yn_function } = await import('./tty/topl.js');
+        if ((await tty_yn_function(
+            'Beware, there will be no return!  Still climb?', 'yn', 'n'))
+            !== 'y')
+            return ECMD_OK;
     }
     await prev_level(true);
     return ECMD_TIME;
@@ -436,21 +443,33 @@ export async function next_level(at_stairs) {
 //         new = TRUE;
 //     } else { ...reload the saved level from its file... }
 //
-// Three of goto_level's four draws are the Mysterious Force
-// (rn2(4 + mysteryforce), rn2(odds), rn2(diff + 2)), which fires only in the
-// Quest. The fourth is rnd(3) falling damage for an encumbered, punished, or
-// fumbling hero. A plain staircase descent spends no draw of its own.
+// The mysterious force can add three or four draws to an Amulet ascent from
+// Gehennom. A plain staircase descent spends no draw of its own.
 export async function goto_level(newlevel, at_stairs, falling, portal) {
     const dist = depth_do(newlevel) - depth_do(game.u.uz);
     let up = (depth_do(newlevel) < depth_do(game.u.uz));
     let do_fall_dmg = false;
+    const newdungeon = (game.u.uz.dnum !== newlevel.dnum);
+
+    /* src/do.c:1492: the mysterious force must keep a hero who starts
+       inside the Wizard's Tower inside it. The tower boundary is the
+       excluded rectangle shared by the up/down arrival regions. */
+    const onWTowerLevel = (lev) => ['wiz1_level', 'wiz2_level', 'wiz3_level']
+        .some(key => {
+            const sp = game.special_levels?.[key];
+            return sp && sp.dnum === lev.dnum && sp.dlevel === lev.dlevel;
+        });
+    const towerBoundary = game.dndest || {};
+    const wasInWTower = onWTowerLevel(game.u.uz)
+        && towerBoundary.nlx
+        && game.u.ux >= towerBoundary.nlx && game.u.ux <= towerBoundary.nhx
+        && game.u.uy >= towerBoundary.nly && game.u.uy <= towerBoundary.nhy;
 
     /* src/do.c:1502 — dungeon-change arms. In_tutorial(lev) is
        lev.dnum == tutorial_dnum; entering stashes the whole game state
        (inventory included) via nhcore's enter_tutorial, leaving restores
        it and re-enters level 1 as if starting a new game. */
     {
-        const newdungeon = (game.u.uz.dnum !== newlevel.dnum);
         if (newdungeon) {
             const { tutorial } = await import('./nhlua.js');
             if (newlevel.dnum === game.tutorial_dnum) {
@@ -461,6 +480,49 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
             }
         }
     }
+
+    /* src/do.c:1541: while carrying the real Amulet, one quarter of early
+       Gehennom climbs initially trigger the mysterious force. It either
+       sends the hero down one or more levels or teleports them on the same
+       level. Repeated triggers become progressively less likely. */
+    const dgn = game.dungeons?.[game.u.uz.dnum];
+    if (dgn?.flags?.hellish && up && game.u.uhave?.amulet
+        && !newdungeon && !portal
+        && game.u.uz.dlevel < dgn.num_dunlevs - 3) {
+        const mysteryforce = game.context?.mysteryforce | 0;
+        if (!rn2(4 + mysteryforce)) {
+            const odds = 3 + (game.u.ualign?.type | 0);
+            let diff = odds <= 1 ? 0 : rn2(odds);
+
+            if (diff !== 0) {
+                newlevel.dnum = game.u.uz.dnum;
+                newlevel.dlevel = game.u.uz.dlevel + rnd(diff);
+                if (newlevel.dlevel > dgn.num_dunlevs)
+                    newlevel.dlevel = dgn.num_dunlevs;
+                diff = newlevel.dlevel - game.u.uz.dlevel;
+                if (wasInWTower && !onWTowerLevel(newlevel))
+                    diff = 0;
+            }
+            if (diff === 0) {
+                newlevel.dnum = game.u.uz.dnum;
+                newlevel.dlevel = game.u.uz.dlevel;
+            }
+
+            await pline('A mysterious force momentarily surrounds you...');
+            game.context ||= {};
+            game.context.mysteryforce = mysteryforce + rn2(diff + 2);
+
+            if (newlevel.dnum === game.u.uz.dnum
+                && newlevel.dlevel === game.u.uz.dlevel) {
+                const { safe_teleds, TELEDS_NO_FLAGS } =
+                    await import('./teleport.js');
+                await safe_teleds(TELEDS_NO_FLAGS);
+                return;
+            }
+            at_stairs = false;
+        }
+    }
+
     /* src/do.c:1577, the Quest start level blocks every descent within the
        same dungeon until the leader grants access. This also applies to a
        wizard-mode level teleport selected from the dungeon overview. */
@@ -468,7 +530,6 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         const qstart = game.special_levels?.qstart_level;
         const atQstart = qstart && game.u.uz.dnum === qstart.dnum
                          && game.u.uz.dlevel === qstart.dlevel;
-        const newdungeon = game.u.uz.dnum !== newlevel.dnum;
         if (atQstart && !newdungeon) {
             const { ok_to_quest } = await import('./quest.js');
             if (!await ok_to_quest()) {

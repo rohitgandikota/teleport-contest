@@ -1737,7 +1737,8 @@ function m_initweap(mtmp) {
                 break;
             }
             if (mm === P.PM_ELVEN_MONARCH) {
-                if (rn2(3)) mongets(mtmp, O.PICK_AXE);
+                if (rn2(3) || (game.in_mklev && Is_earthlevel(game.u.uz)))
+                    mongets(mtmp, O.PICK_AXE);
                 if (!rn2(50)) mongets(mtmp, O.CRYSTAL_BALL);
             }
         } else if (ptr.msound === MS_PRIEST

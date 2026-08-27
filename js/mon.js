@@ -31,7 +31,7 @@ import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists, destroy_items, resist } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
-         undead_to_corpse, discard_minvent } from './mkobj.js';
+         undead_to_corpse, discard_minvent, add_to_container } from './mkobj.js';
 import { weight } from './invent.js';
 import { newsym, canseemon, canspotmon, pline,
          unmap_invisible } from './display.js';
@@ -82,7 +82,9 @@ import { mpickobj } from './steal.js';
 import { nonliving, is_neuter, is_animal, is_mplayer, has_head,
          olfaction, is_orc } from './mondata.js';
 import { mkcorpstat } from './mklev.js';
-import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE, ACCESSIBLE, TAINT_AGE, CORPSTAT_BURIED } from './const.js';
+import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE,
+         CORPSTAT_HISTORIC, ACCESSIBLE, TAINT_AGE,
+         CORPSTAT_BURIED } from './const.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
 
 // include/monflag.h:180 MZ_HUMAN is MZ_MEDIUM
@@ -1458,6 +1460,55 @@ export function mongone(mdef) {
     m_detach(mdef, mdef.data, false);
 }
 
+// src/mon.c:3287 monstone(), turn a monster and its inventory into a statue.
+export async function monstone(mdef) {
+    const x = mdef.mx, y = mdef.my;
+    let remains;
+
+    mdef.mhp = 0;
+    mdef.mtrapped = 0;
+
+    const statueChance = 2
+        + (((mdef.data.geno & MFLAGS.G_FREQ) > 2) ? 1 : 0);
+    if (mdef.data.msize > MFLAGS.MZ_TINY || !rn2(statueChance)) {
+        const held = [];
+        while ((mdef.minvent || []).length) {
+            const obj = mdef.minvent[0];
+            obj.owornmask = 0;
+            obj_extract_self(obj);
+            if (obj.otyp === ONAMES.BOULDER || obj_resists(obj, 0, 0)) {
+                place_object(obj, x, y);
+            } else {
+                held.unshift(obj);
+            }
+        }
+
+        let flags = CORPSTAT_NONE;
+        if (mdef.female)
+            flags |= CORPSTAT_FEMALE;
+        else if (!is_neuter(mdef.data))
+            flags |= CORPSTAT_MALE;
+        if (mdef.data.geno & G_UNIQ)
+            flags |= CORPSTAT_HISTORIC;
+
+        remains = mkcorpstat(ONAMES.STATUE, mdef, mdef.mnum,
+                             x, y, flags);
+        if (mdef.mgivenname)
+            remains.oname = mdef.mgivenname;
+        for (const obj of held)
+            add_to_container(remains, obj);
+        remains.owt = weight(remains);
+    } else {
+        remains = mksobj_at(ONAMES.ROCK, x, y, true, false);
+    }
+
+    stackobj(remains);
+    if (cansee(x, y))
+        newsym(x, y);
+    await mondead(mdef);
+    return remains;
+}
+
 /* mon_resistancebits lives in js/mondata.js, its C home. */
 
 // include/monst.h:279 resists_ston(), via src/mondata.c:129 Resists_Elem().
@@ -1624,9 +1675,9 @@ export async function killed(mtmp) {
 //
 // The spine is the death message, mondead(), the "treasure drop" rn2(6), the
 // corpse, the luck adjustments and the experience award, in that order; the
-// order matters because three of those draw. Petrification (monstone), the
+// order matters because three of those draw. Petrification is live; the
 // engulfer expel, quest leaders, priests, shopkeepers and the murder penalty
-// are recorded.
+// are recorded where their remaining branches are not yet ported.
 export async function xkilled(mtmp, xkill_flags) {
     const x = mtmp.mx, y = mtmp.my;
     const nomsg = (xkill_flags & XKILL_NOMSG) !== 0;
@@ -1675,9 +1726,11 @@ export async function xkilled(mtmp, xkill_flags) {
         mtmp.edog.killed_by_u = 1;
 
     /* dispose of monster and make cadaver */
-    if (game.stoned)
-        note_unported_mon('xkilled:monstone');
-    await mondead(mtmp);
+    const was_stoned = !!game.stoned;
+    if (was_stoned)
+        await monstone(mtmp);
+    else
+        await mondead(mtmp);
 
     if (be_sad)
         await You('have a sad feeling for a moment, then it passes.');
@@ -1685,7 +1738,8 @@ export async function xkilled(mtmp, xkill_flags) {
     const mdat = game.mons[mtmp.mnum]; /* mondead can change mtmp->data */
     const mndx = mtmp.mnum;
 
-    if (!nocorpse && (ACCESSIBLE(game.level?.at(x, y)?.typ) || is_pool(x, y))) {
+    if (!was_stoned && !nocorpse
+        && (ACCESSIBLE(game.level?.at(x, y)?.typ) || is_pool(x, y))) {
         /* illogical but traditional "treasure drop" */
         if (!rn2(6) && !((game.mvitals?.[mndx]?.mvflags ?? 0) & MC_G_NOCORPSE)
             /* no extra item from swallower or steed */
@@ -1717,8 +1771,12 @@ export async function xkilled(mtmp, xkill_flags) {
             make_corpse(mtmp, CORPSTAT_NONE);
     }
 
-    /* monster is gone, corpse or other object might now be visible */
-    newsym(x, y);
+    if (was_stoned) {
+        game.stoned = false;
+    } else {
+        /* monster is gone, corpse or other object might now be visible */
+        newsym(x, y);
+    }
 
     /* Punish bad behavior. */
     if (is_human(mdat) && !mtmp.mpeaceful)

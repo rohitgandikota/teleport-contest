@@ -1,5 +1,30 @@
 # STATUS — live handoff board
 
+## 2026-08-27: Medusa gaze reflection and petrification
+
+The `reflection-gaze` C oracle uses debug seed 6920. A Valkyrie wishes for and
+wears an amulet of reflection, creates Medusa, and searches until Medusa's
+gaze reflects from the medallion and turns Medusa to stone. The resulting
+statue retains her inventory, and the kill advances the hero to experience
+level 2. Two fresh recordings were byte-identical, with SHA-256
+`fc2d5ee4523736ce5e3a6090d60440e9963ea116026c1577e28dbe6644fa79c8`.
+
+The port matches all 40/40 screens, 40/40 cells, 40/40 cursors, and
+2,168/2,168 RNG calls. The implementation wires Medusa's pre-movement gaze,
+ports hero and monster reflection sources, ports monster petrification into a
+statue with contained inventory, and implements the corresponding fatal gaze
+path for an unprotected hero.
+
+Public local remains exact at 11,405/11,405 screens, 792,838/792,838 RNG
+calls, and 44/44 sessions. The expanded supplemental corpus has 74 sessions
+and 11,257 frames. It matches 10,872/11,257 complete screens,
+11,250/11,257 cells, 10,872/11,257 cursors, and 1,399,108/1,399,108 RNG calls,
+with 72/74 formal session passes. The two failures remain the documented C
+recorder artifacts in `gehennom-tour` and `bones-persistence`. All 44 public
+hang checks pass. Conservative full-game coverage is now 104 covered,
+1 partial, and 0 gaps out of 105. Only the second independent instant-death
+trace remains to complete the coverage matrix.
+
 ## 2026-08-26: covetous Wizard and Amulet behavior
 
 The three-segment `monster-covetous` C oracle uses seeds 7200, 7201, and

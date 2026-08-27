@@ -10,7 +10,7 @@
 
 import { game } from './gstate.js';
 import { rn2, rn1, rnd, d } from './rng.js';
-import { sgn, dist2, distmin } from './hacklib.js';
+import { sgn, dist2, distmin, s_suffix } from './hacklib.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
@@ -30,7 +30,8 @@ import { Teleport_control, See_invisible } from './youprop.js';
 import { xytodir, dirtocoord } from './cmd.js';
 import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          M_SEEN_COLD, M_SEEN_ELEC, M_SEEN_ACID, TELEP_TRAP, N_DIRS,
-         Is_rogue_level, In_endgame, Is_earthlevel, W_ARMF, MSLOW, MFAST, NON_PM,
+         Is_rogue_level, In_endgame, Is_earthlevel, W_ARM, W_ARMS, W_ARMF,
+         W_AMUL, MSLOW, MFAST, NON_PM,
          POLY_TRAP, u_at, KILLED_BY_AN, ZAP_POS, IS_DOOR, D_LOCKED,
          D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
          SUPPRESS_SADDLE, SUPPRESS_IT, AUGMENT_IT, G_UNIQ,
@@ -85,6 +86,56 @@ export const MUSE_BAG = 10;
 
 // include/monst.h:89 m_seenres()
 const m_seenres = (mon, mask) => ((mon.seen_resistance ?? 0) & mask);
+
+// src/muse.c:2797 mon_reflects(), monster equipment and innate reflection.
+export async function mon_reflects(mon, fmt = null) {
+    let source = null;
+    let identify = 0;
+    let orefl = which_armor(mon, W_ARMS);
+
+    if (orefl?.otyp === ONAMES.SHIELD_OF_REFLECTION) {
+        source = 'shield';
+        identify = ONAMES.SHIELD_OF_REFLECTION;
+    } else {
+        const weapon = MON_WEP(mon);
+        if (weapon) {
+            const { get_artifact } = await import('./artifact.js');
+            if (((get_artifact(weapon)?.spfx ?? 0) & 0x04000000) !== 0)
+                source = 'weapon';
+        }
+    }
+    if (!source) {
+        orefl = which_armor(mon, W_AMUL);
+        if (orefl?.otyp === ONAMES.AMULET_OF_REFLECTION) {
+            source = 'amulet';
+            identify = ONAMES.AMULET_OF_REFLECTION;
+        }
+    }
+    if (!source) {
+        orefl = which_armor(mon, W_ARM);
+        if (orefl?.otyp === ONAMES.SILVER_DRAGON_SCALES
+            || orefl?.otyp === ONAMES.SILVER_DRAGON_SCALE_MAIL)
+            source = 'armor';
+    }
+    if (!source && (mon.mnum === PMNAMES.PM_SILVER_DRAGON
+                    || mon.mnum === PMNAMES.PM_CHROMATIC_DRAGON))
+        source = 'scales';
+    if (!source)
+        return false;
+
+    if (fmt !== null) {
+        const [{ pline }, { mon_nam }, { makeknown }] = await Promise.all([
+            import('./display.js'), import('./do_name.js'),
+            import('./o_init.js'),
+        ]);
+        const message = fmt.replace('%s', s_suffix(mon_nam(mon)))
+                           .replace('%s', source);
+        await pline(message);
+        if (identify)
+            makeknown(identify);
+    }
+    return true;
+}
 
 // src/muse.c:1293 linedup_chk_corpse()
 function linedup_chk_corpse(x, y) {

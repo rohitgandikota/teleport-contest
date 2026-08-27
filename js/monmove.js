@@ -84,7 +84,7 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          Upolyd, u_at, NORMAL_SPEED, M_ATTK_HIT, M_ATTK_DEF_DIED,
          M_ATTK_AGR_DIED } from './const.js';
 import { mon_wield_item } from './weapon.js';
-import { mattacku } from './mhitu.js';
+import { mattacku, gazemu } from './mhitu.js';
 import { noattacks } from './mondata.js';
 import { helpless } from './monst.js';
 import { is_axe, is_pick } from './mon.js';
@@ -1223,7 +1223,15 @@ export async function dochug(mtmp) {
         }
     }
 
-    /* m_respond(): the shrieker/medusa special responses are recorded */
+    /* src/mon.c:4122 m_respond(), Medusa gazes once before movement. */
+    if (mtmp.mnum === PMNAMES.PM_MEDUSA
+        && couldsee(mtmp.mx, mtmp.my)) {
+        const gaze = mtmp.data.mattk.find(atk => atk[0] === ATTKS.AT_GAZE);
+        if (gaze)
+            await gazemu(mtmp, gaze);
+        if (DEADMONSTER(mtmp))
+            return 1;
+    }
 
     /* src/monmove.c:757 — fleeing monsters might regain courage */
     if (mtmp.mflee && !mtmp.mfleetim

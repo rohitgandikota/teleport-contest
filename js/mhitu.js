@@ -13,12 +13,14 @@ import { rn2, rn1, rnd, d } from './rng.js';
 import { is_animal, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
          nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer,
-         defended, resists_cold, resists_elec, resists_fire } from './mondata.js';
+         defended, resists_cold, resists_elec, resists_fire,
+         poly_when_stoned } from './mondata.js';
 import { is_vampshifter, DEADMONSTER, MON_WEP } from './monst.js';
-import { poly_gender, body_part } from './polyself.js';
+import { poly_gender, body_part, polymon } from './polyself.js';
 import { Blind, Invis, See_invisible, Underwater, Deaf, Levitation, Flying,
          Cold_resistance, Fire_resistance, Hallucination,
-         Reflecting, Shock_resistance, Unaware } from './youprop.js';
+         Reflecting, Shock_resistance, Stone_resistance,
+         Unaware } from './youprop.js';
 import { ATTKS, MONSYMS, PMNAMES, MFLAGS } from './monst_data.js';
 import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          M_ATTK_MISS, M_ATTK_HIT, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE,
@@ -26,11 +28,12 @@ import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          RLOC_MSG,
          TT_PIT, WATER, P_WHIP, P_POLEARMS, NEED_WEAPON,
          NEED_HTH_WEAPON, LEFT_SIDE, RIGHT_SIDE, LEG,
-         MON_EXPLODE, XKILL_NOMSG, SICK_NONVOMITABLE } from './const.js';
+         MON_EXPLODE, XKILL_NOMSG, SICK_NONVOMITABLE, STONING,
+         KILLED_BY } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { genders } from './role_data.js';
 import { pline, canspotmon, canseemon, mon_visible, sensemon, bot,
-         map_invisible, newsym } from './display.js';
+         map_invisible, newsym, urgent_pline } from './display.js';
 import { cansee, couldsee } from './vision.js';
 import { Amonnam, Monnam, pmname, rndmonnam } from './do_name.js';
 import { You, You_feel, You_hear } from './pline.js';
@@ -52,7 +55,7 @@ import { mhitm_ad_phys, mhitm_ad_cold, mhitm_ad_elec, mhitm_ad_drst,
          mhitm_ad_samu, mhitm_knockback } from './uhitm.js';
 import { is_pool, t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
-import { find_offensive, use_offensive } from './muse.js';
+import { find_offensive, use_offensive, mon_reflects } from './muse.js';
 import { steal } from './steal.js';
 import { castmu } from './mcastu.js';
 
@@ -474,10 +477,9 @@ async function explmu(mtmp, mattk, ufound, indx) {
     return DEADMONSTER(mtmp) ? M_ATTK_AGR_DIED : M_ATTK_MISS;
 }
 
-// src/mhitu.c:1680 gazemu(), common visibility and hallucination gates plus
-// the umber hulk's confusion gaze. Other gaze effects remain recorded until
-// their status and reflection paths land.
-async function gazemu(mtmp, mattk) {
+// src/mhitu.c:1680 gazemu(), common visibility and hallucination gates,
+// Medusa's stoning gaze, and the umber hulk's confusion gaze.
+export async function gazemu(mtmp, mattk) {
     const is_medusa = mtmp.mnum === PMNAMES.PM_MEDUSA;
     const reflectable = Reflecting() && couldsee(mtmp.mx, mtmp.my)
                         && is_medusa;
@@ -487,6 +489,70 @@ async function gazemu(mtmp, mattk) {
 
     if ((Hallucination() && rn2(4)) || (Unaware() && !reflectable))
         cancelled = true;
+
+    if (mattk[1] === ATTKS.AD_STON) {
+        if (cancelled || !mtmp.mcansee) {
+            if (!canseemon(mtmp))
+                return M_ATTK_MISS;
+            if (is_medusa && Hallucination() && !rn2(3))
+                await pline('Someone seems overdue for a serpent cut.');
+            else
+                await pline(`${Monnam(mtmp)} ${
+                    is_medusa && mtmp.mcan ? "doesn't look all that ugly"
+                                          : 'gazes ineffectually'}.`);
+            return M_ATTK_MISS;
+        }
+
+        if (reflectable) {
+            const useeit = canseemon(mtmp);
+            if (useeit) {
+                const { ureflects } = await import('./zap.js');
+                await ureflects('%s gaze is reflected by your %s.',
+                                s_suffix(Monnam(mtmp)));
+            }
+            if (await mon_reflects(mtmp, useeit
+                ? 'The gaze is reflected away by %s %s!' : null))
+                return M_ATTK_MISS;
+
+            const monCanSeeHero = (!Invis() || perceives(mtmp.data))
+                                  && !Underwater()
+                                  && couldsee(mtmp.mx, mtmp.my);
+            if (!monCanSeeHero) {
+                if (useeit) {
+                    const possessive = ['his', 'her', 'its', 'their'][
+                        gender(mtmp)] || 'its';
+                    await pline(`${Monnam(mtmp)} doesn't seem to notice that ${
+                        possessive} gaze was reflected.`);
+                }
+                return M_ATTK_MISS;
+            }
+            if (useeit)
+                await pline(`${Monnam(mtmp)} is turned to stone!`);
+            game.stoned = true;
+            const { killed } = await import('./mon.js');
+            await killed(mtmp);
+            if (DEADMONSTER(mtmp))
+                return M_ATTK_AGR_DIED;
+            return M_ATTK_MISS;
+        }
+
+        if (canseemon(mtmp) && couldsee(mtmp.mx, mtmp.my)
+            && !Stone_resistance() && !Unaware()) {
+            await You(`meet ${s_suffix(mon_nam(mtmp))} gaze.`);
+            await stop_occupation();
+            if (poly_when_stoned(game.youmonst.data)
+                && await polymon(PMNAMES.PM_STONE_GOLEM))
+                return M_ATTK_MISS;
+            await urgent_pline('You turn to stone...');
+            game.killer = {
+                format: KILLED_BY,
+                name: pmname(mtmp.data, gender(mtmp)),
+            };
+            const { done } = await import('./end.js');
+            await done(STONING);
+        }
+        return M_ATTK_MISS;
+    }
 
     /* A blind or otherwise unsensing hero cannot register these gazes. The
        C still spent the hallucination draw above, which is the important

@@ -1573,7 +1573,7 @@ function zapdir_cmap(dx, dy) {
 }
 
 // src/muse.c:2836 ureflects(), outermost equipment first.
-async function ureflects() {
+export async function ureflects(fmt = null, str = null) {
     const mask = game.u.uprops?.REFLECTING | 0;
     let source = null;
     let identify = 0;
@@ -1593,7 +1593,12 @@ async function ureflects() {
         note_unported_zap('ureflects:source');
         source = 'body';
     }
-    await pline(`But it reflects from your ${source}!`);
+    if (fmt !== null && str !== null) {
+        const message = fmt.replace('%s', str).replace('%s', source);
+        await pline(message);
+    } else {
+        await pline(`But it reflects from your ${source}!`);
+    }
     if (identify)
         makeknown(identify);
 }

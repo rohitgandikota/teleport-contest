@@ -27,7 +27,8 @@ import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
 import { destroy_items, exclam } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
          Levitation } from './youprop.js';
-import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline } from './display.js';
+import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
+         flush_screen } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
@@ -48,7 +49,8 @@ import { monflee, set_apparxy } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
-         FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET } from './const.js';
+         FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET,
+         TEST_MOVE, ROOM, CORR } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
@@ -62,7 +64,8 @@ import { vtense } from './objnam.js';
 import { hides_under } from './mondata.js';
 import { MONSYMS } from './monst_data.js';
 import { u_wipe_engr } from './engrave.js';
-import { check_capacity, overexertion, doorless_door } from './hack.js';
+import { check_capacity, overexertion, doorless_door, test_move,
+         check_special_room, nomul } from './hack.js';
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool, mksobj } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES, SKILLS } from './objects_data.js';
@@ -82,7 +85,7 @@ import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
 import { get_artifact, spec_dbon } from './artifact.js';
-import { cansee } from './vision.js';
+import { cansee, vision_recalc } from './vision.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -2019,6 +2022,65 @@ function will_hurtle(mon, x, y) {
     return goodpos(x, y, mon, MM_IGNOREWATER | MM_IGNORELAVA);
 }
 
+// src/dothrow.c:1078 hurtle(). Move the hero after recoil or knockback.
+//
+// The ordinary room/corridor path is complete. Punishment, traps, terrain
+// transitions, and collisions each need their own transcript because their
+// messages and damage can alter both the screen and later RNG.
+async function hurtle_u(dx, dy, range) {
+    if (game.u.uball) {
+        note_unported_uhitm('hurtle_u:punished');
+        return;
+    }
+    if (game.u.utrap) {
+        note_unported_uhitm('hurtle_u:trapped');
+        nomul(0);
+        return;
+    }
+
+    dx = sgn(dx);
+    dy = sgn(dy);
+    if (!range || (!dx && !dy) || game.u.ustuck)
+        return;
+
+    nomul(-range);
+    game.multi_reason = 'moving through the air';
+    game.nomovemsg = '';
+
+    const { u_on_newpos } = await import('./teleport.js');
+    for (let remaining = range; remaining > 0; remaining--) {
+        const x = game.u.ux + dx;
+        const y = game.u.uy + dy;
+        const loc = game.level?.at(x, y);
+
+        if (!(await test_move(game.u.ux, game.u.uy, dx, dy, TEST_MOVE))) {
+            note_unported_uhitm('hurtle_u:obstructed');
+            break;
+        }
+        if (!loc || (loc.typ !== ROOM && loc.typ !== CORR)) {
+            note_unported_uhitm('hurtle_u:terrain');
+            break;
+        }
+        if (m_at(x, y)) {
+            note_unported_uhitm('hurtle_u:monster_collision');
+            break;
+        }
+        if (t_at(x, y)) {
+            note_unported_uhitm('hurtle_u:trap');
+            break;
+        }
+
+        const ox = game.u.ux, oy = game.u.uy;
+        u_on_newpos(x, y);
+        newsym(ox, oy);
+        vision_recalc(1);
+        await flush_screen(1);
+        await check_special_room(false);
+        if (remaining > 1 && game.animationFrame)
+            await game.animationFrame();
+    }
+}
+
 // src/dothrow.c:1118 mhurtle(). Move a monster along a straight path. The
 // collision and region edge cases remain recorded, but the ordinary open
 // path, including trap checks, is live.
@@ -2115,10 +2177,14 @@ export async function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
     const agry = u_agr ? game.u.uy : magr.my;
     const dx = sgn(defx - agrx), dy = sgn(defy - agry);
 
-    if (!isok(defx + dx, defy + dy))
-        return false;
     if (u_def) {
-        note_unported_uhitm('mhitm_knockback:test_move_u');
+        if (!(await test_move(defx, defy, dx, dy, TEST_MOVE)))
+            return false;
+        if (game.u.usteed) {
+            note_unported_uhitm('mhitm_knockback:mounted');
+            return false;
+        }
+    } else if (!isok(defx + dx, defy + dy)) {
         return false;
     } else if (IS_DOOR(game.level.at(defx, defy).typ)
                && (defx - agrx) && (defy - agry)
@@ -2126,7 +2192,7 @@ export async function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
         return false;
     }
 
-    if ((!u_agr && DEADMONSTER(magr)) || DEADMONSTER(mdef))
+    if ((!u_agr && DEADMONSTER(magr)) || (!u_def && DEADMONSTER(mdef)))
         return false;
     if (!(magrdata.msize > mdefdata.msize + 1))
         return false;
@@ -2134,20 +2200,22 @@ export async function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
         return false;
     if (unsolid(magrdata))
         return false;
-    if (u_agr && !(mhm.hitflags & M_ATTK_HIT))
+    if ((u_agr || u_def) && !(mhm.hitflags & M_ATTK_HIT))
         return false;
 
     if (m_is_steadfast(mdef)) {
-        if (canseemon(mdef))
+        if (u_def)
+            await You("don't budge.");
+        else if (canseemon(mdef))
             await pline(`${Monnam(mdef)} doesn't budge.`);
         return false;
     }
 
     const knockedhow = will_hurtle(mdef, defx + dx, defy + dy)
         ? 'backward' : 'back';
-    if (canseemon(mdef)) {
+    if (u_def || canseemon(mdef)) {
         const magrbuf = u_agr ? 'You' : Monnam(magr);
-        const mdefbuf = y_monnam(mdef);
+        const mdefbuf = u_def ? 'you' : y_monnam(mdef);
         const force = rn2(2) ? 'forceful' : 'powerful';
         const hitkind = rn2(2) ? 'blow' : 'strike';
         await pline(`${magrbuf} ${vtense(magrbuf, 'knock')} ${mdefbuf} ${
@@ -2156,16 +2224,26 @@ export async function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
         await You(`feel ${m_monnam(mdef)} be knocked ${knockedhow}!`);
     }
 
-    if (game.u.ustuck && u_agr)
+    if (game.u.ustuck && (u_def || u_agr))
         set_ustuck(null);
 
-    await mhurtle(mdef, dx, dy, knockdistance);
-    if (!u_agr)
+    if (u_def) {
+        await hurtle_u(dx, dy, knockdistance);
         mhm.hitflags |= M_ATTK_HIT;
-    if (DEADMONSTER(mdef)) {
-        mhm.hitflags |= M_ATTK_DEF_DIED;
-    } else if (!rn2(4)) {
-        mdef.mstun = 1;
+        set_apparxy(magr);
+        if (!(game.u.intrinsic?.HStun || 0) && !rn2(4)) {
+            const { make_stunned } = await import('./potion.js');
+            await make_stunned(knockdistance + 1, true);
+        }
+    } else {
+        await mhurtle(mdef, dx, dy, knockdistance);
+        if (!u_agr)
+            mhm.hitflags |= M_ATTK_HIT;
+        if (DEADMONSTER(mdef)) {
+            mhm.hitflags |= M_ATTK_DEF_DIED;
+        } else if (!rn2(4)) {
+            mdef.mstun = 1;
+        }
     }
     if (!u_agr && DEADMONSTER(magr))
         mhm.hitflags |= M_ATTK_AGR_DIED;

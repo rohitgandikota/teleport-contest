@@ -1,0 +1,22 @@
+{
+  "name": "monster-knockback",
+  "description": "Debug level-20 Valkyrie creates a red dragon and survives repeated adjacent attacks to exercise monster-to-hero physical knockback on open floor.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "combat.melee",
+    "combat.knockback"
+  ],
+  "segments": [
+    {
+      "seed": 6931,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0007red dragon\rms ms ms ms ms ms :"
+    }
+  ]
+}

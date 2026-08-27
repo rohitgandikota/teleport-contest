@@ -1,8 +1,8 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T18:20:42.000Z. Local commit: `b5c31ee`.
+Last refreshed: 2026-08-27T18:28:21.000Z. Local commit: `cb48638`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
-Leaderboard page checked: 2026-08-27T18:14:47.000Z. The page reported "Updated 5h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
+Leaderboard page checked: 2026-08-27T18:28:21.000Z. The page reported "Updated 7h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
 
 ## Score summary
 
@@ -11,7 +11,7 @@ Leaderboard page checked: 2026-08-27T18:14:47.000Z. The page reported "Updated 5
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 12127/12512 | 96.92% | 88/90 | 1474439/1474439 (100.00%) | 14/408 |
+| Supplemental C suite | 12360/12745 | 96.98% | 89/91 | 1478310/1478310 (100.00%) | 14/413 |
 
 ## Contest position and generalization
 
@@ -26,9 +26,9 @@ Leaderboard page checked: 2026-08-27T18:14:47.000Z. The page reported "Updated 5
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 12505/12512 |
-| Cursor positions | 11405/11405 | 12127/12512 |
-| Startup and per-turn estimate | 67+0.49/turn | 55+0.59/turn |
+| Cells only | 11405/11405 | 12738/12745 |
+| Cursor positions | 11405/11405 | 12360/12745 |
+| Startup and per-turn estimate | 68+0.44/turn | 51+0.57/turn |
 
 ## Supplemental capture caveats
 
@@ -47,6 +47,7 @@ Leaderboard page checked: 2026-08-27T18:14:47.000Z. The page reported "Updated 5
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T18:28:21.000Z | `cb48638` | 11405/11405 | 12360/12745 | 6032/11265 | 3 |
 | 2026-08-27T18:20:42.000Z | `b5c31ee` | 11405/11405 | 12127/12512 | 6032/11265 | 3 |
 | 2026-08-27T18:14:47.000Z | `e65f38a` | 11405/11405 | 12089/12474 | 6032/11265 | 3 |
 | 2026-08-27T18:05:48.000Z | `f1fe94f` | 11405/11405 | 11991/12376 | 6032/11265 | 3 |

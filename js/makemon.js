@@ -15,12 +15,12 @@ import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire 
 import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn, sobj_at } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
-         W_SADDLE, has_mgivenname } from './const.js';
+         W_SADDLE, has_mgivenname, A_LAWFUL, ONAME_RANDOM } from './const.js';
 import { Levitation, Flying } from './youprop.js';
 import { closed_door } from './cmd.js';
 import { may_passwall } from './hack.js';
 import { sengr_at } from './engrave.js';
-import { rndghostname, christen_monst, christen_orc,
+import { rndghostname, christen_monst, christen_orc, oname,
          y_monnam } from './do_name.js';
 import { m_dowear, which_armor } from './worn.js';
 import { can_saddle, put_saddle_on_mon } from './steed.js';
@@ -1798,8 +1798,13 @@ function m_initweap(mtmp) {
             const typ = rn2(3) ? O.LONG_SWORD : O.SILVER_MACE;
             otmp = mksobj(typ, false, false);
             if ((!rn2(20) || is_lord(ptr))
-                && sgn(ptr.maligntyp) === 1 /* A_LAWFUL */)
-                note_unported('oname (Sunsword/Demonbane)');
+                && sgn(mtmp.isminion
+                       ? (mtmp.emin?.min_align
+                          ?? mtmp.mextra?.emin?.min_align ?? A_NONE)
+                       : ptr.maligntyp) === A_LAWFUL)
+                otmp = oname(otmp,
+                             typ === O.LONG_SWORD ? 'Sunsword' : 'Demonbane',
+                             ONAME_RANDOM);
             otmp.blessed = 1; otmp.cursed = 0;
             otmp.oerodeproof = true;
             otmp.spe = rn2(4);

@@ -490,7 +490,7 @@ export async function Amulet_on(amul) {
 }
 
 // src/do_wear.c:1030 Amulet_off() — does its own off_msg.
-async function Amulet_off() {
+export async function Amulet_off() {
     const uamul = worn(W_AMUL);
     if (!uamul) return;
     await off_msg(uamul);

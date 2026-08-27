@@ -19,7 +19,7 @@ import { IS_ALTAR, Amask2align, A_NONE, A_LAWFUL, A_NEUTRAL, A_CHAOTIC,
          EXT_ENCUMBER, A_MAX, A_STR, A_WIS, AM_SHRINE, TIMEOUT,
          Upolyd, KILLED_BY, W_ARMS, W_ARMC, W_ARM, W_ARMU,
          AM_MASK, AM_SANCTUM, ROOM, MM_NOMSG, STRAT_APPEARMSG,
-         LUCKMAX, NON_PM, nothing_happens, NH_BLACK, BOLT_LIM,
+         LUCKMAX, NON_PM, nothing_happens, NH_BLACK, NH_ORANGE, BOLT_LIM,
          MAXULEV, FROMOUTSIDE, INTRINSIC, NH_AMBER, NH_LIGHT_BLUE,
          NH_GOLDEN, ONAME_GIFT, ONAME_KNOW_ARTI, P_ISRESTRICTED,
          P_LONG_SWORD, P_BROAD_SWORD, FOOT, STOMACH } from './const.js';
@@ -28,13 +28,13 @@ import { An, an, ansimpleoname, makeplural, OBJ_NAME, otense, vtense,
          xname, yname, Yobjnam2 } from './objnam.js';
 import { a_monnam, hcolor, mon_nam, oname, upstart } from './do_name.js';
 import { attrcurse, rndcurse } from './sit.js';
-import { Blind, Flying, Hallucination, Levitation, Reflecting,
+import { Blind, Deaf, Flying, Hallucination, Levitation, Reflecting,
          Shock_resistance } from './youprop.js';
 import { obj_resists, resist } from './zap.js';
 import { carrying, update_inventory, useup, useupf } from './invent.js';
 import { carried } from './obj.js';
 import { find_ac } from './do_wear.js';
-import { done, DIED } from './end.js';
+import { done, DIED, ESCAPED, ASCENDED } from './end.js';
 import { roles } from './role_data.js';
 import { PMNAMES, MONSYMS, MFLAGS } from './monst_data.js';
 import { is_undead, is_demon, is_silent, has_head, is_human } from './mondata.js';
@@ -1031,6 +1031,108 @@ async function bestow_artifact(maxGiftValue) {
     return false;
 }
 
+// src/pray.c:1476 offer_too_soon().
+async function offer_too_soon(altaralign) {
+    if (altaralign === A_NONE && Inhell()) {
+        await gods_upset(A_NONE);
+        return;
+    }
+    await You_feel(`${Hallucination() ? 'homesick'
+        : altaralign === game.u.ualign.type
+          ? 'an urge to return to the surface' : 'ashamed'}.`);
+}
+
+// src/pray.c:1498 desecrate_altar().
+async function desecrate_altar(highaltar, altaralign) {
+    if (altaralign === game.u.ualign.type) {
+        adjalign(-20);
+        game.u.ugangr = (game.u.ugangr || 0) + 5;
+    }
+    await You_feel('the air around you grow charged...');
+    await pline(`Suddenly, you realize that ${align_gname(altaralign)} has noticed you...`);
+    await godvoice(altaralign,
+                   `So, mortal!  You dare desecrate my ${
+                       highaltar ? 'High Temple' : 'altar'}!`);
+    await god_zaps_you(altaralign);
+}
+
+async function offer_negative_valued(highaltar, altaralign) {
+    if (altaralign !== game.u.ualign.type && highaltar)
+        await desecrate_altar(highaltar, altaralign);
+    else
+        await gods_upset(altaralign);
+}
+
+// src/pray.c:1602 offer_fake_amulet().
+async function offer_fake_amulet(obj, highaltar, altaralign) {
+    if (!highaltar && !obj.known) {
+        await offer_too_soon(altaralign);
+        return;
+    }
+    await You_hear('a nearby thunderclap.');
+    if (!obj.known) {
+        await You(`realize you have made a ${
+            Hallucination() ? 'boo-boo' : 'mistake'}.`);
+        obj.known = true;
+        change_luck(-1);
+        return;
+    }
+
+    if (Deaf())
+        await pline('Oh, no.');
+    change_luck(-3);
+    adjalign(-1);
+    game.u.ugangr = (game.u.ugangr || 0) + 3;
+    await offer_negative_valued(highaltar, altaralign);
+}
+
+// src/pray.c:1529 offer_real_amulet().
+async function offer_real_amulet(obj, altaralign) {
+    if (game.u.uamul === obj) {
+        const { Amulet_off } = await import('./do_wear.js');
+        await Amulet_off();
+    }
+    if (carried(obj))
+        useup(obj);
+    else
+        useupf(obj, 1);
+
+    const altarGod = align_gname(altaralign);
+    const heroGod = align_gname(game.u.ualign.type);
+    await You(`offer the Amulet of Yendor to ${altarGod}...`);
+
+    if (altaralign === A_NONE) {
+        if (game.u.ualign.record > -99)
+            game.u.ualign.record = -99;
+        await pline('An invisible choir chants, and you are bathed in darkness...');
+        await pline(`Moloch shrugs and retains dominion over ${heroGod},`);
+        await pline('then mercilessly snuffs out your life.');
+        game.killer = { format: KILLED_BY,
+                        name: `${s_suffix('Moloch')} indifference` };
+        await done(DIED);
+        await pline('Moloch snarls and tries again...');
+        await fry_by_god(A_NONE, true);
+        await pline(`A cloud of ${hcolor(NH_BLACK)} smoke surrounds you...`);
+        await done(ESCAPED);
+    } else if (game.u.ualign.type !== altaralign) {
+        adjalign(-99);
+        await pline(`${altarGod} accepts your gift, and gains dominion over ${heroGod}...`);
+        await pline(`${heroGod} is enraged...`);
+        await pline(`Fortunately, ${altarGod} permits you to live...`);
+        await pline(`A cloud of ${hcolor(NH_ORANGE)} smoke surrounds you...`);
+        await done(ESCAPED);
+    } else {
+        (game.u.uevent ||= {}).ascended = 1;
+        adjalign(10);
+        await pline('An invisible choir sings, and you are bathed in radiance...');
+        await godvoice(altaralign, 'Mortal, thou hast done well!');
+        await pline('"In return for thy service, I grant thee the gift of Immortality!"');
+        await You(`ascend to the status of Demigod${
+            game.flags?.female ? 'dess' : ''}...`);
+        await done(ASCENDED);
+    }
+}
+
 // src/pray.c:1854 dosacrifice() -- #offer.
 export async function dosacrifice() {
     const altar = game.level?.at(game.u.ux, game.u.uy);
@@ -1051,16 +1153,14 @@ export async function dosacrifice() {
         return ECMD_OK;
 
     if (obj.otyp === ONAMES.AMULET_OF_YENDOR) {
-        if (!highaltar) {
-            await You_feel(altaralign === game.u.ualign.type
-                ? 'an urge to return to the surface.' : 'ashamed.');
-        } else {
-            note_unported_pray('sacrifice:real_amulet');
-        }
+        if (!highaltar)
+            await offer_too_soon(altaralign);
+        else
+            await offer_real_amulet(obj, altaralign);
         return ECMD_TIME;
     }
     if (obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR) {
-        note_unported_pray('sacrifice:fake_amulet');
+        await offer_fake_amulet(obj, highaltar, altaralign);
         return ECMD_TIME;
     }
     if (obj.otyp === ONAMES.CORPSE) {

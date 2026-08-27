@@ -711,15 +711,19 @@ export const TELEDS_NO_FLAGS = 0, TELEDS_ALLOW_DRAG = 1, TELEDS_TELEPORT = 2;
 
 // src/teleport.c:850 scrolltele() — the controlled-teleport prompt.
 //
-// Only the controlled arm is ported: Teleport_control or wizard mode, hero
-// conscious. The Amulet/W-tower disorientation, the uncontrolled random
-// destination and the level-teleport arms are recorded.
+// The controlled arm is ported: Teleport_control or wizard mode, hero
+// conscious.  Amulet disorientation and wizard override are included; the
+// W-tower variant, uncontrolled random destination and level-teleport arms
+// are recorded.
 export async function scrolltele(scroll) {
     const cc = { x: 0, y: 0 };
 
     if ((game.u.uhave?.amulet) && !rn2(3)) {
-        note_unported_teleport('scrolltele:disoriented');
-        return;
+        await You_feel('disoriented for a moment.');
+        if (!game.wizard) return;
+        const { tty_yn_function } = await import('./tty/topl.js');
+        if ((await tty_yn_function('Override?', 'yn', 'n')) !== 'y')
+            return;
     }
     /* src/teleport.c:872 — Teleport_control (or a blessed scroll, or
        wizard mode) picks the spot via getpos; everyone else falls through

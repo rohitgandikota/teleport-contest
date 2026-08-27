@@ -808,10 +808,12 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         const { In_endgame, Is_astralevel } = await import('./const.js');
         const newdungeon = (game.u.uz0.dnum !== game.u.uz.dnum);
         if (In_endgame(game.u.uz)) {
-            /* record_achievement(ACH_ENDG) — invisible */
+            const { ACH_ENDG, ACH_ASTR, record_achievement } =
+                await import('./insight.js');
+            record_achievement(ACH_ENDG);
             if (!familiar_level && Is_astralevel(game.u.uz)) {
                 await final_level(); /* guardian angel,&c */
-                /* record_achievement(ACH_ASTR) — invisible */
+                record_achievement(ACH_ASTR);
             } else if (newdungeon && game.u.uhave?.amulet) {
                 const { resurrect } = await import('./wizard.js');
                 await resurrect(); /* force confrontation with Wizard */

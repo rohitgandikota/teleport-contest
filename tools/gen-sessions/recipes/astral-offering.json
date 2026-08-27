@@ -1,0 +1,36 @@
+{
+  "name": "astral-offering",
+  "description": "Debug-mode Astral high-altar matrix for aligned ascension, wrong-alignment escape, and first fake-Amulet rejection.",
+  "coverage": [
+    "mode.debug",
+    "level.astral",
+    "religion.sacrifice",
+    "object.amulets",
+    "endgame.astral-offering",
+    "ending.death-disclosure",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 8850,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r    \u0006\u0014 yhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkkkkk. :#offer\re          "
+    },
+    {
+      "seed": 8850,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r    \u0006\u0014 yhhhhhhhhkkkkkkkkkk. :#offer\re         "
+    },
+    {
+      "seed": 8850,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r    \u0006\u0014 yhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkkkkk. :\u0017fake Amulet of Yendor\r#offer\rg"
+    }
+  ]
+}

@@ -117,6 +117,7 @@
     { "group": "Quest and endgame", "id": "endgame.invocation", "description": "Bell, Candelabrum, Book, vibrating square, and invocation", "minimumSessions": 1 },
     { "group": "Quest and endgame", "id": "endgame.amulet-wizard", "description": "Real Amulet pickup, wish, Wizard harassment, theft, and recovery", "minimumSessions": 1 },
     { "group": "Quest and endgame", "id": "endgame.ascent", "description": "Upward run, mysterious force, portals, and Amulet targeting", "minimumSessions": 1 },
-    { "group": "Quest and endgame", "id": "endgame.astral-offering", "description": "Riders, aligned and wrong altars, fake or real Amulet, and ascension", "minimumSessions": 1 }
+    { "group": "Quest and endgame", "id": "endgame.astral-offering", "description": "Aligned and wrong altars, fake or real Amulet, escape, and ascension", "minimumSessions": 1 },
+    { "group": "Quest and endgame", "id": "endgame.riders", "description": "Death, Famine, and Pestilence attacks, deaths, corpses, and revival", "minimumSessions": 1 }
   ]
 }

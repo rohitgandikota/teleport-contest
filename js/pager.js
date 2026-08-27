@@ -15,7 +15,7 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          POOL, MOAT, WATER, LAVAPOOL, LAVAWALL, ICE,
          MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, ECMD_OK,
          TER_DETECT, TER_MAP, M_AP_TYPE, M_AP_FURNITURE,
-         M_AP_OBJECT, AM_MASK, AM_SANCTUM, Amask2align,
+         M_AP_OBJECT, AM_MASK, AM_SANCTUM, Amask2align, Is_astralevel,
          A_LAWFUL, A_NEUTRAL, A_CHAOTIC } from './const.js';
 import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
@@ -258,7 +258,12 @@ function lookat(x, y) {
                             : alignment === A_NEUTRAL ? 'neutral'
                               : alignment === A_CHAOTIC ? 'chaotic'
                                 : 'unaligned';
-            buf = `${alignName} ${mask & AM_SANCTUM ? 'high ' : ''}altar`;
+            const nextToHero = Math.abs(x - game.u.ux) <= 1
+                            && Math.abs(y - game.u.uy) <= 1;
+            const astralHighUnknown = Is_astralevel(game.u.uz)
+                                   && !nextToHero && (mask & AM_SANCTUM);
+            buf = `${astralHighUnknown ? 'aligned' : alignName} ${
+                mask & AM_SANCTUM ? 'high ' : ''}altar`;
             break;
         }
         case CM.S_ndoor:

@@ -206,6 +206,11 @@ function render(row, leaderboard) {
     lines.push(`| Cursor positions | ${publicLocal.cursorsMatched}/${publicLocal.cursorsTotal} | ${supplemental.cursorsMatched}/${supplemental.cursorsTotal} |`);
     lines.push(`| Startup and per-turn estimate | ${row.publicSpeed} | ${row.supplementalSpeed} |`);
     lines.push('');
+    lines.push('## Supplemental capture caveats');
+    lines.push('');
+    lines.push('- `gehennom-tour` contains five corrupt C cell frames and 383 corrupt cursor frames from its original recording.');
+    lines.push('- `bones-persistence` differs on two terminal frames while the C recorder reports a bones-compression error. Its 468-frame load segment and all RNG calls match exactly.');
+    lines.push('');
     lines.push('## Judge health');
     lines.push('');
     lines.push(`- Playable: ${playability.playable}. Browser: ${playability.browser_ok}.`);

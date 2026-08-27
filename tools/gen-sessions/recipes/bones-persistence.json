@@ -1,0 +1,24 @@
+{
+  "name": "bones-persistence",
+  "description": "A normal-mode Priest dies in the Mines and leaves a named ghost, then a fresh Healer loads that level and inspects the ghost.",
+  "coverage": [
+    "mode.normal",
+    "level.mines",
+    "monster.death-corpse-revival",
+    "persistence.bones"
+  ],
+  "segments": [
+    {
+      "seed": 37,
+      "datetime": "20260212120000",
+      "nethackrc": "OPTIONS=name:Ashen,role:Priest,race:human,gender:female,align:lawful\nOPTIONS=!autopickup,!legacy,!tutorial,!tombstone\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " klkkllkullllnllllljj>  jj hhjbbjjjjbhhhhhhhhhhhhhhhyyh>  lllk\u0004k\u0004k\u0004k\u0004k\u0004k\u0004k\u0004k\u0004k\u0004k\u0004k\u0004kkkhykullukssssssssssssssssssss.hykullukkkullllllll>  uuuukkkkFy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy Fy  nnnnn  "
+    },
+    {
+      "seed": 40,
+      "datetime": "20260305120000",
+      "nethackrc": "OPTIONS=name:Seeker,role:Healer,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!legacy,!tutorial\nOPTIONS=disclose:-i -a -v -g -c -o\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " kllnlllljjnssssssssssssssssssss.bjnjnjnjjnllkuuuu>  unllllnnllluuuulnnnb>  jjqy hhhhbjbbjhhhhssssssssssssssssssss.j jhh hhkkybhhhhhhyhhhhhssssssssssssssssssss.hhhybhhhhhssssssssssssssssssss.hhhhhhhhhhhhhhhhhhhhhykkssssssssssssssssssss.hykkkkkkkkuuulllnnhhhhhh  hhyhbbhhhhhhhhssssssssssssssssssss.hhhhbhhbj>  llllllunullllllllnjjbnss >  uuuukkkk ;  kk.\"                # farlook -> \"Ashen's ghost, asleep   zfk         k    k    k    k    k    k    k    k    yyyy ny "
+    }
+  ]
+}

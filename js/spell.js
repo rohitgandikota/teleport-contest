@@ -679,6 +679,45 @@ const quitchars = ' \r\n\x1b';
 const KEEN = 20000;
 export const SPELL_LEV_PW = (lvl) => lvl * 5;
 
+export const spe_Forgotten = -1;
+export const spe_Unknown = 0;
+export const spe_Fresh = 1;
+export const spe_GoingStale = 2;
+
+// src/spell.c known_spell(). Classify retained knowledge for a book type.
+export function known_spell(otyp) {
+    for (let i = 0; i < MAXSPELL && spellid(i) !== NO_SPELL; i++) {
+        if (spellid(i) === otyp) {
+            const knowledge = spellknow(i);
+            return knowledge > KEEN / 10 ? spe_Fresh
+                 : knowledge > 0 ? spe_GoingStale : spe_Forgotten;
+        }
+    }
+    return spe_Unknown;
+}
+
+// src/spell.c force_learn_spell(). Add or refresh a spell and return its key.
+export function force_learn_spell(otyp) {
+    if (otyp === ONAMES.SPE_BLANK_PAPER
+        || otyp === ONAMES.SPE_BOOK_OF_THE_DEAD
+        || known_spell(otyp) === spe_Fresh)
+        return '';
+
+    let i;
+    for (i = 0; i < MAXSPELL; i++)
+        if (spellid(i) === NO_SPELL || spellid(i) === otyp)
+            break;
+    if (i === MAXSPELL)
+        return '';
+
+    (game.spl_book ||= [])[i] = {
+        sp_id: otyp,
+        sp_lev: game.objects[otyp].oc_level,
+        sp_know: KEEN,
+    };
+    return String.fromCharCode(i < 26 ? 97 + i : 65 + i - 26);
+}
+
 // include/spell.h:33 spellknow()
 function spellknow(spidx) {
     return game.spl_book?.[spidx]?.sp_know ?? 0;

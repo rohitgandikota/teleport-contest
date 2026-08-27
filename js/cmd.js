@@ -2542,7 +2542,8 @@ async function domove_swap_with_pet(mtmp, x, y) {
 // include/monst.h:227 mundisplaceable()
 function mundisplaceable(mon) {
     return !!(mon.ispriest || mon.isshk || mon.isgd
-              || mon.mnum === PMNAMES.PM_ORACLE);
+              || mon.mnum === PMNAMES.PM_ORACLE
+              || mon.m_id === game.quest_status?.leader_m_id);
 }
 
 // include/mondata.h bigmonst()

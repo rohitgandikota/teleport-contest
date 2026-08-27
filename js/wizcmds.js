@@ -14,7 +14,7 @@ import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
     from './const.js';
 import { getlin } from './cmd.js';
 import { docrt, map_trap, pline, see_monsters, swallowed } from './display.js';
-import { pluslvl } from './exper.js';
+import { pluslvl, losexp } from './exper.js';
 import { level_tele } from './teleport.js';
 import { do_mapping } from './detect.js';
 import { NO_COLOR } from './terminal.js';
@@ -115,14 +115,15 @@ export async function wiz_level_change() {
             await pline('You are already as inexperienced as you can get.');
             return ECMD_OK;
         }
-        /* losexp() needs the experience and hit-point code. */
-        note_unported_wizcmds('wiz_level_change:losexp');
-        return ECMD_OK;
+        newlevel = Math.max(newlevel, 1);
+        while (game.u.ulevel > newlevel)
+            await losexp('#levelchange');
     } else {
         if (game.u.ulevel >= MAXULEV) {
             await pline('You are already as experienced as you can get.');
             return ECMD_OK;
         }
+        newlevel = Math.min(newlevel, MAXULEV);
         while (game.u.ulevel < newlevel)
             await pluslvl(false);
     }

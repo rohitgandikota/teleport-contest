@@ -17,13 +17,14 @@ import { mdistu, mon_track_clear, m_everyturn_effect,
 // with the wrong number of monsters desynchronises on its very first turn.
 
 import { game } from './gstate.js';
-import { worm_cross } from './worm.js';
+import { get_wormno, initworm, place_worm_tail_randomly,
+         worm_cross, worm_wire } from './worm.js';
 import { adjalign, change_luck, exercise } from './attrib.js';
 import { couldsee, cansee, does_block, unblock_point, vision_recalc } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
 import { sengr_at } from './engrave.js';
-import { Monnam, mon_nam, x_monnam } from './do_name.js';
+import { Monnam, mon_nam, x_monnam, upstart } from './do_name.js';
 import { hot_pursuit } from './shk.js';
 import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
 import { bad_rock, may_dig, may_passwall } from './hack.js';
@@ -40,7 +41,8 @@ import { remove_monster, place_monster, goodpos } from './makemon.js';
 import { enexto_core, enexto, noteleport_level, rloc, tele_restrict,
          rloc_to_flag } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
-         G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE,
+         G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE, ARTICLE_A,
+         ARTICLE_YOUR,
          SUPPRESS_SADDLE } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
@@ -77,7 +79,8 @@ import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, slimeproof, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
 import { mpickobj } from './steal.js';
-import { nonliving, is_neuter, is_animal, is_mplayer, has_head } from './mondata.js';
+import { nonliving, is_neuter, is_animal, is_mplayer, has_head,
+         olfaction, is_orc } from './mondata.js';
 import { mkcorpstat } from './mklev.js';
 import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE, ACCESSIBLE, TAINT_AGE, CORPSTAT_BURIED } from './const.js';
 import { MAX_CARR_CAP, WT_HUMAN, W_ARMG, W_ARMS, P_AXE, P_PICK_AXE, IS_TREE } from './const.js';
@@ -2501,7 +2504,7 @@ export async function decide_to_shapeshift(mon) {
         }
     }
     if (dochng) {
-        if (newcham(mon, ptr, NC_SHOW_MSG)) {
+        if (await newcham(mon, ptr, NC_SHOW_MSG)) {
             /* for vampshift, override the 10% chance for sex change
                (by forcing original gender in case that occurred) */
             if (is_vampshifter_mon(mon)) {
@@ -2682,9 +2685,108 @@ const is_vampshifter_mon = (m) => m.cham === PMNAMES.PM_VAMPIRE
 let mon_fns_cham = null;
 export function mon_wire_cham(fns) { mon_fns_cham = fns; }
 
-// src/mon.c:5278 newcham() — the creation path: caller wants a random shape.
+// src/mon.c:5796 usmellmon(), used when a monster changes into an unseen
+// form. The species exclusions prevent a unicorn or jellyfish from falling
+// through to the generic class message.
+async function usmellmon(mdat) {
+    if (!mdat || !olfaction(game.youmonst.data))
+        return false;
+
+    const mndx = mdat.pmidx;
+    let nonspecific = false;
+
+    switch (mndx) {
+    case PMNAMES.PM_ROTHE:
+    case PMNAMES.PM_MINOTAUR:
+        await You('notice a bovine smell.');
+        return true;
+    case PMNAMES.PM_CAVE_DWELLER:
+    case PMNAMES.PM_BARBARIAN:
+    case PMNAMES.PM_NEANDERTHAL:
+        await You('smell body odor.');
+        return true;
+    case PMNAMES.PM_HORNED_DEVIL:
+    case PMNAMES.PM_BALROG:
+    case PMNAMES.PM_ASMODEUS:
+    case PMNAMES.PM_DISPATER:
+    case PMNAMES.PM_YEENOGHU:
+    case PMNAMES.PM_ORCUS:
+        return false;
+    case PMNAMES.PM_HUMAN_WEREJACKAL:
+    case PMNAMES.PM_HUMAN_WERERAT:
+    case PMNAMES.PM_HUMAN_WEREWOLF:
+    case PMNAMES.PM_WEREJACKAL:
+    case PMNAMES.PM_WERERAT:
+    case PMNAMES.PM_WEREWOLF:
+    case PMNAMES.PM_OWLBEAR:
+        await You("detect an odor reminiscent of an animal's den.");
+        return true;
+    case PMNAMES.PM_STEAM_VORTEX:
+        await You('smell steam.');
+        return true;
+    case PMNAMES.PM_GREEN_SLIME:
+        await pline('Something stinks.');
+        return true;
+    case PMNAMES.PM_VIOLET_FUNGUS:
+    case PMNAMES.PM_SHRIEKER:
+        await You('smell mushrooms.');
+        return true;
+    case PMNAMES.PM_WHITE_UNICORN:
+    case PMNAMES.PM_GRAY_UNICORN:
+    case PMNAMES.PM_BLACK_UNICORN:
+    case PMNAMES.PM_JELLYFISH:
+        return false;
+    default:
+        nonspecific = true;
+        break;
+    }
+
+    if (!nonspecific)
+        return false;
+
+    switch (mdat.mlet) {
+    case MONSYMS.S_DOG:
+        await You('notice a dog smell.');
+        return true;
+    case MONSYMS.S_DRAGON:
+        await You('smell a dragon!');
+        return true;
+    case MONSYMS.S_FUNGUS:
+        await pline('Something smells moldy.');
+        return true;
+    case MONSYMS.S_UNICORN:
+        await You(`detect a${mndx === PMNAMES.PM_PONY ? 'n' : ' strong'} odor reminiscent of a stable.`);
+        return true;
+    case MONSYMS.S_ZOMBIE:
+        await You('smell rotting flesh.');
+        return true;
+    case MONSYMS.S_EEL:
+        await You('smell fish.');
+        return true;
+    case MONSYMS.S_ORC: {
+        const heroIsOrc = is_orc(game.youmonst.data)
+            || game.urace?.filecode === 'Orc';
+        if (heroIsOrc)
+            await You('notice an attractive smell.');
+        else
+            await pline('A foul stench makes you feel a little nauseated.');
+        return true;
+    }
+    default:
+        return false;
+    }
+}
+
+// src/mon.c:5278 newcham(). The no-message creation path remains synchronous
+// for makemon(); NC_SHOW_MSG callers await the conditional promise below.
 export function newcham(mtmp, mdat, ncflags) {
     let mndx = -1;
+    const msg = !!(ncflags & NC_SHOW_MSG);
+    const seenorsensed = msg ? canspotmon(mtmp) : false;
+    const oldname = msg
+        ? upstart(x_monnam(mtmp, mtmp.mtame ? ARTICLE_YOUR : ARTICLE_THE,
+                           null, SUPPRESS_SADDLE, false))
+        : '';
 
     if (!mdat) {
         let tryct = 20;
@@ -2728,8 +2830,37 @@ export function newcham(mtmp, mdat, ncflags) {
                              LS_MONSTER, mtmp.m_id);
     }
 
+    if (mdat === game.mons[PMNAMES.PM_LONG_WORM]
+        && (mtmp.wormno = get_wormno()) !== 0) {
+        worm_wire(goodpos);
+        initworm(mtmp, rn2(5));
+        place_worm_tail_randomly(mtmp, mtmp.mx, mtmp.my);
+    }
+
+    mtmp.meverseen = 0;
+    newsym(mtmp.mx, mtmp.my);
+
     /* leashes, mimicry, worm shrink: recorded when reached */
-    return 1;
+    if (!msg)
+        return 1;
+
+    return (async () => {
+        if (!canspotmon(mtmp)) {
+            if (seenorsensed)
+                await pline(`${oldname} disappears!`);
+            await usmellmon(mdat);
+        } else if (!seenorsensed) {
+            const newname = x_monnam(
+                mtmp, mtmp.mtame ? ARTICLE_YOUR : ARTICLE_A,
+                null, SUPPRESS_SADDLE, false);
+            await pline(`${upstart(newname)} appears!`);
+        } else {
+            const newname = x_monnam(
+                mtmp, ARTICLE_A, null, SUPPRESS_SADDLE, false);
+            await pline(`${oldname} turns into ${newname}!`);
+        }
+        return 1;
+    })();
 }
 
 // src/mon.c:4367 wake_nearby() / wake_nearto_core() — noise wakes monsters

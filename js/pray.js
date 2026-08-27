@@ -1,18 +1,18 @@
 // pray.js — prayer.
 // C ref: src/pray.c
 //
-// The #pray command covers confirmation, eligibility, the three-turn delay,
-// failed prayer, and the ordinary coaligned successful response. Punishments,
-// trouble cures, rare divine favors, and sacrifice remain partial.
+// The #pray command covers eligibility, delay, ordinary favors, crowning, and
+// the tested sacrifice paths. Some punishment, conversion, and artifact-gift
+// paths remain partial.
 
 import { game } from './gstate.js';
 import { rn1, rn2, rnd, rnz, rnl, rn2_on_display_rng } from './rng.js';
-import { newsym, pline, more } from './display.js';
-import { You, You_feel, Your, pline_The } from './pline.js';
+import { newsym, pline, more, see_monsters } from './display.js';
+import { You, You_feel, You_hear, Your, pline_The } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
 import { nomul, losehp } from './hack.js';
 import { adjalign, adjattrib, change_luck, near_capacity,
-         exercise } from './attrib.js';
+         exercise, encumber_msg } from './attrib.js';
 import { which_armor } from './worn.js';
 import { IS_ALTAR, Amask2align, A_NONE, A_LAWFUL, A_NEUTRAL, A_CHAOTIC,
          ECMD_OK, ECMD_TIME, W_SADDLE, TT_LAVA, TT_BURIEDBALL, WEAK, HUNGRY,
@@ -20,32 +20,49 @@ import { IS_ALTAR, Amask2align, A_NONE, A_LAWFUL, A_NEUTRAL, A_CHAOTIC,
          Upolyd, KILLED_BY, W_ARMS, W_ARMC, W_ARM, W_ARMU,
          AM_MASK, AM_SANCTUM, ROOM, MM_NOMSG, STRAT_APPEARMSG,
          LUCKMAX, NON_PM, nothing_happens, NH_BLACK, BOLT_LIM,
-         MAXULEV } from './const.js';
-import { ONAMES } from './objects_data.js';
-import { An } from './objnam.js';
-import { a_monnam, hcolor } from './do_name.js';
+         MAXULEV, FROMOUTSIDE, INTRINSIC, NH_AMBER, NH_LIGHT_BLUE,
+         NH_GOLDEN, ONAME_GIFT, ONAME_KNOW_ARTI, P_ISRESTRICTED,
+         P_LONG_SWORD, P_BROAD_SWORD, FOOT, STOMACH } from './const.js';
+import { ONAMES, OCLASSES } from './objects_data.js';
+import { An, an, ansimpleoname, makeplural, OBJ_NAME, otense, vtense,
+         xname, yname, Yobjnam2 } from './objnam.js';
+import { a_monnam, hcolor, mon_nam, oname, upstart } from './do_name.js';
 import { attrcurse, rndcurse } from './sit.js';
 import { Blind, Flying, Hallucination, Levitation, Reflecting,
          Shock_resistance } from './youprop.js';
 import { obj_resists, resist } from './zap.js';
-import { useup, useupf } from './invent.js';
+import { carrying, update_inventory, useup, useupf } from './invent.js';
 import { carried } from './obj.js';
 import { find_ac } from './do_wear.js';
 import { done, DIED } from './end.js';
 import { roles } from './role_data.js';
 import { PMNAMES, MONSYMS, MFLAGS } from './monst_data.js';
-import { is_undead, is_demon, is_silent, has_head } from './mondata.js';
+import { is_undead, is_demon, is_silent, has_head, is_human } from './mondata.js';
 import { is_vampshifter, DEADMONSTER } from './monst.js';
 import { couldsee } from './vision.js';
 import { mdistu, monflee } from './monmove.js';
 import { makemon, set_malign, Inhell } from './makemon.js';
 import { killed } from './mon.js';
 import { aggravate } from './wizard.js';
-import { setuhpmax } from './exper.js';
-import { floorfood } from './eat.js';
+import { setuhpmax, pluslvl } from './exper.js';
+import { floorfood, init_uhunger } from './eat.js';
 import { dlord } from './minion.js';
 import { angry_priest } from './priest.js';
-import { sgn } from './hacklib.js';
+import { s_suffix, sgn } from './hacklib.js';
+import { bless, is_weptool, mkobj, mksobj, place_object, rnd_class,
+         SPBOOK_no_NOVEL, uncurse } from './mkobj.js';
+import { dropy } from './do.js';
+import { discover_artifact, exist_artifact, is_art } from './artifact.js';
+import { artifact_names, ART_EXCALIBUR, ART_STORMBRINGER,
+         ART_VORPAL_BLADE } from './artilist_data.js';
+import { add_weapon_skill, unrestrict_weapon_skill,
+         weapon_type } from './weapon.js';
+import { force_learn_spell, known_spell, spe_Forgotten, spe_Fresh,
+         spe_Unknown, spell_skilltype } from './spell.js';
+import { makeknown, observe_object } from './o_init.js';
+import { make_blinded } from './potion.js';
+import { body_part, mbodypart } from './polyself.js';
+import { welded } from './wield.js';
 
 function note_unported_pray(what) {
     (game.unported ||= new Set()).add('pray:' + what);
@@ -72,7 +89,10 @@ const TROUBLE_PUNISHED = -1, TROUBLE_FUMBLING = -2, TROUBLE_CURSED_ITEMS = -3,
       TROUBLE_CONFUSED = -10, TROUBLE_HALLUCINATION = -11;
 
 /* include/align.h alignment record thresholds used by pleased() */
-const DEVOUT = 14, STRIDENT = 4;
+const DEVOUT = 14, STRIDENT = 4, PIOUS = 20;
+
+// src/role.c Role_if().
+const Role_if = (pm) => game.urole?.mnum === pm;
 
 // src/pray.c:116 critically_low_hp()
 function critically_low_hp(only_if_injured) {
@@ -527,6 +547,216 @@ async function godvoice(g_align, words) {
     await pline_The(`voice of ${align_gname(g_align)} ${godvoices[rn2(godvoices.length)]}: ${quot}${words}${quot}`);
 }
 
+// src/pray.c at_your_feet(). Announce a divine object arriving nearby.
+async function at_your_feet(str) {
+    const u = game.u;
+    if (Blind())
+        str = 'Something';
+    if (u.uswallow) {
+        await pline(`${str} ${vtense(str, 'drop')} into ${
+            s_suffix(mon_nam(u.ustuck))} ${mbodypart(u.ustuck, STOMACH)}.`);
+    } else {
+        await pline(`${str} ${vtense(str, Blind() ? 'land' : 'appear')} ${
+            Levitation() ? 'beneath' : 'at'} your ${
+            makeplural(body_part(FOOT))}!`);
+    }
+}
+
+const ok_wep = (obj) => !!obj
+    && (obj.oclass === OCLASSES.WEAPON_CLASS
+        || is_weptool(obj, game.objects));
+
+// src/pray.c gcrownu(). Bestow the alignment title, class gift, artifact,
+// permanent resistances, weapon skill, and extra skill slot.
+async function gcrownu() {
+    const u = game.u;
+    const intrinsic = (u.intrinsic ||= {});
+    const uevent = (u.uevent ||= {});
+    for (const prop of ['HSee_invisible', 'HFire_resistance',
+                        'HCold_resistance', 'HShock_resistance',
+                        'HSleep_resistance', 'HPoison_resistance'])
+        intrinsic[prop] = (intrinsic[prop] | 0) | FROMOUTSIDE;
+
+    await godvoice(u.ualign.type, null);
+
+    const wielding = (art) => u.uwep?.oartifact === art;
+    let classGift = ONAMES.STRANGE_OBJECT;
+    if (Role_if(PMNAMES.PM_WIZARD)
+        && !wielding(ART_VORPAL_BLADE)
+        && !wielding(ART_STORMBRINGER)
+        && !carrying(ONAMES.SPE_FINGER_OF_DEATH)) {
+        classGift = ONAMES.SPE_FINGER_OF_DEATH;
+    } else if (Role_if(PMNAMES.PM_MONK)
+               && !u.uwep?.oartifact
+               && !carrying(ONAMES.SPE_RESTORE_ABILITY)) {
+        classGift = ONAMES.SPE_RESTORE_ABILITY;
+    }
+
+    let obj = ok_wep(u.uwep) ? u.uwep : null;
+    let alreadyExists = false, inHand = false;
+    switch (u.ualign.type) {
+    case A_LAWFUL:
+        uevent.uhand_of_elbereth = 1;
+        await pline('"I crown thee...  The Hand of Elbereth!"');
+        break;
+    case A_NEUTRAL:
+        uevent.uhand_of_elbereth = 2;
+        inHand = wielding(ART_VORPAL_BLADE);
+        alreadyExists = exist_artifact(ONAMES.LONG_SWORD,
+                                       artifact_names[ART_VORPAL_BLADE]);
+        await pline('"Thou shalt be my Envoy of Balance!"');
+        break;
+    case A_CHAOTIC: {
+        uevent.uhand_of_elbereth = 3;
+        inHand = wielding(ART_STORMBRINGER);
+        alreadyExists = exist_artifact(ONAMES.RUNESWORD,
+                                       artifact_names[ART_STORMBRINGER]);
+        const what = ((alreadyExists && !inHand)
+                      || classGift !== ONAMES.STRANGE_OBJECT)
+                     ? 'take lives' : 'steal souls';
+        await pline(`"Thou art chosen to ${what} for My Glory!"`);
+        break;
+    }
+    default:
+        break;
+    }
+
+    if (game.objects[classGift].oc_class === OCLASSES.SPBOOK_CLASS) {
+        obj = mksobj(classGift, true, false);
+        bless(obj);
+        obj.bknown = 1;
+        observe_object(obj);
+        await at_your_feet(upstart(ansimpleoname(obj)));
+        await dropy(obj);
+        u.ugifts = (u.ugifts | 0) + 1;
+
+        if (known_spell(classGift) !== spe_Unknown && ok_wep(u.uwep))
+            obj = u.uwep;
+    }
+
+    switch (u.ualign.type) {
+    case A_LAWFUL:
+        if (classGift !== ONAMES.STRANGE_OBJECT) {
+            // The class spellbook was the crowning gift.
+        } else if (obj?.otyp === ONAMES.LONG_SWORD && !obj.oartifact) {
+            if (!Blind())
+                await Your('sword shines brightly for a moment.');
+            obj = oname(obj, artifact_names[ART_EXCALIBUR],
+                        ONAME_GIFT | ONAME_KNOW_ARTI);
+            if (is_art(obj, ART_EXCALIBUR))
+                u.ugifts = (u.ugifts | 0) + 1;
+        }
+        unrestrict_weapon_skill(P_LONG_SWORD);
+        if (is_art(obj, ART_EXCALIBUR))
+            discover_artifact(ART_EXCALIBUR);
+        break;
+    case A_NEUTRAL:
+        if (classGift !== ONAMES.STRANGE_OBJECT) {
+            // The class spellbook was the crowning gift.
+        } else if (obj && inHand) {
+            await Your(`${xname(obj)} goes snicker-snack!`);
+            observe_object(obj);
+        } else if (!alreadyExists) {
+            obj = mksobj(ONAMES.LONG_SWORD, false, false);
+            obj = oname(obj, artifact_names[ART_VORPAL_BLADE],
+                        ONAME_GIFT | ONAME_KNOW_ARTI);
+            obj.spe = 1;
+            await at_your_feet('A sword');
+            await dropy(obj);
+            u.ugifts = (u.ugifts | 0) + 1;
+        }
+        unrestrict_weapon_skill(P_LONG_SWORD);
+        if (is_art(obj, ART_VORPAL_BLADE))
+            discover_artifact(ART_VORPAL_BLADE);
+        break;
+    case A_CHAOTIC: {
+        const sword = `${hcolor(NH_BLACK)} sword`;
+        if (classGift !== ONAMES.STRANGE_OBJECT) {
+            // The class spellbook was the crowning gift.
+        } else if (obj && inHand) {
+            await Your(`${sword} hums ominously!`);
+            observe_object(obj);
+        } else if (!alreadyExists) {
+            obj = mksobj(ONAMES.RUNESWORD, false, false);
+            obj = oname(obj, artifact_names[ART_STORMBRINGER],
+                        ONAME_GIFT | ONAME_KNOW_ARTI);
+            obj.spe = 1;
+            await at_your_feet(An(sword));
+            await dropy(obj);
+            u.ugifts = (u.ugifts | 0) + 1;
+        }
+        unrestrict_weapon_skill(P_BROAD_SWORD);
+        if (is_art(obj, ART_STORMBRINGER))
+            discover_artifact(ART_STORMBRINGER);
+        break;
+    }
+    default:
+        obj = null;
+        break;
+    }
+
+    if (ok_wep(obj)) {
+        bless(obj);
+        obj.oeroded = obj.oeroded2 = 0;
+        obj.oerodeproof = 1;
+        obj.bknown = obj.rknown = 1;
+        if ((obj.spe | 0) < 1)
+            obj.spe = 1;
+        unrestrict_weapon_skill(weapon_type(obj));
+    } else if (classGift === ONAMES.STRANGE_OBJECT) {
+        await You_feel('unworthy.');
+    }
+    update_inventory();
+    await add_weapon_skill(1);
+}
+
+// src/pray.c give_spell(). Prefer an unknown usable spell, then either
+// teach it directly or place a blessed book at the hero's feet.
+async function give_spell() {
+    const u = game.u;
+    let obj = mkobj(SPBOOK_no_NOVEL, true);
+    let trycnt = u.ulevel + 1;
+
+    while (--trycnt > 0) {
+        if (obj.otyp !== ONAMES.SPE_BLANK_PAPER) {
+            const skill = spell_skilltype(obj.otyp);
+            const skillLevel = u.weapon_skills?.[skill]?.skill
+                               ?? P_ISRESTRICTED;
+            if (known_spell(obj.otyp) <= spe_Unknown
+                && skillLevel !== P_ISRESTRICTED)
+                break;
+        } else if (!game.objects[ONAMES.SPE_BLANK_PAPER].oc_name_known
+                   || carrying(ONAMES.MAGIC_MARKER)) {
+            break;
+        }
+        obj.otyp = rnd_class(game.bases[OCLASSES.SPBOOK_CLASS],
+                             ONAMES.SPE_BLANK_PAPER);
+    }
+
+    let knowledge;
+    if (obj.otyp !== ONAMES.SPE_BLANK_PAPER && !rn2(4)
+        && (knowledge = known_spell(obj.otyp)) !== spe_Fresh) {
+        const letter = force_learn_spell(obj.otyp);
+        if (letter) {
+            const spellName = OBJ_NAME(game.objects[obj.otyp]);
+            if (knowledge === spe_Unknown) {
+                await pline(`Divine knowledge of ${spellName} fills your mind!  Spell '${letter}'.`);
+            } else {
+                await Your(`knowledge of spell '${letter}' - ${spellName} is ${
+                    knowledge === spe_Forgotten ? 'restored' : 'refreshed'}.`);
+            }
+        }
+    } else {
+        observe_object(obj);
+        if (obj.otyp === ONAMES.SPE_BLANK_PAPER || !rn2(100))
+            makeknown(obj.otyp);
+        bless(obj);
+        await at_your_feet(upstart(ansimpleoname(obj)));
+        place_object(obj, u.ux, u.uy);
+        newsym(u.ux, u.uy);
+    }
+}
+
 async function gods_angry(g_align) {
     await godvoice(g_align, 'Thou hast angered me.');
 }
@@ -759,7 +989,8 @@ async function offer_corpse(obj, highaltar, altaralign) {
             }
         }
     } else {
-        note_unported_pray('sacrifice:artifact_gift');
+        if (await bestow_artifact(value))
+            return;
         const original = game.u.uluck || 0;
         let increase = Math.trunc(value * LUCKMAX / (MAXVALUE * 2));
         if (original > value)
@@ -778,6 +1009,26 @@ async function offer_corpse(obj, highaltar, altaralign) {
                 await You('glimpse a four-leaf clover at your feet.');
         }
     }
+}
+
+// src/pray.c:1781 bestow_artifact(). Debug mode asks before making the
+// normal random-gift decision, which is also useful for deterministic oracle
+// recipes that deliberately decline the gift.
+async function bestow_artifact(maxGiftValue) {
+    const u = game.u;
+    if (u.ulevel <= 2 || (u.uluck | 0) < 0)
+        return false;
+
+    if (game.wizard) {
+        const answer = await tty_yn_function('Gift an artifact?', 'yn', 'n');
+        if (answer !== 'y')
+            return false;
+        note_unported_pray(`sacrifice:artifact_gift:${maxGiftValue}`);
+        return true;
+    }
+
+    note_unported_pray('sacrifice:artifact_gift');
+    return false;
 }
 
 // src/pray.c:1854 dosacrifice() -- #offer.
@@ -896,9 +1147,8 @@ async function god_zaps_you(resp_god) {
         find_ac();
 }
 
-// src/pray.c:1071 pleased(). The ordinary no-trouble successful-prayer path is
-// complete. Trouble cures and rare favors preserve their dispatch draw and
-// record the missing state change.
+// src/pray.c:1071 pleased(). The successful-prayer favors and crowning path
+// follow the C dispatch and state changes used by the reference sessions.
 async function pleased(g_align) {
     const u = game.u;
     let trouble = in_trouble();
@@ -970,11 +1220,176 @@ async function pleased(g_align) {
     if (pat_on_head) {
         const luck = (u.uluck || 0) + (u.moreluck || 0);
         const favor = rn2((luck + 6) >> 1);
-        if (favor)
-            note_unported_pray(`pleased:favor=${favor}`);
+
+        switch (favor) {
+        case 0:
+            break;
+        case 1: {
+            const uwep = u.uwep;
+            if (!uwep || !(welded(uwep)
+                           || uwep.oclass === OCLASSES.WEAPON_CLASS
+                           || is_weptool(uwep, game.objects)))
+                break;
+
+            let repair = '';
+            if (uwep.oeroded || uwep.oeroded2)
+                repair = ` and ${otense(uwep, 'are')} now as good as new`;
+
+            if (uwep.cursed) {
+                if (!Blind()) {
+                    await pline(`${Yobjnam2(uwep, 'softly glow')} ${
+                        hcolor(NH_AMBER)}${repair}.`);
+                } else {
+                    await You_feel(`the power of ${align_gname(u.ualign.type)} over ${yname(uwep)}.`);
+                }
+                uncurse(uwep);
+                uwep.bknown = 1;
+                repair = '';
+            } else if (!uwep.blessed) {
+                if (!Blind()) {
+                    await pline(`${Yobjnam2(uwep, 'softly glow')} with ${
+                        an(hcolor(NH_LIGHT_BLUE))} aura${repair}.`);
+                } else {
+                    await You_feel(`the blessing of ${align_gname(u.ualign.type)} over ${yname(uwep)}.`);
+                }
+                bless(uwep);
+                uwep.bknown = 1;
+                repair = '';
+            }
+
+            if (uwep.oeroded || uwep.oeroded2) {
+                uwep.oeroded = uwep.oeroded2 = 0;
+                if (repair)
+                    await pline(`${Yobjnam2(uwep, Blind() ? 'feel' : 'look')} as good as new!`);
+            }
+            update_inventory();
+            break;
+        }
+        case 3: {
+            const uevent = (u.uevent ||= {});
+            if (!uevent.uopened_dbridge && !uevent.gehennom_entered) {
+                if ((uevent.uheard_tune | 0) < 1) {
+                    await godvoice(g_align, null);
+                    await pline(`"Hark, ${is_human(game.youmonst.data)
+                        ? 'mortal' : 'creature'}!"`);
+                    await pline('"To enter the castle, thou must play the right tune!"');
+                    uevent.uheard_tune = (uevent.uheard_tune | 0) + 1;
+                    break;
+                } else if (uevent.uheard_tune < 2) {
+                    await You_hear('a divine music...');
+                    await pline(`It sounds like:  "${game.castle_tune}".`);
+                    uevent.uheard_tune++;
+                    break;
+                }
+            }
+            // Fall through once both tune hints have been given.
+        }
+        case 2:
+            if (!Blind())
+                await You(`are surrounded by ${an(hcolor(NH_GOLDEN))} glow.`);
+            if (u.ulevel < u.ulevelmax) {
+                u.ulevelmax--;
+                await pluslvl(false);
+            } else {
+                u.uhpmax += 5;
+                if (u.uhpmax > (u.uhppeak || 0))
+                    u.uhppeak = u.uhpmax;
+                if (Upolyd(u))
+                    u.mhmax += 5;
+            }
+            u.uhp = u.uhpmax;
+            if (Upolyd(u))
+                u.mh = u.mhmax;
+            if (u.acurr.a[A_STR] < u.amax.a[A_STR]) {
+                u.acurr.a[A_STR] = u.amax.a[A_STR];
+                (game.disp ||= {}).botl = true;
+                await encumber_msg();
+            }
+            if (u.uhunger < 900)
+                init_uhunger();
+            if ((u.uluck | 0) < 0)
+                u.uluck = 0;
+            u.ucreamed = 0;
+            await make_blinded(0, true);
+            (game.disp ||= {}).botl = true;
+            break;
+        case 4: {
+            let any = 0;
+            if (Blind()) {
+                await You_feel(`the power of ${align_gname(u.ualign.type)}.`);
+            } else {
+                await You(`are surrounded by ${an(hcolor(NH_LIGHT_BLUE))} aura.`);
+            }
+            for (const obj of game.invent || []) {
+                if (!obj.cursed
+                    || (obj === u.uarmh
+                        && obj.otyp === ONAMES.HELM_OF_OPPOSITE_ALIGNMENT))
+                    continue;
+                if (!Blind()) {
+                    await pline(`${Yobjnam2(obj, 'softly glow')} ${
+                        hcolor(NH_AMBER)}.`);
+                    obj.bknown = 1;
+                    any++;
+                }
+                uncurse(obj);
+            }
+            if (any)
+                update_inventory();
+            break;
+        }
+        case 5: {
+            const intrinsic = (u.intrinsic ||= {});
+            await godvoice(u.ualign.type,
+                           'Thou hast pleased me with thy progress,');
+            let gift;
+            if (!((intrinsic.HTelepat | 0) & INTRINSIC)) {
+                intrinsic.HTelepat = (intrinsic.HTelepat | 0) | FROMOUTSIDE;
+                gift = 'Telepathy';
+                if (Blind())
+                    see_monsters();
+            } else if (!((intrinsic.HFast | 0) & INTRINSIC)) {
+                intrinsic.HFast = (intrinsic.HFast | 0) | FROMOUTSIDE;
+                gift = 'Speed';
+            } else if (!((intrinsic.HStealth | 0) & INTRINSIC)) {
+                intrinsic.HStealth = (intrinsic.HStealth | 0) | FROMOUTSIDE;
+                gift = 'Stealth';
+            } else {
+                if (!((intrinsic.HProtection | 0) & INTRINSIC)) {
+                    intrinsic.HProtection = (intrinsic.HProtection | 0)
+                                            | FROMOUTSIDE;
+                    if (!u.ublessed)
+                        u.ublessed = rn1(3, 2);
+                } else {
+                    u.ublessed = (u.ublessed | 0) + 1;
+                }
+                gift = 'my protection';
+            }
+            await pline(`"and thus I grant thee the gift of ${gift}!"`);
+            await pline('"Use it wisely in my name!"');
+            break;
+        }
+        case 7:
+        case 8:
+            if (u.ualign.record >= PIOUS
+                && !(u.uevent?.uhand_of_elbereth)) {
+                await gcrownu();
+                break;
+            }
+            // Fall through when the hero is not eligible for crowning.
+        case 6:
+            await give_spell();
+            break;
+        default:
+            break;
+        }
     }
 
     u.ublesscnt = rnz(350);
+    let kickOnButt = u.uevent?.udemigod ? 1 : 0;
+    if (u.uevent?.uhand_of_elbereth)
+        kickOnButt++;
+    if (kickOnButt)
+        u.ublesscnt += kickOnButt * rnz(1000);
 }
 
 // src/pray.c:2276 prayer_done()

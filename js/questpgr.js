@@ -22,7 +22,7 @@ import { nhl_init } from './nhlua.js';
 import { questtext } from './quest_data.js';
 import { genders } from './role_data.js';
 import { rank_of } from './botl.js';
-import { an, An, makeplural } from './objnam.js';
+import { an, An, makeplural, makesingular } from './objnam.js';
 import { s_suffix } from './hacklib.js';
 import { mons } from './monst_data.js';
 import { ART_ORB_OF_DETECTION, artifact_names } from './artilist_data.js';
@@ -170,11 +170,13 @@ function qtext_pronoun(who, which) {
     let pnoun;
     const lwhich = which.toLowerCase(); /* H,I,J -> h,i,j */
 
-    /* For %o, treat all artifacts as neuter; some have plural names, which
-       genders[] does not handle. The plural test needs makesingular(), so a
-       plural artifact name is recorded rather than guessed. */
-    if (who === 'o') {
-        note_unported('qtext_pronoun:artifact plural test');
+    /* For %o, ordinary artifacts are neuter singular. Only names which
+       makesingular() changes, plus the special "Eyes" name, use plural
+       pronouns. cvt_buf still holds the expanded artifact name here. */
+    const pluralArtifact = who === 'o'
+        && (cvt_buf.toLowerCase().includes('eyes ')
+            || cvt_buf.toLowerCase() !== makesingular(cvt_buf).toLowerCase());
+    if (pluralArtifact) {
         pnoun = (lwhich === 'h') ? 'they'
               : (lwhich === 'i') ? 'them'
               : (lwhich === 'j') ? 'their' : '?';

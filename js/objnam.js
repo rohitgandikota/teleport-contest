@@ -35,7 +35,8 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          HAND, ROOMOFFSET, NO_TRAP, TRAPNUM, ROCKTRAP, MAGIC_PORTAL,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
-         D_TRAPPED } from './const.js';
+         D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
+         A_LAWFUL } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -2483,9 +2484,7 @@ async function wiztrapwish(d) {
     return null;
 }
 
-// src/objnam.c:3554 wizterrainwish(), wall and regular-door arms.
-// These two states provide deterministic setup for trapped-door tests and
-// preserve the same debug-mode terrain controls exposed by the C game.
+// src/objnam.c:3554 wizterrainwish(), altar, wall, and regular-door arms.
 async function wizterrainwish(d) {
     const x = game.u.ux, y = game.u.uy;
     const lev = game.level?.at(x, y);
@@ -2493,7 +2492,19 @@ async function wizterrainwish(d) {
     if (!lev)
         return null;
 
-    if (wanted === 'wall') {
+    if (wanted.endsWith('altar')) {
+        const alignment = wanted.startsWith('chaotic ') ? A_CHAOTIC
+                        : wanted.startsWith('neutral ') ? A_NEUTRAL
+                          : wanted.startsWith('lawful ') ? A_LAWFUL
+                            : wanted.startsWith('unaligned ') ? A_NONE
+                              : !rn2(6) ? A_NONE : rn2(A_LAWFUL + 2) - 1;
+        const label = alignment === A_CHAOTIC ? 'chaotic'
+                    : alignment === A_NEUTRAL ? 'neutral'
+                      : alignment === A_LAWFUL ? 'lawful' : 'unaligned';
+        lev.typ = ALTAR;
+        lev.altarmask = Align2amask(alignment);
+        await pline(`${An(label)} altar.`);
+    } else if (wanted === 'wall') {
         const north = game.level.at(x, y - 1);
         const south = game.level.at(x, y + 1);
         lev.typ = ((north && IS_WALL(north.typ))

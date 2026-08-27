@@ -1,0 +1,33 @@
+{
+  "name": "crowning-rites",
+  "description": "Debug crowning routes through quest-leader piety adjustment, altar wishes, stacked sacrifices, and forced prayer. Covers lawful Excalibur, a neutral Wizard class gift, and chaotic Stormbringer.",
+  "coverage": [
+    "mode.debug",
+    "level.quest",
+    "religion.altars-crowning",
+    "religion.prayer",
+    "religion.sacrifice",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000114090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r             \u0016?\r y  \u0014klll.l\r y \u0016?\rg \u0017lawful altar\r#levelchange\r2\r   \u0017blessed luckstone\r\u0017long sword\rwf\u001720 red dragon corpses\r #offer\ry #offer\ry #offer\ry #offer\ry #offer\ry #offer\ry #offer\ry#offer\ry#pray\ry y   i\u001b:"
+    },
+    {
+      "seed": 7102,
+      "datetime": "20000114090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r             \u0016?\r y  \u0006\u0014HHHh.k        y \u0016?\rc \u0017neutral altar\r#levelchange\r2\r   \u0017blessed luckstone\r\u001720 red dragon corpses\r #offer\ry #offer\ry #offer\ry #offer\ry #offer\ry #offer\ry#offer\ry#offer\ry#pray\ry y #pray\ry y #pray\ry y    #pray\ry y #pray\ry y  #pray\ry y   i\u001b:"
+    },
+    {
+      "seed": 7101,
+      "datetime": "20000114090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r             \u0016?\r y  \u0006\u0014kkkkkkhhhhhhhhhhhhhhhhhhhh.  l\r y y \u0016?\rc \u0017chaotic altar\r\u0017blessed luckstone\r\u001720 red dragon corpses\r #offer\ry #offer\ry #offer\ry  #offer\ry  #offer\ry   #offer\ry  #offer\ry  #offer\ry  #pray\ry y     #pray\ry y    #pray\ry y     #pray\ry y     #pray\ry y    #pray\ry y     #pray\ry y     #pray\ry y    #pray\ry y    #pray\ry y       #pray\ry y      :"
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 // changes the number of draws, not just their values.
 
 import { game } from './gstate.js';
+import { def_monsyms } from './drawing_data.js';
 import { new_light_source, LS_OBJECT, LS_MONSTER } from './light.js';
 import { ARM_BONUS } from './do_wear.js';
 import { get_wormno, initworm, count_wsegs, place_worm_tail_randomly, worm_wire } from './worm.js';
@@ -233,7 +234,7 @@ export function rndmonst_adj(minadj, maxadj) {
     zlevel = level_difficulty();
     minmlev = monmin_difficulty(zlevel) + minadj;
     maxmlev = monmax_difficulty(zlevel) + maxadj;
-    const upper = false;      /* Is_rogue_level */
+    const upper = Is_rogue_level(game.u.uz);
     /* src/makemon.c:1678 — on the elemental planes (astral excepted) only
        monsters at home on the element are generated */
     const elemlevel = In_endgame_uz(game.u.uz) && !Is_astralevel(game.u.uz);
@@ -246,7 +247,7 @@ export function rndmonst_adj(minadj, maxadj) {
 
         if (montooweak(mndx, minmlev) || montoostrong(mndx, maxmlev))
             continue;
-        if (upper)      /* !isupper(monsym(ptr)) */
+        if (upper && !/[A-Z]/.test(def_monsyms[ptr.mlet] || ''))
             continue;
         if (elemlevel && wrong_elem_type(ptr))
             continue;

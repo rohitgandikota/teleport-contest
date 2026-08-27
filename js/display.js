@@ -8,7 +8,7 @@ import { ONAMES, OCLASSES } from './objects_data.js';
 import { update_topl, show_topl_nohistory } from './tty/topl.js';
 import { xwaitforspace } from './tty/getline.js';
 import { term_start_color } from './tty/termcap.js';
-import { rank, bot_conditions } from './botl.js';
+import { rank, rank_of, bot_conditions } from './botl.js';
 import { Upolyd } from './const.js';
 import { cansee, couldsee, vision_recalc } from './vision.js';
 import { Blind, Infravision, Hallucination, Invis, See_invisible,
@@ -1622,9 +1622,12 @@ function _statusLine1() {
         ? (mons[u.umonnum].pmnames[game.flags.female ? 1 : 0]
            || mons[u.umonnum].pmnames[2] || mons[u.umonnum].pmnames[0])
         : '';
+    const shownLevel = game._deferred_status_level_until_more ?? u.ulevel;
     const role = Upolyd(u)
         ? polyname.replace(/\b\w/g, c => c.toUpperCase())
-        : rank();
+        : (shownLevel === u.ulevel
+           ? rank()
+           : rank_of(shownLevel, game.urole, !!game.flags.female));
     const title = `${name} the ${role}`;
     /* src/botl.c:87 — u.acurr.a[] is indexed by the include/attrib.h enum
        (A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA), which is NOT the order the
@@ -1696,7 +1699,8 @@ function _statusLine2() {
     if (Upolyd(u))
         s += ` HD:${mons[u.umonnum].mlevel}`;
     else {
-        s += ` Xp:${u.ulevel || 1}`;
+        const shownLevel = game._deferred_status_level_until_more ?? u.ulevel;
+        s += ` Xp:${shownLevel || 1}`;
         if (f.showexp) s += `/${u.uexp || 0}`;
     }
     if (f.time) s += ` T:${game.moves || 1}`;

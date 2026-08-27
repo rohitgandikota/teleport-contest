@@ -163,8 +163,13 @@ function addinv_finish(obj) {
         const r = merged({ o: otmp }, { o: obj });
         if (!r)
             return null;
-        otmp.pickup_prev = 1;
-        return (r instanceof Promise) ? r.then(() => otmp) : otmp;
+        const finish = () => {
+            otmp.pickup_prev = 1;
+            if (confers_luck(otmp))
+                set_moreluck();
+            return otmp;
+        };
+        return (r instanceof Promise) ? r.then(finish) : finish();
     };
 
     /* src/invent.c:1098. Prefer the readied stack even when another wielded
@@ -197,6 +202,8 @@ export function addinv_nomerge(obj) {
     /* src/invent.c:1117 — flags.invlet_constant defaults On, so the chain
        is kept in inv_rank order (gold first). */
     reorder_invent();
+    if (confers_luck(obj))
+        set_moreluck();
     return obj;
 }
 
@@ -1281,6 +1288,28 @@ export function confers_luck(obj) {
     return false;
 }
 
+// src/attrib.c:423 stone_luck() and :441 set_moreluck().
+export function stone_luck(include_uncursed) {
+    let bonus = 0;
+    for (const obj of game.invent || []) {
+        if (!confers_luck(obj))
+            continue;
+        if (obj.cursed)
+            bonus -= obj.quan || 1;
+        else if (obj.blessed || include_uncursed)
+            bonus += obj.quan || 1;
+    }
+    return Math.sign(bonus);
+}
+
+export function set_moreluck() {
+    const bonus = stone_luck(true);
+    if (!bonus && !carrying(ONAMES.LUCKSTONE))
+        game.u.moreluck = 0;
+    else
+        game.u.moreluck = bonus >= 0 ? 3 : -3;
+}
+
 function freeinv_core(obj) {
     if (obj.oclass === OCLASSES.COIN_CLASS) {
         /* src/invent.c freeinv_core() — this arm is exactly two statements in
@@ -1308,9 +1337,7 @@ function freeinv_core(obj) {
     if (obj.otyp === ONAMES.LOADSTONE)
         curse(obj);
     else if (confers_luck(obj))
-        /* set_moreluck() needs stone_luck() and carrying(); reached only for a
-           luckstone or a luck-conferring artifact, so it records. */
-        note_unported_invent('freeinv_core:set_moreluck');
+        set_moreluck();
     else if (obj.otyp === ONAMES.FIGURINE && obj.timed)
         note_unported_invent('freeinv_core:stop_timer');
 

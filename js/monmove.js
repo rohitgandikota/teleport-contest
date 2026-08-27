@@ -1405,8 +1405,10 @@ export async function dochug(mtmp) {
     if (!helpless(mtmp) && nearby
         && (mdat.msound === MSOUND.MS_LEADER
             || mdat.msound === MSOUND.MS_NEMESIS
-            || mdat.msound === MSOUND.MS_GUARDIAN))
-        note_unported_monmove('dochug:quest_talk');
+            || mdat.msound === MSOUND.MS_GUARDIAN)) {
+        const { quest_talk } = await import('./quest.js');
+        await quest_talk(mtmp);
+    }
     /* extra emotional attack for vile monsters */
     if (inrange && mdat.msound === MSOUND.MS_CUSS && !mtmp.mpeaceful
         && couldsee(mtmp.mx, mtmp.my) && !mtmp.minvis && !rn2(5)) {
@@ -1905,7 +1907,7 @@ async function postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel) {
             && (here.doormask & (D_LOCKED | D_CLOSED)) !== 0
             && can_fog(mtmp)) {
             const { newcham } = await import('./mon.js');
-            if (newcham(mtmp, game.mons[PMNAMES.PM_FOG_CLOUD], NC_SHOW_MSG))
+            if (await newcham(mtmp, game.mons[PMNAMES.PM_FOG_CLOUD], NC_SHOW_MSG))
                 ptr = mtmp.data;
         }
     }

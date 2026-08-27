@@ -1550,8 +1550,10 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     /* Healer with anatomy knowledge */
     if (Role_if(PMNAMES.PM_HEALER) && hmd.hand_to_hand
         && obj.oclass === OCLASSES.WEAPON_CLASS
-        && game.objects[obj.otyp].oc_skill === P_KNIFE)
-        note_unported_uhitm('hmon_hitmon:healer_anatomy');   /* mvitals */
+        && game.objects[obj.otyp].oc_skill === P_KNIFE) {
+        const kills = game.mvitals?.[mon.mnum]?.died ?? 0;
+        hmd.dmg += Math.min(3, Math.floor(kills / 6));
+    }
 
     /* special attack actions -- an if/else ladder: at most one fires */
     if (!hmd.train_weapon_skill || mon === game.u.ustuck || game.u.twoweap

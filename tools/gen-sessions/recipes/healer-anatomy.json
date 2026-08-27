@@ -1,0 +1,21 @@
+{
+  "name": "healer-anatomy",
+  "description": "A debug Healer earns anatomy knowledge from six prior ogre kills, then attacks another ogre with a scalpel.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.getpos",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee",
+    "object.weapons"
+  ],
+  "segments": [
+    {
+      "seed": 8934,
+      "datetime": "20000112102000",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r         \u0007hostile ogre\r#wizkill\rk.\u001b\u0007hostile ogre\r#wizkill\ry.\u001b\u0007hostile ogre\r#wizkill\rk.\u001b\u0007hostile ogre\r#wizkill\ry.\u001b\u0007hostile ogre\r#wizkill\ry.\u001b\u0007hostile ogre\r#wizkill\ry.\u001b\u0007hostile ogre\r\u0017blessed wand of sleep\ri\u001bzkhhhhhhhhh"
+    }
+  ]
+}

@@ -54,7 +54,8 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
-         setmnotwielded, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
+         setmnotwielded, special_dmgval, use_skill, uwep_skill_type,
+         weapon_type } from './weapon.js';
 import { find_mac } from './worn.js';
 import { greatest_erosion, worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
@@ -1354,10 +1355,8 @@ function hmon_hitmon_stagger(hmd, mon, obj) {
 // backwards compatibility for playability), 1 the right, 2 the left, and a
 // polymorphed hero's third or later hit gets neither.
 //
-// special_dmgval is recorded, so silverhit stays 0 and no silver bonus is
-// added yet.
 function hmon_hitmon_barehands(hmd, mon) {
-    const silverhit = 0;                /* worn masks */
+    const silverhitOut = { value: 0 };  /* worn masks */
 
     if (hmd.mdat === game.mons[PMNAMES.PM_SHADE]) {
         hmd.dmg = 0;                    /* NO DRAW on this path */
@@ -1373,7 +1372,8 @@ function hmon_hitmon_barehands(hmd, mon) {
     const spcdmgflg = game.u.uarmg ? W_ARMG
                     : (((hmd.twohits === 0 || hmd.twohits === 1) ? W_RINGR : 0)
                        | ((hmd.twohits === 0 || hmd.twohits === 2) ? W_RINGL : 0));
-    note_unported_uhitm('hmon_hitmon:special_dmgval');
+    hmd.dmg += special_dmgval(game.youmonst, mon, spcdmgflg, silverhitOut);
+    const silverhit = silverhitOut.value;
 
     switch (hmd.twohits) {
     case 0:     /* one hit attempted; either hand's silver ring applies, and

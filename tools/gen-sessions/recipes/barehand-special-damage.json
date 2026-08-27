@@ -1,0 +1,27 @@
+{
+  "name": "barehand-special-damage",
+  "description": "Debug Monks punch blessing- and silver-vulnerable monsters while wearing blessed gloves or a silver ring.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee",
+    "object.armor",
+    "object.rings"
+  ],
+  "segments": [
+    {
+      "seed": 8930,
+      "datetime": "20000112100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed pair of leather gloves\rTaWl\u0007hostile kobold zombie\rl"
+    },
+    {
+      "seed": 8931,
+      "datetime": "20000112100500",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017silver ring\rTaPjr\u0007hostile shade\rh"
+    }
+  ]
+}

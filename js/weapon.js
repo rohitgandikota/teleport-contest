@@ -33,7 +33,8 @@ import { ART_SNICKERSNEE } from './artilist_data.js';
 import { which_armor } from './worn.js';
 import { canseemon, pline } from './display.js';
 import { Monnam } from './do_name.js';
-import { W_ARMS, W_ARMG, W_WEP, NO_WEAPON_WANTED, NEED_WEAPON,
+import { W_ARM, W_ARMC, W_ARMS, W_ARMG, W_ARMU, W_RINGL, W_RINGR, W_WEP,
+         NO_WEAPON_WANTED, NEED_WEAPON,
          NEED_RANGED_WEAPON, NEED_HTH_WEAPON, NEED_PICK_AXE, NEED_AXE,
          NEED_PICK_OR_AXE } from './const.js';
 import { ACURR } from './attrib.js';
@@ -801,6 +802,62 @@ export function dmgval(otmp, mon) {
     }
 
     return tmp;
+}
+
+// src/weapon.c:361 special_dmgval(), blessed and silver damage from worn
+// equipment used in a non-weapon hit. The caller supplies a mutable output
+// object because C returns the damage and writes the silver slot mask through
+// a pointer.
+export function special_dmgval(magr, mdef, armask, silverhitOut = null) {
+    const leftRing = (armask & W_RINGL) !== 0;
+    const rightRing = (armask & W_RINGR) !== 0;
+    let obj = null, silverhit = 0, bonus = 0;
+
+    if (armask & (W_ARMC | W_ARM | W_ARMU)) {
+        if ((armask & W_ARMC) && (obj = which_armor(magr, W_ARMC)))
+            armask = W_ARMC;
+        else if ((armask & W_ARM) && (obj = which_armor(magr, W_ARM)))
+            armask = W_ARM;
+        else if ((armask & W_ARMU) && (obj = which_armor(magr, W_ARMU)))
+            armask = W_ARMU;
+        else
+            armask = 0;
+    } else if (armask & (W_ARMG | W_RINGL | W_RINGR)) {
+        obj = which_armor(magr, W_ARMG);
+        armask = obj ? W_ARMG : 0;
+    } else {
+        obj = which_armor(magr, armask);
+    }
+
+    if (obj) {
+        if (obj.blessed && mon_hates_blessings(mdef))
+            bonus += rnd(4);
+        if (game.objects[obj.otyp].oc_material === MATERIALS.SILVER
+            && mon_hates_silver(mdef)) {
+            bonus += rnd(20);
+            silverhit |= armask;
+        }
+    } else if ((leftRing || rightRing) && magr === game.youmonst) {
+        const left = game.u.uleft, right = game.u.uright;
+
+        if (leftRing && left
+            && game.objects[left.otyp].oc_material === MATERIALS.SILVER
+            && mon_hates_silver(mdef)) {
+            bonus += rnd(20);
+            silverhit |= W_RINGL;
+        }
+        if (rightRing && right
+            && game.objects[right.otyp].oc_material === MATERIALS.SILVER
+            && mon_hates_silver(mdef)) {
+            if (!(silverhit & W_RINGL))
+                bonus += rnd(20);
+            silverhit |= W_RINGR;
+        }
+    }
+
+    if (silverhitOut)
+        silverhitOut.value = silverhit;
+    return bonus;
 }
 
 // include/weight.h:18 WT_IRON_BALL_INCR — verified against the header, not

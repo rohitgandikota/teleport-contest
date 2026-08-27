@@ -1,8 +1,8 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T20:05:04.000Z. Local commit: `d6248e2`.
+Last refreshed: 2026-08-27T20:16:49.000Z. Local commit: `711752e`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
-Leaderboard page checked: 2026-08-27T20:05:04.000Z. The page reported "Updated 9h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
+Leaderboard page checked: 2026-08-27T20:16:49.000Z. The page reported "Updated 9h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
 
 ## Score summary
 
@@ -11,7 +11,7 @@ Leaderboard page checked: 2026-08-27T20:05:04.000Z. The page reported "Updated 9
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 13386/13771 | 97.20% | 96/98 | 1538176/1538176 (100.00%) | 14/417 |
+| Supplemental C suite | 13450/13835 | 97.22% | 97/99 | 1544998/1544998 (100.00%) | 14/417 |
 
 ## Contest position and generalization
 
@@ -21,15 +21,15 @@ Leaderboard page checked: 2026-08-27T20:05:04.000Z. The page reported "Updated 9
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `d6248e2` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `711752e` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 13764/13771 |
-| Cursor positions | 11405/11405 | 13386/13771 |
-| Startup and per-turn estimate | 61+0.49/turn | 51+1.23/turn |
+| Cells only | 11405/11405 | 13828/13835 |
+| Cursor positions | 11405/11405 | 13450/13835 |
+| Startup and per-turn estimate | 74+0.44/turn | 50+0.56/turn |
 
 ## Supplemental capture caveats
 
@@ -48,6 +48,7 @@ Leaderboard page checked: 2026-08-27T20:05:04.000Z. The page reported "Updated 9
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T20:16:49.000Z | `711752e` | 11405/11405 | 13450/13835 | 6032/11265 | 3 |
 | 2026-08-27T20:05:04.000Z | `d6248e2` | 11405/11405 | 13386/13771 | 6032/11265 | 3 |
 | 2026-08-27T19:44:35.000Z | `beda92b` | 11405/11405 | 13208/13593 | 6032/11265 | 3 |
 | 2026-08-27T19:32:09.000Z | `5b52da1` | 11405/11405 | 13141/13526 | 6032/11265 | 3 |

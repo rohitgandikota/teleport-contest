@@ -37,6 +37,7 @@ import { prinv, update_inventory, ECMD_OK } from './invent.js';
 import { nomul, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { encumber_msg } from './attrib.js';
+import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
 const OCLASSES_RING = OCLASSES.RING_CLASS;
@@ -1086,7 +1087,7 @@ export async function dotakeoff() {
         return ECMD_OK;
     }
     let pick = otmp;
-    if (armor !== 1) {
+    if (armor !== 1 || (paranoia_bits() & PARANOID_REMOVE)) {
         pick = await getobj('take off', takeoff_ok, 0);
         if (!pick)
             return ECMD_OK; /* ECMD_CANCEL */
@@ -1103,7 +1104,8 @@ export async function doremring() {
         await pline('Not wearing any accessories or armor.');
         return ECMD_OK;
     }
-    let pick = accessories === 1 ? otmp : null;
+    let pick = (accessories === 1
+                && !(paranoia_bits() & PARANOID_REMOVE)) ? otmp : null;
     if (!pick) {
         pick = await getobj('remove', remove_ok, 0);
         if (!pick)

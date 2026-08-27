@@ -636,9 +636,22 @@ function equip_ok(obj, removing, accessory) {
         && !canwearobj_core(obj).mask)
         return GETOBJ_DOWNPLAY;
 
-    /* removing inaccessible equipment */
-    if (removing)
-        note_unported_cmd('equip_ok:inaccessible_equipment');
+    /* src/do_wear.c inaccessible_equipment(obj, NULL, TRUE): while choosing
+       something to remove, only a covering item whose curse is already known
+       hides the equipment beneath it. */
+    if (removing) {
+        const knownCursed = (covering) => !!covering?.cursed
+                                           && !!covering.bknown;
+        const inaccessible = (obj === game.u.uarm
+                                && knownCursed(game.u.uarmc))
+            || (obj === game.u.uarmu
+                && (knownCursed(game.u.uarm)
+                    || knownCursed(game.u.uarmc)))
+            || ((obj === game.u.uleft || obj === game.u.uright)
+                && knownCursed(game.u.uarmg));
+        if (inaccessible)
+            return GETOBJ_EXCLUDE_INACCESS;
+    }
 
     /* all good to go */
     return GETOBJ_SUGGEST;

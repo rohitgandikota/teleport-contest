@@ -1,0 +1,22 @@
+{
+  "name": "equipment-accessibility",
+  "description": "Debug Priestess: worn shirt, suit, cloak, ring, and gloves exercise take-off menu filtering for equipment hidden beneath known cursed outer layers.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.armor",
+    "object.rings",
+    "object.identification",
+    "object.buc-enchant-erosion"
+  ],
+  "segments": [
+    {
+      "seed": 6061,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial\nOPTIONS=paranoid_confirmation:Remove\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :Tb:\u0017hawaiian shirt\r:\u0017leather armor\r:\u0017cursed cloak of protection\r:\u0017uncursed ring of protection\r:\u0017cursed pair of leather gloves\r:i\u001b:Wi:Wj:Wk :Plr :Wm:T\u001b:R\u001b:i\u001b:"
+    }
+  ]
+}

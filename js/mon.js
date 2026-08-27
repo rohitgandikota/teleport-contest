@@ -1513,16 +1513,10 @@ export async function monstone(mdef) {
 
 // include/monst.h:279 resists_ston(), via src/mondata.c:129 Resists_Elem().
 //
-// Resists_Elem also scans the monster's WORN items for resistance-granting
-// armour; that arm is recorded rather than faked, since guessing it would
-// change which monsters flee a cockatrice corpse.
-//
 // This function was CALLED at js/mon.js:831 and defined nowhere. It never
 // threw only because the guard in front of it short-circuits on every path
 // the public sessions take.
 export function resists_ston(mon) {
-    if (mon.misc_worn_check)
-        (game.unported ||= new Set()).add('mon:Resists_Elem:worn');
     return (mon_resistancebits(mon) & MFLAGS.MR_STONE) !== 0;
 }
 
@@ -1965,14 +1959,10 @@ export async function mpickstuff(mtmp) {
                     await pline(`${Monnam(mtmp)} picks up ${otmpname}.`);
             }
             obj_extract_self(otmp3);        /* remove from floor */
-            /* src/steal.c:618 mpickobj() — may merge and free otmp3.
-               js/makemon.js has a reduced version that does the essential
-               thing, moving the object into minvent. Recording instead was
-               strictly worse than calling it: obj_extract_self has already
-               taken the object off the floor, so with no call the object
-               was being LOST rather than picked up. */
+            /* src/steal.c:618 mpickobj() may merge and free otmp3. Its
+               conditional markers cover the unported billing, light, and
+               figurine branches without flagging every ordinary pickup. */
             mpickobj(mtmp, otmp3);
-            note_unported_mon('mpickobj:shop_light_thrown_arms');
             check_gear_next_turn(mtmp);
             newsym(mtmp.mx, mtmp.my);
             return true;                    /* pick only one object */

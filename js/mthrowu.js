@@ -155,8 +155,15 @@ export async function drop_throw(obj, ohit, x, y) {
                 place_object(obj, x, y);
                 if (!mtmp && u_at(x, y))
                     mtmp = game.youmonst;
-                if (mtmp && ohit)
-                    note_unported_mthrowu('drop_throw:passive_obj');
+                if (mtmp && ohit) {
+                    const mdat = mtmp.data || game.mons[mtmp.mnum];
+                    const pattk = mdat?.mattk?.find(
+                        (attk) => attk?.[0] === ATTKS.AT_NONE);
+                    if (pattk && [ATTKS.AD_FIRE, ATTKS.AD_ACID,
+                                  ATTKS.AD_RUST, ATTKS.AD_CORR,
+                                  ATTKS.AD_ENCH].includes(pattk[1]))
+                        note_unported_mthrowu('drop_throw:passive_obj');
+                }
                 stackobj(obj);
             }
         }

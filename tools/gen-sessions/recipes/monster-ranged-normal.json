@@ -1,0 +1,20 @@
+{
+  "name": "monster-ranged-normal",
+  "description": "A natural normal-mode Tourist run exercises a monster projectile hit and the no-passive-defense object path on an ordinary human hero.",
+  "coverage": [
+    "mode.normal",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.ranged",
+    "combat.ranged"
+  ],
+  "segments": [
+    {
+      "seed": 23151,
+      "datetime": "20260725120000",
+      "nethackrc": "OPTIONS=name:Gen,role:Tourist,race:human,gender:male,align:neutral,!legacy,!tutorial,!tips,pettype:none,!safe_wait,symset:DECgraphics\n",
+      "moves": " ................................................................................"
+    }
+  ]
+}

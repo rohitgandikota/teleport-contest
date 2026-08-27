@@ -619,8 +619,8 @@ async function seffect_magic_mapping(sobj) {
 //
 // The recorded uses type a plain monster name, so what is ported is the
 // prompt/getlin loop, the name lookup, the makemon, and the peaceful/hostile
-// prefixes. The remaining modifiers, monster-class syntax, and random-monster
-// syntax are recorded.
+// prefixes, plus the sleeping modifier. The remaining modifiers,
+// monster-class syntax, and random-monster syntax are recorded.
 export async function create_particular() {
     const CP_TRYLIM = 5;
     let tryct = CP_TRYLIM, altmsg = 0;
@@ -630,7 +630,10 @@ export async function create_particular() {
         const buf = await getlin(prompt);
         if (buf === null || buf === '\x1b')
             return false;
-        const bufp = buf.trim().replace(/\s+/g, ' ');
+        let bufp = buf.trim().replace(/\s+/g, ' ');
+        const sleeping = /\bsleeping\s+/i.test(bufp);
+        if (sleeping)
+            bufp = bufp.replace(/\bsleeping\s+/i, '').trim();
         const makehostile = /^hostile /i.test(bufp);
         const makepeaceful = /^peaceful /i.test(bufp);
         const monster_name = makehostile ? bufp.slice(8)
@@ -638,7 +641,7 @@ export async function create_particular() {
 
         /* create_particular_parse()'s modifier scan is recorded; the plain
            name and explicit hostile/peaceful forms are live. */
-        if (/^\d|saddled |sleeping |invisible |hidden |tame |male |female /i.test(bufp))
+        if (/^\d|saddled |invisible |hidden |tame |male |female /i.test(bufp))
             note_unported_read('create_particular:modifiers');
 
         const box = {};
@@ -692,6 +695,8 @@ export async function create_particular() {
                 mtmp.mpeaceful = makepeaceful ? 1 : 0;
                 set_malign(mtmp);
             }
+            if (mtmp && sleeping)
+                mtmp.msleeping = 1;
 
             /* A safe shapechanger replacement starts out looking like the
                form requested by the wizard after its creation message. */

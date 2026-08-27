@@ -1,0 +1,27 @@
+{
+  "name": "monster-anti-magic",
+  "description": "Debug Wizard hurtles a kobold shaman and the Oracle across an anti-magic field to exercise monster spell-energy loss and magic-resistant implosion damage.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "level.ordinary",
+    "monster.movement",
+    "traps.magical",
+    "traps.monster"
+  ],
+  "segments": [
+    {
+      "seed": 6084,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r                   \u0014kkkl.\u0014ll.h:j\u0007sleeping hostile kobold shaman\r#wiztelekinesis\rh.u \u001b:"
+    },
+    {
+      "seed": 6084,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r                   \u0014kkkl.\u0014ll.h:j\u0007sleeping hostile Oracle\ry#wiztelekinesis\rh.u \u001b:"
+    }
+  ]
+}

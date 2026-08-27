@@ -128,7 +128,8 @@ import { obj_extract_self, sobj_at } from './invent.js';
 import { metallivorous } from './mondata.js';
 import { amorphous, is_whirly, unsolid, is_clinger, is_floater, is_flyer,
          webmaker, nohands, defended, resists_fire, resists_sleep, breathless,
-         resists_magm, resists_blnd, flaming, acidic, stagger } from './mondata.js';
+         resists_magm, resists_blnd, flaming, acidic, stagger,
+         attacktype } from './mondata.js';
 import { ECMD_OK } from './const.js';
 
 // src/trap.c:6694 b_trapped(), shared by trapped doors and tins.
@@ -984,7 +985,7 @@ async function trapeffect_sqky_board(mtmp, trap, trflags) {
 // src/trap.c:2323 trapeffect_anti_magic(): the hero's arm. Magic
 // resistance causes an implosion, then the field drains 2d6 Pw with half
 // (rounded down) coming from max when max exceeds the drain. The iron-shoes
-// and monster arms still record.
+// arm still records.
 async function trapeffect_anti_magic(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
         const u = game.u;
@@ -1022,7 +1023,45 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
         }
         await drain_en(drain, exclaim_it);
     } else {
-        note_unported_trap('trapeffect_anti_magic:monster');
+        let trapkilled = false;
+        const in_sight = canseemon(mtmp) || mtmp === game.u.usteed;
+        const see_it = cansee(mtmp.mx, mtmp.my);
+        const mptr = mtmp.data;
+
+        if (!resists_magm(mtmp)) {
+            if (!mtmp.mcan && (attacktype(mptr, ATTKS.AT_MAGC)
+                               || attacktype(mptr, ATTKS.AT_BREA))) {
+                mtmp.mspec_used = (mtmp.mspec_used || 0) + d(2, 6);
+                if (in_sight) {
+                    seetrap(trap);
+                    await pline(`${Monnam(mtmp)} seems lethargic.`);
+                }
+            }
+        } else {
+            let dmgval2 = rnd(4);
+            if (MON_WEP(mtmp)?.oartifact === ART_MAGICBANE)
+                dmgval2 += rnd(4);
+            const carriedDefense = (mtmp.minvent || []).some((obj) =>
+                obj.oartifact && defends_when_carried(ATTKS.AD_MAGM, obj));
+            if (carriedDefense)
+                dmgval2 += rnd(4);
+            if (passes_walls(mptr))
+                dmgval2 = Math.trunc((dmgval2 + 3) / 4);
+
+            if (in_sight)
+                seetrap(trap);
+            mtmp.mhp -= dmgval2;
+            if (DEADMONSTER(mtmp)) {
+                await monkilled(mtmp,
+                    in_sight ? 'compression from an anti-magic field' : null,
+                    -ATTKS.AD_MAGM);
+                trapkilled = true;
+            }
+            if (see_it)
+                newsym(trap.tx, trap.ty);
+        }
+        return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
+            ? Trap_Caught_Mon : Trap_Effect_Finished;
     }
     return Trap_Effect_Finished;
 }
@@ -1637,6 +1676,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_magic_portal(mtmp, trap, trflags);
     case WEB:
         return await trapeffect_web(mtmp, trap, trflags);
+    case ANTI_MAGIC:
+        return await trapeffect_anti_magic(mtmp, trap, trflags);
     default:
         note_unported_trap(`trapeffect_selector:ttyp=${trap.ttyp}`);
         return Trap_Effect_Finished;

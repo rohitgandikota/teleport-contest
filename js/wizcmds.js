@@ -10,11 +10,11 @@ import { game } from './gstate.js';
 import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
 import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
-         TIMEOUT, ARTICLE_THE, XKILL_NOMSG }
+         TIMEOUT, ARTICLE_THE, XKILL_NOMSG, ECMD_CANCEL, UTOTYPE_NONE }
     from './const.js';
-import { getlin } from './cmd.js';
+import { getdir, getlin } from './cmd.js';
 import { docrt, map_trap, pline, see_monsters, swallowed,
-         unmap_invisible } from './display.js';
+         unmap_invisible, canspotmon } from './display.js';
 import { pluslvl, losexp } from './exper.js';
 import { level_tele } from './teleport.js';
 import { do_mapping } from './detect.js';
@@ -27,6 +27,7 @@ import {
 import { boolean_option } from './options.js';
 import { getpos } from './getpos.js';
 import { m_at, xkilled } from './mon.js';
+import { DEADMONSTER } from './monst.js';
 import { x_monnam } from './do_name.js';
 import { You } from './pline.js';
 
@@ -87,6 +88,36 @@ export async function wiz_kill() {
         await You(`kill ${name}!`);
         await xkilled(mtmp, XKILL_NOMSG);
     }
+    return ECMD_OK;
+}
+
+// src/wizcmds.c:487 wiz_telekinesis(). Select a visible monster and hurtle
+// it six squares in a chosen direction. The command repeats until cancelled.
+export async function wiz_telekinesis() {
+    if (!game.wizard) {
+        await pline('Unavailable command.');
+        return ECMD_OK;
+    }
+
+    const cc = { x: game.u.ux, y: game.u.uy };
+    await pline('Pick a monster to hurtle.');
+    do {
+        const ans = await getpos(cc, true, 'a monster');
+        if (ans < 0 || cc.x < 1)
+            return ECMD_CANCEL;
+
+        const mtmp = m_at(cc.x, cc.y);
+        if (mtmp && canspotmon(mtmp)) {
+            if (!await getdir('which direction?'))
+                return ECMD_CANCEL;
+            const { mhurtle } = await import('./uhitm.js');
+            await mhurtle(mtmp, game.u.dx, game.u.dy, 6);
+            if (!DEADMONSTER(mtmp) && canspotmon(mtmp)) {
+                cc.x = mtmp.mx;
+                cc.y = mtmp.my;
+            }
+        }
+    } while ((game.u.utotype || 0) === UTOTYPE_NONE);
     return ECMD_OK;
 }
 

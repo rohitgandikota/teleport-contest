@@ -2322,7 +2322,7 @@ async function hurtle_u(dx, dy, range) {
 // src/dothrow.c:1118 mhurtle(). Move a monster along a straight path. The
 // collision and region edge cases remain recorded, but the ordinary open
 // path, including trap checks, is live.
-async function mhurtle(mon, dx, dy, range) {
+export async function mhurtle(mon, dx, dy, range) {
     await wakeup(mon, !game.context?.mon_moving);
     mon.movement = 0;
     mon.mstun = 1;

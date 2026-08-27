@@ -881,6 +881,10 @@ export async function doextcmd() {
         const { wiz_kill } = await import('./wizcmds.js');
         return await wiz_kill();
     }
+    if (name === 'wiztelekinesis') {
+        const { wiz_telekinesis } = await import('./wizcmds.js');
+        return await wiz_telekinesis();
+    }
     if (name === 'wizintrinsic') {
         const { wiz_intrinsic } = await import('./wizcmds.js');
         return await wiz_intrinsic();

@@ -1,7 +1,8 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T14:49:30.342Z. Local commit: `b22fb43`.
+Last refreshed: 2026-08-27T15:40:45.000Z. Local commit: `95a8fca`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
+Leaderboard page checked: 2026-08-27T15:40:45.000Z. The page reported "Updated 5h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
 
 ## Score summary
 
@@ -10,11 +11,12 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 10917/11302 | 96.59% | 74/76 | 1412164/1412164 (100.00%) | 14/364 |
+| Supplemental C suite | 10929/11314 | 96.60% | 75/77 | 1414658/1414658 (100.00%) | 14/364 |
 
 ## Contest position and generalization
 
-- Held-out rank: **3/18**.
+- Agentic category rank: **1/12**.
+- Overall held-out rank: **3/18**.
 - Public rank: **6/18**.
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
@@ -24,9 +26,9 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 11295/11302 |
-| Cursor positions | 11405/11405 | 10917/11302 |
-| Startup and per-turn estimate | 64+0.43/turn | 60+0.54/turn |
+| Cells only | 11405/11405 | 11307/11314 |
+| Cursor positions | 11405/11405 | 10929/11314 |
+| Startup and per-turn estimate | 62+0.44/turn | 62+0.55/turn |
 
 ## Supplemental capture caveats
 
@@ -45,6 +47,7 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T15:40:45.000Z | `95a8fca` | 11405/11405 | 10929/11314 | 6032/11265 | 3 |
 | 2026-08-27T14:49:30.342Z | `b22fb43` | 11405/11405 | 10917/11302 | 6032/11265 | 3 |
 | 2026-08-27T14:35:34.591Z | `604b497` | 11405/11405 | 10889/11274 | 6032/11265 | 3 |
 | 2026-08-27T14:31:00.226Z | `2cef13f` | 11405/11405 | 10872/11257 | 6032/11265 | 3 |

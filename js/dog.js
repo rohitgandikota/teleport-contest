@@ -21,7 +21,7 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          NEED_WEAPON, NEED_HTH_WEAPON } from './const.js';
 import { acurr } from './attrib.js';
 import { put_saddle_on_mon } from './steed.js';
-import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater, regenerates, resist_conflict } from './mondata.js';
+import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, dmgtype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater, regenerates, resist_conflict } from './mondata.js';
 import { sobj_at, eaten_stat, obj_extract_self } from './invent.js';
 import { may_dig } from './hack.js';
 import { is_metallic, OBJ_FLOOR } from './obj.js';
@@ -273,8 +273,13 @@ function stale_egg(obj) {
 }
 
 function polyfood(obj) {
-    note_unported('polyfood');
-    return false;
+    if ((obj.otyp !== ONAMES.CORPSE && obj.otyp !== ONAMES.EGG
+         && obj.otyp !== ONAMES.TIN)
+        || !ismnum(obj.corpsenm))
+        return false;
+    const ptr = game.mons[obj.corpsenm];
+    return !!((ptr.mflags2 & MFLAGS.M2_SHAPESHIFTER)
+              || dmgtype(ptr, ATTKS.AD_POLY));
 }
 
 function same_race(pm1, pm2) {

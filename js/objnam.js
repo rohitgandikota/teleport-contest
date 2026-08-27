@@ -300,7 +300,11 @@ export function xname(obj) {
         /* FALLTHRU */
     case VENOM_CLASS:
     case TOOL_CLASS:
+        if (obj.otyp === ONAMES.TOWEL && obj.spe > 0)
+            buf += obj.spe < 3 ? 'moist ' : 'wet ';
         buf += !dknown ? dn : nn ? actualn : un ? `${dn} called ${un}` : dn;
+        if (obj.otyp === ONAMES.TOWEL && obj.spe > 0 && game.wizard)
+            buf += ` (${obj.spe})`;
         break;
     case ARMOR_CLASS:
         if (ocl.oc_subtyp === ARM_BOOTS || ocl.oc_subtyp === ARM_GLOVES)

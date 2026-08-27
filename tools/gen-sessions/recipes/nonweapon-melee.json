@@ -1,0 +1,46 @@
+{
+  "name": "nonweapon-melee",
+  "description": "Debug Barbarians strike monsters with a shield, a wet towel, and a soft food object to cover non-weapon impact damage and messages.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee",
+    "object.armor",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "segments": [
+    {
+      "seed": 8937,
+      "datetime": "20000112102500",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017uncursed small shield\rwe\u0007hostile ogre\rkkk"
+    },
+    {
+      "seed": 8938,
+      "datetime": "20000112103000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017wet towel\rwe\u0007hostile iron golem\rn"
+    },
+    {
+      "seed": 8939,
+      "datetime": "20000112103500",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017uncursed carrot\rwe\u0007hostile ogre\rl"
+    },
+    {
+      "seed": 8940,
+      "datetime": "20000112104000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017silver wand\rwe\u0007hostile wraith\ru"
+    },
+    {
+      "seed": 8941,
+      "datetime": "20000112104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed small shield\rwe\u0007hostile wraith\rl"
+    }
+  ]
+}

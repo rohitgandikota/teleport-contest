@@ -34,14 +34,15 @@ import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
-import { bimanual, is_plural, is_flimsy, stone_missile } from './obj.js';
+import { bimanual, carried, is_plural, is_flimsy, is_shield,
+         stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
 import { obj_extract_self, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
-         otense, mshot_xname } from './objnam.js';
+         otense, mshot_xname, Yobjnam2 } from './objnam.js';
 import { mintrap, erode_obj } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -61,7 +62,7 @@ import { find_mac } from './worn.js';
 import { greatest_erosion, worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
-         is_whirly } from './mondata.js';
+         is_whirly, mon_hates_blessings } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -1136,6 +1137,9 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     }
     await hmon_hitmon_msg_hit(hmd, mon, obj);
 
+    if (hmd.dryit)
+        await dry_a_towel(obj, -1, true);
+
     if (hmd.silvermsg)
         await hmon_hitmon_msg_silver(hmd, mon, obj);
 
@@ -1289,9 +1293,50 @@ async function hmon_hitmon_misc_obj(hmd, mon, obj) {
         hmd.dmg = 0;
         break;
     }
-    default:
-        note_unported_uhitm('hmon_hitmon:misc_obj');
+    default: {
+        const material = game.objects[obj.otyp].oc_material;
+
+        if ((material === MATERIALS.VEGGY || material === MATERIALS.PAPER)
+            && obj.oclass !== OCLASSES.SPBOOK_CLASS) {
+            hmd.dmg = 0;
+            hmd.get_dmg_bonus = false;
+            break;
+        }
+
+        hmd.dmg = Math.ceil(obj.owt / 100);
+        hmd.dmg = hmd.dmg <= 1 ? 1 : rnd(hmd.dmg);
+        hmd.dmg = Math.min(hmd.dmg, 6);
+
+        if (is_wet_towel(obj)) {
+            const doubled = hmd.mdat === game.mons[PMNAMES.PM_IRON_GOLEM];
+
+            hmd.dmg += obj.spe * (doubled ? 2 : 1);
+            hmd.dmg = rnd(hmd.dmg);
+            hmd.dryit = rn2(obj.spe + 1) > 0;
+        }
+        if (hmd.material === MATERIALS.SILVER && mon_hates_silver(mon)) {
+            hmd.dmg += rnd(20);
+            hmd.silvermsg = hmd.silverobj = true;
+        }
+        if (obj.blessed && mon_hates_blessings(mon))
+            hmd.dmg += rnd(4);
         break;
+    }
+    }
+}
+
+const is_wet_towel = (obj) => obj.otyp === ONAMES.TOWEL && obj.spe > 0;
+
+// src/weapon.c:1067 dry_a_towel(), restricted to the hero-attack path here.
+async function dry_a_towel(obj, amount, verbose) {
+    const newspe = amount < 0 ? obj.spe + amount : amount;
+
+    if (newspe < obj.spe && verbose && carried(obj))
+        await pline(`${Yobjnam2(obj, null)} dries${newspe ? '' : ' out'}.`);
+    if (newspe !== obj.spe) {
+        obj.spe = Math.max(0, Math.min(newspe, 7));
+        if (obj === game.u.uwep)
+            game.unweapon = !is_wet_towel(obj);
     }
 }
 
@@ -1788,10 +1833,10 @@ async function hmon_hitmon_msg_hit(hmd, mon, obj) {
             await You('hit it.');
         } else {    /* hand_to_hand */
             const verb =
-                (obj && (note_unported_uhitm('msg_hit:is_shield')
+                (obj && (is_shield(obj)
                          || obj.otyp === ONAMES.HEAVY_IRON_BALL)) ? 'bash'
                 : (obj && (game.objects[obj.otyp].oc_skill === P_WHIP
-                           || note_unported_uhitm('msg_hit:is_wet_towel'))) ? 'lash'
+                           || is_wet_towel(obj))) ? 'lash'
                   : Role_if(PMNAMES.PM_BARBARIAN) ? 'smite'
                     : 'hit';
             await You(`${verb} ${mon_nam(mon)}`

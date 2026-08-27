@@ -1,0 +1,34 @@
+{
+  "name": "encumbrance-loadstone",
+  "description": "Normal movement plus a focused debug setup exercise carrying-capacity bands, cursed loadstones, overloaded movement, uncursing and dropping weight, and heavy floor pickup limits.",
+  "coverage": [
+    "mode.normal",
+    "mode.debug",
+    "level.ordinary",
+    "object.gems-stones",
+    "survival.encumbrance",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 8917,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:loadtest,role:Tourist,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=pickup_burden:unencumbered\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :i\u001bk,n,y i\u001bdk:"
+    },
+    {
+      "seed": 6931,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=pickup_burden:unencumbered\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of remove curse\r\u0017blessed +3 gauntlets of power\r\u0017cursed loadstone\r \u0017cursed loadstone\r\u0017cursed loadstone\r\u0017cursed loadstone\rh.ldoWn rm do , do :i\u001b"
+    },
+    {
+      "seed": 6932,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=pickup_burden:unencumbered\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017chest\r,n,y dn l\u0017boulder\r,:i\u001b"
+    }
+  ]
+}

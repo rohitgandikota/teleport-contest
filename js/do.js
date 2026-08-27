@@ -15,12 +15,12 @@ import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
 import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
-import { place_object } from './mkobj.js';
+import { place_object, set_bknown } from './mkobj.js';
 import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -1158,8 +1158,13 @@ export async function dropx(obj) {
 export async function drop(obj) {
     if (!obj)
         return ECMD_FAIL;
-    if (!canletgo(obj, 'drop'))
+    if (!canletgo(obj, 'drop')) {
+        if (game._canletgo_message) {
+            await pline(game._canletgo_message);
+            delete game._canletgo_message;
+        }
         return ECMD_FAIL;
+    }
     if (obj.otyp === ONAMES.CORPSE
         && note_unported_do('drop:better_not_try_to_drop_that'))
         return ECMD_FAIL;
@@ -1300,7 +1305,8 @@ export async function doddrop() {
 // refusal itself is real.
 export function canletgo(obj, word) {
     if (obj.owornmask & (W_ARMOR | W_ACCESSORY)) {
-        if (word) note_unported_do('canletgo:wearing_msg');
+        if (word)
+            game._canletgo_message = `You cannot ${word} something you are wearing.`;
         return false;
     }
     if (obj === game.u.uwep && welded(game.u.uwep)) {
@@ -1313,18 +1319,21 @@ export function canletgo(obj, word) {
             /* getobj ignores a count for throwing; replicate its kludge */
             if (word === 'throw' && obj.quan > 1)
                 obj.corpsenm = 1;
-            note_unported_do('canletgo:loadstone_msg');
+            game._canletgo_message = `For some reason, you cannot ${word}${
+                obj.corpsenm ? ' any of' : ''} the stone${obj.quan === 1 ? '' : 's'}!`;
         }
         obj.corpsenm = 0;               /* reset */
-        note_unported_do('canletgo:set_bknown');
+        set_bknown(obj, 1);
         return false;
     }
     if (obj.otyp === ONAMES.LEASH && obj.leashmon !== 0) {
-        if (word) note_unported_do('canletgo:leash_msg');
+        if (word)
+            game._canletgo_message = `The leash is tied around your ${body_part(HAND)}.`;
         return false;
     }
     if (obj.owornmask & W_SADDLE) {
-        if (word) note_unported_do('canletgo:saddle_msg');
+        if (word)
+            game._canletgo_message = `You cannot ${word} something you are sitting on.`;
         return false;
     }
     return true;

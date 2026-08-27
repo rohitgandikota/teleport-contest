@@ -1,0 +1,68 @@
+{
+  "name": "priest-donations",
+  "description": "Debug Minetown temple setup exercises priest chat, donations, rewards, cheapskate state, and anger.",
+  "coverage": [
+    "mode.debug",
+    "level.mines",
+    "religion.priest-donation",
+    "social.chat",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 7001,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.#chat\rl"
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   #chat\rl "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u001710000 gold pieces\r#chat\rl 0\r#chat\rl 100\r "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u0017500 gold pieces\r#chat\rl 200\r "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u001710000 gold pieces\r#chat\rl 100\r "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u001710000 gold pieces\r#chat\rl 3198\r  "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u001710000 gold pieces\r#chat\rl 6396\r "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u001710000 gold pieces\r#chat\rl 9594\r "
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   \u0017wand of sleep\rzfl #chat\rl "
+    }
+  ]
+}

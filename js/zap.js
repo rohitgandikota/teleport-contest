@@ -69,7 +69,8 @@ import { is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_blnd, resists_cold,
-         resists_elec, resists_fire, resists_magm, nohands } from './mondata.js';
+         resists_elec, resists_fire, resists_magm, resists_sleep,
+         nohands } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Deaf, Unaware } from './youprop.js';
@@ -78,6 +79,7 @@ import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
 import { create_gas_cloud } from './region.js';
 import { boolean_option } from './options.js';
+import { finish_meating } from './dogmove.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -1363,9 +1365,34 @@ export async function destroy_items(mon, osym, dmg_in) {
     return damage;
 }
 
-// src/zap.c:4238 zhitm(). The common missile and cold-ray damage paths are
-// complete. Other ray families stay marked until their item-destruction and
-// status effects are ported together.
+// src/zap.c:4238 zhitm(). The common missile, elemental, and sleep-ray paths
+// are complete. Other ray families stay marked until their item-destruction
+// and status effects are ported together.
+function sleep_monst(mon, amount, how) {
+    const ptr = game.mons[mon.mnum];
+    if (how >= 0 && !mon.msleeping && !mon.mfrozen
+        && ptr.mlet === MONSYMS.S_MIMIC
+        && (M_AP_TYPE(mon) === M_AP_FURNITURE
+            || M_AP_TYPE(mon) === M_AP_OBJECT))
+        seemimic(mon);
+
+    if (resists_sleep(mon) || defended(mon, ATTKS.AD_SLEE)
+        || (how >= 0 && resist(mon, how, 0, false))) {
+        shieldeff_mon(mon);
+    } else if (mon.mcanmove) {
+        finish_meating(mon);
+        amount += mon.mfrozen || 0;
+        if (amount > 0) {
+            mon.mcanmove = 0;
+            mon.mfrozen = Math.min(amount, 127);
+        } else {
+            mon.msleeping = 1;
+        }
+        return true;
+    }
+    return false;
+}
+
 async function zhitm(mon, type, nd) {
     const damgtype = zaptype(type) % 10;
     let damage = 0;
@@ -1406,6 +1433,10 @@ async function zhitm(mon, type, nd) {
             if (!rn2(3))
                 damage += await destroy_items(mon, ATTKS.AD_COLD, orig_damage);
         }
+        break;
+    case 3:
+        sleep_monst(mon, d(nd, 25),
+                    type === 3 ? OCLASSES.WAND_CLASS : 0);
         break;
     case 5: {
         damage = d(nd, 6);

@@ -11,14 +11,87 @@
 // (bury_an_obj spends rnd(250) for ROT_ORGANIC). Only the bookkeeping is here.
 
 import { game } from './gstate.js';
-import { rn2, rnd } from './rng.js';
+import { rn2, rnd, d } from './rng.js';
 import { stop_occupation } from './allmain.js';
 import { nomul } from './hack.js';
 import { TIMEOUT, FROMOUTSIDE, WT_NOISY_INV, FOOT, A_DEX, A_CON,
-         PLNMSG_ONE_ITEM_HERE, FULL_MOON } from './const.js';
+         PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
 import { pline } from './display.js';
+
+// src/timeout.c:187 vomiting_dialogue(). It runs before the property timer is
+// decremented, so every switch value uses the pending timeout minus one.
+async function vomiting_dialogue() {
+    const props = (game.u.uprops ||= {});
+    const v = (props.VOMITING || 0) - 1;
+    let text = null;
+
+    switch (v) {
+    case 14:
+        text = 'are feeling mildly nauseated.';
+        break;
+    case 11:
+        text = props.CONFUSION ? 'feel slightly more confused.'
+                               : 'feel slightly confused.';
+        break;
+    case 6: {
+        const { make_stunned, make_confused } = await import('./potion.js');
+        await make_stunned((game.u.intrinsic?.HStun || 0) + d(2, 4), false);
+        await stop_occupation();
+        await make_confused((game.u.intrinsic?.HConfusion || 0) + d(2, 4),
+                            false);
+        if ((game.multi ?? 0) > 0)
+            nomul(0);
+        break;
+    }
+    case 9: {
+        const { make_confused } = await import('./potion.js');
+        await make_confused((game.u.intrinsic?.HConfusion || 0) + d(2, 4),
+                            false);
+        if ((game.multi ?? 0) > 0)
+            nomul(0);
+        break;
+    }
+    case 8:
+        text = game.u.uprops?.STUNNED ? "can't think straight."
+                                     : "can't seem to think straight.";
+        break;
+    case 5:
+        text = 'feel incredibly sick.';
+        break;
+    case 2: {
+        const { cantvomit } = await import('./mondata.js');
+        const { Hallucination } = await import('./youprop.js');
+        if (cantvomit(game.youmonst.data))
+            text = 'gag uncontrollably.';
+        else
+            text = Hallucination() ? 'are about to hurl!'
+                                   : 'are about to vomit.';
+        break;
+    }
+    case 0: {
+        await stop_occupation();
+        const { cantvomit } = await import('./mondata.js');
+        const { Hallucination } = await import('./youprop.js');
+        const { morehungry, vomit } = await import('./eat.js');
+        if (!cantvomit(game.youmonst.data)) {
+            await morehungry(20);
+            if (game.u.uhs < FAINTING)
+                await pline(`You ${Hallucination() ? 'hurl chunks' : 'vomit'}!`);
+        }
+        await vomit();
+        break;
+    }
+    default:
+        break;
+    }
+
+    if (text)
+        await pline(`You ${text}`);
+    const { exercise } = await import('./attrib.js');
+    exercise(A_CON, false);
+}
 
 // include/timeout.h:11 enum timer_type
 export const TIMER_NONE = 0;
@@ -264,6 +337,14 @@ export async function nh_timeout() {
        timeout, including wizard-set intrinsics, until prayer finishes. */
     if (u.uinvulnerable)
         return;
+
+    const vomiting = u.uprops?.VOMITING || 0;
+    if (vomiting) {
+        await vomiting_dialogue();
+        u.uprops.VOMITING = vomiting - 1;
+        if (!u.uprops.VOMITING)
+            (game.disp ||= {}).botl = true;
+    }
 
     /* src/timeout.c:631 sickness_dialogue(), followed later in nh_timeout by
        the property countdown. Fatal illness abuses constitution every turn,

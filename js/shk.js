@@ -9,7 +9,7 @@
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-         ECMD_OK, ECMD_TIME, G_GONE } from './const.js';
+         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE } from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
 import { m_canseeu, inhishop } from './monmove.js';
@@ -25,15 +25,15 @@ import { helpless } from './monst.js';
 import { is_elf, is_human } from './mondata.js';
 import { rn2, rnd } from './rng.js';
 import { bot, pline } from './display.js';
-import { doname, xname } from './objnam.js';
-import { splitobj } from './mkobj.js';
-import { OBJ_FREE } from './obj.js';
+import { doname, simpleonames, xname } from './objnam.js';
+import { next_ident, splitobj } from './mkobj.js';
+import { OBJ_FREE, OBJ_ONBILL } from './obj.js';
 import { s_suffix } from './hacklib.js';
 import { shtypes, VEGETARIAN_CLASS } from './shknam.js';
 import { Hello } from './role.js';
 import { ATR_NONE, NHW_MENU, tty_add_menu, tty_create_nhwindow,
          tty_destroy_nhwindow, tty_end_menu, tty_select_menu,
-         tty_start_menu } from './tty/wintty.js';
+         tty_start_menu, ATR_INVERSE } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
 import { tty_yn_function } from './tty/topl.js';
 
@@ -590,22 +590,32 @@ function ordinary_paydoname(obj) {
     return name;
 }
 
-/* src/shk.c make_itemized_bill() for intact ordinary inventory objects.
-   Used-up portions and containers require separate billobjs and nested
-   object-chain support which this object model does not have yet. */
+/* src/shk.c make_itemized_bill() for intact ordinary inventory objects and
+   the fully used-up dummy objects made by costly_alteration(). */
 function ordinary_itemized_bill(eshk) {
     const result = [];
     for (let bidx = 0; bidx < (eshk.bill_p || []).length; ++bidx) {
         const bp = eshk.bill_p[bidx];
+        if (bp.useup) {
+            const obj = bp.obj || (game.billobjs || [])
+                .find(candidate => candidate.o_id === bp.bo_id);
+            if (obj) {
+                result.push({ obj, bp, bidx, cost: bp.price * bp.bquan,
+                              usedup: true });
+                continue;
+            }
+        }
         const obj = (game.invent || []).find(o => o.o_id === bp.bo_id);
         if (!obj || !obj.unpaid || bp.useup || Has_contents(obj)
             || obj.quan !== bp.bquan) {
             note_unported_shk('dopay:nonordinary_bill_entry');
             continue;
         }
-        result.push({ obj, bp, bidx, cost: bp.price * obj.quan });
+        result.push({ obj, bp, bidx, cost: bp.price * obj.quan,
+                      usedup: false });
     }
-    result.sort((a, b) => (b.cost - a.cost) || (a.bidx - b.bidx));
+    result.sort((a, b) => (Number(b.usedup) - Number(a.usedup))
+                          || (b.cost - a.cost) || (a.bidx - b.bidx));
     return result;
 }
 
@@ -698,6 +708,53 @@ function subfrombill(obj, shkp) {
         if (contained.oclass !== OCLASSES.COIN_CLASS)
             subfrombill(contained, shkp);
     }
+}
+
+// src/mkobj.c:752 costly_alteration(), COST_BITE inventory arm. Starting
+// an unpaid meal replaces the intact item on the shop bill with a private
+// clone of its pre-bite state, so the used-up item can still be itemized.
+export async function costly_alteration(obj, alter_type) {
+    if (alter_type !== COST_BITE || !obj.unpaid)
+        return;
+
+    const roomno = game.u.ushops ? game.u.ushops.charCodeAt(0) : NO_ROOM;
+    const shkp = shop_keeper(roomno);
+    if (!shkp || !inhishop(shkp))
+        return;
+    const eshk = shkp.eshk || ESHK(shkp);
+    const original = (eshk.bill_p || []).find(bp => bp.bo_id === obj.o_id);
+    if (!original)
+        return;
+
+    const those = obj.quan === 1 ? 'that' : 'those';
+    const them = obj.quan === 1 ? 'it' : 'them';
+    await pline(`"You bite ${those} ${simpleonames(obj)}, you pay for ${them}!"`);
+
+    const originalPrice = original.price;
+    const originalQuan = original.bquan;
+    subfrombill(obj, shkp);
+    const dummy = {
+        ...obj,
+        oextra: null,
+        o_id: next_ident(),
+        timed: 0,
+        lamplit: 0,
+        owornmask: 0,
+        where: OBJ_FREE,
+        unpaid: 0,
+        ocarry: null,
+        ocontainer: null,
+    };
+    if (!add_one_tobill(dummy, true, shkp))
+        return;
+    const billed = eshk.bill_p[eshk.bill_p.length - 1];
+    billed.price = originalPrice;
+    billed.bquan = originalQuan;
+    billed.obj = dummy;
+    dummy.where = OBJ_ONBILL;
+    (game.billobjs ||= []).unshift(dummy);
+    obj.no_charge = 0;
+    obj.unpaid = 0;
 }
 
 async function money2u(mon, amount) {
@@ -845,13 +902,26 @@ export async function sellobj(obj, x, y) {
     await pline(`You sold ${doname(obj)} for ${offer} gold piece${offer === 1 ? '' : 's'}.`);
 }
 
-// src/shk.c menu_pick_pay_items() -- choose intact ordinary items to buy.
+// src/shk.c menu_pick_pay_items() selects intact and used-up bill entries.
 async function menu_pick_pay_items(items) {
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
     const amtWidth = String(Math.max(...items.map(it => it.cost))).length;
 
+    if (items[0].usedup) {
+        const usedCount = items.filter(it => it.usedup).length;
+        tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
+                     `Used up item${usedCount > 1 ? 's' : ''}:`,
+                     MENU_ITEMFLAGS_NONE);
+    }
+
     for (let i = 0; i < items.length; ++i) {
+        if (i > 0 && items[i - 1].usedup && !items[i].usedup) {
+            const intactCount = items.slice(i).filter(it => !it.usedup).length;
+            tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
+                         `Unpaid item${intactCount > 1 ? 's' : ''}:`,
+                         MENU_ITEMFLAGS_NONE);
+        }
         const amount = String(items[i].cost).padStart(amtWidth, ' ');
         tty_add_menu(win, null, i + 1, 0, 0, ATR_NONE, NO_COLOR,
                      `${amount} Zm, ${ordinary_paydoname(items[i].obj)}`,
@@ -900,10 +970,18 @@ async function pay_ordinary_item(shkp, item) {
         return false;
 
     const boughtName = ordinary_paydoname(item.obj);
-    await pline(`You bought ${boughtName} for ${item.cost} gold piece`
-                + `${item.cost === 1 ? '' : 's'}.`);
+    await pline(item.usedup
+        ? `You paid for ${boughtName} at a cost of ${item.cost} gold piece`
+          + `${item.cost === 1 ? '' : 's'}.`
+        : `You bought ${boughtName} for ${item.cost} gold piece`
+          + `${item.cost === 1 ? '' : 's'}.`);
 
     item.obj.unpaid = 0;
+    if (item.usedup) {
+        const billobj = (game.billobjs || []).indexOf(item.obj);
+        if (billobj >= 0)
+            game.billobjs.splice(billobj, 1);
+    }
     const bidx = eshk.bill_p.indexOf(item.bp);
     if (bidx >= 0)
         eshk.bill_p.splice(bidx, 1);

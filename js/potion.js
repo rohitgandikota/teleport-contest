@@ -12,7 +12,7 @@ import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_OTHER_THROW,
-         HEAD } from './const.js';
+         HEAD, SICK_ALL } from './const.js';
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
@@ -91,6 +91,21 @@ export async function make_sick(xtime, cause, talk, type) {
     }
 }
 
+// src/potion.c:243 make_vomiting(). The countdown dialogue and per-turn
+// effects live in nh_timeout(); this routine only starts or clears the timer.
+export async function make_vomiting(xtime, talk) {
+    const props = (game.u.uprops ||= {});
+    const old = props.VOMITING || 0;
+
+    if (Unaware())
+        talk = false;
+
+    props.VOMITING = Math.max(0, xtime | 0);
+    (game.disp ||= {}).botl = true;
+    if (!xtime && old && talk)
+        await You_feel('much less nauseated now.');
+}
+
 // src/potion.c:1428 healup()
 export async function healup(nhp, nxtra, curesick, cureblind) {
     const u = game.u;
@@ -111,8 +126,9 @@ export async function healup(nhp, nxtra, curesick, cureblind) {
             note_unported_potion('healup:make_deaf');
     }
     if (curesick) {
-        if (u.uprops?.VOMITING || u.uprops?.SICK)
-            note_unported_potion('healup:curesick');
+        await make_vomiting(0, true);
+        if (u.uprops?.SICK)
+            await make_sick(0, null, true, SICK_ALL);
     }
     (game.disp ||= {}).botl = true;
 }

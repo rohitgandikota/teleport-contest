@@ -1,5 +1,5 @@
 import { exercise, near_capacity, adjalign, poison_strdmg } from './attrib.js';
-import { A_CON, SLT_ENCUMBER, W_RINGL, W_RINGR } from './const.js';
+import { A_CON, COST_BITE, SLT_ENCUMBER, W_RINGL, W_RINGR } from './const.js';
 // eat.js — nutrition.
 // C ref: src/eat.c
 //
@@ -318,7 +318,7 @@ export function tin_variety_txt(s, tinvariety) {
 // next_ident. costly_alteration (shop billing) and the 52-slot overflow drop
 // are recorded. The re-slot mirrors C's freeinv + addinv_nomerge using
 // assigninvlet's rule: first unused letter, a-z then A-Z.
-function touchfood(otmp) {
+async function touchfood(otmp) {
     if (otmp.quan > 1) {
         if (!carried(otmp))
             splitobj(otmp, otmp.quan - 1);
@@ -327,7 +327,8 @@ function touchfood(otmp) {
     }
 
     if (!otmp.oeaten) {
-        note_unported_eat('touchfood:costly_alteration');
+        const { costly_alteration } = await import('./shk.js');
+        await costly_alteration(otmp, COST_BITE);
         otmp.oeaten = obj_nutrition(otmp);
     }
 
@@ -596,7 +597,7 @@ export async function doeat() {
         /* src/eat.c:2966 — touchfood() precedes eatcorpse(), so oeaten has
            the full corpse nutrition before rottenfood divides it. */
         const already_partly_eaten = !!otmp.oeaten;
-        otmp = touchfood(otmp);
+        otmp = await touchfood(otmp);
         const v0 = (game.context.victual ||= {});
         v0.piece = otmp;
         v0.o_id = otmp.o_id;
@@ -635,7 +636,7 @@ export async function doeat() {
 
     /* src/eat.c:2968 — touchfood() BEFORE the victual is set up; it may
        replace otmp with the split-off single. */
-    otmp = touchfood(otmp);
+    otmp = await touchfood(otmp);
 
     const v = (game.context.victual ||= {});
     v.piece = otmp;
@@ -745,8 +746,9 @@ async function fprefx(otmp) {
             /* not cannibalism, but we use similar criteria
                for deciding whether to be sickened by this meal */
             if (rn2(2) && !cannibal_allowed()) {
-                rn1(game.context.victual.reqtime, 14);
-                note_unported_eat('fprefx:make_vomiting');
+                const { make_vomiting } = await import('./potion.js');
+                await make_vomiting(rn1(game.context.victual.reqtime, 14),
+                                    false);
             }
         }
         break;

@@ -1,0 +1,19 @@
+{
+  "name": "shop-food-billing",
+  "description": "Normal Tourist reaches a natural general store, pays for an unpaid tripe ration after biting it, then waits through the complete nausea countdown and vomiting recovery.",
+  "coverage": [
+    "mode.normal",
+    "level.ordinary",
+    "social.shops-billing",
+    "object.food-corpses",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Shopper,role:Tourist,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " johhhkhhhkhhkhhohhhk> johhhhhjhhjjhjjjjjlllljlllolllllkkjl , en pa\r yhhssssssmsmsmsms"
+    }
+  ]
+}

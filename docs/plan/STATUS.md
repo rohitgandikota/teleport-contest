@@ -1,5 +1,23 @@
 # STATUS — live handoff board
 
+## 2026-08-27: complete supplemental coverage matrix
+
+The `medusa-petrification` C oracle uses fresh debug seed 6922. An unprotected
+Valkyrie creates Medusa, searches until the gaze interrupts the occupation,
+meets the gaze, turns to stone, reaches the death prompt at zero HP, and uses
+the debug-mode save to resume the same monster turn. This is independent of
+the prayer oracle's lightning and disintegration deaths and of the reflected
+Medusa kill. Two fresh recordings were byte-identical, with SHA-256
+`f4afb4f897dcce5292146dae890e6ac6de83e88725d0d2a829fea96829ada97e`.
+
+The port passes the new trace without another code change at 17/17 screens,
+17/17 cells, 17/17 cursors, and 2,363/2,363 RNG calls. The supplemental
+coverage matrix is now complete at 105 covered, 0 partial, and 0 gaps. With
+this trace included, the corpus has 75 sessions and 11,274 frames. It matches
+10,889/11,274 complete screens, 11,267/11,274 cells, 10,889/11,274 cursors,
+and 1,401,471/1,401,471 RNG calls, with 73/75 formal session passes. The only
+formal failures remain the two documented C recorder artifacts.
+
 ## 2026-08-27: Medusa gaze reflection and petrification
 
 The `reflection-gaze` C oracle uses debug seed 6920. A Valkyrie wishes for and

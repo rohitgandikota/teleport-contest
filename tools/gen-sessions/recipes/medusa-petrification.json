@@ -1,0 +1,20 @@
+{
+  "name": "medusa-petrification",
+  "description": "Debug Valkyrie meets Medusa's gaze without reflection and exercises the fatal petrification save prompt.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.special-effects",
+    "survival.instant-deaths",
+    "turn.occupation-interrupt",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 6922,
+      "datetime": "20000112090500",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007Medusa\ry10s n "
+    }
+  ]
+}

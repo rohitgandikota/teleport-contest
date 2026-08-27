@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T14:01:24.536Z. Local commit: `efcc502`.
+Last refreshed: 2026-08-27T14:13:10.104Z. Local commit: `5acfbc5`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
 
 ## Score summary
@@ -10,7 +10,7 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 9965/10348 | 96.30% | 70/71 | 1350224/1350224 (100.00%) | 14/298 |
+| Supplemental C suite | 10832/11217 | 96.57% | 71/73 | 1396940/1396940 (100.00%) | 14/322 |
 
 ## Contest position and generalization
 
@@ -24,9 +24,14 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 10343/10348 |
-| Cursor positions | 11405/11405 | 9965/10348 |
-| Startup and per-turn estimate | 68+0.45/turn | 62+0.58/turn |
+| Cells only | 11405/11405 | 11210/11217 |
+| Cursor positions | 11405/11405 | 10832/11217 |
+| Startup and per-turn estimate | 66+0.42/turn | 61+0.54/turn |
+
+## Supplemental capture caveats
+
+- `gehennom-tour` contains five corrupt C cell frames and 383 corrupt cursor frames from its original recording.
+- `bones-persistence` differs on two terminal frames while the C recorder reports a bones-compression error. Its 468-frame load segment and all RNG calls match exactly.
 
 ## Judge health
 
@@ -40,6 +45,7 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T14:13:10.104Z | `5acfbc5` | 11405/11405 | 10832/11217 | 6032/11265 | 3 |
 | 2026-08-27T14:01:24.536Z | `efcc502` | 11405/11405 | 9965/10348 | 6032/11265 | 3 |
 | 2026-08-27T13:51:52.609Z | `e3e330a` | 11405/11405 | 9848/10231 | 6032/11265 | 3 |
 | 2026-08-27T07:06:22.008Z | `1975f32` | 11405/11405 | 9704/10087 | 5852/11265 | 3 |
@@ -49,7 +55,6 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 | 2026-08-27T04:31:42.083Z | `721ca4f` | 11405/11405 | 8577/8960 | 5852/11265 | 3 |
 | 2026-08-27T04:11:40.543Z | `ae64f3c` | 11405/11405 | 8494/8877 | 5852/11265 | 3 |
 | 2026-08-27T03:36:25.157Z | `8cbc4e9` | 11405/11405 | 8211/8594 | 5852/11265 | 3 |
-| 2026-08-27T01:25:32.487Z | `c9280f9` | 11405/11405 | 7336/7719 | 5852/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

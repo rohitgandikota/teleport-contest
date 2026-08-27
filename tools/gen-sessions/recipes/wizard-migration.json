@@ -1,0 +1,25 @@
+{
+  "name": "wizard-migration",
+  "description": "Debug Barbarian leaves the Wizard of Yendor behind on level 2, obtains the Amulet on level 1, and enters the endgame to exercise exact-level monster migration and resurrection of the existing Wizard.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "level.planes",
+    "monster.covetous",
+    "object.amulets",
+    "endgame.ascent",
+    "endgame.amulet-wizard",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 6085,
+      "datetime": "20000118090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen,quick_farsight\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u001b\u0006\u0007Wizard of Yendor\ry\u0014<.< \u0017Amulet of Yendor\r . \u001b\u0014 y<.<y   \u0006"
+    }
+  ]
+}

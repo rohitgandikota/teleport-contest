@@ -1753,10 +1753,50 @@ function distu(x, y) {
     return dx * dx + dy * dy;
 }
 
-// src/dog.c:789 keepdogs() — move adjacent followers off the map and onto
-// the mydogs list before the hero leaves the level. The steed, meating/
-// trapped feedback, amulet-holder and keep_mon_accessible arms need absent
-// state and are recorded when reached.
+function same_level(a, b) {
+    return !!a && !!b && a.dnum === b.dnum && a.dlevel === b.dlevel;
+}
+
+// src/dog.c:768 keep_mon_accessible(). The Wizard is globally reachable.
+// A shopkeeper, priest, or guard only needs this treatment while away from
+// the level recorded in its role-specific state.
+function keep_mon_accessible(mtmp) {
+    if (mtmp.iswiz)
+        return true;
+    const eshk = mtmp.eshk || mtmp.mextra?.eshk;
+    const epri = mtmp.epri || mtmp.mextra?.epri;
+    const egd = mtmp.egd || mtmp.mextra?.egd;
+    return !!((mtmp.isshk && eshk?.shoplevel
+               && !same_level(game.u.uz, eshk.shoplevel))
+              || (mtmp.ispriest && epri?.shrlevel
+                  && !same_level(game.u.uz, epri.shrlevel))
+              || (mtmp.isgd && egd?.gdlevel
+                  && !same_level(game.u.uz, egd.gdlevel)));
+}
+
+// migrate_to_level() for keep_mon_accessible's exact-position case. Its
+// destination is the level being left, so no ledger conversion is needed.
+function migrate_accessible_monster(mtmp) {
+    const mx = mtmp.mx, my = mtmp.my;
+    remove_monster(mx, my);
+    const idx = game.level.monsters.indexOf(mtmp);
+    if (idx >= 0)
+        game.level.monsters.splice(idx, 1);
+
+    mtmp.mstate = (mtmp.mstate || 0) | MON_MIGRATING;
+    mtmp.mtrack ||= [];
+    mtmp.mtrack[2] = { x: game.u.uz.dnum, y: game.u.uz.dlevel };
+    mtmp.mtrack[1] = { x: mx, y: my };
+    mtmp.mtrack[0] = { x: MIGR_EXACT_XY, y: 0 };
+    mtmp.mux = game.u.uz.dnum;
+    mtmp.muy = game.u.uz.dlevel;
+    mtmp.mx = mtmp.my = 0;
+    mtmp.mlstmv = game.moves;
+    (game.migrating_mons ||= []).unshift(mtmp);
+}
+
+// src/dog.c:789 keepdogs() moves adjacent followers off the map and onto
+// the mydogs list before the hero leaves the level.
 export function keepdogs(pets_only) {
     const chain = [...(game.level?.monsters || [])];
     for (const mtmp of chain) {
@@ -1764,7 +1804,8 @@ export function keepdogs(pets_only) {
             continue;
         if (pets_only && !mtmp.mtame)
             continue;
-        if (((mdistu_dog(mtmp) <= 2 && levl_follower(mtmp)))
+        if (((mdistu_dog(mtmp) <= 2 && levl_follower(mtmp))
+             || (game.u.uhave?.amulet && mtmp.iswiz))
             && (!helpless(mtmp))
             && !(mtmp.mstrategy & 0x20000000 /* STRAT_WAITFORU */)) {
             if (mtmp.mtrapped)
@@ -1785,8 +1826,8 @@ export function keepdogs(pets_only) {
             (game.mydogs ||= []).unshift(mtmp);
             mtmp.mx = mtmp.my = 0; /* mx==0 implies migrating */
             mtmp.mlstmv = game.moves;
-        } else if (mtmp.iswiz || mtmp.isshk || mtmp.ispriest || mtmp.isgd) {
-            note_unported('keepdogs:keep_mon_accessible');
+        } else if (keep_mon_accessible(mtmp)) {
+            migrate_accessible_monster(mtmp);
         }
     }
 }
@@ -1814,7 +1855,7 @@ function levl_follower(mtmp) {
         && (!mtmp.mflee || game.u.uhave?.amulet);
 }
 
-const Before_you = 0, With_you = 1, After_you = 2;
+const Before_you = 0, With_you = 1, After_you = 2, Wiz_arrive = -1;
 const MON_STILL_ARRIVING = 0x100;
 
 // src/dog.c:304 losedogs(). Restore exact-position residents first, then
@@ -1861,13 +1902,13 @@ export async function losedogs() {
 
 // src/dog.c:420 mon_arrive(). This covers companions plus random,
 // approximate, exact, and hero-relative independent arrivals.
-async function mon_arrive(mtmp, when) {
+export async function mon_arrive(mtmp, when) {
     (game.level.monsters ||= []).unshift(mtmp);
     mtmp.mstate = (mtmp.mstate || 0) | MON_STILL_ARRIVING;
     mtmp.mstrategy = (mtmp.mstrategy | 0) | 0x40000000; /* STRAT_ARRIVE */
     mtmp.mstate &= ~(MON_MIGRATING | MON_LIMBO);
 
-    const xyloc = mtmp.mtrack?.[0]?.x ?? MIGR_RANDOM;
+    let xyloc = mtmp.mtrack?.[0]?.x ?? MIGR_RANDOM;
     const xyflags = mtmp.mtrack?.[0]?.y ?? 0;
     let xlocale = mtmp.mtrack?.[1]?.x ?? 0;
     let ylocale = mtmp.mtrack?.[1]?.y ?? 0;
@@ -1889,7 +1930,8 @@ async function mon_arrive(mtmp, when) {
         }
         mtmp.mstate &= ~MON_STILL_ARRIVING;
         return true;
-    }
+    } else if (when === Wiz_arrive)
+        xyloc = MIGR_WITH_HERO;
 
     let wander = 0;
     if ((mtmp.mlstmv ?? game.moves) < game.moves - 1) {

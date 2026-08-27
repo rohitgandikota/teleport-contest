@@ -8,16 +8,16 @@ not mean the JavaScript port passes them. Static rows are checked by
 `node tools/game-inventory.mjs`. Dynamic parity is measured by the frozen
 runner. RNG annotations only observe C functions that draw randomness.
 
-Requirements: **104**. Covered: **93**.
-Partial: **5**. Gaps: **6**.
+Requirements: **104**. Covered: **94**.
+Partial: **4**. Gaps: **6**.
 
 ## Corpus inventory
 
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 65 | 8877 | 1173925 | 66 | 324 |
-| Union | 109 | 20282 | 1941685 | 76 | 410 |
+| Supplemental | 65 | 8960 | 1177478 | 66 | 325 |
+| Union | 109 | 20365 | 1945238 | 76 | 410 |
 
 ## Static inventory
 
@@ -170,7 +170,7 @@ Partial: **5**. Gaps: **6**.
 | Status | Requirement | Criterion | Evidence |
 |---|---|---|---|
 | covered | `social.shops-billing` | 2 session(s), including normal mode | `shop-billing`, `shop-normal` |
-| partial | `social.vault-guard` | 1 session(s), including normal mode | `vault-guard` |
+| covered | `social.vault-guard` | 1 session(s), including normal mode | `vault-guard` |
 | covered | `social.chat` | 2 session(s), including normal mode | `priest-donations`, `variant-steed`, `variant-twoweapon` |
 
 ## Persistence and ending
@@ -260,7 +260,7 @@ Partial: **5**. Gaps: **6**.
 | `variant-twoweapon` | normal | 97 | present | `combat.twoweapon`, `mode.normal`, `object.weapons`, `social.chat`, `turn.speed-energy` |
 | `variant-wandpoly` | debug | 86 | present | `forms.polymorph`, `mode.debug`, `object.identification`, `object.wands` |
 | `variant-world-tour` | debug | 832 | present | `level.special-variants`, `mode.debug`, `ui.getlin`, `ui.map-memory-vision` |
-| `vault-guard` | debug | 280 | present | `level.ordinary`, `mode.debug`, `social.vault-guard`, `ui.getlin` |
+| `vault-guard` | debug+normal | 362 | present | `level.ordinary`, `mode.debug`, `social.vault-guard`, `ui.getlin` |
 | `wand-striking-door` | debug | 68 | present | `combat.melee`, `combat.ranged`, `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.hero-melee`, `object.identification`, `object.potions`, `object.wands`, `terrain.doors-locks`, `ui.animation`, `ui.getlin` |
 
 ## Open gaps
@@ -269,7 +269,6 @@ Partial: **5**. Gaps: **6**.
 - **partial:** `combat.resist-reflect`: Resistance, magic cancellation, reflection, and shield effects
 - **partial:** `forms.polymorph`: Hero, monster, and object polymorph with control and reversion
 - **partial:** `survival.instant-deaths`: Drowning, lava, petrification, disintegration, choking, poison, and related saves
-- **partial:** `social.vault-guard`: Vault discovery, guard conversation, escort, and hostility
 - **gap:** `persistence.bones`: Bones creation, storage, eligibility, loading, and sanitization
 - **gap:** `ending.topten`: Score calculation, record persistence, and top-ten rendering
 - **gap:** `ending.conduct-achievement`: Conduct counters, roleplay state, achievements, and disclosure

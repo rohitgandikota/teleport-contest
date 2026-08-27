@@ -1,6 +1,6 @@
 {
   "name": "vault-guard",
-  "description": "Fresh-seed debug vault routes for guard discovery, visible-gold interrogation, repeated refusal, hostility, teleport escape, corridor restoration, and Croesus impersonation.",
+  "description": "Fresh-seed debug and normal vault routes for guard discovery, visible-gold interrogation, repeated refusal, hostility, teleport escape, corridor restoration, and Croesus impersonation.",
   "coverage": [
     "level.ordinary",
     "mode.debug",
@@ -25,6 +25,12 @@
       "datetime": "20000115090000",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " \u00162\r\u0006\u0014kkkkkkkkkkkkkhhhhh. ................................... Croesus\r"
+    },
+    {
+      "seed": 8672,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mapper,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " rijbbnlnnnlllnjnnlllllnnlukzclllllllllll50sh50sFhFhFhFhFhFh50sFhFhFhFh50s Mapper\r"
     }
   ]
 }

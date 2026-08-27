@@ -1399,17 +1399,24 @@ export function can_touch_safely(mtmp, otmp) {
 // due_to_death arm (nemdead/leaddead/relobj), thiefdead, shkgone, wormgone,
 // the endgame flag, and the steed dismount.
 export function m_detach(mtmp, mptr, due_to_death) {
+    const mx = mtmp.mx, my = mtmp.my;
+    const onmap = mx > 0
+        && game.level?.monAt?.get(`${mx},${my}`) === mtmp;
+
     if (mtmp.mleashed || mtmp.iswiz || mtmp.isshk || mtmp.wormno
         || due_to_death)
         (game.unported ||= new Set()).add('mon:m_detach');
 
     /* src/mon.c:2744 — a glowing monster takes its light with it */
-    if (mtmp.mx > 0 && emits_light(mptr))
+    if (mx > 0 && emits_light(mptr))
         del_light_source(LS_MONSTER, mtmp.m_id);
 
     /* mon_leaving_level() — off the map, but still on the fmon chain */
-    if (mtmp.mx > 0)
-        remove_monster(mtmp.mx, mtmp.my);
+    if (onmap) {
+        remove_monster(mx, my);
+        mtmp.mundetected = 0;
+        newsym(mx, my);
+    }
 
     mtmp.mhp = 0;               /* simplify some tests: force mhp to 0 */
 

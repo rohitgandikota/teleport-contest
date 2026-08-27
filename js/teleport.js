@@ -35,7 +35,7 @@ import { unconscious } from './trap.js';
 import { goodpos, remove_monster, place_monster } from './makemon.js';
 import { newsym } from './display.js';
 import { vision_recalc, couldsee } from './vision.js';
-import { spoteffects, invocation_message } from './hack.js';
+import { in_rooms, invocation_message, spoteffects } from './hack.js';
 import { morehungry } from './eat.js';
 import { getpos } from './getpos.js';
 import { Amonnam, Monnam, mon_nam } from './do_name.js';
@@ -655,6 +655,13 @@ export async function teleds(nux, nuy, teleds_flags) {
     const ball = game.u.uball;
     const ballActive = !!(ball && ball.where !== OBJ_FREE);
     let ballUnplaced = false;
+    let vaultFns = null, vaultGuard = null;
+
+    if (game.u.urooms) {
+        vaultFns = await import('./vault.js');
+        if (vaultFns.vault_occupied(game.u.urooms))
+            vaultGuard = vaultFns.findgd();
+    }
 
     if (game.u.uswallow || game.u.utrap)
         note_unported_teleport('teleds:ball_or_swallow');
@@ -686,6 +693,14 @@ export async function teleds(nux, nuy, teleds_flags) {
         await You(`materialize in ${
             (nux === ux0 && nuy === uy0) ? 'the same'
                                          : 'a different'} location!`);
+
+    if (vaultGuard) {
+        const savedRooms = game.u.urooms;
+        game.u.urooms = in_rooms(game.u.ux, game.u.uy, VAULT);
+        if (!vaultFns.vault_occupied(game.u.urooms))
+            await vaultFns.uleftvault(vaultGuard);
+        game.u.urooms = savedRooms;
+    }
 
     await spoteffects(true);
     await invocation_message();

@@ -459,6 +459,17 @@ async function peffect_confusion(otmp) {
                         false);
 }
 
+// src/potion.c:1073 peffect_blindness()
+async function peffect_blindness(otmp) {
+    const was_blind = Blind();
+    if (was_blind)
+        game.potion_nothing++;
+    await make_blinded(
+        itimeout_incr(game.u.intrinsic?.HBlinded,
+                      rn1(200, 250 - 125 * bcsign(otmp))),
+        !was_blind);
+}
+
 // src/attrib.c:294 poisontell()
 async function poisontell(typ) {
     switch (typ) {
@@ -613,6 +624,9 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_SICKNESS:
         await peffect_sickness(otmp);
+        break;
+    case ONAMES.POT_BLINDNESS:
+        await peffect_blindness(otmp);
         break;
     case ONAMES.POT_PARALYSIS:
         await peffect_paralysis(otmp);

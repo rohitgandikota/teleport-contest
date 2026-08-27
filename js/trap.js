@@ -11,12 +11,13 @@ import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING,
-         WATER, FIRE_RES } from './const.js';
+         STONING, WATER, FIRE_RES } from './const.js';
 import { goodpos, makemon, remove_monster } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
 import { Teleport_control, Unaware, Sleep_resistance, Fire_resistance,
-         Shock_resistance, Halluc_resistance } from './youprop.js';
+         Shock_resistance, Halluc_resistance,
+         Stone_resistance } from './youprop.js';
 import { teleds, safe_teleds, TELEDS_ALLOW_DRAG,
          TELEDS_TELEPORT } from './teleport.js';
 import { done } from './end.js';
@@ -31,7 +32,7 @@ import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
 import { canspotmon, display_nhwindow_message, display_object_at, newsym, pline,
-         temporary_object_glyph } from './display.js';
+         temporary_object_glyph, urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
@@ -40,7 +41,8 @@ import { monkilled } from './mon.js';
 import { find_mac, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
-import { passes_walls, likes_lava, throws_rocks } from './mondata.js';
+import { passes_walls, likes_lava, throws_rocks,
+         poly_when_stoned } from './mondata.js';
 import { has_ceiling, Can_fall_thru, depth, level_difficulty } from './dungeon.js';
 import { Monnam, rndcolor } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
@@ -55,7 +57,7 @@ import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
          EF_NONE, EF_GREASE, EF_VERBOSE, EF_PAY, EF_DESTROY,
          ER_NOTHING, ER_DAMAGED, ER_DESTROYED } from './const.js';
 import { rnl } from './rng.js';
-import { body_part } from './polyself.js';
+import { body_part, polymon } from './polyself.js';
 import { mon_nam } from './do_name.js';
 import { MON_WEP, DEADMONSTER, helpless } from './monst.js';
 import { erosion_matters } from './mkobj.js';
@@ -79,6 +81,18 @@ const Trap_Effect_Finished = 0, Trap_Is_Gone = 0,
 
 function note_unported_trap(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/trap.c:3844 instapetrify()
+export async function instapetrify(str) {
+    if (Stone_resistance())
+        return;
+    if (poly_when_stoned(game.youmonst.data)
+        && await polymon(PMNAMES.PM_STONE_GOLEM))
+        return;
+    await urgent_pline('You turn to stone...');
+    game.killer = { format: KILLED_BY, name: str || '' };
+    await done(STONING);
 }
 
 /* src/hacklib.c exclam() — the punctuation a damage amount earns. */

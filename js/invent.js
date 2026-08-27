@@ -11,13 +11,15 @@ import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALT
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
          A_NEUTRAL, A_CHAOTIC } from './const.js';
-import { hides_under } from './mondata.js';
+import { hides_under, touch_petrifies, poly_when_stoned } from './mondata.js';
 import { worn } from './do_wear.js';
 import { empty_handed } from './wield.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          W_RINGL, W_RINGR, W_AMUL, W_ART } from './const.js';
-import { Blind as heroBlind, Hallucination } from './youprop.js';
-import { doname, an } from './objnam.js';
+import { Blind as heroBlind, Hallucination,
+         Stone_resistance } from './youprop.js';
+import { doname, an, corpse_xname, makeplural, CXN_PFX_THE,
+         CXN_ARTICLE } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj } from './mkobj.js';
@@ -44,11 +46,39 @@ import { recalc_block_point } from './vision.js';
 import { surface } from './dungeon.js';
 import { discover_artifact } from './artifact.js';
 import { ART_MJOLLNIR } from './artilist_data.js';
+import { body_part } from './polyself.js';
+import { HAND } from './const.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
 export const ECMD_OK = 0;
 export const ECMD_TIME = 1;
+
+// src/invent.c:4334 will_feel_cockatrice()
+export function will_feel_cockatrice(otmp, force_touch = false) {
+    return !!((heroBlind() || force_touch) && !game.u.uarmg
+              && !Stone_resistance() && otmp?.otyp === ONAMES.CORPSE
+              && touch_petrifies(game.mons[otmp.corpsenm]));
+}
+
+// src/invent.c:4343 feel_cockatrice()
+export async function feel_cockatrice(otmp, force_touch = false) {
+    if (!will_feel_cockatrice(otmp, force_touch))
+        return false;
+
+    const corpse = corpse_xname(otmp, null, CXN_PFX_THE);
+    if (poly_when_stoned(game.youmonst.data)) {
+        await You(`touched ${corpse} with your bare ${
+            makeplural(body_part(HAND))}.`);
+    } else {
+        await pline(`Touching ${corpse} is a fatal mistake...`);
+    }
+    const killer = `touching ${
+        corpse_xname(otmp, null, CXN_ARTICLE)} bare-handed`;
+    const { instapetrify } = await import('./trap.js');
+    await instapetrify(killer);
+    return true;
+}
 
 /* src/invent.c:735 inv_rank() — invlet ^ 040, which sorts '$' (gold) before
    'a'..'z' before 'A'..'Z'. */
@@ -272,9 +302,9 @@ export function dfeature_at(x, y) {
 
 // src/invent.c:4104 look_here()
 //
-// The engulfed arm, gas regions, cockatrice touches and Blind feel-arms are
-// gated on state no session can reach yet and are recorded when hit. The
-// dungeon-feature description carries only the stairway arm so far.
+// The engulfed arm, gas regions, and skip/multi-pile cockatrice touches are
+// recorded when hit. Blind floor reach and single-object cockatrice contact
+// are live. The dungeon-feature description carries only the stairway arm.
 export async function look_here(obj_cnt, lhflags) {
     const Blind = heroBlind();
     const verb = Blind ? 'feel' : 'see';
@@ -366,7 +396,7 @@ export async function look_here(obj_cnt, lhflags) {
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         await You(`${verb} here ${doname_with_price(otmp)}.`);
         if (otmp.otyp === ONAMES.CORPSE)
-            note_unported_invent('look_here:feel_cockatrice');
+            await feel_cockatrice(otmp, false);
     } else {
         /* src/invent.c:4289 flushes WIN_MESSAGE before constructing the
            multi-object popup.  For an acknowledged no-history getpos

@@ -1,6 +1,6 @@
 import { exercise, poisoned } from './attrib.js';
 import { A_DEX, A_STR, ERODE_NONE, ERODE_BURN, ERODE_RUST,
-         ERODE_CORRODE, EF_NONE, EF_GREASE } from './const.js';
+         ERODE_CORRODE, EF_NONE, EF_GREASE, Upolyd } from './const.js';
 // uhitm.js — the hero attacking, or declining to attack, a monster.
 // C ref: src/uhitm.c
 //
@@ -57,7 +57,8 @@ import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uw
 import { find_mac } from './worn.js';
 import { worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
-         sticks, haseyes, cantwield, is_flyer, is_floater } from './mondata.js';
+         sticks, haseyes, cantwield, is_flyer, is_floater,
+         is_whirly } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -1481,6 +1482,16 @@ const is_launcher_w = (o) =>
 // monster is holding you, or you are two-weaponing, or the weapon is
 // Cleaver. Porting the arms as independent ifs would let several fire at
 // once and would draw where C draws nothing.
+function backstabbable(mon) {
+    const ptr = game.mons[mon.mnum];
+    return !amorphous(ptr) && !is_whirly(ptr) && !noncorporeal(ptr)
+           && ptr.mlet !== MONSYMS.S_BLOB
+           && ptr.mlet !== MONSYMS.S_EYE
+           && ptr.mlet !== MONSYMS.S_FUNGUS
+           && canseemon(mon)
+           && (mon.mflee || helpless(mon));
+}
+
 async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     /* "normal" weapon usage */
     hmd.use_weapon_skill = true;
@@ -1498,6 +1509,11 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     if (!hmd.train_weapon_skill || mon === game.u.ustuck || game.u.twoweap
         || (hmd.hand_to_hand && obj.oartifact === ART_CLEAVER)) {
         ;   /* no special bonuses */
+    } else if (Role_if(PMNAMES.PM_ROGUE) && backstabbable(mon)
+               && !Upolyd(game.u) && hmd.hand_to_hand) {
+        await You(`strike ${mon_nam(mon)} from behind!`);
+        hmd.dmg += rnd(game.u.ulevel);
+        hmd.hittxt = true;
     } else {
         note_unported_uhitm('hmon_hitmon:special_attacks');
     }

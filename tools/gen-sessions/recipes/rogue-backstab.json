@@ -1,0 +1,20 @@
+{
+  "name": "rogue-backstab",
+  "description": "Debug Rogue puts a visible ogre to sleep with a wand, then strikes it in melee to exercise the helpless-monster backstab bonus.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee",
+    "object.wands"
+  ],
+  "segments": [
+    {
+      "seed": 6941,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender:male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed wand of sleep\rll\u0007hostile ogre\rzgb #levelchange\n9\n       b:"
+    }
+  ]
+}

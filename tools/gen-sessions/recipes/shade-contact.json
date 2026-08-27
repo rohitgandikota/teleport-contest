@@ -1,0 +1,25 @@
+{
+  "name": "shade-contact",
+  "description": "Debug heroes attack a shade with bare hands and an ordinary wielded weapon.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee"
+  ],
+  "segments": [
+    {
+      "seed": 8932,
+      "datetime": "20000112101000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Ta\u0007hostile shade\rj"
+    },
+    {
+      "seed": 8933,
+      "datetime": "20000112101500",
+      "nethackrc": "OPTIONS=name:wizard,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile shade\rb"
+    }
+  ]
+}

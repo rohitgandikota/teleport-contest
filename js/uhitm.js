@@ -28,7 +28,8 @@ import { destroy_items, exclam, hit, obj_resists } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
          Levitation } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
-         flush_screen, glyph_is_invisible_at, unmap_invisible } from './display.js';
+         flush_screen, glyph_is_invisible_at, map_invisible,
+         unmap_invisible } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
@@ -1053,7 +1054,13 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         note_unported_uhitm('hmon_hitmon:poison');
 
     if (hmd.dmg < 1) {
-        note_unported_uhitm('hmon_hitmon:no_damage');
+        const monIsShade = hmd.mdat === game.mons[PMNAMES.PM_SHADE];
+
+        hmd.dmg = hmd.get_dmg_bonus && !monIsShade ? 1 : 0;
+        if (monIsShade && !hmd.hittxt
+            && thrown !== HMON_THROWN && thrown !== HMON_KICKED)
+            hmd.hittxt = await shade_miss(game.youmonst, mon, obj,
+                                          false, true);
     }
 
     if (hmd.jousting) {
@@ -1292,8 +1299,45 @@ async function hmon_hitmon_misc_obj(hmd, mon, obj) {
 // Both halves exist: passes_walls is in this file, unsolid in js/mondata.js.
 export const passes_rocks = (ptr) => passes_walls(ptr) && !unsolid(ptr);
 
-// src/uhitm.c shade_aware() remains recorded.
-const shade_aware = (o) => { note_unported_uhitm('hmon_hitmon:shade_aware'); return false; };
+// src/uhitm.c:1978 shade_aware(), objects which can affect a shade or whose
+// shade interaction is handled by another routine.
+const shade_aware = (obj) => !!obj && (
+    obj.otyp === ONAMES.BOULDER
+    || obj.otyp === ONAMES.HEAVY_IRON_BALL
+    || obj.otyp === ONAMES.IRON_CHAIN
+    || obj.otyp === ONAMES.MIRROR
+    || obj.otyp === ONAMES.CLOVE_OF_GARLIC
+    || game.objects[obj.otyp].oc_material === MATERIALS.SILVER
+);
+
+// src/uhitm.c:2000 shade_miss(), report an attack that cannot touch a shade.
+async function shade_miss(magr, mdef, obj, thrown, verbose) {
+    const youagr = magr === game.youmonst;
+    const youdef = mdef === game.youmonst;
+
+    if (mdef.data !== game.mons[PMNAMES.PM_SHADE]
+        || (obj && dmgval(obj, mdef)))
+        return false;
+
+    if (verbose
+        && (youdef || cansee(mdef.mx, mdef.my) || sensemon(mdef)
+            || (youagr && distu(mdef.mx, mdef.my) <= 2))) {
+        const what = !obj || shade_aware(obj) ? 'attack' : cxname(obj);
+        const target = youdef ? 'you' : mon_nam(mdef);
+
+        if (!thrown) {
+            const whose = youagr ? 'Your' : s_suffix(Monnam(magr));
+            await pline(`${whose} ${what} ${vtense(what, 'pass')} harmlessly through ${target}.`);
+        } else {
+            await pline(`${The(what)} ${vtense(what, 'pass')} harmlessly through ${target}.`);
+        }
+        if (!youdef && !canspotmon(mdef))
+            map_invisible(mdef.mx, mdef.my);
+    }
+    if (!youdef)
+        mdef.msleeping = 0;
+    return true;
+}
 
 // src/uhitm.c:1663 hmon_hitmon_msg_silver() — "Your silver X sears ...".
 async function hmon_hitmon_msg_silver(hmd, mon, obj) {

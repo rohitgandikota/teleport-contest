@@ -1,0 +1,53 @@
+{
+  "name": "rider-behavior",
+  "description": "Debug-mode Rider matrix for Death, Pestilence, and Famine attacks, deaths, corpses, and timed revival.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.death-corpse-revival",
+    "endgame.riders",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 8860,
+      "datetime": "20000117090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007Death\ry..   "
+    },
+    {
+      "seed": 8861,
+      "datetime": "20000117090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007Pestilence\ry.. "
+    },
+    {
+      "seed": 8862,
+      "datetime": "20000117090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007Famine\ry.. "
+    },
+    {
+      "seed": 8863,
+      "datetime": "20000117090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007Death\ry#wizkill\rm.\u001b6."
+    },
+    {
+      "seed": 8870,
+      "datetime": "20000117090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007Pestilence\ry#wizkill\rm.\u001b30. "
+    },
+    {
+      "seed": 8865,
+      "datetime": "20000117090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007Famine\ry#wizkill\rm.\u001b30. "
+    }
+  ]
+}

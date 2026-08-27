@@ -46,6 +46,51 @@ function note_unported_potion(what) {
     (game.unported ||= new Set()).add(what);
 }
 
+// src/potion.c:137 make_sick(). Set or clear fatal illness and food
+// poisoning. The delayed-killer record is retained in JS state for the
+// timeout path; immediate messaging and status state match the C routine.
+export async function make_sick(xtime, cause, talk, type) {
+    const u = game.u;
+    const props = (u.uprops ||= {});
+    const old = props.SICK || 0;
+
+    if (xtime > 0) {
+        if (props.SICK_RES || u.intrinsic?.HSick_resistance)
+            return;
+        if (!old) {
+            await You_feel('deathly sick.');
+        } else if (talk) {
+            await You_feel(`${xtime <= old / 2 ? 'much' : 'even'} worse.`);
+        }
+        props.SICK = xtime;
+        u.usick_type = (u.usick_type || 0) | type;
+        (game.disp ||= {}).botl = true;
+    } else if (old && (type & (u.usick_type || 0))) {
+        u.usick_type &= ~type;
+        if (u.usick_type) {
+            if (talk)
+                await You_feel('somewhat better.');
+            props.SICK = old * 2;
+        } else {
+            if (talk)
+                await You_feel('cured.  What a relief!');
+            props.SICK = 0;
+        }
+        (game.disp ||= {}).botl = true;
+    }
+
+    if (props.SICK) {
+        exercise(A_CON, false);
+        game.delayed_killer = {
+            how: 'sickness',
+            format: cause === '#wizintrinsic' ? KILLED_BY : KILLED_BY_AN,
+            name: cause,
+        };
+    } else if (game.delayed_killer?.how === 'sickness') {
+        game.delayed_killer = null;
+    }
+}
+
 // src/potion.c:1428 healup()
 export async function healup(nhp, nxtra, curesick, cureblind) {
     const u = game.u;

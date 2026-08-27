@@ -864,6 +864,10 @@ export async function doextcmd() {
         return await wiz_wish();
     if (name === 'wizgenesis')
         return await wiz_genesis();
+    if (name === 'wizkill') {
+        const { wiz_kill } = await import('./wizcmds.js');
+        return await wiz_kill();
+    }
     if (name === 'wizintrinsic') {
         const { wiz_intrinsic } = await import('./wizcmds.js');
         return await wiz_intrinsic();

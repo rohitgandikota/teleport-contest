@@ -20,8 +20,8 @@ import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK } from './const.js';
-import { t_at, m_at, is_pool, is_lava } from './mon.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOTAIL, MM_NOMSG } from './const.js';
+import { t_at, m_at, is_pool, is_lava, delobj_core } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { Blind, Hallucination, Levitation } from './youprop.js';
@@ -30,6 +30,8 @@ import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
+import { PMNAMES } from './monst_data.js';
+import { Monnam } from './do_name.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
    A dynamic import() here hits the same partially-initialised module the
@@ -49,6 +51,58 @@ export function do_wire_dokick(fn) { ship_object_fn = fn; }
 
 function note_unported_do(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/do.c:2111 revive_corpse() and :2251 revive_mon(), with zap.c revive()
+// for an ordinary floor corpse. This is the timed Rider path: recreate the
+// monster without inventory, consume the corpse forcibly, and print the
+// species-specific rising effect.
+export async function revive_corpse(corpse) {
+    if (!corpse || corpse.otyp !== ONAMES.CORPSE
+        || corpse.where !== OBJ_FLOOR)
+        return false;
+
+    const x = corpse.ox, y = corpse.oy;
+    const ptr = game.mons[corpse.corpsenm];
+    const { makemon } = await import('./makemon.js');
+    const mmflags = NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH
+                    | MM_NOTAIL | MM_NOMSG;
+    const mtmp = makemon(ptr, x, y, mmflags);
+    if (!mtmp)
+        return false;
+
+    /* makemon.c calls dochugw() even for MM_NOMSG arrivals. A visible,
+       nearby Rider interrupts a counted wait before revive_corpse prints
+       the rising message. */
+    if (game.occupation) {
+        const { dochugw } = await import('./monmove.js');
+        await dochugw(mtmp, false);
+    }
+
+    if (mtmp.m_lev < ptr.mlevel)
+        rnd(ptr.mlevel + 1); /* montraits' restoration-level roll */
+    mtmp.mrevived = 1;
+    mtmp.msleeping = 0;
+    mtmp.mcanmove = true;
+    mtmp.mcansee = true;
+
+    delobj_core(corpse, true);
+
+    let effect = '';
+    if (ptr.pmidx === PMNAMES.PM_DEATH)
+        effect = ' in a whirl of spectral skulls';
+    else if (ptr.pmidx === PMNAMES.PM_PESTILENCE)
+        effect = ' in a churning pillar of flies';
+    else if (ptr.pmidx === PMNAMES.PM_FAMINE)
+        effect = ' in a ring of withered crops';
+    if (cansee(x, y))
+        await pline(`${Monnam(mtmp)} rises from the dead${effect}!`);
+    return true;
+}
+
+export async function revive_mon(body) {
+    if (!await revive_corpse(body))
+        note_unported_do('revive_mon:retry');
 }
 
 // src/ball.c:147 unplacebc_core(): detach punishment pieces from this level.

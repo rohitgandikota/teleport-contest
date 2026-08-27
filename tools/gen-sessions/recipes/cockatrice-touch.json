@@ -1,6 +1,6 @@
 {
   "name": "cockatrice-touch",
-  "description": "Debug Valkyries become blind and feel a cockatrice corpse, bare-handed for fatal contact petrification and gloved as a protected control.",
+  "description": "Debug Valkyries become blind and feel a cockatrice corpse, bare-handed in single, multi-object, and pile-limit paths for fatal contact petrification and gloved as a protected control.",
   "coverage": [
     "mode.debug",
     "ui.getlin",
@@ -22,6 +22,18 @@
       "datetime": "20000112091000",
       "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " \u0017pair of leather gloves\rWe\u0017potion of blindness\rqf\u0017cockatrice corpse\rdg:  "
+    },
+    {
+      "seed": 6930,
+      "datetime": "20000112091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017potion of blindness\rqe\u0017cockatrice corpse\r\u0017food ration\rdg:    n"
+    },
+    {
+      "seed": 6927,
+      "datetime": "20000112091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pile_limit:1\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017potion of blindness\rqf\u0017cockatrice corpse\rlh     n"
     }
   ]
 }

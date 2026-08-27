@@ -302,9 +302,9 @@ export function dfeature_at(x, y) {
 
 // src/invent.c:4104 look_here()
 //
-// The engulfed arm, gas regions, and skip/multi-pile cockatrice touches are
-// recorded when hit. Blind floor reach and single-object cockatrice contact
-// are live. The dungeon-feature description carries only the stairway arm.
+// The engulfed arm and gas regions are recorded when hit. Blind floor reach
+// and floor-pile cockatrice contact are live. The dungeon-feature description
+// carries only the stairway arm.
 export async function look_here(obj_cnt, lhflags) {
     const Blind = heroBlind();
     const verb = Blind ? 'feel' : 'see';
@@ -385,9 +385,18 @@ export async function look_here(obj_cnt, lhflags) {
                 : (obj_cnt < 5) ? 'a few'
                   : (obj_cnt < 10) ? 'several'
                     : 'many'}${picked_some ? ' more' : ''} objects here.`);
-        for (const otmp of pile)
-            if (otmp.otyp === ONAMES.CORPSE)
-                note_unported_invent('look_here:feel_cockatrice');
+        for (const otmp of pile) {
+            if (!will_feel_cockatrice(otmp, false))
+                continue;
+            const lead = obj_cnt > 1 ? 'Including'
+                       : otmp.quan > 1 ? "They're" : "It's";
+            const suffix = poly_when_stoned(game.youmonst.data)
+                ? '' : ', unfortunately';
+            await pline(`${lead} ${
+                corpse_xname(otmp, null, CXN_ARTICLE)}${suffix}.`);
+            await feel_cockatrice(otmp, false);
+            break;
+        }
     } else if (pile.length === 1) {
         /* only one object */
         const otmp = pile[0];
@@ -402,6 +411,7 @@ export async function look_here(obj_cnt, lhflags) {
            multi-object popup.  For an acknowledged no-history getpos
            description, the tty marks the message logically empty but leaves
            its pixels under the menu overlay. */
+        let felt_cockatrice = null;
         await display_nhwindow_message();
         const tmpwin = tty_create_nhwindow(NHW_MENU);
         if (dfeature && !skip_dfeature) {
@@ -411,8 +421,11 @@ export async function look_here(obj_cnt, lhflags) {
         tty_putstr(tmpwin, 0, `${picked_some ? 'Other things' : 'Things'} that ${
             Blind ? 'you feel' : 'are'} here:`);
         for (const otmp of pile) {
-            if (otmp.otyp === ONAMES.CORPSE)
-                note_unported_invent('look_here:feel_cockatrice');
+            if (will_feel_cockatrice(otmp, false)) {
+                felt_cockatrice = otmp;
+                tty_putstr(tmpwin, 0, `${doname(otmp)}...`);
+                break;
+            }
             tty_putstr(tmpwin, 0, doname_with_price(otmp));
         }
         await tty_display_nhwindow(tmpwin);
@@ -423,10 +436,11 @@ export async function look_here(obj_cnt, lhflags) {
         while (tty_next_page(tmpwin))
             await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(tmpwin);
+        if (felt_cockatrice)
+            await feel_cockatrice(felt_cockatrice, false);
+        await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
     }
 
-    /* C's multi-object menu arm does not call read_engr_at; the other three
-       arms above do */
     return Blind ? ECMD_TIME : ECMD_OK;
 }
 

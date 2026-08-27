@@ -16,8 +16,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 85 | 11986 | 1392554 | 67 | 346 |
-| Union | 129 | 23391 | 2160314 | 76 | 423 |
+| Supplemental | 85 | 12103 | 1397141 | 67 | 346 |
+| Union | 129 | 23508 | 2164901 | 76 | 423 |
 
 ## Static inventory
 
@@ -206,7 +206,7 @@ Partial: **0**. Gaps: **0**.
 | `astral-offering` | debug | 463 | present | `endgame.astral-offering`, `ending.death-disclosure`, `level.astral`, `mode.debug`, `object.amulets`, `religion.sacrifice`, `ui.getlin`, `ui.getpos`, `ui.menus`, `ui.more-paging` |
 | `barb-chargen` | normal | 96 | present | `chargen.restricted-path`, `combat.melee`, `combat.unarmed-kick`, `level.ordinary`, `mode.normal`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.food-corpses`, `object.weapons`, `survival.hunger`, `survival.regen-exercise`, `survival.timed-status`, `terrain.doors-locks`, `traps.projectile-physical`, `turn.occupation-interrupt`, `turn.speed-energy`, `turn.timers`, `ui.count-repeat`, `ui.map-memory-vision`, `ui.menus` |
 | `bones-persistence` | normal | 719 | present | `level.mines`, `mode.normal`, `monster.death-corpse-revival`, `persistence.bones` |
-| `cockatrice-touch` | debug | 125 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `survival.instant-deaths`, `survival.timed-status`, `ui.getlin`, `ui.more-paging` |
+| `cockatrice-touch` | debug | 240 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `survival.instant-deaths`, `survival.timed-status`, `ui.getlin`, `ui.more-paging` |
 | `conduct-achievements` | normal | 116 | present | `ending.conduct-achievement`, `level.ordinary`, `mode.normal`, `social.shops-billing` |
 | `container-bag-holding` | debug | 40 | present | `level.ordinary`, `mode.debug`, `object.tools-containers`, `ui.getlin`, `ui.menus` |
 | `container-loot` | debug | 89 | present | `level.ordinary`, `mode.debug`, `object.tools-containers`, `ui.getlin`, `ui.menus` |

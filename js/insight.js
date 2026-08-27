@@ -20,7 +20,7 @@ import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WE
          MSLOW, MFAST, A_NONE, TIMEOUT, W_ARM, W_ARMC, W_ARMH, W_ARMS,
          W_ARMG, W_ARMF, W_ARMU, W_AMUL, W_RINGL, W_RINGR,
          W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART,
-         LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG } from './const.js';
+         LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd } from './const.js';
 import { makeplural, minimal_xname, simpleonames,
          suit_simple_name } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
@@ -39,11 +39,11 @@ import { money_cnt } from './invent.js';
 import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
 import { night, midnight } from './calendar.js';
-import { type_is_pname } from './mondata.js';
+import { type_is_pname, sticks } from './mondata.js';
 import { inv_weight, near_capacity } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { pline } from './display.js';
-import { x_monnam } from './do_name.js';
+import { a_monnam, x_monnam } from './do_name.js';
 import { find_mac } from './worn.js';
 import { Fast, Very_fast, from_what as innate_source } from './attrib.js';
 import { Fire_resistance, Cold_resistance, Sleep_resistance,
@@ -414,6 +414,23 @@ function characteristics_enlightenment() {
         one_characteristic(a);
 }
 
+// src/getpos.c:557 dxdy_to_dist_descr(), full-direction form.
+function full_direction(dx, dy) {
+    if (!dx && !dy)
+        return 'here';
+    if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
+        const vertical = dy < 0 ? 'north' : dy > 0 ? 'south' : '';
+        const horizontal = dx < 0 ? 'west' : dx > 0 ? 'east' : '';
+        return vertical + horizontal;
+    }
+    const parts = [];
+    if (dy)
+        parts.push(`${Math.abs(dy)}${dy < 0 ? 'north' : 'south'}`);
+    if (dx)
+        parts.push(`${Math.abs(dx)}${dx < 0 ? 'west' : 'east'}`);
+    return parts.join(',');
+}
+
 // src/insight.c:1180 status_enlightenment() — only the last-resort entries a
 // fresh hero reaches.
 function status_enlightenment() {
@@ -435,6 +452,18 @@ function status_enlightenment() {
             ? `chained to ${an(simpleonames(game.u.uball))}`
             : 'punished';
         you_are(punishment);
+    }
+
+    if (game.u.ustuck && !game.u.uswallow) {
+        const holder = game.u.ustuck;
+        let heldmon = a_monnam(holder);
+        if (heldmon === 'it' && holder.mgivenname !== 'it')
+            heldmon = 'an unseen creature';
+        const relation = Upolyd(game.u) && sticks(game.youmonst.data)
+            ? 'holding' : 'held by';
+        const direction = full_direction(holder.mx - game.u.ux,
+                                         holder.my - game.u.uy);
+        you_are(`${relation} ${heldmon} (${direction})`);
     }
 
     if (((game.u.intrinsic?.HWounded_legs | 0) > 0

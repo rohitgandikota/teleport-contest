@@ -13,7 +13,7 @@ import { rn2, rn1, rnd, d } from './rng.js';
 import { is_animal, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
          nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer,
-         defended, resists_cold, resists_elec, resists_fire,
+         defended, resists_cold, resists_elec, resists_fire, sticks,
          poly_when_stoned } from './mondata.js';
 import { is_vampshifter, DEADMONSTER, MON_WEP } from './monst.js';
 import { poly_gender, body_part, polymon } from './polyself.js';
@@ -52,7 +52,8 @@ import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
 import { mhitm_ad_phys, mhitm_ad_cold, mhitm_ad_elec, mhitm_ad_drst,
          mhitm_ad_blnd, mhitm_ad_ston, mhitm_ad_drli,
-         mhitm_ad_samu, mhitm_knockback } from './uhitm.js';
+         mhitm_ad_samu, mhitm_knockback,
+         mhitm_mgc_atk_negated } from './uhitm.js';
 import { is_pool, t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { find_offensive, use_offensive, mon_reflects } from './muse.js';
@@ -1152,6 +1153,15 @@ async function hitmu(mtmp, mattk, indx) {
         await mhitm_ad_pest(mtmp, mhm);
     } else if (mattk[1] === A.AD_DETH) {
         await mhitm_ad_deth(mtmp, mhm);
+    } else if (mattk[1] === A.AD_STCK) {
+        await hitmsg(mtmp, mattk, indx);
+        const negated = await mhitm_mgc_atk_negated(
+            mtmp, game.youmonst, false);
+        if (!negated && !game.u.ustuck && !sticks(game.youmonst.data)) {
+            set_ustuck_mh(mtmp);
+            if (mdat.pmidx === PMNAMES.PM_BARBED_DEVIL)
+                await pline('The barbs stick to you!');
+        }
     } else if (mattk[1] === A.AD_STUN) {
         await hitmsg(mtmp, mattk, indx);
         if (!mtmp.mcan && !rn2(4)) {

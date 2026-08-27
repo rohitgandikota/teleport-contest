@@ -15,14 +15,14 @@ import { dokick_wire, ship_object, dokick } from './dokick.js';
 import { mklev, mklev_wire_mon } from './mklev.js';
 import { sp_lev_wire_mon } from './sp_lev.js';
 import { is_pool, is_lava, m_at, t_at, newcham, resists_ston,
-         mongone } from './mon.js';
+         mongone, set_ustuck } from './mon.js';
 import { do_attack } from './uhitm.js';
 import { back_to_glyph, glyph_is_invisible_at, is_safemon, mon_visible,
          sensemon, unmap_invisible } from './display.js';
 import { goodpos, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
-import { is_hider, verysmall } from './mondata.js';
+import { is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
          could_move_onto_boulder, u_locomotion } from './hack.js';
@@ -39,7 +39,7 @@ import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, 
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { an, cxname, simpleonames, the } from './objnam.js';
 import { cmap_names, defsyms } from './drawing_data.js';
-import { x_monnam, YMonnam, docallcmd, donamelevel } from './do_name.js';
+import { x_monnam, y_monnam, YMonnam, docallcmd, donamelevel } from './do_name.js';
 import { You } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
@@ -2014,6 +2014,39 @@ function finishPunishmentMove(state) {
         newsym(state.ballx, state.bally);
 }
 
+// src/hack.c:2639 escape_from_sticky_mon(). A failed pull consumes the move;
+// success, a distant holder, or releasing a monster stuck to the hero lets
+// normal movement continue.
+async function escape_from_sticky_mon(x, y) {
+    const u = game.u;
+    const holder = u.ustuck;
+    if (!holder || (x === holder.mx && y === holder.my))
+        return false;
+
+    if (dist2(holder.mx, holder.my, u.ux, u.uy) > 2) {
+        set_ustuck(null);
+    } else if (sticks(game.youmonst.data)) {
+        set_ustuck(null);
+        await You(`release ${y_monnam(holder)}.`);
+    } else {
+        const holderCanMove = (holder.mcanmove ?? 1) !== 0;
+        const roll = rn2(holderCanMove ? 40 : 8);
+        if (roll === 3 && !holderCanMove) {
+            holder.mfrozen = 1;
+            holder.msleeping = 0;
+        }
+        if (roll > 2
+            && (game.u.uprops?.CONFLICT || holder.mconf || !holder.mtame)) {
+            await You(`cannot escape from ${y_monnam(holder)}!`);
+            nomul(0);
+            return true;
+        }
+        set_ustuck(null);
+        await You(`pull free from ${y_monnam(holder)}.`);
+    }
+    return false;
+}
+
 async function domove_core() {
     const u = game.u;
     /* C's domove() takes no arguments and reads u.dx/u.dy, which movecmd()
@@ -2089,6 +2122,9 @@ async function domove_core() {
     const dx = u.dx, dy = u.dy;
     const newx = u.ux + dx;
     const newy = u.uy + dy;
+
+    if (await escape_from_sticky_mon(newx, newy))
+        return;
 
     /* src/hack.c:2242: force-fighting an empty square, or walking into a stale
        invisible-monster marker without nopick, attacks the square instead of

@@ -1,0 +1,22 @@
+{
+  "name": "sticky-attack",
+  "description": "Debug level-20 Valkyrie creates a barbed devil and waits through adjacent attacks to exercise magical cancellation, the sticky attack, and held-hero state.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "combat.melee"
+  ],
+  "segments": [
+    {
+      "seed": 6929,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0007barbed devil\rmsms j\u0018  \u001b"
+    }
+  ]
+}

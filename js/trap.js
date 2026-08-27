@@ -73,6 +73,9 @@ import { pickup } from './pickup.js';
 import { surface, In_sokoban } from './dungeon.js';
 import { Is_airlevel, Is_waterlevel, In_endgame } from './const.js';
 import { count_wsegs } from './worm.js';
+import { defends_when_carried } from './artifact.js';
+import { ART_MAGICBANE } from './artilist_data.js';
+import { is_quest_artifact } from './questpgr.js';
 
 /* src/trap.h — trapeffect_*() return values. */
 /* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
@@ -978,10 +981,10 @@ async function trapeffect_sqky_board(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
-// src/trap.c:2323 trapeffect_anti_magic() — the hero's arm: drain 2d6 Pw,
-// with half (rounded down) coming from max when max exceeds the drain.
-// The iron-shoes and Antimagic-implosion arms need states not yet
-// reachable; the monster arm records.
+// src/trap.c:2323 trapeffect_anti_magic(): the hero's arm. Magic
+// resistance causes an implosion, then the field drains 2d6 Pw with half
+// (rounded down) coming from max when max exceeds the drain. The iron-shoes
+// and monster arms still record.
 async function trapeffect_anti_magic(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
         const u = game.u;
@@ -989,9 +992,25 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
 
         seetrap(trap);
         if (u.uprops?.ANTIMAGIC || u.uprops?.MAGIC_RES) {
-            /* the rnd(4)-per-source implosion damage + losehp */
-            note_unported_trap('trapeffect_anti_magic:antimagic_implosion');
-            return Trap_Effect_Finished;
+            let dmgval2 = rnd(4);
+            const hp = Upolyd(u) ? u.mh : u.uhp;
+
+            if (u.uprops?.HALF_PHDAM || u.uprops?.HALF_SPDAM)
+                dmgval2 += rnd(4);
+            if (u.uwep?.oartifact === ART_MAGICBANE)
+                dmgval2 += rnd(4);
+            const carriedDefense = (game.invent || []).some((obj) =>
+                obj.oartifact && !is_quest_artifact(obj)
+                    && defends_when_carried(ATTKS.AD_MAGM, obj));
+            if (carriedDefense)
+                dmgval2 += rnd(4);
+            if (u.uprops?.PASSES_WALLS)
+                dmgval2 = Math.trunc((dmgval2 + 3) / 4);
+
+            await You_feel(dmgval2 >= hp ? 'unbearably torpid!'
+                : dmgval2 >= Math.trunc(hp / 4) ? 'very lethargic.'
+                    : 'sluggish.');
+            await losehp(dmgval2, 'anti-magic implosion', KILLED_BY_AN);
         }
 
         let drain = d(2, 6); /* 2d6 => 2..12 */

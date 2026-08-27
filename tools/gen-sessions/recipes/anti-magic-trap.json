@@ -1,0 +1,20 @@
+{
+  "name": "anti-magic-trap",
+  "description": "Debug Wizard descends to a deep ordinary level and triggers an anti-magic trap to exercise magical-energy drain and status updates.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "level.ordinary",
+    "traps.magical",
+    "survival.regen-exercise"
+  ],
+  "segments": [
+    {
+      "seed": 6084,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r                   \u0006:\u0014kkkl.ly:"
+    }
+  ]
+}

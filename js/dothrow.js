@@ -38,7 +38,7 @@ import { hitval, weapon_hit_bonus } from './weapon.js';
 import { getdir } from './cmd.js';
 import { find_mac } from './worn.js';
 import { distmin } from './hacklib.js';
-import { hmon } from './uhitm.js';
+import { hmon, passive_obj } from './uhitm.js';
 import { Some_Monnam } from './do_name.js';
 import { Deaf } from './youprop.js';
 
@@ -451,7 +451,7 @@ export async function thitmonst(mon, obj) {
                 game.thrownobj = null;
                 return 1;
             }
-            note_unported_dothrow('thitmonst:passive_obj');
+            await passive_obj(mon, obj);
         } else {
             await tmiss(obj, mon, true);
             if (hmode === HMON_APPLIED)

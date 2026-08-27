@@ -1,6 +1,6 @@
 import { exercise, poisoned } from './attrib.js';
 import { A_DEX, A_STR, ERODE_NONE, ERODE_BURN, ERODE_RUST,
-         ERODE_CORRODE } from './const.js';
+         ERODE_CORRODE, EF_NONE, EF_GREASE } from './const.js';
 // uhitm.js — the hero attacking, or declining to attack, a monster.
 // C ref: src/uhitm.c
 //
@@ -24,7 +24,7 @@ import { You, Your, You_hear } from './pline.js';
 import { end_running } from './hack.js';
 import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
          pmname } from './do_name.js';
-import { destroy_items, exclam } from './zap.js';
+import { destroy_items, exclam, hit } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
          Levitation } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
@@ -33,15 +33,15 @@ import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
-import { bimanual, is_plural, is_flimsy } from './obj.js';
+import { bimanual, is_plural, is_flimsy, stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
 import { useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { yname, cxname, xname, The, makeplural, simpleonames,
-         otense } from './objnam.js';
-import { mintrap } from './trap.js';
+         otense, mshot_xname } from './objnam.js';
+import { mintrap, erode_obj } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
@@ -845,6 +845,46 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
     return malive | mhit;
 }
 
+// src/uhitm.c:6127 passive_obj() applies a monster's AT_NONE defense to
+// the object that struck it. The disenchantment arm stays recorded until
+// drain_item is available; the four erosion arms are complete.
+export async function passive_obj(mon, obj, mattk = null) {
+    if (!mon || !obj)
+        return;
+
+    const ptr = mon.data || game.mons[mon.mnum];
+    if (!mattk)
+        mattk = ptr?.mattk?.find((attk) => attk?.[0] === ATTKS.AT_NONE);
+    if (!mattk)
+        return;
+
+    switch (mattk[1]) {
+    case ATTKS.AD_FIRE:
+        if (!rn2(6) && !mon.mcan
+            && ptr !== game.mons[PMNAMES.PM_STEAM_VORTEX])
+            await erode_obj(obj, null, ERODE_BURN, EF_NONE);
+        break;
+    case ATTKS.AD_ACID:
+        if (!rn2(6))
+            await erode_obj(obj, null, ERODE_CORRODE, EF_GREASE);
+        break;
+    case ATTKS.AD_RUST:
+        if (!mon.mcan)
+            await erode_obj(obj, null, ERODE_RUST, EF_GREASE);
+        break;
+    case ATTKS.AD_CORR:
+        if (!mon.mcan)
+            await erode_obj(obj, null, ERODE_CORRODE, EF_GREASE);
+        break;
+    case ATTKS.AD_ENCH:
+        if (!mon.mcan)
+            note_unported_uhitm('passive_obj:drain_item');
+        break;
+    default:
+        break;
+    }
+}
+
 // src/uhitm.c hmon() — the damage entry point.
 //
 // Thin, but not empty: the anger_guards flag is captured BEFORE hmon_hitmon
@@ -1105,7 +1145,7 @@ async function hmon_hitmon_do_hit(hmd, mon, obj) {
         hmon_hitmon_barehands(hmd, mon);
     } else {
         if ((hmd.thrown === HMON_THROWN || hmd.thrown === HMON_KICKED)
-            && note_stone_missile_unported(obj) && passes_rocks(hmd.mdat)) {
+            && stone_missile(obj) && passes_rocks(hmd.mdat)) {
             note_unported_uhitm('hmon_hitmon:hit_no_harm');
             await wakeup(mon, true);
             hmd.doreturn = true;
@@ -1195,12 +1235,7 @@ async function hmon_hitmon_misc_obj(hmd, mon, obj) {
 // Both halves exist: passes_walls is in this file, unsolid in js/mondata.js.
 export const passes_rocks = (ptr) => passes_walls(ptr) && !unsolid(ptr);
 
-// src/dothrow.c stone_missile() /
-// src/uhitm.c shade_aware() — recorded.
-function note_stone_missile_unported(obj) {
-    note_unported_uhitm('hmon_hitmon:stone_missile');
-    return false;
-}
+// src/uhitm.c shade_aware() remains recorded.
 const shade_aware = (o) => { note_unported_uhitm('hmon_hitmon:shade_aware'); return false; };
 
 // src/uhitm.c:1663 hmon_hitmon_msg_silver() — "Your silver X sears ...".
@@ -1590,7 +1625,7 @@ async function hmon_hitmon_msg_hit(hmd, mon, obj) {
             || (hmd.thrown && (game.m_shot?.n ?? 0) > 1
                 && game.m_shot?.o === obj?.otyp))) {
         if (hmd.thrown) {
-            note_unported_uhitm('msg_hit:mshot_xname');
+            await hit(mshot_xname(obj), mon, exclam(hmd.dmg));
         } else if (!game.flags?.verbose) {
             await You('hit it.');
         } else {    /* hand_to_hand */

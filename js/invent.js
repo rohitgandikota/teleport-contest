@@ -1366,6 +1366,7 @@ export function freeinv(obj) {
     const i = inv.indexOf(obj);
     if (i >= 0)
         inv.splice(i, 1);           /* extract_nobj(obj, &gi.invent) */
+    obj.where = OBJ_FREE;
     obj.pickup_prev = 0;
     freeinv_core(obj);
     update_inventory();

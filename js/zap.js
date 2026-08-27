@@ -20,7 +20,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
          ZAP_POS, W_ARM, W_ARMS, W_WEP, W_AMUL, HI_ZAP,
-         W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR,
+         W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, M_SEEN_MAGR,
          KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, SHOPBASE } from './const.js';
@@ -1106,7 +1106,7 @@ function zaptype(type) {
     return Math.abs(type);
 }
 
-function flash_str(type) {
+export function flash_str(type) {
     const fltyp = zaptype(type);
     if (game.u.uprops?.HALLUC) {
         note_unported_zap('flash_str:hallucination');
@@ -1474,6 +1474,25 @@ async function zhitu(type, nd, fltxt, sx, sy) {
     let damage = 0;
 
     switch (abstyp % 10) {
+    case 0: { /* ZT_MAGIC_MISSILE */
+        const antimagic = !!(game.u.intrinsic?.HAntimagic
+                             || game.u.uprops?.ANTIMAGIC
+                             || game.u.uprops?.MAGIC_RES);
+        if (antimagic) {
+            note_unported_zap('zhitu:magic_missile_shieldeff');
+            await pline_The('missiles bounce off!');
+            if (game.buzzer)
+                game.buzzer.seen_resistance =
+                    (game.buzzer.seen_resistance ?? 0) | M_SEEN_MAGR;
+        } else {
+            damage = d(nd, 6);
+            exercise(A_STR, false);
+            if (game.buzzer)
+                game.buzzer.seen_resistance =
+                    (game.buzzer.seen_resistance ?? 0) & ~M_SEEN_MAGR;
+        }
+        break;
+    }
     case 1: { /* ZT_FIRE */
         const origDamage = d(nd, 6);
         if (Fire_resistance()) {

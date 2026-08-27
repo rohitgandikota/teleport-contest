@@ -58,7 +58,7 @@ import { is_pool, t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { find_offensive, use_offensive, mon_reflects } from './muse.js';
 import { steal } from './steal.js';
-import { castmu } from './mcastu.js';
+import { buzzmu, castmu } from './mcastu.js';
 
 function note_unported_mhitu(what) {
     (game.unported ||= new Set()).add(what);
@@ -1000,7 +1000,7 @@ export async function mattacku(mtmp) {
             break;
         case A.AT_MAGC:
             if (v.range2)
-                note_unported_mhitu('mattacku:buzzmu');
+                sum[i] = await buzzmu(mtmp, mattk);
             else
                 sum[i] = await castmu(mtmp, mattk, true, v.foundyou);
             break;

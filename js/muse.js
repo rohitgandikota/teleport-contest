@@ -15,9 +15,10 @@ import { ONAMES, MATERIALS } from './objects_data.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
          passes_walls, noncorporeal, unsolid, haseyes, hates_light,
-         resists_blnd, attacktype, verysmall, throws_rocks } from './mondata.js';
+         resists_blnd, attacktype, verysmall, throws_rocks,
+         is_floater } from './mondata.js';
 import { in_your_sanctuary, lined_up, monnear, onscary, mon_knows_traps,
-         mon_would_take_item, accessible } from './monmove.js';
+         mon_would_take_item, accessible, monflee } from './monmove.js';
 import { which_armor } from './worn.js';
 import { hard_helmet } from './do_wear.js';
 import { noteleport_level } from './teleport.js';
@@ -31,7 +32,10 @@ import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          M_SEEN_COLD, M_SEEN_ELEC, M_SEEN_ACID, TELEP_TRAP, N_DIRS,
          Is_rogue_level, In_endgame, Is_earthlevel, W_ARMF, MSLOW, MFAST, NON_PM,
          POLY_TRAP, u_at, KILLED_BY_AN, ZAP_POS, IS_DOOR, D_LOCKED,
-         D_CLOSED, G_GONE } from './const.js';
+         D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
+         SUPPRESS_SADDLE, SUPPRESS_IT, AUGMENT_IT, G_UNIQ,
+         MIGR_STAIRS_UP, MIGR_STAIRS_DOWN, MIGR_LADDER_UP,
+         MIGR_LADDER_DOWN, MIGR_SSTAIRS } from './const.js';
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
 import { MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
@@ -59,6 +63,12 @@ const MUSE_WAN_UNDEAD_TURNING = 20; /* shared with the defensive list */
 // src/muse.c:310 defensive item selection codes used below.
 const MUSE_POT_HEALING = 3;
 const MUSE_POT_EXTRA_HEALING = 4;
+const MUSE_UPSTAIRS = 8;
+const MUSE_DOWNSTAIRS = 9;
+const MUSE_SCR_CREATE_MONSTER = 11;
+const MUSE_UP_LADDER = 12;
+const MUSE_DN_LADDER = 13;
+const MUSE_SSTAIRS = 14;
 const MUSE_POT_FULL_HEALING = 18;
 
 // src/muse.c:2084 miscellaneous item selection codes.
@@ -637,12 +647,13 @@ function m_useup_misc(mtmp, obj) {
         mtmp.minvent.splice(at, 1);
 }
 
-// src/muse.c:441 find_defensive(), healing subset. Monsters use healing
-// while badly hurt, and also as an escape action when movement has no legal
-// square. Other defensive items remain outside this subset.
+// src/muse.c:441 find_defensive(), healing, stairs, and create-monster-scroll
+// actions. Monsters use healing while badly hurt, and can escape by a
+// staircase or ladder when movement has no legal square.
 export function find_defensive(mtmp, tryescape) {
     const mdat = mtmp.data ?? game.mons[mtmp.mnum];
     const stuck = mtmp === game.u.ustuck;
+    const immobile = mdat.mmove === 0;
 
     if (!game.m)
         game.m = {};
@@ -663,6 +674,26 @@ export function find_defensive(mtmp, tryescape) {
             || (mtmp.mhp >= 10 && mtmp.mhp * fraction >= mtmp.mhpmax))
             return false;
     }
+
+    if (tryescape && !stuck && !immobile && !mtmp.mtrapped) {
+        const stway = stairway_at(mtmp.mx, mtmp.my);
+        if (stway) {
+            const sameDungeon = stway.tolev.dnum === game.u.uz.dnum;
+            if (!sameDungeon) {
+                if (stway.up || !is_floater(mdat))
+                    game.m.has_defense = MUSE_SSTAIRS;
+            } else if (stway.up) {
+                game.m.has_defense = stway.isladder
+                    ? MUSE_UP_LADDER : MUSE_UPSTAIRS;
+            } else if (!is_floater(mdat)) {
+                game.m.has_defense = stway.isladder
+                    ? MUSE_DN_LADDER : MUSE_DOWNSTAIRS;
+            }
+            if (game.m.has_defense)
+                return true;
+        }
+    }
+
     if (nohands(mdat))
         return false;
 
@@ -686,6 +717,12 @@ export function find_defensive(mtmp, tryescape) {
         if (obj.otyp === ONAMES.POT_HEALING) {
             game.m.defensive = obj;
             game.m.has_defense = MUSE_POT_HEALING;
+        }
+        if (game.m.has_defense === MUSE_SCR_CREATE_MONSTER)
+            continue;
+        if (obj.otyp === ONAMES.SCR_CREATE_MONSTER) {
+            game.m.defensive = obj;
+            game.m.has_defense = MUSE_SCR_CREATE_MONSTER;
         }
     }
     return !!game.m.has_defense;
@@ -727,13 +764,144 @@ async function mquaffmsg(mtmp, obj) {
     }
 }
 
-// src/muse.c:796 use_defensive(), healing potion subset.
+// src/muse.c:238 mreadmsg(). Seeing or hearing a monster read reveals the
+// scroll label. The unseen path names a previously seen monster, or a
+// non-unique human to a human hero, instead of reducing it to "someone".
+async function mreadmsg(mtmp, obj) {
+    const [{ canseemon, sensemon, map_invisible, pline }, { couldsee },
+           { Deaf, Hallucination }, { observe_object },
+           { singular, doname, ansimpleoname },
+           { Monnam, mon_nam, x_monnam }, { You_hear },
+           { is_human }] = await Promise.all([
+        import('./display.js'), import('./vision.js'), import('./youprop.js'),
+        import('./o_init.js'), import('./objnam.js'), import('./do_name.js'),
+        import('./pline.js'), import('./mondata.js'),
+    ]);
+    const vismon = canseemon(mtmp);
+    if (!vismon && Deaf())
+        return false;
+
+    observe_object(obj);
+    const onambuf = singular(obj, vismon ? doname : ansimpleoname);
+    if (vismon) {
+        await pline(`${Monnam(mtmp)} reads ${onambuf}!`);
+    } else {
+        const mdat = mtmp.data ?? game.mons[mtmp.mnum];
+        const ydat = game.youmonst?.data ?? game.mons[game.u.umonnum];
+        const similar = is_human(ydat) && is_human(mdat);
+        const unique = !!(mdat.geno & G_UNIQ) || !!mtmp.isshk;
+        const recognize = !Hallucination()
+            && (mtmp.meverseen || (similar && !unique));
+        const suppress = SUPPRESS_INVISIBLE | SUPPRESS_SADDLE
+            | (recognize ? SUPPRESS_IT : AUGMENT_IT);
+        const who = x_monnam(mtmp, ARTICLE_A, null, suppress, false);
+        let action = `reading ${onambuf}`;
+        action = action.replace('reading a scroll labeled',
+            mtmp.mconf ? 'attempting to incant' : 'incant');
+
+        if (!sensemon(mtmp) && couldsee(mtmp.mx, mtmp.my)
+            && dist2(mtmp.mx, mtmp.my, game.u.ux, game.u.uy) <= 100)
+            map_invisible(mtmp.mx, mtmp.my);
+        await You_hear(`${who} ${action}.`);
+    }
+    if (mtmp.mconf) {
+        const who = vismon ? mon_nam(mtmp) : 'it';
+        await pline(`Being confused, ${who} mispronounces the magic words...`);
+    }
+    return true;
+}
+
+// src/muse.c:796 use_defensive(), physical escape, healing potion, and
+// create-monster-scroll actions.
 export async function use_defensive(mtmp) {
     const obj = game.m?.defensive || null;
     const action = game.m?.has_defense || 0;
     const checked = await defensive_precheck(mtmp, obj);
     if (checked)
         return checked;
+
+    if (action === MUSE_UPSTAIRS || action === MUSE_DOWNSTAIRS
+        || action === MUSE_UP_LADDER || action === MUSE_DN_LADDER
+        || action === MUSE_SSTAIRS) {
+        const stway = stairway_at(mtmp.mx, mtmp.my);
+        if (!stway)
+            return 0;
+
+        if (!mtmp.mflee && !mtmp.iswiz) {
+            const fleetim = 33
+                - Math.trunc(30 * mtmp.mhp / Math.max(1, mtmp.mhpmax));
+            if (fleetim)
+                monflee(mtmp, fleetim, false, false);
+        }
+
+        const [{ canseemon, pline }, { Monnam }, { migrate_monster }]
+            = await Promise.all([
+                import('./display.js'), import('./do_name.js'),
+                import('./trap.js'),
+            ]);
+        if (canseemon(mtmp)) {
+            let route;
+            if (action === MUSE_SSTAIRS)
+                route = `${stway.up ? 'up' : 'down'}stairs`;
+            else if (stway.isladder)
+                route = `${stway.up ? 'up' : 'down'} the ladder`;
+            else
+                route = `${stway.up ? 'up' : 'down'}stairs`;
+            await pline(`${Monnam(mtmp)} escapes ${route}!`);
+        }
+
+        const arrival = action === MUSE_SSTAIRS ? MIGR_SSTAIRS
+            : action === MUSE_UPSTAIRS ? MIGR_STAIRS_DOWN
+            : action === MUSE_DOWNSTAIRS ? MIGR_STAIRS_UP
+            : action === MUSE_UP_LADDER ? MIGR_LADDER_DOWN
+            : MIGR_LADDER_UP;
+        migrate_monster(mtmp, stway.tolev, arrival);
+        return 2;
+    }
+
+    if (action === MUSE_SCR_CREATE_MONSTER) {
+        if (!obj)
+            return 0;
+        let count = 1;
+        if (!rn2(73))
+            count += rnd(4);
+        if (mtmp.mconf || obj.cursed)
+            count += 12;
+
+        const { is_pool } = await import('./mon.js');
+        let monsterType = null;
+        let locationType = null;
+        if (mtmp.mconf) {
+            monsterType = locationType = game.mons[PMNAMES.PM_ACID_BLOB];
+        } else if (is_pool(mtmp.mx, mtmp.my)) {
+            locationType = game.mons[game.u.uinwater
+                ? PMNAMES.PM_GIANT_EEL : PMNAMES.PM_CROCODILE];
+        }
+
+        const messaged = await mreadmsg(mtmp, obj);
+        const { enexto } = await import('./teleport.js');
+        const { makemon } = await import('./makemon.js');
+        const { canspotmon } = await import('./display.js');
+        let known = false;
+        while (count-- > 0) {
+            const cc = { x: 0, y: 0 };
+            if (!enexto(cc, mtmp.mx, mtmp.my, locationType))
+                break;
+            const mon = makemon(monsterType, cc.x, cc.y, 0);
+            if (mon && canspotmon(mon))
+                known = true;
+        }
+
+        if (known) {
+            const { makeknown } = await import('./o_init.js');
+            makeknown(obj.otyp);
+        } else if (messaged) {
+            const { trycall } = await import('./do_name.js');
+            await trycall(obj);
+        }
+        m_useup_misc(mtmp, obj);
+        return 2;
+    }
     if (action !== MUSE_POT_HEALING
         && action !== MUSE_POT_EXTRA_HEALING
         && action !== MUSE_POT_FULL_HEALING)

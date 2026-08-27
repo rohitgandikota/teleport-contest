@@ -1,13 +1,14 @@
 import { game } from './gstate.js';
 import { pline } from './display.js';
 import { splitobj, place_object } from './mkobj.js';
-import { freeinv, stackobj } from './invent.js';
+import { addinv, freeinv, fully_identify_obj, stackobj } from './invent.js';
 import { encumber_msg, near_capacity, ACURR, acurrstr, exercise } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
-         HMON_THROWN, HMON_KICKED, HMON_APPLIED, engulfing_u } from './const.js';
+         HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
+         engulfing_u } from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
-import { singular, xname, an, The, otense, mshot_xname } from './objnam.js';
+import { singular, xname, an, the, The, otense, mshot_xname } from './objnam.js';
 import { skill_name, weapon_descr, weapon_type, P_SKILL } from './weapon.js';
 import { SKILLS, MATERIALS } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
@@ -38,6 +39,8 @@ import { getdir } from './cmd.js';
 import { find_mac } from './worn.js';
 import { distmin } from './hacklib.js';
 import { hmon } from './uhitm.js';
+import { Some_Monnam } from './do_name.js';
+import { Deaf } from './youprop.js';
 
 // dothrow.js — throwing, firing, and the path a thrown thing takes.
 // C ref: src/dothrow.c
@@ -378,6 +381,38 @@ export async function thitmonst(mon, obj) {
     /* Unicorn gifts and quest-leader catches precede dieroll in C. */
     if (obj.oclass === OCLASSES.GEM_CLASS && is_unicorn(mdat)) {
         note_unported_dothrow('thitmonst:unicorn_gift');
+        return 0;
+    }
+
+    const specialForLeader = ((obj.oartifact ?? 0) === game.urole?.questarti
+        || !!game.objects[obj.otyp].oc_unique
+        || (obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR && !obj.known))
+        && mon.m_id === game.quest_status?.leader_m_id;
+    if (hmode !== HMON_APPLIED && specialForLeader) {
+        mon.msleeping = 0;
+        mon.mstrategy &= ~STRAT_WAITMASK;
+        if (mon.mcanmove) {
+            await pline(`${Some_Monnam(mon)} catches ${the(xname(obj))}.`);
+            if (((game.u.uevent?.invoked && game.objects[obj.otyp].oc_unique
+                  && obj.otyp !== ONAMES.AMULET_OF_YENDOR)
+                 || !mon.mpeaceful)) {
+                if (mon.mpeaceful && !Deaf()) {
+                    fully_identify_obj(obj);
+                    await pline(`"${The(xname(obj))}'s part in this is finished."`);
+                    await pline('"We will guard it in case it is ever needed again."');
+                }
+                const { mpickobj } = await import('./steal.js');
+                mpickobj(mon, obj);
+            } else {
+                const { finish_quest } = await import('./quest.js');
+                await finish_quest(obj);
+                const next2u = distmin(mon.mx, mon.my, u.ux, u.uy) <= 1;
+                await pline(`${Some_Monnam(mon)} ${next2u ? 'hands' : 'tosses'} ${the(xname(obj))} back to you.`);
+                await addinv(obj);
+                await encumber_msg();
+            }
+            return 1;
+        }
         return 0;
     }
 

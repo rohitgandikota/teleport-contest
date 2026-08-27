@@ -16,7 +16,7 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, ECMD_OK,
          TER_DETECT, TER_MAP, M_AP_TYPE, M_AP_FURNITURE,
          M_AP_OBJECT, AM_MASK, AM_SANCTUM, Amask2align, Is_astralevel,
-         A_LAWFUL, A_NEUTRAL, A_CHAOTIC } from './const.js';
+         A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK } from './const.js';
 import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -161,7 +161,7 @@ function look_at_monster(mtmp, x, y) {
         buf += ", can't move (paralyzed or sleeping or busy)";
     else if (mtmp.msleeping)
         buf += ', asleep';
-    else if ((mtmp.mstrategy & 0x0000ffff) !== 0)  /* STRAT_WAITMASK */
+    else if ((mtmp.mstrategy & STRAT_WAITMASK) !== 0)
         buf += ', meditating';
     if (mtmp.mleashed)
         buf += ', leashed to you';

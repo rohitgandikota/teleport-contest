@@ -278,6 +278,15 @@ export function xname(obj) {
     const dknown = obj.dknown;
     let buf = '';
 
+    /* src/objnam.c:663, jump directly to the personal name once an artifact
+       is fully known. The ordinary object type must not prefix it. */
+    if (obj_is_pname(obj)) {
+        buf = obj.oname;
+        if (obj.oartifact && buf.startsWith('The '))
+            buf = 'the ' + buf.slice(4);
+        return /^the /i.test(buf) ? buf.slice(4) : buf;
+    }
+
     switch (obj.oclass) {
     case COIN_CLASS:
     case CHAIN_CLASS:
@@ -765,13 +774,9 @@ function the_unique_obj(obj) {
                   && (known || obj.otyp === ONAMES.AMULET_OF_YENDOR));
 }
 
-// src/artifact.c undiscovered_artifact() — C scans artidisco[]. Nothing ported
-// discovers an artifact, so the list is empty and every artifact is
-// undiscovered; the call is recorded so this stops being an assumption the
-// moment artifacts land.
+// src/artifact.c undiscovered_artifact(), C scans artidisco[].
 function undiscovered_artifact(m) {
-    note_unported_objnam('undiscovered_artifact');
-    return true;
+    return !(game.artidisco || []).includes(m);
 }
 
 // include/obj.h:421 is_plural()

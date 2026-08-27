@@ -2202,6 +2202,21 @@ export async function mondead(mdef) {
     if (idx >= 0)
         game.level.monsters.splice(idx, 1);
 
+    /* m_detach() handles quest deaths after taking the monster off the map
+       and before dropping its inventory. The order keeps the death pager
+       ahead of the Bell and quest artifact appearing on the floor. */
+    if (mdef.data.msound === MSOUND.MS_NEMESIS) {
+        const { nemdead, nemesis_stinks } = await import('./quest.js');
+        await nemdead();
+        const { stinky_nemesis } = await import('./questpgr.js');
+        if (stinky_nemesis())
+            await nemesis_stinks(mx, my);
+    }
+    if (mdef.data.msound === MSOUND.MS_LEADER) {
+        const { leaddead } = await import('./quest.js');
+        leaddead();
+    }
+
     /* "this assumes that the dead monster's map coordinates remain accurate":
        both relobj and any corpse read mx,my after this point */
     mdef.mx = mx; mdef.my = my;

@@ -32,7 +32,7 @@ import { inv_cnt } from './hack.js';
 import { place_object } from './mkobj.js';
 import { touch_artifact } from './mon.js';
 import { dropy, dropx } from './do.js';
-import { is_missile, ammo_and_launcher, setuqwep } from './wield.js';
+import { is_ammo, is_missile, ammo_and_launcher, setuqwep } from './wield.js';
 import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -42,6 +42,8 @@ import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
 import { recalc_block_point } from './vision.js';
 import { surface } from './dungeon.js';
+import { discover_artifact } from './artifact.js';
+import { ART_MJOLLNIR } from './artilist_data.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
@@ -147,14 +149,15 @@ export function addinv(obj) {
        inventory do not survive pickup. In particular, a returning missile
        must lose LOST_THROWN before mergable() compares it with the quiver. */
     obj.no_charge = 0;
+    const objWasThrown = obj.how_lost === LOST_THROWN;
     obj.how_lost = LOST_NONE;
 
     const pending = addinv_core1(obj);
-    return pending ? pending.then(() => addinv_finish(obj))
-                   : addinv_finish(obj);
+    return pending ? pending.then(() => addinv_finish(obj, objWasThrown))
+                   : addinv_finish(obj, objWasThrown);
 }
 
-function addinv_finish(obj) {
+function addinv_finish(obj, objWasThrown) {
     /* src/invent.c addinv_core0 — merging goes through merged(), which
        recomputes the stack's owt. The old inline quan += left every
        merged stack carrying a single item's weight, which under-read
@@ -188,7 +191,13 @@ function addinv_finish(obj) {
         if (result)
             return result;
     }
-    return addinv_nomerge(obj);
+    const result = addinv_nomerge(obj);
+    if (objWasThrown && game.flags?.pickup_thrown !== false
+        && !game.u.uquiver && obj.oartifact !== ART_MJOLLNIR
+        && obj.otyp !== ONAMES.AKLYS
+        && (is_missile(obj) || is_ammo(obj)))
+        setuqwep(obj);
+    return result;
 }
 
 // src/invent.c addinv_nomerge() — the no-merge arm touchfood needs so a
@@ -1666,7 +1675,7 @@ export function count_unidentified(objchn) {
 export function fully_identify_obj(otmp) {
     makeknown(otmp.otyp);
     if (otmp.oartifact)
-        note_unported_invent('fully_identify_obj:artifact');
+        discover_artifact(otmp.oartifact);
     observe_object(otmp);
     otmp.known = otmp.bknown = otmp.rknown = 1;
     if (Is_container(otmp) || otmp.otyp === ONAMES.STATUE)

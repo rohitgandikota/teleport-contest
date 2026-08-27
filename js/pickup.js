@@ -37,7 +37,7 @@ import { There, You, Your } from './pline.js';
 import { flush_screen } from './display.js';
 import { look_here } from './invent.js';
 import { nomul } from './hack.js';
-import { t_at, is_pool, is_lava, m_at } from './mon.js';
+import { t_at, is_pool, is_lava, m_at, touch_artifact } from './mon.js';
 import { unconscious } from './trap.js';
 import { is_pit } from './const.js';
 import { Blind, Levitation, Stone_resistance } from './youprop.js';
@@ -468,7 +468,9 @@ export async function pickup_object(obj, count, telekinesis) {
 
     if (obj === game.uchain)
         return 0;                       /* do not pick up attached chain */
-    if (obj.oartifact || obj.otyp === ONAMES.SCR_SCARE_MONSTER) {
+    if (obj.oartifact && !touch_artifact(obj, game.youmonst))
+        return 0;
+    if (obj.otyp === ONAMES.SCR_SCARE_MONSTER) {
         note_unported_pickup('pickup_object:special_object');
         return 0;
     }

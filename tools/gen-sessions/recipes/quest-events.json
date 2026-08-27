@@ -1,0 +1,22 @@
+{
+  "name": "quest-events",
+  "description": "Debug-mode Barbarian Quest event flow through leader admission, nemesis defeat, artifact recovery, and leader completion.",
+  "coverage": [
+    "mode.debug",
+    "level.quest",
+    "endgame.quest-events",
+    "object.artifacts",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 8890,
+      "datetime": "20000118090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen,quick_farsight,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0016?\r y  \u0006\u0014LLLLLJjj.#chat\rh  y  \u001b\u0016?\r A  \u0006\u0014HHHhkkkk.#wizkill\rh.  \u001bh  i\u001b\u0016?\r y\u0006\u0014LLLlllllllJjjj.tgh   i"
+    }
+  ]
+}

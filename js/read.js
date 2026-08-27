@@ -20,7 +20,7 @@ import { newsym, pline } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { getlin } from './cmd.js';
 import { name_to_monplus } from './mondata.js';
-import { makemon } from './makemon.js';
+import { makemon, set_malign } from './makemon.js';
 import { canseemon } from './display.js';
 import { Amonnam, trycall } from './do_name.js';
 import { MM_NOEXCLAM } from './const.js';
@@ -618,10 +618,9 @@ async function seffect_magic_mapping(sobj) {
 // src/read.c:3372 create_particular() — the wizard-mode monster maker.
 //
 // The recorded uses type a plain monster name, so what is ported is the
-// prompt/getlin loop, the name lookup and the makemon. The modifier prefixes
-// (a leading count, "saddled ", "sleeping ", "invisible ", "hidden ", the
-// tame/peaceful/hostile words and the gender terms) are recorded, as is the
-// monster-class and random-monster syntax.
+// prompt/getlin loop, the name lookup, the makemon, and the peaceful/hostile
+// prefixes. The remaining modifiers, monster-class syntax, and random-monster
+// syntax are recorded.
 export async function create_particular() {
     const CP_TRYLIM = 5;
     let tryct = CP_TRYLIM, altmsg = 0;
@@ -632,14 +631,18 @@ export async function create_particular() {
         if (buf === null || buf === '\x1b')
             return false;
         const bufp = buf.trim().replace(/\s+/g, ' ');
+        const makehostile = /^hostile /i.test(bufp);
+        const makepeaceful = /^peaceful /i.test(bufp);
+        const monster_name = makehostile ? bufp.slice(8)
+                           : makepeaceful ? bufp.slice(9) : bufp;
 
         /* create_particular_parse()'s modifier scan is recorded; the plain
-           "<monster name>" form is the one every recorded use takes. */
-        if (/^\d|saddled |sleeping |invisible |hidden |tame |peaceful |hostile |male |female /.test(bufp))
+           name and explicit hostile/peaceful forms are live. */
+        if (/^\d|saddled |sleeping |invisible |hidden |tame |male |female /i.test(bufp))
             note_unported_read('create_particular:modifiers');
 
         const box = {};
-        const mndx = name_to_monplus(bufp, box);
+        const mndx = name_to_monplus(monster_name, box);
         if (mndx !== undefined && mndx !== null && mndx >= 0) {
             const firstchoice = mndx;
             let which = mndx;
@@ -682,6 +685,12 @@ export async function create_particular() {
                               && Math.abs(mtmp.my - game.u.uy) <= 1);
                 await pline(`${Amonnam(mtmp)} appears${
                     near ? ' next to you' : ''}.`);
+            }
+
+            if (mtmp && (makehostile || makepeaceful)) {
+                mtmp.mtame = 0;
+                mtmp.mpeaceful = makepeaceful ? 1 : 0;
+                set_malign(mtmp);
             }
 
             /* A safe shapechanger replacement starts out looking like the

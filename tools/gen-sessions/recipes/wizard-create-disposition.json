@@ -1,0 +1,26 @@
+{
+  "name": "wizard-create-disposition",
+  "description": "Debug Valkyrie creates explicitly hostile and peaceful newts to exercise wizard monster-disposition prefixes and their movement behavior.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee"
+  ],
+  "segments": [
+    {
+      "seed": 6915,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile newt\r30s  "
+    },
+    {
+      "seed": 6916,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful newt\r30s"
+    }
+  ]
+}

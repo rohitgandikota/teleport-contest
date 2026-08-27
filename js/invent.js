@@ -8,7 +8,9 @@ import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { costly_spot, doname_with_price } from './shk.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
-         ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN } from './const.js';
+         ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
+         AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
+         A_NEUTRAL, A_CHAOTIC } from './const.js';
 import { hides_under } from './mondata.js';
 import { worn } from './do_wear.js';
 import { empty_handed } from './wield.js';
@@ -227,7 +229,17 @@ export function dfeature_at(x, y) {
     } else if (ltyp === SINK) {
         dfeature = 'sink';
     } else if (ltyp === ALTAR) {
-        note_unported_invent('look_here:altar_dfeature');
+        const alignment = Amask2align(loc0.altarmask & ~AM_SHRINE);
+        let god = alignment === A_NONE ? 'Moloch'
+                : alignment === A_LAWFUL ? game.urole?.lgod
+                  : alignment === A_NEUTRAL ? game.urole?.ngod
+                    : alignment === A_CHAOTIC ? game.urole?.cgod : 'someone';
+        if (god?.startsWith('_'))
+            god = god.slice(1);
+        const alignName = alignment === A_LAWFUL ? 'lawful'
+                        : alignment === A_NEUTRAL ? 'neutral'
+                          : alignment === A_CHAOTIC ? 'chaotic' : 'unaligned';
+        dfeature = `${loc0.altarmask & AM_SANCTUM ? 'high ' : ''}altar to ${god || 'someone'} (${alignName})`;
     } else if (stway) {
         dfeature = stairs_description(stway, true);
     } else if (ltyp === DRAWBRIDGE_DOWN) {
@@ -1415,8 +1427,8 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
         await dropx(obj);
     } else {
         freeinv(obj);
-        /* hitfloor() (levitation/riding drop) is not ported */
-        note_unported_invent('hold_another_object:hitfloor');
+        const { hitfloor } = await import('./do.js');
+        await hitfloor(obj, false);
     }
     return null; /* might be gone */
 }

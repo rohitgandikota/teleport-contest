@@ -655,7 +655,9 @@ export async function check_special_room(newlev) {
 
     for (const ch of game.u.uentered) {
         const roomno = ch.charCodeAt(0) - ROOMOFFSET;
-        const room = game.level?.rooms?.[roomno];
+        const room = roomno <= MAXNROFROOMS
+            ? game.level?.rooms?.[roomno]
+            : game.level?.subrooms?.find(r => r.roomnoidx === roomno);
         if (!room || room.rtype >= SHOPBASE)
             continue;
         if (room.rtype === TEMPLE) {

@@ -1,0 +1,32 @@
+{
+  "name": "sacrifice-rites",
+  "description": "Debug altar setup exercises ordinary sacrifice, floor selection, divine timeout reconciliation, altar alignment conflict, and same-race sacrifice.",
+  "coverage": [
+    "mode.debug",
+    "level.mines",
+    "religion.sacrifice",
+    "ui.getlin",
+    "ui.menus",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 7001,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014lll.:\u0017giant ant corpse\r#offer\ro   :"
+    },
+    {
+      "seed": 7002,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   :#levelchange\r5\r    \u0017red dragon corpse\r #offer\ry \u0017red dragon corpse\r #offer\ry "
+    },
+    {
+      "seed": 7004,
+      "datetime": "20000113090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\r w \u0006\u0014_.   :\u0017human corpse\r #offer\ry      "
+    }
+  ]
+}

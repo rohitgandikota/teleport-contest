@@ -759,19 +759,8 @@ export async function doextcmd() {
         return ECMD_OK;
     }
     if (name === 'offer') {
-        /* src/pray.c:1854 dosacrifice() — only the not-on-an-altar arm is
-           reachable without altars underfoot; the rite itself records */
-        const { ALTAR } = await import('./const.js');
-        const loc = game.level?.at(game.u.ux, game.u.uy);
-        if (!loc || loc.typ !== ALTAR || game.u.uswallow) {
-            const { You } = await import('./pline.js');
-            const airborne = game.u.uprops?.LEVITATION
-                             || game.u.uprops?.FLYING;
-            await You(`are not ${airborne ? 'over' : 'on'} an altar.`);
-            return ECMD_OK;
-        }
-        (game.unported ||= new Set()).add('cmd:doextcmd:offer_rite');
-        return ECMD_OK;
+        const { dosacrifice } = await import('./pray.js');
+        return await dosacrifice();
     }
     if (name === 'loot')
         return await doloot();

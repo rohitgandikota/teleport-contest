@@ -14,8 +14,9 @@ import { mkobj, curse, SPBOOK_no_NOVEL } from './mkobj.js';
 import { pm_good_location } from './sp_lev.js';
 import { PMNAMES, MMFLAGS } from './monst_data.js';
 import { ROOMOFFSET, W_ARMC, IS_ROOM, NOTONL, ALLOW_M,
-         ALLOW_ROCK, SPINE, AM_SHRINE, IS_ALTAR, In_endgame } from './const.js';
-import { mfndpos, mon_allowflags, m_at } from './mon.js';
+         ALLOW_ROCK, SPINE, AM_MASK, AM_SHRINE, IS_ALTAR,
+         In_endgame } from './const.js';
+import { mfndpos, mon_allowflags, m_at, setmangry, wakeup } from './mon.js';
 import { monnear, m_canseeu, histemple_at, inhishop } from './monmove.js';
 import { dist2, online2 } from './hacklib.js';
 import { newsym, canseemon, canspotmon, pline } from './display.js';
@@ -409,4 +410,34 @@ export function reset_hostility(roamer) {
         set_malign(roamer);
     }
     newsym(roamer.mx, roamer.my);
+}
+
+// src/priest.c:877 angry_priest() -- anger the cleric for the temple the
+// hero currently occupies. A destroyed or converted shrine releases that
+// cleric as a roaming minion of the shrine's former alignment.
+export async function angry_priest() {
+    const occupied = new Set([...(game.u.urooms || ''),
+                              ...(game.u.urooms0 || '')]);
+    const priest = (game.level?.monsters || []).find((mon) =>
+        mon.mhp > 0 && mon.ispriest && mon.epri
+        && occupied.has(String.fromCharCode(mon.epri.shroom)));
+    if (!priest)
+        return;
+
+    await wakeup(priest, false);
+    await setmangry(priest, false);
+
+    const epri = priest.epri;
+    const shrine = game.level?.at(epri.shrpos.x, epri.shrpos.y);
+    if (!shrine || !IS_ALTAR(shrine.typ)
+        || Amask2align(shrine.altarmask & AM_MASK) !== epri.shralign) {
+        const emin = { min_align: epri.shralign, renegade: false };
+        priest.emin = emin;
+        priest.mextra ||= {};
+        priest.mextra.emin = emin;
+        delete priest.mextra.epri;
+        delete priest.epri;
+        priest.ispriest = 0;
+        priest.isminion = 1;
+    }
 }

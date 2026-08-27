@@ -26,7 +26,8 @@ import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          SUPPRESS_SADDLE, SUPPRESS_IT, SUPPRESS_INVISIBLE,
          SUPPRESS_HALLUCINATION, SUPPRESS_MAPPEARANCE, AUGMENT_IT,
          MD_PAD_BOGONS,
-         has_mgivenname, MGIVENNAME, W_SADDLE } from './const.js';
+         has_mgivenname, MGIVENNAME, W_SADDLE, A_NONE, A_LAWFUL,
+         A_NEUTRAL, A_CHAOTIC } from './const.js';
 import { humanoid, is_animal, mindless, pronoun_gender, type_is_pname } from './mondata.js';
 import { canspotmon } from './display.js';
 import { ONAME_SKIP_INVUPD } from './const.js';
@@ -142,6 +143,44 @@ export function pmname(ptr, gender) {
     return n[gender] || n[2] || n[0] || '';
 }
 
+function aligned_god_name(alignment) {
+    let name = alignment === A_NONE ? 'Moloch'
+             : alignment === A_LAWFUL ? game.urole?.lgod
+               : alignment === A_NEUTRAL ? game.urole?.ngod
+                 : alignment === A_CHAOTIC ? game.urole?.cgod : 'someone';
+    if (name?.startsWith('_'))
+        name = name.slice(1);
+    return name || 'someone';
+}
+
+function priest_name(mtmp, article) {
+    const alignedPriest = mtmp.mnum === PMNAMES.PM_ALIGNED_CLERIC;
+    const highPriest = mtmp.mnum === PMNAMES.PM_HIGH_CLERIC;
+    let what = (mtmp.ispriest || alignedPriest || highPriest)
+        ? (mtmp.female ? 'priestess' : 'priest')
+        : pmname(game.mons[mtmp.mnum], mtmp.female ? 1 : 0);
+    if (highPriest)
+        what = `high ${what}`;
+    if (mtmp.minvis)
+        what = `invisible ${what}`;
+    if (mtmp.isminion && mtmp.emin?.renegade)
+        what = `renegade ${what}`;
+
+    let prefix = '';
+    if (article === ARTICLE_THE || article === ARTICLE_YOUR
+        || (article === ARTICLE_A && highPriest))
+        prefix = 'the ';
+    else if (article === ARTICLE_A) {
+        const withArticle = just_an(what);
+        prefix = withArticle.slice(0, withArticle.length - what.length);
+    }
+
+    const alignment = mtmp.ispriest
+        ? mtmp.epri?.shralign
+        : mtmp.emin?.min_align;
+    return `${prefix}${what} of ${aligned_god_name(alignment)}`;
+}
+
 // src/do_name.c:827 x_monnam() — build a monster's name.
 //
 // 205 lines in C with 396 call sites; this is its COMMON PATH only. Ported:
@@ -174,6 +213,9 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
 
     const do_hallu = Hallucination()
         && !((suppress || 0) & SUPPRESS_HALLUCINATION);
+
+    if (!do_hallu && (mtmp.ispriest || mtmp.isminion))
+        return priest_name(mtmp, article);
 
     const mdat = game.mons[mtmp.mnum];
     /* src/do_name.c mon_pmname(), ordinary monster names use Mgender(),

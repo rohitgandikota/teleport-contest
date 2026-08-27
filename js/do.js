@@ -20,11 +20,11 @@ import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK } from './const.js';
 import { t_at, m_at, is_pool, is_lava } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
-import { Blind, Levitation } from './youprop.js';
+import { Blind, Hallucination, Levitation } from './youprop.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, add_valid_menu_class, allow_category,
@@ -1115,6 +1115,57 @@ export async function dropy(obj) {
     await dropz(obj, false);
 }
 
+// src/do.c:363 doaltarobj() and src/dothrow.c:606 hitfloor().
+// An object that falls while the hero cannot reach the floor still announces
+// an altar landing, reveals its beatitude, and then enters the floor pile.
+export async function doaltarobj(obj) {
+    if (Blind())
+        return;
+
+    if (obj.oclass !== OCLASSES.COIN_CLASS) {
+        game.u.uconduct ||= {};
+        if (!game.context?.mon_moving)
+            game.u.uconduct.gnostic = (game.u.uconduct.gnostic || 0) + 1;
+    } else {
+        obj.blessed = obj.cursed = 0;
+    }
+
+    const [{ doname, otense, an }, { upstart, hcolor }]
+        = await Promise.all([import('./objnam.js'), import('./do_name.js')]);
+    if (obj.blessed || obj.cursed) {
+        const color = hcolor(obj.blessed ? NH_AMBER : NH_BLACK);
+        await pline(`There is ${an(color)} flash as ${doname(obj)} ${otense(obj, 'hit')} the altar.`);
+        if (!Hallucination())
+            obj.bknown = 1;
+    } else {
+        await pline(`${upstart(doname(obj))} ${otense(obj, 'land')} on the altar.`);
+        if (obj.oclass !== OCLASSES.COIN_CLASS)
+            obj.bknown = 1;
+    }
+}
+
+export async function hitfloor(obj, verbosely) {
+    const loc = game.level.at(game.u.ux, game.u.uy);
+    if (IS_SOFT(loc.typ) || game.u.uinwater || game.u.uswallow) {
+        await dropy(obj);
+        return;
+    }
+    if (IS_ALTAR(loc.typ)) {
+        await doaltarobj(obj);
+    } else if (verbosely) {
+        const [{ doname, otense }, { upstart }, { surface }]
+            = await Promise.all([
+                import('./objnam.js'), import('./do_name.js'),
+                import('./dungeon.js'),
+            ]);
+        await pline(`${upstart(doname(obj))} ${otense(obj, 'hit')} the ${surface(game.u.ux, game.u.uy)}.`);
+    }
+    if (ship_object_fn
+        && ship_object_fn(obj, game.u.ux, game.u.uy, false))
+        return;
+    await dropz(obj, true);
+}
+
 // src/do.c dropx() — take it out of inventory, then put it down.
 //
 // freeinv FIRST, then the placement. ship_object is the chute that swallows
@@ -1133,7 +1184,7 @@ export async function dropx(obj) {
         if (ship_object_fn && ship_object_fn(obj, game.u.ux, game.u.uy, false))
             return;
         if (IS_ALTAR(game.level.at(game.u.ux, game.u.uy)?.typ))
-            note_unported_do('dropx:doaltarobj');   /* sets bknown */
+            await doaltarobj(obj);
     }
     await dropy(obj);
 }

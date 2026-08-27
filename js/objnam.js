@@ -947,14 +947,6 @@ export function doname(obj) {
     else
         prefix = 'a ';                 /* recomputed at the end */
 
-    /* src/objnam.c:1507 — the FOOD_CLASS arm's corpse case. xname() has
-       already put "corpse" in the buffer, so corpse_xname supplies the
-       species and, for a single corpse, the article. */
-    if (obj.otyp === ONAMES.CORPSE)
-        prefix = corpse_xname(obj, prefix,
-                              (obj.quan !== 1 ? 0 : CXN_ARTICLE)
-                              | CXN_NOCORPSE) + ' ';
-
     /* src/objnam.c:1300 — "empty" goes at the beginning: a container known
        to have no contents (bag of tricks and horn of plenty key on charges
        instead and are recorded with the charge subsystem) */
@@ -1074,6 +1066,10 @@ export function doname(obj) {
     case FOOD_CLASS:
         if (obj.oeaten)
             prefix += 'partly eaten ';
+        if (obj.otyp === ONAMES.CORPSE)
+            prefix = corpse_xname(obj, prefix,
+                                  (obj.quan !== 1 ? 0 : CXN_ARTICLE)
+                                  | CXN_NOCORPSE) + ' ';
         break;
     case BALL_CLASS:
     case CHAIN_CLASS:

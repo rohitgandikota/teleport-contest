@@ -2294,6 +2294,10 @@ export function makemon(ptr, x, y, mmflags) {
              || mndx === PMNAMES.PM_LONG_WORM || mndx === PMNAMES.PM_GIANT_EEL)
             && !game.u.uhave?.amulet && rn2(5))
             mtmp.msleeping = true;
+    } else if (byyou) {
+        /* src/makemon.c:1391. Creation beside the hero draws the monster
+           once here and again in the common arrival block below. */
+        newsym(mtmp.mx, mtmp.my);
     }
 
     /* src/makemon.c:1404 — a long worm grows a random tail at creation */

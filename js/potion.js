@@ -373,11 +373,15 @@ export async function make_hallucinated(xtime, talk, mask = 0) {
 
     if (changed) {
         (game.disp ||= {}).botl = true;
-        const { see_monsters, see_objects, see_traps } =
+        const { see_monsters, see_objects, see_traps, swallowed } =
             await import('./display.js');
-        see_monsters();
-        see_objects();
-        see_traps();
+        if (game.u.uswallow) {
+            await swallowed(0);
+        } else {
+            see_monsters();
+            see_objects();
+            see_traps();
+        }
         update_inventory();
         if (talk) {
             await pline(!xtime

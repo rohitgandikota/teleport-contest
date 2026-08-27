@@ -13,8 +13,8 @@ import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
          TIMEOUT, ARTICLE_THE, XKILL_NOMSG, ECMD_CANCEL, UTOTYPE_NONE }
     from './const.js';
 import { getdir, getlin } from './cmd.js';
-import { docrt, map_trap, pline, see_monsters, swallowed,
-         unmap_invisible, canspotmon } from './display.js';
+import { docrt, map_trap, pline, unmap_invisible, canspotmon }
+    from './display.js';
 import { pluslvl, losexp } from './exper.js';
 import { level_tele } from './teleport.js';
 import { do_mapping } from './detect.js';
@@ -332,18 +332,8 @@ export async function wiz_intrinsic() {
             const { make_blinded } = await import('./potion.js');
             await make_blinded(oldtimeout + 30, true);
         } else if (key === 'HALLUC') {
-            const uprops = (game.u.uprops ||= {});
-            uprops.HALLUC = oldtimeout + 30;
-            (game.u.intrinsic ||= {}).HHallucination = oldtimeout + 30;
-            if (!oldtimeout && !uprops.HALLUC_RES) {
-                if (game.u.uswallow)
-                    await swallowed(0);
-                else
-                    see_monsters();
-                (game.disp ||= {}).botl = true;
-                await pline(`Oh wow!  Everything ${game.u.ublind
-                    ? 'feels' : 'looks'} so cosmic!`);
-            }
+            const { make_hallucinated } = await import('./potion.js');
+            await make_hallucinated(oldtimeout + 30, true);
         } else if (key === 'FAST') {
             const intr = (game.u.intrinsic ||= {});
             const word = intr.HFast | 0;

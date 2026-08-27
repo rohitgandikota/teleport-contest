@@ -1,0 +1,19 @@
+{
+  "name": "monster-article-special",
+  "description": "Hallucinating debug Valkyrie creates a newt whose display name is unicorn pegasus kitten, pinning C's consonant-sound article exception.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.hallucination",
+    "level.ordinary",
+    "monster.movement"
+  ],
+  "segments": [
+    {
+      "seed": 7240,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\rh\r \u0007newt\r"
+    }
+  ]
+}

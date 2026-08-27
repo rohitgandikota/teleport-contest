@@ -10,7 +10,7 @@ import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
 import { docrt, flush_screen, pline } from './display.js';
 import { discover_object } from './o_init.js';
-import { an, xname } from './objnam.js';
+import { an, just_an, xname } from './objnam.js';
 import { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          PICK_ONE, ECMD_OK, GETOBJ_PROMPT, GETOBJ_EXCLUDE,
          GETOBJ_DOWNPLAY, GETOBJ_SUGGEST, ONAME_VIA_NAMING,
@@ -171,8 +171,7 @@ function priest_name(mtmp, article) {
         || (article === ARTICLE_A && highPriest))
         prefix = 'the ';
     else if (article === ARTICLE_A) {
-        const withArticle = just_an(what);
-        prefix = withArticle.slice(0, withArticle.length - what.length);
+        prefix = just_an(what);
     }
 
     const alignment = mtmp.ispriest
@@ -301,18 +300,10 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
     switch (article) {
     case ARTICLE_YOUR: return 'your ' + buf;
     case ARTICLE_THE:  return 'the ' + buf;
-    case ARTICLE_A:    return just_an(buf);
+    case ARTICLE_A:    return just_an(buf) + buf;
     case ARTICLE_NONE:
     default:           return buf;
     }
-}
-
-// src/objnam.c just_an() — "a " or "an ". C also handles a leading vowel that
-// sounds like a consonant and single letters; only the vowel rule is here.
-function just_an(str) {
-    if (!str) return str;
-    note_do_name_unported('just_an:special_cases');
-    return ('aeiou'.includes(str[0].toLowerCase()) ? 'an ' : 'a ') + str;
 }
 
 // src/do_name.c:1152 a_monnam() — ARTICLE_A.

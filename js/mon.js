@@ -37,12 +37,14 @@ import { newsym, canseemon, canspotmon, pline,
          unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
-import { remove_monster, place_monster, goodpos } from './makemon.js';
+import { remove_monster, place_monster, goodpos, grow_up } from './makemon.js';
 import { enexto_core, enexto, noteleport_level, rloc, tele_restrict,
          rloc_to_flag } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE, ARTICLE_A,
-         ARTICLE_YOUR,
+         ARTICLE_YOUR, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES,
+         SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
+         TELEPORT_CONTROL, TELEPAT, LAST_PROP,
          SUPPRESS_SADDLE } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
@@ -792,12 +794,98 @@ export function healmon(mtmp, amt, overheal) {
     return mtmp.mhp - oldhp;
 }
 
-// src/mon.c m_consume_obj() — the monster swallows otmp.
+function monster_intrinsic_possible(type, ptr) {
+    const conveys = ptr.mconveys | 0;
+    switch (type) {
+    case FIRE_RES:   return (conveys & MFLAGS.MR_FIRE) !== 0;
+    case COLD_RES:   return (conveys & MFLAGS.MR_COLD) !== 0;
+    case SLEEP_RES:  return (conveys & MFLAGS.MR_SLEEP) !== 0;
+    case DISINT_RES: return (conveys & MFLAGS.MR_DISINT) !== 0;
+    case SHOCK_RES:  return (conveys & MFLAGS.MR_ELEC) !== 0;
+    case POISON_RES: return (conveys & MFLAGS.MR_POISON) !== 0;
+    case ACID_RES:   return (conveys & MFLAGS.MR_ACID) !== 0;
+    case STONE_RES:  return (conveys & MFLAGS.MR_STONE) !== 0;
+    case TELEPORT:   return (ptr.mflags1 & MFLAGS.M1_TPORT) !== 0;
+    case TELEPORT_CONTROL:
+        return (ptr.mflags1 & MFLAGS.M1_TPORT_CNTRL) !== 0;
+    case TELEPAT:
+        return ptr.pmidx === PMNAMES.PM_FLOATING_EYE
+            || ptr.pmidx === PMNAMES.PM_MIND_FLAYER
+            || ptr.pmidx === PMNAMES.PM_MASTER_MIND_FLAYER;
+    default:
+        return false;
+    }
+}
+
+function monster_corpse_intrinsic(ptr) {
+    const conveysStrength = (ptr.mflags2 & MFLAGS.M2_GIANT) !== 0;
+    let count = conveysStrength ? 1 : 0;
+    let prop = conveysStrength ? -1 : 0;
+
+    for (let i = 1; i <= LAST_PROP; i++) {
+        if (!monster_intrinsic_possible(i, ptr))
+            continue;
+        if (!rn2(++count))
+            prop = i;
+    }
+    if (conveysStrength && count === 1 && !rn2(2))
+        prop = 0;
+    return prop;
+}
+
+function monster_should_givit(prop, ptr) {
+    let chance = 15;
+    if (prop === POISON_RES
+        && (ptr.pmidx === PMNAMES.PM_KILLER_BEE
+            || ptr.pmidx === PMNAMES.PM_SCORPION)
+        && !rn2(4))
+        chance = 1;
+    else if (prop === TELEPORT)
+        chance = 10;
+    else if (prop === TELEPORT_CONTROL)
+        chance = 12;
+    else if (prop === TELEPAT)
+        chance = 1;
+    return ptr.mlevel > rn2(chance);
+}
+
+async function monster_give_prop(mtmp, prop) {
+    const messages = new Map([
+        [FIRE_RES, 'shivers slightly.'],
+        [COLD_RES, 'looks quite warm.'],
+        [SLEEP_RES, 'looks wide awake.'],
+        [DISINT_RES, 'looks very firm.'],
+        [SHOCK_RES, 'crackles with static electricity.'],
+        [POISON_RES, 'looks healthy.'],
+    ]);
+    const msg = messages.get(prop);
+    if (!msg)
+        return;
+
+    const intrinsic = 1 << (prop - 1);
+    const alreadyIntrinsic = ((mtmp.data.mresists | 0)
+                              | (mtmp.mintrinsics | 0)) & intrinsic;
+    mtmp.mintrinsics = (mtmp.mintrinsics | 0) | intrinsic;
+    if (canseemon(mtmp) && !alreadyIntrinsic)
+        await pline(Monnam(mtmp) + ' ' + msg);
+}
+
+async function monster_givit(mtmp, ptr) {
+    const prop = monster_corpse_intrinsic(ptr);
+    if (DEADMONSTER(mtmp))
+        return;
+    if (ptr.pmidx === PMNAMES.PM_STALKER) {
+        note_unported_mon('m_consume_obj:stalker_invisibility');
+        return;
+    }
+    if (prop && monster_should_givit(prop, ptr))
+        await monster_give_prop(mtmp, prop);
+}
+
+// src/mon.c m_consume_obj(): the monster swallows otmp.
 //
-// Every arm past delobj() is gated on a corpse, glob, egg or container
-// predicate. For the metal object meatmetal() feeds it none of them can be
-// true, so this is the whole function on that path rather than a reduction of
-// it; the guards are the C's own, evaluated, not assumed.
+// Wraith growth and ordinary corpse resistance conveyance are implemented.
+// The remaining special food effects stay explicitly recorded.
 export function m_consume_obj(mtmp, otmp) {
     const ispet = mtmp.mtame;
 
@@ -815,6 +903,9 @@ export function m_consume_obj(mtmp, otmp) {
                          || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
                          || otmp.otyp === ONAMES.EGG
                          || otmp.otyp === ONAMES.CARROT);
+    const foodCorpse = otmp.otyp === ONAMES.CORPSE
+        || otmp.otyp === ONAMES.EGG || otmp.otyp === ONAMES.TIN;
+    const effectpm = foodCorpse ? otmp.corpsenm : NON_PM;
 
     /* src/mon.c — C computes polyfood/mlevelgain/mhealup/mstoning (all pure
        predicates, no draws), then calls delobj() UNCONDITIONALLY, and only
@@ -825,10 +916,39 @@ export function m_consume_obj(mtmp, otmp) {
        mon_givit and are recorded, but the object must go either way. */
     delobj(otmp); /* munch */
 
+    if (effectpm === PMNAMES.PM_WRAITH) {
+        if ((!ispet
+             || mtmp.m_lev < mtmp.data.mlevel + 15))
+            grow_up(mtmp, null);
+        return;
+    }
+
+    const corpseptr = game.mons[corpsenm];
+    const effectptr = game.mons[effectpm];
+    const polyfood = effectptr
+        && ((effectptr.mflags2 & MFLAGS.M2_SHAPESHIFTER)
+            || dmgtype(effectptr, ATTKS.AD_POLY));
+    const deadmimic = otmp.otyp === ONAMES.CORPSE
+        && (corpsenm === PMNAMES.PM_SMALL_MIMIC
+            || corpsenm === PMNAMES.PM_LARGE_MIMIC
+            || corpsenm === PMNAMES.PM_GIANT_MIMIC);
+    const specialEffect = polyfood
+        || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
+        || effectpm === PMNAMES.PM_NURSE
+        || otmp.otyp === ONAMES.CARROT
+        || (effectptr
+            && (touch_petrifies(effectptr)
+                || effectpm === PMNAMES.PM_MEDUSA))
+        || deadmimic
+        || (otmp.otyp === ONAMES.EGG
+            && effectpm === PMNAMES.PM_PYROLISK);
+
+    if (corpseptr && !specialEffect)
+        return monster_givit(mtmp, corpseptr);
+
     if (has_effects) {
-        /* polyfood/mlevelgain/mhealup/mstoning and their newcham, grow_up,
-           monstone and mon_givit consequences; all draw. */
-        note_unported_mon('m_consume_obj:corpse_effects');
+        if (specialEffect)
+            note_unported_mon('m_consume_obj:corpse_effects');
         return;
     }
 }
@@ -983,7 +1103,7 @@ export async function meatobj(mtmp) {
             } else if (game.flags?.verbose) {
                 await You_hear('a slurping sound.');
             }
-            m_consume_obj(mtmp, otmp);
+            await m_consume_obj(mtmp, otmp);
             if (mtmp.mnum !== original_mnum || DEADMONSTER(mtmp))
                 return DEADMONSTER(mtmp) ? 2 : 1;
         }

@@ -675,7 +675,7 @@ async function dog_eat(mtmp, obj, x, y, devour) {
             if (edog.apport <= 0)
                 edog.apport = 1;        /* impossible() in C */
         }
-        m_consume_obj(mtmp, obj);
+        await m_consume_obj(mtmp, obj);
     }
 
     return DEADMONSTER(mtmp) ? 2 : 1;

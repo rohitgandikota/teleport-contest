@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T14:31:00.226Z. Local commit: `2cef13f`.
+Last refreshed: 2026-08-27T14:35:34.591Z. Local commit: `604b497`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
 
 ## Score summary
@@ -10,7 +10,7 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 10872/11257 | 96.58% | 72/74 | 1399108/1399108 (100.00%) | 14/322 |
+| Supplemental C suite | 10889/11274 | 96.59% | 73/75 | 1401471/1401471 (100.00%) | 14/322 |
 
 ## Contest position and generalization
 
@@ -24,9 +24,9 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 11250/11257 |
-| Cursor positions | 11405/11405 | 10872/11257 |
-| Startup and per-turn estimate | 64+0.43/turn | 61+0.54/turn |
+| Cells only | 11405/11405 | 11267/11274 |
+| Cursor positions | 11405/11405 | 10889/11274 |
+| Startup and per-turn estimate | 64+0.43/turn | 59+0.54/turn |
 
 ## Supplemental capture caveats
 
@@ -45,6 +45,7 @@ Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T14:35:34.591Z | `604b497` | 11405/11405 | 10889/11274 | 6032/11265 | 3 |
 | 2026-08-27T14:31:00.226Z | `2cef13f` | 11405/11405 | 10872/11257 | 6032/11265 | 3 |
 | 2026-08-27T14:13:10.104Z | `5acfbc5` | 11405/11405 | 10832/11217 | 6032/11265 | 3 |
 | 2026-08-27T14:01:24.536Z | `efcc502` | 11405/11405 | 9965/10348 | 6032/11265 | 3 |

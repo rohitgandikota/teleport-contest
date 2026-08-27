@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T19:32:09.000Z. Local commit: `5b52da1`.
+Last refreshed: 2026-08-27T19:44:35.000Z. Local commit: `beda92b`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
 Leaderboard page checked: 2026-08-27T19:32:09.000Z. The page reported "Updated 9h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
 
@@ -11,7 +11,7 @@ Leaderboard page checked: 2026-08-27T19:32:09.000Z. The page reported "Updated 9
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 13141/13526 | 97.15% | 94/96 | 1518783/1518783 (100.00%) | 14/413 |
+| Supplemental C suite | 13208/13593 | 97.17% | 95/97 | 1524349/1524349 (100.00%) | 14/413 |
 
 ## Contest position and generalization
 
@@ -21,15 +21,15 @@ Leaderboard page checked: 2026-08-27T19:32:09.000Z. The page reported "Updated 9
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `5b52da1` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `beda92b` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 13519/13526 |
-| Cursor positions | 11405/11405 | 13141/13526 |
-| Startup and per-turn estimate | 68+0.45/turn | 51+0.54/turn |
+| Cells only | 11405/11405 | 13586/13593 |
+| Cursor positions | 11405/11405 | 13208/13593 |
+| Startup and per-turn estimate | 66+0.44/turn | 51+0.54/turn |
 
 ## Supplemental capture caveats
 
@@ -48,6 +48,7 @@ Leaderboard page checked: 2026-08-27T19:32:09.000Z. The page reported "Updated 9
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T19:44:35.000Z | `beda92b` | 11405/11405 | 13208/13593 | 6032/11265 | 3 |
 | 2026-08-27T19:32:09.000Z | `5b52da1` | 11405/11405 | 13141/13526 | 6032/11265 | 3 |
 | 2026-08-27T19:10:23.000Z | `49e5707` | 11405/11405 | 13105/13490 | 6032/11265 | 3 |
 | 2026-08-27T18:56:19.000Z | `b35e8f1` | 11405/11405 | 12945/13330 | 6032/11265 | 3 |

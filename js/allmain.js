@@ -63,7 +63,7 @@ import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
          UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
-         Upolyd, Is_waterlevel, Is_airlevel } from './const.js';
+         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
 import { lookaround, end_running, unmul, nomul,
@@ -294,14 +294,15 @@ export async function newgame() {
         // functions that take a real monster (dmgval, mhitm_ad_phys,
         // could_seduce), which read .data and .mnum.
         g.youmonst = { data: g.mons[g.u.umonnum], mnum: g.u.umonnum };
-        /* set_uasmon()'s PROPSET(INFRAVISION) — infravision is a property
+        /* set_uasmon()'s PROPSET(INFRAVISION) - infravision is a property
            of the hero's physical race (mondata.c:838): orcs, elves,
-           dwarves and gnomes see warm monsters in the dark */
+           dwarves and gnomes see warm monsters in the dark. C stores the
+           source as FROMFORM, outside the low TIMEOUT bits. */
         {
             const racemon = g.mons[g.urace?.mnum];
             (g.u.intrinsic ||= {}).HInfravision =
-                !!(racemon
-                   && (racemon.mflags3 & 256 /* M3_INFRAVISION */));
+                (racemon && (racemon.mflags3 & 256 /* M3_INFRAVISION */))
+                    ? FROMFORM : 0;
         }
         g.u.ulevel = g.u.ulevelmax = 1;
         /* type and record were filled by newhp() above, where C sets them. */

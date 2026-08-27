@@ -1,0 +1,19 @@
+{
+  "name": "racial-infravision",
+  "description": "Debug gnome records extended attributes before and after a real turn, proving that physical-form infravision is permanent rather than a one-turn intrinsic timeout.",
+  "coverage": [
+    "mode.debug",
+    "static.roles-races",
+    "survival.timed-status",
+    "turn.timers",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 6926,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:gnome,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0018  \u001b.\u0018  \u001b:"
+    }
+  ]
+}

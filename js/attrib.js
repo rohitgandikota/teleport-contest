@@ -519,7 +519,10 @@ export async function adjabil(oldlevel, newlevel) {
     };
 
     await grant(role_abil(game.flags.initrole ?? 0), FROMEXPER);
-    await grant(race_abil(game.flags.initrace ?? 0), FROMRACE);
+    const raceNoun = game.urace?.noun;
+    await grant((raceNoun === 'elf' || raceNoun === 'orc')
+                    ? race_abil(game.flags.initrace ?? 0) : [],
+                FROMRACE);
 }
 
 // src/attrib.c:815 check_innate_abil() — would the role/race table have

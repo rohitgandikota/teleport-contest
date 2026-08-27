@@ -24,7 +24,7 @@ import { You, Your, You_hear } from './pline.js';
 import { end_running } from './hack.js';
 import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
          pmname } from './do_name.js';
-import { destroy_items, exclam, hit } from './zap.js';
+import { destroy_items, exclam, hit, obj_resists } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
          Levitation } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
@@ -35,11 +35,11 @@ import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, is_plural, is_flimsy, stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
-import { useup } from './invent.js';
+import { obj_extract_self, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
-import { yname, cxname, xname, The, makeplural, simpleonames,
+import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          otense, mshot_xname } from './objnam.js';
 import { mintrap, erode_obj } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster } from './makemon.js';
@@ -53,9 +53,10 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          TEST_MOVE, ROOM, CORR, xdir, ydir } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
-import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
+import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
+         setmnotwielded, use_skill, uwep_skill_type, weapon_type } from './weapon.js';
 import { find_mac } from './worn.js';
-import { worn } from './do_wear.js';
+import { greatest_erosion, worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
          is_whirly } from './mondata.js';
@@ -76,8 +77,9 @@ import { STR18 } from './const.js';
 import { ACURR } from './attrib.js';
 import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_RINGR, W_RINGL, P_KNIFE, P_WHIP, XKILL_NOMSG,
-         STRAT_WAITMASK, engulfing_u, NEW_MOON } from './const.js';
+         W_ARMG, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
+         NEED_WEAPON, XKILL_NOMSG, STRAT_WAITMASK, engulfing_u,
+         NEW_MOON } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
@@ -1493,6 +1495,8 @@ function backstabbable(mon) {
 }
 
 async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
+    let wtype, monwep;
+
     /* "normal" weapon usage */
     hmd.use_weapon_skill = true;
     hmd.dmg = dmgval(obj, mon);
@@ -1514,8 +1518,47 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
         await You(`strike ${mon_nam(mon)} from behind!`);
         hmd.dmg += rnd(game.u.ulevel);
         hmd.hittxt = true;
-    } else {
-        note_unported_uhitm('hmon_hitmon:special_attacks');
+    } else if (hmd.dieroll === 2 && obj === game.u.uwep
+               && obj.oclass === OCLASSES.WEAPON_CLASS
+               && (bimanual(obj)
+                   || (Role_if(PMNAMES.PM_SAMURAI)
+                       && obj.otyp === ONAMES.KATANA && !worn(W_ARMS)))
+               && ((wtype = uwep_skill_type()) !== P_NONE
+                   && P_SKILL(wtype) >= P_SKILLED)
+               && ((monwep = MON_WEP(mon)) != null
+                   && !is_flimsy(monwep)
+                   && !obj_resists(monwep,
+                                   50 + 15 * (greatest_erosion(obj)
+                                              - greatest_erosion(monwep)),
+                                   100))) {
+        setmnotwielded(mon, monwep);
+        mon.weapon_check = NEED_WEAPON;
+
+        const owner = s_suffix(Monnam(mon));
+        const shatter = canseemon(mon)
+            ? `${owner} ${aobjnam(monwep, 'shatter')}`
+            : `${owner} weapon${monwep.quan === 1 ? '' : 's'} ${
+                otense(monwep, 'shatter')}`;
+        await pline(`${shatter} from the force of your blow!`);
+        obj_extract_self(monwep);
+        if (rn2(4)) {
+            const fleetime = d(2, 3);
+            if (!mon.mflee && canseemon(mon)
+                && M_AP_TYPE(mon) !== M_AP_FURNITURE
+                && M_AP_TYPE(mon) !== M_AP_OBJECT) {
+                if (!mon.mcanmove || !hmd.mdat.mmove) {
+                    const name = Monnam(mon);
+                    const immobile = name.startsWith('The ')
+                        ? `The immobile ${name.slice(4)}`
+                        : `Immobile ${name}`;
+                    await pline(`${immobile} seems to flinch.`);
+                } else {
+                    await pline(`${Monnam(mon)} turns to flee.`);
+                }
+            }
+            monflee(mon, fleetime, true, false);
+        }
+        hmd.hittxt = true;
     }
 
     if (obj.oartifact

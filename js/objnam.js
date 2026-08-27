@@ -36,7 +36,7 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
-         A_LAWFUL } from './const.js';
+         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -2484,7 +2484,7 @@ async function wiztrapwish(d) {
     return null;
 }
 
-// src/objnam.c:3554 wizterrainwish(), altar, wall, and regular-door arms.
+// src/objnam.c:3554 wizterrainwish(), sink, altar, wall, and regular-door arms.
 async function wizterrainwish(d) {
     const x = game.u.ux, y = game.u.uy;
     const lev = game.level?.at(x, y);
@@ -2492,7 +2492,14 @@ async function wizterrainwish(d) {
     if (!lev)
         return null;
 
-    if (wanted.endsWith('altar')) {
+    if (wanted.endsWith('sink')) {
+        const oldtyp = lev.typ;
+        lev.typ = SINK;
+        if (oldtyp !== SINK)
+            game.level.flags.nsinks = (game.level.flags.nsinks || 0) + 1;
+        lev.looted = d.looted ? S_LPUDDING | S_LDWASHER | S_LRING : 0;
+        await pline('A sink.');
+    } else if (wanted.endsWith('altar')) {
         const alignment = wanted.startsWith('chaotic ') ? A_CHAOTIC
                         : wanted.startsWith('neutral ') ? A_NEUTRAL
                           : wanted.startsWith('lawful ') ? A_LAWFUL

@@ -1695,7 +1695,7 @@ function _statusLine2() {
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
           + ` HP:${shownHp}(${maxHp || 0})`
           + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
-          + ` AC:${u.uac ?? 0}`;
+          + ` AC:${game._deferred_status_ac_until_more ?? u.uac ?? 0}`;
     if (Upolyd(u))
         s += ` HD:${mons[u.umonnum].mlevel}`;
     else {
@@ -2099,6 +2099,12 @@ export async function more() {
     } else {
         delete game._deferred_status_hp_until_more;
         delete game._deferred_status_hp_more_count;
+    }
+    if ((game._deferred_status_ac_more_count | 0) > 1) {
+        game._deferred_status_ac_more_count--;
+    } else {
+        delete game._deferred_status_ac_until_more;
+        delete game._deferred_status_ac_more_count;
     }
 
     /* win/tty/topl.c more():234 — ESC sets WIN_STOP: the player has asked to

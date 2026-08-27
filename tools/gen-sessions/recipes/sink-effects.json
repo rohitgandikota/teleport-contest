@@ -1,0 +1,69 @@
+{
+  "name": "sink-effects",
+  "description": "Fresh-seed debug sink routes for scalding water, sewer monsters, random potions, ring discovery, broken pipes, animated water, experience, hero polymorph, and poison gas.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "terrain.furniture",
+    "object.potions",
+    "object.rings",
+    "forms.polymorph",
+    "monster.special-effects"
+  ],
+  "segments": [
+    {
+      "seed": 8847,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8825,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8817,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8843,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8827,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8801,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy"
+    },
+    {
+      "seed": 8803,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy    "
+    },
+    {
+      "seed": 8829,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Plumber,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017sink\rqy  "
+    }
+  ]
+}

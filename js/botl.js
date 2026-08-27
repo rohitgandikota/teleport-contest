@@ -114,12 +114,12 @@ export function bot_conditions() {
         cond += ' Blind';
     if (intr.HDeaf || props.DEAF) cond += ' Deaf';
     if (intr.HHallucination) cond += ' Hallu';
-    if (intr.HStun || props.STUNNED) cond += ' Stun';
     if (intr.HConfusion || props.CONFUSION) cond += ' Conf';
     if (props.LEVITATION || intr.HLevitation) cond += ' Lev';
     else if (props.FLYING || intr.HFlying
              || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY)))
         cond += ' Fly';
+    if (intr.HStun || props.STUNNED) cond += ' Stun';
     if (u.usteed) cond += ' Ride';
     return cond;
 }

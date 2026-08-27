@@ -15,8 +15,9 @@ import { rn2, rnd } from './rng.js';
 import { stop_occupation } from './allmain.js';
 import { nomul } from './hack.js';
 import { TIMEOUT, FROMOUTSIDE, WT_NOISY_INV, FOOT, A_DEX, A_CON,
-         PLNMSG_ONE_ITEM_HERE } from './const.js';
+         PLNMSG_ONE_ITEM_HERE, FULL_MOON } from './const.js';
 import { ONAMES } from './objects_data.js';
+import { PMNAMES } from './monst_data.js';
 import { pline } from './display.js';
 
 // include/timeout.h:11 enum timer_type
@@ -234,16 +235,34 @@ async function slip_or_trip() {
     }
 }
 
-// src/timeout.c:660 nh_timeout() — the per-turn countdown of intrinsic
-// timeouts. Only the intrinsic-timer loop is live; the luck rebalancing,
-// storm/fumaroles arms and most expiry cases need absent state and are
-// recorded when their trigger appears.
+// src/timeout.c:588 nh_timeout() - per-turn luck and intrinsic timeouts.
 export async function nh_timeout() {
-    if (game.u.uluck)
-        note_unported_timeout('nh_timeout:luck_rebalance');
+    const u = game.u;
+    let baseluck = game.flags?.moonphase === FULL_MOON ? 1 : 0;
+    if (game.flags?.friday13)
+        baseluck--;
+    if (game.quest_status?.killed_leader)
+        baseluck -= 4;
+    const role = game.urole?.mnum;
+    if ((role === PMNAMES.PM_ARCHEOLOGIST || role === 'PM_ARCHEOLOGIST')
+        && u.uarmh?.otyp === ONAMES.FEDORA)
+        baseluck++;
+
+    const luckPeriod = (u.uhave?.amulet || u.ugangr) ? 300 : 600;
+    if ((u.uluck || 0) !== baseluck
+        && (game.moves || 0) % luckPeriod === 0) {
+        const { stone_luck } = await import('./invent.js');
+        const timeLuck = stone_luck(false);
+        const noStone = !(game.invent || []).some(
+            (obj) => obj.otyp === ONAMES.LUCKSTONE) && !stone_luck(true);
+        if (u.uluck > baseluck && (noStone || timeLuck < 0))
+            u.uluck--;
+        else if (u.uluck < baseluck && (noStone || timeLuck > 0))
+            u.uluck++;
+    }
     /* src/timeout.c:621, successful prayer freezes every dangerous
        timeout, including wizard-set intrinsics, until prayer finishes. */
-    if (game.u.uinvulnerable)
+    if (u.uinvulnerable)
         return;
 
     /* src/timeout.c:631 sickness_dialogue(), followed later in nh_timeout by

@@ -787,7 +787,11 @@ function attributes_enlightenment() {
     }
 
     if (u.ugangr) {
-        note_unported_insight('attributes:ugangr');
+        let anger = `${u.ugangr > 6 ? 'extremely '
+                     : u.ugangr > 3 ? 'very ' : ''}angry with you`;
+        if (game.wizard)
+            anger += ` (${u.ugangr})`;
+        enl_msg(u_gname(), ' is', ' was', ` ${anger}`, '');
     } else if (!en_final) {
         /* src/insight.c:1936 — suppressed when the game is over: death can
            change can_pray()'s answer */

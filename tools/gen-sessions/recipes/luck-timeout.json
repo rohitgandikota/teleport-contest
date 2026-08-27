@@ -1,0 +1,20 @@
+{
+  "name": "luck-timeout",
+  "description": "Debug Valkyrie angers Tyr, records the resulting luck, then waits through the 300-turn anger timeout boundary and records luck moving one point toward its calendar baseline.",
+  "coverage": [
+    "mode.debug",
+    "religion.luck-calendar",
+    "religion.prayer",
+    "turn.timers",
+    "ui.count-repeat",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 6924,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " :#pray\ry n  \u0018  \u001b296s \u0018  \u001b:"
+    }
+  ]
+}

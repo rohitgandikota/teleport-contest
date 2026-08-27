@@ -90,13 +90,12 @@ for (let i = 0; i < N; i++) {
     try {
         await runSegment({
             seed: String(seedOf(i)),
-            nethackrc: `OPTIONS=${cfg}\n`,
+            nethackrc: `OPTIONS=${cfg},!legacy,!tutorial,!tips,pettype:none,!safe_wait,symset:DECgraphics\n`,
             storage: newStorage(),
             datetime: '2026-07-25T12:00:00Z',
-            /* spaces dismiss --More-- prompts (the legacy blurb, the
-               welcome line) so the game reaches the move loop and a few
-               turns of it, which is where most unported paths live */
-            keys: ' '.repeat(60).split(''),
+            /* One space dismisses the welcome line, then periods spend real
+               turns so monster movement, timeouts, and combat can execute. */
+            moves: ' ' + '.'.repeat(80),
             onFrame: () => {},
         });
     } catch (e) {

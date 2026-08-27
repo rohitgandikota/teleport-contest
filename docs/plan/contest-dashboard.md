@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-27T16:04:54.000Z. Local commit: `9291d9b`.
+Last refreshed: 2026-08-27T16:10:26.000Z. Local commit: `705b190`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
 Leaderboard page checked: 2026-08-27T16:04:54.000Z. The page reported "Updated 5h ago" and displayed the same scores; its raw JSON endpoint was unavailable.
 
@@ -11,7 +11,7 @@ Leaderboard page checked: 2026-08-27T16:04:54.000Z. The page reported "Updated 5
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 11058/11443 | 96.64% | 77/79 | 1419842/1419842 (100.00%) | 14/364 |
+| Supplemental C suite | 11140/11525 | 96.66% | 78/80 | 1423836/1423836 (100.00%) | 14/364 |
 
 ## Contest position and generalization
 
@@ -26,9 +26,9 @@ Leaderboard page checked: 2026-08-27T16:04:54.000Z. The page reported "Updated 5
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 11436/11443 |
-| Cursor positions | 11405/11405 | 11058/11443 |
-| Startup and per-turn estimate | 76+0.51/turn | 62+0.60/turn |
+| Cells only | 11405/11405 | 11518/11525 |
+| Cursor positions | 11405/11405 | 11140/11525 |
+| Startup and per-turn estimate | 80+0.54/turn | 71+0.63/turn |
 
 ## Supplemental capture caveats
 
@@ -47,6 +47,7 @@ Leaderboard page checked: 2026-08-27T16:04:54.000Z. The page reported "Updated 5
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-27T16:10:26.000Z | `705b190` | 11405/11405 | 11140/11525 | 6032/11265 | 3 |
 | 2026-08-27T16:04:54.000Z | `9291d9b` | 11405/11405 | 11058/11443 | 6032/11265 | 3 |
 | 2026-08-27T15:52:49.000Z | `ef90b12` | 11405/11405 | 10990/11375 | 6032/11265 | 3 |
 | 2026-08-27T15:40:45.000Z | `95a8fca` | 11405/11405 | 10929/11314 | 6032/11265 | 3 |

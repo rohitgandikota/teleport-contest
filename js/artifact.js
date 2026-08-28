@@ -792,6 +792,37 @@ async function invoke_create_ammo(obj) {
     return ECMD_TIME;
 }
 
+// src/artifact.c:2162 ENLIGHTENING. enlightenment() builds the text, while
+// the artifact caller owns the same menu paging and redraw used by C.
+async function invoke_enlightening() {
+    const { enlightenment, MAGICENLIGHTENMENT, ENL_GAMEINPROGRESS } =
+        await import('./insight.js');
+    const { tty_create_nhwindow, tty_destroy_nhwindow, tty_start_menu,
+            tty_add_menu, tty_end_menu, tty_display_nhwindow, tty_next_page,
+            NHW_MENU, ATR_NONE } = await import('./tty/wintty.js');
+    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE } =
+        await import('./const.js');
+    const { NO_COLOR } = await import('./terminal.js');
+    const { xwaitforspace } = await import('./tty/getline.js');
+    const { docrt } = await import('./display.js');
+    const win = tty_create_nhwindow(NHW_MENU);
+
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (const line of enlightenment(MAGICENLIGHTENMENT,
+                                      ENL_GAMEINPROGRESS)) {
+        tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR, line,
+                     MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, null);
+    await tty_display_nhwindow(win);
+    await xwaitforspace(' \r\n\x1b');
+    while (tty_next_page(win))
+        await xwaitforspace(' \r\n\x1b');
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return ECMD_TIME;
+}
+
 // src/artifact.c:2131 arti_invoke(), ordinary property powers. These toggle
 // an extrinsic bit immediately. Turning one off starts its cooldown; trying
 // to turn it back on too soon spends 3d10 more cooldown and has no effect.
@@ -904,6 +935,13 @@ export async function doinvoke() {
         return invoke_energy_boost(obj);
     case 'CREATE_AMMO':
         return invoke_create_ammo(obj);
+    case 'ENLIGHTENING':
+        return invoke_enlightening();
+    case 'LEV_TELE': {
+        const { level_tele } = await import('./teleport.js');
+        await level_tele();
+        return ECMD_TIME;
+    }
     default:
         break;
     }

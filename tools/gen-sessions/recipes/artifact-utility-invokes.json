@@ -1,0 +1,26 @@
+{
+  "name": "artifact-utility-invokes",
+  "description": "Debug quest-artifact holders exercise magical enlightenment and controlled level-teleport invocation powers.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging",
+    "level.ordinary",
+    "object.artifacts"
+  ],
+  "segments": [
+    {
+      "seed": 6227,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:monk,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Eyes of the Overworld\r #invoke\nj #invoke\nj:"
+    },
+    {
+      "seed": 6228,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Fate\r #invoke\ne2\r#invoke\ne:"
+    }
+  ]
+}

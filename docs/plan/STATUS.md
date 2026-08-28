@@ -1,5 +1,29 @@
 # STATUS — live handoff board
 
+## 2026-08-28: ordinary candle and lamp fuel timers
+
+The `lamp-candle-burnout` C oracle uses fresh debug seed 2210. It disables
+random monster generation, removes the two fixed monsters, burns a tallow
+candle through its 75-turn and 15-turn warnings and final consumption, then
+burns an oil lamp through the 150, 100, 50, and 25 fuel checkpoints and final
+extinction. A brass lantern is lit and snuffed in the same trace. Two fresh
+recordings were byte-identical, with SHA-256
+`b08e74d1ad04137ac214851b8db760b204ea4c63bfdb6234bc0ffc4222dc5ebc`.
+
+The port matches all 198/198 screens, 198/198 cells, 198/198 cursors, and
+7,614/7,614 RNG calls. The implementation adds checkpointed lamp and candle
+burn timers, fuel restoration when a light is snuffed, source-defined warning
+messages and burnout, candle consumption, permanent magic-lamp handling,
+candle light radii, and the `(lit)` and `partly used` inventory suffixes.
+
+Public local remains exact at 44/44 sessions, 11,405/11,405 screens, and
+792,838/792,838 RNG calls. The expanded supplemental corpus is 146/148 exact,
+with 25,133/25,518 screens, 25,511/25,518 cells, 25,133/25,518 cursors, and
+1,856,044/1,856,044 RNG calls. The only failures remain the two documented C
+recorder artifacts in `bones-persistence` and `gehennom-tour`. Coverage is
+105 covered, 0 partial, and 0 gaps. Eighty fresh generalization games reached
+no unported path, and all 44 public hang checks pass.
+
 ## 2026-08-27: complete supplemental coverage matrix
 
 The `medusa-petrification` C oracle uses fresh debug seed 6922. An unprotected

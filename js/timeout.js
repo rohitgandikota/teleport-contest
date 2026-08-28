@@ -195,30 +195,68 @@ export function obj_stop_timers(obj) {
     obj.timed = Math.max(0, (obj.timed || 0) - removed);
 }
 
-// src/timeout.c:1712 begin_burn(), limited to the oil-potion path currently
-// reached by apply.js. The timer stores the next fuel checkpoint while age
-// holds any fuel beyond that checkpoint, exactly as the C object does.
+function candle_light_range(obj) {
+    if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION)
+        return obj.spe < 4 ? 2 : obj.spe < 7 ? 3 : 4;
+
+    let radius = 1;
+    while (radius * radius <= obj.quan)
+        radius++;
+    return radius;
+}
+
+const ordinary_candle = (obj) => obj.otyp === ONAMES.TALLOW_CANDLE
+    || obj.otyp === ONAMES.WAX_CANDLE;
+
+// src/timeout.c:1712 begin_burn(). The timer stores the next fuel checkpoint
+// while age holds any fuel beyond that checkpoint, exactly as the C object
+// does.
 export async function begin_burn(obj, already_lit) {
-    if (!obj?.age)
+    if (!obj || (!obj.age && obj.otyp !== ONAMES.MAGIC_LAMP))
         return;
-    if (obj.otyp !== ONAMES.POT_OIL) {
+
+    let radius = 3;
+    let turns = 0;
+    let do_timer = true;
+
+    if (obj.otyp === ONAMES.MAGIC_LAMP) {
+        obj.lamplit = 1;
+        do_timer = false;
+    } else if (obj.otyp === ONAMES.POT_OIL) {
+        turns = obj.age;
+        if (obj.odiluted)
+            turns = Math.trunc((3 * turns + 2) / 4);
+        radius = 1;
+    } else if (obj.otyp === ONAMES.BRASS_LANTERN
+               || obj.otyp === ONAMES.OIL_LAMP) {
+        turns = obj.age > 150 ? obj.age - 150
+              : obj.age > 100 ? obj.age - 100
+                : obj.age > 50 ? obj.age - 50
+                  : obj.age > 25 ? obj.age - 25 : obj.age;
+    } else if (ordinary_candle(obj)
+               || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
+        turns = obj.age > 75 ? obj.age - 75
+              : obj.age > 15 ? obj.age - 15 : obj.age;
+        radius = candle_light_range(obj);
+    } else {
         note_unported_timeout('begin_burn:otyp=' + obj.otyp);
         return;
     }
 
-    let turns = obj.age;
-    if (obj.odiluted)
-        turns = Math.trunc((3 * turns + 2) / 4);
-
-    if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, obj)) {
-        obj.lamplit = 1;
-        obj.age -= turns;
-        if (obj.where === OBJ_INVENT && !already_lit) {
-            const { update_inventory } = await import('./invent.js');
-            update_inventory();
+    if (do_timer) {
+        if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, obj)) {
+            obj.lamplit = 1;
+            obj.age -= turns;
+            if (obj.where === OBJ_INVENT && !already_lit) {
+                const { update_inventory } = await import('./invent.js');
+                update_inventory();
+            }
+        } else {
+            obj.lamplit = 0;
         }
-    } else {
-        obj.lamplit = 0;
+    } else if (obj.where === OBJ_INVENT && !already_lit) {
+        const { update_inventory } = await import('./invent.js');
+        update_inventory();
     }
 
     if (obj.lamplit && !already_lit) {
@@ -237,7 +275,7 @@ export async function begin_burn(obj, already_lit) {
             note_unported_timeout('begin_burn:object_location');
         } else {
             const { new_light_source, LS_OBJECT } = await import('./light.js');
-            new_light_source(x, y, 1, LS_OBJECT, obj.o_id);
+            new_light_source(x, y, radius, LS_OBJECT, obj.o_id);
             game.vision_full_recalc = 1;
         }
     }
@@ -248,6 +286,9 @@ export async function begin_burn(obj, already_lit) {
 export async function end_burn(obj, timer_attached) {
     if (!obj?.lamplit)
         return;
+
+    if (obj.otyp === ONAMES.MAGIC_LAMP)
+        timer_attached = false;
 
     if (timer_attached) {
         const remaining = stop_timer(BURN_OBJECT, obj);
@@ -267,7 +308,11 @@ export async function end_burn(obj, timer_attached) {
 }
 
 async function burn_object(obj, timeout) {
-    if (obj?.otyp !== ONAMES.POT_OIL) {
+    const lamp = obj?.otyp === ONAMES.BRASS_LANTERN
+        || obj?.otyp === ONAMES.OIL_LAMP;
+    const candle = ordinary_candle(obj);
+    const menorah = obj?.otyp === ONAMES.CANDELABRUM_OF_INVOCATION;
+    if (obj?.otyp !== ONAMES.POT_OIL && !lamp && !candle && !menorah) {
         note_unported_timeout('burn_object:otyp=' + obj?.otyp);
         return;
     }
@@ -281,7 +326,14 @@ async function burn_object(obj, timeout) {
         }
         obj.age = 0;
         await end_burn(obj, false);
-        if (obj.where === OBJ_FLOOR || obj.where === OBJ_MINVENT) {
+        if (menorah) {
+            obj.spe = 0;
+            const { weight, update_inventory } = await import('./invent.js');
+            obj.owt = weight(obj);
+            if (obj.where === OBJ_INVENT)
+                update_inventory();
+        } else if ((candle || obj.otyp === ONAMES.POT_OIL)
+                   && (obj.where === OBJ_FLOOR || obj.where === OBJ_MINVENT)) {
             const was_floor = obj.where === OBJ_FLOOR;
             const ox = obj.ox, oy = obj.oy;
             const { obj_extract_self } = await import('./invent.js');
@@ -305,11 +357,16 @@ async function burn_object(obj, timeout) {
         x = obj.ocarry.mx;
         y = obj.ocarry.my;
     }
-    if (x !== undefined) {
-        const [{ Blind }, { cansee }] = await Promise.all([
-            import('./youprop.js'), import('./vision.js'),
-        ]);
-        if (!Blind() && cansee(x, y)) {
+    const [{ Blind, Hallucination }, { cansee }, names] = await Promise.all([
+        import('./youprop.js'), import('./vision.js'), import('./objnam.js'),
+    ]);
+    const canseeit = x !== undefined && !Blind() && cansee(x, y);
+    const bytouch = obj.where === OBJ_INVENT
+        && obj.otyp !== ONAMES.BRASS_LANTERN;
+    const many = menorah ? obj.spe > 1 : obj.quan > 1;
+
+    if (obj.otyp === ONAMES.POT_OIL) {
+        if (canseeit) {
             if (obj.where === OBJ_INVENT)
                 await pline('Your potion of oil has burnt away.');
             else if (obj.where === OBJ_FLOOR) {
@@ -319,21 +376,90 @@ async function burn_object(obj, timeout) {
                 note_unported_timeout('burn_object:minvent_message');
             }
         }
-    }
-    await end_burn(obj, false);
-
-    const { obj_extract_self, useupall } = await import('./invent.js');
-    if (obj.where === OBJ_INVENT) {
-        useupall(obj);
-    } else {
-        const was_floor = obj.where === OBJ_FLOOR;
-        const ox = obj.ox, oy = obj.oy;
-        obj_extract_self(obj);
-        if (was_floor) {
-            const { newsym } = await import('./display.js');
-            newsym(ox, oy);
+        await end_burn(obj, false);
+        const { obj_extract_self, useupall } = await import('./invent.js');
+        if (obj.where === OBJ_INVENT) {
+            useupall(obj);
+        } else {
+            const was_floor = obj.where === OBJ_FLOOR;
+            const ox = obj.ox, oy = obj.oy;
+            obj_extract_self(obj);
+            if (was_floor) {
+                const { newsym } = await import('./display.js');
+                newsym(ox, oy);
+            }
         }
+        return;
     }
+
+    if (lamp) {
+        if (obj.age === 150 || obj.age === 100 || obj.age === 50) {
+            if (canseeit) {
+                if (obj.otyp === ONAMES.BRASS_LANTERN) {
+                    await pline('Your lantern is getting dim.');
+                } else {
+                    await pline(`${names.Yname2(obj)} flickers${
+                        obj.age === 50 ? ' considerably' : ''}.`);
+                }
+            }
+        } else if (obj.age === 25) {
+            if (canseeit) {
+                if (obj.otyp === ONAMES.BRASS_LANTERN)
+                    await pline('Your lantern is getting dim.');
+                else
+                    await pline(`${names.Yname2(obj)} seems about to go out.`);
+            }
+        } else if (obj.age === 0) {
+            if (canseeit || bytouch) {
+                await pline(obj.otyp === ONAMES.BRASS_LANTERN
+                    ? 'Your lantern has run out of power.'
+                    : `${names.Yname2(obj)} has gone out.`);
+            }
+            await end_burn(obj, false);
+        }
+        if (obj.age)
+            await begin_burn(obj, true);
+        return;
+    }
+
+    if (obj.age === 75 && canseeit) {
+        const subject = menorah ? `Your candelabrum's candle${many ? 's are' : ' is'}`
+                                : `${many ? 'Your candles are' : 'Your candle is'}`;
+        await pline(`${subject} getting short.`);
+    } else if (obj.age === 15 && canseeit) {
+        const subject = menorah ? `Your candelabrum's candle${many ? "s'" : "'s"}`
+                                : many ? "Your candles'" : "Your candle's";
+        await pline(`${subject} flame${many ? 's' : ''} flicker${many ? '' : 's'} low!`);
+    } else if (obj.age === 0) {
+        if (canseeit || bytouch) {
+            if (menorah) {
+                await pline(`Your candelabrum's flame${many ? 's die' : ' dies'}.`);
+            } else {
+                await pline(`${names.Yname2(obj)} ${many ? 'are' : 'is'} consumed!`);
+                if (Hallucination())
+                    await pline(many ? 'They shriek!' : 'It shrieks!');
+                else if (!Blind())
+                    await pline(many ? 'Their flames die.' : 'Its flame dies.');
+            }
+        }
+        await end_burn(obj, false);
+        if (menorah) {
+            obj.spe = 0;
+            const { weight, update_inventory } = await import('./invent.js');
+            obj.owt = weight(obj);
+            if (obj.where === OBJ_INVENT)
+                update_inventory();
+        } else {
+            const { useupall } = await import('./invent.js');
+            if (obj.where === OBJ_INVENT)
+                useupall(obj);
+            else
+                note_unported_timeout('burn_object:candle_location');
+        }
+        return;
+    }
+    if (obj.age)
+        await begin_burn(obj, true);
 }
 
 // src/timeout.c:2222 run_timers() — fire every timer whose time has come.

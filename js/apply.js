@@ -41,13 +41,13 @@ import { cansee } from './vision.js';
 import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE, FINGER, HAND } from './const.js';
-import { OBJ_NAME, The, Tobjnam, Yobjnam2, an, aobjnam, doname, singular,
+import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular,
          xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
          otense, vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
-import { bimanual, is_boots, is_gloves } from './obj.js';
+import { bimanual, Is_candle, is_boots, is_gloves } from './obj.js';
 import { clear_splitobjs, mkobj, rnd_class, set_bknown, splitobj,
          unbless } from './mkobj.js';
 import { can_blow, haseyes, nohands, passes_walls,
@@ -103,27 +103,27 @@ function on_stairs_at_u() {
     return false;
 }
 
-// src/apply.c:1628 use_lamp(), including begin_burn/end_burn's permanent
-// magic-lamp path. Oil-lamp and lantern fuel timers are not represented yet,
-// but their on/off state and light source still match until fuel expires.
+// src/apply.c:1628 use_lamp(). Lamps, lanterns, and loose candles share the
+// same on/off path; begin_burn() selects their fuel checkpoints and radius.
 async function use_lamp(obj) {
-    const lamp = obj.otyp === ONAMES.BRASS_LANTERN ? 'lantern' : 'lamp';
-    const { new_light_source, del_light_source, LS_OBJECT } =
-        await import('./light.js');
+    const candle = Is_candle(obj);
+    const lamp = obj.otyp === ONAMES.BRASS_LANTERN ? 'lantern'
+               : candle ? null : 'lamp';
 
     if (obj.lamplit) {
-        await pline(`Your ${lamp} is now off.`);
-        del_light_source(LS_OBJECT, obj.o_id);
-        obj.lamplit = 0;
-        game.vision_full_recalc = 1;
-        update_inventory();
+        if (lamp)
+            await pline(`Your ${lamp} is now off.`);
+        else
+            await You(`snuff out ${yname(obj)}.`);
+        await end_burn(obj, true);
         return;
     }
     if (Underwater()) {
-        await pline('This is not a diving lamp.');
+        await pline(candle ? "Sorry, fire and water don't mix."
+                           : 'This is not a diving lamp.');
         return;
     }
-    if ((obj.otyp !== ONAMES.MAGIC_LAMP && !obj.age)
+    if ((!candle && obj.otyp !== ONAMES.MAGIC_LAMP && !obj.age)
         || (obj.otyp === ONAMES.MAGIC_LAMP && !obj.spe)) {
         if (obj.otyp === ONAMES.BRASS_LANTERN)
             await pline(game.u.ublind ? nothing_seems_to_happen
@@ -133,24 +133,29 @@ async function use_lamp(obj) {
         return;
     }
     if (obj.cursed && !rn2(2)) {
-        if (obj.otyp !== ONAMES.BRASS_LANTERN && !rn2(3)) {
+        if ((obj.otyp === ONAMES.OIL_LAMP || obj.otyp === ONAMES.MAGIC_LAMP)
+            && !rn2(3)) {
             note_unported_apply('use_lamp:oil_spill');
             await pline('The lamp spills and covers your fingers with oil.');
         } else if (!game.u.ublind) {
-            await pline(`Your ${lamp} flickers for a moment, then dies.`);
+            await pline(`${Yname2(obj)} ${otense(obj, 'flicker')} for a moment, then ${
+                otense(obj, 'die')}.`);
         } else {
             await pline(nothing_seems_to_happen);
         }
         return;
     }
 
-    await pline(`Your ${lamp} is now on.`);
-    obj.lamplit = 1;
-    if (obj.otyp !== ONAMES.MAGIC_LAMP)
-        note_unported_apply('use_lamp:fuel_timer');
-    new_light_source(game.u.ux, game.u.uy, 3, LS_OBJECT, obj.o_id);
-    game.vision_full_recalc = 1;
-    update_inventory();
+    if (lamp) {
+        await pline(`Your ${lamp} is now on.`);
+    } else {
+        const name = Yname2(obj);
+        const possessive = name.endsWith('s') ? `${name}'` : `${name}'s`;
+        const many = obj.quan !== 1;
+        await pline(`${possessive} flame${many ? 's' : ''} ${
+            many ? 'burn' : 'burns'}${Blind() ? '.' : ' brightly!'}`);
+    }
+    await begin_burn(obj, false);
 }
 
 // src/apply.c:1703 light_cocktail(). A lit oil potion is a one-item stack
@@ -318,13 +323,13 @@ async function use_candle(obj) {
 
     const candelabrum = carrying(ONAMES.CANDELABRUM_OF_INVOCATION);
     if (!candelabrum || candelabrum.spe === 7) {
-        note_unported_apply('use_candle:lamp_path');
+        await use_lamp(obj);
         return;
     }
 
     if ((await tty_yn_function(
         `Attach ${yname(obj)} to ${yname(candelabrum)}?`, 'yn', 'n')) !== 'y') {
-        note_unported_apply('use_candle:declined_lamp_path');
+        await use_lamp(obj);
         return;
     }
 

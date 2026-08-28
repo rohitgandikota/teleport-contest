@@ -34,6 +34,7 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          ismnum, SPE_LIM, RANDOM_TIN, GOLD_SYM, WT_IRON_BALL_INCR,
          P_POLEARMS, P_HAMMER, ONAME_WISH, ONAME_NO_FLAGS,
          HAND, ROOMOFFSET, NO_TRAP, TRAPNUM, ROCKTRAP, MAGIC_PORTAL,
+         BURN_OBJECT,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
@@ -1070,6 +1071,25 @@ export function doname(obj) {
         if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
             const suffix = `${plur(obj.spe)}${obj.lamplit ? ', lit' : ' attached'}`;
             bp += ` (${obj.spe} of 7 candle${suffix})`;
+            break;
+        }
+        if (obj.otyp === ONAMES.OIL_LAMP || obj.otyp === ONAMES.MAGIC_LAMP
+            || obj.otyp === ONAMES.BRASS_LANTERN || Is_candle(obj)) {
+            if (Is_candle(obj)) {
+                const fullBurnTime = 20 * game.objects[obj.otyp].oc_cost;
+                let turnsLeft = obj.age || 0;
+                if (obj.lamplit) {
+                    const timer = (game.timer_base || []).find((candidate) =>
+                        candidate.func_index === BURN_OBJECT
+                        && candidate.arg === obj);
+                    turnsLeft += Math.max(0, (timer?.timeout || game.moves)
+                                             - (game.moves || 0));
+                }
+                if (turnsLeft < fullBurnTime)
+                    prefix += 'partly used ';
+            }
+            if (obj.lamplit)
+                bp += ' (lit)';
             break;
         }
         /* charged tools show "(0:n)" once the count is known */

@@ -1,0 +1,19 @@
+{
+  "name": "applied-eyewear",
+  "description": "A debug Wizard applies and removes a blindfold and lenses, then tries each while the other facewear slot is occupied to cover blindness redraw and both conflict messages.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2195,
+      "datetime": "20000110102000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed blindfold\r\u0017blessed lenses\ri\u001baoaoapaoapaoapao"
+    }
+  ]
+}

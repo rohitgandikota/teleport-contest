@@ -42,6 +42,7 @@ import { nohands, passes_walls, throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown } from './o_init.js';
+import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -586,6 +587,23 @@ async function use_figurine(obj) {
     return ECMD_TIME;
 }
 
+// src/apply.c:4244, applying facewear toggles the selected item directly.
+async function use_blindfold(obj) {
+    const ublindf = game.u.ublindf;
+    if (obj === ublindf) {
+        if (!await cursed(obj))
+            await Blindf_off(obj);
+    } else if (!ublindf) {
+        await Blindf_on(obj);
+    } else {
+        await You(`are already ${ublindf.otyp === ONAMES.TOWEL
+            ? 'covered by a towel'
+            : ublindf.otyp === ONAMES.BLINDFOLD
+                ? 'wearing a blindfold' : 'wearing lenses'}.`);
+    }
+    return ECMD_TIME;
+}
+
 // src/apply.c doapply() — the 'a' command.
 export async function doapply() {
     if (nohands(game.youmonst.data)) {
@@ -608,6 +626,9 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.STETHOSCOPE)
         return await use_stethoscope(obj);
+
+    if (obj.otyp === ONAMES.BLINDFOLD || obj.otyp === ONAMES.LENSES)
+        return await use_blindfold(obj);
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

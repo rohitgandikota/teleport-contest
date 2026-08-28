@@ -3348,6 +3348,19 @@ export function gloves_simple_name(gloves) {
     return 'gloves';
 }
 
+// src/objnam.c:5551 boots_simple_name(), shoes vs boots based on discovery.
+export function boots_simple_name(boots) {
+    if (boots && boots.dknown) {
+        const ocl = game.objects[boots.otyp];
+        const actualn = OBJ_NAME(ocl), descrpn = OBJ_DESCR(ocl);
+        if ((descrpn && descrpn.toLowerCase().includes('shoes'))
+            || (ocl.oc_name_known && actualn
+                && actualn.toLowerCase().includes('shoes')))
+            return 'shoes';
+    }
+    return 'boots';
+}
+
 // src/objnam.c:1090 mshot_xname() — "the Nth arrow" during a volley.
 export function mshot_xname(obj) {
     let onm = xname(obj);

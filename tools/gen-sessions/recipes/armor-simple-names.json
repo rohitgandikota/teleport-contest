@@ -1,0 +1,20 @@
+{
+  "name": "armor-simple-names",
+  "description": "A debug Wizard wears and removes low shoes, high boots, and a reflection shield to exercise category-specific armor names.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.identification",
+    "turn.occupation-interrupt",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2194,
+      "datetime": "20000110101500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed low boots\rWoTo\u0017blessed high boots\rWpTp\u0017blessed shield of reflection\rWqTq"
+    }
+  ]
+}

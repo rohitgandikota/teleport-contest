@@ -33,7 +33,7 @@ import { stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
-         suit_simple_name, Yname2 } from './objnam.js';
+         boots_simple_name, suit_simple_name, Yname2 } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
@@ -1538,6 +1538,7 @@ async function armoroff(otmp) {
     if (cat === 5) what = cloak_simple_name(otmp);
     if (cat === 2) what = helm_simple_name(otmp);
     if (cat === 3) what = gloves_simple_name(otmp);
+    if (cat === 4) what = boots_simple_name(otmp);
 
     if (delay) {
         nomul(delay);

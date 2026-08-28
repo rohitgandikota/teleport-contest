@@ -492,14 +492,15 @@ export const is_silent  = (d) => d.msound === MFLAGS.MS_SILENT;
 
 // src/mondata.c:567 can_blow() — can this monster blow a horn?
 //
-// The hero's Strangled arm is not modelled; it only applies to youmonst and a
-// monster is never that here.
 export function can_blow(mtmp) {
     const d = game.mons[mtmp.mnum];
 
     if ((is_silent(d) || d.msound === MFLAGS.MS_BUZZ)
         && (breathless(d) || verysmall(d) || !has_head(d)
             || d.mlet === MONSYMS.S_EEL))
+        return false;
+    if (mtmp === game.youmonst
+        && (game.u.intrinsic?.HStrangled || game.u.uprops?.STRANGLED))
         return false;
     return true;
 }

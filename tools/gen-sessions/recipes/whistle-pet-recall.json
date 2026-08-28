@@ -1,0 +1,21 @@
+{
+  "name": "whistle-pet-recall",
+  "description": "A debug Wizard uses a tin whistle to call a starting pet, then uses an unknown and a known magic whistle to cover relocation, identification, paging, and cumulative pet feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.pets",
+    "object.identification",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2196,
+      "datetime": "20000110102500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:dog,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed tin whistle\r\u0017blessed magic whistle\ri\u001banao i\u001bao "
+    }
+  ]
+}

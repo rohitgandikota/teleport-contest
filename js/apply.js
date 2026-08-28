@@ -6,12 +6,13 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          nothing_happens, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
-         Is_airlevel, Is_waterlevel } from './const.js';
+         Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
+         RLOC_NONE } from './const.js';
 import { carrying, getobj, update_inventory, useup, useupall, weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
-         is_pool } from './mon.js';
+         is_pool, mnexto } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
 import { Blind, Hallucination, Deaf, Underwater } from './youprop.js';
@@ -25,8 +26,8 @@ import { walk_path } from './dothrow.js';
 import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
 import { ONAMES } from './objects_data.js';
-import { map_invisible, pline } from './display.js';
-import { You, There } from './pline.js';
+import { canspotmon, map_invisible, newsym, pline } from './display.js';
+import { You, There, You_feel } from './pline.js';
 import { dist2 } from './hacklib.js';
 import { cansee } from './vision.js';
 import { wield_tool } from './wield.js';
@@ -34,15 +35,17 @@ import { body_part } from './polyself.js';
 import { FACE } from './const.js';
 import { OBJ_NAME, The, Tobjnam, xname, yname, the, makeplural,
          vtense } from './objnam.js';
-import { pmname, x_monnam } from './do_name.js';
+import { pmname, upstart, x_monnam, y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { is_boots, is_gloves } from './obj.js';
 import { splitobj } from './mkobj.js';
-import { nohands, passes_walls, throws_rocks } from './mondata.js';
+import { can_blow, nohands, passes_walls, throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
+import { DEADMONSTER } from './monst.js';
+import { change_luck } from './attrib.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -604,6 +607,133 @@ async function use_blindfold(obj) {
     return ECMD_TIME;
 }
 
+// src/apply.c:476 use_whistle().
+async function use_whistle(obj) {
+    if (!can_blow(game.youmonst)) {
+        await You('are incapable of using the whistle.');
+    } else if (Underwater()) {
+        await You(`blow bubbles through ${yname(obj)}.`);
+    } else {
+        if (Deaf())
+            await You_feel(`rushing air tickle your ${body_part(NOSE)}.`);
+        else
+            await You(`produce a ${obj.cursed ? 'shrill' : 'high'} whistling sound.`);
+        wake_nearby(true);
+        if (obj.cursed)
+            note_unported_apply('use_whistle:vault_summon_gd');
+    }
+}
+
+function whistle_count_name(count) {
+    return count === 2 ? 'two' : count === 3 ? 'three'
+         : count === 4 ? 'four' : count <= 7 ? 'several' : 'many';
+}
+
+// src/apply.c:516 magic_whistled(). Relocate every tame companion next to the
+// hero, identify an unknown whistle when the move is visible, and combine the
+// relocation feedback once the whistle is already known.
+async function magic_whistled(obj) {
+    if ((game.level?.flags?.stasis_until ?? 0) >= game.moves)
+        return;
+
+    const alreadyDiscovered = !!game.objects[obj.otyp].oc_name_known;
+    let shift = 0, appear = 0, disappear = 0, trapped = 0;
+    let shiftName = '', appearName = '', disappearName = '';
+
+    for (const mtmp of [...(game.level?.monsters || [])]) {
+        if (DEADMONSTER(mtmp) || !mtmp.mtame || mtmp === game.u.usteed)
+            continue;
+        if (mtmp.mtrapped) {
+            mtmp.mtrapped = 0;
+            note_unported_apply('magic_whistled:fill_pit');
+        }
+
+        const oldSeen = canspotmon(mtmp);
+        const oldName = oldSeen ? y_monnam(mtmp) : '';
+        if (M_AP_TYPE(mtmp))
+            seemimic(mtmp);
+        const oldx = mtmp.mx, oldy = mtmp.my;
+        await mnexto(mtmp, alreadyDiscovered ? RLOC_NONE : RLOC_MSG);
+        if (mtmp.mx === oldx && mtmp.my === oldy)
+            continue;
+
+        if (mtmp.mundetected) {
+            mtmp.mundetected = 0;
+            newsym(mtmp.mx, mtmp.my);
+        }
+        const previousMessage = game._prevmsg;
+        const wasAlive = !DEADMONSTER(mtmp);
+        const { mintrap } = await import('./trap.js');
+        await mintrap(mtmp, NO_TRAP_FLAGS);
+        if (wasAlive && DEADMONSTER(mtmp))
+            change_luck(-1);
+        if (game._prevmsg !== previousMessage) {
+            trapped++;
+            continue;
+        }
+
+        const newSeen = !DEADMONSTER(mtmp) && canspotmon(mtmp);
+        if (newSeen) {
+            const newName = y_monnam(mtmp);
+            if (oldSeen) {
+                if (++shift === 1)
+                    shiftName = `${newName} shifts location`;
+            } else if (++appear === 1) {
+                appearName = `${newName} appears`;
+            }
+        } else if (oldSeen && ++disappear === 1) {
+            disappearName = `${oldName} disappears`;
+        }
+    }
+
+    if (!alreadyDiscovered) {
+        if (shift + appear + trapped > 0)
+            makeknown(obj.otyp);
+        return;
+    }
+
+    if (shift > 1)
+        shiftName = `${whistle_count_name(shift)} creatures shift locations`;
+    if (appear > 1)
+        appearName = `${whistle_count_name(appear)} ${shift === 0
+            ? 'creatures' : shift === 1 ? 'other creatures' : 'others'} appear`;
+    if (disappear > 1)
+        disappearName = `${whistle_count_name(disappear)} ${
+            shift === 0 && appear === 0 ? 'creatures'
+                : shift < 2 && appear < 2 ? 'other creatures' : 'others'} disappear`;
+
+    let message = '';
+    if (shift)
+        message = upstart(shiftName);
+    if (appear)
+        message = !message ? upstart(appearName)
+            : `${message}${disappear ? ',' : ' and'} ${appearName}`;
+    if (disappear)
+        message = !message ? upstart(disappearName)
+            : `${message}${shift && appear ? ',' : ''} and ${disappearName}`;
+    if (message)
+        await pline(`${message}.`);
+}
+
+// src/apply.c:495 use_magic_whistle().
+async function use_magic_whistle(obj) {
+    if (!can_blow(game.youmonst)) {
+        await You('are incapable of using the whistle.');
+    } else if (obj.cursed && !rn2(2)) {
+        await You(`produce a ${Underwater() ? 'very ' : ''}high-${Deaf()
+            ? 'frequency vibration' : 'pitched humming noise'}.`);
+        wake_nearby(true);
+        if (!rn2(2))
+            note_unported_apply('use_magic_whistle:tele_to_rnd_pet');
+    } else {
+        const kind = Hallucination() ? 'normal'
+            : Underwater() && !Deaf() ? 'strange, high-pitched' : 'strange';
+        await You(Deaf() ? `produce a ${kind}, sharp vibration.`
+                         : `produce a ${kind} whistling sound.`);
+        await magic_whistled(obj);
+    }
+}
+
 // src/apply.c doapply() — the 'a' command.
 export async function doapply() {
     if (nohands(game.youmonst.data)) {
@@ -629,6 +759,16 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.BLINDFOLD || obj.otyp === ONAMES.LENSES)
         return await use_blindfold(obj);
+
+    if (obj.otyp === ONAMES.MAGIC_WHISTLE) {
+        await use_magic_whistle(obj);
+        return ECMD_TIME;
+    }
+
+    if (obj.otyp === ONAMES.TIN_WHISTLE) {
+        await use_whistle(obj);
+        return ECMD_TIME;
+    }
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

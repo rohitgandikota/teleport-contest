@@ -7,7 +7,7 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
-         RLOC_NONE, TIMEOUT, Upolyd } from './const.js';
+         RLOC_NONE, TIMEOUT, Upolyd, A_DEX } from './const.js';
 import { addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, update_inventory, useup, useupall,
          weight } from './invent.js';
@@ -40,8 +40,9 @@ import { cansee } from './vision.js';
 import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE, FINGER, HAND } from './const.js';
-import { OBJ_NAME, The, Tobjnam, Yobjnam2, aobjnam, xname, yname, the,
-         gloves_simple_name, makeplural, otense, vtense } from './objnam.js';
+import { OBJ_NAME, The, Tobjnam, Yobjnam2, an, aobjnam, singular, xname,
+         yname, the, gloves_simple_name, makeplural, otense,
+         vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
@@ -55,7 +56,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { makeknown } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
-import { change_luck } from './attrib.js';
+import { ACURR, change_luck } from './attrib.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, HATCH_EGG, stop_timer } from './timeout.js';
@@ -702,6 +703,41 @@ async function use_grease(obj) {
     return ECMD_TIME;
 }
 
+// src/apply.c:4496 flip_coin().
+async function flip_coin(obj) {
+    let dropped = obj;
+    let lose_coin = false;
+
+    await You(`flip ${an(singular(obj, xname))}.`);
+    if (Underwater()) {
+        await pline('It tumbles away.');
+        lose_coin = true;
+    } else {
+        const dex = ACURR(A_DEX);
+        if (Glib() || Fumbling() || game.u.intrinsic?.HFumbling
+            || (dex < 10 && !rn2(dex))) {
+            await pline(`It slips between your ${fingers_or_gloves(false)}.`);
+            lose_coin = true;
+        }
+    }
+
+    if (lose_coin) {
+        if (obj.quan > 1)
+            dropped = splitobj(obj, 1);
+        const { dropx } = await import('./do.js');
+        await dropx(dropped);
+        return ECMD_TIME;
+    }
+
+    if (Hallucination()) {
+        await pline(rn2(100) ? 'Wow, a double header!'
+                             : 'The coin miraculously lands on its edge!');
+    } else {
+        await pline(`It comes up ${rn2(2) ? 'heads' : 'tails'}.`);
+    }
+    return ECMD_TIME;
+}
+
 // src/apply.c:3568 use_cream_pie(): apply a pie to the hero's face.
 async function use_cream_pie(obj) {
     const wasblind = !!game.u.ublind;
@@ -1169,6 +1205,9 @@ export async function doapply() {
     if (!obj)
         return ECMD_OK; /* ECMD_CANCEL */
 
+    if (obj.oclass === OCLASSES.COIN_CLASS)
+        return await flip_coin(obj);
+
     if (LOCK_TOOLS.includes(obj.otyp)) {
         /* src/apply.c:4288 — ECMD_TIME when pick_lock() did anything at all
            (learned something or started picking), ECMD_OK otherwise */
@@ -1218,6 +1257,15 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);
+
+    if (obj.otyp === ONAMES.BANANA) {
+        if (Hallucination()) {
+            await pline('It rings! ... But no-one answers.');
+            return ECMD_TIME;
+        }
+        await pline("Sorry, I don't know how to use that.");
+        return ECMD_FAIL;
+    }
 
     if (obj.otyp === ONAMES.MAGIC_MARKER) {
         /* src/write.c dowrite(): selecting the paper is the entire observed

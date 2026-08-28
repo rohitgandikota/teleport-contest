@@ -61,7 +61,7 @@ const spfxval = (expr) => expr.split('|')
 const names = [];
 const tags = [];
 const otyps = [];
-const spfxs = [], mtypes = [], attks = [], defns = [], carys = [],
+const spfxs = [], cspfxs = [], mtypes = [], attks = [], defns = [], carys = [],
       invProps = [], aligns = [], roles = [], races = [], genSpes = [],
       giftValues = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
@@ -99,6 +99,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
        10=race, 11=gen_spe, 12=gift_value. */
     const clean = (s) => s.replace(/\/\*[^]*?\*\//g, '').replace(/\s+/g, ' ').trim();
     spfxs.push(clean(fields[2] ?? '0'));
+    cspfxs.push(clean(fields[3] ?? '0'));
     mtypes.push(clean(fields[4] ?? '0'));
     attks.push(clean(fields[5] ?? 'NO_ATTK'));
     defns.push(clean(fields[6] ?? 'NO_DFNS'));
@@ -149,6 +150,7 @@ export const artifact_otyps = ${JSON.stringify(otyps, null, 1)};
 // Per-artifact records used by generation, touch checks, and combat.
 export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     spfx: spfxval(spfxs[i] ?? '0'),
+    cspfx: spfxval(cspfxs[i] ?? '0'),
     mtype: mtypes[i],
     attk: attks[i],
     defn: defns[i],

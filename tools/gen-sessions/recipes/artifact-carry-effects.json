@@ -1,0 +1,48 @@
+{
+  "name": "artifact-carry-effects",
+  "description": "Debug heroes carry quest artifacts to exercise separate carried resistance and special-property fields, source attribution, and carry removal.",
+  "coverage": [
+    "mode.debug",
+    "object.artifacts",
+    "survival.timed-status",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2198,
+      "datetime": "20000110103100",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Magic Mirror of Merlin\r\u001b\u0018  \u001bdi\u0018  \u001b,\u0018  \u001b"
+    },
+    {
+      "seed": 2199,
+      "datetime": "20000110103200",
+      "nethackrc": "OPTIONS=name:wizard,role:Rogue,race:human,gender=male,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Master Key of Thievery\r\u001b\u0018   \u001b"
+    },
+    {
+      "seed": 2200,
+      "datetime": "20000110103300",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender=female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Fate\r\u001b\u0018   \u001b"
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110103400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Eye of the Aethiopica\r\u001b\u0018  \u001b"
+    },
+    {
+      "seed": 2202,
+      "datetime": "20000110103500",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Heart of Ahriman\r\u001b\u0018   \u001b"
+    },
+    {
+      "seed": 2203,
+      "datetime": "20000110103600",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Mitre of Holiness\r\u001b\u0018  \u001b"
+    }
+  ]
+}

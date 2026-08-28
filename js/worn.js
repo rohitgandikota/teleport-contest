@@ -79,9 +79,8 @@ export function recalc_telepat_range() {
         if (oobj && PROP_KEYS[game.objects[oobj.otyp].oc_oprop] === 'TELEPAT')
             nobjs++;
     }
-    /* count all artifacts with SPFX_ESP as one; ETelepat's W_ART bit is only
-       ever set by set_artifact_intrinsic, which is not ported, so this term
-       is exact while that is true */
+    /* Count all carried artifacts with SPFX_ESP as one. C likewise treats
+       ETelepat's W_ART source as one range increment. */
     if ((game.u.uprops?.TELEPAT || 0) & W_ART)
         nobjs++;
 

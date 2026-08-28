@@ -35,7 +35,7 @@ import { In_endgame, In_quest, Is_knox_level } from './const.js';
 import { aligns } from './role_data.js';
 import { A_MAX, ACURR } from './attrib.js';
 import { hu_stat, rank_of } from './botl.js';
-import { money_cnt } from './invent.js';
+import { carrying, money_cnt, stone_luck } from './invent.js';
 import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
 import { night, midnight } from './calendar.js';
@@ -52,7 +52,9 @@ import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Infravision, Deaf, Hallucination, Halluc_resistance,
          Reflecting } from './youprop.js';
 import { artifact_names } from './artilist_data.js';
+import { carried_artifact_conveys } from './artifact.js';
 import { body_part } from './polyself.js';
+import { is_metallic } from './obj.js';
 
 const EXTRINSIC_KEYS = {
     HFire_resistance: 'FIRE_RES',
@@ -77,6 +79,9 @@ const EXTRINSIC_KEYS = {
     HJumping: 'JUMPING',
     HTeleport_control: 'TELEPORT_CONTROL',
     HSlow_digestion: 'SLOW_DIGESTION',
+    HRegeneration: 'REGENERATION',
+    HHalf_physical_damage: 'HALF_PHDAM',
+    HHalf_spell_damage: 'HALF_SPDAM',
     HFast: 'FAST',
     HReflecting: 'REFLECTING',
     HFree_action: 'FREE_ACTION',
@@ -100,12 +105,16 @@ function from_what(abilKey) {
         if (mask)
             return ' because of worn equipment';
     }
-    const obj = mask && (game.invent || []).find(
+    const propKey = EXTRINSIC_KEYS[abilKey];
+    let obj = mask && (game.invent || []).find(
         (candidate) => ((candidate.owornmask | 0) & mask) !== 0);
+    if (!obj && (mask & W_ART))
+        obj = (game.invent || []).find(
+            (candidate) => carried_artifact_conveys(candidate, propKey));
     if (!obj)
         return '';
 
-    const name = obj.oartifact ? artifact_names[obj.oartifact]
+    const name = obj.oartifact ? artifact_names[obj.oartifact].replace(/^The /, 'the ')
                                : minimal_xname(obj).replace(/\bpair of /i, '');
     return ` because of ${obj.oartifact ? '' : 'your '}${name}`;
 }
@@ -807,6 +816,8 @@ function attributes_enlightenment() {
     if (Teleport_control())
         you_have('teleport control', from_what('HTeleport_control'));
 
+    if (u.intrinsic?.HRegeneration || u.uprops?.REGENERATION)
+        enl_msg('You regenerate', '', 'd', '', from_what('HRegeneration'));
     if (u.uprops?.SLOW_DIGESTION)
         you_have('slower digestion', from_what('HSlow_digestion'));
 
@@ -816,6 +827,26 @@ function attributes_enlightenment() {
     if (armpro > 0) {
         const mc_types = ['', 'warded', 'guarded', 'protected'];
         you_are(mc_types[Math.min(armpro, 3)]);
+    }
+    if (u.uprops?.HALF_PHDAM)
+        enl_msg('You ', 'take', 'took', ` ${en_final || game.wizard
+            ? 'half' : 'reduced'} physical damage`,
+            from_what('HHalf_physical_damage'));
+    if (u.uprops?.HALF_SPDAM)
+        enl_msg('You ', 'take', 'took', ` ${en_final || game.wizard
+            ? 'half' : 'reduced'} spell damage`,
+            from_what('HHalf_spell_damage'));
+    if (game.spl_book?.[0]?.sp_id) {
+        const suit = u.uarm && is_metallic(u.uarm);
+        const robe = u.uarmc?.otyp === ONAMES.ROBE;
+        let cast = '';
+        if (suit)
+            cast = ` impaired by metallic armor${robe
+                ? ', mitigated by your robe' : ''}`;
+        else if (robe)
+            cast = ' enhanced by wearing a robe';
+        if (cast)
+            enl_msg('Your spell casting ', 'is', 'was', cast, '');
     }
 
     /* src/insight.c:1898 — Fast, between the mc line and Luck */
@@ -839,6 +870,17 @@ function attributes_enlightenment() {
         you_are(lbuf);
     } else if (game.wizard) {
         enl_msg('Your luck ', 'is', 'was', ' zero', '');
+    }
+    if ((u.moreluck | 0) > 0)
+        you_have('extra luck');
+    else if ((u.moreluck | 0) < 0)
+        you_have('reduced luck');
+    if (carrying(ONAMES.LUCKSTONE) || stone_luck(true)) {
+        const timeoutLuck = stone_luck(false);
+        if (timeoutLuck <= 0)
+            enl_msg('Bad luck ', 'does', 'did', ' not time out for you', '');
+        if (timeoutLuck >= 0)
+            enl_msg('Good luck ', 'does', 'did', ' not time out for you', '');
     }
 
     if (u.ugangr) {

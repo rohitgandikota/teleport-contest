@@ -24,7 +24,7 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj } from './mkobj.js';
 import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, Is_container, Is_candle, Is_pudding } from './obj.js';
-import { setnotworn } from './worn.js';
+import { setnotworn, recalc_telepat_range } from './worn.js';
 import { is_rider, hideunder } from './makemon.js';
 import { Fumbling } from './youprop.js';
 import { st_all, MOD_ENCUMBER, invlet_basic } from './const.js';
@@ -38,13 +38,15 @@ import { is_ammo, is_missile, ammo_and_launcher, setuqwep } from './wield.js';
 import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
-import { pline, display_nhwindow_message, temporary_object_glyph } from './display.js';
+import { pline, display_nhwindow_message, temporary_object_glyph,
+         see_monsters } from './display.js';
 import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
 import { You } from './pline.js';
 import { recalc_block_point } from './vision.js';
 import { surface } from './dungeon.js';
-import { discover_artifact } from './artifact.js';
+import { discover_artifact, set_artifact_intrinsic,
+         artifact_confers_luck } from './artifact.js';
 import { ART_MJOLLNIR } from './artilist_data.js';
 import { body_part } from './polyself.js';
 import { HAND } from './const.js';
@@ -163,8 +165,9 @@ function addinv_core1(obj) {
             const { artitouch } = await import('./quest.js');
             await artitouch(obj);
         }
-        const { set_artifact_intrinsic } = await import('./artifact.js');
         set_artifact_intrinsic(obj, true, W_ART);
+        recalc_telepat_range();
+        see_monsters();
     })();
 }
 
@@ -1344,9 +1347,7 @@ export function confers_luck(obj) {
     if (!obj.oartifact)
         return false;
 
-    /* spec_ability(obj, SPFX_LUCK) — needs get_artifact() and artilist */
-    (game.unported ||= new Set()).add('invent:confers_luck:spec_ability');
-    return false;
+    return artifact_confers_luck(obj);
 }
 
 // src/attrib.c:423 stone_luck() and :441 set_moreluck().
@@ -1391,8 +1392,9 @@ function freeinv_core(obj) {
     } else if (obj.oartifact) {
         if (obj.oartifact === game.urole?.questarti)
             (game.u.uhave ||= {}).questart = 0;
-        /* set_artifact_intrinsic needs the artifact tables. */
-        note_unported_invent('freeinv_core:set_artifact_intrinsic');
+        set_artifact_intrinsic(obj, false, W_ART);
+        recalc_telepat_range();
+        see_monsters();
     }
 
     if (obj.otyp === ONAMES.LOADSTONE)

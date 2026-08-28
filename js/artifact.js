@@ -1,8 +1,8 @@
 // artifact.js — artifact bookkeeping.
 // C ref: src/artifact.c
 //
-// Covers artifact generation and the wish flow's name and existence tracking.
-// The intrinsic half of artifact.c is not ported yet.
+// Covers artifact generation, intrinsic effects, and the wish flow's name and
+// existence tracking.
 
 import { game } from './gstate.js';
 import { fuzzymatch } from './hacklib.js';
@@ -254,6 +254,7 @@ const SPFX_INTEL = 0x04, SPFX_RESTR = 0x02, SPFX_WARN = 0x20,
       SPFX_STLTH = 0x00002000, SPFX_REGEN = 0x00004000,
       SPFX_EREGEN = 0x00008000, SPFX_HSPDAM = 0x00010000,
       SPFX_HPHDAM = 0x00020000, SPFX_TCTRL = 0x00040000,
+      SPFX_LUCK = 0x00080000,
       SPFX_DMONS = 0x00100000, SPFX_DCLAS = 0x00200000,
       SPFX_DFLAG1 = 0x00400000, SPFX_DFLAG2 = 0x00800000,
       SPFX_DALIGN = 0x01000000, SPFX_DBONUS = 0x01F00000,
@@ -294,35 +295,70 @@ function arti_adtyp(field) {
     return name ? (ADTYPES[name] | 0) : 0;
 }
 
+const ARTIFACT_DEFENSE_PROPS = new Map([
+    [ADTYPES.AD_FIRE, 'FIRE_RES'], [ADTYPES.AD_COLD, 'COLD_RES'],
+    [ADTYPES.AD_ELEC, 'SHOCK_RES'], [ADTYPES.AD_MAGM, 'ANTIMAGIC'],
+    [ADTYPES.AD_DISN, 'DISINT_RES'], [ADTYPES.AD_DRST, 'POISON_RES'],
+    [ADTYPES.AD_DRLI, 'DRAIN_RES'],
+]);
+
+const ARTIFACT_SPFX_PROPS = [
+    [SPFX_SEARCH, 'SEARCHING'], [SPFX_HALRES, 'HALLUC_RES'],
+    [SPFX_ESP, 'TELEPAT'], [SPFX_STLTH, 'STEALTH'],
+    [SPFX_REGEN, 'REGENERATION'],
+    [SPFX_EREGEN, 'ENERGY_REGENERATION'],
+    [SPFX_TCTRL, 'TELEPORT_CONTROL'], [SPFX_HSPDAM, 'HALF_SPDAM'],
+    [SPFX_HPHDAM, 'HALF_PHDAM'], [SPFX_PROTECT, 'PROTECTION'],
+];
+
+// src/attrib.c what_gives(), carried-artifact arm used by debug attributes.
+export function carried_artifact_conveys(obj, key) {
+    const art = get_artifact(obj);
+    if (art === artifact_records[0])
+        return false;
+    if (ARTIFACT_DEFENSE_PROPS.get(arti_adtyp(art.cary)) === key)
+        return true;
+    const spfx = art.cspfx | 0;
+    if (ARTIFACT_SPFX_PROPS.some(([bit, prop]) => prop === key && (spfx & bit)))
+        return true;
+    if (spfx & SPFX_WARN)
+        return (mtype_value(art) ? 'WARN_OF_MON' : 'WARNING') === key;
+    return false;
+}
+
+// src/artifact.c:524 confers_luck(), SPFX_LUCK applies while carried.
+export function artifact_confers_luck(obj) {
+    const art = get_artifact(obj);
+    return art !== artifact_records[0] && !!(art.spfx & SPFX_LUCK);
+}
+
 // src/artifact.c:716 set_artifact_intrinsic(), wielded and worn effects.
 export function set_artifact_intrinsic(obj, on, wp_mask) {
     const art = get_artifact(obj);
     if (art === artifact_records[0])
         return;
 
-    const dprops = new Map([
-        [ADTYPES.AD_FIRE, 'FIRE_RES'], [ADTYPES.AD_COLD, 'COLD_RES'],
-        [ADTYPES.AD_ELEC, 'SHOCK_RES'], [ADTYPES.AD_MAGM, 'ANTIMAGIC'],
-        [ADTYPES.AD_DISN, 'DISINT_RES'], [ADTYPES.AD_DRST, 'POISON_RES'],
-        [ADTYPES.AD_DRLI, 'DRAIN_RES'],
-    ]);
-    const dprop = dprops.get(arti_adtyp(art.defn));
+    const carried = wp_mask === W_ART;
+    let dtyp = arti_adtyp(carried ? art.cary : art.defn);
+    let spfx = carried ? (art.cspfx | 0) : art.spfx;
+
+    if (carried && !on) {
+        const others = (game.invent || []).filter((other) => other.oartifact);
+        if (others.some((other) => arti_adtyp(get_artifact(other).cary) === dtyp))
+            dtyp = 0;
+        for (const other of others)
+            spfx &= ~(get_artifact(other).cspfx | 0);
+    }
+
+    const dprop = ARTIFACT_DEFENSE_PROPS.get(dtyp);
     if (dprop)
         set_artifact_prop(dprop, on, wp_mask);
 
-    const mappings = [
-        [SPFX_SEARCH, 'SEARCHING'], [SPFX_HALRES, 'HALLUC_RES'],
-        [SPFX_ESP, 'TELEPAT'], [SPFX_STLTH, 'STEALTH'],
-        [SPFX_REGEN, 'REGENERATION'],
-        [SPFX_EREGEN, 'ENERGY_REGENERATION'],
-        [SPFX_TCTRL, 'TELEPORT_CONTROL'], [SPFX_HSPDAM, 'HALF_SPDAM'],
-        [SPFX_HPHDAM, 'HALF_PHDAM'], [SPFX_PROTECT, 'PROTECTION'],
-    ];
-    for (const [bit, key] of mappings)
-        if (art.spfx & bit)
+    for (const [bit, key] of ARTIFACT_SPFX_PROPS)
+        if (spfx & bit)
             set_artifact_prop(key, on, wp_mask);
 
-    if (art.spfx & SPFX_WARN) {
+    if (spfx & SPFX_WARN) {
         const mt = mtype_value(art);
         set_artifact_prop(mt ? 'WARN_OF_MON' : 'WARNING', on, wp_mask);
         if (mt) {
@@ -331,9 +367,9 @@ export function set_artifact_intrinsic(obj, on, wp_mask) {
                              : ((warning.obj || 0) & ~mt);
         }
     }
-    if ((art.spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
+    if ((spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
         set_artifact_prop('REFLECTING', on, wp_mask);
-    if ((art.spfx & SPFX_XRAY) && wp_mask !== W_ART) {
+    if ((spfx & SPFX_XRAY) && wp_mask !== W_ART) {
         game.u.xray_range = on ? 3 : -1;
         game.vision_full_recalc = 1;
     }

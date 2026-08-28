@@ -123,6 +123,7 @@ export const artifact_otyps = [
 export const artifact_records = [
  {
   "spfx": 0,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -136,6 +137,7 @@ export const artifact_records = [
  },
  {
   "spfx": 663,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(5, 10)",
   "defn": "DRLI(0, 0)",
@@ -149,6 +151,7 @@ export const artifact_records = [
  },
  {
   "spfx": 454,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "DRLI(5, 2)",
   "defn": "DRLI(0, 0)",
@@ -162,6 +165,7 @@ export const artifact_records = [
  },
  {
   "spfx": 66,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "ELEC(5, 24)",
   "defn": "NO_DFNS",
@@ -175,6 +179,7 @@ export const artifact_records = [
  },
  {
   "spfx": 2,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(3, 6)",
   "defn": "NO_DFNS",
@@ -188,6 +193,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388642,
+  "cspfx": 0,
   "mtype": "M2_ELF",
   "attk": "PHYS(2, 6)",
   "defn": "POIS(0,0)",
@@ -201,6 +207,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388640,
+  "cspfx": 0,
   "mtype": "M2_ORC",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -214,6 +221,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388640,
+  "cspfx": 0,
   "mtype": "M2_ORC",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -227,6 +235,7 @@ export const artifact_records = [
  },
  {
   "spfx": 194,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "STUN(3, 4)",
   "defn": "DFNS(AD_MAGM)",
@@ -240,6 +249,7 @@ export const artifact_records = [
  },
  {
   "spfx": 194,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "COLD(5, 0)",
   "defn": "COLD(0, 0)",
@@ -253,6 +263,7 @@ export const artifact_records = [
  },
  {
   "spfx": 194,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "FIRE(5, 0)",
   "defn": "FIRE(0, 0)",
@@ -266,6 +277,7 @@ export const artifact_records = [
  },
  {
   "spfx": 69206018,
+  "cspfx": 0,
   "mtype": "S_DRAGON",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -279,6 +291,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388610,
+  "cspfx": 0,
   "mtype": "M2_DEMON",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -292,6 +305,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388610,
+  "cspfx": 0,
   "mtype": "M2_WERE",
   "attk": "PHYS(5, 0)",
   "defn": "DFNS(AD_WERE)",
@@ -305,6 +319,7 @@ export const artifact_records = [
  },
  {
   "spfx": 2050,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -318,6 +333,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388610,
+  "cspfx": 0,
   "mtype": "M2_GIANT",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -331,6 +347,7 @@ export const artifact_records = [
  },
  {
   "spfx": 2097154,
+  "cspfx": 0,
   "mtype": "S_OGRE",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -344,6 +361,7 @@ export const artifact_records = [
  },
  {
   "spfx": 2113538,
+  "cspfx": 0,
   "mtype": "S_TROLL",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -357,6 +375,7 @@ export const artifact_records = [
  },
  {
   "spfx": 1026,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(5, 1)",
   "defn": "NO_DFNS",
@@ -370,6 +389,7 @@ export const artifact_records = [
  },
  {
   "spfx": 2,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(0, 8)",
   "defn": "NO_DFNS",
@@ -383,6 +403,7 @@ export const artifact_records = [
  },
  {
   "spfx": 8388610,
+  "cspfx": 0,
   "mtype": "M2_UNDEAD",
   "attk": "PHYS(5, 0)",
   "defn": "DFNS(AD_BLND)",
@@ -396,6 +417,7 @@ export const artifact_records = [
  },
  {
   "spfx": 7,
+  "cspfx": 69632,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -409,6 +431,7 @@ export const artifact_records = [
  },
  {
   "spfx": 7,
+  "cspfx": 8192,
   "mtype": "0",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -422,6 +445,7 @@ export const artifact_records = [
  },
  {
   "spfx": 16777223,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(5, 0)",
   "defn": "DFNS(AD_MAGM)",
@@ -435,6 +459,7 @@ export const artifact_records = [
  },
  {
   "spfx": 16711,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "DRLI(0, 0)",
   "defn": "DRLI(0, 0)",
@@ -448,6 +473,7 @@ export const artifact_records = [
  },
  {
   "spfx": 15,
+  "cspfx": 4096,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -461,6 +487,7 @@ export const artifact_records = [
  },
  {
   "spfx": 33554439,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "DFNS(AD_MAGM)",
@@ -474,6 +501,7 @@ export const artifact_records = [
  },
  {
   "spfx": 142606343,
+  "cspfx": 0,
   "mtype": "M2_UNDEAD",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -487,6 +515,7 @@ export const artifact_records = [
  },
  {
   "spfx": 67108871,
+  "cspfx": 4096,
   "mtype": "0",
   "attk": "PHYS(5, 0)",
   "defn": "NO_DFNS",
@@ -500,6 +529,7 @@ export const artifact_records = [
  },
  {
   "spfx": 15,
+  "cspfx": 393248,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -513,6 +543,7 @@ export const artifact_records = [
  },
  {
   "spfx": 134743047,
+  "cspfx": 0,
   "mtype": "0",
   "attk": "PHYS(0, 8)",
   "defn": "NO_DFNS",
@@ -526,6 +557,7 @@ export const artifact_records = [
  },
  {
   "spfx": 135,
+  "cspfx": 69632,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -539,6 +571,7 @@ export const artifact_records = [
  },
  {
   "spfx": 524295,
+  "cspfx": 196640,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "NO_DFNS",
@@ -552,6 +585,7 @@ export const artifact_records = [
  },
  {
   "spfx": 7,
+  "cspfx": 98304,
   "mtype": "0",
   "attk": "NO_ATTK",
   "defn": "DFNS(AD_MAGM)",

@@ -432,42 +432,42 @@ function growl_sound(mtmp) {
     let ret;
 
     switch (game.mons[mtmp.mnum].msound) {
-    case MFLAGS.MS_MEW:
-    case MFLAGS.MS_HISS:
+    case MSOUND.MS_MEW:
+    case MSOUND.MS_HISS:
         ret = "hiss";
         break;
-    case MFLAGS.MS_BARK:
-    case MFLAGS.MS_GROWL:
+    case MSOUND.MS_BARK:
+    case MSOUND.MS_GROWL:
         ret = "growl";
         break;
-    case MFLAGS.MS_ROAR:
+    case MSOUND.MS_ROAR:
         ret = "roar";
         break;
-    case MFLAGS.MS_BELLOW:
+    case MSOUND.MS_BELLOW:
         ret = "bellow";
         break;
-    case MFLAGS.MS_BUZZ:
+    case MSOUND.MS_BUZZ:
         ret = "buzz";
         break;
-    case MFLAGS.MS_SQEEK:
+    case MSOUND.MS_SQEEK:
         ret = "squeal";
         break;
-    case MFLAGS.MS_SQAWK:
+    case MSOUND.MS_SQAWK:
         ret = "screech";
         break;
-    case MFLAGS.MS_NEIGH:
+    case MSOUND.MS_NEIGH:
         ret = "neigh";
         break;
-    case MFLAGS.MS_WAIL:
+    case MSOUND.MS_WAIL:
         ret = "wail";
         break;
-    case MFLAGS.MS_GROAN:
+    case MSOUND.MS_GROAN:
         ret = "groan";
         break;
-    case MFLAGS.MS_MOO:
+    case MSOUND.MS_MOO:
         ret = "low";
         break;
-    case MFLAGS.MS_SILENT:
+    case MSOUND.MS_SILENT:
         ret = "commotion";
         break;
     default:
@@ -505,7 +505,7 @@ export function cry_sound(mtmp) {
 export async function growl(mtmp) {
     let growl_verb = 0;
 
-    if (helpless(mtmp) || game.mons[mtmp.mnum].msound === MFLAGS.MS_SILENT)
+    if (helpless(mtmp) || game.mons[mtmp.mnum].msound === MSOUND.MS_SILENT)
         return;
 
     /* presumably nearness and soundok checks have already been made */

@@ -10,12 +10,12 @@ import { isok } from './hacklib.js';
 import { is_pool, m_at, t_at } from './mon.js';
 import { cansee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
-import { display_cmap_at, display_object_at, map_invisible, newsym,
-         temporary_object_glyph, unmap_invisible } from './display.js';
+import { display_cmap_at, display_object_at, flush_screen, map_invisible,
+         newsym, temporary_object_glyph, unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
 
 import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
-         THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, M_AP_TYPE,
+         THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, FLASHED_LIGHT, M_AP_TYPE,
          M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
@@ -68,12 +68,13 @@ import { is_flammable, is_rottable, burnarmor } from './trap.js';
 import { is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
-import { breathless, defended, haseyes, resists_blnd, resists_cold,
+import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
+         resists_cold,
          resists_elec, resists_fire, resists_magm, resists_sleep,
          nohands, nonliving, is_demon } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
-         Shock_resistance, Deaf, Unaware } from './youprop.js';
+         Shock_resistance, Blind, Deaf, Unaware } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -281,6 +282,34 @@ export async function zapyourself(obj, ordinary) {
         learn_it = !!obj.dknown;
         await findit();
         break;
+    case ONAMES.EXPENSIVE_CAMERA: {
+        let lightDamage = 5;
+        if (game.u.umonnum === PMNAMES.PM_GREMLIN) {
+            lightDamage = rnd(lightDamage);
+            if (lightDamage > 10)
+                lightDamage = 10 + rnd(lightDamage - 10);
+            if (lightDamage > 20)
+                lightDamage = 20;
+            await pline(`Ow, that light hurts${
+                lightDamage > 2 || game.u.mh <= 5 ? '!' : '.'}`);
+            const { losehp } = await import('./hack.js');
+            await losehp(lightDamage, 'zapped himself with an expensive camera',
+                         KILLED_BY);
+        }
+        const duration = lightDamage + rnd(25);
+        if (!resists_blnd(null)) {
+            await You('are blinded by the flash!');
+            const { make_blinded } = await import('./potion.js');
+            await make_blinded(duration, false);
+            if (!Blind())
+                await Your('vision clears.');
+            learn_it = true;
+        } else if (resists_blnd_by_arti(null)) {
+            note_unported_zap('zapyourself:camera_shieldeff');
+            learn_it = true;
+        }
+        break;
+    }
     default:
         note_unported_zap(`zapyourself:otyp=${obj.otyp}`);
         break;
@@ -1900,10 +1929,9 @@ export async function dozap() {
 
 // src/zap.c:3827 bhit() — walk a missile (or beam) along a line.
 //
-// Only the THROWN_WEAPON spine is live: the flight stops at a monster, a
-// wall (!ZAP_POS), a closed door, a sink, water/lava walls or the map edge,
-// and gb.bhitpos holds the last good square. The rock-skip arm draws rn2(3)
-// for thrown ROCKs only.
+// The physical-object, immediate-wand, and camera-flash spines share this
+// walk. Camera flashes retain each `!` until the ray ends, matching tmp_at's
+// DISP_BEAM mode, and pass through invisible monsters after flashing them.
 export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
     const obj = pobjRef.obj;
     let result = null;
@@ -1930,6 +1958,7 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
     const flightGlyph = (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
         && obj ? temporary_object_glyph(obj) : null;
     let flightPos = null;
+    const flashCells = [];
     const endFlight = () => {
         if (flightPos) {
             newsym(flightPos.x, flightPos.y);
@@ -1985,13 +2014,26 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
         }
 
         /* a mimic pretending to be an object is not hit by thrown things */
-        if (mtmp && (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
-            && M_AP_TYPE(mtmp) === M_AP_OBJECT)
+        if (mtmp
+            && (((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+                 && M_AP_TYPE(mtmp) === M_AP_OBJECT)
+                || (weapon === FLASHED_LIGHT
+                    && M_AP_TYPE(mtmp) === M_AP_OBJECT)))
             mtmp = null;
 
         if (mtmp) {
             game.notonhead = (x !== mtmp.mx || y !== mtmp.my);
-            if (weapon !== ZAPPED_WAND) {
+            if (weapon === FLASHED_LIGHT) {
+                if (mtmp.minvis) {
+                    obj.ox = game.u.ux;
+                    obj.oy = game.u.uy;
+                    const { flash_hits_mon } = await import('./uhitm.js');
+                    await flash_hits_mon(mtmp, obj);
+                } else {
+                    result = mtmp;
+                    break;
+                }
+            } else if (weapon !== ZAPPED_WAND) {
                 /* THROWN_WEAPON, KICKED_WEAPON; map_invisible when unseen
                    is display bookkeeping */
                 result = mtmp;
@@ -2038,7 +2080,15 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
             break;
         }
 
-        if (flightGlyph) {
+        if (weapon === FLASHED_LIGHT) {
+            display_cmap_at(cmap_names.S_flashbeam, x, y, CLR_WHITE,
+                            'camera-flash');
+            flashCells.push([x, y]);
+            if (game.animationFrame) {
+                await flush_screen(0);
+                await game.animationFrame();
+            }
+        } else if (flightGlyph) {
             endFlight();
             if (cansee(x, y)) {
                 display_object_at(obj, x, y, flightGlyph);
@@ -2048,14 +2098,15 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
                 await game.animationFrame();
         }
 
-        if (IS_SINK(typ) && weapon !== FLASHED_LIGHT_BHIT)
+        if (IS_SINK(typ) && weapon !== FLASHED_LIGHT)
             break;               /* physical objects fall onto sink */
     }
 
     endFlight();
+    for (const [x, y] of flashCells)
+        newsym(x, y);
     return result;
 }
-const FLASHED_LIGHT_BHIT = 2;    /* include/hack.h bhit_call_types */
 
 // src/zap.c:3556 hit() / :3571 miss() — the missile/zap contact messages.
 export async function hit(str, mtmp, force) {

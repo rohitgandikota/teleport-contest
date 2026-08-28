@@ -1,0 +1,52 @@
+{
+  "name": "expensive-camera",
+  "description": "Debug Wizards apply empty and charged expensive cameras vertically, at themselves, along an empty horizontal ray, and at a nearby monster to cover direction input, charge use, blindness, flash travel, and monster flash effects.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.movement",
+    "object.buc-enchant-erosion",
+    "object.identification",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2231,
+      "datetime": "20000110131000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed -1 expensive camera\raoli\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110131500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 expensive camera\rao>i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110132000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 expensive camera\rao<i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110132500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 expensive camera\rao.i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110133000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 expensive camera\raoli\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110133500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +2 expensive camera\r\u0007peaceful newt\raoui\u001b"
+    }
+  ]
+}

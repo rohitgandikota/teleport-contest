@@ -9,14 +9,15 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE, TIMEOUT, Upolyd, A_DEX, A_CON, MAX_SPELL_STUDY,
          SICK_ALL, SICK_NONVOMITABLE,
-         NH_RED, plur, HOMEMADE_TIN } from './const.js';
+         NH_RED, plur, HOMEMADE_TIN, COLNO, FLASHED_LIGHT,
+         STOMACH } from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
          useupall, useupf, weight, any_obj_ok, prinv } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
-         is_pool, mnexto } from './mon.js';
+         is_pool, mnexto, see_monster_closeup } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
 import { Blind, Fumbling, Glib, Hallucination, Deaf, Stone_resistance,
@@ -37,10 +38,10 @@ import { ONAMES } from './objects_data.js';
 import { canseemon, canspotmon, map_invisible, newsym, pline,
          sensemon } from './display.js';
 import { You, There, You_feel, Your } from './pline.js';
-import { dist2, distu } from './hacklib.js';
+import { dist2, distu, s_suffix } from './hacklib.js';
 import { cansee } from './vision.js';
 import { wield_tool, welded } from './wield.js';
-import { body_part } from './polyself.js';
+import { body_part, mbodypart } from './polyself.js';
 import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular,
          cxname, xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
@@ -64,7 +65,8 @@ import { is_rider, makemon, NO_MM_FLAGS } from './makemon.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
-import { obj_resists } from './zap.js';
+import { bhit, obj_resists, zapyourself } from './zap.js';
+import { ceiling, surface } from './dungeon.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -79,8 +81,7 @@ const LOCK_TOOLS = [ONAMES.LOCK_PICK, ONAMES.CREDIT_CARD, ONAMES.SKELETON_KEY];
 
 /* src/apply.c: the remaining directional tool placeholders. Stethoscopes and
    figurines have their own handlers below. */
-const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR,
-                   ONAMES.EXPENSIVE_CAMERA];
+const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR];
 
 /* src/apply.c:4344 — use_lamp() is void, so doapply's `int res = ECMD_TIME`
    survives and applying a lamp takes a turn. */
@@ -918,6 +919,51 @@ function consume_obj_charge(obj) {
         update_inventory();
 }
 
+// src/apply.c:60 do_blinding_ray() / :80 use_camera().
+async function do_blinding_ray(obj) {
+    const ref = { obj };
+    const mtmp = await bhit(game.u.dx, game.u.dy, COLNO, FLASHED_LIGHT,
+                            null, null, ref);
+    obj.ox = game.u.ux;
+    obj.oy = game.u.uy;
+    if (mtmp) {
+        const { flash_hits_mon } = await import('./uhitm.js');
+        await flash_hits_mon(mtmp, obj);
+        await see_monster_closeup(mtmp, true);
+    }
+}
+
+async function use_camera(obj) {
+    if (Underwater()) {
+        await pline('Using your camera underwater would void the warranty.');
+        return ECMD_OK;
+    }
+    if (!await getdir(null))
+        return ECMD_CANCEL;
+
+    if (obj.spe <= 0) {
+        await pline(nothing_happens);
+        return ECMD_TIME;
+    }
+    consume_obj_charge(obj);
+
+    if (obj.cursed && !rn2(2)) {
+        await zapyourself(obj, true);
+    } else if (game.u.uswallow) {
+        await You(`take a picture of ${s_suffix(mon_nam(game.u.ustuck))} ${
+            mbodypart(game.u.ustuck, STOMACH)}.`);
+    } else if (game.u.dz) {
+        await You(`take a picture of the ${game.u.dz > 0
+            ? surface(game.u.ux, game.u.uy)
+            : ceiling(game.u.ux, game.u.uy)}.`);
+    } else if (!game.u.dx && !game.u.dy) {
+        await zapyourself(obj, true);
+    } else {
+        await do_blinding_ray(obj);
+    }
+    return ECMD_TIME;
+}
+
 // src/apply.c:2604 use_grease().
 async function use_grease(obj) {
     const u = game.u;
@@ -1705,6 +1751,9 @@ export async function doapply() {
         await use_tinning_kit(obj);
         return ECMD_TIME;
     }
+
+    if (obj.otyp === ONAMES.EXPENSIVE_CAMERA)
+        return await use_camera(obj);
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

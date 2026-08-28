@@ -31,7 +31,7 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
-         is_pool, m_carrying, t_at } from './mon.js';
+         shieldeff_mon, is_pool, m_carrying, t_at } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
@@ -62,7 +62,8 @@ import { find_mac } from './worn.js';
 import { greatest_erosion, worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
-         is_whirly, mon_hates_blessings } from './mondata.js';
+         is_whirly, mon_hates_blessings, resists_blnd,
+         resists_blnd_by_arti } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -74,7 +75,7 @@ import { check_capacity, overexertion, doorless_door, test_move,
 import { is_blade, is_axe, set_ustuck, m_at } from './mon.js';
 import { is_weptool, mksobj } from './mkobj.js';
 import { OCLASSES, MATERIALS, ONAMES, SKILLS } from './objects_data.js';
-import { sgn, distu } from './hacklib.js';
+import { dist2, sgn, distu } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { STR18 } from './const.js';
 import { ACURR } from './attrib.js';
@@ -87,7 +88,7 @@ import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
 import { body_part, mbodypart } from './polyself.js';
-import { M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
+import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
 import { get_artifact, spec_dbon } from './artifact.js';
@@ -95,6 +96,85 @@ import { cansee, vision_recalc } from './vision.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
+}
+
+// src/uhitm.c:6341 flash_hits_mon(), camera and wand-light flashes wake,
+// blind, anger, and sometimes frighten the first visible monster in the ray.
+export async function flash_hits_mon(mtmp, otmp) {
+    if (game.notonhead)
+        return 0;
+
+    const mx = mtmp.mx, my = mtmp.my;
+    const ptr = game.mons[mtmp.mnum];
+    const useeit = canseemon(mtmp);
+    let res = 0;
+
+    if (M_AP_TYPE(mtmp) !== M_AP_NOTHING) {
+        const oldAppearance = M_AP_TYPE(mtmp);
+        await wakeup(mtmp, false);
+        if (oldAppearance !== M_AP_TYPE(mtmp)) {
+            note_unported_uhitm('flash_hits_mon:mimic_description');
+            res = 1;
+        }
+    }
+
+    if (mtmp.msleeping && haseyes(ptr)) {
+        mtmp.msleeping = 0;
+        if (useeit) {
+            await pline(`The flash awakens ${mon_nam(mtmp)}.`);
+            res = 1;
+        }
+    } else if (ptr.mlet !== MONSYMS.S_LIGHT) {
+        if (!resists_blnd(mtmp)) {
+            const distance = dist2(otmp.ox, otmp.oy, mx, my);
+            if (useeit) {
+                await pline(`${Monnam(mtmp)} is blinded by the flash!`);
+                res = 1;
+            }
+
+            if (mtmp.mnum === PMNAMES.PM_GREMLIN) {
+                const amount = otmp.otyp === ONAMES.WAN_LIGHT
+                    ? d(1 + otmp.spe, 4)
+                    : rnd(Math.min(mtmp.mhp, 4));
+                if (!Deaf() && dist2(game.u.ux, game.u.uy, mx, my) <= 90) {
+                    await pline(`${Monnam(mtmp)} ${
+                        amount > mtmp.mhp / 2 ? 'wails in agony'
+                                             : 'cries out in pain'}!`);
+                } else if (canseemon(mtmp)) {
+                    await pline(`${Monnam(mtmp)} recoils from the light!`);
+                }
+                mtmp.mhp -= amount;
+                wake_nearto(mx, my, 30);
+                if (DEADMONSTER(mtmp))
+                    await killed(mtmp);
+                else if (cansee(mx, my) && !canspotmon(mtmp))
+                    map_invisible(mx, my);
+            }
+
+            if (!DEADMONSTER(mtmp)) {
+                if (!game.context?.mon_moving)
+                    await setmangry(mtmp, true);
+                if (distance < 9 && !mtmp.isshk && rn2(4)) {
+                    await monflee(mtmp, rn2(4) ? rnd(100) : 0,
+                                  false, true);
+                }
+                mtmp.mcansee = 0;
+                mtmp.mblinded = distance < 3
+                    ? 0 : rnd(1 + Math.trunc(50 / distance));
+            }
+        } else if (useeit) {
+            if (resists_blnd_by_arti(mtmp))
+                shieldeff_mon(mtmp);
+            if (game.flags.verbose) {
+                const lit = !!game.level?.at(mx, my)?.lit;
+                await pline(lit
+                    ? `The flash of light shines on ${mon_nam(mtmp)}.`
+                    : `${Monnam(mtmp)} is illuminated.`);
+            }
+        }
+    }
+
+    return res ? 1 : 0;
 }
 
 // include/mondata.h:29 passes_walls()

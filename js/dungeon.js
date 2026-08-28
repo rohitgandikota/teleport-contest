@@ -11,10 +11,11 @@
 // docs/plan/04-level-generation.md §4.0.
 
 import { game } from './gstate.js';
-import { In_endgame, Is_earthlevel, ROOM, CORR, ICE, SDOOR, ALTAR, GRAVE, TREE, THRONE,
+import { In_endgame, In_quest, Is_earthlevel, Is_firelevel, Is_waterlevel,
+         ROOM, CORR, ICE, SDOOR, ALTAR, GRAVE, TREE, THRONE,
          FOUNTAIN, SINK, IRONBARS, DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, IS_WALL,
-         IS_DOOR, M_AP_TYPE, M_AP_FURNITURE, SHOPBASE, TEMPLE, DELPHI,
-         ROOMOFFSET } from './const.js';
+         IS_DOOR, IS_AIR, IS_ROOM, M_AP_TYPE, M_AP_FURNITURE, SHOPBASE,
+         TEMPLE, VAULT, DELPHI, ROOMOFFSET } from './const.js';
 import { is_pool, is_lava, m_at } from './mon.js';
 import { db_under_typ } from './dbridge.js';
 import { cmap_to_type } from './mkroom.js';
@@ -1084,6 +1085,35 @@ export async function print_dungeon(bymenu, out) {
 
 function note_unported_dungeon(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/dungeon.c:1714 ceiling(), the surface above the hero for camera and
+// falling-object messages.
+export function ceiling(x, y) {
+    const lev = game.level?.at(x, y);
+    const inRooms = game.in_rooms || (() => '');
+
+    if (inRooms(x, y, VAULT))
+        return "vault's ceiling";
+    if (inRooms(x, y, TEMPLE))
+        return "temple's ceiling";
+    if (inRooms(x, y, SHOPBASE))
+        return "shop's ceiling";
+    if (Is_waterlevel(game.u.uz))
+        return 'water above';
+    if (lev && IS_AIR(lev.typ))
+        return 'sky';
+    if (Is_firelevel(game.u.uz))
+        return 'flames above';
+    if (In_quest(game.u.uz))
+        return 'expanse above';
+    if (game.u.uinwater)
+        return "water's surface";
+    if (lev && ((IS_ROOM(lev.typ) && !Is_earthlevel(game.u.uz))
+                || IS_WALL(lev.typ) || IS_DOOR(lev.typ)
+                || lev.typ === SDOOR))
+        return 'ceiling';
+    return 'rock cavern';
 }
 
 // src/dungeon.c:1750 surface() — what the hero is standing on, for messages.

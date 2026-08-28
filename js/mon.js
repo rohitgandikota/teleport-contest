@@ -78,7 +78,7 @@ import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohand
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
-import { Hallucination } from './youprop.js';
+import { Blind, Hallucination } from './youprop.js';
 import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, slimeproof, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
@@ -1773,6 +1773,51 @@ export async function setmangry(mtmp, via_attack) {
     /* make other peaceful monsters react */
     if (!game.context?.mon_moving)
         note_unported_mon('setmangry:peacefuls_respond');
+}
+
+// src/mon.c:5971 see_monster_closeup(), remember first close sightings and
+// photographs. Tourists receive ordinary monster experience for a first
+// photograph, except for their unchanged starting pet.
+export async function see_monster_closeup(mtmp, photo) {
+    if (Hallucination() || (Blind() && !sensemon(mtmp)))
+        return;
+
+    let mndx = mtmp.mnum;
+    if (M_AP_TYPE(mtmp) === M_AP_MONSTER && !sensemon(mtmp))
+        mndx = mtmp.mappearance;
+    if (mndx === PMNAMES.PM_LONG_WORM && game.notonhead)
+        mndx = PMNAMES.PM_LONG_WORM_TAIL;
+
+    const vitals = (game.mvitals ||= [])[mndx] ||= {};
+    const lifelist = (game.context ||= {}).lifelist ||= {};
+    if (!vitals.seen_close) {
+        vitals.seen_close = 1;
+        lifelist.total_seen_upclose = (lifelist.total_seen_upclose | 0) + 1;
+    }
+
+    if (!photo || mtmp.minvis || mtmp.mundetected
+        || (M_AP_TYPE(mtmp) !== M_AP_NOTHING
+            && M_AP_TYPE(mtmp) !== M_AP_MONSTER))
+        return;
+
+    if (M_AP_TYPE(mtmp) === M_AP_MONSTER)
+        mndx = mtmp.mappearance;
+    const photoVitals = (game.mvitals ||= [])[mndx] ||= {};
+    if (photoVitals.photographed)
+        return;
+
+    photoVitals.photographed = 1;
+    lifelist.total_photographed = (lifelist.total_photographed | 0) + 1;
+
+    const role = game.urole?.mnum;
+    const tourist = role === 'PM_TOURIST' || role === PMNAMES.PM_TOURIST;
+    if (tourist
+        && (mtmp.m_id !== game.context.startingpet_mid
+            || mndx !== game.context.startingpet_typ)
+        && mndx === mtmp.mnum) {
+        more_experienced(experience(mtmp, 0), 0);
+        await newexplevel();
+    }
 }
 
 

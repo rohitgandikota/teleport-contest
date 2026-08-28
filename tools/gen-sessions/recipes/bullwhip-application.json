@@ -1,0 +1,70 @@
+{
+  "name": "bullwhip-application",
+  "description": "Debug Wizards and normal-mode Archeologists apply bullwhips to cover automatic wielding and reapplication, cancellation, self-hits, upward and downward flicks, empty horizontal snaps, and adjacent monster attacks.",
+  "coverage": [
+    "combat.melee",
+    "level.ordinary",
+    "mode.debug",
+    "mode.normal",
+    "object.buc-enchant-erosion",
+    "object.weapons",
+    "ui.cancel-invalid",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2231,
+      "datetime": "20000111110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 bullwhip\rao \u001bi\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111110500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 bullwhip\rao .i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 bullwhip\rao <i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111111500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 bullwhip\rao >i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 bullwhip\rao li\u001b"
+    },
+    {
+      "seed": 31000,
+      "datetime": "20000111112500",
+      "nethackrc": "OPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "Archie\rnahmly aa.i\u001b"
+    },
+    {
+      "seed": 31000,
+      "datetime": "20000111113000",
+      "nethackrc": "OPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "Archie\rnahmly aaki\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile soldier\rmsaah aahi\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed apple\rdj\u0017blessed ring of levitation\rPkr aa.i\u001b"
+    }
+  ]
+}

@@ -11,25 +11,28 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          SICK_ALL, SICK_NONVOMITABLE,
          NH_RED, plur, HOMEMADE_TIN, COLNO, FLASHED_LIGHT,
          STOMACH, DIGTYP_UNDIGGABLE, N_DIRS_Z, xdir, ydir,
-         TT_WEB } from './const.js';
+         TT_WEB, TT_PIT, FOOT, NO_KILLER_PREFIX, IS_WATERWALL, LAVAWALL }
+    from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
-         useupall, useupf, weight, any_obj_ok, prinv } from './invent.js';
-import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
+         useupall, useupf, weight, any_obj_ok, prinv, stackobj }
+    from './invent.js';
+import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key, confdir }
+    from './cmd.js';
 import { pick_lock } from './lock.js';
-import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
-         is_pool, mnexto, see_monster_closeup } from './mon.js';
+import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby, wakeup,
+         is_pool, is_lava, mnexto, see_monster_closeup } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
 import { Blind, Fumbling, Glib, Hallucination, Deaf, Stone_resistance,
-         Underwater } from './youprop.js';
+         Underwater, Levitation, Flying } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_INACCESS, GETOBJ_EXCLUDE_SELECTABLE,
          GETOBJ_PROMPT } from './invent.js';
 import { OCLASSES, MATERIALS } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { Norep, You_cant, You_hear, You_see } from './pline.js';
-import { d, rn1, rn2, rnd } from './rng.js';
+import { d, rn1, rn2, rnd, rnl } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
          MAX_OIL_IN_FLASK, BOLT_LIM, NON_PM } from './const.js';
 import { walk_path } from './dothrow.js';
@@ -47,16 +50,16 @@ import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular,
          cxname, xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
          otense, vtense } from './objnam.js';
-import { Amonnam, hcolor, pmname, upstart, x_monnam,
+import { Amonnam, hcolor, mon_nam, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { bimanual, carried, Is_candle, is_boots, is_gloves,
          is_flimsy } from './obj.js';
-import { clear_splitobjs, mkobj, mksobj, rnd_class, set_bknown, splitobj,
-         set_tin_variety, unbless } from './mkobj.js';
+import { clear_splitobjs, mkobj, mksobj, place_object, rnd_class, set_bknown,
+         splitobj, set_tin_variety, unbless } from './mkobj.js';
 import { attacktype_fordmg, can_blow, haseyes, nohands, passes_walls,
          poly_when_stoned, throws_rocks, touch_petrifies } from './mondata.js';
-import { check_capacity, invocation_pos, may_passwall } from './hack.js';
+import { check_capacity, invocation_pos, losehp, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown, observe_object } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
@@ -68,8 +71,10 @@ import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
 import { bhit, obj_resists, zapyourself } from './zap.js';
 import { ceiling, surface } from './dungeon.js';
-import { can_reach_floor } from './pickup.js';
+import { can_reach_floor, pickup_object } from './pickup.js';
 import { dig_typ, use_pick_axe2 } from './dig.js';
+import { dbon, do_attack } from './uhitm.js';
+import { possibly_unwield, setmnotwielded } from './weapon.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -84,7 +89,7 @@ const LOCK_TOOLS = [ONAMES.LOCK_PICK, ONAMES.CREDIT_CARD, ONAMES.SKELETON_KEY];
 
 /* src/apply.c: the remaining directional tool placeholders. Stethoscopes and
    figurines have their own handlers below. */
-const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR];
+const NEEDS_DIR = [ONAMES.MIRROR];
 
 /* src/apply.c:4344 — use_lamp() is void, so doapply's `int res = ECMD_TIME`
    survives and applying a lamp takes a turn. */
@@ -144,6 +149,166 @@ async function use_pick_axe(obj) {
     if (!await getdir(`In what direction do you want to ${verb}? [${choices.join('')}]`))
         return ECMD_CANCEL;
     return await use_pick_axe2(obj);
+}
+
+// src/apply.c:2955 use_whip(). This covers wield-and-replay, direction
+// handling, self damage, ordinary snaps, adjacent attacks, floor snags, and
+// weapon disarming. Mounted use and pit escape remain explicit gaps.
+async function use_whip(obj) {
+    const u = game.u;
+
+    if (obj !== u.uwep) {
+        if (await wield_tool(obj, 'lash')) {
+            cmdq_add_ec(CQ_CANNED, doapply);
+            cmdq_add_key(CQ_CANNED, obj.invlet);
+            return ECMD_TIME;
+        }
+        return ECMD_OK;
+    }
+    if (!await getdir(null))
+        return ECMD_OK | ECMD_CANCEL;
+
+    let mtmp;
+    let rx, ry;
+    if (u.uswallow) {
+        mtmp = u.ustuck;
+        rx = mtmp.mx;
+        ry = mtmp.my;
+    } else {
+        confdir(false);
+        rx = u.ux + u.dx;
+        ry = u.uy + u.dy;
+        if (!isok(rx, ry)) {
+            await You('miss.');
+            return ECMD_OK;
+        }
+        mtmp = m_at(rx, ry);
+    }
+
+    let proficient = 0;
+    const role = game.urole?.mnum;
+    if (role === 'PM_ARCHEOLOGIST' || role === PMNAMES.PM_ARCHEOLOGIST)
+        proficient++;
+    const dex = ACURR(A_DEX);
+    if (dex < 6)
+        proficient--;
+    else if (dex >= 14)
+        proficient += dex - 14;
+    if (Fumbling())
+        proficient--;
+    proficient = Math.max(0, Math.min(3, proficient));
+
+    if (u.uswallow) {
+        await There('is not enough room to flick your bullwhip.');
+    } else if (Underwater()) {
+        await There('is too much resistance to flick your bullwhip.');
+    } else if (u.dz < 0) {
+        await You(`flick a bug off of the ${ceiling(u.ux, u.uy)}.`);
+    } else if (!u.dz && (IS_WATERWALL(game.level.at(rx, ry)?.typ)
+                         || game.level.at(rx, ry)?.typ === LAVAWALL)) {
+        await You('cause a small splash.');
+        if (game.level.at(rx, ry)?.typ === LAVAWALL)
+            note_unported_apply('use_whip:lava_wall_fire_damage');
+        return ECMD_TIME;
+    } else if ((!u.dx && !u.dy) || u.dz > 0) {
+        if (is_pool(u.ux, u.uy) || is_lava(u.ux, u.uy)) {
+            await You('cause a small splash.');
+            if (is_lava(u.ux, u.uy))
+                note_unported_apply('use_whip:lava_fire_damage');
+            return ECMD_TIME;
+        }
+        if (Levitation() || u.usteed || Flying()) {
+            const otmp = (game.level?.objects || [])
+                .find((o) => o.ox === u.ux && o.oy === u.uy);
+            if (otmp && proficient) {
+                await You(`wrap your bullwhip around ${
+                    an(singular(otmp, xname))} on the ${surface(u.ux, u.uy)}.`);
+                if (rnl(6) || await pickup_object(otmp, 1, true) < 1)
+                    await pline('The bullwhip slips free.');
+                return ECMD_TIME;
+            }
+        }
+
+        let dam = rnd(2) + dbon() + (obj.spe || 0);
+        if (dam <= 0)
+            dam = 1;
+        await You(`hit your ${body_part(FOOT)} with your bullwhip.`);
+        const him = game.flags?.female ? 'her' : 'him';
+        const his = game.flags?.female ? 'her' : 'his';
+        await losehp(dam, `killed ${him}self with ${his} bullwhip`,
+                     NO_KILLER_PREFIX);
+        return ECMD_TIME;
+    } else if ((Fumbling() || Glib()) && !rn2(5)) {
+        await pline(`The bullwhip slips out of your ${body_part(HAND)}.`);
+        const { dropx } = await import('./do.js');
+        await dropx(obj);
+    } else if (u.utrap && u.utraptype === TT_PIT) {
+        note_unported_apply('use_whip:pit_escape');
+        await pline('Snap!');
+    } else if (mtmp) {
+        if (!canspotmon(mtmp)) {
+            note_unported_apply('use_whip:unseen_monster');
+        } else if (mtmp.mw) {
+            const otmp = mtmp.mw;
+            const onambuf = cxname(otmp);
+            let gotit = proficient && (!Fumbling() || !rn2(10));
+            const monHand = bimanual(otmp)
+                ? makeplural(mbodypart(mtmp, HAND)) : mbodypart(mtmp, HAND);
+
+            await You(`wrap your bullwhip around ${
+                s_suffix(mon_nam(mtmp))} ${xname(otmp)}.`);
+            if (gotit && otmp.cursed && (otmp.owornmask || 0)) {
+                note_unported_apply('use_whip:welded_monster_weapon');
+                gotit = false;
+            }
+            if (gotit) {
+                obj_extract_self(otmp);
+                possibly_unwield(mtmp, false);
+                setmnotwielded(mtmp, otmp);
+
+                switch (rn2(proficient + 1)) {
+                case 2:
+                    await You(`yank ${yname(otmp)} to the ${
+                        surface(u.ux, u.uy)}!`);
+                    place_object(otmp, u.ux, u.uy);
+                    stackobj(otmp);
+                    break;
+                case 3:
+                    await You(`snatch ${yname(otmp)}!`);
+                    await hold_another_object(otmp, 'You drop %s!',
+                                              doname(otmp), null);
+                    break;
+                default:
+                    await You(`yank ${the(onambuf)} from ${
+                        s_suffix(mon_nam(mtmp))} ${monHand}!`);
+                    place_object(otmp, mtmp.mx, mtmp.my);
+                    stackobj(otmp);
+                    break;
+                }
+            } else {
+                await pline('The bullwhip slips free.');
+            }
+        } else {
+            await You(`flick your bullwhip towards ${mon_nam(mtmp)}.`);
+            if (proficient) {
+                const context = game.context ||= {};
+                const save = context.forcefight;
+                if (!mtmp.mtame)
+                    context.forcefight = true;
+                const attacked = await do_attack(mtmp);
+                context.forcefight = save;
+                if (attacked)
+                    return ECMD_TIME;
+            }
+            await pline('Snap!');
+        }
+        await wakeup(mtmp, true);
+    } else if (Is_airlevel(u.uz) || Is_waterlevel(u.uz)) {
+        await You('snap your whip through thin air.');
+    } else {
+        await pline('Snap!');
+    }
+    return ECMD_TIME;
 }
 
 // src/apply.c:1628 use_lamp(). Lamps, lanterns, and loose candles share the
@@ -1826,6 +1991,9 @@ export async function doapply() {
 
     if (is_graystone(obj))
         return await use_stone(obj);
+
+    if (obj.otyp === ONAMES.BULLWHIP)
+        return await use_whip(obj);
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

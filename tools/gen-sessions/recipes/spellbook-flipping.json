@@ -1,0 +1,22 @@
+{
+  "name": "spellbook-flipping",
+  "description": "A debug Wizard applies ordinary and special spellbooks while sighted, blind, hallucinating, and deaf, covering identification, ink fade, and every Book of the Dead sensory response.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.identification",
+    "object.spellbooks-spells",
+    "turn.timers",
+    "ui.getlin",
+    "ui.hallucination",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 2205,
+      "datetime": "20000110114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\r\u0017blessed spellbook of magic missile\r\u0017blessed spellbook of blank paper\r\u0017uncursed novel\r\u0017uncursed Book of the Dead\ri\u001bap\u001baq\u001bar\u001bas\u001bPoap\u001bR#wizintrinsic\rh\r ap\u001baq\u001bas\u001bPoap\u001bas\u001bR#wizintrinsic\rj\r as\u001bPoas\u001bRi\u001b"
+    }
+  ]
+}

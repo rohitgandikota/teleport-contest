@@ -7,7 +7,8 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
-         RLOC_NONE, TIMEOUT, Upolyd, A_DEX } from './const.js';
+         RLOC_NONE, TIMEOUT, Upolyd, A_DEX, MAX_SPELL_STUDY,
+         NH_RED } from './const.js';
 import { addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, update_inventory, useup, useupall,
          weight } from './invent.js';
@@ -24,7 +25,7 @@ import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_PROMPT } from './invent.js';
 import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
-import { Norep, You_cant, You_hear } from './pline.js';
+import { Norep, You_cant, You_hear, You_see } from './pline.js';
 import { rn1, rn2, rnd } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
          MAX_OIL_IN_FLASK, BOLT_LIM, NON_PM } from './const.js';
@@ -41,7 +42,7 @@ import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yobjnam2, an, aobjnam, singular, xname,
-         yname, the, gloves_simple_name, makeplural, otense,
+         yname, the, thesimpleoname, gloves_simple_name, makeplural, otense,
          vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
@@ -738,6 +739,46 @@ async function flip_coin(obj) {
     return ECMD_TIME;
 }
 
+// src/apply.c:4426 flip_through_book().
+async function flip_through_book(obj) {
+    if (Underwater()) {
+        await You("don't want to get the pages even more soggy, do you?");
+        return ECMD_OK;
+    }
+
+    await You(`flip through the pages of ${thesimpleoname(obj)}.`);
+    if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+        if (!Deaf()) {
+            await You_hear(`the pages make an unpleasant ${
+                Hallucination() ? 'chuckling' : 'rustling'} sound.`);
+        } else if (!Blind()) {
+            await You_see(`the pages glow faintly ${hcolor(NH_RED)}.`);
+        } else {
+            await You_feel('the pages tremble.');
+        }
+    } else if (Blind()) {
+        await pline(`The pages feel ${Hallucination()
+            ? 'freshly picked' : 'rough and dry'}.`);
+    } else if (obj.otyp === ONAMES.SPE_BLANK_PAPER) {
+        await pline(`This spellbook ${Hallucination()
+            ? "doesn't have much of a plot" : 'has nothing written in it'}.`);
+        makeknown(obj.otyp);
+    } else if (Hallucination()) {
+        await You('enjoy the animated initials.');
+    } else if (obj.otyp === ONAMES.SPE_NOVEL) {
+        await pline('This looks like it might be interesting to read.');
+    } else {
+        const fadeness = [
+            'fresh', 'slightly faded', 'very faded', 'extremely faded',
+            'barely visible',
+        ];
+        const findx = Math.min(obj.spestudied | 0, MAX_SPELL_STUDY);
+        await pline(`The${game.objects[obj.otyp].oc_magic ? ' magical' : ''} `
+                    + `ink in this spellbook is ${fadeness[findx]}.`);
+    }
+    return ECMD_TIME;
+}
+
 // src/apply.c:3568 use_cream_pie(): apply a pie to the hero's face.
 async function use_cream_pie(obj) {
     const wasblind = !!game.u.ublind;
@@ -1207,6 +1248,9 @@ export async function doapply() {
 
     if (obj.oclass === OCLASSES.COIN_CLASS)
         return await flip_coin(obj);
+
+    if (obj.oclass === OCLASSES.SPBOOK_CLASS)
+        return await flip_through_book(obj);
 
     if (LOCK_TOOLS.includes(obj.otyp)) {
         /* src/apply.c:4288 — ECMD_TIME when pick_lock() did anything at all

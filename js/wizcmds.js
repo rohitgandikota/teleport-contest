@@ -287,7 +287,7 @@ function wiz_intrinsic_timeout(key) {
     if (key === 'SICK')
         return Number(game.u.uprops?.SICK) || 0;
     if (key === 'HALLUC')
-        return Number(game.u.uprops?.HALLUC) || 0;
+        return (game.u.intrinsic?.HHallucination | 0) & TIMEOUT;
     if (key === 'BLINDED')
         return (game.u.intrinsic?.HBlinded | 0) & TIMEOUT;
     if (key === 'DEAF')

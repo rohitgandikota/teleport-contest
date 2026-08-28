@@ -1,0 +1,20 @@
+{
+  "name": "ring-levitation",
+  "description": "A debug Wizard wears and removes a blessed ring of levitation on ordinary floor, pinning discovery, float-up and float-down messages, encumbrance checks, status redraw, and floor effects.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.rings",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2175,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPnr R \u0006"
+    }
+  ]
+}

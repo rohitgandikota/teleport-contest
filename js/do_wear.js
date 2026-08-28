@@ -15,13 +15,13 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
          LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_DEX, A_CON, A_CHA,
-         INTRINSIC } from './const.js';
+         INTRINSIC, Is_airlevel } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
 import { Is_dragon_armor, nolimbs, nohands, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
-import { erode_obj, is_flammable, is_rustprone, is_crackable, is_rottable,
+import { erode_obj, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
 import { erosion_matters } from './mkobj.js';
 import { rn2, rnd } from './rng.js';
@@ -36,10 +36,11 @@ import { an, xname, doname, the, gloves_simple_name,
 import { makeknown, observe_object } from './o_init.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
 import { prinv, update_inventory, ECMD_OK } from './invent.js';
-import { nomul, unmul } from './hack.js';
+import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { ACURR, encumber_msg } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
+import { Flying, Hallucination, Levitation } from './youprop.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
 const OCLASSES_RING = OCLASSES.RING_CLASS;
@@ -557,6 +558,31 @@ function adjust_ring_attribute(ring, which, amount) {
     (game.disp ||= {}).botl = true;
 }
 
+// src/trap.c float_up(), for the states currently represented by the port.
+// Traps, engulfers, and mounted levitation retain explicit reachability marks
+// until their source-specific state transitions are available here.
+async function float_up_from_ring() {
+    (game.disp ||= {}).botl = true;
+    if (game.u.utrap) {
+        note_unported_do_wear('Ring_on:levitation_trap');
+    } else if (game.u.uinwater) {
+        await spoteffects(true);
+    } else if (game.u.uswallow) {
+        note_unported_do_wear('Ring_on:levitation_swallowed');
+    } else if (Hallucination()) {
+        await pline("Up, up, and awaaaay!  You're walking on air!");
+    } else if (Is_airlevel(game.u.uz)) {
+        await You('gain control over your movements.');
+    } else {
+        await You('start to float in the air!');
+    }
+    if (game.u.usteed)
+        note_unported_do_wear('Ring_on:levitation_steed');
+    if (Flying())
+        await You('are no longer able to control your flight.');
+    await encumber_msg();
+}
+
 // src/do_wear.c toggle_stealth() for rings.  A visible change in stealth
 // identifies the ring and gives immediate feedback.  The blocked term is
 // tracked separately from the worn-property mask, as in C's BStealth.
@@ -573,7 +599,8 @@ async function toggle_ring_stealth(ring, oldprop, on) {
 // src/do_wear.c Ring_on()/Ring_off().
 async function Ring_on(obj) {
     const ringmask = W_RINGL | W_RINGR;
-    let oldprop = game.u.uprops?.STEALTH || 0;
+    const prop = PROP_KEYS[objects[obj.otyp].oc_oprop];
+    let oldprop = prop ? (game.u.uprops?.[prop] || 0) : 0;
     /* setworn() has already added this ring.  Unless both hands carry the
        same property, strip the ring bits to recover the previous state. */
     if ((oldprop & ringmask) !== ringmask)
@@ -591,6 +618,15 @@ async function Ring_on(obj) {
         break;
     case ONAMES.RIN_ADORNMENT:
         adjust_ring_attribute(obj, A_CHA, obj.spe);
+        break;
+    case ONAMES.RIN_LEVITATION:
+        if (!oldprop && !game.u.intrinsic?.HLevitation
+            && !game.u.blocked?.LEVITATION) {
+            await float_up_from_ring();
+            learnring(obj, true);
+            if (Levitation())
+                await spoteffects(false);
+        }
         break;
     case ONAMES.RIN_STEALTH:
         await toggle_ring_stealth(obj, oldprop, true);
@@ -621,6 +657,12 @@ async function Ring_off(obj) {
         adjust_ring_attribute(obj, A_CON, -obj.spe);
     } else if (obj.otyp === ONAMES.RIN_ADORNMENT) {
         adjust_ring_attribute(obj, A_CHA, -obj.spe);
+    } else if (obj.otyp === ONAMES.RIN_LEVITATION) {
+        if (!game.u.blocked?.LEVITATION) {
+            await float_down(0, 0);
+            if (!Levitation())
+                learnring(obj, true);
+        }
     } else if (obj.otyp === ONAMES.RIN_STEALTH) {
         await toggle_ring_stealth(obj, oldprop, false);
     } else {

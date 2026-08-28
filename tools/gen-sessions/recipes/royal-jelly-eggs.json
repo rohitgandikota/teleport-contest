@@ -1,0 +1,20 @@
+{
+  "name": "royal-jelly-eggs",
+  "description": "A debug Wizard applies blessed royal jelly from a stack to a timed typed egg, cancels its hatch timer with cursed jelly, reapplies the remaining blessed lump, then cancels a split application to cover consumption, timer cancellation and rescheduling, and exact stack restoration.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2200,
+      "datetime": "20000110104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed 2 lumps of royal jelly\r\u0017+1 egg of a garter snake\ri\u001banoi\u001b\u0017cursed lump of royal jelly\rapoi\u001banoi\u001b\u00172 lumps of royal jelly\raq\u001bi\u001b"
+    }
+  ]
+}

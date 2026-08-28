@@ -8,8 +8,8 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE } from './const.js';
-import { carrying, getobj, hold_another_object, update_inventory, useup,
-         useupall, weight } from './invent.js';
+import { addinv_nomerge, carrying, freeinv, getobj, hold_another_object,
+         update_inventory, useup, useupall, weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
@@ -17,13 +17,14 @@ import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
 import { Blind, Hallucination, Deaf, Underwater } from './youprop.js';
-import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_SELECTABLE } from './invent.js';
+import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
+         GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT } from './invent.js';
 import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { Norep, You_cant, You_hear } from './pline.js';
 import { rn2, rnd } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
-         MAX_OIL_IN_FLASK, BOLT_LIM } from './const.js';
+         MAX_OIL_IN_FLASK, BOLT_LIM, NON_PM } from './const.js';
 import { walk_path } from './dothrow.js';
 import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
@@ -37,12 +38,13 @@ import { wield_tool } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yobjnam2, aobjnam, xname, yname, the,
-         makeplural, vtense } from './objnam.js';
+         makeplural, otense, vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { is_boots, is_gloves } from './obj.js';
-import { mkobj, rnd_class, set_bknown, splitobj, unbless } from './mkobj.js';
+import { clear_splitobjs, mkobj, rnd_class, set_bknown, splitobj,
+         unbless } from './mkobj.js';
 import { can_blow, nohands, passes_walls, throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -51,6 +53,8 @@ import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
 import { change_luck } from './attrib.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
+import { PMNAMES } from './monst_data.js';
+import { attach_egg_hatch_timeout, HATCH_EGG, stop_timer } from './timeout.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -411,6 +415,65 @@ export function apply_ok(obj) {
     }
 
     return GETOBJ_EXCLUDE_SELECTABLE;
+}
+
+/* src/apply.c:3616 use_royal_jelly(): rub one lump on an egg. */
+function jelly_ok(obj) {
+    return obj?.otyp === ONAMES.EGG ? GETOBJ_SUGGEST : GETOBJ_EXCLUDE;
+}
+
+async function use_royal_jelly(jelly) {
+    const splitit = jelly.quan > 1;
+    const obj = splitit ? splitobj(jelly, 1) : jelly;
+    freeinv(obj);
+
+    const egg = await getobj('rub the royal jelly on', jelly_ok,
+                             GETOBJ_PROMPT);
+    if (!egg) {
+        /* In 5.0.0, unsplitobj(obj) receives the free split child here and
+           returns null, so cancelling a split application loses one lump. */
+        if (!splitit)
+            addinv_nomerge(obj);
+        update_inventory();
+        return ECMD_CANCEL;
+    }
+
+    await You(`smear royal jelly all over ${yname(egg)}.`);
+    if (egg.otyp !== ONAMES.EGG) {
+        await pline(nothing_happens);
+    } else {
+        const oldcorpsenm = egg.corpsenm;
+        if (egg.corpsenm === PMNAMES.PM_KILLER_BEE)
+            egg.corpsenm = PMNAMES.PM_QUEEN_BEE;
+
+        if (obj.cursed) {
+            if (egg.timed || egg.corpsenm !== oldcorpsenm) {
+                await pline(`The ${xname(egg)} ${otense(egg, 'quiver')} `
+                            + 'feebly.');
+            } else {
+                await pline(nothing_seems_to_happen);
+            }
+            stop_timer(HATCH_EGG, egg);
+        } else {
+            const was_timed = egg.timed;
+            if (egg.corpsenm !== NON_PM) {
+                if (!egg.timed)
+                    attach_egg_hatch_timeout(egg, 0);
+                if (obj.blessed && !egg.spe)
+                    egg.spe = 2;
+            }
+            if ((egg.timed && !was_timed) || egg.spe === 2
+                || egg.corpsenm !== oldcorpsenm) {
+                await pline(`The ${xname(egg)} ${otense(egg, 'quiver')} `
+                            + 'briefly.');
+            } else {
+                await pline(nothing_seems_to_happen);
+            }
+        }
+    }
+
+    clear_splitobjs();
+    return ECMD_TIME;
 }
 
 // src/apply.c:3568 use_cream_pie(): apply a pie to the hero's face.
@@ -917,6 +980,9 @@ export async function doapply() {
         }
         return ECMD_TIME;
     }
+
+    if (obj.otyp === ONAMES.LUMP_OF_ROYAL_JELLY)
+        return await use_royal_jelly(obj);
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

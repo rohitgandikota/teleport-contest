@@ -1543,7 +1543,7 @@ async function hmon_hitmon_weapon_ranged(hmd, mon, obj) {
                     + `${more_than_1 ? 'one of ' : ''}${yname(obj)}`
                     + ` breaks into splinters.`);
         if (!more_than_1)
-            uwepgone(); /* set gu.unweapon */
+            await uwepgone(); /* set gu.unweapon */
         useup(obj);
         hmd.hittxt = true;
         if (hmd.mdat !== game.mons[PMNAMES.PM_SHADE])

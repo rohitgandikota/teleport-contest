@@ -1,4 +1,5 @@
-import { setuqwep, setuwep, setuswapwep, weldmsg } from './wield.js';
+import { setuqwep, setuwep_with_feedback, setuswapwep,
+         weldmsg } from './wield.js';
 import { impact_disturbs_zombies } from './hack.js';
 import { stackobj } from './invent.js';
 // do.js — commands that move the hero between levels, and the level change
@@ -358,7 +359,7 @@ async function ballrelease() {
         return;
 
     if (u.uwep === ball)
-        setuwep(null);
+        await setuwep_with_feedback(null);
     if (u.uswapwep === ball)
         setuswapwep(null);
     if (u.uquiver === ball)
@@ -1321,7 +1322,7 @@ export async function deferred_goto() {
 // are recorded.
 export async function dropz(obj, with_impact) {
     if (obj === game.u.uwep)
-        setuwep(null);          /* src/do.c:810 */
+        await setuwep_with_feedback(null); /* src/do.c:810 */
     if (obj === game.u.uquiver)
         setuqwep(null);         /* src/do.c:812 */
     if (obj === game.u.uswapwep)
@@ -1462,7 +1463,7 @@ export async function drop(obj) {
             await weldmsg(obj);
             return ECMD_FAIL;
         }
-        setuwep(null);          /* src/do.c:727 */
+        await setuwep_with_feedback(null); /* src/do.c:727 */
     }
     if (obj === game.u.uquiver)
         setuqwep(null);

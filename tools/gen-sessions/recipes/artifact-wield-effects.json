@@ -1,0 +1,37 @@
+{
+  "name": "artifact-wield-effects",
+  "description": "Debug heroes wield artifacts to exercise wielded regeneration, reflection, constitution, blindness resistance, permanent light, and artifact speech, then remove the wielded item to verify cleanup.",
+  "coverage": ["mode.debug", "object.artifacts", "survival.timed-status", "ui.getlin"],
+  "segments": [
+    {
+      "seed": 2204,
+      "datetime": "20000110103700",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Trollsbane\r\u001bwi\u001b\u0018  w-\u001b\u0018  "
+    },
+    {
+      "seed": 2205,
+      "datetime": "20000110103800",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Dragonbane\r\u001bwi\u001b\u0018  w-\u001b\u0018  "
+    },
+    {
+      "seed": 2206,
+      "datetime": "20000110103900",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Ogresmasher\r\u001bwi\u001b\u0018  w-\u001b\u0018  "
+    },
+    {
+      "seed": 2207,
+      "datetime": "20000110104000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Sunsword\r\u001bwi\u001b\u0018  w-\u001b\u0018  wi\u001bdi\u001b"
+    },
+    {
+      "seed": 2208,
+      "datetime": "20000110104100",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Magic Mirror of Merlin\r\u001bwi  \u001b"
+    }
+  ]
+}

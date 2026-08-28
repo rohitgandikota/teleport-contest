@@ -19,8 +19,8 @@ import { Fire_resistance, Cold_resistance, Shock_resistance,
 import { rn2, rnd, rnz, d } from './rng.js';
 import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
-         ONAME_KNOW_ARTI, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
-         nothing_happens, W_WEP, W_ART, W_ARTI } from './const.js';
+         ONAME_KNOW_ARTI, ECMD_OK, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
+         nothing_happens, W_ARM, W_WEP, W_ART, W_ARTI } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -248,7 +248,8 @@ function artifact_alignment(rec, artinum) {
 }
 
 /* include/artifact.h SPFX_* bits used below */
-const SPFX_INTEL = 0x04, SPFX_RESTR = 0x02, SPFX_WARN = 0x20,
+const SPFX_INTEL = 0x04, SPFX_RESTR = 0x02, SPFX_SPEAK = 0x08,
+      SPFX_WARN = 0x20,
       SPFX_ATTK = 0x40, SPFX_SEARCH = 0x00000200,
       SPFX_HALRES = 0x00000800, SPFX_ESP = 0x00001000,
       SPFX_STLTH = 0x00002000, SPFX_REGEN = 0x00004000,
@@ -266,6 +267,36 @@ export function get_artifact(obj) {
     const n = obj?.oartifact ?? 0;
     return (n > 0 && n < artifact_records.length) ? artifact_records[n]
                                                   : artifact_records[0];
+}
+
+// src/artifact.c:2264 artifact_light(). Sunsword is always a light source;
+// gold dragon armor emits light only while worn as the suit.
+export function artifact_light(obj) {
+    if (obj && (obj.otyp === ONAMES.GOLD_DRAGON_SCALE_MAIL
+                || obj.otyp === ONAMES.GOLD_DRAGON_SCALES)
+        && (obj.owornmask & W_ARM))
+        return true;
+    return get_artifact(obj) !== artifact_records[0]
+        && is_art(obj, ART_SUNSWORD);
+}
+
+// src/artifact.c:2279 arti_speak(). Speaking artifacts use a non-cookie
+// rumor whose truth follows the object's beatitude.
+export async function arti_speak(obj) {
+    const art = get_artifact(obj);
+    if (art === artifact_records[0] || !(art.spfx & SPFX_SPEAK))
+        return ECMD_OK;
+
+    const [{ getrumor }, { bcsign }, { Tobjnam }, { pline }] =
+        await Promise.all([
+            import('./rumors.js'), import('./mkobj.js'),
+            import('./objnam.js'), import('./display.js'),
+        ]);
+    const line = getrumor(bcsign(obj), true)
+        || 'NetHack rumors file closed for renovation.';
+    await pline(`${Tobjnam(obj, 'whisper')}:`);
+    await pline(`"${line}"`);
+    return ECMD_TIME;
 }
 
 function set_artifact_prop(key, on, mask) {

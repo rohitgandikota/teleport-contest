@@ -493,7 +493,7 @@ export async function polymon(mntmp) {
         await You(`drop your gloves${weapon ? ' and weapon' : ''}!`);
         if (weapon) {
             const { uwepgone } = await import('./wield.js');
-            uwepgone();
+            await uwepgone();
             const { dropx } = await import('./do.js');
             await dropx(weapon);
         }
@@ -551,7 +551,7 @@ export async function polymon(mntmp) {
         else
             await You(message);
         const { uwepgone } = await import('./wield.js');
-        uwepgone();
+        await uwepgone();
         const { dropx } = await import('./do.js');
         await dropx(weapon);
     }

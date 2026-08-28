@@ -49,7 +49,7 @@ import { Fast, Very_fast, from_what as innate_source } from './attrib.js';
 import { Fire_resistance, Cold_resistance, Sleep_resistance,
          Shock_resistance, Poison_resistance, Stealth, Searching,
          Warning, Teleport_control, See_invisible,
-         Infravision, Deaf, Hallucination, Halluc_resistance,
+         Infravision, Deaf, Blind, Hallucination, Halluc_resistance,
          Reflecting } from './youprop.js';
 import { artifact_names } from './artilist_data.js';
 import { carried_artifact_conveys } from './artifact.js';
@@ -68,6 +68,7 @@ const EXTRINSIC_KEYS = {
     HSick_resistance: 'SICK_RES',
     HStone_resistance: 'STONE_RES',
     HHalluc_resistance: 'HALLUC_RES',
+    HBlnd_resistance: 'BLND_RES',
     HAntimagic: 'ANTIMAGIC',
     HSee_invisible: 'SEE_INVIS',
     HWarning: 'WARNING',
@@ -792,6 +793,9 @@ function attributes_enlightenment() {
                 from_what('HHalluc_resistance'));
 
     /*** Vision and senses (insight.c:1566) ***/
+    if (u.uprops?.BLND_RES && !Blind())
+        you_are('not subject to light-induced blindness',
+                from_what('HBlnd_resistance'));
     if (See_invisible())
         enl_msg('You ', 'see ', 'saw ', 'invisible',
                 from_what('HSee_invisible'));

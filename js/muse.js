@@ -1125,7 +1125,7 @@ export async function use_misc(mtmp) {
 
         const [{ canseemon, pline, newsym }, { Monnam },
                { xname, the, makeplural }, { body_part },
-               { welded, setuwep, setuswapwep, setuqwep },
+               { welded, setuwep_with_feedback, setuswapwep, setuqwep },
                { freeinv }, { place_object }, { dropy },
                { mpickobj }, { mon_hates_silver }, { surface },
                { HAND }] = await Promise.all([
@@ -1162,7 +1162,7 @@ export async function use_misc(mtmp) {
             where_to = 2;
 
         if (target === game.u.uwep)
-            setuwep(null);
+            await setuwep_with_feedback(null);
         if (target === game.u.uswapwep)
             setuswapwep(null);
         if (target === game.u.uquiver)

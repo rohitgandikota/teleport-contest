@@ -8,7 +8,8 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE } from './const.js';
-import { carrying, getobj, update_inventory, useup, useupall, weight } from './invent.js';
+import { carrying, getobj, hold_another_object, update_inventory, useup,
+         useupall, weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
@@ -21,7 +22,8 @@ import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { You_cant, You_hear } from './pline.js';
 import { rn2, rnd } from './rng.js';
-import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN } from './const.js';
+import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
+         MAX_OIL_IN_FLASK } from './const.js';
 import { walk_path } from './dothrow.js';
 import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
@@ -33,12 +35,12 @@ import { cansee } from './vision.js';
 import { wield_tool } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE } from './const.js';
-import { OBJ_NAME, The, Tobjnam, xname, yname, the, makeplural,
+import { OBJ_NAME, The, Tobjnam, aobjnam, xname, yname, the, makeplural,
          vtense } from './objnam.js';
 import { pmname, upstart, x_monnam, y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { is_boots, is_gloves } from './obj.js';
-import { splitobj } from './mkobj.js';
+import { mkobj, rnd_class, splitobj } from './mkobj.js';
 import { can_blow, nohands, passes_walls, throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -734,6 +736,59 @@ async function use_magic_whistle(obj) {
     }
 }
 
+// src/mkobj.c:2847 hornoplenty(), for applying one charge into inventory.
+async function hornoplenty(horn) {
+    if (horn.spe < 1) {
+        await pline(nothing_happens);
+        if (!horn.cknown) {
+            horn.cknown = 1;
+            update_inventory();
+        }
+        return;
+    }
+
+    if (horn.unpaid)
+        note_unported_apply('hornoplenty:shop_billing');
+    horn.spe--;
+    if (horn.known)
+        update_inventory();
+
+    let obj, what;
+    if (!rn2(13)) {
+        obj = mkobj(OCLASSES.POTION_CLASS, false);
+        if (game.objects[obj.otyp].oc_magic) {
+            do {
+                obj.otyp = rnd_class(ONAMES.POT_BOOZE, ONAMES.POT_WATER);
+            } while (obj.otyp === ONAMES.POT_SICKNESS);
+            if (obj.otyp === ONAMES.POT_OIL)
+                obj.age = MAX_OIL_IN_FLASK;
+        }
+        what = obj.quan > 1 ? 'Some potions' : 'A potion';
+    } else {
+        obj = mkobj(OCLASSES.FOOD_CLASS, false);
+        if (obj.otyp === ONAMES.FOOD_RATION && !rn2(7))
+            obj.otyp = ONAMES.LUMP_OF_ROYAL_JELLY;
+        what = 'Some food';
+    }
+
+    await pline(`${what} ${vtense(what, 'spill')} out.`);
+    obj.blessed = horn.blessed;
+    obj.cursed = horn.cursed;
+    obj.owt = weight(obj);
+
+    const typ = game.level.at(game.u.ux, game.u.uy).typ;
+    const dropFmt = game.u.uswallow
+        ? 'Oops!  %s out of your reach!'
+        : (Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz)
+           || typ < IRONBARS || typ >= ICE)
+            ? 'Oops!  %s away from you!'
+            : 'Oops!  %s to the floor!';
+    await hold_another_object(obj, dropFmt, The(aobjnam(obj, 'slip')), null);
+
+    if (horn.dknown)
+        makeknown(ONAMES.HORN_OF_PLENTY);
+}
+
 // src/apply.c doapply() — the 'a' command.
 export async function doapply() {
     if (nohands(game.youmonst.data)) {
@@ -810,6 +865,11 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.WAX_CANDLE || obj.otyp === ONAMES.TALLOW_CANDLE) {
         await use_candle(obj);
+        return ECMD_TIME;
+    }
+
+    if (obj.otyp === ONAMES.HORN_OF_PLENTY) {
+        await hornoplenty(obj);
         return ECMD_TIME;
     }
 

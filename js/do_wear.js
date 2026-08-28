@@ -20,7 +20,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
-import { Is_dragon_armor, nolimbs, nohands, verysmall } from './mondata.js';
+import { nolimbs, nohands, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { erode_obj, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
@@ -113,23 +113,87 @@ export async function Armor_on() {
         game.u.uarm.known = 1; /* +/- evident because of status line AC */
         note_unported_do_wear('Armor_on:update_inventory');
     }
-    /* src/do_wear.c dragon_armor_handling(): blue dragon armor grants an
-       extra speed property in addition to its ordinary shock resistance. */
-    if (game.u.uarm.otyp === ONAMES.BLUE_DRAGON_SCALES
-        || game.u.uarm.otyp === ONAMES.BLUE_DRAGON_SCALE_MAIL) {
-        const hfast = game.u.intrinsic?.HFast | 0;
-        const efast = game.u.uprops?.FAST | 0;
-        const fast = !!(hfast || efast);
-        const very_fast = !!((hfast & TIMEOUT) || efast);
-        if (!very_fast)
-            await You(`speed up${fast ? ' a bit more' : ''}.`);
-        (game.u.uprops ||= {}).FAST = efast | W_ARM;
-    } else if (Is_dragon_armor(game.u.uarm)) {
-        note_unported_do_wear('Armor_on:dragon_armor_handling');
-    }
+    await dragon_armor_handling(game.u.uarm, true);
     if (game.u.uarm.oartifact)
         note_unported_do_wear('Armor_on:artifact_light');
     return 0;
+}
+
+// src/do_wear.c dragon_armor_handling(). The armor's primary property is
+// managed by setworn(); this switch supplies its second property.
+async function dragon_armor_handling(obj, putOn) {
+    const props = (game.u.uprops ||= {});
+    let secondary = null;
+
+    switch (obj.otyp) {
+    case ONAMES.BLACK_DRAGON_SCALES:
+    case ONAMES.BLACK_DRAGON_SCALE_MAIL:
+        secondary = 'DRAIN_RES';
+        break;
+    case ONAMES.BLUE_DRAGON_SCALES:
+    case ONAMES.BLUE_DRAGON_SCALE_MAIL: {
+        const hfast = game.u.intrinsic?.HFast | 0;
+        const efast = props.FAST | 0;
+        if (putOn) {
+            const fast = !!(hfast || efast);
+            const very_fast = !!((hfast & TIMEOUT) || efast);
+            if (!very_fast)
+                await You(`speed up${fast ? ' a bit more' : ''}.`);
+            props.FAST = efast | W_ARM;
+        } else {
+            set_dragon_secondary(props, 'FAST', false);
+            if (!Very_fast() && !game.context_takeoff?.cancelled_don)
+                await You('slow down.');
+        }
+        return;
+    }
+    case ONAMES.GREEN_DRAGON_SCALES:
+    case ONAMES.GREEN_DRAGON_SCALE_MAIL:
+        secondary = 'SICK_RES';
+        break;
+    case ONAMES.RED_DRAGON_SCALES:
+    case ONAMES.RED_DRAGON_SCALE_MAIL:
+        secondary = 'INFRAVISION';
+        break;
+    case ONAMES.GOLD_DRAGON_SCALES:
+    case ONAMES.GOLD_DRAGON_SCALE_MAIL:
+        note_unported_do_wear('dragon_armor_handling:gold');
+        return;
+    case ONAMES.ORANGE_DRAGON_SCALES:
+    case ONAMES.ORANGE_DRAGON_SCALE_MAIL:
+        secondary = 'FREE_ACTION';
+        break;
+    case ONAMES.YELLOW_DRAGON_SCALES:
+    case ONAMES.YELLOW_DRAGON_SCALE_MAIL:
+        secondary = 'STONE_RES';
+        break;
+    case ONAMES.WHITE_DRAGON_SCALES:
+    case ONAMES.WHITE_DRAGON_SCALE_MAIL:
+        secondary = 'SLOW_DIGESTION';
+        break;
+    default:
+        return;
+    }
+
+    set_dragon_secondary(props, secondary, putOn);
+    if (secondary === 'INFRAVISION')
+        see_monsters();
+    if (!putOn && secondary === 'STONE_RES'
+        && [game.u.uwep, game.u.uswapwep].some(
+            item => item?.otyp === ONAMES.CORPSE))
+        note_unported_do_wear('dragon_armor_handling:wielding_corpse');
+}
+
+function set_dragon_secondary(props, prop, putOn) {
+    if (putOn) {
+        props[prop] = (props[prop] | 0) | W_ARM;
+    } else {
+        const left = (props[prop] | 0) & ~W_ARM;
+        if (left)
+            props[prop] = left;
+        else
+            delete props[prop];
+    }
 }
 
 /* Every armor-slot on-handler ends by revealing the item's enchantment: the
@@ -1468,21 +1532,9 @@ async function slot_off(otmp) {
     }
     if (otmp.owornmask & W_ARM) {
         /* Armor_off clears setworn's primary property before removing the
-           second property supplied by blue dragon armor. */
+           second property supplied by dragon armor. */
         setworn(null, W_ARM);
-        if (otmp.otyp === ONAMES.BLUE_DRAGON_SCALES
-            || otmp.otyp === ONAMES.BLUE_DRAGON_SCALE_MAIL) {
-            const left = (game.u.uprops?.FAST | 0) & ~W_ARM;
-            if (left)
-                game.u.uprops.FAST = left;
-            else if (game.u.uprops)
-                delete game.u.uprops.FAST;
-            const hfast = game.u.intrinsic?.HFast | 0;
-            const efast = game.u.uprops?.FAST | 0;
-            if (!((hfast & TIMEOUT) || efast)
-                && !game.context_takeoff?.cancelled_don)
-                await You('slow down.');
-        }
+        await dragon_armor_handling(otmp, false);
     } else {
         setworn(null, mask); /* each C *_off handler clears its own slot */
     }

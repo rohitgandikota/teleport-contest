@@ -123,6 +123,9 @@ export function obj_typename(otyp) {
     case ARMOR_CLASS:
         if (ocl.oc_subtyp === ARM_GLOVES || ocl.oc_subtyp === ARM_BOOTS)
             buf = 'pair of ';
+        else if (otyp >= ONAMES.GRAY_DRAGON_SCALES
+                 && otyp <= ONAMES.YELLOW_DRAGON_SCALES)
+            buf = 'set of ';
         /* FALLTHRU */
     default:
         if (nn) {
@@ -310,6 +313,9 @@ export function xname(obj) {
     case ARMOR_CLASS:
         if (ocl.oc_subtyp === ARM_BOOTS || ocl.oc_subtyp === ARM_GLOVES)
             buf = 'pair of ';
+        else if (obj.otyp >= ONAMES.GRAY_DRAGON_SCALES
+                 && obj.otyp <= ONAMES.YELLOW_DRAGON_SCALES)
+            buf = 'set of ';
         buf += nn ? actualn : un ? `${dn} called ${un}` : dn;
         break;
     case POTION_CLASS:

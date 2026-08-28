@@ -789,11 +789,12 @@ async function peffect_see_invisible(otmp) {
 // src/potion.c peffect_paralysis() — the hero freezes for rn1(10, 25) turns,
 // longer when the potion is cursed and shorter when blessed.
 //
-// Free_action, Levitation and riding change only the message; none is
-// reachable yet, so those arms are recorded.
+// Free action avoids the timeout and its RNG draw. Levitation and riding
+// change only the message and remain recorded until their surface variants
+// are covered.
 async function peffect_paralysis(otmp) {
-    if (game.u.uprops?.FREE_ACTION?.intrinsic) {
-        note_unported_potion('peffect_paralysis:free_action');
+    if (game.u.uprops?.FREE_ACTION) {
+        await You('stiffen momentarily.');
         return;
     }
     if (game.u.uprops?.LEVITATION || game.u.usteed) {

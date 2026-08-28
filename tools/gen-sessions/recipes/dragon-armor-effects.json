@@ -1,0 +1,21 @@
+{
+  "name": "dragon-armor-effects",
+  "description": "A debug Tourist wears orange dragon scales and quaffs paralysis to pin the secondary free-action property.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.potions",
+    "survival.timed-status",
+    "turn.occupation-interrupt",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2183,
+      "datetime": "20000110092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed orange dragon scales\rWn\u0017blessed potion of paralysis\rqo."
+    }
+  ]
+}

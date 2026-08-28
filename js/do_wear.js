@@ -946,6 +946,18 @@ async function self_invis_message() {
 }
 
 // src/do_wear.c Ring_on()/Ring_off().
+const PASSIVE_RING_TYPES = new Set([
+    ONAMES.RIN_TELEPORTATION, ONAMES.RIN_REGENERATION,
+    ONAMES.RIN_SEARCHING, ONAMES.RIN_HUNGER,
+    ONAMES.RIN_AGGRAVATE_MONSTER, ONAMES.RIN_POISON_RESISTANCE,
+    ONAMES.RIN_FIRE_RESISTANCE, ONAMES.RIN_COLD_RESISTANCE,
+    ONAMES.RIN_SHOCK_RESISTANCE, ONAMES.RIN_CONFLICT,
+    ONAMES.RIN_TELEPORT_CONTROL, ONAMES.RIN_POLYMORPH,
+    ONAMES.RIN_POLYMORPH_CONTROL, ONAMES.RIN_FREE_ACTION,
+    ONAMES.RIN_SLOW_DIGESTION, ONAMES.RIN_SUSTAIN_ABILITY,
+    ONAMES.MEAT_RING,
+]);
+
 async function Ring_on(obj) {
     const ringmask = W_RINGL | W_RINGR;
     const prop = PROP_KEYS[objects[obj.otyp].oc_oprop];
@@ -956,8 +968,8 @@ async function Ring_on(obj) {
         oldprop &= ~ringmask;
 
     switch (obj.otyp) {
-    case ONAMES.RIN_SUSTAIN_ABILITY:
     case ONAMES.RIN_WARNING:
+        see_monsters();
         break;
     case ONAMES.RIN_SEE_INVISIBLE:
         see_monsters();
@@ -985,6 +997,12 @@ async function Ring_on(obj) {
     case ONAMES.RIN_ADORNMENT:
         adjust_ring_attribute(obj, A_CHA, obj.spe);
         break;
+    case ONAMES.RIN_INCREASE_ACCURACY:
+        game.u.uhitinc = (game.u.uhitinc || 0) + obj.spe;
+        break;
+    case ONAMES.RIN_INCREASE_DAMAGE:
+        game.u.udaminc = (game.u.udaminc || 0) + obj.spe;
+        break;
     case ONAMES.RIN_LEVITATION:
         if (!oldprop && !game.u.intrinsic?.HLevitation
             && !game.u.blocked?.LEVITATION) {
@@ -1002,8 +1020,12 @@ async function Ring_on(obj) {
         if (obj.spe)
             find_ac();
         break;
+    case ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN:
+        note_unported_do_wear('Ring_on:rescham');
+        break;
     default:
-        note_unported_do_wear(`Ring_on:otyp=${obj.otyp}`);
+        if (!PASSIVE_RING_TYPES.has(obj.otyp))
+            note_unported_do_wear(`Ring_on:otyp=${obj.otyp}`);
         break;
     }
 }
@@ -1023,6 +1045,10 @@ async function Ring_off(obj) {
         adjust_ring_attribute(obj, A_CON, -obj.spe);
     } else if (obj.otyp === ONAMES.RIN_ADORNMENT) {
         adjust_ring_attribute(obj, A_CHA, -obj.spe);
+    } else if (obj.otyp === ONAMES.RIN_INCREASE_ACCURACY) {
+        game.u.uhitinc = (game.u.uhitinc || 0) - obj.spe;
+    } else if (obj.otyp === ONAMES.RIN_INCREASE_DAMAGE) {
+        game.u.udaminc = (game.u.udaminc || 0) - obj.spe;
     } else if (obj.otyp === ONAMES.RIN_LEVITATION) {
         if (!game.u.blocked?.LEVITATION) {
             await float_down(0, 0);
@@ -1047,8 +1073,14 @@ async function Ring_off(obj) {
                 See_invisible() ? ' completely.' : '...'}`);
             learnring(obj, true);
         }
+    } else if (obj.otyp === ONAMES.RIN_WARNING) {
+        see_monsters();
+    } else if (obj.otyp === ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN) {
+        if (!game.u.uprops?.PROT_FROM_SHAPE_CHANGERS)
+            note_unported_do_wear('Ring_off:restartcham');
+    } else if (PASSIVE_RING_TYPES.has(obj.otyp)) {
+        /* setworn() already removed the ring's ordinary property. */
     } else {
-        find_ac();
         note_unported_do_wear(`Ring_off:otyp=${obj.otyp}`);
     }
 }

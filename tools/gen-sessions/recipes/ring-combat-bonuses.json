@@ -1,0 +1,38 @@
+{
+  "name": "ring-combat-bonuses",
+  "description": "Debug Wizards wear enchanted accuracy and damage rings and attack durable monsters to pin combat bonuses and removal.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.rings",
+    "monster.hero-melee",
+    "combat.melee",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2179,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +10 ring of increase accuracy\rPor\u0007hostile black dragon\rj"
+    },
+    {
+      "seed": 2180,
+      "datetime": "20000110090500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase damage\rPor\u0007hostile giant ant\rjjj"
+    },
+    {
+      "seed": 2181,
+      "datetime": "20000110091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase damage\rPnrR\u0007hostile giant ant\rllll"
+    },
+    {
+      "seed": 2182,
+      "datetime": "20000110091500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +10 ring of increase accuracy\rPorR\u0007hostile black dragon\rk"
+    }
+  ]
+}

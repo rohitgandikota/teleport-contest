@@ -1,9 +1,9 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-28T09:13:38.505Z. Local commit: `63d7794`.
+Last refreshed: 2026-08-28T09:33:42.902Z. Local commit: `745c180`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-27T09:55:38.417Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
-Leaderboard page checked: 2026-08-28T05:45:18.000Z. The page reported Updated 5h ago and displayed the same visible scores.
+Leaderboard page checked: 2026-08-28T09:35:29.000Z. The page reported Updated 5h ago and displayed the same visible scores.
 
 ## Score summary
 
@@ -12,7 +12,7 @@ Leaderboard page checked: 2026-08-28T05:45:18.000Z. The page reported Updated 5h
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 9/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 22641/23026 | 98.33% | 127/129 | 1761877/1761877 (100.00%) | 14/436 |
+| Supplemental C suite | 22830/23215 | 98.34% | 128/130 | 1774476/1774476 (100.00%) | 14/436 |
 
 ## Contest position and generalization
 
@@ -22,15 +22,15 @@ Leaderboard page checked: 2026-08-28T05:45:18.000Z. The page reported Updated 5h
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `63d7794` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `745c180` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 23019/23026 |
-| Cursor positions | 11405/11405 | 22641/23026 |
-| Startup and per-turn estimate | 73+0.47/turn | 101+0.15/turn |
+| Cells only | 11405/11405 | 23208/23215 |
+| Cursor positions | 11405/11405 | 22830/23215 |
+| Startup and per-turn estimate | 69+0.47/turn | 104+0.15/turn |
 
 ## Supplemental capture caveats
 
@@ -49,6 +49,7 @@ Leaderboard page checked: 2026-08-28T05:45:18.000Z. The page reported Updated 5h
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-28T09:33:42.902Z | `745c180` | 11405/11405 | 22830/23215 | 6032/11265 | 3 |
 | 2026-08-28T09:13:38.505Z | `63d7794` | 11405/11405 | 22641/23026 | 6032/11265 | 3 |
 | 2026-08-28T08:56:49.272Z | `c20df35` | 11405/11405 | 22392/22777 | 6032/11265 | 3 |
 | 2026-08-28T08:38:55.773Z | `781f93a` | 11405/11405 | 22303/22688 | 6032/11265 | 3 |
@@ -58,7 +59,6 @@ Leaderboard page checked: 2026-08-28T05:45:18.000Z. The page reported Updated 5h
 | 2026-08-28T07:44:01.182Z | `5735a7e` | 11405/11405 | 21540/21925 | 6032/11265 | 3 |
 | 2026-08-28T07:35:15.744Z | `bc2b9e6` | 11405/11405 | 21474/21859 | 6032/11265 | 3 |
 | 2026-08-28T07:24:10.303Z | `46d5d58` | 11405/11405 | 21139/21524 | 6032/11265 | 3 |
-| 2026-08-28T07:12:29.734Z | `f2649a0` | 11405/11405 | 21053/21438 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

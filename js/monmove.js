@@ -44,7 +44,7 @@ import { Is_container, Is_candle, is_cloak, is_gloves,
 import { is_weptool } from './mkobj.js';
 import { metallivorous, corpse_eater, is_covetous,
          resist_conflict } from './mondata.js';
-import { may_dig, in_town, losehp } from './hack.js';
+import { may_dig, in_town, losehp, disturb_buried_zombies } from './hack.js';
 import { place_monster, remove_monster, hideunder,
          hideunder_with_message } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -1378,6 +1378,11 @@ export async function dochug(mtmp) {
             /* if confused grabber has wandered off, let go */
             if (mtmp === game.u.ustuck && !(distu(mtmp.mx, mtmp.my) <= 2))
                 note_unported_monmove('dochug:unstuck');
+            {
+                const { grounded } = await import('./trap.js');
+                if (grounded(mdat))
+                    disturb_buried_zombies(mtmp.mx, mtmp.my);
+            }
             /* Maybe it stepped on a trap and fell asleep... */
             if (helpless(mtmp))
                 return 0;

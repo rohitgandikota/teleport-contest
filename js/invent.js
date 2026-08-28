@@ -23,7 +23,7 @@ import { doname, an, corpse_xname, makeplural, CXN_PFX_THE,
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj } from './mkobj.js';
-import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, Is_container, Is_candle, Is_pudding } from './obj.js';
+import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, Is_container, Is_candle, Is_pudding } from './obj.js';
 import { setnotworn } from './worn.js';
 import { is_rider, hideunder } from './makemon.js';
 import { Fumbling } from './youprop.js';
@@ -1238,6 +1238,14 @@ export function obj_extract_self(obj) {
     case OBJ_INVENT:
         freeinv(obj);       /* src/mkobj.c:2573 -- ported at invent.js:622 */
         break;
+    case OBJ_BURIED: {
+        const objs = game.level?.buriedobjs;
+        if (objs) {
+            const i = objs.indexOf(obj);
+            if (i >= 0) objs.splice(i, 1);
+        }
+        break;
+    }
     default: {   /* OBJ_FLOOR — remove_object() */
         const objs = game.level?.objects;
         if (objs) {

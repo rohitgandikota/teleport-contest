@@ -22,6 +22,8 @@ import { ROOM } from './const.js';
 import { lspo_engraving, lspo_terrain, lspo_trap, get_traptype_byname,
          lspo_object, lspo_monster, lspo_altar } from './sp_lev.js';
 import { create_gas_cloud_selection } from './region.js';
+import { start_timer, obj_stop_timers, TIMER_OBJECT, ZOMBIFY_MON }
+    from './timeout.js';
 
 function note_unported_themerms(what) {
     (game.unported ||= new Set()).add(what);
@@ -291,11 +293,13 @@ export function fill_buried_zombies(rm) {
     const n = (rm.width * rm.height) / 2;
     for (let i = 1; i <= n; i++) {
         lua_shuffle(zombifiable);
-        lspo_object('corpse', undefined, undefined,
-                    { montype: zombifiable[0], buried: true });
-        /* o:stop_timer("rot-corpse") draws nothing */
-        nh_random(990, 21);             /* math.random(990, 1010) */
-        note_unported_themerms('start_timer:zombify-mon');
+        const body = lspo_object('corpse', undefined, undefined,
+                                 { montype: zombifiable[0], buried: true });
+        const when = nh_random(990, 21); /* math.random(990, 1010) */
+        if (body) {
+            obj_stop_timers(body);       /* o:stop_timer("rot-corpse") */
+            start_timer(when, TIMER_OBJECT, ZOMBIFY_MON, body);
+        }
     }
 }
 

@@ -158,6 +158,27 @@ export function start_timer(when, kind, func_index, arg) {
     return true;
 }
 
+// src/timeout.c:2299 stop_timer() and :2328 peek_timer().
+export function stop_timer(func_index, arg) {
+    const base = (game.timer_base ||= []);
+    const index = base.findIndex(
+        (timer) => timer.func_index === func_index && timer.arg === arg);
+    if (index < 0)
+        return 0;
+
+    const [timer] = base.splice(index, 1);
+    if (timer.kind === TIMER_OBJECT)
+        arg.timed = Math.max(0, (arg.timed ?? 1) - 1);
+    return timer.timeout - (game.moves ?? 0);
+}
+
+export function peek_timer(func_index, arg) {
+    const timer = (game.timer_base || []).find(
+        (candidate) => candidate.func_index === func_index
+            && candidate.arg === arg);
+    return timer?.timeout ?? 0;
+}
+
 // src/timeout.c:2377 obj_stop_timers(). Remove every timer attached to an
 // object before changing the object type or corpse species.
 export function obj_stop_timers(obj) {

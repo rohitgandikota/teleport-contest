@@ -74,6 +74,8 @@ import { tunnels, needspick, passes_walls, passes_bars, dmgtype,
          metallivorous, throws_rocks, verysmall, bigmonst, amorphous,
          is_whirly, noncorporeal, slithy } from './mondata.js';
 import { INTRINSIC } from './const.js';
+import { start_timer, stop_timer, peek_timer, TIMER_OBJECT, ZOMBIFY_MON }
+    from './timeout.js';
 
 // src/hack.c:982 invocation_pos(), the ritual square on the penultimate
 // Gehennom level.
@@ -1414,12 +1416,6 @@ export async function lookaround() {
 // src/hack.c:1787 impact_disturbs_zombies() — a heavy object hitting the floor
 // wakes zombies buried nearby.
 //
-// The early return is fully ported and is what fires in the common case: a
-// light or flimsy object makes no noticeable impact and nothing happens. Only
-// a heavy, non-flimsy drop reaches disturb_buried_zombies(), which needs the
-// buried object list and peek_timer/stop_timer -- none of which exist yet --
-// so that call is recorded rather than guessed.
-//
 // Note the threshold flips with `violent`: 10 for a violent impact, 100 for an
 // ordinary drop, so an ordinary drop has to be ten times heavier to matter.
 export function impact_disturbs_zombies(obj, violent) {
@@ -1427,8 +1423,21 @@ export function impact_disturbs_zombies(obj, violent) {
     if (obj.owt < (violent ? 10 : 100) || is_flimsy(obj))
         return;
 
-    /* disturb_buried_zombies(obj->ox, obj->oy) */
-    (game.unported ||= new Set()).add('hack:disturb_buried_zombies');
+    disturb_buried_zombies(obj.ox, obj.oy);
+}
+
+// src/hack.c:1798 disturb_buried_zombies().
+export function disturb_buried_zombies(x, y) {
+    for (const obj of (game.level?.buriedobjs || [])) {
+        if (obj.otyp === ONAMES.CORPSE && obj.timed
+            && obj.ox >= x - 1 && obj.ox <= x + 1
+            && obj.oy >= y - 1 && obj.oy <= y + 1
+            && peek_timer(ZOMBIFY_MON, obj) > 0) {
+            const remaining = stop_timer(ZOMBIFY_MON, obj);
+            start_timer(Math.max(1, Math.trunc(remaining * 2 / 3)),
+                        TIMER_OBJECT, ZOMBIFY_MON, obj);
+        }
+    }
 }
 
 // src/hack.c:4106 monster_nearby() — a spottable hostile adjacent to the hero.

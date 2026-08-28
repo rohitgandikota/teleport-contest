@@ -20,7 +20,7 @@ import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM } from './const.js';
 import { t_at, m_at, is_pool, is_lava, delobj_core } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -31,7 +31,7 @@ import { can_reach_floor, add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
-import { Monnam } from './do_name.js';
+import { Amonnam, Monnam } from './do_name.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
    A dynamic import() here hits the same partially-initialised module the
@@ -58,11 +58,19 @@ function note_unported_do(what) {
 // monster without inventory, consume the corpse forcibly, and print the
 // species-specific rising effect.
 export async function revive_corpse(corpse) {
+    const buried = corpse?.where === OBJ_BURIED;
     if (!corpse || corpse.otyp !== ONAMES.CORPSE
-        || corpse.where !== OBJ_FLOOR)
+        || (corpse.where !== OBJ_FLOOR && !buried))
         return false;
 
-    const x = corpse.ox, y = corpse.oy;
+    let x = corpse.ox, y = corpse.oy;
+    if (buried) {
+        const typ = game.level?.at(x, y)?.typ;
+        if (!(game.level?.buriedobjs || []).includes(corpse)
+            || t_at(x, y)
+            || (typ !== ROOM && typ !== CORR && typ !== GRAVE))
+            return false;
+    }
     const ptr = game.mons[corpse.corpsenm];
     const { makemon } = await import('./makemon.js');
     const rider = ptr.pmidx === PMNAMES.PM_DEATH
@@ -75,6 +83,14 @@ export async function revive_corpse(corpse) {
         mmflags |= MM_MALE;
     else if (!rider && cgend === CORPSTAT_FEMALE)
         mmflags |= MM_FEMALE;
+    if (m_at(x, y)) {
+        const { enexto } = await import('./teleport.js');
+        const cc = { x, y };
+        if (enexto(cc, x, y, ptr)) {
+            x = cc.x;
+            y = cc.y;
+        }
+    }
     const mtmp = makemon(ptr, x, y, mmflags);
     if (!mtmp)
         return false;
@@ -96,6 +112,22 @@ export async function revive_corpse(corpse) {
     mtmp.mcansee = true;
 
     delobj_core(corpse, true);
+
+    if (buried) {
+        const { maketrap } = await import('./mklev.js');
+        const trap = maketrap(mtmp.mx, mtmp.my, PIT);
+        if (cansee(mtmp.mx, mtmp.my)) {
+            if (trap) trap.tseen = 1;
+            await pline(`${Amonnam(mtmp)} claws itself out of the ground!`);
+            newsym(mtmp.mx, mtmp.my);
+        } else {
+            const dx = mtmp.mx - game.u.ux;
+            const dy = mtmp.my - game.u.uy;
+            if (dx * dx + dy * dy < 25)
+                await You_hear('scratching noises.');
+        }
+        return true;
+    }
 
     let effect = '';
     if (ptr.pmidx === PMNAMES.PM_DEATH)
@@ -119,9 +151,12 @@ export async function revive_mon(body) {
 // src/do.c:2299 zombify_mon() - convert the corpse to its zombie species,
 // then pass it through the ordinary timed-revival path.
 export async function zombify_mon(body) {
+    const active = body?.where === OBJ_FLOOR
+        ? (game.level?.objects || []).includes(body)
+        : body?.where === OBJ_BURIED
+          && (game.level?.buriedobjs || []).includes(body);
     if (!body || body.otyp !== ONAMES.CORPSE
-        || body.where !== OBJ_FLOOR
-        || !(game.level?.objects || []).includes(body)) {
+        || !active) {
         /* C keeps object timers on the saved level. The JS queue is global,
            so an off-level object must not consume RNG on the active level. */
         return;

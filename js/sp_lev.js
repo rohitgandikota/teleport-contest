@@ -1510,7 +1510,7 @@ export function bury_an_obj(otmp, dealloced) {
                     TIMER_OBJECT, ROT_ORGANIC, otmp);
     }
 
-    (game.level.buriedobjs ||= []).push(otmp);   /* add_to_buried() */
+    (game.level.buriedobjs ||= []).unshift(otmp);   /* add_to_buried() */
     otmp.where = OBJ_BURIED;
 }
 

@@ -60,7 +60,7 @@ function splitArgs(s) {
 const DEFINES = new Set([
     'OPTLIST_H', 'NHOPT_PARSE',
     'UNIX', 'TTY_GRAPHICS', 'ALTMETA', 'INSURANCE', 'MAIL', 'NEWS',
-    'SELECTSAVED', 'STATUS_HILITES', 'CRASHREPORT', 'PREV_MSGS',
+    'SELECTSAVED', 'STATUS_HILITES', 'CRASHREPORT', 'PREV_MSGS', 'DEBUG',
     'BACKWARD_COMPAT',
     /* SND_LIB_INTEGRATED is NOT defined: the reference binary shows
        "sounds [off]" in the 'm O' doset() menu (seed0007 step 29), which is

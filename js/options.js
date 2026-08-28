@@ -638,12 +638,24 @@ function longest_option_name(startpass, endpass) {
     return longest_name_len;
 }
 
+const iflag_boolean_options = new Set([
+    'debug_hunger', 'debug_mongen', 'debug_overwrite_stairs',
+]);
+
+function bool_opt_store(name) {
+    return iflag_boolean_options.has(name) ? (game.iflags ||= {})
+                                           : (game.flags ||= {});
+}
+
+function set_bool_optval(name, value) {
+    bool_opt_store(name)[name] = value;
+}
+
 /* The value of a boolean option. C reads *allopt[i].addr, a pointer straight
-   at the live variable; our single store is game.flags keyed by the OPTION
-   name (see the note at js/cmd.js dotogglepickup), so an option the rc never
-   mentioned and nothing has toggled falls back to the table's initval. */
+   at the live variable. Most options live in game.flags here, while the three
+   wizard debug switches match C's iflags fields. */
 function bool_optval(o) {
-    const v = game.flags?.[o.name];
+    const v = bool_opt_store(o.name)[o.name];
     return (v === undefined) ? (o.initval === 'On') : !!v;
 }
 
@@ -1144,7 +1156,7 @@ async function doset_simple_menu() {
                    js/cmd.js dotogglepickup), so the flip happens here --
                    routing it through parseoptions() updated game.rc.opts and
                    left the menu showing the old value. */
-                game.flags[allopt[k].name] = !bool_optval(allopt[k]);
+                set_bool_optval(allopt[k].name, !bool_optval(allopt[k]));
                 boolopt_side_effects(allopt[k].name);
             } else if (allopt[k].hasHandler !== 'Yes') {
                 /* src/options.c:8672 — a compound option with no handler
@@ -1409,8 +1421,8 @@ export async function doset() {
             }
 
         /* PREFIXES_IN_USE ("Variable playground locations:") is not
-           compiled into the reference binary — the recorded menu is 7
-           pages and ends at "status highlight rules" */
+           compiled into the reference binary. The recorded DEBUG build has
+           8 pages and ends at "status highlight rules". */
         tty_end_menu(tmpwin, 'Set what options?');
         game.opt_need_redraw = false;
 
@@ -1437,7 +1449,7 @@ export async function doset() {
                    (give_opt_msg is TRUE here, unlike doset_simple) reports
                    the change (options.c:5438) */
                 const newval = !bool_optval(o);
-                game.flags[o.name] = newval;
+                set_bool_optval(o.name, newval);
                 boolopt_side_effects(o.name);
                 await pline(`'${o.name}' option toggled ${newval ? 'on'
                                                                  : 'off'}.`);

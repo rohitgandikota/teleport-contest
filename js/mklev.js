@@ -25,7 +25,8 @@ import { mongone, m_at, is_pool, minliquid, seemimic } from './mon.js';
 import { sgn } from './hacklib.js';
 import { set_wall_state, newsym, flush_screen,
          display_nhwindow_message } from './display.js';
-import { obj_extract_self } from './invent.js';
+import { obj_extract_self, stackobj } from './invent.js';
+import { stop_timer, ROT_ORGANIC } from './timeout.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
 import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, sp_lev_wire_roamer, reset_xystart_size } from './sp_lev.js';
 import { walkfrom, mkmaze_wire_mklev, mkportal } from './mkmaze.js';
@@ -344,7 +345,7 @@ let _nextObjId = 1;
 /* mkgold() lives in js/mkobj.js, where src/mkobj.c has it. */
 
 function add_to_buried(otmp) {
-    (game.level.buriedobjs ||= []).push(otmp);
+    (game.level.buriedobjs ||= []).unshift(otmp);
 }
 function dealloc_obj(otmp) { /* stub */ }
 
@@ -406,6 +407,21 @@ function choose_trapnote(ttmp) {
         if (tavail[k] === 0)
             tpick.push(k);
     return tpick.length > 0 ? tpick[rn2(tpick.length)] : rn2(12);
+}
+
+// src/dig.c:2086 unearth_objs(). Pits and holes expose every object buried
+// on their square. Object timers other than ROT_ORGANIC keep running.
+function unearth_objs(x, y) {
+    for (const obj of [...(game.level?.buriedobjs || [])]) {
+        if (obj.ox !== x || obj.oy !== y)
+            continue;
+        obj_extract_self(obj);
+        if (obj.timed)
+            stop_timer(ROT_ORGANIC, obj);
+        place_object(obj, x, y);
+        stackobj(obj);
+    }
+    newsym(x, y);
 }
 
 // src/trap.c:490 maketrap()
@@ -486,6 +502,7 @@ export function maketrap(x, y, typ) {
            gates the draw, not the case label. */
         if (is_hole(typ))
             hole_destination(trap.dst);
+        unearth_objs(x, y);
         break;
     default:
         break;

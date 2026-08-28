@@ -1,0 +1,55 @@
+{
+  "name": "artifact-special-invokes",
+  "description": "Debug quest-artifact holders exercise healing, energy recovery, and ammunition creation invocation powers.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.artifacts"
+  ],
+  "segments": [
+    {
+      "seed": 6220,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Staff of Aesculapius\r \u0004j#wizintrinsic\ne\n #invoke\nl#invoke\nl:"
+    },
+    {
+      "seed": 6223,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:healer,role:Healer,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Staff of Aesculapius\r #wizintrinsic\ni\n #invoke\nl#invoke\nl:"
+    },
+    {
+      "seed": 6221,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:priest,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Zb.\u0017blessed The Mitre of Holiness\r #invoke\ni#invoke\ni:"
+    },
+    {
+      "seed": 6224,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:priest,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Mitre of Holiness\r #invoke\ni#invoke\ni:"
+    },
+    {
+      "seed": 6222,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:ranger,role:Ranger,race:human,gender:female,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Longbow of Diana\r #invoke\ng#invoke\ngi\u001b"
+    },
+    {
+      "seed": 6225,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:ranger,role:Ranger,race:human,gender:female,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed The Longbow of Diana\r #invoke\ng #invoke\ngi\u001b"
+    },
+    {
+      "seed": 6226,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:ranger,role:Ranger,race:human,gender:female,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed The Longbow of Diana\r #invoke\ng#invoke\ngi\u001b"
+    }
+  ]
+}

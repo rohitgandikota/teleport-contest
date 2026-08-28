@@ -20,7 +20,8 @@ import { rn2, rnd, rnz, d } from './rng.js';
 import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
          ONAME_KNOW_ARTI, ECMD_OK, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
-         nothing_happens, W_ARM, W_WEP, W_ART, W_ARTI } from './const.js';
+         nothing_happens, W_ARM, W_WEP, W_ART, W_ARTI, SICK_ALL,
+         TIMEOUT } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -667,6 +668,130 @@ export function retouch_object(obj, loseit) {
     return 0;
 }
 
+async function nothing_special(obj) {
+    if ((game.invent || []).includes(obj)) {
+        const { You_feel } = await import('./pline.js');
+        await You_feel('a surge of power, but nothing seems to happen.');
+    }
+}
+
+// src/artifact.c:2089 arti_invoke_cost(). Special powers start a cooldown on
+// first use. Reusing one too soon either spends 25 Pw for the two directional
+// powers or extends the cooldown and reports that the artifact is tired.
+async function arti_invoke_cost(obj, prop) {
+    if ((obj.age || 0) > game.moves) {
+        const pwCost = (prop === 'FLING_POISON' || prop === 'BLINDING_RAY')
+            ? 25 : -1;
+        if (pwCost < 0 || game.u.uen < pwCost) {
+            const { xname, the, otense } = await import('./objnam.js');
+            const { You_feel } = await import('./pline.js');
+            await You_feel(`that ${the(xname(obj))} ${otense(obj, 'are')} ignoring you.`);
+            obj.age += d(3, 10);
+            return false;
+        }
+        const { You_feel } = await import('./pline.js');
+        await You_feel('drained...');
+        game.u.uen -= pwCost;
+        (game.disp ||= {}).botl = true;
+    } else {
+        obj.age = game.moves + rnz(100);
+    }
+    return true;
+}
+
+// src/artifact.c:1780 invoke_healing(). NetHack 5.0 prints both adjacent
+// "better" messages when the power has an effect, so retain both calls.
+async function invoke_healing(obj) {
+    const u = game.u;
+    const sick = !!u.uprops?.SICK;
+    const slimed = !!u.uprops?.SLIMED;
+    const creamed = Number(u.ucreamed) || 0;
+    const hblinded = u.intrinsic?.HBlinded | 0;
+    const blinded = !!hblinded && !u.blocked?.BLINDED;
+    const blindTimeout = hblinded & TIMEOUT;
+    const healamt = Math.trunc((u.uhpmax + 1 - u.uhp) / 2);
+    const { You_feel } = await import('./pline.js');
+
+    if (healamt || sick || slimed || Number(blinded) > creamed)
+        await You_feel('better.');
+    if (healamt || sick || slimed || blindTimeout > creamed) {
+        const slightly = !healamt && !sick && !slimed
+                         && (hblinded & ~TIMEOUT) !== 0;
+        await You_feel(`${slightly ? 'slightly ' : ''}better.`);
+    } else {
+        await nothing_special(obj);
+        return ECMD_TIME;
+    }
+
+    if (healamt > 0)
+        u.uhp += healamt;
+    if (sick) {
+        const { make_sick } = await import('./potion.js');
+        await make_sick(0, null, false, SICK_ALL);
+    }
+    if (slimed)
+        u.uprops.SLIMED = 0;
+    if (blindTimeout > creamed) {
+        const { make_blinded } = await import('./potion.js');
+        await make_blinded(creamed, false);
+    }
+    (game.disp ||= {}).botl = true;
+    return ECMD_TIME;
+}
+
+// src/artifact.c:1818 invoke_energy_boost(). Small deficits are filled in
+// full; large deficits restore half, capped at 120 Pw.
+async function invoke_energy_boost(obj) {
+    const u = game.u;
+    let epboost = Math.trunc((u.uenmax + 1 - u.uen) / 2);
+
+    if (epboost > 120)
+        epboost = 120;
+    else if (epboost < 12)
+        epboost = u.uenmax - u.uen;
+    if (epboost) {
+        const { You_feel } = await import('./pline.js');
+        u.uen += epboost;
+        (game.disp ||= {}).botl = true;
+        await You_feel('re-energized.');
+    } else {
+        await nothing_special(obj);
+    }
+    return ECMD_TIME;
+}
+
+// src/artifact.c:1918 invoke_create_ammo(). The new arrows inherit the
+// Longbow's beatitude, then pass through normal inventory merging.
+async function invoke_create_ammo(obj) {
+    const { mksobj } = await import('./mkobj.js');
+    const { weight, hold_another_object } = await import('./invent.js');
+    const { aobjnam } = await import('./objnam.js');
+    const otmp = mksobj(ONAMES.ARROW, true, false);
+
+    if (!otmp) {
+        await nothing_special(obj);
+        return ECMD_TIME;
+    }
+    otmp.blessed = obj.blessed;
+    otmp.cursed = obj.cursed;
+    otmp.bknown = obj.bknown;
+    otmp.oeroded = otmp.oeroded2 = 0;
+    if (obj.blessed) {
+        if (otmp.spe < 0)
+            otmp.spe = 0;
+        otmp.quan += rnd(10);
+    } else if (obj.cursed) {
+        if (otmp.spe > 0)
+            otmp.spe = 0;
+    } else {
+        otmp.quan += rnd(5);
+    }
+    otmp.owt = weight(otmp);
+    await hold_another_object(otmp, 'Suddenly %s out.',
+                              aobjnam(otmp, 'fall'), null);
+    return ECMD_TIME;
+}
+
 // src/artifact.c:2131 arti_invoke(), ordinary property powers. These toggle
 // an extrinsic bit immediately. Turning one off starts its cooldown; trying
 // to turn it back on too soon spends 3d10 more cooldown and has no effect.
@@ -768,6 +893,20 @@ export async function doinvoke() {
     if (oart.inv_prop === 'CONFLICT' || oart.inv_prop === 'LEVITATION'
         || oart.inv_prop === 'INVIS')
         return invoke_property(obj, oart.inv_prop);
+
+    if (!(await arti_invoke_cost(obj, oart.inv_prop)))
+        return ECMD_TIME;
+
+    switch (oart.inv_prop) {
+    case 'HEALING':
+        return invoke_healing(obj);
+    case 'ENERGY_BOOST':
+        return invoke_energy_boost(obj);
+    case 'CREATE_AMMO':
+        return invoke_create_ammo(obj);
+    default:
+        break;
+    }
 
     note_unported_art(`arti_invoke:special_power=${oart.inv_prop}`);
     return ECMD_TIME;

@@ -15,6 +15,7 @@ import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { roles, races, genders, aligns } from './role_data.js';
 import { mons as MONS_INIT, PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
+import { ONAMES, SKILLS } from './objects_data.js';
 
 // include/monflag.h — msound is a number in the generated table. Assigning the
 // C identifier as a *string* here would make every `ptr.msound === MS_LEADER`
@@ -445,6 +446,11 @@ export function role_init(initrole, initalign) {
             for (let i = 0; i < roles.length; i++)
                 if (roles[i].lgod) { game.pantheon = i; break; }
         }
+    }
+
+    if (pmIndex(urole.mnum) === PMNAMES.PM_CLERIC) {
+        game.objects[ONAMES.SPE_LIGHT].oc_skill = SKILLS.P_CLERIC_SPELL;
+        game.objects[ONAMES.SPE_LIGHT].oc_subtyp = SKILLS.P_CLERIC_SPELL;
     }
 }
 

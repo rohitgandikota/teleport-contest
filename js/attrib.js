@@ -723,7 +723,8 @@ export function exerper() {
            while the status line was showing "Conf". Same convention as
            botl.js's condition string: `intr.HX || props.X`. */
         if (game.u.intrinsic?.HConfusion || game.u.uprops?.CONFUSION
-            || game.u.intrinsic?.HHallucination || game.u.uprops?.HALLUC)
+            || ((game.u.intrinsic?.HHallucination || game.u.uprops?.HALLUC)
+                && !game.u.uprops?.HALLUC_RES))
             exercise(A_WIS, false);
         /* src/attrib.c:582 tests plain `HStun`, not `Stunned` — intrinsic
            only, so an extrinsic stun deliberately does not exercise DEX. */

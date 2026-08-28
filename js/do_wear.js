@@ -33,7 +33,7 @@ import { stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
-         suit_simple_name } from './objnam.js';
+         suit_simple_name, Yname2 } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
@@ -114,9 +114,50 @@ export async function Armor_on() {
         note_unported_do_wear('Armor_on:update_inventory');
     }
     await dragon_armor_handling(game.u.uarm, true);
-    if (game.u.uarm.oartifact)
+    if (is_gold_dragon_armor(game.u.uarm) && !game.u.uarm.lamplit)
+        await begin_gold_dragon_light(game.u.uarm);
+    else if (game.u.uarm.oartifact)
         note_unported_do_wear('Armor_on:artifact_light');
     return 0;
+}
+
+function is_gold_dragon_armor(obj) {
+    return obj?.otyp === ONAMES.GOLD_DRAGON_SCALES
+        || obj?.otyp === ONAMES.GOLD_DRAGON_SCALE_MAIL;
+}
+
+function gold_dragon_light_radius(obj) {
+    let radius = obj.blessed ? 3 : obj.cursed ? 1 : 2;
+    if (obj.otyp === ONAMES.GOLD_DRAGON_SCALE_MAIL)
+        radius++;
+    return radius;
+}
+
+function gold_dragon_light_description(obj) {
+    return ['strangely', 'dimly', 'brightly', 'brilliantly', 'radiantly'][
+        gold_dragon_light_radius(obj)] || 'strangely';
+}
+
+async function begin_gold_dragon_light(obj) {
+    const { new_light_source, LS_OBJECT } = await import('./light.js');
+    obj.lamplit = 1;
+    new_light_source(game.u.ux, game.u.uy, gold_dragon_light_radius(obj),
+                     LS_OBJECT, obj.o_id);
+    game.vision_full_recalc = 1;
+    update_inventory();
+    if (!Blind())
+        await pline(`${Yname2(obj)} begins to shine ${
+            gold_dragon_light_description(obj)}!`);
+}
+
+async function end_gold_dragon_light(obj) {
+    const { del_light_source, LS_OBJECT } = await import('./light.js');
+    del_light_source(LS_OBJECT, obj.o_id);
+    obj.lamplit = 0;
+    game.vision_full_recalc = 1;
+    update_inventory();
+    if (!Blind())
+        await pline(`${Tobjnam(obj, 'stop')} shining.`);
 }
 
 // src/do_wear.c dragon_armor_handling(). The armor's primary property is
@@ -156,9 +197,11 @@ async function dragon_armor_handling(obj, putOn) {
         secondary = 'INFRAVISION';
         break;
     case ONAMES.GOLD_DRAGON_SCALES:
-    case ONAMES.GOLD_DRAGON_SCALE_MAIL:
-        note_unported_do_wear('dragon_armor_handling:gold');
+    case ONAMES.GOLD_DRAGON_SCALE_MAIL: {
+        const { make_hallucinated } = await import('./potion.js');
+        await make_hallucinated(putOn ? 0 : 1, true, W_ARM);
         return;
+    }
     case ONAMES.ORANGE_DRAGON_SCALES:
     case ONAMES.ORANGE_DRAGON_SCALE_MAIL:
         secondary = 'FREE_ACTION';
@@ -1533,7 +1576,10 @@ async function slot_off(otmp) {
     if (otmp.owornmask & W_ARM) {
         /* Armor_off clears setworn's primary property before removing the
            second property supplied by dragon armor. */
+        const wasGoldLight = is_gold_dragon_armor(otmp) && !!otmp.lamplit;
         setworn(null, W_ARM);
+        if (wasGoldLight)
+            await end_gold_dragon_light(otmp);
         await dragon_armor_handling(otmp, false);
     } else {
         setworn(null, mask); /* each C *_off handler clears its own slot */

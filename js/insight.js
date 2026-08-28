@@ -58,8 +58,13 @@ const EXTRINSIC_KEYS = {
     HFire_resistance: 'FIRE_RES',
     HCold_resistance: 'COLD_RES',
     HSleep_resistance: 'SLEEP_RES',
+    HDisint_resistance: 'DISINT_RES',
     HShock_resistance: 'SHOCK_RES',
     HPoison_resistance: 'POISON_RES',
+    HAcid_resistance: 'ACID_RES',
+    HDrain_resistance: 'DRAIN_RES',
+    HSick_resistance: 'SICK_RES',
+    HStone_resistance: 'STONE_RES',
     HHalluc_resistance: 'HALLUC_RES',
     HAntimagic: 'ANTIMAGIC',
     HSee_invisible: 'SEE_INVIS',
@@ -71,8 +76,10 @@ const EXTRINSIC_KEYS = {
     HDisplaced: 'DISPLACED',
     HJumping: 'JUMPING',
     HTeleport_control: 'TELEPORT_CONTROL',
+    HSlow_digestion: 'SLOW_DIGESTION',
     HFast: 'FAST',
     HReflecting: 'REFLECTING',
+    HFree_action: 'FREE_ACTION',
 };
 
 // src/attrib.c:905 from_what(), equipment arm. The flat extrinsic value is a
@@ -748,15 +755,29 @@ function attributes_enlightenment() {
        from_what() naming the source in wizard mode */
     if (Fire_resistance())
         you_are('fire resistant', from_what('HFire_resistance'));
+    item_resistance_message('FIRE_RES', ' protected from fire');
     if (Cold_resistance())
         you_are('cold resistant', from_what('HCold_resistance'));
+    item_resistance_message('COLD_RES', ' protected from cold');
     if (Sleep_resistance())
         you_are('sleep resistant', from_what('HSleep_resistance'));
+    if (u.uprops?.DISINT_RES)
+        you_are('disintegration resistant', from_what('HDisint_resistance'));
+    item_resistance_message('DISINT_RES', ' protected from disintegration');
     if (Shock_resistance())
         you_are('shock resistant', from_what('HShock_resistance'));
     item_resistance_message('SHOCK_RES', ' protected from electric shocks');
     if (Poison_resistance())
         you_are('poison resistant', from_what('HPoison_resistance'));
+    if (u.uprops?.ACID_RES)
+        you_are('acid resistant', from_what('HAcid_resistance'));
+    item_resistance_message('ACID_RES', ' protected from acid');
+    if (u.uprops?.DRAIN_RES)
+        you_are('level-drain resistant', from_what('HDrain_resistance'));
+    if (u.uprops?.SICK_RES)
+        you_are('immune to sickness', from_what('HSick_resistance'));
+    if (u.uprops?.STONE_RES)
+        you_are('petrification resistant', from_what('HStone_resistance'));
     if (Halluc_resistance())
         enl_msg('You ', 'resist', 'resisted', ' hallucinations',
                 from_what('HHalluc_resistance'));
@@ -786,6 +807,9 @@ function attributes_enlightenment() {
     if (Teleport_control())
         you_have('teleport control', from_what('HTeleport_control'));
 
+    if (u.uprops?.SLOW_DIGESTION)
+        you_have('slower digestion', from_what('HSlow_digestion'));
+
     /* src/insight.c:1799 — the magic cancellation factor from worn armor:
        "warded" / "guarded" / "protected" for mc 1..3 */
     const armpro = magic_negation(null);
@@ -799,6 +823,8 @@ function attributes_enlightenment() {
         you_are(Very_fast() ? 'very fast' : 'fast', from_what('HFast'));
     if (Reflecting())
         you_have('reflection', from_what('HReflecting'));
+    if (u.uprops?.FREE_ACTION)
+        you_have('free action', from_what('HFree_action'));
     if (u.uprops?.LIFESAVED)
         enl_msg('Your life ', 'will be', 'would have been', ' saved', '');
 

@@ -10,8 +10,10 @@ import { game } from './gstate.js';
 import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
 import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
-         TIMEOUT, ARTICLE_THE, XKILL_NOMSG, ECMD_CANCEL, UTOTYPE_NONE }
+         TIMEOUT, ARTICLE_THE, XKILL_NOMSG, ECMD_CANCEL, UTOTYPE_NONE,
+         SICK_VOMITABLE, SICK_NONVOMITABLE }
     from './const.js';
+import { rn2 } from './rng.js';
 import { getdir, getlin } from './cmd.js';
 import { docrt, map_trap, pline, unmap_invisible, canspotmon }
     from './display.js';
@@ -282,6 +284,8 @@ const WIZ_INTRINSICS = [
 ];
 
 function wiz_intrinsic_timeout(key) {
+    if (key === 'SICK')
+        return Number(game.u.uprops?.SICK) || 0;
     if (key === 'HALLUC')
         return Number(game.u.uprops?.HALLUC) || 0;
     if (key === 'BLINDED')
@@ -341,6 +345,10 @@ export async function wiz_intrinsic() {
         } else if (key === 'HALLUC') {
             const { make_hallucinated } = await import('./potion.js');
             await make_hallucinated(oldtimeout + 30, true);
+        } else if (key === 'SICK') {
+            const { make_sick } = await import('./potion.js');
+            const type = !rn2(2) ? SICK_VOMITABLE : SICK_NONVOMITABLE;
+            await make_sick(oldtimeout || 30, '#wizintrinsic', true, type);
         } else if (key === 'SEE_INVIS') {
             const intr = (game.u.intrinsic ||= {});
             const word = intr.HSee_invisible | 0;

@@ -367,27 +367,39 @@ export async function make_deaf(xtime, talk) {
     }
 }
 
-// src/potion.c:369 make_hallucinated(), timed hallucination without an
-// equipment-resistance mask. Both fields are kept because display predicates
-// read uprops while timeout and status code read the intrinsic counter.
+// src/potion.c:369 make_hallucinated(). Both fields are kept because display
+// predicates read uprops while timeout and status code read the intrinsic
+// counter. A nonzero mask changes worn hallucination resistance without
+// clearing the underlying timeout.
 export async function make_hallucinated(xtime, talk, mask = 0) {
     if (Unaware())
         talk = false;
-    if (mask) {
-        note_unported_potion('make_hallucinated:resistance_mask');
-        return false;
-    }
 
     const intr = (game.u.intrinsic ||= {});
     const props = (game.u.uprops ||= {});
     const old = intr.HHallucination | 0;
-    const changed = !Halluc_resistance() && (!!old !== !!xtime);
-    if (xtime) {
-        intr.HHallucination = xtime;
-        props.HALLUC = xtime;
+    let changed;
+
+    if (mask) {
+        changed = !!old;
+        if (!xtime) {
+            props.HALLUC_RES = (props.HALLUC_RES | 0) | mask;
+        } else {
+            const left = (props.HALLUC_RES | 0) & ~mask;
+            if (left)
+                props.HALLUC_RES = left;
+            else
+                delete props.HALLUC_RES;
+        }
     } else {
-        delete intr.HHallucination;
-        delete props.HALLUC;
+        changed = !Halluc_resistance() && (!!old !== !!xtime);
+        if (xtime) {
+            intr.HHallucination = xtime;
+            props.HALLUC = xtime;
+        } else {
+            delete intr.HHallucination;
+            delete props.HALLUC;
+        }
     }
 
     if (changed) {

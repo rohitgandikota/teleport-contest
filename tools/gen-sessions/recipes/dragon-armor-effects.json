@@ -1,6 +1,6 @@
 {
   "name": "dragon-armor-effects",
-  "description": "A debug Tourist wears orange dragon scales and quaffs paralysis to pin the secondary free-action property.",
+  "description": "Debug heroes exercise every dragon-scale property, including the colored secondary effects.",
   "coverage": [
     "level.ordinary",
     "mode.debug",
@@ -8,7 +8,8 @@
     "object.potions",
     "survival.timed-status",
     "turn.occupation-interrupt",
-    "ui.getlin"
+    "ui.getlin",
+    "ui.more-paging"
   ],
   "segments": [
     {
@@ -16,6 +17,60 @@
       "datetime": "20000110092000",
       "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " \u0017blessed orange dragon scales\rWn\u0017blessed potion of paralysis\rqo."
+    },
+    {
+      "seed": 2184,
+      "datetime": "20000110092500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed red dragon scales\rWn\u0018  \u001b"
+    },
+    {
+      "seed": 2185,
+      "datetime": "20000110093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed white dragon scales\rWl40s\u0018  \u001b"
+    },
+    {
+      "seed": 2186,
+      "datetime": "20000110093500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed yellow dragon scales\rWm\u0017blessed cockatrice corpse\rdn,\u0018  \u001b"
+    },
+    {
+      "seed": 2187,
+      "datetime": "20000110094000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender=female,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0017blessed black dragon scales\rWe\u0007wraith\rmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsmsms\u0018   \u001b"
+    },
+    {
+      "seed": 2188,
+      "datetime": "20000110094500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed green dragon scales\rWn#wizintrinsic\re\r\u0018  \u001b"
+    },
+    {
+      "seed": 2189,
+      "datetime": "20000110095000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed blue dragon scales\rWn\u0018  \u001bT "
+    },
+    {
+      "seed": 2190,
+      "datetime": "20000110095500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gold dragon scales\r#wizintrinsic\rh\r Wl \u0018  \u001bT  "
+    },
+    {
+      "seed": 2191,
+      "datetime": "20000110100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gray dragon scales\rWn\u0018  \u001b"
+    },
+    {
+      "seed": 2192,
+      "datetime": "20000110100500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed silver dragon scales\rWn\u0018  \u001b"
     }
   ]
 }

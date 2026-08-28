@@ -8,17 +8,20 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE, TIMEOUT, Upolyd } from './const.js';
-import { addinv_nomerge, carrying, freeinv, getobj, hold_another_object,
-         update_inventory, useup, useupall, weight } from './invent.js';
+import { addinv_nomerge, carrying, freeinv, getobj, hands_obj,
+         hold_another_object, update_inventory, useup, useupall,
+         weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
          is_pool, mnexto } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
-import { Blind, Glib, Hallucination, Deaf, Underwater } from './youprop.js';
+import { Blind, Fumbling, Glib, Hallucination, Deaf,
+         Underwater } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
-         GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT } from './invent.js';
+         GETOBJ_EXCLUDE_INACCESS, GETOBJ_EXCLUDE_SELECTABLE,
+         GETOBJ_PROMPT } from './invent.js';
 import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { Norep, You_cant, You_hear } from './pline.js';
@@ -36,7 +39,7 @@ import { dist2, distu } from './hacklib.js';
 import { cansee } from './vision.js';
 import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
-import { FACE, HAND } from './const.js';
+import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yobjnam2, aobjnam, xname, yname, the,
          gloves_simple_name, makeplural, otense, vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
@@ -601,6 +604,104 @@ async function use_towel(obj) {
     return ECMD_OK;
 }
 
+function grease_covering(obj) {
+    const u = game.u;
+    if (!obj?.owornmask)
+        return [];
+    if (obj === u.uarm && u.uarmc)
+        return [u.uarmc];
+    if (obj === u.uarmu && (u.uarm || u.uarmc))
+        return [u.uarmc, u.uarm].filter(Boolean);
+    if ((obj === u.uleft || obj === u.uright) && u.uarmg)
+        return [u.uarmg];
+    return [];
+}
+
+/* src/apply.c:2590 grease_ok().  Hands are a real getobj choice; gold and
+   equipment hidden under outer armor or gloves are not. */
+function grease_ok(obj) {
+    if (!obj)
+        return GETOBJ_SUGGEST;
+    if (obj.oclass === OCLASSES.COIN_CLASS)
+        return GETOBJ_EXCLUDE;
+    if (grease_covering(obj).length)
+        return GETOBJ_EXCLUDE_INACCESS;
+    return GETOBJ_SUGGEST;
+}
+
+function fingers_or_gloves(check_gloves) {
+    return check_gloves && game.u.uarmg
+        ? gloves_simple_name(game.u.uarmg)
+        : makeplural(body_part(FINGER));
+}
+
+function consume_obj_charge(obj) {
+    if (obj.unpaid)
+        note_unported_apply('consume_obj_charge:check_unpaid');
+    obj.spe = (obj.spe | 0) - 1;
+    if (obj.known)
+        update_inventory();
+}
+
+// src/apply.c:2604 use_grease().
+async function use_grease(obj) {
+    const u = game.u;
+    const { dropx } = await import('./do.js');
+
+    if (Glib()) {
+        await pline(`${Tobjnam(obj, 'slip')} from your `
+                    + `${fingers_or_gloves(false)}.`);
+        await dropx(obj);
+        return ECMD_TIME;
+    }
+
+    if ((obj.spe | 0) > 0) {
+        if ((obj.cursed || Fumbling() || u.intrinsic?.HFumbling)
+            && !rn2(2)) {
+            consume_obj_charge(obj);
+            await pline(`${Tobjnam(obj, 'slip')} from your `
+                        + `${fingers_or_gloves(false)}.`);
+            await dropx(obj);
+            return ECMD_TIME;
+        }
+
+        const target = await getobj('grease', grease_ok, GETOBJ_PROMPT);
+        if (!target)
+            return ECMD_CANCEL;
+
+        const covering = grease_covering(target);
+        if (covering.length) {
+            const outer = covering.length === 1
+                ? yname(covering[0])
+                : `${yname(covering[0])} and ${xname(covering[1])}`;
+            await You(`need to take off ${outer} to grease ${yname(target)}.`);
+            return ECMD_OK;
+        }
+
+        consume_obj_charge(obj);
+        const { make_glib } = await import('./potion.js');
+        const oldglib = ((u.intrinsic?.HGlib || u.uprops?.GLIB || 0)
+                         & TIMEOUT);
+        if (target !== hands_obj) {
+            await You(`cover ${yname(target)} with a thick layer of grease.`);
+            target.greased = 1;
+            if (obj.cursed && !nohands(game.youmonst.data)) {
+                make_glib(oldglib + rn1(6, 10));
+                await pline(`Some of the grease gets all over your `
+                            + `${fingers_or_gloves(true)}.`);
+            }
+        } else {
+            make_glib(oldglib + rn1(11, 5));
+            await You(`coat your ${fingers_or_gloves(true)} with grease.`);
+        }
+    } else {
+        await pline(`${Tobjnam(obj, obj.known ? 'are' : 'seem')} `
+                    + `${obj.known ? '' : 'to be '}empty.`);
+    }
+    update_inventory();
+    return ECMD_TIME;
+}
+
 // src/apply.c:3568 use_cream_pie(): apply a pie to the hero's face.
 async function use_cream_pie(obj) {
     const wasblind = !!game.u.ublind;
@@ -1111,6 +1212,9 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.TOWEL)
         return await use_towel(obj);
+
+    if (obj.otyp === ONAMES.CAN_OF_GREASE)
+        return await use_grease(obj);
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

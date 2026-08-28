@@ -1,0 +1,20 @@
+{
+  "name": "can-of-grease",
+  "description": "A debug Wizard greases equipment, bare hands, gloves, and a can, covers Glib and cursed slips, verifies covered rings are excluded, cancels target selection without spending a charge, and checks empty feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.tools-containers",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2203,
+      "datetime": "20000110112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +3 can of grease\ri\u001b\u0017uncursed towel\ri\u001baod\u001bao-\u001bao\u001bap\u001b\u0017uncursed +1 can of grease\ri\u001baqq\u001baqi\u001b\u0017uncursed leather gloves\rPdrWr\u0017cursed +4 can of grease\ri\u001bas\u0017cursed +2 can of grease\ri\u001bate\u001bap\u001bat\u0017uncursed +1 can of grease\ri\u001bau\u001baue\u001baui\u001b"
+    }
+  ]
+}

@@ -1019,6 +1019,9 @@ export function doname(obj) {
             prefix += 'unlocked ';
     }
 
+    if (obj.greased)
+        prefix += 'greased ';
+
     /* src/objnam.c:1150 add_erosion_words — the eroded words come first:
        "very burnt", "thoroughly rusty", &c. (is_damageable gate: every
        reachable eroded item passes it, and !is_damageable items never

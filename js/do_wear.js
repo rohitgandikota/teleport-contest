@@ -14,7 +14,8 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          ECMD_TIME, TT_BEARTRAP, TT_INFLOOR, I_SPECIAL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
-         LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_DEX, A_CON, A_CHA,
+         LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_INT, A_WIS, A_DEX, A_CON,
+         A_CHA, NH_BLACK,
          INTRINSIC, Is_airlevel } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
@@ -23,7 +24,7 @@ import { Is_dragon_armor, nolimbs, nohands, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
 import { erode_obj, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
-import { erosion_matters } from './mkobj.js';
+import { curse, erosion_matters, set_bknown } from './mkobj.js';
 import { rn2, rnd } from './rng.js';
 import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
          ERODE_NONE, EF_PAY, EF_DESTROY, ER_NOTHING,
@@ -34,11 +35,12 @@ import { You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
          suit_simple_name } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
+import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
 import { prinv, update_inventory, useup, ECMD_OK } from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
-import { ACURR, encumber_msg, Fast, Very_fast } from './attrib.js';
+import { ACURR, change_luck, encumber_msg, Fast, Very_fast } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Hallucination, Invis, Levitation,
          See_invisible } from './youprop.js';
@@ -225,7 +227,109 @@ async function Cloak_off(otmp) {
     }
     }
 }
-function Helmet_on() { return reveal_worn_armor(W_ARMH); }
+async function Helmet_on() {
+    const uarmh = worn(W_ARMH);
+    if (!uarmh)
+        return 0;
+
+    switch (uarmh.otyp) {
+    case ONAMES.FEDORA:
+        if (game.urole?.name?.m === 'Archeologist')
+            change_luck(1);
+        break;
+    case ONAMES.HELM_OF_CAUTION:
+        see_monsters();
+        break;
+    case ONAMES.HELM_OF_BRILLIANCE:
+        adjust_helmet_brilliance(uarmh, uarmh.spe || 0);
+        break;
+    case ONAMES.CORNUTHAUM:
+        attribute_bonus_array()[A_CHA] +=
+            game.urole?.name?.m === 'Wizard' ? 1 : -1;
+        (game.disp ||= {}).botl = true;
+        makeknown(uarmh.otyp);
+        break;
+    case ONAMES.HELM_OF_OPPOSITE_ALIGNMENT:
+        note_unported_do_wear('Helmet_on:opposite_alignment');
+        break;
+    case ONAMES.DUNCE_CAP:
+        if (!uarmh.cursed) {
+            if (Blind())
+                await pline(`${Tobjnam(uarmh, 'vibrate')} for a moment.`);
+            else
+                await pline(`${Tobjnam(uarmh, 'glow')} ${hcolor(NH_BLACK)} `
+                            + 'for a moment.');
+            curse(uarmh);
+            if (Blind())
+                set_bknown(uarmh, 0);
+            else if (game.urole?.name?.m === 'Priest')
+                set_bknown(uarmh, 1);
+            else if (uarmh.bknown)
+                update_inventory();
+        }
+        (game.disp ||= {}).botl = true;
+        if (Hallucination()) {
+            await pline('My brain hurts!');
+        } else {
+            const score = (game.u.acurr?.a?.[A_INT] || 0)
+                + (game.u.abon?.a?.[A_INT] || 0)
+                + (game.u.atemp?.a?.[A_INT] || 0);
+            await You_feel(ACURR(A_INT) <= score
+                ? 'like sitting in a corner.' : 'giddy.');
+        }
+        break;
+    }
+    return reveal_worn_armor(W_ARMH);
+}
+
+function adjust_helmet_brilliance(obj, delta) {
+    if (delta) {
+        makeknown(obj.otyp);
+        const abon = attribute_bonus_array();
+        abon[A_INT] += delta;
+        abon[A_WIS] += delta;
+    }
+    (game.disp ||= {}).botl = true;
+}
+
+async function Helmet_off(otmp) {
+    (game.context_takeoff ||= {}).mask &= ~W_ARMH;
+    switch (otmp.otyp) {
+    case ONAMES.FEDORA:
+        if (game.urole?.name?.m === 'Archeologist')
+            change_luck(-1);
+        break;
+    case ONAMES.DUNCE_CAP:
+        (game.disp ||= {}).botl = true;
+        break;
+    case ONAMES.CORNUTHAUM:
+        if (!game.context_takeoff?.cancelled_don) {
+            attribute_bonus_array()[A_CHA] +=
+                game.urole?.name?.m === 'Wizard' ? -1 : 1;
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    case ONAMES.HELM_OF_TELEPATHY:
+    case ONAMES.HELM_OF_CAUTION:
+        setworn(null, W_ARMH);
+        see_monsters();
+        return;
+    case ONAMES.HELM_OF_BRILLIANCE:
+        if (!game.context_takeoff?.cancelled_don)
+            adjust_helmet_brilliance(otmp, -(otmp.spe || 0));
+        break;
+    case ONAMES.HELM_OF_OPPOSITE_ALIGNMENT:
+        note_unported_do_wear('Helmet_off:opposite_alignment');
+        break;
+    }
+    setworn(null, W_ARMH);
+    game.context_takeoff.cancelled_don = false;
+}
+
+function attribute_bonus_array() {
+    const abon = (game.u.abon ||= {});
+    return abon.a ||= new Array(game.u.acurr?.a?.length || 6).fill(0);
+}
 function Gloves_on() {
     const uarmg = worn(W_ARMG);
     if (!uarmg)
@@ -317,6 +421,9 @@ export function set_wear(obj) {
         if (o && (!obj || obj === o)) {
             if (arm === 'Armor_on')
                 Armor_on();
+            else if (arm === 'Helmet_on' && o.otyp === ONAMES.FEDORA
+                     && game.urole?.name?.m === 'Archeologist')
+                change_luck(1);
         }
     }
 
@@ -1282,6 +1389,10 @@ async function slot_off(otmp) {
     }
     if (otmp.owornmask & W_ARMC) {
         await Cloak_off(otmp);
+        return;
+    }
+    if (otmp.owornmask & W_ARMH) {
+        await Helmet_off(otmp);
         return;
     }
     if (otmp.owornmask & W_ARM) {

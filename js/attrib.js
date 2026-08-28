@@ -816,7 +816,8 @@ export function acurr(chridx) {
         if (game.u.uwep?.oartifact === ART_OGRESMASHER)
             result = 25;
     } else if (chridx === A_INT || chridx === A_WIS) {
-        /* uarmh == DUNCE_CAP -> 6 */
+        if (game.u.uarmh?.otyp === ONAMES.DUNCE_CAP)
+            result = 6;
     } else if (chridx === A_DEX) {
         ; /* there aren't any special cases for dexterity */
     }

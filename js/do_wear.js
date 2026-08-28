@@ -14,7 +14,8 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          ECMD_TIME, TT_BEARTRAP, TT_INFLOOR, I_SPECIAL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
-         LEFT_RING, RIGHT_RING, TIMEOUT, A_DEX, INTRINSIC } from './const.js';
+         LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_DEX, A_CON, A_CHA,
+         INTRINSIC } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
@@ -33,10 +34,11 @@ import { You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, gloves_simple_name,
          suit_simple_name } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
+import { ART_OGRESMASHER } from './artilist_data.js';
 import { prinv, update_inventory, ECMD_OK } from './invent.js';
 import { nomul, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
-import { encumber_msg } from './attrib.js';
+import { ACURR, encumber_msg } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
@@ -527,6 +529,34 @@ function learnring(ring, observed) {
     }
 }
 
+// src/do_wear.c extremeattr() and adjust_attrib(), limited to the three
+// characteristics rings can change.  The exceptional lower limits matter
+// when gauntlets of power or Ogresmasher already force an attribute to 25.
+function extreme_ring_attribute(which) {
+    let low = 3, high = 25;
+    if (which === A_STR) {
+        high = 125;
+        if (worn(W_ARMG)?.otyp === ONAMES.GAUNTLETS_OF_POWER)
+            low = high;
+    } else if (which === A_CON
+               && game.u.uwep?.oartifact === ART_OGRESMASHER) {
+        low = high;
+    }
+    const current = ACURR(which);
+    return current === low || current === high;
+}
+
+function adjust_ring_attribute(ring, which, amount) {
+    const old = ACURR(which);
+    game.u.abon ||= {};
+    game.u.abon.a ||= new Array(game.u.acurr.a.length).fill(0);
+    game.u.abon.a[which] += amount;
+    const observable = old !== ACURR(which);
+    if (observable || !extreme_ring_attribute(which))
+        learnring(ring, observable);
+    (game.disp ||= {}).botl = true;
+}
+
 // src/do_wear.c toggle_stealth() for rings.  A visible change in stealth
 // identifies the ring and gives immediate feedback.  The blocked term is
 // tracked separately from the worn-property mask, as in C's BStealth.
@@ -550,9 +580,17 @@ async function Ring_on(obj) {
         oldprop &= ~ringmask;
 
     switch (obj.otyp) {
-    case ONAMES.RIN_ADORNMENT:
     case ONAMES.RIN_SUSTAIN_ABILITY:
     case ONAMES.RIN_WARNING:
+        break;
+    case ONAMES.RIN_GAIN_STRENGTH:
+        adjust_ring_attribute(obj, A_STR, obj.spe);
+        break;
+    case ONAMES.RIN_GAIN_CONSTITUTION:
+        adjust_ring_attribute(obj, A_CON, obj.spe);
+        break;
+    case ONAMES.RIN_ADORNMENT:
+        adjust_ring_attribute(obj, A_CHA, obj.spe);
         break;
     case ONAMES.RIN_STEALTH:
         await toggle_ring_stealth(obj, oldprop, true);
@@ -577,6 +615,12 @@ async function Ring_off(obj) {
         learnring(obj, observable);
         if (obj.spe)
             find_ac();
+    } else if (obj.otyp === ONAMES.RIN_GAIN_STRENGTH) {
+        adjust_ring_attribute(obj, A_STR, -obj.spe);
+    } else if (obj.otyp === ONAMES.RIN_GAIN_CONSTITUTION) {
+        adjust_ring_attribute(obj, A_CON, -obj.spe);
+    } else if (obj.otyp === ONAMES.RIN_ADORNMENT) {
+        adjust_ring_attribute(obj, A_CHA, -obj.spe);
     } else if (obj.otyp === ONAMES.RIN_STEALTH) {
         await toggle_ring_stealth(obj, oldprop, false);
     } else {

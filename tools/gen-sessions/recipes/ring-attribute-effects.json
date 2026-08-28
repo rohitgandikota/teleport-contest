@@ -1,0 +1,18 @@
+{
+  "name": "ring-attribute-effects",
+  "description": "A debug Wizard wears and removes +2 rings of gain strength, gain constitution, and adornment, pinning attribute bonuses, discovery, inventory naming, status redraw, and symmetric removal.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.rings",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2175,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +2 ring of gain strength\rPnrR\u0017blessed +2 ring of gain constitution\rPorR\u0017blessed +2 ring of adornment\rPprR\u0006"
+    }
+  ]
+}

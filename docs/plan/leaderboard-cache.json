@@ -1,0 +1,56 @@
+{
+  "timestamp": "2026-08-27T10:30:40.033Z",
+  "contestPhase": "open",
+  "teamCount": 18,
+  "team": {
+    "name": "rohitgandikota",
+    "fork": "rohitgandikota/teleport-contest",
+    "category": "agentic",
+    "lastScored": "2026-08-27T09:55:38.417Z",
+    "public": {
+      "points": 11405,
+      "maxPoints": 11405,
+      "screenPct": 100,
+      "passing": 44,
+      "total": 44,
+      "rngPct": 100,
+      "animMatched": 9,
+      "animTotal": 1483
+    },
+    "heldOut": {
+      "points": 6032,
+      "maxPoints": 11265,
+      "screenPct": 53.54638260097647,
+      "passing": 9,
+      "total": 44,
+      "rngPct": 43.372115019684315,
+      "animMatched": 0,
+      "animTotal": 2959
+    },
+    "playability": {
+      "playable": true,
+      "browser_ok": true,
+      "ms_per_move": 2.452,
+      "threshold_ms_per_move": 5,
+      "sessions_skipped": 0,
+      "sessions_killed": 0,
+      "aborted_early": false,
+      "total_moves": 18402
+    }
+  },
+  "heldRank": 3,
+  "publicRank": 6,
+  "category": "agentic",
+  "categoryRank": 1,
+  "categoryTotal": 12,
+  "leader": {
+    "fork": "NoahBPeterson/teleport-contest",
+    "heldOut": {
+      "points": 11264,
+      "maxPoints": 11265
+    }
+  },
+  "retrievedAt": "2026-08-27T10:30:40.033Z",
+  "pageCheckedAt": "2026-08-28T00:20:28.654Z",
+  "pageCheck": "The page reported Updated 1h ago and displayed the same visible scores"
+}

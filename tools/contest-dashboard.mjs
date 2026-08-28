@@ -14,6 +14,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const RUNNER = join(ROOT, 'frozen', 'ps_test_runner.mjs');
 const DASHBOARD = join(ROOT, 'docs', 'plan', 'contest-dashboard.md');
 const HISTORY = join(ROOT, 'docs', 'plan', 'contest-dashboard-history.tsv');
+const LEADERBOARD_CACHE = join(ROOT, 'docs', 'plan', 'leaderboard-cache.json');
 const LEADERBOARD_URL = 'https://mazesofmenace.ai/leaderboard/data.json';
 const FORK = 'rohitgandikota/teleport-contest';
 
@@ -33,6 +34,18 @@ function runScorer(target) {
         throw new Error(`scorer failed for ${target}: ${(child.stderr || output).slice(-2000)}`);
     }
     return JSON.parse(output.slice(marker + '__RESULTS_JSON__'.length).trim());
+}
+
+function runPublicScorer(target) {
+    let bundle = runScorer(target);
+    if (!bundle.results.every((result) => result.passed))
+        bundle = runScorer(target);
+    const failed = bundle.results.filter((result) => !result.passed);
+    if (failed.length) {
+        throw new Error(`public scorer did not pass ${failed.length} session(s): ${
+            failed.map((result) => result.session).join(', ')}`);
+    }
+    return bundle;
 }
 
 function aggregate(bundle) {
@@ -91,23 +104,49 @@ function runHangGate() {
     };
 }
 
-async function fetchLeaderboard() {
-    const response = await fetch(`${LEADERBOARD_URL}?t=${Date.now()}`);
-    if (!response.ok) throw new Error(`leaderboard fetch failed: ${response.status}`);
-    const data = await response.json();
+function summarizeLeaderboard(data) {
     const team = data.teams.find((entry) => entry.fork === FORK);
     if (!team) throw new Error(`fork ${FORK} not found on leaderboard`);
     const heldRanking = [...data.teams].sort((a, b) =>
         (b.heldOut?.points || 0) - (a.heldOut?.points || 0));
     const publicRanking = [...data.teams].sort((a, b) =>
         (b.public?.points || 0) - (a.public?.points || 0));
+    const categoryTeams = data.teams.filter((entry) =>
+        (entry.category || 'none') === (team.category || 'none'));
+    categoryTeams.sort((a, b) =>
+        ((b.public?.points || 0) + (b.heldOut?.points || 0))
+            - ((a.public?.points || 0) + (a.heldOut?.points || 0))
+        || ((b.public?.passing || 0) + (b.heldOut?.passing || 0))
+            - ((a.public?.passing || 0) + (a.heldOut?.passing || 0))
+        || (b.public?.rngPct || 0) - (a.public?.rngPct || 0));
     return {
-        data,
+        timestamp: data.timestamp,
+        contestPhase: data.contestPhase,
+        teamCount: data.teams.length,
         team,
         heldRank: heldRanking.findIndex((entry) => entry.fork === FORK) + 1,
         publicRank: publicRanking.findIndex((entry) => entry.fork === FORK) + 1,
+        category: team.category || 'none',
+        categoryRank: categoryTeams.findIndex((entry) => entry.fork === FORK) + 1,
+        categoryTotal: categoryTeams.length,
         leader: heldRanking[0],
     };
+}
+
+async function fetchLeaderboard() {
+    try {
+        const response = await fetch(`${LEADERBOARD_URL}?t=${Date.now()}`);
+        if (!response.ok)
+            throw new Error(`leaderboard fetch failed: ${response.status}`);
+        const snapshot = summarizeLeaderboard(await response.json());
+        snapshot.retrievedAt = new Date().toISOString();
+        writeFileSync(LEADERBOARD_CACHE, `${JSON.stringify(snapshot, null, 2)}\n`);
+        return { ...snapshot, source: 'live' };
+    } catch (error) {
+        if (!existsSync(LEADERBOARD_CACHE)) throw error;
+        const snapshot = JSON.parse(readFileSync(LEADERBOARD_CACHE, 'utf8'));
+        return { ...snapshot, source: 'cached', fetchError: error.message };
+    }
 }
 
 function appendHistory(row) {
@@ -179,7 +218,12 @@ function render(row, leaderboard) {
     lines.push('# Contest score dashboard');
     lines.push('');
     lines.push(`Last refreshed: ${row.refreshedAt}. Local commit: \`${row.commit}\`.`);
-    lines.push(`Leaderboard snapshot: ${leaderboard.data.timestamp}. Fork last scored: ${row.leaderboardScoredAt}.`);
+    lines.push(`Leaderboard snapshot: ${leaderboard.timestamp}. Fork last scored: ${row.leaderboardScoredAt}.`);
+    if (leaderboard.source === 'cached') {
+        lines.push(`Live JSON fetch unavailable: ${leaderboard.fetchError}. Using the last exact snapshot.`);
+        if (leaderboard.pageCheckedAt)
+            lines.push(`Leaderboard page checked: ${leaderboard.pageCheckedAt}. ${leaderboard.pageCheck}.`);
+    }
     lines.push('');
     lines.push('## Score summary');
     lines.push('');
@@ -192,11 +236,13 @@ function render(row, leaderboard) {
     lines.push('');
     lines.push('## Contest position and generalization');
     lines.push('');
-    lines.push(`- Held-out rank: **${row.heldRank}/${leaderboard.data.teams.length}**.`);
-    lines.push(`- Public rank: **${row.publicRank}/${leaderboard.data.teams.length}**.`);
+    lines.push(`- ${row.category[0].toUpperCase()}${row.category.slice(1)} category rank: **${row.categoryRank}/${row.categoryTotal}**.`);
+    lines.push(`- Overall held-out rank: **${row.heldRank}/${leaderboard.teamCount}**.`);
+    lines.push(`- Public rank: **${row.publicRank}/${leaderboard.teamCount}**.`);
     lines.push(`- Held-out/public identical-screen ratio: **${ratio(held.points, publicLive.points)}**.`);
     lines.push(`- Current held-out leader: \`${leaderboard.leader.fork}\`, ${leaderboard.leader.heldOut.points}/${leaderboard.leader.heldOut.maxPoints}.`);
-    lines.push(`- Contest phase: ${leaderboard.data.contestPhase}.`);
+    lines.push(`- Contest phase: ${leaderboard.contestPhase}.`);
+    lines.push(`- Local checkpoint \`${row.commit}\` has not been judged yet; held-out numbers are from the earlier published run.`);
     lines.push('');
     lines.push('## Output details');
     lines.push('');
@@ -240,7 +286,7 @@ async function main() {
         cwd: ROOT,
         encoding: 'utf8',
     }).trim();
-    const publicBundle = runScorer(join(ROOT, 'sessions'));
+    const publicBundle = runPublicScorer(join(ROOT, 'sessions'));
     const supplementalBundle = runScorer(join(ROOT, 'tools', 'gen-sessions', 'generated'));
     const publicLocal = aggregate(publicBundle);
     const supplemental = aggregate(supplementalBundle);
@@ -256,6 +302,9 @@ async function main() {
         held: leaderboard.team.heldOut,
         heldRank: leaderboard.heldRank,
         publicRank: leaderboard.publicRank,
+        category: leaderboard.category,
+        categoryRank: leaderboard.categoryRank,
+        categoryTotal: leaderboard.categoryTotal,
         playability: leaderboard.team.playability,
         hangGate,
         publicSpeed: publicBundle.speed?.label || 'n/a',
@@ -267,7 +316,7 @@ async function main() {
     else {
         writeFileSync(DASHBOARD, text);
         console.log(`wrote ${DASHBOARD}`);
-        console.log(`public ${publicLocal.screensMatched}/${publicLocal.screensTotal}, supplemental ${supplemental.screensMatched}/${supplemental.screensTotal}, held ${row.held.points}/${row.held.maxPoints}, rank ${row.heldRank}/${leaderboard.data.teams.length}`);
+        console.log(`public ${publicLocal.screensMatched}/${publicLocal.screensTotal}, supplemental ${supplemental.screensMatched}/${supplemental.screensTotal}, held ${row.held.points}/${row.held.maxPoints}, rank ${row.heldRank}/${leaderboard.teamCount}`);
         console.log(`hang gate: ${hangGate.passed ? 'PASS' : 'FAIL'}`);
     }
     if (!hangGate.passed) process.exitCode = 1;

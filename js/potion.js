@@ -430,26 +430,36 @@ export async function make_blinded(xtime, talk) {
     const u = game.u;
     const intr = (u.intrinsic ||= {});
     const was_blind = !!u.ublind;
+    const old_timeout = (intr.HBlinded | 0) & TIMEOUT;
     const blindfolded = !!u.ublindf
         && (u.ublindf.otyp === ONAMES.BLINDFOLD
             || u.ublindf.otyp === ONAMES.TOWEL);
+    const blocked = !!u.blocked?.BLINDED;
 
     if (Unaware())
         talk = false;
 
     const new_timeout = Math.max(0, xtime | 0);
-    const blind_now = !!new_timeout || blindfolded;
+    const blind_now = !blocked && (!!new_timeout || blindfolded);
 
     if (was_blind && !blind_now && talk) {
         if (Hallucination())
             await pline('Far out!  Everything is all cosmic again!');
         else
             await You('can see again.');
-    } else if (!was_blind && blind_now && talk) {
+    } else if (old_timeout && !new_timeout && talk && blocked) {
+        await Your(`vision seems to brighten for a moment but is ${
+            Hallucination() ? 'sadder' : 'normal'} now.`);
+    }
+
+    if (!was_blind && blind_now && talk) {
         if (Hallucination())
             await pline('Oh, bummer!  Everything is dark!  Help!');
         else
             await pline('A cloud of darkness falls upon you.');
+    } else if (!old_timeout && new_timeout && talk && blocked) {
+        await Your(`vision seems to dim for a moment but is ${
+            Hallucination() ? 'happier' : 'normal'} now.`);
     }
 
     /* src/potion.c:308: capture the glyphs under an attached ball and chain

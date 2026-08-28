@@ -1,0 +1,20 @@
+{
+  "name": "artifact-eyes-blindness",
+  "description": "A debug Monk wears the Eyes of the Overworld across timed blindness transitions to exercise blindness suppression, artifact eyewear naming, vision redraw, and timeout feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.artifacts",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2197,
+      "datetime": "20000110103000",
+      "nethackrc": "OPTIONS=name:wizard,role:Monk,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Eyes of the Overworld\r #wizintrinsic\r6i\r Pj R Pj 3..#wizintrinsic\r3i\r 3..R"
+    }
+  ]
+}

@@ -730,6 +730,25 @@ export function vision_recalc(control = 0) {
         }
     }
 
+    /* src/vision.c:631, the Eyes of the Overworld see every square in a
+       radius-three circle, including through walls. */
+    const xray = u.xray_range ?? -1;
+    if (xray >= 0) {
+        const ranges = circle_data.slice(circle_start[xray]);
+        for (let row = Math.max(0, uy - xray);
+             row <= Math.min(ROWNO - 1, uy + xray); row++) {
+            const halfwidth = ranges[Math.abs(uy - row)];
+            const start = Math.max(1, ux - halfwidth);
+            const stop = Math.min(COLNO - 1, ux + halfwidth);
+            for (let col = start; col <= stop; col++) {
+                next[row][col] |= IN_SIGHT;
+                level.at(col, row).seenv = SVALL;
+            }
+            next_rmin[row] = Math.min(start, next_rmin[row]);
+            next_rmax[row] = Math.max(stop, next_rmax[row]);
+        }
+    }
+
     // Swap viz_array and run newsym updates
     const old_array = game.viz_array;
     game.viz_array = next;

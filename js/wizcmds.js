@@ -335,41 +335,45 @@ export async function wiz_intrinsic() {
             continue;
         const name = prop[1];
         const oldtimeout = wiz_intrinsic_timeout(key);
+        const picked_count = picks.counts?.get(key) ?? -1;
+        const amount = picked_count === -1 ? 30 : picked_count;
+        if (amount <= 0)
+            continue;
 
         if (key === 'BLINDED') {
             const { make_blinded } = await import('./potion.js');
-            await make_blinded(oldtimeout + 30, true);
+            await make_blinded(oldtimeout + amount, true);
         } else if (key === 'DEAF') {
             const { make_deaf } = await import('./potion.js');
-            await make_deaf(oldtimeout + 30, true);
+            await make_deaf(oldtimeout + amount, true);
         } else if (key === 'HALLUC') {
             const { make_hallucinated } = await import('./potion.js');
-            await make_hallucinated(oldtimeout + 30, true);
+            await make_hallucinated(oldtimeout + amount, true);
         } else if (key === 'SICK') {
             const { make_sick } = await import('./potion.js');
             const type = !rn2(2) ? SICK_VOMITABLE : SICK_NONVOMITABLE;
-            await make_sick(oldtimeout || 30, '#wizintrinsic', true, type);
+            await make_sick(oldtimeout || amount, '#wizintrinsic', true, type);
         } else if (key === 'SEE_INVIS') {
             const intr = (game.u.intrinsic ||= {});
             const word = intr.HSee_invisible | 0;
             intr.HSee_invisible = (word & ~TIMEOUT)
-                | Math.min(TIMEOUT, oldtimeout + 30);
+                | Math.min(TIMEOUT, oldtimeout + amount);
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
-                ? 'increased by' : 'set to'} 30.`);
+                ? 'increased by' : 'set to'} ${amount}.`);
         } else if (key === 'FAST') {
             const intr = (game.u.intrinsic ||= {});
             const word = intr.HFast | 0;
             intr.HFast = (word & ~TIMEOUT)
-                         | Math.min(TIMEOUT, oldtimeout + 30);
+                         | Math.min(TIMEOUT, oldtimeout + amount);
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
-                ? 'increased by' : 'set to'} 30.`);
+                ? 'increased by' : 'set to'} ${amount}.`);
         } else {
-            (game.u.wiz_intrinsic_timeouts ||= {})[key] = oldtimeout + 30;
+            (game.u.wiz_intrinsic_timeouts ||= {})[key] = oldtimeout + amount;
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
-                ? 'increased by' : 'set to'} 30.`);
+                ? 'increased by' : 'set to'} ${amount}.`);
         }
     }
     await docrt();

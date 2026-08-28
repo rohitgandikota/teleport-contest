@@ -11,6 +11,7 @@ import { near_capacity } from './attrib.js';
 import { NOT_HUNGRY, UNENCUMBERED, SICK_VOMITABLE, SICK_NONVOMITABLE,
          Upolyd } from './const.js';
 import { MFLAGS } from './monst_data.js';
+import { Blind } from './youprop.js';
 
 /* src/botl.c:817 condtests[] — one row per status condition. `enabled`
    defaults to !opt_in and the 'status condition fields' option edits it; the
@@ -109,8 +110,9 @@ export function bot_conditions() {
         ? game._deferred_status_capacity
         : game._encumber_status_stale ? game.oldcap : near_capacity();
     if (cap > UNENCUMBERED) cond += ' ' + enc_stat[cap];
-    if (u.ublind || intr.HBlinded
-        || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_NOEYES)))
+    const blind = typeof game._deferred_status_blind === 'boolean'
+        ? game._deferred_status_blind : Blind();
+    if (blind)
         cond += ' Blind';
     if (intr.HDeaf || props.DEAF) cond += ' Deaf';
     if ((intr.HHallucination || props.HALLUC) && !props.HALLUC_RES)

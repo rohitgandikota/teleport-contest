@@ -20,7 +20,7 @@ import { rn2, rnd, rnz, d } from './rng.js';
 import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
          ONAME_KNOW_ARTI, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
-         nothing_happens, W_WEP, W_ARTI } from './const.js';
+         nothing_happens, W_WEP, W_ART, W_ARTI } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -333,8 +333,10 @@ export function set_artifact_intrinsic(obj, on, wp_mask) {
     }
     if ((art.spfx & SPFX_REFLECT) && (wp_mask & W_WEP))
         set_artifact_prop('REFLECTING', on, wp_mask);
-    if (art.spfx & SPFX_XRAY)
+    if ((art.spfx & SPFX_XRAY) && wp_mask !== W_ART) {
         game.u.xray_range = on ? 3 : -1;
+        game.vision_full_recalc = 1;
+    }
     if ((wp_mask & W_WEP) && is_art(obj, ART_SUNSWORD))
         set_artifact_prop('BLND_RES', on, wp_mask);
 }

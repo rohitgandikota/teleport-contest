@@ -1411,21 +1411,28 @@ async function toggle_blindness() {
     vision_recalc(0);
 }
 
+function current_equipment_blindness() {
+    const u = game.u;
+    const facewear_blinds = u.ublindf
+        && (u.ublindf.otyp === ONAMES.BLINDFOLD
+            || u.ublindf.otyp === ONAMES.TOWEL);
+    return !u.blocked?.BLINDED
+        && (!!u.intrinsic?.HBlinded || facewear_blinds);
+}
+
 export async function Blindf_on(otmp) {
-    const already_blind = !!game.u.ublind;
+    const already_blind = Blind();
 
     setworn(otmp, W_TOOL);
+    game.u.ublind = current_equipment_blindness() ? 1 : 0;
     await on_msg(otmp);
 
-    /* Blind: the blindfold's W_TOOL wear makes the hero blind */
-    if (otmp.otyp === ONAMES.BLINDFOLD || otmp.otyp === ONAMES.TOWEL)
-        game.u.ublind = 1;
-
-    if (game.u.ublind && !already_blind) {
+    const blind_now = Blind();
+    if (blind_now && !already_blind) {
         if (game.flags?.verbose)
             await You_cant('see any more.');
         await toggle_blindness();
-    } else if (already_blind && !game.u.ublind) {
+    } else if (already_blind && !blind_now) {
         await You('can see!');
         await toggle_blindness();
     }
@@ -1662,11 +1669,10 @@ export async function armor_or_accessory_off(obj) {
 export async function Blindf_off(otmp) {
     const was_blind = Blind();
 
+    game._deferred_status_blind = was_blind;
     setworn(null, W_TOOL);   /* src/do_wear.c Blindf_off */
+    game.u.ublind = current_equipment_blindness() ? 1 : 0;
     await off_msg(otmp);
-
-    if (otmp.otyp === ONAMES.BLINDFOLD || otmp.otyp === ONAMES.TOWEL)
-        game.u.ublind = !!((game.u.intrinsic?.HBlinded | 0) & TIMEOUT);
 
     const blind_now = Blind();
     if (blind_now) {
@@ -1675,13 +1681,16 @@ export async function Blindf_off(otmp) {
                 await You('still cannot see.');
         } else {
             await You_cant('see anything now!');
+            delete game._deferred_status_blind;
             await toggle_blindness();
         }
     } else if (was_blind) {
         /* gulp_blnd_check() needs the engulfed state; absent */
         await You('can see again.');
+        delete game._deferred_status_blind;
         await toggle_blindness();
     }
+    delete game._deferred_status_blind;
 }
 
 /* src/do_wear.c:1733 count_worn_stuff() */

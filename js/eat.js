@@ -11,12 +11,12 @@ import { game } from './gstate.js';
 import { Race_if } from './u_init.js';
 import { carnivorous, herbivorous, metallivorous, acidic, poisonous,
          flesh_petrifies, vegan, vegetarian, type_is_pname, dmgtype,
-         attacktype, cantvomit, olfaction } from './mondata.js';
+         attacktype, cantvomit, cantwield, olfaction } from './mondata.js';
 import { can_reach_floor } from './pickup.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { tty_yn_function } from './tty/topl.js';
 import { Unaware, Hallucination, Poison_resistance } from './youprop.js';
-import { singular, xname, doname } from './objnam.js';
+import { singular, xname, doname, yobjnam } from './objnam.js';
 import { more_experienced, newexplevel } from './exper.js';
 import { You, You_cant } from './pline.js';
 import { outrumor } from './rumors.js';
@@ -35,10 +35,11 @@ import { rn2, rnd, rn1, d } from './rng.js';
 import { You_feel, Your } from './pline.js';
 import { losehp } from './hack.js';
 import { SICK_RES, SICK_VOMITABLE, KILLED_BY_AN } from './const.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE } from './const.js';
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE, HOMEMADE_TIN, NON_PM } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_DOWNPLAY, freeinv, update_inventory, reorder_invent, addinv_nomerge } from './invent.js';
 import { pline } from './display.js';
+import { observe_object } from './o_init.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
 import { splitobj, bcsign } from './mkobj.js';
@@ -998,12 +999,124 @@ export async function bite() {
 // than < , so the last turn of a meal still takes a bite. Writing it as < , or
 // biting before incrementing, drops that final bite -- and for a Satiated hero
 // that final bite is the one that chokes.
-/* src/eat.c:1571 opentin() — the tin-opening occupation. Not ported yet;
-   newhungry() compares occupation pointers against it, so the symbol must
-   exist for that test even while nothing can ever set it. */
-function opentin() {
-    (game.unported ||= new Set()).add('eat:opentin');
+// src/eat.c:1491 tin_variety(). This is needed before even an empty tin can
+// be identified because C chooses and stores no variety for a fresh tin.
+function tin_variety(tin) {
+    let r;
+    if (tin.spe === 1)
+        return -1;
+    if (tin.cursed)
+        return 0;
+    if (tin.spe < 0)
+        r = -tin.spe - 1;
+    else
+        r = rn2(TTSZ - 1);
+
+    if (r === HOMEMADE_TIN && !tin.blessed && !rn2(7))
+        r = 0;
+    if (r === 0 && tin.corpsenm !== NON_PM
+        && nonrotting_corpse(tin.corpsenm))
+        r = HOMEMADE_TIN;
+    return r;
+}
+
+function use_up_tin(tin) {
+    if (carried(tin))
+        useup(tin);
+    else
+        useupf(tin, 1);
+    const tc = (game.context ||= {}).tin ||= {};
+    tc.tin = null;
+    tc.o_id = 0;
+}
+
+// src/eat.c:1528 consume_tin(). Empty tins are complete here. Meat, spinach,
+// traps, shop billing, and their nutrition effects remain explicit gaps.
+async function consume_tin(mesg) {
+    const tc = (game.context ||= {}).tin ||= {};
+    const tin = tc.tin;
+    const r = tin_variety(tin);
+
+    if (tin.otrapped || (tin.cursed && r !== HOMEMADE_TIN && !rn2(8))) {
+        note_unported_eat('consume_tin:trapped');
+        use_up_tin(tin);
+        return;
+    }
+
+    await pline(mesg);
+    if (r !== -1 && tin.corpsenm === NON_PM) {
+        if (Hallucination())
+            await pline(`It's full of ${rn2(2) ? 'air elemental souffle'
+                                               : 'dehydrated water'}.`);
+        else
+            await pline('It turns out to be empty.');
+        observe_object(tin);
+        tin.known = 1;
+        use_up_tin(tin);
+        return;
+    }
+
+    note_unported_eat(r === -1 ? 'consume_tin:spinach'
+                               : 'consume_tin:meat');
+}
+
+// src/eat.c:1703 opentin() and :1723 start_tin(). Applying a tin opener is
+// sufficient to reach each timing arm. Other improvised opening tools still
+// enter through doeat(), whose tin path remains separate.
+async function opentin() {
+    const tc = game.context?.tin;
+    const tin = tc?.tin;
+    if (!tin || (!carried(tin)
+        && (!obj_here(tin, game.u.ux, game.u.uy) || !can_reach_floor(true))))
+        return 0;
+    if (tc.usedtime++ >= 50) {
+        await You('give up your attempt to open the tin.');
+        return 0;
+    }
+    if (tc.usedtime < tc.reqtime)
+        return 1;
+
+    await consume_tin('You succeed in opening the tin.');
     return 0;
+}
+
+export async function start_tin(tin) {
+    let mesg = null;
+    let delay;
+
+    if (metallivorous(game.youmonst.data)) {
+        mesg = 'You bite right into the metal tin...';
+        delay = 0;
+    } else if (cantwield(game.youmonst.data)) {
+        await You('cannot handle the tin properly to open it.');
+        return;
+    } else if (tin.blessed) {
+        delay = game.u.uwep?.blessed
+                && game.u.uwep.otyp === ONAMES.TIN_OPENER ? 0 : rn2(2);
+        if (!delay)
+            mesg = 'The tin opens like magic!';
+        else
+            await pline('The tin seems easy to open.');
+    } else if (game.u.uwep?.otyp === ONAMES.TIN_OPENER) {
+        mesg = 'You easily open the tin.';
+        delay = rn2(game.u.uwep.cursed ? 3
+                    : !game.u.uwep.blessed ? 2 : 1);
+        await pline(`Using ${yobjnam(game.u.uwep, null)} you try to open the tin.`);
+    } else {
+        note_unported_eat('start_tin:improvised');
+        return;
+    }
+
+    const tc = (game.context ||= {}).tin ||= {};
+    tc.tin = tin;
+    tc.o_id = tin.o_id;
+    if (!delay) {
+        await consume_tin(mesg);
+    } else {
+        tc.reqtime = delay;
+        tc.usedtime = 0;
+        set_occupation(opentin, 'opening the tin', 0);
+    }
 }
 
 export async function eatfood() {

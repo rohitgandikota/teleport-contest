@@ -311,6 +311,39 @@ async function use_whip(obj) {
     return ECMD_TIME;
 }
 
+// src/eat.c:3098 use_tin_opener(). The opener is wielded before the tin
+// prompt, but unlike picks and whips the application continues immediately.
+function tinopen_ok(obj) {
+    return obj?.otyp === ONAMES.TIN ? GETOBJ_SUGGEST : GETOBJ_EXCLUDE;
+}
+
+async function use_tin_opener(obj) {
+    let res = ECMD_OK;
+
+    if (!carrying(ONAMES.TIN)) {
+        await You('have no tin to open.');
+        return ECMD_OK;
+    }
+
+    if (obj !== game.u.uwep) {
+        if (obj.cursed && obj.bknown
+            && (await tty_yn_function(`Really wield ${doname(obj)}?`,
+                                      'ynq', 'q')) !== 'y')
+            return ECMD_OK;
+        if (!await wield_tool(obj, 'use'))
+            return ECMD_OK;
+        res = ECMD_TIME;
+    }
+
+    const tin = await getobj('open', tinopen_ok, GETOBJ_NOFLAGS);
+    if (!tin)
+        return res | ECMD_CANCEL;
+
+    const { start_tin } = await import('./eat.js');
+    await start_tin(tin);
+    return ECMD_TIME;
+}
+
 // src/apply.c:1628 use_lamp(). Lamps, lanterns, and loose candles share the
 // same on/off path; begin_burn() selects their fuel checkpoints and radius.
 async function use_lamp(obj) {
@@ -1994,6 +2027,9 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.BULLWHIP)
         return await use_whip(obj);
+
+    if (obj.otyp === ONAMES.TIN_OPENER)
+        return await use_tin_opener(obj);
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

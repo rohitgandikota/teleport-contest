@@ -1,0 +1,40 @@
+{
+  "name": "tin-opener-application",
+  "description": "Normal and debug heroes apply tin openers with no tin, cancel after automatic wielding, and immediately open an empty tin with a blessed opener.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "mode.normal",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "object.tools-containers",
+    "ui.cancel-invalid",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 31023,
+      "datetime": "20000111120000",
+      "nethackrc": "OPTIONS=name:Archie,role:Archeologist,race:human,gender:male,align:lawful\nOPTIONS=!legacy,!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "aii\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111120500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin opener\raoi\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017blessed tin opener\rap \u001bi\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000111121500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017blessed tin opener\rap o i\u001b"
+    }
+  ]
+}

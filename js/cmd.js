@@ -1516,7 +1516,9 @@ export async function rhack(key) {
         game.context.move = (await doclose() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'a') {
         // src/cmd.c cmdlist — 'a' is doapply. 232 keystrokes across the corpus.
-        game.context.move = (await doapply() === ECMD_TIME ? 1 : 0);
+        /* command results are flags: cancelling the tin selection after
+           auto-wielding its opener returns ECMD_TIME | ECMD_CANCEL */
+        game.context.move = ((await doapply()) & ECMD_TIME) ? 1 : 0;
     } else if (ch === 'e') {
         // src/cmd.c cmdlist — 'e' is doeat, which reaches floorfood() and then
         // getobj(). 330 keystrokes across the public corpus, the most of any

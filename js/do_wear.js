@@ -527,13 +527,35 @@ function learnring(ring, observed) {
     }
 }
 
+// src/do_wear.c toggle_stealth() for rings.  A visible change in stealth
+// identifies the ring and gives immediate feedback.  The blocked term is
+// tracked separately from the worn-property mask, as in C's BStealth.
+async function toggle_ring_stealth(ring, oldprop, on) {
+    if (on ? game.initial_don : game.context_takeoff?.cancelled_don)
+        return;
+    if (!oldprop && !game.u.intrinsic?.HStealth
+        && !game.u.blocked?.STEALTH) {
+        learnring(ring, true);
+        await You(on ? 'move very quietly.' : 'sure are noisy.');
+    }
+}
+
 // src/do_wear.c Ring_on()/Ring_off().
 async function Ring_on(obj) {
+    const ringmask = W_RINGL | W_RINGR;
+    let oldprop = game.u.uprops?.STEALTH || 0;
+    /* setworn() has already added this ring.  Unless both hands carry the
+       same property, strip the ring bits to recover the previous state. */
+    if ((oldprop & ringmask) !== ringmask)
+        oldprop &= ~ringmask;
+
     switch (obj.otyp) {
     case ONAMES.RIN_ADORNMENT:
-    case ONAMES.RIN_STEALTH:
     case ONAMES.RIN_SUSTAIN_ABILITY:
     case ONAMES.RIN_WARNING:
+        break;
+    case ONAMES.RIN_STEALTH:
+        await toggle_ring_stealth(obj, oldprop, true);
         break;
     case ONAMES.RIN_PROTECTION:
         learnring(obj, obj.spe !== 0);
@@ -547,12 +569,16 @@ async function Ring_on(obj) {
 }
 
 async function Ring_off(obj) {
+    const mask = obj.owornmask & (W_RINGL | W_RINGR);
+    const oldprop = (game.u.uprops?.STEALTH || 0) & ~mask;
     const observable = obj.otyp === ONAMES.RIN_PROTECTION && obj.spe !== 0;
-    setworn(null, obj.owornmask & (W_RINGL | W_RINGR));
+    setworn(null, mask);
     if (obj.otyp === ONAMES.RIN_PROTECTION) {
         learnring(obj, observable);
         if (obj.spe)
             find_ac();
+    } else if (obj.otyp === ONAMES.RIN_STEALTH) {
+        await toggle_ring_stealth(obj, oldprop, false);
     } else {
         find_ac();
         note_unported_do_wear(`Ring_off:otyp=${obj.otyp}`);

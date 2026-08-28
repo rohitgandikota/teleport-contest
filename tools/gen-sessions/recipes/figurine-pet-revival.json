@@ -1,0 +1,23 @@
+{
+  "name": "figurine-pet-revival",
+  "description": "A debug Wizard applies a blessed troll figurine, verifies that it becomes tame, kills the pet with a death ray, and resurrects it from its saved-trait corpse before exercising its restored pet movement.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "object.food-corpses",
+    "object.tools-containers",
+    "object.wands",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 9485,
+      "datetime": "20000112120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed figurine of troll\ri\u001bsaoh\u0006\u0017blessed wand of death\ri\u001bzph  \u0006\u0017blessed wand of undead turning\ri\u001bzqh \u0006hhhh"
+    }
+  ]
+}

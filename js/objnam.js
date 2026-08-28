@@ -309,7 +309,13 @@ export function xname(obj) {
         else if (obj.otyp === ONAMES.TOWEL && obj.spe > 0)
             buf += obj.spe < 3 ? 'moist ' : 'wet ';
         buf += !dknown ? dn : nn ? actualn : un ? `${dn} called ${un}` : dn;
-        if (obj.otyp === ONAMES.TOWEL && obj.spe > 0 && game.wizard)
+        if (obj.otyp === ONAMES.FIGURINE && ismnum(obj.corpsenm)) {
+            const cgend = (obj.spe | 0) & (CORPSTAT_MALE | CORPSTAT_FEMALE);
+            const mgend = cgend === CORPSTAT_MALE ? MALE
+                         : cgend === CORPSTAT_FEMALE ? FEMALE : NEUTER;
+            const mnam = pmname(game.mons[obj.corpsenm], mgend);
+            buf += ` of ${just_an(mnam)}${mnam}`;
+        } else if (obj.otyp === ONAMES.TOWEL && obj.spe > 0 && game.wizard)
             buf += ` (${obj.spe})`;
         break;
     case ARMOR_CLASS:

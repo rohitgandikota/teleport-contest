@@ -5,11 +5,13 @@ import { game } from './gstate.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          nothing_happens, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
-         SUPPRESS_INVISIBLE, nothing_seems_to_happen } from './const.js';
-import { carrying, getobj, update_inventory, useupall, weight } from './invent.js';
+         SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
+         Is_airlevel, Is_waterlevel } from './const.js';
+import { carrying, getobj, update_inventory, useup, useupall, weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
-import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby } from './mon.js';
+import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
+         is_pool } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
 import { Blind, Hallucination, Deaf, Underwater } from './youprop.js';
@@ -23,7 +25,7 @@ import { walk_path } from './dothrow.js';
 import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
 import { ONAMES } from './objects_data.js';
-import { pline } from './display.js';
+import { map_invisible, pline } from './display.js';
 import { You, There } from './pline.js';
 import { dist2 } from './hacklib.js';
 import { cansee } from './vision.js';
@@ -36,8 +38,8 @@ import { pmname, x_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { is_boots, is_gloves } from './obj.js';
 import { splitobj } from './mkobj.js';
-import { nohands } from './mondata.js';
-import { check_capacity, invocation_pos } from './hack.js';
+import { nohands, passes_walls, throws_rocks } from './mondata.js';
+import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown } from './o_init.js';
 
@@ -52,10 +54,10 @@ function note_unported_apply(what) {
    pick, and the `j` after it is a direction in C and a move in ours. */
 const LOCK_TOOLS = [ONAMES.LOCK_PICK, ONAMES.CREDIT_CARD, ONAMES.SKELETON_KEY];
 
-/* src/apply.c — these five reach getdir() through use_whip, use_stethoscope,
-   use_mirror, use_camera and use_figurine. */
+/* src/apply.c: the remaining directional tool placeholders. Stethoscopes and
+   figurines have their own handlers below. */
 const NEEDS_DIR = [ONAMES.BULLWHIP, ONAMES.MIRROR,
-                   ONAMES.EXPENSIVE_CAMERA, ONAMES.FIGURINE];
+                   ONAMES.EXPENSIVE_CAMERA];
 
 /* src/apply.c:4344 — use_lamp() is void, so doapply's `int res = ECMD_TIME`
    survives and applying a lamp takes a turn. */
@@ -522,6 +524,68 @@ async function use_stethoscope(obj) {
     return res;
 }
 
+// src/apply.c:2511 figurine_location_checks(). A carried figurine can be
+// activated only where its monster can physically fit.
+async function figurine_location_checks(obj, x, y) {
+    if (game.u.uswallow) {
+        await You("don't have enough room in here.");
+        return false;
+    }
+    if (!isok(x, y)) {
+        await You('cannot put the figurine there.');
+        return false;
+    }
+
+    const ptr = game.mons[obj.corpsenm];
+    const typ = game.level.at(x, y).typ;
+    if (IS_OBSTRUCTED(typ)
+        && !(passes_walls(ptr) && may_passwall(x, y))) {
+        await You(`cannot place a figurine in ${IS_TREE(typ)
+            ? 'a tree' : 'solid rock'}!`);
+        return false;
+    }
+    if (sobj_at(ONAMES.BOULDER, x, y) && !passes_walls(ptr)
+        && !throws_rocks(ptr)) {
+        await You('cannot fit the figurine on the boulder.');
+        return false;
+    }
+    return true;
+}
+
+// src/apply.c:2544 use_figurine().
+async function use_figurine(obj) {
+    if (game.u.uswallow) {
+        await figurine_location_checks(obj, game.u.ux, game.u.uy);
+        return ECMD_OK;
+    }
+    if (!await getdir(null))
+        return ECMD_CANCEL;
+
+    const x = game.u.ux + game.u.dx;
+    const y = game.u.uy + game.u.dy;
+    if (!await figurine_location_checks(obj, x, y))
+        return ECMD_TIME;
+
+    let action;
+    if (game.u.dx || game.u.dy)
+        action = 'set the figurine beside you';
+    else if (Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz)
+             || is_pool(x, y))
+        action = 'release the figurine';
+    else if (game.u.dz < 0)
+        action = 'toss the figurine into the air';
+    else
+        action = 'set the figurine on the ground';
+
+    await You(`${action} and it ${Blind() ? 'supposedly ' : ''}transforms.`);
+    const { make_familiar } = await import('./dog.js');
+    await make_familiar(obj, x, y, false);
+    useup(obj);
+    if (Blind())
+        map_invisible(x, y);
+    return ECMD_TIME;
+}
+
 // src/apply.c doapply() — the 'a' command.
 export async function doapply() {
     if (nohands(game.youmonst.data)) {
@@ -557,6 +621,9 @@ export async function doapply() {
         note_unported_apply('dowrite:paper');
         return ECMD_TIME;
     }
+
+    if (obj.otyp === ONAMES.FIGURINE)
+        return await use_figurine(obj);
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

@@ -37,7 +37,8 @@ import {
     COLNO, ROWNO, IS_ROOM, MAGIC_PORTAL, ALLOW_M, ALLOW_U,
     IS_OBSTRUCTED, IS_DOOR, D_CLOSED, D_LOCKED, isok,
     IS_STWALL, IS_TREE, W_NONDIGGABLE,
-    ALLOW_MDISP, ALLOW_TRAPS, A_CHA,
+    ALLOW_MDISP, ALLOW_TRAPS, A_CHA, CORPSTAT_GENDER,
+    CORPSTAT_FEMALE, CORPSTAT_MALE,
 } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
@@ -53,7 +54,7 @@ import { MIGR_RANDOM, MIGR_APPROX_XY, MIGR_EXACT_XY, MIGR_WITH_HERO,
          MIGR_LEFTOVERS, MON_MIGRATING, MON_LIMBO,
          RLOC_NOMSG } from './const.js';
 import { Hallucination } from './youprop.js';
-import { pline_xy } from './pline.js';
+import { pline_xy, You } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy, mon_track_add } from './monmove.js';
 import { gettrack } from './track.js';
@@ -62,8 +63,9 @@ import { mattackm } from './mhitm.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import {
-    makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider,
-    mpickobj, set_malign, deliver_obj_to_mon, DF_ALL } from './makemon.js';
+    makemon, MM_EDOG, MM_IGNOREWATER, MM_NOMSG, MM_MALE, MM_FEMALE,
+    NO_MINVENT, place_monster, remove_monster, is_rider, mpickobj, set_malign,
+    deliver_obj_to_mon, DF_ALL } from './makemon.js';
 import { rloc } from './teleport.js';
 import { finish_meating } from './dogmove.js';
 
@@ -196,6 +198,71 @@ export function initedog(mtmp, everything) {
     /* src/dog.c:87 — pets-conduct counter (the first-pet livelog is
        invisible); gain_guardian_angel() reads it on the Astral Plane */
     (game.u.uconduct ||= {}).pets = ((game.u.uconduct.pets | 0) + 1);
+}
+
+// src/dog.c:138 make_familiar(), for figurines. Spell-created familiars use
+// a separate random-species path and remain outside this entry point.
+export async function make_familiar(otmp, x, y, quietly = false) {
+    const mndx = otmp?.corpsenm;
+    if (!Number.isInteger(mndx) || mndx < 0 || mndx >= NUMMONS)
+        return null;
+
+    const vitals = game.mvitals[mndx];
+    const hasSpecialLimit = mndx === PMNAMES.PM_NAZGUL
+                         || mndx === PMNAMES.PM_ERINYS;
+    if (hasSpecialLimit && (vitals?.mvflags & MFLAGS.G_EXTINCT)) {
+        if (!quietly)
+            await pline('... into a pile of dust.');
+        return null;
+    }
+
+    let mmflags = MM_EDOG | MM_IGNOREWATER | NO_MINVENT | MM_NOMSG;
+    const cgend = (otmp.spe | 0) & CORPSTAT_GENDER;
+    if (cgend === CORPSTAT_FEMALE)
+        mmflags |= MM_FEMALE;
+    else if (cgend === CORPSTAT_MALE)
+        mmflags |= MM_MALE;
+
+    const mtmp = makemon(game.mons[mndx], x, y, mmflags);
+    if (!mtmp) {
+        if (!quietly)
+            await pline('The figurine writhes and then shatters into pieces!');
+        return null;
+    }
+    if (mtmp.isminion) {
+        mtmp.isminion = 0;
+        if (mtmp.mextra)
+            delete mtmp.mextra.emin;
+    }
+    if (is_pool(mtmp.mx, mtmp.my)) {
+        const { minliquid } = await import('./mon.js');
+        if (await minliquid(mtmp))
+            return null;
+    }
+
+    let chance = rn2(10);
+    if (chance > 2)
+        chance = otmp.blessed ? 0 : !otmp.cursed ? 1 : 2;
+    if (chance === 0) {
+        initedog(mtmp, true);
+    } else if (chance === 2) {
+        if (!quietly)
+            await You('get a bad feeling about this.');
+        mtmp.mpeaceful = 0;
+        set_malign(mtmp);
+    }
+    if (otmp.oname)
+        christen_monst(mtmp, otmp.oname);
+
+    mtmp.msleeping = 0;
+    set_malign(mtmp);
+    newsym(mtmp.mx, mtmp.my);
+    if (mtmp.mtame && attacktype(mtmp.data, ATTKS.AT_WEAP)) {
+        mtmp.weapon_check = NEED_HTH_WEAPON;
+        const { mon_wield_item } = await import('./weapon.js');
+        await mon_wield_item(mtmp);
+    }
+    return mtmp;
 }
 
 // ---------------------------------------------------------------------------

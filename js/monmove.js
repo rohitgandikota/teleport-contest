@@ -32,7 +32,7 @@ import { is_vampshifter } from './monst.js';
 import { newsym, canseemon, canspotmon, sensemon, pline } from './display.js';
 import { You, You_see, You_hear } from './pline.js';
 import { create_gas_cloud, visible_region_at } from './region.js';
-import { Monnam, mon_nam, y_monnam, upstart } from './do_name.js';
+import { Adjmonnam, Monnam, mon_nam, y_monnam, upstart } from './do_name.js';
 import { Blind, Deaf } from './youprop.js';
 import { Is_rogue_level as IRL_const, D_TRAPPED } from './const.js';
 import { sobj_at, money_cnt } from './invent.js';
@@ -56,7 +56,8 @@ import {
     curr_mon_load, max_mon_load,
 } from './mon.js';
 import { MONSYMS, MFLAGS, PMNAMES, ATTKS } from './monst_data.js';
-import { M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER } from './const.js';
+import { M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, M_AP_FURNITURE,
+         M_AP_OBJECT } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { is_pit } from './const.js';
 import { couldsee, cansee, clear_path, recalc_block_point,
@@ -936,10 +937,9 @@ export function onscary(x, y, mtmp) {
 
 // src/monmove.c:462 monflee() — begin fleeing for fleetime turns.
 //
-// The caller has already spent the rnd() that produces fleetime; this function
-// itself only draws through its messages, which need pline plumbing that is not
-// here yet.
-export function monflee(mtmp, fleetime, first, fleemsg) {
+// The caller has already spent the rnd() that produces fleetime. The ordinary
+// and immobile message paths do not draw further RNG.
+export async function monflee(mtmp, fleetime, first, fleemsg) {
     if (DEADMONSTER(mtmp))
         return;
 
@@ -957,8 +957,15 @@ export function monflee(mtmp, fleetime, first, fleemsg) {
                 fleetime++;
             mtmp.mfleetim = Math.min(fleetime, 127);
         }
-        if (!mtmp.mflee && fleemsg)
-            note_unported('monflee:fleemsg');
+        if (!mtmp.mflee && fleemsg && canseemon(mtmp)
+            && M_AP_TYPE(mtmp) !== M_AP_FURNITURE
+            && M_AP_TYPE(mtmp) !== M_AP_OBJECT) {
+            if (!mtmp.mcanmove || !game.mons[mtmp.mnum].mmove) {
+                await pline(`${Adjmonnam(mtmp, 'immobile')} seems to flinch.`);
+            } else {
+                await pline(`${Monnam(mtmp)} turns to flee.`);
+            }
+        }
 
         /* src/monmove.c:521 — a vrock covers its escape in a stench cloud */
         if (mtmp.mnum === PMNAMES.PM_VROCK && !mtmp.mspec_used) {
@@ -1082,7 +1089,7 @@ export function can_ooze(mtmp) {
 }
 
 // src/monmove.c:532 distfleeck()
-export function distfleeck(mtmp) {
+export async function distfleeck(mtmp) {
     let seescaryx, seescaryy;
     const bravegremlin = (rn2(5) === 0);
 
@@ -1107,7 +1114,7 @@ export function distfleeck(mtmp) {
                    || (flees_light(mtmp) && !bravegremlin)
                    || (!mtmp.mpeaceful && in_your_sanctuary(mtmp, 0, 0)))) {
         scared = true;
-        monflee(mtmp, rnd(rn2(7) ? 10 : 100), true, true);
+        await monflee(mtmp, rnd(rn2(7) ? 10 : 100), true, true);
     } else {
         scared = false;
     }
@@ -1258,7 +1265,7 @@ export async function dochug(mtmp) {
     }
 
     /* src/monmove.c:791 */
-    let { inrange, nearby, scared } = distfleeck(mtmp);
+    let { inrange, nearby, scared } = await distfleeck(mtmp);
 
     const mdat = game.mons[mtmp.mnum];
     let status = 0;
@@ -1280,7 +1287,7 @@ export async function dochug(mtmp) {
                && !rn2(20)) {
         await mind_blast(mtmp);
         set_apparxy(mtmp);
-        ({ inrange, nearby, scared } = distfleeck(mtmp));
+        ({ inrange, nearby, scared } = await distfleeck(mtmp));
     }
 
     /* src/monmove.c:840 — if monster is nearby you, and has to wield a
@@ -1350,7 +1357,7 @@ export async function dochug(mtmp) {
         /* src/monmove.c:915 — distfleeck is RECALCULATED after the move, so
            every monster that takes a turn spends TWO rn2(5) draws, not one. */
         if (status !== MMOVE_DIED)
-            ({ inrange, nearby, scared } = distfleeck(mtmp));
+            ({ inrange, nearby, scared } = await distfleeck(mtmp));
 
         /* src/monmove.c:917 — the status switch. For pets, cases 0 and 3
            are equivalent. */

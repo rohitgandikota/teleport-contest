@@ -338,7 +338,7 @@ async function maybe_turn_mon(mtmp, range) {
             await killed(mtmp);
         }
     } else {
-        monflee(mtmp, 0, false, true);
+        await monflee(mtmp, 0, false, true);
     }
     return false;
 }

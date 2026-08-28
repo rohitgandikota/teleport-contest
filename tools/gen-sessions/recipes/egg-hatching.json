@@ -1,0 +1,20 @@
+{
+  "name": "egg-hatching",
+  "description": "Debug Wizard wishes for a fertile garter snake egg and observes it hatch, covering object timers, adjacent monster placement, hatch messaging, and egg consumption.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.movement",
+    "object.food-corpses",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 7245,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of scare monster\rdp\u0017egg of a garter snake\rdqm.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m."
+    }
+  ]
+}

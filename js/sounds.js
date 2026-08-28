@@ -476,6 +476,32 @@ function growl_sound(mtmp) {
     return ret;
 }
 
+// src/sounds.c:617 cry_sound() -- the small sound vocabulary used when an
+// egg recognizes its parent. The caller adds the "ing" suffix.
+export function cry_sound(mtmp) {
+    const ptr = mtmp.data || game.mons[mtmp.mnum];
+    switch (ptr.msound) {
+    default:
+    case MSOUND.MS_SILENT:
+        return ptr.mlet === MONSYMS.S_EEL ? 'gurgle' : 'chitter';
+    case MSOUND.MS_HISS:
+        return 'hiss';
+    case MSOUND.MS_ROAR:
+    case MSOUND.MS_GROWL:
+        return 'growl';
+    case MSOUND.MS_CHIRP:
+        return 'chirp';
+    case MSOUND.MS_BUZZ:
+        return 'buzz';
+    case MSOUND.MS_SQAWK:
+        return 'screech';
+    case MSOUND.MS_GRUNT:
+        return 'grunt';
+    case MSOUND.MS_MUMBLE:
+        return 'mumble';
+    }
+}
+
 export async function growl(mtmp) {
     let growl_verb = 0;
 

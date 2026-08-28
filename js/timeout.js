@@ -15,9 +15,11 @@ import { rn2, rnd, d } from './rng.js';
 import { stop_occupation } from './allmain.js';
 import { nomul } from './hack.js';
 import { TIMEOUT, FROMOUTSIDE, WT_NOISY_INV, FOOT, A_DEX, A_CON,
-         PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING } from './const.js';
+         PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING, MV_KNOWS_EGG,
+         NO_MINVENT, MM_NOMSG, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT }
+    from './const.js';
 import { ONAMES } from './objects_data.js';
-import { PMNAMES } from './monst_data.js';
+import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { pline } from './display.js';
 
 // src/timeout.c:187 vomiting_dialogue(). It runs before the property timer is
@@ -195,9 +197,12 @@ export async function run_timers() {
             await revive_mon(curr.arg);
             break;
         }
+        case HATCH_EGG:
+            await hatch_egg(curr.arg, curr.timeout);
+            break;
         default:
-            /* hatch_egg, burn_object, revive_mon... — each is its own
-               subsystem; record which one fired unported */
+            /* burn_object and the remaining callbacks each need their own
+               subsystem; record which one fired unported. */
             (game.unported ||= new Set())
                 .add('timeout:run_timers:' + curr.func_index);
             break;
@@ -499,6 +504,165 @@ export function attach_egg_hatch_timeout(egg, when = 0) {
     }
     if (when)
         start_timer(when, TIMER_OBJECT, HATCH_EGG, egg);
+}
+
+// src/timeout.c:1017 hatch_egg() -- turn a fertile egg stack into one or more
+// adjacent baby monsters, report what the hero can perceive, and consume the
+// eggs which actually hatched.
+export async function hatch_egg(egg, timeout) {
+    if (!egg || (egg.corpsenm ?? -1) < 0)
+        return;
+
+    const { big_to_little } = await import('./mkobj.js');
+    const { carried } = await import('./obj.js');
+    const mnum = big_to_little(egg.corpsenm);
+
+    let x, y;
+    if (egg.where === OBJ_INVENT && (game.invent || []).includes(egg)) {
+        x = game.u.ux;
+        y = game.u.uy;
+    } else if (egg.where === OBJ_FLOOR
+               && (game.level?.objects || []).includes(egg)) {
+        x = egg.ox;
+        y = egg.oy;
+    } else if (egg.where === OBJ_MINVENT && egg.ocarry
+               && (game.level?.monsters || []).includes(egg.ocarry)
+               && (egg.ocarry.minvent || []).includes(egg)) {
+        x = egg.ocarry.mx;
+        y = egg.ocarry.my;
+    } else {
+        /* C moves object timers to the saved level's timer chain. The port's
+           timer queue is global, so reject an object which is not owned by
+           the active level before this callback consumes any RNG. */
+        return;
+    }
+
+    const isCarried = carried(egg);
+    const yours = !!(egg.spe
+        || (!game.flags.female && isCarried && !rn2(2)));
+    const silent = timeout !== game.moves;
+
+    const { cansee } = await import('./vision.js');
+    const { enexto } = await import('./teleport.js');
+    const { makemon } = await import('./makemon.js');
+    let hatchcount = rnd(egg.quan | 0);
+    const canseeHatchspot = cansee(x, y) && !silent;
+    const ptr = game.mons[mnum];
+    let mon = null, mon2 = null;
+    let i = hatchcount;
+
+    if (!(ptr.geno & MFLAGS.G_UNIQ)
+        && !((game.mvitals[mnum]?.mvflags ?? 0)
+             & (MFLAGS.G_GENOD | MFLAGS.G_EXTINCT))) {
+        for (; i > 0; i--) {
+            const cc = { x: 0, y: 0 };
+            if (!enexto(cc, x, y, ptr))
+                break;
+            mon = makemon(ptr, cc.x, cc.y, NO_MINVENT | MM_NOMSG);
+            if (!mon)
+                break;
+
+            if ((yours && !silent)
+                || (isCarried && mon.data.mlet === MONSYMS.S_DRAGON)) {
+                const { initedog } = await import('./dog.js');
+                initedog(mon, true);
+                if (isCarried && mon.data.mlet !== MONSYMS.S_DRAGON)
+                    mon.mtame = 20;
+            }
+            if ((game.mvitals[mnum]?.mvflags ?? 0) & MFLAGS.G_EXTINCT)
+                break;
+            mon2 = mon;
+        }
+        if (!mon)
+            mon = mon2;
+        hatchcount -= i;
+        egg.quan -= hatchcount;
+    }
+
+    if (!mon)
+        return;
+
+    const siblings = hatchcount > 1;
+    let monname = '';
+    if (canseeHatchspot) {
+        const { m_monnam } = await import('./do_name.js');
+        const { an, makeplural } = await import('./objnam.js');
+        const base = m_monnam(mon);
+        monname = siblings ? `some ${makeplural(base)}` : an(base);
+    }
+
+    let knowsEgg = false;
+    let redraw = false;
+    if (egg.where === OBJ_INVENT) {
+        const { You_feel, You_see } = await import('./pline.js');
+        const { locomotion, is_silent } = await import('./mondata.js');
+        knowsEgg = true;
+        if (canseeHatchspot)
+            await You_see(`${monname} ${locomotion(mon.data, 'drop')} out of your pack!`);
+        else
+            await You_feel(`something ${locomotion(mon.data, 'drop')} from your pack!`);
+
+        const { Deaf } = await import('./youprop.js');
+        if (yours) {
+            const { cry_sound } = await import('./sounds.js');
+            const { ing_suffix } = await import('./hacklib.js');
+            await pline(`${siblings ? 'Their' : 'Its'} ${
+                ing_suffix(cry_sound(mon))} ${
+                is_silent(mon.data) || Deaf() ? 'seems' : 'sounds'} like "${
+                game.flags.female ? 'mommy' : 'daddy'}${egg.spe ? '.' : '?'}"`);
+        } else if (mon.data.mlet === MONSYMS.S_DRAGON && !Deaf()) {
+            await pline('"Gleep!"');
+        }
+    } else if (egg.where === OBJ_FLOOR) {
+        if (canseeHatchspot) {
+            const { You_see } = await import('./pline.js');
+            knowsEgg = true;
+            await You_see(`${monname} hatch.`);
+            redraw = true;
+        }
+    } else if (egg.where === OBJ_MINVENT && canseeHatchspot) {
+        const { a_monnam } = await import('./do_name.js');
+        const { s_suffix } = await import('./hacklib.js');
+        const { locomotion } = await import('./mondata.js');
+        const { canseemon } = await import('./display.js');
+        const { is_pool } = await import('./mon.js');
+        const carrier = egg.ocarry;
+        let carriedby;
+        if (carrier && canseemon(carrier)
+            && (!carrier.wormno || cansee(carrier.mx, carrier.my))) {
+            carriedby = `${s_suffix(a_monnam(carrier))} pack`;
+            knowsEgg = true;
+        } else {
+            carriedby = is_pool(mon.mx, mon.my) ? 'empty water' : 'thin air';
+        }
+        const { You_see } = await import('./pline.js');
+        await You_see(`${monname} ${locomotion(mon.data, 'drop')} out of ${carriedby}!`);
+    }
+
+    if (canseeHatchspot && knowsEgg) {
+        game.mvitals[egg.corpsenm].mvflags |= MV_KNOWS_EGG;
+        const { update_inventory } = await import('./invent.js');
+        update_inventory();
+    }
+
+    const { useup, obj_extract_self, weight } = await import('./invent.js');
+    if (egg.quan > 0) {
+        attach_egg_hatch_timeout(egg, rnd(12));
+        egg.owt = weight(egg);
+    } else if (isCarried) {
+        useup(egg);
+    } else {
+        obj_extract_self(egg);
+        const { m_at } = await import('./mon.js');
+        const { hideunder } = await import('./makemon.js');
+        const floorMon = m_at(x, y);
+        if (floorMon && !hideunder(floorMon) && cansee(x, y))
+            redraw = true;
+    }
+    if (redraw) {
+        const { newsym } = await import('./display.js');
+        newsym(x, y);
+    }
 }
 
 // src/timeout.c:1846 do_storms() — no lightning if not a stormy level (the

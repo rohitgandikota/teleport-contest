@@ -367,6 +367,12 @@ export const YMonnam = (mtmp) => upstart(y_monnam(mtmp));
 export const noit_Monnam = (mtmp) => upstart(noit_mon_nam(mtmp));
 export const Some_Monnam = (mtmp) => upstart(some_mon_nam(mtmp));
 
+// src/do_name.c:1142 Adjmonnam() -- a capitalized definite monster name
+// with an adjective inserted before the ordinary description.
+export const Adjmonnam = (mtmp, adjective) =>
+    upstart(x_monnam(mtmp, ARTICLE_THE, adjective,
+                     has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0, false));
+
 // src/do_name.c:1191 mon_nam_too() — name `mon`, except that when it IS
 // `other_mon` the reflexive pronoun is used instead.
 //

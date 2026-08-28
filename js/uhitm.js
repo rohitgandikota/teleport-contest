@@ -610,7 +610,7 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
                flee and spend rn2(3)+rnd(100) C never drew */
             if (!rn2(25) && mon.mhp < Math.trunc(mon.mhpmax / 2)
                 && !game.u.uswallow) {
-                monflee(mon, !rn2(3) ? rnd(100) : 0, false, true);
+                await monflee(mon, !rn2(3) ? rnd(100) : 0, false, true);
 
                 if (game.u.ustuck === mon && !game.u.uswallow)
                     set_ustuck(null);

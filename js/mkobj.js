@@ -822,7 +822,7 @@ function little_to_big(montype) {
     const p = GROWNUPS.find(([baby]) => baby === montype);
     return p ? p[1] : montype;
 }
-function big_to_little(montype) {
+export function big_to_little(montype) {
     const p = GROWNUPS.find(([, adult]) => adult === montype);
     return p ? p[0] : montype;
 }

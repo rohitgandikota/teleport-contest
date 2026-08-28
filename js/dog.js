@@ -156,7 +156,7 @@ export function makedog() {
 //
 // `everything` is FALSE when re-taming an already-tame monster, and then only
 // the apport floor is applied.
-function initedog(mtmp, everything) {
+export function initedog(mtmp, everything) {
     const edogp = (mtmp.edog ||= {});
     const minhungry = game.moves + 1000;
     const minimumtame = is_domestic(mtmp.data) ? 10 : 5;

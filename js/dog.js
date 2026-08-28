@@ -65,6 +65,7 @@ import {
     makemon, MM_EDOG, NO_MINVENT, place_monster, remove_monster, is_rider,
     mpickobj, set_malign, deliver_obj_to_mon, DF_ALL } from './makemon.js';
 import { rloc } from './teleport.js';
+import { finish_meating } from './dogmove.js';
 
 const NON_PM = -1;
 
@@ -2010,6 +2011,52 @@ export async function abuse_dog(mtmp) {
             newsym(mtmp.mx, mtmp.my);
             if (mtmp.wormno)
                 note_unported('abuse_dog:redraw_worm');
+        }
+    }
+}
+
+// src/dog.c:1292 wary_dog() -- revived pets can lose tameness based on how
+// they died and how they were treated.  Revival calls this quietly.
+export function wary_dog(mtmp, was_dead) {
+    const edog = !mtmp.isminion ? mtmp.edog : null;
+
+    finish_meating(mtmp);
+    if (!mtmp.mtame)
+        return;
+
+    if (edog?.mhpmax_penalty) {
+        mtmp.mhpmax += edog.mhpmax_penalty;
+        mtmp.mhp += edog.mhpmax_penalty;
+        edog.mhpmax_penalty = 0;
+    }
+
+    if (edog && (edog.killed_by_u === 1 || edog.abuse > 2)) {
+        mtmp.mpeaceful = mtmp.mtame = 0;
+        if (edog.abuse >= 0 && edog.abuse < 10
+            && !rn2(edog.abuse + 1))
+            mtmp.mpeaceful = 1;
+    } else {
+        mtmp.mtame = rn2(mtmp.mtame + 1);
+        if (!mtmp.mtame)
+            mtmp.mpeaceful = rn2(2);
+    }
+
+    if (!mtmp.mtame) {
+        if (!was_dead)
+            note_unported('wary_dog:life_saved_feedback');
+        newsym(mtmp.mx, mtmp.my);
+    } else if (edog) {
+        edog.revivals = (edog.revivals | 0) + 1;
+        edog.killed_by_u = 0;
+        edog.abuse = 0;
+        edog.ogoal = { x: -1, y: -1 };
+        if (was_dead || edog.hungrytime < game.moves + 500)
+            edog.hungrytime = game.moves + 500;
+        if (was_dead) {
+            edog.droptime = 0;
+            edog.dropdist = 10000;
+            edog.whistletime = 0;
+            edog.apport = 5;
         }
     }
 }

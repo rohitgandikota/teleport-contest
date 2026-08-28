@@ -1,0 +1,22 @@
+{
+  "name": "corpse-saved-traits",
+  "description": "A debug Wizard creates an explicitly peaceful unique Cyclops, kills it with a death ray, then resurrects its corpse with undead turning. The revived Cyclops must retain its species and peaceful disposition, displace the hero, and expose the boulder-priority death pile throughout the corpse interval.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.death-corpse-revival",
+    "monster.movement",
+    "object.food-corpses",
+    "object.wands",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 9485,
+      "datetime": "20000112120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful Cyclops\ry\u0006\u0017blessed wand of death\ri\u001bzoh  \u0006\u0017blessed wand of undead turning\ri\u001bzph\u0006h"
+    }
+  ]
+}

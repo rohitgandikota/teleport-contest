@@ -31,7 +31,8 @@ import { start_timer, TIMER_OBJECT,
          REVIVE_MON as TIMEOUT_REVIVE_MON,
          obj_stop_timers } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
-import { Is_rogue_level, NODIR, OBJ_FLOOR, OBJ_INVENT, In_quest } from './const.js';
+import { Is_rogue_level, NODIR, OBJ_FLOOR, OBJ_INVENT, In_quest,
+         MON_DETACH } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -1220,6 +1221,35 @@ export function special_corpse(num) {
         || is_rider(game.mons[num]);
 }
 
+// src/mkobj.c:2157 save_mtraits() -- keep an individual's monster record on
+// its corpse or statue while dropping live-map and inventory pointers.
+function save_mtraits(obj, mtmp) {
+    const saved = structuredClone({
+        ...mtmp,
+        data: null,
+        minvent: null,
+        mw: null,
+    });
+    const baselevel = mtmp.data?.mlevel ?? 0;
+
+    saved.mnum = mtmp.mnum ?? mtmp.data?.pmidx ?? NON_PM;
+    saved.data = null;
+    saved.minvent = null;
+    saved.mw = null;
+    saved.wormno = 0;
+    if ((saved.mhpmax | 0) <= baselevel)
+        saved.mhpmax = baselevel + 1;
+    if ((saved.mhp | 0) > saved.mhpmax)
+        saved.mhp = saved.mhpmax;
+    if ((saved.mhp | 0) < 1)
+        saved.mhp = 0;
+    saved.mstate = (saved.mstate | 0) & ~MON_DETACH;
+
+    obj.omonst = saved;
+    (obj.oextra ||= {}).omonst = saved;
+    return obj;
+}
+
 // src/mkobj.c:1976 set_corpsenm()
 // src/mkobj.c:2148 mkcorpstat() — a corpse or statue, optionally carrying a
 // dead monster's traits. The level-generation callers pass a fixed spot and
@@ -1243,9 +1273,11 @@ export function mkcorpstat(objtype, mtmp, ptr, x, y, corpstatflags) {
 
     if (mtmp) {
         /* save_mtraits() keeps the individual's stats with the remains */
-        note_unported_obj('mkcorpstat:save_mtraits');
+        save_mtraits(otmp, mtmp);
         if (!ptr)
             ptr = mtmp.data;
+        if (mtmp.mcan && !is_rider(ptr))
+            otmp.norevive = 1;
     }
 
     /* override mkobjs()'s initialization of a random monster type */

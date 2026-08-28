@@ -920,6 +920,17 @@ function pile_attr(glyph) {
            && game.flags?.use_inverse !== false ? TERM_INVERSE : 0;
 }
 
+/* src/mkobj.c:2336-2348 place_object() keeps every boulder at the head of
+   its per-square nexthere chain.  The port's flat fobj-style list must remain
+   newest-first for global traversals, so derive the visible pile head here. */
+function vobj_at(x, y) {
+    const objects = game.level?.objects || [];
+    return objects.find(o => o.ox === x && o.oy === y
+                             && o.otyp === ONAMES.BOULDER)
+           || objects.find(o => o.ox === x && o.oy === y)
+           || null;
+}
+
 function floor_object_glyph(obj, x, y, piletop = true) {
     /* include/display.h random_obj_to_glyph(): every object is shown as a
        random object while hallucinating. CORPSE is the one random type that
@@ -1065,8 +1076,7 @@ export function see_nearby_objects() {
                 continue;
             /* skip if no object or the object has already been marked as
                having been seen up close */
-            const obj = (game.level?.objects || [])
-                            .find(o => o.ox === ix && o.oy === iy);
+            const obj = vobj_at(ix, iy);
             if (!obj || obj.dknown)
                 continue;
             /* skip if the spot can't be seen or is too far (diagonal) */
@@ -1145,9 +1155,7 @@ export function newsym(x, y) {
            and display_self() draws '@' over it.
            include/display.h:246 maybe_display_usteed() — while riding, the
            hero's square shows the STEED's glyph, not '@'. */
-        const under = covers_objects(x, y) ? null
-            : (game.level?.objects || [])
-                  .find(o => o.ox === x && o.oy === y);
+        const under = covers_objects(x, y) ? null : vobj_at(x, y);
         const tg = under ? floor_object_glyph(under, x, y)
                          : terrain_glyph(loc, x, y);
         const steed = game.u.usteed;
@@ -1214,13 +1222,9 @@ export function newsym(x, y) {
             return;
         }
 
-        /* C shows the TOP of the pile, and our object list is newest-first
-           (place_object prepends), so the first match is the top.
-           _map_location: vobj_at(x,y) && !covers_objects(x,y) — a pool or
+        /* _map_location: vobj_at(x,y) && !covers_objects(x,y) -- a pool or
            lava square hides what floats... sinks under it. */
-        const obj = covers_objects(x, y) ? null
-            : (game.level?.objects || [])
-                  .find(o => o.ox === x && o.oy === y);
+        const obj = covers_objects(x, y) ? null : vobj_at(x, y);
         const memg = obj ? floor_object_glyph(obj, x, y)
                          : (engraving_glyph(loc, x, y)
                             || terrain_glyph(loc, x, y));
@@ -1798,9 +1802,7 @@ export function feel_location(x, y) {
         (game.unported ||= new Set()).add('feel_location:levitation');
 
     /* _map_location(x, y, 1) */
-    const obj = covers_objects(x, y) ? null
-        : (game.level?.objects || [])
-              .find(o => o.ox === x && o.oy === y);
+    const obj = covers_objects(x, y) ? null : vobj_at(x, y);
     const trap = t_at(x, y);
     const memg = obj ? floor_object_glyph(obj, x, y)
         : (trap && trap.tseen) ? trap_glyph(trap)

@@ -23,8 +23,8 @@ import { pline_The, You, You_cant, You_feel, You_hear, Your }
     from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG } from './const.js';
-import { t_at, m_at, is_pool, is_lava, delobj_core } from './mon.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_NOTAIL, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG } from './const.js';
+import { t_at, m_at, is_pool, is_lava, delobj_core, seemimic } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { Blind, Hallucination, Levitation } from './youprop.js';
@@ -33,9 +33,10 @@ import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
-import { is_displacer } from './mondata.js';
-import { PMNAMES, MFLAGS } from './monst_data.js';
-import { Amonnam, Monnam } from './do_name.js';
+import { dmgtype, is_displacer } from './mondata.js';
+import { ATTKS, PMNAMES, MFLAGS } from './monst_data.js';
+import { Amonnam, Monnam, upstart } from './do_name.js';
+import { corpse_xname, CXN_PFX_THE } from './objnam.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
    A dynamic import() here hits the same partially-initialised module the
@@ -61,7 +62,7 @@ function note_unported_do(what) {
 // for an ordinary floor corpse. This is the timed Rider path: recreate the
 // monster without inventory, consume the corpse forcibly, and print the
 // species-specific rising effect.
-export async function revive_corpse(corpse) {
+export async function revive_corpse(corpse, byHero = false) {
     const buried = corpse?.where === OBJ_BURIED;
     if (!corpse || corpse.otyp !== ONAMES.CORPSE
         || (corpse.where !== OBJ_FLOOR && !buried))
@@ -75,22 +76,28 @@ export async function revive_corpse(corpse) {
             || (typ !== ROOM && typ !== CORR && typ !== GRAVE))
             return false;
     }
-    const ptr = game.mons[corpse.corpsenm];
-    const { makemon } = await import('./makemon.js');
+    const saved = corpse.omonst || corpse.oextra?.omonst || null;
+    const reviveMnum = Number.isInteger(saved?.mnum) && saved.mnum >= 0
+        ? saved.mnum : corpse.corpsenm;
+    const corpsePtr = game.mons[corpse.corpsenm];
+    const ptr = game.mons[reviveMnum];
+    const { makemon, monhp_per_lvl } = await import('./makemon.js');
     const rider = ptr.pmidx === PMNAMES.PM_DEATH
                || ptr.pmidx === PMNAMES.PM_PESTILENCE
                || ptr.pmidx === PMNAMES.PM_FAMINE;
     let mmflags = NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH | MM_NOMSG;
+    if (saved)
+        mmflags |= MM_NOTAIL;
     const cgend = (corpse.spe ?? 0) & CORPSTAT_GENDER;
     /* Rider corpses carry the neutral marker in C and still draw gender. */
-    if (!rider && cgend === CORPSTAT_MALE)
+    if (!saved && !rider && cgend === CORPSTAT_MALE)
         mmflags |= MM_MALE;
-    else if (!rider && cgend === CORPSTAT_FEMALE)
+    else if (!saved && !rider && cgend === CORPSTAT_FEMALE)
         mmflags |= MM_FEMALE;
     if (m_at(x, y)) {
         const { enexto } = await import('./teleport.js');
         const cc = { x, y };
-        if (enexto(cc, x, y, ptr)) {
+        if (enexto(cc, x, y, corpsePtr)) {
             x = cc.x;
             y = cc.y;
         }
@@ -107,13 +114,84 @@ export async function revive_corpse(corpse) {
         await dochugw(mtmp, false);
     }
 
-    const savedTraits = !!(corpse.omonst || corpse.oextra?.omonst || rider);
-    if (savedTraits && mtmp.m_lev < ptr.mlevel)
-        rnd(ptr.mlevel + 1); /* montraits' restoration-level roll */
+    if (saved) {
+        const restored = structuredClone(saved);
+        restored.data = ptr;
+
+        if ((mtmp.m_lev | 0) < ptr.mlevel) {
+            const ltmp = rnd(ptr.mlevel + 1);
+            if (ltmp > (mtmp.m_lev | 0)) {
+                while ((mtmp.m_lev | 0) < ltmp) {
+                    mtmp.m_lev++;
+                    mtmp.mhpmax += monhp_per_lvl(mtmp);
+                }
+                restored.m_lev = mtmp.m_lev;
+            }
+        }
+        if ((mtmp.mhpmax | 0) > (restored.mhpmax | 0))
+            restored.mhpmax = mtmp.mhpmax;
+        restored.mhp = restored.mhpmax;
+
+        const fresh = {
+            mx: mtmp.mx, my: mtmp.my, mux: mtmp.mux, muy: mtmp.muy,
+            m_id: mtmp.m_id, minvent: mtmp.minvent, mw: mtmp.mw,
+            wormno: mtmp.wormno,
+            misc_worn_check: mtmp.misc_worn_check,
+            weapon_check: mtmp.weapon_check,
+            mtrapseen: mtmp.mtrapseen,
+            mflee: mtmp.mflee, mburied: mtmp.mburied,
+            mundetected: mtmp.mundetected, mfleetim: mtmp.mfleetim,
+            mlstmv: mtmp.mlstmv, m_ap_type: mtmp.m_ap_type,
+        };
+        for (const key of Object.keys(mtmp))
+            delete mtmp[key];
+        Object.assign(mtmp, restored, fresh);
+        mtmp.data = ptr;
+        mtmp.mnum = reviveMnum;
+        mtmp.mrevived = 1;
+        mtmp.mavenge = 0;
+        mtmp.meating = 0;
+        mtmp.mleashed = 0;
+        mtmp.mtrapped = 0;
+        mtmp.msleeping = 0;
+        mtmp.mfrozen = 0;
+        mtmp.mcanmove = true;
+        if (!dmgtype(ptr, ATTKS.AD_SEDU) && !dmgtype(ptr, ATTKS.AD_SSEX))
+            mtmp.mcan = 0;
+        mtmp.mcansee = true;
+        mtmp.mblinded = 0;
+        mtmp.mstun = 0;
+        mtmp.mconf = 0;
+        newsym(mtmp.mx, mtmp.my);
+    } else if (rider && mtmp.m_lev < ptr.mlevel) {
+        rnd(ptr.mlevel + 1); /* Riders always carry saved traits in C */
+    }
     mtmp.mrevived = 1;
     mtmp.msleeping = 0;
     mtmp.mcanmove = true;
     mtmp.mcansee = true;
+
+    if (saved && mtmp.mtame && !mtmp.isminion) {
+        const { wary_dog } = await import('./dog.js');
+        wary_dog(mtmp, true);
+    }
+    if (mtmp.mundetected) {
+        mtmp.mundetected = 0;
+        newsym(mtmp.mx, mtmp.my);
+    }
+    if (mtmp.m_ap_type)
+        seemimic(mtmp);
+
+    if (byHero && cansee(corpse.ox, corpse.oy)) {
+        let cname;
+        if ((game.mons[corpse.corpsenm]?.geno & MFLAGS.G_UNIQ) !== 0) {
+            const mname = Monnam(mtmp);
+            cname = `${mname}${mname.endsWith('s') ? "'" : "'s"} corpse`;
+        } else {
+            cname = upstart(corpse_xname(corpse, null, CXN_PFX_THE));
+        }
+        await pline(`${cname} glows iridescently.`);
+    }
 
     delobj_core(corpse, true);
 
@@ -130,8 +208,11 @@ export async function revive_corpse(corpse) {
             if (dx * dx + dy * dy < 25)
                 await You_hear('scratching noises.');
         }
-        return true;
+        return mtmp;
     }
+
+    if (byHero)
+        return mtmp;
 
     let effect = '';
     if (ptr.pmidx === PMNAMES.PM_DEATH)
@@ -142,7 +223,7 @@ export async function revive_corpse(corpse) {
         effect = ' in a ring of withered crops';
     if (cansee(x, y))
         await pline(`${Monnam(mtmp)} rises from the dead${effect}!`);
-    return true;
+    return mtmp;
 }
 
 export async function revive_mon(body) {

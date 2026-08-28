@@ -32,9 +32,9 @@ import { artifact_origin } from './artifact.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_destroy_nhwindow, NHW_TEXT } from './tty/wintty.js';
 import { OCLASSES } from './objects_data.js';
-import { DEADMONSTER } from './monst.js';
+import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
-         wake_nearto } from './mon.js';
+         wake_nearto, healmon } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
@@ -70,7 +70,7 @@ import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_blnd, resists_cold,
          resists_elec, resists_fire, resists_magm, resists_sleep,
-         nohands } from './mondata.js';
+         nohands, nonliving, is_demon } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Deaf, Unaware } from './youprop.js';
@@ -851,10 +851,27 @@ export async function bhito(obj, otmp) {
             res = 0;
             break;
         case ONAMES.WAN_UNDEAD_TURNING:
-        case ONAMES.SPE_TURN_UNDEAD:
-            note_unported_zap('bhito:undead_turning');
-            res = 0;
+        case ONAMES.SPE_TURN_UNDEAD: {
+            if (obj.otyp !== ONAMES.CORPSE) {
+                note_unported_zap('bhito:undead_turning_noncorpse');
+                res = 0;
+                break;
+            }
+            const ox = obj.ox, oy = obj.oy;
+            const saveNorevive = obj.norevive;
+            obj.norevive = 0;
+            const { revive_corpse } = await import('./do.js');
+            const revived = await revive_corpse(obj, true);
+            if (!revived) {
+                obj.norevive = saveNorevive;
+                res = 0;
+            } else if (cansee(ox, oy) && canspotmon(revived)) {
+                await pline(`${Monnam(revived)} is resurrected!`);
+                learn_it = true;
+                exercise(A_WIS, true);
+            }
             break;
+        }
         case ONAMES.WAN_OPENING:
         case ONAMES.SPE_KNOCK:
         case ONAMES.WAN_LOCKING:
@@ -1438,6 +1455,30 @@ async function zhitm(mon, type, nd) {
         sleep_monst(mon, d(nd, 25),
                     type === 3 ? OCLASSES.WAND_CLASS : 0);
         break;
+    case 4: {
+        /* src/zap.c:4299 ZT_DEATH. Disintegration breath shares this zap
+           number but has armor-destruction rules which remain separate. */
+        if (Math.abs(type) === 24) {
+            note_unported_zap('zhitm:disintegration');
+            return 0;
+        }
+        const ptr = game.mons[mon.mnum];
+        if (mon.mnum === PMNAMES.PM_DEATH) {
+            healmon(mon, Math.trunc(mon.mhpmax * 3 / 2),
+                    Math.trunc(mon.mhpmax / 2));
+            if (mon.mhpmax >= 1000)
+                mon.mhpmax = 999;
+            break;
+        }
+        if (nonliving(ptr) || is_demon(ptr) || is_vampshifter(mon)
+            || resists_magm(mon)) {
+            shieldeff_mon(mon);
+            break;
+        }
+        type = -1; /* death rays do not permit a saving throw */
+        damage = mon.mhp + 1;
+        break;
+    }
     case 5: {
         damage = d(nd, 6);
         const orig_damage = damage;

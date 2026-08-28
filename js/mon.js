@@ -2227,7 +2227,12 @@ export function make_corpse(mtmp, corpseflags) {
             return null;
         corpstatflags |= CORPSTAT_INIT;
         /* preserve the unique traits of some creatures */
-        const keep = (mtmp.isshk || mtmp.mtame || is_rider(mdat));
+        const keep = (mtmp.isshk || mtmp.mtame
+                      || (mdat.geno & G_UNIQ) !== 0
+                      || is_rider(mdat) || mdat.mlet === MONSYMS.S_TROLL
+                      || mtmp.m_id === game.quest_status?.leader_m_id
+                      || dmgtype(mdat, ATTKS.AD_SEDU)
+                      || dmgtype(mdat, ATTKS.AD_SSEX));
         obj = mkcorpstat(ONAMES.CORPSE, keep ? mtmp : null, mndx,
                          x, y, corpstatflags);
         if (corpseflags & CORPSTAT_BURIED)

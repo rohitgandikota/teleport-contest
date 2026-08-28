@@ -571,6 +571,22 @@ function wrong_elem_type(ptr) {
     return false;
 }
 
+// src/makemon.c:986 monhp_per_lvl() -- hit points gained per restored level.
+export function monhp_per_lvl(mon) {
+    const ptr = mon.data;
+    let hp = rnd(8);
+
+    if (is_golem(ptr))
+        hp = Math.trunc(golemhp(mon.mnum) / ptr.mlevel);
+    else if (ptr.mlevel > 49)
+        hp = 4 + rnd(4);
+    else if (ptr.mlet === S_DRAGON && mon.mnum >= PMNAMES.PM_GRAY_DRAGON)
+        hp = 4 + rn2(5);
+    else if (!mon.m_lev)
+        hp = rnd(4);
+    return hp;
+}
+
 // src/makemon.c:1012 newmonhp() — the monster's level and hit points.
 export function newmonhp(mon, mndx) {
     const ptr = game.mons[mndx];

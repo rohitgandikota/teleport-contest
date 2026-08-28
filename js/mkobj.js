@@ -1,4 +1,4 @@
-import { is_human, is_neuter, vegetarian } from './mondata.js';
+import { is_human, is_neuter, vegetarian, is_elf } from './mondata.js';
 import { mk_artifact, nartifact_exist } from './artifact.js';
 // mkobj.js — object creation.
 // C ref: src/mkobj.c
@@ -1063,6 +1063,33 @@ export function undead_to_corpse(mndx) {
     return UNDEAD_TO_CORPSE.get(mndx) ?? mndx;
 }
 
+// src/mon.c:386 zombie_form() - the zombie-specific inverse of
+// undead_to_corpse(). Pure lookup, no draw.
+export function zombie_form(ptr) {
+    switch (ptr.mlet) {
+    case MONSYMS.S_ZOMBIE:
+        return NON_PM;
+    case MONSYMS.S_KOBOLD:
+        return PMNAMES.PM_KOBOLD_ZOMBIE;
+    case MONSYMS.S_ORC:
+        return PMNAMES.PM_ORC_ZOMBIE;
+    case MONSYMS.S_GIANT:
+        return ptr.pmidx === PMNAMES.PM_ETTIN
+            ? PMNAMES.PM_ETTIN_ZOMBIE : PMNAMES.PM_GIANT_ZOMBIE;
+    case MONSYMS.S_HUMAN:
+    case MONSYMS.S_KOP:
+        return is_elf(ptr) ? PMNAMES.PM_ELF_ZOMBIE
+                           : PMNAMES.PM_HUMAN_ZOMBIE;
+    case MONSYMS.S_HUMANOID:
+        return (ptr.mflags2 & MFLAGS.M2_DWARF)
+            ? PMNAMES.PM_DWARF_ZOMBIE : NON_PM;
+    case MONSYMS.S_GNOME:
+        return PMNAMES.PM_GNOME_ZOMBIE;
+    default:
+        return NON_PM;
+    }
+}
+
 // src/mkobj.c:828 dknowns[] — the classes whose appearance is not fully
 // obvious at a glance, so a new object starts with dknown 0.
 const dknowns = [
@@ -1278,6 +1305,20 @@ export function uncurse(otmp) {
 }
 
 export function set_corpsenm(obj, id) {
+    const old_id = obj.corpsenm;
+
+    /* C removes every corpse or figurine timer before changing species.
+       Egg timers preserve their remaining delay, and the existing egg path
+       already does that by leaving its live HATCH_EGG timer attached. */
+    if (obj.timed && obj.otyp !== ONAMES.EGG)
+        obj_stop_timers(obj);
+
+    if (obj.otyp === ONAMES.CORPSE && obj.oeaten
+        && game.mons[old_id].cnutrit !== game.mons[id].cnutrit) {
+        obj.oeaten = Math.trunc(obj.oeaten * game.mons[id].cnutrit
+                               / game.mons[old_id].cnutrit);
+    }
+
     obj.corpsenm = id;
     switch (obj.otyp) {
     case ONAMES.CORPSE:

@@ -18,7 +18,8 @@ import { vegetarian, name_to_monplus, type_is_pname, verysmall,
 import { MFLAGS, MSOUND, MONSYMS } from './monst_data.js';
 import { pmname, oname } from './do_name.js';
 import { rn2, rnd, rn1 } from './rng.js';
-import { mksobj, mkobj, rnd_class, curse, set_corpsenm, set_tin_variety,
+import { mksobj, mkobj, rnd_class, curse, set_corpsenm, zombie_form,
+         set_tin_variety,
          dead_species, can_be_hatched, erosion_matters } from './mkobj.js';
 import { Is_candle, Is_container } from './obj.js';
 import { is_ammo, is_missile } from './wield.js';
@@ -2914,8 +2915,15 @@ export async function readobjnam(bp, no_wish) {
                 set_corpsenm(d.otmp, d.mntmp);
             }
             if (d.zombify) {
-                /* zombie_form() + start_timer(ZOMBIFY_MON) not ported */
-                note_unported_objnam('readobjnam:zombify');
+                /* Keep C's integer truth test. NON_PM is -1, so even a
+                   species without a zombie form receives a callback which
+                   later rots it. */
+                if (zombie_form(game.mons[d.mntmp])) {
+                    const { start_timer, TIMER_OBJECT, ZOMBIFY_MON }
+                        = await import('./timeout.js');
+                    start_timer(rn1(5, 10), TIMER_OBJECT, ZOMBIFY_MON,
+                                d.otmp);
+                }
             }
             break;
         case ONAMES.EGG:

@@ -15,12 +15,12 @@ import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
 import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
-import { place_object, set_bknown } from './mkobj.js';
+import { place_object, set_bknown, set_corpsenm, zombie_form } from './mkobj.js';
 import { cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOTAIL, MM_NOMSG } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, VIBRATING_SQUARE, MAGIC_PORTAL, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM } from './const.js';
 import { t_at, m_at, is_pool, is_lava, delobj_core } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -30,7 +30,7 @@ import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
-import { PMNAMES } from './monst_data.js';
+import { PMNAMES, MFLAGS } from './monst_data.js';
 import { Monnam } from './do_name.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
@@ -65,8 +65,16 @@ export async function revive_corpse(corpse) {
     const x = corpse.ox, y = corpse.oy;
     const ptr = game.mons[corpse.corpsenm];
     const { makemon } = await import('./makemon.js');
-    const mmflags = NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH
-                    | MM_NOTAIL | MM_NOMSG;
+    const rider = ptr.pmidx === PMNAMES.PM_DEATH
+               || ptr.pmidx === PMNAMES.PM_PESTILENCE
+               || ptr.pmidx === PMNAMES.PM_FAMINE;
+    let mmflags = NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH | MM_NOMSG;
+    const cgend = (corpse.spe ?? 0) & CORPSTAT_GENDER;
+    /* Rider corpses carry the neutral marker in C and still draw gender. */
+    if (!rider && cgend === CORPSTAT_MALE)
+        mmflags |= MM_MALE;
+    else if (!rider && cgend === CORPSTAT_FEMALE)
+        mmflags |= MM_FEMALE;
     const mtmp = makemon(ptr, x, y, mmflags);
     if (!mtmp)
         return false;
@@ -79,7 +87,8 @@ export async function revive_corpse(corpse) {
         await dochugw(mtmp, false);
     }
 
-    if (mtmp.m_lev < ptr.mlevel)
+    const savedTraits = !!(corpse.omonst || corpse.oextra?.omonst || rider);
+    if (savedTraits && mtmp.m_lev < ptr.mlevel)
         rnd(ptr.mlevel + 1); /* montraits' restoration-level roll */
     mtmp.mrevived = 1;
     mtmp.msleeping = 0;
@@ -101,8 +110,41 @@ export async function revive_corpse(corpse) {
 }
 
 export async function revive_mon(body) {
-    if (!await revive_corpse(body))
+    const revived = await revive_corpse(body);
+    if (!revived)
         note_unported_do('revive_mon:retry');
+    return revived;
+}
+
+// src/do.c:2299 zombify_mon() - convert the corpse to its zombie species,
+// then pass it through the ordinary timed-revival path.
+export async function zombify_mon(body) {
+    if (!body || body.otyp !== ONAMES.CORPSE
+        || body.where !== OBJ_FLOOR
+        || !(game.level?.objects || []).includes(body)) {
+        /* C keeps object timers on the saved level. The JS queue is global,
+           so an off-level object must not consume RNG on the active level. */
+        return;
+    }
+
+    const zmon = zombie_form(game.mons[body.corpsenm]);
+    if (zmon !== NON_PM
+        && !((game.mvitals[zmon]?.mvflags ?? 0) & MFLAGS.G_GENOD)) {
+        delete body.omid;
+        delete body.omonst;
+        if (body.oextra) {
+            delete body.oextra.omid;
+            delete body.oextra.omonst;
+        }
+        set_corpsenm(body, zmon);
+        if (await revive_mon(body)) {
+            const { obj_stop_timers } = await import('./timeout.js');
+            obj_stop_timers(body);
+        }
+    } else {
+        const { rot_corpse } = await import('./dig.js');
+        await rot_corpse(body);
+    }
 }
 
 // src/ball.c:147 unplacebc_core(): detach punishment pieces from this level.

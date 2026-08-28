@@ -1,0 +1,21 @@
+{
+  "name": "zombifying-corpse",
+  "description": "Debug Wizard wishes for a zombifying human corpse and observes its timed revival as a human zombie, covering zombie-form conversion, corpse timers, revival messaging, and post-revival movement.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.death-corpse-revival",
+    "monster.movement",
+    "object.food-corpses",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 7245,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of scare monster\rdp\u0017zombifying human corpse\rm.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m."
+    }
+  ]
+}

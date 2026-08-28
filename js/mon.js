@@ -31,7 +31,8 @@ import { bad_rock, may_dig, may_passwall } from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists, destroy_items, resist } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
-         undead_to_corpse, discard_minvent, add_to_container } from './mkobj.js';
+         undead_to_corpse, zombie_form, discard_minvent,
+         add_to_container } from './mkobj.js';
 import { weight } from './invent.js';
 import { newsym, canseemon, canspotmon, pline,
          unmap_invisible } from './display.js';
@@ -1369,11 +1370,7 @@ function zombie_maker(mon) {
         return true;
     return false;
 }
-/* src/zombify.c zombie_form() — needs the zombie table; nothing in the corpus
-   generates a zombifier this early, and the call is gated behind
-   zombie_maker() above. */
-const zombie_form = (d) => NON_PM;
-
+/* zombie_form() is shared with corpse conversion in mkobj.js. */
 // src/mon.c curr_mon_load() — total weight the monster is already carrying.
 export function curr_mon_load(mtmp) {
     let curload = 0;

@@ -163,12 +163,13 @@ export function start_timer(when, kind, func_index, arg) {
 export function obj_stop_timers(obj) {
     const base = (game.timer_base ||= []);
     let removed = 0;
-    game.timer_base = base.filter((timer) => {
-        const match = timer.kind === TIMER_OBJECT && timer.arg === obj;
-        if (match)
+    for (let i = base.length - 1; i >= 0; --i) {
+        const timer = base[i];
+        if (timer.kind === TIMER_OBJECT && timer.arg === obj) {
+            base.splice(i, 1);
             removed++;
-        return !match;
-    });
+        }
+    }
     obj.timed = Math.max(0, (obj.timed || 0) - removed);
 }
 
@@ -195,6 +196,11 @@ export async function run_timers() {
         case REVIVE_MON: {
             const { revive_mon } = await import('./do.js');
             await revive_mon(curr.arg);
+            break;
+        }
+        case ZOMBIFY_MON: {
+            const { zombify_mon } = await import('./do.js');
+            await zombify_mon(curr.arg, curr.timeout);
             break;
         }
         case HATCH_EGG:

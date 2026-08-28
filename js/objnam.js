@@ -304,7 +304,9 @@ export function xname(obj) {
         /* FALLTHRU */
     case VENOM_CLASS:
     case TOOL_CLASS:
-        if (obj.otyp === ONAMES.TOWEL && obj.spe > 0)
+        if (obj.otyp === ONAMES.LENSES)
+            buf = 'pair of ';
+        else if (obj.otyp === ONAMES.TOWEL && obj.spe > 0)
             buf += obj.spe < 3 ? 'moist ' : 'wet ';
         buf += !dknown ? dn : nn ? actualn : un ? `${dn} called ${un}` : dn;
         if (obj.otyp === ONAMES.TOWEL && obj.spe > 0 && game.wizard)

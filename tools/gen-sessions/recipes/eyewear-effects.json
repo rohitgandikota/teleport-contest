@@ -1,0 +1,20 @@
+{
+  "name": "eyewear-effects",
+  "description": "A debug Wizard puts on and removes a blindfold, lenses, and a towel, then layers a blindfold over timed blindness to exercise eyewear naming, blindness sources, vision redraw, and removal.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2195,
+      "datetime": "20000110102000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed blindfold\r\u0017blessed lenses\r\u0017blessed towel\rPoRPpRPqR#wizintrinsic\ri\r PoR30s"
+    }
+  ]
+}

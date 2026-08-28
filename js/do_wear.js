@@ -16,7 +16,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
          LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_INT, A_WIS, A_DEX, A_CON,
          A_CHA, A_CURRENT, A_CHAOTIC, A_LAWFUL, A_NEUTRAL, NH_BLACK,
-         INTRINSIC, Is_airlevel, Is_astralevel } from './const.js';
+         INTRINSIC, HEAD, Is_airlevel, Is_astralevel } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
@@ -45,7 +45,7 @@ import { ACURR, adjalign, change_luck, encumber_msg, Fast,
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Hallucination, Invis, Levitation,
          See_invisible } from './youprop.js';
-import { change_sex, poly_gender } from './polyself.js';
+import { body_part, change_sex, poly_gender } from './polyself.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
 const OCLASSES_RING = OCLASSES.RING_CLASS;
@@ -711,8 +711,10 @@ async function on_msg(otmp) {
     }
     if (game.flags?.verbose !== false) {
         const otmp_name = xname(otmp);
+        const how = otmp.otyp === ONAMES.TOWEL
+            ? ` around your ${body_part(HEAD)}` : '';
         /* obj_is_pname() only for artifacts */
-        await You(`are now wearing ${an(otmp_name)}.`);
+        await You(`are now wearing ${an(otmp_name)}${how}.`);
     }
 }
 
@@ -1658,22 +1660,23 @@ export async function armor_or_accessory_off(obj) {
 
 // src/do_wear.c:1495 Blindf_off()
 export async function Blindf_off(otmp) {
-    const was_blind = !!game.u.ublind;
+    const was_blind = Blind();
 
     setworn(null, W_TOOL);   /* src/do_wear.c Blindf_off */
     await off_msg(otmp);
 
     if (otmp.otyp === ONAMES.BLINDFOLD || otmp.otyp === ONAMES.TOWEL)
-        game.u.ublind = 0;
+        game.u.ublind = !!((game.u.intrinsic?.HBlinded | 0) & TIMEOUT);
 
-    if (game.u.ublind) {
+    const blind_now = Blind();
+    if (blind_now) {
         if (was_blind) {
             if (otmp.otyp !== ONAMES.LENSES)
                 await You('still cannot see.');
         } else {
             await You_cant('see anything now!');
+            await toggle_blindness();
         }
-        await toggle_blindness();
     } else if (was_blind) {
         /* gulp_blnd_check() needs the engulfed state; absent */
         await You('can see again.');

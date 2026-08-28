@@ -210,6 +210,28 @@ export function poly_gender() {
     return game.flags?.female ? 1 : 0;
 }
 
+// src/polyself.c:273 change_sex().  The base sex always changes.  A
+// polymorphed body changes too unless its species has a fixed sex.
+export function change_sex() {
+    const u = game.u;
+    const polymorphed = Upolyd(u);
+    const mdat = game.youmonst?.data;
+    const fixed_male = !!(mdat?.mflags2 & MFLAGS.M2_MALE);
+    const fixed_female = !!(mdat?.mflags2 & MFLAGS.M2_FEMALE);
+
+    if (!polymorphed
+        || (!fixed_male && !fixed_female && !is_neuter(mdat)))
+        game.flags.female = !game.flags.female;
+    if (polymorphed)
+        u.mfemale = !u.mfemale;
+
+    if (!polymorphed) {
+        u.umonnum = u.umonster;
+    } else if (u.umonnum === PMNAMES.PM_AMOROUS_DEMON) {
+        game.flags.female = !game.flags.female;
+    }
+}
+
 const clone_attr = (attr) => attr ? { ...attr, a: [...attr.a] } : attr;
 const indefinite = (name) => `${/^[aeiou]/i.test(name) ? 'an' : 'a'} ${name}`;
 const placeholder_forms = new Set([

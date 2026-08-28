@@ -1,0 +1,20 @@
+{
+  "name": "amulet-effects",
+  "description": "A debug Wizard wears and removes amulets of strangulation, guarding, and flying, then wears an amulet of change, pinning discovery, status changes, removal effects, and disintegration.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.amulets",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 2175,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed amulet of strangulation\rPn R \u0017blessed amulet of guarding\rPoR\u0017blessed amulet of flying\rPpR\u0017blessed amulet of change\rPq \u0006"
+    }
+  ]
+}

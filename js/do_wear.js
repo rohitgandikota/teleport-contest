@@ -35,13 +35,14 @@ import { an, xname, doname, the, gloves_simple_name,
          suit_simple_name } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
-import { prinv, update_inventory, ECMD_OK } from './invent.js';
+import { prinv, update_inventory, useup, ECMD_OK } from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { ACURR, encumber_msg } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Hallucination, Invis, Levitation,
          See_invisible } from './youprop.js';
+import { change_sex, poly_gender } from './polyself.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
 const OCLASSES_RING = OCLASSES.RING_CLASS;
@@ -469,14 +470,26 @@ async function Boots_off(otmp) {
 
 // src/do_wear.c:963 Amulet_on() — setworn and on_msg are its own business.
 export async function Amulet_on(amul) {
+    const was_flying = Flying();
+    const was_strangled = !!game.u.uprops?.STRANGLED;
     setworn(amul, W_AMUL);
-    find_ac();  /* C: the AMULET_OF_GUARDING arm recomputes AC */
+    let on_msg_done = false;
     switch (amul.otyp) {
     case ONAMES.AMULET_OF_ESP:
     case ONAMES.AMULET_OF_LIFE_SAVING:
     case ONAMES.AMULET_VERSUS_POISON:
     case ONAMES.AMULET_OF_REFLECTION:
     case ONAMES.FAKE_AMULET_OF_YENDOR:
+        break;
+    case ONAMES.AMULET_OF_STRANGULATION:
+        if (!was_strangled) {
+            makeknown(amul.otyp);
+            (game.u.intrinsic ||= {}).HStrangled = 6;
+            (game.disp ||= {}).botl = true;
+            await on_msg(amul);
+            on_msg_done = true;
+            await pline('It constricts your throat!');
+        }
         break;
     case ONAMES.AMULET_OF_RESTFUL_SLEEP: {
         const intrinsic = (game.u.intrinsic ||= {});
@@ -487,30 +500,93 @@ export async function Amulet_on(amul) {
                                 | newnap;
         break;
     }
+    case ONAMES.AMULET_OF_FLYING:
+        if (Flying() && !was_flying) {
+            makeknown(amul.otyp);
+            await on_msg(amul);
+            on_msg_done = true;
+            (game.disp ||= {}).botl = true;
+            await You('are now in flight.');
+        }
+        break;
+    case ONAMES.AMULET_OF_GUARDING:
+        makeknown(amul.otyp);
+        find_ac();
+        break;
+    case ONAMES.AMULET_OF_CHANGE: {
+        const old_sex = poly_gender();
+        if (!(game.u.intrinsic?.HUnchanging || game.u.uprops?.UNCHANGING))
+            change_sex();
+        const new_sex = poly_gender();
+        if (new_sex !== old_sex)
+            makeknown(amul.otyp);
+        await on_msg(amul);
+        on_msg_done = true;
+        if (new_sex !== old_sex) {
+            newsym(game.u.ux, game.u.uy);
+            (game.disp ||= {}).botl = true;
+            await You(`are suddenly very ${
+                game.flags.female ? 'feminine' : 'masculine'}!`);
+        } else {
+            await You("don't feel like yourself.");
+        }
+        await pline('The amulet disintegrates!');
+        useup(amul);
+        break;
+    }
     default:
         note_unported_do_wear(`Amulet_on:otyp=${amul.otyp}`);
         break;
     }
-    await on_msg(amul);
+    if (!on_msg_done)
+        await on_msg(amul);
 }
 
 // src/do_wear.c:1030 Amulet_off() — does its own off_msg.
 export async function Amulet_off() {
     const uamul = worn(W_AMUL);
     if (!uamul) return;
+    const was_flying = Flying();
+    const was_strangled = !!game.u.uprops?.STRANGLED;
+    setworn(null, W_AMUL);   /* src/do_wear.c:1100 */
     await off_msg(uamul);
     switch (uamul.otyp) {
     case ONAMES.AMULET_OF_ESP:
+        see_monsters();
+        break;
     case ONAMES.AMULET_OF_LIFE_SAVING:
     case ONAMES.AMULET_VERSUS_POISON:
     case ONAMES.AMULET_OF_REFLECTION:
     case ONAMES.FAKE_AMULET_OF_YENDOR:
         break;
+    case ONAMES.AMULET_OF_STRANGULATION:
+        if (was_strangled) {
+            (game.u.intrinsic ||= {}).HStrangled = 0;
+            (game.disp ||= {}).botl = true;
+            await You('can breathe more easily!');
+            makeknown(uamul.otyp);
+        }
+        break;
+    case ONAMES.AMULET_OF_RESTFUL_SLEEP:
+        if (!game.u.uprops?.SLEEPY
+            && !((game.u.intrinsic?.HSleepy || 0) & ~TIMEOUT))
+            game.u.intrinsic.HSleepy &= ~TIMEOUT;
+        break;
+    case ONAMES.AMULET_OF_FLYING:
+        if (was_flying && !Flying()) {
+            (game.disp ||= {}).botl = true;
+            await You('land.');
+            makeknown(uamul.otyp);
+            await spoteffects(true);
+        }
+        break;
+    case ONAMES.AMULET_OF_GUARDING:
+        find_ac();
+        break;
     default:
         note_unported_do_wear(`Amulet_off:otyp=${uamul.otyp}`);
         break;
     }
-    setworn(null, W_AMUL);   /* src/do_wear.c:1100 */
     find_ac();
 }
 

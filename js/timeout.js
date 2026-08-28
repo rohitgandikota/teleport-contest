@@ -14,7 +14,8 @@ import { game } from './gstate.js';
 import { rn2, rnd, d } from './rng.js';
 import { stop_occupation } from './allmain.js';
 import { nomul } from './hack.js';
-import { TIMEOUT, FROMOUTSIDE, WT_NOISY_INV, FOOT, A_DEX, A_CON,
+import { TIMEOUT, FROMOUTSIDE, I_SPECIAL, WT_NOISY_INV, FOOT, NECK,
+         A_STR, A_DEX, A_CON, DIED, KILLED_BY,
          PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING, MV_KNOWS_EGG,
          NO_MINVENT, MM_NOMSG, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT }
     from './const.js';
@@ -343,6 +344,7 @@ async function slip_or_trip() {
 // src/timeout.c:588 nh_timeout() - per-turn luck and intrinsic timeouts.
 export async function nh_timeout() {
     const u = game.u;
+    const intr = (u.intrinsic ||= {});
     let baseluck = game.flags?.moonphase === FULL_MOON ? 1 : 0;
     if (game.flags?.friday13)
         baseluck--;
@@ -378,6 +380,44 @@ export async function nh_timeout() {
             (game.disp ||= {}).botl = true;
     }
 
+    const strangled = intr.HStrangled || 0;
+    if (strangled) {
+        const remaining = strangled & TIMEOUT;
+        if (remaining > 0 && remaining <= 5) {
+            const { breathless } = await import('./mondata.js');
+            const cannot_breathe = breathless(game.youmonst.data)
+                || !!(intr.HMagical_breathing
+                       || game.u.uprops?.MAGICAL_BREATHING);
+            const alternate = cannot_breathe || !rn2(50);
+            const neck = (await import('./polyself.js')).body_part(NECK);
+            const ordinary = [
+                'You find it hard to breathe.',
+                "You're gasping for air.",
+                'You can no longer breathe.',
+                null,
+                'You suffocate.',
+            ];
+            const special = [
+                `Your ${neck} is becoming constricted.`,
+                'Your blood is having trouble reaching your brain.',
+                `The pressure on your ${neck} increases.`,
+                'Your consciousness is fading.',
+                'You suffocate.',
+            ];
+            let message = (alternate ? special : ordinary)[5 - remaining];
+            if (!message) {
+                const { hcolor } = await import('./do_name.js');
+                const { NH_BLUE } = await import('./const.js');
+                message = `You're turning ${hcolor(NH_BLUE)}.`;
+            }
+            await pline(message);
+            if (!alternate)
+                await stop_occupation();
+        }
+        const { exercise } = await import('./attrib.js');
+        exercise(A_STR, false);
+    }
+
     /* src/timeout.c:631 sickness_dialogue(), followed later in nh_timeout by
        the property countdown. Fatal illness abuses constitution every turn,
        even when its low-time warning text is not yet due. */
@@ -395,8 +435,6 @@ export async function nh_timeout() {
         game.u.uprops.SICK = sick - 1;
     }
 
-    const intr = (game.u.intrinsic ||= {});
-
     for (const key of Object.keys(intr)) {
         const v = intr[key];
         if (typeof v !== 'number' || !(v & TIMEOUT))
@@ -406,6 +444,25 @@ export async function nh_timeout() {
             continue;
         /* the timeout just ran out */
         switch (key) {
+        case 'HStrangled': {
+            intr.HStrangled |= I_SPECIAL;
+            game.killer = {
+                format: KILLED_BY,
+                name: u.uburied ? 'suffocation' : 'strangulation',
+            };
+            const { done } = await import('./end.js');
+            await done(DIED);
+            intr.HStrangled &= ~I_SPECIAL;
+            (game.disp ||= {}).botl = true;
+            if (u.uamul?.otyp === ONAMES.AMULET_OF_STRANGULATION) {
+                const amulet = u.uamul;
+                const { Your } = await import('./pline.js');
+                await Your('amulet vanishes!');
+                const { useup } = await import('./invent.js');
+                useup(amulet);
+            }
+            break;
+        }
         case 'HWounded_legs': {
             /* src/timeout.c nh_timeout WOUNDED_LEGS arm: heal_legs(0) */
             const { heal_legs } = await import('./do.js');

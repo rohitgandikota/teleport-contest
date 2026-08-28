@@ -15,8 +15,11 @@ import { carnivorous, herbivorous, metallivorous, acidic, poisonous,
 import { can_reach_floor } from './pickup.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { tty_yn_function } from './tty/topl.js';
-import { Unaware, Hallucination, Poison_resistance } from './youprop.js';
-import { singular, xname, doname, yobjnam } from './objnam.js';
+import { Unaware, Hallucination, Poison_resistance, Stone_resistance }
+    from './youprop.js';
+import { singular, xname, doname, yobjnam, makeplural, the }
+    from './objnam.js';
+import { rndmonnam } from './do_name.js';
 import { more_experienced, newexplevel } from './exper.js';
 import { You, You_cant } from './pline.js';
 import { outrumor } from './rumors.js';
@@ -1036,6 +1039,7 @@ async function consume_tin(mesg) {
     const tc = (game.context ||= {}).tin ||= {};
     const tin = tc.tin;
     const r = tin_variety(tin);
+    const always_eat = metallivorous(game.youmonst.data);
 
     if (tin.otrapped || (tin.cursed && r !== HOMEMADE_TIN && !rn2(8))) {
         note_unported_eat('consume_tin:trapped');
@@ -1053,11 +1057,68 @@ async function consume_tin(mesg) {
         observe_object(tin);
         tin.known = 1;
         use_up_tin(tin);
+        if (always_eat)
+            await lesshungry(5);
         return;
     }
 
-    note_unported_eat(r === -1 ? 'consume_tin:spinach'
-                               : 'consume_tin:meat');
+    if (r !== -1) {
+        const mnum = tin.corpsenm;
+        const mdat = game.mons[mnum];
+        let what;
+        let which = 0;
+
+        if ((mnum === PMNAMES.PM_COCKATRICE
+             || mnum === PMNAMES.PM_CHICKATRICE)
+            && (Stone_resistance() || Hallucination())) {
+            what = 'chicken';
+            which = 1;
+        } else if (Hallucination()) {
+            what = rndmonnam();
+        } else {
+            what = mdat?.pmnames?.[2] ?? mdat?.pmnames?.[0] ?? 'monster';
+            if (!type_is_pname(mdat) && (mdat.geno & MFLAGS_EAT.G_UNIQ))
+                which = 2;
+            else if (type_is_pname(mdat))
+                which = 1;
+        }
+        if (which === 0)
+            what = makeplural(what);
+        else if (which === 2)
+            what = the(what);
+
+        if (!always_eat) {
+            await pline(`It smells like ${what}.`);
+            if ((await tty_yn_function('Eat it?', 'yn', 'n')) === 'n') {
+                if (game.flags?.verbose !== false)
+                    await You('discard the open tin.');
+                if (!Hallucination()) {
+                    observe_object(tin);
+                    tin.known = 1;
+                }
+                use_up_tin(tin);
+                return;
+            }
+        }
+        note_unported_eat('consume_tin:meat-eat');
+        return;
+    }
+
+    if (tin.cursed) {
+        note_unported_eat('consume_tin:cursed-spinach');
+        return;
+    }
+    await pline('It contains spinach.');
+    observe_object(tin);
+    tin.known = 1;
+    if (!always_eat
+        && (await tty_yn_function('Eat it?', 'yn', 'n')) === 'n') {
+        if (game.flags?.verbose !== false)
+            await You('discard the open tin.');
+        use_up_tin(tin);
+        return;
+    }
+    note_unported_eat('consume_tin:spinach-eat');
 }
 
 // src/eat.c:1703 opentin() and :1723 start_tin(). Applying a tin opener is

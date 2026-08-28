@@ -1,0 +1,51 @@
+{
+  "name": "tin-opening-branches",
+  "description": "Debug heroes exercise delayed and cursed tin openers, blessed tins, meat tins, and spinach tins.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "object.tools-containers",
+    "turn.occupation-interrupt",
+    "ui.cancel-invalid"
+  ],
+  "segments": [
+    {
+      "seed": 2232,
+      "datetime": "20000111122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017uncursed tin opener\raq p i\u001b"
+    },
+    {
+      "seed": 2233,
+      "datetime": "20000111122500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017cursed tin opener\rap o i\u001b"
+    },
+    {
+      "seed": 2234,
+      "datetime": "20000111123000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017cursed tin opener\raq p i\u001b"
+    },
+    {
+      "seed": 2235,
+      "datetime": "20000111123500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed empty tin\r\u0017uncursed tin opener\rao ni\u001b"
+    },
+    {
+      "seed": 2236,
+      "datetime": "20000111124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of newt meat\r\u0017blessed tin opener\raq p   i\u001b"
+    },
+    {
+      "seed": 2237,
+      "datetime": "20000111124500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of spinach\r\u0017blessed tin opener\raq p   i\u001b"
+    }
+  ]
+}

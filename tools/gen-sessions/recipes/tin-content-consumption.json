@@ -1,0 +1,26 @@
+{
+  "name": "tin-content-consumption",
+  "description": "Debug heroes accept and consume meat and spinach from tins opened with blessed tin openers.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "object.tools-containers",
+    "turn.speed-energy"
+  ],
+  "segments": [
+    {
+      "seed": 2238,
+      "datetime": "20000111125000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of newt meat\r\u0017blessed tin opener\rao n  yi\u001b"
+    },
+    {
+      "seed": 2239,
+      "datetime": "20000111125500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of spinach\r\u0017blessed tin opener\raq p  yi\u001b"
+    }
+  ]
+}

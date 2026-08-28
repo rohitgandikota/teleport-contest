@@ -1,4 +1,5 @@
-import { exercise, near_capacity, adjalign, poison_strdmg } from './attrib.js';
+import { exercise, near_capacity, adjalign, poison_strdmg, adjattrib }
+    from './attrib.js';
 import { A_CON, COST_BITE, SLT_ENCUMBER, W_RINGL, W_RINGR } from './const.js';
 // eat.js — nutrition.
 // C ref: src/eat.c
@@ -38,7 +39,7 @@ import { rn2, rnd, rn1, d } from './rng.js';
 import { You_feel, Your } from './pline.js';
 import { losehp } from './hack.js';
 import { SICK_RES, SICK_VOMITABLE, KILLED_BY_AN } from './const.js';
-import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE, HOMEMADE_TIN, NON_PM } from './const.js';
+import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE, HOMEMADE_TIN, NON_PM, STR18 } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_DOWNPLAY, freeinv, update_inventory, reorder_invent, addinv_nomerge } from './invent.js';
 import { pline } from './display.js';
@@ -1033,6 +1034,19 @@ function use_up_tin(tin) {
     tc.o_id = 0;
 }
 
+// src/attrib.c:203 gainstr(), with the tin as the BUC source and no message.
+async function gainstr_from_tin(tin) {
+    const base = game.u.acurr?.a?.[A_STR] ?? 0;
+    let amount;
+    if (base < 18)
+        amount = rn2(4) ? 1 : rnd(6);
+    else if (base < STR18(85))
+        amount = rnd(10);
+    else
+        amount = 1;
+    await adjattrib(A_STR, tin.cursed ? -amount : amount, 1);
+}
+
 // src/eat.c:1528 consume_tin(). Empty tins are complete here. Meat, spinach,
 // traps, shop billing, and their nutrition effects remain explicit gaps.
 async function consume_tin(mesg) {
@@ -1100,7 +1114,38 @@ async function consume_tin(mesg) {
                 return;
             }
         }
-        note_unported_eat('consume_tin:meat-eat');
+
+        game.context.victual = {};
+        const meat = mdat?.pmnames?.[2] ?? mdat?.pmnames?.[0] ?? 'monster';
+        await You(`consume ${tintxts[r].txt} ${meat}.`);
+        const conduct = game.u.uconduct ||= {};
+        conduct.food = (conduct.food | 0) + 1;
+        if (!vegan(mdat))
+            conduct.unvegan = (conduct.unvegan | 0) + 1;
+        if (!vegetarian(mdat))
+            await violated_vegetarian();
+        observe_object(tin);
+        tin.known = 1;
+
+        /* Newt and ordinary corpse effects already live in cpostfx(). The
+           pre-consumption special species remain explicit there or below. */
+        await cpostfx(mnum);
+        if (!game.context.tin.tin)
+            return;
+
+        if (tintxts[r].nut < 0) {
+            note_unported_eat('consume_tin:rotten-meat');
+            return;
+        }
+        let nutrition = tintxts[r].nut;
+        if (r === HOMEMADE_TIN && nutrition > mdat.cnutrit)
+            nutrition = mdat.cnutrit;
+        if (always_eat)
+            nutrition += 5;
+        use_up_tin(tin);
+        await lesshungry(nutrition);
+        if (tintxts[r].greasy)
+            note_unported_eat('consume_tin:greasy-meat');
         return;
     }
 
@@ -1118,7 +1163,19 @@ async function consume_tin(mesg) {
         use_up_tin(tin);
         return;
     }
-    note_unported_eat('consume_tin:spinach-eat');
+    const conduct = game.u.uconduct ||= {};
+    conduct.food = (conduct.food | 0) + 1;
+    await pline(`This makes you feel like ${Hallucination()
+                 ? "Swee'pea" : 'Popeye'}!`);
+    await gainstr_from_tin(tin);
+
+    let nutrition = tin.blessed ? 600
+                    : !tin.cursed ? 400 + rnd(200)
+                      : 200 + rnd(400);
+    if (always_eat)
+        nutrition += 5;
+    use_up_tin(tin);
+    await lesshungry(nutrition);
 }
 
 // src/eat.c:1703 opentin() and :1723 start_tin(). Applying a tin opener is

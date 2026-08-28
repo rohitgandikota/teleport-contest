@@ -202,19 +202,13 @@ async function light_cocktail(obj) {
     return obj;
 }
 
-// src/apply.c:1319 use_candelabrum(). Burn timers are not represented yet,
-// but the object's fuel checkpoint, light source, messages, and state are.
+// src/apply.c:1319 use_candelabrum().
 async function use_candelabrum(obj) {
     const s = obj.spe !== 1 ? 'candles' : 'candle';
-    const { new_light_source, del_light_source, LS_OBJECT } =
-        await import('./light.js');
 
     if (obj.lamplit) {
         await You(`snuff the ${s}.`);
-        del_light_source(LS_OBJECT, obj.o_id);
-        obj.lamplit = 0;
-        game.vision_full_recalc = 1;
-        update_inventory();
+        await end_burn(obj, true);
         return;
     }
     if (obj.spe <= 0) {
@@ -239,7 +233,7 @@ async function use_candelabrum(obj) {
         await There(`${vtense(s, 'are')} only ${obj.spe} ${s} in ${the(xname(obj))}.`);
         if (!Blind()) {
             await pline(`${obj.spe === 1 ? 'It is' : 'They are'} lit.  ${
-                obj.spe === 1 ? 'It shines' : 'They shine'} dimly.`);
+                Tobjnam(obj, 'shine')} dimly.`);
         }
     } else {
         await pline(`${The(xname(obj))}'s ${s} burn${Blind() ? '.' : ' brightly!'}`);
@@ -256,13 +250,7 @@ async function use_candelabrum(obj) {
         obj.known = 1;
     }
 
-    obj.lamplit = 1;
-    if ((obj.age || 0) > 75)
-        obj.age = 75;
-    const radius = obj.spe < 4 ? 2 : obj.spe < 7 ? 3 : 4;
-    new_light_source(game.u.ux, game.u.uy, radius, LS_OBJECT, obj.o_id);
-    game.vision_full_recalc = 1;
-    update_inventory();
+    await begin_burn(obj, false);
 }
 
 // src/apply.c:1200 use_bell(). The charged invocation path is complete;
@@ -339,11 +327,35 @@ async function use_candle(obj) {
 
     const count = obj.quan;
     const s = count !== 1 ? 'candles' : 'candle';
+    const was_lamplit = !!obj.lamplit;
+    if (was_lamplit)
+        await end_burn(obj, true);
+
     await You(`attach ${count}${candelabrum.spe ? ' more' : ''} ${s} to ${
         the(xname(candelabrum))}.`);
     if (!candelabrum.spe || candelabrum.age > obj.age)
         candelabrum.age = obj.age;
     candelabrum.spe += count;
+    if (candelabrum.lamplit && !was_lamplit) {
+        await pline(`The new ${s} magically ${vtense(s, 'ignite')}!`);
+    } else if (!candelabrum.lamplit && was_lamplit) {
+        await pline(`${count > 1 ? 'They go' : 'It goes'} out.`);
+    }
+    if (obj.unpaid)
+        note_unported_apply('use_candle:shop_billing');
+    if (count < 7 && candelabrum.spe === 7) {
+        await pline(`${The(xname(candelabrum))} now has seven${
+            candelabrum.lamplit ? ' lit' : ''} candles attached.`);
+    }
+    if (candelabrum.lamplit) {
+        const { del_light_source, new_light_source, LS_OBJECT } =
+            await import('./light.js');
+        const radius = candelabrum.spe < 4 ? 2 : candelabrum.spe < 7 ? 3 : 4;
+        del_light_source(LS_OBJECT, candelabrum.o_id);
+        new_light_source(game.u.ux, game.u.uy, radius, LS_OBJECT,
+                         candelabrum.o_id);
+        game.vision_full_recalc = 1;
+    }
     useupall(obj);
     candelabrum.owt = weight(candelabrum);
     update_inventory();

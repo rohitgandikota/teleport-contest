@@ -1,5 +1,30 @@
 # STATUS — live handoff board
 
+## 2026-08-28: Candelabrum fuel and active candle attachment
+
+The `candelabrum-burnout` C oracle uses fresh debug seed 2211. It lights a
+pair of loose wax candles, attaches them to an unlit Candelabrum and records
+them going out, then lights the Candelabrum and attaches another unlit candle
+to record its magical ignition. The trace continues through the 75-turn and
+15-turn warnings and the final loss of all three candles. Two fresh recordings
+were byte-identical, with SHA-256
+`e4ff1041cbc0f61c39ec158b72be1108fdaded900d9c24f6ba22990044908039`.
+
+The port matches all 175/175 screens, 175/175 cells, 175/175 cursors, and
+3,514/3,514 RNG calls. The implementation transfers remaining fuel when lit
+candles are attached, preserves the shortest attached-candle lifetime,
+updates the active light radius, routes Candelabrum lighting through the burn
+timer, consumes the attached candles at zero fuel, and fixes the dim-light
+message to name the Candelabrum.
+
+Public local remains exact at 44/44 sessions, 11,405/11,405 screens, and
+792,838/792,838 RNG calls. The expanded supplemental corpus is 147/149 exact,
+with 25,308/25,693 screens, 25,686/25,693 cells, 25,308/25,693 cursors, and
+1,859,558/1,859,558 RNG calls. The only failures remain the documented C
+recorder artifacts in `bones-persistence` and `gehennom-tour`. Coverage is
+105 covered, 0 partial, and 0 gaps. Eighty fresh generalization games reached
+no unported path, and all 44 public hang checks pass.
+
 ## 2026-08-28: ordinary candle and lamp fuel timers
 
 The `lamp-candle-burnout` C oracle uses fresh debug seed 2210. It disables

@@ -1076,6 +1076,10 @@ export function doname(obj) {
         if (ocl.oc_charged && known)
             bp += ` (${obj.recharged || 0}:${obj.spe})`;
         break;
+    case POTION_CLASS:
+        if (obj.otyp === ONAMES.POT_OIL && obj.lamplit)
+            bp += ' (lit)';
+        break;
     case RING_CLASS:
         /* src/objnam.c:1494 — "(on right hand)" / "(on left hand)" */
         if (obj.owornmask & W_RINGR)

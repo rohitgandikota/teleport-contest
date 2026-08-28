@@ -195,6 +195,147 @@ export function obj_stop_timers(obj) {
     obj.timed = Math.max(0, (obj.timed || 0) - removed);
 }
 
+// src/timeout.c:1712 begin_burn(), limited to the oil-potion path currently
+// reached by apply.js. The timer stores the next fuel checkpoint while age
+// holds any fuel beyond that checkpoint, exactly as the C object does.
+export async function begin_burn(obj, already_lit) {
+    if (!obj?.age)
+        return;
+    if (obj.otyp !== ONAMES.POT_OIL) {
+        note_unported_timeout('begin_burn:otyp=' + obj.otyp);
+        return;
+    }
+
+    let turns = obj.age;
+    if (obj.odiluted)
+        turns = Math.trunc((3 * turns + 2) / 4);
+
+    if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, obj)) {
+        obj.lamplit = 1;
+        obj.age -= turns;
+        if (obj.where === OBJ_INVENT && !already_lit) {
+            const { update_inventory } = await import('./invent.js');
+            update_inventory();
+        }
+    } else {
+        obj.lamplit = 0;
+    }
+
+    if (obj.lamplit && !already_lit) {
+        let x, y;
+        if (obj.where === OBJ_INVENT) {
+            x = game.u.ux;
+            y = game.u.uy;
+        } else if (obj.where === OBJ_FLOOR) {
+            x = obj.ox;
+            y = obj.oy;
+        } else if (obj.where === OBJ_MINVENT && obj.ocarry) {
+            x = obj.ocarry.mx;
+            y = obj.ocarry.my;
+        }
+        if (x === undefined) {
+            note_unported_timeout('begin_burn:object_location');
+        } else {
+            const { new_light_source, LS_OBJECT } = await import('./light.js');
+            new_light_source(x, y, 1, LS_OBJECT, obj.o_id);
+            game.vision_full_recalc = 1;
+        }
+    }
+}
+
+// src/timeout.c:1804 end_burn() plus cleanup_burn(). stop_timer() returns the
+// remaining delay, which is the unused fuel cleanup_burn restores to age.
+export async function end_burn(obj, timer_attached) {
+    if (!obj?.lamplit)
+        return;
+
+    if (timer_attached) {
+        const remaining = stop_timer(BURN_OBJECT, obj);
+        if (!remaining)
+            note_unported_timeout('end_burn:missing_timer');
+        obj.age = (obj.age || 0) + remaining;
+    }
+
+    const { del_light_source, LS_OBJECT } = await import('./light.js');
+    del_light_source(LS_OBJECT, obj.o_id);
+    obj.lamplit = 0;
+    game.vision_full_recalc = 1;
+    if (obj.where === OBJ_INVENT) {
+        const { update_inventory } = await import('./invent.js');
+        update_inventory();
+    }
+}
+
+async function burn_object(obj, timeout) {
+    if (obj?.otyp !== ONAMES.POT_OIL) {
+        note_unported_timeout('burn_object:otyp=' + obj?.otyp);
+        return;
+    }
+
+    if (timeout !== (game.moves ?? 0)) {
+        const how_long = (game.moves ?? 0) - timeout;
+        if (how_long < (obj.age || 0)) {
+            obj.age -= how_long;
+            await begin_burn(obj, true);
+            return;
+        }
+        obj.age = 0;
+        await end_burn(obj, false);
+        if (obj.where === OBJ_FLOOR || obj.where === OBJ_MINVENT) {
+            const was_floor = obj.where === OBJ_FLOOR;
+            const ox = obj.ox, oy = obj.oy;
+            const { obj_extract_self } = await import('./invent.js');
+            obj_extract_self(obj);
+            if (was_floor) {
+                const { newsym } = await import('./display.js');
+                newsym(ox, oy);
+            }
+        }
+        return;
+    }
+
+    let x, y;
+    if (obj.where === OBJ_INVENT) {
+        x = game.u.ux;
+        y = game.u.uy;
+    } else if (obj.where === OBJ_FLOOR) {
+        x = obj.ox;
+        y = obj.oy;
+    } else if (obj.where === OBJ_MINVENT && obj.ocarry) {
+        x = obj.ocarry.mx;
+        y = obj.ocarry.my;
+    }
+    if (x !== undefined) {
+        const [{ Blind }, { cansee }] = await Promise.all([
+            import('./youprop.js'), import('./vision.js'),
+        ]);
+        if (!Blind() && cansee(x, y)) {
+            if (obj.where === OBJ_INVENT)
+                await pline('Your potion of oil has burnt away.');
+            else if (obj.where === OBJ_FLOOR) {
+                const { You_see } = await import('./pline.js');
+                await You_see('a burning potion of oil go out.');
+            } else {
+                note_unported_timeout('burn_object:minvent_message');
+            }
+        }
+    }
+    await end_burn(obj, false);
+
+    const { obj_extract_self, useupall } = await import('./invent.js');
+    if (obj.where === OBJ_INVENT) {
+        useupall(obj);
+    } else {
+        const was_floor = obj.where === OBJ_FLOOR;
+        const ox = obj.ox, oy = obj.oy;
+        obj_extract_self(obj);
+        if (was_floor) {
+            const { newsym } = await import('./display.js');
+            newsym(ox, oy);
+        }
+    }
+}
+
 // src/timeout.c:2222 run_timers() — fire every timer whose time has come.
 // The list is ordered; we are done when the first element is in the future.
 // Runs from nh_timeout()'s tail (timeout.c:947) and from goto_level.
@@ -225,12 +366,15 @@ export async function run_timers() {
             await zombify_mon(curr.arg, curr.timeout);
             break;
         }
+        case BURN_OBJECT:
+            await burn_object(curr.arg, curr.timeout);
+            break;
         case HATCH_EGG:
             await hatch_egg(curr.arg, curr.timeout);
             break;
         default:
-            /* burn_object and the remaining callbacks each need their own
-               subsystem; record which one fired unported. */
+            /* The remaining callbacks each need their own subsystem; record
+               which one fired unported. */
             (game.unported ||= new Set())
                 .add('timeout:run_timers:' + curr.func_index);
             break;

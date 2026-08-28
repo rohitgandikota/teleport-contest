@@ -7,7 +7,7 @@ import { fruitname, xname } from './objnam.js';
 import { trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
-import { pline } from './display.js';
+import { pline, see_monsters } from './display.js';
 import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
@@ -18,7 +18,8 @@ import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
-         Deaf, Poison_resistance, Sleep_resistance } from './youprop.js';
+         Deaf, Poison_resistance, Sleep_resistance,
+         Underwater } from './youprop.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
@@ -685,6 +686,40 @@ async function peffect_extra_healing(otmp) {
     exercise(A_STR, true);
 }
 
+// src/potion.c:912 peffect_monster_detection(). Blessed monster detection
+// persists long enough to reveal every live monster for the debug selector;
+// ordinary and cursed doses use detect.c's one-shot map browser.
+async function peffect_monster_detection(otmp) {
+    if (otmp.blessed) {
+        const props = (game.u.uprops ||= {});
+        if (props.DETECT_MONSTERS)
+            game.potion_nothing++;
+        game.potion_unkn++;
+
+        const current = Number(props.DETECT_MONSTERS) || 0;
+        const duration = current >= 300 ? 1 : rn2(100) + 100;
+        props.DETECT_MONSTERS = itimeout_incr(current, duration);
+
+        const monsters = (game.level?.monsters || [])
+            .filter(mon => mon.mhp > 0 && !(mon.isgd && !mon.mx));
+        if (monsters.length)
+            game.potion_unkn = 0;
+
+        if (!game.u.uswallow && !Underwater()) {
+            see_monsters();
+            if (game.potion_unkn)
+                await You_feel('lonely.');
+            return 0;
+        }
+    }
+
+    const { monster_detect } = await import('./detect.js');
+    if (await monster_detect(otmp, 0))
+        return 1;
+    exercise(A_WIS, true);
+    return 0;
+}
+
 // src/potion.c:1333 peffects() — dispatch one quaffed potion.
 // Returns -1 to let dopotion() finish (identify + useup), matching C.
 async function peffects(otmp) {
@@ -709,6 +744,10 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_PARALYSIS:
         await peffect_paralysis(otmp);
+        break;
+    case ONAMES.POT_MONSTER_DETECTION:
+        if (await peffect_monster_detection(otmp))
+            return 1;
         break;
     case ONAMES.POT_FRUIT_JUICE:
     case ONAMES.POT_SEE_INVISIBLE:

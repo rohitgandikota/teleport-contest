@@ -31,8 +31,8 @@ import { start_timer, TIMER_OBJECT,
          REVIVE_MON as TIMEOUT_REVIVE_MON,
          obj_stop_timers } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
-import { Is_rogue_level, NODIR, OBJ_FLOOR, OBJ_INVENT, In_quest,
-         MON_DETACH } from './const.js';
+import { Is_rogue_level, MAX_OIL_IN_FLASK, NODIR, OBJ_FLOOR, OBJ_INVENT,
+         In_quest, MON_DETACH } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -794,6 +794,10 @@ export function mksobj(otyp, init, artif) {
         break;
     case ONAMES.BOULDER:
         otmp.next_boulder = 0;
+        break;
+    case ONAMES.POT_OIL:
+        otmp.age = MAX_OIL_IN_FLASK;
+        otmp.fromsink = 0;
         break;
     case ONAMES.SPE_NOVEL: {
         /* src/mkobj.c:1246 — every novel gets a Discworld title at

@@ -1201,6 +1201,9 @@ export function newsym(x, y) {
                             && (mon.mx !== x || mon.my !== y));
         const spotMon = !!(mon && (mon_visible(mon)
                                    || (!wormTail && sensemon(mon))));
+        const detectedOnly = !!(spotMon && !wormTail
+            && game.u.uprops?.DETECT_MONSTERS && !mon_visible(mon)
+            && !tp_sensemon(mon) && !match_warn_of_mon(mon));
         /* src/display.c:1029, a warning glyph takes precedence over a
            remembered invisible-monster marker. */
         if (!spotMon && mon && mon_warning(mon) && !wormTail) {
@@ -1266,8 +1269,11 @@ export function newsym(x, y) {
                 : (wormTail ? PMNAMES.PM_LONG_WORM_TAIL
                     : (mon.m_ap_type === M_AP_MONSTER
                         ? mon.mappearance : mon.mnum))];
+            const attr = detectedOnly && !(mon.mtame && !Hallucination())
+                         && game.flags?.use_inverse !== false
+                ? TERM_INVERSE : 0;
             show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
-                            shown.mcolor ?? NO_COLOR, false, 0,
+                            shown.mcolor ?? NO_COLOR, false, attr,
                             { kind: 'mon', mon });
             return;
         }
@@ -1283,13 +1289,20 @@ export function newsym(x, y) {
         const mon = (game.level?.monsters || [])
                         .find(m => m.mx === x && m.my === y && m.mhp > 0
                                    && !m.msleeping_hidden);
-        if (mon && (sensemon(mon)
-                    || (see_with_infrared(mon) && mon_visible(mon)))) {
+        const spotMon = !!(mon && (sensemon(mon)
+                    || (see_with_infrared(mon) && mon_visible(mon))));
+        const detectedOnly = !!(spotMon && game.u.uprops?.DETECT_MONSTERS
+            && !tp_sensemon(mon) && !match_warn_of_mon(mon)
+            && !(see_with_infrared(mon) && mon_visible(mon)));
+        if (spotMon) {
             const shown = game.mons[Hallucination()
                 ? rn2_on_display_rng(NUMMONS) : mon.mnum];
+            const attr = detectedOnly && !(mon.mtame && !Hallucination())
+                         && game.flags?.use_inverse !== false
+                ? TERM_INVERSE : 0;
             clear_invisible_memory(x, y);
             show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
-                            shown.mcolor ?? NO_COLOR, false, 0,
+                            shown.mcolor ?? NO_COLOR, false, attr,
                             { kind: 'mon', mon });
             return;
         }

@@ -1,0 +1,20 @@
+{
+  "name": "potion-oil-lighting",
+  "description": "A debug Wizard lights one potion from an oil stack, checks the separate lit inventory stack, snuffs it to remerge, and repeats while blind.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.identification",
+    "object.potions",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2206,
+      "datetime": "20000110115000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 uncursed potions of oil\ri\u001bao i\u001bapi\u001b\u0017uncursed blindfold\ri\u001bPqaoi\u001bari\u001bRi\u001b"
+    }
+  ]
+}

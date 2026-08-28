@@ -9,9 +9,9 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE, TIMEOUT, Upolyd, A_DEX, MAX_SPELL_STUDY,
          NH_RED } from './const.js';
-import { addinv_nomerge, carrying, freeinv, getobj, hands_obj,
-         hold_another_object, update_inventory, useup, useupall,
-         weight } from './invent.js';
+import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
+         hold_another_object, obj_extract_self, update_inventory, useup,
+         useupall, weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
@@ -41,9 +41,9 @@ import { cansee } from './vision.js';
 import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE, FINGER, HAND } from './const.js';
-import { OBJ_NAME, The, Tobjnam, Yobjnam2, an, aobjnam, singular, xname,
-         yname, the, thesimpleoname, gloves_simple_name, makeplural, otense,
-         vtense } from './objnam.js';
+import { OBJ_NAME, The, Tobjnam, Yobjnam2, an, aobjnam, doname, singular,
+         xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
+         otense, vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
@@ -60,7 +60,8 @@ import { DEADMONSTER } from './monst.js';
 import { ACURR, change_luck } from './attrib.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { PMNAMES } from './monst_data.js';
-import { attach_egg_hatch_timeout, HATCH_EGG, stop_timer } from './timeout.js';
+import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
+         stop_timer } from './timeout.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -150,6 +151,50 @@ async function use_lamp(obj) {
     new_light_source(game.u.ux, game.u.uy, 3, LS_OBJECT, obj.o_id);
     game.vision_full_recalc = 1;
     update_inventory();
+}
+
+// src/apply.c:1703 light_cocktail(). A lit oil potion is a one-item stack
+// with a burn timer and radius-one light source. Snuffing restores its unused
+// fuel, then removes and re-adds it so that it can merge with matching oil.
+async function light_cocktail(obj) {
+    if (game.u.uswallow) {
+        await You("don't have enough elbow-room to maneuver.");
+        return obj;
+    }
+
+    if (obj.lamplit) {
+        await You('snuff the lit potion.');
+        await end_burn(obj, true);
+        if (!obj.owornmask) {
+            freeinv(obj);
+            obj = await addinv(obj);
+        }
+        return obj;
+    }
+    if (Underwater()) {
+        await There('is not enough oxygen to sustain a fire.');
+        return obj;
+    }
+
+    const split1off = obj.quan > 1;
+    if (split1off)
+        obj = splitobj(obj, 1);
+
+    if (obj.unpaid)
+        note_unported_apply('light_cocktail:shop_billing');
+    await You(`light your potion.${Blind()
+        ? '' : '  It gives off a dim light.'}`);
+    makeknown(obj.otyp);
+    await begin_burn(obj, false);
+
+    if (split1off) {
+        obj_extract_self(obj);
+        obj.nomerge = 1;
+        obj = await hold_another_object(obj, 'You drop %s!', doname(obj), null);
+        if (obj)
+            obj.nomerge = 0;
+    }
+    return obj;
 }
 
 // src/apply.c:1319 use_candelabrum(). Burn timers are not represented yet,
@@ -1333,6 +1378,11 @@ export async function doapply() {
 
     if (LAMPS.includes(obj.otyp)) {
         await use_lamp(obj);
+        return ECMD_TIME;
+    }
+
+    if (obj.otyp === ONAMES.POT_OIL) {
+        await light_cocktail(obj);
         return ECMD_TIME;
     }
 

@@ -15,8 +15,8 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
          LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_INT, A_WIS, A_DEX, A_CON,
-         A_CHA, NH_BLACK,
-         INTRINSIC, Is_airlevel } from './const.js';
+         A_CHA, A_CURRENT, A_CHAOTIC, A_LAWFUL, A_NEUTRAL, NH_BLACK,
+         INTRINSIC, Is_airlevel, Is_astralevel } from './const.js';
 import { setworn } from './worn.js';
 import { welded, is_sword } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
@@ -25,7 +25,7 @@ import { sgn } from './hacklib.js';
 import { erode_obj, float_down, is_flammable, is_rustprone, is_crackable, is_rottable,
          is_corrodeable, is_damageable } from './trap.js';
 import { curse, erosion_matters, set_bknown } from './mkobj.js';
-import { rn2, rnd } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
          ERODE_NONE, EF_PAY, EF_DESTROY, ER_NOTHING,
          ER_DESTROYED } from './const.js';
@@ -40,7 +40,8 @@ import { ART_OGRESMASHER } from './artilist_data.js';
 import { prinv, update_inventory, useup, ECMD_OK } from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
-import { ACURR, change_luck, encumber_msg, Fast, Very_fast } from './attrib.js';
+import { ACURR, adjalign, change_luck, encumber_msg, Fast,
+         Very_fast } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Hallucination, Invis, Levitation,
          See_invisible } from './youprop.js';
@@ -250,8 +251,13 @@ async function Helmet_on() {
         makeknown(uarmh.otyp);
         break;
     case ONAMES.HELM_OF_OPPOSITE_ALIGNMENT:
-        note_unported_do_wear('Helmet_on:opposite_alignment');
-        break;
+        uarmh.known = 1;
+        await change_helm_alignment(
+            game.u.ualign.type !== A_NEUTRAL
+                ? -game.u.ualign.type
+                : ((uarmh.o_id || 0) % 2 ? A_CHAOTIC : A_LAWFUL),
+            true);
+        /* fall through: opposite-alignment helms and dunce caps autocurse */
     case ONAMES.DUNCE_CAP:
         if (!uarmh.cursed) {
             if (Blind())
@@ -270,12 +276,14 @@ async function Helmet_on() {
         (game.disp ||= {}).botl = true;
         if (Hallucination()) {
             await pline('My brain hurts!');
-        } else {
+        } else if (uarmh.otyp === ONAMES.DUNCE_CAP) {
             const score = (game.u.acurr?.a?.[A_INT] || 0)
                 + (game.u.abon?.a?.[A_INT] || 0)
                 + (game.u.atemp?.a?.[A_INT] || 0);
             await You_feel(ACURR(A_INT) <= score
                 ? 'like sitting in a corner.' : 'giddy.');
+        } else {
+            makeknown(ONAMES.HELM_OF_OPPOSITE_ALIGNMENT);
         }
         break;
     }
@@ -319,11 +327,42 @@ async function Helmet_off(otmp) {
             adjust_helmet_brilliance(otmp, -(otmp.spe || 0));
         break;
     case ONAMES.HELM_OF_OPPOSITE_ALIGNMENT:
-        note_unported_do_wear('Helmet_off:opposite_alignment');
+        await change_helm_alignment(
+            game.u.ualignbase?.[A_CURRENT] ?? game.u.ualign.type,
+            false);
         break;
     }
     setworn(null, W_ARMH);
     game.context_takeoff.cancelled_don = false;
+}
+
+// src/attrib.c:1320 uchangealign(), helm-on and helm-off arms.
+async function change_helm_alignment(newalign, puttingOn) {
+    const oldalign = game.u.ualign.type;
+
+    game.u.ublessed = 0;
+    (game.disp ||= {}).botl = true;
+    game.u.ualign.type = newalign;
+
+    if (puttingOn) {
+        adjalign(-7);
+        await Your(`mind oscillates ${Hallucination() ? 'wildly'
+                                                       : 'briefly'}.`);
+        const { make_confused } = await import('./potion.js');
+        await make_confused(rn1(2, 3), false);
+        if (Is_astralevel(game.u.uz)
+            || rn2(50) < (game.u.ualign.abuse || 0))
+            note_unported_do_wear('change_helm_alignment:summon_furies');
+    } else {
+        await Your(`mind is ${Hallucination()
+            ? 'much of a muchness' : 'back in sync with your body'}.`);
+    }
+
+    if (game.u.ualign.type !== oldalign) {
+        game.u.ualign.record = 0;
+        if ((game.invent || []).some(obj => obj.oartifact))
+            note_unported_do_wear('change_helm_alignment:retouch_equipment');
+    }
 }
 
 function attribute_bonus_array() {

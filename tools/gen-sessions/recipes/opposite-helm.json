@@ -1,0 +1,23 @@
+{
+  "name": "opposite-helm",
+  "description": "A lawful debug Valkyrie wears a helm of opposite alignment, removes its curse, and takes it off to pin alignment, confusion, curse, and restoration effects.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.scrolls",
+    "object.identification",
+    "turn.occupation-interrupt",
+    "turn.timers",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 2178,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender=female,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of remove curse\r\u0017blessed helm of opposite alignment\rWg ....rf  \u001bTg \u0006"
+    }
+  ]
+}

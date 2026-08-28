@@ -1,0 +1,24 @@
+{
+  "name": "bag-of-tricks",
+  "description": "An invisible debug Wizard empties a five-charge bag of tricks, then applies the empty bag to cover ordinary creation, a jackal birth group, an eight-attempt burst, paged arrival messages, visible identification, charge decrement, and empty feedback with same-turn monster attacks.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.movement",
+    "object.buc-enchant-erosion",
+    "object.identification",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 2198,
+      "datetime": "20000110103500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of invisibility\rWo\u0017blessed +5 bag of tricks\ri\u001bap\u001bap\u001bap\u001bap\u001bap\u001bap"
+    }
+  ]
+}

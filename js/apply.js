@@ -3,7 +3,7 @@
 
 import { game } from './gstate.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
-         nothing_happens, M_AP_TYPE, M_AP_FURNITURE, M_AP_OBJECT,
+         nothing_happens, M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
@@ -20,24 +20,25 @@ import { Blind, Hallucination, Deaf, Underwater } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_SELECTABLE } from './invent.js';
 import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
-import { You_cant, You_hear } from './pline.js';
+import { Norep, You_cant, You_hear } from './pline.js';
 import { rn2, rnd } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
-         MAX_OIL_IN_FLASK } from './const.js';
+         MAX_OIL_IN_FLASK, BOLT_LIM } from './const.js';
 import { walk_path } from './dothrow.js';
 import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
 import { ONAMES } from './objects_data.js';
-import { canspotmon, map_invisible, newsym, pline } from './display.js';
+import { canseemon, canspotmon, map_invisible, newsym, pline,
+         sensemon } from './display.js';
 import { You, There, You_feel } from './pline.js';
-import { dist2 } from './hacklib.js';
+import { dist2, distu } from './hacklib.js';
 import { cansee } from './vision.js';
 import { wield_tool } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE } from './const.js';
 import { OBJ_NAME, The, Tobjnam, aobjnam, xname, yname, the, makeplural,
          vtense } from './objnam.js';
-import { pmname, upstart, x_monnam, y_monnam } from './do_name.js';
+import { Amonnam, pmname, upstart, x_monnam, y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { is_boots, is_gloves } from './obj.js';
 import { mkobj, rnd_class, splitobj } from './mkobj.js';
@@ -48,6 +49,7 @@ import { makeknown } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
 import { change_luck } from './attrib.js';
+import { makemon, NO_MM_FLAGS } from './makemon.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -736,6 +738,80 @@ async function use_magic_whistle(obj) {
     }
 }
 
+// src/makemon.c:1471, the arrival message from synchronous makemon().
+async function bagotricks_arrival(mtmp) {
+    const appearance = M_AP_TYPE(mtmp);
+    const visible = canseemon(mtmp);
+    const discerned = (visible
+                       && (appearance === M_AP_NOTHING
+                           || appearance === M_AP_MONSTER))
+                      || sensemon(mtmp);
+
+    if (discerned) {
+        const what = Amonnam(mtmp);
+        const du = distu(mtmp.mx, mtmp.my, game.u.ux, game.u.uy);
+        await Norep(`${what} suddenly ${vtense(what, 'appear')}${
+            du <= 2 ? ' next to you'
+                : du <= BOLT_LIM * BOLT_LIM ? ' close by' : ''}!`);
+    } else if (visible) {
+        note_unported_apply('bagotricks:mimic_arrival_description');
+    }
+    return discerned;
+}
+
+// src/makemon.c:2554 bagotricks(), for applying one charge.
+async function bagotricks(bag) {
+    let moncount = 0;
+
+    if (bag.spe < 1) {
+        await pline(nothing_happens);
+        if (bag.dknown && game.objects[bag.otyp].oc_name_known) {
+            bag.cknown = 1;
+            update_inventory();
+        }
+        return moncount;
+    }
+
+    if (bag.unpaid)
+        note_unported_apply('bagotricks:shop_billing');
+    bag.spe--;
+    if (bag.known)
+        update_inventory();
+
+    let creatcnt = 1, seecount = 0;
+    if (!rn2(23))
+        creatcnt += rnd(7);
+    do {
+        const oldIds = new Set((game.level?.monsters || []).map((m) => m.m_id));
+        const mtmp = makemon(null, game.u.ux, game.u.uy, NO_MM_FLAGS);
+        if (mtmp) {
+            moncount++;
+            const made = (game.level?.monsters || [])
+                .filter((m) => !oldIds.has(m.m_id) && m !== mtmp)
+                .reverse();
+            made.push(mtmp);
+            let primaryDiscerned = false;
+            for (const arrival of made) {
+                const discerned = await bagotricks_arrival(arrival);
+                if (arrival === mtmp)
+                    primaryDiscerned = discerned;
+            }
+            if (primaryDiscerned)
+                seecount++;
+        }
+    } while (--creatcnt > 0);
+
+    if (seecount) {
+        if (bag.dknown) {
+            makeknown(ONAMES.BAG_OF_TRICKS);
+            update_inventory();
+        }
+    } else {
+        await pline(moncount ? nothing_seems_to_happen : nothing_happens);
+    }
+    return moncount;
+}
+
 // src/mkobj.c:2847 hornoplenty(), for applying one charge into inventory.
 async function hornoplenty(horn) {
     if (horn.spe < 1) {
@@ -870,6 +946,11 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.HORN_OF_PLENTY) {
         await hornoplenty(obj);
+        return ECMD_TIME;
+    }
+
+    if (obj.otyp === ONAMES.BAG_OF_TRICKS) {
+        await bagotricks(obj);
         return ECMD_TIME;
     }
 

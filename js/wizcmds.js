@@ -30,6 +30,7 @@ import { boolean_option } from './options.js';
 import { getpos } from './getpos.js';
 import { m_at, xkilled } from './mon.js';
 import { DEADMONSTER } from './monst.js';
+import { nonliving } from './mondata.js';
 import { x_monnam } from './do_name.js';
 import { You } from './pline.js';
 
@@ -87,7 +88,7 @@ export async function wiz_kill() {
         }
 
         const name = x_monnam(mtmp, ARTICLE_THE, null, 0, false);
-        await You(`kill ${name}!`);
+        await You(`${nonliving(mtmp.data) ? 'destroy' : 'kill'} ${name}!`);
         await xkilled(mtmp, XKILL_NOMSG);
     }
     return ECMD_OK;

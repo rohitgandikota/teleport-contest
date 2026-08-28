@@ -9,10 +9,10 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE, TIMEOUT, Upolyd, A_DEX, A_CON, MAX_SPELL_STUDY,
          SICK_ALL, SICK_NONVOMITABLE,
-         NH_RED } from './const.js';
+         NH_RED, plur } from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
-         useupall, weight } from './invent.js';
+         useupall, weight, any_obj_ok, prinv } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
@@ -24,7 +24,7 @@ import { Blind, Fumbling, Glib, Hallucination, Deaf,
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_INACCESS, GETOBJ_EXCLUDE_SELECTABLE,
          GETOBJ_PROMPT } from './invent.js';
-import { OCLASSES } from './objects_data.js';
+import { OCLASSES, MATERIALS } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { Norep, You_cant, You_hear, You_see } from './pline.js';
 import { d, rn1, rn2, rnd } from './rng.js';
@@ -48,14 +48,14 @@ import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
-import { bimanual, Is_candle, is_boots, is_gloves } from './obj.js';
+import { bimanual, Is_candle, is_boots, is_gloves, is_flimsy } from './obj.js';
 import { clear_splitobjs, mkobj, rnd_class, set_bknown, splitobj,
          unbless } from './mkobj.js';
 import { attacktype_fordmg, can_blow, haseyes, nohands, passes_walls,
          throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
-import { makeknown } from './o_init.js';
+import { makeknown, observe_object } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
 import { ACURR, change_luck } from './attrib.js';
@@ -63,6 +63,7 @@ import { makemon, NO_MM_FLAGS } from './makemon.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
+import { obj_resists } from './zap.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -395,16 +396,160 @@ export function rub_ok(obj) {
     return GETOBJ_EXCLUDE;
 }
 
+// src/apply.c:2660 touchstone_ok().
+function touchstone_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+    if (obj.oclass === OCLASSES.COIN_CLASS)
+        return GETOBJ_SUGGEST;
+    if (obj.oclass === OCLASSES.GEM_CLASS
+        && !(obj.dknown && game.objects[obj.otyp].oc_name_known))
+        return GETOBJ_SUGGEST;
+    return GETOBJ_DOWNPLAY;
+}
+
+const C_OBJ_COLORS = [
+    'black', 'red', 'green', 'brown', 'blue', 'magenta', 'cyan', 'gray',
+    'transparent', 'orange', 'bright green', 'yellow', 'bright blue',
+    'bright magenta', 'bright cyan', 'white',
+];
+
+// src/apply.c:2680 use_stone().
+async function use_stone(tstone) {
+    const scritch = '"scritch, scritch"';
+
+    if (!Blind())
+        observe_object(tstone);
+    const known = tstone.otyp === ONAMES.TOUCHSTONE && tstone.dknown
+                  && game.objects[ONAMES.TOUCHSTONE].oc_name_known;
+    const obj = await getobj(`rub on the stone${plur(tstone.quan)}`,
+                             known ? touchstone_ok : any_obj_ok,
+                             GETOBJ_PROMPT);
+    if (!obj)
+        return ECMD_CANCEL;
+
+    if (obj === tstone && obj.quan === 1) {
+        await You_cant(`rub ${the(xname(obj))} on itself.`);
+        return ECMD_OK;
+    }
+
+    if (tstone.otyp === ONAMES.TOUCHSTONE && tstone.cursed
+        && obj.oclass === OCLASSES.GEM_CLASS && !is_graystone(obj)
+        && !obj_resists(obj, 80, 100)) {
+        if (Blind()) {
+            await You_feel('something shatter.');
+        } else if (Hallucination()) {
+            await pline('Oh, wow, look at the pretty shards.');
+        } else {
+            await pline(`A sharp crack shatters ${
+                obj.quan > 1 ? 'one of ' : ''}${the(xname(obj))}.`);
+        }
+        useup(obj);
+        return ECMD_TIME;
+    }
+
+    if (Blind()) {
+        await pline(scritch);
+        return ECMD_TIME;
+    }
+    if (Hallucination()) {
+        await pline('Oh wow, man: Fractals!');
+        return ECMD_TIME;
+    }
+
+    let do_scratch = false;
+    let streak_color = null;
+    let oclass = obj.oclass;
+    const objclass = game.objects[obj.otyp];
+
+    if (oclass === OCLASSES.RING_CLASS
+        && objclass.oc_material !== MATERIALS.GEMSTONE
+        && objclass.oc_material !== MATERIALS.MINERAL)
+        oclass = 0; /* RANDOM_CLASS */
+
+    if (oclass === OCLASSES.GEM_CLASS || oclass === OCLASSES.RING_CLASS) {
+        if (tstone.otyp !== ONAMES.TOUCHSTONE) {
+            do_scratch = true;
+        } else {
+            const role = game.urole?.mnum;
+            const race = game.urace?.mnum;
+            const effective = tstone.blessed
+                || (!tstone.cursed
+                    && (role === 'PM_ARCHEOLOGIST'
+                        || role === PMNAMES.PM_ARCHEOLOGIST
+                        || race === 'PM_GNOME'
+                        || race === PMNAMES.PM_GNOME));
+            if (obj.oclass === OCLASSES.GEM_CLASS && effective) {
+                makeknown(ONAMES.TOUCHSTONE);
+                makeknown(obj.otyp);
+                await prinv(null, obj, 0);
+                return ECMD_TIME;
+            }
+            if (objclass.oc_material === MATERIALS.GLASS) {
+                do_scratch = true;
+            } else {
+                streak_color = C_OBJ_COLORS[objclass.oc_color];
+            }
+        }
+        if (tstone.otyp !== ONAMES.TOUCHSTONE)
+            streak_color = C_OBJ_COLORS[objclass.oc_color];
+    } else {
+        switch (objclass.oc_material) {
+        case MATERIALS.CLOTH:
+            await pline(`${Tobjnam(tstone, 'look')} a little more polished now.`);
+            return ECMD_TIME;
+        case MATERIALS.LIQUID:
+            if (!obj.known)
+                await You('must think this is a wetstone, do you?');
+            else
+                await pline(`${Tobjnam(tstone, 'are')} a little wetter now.`);
+            return ECMD_TIME;
+        case MATERIALS.WAX:
+            streak_color = 'waxy';
+            break;
+        case MATERIALS.WOOD:
+            streak_color = 'wooden';
+            break;
+        case MATERIALS.GOLD:
+            do_scratch = true;
+            streak_color = 'golden';
+            break;
+        case MATERIALS.SILVER:
+            do_scratch = true;
+            streak_color = 'silvery';
+            break;
+        default:
+            if (is_flimsy(obj))
+                streak_color = C_OBJ_COLORS[objclass.oc_color];
+            else
+                do_scratch = tstone.otyp !== ONAMES.TOUCHSTONE;
+            break;
+        }
+    }
+
+    const stone = `stone${plur(tstone.quan)}`;
+    if (do_scratch) {
+        await You(`make ${streak_color ? `${streak_color} ` : ''}`
+                  + `scratch marks on the ${stone}.`);
+    } else if (streak_color) {
+        await You_see(`${streak_color} streaks on the ${stone}.`);
+    } else {
+        await pline(scritch);
+    }
+    return ECMD_TIME;
+}
+
 // src/apply.c:1785 dorub(): the #rub command.
 export async function dorub() {
     const obj = await getobj('rub', rub_ok, GETOBJ_NOFLAGS);
     if (!obj)
         return ECMD_CANCEL;
 
-    if (obj.oclass === OCLASSES.GEM_CLASS
-        || obj.oclass === OCLASSES.FOOD_CLASS) {
-        note_unported_apply(is_graystone(obj) ? 'dorub:use_stone'
-                                             : 'dorub:use_royal_jelly');
+    if (is_graystone(obj))
+        return await use_stone(obj);
+
+    if (obj.oclass === OCLASSES.FOOD_CLASS) {
+        note_unported_apply('dorub:use_royal_jelly');
         await pline("Sorry, I don't know how to use that.");
         return ECMD_OK;
     }
@@ -1520,6 +1665,9 @@ export async function doapply() {
         await use_unicorn_horn(obj);
         return ECMD_TIME;
     }
+
+    if (is_graystone(obj))
+        return await use_stone(obj);
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

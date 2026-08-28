@@ -1,0 +1,38 @@
+{
+  "name": "gray-stone-rubbing",
+  "description": "A debug Archeologist applies and rubs gray stones against gems and representative materials, covering touchstone identification, cursed shattering, and ordinary streak and scratch feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.identification",
+    "object.tools-containers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2223,
+      "datetime": "20000110123000",
+      "nethackrc": "OPTIONS=name:archeologist,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " i\u001b\u0017uncursed ruby\r\u0017uncursed worthless piece of red glass\r\u0017blessed touchstone\r\u0017cursed touchstone\r\u0017uncursed flint\r\u0017uncursed luckstone\r\u0017uncursed wax candle\r\u0017uncursed wooden flute\r\u0017uncursed silver dagger\r\u0017uncursed towel\r\u0017uncursed potion of water\r\u0017uncursed loadstone\r\u001bi \u001b\u0017blessed potion of monster detection\rqv\u001b#wizkill\rm.m.m.\u001bagj#rub\rgkanpaoqauragsagtannagu\u0017uncursed 5 diamonds\ramwamwamwamwamwamwalw\u0017uncursed ring of searching\ragx\u0017uncursed ring of adornment\ragy\u00175 gold pieces\rag$agaageane"
+    },
+    {
+      "seed": 2224,
+      "datetime": "20000110123500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " i\u001b\u0017uncursed touchstone\r\u0017uncursed sapphire\r\u0017blessed touchstone\r\u0017uncursed emerald\r\u0017uncursed blindfold\raopaqrPsaopR#wizintrinsic\rh\r aop"
+    },
+    {
+      "seed": 2225,
+      "datetime": "20000110124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed touchstone\r\u001710 uncursed diamonds\r\u0017uncursed blindfold\rPoamnamnamnamnamnamnamnamnamnamn"
+    },
+    {
+      "seed": 2226,
+      "datetime": "20000110124500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed touchstone\r\u001710 uncursed diamonds\r#wizintrinsic\rh\r anoanoanoanoanoanoanoanoanoano"
+    }
+  ]
+}

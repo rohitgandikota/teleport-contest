@@ -753,7 +753,9 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         await You(`don't have anything to ${word}.`);
         return null;
     }
-    qbuf += promptLets ? ` [${promptLets} or ?*]` : ' [*]';
+    qbuf += promptLets
+        ? ` [${promptLets}${promptLets.endsWith(' ') ? '' : ' '}or ?*]`
+        : ' [*]';
 
     for (;;) {
         let ilet = await tty_yn_function(qbuf, null, '\0');

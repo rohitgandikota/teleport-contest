@@ -1,0 +1,20 @@
+{
+  "name": "towel-application",
+  "description": "A debug Wizard repeatedly applies a cursed wet towel across all random outcomes, then uses a wielded blessed wet towel and a worn towel to cover slippery fingers, cream blindness cleanup, drying, clean feedback, and worn-item refusal.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.tools-containers",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2201,
+      "datetime": "20000110110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed wet towel\ri\u001bao\u001bao\u001bao\u001bao\u001bao\u001bao\u001bao\u001bao\u001bi\u001b\u0017blessed wet towel\rap\u001bwp\u001bao\u001bap\u001bao\u001bap\u001bi\u001b\u0017uncursed towel\rPq\u001baq\u001bR"
+    }
+  ]
+}

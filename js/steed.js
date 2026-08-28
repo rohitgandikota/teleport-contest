@@ -41,6 +41,7 @@ import { throws_rocks } from './mondata.js';
 import { grounded } from './trap.js';
 import { is_pole } from './mhitu.js';
 import { PMNAMES } from './monst_data.js';
+import { Glib } from './youprop.js';
 
 function note_unported_steed(what) {
     (game.unported ||= new Set()).add('steed:' + what);
@@ -198,7 +199,7 @@ export async function mount_steed(mtmp, force) {
     const Wounded_legs = (game.u.intrinsic?.HWounded_legs || 0) > 0
                          || (game.u.EWounded_legs || 0);
     if (!force
-        && (Confusion || game.u.uprops?.FUMBLING || game.u.uprops?.GLIB
+        && (Confusion || game.u.uprops?.FUMBLING || Glib()
             || Wounded_legs || otmp.cursed || otmp.greased
             || (game.u.ulevel + mtmp.mtame
                 < rnd(20)))) { /* rnd(MAXULEV / 2 + 5) */

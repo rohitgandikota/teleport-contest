@@ -7,7 +7,7 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
-         RLOC_NONE } from './const.js';
+         RLOC_NONE, TIMEOUT, Upolyd } from './const.js';
 import { addinv_nomerge, carrying, freeinv, getobj, hold_another_object,
          update_inventory, useup, useupall, weight } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
@@ -16,13 +16,13 @@ import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
          is_pool, mnexto } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
-import { Blind, Hallucination, Deaf, Underwater } from './youprop.js';
+import { Blind, Glib, Hallucination, Deaf, Underwater } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT } from './invent.js';
 import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { Norep, You_cant, You_hear } from './pline.js';
-import { rn2, rnd } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
          MAX_OIL_IN_FLASK, BOLT_LIM, NON_PM } from './const.js';
 import { walk_path } from './dothrow.js';
@@ -31,21 +31,22 @@ import { sobj_at } from './invent.js';
 import { ONAMES } from './objects_data.js';
 import { canseemon, canspotmon, map_invisible, newsym, pline,
          sensemon } from './display.js';
-import { You, There, You_feel } from './pline.js';
+import { You, There, You_feel, Your } from './pline.js';
 import { dist2, distu } from './hacklib.js';
 import { cansee } from './vision.js';
-import { wield_tool } from './wield.js';
+import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
-import { FACE } from './const.js';
+import { FACE, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yobjnam2, aobjnam, xname, yname, the,
-         makeplural, otense, vtense } from './objnam.js';
+         gloves_simple_name, makeplural, otense, vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
-import { is_boots, is_gloves } from './obj.js';
+import { bimanual, is_boots, is_gloves } from './obj.js';
 import { clear_splitobjs, mkobj, rnd_class, set_bknown, splitobj,
          unbless } from './mkobj.js';
-import { can_blow, nohands, passes_walls, throws_rocks } from './mondata.js';
+import { can_blow, haseyes, nohands, passes_walls,
+         throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown } from './o_init.js';
@@ -474,6 +475,130 @@ async function use_royal_jelly(jelly) {
 
     clear_splitobjs();
     return ECMD_TIME;
+}
+
+const is_wet_towel = (obj) => obj.otyp === ONAMES.TOWEL && obj.spe > 0;
+
+function freehand() {
+    const u = game.u;
+    return !u.uwep || !welded(u.uwep)
+        || (!bimanual(u.uwep) && (!u.uarms || !u.uarms.cursed));
+}
+
+async function dry_a_towel(obj, amount, verbose) {
+    const newspe = amount < 0 ? obj.spe + amount : amount;
+    if (newspe < obj.spe && verbose) {
+        await pline(`${Yobjnam2(obj, null)} dries${newspe ? '' : ' out'}.`);
+    }
+    if (newspe !== obj.spe) {
+        obj.spe = Math.max(0, Math.min(newspe, 7));
+        if (obj === game.u.uwep)
+            game.unweapon = !is_wet_towel(obj);
+    }
+}
+
+// src/apply.c:112 use_towel().
+async function use_towel(obj) {
+    const u = game.u;
+    const drying_feedback = obj === u.uwep;
+    const { make_blinded, make_glib } = await import('./potion.js');
+
+    if (!freehand()) {
+        await You(`have no free ${body_part(HAND)}!`);
+        return ECMD_OK;
+    }
+    if (obj === u.ublindf) {
+        await You("cannot use it while you're wearing it!");
+        return ECMD_OK;
+    }
+
+    if (obj.cursed) {
+        switch (rn2(3)) {
+        case 2: {
+            const old = (u.intrinsic?.HGlib | 0) & TIMEOUT;
+            make_glib(old + rn1(10, 3));
+            await Your(`${makeplural(body_part(HAND))} `
+                       + `${old ? 'are filthier than ever' : 'get slimy'}!`);
+            if (is_wet_towel(obj))
+                await dry_a_towel(obj, -1, drying_feedback);
+            return ECMD_TIME;
+        }
+        case 1:
+            if (!u.ublindf) {
+                const old = u.ucreamed || 0;
+                u.ucreamed = old + rn1(10, 3);
+                await pline(`Yecch!  Your ${body_part(FACE)} `
+                            + `${old ? 'has more' : 'now has'} gunk on it!`);
+                const blinded = (u.intrinsic?.HBlinded | 0) & TIMEOUT;
+                await make_blinded(blinded + u.ucreamed - old, true);
+            } else {
+                const what = u.ublindf.otyp === ONAMES.LENSES ? 'lenses'
+                    : obj.otyp === u.ublindf.otyp ? 'other towel'
+                        : 'blindfold';
+                if (u.ublindf.cursed) {
+                    await You(`push your ${what} `
+                              + `${rn2(2) ? 'cock-eyed' : 'crooked'}.`);
+                } else {
+                    const blindf = u.ublindf;
+                    await You(`push your ${what} off.`);
+                    await Blindf_off(blindf);
+                    const { dropx } = await import('./do.js');
+                    await dropx(blindf);
+                }
+            }
+            if (is_wet_towel(obj))
+                await dry_a_towel(obj, -1, drying_feedback);
+            return ECMD_TIME;
+        default:
+            break;
+        }
+    }
+
+    if (Glib()) {
+        make_glib(0);
+        await You(`wipe off your ${u.uarmg
+            ? gloves_simple_name(u.uarmg) : makeplural(body_part(HAND))}.`);
+        if (is_wet_towel(obj))
+            await dry_a_towel(obj, -1, drying_feedback);
+        return ECMD_TIME;
+    }
+
+    if (u.ucreamed) {
+        const intr = (u.intrinsic ||= {});
+        const old = intr.HBlinded | 0;
+        const remaining = Math.max(0, (old & TIMEOUT) - u.ucreamed);
+        intr.HBlinded = (old & ~TIMEOUT) | remaining;
+        if (!intr.HBlinded)
+            delete intr.HBlinded;
+        u.ucreamed = 0;
+
+        const blindfolded = u.ublindf
+            && (u.ublindf.otyp === ONAMES.BLINDFOLD
+                || u.ublindf.otyp === ONAMES.TOWEL);
+        const eyeless = Upolyd(u) && game.youmonst?.data
+            && !haseyes(game.youmonst.data);
+        const still_blind = eyeless
+            || (!u.blocked?.BLINDED && (!!remaining || !!blindfolded));
+        u.ublind = still_blind ? 1 : 0;
+
+        if (!still_blind) {
+            await pline("You've got the glop off.");
+            if (u.uswallow)
+                note_unported_apply('use_towel:gulp_blnd_check');
+            intr.HBlinded = 1;
+            u.ublind = u.blocked?.BLINDED ? 0 : 1;
+            await make_blinded(0, true);
+        } else {
+            await Your(`${body_part(FACE)} feels clean now.`);
+        }
+        if (is_wet_towel(obj))
+            await dry_a_towel(obj, -1, drying_feedback);
+        return ECMD_TIME;
+    }
+
+    await Your(`${body_part(FACE)} and ${makeplural(body_part(HAND))} `
+               + 'are already clean.');
+    return ECMD_OK;
 }
 
 // src/apply.c:3568 use_cream_pie(): apply a pie to the hero's face.
@@ -983,6 +1108,9 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.LUMP_OF_ROYAL_JELLY)
         return await use_royal_jelly(obj);
+
+    if (obj.otyp === ONAMES.TOWEL)
+        return await use_towel(obj);
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

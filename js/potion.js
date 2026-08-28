@@ -367,6 +367,24 @@ export async function make_deaf(xtime, talk) {
     }
 }
 
+// src/potion.c:461 make_glib(), set or clear slippery fingers.
+export function make_glib(xtime) {
+    const u = game.u;
+    const intr = (u.intrinsic ||= {});
+    const old = !!(intr.HGlib || u.uprops?.GLIB);
+    const timeout = Math.min(TIMEOUT, Math.max(0, xtime | 0));
+
+    intr.HGlib = ((intr.HGlib | 0) & ~TIMEOUT) | timeout;
+    if (!intr.HGlib)
+        delete intr.HGlib;
+
+    const now = !!(intr.HGlib || u.uprops?.GLIB);
+    if (old !== now)
+        (game.disp ||= {}).botl = true;
+    if (u.uarmg)
+        update_inventory();
+}
+
 // src/potion.c:369 make_hallucinated(). Both fields are kept because display
 // predicates read uprops while timeout and status code read the intrinsic
 // counter. A nonzero mask changes worn hallucination resistance without

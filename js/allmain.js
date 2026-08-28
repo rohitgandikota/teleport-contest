@@ -4,7 +4,7 @@
 // Real mklev.js handles level generation for screen parity.
 
 import { game } from './gstate.js';
-import { set_wear } from './do_wear.js';
+import { glibr, set_wear } from './do_wear.js';
 import { maybe_finished_meal } from './eat.js';
 
 // src/allmain.c set_occupation() / stop_occupation() — the multi-turn action
@@ -75,7 +75,7 @@ import {
     see_traps, swallowed,
     TOPLINE_EMPTY,
 } from './display.js';
-import { Hallucination } from './youprop.js';
+import { Glib, Hallucination } from './youprop.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
@@ -720,6 +720,10 @@ export async function moveloop_core() {
                 /* allmain.c:260: begin this turn's hero movement sequence. */
                 g.hero_seq = g.moves * 8;
 
+                /* src/allmain.c:271: slippery fingers act before property
+                   timeouts, so the last turn of Glib can still drop gear. */
+                if (Glib())
+                    await glibr();
                 /* src/allmain.c:275 — nh_timeout() then the prayer
                    timeout, every turn. */
                 await nh_timeout();

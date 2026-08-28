@@ -42,7 +42,7 @@ import { W_QUIVER, W_WEP, W_SWAPWEP, W_ARMOR, W_ACCESSORY, W_SADDLE, P_BOOMERANG
 import { You } from './pline.js';
 import { tty_yn_function } from './tty/topl.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
-import { Blind } from './youprop.js';
+import { Blind, Glib } from './youprop.js';
 import { del_light_source, new_light_source, LS_OBJECT } from './light.js';
 
 // include/hack.h:1330 ynq()
@@ -725,8 +725,8 @@ export async function can_twoweapon() {
                && cant_wield_corpse(game.u.uswapwep)) {
         /* [Note: !TWOWEAPOK() check prevents ever getting here...] */
         ; /* must be life-saved to reach here; return FALSE */
-    } else if (game.u.uprops?.GLIB || game.u.uswapwep.cursed) {
-        if (!game.u.uprops?.GLIB)
+    } else if (Glib() || game.u.uswapwep.cursed) {
+        if (!Glib())
             set_bknown(game.u.uswapwep, 1);
         await drop_uswapwep();
     } else

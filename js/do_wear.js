@@ -16,9 +16,10 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
          LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_INT, A_WIS, A_DEX, A_CON,
          A_CHA, A_CURRENT, A_CHAOTIC, A_LAWFUL, A_NEUTRAL, NH_BLACK,
-         INTRINSIC, HEAD, Is_airlevel, Is_astralevel } from './const.js';
+         INTRINSIC, HEAD, HAND, FINGER, CQ_CANNED,
+         Is_airlevel, Is_astralevel } from './const.js';
 import { setworn } from './worn.js';
-import { welded, is_sword } from './wield.js';
+import { welded, is_sword, setuwep, setuswapwep } from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
 import { nolimbs, nohands, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
@@ -33,7 +34,8 @@ import { stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
-         boots_simple_name, suit_simple_name, Yname2 } from './objnam.js';
+         boots_simple_name, suit_simple_name, Yname2, makeplural,
+         makesingular, otense } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
@@ -94,6 +96,88 @@ export function find_ac() {
         u.uac = uac;
         game.disp = game.disp || {};
         game.disp.botl = true;
+    }
+}
+
+// src/do_wear.c:2528 glibr(), the once-per-turn slippery-fingers drop.
+export async function glibr() {
+    const u = game.u;
+    const urighty = (u.uhandedness ?? 0) === 0;
+    const uwep = u.uwep;
+    let xfl = 0, wastwoweap = false, otherwep = null;
+
+    const leftfall = !!u.uleft && !u.uleft.cursed
+        && (!uwep || !(welded(uwep) && !urighty) || !bimanual(uwep));
+    const rightfall = !!u.uright && !u.uright.cursed
+        && (!uwep || !(welded(uwep) && urighty) || !bimanual(uwep));
+    const { dropx, canletgo } = await import('./do.js');
+    const { cmdq_clear } = await import('./cmd.js');
+
+    if (!u.uarmg && (leftfall || rightfall)
+        && !nolimbs(game.youmonst.data)) {
+        await Your(`${leftfall && rightfall ? 'rings slip' : 'ring slips'} `
+                   + `off your ${leftfall && rightfall
+                       ? 'fingers' : body_part(FINGER)}.`);
+        xfl++;
+        if (leftfall) {
+            const obj = u.uleft;
+            await Ring_off(obj);
+            await dropx(obj);
+            cmdq_clear(CQ_CANNED);
+        }
+        if (rightfall) {
+            const obj = u.uright;
+            await Ring_off(obj);
+            await dropx(obj);
+            cmdq_clear(CQ_CANNED);
+        }
+    }
+
+    let obj = u.uswapwep;
+    if (u.twoweap && obj) {
+        const { weapon_descr } = await import('./weapon.js');
+        otherwep = is_sword(obj) ? 'sword' : weapon_descr(obj);
+        if (obj.quan > 1)
+            otherwep = makeplural(otherwep);
+        const hand = body_part(HAND);
+        const which = urighty ? 'left ' : 'right ';
+        await Your(`${otherwep} ${xfl ? 'also ' : ''}`
+                   + `${otense(obj, 'slip')} from your ${which}${hand}.`);
+        xfl++;
+        wastwoweap = true;
+        setuswapwep(null);
+        cmdq_clear(CQ_CANNED);
+        if (canletgo(obj, ''))
+            await dropx(obj);
+    }
+
+    obj = u.uwep;
+    if (obj && obj.otyp !== ONAMES.AKLYS && !welded(obj)) {
+        const { weapon_descr } = await import('./weapon.js');
+        const savequan = obj.quan;
+        let thiswep = is_sword(obj) ? 'sword' : weapon_descr(obj);
+        if (otherwep && thiswep !== makesingular(otherwep))
+            otherwep = null;
+        if (obj.quan > 1) {
+            if (thiswep === 'food')
+                obj.quan = 1;
+            else
+                thiswep = makeplural(thiswep);
+        }
+        let hand = body_part(HAND), which = '';
+        if (bimanual(obj))
+            hand = makeplural(hand);
+        else if (wastwoweap)
+            which = urighty ? 'right ' : 'left ';
+        await pline(`${thiswep.startsWith('corpse') ? 'The' : 'Your'} `
+                    + `${otherwep ? 'other ' : ''}${thiswep} `
+                    + `${xfl ? 'also ' : ''}${otense(obj, 'slip')} `
+                    + `from your ${which}${hand}.`);
+        obj.quan = savequan;
+        setuwep(null);
+        cmdq_clear(CQ_CANNED);
+        if (canletgo(obj, ''))
+            await dropx(obj);
     }
 }
 

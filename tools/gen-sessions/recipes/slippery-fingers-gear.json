@@ -1,0 +1,20 @@
+{
+  "name": "slippery-fingers-gear",
+  "description": "A debug Wizard wears both starting rings, applies a cursed towel until slippery fingers drop worn and wielded gear, then waits for the timed property to expire and inspects the remaining inventory.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.rings",
+    "object.tools-containers",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2202,
+      "datetime": "20000110111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " PdrPe\u0017cursed towel\rao\u001bao\u001bao\u001bao\u001bao\u001bao\u001bao\u001bi\u001bssssssssssssssssi\u001b\u0017uncursed towel\rap\u001bi\u001b"
+    }
+  ]
+}

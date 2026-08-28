@@ -53,6 +53,10 @@ export const Stone_resistance = () => !!game.u?.uprops?.STONE_RES;
 // include/youprop.h:129 Fumbling
 export const Fumbling = () => !!game.u?.uprops?.FUMBLING;
 
+// include/youprop.h:132 Glib, the timed slippery-fingers property.
+export const Glib = () => !!(game.u?.intrinsic?.HGlib
+                             || game.u?.uprops?.GLIB);
+
 // include/youprop.h:279 Underwater()
 export const Underwater = () => !!game.u?.uinwater;
 

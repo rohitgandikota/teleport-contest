@@ -372,6 +372,11 @@ export async function nh_timeout() {
     if (u.uinvulnerable)
         return;
 
+    /* src/timeout.c:649: facial cream wears off one point per turn before
+       HBlinded is decremented below. */
+    if (u.ucreamed)
+        u.ucreamed--;
+
     const vomiting = u.uprops?.VOMITING || 0;
     if (vomiting) {
         await vomiting_dialogue();
@@ -496,6 +501,12 @@ export async function nh_timeout() {
             const { make_blinded } = await import('./potion.js');
             intr.HBlinded = 1; /* preserve the old timeout for the cure */
             await make_blinded(0, true);
+            break;
+        }
+        case 'HGlib': {
+            const { make_glib } = await import('./potion.js');
+            intr.HGlib = 1; /* preserve the old state for make_glib() */
+            make_glib(0);
             break;
         }
         case 'HDeaf': {

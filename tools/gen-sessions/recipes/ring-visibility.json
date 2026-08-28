@@ -1,0 +1,20 @@
+{
+  "name": "ring-visibility",
+  "description": "A debug Wizard wears invisibility and see-invisible rings together, then removes them in dependency order, pinning discovery, self-visibility messages, hero redraws, both ring slots, targeted removal, and paging.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.rings",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 2175,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of invisibility\rPnr \u0017blessed ring of see invisible\rPo Ro R \u0006"
+    }
+  ]
+}

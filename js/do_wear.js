@@ -29,7 +29,7 @@ import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
          ERODE_NONE, EF_PAY, EF_DESTROY, ER_NOTHING,
          ER_DESTROYED } from './const.js';
 import { stop_occupation } from './allmain.js';
-import { pline } from './display.js';
+import { newsym, pline, see_monsters } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, gloves_simple_name,
          suit_simple_name } from './objnam.js';
@@ -40,7 +40,8 @@ import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { ACURR, encumber_msg } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
-import { Flying, Hallucination, Levitation } from './youprop.js';
+import { Blind, Flying, Hallucination, Invis, Levitation,
+         See_invisible } from './youprop.js';
 
 const OCLASSES_ARMOR = OCLASSES.ARMOR_CLASS;
 const OCLASSES_RING = OCLASSES.RING_CLASS;
@@ -596,6 +597,14 @@ async function toggle_ring_stealth(ring, oldprop, on) {
     }
 }
 
+// src/potion.c:471 self_invis_message().
+async function self_invis_message() {
+    await pline(`${Hallucination() ? 'Far out, man!  You'
+                                  : 'Gee!  All of a sudden, you'} ${
+        See_invisible() ? 'can see right through yourself'
+                        : "can't see yourself"}.`);
+}
+
 // src/do_wear.c Ring_on()/Ring_off().
 async function Ring_on(obj) {
     const ringmask = W_RINGL | W_RINGR;
@@ -609,6 +618,23 @@ async function Ring_on(obj) {
     switch (obj.otyp) {
     case ONAMES.RIN_SUSTAIN_ABILITY:
     case ONAMES.RIN_WARNING:
+        break;
+    case ONAMES.RIN_SEE_INVISIBLE:
+        see_monsters();
+        if (Invis() && !oldprop && !game.u.intrinsic?.HSee_invisible
+            && !Blind()) {
+            newsym(game.u.ux, game.u.uy);
+            await pline('Suddenly you are transparent, but there!');
+            learnring(obj, true);
+        }
+        break;
+    case ONAMES.RIN_INVISIBILITY:
+        if (!oldprop && !game.u.intrinsic?.HInvis
+            && !game.u.blocked?.INVIS && !Blind()) {
+            learnring(obj, true);
+            newsym(game.u.ux, game.u.uy);
+            await self_invis_message();
+        }
         break;
     case ONAMES.RIN_GAIN_STRENGTH:
         adjust_ring_attribute(obj, A_STR, obj.spe);
@@ -665,6 +691,22 @@ async function Ring_off(obj) {
         }
     } else if (obj.otyp === ONAMES.RIN_STEALTH) {
         await toggle_ring_stealth(obj, oldprop, false);
+    } else if (obj.otyp === ONAMES.RIN_SEE_INVISIBLE) {
+        if (!See_invisible())
+            see_monsters();
+        if ((game.u.intrinsic?.HInvis || game.u.uprops?.INVIS)
+            && !Blind()) {
+            newsym(game.u.ux, game.u.uy);
+            await pline('Suddenly you cannot see yourself.');
+            learnring(obj, true);
+        }
+    } else if (obj.otyp === ONAMES.RIN_INVISIBILITY) {
+        if (!Invis() && !game.u.blocked?.INVIS && !Blind()) {
+            newsym(game.u.ux, game.u.uy);
+            await Your(`body seems to unfade${
+                See_invisible() ? ' completely.' : '...'}`);
+            learnring(obj, true);
+        }
     } else {
         find_ac();
         note_unported_do_wear(`Ring_off:otyp=${obj.otyp}`);

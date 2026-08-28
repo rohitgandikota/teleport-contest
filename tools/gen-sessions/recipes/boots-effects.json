@@ -1,0 +1,20 @@
+{
+  "name": "boots-effects",
+  "description": "A debug Wizard wears and removes elven and levitation boots, pinning multi-turn dressing, stealth discovery, floating, landing, armor naming, and status redraw.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "turn.occupation-interrupt",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2175,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed elven boots\rWnTn\u0017blessed levitation boots\rWoTo\u0006"
+    }
+  ]
+}

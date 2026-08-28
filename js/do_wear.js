@@ -38,7 +38,7 @@ import { ART_OGRESMASHER } from './artilist_data.js';
 import { prinv, update_inventory, useup, ECMD_OK } from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
-import { ACURR, encumber_msg } from './attrib.js';
+import { ACURR, encumber_msg, Fast, Very_fast } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Hallucination, Invis, Levitation,
          See_invisible } from './youprop.js';
@@ -404,7 +404,9 @@ async function on_msg(otmp) {
 export async function Boots_on() {
     const uarmf = worn(W_ARMF);
     if (!uarmf) return;
-    const oldprop = (game.u.uprops?.FUMBLING || 0) & ~WORN_BOOTS;
+    const prop = PROP_KEYS[objects[uarmf.otyp].oc_oprop];
+    const oldprop = prop
+        ? (game.u.uprops?.[prop] || 0) & ~WORN_BOOTS : 0;
     switch (uarmf.otyp) {
     case ONAMES.LOW_BOOTS:
     case ONAMES.IRON_SHOES:
@@ -413,20 +415,29 @@ export async function Boots_on() {
     case ONAMES.KICKING_BOOTS:
         break;
     case ONAMES.SPEED_BOOTS:
-        /* oldprop: extrinsic speed from another source; none exists */
-        if (!(game.u.intrinsic?.HFast)) {
+        if (!oldprop && !((game.u.intrinsic?.HFast || 0) & TIMEOUT)) {
             makeknown(uarmf.otyp);
-            await You_feel('yourself speed up.');
-        } else {
-            makeknown(uarmf.otyp);
-            await You_feel('yourself speed up a bit more.');
+            await You_feel(`yourself speed up${
+                game.u.intrinsic?.HFast ? ' a bit more' : ''}.`);
         }
         break;
     case ONAMES.WATER_WALKING_BOOTS:
+        if (game.u.uinwater)
+            await spoteffects(true);
+        break;
     case ONAMES.ELVEN_BOOTS:
+        await toggle_stealth(uarmf, oldprop, true);
+        break;
     case ONAMES.LEVITATION_BOOTS:
-    default:
-        note_unported_do_wear(`Boots_on:otyp=${uarmf.otyp}`);
+        if (!oldprop && !game.u.intrinsic?.HLevitation
+            && !game.u.blocked?.LEVITATION) {
+            uarmf.known = 1;
+            (game.disp ||= {}).botl = true;
+            makeknown(uarmf.otyp);
+            await float_up_from_wearable('Boots_on');
+            if (Levitation())
+                await spoteffects(false);
+        }
         break;
     case ONAMES.FUMBLE_BOOTS: {
         const intrinsic = (game.u.intrinsic ||= {});
@@ -446,14 +457,36 @@ export async function Boots_on() {
 
 // src/do_wear.c:239 Boots_off()
 async function Boots_off(otmp) {
+    const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
+    const oldprop = prop
+        ? (game.u.uprops?.[prop] || 0) & ~WORN_BOOTS : 0;
+    setworn(null, W_ARMF);
     switch (otmp.otyp) {
     case ONAMES.SPEED_BOOTS:
-        if (!(game.u.intrinsic?.HFast)) {
+        if (!Very_fast() && !game.context_takeoff?.cancelled_don) {
             makeknown(otmp.otyp);
-            await You_feel('yourself slow down.');
-        } else {
+            await You_feel(`yourself slow down${Fast() ? ' a bit' : ''}.`);
+        }
+        break;
+    case ONAMES.WATER_WALKING_BOOTS:
+        break;
+    case ONAMES.ELVEN_BOOTS:
+        await toggle_stealth(otmp, oldprop, false);
+        break;
+    case ONAMES.FUMBLE_BOOTS:
+        if (!oldprop
+            && !((game.u.intrinsic?.HFumbling || 0) & ~TIMEOUT)) {
+            (game.u.intrinsic ||= {}).HFumbling = 0;
+            if (game.u.uprops)
+                delete game.u.uprops.FUMBLING;
+        }
+        break;
+    case ONAMES.LEVITATION_BOOTS:
+        if (!oldprop && !game.u.intrinsic?.HLevitation
+            && !game.u.blocked?.LEVITATION
+            && !game.context_takeoff?.cancelled_don) {
+            await float_down(0, 0);
             makeknown(otmp.otyp);
-            await You_feel('yourself slow down a bit.');
         }
         break;
     case ONAMES.LOW_BOOTS:
@@ -462,10 +495,8 @@ async function Boots_off(otmp) {
     case ONAMES.JUMPING_BOOTS:
     case ONAMES.KICKING_BOOTS:
         break;
-    default:
-        note_unported_do_wear(`Boots_off:otyp=${otmp.otyp}`);
-        break;
     }
+    (game.context_takeoff ||= {}).cancelled_don = false;
 }
 
 // src/do_wear.c:963 Amulet_on() — setworn and on_msg are its own business.
@@ -638,14 +669,14 @@ function adjust_ring_attribute(ring, which, amount) {
 // src/trap.c float_up(), for the states currently represented by the port.
 // Traps, engulfers, and mounted levitation retain explicit reachability marks
 // until their source-specific state transitions are available here.
-async function float_up_from_ring() {
+async function float_up_from_wearable(source) {
     (game.disp ||= {}).botl = true;
     if (game.u.utrap) {
-        note_unported_do_wear('Ring_on:levitation_trap');
+        note_unported_do_wear(`${source}:levitation_trap`);
     } else if (game.u.uinwater) {
         await spoteffects(true);
     } else if (game.u.uswallow) {
-        note_unported_do_wear('Ring_on:levitation_swallowed');
+        note_unported_do_wear(`${source}:levitation_swallowed`);
     } else if (Hallucination()) {
         await pline("Up, up, and awaaaay!  You're walking on air!");
     } else if (Is_airlevel(game.u.uz)) {
@@ -654,22 +685,30 @@ async function float_up_from_ring() {
         await You('start to float in the air!');
     }
     if (game.u.usteed)
-        note_unported_do_wear('Ring_on:levitation_steed');
+        note_unported_do_wear(`${source}:levitation_steed`);
     if (Flying())
         await You('are no longer able to control your flight.');
     await encumber_msg();
 }
 
-// src/do_wear.c toggle_stealth() for rings.  A visible change in stealth
-// identifies the ring and gives immediate feedback.  The blocked term is
+// src/do_wear.c toggle_stealth().  A visible change in stealth identifies
+// the ring or boots and gives immediate feedback.  The blocked term is
 // tracked separately from the worn-property mask, as in C's BStealth.
-async function toggle_ring_stealth(ring, oldprop, on) {
+async function toggle_stealth(obj, oldprop, on) {
     if (on ? game.initial_don : game.context_takeoff?.cancelled_don)
         return;
     if (!oldprop && !game.u.intrinsic?.HStealth
         && !game.u.blocked?.STEALTH) {
-        learnring(ring, true);
-        await You(on ? 'move very quietly.' : 'sure are noisy.');
+        if (obj.otyp === ONAMES.RIN_STEALTH)
+            learnring(obj, true);
+        else
+            makeknown(obj.otyp);
+        if (on && obj.otyp === ONAMES.ELVEN_BOOTS) {
+            await You(Levitation() || Flying()
+                ? 'float imperceptibly.' : 'walk very quietly.');
+        } else {
+            await You(on ? 'move very quietly.' : 'sure are noisy.');
+        }
     }
 }
 
@@ -724,14 +763,14 @@ async function Ring_on(obj) {
     case ONAMES.RIN_LEVITATION:
         if (!oldprop && !game.u.intrinsic?.HLevitation
             && !game.u.blocked?.LEVITATION) {
-            await float_up_from_ring();
+            await float_up_from_wearable('Ring_on');
             learnring(obj, true);
             if (Levitation())
                 await spoteffects(false);
         }
         break;
     case ONAMES.RIN_STEALTH:
-        await toggle_ring_stealth(obj, oldprop, true);
+        await toggle_stealth(obj, oldprop, true);
         break;
     case ONAMES.RIN_PROTECTION:
         learnring(obj, obj.spe !== 0);
@@ -766,7 +805,7 @@ async function Ring_off(obj) {
                 learnring(obj, true);
         }
     } else if (obj.otyp === ONAMES.RIN_STEALTH) {
-        await toggle_ring_stealth(obj, oldprop, false);
+        await toggle_stealth(obj, oldprop, false);
     } else if (obj.otyp === ONAMES.RIN_SEE_INVISIBLE) {
         if (!See_invisible())
             see_monsters();
@@ -1154,8 +1193,10 @@ async function armoroff(otmp) {
 async function slot_off(otmp) {
     const mask = otmp.owornmask
         & (W_ARM | W_ARMC | W_ARMH | W_ARMS | W_ARMG | W_ARMF | W_ARMU);
-    if (otmp.owornmask & W_ARMF)
+    if (otmp.owornmask & W_ARMF) {
         await Boots_off(otmp);
+        return;
+    }
     if (otmp.owornmask & W_ARMG) {
         await Gloves_off(otmp);
         return;

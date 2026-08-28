@@ -15,12 +15,14 @@ import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
 import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
-import { place_object, set_bknown, set_corpsenm, zombie_form } from './mkobj.js';
-import { cls, pline, newsym } from './display.js';
-import { pline_The, You, You_cant, You_hear, Your } from './pline.js';
+import { place_object, rider_revival_time, set_bknown, set_corpsenm,
+         zombie_form } from './mkobj.js';
+import { canseemon, cls, pline, newsym } from './display.js';
+import { pline_The, You, You_cant, You_feel, You_hear, Your }
+    from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG } from './const.js';
 import { t_at, m_at, is_pool, is_lava, delobj_core } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
@@ -30,6 +32,7 @@ import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
+import { is_displacer } from './mondata.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { Amonnam, Monnam } from './do_name.js';
 
@@ -142,9 +145,50 @@ export async function revive_corpse(corpse) {
 }
 
 export async function revive_mon(body) {
+    const mptr = game.mons[body.corpsenm];
+    if (is_displacer(mptr) && body.where === OBJ_FLOOR
+        && (game.level?.flags?.stasis_until ?? 0) < (game.moves ?? 0)) {
+        const x = body.ox, y = body.oy;
+        const obstacle = m_at(x, y);
+        if (obstacle) {
+            const noticed = canseemon(obstacle);
+            const oldname = Monnam(obstacle);
+            const { rloc } = await import('./teleport.js');
+            if (await rloc(obstacle, RLOC_NOMSG)) {
+                if (noticed && !canseemon(obstacle))
+                    await pline(`${oldname} vanishes.`);
+                else if (!noticed && canseemon(obstacle))
+                    await pline(`${Monnam(obstacle)} appears.`);
+                else if (noticed
+                         && ((obstacle.mx - x) ** 2
+                             + (obstacle.my - y) ** 2) > 2)
+                    await pline(`${oldname} teleports.`);
+            }
+        }
+    }
+
     const revived = await revive_corpse(body);
-    if (!revived)
-        note_unported_do('revive_mon:retry');
+    if (!revived) {
+        const { peek_timer, start_timer, TIMER_OBJECT, ROT_CORPSE, REVIVE_MON }
+            = await import('./timeout.js');
+        const rider = mptr.pmidx === PMNAMES.PM_DEATH
+            || mptr.pmidx === PMNAMES.PM_PESTILENCE
+            || mptr.pmidx === PMNAMES.PM_FAMINE;
+        let action, when;
+        if (rider && rn2(99)) {
+            action = REVIVE_MON;
+            when = rider_revival_time(body, true);
+        } else {
+            if (!peek_timer(ROT_CORPSE, body))
+                await You_feel(`${rider ? 'much ' : ''}less hassled.`);
+            action = ROT_CORPSE;
+            when = d(5, 50) - ((game.moves ?? 0) - body.age);
+            if (when < 1)
+                when = 1;
+        }
+        if (!peek_timer(action, body))
+            start_timer(when, TIMER_OBJECT, action, body);
+    }
     return revived;
 }
 

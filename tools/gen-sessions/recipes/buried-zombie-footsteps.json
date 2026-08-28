@@ -1,0 +1,23 @@
+{
+  "name": "buried-zombie-footsteps",
+  "description": "A heavy grounded hero teleports beside a naturally generated buried-zombie themed room, protects two pacing squares with scare-monster scrolls, and forces nearby corpse callbacks early by walking back and forth.",
+  "coverage": [
+    "level.ordinary",
+    "level.themed",
+    "mode.debug",
+    "monster.death-corpse-revival",
+    "monster.movement",
+    "object.food-corpses",
+    "turn.timers",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2175,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO>r\r\u001b\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh.\u0017blessed scroll of scare monster\rdnl\u0017blessed scroll of scare monster\rdohlhlhlhlhlhlhlhlhlhlhlhl\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001bm.\u001b\u0006"
+    }
+  ]
+}

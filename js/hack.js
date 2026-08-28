@@ -1821,7 +1821,7 @@ async function moverock_core(sx, sy) {
                 return cannot_push(otmp, sx, sy);
             }
 
-            /* disturb_buried_zombies(sx, sy): no buried zombies yet */
+            disturb_buried_zombies(sx, sy);
 
             if (ttmp) {
                 switch (ttmp.ttyp) {

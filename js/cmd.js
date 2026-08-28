@@ -25,9 +25,11 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
-         could_move_onto_boulder, u_locomotion } from './hack.js';
+         could_move_onto_boulder, u_locomotion,
+         disturb_buried_zombies } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
-import { Blind, Hallucination } from './youprop.js';
+import { Blind, Flying, Hallucination, Levitation, Stealth }
+    from './youprop.js';
 import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
 import { curr_mon_load } from './mon.js';
@@ -62,7 +64,7 @@ import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
          tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, OBJ_FLOOR } from './const.js';
+import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, OBJ_FLOOR, WT_ELF } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
 import { ECMD_OK, getobj } from './invent.js';
 import { count_unidentified } from './invent.js';
@@ -2487,6 +2489,12 @@ async function domove_core() {
                 nomul(0);
         }
     }
+
+    /* src/hack.c:2943. A sufficiently heavy, grounded, non-stealthy hero
+       shortens nearby buried-zombie timers with every step. */
+    if (!Levitation() && !Flying() && !Stealth()
+        && game.youmonst.data.cwt >= WT_ELF / 2)
+        disturb_buried_zombies(game.u.ux, game.u.uy);
 
     // Update display
     newsym(oldx, oldy);

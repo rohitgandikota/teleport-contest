@@ -27,7 +27,8 @@ import { sengr_at } from './engrave.js';
 import { Monnam, mon_nam, x_monnam, upstart } from './do_name.js';
 import { hot_pursuit } from './shk.js';
 import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
-import { bad_rock, may_dig, may_passwall } from './hack.js';
+import { bad_rock, disturb_buried_zombies, may_dig, may_passwall }
+    from './hack.js';
 import { which_armor } from './worn.js';
 import { obj_resists, destroy_items, resist } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
@@ -3083,7 +3084,7 @@ function wake_nearto_core(x, y, distance, petcall) {
             }
         }
     }
-    /* disturb_buried_zombies() needs buried monsters, which nothing makes */
+    disturb_buried_zombies(x, y);
 }
 
 // src/mon.c:4402 wake_nearto()

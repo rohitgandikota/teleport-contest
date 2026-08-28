@@ -36,12 +36,13 @@ import { cansee } from './vision.js';
 import { wield_tool } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE } from './const.js';
-import { OBJ_NAME, The, Tobjnam, aobjnam, xname, yname, the, makeplural,
-         vtense } from './objnam.js';
-import { Amonnam, pmname, upstart, x_monnam, y_monnam } from './do_name.js';
+import { OBJ_NAME, The, Tobjnam, Yobjnam2, aobjnam, xname, yname, the,
+         makeplural, vtense } from './objnam.js';
+import { Amonnam, hcolor, pmname, upstart, x_monnam,
+         y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { is_boots, is_gloves } from './obj.js';
-import { mkobj, rnd_class, splitobj } from './mkobj.js';
+import { mkobj, rnd_class, set_bknown, splitobj, unbless } from './mkobj.js';
 import { can_blow, nohands, passes_walls, throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -898,6 +899,22 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.TIN_WHISTLE) {
         await use_whistle(obj);
+        return ECMD_TIME;
+    }
+
+    if (obj.otyp === ONAMES.EUCALYPTUS_LEAF) {
+        if (obj.blessed) {
+            await use_magic_whistle(obj);
+            if (!rn2(49)) {
+                if (!Blind()) {
+                    await pline(`${Yobjnam2(obj, 'glow')} ${hcolor('brown')}.`);
+                    set_bknown(obj, 1);
+                }
+                unbless(obj);
+            }
+        } else {
+            await use_whistle(obj);
+        }
         return ECMD_TIME;
     }
 

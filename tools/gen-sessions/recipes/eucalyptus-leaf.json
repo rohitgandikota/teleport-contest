@@ -1,0 +1,24 @@
+{
+  "name": "eucalyptus-leaf",
+  "description": "A debug Wizard applies a blessed eucalyptus leaf to recall a starting pet and trigger the rare blessing loss, then applies the unblessed leaf for ordinary whistle behavior.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.pets",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "object.identification",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 2199,
+      "datetime": "20000110104000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:dog,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed eucalyptus leaf\ri\u001ban\u001ban"
+    }
+  ]
+}

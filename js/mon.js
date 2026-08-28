@@ -2544,8 +2544,11 @@ export function mnexto(mtmp, rlocflags) {
 
     /* rloc_to_flag(mtmp, mm.x, mm.y, rlocflags): the no-message path is
        kept synchronous for level-arrival callers which do not await it. */
-    if (mtmp.mx || mtmp.my)
-        remove_monster(mtmp.mx, mtmp.my);
+    if (mtmp.mx || mtmp.my) {
+        const oldx = mtmp.mx, oldy = mtmp.my;
+        remove_monster(oldx, oldy);
+        newsym(oldx, oldy);
+    }
     place_monster(mtmp, mm.x, mm.y);
     newsym(mtmp.mx, mtmp.my);
 }

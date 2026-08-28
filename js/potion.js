@@ -12,13 +12,13 @@ import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_OTHER_THROW,
-         HEAD, SICK_ALL } from './const.js';
+         HEAD, SICK_ALL, TIMEOUT } from './const.js';
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
-         Poison_resistance, Sleep_resistance } from './youprop.js';
+         Deaf, Poison_resistance, Sleep_resistance } from './youprop.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
@@ -122,8 +122,7 @@ export async function healup(nhp, nxtra, curesick, cureblind) {
     if (cureblind) {
         u.ucreamed = 0;
         await make_blinded(0, true);
-        if (u.uprops?.DEAF)
-            note_unported_potion('healup:make_deaf');
+        await make_deaf(0, true);
     }
     if (curesick) {
         await make_vomiting(0, true);
@@ -185,8 +184,7 @@ export async function potionbreathe(obj) {
                 cureblind = true;
             if (cureblind) {
                 await make_blinded(0, !game.u.ucreamed);
-                if (game.u.uprops?.DEAF)
-                    note_unported_potion('potionbreathe:make_deaf');
+                await make_deaf(0, true);
             }
             exercise(A_CON, true);
             break;
@@ -346,6 +344,27 @@ export async function make_stunned(xtime, talk) {
         (game.u.uprops ||= {}).STUNNED = 1;
     else if (game.u.uprops)
         delete game.u.uprops.STUNNED;
+}
+
+// src/potion.c:443 make_deaf(), set or clear the timed half of HDeaf.
+export async function make_deaf(xtime, talk) {
+    const intr = (game.u.intrinsic ||= {});
+    const old = intr.HDeaf | 0;
+    const timeout = Math.min(TIMEOUT, Math.max(0, xtime | 0));
+
+    if (Unaware())
+        talk = false;
+
+    intr.HDeaf = (old & ~TIMEOUT) | timeout;
+    if (!intr.HDeaf)
+        delete intr.HDeaf;
+
+    if (!!timeout !== !!old) {
+        (game.disp ||= {}).botl = true;
+        if (talk)
+            await You(old && !Deaf() ? 'can hear again.'
+                                     : 'are unable to hear anything.');
+    }
 }
 
 // src/potion.c:369 make_hallucinated(), timed hallucination without an

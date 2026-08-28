@@ -1,0 +1,19 @@
+{
+  "name": "deafness-timeout",
+  "description": "Debug Valkyrie sets timed deafness and waits for hearing to return, pinning live sound state, status display, and timeout feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "segments": [
+    {
+      "seed": 7243,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\rj\r 30s"
+    }
+  ]
+}

@@ -286,6 +286,8 @@ function wiz_intrinsic_timeout(key) {
         return Number(game.u.uprops?.HALLUC) || 0;
     if (key === 'BLINDED')
         return (game.u.intrinsic?.HBlinded | 0) & TIMEOUT;
+    if (key === 'DEAF')
+        return (game.u.intrinsic?.HDeaf | 0) & TIMEOUT;
     if (key === 'SEE_INVIS')
         return (game.u.intrinsic?.HSee_invisible | 0) & TIMEOUT;
     if (key === 'FAST')
@@ -333,6 +335,9 @@ export async function wiz_intrinsic() {
         if (key === 'BLINDED') {
             const { make_blinded } = await import('./potion.js');
             await make_blinded(oldtimeout + 30, true);
+        } else if (key === 'DEAF') {
+            const { make_deaf } = await import('./potion.js');
+            await make_deaf(oldtimeout + 30, true);
         } else if (key === 'HALLUC') {
             const { make_hallucinated } = await import('./potion.js');
             await make_hallucinated(oldtimeout + 30, true);

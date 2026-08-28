@@ -1,0 +1,20 @@
+{
+  "name": "deafness-healing-cure",
+  "description": "Debug Valkyrie sets timed deafness, wishes for a blessed potion of healing, and drinks it to restore hearing, pinning the healing cure path.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.potions",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "segments": [
+    {
+      "seed": 7244,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\rj\r \u0017blessed potion of healing\rqe"
+    }
+  ]
+}

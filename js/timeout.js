@@ -409,6 +409,16 @@ export async function nh_timeout() {
             await make_blinded(0, true);
             break;
         }
+        case 'HDeaf': {
+            const { make_deaf } = await import('./potion.js');
+            const { Deaf } = await import('./youprop.js');
+            intr.HDeaf = (intr.HDeaf & ~TIMEOUT) | 1;
+            await make_deaf(0, true);
+            (game.disp ||= {}).botl = true;
+            if (!Deaf())
+                await stop_occupation();
+            break;
+        }
         case 'HFast': {
             const { Fast, Very_fast } = await import('./attrib.js');
             if (!Very_fast()) {

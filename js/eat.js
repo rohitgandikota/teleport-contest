@@ -150,6 +150,33 @@ export function init_uhunger() {
     game.u.uhs = NOT_HUNGRY;
 }
 
+// src/eat.c tinnable() and tin_ok().
+export function tinnable(corpse) {
+    return !corpse.oeaten && !!game.mons[corpse.corpsenm].cnutrit;
+}
+
+function tin_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+    if (obj.oclass !== OCLASSES.FOOD_CLASS)
+        return GETOBJ_EXCLUDE;
+    if (obj.otyp !== ONAMES.CORPSE || !tinnable(obj))
+        return GETOBJ_EXCLUDE_SELECTABLE;
+    return GETOBJ_SUGGEST;
+}
+
+async function inventory_floorfood(verb, corpsecheck, offering) {
+    const obj = await getobj(verb, offering ? offer_ok
+                                  : corpsecheck === 2 ? tin_ok : eat_ok, 0);
+    if (obj && corpsecheck && !(offering && obj.oclass === OCLASSES.AMULET_CLASS)
+        && (obj.otyp !== ONAMES.CORPSE
+            || (corpsecheck === 2 && !tinnable(obj)))) {
+        await You_cant(`${verb} that!`);
+        return null;
+    }
+    return obj;
+}
+
 // src/eat.c floorfood() — offer each edible thing at the hero's feet with a
 // y/n prompt, then fall through to getobj() for something carried.
 //
@@ -166,7 +193,7 @@ export async function floorfood(verb, corpsecheck) {
     /* if we can't touch floor objects then use inventory food only */
     if (!can_reach_floor(true)
         || (is_pool_or_lava(game.u.ux, game.u.uy)))
-        return await getobj(verb, offering ? offer_ok : eat_ok, 0);
+        return await inventory_floorfood(verb, corpsecheck, offering);
 
     /* src/eat.c — the metallivore arms (bear trap, iron bars, gold) come
        first and each spends a prompt; no ported hero is metallivorous. */
@@ -179,7 +206,8 @@ export async function floorfood(verb, corpsecheck) {
         if (otmp.ox !== game.u.ux || otmp.oy !== game.u.uy)
             continue;
         const wanted = corpsecheck
-            ? (otmp.otyp === ONAMES.CORPSE && corpsecheck === 1)
+            ? (otmp.otyp === ONAMES.CORPSE
+               && (corpsecheck === 1 || tinnable(otmp)))
             : feeding ? (otmp.oclass !== OCLASSES.COIN_CLASS
                          && is_edible(otmp))
                       : otmp.oclass === OCLASSES.FOOD_CLASS;
@@ -198,7 +226,7 @@ export async function floorfood(verb, corpsecheck) {
     }
 
  /* skipfloor: */
-    return await getobj(verb, offering ? offer_ok : eat_ok, 0);
+    return await inventory_floorfood(verb, corpsecheck, offering);
 }
 
 // src/eat.c doeat() — the 'e' command.

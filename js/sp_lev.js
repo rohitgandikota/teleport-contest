@@ -453,6 +453,12 @@ export function lspo_replace_terrain(opts) {
        draws rn2(2), NOCHANGE leaves the square's lit alone */
     const tolit = (opts.lit === undefined) ? SET_LIT_NOCHANGE : opts.lit;
     const set_typ_lit = (loc) => {
+        /* mkmaze.c:77 set_levltyp() keeps a garden's secret door in place;
+           AIR is a sentinel which marks that door as tree-like instead. */
+        if (loc.typ === SDOOR && totyp === AIR) {
+            loc.arboreal_sdoor = 1;
+            return;
+        }
         loc.typ = totyp;
         if (IS_LAVA(totyp))
             loc.lit = true;

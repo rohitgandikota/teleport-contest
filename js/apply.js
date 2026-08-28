@@ -9,17 +9,17 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
          RLOC_NONE, TIMEOUT, Upolyd, A_DEX, A_CON, MAX_SPELL_STUDY,
          SICK_ALL, SICK_NONVOMITABLE,
-         NH_RED, plur } from './const.js';
+         NH_RED, plur, HOMEMADE_TIN } from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
-         useupall, weight, any_obj_ok, prinv } from './invent.js';
+         useupall, useupf, weight, any_obj_ok, prinv } from './invent.js';
 import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { pick_lock } from './lock.js';
 import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby,
          is_pool, mnexto } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
-import { Blind, Fumbling, Glib, Hallucination, Deaf,
+import { Blind, Fumbling, Glib, Hallucination, Deaf, Stone_resistance,
          Underwater } from './youprop.js';
 import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_EXCLUDE_INACCESS, GETOBJ_EXCLUDE_SELECTABLE,
@@ -43,23 +43,24 @@ import { wield_tool, welded } from './wield.js';
 import { body_part } from './polyself.js';
 import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular,
-         xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
+         cxname, xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
          otense, vtense } from './objnam.js';
 import { Amonnam, hcolor, pmname, upstart, x_monnam,
          y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
-import { bimanual, Is_candle, is_boots, is_gloves, is_flimsy } from './obj.js';
-import { clear_splitobjs, mkobj, rnd_class, set_bknown, splitobj,
-         unbless } from './mkobj.js';
+import { bimanual, carried, Is_candle, is_boots, is_gloves,
+         is_flimsy } from './obj.js';
+import { clear_splitobjs, mkobj, mksobj, rnd_class, set_bknown, splitobj,
+         set_tin_variety, unbless } from './mkobj.js';
 import { attacktype_fordmg, can_blow, haseyes, nohands, passes_walls,
-         throws_rocks } from './mondata.js';
+         poly_when_stoned, throws_rocks, touch_petrifies } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown, observe_object } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
 import { ACURR, change_luck } from './attrib.js';
-import { makemon, NO_MM_FLAGS } from './makemon.js';
+import { is_rider, makemon, NO_MM_FLAGS } from './makemon.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
@@ -537,6 +538,70 @@ async function use_stone(tstone) {
         await pline(scritch);
     }
     return ECMD_TIME;
+}
+
+// src/apply.c:2177 use_tinning_kit().
+async function use_tinning_kit(obj) {
+    if (obj.spe <= 0) {
+        await You('seem to be out of tins.');
+        return;
+    }
+
+    const { floorfood } = await import('./eat.js');
+    const corpse = await floorfood('tin', 2);
+    if (!corpse)
+        return;
+    if (corpse.oeaten) {
+        await You('cannot tin something which is partly eaten.');
+        return;
+    }
+
+    const mptr = game.mons[corpse.corpsenm];
+    if (touch_petrifies(mptr) && !Stone_resistance() && !game.u.uarmg) {
+        const corpse_name = an(cxname(corpse));
+        let cause = '';
+        if (poly_when_stoned(game.youmonst.data)) {
+            await You(`tin ${corpse_name} without wearing gloves.`);
+        } else {
+            await pline(`Tinning ${corpse_name} without wearing gloves `
+                        + 'is a fatal mistake...');
+            cause = `trying to tin ${corpse_name} without gloves`;
+        }
+        const { instapetrify } = await import('./trap.js');
+        await instapetrify(cause);
+    }
+
+    if (is_rider(mptr)) {
+        const { revive_corpse } = await import('./do.js');
+        if (await revive_corpse(corpse, true))
+            await pline('"Yes...  But War does not preserve its enemies..."');
+        else
+            await pline('The corpse evades your grasp.');
+        return;
+    }
+    if (!mptr.cnutrit) {
+        await pline("That's too insubstantial to tin.");
+        return;
+    }
+
+    consume_obj_charge(obj);
+    const can = mksobj(ONAMES.TIN, false, false);
+    can.corpsenm = corpse.corpsenm;
+    can.cursed = obj.cursed;
+    can.blessed = obj.blessed;
+    can.owt = weight(can);
+    can.known = 1;
+    set_tin_variety(can, HOMEMADE_TIN);
+
+    if (carried(corpse)) {
+        if (corpse.unpaid)
+            note_unported_apply('use_tinning_kit:shop_billing');
+        useup(corpse);
+    } else {
+        useupf(corpse, 1);
+    }
+    await hold_another_object(can, 'You make, but cannot pick up, %s.',
+                              doname(can), null);
 }
 
 // src/apply.c:1785 dorub(): the #rub command.
@@ -1635,6 +1700,11 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.CAN_OF_GREASE)
         return await use_grease(obj);
+
+    if (obj.otyp === ONAMES.TINNING_KIT) {
+        await use_tinning_kit(obj);
+        return ECMD_TIME;
+    }
 
     if (obj.otyp === ONAMES.CREAM_PIE)
         return await use_cream_pie(obj);

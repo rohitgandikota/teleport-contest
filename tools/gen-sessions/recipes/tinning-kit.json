@@ -1,0 +1,40 @@
+{
+  "name": "tinning-kit",
+  "description": "Debug heroes apply empty and charged tinning kits, tin carried and floor corpses, and check the resulting homemade tins and charge use. One seeded level also covers Garden fountains and deferred wall conversion.",
+  "coverage": [
+    "level.ordinary",
+    "level.themed",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "object.identification",
+    "object.tools-containers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2227,
+      "datetime": "20000110125000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed -1 tinning kit\raoi\u001b"
+    },
+    {
+      "seed": 2228,
+      "datetime": "20000110125500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed tinning kit\raoi\u001b"
+    },
+    {
+      "seed": 2229,
+      "datetime": "20000110130000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed tinning kit\r\u0017uncursed newt corpse\rapqi \u001b"
+    },
+    {
+      "seed": 2230,
+      "datetime": "20000110130500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed tinning kit\r\u0017uncursed jackal corpse\r dpaoyi \u001b"
+    }
+  ]
+}

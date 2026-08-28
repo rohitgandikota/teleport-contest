@@ -20,7 +20,8 @@ import { selection_from_mkroom, l_selection_iterate, selection_rndcoord,
          selection_new, selection_clear } from './selvar.js';
 import { ROOM } from './const.js';
 import { lspo_engraving, lspo_terrain, lspo_trap, get_traptype_byname,
-         lspo_object, lspo_monster, lspo_altar } from './sp_lev.js';
+         lspo_object, lspo_monster, lspo_altar, lspo_feature,
+         lspo_replace_terrain, l_selection_grow } from './sp_lev.js';
 import { create_gas_cloud_selection } from './region.js';
 import { start_timer, obj_stop_timers, TIMER_OBJECT, ZOMBIFY_MON }
     from './timeout.js';
@@ -321,9 +322,26 @@ export function fill_garden(rm) {
     for (let i = 1; i <= npts; i++) {
         lspo_monster('wood nymph', undefined, undefined, { asleep: true });
         if (percent(30))
-            note_unported_themerms('des.feature:fountain');
+            lspo_feature('fountain');
     }
-    note_unported_themerms('postprocess:make_garden_walls');
+    postprocess_add(make_garden_walls, {
+        sel: selection_from_mkroom(rm._mkroom || rm),
+    });
+}
+
+// dat/themerms.lua:1071 make_garden_walls().
+function make_garden_walls(data) {
+    const sel = l_selection_grow(data.sel);
+    lspo_replace_terrain({
+        selection: sel,
+        fromterrain: 'w',
+        toterrain: 'T',
+    });
+    lspo_replace_terrain({
+        selection: sel,
+        fromterrain: 'S',
+        toterrain: 'A',
+    });
 }
 
 // dat/themerms.lua:137 "Buried treasure"

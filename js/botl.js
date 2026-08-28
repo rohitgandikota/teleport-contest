@@ -99,8 +99,9 @@ export function bot_conditions() {
     if (props.STONED) cond += ' Stone';
     if (props.SLIMED) cond += ' Slime';
     if (props.STRANGLED) cond += ' Strngl';
-    if (u.usick_type & SICK_VOMITABLE) cond += ' FoodPois';
-    if (u.usick_type & SICK_NONVOMITABLE) cond += ' TermIll';
+    const sick_type = game._deferred_status_sick_type ?? u.usick_type;
+    if (sick_type & SICK_VOMITABLE) cond += ' FoodPois';
+    if (sick_type & SICK_NONVOMITABLE) cond += ' TermIll';
     if (u.uhs != null && u.uhs !== NOT_HUNGRY) cond += ' ' + hu_stat[u.uhs];
     /* encumber_msg() prints before botl is marked dirty.  The tty therefore
        keeps the preceding capacity condition while that message is blocked

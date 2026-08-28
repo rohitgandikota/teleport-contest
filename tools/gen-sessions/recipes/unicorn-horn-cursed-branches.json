@@ -1,0 +1,61 @@
+{
+  "name": "unicorn-horn-cursed-branches",
+  "description": "Eight independent debug Wizards each wish for and apply one cursed unicorn horn, providing fresh RNG contexts for timed ailments without compounding sickness in one game.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "survival.timed-status",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2214,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2215,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2216,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2217,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2218,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2220,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2221,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    },
+    {
+      "seed": 2222,
+      "datetime": "20000110122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\ri\u001baoi\u001b"
+    }
+  ]
+}

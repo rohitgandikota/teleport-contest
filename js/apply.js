@@ -7,7 +7,8 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
-         RLOC_NONE, TIMEOUT, Upolyd, A_DEX, MAX_SPELL_STUDY,
+         RLOC_NONE, TIMEOUT, Upolyd, A_DEX, A_CON, MAX_SPELL_STUDY,
+         SICK_ALL, SICK_NONVOMITABLE,
          NH_RED } from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
@@ -26,7 +27,7 @@ import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
 import { OCLASSES } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
 import { Norep, You_cant, You_hear, You_see } from './pline.js';
-import { rn1, rn2, rnd } from './rng.js';
+import { d, rn1, rn2, rnd } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
          MAX_OIL_IN_FLASK, BOLT_LIM, NON_PM } from './const.js';
 import { walk_path } from './dothrow.js';
@@ -50,7 +51,7 @@ import { defsyms } from './drawing_data.js';
 import { bimanual, Is_candle, is_boots, is_gloves } from './obj.js';
 import { clear_splitobjs, mkobj, rnd_class, set_bknown, splitobj,
          unbless } from './mkobj.js';
-import { can_blow, haseyes, nohands, passes_walls,
+import { attacktype_fordmg, can_blow, haseyes, nohands, passes_walls,
          throws_rocks } from './mondata.js';
 import { check_capacity, invocation_pos, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -59,7 +60,7 @@ import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
 import { ACURR, change_luck } from './attrib.js';
 import { makemon, NO_MM_FLAGS } from './makemon.js';
-import { PMNAMES } from './monst_data.js';
+import { ATTKS, PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
 
@@ -1294,6 +1295,135 @@ async function hornoplenty(horn) {
         makeknown(ONAMES.HORN_OF_PLENTY);
 }
 
+// src/apply.c:2259 use_unicorn_horn(). A cursed horn adds one random timed
+// ailment. A noncursed horn shuffles the timed ailments and cures a random
+// prefix, with a blessed horn able to cure more of them.
+async function use_unicorn_horn(obj) {
+    const u = game.u;
+    const intr = (u.intrinsic ||= {});
+    const props = (u.uprops ||= {});
+    const {
+        make_blinded, make_confused, make_deaf, make_hallucinated,
+        make_sick, make_stunned, make_vomiting,
+    } = await import('./potion.js');
+
+    if (obj.cursed) {
+        const lcount = rn1(90, 10);
+
+        switch (Math.trunc(rn2(13) / 2)) {
+        case 0: {
+            const sick = (props.SICK | 0) & TIMEOUT;
+            await make_sick(sick ? Math.trunc(sick / 3) + 1
+                                 : rn1(ACURR(A_CON), 20),
+                            xname(obj), true, SICK_NONVOMITABLE);
+            break;
+        }
+        case 1:
+            await make_blinded(((intr.HBlinded | 0) & TIMEOUT) + lcount,
+                               true);
+            break;
+        case 2:
+            if (!(intr.HConfusion || props.CONFUSION))
+                await You(`suddenly feel ${Hallucination() ? 'trippy'
+                                                           : 'confused'}.`);
+            await make_confused(((intr.HConfusion | 0) & TIMEOUT) + lcount,
+                                true);
+            break;
+        case 3:
+            await make_stunned(((intr.HStun | 0) & TIMEOUT) + lcount, true);
+            break;
+        case 4:
+            if (props.VOMITING) {
+                const { vomit } = await import('./eat.js');
+                await vomit();
+            } else {
+                await make_vomiting(14, false);
+            }
+            break;
+        case 5:
+            await make_hallucinated(
+                ((intr.HHallucination | 0) & TIMEOUT) + lcount, true, 0);
+            break;
+        case 6:
+            if (Deaf())
+                await pline(nothing_seems_to_happen);
+            await make_deaf(((intr.HDeaf | 0) & TIMEOUT) + lcount, true);
+            break;
+        }
+        return;
+    }
+
+    const timed_trouble = (value) => {
+        value = Number(value) || 0;
+        return value && !(value & ~TIMEOUT) ? value & TIMEOUT : 0;
+    };
+    const trouble = [];
+    if (timed_trouble(props.SICK))
+        trouble.push('sick');
+
+    const stuckData = u.ustuck?.data ?? game.mons?.[u.ustuck?.mnum];
+    const swallowedBlindAttack = u.uswallow && stuckData
+        && attacktype_fordmg(stuckData, ATTKS.AT_ENGL, ATTKS.AD_BLND);
+    if (timed_trouble(intr.HBlinded) > (u.ucreamed || 0)
+        && !swallowedBlindAttack)
+        trouble.push('blinded');
+    if (timed_trouble(intr.HHallucination))
+        trouble.push('hallucinating');
+    if (timed_trouble(props.VOMITING))
+        trouble.push('vomiting');
+    if (timed_trouble(intr.HConfusion))
+        trouble.push('confused');
+    if (timed_trouble(intr.HStun))
+        trouble.push('stunned');
+    if (timed_trouble(intr.HDeaf))
+        trouble.push('deaf');
+
+    if (!trouble.length) {
+        await pline(nothing_happens);
+        return;
+    }
+    for (let i = trouble.length - 1; i > 0; i--) {
+        const iswap = rn2(i + 1);
+        if (iswap !== i)
+            [trouble[i], trouble[iswap]] = [trouble[iswap], trouble[i]];
+    }
+
+    let val_limit = rn2(d(2, obj.blessed ? 4 : 2));
+    if (val_limit > trouble.length)
+        val_limit = trouble.length;
+
+    for (let val = 0; val < val_limit; val++) {
+        switch (trouble[val]) {
+        case 'sick':
+            await make_sick(0, null, true, SICK_ALL);
+            break;
+        case 'blinded':
+            await make_blinded(u.ucreamed || 0, true);
+            break;
+        case 'hallucinating':
+            await make_hallucinated(0, true, 0);
+            break;
+        case 'vomiting':
+            await make_vomiting(0, true);
+            break;
+        case 'confused':
+            await make_confused(0, true);
+            break;
+        case 'stunned':
+            await make_stunned(0, true);
+            break;
+        case 'deaf':
+            await make_deaf(0, true);
+            break;
+        }
+    }
+
+    if (val_limit)
+        (game.disp ||= {}).botl = true;
+    else
+        await pline(nothing_seems_to_happen);
+}
+
 // src/apply.c doapply() — the 'a' command.
 export async function doapply() {
     if (nohands(game.youmonst.data)) {
@@ -1385,6 +1515,11 @@ export async function doapply() {
 
     if (obj.otyp === ONAMES.FIGURINE)
         return await use_figurine(obj);
+
+    if (obj.otyp === ONAMES.UNICORN_HORN) {
+        await use_unicorn_horn(obj);
+        return ECMD_TIME;
+    }
 
     if (NEEDS_DIR.includes(obj.otyp)) {
         if (!await getdir(null))

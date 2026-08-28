@@ -1,0 +1,20 @@
+{
+  "name": "unicorn-horn-effects",
+  "description": "A debug Wizard disables random monster generation, removes fixed monsters, repeatedly applies a cursed unicorn horn to accumulate timed ailments, then repeatedly applies a blessed horn to exercise randomized multi-trouble cures and the no-trouble result.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "survival.timed-status",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2212,
+      "datetime": "20000110121500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!acoustics,!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO r\r\u0017blessed potion of monster detection\ri\u001bqo\u001b#wizkill\rm.m.m.m.\u001b\u0017cursed unicorn horn\ri\u001bapi\u001bapi\u001bapi\u001bapi\u001bapi\u001bapi\u001bapi\u001b\u0017blessed unicorn horn\ri\u001baqi\u001baqi\u001baqi\u001baqi\u001baqi\u001baqi\u001baqi\u001baqi\u001baqi\u001baqi\u001b"
+    }
+  ]
+}

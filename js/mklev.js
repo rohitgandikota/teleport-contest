@@ -112,7 +112,7 @@ import { pline_The, You } from './pline.js';
 
 // include/permonst.h / include/hack.h:1189-1193, 1404
 const NON_PM = -1;
-const CORPSTAT_INIT = 0x08, CORPSTAT_SPE_VAL = 0x07,
+const CORPSTAT_FEMALE = 0x01, CORPSTAT_INIT = 0x08, CORPSTAT_SPE_VAL = 0x07,
       CORPSTAT_NONE = 0x00; /* include/obj.h */
 const TAINT_AGE = 50;
 // Object type and object class constants come from js/objects_data.js, which
@@ -2687,10 +2687,12 @@ async function makeniche(trap_type) {
                 if (!rn2(5) && loc && IS_WALL(loc.typ)) {
                     loc.typ = IRONBARS;
                     if (rn2(3)) {
-                        /* src/mklev.c — a dead adventurer behind the bars */
+                        /* src/mklev.c:786 passes TRUE, numeric 1, as the
+                           corpstat flag. That aliases CORPSTAT_FEMALE and
+                           deliberately does not request initialization. */
                         const ptr = mkclass(MONSYMS.S_HUMAN, 0);
                         mkcorpstat(CORPSE, null, ptr ? monsndx(ptr) : NON_PM,
-                                   xx, yy + dy, CORPSTAT_INIT);
+                                   xx, yy + dy, CORPSTAT_FEMALE);
                     }
                 }
                 if (!g.level.flags.noteleport) {

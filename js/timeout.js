@@ -417,6 +417,13 @@ export async function nh_timeout() {
             }
             break;
         }
+        case 'HSee_invisible': {
+            const { newsym, see_monsters } = await import('./display.js');
+            see_monsters();
+            newsym(game.u.ux, game.u.uy);
+            await stop_occupation();
+            break;
+        }
         case 'HFumbling': {
             const { Levitation, Flying, Deaf } = await import('./youprop.js');
             if (game.u.umoved && !(Levitation() || Flying())) {

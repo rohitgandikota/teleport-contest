@@ -212,6 +212,8 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
 
     const do_hallu = Hallucination()
         && !((suppress || 0) & SUPPRESS_HALLUCINATION);
+    const do_invis = !!mtmp.minvis
+        && !((suppress || 0) & SUPPRESS_INVISIBLE);
 
     if (!do_hallu && (mtmp.ispriest || mtmp.isminion))
         return priest_name(mtmp, article);
@@ -239,8 +241,6 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
             note_do_name_unported('x_monnam:shkname');
         }
     }
-    if (mtmp.minvis)
-        note_do_name_unported('x_monnam:invisible');
     /* src/do_name.c:875, unseen monsters read as "it". AUGMENT_IT asks for
        "someone" for a thinking humanoid and "something" otherwise; while
        hallucinating, rn2(2) may invert that choice. */
@@ -254,10 +254,12 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
         return (!do_hallu ? someone : !rn2(2)) ? 'someone' : 'something';
     }
 
-    /* Put the adjectives in the buffer; the invisible state is recorded
-       above. src/do_name.c:943 — "saddled" is appended for a steed wearing
-       its saddle unless SUPPRESS_SADDLE, Blind or Hallucination. */
+    /* Put the adjectives in the buffer. src/do_name.c:943 says "saddled"
+       is appended for a steed wearing its saddle unless SUPPRESS_SADDLE,
+       Blind or Hallucination. */
     let buf = adjective ? adjective + ' ' : '';
+    if (do_invis)
+        buf += 'invisible ';
     const do_saddle = !((suppress || 0) & SUPPRESS_SADDLE);
     if (do_saddle && ((mtmp.misc_worn_check || 0) & W_SADDLE)
         && !game.u.ublind && !game.u.uprops?.HALLUC)

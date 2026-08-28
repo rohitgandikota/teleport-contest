@@ -1,0 +1,19 @@
+{
+  "name": "monster-invisible-timeout",
+  "description": "Debug Valkyrie lets see invisible expire before creating a stalker, pinning timeout cleanup and redraw.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.movement",
+    "survival.timed-status"
+  ],
+  "segments": [
+    {
+      "seed": 7242,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r a\r 30s\u0007stalker\r"
+    }
+  ]
+}

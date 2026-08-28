@@ -1858,7 +1858,7 @@ async function hmon_hitmon_dmg_recalc(hmd, obj) {
 // src/weapon.c:993 dbon() — the Strength damage bonus. A weak hero takes a
 // PENALTY, which is why stubbing this at 0 made light hits kill monsters C
 // leaves alive.
-function dbon() {
+export function dbon() {
     const str = ACURR(A_STR);
 
     if (game.Upolyd)

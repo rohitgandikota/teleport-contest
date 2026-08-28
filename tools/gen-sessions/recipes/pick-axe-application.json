@@ -1,0 +1,64 @@
+{
+  "name": "pick-axe-application",
+  "description": "Debug Wizards and a normal-mode Archeologist apply pick-axes to cover automatic wielding and reapplication, cancellation, upward and downward use, self-hits, empty horizontal swings, interruption, and completed ordinary wall digging.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "mode.normal",
+    "object.buc-enchant-erosion",
+    "object.identification",
+    "ui.cancel-invalid",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "segments": [
+    {
+      "seed": 2231,
+      "datetime": "20000110134000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\rao \u001bi\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110134500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\rao .i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110135000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\rao <i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110135500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\rao >i\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110140000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\rao li\u001b"
+    },
+    {
+      "seed": 2231,
+      "datetime": "20000110140500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\rao \u001bhhaohi\u001b"
+    },
+    {
+      "seed": 2200,
+      "datetime": "20000110141000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 pick-axe\ran y\u001bi\u001b"
+    },
+    {
+      "seed": 31000,
+      "datetime": "20000111100000",
+      "nethackrc": "OPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "Archie\rnahmly ae  .i\u001b"
+    }
+  ]
+}

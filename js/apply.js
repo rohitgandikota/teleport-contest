@@ -10,7 +10,8 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          RLOC_NONE, TIMEOUT, Upolyd, A_DEX, A_CON, MAX_SPELL_STUDY,
          SICK_ALL, SICK_NONVOMITABLE,
          NH_RED, plur, HOMEMADE_TIN, COLNO, FLASHED_LIGHT,
-         STOMACH } from './const.js';
+         STOMACH, DIGTYP_UNDIGGABLE, N_DIRS_Z, xdir, ydir,
+         TT_WEB } from './const.js';
 import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
          useupall, useupf, weight, any_obj_ok, prinv } from './invent.js';
@@ -67,6 +68,8 @@ import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
 import { bhit, obj_resists, zapyourself } from './zap.js';
 import { ceiling, surface } from './dungeon.js';
+import { can_reach_floor } from './pickup.js';
+import { dig_typ, use_pick_axe2 } from './dig.js';
 
 function note_unported_apply(what) {
     (game.unported ||= new Set()).add(what);
@@ -105,6 +108,42 @@ function on_stairs_at_u() {
         if (stway.sx === game.u.ux && stway.sy === game.u.uy)
             return true;
     return false;
+}
+
+// src/dig.c:1092 use_pick_axe() -- wield first, replay the application, then
+// show only directions with a useful target plus the reachable vertical one.
+async function use_pick_axe(obj) {
+    if (obj !== game.u.uwep) {
+        if (await wield_tool(obj, 'swing')) {
+            cmdq_add_ec(CQ_CANNED, doapply);
+            cmdq_add_key(CQ_CANNED, obj.invlet);
+            return ECMD_TIME;
+        }
+        return ECMD_OK;
+    }
+
+    const verb = is_pick(obj) ? 'dig' : 'chop';
+    if (game.u.utrap && game.u.utraptype === TT_WEB) {
+        await pline(`Unfortunately, you can't ${verb} while entangled in a web.`);
+        return ECMD_OK;
+    }
+
+    const chars = 'hykulnjb<>';
+    const choices = [];
+    const downok = can_reach_floor(false);
+    for (let dir = 0; dir < N_DIRS_Z; dir++) {
+        if (dir < 8) {
+            const rx = game.u.ux + xdir[dir], ry = game.u.uy + ydir[dir];
+            if (!isok(rx, ry) || dig_typ(obj, rx, ry) === DIGTYP_UNDIGGABLE)
+                continue;
+        } else if (((dir === 9) ? 1 : 0) ^ (downok ? 1 : 0)) {
+            continue;
+        }
+        choices.push(chars[dir]);
+    }
+    if (!await getdir(`In what direction do you want to ${verb}? [${choices.join('')}]`))
+        return ECMD_CANCEL;
+    return await use_pick_axe2(obj);
 }
 
 // src/apply.c:1628 use_lamp(). Lamps, lanterns, and loose candles share the
@@ -1840,6 +1879,9 @@ export async function doapply() {
         return await use_container(obj, true, false);
     }
 
+    if (is_pick(obj) || is_axe(obj))
+        return await use_pick_axe(obj);
+
     /* src/apply.c doapply's switch: an otyp with a real case whose handler
        is not ported yet is recorded; anything else falls to C's default
        arm, which is fully defined: pole-arms and diggers get their use
@@ -1852,10 +1894,6 @@ export async function doapply() {
         note_unported_apply('apply:use_pole');
         return ECMD_OK;
     }
-    if (is_pick(obj) || is_axe(obj)) {
-        note_unported_apply('apply:use_pick_axe');
-        return ECMD_OK;
-    }
     await pline("Sorry, I don't know how to use that.");
     return ECMD_FAIL;
 }
@@ -1865,8 +1903,8 @@ const APPLY_CASED_OTYPS = new Set([
     'BLINDFOLD', 'LENSES', 'CREAM_PIE', 'LUMP_OF_ROYAL_JELLY', 'BULLWHIP',
     'GRAPPLING_HOOK', 'LARGE_BOX', 'CHEST', 'ICE_BOX', 'SACK',
     'BAG_OF_HOLDING', 'OILSKIN_SACK', 'BAG_OF_TRICKS', 'CAN_OF_GREASE',
-    'LOCK_PICK', 'CREDIT_CARD', 'SKELETON_KEY', 'PICK_AXE',
-    'DWARVISH_MATTOCK', 'TINNING_KIT', 'LEASH', 'SADDLE', 'MAGIC_WHISTLE',
+    'LOCK_PICK', 'CREDIT_CARD', 'SKELETON_KEY', 'TINNING_KIT', 'LEASH',
+    'SADDLE', 'MAGIC_WHISTLE',
     'TIN_WHISTLE', 'EUCALYPTUS_LEAF', 'STETHOSCOPE', 'MIRROR', 'BELL',
     'BELL_OF_OPENING', 'CANDELABRUM_OF_INVOCATION', 'WAX_CANDLE',
     'TALLOW_CANDLE', 'OIL_LAMP', 'MAGIC_LAMP', 'BRASS_LANTERN', 'POT_OIL',

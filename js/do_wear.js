@@ -489,7 +489,7 @@ function Gloves_on() {
     case ONAMES.GAUNTLETS_OF_DEXTERITY:
         if (uarmg.spe) {
             makeknown(uarmg.otyp);
-            game.u.abon.a[A_DEX] += uarmg.spe;
+            attribute_bonus_array()[A_DEX] += uarmg.spe;
         }
         (game.disp ||= {}).botl = true;
         break;
@@ -1537,6 +1537,7 @@ async function armoroff(otmp) {
     if (cat === 0) what = suit_simple_name(otmp);
     if (cat === 5) what = cloak_simple_name(otmp);
     if (cat === 2) what = helm_simple_name(otmp);
+    if (cat === 3) what = gloves_simple_name(otmp);
 
     if (delay) {
         nomul(delay);
@@ -1595,7 +1596,7 @@ async function Gloves_off(otmp) {
     case ONAMES.GAUNTLETS_OF_DEXTERITY:
         if (!game.context_takeoff?.cancelled_don && otmp.spe) {
             makeknown(otmp.otyp);
-            game.u.abon.a[A_DEX] -= otmp.spe;
+            attribute_bonus_array()[A_DEX] -= otmp.spe;
         }
         (game.disp ||= {}).botl = true;
         break;

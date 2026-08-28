@@ -1,0 +1,22 @@
+{
+  "name": "glove-effects",
+  "description": "A debug Wizard wears and removes power, dexterity, and fumbling gauntlets to exercise attribute bonuses, identification, timer setup, and removal names.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.identification",
+    "object.buc-enchant-erosion",
+    "survival.timed-status",
+    "turn.occupation-interrupt",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 2193,
+      "datetime": "20000110101000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +3 gauntlets of power\rWoTo\u0017blessed +3 gauntlets of dexterity\rWpTp\u0017blessed gauntlets of fumbling\rWq30sTq"
+    }
+  ]
+}

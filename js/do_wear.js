@@ -31,7 +31,7 @@ import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
 import { stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
 import { You, You_feel, You_cant, Your } from './pline.js';
-import { an, xname, doname, the, gloves_simple_name,
+import { an, xname, doname, the, Tobjnam, gloves_simple_name,
          suit_simple_name } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
@@ -147,20 +147,83 @@ async function Cloak_on() {
     if (!uarmc)
         return 0;
     const prop = PROP_KEYS[objects[uarmc.otyp].oc_oprop];
-    const oldprop = (game.u.uprops?.[prop] || 0) & ~WORN_CLOAK;
+    const oldprop = prop
+        ? (game.u.uprops?.[prop] || 0) & ~WORN_CLOAK : 0;
 
-    if (uarmc.otyp === ONAMES.CLOAK_OF_DISPLACEMENT
-        && !oldprop && !game.u.intrinsic?.HDisplaced
-        && !game.u.blocked?.DISPLACED
-        && ((!game.u.ublind && !game.u.uswallow && !game.u.uprops?.INVIS)
-            || game.u.unblind_telepat_range >= 0
-            || game.u.uprops?.DETECT_MONSTERS)) {
+    switch (uarmc.otyp) {
+    case ONAMES.CLOAK_OF_PROTECTION:
         makeknown(uarmc.otyp);
-        await You_feel('that monsters have difficulty pinpointing your location.');
-    } else if (uarmc.otyp === ONAMES.CLOAK_OF_PROTECTION) {
-        makeknown(uarmc.otyp);
+        break;
+    case ONAMES.ELVEN_CLOAK:
+        await toggle_stealth(uarmc, oldprop, true);
+        break;
+    case ONAMES.CLOAK_OF_DISPLACEMENT:
+        await toggle_displacement(uarmc, oldprop, true);
+        break;
+    case ONAMES.MUMMY_WRAPPING:
+        if ((game.u.intrinsic?.HInvis || game.u.uprops?.INVIS) && !Blind()) {
+            newsym(game.u.ux, game.u.uy);
+            await You(`can ${See_invisible()
+                ? 'no longer see through yourself' : 'see yourself'}!`);
+        }
+        break;
+    case ONAMES.CLOAK_OF_INVISIBILITY:
+        if (!oldprop && !game.u.intrinsic?.HInvis && !Blind()) {
+            makeknown(uarmc.otyp);
+            newsym(game.u.ux, game.u.uy);
+            await pline(`Suddenly you can${See_invisible()
+                ? ' see through' : 'not see'} yourself.`);
+        }
+        break;
+    case ONAMES.OILSKIN_CLOAK:
+        await pline(`${Tobjnam(uarmc, 'fit')} very tightly.`);
+        break;
+    case ONAMES.ALCHEMY_SMOCK:
+        (game.u.uprops ||= {}).ACID_RES =
+            (game.u.uprops.ACID_RES || 0) | WORN_CLOAK;
+        break;
     }
     return reveal_worn_armor(W_ARMC);
+}
+
+async function Cloak_off(otmp) {
+    const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
+    const oldprop = prop
+        ? (game.u.uprops?.[prop] || 0) & ~WORN_CLOAK : 0;
+
+    (game.context_takeoff ||= {}).mask &= ~W_ARMC;
+    setworn(null, W_ARMC);
+    switch (otmp.otyp) {
+    case ONAMES.ELVEN_CLOAK:
+        await toggle_stealth(otmp, oldprop, false);
+        break;
+    case ONAMES.CLOAK_OF_DISPLACEMENT:
+        await toggle_displacement(otmp, oldprop, false);
+        break;
+    case ONAMES.MUMMY_WRAPPING:
+        if (Invis() && !Blind()) {
+            newsym(game.u.ux, game.u.uy);
+            await You(`can ${See_invisible()
+                ? 'see through yourself' : 'no longer see yourself'}.`);
+        }
+        break;
+    case ONAMES.CLOAK_OF_INVISIBILITY:
+        if (!oldprop && !game.u.intrinsic?.HInvis && !Blind()) {
+            makeknown(otmp.otyp);
+            newsym(game.u.ux, game.u.uy);
+            await pline(`Suddenly you can ${See_invisible()
+                ? 'no longer see through yourself' : 'see yourself'}.`);
+        }
+        break;
+    case ONAMES.ALCHEMY_SMOCK: {
+        const left = (game.u.uprops?.ACID_RES || 0) & ~WORN_CLOAK;
+        if (left)
+            game.u.uprops.ACID_RES = left;
+        else if (game.u.uprops)
+            delete game.u.uprops.ACID_RES;
+        break;
+    }
+    }
 }
 function Helmet_on() { return reveal_worn_armor(W_ARMH); }
 function Gloves_on() {
@@ -712,6 +775,22 @@ async function toggle_stealth(obj, oldprop, on) {
     }
 }
 
+// src/do_wear.c toggle_displacement().
+async function toggle_displacement(obj, oldprop, on) {
+    if (on ? game.initial_don : game.context_takeoff?.cancelled_don)
+        return;
+    if (!oldprop && !game.u.intrinsic?.HDisplaced
+        && !game.u.blocked?.DISPLACED
+        && ((!Blind() && !game.u.uswallow && !Invis())
+            || game.u.unblind_telepat_range >= 0
+            || game.u.uprops?.DETECT_MONSTERS)) {
+        if (obj)
+            makeknown(obj.otyp);
+        await You_feel(`that monsters${on ? '' : ' no longer'} have difficulty `
+                       + 'pinpointing your location.');
+    }
+}
+
 // src/potion.c:471 self_invis_message().
 async function self_invis_message() {
     await pline(`${Hallucination() ? 'Far out, man!  You'
@@ -1199,6 +1278,10 @@ async function slot_off(otmp) {
     }
     if (otmp.owornmask & W_ARMG) {
         await Gloves_off(otmp);
+        return;
+    }
+    if (otmp.owornmask & W_ARMC) {
+        await Cloak_off(otmp);
         return;
     }
     if (otmp.owornmask & W_ARM) {

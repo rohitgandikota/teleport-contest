@@ -73,10 +73,9 @@ export const See_invisible = () => !!(game.u?.intrinsic?.HSee_invisible
                                       || game.u?.uprops?.SEE_INVIS);
 
 // include/youprop.h:198 Invis — ((HInvis || EInvis) && !BInvis).
-// The flat uprops map has no blocked slot, so the BInvis term has nowhere to
-// live yet; nothing blocks invisibility today, so this is right for now and
-// the term goes in when uprops grows the struct.
-export const Invis = () => !!game.u?.uprops?.INVIS;
+export const Invis = () => !!(game.u?.intrinsic?.HInvis
+                              || game.u?.uprops?.INVIS)
+                           && !game.u?.blocked?.INVIS;
 
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
 export const Levitation = () => !!game.u?.uprops?.LEVITATION;

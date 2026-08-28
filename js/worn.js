@@ -56,8 +56,19 @@ const worn = [
 /* The flat game.u.uprops map stores, under each PROP_KEYS name, C's
    u.uprops[p].extrinsic slot mask itself (a nonzero number, so every
    truthiness read keeps working); the key is deleted when the mask empties.
-   That makes remove-one-of-two-granting-items exact. The .blocked and
-   artifact W_ART bookkeeping have no ported reader yet; their arms record. */
+   game.u.blocked carries the matching blocked slot masks. */
+
+function update_blocked(u, prop, mask, on) {
+    const key = PROP_KEYS[prop];
+    if (!key)
+        return;
+    const old = u.blocked?.[key] || 0;
+    const next = on ? old | mask : old & ~mask;
+    if (next)
+        (u.blocked ||= {})[key] = next;
+    else if (u.blocked)
+        delete u.blocked[key];
+}
 
 // src/worn.c:50 recalc_telepat_range() — range of unblind telepathy.
 export function recalc_telepat_range() {
@@ -111,7 +122,7 @@ export function setworn(obj, mask) {
                                 delete u.uprops[PROP_KEYS[p]];
                         }
                         if ((p = w_blocks(oobj, mask)) !== 0)
-                            note_unported_worn('setworn:blocked');
+                            update_blocked(u, p, wp.w_mask, false);
                         if (oobj.oartifact)
                             set_artifact_intrinsic(oobj, false, wp.w_mask);
                     }
@@ -134,7 +145,7 @@ export function setworn(obj, mask) {
                                 (u.uprops ||= {})[PROP_KEYS[p]] =
                                     (u.uprops[PROP_KEYS[p]] || 0) | wp.w_mask;
                             if ((p = w_blocks(obj, mask)) !== 0)
-                                note_unported_worn('setworn:blocked');
+                                update_blocked(u, p, wp.w_mask, true);
                         }
                         if (obj.oartifact)
                             set_artifact_intrinsic(obj, true, wp.w_mask);
@@ -186,7 +197,7 @@ export function setnotworn(obj) {
             if (obj.oartifact)
                 set_artifact_intrinsic(obj, false, wp.w_mask);
             if ((p = w_blocks(obj, wp.w_mask)) !== 0)
-                note_unported_worn('setnotworn:blocked');
+                update_blocked(u, p, wp.w_mask, false);
         }
     if (!u.uarm)
         game.iflags.tux_penalty = false;

@@ -217,11 +217,15 @@ export async function tty_yn_function(query, resp, def) {
        advance a 79-column question's logical cursor onto an empty second
        row, even though the visible cells contain only the question text. */
     const columns = game?.nhDisplay?.cols ?? 80;
-    /* tty continuation rows retain the space that occupied the wrap column;
-       update_topl replaces it logically, but the physical tty starts the
-       continuation at column 1. */
-    const renderedPrompt = wrap_topline(prompt + ' ', columns)
-        .replace(/\n/g, '\n ');
+    /* SUPPRESS_HISTORY routes this through show_topl(), whose putsyms()
+       hard-wraps before column CO rather than using update_topl()'s word
+       wrapping. */
+    const promptText = prompt + ' ';
+    const promptWidth = columns - 1;
+    const promptLines = [];
+    for (let start = 0; start < promptText.length; start += promptWidth)
+        promptLines.push(promptText.slice(start, start + promptWidth));
+    const renderedPrompt = promptLines.join('\n');
     game._topline_physical_prefix = '';
     game._pending_message = renderedPrompt;
     game._toplin = TOPLINE_SPECIAL_PROMPT;
@@ -229,9 +233,9 @@ export async function tty_yn_function(query, resp, def) {
 
     const display = game?.nhDisplay;
     if (display) {
-        const promptLines = renderedPrompt.split('\n');
-        const cursorRow = promptLines.length - 1;
-        const lastLineLength = promptLines[cursorRow].length;
+        const renderedLines = renderedPrompt.split('\n');
+        const cursorRow = renderedLines.length - 1;
+        const lastLineLength = renderedLines[cursorRow].length;
         game._topl_curx = lastLineLength;
         game._topl_cury = cursorRow;
         /* The tty's clear-to-EOL fallback parks column 1 on an empty wrapped

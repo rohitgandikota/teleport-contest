@@ -450,7 +450,29 @@ function get_cost(obj, shkp) {
     if (!obj.dknown || !ocl.oc_name_known) {
         if (obj.oclass === OCLASSES.GEM_CLASS
             && ocl.oc_material === MATERIALS.GLASS) {
-            note_unported_shk('get_cost:unidentified_glass_gem');
+            const pairs = [
+                [ONAMES.DIAMOND, ONAMES.OPAL],
+                [ONAMES.SAPPHIRE, ONAMES.AQUAMARINE],
+                [ONAMES.RUBY, ONAMES.JASPER],
+                [ONAMES.AMBER, ONAMES.TOPAZ],
+                [ONAMES.JACINTH, ONAMES.AGATE],
+                [ONAMES.CITRINE, ONAMES.CHRYSOBERYL],
+                [ONAMES.BLACK_OPAL, ONAMES.JET],
+                [ONAMES.EMERALD, ONAMES.JADE],
+                [ONAMES.AMETHYST, ONAMES.FLUORITE],
+            ];
+            const pair = pairs[obj.otyp - ONAMES.FIRST_GLASS_GEM];
+            const dt = String(game.fixed_datetime || '');
+            const birthday = dt.length === 14
+                ? Date.UTC(Number(dt.slice(0, 4)), Number(dt.slice(4, 6)) - 1,
+                           Number(dt.slice(6, 8)), Number(dt.slice(8, 10)),
+                           Number(dt.slice(10, 12)), Number(dt.slice(12, 14)))
+                    / 1000 + 4 * 60 * 60
+                : 0;
+            const pseudorand = ((birthday | 0) % obj.otyp)
+                             >= Math.trunc(obj.otyp / 2);
+            if (pair)
+                tmp = game.objects[pair[pseudorand ? 0 : 1]].oc_cost;
         } else if ((obj.o_id % 4) === 0) {
             multiplier *= 4;
             divisor *= 3;
@@ -703,7 +725,13 @@ function set_cost(obj, shkp) {
     const ocl = game.objects[obj.otyp];
     if (!obj.dknown || !ocl.oc_name_known) {
         if (obj.oclass === OCLASSES.GEM_CLASS) {
-            note_unported_shk('set_cost:unidentified_gem');
+            if (ocl.oc_material === MATERIALS.GEMSTONE
+                || ocl.oc_material === MATERIALS.GLASS) {
+                amount = (obj.otyp - ONAMES.FIRST_REAL_GEM)
+                       % (6 - (shkp.m_id || 0) % 3);
+                amount = (amount + 3) * (obj.quan || 1);
+                divisor = 1;
+            }
         } else if (amount > 1 && !((shkp.m_id || 0) % 4)) {
             multiplier *= 3;
             divisor *= 4;

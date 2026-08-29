@@ -217,6 +217,13 @@ export function del_engr(ep) {
     if (i >= 0) list.splice(i, 1);
 }
 
+// src/engrave.c del_engr_at()
+export function del_engr_at(x, y) {
+    const ep = engr_at(x, y);
+    if (ep)
+        del_engr(ep);
+}
+
 // src/engrave.c:408 make_engr_at() — replaces any engraving already there.
 //
 // It DOES draw, on one branch: engr_type <= 0 means "pick one", and that costs

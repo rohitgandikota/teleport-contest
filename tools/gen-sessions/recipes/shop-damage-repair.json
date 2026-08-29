@@ -1,0 +1,21 @@
+{
+  "name": "shop-damage-repair",
+  "description": "A debug Wizard pays for razing a general-store wall, then waits for the shopkeeper to restore that wall after C's repair delay.",
+  "branches": [
+    "shop.damage.repair"
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "social.shops-billing",
+    "terrain.doors-locks"
+  ],
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017blessed wand of digging (0:5)\r\u00171000 gold pieces\rzojy..... "
+    }
+  ]
+}

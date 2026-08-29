@@ -11,25 +11,27 @@ import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS,
          M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG,
-         NON_PM }
+         NON_PM, REPAIR_DELAY, BOLT_LIM, D_BROKEN, D_CLOSED, IS_ROOM,
+         IS_WALL, SVALL, u_at }
     from './const.js';
 import { in_rooms } from './hack.js';
-import { distu, dist2, online2, isok } from './hacklib.js';
-import { m_canseeu, inhishop } from './monmove.js';
+import { distu, dist2, distmin, online2, isok } from './hacklib.js';
+import { m_canseeu, inhishop, mdistu } from './monmove.js';
 import { move_special } from './priest.js';
 import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
          contained_gold, hidden_gold, weight } from './invent.js';
-import { m_at, wake_nearto } from './mon.js';
+import { m_at, t_at, wake_nearto } from './mon.js';
 import { Blind, Deaf, Invis } from './youprop.js';
 import { ACURR, Fast, adjalign, exercise } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
 import { Has_contents, Is_candle } from './obj.js';
 import { DEADMONSTER, helpless } from './monst.js';
-import { is_demon, is_elf, is_human, vegetarian } from './mondata.js';
+import { is_demon, is_elf, is_human, passes_walls, vegetarian } from './mondata.js';
 import { poly_gender } from './polyself.js';
 import { rn2, rnd } from './rng.js';
-import { bot, pline, canseemon, canspotmon, newsym, sensemon } from './display.js';
+import { bot, flush_screen, pline, canseemon, canspotmon, newsym, sensemon }
+    from './display.js';
 import { an, doname, simpleonames, xname, The } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
 import { OBJ_CONTAINED, OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
@@ -42,6 +44,9 @@ import { ATR_NONE, NHW_MENU, tty_add_menu, tty_create_nhwindow,
 import { NO_COLOR } from './terminal.js';
 import { tty_yn_function } from './tty/topl.js';
 import { arti_cost } from './artifact.js';
+import { block_point, cansee } from './vision.js';
+import { del_engr_at } from './engrave.js';
+import { You_feel, You_hear } from './pline.js';
 
 // src/shk.c:1449 hot_pursuit() — the shopkeeper starts following you.
 //
@@ -2002,15 +2007,342 @@ export function block_entry(x, y) {
 // shopkeeper inside his own shop? js/monmove.js holds the test.
 export { inhishop };
 
-// src/shk.c:4556 shk_fixes_damage() — repair one pending damage-list
-// entry. The level damage list only gains entries from digging and door
-// breakage, neither of which a ported path creates near a shop yet, so
-// this stays a pure guard.
-function shk_fixes_damage(shkp) {
-    const dam = (game.level?.damagelist || []).length;
+// src/shk.c:4399 add_damage()
+export function add_damage(x, y, cost) {
+    const lev = game.level?.at(x, y);
+    if (!lev)
+        return;
+
+    if (IS_DOOR(lev.typ)) {
+        let realEntrance = false;
+        for (const room of in_rooms(x, y, SHOPBASE)) {
+            const shkp = shop_keeper(room.charCodeAt(0));
+            const shd = shkp ? (shkp.eshk || ESHK(shkp))?.shd : null;
+            if (shd && shd.x === x && shd.y === y) {
+                realEntrance = true;
+                break;
+            }
+        }
+        if (!realEntrance)
+            return;
+    }
+
+    const damage = game.level.damagelist ||= [];
+    const old = damage.find(dam => dam.x === x && dam.y === y);
+    if (old) {
+        old.cost += cost;
+        old.when = game.moves;
+        return;
+    }
+
+    damage.unshift({
+        when: game.moves,
+        x,
+        y,
+        cost,
+        typ: lev.typ,
+        flags: lev.flags,
+        wall_info: lev.wall_info,
+        doormask: lev.doormask,
+    });
+    if (cansee(x, y))
+        lev.seenv = SVALL;
+}
+
+function cad(altusage) {
+    const gender = is_demon(game.youmonst?.data) ? 3 : poly_gender();
+    const address = ['cad', 'minx', 'beast', 'fiend'][gender] || 'thing';
+    if (!altusage)
+        return address;
+    return `"${address[0].toUpperCase()}${address.slice(1)}!  `;
+}
+
+async function getcad(shkp, dmgstr, x, y, uinshp, animal, pursue) {
+    const dugwall = dmgstr === 'dig into' || dmgstr === 'damage';
+    const target = dugwall ? 'shop' : 'door';
+
+    if (muteshk(shkp)) {
+        if (animal && !helpless(shkp))
+            note_unported_shk('getcad:yelp');
+    } else if (pursue || uinshp
+               || distmin(game.u.ux, game.u.uy, x, y) <= 1) {
+        if (!Deaf()) {
+            await pline(`"How dare you ${dmgstr} my ${target}?"`);
+        } else {
+            note_unported_shk('getcad:deaf_angrytext');
+            await pline(`${shopkeeper_name(shkp)} is furious that you decided to ${
+                dmgstr} ${shk_pronouns(shkp).his} ${target}!`);
+        }
+    } else if (!Deaf()) {
+        await pline(`${shopkeeper_name(shkp)} shouts:`);
+        await pline(`"Who dared ${dmgstr} my ${target}?"`);
+    } else {
+        note_unported_shk('getcad:deaf_angrytext');
+        await pline(`${shopkeeper_name(shkp)} is furious that someone decided to ${
+            dmgstr} ${shk_pronouns(shkp).his} ${target}!`);
+    }
+    hot_pursuit(shkp);
+}
+
+async function home_shk(shkp) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    const { mnearto } = await import('./mon.js');
+    await mnearto(shkp, eshk.shk.x, eshk.shk.y, true, RLOC_NOMSG);
+    game.level.flags.has_shop = 1;
+    after_shk_move(shkp);
+}
+
+// src/shk.c:5174 pay_for_damage()
+export async function pay_for_damage(dmgstr, cant_mollify = false) {
+    let shkp = null;
+    let appearHere = null;
+    let cost = 0;
+    let nearestShk = Number.MAX_SAFE_INTEGER;
+    let nearestDamage = Number.MAX_SAFE_INTEGER;
+    let picks = 0;
+
+    for (const dam of game.level?.damagelist || []) {
+        if (dam.when !== game.moves || !dam.cost)
+            continue;
+        cost += dam.cost;
+        for (const room of in_rooms(dam.x, dam.y, SHOPBASE)) {
+            const candidate = shop_keeper(room.charCodeAt(0));
+            if (!candidate)
+                continue;
+            if (candidate === shkp) {
+                const damageDistance = distu(dam.x, dam.y);
+                if (damageDistance < nearestDamage) {
+                    nearestDamage = damageDistance;
+                    appearHere = dam;
+                }
+                continue;
+            }
+            if (!inhishop(candidate))
+                continue;
+            const distance = mdistu(candidate);
+            if (distance > nearestShk)
+                continue;
+            if (distance === nearestShk && picks) {
+                if (rn2(++picks))
+                    continue;
+            } else {
+                picks = 1;
+            }
+            shkp = candidate;
+            nearestShk = distance;
+            appearHere = dam;
+            nearestDamage = distu(dam.x, dam.y);
+        }
+    }
+
+    if (!cost || !shkp || !appearHere)
+        return;
+
+    const eshk = shkp.eshk || ESHK(shkp);
+    const uinshp = !!(game.u.ushops || '').length;
+    const animal = (shkp.data?.msound ?? 0) <= MSOUND.MS_ANIMAL;
+    const { x, y } = appearHere;
+    eshk.customer = game.plname || '';
+
+    if (!shkp.mpeaceful || eshk.following) {
+        hot_pursuit(shkp);
+        return;
+    }
+
+    if (!in_rooms(shkp.mx, shkp.my, SHOPBASE)) {
+        if (cansee(shkp.mx, shkp.my))
+            await getcad(shkp, dmgstr, x, y, uinshp, animal, true);
+        return;
+    }
+
+    let pursue = false;
+    if (uinshp) {
+        const distance = distmin(game.u.ux, game.u.uy, shkp.mx, shkp.my);
+        if (distance > 1 && distance <= 3) {
+            await pline(`${shopkeeper_name(shkp)} leaps towards you!`);
+            const { mnexto } = await import('./mon.js');
+            mnexto(shkp, RLOC_NOMSG);
+        }
+        pursue = distmin(game.u.ux, game.u.uy, shkp.mx, shkp.my) > 1;
+        if (pursue) {
+            await getcad(shkp, dmgstr, x, y, uinshp, animal, pursue);
+            return;
+        }
+    } else {
+        note_unported_shk('pay_for_damage:outside_shop_appearance');
+    }
+
+    if ((!uinshp && distmin(game.u.ux, game.u.uy, x, y) > 1)
+        || cant_mollify
+        || money_cnt(game.invent || []) + (eshk.credit || 0) < cost
+        || !rn2(50)) {
+        await getcad(shkp, dmgstr, x, y, uinshp, animal, pursue);
+        return;
+    }
+
+    if (Invis())
+        await pline(`Your invisibility does not fool ${shopkeeper_name(shkp)}!`);
+    await flush_screen(0);
+    const answer = await tty_yn_function(
+        `${animal ? '' : cad(true)}You did ${cost} ${currency(cost)} worth of damage!${
+            animal ? '' : '"'}  Pay?`,
+        'yn', 'n');
+    if (answer !== 'n') {
+        const wasSeen = canseemon(shkp);
+        const wasOutside = !inhishop(shkp);
+        const sx = shkp.mx, sy = shkp.my;
+        let balance = cost;
+        if (eshk.credit) {
+            if (eshk.credit >= balance) {
+                await pline('The price is deducted from your credit.');
+                eshk.credit -= balance;
+                balance = 0;
+            } else {
+                await pline('The price is partially covered by your credit.');
+                balance -= eshk.credit;
+                eshk.credit = 0;
+            }
+        }
+        if (balance > 0)
+            await money2mon(shkp, balance);
+        (game.disp ||= {}).botl = true;
+        await pline(`Mollified, ${shopkeeper_name(shkp)} accepts your restitution.`);
+        await home_shk(shkp);
+        shkp.mpeaceful = 1;
+        if (shkp.mx !== sx || shkp.my !== sy) {
+            const isSeen = canseemon(shkp);
+            if (wasOutside && canspotmon(shkp)) {
+                await pline(`${shopkeeper_name(shkp)} returns to ${
+                    shk_pronouns(shkp).his} shop.`);
+            } else if (isSeen || wasSeen) {
+                await pline(`${shopkeeper_name(shkp)} ${!wasSeen
+                    ? 'appears' : isSeen ? 'shifts location' : 'disappears'}.`);
+            }
+        }
+    } else {
+        if (!animal && !Deaf() && !muteshk(shkp))
+            await pline('"Oh, yes!  You\'ll pay!"');
+        else if (animal)
+            note_unported_shk('pay_for_damage:growl');
+        hot_pursuit(shkp);
+        adjalign(-Math.sign(game.u.ualign?.type || 0));
+    }
+}
+
+function shk_impaired(shkp) {
+    return !shkp || !shkp.isshk || !inhishop(shkp)
+        || helpless(shkp) || !!(shkp.eshk || ESHK(shkp))?.following;
+}
+
+function repairable_damage(dam, shkp) {
+    if (!dam || shk_impaired(shkp)
+        || game.moves - dam.when < REPAIR_DELAY)
+        return false;
+
+    const { x, y } = dam;
+    if (!IS_ROOM(dam.typ)) {
+        const mon = m_at(x, y);
+        if ((u_at(x, y) && !game.u.uprops?.PASSES_WALLS)
+            || (x === shkp.mx && y === shkp.my)
+            || (mon && !passes_walls(mon.data)))
+            return false;
+    }
+
+    const trap = t_at(x, y);
+    if (trap && (u_at(x, y) || m_at(x, y)?.mtrapped))
+        return false;
+
+    const room = String.fromCharCode((shkp.eshk || ESHK(shkp)).shoproom);
+    return in_rooms(x, y, SHOPBASE).includes(room);
+}
+
+function find_damage(shkp) {
+    if (shk_impaired(shkp))
+        return null;
+    return (game.level?.damagelist || [])
+        .find(dam => repairable_damage(dam, shkp)) || null;
+}
+
+async function repair_damage(shkp, dam, catchup = false) {
+    if (!repairable_damage(dam, shkp))
+        return 0;
+
+    const { x, y } = dam;
+    const lev = game.level.at(x, y);
+    const trap = t_at(x, y);
+    if (trap) {
+        note_unported_shk('repair_damage:trap');
+        return 0;
+    }
+
+    if (IS_ROOM(dam.typ)
+        || (dam.typ === lev.typ
+            && (!IS_DOOR(dam.typ) || lev.doormask > D_BROKEN)))
+        return 1;
+
+    const litter = (game.level.objects || [])
+        .some(obj => obj.ox === x && obj.oy === y);
+    if (litter) {
+        note_unported_shk('repair_damage:litter_scatter');
+        return 0;
+    }
+
+    const seeit = cansee(x, y);
+    lev.typ = dam.typ;
+    if (IS_DOOR(dam.typ)) {
+        lev.doormask = D_CLOSED;
+    } else {
+        lev.flags = dam.flags;
+        lev.wall_info = dam.wall_info;
+    }
+    del_engr_at(x, y);
+
+    if (seeit)
+        newsym(x, y);
+    block_point(x, y);
+
+    if (catchup)
+        return 1;
+
+    if (seeit) {
+        if (IS_WALL(dam.typ)) {
+            lev.seenv = SVALL;
+            await pline('Suddenly, a section of the wall closes up!');
+        } else if (IS_DOOR(dam.typ)) {
+            await pline('Suddenly, the shop door reappears!');
+        }
+        newsym(x, y);
+    } else if (IS_WALL(dam.typ)) {
+        const eshk = shkp.eshk || ESHK(shkp);
+        if (inside_shop(game.u.ux, game.u.uy) === eshk.shoproom)
+            await You_feel('more claustrophobic than before.');
+        else if (!Deaf() && !rn2(10))
+            await pline('The dungeon acoustics noticeably change.');
+    }
+    return 2;
+}
+
+// src/shk.c:4556 shk_fixes_damage()
+async function shk_fixes_damage(shkp) {
+    const dam = find_damage(shkp);
     if (!dam)
         return;
-    note_unported_shk('shk_fixes_damage:repair_damage');
+
+    const closeby = mdistu(shkp) <= (BOLT_LIM / 2) ** 2;
+    if (canseemon(shkp)) {
+        await pline(`${shopkeeper_name(shkp)} whispers ${
+            closeby ? 'an incantation' : 'something'}.`);
+    } else if (!Deaf() && closeby) {
+        await You_hear('someone muttering an incantation.');
+    }
+
+    const disposition = await repair_damage(shkp, dam, false);
+    if (!disposition)
+        return;
+    const damage = game.level.damagelist || [];
+    const index = damage.indexOf(dam);
+    if (index >= 0)
+        damage.splice(index, 1);
 }
 
 // src/dig.c:597 holetime() — countdown until the hero's dig breaks
@@ -2033,7 +2365,7 @@ export async function shk_move(shkp) {
     const omy = shkp.my;
 
     if (inhishop(shkp))
-        shk_fixes_damage(shkp);
+        await shk_fixes_damage(shkp);
 
     const udist = distu(omx, omy);
     if (udist < 3 /* grid bug shk: PM_GRID_BUG can't be a shk */) {

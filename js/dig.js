@@ -37,7 +37,7 @@ import { IS_OBSTRUCTED, IS_TREE, IS_WALL, IS_STWALL, SDOOR, SCORR, CORR,
          A_WIS, STONE, Is_earthlevel, Is_airlevel, Is_waterlevel,
          DIGTYP_UNDIGGABLE, DIGTYP_ROCK, DIGTYP_STATUE, DIGTYP_BOULDER,
          DIGTYP_DOOR, DIGTYP_TREE, TT_PIT, KILLED_BY, ECMD_TIME,
-         is_pit } from './const.js';
+         is_pit, SHOP_DOOR_COST, SHOP_WALL_COST } from './const.js';
 
 function note_unported_dig(what) {
     (game.unported ||= new Set()).add(what);
@@ -408,13 +408,17 @@ export async function zap_dig() {
         const room = game.level.at(zx, zy);
 
         if (closed_door(zx, zy) || room.typ === SDOOR) {
-            if (in_rooms(zx, zy, SHOPBASE))
+            if (in_rooms(zx, zy, SHOPBASE)) {
+                const { add_damage } = await import('./shk.js');
+                add_damage(zx, zy, SHOP_DOOR_COST);
                 shopdoor = true;
+            }
             if (room.typ === SDOOR)
                 room.typ = DOOR;
             else if (cansee(zx, zy))
                 await pline_The('door is razed!');
-            note_unported_dig('zap_dig:watch_dig');
+            if (in_town(zx, zy))
+                note_unported_dig('zap_dig:watch_dig');
             room.doormask = D_NODOOR;
             recalc_block_point(zx, zy);
             digdepth -= 2;
@@ -425,8 +429,11 @@ export async function zap_dig() {
         } else if (maze_dig) {
             if (IS_WALL(room.typ)) {
                 if (!(room.wall_info & W_NONDIGGABLE)) {
-                    if (in_rooms(zx, zy, SHOPBASE))
+                    if (in_rooms(zx, zy, SHOPBASE)) {
+                        const { add_damage } = await import('./shk.js');
+                        add_damage(zx, zy, SHOP_WALL_COST);
                         shopwall = true;
+                    }
                     room.typ = ROOM;
                     room.flags = 0;
                     unblock_point(zx, zy);
@@ -462,9 +469,13 @@ export async function zap_dig() {
                 break;
             }
             if (IS_WALL(room.typ) || room.typ === SDOOR) {
-                if (in_rooms(zx, zy, SHOPBASE))
+                if (in_rooms(zx, zy, SHOPBASE)) {
+                    const { add_damage } = await import('./shk.js');
+                    add_damage(zx, zy, SHOP_WALL_COST);
                     shopwall = true;
-                note_unported_dig('zap_dig:watch_dig');
+                }
+                if (in_town(zx, zy))
+                    note_unported_dig('zap_dig:watch_dig');
                 if (game.level.flags?.is_cavernous_lev
                     && !in_town(zx, zy)) {
                     room.typ = CORR;
@@ -492,8 +503,10 @@ export async function zap_dig() {
         zy += u.dy;
     }
 
-    if (shopdoor || shopwall)
-        note_unported_dig('zap_dig:pay_for_damage');
+    if (shopdoor || shopwall) {
+        const { pay_for_damage } = await import('./shk.js');
+        await pay_for_damage(shopdoor ? 'destroy' : 'dig into', false);
+    }
 }
 
 // src/dig.c:1414 mdig_tunnel() — a tunneling monster eats through the door,

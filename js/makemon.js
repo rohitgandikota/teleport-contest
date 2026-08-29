@@ -56,6 +56,7 @@ import { mon_track_clear, onscary } from './monmove.js';
 /* questpgr.js has no imports back into makemon.js at module level except
    through the mkclass wire below (set at this module's top level). */
 import { qt_montype, questpgr_wire_mkclass } from './questpgr.js';
+import { start_timer, TIMER_OBJECT, BURN_OBJECT } from './timeout.js';
 
 
 // include/permonst.h:15,23
@@ -921,13 +922,16 @@ function m_initinv(mtmp) {
             if (!mpickobj(mtmp, otmp)
                 && !game.level.at(mtmp.mx, mtmp.my)?.lit) {
                 /* src/timeout.c:1712 begin_burn(). A single candle has
-                   radius 2. Its 125- or 325-turn burn timer is longer than
-                   level-generation arrivals need, but the active object
-                   light source must exist immediately. */
-                otmp.lamplit = 1;
-                new_light_source(mtmp.mx, mtmp.my, 2, LS_OBJECT, otmp.o_id);
-                game.vision_full_recalc = 1;
-                note_unported('m_initinv:begin_burn_timer');
+                   radius 2 and stops first at 75 turns of fuel. */
+                const turns = otmp.age > 75 ? otmp.age - 75
+                            : otmp.age > 15 ? otmp.age - 15 : otmp.age;
+                if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, otmp)) {
+                    otmp.lamplit = 1;
+                    otmp.age -= turns;
+                    new_light_source(mtmp.mx, mtmp.my, 2,
+                                     LS_OBJECT, otmp.o_id);
+                    game.vision_full_recalc = 1;
+                }
             }
         }
         break;

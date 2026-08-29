@@ -1,0 +1,28 @@
+{
+  "name": "gnome-candle-timer",
+  "description": "A debug Wizard enters a dark corridor, creates a gnome whose generated inventory contains a lit tallow candle, kills the gnome so the candle drops, removes the other level monsters, then waits through the candle's short, low-flame, and consumption checkpoints.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.death-corpse-revival",
+    "monster.movement",
+    "object.tools-containers",
+    "turn.timers",
+    "ui.count-repeat",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "debug.wizkill.unseen-target",
+    "monster.inventory.gnome-lit-candle",
+    "timer.burn.floor-candle-lifecycle"
+  ],
+  "segments": [
+    {
+      "seed": 7831,
+      "datetime": "20000112140000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006llllll\u0007gnome\r#wizkill\rnn.\u001b#wizkill\rh.\u001b#wizkill\rhhhhhhhhhhhhhhhhhhhhhkkkkkkk.\u001b\u0014nn.  124.60.15."
+    }
+  ]
+}

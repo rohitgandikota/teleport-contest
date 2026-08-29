@@ -64,6 +64,10 @@
 
     { "group": "Shop movement and damage", "id": "shop.damage.repair", "cFile": "src/shk.c", "cFunction": "shk_fixes_damage", "description": "Repair shop damage and handle obstructing objects or monsters" },
     { "group": "Shop movement and damage", "id": "shop.movement.block-door", "cFile": "src/shk.c", "cFunction": "block_door", "description": "Block the shop doorway while debt or robbery is outstanding" },
-    { "group": "Shop movement and damage", "id": "shop.movement.following-nag", "cFile": "src/shk.c", "cFunction": "shk_move", "description": "Have a following shopkeeper demand payment" }
+    { "group": "Shop movement and damage", "id": "shop.movement.following-nag", "cFile": "src/shk.c", "cFunction": "shk_move", "description": "Have a following shopkeeper demand payment" },
+
+    { "group": "Monster inventory and object timers", "id": "monster.inventory.gnome-lit-candle", "cFile": "src/makemon.c", "cFunction": "m_initinv", "description": "Generate a gnome with a lit candle on a dark square and start its burn timer" },
+    { "group": "Monster inventory and object timers", "id": "timer.burn.floor-candle-lifecycle", "cFile": "src/timeout.c", "cFunction": "burn_object", "description": "Drop a lit candle, reschedule both fuel warnings, remove its light source, and consume the floor object" },
+    { "group": "Debug commands", "id": "debug.wizkill.unseen-target", "cFile": "src/wizcmds.c", "cFunction": "wiz_kill", "description": "Kill an unseen target while preserving its explicit species name" }
   ]
 }

@@ -10,8 +10,10 @@ import { game } from './gstate.js';
 import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
 import { ECMD_OK, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY,
-         TIMEOUT, ARTICLE_THE, XKILL_NOMSG, ECMD_CANCEL, UTOTYPE_NONE,
-         SICK_VOMITABLE, SICK_NONVOMITABLE }
+         TIMEOUT, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR, XKILL_NOMSG,
+         ECMD_CANCEL, UTOTYPE_NONE, SICK_VOMITABLE, SICK_NONVOMITABLE,
+         SUPPRESS_IT, SUPPRESS_HALLUCINATION, SUPPRESS_SADDLE,
+         has_mgivenname }
     from './const.js';
 import { rn2 } from './rng.js';
 import { getdir, getlin } from './cmd.js';
@@ -87,7 +89,14 @@ export async function wiz_kill() {
             break;
         }
 
-        const name = x_monnam(mtmp, ARTICLE_THE, null, 0, false);
+        const tame = !!mtmp.mtame;
+        const seen = canspotmon(mtmp);
+        const article = tame ? ARTICLE_YOUR : seen ? ARTICLE_THE : ARTICLE_A;
+        const adjective = tame ? (seen ? 'poor' : 'poor, unseen')
+                               : seen ? null : 'unseen';
+        const suppress = SUPPRESS_IT | SUPPRESS_HALLUCINATION
+            | (tame && has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0);
+        const name = x_monnam(mtmp, article, adjective, suppress, false);
         await You(`${nonliving(mtmp.data) ? 'destroy' : 'kill'} ${name}!`);
         await xkilled(mtmp, XKILL_NOMSG);
     }

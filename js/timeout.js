@@ -423,19 +423,48 @@ async function burn_object(obj, timeout) {
     }
 
     if (obj.age === 75 && canseeit) {
-        const subject = menorah ? `Your candelabrum's candle${many ? 's are' : ' is'}`
-                                : `${many ? 'Your candles are' : 'Your candle is'}`;
-        await pline(`${subject} getting short.`);
+        if (obj.where === OBJ_FLOOR) {
+            const { You_see } = await import('./pline.js');
+            await You_see(`${menorah ? "a candelabrum's " : many ? 'some ' : 'a '
+                }candle${many ? 's' : ''} getting short.`);
+        } else {
+            const subject = menorah
+                ? `Your candelabrum's candle${many ? 's are' : ' is'}`
+                : `${many ? 'Your candles are' : 'Your candle is'}`;
+            await pline(`${subject} getting short.`);
+        }
     } else if (obj.age === 15 && canseeit) {
-        const subject = menorah ? `Your candelabrum's candle${many ? "s'" : "'s"}`
-                                : many ? "Your candles'" : "Your candle's";
-        await pline(`${subject} flame${many ? 's' : ''} flicker${many ? '' : 's'} low!`);
+        if (obj.where === OBJ_FLOOR) {
+            const { You_see } = await import('./pline.js');
+            await You_see(`${menorah ? "a candelabrum's " : many ? 'some ' : 'a '
+                }candle${many ? "s'" : "'s"} flame${many ? 's' : ''} flicker low!`);
+        } else {
+            const subject = menorah
+                ? `Your candelabrum's candle${many ? "s'" : "'s"}`
+                : many ? "Your candles'" : "Your candle's";
+            await pline(`${subject} flame${many ? 's' : ''} flicker${
+                many ? '' : 's'} low!`);
+        }
     } else if (obj.age === 0) {
         if (canseeit || bytouch) {
             if (menorah) {
-                await pline(`Your candelabrum's flame${many ? 's die' : ' dies'}.`);
+                if (obj.where === OBJ_FLOOR) {
+                    const { You_see } = await import('./pline.js');
+                    await You_see(`a candelabrum's flame${many ? 's' : ''} die.`);
+                } else {
+                    await pline(`Your candelabrum's flame${
+                        many ? 's die' : ' dies'}.`);
+                }
             } else {
-                await pline(`${names.Yname2(obj)} ${many ? 'are' : 'is'} consumed!`);
+                if (obj.where === OBJ_FLOOR) {
+                    const { You_see } = await import('./pline.js');
+                    await You_see(`${many ? 'some ' : ''}${
+                        many ? names.xname(obj) : names.an(names.xname(obj))
+                    } consumed!`);
+                } else {
+                    await pline(`${names.Yname2(obj)} ${
+                        many ? 'are' : 'is'} consumed!`);
+                }
                 if (Hallucination())
                     await pline(many ? 'They shriek!' : 'It shrieks!');
                 else if (!Blind())
@@ -450,11 +479,18 @@ async function burn_object(obj, timeout) {
             if (obj.where === OBJ_INVENT)
                 update_inventory();
         } else {
-            const { useupall } = await import('./invent.js');
+            const { obj_extract_self, useupall } = await import('./invent.js');
             if (obj.where === OBJ_INVENT)
                 useupall(obj);
-            else
-                note_unported_timeout('burn_object:candle_location');
+            else {
+                const was_floor = obj.where === OBJ_FLOOR;
+                const ox = obj.ox, oy = obj.oy;
+                obj_extract_self(obj);
+                if (was_floor) {
+                    const { newsym } = await import('./display.js');
+                    newsym(ox, oy);
+                }
+            }
         }
         return;
     }

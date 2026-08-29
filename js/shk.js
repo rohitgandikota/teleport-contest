@@ -958,7 +958,7 @@ async function donate_gold(amount, shkp, selling) {
     }
 }
 
-// src/shk.c sellobj(), ordinary objects, gold, and containers without gold.
+// src/shk.c sellobj(), ordinary objects, gold, and containers.
 export async function sellobj(obj, x, y) {
     if (!(game.u.ushops || '').length)
         return;
@@ -973,13 +973,9 @@ export async function sellobj(obj, x, y) {
         sub_one_frombill(obj, shkp);
         return;
     }
-    if (container && contained_gold(obj, true)) {
-        note_unported_shk('sellobj:container_gold');
-        return;
-    }
-
     const eshk = shkp.eshk || ESHK(shkp);
     const isgold = obj.oclass === OCLASSES.COIN_CLASS;
+    const containedGold = container ? contained_gold(obj, true) : 0;
     const saleitem = saleable(shkp, obj);
     const contents = container
         ? contained_sale_summary(obj, shkp)
@@ -994,7 +990,8 @@ export async function sellobj(obj, x, y) {
         return;
     }
 
-    if (!isgold && (!offer || game.sell_how === SELL_DONTSELL)) {
+    if (!(isgold || containedGold)
+        && (!offer || game.sell_how === SELL_DONTSELL)) {
         if (container)
             dropped_container(obj, shkp, false);
         if (!obj.unpaid)
@@ -1005,16 +1002,20 @@ export async function sellobj(obj, x, y) {
         return;
     }
 
-    if (isgold) {
-        await donate_gold(obj.quan, shkp, true);
-        return;
+    if (isgold || containedGold) {
+        await donate_gold(containedGold || obj.quan, shkp, true);
+        if (!offer || game.sell_how === SELL_DONTSELL) {
+            if (!isgold) {
+                dropped_container(obj, shkp, false);
+                if (!obj.unpaid)
+                    obj.no_charge = 1;
+                subfrombill(obj, shkp);
+            }
+            return;
+        }
     }
 
     const shkmoney = money_cnt(shkp.minvent || []);
-    if (container && !shkmoney) {
-        note_unported_shk('sellobj:container_credit');
-        return;
-    }
     if (!shkmoney) {
         const creditOffer = Math.trunc(offer * 9 / 10) + (offer <= 1 ? 1 : 0);
         let answer = game.sell_response;
@@ -1024,7 +1025,7 @@ export async function sellobj(obj, x, y) {
             await pline(`${shopkeeper_name(shkp)} cannot pay you at present.`);
             answer = await tty_yn_function(
                 `Will you accept ${creditOffer} ${currency(creditOffer)} in credit for ${doname(obj)}?`,
-                'ynaq', 'n');
+                'ynaq', 'y');
             if (answer === 'a') {
                 answer = 'y';
                 game.auto_credit = true;
@@ -1032,13 +1033,22 @@ export async function sellobj(obj, x, y) {
         }
         if (answer === 'y') {
             delete game._encumber_status_stale;
-            await pline(`You traded ${doname(obj)} for ${creditOffer} zorkmid${creditOffer === 1 ? '' : 's'} in ${eshk.credit ? 'additional ' : ''}credit.`);
+            if (container)
+                dropped_container(obj, shkp, true);
+            const tradedName = container
+                ? `the contents of ${obj.no_charge
+                    ? an(xname(obj)) : `your ${xname(obj)}`}`
+                : doname(obj);
+            await pline(`You traded ${tradedName} for ${creditOffer} zorkmid${creditOffer === 1 ? '' : 's'} in ${eshk.credit ? 'additional ' : ''}credit.`);
             eshk.credit = (eshk.credit || 0) + creditOffer;
             subfrombill(obj, shkp);
         } else {
             if (answer === 'q')
                 game.sell_response = 'n';
-            obj.no_charge = 1;
+            if (container)
+                dropped_container(obj, shkp, false);
+            if (!obj.unpaid)
+                obj.no_charge = 1;
             subfrombill(obj, shkp);
         }
         return;

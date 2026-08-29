@@ -1,0 +1,30 @@
+{
+  "name": "shop-container-gold-credit",
+  "description": "A Debug Wizard drops bags containing gold alone and gold plus saleable contents, then sells a bag's contents for credit after exhausting a general-store shopkeeper's cash.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "social.shops-billing"
+  ],
+  "segments": [
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r\u0017100 gold pieces\rania\r$\rdn "
+    },
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed 100 diamonds\rdo y\u0017uncursed 100 diamonds\rdp y\u0017uncursed 100 diamonds\rdq y\u0017uncursed 100 diamonds\rdr y\u0017uncursed sack\r\u0017uncursed leather armor\rasid\rt\rds  "
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  \u0017uncursed sack\r\u0017100 gold pieces\rania\r$\r\u0017uncursed leather armor\ranic\ro\rdn  y"
+    }
+  ]
+}

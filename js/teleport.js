@@ -16,7 +16,8 @@ import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          NO_MM_FLAGS, RLOC_MSG, RLOC_NOMSG, RLOC_ERR,
-         BOLT_LIM, VAULT, STRAT_APPEARMSG, OBJ_FREE, OBJ_INVENT } from './const.js';
+         BOLT_LIM, VAULT, STRAT_APPEARMSG, OBJ_FREE, OBJ_INVENT,
+         SHOPBASE, TEMPLE } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
          sensemon, see_monsters } from './display.js';
@@ -506,8 +507,22 @@ function rloc_pos_ok(x, y, mtmp) {
         }
         return true;
     }
-    if (mtmp.isshk || mtmp.ispriest)
-        note_unported_teleport('rloc:resident_room');
+    const target = game.level.at(x, y);
+    if (mtmp.isshk && mtmp.eshk) {
+        const room = mtmp.eshk.shoproom;
+        const resident = in_rooms(mtmp.mx, mtmp.my, SHOPBASE)
+            .includes(String.fromCharCode(room));
+        if (resident && target?.roomno !== room)
+            return false;
+    } else if (mtmp.ispriest) {
+        const epri = mtmp.epri ?? mtmp.mextra?.epri;
+        const room = epri?.shroom;
+        const resident = room !== undefined
+            && in_rooms(mtmp.mx, mtmp.my, TEMPLE)
+                .includes(String.fromCharCode(room));
+        if (resident && target?.roomno !== room)
+            return false;
+    }
     return tele_jump_ok(mtmp.mx, mtmp.my, x, y);
 }
 

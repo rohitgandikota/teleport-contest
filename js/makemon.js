@@ -2090,6 +2090,10 @@ export function makemon(ptr, x, y, mmflags) {
     let allow_minvent = ((mmflags & NO_MINVENT) === 0);
     const countbirth = ((mmflags & MM_NOCOUNTBIRTH) === 0);
 
+    /* newcham lives in mon.js, which imports this module. Wire its creation
+       helpers after module evaluation, on the first ordinary makemon call. */
+    mon_wire_cham({ newmonhp, rndmonst });
+
     if (game.iflags?.debug_mongen || (!game.level?.flags?.rndmongen && !ptr))
         return null;
 
@@ -2288,7 +2292,6 @@ export function makemon(ptr, x, y, mmflags) {
     if (is_shapeshifter(ptr)) {
         const mcham = mndx;    /* pm_to_cham: M2_SHAPESHIFTER means itself */
         mtmp.cham = mcham;
-        mon_wire_cham({ newmonhp, rndmonst });
         if (mndx !== PMNAMES.PM_VLAD_THE_IMPALER
             && newcham(mtmp, null, 0))
             allow_minvent = false;

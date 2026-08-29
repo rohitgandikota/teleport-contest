@@ -24,7 +24,8 @@ import { couldsee, cansee, does_block, unblock_point, vision_recalc } from './vi
 import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
 import { sengr_at } from './engrave.js';
-import { Monnam, mon_nam, x_monnam, upstart } from './do_name.js';
+import { Monnam, mon_nam, noname_monnam, x_monnam, upstart }
+    from './do_name.js';
 import { hot_pursuit, shkgone } from './shk.js';
 import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
 import { bad_rock, disturb_buried_zombies, may_dig, may_passwall }
@@ -39,7 +40,7 @@ import { newsym, canseemon, canspotmon, pline, see_monsters,
          unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
-import { remove_monster, place_monster, goodpos, grow_up } from './makemon.js';
+import { remove_monster, place_monster, goodpos, grow_up, makemon } from './makemon.js';
 import { enexto_core, enexto, noteleport_level, rloc, tele_restrict,
          rloc_to_flag } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
@@ -52,6 +53,7 @@ import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
          XKILL_NOMSG, XKILL_NOCORPSE, MON_EXPLODE } from './const.js';
+import { NO_MM_FLAGS } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
 import { def_monsyms } from './drawing_data.js';
 
@@ -2415,6 +2417,21 @@ export async function mondead(mdef) {
         if ((mv.died | 0) < 255)
             mv.died = (mv.died | 0) + 1;
     }
+    /* src/mon.c:3147, dead Kops may return. The branch runs before the
+       original is detached, and case 1 prefers the down staircase. */
+    if (mdef.data.mlet === MONSYMS.S_KOP) {
+        const roll = rnd(5);
+        const down = (() => {
+            for (let stway = game.stairs; stway; stway = stway.next)
+                if (!stway.isladder && !stway.up)
+                    return stway;
+            return null;
+        })();
+        if (roll === 1 && down)
+            makemon(mdef.data, down.sx, down.sy, NO_MM_FLAGS);
+        else if (roll === 1 || roll === 2)
+            makemon(mdef.data, 0, 0, NO_MM_FLAGS);
+    }
     /* src/mon.c:3170, death proves the remembered invisible marker stale.
        Clear it before detaching so the corpse or dropped object can replace
        it on the same screen boundary. */
@@ -2874,7 +2891,7 @@ function isspecmon(mon) {
 }
 
 // src/mon.c:5024 validspecmon()
-function validspecmon(mon, mndx) {
+export function validspecmon(mon, mndx) {
     if (mndx === NON_PM)
         return true; /* caller wants random */
 
@@ -3108,8 +3125,7 @@ export function newcham(mtmp, mdat, ncflags) {
                 null, SUPPRESS_SADDLE, false);
             await pline(`${upstart(newname)} appears!`);
         } else {
-            const newname = x_monnam(
-                mtmp, ARTICLE_A, null, SUPPRESS_SADDLE, false);
+            const newname = noname_monnam(mtmp, ARTICLE_A);
             await pline(`${oldname} turns into ${newname}!`);
         }
         return 1;

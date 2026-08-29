@@ -2442,6 +2442,25 @@ export function display_cmap_at(cmap, x, y, color = NO_COLOR,
                     { kind, cmap });
 }
 
+// src/display.c:1110 shieldeff(). A resisted magical attack cycles through
+// the four shield glyphs three times, with seven frames per cycle.
+export async function shieldeff(x, y) {
+    if (game.flags?.sparkle === false || !cansee(x, y))
+        return;
+    const shield = [cmap_names.S_ss1, cmap_names.S_ss2, cmap_names.S_ss3,
+                    cmap_names.S_ss2, cmap_names.S_ss1, cmap_names.S_ss2,
+                    cmap_names.S_ss4];
+    for (let repeat = 0; repeat < 3; ++repeat) {
+        for (const cmap of shield) {
+            display_cmap_at(cmap, x, y, CLR_BRIGHT_BLUE, 'shield');
+            await flush_screen(1);
+            if (game.animationFrame)
+                await game.animationFrame();
+        }
+    }
+    newsym(x, y);
+}
+
 // src/display.c:276 map_trap() — remember and (optionally) show one trap.
 export function map_trap(trap, show) {
     const x = trap.tx, y = trap.ty;

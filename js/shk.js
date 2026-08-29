@@ -12,7 +12,7 @@ import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS,
          M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG,
          NON_PM, REPAIR_DELAY, BOLT_LIM, D_BROKEN, D_CLOSED, IS_ROOM,
-         IS_WALL, SVALL, u_at }
+         IS_WALL, SVALL, u_at, HAND, PRONOUN_NO_IT, PRONOUN_HALLU }
     from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, distmin, online2, isok } from './hacklib.js';
@@ -27,17 +27,19 @@ import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
 import { Has_contents, Is_candle } from './obj.js';
 import { DEADMONSTER, helpless } from './monst.js';
-import { is_demon, is_elf, is_human, passes_walls, vegetarian } from './mondata.js';
-import { poly_gender } from './polyself.js';
+import { is_demon, is_elf, is_human, passes_walls, vegetarian,
+         pronoun_gender } from './mondata.js';
+import { poly_gender, mbodypart } from './polyself.js';
 import { rn2, rnd } from './rng.js';
 import { bot, pline, canseemon, canspotmon, newsym, sensemon }
     from './display.js';
 import { an, doname, simpleonames, xname, The } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
-import { OBJ_CONTAINED, OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
+import { OBJ_CONTAINED, OBJ_FLOOR, OBJ_FREE, OBJ_INVENT, OBJ_ONBILL }
+    from './obj.js';
 import { s_suffix } from './hacklib.js';
 import { shtypes, VEGETARIAN_CLASS } from './shknam.js';
-import { Hello } from './role.js';
+import { Hello, genders } from './role.js';
 import { ATR_NONE, NHW_MENU, tty_add_menu, tty_create_nhwindow,
          tty_destroy_nhwindow, tty_end_menu, tty_select_menu,
          tty_start_menu, ATR_INVERSE } from './tty/wintty.js';
@@ -46,7 +48,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { arti_cost } from './artifact.js';
 import { block_point, cansee } from './vision.js';
 import { del_engr_at } from './engrave.js';
-import { You_feel, You_hear } from './pline.js';
+import { Norep, You_feel, You_hear } from './pline.js';
 
 // src/shk.c:1449 hot_pursuit() — the shopkeeper starts following you.
 //
@@ -300,6 +302,53 @@ function setpaid(shkp) {
     eshk.credit = 0;
     eshk.debit = 0;
     eshk.loan = 0;
+}
+
+// src/shk.c:1461 make_angry_shk(). Pending transactions become robbery
+// before the keeper starts pursuing the customer.
+export async function make_angry_shk(shkp) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    if (eshk.billct || eshk.debit || eshk.loan || eshk.credit) {
+        eshk.robbed = (eshk.robbed || 0) + add_up_bill(shkp)
+            + (eshk.debit || 0) + (eshk.loan || 0) - (eshk.credit || 0);
+        eshk.robbed = Math.max(0, eshk.robbed);
+        setpaid(shkp);
+    }
+    await pline(`${shopkeeper_name(shkp)} ${shkp.mpeaceful
+        ? 'gets angry' : 'is furious'}!`);
+    hot_pursuit(shkp);
+}
+
+// src/zap.c:1970 poly_obj() shop tail. Transforming merchandise angers its
+// resident even though the replacement object itself is not on the bill.
+export async function shop_object_transformed(obj, replacement, x, y) {
+    if ((!replacement || replacement.where === OBJ_INVENT) && !obj.unpaid)
+        return;
+    if (!costly_spot(x, y))
+        return;
+
+    const rooms = in_rooms(x, y, SHOPBASE);
+    const shkp = shop_keeper(rooms ? rooms.charCodeAt(0) : NO_ROOM);
+    if (!shkp || !inhishop(shkp))
+        return;
+    if (obj.no_charge
+        && (!Has_contents(obj) || !contained_purchase_cost(obj, shkp)))
+        return;
+
+    if (!shkp.mpeaceful) {
+        await Norep(`${shopkeeper_name(shkp)} is furious!`);
+        return;
+    }
+
+    const heroRoom = in_rooms(game.u.ux, game.u.uy, 0)?.[0] || '';
+    const keeperRoom = in_rooms(shkp.mx, shkp.my, 0)?.[0] || '';
+    if ((game.u.ushops || '').length && heroRoom === keeperRoom
+        && !costly_spot(game.u.ux, game.u.uy)) {
+        await make_angry_shk(shkp);
+    } else {
+        await pline(`${shopkeeper_name(shkp)} gets angry!`);
+        hot_pursuit(shkp);
+    }
 }
 
 // src/shk.c:235 shkgone(): remove a dead shopkeeper's room residency and
@@ -2393,9 +2442,29 @@ export async function shk_move(shkp) {
             return 0;
         }
         if (eshkp.following) {
-            /* the "didn't you forget to pay?" nag and the rn2(9)
-               rile_shk roll */
-            note_unported_shk('shk_move:following_nag');
+            if ((eshkp.customer || '') !== (game.plname || '')) {
+                if (!Deaf() && !muteshk(shkp)) {
+                    await pline(`"${Hello(shkp)}, ${game.plname}!  I was looking for ${
+                        eshkp.customer}."`);
+                }
+                eshkp.following = 0;
+                return 0;
+            }
+            if ((game.moves || 0) > (game.followmsg || 0) + 4) {
+                if (!Deaf() && !muteshk(shkp)) {
+                    await pline(`"${Hello(shkp)}, ${game.plname}!  Didn't you forget to pay?"`);
+                } else {
+                    const his = genders[pronoun_gender(
+                        shkp, PRONOUN_NO_IT | PRONOUN_HALLU)].his;
+                    await pline(`${shopkeeper_name(shkp)} holds out ${his} upturned ${
+                        mbodypart(shkp, HAND)}.`);
+                }
+                game.followmsg = game.moves || 0;
+                if (!rn2(9)) {
+                    await pline(`${shopkeeper_name(shkp)} doesn't like customers who don't pay.`);
+                    rile_shk(shkp);
+                }
+            }
             if (udist < 2)
                 return 0;
         }

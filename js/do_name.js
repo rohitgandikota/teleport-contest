@@ -24,7 +24,8 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
          SUPPRESS_SADDLE, SUPPRESS_IT, SUPPRESS_INVISIBLE,
-         SUPPRESS_HALLUCINATION, SUPPRESS_MAPPEARANCE, AUGMENT_IT,
+         SUPPRESS_HALLUCINATION, SUPPRESS_MAPPEARANCE, SUPPRESS_NAME,
+         AUGMENT_IT,
          MD_PAD_BOGONS,
          has_mgivenname, MGIVENNAME, W_SADDLE, A_NONE, A_LAWFUL,
          A_NEUTRAL, A_CHAOTIC } from './const.js';
@@ -232,11 +233,15 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
         const raw = mtmp.shknam || mtmp.eshk?.shknam
             || mtmp.mextra?.eshk?.shknam;
         if (raw) {
-            const shkname = /^[-+_|]/.test(raw) ? raw.slice(1) : raw;
-            if (mtmp.data === game.mons[PMNAMES.PM_SHOPKEEPER]
-                && !mtmp.minvis)
-                return shkname;
-            note_do_name_unported('x_monnam:unusual_shopkeeper');
+            const shkname = /^[-+_|=]/.test(raw) ? raw.slice(1) : raw;
+            const unusual = mtmp.data !== game.mons[PMNAMES.PM_SHOPKEEPER]
+                || do_invis;
+            const description = unusual
+                ? `${shkname} the ${do_invis ? 'invisible ' : ''}${pm_name}`
+                : shkname;
+            if (adjective && article === ARTICLE_THE)
+                return `the ${adjective} ${description}`;
+            return description;
         } else {
             note_do_name_unported('x_monnam:shkname');
         }
@@ -317,6 +322,11 @@ export const Amonnam = (mtmp) => upstart(a_monnam(mtmp));
 export const a_monnam = (mtmp) =>
     x_monnam(mtmp, ARTICLE_A, null, has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0,
              false);
+
+// src/do_name.c:1102 noname_monnam(). Shopkeeper names are deliberately
+// retained because x_monnam's shopkeeper arm ignores SUPPRESS_NAME.
+export const noname_monnam = (mtmp, article) =>
+    x_monnam(mtmp, article, null, SUPPRESS_NAME, false);
 
 // src/do_name.c:1052 christen_monst() — give a monster its name.
 // C stores it in mextra and truncates to PL_PSIZ-1 (31); the ghost rename

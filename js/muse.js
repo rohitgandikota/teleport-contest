@@ -469,10 +469,12 @@ export async function use_offensive(mtmp) {
                 break;
             }
 
-            if (u_at(x, y)) {
+        if (u_at(x, y)) {
                 if (game.u.uprops?.ANTIMAGIC || game.u.uprops?.MAGIC_RES) {
                     mtmp.seen_resistance = (mtmp.seen_resistance ?? 0)
                                                | M_SEEN_MAGR;
+                    const { shieldeff } = await import('./display.js');
+                    await shieldeff(game.u.ux, game.u.uy);
                     await pline('Boing!');
                     if (seen)
                         makeknown(obj.otyp);

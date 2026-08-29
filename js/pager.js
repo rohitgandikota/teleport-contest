@@ -47,6 +47,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { ok_to_quest } from './quest.js';
+import { doname_with_price } from './shk.js';
 
 function note_unported_pager(what) {
     (game.unported ||= new Set()).add('pager:' + what);
@@ -127,9 +128,9 @@ function look_at_object(x, y, glyph) {
                    && (glyph.otyp === undefined || o.otyp === glyph.otyp));
     let buf;
     if (otmp) {
-        /* distant_name(otmp, dknown ? doname_with_price : doname_vague_quan):
-           within sight doname applies; price needs shops (absent) */
-        buf = doname(otmp);
+        /* distant_name(otmp, dknown ? doname_with_price
+           : doname_vague_quan). */
+        buf = otmp.dknown ? doname_with_price(otmp) : doname(otmp);
     } else {
         note_unported_pager('look_at_object:fakeobj');
         buf = 'object';

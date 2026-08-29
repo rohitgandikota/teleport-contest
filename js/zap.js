@@ -23,7 +23,8 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, M_SEEN_MAGR,
          KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
-         IS_DOOR, SHOPBASE } from './const.js';
+         IS_DOOR, SHOPBASE, NC_SHOW_MSG, NC_VIA_WAND_OR_SPELL, NON_PM,
+         XKILL_NOCORPSE } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
 import { u_safe_from_fatal_corpse } from './pickup.js';
@@ -34,7 +35,7 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
 import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
-         wake_nearto, healmon } from './mon.js';
+         wake_nearto, healmon, newcham, validspecmon, xkilled } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
@@ -55,7 +56,7 @@ import { Norep, pline_The, You, You_feel, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { The, vtense, xname, Yname2, yname, makeplural,
          Yobjnam2, otense } from './objnam.js';
-import { Monnam, mon_nam } from './do_name.js';
+import { Monnam, mon_nam, noit_mon_nam } from './do_name.js';
 import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
@@ -74,13 +75,14 @@ import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
          nohands, nonliving, is_demon } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
-         Shock_resistance, Blind, Deaf, Unaware } from './youprop.js';
+         Shock_resistance, Blind, Deaf, Unaware, Hallucination } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
 import { create_gas_cloud } from './region.js';
 import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
+import { name_to_monplus } from './mondata.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -786,6 +788,11 @@ export async function poly_obj(obj, id) {
         && obj.otyp !== otmp.otyp)
         note_unported_zap('poly_obj:luck_mirror');
 
+    if (obj_location === OBJ_FLOOR) {
+        const { shop_object_transformed } = await import('./shk.js');
+        await shop_object_transformed(obj, otmp, obj.ox, obj.oy);
+    }
+
     /* src/zap.c poly_obj tail — delobj(obj) on the original; its
        obj_resists(0,0) guard DRAWS one rn2(100) every time. The floor swap
        above already removed obj from the list, so mark it free first so
@@ -970,6 +977,36 @@ export async function zapwrapup() {
     obj_zapped = false;
 }
 
+// src/mon.c:5077 wiz_force_cham_form(), the debug-only monster polymorph
+// selector. The ordinary path remains random. A named form is checked with
+// the same special-monster rules before newcham receives it.
+async function controlled_newcham(mtmp, ncflags) {
+    if (!(game.wizard && game.flags?.monpolycontrol))
+        return await newcham(mtmp, null, ncflags);
+
+    let prompt = `Change ${noit_mon_nam(mtmp)} @ <${mtmp.mx},${mtmp.my}> into what?`;
+    let tryct = 5;
+    do {
+        if (tryct === 4)
+            prompt = prompt.replace(/ into what\?$/, ' into what kind of monster?');
+
+        const answer = mungspaces(await getlin(prompt));
+        if (answer[0] === '\x1b' || answer === '*'
+            || answer.toLowerCase() === 'random')
+            break;
+
+        const mndx = name_to_monplus(answer, null, null);
+        if (mndx !== NON_PM && validspecmon(mtmp, mndx))
+            return await newcham(mtmp, game.mons[mndx], ncflags);
+
+        await pline("It can't become that.");
+    } while (--tryct > 0);
+
+    if (!tryct)
+        await pline("That's enough tries!");
+    return await newcham(mtmp, null, ncflags);
+}
+
 // src/zap.c:158 bhitm(), immediate wand or spell effect on a monster.
 export async function bhitm(mtmp, otmp) {
     let wake = true;
@@ -1004,6 +1041,54 @@ export async function bhitm(mtmp, otmp) {
             if (!disguised_mimic)
                 await miss('wand', mtmp);
             learn_it = false;
+        }
+        break;
+    }
+    case ONAMES.WAN_POLYMORPH:
+    case ONAMES.SPE_POLYMORPH:
+    case ONAMES.POT_POLYMORPH: {
+        const hasLongWormTag = mtmp.mnum === PMNAMES.PM_LONG_WORM
+            && mtmp.mextra?.mcorpsenm !== undefined;
+
+        if (hasLongWormTag) {
+            /* A long worm created earlier in this beam is not changed again
+               when the beam reaches one of its new tail segments. */
+        } else if (resists_magm(mtmp)) {
+            shieldeff_mon(mtmp);
+        } else if (!resist(mtmp, otmp.oclass, 0, false)) {
+            const polyspot = otmp.otyp !== ONAMES.POT_POLYMORPH;
+            const give_msg = !Hallucination()
+                && (canseemon(mtmp) || engulfing_u(mtmp));
+
+            if (polyspot && (mtmp.minvent || []).length) {
+                for (const obj of mtmp.minvent)
+                    obj.bypass = 1;
+                game.context.bypasses = true;
+            }
+
+            if ((mtmp.cham ?? NON_PM) === NON_PM && !rn2(25)) {
+                if (canseemon(mtmp)) {
+                    await pline(`${Monnam(mtmp)} shudders!`);
+                    learn_it = true;
+                }
+                await xkilled(mtmp, XKILL_NOCORPSE);
+            } else {
+                let ncflags = polyspot ? NC_VIA_WAND_OR_SPELL : 0;
+                if (give_msg)
+                    ncflags |= NC_SHOW_MSG;
+
+                let changed = await controlled_newcham(mtmp, ncflags);
+                if (!changed && (mtmp.cham ?? NON_PM) !== NON_PM)
+                    changed = await newcham(mtmp, game.mons[mtmp.cham], ncflags);
+                if (changed && give_msg
+                    && (canspotmon(mtmp) || engulfing_u(mtmp)))
+                    learn_it = true;
+            }
+
+            if (!DEADMONSTER(mtmp) && mtmp.mnum === PMNAMES.PM_LONG_WORM) {
+                (mtmp.mextra ||= {}).mcorpsenm = PMNAMES.PM_LONG_WORM;
+                game.context.bypasses = true;
+            }
         }
         break;
     }

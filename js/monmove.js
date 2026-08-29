@@ -1714,7 +1714,7 @@ export async function m_move(mtmp, after) {
     const flag = mon_allowflags(mtmp);
     const mfp = {};
     const cnt = mfndpos(mtmp, mfp, flag);
-    if (cnt === 0) {
+    if (cnt === 0 && !is_unicorn(ptr)) {
         if (find_defensive(mtmp, true) && await use_defensive(mtmp))
             return MMOVE_DONE;
         return MMOVE_NOMOVES;
@@ -1841,6 +1841,13 @@ export async function m_move(mtmp, after) {
            the matching remembered square, so an unmaintained track makes
            every match land on j=0 and draws the wrong modulus. */
         mon_track_add(mtmp, omx, omy);
+    } else if (is_unicorn(ptr) && rn2(2)) {
+        /* A unicorn which cannot find an acceptable step may teleport. */
+        const { rloc, tele_restrict } = await import('./teleport.js');
+        if (!await tele_restrict(mtmp)) {
+            await rloc(mtmp, RLOC_MSG);
+            return MMOVE_MOVED;
+        }
     }
 
     return await postmov(mtmp, ptr, omx, omy, mmoved, can_tunnel);

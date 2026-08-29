@@ -2,10 +2,11 @@ import { game } from './gstate.js';
 import { pline } from './display.js';
 import { splitobj, place_object } from './mkobj.js';
 import { addinv, freeinv, fully_identify_obj, stackobj } from './invent.js';
-import { encumber_msg, near_capacity, ACURR, acurrstr, exercise } from './attrib.js';
+import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
+         change_luck } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
-         engulfing_u } from './const.js';
+         engulfing_u, RLOC_MSG } from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
 import { singular, xname, an, the, The, otense, mshot_xname } from './objnam.js';
@@ -18,7 +19,7 @@ import { is_blade } from './mon.js';
 import { is_missile, is_sword } from './wield.js';
 import { cansee } from './vision.js';
 import { newsym, canseemon } from './display.js';
-import { Levitation } from './youprop.js';
+import { Levitation, Blind } from './youprop.js';
 import { cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
 import { greatest_erosion } from './do_wear.js';
@@ -37,10 +38,11 @@ import { is_weptool } from './mkobj.js';
 import { hitval, weapon_hit_bonus } from './weapon.js';
 import { getdir } from './cmd.js';
 import { find_mac } from './worn.js';
-import { distmin } from './hacklib.js';
+import { distmin, sgn } from './hacklib.js';
 import { hmon, passive_obj } from './uhitm.js';
-import { Some_Monnam } from './do_name.js';
+import { Monnam, Some_Monnam } from './do_name.js';
 import { Deaf } from './youprop.js';
+import { helpless } from './monst.js';
 
 // dothrow.js — throwing, firing, and the path a thrown thing takes.
 // C ref: src/dothrow.c
@@ -334,6 +336,73 @@ export async function throwit(obj, wep_mask) {
         newsym(bx, by);
 }
 
+// src/dothrow.c:2309 gem_accept(), a unicorn accepts or rejects a gem,
+// adjusts Luck from its value and identification state, then relocates.
+async function gem_accept(mon, obj) {
+    const objclass = game.objects[obj.otyp];
+    const is_buddy = sgn(mon.data.maligntyp)
+        === sgn(game.u.ualign?.type ?? 0);
+    const is_gem = objclass.oc_material === MATERIALS.GEMSTONE;
+    let message = Monnam(mon);
+    let accepted = false;
+
+    mon.mpeaceful = 1;
+    mon.mavenge = 0;
+
+    if (obj.dknown && objclass.oc_name_known) {
+        if (is_gem) {
+            if (is_buddy) {
+                message += ' gratefully';
+                change_luck(5);
+            } else {
+                message += ' hesitatingly';
+                change_luck(rn2(7) - 3);
+            }
+            accepted = true;
+        }
+    } else if (obj.oname != null || objclass.oc_uname) {
+        if (is_gem) {
+            if (is_buddy) {
+                message += ' gratefully';
+                change_luck(2);
+            } else {
+                message += ' hesitatingly';
+                change_luck(rn2(3) - 1);
+            }
+            accepted = true;
+        }
+    } else if (is_gem) {
+        if (is_buddy) {
+            message += ' gratefully';
+            change_luck(1);
+        } else {
+            message += ' hesitatingly';
+            change_luck(rn2(3) - 1);
+        }
+        accepted = true;
+    } else {
+        message += ' graciously';
+        accepted = true;
+    }
+
+    if (accepted) {
+        message += ' accepts your gift.';
+        if ((game.u.ushops || '').length || obj.unpaid)
+            note_unported_dothrow('gem_accept:check_shop_obj');
+        const { mpickobj } = await import('./steal.js');
+        mpickobj(mon, obj);
+    } else {
+        message += ' is not interested in your junk.';
+    }
+
+    if (!Blind())
+        await pline(message);
+    const { rloc, tele_restrict } = await import('./teleport.js');
+    if (!await tele_restrict(mon))
+        await rloc(mon, RLOC_MSG);
+    return accepted ? 1 : 0;
+}
+
 // src/dothrow.c:2013 thitmonst() - resolve a thrown object at a monster.
 //
 // The base roll is shared by every object type. In particular, cream pies
@@ -378,10 +447,22 @@ export async function thitmonst(mon, obj) {
     if (guaranteed_hit)
         tmp += 1000;
 
-    /* Unicorn gifts and quest-leader catches precede dieroll in C. */
-    if (obj.oclass === OCLASSES.GEM_CLASS && is_unicorn(mdat)) {
-        note_unported_dothrow('thitmonst:unicorn_gift');
-        return 0;
+    /* src/dothrow.c:2082, unicorn gifts precede the ordinary to-hit roll. */
+    const uslinging = !!u.uwep
+        && game.objects[u.uwep.otyp].oc_skill === SKILLS.P_SLING;
+    if (obj.oclass === OCLASSES.GEM_CLASS && is_unicorn(mdat)
+        && game.objects[obj.otyp].oc_material !== MATERIALS.MINERAL
+        && !uslinging) {
+        if (helpless(mon)) {
+            await tmiss(obj, mon, false);
+            return 0;
+        }
+        if (mon.mtame) {
+            await pline(`${Monnam(mon)} catches and drops ${the(xname(obj))}.`);
+            return 0;
+        }
+        await pline(`${Monnam(mon)} catches ${the(xname(obj))}.`);
+        return await gem_accept(mon, obj);
     }
 
     const specialForLeader = ((obj.oartifact ?? 0) === game.urole?.questarti

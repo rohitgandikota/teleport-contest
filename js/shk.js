@@ -10,7 +10,7 @@ import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS,
-         M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER }
+         M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG }
     from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
@@ -24,11 +24,11 @@ import { ACURR, Fast, adjalign, exercise } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
 import { Has_contents, Is_candle } from './obj.js';
-import { helpless } from './monst.js';
+import { DEADMONSTER, helpless } from './monst.js';
 import { is_demon, is_elf, is_human } from './mondata.js';
 import { poly_gender } from './polyself.js';
 import { rn2, rnd } from './rng.js';
-import { bot, pline, canseemon, sensemon } from './display.js';
+import { bot, pline, canseemon, canspotmon, newsym, sensemon } from './display.js';
 import { an, doname, simpleonames, xname, The } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
 import { OBJ_CONTAINED, OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
@@ -1627,36 +1627,251 @@ async function pay_item(shkp, item) {
     return true;
 }
 
-// src/shk.c dopay() -- ordinary itemized payment in a tended shop.
+async function pay_shk(amount, shkp) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    const robbed = eshk.robbed || 0;
+    let balance = amount;
+
+    if (eshk.credit) {
+        if (eshk.credit >= balance) {
+            await pline('The price is deducted from your credit.');
+            eshk.credit -= balance;
+            balance = 0;
+        } else {
+            await pline('The price is partially covered by your credit.');
+            balance -= eshk.credit;
+            eshk.credit = 0;
+        }
+    }
+    if (balance > 0)
+        await money2mon(shkp, balance);
+    if (robbed)
+        eshk.robbed = Math.max(0, robbed - amount);
+    (game.disp ||= {}).botl = true;
+}
+
+function rile_shk(shkp) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    shkp.mpeaceful = 0;
+    if (!eshk.surcharge) {
+        eshk.surcharge = true;
+        for (const bp of eshk.bill_p || [])
+            bp.price += Math.trunc((bp.price + 2) / 3);
+    }
+}
+
+function live_shopkeepers() {
+    const keepers = [];
+    for (const mon of game.level?.monsters || []) {
+        if (!mon.isshk || DEADMONSTER(mon))
+            continue;
+        if (!mon.mpeaceful && !(mon.eshk || ESHK(mon)).surcharge)
+            rile_shk(mon);
+        keepers.push(mon);
+    }
+    return keepers;
+}
+
+function shk_pronouns(shkp) {
+    return shkp.female
+        ? { he: 'she', him: 'her', his: 'her' }
+        : { he: 'he', him: 'him', his: 'his' };
+}
+
+async function kops_gone(silent) {
+    const kopTypes = new Set([
+        PMNAMES.PM_KEYSTONE_KOP, PMNAMES.PM_KOP_SERGEANT,
+        PMNAMES.PM_KOP_LIEUTENANT, PMNAMES.PM_KOP_KAPTAIN,
+    ]);
+    const kops = (game.level?.monsters || [])
+        .filter(mon => !DEADMONSTER(mon) && kopTypes.has(mon.mnum));
+    let seen = 0;
+    const { mongone } = await import('./mon.js');
+    for (const kop of kops) {
+        if (canspotmon(kop))
+            ++seen;
+        mongone(kop);
+    }
+    if (seen && !silent) {
+        await pline(seen === 1
+            ? 'The Kop (disappointed) vanishes into thin air.'
+            : 'The Kops (disappointed) vanish into thin air.');
+    }
+}
+
+async function make_happy_shoppers(silentkops) {
+    if (live_shopkeepers().some(shkp => !shkp.mpeaceful))
+        return;
+    await kops_gone(silentkops);
+    for (const mon of game.level?.monsters || []) {
+        if (mon.mnum === PMNAMES.PM_WATCHMAN
+            || mon.mnum === PMNAMES.PM_WATCH_CAPTAIN)
+            mon.mpeaceful = 1;
+    }
+}
+
+async function make_happy_shk(shkp, silentkops) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    const wasmad = !shkp.mpeaceful;
+    shkp.mpeaceful = 1;
+    eshk.following = 0;
+    eshk.robbed = 0;
+    if (game.urole?.mnum !== PMNAMES.PM_ROGUE)
+        adjalign(Math.sign(game.u.ualign?.type || 0));
+
+    if (!inhishop(shkp)) {
+        const name = shopkeeper_name(shkp);
+        const pronouns = shk_pronouns(shkp);
+        let vanished = canseemon(shkp);
+        const local = eshk.shoplevel
+            && eshk.shoplevel.dnum === game.u.uz.dnum
+            && eshk.shoplevel.dlevel === game.u.uz.dlevel;
+        if (local) {
+            const { mnearto } = await import('./mon.js');
+            await mnearto(shkp, eshk.shk.x, eshk.shk.y, true, RLOC_NOMSG);
+            game.level.flags.has_shop = 1;
+            if (canspotmon(shkp)) {
+                await pline(`${shopkeeper_name(shkp)} returns to ${pronouns.his} shop.`);
+                vanished = false;
+            }
+        } else {
+            if (sensemon(shkp))
+                vanished = true;
+            const { mdrop_special_objs } = await import('./steal.js');
+            const { migrate_monster } = await import('./trap.js');
+            mdrop_special_objs(shkp);
+            const oldx = shkp.mx, oldy = shkp.my;
+            migrate_monster(shkp, eshk.shoplevel || game.u.uz,
+                            MIGR_APPROX_XY, eshk.shd);
+            newsym(oldx, oldy);
+            eshk.dismiss_kops = true;
+        }
+        if (vanished)
+            await pline(`Satisfied, ${name} suddenly disappears!`);
+    } else if (wasmad) {
+        await pline(`${shopkeeper_name(shkp)} calms down.`);
+    }
+    await make_happy_shoppers(silentkops);
+}
+
+// src/shk.c dopay() -- nearby keepers take priority over the room resident.
 export async function dopay() {
     game.multi = 0;
     const roomno = game.u.ushops ? game.u.ushops.charCodeAt(0) : NO_ROOM;
-    const shkp = shop_keeper(roomno);
-    if (!shkp || !inhishop(shkp)) {
-        if (Blind())
-            await pline("You can't see...");
-        else
-            await pline('There appears to be no shopkeeper here to receive your payment.');
+    const keepers = live_shopkeepers();
+    let adjacent = null, nexttosk = 0, seen = 0;
+    let resident = null;
+    for (const keeper of keepers) {
+        if (distu(keeper.mx, keeper.my) <= 2) {
+            if (adjacent && !adjacent.mpeaceful)
+                continue;
+            ++nexttosk;
+            adjacent = keeper;
+        }
+        if (canspotmon(keeper))
+            ++seen;
+        const keeperEshk = keeper.eshk || ESHK(keeper);
+        if (inhishop(keeper) && roomno === keeperEshk.shoproom)
+            resident = keeper;
+    }
+
+    let shkp = adjacent && nexttosk === 1 ? adjacent : null;
+    if (!shkp && (!keepers.length || (!Blind() && !seen))) {
+        await pline('There appears to be no shopkeeper here to receive your payment.');
+        return ECMD_OK;
+    }
+    if (!shkp && !seen) {
+        await pline("You can't see...");
+        return ECMD_OK;
+    }
+    if (!shkp && keepers.length === 1 && resident) {
+        shkp = resident;
+    } else if (!shkp && seen === 1) {
+        shkp = keepers.find(keeper => canspotmon(keeper));
+        if (shkp !== resident && distu(shkp.mx, shkp.my) > 2) {
+            await pline(`${shopkeeper_name(shkp)} is not near enough to receive your payment.`);
+            return ECMD_OK;
+        }
+    }
+    if (!shkp) {
+        note_unported_shk('dopay:select-among-shopkeepers');
         return ECMD_OK;
     }
 
     const eshk = shkp.eshk || ESHK(shkp);
-    if (!(eshk.billct || eshk.debit || eshk.robbed)) {
-        await pline(`You do not owe ${shopkeeper_name(shkp)} anything.`);
-        return ECMD_OK;
+    const stashedGold = hidden_gold(game.invent || [], true) > 0;
+    if (eshk.robbed || eshk.billct || eshk.debit) {
+        shkp.msleeping = 0;
+        shkp.mfrozen = 0;
+        shkp.mcanmove = 1;
     }
     if (helpless(shkp)) {
         await pline(`${shopkeeper_name(shkp)} ${rn2(2)
             ? 'seems to be napping' : "doesn't respond"}.`);
         return ECMD_OK;
     }
-    if (eshk.robbed) {
-        note_unported_shk('dopay:robbery');
-        return ECMD_OK;
+
+    const pronouns = shk_pronouns(shkp);
+    if (shkp !== resident && shkp.mpeaceful) {
+        const cash = money_cnt(game.invent);
+        const robbed = eshk.robbed || 0;
+        if (!robbed) {
+            await pline(`You do not owe ${shopkeeper_name(shkp)} anything.`);
+        } else if (!cash) {
+            await pline(`You ${stashedGold ? 'seem to ' : ''}have no gold.`);
+            if (stashedGold)
+                await pline('But you have some gold stashed away.');
+        } else {
+            if (cash > robbed) {
+                await pline(`You give ${shopkeeper_name(shkp)} the ${robbed} gold piece${
+                    robbed === 1 ? '' : 's'} ${pronouns.he} asked for.`);
+                await pay_shk(robbed, shkp);
+            } else {
+                await pline(`You give ${shopkeeper_name(shkp)} all your${
+                    stashedGold ? ' openly kept' : ''} gold.`);
+                await pay_shk(cash, shkp);
+                if (stashedGold)
+                    await pline('But you have hidden gold!');
+            }
+            if (cash < robbed / 2 || (cash < robbed && stashedGold)) {
+                await pline(`Unfortunately, ${pronouns.he} doesn't look satisfied.`);
+            } else {
+                await make_happy_shk(shkp, false);
+            }
+        }
+        return ECMD_TIME;
+    }
+
+    if (!eshk.billct && !eshk.debit) {
+        const cash = money_cnt(game.invent);
+        const robbed = eshk.robbed || 0;
+        if (!robbed && shkp.mpeaceful) {
+            await pline(`You do not owe ${shopkeeper_name(shkp)} anything.`);
+            if (!cash)
+                await pline(`Moreover, you${stashedGold ? ' seem to' : ''} have no gold.`);
+        } else if (robbed) {
+            await pline(`${shopkeeper_name(shkp)} is after blood, not gold!`);
+            if (cash < robbed / 2 || (cash < robbed && stashedGold)) {
+                if (!cash) {
+                    await pline(`Moreover, you${stashedGold ? ' seem to' : ''} have no gold.`);
+                } else {
+                    await pline(`Besides, you don't have enough to interest ${pronouns.him}.`);
+                }
+                return ECMD_TIME;
+            }
+            await pline(`But since ${pronouns.his} shop has been robbed recently,`);
+            await pline(`you ${cash < robbed ? 'partially ' : ''}compensate ${
+                shopkeeper_name(shkp)} for ${pronouns.his} losses.`);
+            await pay_shk(Math.min(cash, robbed), shkp);
+            await make_happy_shk(shkp, false);
+        } else {
+            note_unported_shk('dopay:appease-angry-unrobbed');
+            return ECMD_OK;
+        }
+        return ECMD_TIME;
     }
 
     let paid = false;
-    const stashedGold = hidden_gold(game.invent || [], true) > 0;
     if (eshk.debit) {
         const debt = eshk.debit;
         const loan = eshk.loan || 0;

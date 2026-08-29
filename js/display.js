@@ -1252,6 +1252,14 @@ export function newsym(x, y) {
                                corpsenm: mon.mcorpsenm ?? PMNAMES.PM_TENGU,
                                quan: 1, dknown: 0 };
                 const g = floor_object_glyph(fake, x, y, false);
+                /* display_monster() maps a mimic's fake object into hero
+                   memory before drawing it. That memory survives a level
+                   change even when the terminal still holds an older cell. */
+                if (game.level?.flags?.hero_memory)
+                    loc.remembered_glyph = {
+                        ch: g.ch, color: g.color, decgfx: g.dec,
+                        glyph: g.glyph,
+                    };
                 show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, g.attr,
                                 g.glyph ?? { kind: 'obj', otyp: fake.otyp });
                 return;

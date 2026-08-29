@@ -1226,7 +1226,7 @@ export function doname(obj) {
        was added to the current shopkeeper's bill. */
     const billed = obj.unpaid || Has_contents(obj)
         ? billed_cost(obj) : { price: 0, found: false };
-    if (obj.unpaid || billed.found) {
+    if (!game.iflags?.suppress_price && (obj.unpaid || billed.found)) {
         bp += ` (${obj.unpaid ? 'unpaid' : 'contents'}, ${billed.price} ${currency(billed.price)})`;
     }
 

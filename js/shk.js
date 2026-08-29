@@ -769,36 +769,99 @@ function shopkeeper_name(shkp) {
 }
 
 /* src/objnam.c paydoname() suppresses the carried-item price because the pay
-   menu puts its own aligned amount first. Ordinary objects only need the
-   unpaid suffix hidden. Containers have separate wording rules. */
-function ordinary_paydoname(obj) {
+   menu puts its own aligned amount first. Container contents are hidden and
+   ownership is described relative to the outer container. */
+function paydoname(obj) {
     const unpaid = obj.unpaid;
+    const cknown = obj.cknown;
     obj.unpaid = 0;
-    const name = doname(obj);
+    if (Has_contents(obj))
+        obj.cknown = 0;
+    game.iflags.suppress_price = (game.iflags.suppress_price || 0) + 1;
+    let name = doname(obj);
+    game.iflags.suppress_price -= 1;
     obj.unpaid = unpaid;
+    obj.cknown = cknown;
+
+    if (Has_contents(obj)) {
+        if (!obj.no_charge) {
+            name = name.replace(/^(?:an? )/, '');
+            name = unpaid ? `an unpaid ${name}` : `your ${name}`;
+        }
+        name = unpaid ? `${name} and its contents`
+                      : `the contents of ${name}`;
+    }
     return name;
 }
 
-/* src/shk.c make_itemized_bill() for intact ordinary inventory objects and
-   the fully used-up dummy objects made by costly_alteration(). */
-function ordinary_itemized_bill(eshk) {
+/* src/shk.c make_itemized_bill(). Contained bill entries collapse into one
+   outer-container row, while ordinary and fully used-up entries stay
+   itemized individually. */
+function itemized_bill(eshk) {
     const result = [];
+    const byId = new Map();
+    const indexObjects = (objects) => {
+        for (const obj of objects || []) {
+            byId.set(obj.o_id, obj);
+            indexObjects(obj.cobj);
+        }
+    };
+    indexObjects(game.invent);
+    indexObjects(game.billobjs);
+
+    const outerContainer = (obj) => {
+        let top = obj;
+        while (top.where === OBJ_CONTAINED && top.ocontainer)
+            top = top.ocontainer;
+        return top;
+    };
+    const grouped = new Set();
+
     for (let bidx = 0; bidx < (eshk.bill_p || []).length; ++bidx) {
         const bp = eshk.bill_p[bidx];
         if (bp.useup) {
-            const obj = bp.obj || (game.billobjs || [])
-                .find(candidate => candidate.o_id === bp.bo_id);
+            const obj = bp.obj || byId.get(bp.bo_id);
             if (obj) {
                 result.push({ obj, bp, bidx, cost: bp.price * bp.bquan,
                               usedup: true });
                 continue;
             }
         }
-        const obj = (game.invent || []).find(o => o.o_id === bp.bo_id);
-        if (!obj || !obj.unpaid || bp.useup || Has_contents(obj)
-            || obj.quan !== bp.bquan) {
+        const obj = byId.get(bp.bo_id);
+        if (!obj || !obj.unpaid || bp.useup || obj.quan !== bp.bquan) {
             note_unported_shk('dopay:nonordinary_bill_entry');
             continue;
+        }
+
+        const top = outerContainer(obj);
+        if (obj.where === OBJ_CONTAINED || Has_contents(obj)) {
+            const entries = [];
+            for (let j = 0; j < (eshk.bill_p || []).length; ++j) {
+                const nestedBp = eshk.bill_p[j];
+                const nestedObj = byId.get(nestedBp.bo_id);
+                if (!nestedBp.useup && nestedObj?.unpaid
+                    && nestedObj.quan === nestedBp.bquan
+                    && outerContainer(nestedObj) === top) {
+                    entries.push({ obj: nestedObj, bp: nestedBp, bidx: j });
+                }
+            }
+            const hasBilledContents = entries.some(entry => entry.obj !== top);
+            if ((top !== obj || hasBilledContents) && !grouped.has(top)) {
+                grouped.add(top);
+                result.push({
+                    obj: top,
+                    bp: entries.find(entry => entry.obj === top)?.bp || null,
+                    bidx: entries.find(entry => entry.obj === top)?.bidx ?? -1,
+                    cost: entries.reduce((sum, entry) =>
+                        sum + entry.bp.price * (entry.obj.quan || 1), 0),
+                    usedup: false,
+                    container: true,
+                    entries,
+                });
+                continue;
+            }
+            if (grouped.has(top))
+                continue;
         }
         result.push({ obj, bp, bidx, cost: bp.price * obj.quan,
                       usedup: false });
@@ -1270,7 +1333,7 @@ async function menu_pick_pay_items(items) {
         }
         const amount = String(items[i].cost).padStart(amtWidth, ' ');
         tty_add_menu(win, null, i + 1, 0, 0, ATR_NONE, NO_COLOR,
-                     `${amount} Zm, ${ordinary_paydoname(items[i].obj)}`,
+                     `${amount} Zm, ${paydoname(items[i].obj)}`,
                      MENU_ITEMFLAGS_NONE);
     }
     tty_end_menu(win, 'Pay for which items?');
@@ -1295,27 +1358,41 @@ async function money2mon(mon, amount) {
     return amount;
 }
 
-async function pay_ordinary_item(shkp, item) {
+async function pay_item(shkp, item) {
     const eshk = shkp.eshk || ESHK(shkp);
     if (money_cnt(game.invent) + (eshk.credit || 0) < item.cost) {
         await pline(`You don't have gold${eshk.credit ? ' or credit' : ''}`
-                    + ` enough to pay for ${ordinary_paydoname(item.obj)}.`);
+                    + ` enough to pay for ${paydoname(item.obj)}.`);
         return false;
     }
 
-    let balance = item.cost;
-    if (eshk.credit) {
-        const credit = Math.min(eshk.credit, balance);
-        eshk.credit -= credit;
-        balance -= credit;
-        await pline(credit === item.cost
-            ? 'The price is deducted from your credit.'
-            : 'The price is partially covered by your credit.');
+    const paymentEntries = item.container
+        ? [
+            ...item.entries.filter(entry => entry.obj !== item.obj),
+            ...item.entries.filter(entry => entry.obj === item.obj),
+        ]
+        : [item];
+    for (const entry of paymentEntries) {
+        const entryCost = item.container
+            ? entry.bp.price * entry.obj.quan : item.cost;
+        let balance = entryCost;
+        if (eshk.credit) {
+            const credit = Math.min(eshk.credit, balance);
+            eshk.credit -= credit;
+            balance -= credit;
+            await pline(credit === entryCost
+                ? 'The price is deducted from your credit.'
+                : 'The price is partially covered by your credit.');
+        }
+        if (balance && !(await money2mon(shkp, balance)))
+            return false;
     }
-    if (balance && !(await money2mon(shkp, balance)))
-        return false;
 
-    const boughtName = ordinary_paydoname(item.obj);
+    const boughtName = item.container
+        ? item.obj.unpaid
+            ? `${an(xname(item.obj))} and its contents`
+            : `the contents of your ${xname(item.obj)}`
+        : paydoname(item.obj);
     await pline(item.usedup
         ? `You paid for ${boughtName} at a cost of ${item.cost} gold piece`
           + `${item.cost === 1 ? '' : 's'}.`
@@ -1328,9 +1405,11 @@ async function pay_ordinary_item(shkp, item) {
         if (billobj >= 0)
             game.billobjs.splice(billobj, 1);
     }
-    const bidx = eshk.bill_p.indexOf(item.bp);
-    if (bidx >= 0)
-        eshk.bill_p.splice(bidx, 1);
+    const paidEntries = item.container ? item.entries : [item];
+    const paidBills = new Set(paidEntries.map(entry => entry.bp));
+    for (const entry of paidEntries)
+        entry.obj.unpaid = 0;
+    eshk.bill_p = (eshk.bill_p || []).filter(bp => !paidBills.has(bp));
     eshk.billct = eshk.bill_p.length;
     await bot();
     return true;
@@ -1364,7 +1443,7 @@ export async function dopay() {
         return ECMD_OK;
     }
 
-    const items = ordinary_itemized_bill(eshk);
+    const items = itemized_bill(eshk);
     if (!items.length)
         return ECMD_OK;
     if (!money_cnt(game.invent) && !(eshk.credit || 0)) {
@@ -1382,7 +1461,7 @@ export async function dopay() {
     const selected = await menu_pick_pay_items(items);
     let paid = false;
     for (let i = 0; i < items.length; ++i) {
-        if (selected.has(i) && await pay_ordinary_item(shkp, items[i]))
+        if (selected.has(i) && await pay_item(shkp, items[i]))
             paid = true;
     }
 

@@ -9,7 +9,8 @@
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS }
+         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS,
+         M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER }
     from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
@@ -17,7 +18,7 @@ import { m_canseeu, inhishop } from './monmove.js';
 import { move_special } from './priest.js';
 import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
          contained_gold, hidden_gold, weight } from './invent.js';
-import { wake_nearto } from './mon.js';
+import { m_at, wake_nearto } from './mon.js';
 import { Blind, Deaf, Invis } from './youprop.js';
 import { ACURR, Fast, adjalign, exercise } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
@@ -27,7 +28,7 @@ import { helpless } from './monst.js';
 import { is_demon, is_elf, is_human } from './mondata.js';
 import { poly_gender } from './polyself.js';
 import { rn2, rnd } from './rng.js';
-import { bot, pline } from './display.js';
+import { bot, pline, canseemon, sensemon } from './display.js';
 import { an, doname, simpleonames, xname, The } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
 import { OBJ_CONTAINED, OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
@@ -133,15 +134,61 @@ export function shop_keeper(roomno) {
     return shkp;
 }
 
-// src/shk.c:751 u_entered_shop(), ordinary tended-shop entry.
+// src/shk.c:723 deserted_shop(): report an absent shopkeeper, distinguishing
+// a genuinely empty shop from one containing seen or unseen monsters.
+async function deserted_shop(enterstring) {
+    const roomno = enterstring.charCodeAt(0) - ROOMOFFSET;
+    const room = game.level?.rooms?.[roomno];
+    if (!room)
+        return;
+
+    let seen = 0, total = 0;
+    for (let x = room.lx; x <= room.hx; ++x) {
+        for (let y = room.ly; y <= room.hy; ++y) {
+            if (x === game.u.ux && y === game.u.uy)
+                continue;
+            const mon = m_at(x, y);
+            if (!mon)
+                continue;
+            ++total;
+            const appearance = M_AP_TYPE(mon);
+            if (sensemon(mon)
+                || ((appearance === M_AP_NOTHING
+                     || appearance === M_AP_MONSTER)
+                    && canseemon(mon)))
+                ++seen;
+        }
+    }
+
+    const blindTelepat = !!(game.u.intrinsic?.HTelepat
+                             || game.u.uprops?.TELEPAT);
+    if (Blind() && !(blindTelepat || game.u.uprops?.DETECT_MONSTERS))
+        ++total;
+    await pline(`This shop ${seen < total ? 'seems to be' : 'is'} ${
+        !total ? 'deserted' : 'untended'}.`);
+}
+
+// src/shk.c:751 u_entered_shop(), including tended and untended entry.
 export async function u_entered_shop(enterstring) {
     if (!enterstring)
         return;
 
     const roomno = enterstring.charCodeAt(0);
     const shkp = shop_keeper(roomno);
-    if (!shkp || !inhishop(shkp)) {
-        note_unported_shk('u_entered_shop:untended');
+    const emptyShops = game._empty_shops || '';
+    if (!shkp) {
+        if (!emptyShops.includes(enterstring[0])
+            && in_rooms(game.u.ux, game.u.uy, SHOPBASE)
+               !== in_rooms(game.u.ux0, game.u.uy0, SHOPBASE))
+            await deserted_shop(enterstring);
+        game._empty_shops = game.u.ushops || '';
+        game.u.ushops = '';
+        return;
+    }
+    if (!inhishop(shkp)) {
+        if (!emptyShops.includes(enterstring[0]))
+            await deserted_shop(enterstring);
+        game._empty_shops = game.u.ushops || '';
         game.u.ushops = '';
         return;
     }
@@ -168,7 +215,18 @@ export async function u_entered_shop(enterstring) {
 
     if (muteshk(shkp) || eshk.following)
         return;
-    if (Invis() || !shkp.mpeaceful || eshk.surcharge || eshk.robbed) {
+    if (Invis()) {
+        await pline(`${shopkeeper_name(shkp)} senses your presence.`);
+        if (!Deaf() && !muteshk(shkp)) {
+            await pline('"Invisible customers are not welcome!"');
+        } else {
+            const pronoun = shkp.female ? 'she' : 'he';
+            await pline(`${shopkeeper_name(shkp)} stands firm as if ${
+                pronoun} knows you are there.`);
+        }
+        return;
+    }
+    if (!shkp.mpeaceful || eshk.surcharge || eshk.robbed) {
         note_unported_shk('u_entered_shop:special_dialogue');
         return;
     }
@@ -225,6 +283,34 @@ function setpaid(shkp) {
     eshk.credit = 0;
     eshk.debit = 0;
     eshk.loan = 0;
+}
+
+// src/shk.c:235 shkgone(): remove a dead shopkeeper's room residency and
+// stop treating the former stock as shop-owned merchandise.
+export function shkgone(shkp) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    const roomno = (eshk?.shoproom ?? NO_ROOM) - ROOMOFFSET;
+    const room = game.level?.rooms?.[roomno];
+    if (!eshk || !room)
+        return;
+    if (eshk.shoplevel
+        && (eshk.shoplevel.dnum !== game.u.uz.dnum
+            || eshk.shoplevel.dlevel !== game.u.uz.dlevel))
+        return;
+
+    room.resident = null;
+    for (const obj of game.level?.objects || []) {
+        if (obj.ox >= room.lx && obj.ox <= room.hx
+            && obj.oy >= room.ly && obj.oy <= room.hy)
+            obj.no_charge = 0;
+    }
+
+    const roomchar = String.fromCharCode(eshk.shoproom);
+    if ((game.u.ushops || '').includes(roomchar)) {
+        setpaid(shkp);
+        game.u.ushops = [...game.u.ushops]
+            .filter(ch => ch !== roomchar).join('');
+    }
 }
 
 async function makekops(origin) {

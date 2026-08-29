@@ -25,7 +25,7 @@ import { finish_meating } from './dogmove.js';
 import { growl } from './sounds.js';
 import { sengr_at } from './engrave.js';
 import { Monnam, mon_nam, x_monnam, upstart } from './do_name.js';
-import { hot_pursuit } from './shk.js';
+import { hot_pursuit, shkgone } from './shk.js';
 import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
 import { bad_rock, disturb_buried_zombies, may_dig, may_passwall }
     from './hack.js';
@@ -35,7 +35,7 @@ import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
          undead_to_corpse, zombie_form, discard_minvent,
          add_to_container } from './mkobj.js';
 import { weight } from './invent.js';
-import { newsym, canseemon, canspotmon, pline,
+import { newsym, canseemon, canspotmon, pline, see_monsters,
          unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
@@ -43,10 +43,10 @@ import { remove_monster, place_monster, goodpos, grow_up } from './makemon.js';
 import { enexto_core, enexto, noteleport_level, rloc, tele_restrict,
          rloc_to_flag } from './teleport.js';
 import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
-         G_GENOD, A_NONE, A_STR, ARTICLE_NONE, ARTICLE_THE, ARTICLE_A,
+         G_GENOD, A_NONE, A_CHAOTIC, A_STR, ARTICLE_NONE, ARTICLE_THE, ARTICLE_A,
          ARTICLE_YOUR, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES,
          SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
-         TELEPORT_CONTROL, TELEPAT, LAST_PROP,
+         TELEPORT_CONTROL, TELEPAT, LAST_PROP, INTRINSIC,
          SUPPRESS_SADDLE } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
@@ -1832,9 +1832,9 @@ export async function killed(mtmp) {
 //
 // The spine is the death message, mondead(), the "treasure drop" rn2(6), the
 // corpse, the luck adjustments and the experience award, in that order; the
-// order matters because three of those draw. Petrification is live; the
-// engulfer expel, quest leaders, priests, shopkeepers and the murder penalty
-// are recorded where their remaining branches are not yet ported.
+// order matters because three of those draw. Petrification and the murder
+// penalty are live; the remaining engulfer, quest leader, priest, and
+// shopkeeper branches stay recorded where they are not yet ported.
 export async function xkilled(mtmp, xkill_flags) {
     const x = mtmp.mx, y = mtmp.my;
     const nomsg = (xkill_flags & XKILL_NOMSG) !== 0;
@@ -1935,11 +1935,21 @@ export async function xkilled(mtmp, xkill_flags) {
         newsym(x, y);
     }
 
-    /* Punish bad behavior. */
-    if (is_human(mdat) && !mtmp.mpeaceful)
-        ; /* the murder arm needs always_hostile/malign; hostile is clear */
-    else if (is_human(mdat))
-        note_unported_mon('xkilled:murder');
+    /* Punish murder of a non-hostile human by a lawful or neutral hero. */
+    if (is_human(mdat)
+        && !(mdat.mflags2 & MFLAGS.M2_HOSTILE)
+        && (mtmp.malign ?? 0) <= 0
+        && (mndx < PMNAMES.PM_ARCHEOLOGIST || mndx > PMNAMES.PM_WIZARD)
+        && mndx !== PMNAMES.PM_HUMAN
+        && game.u.ualign.type !== A_CHAOTIC) {
+        const intrinsic = game.u.intrinsic ||= {};
+        intrinsic.HTelepat = (intrinsic.HTelepat | 0) & ~INTRINSIC;
+        change_luck(-2);
+        await You('murderer!');
+        if (Blind()
+            && !(intrinsic.HTelepat || game.u.uprops?.TELEPAT))
+            see_monsters();
+    }
 
     if ((mtmp.mpeaceful && !rn2(2)) || mtmp.mtame)
         change_luck(-1);
@@ -2440,6 +2450,8 @@ export async function mondead(mdef) {
         const { relobj } = await import('./steal.js');
         await relobj(mdef, 1, false);
     }
+    if (mdef.isshk)
+        shkgone(mdef);
 }
 
 // src/mon.c:3253 mondied() — mondead() plus, maybe, a corpse.

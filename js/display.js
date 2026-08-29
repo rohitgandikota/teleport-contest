@@ -75,15 +75,16 @@ const ANSI_COLOR = [
 ];
 
 /* include/display.h canspotself().  Blind heroes can locate themselves by
-   touch; otherwise intrinsic invisibility hides the hero glyph unless they
-   can see invisible. */
-function canspotself() {
+   touch; otherwise effective invisibility hides the hero glyph unless
+   telepathy or monster detection reveals it. */
+export function canspotself() {
     const u = game.u;
     if (!u)
         return false;
     const invisible = Invis() && !See_invisible();
     return Blind() || !!u.uswallow
            || (!invisible && !u.uundetected)
+           || !!u.uprops?.TELEPAT
            || !!u.uprops?.DETECT_MONSTERS;
 }
 

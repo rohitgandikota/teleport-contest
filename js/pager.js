@@ -21,7 +21,7 @@ import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
-import { pline, glyph_at, docrt, flush_screen,
+import { pline, glyph_at, docrt, flush_screen, canspotself,
          tty_clear_nhwindow_message } from './display.js';
 import { couldsee } from './vision.js';
 import { DEC_TO_UNICODE, NO_COLOR } from './terminal.js';
@@ -224,7 +224,7 @@ function lookat(x, y) {
     const glyph = glyph_at(x, y);
     const loc = game.level?.at(x, y);
 
-    if (game.u.ux === x && game.u.uy === y /* && canspotself() */) {
+    if (game.u.ux === x && game.u.uy === y && canspotself()) {
         buf = self_lookat();
         /* pm stays null for self: file lookup uses the name string.
            The only exception is a gnomish wizard, forced to the generic

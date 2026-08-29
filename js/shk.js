@@ -30,7 +30,7 @@ import { DEADMONSTER, helpless } from './monst.js';
 import { is_demon, is_elf, is_human, passes_walls, vegetarian } from './mondata.js';
 import { poly_gender } from './polyself.js';
 import { rn2, rnd } from './rng.js';
-import { bot, flush_screen, pline, canseemon, canspotmon, newsym, sensemon }
+import { bot, pline, canseemon, canspotmon, newsym, sensemon }
     from './display.js';
 import { an, doname, simpleonames, xname, The } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
@@ -115,7 +115,9 @@ export function record_price_quote(otyp, price, buyprice) {
 // off-by-ROOMOFFSET slot is usually past nroom, whose rtype reads as
 // ordinary, so these functions almost always see IS_SHOP() false.
 function IS_SHOP(roomidx) {
-    const r = (game.level?.rooms || [])[roomidx];
+    const r = (game.level?.rooms || [])[roomidx]
+        || (game.level?.subrooms || [])
+            .find(room => room.roomnoidx === roomidx);
     return !!r && r.rtype >= SHOPBASE;
 }
 
@@ -133,7 +135,11 @@ export function inside_shop(x, y) {
 export function shop_keeper(roomno) {
     if (roomno < ROOMOFFSET)
         return null;
-    const shkp = game.level?.rooms?.[roomno - ROOMOFFSET]?.resident || null;
+    const roomidx = roomno - ROOMOFFSET;
+    const room = game.level?.rooms?.[roomidx]
+        || (game.level?.subrooms || [])
+            .find(candidate => candidate.roomnoidx === roomidx);
+    const shkp = room?.resident || null;
     if (!shkp || !(shkp.eshk || ESHK(shkp)))
         return null;
     if (!shkp.mpeaceful && !(shkp.eshk || ESHK(shkp)).surcharge)
@@ -238,7 +244,11 @@ export async function u_entered_shop(enterstring) {
         return;
     }
 
-    const rt = game.level?.rooms?.[roomno - ROOMOFFSET]?.rtype ?? SHOPBASE;
+    const roomidx = roomno - ROOMOFFSET;
+    const room = game.level?.rooms?.[roomidx]
+        || (game.level?.subrooms || [])
+            .find(candidate => candidate.roomnoidx === roomidx);
+    const rt = room?.rtype ?? SHOPBASE;
     const shopname = shtypes[rt - SHOPBASE]?.name || 'shop';
     const again = (eshk.visitct | 0) ? ' again' : '';
     if (!Deaf()) {
@@ -1964,12 +1974,9 @@ export async function dopay() {
     return paid ? ECMD_TIME : ECMD_OK;
 }
 
-// src/shk.c:5791 block_door() — an angry shopkeeper standing on his usual
-// spot blocks the shop door. The room-type gates answer for every non-shop
-// doorway; a real shop with an owed shopkeeper needs eshk state (shk.x/y,
-// shd, debit/billct/robbed) that the shk port does not carry yet, so that
-// arm records itself instead of guessing.
-export function block_door(x, y) {
+// src/shk.c:5791 block_door(). A shopkeeper on the usual post blocks a
+// diagonal exit through the shop door while the customer still owes money.
+export async function block_door(x, y) {
     const rooms = in_rooms(x, y, SHOPBASE);
     if (!rooms.length)
         return false;
@@ -1981,7 +1988,19 @@ export function block_door(x, y) {
     if (roomno !== (game.u.ushops?.charCodeAt?.(0) ?? -1))
         return false;
 
-    note_unported_shk('block_door:shk_on_post');
+    const shkp = shop_keeper(roomno);
+    if (!shkp || !inhishop(shkp))
+        return false;
+
+    const eshk = shkp.eshk || ESHK(shkp);
+    if (shkp.mx === eshk.shk.x && shkp.my === eshk.shk.y
+        && eshk.shd.x === x && eshk.shd.y === y
+        && !helpless(shkp)
+        && (eshk.debit || eshk.billct || eshk.robbed)) {
+        await pline(`${shopkeeper_name(shkp)}${Invis()
+            ? ' senses your motion and' : ''} blocks your way!`);
+        return true;
+    }
     return false;
 }
 
@@ -2182,7 +2201,6 @@ export async function pay_for_damage(dmgstr, cant_mollify = false) {
 
     if (Invis())
         await pline(`Your invisibility does not fool ${shopkeeper_name(shkp)}!`);
-    await flush_screen(0);
     const answer = await tty_yn_function(
         `${animal ? '' : cad(true)}You did ${cost} ${currency(cost)} worth of damage!${
             animal ? '' : '"'}  Pay?`,

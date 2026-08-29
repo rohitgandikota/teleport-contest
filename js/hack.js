@@ -310,8 +310,8 @@ export async function test_move(ux, uy, dx, dy, mode) {
                 } else if (mode === TEST_TRAV || mode === TEST_TRAP) {
                     /* C: goto testdiag — on survival, control falls out of
                        the door branch into the squeeze tests below */
-                    const r = test_move_testdiag(x, y, dx, dy, mode,
-                                                 Passes_walls);
+                    const r = await test_move_testdiag(x, y, dx, dy, mode,
+                                                       Passes_walls);
                     if (r !== 'fallthru')
                         return r;
                     through_testdiag = true;
@@ -320,7 +320,8 @@ export async function test_move(ux, uy, dx, dy, mode) {
                     return false;
             }
         } else {
-            const r = test_move_testdiag(x, y, dx, dy, mode, Passes_walls);
+            const r = await test_move_testdiag(x, y, dx, dy, mode,
+                                               Passes_walls);
             if (r !== 'fallthru')
                 return r;
         }
@@ -439,9 +440,9 @@ export async function test_move(ux, uy, dx, dy, mode) {
 // The `testdiag` label inside src/hack.c:1138 test_move(): diagonal moves
 // into an intact doorway are not allowed. Returns 'fallthru' when the C would
 // fall out of the door branch and continue with the squeeze tests.
-function test_move_testdiag(x, y, dx, dy, mode, Passes_walls) {
+async function test_move_testdiag(x, y, dx, dy, mode, Passes_walls) {
     if (dx && dy && !Passes_walls
-        && (!doorless_door(x, y) || block_door(x, y))) {
+        && (!doorless_door(x, y) || await block_door(x, y))) {
         /* Diagonal moves into a door are not allowed. */
         if (mode === DO_MOVE)
             note_unported_hack('test_move:diag_door_msg');
@@ -608,7 +609,11 @@ export function move_update(newlev) {
     for (const ch of u.urooms) {
         if (!u.urooms0.includes(ch))
             u.uentered += ch;
-        const rtype = game.level?.rooms?.[ch.charCodeAt(0) - ROOMOFFSET]?.rtype;
+        const roomidx = ch.charCodeAt(0) - ROOMOFFSET;
+        const room = game.level?.rooms?.[roomidx]
+            || (game.level?.subrooms || [])
+                .find(candidate => candidate.roomnoidx === roomidx);
+        const rtype = room?.rtype;
         if (rtype >= SHOPBASE) {
             u.ushops += ch;
             if (!u.ushops0.includes(ch))

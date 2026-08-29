@@ -975,8 +975,11 @@ function billed_cost(obj) {
     let price = 0;
     let found = false;
     for (const room of game.u.ushops || '') {
-        const shkp = game.level?.rooms?.[
-            room.charCodeAt(0) - ROOMOFFSET]?.resident;
+        const roomidx = room.charCodeAt(0) - ROOMOFFSET;
+        const shoproom = game.level?.rooms?.[roomidx]
+            || (game.level?.subrooms || [])
+                .find(candidate => candidate.roomnoidx === roomidx);
+        const shkp = shoproom?.resident;
         const bill = shkp?.eshk?.bill_p;
         const entry = Array.isArray(bill)
             ? bill.find(bp => bp.bo_id === obj.o_id) : null;

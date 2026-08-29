@@ -146,7 +146,7 @@ function flags_autoopen() {
     return game.flags?.autoopen !== false;
 }
 
-function blocksMove(x, y, dx, dy) {
+async function blocksMove(x, y, dx, dy) {
     /* src/hack.c:1001 — test_move clears door_opened on entry; without this
        a door opened two commands ago lets a later blocked move keep its
        turn and run a monster round C never ran */
@@ -157,7 +157,13 @@ function blocksMove(x, y, dx, dy) {
     if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))) return true;
     /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway
        are not allowed (block_door boulder check needs Sokoban state) */
-    if (dx && dy && IS_DOOR(loc.typ) && !doorless_door(x, y)) return true;
+    if (dx && dy && IS_DOOR(loc.typ)) {
+        if (!doorless_door(x, y))
+            return true;
+        const { block_door } = await import('./shk.js');
+        if (await block_door(x, y))
+            return true;
+    }
     /* src/hack.c:1208 — nor diagonal moves OUT of one */
     const ust = game.level?.at(game.u.ux, game.u.uy);
     if (dx && dy && ust && IS_DOOR(ust.typ)
@@ -2344,7 +2350,7 @@ async function domove_core() {
      *
      * The door_opened guard matters: walking into a closed door with autoopen
      * opens it and consumes the turn, and that must NOT stop a run. */
-    if (blocksMove(newx, newy, dx, dy)) {
+    if (await blocksMove(newx, newy, dx, dy)) {
         // Can't move there
         /* src/hack.c:1058 — with mention_walls the blocked move says what
            stopped it, naming the background glyph. Only the solid-stone and

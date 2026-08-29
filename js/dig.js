@@ -7,7 +7,8 @@
 
 import { game } from './gstate.js';
 import { rn1, rn2, rnd } from './rng.js';
-import { newsym, canseemon, pline } from './display.js';
+import { newsym, canseemon, display_cmap_at, flush_screen, pline }
+    from './display.js';
 import { You, You_cant, You_feel, You_hear, pline_The } from './pline.js';
 import { cansee, does_block, unblock_point, recalc_block_point } from './vision.js';
 import { cvt_sdoor_to_door } from './detect.js';
@@ -31,6 +32,8 @@ import { ceiling, surface } from './dungeon.js';
 import { simpleonames, Yobjnam2, yname, yobjnam } from './objnam.js';
 import { u_wipe_engr } from './engrave.js';
 import { PMNAMES } from './monst_data.js';
+import { cmap_names } from './drawing_data.js';
+import { CLR_WHITE } from './terminal.js';
 import { IS_OBSTRUCTED, IS_TREE, IS_WALL, IS_STWALL, SDOOR, SCORR, CORR,
          ROOM, DOOR, D_NODOOR, D_BROKEN, D_TRAPPED, D_LOCKED, D_CLOSED,
          W_NONDIGGABLE, SHOPBASE, A_STR, A_DEX, A_CON, A_CHA, A_INT,
@@ -398,14 +401,25 @@ export async function zap_dig() {
         && !Is_earthlevel(u.uz);
     let zx = u.ux + u.dx, zy = u.uy + u.dy;
     let digdepth = rn1(18, 8);
+    const beamCells = [];
 
     if (u.utrap)
         note_unported_dig('zap_dig:pit');
 
+    await flush_screen(0);
     while (--digdepth >= 0) {
         if (!isok(zx, zy))
             break;
         const room = game.level.at(zx, zy);
+
+        if (cansee(zx, zy)) {
+            display_cmap_at(cmap_names.S_digbeam, zx, zy, CLR_WHITE,
+                            'dig-beam');
+            beamCells.push([zx, zy]);
+            await flush_screen(0);
+        }
+        if (game.animationFrame)
+            await game.animationFrame();
 
         if (closed_door(zx, zy) || room.typ === SDOOR) {
             if (in_rooms(zx, zy, SHOPBASE)) {
@@ -496,12 +510,12 @@ export async function zap_dig() {
             }
             unblock_point(zx, zy);
         }
-        /* tmp_at() restores the preceding beam square with newsym() as the
-           beam advances. Keep the final map visible without the animation. */
-        newsym(zx, zy);
         zx += u.dx;
         zy += u.dy;
     }
+
+    for (const [x, y] of beamCells)
+        newsym(x, y);
 
     if (shopdoor || shopwall) {
         const { pay_for_damage } = await import('./shk.js');

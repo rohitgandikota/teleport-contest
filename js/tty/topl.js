@@ -202,6 +202,18 @@ export async function tty_yn_function(query, resp, def) {
         await more();
     game._win_stop = false;
 
+    /* custompline() prepares the map after any pending --More-- has been
+       acknowledged. This ordering preserves temporary effects under the
+       --More-- frame, then exposes terrain changes beneath the prompt. */
+    if (game.vision_full_recalc) {
+        const { vision_recalc } = await import('../vision.js');
+        vision_recalc(0);
+    }
+    if (game.u?.ux) {
+        const { flush_screen } = await import('../display.js');
+        await flush_screen(1);
+    }
+
     let prompt = query;
     if (resp) {
         /* win/tty/topl.c builds "<query> [<resp>] " and appends "(<def>) "

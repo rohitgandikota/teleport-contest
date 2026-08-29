@@ -251,6 +251,12 @@ export async function tty_yn_function(query, resp, def) {
         game._toplines = prompt + vis;   /* gt.toplines: ^P recall buffer */
         game._pending_message = '';
         game._toplin = TOPLINE_NON_EMPTY;
+        /* win/tty/topl.c clears the message window here when the prompt
+           wrapped onto a continuation row. */
+        if (promptLines.length > 1) {
+            tty_clear_nhwindow_message(promptLines.length - 1);
+            game._topl_curx = game._topl_cury = 0;
+        }
         return q;
     };
 

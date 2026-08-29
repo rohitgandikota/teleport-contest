@@ -15,7 +15,8 @@ import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
 import { m_canseeu, inhishop } from './monmove.js';
 import { move_special } from './priest.js';
-import { addinv, carrying, sobj_at, currency, money_cnt, freeinv } from './invent.js';
+import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
+         contained_gold } from './invent.js';
 import { wake_nearto } from './mon.js';
 import { Blind, Deaf, Invis } from './youprop.js';
 import { ACURR, Fast, adjalign } from './attrib.js';
@@ -26,7 +27,7 @@ import { helpless } from './monst.js';
 import { is_elf, is_human } from './mondata.js';
 import { rn2, rnd } from './rng.js';
 import { bot, pline } from './display.js';
-import { doname, simpleonames, xname } from './objnam.js';
+import { an, doname, simpleonames, xname } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
 import { OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
 import { s_suffix } from './hacklib.js';
@@ -747,6 +748,54 @@ function set_cost(obj, shkp) {
     return amount;
 }
 
+// src/shk.c:2995 contained_cost() and src/invent.c:3620 count_contents().
+// During a new drop, unpaid contents still belong to the shopkeeper and all
+// other contents still belong to the hero. The offer only includes saleable
+// hero-owned objects, while the counts drive the container-specific prompt.
+function contained_sale_summary(obj, shkp) {
+    let cost = 0;
+    let shopCount = 0;
+    let heroCount = 0;
+    for (const contained of obj.cobj || []) {
+        if (Has_contents(contained)) {
+            const nested = contained_sale_summary(contained, shkp);
+            cost += nested.cost;
+            shopCount += nested.shopCount;
+            heroCount += nested.heroCount;
+        }
+        if (contained.unpaid) {
+            shopCount += contained.quan || 1;
+        } else {
+            heroCount += contained.quan || 1;
+            if (contained.oclass !== OCLASSES.COIN_CLASS
+                && contained.oclass !== OCLASSES.BALL_CLASS
+                && saleable(shkp, contained)
+                && !(contained.oclass === OCLASSES.FOOD_CLASS
+                     && contained.oeaten)
+                && !(Is_candle(contained)
+                     && (contained.age ?? 0)
+                        < 20 * (game.objects[contained.otyp]?.oc_cost ?? 0))) {
+                cost += set_cost(contained, shkp);
+            }
+        }
+    }
+    return { cost, shopCount, heroCount };
+}
+
+// src/shk.c:3064 dropped_container(). Mark the portions of a newly dropped
+// container which the shopkeeper did not buy as player-owned floor objects.
+function dropped_container(obj, shkp, sale) {
+    for (const contained of obj.cobj || []) {
+        if (contained.oclass !== OCLASSES.COIN_CLASS
+            && !contained.unpaid
+            && !(sale && saleable(shkp, contained))) {
+            contained.no_charge = 1;
+        }
+        if (Has_contents(contained))
+            dropped_container(contained, shkp, sale);
+    }
+}
+
 function sub_one_frombill(obj, shkp) {
     const eshk = shkp.eshk || ESHK(shkp);
     const bill = eshk.bill_p || [];
@@ -909,8 +958,7 @@ async function donate_gold(amount, shkp, selling) {
     }
 }
 
-// src/shk.c sellobj(), ordinary objects and gold. Container-specific billing
-// remains explicit because nested ownership needs the bill-object chain.
+// src/shk.c sellobj(), ordinary objects, gold, and containers without gold.
 export async function sellobj(obj, x, y) {
     if (!(game.u.ushops || '').length)
         return;
@@ -919,20 +967,26 @@ export async function sellobj(obj, x, y) {
     if (!shkp || !inhishop(shkp) || !costly_spot(x, y))
         return;
 
-    if (obj.unpaid && !Has_contents(obj)
+    const container = Has_contents(obj);
+    if (obj.unpaid && !container
         && obj.oclass !== OCLASSES.COIN_CLASS) {
         sub_one_frombill(obj, shkp);
         return;
     }
-    if (Has_contents(obj)) {
-        note_unported_shk('sellobj:container');
+    if (container && contained_gold(obj, true)) {
+        note_unported_shk('sellobj:container_gold');
         return;
     }
 
     const eshk = shkp.eshk || ESHK(shkp);
     const isgold = obj.oclass === OCLASSES.COIN_CLASS;
     const saleitem = saleable(shkp, obj);
-    let offer = !isgold && saleitem ? set_cost(obj, shkp) : 0;
+    const contents = container
+        ? contained_sale_summary(obj, shkp)
+        : { cost: 0, shopCount: 0, heroCount: 0 };
+    const containerOffer = !isgold && !obj.unpaid && saleitem
+        ? set_cost(obj, shkp) : 0;
+    let offer = containerOffer + contents.cost;
 
     if (!shkp.mpeaceful) {
         await pline('"Thank you, scum!"');
@@ -941,7 +995,11 @@ export async function sellobj(obj, x, y) {
     }
 
     if (!isgold && (!offer || game.sell_how === SELL_DONTSELL)) {
-        obj.no_charge = 1;
+        if (container)
+            dropped_container(obj, shkp, false);
+        if (!obj.unpaid)
+            obj.no_charge = 1;
+        subfrombill(obj, shkp);
         if (game.sell_how !== SELL_DONTSELL)
             await pline(`${shopkeeper_name(shkp)} seems uninterested.`);
         return;
@@ -953,6 +1011,10 @@ export async function sellobj(obj, x, y) {
     }
 
     const shkmoney = money_cnt(shkp.minvent || []);
+    if (container && !shkmoney) {
+        note_unported_shk('sellobj:container_credit');
+        return;
+    }
     if (!shkmoney) {
         const creditOffer = Math.trunc(offer * 9 / 10) + (offer <= 1 ? 1 : 0);
         let answer = game.sell_response;
@@ -989,9 +1051,29 @@ export async function sellobj(obj, x, y) {
 
     let answer = game.sell_response;
     if (!answer) {
-        const one = (obj.quan || 1) === 1;
+        let one = (obj.quan || 1) === 1;
+        let owner = 'your ';
+        let contentsPrefix = '';
+        let contentsSuffix = '';
+        if (container) {
+            owner = obj.unpaid ? 'the ' : 'your ';
+            if (contents.cost && !containerOffer) {
+                contentsPrefix = contents.heroCount === 1
+                    ? 'your item in ' : 'your items in ';
+            } else if (contents.cost && containerOffer) {
+                const partiallyOwned = contents.shopCount
+                    && contents.heroCount;
+                contentsSuffix = partiallyOwned
+                    ? (contents.heroCount === 1
+                        ? ' and item inside' : ' and items inside')
+                    : ' and its contents';
+            }
+            one = !containerOffer
+                ? contents.heroCount === 1
+                : (obj.quan || 1) === 1 && !contents.cost;
+        }
         answer = await tty_yn_function(
-            `${shopkeeper_name(shkp)} offers${shortFunds ? ' only' : ''} ${offer} gold piece${offer === 1 ? '' : 's'} for your ${xname(obj)}.  Sell ${one ? 'it' : 'them'}?`,
+            `${shopkeeper_name(shkp)} offers${shortFunds ? ' only' : ''} ${offer} gold piece${offer === 1 ? '' : 's'} for ${contentsPrefix}${owner}${xname(obj)}${contentsSuffix}.  Sell ${one ? 'it' : 'them'}?`,
             'ynaq', 'n');
     }
     if (answer === 'q') {
@@ -1004,14 +1086,25 @@ export async function sellobj(obj, x, y) {
     delete game._encumber_status_stale;
 
     if (answer !== 'y') {
-        obj.no_charge = 1;
+        if (container)
+            dropped_container(obj, shkp, false);
+        if (!obj.unpaid)
+            obj.no_charge = 1;
         subfrombill(obj, shkp);
         return;
     }
 
+    if (container)
+        dropped_container(obj, shkp, true);
+    if (!obj.unpaid && !saleitem)
+        obj.no_charge = 1;
     subfrombill(obj, shkp);
     await money2u(shkp, offer);
-    await pline(`You sold ${doname(obj)} for ${offer} gold piece${offer === 1 ? '' : 's'}.`);
+    const soldName = container
+        ? `the contents of ${obj.no_charge
+            ? an(xname(obj)) : `your ${xname(obj)}`}`
+        : doname(obj);
+    await pline(`You sold ${soldName} for ${offer} gold piece${offer === 1 ? '' : 's'}.`);
 }
 
 // src/shk.c menu_pick_pay_items() selects intact and used-up bill entries.

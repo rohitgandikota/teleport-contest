@@ -8,7 +8,8 @@
 import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
-         freeinv, update_inventory, weight, mergable, money_cnt } from './invent.js';
+         freeinv, update_inventory, weight, mergable, merged, money_cnt }
+    from './invent.js';
 import { observe_object } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an,
          otense } from './objnam.js';
@@ -1117,9 +1118,14 @@ async function menu_loot(retry, put_in) {
         if (picks.length) {
             n_looted = picks.length;
             for (let otmp of picks) {
-                /* count splitting needs menu counts; whole stacks only */
+                const original = otmp;
+                const count = picks.counts?.get(otmp) ?? otmp.quan;
+                if (count > 0 && count < otmp.quan)
+                    otmp = splitobj(otmp, count);
                 const res = put_in ? await in_container(otmp)
                                    : await out_container(otmp);
+                if (res <= 0 && current_container && otmp !== original)
+                    merged({ o: original }, { o: otmp });
                 if (res < 0)
                     break;
             }

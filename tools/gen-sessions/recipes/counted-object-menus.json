@@ -1,0 +1,27 @@
+{
+  "name": "counted-object-menus",
+  "description": "A Debug Wizard moves partial stacks through pickup, drop, and both container menu directions, then clamps an oversized pickup count.",
+  "branches": [
+    "container.menu.partial-count-put-in",
+    "container.menu.partial-count-take-out",
+    "drop.menu.partial-count",
+    "pickup.menu.count-split",
+    "pickup.menu.explicit-count",
+    "pickup.menu.overlarge-count-clamp"
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "object.tools-containers",
+    "ui.menus"
+  ],
+  "segments": [
+    {
+      "seed": 6920,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed bag of holding\r\u001710 uncursed apples\rapi%\r4q\r apo%\r2a\rD%\r3q\rdp,99a\r"
+    }
+  ]
+}

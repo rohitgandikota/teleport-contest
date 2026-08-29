@@ -17,7 +17,7 @@ import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
 import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
 import { place_object, rider_revival_time, set_bknown, set_corpsenm,
-         zombie_form } from './mkobj.js';
+         splitobj, zombie_form } from './mkobj.js';
 import { canseemon, cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_feel, You_hear, Your }
     from './pline.js';
@@ -1594,6 +1594,20 @@ export async function dodrop() {
 }
 
 // src/do.c:924 doddrop() and :980 menu_drop(), the 'D' command.
+async function menudrop_split(obj, count) {
+    let selected = obj;
+    if (count && count < obj.quan) {
+        if (welded(obj)) {
+            /* welded stacks are not split */
+        } else if (obj.otyp === ONAMES.LOADSTONE && obj.cursed) {
+            obj.corpsenm = count;
+        } else {
+            selected = splitobj(obj, count);
+        }
+    }
+    return drop(selected);
+}
+
 export async function doddrop() {
     if (!game.invent?.length) {
         await You('have nothing to drop.');
@@ -1636,8 +1650,11 @@ export async function doddrop() {
             const objects = await query_objlist(
                 'What would you like to drop?', eligible, true);
             for (const obj of objects) {
-                if (game.invent.includes(obj))
-                    dropped += (await drop(obj)) === ECMD_TIME ? 1 : 0;
+                if (game.invent.includes(obj)) {
+                    const count = objects.counts?.get(obj) ?? obj.quan;
+                    dropped += (await menudrop_split(obj, count)) === ECMD_TIME
+                        ? 1 : 0;
+                }
             }
         }
         result = dropped ? ECMD_TIME : ECMD_OK;

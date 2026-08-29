@@ -9,22 +9,23 @@
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN }
+         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS }
     from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
 import { m_canseeu, inhishop } from './monmove.js';
 import { move_special } from './priest.js';
 import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
-         contained_gold, weight } from './invent.js';
+         contained_gold, hidden_gold, weight } from './invent.js';
 import { wake_nearto } from './mon.js';
 import { Blind, Deaf, Invis } from './youprop.js';
-import { ACURR, Fast, adjalign } from './attrib.js';
+import { ACURR, Fast, adjalign, exercise } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
 import { Has_contents, Is_candle } from './obj.js';
 import { helpless } from './monst.js';
-import { is_elf, is_human } from './mondata.js';
+import { is_demon, is_elf, is_human } from './mondata.js';
+import { poly_gender } from './polyself.js';
 import { rn2, rnd } from './rng.js';
 import { bot, pline } from './display.js';
 import { an, doname, simpleonames, xname, The } from './objnam.js';
@@ -607,6 +608,87 @@ function append_honorific() {
 
 function muteshk(shkp) {
     return helpless(shkp) || (shkp.data?.msound ?? 0) <= MSOUND.MS_ANIMAL;
+}
+
+// src/shk.c cost_per_charge() and check_unpaid_usage(). Using a charge from
+// unpaid merchandise adds a separate usage debt without changing store credit.
+function cost_per_charge(shkp, obj, altusage) {
+    let cost = get_cost(obj, shkp);
+    if (obj.otyp === ONAMES.MAGIC_LAMP) {
+        cost = altusage
+            ? cost + Math.trunc(cost / 3)
+            : game.objects[ONAMES.OIL_LAMP].oc_cost;
+    } else if (obj.otyp === ONAMES.MAGIC_MARKER) {
+        cost = Math.trunc(cost / 2);
+    } else if (obj.otyp === ONAMES.BAG_OF_TRICKS
+               || obj.otyp === ONAMES.HORN_OF_PLENTY) {
+        if (!altusage)
+            cost = Math.trunc(cost / 5);
+    } else if (obj.otyp === ONAMES.CRYSTAL_BALL
+               || obj.otyp === ONAMES.OIL_LAMP
+               || obj.otyp === ONAMES.BRASS_LANTERN
+               || (obj.otyp >= ONAMES.MAGIC_FLUTE
+                   && obj.otyp <= ONAMES.DRUM_OF_EARTHQUAKE)
+               || obj.oclass === OCLASSES.WAND_CLASS) {
+        if (obj.spe > 1)
+            cost = Math.trunc(cost / 4);
+    } else if (obj.oclass === OCLASSES.SPBOOK_CLASS) {
+        cost -= Math.trunc(cost / 5);
+    } else if (obj.otyp === ONAMES.CAN_OF_GREASE
+               || obj.otyp === ONAMES.TINNING_KIT
+               || obj.otyp === ONAMES.EXPENSIVE_CAMERA) {
+        cost = Math.trunc(cost / 10);
+    } else if (obj.otyp === ONAMES.POT_OIL) {
+        cost = Math.trunc(cost / 5);
+    }
+    return cost;
+}
+
+export async function check_unpaid_usage(obj, altusage = false) {
+    if (!obj?.unpaid || !(game.u.ushops || '').length
+        || (obj.spe <= 0 && game.objects[obj.otyp]?.oc_charged))
+        return;
+    const shkp = shop_keeper(game.u.ushops.charCodeAt(0));
+    if (!shkp || !inhishop(shkp))
+        return;
+    const cost = cost_per_charge(shkp, obj, altusage);
+    if (!cost)
+        return;
+
+    const eshk = shkp.eshk || ESHK(shkp);
+    let message;
+    if (obj.oclass === OCLASSES.SPBOOK_CLASS) {
+        const gender = is_demon(game.youmonst?.data) ? 3 : poly_gender();
+        const address = ['cad', 'minx', 'beast', 'fiend'][gender] || 'thing';
+        const preface = rn2(2) ? `This is no free library, ${address}!  ` : '';
+        message = `${preface}You owe${eshk.debit ? ' an additional' : ''}`
+                + ` ${cost} ${currency(cost)}.`;
+    } else if (obj.otyp === ONAMES.POT_OIL) {
+        message = `That will cost you ${cost} ${currency(cost)}`
+                + ' (Yendorian Fuel Tax).';
+    } else if (altusage && (obj.otyp === ONAMES.BAG_OF_TRICKS
+                            || obj.otyp === ONAMES.HORN_OF_PLENTY)) {
+        let preface = '';
+        if (!rn2(3))
+            preface = 'Whoa!  ';
+        if (!rn2(3))
+            preface = 'Watch it!  ';
+        message = `${preface}Emptying that will cost you ${cost} ${currency(cost)}.`;
+    } else {
+        const first = !rn2(3) ? 'Hey!  ' : '';
+        const second = !rn2(3) ? 'Ahem.  ' : '';
+        message = `${first}${second}Usage fee, ${cost} ${currency(cost)}.`;
+    }
+
+    if (!Deaf() && !muteshk(shkp)) {
+        await pline(`"${message}"`);
+        exercise(A_WIS, true);
+    }
+    eshk.debit = (eshk.debit || 0) + cost;
+}
+
+export async function check_unpaid(obj) {
+    await check_unpaid_usage(obj, false);
 }
 
 // src/shk.c:3085 picked_container(). Once a container leaves the floor, its
@@ -1438,31 +1520,68 @@ export async function dopay() {
             ? 'seems to be napping' : "doesn't respond"}.`);
         return ECMD_OK;
     }
-    if (eshk.debit || eshk.robbed) {
-        note_unported_shk('dopay:debit_or_robbery');
+    if (eshk.robbed) {
+        note_unported_shk('dopay:robbery');
         return ECMD_OK;
+    }
+
+    let paid = false;
+    const stashedGold = hidden_gold(game.invent || [], true) > 0;
+    if (eshk.debit) {
+        const debt = eshk.debit;
+        const loan = eshk.loan || 0;
+        const debtReason = loan
+            ? loan === debt
+                ? 'you picked up in the store.'
+                : 'for gold picked up and the use of merchandise.'
+            : 'for the use of merchandise.';
+        await pline(`You owe ${shopkeeper_name(shkp)} ${debt} ${currency(debt)} `
+                    + debtReason);
+
+        const cash = money_cnt(game.invent);
+        if (cash + (eshk.credit || 0) < debt) {
+            await pline(`But you don't${stashedGold ? ' seem to' : ''}`
+                        + ` have enough gold${eshk.credit ? ' or credit' : ''}.`);
+            return ECMD_TIME;
+        }
+
+        if ((eshk.credit || 0) >= debt) {
+            eshk.credit -= debt;
+            await pline('Your debt is covered by your credit.');
+        } else if (!eshk.credit) {
+            await money2mon(shkp, debt);
+            await pline('You pay that debt.');
+            await bot();
+        } else {
+            const remainder = debt - eshk.credit;
+            eshk.credit = 0;
+            await money2mon(shkp, remainder);
+            await pline('That debt is partially offset by your credit.');
+            await pline('You pay the remainder.');
+            await bot();
+        }
+        eshk.debit = 0;
+        eshk.loan = 0;
+        paid = true;
     }
 
     const items = itemized_bill(eshk);
-    if (!items.length)
-        return ECMD_OK;
-    if (!money_cnt(game.invent) && !(eshk.credit || 0)) {
-        await pline('You have no gold or credit.');
-        return ECMD_OK;
-    }
-    if (money_cnt(game.invent) + (eshk.credit || 0)
-        < Math.min(...items.map(it => it.cost))) {
-        await pline(`You don't have enough gold to buy`
-                    + `${items.length > 1 ? ' any of' : ''} the item`
-                    + `${items.length > 1 ? "s you've picked" : ' on your bill'}.`);
-        return ECMD_TIME;
-    }
-
-    const selected = await menu_pick_pay_items(items);
-    let paid = false;
-    for (let i = 0; i < items.length; ++i) {
-        if (selected.has(i) && await pay_item(shkp, items[i]))
-            paid = true;
+    if (items.length) {
+        if (!money_cnt(game.invent) && !(eshk.credit || 0)) {
+            await pline(`You ${stashedGold ? 'seem to ' : ''}have no gold or credit`
+                        + `${paid ? ' left' : ''}.`);
+        } else if (money_cnt(game.invent) + (eshk.credit || 0)
+                   < Math.min(...items.map(it => it.cost))) {
+            await pline(`You don't have enough gold to buy`
+                        + `${items.length > 1 ? ' any of' : ''} the item`
+                        + `${items.length > 1 ? "s you've picked" : ' on your bill'}.`);
+        } else {
+            const selected = await menu_pick_pay_items(items);
+            for (let i = 0; i < items.length; ++i) {
+                if (selected.has(i) && await pay_item(shkp, items[i]))
+                    paid = true;
+            }
+        }
     }
 
     if (paid && shkp.mpeaceful) {

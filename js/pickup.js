@@ -230,7 +230,8 @@ export async function pickup(what) {
             reset_justpicked();
         for (const obj of picked) {
             n_tried++;
-            if ((await pickup_object(obj, obj.quan, false)) > 0)
+            const count = picked.counts?.get(obj) ?? obj.quan;
+            if ((await pickup_object(obj, count, false)) > 0)
                 n_picked++;
         }
     } else {
@@ -331,7 +332,20 @@ export async function query_objlist(qstr, olist, use_invlet = false) {
     tty_destroy_nhwindow(win);
     await docrt();
 
-    return ids.map(i => byid.get(i)).filter(Boolean);
+    const picks = [];
+    const counts = new Map();
+    for (const id of ids) {
+        const obj = byid.get(id);
+        if (!obj)
+            continue;
+        let count = ids.counts?.get(id) ?? -1;
+        if (count < 0 || count > obj.quan)
+            count = obj.quan;
+        picks.push(obj);
+        counts.set(obj, count);
+    }
+    Object.defineProperty(picks, 'counts', { value: counts });
+    return picks;
 }
 
 const gold_weight = (amount) => Math.trunc((amount + 50) / 100);

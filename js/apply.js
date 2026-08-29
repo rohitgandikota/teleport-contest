@@ -1695,8 +1695,10 @@ async function bagotricks(bag) {
         return moncount;
     }
 
-    if (bag.unpaid)
-        note_unported_apply('bagotricks:shop_billing');
+    if (bag.unpaid) {
+        const { check_unpaid } = await import('./shk.js');
+        await check_unpaid(bag);
+    }
     bag.spe--;
     if (bag.known)
         update_inventory();
@@ -1746,8 +1748,10 @@ async function hornoplenty(horn) {
         return;
     }
 
-    if (horn.unpaid)
-        note_unported_apply('hornoplenty:shop_billing');
+    if (horn.unpaid) {
+        const { check_unpaid } = await import('./shk.js');
+        await check_unpaid(horn);
+    }
     horn.spe--;
     if (horn.known)
         update_inventory();

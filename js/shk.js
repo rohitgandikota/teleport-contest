@@ -10,7 +10,8 @@ import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
          ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN, A_WIS,
-         M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG }
+         M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, MIGR_APPROX_XY, RLOC_NOMSG,
+         NON_PM }
     from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
@@ -25,7 +26,7 @@ import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
 import { Has_contents, Is_candle } from './obj.js';
 import { DEADMONSTER, helpless } from './monst.js';
-import { is_demon, is_elf, is_human } from './mondata.js';
+import { is_demon, is_elf, is_human, vegetarian } from './mondata.js';
 import { poly_gender } from './polyself.js';
 import { rn2, rnd } from './rng.js';
 import { bot, pline, canseemon, canspotmon, newsym, sensemon } from './display.js';
@@ -933,7 +934,7 @@ export async function addtobill(obj, ininv, dummy, silent) {
 function shopkeeper_name(shkp) {
     const raw = shkp.shknam || shkp.eshk?.shknam
         || shkp.mextra?.eshk?.shknam || 'the shopkeeper';
-    return /^[-+_|]/.test(raw) ? raw.slice(1) : raw;
+    return /^[-+_|=]/.test(raw) ? raw.slice(1) : raw;
 }
 
 /* src/objnam.c paydoname() suppresses the carried-item price because the pay
@@ -1058,7 +1059,17 @@ function saleable(shkp, obj) {
         return true;
     for (const [, itype] of shop.iprobs || []) {
         if (itype === VEGETARIAN_CLASS) {
-            note_unported_shk('saleable:vegetarian');
+            const otyp = obj.otyp;
+            const corpsenm = obj.corpsenm ?? NON_PM;
+            if (obj.oclass === OCLASSES.FOOD_CLASS
+                && (game.objects[otyp].oc_material === MATERIALS.VEGGY
+                    || otyp === ONAMES.EGG
+                    || (otyp === ONAMES.TIN && corpsenm === NON_PM
+                        && obj.spe === 1)
+                    || ((otyp === ONAMES.TIN || otyp === ONAMES.CORPSE)
+                        && corpsenm >= 0 && corpsenm < game.mons.length
+                        && vegetarian(game.mons[corpsenm]))))
+                return true;
             continue;
         }
         if (itype < 0 ? itype === -obj.otyp : itype === obj.oclass)

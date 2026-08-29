@@ -187,6 +187,15 @@ export function splitobj(obj, num) {
     game.context.objsplit.parent_oid = obj.o_id;
     game.context.objsplit.child_oid = otmp.o_id;
 
+    /* C inserts the child immediately after the parent in both floor chains.
+     * The port represents those chains with one level object array. */
+    if (obj.where === OBJ_FLOOR) {
+        const objects = game.level?.objects;
+        const index = objects?.indexOf(obj) ?? -1;
+        if (index >= 0)
+            objects.splice(index + 1, 0, otmp);
+    }
+
     if (obj.unpaid)
         note_unported_obj('splitobj:splitbill');
     if (obj.timed)

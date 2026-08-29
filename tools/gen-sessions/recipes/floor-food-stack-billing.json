@@ -1,0 +1,20 @@
+{
+  "name": "floor-food-stack-billing",
+  "description": "Debug Wizard sells a two-pie stack to a general store, eats one pie from the floor, verifies the untouched pie remains for sale, then pays for the consumed portion.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "social.shops-billing",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed cream pie\r\u0017uncursed cream pie\rdo yey: \u0017100 gold pieces\rpa\r "
+    }
+  ]
+}

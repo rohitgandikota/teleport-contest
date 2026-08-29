@@ -16,7 +16,7 @@ import { distu, dist2, online2, isok } from './hacklib.js';
 import { m_canseeu, inhishop } from './monmove.js';
 import { move_special } from './priest.js';
 import { addinv, carrying, sobj_at, currency, money_cnt, freeinv,
-         contained_gold } from './invent.js';
+         contained_gold, weight } from './invent.js';
 import { wake_nearto } from './mon.js';
 import { Blind, Deaf, Invis } from './youprop.js';
 import { ACURR, Fast, adjalign } from './attrib.js';
@@ -329,7 +329,37 @@ export async function u_left_shop(leavestring, newlev) {
         await call_kops(shkp, !newlev && !!game.level?.at(u.ux0, u.uy0)?.edge);
 }
 
-// src/shk.c:2809 get_cost_of_shop_item(), for ordinary floor stock.
+// src/shk.c:2846 get_pricing_units(). Ordinary stacks price by quantity;
+// globs price by their current weight.
+function get_pricing_units(obj) {
+    let units = obj.quan || 1;
+    if (obj.globby) {
+        const unitWeight = game.objects[obj.otyp]?.oc_weight || 0;
+        const currentWeight = obj.owt > 0 ? obj.owt : weight(obj);
+        if (unitWeight)
+            units = Math.trunc((currentWeight + unitWeight - 1) / unitWeight);
+    }
+    return units;
+}
+
+// src/shk.c:2995 contained_cost(), purchase side. A floor container's
+// player-owned contents are marked no_charge; every other non-coin object is
+// shop stock and contributes its full stack price.
+function contained_purchase_cost(obj, shkp) {
+    let price = 0;
+    for (const contained of obj.cobj || []) {
+        if (contained.oclass !== OCLASSES.COIN_CLASS
+            && !contained.no_charge) {
+            price += get_cost(contained, shkp)
+                   * get_pricing_units(contained);
+        }
+        if (Has_contents(contained))
+            price += contained_purchase_cost(contained, shkp);
+    }
+    return price;
+}
+
+// src/shk.c:2809 get_cost_of_shop_item(), including floor containers.
 function get_cost_of_shop_item(obj) {
     let nocharge = -1;
     const x = obj.ox, y = obj.oy;
@@ -345,7 +375,9 @@ function get_cost_of_shop_item(obj) {
     const onfloor = obj.where === undefined || obj.where === 1;
     const freespot = onfloor && x === eshk.shk.x && y === eshk.shk.y;
     nocharge = onfloor && (!!obj.no_charge || freespot) ? 1 : 0;
-    const price = nocharge ? 0 : get_cost(obj, shkp) * (obj.quan || 1);
+    let price = nocharge ? 0 : get_cost(obj, shkp) * get_pricing_units(obj);
+    if (Has_contents(obj) && !freespot)
+        price += contained_purchase_cost(obj, shkp);
     return { price, nocharge };
 }
 
@@ -357,7 +389,7 @@ export function doname_with_price(obj) {
 
     const { price, nocharge } = get_cost_of_shop_item(obj);
     if (price > 0) {
-        result += ` (for sale, ${price} ${currency(price)})`;
+        result += ` (${nocharge ? 'contents' : 'for sale'}, ${price} ${currency(price)})`;
         record_price_quote(obj.otyp, Math.trunc(price / (obj.quan || 1)), true);
     } else if (nocharge > 0) {
         result += ' (no charge)';
@@ -534,10 +566,13 @@ function add_one_tobill(obj, dummy, shkp) {
     if (eshk.bill_p.length >= 200)
         return false;
 
+    let price = get_cost(obj, shkp);
+    if (obj.globby)
+        price *= get_pricing_units(obj);
     eshk.bill_p.push({
         bo_id: obj.o_id,
         useup: !!dummy,
-        price: get_cost(obj, shkp),
+        price,
         bquan: obj.quan,
     });
     eshk.billct = eshk.bill_p.length;
@@ -571,25 +606,91 @@ function muteshk(shkp) {
     return helpless(shkp) || (shkp.data?.msound ?? 0) <= MSOUND.MS_ANIMAL;
 }
 
-// src/shk.c:3490 addtobill(), add ordinary shop stock to the bill and quote
-// its unit price. Container contents, gold, and used-up dummy objects still
-// need their dedicated object-chain handling.
+// src/shk.c:3085 picked_container(). Once a container leaves the floor, its
+// contents no longer use floor-only no_charge ownership markers.
+function picked_container(obj) {
+    for (const contained of obj.cobj || []) {
+        if (contained.oclass === OCLASSES.COIN_CLASS)
+            continue;
+        contained.no_charge = 0;
+        if (Has_contents(contained))
+            picked_container(contained);
+    }
+}
+
+// src/shk.c:3385 bill_box_content(). Bill every shop-owned non-coin object in
+// a container, including objects inside nested containers.
+function bill_box_content(obj, dummy, shkp) {
+    for (const contained of obj.cobj || []) {
+        if (contained.oclass === OCLASSES.COIN_CLASS)
+            continue;
+        if (!contained.no_charge)
+            add_one_tobill(contained, dummy, shkp);
+        if (Has_contents(contained))
+            bill_box_content(contained, dummy, shkp);
+    }
+}
+
+function count_unpaid_contents(obj) {
+    let count = 0;
+    for (const contained of obj.cobj || []) {
+        if (contained.unpaid)
+            count += 1;
+        if (Has_contents(contained))
+            count += count_unpaid_contents(contained);
+    }
+    return count;
+}
+
+// src/shk.c:5745 costly_gold(). Picking shop-floor gold back up first consumes
+// credit, then becomes debt and a loan if the credit is insufficient.
+async function costly_gold(amount, shkp, silent) {
+    const eshk = shkp.eshk || ESHK(shkp);
+    if ((eshk.credit || 0) >= amount) {
+        if (!silent) {
+            await pline(eshk.credit > amount
+                ? `Your credit is reduced by ${amount} ${currency(amount)}.`
+                : 'Your credit is erased.');
+        }
+        eshk.credit -= amount;
+        return;
+    }
+
+    const delta = amount - (eshk.credit || 0);
+    if (!silent) {
+        if (eshk.credit)
+            await pline('Your credit is erased.');
+        await pline(eshk.debit
+            ? `Your debt increases by ${delta} ${currency(delta)}.`
+            : `You owe ${shopkeeper_name(shkp)} ${delta} ${currency(delta)}.`);
+    }
+    eshk.debit = (eshk.debit || 0) + delta;
+    eshk.loan = (eshk.loan || 0) + delta;
+    eshk.credit = 0;
+}
+
+// src/shk.c:3490 addtobill(), including container contents and gold.
 export async function addtobill(obj, ininv, dummy, silent) {
     const roomno = game.u.ushops ? game.u.ushops.charCodeAt(0) : NO_ROOM;
     const shkp = shop_keeper(roomno);
-    if (!shkp || !inhishop(shkp) || obj.unpaid)
+    if (!shkp || !inhishop(shkp) || obj.unpaid
+        || (obj.oclass === OCLASSES.FOOD_CLASS && obj.oeaten))
         return;
-    if (obj.no_charge) {
-        obj.no_charge = 0;
-        if (!Has_contents(obj))
-            return;
+
+    const container = Has_contents(obj);
+    const contentsPrice = container ? contained_purchase_cost(obj, shkp) : 0;
+    const containedGold = container ? contained_gold(obj, true) : 0;
+    if (obj.no_charge
+        && (!container || (!contentsPrice && !containedGold))) {
+        if (obj.oclass !== OCLASSES.COIN_CLASS) {
+            obj.no_charge = 0;
+            if (container)
+                picked_container(obj);
+        }
+        return;
     }
     if (obj.oclass === OCLASSES.COIN_CLASS) {
-        note_unported_shk('addtobill:costly_gold');
-        return;
-    }
-    if (Has_contents(obj)) {
-        note_unported_shk('addtobill:container_contents');
+        await costly_gold(obj.quan || 1, shkp, silent);
         return;
     }
 
@@ -600,15 +701,36 @@ export async function addtobill(obj, ininv, dummy, silent) {
         return;
     }
 
-    const price = get_cost(obj, shkp);
-    if (!add_one_tobill(obj, dummy, shkp))
+    let price = !obj.no_charge ? get_cost(obj, shkp) : 0;
+    if (price && obj.globby)
+        price *= get_pricing_units(obj);
+    let contentsCount = 0;
+    if (container) {
+        if (price)
+            add_one_tobill(obj, dummy, shkp);
+        if (contentsPrice)
+            bill_box_content(obj, dummy, shkp);
+        picked_container(obj);
+        price += contentsPrice;
+
+        if (containedGold) {
+            await costly_gold(containedGold, shkp, silent);
+            if (!price)
+                return;
+        }
+        obj.no_charge = 0;
+        contentsCount = count_unpaid_contents(obj);
+    } else if (!add_one_tobill(obj, dummy, shkp)) {
         return;
+    }
+
     if (silent)
         return;
 
     if (!Deaf() && !muteshk(shkp)) {
         if (!ininv) {
-            await pline(`${xname(obj)} will cost you ${price} ${currency(price)}`
+            const named = xname(obj);
+            await pline(`${named.charAt(0).toUpperCase()}${named.slice(1)} will cost you ${price} ${currency(price)}`
                         + `${obj.quan > 1 ? ' each' : ''}.`);
             return;
         }
@@ -621,12 +743,19 @@ export async function addtobill(obj, ininv, dummy, silent) {
         }
         const saveQuan = obj.quan;
         obj.quan = 1;
-        quote += ` ${price} ${currency(price)} ${saveQuan > 1 ? 'per' : 'for this'}`
-               + ` ${xname(obj)}."`;
+        const relation = saveQuan > 1 ? 'per'
+            : (contentsCount && !obj.unpaid)
+                ? 'for the contents of this' : 'for this';
+        quote += ` ${price} ${currency(price)} ${relation} ${xname(obj)}`
+               + `${contentsCount && obj.unpaid ? ' and its contents' : ''}."`;
         obj.quan = saveQuan;
         await pline(quote);
     } else {
-        await pline(`The list price of ${xname(obj)} is ${price} ${currency(price)}`
+        const subject = contentsCount && !obj.unpaid
+            ? `the contents of the ${xname(obj)}`
+            : `the ${xname(obj)}${contentsCount && obj.unpaid
+                ? ' and its contents' : ''}`;
+        await pline(`The list price of ${subject} is ${price} ${currency(price)}`
                     + `${obj.quan > 1 ? ' each' : ''}.`);
     }
 }

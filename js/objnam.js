@@ -969,6 +969,31 @@ function tin_details(obj) {
 /* include/obj.h:338 Is_box() */
 const Is_box = (o) => o.otyp === ONAMES.LARGE_BOX || o.otyp === ONAMES.CHEST;
 
+// src/objnam.c is_unpaid() plus unpaid_cost(..., COST_CONTENTS). A carried
+// container's price suffix includes every billed object nested inside it.
+function billed_cost(obj) {
+    let price = 0;
+    let found = false;
+    for (const room of game.u.ushops || '') {
+        const shkp = game.level?.rooms?.[
+            room.charCodeAt(0) - ROOMOFFSET]?.resident;
+        const bill = shkp?.eshk?.bill_p;
+        const entry = Array.isArray(bill)
+            ? bill.find(bp => bp.bo_id === obj.o_id) : null;
+        if (entry) {
+            price += entry.price * (obj.quan || 1);
+            found = true;
+            break;
+        }
+    }
+    for (const contained of obj.cobj || []) {
+        const nested = billed_cost(contained);
+        price += nested.price;
+        found ||= nested.found;
+    }
+    return { price, found };
+}
+
 export function doname(obj) {
     const ocl = game.objects[obj.otyp];
     let bp = xname(obj);
@@ -1199,20 +1224,10 @@ export function doname(obj) {
 
     /* src/objnam.c:1654: carried shop stock shows the price stored when it
        was added to the current shopkeeper's bill. */
-    if (obj.unpaid) {
-        let quotedprice = 0;
-        for (const room of game.u.ushops || '') {
-            const shkp = game.level?.rooms?.[
-                room.charCodeAt(0) - ROOMOFFSET]?.resident;
-            const bill = shkp?.eshk?.bill_p;
-            const entry = Array.isArray(bill)
-                ? bill.find(bp_ => bp_.bo_id === obj.o_id) : null;
-            if (entry) {
-                quotedprice = entry.price * obj.quan;
-                break;
-            }
-        }
-        bp += ` (unpaid, ${quotedprice} ${currency(quotedprice)})`;
+    const billed = obj.unpaid || Has_contents(obj)
+        ? billed_cost(obj) : { price: 0, found: false };
+    if (obj.unpaid || billed.found) {
+        bp += ` (${obj.unpaid ? 'unpaid' : 'contents'}, ${billed.price} ${currency(billed.price)})`;
     }
 
     /* src/objnam.c:1527 — recompute the article now that the prefix is

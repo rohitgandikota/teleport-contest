@@ -1,0 +1,25 @@
+{
+  "name": "pet-carrot-blindness",
+  "description": "A debug Knight blinds the starting pony with an adjacent camera flash, then feeds it a carrot to restore monster vision.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.pets",
+    "monster.special-effects",
+    "object.food-corpses",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "monster.consume.carrot-cure-blindness"
+  ],
+  "segments": [
+    {
+      "seed": 8953,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0017uncursed +2 expensive camera\raih \u0017uncursed carrot\r thh  "
+    }
+  ]
+}

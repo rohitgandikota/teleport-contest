@@ -31,9 +31,9 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED } from './const.js';
 import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { throws_rocks, is_orc, is_elf, is_unicorn, notake,
+import { throws_rocks, is_orc, is_elf, is_unicorn, is_domestic, notake,
          nohands } from './mondata.js';
-import { PMNAMES, MFLAGS } from './monst_data.js';
+import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { is_weptool } from './mkobj.js';
 import { hitval, weapon_hit_bonus } from './weapon.js';
 import { getdir } from './cmd.js';
@@ -43,6 +43,19 @@ import { hmon, passive_obj } from './uhitm.js';
 import { Monnam, Some_Monnam } from './do_name.js';
 import { Deaf } from './youprop.js';
 import { helpless } from './monst.js';
+
+// include/mondata.h:255 befriend_with_obj(). This predicate is checked before
+// dogfood(), so a domestic monster offered normal food does not spend
+// dogfood()'s obj_resists draw until tamedog() inspects the meal.
+function befriend_with_obj(ptr, obj) {
+    if (ptr.pmidx === PMNAMES.PM_MONKEY || ptr.pmidx === PMNAMES.PM_APE)
+        return obj.otyp === ONAMES.BANANA;
+    return is_domestic(ptr) && obj.oclass === OCLASSES.FOOD_CLASS
+        && (ptr.mlet !== MONSYMS.S_UNICORN
+            || game.objects[obj.otyp].oc_material === MATERIALS.VEGGY
+            || (obj.otyp === ONAMES.CORPSE
+                && obj.corpsenm === PMNAMES.PM_LICHEN));
+}
 
 // dothrow.js — throwing, firing, and the path a thrown thing takes.
 // C ref: src/dothrow.c
@@ -554,7 +567,18 @@ export async function thitmonst(mon, obj) {
         await hmon(mon, obj, hmode, dieroll);
         return 1;
     } else {
-        await tmiss(obj, mon, true);
+        const dog = await import('./dog.js');
+        const acceptsFood = befriend_with_obj(mdat, obj)
+            || (mon.mtame && dog.dogfood(mon, obj) <= dog.ACCFOOD);
+        if (acceptsFood) {
+            if (await dog.tamedog(mon, obj, true))
+                return 1;
+            await tmiss(obj, mon, false);
+            mon.msleeping = 0;
+            mon.mstrategy &= ~STRAT_WAITMASK;
+        } else {
+            await tmiss(obj, mon, true);
+        }
     }
 
     return 0;

@@ -27,9 +27,10 @@ import { may_dig } from './hack.js';
 import { is_metallic, OBJ_FLOOR } from './obj.js';
 import { obj_resists } from './zap.js';
 import { newsym, canspotmon, mon_visible, pline, canseemon } from './display.js';
-import { splitobj, peek_at_iced_corpse_age } from './mkobj.js';
+import { splitobj, peek_at_iced_corpse_age, place_object } from './mkobj.js';
 import { yelp, growl } from './sounds.js';
-import { m_consume_obj, is_pick, check_gear_next_turn, healmon } from './mon.js';
+import { m_consume_obj, is_pick, check_gear_next_turn, healmon,
+         wake_nearto } from './mon.js';
 import {
     mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at, t_at,
 } from './mon.js';
@@ -47,13 +48,14 @@ const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2, rnd, getRngLog } from './rng.js';
 import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
-import { doname } from './objnam.js';
+import { doname, xname, the, The } from './objnam.js';
 import { Monnam, noit_Monnam, christen_monst, x_monnam } from './do_name.js';
 import { ARTICLE_YOUR } from './const.js';
 import { MIGR_RANDOM, MIGR_APPROX_XY, MIGR_EXACT_XY, MIGR_WITH_HERO,
          MIGR_LEFTOVERS, MON_MIGRATING, MON_LIMBO,
          RLOC_NOMSG } from './const.js';
 import { Hallucination } from './youprop.js';
+import { night } from './calendar.js';
 import { pline_xy, You } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy, mon_track_add } from './monmove.js';
@@ -68,6 +70,7 @@ import {
     deliver_obj_to_mon, DF_ALL } from './makemon.js';
 import { rloc } from './teleport.js';
 import { finish_meating } from './dogmove.js';
+import { FULL_MOON } from './const.js';
 
 const NON_PM = -1;
 
@@ -577,6 +580,59 @@ export function dogfood(mon, obj) {
     }
 }
 
+// src/dog.c:1143 tamedog(), for food thrown at an existing pet. The broader
+// taming arm stays visible as unported until it has its own C oracle.
+export async function tamedog(mtmp, obj, givemsg) {
+    if (mtmp.mfrozen)
+        mtmp.mfrozen = Math.trunc((mtmp.mfrozen + 1) / 2);
+    if (mtmp.msleeping)
+        wake_nearto(mtmp.mx, mtmp.my, 1);
+
+    if (mtmp.iswiz || mtmp.mnum === PMNAMES.PM_MEDUSA
+        || (mtmp.data.mflags3 & MFLAGS.M3_WANTSARTI))
+        return false;
+
+    if (givemsg && !mtmp.mpeaceful && canspotmon(mtmp)) {
+        await pline(`${Monnam(mtmp)} seems ${Hallucination()
+            ? 'really chill' : 'more amiable'}.`);
+        givemsg = false;
+    }
+    mtmp.mpeaceful = 1;
+    set_malign(mtmp);
+
+    if (game.flags?.moonphase === FULL_MOON && night() && rn2(6) && obj
+        && mtmp.data.mlet === MONSYMS.S_DOG)
+        return false;
+
+    mtmp.mflee = 0;
+    mtmp.mfleetim = 0;
+
+    if (mtmp.mtame && obj) {
+        const tasty = dogfood(mtmp, obj);
+        if (mtmp.mcanmove && !mtmp.mconf && !mtmp.meating
+            && (tasty === DOGFOOD
+                || (tasty <= ACCFOOD
+                    && mtmp.edog.hungrytime <= game.moves))) {
+            if (canseemon(mtmp)) {
+                const bigCorpse = obj.otyp === ONAMES.CORPSE
+                    && ismnum(obj.corpsenm)
+                    && game.mons[obj.corpsenm].msize > mtmp.data.msize;
+                await pline(`${Monnam(mtmp)} catches ${the(xname(obj))}${
+                    bigCorpse ? ', or vice versa!' : '.'}`);
+            } else if (cansee(mtmp.mx, mtmp.my)) {
+                await pline(`${The(xname(obj))} stops.`);
+            }
+            place_object(obj, mtmp.mx, mtmp.my);
+            await dog_eat(mtmp, obj, mtmp.mx, mtmp.my, false);
+            return true;
+        }
+        return false;
+    }
+
+    note_unported('tamedog:new_pet');
+    return false;
+}
+
 /* src/artifact.c is not ported; no session generates a quest artifact this
    early, and the call draws nothing either way. */
 function is_quest_artifact(obj) { return false; }
@@ -665,7 +721,7 @@ function dog_nutrition(mtmp, obj) {
 // Not ported, each recorded rather than faked: the killer-bee royal jelly
 // bypass, the rust monster's erodeproof branch, shop billing (unpaid,
 // costly_alteration, unpaid_cost) and the eating messages.
-async function dog_eat(mtmp, obj, x, y, devour) {
+export async function dog_eat(mtmp, obj, x, y, devour) {
     const edog = mtmp.edog;
     let nutrit;
 

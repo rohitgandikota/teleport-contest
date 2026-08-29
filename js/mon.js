@@ -85,7 +85,7 @@ import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, slimeproof, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
 import { mpickobj } from './steal.js';
-import { nonliving, is_neuter, is_animal, is_mplayer, has_head,
+import { nonliving, is_neuter, is_animal, is_mplayer, has_head, haseyes,
          olfaction, is_orc } from './mondata.js';
 import { mkcorpstat } from './mklev.js';
 import { CORPSTAT_NONE, CORPSTAT_INIT, CORPSTAT_FEMALE, CORPSTAT_MALE,
@@ -886,6 +886,16 @@ async function monster_givit(mtmp, ptr) {
         await monster_give_prop(mtmp, prop);
 }
 
+// src/muse.c:2872 mcureblindness(), used by monster food effects.
+async function mcureblindness(mon, verbose) {
+    if (!mon.mcansee) {
+        mon.mcansee = 1;
+        mon.mblinded = 0;
+        if (verbose && haseyes(mon.data))
+            await pline(`${Monnam(mon)} can see again.`);
+    }
+}
+
 // src/mon.c m_consume_obj(): the monster swallows otmp.
 //
 // Wraith growth, polyfood, and ordinary corpse resistance conveyance are
@@ -944,9 +954,13 @@ export async function m_consume_obj(mtmp, otmp) {
         return;
     }
 
+    if (otmp.otyp === ONAMES.CARROT) {
+        await mcureblindness(mtmp, canseemon(mtmp));
+        return;
+    }
+
     const specialEffect = otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
         || effectpm === PMNAMES.PM_NURSE
-        || otmp.otyp === ONAMES.CARROT
         || (effectptr
             && (touch_petrifies(effectptr)
                 || effectpm === PMNAMES.PM_MEDUSA))

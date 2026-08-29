@@ -270,6 +270,15 @@ export function get_artifact(obj) {
                                                   : artifact_records[0];
 }
 
+// src/artifact.c:2309 arti_cost(). Artifact prices are separate from the
+// base object table and also supply the shop and score values.
+export function arti_cost(obj) {
+    const base = game.objects[obj?.otyp]?.oc_cost ?? 0;
+    if (!obj?.oartifact)
+        return base;
+    return get_artifact(obj).cost || 100 * base;
+}
+
 // src/artifact.c:2264 artifact_light(). Sunsword is always a light source;
 // gold dragon armor emits light only while worn as the suit.
 export function artifact_light(obj) {

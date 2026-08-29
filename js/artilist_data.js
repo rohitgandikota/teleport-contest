@@ -133,7 +133,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 0
+  "gift_value": 0,
+  "cost": 0
  },
  {
   "spfx": 663,
@@ -147,7 +148,8 @@ export const artifact_records = [
   "role": "PM_KNIGHT",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 10
+  "gift_value": 10,
+  "cost": 4000
  },
  {
   "spfx": 454,
@@ -161,7 +163,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 9
+  "gift_value": 9,
+  "cost": 8000
  },
  {
   "spfx": 66,
@@ -175,7 +178,8 @@ export const artifact_records = [
   "role": "PM_VALKYRIE",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 8
+  "gift_value": 8,
+  "cost": 4000
  },
  {
   "spfx": 2,
@@ -189,7 +193,8 @@ export const artifact_records = [
   "role": "PM_BARBARIAN",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 8
+  "gift_value": 8,
+  "cost": 1500
  },
  {
   "spfx": 8388642,
@@ -203,7 +208,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "PM_ORC",
   "gen_spe": 0,
-  "gift_value": 5
+  "gift_value": 5,
+  "cost": 1200
  },
  {
   "spfx": 8388640,
@@ -217,7 +223,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "PM_ELF",
   "gen_spe": 3,
-  "gift_value": 4
+  "gift_value": 4,
+  "cost": 2000
  },
  {
   "spfx": 8388640,
@@ -231,7 +238,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "PM_ELF",
   "gen_spe": 3,
-  "gift_value": 1
+  "gift_value": 1,
+  "cost": 800
  },
  {
   "spfx": 194,
@@ -245,7 +253,8 @@ export const artifact_records = [
   "role": "PM_WIZARD",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 7
+  "gift_value": 7,
+  "cost": 3500
  },
  {
   "spfx": 194,
@@ -259,7 +268,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 9
+  "gift_value": 9,
+  "cost": 3000
  },
  {
   "spfx": 194,
@@ -273,7 +283,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 5
+  "gift_value": 5,
+  "cost": 3000
  },
  {
   "spfx": 69206018,
@@ -287,7 +298,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 2,
-  "gift_value": 5
+  "gift_value": 5,
+  "cost": 500
  },
  {
   "spfx": 8388610,
@@ -301,7 +313,8 @@ export const artifact_records = [
   "role": "PM_CLERIC",
   "race": "NON_PM",
   "gen_spe": 1,
-  "gift_value": 3
+  "gift_value": 3,
+  "cost": 2500
  },
  {
   "spfx": 8388610,
@@ -315,7 +328,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 1,
-  "gift_value": 4
+  "gift_value": 4,
+  "cost": 1500
  },
  {
   "spfx": 2050,
@@ -329,7 +343,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 10
+  "gift_value": 10,
+  "cost": 8000
  },
  {
   "spfx": 8388610,
@@ -343,7 +358,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 2,
-  "gift_value": 4
+  "gift_value": 4,
+  "cost": 200
  },
  {
   "spfx": 2097154,
@@ -357,7 +373,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 2,
-  "gift_value": 1
+  "gift_value": 1,
+  "cost": 200
  },
  {
   "spfx": 2113538,
@@ -371,7 +388,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 2,
-  "gift_value": 1
+  "gift_value": 1,
+  "cost": 200
  },
  {
   "spfx": 1026,
@@ -385,7 +403,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 1,
-  "gift_value": 5
+  "gift_value": 5,
+  "cost": 4000
  },
  {
   "spfx": 2,
@@ -399,7 +418,8 @@ export const artifact_records = [
   "role": "PM_SAMURAI",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 8
+  "gift_value": 8,
+  "cost": 1200
  },
  {
   "spfx": 8388610,
@@ -413,7 +433,8 @@ export const artifact_records = [
   "role": "NON_PM",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 6
+  "gift_value": 6,
+  "cost": 1500
  },
  {
   "spfx": 7,
@@ -427,7 +448,8 @@ export const artifact_records = [
   "role": "PM_ARCHEOLOGIST",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 2500
  },
  {
   "spfx": 7,
@@ -441,7 +463,8 @@ export const artifact_records = [
   "role": "PM_BARBARIAN",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 2500
  },
  {
   "spfx": 16777223,
@@ -455,7 +478,8 @@ export const artifact_records = [
   "role": "PM_CAVE_DWELLER",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 2500
  },
  {
   "spfx": 16711,
@@ -469,7 +493,8 @@ export const artifact_records = [
   "role": "PM_HEALER",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 5000
  },
  {
   "spfx": 15,
@@ -483,7 +508,8 @@ export const artifact_records = [
   "role": "PM_KNIGHT",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 1500
  },
  {
   "spfx": 33554439,
@@ -497,7 +523,8 @@ export const artifact_records = [
   "role": "PM_MONK",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 2500
  },
  {
   "spfx": 142606343,
@@ -511,7 +538,8 @@ export const artifact_records = [
   "role": "PM_CLERIC",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 2000
  },
  {
   "spfx": 67108871,
@@ -525,7 +553,8 @@ export const artifact_records = [
   "role": "PM_RANGER",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 4000
  },
  {
   "spfx": 15,
@@ -539,7 +568,8 @@ export const artifact_records = [
   "role": "PM_ROGUE",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 3500
  },
  {
   "spfx": 134743047,
@@ -553,7 +583,8 @@ export const artifact_records = [
   "role": "PM_SAMURAI",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 4500
  },
  {
   "spfx": 135,
@@ -567,7 +598,8 @@ export const artifact_records = [
   "role": "PM_TOURIST",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 7000
  },
  {
   "spfx": 524295,
@@ -581,7 +613,8 @@ export const artifact_records = [
   "role": "PM_VALKYRIE",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 3500
  },
  {
   "spfx": 7,
@@ -595,6 +628,7 @@ export const artifact_records = [
   "role": "PM_WIZARD",
   "race": "NON_PM",
   "gen_spe": 0,
-  "gift_value": 12
+  "gift_value": 12,
+  "cost": 4000
  }
 ];

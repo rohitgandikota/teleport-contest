@@ -41,6 +41,7 @@ import { ATR_NONE, NHW_MENU, tty_add_menu, tty_create_nhwindow,
          tty_start_menu, ATR_INVERSE } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
 import { tty_yn_function } from './tty/topl.js';
+import { arti_cost } from './artifact.js';
 
 // src/shk.c:1449 hot_pursuit() — the shopkeeper starts following you.
 //
@@ -525,18 +526,18 @@ function corpsenm_price_adj(obj) {
 
 // src/shk.c:4319 getprice(), base price before the buyer-specific charisma,
 // knowledge, clothing, and anger adjustments below.
-function getprice(obj) {
+function getprice(obj, shk_buying = false) {
     let tmp = game.objects[obj.otyp]?.oc_cost ?? 0;
 
     if (obj.oartifact) {
-        /* Artifact list prices are separate from objects[].oc_cost. Billing
-           ordinary stock remains exact while that table is not represented. */
-        note_unported_shk('getprice:artifact');
+        tmp = arti_cost(obj);
+        if (shk_buying)
+            tmp = Math.trunc(tmp / 4);
     }
     switch (obj.oclass) {
     case OCLASSES.FOOD_CLASS:
         tmp += corpsenm_price_adj(obj);
-        if ((game.u.uhs ?? 0) >= HUNGRY)
+        if ((game.u.uhs ?? 0) >= HUNGRY && !shk_buying)
             tmp *= game.u.uhs;
         if (obj.oeaten)
             tmp = 0;
@@ -1080,7 +1081,7 @@ function saleable(shkp, obj) {
 
 // src/shk.c set_cost(), the amount a shopkeeper offers for ordinary goods.
 function set_cost(obj, shkp) {
-    let amount = (obj.quan || 1) * getprice(obj);
+    let amount = (obj.quan || 1) * getprice(obj, true);
     let multiplier = 1;
     let divisor = 1;
     const u = game.u;

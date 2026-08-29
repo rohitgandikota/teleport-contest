@@ -63,7 +63,7 @@ const tags = [];
 const otyps = [];
 const spfxs = [], cspfxs = [], mtypes = [], attks = [], defns = [], carys = [],
       invProps = [], aligns = [], roles = [], races = [], genSpes = [],
-      giftValues = [];
+      giftValues = [], costs = [];
 for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* Skip A( appearing inside a longer identifier, e.g. NO_CARY. */
     if (/\w/.test(src[i - 1] || '')) continue;
@@ -96,7 +96,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     /* A(nam, typ, s1, s2, mt, atk, dfn, cry, inv, al, cl, rac, gs, gv,
        cost, clr, bn) — fields after the name, 0-based: 0=typ 1=spfx
        2=cspfx 3=mtype 4=attk 5=defn 6=cary 7=inv_prop 8=alignment 9=role
-       10=race, 11=gen_spe, 12=gift_value. */
+       10=race, 11=gen_spe, 12=gift_value, 13=cost. */
     const clean = (s) => s.replace(/\/\*[^]*?\*\//g, '').replace(/\s+/g, ' ').trim();
     spfxs.push(clean(fields[2] ?? '0'));
     cspfxs.push(clean(fields[3] ?? '0'));
@@ -110,6 +110,7 @@ for (let i = src.indexOf('A("'); i !== -1; i = src.indexOf('A("', i + 1)) {
     races.push(clean(fields[11] ?? 'NON_PM'));
     genSpes.push(Number(clean(fields[12] ?? '0')) || 0);
     giftValues.push(Number(clean(fields[13] ?? '0')) || 0);
+    costs.push(Number(clean(fields[14] ?? '0').replace(/[lL]$/, '')) || 0);
 }
 
 if (names.length < 20) {
@@ -161,6 +162,7 @@ export const artifact_records = ${JSON.stringify(names.map((n, i) => ({
     race: races[i],
     gen_spe: genSpes[i],
     gift_value: giftValues[i],
+    cost: costs[i],
 })), null, 1)};
 `);
 

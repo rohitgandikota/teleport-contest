@@ -25,7 +25,7 @@ import { ONAMES, OCLASSES } from './objects_data.js';
 import { newsym, pline, bot, tty_clear_nhwindow_message } from './display.js';
 import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
          EXT_ENCUMBER, SHOPBASE, invlet_basic, HAND } from './const.js';
-import { addtobill, costly_spot } from './shk.js';
+import { addtobill, costly_spot, doname_with_price } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban } from './dungeon.js';
 import { Is_mbag, splitobj } from './mkobj.js';
@@ -315,7 +315,8 @@ export async function query_objlist(qstr, olist, use_invlet = false) {
                         : (first_of_class && oclass === OCLASSES.COIN_CLASS)
                           ? '$' : let_;
             tty_add_menu(win, null, id, sel, 0, ATR_NONE,
-                         NO_COLOR, doname(o), MENU_ITEMFLAGS_NONE);
+                         NO_COLOR, doname_with_price(o),
+                         MENU_ITEMFLAGS_NONE);
             if (!use_invlet && sel !== '$')
                 let_ = String.fromCharCode(let_.charCodeAt(0) + 1);
             first_of_class = false;

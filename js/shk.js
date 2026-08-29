@@ -9,7 +9,8 @@
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE } from './const.js';
+         ECMD_OK, ECMD_TIME, G_GONE, COST_BITE, COST_DSTROY, COST_OPEN }
+    from './const.js';
 import { in_rooms } from './hack.js';
 import { distu, dist2, online2, isok } from './hacklib.js';
 import { m_canseeu, inhishop } from './monmove.js';
@@ -19,7 +20,7 @@ import { wake_nearto } from './mon.js';
 import { Blind, Deaf, Invis } from './youprop.js';
 import { ACURR, Fast, adjalign } from './attrib.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
-import { PMNAMES, MSOUND } from './monst_data.js';
+import { PMNAMES, MSOUND, MFLAGS } from './monst_data.js';
 import { Has_contents, Is_candle } from './obj.js';
 import { helpless } from './monst.js';
 import { is_elf, is_human } from './mondata.js';
@@ -363,6 +364,41 @@ export function doname_with_price(obj) {
     return result;
 }
 
+// src/shk.c:4275 corpsenm_price_adj(), the species premium for tins, eggs,
+// and corpses. Each conveyable intrinsic has its own fixed weight.
+function corpsenm_price_adj(obj) {
+    if (obj.otyp !== ONAMES.TIN && obj.otyp !== ONAMES.EGG
+        && obj.otyp !== ONAMES.CORPSE)
+        return 0;
+    const ptr = game.mons[obj.corpsenm];
+    if (!ptr)
+        return 0;
+
+    const conveyance_costs = [
+        [0x01, 2], [0x04, 3], [0x02, 2], [0x08, 5],
+        [0x10, 4], [0x20, 2], [0x40, 1], [0x80, 3],
+    ];
+    let multiplier = 1;
+    for (const [mask, cost] of conveyance_costs)
+        if (ptr.mconveys & mask)
+            multiplier += cost;
+    if (ptr.mflags1 & MFLAGS.M1_TPORT)
+        multiplier += 2;
+    if (ptr.mflags1 & MFLAGS.M1_TPORT_CNTRL)
+        multiplier += 3;
+    if (ptr === game.mons[PMNAMES.PM_FLOATING_EYE]
+        || ptr === game.mons[PMNAMES.PM_MIND_FLAYER]
+        || ptr === game.mons[PMNAMES.PM_MASTER_MIND_FLAYER])
+        multiplier += 5;
+    if (ptr.geno & MFLAGS.G_UNIQ)
+        multiplier += 50;
+
+    let value = Math.max(1, (ptr.mlevel - 1) * 2);
+    if (obj.otyp === ONAMES.CORPSE)
+        value += Math.max(1, Math.trunc(ptr.cnutrit / 30));
+    return value * multiplier;
+}
+
 // src/shk.c:4319 getprice(), base price before the buyer-specific charisma,
 // knowledge, clothing, and anger adjustments below.
 function getprice(obj) {
@@ -375,8 +411,7 @@ function getprice(obj) {
     }
     switch (obj.oclass) {
     case OCLASSES.FOOD_CLASS:
-        if (obj.corpsenm >= 0)
-            note_unported_shk('getprice:corpsenm_price_adj');
+        tmp += corpsenm_price_adj(obj);
         if ((game.u.uhs ?? 0) >= HUNGRY)
             tmp *= game.u.uhs;
         if (obj.oeaten)
@@ -710,11 +745,45 @@ function subfrombill(obj, shkp) {
     }
 }
 
-// src/mkobj.c:752 costly_alteration(), COST_BITE inventory arm. Starting
-// an unpaid meal replaces the intact item on the shop bill with a private
-// clone of its pre-bite state, so the used-up item can still be itemized.
+// src/shk.c:3623 splitbill() -- give the split child its own bill entry while
+// preserving the parent's unit price.
+export function splitbill(obj, otmp) {
+    const roomno = game.u.ushops ? game.u.ushops.charCodeAt(0) : NO_ROOM;
+    const shkp = shop_keeper(roomno);
+    if (!shkp || !inhishop(shkp)) {
+        note_unported_shk('splitbill:no_shopkeeper');
+        return false;
+    }
+    const eshk = shkp.eshk || ESHK(shkp);
+    const original = (eshk.bill_p || []).find(bp => bp.bo_id === obj.o_id);
+    if (!original || original.bquan <= otmp.quan) {
+        note_unported_shk('splitbill:bad_quantity');
+        return false;
+    }
+
+    original.bquan -= otmp.quan;
+    if ((eshk.bill_p || []).length >= 200) {
+        otmp.unpaid = 0;
+        return false;
+    }
+    eshk.bill_p.push({
+        bo_id: otmp.o_id,
+        bquan: otmp.quan,
+        useup: false,
+        price: original.price,
+    });
+    eshk.billct = eshk.bill_p.length;
+    return true;
+}
+
+// src/mkobj.c:752 costly_alteration(), carried COST_BITE, COST_OPEN, and
+// COST_DSTROY arms. Altering unpaid stock replaces the intact bill entry with
+// a private clone, so the used-up item can still be itemized.
 export async function costly_alteration(obj, alter_type) {
-    if (alter_type !== COST_BITE || !obj.unpaid)
+    const verb = alter_type === COST_BITE ? 'bite'
+               : alter_type === COST_OPEN ? 'open'
+                 : alter_type === COST_DSTROY ? 'destroy' : null;
+    if (!verb || !obj.unpaid)
         return;
 
     const roomno = game.u.ushops ? game.u.ushops.charCodeAt(0) : NO_ROOM;
@@ -728,7 +797,7 @@ export async function costly_alteration(obj, alter_type) {
 
     const those = obj.quan === 1 ? 'that' : 'those';
     const them = obj.quan === 1 ? 'it' : 'them';
-    await pline(`"You bite ${those} ${simpleonames(obj)}, you pay for ${them}!"`);
+    await pline(`"You ${verb} ${those} ${simpleonames(obj)}, you pay for ${them}!"`);
 
     const originalPrice = original.price;
     const originalQuan = original.bquan;

@@ -1,7 +1,8 @@
 import { exercise, near_capacity, adjalign, poison_strdmg, adjattrib,
          acurrstr }
     from './attrib.js';
-import { A_CON, COST_BITE, SLT_ENCUMBER, W_RINGL, W_RINGR } from './const.js';
+import { A_CON, COST_BITE, COST_DSTROY, COST_OPEN, SLT_ENCUMBER,
+         W_RINGL, W_RINGR } from './const.js';
 // eat.js — nutrition.
 // C ref: src/eat.c
 //
@@ -1037,6 +1038,26 @@ function use_up_tin(tin) {
     tc.o_id = 0;
 }
 
+// src/eat.c:1389 costly_tin(), carried unpaid-stock arm. Splitting first
+// keeps the untouched remainder on its original bill entry and charges the
+// opened or destroyed tin at the same unit price.
+async function costly_tin(tin, alter_type) {
+    if (!carried(tin) || !tin.unpaid)
+        return tin;
+
+    const { costly_alteration, splitbill } = await import('./shk.js');
+    if (tin.quan > 1) {
+        const stack = tin;
+        tin = splitobj(stack, 1);
+        splitbill(stack, tin);
+        const tc = (game.context ||= {}).tin ||= {};
+        tc.tin = tin;
+        tc.o_id = tin.o_id;
+    }
+    await costly_alteration(tin, alter_type);
+    return tin;
+}
+
 // src/attrib.c:203 gainstr(), with the tin as the BUC source and no message.
 async function gainstr_from_tin(tin) {
     const base = game.u.acurr?.a?.[A_STR] ?? 0;
@@ -1050,15 +1071,16 @@ async function gainstr_from_tin(tin) {
     await adjattrib(A_STR, tin.cursed ? -amount : amount, 1);
 }
 
-// src/eat.c:1528 consume_tin(). Shop billing remains outside this routine.
+// src/eat.c:1528 consume_tin().
 async function consume_tin(mesg) {
     const tc = (game.context ||= {}).tin ||= {};
-    const tin = tc.tin;
+    let tin = tc.tin;
     const r = tin_variety(tin);
     const always_eat = metallivorous(game.youmonst.data);
 
     if (tin.otrapped || (tin.cursed && r !== HOMEMADE_TIN && !rn2(8))) {
         await b_trapped('tin', NO_PART);
+        tin = await costly_tin(tin, COST_DSTROY);
         use_up_tin(tin);
         return;
     }
@@ -1072,6 +1094,7 @@ async function consume_tin(mesg) {
             await pline('It turns out to be empty.');
         observe_object(tin);
         tin.known = 1;
+        tin = await costly_tin(tin, COST_OPEN);
         use_up_tin(tin);
         if (always_eat)
             await lesshungry(5);
@@ -1112,6 +1135,7 @@ async function consume_tin(mesg) {
                     observe_object(tin);
                     tin.known = 1;
                 }
+                tin = await costly_tin(tin, COST_OPEN);
                 use_up_tin(tin);
                 return;
             }
@@ -1128,6 +1152,7 @@ async function consume_tin(mesg) {
             await violated_vegetarian();
         observe_object(tin);
         tin.known = 1;
+        tin = await costly_tin(tin, COST_OPEN);
 
         /* Newt and ordinary corpse effects already live in cpostfx(). The
            pre-consumption special species remain explicit there or below. */
@@ -1177,6 +1202,7 @@ async function consume_tin(mesg) {
         && (await tty_yn_function('Eat it?', 'yn', 'n')) === 'n') {
         if (game.flags?.verbose !== false)
             await You('discard the open tin.');
+        tin = await costly_tin(tin, COST_OPEN);
         use_up_tin(tin);
         return;
     }
@@ -1187,6 +1213,7 @@ async function consume_tin(mesg) {
                      ? "Swee'pea" : 'Popeye'}!`);
     }
     await gainstr_from_tin(tin);
+    tin = await costly_tin(tin, COST_OPEN);
 
     let nutrition = tin.blessed ? 600
                     : !tin.cursed ? 400 + rnd(200)

@@ -1038,18 +1038,21 @@ function use_up_tin(tin) {
     tc.o_id = 0;
 }
 
-// src/eat.c:1389 costly_tin(), carried unpaid-stock arm. Splitting first
-// keeps the untouched remainder on its original bill entry and charges the
-// opened or destroyed tin at the same unit price.
+// src/eat.c:1389 costly_tin(). Splitting first keeps the untouched remainder
+// in place and charges only the opened or destroyed tin.
 async function costly_tin(tin, alter_type) {
-    if (!carried(tin) || !tin.unpaid)
+    const { costly_alteration, costly_spot, splitbill } = await import('./shk.js');
+    const inInventory = carried(tin);
+    const billable = inInventory ? tin.unpaid
+                                 : costly_spot(tin.ox, tin.oy) && !tin.no_charge;
+    if (!billable)
         return tin;
 
-    const { costly_alteration, splitbill } = await import('./shk.js');
     if (tin.quan > 1) {
         const stack = tin;
         tin = splitobj(stack, 1);
-        splitbill(stack, tin);
+        if (inInventory)
+            splitbill(stack, tin);
         const tc = (game.context ||= {}).tin ||= {};
         tc.tin = tin;
         tc.o_id = tin.o_id;

@@ -861,8 +861,13 @@ export function useupf(obj, numused) {
         otmp = obj;
 
     if (!game.context?.mon_moving && costly_spot(otmp.ox, otmp.oy)) {
-        /* addtobill() / stolen_value() need the shop subsystem */
-        (game.unported ||= new Set()).add('useupf:shop_billing');
+        if (otmp.no_charge) {
+            /* addtobill() clears no_charge and returns without billing. */
+            otmp.no_charge = 0;
+        } else {
+            /* addtobill() / stolen_value() need the remaining shop paths. */
+            (game.unported ||= new Set()).add('useupf:shop_billing');
+        }
     }
     delobj(otmp);
     if (at_u && game.u?.uundetected && hides_under(game.youmonst?.data))

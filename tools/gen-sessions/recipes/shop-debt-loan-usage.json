@@ -1,0 +1,21 @@
+{
+  "name": "shop-debt-loan-usage",
+  "description": "A debug Wizard pays a debt that combines shop gold picked up on loan with a second unpaid merchandise usage fee.",
+  "branches": [
+    "shop.dopay.debt.loan-and-usage"
+  ],
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "social.shops-billing"
+  ],
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed bag of tricks\rdo yd$,a\r ao dop  ,$\r ,a\r ao do\u0017100 gold pieces\rp  "
+    }
+  ]
+}

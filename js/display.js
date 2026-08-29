@@ -2108,7 +2108,14 @@ export async function more() {
     if (display) {
         const CO = display.cols ?? 80;
         let col = mlines[mlines.length - 1].length;
-        if (col >= CO - 8) { col = 0; row++; }
+        if (col >= CO - 8) {
+            col = 0;
+            row++;
+            /* topl_putsym('\n') calls cl_end() again after advancing to
+               the continuation row, clearing the map beneath --More--. */
+            for (let c = 0; c < CO; c++)
+                display.setCell(c, row, ' ', NO_COLOR, 0);
+        }
         for (let i = 0; i < defmorestr.length && col + i < CO; i++)
             display.setCell(col + i, row, defmorestr[i], NO_COLOR, 0);
         display.setCursor(Math.min(col + defmorestr.length, CO - 1), row);

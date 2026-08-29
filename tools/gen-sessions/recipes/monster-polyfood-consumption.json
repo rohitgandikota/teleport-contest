@@ -1,0 +1,25 @@
+{
+  "name": "monster-polyfood-consumption",
+  "description": "A debug gelatinous cube eats a chameleon corpse and polymorphs through the ordinary random-form path.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.movement",
+    "monster.special-effects",
+    "object.food-corpses",
+    "turn.speed-energy",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.consume.polyfood"
+  ],
+  "segments": [
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017chameleon corpse\rhhhhdellll\u0007gelatinous cube\r\u0006hhhhhhhhhh30s  10s"
+    }
+  ]
+}

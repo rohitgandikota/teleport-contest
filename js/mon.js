@@ -888,10 +888,11 @@ async function monster_givit(mtmp, ptr) {
 
 // src/mon.c m_consume_obj(): the monster swallows otmp.
 //
-// Wraith growth and ordinary corpse resistance conveyance are implemented.
-// The remaining special food effects stay explicitly recorded.
-export function m_consume_obj(mtmp, otmp) {
+// Wraith growth, polyfood, and ordinary corpse resistance conveyance are
+// implemented. The remaining special food effects stay explicitly recorded.
+export async function m_consume_obj(mtmp, otmp) {
     const ispet = mtmp.mtame;
+    const vis = canseemon(mtmp);
 
     /* non-pet: Heal up to the object's weight in hp */
     if (!ispet && mtmp.mhp < mtmp.mhpmax)
@@ -936,8 +937,14 @@ export function m_consume_obj(mtmp, otmp) {
         && (corpsenm === PMNAMES.PM_SMALL_MIMIC
             || corpsenm === PMNAMES.PM_LARGE_MIMIC
             || corpsenm === PMNAMES.PM_GIANT_MIMIC);
-    const specialEffect = polyfood
-        || otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
+    if (polyfood) {
+        await newcham(mtmp, null, vis ? NC_SHOW_MSG : 0);
+        if (corpseptr)
+            await monster_givit(mtmp, corpseptr);
+        return;
+    }
+
+    const specialEffect = otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
         || effectpm === PMNAMES.PM_NURSE
         || otmp.otyp === ONAMES.CARROT
         || (effectptr

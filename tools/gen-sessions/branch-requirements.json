@@ -68,6 +68,7 @@
 
     { "group": "Monster inventory and object timers", "id": "monster.inventory.gnome-lit-candle", "cFile": "src/makemon.c", "cFunction": "m_initinv", "description": "Generate a gnome with a lit candle on a dark square and start its burn timer" },
     { "group": "Monster inventory and object timers", "id": "timer.burn.floor-candle-lifecycle", "cFile": "src/timeout.c", "cFunction": "burn_object", "description": "Drop a lit candle, reschedule both fuel warnings, remove its light source, and consume the floor object" },
+    { "group": "Monster food effects", "id": "monster.consume.polyfood", "cFile": "src/mon.c", "cFunction": "m_consume_obj", "description": "Have a non-pet monster consume a chameleon corpse, change form, and continue with the new form's speed and attacks" },
     { "group": "Debug commands", "id": "debug.wizkill.unseen-target", "cFile": "src/wizcmds.c", "cFunction": "wiz_kill", "description": "Kill an unseen target while preserving its explicit species name" }
   ]
 }

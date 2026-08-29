@@ -17,10 +17,10 @@ import { addinv, addinv_nomerge, carrying, freeinv, getobj, hands_obj,
          hold_another_object, obj_extract_self, update_inventory, useup,
          useupall, useupf, weight, any_obj_ok, prinv, stackobj }
     from './invent.js';
-import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key, confdir }
+import { getdir, get_adjacent_loc, cmdq_add_ec, cmdq_add_key, confdir, getlin }
     from './cmd.js';
 import { pick_lock } from './lock.js';
-import { is_pick, is_axe, delobj, m_at, seemimic, wake_nearby, wakeup,
+import { is_pick, is_axe, delobj, m_at, mongone, seemimic, wake_nearby, wakeup,
          is_pool, is_lava, mnexto, see_monster_closeup } from './mon.js';
 import { is_pole } from './u_init.js';
 import { ECMD_FAIL } from './const.js';
@@ -50,8 +50,8 @@ import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular,
          cxname, xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
          otense, vtense } from './objnam.js';
-import { Amonnam, hcolor, mon_nam, pmname, upstart, x_monnam,
-         y_monnam } from './do_name.js';
+import { Amonnam, Monnam, a_monnam, hcolor, mon_nam, pmname, upstart,
+         x_monnam, y_monnam } from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { bimanual, carried, Is_candle, is_boots, is_gloves,
          is_flimsy } from './obj.js';
@@ -64,8 +64,9 @@ import { tty_yn_function } from './tty/topl.js';
 import { makeknown, observe_object } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
-import { ACURR, change_luck } from './attrib.js';
-import { is_rider, makemon, NO_MM_FLAGS } from './makemon.js';
+import { ACURR, change_luck, exercise } from './attrib.js';
+import { is_rider, makemon, set_malign, MM_NOMSG, NO_MM_FLAGS }
+    from './makemon.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
 import { attach_egg_hatch_timeout, begin_burn, end_burn, HATCH_EGG,
          stop_timer } from './timeout.js';
@@ -346,6 +347,23 @@ async function use_tin_opener(obj) {
 
 // src/apply.c:1628 use_lamp(). Lamps, lanterns, and loose candles share the
 // same on/off path; begin_burn() selects their fuel checkpoints and radius.
+async function shop_owned_prefix(obj, capitalize) {
+    let prefix = carried(obj) ? 'your' : 'the';
+    if (obj.unpaid && game.u.ushops) {
+        const { shop_keeper } = await import('./shk.js');
+        const shkp = shop_keeper(game.u.ushops.charCodeAt(0));
+        if (shkp) {
+            const raw = shkp.shknam || shkp.eshk?.shknam
+                || shkp.mextra?.eshk?.shknam || 'the shopkeeper';
+            const name = /^[-+_|]/.test(raw) ? raw.slice(1) : raw;
+            prefix = s_suffix(name);
+        }
+    }
+    if (capitalize)
+        prefix = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    return `${prefix} `;
+}
+
 async function use_lamp(obj) {
     const candle = Is_candle(obj);
     const lamp = obj.otyp === ONAMES.BRASS_LANTERN ? 'lantern'
@@ -353,7 +371,7 @@ async function use_lamp(obj) {
 
     if (obj.lamplit) {
         if (lamp)
-            await pline(`Your ${lamp} is now off.`);
+            await pline(`${await shop_owned_prefix(obj, true)}${lamp} is now off.`);
         else
             await You(`snuff out ${yname(obj)}.`);
         await end_burn(obj, true);
@@ -388,7 +406,11 @@ async function use_lamp(obj) {
     }
 
     if (lamp) {
-        await pline(`Your ${lamp} is now on.`);
+        if (obj.unpaid) {
+            const { check_unpaid } = await import('./shk.js');
+            await check_unpaid(obj);
+        }
+        await pline(`${await shop_owned_prefix(obj, true)}${lamp} is now on.`);
     } else {
         const name = Yname2(obj);
         const possessive = name.endsWith('s') ? `${name}'` : `${name}'s`;
@@ -426,10 +448,15 @@ async function light_cocktail(obj) {
     if (split1off)
         obj = splitobj(obj, 1);
 
-    if (obj.unpaid)
-        note_unported_apply('light_cocktail:shop_billing');
-    await You(`light your potion.${Blind()
+    await You(`light ${await shop_owned_prefix(obj, false)}potion.${Blind()
         ? '' : '  It gives off a dim light.'}`);
+
+    if (obj.unpaid && game.u.ushops) {
+        const { bill_dummy_object, check_unpaid } = await import('./shk.js');
+        await check_unpaid(obj);
+        await pline('"That\'s in addition to the cost of the potion, of course."');
+        bill_dummy_object(obj);
+    }
     makeknown(obj.otyp);
     await begin_burn(obj, false);
 
@@ -622,6 +649,78 @@ function write_ok(obj) {
         || obj.otyp === ONAMES.SPE_BLANK_PAPER)
         return GETOBJ_SUGGEST;
     return GETOBJ_DOWNPLAY;
+}
+
+// src/write.c dowrite(), through the insufficient-ink exit. This covers the
+// flat shop fee for a marker before any ink is consumed. Successful writing
+// continues through knowledge, luck, and paper-consumption branches that are
+// still tracked separately below.
+async function dowrite(pen) {
+    const paper = await getobj('write on', write_ok, GETOBJ_NOFLAGS);
+    if (!paper)
+        return ECMD_CANCEL;
+
+    const typeword = paper.otyp === ONAMES.SPE_NOVEL ? 'book'
+        : paper.oclass === OCLASSES.SPBOOK_CLASS ? 'spellbook' : 'scroll';
+    observe_object(paper);
+    if (paper.otyp !== ONAMES.SCR_BLANK_PAPER
+        && paper.otyp !== ONAMES.SPE_BLANK_PAPER) {
+        await pline(`That ${typeword} is not blank!`);
+        exercise(A_WIS, false);
+        return ECMD_TIME;
+    }
+    makeknown(ONAMES.SCR_BLANK_PAPER);
+
+    let name = await getlin(`What type of ${typeword} do you want to write?`);
+    name = name.replace(/\s+/g, ' ').trim();
+    if (!name || name[0] === '\x1b')
+        return ECMD_TIME;
+    name = name.replace(/^(?:scroll|spellbook)\s+/i, '')
+        .replace(/^of\s+/i, '');
+
+    let otyp = 0;
+    const first = game.bases[paper.oclass];
+    const last = game.bases[paper.oclass + 1];
+    for (let i = first; i < last; i++) {
+        const actual = OBJ_NAME(game.objects[i]);
+        if (actual && actual.toLowerCase() === name.toLowerCase()
+            && (game.objects[i].oc_name_known
+                || paper.oclass === OCLASSES.SPBOOK_CLASS)) {
+            otyp = i;
+            break;
+        }
+    }
+    if (!otyp) {
+        await There(`is no such ${typeword}!`);
+        return ECMD_TIME;
+    }
+    if (otyp === ONAMES.SCR_BLANK_PAPER
+        || otyp === ONAMES.SPE_BLANK_PAPER) {
+        await You_cant('write that!');
+        await pline("It's obscene!");
+        return ECMD_TIME;
+    }
+    if (otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+        await pline('No mere dungeon adventurer could write that.');
+        return ECMD_TIME;
+    }
+
+    game.u.uconduct ||= {};
+    game.u.uconduct.literate = (game.u.uconduct.literate || 0) + 1;
+    const newObj = mksobj(otyp, false, false);
+    newObj.bknown = !!(paper.bknown && pen.bknown);
+    const { check_unpaid } = await import('./shk.js');
+    await check_unpaid(pen);
+
+    const basecost = paper.oclass === OCLASSES.SPBOOK_CLASS
+        ? 10 * game.objects[otyp].oc_level : 1000;
+    if (pen.spe < Math.trunc(basecost / 2)) {
+        await Your('marker is too dry to write that!');
+        return ECMD_TIME;
+    }
+
+    note_unported_apply('dowrite:ink');
+    return ECMD_TIME;
 }
 
 // src/apply.c:1772 rub_ok(): objects accepted by #rub.
@@ -822,7 +921,7 @@ async function use_tinning_kit(obj) {
         return;
     }
 
-    consume_obj_charge(obj);
+    await consume_obj_charge(obj);
     const can = mksobj(ONAMES.TIN, false, false);
     can.corpsenm = corpse.corpsenm;
     can.cursed = obj.cursed;
@@ -840,6 +939,54 @@ async function use_tinning_kit(obj) {
     }
     await hold_another_object(can, 'You make, but cannot pick up, %s.',
                               doname(can), null);
+}
+
+// src/potion.c:2815 djinni_from_bottle().
+async function djinni_from_bottle(obj) {
+    const mtmp = makemon(game.mons[PMNAMES.PM_DJINNI],
+                         game.u.ux, game.u.uy, MM_NOMSG);
+    if (!mtmp) {
+        await pline('It turns out to be empty.');
+        return;
+    }
+
+    if (!Blind()) {
+        await pline(`In a cloud of smoke, ${a_monnam(mtmp)} emerges!`);
+        await pline(`${Monnam(mtmp)} speaks.`);
+    } else {
+        await You('smell acrid fumes.');
+        await pline('Something speaks.');
+    }
+
+    let chance = rn2(5);
+    if (obj.blessed)
+        chance = chance === 4 ? rnd(4) : 0;
+    else if (obj.cursed)
+        chance = chance === 0 ? rn2(4) : 4;
+
+    if (chance === 0) {
+        await pline('"I am in your debt.  I will grant one wish!"');
+        mongone(mtmp);
+        const { makewish } = await import('./zap.js');
+        await makewish();
+    } else if (chance === 1) {
+        await pline('"Thank you for freeing me!"');
+        const { initedog } = await import('./dog.js');
+        initedog(mtmp, true);
+    } else if (chance === 2) {
+        await pline('"You freed me!"');
+        mtmp.mpeaceful = 1;
+        set_malign(mtmp);
+    } else if (chance === 3) {
+        await pline('"It is about time!"');
+        if (canspotmon(mtmp))
+            await pline(`${Monnam(mtmp)} vanishes.`);
+        mongone(mtmp);
+    } else {
+        await pline('"You disturbed me, fool!"');
+        mtmp.mpeaceful = 0;
+        set_malign(mtmp);
+    }
 }
 
 // src/apply.c:1785 dorub(): the #rub command.
@@ -867,7 +1014,18 @@ export async function dorub() {
 
     if (obj.otyp === ONAMES.MAGIC_LAMP) {
         if (obj.spe > 0 && !rn2(3)) {
-            note_unported_apply('dorub:djinni_from_bottle');
+            if (obj.unpaid) {
+                const { check_unpaid_usage } = await import('./shk.js');
+                await check_unpaid_usage(obj, true);
+            }
+            obj.otyp = ONAMES.OIL_LAMP;
+            obj.spe = 0;
+            obj.age = rn1(500, 1000);
+            if (obj.lamplit)
+                await begin_burn(obj, true);
+            await djinni_from_bottle(obj);
+            makeknown(ONAMES.MAGIC_LAMP);
+            update_inventory();
         } else if (rn2(2)) {
             await You(`${game.u.ublind ? 'smell' : 'see a puff of'} smoke.`);
         } else {
@@ -1148,9 +1306,11 @@ function fingers_or_gloves(check_gloves) {
         : makeplural(body_part(FINGER));
 }
 
-function consume_obj_charge(obj) {
-    if (obj.unpaid)
-        note_unported_apply('consume_obj_charge:check_unpaid');
+async function consume_obj_charge(obj) {
+    if (obj.unpaid) {
+        const { check_unpaid } = await import('./shk.js');
+        await check_unpaid(obj);
+    }
     obj.spe = (obj.spe | 0) - 1;
     if (obj.known)
         update_inventory();
@@ -1182,7 +1342,7 @@ async function use_camera(obj) {
         await pline(nothing_happens);
         return ECMD_TIME;
     }
-    consume_obj_charge(obj);
+    await consume_obj_charge(obj);
 
     if (obj.cursed && !rn2(2)) {
         await zapyourself(obj, true);
@@ -1216,7 +1376,7 @@ async function use_grease(obj) {
     if ((obj.spe | 0) > 0) {
         if ((obj.cursed || Fumbling() || u.intrinsic?.HFumbling)
             && !rn2(2)) {
-            consume_obj_charge(obj);
+            await consume_obj_charge(obj);
             await pline(`${Tobjnam(obj, 'slip')} from your `
                         + `${fingers_or_gloves(false)}.`);
             await dropx(obj);
@@ -1236,7 +1396,7 @@ async function use_grease(obj) {
             return ECMD_OK;
         }
 
-        consume_obj_charge(obj);
+        await consume_obj_charge(obj);
         const { make_glib } = await import('./potion.js');
         const oldglib = ((u.intrinsic?.HGlib || u.uprops?.GLIB || 0)
                          & TIMEOUT);
@@ -1737,18 +1897,19 @@ async function bagotricks(bag) {
     return moncount;
 }
 
-// src/mkobj.c:2847 hornoplenty(), for applying one charge into inventory.
-async function hornoplenty(horn) {
+// src/mkobj.c:2847 hornoplenty(), for applying one charge. Tipping sends the
+// created object to the floor and defers the horn's usage fee to the caller.
+export async function hornoplenty(horn, tipping = false) {
     if (horn.spe < 1) {
         await pline(nothing_happens);
         if (!horn.cknown) {
             horn.cknown = 1;
             update_inventory();
         }
-        return;
+        return 0;
     }
 
-    if (horn.unpaid) {
+    if (horn.unpaid && !tipping) {
         const { check_unpaid } = await import('./shk.js');
         await check_unpaid(horn);
     }
@@ -1779,6 +1940,24 @@ async function hornoplenty(horn) {
     obj.cursed = horn.cursed;
     obj.owt = weight(obj);
 
+    if (horn.unpaid) {
+        const { addtobill } = await import('./shk.js');
+        await addtobill(obj, false, false, true);
+    }
+
+    if (tipping) {
+        game.iflags.suppress_price = (game.iflags.suppress_price || 0) + 1;
+        const name = doname(obj);
+        game.iflags.suppress_price -= 1;
+        await pline(`${upstart(name)} ${otense(obj, 'drop')} to the ${
+            surface(game.u.ux, game.u.uy)}.`);
+        place_object(obj, game.u.ux, game.u.uy);
+        stackobj(obj);
+        if (horn.dknown)
+            makeknown(ONAMES.HORN_OF_PLENTY);
+        return 1;
+    }
+
     const typ = game.level.at(game.u.ux, game.u.uy).typ;
     const dropFmt = game.u.uswallow
         ? 'Oops!  %s out of your reach!'
@@ -1790,6 +1969,7 @@ async function hornoplenty(horn) {
 
     if (horn.dknown)
         makeknown(ONAMES.HORN_OF_PLENTY);
+    return 1;
 }
 
 // src/apply.c:2259 use_unicorn_horn(). A cursed horn adds one random timed
@@ -2009,13 +2189,7 @@ export async function doapply() {
     }
 
     if (obj.otyp === ONAMES.MAGIC_MARKER) {
-        /* src/write.c dowrite(): selecting the paper is the entire observed
-           path when the player chooses an ineligible inventory letter. */
-        const paper = await getobj('write on', write_ok, GETOBJ_NOFLAGS);
-        if (!paper)
-            return ECMD_CANCEL;
-        note_unported_apply('dowrite:paper');
-        return ECMD_TIME;
+        return await dowrite(obj);
     }
 
     if (obj.otyp === ONAMES.FIGURINE)

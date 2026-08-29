@@ -353,7 +353,12 @@ export async function zapnodir(obj) {
         }
         break;
     case ONAMES.WAN_LIGHT:
-    case ONAMES.SPE_LIGHT:
+    case ONAMES.SPE_LIGHT: {
+        known = !!obj.dknown && !Blind();
+        const { litroom } = await import('./read.js');
+        await litroom(true, obj);
+        break;
+    }
     case ONAMES.WAN_ENLIGHTENMENT:
         note_unported_zap(`zapnodir:otyp=${obj.otyp}`);
         break;
@@ -1892,7 +1897,10 @@ export async function dozap() {
     if (!obj)
         return ECMD_CANCEL;
 
-    /* check_unpaid — shops, recorded when billing exists */
+    if (obj.unpaid) {
+        const { check_unpaid } = await import('./shk.js');
+        await check_unpaid(obj);
+    }
 
     const need_dir = game.objects[obj.otyp].oc_dir !== NODIR;
     if (!(await zappable(obj))) {

@@ -370,8 +370,10 @@ async function learn() {
         spbook.o_id = 0;
         return 0;
     }
-    if (book.unpaid)
-        note_unported_spell('learn:check_unpaid');
+    if (book.unpaid) {
+        const { check_unpaid } = await import('./shk.js');
+        await check_unpaid(book);
+    }
     spbook.book = null;
     spbook.o_id = 0;
     return 0;

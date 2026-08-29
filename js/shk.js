@@ -1129,6 +1129,50 @@ export function splitbill(obj, otmp) {
     return true;
 }
 
+// src/mkobj.c:712 bill_dummy_object(). Preserve a fully used or altered
+// shop item on the bill while releasing the live object from shop ownership.
+export function bill_dummy_object(obj) {
+    const roomno = game.u.ushops ? game.u.ushops.charCodeAt(0) : NO_ROOM;
+    const shkp = shop_keeper(roomno);
+    if (!shkp || !inhishop(shkp))
+        return false;
+
+    const eshk = shkp.eshk || ESHK(shkp);
+    const original = obj.unpaid
+        ? (eshk.bill_p || []).find(bp => bp.bo_id === obj.o_id)
+        : null;
+    const price = original?.price;
+    const bquan = original?.bquan;
+    if (obj.unpaid)
+        subfrombill(obj, shkp);
+
+    const dummy = {
+        ...obj,
+        oextra: null,
+        o_id: next_ident(),
+        timed: 0,
+        lamplit: 0,
+        owornmask: 0,
+        where: OBJ_FREE,
+        unpaid: 0,
+        ocarry: null,
+        ocontainer: null,
+    };
+    if (!add_one_tobill(dummy, true, shkp))
+        return false;
+    const billed = eshk.bill_p[eshk.bill_p.length - 1];
+    if (original) {
+        billed.price = price;
+        billed.bquan = bquan;
+    }
+    billed.obj = dummy;
+    dummy.where = OBJ_ONBILL;
+    (game.billobjs ||= []).unshift(dummy);
+    obj.no_charge = obj.where === OBJ_FLOOR || obj.where === OBJ_CONTAINED ? 1 : 0;
+    obj.unpaid = 0;
+    return true;
+}
+
 // src/mkobj.c:752 costly_alteration(), COST_BITE, COST_OPEN, and COST_DSTROY.
 // Altering shop stock replaces it with a private clone, so the used-up item
 // can still be itemized.

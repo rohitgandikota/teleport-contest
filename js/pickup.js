@@ -8,7 +8,8 @@
 import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
-         freeinv, update_inventory, weight, mergable, merged, money_cnt }
+         freeinv, getobj, update_inventory, weight, mergable, merged, money_cnt,
+         GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
 import { observe_object } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an,
@@ -669,8 +670,62 @@ async function doloot_core() {
     return ECMD_OK;
 }
 
-// src/pickup.c:3562 dotip(): floor-container selection. The ordinary
-// carried-container and actual-spillage paths remain recorded.
+function tip_ok(obj) {
+    if (!obj || obj.oclass === OCLASSES.COIN_CLASS)
+        return GETOBJ_EXCLUDE;
+    if (Is_container(obj)
+        || (obj.otyp === ONAMES.HORN_OF_PLENTY && obj.dknown
+            && game.objects[obj.otyp].oc_name_known))
+        return GETOBJ_SUGGEST;
+    return GETOBJ_DOWNPLAY;
+}
+
+async function choose_tip_floor(box) {
+    const { tty_create_nhwindow, tty_start_menu, tty_add_menu,
+            tty_add_menu_str, tty_end_menu, tty_display_nhwindow,
+            tty_select_menu, tty_destroy_nhwindow, ATR_NONE, NHW_MENU }
+        = await import('./tty/wintty.js');
+    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_SELECTED, NO_COLOR,
+            PICK_ONE } = await import('./const.js');
+    const { docrt } = await import('./display.js');
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    tty_add_menu(win, null, 1, '-', 0, ATR_NONE, NO_COLOR,
+                 'on the floor', MENU_ITEMFLAGS_SELECTED);
+    tty_add_menu_str(win, '');
+    tty_end_menu(win, `Where to tip the contents of ${doname(box)}`);
+    await tty_display_nhwindow(win);
+    const picks = await tty_select_menu(win, PICK_ONE);
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return picks.length > 0;
+}
+
+async function tip_horn(box) {
+    if (!await choose_tip_floor(box))
+        return ECMD_OK;
+    box.lknown = 1;
+    const oldSpe = box.spe;
+    const { hornoplenty } = await import('./apply.js');
+    do {
+        if (!await hornoplenty(box, true))
+            break;
+    } while (box.spe > 0);
+
+    if (box.spe < oldSpe) {
+        box.spe = oldSpe;
+        const { check_unpaid_usage } = await import('./shk.js');
+        await check_unpaid_usage(box, true);
+        box.spe = 0;
+        box.cknown = 1;
+        update_inventory();
+    }
+    return ECMD_TIME;
+}
+
+// src/pickup.c:3562 dotip(): floor-container selection and carried horn of
+// plenty emptying. Other container-spillage paths remain recorded.
 export async function dotip() {
     const here = (game.level?.objects || [])
         .filter(o => o.ox === game.u.ux && o.oy === game.u.uy
@@ -686,6 +741,12 @@ export async function dotip() {
             return ECMD_TIME;
         }
     }
+
+    const cobj = await getobj('tip', tip_ok, GETOBJ_PROMPT);
+    if (!cobj)
+        return ECMD_CANCEL;
+    if (cobj.otyp === ONAMES.HORN_OF_PLENTY)
+        return await tip_horn(cobj);
 
     note_unported_pickup('dotip:inventory');
     return ECMD_OK;

@@ -27,9 +27,9 @@ import { helpless } from './monst.js';
 import { is_elf, is_human } from './mondata.js';
 import { rn2, rnd } from './rng.js';
 import { bot, pline } from './display.js';
-import { an, doname, simpleonames, xname } from './objnam.js';
+import { an, doname, simpleonames, xname, The } from './objnam.js';
 import { next_ident, splitobj } from './mkobj.js';
-import { OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
+import { OBJ_CONTAINED, OBJ_FLOOR, OBJ_FREE, OBJ_ONBILL } from './obj.js';
 import { s_suffix } from './hacklib.js';
 import { shtypes, VEGETARIAN_CLASS } from './shknam.js';
 import { Hello } from './role.js';
@@ -362,7 +362,10 @@ function contained_purchase_cost(obj, shkp) {
 // src/shk.c:2809 get_cost_of_shop_item(), including floor containers.
 function get_cost_of_shop_item(obj) {
     let nocharge = -1;
-    const x = obj.ox, y = obj.oy;
+    let top = obj;
+    while (top.where === OBJ_CONTAINED && top.ocontainer)
+        top = top.ocontainer;
+    const x = top.ox, y = top.oy;
     const shop = in_rooms(x, y, SHOPBASE);
     if (!(game.u.ushops || '') || obj.oclass === OCLASSES.COIN_CLASS
         || !shop || shop[0] !== game.u.ushops[0])
@@ -372,7 +375,7 @@ function get_cost_of_shop_item(obj) {
     if (!shkp || !inhishop(shkp))
         return { price: 0, nocharge };
     const eshk = shkp.eshk || ESHK(shkp);
-    const onfloor = obj.where === undefined || obj.where === 1;
+    const onfloor = top.where === undefined || top.where === 1;
     const freespot = onfloor && x === eshk.shk.x && y === eshk.shk.y;
     nocharge = onfloor && (!!obj.no_charge || freespot) ? 1 : 0;
     let price = nocharge ? 0 : get_cost(obj, shkp) * get_pricing_units(obj);
@@ -729,8 +732,7 @@ export async function addtobill(obj, ininv, dummy, silent) {
 
     if (!Deaf() && !muteshk(shkp)) {
         if (!ininv) {
-            const named = xname(obj);
-            await pline(`${named.charAt(0).toUpperCase()}${named.slice(1)} will cost you ${price} ${currency(price)}`
+            await pline(`${The(xname(obj))} will cost you ${price} ${currency(price)}`
                         + `${obj.quan > 1 ? ' each' : ''}.`);
             return;
         }

@@ -185,6 +185,12 @@ export function addinv(obj) {
     const objWasThrown = obj.how_lost === LOST_THROWN;
     obj.how_lost = LOST_NONE;
 
+    if (game.loot_reset_justpicked) {
+        game.loot_reset_justpicked = false;
+        for (const carried of game.invent)
+            carried.pickup_prev = 0;
+    }
+
     const pending = addinv_core1(obj);
     return pending ? pending.then(() => addinv_finish(obj, objWasThrown))
                    : addinv_finish(obj, objWasThrown);

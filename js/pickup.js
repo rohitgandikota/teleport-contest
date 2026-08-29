@@ -25,7 +25,8 @@ import { ONAMES, OCLASSES } from './objects_data.js';
 import { newsym, pline, bot, tty_clear_nhwindow_message } from './display.js';
 import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
          EXT_ENCUMBER, SHOPBASE, invlet_basic, HAND } from './const.js';
-import { addtobill, costly_spot, doname_with_price } from './shk.js';
+import { addtobill, costly_spot, doname_with_price, sellobj,
+         sellobj_state } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban } from './dungeon.js';
 import { Is_mbag, splitobj } from './mkobj.js';
@@ -590,6 +591,15 @@ async function do_loot_cont(cobj, ccount, ci) {
 // confused arm, blind cockatrice check, multi-container menu, grave digging,
 // and saddle removal are recorded.
 export async function doloot() {
+    game.loot_reset_justpicked = true;
+    try {
+        return await doloot_core();
+    } finally {
+        game.loot_reset_justpicked = false;
+    }
+}
+
+async function doloot_core() {
     if (await check_capacity(null))
         return ECMD_OK;
 
@@ -810,8 +820,6 @@ async function query_category(qstr, olist, qflags) {
     const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
             MENU_ITEMFLAGS_SKIPINVERT, NO_COLOR, PICK_ANY }
         = await import('./const.js');
-    const { docrt } = await import('./display.js');
-
     if (!olist || !olist.length)
         return [];
 
@@ -906,7 +914,9 @@ async function query_category(qstr, olist, qflags) {
     await tty_display_nhwindow(win);
     const picks = await tty_select_menu(win, PICK_ANY);
     tty_destroy_nhwindow(win);
-    await docrt();
+    /* tty_select_menu() already dismisses the window while status output is
+       suppressed. A second docrt() here would repaint status cells which C
+       deliberately leaves cleared after a tall category menu. */
     return picks;
 }
 
@@ -955,8 +965,16 @@ async function in_container(obj) {
 
     freeinv(obj);
 
-    if (floor_container && costly_spot(game.u.ux, game.u.uy))
-        note_unported_pickup('in_container:sellobj');
+    if (floor_container && costly_spot(game.u.ux, game.u.uy)
+        && obj.oclass !== OCLASSES.COIN_CLASS) {
+        if (game.sellobj_first) {
+            sellobj_state(current_container.no_charge
+                          ? 2 /* SELL_DONTSELL */
+                          : 1 /* SELL_DELIBERATE */);
+            game.sellobj_first = false;
+        }
+        await sellobj(obj, game.u.ux, game.u.uy);
+    }
     if (current_container.otyp === ONAMES.ICE_BOX) {
         note_unported_pickup('in_container:icebox_age');
     } else if (Is_mbag(current_container)) {
@@ -966,13 +984,16 @@ async function in_container(obj) {
 
     current_container.cknown = 1;
 
+    await You(`put ${doname(obj)} into ${the(xname(current_container))}.`);
+    if (floor_container && obj.oclass === OCLASSES.COIN_CLASS)
+        await sellobj(obj, current_container.ox, current_container.oy);
+
     /* boxes with quantity would need splitobj; boxes are quan 1 */
     (current_container.cobj ||= []).push(obj);
     obj.where = 2; /* OBJ_CONTAINED */
     obj.ocontainer = current_container;
     current_container.owt = weight(current_container);
 
-    await You(`put ${doname(obj)} into ${the(xname(current_container))}.`);
     update_inventory();
     return current_container ? 1 : -1;
 }
@@ -1004,8 +1025,11 @@ async function out_container(obj) {
         note_unported_pickup('out_container:removed_from_icebox');
 
     if (!obj.unpaid && !carried(current_container)
-        && costly_spot(current_container.ox, current_container.oy))
-        note_unported_pickup('out_container:addtobill');
+        && costly_spot(current_container.ox, current_container.oy)) {
+        obj.ox = current_container.ox;
+        obj.oy = current_container.oy;
+        await addtobill(obj, false, false, false);
+    }
 
     const otmp = await addinv(obj);
     await prinv(null, otmp, count);
@@ -1162,6 +1186,8 @@ function thesimpleoname(obj) {
 export async function use_container(obj, held, more_containers) {
     let used = ECMD_OK;
 
+    game.sellobj_first = true;
+
     /* u_handsy() always true un-polymorphed */
     if (!obj.lknown) { /* do this in advance */
         obj.lknown = 1;
@@ -1279,6 +1305,7 @@ export async function use_container(obj, held, more_containers) {
             current_container.cknown = 1;
         update_inventory();
     }
+    sellobj_state(0);
     current_container = null; /* avoid hanging on to stale pointer */
     return used;
 }

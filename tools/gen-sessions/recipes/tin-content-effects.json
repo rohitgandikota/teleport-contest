@@ -1,0 +1,44 @@
+{
+  "name": "tin-content-effects",
+  "description": "Debug heroes open trapped, rotten, greasy, and cursed spinach tins, including the random cursed-tin trap.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "object.tools-containers",
+    "turn.timers"
+  ],
+  "segments": [
+    {
+      "seed": 2246,
+      "datetime": "20000111133000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed trapped empty tin\r\u0017blessed tin opener\rao n i\u001b"
+    },
+    {
+      "seed": 2247,
+      "datetime": "20000111133500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed tin of rotten newt meat\r\u0017blessed tin opener\rap o  yi\u001b"
+    },
+    {
+      "seed": 2248,
+      "datetime": "20000111134000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of french fried newt meat\r\u0017blessed tin opener\rap o  y  i\u001b"
+    },
+    {
+      "seed": 2249,
+      "datetime": "20000111134500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed tin of spinach\r\u0017blessed tin opener\rap o  yi\u001b"
+    },
+    {
+      "seed": 2252,
+      "datetime": "20000111140000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed tin of rotten newt meat\r\u0017blessed tin opener\rap o i\u001b"
+    }
+  ]
+}

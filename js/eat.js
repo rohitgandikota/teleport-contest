@@ -17,11 +17,13 @@ import { carnivorous, herbivorous, metallivorous, acidic, poisonous,
 import { can_reach_floor } from './pickup.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { tty_yn_function } from './tty/topl.js';
-import { Unaware, Hallucination, Poison_resistance, Stone_resistance, Glib }
+import { Unaware, Hallucination, Poison_resistance, Stone_resistance, Glib,
+         Blind }
     from './youprop.js';
-import { singular, xname, doname, yobjnam, makeplural, the }
+import { singular, xname, doname, yobjnam, makeplural, the,
+         gloves_simple_name }
     from './objnam.js';
-import { rndmonnam } from './do_name.js';
+import { rndmonnam, hcolor } from './do_name.js';
 import { more_experienced, newexplevel } from './exper.js';
 import { You, You_cant } from './pline.js';
 import { outrumor } from './rumors.js';
@@ -48,10 +50,11 @@ import { observe_object } from './o_init.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
 import { carried } from './obj.js';
 import { splitobj, bcsign } from './mkobj.js';
-import { is_rottable } from './trap.js';
+import { is_rottable, b_trapped } from './trap.js';
 import { body_part } from './polyself.js';
 import { LIGHT_HEADED, Is_airlevel, Is_astralevel, Is_waterlevel } from './const.js';
 import { surface } from './dungeon.js';
+import { FINGER, NH_GREEN, NO_PART, TIMEOUT } from './const.js';
 
 // src/eat.c:3170 gethungry()
 export async function gethungry() {
@@ -1047,8 +1050,7 @@ async function gainstr_from_tin(tin) {
     await adjattrib(A_STR, tin.cursed ? -amount : amount, 1);
 }
 
-// src/eat.c:1528 consume_tin(). Empty tins are complete here. Meat, spinach,
-// traps, shop billing, and their nutrition effects remain explicit gaps.
+// src/eat.c:1528 consume_tin(). Shop billing remains outside this routine.
 async function consume_tin(mesg) {
     const tc = (game.context ||= {}).tin ||= {};
     const tin = tc.tin;
@@ -1056,7 +1058,7 @@ async function consume_tin(mesg) {
     const always_eat = metallivorous(game.youmonst.data);
 
     if (tin.otrapped || (tin.cursed && r !== HOMEMADE_TIN && !rn2(8))) {
-        note_unported_eat('consume_tin:trapped');
+        await b_trapped('tin', NO_PART);
         use_up_tin(tin);
         return;
     }
@@ -1134,28 +1136,43 @@ async function consume_tin(mesg) {
             return;
 
         if (tintxts[r].nut < 0) {
-            note_unported_eat('consume_tin:rotten-meat');
-            return;
+            const { make_vomiting } = await import('./potion.js');
+            await make_vomiting(rn1(15, 10), false);
+        } else {
+            let nutrition = tintxts[r].nut;
+            if (r === HOMEMADE_TIN && nutrition > mdat.cnutrit)
+                nutrition = mdat.cnutrit;
+            if (always_eat)
+                nutrition += 5;
+            use_up_tin(tin);
+            await lesshungry(nutrition);
         }
-        let nutrition = tintxts[r].nut;
-        if (r === HOMEMADE_TIN && nutrition > mdat.cnutrit)
-            nutrition = mdat.cnutrit;
-        if (always_eat)
-            nutrition += 5;
-        use_up_tin(tin);
-        await lesshungry(nutrition);
-        if (tintxts[r].greasy)
-            note_unported_eat('consume_tin:greasy-meat');
+        if (tintxts[r].greasy) {
+            const already_glib = (game.u.intrinsic?.HGlib | 0) & TIMEOUT;
+            const { make_glib } = await import('./potion.js');
+            make_glib(already_glib + rn1(11, 5));
+            const fingers = game.u.uarmg
+                ? gloves_simple_name(game.u.uarmg)
+                : makeplural(body_part(FINGER));
+            await pline('Eating ' + tintxts[r].txt + ' food made your '
+                        + fingers + ' '
+                        + (already_glib ? 'even more' : 'very')
+                        + ' slippery.');
+        }
+        if (game.context.tin.tin)
+            use_up_tin(tin);
         return;
     }
 
     if (tin.cursed) {
-        note_unported_eat('consume_tin:cursed-spinach');
-        return;
+        await pline('It contains some decaying'
+                    + (Blind() ? '' : ' ' + hcolor(NH_GREEN))
+                    + ' substance.');
+    } else {
+        await pline('It contains spinach.');
+        observe_object(tin);
+        tin.known = 1;
     }
-    await pline('It contains spinach.');
-    observe_object(tin);
-    tin.known = 1;
     if (!always_eat
         && (await tty_yn_function('Eat it?', 'yn', 'n')) === 'n') {
         if (game.flags?.verbose !== false)
@@ -1165,8 +1182,10 @@ async function consume_tin(mesg) {
     }
     const conduct = game.u.uconduct ||= {};
     conduct.food = (conduct.food | 0) + 1;
-    await pline(`This makes you feel like ${Hallucination()
-                 ? "Swee'pea" : 'Popeye'}!`);
+    if (!tin.cursed) {
+        await pline(`This makes you feel like ${Hallucination()
+                     ? "Swee'pea" : 'Popeye'}!`);
+    }
     await gainstr_from_tin(tin);
 
     let nutrition = tin.blessed ? 600

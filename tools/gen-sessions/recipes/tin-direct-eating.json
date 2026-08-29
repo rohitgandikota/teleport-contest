@@ -1,0 +1,49 @@
+{
+  "name": "tin-direct-eating",
+  "description": "Debug heroes eat tins directly without an opener and with improvised weapons, covering blessed, empty, discarded meat, and slippery-finger branches.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.buc-enchant-erosion",
+    "object.food-corpses",
+    "turn.occupation-interrupt"
+  ],
+  "segments": [
+    {
+      "seed": 2240,
+      "datetime": "20000111130000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\reo i\u001b"
+    },
+    {
+      "seed": 2241,
+      "datetime": "20000111130500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed empty tin\ren i\u001b"
+    },
+    {
+      "seed": 2242,
+      "datetime": "20000111131000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017uncursed dagger\rwpeo i\u001b"
+    },
+    {
+      "seed": 2243,
+      "datetime": "20000111131500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed tin of newt meat\reo   i\u001b"
+    },
+    {
+      "seed": 2244,
+      "datetime": "20000111132000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r\u0017uncursed axe\rwpeo i\u001b"
+    },
+    {
+      "seed": 2245,
+      "datetime": "20000111132500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed empty tin\r#wizintrinsic\rl\r eo i\u001b"
+    }
+  ]
+}

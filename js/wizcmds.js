@@ -293,6 +293,8 @@ function wiz_intrinsic_timeout(key) {
         return (game.u.intrinsic?.HBlinded | 0) & TIMEOUT;
     if (key === 'DEAF')
         return (game.u.intrinsic?.HDeaf | 0) & TIMEOUT;
+    if (key === 'GLIB')
+        return (game.u.intrinsic?.HGlib | 0) & TIMEOUT;
     if (key === 'SEE_INVIS')
         return (game.u.intrinsic?.HSee_invisible | 0) & TIMEOUT;
     if (key === 'FAST')
@@ -354,6 +356,13 @@ export async function wiz_intrinsic() {
             const { make_sick } = await import('./potion.js');
             const type = !rn2(2) ? SICK_VOMITABLE : SICK_NONVOMITABLE;
             await make_sick(oldtimeout || amount, '#wizintrinsic', true, type);
+        } else if (key === 'GLIB') {
+            const { make_glib } = await import('./potion.js');
+            make_glib(oldtimeout + amount);
+            (game.disp ||= {}).botl = true;
+            await pline('Timeout for ' + name + ' '
+                        + (oldtimeout ? 'increased by' : 'set to') + ' '
+                        + amount + '.');
         } else if (key === 'SEE_INVIS') {
             const intr = (game.u.intrinsic ||= {});
             const word = intr.HSee_invisible | 0;

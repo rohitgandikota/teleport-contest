@@ -1,4 +1,5 @@
-import { exercise, near_capacity, adjalign, poison_strdmg, adjattrib }
+import { exercise, near_capacity, adjalign, poison_strdmg, adjattrib,
+         acurrstr }
     from './attrib.js';
 import { A_CON, COST_BITE, SLT_ENCUMBER, W_RINGL, W_RINGR } from './const.js';
 // eat.js — nutrition.
@@ -16,7 +17,7 @@ import { carnivorous, herbivorous, metallivorous, acidic, poisonous,
 import { can_reach_floor } from './pickup.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { tty_yn_function } from './tty/topl.js';
-import { Unaware, Hallucination, Poison_resistance, Stone_resistance }
+import { Unaware, Hallucination, Poison_resistance, Stone_resistance, Glib }
     from './youprop.js';
 import { singular, xname, doname, yobjnam, makeplural, the }
     from './objnam.js';
@@ -31,7 +32,7 @@ import { end_running, nomul, rounddiv, check_capacity } from './hack.js';
 import { sgn, distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
 import { bot } from './display.js';
-import { A_STR, STARVING, STARVED, FIRE_RES, SLEEP_RES, COLD_RES,
+import { A_STR, A_DEX, STARVING, STARVED, FIRE_RES, SLEEP_RES, COLD_RES,
          DISINT_RES, SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
          TELEPORT_CONTROL, TELEPAT, LAST_PROP, FROMOUTSIDE } from './const.js';
 import { set_occupation, stop_occupation } from './allmain.js';
@@ -41,7 +42,7 @@ import { losehp } from './hack.js';
 import { SICK_RES, SICK_VOMITABLE, KILLED_BY_AN } from './const.js';
 import { NOT_HUNGRY, ECMD_OK, ECMD_TIME, SATIATED, KILLED_BY, CHOKING, WEAK, HUNGRY, FAINTING, FAINTED, A_LAWFUL, W_ARMOR, W_TOOL, W_AMUL, W_SADDLE, HOMEMADE_TIN, NON_PM, STR18 } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_DOWNPLAY, freeinv, update_inventory, reorder_invent, addinv_nomerge } from './invent.js';
+import { getobj, weight, useup, useupf, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_DOWNPLAY, freeinv, update_inventory, reorder_invent, addinv_nomerge, stackobj } from './invent.js';
 import { pline } from './display.js';
 import { observe_object } from './o_init.js';
 /* include/obj.h:332 carried() is a WHERE test, not list membership. */
@@ -615,11 +616,10 @@ export async function doeat() {
         return ECMD_OK;
     }
 
-    /* src/eat.c doeat() tail — the tin, corpse and conduct arms above this
-       need their own subsystems; what is ported is the ordinary-food path,
-       which is the one that reaches choke(). */
+    /* src/eat.c doeat() tail. Tins have their own opening occupation; the
+       remaining arms continue through corpse or ordinary-food handling. */
     if (otmp.otyp === ONAMES.TIN) {
-        note_unported_eat('doeat:tin');
+        await start_tin(otmp);
         return ECMD_TIME;
     }
 
@@ -1178,9 +1178,8 @@ async function consume_tin(mesg) {
     await lesshungry(nutrition);
 }
 
-// src/eat.c:1703 opentin() and :1723 start_tin(). Applying a tin opener is
-// sufficient to reach each timing arm. Other improvised opening tools still
-// enter through doeat(), whose tin path remains separate.
+// src/eat.c:1703 opentin() and :1723 start_tin(). Applying a tin opener and
+// eating a tin directly share this timing state machine.
 async function opentin() {
     const tc = game.context?.tin;
     const tin = tc?.tin;
@@ -1221,8 +1220,49 @@ export async function start_tin(tin) {
                     : !game.u.uwep.blessed ? 2 : 1);
         await pline(`Using ${yobjnam(game.u.uwep, null)} you try to open the tin.`);
     } else {
-        note_unported_eat('start_tin:improvised');
-        return;
+        const uwep = game.u.uwep;
+        let using_tool = true;
+
+        switch (uwep?.otyp) {
+        case ONAMES.DAGGER:
+        case ONAMES.SILVER_DAGGER:
+        case ONAMES.ELVEN_DAGGER:
+        case ONAMES.ORCISH_DAGGER:
+        case ONAMES.ATHAME:
+        case ONAMES.KNIFE:
+        case ONAMES.STILETTO:
+        case ONAMES.CRYSKNIFE:
+            delay = 3;
+            break;
+        case ONAMES.PICK_AXE:
+        case ONAMES.AXE:
+            delay = 6;
+            break;
+        default:
+            using_tool = false;
+            break;
+        }
+
+        if (using_tool) {
+            await pline('Using ' + yobjnam(uwep, null)
+                        + ' you try to open the tin.');
+        } else {
+            await pline('It is not so easy to open this tin.');
+            if (Glib()) {
+                await pline('The tin slips from your fingers.');
+                if (tin.quan > 1)
+                    tin = splitobj(tin, 1);
+                if (carried(tin)) {
+                    const { dropx } = await import('./do.js');
+                    await dropx(tin);
+                } else {
+                    stackobj(tin);
+                }
+                return;
+            }
+            delay = rn1(1 + Math.trunc(500 / (ACURR(A_DEX) + acurrstr())),
+                        10);
+        }
     }
 
     const tc = (game.context ||= {}).tin ||= {};

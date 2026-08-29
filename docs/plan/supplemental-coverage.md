@@ -11,6 +11,9 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **105**. Covered: **105**.
 Partial: **0**. Gaps: **0**.
 
+Branch requirements: **57**. Covered: **33**.
+Partial: **0**. Gaps: **24**.
+
 ## Corpus inventory
 
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
@@ -194,6 +197,110 @@ Partial: **0**. Gaps: **0**.
 | covered | `endgame.astral-offering` | 1 session(s) | `astral-offering` |
 | covered | `endgame.riders` | 1 session(s) | `rider-behavior` |
 
+## Branch-level oracle ledger
+
+Branch rows name a concrete C decision and require a generated C trace
+that deliberately reaches it. This ledger starts with shops and counted
+object menus, then grows subsystem by subsystem. A gap is an explicit test
+target, not evidence that the JavaScript behavior is wrong.
+
+### Shop entry and robbery
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `shop.entry.tended-welcome` | `src/shk.c:u_entered_shop` | `shop-billing`, `shop-food-billing`, `shop-normal` |
+| gap | `shop.entry.untended` | `src/shk.c:u_entered_shop` | none |
+| gap | `shop.entry.special-dialogue` | `src/shk.c:u_entered_shop` | none |
+| covered | `shop.robbery.exit-alarm` | `src/shk.c:rob_shop` | `shop-billing` |
+| gap | `shop.robbery.restitution` | `src/shk.c:dopay` | none |
+| gap | `shop.robbery.kops` | `src/shk.c:call_kops` | none |
+
+### Shop payment
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `shop.dopay.nothing-owed` | `src/shk.c:dopay` | `shop-food-billing`, `shop-normal` |
+| covered | `shop.dopay.no-funds` | `src/shk.c:dopay` | `shop-billing` |
+| covered | `shop.dopay.item.cash` | `src/shk.c:pay_billed_items` | `shop-billing`, `shop-container-payment`, `shop-normal`, `tin-shop-billing` |
+| covered | `shop.dopay.item.credit` | `src/shk.c:pay_billed_items` | `shop-billing` |
+| covered | `shop.dopay.item.used-up` | `src/shk.c:dopayobj` | `floor-food-stack-billing`, `shop-food-billing`, `tin-floor-shop-billing`, `tin-shop-billing` |
+| covered | `shop.dopay.container-and-contents` | `src/shk.c:buy_container` | `shop-container-payment` |
+| covered | `shop.dopay.container-contents-only` | `src/shk.c:buy_container` | `shop-container-payment` |
+| covered | `shop.dopay.debt.loan-insufficient-stashed` | `src/shk.c:dopay` | `shop-debt-payment` |
+| covered | `shop.dopay.debt.loan-cash` | `src/shk.c:dopay` | `shop-debt-payment` |
+| covered | `shop.dopay.debt.usage-credit` | `src/shk.c:dopay` | `shop-debt-payment` |
+| covered | `shop.dopay.debt.usage-mixed` | `src/shk.c:dopay` | `shop-debt-payment` |
+| gap | `shop.dopay.debt.loan-and-usage` | `src/shk.c:dopay` | none |
+
+### Usage fees
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `shop.usage.generic-fee` | `src/shk.c:check_unpaid_usage` | `shop-debt-payment` |
+| covered | `shop.usage.bag-horn-price` | `src/shk.c:cost_per_charge` | `shop-debt-payment` |
+| gap | `shop.usage.alt-emptying` | `src/shk.c:check_unpaid_usage` | none |
+| gap | `shop.usage.magic-lamp-light` | `src/shk.c:cost_per_charge` | none |
+| gap | `shop.usage.magic-lamp-djinni` | `src/shk.c:cost_per_charge` | none |
+| gap | `shop.usage.magic-marker` | `src/shk.c:cost_per_charge` | none |
+| gap | `shop.usage.multi-charge-quarter` | `src/shk.c:cost_per_charge` | none |
+| gap | `shop.usage.last-charge-full` | `src/shk.c:cost_per_charge` | none |
+| gap | `shop.usage.spellbook` | `src/shk.c:check_unpaid_usage` | none |
+| gap | `shop.usage.small-tool-tenth` | `src/shk.c:cost_per_charge` | none |
+| gap | `shop.usage.oil-tax` | `src/shk.c:check_unpaid_usage` | none |
+| gap | `shop.usage.deaf-or-mute` | `src/shk.c:check_unpaid_usage` | none |
+
+### Gold and selling
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `shop.gold.credit-establish` | `src/shk.c:sellobj` | `shop-billing`, `shop-container-gold-credit`, `shop-container-looting-billing`, `shop-container-pickup-billing`, `shop-debt-payment` |
+| covered | `shop.gold.credit-erase` | `src/shk.c:costly_gold` | `shop-container-looting-billing`, `shop-container-pickup-billing`, `shop-debt-payment` |
+| covered | `shop.gold.credit-reduce` | `src/shk.c:costly_gold` | `shop-debt-payment` |
+| covered | `shop.sell.uninterested` | `src/shk.c:sellobj` | `shop-billing` |
+| covered | `shop.sell.cash` | `src/shk.c:sellobj` | `floor-food-stack-billing`, `shop-billing`, `shop-container-gold-credit`, `shop-debt-payment`, `shop-gem-pricing`, `shop-normal`, `tin-floor-shop-billing` |
+| covered | `shop.sell.credit` | `src/shk.c:sellobj` | `shop-container-gold-credit` |
+| covered | `shop.sell.decline` | `src/shk.c:sellobj` | `shop-container-selling` |
+| gap | `shop.sell.vegetarian-food` | `src/shk.c:saleable` | none |
+
+### Containers and bills
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `shop.container.sell-contents` | `src/shk.c:dropped_container` | `shop-container-gold-credit`, `shop-container-looting-billing`, `shop-container-payment`, `shop-container-pickup-billing`, `shop-container-selling` |
+| covered | `shop.container.sell-container-and-contents` | `src/shk.c:dropped_container` | `shop-container-payment`, `shop-container-pickup-billing`, `shop-container-selling` |
+| covered | `shop.container.retrieve-sold-content` | `src/shk.c:bill_box_content` | `shop-container-looting-billing` |
+| covered | `shop.container.pickup-owned-gold` | `src/shk.c:picked_container` | `shop-container-pickup-billing` |
+| covered | `shop.container.pickup-sold-container` | `src/shk.c:picked_container` | `shop-container-pickup-billing` |
+| covered | `shop.bill.split-used-stack` | `src/shk.c:splitbill` | `floor-food-stack-billing`, `tin-floor-shop-billing`, `tin-shop-billing` |
+| gap | `container.menu.partial-count-put-in` | `src/pickup.c:menu_loot` | none |
+| gap | `container.menu.partial-count-take-out` | `src/pickup.c:menu_loot` | none |
+
+### Pricing
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `shop.pricing.food-rounding` | `src/shk.c:getprice` | `shop-food-price-rounding` |
+| covered | `shop.pricing.gem-offer` | `src/shk.c:set_cost` | `shop-gem-pricing` |
+| covered | `shop.pricing.gem-plausible-purchase` | `src/shk.c:get_cost` | `shop-gem-pricing` |
+| gap | `shop.pricing.artifact` | `src/shk.c:getprice` | none |
+
+### Counted object menus
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `pickup.menu.explicit-count` | `src/pickup.c:query_objlist` | `shop-debt-payment` |
+| covered | `pickup.menu.count-split` | `src/pickup.c:pickup` | `shop-debt-payment` |
+| gap | `pickup.menu.overlarge-count-clamp` | `src/pickup.c:query_objlist` | none |
+| gap | `drop.menu.partial-count` | `src/do.c:menu_drop` | none |
+
+### Shop movement and damage
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| gap | `shop.damage.repair` | `src/shk.c:shk_fixes_damage` | none |
+| gap | `shop.movement.block-door` | `src/shk.c:block_door` | none |
+| gap | `shop.movement.following-nag` | `src/shk.c:shk_move` | none |
+
 ## Scenario index
 
 | Scenario | Mode | Keys | C trace | Declared coverage |
@@ -372,3 +479,28 @@ Partial: **0**. Gaps: **0**.
 | `zombifying-corpse` | debug | 121 | present | `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.movement`, `object.food-corpses`, `turn.timers`, `ui.getlin` |
 
 ## Open gaps
+
+- **branch gap:** `shop.entry.untended`: Enter a shop whose shopkeeper is absent or unavailable
+- **branch gap:** `shop.entry.special-dialogue`: Reach the special shop entry dialogue variants
+- **branch gap:** `shop.robbery.restitution`: Pay restitution after a recorded robbery
+- **branch gap:** `shop.robbery.kops`: Trigger Keystone Kop creation and removal
+- **branch gap:** `shop.dopay.debt.loan-and-usage`: Pay debt that combines a gold loan and merchandise usage
+- **branch gap:** `shop.usage.alt-emptying`: Empty all bag or horn contents using alternate usage pricing
+- **branch gap:** `shop.usage.magic-lamp-light`: Light an unpaid magic lamp at ordinary lamp cost
+- **branch gap:** `shop.usage.magic-lamp-djinni`: Release a djinni from an unpaid magic lamp
+- **branch gap:** `shop.usage.magic-marker`: Use an unpaid magic marker
+- **branch gap:** `shop.usage.multi-charge-quarter`: Use a multi-charge wand, light, instrument, or crystal ball at quarter price
+- **branch gap:** `shop.usage.last-charge-full`: Use the last charge of a wand, light, instrument, or crystal ball at full price
+- **branch gap:** `shop.usage.spellbook`: Study an unpaid spellbook, including its randomized admonition
+- **branch gap:** `shop.usage.small-tool-tenth`: Use unpaid grease, a tinning kit, or a camera at one tenth price
+- **branch gap:** `shop.usage.oil-tax`: Use unpaid potion oil and charge the fuel tax
+- **branch gap:** `shop.usage.deaf-or-mute`: Accrue usage debt while speech is suppressed by deafness or a mute shopkeeper
+- **branch gap:** `shop.sell.vegetarian-food`: Apply vegetarian-shop restrictions when deciding what can be sold
+- **branch gap:** `container.menu.partial-count-put-in`: Put only a selected count from an inventory stack into a container
+- **branch gap:** `container.menu.partial-count-take-out`: Take only a selected count from a contained stack
+- **branch gap:** `shop.pricing.artifact`: Apply artifact cost during buying and selling
+- **branch gap:** `pickup.menu.overlarge-count-clamp`: Clamp a menu count larger than the selected stack
+- **branch gap:** `drop.menu.partial-count`: Drop only a selected count from an inventory stack
+- **branch gap:** `shop.damage.repair`: Repair shop damage and handle obstructing objects or monsters
+- **branch gap:** `shop.movement.block-door`: Block the shop doorway while debt or robbery is outstanding
+- **branch gap:** `shop.movement.following-nag`: Have a following shopkeeper demand payment

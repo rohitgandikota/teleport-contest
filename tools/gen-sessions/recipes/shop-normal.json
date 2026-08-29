@@ -1,6 +1,12 @@
 {
   "name": "shop-normal",
   "description": "Normal Tourist reaches a naturally generated shop and exercises ordinary transactions without wizard commands.",
+  "branches": [
+    "shop.dopay.item.cash",
+    "shop.dopay.nothing-owed",
+    "shop.entry.tended-welcome",
+    "shop.sell.cash"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.normal",

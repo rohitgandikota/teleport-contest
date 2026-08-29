@@ -1,6 +1,16 @@
 {
   "name": "shop-billing",
   "description": "Debug Wizard visits an independently seeded shop and exercises buying, payment, selling, credit, and theft handling.",
+  "branches": [
+    "shop.dopay.item.cash",
+    "shop.dopay.item.credit",
+    "shop.dopay.no-funds",
+    "shop.entry.tended-welcome",
+    "shop.gold.credit-establish",
+    "shop.robbery.exit-alarm",
+    "shop.sell.cash",
+    "shop.sell.uninterested"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

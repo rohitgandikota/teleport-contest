@@ -1,6 +1,14 @@
 {
   "name": "shop-container-pickup-billing",
   "description": "A Debug Wizard retrieves a no-charge bag containing donated gold, a no-charge bag with sold armor, and a sold bag with sold contents to cover credit erasure and both container billing forms.",
+  "branches": [
+    "shop.container.pickup-owned-gold",
+    "shop.container.pickup-sold-container",
+    "shop.container.sell-container-and-contents",
+    "shop.container.sell-contents",
+    "shop.gold.credit-erase",
+    "shop.gold.credit-establish"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

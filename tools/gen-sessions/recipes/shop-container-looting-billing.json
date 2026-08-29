@@ -1,6 +1,12 @@
 {
   "name": "shop-container-looting-billing",
   "description": "A Debug Wizard retrieves sold contents, returns and re-retrieves an unpaid item, withdraws credited gold, and retrieves declined contents from a shop-floor bag.",
+  "branches": [
+    "shop.container.retrieve-sold-content",
+    "shop.container.sell-contents",
+    "shop.gold.credit-erase",
+    "shop.gold.credit-establish"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

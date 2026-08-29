@@ -1,6 +1,11 @@
 {
   "name": "floor-food-stack-billing",
   "description": "Debug Wizard sells a two-pie stack to a general store, eats one pie from the floor, verifies the untouched pie remains for sale, then pays for the consumed portion.",
+  "branches": [
+    "shop.bill.split-used-stack",
+    "shop.dopay.item.used-up",
+    "shop.sell.cash"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

@@ -1,6 +1,9 @@
 {
   "name": "shop-food-price-rounding",
   "description": "Debug Wizards sell carefully sized stacks of every food whose C base price uses truncating integer division, covering meatballs, meat sticks, kelp, eucalyptus, apples, pears, carrots, and slime molds.",
+  "branches": [
+    "shop.pricing.food-rounding"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

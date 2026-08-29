@@ -1,6 +1,11 @@
 {
   "name": "shop-food-billing",
   "description": "Normal Tourist reaches a natural general store, pays for an unpaid tripe ration after biting it, then waits through the complete nausea countdown and vomiting recovery.",
+  "branches": [
+    "shop.dopay.item.used-up",
+    "shop.dopay.nothing-owed",
+    "shop.entry.tended-welcome"
+  ],
   "coverage": [
     "mode.normal",
     "level.ordinary",

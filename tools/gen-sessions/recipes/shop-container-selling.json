@@ -1,6 +1,11 @@
 {
   "name": "shop-container-selling",
   "description": "A Debug Wizard sells a player-owned bag with saleable contents in specialty and general stores, then declines a plural offer and retrieves the no-charge bag.",
+  "branches": [
+    "shop.container.sell-container-and-contents",
+    "shop.container.sell-contents",
+    "shop.sell.decline"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

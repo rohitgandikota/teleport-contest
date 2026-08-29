@@ -1,6 +1,20 @@
 {
   "name": "shop-debt-payment",
   "description": "Debug Wizards test insufficient, cash, credit, and mixed credit-cash payment of shop loans and usage debt.",
+  "branches": [
+    "pickup.menu.count-split",
+    "pickup.menu.explicit-count",
+    "shop.dopay.debt.loan-cash",
+    "shop.dopay.debt.loan-insufficient-stashed",
+    "shop.dopay.debt.usage-credit",
+    "shop.dopay.debt.usage-mixed",
+    "shop.gold.credit-erase",
+    "shop.gold.credit-establish",
+    "shop.gold.credit-reduce",
+    "shop.sell.cash",
+    "shop.usage.bag-horn-price",
+    "shop.usage.generic-fee"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

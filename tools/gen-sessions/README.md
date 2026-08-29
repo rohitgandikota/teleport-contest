@@ -44,6 +44,7 @@ A recipe names only the inputs:
   "name": "fountain-quaff",
   "description": "what this covers",
   "coverage": ["terrain.furniture", "object.potions"],
+  "branches": ["example.concrete-c-branch"],
   "segments": [
     { "seed": 6002, "datetime": "20000110090000",
       "nethackrc": "OPTIONS=...\n", "moves": "..." }
@@ -62,6 +63,12 @@ node tools/game-inventory.mjs
 The first command writes `docs/plan/supplemental-coverage.md`. A covered dynamic
 row means enough tagged C traces exist in the required modes. It does not mean
 the JavaScript port passes those traces.
+
+Optional `branches` tags come from `branch-requirements.json`. Each tag names a
+specific C decision and its source function. The report keeps broad category
+coverage separate from branch coverage, so a category can be represented while
+important logical paths remain visible as gaps. Use `--branch-strict` when a
+subsystem's branch ledger is expected to have no remaining gap.
 
 `moves` is the raw key string, one char per key, exactly as in
 `sessions/*.session.json` (JSON escapes: `\r` Enter, `\u001b` ESC,

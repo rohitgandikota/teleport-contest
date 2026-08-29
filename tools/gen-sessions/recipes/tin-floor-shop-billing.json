@@ -1,6 +1,11 @@
 {
   "name": "tin-floor-shop-billing",
   "description": "Debug Wizard sells a two-tin stack to a general store, opens and consumes one shop-owned tin directly from the floor, then pays for the used-up portion while the intact tin remains on the floor.",
+  "branches": [
+    "shop.bill.split-used-stack",
+    "shop.dopay.item.used-up",
+    "shop.sell.cash"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

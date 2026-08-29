@@ -1,6 +1,13 @@
 {
   "name": "shop-container-payment",
   "description": "A Debug Wizard pays for a shop-owned bag with billed contents and a player-owned bag whose contents alone are billed.",
+  "branches": [
+    "shop.container.sell-container-and-contents",
+    "shop.container.sell-contents",
+    "shop.dopay.container-and-contents",
+    "shop.dopay.container-contents-only",
+    "shop.dopay.item.cash"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

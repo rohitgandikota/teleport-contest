@@ -1,6 +1,11 @@
 {
   "name": "shop-gem-pricing",
   "description": "A Debug Wizard sells an unidentified real gem and all nine colors of unidentified glass, then buys each stack back to cover shopkeeper-specific offers and stable plausible-gem purchase prices.",
+  "branches": [
+    "shop.pricing.gem-offer",
+    "shop.pricing.gem-plausible-purchase",
+    "shop.sell.cash"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

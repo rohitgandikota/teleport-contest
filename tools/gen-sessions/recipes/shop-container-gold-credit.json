@@ -1,6 +1,12 @@
 {
   "name": "shop-container-gold-credit",
   "description": "A Debug Wizard drops bags containing gold alone and gold plus saleable contents, then sells a bag's contents for credit after exhausting a general-store shopkeeper's cash.",
+  "branches": [
+    "shop.container.sell-contents",
+    "shop.gold.credit-establish",
+    "shop.sell.cash",
+    "shop.sell.credit"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

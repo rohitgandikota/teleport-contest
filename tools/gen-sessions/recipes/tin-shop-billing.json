@@ -1,6 +1,11 @@
 {
   "name": "tin-shop-billing",
   "description": "Debug Wizard sells two identical tins to a general store, buys the stack back, opens and consumes one unpaid tin, then pays separately for the used-up and intact portions.",
+  "branches": [
+    "shop.bill.split-used-stack",
+    "shop.dopay.item.cash",
+    "shop.dopay.item.used-up"
+  ],
   "coverage": [
     "level.ordinary",
     "mode.debug",

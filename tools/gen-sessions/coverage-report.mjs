@@ -14,6 +14,7 @@ const ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const RECIPES = join(HERE, 'recipes');
 const GENERATED = join(HERE, 'generated');
 const REQUIREMENTS = join(HERE, 'coverage-requirements.json');
+const BRANCH_REQUIREMENTS = join(HERE, 'branch-requirements.json');
 const OUT = join(ROOT, 'docs', 'plan', 'supplemental-coverage.md');
 const RNG_ANNOTATION = /@\s*([A-Za-z0-9_]+)\(([A-Za-z0-9_.]+):(\d+)\)\s*$/;
 
@@ -69,6 +70,11 @@ function verifyGenerated(recipe) {
     if (JSON.stringify(actualCoverage) !== JSON.stringify(expectedCoverage)) {
         return { present: false, reason: 'coverage metadata differs' };
     }
+    const expectedBranches = [...new Set(recipe.branches || [])].sort();
+    const actualBranches = [...(generated.branches || [])].sort();
+    if (JSON.stringify(actualBranches) !== JSON.stringify(expectedBranches)) {
+        return { present: false, reason: 'branch metadata differs' };
+    }
     if ((generated.segments || []).length !== recipe.segments.length) {
         return { present: false, reason: 'segment count differs' };
     }
@@ -95,6 +101,20 @@ for (const requirement of requirements) {
     byId.set(requirement.id, requirement);
 }
 
+const branchConfig = readJson(BRANCH_REQUIREMENTS);
+const branchRequirements = branchConfig.requirements || [];
+const branchById = new Map();
+for (const requirement of branchRequirements) {
+    if (branchById.has(requirement.id))
+        throw new Error(`duplicate branch requirement ${requirement.id}`);
+    const cPath = join(ROOT, 'nethack-c', 'upstream', requirement.cFile || '');
+    if (!existsSync(cPath))
+        throw new Error(`${requirement.id}: missing C source ${requirement.cFile}`);
+    if (!readFileSync(cPath, 'utf8').includes(requirement.cFunction))
+        throw new Error(`${requirement.id}: C function ${requirement.cFunction} not found`);
+    branchById.set(requirement.id, requirement);
+}
+
 const recipes = readdirSync(RECIPES)
     .filter((name) => name.endsWith('.json'))
     .sort()
@@ -110,9 +130,15 @@ const recipes = readdirSync(RECIPES)
         for (const tag of coverage) {
             if (!byId.has(tag)) throw new Error(`${name}: unknown coverage tag ${tag}`);
         }
+        const branches = [...new Set(recipe.branches || [])].sort();
+        for (const branch of branches) {
+            if (!branchById.has(branch))
+                throw new Error(`${name}: unknown branch tag ${branch}`);
+        }
         return {
             ...recipe,
             coverage,
+            branches,
             mode: recipeMode(recipe),
             keys: recipe.segments.reduce((sum, segment) => sum + segment.moves.length, 0),
             generated: verifyGenerated(recipe),
@@ -122,6 +148,10 @@ const recipes = readdirSync(RECIPES)
 const coverageByTag = new Map(requirements.map((requirement) => [requirement.id, []]));
 for (const recipe of recipes) {
     for (const tag of recipe.coverage) coverageByTag.get(tag).push(recipe);
+}
+const coverageByBranch = new Map(branchRequirements.map((requirement) => [requirement.id, []]));
+for (const recipe of recipes) {
+    for (const branch of recipe.branches) coverageByBranch.get(branch).push(recipe);
 }
 
 function requirementStatus(requirement) {
@@ -143,9 +173,23 @@ const evaluated = requirements.map((requirement) => ({
     ...requirement,
     ...requirementStatus(requirement),
 }));
+const evaluatedBranches = branchRequirements.map((requirement) => {
+    const evidence = coverageByBranch.get(requirement.id) || [];
+    const enough = evidence.length >= (requirement.minimumSessions || 1);
+    const allGenerated = evidence.every((recipe) => recipe.generated.present);
+    return {
+        ...requirement,
+        status: enough && allGenerated ? 'covered'
+            : evidence.length ? 'partial' : 'gap',
+        evidence: evidence.map((recipe) => recipe.name),
+    };
+});
 
 const summary = Object.fromEntries(['covered', 'partial', 'gap'].map((status) => [
     status, evaluated.filter((entry) => entry.status === status).length,
+]));
+const branchSummary = Object.fromEntries(['covered', 'partial', 'gap'].map((status) => [
+    status, evaluatedBranches.filter((entry) => entry.status === status).length,
 ]));
 const publicStats = scanAnnotations(join(ROOT, 'sessions'));
 const supplementalStats = scanAnnotations(GENERATED);
@@ -166,6 +210,9 @@ lines.push('runner. RNG annotations only observe C functions that draw randomnes
 lines.push('');
 lines.push(`Requirements: **${evaluated.length}**. Covered: **${summary.covered}**.`);
 lines.push(`Partial: **${summary.partial}**. Gaps: **${summary.gap}**.`);
+lines.push('');
+lines.push(`Branch requirements: **${evaluatedBranches.length}**. Covered: **${branchSummary.covered}**.`);
+lines.push(`Partial: **${branchSummary.partial}**. Gaps: **${branchSummary.gap}**.`);
 lines.push('');
 lines.push('## Corpus inventory');
 lines.push('');
@@ -194,6 +241,27 @@ for (const group of groups) {
     lines.push('');
 }
 
+lines.push('## Branch-level oracle ledger');
+lines.push('');
+lines.push('Branch rows name a concrete C decision and require a generated C trace');
+lines.push('that deliberately reaches it. This ledger starts with shops and counted');
+lines.push('object menus, then grows subsystem by subsystem. A gap is an explicit test');
+lines.push('target, not evidence that the JavaScript behavior is wrong.');
+lines.push('');
+for (const group of [...new Set(branchRequirements.map((entry) => entry.group))]) {
+    lines.push(`### ${group}`);
+    lines.push('');
+    lines.push('| Status | Branch | C source | Evidence |');
+    lines.push('|---|---|---|---|');
+    for (const requirement of evaluatedBranches.filter((entry) => entry.group === group)) {
+        const evidence = requirement.evidence.length
+            ? requirement.evidence.map((name) => `\`${name}\``).join(', ')
+            : 'none';
+        lines.push(`| ${requirement.status} | \`${requirement.id}\` | \`${requirement.cFile}:${requirement.cFunction}\` | ${evidence} |`);
+    }
+    lines.push('');
+}
+
 lines.push('## Scenario index');
 lines.push('');
 lines.push('| Scenario | Mode | Keys | C trace | Declared coverage |');
@@ -209,6 +277,9 @@ lines.push('');
 for (const requirement of evaluated.filter((entry) => entry.status !== 'covered')) {
     lines.push(`- **${requirement.status}:** \`${requirement.id}\`: ${requirement.description}`);
 }
+for (const requirement of evaluatedBranches.filter((entry) => entry.status !== 'covered')) {
+    lines.push(`- **branch ${requirement.status}:** \`${requirement.id}\`: ${requirement.description}`);
+}
 lines.push('');
 
 const text = `${lines.join('\n').trimEnd()}\n`;
@@ -218,8 +289,13 @@ if (process.argv.includes('--stdout')) {
     writeFileSync(OUT, text);
     console.log(`wrote ${OUT}`);
     console.log(`coverage: ${summary.covered} covered, ${summary.partial} partial, ${summary.gap} gaps`);
+    console.log(`branches: ${branchSummary.covered} covered, ${branchSummary.partial} partial, ${branchSummary.gap} gaps`);
 }
 
 if (process.argv.includes('--strict') && (summary.partial || summary.gap)) {
+    process.exitCode = 1;
+}
+if (process.argv.includes('--branch-strict')
+    && (branchSummary.partial || branchSummary.gap)) {
     process.exitCode = 1;
 }

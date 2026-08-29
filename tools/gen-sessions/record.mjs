@@ -11,6 +11,7 @@
 //     "name": "fountain-quaff",
 //     "description": "what this session covers",
 //     "coverage": ["terrain.furniture", "object.potions"],
+//     "branches": ["example.concrete-c-branch"],
 //     "segments": [
 //       { "seed": 6101, "datetime": "20000110090000",
 //         "nethackrc": "OPTIONS=...\n", "moves": "hjkl..." }
@@ -47,7 +48,9 @@ function recipeToSessionInput(recipe) {
         || !Array.isArray(recipe.segments)) {
         throw new Error('recipe needs {name, coverage:[], segments:[{seed,datetime,nethackrc,moves}]}');
     }
-    return {
+    if (recipe.branches !== undefined && !Array.isArray(recipe.branches))
+        throw new Error('recipe branches must be an array when present');
+    const input = {
         version: 5,
         segments: recipe.segments.map((s) => ({
             seed: s.seed,
@@ -63,6 +66,9 @@ function recipeToSessionInput(recipe) {
         },
         coverage: [...new Set(recipe.coverage)].sort(),
     };
+    if (recipe.branches?.length)
+        input.branches = [...new Set(recipe.branches)].sort();
+    return input;
 }
 
 async function runRecorder(inputPath, outputPath) {

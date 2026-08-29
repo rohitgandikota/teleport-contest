@@ -279,7 +279,7 @@ export function xname(obj) {
             dn = 'koto';
     }
     const un = ocl.oc_uname || null;
-    const pluralize = obj.quan !== 1;
+    let pluralize = obj.quan !== 1;
     const dknown = obj.dknown;
     let buf = '';
 
@@ -354,12 +354,24 @@ export function xname(obj) {
             else buf = `${dn} scroll`;
         }
         break;
-    case FOOD_CLASS:
+    case FOOD_CLASS: {
+        if (obj.otyp === ONAMES.SLIME_MOLD) {
+            let fruit = game.ffruit;
+            while (fruit && fruit.fid !== obj.spe)
+                fruit = fruit.nextf;
+            buf = fruit?.fname || 'fruit';
+            if (pluralize) {
+                buf = makeplural(makesingular(buf));
+                pluralize = false;
+            }
+            break;
+        }
         buf = actualn;
         /* src/objnam.c tin_details(): a tin names its contents once known */
         if (obj.otyp === ONAMES.TIN && obj.known)
             buf = tin_details(obj);
         break;
+    }
     case AMULET_CLASS:
         if (!dknown)
             buf = 'amulet';

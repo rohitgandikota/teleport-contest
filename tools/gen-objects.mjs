@@ -166,7 +166,9 @@ function value(tok) {
             // eslint-disable-next-line no-new-func
             const n = Function(`"use strict"; return (${t});`)();
             if (typeof n === 'boolean') return n ? 1 : 0;
-            if (Number.isFinite(n)) return n;
+            /* Every objclass initializer field is integral. C division
+             * truncates toward zero, while JavaScript division does not. */
+            if (Number.isFinite(n)) return Math.trunc(n);
         } catch { /* fall through */ }
     }
     return t; // an enum / macro identifier

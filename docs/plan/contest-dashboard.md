@@ -1,7 +1,8 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T20:33:19.416Z. Local commit: `6963e63`.
+Last refreshed: 2026-08-30T20:58:02.348Z. Local commit: `a31b49a`.
 Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:55:52.282Z.
+Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 
 ## Score summary
 
@@ -10,7 +11,7 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 39172/39557 | 99.03% | 208/210 | 2679325/2679325 (100.00%) | 88/1760 |
+| Supplemental C suite | 39220/39605 | 99.03% | 209/211 | 2682570/2682570 (100.00%) | 88/1760 |
 
 ## Contest position and generalization
 
@@ -20,25 +21,15 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `6963e63` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `a31b49a` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 39550/39557 |
-| Cursor positions | 11405/11405 | 39172/39557 |
-| Startup and per-turn estimate | 68+0.58/turn | 106+0.25/turn |
-
-## Latest local expansion
-
-- Revealing a mimic now clears its saved corpse, egg, tin, statue, fruit, or altar payload to `NON_PM` before clearing the disguise, matching `src/mon.c`.
-- Three natural-shop C oracles remain exact at 18170/18170 RNG calls and 278/278 screens, cells, and cursors. A state gate covers the otherwise invisible payload reset.
-- `m_detach()` now calls `shkgone()` for removed shopkeepers. The new state gate caught the missing call even though the later terminal frames already matched.
-- Detached shopkeepers now clear room residency, former stock ownership, and active-shop membership while remaining in the monster list until the deferred purge.
-- The valid late-game world-tour oracle remains exact at 123614/123614 RNG calls and 833/833 screens, cells, and cursors. The broad corpus no longer reports either `seemimic:mcorpsenm` or `mon:m_detach`.
-- Deterministic coverage remains 105/105 game elements and 126/126 named C branches. Public remains 44/44, the hang gate remains 44/44, and 80 fresh games across 13 roles reached no unported path.
-- This checkpoint has not been scored by the hidden judge. The displayed held-out result is from the last published build.
+| Cells only | 11405/11405 | 39598/39605 |
+| Cursor positions | 11405/11405 | 39220/39605 |
+| Startup and per-turn estimate | 62+0.55/turn | 102+0.24/turn |
 
 ## Supplemental capture caveats
 
@@ -57,6 +48,7 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T20:58:02.348Z | `a31b49a` | 11405/11405 | 39220/39605 | 6032/11265 | 3 |
 | 2026-08-30T20:33:19.416Z | `6963e63` | 11405/11405 | 39172/39557 | 6032/11265 | 3 |
 | 2026-08-30T20:20:52.701Z | `c14098a` | 11405/11405 | 39172/39557 | 6032/11265 | 3 |
 | 2026-08-30T20:10:00.784Z | `245ff75` | 11405/11405 | 39172/39557 | 6032/11265 | 3 |
@@ -66,7 +58,6 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 | 2026-08-30T19:00:34.610Z | `5c12f8b` | 11405/11405 | 38398/38783 | 6032/11265 | 3 |
 | 2026-08-30T18:40:25.838Z | `1e344aa` | 11405/11405 | 37936/38321 | 6032/11265 | 3 |
 | 2026-08-30T18:10:36.798Z | `715ed63` | 11405/11405 | 37244/37629 | 6032/11265 | 3 |
-| 2026-08-30T18:00:43.993Z | `1b21bb8` | 11405/11405 | 37051/37436 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

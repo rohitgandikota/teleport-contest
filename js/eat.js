@@ -1041,7 +1041,7 @@ function use_up_tin(tin) {
 // src/eat.c:1389 costly_tin(). Splitting first keeps the untouched remainder
 // in place and charges only the opened or destroyed tin.
 async function costly_tin(tin, alter_type) {
-    const { costly_alteration, costly_spot, splitbill } = await import('./shk.js');
+    const { costly_alteration, costly_spot } = await import('./shk.js');
     const inInventory = carried(tin);
     const billable = inInventory ? tin.unpaid
                                  : costly_spot(tin.ox, tin.oy) && !tin.no_charge;
@@ -1049,10 +1049,7 @@ async function costly_tin(tin, alter_type) {
         return tin;
 
     if (tin.quan > 1) {
-        const stack = tin;
-        tin = splitobj(stack, 1);
-        if (inInventory)
-            splitbill(stack, tin);
+        tin = splitobj(tin, 1);
         const tc = (game.context ||= {}).tin ||= {};
         tc.tin = tin;
         tc.o_id = tin.o_id;

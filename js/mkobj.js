@@ -52,6 +52,7 @@ import { ONAME_NO_FLAGS } from './const.js';
 import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
 import { obj_sheds_light, obj_split_light_source } from './light.js';
+import { splitbill } from './shk.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
@@ -201,7 +202,7 @@ export function splitobj(obj, num) {
     }
 
     if (obj.unpaid)
-        note_unported_obj('splitobj:splitbill');
+        splitbill(obj, otmp);
     if (obj.timed)
         obj_split_timers(obj, otmp);
     if (obj_sheds_light(obj))

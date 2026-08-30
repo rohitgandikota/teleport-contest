@@ -1,0 +1,43 @@
+{
+  "name": "cursed-bag-loss",
+  "description": "Open a cursed bag of holding containing several distinct objects so the C oracle records both retained and vanished contents.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.magic-bag.cursed-retain",
+    "container.magic-bag.cursed-loss",
+    "container.contents.prepend-order"
+  ],
+  "segments": [
+    {
+      "seed": 7120,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed bag of holding\r\u0017uncursed apple\r\u0017uncursed carrot\r\u0017uncursed food ration\r\u0017uncursed cream pie\r\u0017uncursed fortune cookie\raoi%\r.\r\u001baoq"
+    },
+    {
+      "seed": 7121,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed bag of holding\r\u0017uncursed apple\r\u0017uncursed carrot\r\u0017uncursed food ration\r\u0017uncursed cream pie\r\u0017uncursed fortune cookie\raoi%\r.\r\u001baoq"
+    },
+    {
+      "seed": 7122,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed bag of holding\r\u0017uncursed apple\r\u0017uncursed carrot\r\u0017uncursed food ration\r\u0017uncursed cream pie\r\u0017uncursed fortune cookie\raoi%\r.\r\u001baoq : q"
+    },
+    {
+      "seed": 7123,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed bag of holding\r\u0017uncursed apple\r\u0017uncursed carrot\r\u0017uncursed food ration\r\u0017uncursed cream pie\r\u0017uncursed fortune cookie\raoi%\r.\r\u001baoq"
+    }
+  ]
+}

@@ -35,7 +35,8 @@ import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban } from './dungeon.js';
-import { Is_mbag, splitobj, unbless, place_object } from './mkobj.js';
+import { Is_mbag, splitobj, unbless, place_object, add_to_container }
+    from './mkobj.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
 import { rn2, rnd, d } from './rng.js';
@@ -1145,6 +1146,37 @@ async function scatter_boh_object(obj, blastforce) {
     newsym(game.u.ux, game.u.uy);
 }
 
+// src/pickup.c:2803 mbag_item_gone() -- finish deleting one object lost from
+// a cursed or exploding magical bag. Shop billing remains explicit.
+async function mbag_item_gone(held, item, silent) {
+    if (!silent) {
+        if (item.dknown) {
+            await pline(`${upstart(doname(item))} ${otense(item, 'have')} vanished!`);
+        } else {
+            await You(`${Blind() ? 'notice' : 'see'} ${doname(item)} disappear!`);
+        }
+    }
+    if (item.unpaid || (!held && costly_spot(game.u.ux, game.u.uy)))
+        note_unported_pickup('mbag_item_gone:shop-billing');
+    obfree(item);
+    return 0;
+}
+
+// src/pickup.c:2537 boh_loss() -- opening a cursed magical bag gives every
+// contained object an independent one-in-thirteen chance to vanish.
+async function boh_loss(container, held) {
+    let loss = 0;
+    if (Is_mbag(container) && container.cursed && Has_contents(container)) {
+        for (const item of [...container.cobj]) {
+            if (!rn2(13)) {
+                obj_extract_self(item);
+                loss += await mbag_item_gone(held, item, false);
+            }
+        }
+    }
+    return loss;
+}
+
 // src/pickup.c:2515 do_boh_explosion() -- remove a magical bag's contents,
 // destroying a small random fraction and scattering everything else.
 async function do_boh_explosion(boh, onFloor) {
@@ -1152,9 +1184,7 @@ async function do_boh_explosion(boh, onFloor) {
     for (const obj of [...(boh.cobj || [])]) {
         if (!rn2(13)) {
             obj_extract_self(obj);
-            if (obj.unpaid || onFloor)
-                note_unported_pickup('mbag_item_gone:shop-billing');
-            obfree(obj);
+            await mbag_item_gone(!onFloor, obj, true);
         } else {
             obj.ox = game.u.ux;
             obj.oy = game.u.uy;
@@ -1228,10 +1258,8 @@ async function in_container(obj) {
     if (floor_container && obj.oclass === OCLASSES.COIN_CLASS)
         await sellobj(obj, current_container.ox, current_container.oy);
 
-    /* boxes with quantity would need splitobj; boxes are quan 1 */
-    (current_container.cobj ||= []).push(obj);
-    obj.where = 2; /* OBJ_CONTAINED */
-    obj.ocontainer = current_container;
+    /* src/mkobj.c add_to_container() prepends and merges like the C chain. */
+    add_to_container(current_container, obj);
     current_container.owt = weight(current_container);
 
     update_inventory();
@@ -1460,21 +1488,26 @@ export async function use_container(obj, held, more_containers) {
 
     current_container = obj; /* for use by in/out_container */
 
-    /* SchroedingersBox / cursed bag of holding loss: neither container
-       type is reachable yet */
-    if (Is_mbag(obj) && obj.cursed && Has_contents(obj))
-        note_unported_pickup('use_container:cursed_mbag');
+    /* Schroedinger's box remains unavailable. */
+    const cursedMbag = Is_mbag(obj) && obj.cursed && Has_contents(obj);
+    if (cursedMbag) {
+        const loss = await boh_loss(obj, held);
+        if (loss) {
+            used = ECMD_TIME;
+            note_unported_pickup('use_container:cursed_mbag_shop_loss');
+        }
+    }
 
     let inokay = (game.invent || []).some(o => o !== current_container);
     const outokay0 = Has_contents(current_container);
-    const emptymsg = `${upstart(yname(current_container))} is empty.`;
+    const emptymsg = `${upstart(yname(current_container))} is ${
+        cursedMbag ? 'now ' : ''}empty.`;
 
     let c;
     for (;;) { /* repeats iff '?' or ':' gets chosen */
         const outmaybe = (outokay0 || !current_container.cknown);
         const qbuf = !outmaybe
-            ? `${upstart(yname(current_container))} is empty.  `
-              + 'Do what with it?'
+            ? `${emptymsg}  Do what with it?`
             : `Do what with ${yname(current_container)}?`;
         /* flags.menu_style defaults to MENU_FULL -> the menu variant */
         c = await in_or_out_menu(qbuf, current_container, outmaybe, inokay,

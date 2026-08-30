@@ -220,10 +220,11 @@ const ordinary_candle = (obj) => obj.otyp === ONAMES.TALLOW_CANDLE
 
 // src/timeout.c:1712 begin_burn(). The timer stores the next fuel checkpoint
 // while age holds any fuel beyond that checkpoint, exactly as the C object
-// does.
-export async function begin_burn(obj, already_lit) {
+// does. The synchronous core lets special-level generation finish a floor
+// object's timer before the first screen is drawn.
+function begin_burn_core(obj) {
     if (!obj || (!obj.age && obj.otyp !== ONAMES.MAGIC_LAMP))
-        return;
+        return null;
 
     let radius = 3;
     let turns = 0;
@@ -250,42 +251,64 @@ export async function begin_burn(obj, already_lit) {
         radius = candle_light_range(obj);
     } else {
         note_unported_timeout('begin_burn:otyp=' + obj.otyp);
-        return;
+        return null;
     }
 
     if (do_timer) {
         if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, obj)) {
             obj.lamplit = 1;
             obj.age -= turns;
-            if (obj.where === OBJ_INVENT && !already_lit) {
-                const { update_inventory } = await import('./invent.js');
-                update_inventory();
-            }
         } else {
             obj.lamplit = 0;
         }
-    } else if (obj.where === OBJ_INVENT && !already_lit) {
+    }
+
+    return { radius };
+}
+
+function burn_location(obj) {
+    if (obj.where === OBJ_INVENT)
+        return { x: game.u.ux, y: game.u.uy };
+    if (obj.where === OBJ_FLOOR)
+        return { x: obj.ox, y: obj.oy };
+    if (obj.where === OBJ_MINVENT && obj.ocarry)
+        return { x: obj.ocarry.mx, y: obj.ocarry.my };
+    return null;
+}
+
+// Level descriptions execute synchronously. Supply their already-loaded light
+// hook so a lit floor object has both its timer and light source immediately.
+export function begin_burn_level_object(obj, add_light_source) {
+    const state = begin_burn_core(obj);
+    if (!state || !obj.lamplit)
+        return;
+
+    const loc = burn_location(obj);
+    if (!loc) {
+        note_unported_timeout('begin_burn:object_location');
+        return;
+    }
+    add_light_source(loc.x, loc.y, state.radius, obj.o_id);
+    game.vision_full_recalc = 1;
+}
+
+export async function begin_burn(obj, already_lit) {
+    const state = begin_burn_core(obj);
+    if (!state)
+        return;
+
+    if (obj.lamplit && obj.where === OBJ_INVENT && !already_lit) {
         const { update_inventory } = await import('./invent.js');
         update_inventory();
     }
 
     if (obj.lamplit && !already_lit) {
-        let x, y;
-        if (obj.where === OBJ_INVENT) {
-            x = game.u.ux;
-            y = game.u.uy;
-        } else if (obj.where === OBJ_FLOOR) {
-            x = obj.ox;
-            y = obj.oy;
-        } else if (obj.where === OBJ_MINVENT && obj.ocarry) {
-            x = obj.ocarry.mx;
-            y = obj.ocarry.my;
-        }
-        if (x === undefined) {
+        const loc = burn_location(obj);
+        if (!loc) {
             note_unported_timeout('begin_burn:object_location');
         } else {
             const { new_light_source, LS_OBJECT } = await import('./light.js');
-            new_light_source(x, y, radius, LS_OBJECT, obj.o_id);
+            new_light_source(loc.x, loc.y, state.radius, LS_OBJECT, obj.o_id);
             game.vision_full_recalc = 1;
         }
     }

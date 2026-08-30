@@ -19,7 +19,7 @@ import { selection_iterate, selection_new, selection_clone,
          selection_not, selection_rndcoord } from './selvar.js';
 import { rn1, rn2, rnd } from './rng.js';
 import { isok, distmin } from './hacklib.js';
-import { sobj_at, weight, obj_extract_self } from './invent.js';
+import { sobj_at, weight, obj_extract_self, stackobj } from './invent.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { mkobj_at, mksobj_at, add_to_container, set_corpsenm } from './mkobj.js';
 import { stock_room } from './shknam.js';
@@ -27,7 +27,9 @@ import { fill_zoo } from './mkroom.js';
 import { OBJ_NAME, OBJ_DESCR } from './objnam.js';
 import { obj_resists } from './zap.js';
 import { OBJ_BURIED } from './obj.js';
-import { start_timer, TIMER_OBJECT, ROT_ORGANIC } from './timeout.js';
+import { start_timer, TIMER_OBJECT, ROT_ORGANIC,
+         begin_burn_level_object } from './timeout.js';
+import { new_light_source, LS_OBJECT } from './light.js';
 import { make_engr_at, engr_at, del_engr } from './engrave.js';
 import { oname, christen_monst } from './do_name.js';
 import { ONAME_LEVEL_DEF } from './const.js';
@@ -1012,6 +1014,22 @@ export function create_object(o, croom) {
         otmp.oerodeproof = 0;
     }
 
+    /* src/sp_lev.c:2287 create_object() object-state options. Omitted lock
+       and trap values are -1, which preserves whatever mksobj generated. */
+    if (o.recharged)
+        otmp.recharged = o.recharged % 8;
+    if (o.locked === 0 || o.locked === 1) {
+        otmp.olocked = o.locked;
+    } else if (o.broken) {
+        otmp.obroken = 1;
+        otmp.olocked = 0;
+    }
+    if (o.trapped === 0 || o.trapped === 1)
+        otmp.otrapped = o.trapped;
+    if (o.trapped !== 0 && (o.tknown === 0 || o.tknown === 1))
+        otmp.tknown = o.tknown;
+    otmp.greased = o.greased ? 1 : 0;
+
     /* src/sp_lev.c:2298 — explicit quantity for mergeable object types */
     if (o.quan > 0 && game.objects[otmp.otyp]?.oc_merge) {
         otmp.quan = o.quan;
@@ -1140,6 +1158,13 @@ export function create_object(o, croom) {
     }
 
     if (!(o.containment & SP_OBJ_CONTENT)) {
+        stackobj(otmp);
+
+        if (o.lit) {
+            begin_burn_level_object(otmp, (lx, ly, radius, oid) =>
+                new_light_source(lx, ly, radius, LS_OBJECT, oid));
+        }
+
         if (o.buried) {
             const dealloced = { v: false };
 
@@ -1155,10 +1180,6 @@ export function create_object(o, croom) {
             }
         }
     }
-
-    /* lit, eroded, locked, trapped options still record. */
-    if (o.lit)
-        note_unported('create_object:options');
 
     return otmp;
 }
@@ -1176,6 +1197,12 @@ export function lspo_object(idOrClass, x, y, opts) {
         containment: 0,
         quan: opts?.quantity ?? -1, buried: 0, lit: 0,
         eroded: opts?.eroded ?? 0,      /* src/sp_lev.c:3592 */
+        recharged: opts?.recharged ?? 0,
+        locked: opts?.locked !== undefined ? (opts.locked ? 1 : 0) : -1,
+        trapped: opts?.trapped !== undefined ? (opts.trapped ? 1 : 0) : -1,
+        tknown: opts?.trap_known !== undefined ? (opts.trap_known ? 1 : 0) : -1,
+        greased: opts?.greased ? 1 : 0,
+        broken: opts?.broken ? 1 : 0,
         name: opts?.name ?? null,
         contents: opts?.contents ?? null,
         coord: 0,
@@ -1247,6 +1274,11 @@ export function lspo_object(idOrClass, x, y, opts) {
         if (opts?.male)     lflags |= CORPSTAT_MALE;
         if (opts?.female)   lflags |= CORPSTAT_FEMALE;
         o.spe = lflags;
+    } else if (o.id === ONAMES.EGG) {
+        o.spe = opts?.laid_by_you ? 1 : 0;
+    } else if ((o.id === ONAMES.TIN || o.id === ONAMES.FIGURINE)
+               && !nonpmobj) {
+        o.spe = 0;
     } else if (opts?.historic) {
         o.spe = CORPSTAT_HISTORIC;
     }
@@ -1269,7 +1301,13 @@ export function lspo_object(idOrClass, x, y, opts) {
     if (opts?.inContainer) o.containment |= SP_OBJ_CONTENT;
 
     lspo_object_fixup(o);
-    const otmp = create_object(o, game.coder?.croom ?? null);
+    let quancnt = o.id > STRANGE_OBJECT ? o.quan : 0;
+    let otmp;
+    do {
+        otmp = create_object(o, game.coder?.croom ?? null);
+        quancnt--;
+    } while (quancnt > 0 && o.id > STRANGE_OBJECT
+             && !game.objects[o.id].oc_merge);
 
     /* The contents closure runs with this object open as the container, then
        the stack is popped. C runs the closure even when create_object returned

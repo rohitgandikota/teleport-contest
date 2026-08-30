@@ -1,0 +1,23 @@
+{
+  "name": "special-object-options",
+  "description": "Teleport to a level-defined lit oil lamp, pick it up, and inspect its active state.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "turn.timers",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "special.object.lit-floor-source"
+  ],
+  "segments": [
+    {
+      "seed": 6920,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkkkkkkkkkkk.,i\u001b"
+    }
+  ]
+}

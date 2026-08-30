@@ -15,12 +15,13 @@ import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
     from './invent.js';
 import { observe_object } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an,
-         otense } from './objnam.js';
+         otense, vtense } from './objnam.js';
 import { Is_container, Has_contents, carried } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
 import { check_capacity, in_rooms, losehp } from './hack.js';
-import { ECMD_OK, ECMD_TIME, IS_FURNITURE, ICE, POOL, MOAT, WATER, LAVAPOOL } from './const.js';
+import { ECMD_OK, ECMD_TIME, IS_FURNITURE, ICE, POOL, MOAT, WATER,
+         LAVAPOOL, nothing_happens } from './const.js';
 import { upstart, trycall } from './do_name.js';
 
 /* src/hacklib.c The() — the() with the first letter capitalised. */
@@ -772,6 +773,16 @@ async function tip_horn(box) {
     return ECMD_TIME;
 }
 
+async function trigger_tip_trap(box) {
+    const { chest_trap } = await import('./trap.js');
+    await chest_trap(box, HAND, false);
+    if ((game.multi ?? 0) >= 0) {
+        nomul(-1);
+        game.multi_reason = 'tipping a container';
+        game.nomovemsg = '';
+    }
+}
+
 // src/pickup.c tipcontainer() - tip a container onto the floor or into another
 // container. Traps, ice boxes, bags of tricks, and shop billing stay explicit
 // until each has a C oracle.
@@ -779,7 +790,7 @@ async function tipcontainer(box) {
     const choice = await choose_tip_target(box, true);
     if (!choice.accepted)
         return;
-    const targetbox = choice.target;
+    let targetbox = choice.target;
 
     if (!box.lknown) {
         box.lknown = 1;
@@ -791,7 +802,7 @@ async function tipcontainer(box) {
         return;
     }
     if (box.otrapped) {
-        note_unported_pickup('tipcontainer:trapped');
+        await trigger_tip_trap(box);
         return;
     }
     if (targetbox && !targetbox.lknown) {
@@ -804,7 +815,7 @@ async function tipcontainer(box) {
         return;
     }
     if (targetbox?.otrapped) {
-        note_unported_pickup('tipcontainer:target-trapped');
+        await trigger_tip_trap(targetbox);
         return;
     }
     if (!Has_contents(box)) {
@@ -829,6 +840,7 @@ async function tipcontainer(box) {
 
     const contents = [...box.cobj];
     const sourceHeld = carried(box);
+    const targetHeld = targetbox && carried(targetbox);
     const cursedMbag = Is_mbag(box) && box.cursed;
     let terse = true;
     box.cknown = 1;
@@ -850,9 +862,20 @@ async function tipcontainer(box) {
         }
         if (targetbox) {
             if (Is_mbag(targetbox) && mbag_explodes(obj, 0)) {
-                note_unported_pickup('tipcontainer:target-mbag-explosion');
-                add_to_container(box, obj);
-                return;
+                await urgent_pline(`As ${doname(obj)} ${otense(obj, 'tumble')} inside, you are blasted by a magical explosion!`);
+                if (obj.otyp === ONAMES.BAG_OF_HOLDING)
+                    await do_boh_explosion(obj, !sourceHeld);
+                obfree(obj);
+
+                await do_boh_explosion(targetbox, !targetHeld);
+                if (targetHeld)
+                    useup(targetbox);
+                else
+                    useupf(targetbox, targetbox.quan);
+                targetbox = null;
+
+                await losehp(d(6, 6), 'magical explosion', KILLED_BY_AN);
+                break;
             }
             add_to_container(targetbox, obj);
         } else {
@@ -869,7 +892,7 @@ async function tipcontainer(box) {
     box.owt = weight(box);
     if (targetbox)
         targetbox.owt = weight(targetbox);
-    if (carried(box) || (targetbox && carried(targetbox)))
+    if (sourceHeld || targetHeld)
         update_inventory();
 }
 
@@ -901,7 +924,38 @@ export async function dotip() {
         return ECMD_TIME;
     }
 
-    note_unported_pickup('dotip:noncontainer');
+    let spillage = null;
+    if (cobj.otyp === ONAMES.CAN_OF_GREASE && cobj.spe > 0) {
+        spillage = 'grease';
+    } else if (cobj.otyp === ONAMES.FOOD_RATION
+               || cobj.otyp === ONAMES.CRAM_RATION
+               || cobj.otyp === ONAMES.LEMBAS_WAFER) {
+        spillage = 'crumbs';
+    } else if (cobj.oclass === OCLASSES.VENOM_CLASS) {
+        spillage = 'venom';
+    }
+    if (spillage) {
+        let suffix = '';
+        if (is_pool(game.u.ux, game.u.uy))
+            suffix = ` and gradually ${vtense(spillage, 'dissipate')}`;
+        else if (is_lava(game.u.ux, game.u.uy))
+            suffix = ` and immediately ${vtense(spillage, 'burn')} away`;
+        await pline(`Some ${spillage} ${vtense(spillage, 'spill')} onto the ${
+            surface(game.u.ux, game.u.uy)}${suffix}.`);
+        if (cobj.otyp === ONAMES.CAN_OF_GREASE) {
+            const { consume_obj_charge } = await import('./apply.js');
+            await consume_obj_charge(cobj);
+        }
+        return ECMD_TIME;
+    }
+
+    if (cobj.oclass === OCLASSES.POTION_CLASS) {
+        await pline(`${The(xname(cobj))} ${otense(cobj, 'are')} securely sealed.`);
+    } else if (cobj.otyp === ONAMES.STATUE) {
+        await pline('Nothing interesting happens.');
+    } else {
+        await pline(nothing_happens);
+    }
     return ECMD_OK;
 }
 

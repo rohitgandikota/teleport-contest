@@ -1441,7 +1441,7 @@ function fingers_or_gloves(check_gloves) {
         : makeplural(body_part(FINGER));
 }
 
-async function consume_obj_charge(obj) {
+export async function consume_obj_charge(obj) {
     if (obj.unpaid) {
         const { check_unpaid } = await import('./shk.js');
         await check_unpaid(obj);

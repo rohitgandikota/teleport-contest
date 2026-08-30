@@ -38,7 +38,8 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
-         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL } from './const.js';
+         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL,
+         LAVAPOOL, LAVAWALL } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -60,7 +61,7 @@ import { is_quest_artifact } from './questpgr.js';
 import { body_part } from './polyself.js';
 import { pline } from './display.js';
 import { tty_yn_function } from './tty/topl.js';
-import { Blind } from './youprop.js';
+import { Blind, Flying, Levitation } from './youprop.js';
 
 const {
     COIN_CLASS, POTION_CLASS, SCROLL_CLASS, WAND_CLASS, SPBOOK_CLASS,
@@ -2597,6 +2598,21 @@ async function wizterrainwish(d) {
         const floorObjects = (game.level.objects || [])
             .filter(obj => obj.ox === x && obj.oy === y);
         await water_damage_chain(floorObjects, true);
+    } else if (wanted.endsWith('lava')) {
+        const wall = wanted.endsWith('wall of lava');
+        lev.typ = wall ? LAVAWALL : LAVAPOOL;
+        lev.flags = 0;
+        const { del_engr_at } = await import('./engrave.js');
+        del_engr_at(x, y);
+        await pline(`A ${wall ? 'wall' : 'pool'} of molten lava.`);
+        if ((!Levitation() && !Flying()) || wall) {
+            const { pooleffects } = await import('./hack.js');
+            await pooleffects(false);
+        }
+        const floorObjects = (game.level.objects || [])
+            .filter(obj => obj.ox === x && obj.oy === y);
+        if (floorObjects.length)
+            note_unported_objnam('wizterrainwish:lava-fire-damage');
     } else if (wanted.endsWith('altar')) {
         const alignment = wanted.startsWith('chaotic ') ? A_CHAOTIC
                         : wanted.startsWith('neutral ') ? A_NEUTRAL

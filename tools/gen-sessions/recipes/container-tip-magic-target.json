@@ -1,0 +1,31 @@
+{
+  "name": "container-tip-magic-target",
+  "description": "Tip safe and explosive objects from an ordinary sack into a carried bag of holding.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses",
+    "object.wands"
+  ],
+  "branches": [
+    "container.tip.magic-bag-safe-target",
+    "container.tip.magic-bag-target-explosion"
+  ],
+  "segments": [
+    {
+      "seed": 7126,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed apple\r\u0017empty uncursed bag of holding\rapsq#tip\rprar: q"
+    },
+    {
+      "seed": 7127,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017wand of cancellation\r\u0017empty uncursed bag of holding\ranso#tip\rnp   ni"
+    }
+  ]
+}

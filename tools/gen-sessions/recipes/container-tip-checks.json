@@ -1,0 +1,44 @@
+{
+  "name": "container-tip-checks",
+  "description": "Cover empty, locked, and trapped source and destination checks before container tipping.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.tip.empty-source",
+    "container.tip.locked-source",
+    "container.tip.trapped-source",
+    "container.tip.trapped-target"
+  ],
+  "segments": [
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r#tip\ro\r"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty locked chest\r#tip\ro\r"
+    },
+    {
+      "seed": 7152,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty unlocked trapped chest\r#tip\ro\r "
+    },
+    {
+      "seed": 7126,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed apple\r\u0017empty unlocked trapped chest\rapsq#tip\rpr   "
+    }
+  ]
+}

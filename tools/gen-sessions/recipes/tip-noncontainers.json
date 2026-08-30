@@ -1,0 +1,73 @@
+{
+  "name": "tip-noncontainers",
+  "description": "Tip food, grease, a sealed potion, a statue, and an ordinary object to cover non-container outcomes.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "object.food-corpses",
+    "object.tools-containers",
+    "object.potions"
+  ],
+  "branches": [
+    "tip.noncontainer.food-spill",
+    "tip.noncontainer.grease-spill",
+    "tip.noncontainer.potion-sealed",
+    "tip.noncontainer.statue",
+    "tip.noncontainer.nothing",
+    "tip.noncontainer.venom-spill",
+    "tip.noncontainer.pool-dissipation",
+    "tip.noncontainer.lava-burn",
+    "debug.terrain-wish.lava"
+  ],
+  "segments": [
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed food ration\r#tip\ro"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +3 can of grease\r#tip\roi"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of water\r#tip\ro"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed statue\r#tip\ro"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed apple\r#tip\ro"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blinding venom\r#tip\ro"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPor \u0017uncursed food ration\r\u0017pool\r#tip\rp"
+    },
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPor \u0017uncursed food ration\r\u0017lava\r#tip\rp"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, SHOPBASE, NC_SHOW_MSG,
-         NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE,
+         NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
          XKILL_NOCORPSE } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
@@ -41,7 +41,8 @@ import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
-import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory } from './invent.js';
+import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
+         stackobj } from './invent.js';
 import { getdir } from './cmd.js';
 import { attach_egg_hatch_timeout, fall_asleep } from './timeout.js';
 import { healup, potionbreathe } from './potion.js';
@@ -63,7 +64,7 @@ import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
          OBJ_FLOOR } from './const.js';
-import { splitobj, mkobj, mksobj, rnd_class, set_corpsenm,
+import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
          dead_species, erosion_matters } from './mkobj.js';
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
@@ -77,7 +78,8 @@ import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
          nohands, nonliving, is_demon } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
-         Shock_resistance, Blind, Deaf, Unaware, Hallucination } from './youprop.js';
+         Shock_resistance, Blind, Deaf, Unaware, Hallucination,
+         Underwater } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -86,6 +88,9 @@ import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
 import { name_to_monplus } from './mondata.js';
 import { engr_at } from './engrave.js';
+import { ceiling } from './dungeon.js';
+import { body_part } from './polyself.js';
+import { hard_helmet } from './do_wear.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -1962,12 +1967,15 @@ async function zap_updown(obj) {
     case ONAMES.WAN_PROBING:
     case ONAMES.WAN_OPENING:
     case ONAMES.SPE_KNOCK:
-    case ONAMES.WAN_STRIKING:
-    case ONAMES.SPE_FORCE_BOLT:
     case ONAMES.WAN_LOCKING:
     case ONAMES.SPE_WIZARD_LOCK:
     case ONAMES.SPE_STONE_TO_FLESH:
         note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
+        break;
+    case ONAMES.WAN_STRIKING:
+    case ONAMES.SPE_FORCE_BOLT:
+        if (game.u.dz > 0)
+            note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
         break;
     default:
         break;
@@ -1976,8 +1984,32 @@ async function zap_updown(obj) {
     if (game.u.dz > 0) {
         await bhitpile(obj, bhito, game.u.ux, game.u.uy, game.u.dz);
         zap_map(game.u.ux, game.u.uy, obj);
-    } else if (game.u.dz < 0 && game.u.uundetected) {
-        note_unported_zap('zap_updown:hiding-under');
+    } else if (game.u.dz < 0) {
+        if ((obj.otyp === ONAMES.WAN_STRIKING
+             || obj.otyp === ONAMES.SPE_FORCE_BOLT)
+            && rn2(3)
+            && !Is_airlevel(game.u.uz)
+            && !Is_waterlevel(game.u.uz)
+            && !Underwater()
+            && !(game.special_levels?.qstart_level
+                 && game.u.uz.dnum === game.special_levels.qstart_level.dnum
+                 && game.u.uz.dlevel === game.special_levels.qstart_level.dlevel)) {
+            await pline(`A rock is dislodged from the ${
+                ceiling(game.u.ux, game.u.uy)} and falls on your ${
+                body_part(HEAD)}.`);
+            let damage = rnd(hard_helmet(game.u.uarmh) ? 2 : 6);
+            if (game.u.uprops?.HALF_PHDAM)
+                damage = Math.trunc((damage + 1) / 2);
+            const { losehp } = await import('./hack.js');
+            await losehp(damage, 'falling rock', KILLED_BY_AN);
+            const rock = mksobj_at(ONAMES.ROCK, game.u.ux, game.u.uy,
+                                  false, false);
+            xname(rock);
+            stackobj(rock);
+            newsym(game.u.ux, game.u.uy);
+        }
+        if (game.u.uundetected)
+            note_unported_zap('zap_updown:hiding-under');
     }
 
     return disclose;

@@ -1,0 +1,29 @@
+{
+  "name": "wand-striking-upward-rock",
+  "description": "Debug Wizards zap a wand of striking upward, covering both the one-in-three quiet outcome and a ceiling rock that damages the hero and lands on the floor.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.wands",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.striking.upward-falling-rock",
+    "wand.striking.upward-no-rock"
+  ],
+  "segments": [
+    {
+      "seed": 2200,
+      "datetime": "20000110104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed wand of striking\r\u0017rock\rzn<"
+    },
+    {
+      "seed": 2200,
+      "datetime": "20000110104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed wand of striking\rzn<"
+    }
+  ]
+}

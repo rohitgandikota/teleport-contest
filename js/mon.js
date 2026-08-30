@@ -1541,19 +1541,26 @@ export function can_touch_safely(mtmp, otmp) {
 // this monster. What must happen immediately is the map slot, because m_at()
 // is what mfndpos() counts free squares with.
 //
-// Ported: the map removal, mhp = 0, and the detach flag. Not ported (none are
-// reachable from mk_trap_statue's freshly-made monster, and each is recorded
-// rather than faked): m_unleash, del_light_source, wizdeadorgone, the
-// due_to_death arm (nemdead/leaddead/relobj), thiefdead, shkgone, wormgone,
-// the endgame flag, and the steed dismount.
+// Ported: map removal, light cleanup, shop cleanup, mhp = 0, and the detach
+// flag. The remaining special cases keep separate markers so a reached branch
+// identifies the actual missing behavior.
 export function m_detach(mtmp, mptr, due_to_death) {
     const mx = mtmp.mx, my = mtmp.my;
     const onmap = mx > 0
         && game.level?.monAt?.get(`${mx},${my}`) === mtmp;
 
-    if (mtmp.mleashed || mtmp.iswiz || mtmp.isshk || mtmp.wormno
-        || due_to_death)
-        (game.unported ||= new Set()).add('mon:m_detach');
+    if (mtmp.mleashed)
+        (game.unported ||= new Set()).add('mon:m_detach:m_unleash');
+    if (mtmp.iswiz)
+        (game.unported ||= new Set()).add('mon:m_detach:wizdeadorgone');
+    if (mtmp.wormno)
+        (game.unported ||= new Set()).add('mon:m_detach:wormgone');
+    if (due_to_death)
+        (game.unported ||= new Set()).add('mon:m_detach:due_to_death');
+    if (In_endgame(game.u.uz))
+        (game.unported ||= new Set()).add('mon:m_detach:endgame_free');
+    if (mtmp === game.u.usteed)
+        (game.unported ||= new Set()).add('mon:m_detach:dismount_steed');
 
     /* src/mon.c:2744 — a glowing monster takes its light with it */
     if (mx > 0 && emits_light(mptr))
@@ -1567,6 +1574,10 @@ export function m_detach(mtmp, mptr, due_to_death) {
     }
 
     mtmp.mhp = 0;               /* simplify some tests: force mhp to 0 */
+
+    /* src/mon.c:2790, a removed shopkeeper no longer owns a shop */
+    if (mtmp.isshk)
+        shkgone(mtmp);
 
     mtmp.mstate = (mtmp.mstate || 0) | MON_DETACH;
     game.iflags = game.iflags || {};

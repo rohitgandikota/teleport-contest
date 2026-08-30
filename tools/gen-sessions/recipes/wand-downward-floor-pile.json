@@ -1,0 +1,23 @@
+{
+  "name": "wand-downward-floor-pile",
+  "description": "A debug Wizard zaps undead turning downward at a floor pile and proves that the immediate wand reaches an egg on the hero's square by waiting for it to hatch.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "object.wands",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "branches": [
+    "wand.immediate.downward-floor-pile"
+  ],
+  "segments": [
+    {
+      "seed": 2200,
+      "datetime": "20000110104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed lump of royal jelly\r\u0017+1 egg of a garter snake\rano\u0017blessed scroll of scare monster\rdp\u0017blessed wand of undead turning\rdozq>200."
+    }
+  ]
+}

@@ -25,7 +25,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, SHOPBASE, NC_SHOW_MSG,
-         NC_VIA_WAND_OR_SPELL, NON_PM,
+         NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE,
          XKILL_NOCORPSE } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
@@ -85,6 +85,7 @@ import { create_gas_cloud } from './region.js';
 import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
 import { name_to_monplus } from './mondata.js';
+import { engr_at } from './engrave.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -1224,8 +1225,22 @@ export function zap_map(x, y, obj) {
     if (ttmp && (obj.otyp === ONAMES.WAN_CANCELLATION
                  || obj.otyp === ONAMES.SPE_CANCELLATION))
         note_unported_zap('zap_map:maybe_explode_trap');
-    if (game.u.dz > 0)
-        note_unported_zap('zap_map:engraving');
+    if (game.u.dz > 0) {
+        const engraving = engr_at(x, y);
+        if (engraving && engraving.engr_type !== HEADSTONE
+            && (obj.otyp === ONAMES.WAN_POLYMORPH
+                || obj.otyp === ONAMES.SPE_POLYMORPH
+                || obj.otyp === ONAMES.WAN_CANCELLATION
+                || obj.otyp === ONAMES.SPE_CANCELLATION
+                || obj.otyp === ONAMES.WAN_MAKE_INVISIBLE
+                || obj.otyp === ONAMES.WAN_TELEPORTATION
+                || obj.otyp === ONAMES.SPE_TELEPORT_AWAY
+                || obj.otyp === ONAMES.SPE_STONE_TO_FLESH
+                || obj.otyp === ONAMES.WAN_STRIKING
+                || obj.otyp === ONAMES.SPE_FORCE_BOLT)) {
+            note_unported_zap('zap_map:engraving');
+        }
+    }
     const terrainType = game.level.at(x, y)?.typ;
     const drawbridge = IS_DRAWBRIDGE(terrainType)
         || is_drawbridge_wall(x, y) >= 0;
@@ -1937,6 +1952,37 @@ async function ubuzz(type, nd) {
     await dobuzz(type, nd, game.u.ux, game.u.uy, game.u.dx, game.u.dy);
 }
 
+// src/zap.c:3219 zap_updown(). The ordinary downward path applies an
+// immediate wand to every object under the hero, then applies map effects.
+// Terrain and trap special cases remain explicit until a C trace reaches one.
+async function zap_updown(obj) {
+    let disclose = false;
+
+    switch (obj.otyp) {
+    case ONAMES.WAN_PROBING:
+    case ONAMES.WAN_OPENING:
+    case ONAMES.SPE_KNOCK:
+    case ONAMES.WAN_STRIKING:
+    case ONAMES.SPE_FORCE_BOLT:
+    case ONAMES.WAN_LOCKING:
+    case ONAMES.SPE_WIZARD_LOCK:
+    case ONAMES.SPE_STONE_TO_FLESH:
+        note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
+        break;
+    default:
+        break;
+    }
+
+    if (game.u.dz > 0) {
+        await bhitpile(obj, bhito, game.u.ux, game.u.uy, game.u.dz);
+        zap_map(game.u.ux, game.u.uy, obj);
+    } else if (game.u.dz < 0 && game.u.uundetected) {
+        note_unported_zap('zap_updown:hiding-under');
+    }
+
+    return disclose;
+}
+
 // src/zap.c:3431 weffects() — dispatch a zap's effect. The IMMEDIATE
 // lateral arm uses bhit; directional rays use dobuzz.
 export async function weffects(obj) {
@@ -1953,7 +1999,7 @@ export async function weffects(obj) {
         if (game.u.uswallow) {
             note_unported_zap('weffects:uswallow');
         } else if (game.u.dz) {
-            note_unported_zap('weffects:zap_updown');
+            disclose = await zap_updown(obj);
         } else {
             await bhit(game.u.dx, game.u.dy, rn1(8, 6), ZAPPED_WAND,
                        bhitm, bhito, { obj });

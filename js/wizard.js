@@ -49,9 +49,20 @@ export async function amulet() {
 
     if (!game.context?.no_of_wizards)
         return;
-    /* find Wizard, and wake him if necessary — the resurrected-Wizard
-       machinery is not ported; record instead of guessing the rn2(40) */
-    (game.unported ||= new Set()).add('amulet:wake_wizard');
+    /* find every live Wizard, spending one wake roll for each sleeping one
+       until a Wizard notices the Amulet */
+    for (const mtmp of game.level?.monsters || []) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        if (mtmp.iswiz && mtmp.msleeping && !rn2(40)) {
+            mtmp.msleeping = 0;
+            if (distu(mtmp.mx, mtmp.my) > 2) {
+                const { You } = await import('./pline.js');
+                await You('get the creepy feeling that somebody noticed your taking the Amulet.');
+            }
+            return;
+        }
+    }
 }
 
 // src/wizard.c:105 mon_has_amulet()

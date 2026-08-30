@@ -1,0 +1,30 @@
+{
+  "name": "wand-trap-conversions",
+  "description": "Debug Wizards zap downward at traps, covering striking a trapdoor into a hole and locking a hole into a trapdoor.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.wands",
+    "traps.movement",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.striking.downward-trapdoor-to-hole",
+    "wand.locking.downward-hole-to-trapdoor"
+  ],
+  "segments": [
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017blessed wand of striking\r\u0017trap door\rzo>  \u0006"
+    },
+    {
+      "seed": 2202,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017blessed wand of locking\r\u0017hole\rzo>\u0006"
+    }
+  ]
+}

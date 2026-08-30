@@ -13,7 +13,7 @@ import { cansee, block_point, unblock_point, recalc_block_point,
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
          newsym, temporary_object_glyph, unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
-import { is_drawbridge_wall } from './dbridge.js';
+import { is_drawbridge_wall, is_ice } from './dbridge.js';
 
 import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, FLASHED_LIGHT, M_AP_TYPE,
@@ -26,7 +26,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
-         XKILL_NOCORPSE } from './const.js';
+         XKILL_NOCORPSE, HOLE, TRAPDOOR, NO_TRAP_FLAGS } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
 import { u_safe_from_fatal_corpse } from './pickup.js';
@@ -1962,6 +1962,15 @@ async function ubuzz(type, nd) {
 // Terrain and trap special cases remain explicit until a C trace reaches one.
 async function zap_updown(obj) {
     let disclose = false;
+    const x = game.u.ux, y = game.u.uy;
+    const ttmp = t_at(x, y);
+    const striking = obj.otyp === ONAMES.WAN_STRIKING
+        || obj.otyp === ONAMES.SPE_FORCE_BOLT;
+    const locking = obj.otyp === ONAMES.WAN_LOCKING
+        || obj.otyp === ONAMES.SPE_WIZARD_LOCK;
+    const handles_trap_conversion = game.u.dz > 0 && ttmp
+        && ((striking && ttmp.ttyp === TRAPDOOR)
+            || (locking && ttmp.ttyp === HOLE));
 
     switch (obj.otyp) {
     case ONAMES.WAN_PROBING:
@@ -1970,11 +1979,12 @@ async function zap_updown(obj) {
     case ONAMES.WAN_LOCKING:
     case ONAMES.SPE_WIZARD_LOCK:
     case ONAMES.SPE_STONE_TO_FLESH:
-        note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
+        if (!handles_trap_conversion)
+            note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
         break;
     case ONAMES.WAN_STRIKING:
     case ONAMES.SPE_FORCE_BOLT:
-        if (game.u.dz > 0)
+        if (game.u.dz > 0 && !handles_trap_conversion)
             note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
         break;
     default:
@@ -1982,11 +1992,35 @@ async function zap_updown(obj) {
     }
 
     if (game.u.dz > 0) {
-        await bhitpile(obj, bhito, game.u.ux, game.u.uy, game.u.dz);
-        zap_map(game.u.ux, game.u.uy, obj);
+        if (ttmp && striking && ttmp.ttyp === TRAPDOOR) {
+            if (Blind() && !ttmp.tseen) {
+                await pline('Something beneath you shatters.');
+            } else if (!ttmp.tseen) {
+                await pline("There's a trapdoor beneath you; it shatters.");
+            } else {
+                await pline('The trapdoor beneath you shatters.');
+                disclose = true;
+            }
+            ttmp.ttyp = HOLE;
+            ttmp.tseen = 1;
+            newsym(x, y);
+            const { dotrap } = await import('./trap.js');
+            await dotrap(ttmp, NO_TRAP_FLAGS);
+        } else if (ttmp && locking && ttmp.ttyp === HOLE) {
+            ttmp.ttyp = TRAPDOOR;
+            if (Blind() || !ttmp.tseen) {
+                await pline(`Some ${is_ice(x, y) ? 'frost' : 'dust'} swirls beneath you.`);
+            } else {
+                ttmp.tseen = 1;
+                newsym(x, y);
+                await pline('A trapdoor appears beneath you.');
+                disclose = true;
+            }
+        }
+        await bhitpile(obj, bhito, x, y, game.u.dz);
+        zap_map(x, y, obj);
     } else if (game.u.dz < 0) {
-        if ((obj.otyp === ONAMES.WAN_STRIKING
-             || obj.otyp === ONAMES.SPE_FORCE_BOLT)
+        if (striking
             && rn2(3)
             && !Is_airlevel(game.u.uz)
             && !Is_waterlevel(game.u.uz)
@@ -2002,11 +2036,10 @@ async function zap_updown(obj) {
                 damage = Math.trunc((damage + 1) / 2);
             const { losehp } = await import('./hack.js');
             await losehp(damage, 'falling rock', KILLED_BY_AN);
-            const rock = mksobj_at(ONAMES.ROCK, game.u.ux, game.u.uy,
-                                  false, false);
+            const rock = mksobj_at(ONAMES.ROCK, x, y, false, false);
             xname(rock);
             stackobj(rock);
-            newsym(game.u.ux, game.u.uy);
+            newsym(x, y);
         }
         if (game.u.uundetected)
             note_unported_zap('zap_updown:hiding-under');

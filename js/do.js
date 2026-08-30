@@ -11,7 +11,7 @@ import { stackobj } from './invent.js';
 // the first draw the new level makes; the missing piece is everything above it.
 
 import { game } from './gstate.js';
-import { reset_occupations, set_move_cmd } from './cmd.js';
+import { paranoid_ynq, reset_occupations, set_move_cmd } from './cmd.js';
 import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
@@ -23,20 +23,21 @@ import { pline_The, You, You_cant, You_feel, You_hear, Your }
     from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_NOTAIL, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG } from './const.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_NOTAIL, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG, st_all } from './const.js';
 import { t_at, m_at, is_pool, is_lava, delobj_core, seemimic } from './mon.js';
 import { is_pick } from './mon.js';
 import { cansee } from './vision.js';
 import { Blind, Hallucination, Levitation } from './youprop.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
-import { can_reach_floor, add_valid_menu_class, allow_category,
+import { can_reach_floor, u_safe_from_fatal_corpse,
+         add_valid_menu_class, allow_category,
          query_drop_categories, query_objlist } from './pickup.js';
 import { body_part } from './polyself.js';
 import { dmgtype, is_displacer } from './mondata.js';
 import { ATTKS, PMNAMES, MFLAGS } from './monst_data.js';
 import { Amonnam, Monnam, upstart } from './do_name.js';
-import { corpse_xname, CXN_PFX_THE } from './objnam.js';
+import { corpse_xname, CXN_NOCORPSE, CXN_PFX_THE } from './objnam.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
    A dynamic import() here hits the same partially-initialised module the
@@ -1528,6 +1529,16 @@ export async function dropx(obj) {
 // The engulfed branch, the Heart of Ahriman levitation dance (ELevitation is
 // forced so hitfloor happens before float_down), doname messages, canletgo,
 // welded/weldmsg and hitfloor are recorded.
+async function better_not_try_to_drop_that(obj) {
+    if (obj.otyp !== ONAMES.CORPSE
+        || u_safe_from_fatal_corpse(obj, st_all))
+        return false;
+
+    const species = corpse_xname(obj, null, CXN_NOCORPSE);
+    const prompt = `Drop the ${species} corpse without ${body_part(HAND)} protection on?`;
+    return (await paranoid_ynq(true, prompt, false)) !== 'y';
+}
+
 export async function drop(obj) {
     if (!obj)
         return ECMD_FAIL;
@@ -1538,8 +1549,7 @@ export async function drop(obj) {
         }
         return ECMD_FAIL;
     }
-    if (obj.otyp === ONAMES.CORPSE
-        && note_unported_do('drop:better_not_try_to_drop_that'))
+    if (await better_not_try_to_drop_that(obj))
         return ECMD_FAIL;
     if (obj === game.u.uwep) {
         if (welded(game.u.uwep)) {

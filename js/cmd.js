@@ -498,6 +498,36 @@ export async function getlin(query, hook) {
     return buf;
 }
 
+// src/cmd.c:5588 paranoid_ynq(). A paranoid question requires the full word
+// "yes". PARANOID_CONFIRM also requires the full word "no" and retries an
+// invalid answer up to five times after the first prompt.
+export async function paranoid_ynq(beParanoid, prompt, acceptQ = false) {
+    if (!beParanoid) {
+        const choices = acceptQ ? 'ynq' : 'yn';
+        const answer = await tty_yn_function(prompt, choices, 'n');
+        return answer === 'y' || (acceptQ && answer === 'q') ? answer : 'n';
+    }
+
+    const confirmWords = (paranoia_bits() & PARANOID_CONFIRM) !== 0;
+    const responseType = confirmWords
+        ? (acceptQ ? '[yes|no|quit]' : '[yes|no]')
+        : (acceptQ ? '[yes|n|q] (n)' : '[yes|n] (n)');
+    let prefix = '';
+    let tries = 6;
+    do {
+        const raw = await getlin(`${prefix}${prompt} ${responseType}`);
+        const answer = raw.trim().replace(/\s+/g, ' ').toLowerCase();
+        if (answer === 'yes')
+            return 'y';
+        if (answer === 'quit' || raw === '\x1b')
+            return acceptQ ? 'q' : 'n';
+        if (!confirmWords || answer === 'no')
+            return 'n';
+        prefix = '"Yes" or "No": ';
+    } while (--tries > 0);
+    return 'n';
+}
+
 /* win/tty/getline.c:213 — hooked_tty_getlin's exit:
        ttyDisplay->toplin = TOPLINE_NON_EMPTY;
        clear_nhwindow(WIN_MESSAGE);   / * clean up after ourselves * /

@@ -13,6 +13,7 @@ import { cansee, block_point, unblock_point, recalc_block_point,
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
          newsym, temporary_object_glyph, unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
+import { is_drawbridge_wall } from './dbridge.js';
 
 import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, FLASHED_LIGHT, M_AP_TYPE,
@@ -23,7 +24,8 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, M_SEEN_MAGR,
          KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
-         IS_DOOR, SHOPBASE, NC_SHOW_MSG, NC_VIA_WAND_OR_SPELL, NON_PM,
+         IS_DOOR, IS_DRAWBRIDGE, SHOPBASE, NC_SHOW_MSG,
+         NC_VIA_WAND_OR_SPELL, NON_PM,
          XKILL_NOCORPSE } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { hands_obj, hold_another_object } from './invent.js';
@@ -1220,9 +1222,19 @@ export function zap_map(x, y, obj) {
         note_unported_zap('zap_map:maybe_explode_trap');
     if (game.u.dz > 0)
         note_unported_zap('zap_map:engraving');
-    if (obj.otyp === ONAMES.WAN_STRIKING || obj.otyp === ONAMES.WAN_OPENING
-        || obj.otyp === ONAMES.WAN_LOCKING || obj.otyp === ONAMES.WAN_PROBING)
-        note_unported_zap('zap_map:terrain_reveal');
+    const terrainType = game.level.at(x, y)?.typ;
+    const drawbridge = IS_DRAWBRIDGE(terrainType)
+        || is_drawbridge_wall(x, y) >= 0;
+    if (drawbridge
+        && (obj.otyp === ONAMES.WAN_STRIKING
+            || obj.otyp === ONAMES.SPE_FORCE_BOLT
+            || obj.otyp === ONAMES.WAN_OPENING
+            || obj.otyp === ONAMES.SPE_KNOCK
+            || obj.otyp === ONAMES.WAN_LOCKING
+            || obj.otyp === ONAMES.SPE_WIZARD_LOCK))
+        note_unported_zap('zap_map:drawbridge');
+    if (obj.otyp === ONAMES.WAN_PROBING)
+        note_unported_zap('zap_map:probing');
 }
 
 const flash_types = [

@@ -1,0 +1,22 @@
+{
+  "name": "peaceful-watch-reaction",
+  "description": "A peaceful watchman sees the hero attack another peaceful humanoid and escalates the whole watch.",
+  "coverage": [
+    "mode.debug",
+    "monster.hero-melee",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "monster.peaceful.watch-bystander"
+  ],
+  "segments": [
+    {
+      "seed": 8121,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful watchman\r\u0007peaceful student\r\u0006Fk     "
+    }
+  ]
+}

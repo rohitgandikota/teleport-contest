@@ -1,0 +1,36 @@
+{
+  "name": "scare-scroll-pickup",
+  "description": "Pick up blessed, fresh uncursed, and degraded or cursed scrolls of scare monster to exercise all state transitions in pickup_object().",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "object.scrolls",
+    "object.buc-enchant-erosion"
+  ],
+  "branches": [
+    "object.pickup.scare-scroll-blessed",
+    "object.pickup.scare-scroll-fresh",
+    "object.pickup.scare-scroll-dust"
+  ],
+  "segments": [
+    {
+      "seed": 7105,
+      "datetime": "20000110220000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of scare monster\rde,"
+    },
+    {
+      "seed": 7106,
+      "datetime": "20000110220000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed scroll of scare monster\rde,de, \u001b"
+    },
+    {
+      "seed": 7107,
+      "datetime": "20000110220000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed scroll of scare monster\rde, \u001b"
+    }
+  ]
+}

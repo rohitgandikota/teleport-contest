@@ -242,12 +242,8 @@ export function make_engr_at(x, y, s, pristine_s, e_time, e_type) {
     const txt = String(s);
     /* src/engrave.c:442 — engraving "Elbereth": at mklev it guards objects,
        from the player it exercises wisdom */
-    if (txt === 'Elbereth') {
-        if (game.in_mklev)
-            note_unported_engrave('make_engr_at:guardobjects');
-        else
-            exercise(A_WIS, true);
-    }
+    if (txt === 'Elbereth' && !game.in_mklev)
+        exercise(A_WIS, true);
     const ep = {
         x, y,
         engr_txt: txt,                          /* actual_text */
@@ -265,8 +261,6 @@ export function make_engr_at(x, y, s, pristine_s, e_time, e_type) {
     if (txt === 'Elbereth') {
         if (game.in_mklev)
             ep.guardobjects = 1;
-        else
-            note_unported_engrave('make_engr_at:exercise');
     }
 
     (game.level.lev_engr ||= []).push(ep);

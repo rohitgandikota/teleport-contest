@@ -9,6 +9,7 @@ import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, getobj, update_inventory, weight, mergable, merged, money_cnt,
+         useupf,
          GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
 import { observe_object } from './o_init.js';
@@ -19,7 +20,7 @@ import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
 import { check_capacity, in_rooms } from './hack.js';
 import { ECMD_OK, ECMD_TIME, IS_FURNITURE, ICE, POOL, MOAT, WATER, LAVAPOOL } from './const.js';
-import { upstart } from './do_name.js';
+import { upstart, trycall } from './do_name.js';
 
 /* src/hacklib.c The() — the() with the first letter capitalised. */
 const The = (s2) => upstart(the(s2));
@@ -31,7 +32,7 @@ import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban } from './dungeon.js';
-import { Is_mbag, splitobj } from './mkobj.js';
+import { Is_mbag, splitobj, unbless } from './mkobj.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
 import { rn2 } from './rng.js';
@@ -476,7 +477,7 @@ async function lift_floor_object(obj, count, telekinesis) {
 }
 
 // src/pickup.c:1803 pickup_object() -- take one object off the floor.
-// Artifact touch, fatal corpses, and scrolls of scare monster remain recorded.
+// Artifact touch and fatal corpse checks remain recorded.
 export async function pickup_object(obj, count, telekinesis) {
     if (obj.quan < count)
         return 0;                       /* impossible() in C */
@@ -489,8 +490,27 @@ export async function pickup_object(obj, count, telekinesis) {
     if (obj.oartifact && !touch_artifact(obj, game.youmonst))
         return 0;
     if (obj.otyp === ONAMES.SCR_SCARE_MONSTER) {
-        note_unported_pickup('pickup_object:special_object');
-        return 0;
+        const carried = await carry_count_floor(
+            obj, count ? count : obj.quan);
+        count = carried.count;
+        if (count < 1)
+            return -1;
+        if (count < obj.quan)
+            obj = splitobj(obj, count);
+
+        if (obj.blessed) {
+            unbless(obj);
+        } else if (!obj.spe && !obj.cursed) {
+            obj.spe = 1;
+        } else {
+            const scroll = `scroll${obj.quan === 1 ? '' : 's'}`;
+            await pline(`The ${scroll} ${otense(obj, 'turn')} to dust as you ${
+                telekinesis ? 'raise' : 'pick'} ${
+                obj.quan === 1 ? 'it' : 'them'} up.`);
+            await trycall(obj);
+            useupf(obj, obj.quan);
+            return 1;
+        }
     }
     if (obj.otyp === ONAMES.CORPSE)
         note_unported_pickup('pickup_object:corpse_checks');

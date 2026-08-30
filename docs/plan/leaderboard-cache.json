@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-08-27T10:30:40.033Z",
+  "timestamp": "2026-08-30T14:28:34.299Z",
   "contestPhase": "open",
-  "teamCount": 18,
+  "teamCount": 19,
   "team": {
     "name": "rohitgandikota",
     "fork": "rohitgandikota/teleport-contest",
     "category": "agentic",
-    "lastScored": "2026-08-29T07:55:07.000Z",
+    "lastScored": "2026-08-30T14:03:27.572Z",
     "public": {
       "points": 11405,
       "maxPoints": 11405,
@@ -30,8 +30,8 @@
     "playability": {
       "playable": true,
       "browser_ok": true,
-      "ms_per_move": 2.452,
-      "threshold_ms_per_move": 5,
+      "ms_per_move": 1.141,
+      "threshold_ms_per_move": 25,
       "sessions_skipped": 0,
       "sessions_killed": 0,
       "aborted_early": false,
@@ -39,7 +39,7 @@
     }
   },
   "heldRank": 3,
-  "publicRank": 6,
+  "publicRank": 5,
   "category": "agentic",
   "categoryRank": 1,
   "categoryTotal": 12,
@@ -50,7 +50,7 @@
       "maxPoints": 11265
     }
   },
-  "retrievedAt": "2026-08-27T10:30:40.033Z",
-  "pageCheckedAt": "2026-08-29T10:15:33.000Z",
-  "pageCheck": "The page reported Last scored: 8/29/2026, 3:55:07 AM and displayed 11405 + 6032 points, 71.9% PRNG, 76.9% screen, 9 animations, 440+1.6 speed, playable no, and 44 + 9 sessions. Its tooltip reported 2 ms per move against the 5 ms threshold, despite the visible playable value"
+  "retrievedAt": "2026-08-30T16:38:28.000Z",
+  "pageCheckedAt": "2026-08-30T16:38:28.000Z",
+  "pageCheck": "The page reported Last scored: 8/30/2026, 10:28:34 AM and displayed 11405 + 6032 points, 71.9% PRNG, 76.9% screen, 9 animations, 251+0.9 speed, playable yes, and 44 + 9 sessions. Its tooltip reported a 251.3 + 0.876 per-move fit and 1.14 ms per move under the 25 ms threshold"
 }

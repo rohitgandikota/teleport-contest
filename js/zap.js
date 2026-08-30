@@ -8,7 +8,7 @@
 import { game } from './gstate.js';
 import { isok } from './hacklib.js';
 import { is_lava, is_pool, m_at, t_at } from './mon.js';
-import { cansee, block_point, unblock_point, recalc_block_point,
+import { cansee, couldsee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
          newsym, shieldeff, temporary_object_glyph,
@@ -21,15 +21,17 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
-         ZAP_POS, W_ARM, W_ARMS, W_WEP, W_AMUL, HI_ZAP,
-         W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, A_CON, M_SEEN_MAGR,
+         ZAP_POS, W_ARM, W_ARMS, W_ARMG, W_ARMH, W_WEP, W_AMUL, HI_ZAP,
+         W_RING, W_ARMOR, W_ACCESSORY, W_ART,
+         A_STR, A_CON, A_CHA, A_DEX, A_INT, M_SEEN_MAGR,
          KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX,
          LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
          XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
-         NO_TRAP_FLAGS, FORCETRAP, ENGRAVE, FACE, FOOT,
+         NO_TRAP_FLAGS, FORCETRAP, ENGRAVE, FACE, FOOT, LEG,
+         TIMEOUT, INTRINSIC,
          In_sokoban } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
@@ -56,7 +58,7 @@ import { getlin } from './cmd.js';
 import { prinv, reorder_invent, addinv } from './invent.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
-import { exercise } from './attrib.js';
+import { exercise, Fast, Very_fast } from './attrib.js';
 import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
 import { Norep, pline_The, You, Your, You_feel, You_hear } from './pline.js';
@@ -69,12 +71,13 @@ import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
          OBJ_FLOOR } from './const.js';
 import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
-         dead_species, erosion_matters } from './mkobj.js';
+         dead_species, erosion_matters, is_weptool, unbless,
+         uncurse } from './mkobj.js';
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
          ignite_items, openholdingtrap, trapname } from './trap.js';
-import { is_metallic } from './obj.js';
+import { Is_container, is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
@@ -84,6 +87,7 @@ import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Blind, Deaf, Unaware, Hallucination,
+         Invis, See_invisible, Teleport_control,
          Underwater, Levitation } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
@@ -96,7 +100,9 @@ import { del_engr, engr_at, make_engr_at, random_engraving, rloc_engr,
          wipe_engr_at } from './engrave.js';
 import { ceiling, surface } from './dungeon.js';
 import { body_part } from './polyself.js';
-import { hard_helmet } from './do_wear.js';
+import { find_ac, hard_helmet } from './do_wear.js';
+import { tele } from './teleport.js';
+import { ustatusline } from './insight.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -233,6 +239,132 @@ export async function zappable(wand) {
     return 1;
 }
 
+function increment_intrinsic_timeout(key, amount) {
+    const intrinsic = game.u.intrinsic ||= {};
+    const current = intrinsic[key] | 0;
+    const timeout = Math.max(0, Math.min(TIMEOUT,
+        (current & TIMEOUT) + amount));
+    intrinsic[key] = (current & ~TIMEOUT) | timeout;
+}
+
+// src/zap.c:1239 cancel_item(). Cancellation removes enchantment and magic
+// from exposed inventory while preserving the few explicitly immune items.
+function cancel_item(obj) {
+    const otyp = obj.otyp;
+    const wornmask = obj.owornmask | 0;
+    const abon = (game.u.abon ||= {}).a
+        ||= new Array(game.u.acurr?.a?.length || 6).fill(0);
+
+    if (game.invent.includes(obj)) {
+        switch (otyp) {
+        case ONAMES.RIN_GAIN_STRENGTH:
+            if (wornmask & W_RING) abon[A_STR] -= obj.spe | 0;
+            break;
+        case ONAMES.RIN_GAIN_CONSTITUTION:
+            if (wornmask & W_RING) abon[A_CON] -= obj.spe | 0;
+            break;
+        case ONAMES.RIN_ADORNMENT:
+            if (wornmask & W_RING) abon[A_CHA] -= obj.spe | 0;
+            break;
+        case ONAMES.RIN_INCREASE_ACCURACY:
+            if (wornmask & W_RING)
+                game.u.uhitinc = (game.u.uhitinc || 0) - (obj.spe | 0);
+            break;
+        case ONAMES.RIN_INCREASE_DAMAGE:
+            if (wornmask & W_RING)
+                game.u.udaminc = (game.u.udaminc || 0) - (obj.spe | 0);
+            break;
+        case ONAMES.GAUNTLETS_OF_DEXTERITY:
+            if (wornmask & W_ARMG) abon[A_DEX] -= obj.spe | 0;
+            break;
+        case ONAMES.HELM_OF_BRILLIANCE:
+            if (wornmask & W_ARMH) {
+                abon[A_INT] -= obj.spe | 0;
+                abon[A_WIS] -= obj.spe | 0;
+            }
+            break;
+        default:
+            break;
+        }
+        if (wornmask & W_ARMOR)
+            (game.disp ||= {}).botl = true;
+    }
+
+    const cancellable = !!game.objects[otyp].oc_magic
+        || ((obj.spe | 0) && (obj.oclass === OCLASSES.ARMOR_CLASS
+                              || obj.oclass === OCLASSES.WEAPON_CLASS
+                              || is_weptool(obj, game.objects)))
+        || otyp === ONAMES.POT_ACID || otyp === ONAMES.POT_SICKNESS
+        || (otyp === ONAMES.POT_WATER && (obj.blessed || obj.cursed))
+        || otyp === ONAMES.SPE_NOVEL;
+
+    if (cancellable) {
+        const cancelledSpe = obj.oclass === OCLASSES.WAND_CLASS
+            || otyp === ONAMES.CRYSTAL_BALL ? -1 : 0;
+        if (obj.spe !== cancelledSpe
+            && otyp !== ONAMES.WAN_CANCELLATION
+            && otyp !== ONAMES.MAGIC_LAMP
+            && otyp !== ONAMES.CANDELABRUM_OF_INVOCATION)
+            obj.spe = cancelledSpe;
+
+        switch (obj.oclass) {
+        case OCLASSES.SCROLL_CLASS:
+            obj.otyp = ONAMES.SCR_BLANK_PAPER;
+            obj.spe = 0;
+            break;
+        case OCLASSES.SPBOOK_CLASS:
+            if (otyp !== ONAMES.SPE_CANCELLATION
+                && otyp !== ONAMES.SPE_BOOK_OF_THE_DEAD) {
+                obj.otyp = ONAMES.SPE_BLANK_PAPER;
+                if (otyp === ONAMES.SPE_NOVEL) {
+                    obj.novelidx = 0;
+                    delete obj.oname;
+                }
+            }
+            break;
+        case OCLASSES.POTION_CLASS:
+            if (otyp === ONAMES.POT_SICKNESS
+                || otyp === ONAMES.POT_SEE_INVISIBLE) {
+                obj.otyp = ONAMES.POT_FRUIT_JUICE;
+            } else {
+                obj.otyp = ONAMES.POT_WATER;
+                obj.odiluted = 0;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    unbless(obj);
+    uncurse(obj);
+}
+
+function cancel_hero_inventory() {
+    for (const obj of game.invent || [])
+        cancel_item(obj);
+    (game.disp ||= {}).botl = true;
+    find_ac();
+}
+
+async function speed_up(duration) {
+    if (!Very_fast()) {
+        await You(`are suddenly moving ${Fast() ? '' : 'much '}faster.`);
+    } else {
+        await Your(`${makeplural(body_part(LEG))} get new energy.`);
+    }
+    exercise(A_DEX, true);
+    increment_intrinsic_timeout('HFast', duration);
+}
+
+async function u_slow_down() {
+    (game.u.intrinsic ||= {}).HFast = 0;
+    if (!Fast())
+        await You('slow down.');
+    else
+        await Your('quickness feels less natural.');
+    exercise(A_DEX, false);
+}
+
 // src/zap.c:2705 zapyourself() — the hero zapped themself.
 //
 // Returns the retributive damage. dozap() applies it after wand discovery and
@@ -320,11 +452,38 @@ export async function zapyourself(obj, ordinary) {
             await pline("Idiot!  You've shot yourself!");
         }
         break;
+    case ONAMES.WAN_CANCELLATION:
+    case ONAMES.SPE_CANCELLATION:
+        cancel_hero_inventory();
+        break;
+    case ONAMES.WAN_MAKE_INVISIBLE: {
+        const msg = !Invis() && !Blind() && !game.u.blocked?.INVIS;
+        if (game.u.blocked?.INVIS
+            && game.u.uarmc?.otyp === ONAMES.MUMMY_WRAPPING) {
+            await You_feel(`rather itchy under ${yname(game.u.uarmc)}.`);
+            break;
+        }
+        increment_intrinsic_timeout('HInvis', rn1(15, 31));
+        if (msg) {
+            learn_it = true;
+            newsym(game.u.ux, game.u.uy);
+            await pline(`${Hallucination() ? 'Far out, man!  You'
+                                           : 'Gee!  All of a sudden, you'} ${
+                See_invisible() ? 'can see right through yourself'
+                                : "can't see yourself"}.`);
+        }
+        break;
+    }
+    case ONAMES.WAN_SPEED_MONSTER:
+        await speed_up(rn1(25, 50));
+        learn_it = true;
+        break;
     case ONAMES.WAN_SLEEP:
     case ONAMES.SPE_SLEEP: {
-        if (game.u.uprops?.SLEEP_RES?.intrinsic
-            || game.u.uprops?.SLEEP_RES?.extrinsic) {
-            note_unported_zap('zapyourself:sleep_resisted');
+        learn_it = true;
+        if (Sleep_resistance()) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await You("don't feel sleepy!");
             break;
         }
         if (ordinary)
@@ -333,6 +492,25 @@ export async function zapyourself(obj, ordinary) {
             await You("fall asleep!");
         /* monstunseesu(M_SEEN_SLEEP) — monster memory, recorded */
         await fall_asleep(-rnd(50), true);
+        break;
+    }
+    case ONAMES.WAN_SLOW_MONSTER:
+    case ONAMES.SPE_SLOW_MONSTER:
+        if ((game.u.intrinsic?.HFast | 0) & (TIMEOUT | INTRINSIC)) {
+            learn_it = true;
+            await u_slow_down();
+        }
+        break;
+    case ONAMES.WAN_TELEPORTATION:
+    case ONAMES.SPE_TELEPORT_AWAY: {
+        const oldX = game.u.ux, oldY = game.u.uy;
+        await tele();
+        const stunned = !!(game.u.uprops?.STUNNED?.intrinsic
+                           || game.u.uprops?.STUNNED);
+        const dx = game.u.ux - oldX, dy = game.u.uy - oldY;
+        if ((Teleport_control() && !stunned)
+            || !couldsee(oldX, oldY) || dx * dx + dy * dy >= 16)
+            learn_it = true;
         break;
     }
     case ONAMES.WAN_DEATH:
@@ -374,6 +552,20 @@ export async function zapyourself(obj, ordinary) {
            the wand even when it finds nothing */
         learn_it = !!obj.dknown;
         await findit();
+        break;
+    case ONAMES.WAN_PROBING:
+        for (const item of game.invent || []) {
+            observe_object(item);
+            if (Is_container(item) || item.otyp === ONAMES.STATUE) {
+                item.lknown = 1;
+                item.cknown = 1;
+            } else if (item.otyp === ONAMES.TIN) {
+                item.known = 1;
+            }
+        }
+        update_inventory();
+        learn_it = true;
+        await ustatusline();
         break;
     case ONAMES.EXPENSIVE_CAMERA: {
         let lightDamage = 5;

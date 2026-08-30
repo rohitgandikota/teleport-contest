@@ -1,9 +1,8 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T15:47:55Z. Local commit: `8027a2e`.
-Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-29T07:55:07.000Z.
-Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
-Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed-load banner but retained the unchanged row: 11405 + 6032 points, 71.9% PRNG, 76.9% screen, 9 animations, 440+1.6 speed, playable no, and 44 + 9 sessions. The last successful page check reported Last scored: 8/29/2026, 3:55:07 AM. Its tooltip reported 2 ms per move against the 5 ms threshold, despite the visible playable value.
+Last refreshed: 2026-08-30T16:00:43Z. Local commit: `352bb41`.
+Leaderboard snapshot: 2026-08-30T14:28:34.299Z. Fork last scored: 2026-08-30T14:03:27.572Z.
+Live JSON fetch succeeded. The fresh judge run left the published row unchanged at 11405 + 6032 points, 100.00% public PRNG, 43.37% held-out PRNG, 100.00% public screens, 53.55% held-out screens, 9 animations, and 44 + 9 sessions. The local checkpoint below is newer than the judged code.
 
 ## Score summary
 
@@ -12,28 +11,31 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 34637/35022 | 98.90% | 188/190 | 2375553/2375553 (100.00%) | 88/1068 |
+| Supplemental C suite | 34780/35165 | 98.91% | 189/191 | 2381026/2381026 (100.00%) | 88/1070 |
 
 ## Contest position and generalization
 
-- Agentic category rank: **1/12**.
-- Overall held-out rank: **3/18**.
-- Public rank: **6/18**.
+- Agentic category rank: **1/9**.
+- Overall held-out rank: **3/19**.
+- Public rank: **5/19**.
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `8027a2e` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `352bb41` has not been judged yet; held-out numbers are from the 2026-08-30T14:03:27.572Z run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 35015/35022 |
-| Cursor positions | 11405/11405 | 34637/35022 |
-| Startup and per-turn estimate | 77+0.47/turn | 82+0.15/turn |
+| Cells only | 11405/11405 | 35158/35165 |
+| Cursor positions | 11405/11405 | 34780/35165 |
+| Startup and per-turn estimate | 62+0.44/turn | 107+0.20/turn |
 
 ## Latest local expansion
 
+- `fatal-corpse-drop`: 5473/5473 RNG calls, 143/143 screens, 143/143 cells, and 143/143 cursor positions match C across two segments.
+- The oracle safely acquires a cockatrice corpse with temporary stone resistance, removes that resistance, declines one bare-handed drop, confirms a second drop, then repeats with full-word confirmation enabled and an invalid-answer retry.
+- The C recording reproduced byte-for-byte, with SHA-256 `01b51c0d6a4d123f0b86eadbd0b9ea073e10738022086ab995aafe0140eac95c`.
 - `obfree-state-cleanup`: 7007/7007 RNG calls, 115/115 screens, 115/115 cells, and 115/115 cursor positions match C.
 - The direct object lifecycle gate passes 5/5 invariants: timer and light cleanup, meal and tin context cleanup, interrupted spellbook cleanup, leash release, recursive container deletion, lock context reset, and used-up shop bill retention.
 - The C recording reproduced byte-for-byte, with SHA-256 `8eb9137ededf9ce04aa814d6f8b6ddfecc9a3c002cbf903518e88a8fd51cf3b7`.
@@ -46,7 +48,7 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 - The new cases cover wizard-created pets, ordinary leash use, leashed-pet movement, pet hunger after 1800 waits, green-slime glob consumption, forced form change, incompatible leash release, and the post-turn-1000 alignment text.
 - Teleport now performs C's before-and-after follower checks and immediately relocates a leashed pet beside the hero with the exact 61-call coordinate shuffle.
 - All three earlier C recordings reproduced byte-for-byte on a second recording run.
-- Coverage ledger: 105/105 elements and 69/69 source branches. Generalization: 80 fresh games across 13 roles reached no unported path.
+- Coverage ledger: 105/105 elements and 71/71 source branches. Generalization: 80 fresh games across 13 roles reached no unported path.
 
 ## Supplemental capture caveats
 
@@ -56,8 +58,9 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 ## Judge health
 
 - Playable: true. Browser: true.
-- Speed: 2.452 ms per move, limit 5 ms.
-- Sessions skipped: 0. Sessions killed: 0.
+- Speed: 1.141 ms per move, limit 25 ms.
+- Sessions skipped: 0. Sessions killed: 0. Sessions failed during the playability run: 9.
+- Timing note: `nh_terminate` at `really_done`; the judge still classifies the build as playable.
 - Early abort: false. Total scored moves: 18402.
 - Local hang gate: PASS. OK: no session over-read (44 checked).
 
@@ -65,6 +68,7 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T16:00:43Z | `352bb41` | 11405/11405 | 34780/35165 | 6032/11265 | 3 |
 | 2026-08-30T15:47:55Z | `8027a2e` | 11405/11405 | 34637/35022 | 6032/11265 | 3 |
 | 2026-08-30T15:30:30Z | `7dad41f` | 11405/11405 | 34522/34907 | 6032/11265 | 3 |
 | 2026-08-30T05:32:26Z | `ae2c520` | 11405/11405 | 34327/34712 | 6032/11265 | 3 |

@@ -51,7 +51,7 @@ import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
          stackobj } from './invent.js';
 import { getdir } from './cmd.js';
 import { attach_egg_hatch_timeout, fall_asleep } from './timeout.js';
-import { healup, potionbreathe } from './potion.js';
+import { healup, make_stunned, potionbreathe } from './potion.js';
 import { cvt_sdoor_to_door, findit } from './detect.js';
 import { readobjnam } from './objnam.js';
 import { getlin } from './cmd.js';
@@ -76,14 +76,15 @@ import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
-         ignite_items, openholdingtrap, trapname } from './trap.js';
+         dotrap, ignite_items, openholdingtrap, trapname } from './trap.js';
 import { Is_container, is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
          resists_cold,
          resists_elec, resists_fire, resists_magm, resists_sleep,
-         nohands, nonliving, is_demon, carnivorous } from './mondata.js';
+         nohands, nonliving, is_demon, is_undead, carnivorous }
+    from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Blind, Deaf, Unaware, Hallucination,
@@ -365,6 +366,66 @@ async function u_slow_down() {
     exercise(A_DEX, false);
 }
 
+// src/lock.c:1056 boxlock() and src/zap.c:2687 boxlock_invent().
+// Self-zapped opening and locking magic reaches every carried chest or box.
+async function boxlock_invent(spell) {
+    let boxing = false;
+    const wizard = game.urole?.name?.m === 'Wizard';
+    for (const item of game.invent || []) {
+        if (item.otyp !== ONAMES.LARGE_BOX && item.otyp !== ONAMES.CHEST)
+            continue;
+        boxing = true;
+        if (spell.otyp === ONAMES.WAN_LOCKING
+            || spell.otyp === ONAMES.SPE_WIZARD_LOCK) {
+            if (!item.olocked) {
+                await pline('Klunk!');
+                item.olocked = 1;
+                item.obroken = 0;
+                item.lknown = wizard ? 1 : 0;
+            }
+        } else if (item.olocked) {
+            await pline('Klick!');
+            item.olocked = 0;
+            item.lknown = wizard ? 1 : 0;
+        } else {
+            item.obroken = 0;
+        }
+    }
+    if (boxing)
+        update_inventory();
+}
+
+// src/trap.c:6252 openfallingtrap(), hero arm. The self-zap caller only
+// opens trapdoors and falling-rock traps, not holes or pits.
+async function openfallingtrap_hero(noticed) {
+    const trap = t_at(game.u.ux, game.u.uy);
+    if (!trap || (trap.ttyp !== TRAPDOOR && trap.ttyp !== ROCKTRAP)
+        || game.u.utrap)
+        return false;
+    noticed.v = true;
+    await dotrap(trap, FORCETRAP);
+    return !!game.u.utrap;
+}
+
+// src/zap.c:1225 unturn_you(). Carried eggs regain their hatch timer before
+// the hero receives the form-dependent dread effect.
+async function unturn_you() {
+    for (const item of game.invent || []) {
+        if (item.otyp === ONAMES.EGG && item.corpsenm !== NON_PM
+            && !dead_species(item.corpsenm, true))
+            attach_egg_hatch_timeout(item, 0);
+        else if (item.otyp === ONAMES.CORPSE)
+            note_unported_zap('unturn_you:carried_corpse');
+    }
+    if (is_undead(game.youmonst.data)) {
+        const oldStun = (game.u.intrinsic?.HStun | 0) & TIMEOUT;
+        await You_feel(`frightened and ${oldStun ? 'even more ' : ''}stunned.`);
+        await make_stunned(oldStun + rnd(30), false);
+    } else {
+        await You('shudder in dread.');
+    }
+}
+
 // src/zap.c:2705 zapyourself() — the hero zapped themself.
 //
 // Returns the retributive damage. dozap() applies it after wand discovery and
@@ -526,6 +587,37 @@ export async function zapyourself(obj, ordinary) {
         /* They might survive with an amulet of life saving */
         const { done, DIED } = await import('./end.js');
         await done(DIED);
+        break;
+    }
+    case ONAMES.WAN_UNDEAD_TURNING:
+    case ONAMES.SPE_TURN_UNDEAD:
+        learn_it = true;
+        await unturn_you();
+        break;
+    case ONAMES.WAN_OPENING:
+    case ONAMES.SPE_KNOCK: {
+        if (game.u.ustuck)
+            note_unported_zap('zapyourself:opening-release-hold');
+        if (game.uball || game.u.uball)
+            note_unported_zap('zapyourself:opening-unpunish');
+        const noticed = { v: learn_it };
+        const escaped = game.u.utrap
+            ? await openholdingtrap(game.youmonst, noticed) : false;
+        if (!escaped) {
+            await boxlock_invent(obj);
+            await openfallingtrap_hero(noticed);
+        }
+        learn_it = noticed.v;
+        break;
+    }
+    case ONAMES.WAN_LOCKING:
+    case ONAMES.SPE_WIZARD_LOCK: {
+        const noticed = { v: learn_it };
+        const shouldBox = game.u.utrap
+            || !await closeholdingtrap(game.youmonst, noticed);
+        if (shouldBox)
+            await boxlock_invent(obj);
+        learn_it = noticed.v;
         break;
     }
     case ONAMES.WAN_POLYMORPH:

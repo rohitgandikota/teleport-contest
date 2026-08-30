@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **105**. Covered: **105**.
 Partial: **0**. Gaps: **0**.
 
-Branch requirements: **143**. Covered: **143**.
+Branch requirements: **146**. Covered: **146**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 220 | 40441 | 2583566 | 71 | 415 |
-| Union | 264 | 51846 | 3351326 | 78 | 479 |
+| Supplemental | 220 | 40540 | 2588228 | 71 | 415 |
+| Union | 264 | 51945 | 3355988 | 78 | 479 |
 
 ## Static inventory
 
@@ -426,6 +426,8 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `wand.probing.upward-empty` | `src/zap.c:zap_updown` | `wand-probing-updown` |
 | covered | `wand.probing.downward-empty` | `src/zap.c:zap_updown` | `wand-probing-updown` |
 | covered | `wand.probing.downward-buried-inventory` | `src/zap.c:zap_updown` | `wand-probing-updown` |
+| covered | `wand.probing.reveal-undiscovered-trap` | `src/zap.c:zap_map` | `wand-probing-updown` |
+| covered | `wand.probing.reveal-secret-door` | `src/zap.c:zap_map` | `wand-probing-updown` |
 
 ### Object handling
 
@@ -450,6 +452,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `debug.wizbury.floor-object` | `src/dig.c:wiz_debug_cmd_bury` | `wand-probing-updown` |
 | covered | `debug.terrain-wish.pool` | `src/objnam.c:wizterrainwish` | `knockback-monster-into-pool` |
 | covered | `debug.terrain-wish.lava` | `src/objnam.c:wizterrainwish` | `tip-noncontainers` |
+| covered | `debug.terrain-wish.secret-door` | `src/objnam.c:wizterrainwish` | `wand-probing-updown` |
 | covered | `debug.terrain-wish.ice` | `src/objnam.c:wizterrainwish` | `glob-lifecycle` |
 
 ## Scenario index
@@ -666,7 +669,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `wand-downward-floor-pile` | debug | 134 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `object.wands`, `turn.timers`, `ui.getlin` |
 | `wand-holding-traps` | debug | 98 | present | `level.ordinary`, `mode.debug`, `object.wands`, `survival.timed-status`, `traps.projectile-physical`, `ui.getlin`, `ui.map-memory-vision` |
 | `wand-opening-falling-traps` | debug | 83 | present | `level.ordinary`, `mode.debug`, `object.wands`, `traps.movement`, `ui.getlin`, `ui.map-memory-vision` |
-| `wand-probing-updown` | debug | 129 | present | `level.ordinary`, `mode.debug`, `object.wands`, `ui.getlin`, `ui.map-memory-vision` |
+| `wand-probing-updown` | debug | 226 | present | `level.ordinary`, `mode.debug`, `object.wands`, `ui.getlin`, `ui.map-memory-vision` |
 | `wand-striking-door` | debug | 68 | present | `combat.melee`, `combat.ranged`, `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.hero-melee`, `object.identification`, `object.potions`, `object.wands`, `terrain.doors-locks`, `ui.animation`, `ui.getlin` |
 | `wand-striking-upward-rock` | debug | 66 | present | `level.ordinary`, `mode.debug`, `object.wands`, `ui.getlin`, `ui.map-memory-vision` |
 | `wand-trap-conversions` | debug | 84 | present | `level.ordinary`, `mode.debug`, `object.wands`, `traps.movement`, `ui.getlin`, `ui.map-memory-vision` |

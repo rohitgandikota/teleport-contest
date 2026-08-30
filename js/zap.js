@@ -31,7 +31,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
 import { u_safe_from_fatal_corpse } from './pickup.js';
-import { aobjnam } from './objnam.js';
+import { an, aobjnam } from './objnam.js';
 import { artifact_origin } from './artifact.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_destroy_nhwindow, NHW_TEXT } from './tty/wintty.js';
@@ -47,7 +47,7 @@ import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
 import { getdir } from './cmd.js';
 import { attach_egg_hatch_timeout, fall_asleep } from './timeout.js';
 import { healup, potionbreathe } from './potion.js';
-import { findit } from './detect.js';
+import { cvt_sdoor_to_door, findit } from './detect.js';
 import { readobjnam } from './objnam.js';
 import { getlin } from './cmd.js';
 import { prinv, reorder_invent, addinv } from './invent.js';
@@ -69,7 +69,7 @@ import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
          dead_species, erosion_matters } from './mkobj.js';
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
-import { is_flammable, is_rottable, burnarmor } from './trap.js';
+import { is_flammable, is_rottable, burnarmor, trapname } from './trap.js';
 import { is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
@@ -1226,8 +1226,9 @@ export async function doorlock(otmp, x, y) {
 // Trap explosion applies to cancellation only; the engraving arm fires for
 // down zaps only; secret-door reveals belong to striking/opening/locking.
 // A lateral polymorph over plain floor does nothing here.
-export function zap_map(x, y, obj) {
+export async function zap_map(x, y, obj) {
     const ttmp = t_at(x, y);
+    let learn_it = false;
     if (ttmp && (obj.otyp === ONAMES.WAN_CANCELLATION
                  || obj.otyp === ONAMES.SPE_CANCELLATION))
         note_unported_zap('zap_map:maybe_explode_trap');
@@ -1258,11 +1259,37 @@ export function zap_map(x, y, obj) {
             || obj.otyp === ONAMES.WAN_LOCKING
             || obj.otyp === ONAMES.SPE_WIZARD_LOCK))
         note_unported_zap('zap_map:drawbridge');
+    if (obj.otyp === ONAMES.WAN_PROBING && ttmp) {
+        const already_seen = !!ttmp.tseen;
+        const hallu = !!Hallucination();
+        ttmp.tseen = 1;
+        newsym(x, y);
+        if (!already_seen || hallu) {
+            const name = trapname(ttmp.ttyp, false);
+            const use_the = hallu && !rn2(4);
+            await You(`find ${use_the ? `the ${name}` : an(name)}${
+                use_the ? '!' : '.'}`);
+            learn_it = !hallu;
+        }
+    }
+    if (obj.otyp === ONAMES.WAN_PROBING && terrainType === SDOOR) {
+        const door = game.level.at(x, y);
+        cvt_sdoor_to_door(door);
+        recalc_block_point(x, y);
+        newsym(x, y);
+        if (cansee(x, y)) {
+            await pline('Probing reveals a secret door.');
+            learn_it = true;
+        } else {
+            note_unported_zap('zap_map:probing_unseen_secret_door');
+        }
+    }
     if (obj.otyp === ONAMES.WAN_PROBING
-        && (!cansee(x, y) || ttmp || terrainType === SDOOR
-            || terrainType === SCORR || terrainType === ICE
+        && (!cansee(x, y) || terrainType === SCORR || terrainType === ICE
             || IS_FURNITURE(terrainType)))
         note_unported_zap('zap_map:probing');
+    if (learn_it)
+        learnwand(obj);
 }
 
 const flash_types = [
@@ -1993,7 +2020,7 @@ async function zap_updown(obj) {
             await You(`probe towards the ${ceiling(x, y)}.`);
         } else {
             revealed += await bhitpile(obj, bhito, x, y, game.u.dz);
-            zap_map(x, y, obj);
+            await zap_map(x, y, obj);
             await You(`probe beneath the ${surface(x, y)}.`);
             revealed += await display_binventory(x, y, true);
         }
@@ -2062,7 +2089,7 @@ async function zap_updown(obj) {
             }
         }
         await bhitpile(obj, bhito, x, y, game.u.dz);
-        zap_map(x, y, obj);
+        await zap_map(x, y, obj);
     } else if (game.u.dz < 0) {
         if (striking
             && rn2(3)
@@ -2261,7 +2288,7 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
 
         if (weapon === ZAPPED_WAND) {
             /* cancellation/opening/locking/striking/probing */
-            zap_map(x, y, obj);
+            await zap_map(x, y, obj);
         }
 
         let mtmp = m_at(x, y);

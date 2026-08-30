@@ -2655,28 +2655,34 @@ async function wizterrainwish(d) {
                         Math.min(79, x + 1), Math.min(20, y + 1));
         lev.horizontal = lev.typ === HWALL;
         await pline('A wall.');
-    } else if (wanted === 'door') {
+    } else if (wanted === 'door' || wanted.endsWith('secret door')) {
+        const secret = wanted.endsWith('secret door');
         if (!(lev.typ === DOOR || lev.typ === SDOOR || IS_WALL(lev.typ)
               || lev.typ === IRONBARS)) {
-            await pline('Door requires door or wall location.');
+            await pline(`${secret ? 'Secret door' : 'Door'} requires door or wall location.`);
             return hands_obj;
         }
-        lev.typ = DOOR;
+        lev.typ = secret ? SDOOR : DOOR;
         let mask = d.locked ? D_LOCKED
-                   : d.doorless ? D_NODOOR
+                   : (d.doorless || secret) ? D_NODOOR
                      : d.open ? D_ISOPEN
                        : d.broken ? D_BROKEN : D_CLOSED;
-        if (d.trapped === 1 && (mask & (D_LOCKED | D_CLOSED)))
+        if (d.trapped === 1
+            && (secret || (mask & (D_LOCKED | D_CLOSED))))
             mask |= D_TRAPPED;
         lev.doormask = mask;
         const words = [];
         if (mask & D_TRAPPED) words.push('trapped');
         if (mask & D_LOCKED) words.push('locked');
-        else if (mask & D_CLOSED) words.push('closed');
-        else if (mask & D_ISOPEN) words.push('open');
-        else if (mask & D_BROKEN) words.push('broken');
-        else words.push('doorless');
-        words.push(mask === D_NODOOR ? 'doorway' : 'door');
+        if (secret) {
+            words.push('secret door');
+        } else {
+            if (mask & D_CLOSED) words.push('closed');
+            else if (mask & D_ISOPEN) words.push('open');
+            else if (mask & D_BROKEN) words.push('broken');
+            else words.push('doorless');
+            words.push(mask === D_NODOOR ? 'doorway' : 'door');
+        }
         await pline(`${An(words.join(' '))}.`);
     } else {
         return null;

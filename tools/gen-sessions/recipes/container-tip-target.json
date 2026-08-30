@@ -1,0 +1,23 @@
+{
+  "name": "container-tip-target",
+  "description": "Tip the contents of one carried container into another and inspect the destination.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.tip.carried-to-container"
+  ],
+  "segments": [
+    {
+      "seed": 7126,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed apple\r\u0017empty uncursed oilskin sack\rapsq#tip\rprar: q"
+    }
+  ]
+}

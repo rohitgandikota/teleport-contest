@@ -1,0 +1,23 @@
+{
+  "name": "container-tip-floor-source",
+  "description": "Fill a floor container, confirm the floor-tip prompt, spill its contents, and inspect the result.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.tip.floor-to-floor"
+  ],
+  "segments": [
+    {
+      "seed": 7127,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed apple\rdn#loot\rso#tip\ry\r: "
+    }
+  ]
+}

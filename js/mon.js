@@ -2073,12 +2073,13 @@ export async function wake_msg(mtmp, interesting) {
 // standing somewhere that blocks light on its own account, and in that case
 // the point stays blocked.
 //
-// has_mcorpsenm/freemcorpsenm are still recorded (oextra is not modelled);
-// everything else is real.
+// freemcorpsenm leaves the extra slot allocated and resets its value to
+// NON_PM. This port stores the same payload directly on the monster.
 export function seemimic(mtmp) {
     const is_blocker_appear = is_lightblocker_mappear(mtmp);
 
-    note_unported_mon('seemimic:mcorpsenm');
+    if (mtmp.mcorpsenm !== undefined && mtmp.mcorpsenm !== NON_PM)
+        mtmp.mcorpsenm = NON_PM;
 
     mtmp.m_ap_type = M_AP_NOTHING;
     mtmp.mappearance = 0;

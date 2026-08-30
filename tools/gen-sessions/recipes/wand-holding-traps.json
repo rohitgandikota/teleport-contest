@@ -1,6 +1,6 @@
 {
   "name": "wand-holding-traps",
-  "description": "Debug Wizards zap downward at bear traps, covering opening one to release a trapped hero and locking one to catch an untrapped hero.",
+  "description": "Debug Wizards enter bear traps and webs, then zap downward to cover opening a holding trap to release a trapped hero and locking one to catch an untrapped hero.",
   "coverage": [
     "level.ordinary",
     "mode.debug",
@@ -11,8 +11,12 @@
     "ui.map-memory-vision"
   ],
   "branches": [
+    "trap.web.hero-caught-strength-timing",
+    "trap.web.hero-struggle-escape",
     "wand.opening.downward-release-bear-trap",
-    "wand.locking.downward-close-bear-trap"
+    "wand.locking.downward-close-bear-trap",
+    "wand.opening.downward-release-web",
+    "wand.locking.downward-close-web"
   ],
   "segments": [
     {
@@ -26,6 +30,24 @@
       "datetime": "20000110105500",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " \u0006k\u0017blessed wand of locking\r\u0017bear trap trap\rzn>\u0006"
+    },
+    {
+      "seed": 2203,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017blessed wand of opening\r\u0017web trap\rjkzo>\u0006"
+    },
+    {
+      "seed": 2204,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017blessed wand of locking\r\u0017web trap\rzn>\u0006"
+    },
+    {
+      "seed": 2203,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017web trap\rjkhhhhhhhh\u0006"
     }
   ]
 }

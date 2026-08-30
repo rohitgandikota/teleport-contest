@@ -48,7 +48,7 @@ import { Monnam, rndcolor } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
 import { W_ARMF, A_DEX, A_CON, NO_PART } from './const.js';
 import { d, rn1 } from './rng.js';
-import { exercise } from './attrib.js';
+import { ACURR, exercise } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { KILLED_BY_AN, A_STR } from './const.js';
 import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
@@ -117,8 +117,9 @@ import { couldsee } from './vision.js';
 import { mdistu } from './monmove.js';
 import { wake_nearby, wake_nearto } from './mon.js';
 import { MFLAGS, PMNAMES, ATTKS, MONSYMS } from './monst_data.js';
-import { is_pit, is_hole, TT_BEARTRAP, TT_PIT, Upolyd, LEFT_SIDE,
-         RIGHT_SIDE, TT_BURIEDBALL } from './const.js';
+import { is_pit, is_hole, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA,
+         TT_INFLOOR, Upolyd, LEFT_SIDE, RIGHT_SIDE,
+         TT_BURIEDBALL } from './const.js';
 import { defsyms, cmap_names } from './drawing_data.js';
 import { xytodir } from './cmd.js';
 import { mons_see_trap } from './mondata.js';
@@ -878,6 +879,7 @@ export async function dotrap(trap, trflags) {
     mons_see_trap(trap);
 
     game.u.utrap = 0;                   /* reset_utrap() */
+    game.u.utraptype = 0;
     if (ttype === ARROW_TRAP)
         return await trapeffect_arrow_trap(game.youmonst, trap, trflags);
     if (ttype === DART_TRAP)
@@ -906,6 +908,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_telep_trap(game.youmonst, trap, trflags);
     if (ttype === MAGIC_PORTAL)
         return await trapeffect_magic_portal(game.youmonst, trap, trflags);
+    if (ttype === WEB)
+        return await trapeffect_web(game.youmonst, trap, trflags);
     if (ttype === VIBRATING_SQUARE) {
         trap.tseen = 1;                 /* feeltrap() */
         newsym(trap.tx, trap.ty);
@@ -914,6 +918,70 @@ export async function dotrap(trap, trflags) {
 
     note_unported_trap(`dotrap:ttyp=${ttype}`);
     return Trap_Effect_Finished;
+}
+
+// src/trap.c:6101 openholdingtrap(), hero arm. Magic opening releases every
+// hero holding state, even when the floor trap is absent or unrelated.
+export async function openholdingtrap(mon, noticed) {
+    const ishero = mon === game.youmonst || mon === game.u.usteed;
+    if (!ishero || !game.u.utrap)
+        return false;
+
+    const trap = t_at_mon(game.u.ux, game.u.uy);
+    let which = trap?.tseen && trap?.madeby_u ? 'your' : 'the';
+    let trapdescr;
+    switch (game.u.utraptype) {
+    case TT_LAVA:
+        trapdescr = 'molten lava';
+        break;
+    case TT_INFLOOR:
+        trapdescr = 'ground';
+        break;
+    case TT_BURIEDBALL:
+        trapdescr = 'your anchor';
+        which = '';
+        break;
+    case TT_BEARTRAP:
+        trapdescr = 'bear trap';
+        break;
+    case TT_PIT:
+        trapdescr = 'pit';
+        break;
+    case TT_WEB:
+        trapdescr = 'web';
+        break;
+    default:
+        trapdescr = 'trap';
+        break;
+    }
+
+    noticed.v = true;
+    if (game.u.usteed) {
+        note_unported_trap('openholdingtrap:steed');
+    } else {
+        await pline(`You are released from ${which ? which + ' ' : ''}${trapdescr}.`);
+    }
+    game.u.utrap = 0;
+    game.u.utraptype = 0;
+    game.vision_full_recalc = 1;
+    vision_recalc(0);
+    return true;
+}
+
+// src/trap.c:6194 closeholdingtrap(), hero arm. Magic locking forces an
+// idle bear trap or web to act on the hero.
+export async function closeholdingtrap(mon, noticed) {
+    const ishero = mon === game.youmonst || mon === game.u.usteed;
+    if (!ishero)
+        return false;
+    const trap = t_at_mon(game.u.ux, game.u.uy);
+    if (!trap || (trap.ttyp !== BEAR_TRAP && trap.ttyp !== WEB)
+        || game.u.utrap)
+        return false;
+
+    noticed.v = true;
+    await dotrap(trap, FORCETRAP);
+    return !!game.u.utrap;
 }
 
 // src/trap.c:3063 trapnote() — the name of the note a squeaky board plays,
@@ -1271,7 +1339,8 @@ async function trapeffect_magic_trap(mtmp, trap, trflags) {
 /* include/hack.h:1306 */
 /* include/hack.h:1306 — trap-activation flags. FORCEBUNGLE is 0x04
    (0x08 is RECURSIVETRAP). */
-const FORCETRAP = 0x01, FORCEBUNGLE = 0x04, FAILEDUNTRAP = 0x40;
+const FORCETRAP = 0x01, NOWEBMSG = 0x02, FORCEBUNGLE = 0x04,
+      FAILEDUNTRAP = 0x40;
 
 // src/mondata.c:1617 mon_knows_traps() — mtrapseen is a bitmask of trap types
 // this monster has already walked into.
@@ -1540,30 +1609,94 @@ async function trapeffect_pit(mtmp, trap, trflags) {
         ? Trap_Caught_Mon : Trap_Effect_Finished;
 }
 
-// src/trap.c:972 mu_maybe_destroy_web(), monster arm.
+// src/trap.c:972 mu_maybe_destroy_web().
 async function mu_maybe_destroy_web(mtmp, domsg, trap) {
     const mptr = mtmp.data;
+    const is_you = mtmp === game.youmonst;
     if (!(amorphous(mptr) || is_whirly(mptr) || flaming(mptr)
           || unsolid(mptr) || mtmp.mnum === PMNAMES.PM_GELATINOUS_CUBE))
         return false;
 
     const article = trap.madeby_u ? 'your' : 'a';
     if (flaming(mptr) || acidic(mptr)) {
-        if (domsg)
-            await pline(`${Monnam(mtmp)} ${flaming(mptr) ? 'burns' : 'dissolves'} ${article} spider web!`);
+        if (domsg) {
+            const verb = flaming(mptr) ? 'burn' : 'dissolve';
+            if (is_you)
+                await You(`${verb} ${article} spider web!`);
+            else
+                await pline(`${Monnam(mtmp)} ${verb}s ${article} spider web!`);
+        }
         deltrap(trap);
         newsym(trap.tx, trap.ty);
     } else if (domsg) {
-        await pline(`${Monnam(mtmp)} flows through ${article} spider web.`);
-        seetrap(trap);
+        if (is_you) {
+            await You(`flow through ${article} spider web.`);
+        } else {
+            await pline(`${Monnam(mtmp)} flows through ${article} spider web.`);
+            seetrap(trap);
+        }
     }
     return true;
 }
 
-// src/trap.c:2106 trapeffect_web(), monster arm.
+// src/trap.c:2106 trapeffect_web().
 async function trapeffect_web(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
-        note_unported_trap('trapeffect_web:hero');
+        const webmsgok = (trflags & NOWEBMSG) === 0;
+        const forcetrap = ((trflags & FORCETRAP) !== 0
+                           || (trflags & FAILEDUNTRAP) !== 0);
+        const viasitting = (trflags & VIASITTING) !== 0;
+        const article = trap.madeby_u ? 'your' : 'a';
+
+        feeltrap(trap);
+        if (await mu_maybe_destroy_web(mtmp, webmsgok, trap))
+            return Trap_Effect_Finished;
+        if (webmaker(mtmp.data)) {
+            if (webmsgok)
+                await pline(trap.madeby_u
+                    ? 'You take a walk on your web.'
+                    : 'There is a spider web here.');
+            return Trap_Effect_Finished;
+        }
+        if (webmsgok) {
+            if (forcetrap || viasitting)
+                await You(`are caught by ${article} spider web!`);
+            else if (game.u.usteed)
+                note_unported_trap('trapeffect_web:steed-message');
+            else
+                await You(`${u_locomotion('stumble')} into ${article} spider web!`);
+        }
+
+        game.u.utrap = 1;
+        game.u.utraptype = TT_WEB;
+        let str = ACURR(A_STR), tim;
+        if (game.u.usteed) {
+            note_unported_trap('trapeffect_web:steed');
+        }
+        if (str <= 3)
+            tim = rn1(6, 6);
+        else if (str < 6)
+            tim = rn1(6, 4);
+        else if (str < 9)
+            tim = rn1(4, 4);
+        else if (str < 12)
+            tim = rn1(4, 2);
+        else if (str < 15)
+            tim = rn1(2, 2);
+        else if (str < 18)
+            tim = rnd(2);
+        else if (str < 69)
+            tim = 1;
+        else {
+            tim = 0;
+            if (webmsgok)
+                await You(`tear through ${article} web!`);
+            deltrap(trap);
+            newsym(game.u.ux, game.u.uy);
+        }
+        game.u.utrap = tim;
+        if (!tim)
+            game.u.utraptype = 0;
         return Trap_Effect_Finished;
     }
 

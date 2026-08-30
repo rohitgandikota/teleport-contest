@@ -26,7 +26,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
-         XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, TT_BEARTRAP,
+         XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR,
          NO_TRAP_FLAGS, FORCETRAP } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
@@ -69,7 +69,8 @@ import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
          dead_species, erosion_matters } from './mkobj.js';
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
-import { is_flammable, is_rottable, burnarmor, trapname } from './trap.js';
+import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
+         openholdingtrap, trapname } from './trap.js';
 import { is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
@@ -2008,14 +2009,16 @@ async function zap_updown(obj) {
     const handles_trap_conversion = game.u.dz > 0 && ttmp
         && ((striking && ttmp.ttyp === TRAPDOOR)
             || (locking && ttmp.ttyp === HOLE));
-    const releases_bear_trap = game.u.dz > 0 && opening
-        && game.u.utrap && game.u.utraptype === TT_BEARTRAP;
+    const releases_holding_trap = game.u.dz > 0 && opening
+        && game.u.utrap;
     const opens_falling_trap = game.u.dz > 0 && opening && !game.u.utrap
         && ttmp && (ttmp.ttyp === TRAPDOOR || ttmp.ttyp === HOLE);
-    const closes_bear_trap = game.u.dz > 0 && locking && ttmp
-        && ttmp.ttyp === BEAR_TRAP && !game.u.utrap;
+    const closes_holding_trap = game.u.dz > 0 && locking && ttmp
+        && (ttmp.ttyp === BEAR_TRAP || ttmp.ttyp === WEB)
+        && !game.u.utrap;
     const handles_special = handles_trap_conversion
-        || releases_bear_trap || opens_falling_trap || closes_bear_trap;
+        || releases_holding_trap || opens_falling_trap
+        || closes_holding_trap;
 
     switch (obj.otyp) {
     case ONAMES.WAN_PROBING: {
@@ -2053,23 +2056,18 @@ async function zap_updown(obj) {
     }
 
     if (game.u.dz > 0) {
-        if (releases_bear_trap) {
-            const which = ttmp?.tseen && ttmp?.madeby_u ? 'your' : 'the';
-            await pline(`You are released from ${which} bear trap.`);
-            disclose = true;
-            game.u.utrap = 0;
-            game.u.utraptype = 0;
-            game.vision_full_recalc = 1;
-            if (game.vision_full_recalc)
-                vision_recalc(0);
+        if (releases_holding_trap) {
+            const noticed = { v: disclose };
+            await openholdingtrap(game.youmonst, noticed);
+            disclose = noticed.v;
         } else if (opens_falling_trap) {
             disclose = true;
             const { dotrap } = await import('./trap.js');
             await dotrap(ttmp, FORCETRAP);
-        } else if (closes_bear_trap) {
-            disclose = true;
-            const { dotrap } = await import('./trap.js');
-            await dotrap(ttmp, FORCETRAP);
+        } else if (closes_holding_trap) {
+            const noticed = { v: disclose };
+            await closeholdingtrap(game.youmonst, noticed);
+            disclose = noticed.v;
         } else if (ttmp && striking && ttmp.ttyp === TRAPDOOR) {
             if (Blind() && !ttmp.tseen) {
                 await pline('Something beneath you shatters.');

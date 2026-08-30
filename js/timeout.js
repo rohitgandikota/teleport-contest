@@ -195,6 +195,16 @@ export function obj_stop_timers(obj) {
     obj.timed = Math.max(0, (obj.timed || 0) - removed);
 }
 
+// src/timeout.c:2359 obj_split_timers(). Duplicate every object timer onto
+// the newly split object without changing the source object's timers.
+export function obj_split_timers(src, dest) {
+    const timers = (game.timer_base || []).filter(
+        (timer) => timer.kind === TIMER_OBJECT && timer.arg === src);
+    for (const timer of timers)
+        start_timer(timer.timeout - (game.moves ?? 0), TIMER_OBJECT,
+                    timer.func_index, dest);
+}
+
 function candle_light_range(obj) {
     if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION)
         return obj.spe < 4 ? 2 : obj.spe < 7 ? 3 : 4;

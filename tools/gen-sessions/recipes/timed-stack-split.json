@@ -1,0 +1,31 @@
+{
+  "name": "timed-stack-split",
+  "description": "Split timed corpse and lit candle stacks, then verify that both halves keep the source timer and that candle light is duplicated with the correct radius.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "turn.timers",
+    "ui.count-repeat",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "object.timer.split-stack",
+    "object.light.split-candle-stack"
+  ],
+  "segments": [
+    {
+      "seed": 7166,
+      "datetime": "20000110233400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO qr\r\u0017blessed cloak of invisibility\rTbWp #wizkill\rm.\u001b\u00172 uncursed newt corpses\rD%\r1q\ri\u001b300.\u001b300.\u001bi\u001b: "
+    },
+    {
+      "seed": 7166,
+      "datetime": "20000110233500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO qr\r\u0017blessed cloak of invisibility\rTbWp #wizkill\rm.\u001b\u00174 uncursed wax candles\raqD(\r1q\r: i\u001b"
+    }
+  ]
+}

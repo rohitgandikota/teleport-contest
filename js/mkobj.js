@@ -30,7 +30,7 @@ import { start_timer, stop_timer, TIMER_OBJECT,
          ROT_CORPSE as TIMEOUT_ROT_CORPSE,
          REVIVE_MON as TIMEOUT_REVIVE_MON,
          SHRINK_GLOB,
-         obj_stop_timers } from './timeout.js';
+         obj_stop_timers, obj_split_timers } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
 import { Is_rogue_level, MAX_OIL_IN_FLASK, NODIR, OBJ_FLOOR, OBJ_INVENT,
          OBJ_BURIED, ICE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE,
@@ -51,6 +51,7 @@ import { oname, noveltitle } from './do_name.js';
 import { ONAME_NO_FLAGS } from './const.js';
 import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
+import { obj_sheds_light, obj_split_light_source } from './light.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
@@ -202,7 +203,9 @@ export function splitobj(obj, num) {
     if (obj.unpaid)
         note_unported_obj('splitobj:splitbill');
     if (obj.timed)
-        note_unported_obj('splitobj:obj_split_timers');
+        obj_split_timers(obj, otmp);
+    if (obj_sheds_light(obj))
+        obj_split_light_source(obj, otmp);
 
     return otmp;
 }

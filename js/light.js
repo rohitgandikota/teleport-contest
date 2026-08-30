@@ -16,6 +16,7 @@
 
 import { game } from './gstate.js';
 import { COLNO, ROWNO } from './const.js';
+import { ONAMES } from './objects_data.js';
 /* imported from vision.c, for small circles (src/light.c:56) */
 import { circle_ptr, clear_path, COULD_SEE, TEMP_LIT } from './vision.js';
 
@@ -201,4 +202,31 @@ export function obj_sheds_light(obj) {
 
 export function obj_is_burning(obj) {
     return !!(obj && obj.lamplit);
+}
+
+// src/light.c:779 obj_split_light_source(). Copy the source entry to the
+// split object and resize both candle sources for their new stack sizes.
+export function obj_split_light_source(src, dest) {
+    const sources = lights();
+    const original = [...sources];
+    for (const source of original) {
+        if (source.type !== LS_OBJECT || source.id !== src.o_id)
+            continue;
+
+        const copy = { ...source, id: dest.o_id };
+        if (src.otyp === ONAMES.TALLOW_CANDLE
+            || src.otyp === ONAMES.WAX_CANDLE) {
+            const radius = (obj) => {
+                let value = 1;
+                while (value * value <= obj.quan && value < MAX_RADIUS)
+                    value++;
+                return value;
+            };
+            source.range = radius(src);
+            copy.range = radius(dest);
+            game.vision_full_recalc = 1;
+        }
+        sources.unshift(copy);
+        dest.lamplit = 1;
+    }
 }

@@ -1,0 +1,30 @@
+{
+  "name": "wand-opening-falling-traps",
+  "description": "Debug Wizards zap opening downward to trigger a trapdoor and a hole, forcing the corresponding fall and level transition.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.wands",
+    "traps.movement",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.opening.downward-trigger-trapdoor",
+    "wand.opening.downward-trigger-hole"
+  ],
+  "segments": [
+    {
+      "seed": 2205,
+      "datetime": "20000110110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017blessed wand of opening\r\u0017trap door\rzo> \u0006"
+    },
+    {
+      "seed": 2206,
+      "datetime": "20000110110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017blessed wand of opening\r\u0017hole\rzo> \u0006"
+    }
+  ]
+}

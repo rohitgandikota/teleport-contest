@@ -1976,10 +1976,12 @@ async function zap_updown(obj) {
             || (locking && ttmp.ttyp === HOLE));
     const releases_bear_trap = game.u.dz > 0 && opening
         && game.u.utrap && game.u.utraptype === TT_BEARTRAP;
+    const opens_falling_trap = game.u.dz > 0 && opening && !game.u.utrap
+        && ttmp && (ttmp.ttyp === TRAPDOOR || ttmp.ttyp === HOLE);
     const closes_bear_trap = game.u.dz > 0 && locking && ttmp
         && ttmp.ttyp === BEAR_TRAP && !game.u.utrap;
     const handles_special = handles_trap_conversion
-        || releases_bear_trap || closes_bear_trap;
+        || releases_bear_trap || opens_falling_trap || closes_bear_trap;
 
     switch (obj.otyp) {
     case ONAMES.WAN_PROBING:
@@ -2010,6 +2012,10 @@ async function zap_updown(obj) {
             game.vision_full_recalc = 1;
             if (game.vision_full_recalc)
                 vision_recalc(0);
+        } else if (opens_falling_trap) {
+            disclose = true;
+            const { dotrap } = await import('./trap.js');
+            await dotrap(ttmp, FORCETRAP);
         } else if (closes_bear_trap) {
             disclose = true;
             const { dotrap } = await import('./trap.js');

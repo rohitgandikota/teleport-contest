@@ -170,6 +170,19 @@ export async function describe_decor() {
     return res;
 }
 
+// src/pickup.c:317 force_decor() makes probing describe the current ice or
+// furniture even when mention_decor is disabled or the same terrain was just
+// described. The override flags in C only bypass deferred flavor checks that
+// this port does not model yet.
+export async function force_decor(via_probing = false) {
+    game.iflags ||= {};
+    game.iflags.prev_decor = 0; /* STONE */
+    const described = await describe_decor();
+    game.iflags.prev_decor = game.level?.at(game.u.ux, game.u.uy)?.typ ?? 0;
+    void via_probing;
+    return described;
+}
+
 const is_pool_typ = (t) => t === POOL || t === MOAT || t === WATER;
 const LAVAPOOL_TYP = LAVAPOOL;
 

@@ -1,6 +1,6 @@
 {
   "name": "wand-probing-updown",
-  "description": "Debug Wizards zap probing upward and downward over empty dungeon floor, probe a buried object in place, and reveal an undiscovered trap, covering ceiling and subsurface feedback, nothing-revealed controls, buried inventory display, and trap discovery.",
+  "description": "Debug Wizards zap probing upward and downward over empty dungeon floor, probe a buried object in place, reveal an undiscovered trap and secret door, and probe beneath ice and furniture, covering ceiling, subsurface, and forced terrain-description feedback.",
   "coverage": [
     "level.ordinary",
     "mode.debug",
@@ -14,6 +14,8 @@
     "wand.probing.downward-buried-inventory",
     "wand.probing.reveal-undiscovered-trap",
     "wand.probing.reveal-secret-door",
+    "wand.probing.downward-force-ice-description",
+    "wand.probing.downward-force-furniture-description",
     "debug.wizbury.floor-object",
     "debug.terrain-wish.secret-door"
   ],
@@ -47,6 +49,18 @@
       "datetime": "20000110105000",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " h\u0017blessed wand of probing\r\u0017wall\r\u0017secret door\rzo> "
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017blessed wand of probing\r\u0017ice\rzo> "
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017blessed wand of probing\r\u0017sink\rzo> "
     }
   ]
 }

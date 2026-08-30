@@ -30,7 +30,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          NO_TRAP_FLAGS, FORCETRAP } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
-import { u_safe_from_fatal_corpse } from './pickup.js';
+import { force_decor, u_safe_from_fatal_corpse } from './pickup.js';
 import { an, aobjnam } from './objnam.js';
 import { artifact_origin } from './artifact.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
@@ -1284,9 +1284,13 @@ export async function zap_map(x, y, obj) {
             note_unported_zap('zap_map:probing_unseen_secret_door');
         }
     }
+    if (obj.otyp === ONAMES.WAN_PROBING && game.u.dz > 0
+        && (terrainType === ICE || IS_FURNITURE(terrainType))) {
+        await force_decor(true);
+        learn_it = true;
+    }
     if (obj.otyp === ONAMES.WAN_PROBING
-        && (!cansee(x, y) || terrainType === SCORR || terrainType === ICE
-            || IS_FURNITURE(terrainType)))
+        && (!cansee(x, y) || terrainType === SCORR))
         note_unported_zap('zap_map:probing');
     if (learn_it)
         learnwand(obj);
@@ -2019,9 +2023,12 @@ async function zap_updown(obj) {
         if (game.u.dz < 0) {
             await You(`probe towards the ${ceiling(x, y)}.`);
         } else {
+            const terrain = game.level.at(x, y)?.typ;
             revealed += await bhitpile(obj, bhito, x, y, game.u.dz);
             await zap_map(x, y, obj);
-            await You(`probe beneath the ${surface(x, y)}.`);
+            const surf = terrain === ICE || IS_FURNITURE(terrain)
+                ? 'it' : `the ${surface(x, y)}`;
+            await You(`probe beneath ${surf}.`);
             revealed += await display_binventory(x, y, true);
         }
         if (!revealed)

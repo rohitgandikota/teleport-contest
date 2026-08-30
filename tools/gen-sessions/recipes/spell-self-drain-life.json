@@ -1,0 +1,40 @@
+{
+  "name": "spell-self-drain-life",
+  "description": "A debug Wizard casts drain life at himself with and without a worn shield of drain resistance, covering level loss, rank and resource updates, and the resisted no-effect branch.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.potions",
+    "object.spellbooks-spells",
+    "survival.regen-exercise",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "potion.gain-energy.blessed",
+    "spell.self.drain-life",
+    "spell.self.drain-life-fatal",
+    "spell.self.drain-life-resisted"
+  ],
+  "segments": [
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r    \u0017blessed spellbook of drain life\rro Zc."
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r    \u0017blessed shield of drain resistance\rw-Wo\u0017blessed spellbook of drain life\rrp Zc."
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r2\r\u0017blessed spellbook of drain life\rro Zc.\u0017blessed potion of gain energy\rqpZc. n"
+    }
+  ]
+}

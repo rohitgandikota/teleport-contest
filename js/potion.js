@@ -689,6 +689,31 @@ async function peffect_extra_healing(otmp) {
     exercise(A_STR, true);
 }
 
+// src/potion.c:1224 peffect_gain_energy(). The BUC state changes the die
+// count and sign; current power changes by three times the maximum increase.
+async function peffect_gain_energy(otmp) {
+    if (otmp.cursed)
+        await You_feel('lackluster.');
+    else
+        await pline('Magical energies course through your body.');
+
+    let amount = d(otmp.blessed ? 3 : otmp.cursed ? 1 : 2, 6);
+    if (otmp.cursed)
+        amount = -amount;
+    game.u.uenmax += amount;
+    if (game.u.uenmax > (game.u.uenpeak ?? 0))
+        game.u.uenpeak = game.u.uenmax;
+    else if (game.u.uenmax <= 0)
+        game.u.uenmax = 0;
+    game.u.uen += 3 * amount;
+    if (game.u.uen > game.u.uenmax)
+        game.u.uen = game.u.uenmax;
+    else if (game.u.uen <= 0)
+        game.u.uen = 0;
+    (game.disp ||= {}).botl = true;
+    exercise(A_WIS, true);
+}
+
 // src/potion.c:912 peffect_monster_detection(). Blessed monster detection
 // persists long enough to reveal every live monster for the debug selector;
 // ordinary and cursed doses use detect.c's one-shot map browser.
@@ -735,6 +760,9 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_EXTRA_HEALING:
         await peffect_extra_healing(otmp);
+        break;
+    case ONAMES.POT_GAIN_ENERGY:
+        await peffect_gain_energy(otmp);
         break;
     case ONAMES.POT_CONFUSION:
         await peffect_confusion(otmp);

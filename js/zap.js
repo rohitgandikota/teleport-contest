@@ -57,7 +57,7 @@ import { readobjnam } from './objnam.js';
 import { getlin } from './cmd.js';
 import { prinv, reorder_invent, addinv } from './invent.js';
 import { makeknown, observe_object } from './o_init.js';
-import { more_experienced } from './exper.js';
+import { losexp, more_experienced } from './exper.js';
 import { encumber_msg, exercise, Fast, Very_fast } from './attrib.js';
 import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
@@ -530,6 +530,14 @@ export async function zapyourself(obj, ordinary) {
     case ONAMES.WAN_CANCELLATION:
     case ONAMES.SPE_CANCELLATION:
         cancel_hero_inventory();
+        break;
+    case ONAMES.SPE_DRAIN_LIFE:
+        if (!(game.u.intrinsic?.HDrain_resistance
+              || game.u.uprops?.DRAIN_RES)) {
+            learn_it = true;
+            await losexp('life drainage');
+        }
+        damage = 0;
         break;
     case ONAMES.WAN_MAKE_INVISIBLE: {
         const msg = !Invis() && !Blind() && !game.u.blocked?.INVIS;

@@ -23,7 +23,7 @@ import { ECMD_FAIL } from './const.js';
 import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
 import { acurr, exercise } from './attrib.js';
 import { mksobj } from './mkobj.js';
-import { zapyourself } from './zap.js';
+import { weffects, zapyourself } from './zap.js';
 import { fall_asleep } from './timeout.js';
 import { makeknown, observe_object } from './o_init.js';
 import { getdir } from './cmd.js';
@@ -646,8 +646,7 @@ export async function spelleffects(spell_otyp, atme, force) {
                     note_unported_spell('spelleffects:losehp');
                 }
             } else {
-                /* weffects — the beam engine */
-                note_unported_spell('spelleffects:weffects');
+                await weffects(pseudo);
             }
         } else {
             note_unported_spell('spelleffects:weffects');

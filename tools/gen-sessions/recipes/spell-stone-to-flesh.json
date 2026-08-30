@@ -1,0 +1,47 @@
+{
+  "name": "spell-stone-to-flesh",
+  "description": "A debug Wizard learns stone to flesh, casts it vertically, exercises object resistance, and converts a boulder, mineral ring, mineral wand, and gemstone into their meat counterparts.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.spellbooks-spells",
+    "ui.getlin",
+    "survival.regen-exercise"
+  ],
+  "branches": [
+    "spell.stone-to-flesh.directional-dispatch",
+    "spell.stone-to-flesh.upward-ceiling",
+    "spell.stone-to-flesh.downward-empty-floor",
+    "spell.stone-to-flesh.object-resistance",
+    "spell.stone-to-flesh.boulder",
+    "spell.stone-to-flesh.ring",
+    "spell.stone-to-flesh.wand",
+    "spell.stone-to-flesh.gem"
+  ],
+  "segments": [
+    {
+      "seed": 2219,
+      "datetime": "20000110112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed spellbook of stone to flesh\rrn Zc<Zc>\u0017boulder\rZc>Zc>"
+    },
+    {
+      "seed": 2219,
+      "datetime": "20000110112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed spellbook of stone to flesh\rrn \u0017granite ring\rdoZc>"
+    },
+    {
+      "seed": 2219,
+      "datetime": "20000110112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed spellbook of stone to flesh\rrn \u0017marble wand\rdoZc>"
+    },
+    {
+      "seed": 2219,
+      "datetime": "20000110112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed spellbook of stone to flesh\rrn \u0017diamond\rdoZc>"
+    }
+  ]
+}

@@ -7,7 +7,7 @@
 
 import { game } from './gstate.js';
 import { isok } from './hacklib.js';
-import { is_pool, m_at, t_at } from './mon.js';
+import { is_lava, is_pool, m_at, t_at } from './mon.js';
 import { cansee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
@@ -27,7 +27,8 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
          XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
-         NO_TRAP_FLAGS, FORCETRAP } from './const.js';
+         NO_TRAP_FLAGS, FORCETRAP, ENGRAVE, FACE, FOOT,
+         In_sokoban } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
 import { force_decor, u_safe_from_fatal_corpse } from './pickup.js';
@@ -77,11 +78,11 @@ import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
          resists_cold,
          resists_elec, resists_fire, resists_magm, resists_sleep,
-         nohands, nonliving, is_demon } from './mondata.js';
+         nohands, nonliving, is_demon, carnivorous } from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Blind, Deaf, Unaware, Hallucination,
-         Underwater } from './youprop.js';
+         Underwater, Levitation } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -647,7 +648,7 @@ export async function poly_obj(obj, id) {
     const can_merge = (id === ONAMES.STRANGE_OBJECT);
     const obj_location = obj.where;
 
-    if (obj.otyp === ONAMES.BOULDER)
+    if (obj.otyp === ONAMES.BOULDER && In_sokoban(game.u.uz))
         note_unported_zap('poly_obj:sokoban_guilt');
     if (id === ONAMES.STRANGE_OBJECT) { /* preserve symbol */
         let try_limit = 3;
@@ -819,6 +820,55 @@ function create_polymon(pile_head, okind) {
     note_unported_zap('create_polymon:okind=' + okind);
 }
 
+// src/zap.c:1993 stone_to_flesh_obj(). Simple mineral objects become their
+// meat counterparts. Statue and figurine animation remains separate because
+// it creates or transforms monsters rather than replacing one floor object.
+async function stone_to_flesh_obj(obj) {
+    const material = game.objects[obj.otyp].oc_material;
+    if (material !== MATERIALS.MINERAL && material !== MATERIALS.GEMSTONE)
+        return 0;
+    if (obj_resists(obj, 2, 98))
+        return 0;
+
+    const ox = obj.ox, oy = obj.oy;
+    let replacement = null;
+    let res = 1;
+
+    if (obj.otyp === ONAMES.BOULDER) {
+        replacement = ONAMES.ENORMOUS_MEATBALL;
+    } else if (obj.otyp === ONAMES.STATUE || obj.otyp === ONAMES.FIGURINE) {
+        note_unported_zap('stone_to_flesh_obj:animate');
+        res = 0;
+    } else {
+        switch (obj.oclass) {
+        case OCLASSES.RING_CLASS:
+            replacement = ONAMES.MEAT_RING;
+            break;
+        case OCLASSES.WAND_CLASS:
+            replacement = ONAMES.MEAT_STICK;
+            break;
+        case OCLASSES.GEM_CLASS:
+            replacement = ONAMES.MEATBALL;
+            break;
+        default:
+            res = 0;
+            break;
+        }
+    }
+
+    if (replacement !== null) {
+        await poly_obj(obj, replacement);
+        const role = game.urole?.mnum ?? game.urole?.malenum;
+        const smellsPlain = role === PMNAMES.PM_MONK || role === 'PM_MONK'
+            || !game.u.uconduct?.unvegetarian
+            || !carnivorous(game.youmonst.data);
+        await Norep(smellsPlain ? 'You smell the odor of meat.'
+                                : 'You smell a delicious smell.');
+    }
+    newsym(ox, oy);
+    return res;
+}
+
 // src/zap.c:2119 bhito() — zap effect hits an object on the floor.
 // The POLYMORPH arm is live; PROBING learns the object; the other wand
 // types record themselves.
@@ -936,8 +986,7 @@ export async function bhito(obj, otmp) {
             res = 0;
             break;
         case ONAMES.SPE_STONE_TO_FLESH:
-            note_unported_zap('bhito:stone_to_flesh');
-            res = 0;
+            res = await stone_to_flesh_obj(obj);
             break;
         default:
             res = 0;
@@ -2044,10 +2093,34 @@ async function zap_updown(obj) {
     case ONAMES.SPE_KNOCK:
     case ONAMES.WAN_LOCKING:
     case ONAMES.SPE_WIZARD_LOCK:
-    case ONAMES.SPE_STONE_TO_FLESH:
         if (!handles_special)
             note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
         break;
+    case ONAMES.SPE_STONE_TO_FLESH: {
+        const qstart = game.special_levels?.qstart_level;
+        const isQstart = qstart && game.u.uz.dnum === qstart.dnum
+            && game.u.uz.dlevel === qstart.dlevel;
+        const hasFloorObject = (game.level.objects || []).some(otmp =>
+            otmp.where === OBJ_FLOOR && otmp.ox === x && otmp.oy === y);
+        if (Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz)
+            || Underwater() || (isQstart && game.u.dz < 0)) {
+            await pline(nothing_happens);
+        } else if (game.u.dz < 0) {
+            await pline(`Blood drips on your ${body_part(FACE)}.`);
+        } else if (game.u.dz > 0 && !hasFloorObject) {
+            const engraving = engr_at(x, y);
+            if (!(engraving && engraving.engr_type === ENGRAVE)) {
+                if (is_pool(x, y) || is_ice(x, y)) {
+                    await pline(nothing_happens);
+                } else {
+                    await pline(`Blood ${is_lava(x, y) ? 'boils' : 'pools'} ${
+                        Levitation() ? 'beneath' : 'at'} your ${
+                        makeplural(body_part(FOOT))}.`);
+                }
+            }
+        }
+        break;
+    }
     case ONAMES.WAN_STRIKING:
     case ONAMES.SPE_FORCE_BOLT:
         if (game.u.dz > 0 && !handles_trap_conversion)
@@ -2134,8 +2207,7 @@ export async function weffects(obj) {
     const was_unkn = !game.objects[otyp].oc_name_known;
     let disclose = false;
 
-    /* exercise(A_WIS) is done by dozap before dispatching here, matching
-       C's placement at the head of weffects */
+    exercise(A_WIS, true);
 
     if (dirprop === IMMEDIATE) {
         zapsetup(); /* reset obj_zapped */
@@ -2199,10 +2271,7 @@ export async function dozap() {
         note_unported_zap('dozap:backfire');
         return ECMD_TIME;
     } else if (!need_dir) {
-        /* src/zap.c:3436 — weffects() opens with exercise(A_WIS, TRUE)
-           before dispatching ANY zap effect */
-        exercise(A_WIS, true);
-        await zapnodir(obj);
+        await weffects(obj);
     } else if (need_dir && !(await getdir(null))) {
         if (!game.u?.ublind)
             note_unported_zap('dozap:glows_and_fades');
@@ -2213,8 +2282,6 @@ export async function dozap() {
             note_unported_zap('dozap:losehp');
         }
     } else {
-        /* src/zap.c:3436 — weffects() exercises wisdom before the effect */
-        exercise(A_WIS, true);
         await weffects(obj);
     }
     if (obj && obj.spe < 0) {

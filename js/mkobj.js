@@ -33,6 +33,7 @@ import { start_timer, stop_timer, TIMER_OBJECT,
          obj_stop_timers } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
 import { Is_rogue_level, MAX_OIL_IN_FLASK, NODIR, OBJ_FLOOR, OBJ_INVENT,
+         OBJ_BURIED, ICE, DRAWBRIDGE_UP, DB_UNDER, DB_ICE,
          In_quest, MON_DETACH, isok } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
@@ -960,11 +961,46 @@ export function start_glob_timeout(obj, when) {
     start_timer(when, TIMER_OBJECT, SHRINK_GLOB, obj);
 }
 
+const NOT_ON_ICE = 0, SET_ON_ICE = 1, BURIED_UNDER_ICE = 2;
+
+// src/mkobj.c item_on_ice(). A contained glob inherits the location of its
+// outermost container, including a container buried under ice.
+function item_on_ice(item) {
+    let outer = item;
+    while (outer?.where === OBJ_CONTAINED && outer.ocontainer)
+        outer = outer.ocontainer;
+    if (!outer || (outer.where !== OBJ_FLOOR && outer.where !== OBJ_BURIED))
+        return NOT_ON_ICE;
+
+    const x = outer.ox, y = outer.oy;
+    if (!isok(x, y))
+        return NOT_ON_ICE;
+    const loc = game.level?.at(x, y);
+    const onIce = loc?.typ === ICE
+        || (loc?.typ === DRAWBRIDGE_UP
+            && ((loc.drawbridgemask ?? 0) & DB_UNDER) === DB_ICE);
+    if (!onIce)
+        return NOT_ON_ICE;
+    return outer.where === OBJ_BURIED ? BURIED_UNDER_ICE : SET_ON_ICE;
+}
+
 // src/mkobj.c shrink_glob() - reduce a glob by one weight unit and keep its
 // timer active until it dissolves.
 export async function shrink_glob(obj) {
     if (!obj?.globby)
         return;
+
+    const globLocation = item_on_ice(obj);
+    let eatingGlob = false;
+    if (game.context?.victual?.piece === obj && game.occupation) {
+        const { eatfood } = await import('./eat.js');
+        eatingGlob = game.occupation === eatfood;
+    }
+    if (eatingGlob || globLocation === BURIED_UNDER_ICE
+        || (globLocation === SET_ON_ICE && (game.moves ?? 0) % 3 === 1)) {
+        start_glob_timeout(obj, 0);
+        return;
+    }
 
     const inInvent = obj.where === OBJ_INVENT;
     const onFloor = obj.where === OBJ_FLOOR;

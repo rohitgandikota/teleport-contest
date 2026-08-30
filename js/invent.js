@@ -18,11 +18,11 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
          W_RINGL, W_RINGR, W_AMUL, W_ART } from './const.js';
 import { Blind as heroBlind, Hallucination,
          Stone_resistance } from './youprop.js';
-import { doname, an, corpse_xname, makeplural, CXN_PFX_THE,
+import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
          CXN_ARTICLE } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
-import { erosion_matters, curse, splitobj } from './mkobj.js';
+import { erosion_matters, curse, splitobj, start_glob_timeout } from './mkobj.js';
 import { carried, OBJ_FREE, OBJ_FLOOR, OBJ_CONTAINED, OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, Is_container, Is_candle, Is_pudding } from './obj.js';
 import { setnotworn, recalc_telepat_range } from './worn.js';
 import { is_rider, hideunder } from './makemon.js';
@@ -42,15 +42,15 @@ import { pline, display_nhwindow_message, temporary_object_glyph,
          see_monsters } from './display.js';
 import { makeknown, observe_object } from './o_init.js';
 import { tty_yn_function } from './tty/topl.js';
-import { You } from './pline.js';
-import { recalc_block_point } from './vision.js';
+import { You, You_hear, You_see, Your } from './pline.js';
+import { cansee, recalc_block_point } from './vision.js';
 import { surface } from './dungeon.js';
 import { discover_artifact, set_artifact_intrinsic,
          artifact_confers_luck } from './artifact.js';
 import { ART_MJOLLNIR } from './artilist_data.js';
 import { body_part } from './polyself.js';
 import { HAND } from './const.js';
-import { obj_stop_timers } from './timeout.js';
+import { obj_stop_timers, stop_timer, SHRINK_GLOB } from './timeout.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
@@ -279,7 +279,7 @@ export function dfeature_at(x, y) {
     } else if (is_lava(x, y)) {
         dfeature = 'molten lava';
     } else if (ltyp === ICE) {
-        dfeature = 'ice';           /* ice_descr's age arms are not seen */
+        dfeature = 'solid ice';
     } else if (is_pool(x, y)) {
         dfeature = 'pool of water';
     } else if (ltyp === SINK) {
@@ -308,6 +308,13 @@ export function dfeature_at(x, y) {
         dfeature = 'set of iron bars';
     }
     return dfeature;
+}
+
+function dfeature_with_article(dfeature) {
+    if (dfeature === 'molten lava' || dfeature === 'ice'
+        || dfeature.startsWith('frozen ') || / ice$/i.test(dfeature))
+        return dfeature;
+    return an(dfeature);
 }
 
 // src/invent.c:4104 look_here()
@@ -375,7 +382,7 @@ export async function look_here(obj_cnt, lhflags) {
            "There is <an feature> here." and SUPPRESS the no-objects line
            unless blind */
         if (dfeature && !skip_dfeature)
-            await pline(`There is ${an(dfeature)} here.`);
+            await pline(`There is ${dfeature_with_article(dfeature)} here.`);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         if (!skip_objects && (Blind || !dfeature))
             await You(`${verb} no objects here.`);
@@ -385,7 +392,7 @@ export async function look_here(obj_cnt, lhflags) {
 
     if (skip_objects) {
         if (dfeature && !skip_dfeature)
-            await pline(`There is ${an(dfeature)} here.`);
+            await pline(`There is ${dfeature_with_article(dfeature)} here.`);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         if (obj_cnt === 1 && pile[0].quan === 1)
             await pline(`There is ${picked_some ? 'another' : 'an'} object here.`);
@@ -411,7 +418,7 @@ export async function look_here(obj_cnt, lhflags) {
         /* only one object */
         const otmp = pile[0];
         if (dfeature && !skip_dfeature)
-            await pline(`There is ${an(dfeature)} here.`);
+            await pline(`There is ${dfeature_with_article(dfeature)} here.`);
         await read_engr_at(game.u.ux, game.u.uy); /* Eric Backus */
         await You(`${verb} here ${doname_with_price(otmp)}.`);
         if (otmp.otyp === ONAMES.CORPSE)
@@ -425,7 +432,8 @@ export async function look_here(obj_cnt, lhflags) {
         await display_nhwindow_message();
         const tmpwin = tty_create_nhwindow(NHW_MENU);
         if (dfeature && !skip_dfeature) {
-            tty_putstr(tmpwin, 0, `There is ${an(dfeature)} here.`);
+            tty_putstr(tmpwin, 0,
+                       `There is ${dfeature_with_article(dfeature)} here.`);
             tty_putstr(tmpwin, 0, '');
         }
         tty_putstr(tmpwin, 0, `${picked_some ? 'Other things' : 'Things'} that ${
@@ -1104,6 +1112,76 @@ export function mergable(otmp, obj) {
     return true;
 }
 
+// src/mkobj.c pudding_merge_message(): report two globs coalescing.
+async function pudding_merge_message(otmp, obj) {
+    const visible = cansee(otmp.ox, otmp.oy) || cansee(obj.ox, obj.oy);
+    const onfloor = otmp.where === OBJ_FLOOR || obj.where === OBJ_FLOOR;
+    const inpack = carried(otmp) || carried(obj);
+
+    if ((!Blind() && visible) || inpack) {
+        if (Hallucination()) {
+            if (onfloor)
+                await You_see('parts of the floor melting!');
+            else if (inpack)
+                await Your('pack reaches out and grabs something!');
+        } else if (onfloor || inpack) {
+            const adjacent = ((otmp.ox !== game.u.ux
+                               || otmp.oy !== game.u.uy)
+                              && (obj.ox !== game.u.ux
+                                  || obj.oy !== game.u.uy));
+            await pline(`The ${onfloor && adjacent ? 'adjacent ' : ''}`
+                        + `${makeplural(obj_typename(otmp.otyp))} coalesce`
+                        + `${inpack ? ' inside your pack' : ''}.`);
+        }
+    } else {
+        await You_hear('a faint sloshing sound.');
+    }
+}
+
+// src/mkobj.c obj_absorb(): augment the surviving glob and discard the
+// absorbed one. merged() has already unlinked obj and stopped its timers.
+function absorb_globs(potmp, pobj) {
+    const otmp = potmp.o, obj = pobj.o;
+    if (!otmp || !obj || otmp === obj)
+        return null;
+
+    if (!!otmp.bknown !== !!obj.bknown)
+        otmp.bknown = obj.bknown = 0;
+    if (!!otmp.rknown !== !!obj.rknown)
+        otmp.rknown = obj.rknown = 0;
+    if (!!otmp.greased !== !!obj.greased)
+        otmp.greased = obj.greased = 0;
+    if (otmp.orotten || obj.orotten)
+        otmp.orotten = obj.orotten = 1;
+
+    const otmpWeight = otmp.oeaten ? otmp.oeaten : otmp.owt;
+    const objWeight = obj.oeaten ? obj.oeaten : obj.owt;
+    const totalWeight = otmpWeight + objWeight;
+    if (totalWeight > 0) {
+        const moves = game.moves ?? 0;
+        const relativeAge = Math.trunc(
+            ((moves - (otmp.age ?? 0)) * otmpWeight
+             + (moves - (obj.age ?? 0)) * objWeight) / totalWeight);
+        otmp.age = moves - relativeAge;
+    }
+    otmp.owt += objWeight;
+    if (otmp.oeaten || obj.oeaten)
+        otmp.oeaten = totalWeight;
+    otmp.quan = 1;
+
+    if (otmp.globby && obj.globby) {
+        const otmpTimer = stop_timer(SHRINK_GLOB, otmp) || 25;
+        const objTimer = stop_timer(SHRINK_GLOB, obj) || 25;
+        start_glob_timeout(otmp,
+                           Math.trunc((otmpTimer + objTimer + 1) / 2));
+    }
+
+    obj_extract_self(obj);
+    obj.where = OBJ_DELETED;
+    pobj.o = null;
+    return otmp;
+}
+
 // src/invent.c merged() — fold *pobj into *potmp. Returns 1 on success.
 //
 // Both arguments are pointers-to-pointers in C because otmp can be REPLACED by
@@ -1136,8 +1214,10 @@ export function merged(potmp, pobj) {
         if (obj.pickup_prev && otmp.where === OBJ_INVENT)
             otmp.pickup_prev = 1;
 
-        if (obj.lamplit || obj.timed)
-            note_unported_invent('merged:light_sources_and_timers');
+        if (obj.lamplit)
+            note_unported_invent('merged:light_sources');
+        if (obj.timed)
+            obj_stop_timers(obj);
 
         /* objects can be identified by comparing them (unless Blind,
            but that is handled in mergable()); the object becomes
@@ -1169,7 +1249,15 @@ export function merged(potmp, pobj) {
             otmp.bypass = 1;
 
         if (obj.globby) {
-            note_unported_invent('merged:obj_absorb');
+            if (carried(otmp)) {
+                return (async () => {
+                    await pudding_merge_message(otmp, obj);
+                    absorb_globs(potmp, pobj);
+                    return 1;
+                })();
+            }
+            void pudding_merge_message(otmp, obj);
+            absorb_globs(potmp, pobj);
             return 1;
         }
 

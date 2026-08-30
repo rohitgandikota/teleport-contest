@@ -39,7 +39,8 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
          A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL,
-         LAVAPOOL, LAVAWALL } from './const.js';
+         LAVAPOOL, LAVAWALL, ROOM, ICE, ICED_POOL, ICED_MOAT,
+         DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, DB_UNDER, DB_ICE } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -2580,9 +2581,11 @@ async function wizterrainwish(d) {
     const wanted = d.bp.toLowerCase();
     if (!lev)
         return null;
+    const oldtyp = lev.typ;
+    const isDrawbridge = oldtyp === DRAWBRIDGE_DOWN
+        || oldtyp === DRAWBRIDGE_UP;
 
     if (wanted.endsWith('sink')) {
-        const oldtyp = lev.typ;
         lev.typ = SINK;
         if (oldtyp !== SINK)
             game.level.flags.nsinks = (game.level.flags.nsinks || 0) + 1;
@@ -2613,6 +2616,21 @@ async function wizterrainwish(d) {
             .filter(obj => obj.ox === x && obj.oy === y);
         if (floorObjects.length)
             note_unported_objnam('wizterrainwish:lava-fire-damage');
+    } else if (wanted.endsWith('ice')) {
+        if (!isDrawbridge) {
+            lev.typ = ICE;
+            lev.icedpool = oldtyp === ROOM ? ICED_POOL : ICED_MOAT;
+        } else {
+            lev.drawbridgemask = ((lev.drawbridgemask ?? 0) & ~DB_UNDER)
+                | DB_ICE;
+        }
+        const { del_engr_at } = await import('./engrave.js');
+        del_engr_at(x, y);
+        if (wanted.startsWith('melting '))
+            note_unported_objnam('wizterrainwish:melting-ice-timer');
+        await pline(isDrawbridge
+            ? `Ice ${oldtyp === DRAWBRIDGE_UP ? 'in front of' : 'under'} the drawbridge.`
+            : 'Solid ice.');
     } else if (wanted.endsWith('altar')) {
         const alignment = wanted.startsWith('chaotic ') ? A_CHAOTIC
                         : wanted.startsWith('neutral ') ? A_NEUTRAL

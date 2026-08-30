@@ -1,0 +1,49 @@
+{
+  "name": "glob-lifecycle",
+  "description": "Merge carried and floor globs, preserve combined weight and the C timer average, complete ordinary and ice-delayed floor lifecycles, and verify that a floor container inherits the ice delay.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "object.tools-containers",
+    "terrain.water-lava",
+    "turn.timers",
+    "ui.count-repeat",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "object.glob.inventory-coalesce",
+    "object.glob.floor-coalesce",
+    "object.glob.timer-transfer",
+    "timer.glob.floor-on-ice",
+    "timer.glob.container-on-ice",
+    "debug.terrain-wish.ice"
+  ],
+  "segments": [
+    {
+      "seed": 7166,
+      "datetime": "20000110233000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO qr\r\u0017blessed cloak of invisibility\rTbWp #wizkill\rm.\u001b\u0017glob of green slime\r\u0017glob of green slime\ri\u001b300.\u001b300.\u001b300.\u001b300.\u001b300.\u001bi\u001b"
+    },
+    {
+      "seed": 7167,
+      "datetime": "20000110233100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO qr\r\u0017blessed cloak of invisibility\rTbWo \u0017glob of green slime\rdp\u0017glob of green slime\rdq: "
+    },
+    {
+      "seed": 7166,
+      "datetime": "20000110233200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO qr\r\u0017blessed cloak of invisibility\rTbWp #wizkill\rm.\u001b\u0017ice\r\u0017glob of green slime\rdq300.\u001b300.\u001b300.\u001b300.\u001b300.\u001b: "
+    },
+    {
+      "seed": 7166,
+      "datetime": "20000110233300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO qr\r\u0017blessed cloak of invisibility\rTbWp #wizkill\rm.\u001b\u0017ice\r\u0017empty uncursed sack\r\u0017glob of green slime\raqsrdq300.\u001b300.\u001b300.\u001b,aqoa\r: "
+    }
+  ]
+}

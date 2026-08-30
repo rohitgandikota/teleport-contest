@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T20:20:52.701Z. Local commit: `c14098a`.
+Last refreshed: 2026-08-30T20:33:19.416Z. Local commit: `6963e63`.
 Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:55:52.282Z.
 
 ## Score summary
@@ -20,7 +20,7 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `c14098a` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `6963e63` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
@@ -28,15 +28,15 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 |---|---:|---:|
 | Cells only | 11405/11405 | 39550/39557 |
 | Cursor positions | 11405/11405 | 39172/39557 |
-| Startup and per-turn estimate | 68+0.61/turn | 105+0.24/turn |
+| Startup and per-turn estimate | 68+0.58/turn | 106+0.25/turn |
 
 ## Latest local expansion
 
-- `amulet()` now follows `src/wizard.c` for sleeping Wizards: dead monsters are skipped, each live sleeper receives one ordered `rn2(40)` wake roll, and the first successful roll wakes that Wizard.
-- A distant wake prints the creepy-feeling warning. Awake Wizards and an empty Wizard count consume no wake RNG.
-- The focused late-game C oracles remain exact at 50356/50356 RNG calls and 530/530 screens, cells, and cursors.
-- The new deterministic state gate covers dead-Wizard skipping, failed and successful ordered rolls, wake state, the distant warning, and both no-draw paths.
-- The former `amulet:wake_wizard` marker no longer appears in any of the 210 supplemental sessions.
+- Revealing a mimic now clears its saved corpse, egg, tin, statue, fruit, or altar payload to `NON_PM` before clearing the disguise, matching `src/mon.c`.
+- Three natural-shop C oracles remain exact at 18170/18170 RNG calls and 278/278 screens, cells, and cursors. A state gate covers the otherwise invisible payload reset.
+- `m_detach()` now calls `shkgone()` for removed shopkeepers. The new state gate caught the missing call even though the later terminal frames already matched.
+- Detached shopkeepers now clear room residency, former stock ownership, and active-shop membership while remaining in the monster list until the deferred purge.
+- The valid late-game world-tour oracle remains exact at 123614/123614 RNG calls and 833/833 screens, cells, and cursors. The broad corpus no longer reports either `seemimic:mcorpsenm` or `mon:m_detach`.
 - Deterministic coverage remains 105/105 game elements and 126/126 named C branches. Public remains 44/44, the hang gate remains 44/44, and 80 fresh games across 13 roles reached no unported path.
 - This checkpoint has not been scored by the hidden judge. The displayed held-out result is from the last published build.
 
@@ -57,6 +57,7 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T20:33:19.416Z | `6963e63` | 11405/11405 | 39172/39557 | 6032/11265 | 3 |
 | 2026-08-30T20:20:52.701Z | `c14098a` | 11405/11405 | 39172/39557 | 6032/11265 | 3 |
 | 2026-08-30T20:10:00.784Z | `245ff75` | 11405/11405 | 39172/39557 | 6032/11265 | 3 |
 | 2026-08-30T19:49:59.418Z | `e080258` | 11405/11405 | 38746/39131 | 6032/11265 | 3 |
@@ -66,7 +67,6 @@ Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:
 | 2026-08-30T18:40:25.838Z | `1e344aa` | 11405/11405 | 37936/38321 | 6032/11265 | 3 |
 | 2026-08-30T18:10:36.798Z | `715ed63` | 11405/11405 | 37244/37629 | 6032/11265 | 3 |
 | 2026-08-30T18:00:43.993Z | `1b21bb8` | 11405/11405 | 37051/37436 | 6032/11265 | 3 |
-| 2026-08-30T17:44:51.360Z | `a53e7a8` | 11405/11405 | 36382/36767 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

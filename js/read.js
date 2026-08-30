@@ -634,14 +634,16 @@ export async function create_particular() {
         const sleeping = /\bsleeping\s+/i.test(bufp);
         if (sleeping)
             bufp = bufp.replace(/\bsleeping\s+/i, '').trim();
+        const maketame = /^tame /i.test(bufp);
         const makehostile = /^hostile /i.test(bufp);
         const makepeaceful = /^peaceful /i.test(bufp);
-        const monster_name = makehostile ? bufp.slice(8)
+        const monster_name = maketame ? bufp.slice(5)
+                           : makehostile ? bufp.slice(8)
                            : makepeaceful ? bufp.slice(9) : bufp;
 
         /* create_particular_parse()'s modifier scan is recorded; the plain
            name and explicit hostile/peaceful forms are live. */
-        if (/^\d|saddled |invisible |hidden |tame |male |female /i.test(bufp))
+        if (/^\d|saddled |invisible |hidden |male |female /i.test(bufp))
             note_unported_read('create_particular:modifiers');
 
         const box = {};
@@ -690,7 +692,10 @@ export async function create_particular() {
                     near ? ' next to you' : ''}.`);
             }
 
-            if (mtmp && (makehostile || makepeaceful)) {
+            if (mtmp && maketame) {
+                const { tamedog } = await import('./dog.js');
+                await tamedog(mtmp, null, false);
+            } else if (mtmp && (makehostile || makepeaceful)) {
                 mtmp.mtame = 0;
                 mtmp.mpeaceful = makepeaceful ? 1 : 0;
                 set_malign(mtmp);

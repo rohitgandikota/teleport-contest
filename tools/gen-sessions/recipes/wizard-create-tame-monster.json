@@ -1,0 +1,23 @@
+{
+  "name": "wizard-create-tame-monster",
+  "description": "The wizard monster command creates a tame fire elemental, then farlook confirms its tame state.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.movement",
+    "monster.pets",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "monster.taming.wizard-created"
+  ],
+  "segments": [
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame fire elemental\r\u0006;k."
+    }
+  ]
+}

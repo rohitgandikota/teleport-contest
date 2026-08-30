@@ -1,0 +1,25 @@
+{
+  "name": "monster-green-slime-consumption",
+  "description": "A starving tame mastodon eats a thrown green slime glob and changes into a green slime through the forced-form consumption path.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.movement",
+    "monster.special-effects",
+    "object.food-corpses",
+    "turn.speed-energy",
+    "forms.polymorph"
+  ],
+  "branches": [
+    "monster.consume.green-slime"
+  ],
+  "segments": [
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,!acoustics\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed potion of monster detection\rqe\u001b#wizkill\rm.m.m.\u001b\u0017uncursed leash\r\u0007tame mastodon\r\u0006afymO qr\r1800.\u0018  \u0006\u0017glob of green slime\rtgy   \u0006;y."
+    }
+  ]
+}

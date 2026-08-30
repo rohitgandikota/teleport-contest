@@ -32,7 +32,7 @@ import { start_timer, TIMER_OBJECT,
          obj_stop_timers } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
 import { Is_rogue_level, MAX_OIL_IN_FLASK, NODIR, OBJ_FLOOR, OBJ_INVENT,
-         In_quest, MON_DETACH } from './const.js';
+         In_quest, MON_DETACH, isok } from './const.js';
 import { rnd, rn1, rn2, rne, rnz } from './rng.js';
 import { OCLASSES, ONAMES, SKILLS, obj_descr } from './objects_data.js';
 import {
@@ -42,7 +42,8 @@ import { PMNAMES, MONSYMS, MFLAGS, GROWNUPS } from './monst_data.js';
 /* invent.js imports erosion_matters() from here, so this edge closes a cycle.
    Both sides export function DECLARATIONS, which hoist, so each module sees the
    other's bindings by the time anything is called. */
-import { merged, weight, update_inventory, obj_extract_self } from './invent.js';
+import { merged, mergable, weight, update_inventory,
+         obj_extract_self } from './invent.js';
 import { OBJ_CONTAINED, Is_pudding, Is_candle } from './obj.js';
 import { oname, noveltitle } from './do_name.js';
 import { ONAME_NO_FLAGS } from './const.js';
@@ -1196,6 +1197,32 @@ export function place_object(otmp, x, y) {
        again: obj_extract_self's OBJ_FREE arm leaves it in level.objects. */
     otmp.where = OBJ_FLOOR;
     (game.level.objects ||= []).unshift(otmp);
+}
+
+// src/mkobj.c:3661 obj_nexto_xy(), find a mergable object on this or an
+// adjacent square. The adjacent scan always spends two draws to choose its
+// horizontal and vertical order, even when there is no matching object.
+export function obj_nexto_xy(obj, x, y, recurs) {
+    const here = (game.level.objects || []).find((otmp) =>
+        otmp !== obj && otmp.where === OBJ_FLOOR
+        && otmp.ox === x && otmp.oy === y
+        && otmp.otyp === obj.otyp && mergable(otmp, obj));
+    if (here || !recurs)
+        return here || null;
+
+    const dx = rn2(2) ? -1 : 1;
+    const dy = rn2(2) ? -1 : 1;
+    const ex = x - dx, ey = y - dy;
+    for (let fx = ex; Math.abs(fx - ex) < 3; fx += dx) {
+        for (let fy = ey; Math.abs(fy - ey) < 3; fy += dy) {
+            if (isok(fx, fy) && (fx !== x || fy !== y)) {
+                const otmp = obj_nexto_xy(obj, fx, fy, false);
+                if (otmp)
+                    return otmp;
+            }
+        }
+    }
+    return null;
 }
 
 export function mkgold(amount, x, y) {

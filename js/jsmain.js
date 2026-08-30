@@ -312,7 +312,11 @@ export async function runSegment(input) {
     // Drive the game loop until input is exhausted. The judge looks
     // at game.getScreens() afterwards; whatever the contestant
     // captured is what gets compared.
-    const maxIter = Math.max(moves.length * 8, 1024);
+    const repeatCounts = [...moves.matchAll(/\d+/g)]
+        .map((match) => Number.parseInt(match[0], 10))
+        .filter(Number.isFinite);
+    const maxRepeat = repeatCounts.length ? Math.max(...repeatCounts) : 0;
+    const maxIter = Math.max(moves.length * 8, maxRepeat + 1024, 1024);
     for (let iter = 0; iter < maxIter; iter++) {
         try {
             await moveloop_core();

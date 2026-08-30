@@ -35,7 +35,7 @@ import { obj_resists, destroy_items, resist } from './zap.js';
 import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
          undead_to_corpse, zombie_form, discard_minvent,
          add_to_container } from './mkobj.js';
-import { weight } from './invent.js';
+import { weight, update_inventory } from './invent.js';
 import { newsym, canseemon, canspotmon, pline, see_monsters,
          unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
@@ -48,7 +48,7 @@ import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          ARTICLE_YOUR, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES,
          SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
          TELEPORT_CONTROL, TELEPAT, LAST_PROP, INTRINSIC,
-         SUPPRESS_SADDLE } from './const.js';
+         SUPPRESS_SADDLE, PRONOUN_HALLU } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
@@ -75,8 +75,8 @@ import { onscary, in_your_sanctuary, m_can_break_boulder, mon_knows_traps, can_f
 import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
          Is_astralevel, has_emin, has_epri, has_eshk, RLOC_NOMSG,
          RLOC_MSG, MON_OBLITERATE } from './const.js';
-import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless, amphibious } from './mondata.js';
+import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, nolimbs, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
+    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless, amphibious, pronoun_gender } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
@@ -959,8 +959,13 @@ export async function m_consume_obj(mtmp, otmp) {
         return;
     }
 
-    const specialEffect = otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME
-        || effectpm === PMNAMES.PM_NURSE
+    if (otmp.otyp === ONAMES.GLOB_OF_GREEN_SLIME) {
+        await newcham(mtmp, game.mons[PMNAMES.PM_GREEN_SLIME],
+                      vis ? NC_SHOW_MSG : 0);
+        return;
+    }
+
+    const specialEffect = effectpm === PMNAMES.PM_NURSE
         || (effectptr
             && (touch_petrifies(effectptr)
                 || effectpm === PMNAMES.PM_MEDUSA))
@@ -3112,30 +3117,34 @@ export function newcham(mtmp, mdat, ncflags) {
     mtmp.mnum = mndx;
     mtmp.data = mdat;
 
-    /* src/mon.c:5397 — used to give light, now doesn't, or vice versa */
-    if (emits_light(olddata) !== emits_light(mdat)) {
-        if (emits_light(olddata))
-            del_light_source(LS_MONSTER, mtmp.m_id);
-        if (emits_light(mdat))
-            new_light_source(mtmp.mx, mtmp.my, emits_light(mdat),
-                             LS_MONSTER, mtmp.m_id);
-    }
+    const leashNeedsRelease = mtmp.mleashed
+        && (mtmp.mnum === PMNAMES.PM_LONG_WORM
+            || unsolid(mtmp.data)
+            || (nolimbs(mtmp.data) && !has_head(mtmp.data)));
+    if (mtmp.mleashed && !leashNeedsRelease)
+        update_inventory();
 
-    if (mdat === game.mons[PMNAMES.PM_LONG_WORM]
-        && (mtmp.wormno = get_wormno()) !== 0) {
-        worm_wire(goodpos);
-        initworm(mtmp, rn2(5));
-        place_worm_tail_randomly(mtmp, mtmp.mx, mtmp.my);
-    }
+    const finishChange = () => {
+        if (emits_light(olddata) !== emits_light(mdat)) {
+            if (emits_light(olddata))
+                del_light_source(LS_MONSTER, mtmp.m_id);
+            if (emits_light(mdat))
+                new_light_source(mtmp.mx, mtmp.my, emits_light(mdat),
+                                 LS_MONSTER, mtmp.m_id);
+        }
 
-    mtmp.meverseen = 0;
-    newsym(mtmp.mx, mtmp.my);
+        if (mdat === game.mons[PMNAMES.PM_LONG_WORM]
+            && (mtmp.wormno = get_wormno()) !== 0) {
+            worm_wire(goodpos);
+            initworm(mtmp, rn2(5));
+            place_worm_tail_randomly(mtmp, mtmp.mx, mtmp.my);
+        }
 
-    /* leashes, mimicry, worm shrink: recorded when reached */
-    if (!msg)
-        return 1;
+        mtmp.meverseen = 0;
+        newsym(mtmp.mx, mtmp.my);
+    };
 
-    return (async () => {
+    const showChange = async () => {
         if (!canspotmon(mtmp)) {
             if (seenorsensed)
                 await pline(`${oldname} disappears!`);
@@ -3150,7 +3159,31 @@ export function newcham(mtmp, mdat, ncflags) {
             await pline(`${oldname} turns into ${newname}!`);
         }
         return 1;
-    })();
+    };
+
+    if (leashNeedsRelease) {
+        return (async () => {
+            if (canseemon(mtmp)) {
+                const possessive = ['his', 'her', 'its', 'their'][
+                    pronoun_gender(mtmp, PRONOUN_HALLU)];
+                await pline(`${Monnam(mtmp)} pulls free of ${possessive} leash!`);
+            } else {
+                await pline('Your leash falls slack.');
+            }
+            const leash = (game.invent || []).find((obj) =>
+                obj.otyp === ONAMES.LEASH && obj.leashmon === mtmp.m_id);
+            if (leash) {
+                leash.leashmon = 0;
+                update_inventory();
+            }
+            mtmp.mleashed = 0;
+            finishChange();
+            return msg ? await showChange() : 1;
+        })();
+    }
+
+    finishChange();
+    return msg ? showChange() : 1;
 }
 
 // src/mon.c:4367 wake_nearby() / wake_nearto_core() — noise wakes monsters

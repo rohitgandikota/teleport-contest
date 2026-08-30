@@ -340,9 +340,10 @@ export async function throwit(obj, wep_mask) {
     if (is_pool(bx, by) || is_lava(bx, by))
         note_unported_dothrow('throwit:splash');
 
-    /* flooreffects consumes the object in water/lava/altars; plain floor
-       falls through to placement */
     game.thrownobj = null;
+    const { flooreffects } = await import('./do.js');
+    if (await flooreffects(obj, bx, by, 'fall'))
+        return;
     place_object(obj, bx, by);
     stackobj(obj);
     if (cansee(bx, by))

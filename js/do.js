@@ -17,7 +17,7 @@ import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
 import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
 import { place_object, rider_revival_time, set_bknown, set_corpsenm,
-         splitobj, zombie_form } from './mkobj.js';
+         splitobj, zombie_form, obj_nexto_xy } from './mkobj.js';
 import { canseemon, cls, pline, newsym } from './display.js';
 import { pline_The, You, You_cant, You_feel, You_hear, Your }
     from './pline.js';
@@ -487,7 +487,9 @@ export async function flooreffects(obj, x, y, verb) {
             res = true;
         }
     } else if (obj.globby) {
-        note_unported_do('flooreffects:obj_meld');
+        const nearby = obj_nexto_xy(obj, x, y, true);
+        if (nearby)
+            note_unported_do('flooreffects:obj_meld');
     } else if (game.context?.mon_moving
                && IS_ALTAR(game.level.at(x, y)?.typ) && cansee(x, y)) {
         note_unported_do('flooreffects:doaltarobj');

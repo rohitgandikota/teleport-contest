@@ -328,6 +328,11 @@ export const a_monnam = (mtmp) =>
 export const noname_monnam = (mtmp, article) =>
     x_monnam(mtmp, article, null, SUPPRESS_NAME, false);
 
+// src/do_name.c:1035 l_monnam(), a leash name without an article.
+export const l_monnam = (mtmp) =>
+    x_monnam(mtmp, ARTICLE_NONE, null,
+             has_mgivenname(mtmp) ? SUPPRESS_SADDLE : 0, true);
+
 // src/do_name.c:1052 christen_monst() — give a monster its name.
 // C stores it in mextra and truncates to PL_PSIZ-1 (31); the ghost rename
 // arm (a christened ghost keeps "X's ghost" form) lives in x_monnam.

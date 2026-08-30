@@ -31,7 +31,7 @@ import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
          GETOBJ_PROMPT } from './invent.js';
 import { OCLASSES, MATERIALS } from './objects_data.js';
 import { mstatusline, ustatusline } from './insight.js';
-import { Norep, You_cant, You_hear, You_see } from './pline.js';
+import { Norep, You_cant, You_hear, You_see, pline_The } from './pline.js';
 import { d, rn1, rn2, rnd, rnl } from './rng.js';
 import { isok, ACCESSIBLE, IS_STWALL, IS_DOOR, D_ISOPEN, IRONBARS, ICE,
          MAX_OIL_IN_FLASK, BOLT_LIM, NON_PM } from './const.js';
@@ -39,8 +39,8 @@ import { walk_path } from './dothrow.js';
 import { closed_door } from './cmd.js';
 import { sobj_at } from './invent.js';
 import { ONAMES } from './objects_data.js';
-import { canseemon, canspotmon, map_invisible, newsym, pline,
-         sensemon } from './display.js';
+import { canseemon, canspotmon, glyph_is_invisible_at, map_invisible, newsym,
+         pline, sensemon, unmap_invisible } from './display.js';
 import { You, There, You_feel, Your } from './pline.js';
 import { dist2, distu, s_suffix } from './hacklib.js';
 import { cansee } from './vision.js';
@@ -50,15 +50,17 @@ import { FACE, FINGER, HAND } from './const.js';
 import { OBJ_NAME, The, Tobjnam, Yname2, Yobjnam2, an, aobjnam, doname, singular,
          cxname, xname, yname, the, thesimpleoname, gloves_simple_name, makeplural,
          otense, vtense } from './objnam.js';
-import { Amonnam, Monnam, a_monnam, hcolor, mon_nam, pmname, upstart,
-         x_monnam, y_monnam } from './do_name.js';
+import { Amonnam, Monnam, a_monnam, hcolor, l_monnam, mon_nam,
+         noit_mon_nam, pmname, upstart, x_monnam, y_monnam }
+    from './do_name.js';
 import { defsyms } from './drawing_data.js';
 import { bimanual, carried, Is_candle, is_boots, is_gloves,
          is_flimsy } from './obj.js';
 import { clear_splitobjs, mkobj, mksobj, place_object, rnd_class, set_bknown,
          splitobj, set_tin_variety, unbless } from './mkobj.js';
-import { attacktype_fordmg, can_blow, haseyes, nohands, passes_walls,
-         poly_when_stoned, throws_rocks, touch_petrifies } from './mondata.js';
+import { attacktype_fordmg, can_blow, has_head, haseyes, nohands, nolimbs,
+         passes_walls, poly_when_stoned, throws_rocks, touch_petrifies,
+         unsolid } from './mondata.js';
 import { check_capacity, invocation_pos, losehp, may_passwall } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { makeknown, observe_object } from './o_init.js';
@@ -108,6 +110,106 @@ const MUSICAL_INSTRUMENTS = [
 const APPLIED_CONTAINERS = [ONAMES.LARGE_BOX, ONAMES.CHEST, ONAMES.ICE_BOX,
                             ONAMES.SACK, ONAMES.BAG_OF_HOLDING,
                             ONAMES.OILSKIN_SACK];
+
+// src/apply.c:698 number_leashed().
+export function number_leashed() {
+    return (game.invent || []).filter((obj) =>
+        obj.otyp === ONAMES.LEASH && obj.leashmon).length;
+}
+
+// src/apply.c:761 leashable().
+export function leashable(mtmp) {
+    return mtmp.mnum !== PMNAMES.PM_LONG_WORM
+        && !unsolid(mtmp.data)
+        && (!nolimbs(mtmp.data) || has_head(mtmp.data));
+}
+
+// src/apply.c:881 get_mleash().
+export function get_mleash(mtmp) {
+    return (game.invent || []).find((obj) =>
+        obj.otyp === ONAMES.LEASH && obj.leashmon === mtmp.m_id) || null;
+}
+
+async function use_leash_core(obj, mtmp, cc, spotmon) {
+    if (!spotmon && !glyph_is_invisible_at(cc.x, cc.y)) {
+        await You(`fail to ${obj.leashmon ? 'un' : ''}leash something.`);
+        map_invisible(cc.x, cc.y);
+    } else if (!mtmp.mtame) {
+        await pline(`${Monnam(mtmp)} ${obj.leashmon
+            ? 'is not' : 'cannot be'} leashed!`);
+    } else if (!obj.leashmon) {
+        if (mtmp.mleashed) {
+            await pline(`This ${spotmon ? l_monnam(mtmp)
+                : 'creature'} is already leashed.`);
+        } else if (unsolid(mtmp.data)) {
+            await pline('The leash would just fall off.');
+        } else if (nolimbs(mtmp.data) && !has_head(mtmp.data)) {
+            await pline(`${Monnam(mtmp)} has no extremities the leash would fit.`);
+        } else if (!leashable(mtmp)) {
+            let name = l_monnam(mtmp);
+            if (cc.x !== mtmp.mx || cc.y !== mtmp.my)
+                name = `${s_suffix(name)} tail`;
+            await pline(`The leash won't fit onto ${spotmon ? 'your ' : ''}${name}.`);
+        } else {
+            await You(`slip the leash around ${spotmon ? 'your ' : ''}${l_monnam(mtmp)}.`);
+            mtmp.mleashed = 1;
+            obj.leashmon = mtmp.m_id;
+            mtmp.msleeping = 0;
+            update_inventory();
+        }
+    } else if (obj.leashmon !== mtmp.m_id) {
+        await pline('This leash is not attached to that creature.');
+    } else if (obj.cursed) {
+        await pline_The('leash would not come off!');
+        set_bknown(obj, 1);
+    } else {
+        mtmp.mleashed = 0;
+        obj.leashmon = 0;
+        update_inventory();
+        await You(`remove the leash from ${spotmon ? 'your ' : ''}${l_monnam(mtmp)}.`);
+    }
+}
+
+// src/apply.c:769 use_leash().
+async function use_leash(obj) {
+    if (game.u.uswallow) {
+        const engulfer = noit_mon_nam(game.u.ustuck);
+        const action = !obj.leashmon
+            ? `leash ${engulfer} from inside.`
+            : obj.leashmon === game.u.ustuck.m_id
+              ? `unleash ${engulfer} from inside.`
+              : `unleash anything from inside ${engulfer}.`;
+        await You_cant(action);
+        return ECMD_OK;
+    }
+    if (!obj.leashmon && number_leashed() >= 2) {
+        await You('cannot leash any more pets.');
+        return ECMD_OK;
+    }
+
+    const cc = {};
+    if (!await get_adjacent_loc(null, null, game.u.ux, game.u.uy, cc))
+        return ECMD_OK;
+
+    if (cc.x === game.u.ux && cc.y === game.u.uy) {
+        if (game.u.usteed && game.u.dz > 0) {
+            await use_leash_core(obj, game.u.usteed, cc, true);
+            return ECMD_TIME;
+        }
+        await pline('Leash yourself?  Very funny...');
+        return ECMD_OK;
+    }
+
+    const mtmp = m_at(cc.x, cc.y);
+    if (!mtmp) {
+        await There('is no creature there.');
+        unmap_invisible(cc.x, cc.y);
+        return ECMD_TIME;
+    }
+
+    await use_leash_core(obj, mtmp, cc, canspotmon(mtmp));
+    return ECMD_TIME;
+}
 
 function on_stairs_at_u() {
     for (let stway = game.stairs; stway; stway = stway.next)
@@ -2142,6 +2244,9 @@ export async function doapply() {
         await use_whistle(obj);
         return ECMD_TIME;
     }
+
+    if (obj.otyp === ONAMES.LEASH)
+        return await use_leash(obj);
 
     if (obj.otyp === ONAMES.EUCALYPTUS_LEAF) {
         if (obj.blessed) {

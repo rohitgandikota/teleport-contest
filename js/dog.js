@@ -21,7 +21,10 @@ import { MMOVE_NOTHING, MMOVE_MOVED, MMOVE_DIED, MMOVE_DONE,
          NEED_WEAPON, NEED_HTH_WEAPON } from './const.js';
 import { acurr } from './attrib.js';
 import { put_saddle_on_mon } from './steed.js';
-import { perceives, is_domestic, is_undead, needspick, nohands, verysmall, is_animal, mindless, attacktype, dmgtype, resists_ston, resists_acid, max_passive_dmg, is_flyer, is_floater, regenerates, resist_conflict } from './mondata.js';
+import { perceives, is_domestic, is_undead, needspick, nohands, verysmall,
+         is_animal, mindless, attacktype, dmgtype, resists_ston, resists_acid,
+         max_passive_dmg, is_flyer, is_floater, regenerates, resist_conflict,
+         is_covetous, is_human, sticks } from './mondata.js';
 import { sobj_at, eaten_stat, obj_extract_self } from './invent.js';
 import { may_dig } from './hack.js';
 import { is_metallic, OBJ_FLOOR } from './obj.js';
@@ -30,7 +33,7 @@ import { newsym, canspotmon, mon_visible, pline, canseemon } from './display.js'
 import { splitobj, peek_at_iced_corpse_age, place_object } from './mkobj.js';
 import { yelp, growl } from './sounds.js';
 import { m_consume_obj, is_pick, check_gear_next_turn, healmon,
-         wake_nearto } from './mon.js';
+         wake_nearto, unstuck } from './mon.js';
 import {
     mfndpos, mon_allowflags, is_pool, is_lava, can_carry, m_at, t_at,
 } from './mon.js';
@@ -39,7 +42,7 @@ import {
     IS_OBSTRUCTED, IS_DOOR, D_CLOSED, D_LOCKED, isok,
     IS_STWALL, IS_TREE, W_NONDIGGABLE,
     ALLOW_MDISP, ALLOW_TRAPS, A_CHA, CORPSTAT_GENDER,
-    CORPSTAT_FEMALE, CORPSTAT_MALE,
+    CORPSTAT_FEMALE, CORPSTAT_MALE, Upolyd,
 } from './const.js';
 import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
 import { MFLAGS, MONSYMS, NUMMONS, MSOUND, ATTKS } from './monst_data.js';
@@ -49,14 +52,15 @@ import { rn2, rnd, getRngLog } from './rng.js';
 import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
 import { doname, xname, the, The } from './objnam.js';
-import { Monnam, noit_Monnam, christen_monst, x_monnam } from './do_name.js';
+import { Monnam, noit_Monnam, christen_monst, x_monnam,
+         y_monnam } from './do_name.js';
 import { ARTICLE_YOUR } from './const.js';
 import { MIGR_RANDOM, MIGR_APPROX_XY, MIGR_EXACT_XY, MIGR_WITH_HERO,
          MIGR_LEFTOVERS, MON_MIGRATING, MON_LIMBO,
          RLOC_NOMSG } from './const.js';
 import { Hallucination } from './youprop.js';
 import { night } from './calendar.js';
-import { pline_xy, You } from './pline.js';
+import { pline_xy, You, You_feel } from './pline.js';
 import { relobj } from './steal.js';
 import { set_apparxy, mon_track_add } from './monmove.js';
 import { gettrack } from './track.js';
@@ -580,9 +584,15 @@ export function dogfood(mon, obj) {
     }
 }
 
-// src/dog.c:1143 tamedog(), for food thrown at an existing pet. The broader
-// taming arm stays visible as unported until it has its own C oracle.
+// src/dog.c:1143 tamedog(), tame a monster or feed an existing pet.
 export async function tamedog(mtmp, obj, givemsg) {
+    let blessedScroll = false;
+    if (obj && (obj.oclass === OCLASSES.SCROLL_CLASS
+                || obj.oclass === OCLASSES.SPBOOK_CLASS)) {
+        blessedScroll = !!obj.blessed;
+        obj = null;
+    }
+
     if (mtmp.mfrozen)
         mtmp.mfrozen = Math.trunc((mtmp.mfrozen + 1) / 2);
     if (mtmp.msleeping)
@@ -607,12 +617,24 @@ export async function tamedog(mtmp, obj, givemsg) {
     mtmp.mflee = 0;
     mtmp.mfleetim = 0;
 
+    if (mtmp === game.u.ustuck) {
+        if (game.u.uswallow) {
+            const { expels } = await import('./mhitu.js');
+            await expels(mtmp, mtmp.data, true);
+        } else {
+            const heroData = game.youmonst?.data ?? game.mons[game.u.umonnum];
+            if (!(Upolyd(game.u) && sticks(heroData)))
+                await unstuck(mtmp);
+        }
+    }
+
     if (mtmp.mtame && obj) {
-        const tasty = dogfood(mtmp, obj);
-        if (mtmp.mcanmove && !mtmp.mconf && !mtmp.meating
-            && (tasty === DOGFOOD
-                || (tasty <= ACCFOOD
-                    && mtmp.edog.hungrytime <= game.moves))) {
+        if (mtmp.mcanmove && !mtmp.mconf && !mtmp.meating) {
+            const tasty = dogfood(mtmp, obj);
+            if (!(tasty === DOGFOOD
+                  || (tasty <= ACCFOOD
+                      && mtmp.edog.hungrytime <= game.moves)))
+                return false;
             if (canseemon(mtmp)) {
                 const bigCorpse = obj.otyp === ONAMES.CORPSE
                     && ismnum(obj.corpsenm)
@@ -629,8 +651,51 @@ export async function tamedog(mtmp, obj, givemsg) {
         return false;
     }
 
-    note_unported('tamedog:new_pet');
-    return false;
+    if (mtmp.mtame && mtmp.mtame < 10) {
+        if (mtmp.mtame < rnd(10))
+            mtmp.mtame++;
+        if (blessedScroll)
+            mtmp.mtame = Math.min(10, mtmp.mtame + 2);
+        return false;
+    }
+
+    if (mtmp.isshk) {
+        note_unported('tamedog:make_happy_shk');
+        return false;
+    }
+
+    const heroData = game.youmonst?.data ?? game.mons[game.u.umonnum];
+    if (!mtmp.mcanmove || mtmp.isshk || mtmp.isgd || mtmp.ispriest
+        || mtmp.isminion || is_covetous(mtmp.data) || is_human(mtmp.data)
+        || (is_demon(mtmp.data) && !is_demon(heroData))
+        || (obj && dogfood(mtmp, obj) >= MANFOOD))
+        return false;
+
+    if (mtmp.m_id === game.quest_status?.leader_m_id)
+        return false;
+
+    initedog(mtmp, !mtmp.edog);
+
+    if (obj) {
+        place_object(obj, mtmp.mx, mtmp.my);
+        if (await dog_eat(mtmp, obj, mtmp.mx, mtmp.my, true) === 2)
+            return true;
+    }
+
+    if (givemsg && canspotmon(mtmp)) {
+        await pline(`${Monnam(mtmp)} seems quite ${Hallucination()
+            ? 'approachable' : 'friendly'}.`);
+    }
+
+    newsym(mtmp.mx, mtmp.my);
+    if (mtmp.wormno)
+        note_unported('tamedog:redraw_worm');
+    if (attacktype(mtmp.data, ATTKS.AT_WEAP)) {
+        mtmp.weapon_check = NEED_HTH_WEAPON;
+        const { mon_wield_item } = await import('./weapon.js');
+        await mon_wield_item(mtmp);
+    }
+    return true;
 }
 
 /* src/artifact.c is not ported; no session generates a quest artifact this
@@ -832,7 +897,11 @@ export function dog_goal(mtmp, edog, after, udist, whappr) {
     const in_masters_sight = couldsee(omx, omy);
     const dog_has_minvent = !!droppables(mtmp);
 
-    for (const obj of (game.level.objects || [])) {
+    if (!edog || mtmp.mleashed) {
+        gtyp = APPORT;
+        gx = game.u.ux;
+        gy = game.u.uy;
+    } else for (const obj of (game.level.objects || [])) {
         /* C walks fobj, the FLOOR chain: an object the hero picked up
            (where OBJ_INVENT, ox/oy stale) or a contained one must not be
            scanned — dogfood() draws, so a phantom entry desyncs the pet. */
@@ -1273,7 +1342,7 @@ const DOG_HUNGRY = 300, DOG_WEAK = 500, DOG_STARVE = 750;
 // stops dochug from calling distfleeck a second time for it — so a pet that
 // starves changes the DRAW COUNT of the turn even though this function itself
 // spends nothing.
-function dog_hunger(mtmp, edog) {
+async function dog_hunger(mtmp, edog) {
     const mdat = game.mons[mtmp.mnum];
 
     if (game.moves > edog.hungrytime + DOG_WEAK) {
@@ -1292,8 +1361,15 @@ function dog_hunger(mtmp, edog) {
                 note_unported('dog_starve');
                 return true;
             }
-            /* the "confused from hunger" / beg() messages need pline plumbing */
-            note_unported('dog_hunger:messages');
+            if (cansee(mtmp.mx, mtmp.my)) {
+                await pline(`${Monnam(mtmp)} is confused from hunger.`);
+            } else if (couldsee(mtmp.mx, mtmp.my)) {
+                note_unported('dog_hunger:beg');
+            } else {
+                await You_feel(`worried about ${y_monnam(mtmp)}.`);
+            }
+            const { stop_occupation } = await import('./allmain.js');
+            await stop_occupation();
         } else if (game.moves > edog.hungrytime + DOG_STARVE
                    || DEADMONSTER(mtmp)) {
             note_unported('dog_starve');
@@ -1307,7 +1383,7 @@ export async function dog_move(mtmp, after) {
     const edog = mtmp.mtame ? (mtmp.edog || {}) : null;
     if (!edog) return 0;
 
-    if (dog_hunger(mtmp, edog))
+    if (await dog_hunger(mtmp, edog))
         return MMOVE_DIED;
 
     const omx = mtmp.mx, omy = mtmp.my;
@@ -1411,6 +1487,9 @@ export async function dog_move(mtmp, after) {
 
     for (let i = 0; i < cnt; i++) {
         const nx = mfp.poss[i].x, ny = mfp.poss[i].y;
+
+        if (mtmp.mleashed && distu(nx, ny) > 4)
+            continue;
 
         /* src/dogmove.c:1141 — the ALLOW_M attack and ALLOW_MDISP displace
            branches need mattackm/mdisplacem, the monster-vs-monster combat

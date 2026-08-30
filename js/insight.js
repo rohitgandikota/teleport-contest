@@ -17,7 +17,8 @@ import { game } from './gstate.js';
 import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK,
          P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE,
          ARTICLE_YOUR, SUPPRESS_IT, SUPPRESS_INVISIBLE, STRAT_WAITMASK,
-         MSLOW, MFAST, A_NONE, TIMEOUT, W_ARM, W_ARMC, W_ARMH, W_ARMS,
+         MSLOW, MFAST, A_NONE, A_CURRENT, A_ORIGINAL, TIMEOUT,
+         W_ARM, W_ARMC, W_ARMH, W_ARMS,
          W_ARMG, W_ARMF, W_ARMU, W_AMUL, W_RINGL, W_RINGR,
          W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART,
          LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd } from './const.js';
@@ -255,7 +256,16 @@ function background_enlightenment() {
     you_are(buf);
 
     /* bypasses you_are() so the sentence has no trailing period yet */
-    out(` You ${en_final ? 'were' : 'are'} ${align_str(u.ualign.type)}, on a mission for ${u_gname()}`);
+    const currentAlign = u.ualignbase?.[A_CURRENT] ?? u.ualign.type;
+    const originalAlign = u.ualignbase?.[A_ORIGINAL] ?? u.ualign.type;
+    const missionAdverb = (u.ualign.type !== currentAlign)
+        ? (en_final ? 'temporarily ' : 'currently ')
+        : (u.ualign.type !== originalAlign)
+          ? (en_final ? 'belatedly ' : 'now ')
+          : (!u.uconduct?.gnostic && game.moves > 1000)
+            ? 'nominally '
+            : '';
+    out(` You ${en_final ? 'were' : 'are'} ${align_str(u.ualign.type)}, ${missionAdverb}on a mission for ${u_gname()}`);
 
     let opp = ` who ${en_final ? 'was' : 'is'} opposed by`;
     if (u.ualign.type !== 1)

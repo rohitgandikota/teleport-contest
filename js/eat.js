@@ -61,7 +61,7 @@ import { FINGER, NH_GREEN, NO_PART, TIMEOUT } from './const.js';
 export async function gethungry() {
     const u = game.u;
 
-    if (u.uinvulnerable)
+    if (u.uinvulnerable || game.iflags?.debug_hunger)
         return;                       /* forced to fast while praying */
 
     /* src/eat.c:3174 — ordinary food consumption. The Unaware term is a real

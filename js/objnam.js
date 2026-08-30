@@ -355,6 +355,13 @@ export function xname(obj) {
         }
         break;
     case FOOD_CLASS: {
+        if (obj.globby) {
+            const size = obj.owt <= 100 ? 'small'
+                       : obj.owt <= 300 ? 'medium'
+                         : obj.owt <= 500 ? 'large' : 'very large';
+            buf = `${size} ${actualn}`;
+            break;
+        }
         if (obj.otyp === ONAMES.SLIME_MOLD) {
             let fruit = game.ffruit;
             while (fruit && fruit.fid !== obj.spe)

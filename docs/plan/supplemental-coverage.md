@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **105**. Covered: **105**.
 Partial: **0**. Gaps: **0**.
 
-Branch requirements: **152**. Covered: **152**.
+Branch requirements: **159**. Covered: **159**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 220 | 40728 | 2599845 | 71 | 416 |
-| Union | 264 | 52133 | 3367605 | 78 | 480 |
+| Supplemental | 220 | 40876 | 2608647 | 71 | 416 |
+| Union | 264 | 52281 | 3376407 | 78 | 480 |
 
 ## Static inventory
 
@@ -425,6 +425,9 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `wand.locking.downward-close-web` | `src/zap.c:zap_updown` | `wand-holding-traps` |
 | covered | `wand.opening.downward-trigger-trapdoor` | `src/zap.c:zap_updown` | `wand-opening-falling-traps` |
 | covered | `wand.opening.downward-trigger-hole` | `src/zap.c:zap_updown` | `wand-opening-falling-traps` |
+| covered | `wand.opening.downward-trigger-pit` | `src/zap.c:zap_updown` | `wand-opening-falling-traps` |
+| covered | `wand.opening.downward-trigger-spiked-pit` | `src/zap.c:zap_updown` | `wand-opening-falling-traps` |
+| covered | `wand.opening.downward-trigger-falling-rock` | `src/zap.c:zap_updown` | `wand-opening-falling-traps` |
 | covered | `wand.probing.upward-empty` | `src/zap.c:zap_updown` | `wand-probing-updown` |
 | covered | `wand.probing.downward-empty` | `src/zap.c:zap_updown` | `wand-probing-updown` |
 | covered | `wand.probing.downward-buried-inventory` | `src/zap.c:zap_updown` | `wand-probing-updown` |
@@ -448,6 +451,15 @@ target, not evidence that the JavaScript behavior is wrong.
 |---|---|---|---|
 | covered | `trap.web.hero-caught-strength-timing` | `src/trap.c:trapeffect_web` | `wand-holding-traps` |
 | covered | `trap.web.hero-struggle-escape` | `src/hack.c:trapmove` | `wand-holding-traps` |
+| covered | `trap.pit.hero-fall-damage` | `src/trap.c:trapeffect_pit` | `wand-opening-falling-traps` |
+| covered | `trap.spiked-pit.hero-spike-damage` | `src/trap.c:trapeffect_pit` | `wand-opening-falling-traps` |
+| covered | `trap.rock.hero-forced-hit` | `src/trap.c:trapeffect_rocktrap` | `wand-opening-falling-traps` |
+
+### Map and vision
+
+| Status | Branch | C source | Evidence |
+|---|---|---|---|
+| covered | `vision.pit.immediate-sight` | `src/vision.c:vision_recalc` | `wand-opening-falling-traps` |
 
 ### Input confirmation
 
@@ -679,7 +691,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `vault-guard` | debug+normal | 362 | present | `level.ordinary`, `mode.debug`, `social.vault-guard`, `ui.getlin` |
 | `wand-downward-floor-pile` | debug | 134 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `object.wands`, `turn.timers`, `ui.getlin` |
 | `wand-holding-traps` | debug | 208 | present | `level.ordinary`, `mode.debug`, `object.wands`, `survival.timed-status`, `traps.projectile-physical`, `ui.getlin`, `ui.map-memory-vision` |
-| `wand-opening-falling-traps` | debug | 83 | present | `level.ordinary`, `mode.debug`, `object.wands`, `traps.movement`, `ui.getlin`, `ui.map-memory-vision` |
+| `wand-opening-falling-traps` | debug | 228 | present | `level.ordinary`, `mode.debug`, `object.wands`, `traps.movement`, `ui.getlin`, `ui.map-memory-vision` |
 | `wand-probing-updown` | debug | 299 | present | `level.ordinary`, `mode.debug`, `object.wands`, `ui.getlin`, `ui.map-memory-vision` |
 | `wand-striking-door` | debug | 68 | present | `combat.melee`, `combat.ranged`, `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.hero-melee`, `object.identification`, `object.potions`, `object.wands`, `terrain.doors-locks`, `ui.animation`, `ui.getlin` |
 | `wand-striking-upward-rock` | debug | 66 | present | `level.ordinary`, `mode.debug`, `object.wands`, `ui.getlin`, `ui.map-memory-vision` |

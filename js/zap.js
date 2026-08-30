@@ -26,7 +26,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
-         XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR,
+         XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
          NO_TRAP_FLAGS, FORCETRAP } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
@@ -931,7 +931,8 @@ export async function bhito(obj, otmp) {
         case ONAMES.SPE_KNOCK:
         case ONAMES.WAN_LOCKING:
         case ONAMES.SPE_WIZARD_LOCK:
-            note_unported_zap('bhito:locking');
+            if (obj.otyp === ONAMES.LARGE_BOX || obj.otyp === ONAMES.CHEST)
+                note_unported_zap('bhito:locking');
             res = 0;
             break;
         case ONAMES.SPE_STONE_TO_FLESH:
@@ -2012,7 +2013,8 @@ async function zap_updown(obj) {
     const releases_holding_trap = game.u.dz > 0 && opening
         && game.u.utrap;
     const opens_falling_trap = game.u.dz > 0 && opening && !game.u.utrap
-        && ttmp && (ttmp.ttyp === TRAPDOOR || ttmp.ttyp === HOLE);
+        && ttmp && (ttmp.ttyp === TRAPDOOR || ttmp.ttyp === ROCKTRAP
+                    || ttmp.ttyp === HOLE || is_pit(ttmp.ttyp));
     const closes_holding_trap = game.u.dz > 0 && locking && ttmp
         && (ttmp.ttyp === BEAR_TRAP || ttmp.ttyp === WEB)
         && !game.u.utrap;

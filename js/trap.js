@@ -11,7 +11,7 @@ import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING,
-         STONING, WATER, FIRE_RES } from './const.js';
+         STONING, WATER, FIRE_RES, NO_KILLER_PREFIX } from './const.js';
 import { goodpos, makemon, remove_monster } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
@@ -48,7 +48,7 @@ import { Monnam, rndcolor } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
 import { W_ARMF, A_DEX, A_CON, NO_PART } from './const.js';
 import { d, rn1 } from './rng.js';
-import { ACURR, exercise } from './attrib.js';
+import { ACURR, exercise, poisoned } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { KILLED_BY_AN, A_STR } from './const.js';
 import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
@@ -898,6 +898,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_rust_trap(game.youmonst, trap, trflags);
     if (ttype === ROLLING_BOULDER_TRAP)
         return await trapeffect_rolling_boulder_trap(game.youmonst, trap, trflags);
+    if (ttype === PIT || ttype === SPIKED_PIT)
+        return await trapeffect_pit(game.youmonst, trap, trflags);
     if (ttype === HOLE || ttype === TRAPDOOR)
         return await trapeffect_hole(game.youmonst, trap, trflags);
     if (ttype === ANTI_MAGIC)
@@ -1561,10 +1563,104 @@ async function trapeffect_slp_gas_trap(mtmp, trap, trflags) {
     return Trap_Effect_Finished;
 }
 
-// src/trap.c:1826 trapeffect_pit() — monster arm only.
+// src/trap.c:1826 trapeffect_pit().
 async function trapeffect_pit(mtmp, trap, trflags) {
     const ttype = trap.ttyp;
     let relevant_spikes = (ttype === SPIKED_PIT);
+
+    if (mtmp === game.youmonst) {
+        const plunged = (trflags & TOOKPLUNGE) !== 0;
+        const viasitting = (trflags & VIASITTING) !== 0;
+        const conj_pit = conjoined_pits(
+            trap, t_at_mon(game.u.ux0 ?? 0, game.u.uy0 ?? 0), true);
+        const adj_pit = adj_nonconjoined_pit(trap);
+        const already_known = !!trap.tseen;
+        const article = trap.madeby_u ? 'your' : 'a';
+        let deliberate = false;
+
+        if (!Sokoban()
+            && (Levitation() || (Flying() && !plunged && !viasitting)))
+            return Trap_Effect_Finished;
+        feeltrap(trap);
+        if (!Sokoban() && is_clinger(mtmp.data) && !plunged) {
+            if (already_known) {
+                await You_see(`${article} ${relevant_spikes ? 'spiked ' : ''}pit below you.`);
+            } else {
+                await pline(`${upstart(article)} pit ${
+                    relevant_spikes ? 'full of spikes ' : ''}opens up under you!`);
+                await You("don't fall in!");
+            }
+            return Trap_Effect_Finished;
+        }
+        if (!Sokoban()) {
+            if (game.u.usteed) {
+                note_unported_trap('trapeffect_pit:steed-message');
+            } else if (game.iflags?.menu_requested && already_known) {
+                await You(`carefully ${u_locomotion('lower yourself')} into the pit.`);
+                deliberate = true;
+            } else if (conj_pit) {
+                await You('move into an adjacent pit.');
+            } else if (adj_pit) {
+                await You(`stumble over debris${
+                    !rn2(5) ? ' between the pits' : ''}.`);
+            } else {
+                const verb = !plunged ? 'fall' : Flying() ? 'dive' : 'plunge';
+                await You(`${verb} into ${article} pit!`);
+            }
+        }
+        if (game.u.umonnum === PMNAMES.PM_PIT_VIPER
+            || game.u.umonnum === PMNAMES.PM_PIT_FIEND)
+            await pline("How pitiful.  Isn't that the pits?");
+
+        if (relevant_spikes && wearing_iron_shoes(mtmp)) {
+            await pline(`${Yname2(game.u.uarmf)} protects you from the sharp iron spikes.`);
+            relevant_spikes = false;
+        } else if (relevant_spikes) {
+            await You(`${conj_pit ? 'step' : 'land'} on a set of sharp iron spikes!`);
+        }
+
+        game.u.utrap = rn1(6, 2);
+        game.u.utraptype = TT_PIT;
+        if (game.u.usteed) {
+            note_unported_trap('trapeffect_pit:steed');
+            return Trap_Effect_Finished;
+        }
+
+        if (relevant_spikes) {
+            let damage = rnd(conj_pit ? 4 : adj_pit ? 6 : 10);
+            if (game.u.uprops?.HALF_PHDAM)
+                damage = Math.trunc((damage + 1) / 2);
+            await losehp(damage,
+                         plunged ? 'deliberately plunged into a pit of iron spikes'
+                         : (conj_pit || deliberate)
+                           ? 'stepped into a pit of iron spikes'
+                           : adj_pit ? 'stumbled into a pit of iron spikes'
+                           : 'fell into a pit of iron spikes',
+                         NO_KILLER_PREFIX);
+            if (!rn2(6)) {
+                await poisoned('spikes', A_STR,
+                               (conj_pit || adj_pit || deliberate)
+                                 ? 'stepping on poison spikes'
+                                 : 'fall onto poison spikes',
+                               8, false);
+            }
+        } else if (!conj_pit && !deliberate
+                   && !(plunged && (Flying() || is_clinger(mtmp.data)))) {
+            let damage = rnd(adj_pit ? 3 : 6);
+            if (game.u.uprops?.HALF_PHDAM)
+                damage = Math.trunc((damage + 1) / 2);
+            await losehp(damage,
+                         plunged ? 'deliberately plunged into a pit'
+                                 : 'fell into a pit',
+                         NO_KILLER_PREFIX);
+        }
+        game.vision_full_recalc = 1;
+        vision_recalc(0);
+        exercise(A_STR, false);
+        exercise(A_DEX, false);
+        return Trap_Effect_Finished;
+    }
+
     const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
     let trapkilled = false;
     const forcetrap = ((trflags & FORCETRAP) !== 0);

@@ -1,13 +1,13 @@
 // vision.js — C ref: vision.c Algorithm C shadow-casting
 // does_block() and the incremental blocked-point updaters are real now;
-// light sources and pit handling are still absent.
+// light sources and pit-limited sight are live.
 
 import { game } from './gstate.js';
 import {
     COLNO, ROWNO, DOOR, SDOOR, POOL, TREE, CLOUD, LAVAWALL,
     D_CLOSED, D_LOCKED, D_TRAPPED, IS_OBSTRUCTED, IS_DOOR, IS_WATERWALL,
     SV0, SV1, SV2, SV3, SV4, SV5, SV6, SV7, SVALL,
-    IS_WALL, MAX_RADIUS,
+    IS_WALL, MAX_RADIUS, TT_PIT,
 } from './const.js';
 import { newsym } from './display.js';
 import { ONAMES } from './objects_data.js';
@@ -660,7 +660,19 @@ export function vision_recalc(control = 0) {
     }
 
     if (control !== 2) {
-        view_from(u.uy, u.ux, next, next_rmin, next_rmax);
+        if (u.utrap && u.utraptype === TT_PIT) {
+            for (let row = Math.max(0, u.uy - 1);
+                 row <= Math.min(ROWNO - 1, u.uy + 1); row++) {
+                const start = Math.max(1, u.ux - 1);
+                const stop = Math.min(COLNO - 1, u.ux + 1);
+                next_rmin[row] = start;
+                next_rmax[row] = stop;
+                for (let col = start; col <= stop; col++)
+                    next[row][col] = IN_SIGHT | COULD_SEE;
+            }
+        } else {
+            view_from(u.uy, u.ux, next, next_rmin, next_rmax);
+        }
     }
 
     /* src/vision.c:552. A blind hero still has COULD_SEE geometry so

@@ -69,8 +69,11 @@ function shortPairs(srcRelPath, name, monnums) {
     const body = text.slice(m.index + m[0].length, text.indexOf('};', m.index));
     const out = [];
     for (const pair of body.matchAll(/\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*,\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}/g)) {
+        if (pair[1] === 'NON_PM')
+            break;
         const a = monnums[pair[1]], b = monnums[pair[2]];
-        if (a === undefined || b === undefined) break;   /* NON_PM sentinel */
+        if (a === undefined || b === undefined)
+            continue; /* disabled monster pair */
         out.push([a, b]);
     }
     return out;

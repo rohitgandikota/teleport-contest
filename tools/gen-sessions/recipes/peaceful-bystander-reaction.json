@@ -1,0 +1,21 @@
+{
+  "name": "peaceful-bystander-reaction",
+  "description": "Debug-mode setup for attacking one peaceful humanoid while another can see the hero and react.",
+  "coverage": [
+    "mode.debug",
+    "monster.hero-melee",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "monster.peaceful.humanoid-bystander"
+  ],
+  "segments": [
+    {
+      "seed": 8120,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful student\r\u0007peaceful apprentice\r\u0006Fjy   "
+    }
+  ]
+}

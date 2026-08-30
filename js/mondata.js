@@ -10,7 +10,7 @@
 // exception is pronoun_gender() at the bottom, which rolls rn2(4) when the
 // hero is hallucinating.
 
-import { PMNAMES, MONSYMS, MFLAGS, ATTKS } from './monst_data.js';
+import { PMNAMES, MONSYMS, MFLAGS, ATTKS, GROWNUPS } from './monst_data.js';
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
 import { Hallucination, Unaware } from './youprop.js';
@@ -88,6 +88,31 @@ export const corpse_eater = (ptr) =>
 
 // include/mondata.h humanoid()
 export const humanoid = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
+
+// src/mondata.c:1331 big_little_match(). Two forms match when either can
+// reach the other by following the complete baby-to-adult progression table.
+export function big_little_match(montyp1, montyp2) {
+    if (montyp1 === montyp2)
+        return true;
+    if (game.mons[montyp1]?.mlet !== game.mons[montyp2]?.mlet)
+        return false;
+
+    const growsTo = (mnum) => {
+        const pair = GROWNUPS.find(([little]) => little === mnum);
+        return pair ? pair[1] : mnum;
+    };
+    for (let little = montyp1, big = growsTo(little);
+         big !== little; little = big, big = growsTo(little)) {
+        if (big === montyp2)
+            return true;
+    }
+    for (let little = montyp2, big = growsTo(little);
+         big !== little; little = big, big = growsTo(little)) {
+        if (big === montyp1)
+            return true;
+    }
+    return false;
+}
 
 // include/mondata.h:57 is_whirly()
 

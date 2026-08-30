@@ -14,7 +14,7 @@ import { helpless, DEADMONSTER } from './monst.js';
 import { rn2 } from './rng.js';
 import { ECMD_OK, ECMD_TIME, IS_WALL, SDOOR, isok, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, STRAT_WAITMASK,
-         ANY_SHOP, ROOMOFFSET, VAULT } from './const.js';
+         ANY_SHOP, ROOMOFFSET, VAULT, PLNMSG_GROWL } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { search_special } from './mkroom.js';
 import { tended_shop, noisy_shop } from './shk.js';
@@ -502,6 +502,46 @@ export function cry_sound(mtmp) {
     }
 }
 
+// src/sounds.c:544 maybe_gasp(). The first rn2(5) belongs to the caller;
+// this function draws only when the observer's sound class can speak.
+export function maybe_gasp(mon) {
+    const exclamations = ['Gasp!', 'Uh-oh.', 'Oh my!', 'What?', 'Why?'];
+    const ptr = game.mons[mon.mnum];
+    let msound = ptr.msound;
+    const rawGuard = game.urole?.guardnum;
+    const guardnum = typeof rawGuard === 'string' ? PMNAMES[rawGuard] : rawGuard;
+
+    if ((msound === MSOUND.MS_GUARDIAN && mon.mnum !== guardnum)
+        || (msound === MSOUND.MS_PRIEST && !game.p_coaligned?.(mon))) {
+        msound = MSOUND.MS_SILENT;
+    } else if (msound === MSOUND.MS_CUSS && mon.mextra?.emin) {
+        const minAlign = mon.emin?.min_align
+            ?? mon.mextra.emin.min_align ?? ptr.maligntyp;
+        const coaligned = minAlign === game.u.ualign.type;
+        if (coaligned ? !mon.mextra.emin.renegade
+                      : !!mon.mextra.emin.renegade)
+            msound = MSOUND.MS_HUMANOID;
+    }
+
+    const always = new Set([
+        MSOUND.MS_HUMANOID, MSOUND.MS_ARREST, MSOUND.MS_SOLDIER,
+        MSOUND.MS_GUARD, MSOUND.MS_NURSE, MSOUND.MS_SEDUCE,
+        MSOUND.MS_LEADER, MSOUND.MS_GUARDIAN, MSOUND.MS_SELL,
+        MSOUND.MS_ORACLE, MSOUND.MS_PRIEST, MSOUND.MS_BOAST,
+        MSOUND.MS_IMITATE,
+    ]);
+    const sameKind = new Set([
+        MSOUND.MS_ORC, MSOUND.MS_GRUNT, MSOUND.MS_LAUGH,
+        MSOUND.MS_ROAR, MSOUND.MS_BELLOW, MSOUND.MS_DJINNI,
+        MSOUND.MS_VAMPIRE, MSOUND.MS_WERE, MSOUND.MS_SPELL,
+    ]);
+    const canGasp = always.has(msound)
+        || (sameKind.has(msound)
+            && ptr.mlet === (game.youmonst?.data?.mlet
+                              ?? game.mons[game.u.umonnum]?.mlet));
+    return canGasp ? exclamations[rn2(exclamations.length)] : null;
+}
+
 export async function growl(mtmp) {
     let growl_verb = 0;
 
@@ -516,7 +556,7 @@ export async function growl(mtmp) {
     if (growl_verb) {
         if (canseemon(mtmp) || !Deaf()) {
             await pline(`${Monnam(mtmp)} ${vtense(null, growl_verb)}!`);
-            /* C sets iflags.last_msg = PLNMSG_GROWL; nothing reads it here */
+            (game.iflags ||= {}).last_msg = PLNMSG_GROWL;
             if (game.context?.run)
                 nomul(0);
         }

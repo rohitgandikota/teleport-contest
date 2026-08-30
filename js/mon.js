@@ -22,7 +22,7 @@ import { get_wormno, initworm, place_worm_tail_randomly,
 import { adjalign, change_luck, exercise } from './attrib.js';
 import { couldsee, cansee, does_block, unblock_point, vision_recalc } from './vision.js';
 import { finish_meating } from './dogmove.js';
-import { growl } from './sounds.js';
+import { growl, maybe_gasp } from './sounds.js';
 import { sengr_at } from './engrave.js';
 import { Monnam, mon_nam, noname_monnam, x_monnam, upstart }
     from './do_name.js';
@@ -52,7 +52,8 @@ import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
-         XKILL_NOMSG, XKILL_NOCORPSE, MON_EXPLODE } from './const.js';
+         XKILL_NOMSG, XKILL_NOCORPSE, MON_EXPLODE,
+         PLNMSG_UNKNOWN, PLNMSG_GROWL } from './const.js';
 import { NO_MM_FLAGS } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
 import { def_monsyms } from './drawing_data.js';
@@ -76,11 +77,11 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
          Is_astralevel, has_emin, has_epri, has_eshk, RLOC_NOMSG,
          RLOC_MSG, MON_OBLITERATE } from './const.js';
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, nolimbs, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
-    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless, amphibious, pronoun_gender } from './mondata.js';
+    is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless, amphibious, pronoun_gender, big_little_match } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
 import { distant_name, doname, makeplural } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
-import { Blind, Hallucination } from './youprop.js';
+import { Blind, Hallucination, Deaf } from './youprop.js';
 import { experience, more_experienced, newexplevel } from './exper.js';
 import { touch_petrifies, acidic, slimeproof, mon_hates_silver, could_reach_item } from './dog.js';
 import { is_rider, set_mimic_sym, hideunder, is_male, is_female } from './makemon.js';
@@ -1792,12 +1793,128 @@ async function qst_guardians_respond() {
     }
 }
 
-function has_peaceful_responder(mtmp) {
-    return (game.level?.monsters || []).some(mon =>
-        mon !== mtmp && !DEADMONSTER(mon)
-        && !mindless(game.mons[mon.mnum]) && mon.mpeaceful
-        && couldsee(mon.mx, mon.my) && !mon.msleeping
-        && mon.mcansee && m_canseeu(mon));
+const is_watch_mon = (mon) =>
+    mon.mnum === PMNAMES.PM_WATCHMAN
+    || mon.mnum === PMNAMES.PM_WATCH_CAPTAIN;
+
+// src/mon.c:5711 angry_guards(). All peaceful Minetown watch members become
+// hostile together. The counts only choose the message and do not draw RNG.
+export async function angry_guards(silent) {
+    let count = 0, near = 0, seen = 0, sleeping = 0;
+
+    for (const mon of (game.level?.monsters || [])) {
+        if (DEADMONSTER(mon) || !is_watch_mon(mon) || !mon.mpeaceful)
+            continue;
+        ++count;
+        if (canspotmon(mon) && mon.mcanmove !== 0) {
+            if (m_next2u(mon))
+                ++near;
+            else
+                ++seen;
+        }
+        if (mon.msleeping || mon.mfrozen) {
+            ++sleeping;
+            mon.msleeping = 0;
+            mon.mfrozen = 0;
+        }
+        mon.mpeaceful = 0;
+    }
+
+    if (count && !silent) {
+        if (sleeping)
+            await pline(`The guard${sleeping > 1 ? 's' : ''} ${sleeping > 1 ? 'wake' : 'wakes'} up.`);
+        if (near) {
+            await pline(`The guard${near > 1 ? 's' : ''} ${near > 1 ? 'get' : 'gets'} angry!`);
+        } else if (seen) {
+            await pline(`${seen === 1 ? 'An angry' : 'Angry'} guard${seen > 1 ? 's' : ''} ${seen > 1 ? 'are' : 'is'} approaching!`);
+        } else {
+            const who = count === 1 ? "a guard's" : "guards'";
+            await You_hear(`the shrill sound of ${who} whistle${count > 1 ? 's' : ''}.`);
+        }
+    }
+    return !!count;
+}
+
+// src/mon.c:4168 peacefuls_respond(). Eligible bystanders react in monster
+// list order. Keeping each short-circuit and draw in C order is essential.
+async function peacefuls_respond(mtmp) {
+    const guardnum = guardnum_of_urole();
+    const leadernum = leadernum_of_urole();
+
+    for (const mon of (game.level?.monsters || [])) {
+        const ptr = game.mons[mon.mnum];
+        if (mon === mtmp || DEADMONSTER(mon) || mindless(ptr)
+            || !mon.mpeaceful || !couldsee(mon.mx, mon.my)
+            || mon.msleeping || !mon.mcansee || !m_canseeu(mon))
+            continue;
+
+        if (humanoid(ptr) || mon.isshk || mon.ispriest) {
+            if (is_watch_mon(mon)) {
+                await pline('"Halt!  You\'re under arrest!"');
+                await angry_guards(Deaf());
+                continue;
+            }
+
+            let line = '';
+            let exclaimed = false;
+            let needsPunctuation = false;
+            if (!Deaf() && !rn2(5)) {
+                const gasp = maybe_gasp(mon);
+                if (gasp) {
+                    if (gasp.toLowerCase().startsWith('gasp')) {
+                        line = `${Monnam(mon)} gasps`;
+                        needsPunctuation = true;
+                    } else {
+                        line = `${Monnam(mon)} exclaims "${gasp}"`;
+                    }
+                    exclaimed = true;
+                }
+            }
+
+            if (mon.isshk || mon.ispriest
+                || (mon.mnum === leadernum && mtmp.mnum !== guardnum)) {
+                if (exclaimed)
+                    await pline(`${line} then shrugs.`);
+                continue;
+            }
+
+            if (ptr.mlevel < rn2(10) && mon.mnum !== guardnum) {
+                const alreadyFleeing = !!(mon.mflee || mon.mfleetim);
+                await monflee(mon, rn2(50) + 25, true, !exclaimed);
+                if (exclaimed) {
+                    if (game.flags?.verbose !== false && !alreadyFleeing) {
+                        line += ' and then turns to flee.';
+                        needsPunctuation = false;
+                    }
+                } else {
+                    exclaimed = true;
+                }
+            }
+            if (line)
+                await pline(`${line}${needsPunctuation ? '.' : ''}`);
+            if (!mon.mtame) {
+                mon.mpeaceful = 0;
+                mon.mstrategy &= ~STRAT_WAITMASK;
+                adjalign(-1);
+                if (!exclaimed)
+                    await pline(`${Monnam(mon)} gets angry!`);
+            }
+        } else if (ptr.mlet === game.mons[mtmp.mnum].mlet
+                   && big_little_match(mtmp.mnum, mon.mnum) && !rn2(3)) {
+            let exclaimed = false;
+            if (!rn2(4)) {
+                (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
+                await growl(mon);
+                exclaimed = game.iflags.last_msg === PLNMSG_GROWL;
+            }
+            if (rn2(6)) {
+                const alreadyFleeing = !!(mon.mflee || mon.mfleetim);
+                await monflee(mon, rn2(25) + 15, true, !exclaimed);
+                if (exclaimed && !alreadyFleeing)
+                    await pline('And then starts to flee.');
+            }
+        }
+    }
 }
 
 // src/mon.c setmangry() — turn a peaceful monster hostile.
@@ -1849,8 +1966,8 @@ export async function setmangry(mtmp, via_attack) {
         await qst_guardians_respond();
 
     /* make other peaceful monsters react */
-    if (!game.context?.mon_moving && has_peaceful_responder(mtmp))
-        note_unported_mon('setmangry:peacefuls_respond');
+    if (!game.context?.mon_moving)
+        await peacefuls_respond(mtmp);
 }
 
 // src/mon.c:5971 see_monster_closeup(), remember first close sightings and

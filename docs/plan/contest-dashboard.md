@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T19:17:32.901Z. Local commit: `5a19514`.
+Last refreshed: 2026-08-30T19:27:48.323Z. Local commit: `ac945f8`.
 Leaderboard snapshot: 2026-08-30T14:28:34.299Z. Fork last scored: 2026-08-30T14:03:27.572Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last scored: 8/30/2026, 10:28:34 AM and displayed 11405 + 6032 points, 71.9% PRNG, 76.9% screen, 9 animations, 251+0.9 speed, playable yes, and 44 + 9 sessions. Its tooltip reported a 251.3 + 0.876 per-move fit and 1.14 ms per move under the 25 ms threshold.
@@ -12,7 +12,7 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 38593/38978 | 99.01% | 205/207 | 2598059/2598059 (100.00%) | 88/1760 |
+| Supplemental C suite | 38680/39065 | 99.01% | 206/208 | 2603452/2603452 (100.00%) | 88/1760 |
 
 ## Contest position and generalization
 
@@ -22,22 +22,22 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `5a19514` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `ac945f8` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 38971/38978 |
-| Cursor positions | 11405/11405 | 38593/38978 |
-| Startup and per-turn estimate | 61+0.58/turn | 99+0.23/turn |
+| Cells only | 11405/11405 | 39058/39065 |
+| Cursor positions | 11405/11405 | 38680/39065 |
+| Startup and per-turn estimate | 61+0.61/turn | 101+0.26/turn |
 
 ## Latest local expansion
 
-- The two-part timed-stack oracle matches 6233/6233 C RNG events and 195/195 screens, cells, and cursors.
-- Splitting a corpse stack now duplicates every attached object timer at the same absolute deadline, so the carried and dropped halves rot together.
-- Splitting four lit candles now leaves both stacks lit, duplicates the burn timer, and resizes their mobile light radii from one four-candle radius to separate three-candle and one-candle radii.
-- The deterministic corpus covers 105/105 game elements and 121/121 named C branches.
+- The unpaid-stack oracle matches 5393/5393 C RNG events and 87/87 screens, cells, and cursors.
+- Returning one apple from a three-apple unpaid stack through a counted drop now preserves the two-item bill and its unit price. The C reference charges 18 gold pieces for the remainder.
+- Generic `splitobj()` now copies unpaid bill entries for every caller. The prior tin-only workaround is removed.
+- The deterministic corpus covers 105/105 game elements and 122/122 named C branches.
 - Public remains 44/44, the hang gate remains 44/44, and 80 fresh games across 13 roles reached no unported path.
 - This checkpoint has not been scored by the hidden judge.
 
@@ -58,6 +58,7 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T19:27:48.323Z | `ac945f8` | 11405/11405 | 38680/39065 | 6032/11265 | 3 |
 | 2026-08-30T19:17:32.901Z | `5a19514` | 11405/11405 | 38593/38978 | 6032/11265 | 3 |
 | 2026-08-30T19:00:34.610Z | `5c12f8b` | 11405/11405 | 38398/38783 | 6032/11265 | 3 |
 | 2026-08-30T18:40:25.838Z | `1e344aa` | 11405/11405 | 37936/38321 | 6032/11265 | 3 |
@@ -67,7 +68,6 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 | 2026-08-30T17:29:28.653Z | `10061f3` | 11405/11405 | 36021/36406 | 6032/11265 | 3 |
 | 2026-08-30T17:16:29.022Z | `7736dc4` | 11405/11405 | 35827/36212 | 6032/11265 | 3 |
 | 2026-08-30T17:07:17.502Z | `a12bdd3` | 11405/11405 | 35768/36153 | 6032/11265 | 3 |
-| 2026-08-30T16:56:09.173Z | `5b8eeda` | 11405/11405 | 35220/35605 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

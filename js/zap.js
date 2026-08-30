@@ -58,7 +58,7 @@ import { getlin } from './cmd.js';
 import { prinv, reorder_invent, addinv } from './invent.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
-import { exercise, Fast, Very_fast } from './attrib.js';
+import { encumber_msg, exercise, Fast, Very_fast } from './attrib.js';
 import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
 import { Norep, pline_The, You, Your, You_feel, You_hear } from './pline.js';
@@ -410,13 +410,27 @@ async function openfallingtrap_hero(noticed) {
 // src/zap.c:1225 unturn_you(). Carried eggs regain their hatch timer before
 // the hero receives the form-dependent dread effect.
 async function unturn_you() {
-    for (const item of game.invent || []) {
+    let revivedCount = 0;
+    for (const item of [...(game.invent || [])]) {
         if (item.otyp === ONAMES.EGG && item.corpsenm !== NON_PM
             && !dead_species(item.corpsenm, true))
             attach_egg_hatch_timeout(item, 0);
-        else if (item.otyp === ONAMES.CORPSE)
-            note_unported_zap('unturn_you:carried_corpse');
+        else if (item.otyp === ONAMES.CORPSE) {
+            const savedNorevive = item.norevive;
+            item.norevive = 0;
+            const { revive_corpse } = await import('./do.js');
+            const revived = await revive_corpse(item, true);
+            if (revived) {
+                revivedCount++;
+                await pline(`It suddenly ${nonliving(revived.data)
+                    ? 'reanimates' : 'comes alive'}!`);
+            } else {
+                item.norevive = savedNorevive;
+            }
+        }
     }
+    if (revivedCount)
+        await encumber_msg();
     if (is_undead(game.youmonst.data)) {
         const oldStun = (game.u.intrinsic?.HStun | 0) & TIMEOUT;
         await You_feel(`frightened and ${oldStun ? 'even more ' : ''}stunned.`);

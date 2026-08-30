@@ -1,0 +1,30 @@
+{
+  "name": "wand-self-revival",
+  "description": "A debug Wizard zaps undead turning at himself while carrying a corpse, forcing inventory revival, adjacent monster placement, corpse consumption, and the self-zap revival messages.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "object.wands",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.self.undead-turning-corpse",
+    "wand.self.undead-turning-corpse-stack"
+  ],
+  "segments": [
+    {
+      "seed": 2200,
+      "datetime": "20000110104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017kobold corpse\r \u0017blessed wand of undead turning\rzo. \u0006"
+    },
+    {
+      "seed": 2200,
+      "datetime": "20000110104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00172 kobold corpses\r \u0017blessed wand of undead turning\rzo.   i \u001b"
+    }
+  ]
+}

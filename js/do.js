@@ -15,7 +15,8 @@ import { paranoid_ynq, reset_occupations, set_move_cmd } from './cmd.js';
 import { welded } from './wield.js';
 import { ONAMES } from './objects_data.js';
 import { encumber_msg, exercise, weight_cap } from './attrib.js';
-import { freeinv, getobj, any_obj_ok, obj_extract_self } from './invent.js';
+import { freeinv, getobj, any_obj_ok, obj_extract_self, useup }
+    from './invent.js';
 import { place_object, rider_revival_time, set_bknown, set_corpsenm,
          splitobj, zombie_form, obj_nexto_xy } from './mkobj.js';
 import { canseemon, cls, pline, newsym } from './display.js';
@@ -60,16 +61,21 @@ function note_unported_do(what) {
 }
 
 // src/do.c:2111 revive_corpse() and :2251 revive_mon(), with zap.c revive()
-// for an ordinary floor corpse. This is the timed Rider path: recreate the
-// monster without inventory, consume the corpse forcibly, and print the
-// species-specific rising effect.
+// for floor, buried, and carried corpses. Recreate the monster without
+// inventory, consume the corpse forcibly, and print the species-specific
+// rising effect.
 export async function revive_corpse(corpse, byHero = false) {
     const buried = corpse?.where === OBJ_BURIED;
+    const carried = corpse?.where === OBJ_INVENT
+        && (game.invent || []).includes(corpse);
     if (!corpse || corpse.otyp !== ONAMES.CORPSE
-        || (corpse.where !== OBJ_FLOOR && !buried))
+        || (corpse.where !== OBJ_FLOOR && !buried && !carried))
         return false;
 
-    let x = corpse.ox, y = corpse.oy;
+    let x = carried ? game.u.ux : corpse.ox;
+    let y = carried ? game.u.uy : corpse.oy;
+    if (carried)
+        corpse.ox = x, corpse.oy = y;
     if (buried) {
         const typ = game.level?.at(x, y)?.typ;
         if (!(game.level?.buriedobjs || []).includes(corpse)
@@ -183,18 +189,37 @@ export async function revive_corpse(corpse, byHero = false) {
     if (mtmp.m_ap_type)
         seemimic(mtmp);
 
+    const oneOf = (corpse.quan | 0) > 1;
+    const consumedCorpse = oneOf ? splitobj(corpse, 1) : corpse;
+
     if (byHero && cansee(corpse.ox, corpse.oy)) {
         let cname;
-        if ((game.mons[corpse.corpsenm]?.geno & MFLAGS.G_UNIQ) !== 0) {
+        if (carried) {
+            if (oneOf) {
+                consumedCorpse.quan++;
+                cname = `One of your ${corpse_xname(consumedCorpse, null, 0)}`;
+                consumedCorpse.quan--;
+            } else {
+                cname = `Your ${corpse_xname(consumedCorpse, null, 0)}`;
+            }
+        } else if ((game.mons[consumedCorpse.corpsenm]?.geno
+                    & MFLAGS.G_UNIQ) !== 0) {
             const mname = Monnam(mtmp);
             cname = `${mname}${mname.endsWith('s') ? "'" : "'s"} corpse`;
         } else {
-            cname = upstart(corpse_xname(corpse, null, CXN_PFX_THE));
+            cname = upstart(corpse_xname(consumedCorpse, null, CXN_PFX_THE));
         }
         await pline(`${cname} glows iridescently.`);
     }
 
-    delobj_core(corpse, true);
+    if (carried) {
+        const oldcap = near_capacity();
+        useup(consumedCorpse);
+        if (near_capacity() !== oldcap)
+            game._encumber_status_stale = true;
+    } else {
+        delobj_core(consumedCorpse, true);
+    }
 
     if (buried) {
         const { maketrap } = await import('./mklev.js');

@@ -199,6 +199,10 @@ export function splitobj(obj, num) {
         const index = objects?.indexOf(obj) ?? -1;
         if (index >= 0)
             objects.splice(index + 1, 0, otmp);
+    } else if (obj.where === OBJ_INVENT) {
+        const index = (game.invent || []).indexOf(obj);
+        if (index >= 0)
+            game.invent.splice(index + 1, 0, otmp);
     }
 
     if (obj.unpaid)

@@ -18,16 +18,17 @@ import { curr_mon_load } from './mon.js';
 import { inv_weight, weight_cap } from './attrib.js';
 import { carrying } from './invent.js';
 import { a_monnam, upstart } from './do_name.js';
-import { is_door_mappear, helpless } from './monst.js';
+import { is_door_mappear, helpless, DEADMONSTER } from './monst.js';
 import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
-         Hallucination, Deaf } from './youprop.js';
+         Hallucination, Deaf, Stealth } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
-import { is_pool, is_lava, t_at, m_at, is_pick, seemimic } from './mon.js';
+import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
+         wake_msg } from './mon.js';
 import { hliquid } from './do_name.js';
 import { Is_waterlevel, WATER, LAVAPOOL, POOL } from './const.js';
 import { waterbody_name } from './pager.js';
-import { surface } from './dungeon.js';
+import { surface, recalc_mapseen } from './dungeon.js';
 import { pickup, can_reach_floor } from './pickup.js';
 import { dotrap } from './trap.js';
 import { is_pit, EXT_ENCUMBER, HVY_ENCUMBER, IS_FURNITURE, STAIRS, ECMD_OK, ECMD_TIME, OBJ_AT, GOLD_SYM, TT_BEARTRAP, TT_PIT, TT_WEB, TT_LAVA, TT_INFLOOR, TT_BURIEDBALL } from './const.js';
@@ -54,7 +55,10 @@ import {
     IS_STWALL, IS_TREE, IS_OBSTRUCTED,
     W_NONDIGGABLE, W_NONPASSWALL,
 
-    ROOMOFFSET, MAXNROFROOMS, OROOM, MORGUE, TEMPLE, SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED, VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR,
+    ROOMOFFSET, MAXNROFROOMS, OROOM, COURT, SWAMP, BEEHIVE, MORGUE,
+    BARRACKS, ZOO, DELPHI, TEMPLE, LEPREHALL, COCKNEST, ANTHOLE,
+    SHOPBASE, NO_ROOM, SHARED, SHARED_PLUS, COLNO, ROWNO, CQ_CANNED,
+    VIBRATING_SQUARE, LAVAWALL, IS_WATERWALL, STONE, CORR, ICE, ROOM, IS_AIR,
     THRONE, SINK, GRAVE, FOUNTAIN, ALTAR, D_ISOPEN, ACCESSIBLE, IS_SDOOR,
     M_AP_OBJECT, M_AP_FURNITURE, M_AP_TYPE, isok, u_at,
     IRONBARS, IS_DOOR, D_NODOOR, D_BROKEN, WT_SQUEEZABLE_INV,
@@ -76,6 +80,7 @@ import { tunnels, needspick, passes_walls, passes_bars, dmgtype,
 import { INTRINSIC } from './const.js';
 import { start_timer, stop_timer, peek_timer, TIMER_OBJECT, ZOMBIFY_MON }
     from './timeout.js';
+import { Hello } from './role.js';
 
 // src/hack.c:982 invocation_pos(), the ritual square on the penultimate
 // Gehennom level.
@@ -624,9 +629,36 @@ export function move_update(newlev) {
         .filter(ch => !u.ushops.includes(ch)).join('');
 }
 
-// src/hack.c:3626 check_special_room(): update room membership and deliver
-// one-time entry messages. Shops and morgues are the currently exercised
-// room types; the remaining special-room side effects stay explicit.
+// src/hack.c:3466 monstinroom() and 3482 furniture_present().
+function monster_in_room(mnum, roomno) {
+    const roomch = String.fromCharCode(roomno + ROOMOFFSET);
+    for (const mtmp of game.level?.monsters || []) {
+        if (!DEADMONSTER(mtmp) && mtmp.mnum === mnum
+            && in_rooms(mtmp.mx, mtmp.my, 0).includes(roomch))
+            return mtmp;
+    }
+    return null;
+}
+
+function furniture_present(furniture, room) {
+    for (let y = room.ly; y <= room.hy; y++)
+        for (let x = room.lx; x <= room.hx; x++)
+            if (game.level.at(x, y)?.typ === furniture
+                && inside_room(room, x, y))
+                return true;
+    return false;
+}
+
+function room_discovered(roomno) {
+    const seen = (game.level._mapseen_rooms ||= []);
+    if (!seen.includes(roomno)) {
+        seen.push(roomno);
+        recalc_mapseen();
+    }
+}
+
+// src/hack.c:3626 check_special_room(): update room membership, deliver each
+// special room's one-time entry message, and retire consumed room types.
 export async function check_special_room(newlev) {
     move_update(newlev);
 
@@ -667,10 +699,25 @@ export async function check_special_room(newlev) {
             : game.level?.subrooms?.find(r => r.roomnoidx === roomno);
         if (!room || room.rtype >= SHOPBASE)
             continue;
-        if (room.rtype === TEMPLE) {
-            const { intemple } = await import('./priest.js');
-            await intemple(ch.charCodeAt(0));
-        } else if (room.rtype === MORGUE) {
+        let rt = room.rtype;
+        let msg_given = true;
+
+        switch (rt) {
+        case ZOO:
+            await pline("Welcome to David's treasure zoo!");
+            break;
+        case SWAMP:
+            await pline(`It ${game.u.ublind ? 'feels' : 'looks'} rather ${
+                game.u.ublind ? 'humid' : 'muddy'} down here.`);
+            break;
+        case COURT:
+            await You(`enter an opulent${
+                furniture_present(THRONE, room) ? ' throne' : ''} room!`);
+            break;
+        case LEPREHALL:
+            await You('enter a leprechaun hall!');
+            break;
+        case MORGUE: {
             const { midnight } = await import('./calendar.js');
             if (midnight()) {
                 const run = u_locomotion('Run');
@@ -678,16 +725,84 @@ export async function check_special_room(newlev) {
             } else {
                 await You('have an uncanny feeling...');
             }
-            room.rtype = OROOM;
-            if (!(game.level.rooms || []).some(r => r.rtype === MORGUE))
-                game.level.flags.has_morgue = false;
-        } else if (room.rtype !== OROOM) {
-            note_unported_hack('check_special_room:other');
+            break;
         }
-        if (room.rtype !== OROOM) {
-            const seen = (game.level._mapseen_rooms ||= []);
-            if (!seen.includes(roomno))
-                seen.push(roomno);
+        case BEEHIVE:
+            await You('enter a giant beehive!');
+            break;
+        case COCKNEST:
+            await You('enter a disgusting nest!');
+            break;
+        case ANTHOLE:
+            await You('enter an anthole!');
+            break;
+        case BARRACKS:
+            if (monster_in_room(PMNAMES.PM_SOLDIER, roomno)
+                || monster_in_room(PMNAMES.PM_SERGEANT, roomno)
+                || monster_in_room(PMNAMES.PM_LIEUTENANT, roomno)
+                || monster_in_room(PMNAMES.PM_CAPTAIN, roomno)) {
+                await You('enter a military barracks!');
+            } else {
+                await You('enter an abandoned barracks.');
+            }
+            break;
+        case DELPHI: {
+            const oracle = monster_in_room(PMNAMES.PM_ORACLE, roomno);
+            if (oracle) {
+                const speech = oracle.mpeaceful
+                    ? `${Hello(null)}, ${game.plname}, welcome to Delphi!`
+                    : `You're in Delphi, ${game.plname}.`;
+                await pline(`"${speech}"`);
+            } else {
+                msg_given = false;
+            }
+            break;
+        }
+        case TEMPLE: {
+            const { intemple } = await import('./priest.js');
+            await intemple(ch.charCodeAt(0));
+            rt = 0;
+            break;
+        }
+        default:
+            msg_given = rt === TEMPLE || rt >= SHOPBASE;
+            rt = 0;
+            break;
+        }
+
+        if (msg_given)
+            room_discovered(roomno);
+
+        if (rt !== 0) {
+            room.rtype = OROOM;
+            const another = [...(game.level.rooms || []),
+                             ...(game.level.subrooms || [])]
+                .some(candidate => candidate?.rtype === rt);
+            if (!another) {
+                const flag = rt === COURT ? 'has_court'
+                    : rt === SWAMP ? 'has_swamp'
+                      : rt === MORGUE ? 'has_morgue'
+                        : rt === ZOO ? 'has_zoo'
+                          : rt === BARRACKS ? 'has_barracks'
+                            : rt === TEMPLE ? 'has_temple'
+                              : rt === BEEHIVE ? 'has_beehive' : null;
+                if (flag)
+                    game.level.flags[flag] = false;
+            }
+
+            if (rt === COURT || rt === SWAMP || rt === MORGUE || rt === ZOO) {
+                for (const mtmp of game.level.monsters || []) {
+                    if (DEADMONSTER(mtmp))
+                        continue;
+                    if (!isok(mtmp.mx, mtmp.my)
+                        || roomno !== game.level.at(mtmp.mx, mtmp.my)?.roomno)
+                        continue;
+                    if (!Stealth() && !rn2(3)) {
+                        await wake_msg(mtmp, false);
+                        mtmp.msleeping = 0;
+                    }
+                }
+            }
         }
     }
 }

@@ -105,6 +105,10 @@
     { "group": "Shop movement and damage", "id": "shop.movement.block-door", "cFile": "src/shk.c", "cFunction": "block_door", "description": "Block the shop doorway while debt or robbery is outstanding" },
     { "group": "Shop movement and damage", "id": "shop.movement.following-nag", "cFile": "src/shk.c", "cFunction": "shk_move", "description": "Have a following shopkeeper demand payment" },
 
+    { "group": "Special room entry", "id": "room.entry.special-messages", "cFile": "src/hack.c", "cFunction": "check_special_room", "description": "Enter courts, swamps, zoos, barracks, halls, nests, morgues, and temples and emit each first-entry message" },
+    { "group": "Special room entry", "id": "room.entry.one-time-state", "cFile": "src/hack.c", "cFunction": "check_special_room", "description": "Record room discovery, retire one-time room types, clear exhausted level flags, and preserve temples, themed rooms, and vaults" },
+    { "group": "Special room entry", "id": "room.entry.wake-roll", "cFile": "src/hack.c", "cFunction": "check_special_room", "description": "Spend the post-entry wake rolls for eligible monsters in courts, swamps, morgues, and zoos" },
+
     { "group": "Monster inventory and object timers", "id": "monster.inventory.gnome-lit-candle", "cFile": "src/makemon.c", "cFunction": "m_initinv", "description": "Generate a gnome with a lit candle on a dark square and start its burn timer" },
     { "group": "Monster inventory and object timers", "id": "timer.burn.floor-candle-lifecycle", "cFile": "src/timeout.c", "cFunction": "burn_object", "description": "Drop a lit candle, reschedule both fuel warnings, remove its light source, and consume the floor object" },
     { "group": "Monster inventory and object timers", "id": "special.object.lit-floor-source", "cFile": "src/sp_lev.c", "cFunction": "create_object", "description": "Create a level-defined lit oil lamp with its burn timer and mobile floor light source active before play begins" },

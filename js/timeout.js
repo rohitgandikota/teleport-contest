@@ -933,7 +933,8 @@ function note_unported_timeout(what) {
 // src/timeout.c:981 attach_egg_hatch_timeout() — decide if and when the egg
 // hatches: one rnd(i) per age 151..200 until a roll exceeds 150.
 export function attach_egg_hatch_timeout(egg, when = 0) {
-    /* stop_timer: no previous timer exists at creation */
+    /* C always replaces an existing hatch timer before choosing the delay. */
+    stop_timer(HATCH_EGG, egg);
     if (!when) {
         for (let i = (200 - 50) + 1; i <= 200; i++)
             if (rnd(i) > 150) {

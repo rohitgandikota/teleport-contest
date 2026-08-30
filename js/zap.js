@@ -43,7 +43,7 @@ import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory } from './invent.js';
 import { getdir } from './cmd.js';
-import { fall_asleep } from './timeout.js';
+import { attach_egg_hatch_timeout, fall_asleep } from './timeout.js';
 import { healup, potionbreathe } from './potion.js';
 import { findit } from './detect.js';
 import { readobjnam } from './objnam.js';
@@ -64,7 +64,7 @@ import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
          OBJ_FLOOR } from './const.js';
 import { splitobj, mkobj, mksobj, rnd_class, set_corpsenm,
-         erosion_matters } from './mkobj.js';
+         dead_species, erosion_matters } from './mkobj.js';
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
 import { is_flammable, is_rottable, burnarmor } from './trap.js';
@@ -895,11 +895,15 @@ export async function bhito(obj, otmp) {
             break;
         case ONAMES.WAN_UNDEAD_TURNING:
         case ONAMES.SPE_TURN_UNDEAD: {
-            if (obj.otyp !== ONAMES.CORPSE) {
-                note_unported_zap('bhito:undead_turning_noncorpse');
-                res = 0;
+            if (obj.otyp === ONAMES.EGG) {
+                if (obj.corpsenm !== NON_PM
+                    && !dead_species(obj.corpsenm, true)) {
+                    attach_egg_hatch_timeout(obj, 0);
+                }
                 break;
             }
+            if (obj.otyp !== ONAMES.CORPSE)
+                break;
             const ox = obj.ox, oy = obj.oy;
             const saveNorevive = obj.norevive;
             obj.norevive = 0;

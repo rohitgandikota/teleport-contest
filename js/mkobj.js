@@ -1494,12 +1494,16 @@ export function uncurse(otmp) {
 
 export function set_corpsenm(obj, id) {
     const old_id = obj.corpsenm;
+    let when = 0;
 
-    /* C removes every corpse or figurine timer before changing species.
-       Egg timers preserve their remaining delay, and the existing egg path
-       already does that by leaving its live HATCH_EGG timer attached. */
-    if (obj.timed && obj.otyp !== ONAMES.EGG)
-        obj_stop_timers(obj);
+    /* C removes timers before changing species. Egg hatch timers retain
+       their remaining delay when they are attached again below. */
+    if (obj.timed) {
+        if (obj.otyp === ONAMES.EGG)
+            when = stop_timer(HATCH_EGG, obj);
+        else
+            obj_stop_timers(obj);
+    }
 
     if (obj.otyp === ONAMES.CORPSE && obj.oeaten
         && game.mons[old_id].cnutrit !== game.mons[id].cnutrit) {
@@ -1520,7 +1524,7 @@ export function set_corpsenm(obj, id) {
         /* src/mkobj.c:1360 — the hatch-decision loop DRAWS one rnd(i) per
            candidate age, so it cannot be skipped */
         if (obj.corpsenm !== NON_PM && !dead_species(obj.corpsenm, true))
-            attach_egg_hatch_timeout(obj, 0);
+            attach_egg_hatch_timeout(obj, when);
         break;
     default:
         /* FIGURINE attaches its own timer; needs carried state */

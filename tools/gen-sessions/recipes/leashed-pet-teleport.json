@@ -1,0 +1,26 @@
+{
+  "name": "leashed-pet-teleport",
+  "description": "A wizard teleports while leading a tame mastodon, then farlook confirms that the leashed pet followed to the destination.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "monster.pets",
+    "object.tools-containers",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "teleport.leash.follow"
+  ],
+  "segments": [
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame mastodon\r\u0017uncursed leash\r\u0006aek\u0014ll.\u0006;m."
+    }
+  ]
+}

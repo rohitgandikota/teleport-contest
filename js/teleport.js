@@ -285,7 +285,7 @@ export async function level_tele() {
         }
     }
 
-    if (!next_to_u() && !force_dest) {
+    if (!await next_to_u() && !force_dest) {
         await You('shudder for a moment.');
         return;
     }
@@ -342,10 +342,10 @@ function lev_by_name(nam) {
     return 0;
 }
 
-// src/hack.c next_to_u() — is everything that follows the hero adjacent?
-// Only a leashed pet or a ball and chain can fail it, and neither is modelled.
-function next_to_u() {
-    return true;
+// src/apply.c next_to_u(), loaded lazily to avoid the apply/monster cycle.
+async function next_to_u() {
+    const apply = await import('./apply.js');
+    return await apply.next_to_u();
 }
 
 const isdigit = (c) => c >= '0' && c <= '9';
@@ -855,11 +855,15 @@ async function dotele(break_the_rules) {
         return 0;
     }
 
+    if (!await next_to_u()) {
+        await You('shudder for a moment.');
+        return 0;
+    }
+
     if (game.iflags?.travelcc)
         game.iflags.travelcc.x = game.iflags.travelcc.y = 0;
     await tele();
-    /* next_to_u() drags adjacent pets along */
-    note_unported_teleport('dotele:next_to_u');
+    await next_to_u();
 
     await morehungry(100);
     return 1;

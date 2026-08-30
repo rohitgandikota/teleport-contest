@@ -7,7 +7,8 @@ import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          M_AP_MONSTER, ARTICLE_A, SUPPRESS_IT,
          SUPPRESS_INVISIBLE, nothing_seems_to_happen, IS_OBSTRUCTED, IS_TREE,
          Is_airlevel, Is_waterlevel, NOSE, NO_TRAP_FLAGS, RLOC_MSG,
-         RLOC_NONE, TIMEOUT, Upolyd, A_DEX, A_CON, MAX_SPELL_STUDY,
+         RLOC_NONE, RLOC_NOMSG, TIMEOUT, Upolyd, A_DEX, A_CON,
+         MAX_SPELL_STUDY,
          SICK_ALL, SICK_NONVOMITABLE,
          NH_RED, plur, HOMEMADE_TIN, COLNO, FLASHED_LIGHT,
          STOMACH, DIGTYP_UNDIGGABLE, N_DIRS_Z, xdir, ydir,
@@ -128,6 +129,38 @@ export function leashable(mtmp) {
 export function get_mleash(mtmp) {
     return (game.invent || []).find((obj) =>
         obj.otyp === ONAMES.LEASH && obj.leashmon === mtmp.m_id) || null;
+}
+
+// src/apply.c:919 next_to_u(), keep leashed followers beside the hero.
+export async function next_to_u() {
+    for (const mtmp of game.level?.monsters || []) {
+        if (!mtmp.mleashed)
+            continue;
+        if (distu(mtmp.mx, mtmp.my) > 2)
+            mnexto(mtmp, RLOC_NOMSG);
+        if (distu(mtmp.mx, mtmp.my) <= 2)
+            continue;
+
+        const leash = get_mleash(mtmp);
+        if (!leash) {
+            note_unported_apply('next_to_u:missing_leash');
+            return false;
+        }
+        if (leash.cursed)
+            return false;
+
+        mtmp.mleashed = 0;
+        leash.leashmon = 0;
+        update_inventory();
+        await You_feel(`${number_leashed() > 1 ? 'a' : 'the'} leash go slack.`);
+    }
+
+    if (game.u.usteed) {
+        const { mon_has_amulet } = await import('./wizard.js');
+        if (mon_has_amulet(game.u.usteed))
+            return false;
+    }
+    return true;
 }
 
 async function use_leash_core(obj, mtmp, cc, spotmon) {

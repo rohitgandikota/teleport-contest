@@ -30,16 +30,21 @@
 // spending a session on it.
 //
 //     node tools/unported-hits.mjs
-//     node tools/unported-hits.mjs <session-file>
+//     node tools/unported-hits.mjs <session-file-or-directory>
 
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync, readFileSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const arg = process.argv[2];
-const files = arg ? [arg]
-    : readdirSync(join(ROOT, 'sessions'))
+const target = arg ? join(ROOT, arg) : null;
+const files = target && statSync(target).isDirectory()
+    ? readdirSync(target)
+        .filter((f) => f.endsWith('.session.json'))
+        .map((f) => join(arg, f))
+    : arg ? [arg]
+      : readdirSync(join(ROOT, 'sessions'))
         .filter((f) => f.endsWith('.session.json'))
         .map((f) => join('sessions', f));
 

@@ -1,0 +1,44 @@
+{
+  "name": "bag-of-holding-explosion",
+  "description": "Exercise direct, inert, and recursively nested cancellation-wand handling when putting objects into an empty carried bag of holding.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.wands"
+  ],
+  "branches": [
+    "container.magic-bag.direct-explosion",
+    "container.magic-bag.inert-empty-charge",
+    "container.magic-bag.nested-explosion",
+    "container.magic-bag.content-scatter"
+  ],
+  "segments": [
+    {
+      "seed": 7108,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017wand of cancellation\rani/\ro\r"
+    },
+    {
+      "seed": 7109,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017uncursed wand of cancellation (0:0)\rapi/\rq\r"
+    },
+    {
+      "seed": 7110,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017empty uncursed sack\r\u0017wand of cancellation\rapi/\rq\raoi(\rp\r"
+    },
+    {
+      "seed": 7111,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017uncursed apple\r\u0017wand of cancellation\rani%\ro\rani/\rp\r  n: "
+    }
+  ]
+}

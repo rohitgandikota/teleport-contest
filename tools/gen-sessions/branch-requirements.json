@@ -51,6 +51,10 @@
     { "group": "Containers and bills", "id": "shop.bill.split-used-stack", "cFile": "src/shk.c", "cFunction": "splitbill", "description": "Split a billed stack after only part is consumed" },
     { "group": "Containers and bills", "id": "container.menu.partial-count-put-in", "cFile": "src/pickup.c", "cFunction": "menu_loot", "description": "Put only a selected count from an inventory stack into a container" },
     { "group": "Containers and bills", "id": "container.menu.partial-count-take-out", "cFile": "src/pickup.c", "cFunction": "menu_loot", "description": "Take only a selected count from a contained stack" },
+    { "group": "Containers and bills", "id": "container.magic-bag.direct-explosion", "cFile": "src/pickup.c", "cFunction": "mbag_explodes", "description": "Put a charged wand of cancellation into an empty bag of holding, destroy both objects, and apply magical explosion damage" },
+    { "group": "Containers and bills", "id": "container.magic-bag.inert-empty-charge", "cFile": "src/pickup.c", "cFunction": "mbag_explodes", "description": "Put a zero-charge wand of cancellation into a bag of holding without triggering an explosion or spending an explosion roll" },
+    { "group": "Containers and bills", "id": "container.magic-bag.nested-explosion", "cFile": "src/pickup.c", "cFunction": "mbag_explodes", "description": "Recursively find a charged cancellation wand inside an ordinary container and trigger the outer bag of holding explosion" },
+    { "group": "Containers and bills", "id": "container.magic-bag.content-scatter", "cFile": "src/pickup.c", "cFunction": "do_boh_explosion", "description": "Scatter surviving bag contents across the map with the same loss, destruction, direction, and range rolls as the C engine" },
 
     { "group": "Pricing", "id": "shop.pricing.food-rounding", "cFile": "src/shk.c", "cFunction": "getprice", "description": "Cover food prices that rely on truncating integer division" },
     { "group": "Pricing", "id": "shop.pricing.gem-offer", "cFile": "src/shk.c", "cFunction": "set_cost", "description": "Price unidentified real gems and colored glass for sale" },

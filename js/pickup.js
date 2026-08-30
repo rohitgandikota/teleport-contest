@@ -2,14 +2,14 @@
 // C ref: src/pickup.c
 //
 // Manual and automatic floor pickup share the same carry-limit machinery.
-// Rare artifact, fatal-corpse, scare-scroll, and remote-shop branches remain
+// Rare artifact, fatal-corpse, and remote-shop branches remain
 // explicit recorded gaps.
 
 import { def_oc_syms } from './drawing_data.js';
 import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, getobj, update_inventory, weight, mergable, merged, money_cnt,
-         useupf,
+         useup, useupf, obfree, stackobj,
          GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
 import { observe_object } from './o_init.js';
@@ -18,24 +18,27 @@ import { doname, xname, cxname, the, yname, singular, an,
 import { Is_container, Has_contents, carried } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
-import { check_capacity, in_rooms } from './hack.js';
+import { check_capacity, in_rooms, losehp } from './hack.js';
 import { ECMD_OK, ECMD_TIME, IS_FURNITURE, ICE, POOL, MOAT, WATER, LAVAPOOL } from './const.js';
 import { upstart, trycall } from './do_name.js';
 
 /* src/hacklib.c The() — the() with the first letter capitalised. */
 const The = (s2) => upstart(the(s2));
-import { ONAMES, OCLASSES } from './objects_data.js';
-import { newsym, pline, bot, tty_clear_nhwindow_message } from './display.js';
+import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { newsym, pline, bot, tty_clear_nhwindow_message, urgent_pline }
+    from './display.js';
 import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
-         EXT_ENCUMBER, SHOPBASE, invlet_basic, HAND } from './const.js';
+         EXT_ENCUMBER, SHOPBASE, invlet_basic, HAND, KILLED_BY_AN,
+         DOOR, D_CLOSED, D_LOCKED, IS_SINK, ZAP_POS, isok, xdir, ydir }
+    from './const.js';
 import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban } from './dungeon.js';
-import { Is_mbag, splitobj, unbless } from './mkobj.js';
+import { Is_mbag, splitobj, unbless, place_object } from './mkobj.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
-import { rn2 } from './rng.js';
+import { rn2, rnd, d } from './rng.js';
 import { OBJ_AT, LOOKHERE_NOFLAGS, LOOKHERE_PICKED_SOME } from './const.js';
 import { There, You, Your } from './pline.js';
 import { flush_screen } from './display.js';
@@ -1033,6 +1036,133 @@ function lift_object(obj) {
     return 1;
 }
 
+// src/pickup.c:2488 mbag_explodes() -- recursively decide whether an object
+// placed into a magical bag triggers an explosion.
+function mbag_explodes(obj, depthin) {
+    if ((obj.otyp === ONAMES.WAN_CANCELLATION
+         || obj.otyp === ONAMES.BAG_OF_TRICKS)
+        && obj.spe <= 0)
+        return false;
+
+    if ((Is_mbag(obj) || obj.otyp === ONAMES.WAN_CANCELLATION)
+        && rn2(1 << Math.min(depthin, 7)) <= depthin)
+        return true;
+
+    for (const contained of (obj.cobj || []))
+        if (mbag_explodes(contained, depthin + 1))
+            return true;
+
+    return false;
+}
+
+// src/explode.c:721 scatter() -- the MAY_HIT | MAY_DESTROY form used by a
+// bag-of-holding explosion. This owns one original contained stack. A stack
+// can split into several independently moving pieces before they land.
+async function scatter_boh_object(obj, blastforce) {
+    const pieces = [];
+    let remaining = obj;
+
+    while (remaining) {
+        let piece = remaining;
+        if (remaining.quan > 1) {
+            const limit = Math.min(remaining.quan - 1, 0x7fffffff);
+            piece = splitobj(remaining, rnd(limit));
+        } else {
+            remaining = null;
+        }
+        obj_extract_self(piece);
+
+        const destroyRoll = rn2(10);
+        const material = game.objects[piece.otyp].oc_material;
+        if (!destroyRoll || material === MATERIALS.GLASS
+            || piece.otyp === ONAMES.EGG) {
+            const { breaktest } = await import('./dothrow.js');
+            if (breaktest(piece)) {
+                note_unported_pickup('scatter:break-effects');
+                obfree(piece);
+                continue;
+            }
+        }
+
+        const direction = rn2(8);
+        const force = Math.max(1,
+            blastforce - Math.trunc((piece.owt ?? weight(piece)) / 40));
+        pieces.push({
+            obj: piece,
+            x: game.u.ux,
+            y: game.u.uy,
+            dx: xdir[direction],
+            dy: ydir[direction],
+            range: rnd(force),
+            stopped: false,
+        });
+    }
+
+    let farthest = pieces.reduce((n, piece) => Math.max(n, piece.range), 0);
+    while (farthest-- > 0) {
+        for (const piece of pieces) {
+            if (piece.range-- <= 0 || piece.stopped || !piece.obj)
+                continue;
+
+            const nx = piece.x + piece.dx;
+            const ny = piece.y + piece.dy;
+            const loc = isok(nx, ny) ? game.level.at(nx, ny) : null;
+            const closedDoor = loc?.typ === DOOR
+                && ((loc.doormask ?? 0) & (D_CLOSED | D_LOCKED));
+            if (!loc || !ZAP_POS(loc.typ) || closedDoor) {
+                piece.stopped = true;
+                continue;
+            }
+
+            game.thrownobj = piece.obj;
+            game.bhitpos = { x: nx, y: ny };
+            const mon = m_at(nx, ny);
+            if (mon) {
+                piece.range--;
+                const { ohitmon } = await import('./mthrowu.js');
+                if (await ohitmon(mon, piece.obj, 1, false)) {
+                    piece.obj = null;
+                    piece.stopped = true;
+                }
+            }
+            piece.x = nx;
+            piece.y = ny;
+            if (IS_SINK(loc.typ))
+                piece.stopped = true;
+            game.thrownobj = null;
+        }
+    }
+
+    const { flooreffects } = await import('./do.js');
+    for (const piece of pieces) {
+        if (piece.obj
+            && !(await flooreffects(piece.obj, piece.x, piece.y, 'land'))) {
+            place_object(piece.obj, piece.x, piece.y);
+            stackobj(piece.obj);
+        }
+        newsym(piece.x, piece.y);
+    }
+    newsym(game.u.ux, game.u.uy);
+}
+
+// src/pickup.c:2515 do_boh_explosion() -- remove a magical bag's contents,
+// destroying a small random fraction and scattering everything else.
+async function do_boh_explosion(boh, onFloor) {
+    boh.in_use = 1;
+    for (const obj of [...(boh.cobj || [])]) {
+        if (!rn2(13)) {
+            obj_extract_self(obj);
+            if (obj.unpaid || onFloor)
+                note_unported_pickup('mbag_item_gone:shop-billing');
+            obfree(obj);
+        } else {
+            obj.ox = game.u.ux;
+            obj.oy = game.u.uy;
+            await scatter_boh_object(obj, 4);
+        }
+    }
+}
+
 // src/pickup.c:2558 in_container() — put obj into current_container.
 async function in_container(obj) {
     const floor_container = obj !== current_container
@@ -1073,10 +1203,24 @@ async function in_container(obj) {
     }
     if (current_container.otyp === ONAMES.ICE_BOX) {
         note_unported_pickup('in_container:icebox_age');
-    } else if (Is_mbag(current_container)) {
-        /* mbag_explodes() rolls are recorded when a magic bag is used */
-        note_unported_pickup('in_container:mbag_explodes');
+    } else if (Is_mbag(current_container) && mbag_explodes(obj, 0)) {
+        await urgent_pline(`As you put ${doname(obj)} inside, you are blasted by a magical explosion!`);
+        if (obj.otyp === ONAMES.BAG_OF_HOLDING)
+            await do_boh_explosion(obj, obj.where === 1 /* OBJ_FLOOR */);
+        obfree(obj);
+
+        await do_boh_explosion(current_container, floor_container);
+        if (floor_container)
+            useupf(current_container, current_container.quan);
+        else
+            useup(current_container);
+
+        await losehp(d(6, 6), 'magical explosion', KILLED_BY_AN);
+        current_container = null;
     }
+
+    if (!current_container)
+        return -1;
 
     current_container.cknown = 1;
 

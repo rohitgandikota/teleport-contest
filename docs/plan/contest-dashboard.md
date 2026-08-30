@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T21:35:25.953Z. Local commit: `739fd92`.
+Last refreshed: 2026-08-30T22:11:17.575Z. Local commit: `51aa41f`.
 Leaderboard snapshot: 2026-08-30T17:31:26.469Z. Fork last scored: 2026-08-30T16:55:52.282Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 
@@ -11,7 +11,7 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 39739/40124 | 99.04% | 215/217 | 2713965/2713965 (100.00%) | 88/1810 |
+| Supplemental C suite | 40230/40615 | 99.05% | 218/220 | 2752344/2752344 (100.00%) | 88/1810 |
 
 ## Contest position and generalization
 
@@ -21,15 +21,15 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `739fd92` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `51aa41f` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 40117/40124 |
-| Cursor positions | 11405/11405 | 39739/40124 |
-| Startup and per-turn estimate | 61+0.59/turn | 99+0.23/turn |
+| Cells only | 11405/11405 | 40608/40615 |
+| Cursor positions | 11405/11405 | 40230/40615 |
+| Startup and per-turn estimate | 67+0.61/turn | 105+0.29/turn |
 
 ## Supplemental capture caveats
 
@@ -48,6 +48,7 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T22:11:17.575Z | `51aa41f` | 11405/11405 | 40230/40615 | 6032/11265 | 3 |
 | 2026-08-30T21:35:25.953Z | `739fd92` | 11405/11405 | 39739/40124 | 6032/11265 | 3 |
 | 2026-08-30T21:13:06.038Z | `39ee103` | 11405/11405 | 39450/39835 | 6032/11265 | 3 |
 | 2026-08-30T20:58:02.348Z | `a31b49a` | 11405/11405 | 39220/39605 | 6032/11265 | 3 |
@@ -57,7 +58,6 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 | 2026-08-30T19:49:59.418Z | `e080258` | 11405/11405 | 38746/39131 | 6032/11265 | 3 |
 | 2026-08-30T19:27:48.323Z | `ac945f8` | 11405/11405 | 38680/39065 | 6032/11265 | 3 |
 | 2026-08-30T19:17:32.901Z | `5a19514` | 11405/11405 | 38593/38978 | 6032/11265 | 3 |
-| 2026-08-30T19:00:34.610Z | `5c12f8b` | 11405/11405 | 38398/38783 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

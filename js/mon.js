@@ -7,7 +7,7 @@ import { new_light_source, del_light_source, any_light_source,
          LS_OBJECT, LS_MONSTER } from './light.js';
 import { sensemon } from './display.js';
 import { mdistu, mon_track_clear, m_everyturn_effect,
-         set_apparxy as set_apparxy_ref, monflee } from './monmove.js';
+         set_apparxy as set_apparxy_ref, monflee, m_canseeu } from './monmove.js';
 // mon.js — monster bookkeeping.
 // C ref: src/mon.c
 //
@@ -78,7 +78,7 @@ import { Is_waterlevel, Is_rogue_level, engulfing_u, In_endgame,
 import { bigmonst, amorphous, is_whirly, noncorporeal, slithy, needspick, nohands, nolimbs, verysmall, is_giant, tunnels, passes_walls, throws_rocks, passes_bars, is_displacer, notake, strongmonst, is_covetous,
     is_clinger, is_flyer, is_floater, mindless, dmgtype, attacktype, mon_resistancebits, humanoid, is_undead, unsolid, breathless, amphibious, pronoun_gender } from './mondata.js';
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
-import { distant_name, doname } from './objnam.js';
+import { distant_name, doname, makeplural } from './objnam.js';
 import { You, You_feel, You_hear } from './pline.js';
 import { Blind, Hallucination } from './youprop.js';
 import { experience, more_experienced, newexplevel } from './exper.js';
@@ -419,7 +419,7 @@ export async function minliquid(mtmp) {
     return 0;
 }
 
-import { dochugw, m_canseeu } from './monmove.js';
+import { dochugw } from './monmove.js';
 import { fightm } from './mhitm.js';
 
 // include/you.h:560 m_next2u() — distu((m)->mx, (m)->my) <= 2.
@@ -1175,6 +1175,11 @@ function guardnum_of_urole() {
     return (typeof g === 'string') ? PMNAMES[g] : (g ?? -1);
 }
 
+function leadernum_of_urole() {
+    const leader = game.urole?.ldrnum;
+    return (typeof leader === 'string') ? PMNAMES[leader] : (leader ?? -1);
+}
+
 // src/mon.c:5915 check_gear_next_turn() — flag the monster to reconsider its
 // equipment on its next move.
 //
@@ -1762,6 +1767,39 @@ export async function wakeup(mtmp, via_attack) {
     }
 }
 
+// src/mon.c:4143 qst_guardians_respond(). Quest guardians sense an attack on
+// their leader even without line of sight. Visibility controls only the one
+// summary message.
+async function qst_guardians_respond() {
+    const guardnum = guardnum_of_urole();
+    let visible = 0;
+
+    for (const mon of (game.level?.monsters || [])) {
+        if (DEADMONSTER(mon) || mon.mnum !== guardnum || !mon.mpeaceful)
+            continue;
+        mon.mpeaceful = 0;
+        if (canseemon(mon))
+            ++visible;
+    }
+    if (visible && !Hallucination()) {
+        let who = game.mons[guardnum]?.pmnames?.[2]
+            ?? game.mons[guardnum]?.pmnames?.[0]
+            ?? game.mons[guardnum]?.pmnames?.[1]
+            ?? 'guardian';
+        if (visible > 1)
+            who = makeplural(who);
+        await pline(`The ${who} ${visible > 1 ? 'appear' : 'appears'} to be angry too...`);
+    }
+}
+
+function has_peaceful_responder(mtmp) {
+    return (game.level?.monsters || []).some(mon =>
+        mon !== mtmp && !DEADMONSTER(mon)
+        && !mindless(game.mons[mon.mnum]) && mon.mpeaceful
+        && couldsee(mon.mx, mon.my) && !mon.msleeping
+        && mon.mcansee && m_canseeu(mon));
+}
+
 // src/mon.c setmangry() — turn a peaceful monster hostile.
 //
 // The order of the three early exits is what carries the behaviour:
@@ -1806,11 +1844,12 @@ export async function setmangry(mtmp, via_attack) {
         await growl(mtmp);
     }
 
-    /* attacking your own quest leader will anger his or her guardians */
-    note_unported_mon('setmangry:quest_leader_check');
+    /* attacking your own quest leader angers his or her guardians */
+    if (mtmp.mnum === leadernum_of_urole())
+        await qst_guardians_respond();
 
     /* make other peaceful monsters react */
-    if (!game.context?.mon_moving)
+    if (!game.context?.mon_moving && has_peaceful_responder(mtmp))
         note_unported_mon('setmangry:peacefuls_respond');
 }
 

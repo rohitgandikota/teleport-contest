@@ -90,7 +90,8 @@ import { create_gas_cloud } from './region.js';
 import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
 import { name_to_monplus } from './mondata.js';
-import { engr_at } from './engrave.js';
+import { del_engr, engr_at, make_engr_at, random_engraving, rloc_engr,
+         wipe_engr_at } from './engrave.js';
 import { ceiling, surface } from './dungeon.js';
 import { body_part } from './polyself.js';
 import { hard_helmet } from './do_wear.js';
@@ -1285,18 +1286,40 @@ export async function zap_map(x, y, obj) {
         note_unported_zap('zap_map:maybe_explode_trap');
     if (game.u.dz > 0) {
         const engraving = engr_at(x, y);
-        if (engraving && engraving.engr_type !== HEADSTONE
-            && (obj.otyp === ONAMES.WAN_POLYMORPH
-                || obj.otyp === ONAMES.SPE_POLYMORPH
-                || obj.otyp === ONAMES.WAN_CANCELLATION
-                || obj.otyp === ONAMES.SPE_CANCELLATION
-                || obj.otyp === ONAMES.WAN_MAKE_INVISIBLE
-                || obj.otyp === ONAMES.WAN_TELEPORTATION
-                || obj.otyp === ONAMES.SPE_TELEPORT_AWAY
-                || obj.otyp === ONAMES.SPE_STONE_TO_FLESH
-                || obj.otyp === ONAMES.WAN_STRIKING
-                || obj.otyp === ONAMES.SPE_FORCE_BOLT)) {
-            note_unported_zap('zap_map:engraving');
+        if (engraving && engraving.engr_type !== HEADSTONE) {
+            switch (obj.otyp) {
+            case ONAMES.WAN_POLYMORPH:
+            case ONAMES.SPE_POLYMORPH: {
+                del_engr(engraving);
+                const replacement = random_engraving();
+                make_engr_at(x, y, replacement.text, replacement.pristine,
+                             game.moves, 0);
+                break;
+            }
+            case ONAMES.WAN_CANCELLATION:
+            case ONAMES.SPE_CANCELLATION:
+            case ONAMES.WAN_MAKE_INVISIBLE:
+                del_engr(engraving);
+                break;
+            case ONAMES.WAN_TELEPORTATION:
+            case ONAMES.SPE_TELEPORT_AWAY:
+                await rloc_engr(engraving);
+                break;
+            case ONAMES.SPE_STONE_TO_FLESH:
+                if (engraving.engr_type === ENGRAVE) {
+                    await pline_The(Hallucination()
+                        ? 'floor runs like butter!'
+                        : 'edges on the floor get smoother.');
+                    wipe_engr_at(x, y, d(2, 4), true);
+                }
+                break;
+            case ONAMES.WAN_STRIKING:
+            case ONAMES.SPE_FORCE_BOLT:
+                wipe_engr_at(x, y, d(2, 4), true);
+                break;
+            default:
+                break;
+            }
         }
     }
     const terrainType = game.level.at(x, y)?.typ;

@@ -31,13 +31,16 @@
 //
 //     node tools/unported-hits.mjs
 //     node tools/unported-hits.mjs <session-file-or-directory>
+//     node tools/unported-hits.mjs <session-file-or-directory> --evidence
 
 import { readdirSync, readFileSync, statSync } from 'fs';
-import { join, dirname } from 'path';
+import { basename, join, dirname } from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const arg = process.argv[2];
+const args = process.argv.slice(2);
+const showEvidence = args.includes('--evidence');
+const arg = args.find((item) => item !== '--evidence');
 const target = arg ? join(ROOT, arg) : null;
 const files = target && statSync(target).isDirectory()
     ? readdirSync(target)
@@ -64,6 +67,7 @@ const newStorage = () => {
 };
 
 const hits = new Map();
+const evidence = new Map();
 const errs = new Map();
 let ran = 0, threw = 0;
 
@@ -89,8 +93,14 @@ for (const f of files) {
                  (errs.get(String(e && e.message || e).split('\n')[0].slice(0,70))||0)+1);
     }
     ran++;
-    for (const path of (gstate.game.unported || []))
+    for (const path of (gstate.game.unported || [])) {
         hits.set(path, (hits.get(path) || 0) + 1);
+        if (showEvidence) {
+            if (!evidence.has(path))
+                evidence.set(path, []);
+            evidence.get(path).push(basename(f, '.session.json'));
+        }
+    }
 }
 
 const rows = [...hits.entries()].sort((a, b) => b[1] - a[1]);
@@ -98,6 +108,8 @@ console.log(`${ran} session(s); unported paths REACHED, by share:\n`);
 for (const [path, n] of rows) {
     const pct = Math.round((n / ran) * 100);
     console.log(`  ${String(pct).padStart(3)}%  ${'#'.repeat(Math.ceil(pct / 4)).padEnd(25)}  ${path}`);
+    if (showEvidence)
+        console.log(`       ${evidence.get(path).join(', ')}`);
 }
 if (!rows.length) console.log('  (none recorded)');
 console.log(`\n${threw}/${ran} threw:`);

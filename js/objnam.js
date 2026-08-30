@@ -38,7 +38,7 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
-         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING } from './const.js';
+         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu } from './hacklib.js';
@@ -2587,6 +2587,16 @@ async function wizterrainwish(d) {
             game.level.flags.nsinks = (game.level.flags.nsinks || 0) + 1;
         lev.looted = d.looted ? S_LPUDDING | S_LDWASHER | S_LRING : 0;
         await pline('A sink.');
+    } else if (wanted.endsWith('pool')) {
+        lev.typ = POOL;
+        lev.flags = 0;
+        const { del_engr_at } = await import('./engrave.js');
+        del_engr_at(x, y);
+        await pline('A pool of water.');
+        const { water_damage_chain } = await import('./trap.js');
+        const floorObjects = (game.level.objects || [])
+            .filter(obj => obj.ox === x && obj.oy === y);
+        await water_damage_chain(floorObjects, true);
     } else if (wanted.endsWith('altar')) {
         const alignment = wanted.startsWith('chaotic ') ? A_CHAOTIC
                         : wanted.startsWith('neutral ') ? A_NEUTRAL

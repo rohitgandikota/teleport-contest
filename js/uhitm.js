@@ -31,7 +31,7 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
-         shieldeff_mon, is_pool, m_carrying, t_at } from './mon.js';
+         shieldeff_mon, is_pool, m_carrying, t_at, minliquid } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
@@ -1254,10 +1254,13 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         /* src/uhitm.c:1926 — a solid weapon hit can hurl the defender. The
            two leading draws inside mhitm_knockback happen unconditionally,
            so skipping the call loses them for every armed hit. */
-        if (maybe_knockback)
-            await mhitm_knockback(game.youmonst, mon,
-                                  game.youmonst.data.mattk[0],
-                                  { hitflags: M_ATTK_HIT }, true);
+        if (maybe_knockback) {
+            const mhm = { hitflags: M_ATTK_HIT };
+            if (await mhitm_knockback(game.youmonst, mon,
+                                     game.youmonst.data.mattk[0], mhm, true)
+                && (mhm.hitflags & M_ATTK_DEF_DIED))
+                hmd.destroyed = true;
+        }
     }
 
     /* src/uhitm.c:1934 — `return hmd.destroyed ? FALSE : TRUE`. This used to
@@ -2461,7 +2464,7 @@ export async function mhurtle(mon, dx, dy, range) {
         if (t_at(mon.mx, mon.my))
             await mintrap(mon, FORCEBUNGLE);
         else
-            note_unported_uhitm('mhurtle:minliquid');
+            await minliquid(mon);
     }
 }
 

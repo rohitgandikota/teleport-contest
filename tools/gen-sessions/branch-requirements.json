@@ -73,6 +73,8 @@
     { "group": "Monster food effects", "id": "monster.consume.green-slime", "cFile": "src/mon.c", "cFunction": "m_consume_obj", "description": "Have a starving leashed pet eat a green slime glob, change into a green slime, and release an incompatible leash" },
     { "group": "Monster taming", "id": "monster.taming.wizard-created", "cFile": "src/read.c", "cFunction": "create_particular_creation", "description": "Create an explicitly tame monster with the wizard command and initialize it as a new pet" },
     { "group": "Teleport followers", "id": "teleport.leash.follow", "cFile": "src/apply.c", "cFunction": "next_to_u", "description": "Teleport with a leashed pet and relocate it beside the hero while preserving the leash" },
-    { "group": "Debug commands", "id": "debug.wizkill.unseen-target", "cFile": "src/wizcmds.c", "cFunction": "wiz_kill", "description": "Kill an unseen target while preserving its explicit species name" }
+    { "group": "Knockback terrain", "id": "combat.knockback.monster-into-pool", "cFile": "src/dothrow.c", "cFunction": "mhurtle", "description": "Knock a breathing monster into water and apply the post-hurtle liquid effect" },
+    { "group": "Debug commands", "id": "debug.wizkill.unseen-target", "cFile": "src/wizcmds.c", "cFunction": "wiz_kill", "description": "Kill an unseen target while preserving its explicit species name" },
+    { "group": "Debug commands", "id": "debug.terrain-wish.pool", "cFile": "src/objnam.c", "cFunction": "wizterrainwish", "description": "Wish for a pool and update the current square to water terrain" }
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "name": "knockback-monster-into-pool",
+  "description": "Ogresmasher knocks a land monster into a pool, forcing the post-hurtle liquid effect.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.hero-melee",
+    "monster.movement",
+    "monster.special-effects",
+    "object.artifacts",
+    "combat.melee",
+    "combat.knockback",
+    "terrain.water-lava",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "combat.knockback.monster-into-pool",
+    "debug.terrain-wish.pool"
+  ],
+  "segments": [
+    {
+      "seed": 6200,
+      "datetime": "20000110210000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0017blessed +3 Ogresmasher\rwo\u0017blessed leather gloves\rWp\u0006\u0014hhhhhhhhhhhhhhjjj.\u0006\u0014kk.#wizkill\rj.\u001b\u0006\u0014bb.\u0017pool\r\u0006\u0014b.\u0017pool\r\u0006\u0014uuu.\u0007sleeping hostile chickatrice\r\u0017rock\rFb   :"
+    }
+  ]
+}

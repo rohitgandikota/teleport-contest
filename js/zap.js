@@ -11,7 +11,8 @@ import { is_lava, is_pool, m_at, t_at } from './mon.js';
 import { cansee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
-         newsym, temporary_object_glyph, unmap_invisible } from './display.js';
+         newsym, shieldeff, temporary_object_glyph,
+         unmap_invisible } from './display.js';
 import { closed_door } from './cmd.js';
 import { is_drawbridge_wall, is_ice } from './dbridge.js';
 
@@ -21,8 +22,9 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
          ZAP_POS, W_ARM, W_ARMS, W_WEP, W_AMUL, HI_ZAP,
-         W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, M_SEEN_MAGR,
-         KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
+         W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, A_CON, M_SEEN_MAGR,
+         KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX,
+         LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
@@ -71,7 +73,7 @@ import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, weight } from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
-         openholdingtrap, trapname } from './trap.js';
+         ignite_items, openholdingtrap, trapname } from './trap.js';
 import { is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
@@ -233,14 +235,91 @@ export async function zappable(wand) {
 
 // src/zap.c:2705 zapyourself() — the hero zapped themself.
 //
-// Only the WAN_SLEEP arm is live (Sleep_resistance is absent for every
-// fresh hero except elves, whose resistance field is real when set); every
-// other wand records. Returns the retributive damage, 0 for sleep.
+// Returns the retributive damage. dozap() applies it after wand discovery and
+// inventory damage have finished, matching the C caller.
 export async function zapyourself(obj, ordinary) {
     let damage = 0;
     let learn_it = false;
+    const antimagic = !!(game.u.intrinsic?.HAntimagic
+                         || game.u.uprops?.ANTIMAGIC
+                         || game.u.uprops?.MAGIC_RES);
 
     switch (obj.otyp) {
+    case ONAMES.WAN_STRIKING:
+    case ONAMES.SPE_FORCE_BOLT:
+        learn_it = true;
+        if (antimagic) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await pline('Boing!');
+        } else {
+            if (ordinary) {
+                await You('bash yourself!');
+                damage = d(2, 12);
+            } else {
+                damage = d(1 + obj.spe, 6);
+            }
+            exercise(A_STR, false);
+        }
+        break;
+    case ONAMES.WAN_LIGHTNING: {
+        learn_it = true;
+        const origDamage = d(12, 6);
+        if (!Shock_resistance()) {
+            await You('shock yourself!');
+            damage = origDamage;
+            exercise(A_CON, false);
+        } else {
+            await shieldeff(game.u.ux, game.u.uy);
+            await You('zap yourself, but seem unharmed.');
+        }
+        await destroy_items(game.youmonst, ATTKS.AD_ELEC, origDamage);
+        await flashburn(rnd(100), true);
+        break;
+    }
+    case ONAMES.WAN_FIRE:
+    case ONAMES.FIRE_HORN: {
+        learn_it = true;
+        const origDamage = d(12, 6);
+        if (Fire_resistance()) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await You_feel('rather warm.');
+        } else {
+            await pline("You've set yourself afire!");
+            damage = origDamage;
+        }
+        if (game.u.uprops?.SLIMED)
+            game.u.uprops.SLIMED = 0;
+        await burnarmor(game.youmonst);
+        await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDamage);
+        await ignite_items(game.invent);
+        break;
+    }
+    case ONAMES.WAN_COLD:
+    case ONAMES.SPE_CONE_OF_COLD:
+    case ONAMES.FROST_HORN: {
+        learn_it = true;
+        const origDamage = d(12, 6);
+        if (Cold_resistance()) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await You_feel('a little chill.');
+        } else {
+            await You('imitate a popsicle!');
+            damage = origDamage;
+        }
+        await destroy_items(game.youmonst, ATTKS.AD_COLD, origDamage);
+        break;
+    }
+    case ONAMES.WAN_MAGIC_MISSILE:
+    case ONAMES.SPE_MAGIC_MISSILE:
+        learn_it = true;
+        if (antimagic) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await pline_The('missiles bounce!');
+        } else {
+            damage = d(4, 6);
+            await pline("Idiot!  You've shot yourself!");
+        }
+        break;
     case ONAMES.WAN_SLEEP:
     case ONAMES.SPE_SLEEP: {
         if (game.u.uprops?.SLEEP_RES?.intrinsic
@@ -331,6 +410,24 @@ export async function zapyourself(obj, ordinary) {
     if (learn_it)
         learnwand(obj);
     return damage;
+}
+
+// src/zap.c:3060 flashburn(). Lightning and camera flashes share the same
+// blindness message and timeout path.
+async function flashburn(duration, viaLightning) {
+    if (!resists_blnd(null)) {
+        await You('are blinded by the flash!');
+        const { make_blinded } = await import('./potion.js');
+        await make_blinded(duration, false);
+        if (!Blind())
+            await Your('vision clears.');
+        return true;
+    }
+    if (!viaLightning && resists_blnd_by_arti(null)) {
+        await shieldeff(game.u.ux, game.u.uy);
+        return true;
+    }
+    return false;
 }
 
 // src/zap.c:2539 zapnodir() — wands that need no direction.
@@ -2302,7 +2399,12 @@ export async function dozap() {
     } else if (need_dir && !game.u.dx && !game.u.dy && !game.u.dz) {
         const damage = await zapyourself(obj, true);
         if (damage) {
-            note_unported_zap('dozap:losehp');
+            const self = game.flags?.female ? 'herself' : 'himself';
+            const finalDamage = game.u.uprops?.HALF_PHDAM
+                ? Math.trunc((damage + 1) / 2) : damage;
+            const { losehp } = await import('./hack.js');
+            await losehp(finalDamage, `zapped ${self} with ${xname(obj)}`,
+                         NO_KILLER_PREFIX);
         }
     } else {
         await weffects(obj);

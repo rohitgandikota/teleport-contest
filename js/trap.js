@@ -151,7 +151,7 @@ export async function b_trapped(item, bodypart) {
 }
 
 // src/trap.c:7161 ignite_items(), exposed inventory light sources only.
-async function ignite_items(items) {
+export async function ignite_items(items) {
     const ignitable = new Set([
         ONAMES.OIL_LAMP, ONAMES.MAGIC_LAMP, ONAMES.TALLOW_CANDLE,
         ONAMES.WAX_CANDLE, ONAMES.CANDELABRUM_OF_INVOCATION,

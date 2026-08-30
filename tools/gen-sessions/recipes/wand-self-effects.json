@@ -1,0 +1,54 @@
+{
+  "name": "wand-self-effects",
+  "description": "High-level debug Tourists zap themselves with striking, fire, cold, magic missile, and lightning wands to cover direct hero damage, exercise, item-destruction gates, blindness, and wand discovery.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.wands",
+    "survival.regen-exercise",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.self.cold",
+    "wand.self.damage-application",
+    "wand.self.fire",
+    "wand.self.lightning",
+    "wand.self.lightning-blindness",
+    "wand.self.magic-missile",
+    "wand.self.striking"
+  ],
+  "segments": [
+    {
+      "seed": 2221,
+      "datetime": "20000110113000",
+      "nethackrc": "OPTIONS=name:tourist,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of striking\rzp."
+    },
+    {
+      "seed": 2221,
+      "datetime": "20000110113000",
+      "nethackrc": "OPTIONS=name:tourist,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of fire\rzp."
+    },
+    {
+      "seed": 2221,
+      "datetime": "20000110113000",
+      "nethackrc": "OPTIONS=name:tourist,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cold\rzp."
+    },
+    {
+      "seed": 2221,
+      "datetime": "20000110113000",
+      "nethackrc": "OPTIONS=name:tourist,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of magic missile\rzp."
+    },
+    {
+      "seed": 2221,
+      "datetime": "20000110113000",
+      "nethackrc": "OPTIONS=name:tourist,role:Tourist,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of lightning\rzp."
+    }
+  ]
+}

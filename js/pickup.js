@@ -36,7 +36,7 @@ import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
 import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
-import { In_sokoban } from './dungeon.js';
+import { In_sokoban, surface } from './dungeon.js';
 import { Is_mbag, splitobj, unbless, place_object, add_to_container }
     from './mkobj.js';
 import { def_char_to_objclass } from './sp_lev.js';
@@ -772,9 +772,9 @@ async function tip_horn(box) {
     return ECMD_TIME;
 }
 
-// src/pickup.c tipcontainer() - tip an ordinary container onto the floor.
-// Destination containers, traps, ice boxes, magical bags, and shop billing
-// stay explicit until each has a C oracle.
+// src/pickup.c tipcontainer() - tip a container onto the floor or into another
+// container. Traps, ice boxes, bags of tricks, and shop billing stay explicit
+// until each has a C oracle.
 async function tipcontainer(box) {
     const choice = await choose_tip_target(box, true);
     if (!choice.accepted)
@@ -812,7 +812,8 @@ async function tipcontainer(box) {
         await pline(`${The(xname(box))} is empty.`);
         return;
     }
-    if (box.otyp === ONAMES.ICE_BOX || Is_mbag(box)) {
+    if (box.otyp === ONAMES.ICE_BOX
+        || box.otyp === ONAMES.BAG_OF_TRICKS) {
         note_unported_pickup('tipcontainer:special-container');
         return;
     }
@@ -827,6 +828,9 @@ async function tipcontainer(box) {
     }
 
     const contents = [...box.cobj];
+    const sourceHeld = carried(box);
+    const cursedMbag = Is_mbag(box) && box.cursed;
+    let terse = true;
     box.cknown = 1;
     if (targetbox)
         await pline(`${contents.length > 1 ? 'Objects tumble' : 'An object tumbles'} into ${
@@ -839,6 +843,11 @@ async function tipcontainer(box) {
         obj_extract_self(obj);
         obj.ox = game.u.ux;
         obj.oy = game.u.uy;
+        if (cursedMbag && !rn2(13)) {
+            await mbag_item_gone(sourceHeld, obj, false);
+            terse = false;
+            continue;
+        }
         if (targetbox) {
             if (Is_mbag(targetbox) && mbag_explodes(obj, 0)) {
                 note_unported_pickup('tipcontainer:target-mbag-explosion');
@@ -847,7 +856,12 @@ async function tipcontainer(box) {
             }
             add_to_container(targetbox, obj);
         } else {
-            await pline(`${doname(obj)}${i + 1 < contents.length ? ',' : '.'}`);
+            if (terse) {
+                await pline(`${doname(obj)}${i + 1 < contents.length ? ',' : '.'}`);
+            } else {
+                await pline(`${upstart(doname(obj))} ${otense(obj, 'drop')} to the ${
+                    surface(game.u.ux, game.u.uy)}.`);
+            }
             obj.how_lost = LOST_DROPPED;
             await dropy(obj);
         }

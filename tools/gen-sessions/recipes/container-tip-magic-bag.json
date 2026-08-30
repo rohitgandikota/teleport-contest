@@ -1,0 +1,23 @@
+{
+  "name": "container-tip-magic-bag",
+  "description": "Tip a safe magical bag onto the floor and inspect the spilled object.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.tip.magic-bag-safe-source"
+  ],
+  "segments": [
+    {
+      "seed": 7128,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017uncursed apple\raosp#tip\ro\r: "
+    }
+  ]
+}

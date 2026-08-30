@@ -1,0 +1,31 @@
+{
+  "name": "container-tip-cursed-bag",
+  "description": "Tip a cursed bag of holding onto the floor and cover both retained and vanished contents.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.tip.cursed-bag-retain",
+    "container.tip.cursed-bag-loss",
+    "container.tip.cursed-bag-post-loss-drop"
+  ],
+  "segments": [
+    {
+      "seed": 7150,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty cursed bag of holding\r\u0017uncursed apple\r\u0017uncursed carrot\r\u0017uncursed food ration\r\u0017uncursed cream pie\r\u0017uncursed fortune cookie\raoi%\r.\r\u001b#tip\ro\r  : "
+    },
+    {
+      "seed": 7151,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty cursed bag of holding\r\u0017uncursed apple\r\u0017uncursed carrot\r\u0017uncursed food ration\r\u0017uncursed cream pie\r\u0017uncursed fortune cookie\raoi%\r.\r\u001b#tip\ro\r : "
+    }
+  ]
+}

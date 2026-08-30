@@ -38,8 +38,10 @@ import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
 import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban, surface } from './dungeon.js';
-import { Is_mbag, splitobj, unbless, place_object, add_to_container }
+import { Is_mbag, splitobj, unbless, place_object, add_to_container,
+         start_corpse_timeout, start_glob_timeout }
     from './mkobj.js';
+import { PMNAMES } from './monst_data.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { read_engr_at } from './engrave.js';
 import { rn2, rnd, d } from './rng.js';
@@ -783,6 +785,53 @@ async function trigger_tip_trap(box) {
     }
 }
 
+function age_is_relative(obj) {
+    return obj.otyp === ONAMES.BRASS_LANTERN
+        || obj.otyp === ONAMES.OIL_LAMP
+        || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+        || obj.otyp === ONAMES.TALLOW_CANDLE
+        || obj.otyp === ONAMES.WAX_CANDLE
+        || obj.otyp === ONAMES.POT_OIL;
+}
+
+async function freeze_in_icebox(obj) {
+    if (age_is_relative(obj))
+        return;
+
+    obj.age = (game.moves ?? 0) - (obj.age ?? 0);
+    const { stop_timer, ROT_CORPSE, REVIVE_MON, SHRINK_GLOB }
+        = await import('./timeout.js');
+    if (obj.otyp === ONAMES.CORPSE) {
+        if (obj.timed) {
+            stop_timer(ROT_CORPSE, obj);
+            stop_timer(REVIVE_MON, obj);
+        }
+        if (obj.corpsenm === PMNAMES.PM_ICE_TROLL) {
+            const saved = obj.omonst || obj.oextra?.omonst;
+            if (saved)
+                saved.mcan = 0;
+        }
+    } else if (obj.globby && obj.timed) {
+        stop_timer(SHRINK_GLOB, obj);
+    }
+}
+
+async function removed_from_icebox(obj) {
+    if (age_is_relative(obj))
+        return;
+
+    obj.age = (game.moves ?? 0) - (obj.age ?? 0);
+    if (obj.otyp === ONAMES.CORPSE) {
+        const saved = obj.omonst || obj.oextra?.omonst;
+        const iceTroll = saved
+            ? saved.mnum === PMNAMES.PM_ICE_TROLL
+            : obj.corpsenm === PMNAMES.PM_ICE_TROLL;
+        obj.norevive = iceTroll ? 0 : 1;
+        start_corpse_timeout(obj);
+    } else if (obj.globby)
+        start_glob_timeout(obj, 0);
+}
+
 async function tip_bag_of_tricks(box) {
     const oldSpe = box.spe;
     const seen = { count: 0 };
@@ -854,10 +903,6 @@ async function tipcontainer(box) {
         await pline(`${The(xname(box))} is empty.`);
         return;
     }
-    if (box.otyp === ONAMES.ICE_BOX) {
-        note_unported_pickup('tipcontainer:special-container');
-        return;
-    }
     if ((game.level?.flags?.has_shop)
         && costly_spot(game.u.ux, game.u.uy)) {
         note_unported_pickup('tipcontainer:shop-billing');
@@ -881,7 +926,9 @@ async function tipcontainer(box) {
         obj_extract_self(obj);
         obj.ox = game.u.ux;
         obj.oy = game.u.uy;
-        if (cursedMbag && !rn2(13)) {
+        if (box.otyp === ONAMES.ICE_BOX) {
+            await removed_from_icebox(obj);
+        } else if (cursedMbag && !rn2(13)) {
             await mbag_item_gone(sourceHeld, obj, false);
             terse = false;
             continue;
@@ -1441,7 +1488,7 @@ async function in_container(obj) {
         await sellobj(obj, game.u.ux, game.u.uy);
     }
     if (current_container.otyp === ONAMES.ICE_BOX) {
-        note_unported_pickup('in_container:icebox_age');
+        await freeze_in_icebox(obj);
     } else if (Is_mbag(current_container) && mbag_explodes(obj, 0)) {
         await urgent_pline(`As you put ${doname(obj)} inside, you are blasted by a magical explosion!`);
         if (obj.otyp === ONAMES.BAG_OF_HOLDING)
@@ -1499,7 +1546,7 @@ async function out_container(obj) {
     current_container.owt = weight(current_container);
 
     if (current_container.otyp === ONAMES.ICE_BOX)
-        note_unported_pickup('out_container:removed_from_icebox');
+        await removed_from_icebox(obj);
 
     if (!obj.unpaid && !carried(current_container)
         && costly_spot(current_container.ox, current_container.oy)) {

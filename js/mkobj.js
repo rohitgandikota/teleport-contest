@@ -26,9 +26,10 @@ import { mk_artifact, nartifact_exist } from './artifact.js';
 // js/o_init.js init_objects().
 
 import { game } from './gstate.js';
-import { start_timer, TIMER_OBJECT,
+import { start_timer, stop_timer, TIMER_OBJECT,
          ROT_CORPSE as TIMEOUT_ROT_CORPSE,
          REVIVE_MON as TIMEOUT_REVIVE_MON,
+         SHRINK_GLOB,
          obj_stop_timers } from './timeout.js';
 import { attach_egg_hatch_timeout } from './timeout.js';
 import { Is_rogue_level, MAX_OIL_IN_FLASK, NODIR, OBJ_FLOOR, OBJ_INVENT,
@@ -947,12 +948,87 @@ function assign_candy_wrapper(obj) {
 }
 
 
-// src/timeout.c start_glob_timeout() — when the caller passes 0, the shrink
-// time is 25 + rn2(5) - 2.
-function start_glob_timeout(obj, when) {
+// src/mkobj.c start_glob_timeout() - schedule the next one-unit shrink.
+export function start_glob_timeout(obj, when) {
+    if (!obj.globby)
+        return;
+    if (obj.timed)
+        stop_timer(SHRINK_GLOB, obj);
     if (when < 1)
         when = 25 + rn2(5) - 2;
     obj.shrink_when = when;
+    start_timer(when, TIMER_OBJECT, SHRINK_GLOB, obj);
+}
+
+// src/mkobj.c shrink_glob() - reduce a glob by one weight unit and keep its
+// timer active until it dissolves.
+export async function shrink_glob(obj) {
+    if (!obj?.globby)
+        return;
+
+    const inInvent = obj.where === OBJ_INVENT;
+    const onFloor = obj.where === OBJ_FLOOR;
+    const container = obj.where === OBJ_CONTAINED ? obj.ocontainer : null;
+    let topContainer = null, oldTopWeight = 0;
+    if (container) {
+        topContainer = container;
+        while (topContainer.where === OBJ_CONTAINED && topContainer.ocontainer)
+            topContainer = topContainer.ocontainer;
+        oldTopWeight = topContainer.owt;
+    }
+    const ox = obj.ox, oy = obj.oy;
+    const { Yname2 } = await import('./objnam.js');
+    const globName = Yname2(obj);
+    const baseWeight = Math.max(game.objects[obj.otyp].oc_weight || 0, 1);
+    const messageWeight = Math.trunc((baseWeight + 1) / 2);
+    const shrinksVisibly = obj.owt > 0 && obj.owt % messageWeight === 0;
+
+    if (obj.owt > 0) {
+        obj.owt--;
+        if (obj.oeaten > 1)
+            obj.oeaten--;
+    }
+    const gone = !obj.owt;
+
+    if (container) {
+        for (let parent = container; parent; parent = parent.ocontainer)
+            parent.owt = weight(parent);
+    }
+    if (inInvent && (shrinksVisibly || gone)) {
+        const { pline } = await import('./display.js');
+        await pline(`${globName} ${gone ? 'dissolves completely' : 'shrinks'}.`);
+    } else if (topContainer?.where === OBJ_INVENT) {
+        const { near_capacity } = await import('./attrib.js');
+        if (gone || (shrinksVisibly && topContainer.owt !== oldTopWeight)
+            || near_capacity() !== game.oldcap) {
+            const { pline } = await import('./display.js');
+            await pline(`${Yname2(topContainer)} ${
+                topContainer.owt !== oldTopWeight ? 'becomes' : 'seems'
+            }${gone ? '' : ' slightly'} lighter.`);
+        }
+    }
+
+    if (gone) {
+        let visible = false;
+        if (onFloor) {
+            const { cansee } = await import('./vision.js');
+            visible = cansee(ox, oy);
+        }
+        obj_extract_self(obj);
+        if (onFloor) {
+            const { newsym, pline } = await import('./display.js');
+            newsym(ox, oy);
+            if (visible)
+                await pline(`${globName} fades away.`);
+        }
+    } else {
+        start_glob_timeout(obj, 0);
+    }
+    if (inInvent || topContainer?.where === OBJ_INVENT) {
+        update_inventory();
+        const { encumber_msg } = await import('./attrib.js');
+        await encumber_msg();
+    }
 }
 
 // src/objnam.c:5403 rnd_class() — pick within an otyp range by oc_prob.

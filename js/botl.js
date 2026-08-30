@@ -77,8 +77,8 @@ export function rank() {
     return rank_of(game.u.ulevel, game.urole, !!game.flags.female);
 }
 
-// src/eat.c hu_stat[] — trailing spaces are in the C array and are printed
-// verbatim by bot2str's " %s" (they vanish only at end-of-line).
+// src/eat.c hu_stat[] retains its legacy padding.  The tty status-field path
+// trims that padding before it joins hunger to a following condition.
 export const hu_stat = [
     "Satiated", "        ", "Hungry  ", "Weak    ",
     "Fainting", "Fainted ", "Starved "
@@ -102,7 +102,8 @@ export function bot_conditions() {
     const sick_type = game._deferred_status_sick_type ?? u.usick_type;
     if (sick_type & SICK_VOMITABLE) cond += ' FoodPois';
     if (sick_type & SICK_NONVOMITABLE) cond += ' TermIll';
-    if (u.uhs != null && u.uhs !== NOT_HUNGRY) cond += ' ' + hu_stat[u.uhs];
+    if (u.uhs != null && u.uhs !== NOT_HUNGRY)
+        cond += ' ' + hu_stat[u.uhs].trimEnd();
     /* encumber_msg() prints before botl is marked dirty.  The tty therefore
        keeps the preceding capacity condition while that message is blocked
        at --More--; display.js otherwise recomputes every status line from

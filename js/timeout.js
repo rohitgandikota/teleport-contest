@@ -534,6 +534,11 @@ export async function run_timers() {
         case HATCH_EGG:
             await hatch_egg(curr.arg, curr.timeout);
             break;
+        case SHRINK_GLOB: {
+            const { shrink_glob } = await import('./mkobj.js');
+            await shrink_glob(curr.arg, curr.timeout);
+            break;
+        }
         default:
             /* The remaining callbacks each need their own subsystem; record
                which one fired unported. */

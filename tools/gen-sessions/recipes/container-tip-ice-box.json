@@ -1,0 +1,47 @@
+{
+  "name": "container-tip-ice-box",
+  "description": "Freeze corpses and a glob, wait while refrigerated, tip them onto the floor and into another container, and expose resumed rot and shrink timers in each location.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.food-corpses",
+    "object.tools-containers",
+    "turn.timers"
+  ],
+  "branches": [
+    "container.ice-box.freeze-corpse",
+    "container.tip.ice-box-thaw-floor",
+    "container.tip.ice-box-thaw-target",
+    "container.tip.ice-box-thaw-glob",
+    "container.tip.ice-box-thaw-glob-target",
+    "status.hunger-encumbrance-spacing"
+  ],
+  "segments": [
+    {
+      "seed": 7163,
+      "datetime": "20000110233000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of invisibility\rWo\u0017empty uncursed ice box\r\u0017uncursed newt corpse\r\u0017blessed scroll of scare monster\r\u0017blessed ring of slow digestion\rPsrdrapsq300.\u001b#tip\rp\r300.\u001b: "
+    },
+    {
+      "seed": 7164,
+      "datetime": "20000110233000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of invisibility\rWp\u0017empty uncursed ice box\r\u0017uncursed newt corpse\r\u0017empty uncursed sack\r\u0017blessed scroll of scare monster\r\u0017blessed ring of slow digestion\rPurdtaqsr300.\u001b#tip\rqs300.\u001bas: q"
+    },
+    {
+      "seed": 7165,
+      "datetime": "20000110233000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWo\u0017empty uncursed ice box\r \u0017glob of green slime\r\u0017blessed scroll of scare monster\rdrapsq50.\u001b#tip\rp\r30.\u001b: "
+    },
+    {
+      "seed": 7166,
+      "datetime": "20000110233000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO r\r\u0017blessed cloak of invisibility\rTbWp #wizkill\rm.\u001b\u0017blessed gauntlets of power\rWq\u0017empty uncursed ice box\r \u0017glob of green slime\r\u0017empty uncursed sack\rarss50.\u001b#tip\rrt30.\u001b250.\u001b300.\u001bat: q"
+    }
+  ]
+}

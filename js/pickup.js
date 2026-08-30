@@ -21,7 +21,7 @@ import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
 import { check_capacity, in_rooms, losehp } from './hack.js';
 import { ECMD_OK, ECMD_TIME, IS_FURNITURE, ICE, POOL, MOAT, WATER,
-         LAVAPOOL, nothing_happens } from './const.js';
+         LAVAPOOL, nothing_happens, nothing_seems_to_happen } from './const.js';
 import { upstart, trycall } from './do_name.js';
 
 /* src/hacklib.c The() — the() with the first letter capitalised. */
@@ -783,14 +783,41 @@ async function trigger_tip_trap(box) {
     }
 }
 
+async function tip_bag_of_tricks(box) {
+    const oldSpe = box.spe;
+    const seen = { count: 0 };
+    const { bagotricks } = await import('./apply.js');
+    do {
+        if (!await bagotricks(box, true, seen))
+            break;
+    } while (box.spe > 0);
+
+    if (box.spe < oldSpe) {
+        if (!seen.count)
+            await pline(nothing_seems_to_happen);
+        box.spe = oldSpe;
+        const { check_unpaid_usage } = await import('./shk.js');
+        await check_unpaid_usage(box, true);
+        box.spe = 0;
+        box.cknown = 1;
+        update_inventory();
+    }
+}
+
 // src/pickup.c tipcontainer() - tip a container onto the floor or into another
-// container. Traps, ice boxes, bags of tricks, and shop billing stay explicit
-// until each has a C oracle.
+// container. Ice boxes and shop billing stay explicit until each has a C
+// oracle.
 async function tipcontainer(box) {
     const choice = await choose_tip_target(box, true);
     if (!choice.accepted)
         return;
     let targetbox = choice.target;
+
+    if (targetbox?.otyp === ONAMES.BAG_OF_TRICKS) {
+        const { bagotricks } = await import('./apply.js');
+        await bagotricks(targetbox);
+        return;
+    }
 
     if (!box.lknown) {
         box.lknown = 1;
@@ -818,18 +845,17 @@ async function tipcontainer(box) {
         await trigger_tip_trap(targetbox);
         return;
     }
+    if (box.otyp === ONAMES.BAG_OF_TRICKS) {
+        await tip_bag_of_tricks(box);
+        return;
+    }
     if (!Has_contents(box)) {
         box.cknown = 1;
         await pline(`${The(xname(box))} is empty.`);
         return;
     }
-    if (box.otyp === ONAMES.ICE_BOX
-        || box.otyp === ONAMES.BAG_OF_TRICKS) {
+    if (box.otyp === ONAMES.ICE_BOX) {
         note_unported_pickup('tipcontainer:special-container');
-        return;
-    }
-    if (targetbox?.otyp === ONAMES.BAG_OF_TRICKS) {
-        note_unported_pickup('tipcontainer:bag-of-tricks-target');
         return;
     }
     if ((game.level?.flags?.has_shop)

@@ -1977,12 +1977,12 @@ async function bagotricks_arrival(mtmp) {
     return discerned;
 }
 
-// src/makemon.c:2554 bagotricks(), for applying one charge.
-async function bagotricks(bag) {
+// src/makemon.c:2554 bagotricks(), for applying or tipping one charge.
+export async function bagotricks(bag, tipping = false, seenState = null) {
     let moncount = 0;
 
     if (bag.spe < 1) {
-        await pline(nothing_happens);
+        await pline(tipping && bag.cknown ? "It's empty." : nothing_happens);
         if (bag.dknown && game.objects[bag.otyp].oc_name_known) {
             bag.cknown = 1;
             update_inventory();
@@ -1990,7 +1990,7 @@ async function bagotricks(bag) {
         return moncount;
     }
 
-    if (bag.unpaid) {
+    if (bag.unpaid && !tipping) {
         const { check_unpaid } = await import('./shk.js');
         await check_unpaid(bag);
     }
@@ -2022,11 +2022,13 @@ async function bagotricks(bag) {
     } while (--creatcnt > 0);
 
     if (seecount) {
+        if (seenState)
+            seenState.count += seecount;
         if (bag.dknown) {
             makeknown(ONAMES.BAG_OF_TRICKS);
             update_inventory();
         }
-    } else {
+    } else if (!tipping) {
         await pline(moncount ? nothing_seems_to_happen : nothing_happens);
     }
     return moncount;

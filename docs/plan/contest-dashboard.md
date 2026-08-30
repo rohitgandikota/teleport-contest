@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T05:32:26Z. Local commit: `ae2c520`.
+Last refreshed: 2026-08-30T15:30:30Z. Local commit: `7dad41f`.
 Leaderboard snapshot: 2026-08-27T10:30:40.033Z. Fork last scored: 2026-08-29T07:55:07.000Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed-load banner but retained the unchanged row: 11405 + 6032 points, 71.9% PRNG, 76.9% screen, 9 animations, 440+1.6 speed, playable no, and 44 + 9 sessions. The last successful page check reported Last scored: 8/29/2026, 3:55:07 AM. Its tooltip reported 2 ms per move against the 5 ms threshold, despite the visible playable value.
@@ -12,7 +12,7 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 34327/34712 | 98.89% | 186/188 | 2366102/2366102 (100.00%) | 88/1054 |
+| Supplemental C suite | 34522/34907 | 98.90% | 187/189 | 2368546/2368546 (100.00%) | 88/1055 |
 
 ## Contest position and generalization
 
@@ -22,25 +22,28 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `ae2c520` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `7dad41f` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 34705/34712 |
-| Cursor positions | 11405/11405 | 34327/34712 |
-| Startup and per-turn estimate | 88+0.65/turn | 120+0.20/turn |
+| Cells only | 11405/11405 | 34900/34907 |
+| Cursor positions | 11405/11405 | 34522/34907 |
+| Startup and per-turn estimate | 61+0.41/turn | 78+0.13/turn |
 
 ## Latest local expansion
 
+- `knockback-monster-into-pool`: 2444/2444 RNG calls, 195/195 screens, and 195/195 cursor positions match C.
+- The new oracle covers a pool terrain wish, weapon knockback over one or two squares, post-hurtle liquid handling, monster drowning, and propagation of the defender-death flag back to melee.
+- The recording reproduced byte-for-byte on a second capture, with SHA-256 `64bd089f67e59d9699282013fcf850a554d97080a94c18b3081419e9f2071e11`.
 - `wizard-create-tame-monster`: 2980/2980 RNG calls and 27/27 screens match C.
 - `monster-green-slime-consumption`: 17838/17838 RNG calls and 139/139 screens match C.
 - `leashed-pet-teleport`: 3056/3056 RNG calls and 45/45 screens match C.
 - The new cases cover wizard-created pets, ordinary leash use, leashed-pet movement, pet hunger after 1800 waits, green-slime glob consumption, forced form change, incompatible leash release, and the post-turn-1000 alignment text.
 - Teleport now performs C's before-and-after follower checks and immediately relocates a leashed pet beside the hero with the exact 61-call coordinate shuffle.
-- All three C recordings reproduced byte-for-byte on a second recording run.
-- Coverage ledger: 105/105 elements and 65/65 source branches. Generalization: 80 fresh games across 13 roles reached no unported path.
+- All three earlier C recordings reproduced byte-for-byte on a second recording run.
+- Coverage ledger: 105/105 elements and 67/67 source branches. Generalization: 80 fresh games across 13 roles reached no unported path.
 
 ## Supplemental capture caveats
 
@@ -59,6 +62,7 @@ Leaderboard page checked: 2026-08-30T05:20:44Z. The live request showed a failed
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T15:30:30Z | `7dad41f` | 11405/11405 | 34522/34907 | 6032/11265 | 3 |
 | 2026-08-30T05:32:26Z | `ae2c520` | 11405/11405 | 34327/34712 | 6032/11265 | 3 |
 | 2026-08-30T05:20:44Z | `9783f0c` | 11405/11405 | 34282/34667 | 6032/11265 | 3 |
 | 2026-08-29T10:31:01.764Z | `e0bfa28` | 11405/11405 | 34116/34501 | 6032/11265 | 3 |

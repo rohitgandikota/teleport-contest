@@ -1,0 +1,23 @@
+{
+  "name": "container-stash-one",
+  "description": "Use the container menu's stash-one action, then inspect the bag to verify that the selected object moved into it.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.food-corpses"
+  ],
+  "branches": [
+    "container.menu.stash-one"
+  ],
+  "segments": [
+    {
+      "seed": 7124,
+      "datetime": "20000110230000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017uncursed apple\raosp ao: q"
+    }
+  ]
+}

@@ -10,7 +10,8 @@ import { game } from './gstate.js';
 import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          freeinv, getobj, update_inventory, weight, mergable, merged, money_cnt,
          useup, useupf, obfree, stackobj,
-         GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
+         GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE,
+         GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
 import { observe_object } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an,
@@ -1455,6 +1456,16 @@ function thesimpleoname(obj) {
     return `the ${xname(obj)}`;
 }
 
+/* src/pickup.c stash_ok() - allow every inventory item except the
+   container currently receiving the stashed object. */
+function stash_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+    if (!current_container || obj === current_container)
+        return GETOBJ_EXCLUDE_SELECTABLE;
+    return GETOBJ_SUGGEST;
+}
+
 // src/pickup.c:2972 use_container() — the "Do what with <container>?" loop.
 export async function use_container(obj, held, more_containers) {
     let used = ECMD_OK;
@@ -1558,8 +1569,14 @@ export async function use_container(obj, held, more_containers) {
                 used = ECMD_TIME;
             add_valid_menu_class(0);
         } else if (stash_one) {
-            /* getobj("stash") one item */
-            note_unported_pickup('use_container:stash_one');
+            const stashed = await getobj('stash', stash_ok,
+                                         GETOBJ_PROMPT | GETOBJ_ALLOWCNT);
+            if (stashed) {
+                if (await in_container(stashed))
+                    used = ECMD_TIME;
+                else
+                    note_unported_pickup('use_container:stash_one_unsplit');
+            }
         }
 
         /* out after in */

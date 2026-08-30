@@ -1,0 +1,31 @@
+{
+  "name": "obfree-state-cleanup",
+  "description": "Consume a timed corpse and destroy an interrupted spellbook, then continue playing to expose stale object timers and occupation pointers.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.food-corpses",
+    "object.spellbooks-spells",
+    "turn.occupation-interrupt",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "branches": [
+    "object.obfree.food-timer",
+    "object.obfree.spellbook-context"
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110210000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed newt corpse\reneni\u001b500.:"
+    },
+    {
+      "seed": 7102,
+      "datetime": "20000110210000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed spellbook of magic missile\rrn\u001b\u0017blessed potion of confusion\rqo\u001brn \u001bi\u001b:"
+    }
+  ]
+}

@@ -74,6 +74,8 @@
     { "group": "Monster taming", "id": "monster.taming.wizard-created", "cFile": "src/read.c", "cFunction": "create_particular_creation", "description": "Create an explicitly tame monster with the wizard command and initialize it as a new pet" },
     { "group": "Teleport followers", "id": "teleport.leash.follow", "cFile": "src/apply.c", "cFunction": "next_to_u", "description": "Teleport with a leashed pet and relocate it beside the hero while preserving the leash" },
     { "group": "Knockback terrain", "id": "combat.knockback.monster-into-pool", "cFile": "src/dothrow.c", "cFunction": "mhurtle", "description": "Knock a breathing monster into water and apply the post-hurtle liquid effect" },
+    { "group": "Object lifecycle", "id": "object.obfree.food-timer", "cFile": "src/shk.c", "cFunction": "obfree", "description": "Consume a timed corpse, clear its active meal state, and remove its object timer before later turns" },
+    { "group": "Object lifecycle", "id": "object.obfree.spellbook-context", "cFile": "src/shk.c", "cFunction": "obfree", "description": "Destroy an interrupted spellbook while confused and clear the stored study object" },
     { "group": "Debug commands", "id": "debug.wizkill.unseen-target", "cFile": "src/wizcmds.c", "cFunction": "wiz_kill", "description": "Kill an unseen target while preserving its explicit species name" },
     { "group": "Debug commands", "id": "debug.terrain-wish.pool", "cFile": "src/objnam.c", "cFunction": "wizterrainwish", "description": "Wish for a pool and update the current square to water terrain" }
   ]

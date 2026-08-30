@@ -1335,6 +1335,37 @@ export function bill_dummy_object(obj) {
     return true;
 }
 
+// src/shk.c:1187 obfree(), bill arm. A consumed unpaid object must remain
+// available for the itemized bill even though it has left ordinary play.
+// The non-billing lifecycle stays in invent.js, where useupall() calls it.
+export function obfree_bill(obj) {
+    let shkp = null;
+    if (obj.unpaid) {
+        shkp = (game.level?.monsters || []).find((mon) => {
+            if (!mon.isshk)
+                return false;
+            const eshk = mon.eshk || ESHK(mon);
+            return (eshk?.bill_p || []).some(bp => bp.bo_id === obj.o_id);
+        }) || null;
+    }
+    if (!shkp && game.u.ushops)
+        shkp = shop_keeper(game.u.ushops.charCodeAt(0));
+    if (!shkp)
+        return false;
+
+    const eshk = shkp.eshk || ESHK(shkp);
+    const bp = (eshk?.bill_p || []).find(entry => entry.bo_id === obj.o_id);
+    if (!bp)
+        return false;
+
+    bp.useup = true;
+    bp.obj = obj;
+    obj.unpaid = 0;
+    obj.where = OBJ_ONBILL;
+    (game.billobjs ||= []).unshift(obj);
+    return true;
+}
+
 // src/mkobj.c:752 costly_alteration(), COST_BITE, COST_OPEN, and COST_DSTROY.
 // Altering shop stock replaces it with a private clone, so the used-up item
 // can still be itemized.

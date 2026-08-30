@@ -6,11 +6,11 @@ import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
-import { costly_spot, doname_with_price } from './shk.js';
+import { costly_spot, doname_with_price, obfree_bill } from './shk.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
-         A_NEUTRAL, A_CHAOTIC } from './const.js';
+         A_NEUTRAL, A_CHAOTIC, OBJ_DELETED } from './const.js';
 import { hides_under, touch_petrifies, poly_when_stoned } from './mondata.js';
 import { worn } from './do_wear.js';
 import { empty_handed } from './wield.js';
@@ -50,6 +50,7 @@ import { discover_artifact, set_artifact_intrinsic,
 import { ART_MJOLLNIR } from './artilist_data.js';
 import { body_part } from './polyself.js';
 import { HAND } from './const.js';
+import { obj_stop_timers } from './timeout.js';
 
 // include/hack.h — command result flags. ECMD_TIME means the command consumed
 // a move, which is what makes moveloop advance svm.moves.
@@ -1537,22 +1538,85 @@ export async function hold_another_object(obj, drop_fmt, drop_arg, hold_msg) {
     return null; /* might be gone */
 }
 
-// src/invent.c useupall() — the whole stack goes.
-//
-// setnotworn first (a worn item must stop being worn before it stops
-// existing), then freeinv, then obfree which deletes contents recursively.
+// src/shk.c:1187 obfree(). This is synchronous in C and must remain so here:
+// many useup() callers inspect the consumed object before the current command
+// returns. Objects on a shop bill are retained there; every other object is
+// marked deleted after its timers, light source, and transient references are
+// cleared.
+export function obfree(obj) {
+    if (obj.otyp === ONAMES.LEASH && obj.leashmon) {
+        const mon = (game.level?.monsters || [])
+            .find(candidate => candidate.m_id === obj.leashmon);
+        if (mon)
+            mon.mleashed = 0;
+        obj.leashmon = 0;
+        update_inventory();
+    }
+
+    if (obj.oclass === OCLASSES.FOOD_CLASS) {
+        if (obj === game.context?.victual?.piece)
+            game.context.victual = {};
+        if (obj.timed)
+            obj_stop_timers(obj);
+    }
+    if (obj.oclass === OCLASSES.SPBOOK_CLASS
+        && obj === game.context?.spbook?.book) {
+        game.context.spbook.book = null;
+        game.context.spbook.o_id = 0;
+    }
+
+    while (obj.cobj?.length) {
+        const contained = obj.cobj[0];
+        obj_extract_self(contained);
+        obfree(contained);
+    }
+    if (Is_container(obj) && obj === game.xlock?.box) {
+        const xl = game.xlock;
+        xl.usedtime = xl.chance = xl.picktyp = 0;
+        xl.magic_key = false;
+        xl.door = null;
+        xl.box = null;
+    }
+    if (obj.otyp === ONAMES.BOULDER)
+        obj.next_boulder = null;
+
+    if (obfree_bill(obj))
+        return;
+
+    if (obj.owornmask)
+        setnotworn(obj);
+    if (obj.timed)
+        obj_stop_timers(obj);
+    if (obj.lamplit) {
+        const sources = (game.light_sources ||= []);
+        const index = sources.findIndex(source => source.type === 1
+                                      && source.id === obj.o_id);
+        if (index >= 0)
+            sources.splice(index, 1);
+        obj.lamplit = 0;
+    }
+    if (obj === game.thrownobj)
+        game.thrownobj = null;
+    if (obj === game.kickedobj)
+        game.kickedobj = null;
+    if (obj === game.context?.tin?.tin) {
+        game.context.tin.tin = null;
+        game.context.tin.o_id = 0;
+    }
+    const split = game.context?.objsplit;
+    if (split && (obj.o_id === split.parent_oid
+                  || obj.o_id === split.child_oid)) {
+        split.parent_oid = split.child_oid = 0;
+    }
+    obj.where = OBJ_DELETED;
+}
+
+// src/invent.c useupall(): the whole stack goes. A worn item stops being
+// worn before it leaves inventory, then obfree() owns the remaining cleanup.
 export function useupall(obj) {
     setnotworn(obj);
     freeinv(obj);
-    /* obfree() (src/shk.c:1187) unleashes, stops food/book timers, deletes
-       container contents and handles the shop bill; for an ordinary object
-       none of its arms act, so it records only when one could. */
-    if ((obj.otyp === ONAMES.LEASH && obj.leashmon)
-        || obj.oclass === OCLASSES.FOOD_CLASS
-        || obj.oclass === OCLASSES.SPBOOK_CLASS
-        || (obj.cobj && obj.cobj.length) || Is_container(obj)
-        || obj.otyp === ONAMES.BOULDER || obj.unpaid)
-        note_unported_invent('useupall:obfree');
+    obfree(obj);
 }
 
 // src/invent.c useup() — consume ONE of a stack, or all of it.

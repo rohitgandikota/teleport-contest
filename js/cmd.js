@@ -931,6 +931,33 @@ export async function doextcmd() {
         const { wiz_map } = await import('./wizcmds.js');
         return await wiz_map();
     }
+    if (name === 'wizbury') {
+        const { bury_an_obj } = await import('./sp_lev.js');
+        let before = 0, after = 0;
+        for (let x = game.u.ux - 1; x <= game.u.ux + 1; x++) {
+            for (let y = game.u.uy - 1; y <= game.u.uy + 1; y++) {
+                if (!isok(x, y))
+                    continue;
+                const pile = (game.level?.objects || []).filter(
+                    o => o.where === OBJ_FLOOR && o.ox === x && o.oy === y);
+                before += pile.length;
+                for (const obj of pile)
+                    bury_an_obj(obj, null);
+                after += (game.level?.objects || []).filter(
+                    o => o.where === OBJ_FLOOR && o.ox === x && o.oy === y)
+                    .length;
+                newsym(x, y);
+            }
+        }
+        const buried = before - after;
+        if (!before)
+            await pline('No objects here or adjacent to bury.');
+        else if (!buried)
+            await pline('No objects buried.');
+        else
+            await pline(`${buried} object${buried === 1 ? '' : 's'} buried.`);
+        return ECMD_OK;
+    }
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;

@@ -495,6 +495,57 @@ export function let_to_name(oclass) {
     return '';
 }
 
+// src/invent.c:5489 display_binventory() shows objects hidden below the
+// current surface. Probing is the only caller. The buried-object arm uses the
+// same class-grouped, display-only menu as C's query_objlist(PICK_NONE).
+export async function display_binventory(x, y, as_if_seen = false) {
+    const buried = (game.level?.buriedobjs || [])
+        .filter(o => o.ox === x && o.oy === y);
+    if (!buried.length)
+        return 0;
+
+    if (as_if_seen) {
+        for (const obj of buried)
+            observe_object(obj);
+    }
+
+    const { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+            tty_select_menu, tty_destroy_nhwindow } =
+        await import('./tty/wintty.js');
+    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_NONE } =
+        await import('./const.js');
+    const { NO_COLOR } = await import('./terminal.js');
+    const { sortloot_items } = await import('./pickup.js');
+    const { docrt } = await import('./display.js');
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    let id = 1, nextlet = 'a';
+    for (const oclass of inv_order()) {
+        const items = sortloot_items(buried.filter(o => o.oclass === oclass));
+        if (!items.length)
+            continue;
+        tty_add_menu(win, null, 0, 0, 0, ATR_INVERSE, NO_COLOR,
+                     let_to_name(oclass), MENU_ITEMFLAGS_NONE);
+        let first = true;
+        for (const obj of items) {
+            const selector = first && oclass === OCLASSES.COIN_CLASS
+                ? '$' : nextlet;
+            tty_add_menu(win, temporary_object_glyph(obj), id++, selector, 0,
+                         ATR_NONE, NO_COLOR, doname_with_price(obj),
+                         MENU_ITEMFLAGS_NONE);
+            if (selector !== '$')
+                nextlet = String.fromCharCode(nextlet.charCodeAt(0) + 1);
+            first = false;
+        }
+    }
+    tty_end_menu(win, 'Things that are buried here:');
+    await tty_select_menu(win, PICK_NONE);
+    tty_destroy_nhwindow(win);
+    await docrt();
+    return buried.length;
+}
+
 // src/invent.c:3220 display_pickinv() — walk flags.inv_order, heading each
 // non-empty class, then its items in inventory-letter order.
 //

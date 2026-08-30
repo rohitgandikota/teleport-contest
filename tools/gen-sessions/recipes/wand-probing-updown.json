@@ -1,0 +1,37 @@
+{
+  "name": "wand-probing-updown",
+  "description": "Debug Wizards zap probing upward and downward over empty dungeon floor, then bury an object and probe it in place, covering ceiling and subsurface feedback, nothing-revealed controls, and buried inventory display.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.wands",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.probing.upward-empty",
+    "wand.probing.downward-empty",
+    "wand.probing.downward-buried-inventory",
+    "debug.wizbury.floor-object"
+  ],
+  "segments": [
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed wand of probing\rzo<"
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017blessed wand of probing\rzo>"
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0017blessed wand of probing\r\u0017blessed potion of healing\rdp#wizbury\rzo>  "
+    }
+  ]
+}

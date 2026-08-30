@@ -24,12 +24,12 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          W_RING, W_ARMOR, W_ACCESSORY, W_ART, A_STR, M_SEEN_MAGR,
          KILLED_BY_AN, KILLED_BY, LEVITATION, FLYING, DOOR, SDOOR,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
-         IS_DOOR, IS_DRAWBRIDGE, SHOPBASE, NC_SHOW_MSG,
+         IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
          XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, TT_BEARTRAP,
          NO_TRAP_FLAGS, FORCETRAP } from './const.js';
 import { mungspaces } from './hacklib.js';
-import { hands_obj, hold_another_object } from './invent.js';
+import { display_binventory, hands_obj, hold_another_object } from './invent.js';
 import { u_safe_from_fatal_corpse } from './pickup.js';
 import { aobjnam } from './objnam.js';
 import { artifact_origin } from './artifact.js';
@@ -56,7 +56,7 @@ import { more_experienced } from './exper.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
-import { Norep, pline_The, You, You_feel, You_hear } from './pline.js';
+import { Norep, pline_The, You, Your, You_feel, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { The, vtense, xname, Yname2, yname, makeplural,
          Yobjnam2, otense } from './objnam.js';
@@ -89,7 +89,7 @@ import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
 import { name_to_monplus } from './mondata.js';
 import { engr_at } from './engrave.js';
-import { ceiling } from './dungeon.js';
+import { ceiling, surface } from './dungeon.js';
 import { body_part } from './polyself.js';
 import { hard_helmet } from './do_wear.js';
 
@@ -1258,7 +1258,10 @@ export function zap_map(x, y, obj) {
             || obj.otyp === ONAMES.WAN_LOCKING
             || obj.otyp === ONAMES.SPE_WIZARD_LOCK))
         note_unported_zap('zap_map:drawbridge');
-    if (obj.otyp === ONAMES.WAN_PROBING)
+    if (obj.otyp === ONAMES.WAN_PROBING
+        && (!cansee(x, y) || ttmp || terrainType === SDOOR
+            || terrainType === SCORR || terrainType === ICE
+            || IS_FURNITURE(terrainType)))
         note_unported_zap('zap_map:probing');
 }
 
@@ -1984,7 +1987,20 @@ async function zap_updown(obj) {
         || releases_bear_trap || opens_falling_trap || closes_bear_trap;
 
     switch (obj.otyp) {
-    case ONAMES.WAN_PROBING:
+    case ONAMES.WAN_PROBING: {
+        let revealed = 0;
+        if (game.u.dz < 0) {
+            await You(`probe towards the ${ceiling(x, y)}.`);
+        } else {
+            revealed += await bhitpile(obj, bhito, x, y, game.u.dz);
+            zap_map(x, y, obj);
+            await You(`probe beneath the ${surface(x, y)}.`);
+            revealed += await display_binventory(x, y, true);
+        }
+        if (!revealed)
+            await Your('probe reveals nothing.');
+        return true;
+    }
     case ONAMES.WAN_OPENING:
     case ONAMES.SPE_KNOCK:
     case ONAMES.WAN_LOCKING:

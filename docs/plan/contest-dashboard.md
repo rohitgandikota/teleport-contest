@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-08-30T17:07:17.502Z. Local commit: `a12bdd3`.
+Last refreshed: 2026-08-30T17:16:29.022Z. Local commit: `7736dc4`.
 Leaderboard snapshot: 2026-08-30T14:28:34.299Z. Fork last scored: 2026-08-30T14:03:27.572Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last scored: 8/30/2026, 10:28:34 AM and displayed 11405 + 6032 points, 71.9% PRNG, 76.9% screen, 9 animations, 251+0.9 speed, playable yes, and 44 + 9 sessions. Its tooltip reported a 251.3 + 0.876 per-move fit and 1.14 ms per move under the 25 ms threshold.
@@ -12,7 +12,7 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 35768/36153 | 98.94% | 192/194 | 2412052/2412052 (100.00%) | 88/1070 |
+| Supplemental C suite | 35827/36212 | 98.94% | 193/195 | 2414488/2414488 (100.00%) | 88/1070 |
 
 ## Contest position and generalization
 
@@ -22,21 +22,21 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `a12bdd3` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `7736dc4` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## Output details
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 36146/36153 |
-| Cursor positions | 11405/11405 | 35768/36153 |
-| Startup and per-turn estimate | 54+0.61/turn | 103+0.20/turn |
+| Cells only | 11405/11405 | 36205/36212 |
+| Cursor positions | 11405/11405 | 35827/36212 |
+| Startup and per-turn estimate | 62+0.58/turn | 106+0.20/turn |
 
 ## Latest local expansion
 
-- `cursed-bag-loss` matches 12073/12073 C RNG calls, 548/548 screens, 548/548 cells, and 548/548 cursor positions across four seeds.
-- The oracle covers 20 independent cursed-bag loss rolls, retained contents, one vanished cream pie, the four surviving contents, and C container insertion order.
-- Coverage is 105/105 game elements and 81/81 named C branches. Eighty fresh games across 13 role configurations reached no unported path.
+- `container-stash-one` matches 2436/2436 C RNG calls, 59/59 screens, 59/59 cells, and 59/59 cursor positions.
+- The oracle covers the container menu's stash action, C-style inventory filtering, selection of one apple, movement into the bag, and the final contents listing.
+- Coverage is 105/105 game elements and 82/82 named C branches. Eighty fresh games across 13 role configurations reached no unported path.
 - This checkpoint has not been judged on the hidden corpus. The held-out row remains the last verified published result.
 
 ## Supplemental capture caveats
@@ -56,6 +56,7 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-08-30T17:16:29.022Z | `7736dc4` | 11405/11405 | 35827/36212 | 6032/11265 | 3 |
 | 2026-08-30T17:07:17.502Z | `a12bdd3` | 11405/11405 | 35768/36153 | 6032/11265 | 3 |
 | 2026-08-30T16:56:09.173Z | `5b8eeda` | 11405/11405 | 35220/35605 | 6032/11265 | 3 |
 | 2026-08-30T16:34:52.583Z | `537285e` | 11405/11405 | 34901/35286 | 6032/11265 | 3 |
@@ -65,7 +66,6 @@ Leaderboard page checked: 2026-08-30T16:38:28.000Z. The page reported Last score
 | 2026-08-29T09:27:51.249Z | `efb413e` | 11405/11405 | 33894/34279 | 6032/11265 | 3 |
 | 2026-08-29T08:24:33.560Z | `746d2ec` | 11405/11405 | 33721/34106 | 6032/11265 | 3 |
 | 2026-08-29T07:55:51.547Z | `1e5fbea` | 11405/11405 | 33635/34020 | 6032/11265 | 3 |
-| 2026-08-29T07:37:41.044Z | `1f879b9` | 11405/11405 | 33544/33929 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

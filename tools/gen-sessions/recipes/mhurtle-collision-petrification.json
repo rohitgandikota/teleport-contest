@@ -1,0 +1,30 @@
+{
+  "name": "mhurtle-collision-petrification",
+  "description": "Hurtle an unarmored minotaur into a cockatrice, then hurtle a cockatrice into an unarmored minotaur, pinning both monster-collision petrification directions against C.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "combat.knockback",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "combat.knockback.collision-petrifies-hurtler",
+    "combat.knockback.collision-petrifies-blocker"
+  ],
+  "segments": [
+    {
+      "seed": 6970,
+      "datetime": "20000112130000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile cockatrice\r\u0007sleeping hostile minotaur\rj#wiztelekinesis\ru.h \u001b\u001b\u0006"
+    },
+    {
+      "seed": 6970,
+      "datetime": "20000112130100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                             \u0007sleeping hostile minotaur\r\u0007sleeping hostile cockatrice\rj#wiztelekinesis\rh.k  \u001b\u001b\u0006"
+    }
+  ]
+}

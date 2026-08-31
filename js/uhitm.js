@@ -44,7 +44,7 @@ import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          otense, mshot_xname, Yname2, Yobjnam2 } from './objnam.js';
-import { mintrap, erode_obj, ignite_items } from './trap.js';
+import { mintrap, minstapetrify, erode_obj, ignite_items } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
          is_rider } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -3328,11 +3328,15 @@ export async function mhurtle(mon, dx, dy, range) {
                         a_monnam(blocker)}.`);
                 await wakeup(blocker, !game.context?.mon_moving);
                 if (touch_petrifies(blocker.data || game.mons[blocker.mnum])
-                    && !which_armor(mon, W_ARMU | W_ARM | W_ARMC))
-                    note_unported_uhitm('mhurtle:collision_petrify_hurtler');
+                    && !which_armor(mon, W_ARMU | W_ARM | W_ARMC)) {
+                    await minstapetrify(mon, !game.context?.mon_moving);
+                    newsym(mon.mx, mon.my);
+                }
                 if (touch_petrifies(mon.data || game.mons[mon.mnum])
-                    && !which_armor(blocker, W_ARMU | W_ARM | W_ARMC))
-                    note_unported_uhitm('mhurtle:collision_petrify_blocker');
+                    && !which_armor(blocker, W_ARMU | W_ARM | W_ARMC)) {
+                    await minstapetrify(blocker, !game.context?.mon_moving);
+                    newsym(blocker.mx, blocker.my);
+                }
             } else if (x === game.u.ux && y === game.u.uy) {
                 note_unported_uhitm('mhurtle:hero_collision');
             }

@@ -11,7 +11,8 @@ import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
-         STONING, WATER, FIRE_RES, NO_KILLER_PREFIX } from './const.js';
+         STONING, WATER, FIRE_RES, FAST, MFAST, XKILL_NOMSG,
+         NO_KILLER_PREFIX } from './const.js';
 import { goodpos, makemon, remove_monster } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
@@ -38,14 +39,15 @@ import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
-import { delobj, monkilled } from './mon.js';
+import { delobj, monkilled, monstone, newcham, resists_ston,
+         xkilled } from './mon.js';
 import { find_mac, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
-import { passes_walls, likes_lava, throws_rocks,
+import { gender, passes_walls, likes_lava, throws_rocks,
          poly_when_stoned } from './mondata.js';
 import { has_ceiling, Can_fall_thru, depth, level_difficulty } from './dungeon.js';
-import { Monnam, rndcolor } from './do_name.js';
+import { Monnam, pmname, rndcolor } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
 import { W_ARMF, A_DEX, A_CON, NO_PART } from './const.js';
 import { d, rn1 } from './rng.js';
@@ -99,6 +101,60 @@ export async function instapetrify(str) {
     await urgent_pline('You turn to stone...');
     game.killer = { format: KILLED_BY, name: str || '' };
     await done(STONING);
+}
+
+// src/trap.c:3856 minstapetrify(). Monster petrification first converts a
+// susceptible golem, otherwise strips intrinsic speed, reports the visible
+// countdown, and creates a statue through the player or environmental kill
+// path. Shapechanger reversion remains recorded separately below.
+export async function minstapetrify(mon, byplayer) {
+    if (resists_ston(mon))
+        return;
+
+    if (poly_when_stoned(mon.data)) {
+        if (canseemon(mon))
+            await pline(`${Monnam(mon)} solidifies...`);
+        if (await newcham(mon, game.mons[PMNAMES.PM_STONE_GOLEM], 0)) {
+            if (canseemon(mon))
+                await pline(`Now it's ${an(pmname(mon.data, gender(mon)))}.`);
+        } else if (canseemon(mon)) {
+            await pline('... and returns to normal.');
+        }
+        return;
+    }
+
+    /* src/mon.c:vamp_stone() can restore a shifted vampire or a sandestin's
+       innate stone-resistant form. Preserve those monsters until that
+       transformation path is ported instead of incorrectly killing them. */
+    const cham = Number.isInteger(mon.cham) ? mon.cham : -1;
+    const vampShifter = cham === PMNAMES.PM_VAMPIRE
+        || cham === PMNAMES.PM_VAMPIRE_LEADER
+        || cham === PMNAMES.PM_VLAD_THE_IMPALER;
+    const innateStoneResistance = cham >= 0
+        && !!((game.mons[cham]?.mresists ?? 0) & MFLAGS.MR_STONE);
+    if (vampShifter || innateStoneResistance) {
+        note_unported_trap('minstapetrify:vamp_stone');
+        return;
+    }
+
+    if ((mon.permspeed | 0) === MFAST)
+        mon.permspeed = 0;
+    const speedArmor = (mon.minvent || []).find((obj) =>
+        obj.owornmask && game.objects[obj.otyp]?.oc_oprop === FAST);
+    mon.mspeed = speedArmor ? MFAST : (mon.permspeed | 0);
+
+    if (mon.data.mmove && !mon.mfrozen && !mon.msleeping && canseemon(mon)
+        && game.flags?.verbose !== false)
+        await pline(`${Monnam(mon)} is slowing down.`);
+
+    if (cansee(mon.mx, mon.my))
+        await pline(`${Monnam(mon)} turns to stone.`);
+    if (byplayer) {
+        game.stoned = true;
+        await xkilled(mon, XKILL_NOMSG);
+    } else {
+        await monstone(mon);
+    }
 }
 
 /* src/hacklib.c exclam() — the punctuation a damage amount earns. */

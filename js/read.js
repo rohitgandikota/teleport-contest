@@ -36,6 +36,7 @@ import { A_WIS } from './const.js';
 import { outrumor } from './rumors.js';
 import { setworn } from './worn.js';
 import { PMNAMES, mons_name } from './monst_data.js';
+import { delobj } from './mon.js';
 
 function note_unported_read(what) {
     (game.unported ||= new Set()).add('read:' + what);
@@ -227,6 +228,21 @@ async function seffect_punishment(sobj) {
     place_object(ball, game.u.ux, game.u.uy);
     place_object(chain, game.u.ux, game.u.uy);
     newsym(game.u.ux, game.u.uy);
+}
+
+// src/read.c:3066 unpunish() -- destroy the attached chain while leaving the
+// detached heavy iron ball as an ordinary object on the floor.
+export function unpunish() {
+    const chain = game.u.uchain;
+
+    setworn(null, W_CHAIN);
+    delobj(chain);
+    setworn(null, W_BALL);
+
+    game.uchain = game.u.uchain;
+    game.uball = game.u.uball;
+    if (game.u.uprops)
+        delete game.u.uprops.PUNISHED;
 }
 
 // src/read.c:1490 seffect_remove_curse(). A cursed scroll only reports and

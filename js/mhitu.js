@@ -136,9 +136,9 @@ const AC_VALUE = (AC) => (AC >= 0 ? AC : -rnd(-AC));
 // src/mhitu.c:29 hitmsg() — the "<Monster> hits!" line, with the verb keyed
 // to the attack type and " again" appended when the same monster lands the
 // NEXT attack slot of the same type in one round. The C tracks that with a
-// pointer (mattk == gh.hitmsg_prev + 1); the slot index plays that role here,
-// so consecutive-turn hits with slot 0 never say "again", exactly as the
-// pointer arithmetic never matches across calls.
+// pointer (mattk == gh.hitmsg_prev + 1). The slot index plays that role for
+// attacks from the monster table. A getmattk() substitution uses one shared C
+// scratch slot instead, so it can never be adjacent to the previous attack.
 export async function hitmsg(mtmp, mattk, indx) {
     const A = ATTKS;
     let compat;
@@ -186,12 +186,17 @@ export async function hitmsg(mtmp, mattk, indx) {
         const prev = game.hitmsg_prev;
         const again = (mtmp.m_id === game.hitmsg_mid
                        && prev != null
+                       && !prev.alternate && !mattk.getmattk_alternate
                        && indx === prev.indx + 1
                        && mattk[0] === prev.aatyp) ? ' again' : '';
         await pline(`${Monst_name} ${verb}${again}${punct}`);
     }
     game.hitmsg_mid = mtmp.m_id;
-    game.hitmsg_prev = { indx, aatyp: mattk[0] };
+    game.hitmsg_prev = {
+        indx,
+        aatyp: mattk[0],
+        alternate: !!mattk.getmattk_alternate,
+    };
 }
 
 // src/mhitu.c:85 missmu() — monster missed you.
@@ -605,6 +610,7 @@ export function getmattk(magr, mdef, indx, prev_result) {
             || attk[1] === A.AD_FAMN)
         && attk[1] === mptr.mattk[indx - 1][1]) {
         const alt = [...attk];
+        alt.getmattk_alternate = true;
         alt[1] = A.AD_STUN;
         return alt;
     }
@@ -616,6 +622,7 @@ export function getmattk(magr, mdef, indx, prev_result) {
                             || attk[1] === A.AD_STCK
                             || attk[1] === A.AD_POLY)) {
         const alt = [...attk];
+        alt.getmattk_alternate = true;
         const wimpy = alt[3] === 0;
 
         if (alt[1] === A.AD_ACID || alt[1] === A.AD_ELEC
@@ -642,6 +649,7 @@ export function getmattk(magr, mdef, indx, prev_result) {
         && cold_resistant_target
         && mdef.data.pmidx !== PMNAMES.PM_SHADE) {
         const alt = [...attk];
+        alt.getmattk_alternate = true;
         alt[1] = A.AD_PHYS;
         alt[2] = Math.trunc((alt[2] + 1) / 2);
         if (alt[3] === 10)

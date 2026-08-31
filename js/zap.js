@@ -6,7 +6,7 @@
 // rn2(100) into the stream ahead of the next monster's turn.
 
 import { game } from './gstate.js';
-import { isok } from './hacklib.js';
+import { isok, s_suffix } from './hacklib.js';
 import { is_lava, is_pool, m_at, t_at } from './mon.js';
 import { cansee, couldsee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
@@ -43,7 +43,8 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
 import { OCLASSES } from './objects_data.js';
 import { DEADMONSTER, is_vampshifter } from './monst.js';
 import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
-         wake_nearto, healmon, newcham, validspecmon, xkilled } from './mon.js';
+         wake_nearto, healmon, newcham, validspecmon, xkilled,
+         set_ustuck, unstuck } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_rider } from './makemon.js';
@@ -83,7 +84,8 @@ import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
 import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
          resists_cold,
          resists_elec, resists_fire, resists_magm, resists_sleep,
-         nohands, nonliving, is_demon, is_undead, carnivorous }
+         nohands, nonliving, is_demon, is_undead, carnivorous, digests,
+         sticks }
     from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
@@ -440,6 +442,35 @@ async function unturn_you() {
     }
 }
 
+// src/zap.c:568 release_hold() -- opening magic releases the monster holding
+// the hero, the swallowed hero, or a monster held by a sticky hero form.
+export async function release_hold() {
+    const mtmp = game.u.ustuck;
+    if (!mtmp)
+        return;
+
+    const mdat = game.mons[mtmp.mnum];
+    if (game.u.uswallow) {
+        if (digests(mdat)) {
+            if (!Blind())
+                await pline(`${Monnam(mtmp)} opens its mouth!`);
+            else
+                await You_feel('a sudden rush of air!');
+        }
+        const { expels } = await import('./mhitu.js');
+        await expels(mtmp, mdat, true);
+    } else if (sticks(game.youmonst.data)) {
+        set_ustuck(null);
+        await You(`release ${mon_nam(mtmp)}.`);
+    } else {
+        await unstuck(mtmp);
+        const relation = !nohands(mdat)
+            ? `from ${s_suffix(mon_nam(mtmp))} grasp`
+            : `by ${mon_nam(mtmp)}`;
+        await You(`are released ${relation}.`);
+    }
+}
+
 // src/zap.c:2705 zapyourself() — the hero zapped themself.
 //
 // Returns the retributive damage. dozap() applies it after wand discovery and
@@ -618,10 +649,15 @@ export async function zapyourself(obj, ordinary) {
         break;
     case ONAMES.WAN_OPENING:
     case ONAMES.SPE_KNOCK: {
-        if (game.u.ustuck)
-            note_unported_zap('zapyourself:opening-release-hold');
-        if (game.uball || game.u.uball)
-            note_unported_zap('zapyourself:opening-unpunish');
+        if (game.u.ustuck) {
+            await release_hold();
+            learn_it = true;
+        }
+        if (game.uball || game.u.uball) {
+            const { unpunish } = await import('./read.js');
+            unpunish();
+            learn_it = true;
+        }
         const noticed = { v: learn_it };
         const escaped = game.u.utrap
             ? await openholdingtrap(game.youmonst, noticed) : false;

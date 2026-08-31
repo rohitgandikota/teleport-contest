@@ -1,0 +1,27 @@
+{
+  "name": "wand-self-opening-hold",
+  "description": "Debug level-20 Valkyrie becomes held by a barbed devil, then zaps opening at herself to release its grasp and move away.",
+  "coverage": [
+    "combat.melee",
+    "level.ordinary",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.movement",
+    "monster.special-effects",
+    "object.wands",
+    "turn.speed-energy",
+    "ui.getlin"
+  ],
+  "branches": [
+    "combat.monster.substituted-hit-message",
+    "wand.self.opening-release-hold"
+  ],
+  "segments": [
+    {
+      "seed": 6929,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\n20\n                   \u0007barbed devil\rmsms j\u0017blessed wand of opening\ri\u001bze.  j"
+    }
+  ]
+}

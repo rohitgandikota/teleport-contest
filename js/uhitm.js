@@ -35,7 +35,7 @@ import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
-         stone_missile } from './obj.js';
+         is_poisonable, stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
 import { obj_extract_self, update_inventory, useup } from './invent.js';
 import { rnl } from './rng.js';
@@ -97,7 +97,7 @@ import { body_part, mbodypart, ugolemeffects } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
-import { defends, get_artifact,
+import { defends, get_artifact, permapoisoned,
          spec_dbon } from './artifact.js';
 import { cansee, vision_recalc } from './vision.js';
 import { make_stunned } from './potion.js';
@@ -1607,7 +1607,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         await hmon_hitmon_dmg_recalc(hmd, obj);
 
     if (hmd.ispoisoned)
-        note_unported_uhitm('hmon_hitmon:poison');
+        await hmon_hitmon_poison(hmd, mon, obj);
 
     if (hmd.dmg < 1) {
         const monIsShade = hmd.mdat === game.mons[PMNAMES.PM_SHADE];
@@ -1699,14 +1699,17 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     if (hmd.silvermsg)
         await hmon_hitmon_msg_silver(hmd, mon, obj);
 
+    if (hmd.unpoisonmsg)
+        hmd.saved_oname = cxname(obj);
+
     /* src/uhitm.c:1897 -- the kill/survive tail.
        poiskilled and destroyed are separate branches, and BOTH check
        already_killed again before calling the kill, because an earlier stage
        may have done it. */
     if (hmd.needpoismsg)
-        note_unported_uhitm('hmon_hitmon:needpoismsg');
+        await pline_The(`poison doesn't seem to affect ${mon_nam(mon)}.`);
     if (hmd.poiskilled) {
-        note_unported_uhitm('hmon_hitmon:poison_deadly');
+        await pline_The('poison was deadly...');
         if (!hmd.already_killed)
             await xkilled(mon, XKILL_NOMSG);
         hmd.destroyed = true;
@@ -1719,7 +1722,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         note_unported_uhitm('hmon_hitmon:resist_confuse');
     }
     if (hmd.unpoisonmsg)
-        note_unported_uhitm('hmon_hitmon:unpoisonmsg');
+        await Your(`${hmd.saved_oname} ${vtense(hmd.saved_oname, 'are')} no longer poisoned.`);
 
     /* A monster that is still here gets woken and angered. This is the piece
        that makes a swing have consequences beyond damage: wakeup calls
@@ -2057,10 +2060,8 @@ function hmon_hitmon_barehands(hmd, mon) {
 // The polearm clause needs BOTH !u.usteed and the artifact test; dropping
 // either turns a legitimate mounted lance charge into a fumble.
 //
-// is_launcher, is_missile, is_ammo, is_art and ammo_and_launcher are
-// recorded, so today every weapon blow routes to the melee arm -- which is
-// the correct behaviour for an ordinary weapon and wrong only for the four
-// cases above, none of which can arise before those predicates exist.
+// is_launcher, is_missile, is_ammo, is_art and ammo_and_launcher are live,
+// so the four routing cases above follow the C decision directly.
 async function hmon_hitmon_weapon(hmd, mon, obj) {
     /* is it not a melee weapon? */
     if (/* if you strike with a bow... */
@@ -2118,9 +2119,11 @@ const is_launcher_w = (o) =>
 
 // src/uhitm.c:934 hmon_hitmon_weapon_melee() — "normal" weapon usage.
 //
-// Head only. The base damage comes from dmgval (src/weapon.c, now ported),
-// and train_weapon_skill is set from the RESULT: a minimal hit does not
-// exercise proficiency, same rule as the bare-handed path.
+// The base damage comes from dmgval (src/weapon.c), and train_weapon_skill is
+// set from the result: a minimal hit does not exercise proficiency, the same
+// rule as the bare-handed path. The common tail applies launcher-specific
+// role and race damage, then marks temporary or permanent poison for the
+// ordered poison stage in hmon_hitmon().
 //
 // The Healer knife bonus is not a draw but it is not a constant either --
 // it scales with how many of THIS species you have already killed,
@@ -2232,6 +2235,22 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
         hmd.silvermsg = hmd.silverobj = true;
     if (obj.oartifact && obj.lamplit)
         note_unported_uhitm('hmon_hitmon:lightobj'); /* artifact_light */
+
+    if (hmd.thrown === HMON_THROWN && (is_ammo(obj) || is_missile(obj))) {
+        if (ammo_and_launcher(obj, game.u.uwep)) {
+            if (Role_if(PMNAMES.PM_SAMURAI) && obj.otyp === ONAMES.YA
+                && game.u.uwep?.otyp === ONAMES.YUMI)
+                hmd.dmg++;
+            else if (Race_if(PMNAMES.PM_ELF) && obj.otyp === ONAMES.ELVEN_ARROW
+                     && game.u.uwep?.otyp === ONAMES.ELVEN_BOW)
+                hmd.dmg++;
+            hmd.train_weapon_skill = hmd.dmg > 0;
+        }
+        if (obj.opoisoned && is_poisonable(obj))
+            hmd.ispoisoned = true;
+    }
+    if (permapoisoned(obj) && hmd.dieroll <= 5)
+        hmd.ispoisoned = true;
 }
 
 // src/artifact.c:1447 artifact_hit(), hero-attacker slice. Mjollnir prints its
@@ -2332,6 +2351,32 @@ async function hmon_hitmon_dmg_recalc(hmd, obj) {
     /* don't let penalty, if bonus is negative, turn a hit into a miss */
     if (hmd.dmg < 1)
         hmd.dmg = 1;
+}
+
+// src/uhitm.c:1510 hmon_hitmon_poison().
+async function hmon_hitmon_poison(hmd, mon, obj) {
+    let nopoison = 10 - Math.trunc(obj.owt / 10);
+
+    if (nopoison < 2)
+        nopoison = 2;
+    if (Role_if(PMNAMES.PM_SAMURAI)) {
+        await You('dishonorably use a poisoned weapon!');
+        adjalign(-sgn(game.u.ualign.type));
+    } else if (game.u.ualign.type === A_LAWFUL
+               && game.u.ualign.record > -10) {
+        await You_feel('like an evil coward for using a poisoned weapon.');
+        adjalign(-1);
+    }
+    if (!permapoisoned(obj) && !rn2(nopoison)) {
+        obj.opoisoned = false;
+        hmd.unpoisonmsg = true;
+    }
+    if (resists_poison(mon))
+        hmd.needpoismsg = true;
+    else if (rn2(10))
+        hmd.dmg += rnd(6);
+    else
+        hmd.poiskilled = true;
 }
 
 // src/weapon.c:993 dbon() — the Strength damage bonus. A weak hero takes a

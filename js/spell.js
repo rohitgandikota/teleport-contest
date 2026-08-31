@@ -681,6 +681,73 @@ const quitchars = ' \r\n\x1b';
 const KEEN = 20000;
 export const SPELL_LEV_PW = (lvl) => lvl * 5;
 
+// src/spell.c:1707 tport_spell(). Wizard-mode m-^T temporarily hides or
+// supplies teleport away, then uses the returned operation to restore the
+// exact prior spell-list slot.
+export const NOOP_SPELL = 0, HIDE_SPELL = 1, ADD_SPELL = 2,
+             UNHIDESPELL = 3, REMOVESPELL = 4;
+
+let savedTeleportSpell = null;
+
+export function tport_spell(what) {
+    const book = (game.spl_book ||= []);
+    let i;
+    for (i = 0; i < MAXSPELL; i++) {
+        const id = spellid(i);
+        if (id === ONAMES.SPE_TELEPORT_AWAY || id === NO_SPELL)
+            break;
+    }
+    if (i === MAXSPELL) {
+        note_unported_spell('tport_spell:spellbook full');
+    } else if (spellid(i) === NO_SPELL) {
+        if (what === HIDE_SPELL || what === REMOVESPELL) {
+            savedTeleportSpell = null;
+        } else if (what === UNHIDESPELL) {
+            if (savedTeleportSpell) {
+                book[savedTeleportSpell.index] = savedTeleportSpell.slot;
+                savedTeleportSpell = null;
+            }
+        } else if (what === ADD_SPELL) {
+            savedTeleportSpell = {
+                index: i,
+                slot: book[i],
+                hadSlot: Object.hasOwn(book, i),
+                length: book.length,
+            };
+            book[i] = {
+                sp_id: ONAMES.SPE_TELEPORT_AWAY,
+                sp_lev: game.objects[ONAMES.SPE_TELEPORT_AWAY].oc_level,
+                sp_know: KEEN,
+            };
+            return REMOVESPELL;
+        }
+    } else {
+        if (what === ADD_SPELL || what === UNHIDESPELL) {
+            savedTeleportSpell = null;
+        } else if (what === REMOVESPELL) {
+            if (savedTeleportSpell) {
+                const saved = savedTeleportSpell;
+                if (saved.hadSlot)
+                    book[i] = saved.slot;
+                else
+                    delete book[i];
+                book.length = saved.length;
+                savedTeleportSpell = null;
+            }
+        } else if (what === HIDE_SPELL) {
+            savedTeleportSpell = {
+                index: i,
+                slot: book[i],
+                hadSlot: true,
+                length: book.length,
+            };
+            book[i] = { ...book[i], sp_id: NO_SPELL };
+            return UNHIDESPELL;
+        }
+    }
+    return NOOP_SPELL;
+}
+
 export const spe_Forgotten = -1;
 export const spe_Unknown = 0;
 export const spe_Fresh = 1;

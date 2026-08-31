@@ -1,0 +1,52 @@
+{
+  "name": "teleport-command-menu",
+  "description": "Wizard-mode menu teleport exercises cancellation plus normal intrinsic, temporary spell, unavailable, and unrestricted command modes.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.spellbooks-spells",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.menus"
+  ],
+  "branches": [
+    "teleport.command.menu-cancel",
+    "teleport.command.menu-no-ability",
+    "teleport.command.menu-intrinsic",
+    "teleport.command.menu-spell",
+    "teleport.command.menu-unrestricted"
+  ],
+  "segments": [
+    {
+      "seed": 6959,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m\u0014\u001b"
+    },
+    {
+      "seed": 6959,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m\u0014t"
+    },
+    {
+      "seed": 6959,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m\u0014n"
+    },
+    {
+      "seed": 6959,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m\u0014s"
+    },
+    {
+      "seed": 6959,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " m\u0014w."
+    }
+  ]
+}

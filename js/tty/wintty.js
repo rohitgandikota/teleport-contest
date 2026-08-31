@@ -722,7 +722,8 @@ function unset_all_on_page(window, page) {
 //
 // Returns the identifiers of the picked entries, so C's
 // `select_menu(...) > 0` test becomes `.length > 0`. The attached `counts`
-// map preserves C's per-selection counts without changing existing callers.
+// map preserves C's per-selection counts, and `cancelled` distinguishes ESC
+// from explicitly deselecting every preselected item.
 export async function tty_select_menu(window, how) {
     const cw = windows[window];
     if (!cw) return [];
@@ -926,9 +927,10 @@ export async function tty_select_menu(window, how) {
     tty_dismiss_nhwindow(window);
     game.bot_disabled = oldBotDisabled;
 
-    if (cw.cancelled)
-        return [];
     const picks = [];
+    Object.defineProperty(picks, 'cancelled', { value: !!cw.cancelled });
+    if (cw.cancelled)
+        return picks;
     const counts = new Map();
     for (let curr = cw.mlist; curr; curr = curr.next) {
         if (curr.identifier && curr.selected) {

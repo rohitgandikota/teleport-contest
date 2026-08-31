@@ -18,7 +18,8 @@ import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          NO_MM_FLAGS, RLOC_MSG, RLOC_NOMSG, RLOC_ERR,
          BOLT_LIM, VAULT, STRAT_APPEARMSG, OBJ_FREE, OBJ_INVENT,
          SHOPBASE, TEMPLE, A_STR, A_WIS, TELEP_TRAP, LEVEL_TELEP,
-         FORCETRAP } from './const.js';
+         FORCETRAP, I_SPECIAL, NHW_MENU, MENU_BEHAVE_STANDARD, PICK_ONE,
+         MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
          sensemon, see_monsters } from './display.js';
@@ -51,8 +52,13 @@ import { ONAMES } from './objects_data.js';
 import { learnscroll } from './read.js';
 import { ACURR, exercise } from './attrib.js';
 import { PMNAMES } from './monst_data.js';
-import { known_spell, spe_Fresh, spe_Unknown, spelleffects }
+import { known_spell, spe_Fresh, spe_Unknown, spelleffects, tport_spell,
+         NOOP_SPELL, HIDE_SPELL, ADD_SPELL }
     from './spell.js';
+import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+         tty_select_menu, tty_destroy_nhwindow, ATR_NONE }
+    from './tty/wintty.js';
+import { NO_COLOR } from './terminal.js';
 
 // include/hack.h:1204-1210
 
@@ -968,13 +974,76 @@ export async function dotelecmd() {
     if (!game.wizard)
         return (await dotele(false)) ? ECMD_TIME : ECMD_OK;
 
-    /* wizard mode without the 'm' prefix ignores every restriction; with it,
-       C puts up a menu of teleport flavours, which is recorded */
-    if (game.iflags?.menu_requested) {
-        note_unported_teleport('dotelecmd:menu');
-        return ECMD_OK;
+    if (!game.iflags?.menu_requested)
+        return (await dotele(true)) ? ECMD_TIME : ECMD_OK;
+
+    const tports = [
+        ['n', 'normal ^T on demand; no spell, obey restrictions'],
+        ['s', 'via spellcast; no intrinsic teleport'],
+        ['t', 'try ^T without having it; no spell'],
+        ['w', 'debug mode; ignore restrictions'],
+    ];
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (const [key, description] of tports) {
+        tty_add_menu(win, null, key, key, 0, ATR_NONE, NO_COLOR,
+                     description, key === 'w' ? MENU_ITEMFLAGS_SELECTED
+                                              : MENU_ITEMFLAGS_NONE);
     }
-    const res = await dotele(true);
+    tty_end_menu(win, 'Which way do you want to teleport?');
+    const picks = await tty_select_menu(win, PICK_ONE);
+    tty_destroy_nhwindow(win);
+    if (picks.cancelled)
+        return ECMD_OK;
+
+    /* Choosing another mode leaves preselected 'w' in the selection list.
+       Choosing 'w' toggles it off and yields no picks, which C also treats as
+       the traditional unrestricted wizard command. */
+    const tmode = picks.find((pick) => pick !== 'w') || 'w';
+    const intrinsic = (game.u.intrinsic ||= {});
+    const uprops = (game.u.uprops ||= {});
+    const hadHTele = Object.hasOwn(intrinsic, 'HTeleportation');
+    const hadETele = Object.hasOwn(uprops, 'TELEPORT');
+    const saveHTele = intrinsic.HTeleportation;
+    const saveETele = uprops.TELEPORT;
+    let undoSpell = NOOP_SPELL;
+    let ignoreRestrictions = false;
+
+    switch (tmode) {
+    case 'n':
+        intrinsic.HTeleportation = (intrinsic.HTeleportation | 0) | I_SPECIAL;
+        undoSpell = tport_spell(HIDE_SPELL);
+        break;
+    case 's':
+        intrinsic.HTeleportation = 0;
+        uprops.TELEPORT = 0;
+        undoSpell = tport_spell(ADD_SPELL);
+        break;
+    case 't':
+        intrinsic.HTeleportation = 0;
+        uprops.TELEPORT = 0;
+        undoSpell = tport_spell(HIDE_SPELL);
+        break;
+    case 'w':
+        ignoreRestrictions = true;
+        break;
+    }
+
+    let res;
+    try {
+        res = await dotele(ignoreRestrictions);
+    } finally {
+        if (hadHTele)
+            intrinsic.HTeleportation = saveHTele;
+        else
+            delete intrinsic.HTeleportation;
+        if (hadETele)
+            uprops.TELEPORT = saveETele;
+        else
+            delete uprops.TELEPORT;
+        if (undoSpell !== NOOP_SPELL)
+            tport_spell(undoSpell);
+    }
     return res ? ECMD_TIME : ECMD_OK;
 }
 

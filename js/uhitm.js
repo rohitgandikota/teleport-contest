@@ -21,7 +21,7 @@ import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.j
 import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
 import { end_running } from './hack.js';
 import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
-         x_monnam, hliquid, pmname } from './do_name.js';
+         x_monnam, hliquid, pmname, Some_Monnam } from './do_name.js';
 import { destroy_items, drain_item, exclam, hit, obj_resists } from './zap.js';
 import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
@@ -44,7 +44,8 @@ import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          otense, mshot_xname, Yname2, Yobjnam2 } from './objnam.js';
-import { mintrap, minstapetrify, erode_obj, ignite_items } from './trap.js';
+import { mintrap, instapetrify, minstapetrify, erode_obj,
+         ignite_items } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
          is_rider } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -97,12 +98,14 @@ import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
 import { body_part, mbodypart, ugolemeffects } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
-         M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
+         M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A, ARTICLE_YOUR,
+         EXACT_NAME, SUPPRESS_NAME } from './const.js';
 import { defsyms } from './drawing_data.js';
 import { defends, get_artifact, permapoisoned,
          spec_dbon } from './artifact.js';
 import { cansee, vision_recalc } from './vision.js';
 import { make_stunned } from './potion.js';
+import { stop_occupation } from './allmain.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -3287,8 +3290,8 @@ async function hurtle_u(dx, dy, range) {
 }
 
 // src/dothrow.c:1118 mhurtle(). Move a monster along a straight path. The
-// collision and region edge cases remain recorded, but the ordinary open
-// path, including trap checks, is live.
+// Region edge cases remain recorded, but open movement, trap checks, and
+// monster or hero collisions are live.
 export async function mhurtle(mon, dx, dy, range) {
     await wakeup(mon, !game.context?.mon_moving);
     mon.movement = 0;
@@ -3338,7 +3341,22 @@ export async function mhurtle(mon, dx, dy, range) {
                     newsym(blocker.mx, blocker.my);
                 }
             } else if (x === game.u.ux && y === game.u.uy) {
-                note_unported_uhitm('mhurtle:hero_collision');
+                await pline(`${Some_Monnam(mon)} bumps into you.`);
+                await stop_occupation();
+                if (Upolyd(game.u) && touch_petrifies(game.youmonst.data)
+                    && !which_armor(mon, W_ARMU | W_ARM | W_ARMC)) {
+                    await minstapetrify(mon, true);
+                    newsym(mon.mx, mon.my);
+                }
+                if (touch_petrifies(mon.data || game.mons[mon.mnum])
+                    && !(game.u.uarmu || game.u.uarm || game.u.uarmc)) {
+                    const article = mon.mtame ? ARTICLE_YOUR : ARTICLE_A;
+                    const monname = x_monnam(mon, article, 'hurtling',
+                                             EXACT_NAME | SUPPRESS_NAME,
+                                             false);
+                    await instapetrify(`being hit by ${monname}`);
+                    newsym(game.u.ux, game.u.uy);
+                }
             }
             break;
         }

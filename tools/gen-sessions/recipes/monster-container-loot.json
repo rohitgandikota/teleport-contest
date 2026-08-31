@@ -1,0 +1,34 @@
+{
+  "name": "monster-container-loot",
+  "description": "A hostile goblin picks up a light filled sack and rummages through it, covering monster container selection, random removal, and nearby messages.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "turn.speed-energy",
+    "level.ordinary",
+    "object.tools-containers",
+    "object.gems-stones",
+    "monster.movement"
+  ],
+  "branches": [
+    "monster.container.selection-random",
+    "monster.container.takeout-one",
+    "monster.container.takeout-three",
+    "monster.container.random-content",
+    "monster.container.stop-roll",
+    "monster.container.distant-message",
+    "monster.container.adjacent-first-message",
+    "monster.container.additional-pronoun-message",
+    "monster.container.clear-knowledge",
+    "monster.container.transfer-to-inventory"
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112122000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\r\u0017uncursed diamond\r\u0017uncursed ruby\r\u0017uncursed emerald\r\u0017uncursed sapphire\raospaosqaosraoss\u0007hostile goblin\rldolllm.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m.m."
+    }
+  ]
+}

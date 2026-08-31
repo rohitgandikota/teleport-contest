@@ -16,15 +16,15 @@ import { ATTKS, PMNAMES, NUMMONS } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
          passes_walls, noncorporeal, unsolid, haseyes, hates_light,
          resists_blnd, attacktype, verysmall, throws_rocks,
-         is_floater, locomotion } from './mondata.js';
+         is_floater, locomotion, pronoun_gender } from './mondata.js';
 import { in_your_sanctuary, lined_up, monnear, onscary, mon_knows_traps,
-         mon_would_take_item, accessible, monflee } from './monmove.js';
+         mon_would_take_item, accessible, monflee, mdistu } from './monmove.js';
 import { which_armor } from './worn.js';
 import { hard_helmet } from './do_wear.js';
 import { noteleport_level } from './teleport.js';
 import { stairway_at } from './stairs.js';
-import { carrying, sobj_at } from './invent.js';
-import { m_at, t_at } from './mon.js';
+import { carrying, sobj_at, obj_extract_self, weight } from './invent.js';
+import { m_at, t_at, can_carry } from './mon.js';
 import { linedup_callback, m_throw } from './mthrowu.js';
 import { Teleport_control, See_invisible } from './youprop.js';
 import { xytodir, dirtocoord } from './cmd.js';
@@ -35,13 +35,14 @@ import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          POLY_TRAP, u_at, KILLED_BY_AN, ZAP_POS, IS_DOOR, D_LOCKED,
          D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
          SUPPRESS_SADDLE, SUPPRESS_IT, AUGMENT_IT, G_UNIQ,
-         NC_SHOW_MSG, NC_VIA_WAND_OR_SPELL,
+         NC_SHOW_MSG, NC_VIA_WAND_OR_SPELL, PRONOUN_HALLU,
          MIGR_STAIRS_UP, MIGR_STAIRS_DOWN, MIGR_LADDER_UP,
          MIGR_LADDER_DOWN, MIGR_SSTAIRS, MIGR_RANDOM } from './const.js';
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
 import { MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
 import { def_monsyms } from './drawing_data.js';
+import { genders as genders_tbl } from './role_data.js';
 
 // src/muse.c:1272 — the offensive MUSE_* selection codes.
 const MUSE_WAN_DEATH = 1;
@@ -723,6 +724,85 @@ async function muse_newcham_mon(mtmp) {
     return rndmonst();
 }
 
+// src/muse.c:2265 mloot_container(). A monster occasionally removes up to
+// four random objects from an unlocked carried container. The container is
+// lightened before can_carry() so its contents are not counted twice.
+export async function mloot_container(mon, container, vismon) {
+    const [{ Is_mbag, add_to_container }, { mpickobj },
+           { removed_from_icebox },
+           { xname, distant_name, doname, an },
+           { Monnam, upstart }, { Norep }, { pline }]
+        = await Promise.all([
+            import('./mkobj.js'), import('./steal.js'), import('./pickup.js'),
+            import('./objnam.js'), import('./do_name.js'),
+            import('./pline.js'), import('./display.js'),
+        ]);
+
+    if (!container || !Has_contents(container) || container.olocked)
+        return 0;
+    if ((Is_mbag(container) && container.cursed)
+        || (container.otyp === ONAMES.LARGE_BOX && container.spe === 1)) {
+        return 0;
+    }
+
+    const roll = rn2(10);
+    const takeoutCount = roll < 4 ? 1 : roll < 7 ? 2 : roll < 9 ? 3 : 4;
+    const howfar = mdistu(mon);
+    const nearby = howfar <= 7 * 7;
+    let containerName = '';
+    const pronoun = vismon
+        ? genders_tbl[pronoun_gender(mon, PRONOUN_HALLU)].he : '';
+    let result = 0;
+
+    for (let takeoutIndex = 0;
+         takeoutIndex < takeoutCount; ++takeoutIndex) {
+        if (!Has_contents(container))
+            break;
+
+        const nitems = container.cobj.length;
+        if (!rn2(nitems + 1))
+            break;
+        const xobj = container.cobj[rn2(nitems)];
+
+        container.cknown = 0;
+        if (!containerName) {
+            const name = nearby ? xname(container)
+                         : distant_name(container, xname);
+            containerName = an(name);
+        }
+
+        obj_extract_self(xobj);
+        if (can_carry(mon, xobj)) {
+            if (vismon) {
+                if (howfar > 2) {
+                    await Norep(`${Monnam(mon)} rummages through ${
+                        containerName}.`);
+                } else if (takeoutIndex === 0) {
+                    await pline(`${Monnam(mon)} removes ${doname(xobj)} from ${
+                        containerName}.`);
+                } else {
+                    await pline(`${upstart(pronoun)} removes ${doname(xobj)}.`);
+                }
+            }
+            if (container.otyp === ONAMES.ICE_BOX)
+                await removed_from_icebox(xobj);
+            mpickobj(mon, xobj);
+            result = 2;
+        } else {
+            const alreadyNomerge = !!xobj.nomerge;
+            const justXobj = !Has_contents(container);
+            xobj.nomerge = 1;
+            const restored = add_to_container(container, xobj);
+            if (!alreadyNomerge)
+                restored.nomerge = 0;
+            container.owt = weight(container);
+            if (justXobj)
+                break;
+        }
+    }
+    return result;
+}
+
 // src/muse.c:441 find_defensive(), healing, stairs, and create-monster-scroll
 // actions. Monsters use healing while badly hurt, and can escape by a
 // staircase or ladder when movement has no legal square.
@@ -1368,6 +1448,12 @@ export async function use_misc(mtmp) {
 
         await newcham(mtmp, null, NC_SHOW_MSG);
         return 2;
+    }
+    case MUSE_BAG: {
+        if (!obj)
+            return 0;
+        const { canseemon } = await import('./display.js');
+        return mloot_container(mtmp, obj, canseemon(mtmp));
     }
     case MUSE_BULLWHIP: {
         let where_to = rn2(4);

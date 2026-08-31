@@ -419,6 +419,19 @@ weapons it can no longer use and sheds, breaks, or destroys incompatible worn
 gear in a fixed order. Objects dropped through an active polymorph beam receive
 the bypass flag so that the same beam does not transform them again.
 
+Monsters also inspect eligible containers they already carry. An unlocked,
+untrapped container with contents has a one-in-five chance to be selected when
+no other miscellaneous action takes priority. Bags of tricks and
+Schroedinger's box are excluded, and a cursed magical bag is left alone. A
+selected monster makes one to four removal attempts. Each attempt can stop on
+a contents-dependent throttle roll, otherwise it chooses a random item. The
+item is removed before the carrying-capacity check so its weight is not counted
+twice. Accepted items enter monster inventory, rejected items return to the
+container, and removal from an ice box resumes corpse or glob timers. Any
+attempt clears known-contents state. A visible adjacent monster names the first
+item and uses one stable pronoun for later items, while a more distant visible
+monster is only described as rummaging through the container.
+
 ## 12. Combat and damage
 
 Combat resolves intent, safety prompts, displacement and mimic reveals,

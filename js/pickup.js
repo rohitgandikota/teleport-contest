@@ -872,7 +872,7 @@ async function freeze_in_icebox(obj) {
     }
 }
 
-async function removed_from_icebox(obj) {
+export async function removed_from_icebox(obj) {
     if (age_is_relative(obj))
         return;
 

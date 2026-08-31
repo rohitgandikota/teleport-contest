@@ -27,11 +27,12 @@ import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
 import { destroy_items, exclam, hit, obj_resists } from './zap.js';
 import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
          Levitation } from './youprop.js';
-import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline,
+import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
-         shieldeff_mon, is_pool, m_carrying, t_at, minliquid } from './mon.js';
+         shieldeff_mon, is_pool, m_carrying, t_at, minliquid,
+         healmon } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
@@ -43,7 +44,7 @@ import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          otense, mshot_xname, Yobjnam2 } from './objnam.js';
-import { mintrap, erode_obj } from './trap.js';
+import { mintrap, erode_obj, ignite_items } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
          is_rider } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
@@ -65,7 +66,8 @@ import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
          thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
          is_whirly, mon_hates_blessings, resists_blnd, has_head, mindless,
-         resists_blnd_by_arti, resists_poison, resists_drli,
+         resists_blnd_by_arti, resists_fire, resists_cold, resists_elec,
+         resists_poison, resists_drli, defended, completelyburns,
          noattacks } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
@@ -86,8 +88,8 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
          W_ARMG, W_ARMH, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
-         NEED_WEAPON, XKILL_NOMSG, STRAT_WAITMASK, engulfing_u,
-         NEW_MOON } from './const.js';
+         NEED_WEAPON, XKILL_NOMSG, XKILL_NOCORPSE, STRAT_WAITMASK,
+         engulfing_u, NEW_MOON, MSLOW, MFAST } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
@@ -1014,8 +1016,23 @@ async function damageum(mon, mattk, specialdmg) {
                 damage = Math.max(1, damage + bonus);
         }
     } else {
-        if (mattk[1] === ATTKS.AD_DRST || mattk[1] === ATTKS.AD_DRDX
-            || mattk[1] === ATTKS.AD_DRCO) {
+        if (mattk[1] === ATTKS.AD_FIRE) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_fire(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_COLD) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_cold(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_ELEC) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_elec(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_DRST || mattk[1] === ATTKS.AD_DRDX
+                   || mattk[1] === ATTKS.AD_DRCO) {
             const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
                           specialdmg, done: false };
             await mhitm_ad_drst(game.youmonst, mattk, mon, mhm);
@@ -2197,6 +2214,70 @@ export async function mhitm_mgc_atk_negated(magr, mdef, verbosely) {
     return false;
 }
 
+// src/mondata.c:1411 on_fire(), the wording for a fire attack's target.
+function on_fire(ptr, mattk) {
+    switch (ptr.pmidx) {
+    case PMNAMES.PM_FLAMING_SPHERE:
+    case PMNAMES.PM_FIRE_VORTEX:
+    case PMNAMES.PM_FIRE_ELEMENTAL:
+    case PMNAMES.PM_SALAMANDER:
+        return 'already on fire';
+    case PMNAMES.PM_WATER_ELEMENTAL:
+    case PMNAMES.PM_FOG_CLOUD:
+    case PMNAMES.PM_STEAM_VORTEX:
+        return 'boiling';
+    case PMNAMES.PM_ICE_VORTEX:
+    case PMNAMES.PM_GLASS_GOLEM:
+        return 'melting';
+    case PMNAMES.PM_STONE_GOLEM:
+    case PMNAMES.PM_CLAY_GOLEM:
+    case PMNAMES.PM_GOLD_GOLEM:
+    case PMNAMES.PM_AIR_ELEMENTAL:
+    case PMNAMES.PM_EARTH_ELEMENTAL:
+    case PMNAMES.PM_DUST_VORTEX:
+    case PMNAMES.PM_ENERGY_VORTEX:
+        return 'heating up';
+    default:
+        return mattk[0] === ATTKS.AT_HUGS ? 'being roasted' : 'on fire';
+    }
+}
+
+// src/mon.c:5680 golemeffects(), elemental healing and slowing for flesh
+// and iron golems.
+async function golem_element_effects(mon, adtyp, damage) {
+    let heal = 0, slow = false;
+
+    if (mon.mnum === PMNAMES.PM_FLESH_GOLEM) {
+        if (adtyp === ATTKS.AD_ELEC)
+            heal = Math.trunc((damage + 5) / 6);
+        else if (adtyp === ATTKS.AD_FIRE || adtyp === ATTKS.AD_COLD)
+            slow = true;
+    } else if (mon.mnum === PMNAMES.PM_IRON_GOLEM) {
+        if (adtyp === ATTKS.AD_ELEC)
+            slow = true;
+        else if (adtyp === ATTKS.AD_FIRE)
+            heal = damage;
+    } else {
+        return;
+    }
+
+    if (slow && (mon.mspeed | 0) !== MSLOW) {
+        const oldspeed = mon.mspeed | 0;
+        mon.permspeed = (mon.permspeed | 0) === MFAST ? 0 : MSLOW;
+        const boots = which_armor(mon, W_ARMF);
+        mon.mspeed = boots?.otyp === ONAMES.SPEED_BOOTS
+            ? MFAST : mon.permspeed;
+        if (mon.mspeed !== oldspeed && game.mons[mon.mnum].mmove
+            && !mon.mfrozen && !mon.msleeping && canseemon(mon)) {
+            const howmuch = mon.mspeed + oldspeed === MFAST + MSLOW
+                ? 'much ' : '';
+            await pline(`${Monnam(mon)} seems to be moving ${howmuch}slower.`);
+        }
+    }
+    if (heal && healmon(mon, heal, 0) && cansee(mon.mx, mon.my))
+        await pline(`${Monnam(mon)} seems healthier.`);
+}
+
 // src/uhitm.c:2445 mhitm_ad_drli(), a monster draining the hero's life.
 // The one-in-three gate precedes drain resistance and magical cancellation,
 // so most successful touches do not spend the cancellation draw.
@@ -2249,12 +2330,65 @@ export async function mhitm_ad_samu(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:2626 mhitm_ad_cold(), a cold touch against the hero.
+// src/uhitm.c:2521 mhitm_ad_fire(), fire carried by a natural attack.
+export async function mhitm_ad_fire(magr, mattk, mdef, mhm) {
+    const pd = game.mons[mdef.mnum];
+    const orig_dmg = mhm.damage;
+
+    if (magr === game.youmonst) {
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            mhm.damage = 0;
+            return;
+        }
+        if (!Blind())
+            await pline(`${Monnam(mdef)} is ${on_fire(pd, mattk)}!`);
+        if (completelyburns(pd)) {
+            if (!Blind()) {
+                await pline(`${Monnam(mdef)} burns completely!`);
+            } else {
+                await You(`smell burning${
+                    pd.pmidx === PMNAMES.PM_PAPER_GOLEM ? ' paper'
+                    : pd.pmidx === PMNAMES.PM_STRAW_GOLEM ? ' straw' : ''}.`);
+            }
+            await xkilled(mdef, XKILL_NOMSG | XKILL_NOCORPSE);
+            mhm.damage = 0;
+            return;
+        }
+        if (resists_fire(mdef) || defended(mdef, ATTKS.AD_FIRE)) {
+            if (!Blind())
+                await pline_The(`fire doesn't heat ${mon_nam(mdef)}!`);
+            await golem_element_effects(mdef, ATTKS.AD_FIRE, mhm.damage);
+            await shieldeff(mdef.mx, mdef.my);
+            mhm.damage = 0;
+        }
+        mhm.damage += await destroy_items(mdef, ATTKS.AD_FIRE, orig_dmg);
+        await ignite_items(mdef.minvent || []);
+    } else if (mdef === game.youmonst) {
+        note_unported_uhitm('mhitm_ad_fire:mhitu');
+    } else {
+        note_unported_uhitm('mhitm_ad_fire:mhitm');
+    }
+}
+
+// src/uhitm.c:2626 mhitm_ad_cold(), cold carried by a natural attack.
 export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
     const orig_dmg = mhm.damage;
 
     if (magr === game.youmonst) {
-        note_unported_uhitm('mhitm_ad_cold:uhitm');
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            mhm.damage = 0;
+            return;
+        }
+        if (!Blind())
+            await pline(`${Monnam(mdef)} is covered in frost!`);
+        if (resists_cold(mdef) || defended(mdef, ATTKS.AD_COLD)) {
+            await shieldeff(mdef.mx, mdef.my);
+            if (!Blind())
+                await pline_The(`frost doesn't chill ${mon_nam(mdef)}!`);
+            await golem_element_effects(mdef, ATTKS.AD_COLD, mhm.damage);
+            mhm.damage = 0;
+        }
+        mhm.damage += await destroy_items(mdef, ATTKS.AD_COLD, orig_dmg);
     } else if (mdef === game.youmonst) {
         await hitmsg(magr, mattk, mhm.indx);
         if (!(await mhitm_mgc_atk_negated(magr, mdef, true))) {
@@ -2276,7 +2410,7 @@ export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:2684 mhitm_ad_elec() — a shock attack.
+// src/uhitm.c:2684 mhitm_ad_elec(), electricity carried by an attack.
 //
 // The mhitu branch is the one a grid bug takes against the hero: the hit
 // message first, then "You get zapped!", then the resistance test and, when
@@ -2285,7 +2419,20 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
     const orig_dmg = mhm.damage;
 
     if (magr === game.youmonst) {
-        note_unported_uhitm('mhitm_ad_elec:uhitm');
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            mhm.damage = 0;
+            return;
+        }
+        if (!Blind())
+            await pline(`${Monnam(mdef)} is zapped!`);
+        if (resists_elec(mdef) || defended(mdef, ATTKS.AD_ELEC)) {
+            if (!Blind())
+                await pline_The(`zap doesn't shock ${mon_nam(mdef)}!`);
+            await golem_element_effects(mdef, ATTKS.AD_ELEC, mhm.damage);
+            await shieldeff(mdef.mx, mdef.my);
+            mhm.damage = 0;
+        }
+        mhm.damage += await destroy_items(mdef, ATTKS.AD_ELEC, orig_dmg);
     } else if (mdef === game.youmonst) {
         /* mhitu */
         await hitmsg(magr, mattk, mhm.indx);

@@ -761,7 +761,8 @@ export async function moveloop_core() {
                    rn2(100) only starts once the hero has been hurt. */
                 if (!g.u.uinvulnerable
                     && (!Upolyd(g.u) ? (g.u.uhp < g.u.uhpmax)
-                                     : (g.u.mh < g.u.mhmax)))
+                                     : (g.u.mh < g.u.mhmax
+                                        || g.youmonst.data.mlet === MONSYMS.S_EEL)))
                     await regen_hp(near_capacity());
 
                 /* src/allmain.c:298 — overexert_hp when heavily encumbered

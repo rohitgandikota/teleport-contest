@@ -1,0 +1,26 @@
+{
+  "name": "polymorph-natural-fire-elemental",
+  "description": "A protected level-30 debug Wizard polymorphs into a fire elemental and attacks a sleeping minotaur with a fire claw.",
+  "coverage": [
+    "combat.melee",
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.movement",
+    "object.weapons",
+    "turn.speed-energy",
+    "ui.getlin"
+  ],
+  "branches": [
+    "combat.hero.polymorphed-fire-claw"
+  ],
+  "segments": [
+    {
+      "seed": 6941,
+      "datetime": "20000112101500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b\u0017blessed +10 ring of increase accuracy\rPnr\u0017blessed +20 ring of protection\rPol\u0007sleeping hostile minotaur\r#polyself\rfire elemental\rk    "
+    }
+  ]
+}

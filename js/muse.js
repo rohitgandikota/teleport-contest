@@ -36,7 +36,7 @@ import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
          SUPPRESS_SADDLE, SUPPRESS_IT, AUGMENT_IT, G_UNIQ,
          MIGR_STAIRS_UP, MIGR_STAIRS_DOWN, MIGR_LADDER_UP,
-         MIGR_LADDER_DOWN, MIGR_SSTAIRS } from './const.js';
+         MIGR_LADDER_DOWN, MIGR_SSTAIRS, MIGR_RANDOM } from './const.js';
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
 import { MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
@@ -1036,14 +1036,45 @@ export async function use_misc(mtmp) {
             return 0;
         await mquaffmsg(mtmp, obj);
         if (obj.cursed) {
-            (game.unported ||= new Set()).add('use_misc:cursed_gain_level');
+            const [{ Can_rise_up, ceiling, depth, get_level },
+                   { canseemon, pline }, { Monnam, trycall }]
+                = await Promise.all([
+                    import('./dungeon.js'), import('./display.js'),
+                    import('./do_name.js'),
+                ]);
+            const vismon = canseemon(mtmp);
+            if (Can_rise_up(mtmp.mx, mtmp.my, game.u.uz)) {
+                const tolevel = {};
+                get_level(tolevel, depth(game.u.uz) - 1);
+                if (tolevel.dnum !== game.u.uz.dnum
+                    || tolevel.dlevel !== game.u.uz.dlevel) {
+                    if (vismon) {
+                        await pline(`${Monnam(mtmp)} rises up, through the ${
+                            ceiling(mtmp.mx, mtmp.my)}!`);
+                        await trycall(obj);
+                    }
+                    m_useup_misc(mtmp, obj);
+                    const { migrate_monster } = await import('./trap.js');
+                    migrate_monster(mtmp, tolevel, MIGR_RANDOM);
+                    return 2;
+                }
+            }
+            if (vismon) {
+                await pline(`${Monnam(mtmp)} looks uneasy.`);
+                await trycall(obj);
+            }
             m_useup_misc(mtmp, obj);
             return 2;
         }
         const { canseemon, pline } = await import('./display.js');
         const { Monnam } = await import('./do_name.js');
-        if (canseemon(mtmp))
+        const vismon = canseemon(mtmp);
+        if (vismon)
             await pline(`${Monnam(mtmp)} seems more experienced.`);
+        if (vismon) {
+            const { makeknown } = await import('./o_init.js');
+            makeknown(ONAMES.POT_GAIN_LEVEL);
+        }
         m_useup_misc(mtmp, obj);
         const { grow_up } = await import('./makemon.js');
         return grow_up(mtmp, null) ? 2 : 1;

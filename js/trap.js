@@ -3252,6 +3252,7 @@ export function migrate_monster(mtmp, dest, xyloc, cc = null) {
     const at = (game.level.monsters || []).indexOf(mtmp);
     if (at >= 0)
         game.level.monsters.splice(at, 1);
+    newsym(mx, my);
 
     mtmp.mstate = (mtmp.mstate || 0) | MON_MIGRATING;
     mtmp.mtrack ||= [];

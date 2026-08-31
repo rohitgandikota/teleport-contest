@@ -710,6 +710,34 @@ export function Can_fall_thru(lev) {
     return Can_dig_down(lev) || Is_stronghold(lev);
 }
 
+// src/dungeon.c:1674 Can_rise_up(), used by cursed gain-level potions.
+export function Can_rise_up(x, y, lev) {
+    if (!lev || In_endgame(lev) || In_sokoban(lev))
+        return false;
+
+    const sameLevel = (a, b) => !!a && !!b
+        && a.dnum === b.dnum && a.dlevel === b.dlevel;
+    const tower = game.dndest || {};
+    const insideTower = sameLevel(lev, game.special_levels?.wiz1_level)
+        && tower.nlx
+        && x >= tower.nlx && x <= tower.nhx
+        && y >= tower.nly && y <= tower.nhy;
+    if (insideTower)
+        return false;
+
+    const dgn = game.dungeons?.[lev.dnum];
+    const ledger = (dgn?.ledger_start ?? 0) + lev.dlevel;
+    let branchUp = null;
+    for (let stway = game.stairs; stway; stway = stway.next) {
+        if (stway.tolev?.dnum !== game.u.uz.dnum && stway.up) {
+            branchUp = stway;
+            break;
+        }
+    }
+    return lev.dlevel > 1
+        || (dgn?.entry_lev === 1 && ledger !== 1 && !!branchUp);
+}
+
 // include/dungeon.h:126 Is_botlevel(x) — the bottom level of its dungeon.
 function Is_botlevel(lev) {
     return lev && game.dungeons?.[lev.dnum]

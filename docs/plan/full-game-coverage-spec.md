@@ -381,6 +381,16 @@ recharging, cancellation, and polymorph each have class-specific failure paths.
 Container rules cover nested weight, locks, traps, bags of holding, magical-bag
 explosions, refrigeration, monster access, shop ownership, and spilling.
 
+Monsters select and use useful inventory items on their own turns. An uncursed
+potion of gain level raises the monster's level and hit points, and seeing that
+use identifies the potion for the hero. A cursed potion instead tries to move
+the monster one logical depth upward. Intermediate levels and upward branch
+stairs permit that migration, while the surface, Sokoban, the endgame, and the
+inside of the top Wizard's Tower block it. A blocked monster looks uneasy and
+stays put. Guards, shopkeepers, and priests do not choose cursed gain-level
+potions. A departing monster must be removed from both the level's monster list
+and positional map, then its old square must be redrawn.
+
 ## 12. Combat and damage
 
 Combat resolves intent, safety prompts, displacement and mimic reveals,

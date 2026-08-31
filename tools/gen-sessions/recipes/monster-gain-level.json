@@ -1,0 +1,41 @@
+{
+  "name": "monster-gain-level",
+  "description": "A hostile stone giant uses a randomly generated uncursed potion of gain level, exercising monster item recognition and victim-less growth against the C implementation.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "object.potions",
+    "monster.movement",
+    "monster.vs-monster"
+  ],
+  "branches": [
+    "monster.gain-level.visible-identification",
+    "monster.gain-level.uncursed-growth",
+    "monster.gain-level.cursed-rise",
+    "monster.gain-level.cursed-blocked",
+    "monster.gain-level.can-rise-up",
+    "monster.gain-level.departure-redraw"
+  ],
+  "segments": [
+    {
+      "seed": 6947,
+      "datetime": "20000112100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017scroll of confuse monster\rro \u001b\u0007hostile stone giant\rj jm.  m.m."
+    },
+    {
+      "seed": 7331,
+      "datetime": "20000112110500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0007hostile stone giant\rm.m.  \u001bm."
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of gain level\rdo\u0007hostile stone giant\rjm.m.m. \u001bm."
+    }
+  ]
+}

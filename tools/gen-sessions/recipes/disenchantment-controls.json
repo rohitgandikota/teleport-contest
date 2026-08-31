@@ -1,0 +1,77 @@
+{
+  "name": "disenchantment-controls",
+  "description": "Debug heroes exercise worn-item enchantment drain and its derived attribute, combat, and armor effects.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.melee",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "object.armor",
+    "object.rings",
+    "object.buc-enchant-erosion",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "combat.disenchant.active-claw",
+    "item.drain.gauntlets-dexterity",
+    "item.drain.helm-brilliance",
+    "item.drain.ring-accuracy",
+    "item.drain.ring-adornment",
+    "item.drain.ring-constitution",
+    "item.drain.ring-damage",
+    "item.drain.ring-protection",
+    "item.drain.ring-strength"
+  ],
+  "segments": [
+    {
+      "seed": 6936,
+      "datetime": "20000112110500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Tb\u0017blessed +3 gauntlets of dexterity\rWf\u0007hostile disenchanter\rm. m. m. "
+    },
+    {
+      "seed": 6937,
+      "datetime": "20000112111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 helm of brilliance\rWf\u0007hostile disenchanter\rm. m."
+    },
+    {
+      "seed": 6938,
+      "datetime": "20000112111500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 ring of gain strength\rPfr\u0007hostile disenchanter\rm. m. m. m. "
+    },
+    {
+      "seed": 6939,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 ring of gain constitution\rPfr\u0007hostile disenchanter\rm. m.  "
+    },
+    {
+      "seed": 6940,
+      "datetime": "20000112112500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 ring of adornment\rPfr\u0007hostile disenchanter\rm. m. m."
+    },
+    {
+      "seed": 6941,
+      "datetime": "20000112113000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 ring of increase accuracy\rPfr\u0007hostile disenchanter\rm. m. m. m. m. m."
+    },
+    {
+      "seed": 6942,
+      "datetime": "20000112113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 ring of increase damage\rPfr\u0007hostile disenchanter\rm. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6943,
+      "datetime": "20000112114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tb\u0017blessed +3 ring of protection\rPfr\u0007hostile disenchanter\rm. m. m. m. m. m. m. m. m. m. m. m. m. "
+    }
+  ]
+}

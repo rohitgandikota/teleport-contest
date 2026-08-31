@@ -54,6 +54,7 @@ import { ONAMES } from './objects_data.js';
 import { KILLED_BY_AN, A_STR } from './const.js';
 import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
          W_ARMC, W_ARM, W_ARMU, W_WEP, W_SWAPWEP, MAX_ERODE,
+         W_ARMOR, W_ACCESSORY, W_ART,
          ERODE_BURN, ERODE_RUST, ERODE_ROT, ERODE_CORRODE, ERODE_CRACK,
          EF_NONE, EF_GREASE, EF_VERBOSE, EF_PAY, EF_DESTROY,
          ER_NOTHING, ER_DAMAGED, ER_DESTROYED } from './const.js';
@@ -92,7 +93,8 @@ export async function instapetrify(str) {
     if (Stone_resistance())
         return;
     if (poly_when_stoned(game.youmonst.data)
-        && await polymon(PMNAMES.PM_STONE_GOLEM))
+        && await polymon(PMNAMES.PM_STONE_GOLEM,
+                         { allowSexChange: false }))
         return;
     await urgent_pline('You turn to stone...');
     game.killer = { format: KILLED_BY, name: str || '' };
@@ -1138,7 +1140,7 @@ async function trapeffect_anti_magic(mtmp, trap, trflags) {
 }
 
 // src/trap.c:5202 drain_en() — reduce current magical energy.
-async function drain_en(n, max_already_drained) {
+export async function drain_en(n, max_already_drained) {
     const u = game.u;
     let mesg;
     let punct = max_already_drained ? '!' : '.';
@@ -2252,6 +2254,25 @@ export const is_damageable = (otmp) =>
     is_rustprone(otmp) || is_flammable(otmp) || is_rottable(otmp)
     || is_corrodeable(otmp) || is_crackable(otmp);
 
+// src/zap.c:5710 inventory_resistance_check(). Equipped elemental
+// resistance protects carried objects 99% of the time. This check belongs
+// before erode_obj's material and erosion tests because C still spends the
+// roll when the protected object would otherwise be unaffected.
+function inventory_resistance_check(dmgtyp) {
+    const prop = dmgtyp === ATTKS.AD_COLD ? 'COLD_RES'
+               : dmgtyp === ATTKS.AD_FIRE ? 'FIRE_RES'
+                 : dmgtyp === ATTKS.AD_ELEC ? 'SHOCK_RES'
+                   : dmgtyp === ATTKS.AD_ACID ? 'ACID_RES' : null;
+    let probability = prop
+        && (((game.u.uprops?.[prop] || 0)
+             & (W_ARMOR | W_ACCESSORY | W_WEP | W_ART)) !== 0) ? 99 : 0;
+
+    if (!probability && game.u.uarmc?.otyp === ONAMES.DWARVISH_CLOAK
+        && (dmgtyp === ATTKS.AD_COLD || dmgtyp === ATTKS.AD_FIRE))
+        probability = 90;
+    return probability ? rn2(100) < probability : false;
+}
+
 // src/trap.c:171 erode_obj() — generic erode-item function. Draws only the
 // rnl(4) blessed-protection roll. The shop-billing (EF_PAY) and destroy-arm
 // unwearing paths sit on unported subsystems and record themselves.
@@ -2276,6 +2297,8 @@ export async function erode_obj(otmp, ostr, type, ef_flags) {
 
     switch (type) {
     case ERODE_BURN:
+        if (uvictim && inventory_resistance_check(ATTKS.AD_FIRE))
+            return ER_NOTHING;
         vulnerable = is_flammable(otmp);
         check_grease = false;
         break;
@@ -2288,6 +2311,8 @@ export async function erode_obj(otmp, ostr, type, ef_flags) {
         is_primary = false;
         break;
     case ERODE_CORRODE:
+        if (uvictim && inventory_resistance_check(ATTKS.AD_ACID))
+            return ER_NOTHING;
         vulnerable = is_corrodeable(otmp);
         is_primary = false;
         break;

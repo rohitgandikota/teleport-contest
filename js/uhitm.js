@@ -1,7 +1,8 @@
 import { change_luck, exercise, poisoned } from './attrib.js';
 import { A_DEX, A_STR, A_INT, A_WIS, ERODE_NONE, ERODE_BURN, ERODE_RUST,
          ERODE_CORRODE, EF_NONE, EF_GREASE, EF_VERBOSE, ER_NOTHING,
-         STONING, Upolyd } from './const.js';
+         M_SEEN_ACID, M_SEEN_MAGR, M_SEEN_COLD, M_SEEN_FIRE,
+         M_SEEN_ELEC, STONING, Upolyd } from './const.js';
 // uhitm.js — the hero attacking, or declining to attack, a monster.
 // C ref: src/uhitm.c
 //
@@ -13,7 +14,7 @@ import { A_DEX, A_STR, A_INT, A_WIS, ERODE_NONE, ERODE_BURN, ERODE_RUST,
 import { game } from './gstate.js';
 import { helpless, MON_WEP } from './monst.js';
 import { rn1 } from './rng.js';
-import { dmgtype } from './mondata.js';
+import { dmgtype, monstseesu, monstunseesu } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor } from './worn.js';
 import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.js';
@@ -21,7 +22,7 @@ import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
 import { end_running } from './hack.js';
 import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
          x_monnam, hliquid, pmname } from './do_name.js';
-import { destroy_items, exclam, hit, obj_resists } from './zap.js';
+import { destroy_items, drain_item, exclam, hit, obj_resists } from './zap.js';
 import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Hallucination, Flying, Levitation,
          Reflecting, Shock_resistance, Stone_resistance } from './youprop.js';
@@ -92,11 +93,11 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
-import { body_part, mbodypart } from './polyself.js';
+import { body_part, mbodypart, ugolemeffects } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
-import { defends, defends_when_carried, get_artifact,
+import { defends, get_artifact,
          spec_dbon } from './artifact.js';
 import { cansee, vision_recalc } from './vision.js';
 import { make_stunned } from './potion.js';
@@ -882,9 +883,7 @@ export async function hmonas(mon) {
         let weapon = null;
         let dhit = 0;
 
-        if (aatyp === ATTKS.AT_NONE || aatyp === ATTKS.AT_BOOM
-            || aatyp === ATTKS.AT_BREA || aatyp === ATTKS.AT_SPIT
-            || aatyp === ATTKS.AT_GAZE) {
+        if (aatyp === ATTKS.AT_NONE || aatyp === ATTKS.AT_BOOM) {
             continue;
         }
         if (game.skipdrin && aatyp === ATTKS.AT_TENT
@@ -898,7 +897,14 @@ export async function hmonas(mon) {
                 && game.youmonst.data.mlet === MONSYMS.S_LICH
                 && !weapon_used);
 
-        if (use_weapon) {
+        if (aatyp === ATTKS.AT_BREA || aatyp === ATTKS.AT_SPIT
+            || aatyp === ATTKS.AT_GAZE) {
+            /* These active abilities are only used through #monster. During
+               an ordinary polymorphed melee turn C records a miss, then still
+               applies the defender's live passive response and knockback
+               gate for this attack slot. */
+            sum[i] = M_ATTK_MISS;
+        } else if (use_weapon) {
             odd_claw = !odd_claw;
             weapon_used = true;
             weapon = game.u.uwep;
@@ -1233,8 +1239,12 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
             else
                 await You(`are splashed by ${s_suffix(mon_nam(mon))} ${
                     hliquid('acid')}!`);
-            if (!Acid_resistance())
+            if (!Acid_resistance()) {
                 await mdamageu(mon, tmp);
+                monstunseesu(M_SEEN_ACID);
+            } else {
+                monstseesu(M_SEEN_ACID);
+            }
             if (!rn2(30))
                 await erode_armor(game.youmonst, ERODE_CORRODE);
         }
@@ -1268,7 +1278,8 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
                 if (!Stone_resistance()) {
                     if (poly_when_stoned(game.youmonst.data)) {
                         const { polymon } = await import('./polyself.js');
-                        if (await polymon(PMNAMES.PM_STONE_GOLEM))
+                        if (await polymon(PMNAMES.PM_STONE_GOLEM,
+                                          { allowSexChange: false }))
                             break;
                     }
                     const { done_in_by } = await import('./end.js');
@@ -1301,10 +1312,12 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
         /* wrath of gods for attacking Oracle -- no draw either way */
         if (Antimagic()) {
             await shieldeff(game.u.ux, game.u.uy);
+            monstseesu(M_SEEN_MAGR);
             await pline('A hail of magic missiles narrowly misses you!');
         } else {
             await You('are hit by magic missiles appearing from thin air!');
             await mdamageu(mon, tmp);
+            monstunseesu(M_SEEN_MAGR);
         }
         break;
     case ATTKS.AD_ENCH:     /* KMH -- remove enchantment (disenchanter) */
@@ -1385,9 +1398,11 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
                 if (Cold_resistance()) {
                     await shieldeff(game.u.ux, game.u.uy);
                     await You_feel('a mild chill.');
-                    note_unported_uhitm('passive:ugolemeffects:cold');
+                    monstseesu(M_SEEN_COLD);
+                    await ugolemeffects(ATTKS.AD_COLD, tmp);
                     break;
                 }
+                monstunseesu(M_SEEN_COLD);
                 await You('are suddenly very cold!');
                 await mdamageu(mon, tmp);
                 healmon(mon, Math.trunc((tmp + rn2(2)) / 2),
@@ -1405,9 +1420,11 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
                 if (Fire_resistance()) {
                     await shieldeff(game.u.ux, game.u.uy);
                     await You_feel('mildly warm.');
-                    note_unported_uhitm('passive:ugolemeffects:fire');
+                    monstseesu(M_SEEN_FIRE);
+                    await ugolemeffects(ATTKS.AD_FIRE, tmp);
                     break;
                 }
+                monstunseesu(M_SEEN_FIRE);
                 await You('are suddenly very hot!');
                 await mdamageu(mon, tmp);
             }
@@ -1416,9 +1433,11 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
             if (Shock_resistance()) {
                 await shieldeff(game.u.ux, game.u.uy);
                 await You_feel('a mild tingle.');
-                note_unported_uhitm('passive:ugolemeffects:elec');
+                monstseesu(M_SEEN_ELEC);
+                await ugolemeffects(ATTKS.AD_ELEC, tmp);
                 break;
             }
+            monstunseesu(M_SEEN_ELEC);
             await You('are jolted with electricity!');
             await mdamageu(mon, tmp);
             break;
@@ -1432,28 +1451,6 @@ export async function passive(mon, weapon, mhitb, maliveb, aatyp,
 
 // src/uhitm.c:6127 passive_obj() applies a monster's AT_NONE defense to
 // the object that struck it.
-function drain_item(obj, by_you) {
-    const oclass = game.objects[obj?.otyp];
-    if (!obj
-        || (!(oclass?.oc_charged)
-            && obj.oclass !== OCLASSES.WEAPON_CLASS
-            && obj.oclass !== OCLASSES.ARMOR_CLASS
-            && !is_weptool(obj))
-        || (obj.spe | 0) <= 0)
-        return false;
-    if (defends(ATTKS.AD_DRLI, obj)
-        || defends_when_carried(ATTKS.AD_DRLI, obj)
-        || obj_resists(obj, 10, 90))
-        return false;
-
-    if (by_you && obj.unpaid)
-        note_unported_uhitm('drain_item:costly_alteration');
-    obj.spe--;
-    if (carried(obj))
-        update_inventory();
-    return true;
-}
-
 export async function passive_obj(mon, obj, mattk = null) {
     if (!mon)
         return;
@@ -1492,7 +1489,7 @@ export async function passive_obj(mon, obj, mattk = null) {
             await erode_obj(obj, null, ERODE_CORRODE, EF_GREASE);
         break;
     case ATTKS.AD_ENCH:
-        if (!mon.mcan && drain_item(obj, true)
+        if (!mon.mcan && await drain_item(obj, true)
             && carried(obj)
             && (obj.known || obj.oclass === OCLASSES.ARMOR_CLASS))
             await pline(`${Yobjnam2(obj, 'seem')} less effective.`);
@@ -2560,6 +2557,58 @@ export async function mhitm_ad_drli(magr, mattk, mdef, mhm) {
     }
 }
 
+// src/do_wear.c:2630 some_armor(), restricted to the hero target used by
+// mhitm_ad_ench(). Body armor supplies the initial candidate. Each smaller
+// slot replaces it only on its independent one-in-four roll.
+function some_hero_armor() {
+    const u = game.u;
+    let obj = u.uarmc || u.uarm || u.uarmu || null;
+    for (const candidate of [u.uarmh, u.uarmg, u.uarmf, u.uarms]) {
+        if (candidate && (!obj || !rn2(4)))
+            obj = candidate;
+    }
+    return obj;
+}
+
+// src/uhitm.c:3602 mhitm_ad_ench(). A disenchanter claw first checks magical
+// cancellation, then selects worn armor or one of the ring and accessory
+// slots before draining a positive enchantment.
+export async function mhitm_ad_ench(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        return;
+    }
+    if (mdef !== game.youmonst) {
+        return;
+    }
+
+    const negated = await mhitm_mgc_atk_negated(magr, mdef, false);
+    await hitmsg(magr, mattk, mhm.indx);
+    if (negated)
+        return;
+
+    let obj = some_hero_armor();
+    if (!obj) {
+        switch (rn2(5)) {
+        case 1:
+            obj = game.u.uright;
+            break;
+        case 2:
+            obj = game.u.uleft;
+            break;
+        case 3:
+            obj = game.u.uamul;
+            break;
+        case 4:
+            obj = game.u.ublindf;
+            break;
+        default:
+            break;
+        }
+    }
+    if (obj && await drain_item(obj, false))
+        await pline(`${Yobjnam2(obj, 'seem')} less effective.`);
+}
+
 // src/uhitm.c:4565 mhitm_ad_samu(). A successful special hit always prints
 // its hit message, then has a one-in-twenty chance to take an invocation item.
 export async function mhitm_ad_samu(magr, mattk, mdef, mhm) {
@@ -2610,7 +2659,32 @@ export async function mhitm_ad_fire(magr, mattk, mdef, mhm) {
         mhm.damage += await destroy_items(mdef, ATTKS.AD_FIRE, orig_dmg);
         await ignite_items(mdef.minvent || []);
     } else if (mdef === game.youmonst) {
-        note_unported_uhitm('mhitm_ad_fire:mhitu');
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            await pline(`You're ${on_fire(pd, mattk)}!`);
+            if (completelyburns(pd)) {
+                await You('go up in flames!');
+                monstunseesu(M_SEEN_FIRE);
+                const { rehumanize } = await import('./polyself.js');
+                await rehumanize();
+                return;
+            }
+            if (Fire_resistance()) {
+                await pline_The(`fire doesn't feel hot!`);
+                monstseesu(M_SEEN_FIRE);
+                mhm.damage = 0;
+            } else {
+                monstunseesu(M_SEEN_FIRE);
+            }
+            if (magr.m_lev > rn2(20)) {
+                await destroy_items(game.youmonst, ATTKS.AD_FIRE, orig_dmg);
+                await ignite_items(game.invent);
+            }
+            if (game.u.uprops?.SLIMED)
+                game.u.uprops.SLIMED = 0;
+        } else {
+            mhm.damage = 0;
+        }
     } else {
         note_unported_uhitm('mhitm_ad_fire:mhitm');
     }
@@ -2641,10 +2715,10 @@ export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
             await pline("You're covered in frost!");
             if (Cold_resistance()) {
                 await pline("The frost doesn't seem cold!");
-                note_unported_uhitm('mhitm_ad_cold:monstseesu');
+                monstseesu(M_SEEN_COLD);
                 mhm.damage = 0;
             } else {
-                note_unported_uhitm('mhitm_ad_cold:monstunseesu');
+                monstunseesu(M_SEEN_COLD);
             }
             if (magr.m_lev > rn2(20))
                 await destroy_items(game.youmonst, ATTKS.AD_COLD, orig_dmg);
@@ -2684,12 +2758,15 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
         await hitmsg(magr, mattk, mhm.indx);
         if (!(await mhitm_mgc_atk_negated(magr, mdef, true))) {
             await You('get zapped!');
-            if (game.u.uprops?.SHOCK_RES) {
-                note_unported_uhitm('mhitm_ad_elec:shock_resistance');
+            if (Shock_resistance()) {
+                await pline_The(`zap doesn't shock you!`);
+                monstseesu(M_SEEN_ELEC);
                 mhm.damage = 0;
+            } else {
+                monstunseesu(M_SEEN_ELEC);
             }
             if (magr.m_lev > rn2(20))
-                note_unported_uhitm('mhitm_ad_elec:destroy_items');
+                await destroy_items(game.youmonst, ATTKS.AD_ELEC, orig_dmg);
         } else {
             mhm.damage = 0;
         }

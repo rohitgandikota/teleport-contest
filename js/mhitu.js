@@ -51,9 +51,10 @@ import { doname, xname } from './objnam.js';
 import { nomul } from './hack.js';
 import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
-import { mhitm_ad_phys, mhitm_ad_cold, mhitm_ad_elec, mhitm_ad_drst,
+import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
+         mhitm_ad_drst,
          mhitm_ad_blnd, mhitm_ad_ston, mhitm_ad_drli,
-         mhitm_ad_samu, mhitm_knockback,
+         mhitm_ad_ench, mhitm_ad_samu, mhitm_knockback,
          mhitm_mgc_atk_negated } from './uhitm.js';
 import { is_pool, t_at } from './mon.js';
 import { touch_petrifies } from './dog.js';
@@ -548,7 +549,8 @@ export async function gazemu(mtmp, mattk) {
             await You(`meet ${s_suffix(mon_nam(mtmp))} gaze.`);
             await stop_occupation();
             if (poly_when_stoned(game.youmonst.data)
-                && await polymon(PMNAMES.PM_STONE_GOLEM))
+                && await polymon(PMNAMES.PM_STONE_GOLEM,
+                                 { allowSexChange: false }))
                 return M_ATTK_MISS;
             await urgent_pline('You turn to stone...');
             game.killer = {
@@ -612,6 +614,27 @@ export function getmattk(magr, mdef, indx, prev_result) {
         const alt = [...attk];
         alt.getmattk_alternate = true;
         alt[1] = A.AD_STUN;
+        return alt;
+    }
+
+    /* src/mhitu.c:349. Energy-vortex drain scales with the hero's current
+       and maximum energy. At level 30 with 99 energy, the ordinary 2d6
+       attack becomes 1d6; retaining 2d6 changes both the drained amount and
+       the RNG modulus for every later action. */
+    if (attk[1] === A.AD_DREN && mdef === game.youmonst) {
+        const alt = [...attk];
+        alt.getmattk_alternate = true;
+        const ulev = Math.max(game.u.ulevel | 0, 6);
+
+        if ((game.u.uen | 0) <= 5 * ulev && alt[2] > 1) {
+            alt[2]--;
+            if ((game.u.uenmax | 0) <= 2 * ulev && alt[3] > 3)
+                alt[3] -= 3;
+        } else if ((game.u.uen | 0) > 12 * ulev) {
+            alt[2]++;
+            if ((game.u.uenmax | 0) > 20 * ulev)
+                alt[3] += 3;
+        }
         return alt;
     }
 
@@ -1069,7 +1092,10 @@ export function is_pole(obj) {
 // state fresh heroes lack and are recorded when present.
 export function magic_negation(mon) {
     const is_you = (mon === null || mon === game.u || mon === game.youmonst);
-    let mc = 0;
+    let mc = 0, via_amul = false;
+    let gotprot = is_you
+        ? !!game.u.uprops?.PROTECTION
+        : mon?.data?.pmidx === PMNAMES.PM_HIGH_CLERIC;
 
     const chain = is_you ? (game.invent || []) : (mon.minvent || []);
     for (const o of chain) {
@@ -1079,13 +1105,21 @@ export function magic_negation(mon) {
                 mc = armpro;
         } else if ((o.owornmask ?? 0) & W_AMUL) {
             if (o.otyp === ONAMES.AMULET_OF_GUARDING)
-                note_unported_mhitu('magic_negation:amulet_of_guarding');
+                via_amul = true;
         }
+        if (!is_you && !gotprot && o.oartifact)
+            note_unported_mhitu('magic_negation:monster_artifact_protection');
     }
 
-    if (is_you && (game.u.uprops?.PROTECTION?.extrinsic
-                   || game.u.uspellprot))
-        note_unported_mhitu('magic_negation:protection');
+    if (gotprot) {
+        mc += via_amul ? 2 : 1;
+        if (mc > 3)
+            mc = 3;
+    } else if (mc < 1 && is_you
+               && ((game.u.intrinsic?.HProtection && game.u.ublessed > 0)
+                   || game.u.uspellprot)) {
+        mc = 1;
+    }
 
     return mc;
 }
@@ -1140,6 +1174,8 @@ async function hitmu(mtmp, mattk, indx) {
     /* mhitm_adtyping: dispatch on the damage type */
     if (mattk[1] === A.AD_PHYS) {
         await mhitm_ad_phys(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_FIRE) {
+        await mhitm_ad_fire(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_COLD) {
         await mhitm_ad_cold(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_ELEC) {
@@ -1154,6 +1190,8 @@ async function hitmu(mtmp, mattk, indx) {
         await mhitm_ad_ston(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_DRLI) {
         await mhitm_ad_drli(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_ENCH) {
+        await mhitm_ad_ench(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_SAMU) {
         await mhitm_ad_samu(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_FAMN) {

@@ -1,0 +1,91 @@
+{
+  "name": "passive-controls",
+  "description": "Debug heroes exercise resistance, reflection, free-action, cancellation, and contact-protection controls for monster passive retaliation.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.melee",
+    "combat.resist-reflect",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "object.armor",
+    "object.rings",
+    "object.amulets",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "combat.passive.acid-resistance",
+    "combat.passive.cancellation",
+    "combat.passive.cold-resistance",
+    "combat.passive.contact-protection",
+    "combat.passive.fire-resistance",
+    "combat.passive.floating-eye-free-action",
+    "combat.passive.floating-eye-reflection",
+    "combat.passive.gelatinous-free-action",
+    "combat.passive.magic-resistance",
+    "combat.passive.shock-resistance"
+  ],
+  "segments": [
+    {
+      "seed": 6923,
+      "datetime": "20000112100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed amulet of reflection\rPf\u0007hostile floating eye\rl   "
+    },
+    {
+      "seed": 6924,
+      "datetime": "20000112100500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of free action\rPfl\u0007hostile floating eye\rn   "
+    },
+    {
+      "seed": 6925,
+      "datetime": "20000112101000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of free action\rPfl\u0007hostile gelatinous cube\rl   l   "
+    },
+    {
+      "seed": 6926,
+      "datetime": "20000112101500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of cold resistance\rPgl\u0007hostile blue jelly\ry   "
+    },
+    {
+      "seed": 6927,
+      "datetime": "20000112102000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of fire resistance\rPfl\u0007hostile fire elemental\rn   "
+    },
+    {
+      "seed": 6928,
+      "datetime": "20000112102500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of shock resistance\rPfl\u0007hostile energy vortex\rj   h   "
+    },
+    {
+      "seed": 6913,
+      "datetime": "20000112103000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile Oracle\ry\u0017blessed cloak of magic resistance\rWfu   "
+    },
+    {
+      "seed": 6930,
+      "datetime": "20000112103500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile cockatrice\rj   "
+    },
+    {
+      "seed": 6931,
+      "datetime": "20000112104000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed yellow dragon scale mail\rTWg\u0007hostile acid blob\rk   \u0007hostile acid blob\ru   \u0007hostile acid blob\rk   "
+    },
+    {
+      "seed": 6932,
+      "datetime": "20000112104500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cancellation\r\u0007hostile rust monster\rzfhh   "
+    }
+  ]
+}

@@ -13,12 +13,13 @@
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, GROWNUPS } from './monst_data.js';
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
-import { Hallucination, Unaware } from './youprop.js';
+import { Hallucination, Invis, Underwater, Unaware } from './youprop.js';
 import { defends, defends_when_carried } from './artifact.js';
 import { canspotmon } from './display.js';
-import { G_UNIQ, PRONOUN_NO_IT, PRONOUN_HALLU } from './const.js';
+import { G_UNIQ, M_SEEN_NOTHING, PRONOUN_NO_IT,
+         PRONOUN_HALLU } from './const.js';
 import { dist2 } from './hacklib.js';
-import { clear_path } from './vision.js';
+import { clear_path, couldsee } from './vision.js';
 import { ACURR } from './attrib.js';
 import { A_CHA } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -181,6 +182,35 @@ export const is_domestic = (ptr) => (ptr.mflags2 & MFLAGS.M2_DOMESTIC) !== 0;
 
 // include/mondata.h:81 perceives() — can this species see invisible?
 export const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
+
+// include/vision.h m_canseeu() and src/mondata.c monstseesu(). Monsters in
+// the hero's line of sight remember which defenses they have seen succeed.
+// The C macro intentionally does not test mcansee here.
+function monster_can_see_hero(mtmp) {
+    const ptr = mtmp.data || game.mons?.[mtmp.mnum];
+    return (!Invis() || (ptr && perceives(ptr)))
+        && !Underwater()
+        && couldsee(mtmp.mx, mtmp.my);
+}
+
+export function monstseesu(seenres) {
+    if (seenres === M_SEEN_NOTHING || game.u.uswallow)
+        return;
+    for (const mtmp of game.level?.monsters || []) {
+        if ((mtmp.mhp | 0) > 0 && monster_can_see_hero(mtmp))
+            mtmp.seen_resistance = (mtmp.seen_resistance ?? 0) | seenres;
+    }
+}
+
+export function monstunseesu(seenres) {
+    if (seenres === M_SEEN_NOTHING || game.u.uswallow)
+        return;
+    for (const mtmp of game.level?.monsters || []) {
+        if ((mtmp.mhp | 0) > 0 && monster_can_see_hero(mtmp))
+            mtmp.seen_resistance = (mtmp.seen_resistance ?? 0) & ~seenres;
+    }
+}
+
 export const can_teleport = (ptr) => (ptr.mflags1 & MFLAGS.M1_TPORT) !== 0;
 export const control_teleport = (ptr) =>
     (ptr.mflags1 & MFLAGS.M1_TPORT_CNTRL) !== 0;

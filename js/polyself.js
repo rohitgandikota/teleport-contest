@@ -206,6 +206,34 @@ export function body_part(part) {
     return mbodypart(game.youmonst, part);
 }
 
+// src/polyself.c:2160 ugolemeffects(). Flesh golems convert electrical
+// damage into a small heal, and iron golems convert fire damage into a heal.
+// The caller has already established resistance, so this function only
+// handles the form-specific recovery.
+export async function ugolemeffects(damtype, dam) {
+    const u = game.u;
+    let heal = 0;
+
+    if (u.umonnum !== PMNAMES.PM_FLESH_GOLEM
+        && u.umonnum !== PMNAMES.PM_IRON_GOLEM)
+        return;
+    if (damtype === ATTKS.AD_ELEC
+        && u.umonnum === PMNAMES.PM_FLESH_GOLEM)
+        heal = Math.trunc((dam + 5) / 6);
+    else if (damtype === ATTKS.AD_FIRE
+             && u.umonnum === PMNAMES.PM_IRON_GOLEM)
+        heal = dam;
+
+    if (heal && u.mh < u.mhmax) {
+        u.mh = Math.min(u.mh + heal, u.mhmax);
+        (game.disp ||= {}).botl = true;
+        const { pline } = await import('./display.js');
+        await pline('Strangely, you feel better than before.');
+        const { exercise } = await import('./attrib.js');
+        exercise(A_STR, true);
+    }
+}
+
 // src/polyself.c:2149 poly_gender() — the polymorphed hero's gender.
 // 0 and 1 mean what flags.female means; 2 is none.
 //

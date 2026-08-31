@@ -7,7 +7,8 @@
 // array that comparison has no input at all.
 
 import { game } from './gstate.js';
-import { OBJ_NAME, doname, xname, the, makesingular } from './objnam.js';
+import { OBJ_NAME, doname, xname, the, makesingular, Tobjnam,
+         makeplural } from './objnam.js';
 /* include/defsym.h OBJCLASS rows, the `name` column — C's def_oc_syms[].name
    (js/drawing_data.js keeps only the symbol chars). Index = oclass. Used by
    weapon_descr() below, same as C's object_detect(). */
@@ -17,7 +18,7 @@ const def_oc_syms_name = ["", "illegal objects", "weapons", "armor", "rings",
 import { STR18, P_SKILL_LIMIT, P_LAST_WEAPON, P_UNSKILLED, P_BASIC, P_EXPERT, P_ISRESTRICTED, P_SLING, P_FLAIL, P_PICK_AXE, Upolyd } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype, is_wooden, hates_light, throws_rocks, mindless, is_animal } from './mondata.js';
-import { is_axe } from './obj.js';
+import { is_axe, bimanual, is_plural } from './obj.js';
 import { greatest_erosion } from './do_wear.js';
 import { ATTKS } from './monst_data.js';
 import { is_spear } from './u_init.js';
@@ -28,12 +29,13 @@ import { mon_hates_silver, touch_petrifies } from './dog.js';
 import { hands_obj } from './invent.js';
 import { couldsee } from './vision.js';
 import { adj_lev, likes_gems } from './makemon.js';
-import { dist2 } from './hacklib.js';
+import { dist2, s_suffix } from './hacklib.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
 import { which_armor } from './worn.js';
 import { canseemon, pline } from './display.js';
-import { Monnam } from './do_name.js';
+import { Monnam, mon_nam } from './do_name.js';
 import { W_ARM, W_ARMC, W_ARMS, W_ARMG, W_ARMU, W_RINGL, W_RINGR, W_WEP,
+         HAND,
          NO_WEAPON_WANTED, NEED_WEAPON,
          NEED_RANGED_WEAPON, NEED_HTH_WEAPON, NEED_PICK_AXE, NEED_AXE,
          NEED_PICK_OR_AXE } from './const.js';
@@ -1066,9 +1068,13 @@ export async function mon_wield_item(mon) {
             const newly_welded = mwelded_weapon(obj);
             obj.owornmask &= ~W_WEP;
             if (newly_welded) {
-                /* "The <weapon> welds itself to <mon>'s <hand>!" needs
-                   Tobjnam/mbodypart */
-                note_unported_weapon('mon_wield_item:weld_msg');
+                const { mbodypart } = await import('./polyself.js');
+                let mon_hand = mbodypart(mon, HAND);
+                if (bimanual(obj))
+                    mon_hand = makeplural(mon_hand);
+                await pline(`${Tobjnam(obj, 'weld')} ${
+                    is_plural(obj) ? 'themselves' : 'itself'} to ${
+                    s_suffix(mon_nam(mon))} ${mon_hand}!`);
                 obj.bknown = 1;
             }
         }

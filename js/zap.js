@@ -12,7 +12,7 @@ import { cansee, couldsee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
          newsym, shieldeff, temporary_object_glyph,
-         unmap_invisible } from './display.js';
+         unmap_invisible, bot } from './display.js';
 import { closed_door } from './cmd.js';
 import { is_drawbridge_wall, is_ice } from './dbridge.js';
 
@@ -31,13 +31,13 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
          XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
          NO_TRAP_FLAGS, FORCETRAP, ENGRAVE, FACE, FOOT, LEG,
-         TIMEOUT, INTRINSIC,
-         In_sokoban } from './const.js';
+         COST_DRAIN, TIMEOUT, INTRINSIC,
+         In_sokoban, Upolyd } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
 import { force_decor, u_safe_from_fatal_corpse } from './pickup.js';
 import { an, aobjnam } from './objnam.js';
-import { artifact_origin } from './artifact.js';
+import { artifact_origin, defends, defends_when_carried } from './artifact.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_destroy_nhwindow, NHW_TEXT } from './tty/wintty.js';
 import { OCLASSES } from './objects_data.js';
@@ -91,7 +91,7 @@ import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Blind, Deaf, Unaware, Hallucination,
          Invis, See_invisible, Teleport_control,
-         Underwater, Levitation } from './youprop.js';
+         Underwater, Levitation, Antimagic } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -139,6 +139,89 @@ export function obj_resists(obj, ochance, achance) {
 
         return chance < (obj.oartifact ? achance : ochance);
     }
+}
+
+// src/zap.c:1382 drain_item(). Remove one positive charge or enchantment and
+// immediately adjust every derived effect supplied by a worn hero item.
+export async function drain_item(obj, by_you) {
+    const oclass = game.objects[obj?.otyp];
+    if (!obj
+        || (!oclass?.oc_charged
+            && obj.oclass !== OCLASSES.WEAPON_CLASS
+            && obj.oclass !== OCLASSES.ARMOR_CLASS
+            && !is_weptool(obj))
+        || (obj.spe | 0) <= 0)
+        return false;
+    if (defends(ATTKS.AD_DRLI, obj)
+        || defends_when_carried(ATTKS.AD_DRLI, obj)
+        || obj_resists(obj, 10, 90))
+        return false;
+
+    if (by_you) {
+        const { costly_alteration } = await import('./shk.js');
+        await costly_alteration(obj, COST_DRAIN);
+    }
+
+    obj.spe--;
+    const u = game.u;
+    const wornmask = obj.owornmask | 0;
+    const uRing = obj === u.uleft || obj === u.uright;
+    const abon = (u.abon ||= {}).a
+        ||= new Array(u.acurr?.a?.length || 6).fill(0);
+
+    switch (obj.otyp) {
+    case ONAMES.RIN_GAIN_STRENGTH:
+        if ((wornmask & W_RING) && uRing) {
+            abon[A_STR]--;
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    case ONAMES.RIN_GAIN_CONSTITUTION:
+        if ((wornmask & W_RING) && uRing) {
+            abon[A_CON]--;
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    case ONAMES.RIN_ADORNMENT:
+        if ((wornmask & W_RING) && uRing) {
+            abon[A_CHA]--;
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    case ONAMES.RIN_INCREASE_ACCURACY:
+        if ((wornmask & W_RING) && uRing)
+            u.uhitinc = (u.uhitinc || 0) - 1;
+        break;
+    case ONAMES.RIN_INCREASE_DAMAGE:
+        if ((wornmask & W_RING) && uRing)
+            u.udaminc = (u.udaminc || 0) - 1;
+        break;
+    case ONAMES.RIN_PROTECTION:
+        if (uRing) {
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    case ONAMES.HELM_OF_BRILLIANCE:
+        if ((wornmask & W_ARMH) && obj === u.uarmh) {
+            abon[A_INT]--;
+            abon[A_WIS]--;
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    case ONAMES.GAUNTLETS_OF_DEXTERITY:
+        if ((wornmask & W_ARMG) && obj === u.uarmg) {
+            abon[A_DEX]--;
+            (game.disp ||= {}).botl = true;
+        }
+        break;
+    default:
+        break;
+    }
+    if (game.disp?.botl)
+        await bot();
+    if ((game.invent || []).includes(obj))
+        update_inventory();
+    return true;
 }
 
 // src/zap.c:3547 exclam() — the punctuation that ends a hit message, and it
@@ -342,11 +425,89 @@ function cancel_item(obj) {
     uncurse(obj);
 }
 
-function cancel_hero_inventory() {
-    for (const obj of game.invent || [])
-        cancel_item(obj);
-    (game.disp ||= {}).botl = true;
-    find_ac();
+// src/mon.c:4431 normal_shape(), the cancellation subset. Shapechangers
+// return to their base form, werecreatures return to human form, and mimics
+// drop their disguise. newcham can print, so this helper is asynchronous.
+async function cancel_normal_shape(mon) {
+    const mcham = mon.cham ?? NON_PM;
+    if (mcham !== NON_PM && game.mons[mcham]) {
+        const wasCancelled = mon.mcan;
+        await newcham(mon, game.mons[mcham], NC_SHOW_MSG);
+        mon.cham = NON_PM;
+        mon.mcan = wasCancelled;
+        newsym(mon.mx, mon.my);
+    }
+
+    const { is_were, new_were } = await import('./were.js');
+    if (is_were(mon.data) && mon.data.mlet !== MONSYMS.S_HUMAN)
+        await new_were(mon);
+
+    if (M_AP_TYPE(mon) !== M_AP_NOTHING) {
+        if (!mon.meating) {
+            if (M_AP_TYPE(mon) !== M_AP_MONSTER)
+                mon.msleeping = 1;
+            seemimic(mon);
+        } else {
+            await finish_meating(mon);
+        }
+    }
+}
+
+// src/zap.c:3150 cancel_monst(). Wands and spells must make the resistance
+// roll before setting mcan, even for monsters with zero magic resistance.
+// That draw is part of every later turn's deterministic state.
+export async function cancel_monst(mdef, obj, youattack, allow_cancel_kill,
+                                   self_cancel) {
+    const youdefend = mdef === game.youmonst;
+    if (youdefend ? (!youattack && Antimagic())
+                  : resist(mdef, obj.oclass, 0, false))
+        return false;
+
+    if (self_cancel) {
+        const inventory = youdefend ? game.invent : (mdef.minvent || []);
+        for (const otmp of inventory)
+            cancel_item(otmp);
+        if (youdefend) {
+            (game.disp ||= {}).botl = true;
+            find_ac();
+        }
+    }
+
+    if (youdefend) {
+        if (Upolyd(game.u)) {
+            if (game.u.umonnum === PMNAMES.PM_CLAY_GOLEM) {
+                if (!Blind())
+                    await pline('Some writing vanishes from your head!');
+                else
+                    await You_feel(`${Hallucination() ? 'dark' : 'light'} headed.`);
+                game.u.mh = 0;
+            }
+            const unchanging = !!(game.u.intrinsic?.HUnchanging
+                                   || game.u.uprops?.UNCHANGING);
+            if (unchanging && game.u.mh > 0) {
+                await Your('amulet grows hot for a moment, then cools.');
+            } else {
+                const { rehumanize } = await import('./polyself.js');
+                await rehumanize();
+            }
+        }
+    } else {
+        mdef.mcan = 1;
+        await cancel_normal_shape(mdef);
+
+        if (mdef.mnum === PMNAMES.PM_CLAY_GOLEM) {
+            if (canseemon(mdef))
+                await pline(`Some writing vanishes from ${
+                    s_suffix(mon_nam(mdef))} head!`);
+            if (allow_cancel_kill) {
+                if (youattack)
+                    await killed(mdef);
+                else
+                    await monkilled(mdef, '', ATTKS.AD_SPEL);
+            }
+        }
+    }
+    return true;
 }
 
 async function speed_up(duration) {
@@ -560,7 +721,7 @@ export async function zapyourself(obj, ordinary) {
         break;
     case ONAMES.WAN_CANCELLATION:
     case ONAMES.SPE_CANCELLATION:
-        cancel_hero_inventory();
+        await cancel_monst(game.youmonst, obj, true, true, true);
         break;
     case ONAMES.SPE_DRAIN_LIFE:
         if (!(game.u.intrinsic?.HDrain_resistance
@@ -1597,6 +1758,12 @@ export async function bhitm(mtmp, otmp) {
         }
         break;
     }
+    case ONAMES.WAN_CANCELLATION:
+    case ONAMES.SPE_CANCELLATION:
+        if (disguised_mimic)
+            seemimic(mtmp);
+        await cancel_monst(mtmp, otmp, true, true, false);
+        break;
     default:
         note_unported_zap(`bhitm:otyp=${otmp.otyp}`);
         wake = false;

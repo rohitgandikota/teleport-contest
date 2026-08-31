@@ -330,6 +330,33 @@ and restores the natural vampire form unless that form was genocided. A shifted
 monster whose natural form intrinsically resists stone, notably a sandestin,
 also reverts instead of becoming a statue.
 
+Were creatures use paired human and beast species for were-rats, werejackals,
+and werewolves. A human form checks a moon- and time-dependent change chance
+on its turns. Beast forms check a separate one-in-thirty chance to become human.
+Protection from shape changers suppresses human-to-beast changes without a
+random draw and forces an existing beast form back to human. A form change
+wakes a helpless monster, heals one quarter of its missing HP, redraws it,
+sheds incompatible armor before handling its weapon, and can make a hostile
+monster flee a nearby scary square. An unseen wolf or jackal transformation can
+be heard and wakes nearby monsters.
+
+An attacking were creature has a separate form-change check and a one-in-ten
+chance to try summoning help. Were-rats call sewer, giant, or rabid rats;
+werejackals call jackals, coyotes, or foxes; werewolves call wolves, wargs, or
+winter wolves. Each successful summon attempt makes one to five placement
+attempts. Hostile helpers are blocked by protection from shape changers, while
+helpers summoned through the hero's lycanthropy are made tame. The hero can
+also gain, control, suppress, time out, or cure lycanthropy, subject to
+Unchanging, nearby monsters, polymorph control, and the current form.
+
+Taming magic normally checks the surrounding three by three area and expands
+to eleven by eleven while confused. While swallowed it targets only the
+engulfer, and a steed can occupy the hero-square target. Cursed magic angers
+eligible peaceful monsters. Other targets make a magic-resistance roll before
+pet logic runs. Some untamable creatures, including human were creatures, can
+still become peaceful. The final message and scroll identification depend on
+whether any attitude changed and whether the changed targets were visible.
+
 Monster turns include energy gain, wake and helpless checks, conflict, ranged
 and defensive item use, spells, covetous warps, hiding, door and container use,
 movement candidate generation, attacks on the hero or other monsters, traps,

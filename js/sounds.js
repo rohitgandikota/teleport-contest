@@ -428,7 +428,7 @@ const h_sounds = [
 // ROLL_FROM(h_sounds) is a draw but only under Hallucination. growl_sound
 // (a table lookup on msound) and wake_nearto are recorded.
 // src/sounds.c growl_sound() — the verb for a growl, by msound class.
-function growl_sound(mtmp) {
+export function growl_sound(mtmp) {
     let ret;
 
     switch (game.mons[mtmp.mnum].msound) {

@@ -8,10 +8,10 @@
 // exact C decision point, so game.unported names what a divergence wanted.
 
 import { game } from './gstate.js';
-import { midnight } from './calendar.js';
+import { midnight, night } from './calendar.js';
 import { breamm, thrwmu, spitmm } from './mthrowu.js';
 import { rn2, rn1, rnd, d } from './rng.js';
-import { is_animal, perceives, dmgtype, gender, pronoun_gender,
+import { is_animal, is_human, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
          nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer,
          defended, resists_acid, resists_cold, resists_elec, resists_fire,
@@ -22,7 +22,7 @@ import { poly_gender, body_part, polymon } from './polyself.js';
 import { Blind, Invis, See_invisible, Underwater, Deaf, Levitation, Flying,
          Cold_resistance, Fire_resistance, Hallucination,
          Reflecting, Shock_resistance, Stone_resistance,
-         Unaware } from './youprop.js';
+         Unaware, Protection_from_shape_changers } from './youprop.js';
 import { ATTKS, MONSYMS, PMNAMES, MFLAGS } from './monst_data.js';
 import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          M_ATTK_MISS, M_ATTK_HIT, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE,
@@ -38,7 +38,7 @@ import { genders } from './role_data.js';
 import { pline, canspotmon, canseemon, mon_visible, sensemon, bot,
          map_invisible, newsym, urgent_pline, shieldeff } from './display.js';
 import { cansee, couldsee } from './vision.js';
-import { Amonnam, Monnam, pmname, rndmonnam, hliquid, christen_monst }
+import { Amonnam, Monnam, pmname, rndmonnam, hliquid, christen_monst, upstart }
          from './do_name.js';
 import { You, You_feel, You_hear } from './pline.js';
 import { attacktype_fordmg, dmgtype_fromattack } from './mondata.js';
@@ -1066,9 +1066,10 @@ export async function mattacku(mtmp) {
     return 0;
 }
 
-// src/mhitu.c:956 summonmu() demon arm
+// src/mhitu.c:956 summonmu(). Demons summon their own kind; were creatures
+// can change form and then call compatible animals into adjacent squares.
 async function summonmu(mtmp, youseeit) {
-    const mdat = mtmp.data;
+    let mdat = mtmp.data;
 
     if (is_demon(mdat)) {
         if (mdat !== game.mons[PMNAMES.PM_BALROG]
@@ -1081,8 +1082,50 @@ async function summonmu(mtmp, youseeit) {
         return;
     }
 
-    if ((mdat.mflags2 & MFLAGS.M2_WERE) !== 0)
-        note_unported_mhitu('summonmu:were');
+    if ((mdat.mflags2 & MFLAGS.M2_WERE) !== 0) {
+        const { new_were, were_summon } = await import('./were.js');
+        if (is_human(mdat)) {
+            if (!Protection_from_shape_changers()
+                && !rn2(5 - (night() ? 2 : 0))) {
+                await new_were(mtmp);
+            }
+        } else if (Protection_from_shape_changers() || !rn2(30)) {
+            await new_were(mtmp);
+        }
+        mdat = mtmp.data;
+
+        if (!rn2(10)) {
+            if (youseeit)
+                await pline(`${Monnam(mtmp)} summons help!`);
+            const { total, visible, generic }
+                = await were_summon(mdat, false);
+            if (youseeit) {
+                if (total > 0) {
+                    if (visible === 0)
+                        await You_feel('hemmed in.');
+                } else {
+                    await pline('But none comes.');
+                }
+            } else {
+                let fromNowhere = ' from nowhere';
+                if (!Deaf()) {
+                    const { growl_sound } = await import('./sounds.js');
+                    await pline(`Something ${makeplural(growl_sound(mtmp))}!`);
+                    fromNowhere = '';
+                }
+                if (total > 0) {
+                    if (visible < 1) {
+                        await You_feel('hemmed in.');
+                    } else {
+                        const appearance = visible === 1
+                            ? `${an(generic)} appears`
+                            : `${makeplural(generic)} appear`;
+                        await pline(`${upstart(appearance)}${fromNowhere}!`);
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* include/obj.h is_pole() */

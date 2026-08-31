@@ -290,7 +290,7 @@ async function movemon_singlemon(mtmp) {
             || dist2(mtmp.mx, mtmp.my, mtmp.mux, mtmp.muy) > (3 * 3)) {
             mtmp.misc_worn_check &= ~I_SPECIAL;
             const oldworn = mtmp.misc_worn_check;
-            m_dowear(mtmp, false);
+            await m_dowear(mtmp, false);
             if (mtmp.misc_worn_check !== oldworn || !mtmp.mcanmove)
                 return false; /* is spending this turn equipping */
         }

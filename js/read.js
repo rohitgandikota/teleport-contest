@@ -12,7 +12,7 @@ import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR,
          M_AP_FURNITURE, MM_FEMALE, MM_MALE, NON_PM, W_SADDLE,
          OBJ_AT, COLNO, ROWNO, BOLT_LIM, HAND, HEAD, NH_RED,
          NH_PURPLE } from './const.js';
-import { sgn, distu } from './hacklib.js';
+import { sgn, distu, isok } from './hacklib.js';
 import { valid_cloud_pos } from './region.js';
 import { cansee } from './vision.js';
 import { bcsign, blessorcurse, mkobj, mksobj, place_object,
@@ -20,7 +20,7 @@ import { bcsign, blessorcurse, mkobj, mksobj, place_object,
 import { chwepon } from './wield.js';
 import { erosion_matters } from './mkobj.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { newsym, pline, sensemon } from './display.js';
+import { newsym, pline, sensemon, canspotmon } from './display.js';
 import { rn1, rn2, rnd } from './rng.js';
 import { getlin } from './cmd.js';
 import { has_head, hides_under, is_hider, is_silent,
@@ -44,7 +44,7 @@ import { A_WIS } from './const.js';
 import { outrumor } from './rumors.js';
 import { setworn, which_armor } from './worn.js';
 import { LIMITS, MFLAGS, MONSYMS, PMNAMES, mons_name } from './monst_data.js';
-import { delobj, is_pool } from './mon.js';
+import { delobj, is_pool, m_at, setmangry } from './mon.js';
 import { roles } from './role_data.js';
 import { body_part } from './polyself.js';
 import { Blind, Hallucination, Invisible } from './youprop.js';
@@ -209,6 +209,10 @@ async function seffects(sobj) {
         break;
     case ONAMES.SCR_ENCHANT_WEAPON:
         return await seffect_enchant_weapon(sobj);
+    case ONAMES.SCR_TAMING:
+    case ONAMES.SPE_CHARM_MONSTER:
+        await seffect_taming(sobj);
+        break;
     case ONAMES.SCR_LIGHT:
         return await seffect_light(sobj);
     case ONAMES.SCR_DESTROY_ARMOR:
@@ -232,6 +236,65 @@ async function seffects(sobj) {
         break;
     }
     return false;
+}
+
+// src/read.c:1044 maybe_tame(), apply one taming effect to one monster.
+async function maybe_tame(mtmp, sobj) {
+    const was_tame = mtmp.mtame | 0;
+    const was_peaceful = !!mtmp.mpeaceful;
+
+    if (sobj.cursed) {
+        await setmangry(mtmp, false);
+        return was_peaceful && !mtmp.mpeaceful ? -1 : 0;
+    }
+
+    const { resist } = await import('./zap.js');
+    if (!resist(mtmp, sobj.oclass, 0, false) || mtmp.isshk) {
+        const { tamedog } = await import('./dog.js');
+        await tamedog(mtmp, sobj, false);
+    }
+    return ((!was_peaceful && mtmp.mpeaceful)
+            || was_tame !== (mtmp.mtame | 0)) ? 1 : 0;
+}
+
+// src/read.c:1679 seffect_taming(), affect every monster in the nearby square
+// for a normal reading, or the wider 11 by 11 area when confused.
+async function seffect_taming(sobj) {
+    let candidates = 0, results = 0, vis_results = 0;
+
+    if (game.u.uswallow) {
+        candidates = 1;
+        results = vis_results = await maybe_tame(game.u.ustuck, sobj);
+    } else {
+        const bd = (game.u.intrinsic?.HConfusion
+                    || game.u.uprops?.CONFUSION) ? 5 : 1;
+        for (let i = -bd; i <= bd; ++i) {
+            for (let j = -bd; j <= bd; ++j) {
+                const x = game.u.ux + i, y = game.u.uy + j;
+                if (!isok(x, y))
+                    continue;
+                const mtmp = m_at(x, y)
+                    || (!i && !j ? game.u.usteed : null);
+                if (!mtmp)
+                    continue;
+                ++candidates;
+                const res = await maybe_tame(mtmp, sobj);
+                results += res;
+                if (canspotmon(mtmp))
+                    vis_results += res;
+            }
+        }
+    }
+
+    if (!results) {
+        await pline(`Nothing interesting ${
+            candidates ? 'seems to happen' : 'happens'}.`);
+    } else {
+        await pline_The(`neighborhood ${vis_results ? 'is' : 'seems'} ${
+            results < 0 ? 'un' : ''}friendlier.`);
+        if (vis_results > 0)
+            game.known = true;
+    }
 }
 
 // src/read.c:1400 seffect_confuse_monster().

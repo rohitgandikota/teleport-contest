@@ -23,6 +23,8 @@ import { is_weptool, place_object } from './mkobj.js';
 import { set_twoweap } from './wield.js';
 import { update_inventory, obj_extract_self } from './invent.js';
 import { Monnam, mon_nam } from './do_name.js';
+import { distant_name, doname } from './objnam.js';
+import { canseemon, pline } from './display.js';
 import { See_invisible } from './youprop.js';
 import { ART_EYES_OF_THE_OVERWORLD } from './artilist_data.js';
 import { genders as genders_tbl } from './role_data.js';
@@ -212,10 +214,8 @@ export function setnotworn(obj) {
 
 // src/worn.c which_armor() — the object worn in a given slot, or null.
 //
-// Monsters do not don armour in this port yet (m_dowear is absent), so the
-// minvent scan finds nothing for them. That is the honest answer for a monster
-// carrying an unworn shield, and it is the same answer the C gives; it becomes
-// wrong only once m_dowear exists, at which point this needs no change.
+// Monster equipment uses the same slot masks as hero equipment, but scans the
+// monster's own inventory instead of the hero's worn-object fields.
 export function which_armor(mon, flag) {
     if (mon === game.youmonst) {
         switch (flag) {
@@ -258,23 +258,47 @@ export function m_dowear(mon, creation) {
                           && data.pmidx !== PMNAMES.PM_SKELETON)))
         return;
 
-    m_dowear_type(mon, W_AMUL, creation, false);
     const can_wear_armor = !cantweararm(data); /* for suit, cloak, shirt */
+    if (!creation)
+        return m_dowear_runtime(mon, can_wear_armor);
+
+    m_dowear_type(mon, W_AMUL, true, false);
     /* can't put on shirt if already wearing suit */
     if (can_wear_armor && !(mon.misc_worn_check & W_ARM))
-        m_dowear_type(mon, W_ARMU, creation, false);
+        m_dowear_type(mon, W_ARMU, true, false);
     if (can_wear_armor || WrappingAllowed(data))
-        m_dowear_type(mon, W_ARMC, creation, false);
-    m_dowear_type(mon, W_ARMH, creation, false);
+        m_dowear_type(mon, W_ARMC, true, false);
+    m_dowear_type(mon, W_ARMH, true, false);
     if (!MON_WEP(mon) || !bimanual(MON_WEP(mon)))
-        m_dowear_type(mon, W_ARMS, creation, false);
-    m_dowear_type(mon, W_ARMG, creation, false);
+        m_dowear_type(mon, W_ARMS, true, false);
+    m_dowear_type(mon, W_ARMG, true, false);
     if (!slithy(data) && data.mlet !== MONSYMS.S_CENTAUR)
-        m_dowear_type(mon, W_ARMF, creation, false);
+        m_dowear_type(mon, W_ARMF, true, false);
     if (can_wear_armor)
-        m_dowear_type(mon, W_ARM, creation, false);
+        m_dowear_type(mon, W_ARM, true, false);
     else
-        m_dowear_type(mon, W_ARM, creation, RACE_EXCEPTION);
+        m_dowear_type(mon, W_ARM, true, RACE_EXCEPTION);
+}
+
+async function m_dowear_runtime(mon, can_wear_armor) {
+    const data = game.mons[mon.mnum];
+    const RACE_EXCEPTION = true;
+
+    await m_dowear_type(mon, W_AMUL, false, false);
+    if (can_wear_armor && !(mon.misc_worn_check & W_ARM))
+        await m_dowear_type(mon, W_ARMU, false, false);
+    if (can_wear_armor || WrappingAllowed(data))
+        await m_dowear_type(mon, W_ARMC, false, false);
+    await m_dowear_type(mon, W_ARMH, false, false);
+    if (!MON_WEP(mon) || !bimanual(MON_WEP(mon)))
+        await m_dowear_type(mon, W_ARMS, false, false);
+    await m_dowear_type(mon, W_ARMG, false, false);
+    if (!slithy(data) && data.mlet !== MONSYMS.S_CENTAUR)
+        await m_dowear_type(mon, W_ARMF, false, false);
+    if (can_wear_armor)
+        await m_dowear_type(mon, W_ARM, false, false);
+    else
+        await m_dowear_type(mon, W_ARM, false, RACE_EXCEPTION);
 }
 
 // include/monst.h:210 MON_WEP() — monsters do not wield in this port yet.
@@ -290,6 +314,7 @@ function m_dowear_type(mon, flag, creation, racialexception) {
     /* C copies the monster's name before looking for a better item because
        wearing one can change visibility. Keep that display-RNG side effect
        even when this slot has no candidate. */
+    const sawmon = canseemon(mon);
     if (See_invisible())
         Monnam(mon);
     else
@@ -379,23 +404,44 @@ function m_dowear_type(mon, flag, creation, racialexception) {
         old.owornmask = 0;              /* avoid doname() "(being worn)" */
     }
 
-    if (!creation) {
-        /* the "<Mon> puts on <armour>." messages need doname/Monnam */
-        m_delay += game.objects[best.otyp].oc_delay;
-        mon.mfrozen = m_delay;
-        if (mon.mfrozen)
-            mon.mcanmove = 0;
+    const finishWear = () => {
+        if (!creation) {
+            m_delay += game.objects[best.otyp].oc_delay;
+            mon.mfrozen = m_delay;
+            if (mon.mfrozen)
+                mon.mcanmove = 0;
+        }
+        if (old) {
+            update_mon_extrinsics(mon, old, false, creation);
+            old.owornmask = 0;
+            /* artifact_light()/end_burn() need the light-source code */
+        }
+        mon.misc_worn_check |= flag;
+        best.owornmask |= flag;
+        if (autocurse)
+            best.cursed = true;         /* curse(best) */
+        update_mon_extrinsics(mon, best, true, creation);
+    };
+
+    if (!creation && sawmon) {
+        let prefix = '';
+        let oldarm = '';
+        if (old) {
+            oldarm = distant_name(old, doname);
+            prefix = ` removes ${oldarm} and`;
+        }
+        let newarm = distant_name(best, doname);
+        if (newarm.toLowerCase() === oldarm.toLowerCase()) {
+            if (/^a /i.test(newarm))
+                newarm = `another ${newarm.slice(2)}`;
+            else if (/^an /i.test(newarm))
+                newarm = `another ${newarm.slice(3)}`;
+        }
+        return pline(`${Monnam(mon)}${prefix} puts on ${newarm}.`)
+            .then(finishWear);
     }
-    if (old) {
-        update_mon_extrinsics(mon, old, false, creation);
-        old.owornmask = 0;
-        /* artifact_light()/end_burn() need the light-source code */
-    }
-    mon.misc_worn_check |= flag;
-    best.owornmask |= flag;
-    if (autocurse)
-        best.cursed = true;             /* curse(best) */
-    update_mon_extrinsics(mon, best, true, creation);
+    finishWear();
+    return null;
 }
 
 // src/worn.c extra_pref() — currently only speed boots.

@@ -162,6 +162,12 @@ export const Passes_walls = () =>
 export const Regeneration = () =>
     !!(game.u?.intrinsic?.HRegeneration || game.u?.uprops?.REGENERATION);
 
+// include/youprop.h:355 Protection_from_shape_changers. Rings and wizard
+// intrinsics share the same flat property entry in this port.
+export const Protection_from_shape_changers = () =>
+    !!(game.u?.intrinsic?.HProtection_from_shape_changers
+       || game.u?.uprops?.PROT_FROM_SHAPE_CHANGERS);
+
 // include/youprop.h:113 Reflecting. The flat property value is C's
 // EReflecting slot mask, so a nonzero mask means reflection is active.
 export const Reflecting = () =>

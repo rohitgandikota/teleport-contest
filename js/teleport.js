@@ -17,13 +17,14 @@ import { rn2 } from './rng.js';
 import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          NO_MM_FLAGS, RLOC_MSG, RLOC_NOMSG, RLOC_ERR,
          BOLT_LIM, VAULT, STRAT_APPEARMSG, OBJ_FREE, OBJ_INVENT,
-         SHOPBASE, TEMPLE } from './const.js';
+         SHOPBASE, TEMPLE, A_STR, A_WIS } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
          sensemon, see_monsters } from './display.js';
-import { Blind, Hallucination } from './youprop.js';
+import { Blind, Hallucination, Teleport_control, Teleportation }
+    from './youprop.js';
 import { is_demon, is_lord, is_prince, is_covetous,
-         passes_walls } from './mondata.js';
+         passes_walls, can_teleport } from './mondata.js';
 import { You, You_feel, You_cant } from './pline.js';
 import { getlin } from './cmd.js';
 import { get_level, find_hell, depth, print_dungeon,
@@ -36,7 +37,8 @@ import { unconscious } from './trap.js';
 import { goodpos, remove_monster, place_monster } from './makemon.js';
 import { newsym } from './display.js';
 import { vision_recalc, couldsee } from './vision.js';
-import { in_rooms, invocation_message, spoteffects } from './hack.js';
+import { check_capacity, in_rooms, invocation_message, spoteffects }
+    from './hack.js';
 import { morehungry } from './eat.js';
 import { getpos } from './getpos.js';
 import { Amonnam, Monnam, mon_nam } from './do_name.js';
@@ -45,6 +47,10 @@ import { distu, distmin } from './hacklib.js';
 import { isok, ECMD_OK, ECMD_TIME, VIBRATING_SQUARE, is_pit, is_hole } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { learnscroll } from './read.js';
+import { ACURR, exercise } from './attrib.js';
+import { PMNAMES } from './monst_data.js';
+import { known_spell, spe_Fresh, spe_Unknown, spelleffects }
+    from './spell.js';
 
 // include/hack.h:1204-1210
 
@@ -349,7 +355,6 @@ async function next_to_u() {
 }
 
 const isdigit = (c) => c >= '0' && c <= '9';
-const Teleport_control = () => !!game.u?.uprops?.TELEPORT_CONTROL;
 const Stunned = () => !!game.u?.uprops?.STUNNED;
 const Confusion = () => !!game.u?.uprops?.CONFUSION;
 
@@ -746,9 +751,8 @@ export async function scrolltele(scroll) {
     /* src/teleport.c:872 — Teleport_control (or a blessed scroll, or
        wizard mode) picks the spot via getpos; everyone else falls through
        to the random destination below */
-    const controlled = (game.u.uprops?.TELEPORT_CONTROL
-                        || game.u.intrinsic?.HTeleport_control
-                        || (scroll && scroll.blessed) || game.wizard);
+    const controlled = ((Teleport_control() || (scroll && scroll.blessed))
+                        && !Stunned()) || game.wizard;
     if (controlled) {
         if (unconscious()) {
             await pline('Being unconscious, you cannot control your teleport.');
@@ -772,6 +776,11 @@ export async function scrolltele(scroll) {
                is low; allow transfer to solid rock */
             if (teleok(cc.x, cc.y, false)) {
                 await teleds(cc.x, cc.y, TELEDS_TELEPORT);
+                if (game.iflags?.travelcc
+                    && game.u.ux === game.iflags.travelcc.x
+                    && game.u.uy === game.iflags.travelcc.y) {
+                    game.iflags.travelcc.x = game.iflags.travelcc.y = 0;
+                }
                 return;
             }
             await pline('Sorry...');
@@ -853,9 +862,52 @@ async function dotele(break_the_rules) {
         return 0;
     }
     if (!break_the_rules) {
-        /* the Teleportation-intrinsic and spell-casting gate */
-        note_unported_teleport('dotele:not_wizard');
-        return 0;
+        let castit = false;
+        const role = game.urole?.mnum;
+        const threshold = (role === PMNAMES.PM_WIZARD
+                           || role === 'PM_WIZARD') ? 8 : 12;
+        if (!Teleportation()
+            || ((game.u.ulevel || 0) < threshold
+                && !can_teleport(game.youmonst.data))) {
+            const knownsp = known_spell(ONAMES.SPE_TELEPORT_AWAY);
+            castit = knownsp >= spe_Fresh && !Confusion();
+            if (!castit) {
+                const reason = !Teleportation()
+                    ? (knownsp !== spe_Unknown ? "can't cast that spell"
+                                               : "don't know that spell")
+                    : 'are not able to teleport at will';
+                await You(`${reason}.`);
+                return 0;
+            }
+        }
+
+        const energy = 5 * game.objects[ONAMES.SPE_TELEPORT_AWAY].oc_level;
+        let reason = null;
+        if ((game.u.uhunger || 0) <= 10)
+            reason = 'are too weak from hunger';
+        else if (ACURR(A_STR) < 4)
+            reason = 'lack the strength';
+        else if (energy > (game.u.uen || 0))
+            reason = 'lack the energy';
+        if (reason) {
+            await You(`${reason} ${castit ? 'for a teleport spell'
+                                         : 'to teleport'}.`);
+            return 0;
+        }
+        if (await check_capacity(
+                'Your concentration falters from carrying so much.'))
+            return 1;
+
+        if (castit) {
+            exercise(A_WIS, true);
+            if ((await spelleffects(
+                    ONAMES.SPE_TELEPORT_AWAY, true, false)) & ECMD_TIME)
+                return 1;
+            return 0;
+        }
+
+        game.u.uen -= energy;
+        (game.disp ||= {}).botl = true;
     }
 
     if (!await next_to_u()) {

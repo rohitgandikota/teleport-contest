@@ -78,7 +78,7 @@ import { getpos, getpos_sethilite } from './getpos.js';
 import { get_valid_jump_position, is_valid_jump_pos } from './apply.js';
 import { dowear, doputon, dotakeoff, doremring, canwearobj_core } from './do_wear.js';
 import { boolean_option, show_menu_controls, paranoia_bits,
-         PARANOID_CONFIRM, PARANOID_TRAP } from './options.js';
+         PARANOID_CONFIRM, PARANOID_QUIT, PARANOID_TRAP } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
 import { NO_COLOR } from './terminal.js';
 import { nhgetch } from './input.js';
@@ -746,6 +746,29 @@ async function docmd_getobj(ch) {
 // The individual commands are not ported. What IS ported is reading the whole
 // name off the input, because a session that issues one and does not have it
 // consumed runs every later keystroke against the wrong command.
+async function enter_explore_mode() {
+    if (game.discover) {
+        await You('are already in explore mode.');
+        return ECMD_OK;
+    }
+
+    const oldmode = game.wizard ? 'debug mode' : 'normal game';
+    await pline(`Beware!  From explore mode there will be no return to ${oldmode},`);
+    const answer = await paranoid_ynq(
+        !!(paranoia_bits() & PARANOID_QUIT),
+        'Do you want to enter explore mode?');
+    if (answer === 'y') {
+        game.discover = true;
+        game.wizard = false;
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await You('are now in non-scoring explore mode.');
+    } else {
+        tty_clear_nhwindow_message(game._topl_cury || 0);
+        await pline(`Continuing with ${oldmode}.`);
+    }
+    return ECMD_OK;
+}
+
 export async function doextcmd() {
     const name = await get_ext_cmd();
 
@@ -759,6 +782,8 @@ export async function doextcmd() {
         const { done2 } = await import('./end.js');
         return await done2();
     }
+    if (name === 'exploremode')
+        return await enter_explore_mode();
     if (name === 'enhance') {
         const { enhance_weapon_skill } = await import('./weapon.js');
         return await enhance_weapon_skill();

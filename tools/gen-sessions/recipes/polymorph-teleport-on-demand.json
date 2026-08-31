@@ -1,0 +1,39 @@
+{
+  "name": "polymorph-teleport-on-demand",
+  "description": "Debug setup switches into explore mode, then tests controlled, uncontrolled, and unavailable on-demand teleportation from monster-form properties.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "mode.explore",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "forms.polymorph.teleport-control-command",
+    "forms.polymorph.teleport-uncontrolled-command",
+    "forms.polymorph.teleport-unavailable-command",
+    "mode.debug-to-explore"
+  ],
+  "segments": [
+    {
+      "seed": 6950,
+      "datetime": "20000112113000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r8\r      Tbw-DaA\r\u001b#polyself\rtengu\r#exploremode\r\u001by\u0014."
+    },
+    {
+      "seed": 6951,
+      "datetime": "20000112113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r8\r      Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b#exploremode\r\u001by\u0014"
+    },
+    {
+      "seed": 6952,
+      "datetime": "20000112114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r8\r      Tbw-DaA\r\u001b#polyself\rfire giant\r#exploremode\r\u001by\u0014"
+    }
+  ]
+}

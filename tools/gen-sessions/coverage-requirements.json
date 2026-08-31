@@ -18,6 +18,7 @@
     { "group": "Identity and modes", "id": "chargen.restricted-path", "description": "A role or race combination that skips an inapplicable choice", "minimumSessions": 1, "normalModeRequired": true },
     { "group": "Identity and modes", "id": "mode.normal", "description": "Normal-mode timing and generation", "minimumSessions": 3, "normalModeRequired": true },
     { "group": "Identity and modes", "id": "mode.debug", "description": "Wizard-mode setup and debug command dispatch", "minimumSessions": 3 },
+    { "group": "Identity and modes", "id": "mode.explore", "description": "Non-scoring explore-mode command behavior and debug-to-explore transition", "minimumSessions": 1 },
     { "group": "Identity and modes", "id": "options.rc-bindings", "description": "Options parsing, custom bindings, safety, and display choices", "minimumSessions": 1 },
 
     { "group": "Input and display", "id": "ui.menus", "description": "Single and multi-select menus, paging, accept, and cancel", "minimumSessions": 2, "normalModeRequired": true },

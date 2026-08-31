@@ -188,6 +188,7 @@
     { "group": "Hero lycanthropy", "id": "hero.lycanthropy.intrinsic-refresh", "cFile": "src/were.c", "cFunction": "set_ulycn", "description": "Refresh the hero's form-based intrinsics when lycanthropy is gained or cured" },
     { "group": "Were creature lookup tables", "id": "were.lookup.counter-pairs", "cFile": "src/were.c", "cFunction": "counter_were", "description": "Map every human were creature to its beast form and back" },
     { "group": "Were creature lookup tables", "id": "were.lookup.related-beast-families", "cFile": "src/were.c", "cFunction": "were_beastie", "description": "Map the rat, jackal, and wolf helper families to their were-beast species" },
+    { "group": "Corpse cannibalism", "id": "eat.cannibal.were-family", "cFile": "src/eat.c", "cFunction": "maybe_cannibal", "description": "Penalize an infected non-cannibal hero for eating a corpse from the related were-beast family" },
 
     { "group": "Invisible monster creation", "id": "wizard.create.invisible-modifier", "cFile": "src/read.c", "cFunction": "create_particular_creation", "description": "Apply the wizard monster maker's invisible state modifier and create a permanently invisible ordinary monster" },
     { "group": "Invisible monster creation", "id": "wizard.create.disguised-mimic-arrival", "cFile": "src/makemon.c", "cFunction": "makemon", "description": "Create an invisible object-shaped mimic, name its disguised arrival from the remembered object glyph, and spend the temporary object's identifier draw" },

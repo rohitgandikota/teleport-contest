@@ -102,6 +102,32 @@ export function counter_were(pm) {
     }
 }
 
+// src/were.c:69 were_beastie(). Map each helper family back to the
+// corresponding were-beast. This is also used by the cannibalism check.
+export function were_beastie(pm) {
+    const P = PMNAMES;
+    switch (pm) {
+    case P.PM_WERERAT:
+    case P.PM_SEWER_RAT:
+    case P.PM_GIANT_RAT:
+    case P.PM_RABID_RAT:
+        return P.PM_WERERAT;
+    case P.PM_WEREJACKAL:
+    case P.PM_JACKAL:
+    case P.PM_FOX:
+    case P.PM_COYOTE:
+        return P.PM_WEREJACKAL;
+    case P.PM_WEREWOLF:
+    case P.PM_WOLF:
+    case P.PM_WARG:
+    case P.PM_WINTER_WOLF:
+    case P.PM_WINTER_WOLF_CUB:
+        return P.PM_WEREWOLF;
+    default:
+        return NON_PM;
+    }
+}
+
 // src/were.c:232 set_ulycn(). Catching or curing lycanthropy changes the
 // hero's innate drain resistance without changing the current body.
 export function set_ulycn(which) {
@@ -137,11 +163,11 @@ export async function you_were() {
             `Do you want to change into a ${beast}?`, false) !== 'y') {
             return;
         }
+    } else {
+        const { monster_nearby } = await import('./hack.js');
+        if (monster_nearby())
+            return;
     }
-
-    const { monster_nearby } = await import('./hack.js');
-    if (monster_nearby())
-        return;
     game.were_changes = (game.were_changes || 0) + 1;
     const { polymon } = await import('./polyself.js');
     await polymon(u.ulycn, { allowSexChange: false });

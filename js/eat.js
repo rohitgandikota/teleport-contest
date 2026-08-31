@@ -1,5 +1,5 @@
 import { exercise, near_capacity, adjalign, poison_strdmg, adjattrib,
-         acurrstr }
+         acurrstr, change_luck }
     from './attrib.js';
 import { A_CON, COST_BITE, COST_DSTROY, COST_OPEN, SLT_ENCUMBER,
          W_RINGL, W_RINGR } from './const.js';
@@ -56,6 +56,13 @@ import { body_part } from './polyself.js';
 import { LIGHT_HEADED, Is_airlevel, Is_astralevel, Is_waterlevel } from './const.js';
 import { surface } from './dungeon.js';
 import { FINGER, NH_GREEN, NO_PART, TIMEOUT } from './const.js';
+import { were_beastie } from './were.js';
+
+/* include/hack.h:51 CANNIBAL_ALLOWED() */
+const cannibal_allowed = () =>
+    game.urole?.mnum === 'PM_CAVE_DWELLER'
+    || game.urole?.mnum === PMNAMES.PM_CAVE_DWELLER
+    || Race_if(PMNAMES.PM_ORC);
 
 // src/eat.c:3170 gethungry()
 export async function gethungry() {
@@ -752,12 +759,6 @@ async function fprefx(otmp) {
                     ? "bland."
                     : Hallucination() ? "gnarly!" : "delicious!"}`);
     };
-    /* include/hack.h:51 CANNIBAL_ALLOWED() */
-    const cannibal_allowed = () =>
-        game.urole?.mnum === 'PM_CAVE_DWELLER'
-        || game.urole?.mnum === PMNAMES.PM_CAVE_DWELLER
-        || Race_if(PMNAMES.PM_ORC);
-
     switch (otmp.otyp) {
     case ONAMES.EGG:
         if (otmp.corpsenm === PMNAMES.PM_PYROLISK) {
@@ -910,6 +911,22 @@ export async function start_eating(otmp, already_partly_eaten) {
     v.doreset = 0;
     v.eating = 1;
 
+    /* src/eat.c:2041 cprefx(), lycanthropy arm of maybe_cannibal().
+       An infected hero treats every related helper species as their own. */
+    if ((otmp.otyp === ONAMES.CORPSE || otmp.globby)
+        && game.context.ate_brains !== game.moves) {
+        game.context.ate_brains = game.moves;
+        const pm = v.piece?.corpsenm ?? NON_PM;
+        if (!cannibal_allowed() && game.u.ulycn >= 0
+            && were_beastie(pm) === game.u.ulycn) {
+            await You('cannibal!  You will regret this!');
+            const intr = (game.u.intrinsic ||= {});
+            intr.HAggravate_monster = (intr.HAggravate_monster | 0)
+                                      | FROMOUTSIDE;
+            change_luck(-rn1(4, 2));
+        }
+    }
+
     if (await bite()) {
         /* survived choking, finish off food that's nearly done;
            need this to handle cockatrice eggs, fortune cookies, etc */
@@ -931,7 +948,7 @@ export async function start_eating(otmp, already_partly_eaten) {
         return;
     }
 
-    set_occupation(eatfood, `eating ${otmp.oname ?? ''}`, 0);
+    set_occupation(eatfood, `eating ${food_xname(otmp, true)}`, 0);
 }
 
 function note_unported_eat(what) {

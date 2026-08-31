@@ -22,7 +22,7 @@ import { W_SADDLE, ECMD_OK, ECMD_TIME, ECMD_CANCEL, isok, SLT_ENCUMBER,
          has_mgivenname } from './const.js';
 import { OBJ_MINVENT, is_metallic } from './obj.js';
 import { rn2, rnd, rn1 } from './rng.js';
-import { pline } from './display.js';
+import { newsym, pline } from './display.js';
 import { You, You_cant, Your } from './pline.js';
 import { Monnam, mon_nam, pmname } from './do_name.js';
 import { m_at, is_pool, is_lava, t_at } from './mon.js';
@@ -139,6 +139,33 @@ async function maybewakesteed(steed) {
         await pline(`${Monnam(steed)} wakes up.`);
     /* regardless of waking, terminate any meal in progress */
     finish_meating(steed);
+}
+
+// src/steed.c:420 kick_steed() lowers an awake steed's tameness, possibly
+// throw the rider, or start a gallop. The helpless response has extra
+// pronoun-sensitive text and remains separately visible in the gap audit.
+export async function kick_steed() {
+    const steed = game.u.usteed;
+    if (!steed)
+        return;
+    if (helpless(steed)) {
+        note_unported_steed('kick:helpless');
+        return;
+    }
+
+    if (steed.mtame)
+        steed.mtame--;
+    if (!steed.mtame && steed.mleashed)
+        note_unported_steed('kick:m_unleash');
+    if (!steed.mtame
+        || game.u.ulevel + steed.mtame < rnd(20)) {
+        newsym(steed.mx, steed.my);
+        await dismount_steed(DISMOUNT_THROWN);
+        return;
+    }
+
+    await pline(`${Monnam(steed)} gallops!`);
+    game.u.ugallop = (game.u.ugallop | 0) + rn1(20, 30);
 }
 
 // src/steed.c:197 mount_steed() — start riding the given monster.

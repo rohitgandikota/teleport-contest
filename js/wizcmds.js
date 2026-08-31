@@ -296,6 +296,8 @@ const WIZ_INTRINSICS = [
 function wiz_intrinsic_timeout(key) {
     if (key === 'SICK')
         return Number(game.u.uprops?.SICK) || 0;
+    if (key === 'CONFUSION')
+        return game.u.intrinsic?.HConfusion | 0;
     if (key === 'HALLUC')
         return (game.u.intrinsic?.HHallucination | 0) & TIMEOUT;
     if (key === 'BLINDED')
@@ -356,7 +358,12 @@ export async function wiz_intrinsic() {
         if (amount <= 0)
             continue;
 
-        if (key === 'BLINDED') {
+        if (key === 'CONFUSION') {
+            const { make_confused } = await import('./potion.js');
+            await make_confused(Math.min(TIMEOUT, oldtimeout + amount), false);
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} ${amount}.`);
+        } else if (key === 'BLINDED') {
             const { make_blinded } = await import('./potion.js');
             await make_blinded(oldtimeout + amount, true);
         } else if (key === 'DEAF') {

@@ -424,7 +424,13 @@ export async function dokick() {
         await You('are too small to do any kicking.');
         no_kick = true;
     } else if (game.u.usteed) {
-        note_unported_dokick('dokick:steed');
+        const { tty_yn_function } = await import('./tty/topl.js');
+        if ((await tty_yn_function('Kick your steed?', 'yn', 'y')) === 'y') {
+            await You(`kick ${mon_nam(game.u.usteed)}.`);
+            const { kick_steed } = await import('./steed.js');
+            await kick_steed();
+            return ECMD_TIME;
+        }
         return ECMD_OK;
     } else if ((game.u.intrinsic?.HWounded_legs || 0) > 0
                || (game.u.EWounded_legs || 0)) {

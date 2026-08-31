@@ -1817,7 +1817,7 @@ async function make_happy_shoppers(silentkops) {
     }
 }
 
-async function make_happy_shk(shkp, silentkops) {
+export async function make_happy_shk(shkp, silentkops) {
     const eshk = shkp.eshk || ESHK(shkp);
     const wasmad = !shkp.mpeaceful;
     shkp.mpeaceful = 1;
@@ -1834,9 +1834,7 @@ async function make_happy_shk(shkp, silentkops) {
             && eshk.shoplevel.dnum === game.u.uz.dnum
             && eshk.shoplevel.dlevel === game.u.uz.dlevel;
         if (local) {
-            const { mnearto } = await import('./mon.js');
-            await mnearto(shkp, eshk.shk.x, eshk.shk.y, true, RLOC_NOMSG);
-            game.level.flags.has_shop = 1;
+            await home_shk(shkp);
             if (canspotmon(shkp)) {
                 await pline(`${shopkeeper_name(shkp)} returns to ${pronouns.his} shop.`);
                 vanished = false;

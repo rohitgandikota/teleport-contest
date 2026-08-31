@@ -660,7 +660,8 @@ export async function tamedog(mtmp, obj, givemsg) {
     }
 
     if (mtmp.isshk) {
-        note_unported('tamedog:make_happy_shk');
+        const { make_happy_shk } = await import('./shk.js');
+        await make_happy_shk(mtmp, false);
         return false;
     }
 

@@ -1297,9 +1297,11 @@ function mkobj_at(oclass, x, y, artif) {
 // stub that always set mundetected = 0, so a swamp snake created over its
 // starter object stood in plain sight where C's is hidden.
 export function hideunder(mtmp, defer_newsym = false) {
+    const isHero = mtmp === game.youmonst;
     let undetected = false;
-    const x = mtmp.mx, y = mtmp.my;
-    const ptr = game.mons[mtmp.mnum];
+    const x = isHero ? game.u.ux : mtmp.mx;
+    const y = isHero ? game.u.uy : mtmp.my;
+    const ptr = isHero ? game.youmonst.data : game.mons[mtmp.mnum];
     let t2;
 
     if (mtmp === game.u.ustuck) {
@@ -1338,8 +1340,10 @@ export function hideunder(mtmp, defer_newsym = false) {
         }
     }
 
-    const oldundetctd = !!mtmp.mundetected;
+    const oldundetctd = !!(isHero ? game.u.uundetected : mtmp.mundetected);
     mtmp.mundetected = undetected ? 1 : 0;
+    if (isHero)
+        game.u.uundetected = mtmp.mundetected;
     if (undetected !== oldundetctd && !defer_newsym)
         newsym(x, y);
     return undetected;

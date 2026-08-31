@@ -898,6 +898,7 @@ export const emits_light = (ptr) =>
 
 // include/mondata.h:97,99,136,137 — race and rank flags.
 export const is_elf    = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
+export const is_dwarf  = (ptr) => (ptr.mflags2 & MFLAGS.M2_DWARF) !== 0;
 export const is_gnome  = (ptr) => (ptr.mflags2 & MFLAGS.M2_GNOME) !== 0;
 export const is_lord   = (ptr) => (ptr.mflags2 & MFLAGS.M2_LORD) !== 0;
 export const is_prince = (ptr) => (ptr.mflags2 & MFLAGS.M2_PRINCE) !== 0;

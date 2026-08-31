@@ -33,7 +33,7 @@ import {
     SV0, SV1, SV2, SV3, SV4, SV5, SV6, SV7,
     M_AP_FURNITURE, M_AP_OBJECT, M_AP_MONSTER, M_AP_TYPE,
     AM_NONE, AM_CHAOTIC, AM_NEUTRAL, AM_LAWFUL, AM_MASK, AM_SANCTUM,
-    ACCESSIBLE, Is_rogue_level,
+    ACCESSIBLE, Is_rogue_level, Is_waterlevel,
 } from './const.js';
 import { engr_at } from './engrave.js';
 import { visible_region_at } from './region.js';
@@ -1061,6 +1061,49 @@ export async function swallowed(first) {
     swallowed_lasty = u.uy;
 }
 
+/* src/display.c:1395 under_water().  Ordinary vision is replaced by the
+   liquid squares in the hero's immediate neighborhood.  A full update calls
+   cls(), whose message-window flush is also the blocking --More-- C displays
+   when a swimming-only form first enters a pool. */
+let underwater_lastx = 0, underwater_lasty = 0;
+let underwater_delayed = false;
+
+export async function under_water(mode) {
+    const u = game.u;
+    if (!u || Is_waterlevel(u.uz) || u.uswallow)
+        return;
+
+    if (mode === 1 || underwater_delayed) {
+        await cls();
+        underwater_delayed = false;
+    } else if (mode === 2) {
+        underwater_delayed = true;
+        return;
+    } else {
+        for (let y = underwater_lasty - 1; y <= underwater_lasty + 1; y++)
+            for (let x = underwater_lastx - 1; x <= underwater_lastx + 1; x++)
+                if (isok(x, y))
+                    show_glyph_cell(x, y, ' ', NO_COLOR, false, 0,
+                                    { kind: 'unexplored' });
+    }
+
+    for (let x = u.ux - 1; x <= u.ux + 1; x++)
+        for (let y = u.uy - 1; y <= u.uy + 1; y++) {
+            if (!isok(x, y)
+                || (!is_pool_or_lava(x, y)
+                    && game.level?.at(x, y)?.typ !== ICE))
+                continue;
+            if (Blind() && (x !== u.ux || y !== u.uy))
+                show_glyph_cell(x, y, ' ', NO_COLOR, false, 0,
+                                { kind: 'unexplored' });
+            else
+                newsym(x, y);
+        }
+
+    underwater_lastx = u.ux;
+    underwater_lasty = u.uy;
+}
+
 // src/display.c:1574 see_nearby_objects() — mark the top object of nearby
 // stacks as having been seen, and if that object was being displayed as
 // generic, redisplay it as specific.  Called from u_on_newpos() whenever the
@@ -1839,7 +1882,15 @@ export function feel_location(x, y) {
        has last seen here (svl.lastseentyp); callers compare it to learn
        whether feeling the spot taught the hero anything. */
     update_lastseentyp(x, y);
-    newsym(x, y);
+    const sensed = (game.u.ux !== x || game.u.uy !== y) && m_at(x, y)
+                   && sensemon(m_at(x, y));
+    if (sensed) {
+        newsym(x, y);
+    } else {
+        show_glyph_cell(x, y, memg.ch, memg.color, memg.dec ?? false,
+                        pile_attr(memg.glyph), memg.glyph
+                            ?? { kind: 'cmap', cmap: memg.cmap });
+    }
 
     /* src/display.c:894 — "Floor spaces are dark if unlit": with dark_room
        on (5.0 default) a felt room floor is remembered as S_darkroom even
@@ -1859,6 +1910,15 @@ export function feel_location(x, y) {
                                      glyph: { kind: 'cmap',
                                               cmap: CM.S_corr } };
     }
+}
+
+// src/display.c:726 feel_newsym(): use touch mapping while blind, otherwise
+// redraw the visible location normally.
+export function feel_newsym(x, y) {
+    if (Blind())
+        feel_location(x, y);
+    else
+        newsym(x, y);
 }
 
 // src/display.c:2147 row_refresh() — repaint map row y, columns start..stop,

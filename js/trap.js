@@ -10,13 +10,13 @@ import { m_at, t_at as t_at_mon } from './mon.js';
 import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
 import { near_capacity } from './attrib.js';
-import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING,
+import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
          STONING, WATER, FIRE_RES, NO_KILLER_PREFIX } from './const.js';
 import { goodpos, makemon, remove_monster } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
 import { Teleport_control, Unaware, Sleep_resistance, Fire_resistance,
-         Shock_resistance, Halluc_resistance,
+         Shock_resistance, Halluc_resistance, Swimming, Amphibious, Breathless,
          Stone_resistance } from './youprop.js';
 import { teleds, safe_teleds, TELEDS_ALLOW_DRAG,
          TELEDS_TELEPORT } from './teleport.js';
@@ -31,13 +31,14 @@ import { mksobj, place_object, splitobj } from './mkobj.js';
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
 import { observe_object } from './o_init.js';
-import { canspotmon, display_nhwindow_message, display_object_at, newsym, pline,
-         temporary_object_glyph, urgent_pline } from './display.js';
+import { canspotmon, display_nhwindow_message, display_object_at, feel_newsym,
+         newsym, pline, temporary_object_glyph, under_water,
+         urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
-import { monkilled } from './mon.js';
+import { delobj, monkilled } from './mon.js';
 import { find_mac, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
@@ -2557,6 +2558,75 @@ export async function water_damage_chain(objs, here) {
         await water_damage(obj, null, false);
 }
 
+// src/trap.c:4455 fire_damage() and :4550 fire_damage_chain().
+export async function fire_damage(obj, force, x, y) {
+    const inSight = !Blind() && couldsee(x, y);
+
+    /* The container-content branch is separate because burning a container
+       spills its contents back onto the same square. */
+    if (Is_container_tr(obj)) {
+        if (obj.otyp === ONAMES.ICE_BOX)
+            return false;
+        const chance = obj.otyp === ONAMES.CHEST ? 40
+                     : obj.otyp === ONAMES.LARGE_BOX ? 30 : 20;
+        if (!force && (game.u.uluck | 0) + 5 > rn2(chance))
+            return false;
+        if (inSight)
+            await pline(`${Yname2(obj)} catches fire and burns.`);
+        if (obj.cobj?.length) {
+            if (inSight)
+                await pline('Its contents fall out.');
+            for (const item of [...obj.cobj]) {
+                obj.cobj.splice(obj.cobj.indexOf(item), 1);
+                item.ocontainer = null;
+                place_object(item, x, y);
+            }
+        }
+        delobj(obj);
+        return true;
+    }
+
+    if (!force && (game.u.uluck | 0) + 5 > rn2(20))
+        return false;
+
+    if (obj.oclass === OCLASSES.SCROLL_CLASS
+        || obj.oclass === OCLASSES.SPBOOK_CLASS) {
+        if (obj.otyp === ONAMES.SCR_FIRE || obj.otyp === ONAMES.SPE_FIREBALL)
+            return false;
+        if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+            if (inSight)
+                await pline(`Smoke rises from the ${xname(obj)}.`);
+            return false;
+        }
+        if (inSight)
+            await pline(`${Yname2(obj)} catches fire and burns.`);
+        delobj(obj);
+        return true;
+    }
+
+    if (obj.oclass === OCLASSES.POTION_CLASS) {
+        if (inSight)
+            await pline(`${Yname2(obj)} ${obj.otyp === ONAMES.POT_OIL
+                ? 'ignites and explodes' : 'boils and explodes'}.`);
+        delobj(obj);
+        return true;
+    }
+
+    return await erode_obj(obj, null, ERODE_BURN, EF_DESTROY)
+        === ER_DESTROYED;
+}
+
+export async function fire_damage_chain(objs, force, here, x, y) {
+    game.bhitpos = { x, y };
+    let destroyed = 0;
+    for (const obj of [...(objs || [])])
+        if (await fire_damage(obj, force, x, y))
+            destroyed++;
+    if (destroyed && Blind() && !couldsee(x, y))
+        await You('smell smoke.');
+    return destroyed;
+}
+
 // src/apply.c:698 number_leashed()
 function number_leashed() {
     let i = 0;
@@ -2668,10 +2738,10 @@ export async function drown() {
     let inpool_ok = false;
     const is_solid = game.level?.at(u.ux, u.uy)?.typ === WATER;
 
-    newsym(u.ux, u.uy); /* feel_newsym: in case Blind, map the water here */
-    const swimming = !!u.uprops?.SWIMMING;
-    const amphibious = !!u.uprops?.AMPHIBIOUS;
-    const breathless = !!u.uprops?.BREATHLESS;
+    feel_newsym(u.ux, u.uy); /* in case Blind, map the water here */
+    const swimming = Swimming();
+    const amphibious = Amphibious();
+    const breathless = Breathless();
     /* happily wading in the same contiguous pool */
     if (u.uinwater && is_pool(u.ux - u.dx, u.uy - u.dy)
         && (swimming || amphibious || breathless)) {
@@ -2723,7 +2793,7 @@ export async function drown() {
             note_unported_trap('drown:placebc');
         vision_recalc(2); /* unsee old position */
         set_uinwater(1);
-        note_unported_trap('drown:under_water');
+        await under_water(1);
         game.vision_full_recalc = 1;
         return false;
     }
@@ -2797,12 +2867,12 @@ export async function lava_effects() {
     const u = game.u;
     const dmg = d(6, 6); /* only applicable for water walking */
 
-    newsym(u.ux, u.uy); /* feel_newsym */
+    feel_newsym(u.ux, u.uy);
     /* burn_away_slime() needs the sliming timer; no session carries it */
     if (likes_lava(game.mons[u.umonnum]))
         return false;
 
-    const fire_res = !!u.uprops?.FIRE_RES;
+    const fire_res = Fire_resistance();
     const wwalking = !!u.uprops?.WWALKING;
     let usurvive = fire_res || (wwalking && dmg < u.uhp);
     /* flag items to be destroyed before any messages */
@@ -2862,10 +2932,53 @@ export async function lava_effects() {
         }
 
         await You('find yourself back on solid ground.');
-    } else {
-        note_unported_trap('lava_effects:fire_resistant');
+    } else if (!wwalking
+               && (!u.utrap || u.utraptype !== TT_LAVA)) {
+        const boilAway = !fire_res;
+        u.utrap = rn1(4, 4) + ((boilAway ? 2 : rn1(4, 12)) << 8);
+        u.utraptype = TT_LAVA;
+        await You(`sink into the ${waterbody_name(u.ux, u.uy)}${
+            boilAway ? ' and are about to be immolated'
+                     : ', but it only burns slightly'}!`);
+        if (u.uhp > 1)
+            await losehp(boilAway ? Math.trunc(u.uhp / 2) : 1,
+                         'molten lava', KILLED_BY);
     }
-    return true;
+    await destroy_items(game.youmonst, ATTKS.AD_FIRE, dmg);
+    await ignite_items(game.invent);
+    return false;
+}
+
+// src/trap.c:6991 sink_into_lava(), called once per time-taking action while
+// the hero remains trapped in molten lava.
+export async function sink_into_lava() {
+    const u = game.u;
+    if (!u.utrap || u.utraptype !== TT_LAVA)
+        return;
+    if (!is_lava(u.ux, u.uy)) {
+        u.utrap = 0;
+        u.utraptype = 0;
+        return;
+    }
+    if (u.uinvulnerable)
+        return;
+
+    if (!Fire_resistance())
+        u.uhp = Math.trunc((u.uhp + 2) / 3);
+
+    u.utrap -= 1 << 8;
+    if (u.utrap < (1 << 8)) {
+        game.killer = { format: KILLED_BY, name: 'molten lava' };
+        await urgent_pline('You sink below the surface and die.');
+        await done(DISSOLVED);
+        u.utrap = 0;
+        u.utraptype = 0;
+        if (!Levitation() && !Flying())
+            await safe_teleds(TELEDS_ALLOW_DRAG | TELEDS_TELEPORT);
+    } else if (!u.umoved) {
+        await Norep('You sink deeper into the lava.');
+        u.utrap += rnd(4);
+    }
 }
 
 // src/trap.c:1602 trapeffect_rust_trap() — a gush of water; one rn2(5)

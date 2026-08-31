@@ -420,6 +420,9 @@ function Is_botlevel_tele(lev) {
 export function u_on_newpos(x, y) {
     game.u.ux = x;
     game.u.uy = y;
+    game.u.uundetected = 0;
+    if (game.youmonst)
+        game.youmonst.mundetected = 0;
     /* src/dungeon.c:1584 — ridden steed always shares hero's location;
        cliparound() is a no-op on an 80x21 map */
     if (game.u.usteed) {

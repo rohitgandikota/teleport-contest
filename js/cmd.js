@@ -19,10 +19,10 @@ import { is_pool, is_lava, m_at, t_at, newcham, resists_ston,
 import { do_attack } from './uhitm.js';
 import { back_to_glyph, glyph_is_invisible_at, is_safemon, mon_visible,
          sensemon, unmap_invisible } from './display.js';
-import { goodpos, place_monster, remove_monster } from './makemon.js';
+import { goodpos, hideunder, place_monster, remove_monster } from './makemon.js';
 import { sobj_at } from './invent.js';
-import { PMNAMES, MFLAGS } from './monst_data.js';
-import { is_hider, verysmall, sticks } from './mondata.js';
+import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
+import { hides_under, is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
          could_move_onto_boulder, u_locomotion,
@@ -2562,6 +2562,13 @@ async function domove_core() {
     if (!Levitation() && !Flying() && !Stealth()
         && game.youmonst.data.cwt >= WT_ELF / 2)
         disturb_buried_zombies(game.u.ux, game.u.uy);
+
+    /* src/hack.c:2948. Aquatic forms hide in water, concealing forms hide
+       beneath suitable objects, and an ordinary move clears prior hiding
+       when the destination no longer supports it. */
+    if (hides_under(game.youmonst.data)
+        || game.youmonst.data.mlet === MONSYMS.S_EEL || u.dx || u.dy)
+        hideunder(game.youmonst);
 
     // Update display
     newsym(oldx, oldy);

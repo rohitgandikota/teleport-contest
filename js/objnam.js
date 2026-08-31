@@ -2614,8 +2614,8 @@ async function wizterrainwish(d) {
         }
         const floorObjects = (game.level.objects || [])
             .filter(obj => obj.ox === x && obj.oy === y);
-        if (floorObjects.length)
-            note_unported_objnam('wizterrainwish:lava-fire-damage');
+        const { fire_damage_chain } = await import('./trap.js');
+        await fire_damage_chain(floorObjects, true, true, x, y);
     } else if (wanted.endsWith('ice')) {
         if (!isDrawbridge) {
             lev.typ = ICE;

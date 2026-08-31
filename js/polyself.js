@@ -13,8 +13,10 @@ import { is_neuter, humanoid, slithy, attacktype, name_to_monplus,
          regenerates, resists_drli, dmgtype, dmgtype_fromattack,
          perceives, telepathic, infravision, pm_invisible,
          can_teleport, control_teleport, is_floater, is_flyer,
-         passes_walls, haseyes } from './mondata.js';
+         passes_walls, haseyes, is_dwarf, is_elf, is_giant, is_gnome,
+         is_orc, is_undead } from './mondata.js';
 import { mons, PMNAMES, MONSYMS, ATTKS, MFLAGS, MSOUND } from './monst_data.js';
+import { races } from './role_data.js';
 import { is_vampshifter } from './monst.js';
 import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
          HEAD, LEG, TOE, HAIR, EYE, NOSE, A_STR, A_WIS, A_CON,
@@ -305,6 +307,29 @@ function set_form_intrinsics(mdat, mntmp) {
                 || dmgtype_fromattack(mdat, ATTKS.AD_BLND, ATTKS.AT_GAZE)));
 }
 
+// src/polyself.c:1077 uasmon_maxStr(): temporary maximum strength for the
+// current monster form, including race-shaped forms and living giants.
+function uasmon_maxStr(mdat, mntmp) {
+    let raceForm = mntmp;
+    if (is_orc(mdat)) {
+        if (mntmp !== PMNAMES.PM_URUK_HAI
+            && mntmp !== PMNAMES.PM_ORC_CAPTAIN)
+            raceForm = PMNAMES.PM_ORC;
+    } else if (is_elf(mdat)) {
+        raceForm = PMNAMES.PM_ELF;
+    } else if (is_dwarf(mdat)) {
+        raceForm = PMNAMES.PM_DWARF;
+    } else if (is_gnome(mdat)) {
+        raceForm = PMNAMES.PM_GNOME;
+    }
+    const race = races.find((candidate) => candidate.mnum === raceForm);
+    if (strongmonst(mdat)) {
+        const livingGiant = is_giant(mdat) && !is_undead(mdat);
+        return race?.attrmax?.[A_STR] ?? (livingGiant ? 119 : 118);
+    }
+    return race?.attrmax?.[A_STR] ?? 18;
+}
+
 // src/polyself.c:332 newman() and :200 polyman(), the controlled return to
 // the hero's race. This rebuilds level, attributes, HP and energy before
 // restoring the saved human state.
@@ -503,11 +528,12 @@ export async function polymon(mntmp) {
     game.youmonst.mnum = mntmp;
     set_form_intrinsics(mdat, mntmp);
 
+    const maxStrength = uasmon_maxStr(mdat, mntmp);
     if (strongmonst(mdat)) {
-        u.acurr.a[A_STR] = 118;
-        u.amax.a[A_STR] = 118;
+        u.acurr.a[A_STR] = maxStrength;
+        u.amax.a[A_STR] = maxStrength;
     } else {
-        u.amax.a[A_STR] = Math.min(u.amax.a[A_STR], 18);
+        u.amax.a[A_STR] = maxStrength;
         u.acurr.a[A_STR] = Math.min(u.acurr.a[A_STR], u.amax.a[A_STR]);
     }
 

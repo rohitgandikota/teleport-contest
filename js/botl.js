@@ -9,7 +9,7 @@ import { game } from './gstate.js';
 import { roles } from './role_data.js';
 import { near_capacity } from './attrib.js';
 import { NOT_HUNGRY, UNENCUMBERED, SICK_VOMITABLE, SICK_NONVOMITABLE,
-         Upolyd } from './const.js';
+         TT_LAVA, Upolyd } from './const.js';
 import { MFLAGS } from './monst_data.js';
 import { Blind } from './youprop.js';
 
@@ -126,5 +126,6 @@ export function bot_conditions() {
         cond += ' Fly';
     if (intr.HStun || props.STUNNED) cond += ' Stun';
     if (u.usteed) cond += ' Ride';
+    if (u.utrap && u.utraptype === TT_LAVA) cond += ' InLava';
     return cond;
 }

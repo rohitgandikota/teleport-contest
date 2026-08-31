@@ -1,0 +1,60 @@
+{
+  "name": "polymorph-aquatic-mobility",
+  "description": "Polymorphed heroes enter and leave liquid terrain using swimming, amphibious, breathless, and fire-resistant form properties.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "survival.instant-deaths",
+    "terrain.water-lava",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "debug.terrain-wish.grounded-lava",
+    "forms.polymorph.amphibious-water-entry",
+    "forms.polymorph.aquatic-hideunder",
+    "forms.polymorph.breathless-water-entry",
+    "forms.polymorph.fire-resistant-lava",
+    "forms.polymorph.living-giant-strength",
+    "forms.polymorph.monster-hp-damage",
+    "forms.polymorph.swimming-water-entry",
+    "forms.polymorph.teleportation-turn-roll",
+    "status.in-lava",
+    "terrain.lava.escape-edge",
+    "terrain.lava.floor-fire-damage",
+    "terrain.lava.sinking-countdown",
+    "terrain.lava.trapped-movement",
+    "terrain.water.floor-item-damage",
+    "terrain.water.leave-reenter",
+    "ui.blind-liquid-feel",
+    "ui.underwater-full-redraw"
+  ],
+  "segments": [
+    {
+      "seed": 6947,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b\u0017pool\rlmh"
+    },
+    {
+      "seed": 6947,
+      "datetime": "20000112110500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rgiant eel\r\u0017pool\rlmh"
+    },
+    {
+      "seed": 6948,
+      "datetime": "20000112111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rearth elemental\r\u0017pool\rlmh"
+    },
+    {
+      "seed": 6949,
+      "datetime": "20000112111500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rfire giant\r\u0017lava\r\u001blmhllll"
+    }
+  ]
+}

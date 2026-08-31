@@ -435,6 +435,13 @@ function one_characteristic(attrindx) {
     const alimit = game.urace.attrmax[attrindx];
     let valubuf = attrval(attrindx, acurrent);
 
+    /* src/insight.c:858: a polymorphed hero cannot reliably inspect the
+       underlying base, peak, or innate-limit values. */
+    if (Upolyd(game.u)) {
+        enl_msg(`Your ${attrname[attrindx]} `, 'is ', 'was ', valubuf, '');
+        return;
+    }
+
     const interesting_alimit = en_final
         ? true /* was originally (abase != alimit) */
         : (alimit !== (attrindx !== A_STR ? 18 : STR18(100)));

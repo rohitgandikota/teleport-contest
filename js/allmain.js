@@ -63,7 +63,7 @@ import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
          UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
-         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM } from './const.js';
+         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA } from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
 import { lookaround, end_running, unmul, nomul,
@@ -75,7 +75,7 @@ import {
     see_traps, swallowed,
     TOPLINE_EMPTY,
 } from './display.js';
-import { Glib, Hallucination } from './youprop.js';
+import { Glib, Hallucination, Teleportation, Underwater } from './youprop.js';
 import { vision_recalc, vision_reset, init_vision_globals } from './vision.js';
 import { init_objects } from './o_init.js';
 import { init_dungeons } from './dungeon.js';
@@ -771,6 +771,25 @@ export async function moveloop_core() {
                 /* src/allmain.c:305 — regen_pw runs unconditionally */
                 await regen_pw(near_capacity());
 
+                /* src/allmain.c:307: innate or equipped teleportation can
+                   fire once per turn.  Form-derived teleportation lives in
+                   HTeleportation's FROMFORM bit, so reading the shared macro
+                   is required for nymph and tengu forms too. */
+                if (!g.u.uinvulnerable && Teleportation() && !rn2(85)) {
+                    const oldUx = g.u.ux, oldUy = g.u.uy;
+                    const { tele } = await import('./teleport.js');
+                    await tele();
+                    if (g.u.ux !== oldUx || g.u.uy !== oldUy) {
+                        const { next_to_u } = await import('./apply.js');
+                        if (!await next_to_u())
+                            (g.unported ||= new Set()).add('check_leash');
+                        const { cmdq_clear } = await import('./cmd.js');
+                        const { CQ_CANNED, CQ_REPEAT } = await import('./const.js');
+                        cmdq_clear(CQ_CANNED);
+                        cmdq_clear(CQ_REPEAT);
+                    }
+                }
+
                 /* src/allmain.c:342 — intrinsic Searching autosearches
                    every turn (Archeologists have it from level 1) */
                 if ((g.u.intrinsic?.HSearching || g.u.uprops?.SEARCHING)
@@ -852,6 +871,22 @@ export async function moveloop_core() {
             /* we maintain this counter even when clairvoyance isn't
                taking place; on average, go again 30 turns from now */
             g.context.seer_turn = g.moves + rn1(31, 15); /*15..45*/
+        }
+
+        /* src/allmain.c:422-432: liquid terrain keeps acting after the
+           command.  Lava advances its two-part escape and sinking counter;
+           a stationary hero re-runs pool effects; underwater vision then
+           redraws only the immediate liquid neighborhood. */
+        if (g.u.utrap && g.u.utraptype === TT_LAVA) {
+            const { sink_into_lava } = await import('./trap.js');
+            await sink_into_lava();
+        } else if (!g.u.umoved) {
+            const { pooleffects } = await import('./hack.js');
+            await pooleffects(false);
+        }
+        if (Underwater()) {
+            const { under_water } = await import('./display.js');
+            await under_water(0);
         }
 
         /* the move flag is CONSUMED by the turn block above. C's blocking

@@ -21,7 +21,8 @@ import { a_monnam, upstart } from './do_name.js';
 import { is_door_mappear, helpless, DEADMONSTER } from './monst.js';
 import { dist2, distmin } from './hacklib.js';
 import { Levitation, Flying, Fire_resistance, Underwater,
-         Hallucination, Deaf, Passes_walls, Stealth } from './youprop.js';
+         Hallucination, Deaf, Passes_walls, Stealth, Swimming,
+         Amphibious, Breathless } from './youprop.js';
 import { is_pool_or_lava } from './dbridge.js';
 import { is_pool, is_lava, t_at, m_at, is_pick, seemimic,
          wake_msg } from './mon.js';
@@ -64,7 +65,7 @@ import {
     IRONBARS, IS_DOOR, D_NODOOR, D_BROKEN, WT_SQUEEZABLE_INV,
     WT_TOOMUCH_DIAGONAL, DO_MOVE, TEST_MOVE, TEST_TRAV, TEST_TRAP,
     DIR_W, DIR_N, DIR_E, DIR_S, DIR_NW, DIR_NE, DIR_SE, DIR_SW,
-    xdir, ydir, N_DIRS } from './const.js';
+    xdir, ydir, N_DIRS, Upolyd } from './const.js';
 import { sobj_at } from './invent.js';
 import { couldsee } from './vision.js';
 import { D_CLOSED, D_LOCKED } from './const.js';
@@ -497,7 +498,21 @@ async function maybe_wail() {
 // end_running are display and movement bookkeeping.
 export async function losehp(n, knam, k_format) {
     (game.disp ||= {}).botl = true;
-    /* Upolyd's rehumanize path needs polymorph state */
+    if (Upolyd(game.u)) {
+        game.u.mh -= n;
+        if (game.u.mh > game.u.mhmax)
+            game.u.mhmax = game.u.mh;
+        if (game.u.mh < 1) {
+            const { rehumanize } = await import('./polyself.js');
+            await rehumanize();
+        } else if (n > 0 && game.u.mh * 10 < game.u.mhmax
+                   && (game.u.intrinsic?.HUnchanging
+                       || game.u.uprops?.UNCHANGING)) {
+            await maybe_wail();
+        }
+        return;
+    }
+
     const shownHp = game.u.uhp;
     game.u.uhp -= n;
     if (game.u.uhp > game.u.uhpmax)
@@ -925,7 +940,7 @@ const note_unported_hack = (w) => {
 // src/hack.c:1832 u_simple_floortyp() — floor solid/liquid state for the
 // hero: walls of water/lava always count; pools only when grounded.
 function u_simple_floortyp(x, y) {
-    const u_in_air = !!(game.u.uprops?.LEVITATION || game.u.uprops?.FLYING);
+    const u_in_air = Levitation() || Flying();
     const typ = game.level?.at(x, y)?.typ;
     if (typ === WATER)
         return WATER;
@@ -966,8 +981,8 @@ export async function swim_move_danger(x, y) {
                 return false;
             } else if (paranoid_swim() || liquid_wall) {
                 await You(`avoid ${
-                    game.u.uprops?.LEVITATION ? 'floating'
-                    : game.u.uprops?.FLYING ? 'flying' : 'stepping'} into the ${
+                    Levitation() ? 'floating'
+                    : Flying() ? 'flying' : 'stepping'} into the ${
                     waterbody_name(x, y)}.`);
                 await handle_tip(TIP_SWIM);
                 return true;
@@ -1028,9 +1043,9 @@ export async function pooleffects(newspot) {
             }
         } else if (Is_waterlevel(u.uz)) {
             still_inwater = true;
-        } else if (u.uprops?.LEVITATION) {
+        } else if (Levitation()) {
             await You(`pop out of the ${hliquid('water')} like a cork!`);
-        } else if (u.uprops?.FLYING) {
+        } else if (Flying()) {
             await You(`fly out of the ${hliquid('water')}.`);
         } else if (u.uprops?.WWALKING) {
             await You('slowly rise above the surface.');
@@ -1048,7 +1063,7 @@ export async function pooleffects(newspot) {
     }
 
     /* check for entering water or lava */
-    if (!u.ustuck && !u.uprops?.LEVITATION && !u.uprops?.FLYING
+    if (!u.ustuck && !Levitation() && !Flying()
         && is_pool_or_lava(u.ux, u.uy)) {
         if (u.usteed) {
             note_unported_hack('pooleffects:steed');
@@ -1062,8 +1077,7 @@ export async function pooleffects(newspot) {
         } else if ((!u.uprops?.WWALKING
                     || game.level?.at(u.ux, u.uy)?.typ === WATER)
                    && (newspot || !u.uinwater
-                       || !(u.uprops?.SWIMMING || u.uprops?.AMPHIBIOUS
-                            || u.uprops?.BREATHLESS))) {
+                       || !(Swimming() || Amphibious() || Breathless()))) {
             const { drown } = await import('./trap.js');
             if (await drown())
                 return true;
@@ -1751,6 +1765,18 @@ export async function trapmove(x, y, desttrap) {
         }
         break;
     case TT_LAVA:
+        if (game.flags?.verbose !== false)
+            await Norep('You are stuck in the lava.');
+        if (!is_lava(x, y)) {
+            game.u.utrap--;
+            if ((game.u.utrap & 0xff) === 0) {
+                game.u.utrap = 0;
+                await You(`pull yourself to the edge of the ${
+                    hliquid('lava')}.`);
+            }
+        }
+        game.u.umoved = true;
+        break;
     case TT_INFLOOR:
     case TT_BURIEDBALL:
         (game.unported ||= new Set()).add('trapmove:' + game.u.utraptype);

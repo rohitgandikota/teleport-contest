@@ -19,7 +19,7 @@ import { MFLAGS, PMNAMES } from './monst_data.js';
 import { night } from './calendar.js';
 import { Deaf, Hallucination, Protection_from_shape_changers }
     from './youprop.js';
-import { FROMFORM, FULL_MOON, NO_MM_FLAGS } from './const.js';
+import { FROMFORM, FULL_MOON, NON_PM, NO_MM_FLAGS } from './const.js';
 
 /* include/mondata.h:96 is_were() */
 export const is_were = (ptr) => (ptr.mflags2 & MFLAGS.M2_WERE) !== 0;
@@ -122,8 +122,15 @@ export async function you_were() {
                        && !(u.intrinsic?.HStun || u.uprops?.STUNNED)
                        && !(await import('./youprop.js')).Unaware();
     if (controlled) {
-        (game.unported ||= new Set()).add('you_were:controlled_prompt');
-        return;
+        const beast = pmname(game.mons[u.ulycn], 2).slice(4);
+        const [{ paranoid_ynq }, options] = await Promise.all([
+            import('./cmd.js'), import('./options.js'),
+        ]);
+        if (await paranoid_ynq(
+            !!(options.paranoia_bits() & options.PARANOID_WERECHANGE),
+            `Do you want to change into a ${beast}?`, false) !== 'y') {
+            return;
+        }
     }
 
     const { monster_nearby } = await import('./hack.js');
@@ -132,6 +139,45 @@ export async function you_were() {
     game.were_changes = (game.were_changes || 0) + 1;
     const { polymon } = await import('./polyself.js');
     await polymon(u.ulycn, { allowSexChange: false });
+}
+
+// src/were.c:215 you_unwere(). Holy water can cure the infection and, when
+// the current body is a werebeast, either return the hero to normal or leave
+// a blocked form with a fresh timer.
+export async function you_unwere(purify) {
+    const u = game.u;
+    const unchanging = !!(u.intrinsic?.HUnchanging || u.uprops?.UNCHANGING);
+    const controlled = !!(u.intrinsic?.HPolymorph_control
+                           || u.uprops?.POLYMORPH_CONTROL)
+                       && !(u.intrinsic?.HStun || u.uprops?.STUNNED)
+                       && !(await import('./youprop.js')).Unaware();
+
+    if (purify) {
+        const { You_feel } = await import('./pline.js');
+        await You_feel('purified.');
+        set_ulycn(NON_PM);
+    }
+
+    const inWereForm = is_were(game.youmonst.data);
+    const { monster_nearby } = await import('./hack.js');
+    const nearby = inWereForm && monster_nearby();
+    let remain = false;
+    if (inWereForm && !unchanging && !nearby && controlled) {
+        const [{ paranoid_ynq }, options] = await Promise.all([
+            import('./cmd.js'), import('./options.js'),
+        ]);
+        remain = await paranoid_ynq(
+            !!(options.paranoia_bits() & options.PARANOID_WERECHANGE),
+            'Remain in beast form?', false) === 'y';
+    }
+
+    if (inWereForm && !unchanging && !nearby
+        && (!controlled || !remain)) {
+        const { rehumanize } = await import('./polyself.js');
+        await rehumanize();
+    } else if (inWereForm && !u.mtimedone) {
+        u.mtimedone = rn1(200, 200);
+    }
 }
 
 // src/were.c:96 new_were() — transform between human and beast form.

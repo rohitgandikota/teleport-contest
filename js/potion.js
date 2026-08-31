@@ -3,8 +3,8 @@
 //
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
-import { fruitname, xname } from './objnam.js';
-import { trycall } from './do_name.js';
+import { fruitname, makeplural, xname } from './objnam.js';
+import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
 import { pline, see_monsters } from './display.js';
@@ -12,7 +12,8 @@ import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_OTHER_THROW,
-         HEAD, SICK_ALL, TIMEOUT } from './const.js';
+         HEAD, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
+         Upolyd, ismnum } from './const.js';
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
@@ -37,7 +38,8 @@ import { GETOBJ_EXCLUDE_INACCESS } from './invent.js';
 import { doname, otense, short_oname, simpleonames, thesimpleoname,
          Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
-import { breathless, haseyes, stagger } from './mondata.js';
+import { breathless, haseyes, mon_hates_blessings, stagger }
+    from './mondata.js';
 import { cansee, vision_recalc } from './vision.js';
 import { hcolor } from './do_name.js';
 import { mkobj, splitobj } from './mkobj.js';
@@ -748,6 +750,71 @@ async function peffect_monster_detection(otmp) {
     return 0;
 }
 
+// src/potion.c:717 peffect_water(). Blessed and cursed water operate on the
+// hero's alignment, creature form, and lycanthropy; ordinary water only
+// relieves a small amount of hunger.
+async function peffect_water(otmp) {
+    const u = game.u;
+    if (!otmp.blessed && !otmp.cursed) {
+        await pline(`This tastes like ${hliquid('water')}.`);
+        u.uhunger += rnd(10);
+        await newuhs(false);
+        return;
+    }
+
+    game.potion_unkn++;
+    const hatesBlessings = mon_hates_blessings(game.youmonst)
+        || u.ualign?.type === A_CHAOTIC;
+    const halfPhysical = (amount) => (u.uprops?.HALF_PHYS
+                                      || u.intrinsic?.HHalf_physical_damage)
+        ? Math.trunc((amount + 1) / 2) : amount;
+    const { set_ulycn, you_unwere, you_were } = await import('./were.js');
+
+    if (hatesBlessings) {
+        if (otmp.blessed) {
+            await pline(`This burns like ${hliquid('acid')}!`);
+            exercise(A_CON, false);
+            if (ismnum(u.ulycn)) {
+                const name = game.mons[u.ulycn].pmnames[2]
+                    || game.mons[u.ulycn].pmnames[0];
+                await Your(`affinity to ${makeplural(name)} disappears!`);
+                if (u.umonnum === u.ulycn)
+                    await you_unwere(false);
+                set_ulycn(NON_PM);
+            }
+            await losehp(halfPhysical(d(2, 6)), 'potion of holy water',
+                         KILLED_BY_AN);
+        } else {
+            await You_feel('quite proud of yourself.');
+            await healup(d(2, 6), 0, false, false);
+            if (ismnum(u.ulycn) && !Upolyd(u))
+                await you_were();
+            exercise(A_CON, true);
+        }
+        return;
+    }
+
+    if (otmp.blessed) {
+        await You_feel('full of awe.');
+        await make_sick(0, null, true, SICK_ALL);
+        exercise(A_WIS, true);
+        exercise(A_CON, true);
+        if (ismnum(u.ulycn))
+            await you_unwere(true);
+    } else {
+        if (u.ualign?.type === A_LAWFUL) {
+            await pline(`This burns like ${hliquid('acid')}!`);
+            await losehp(halfPhysical(d(2, 6)), 'potion of unholy water',
+                         KILLED_BY_AN);
+        } else {
+            await You_feel('full of dread.');
+        }
+        if (ismnum(u.ulycn) && !Upolyd(u))
+            await you_were();
+        exercise(A_CON, false);
+    }
+}
+
 // src/potion.c:1333 peffects() — dispatch one quaffed potion.
 // Returns -1 to let dopotion() finish (identify + useup), matching C.
 async function peffects(otmp) {
@@ -786,6 +853,9 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_OIL:
         await peffect_oil(otmp);
+        break;
+    case ONAMES.POT_WATER:
+        await peffect_water(otmp);
         break;
     default:
         /* every other arm draws through its own subsystem */

@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-08-30T21:56:37.955Z",
+  "timestamp": "2026-08-31T06:22:08.448Z",
   "contestPhase": "open",
   "teamCount": 19,
   "team": {
     "name": "rohitgandikota",
     "fork": "rohitgandikota/teleport-contest",
     "category": "agentic",
-    "lastScored": "2026-08-30T21:20:33.472Z",
+    "lastScored": "2026-08-31T05:47:19.372Z",
     "speed": {
-      "startup_ms": 452,
-      "per_move_ms": 1.5937,
-      "r2": 0.661,
-      "label": "452+1.59/turn",
+      "startup_ms": 423.4,
+      "per_move_ms": 1.4835,
+      "r2": 0.671,
+      "label": "423+1.48/turn",
       "sessions": 88
     },
     "playability": {
@@ -21,7 +21,7 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 2.094,
+      "ms_per_move": 1.941,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
@@ -32,9 +32,9 @@
       "timing_error": "Error: nh_terminate | at really_done (file:///home/runner/work/teleport-judge/teleport-judge/play/rohitgandikota/js/end.js:619:17)",
       "aborted_early": false,
       "total_moves": 18402,
-      "total_cumulative_ms": 38526,
+      "total_cumulative_ms": 35713,
       "total_startup_moves": 417,
-      "total_startup_ms": 4710
+      "total_startup_ms": 4276
     },
     "public": {
       "points": 11405,
@@ -991,6 +991,12 @@
       },
       {
         "ts": "2026-08-30T21:20:33.472Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-08-31T05:47:19.372Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -2241,12 +2247,12 @@
     "name": "NoahBPeterson",
     "fork": "NoahBPeterson/teleport-contest",
     "category": "transpiled",
-    "lastScored": "2026-08-30T21:17:58.222Z",
+    "lastScored": "2026-08-31T05:44:55.371Z",
     "speed": {
-      "startup_ms": 2064.3,
-      "per_move_ms": 3.5135,
-      "r2": 0.56,
-      "label": "2064+3.51/turn",
+      "startup_ms": 1976.4,
+      "per_move_ms": 3.3123,
+      "r2": 0.563,
+      "label": "1976+3.31/turn",
       "sessions": 88
     },
     "playability": {
@@ -2256,7 +2262,7 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 7.96,
+      "ms_per_move": 7.457,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
@@ -2267,9 +2273,9 @@
       "timing_error": null,
       "aborted_early": false,
       "total_moves": 19926,
-      "total_cumulative_ms": 158611,
+      "total_cumulative_ms": 148594,
       "total_startup_moves": 0,
-      "total_startup_ms": 158408
+      "total_startup_ms": 147840
     },
     "public": {
       "points": 11405,
@@ -2926,6 +2932,12 @@
       },
       {
         "ts": "2026-08-30T21:17:58.222Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-08-31T05:44:55.371Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -4167,5 +4179,5 @@
     ],
     "bitcomplexity": null
   },
-  "retrievedAt": "2026-08-31T05:53:29.583Z"
+  "retrievedAt": "2026-08-31T06:28:18.191Z"
 }

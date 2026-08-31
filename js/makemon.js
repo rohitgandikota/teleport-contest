@@ -509,7 +509,7 @@ export function adj_lev(ptr) {
 }
 
 // src/makemon.c:2233 golemhp()
-function golemhp(type) {
+export function golemhp(type) {
     const P = PMNAMES;
     switch (type) {
     case P.PM_STRAW_GOLEM:   return 20;

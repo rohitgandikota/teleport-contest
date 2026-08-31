@@ -14,8 +14,8 @@ import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
          GETOBJ_EXCLUDE_SELECTABLE, GETOBJ_PROMPT, GETOBJ_SUGGEST }
     from './invent.js';
 import { observe_object } from './o_init.js';
-import { doname, xname, cxname, the, yname, singular, an,
-         otense, vtense } from './objnam.js';
+import { doname, xname, cxname, the, yname, singular, an, corpse_xname,
+         CXN_ARTICLE, CXN_SINGULAR, otense, vtense } from './objnam.js';
 import { Is_container, Has_contents, carried } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
@@ -27,16 +27,17 @@ import { upstart, trycall } from './do_name.js';
 /* src/hacklib.c The() — the() with the first letter capitalised. */
 const The = (s2) => upstart(the(s2));
 import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
-import { newsym, pline, bot, tty_clear_nhwindow_message, urgent_pline }
+import { newsym, pline, bot, display_nhwindow_message,
+         tty_clear_nhwindow_message, urgent_pline }
     from './display.js';
 import { UNENCUMBERED, SLT_ENCUMBER, MOD_ENCUMBER, HVY_ENCUMBER,
          EXT_ENCUMBER, SHOPBASE, invlet_basic, HAND, KILLED_BY_AN,
          DOOR, D_CLOSED, D_LOCKED, IS_SINK, ZAP_POS, isok, xdir, ydir,
-         LOST_DROPPED }
+         LOST_DROPPED, A_WIS, st_all }
     from './const.js';
 import { addtobill, costly_spot, doname_with_price, sellobj,
          sellobj_state } from './shk.js';
-import { calc_capacity, max_capacity, near_capacity } from './attrib.js';
+import { calc_capacity, exercise, max_capacity, near_capacity } from './attrib.js';
 import { In_sokoban, surface } from './dungeon.js';
 import { Is_mbag, splitobj, unbless, place_object, add_to_container,
          start_corpse_timeout, start_glob_timeout }
@@ -56,7 +57,9 @@ import { is_pit } from './const.js';
 import { Blind, Levitation, Stone_resistance } from './youprop.js';
 import { st_gloves, st_corpse, st_petrifies, st_resists, W_ARMG } from './const.js';
 import { worn } from './do_wear.js';
-import { nohands, notake, throws_rocks, touch_petrifies } from './mondata.js';
+import { nohands, notake, poly_when_stoned, throws_rocks,
+         touch_petrifies } from './mondata.js';
+import { is_rider } from './makemon.js';
 import { body_part } from './polyself.js';
 import { tty_yn_function } from './tty/topl.js';
 import { inv_cnt } from './hack.js';
@@ -89,6 +92,43 @@ export function u_safe_from_fatal_corpse(obj, tests) {
         || ((tests & st_resists) && Stone_resistance()))
         return true;
     return false;
+}
+
+// src/pickup.c:285 fatal_corpse_mistake().
+async function fatal_corpse_mistake(obj, remotely) {
+    if (u_safe_from_fatal_corpse(obj, st_all) || remotely)
+        return false;
+
+    if (poly_when_stoned(game.youmonst.data)) {
+        const { polymon } = await import('./polyself.js');
+        if (await polymon(PMNAMES.PM_STONE_GOLEM, {
+            allowSexChange: false,
+            keepAttributesForMessage: true,
+        })) {
+            await display_nhwindow_message();
+            return false;
+        }
+    }
+
+    await pline(`Touching ${corpse_xname(
+        obj, null, CXN_SINGULAR | CXN_ARTICLE)} is a fatal mistake.`);
+    const { instapetrify } = await import('./trap.js');
+    await instapetrify(corpse_xname(obj, null, CXN_SINGULAR));
+    return true;
+}
+
+// src/pickup.c:303 rider_corpse_revival().
+export async function rider_corpse_revival(obj, remotely) {
+    if (!obj || obj.otyp !== ONAMES.CORPSE
+        || !is_rider(game.mons[obj.corpsenm]))
+        return false;
+
+    await pline(`At your ${remotely ? 'attempted acquisition' : 'touch'}, `
+                + 'the corpse suddenly moves...');
+    const { revive_corpse } = await import('./do.js');
+    await revive_corpse(obj, false);
+    exercise(A_WIS, false);
+    return true;
 }
 
 // src/pickup.c:430 check_here() — look at the objects at our location.
@@ -499,7 +539,8 @@ async function lift_floor_object(obj, count, telekinesis) {
 }
 
 // src/pickup.c:1803 pickup_object() -- take one object off the floor.
-// Artifact touch and fatal corpse checks remain recorded.
+// Artifact touch, fatal corpse contact, and Rider revival are checked before
+// the ordinary lift path.
 export async function pickup_object(obj, count, telekinesis) {
     if (obj.quan < count)
         return 0;                       /* impossible() in C */
@@ -534,8 +575,10 @@ export async function pickup_object(obj, count, telekinesis) {
             return 1;
         }
     }
-    if (obj.otyp === ONAMES.CORPSE)
-        note_unported_pickup('pickup_object:corpse_checks');
+    if (obj.otyp === ONAMES.CORPSE
+        && (await fatal_corpse_mistake(obj, telekinesis)
+            || await rider_corpse_revival(obj, telekinesis)))
+        return -1;
 
     const lifted = await lift_floor_object(obj, count, telekinesis);
     if (lifted.result <= 0)

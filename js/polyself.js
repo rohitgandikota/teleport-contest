@@ -473,9 +473,11 @@ export async function rehumanize() {
 // src/polyself.c:735 polymon(): install a monster form. The shared state,
 // hit-dice, armor-fit and wielded-object paths are live for every form; rare
 // form-specific effects remain recorded at their trigger.
-export async function polymon(mntmp) {
+export async function polymon(mntmp, options = {}) {
     const u = game.u;
     const mdat = game.mons?.[mntmp] || mons[mntmp];
+    const allowSexChange = options.allowSexChange !== false;
+    const keepAttributesForMessage = !!options.keepAttributesForMessage;
     if (!mdat)
         return 0;
     const { Blind } = await import('./youprop.js');
@@ -495,7 +497,7 @@ export async function polymon(mntmp) {
         u.macurr = clone_attr(u.acurr);
         u.mamax = clone_attr(u.amax);
         u.mfemale = !!game.flags.female;
-    } else {
+    } else if (!keepAttributesForMessage) {
         u.acurr = clone_attr(u.macurr);
         u.amax = clone_attr(u.mamax);
         game.flags.female = !!u.mfemale;
@@ -507,7 +509,8 @@ export async function polymon(mntmp) {
         game.flags.female = false;
     else if (fixed_female && !game.flags.female)
         game.flags.female = true;
-    else if (!fixed_male && !fixed_female && !is_neuter(mdat) && !rn2(10))
+    else if (allowSexChange && !fixed_male && !fixed_female
+             && !is_neuter(mdat) && !rn2(10))
         game.flags.female = !game.flags.female;
 
     const monname = mdat.pmnames[game.flags.female ? 1 : 0]
@@ -515,6 +518,12 @@ export async function polymon(mntmp) {
     const { You } = await import('./pline.js');
     await You(`${u.umonnum !== mntmp ? 'turn into' : 'feel like'} `
               + `${indefinite(u.umonnum !== mntmp ? monname : `new ${monname}`)}!`);
+
+    if (Upolyd(u) && keepAttributesForMessage) {
+        u.acurr = clone_attr(u.macurr);
+        u.amax = clone_attr(u.mamax);
+        game.flags.female = !!u.mfemale;
+    }
 
     u.mtimedone = rn1(500, 500);
     /* src/mondata.c:11 set_mon_data() prorates banked movement when the
@@ -541,6 +550,9 @@ export async function polymon(mntmp) {
     if (mdat.mlet === MONSYMS.S_DRAGON
         && mntmp >= PMNAMES.PM_GRAY_DRAGON) {
         u.mhmax = 4 * mlvl + d(mlvl, 4);
+    } else if (mdat.mlet === MONSYMS.S_GOLEM) {
+        const { golemhp } = await import('./makemon.js');
+        u.mhmax = golemhp(mntmp);
     } else {
         u.mhmax = mlvl ? d(mlvl, 8) : rnd(4);
     }

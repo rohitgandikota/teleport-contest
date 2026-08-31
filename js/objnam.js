@@ -43,7 +43,7 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, DB_UNDER, DB_ICE } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
-import { ordin, distu } from './hacklib.js';
+import { ordin, distu, s_suffix } from './hacklib.js';
 import { cansee as cansee_o } from './vision.js';
 import { ART_ORB_OF_DETECTION, ART_EYES_OF_THE_OVERWORLD } from './artilist_data.js';
 const mons_PM_SAMURAI = PMNAMES.PM_SAMURAI;
@@ -504,9 +504,6 @@ function the_unique_pm(ptr) {
 // src/objnam.c:1824 corpse_xname() — "<species> corpse", with the article and
 // "the" handling C spells out for unique and personal-name monsters.
 //
-// The possessive form (Medusa's corpse), the adjective positioning and the
-// ghost/statue callers are recorded; what is ported is the ordinary
-// "a goblin corpse" that every kill produces.
 export function corpse_xname(otmp, adjective, cxn_flags) {
     const omndx = otmp.corpsenm;
     const the_prefix0 = (cxn_flags & CXN_PFX_THE) !== 0;
@@ -524,12 +521,16 @@ export function corpse_xname(otmp, adjective, cxn_flags) {
     const mgend = (cgend === CORPSTAT_MALE) ? MALE
                 : (cgend === CORPSTAT_FEMALE) ? FEMALE
                 : NEUTER;
-    const mnam = mdat ? pmname(mdat, mgend) : 'thing';
+    let mnam = mdat ? pmname(mdat, mgend) : 'thing';
+    let possessive = false;
 
-    if (mdat && type_is_pname(mdat)) {
-        no_prefix = true;
-    } else if (mdat && the_unique_pm(mdat) && !no_prefix) {
-        the_prefix = true;
+    if (mdat && (the_unique_pm(mdat) || type_is_pname(mdat))) {
+        mnam = s_suffix(mnam);
+        possessive = true;
+        if (type_is_pname(mdat))
+            no_prefix = true;
+        else if (!no_prefix)
+            the_prefix = true;
     }
     if (no_prefix)
         the_prefix = any_prefix = false;
@@ -541,7 +542,8 @@ export function corpse_xname(otmp, adjective, cxn_flags) {
     if (!adjective || !adjective.trim()) {
         nambuf += mnam;                 /* normal case: newt corpse */
     } else {
-        nambuf += `${adjective.trim()} ${mnam}`;
+        nambuf += possessive ? `${mnam} ${adjective.trim()}`
+                             : `${adjective.trim()} ${mnam}`;
         /* doname() may pass a count as the adjective; then no article */
         if (/^\d/.test(adjective.trim()))
             any_prefix = false;
@@ -935,6 +937,8 @@ function Strcasecpy(buf, at, repl) {
 }
 
 export function singular(otmp, func) {
+    if (otmp.otyp === ONAMES.CORPSE && func === xname)
+        func = cxname;
     const savequan = otmp.quan;
     otmp.quan = 1;
     const nam = func(otmp);

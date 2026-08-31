@@ -87,7 +87,11 @@ export async function revive_corpse(corpse, byHero = false) {
     const reviveMnum = Number.isInteger(saved?.mnum) && saved.mnum >= 0
         ? saved.mnum : corpse.corpsenm;
     const corpsePtr = game.mons[corpse.corpsenm];
-    const ptr = game.mons[reviveMnum];
+    const shapechangerReplacement = !saved
+        && (corpsePtr?.geno & MFLAGS.G_UNIQ) !== 0;
+    const creationMnum = shapechangerReplacement
+        ? PMNAMES.PM_DOPPELGANGER : reviveMnum;
+    const ptr = game.mons[creationMnum];
     const { makemon, monhp_per_lvl } = await import('./makemon.js');
     const rider = ptr.pmidx === PMNAMES.PM_DEATH
                || ptr.pmidx === PMNAMES.PM_PESTILENCE
@@ -112,6 +116,11 @@ export async function revive_corpse(corpse, byHero = false) {
     const mtmp = makemon(ptr, x, y, mmflags);
     if (!mtmp)
         return false;
+
+    if (shapechangerReplacement) {
+        const { newcham } = await import('./mon.js');
+        newcham(mtmp, corpsePtr, 0);
+    }
 
     /* makemon.c calls dochugw() even for MM_NOMSG arrivals. A visible,
        nearby Rider interrupts a counted wait before revive_corpse prints
@@ -240,12 +249,13 @@ export async function revive_corpse(corpse, byHero = false) {
     if (byHero)
         return mtmp;
 
+    const risenPtr = mtmp.data;
     let effect = '';
-    if (ptr.pmidx === PMNAMES.PM_DEATH)
+    if (risenPtr.pmidx === PMNAMES.PM_DEATH)
         effect = ' in a whirl of spectral skulls';
-    else if (ptr.pmidx === PMNAMES.PM_PESTILENCE)
+    else if (risenPtr.pmidx === PMNAMES.PM_PESTILENCE)
         effect = ' in a churning pillar of flies';
-    else if (ptr.pmidx === PMNAMES.PM_FAMINE)
+    else if (risenPtr.pmidx === PMNAMES.PM_FAMINE)
         effect = ' in a ring of withered crops';
     if (cansee(x, y))
         await pline(`${Monnam(mtmp)} rises from the dead${effect}!`);

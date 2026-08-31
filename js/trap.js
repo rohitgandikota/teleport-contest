@@ -1959,7 +1959,7 @@ async function trapeffect_telep_trap(mtmp, trap, trflags) {
         newsym(game.u.ux, game.u.uy);
         await vault_tele();
     } else if (isok(trap.teledest?.x ?? 0, trap.teledest?.y ?? 0)) {
-        note_unported_trap('trapeffect_telep_trap:fixed_destination');
+        await teleds(trap.teledest.x, trap.teledest.y, TELEDS_TELEPORT);
     } else {
         await tele();
     }
@@ -2001,6 +2001,11 @@ async function trapeffect_level_telep(mtmp, trap, trflags) {
         await make_confused(timeout + 3, false);
     }
     return Trap_Effect_Finished;
+}
+
+// src/teleport.c:1537 level_tele_trap(), deliberate hero activation.
+export async function level_tele_trap(trap, trflags) {
+    return await trapeffect_level_telep(game.youmonst, trap, trflags);
 }
 
 // src/trap.c:2710 trapeffect_magic_portal(), monster path. Portals send a

@@ -502,5 +502,5 @@ export function make_a_trap(data) {
                    && data.teledest.y !== data.coord.y));
     }
     lspo_trap(get_traptype_byname(data.type), data.coord.x, data.coord.y,
-              { seen: data.seen });
+              { seen: data.seen, teledest: data.teledest });
 }

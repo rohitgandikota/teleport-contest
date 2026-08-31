@@ -1,0 +1,32 @@
+{
+  "name": "fixed-teleport-traps",
+  "description": "A deterministic Teleportation hub room exposes visible fixed-destination teleport traps for construction and activation parity.",
+  "coverage": [
+    "level.ordinary",
+    "level.themed",
+    "mode.debug",
+    "traps.movement",
+    "turn.speed-energy",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "trap.teleport.fixed-construction",
+    "trap.teleport.fixed-hero-activation",
+    "trap.teleport.antimagic-block",
+    "teleport.command.fixed-trap-activation"
+  ],
+  "segments": [
+    {
+      "seed": 149,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " T\u0006\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkk.ky"
+    },
+    {
+      "seed": 149,
+      "datetime": "20000110090100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0014hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhkkk.kyT\u0014 "
+    }
+  ]
+}

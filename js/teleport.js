@@ -17,7 +17,8 @@ import { rn2 } from './rng.js';
 import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          NO_MM_FLAGS, RLOC_MSG, RLOC_NOMSG, RLOC_ERR,
          BOLT_LIM, VAULT, STRAT_APPEARMSG, OBJ_FREE, OBJ_INVENT,
-         SHOPBASE, TEMPLE, A_STR, A_WIS } from './const.js';
+         SHOPBASE, TEMPLE, A_STR, A_WIS, TELEP_TRAP, LEVEL_TELEP,
+         FORCETRAP } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
          sensemon, see_monsters } from './display.js';
@@ -33,11 +34,12 @@ import { rnd } from './rng.js';
 import { Is_knox_level } from './const.js';
 import { schedule_goto, UTOTYPE_NONE, unplacebc, placebc } from './do.js';
 import { t_at } from './mon.js';
-import { unconscious } from './trap.js';
+import { unconscious, deltrap, level_tele_trap } from './trap.js';
 import { goodpos, remove_monster, place_monster } from './makemon.js';
 import { newsym } from './display.js';
 import { vision_recalc, couldsee } from './vision.js';
-import { check_capacity, in_rooms, invocation_message, spoteffects }
+import { check_capacity, in_rooms, invocation_message, spoteffects,
+         u_locomotion }
     from './hack.js';
 import { morehungry } from './eat.js';
 import { getpos } from './getpos.js';
@@ -855,13 +857,41 @@ export async function tele() {
 
 // src/teleport.c:1035 dotele() — `break_the_rules` is wizard-mode ^T.
 async function dotele(break_the_rules) {
-    const trap = t_at(game.u.ux, game.u.uy);
+    let trap = t_at(game.u.ux, game.u.uy);
+    let trap_once = false;
+
+    if (trap && !trap.tseen)
+        trap = null;
 
     if (trap) {
-        note_unported_teleport('dotele:trap');
-        return 0;
+        if (trap.ttyp === LEVEL_TELEP) {
+            const { tty_yn_function } = await import('./tty/topl.js');
+            if ((await tty_yn_function(
+                    'There is a level teleporter here. Trigger it?',
+                    'yn', 'n')) === 'y') {
+                await level_tele_trap(trap, FORCETRAP);
+                return 1;
+            }
+            trap = null;
+        } else if (trap.ttyp === TELEP_TRAP) {
+            trap_once = !!trap.once;
+            if (trap.once) {
+                await pline('This is a vault teleport, usable once only.');
+                const { tty_yn_function } = await import('./tty/topl.js');
+                if ((await tty_yn_function('Jump in?', 'yn', 'n')) === 'n') {
+                    trap = null;
+                } else {
+                    deltrap(trap);
+                    newsym(game.u.ux, game.u.uy);
+                }
+            }
+            if (trap)
+                await You(`${u_locomotion('jump')} onto the teleportation trap.`);
+        } else {
+            trap = null;
+        }
     }
-    if (!break_the_rules) {
+    if (!trap && !break_the_rules) {
         let castit = false;
         const role = game.urole?.mnum;
         const threshold = (role === PMNAMES.PM_WIZARD
@@ -915,12 +945,20 @@ async function dotele(break_the_rules) {
         return 0;
     }
 
-    if (game.iflags?.travelcc)
-        game.iflags.travelcc.x = game.iflags.travelcc.y = 0;
-    await tele();
+    if (trap && trap_once) {
+        await vault_tele();
+    } else if (trap && isok(trap.teledest?.x ?? 0,
+                            trap.teledest?.y ?? 0)) {
+        await teleds(trap.teledest.x, trap.teledest.y, TELEDS_TELEPORT);
+    } else {
+        if (game.iflags?.travelcc)
+            game.iflags.travelcc.x = game.iflags.travelcc.y = 0;
+        await tele();
+    }
     await next_to_u();
 
-    await morehungry(100);
+    if (!trap)
+        await morehungry(100);
     return 1;
 }
 

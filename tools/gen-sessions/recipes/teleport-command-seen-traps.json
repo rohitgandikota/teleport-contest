@@ -1,0 +1,45 @@
+{
+  "name": "teleport-command-seen-traps",
+  "description": "Independent debug setups create teleport traps beneath the hero, switch into explore mode, then exercise unseen-trap fallback, deliberate ordinary teleport activation, and both answers to the level-teleporter prompt.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "mode.explore",
+    "traps.movement",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "teleport.command.unseen-trap-ignored",
+    "teleport.command.seen-teleport-trap",
+    "teleport.command.level-trap-accept",
+    "teleport.command.level-trap-decline"
+  ],
+  "segments": [
+    {
+      "seed": 6958,
+      "datetime": "20000112115900",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017teleportation trap\r#exploremode\r\u001by\u0014"
+    },
+    {
+      "seed": 6955,
+      "datetime": "20000112120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017teleportation trap\r\u0006#exploremode\r\u001by\u0014 "
+    },
+    {
+      "seed": 6956,
+      "datetime": "20000112120100",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017level teleporter\r\u0006#exploremode\r\u001by\u0014y "
+    },
+    {
+      "seed": 6957,
+      "datetime": "20000112120200",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017level teleporter\r\u0006#exploremode\r\u001by\u0014n"
+    }
+  ]
+}

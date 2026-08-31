@@ -1,0 +1,38 @@
+{
+  "name": "vault-teleport-trap",
+  "description": "A deterministic one-shot teleport niche exercises discovery, refusal, anti-magic blocking, and deliberate vault teleport activation.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "traps.movement",
+    "turn.speed-energy",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "trap.teleport.vault-niche-construction",
+    "trap.teleport.vault-step-activation",
+    "trap.teleport.vault-antimagic-block",
+    "teleport.command.vault-trap-accept",
+    "teleport.command.vault-trap-decline"
+  ],
+  "segments": [
+    {
+      "seed": 7,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " T\u0006\u0014lkkkkkkkkkkkkk. \u0005okkkky"
+    },
+    {
+      "seed": 7,
+      "datetime": "20000110090100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0014lkkkkkkkkkkkkk. \u0005okkkky\u0014 y "
+    },
+    {
+      "seed": 7,
+      "datetime": "20000110090200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006\u0014lkkkkkkkkkkkkk. \u0005okkkky#exploremode\r\u001by\u0014 n"
+    }
+  ]
+}

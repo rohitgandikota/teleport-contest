@@ -825,6 +825,17 @@ export function create_trap(t, croom) {
     if (t.novictim)       mktrap_flags |= MKTRAP_NOVICTIM;
 
     mktrap_fn(t.type, mktrap_flags, null, { x: pos.x, y: pos.y });
+    const teledest = t.teledest && {
+        x: t.teledest.x + (game.xstart ?? 0),
+        y: t.teledest.y + (game.ystart ?? 0),
+    };
+    if (t.type === TELEP_TRAP && isok(teledest?.x, teledest?.y)) {
+        const trap = (game.level?.traps || [])
+            .find(candidate => candidate.tx === pos.x
+                               && candidate.ty === pos.y);
+        if (trap)
+            trap.teledest = teledest;
+    }
 }
 
 // src/sp_lev.c:4397 lspo_trap() — the des.trap() verb.
@@ -850,6 +861,7 @@ export function lspo_trap(type, x, y, opts) {
                        ? !!opts.spider_on_web : true,
         seen: !!opts?.seen,
         novictim: opts?.victim !== undefined ? !opts.victim : false,
+        teledest: opts?.teledest,
         coord: (x === undefined || x === -1) && (y === undefined || y === -1)
                ? SP_COORD_PACK_RANDOM(0)
                : SP_COORD_PACK(x, y),

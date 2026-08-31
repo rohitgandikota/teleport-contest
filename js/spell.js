@@ -596,8 +596,7 @@ export async function docast() {
     return ECMD_FAIL;
 }
 
-// src/spell.c spelleffects() — cast it. Only the pre-flight check is ported;
-// the effects themselves are a per-spell dispatch that needs zap/potion/etc.
+// src/spell.c spelleffects(), cast the selected spell.
 export async function spelleffects(spell_otyp, atme, force) {
     const spell = spell_idx(spell_otyp);
     const energy = { v: 0 };
@@ -609,6 +608,7 @@ export async function spelleffects(spell_otyp, atme, force) {
     }
 
     game.u.uen -= energy.v;
+    (game.disp ||= {}).botl = true;
     exercise(A_WIS, true);
 
     /* pseudo = mksobj(spellid(spell), FALSE, FALSE) — a throwaway object
@@ -621,6 +621,7 @@ export async function spelleffects(spell_otyp, atme, force) {
     const role_skill = P_SKILL(spell_skilltype(otyp));
 
     switch (otyp) {
+    case ONAMES.SPE_TELEPORT_AWAY:
     case ONAMES.SPE_HEALING:
     case ONAMES.SPE_EXTRA_HEALING:
     case ONAMES.SPE_DRAIN_LIFE:

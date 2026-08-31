@@ -1,0 +1,39 @@
+{
+  "name": "teleport-command-spell-fallback",
+  "description": "Debug setup teaches teleport away, switches into explore mode, then exercises successful casting, failed casting, and insufficient-energy rejection through the normal teleport command.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "mode.explore",
+    "object.spellbooks-spells",
+    "survival.regen-exercise",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "teleport.command.spell-cast-success",
+    "teleport.command.spell-cast-failure",
+    "teleport.command.spell-energy-gate"
+  ],
+  "segments": [
+    {
+      "seed": 6954,
+      "datetime": "20000112114500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed spellbook of teleport away\r\u0017blessed +5 helm of brilliance\rWpro \u001b#exploremode\r\u001by\u0014."
+    },
+    {
+      "seed": 6954,
+      "datetime": "20000112114600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed spellbook of teleport away\rro \u001b#exploremode\r\u001by\u0014"
+    },
+    {
+      "seed": 6954,
+      "datetime": "20000112114700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed spellbook of teleport away\rro \u001b#exploremode\r\u001by\u0014"
+    }
+  ]
+}

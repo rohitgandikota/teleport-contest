@@ -26,9 +26,9 @@ import { is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
          could_move_onto_boulder, u_locomotion,
-         disturb_buried_zombies } from './hack.js';
+         disturb_buried_zombies, may_passwall } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
-import { Blind, Flying, Hallucination, Levitation, Stealth }
+import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
 import { u_on_newpos } from './teleport.js';
 import { doloot } from './pickup.js';
@@ -153,8 +153,10 @@ async function blocksMove(x, y, dx, dy) {
     game.context.door_opened = false;
     const loc = game.level?.at(x, y);
     if (!loc) return true;
-    if (IS_OBSTRUCTED(loc.typ)) return true;
-    if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))) return true;
+    if (IS_OBSTRUCTED(loc.typ)
+        && !(Passes_walls() && may_passwall(x, y))) return true;
+    if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))
+        && !Passes_walls()) return true;
     /* src/hack.c:1140 test_move() — diagonal moves into an intact doorway
        are not allowed (block_door boulder check needs Sokoban state) */
     if (dx && dy && IS_DOOR(loc.typ)) {
@@ -2366,7 +2368,7 @@ async function domove_core() {
             HOLE, TRAPDOOR,
         ]);
         const clearlyImmune = groundTypes.has(trap?.ttyp)
-            && !!(game.u.uprops?.LEVITATION || game.u.uprops?.FLYING);
+            && (Levitation() || Flying());
         if ((bits & PARANOID_TRAP) && !game.u.uprops?.STUNNED
             && !game.u.uprops?.CONFUSION
             && (!game.context.nopick || game.context.run)
@@ -2474,7 +2476,7 @@ async function domove_core() {
        walking into a boulder tries to push it (moverock, hack.c:336), and
        a failed push blocks the move exactly like terrain. */
     if (sobj_at(ONAMES.BOULDER, newx, newy)
-        && (In_sokoban(game.u.uz) || !game.u.uprops?.PASSES_WALLS)) {
+        && (In_sokoban(game.u.uz) || !Passes_walls())) {
         if (!(u.ublind || Hallucination()) && (game.context.run | 0) >= 2
             && !could_move_onto_boulder(newx, newy)) {
             if (game.flags?.mention_walls)

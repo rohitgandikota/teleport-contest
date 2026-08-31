@@ -408,6 +408,17 @@ inventory. A cursed invisibility item grants no invisibility and briefly seems
 transparent; a cursed potion additionally exposes the monster alone on a
 cleared map, aggravates the hero, restores the normal view, and is consumed.
 
+Intelligent monsters can also use potions and wands of polymorph or deliberately
+step onto a nearby polymorph trap when their difficulty is low enough. A wand
+spends one charge and remains in inventory, while a potion is consumed. Seeing
+the successful use identifies the item. Item-based polymorph normally chooses a
+level-suitable random form, except that worn dragon scales or dragon scale mail
+force the matching dragon form. A trap moves the monster onto the trap square
+before choosing an unrestricted new form. After the change, the monster drops
+weapons it can no longer use and sheds, breaks, or destroys incompatible worn
+gear in a fixed order. Objects dropped through an active polymorph beam receive
+the bypass flag so that the same beam does not transform them again.
+
 ## 12. Combat and damage
 
 Combat resolves intent, safety prompts, displacement and mimic reveals,

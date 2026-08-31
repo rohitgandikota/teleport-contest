@@ -278,7 +278,7 @@ export async function mattackm(magr, mdef) {
                 if (await mon_wield_item(magr) !== 0)
                     return M_ATTK_MISS;
             }
-            possibly_unwield(magr, false);
+            await possibly_unwield(magr, false);
             if ((mwep = MON_WEP(magr)) != null) {
                 if (game.vis)
                     await mswingsm(magr, mdef, mwep);

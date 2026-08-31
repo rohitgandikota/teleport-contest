@@ -16,7 +16,7 @@ import { ATTKS, PMNAMES, NUMMONS } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
          passes_walls, noncorporeal, unsolid, haseyes, hates_light,
          resists_blnd, attacktype, verysmall, throws_rocks,
-         is_floater } from './mondata.js';
+         is_floater, locomotion } from './mondata.js';
 import { in_your_sanctuary, lined_up, monnear, onscary, mon_knows_traps,
          mon_would_take_item, accessible, monflee } from './monmove.js';
 import { which_armor } from './worn.js';
@@ -35,6 +35,7 @@ import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          POLY_TRAP, u_at, KILLED_BY_AN, ZAP_POS, IS_DOOR, D_LOCKED,
          D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
          SUPPRESS_SADDLE, SUPPRESS_IT, AUGMENT_IT, G_UNIQ,
+         NC_SHOW_MSG, NC_VIA_WAND_OR_SPELL,
          MIGR_STAIRS_UP, MIGR_STAIRS_DOWN, MIGR_LADDER_UP,
          MIGR_LADDER_DOWN, MIGR_SSTAIRS, MIGR_RANDOM } from './const.js';
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
@@ -701,6 +702,27 @@ function m_useup_misc(mtmp, obj) {
         mtmp.minvent.splice(at, 1);
 }
 
+// src/muse.c:2250 muse_newcham_mon(). Polymorph items normally choose a
+// level-suitable monster. Worn dragon body armor instead forces the matching
+// dragon, preserving the C ordering before newcham() changes equipment.
+async function muse_newcham_mon(mtmp) {
+    const armor = which_armor(mtmp, W_ARM);
+    if (armor) {
+        if (armor.otyp >= ONAMES.GRAY_DRAGON_SCALES
+            && armor.otyp <= ONAMES.YELLOW_DRAGON_SCALES) {
+            return game.mons[PMNAMES.PM_GRAY_DRAGON
+                + armor.otyp - ONAMES.GRAY_DRAGON_SCALES];
+        }
+        if (armor.otyp >= ONAMES.GRAY_DRAGON_SCALE_MAIL
+            && armor.otyp <= ONAMES.YELLOW_DRAGON_SCALE_MAIL) {
+            return game.mons[PMNAMES.PM_GRAY_DRAGON
+                + armor.otyp - ONAMES.GRAY_DRAGON_SCALE_MAIL];
+        }
+    }
+    const { rndmonst } = await import('./makemon.js');
+    return rndmonst();
+}
+
 // src/muse.c:441 find_defensive(), healing, stairs, and create-monster-scroll
 // actions. Monsters use healing while badly hurt, and can escape by a
 // staircase or ladder when movement has no legal square.
@@ -1270,6 +1292,81 @@ export async function use_misc(mtmp) {
                 await you_aggravate(mtmp);
             m_useup_misc(mtmp, obj);
         }
+        return 2;
+    }
+    case MUSE_WAN_POLYMORPH: {
+        if (!obj || obj.spe < 1)
+            return 0;
+        const [{ canseemon }, { newcham }, { makeknown }]
+            = await Promise.all([
+                import('./display.js'), import('./mon.js'),
+                import('./o_init.js'),
+            ]);
+        const oseen = canseemon(mtmp);
+
+        await mzapwand_self(mtmp, obj);
+        await newcham(mtmp, await muse_newcham_mon(mtmp),
+                      NC_VIA_WAND_OR_SPELL | NC_SHOW_MSG);
+        if (oseen)
+            makeknown(ONAMES.WAN_POLYMORPH);
+        return 2;
+    }
+    case MUSE_POT_POLYMORPH: {
+        if (!obj)
+            return 0;
+        const [{ canseemon, pline }, { Monnam }, { newcham }, { makeknown }]
+            = await Promise.all([
+                import('./display.js'), import('./do_name.js'),
+                import('./mon.js'), import('./o_init.js'),
+            ]);
+        const vismon = canseemon(mtmp);
+        const oseen = vismon;
+
+        await mquaffmsg(mtmp, obj);
+        m_useup_misc(mtmp, obj);
+        if (vismon)
+            await pline(`${Monnam(mtmp)} suddenly mutates!`);
+        await newcham(mtmp, await muse_newcham_mon(mtmp), NC_SHOW_MSG);
+        if (oseen)
+            makeknown(ONAMES.POT_POLYMORPH);
+        return 2;
+    }
+    case MUSE_POLY_TRAP: {
+        const trap = t_at(game.trapx, game.trapy);
+        if (!trap)
+            return 0;
+        const [{ cansee },
+               { canseemon, newsym, pline },
+               { Some_Monnam }, { vtense },
+               { seetrap, trapname },
+               { remove_monster, place_monster },
+               { newcham }, { maybe_unhide_at_mon }]
+            = await Promise.all([
+                import('./vision.js'), import('./display.js'),
+                import('./do_name.js'), import('./objnam.js'),
+                import('./trap.js'), import('./makemon.js'),
+                import('./mon.js'), import('./monmove.js'),
+            ]);
+        const vis = cansee(mtmp.mx, mtmp.my);
+        const vismon = canseemon(mtmp);
+        const vistrapspot = cansee(trap.tx, trap.ty);
+
+        if (vis || vistrapspot)
+            seetrap(trap);
+        if (vismon || vistrapspot) {
+            const movement = vtense('mon', locomotion(mtmp.data, 'jump'));
+            await pline(`${Some_Monnam(mtmp)} deliberately ${movement} onto a ${
+                trap.tseen ? trapname(trap.ttyp, false) : 'hidden trap'}!`);
+        }
+
+        const oldx = mtmp.mx, oldy = mtmp.my;
+        remove_monster(oldx, oldy);
+        newsym(oldx, oldy);
+        place_monster(mtmp, game.trapx, game.trapy);
+        maybe_unhide_at_mon(mtmp);
+        newsym(game.trapx, game.trapy);
+
+        await newcham(mtmp, null, NC_SHOW_MSG);
         return 2;
     }
     case MUSE_BULLWHIP: {

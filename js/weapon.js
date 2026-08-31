@@ -8,7 +8,7 @@
 
 import { game } from './gstate.js';
 import { OBJ_NAME, doname, xname, the, makesingular, Tobjnam,
-         makeplural } from './objnam.js';
+         makeplural, distant_name } from './objnam.js';
 /* include/defsym.h OBJCLASS rows, the `name` column — C's def_oc_syms[].name
    (js/drawing_data.js keeps only the symbol chars). Index = oclass. Used by
    weapon_descr() below, same as C's object_detect(). */
@@ -23,16 +23,16 @@ import { greatest_erosion } from './do_wear.js';
 import { ATTKS } from './monst_data.js';
 import { is_spear } from './u_init.js';
 import { is_pool, is_pick, m_carrying, can_touch_safely, resists_ston } from './mon.js';
-import { is_weptool } from './mkobj.js';
+import { is_weptool, place_object } from './mkobj.js';
 import { MON_WEP } from './monst.js';
 import { mon_hates_silver, touch_petrifies } from './dog.js';
-import { hands_obj } from './invent.js';
-import { couldsee } from './vision.js';
+import { hands_obj, obj_extract_self, stackobj } from './invent.js';
+import { cansee, couldsee } from './vision.js';
 import { adj_lev, likes_gems } from './makemon.js';
 import { dist2, s_suffix } from './hacklib.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
 import { which_armor } from './worn.js';
-import { canseemon, pline } from './display.js';
+import { canseemon, newsym, pline } from './display.js';
 import { Monnam, mon_nam } from './do_name.js';
 import { W_ARM, W_ARMC, W_ARMS, W_ARMG, W_ARMU, W_RINGL, W_RINGR, W_WEP,
          HAND,
@@ -958,7 +958,7 @@ export function select_hwep(mtmp) {
 // re-arms weapon_check = NEED_WEAPON so the next wield check re-evaluates;
 // the stolen/destroyed and no-longer-AT_WEAP arms need states that are
 // recorded when reached.
-export function possibly_unwield(mon, polyspot) {
+export async function possibly_unwield(mon, polyspot) {
     const mw_tmp = MON_WEP(mon);
     if (!mw_tmp)
         return;
@@ -969,8 +969,22 @@ export function possibly_unwield(mon, polyspot) {
         return;
     }
     if (!attacktype(game.mons[mon.mnum], ATTKS.AT_WEAP)) {
-        /* poly'd into a non-wielder: drop the weapon to the floor */
-        note_unported_weapon('possibly_unwield:drop');
+        setmnotwielded(mon, mw_tmp);
+        mon.weapon_check = NO_WEAPON_WANTED;
+        if (cansee(mon.mx, mon.my)) {
+            await pline(`${Monnam(mon)} drops ${distant_name(mw_tmp, doname)}.`);
+            newsym(mon.mx, mon.my);
+        }
+        obj_extract_self(mw_tmp);
+        const { flooreffects } = await import('./do.js');
+        if (!await flooreffects(mw_tmp, mon.mx, mon.my, 'drop')) {
+            if (polyspot) {
+                mw_tmp.bypass = 1;
+                (game.context ||= {}).bypasses = true;
+            }
+            place_object(mw_tmp, mon.mx, mon.my);
+            stackobj(mw_tmp);
+        }
         return;
     }
     /* Note that if there is no change, setting the check to NEED_WEAPON

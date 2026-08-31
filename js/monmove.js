@@ -1856,7 +1856,7 @@ export async function m_move(mtmp, after) {
 // src/mon.c:4698 maybe_unhide_at(), monster arm. A concealed monster which
 // leaves its covering object must be revealed before postmov() decides
 // whether to roll for hiding again at the destination.
-function maybe_unhide_at_mon(mtmp) {
+export function maybe_unhide_at_mon(mtmp) {
     if (!mtmp.mundetected)
         return;
     const ptr = game.mons[mtmp.mnum];

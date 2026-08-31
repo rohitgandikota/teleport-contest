@@ -1,6 +1,6 @@
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
-import { m_dowear } from './worn.js';
+import { m_dowear, mon_break_armor } from './worn.js';
 import { is_hider, perceives, is_human, is_unicorn , regenerates, hides_under } from './mondata.js';
 import { ceiling_hider, emits_light, resist_conflict, resists_fire } from './mondata.js';
 import { new_light_source, del_light_source, any_light_source,
@@ -49,7 +49,8 @@ import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
          TELEPORT_CONTROL, TELEPAT, LAST_PROP, INTRINSIC,
          SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, SUPPRESS_INVISIBLE,
-         SUPPRESS_IT, PRONOUN_HALLU, NO_NC_FLAGS } from './const.js';
+         SUPPRESS_IT, PRONOUN_HALLU, NO_NC_FLAGS,
+         NC_VIA_WAND_OR_SPELL } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
@@ -3404,6 +3405,16 @@ export function newcham(mtmp, mdat, ncflags) {
         return 1;
     };
 
+    const finishPostChange = async () => {
+        if (msg)
+            await showChange();
+        const { possibly_unwield } = await import('./weapon.js');
+        await possibly_unwield(mtmp, !!(ncflags & NC_VIA_WAND_OR_SPELL));
+        await mon_break_armor(
+            mtmp, !!(ncflags & NC_VIA_WAND_OR_SPELL));
+        return 1;
+    };
+
     if (leashNeedsRelease) {
         return (async () => {
             if (canseemon(mtmp)) {
@@ -3421,12 +3432,12 @@ export function newcham(mtmp, mdat, ncflags) {
             }
             mtmp.mleashed = 0;
             finishChange();
-            return msg ? await showChange() : 1;
+            return msg ? await finishPostChange() : 1;
         })();
     }
 
     finishChange();
-    return msg ? showChange() : 1;
+    return msg ? finishPostChange() : 1;
 }
 
 // src/mon.c:4367 wake_nearby() / wake_nearto_core() — noise wakes monsters

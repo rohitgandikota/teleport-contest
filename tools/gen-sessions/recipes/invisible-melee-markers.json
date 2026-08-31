@@ -1,0 +1,47 @@
+{
+  "name": "invisible-melee-markers",
+  "description": "Debug Valkyrie encounters sleeping unseen monsters to pin ordinary and force-fight invisible markers, including sticky mimic handling.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "combat.melee"
+  ],
+  "branches": [
+    "wizard.create.invisible-modifier",
+    "wizard.create.disguised-mimic-arrival",
+    "combat.invisible.bump-marker",
+    "combat.invisible.marker-followup",
+    "combat.invisible.force-survivor-marker",
+    "combat.invisible.force-kill-no-marker",
+    "combat.invisible.sticky-mimic-hold"
+  ],
+  "segments": [
+    {
+      "seed": 6962,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r 1a\r \u0007sleeping stalker\rm.b b"
+    },
+    {
+      "seed": 6963,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r 1a\r \u0007sleeping stalker\rm.Fj"
+    },
+    {
+      "seed": 6964,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r 1a\r \u0007sleeping invisible newt\rm.Fk"
+    },
+    {
+      "seed": 6965,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r 1a\r \u0007sleeping invisible giant mimic\rm.hl"
+    }
+  ]
+}

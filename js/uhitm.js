@@ -317,8 +317,11 @@ export async function do_attack(mtmp) {
     else
         await hitum(mtmp, mattk_row(game.youmonst.data.mattk[0]));
 
-    if (game.context?.forcefight && !DEADMONSTER(mtmp) && !canspotmon(mtmp))
-        note_unported_uhitm('do_attack:forcefight_map_invisible');
+    if (game.context?.forcefight && !DEADMONSTER(mtmp) && !canspotmon(mtmp)
+        && !glyph_is_invisible_at(game.u.ux + game.u.dx,
+                                  game.u.uy + game.u.dy)
+        && !engulfing_u(mtmp))
+        map_invisible(game.u.ux + game.u.dx, game.u.uy + game.u.dy);
     return true;
 }
 
@@ -422,9 +425,13 @@ export async function attack_checks(mtmp, wep) {
         && !(!game.u.ublind && mtmp.mundetected
              && hides_under(mdat_of(mtmp)))) {
         await pline("Wait!  There's something there you can't see!");
-        note_unported_uhitm('attack_checks:map_invisible');
-        if (mtmp.m_ap_type)
-            note_unported_uhitm('attack_checks:invisible_mimic');
+        map_invisible(game.bhitpos.x, game.bhitpos.y);
+        if (mtmp.m_ap_type
+            && !game.u.uprops?.PROT_FROM_SHAPE_CHANGERS
+            && !game.u.ustuck && !mtmp.mflee
+            && dmgtype(mdat_of(mtmp), ATTKS.AD_STCK)
+            && distu(mtmp.mx, mtmp.my) <= 2)
+            set_ustuck(mtmp);
         /* always necessary; also un-mimics mimics */
         await wakeup(mtmp, true);
         return true;

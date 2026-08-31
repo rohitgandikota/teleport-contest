@@ -8,22 +8,26 @@ import { game } from './gstate.js';
 import { getobj, GETOBJ_PROMPT, ECMD_TIME, ECMD_OK } from './invent.js';
 import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR,
          A_STR, A_CON, W_BALL, W_CHAIN, W_ART, W_ARTI, TT_BURIEDBALL,
-         BY_COOKIE, G_UNIQ } from './const.js';
+         BY_COOKIE, G_UNIQ, M_AP_TYPE, M_AP_MONSTER, M_AP_OBJECT,
+         M_AP_FURNITURE } from './const.js';
 import { sgn, distu } from './hacklib.js';
 import { valid_cloud_pos } from './region.js';
 import { cansee } from './vision.js';
-import { bcsign, blessorcurse, mkobj, place_object, uncurse } from './mkobj.js';
+import { bcsign, blessorcurse, mkobj, mksobj, place_object,
+         uncurse } from './mkobj.js';
 import { chwepon } from './wield.js';
 import { erosion_matters } from './mkobj.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
-import { newsym, pline } from './display.js';
+import { newsym, pline, sensemon } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { getlin } from './cmd.js';
 import { name_to_monplus } from './mondata.js';
 import { makemon, set_malign } from './makemon.js';
 import { canseemon } from './display.js';
-import { Amonnam, trycall } from './do_name.js';
-import { MM_NOEXCLAM } from './const.js';
+import { Amonnam, trycall, upstart } from './do_name.js';
+import { an, ansimpleoname } from './objnam.js';
+import { defsyms } from './drawing_data.js';
+import { MM_MINVIS, MM_NOEXCLAM } from './const.js';
 import { study_book } from './spell.js';
 import { do_mapping } from './detect.js';
 import { do_clear_area, vision_recalc } from './vision.js';
@@ -650,6 +654,9 @@ export async function create_particular() {
         const sleeping = /\bsleeping\s+/i.test(bufp);
         if (sleeping)
             bufp = bufp.replace(/\bsleeping\s+/i, '').trim();
+        const invisible = /\binvisible\s+/i.test(bufp);
+        if (invisible)
+            bufp = bufp.replace(/\binvisible\s+/i, '').trim();
         const maketame = /^tame /i.test(bufp);
         const makehostile = /^hostile /i.test(bufp);
         const makepeaceful = /^peaceful /i.test(bufp);
@@ -659,7 +666,7 @@ export async function create_particular() {
 
         /* create_particular_parse()'s modifier scan is recorded; the plain
            name and explicit hostile/peaceful forms are live. */
-        if (/^\d|saddled |invisible |hidden |male |female /i.test(bufp))
+        if (/^\d|saddled |hidden |male |female /i.test(bufp))
             note_unported_read('create_particular:modifiers');
 
         const box = {};
@@ -695,8 +702,9 @@ export async function create_particular() {
             }
 
             /* MM_NOEXCLAM: "<mon> appears." rather than "appears!" */
+            const mmflags = MM_NOEXCLAM | (invisible ? MM_MINVIS : 0);
             const mtmp = makemon(game.mons[which], game.u.ux, game.u.uy,
-                                 MM_NOEXCLAM);
+                                 mmflags);
             /* src/makemon.c:1472 — C announces the arrival from inside
                makemon(), which cannot print here because our makemon is
                sync and has 23 call sites. The message is emitted at this
@@ -704,7 +712,21 @@ export async function create_particular() {
             if (mtmp && canseemon(mtmp)) {
                 const near = (Math.abs(mtmp.mx - game.u.ux) <= 1
                               && Math.abs(mtmp.my - game.u.uy) <= 1);
-                await pline(`${Amonnam(mtmp)} appears${
+                const appearance = M_AP_TYPE(mtmp);
+                let what;
+                if (!appearance || appearance === M_AP_MONSTER
+                    || sensemon(mtmp)) {
+                    what = Amonnam(mtmp);
+                } else if (appearance === M_AP_OBJECT) {
+                    const fake = mksobj(mtmp.mappearance, false, false);
+                    what = upstart(ansimpleoname(fake));
+                } else if (appearance === M_AP_FURNITURE) {
+                    what = upstart(an(defsyms[mtmp.mappearance]?.explain
+                                      || 'something'));
+                } else {
+                    what = 'Something';
+                }
+                await pline(`${what} appears${
                     near ? ' next to you' : ''}.`);
             }
 

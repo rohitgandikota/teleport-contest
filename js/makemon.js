@@ -2218,6 +2218,13 @@ export function makemon(ptr, x, y, mmflags) {
     mtmp.mcansee = mtmp.mcanmove = true;
     mtmp.mgenmklev = game.in_mklev;
     mtmp.mpeaceful = (mmflags & MM_ANGRY) ? false : peace_minded(ptr);
+    if (mmflags & MM_MINVIS) {
+        mtmp.perminvis = true;
+        if (!mtmp.invis_blkd) {
+            mtmp.minvis = true;
+            newsym(mtmp.mx, mtmp.my);
+        }
+    }
 
     switch (ptr.mlet) {
     case S_MIMIC:

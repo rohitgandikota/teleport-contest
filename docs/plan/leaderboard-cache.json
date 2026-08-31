@@ -1,5 +1,7 @@
 {
   "timestamp": "2026-08-31T06:22:08.448Z",
+  "pageCheckedAt": "2026-08-31T21:43:58Z",
+  "pageCheck": "Live rendered board last scored 8/31/2026, 10:22:08 AM; rohitgandikota remains at 11,405 public plus 6,032 held-out screens, 44 plus 9 passing sessions, 71.9% combined PRNG, 76.9% combined screen rate, 9 animation frames, speed 256+0.9, playable yes, agentic rank 1/12, and overall held-out rank 3/19.",
   "contestPhase": "open",
   "teamCount": 19,
   "team": {
@@ -2242,7 +2244,7 @@
   "publicRank": 5,
   "category": "agentic",
   "categoryRank": 1,
-  "categoryTotal": 9,
+  "categoryTotal": 12,
   "leader": {
     "name": "NoahBPeterson",
     "fork": "NoahBPeterson/teleport-contest",

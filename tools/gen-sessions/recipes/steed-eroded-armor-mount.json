@@ -1,0 +1,37 @@
+{
+  "name": "steed-eroded-armor-mount",
+  "description": "Debug Knights try to mount their starting ponies while wearing rusty and corroded metallic body armor.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.steeds",
+    "object.armor",
+    "ui.getlin"
+  ],
+  "branches": [
+    "steed.mount.debug-force-decline",
+    "steed.mount.debug-force-accept",
+    "steed.mount.rusty-metal-armor",
+    "steed.mount.corroded-metal-armor"
+  ],
+  "segments": [
+    {
+      "seed": 6961,
+      "datetime": "20000112121600",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017rusty +0 ring mail\ri\u001bTcWi#ride\rhn"
+    },
+    {
+      "seed": 6961,
+      "datetime": "20000112121700",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017corroded +0 ring mail\ri\u001bTcWi#ride\rhn"
+    },
+    {
+      "seed": 6961,
+      "datetime": "20000112121800",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017rusty +0 ring mail\ri\u001bTcWi#ride\rhy"
+    }
+  ]
+}

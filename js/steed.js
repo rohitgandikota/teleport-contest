@@ -20,10 +20,10 @@ import { W_SADDLE, ECMD_OK, ECMD_TIME, ECMD_CANCEL, isok, SLT_ENCUMBER,
          DISMOUNT_GENERIC, DISMOUNT_FELL, DISMOUNT_THROWN, DISMOUNT_KNOCKED,
          DISMOUNT_POLY, DISMOUNT_ENGULFED, DISMOUNT_BONES, DISMOUNT_BYCHOICE,
          has_mgivenname } from './const.js';
-import { OBJ_MINVENT } from './obj.js';
+import { OBJ_MINVENT, is_metallic } from './obj.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { pline } from './display.js';
-import { You, You_cant } from './pline.js';
+import { You, You_cant, Your } from './pline.js';
 import { Monnam, mon_nam, pmname } from './do_name.js';
 import { m_at, is_pool, is_lava, t_at } from './mon.js';
 import { remove_monster, place_monster } from './makemon.js';
@@ -42,6 +42,7 @@ import { grounded } from './trap.js';
 import { is_pole } from './mhitu.js';
 import { PMNAMES } from './monst_data.js';
 import { Glib } from './youprop.js';
+import { greatest_erosion } from './do_wear.js';
 
 function note_unported_steed(what) {
     (game.unported ||= new Set()).add('steed:' + what);
@@ -103,9 +104,15 @@ export async function doride() {
         await dismount_steed(DISMOUNT_BYCHOICE);
     } else if (await getdir(null)
                && isok(game.u.ux + game.u.dx, game.u.uy + game.u.dy)) {
+        let force = false;
+        if (game.wizard) {
+            const { tty_yn_function } = await import('./tty/topl.js');
+            force = (await tty_yn_function(
+                'Force the mount to succeed?', 'yn', 'n')) === 'y';
+        }
         return (await mount_steed(
                     m_at(game.u.ux + game.u.dx, game.u.uy + game.u.dy),
-                    false))
+                    force))
             ? ECMD_TIME : ECMD_OK;
     } else {
         return ECMD_CANCEL;
@@ -192,8 +199,13 @@ export async function mount_steed(mtmp, force) {
         note_unported_steed('mount:levitation');
         return false;
     }
-    if (!force && game.u.uarm)
-        note_unported_steed('mount:metallic_arm_erosion');
+    if (!force && game.u.uarm && is_metallic(game.u.uarm)
+        && greatest_erosion(game.u.uarm)) {
+        const condition = game.u.uarm.oeroded ? 'rusty' : 'corroded';
+        await Your(`${condition} armor is too stiff to be able to mount ${
+            mon_nam(mtmp)}.`);
+        return false;
+    }
     const Confusion = game.u.intrinsic?.HConfusion
                       || game.u.uprops?.CONFUSION;
     const Wounded_legs = (game.u.intrinsic?.HWounded_legs || 0) > 0

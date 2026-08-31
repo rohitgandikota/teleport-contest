@@ -1,0 +1,24 @@
+{
+  "name": "polymorph-nohands-weapon",
+  "description": "A debug Tourist wields a sword without gloves and polymorphs into a fog cloud, reporting that the weapon must be dropped.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "object.weapons",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "forms.polymorph.nohands-drop-weapon",
+    "forms.polymorph.fog-vapor-trail"
+  ],
+  "segments": [
+    {
+      "seed": 2183,
+      "datetime": "20000110092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +0 long sword\rwn#polyself\rfog cloud\ri\u001b"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "polymorph-nohands-equipment",
+  "description": "A fully equipped debug Tourist polymorphs into a fog cloud, dropping a wielded sword with gloves, then shedding shield, helmet, and boots in C order.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.weapons",
+    "ui.getlin",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "forms.polymorph.nohands-drop-gloves-weapon",
+    "forms.polymorph.nohands-drop-shield",
+    "forms.polymorph.nohands-drop-helmet",
+    "forms.polymorph.nohands-drop-boots",
+    "forms.polymorph.fog-vapor-trail"
+  ],
+  "segments": [
+    {
+      "seed": 2183,
+      "datetime": "20000110092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +0 pair of leather gloves\rWn\u0017blessed +0 small shield\rWo\u0017blessed +0 helmet\rWp\u0017blessed +0 low boots\rWq\u0017blessed +0 long sword\rwr#polyself\rfog cloud\ri\u001b"
+    }
+  ]
+}

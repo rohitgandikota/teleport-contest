@@ -1,0 +1,22 @@
+{
+  "name": "polymorph-mummy-wrapping-fit",
+  "description": "A debug Tourist wears a mummy wrapping and polymorphs into a large humanoid form that the adaptable wrapping still fits.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "ui.getlin"
+  ],
+  "branches": [
+    "forms.polymorph.keep-mummy-wrapping"
+  ],
+  "segments": [
+    {
+      "seed": 2183,
+      "datetime": "20000110092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed mummy wrapping\rWn#polyself\rowlbear\ri\u001b"
+    }
+  ]
+}

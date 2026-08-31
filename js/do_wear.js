@@ -1751,12 +1751,18 @@ export async function armor_or_accessory_off(obj) {
 
 // src/do_wear.c:1495 Blindf_off()
 export async function Blindf_off(otmp) {
+    const nooffmsg = !otmp;
+    if (!otmp)
+        otmp = game.u.ublindf;
+    if (!otmp)
+        return;
     const was_blind = Blind();
 
     game._deferred_status_blind = was_blind;
     setworn(null, W_TOOL);   /* src/do_wear.c Blindf_off */
     game.u.ublind = current_equipment_blindness() ? 1 : 0;
-    await off_msg(otmp);
+    if (!nooffmsg)
+        await off_msg(otmp);
 
     const blind_now = Blind();
     if (blind_now) {

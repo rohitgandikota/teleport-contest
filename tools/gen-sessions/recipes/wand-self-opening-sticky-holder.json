@@ -9,13 +9,14 @@
     "monster.hero-melee",
     "monster.movement",
     "monster.special-effects",
+    "object.armor",
     "object.wands",
     "turn.speed-energy",
     "ui.getlin",
     "ui.map-memory-vision"
   ],
   "branches": [
-    "forms.polymorph.break-armor",
+    "forms.polymorph.break-cloak",
     "combat.hero.polymorphed-to-hit",
     "combat.hero.polymorphed-natural-attacks",
     "combat.hero.polymorphed-hug",

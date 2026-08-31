@@ -1,0 +1,22 @@
+{
+  "name": "polymorph-horns-flimsy-helmet",
+  "description": "A debug Tourist wears a flimsy elven leather helm and polymorphs into a minotaur, piercing the helmet with two horns while keeping it worn.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "ui.getlin"
+  ],
+  "branches": [
+    "forms.polymorph.horns-pierce-flimsy-helmet"
+  ],
+  "segments": [
+    {
+      "seed": 2183,
+      "datetime": "20000110092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +0 elven leather helm\rWn#polyself\rminotaur\ri\u001b"
+    }
+  ]
+}

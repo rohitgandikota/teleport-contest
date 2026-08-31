@@ -2358,7 +2358,7 @@ export function m_everyturn_effect(mtmp) {
     const x = is_u ? game.u.ux : mtmp.mx,
           y = is_u ? game.u.uy : mtmp.my;
 
-    if (mtmp.mnum === PMNAMES.PM_FOG_CLOUD || (is_u && false /* Upolyd fog */)) {
+    if (mtmp.mnum === PMNAMES.PM_FOG_CLOUD) {
         /* don't leave a vapor cloud if some other gas cloud is already
            present, or when flowing under closed doors */
         if (!closed_door_mm(x, y) && !visible_region_at(x, y))

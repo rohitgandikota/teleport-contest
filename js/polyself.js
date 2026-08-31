@@ -8,13 +8,15 @@
 import { game } from './gstate.js';
 import { is_neuter, humanoid, slithy, attacktype, name_to_monplus,
          strongmonst, sliparm, breakarm, nohands, verysmall,
-         is_whirly } from './mondata.js';
+         is_whirly, num_horns, has_head } from './mondata.js';
 import { mons, PMNAMES, MONSYMS, ATTKS, MFLAGS } from './monst_data.js';
 import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
          HEAD, LEG, TOE, HAIR, EYE, NOSE, A_STR, A_WIS, A_CON,
          ECMD_OK, ECMD_TIME, KILLED_BY_AN, Upolyd, FROMFORM } from './const.js';
 import { rn2, rn1, d, rnd } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
+import { WrappingAllowed, is_flimsy } from './obj.js';
+import { simpleonames, vtense, yname } from './objnam.js';
 
 /* src/polyself.c:1975 — the per-shape body-part tables, in C's order:
    ARM, EYE, FACE, FINGER, FINGERTIP, FOOT, HAND, HANDED, HEAD, LEG,
@@ -477,7 +479,9 @@ export async function polymon(mntmp) {
         useup(armor);
     }
 
-    if (breaksArmor && u.uarmc) {
+    if (breaksArmor && u.uarmc
+        && (u.uarmc.otyp !== ONAMES.MUMMY_WRAPPING
+            || !WrappingAllowed(mdat))) {
         const cloak = u.uarmc;
         const { cloak_simple_name } = await import('./do_wear.js');
         const cloakName = cloak_simple_name(cloak);
@@ -527,6 +531,38 @@ export async function polymon(mntmp) {
         const { dropx } = await import('./do.js');
         await dropx(cloak);
         droppedCloak = true;
+    }
+
+    if (!breaksArmor && sliparm(mdat) && u.uarmu) {
+        const shirt = u.uarmu;
+        const { You } = await import('./pline.js');
+        await You(is_whirly(mdat)
+            ? 'seep right through your shirt!'
+            : 'become much too small for your shirt!');
+        const { setnotworn } = await import('./worn.js');
+        setnotworn(shirt);
+        const { dropx } = await import('./do.js');
+        await dropx(shirt);
+    }
+
+    if (num_horns(mdat) && u.uarmh) {
+        const helm = u.uarmh;
+        const { helm_simple_name } = await import('./do_wear.js');
+        const helmName = helm_simple_name(helm);
+        if (is_flimsy(helm)) {
+            const horns = num_horns(mdat) === 1 ? 'horn' : 'horns';
+            const { Your } = await import('./pline.js');
+            await Your(`${horns} ${horns === 'horn' ? 'pierces' : 'pierce'} `
+                       + `through ${yname(helm)}.`);
+        } else {
+            const { surface } = await import('./dungeon.js');
+            const { Your } = await import('./pline.js');
+            await Your(`${helmName} falls to the ${surface(u.ux, u.uy)}!`);
+            const { setnotworn } = await import('./worn.js');
+            setnotworn(helm);
+            const { dropx } = await import('./do.js');
+            await dropx(helm);
+        }
     }
 
     if ((nohands(mdat) || verysmall(mdat)) && u.uarmg) {
@@ -583,17 +619,30 @@ export async function polymon(mntmp) {
         await dropx(boots);
     }
 
+    if (u.ublindf && !has_head(mdat)) {
+        const eyewearObj = u.ublindf;
+        let eyewear = simpleonames(eyewearObj);
+        if (eyewear.startsWith('pair of '))
+            eyewear = eyewear.slice(8);
+        const { Your } = await import('./pline.js');
+        await Your(`${eyewear} ${vtense(eyewear, 'fall')} off!`);
+        const { Blindf_off } = await import('./do_wear.js');
+        await Blindf_off(null);
+        const { dropx } = await import('./do.js');
+        await dropx(eyewearObj);
+    }
+
     if (nohands(mdat) && u.uwep) {
         const weapon = u.uwep;
         const { weapon_descr } = await import('./weapon.js');
-        const which = weapon_descr(weapon);
+        const { is_sword, uwepgone } = await import('./wield.js');
+        const which = is_sword(weapon) ? 'sword' : weapon_descr(weapon);
         const message = `find you must drop ${
             which.startsWith('corpse') ? 'the' : 'your'} ${which}!`;
         if (droppedCloak)
             droppedWeaponMessage = message;
         else
             await You(message);
-        const { uwepgone } = await import('./wield.js');
         await uwepgone();
         const { dropx } = await import('./do.js');
         await dropx(weapon);

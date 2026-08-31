@@ -103,6 +103,7 @@ function init_sound_disp_gamewindows() {
 // include/you.h:441-442
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
 import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED } from './mon.js';
+import { m_everyturn_effect } from './monmove.js';
 import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
 import { dosearch0 } from './detect.js';
@@ -880,6 +881,11 @@ export async function moveloop_core() {
     }
     await bot();
     await flush_screen(1);
+
+    /* src/allmain.c:481, every living hero form gets its once-per-input
+       monster effect before occupations and command reading. Fog clouds use
+       this to leave a harmless one-square vapor trail. */
+    m_everyturn_effect(g.youmonst);
 
     /* src/allmain.c:485 — an active occupation CONSUMES the turn instead of
        reading a command. It runs once per turn until it returns 0, and a

@@ -1,0 +1,44 @@
+{
+  "name": "potion-gain-energy",
+  "description": "Debug Wizards quaff blessed, uncursed, and cursed potions of gain energy at low and high power, covering every die count, both signs, and the zero clamp.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.potions",
+    "survival.regen-exercise",
+    "ui.getlin"
+  ],
+  "branches": [
+    "object.merge.potion-dilution",
+    "potion.gain-energy.blessed",
+    "potion.gain-energy.cursed-decrease",
+    "potion.gain-energy.cursed-zero-clamp",
+    "potion.gain-energy.uncursed"
+  ],
+  "segments": [
+    {
+      "seed": 2201,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed potion of gain energy\rqo"
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017diluted uncursed potion of gain energy\rqo"
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of gain energy\rqo\u0017cursed potion of gain energy\rqp"
+    },
+    {
+      "seed": 2201,
+      "datetime": "20000110105500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r6\r    \u0017cursed potion of gain energy\rqo"
+    }
+  ]
+}

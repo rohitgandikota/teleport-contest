@@ -1098,6 +1098,8 @@ export function mergable(otmp, obj) {
     if (!!obj.dknown !== !!otmp.dknown
         || (!!obj.bknown !== !!otmp.bknown && !Role_if(PM_CLERIC)
             && (Blind() || Hallucination()))
+        || (obj.oclass === OCLASSES.POTION_CLASS
+            && !!obj.odiluted !== !!otmp.odiluted)
         || (obj.oeroded | 0) !== (otmp.oeroded | 0)
         || (obj.oeroded2 | 0) !== (otmp.oeroded2 | 0)
         || !!obj.greased !== !!otmp.greased)

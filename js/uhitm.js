@@ -1,17 +1,14 @@
-import { exercise, poisoned } from './attrib.js';
+import { change_luck, exercise, poisoned } from './attrib.js';
 import { A_DEX, A_STR, A_INT, A_WIS, ERODE_NONE, ERODE_BURN, ERODE_RUST,
-         ERODE_CORRODE, EF_NONE, EF_GREASE, Upolyd } from './const.js';
+         ERODE_CORRODE, EF_NONE, EF_GREASE, EF_VERBOSE, ER_NOTHING,
+         STONING, Upolyd } from './const.js';
 // uhitm.js — the hero attacking, or declining to attack, a monster.
 // C ref: src/uhitm.c
 //
-// Only do_attack()'s is_safemon branch is ported: the path taken when the hero
-// walks into a pet or other peaceful. That path is not a corner case. Probing
-// domove with an m_at() counter shows seed0030's hero steps onto a tame
-// monster sixteen times in one session, and each of those is an rn2(7) the C
-// draws and we do not.
-//
-// The hostile path (attack_checks and everything past it) is the real combat
-// code and is recorded, not faked.
+// Hero melee, attack checks, weapon handling, and the monster's passive
+// response are ported along the deterministic C-reference paths exercised by
+// the public and supplemental suites. Remaining unsupported branches record
+// explicit markers so coverage work can find them.
 
 import { game } from './gstate.js';
 import { helpless, MON_WEP } from './monst.js';
@@ -19,14 +16,15 @@ import { rn1 } from './rng.js';
 import { dmgtype } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor } from './worn.js';
-import { hitmsg, magic_negation, mpoisons_subj, mhis } from './mhitu.js';
-import { You, Your, You_hear, pline_The } from './pline.js';
+import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.js';
+import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
 import { end_running } from './hack.js';
-import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
-         pmname } from './do_name.js';
+import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
+         x_monnam, hliquid, pmname } from './do_name.js';
 import { destroy_items, exclam, hit, obj_resists } from './zap.js';
-import { Blind, Cold_resistance, Deaf, Hallucination, Flying,
-         Levitation } from './youprop.js';
+import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
+         Fire_resistance, Free_action, Hallucination, Flying, Levitation,
+         Reflecting, Shock_resistance, Stone_resistance } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible } from './display.js';
@@ -38,7 +36,7 @@ import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
          stone_missile } from './obj.js';
 import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
-import { obj_extract_self, useup } from './invent.js';
+import { obj_extract_self, update_inventory, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
@@ -50,6 +48,7 @@ import { clone_mon, goodpos, place_monster, remove_monster,
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee, set_apparxy } from './monmove.js';
+import { monnear } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
@@ -68,7 +67,7 @@ import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
          is_whirly, mon_hates_blessings, resists_blnd, has_head, mindless,
          resists_blnd_by_arti, resists_fire, resists_cold, resists_elec,
          resists_poison, resists_drli, defended, completelyburns,
-         noattacks } from './mondata.js';
+         noattacks, poly_when_stoned } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -97,8 +96,10 @@ import { body_part, mbodypart } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A } from './const.js';
 import { defsyms } from './drawing_data.js';
-import { get_artifact, spec_dbon } from './artifact.js';
+import { defends, defends_when_carried, get_artifact,
+         spec_dbon } from './artifact.js';
 import { cansee, vision_recalc } from './vision.js';
+import { make_stunned } from './potion.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -788,8 +789,8 @@ async function hitum_cleave(target, uattk) {
         game.notonhead = (mtmp.mx !== tx || mtmp.my !== ty);
         await known_hitum(mtmp, game.u.uwep, mhit, tmp,
                           out.role_roll_penalty, uattk, dieroll);
-        passive(mtmp, game.u.uwep, mhit[0], !DEADMONSTER(mtmp),
-                ATTKS.AT_WEAP, !game.u.uwep);
+        await passive(mtmp, game.u.uwep, mhit[0], !DEADMONSTER(mtmp),
+                      ATTKS.AT_WEAP, !game.u.uwep);
 
         if (!game.u.uwep || (game.multi || 0) < 0
             || (game.u.umortality || 0) > oldumort)
@@ -827,8 +828,8 @@ export async function hitum(mon, uattk) {
     let malive = await known_hitum(mon, game.u.uwep, mhit, tmp,
                              out.role_roll_penalty, uattk, dieroll);
     const wep_was_destroyed = !!(wepbefore && !game.u.uwep);
-    passive(mon, game.u.uwep, mhit[0], malive, ATTKS.AT_WEAP,
-            wep_was_destroyed);
+    await passive(mon, game.u.uwep, mhit[0], malive, ATTKS.AT_WEAP,
+                  wep_was_destroyed);
 
     /* second attack for two-weapon combat or skilled unarmed combat */
     if (game.twohits && !(game.override_confirmation
@@ -844,7 +845,8 @@ export async function hitum(mon, uattk) {
                              out.role_roll_penalty, uattk, dieroll);
         /* the second counter-attack only happens if the second hit lands */
         if (mhit[0])
-            note_unported_uhitm('hitum:passive2');
+            await passive(mon, secondwep, mhit[0], malive, ATTKS.AT_WEAP,
+                          !!(secondwep && !game.u.uswapwep));
     }
     game.twohits = 0;
     return malive;
@@ -985,8 +987,8 @@ export async function hmonas(mon) {
             continue;
         }
 
-        passive(mon, weapon, sum[i] !== M_ATTK_MISS,
-                !DEADMONSTER(mon), aatyp, false);
+        await passive(mon, weapon, sum[i] !== M_ATTK_MISS,
+                      !DEADMONSTER(mon), aatyp, false);
         const mhm = { hitflags: sum[i] };
         if (await mhitm_knockback(game.youmonst, mon, mattk, mhm,
                                  weapon_used))
@@ -1069,6 +1071,98 @@ async function damageum(mon, mattk, specialdmg) {
     return M_ATTK_HIT;
 }
 
+// src/potion.c split_mon(), for a mold or jelly strengthened by the hero's
+// heat. clone_mon() performs placement and divides current HP; this tail
+// divides maximum HP and emits the heat-specific message.
+async function split_mon_from_heat(mon) {
+    if (mon.mhp > mon.mhpmax)
+        mon.mhp = mon.mhpmax;
+    const clone = mon.mhp > 1 ? clone_mon(mon, 0, 0) : null;
+    if (!clone)
+        return null;
+
+    clone.mhpmax = Math.trunc(mon.mhpmax / 2);
+    mon.mhpmax -= clone.mhpmax;
+    if (canspotmon(mon))
+        await pline(`${Monnam(mon)} multiplies from your heat!`);
+    return clone;
+}
+
+// src/mhitm.c attk_protection(), the armor slots which keep an aggressive
+// passive defense from touching the attacker.
+function attk_protection(aatyp) {
+    switch (aatyp) {
+    case ATTKS.AT_NONE:
+    case ATTKS.AT_SPIT:
+    case ATTKS.AT_EXPL:
+    case ATTKS.AT_BOOM:
+    case ATTKS.AT_GAZE:
+    case ATTKS.AT_BREA:
+    case ATTKS.AT_MAGC:
+        return -1;
+    case ATTKS.AT_CLAW:
+    case ATTKS.AT_TUCH:
+    case ATTKS.AT_WEAP:
+        return W_ARMG;
+    case ATTKS.AT_KICK:
+        return W_ARMF;
+    case ATTKS.AT_BUTT:
+        return W_ARMH;
+    case ATTKS.AT_HUGS:
+        return W_ARMC | W_ARMG;
+    default:
+        return 0;
+    }
+}
+
+// src/uhitm.c erode_armor(), including its retry loop. Body armor is the one
+// branch which terminates even when there is no eligible object.
+async function erode_armor(mdef, hurt) {
+    for (;;) {
+        let target;
+        switch (rn2(5)) {
+        case 0:
+            target = which_armor(mdef, W_ARMH);
+            if (!target || await erode_obj(target, xname(target), hurt,
+                                           EF_GREASE) === ER_NOTHING)
+                continue;
+            break;
+        case 1:
+            target = which_armor(mdef, W_ARMC);
+            if (target) {
+                await erode_obj(target, xname(target), hurt,
+                                EF_GREASE | EF_VERBOSE);
+            } else {
+                target = which_armor(mdef, W_ARM)
+                         || which_armor(mdef, W_ARMU);
+                if (target)
+                    await erode_obj(target, xname(target), hurt,
+                                    EF_GREASE | EF_VERBOSE);
+            }
+            break;
+        case 2:
+            target = which_armor(mdef, W_ARMS);
+            if (!target || await erode_obj(target, xname(target), hurt,
+                                           EF_GREASE) === ER_NOTHING)
+                continue;
+            break;
+        case 3:
+            target = which_armor(mdef, W_ARMG);
+            if (!target || await erode_obj(target, xname(target), hurt,
+                                           EF_GREASE) === ER_NOTHING)
+                continue;
+            break;
+        case 4:
+            target = which_armor(mdef, W_ARMF);
+            if (!target || await erode_obj(target, xname(target), hurt,
+                                           EF_GREASE) === ER_NOTHING)
+                continue;
+            break;
+        }
+        return;
+    }
+}
+
 // src/uhitm.c passive() — the monster's counter-attack after the hero hits it.
 //
 // hitum calls this unconditionally, so its FIRST action matters on every
@@ -1086,9 +1180,10 @@ async function damageum(mon, mattk, specialdmg) {
 // That is the trap: a port that computed the damage inside the arm that needs
 // it would skip a draw for every arm that does not.
 //
-// The switch itself -- AD_FIRE, AD_ACID, AD_STON, AD_RUST, AD_CORR, AD_MAGM,
-// AD_ENCH and the rest, each with its own draws -- is recorded, not faked.
-export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
+// The supported switch arms preserve those draws and their visible and state
+// effects. Resistant golem-form side effects remain explicit unported markers.
+export async function passive(mon, weapon, mhitb, maliveb, aatyp,
+                              wep_was_destroyed) {
     const ptr = game.mons[mon.mnum];
     const mhit = mhitb ? M_ATTK_HIT : M_ATTK_MISS;
     const malive = maliveb ? M_ATTK_HIT : M_ATTK_MISS;
@@ -1103,10 +1198,11 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
 
     /* Note: tmp is not always used, but the draw happens regardless */
     const damn = ptr.mattk[i][2], damd = ptr.mattk[i][3];
+    let tmp = 0;
     if (damn)
-        d(damn, damd);
+        tmp = d(damn, damd);
     else if (damd)
-        d(mon.m_lev + 1, damd);
+        tmp = d(mon.m_lev + 1, damd);
 
     /*  These affect you even if they just died.  */
     const adtyp = ptr.mattk[i][1];
@@ -1117,11 +1213,12 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
            miss against a red mold draws nothing past the d() above. */
         if (mhitb && !mon.mcan && weapon) {
             if (aatyp === ATTKS.AT_KICK) {
-                if (game.uarmf && !rn2(6))
-                    note_unported_uhitm('passive:erode_obj:burn');
+                if (game.u.uarmf && !rn2(6))
+                    await erode_obj(game.u.uarmf, xname(game.u.uarmf),
+                                    ERODE_BURN, EF_GREASE | EF_VERBOSE);
             } else if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW
                        || aatyp === ATTKS.AT_MAGC || aatyp === ATTKS.AT_TUCH)
-                note_unported_uhitm('passive:passive_obj:fire');
+                await passive_obj(mon, weapon, ptr.mattk[i]);
         }
         break;
     case ATTKS.AD_ACID:
@@ -1131,27 +1228,54 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
            block then repeats the weapon test separately. Folding the two
            blocks together would lose the rn2(2) on every bare-handed hit. */
         if (mhitb && rn2(2)) {
-            note_unported_uhitm('passive:acid_splash');   /* mdamageu */
+            if (Blind() || !game.flags.verbose)
+                await You('are splashed!');
+            else
+                await You(`are splashed by ${s_suffix(mon_nam(mon))} ${
+                    hliquid('acid')}!`);
+            if (!Acid_resistance())
+                await mdamageu(mon, tmp);
             if (!rn2(30))
-                note_unported_uhitm('passive:erode_armor:corrode');
+                await erode_armor(game.youmonst, ERODE_CORRODE);
         }
         if (mhitb && weapon) {
             if (aatyp === ATTKS.AT_KICK) {
-                if (game.uarmf && !rn2(6))
-                    note_unported_uhitm('passive:erode_obj:corrode');
+                if (game.u.uarmf && !rn2(6))
+                    await erode_obj(game.u.uarmf, xname(game.u.uarmf),
+                                    ERODE_CORRODE,
+                                    EF_GREASE | EF_VERBOSE);
             } else if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW
                        || aatyp === ATTKS.AT_MAGC || aatyp === ATTKS.AT_TUCH)
-                note_unported_uhitm('passive:passive_obj:acid');
+                await passive_obj(mon, weapon, ptr.mattk[i]);
         }
-        note_unported_uhitm('passive:exercise:A_STR');
+        exercise(A_STR, false);
         break;
     case ATTKS.AD_STON:
         /* no draw of its own. The protection test decides whether you are
            stoned, and returns a THIRD value, M_ATTK_DEF_DIED, which neither
            of the two flag words above can express. */
         if (mhitb) {
-            note_unported_uhitm('passive:attk_protection');
-            /* Stone_resistance / poly_when_stoned / polymon / done_in_by */
+            let protector = attk_protection(aatyp);
+            if (aatyp === ATTKS.AT_MAGC)
+                protector = W_ARMG;
+            if (protector === 0
+                || (protector === W_ARMG && !game.u.uarmg
+                    && !game.u.uwep && !wep_was_destroyed)
+                || (protector === W_ARMF && !game.u.uarmf)
+                || (protector === W_ARMH && !game.u.uarmh)
+                || (protector === (W_ARMC | W_ARMG)
+                    && (!game.u.uarmc || !game.u.uarmg))) {
+                if (!Stone_resistance()) {
+                    if (poly_when_stoned(game.youmonst.data)) {
+                        const { polymon } = await import('./polyself.js');
+                        if (await polymon(PMNAMES.PM_STONE_GOLEM))
+                            break;
+                    }
+                    const { done_in_by } = await import('./end.js');
+                    await done_in_by(mon, STONING);
+                    return M_ATTK_DEF_DIED;
+                }
+            }
         }
         break;
     case ATTKS.AD_RUST:
@@ -1163,16 +1287,25 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
            a draw to these two or drop it from the other two. */
         if (mhitb && !mon.mcan && weapon) {
             if (aatyp === ATTKS.AT_KICK) {
-                if (game.uarmf)
-                    note_unported_uhitm('passive:erode_obj:rust_corr');
+                if (game.u.uarmf)
+                    await erode_obj(game.u.uarmf, xname(game.u.uarmf),
+                                    adtyp === ATTKS.AD_RUST
+                                        ? ERODE_RUST : ERODE_CORRODE,
+                                    EF_GREASE | EF_VERBOSE);
             } else if (aatyp === ATTKS.AT_WEAP || aatyp === ATTKS.AT_CLAW
                        || aatyp === ATTKS.AT_MAGC || aatyp === ATTKS.AT_TUCH)
-                note_unported_uhitm('passive:passive_obj:rust_corr');
+                await passive_obj(mon, weapon, ptr.mattk[i]);
         }
         break;
     case ATTKS.AD_MAGM:
         /* wrath of gods for attacking Oracle -- no draw either way */
-        note_unported_uhitm('passive:magic_missiles');
+        if (Antimagic()) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await pline('A hail of magic missiles narrowly misses you!');
+        } else {
+            await You('are hit by magic missiles appearing from thin air!');
+            await mdamageu(mon, tmp);
+        }
         break;
     case ATTKS.AD_ENCH:     /* KMH -- remove enchantment (disenchanter) */
         /* The `break`s inside this if leave the SWITCH, not the if, so they
@@ -1186,7 +1319,7 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
                        || (aatyp >= ATTKS.AT_STNG && aatyp < ATTKS.AT_WEAP)) {
                 break;                  /* no object involved */
             }
-            note_unported_uhitm('passive:passive_obj:ench');
+            await passive_obj(mon, weapon, ptr.mattk[i]);
         }
         break;
     default:
@@ -1207,13 +1340,87 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
            as C writes it so a grep for the C line finds this one. */
         switch (adtyp) {
         case ATTKS.AD_PLYS:
+            if (mon.mnum === PMNAMES.PM_FLOATING_EYE) {
+                if (!canseemon(mon))
+                    break;
+                if (mon.mcansee) {
+                    if (Reflecting()) {
+                        const { ureflects } = await import('./zap.js');
+                        await ureflects('%s gaze is reflected by your %s.',
+                                        s_suffix(Monnam(mon)));
+                    } else if (Hallucination() && rn2(4)) {
+                        await pline(`${Monnam(mon)} looks ${
+                            rn2(2) ? 'rather ' : ''}${
+                            rn2(2) ? 'stupefied' : 'numb'}.`);
+                    } else if (Free_action()) {
+                        await You(`momentarily stiffen under ${
+                            s_suffix(mon_nam(mon))} gaze!`);
+                    } else {
+                        await You(`are frozen by ${
+                            s_suffix(mon_nam(mon))} gaze!`);
+                        const duration = ACURR(A_WIS) > 12 || rn2(4)
+                            ? -tmp : -127;
+                        nomul(duration);
+                        game.multi_reason = `frozen by ${
+                            s_suffix(mon_nam(mon))} gaze`;
+                        game.nomovemsg = null;
+                    }
+                } else {
+                    await pline(`${Adjmonnam(mon, 'blind')} cannot defend itself.`);
+                    if (!rn2(500))
+                        change_luck(-1);
+                }
+            } else if (Free_action()) {
+                await You('momentarily stiffen.');
+            } else {
+                await You(`are frozen by ${mon_nam(mon)}!`);
+                game.nomovemsg = 'You can move again.';
+                nomul(-tmp);
+                game.multi_reason = `frozen by ${mon_nam(mon)}`;
+                exercise(A_DEX, false);
+            }
+            break;
         case ATTKS.AD_COLD:
+            if (monnear(mon, game.u.ux, game.u.uy)) {
+                if (Cold_resistance()) {
+                    await shieldeff(game.u.ux, game.u.uy);
+                    await You_feel('a mild chill.');
+                    note_unported_uhitm('passive:ugolemeffects:cold');
+                    break;
+                }
+                await You('are suddenly very cold!');
+                await mdamageu(mon, tmp);
+                healmon(mon, Math.trunc((tmp + rn2(2)) / 2),
+                        Math.trunc((tmp + 1) / 2));
+                if (mon.mhpmax > ((mon.m_lev | 0) + 1) * 8)
+                    await split_mon_from_heat(mon);
+            }
+            break;
         case ATTKS.AD_STUN:
+            if (!(game.u.intrinsic?.HStun || game.u.uprops?.STUNNED))
+                await make_stunned(tmp, true);
+            break;
         case ATTKS.AD_FIRE:
+            if (monnear(mon, game.u.ux, game.u.uy)) {
+                if (Fire_resistance()) {
+                    await shieldeff(game.u.ux, game.u.uy);
+                    await You_feel('mildly warm.');
+                    note_unported_uhitm('passive:ugolemeffects:fire');
+                    break;
+                }
+                await You('are suddenly very hot!');
+                await mdamageu(mon, tmp);
+            }
+            break;
         case ATTKS.AD_ELEC:
-            /* the five arms of C's second switch (paralysis, brown mold or
-               blue jelly chill, yellow mold stun, fire, shock) */
-            note_unported_uhitm(`passive:alive_switch:adtyp=${adtyp}`);
+            if (Shock_resistance()) {
+                await shieldeff(game.u.ux, game.u.uy);
+                await You_feel('a mild tingle.');
+                note_unported_uhitm('passive:ugolemeffects:elec');
+                break;
+            }
+            await You('are jolted with electricity!');
+            await mdamageu(mon, tmp);
             break;
         default:
             break;  /* C's default arm is empty */
@@ -1224,10 +1431,31 @@ export function passive(mon, weapon, mhitb, maliveb, aatyp, wep_was_destroyed) {
 }
 
 // src/uhitm.c:6127 passive_obj() applies a monster's AT_NONE defense to
-// the object that struck it. The disenchantment arm stays recorded until
-// drain_item is available; the four erosion arms are complete.
+// the object that struck it.
+function drain_item(obj, by_you) {
+    const oclass = game.objects[obj?.otyp];
+    if (!obj
+        || (!(oclass?.oc_charged)
+            && obj.oclass !== OCLASSES.WEAPON_CLASS
+            && obj.oclass !== OCLASSES.ARMOR_CLASS
+            && !is_weptool(obj))
+        || (obj.spe | 0) <= 0)
+        return false;
+    if (defends(ATTKS.AD_DRLI, obj)
+        || defends_when_carried(ATTKS.AD_DRLI, obj)
+        || obj_resists(obj, 10, 90))
+        return false;
+
+    if (by_you && obj.unpaid)
+        note_unported_uhitm('drain_item:costly_alteration');
+    obj.spe--;
+    if (carried(obj))
+        update_inventory();
+    return true;
+}
+
 export async function passive_obj(mon, obj, mattk = null) {
-    if (!mon || !obj)
+    if (!mon)
         return;
 
     const ptr = mon.data || game.mons[mon.mnum];
@@ -1235,6 +1463,15 @@ export async function passive_obj(mon, obj, mattk = null) {
         mattk = ptr?.mattk?.find((attk) => attk?.[0] === ATTKS.AT_NONE);
     if (!mattk)
         return;
+
+    if (!obj) {
+        obj = game.u.twoweap && game.u.uswapwep && !rn2(2)
+            ? game.u.uswapwep : game.u.uwep;
+        if (!obj && mattk[1] === ATTKS.AD_ENCH)
+            obj = game.u.uarmg;
+        if (!obj)
+            return;
+    }
 
     switch (mattk[1]) {
     case ATTKS.AD_FIRE:
@@ -1255,8 +1492,10 @@ export async function passive_obj(mon, obj, mattk = null) {
             await erode_obj(obj, null, ERODE_CORRODE, EF_GREASE);
         break;
     case ATTKS.AD_ENCH:
-        if (!mon.mcan)
-            note_unported_uhitm('passive_obj:drain_item');
+        if (!mon.mcan && drain_item(obj, true)
+            && carried(obj)
+            && (obj.known || obj.oclass === OCLASSES.ARMOR_CLASS))
+            await pline(`${Yobjnam2(obj, 'seem')} less effective.`);
         break;
     default:
         break;

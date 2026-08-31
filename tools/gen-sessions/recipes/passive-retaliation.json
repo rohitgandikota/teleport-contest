@@ -1,0 +1,106 @@
+{
+  "name": "passive-retaliation",
+  "description": "Debug heroes exercise monster passive counter-attacks, including two-weapon erosion and surviving gaze retaliation.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.melee",
+    "combat.twoweapon",
+    "monster.hero-melee",
+    "object.weapons",
+    "object.buc-enchant-erosion",
+    "ui.getlin",
+    "ui.more-paging",
+    "monster.special-effects",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "combat.passive.acid-splash",
+    "combat.passive.cold-heat-split",
+    "combat.passive.cockatrice-petrification",
+    "combat.passive.disenchantment",
+    "combat.passive.electric-shock",
+    "combat.passive.fire-heat",
+    "combat.passive.floating-eye-gaze",
+    "combat.passive.gelatinous-paralysis",
+    "combat.passive.oracle-missiles",
+    "combat.passive.pudding-corrosion",
+    "combat.passive.rust-primary-weapon",
+    "combat.passive.rust-secondary-weapon",
+    "combat.passive.yellow-mold-stun"
+  ],
+  "segments": [
+    {
+      "seed": 6913,
+      "datetime": "20000112090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #twoweapon\r\u0007hostile rust monster\ru   "
+    },
+    {
+      "seed": 2179,
+      "datetime": "20000112090500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase accuracy\rPor\u0017uncursed carrot\rwp\u0007hostile floating eye\rb bb   "
+    },
+    {
+      "seed": 2179,
+      "datetime": "20000112091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase accuracy\rPor\u0017uncursed carrot\rwp\u0007hostile gelatinous cube\rb bbb   "
+    },
+    {
+      "seed": 2179,
+      "datetime": "20000112091500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase accuracy\rPor\u0017uncursed carrot\rwp\u0007hostile blue jelly\rb bbb   "
+    },
+    {
+      "seed": 2179,
+      "datetime": "20000112092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase accuracy\rPor\u0017uncursed carrot\rwp\u0007hostile yellow mold\rb bbb   "
+    },
+    {
+      "seed": 2179,
+      "datetime": "20000112092500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase accuracy\rPor\u0017uncursed carrot\rwp\u0007hostile fire elemental\rb "
+    },
+    {
+      "seed": 2179,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017blessed +10 ring of increase accuracy\rPor\u0017uncursed carrot\rwp\u0007hostile energy vortex\rb b"
+    },
+    {
+      "seed": 6913,
+      "datetime": "20000112093500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile acid blob\ru   "
+    },
+    {
+      "seed": 6913,
+      "datetime": "20000112094000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile black pudding\ru   "
+    },
+    {
+      "seed": 6913,
+      "datetime": "20000112094500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile Oracle\ryu   "
+    },
+    {
+      "seed": 6914,
+      "datetime": "20000112095000",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +3 leather gloves\rWfw-\u0007hostile disenchanter\rj   "
+    },
+    {
+      "seed": 6913,
+      "datetime": "20000112095500",
+      "nethackrc": "OPTIONS=name:wizard,role:Samurai,race:human,gender=male,align=lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             w-\u0007hostile cockatrice\ru   "
+    }
+  ]
+}

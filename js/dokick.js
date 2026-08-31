@@ -250,7 +250,7 @@ async function kickdmg(mon, clumsy) {
         note_unported_dokick('kickdmg:reel');
     }
 
-    passive(mon, boots, true, !DEADMONSTER(mon), ATTKS.AT_KICK, false);
+    await passive(mon, boots, true, !DEADMONSTER(mon), ATTKS.AT_KICK, false);
     if (DEADMONSTER(mon))
         await killed(mon);
     if (kick_skill)
@@ -270,7 +270,7 @@ async function kick_monster(mon, x, y) {
         && !is_flyer(ptr)) {
         await pline('Floating in the air, you miss wildly!');
         exercise(A_DEX, false);
-        passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK, false);
+        await passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK, false);
         return;
     }
 
@@ -299,8 +299,8 @@ async function kick_monster(mon, x, y) {
         if (!rn2(i < j10 ? 2 : i < j5 ? 3 : 4)) {
             if (!martial()) {
                 await Your('clumsy kick does no damage.');
-                passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK,
-                        false);
+                await passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK,
+                              false);
                 return;
             }
         }
@@ -323,7 +323,8 @@ async function kick_monster(mon, x, y) {
         && !mon.mstun && !mon.mconf && !mon.msleeping && ptr.mmove >= 12) {
         if (!nohands(ptr) && !rn2(martial() ? 5 : 3)) {
             await pline(`${Monnam(mon)} blocks your ${clumsy ? 'clumsy ' : ''}kick.`);
-            passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK, false);
+            await passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK,
+                          false);
             return;
         }
 
@@ -334,7 +335,8 @@ async function kick_monster(mon, x, y) {
                 : is_flyer(ptr) ? 'swoops'
                   : (nolimbs(ptr) || slithy(ptr)) ? 'slides' : 'jumps';
             await pline(`${Monnam(mon)} ${motion}, ${clumsy ? 'easily' : 'nimbly'} evading your ${clumsy ? 'clumsy ' : ''}kick.`);
-            passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK, false);
+            await passive(mon, game.u.uarmf, false, true, ATTKS.AT_KICK,
+                          false);
             return;
         }
     }

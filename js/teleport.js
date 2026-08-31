@@ -19,6 +19,7 @@ import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
          BOLT_LIM, VAULT, STRAT_APPEARMSG, OBJ_FREE, OBJ_INVENT,
          SHOPBASE, TEMPLE, A_STR, A_WIS, TELEP_TRAP, LEVEL_TELEP,
          FORCETRAP, I_SPECIAL, NHW_MENU, MENU_BEHAVE_STANDARD, PICK_ONE,
+         SLT_ENCUMBER,
          MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED } from './const.js';
 import { rnl } from './rng.js';
 import { pline, see_nearby_objects, canspotmon, canseemon,
@@ -28,7 +29,7 @@ import { Blind, Hallucination, Teleport_control, Teleportation }
 import { is_demon, is_lord, is_prince, is_covetous,
          passes_walls, can_teleport } from './mondata.js';
 import { You, You_feel, You_cant } from './pline.js';
-import { getlin } from './cmd.js';
+import { getlin, preparePunishmentMove, finishPunishmentMove } from './cmd.js';
 import { get_level, find_hell, depth, print_dungeon,
          dunlevs_in_dungeon } from './dungeon.js';
 import { rnd } from './rng.js';
@@ -50,7 +51,7 @@ import { distu, distmin } from './hacklib.js';
 import { isok, ECMD_OK, ECMD_TIME, VIBRATING_SQUARE, is_pit, is_hole } from './const.js';
 import { ONAMES } from './objects_data.js';
 import { learnscroll } from './read.js';
-import { ACURR, exercise } from './attrib.js';
+import { ACURR, exercise, near_capacity } from './attrib.js';
 import { PMNAMES } from './monst_data.js';
 import { known_spell, spe_Fresh, spe_Unknown, spelleffects, tport_spell,
          NOOP_SPELL, HIDE_SPELL, ADD_SPELL }
@@ -680,13 +681,21 @@ function teleok(x, y, trapok) {
 // src/teleport.c teleds() — put the hero at <nux,nuy>.
 //
 // A distant teleport unplaces the punishment pieces and puts them back below
-// the hero at the destination. The nearby drag cases still need drag_ball().
+// the hero at the destination. A nearby relocation can leave the ball in
+// place while moving the chain, or drag both pieces for an allowed short move.
 export async function teleds(nux, nuy, teleds_flags) {
     const is_teleport = !!(teleds_flags & TELEDS_TELEPORT);
     const ball = game.u.uball;
-    const ballActive = !!(ball && ball.where !== OBJ_FREE);
+    const ballActive = !!(ball && game.u.uchain && ball.where !== OBJ_FREE);
+    let allowDrag = !!(teleds_flags & TELEDS_ALLOW_DRAG);
     let ballUnplaced = false;
+    let punishmentMove = null;
     let vaultFns = null, vaultGuard = null;
+
+    if (!ballActive
+        || near_capacity() > SLT_ENCUMBER
+        || distmin(game.u.ux, game.u.uy, nux, nuy) > 1)
+        allowDrag = false;
 
     if (game.u.urooms) {
         vaultFns = await import('./vault.js');
@@ -700,11 +709,16 @@ export async function teleds(nux, nuy, teleds_flags) {
     if (ballActive) {
         const ballStillInRange = ball.where !== OBJ_INVENT
             && distmin(nux, nuy, ball.ox, ball.oy) <= 2;
-        if (!ballStillInRange) {
+        if (ballStillInRange || allowDrag) {
+            punishmentMove = await preparePunishmentMove(nux, nuy, allowDrag);
+            if (!punishmentMove && game.u.uball
+                && game.u.uball.where !== OBJ_FREE) {
+                unplacebc();
+                ballUnplaced = true;
+            }
+        } else {
             unplacebc();
             ballUnplaced = true;
-        } else {
-            note_unported_teleport('teleds:nearby_ball_drag');
         }
     }
 
@@ -713,7 +727,9 @@ export async function teleds(nux, nuy, teleds_flags) {
     game.u.uy0 = uy0;
     u_on_newpos(nux, nuy);
 
-    if (ballUnplaced)
+    if (punishmentMove)
+        finishPunishmentMove(punishmentMove);
+    else if (ballUnplaced)
         await placebc();
 
     newsym(ux0, uy0);           /* clear the old position */

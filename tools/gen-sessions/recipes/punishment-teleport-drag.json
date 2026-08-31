@@ -1,0 +1,23 @@
+{
+  "name": "punishment-teleport-drag",
+  "description": "A punished debug Wizard exercises nearby and distant relocation of the heavy iron ball and chain against the original C implementation.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.scrolls",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "teleport.punishment.distant-replace",
+    "teleport.punishment.nearby-chain-only"
+  ],
+  "segments": [
+    {
+      "seed": 6960,
+      "datetime": "20000112121500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed scroll of punishment\ri\u001bro m\u0014whhhhhhhhhhhhh.\u001b\u001b\u0006hhm\u0014wjj.\u0006"
+    }
+  ]
+}

@@ -1867,7 +1867,7 @@ function chainInMiddle(heroX, heroY, chainX, chainY, ballX, ballY) {
 /* src/ball.c drag_ball(). This prepares the new coordinates and removes the
    pieces before the hero moves. finishPunishmentMove() puts them back after
    vision has been recalculated, matching move_bc(1) and move_bc(0). */
-async function preparePunishmentMove(x, y) {
+export async function preparePunishmentMove(x, y, allowDrag = true) {
     const u = game.u;
     const ball = u.uball;
     const chain = u.uchain;
@@ -1920,20 +1920,22 @@ async function preparePunishmentMove(x, y) {
                     const rock1 = chainRock(tempx, tempy);
                     const rock2 = chainRock(tempx2, tempy2);
                     if (rock1 && !rock2 && !alreadyInRock) {
-                        if ((dist2(u.ux, u.uy, ball.ox, ball.oy) === 5
-                             && dist2(x, y, tempx, tempy) === 1)
-                            || (dist2(u.ux, u.uy, ball.ox, ball.oy) === 4
-                                && dist2(x, y, tempx, tempy) === 2)) {
+                        if (allowDrag
+                            && ((dist2(u.ux, u.uy, ball.ox, ball.oy) === 5
+                                 && dist2(x, y, tempx, tempy) === 1)
+                                || (dist2(u.ux, u.uy, ball.ox, ball.oy) === 4
+                                    && dist2(x, y, tempx, tempy) === 2))) {
                             dragBoth = true;
                         } else {
                             state.chainx = tempx2;
                             state.chainy = tempy2;
                         }
                     } else if (!rock1 && rock2 && !alreadyInRock) {
-                        if ((dist2(u.ux, u.uy, ball.ox, ball.oy) === 5
-                             && dist2(x, y, tempx2, tempy2) === 1)
-                            || (dist2(u.ux, u.uy, ball.ox, ball.oy) === 4
-                                && dist2(x, y, tempx2, tempy2) === 2)) {
+                        if (allowDrag
+                            && ((dist2(u.ux, u.uy, ball.ox, ball.oy) === 5
+                                 && dist2(x, y, tempx2, tempy2) === 1)
+                                || (dist2(u.ux, u.uy, ball.ox, ball.oy) === 4
+                                    && dist2(x, y, tempx2, tempy2) === 2))) {
                             dragBoth = true;
                         } else {
                             state.chainx = tempx;
@@ -2041,7 +2043,7 @@ async function preparePunishmentMove(x, y) {
     return state;
 }
 
-function finishPunishmentMove(state) {
+export function finishPunishmentMove(state) {
     if (!state)
         return;
 

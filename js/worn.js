@@ -9,7 +9,7 @@ import { MON_WEP } from './monst.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
          W_CHAIN, W_ARMOR, W_ART, W_SADDLE, I_SPECIAL, BOLT_LIM, BLINDED,
-         AC_MAX, PRONOUN_HALLU, DISMOUNT_FELL } from './const.js';
+         AC_MAX, PRONOUN_HALLU, DISMOUNT_FELL, NH_BLACK } from './const.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MFLAGS, MONSYMS, PMNAMES } from './monst_data.js';
 import { verysmall, nohands, is_animal, mindless, slithy, cantweararm,
@@ -22,10 +22,11 @@ import { ARM_BONUS, PROP_KEYS, cancel_doff, cloak_simple_name }
 import { is_weptool, place_object } from './mkobj.js';
 import { set_twoweap } from './wield.js';
 import { update_inventory, obj_extract_self } from './invent.js';
-import { Monnam, mon_nam } from './do_name.js';
-import { distant_name, doname } from './objnam.js';
-import { canseemon, pline } from './display.js';
+import { Monnam, mon_nam, hcolor } from './do_name.js';
+import { distant_name, doname, simpleonames, otense } from './objnam.js';
+import { canseemon, newsym, pline } from './display.js';
 import { See_invisible } from './youprop.js';
+import { makeknown } from './o_init.js';
 import { ART_EYES_OF_THE_OVERWORLD } from './artilist_data.js';
 import { genders as genders_tbl } from './role_data.js';
 import { set_artifact_intrinsic } from './artifact.js';
@@ -315,10 +316,7 @@ function m_dowear_type(mon, flag, creation, racialexception) {
        wearing one can change visibility. Keep that display-RNG side effect
        even when this slot has no candidate. */
     const sawmon = canseemon(mon);
-    if (See_invisible())
-        Monnam(mon);
-    else
-        mon_nam(mon);
+    const nambuf = See_invisible() ? Monnam(mon) : mon_nam(mon);
 
     old = which_armor(mon, flag);
     if (old && old.cursed)
@@ -421,6 +419,14 @@ function m_dowear_type(mon, flag, creation, racialexception) {
         if (autocurse)
             best.cursed = true;         /* curse(best) */
         update_mon_extrinsics(mon, best, true, creation);
+
+        if (!creation && sawmon !== canseemon(mon)
+            && mon.minvis && !See_invisible()) {
+            const message = pline(`Suddenly you cannot see ${nambuf}.`);
+            makeknown(best.otyp);
+            return message;
+        }
+        return null;
     };
 
     if (!creation && sawmon) {
@@ -437,8 +443,13 @@ function m_dowear_type(mon, flag, creation, racialexception) {
             else if (/^an /i.test(newarm))
                 newarm = `another ${newarm.slice(3)}`;
         }
-        return pline(`${Monnam(mon)}${prefix} puts on ${newarm}.`)
-            .then(finishWear);
+        let message = pline(`${Monnam(mon)}${prefix} puts on ${newarm}.`);
+        if (autocurse) {
+            message = message.then(() => pline(
+                `${s_suffix(Monnam(mon))} ${simpleonames(best)} `
+                + `${otense(best, 'glow')} ${hcolor(NH_BLACK)} for a moment.`));
+        }
+        return message.then(finishWear);
     }
     finishWear();
     return null;
@@ -477,6 +488,7 @@ const is_elven_armor = (o) =>
 function update_mon_extrinsics(mon, obj, on, silently) {
     let which = game.objects[obj.otyp].oc_oprop;
     const altwhich = altprop(obj);
+    const unseen = !canseemon(mon);
 
     mon.mextrinsics = mon.mextrinsics || 0;
 
@@ -552,8 +564,9 @@ function update_mon_extrinsics(mon, obj, on, silently) {
         mon.minvis = on ? 0 : mon.perminvis;
     }
 
-    /* the usteed/SADDLE dismount and the newsym() visibility update need the
-       steed and display state */
+    /* The usteed/SADDLE dismount still needs the steed state. */
+    if (!silently && unseen !== !canseemon(mon))
+        newsym(mon.mx, mon.my);
 }
 
 // include/prop.h:25 res_to_mr() — the first eight props are the MR_ bits.

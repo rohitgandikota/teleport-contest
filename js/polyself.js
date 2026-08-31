@@ -7,13 +7,14 @@
 
 import { game } from './gstate.js';
 import { is_neuter, humanoid, slithy, attacktype, name_to_monplus,
-         strongmonst, sliparm, nohands, verysmall, is_whirly } from './mondata.js';
+         strongmonst, sliparm, breakarm, nohands, verysmall,
+         is_whirly } from './mondata.js';
 import { mons, PMNAMES, MONSYMS, ATTKS, MFLAGS } from './monst_data.js';
 import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
          HEAD, LEG, TOE, HAIR, EYE, NOSE, A_STR, A_WIS, A_CON,
          ECMD_OK, ECMD_TIME, KILLED_BY_AN, Upolyd, FROMFORM } from './const.js';
 import { rn2, rn1, d, rnd } from './rng.js';
-import { OCLASSES } from './objects_data.js';
+import { OCLASSES, ONAMES } from './objects_data.js';
 
 /* src/polyself.c:1975 — the per-shape body-part tables, in C's order:
    ARM, EYE, FACE, FINGER, FINGERTIP, FOOT, HAND, HANDED, HEAD, LEG,
@@ -402,6 +403,7 @@ export async function polymon(mntmp) {
     const oldAc = u.uac;
     let droppedCloak = false;
     let droppedWeaponMessage = null;
+    const breaksArmor = breakarm(mdat);
 
     (u.uconduct ||= {}).polyselfs = (u.uconduct.polyselfs | 0) + 1;
 
@@ -465,7 +467,48 @@ export async function polymon(mntmp) {
     if (u.ulevel < mlvl)
         u.mtimedone = Math.trunc(u.mtimedone * u.ulevel / mlvl);
 
-    if (sliparm(mdat) && u.uarm) {
+    if (breaksArmor && u.uarm) {
+        const armor = u.uarm;
+        await You('break out of your armor!');
+        exercise(A_STR, false);
+        const { setnotworn } = await import('./worn.js');
+        setnotworn(armor);
+        const { useup } = await import('./invent.js');
+        useup(armor);
+    }
+
+    if (breaksArmor && u.uarmc) {
+        const cloak = u.uarmc;
+        const { cloak_simple_name } = await import('./do_wear.js');
+        const cloakName = cloak_simple_name(cloak);
+        const { setnotworn } = await import('./worn.js');
+        setnotworn(cloak);
+        if (cloak.otyp === ONAMES.MUMMY_WRAPPING) {
+            const { Your } = await import('./pline.js');
+            await Your(`${cloakName} tears apart!`);
+            const { useup } = await import('./invent.js');
+            useup(cloak);
+        } else {
+            const { pline } = await import('./display.js');
+            await pline(cloak.otyp === ONAMES.ALCHEMY_SMOCK
+                ? `The knot on your ${cloakName} is pulled apart!`
+                : `The clasp on your ${cloakName} breaks open!`);
+            const { dropx } = await import('./do.js');
+            await dropx(cloak);
+        }
+    }
+
+    if (breaksArmor && u.uarmu) {
+        const shirt = u.uarmu;
+        const { Your } = await import('./pline.js');
+        await Your('shirt rips to shreds!');
+        const { setnotworn } = await import('./worn.js');
+        setnotworn(shirt);
+        const { useup } = await import('./invent.js');
+        useup(shirt);
+    }
+
+    if (!breaksArmor && sliparm(mdat) && u.uarm) {
         const armor = u.uarm;
         const { Your } = await import('./pline.js');
         await Your('armor falls around you!');
@@ -475,7 +518,7 @@ export async function polymon(mntmp) {
         await dropx(armor);
     }
 
-    if (sliparm(mdat) && u.uarmc) {
+    if (!breaksArmor && sliparm(mdat) && u.uarmc) {
         const cloak = u.uarmc;
         const { cloak_simple_name } = await import('./do_wear.js');
         await You(`shrink out of your ${cloak_simple_name(cloak)}!`);

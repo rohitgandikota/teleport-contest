@@ -1,0 +1,22 @@
+{
+  "name": "scroll-remove-curse-unpunish",
+  "description": "A debug Wizard reads remove curse while punished, destroying the attached chain while leaving the detached heavy iron ball on the floor.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.scrolls",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "scroll.remove-curse.unpunish"
+  ],
+  "segments": [
+    {
+      "seed": 2225,
+      "datetime": "20000110123000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed scroll of remove curse\ri\u001b\u0017cursed scroll of punishment\ri\u001brn rm \u001b\u001b, i\u001b"
+    }
+  ]
+}

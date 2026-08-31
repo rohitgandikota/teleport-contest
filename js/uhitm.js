@@ -52,7 +52,7 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
          FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET,
-         TEST_MOVE, ROOM, CORR, xdir, ydir } from './const.js';
+         TEST_MOVE, ROOM, CORR, xdir, ydir, STRAT_WAITFORU } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
@@ -63,7 +63,7 @@ import { greatest_erosion, worn } from './do_wear.js';
 import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
          is_whirly, mon_hates_blessings, resists_blnd,
-         resists_blnd_by_arti } from './mondata.js';
+         resists_blnd_by_arti, noattacks } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -79,7 +79,8 @@ import { dist2, sgn, distu } from './hacklib.js';
 import { ATTKS } from './monst_data.js';
 import { STR18 } from './const.js';
 import { ACURR } from './attrib.js';
-import { W_ARM, W_ARMS, P_BARE_HANDED_COMBAT, P_BASIC,
+import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
+         P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
          W_ARMG, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
          NEED_WEAPON, XKILL_NOMSG, STRAT_WAITMASK, engulfing_u,
@@ -267,8 +268,11 @@ export async function do_attack(mtmp) {
     if (await attack_checks(mtmp, game.u.uwep))
         return true;
 
-    if (game.u.umonnum !== undefined && game.Upolyd)
-        note_unported_uhitm('do_attack:polyd');
+    if (Upolyd(game.u) && noattacks(game.youmonst.data)) {
+        await You('have no way to attack monsters physically.');
+        mtmp.mstrategy &= ~STRAT_WAITMASK;
+        return true;
+    }
 
     /* src/uhitm.c:530 — check_capacity() prints and returns 1 when the hero
        is overloaded; overexertion() calls gethungry(), which DRAWS, so an
@@ -303,9 +307,10 @@ export async function do_attack(mtmp) {
         && !helpless(mtmp) && !mtmp.mconf && mtmp.mcansee && !rn2(7))
         note_unported_uhitm('do_attack:leprechaun_dodge');
 
-    /* C passes gy.youmonst.data->mattk, i.e. the FIRST attack row; hitum
-       reads uattk->aatyp from it. */
-    await hitum(mtmp, mattk_row(game.youmonst.data.mattk[0]));
+    if (Upolyd(game.u))
+        await hmonas(mtmp);
+    else
+        await hitum(mtmp, mattk_row(game.youmonst.data.mattk[0]));
 
     if (game.context?.forcefight && !DEADMONSTER(mtmp) && !canspotmon(mtmp))
         note_unported_uhitm('do_attack:forcefight_map_invisible');
@@ -830,6 +835,188 @@ export async function hitum(mon, uattk) {
     return malive;
 }
 
+// src/uhitm.c:5424 hmonas(), the polymorphed hero's natural attack loop.
+//
+// Weapon-capable forms use a wielded weapon for their first claw, then use
+// the remaining natural attacks. Each attack has its own passive response and
+// knockback check. Keeping those outside known_hitum() is important because
+// hmon_hitmon() deliberately suppresses its ordinary weapon knockback while
+// the hero is polymorphed.
+export async function hmonas(mon) {
+    const attacks = game.youmonst.data.mattk;
+    const sum = Array(NATTK).fill(M_ATTK_MISS);
+    const roll = { attk_count: 0, role_roll_penalty: 0 };
+    const multi_claw = attacks.filter((a) =>
+        a[0] === ATTKS.AT_WEAP || a[0] === ATTKS.AT_CLAW
+        || a[0] === ATTKS.AT_TUCH).length > 1;
+    let weapon_used = false;
+    let odd_claw = true;
+
+    game.twohits = 0;
+
+    for (let i = 0; i < NATTK; i++) {
+        if (i > 0 && (m_at(game.bhitpos.x, game.bhitpos.y) !== mon
+                      || DEADMONSTER(mon)))
+            continue;
+
+        const mattk = attacks[i];
+        const aatyp = mattk[0];
+        let weapon = null;
+        let dhit = 0;
+
+        if (aatyp === ATTKS.AT_NONE || aatyp === ATTKS.AT_BOOM
+            || aatyp === ATTKS.AT_BREA || aatyp === ATTKS.AT_SPIT
+            || aatyp === ATTKS.AT_GAZE) {
+            continue;
+        }
+
+        const use_weapon = aatyp === ATTKS.AT_WEAP
+            || (aatyp === ATTKS.AT_CLAW && game.u.uwep
+                && !cantwield(game.youmonst.data) && !weapon_used)
+            || (aatyp === ATTKS.AT_TUCH && game.u.uwep
+                && game.youmonst.data.mlet === MONSYMS.S_LICH
+                && !weapon_used);
+
+        if (use_weapon) {
+            odd_claw = !odd_claw;
+            weapon_used = true;
+            weapon = game.u.uwep;
+            const tmp = await find_roll_to_hit(mon, ATTKS.AT_WEAP,
+                                               weapon, roll);
+            mon_maybe_unparalyze(mon);
+            const dieroll = rnd(20);
+            const mhit = [(tmp > dieroll || game.u.uswallow) ? 1 : 0];
+            const malive = await known_hitum(
+                mon, weapon, mhit, tmp, roll.role_roll_penalty,
+                mattk_row(mattk), dieroll);
+            weapon = game.u.uwep;
+            sum[i] = malive
+                ? (mhit[0] ? M_ATTK_HIT : M_ATTK_MISS)
+                : M_ATTK_DEF_DIED;
+            dhit = mhit[0];
+        } else if (aatyp === ATTKS.AT_CLAW || aatyp === ATTKS.AT_TUCH
+                   || aatyp === ATTKS.AT_KICK || aatyp === ATTKS.AT_BITE
+                   || aatyp === ATTKS.AT_STNG || aatyp === ATTKS.AT_BUTT
+                   || aatyp === ATTKS.AT_TENT) {
+            const tmp = await find_roll_to_hit(mon, aatyp, null, roll);
+            mon_maybe_unparalyze(mon);
+            const dieroll = rnd(20);
+            dhit = (tmp > dieroll || game.u.uswallow) ? 1 : 0;
+
+            if (dhit) {
+                await wakeup(mon, true);
+                let specialdmg = 0;
+                if (aatyp === ATTKS.AT_CLAW || aatyp === ATTKS.AT_TUCH) {
+                    odd_claw = !odd_claw;
+                    const armask = W_ARMG
+                        | ((odd_claw || !multi_claw) ? W_RINGL : 0)
+                        | ((!odd_claw || !multi_claw) ? W_RINGR : 0);
+                    specialdmg = special_dmgval(
+                        game.youmonst, mon, armask);
+                } else if (aatyp === ATTKS.AT_KICK) {
+                    specialdmg = special_dmgval(
+                        game.youmonst, mon, W_ARMF);
+                }
+
+                const verb = aatyp === ATTKS.AT_TUCH ? 'touch'
+                    : aatyp === ATTKS.AT_KICK ? 'kick'
+                    : aatyp === ATTKS.AT_BITE ? 'bite'
+                    : aatyp === ATTKS.AT_STNG ? 'sting'
+                    : aatyp === ATTKS.AT_BUTT ? 'head butt'
+                    : aatyp === ATTKS.AT_TENT ? 'tentacles suck'
+                    : 'hit';
+                if (aatyp === ATTKS.AT_TENT)
+                    await Your(`${verb} ${mon_nam(mon)}.`);
+                else
+                    await You(`${verb} ${mon_nam(mon)}.`);
+                sum[i] = await damageum(mon, mattk, specialdmg);
+            } else {
+                await missum(mon, mattk_row(mattk),
+                             tmp + roll.role_roll_penalty > dieroll);
+            }
+        } else if (aatyp === ATTKS.AT_HUGS) {
+            if (sticks(game.mons[mon.mnum]) || game.u.uswallow
+                || game.notonhead) {
+                continue;
+            }
+
+            dhit = 1;
+            await wakeup(mon, true);
+            if (unsolid(game.mons[mon.mnum])) {
+                note_unported_uhitm('hmonas:hug-unsolid');
+            } else if (mon === game.u.ustuck) {
+                await pline(`${Monnam(mon)} is being crushed.`);
+                const specialdmg = special_dmgval(
+                    game.youmonst, mon, W_ARMC | W_ARM | W_ARMU);
+                sum[i] = await damageum(mon, mattk, specialdmg);
+            } else if (i >= 2 && sum[i - 1] > M_ATTK_MISS
+                       && sum[i - 2] > M_ATTK_MISS) {
+                if (game.u.ustuck && game.u.ustuck !== mon) {
+                    note_unported_uhitm('hmonas:release-previous-hold');
+                    set_ustuck(null);
+                }
+                await You(`grab ${mon_nam(mon)}!`);
+                set_ustuck(mon);
+                const specialdmg = special_dmgval(
+                    game.youmonst, mon, W_ARMC | W_ARM | W_ARMU);
+                sum[i] = await damageum(mon, mattk, specialdmg);
+            }
+        } else {
+            note_unported_uhitm(`hmonas:aatyp=${aatyp}`);
+            continue;
+        }
+
+        passive(mon, weapon, sum[i] !== M_ATTK_MISS,
+                !DEADMONSTER(mon), aatyp, false);
+        const mhm = { hitflags: sum[i] };
+        if (await mhitm_knockback(game.youmonst, mon, mattk, mhm,
+                                 weapon_used))
+            break;
+        sum[i] = mhm.hitflags;
+        if (DEADMONSTER(mon))
+            break;
+    }
+
+    game.twohits = 0;
+    return !DEADMONSTER(mon);
+}
+
+// src/uhitm.c:4819 damageum(), the damage tail for a natural hero attack.
+// The physical arm covers claws, kicks, touches, and hugs. Other damage types
+// retain their base dice while their special side effects remain explicit in
+// the unported ledger.
+async function damageum(mon, mattk, specialdmg) {
+    let damage = d(mattk[2], mattk[3]);
+    const aatyp = mattk[0];
+
+    if (mattk[1] === ATTKS.AD_PHYS) {
+        damage += specialdmg;
+        if (aatyp === ATTKS.AT_KICK || aatyp === ATTKS.AT_CLAW
+            || aatyp === ATTKS.AT_TUCH || aatyp === ATTKS.AT_HUGS) {
+            if (thick_skinned(game.mons[mon.mnum])) {
+                damage = aatyp === ATTKS.AT_KICK
+                    ? 0 : Math.trunc((damage + 1) / 2);
+            }
+            const bonus = game.u.udaminc || 0;
+            if (bonus > 0)
+                damage += bonus;
+            else if (damage > 0)
+                damage = Math.max(1, damage + bonus);
+        }
+    } else {
+        note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
+    }
+
+    mon.mstrategy &= ~STRAT_WAITFORU;
+    mon.mhp -= damage;
+    if (DEADMONSTER(mon)) {
+        if (damage)
+            await killed(mon);
+        return M_ATTK_DEF_DIED;
+    }
+    return M_ATTK_HIT;
+}
+
 // src/uhitm.c passive() — the monster's counter-attack after the hero hits it.
 //
 // hitum calls this unconditionally, so its FIRST action matters on every
@@ -1110,7 +1297,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         unarmed: !game.u.uwep && !worn(W_ARM) && !worn(W_ARMS),
         hand_to_hand: (thrown === HMON_MELEE
                        /* not grapnels; applied implies uwep */
-                       || (thrown === HMON_APPLIED && is_pole(game.uwep))),
+                       || (thrown === HMON_APPLIED && is_pole(game.u.uwep))),
         ispoisoned: false,
         unpoisonmsg: false,
         needpoismsg: false,
@@ -1146,9 +1333,10 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
 
     if (hmd.jousting) {
         note_unported_uhitm('hmon_hitmon:jousting');
-    } else if (hmd.unarmed && hmd.dmg > 1 && !thrown && !obj && !game.Upolyd) {
+    } else if (hmd.unarmed && hmd.dmg > 1 && !thrown && !obj
+               && !Upolyd(game.u)) {
         hmon_hitmon_stagger(hmd, mon, obj);
-    } else if (!hmd.unarmed && hmd.dmg > 1 && !thrown && !game.Upolyd
+    } else if (!hmd.unarmed && hmd.dmg > 1 && !thrown && !Upolyd(game.u)
                && !game.u.twoweap && game.u.uwep) {
         maybe_knockback = true;
     }
@@ -1160,8 +1348,8 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
            rather than a throw, no jousting (already logged), real damage, and
            weaphit <= 1 -- the caller has already incremented it, which is why
            the first hit tests as 1 rather than 0. */
-        if (obj && (obj === game.uwep
-                    || (obj === game.uswapwep && game.u.twoweap))
+        if (obj && (obj === game.u.uwep
+                    || (obj === game.u.uswapwep && game.u.twoweap))
             && (obj.oclass === OCLASSES.WEAPON_CLASS
                 || is_weptool(obj, game.objects))
             && (thrown === HMON_MELEE || thrown === HMON_APPLIED)
@@ -1864,7 +2052,7 @@ async function hmon_hitmon_dmg_recalc(hmd, obj) {
 export function dbon() {
     const str = ACURR(A_STR);
 
-    if (game.Upolyd)
+    if (Upolyd(game.u))
         return 0;
 
     if (str < 6)

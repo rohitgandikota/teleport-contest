@@ -1331,7 +1331,8 @@ export async function bhito(obj, otmp) {
         if (otmp.otyp === ONAMES.WAN_OPENING
             || otmp.otyp === ONAMES.SPE_KNOCK) {
             learn_it = true;
-            note_unported_zap('bhito:unpunish');
+            const { unpunish } = await import('./read.js');
+            unpunish();
         } else
             res = 0;
     } else {

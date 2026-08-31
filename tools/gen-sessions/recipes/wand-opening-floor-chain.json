@@ -1,0 +1,23 @@
+{
+  "name": "wand-opening-floor-chain",
+  "description": "A debug Wizard zaps opening downward at an attached chain, destroying the chain while leaving the detached heavy iron ball on the floor.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.scrolls",
+    "object.wands",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "wand.opening.downward-unpunish-chain"
+  ],
+  "segments": [
+    {
+      "seed": 2225,
+      "datetime": "20000110123000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed wand of opening\ri\u001b\u0017cursed scroll of punishment\ri\u001brn zm>, i\u001b"
+    }
+  ]
+}

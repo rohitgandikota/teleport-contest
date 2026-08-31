@@ -14,7 +14,7 @@ import { OBJ_NAME, doname, xname, the, makesingular } from './objnam.js';
 const def_oc_syms_name = ["", "illegal objects", "weapons", "armor", "rings",
     "amulets", "tools", "food", "potions", "scrolls", "spellbooks", "wands",
     "coins", "rocks", "large stones", "iron balls", "chains", "venoms"];
-import { STR18, P_SKILL_LIMIT, P_LAST_WEAPON, P_UNSKILLED, P_BASIC, P_EXPERT, P_ISRESTRICTED, P_SLING, P_FLAIL, P_PICK_AXE } from './const.js';
+import { STR18, P_SKILL_LIMIT, P_LAST_WEAPON, P_UNSKILLED, P_BASIC, P_EXPERT, P_ISRESTRICTED, P_SLING, P_FLAIL, P_PICK_AXE, Upolyd } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { mon_hates_blessings, thick_skinned, passes_walls, is_swimmer, strongmonst, attacktype, is_wooden, hates_light, throws_rocks, mindless, is_animal } from './mondata.js';
 import { is_axe } from './obj.js';
@@ -27,7 +27,7 @@ import { MON_WEP } from './monst.js';
 import { mon_hates_silver, touch_petrifies } from './dog.js';
 import { hands_obj } from './invent.js';
 import { couldsee } from './vision.js';
-import { likes_gems } from './makemon.js';
+import { adj_lev, likes_gems } from './makemon.js';
 import { dist2 } from './hacklib.js';
 import { ART_SNICKERSNEE } from './artilist_data.js';
 import { which_armor } from './worn.js';
@@ -372,7 +372,7 @@ export function select_rwep(mtmp) {
 // src/weapon.c:950 abon() — the hero's to-hit bonus from Str and Dex.
 //
 // No draws; pure arithmetic, so its correctness is checked by value rather
-// than by the scoreboard. The Upolyd arm needs adj_lev and is recorded.
+// than by the scoreboard.
 //
 // Note the two comments C keeps here, both of which change the numbers: the
 // Str test is `< STR18(50)` rather than `<=`, so exactly 18/50 gives a bonus
@@ -382,10 +382,8 @@ export function abon() {
     const str = ACURR(A_STR), dex = ACURR(A_DEX);
     let sbon;
 
-    if (game.u.umonnum !== undefined && game.u.umonnum !== game.u.umonster) {
-        note_unported_weapon('abon:Upolyd');
-        return 0;
-    }
+    if (Upolyd(game.u))
+        return adj_lev(game.mons[game.u.umonnum]) - 3;
 
     if (str < 6)                 sbon = -2;
     else if (str < 8)            sbon = -1;

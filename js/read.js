@@ -307,7 +307,7 @@ async function seffect_remove_curse(sobj) {
     }
 
     if (game.uball && !confused)
-        note_unported_read('seffect_remove_curse:unpunish');
+        unpunish();
     if (game.u.utraptype === TT_BURIEDBALL)
         note_unported_read('seffect_remove_curse:buried_ball');
     update_inventory();

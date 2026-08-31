@@ -9,7 +9,8 @@ import { getobj, GETOBJ_PROMPT, ECMD_TIME, ECMD_OK } from './invent.js';
 import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR,
          A_STR, A_CON, W_BALL, W_CHAIN, W_ART, W_ARTI, TT_BURIEDBALL,
          BY_COOKIE, G_UNIQ, M_AP_TYPE, M_AP_MONSTER, M_AP_OBJECT,
-         M_AP_FURNITURE } from './const.js';
+         M_AP_FURNITURE, MM_FEMALE, MM_MALE, NON_PM, W_SADDLE,
+         OBJ_AT, COLNO, ROWNO, BOLT_LIM } from './const.js';
 import { sgn, distu } from './hacklib.js';
 import { valid_cloud_pos } from './region.js';
 import { cansee } from './vision.js';
@@ -21,26 +22,28 @@ import { OCLASSES, ONAMES } from './objects_data.js';
 import { newsym, pline, sensemon } from './display.js';
 import { rn2, rnd } from './rng.js';
 import { getlin } from './cmd.js';
-import { name_to_monplus } from './mondata.js';
-import { makemon, set_malign } from './makemon.js';
+import { hides_under, is_hider, name_to_monplus } from './mondata.js';
+import { is_female, is_male, makemon, mkclass, rndmonst,
+         set_malign } from './makemon.js';
 import { canseemon } from './display.js';
 import { Amonnam, trycall, upstart } from './do_name.js';
-import { an, ansimpleoname } from './objnam.js';
-import { defsyms } from './drawing_data.js';
+import { an, makesingular, simpleonames, vtense } from './objnam.js';
+import { def_monsyms, defsyms, monexplain } from './drawing_data.js';
 import { MM_MINVIS, MM_NOEXCLAM } from './const.js';
 import { study_book } from './spell.js';
 import { do_mapping } from './detect.js';
 import { do_clear_area, vision_recalc } from './vision.js';
 import { makeknown } from './o_init.js';
 import { more_experienced } from './exper.js';
-import { You, Your } from './pline.js';
+import { Norep, set_msg_xy, You, Your } from './pline.js';
 import { useup, identify_pack, update_inventory } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
 import { outrumor } from './rumors.js';
-import { setworn } from './worn.js';
-import { PMNAMES, mons_name } from './monst_data.js';
-import { delobj } from './mon.js';
+import { setworn, which_armor } from './worn.js';
+import { LIMITS, MONSYMS, PMNAMES, mons_name } from './monst_data.js';
+import { delobj, is_pool } from './mon.js';
+import { roles } from './role_data.js';
 
 function note_unported_read(what) {
     (game.unported ||= new Set()).add('read:' + what);
@@ -635,12 +638,309 @@ async function seffect_magic_mapping(sobj) {
 }
 
 
-// src/read.c:3372 create_particular() — the wizard-mode monster maker.
-//
-// The recorded uses type a plain monster name, so what is ported is the
-// prompt/getlin loop, the name lookup, the makemon, and the peaceful/hostile
-// prefixes, plus the sleeping modifier. The remaining modifiers,
-// monster-class syntax, and random-monster syntax are recorded.
+const CP_MALE = 0, CP_FEMALE = 1, CP_NEUTRAL = 2;
+
+function title_to_mon(str) {
+    const lower = str.toLowerCase();
+    for (const role of roles) {
+        for (const rank of role.rank || []) {
+            for (const title of [rank.m, rank.f]) {
+                if (title && lower.startsWith(title.toLowerCase()))
+                    return role.mnum;
+            }
+        }
+    }
+    return NON_PM;
+}
+
+function name_to_monclass(str) {
+    if (!str)
+        return { monclass: 0, which: NON_PM };
+
+    if (str.length === 1) {
+        let monclass = def_monsyms.indexOf(str);
+        let which = NON_PM;
+        if (monclass === MONSYMS.S_MIMIC_DEF)
+            monclass = MONSYMS.S_MIMIC;
+        else if (monclass === MONSYMS.S_WORM_TAIL) {
+            monclass = MONSYMS.S_WORM;
+            which = PMNAMES.PM_LONG_WORM;
+        } else if (monclass < 0) {
+            monclass = str === 'I' ? MONSYMS.S_invisible : 0;
+        }
+        return { monclass, which };
+    }
+
+    if (/^long$/i.test(str))
+        return { monclass: 0, which: NON_PM };
+    const singular = makesingular(str);
+    if (/^(an|the|or|other|or other)$/i.test(singular))
+        return { monclass: 0, which: NON_PM };
+
+    const trueClasses = new Map([
+        ['demon', MONSYMS.S_DEMON],
+        ['devil', MONSYMS.S_DEMON],
+        ['bug', MONSYMS.S_XAN],
+        ['fish', MONSYMS.S_EEL],
+    ]);
+    const lower = singular.toLowerCase();
+    if (lower === 'long worm') {
+        return {
+            monclass: game.mons[PMNAMES.PM_LONG_WORM].mlet,
+            which: PMNAMES.PM_LONG_WORM,
+        };
+    }
+    if (trueClasses.has(lower))
+        return { monclass: trueClasses.get(lower), which: NON_PM };
+
+    for (let i = 1; i < LIMITS.MAXMCLASSES; ++i) {
+        const explanation = monexplain[i]?.toLowerCase() || '';
+        const at = explanation.indexOf(lower);
+        if (at >= 0 && (at === 0 || explanation[at - 1] === ' ')
+            && (at + lower.length === explanation.length
+                || explanation[at + lower.length] === ' ')) {
+            return { monclass: i, which: NON_PM };
+        }
+    }
+
+    const which = name_to_monplus(singular, {});
+    return which >= 0
+        ? { monclass: game.mons[which].mlet, which }
+        : { monclass: 0, which: NON_PM };
+}
+
+async function parse_create_particular(str) {
+    let bufp = str.trim().replace(/\s+/g, ' ');
+    const commandCount = (game.multi || 0) > 0 ? game.multi : 0;
+    let quan = 1 + commandCount;
+    if (commandCount)
+        game.multi = 0;
+    const count = bufp.match(/^\d+/);
+    if (count) {
+        quan = Number.parseInt(count[0], 10);
+        bufp = bufp.slice(count[0].length).trimStart();
+    }
+    const quanLimit = ROWNO * (COLNO - 1);
+    if (quan < 1 || quan > quanLimit) {
+        const { monster_census } = await import('./minion.js');
+        quan = quanLimit - monster_census(false);
+    }
+
+    const takeModifier = (word) => {
+        const re = new RegExp(`${word} `, 'i');
+        const found = re.test(bufp);
+        if (found)
+            bufp = bufp.replace(re, ' ');
+        return found;
+    };
+    const saddled = takeModifier('saddled');
+    const sleeping = takeModifier('sleeping');
+    const invisible = takeModifier('invisible');
+    const hidden = takeModifier('hidden');
+    let fem = -1;
+    if (takeModifier('female'))
+        fem = CP_FEMALE;
+    if (takeModifier('male'))
+        fem = CP_MALE;
+    bufp = bufp.trim().replace(/\s+/g, ' ');
+
+    let maketame = false, makepeaceful = false, makehostile = false;
+    if (/^tame /i.test(bufp)) {
+        maketame = true;
+        bufp = bufp.slice(5);
+    } else if (/^peaceful /i.test(bufp)) {
+        makepeaceful = true;
+        bufp = bufp.slice(9);
+    } else if (/^hostile /i.test(bufp)) {
+        makehostile = true;
+        bufp = bufp.slice(8);
+    }
+
+    const base = {
+        quan, monclass: LIMITS.MAXMCLASSES,
+        which: game.urole.mnum, fem, genderconf: -1,
+        randmonst: false, maketame, makepeaceful, makehostile,
+        sleeping, saddled, invisible, hidden,
+    };
+    if (game.wizard && (bufp === '*' || /^random$/i.test(bufp)))
+        return { valid: true, text: bufp, data: { ...base, randmonst: true } };
+
+    const genderName = { v: CP_NEUTRAL };
+    let which = name_to_monplus(bufp, {}, genderName);
+    if (which < 0)
+        which = title_to_mon(bufp);
+    if (fem === CP_MALE || fem === CP_FEMALE) {
+        if (genderName.v !== CP_NEUTRAL && fem !== genderName.v)
+            base.genderconf = genderName.v;
+    } else {
+        base.fem = genderName.v;
+    }
+    if (which >= 0)
+        return { valid: true, text: bufp, data: { ...base, which } };
+
+    const byClass = name_to_monclass(bufp);
+    if (byClass.which >= 0) {
+        return {
+            valid: true, text: bufp,
+            data: { ...base, which: byClass.which },
+        };
+    }
+    if (byClass.monclass === MONSYMS.S_invisible) {
+        return {
+            valid: true, text: bufp,
+            data: { ...base, which: PMNAMES.PM_STALKER },
+        };
+    }
+    if (byClass.monclass === MONSYMS.S_WORM_TAIL) {
+        return {
+            valid: true, text: bufp,
+            data: { ...base, which: PMNAMES.PM_LONG_WORM },
+        };
+    }
+    if (byClass.monclass > 0) {
+        return {
+            valid: true, text: bufp,
+            data: { ...base, monclass: byClass.monclass },
+        };
+    }
+    return { valid: false, text: bufp, data: null };
+}
+
+async function announce_created_monster(mtmp, mmflags) {
+    const appearance = M_AP_TYPE(mtmp);
+    let exclaim = !(mmflags & MM_NOEXCLAM);
+    let what = null;
+
+    if ((canseemon(mtmp) && (!appearance || appearance === M_AP_MONSTER))
+        || sensemon(mtmp)) {
+        what = Amonnam(mtmp);
+        if (appearance === M_AP_MONSTER)
+            exclaim = true;
+    } else if (canseemon(mtmp)) {
+        if (appearance === M_AP_OBJECT) {
+            const fake = mksobj(mtmp.mappearance, false, false);
+            if (fake.oclass === OCLASSES.COIN_CLASS)
+                fake.quan = 2;
+            const simple = simpleonames(fake);
+            what = upstart(fake.quan === 1 ? an(simple) : simple);
+        } else if (appearance === M_AP_FURNITURE) {
+            what = upstart(an(defsyms[mtmp.mappearance]?.explain
+                              || 'something'));
+        } else {
+            what = 'Something';
+        }
+    }
+    if (!what)
+        return;
+
+    const near = Math.abs(mtmp.mx - game.u.ux) <= 1
+              && Math.abs(mtmp.my - game.u.uy) <= 1;
+    const where = near ? ' next to you'
+                : distu(mtmp.mx, mtmp.my) <= BOLT_LIM * BOLT_LIM
+                    ? ' close by' : '';
+    set_msg_xy(mtmp.mx, mtmp.my);
+    await Norep(`${what}${exclaim ? ' suddenly' : ''} ${
+        vtense(what, 'appear')}${where}${exclaim ? '!' : '.'}`);
+}
+
+async function create_particular_creation(d) {
+    let whichpm = null, firstchoice = NON_PM;
+    let madeany = false;
+
+    if (!d.randmonst) {
+        firstchoice = d.which;
+        if (d.which === PMNAMES.PM_GUARD
+            || d.which === PMNAMES.PM_SHOPKEEPER
+            || d.which === PMNAMES.PM_HIGH_CLERIC
+            || d.which === PMNAMES.PM_ALIGNED_CLERIC
+            || d.which === PMNAMES.PM_ANGEL) {
+            d.which = PMNAMES.PM_HUMAN_ZOMBIE;
+        } else if (d.which === PMNAMES.PM_LONG_WORM_TAIL) {
+            d.which = PMNAMES.PM_LONG_WORM;
+        } else if ((game.mons[d.which].geno & G_UNIQ) !== 0) {
+            d.which = PMNAMES.PM_DOPPELGANGER;
+        }
+
+        if (d.which !== firstchoice
+            && firstchoice !== PMNAMES.PM_LONG_WORM_TAIL) {
+            const { tty_yn_function } = await import('./tty/topl.js');
+            const answer = await tty_yn_function(
+                `Creating ${mons_name(game.mons[d.which])} instead; force ${
+                    mons_name(game.mons[firstchoice])}?`,
+                'yn', 'n');
+            if (answer === 'y')
+                d.which = firstchoice;
+        }
+        whichpm = game.mons[d.which];
+    }
+
+    for (let i = 0; i < d.quan; ++i) {
+        let mmflags = 0;
+        if (d.monclass !== LIMITS.MAXMCLASSES)
+            whichpm = mkclass(d.monclass, 0);
+        else if (d.randmonst)
+            whichpm = rndmonst();
+
+        if (d.genderconf === -1) {
+            if (d.fem !== -1
+                && (!whichpm || (!is_male(whichpm) && !is_female(whichpm)))) {
+                if (d.fem === CP_FEMALE)
+                    mmflags |= MM_FEMALE;
+                else if (d.fem === CP_MALE)
+                    mmflags |= MM_MALE;
+            }
+            mmflags |= MM_NOEXCLAM;
+        } else if (d.fem === CP_FEMALE) {
+            mmflags |= MM_FEMALE;
+        } else if (d.fem === CP_MALE) {
+            mmflags |= MM_MALE;
+        }
+        if (d.invisible)
+            mmflags |= MM_MINVIS;
+
+        const mtmp = makemon(whichpm, game.u.ux, game.u.uy, mmflags);
+        if (!mtmp) {
+            if (d.monclass === LIMITS.MAXMCLASSES && !d.randmonst)
+                break;
+            continue;
+        }
+        const mx = mtmp.mx, my = mtmp.my;
+        await announce_created_monster(mtmp, mmflags);
+
+        if (d.maketame) {
+            const { tamedog } = await import('./dog.js');
+            await tamedog(mtmp, null, false);
+        } else if (d.makepeaceful || d.makehostile) {
+            mtmp.mtame = 0;
+            mtmp.mpeaceful = d.makepeaceful ? 1 : 0;
+            set_malign(mtmp);
+        }
+        if (d.saddled) {
+            const { can_saddle, put_saddle_on_mon } = await import('./steed.js');
+            if (can_saddle(mtmp) && !which_armor(mtmp, W_SADDLE))
+                put_saddle_on_mon(null, mtmp);
+        }
+        if (d.hidden
+            && ((is_hider(mtmp.data) && mtmp.data.mlet !== MONSYMS.S_MIMIC)
+                || (hides_under(mtmp.data) && OBJ_AT(mx, my))
+                || (mtmp.data.mlet === MONSYMS.S_EEL && is_pool(mx, my)))) {
+            mtmp.mundetected = 1;
+            newsym(mx, my);
+        }
+        if (d.sleeping)
+            mtmp.msleeping = 1;
+
+        madeany = true;
+        if (mtmp.cham !== NON_PM && firstchoice !== NON_PM
+            && mtmp.cham !== firstchoice) {
+            const { newcham } = await import('./mon.js');
+            newcham(mtmp, game.mons[firstchoice], 0);
+        }
+    }
+    return madeany;
+}
+
+// src/read.c:3372 create_particular(), the wizard-mode monster maker.
 export async function create_particular() {
     const CP_TRYLIM = 5;
     let tryct = CP_TRYLIM, altmsg = 0;
@@ -650,108 +950,15 @@ export async function create_particular() {
         const buf = await getlin(prompt);
         if (buf === null || buf === '\x1b')
             return false;
-        let bufp = buf.trim().replace(/\s+/g, ' ');
-        const sleeping = /\bsleeping\s+/i.test(bufp);
-        if (sleeping)
-            bufp = bufp.replace(/\bsleeping\s+/i, '').trim();
-        const invisible = /\binvisible\s+/i.test(bufp);
-        if (invisible)
-            bufp = bufp.replace(/\binvisible\s+/i, '').trim();
-        const maketame = /^tame /i.test(bufp);
-        const makehostile = /^hostile /i.test(bufp);
-        const makepeaceful = /^peaceful /i.test(bufp);
-        const monster_name = maketame ? bufp.slice(5)
-                           : makehostile ? bufp.slice(8)
-                           : makepeaceful ? bufp.slice(9) : bufp;
+        /* C's getlin prompt separates this command from the preceding Norep
+           message. Our prompt renderer does not feed _prevmsg, so clear it
+           before the first creation announcement. */
+        game._prevmsg = null;
+        const parsed = await parse_create_particular(buf);
+        if (parsed.valid)
+            return create_particular_creation(parsed.data);
 
-        /* create_particular_parse()'s modifier scan is recorded; the plain
-           name and explicit hostile/peaceful forms are live. */
-        if (/^\d|saddled |hidden |male |female /i.test(bufp))
-            note_unported_read('create_particular:modifiers');
-
-        const box = {};
-        const mndx = name_to_monplus(monster_name, box);
-        if (mndx !== undefined && mndx !== null && mndx >= 0) {
-            const firstchoice = mndx;
-            let which = mndx;
-
-            /* src/read.c:3112 cant_revive(). These monsters need state that
-               ordinary creation cannot supply. Wizard mode offers to force
-               the requested form after selecting the safe replacement. */
-            if (which === PMNAMES.PM_GUARD
-                || which === PMNAMES.PM_SHOPKEEPER
-                || which === PMNAMES.PM_HIGH_CLERIC
-                || which === PMNAMES.PM_ALIGNED_CLERIC
-                || which === PMNAMES.PM_ANGEL) {
-                which = PMNAMES.PM_HUMAN_ZOMBIE;
-            } else if (which === PMNAMES.PM_LONG_WORM_TAIL) {
-                which = PMNAMES.PM_LONG_WORM;
-            } else if ((game.mons[which].geno & G_UNIQ) !== 0) {
-                which = PMNAMES.PM_DOPPELGANGER;
-            }
-
-            if (which !== firstchoice
-                && firstchoice !== PMNAMES.PM_LONG_WORM_TAIL) {
-                const { tty_yn_function } = await import('./tty/topl.js');
-                const answer = await tty_yn_function(
-                    `Creating ${mons_name(game.mons[which])} instead; force ${
-                        mons_name(game.mons[firstchoice])}?`,
-                    'yn', 'n');
-                if (answer === 'y')
-                    which = firstchoice;
-            }
-
-            /* MM_NOEXCLAM: "<mon> appears." rather than "appears!" */
-            const mmflags = MM_NOEXCLAM | (invisible ? MM_MINVIS : 0);
-            const mtmp = makemon(game.mons[which], game.u.ux, game.u.uy,
-                                 mmflags);
-            /* src/makemon.c:1472 — C announces the arrival from inside
-               makemon(), which cannot print here because our makemon is
-               sync and has 23 call sites. The message is emitted at this
-               caller instead; the other callers do not announce yet. */
-            if (mtmp && canseemon(mtmp)) {
-                const near = (Math.abs(mtmp.mx - game.u.ux) <= 1
-                              && Math.abs(mtmp.my - game.u.uy) <= 1);
-                const appearance = M_AP_TYPE(mtmp);
-                let what;
-                if (!appearance || appearance === M_AP_MONSTER
-                    || sensemon(mtmp)) {
-                    what = Amonnam(mtmp);
-                } else if (appearance === M_AP_OBJECT) {
-                    const fake = mksobj(mtmp.mappearance, false, false);
-                    what = upstart(ansimpleoname(fake));
-                } else if (appearance === M_AP_FURNITURE) {
-                    what = upstart(an(defsyms[mtmp.mappearance]?.explain
-                                      || 'something'));
-                } else {
-                    what = 'Something';
-                }
-                await pline(`${what} appears${
-                    near ? ' next to you' : ''}.`);
-            }
-
-            if (mtmp && maketame) {
-                const { tamedog } = await import('./dog.js');
-                await tamedog(mtmp, null, false);
-            } else if (mtmp && (makehostile || makepeaceful)) {
-                mtmp.mtame = 0;
-                mtmp.mpeaceful = makepeaceful ? 1 : 0;
-                set_malign(mtmp);
-            }
-            if (mtmp && sleeping)
-                mtmp.msleeping = 1;
-
-            /* A safe shapechanger replacement starts out looking like the
-               form requested by the wizard after its creation message. */
-            if (mtmp && mtmp.cham >= 0 && mtmp.cham !== firstchoice) {
-                const { newcham } = await import('./mon.js');
-                newcham(mtmp, game.mons[firstchoice], 0);
-            }
-            return true;
-        }
-
-        /* no good; try again... */
-        if (bufp || altmsg || tryct < 2) {
+        if (parsed.text || altmsg || tryct < 2) {
             await pline("I've never heard of such monsters.");
         } else {
             await pline('Try again (type * for random, ESC to cancel).');

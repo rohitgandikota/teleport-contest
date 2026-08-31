@@ -719,15 +719,13 @@ export const vegetarian = (ptr) =>
 // "gray dragon scale mail" as PM_GRAY_DRAGON + "scale mail" and
 // "yeti corpse" as PM_YETI + "corpse".
 //
-// The rank-title fallback (title_to_mon) is not ported; it is recorded when
-// nothing else matched so the gap stays visible.
 const NAME_TO_MON_ALTS = [
     ['grey dragon', 'PM_GRAY_DRAGON'], ['baby grey dragon', 'PM_BABY_GRAY_DRAGON'],
     ['grey unicorn', 'PM_GRAY_UNICORN'], ['grey ooze', 'PM_GRAY_OOZE'],
     ['gray-elf', 'PM_GREY_ELF'], ['mindflayer', 'PM_MIND_FLAYER'],
     ['master mindflayer', 'PM_MASTER_MIND_FLAYER'],
-    ['aligned priest', 'PM_ALIGNED_CLERIC'], ['aligned priestess', 'PM_ALIGNED_CLERIC'],
-    ['high priest', 'PM_HIGH_CLERIC'], ['high priestess', 'PM_HIGH_CLERIC'],
+    ['aligned priest', 'PM_ALIGNED_CLERIC', 0], ['aligned priestess', 'PM_ALIGNED_CLERIC', 1],
+    ['high priest', 'PM_HIGH_CLERIC', 0], ['high priestess', 'PM_HIGH_CLERIC', 1],
     ['master of thief', 'PM_MASTER_OF_THIEVES'], ['master thief', 'PM_MASTER_OF_THIEVES'],
     ['master of assassin', 'PM_MASTER_ASSASSIN'],
     ['master-lich', 'PM_MASTER_LICH'], ['masterlich', 'PM_MASTER_LICH'],
@@ -743,13 +741,13 @@ const NAME_TO_MON_ALTS = [
     ['uruk hai', 'PM_URUK_HAI'], ['orc captain', 'PM_ORC_CAPTAIN'],
     ['woodland elf', 'PM_WOODLAND_ELF'], ['green elf', 'PM_GREEN_ELF'],
     ['grey elf', 'PM_GREY_ELF'], ['gray elf', 'PM_GREY_ELF'],
-    ['elf lady', 'PM_ELF_NOBLE'], ['elf lord', 'PM_ELF_NOBLE'],
+    ['elf lady', 'PM_ELF_NOBLE', 1], ['elf lord', 'PM_ELF_NOBLE', 0],
     ['elf noble', 'PM_ELF_NOBLE'], ['olog hai', 'PM_OLOG_HAI'],
     ['arch lich', 'PM_ARCH_LICH'], ['archlich', 'PM_ARCH_LICH'],
-    ['incubi', 'PM_AMOROUS_DEMON'], ['succubi', 'PM_AMOROUS_DEMON'],
+    ['incubi', 'PM_AMOROUS_DEMON', 0], ['succubi', 'PM_AMOROUS_DEMON', 1],
     ['violet fungi', 'PM_VIOLET_FUNGUS'], ['homunculi', 'PM_HOMUNCULUS'],
     ['baluchitheria', 'PM_BALUCHITHERIUM'], ['lurkers above', 'PM_LURKER_ABOVE'],
-    ['cavemen', 'PM_CAVE_DWELLER'], ['cavewomen', 'PM_CAVE_DWELLER'],
+    ['cavemen', 'PM_CAVE_DWELLER', 0], ['cavewomen', 'PM_CAVE_DWELLER', 1],
     ['watchmen', 'PM_WATCHMAN'], ['djinn', 'PM_DJINNI'],
     ['mumakil', 'PM_MUMAK'], ['erinyes', 'PM_ERINYS'],
 ];
@@ -782,13 +780,13 @@ export function name_to_monplus(in_str, rest_box, gender_name_var) {
     const low = str.toLowerCase();
     const slen = str.length;
 
-    for (const [nm, pm] of NAME_TO_MON_ALTS) {
+    for (const [nm, pm, genderHint = 2] of NAME_TO_MON_ALTS) {
         if (low.startsWith(nm)
             && (!str[nm.length] || str[nm.length] === ' '
                 || str[nm.length] === "'")) {
             if (rest_box) rest_box.at = skipped + nm.length;
-            /* C's names[] rows carry a genderhint the generated ALTS table
-               does not; gendered alt spellings keep the caller's value */
+            if (gender_name_var)
+                gender_name_var.v = genderHint;
             const v = PMNAMES[pm];
             if (v !== undefined) return v;
         }
@@ -819,8 +817,8 @@ export function name_to_monplus(in_str, rest_box, gender_name_var) {
     }
 
     if (mntmp === NON_PM) {
-        /* the title_to_mon() rank-title fallback ("captain", "ninja") is
-           not ported; ordinary non-monster strings correctly land here */
+        /* title_to_mon() is a separate caller fallback; ordinary
+           non-monster strings correctly land here */
         return NON_PM;
     }
     if (rest_box) rest_box.at = skipped + len;

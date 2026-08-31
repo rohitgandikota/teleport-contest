@@ -28,8 +28,9 @@ import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          AUGMENT_IT,
          MD_PAD_BOGONS,
          has_mgivenname, MGIVENNAME, W_SADDLE, A_NONE, A_LAWFUL,
-         A_NEUTRAL, A_CHAOTIC } from './const.js';
-import { humanoid, is_animal, mindless, pronoun_gender, type_is_pname } from './mondata.js';
+         A_NEUTRAL, A_CHAOTIC, In_endgame } from './const.js';
+import { humanoid, is_animal, is_mplayer, mindless, pronoun_gender,
+         type_is_pname } from './mondata.js';
 import { canspotmon } from './display.js';
 import { ONAME_SKIP_INVUPD } from './const.js';
 import { exist_artifact, artifact_exists } from './artifact.js';
@@ -37,6 +38,8 @@ import { carried } from './obj.js';
 import { getobj, update_inventory } from './invent.js';
 import { get_rnd_text } from './rumors.js';
 import { mungspaces } from './hacklib.js';
+import { rank_of } from './botl.js';
+import { roles } from './role_data.js';
 
 // src/do_name.c:759 ghostnames[] — 34 entries.
 const ghostnames = [
@@ -292,6 +295,11 @@ export function x_monnam(mtmp, article, adjective, suppress, called) {
             buf += name;
             name_at_start = true;
         }
+    } else if (is_mplayer(mdat) && !In_endgame(game.u.uz)) {
+        const role = roles.find(candidate => candidate.mnum === mtmp.mnum)
+                  || game.urole;
+        buf += rank_of(mtmp.m_lev, role, !!mtmp.female).toLowerCase();
+        name_at_start = false;
     } else {
         buf += pm_name;
         name_at_start = type_is_pname(mdat);

@@ -39,7 +39,7 @@ import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
-import { delobj, monkilled, monstone, newcham, resists_ston,
+import { delobj, monkilled, monstone, newcham, resists_ston, vamp_stone,
          xkilled } from './mon.js';
 import { find_mac, which_armor } from './worn.js';
 import { canseemon } from './display.js';
@@ -106,7 +106,8 @@ export async function instapetrify(str) {
 // src/trap.c:3856 minstapetrify(). Monster petrification first converts a
 // susceptible golem, otherwise strips intrinsic speed, reports the visible
 // countdown, and creates a statue through the player or environmental kill
-// path. Shapechanger reversion remains recorded separately below.
+// path. Shifted vampires and naturally stone-resistant shapechangers revert
+// first through src/mon.c vamp_stone().
 export async function minstapetrify(mon, byplayer) {
     if (resists_ston(mon))
         return;
@@ -123,19 +124,8 @@ export async function minstapetrify(mon, byplayer) {
         return;
     }
 
-    /* src/mon.c:vamp_stone() can restore a shifted vampire or a sandestin's
-       innate stone-resistant form. Preserve those monsters until that
-       transformation path is ported instead of incorrectly killing them. */
-    const cham = Number.isInteger(mon.cham) ? mon.cham : -1;
-    const vampShifter = cham === PMNAMES.PM_VAMPIRE
-        || cham === PMNAMES.PM_VAMPIRE_LEADER
-        || cham === PMNAMES.PM_VLAD_THE_IMPALER;
-    const innateStoneResistance = cham >= 0
-        && !!((game.mons[cham]?.mresists ?? 0) & MFLAGS.MR_STONE);
-    if (vampShifter || innateStoneResistance) {
-        note_unported_trap('minstapetrify:vamp_stone');
+    if (!await vamp_stone(mon))
         return;
-    }
 
     if ((mon.permspeed | 0) === MFAST)
         mon.permspeed = 0;

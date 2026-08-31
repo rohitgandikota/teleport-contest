@@ -1,0 +1,40 @@
+{
+  "name": "vamp-stone-reversion",
+  "description": "Petrify shifted vampire-family and innate stone-resistant shapechangers, pinning src/mon.c vamp_stone reversion against C.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "monster.special-effects",
+    "combat.knockback",
+    "forms.polymorph",
+    "survival.instant-deaths",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "monster.petrification.vampire-flyer-reversion",
+    "monster.petrification.vampire-ground-reversion",
+    "monster.petrification.stone-resistant-natural-reversion"
+  ],
+  "segments": [
+    {
+      "seed": 6943,
+      "datetime": "20000112132000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rcockatrice\r \u0007sleeping hostile vampire\r#wiztelekinesis\rl.h    \u001b\u001b\u0006"
+    },
+    {
+      "seed": 6945,
+      "datetime": "20000112132100",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rcockatrice\r     \u0007sleeping hostile sandestin\r#wiztelekinesis\rk.j    \u001b\u001b\u0006"
+    },
+    {
+      "seed": 6946,
+      "datetime": "20000112132200",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rcockatrice\r      \u0007sleeping hostile vampire leader\r#wiztelekinesis\ry.n    \u001b\u001b\u0006"
+    }
+  ]
+}

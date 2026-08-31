@@ -24,7 +24,7 @@ import { couldsee, cansee, does_block, unblock_point, vision_recalc } from './vi
 import { finish_meating } from './dogmove.js';
 import { growl, maybe_gasp } from './sounds.js';
 import { sengr_at } from './engrave.js';
-import { Monnam, mon_nam, noname_monnam, x_monnam, upstart }
+import { Amonnam, Monnam, mon_nam, noname_monnam, x_monnam, upstart }
     from './do_name.js';
 import { hot_pursuit, shkgone } from './shk.js';
 import { is_metallic, is_mines_prize, is_soko_prize } from './obj.js';
@@ -36,8 +36,8 @@ import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
          undead_to_corpse, zombie_form, discard_minvent,
          add_to_container } from './mkobj.js';
 import { weight, update_inventory } from './invent.js';
-import { newsym, canseemon, canspotmon, pline, see_monsters,
-         unmap_invisible } from './display.js';
+import { newsym, canseemon, canspotmon, display_nhwindow_message, pline,
+         see_monsters, unmap_invisible } from './display.js';
 import { rn1, rn2, rnd, rnl, d } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos, grow_up, makemon } from './makemon.js';
@@ -48,7 +48,8 @@ import { GP_CHECKSCARY, STRAT_WAITFORU, BOLT_LIM, NC_SHOW_MSG, ismnum,
          ARTICLE_YOUR, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES,
          SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
          TELEPORT_CONTROL, TELEPAT, LAST_PROP, INTRINSIC,
-         SUPPRESS_SADDLE, PRONOUN_HALLU } from './const.js';
+         SUPPRESS_SADDLE, SUPPRESS_HALLUCINATION, SUPPRESS_INVISIBLE,
+         SUPPRESS_IT, PRONOUN_HALLU, NO_NC_FLAGS } from './const.js';
 import { G_UNIQ } from './const.js';
 import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, STRAT_WAITMASK, XKILL_GIVEMSG,
          M_AP_FURNITURE, M_AP_OBJECT, ROOM, is_pit, I_SPECIAL,
@@ -58,7 +59,7 @@ import { NO_MM_FLAGS } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
 import { def_monsyms } from './drawing_data.js';
 
-import { has_ceiling } from './dungeon.js';
+import { has_ceiling, surface } from './dungeon.js';
 import { in_rooms } from './hack.js';
 import { m_harmless_trap } from './trap.js';
 import { hastrack } from './track.js';
@@ -3151,6 +3152,73 @@ export function mgender_from_permonst(mtmp, mdat) {
 const is_vampshifter_mon = (m) => m.cham === PMNAMES.PM_VAMPIRE
     || m.cham === PMNAMES.PM_VAMPIRE_LEADER
     || m.cham === PMNAMES.PM_VLAD_THE_IMPALER;
+
+function restore_stoning_shapechanger(mtmp) {
+    mtmp.mcanmove = 1;
+    mtmp.mfrozen = 0;
+    mtmp.mhpmax = Math.max(mtmp.mhpmax | 0, (mtmp.m_lev | 0) + 1, 10);
+    mtmp.mhp = mtmp.mhpmax;
+}
+
+// src/mon.c:3766 vamp_stone(). A shifted vampire family member gets one
+// chance to resume its natural form before petrification. Other
+// shapechangers, notably sandestins, do the same when their natural form has
+// intrinsic stone resistance.
+export async function vamp_stone(mtmp) {
+    if (is_vampshifter_mon(mtmp)) {
+        const mndx = mtmp.cham;
+        const x = mtmp.mx, y = mtmp.my;
+
+        if (ismnum(mndx) && mndx !== mtmp.mnum
+            && !((game.mvitals?.[mndx]?.mvflags ?? 0) & G_GENOD)) {
+            const olddata = mtmp.data;
+            const oldname = x_monnam(
+                mtmp, ARTICLE_NONE, null,
+                SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION
+                    | SUPPRESS_INVISIBLE | SUPPRESS_IT,
+                false);
+            const motion = amorphous(olddata) ? 'coalesces on the'
+                : is_flyer(olddata) ? 'drops to the'
+                                    : 'writhes on the';
+            const firstMessage = `The lapidifying ${oldname} ${motion} ${
+                surface(x, y)}`;
+
+            restore_stoning_shapechanger(mtmp);
+            if (engulfing_u(mtmp)) {
+                const { expels } = await import('./mhitu.js');
+                await expels(mtmp, olddata, false);
+            }
+            if (amorphous(olddata)) {
+                const { closed_door } = await import('./cmd.js');
+                if (closed_door(mtmp.mx, mtmp.my)) {
+                    const new_xy = { x: 0, y: 0 };
+                    if (enexto(new_xy, mtmp.mx, mtmp.my, game.mons[mndx]))
+                        await rloc_to_flag(mtmp, new_xy.x, new_xy.y, 0);
+                }
+            }
+            if (canspotmon(mtmp)) {
+                await pline(`${firstMessage}!`);
+                await display_nhwindow_message();
+            }
+            await newcham(mtmp, game.mons[mndx], NO_NC_FLAGS);
+            mtmp.cham = mtmp.mnum === mndx ? NON_PM : mndx;
+            if (canspotmon(mtmp)) {
+                await pline(`${Amonnam(mtmp)} rises from the ${
+                    surface(mtmp.mx, mtmp.my)} with renewed agility!`);
+            }
+            newsym(mtmp.mx, mtmp.my);
+            return false;
+        }
+    } else if (ismnum(mtmp.cham)
+               && ((game.mons[mtmp.cham]?.mresists ?? 0)
+                   & MFLAGS.MR_STONE)) {
+        restore_stoning_shapechanger(mtmp);
+        await newcham(mtmp, game.mons[mtmp.cham], NC_SHOW_MSG);
+        newsym(mtmp.mx, mtmp.my);
+        return false;
+    }
+    return true;
+}
 
 /* rndmonst/newmonhp live in makemon.js which imports this file; wired */
 let mon_fns_cham = null;

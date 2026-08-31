@@ -315,6 +315,17 @@ inventory, equipment, trapped state, blindness, confusion, fleeing, eating,
 sleep, paralysis, cancellation, speed, disguise, undetected state, worm body,
 shop or priest role, migration destination, and prior track.
 
+Shapechanging is persistent monster state, not just a temporary species name.
+Chameleons, doppelgangers, sandestins, and the vampire family retain a natural
+form index while transformed. Vampire forms are restricted to fog cloud,
+vampire bat, and, for the stronger vampire types, wolf, with current health,
+visibility, terrain, genocide, and carried special objects affecting changes.
+Petrifying a shifted vampire restores mobility and health, expels an engulfed
+hero, moves an amorphous form out of a closed doorway before it becomes solid,
+and restores the natural vampire form unless that form was genocided. A shifted
+monster whose natural form intrinsically resists stone, notably a sandestin,
+also reverts instead of becoming a statue.
+
 Monster turns include energy gain, wake and helpless checks, conflict, ranged
 and defensive item use, spells, covetous warps, hiding, door and container use,
 movement candidate generation, attacks on the hero or other monsters, traps,

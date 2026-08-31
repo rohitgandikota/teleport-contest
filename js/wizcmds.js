@@ -308,6 +308,10 @@ function wiz_intrinsic_timeout(key) {
         return (game.u.intrinsic?.HSee_invisible | 0) & TIMEOUT;
     if (key === 'FAST')
         return (game.u.intrinsic?.HFast | 0) & TIMEOUT;
+    if (key === 'STUNNED')
+        return (game.u.intrinsic?.HStun | 0) & TIMEOUT;
+    if (key === 'FUMBLING')
+        return (game.u.intrinsic?.HFumbling | 0) & TIMEOUT;
     return Number(game.u.wiz_intrinsic_timeouts?.[key]) || 0;
 }
 
@@ -361,6 +365,9 @@ export async function wiz_intrinsic() {
         } else if (key === 'HALLUC') {
             const { make_hallucinated } = await import('./potion.js');
             await make_hallucinated(oldtimeout + amount, true);
+        } else if (key === 'STUNNED') {
+            const { make_stunned } = await import('./potion.js');
+            await make_stunned(oldtimeout + amount, true);
         } else if (key === 'SICK') {
             const { make_sick } = await import('./potion.js');
             const type = !rn2(2) ? SICK_VOMITABLE : SICK_NONVOMITABLE;
@@ -385,6 +392,13 @@ export async function wiz_intrinsic() {
             const word = intr.HFast | 0;
             intr.HFast = (word & ~TIMEOUT)
                          | Math.min(TIMEOUT, oldtimeout + amount);
+            (game.disp ||= {}).botl = true;
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} ${amount}.`);
+        } else if (key === 'FUMBLING') {
+            const intr = (game.u.intrinsic ||= {});
+            const timeout = Math.min(TIMEOUT, oldtimeout + amount);
+            intr.HFumbling = ((intr.HFumbling | 0) & ~TIMEOUT) | timeout;
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
                 ? 'increased by' : 'set to'} ${amount}.`);

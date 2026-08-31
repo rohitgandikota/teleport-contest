@@ -233,6 +233,10 @@ export async function mount_steed(mtmp, force) {
         if (game.u.uprops?.FLYING)
             await You(`and ${mon_nam(mtmp)} take flight together.`);
     }
+    /* src/steed.c:368: a polearm which was unsuitable on foot becomes a
+       proper wielded weapon as soon as the hero is mounted. */
+    if (game.u.uwep && is_pole(game.u.uwep))
+        game.unweapon = false;
     game.u.usteed = mtmp;
     if (game.u.uprops?.STEALTH)
         note_unported_steed('mount:steed_vs_stealth');

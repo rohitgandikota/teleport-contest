@@ -2663,6 +2663,13 @@ export async function mondead(mdef) {
     }
     if (mdef.isshk)
         shkgone(mdef);
+    /* src/mon.c:2808 m_detach(): a dead steed immediately stops being the
+       hero's mount. DISMOUNT_GENERIC is deliberately silent, but its cleanup
+       affects later display, targeting, and RNG through mattacku(). */
+    if (mdef === game.u.usteed) {
+        const { dismount_steed } = await import('./steed.js');
+        await dismount_steed(0 /* DISMOUNT_GENERIC */);
+    }
 }
 
 // src/mon.c:3253 mondied() — mondead() plus, maybe, a corpse.

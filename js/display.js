@@ -1580,12 +1580,20 @@ export async function docrt() {
         newsym(mtmp.mx, mtmp.my);
     }
     if (game.u?.ux > 0 && canspotself()) {
-        const self = game.youmonst?.data;
-        show_glyph_cell(game.u.ux, game.u.uy,
-                        Upolyd(game.u)
-                            ? (def_monsyms[self.mlet] || '?') : '@',
-                        Upolyd(game.u) ? self.mcolor : CLR_WHITE,
-                        false, 0, { kind: 'hero' });
+        const steed = game.u.usteed;
+        if (steed && mon_visible(steed))
+            show_glyph_cell(game.u.ux, game.u.uy,
+                            def_monsyms[steed.data.mlet] || '?',
+                            steed.data.mcolor ?? NO_COLOR, false, 0,
+                            { kind: 'hero', mon: steed });
+        else {
+            const self = game.youmonst?.data;
+            show_glyph_cell(game.u.ux, game.u.uy,
+                            Upolyd(game.u)
+                                ? (def_monsyms[self.mlet] || '?') : '@',
+                            Upolyd(game.u) ? self.mcolor : CLR_WHITE,
+                            false, 0, { kind: 'hero' });
+        }
     }
 
     /* C's docrt() only refills the glyph buffer; the physical paint comes

@@ -124,8 +124,8 @@ export function bot_conditions() {
     else if (props.FLYING || intr.HFlying
              || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY)))
         cond += ' Fly';
-    if (intr.HStun || props.STUNNED) cond += ' Stun';
     if (u.usteed) cond += ' Ride';
+    if (intr.HStun || props.STUNNED) cond += ' Stun';
     if (u.utrap && u.utraptype === TT_LAVA) cond += ' InLava';
     return cond;
 }

@@ -24,7 +24,7 @@ import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
          x_monnam, hliquid, pmname } from './do_name.js';
 import { destroy_items, drain_item, exclam, hit, obj_resists } from './zap.js';
 import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
-         Fire_resistance, Free_action, Hallucination, Flying, Levitation,
+         Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
          Reflecting, Shock_resistance, Stone_resistance } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
@@ -36,13 +36,14 @@ import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
          is_poisonable, stone_missile } from './obj.js';
-import { is_ammo, is_missile, ammo_and_launcher, uwepgone } from './wield.js';
+import { is_ammo, is_missile, ammo_and_launcher, set_twoweap,
+         uwepgone } from './wield.js';
 import { obj_extract_self, update_inventory, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
 import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
-         otense, mshot_xname, Yobjnam2 } from './objnam.js';
+         otense, mshot_xname, Yname2, Yobjnam2 } from './objnam.js';
 import { mintrap, erode_obj, ignite_items } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
          is_rider } from './makemon.js';
@@ -88,6 +89,7 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
          W_ARMG, W_ARMH, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
+         P_LANCE, P_TWO_WEAPON_COMBAT, P_ISRESTRICTED, P_UNSKILLED,
          NEED_WEAPON, XKILL_NOMSG, XKILL_NOCORPSE, STRAT_WAITMASK,
          engulfing_u, NEW_MOON, MSLOW, MFAST } from './const.js';
 import { is_undead } from './mondata.js';
@@ -1620,7 +1622,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     }
 
     if (hmd.jousting) {
-        note_unported_uhitm('hmon_hitmon:jousting');
+        await hmon_hitmon_jousting(hmd, mon, obj);
     } else if (hmd.unarmed && hmd.dmg > 1 && !thrown && !obj
                && !Upolyd(game.u)) {
         hmon_hitmon_stagger(hmd, mon, obj);
@@ -1974,6 +1976,39 @@ async function hmon_hitmon_msg_silver(hmd, mon, obj) {
         await pline(`${fmt_head}${whom}!`);
 }
 
+// src/uhitm.c:1541 hmon_hitmon_jousting(). A successful mounted lance
+// attack adds its joust dice before announcing the hit. A broken lance is
+// removed before the target is displaced, and a trap can kill that target
+// before the pending weapon damage is applied by the caller.
+async function hmon_hitmon_jousting(hmd, mon, obj) {
+    hmd.dmg += d(2, obj === game.u.uwep ? 10 : 2);
+    await You(`joust ${mon_nam(mon)}${
+        canseemon(mon) ? exclam(hmd.dmg) : '.'}`);
+
+    if (hmd.jousting < 0) {
+        set_twoweap(false);
+        if (obj === game.u.uwep)
+            await uwepgone();
+        await pline(`${Yname2(obj)} shatters on impact!`);
+        useup(obj);
+    }
+    if (await mhurtle_to_doom(mon, hmd.dmg, hmd))
+        hmd.already_killed = true;
+    hmd.hittxt = true;
+}
+
+// src/uhitm.c:1942 mhurtle_to_doom(). Only displace a monster which will
+// survive the pending physical damage. The displacement itself can trigger a
+// trap, including one which changes the monster's form or kills it outright.
+async function mhurtle_to_doom(mon, pendingDamage, hmd) {
+    if (pendingDamage < mon.mhp) {
+        await mhurtle(mon, game.u.dx, game.u.dy, 1);
+        hmd.mdat = mon.data || game.mons[mon.mnum];
+        return DEADMONSTER(mon);
+    }
+    return false;
+}
+
 // src/uhitm.c:1570 hmon_hitmon_stagger() — a very small chance of stunning an
 // unarmed opponent. The rnd(100) is spent BEFORE the size and hide tests, so
 // it costs a draw on every qualifying bare-handed hit whatever the target is.
@@ -2236,6 +2271,13 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     if (obj.oartifact && obj.lamplit)
         note_unported_uhitm('hmon_hitmon:lightobj'); /* artifact_light */
 
+    if (game.u.usteed && !hmd.thrown && hmd.dmg > 0
+        && weapon_type(obj) === P_LANCE && mon !== game.u.ustuck) {
+        hmd.jousting = joust(mon, obj);
+        if (hmd.jousting)
+            hmd.train_weapon_skill = true;
+    }
+
     if (hmd.thrown === HMON_THROWN && (is_ammo(obj) || is_missile(obj))) {
         if (ammo_and_launcher(obj, game.u.uwep)) {
             if (Role_if(PMNAMES.PM_SAMURAI) && obj.otyp === ONAMES.YA
@@ -2251,6 +2293,36 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
     }
     if (permapoisoned(obj) && hmd.dieroll <= 5)
         hmd.ispoisoned = true;
+}
+
+// src/uhitm.c:2098 joust(). Return 1 for a normal joust, -1 when the lance
+// shatters, and 0 when the hit remains an ordinary mounted lance attack.
+function joust(mon, obj) {
+    if (Fumbling()
+        || game.u.intrinsic?.HStun || game.u.uprops?.STUNNED)
+        return 0;
+    if (obj !== game.u.uwep
+        && (obj !== game.u.uswapwep || !game.u.twoweap))
+        return 0;
+    if (game.u.utrap)
+        return 0;
+
+    let skillRating = P_SKILL(weapon_type(obj));
+    if (game.u.twoweap
+        && P_SKILL(P_TWO_WEAPON_COMBAT) < skillRating)
+        skillRating = P_SKILL(P_TWO_WEAPON_COMBAT);
+    if (skillRating === P_ISRESTRICTED)
+        skillRating = P_UNSKILLED;
+
+    const joustDieroll = rn2(5);
+    if (joustDieroll < skillRating) {
+        if (joustDieroll === 0 && rnl(50) === 49
+            && !unsolid(mon.data || game.mons[mon.mnum])
+            && !obj_resists(obj, 0, 100))
+            return -1;
+        return 1;
+    }
+    return 0;
 }
 
 // src/artifact.c:1447 artifact_hit(), hero-attacker slice. Mjollnir prints its
@@ -3249,10 +3321,21 @@ export async function mhurtle(mon, dx, dy, range) {
         const x = mon.mx + dx;
         const y = mon.my + dy;
         if (!will_hurtle(mon, x, y)) {
-            if (m_at(x, y))
-                note_unported_uhitm('mhurtle:monster_collision');
-            else if (x === game.u.ux && y === game.u.uy)
+            const blocker = m_at(x, y);
+            if (blocker && blocker !== mon) {
+                if (canseemon(mon) || canseemon(blocker))
+                    await pline(`${Monnam(mon)} bumps into ${
+                        a_monnam(blocker)}.`);
+                await wakeup(blocker, !game.context?.mon_moving);
+                if (touch_petrifies(blocker.data || game.mons[blocker.mnum])
+                    && !which_armor(mon, W_ARMU | W_ARM | W_ARMC))
+                    note_unported_uhitm('mhurtle:collision_petrify_hurtler');
+                if (touch_petrifies(mon.data || game.mons[mon.mnum])
+                    && !which_armor(blocker, W_ARMU | W_ARM | W_ARMC))
+                    note_unported_uhitm('mhurtle:collision_petrify_blocker');
+            } else if (x === game.u.ux && y === game.u.uy) {
                 note_unported_uhitm('mhurtle:hero_collision');
+            }
             break;
         }
 

@@ -1,0 +1,55 @@
+{
+  "name": "mounted-jousting",
+  "description": "Mounted Knight controls cover an ordinary lance hit, successful primary and offhand jousts, knockback and monster collision, stun and fumbling guards, and silent dismount when the steed dies.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.melee",
+    "combat.knockback",
+    "combat.twoweapon",
+    "monster.death-corpse-revival",
+    "monster.steeds",
+    "monster.movement",
+    "object.weapons",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "combat.hero.joust-fumbling-guard",
+    "combat.hero.joust-knockback",
+    "combat.hero.joust-offhand-bonus",
+    "combat.hero.joust-primary-bonus",
+    "combat.hero.joust-roll-fails",
+    "combat.hero.joust-stunned-guard",
+    "combat.knockback.monster-collision",
+    "steed.dismount.dead-mount"
+  ],
+  "segments": [
+    {
+      "seed": 6962,
+      "datetime": "20000112124000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy\u0007sleeping minotaur\rbj\u001b\u0006\u001b"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112124500",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy8\u0007sleeping minotaur\r#wizintrinsic\rf\r\u001bFj\u001b\u0006\u001b"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112125000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             i\u001bwb \u0007tame saddled pony\r#ride\ryy8\u0007sleeping minotaur\r#wizintrinsic\r s\r\u001bFj\u001b\u0006\u001b"
+    },
+    {
+      "seed": 6962,
+      "datetime": "20000112125500",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender=male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Te\u001bi\u001bwb \u0007tame saddled pony\r#ride\rly8\u0007sleeping minotaur\rx\u001b#twoweapon\r#wizintrinsic\re\r\u001bFl\u001b\u0006\u001b"
+    }
+  ]
+}

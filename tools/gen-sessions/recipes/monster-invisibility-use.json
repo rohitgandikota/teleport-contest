@@ -1,0 +1,64 @@
+{
+  "name": "monster-invisibility-use",
+  "description": "Hostile monsters pick up and use ordinary and cursed invisibility potions and a wand of make invisible, covering visibility changes, identification, map memory, and aggravation.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.animation",
+    "turn.speed-energy",
+    "level.ordinary",
+    "object.potions",
+    "object.wands",
+    "monster.movement"
+  ],
+  "branches": [
+    "monster.invisibility.potion-hidden",
+    "monster.invisibility.potion-seen",
+    "monster.invisibility.potion-hallucinating",
+    "monster.invisibility.potion-cursed",
+    "monster.invisibility.potion-unseen",
+    "monster.invisibility.wand",
+    "monster.invisibility.identification",
+    "monster.invisibility.map-memory",
+    "monster.invisibility.aggravation",
+    "input.prefix.move-without-pickup-atomic"
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m. "
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112112500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\r a\r \u0017uncursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m. "
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112113000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\rh\r #wizintrinsic\r a\r \u0017uncursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m. "
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m.    "
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\ri\r \u0017uncursed potion of invisibility\rdo\u0007hostile stone giant\rjm.m.m."
+    },
+    {
+      "seed": 7401,
+      "datetime": "20000112114500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of make invisible (0:3)\rdo\u0007hostile stone giant\rhm.m.m. "
+    }
+  ]
+}

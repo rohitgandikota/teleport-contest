@@ -167,6 +167,10 @@ The command table has ordinary keys, extended commands, option-dependent
 bindings, movement aliases, mouse entries, and wizard commands. Command counts,
 repeat, run, rush, travel, move-without-fight, force-fight, number-pad mode,
 occupation interruption, and prefix parsing all affect turn consumption.
+Prefixes such as move-without-pickup, rush, run, and force-fight consume their
+following direction inside one command dispatch. No turn update, status pass,
+hero-form effect, or hallucination redraw occurs between the prefix and that
+direction.
 
 Major command families are:
 
@@ -390,6 +394,19 @@ inside of the top Wizard's Tower block it. A blocked monster looks uneasy and
 stays put. Guards, shopkeepers, and priests do not choose cursed gain-level
 potions. A departing monster must be removed from both the level's monster list
 and positional map, then its old square must be redrawn.
+
+Monsters also use potions and wands of invisibility. An ordinary item grants
+permanent invisibility unless worn gear blocks the effect. A hero without see
+invisible loses sight of the monster and remembers an invisible-monster marker
+at its square. A hero with see invisible continues to see it become strangely
+transparent. While hallucinating, the same visible change is described as
+normal transparency and all monster names and glyphs continue to use the
+separate display random context. Seeing both the item use and successful effect
+identifies its type. An unseen potion only produces a chugging sound and does
+not identify the item. A wand spends one charge and remains in the monster's
+inventory. A cursed invisibility item grants no invisibility and briefly seems
+transparent; a cursed potion additionally exposes the monster alone on a
+cleared map, aggravates the hero, restores the normal view, and is consumed.
 
 ## 12. Combat and damage
 

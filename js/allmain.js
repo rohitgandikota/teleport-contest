@@ -694,6 +694,17 @@ export async function moveloop_core() {
         return;
     }
 
+    /* src/cmd.c parse()/rhack() consume a prefix and its following key in
+       one command dispatch. The replay harness supplies one key at a time,
+       so continue a pending g/G/m/F prefix before returning to moveloop's
+       per-input hallucination redraw, status, and hero-form effects. */
+    if (g._cmd_prefix_pending) {
+        await rhack(0);
+        if (g.u.utotype)
+            await deferred_goto();
+        return;
+    }
+
     if (g.context?.move) {
         /* src/allmain.c:205 — actual time passed */
         g.u.umovement = (g.u.umovement || 0) - NORMAL_SPEED;

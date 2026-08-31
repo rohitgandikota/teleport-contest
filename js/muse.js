@@ -9,10 +9,10 @@
 // the offensive slice at its head exactly as C does.
 
 import { game } from './gstate.js';
-import { rn2, rn1, rnd, d } from './rng.js';
+import { rn2, rn1, rnd, d, rn2_on_display_rng } from './rng.js';
 import { sgn, dist2, distmin, s_suffix } from './hacklib.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
-import { ATTKS, PMNAMES } from './monst_data.js';
+import { ATTKS, PMNAMES, NUMMONS } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
          passes_walls, noncorporeal, unsolid, haseyes, hates_light,
          resists_blnd, attacktype, verysmall, throws_rocks,
@@ -40,6 +40,7 @@ import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
 import { MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
+import { def_monsyms } from './drawing_data.js';
 
 // src/muse.c:1272 — the offensive MUSE_* selection codes.
 const MUSE_WAN_DEATH = 1;
@@ -838,6 +839,71 @@ async function mquaffmsg(mtmp, obj) {
     }
 }
 
+// src/muse.c:165 mzapwand(), self-targeting arm used by miscellaneous
+// invisibility wands. It reports a seen zap, reports only its distance when
+// unseen, forgets unseen charge knowledge, and spends exactly one charge.
+async function mzapwand_self(mtmp, obj) {
+    if (!obj || obj.spe < 1)
+        return false;
+    const [{ canseemon, pline }, { couldsee }, { You_hear },
+           { Monnam, mon_nam_too }, { doname, makeplural, vtense },
+           { unknow_object }] = await Promise.all([
+        import('./display.js'), import('./vision.js'), import('./pline.js'),
+        import('./do_name.js'), import('./objnam.js'), import('./mkobj.js'),
+    ]);
+
+    if (!canseemon(mtmp)) {
+        const range = couldsee(mtmp.mx, mtmp.my) ? 9 : 5;
+        const nearby = dist2(mtmp.mx, mtmp.my, game.u.ux, game.u.uy)
+                       <= range * range;
+        await You_hear(`a ${nearby ? 'nearby' : 'distant'} zap.`);
+        unknow_object(obj);
+    } else {
+        let who = Monnam(mtmp);
+        const self = mon_nam_too(mtmp, mtmp);
+        const verb = vtense(self, 'zap');
+        if (verb === 'zap')
+            who = who === 'It' ? 'They' : makeplural(who);
+        await pline(`${who} ${verb} ${self} with ${doname(obj)}!`);
+    }
+    obj.spe--;
+    return true;
+}
+
+// src/muse.c:2631 you_aggravate(). A cursed invisibility potion briefly
+// clears the map and exposes only the monster and hero before restoring the
+// ordinary view. The forced monster glyph is intentional even while blind.
+async function you_aggravate(mtmp) {
+    const [{ cls, docrt, show_glyph_cell, newsym, canspotmon,
+             map_invisible, more, pline },
+           { noit_mon_nam }, { Hallucination }, { You_feel },
+           { unconscious }] = await Promise.all([
+        import('./display.js'), import('./do_name.js'),
+        import('./youprop.js'), import('./pline.js'), import('./trap.js'),
+    ]);
+
+    const name = noit_mon_nam(mtmp);
+    await pline(`For some reason, ${s_suffix(name)} presence is known to you.`);
+    await cls();
+
+    const shown = game.mons[Hallucination()
+        ? rn2_on_display_rng(NUMMONS) : mtmp.mnum];
+    show_glyph_cell(mtmp.mx, mtmp.my, def_monsyms[shown.mlet] || '?',
+                    shown.mcolor, false, 0, { kind: 'mon', mon: mtmp });
+    newsym(game.u.ux, game.u.uy);
+    await You_feel(`aggravated at ${noit_mon_nam(mtmp)}.`);
+    await more();
+    await docrt();
+
+    if (unconscious()) {
+        game.multi = -1;
+        game.nomovemsg = 'Aggravated, you are jolted into full consciousness.';
+    }
+    newsym(mtmp.mx, mtmp.my);
+    if (!canspotmon(mtmp))
+        map_invisible(mtmp.mx, mtmp.my);
+}
+
 // src/muse.c:238 mreadmsg(). Seeing or hearing a monster read reveals the
 // scroll label. The unseen path names a previously seen monster, or a
 // non-unique human to a human hero, instead of reducing it to "someone".
@@ -1152,22 +1218,30 @@ export async function use_misc(mtmp) {
         m_useup_misc(mtmp, obj);
         return 2;
     }
+    case MUSE_WAN_MAKE_INVISIBLE:
     case MUSE_POT_INVISIBILITY: {
         if (!obj)
             return 0;
-        const [{ canseemon, canspotmon, pline, newsym },
-               { You_hear }, { Deaf }, { Monnam, mon_nam },
-               { singular, doname }] = await Promise.all([
-            import('./display.js'), import('./pline.js'), import('./youprop.js'),
-            import('./do_name.js'), import('./objnam.js'),
+        if (obj.otyp === ONAMES.WAN_MAKE_INVISIBLE && obj.spe < 1)
+            return 0;
+        const [{ cansee },
+               { canseemon, canspotmon, pline, newsym, map_invisible },
+               { Hallucination }, { Monnam, mon_nam, upstart },
+               { makeknown }] = await Promise.all([
+            import('./vision.js'), import('./display.js'),
+            import('./youprop.js'), import('./do_name.js'),
+            import('./o_init.js'),
         ]);
+        const vis = cansee(mtmp.mx, mtmp.my);
         const vismon = canseemon(mtmp);
-        const oldname = mon_nam(mtmp);
+        const oseen = vismon;
 
-        if (vismon)
-            await pline(`${Monnam(mtmp)} drinks ${singular(obj, doname)}!`);
-        else if (!Deaf())
-            await You_hear('a chugging sound.');
+        if (obj.otyp === ONAMES.WAN_MAKE_INVISIBLE)
+            await mzapwand_self(mtmp, obj);
+        else
+            await mquaffmsg(mtmp, obj);
+
+        const oldname = mon_nam(mtmp);
 
         mtmp.perminvis = obj.cursed ? 0 : 1;
         if (!mtmp.invis_blkd) {
@@ -1176,14 +1250,26 @@ export async function use_misc(mtmp) {
         }
         if (vismon && mtmp.minvis) {
             if (canspotmon(mtmp))
-                await pline(`${Monnam(mtmp)}'s body takes on a strange transparency.`);
-            else
+                await pline(`${upstart(s_suffix(oldname))} body takes on a ${
+                    Hallucination() ? 'normal' : 'strange'} transparency.`);
+            else {
                 await pline(`Suddenly you cannot see ${oldname}.`);
+                if (vis)
+                    map_invisible(mtmp.mx, mtmp.my);
+            }
+            if (oseen)
+                makeknown(obj.otyp);
+        } else if (vismon && !mtmp.minvis) {
+            await pline(`${Monnam(mtmp)} briefly seems to be transparent.`);
+        } else if (!vismon && canseemon(mtmp)) {
+            await pline(`${Monnam(mtmp)} suddenly appears!`);
         }
 
-        if (obj.cursed)
-            (game.unported ||= new Set()).add('use_misc:you_aggravate');
-        m_useup_misc(mtmp, obj);
+        if (obj.otyp === ONAMES.POT_INVISIBILITY) {
+            if (obj.cursed)
+                await you_aggravate(mtmp);
+            m_useup_misc(mtmp, obj);
+        }
         return 2;
     }
     case MUSE_BULLWHIP: {

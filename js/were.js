@@ -8,18 +8,18 @@
 import { game } from './gstate.js';
 import { rn1, rn2, rnd } from './rng.js';
 import { pline } from './display.js';
-import { You_hear } from './pline.js';
-import { Monnam, pmname } from './do_name.js';
+import { Norep, set_msg_xy, You_hear } from './pline.js';
+import { Amonnam, Monnam, pmname } from './do_name.js';
 import { canseemon } from './display.js';
 import { newsym } from './display.js';
 import { helpless } from './monst.js';
 import { healmon, wake_nearto } from './mon.js';
-import { is_human } from './mondata.js';
+import { is_human, resists_drli } from './mondata.js';
 import { MFLAGS, PMNAMES } from './monst_data.js';
 import { night } from './calendar.js';
 import { Deaf, Hallucination, Protection_from_shape_changers }
     from './youprop.js';
-import { FULL_MOON, NO_MM_FLAGS } from './const.js';
+import { FROMFORM, FULL_MOON, NO_MM_FLAGS } from './const.js';
 
 /* include/mondata.h:96 is_were() */
 export const is_were = (ptr) => (ptr.mflags2 & MFLAGS.M2_WERE) !== 0;
@@ -66,6 +66,12 @@ export async function were_summon(ptr, yours) {
         const helper = makemon(game.mons[typ], game.u.ux, game.u.uy,
                                NO_MM_FLAGS);
         if (helper) {
+            /* makemon.c:1471 prints this before returning. makemon() is
+               synchronous here, so its async caller supplies the message. */
+            if (canseemon(helper)) {
+                set_msg_xy(helper.mx, helper.my);
+                await Norep(`${Amonnam(helper)} suddenly appears next to you!`);
+            }
             total++;
             if (canseemon(helper))
                 visible++;
@@ -88,6 +94,44 @@ export function counter_were(pm) {
     case P.PM_HUMAN_WERERAT:     return P.PM_WERERAT;
     default:                     return -1 /* NON_PM */;
     }
+}
+
+// src/were.c:232 set_ulycn(). Catching or curing lycanthropy changes the
+// hero's innate drain resistance without changing the current body.
+export function set_ulycn(which) {
+    game.u.ulycn = which;
+    const intr = (game.u.intrinsic ||= {});
+    intr.HDrain_resistance = (intr.HDrain_resistance || 0) & ~FROMFORM;
+    if (resists_drli(game.youmonst))
+        intr.HDrain_resistance |= FROMFORM;
+    /* src/polyself.c:set_uasmon() clears this after rebuilding the
+       form-derived properties which set_ulycn() has just refreshed. */
+    game.were_changes = 0;
+}
+
+// src/were.c:187 you_were(). Hostile adjacent monsters suppress an
+// uncontrolled change, but the outer turn loop has already spent its roll.
+export async function you_were() {
+    const u = game.u;
+    const unchanging = !!(u.intrinsic?.HUnchanging || u.uprops?.UNCHANGING);
+    if (unchanging || u.umonnum === u.ulycn)
+        return;
+
+    const controlled = !!(u.intrinsic?.HPolymorph_control
+                           || u.uprops?.POLYMORPH_CONTROL)
+                       && !(u.intrinsic?.HStun || u.uprops?.STUNNED)
+                       && !(await import('./youprop.js')).Unaware();
+    if (controlled) {
+        (game.unported ||= new Set()).add('you_were:controlled_prompt');
+        return;
+    }
+
+    const { monster_nearby } = await import('./hack.js');
+    if (monster_nearby())
+        return;
+    game.were_changes = (game.were_changes || 0) + 1;
+    const { polymon } = await import('./polyself.js');
+    await polymon(u.ulycn, { allowSexChange: false });
 }
 
 // src/were.c:96 new_were() — transform between human and beast form.

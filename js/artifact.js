@@ -21,7 +21,7 @@ import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
          ONAME_KNOW_ARTI, ECMD_OK, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
          nothing_happens, W_ARM, W_WEP, W_ART, W_ARTI, SICK_ALL,
-         TIMEOUT } from './const.js';
+         TIMEOUT, W_SWAPWEP, W_QUIVER, W_BALL } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -675,6 +675,38 @@ export function retouch_object(obj, loseit) {
     if (obj.owornmask || loseit)
         note_unported_art('retouch_object:drop');
     return 0;
+}
+
+// src/artifact.c:2640 retouch_equipment(). The common path only retests
+// equipment and carried artifacts; ordinary safe gear has no side effects.
+// retouch_object records the remaining harmful silver and bane branches.
+export function retouch_equipment(dropflag) {
+    const u = game.u;
+    const checked = new Set();
+    const wearmask = ~(W_QUIVER | (u.twoweap ? 0 : W_SWAPWEP) | W_BALL);
+
+    const active = (obj) => {
+        const art = get_artifact(obj);
+        const beingworn = !!((obj.owornmask || 0) & wearmask);
+        const carryeffect = art !== artifact_records[0]
+                            && (!!arti_adtyp(art.cary) || !!art.cspfx);
+        const invoked = art !== artifact_records[0] && !!art.inv_prop
+                        && !!((u.uprops?.[art.inv_prop] || 0) & W_ARTI);
+        return beingworn || carryeffect || invoked;
+    };
+    const check = (obj, dropit) => {
+        if (!obj || checked.has(obj))
+            return;
+        checked.add(obj);
+        if (active(obj))
+            retouch_object(obj, dropit);
+    };
+
+    if (u.twoweap)
+        check(u.uswapwep, dropflag > 0);
+    check(u.uwep, dropflag > 0);
+    for (const obj of game.invent || [])
+        check(obj, dropflag === 1);
 }
 
 async function nothing_special(obj) {

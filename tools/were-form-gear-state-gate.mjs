@@ -115,8 +115,8 @@ assert.ok(dropped.some(obj => obj.otyp === ONAMES.LONG_SWORD
                               && !(obj.owornmask | 0)),
           'the unwielded sword lands on the transformation square');
 
-assert.equal(game.were_changes, 1,
-             'one completed form change is counted');
+assert.equal(game.were_changes, 0,
+             'the completed form-change count is cleared after refresh');
 assert.equal(game.objects[ONAMES.SCR_TAMING].oc_name_known, 1,
              'a visible successful pacification identifies the scroll');
 const ring = (game.invent || []).find(obj =>

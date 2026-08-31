@@ -349,6 +349,14 @@ helpers summoned through the hero's lycanthropy are made tame. The hero can
 also gain, control, suppress, time out, or cure lycanthropy, subject to
 Unchanging, nearby monsters, polymorph control, and the current form.
 
+A landed were bite always spends a one-in-four infection roll. A successful
+roll only infects a hero who has no existing lycanthropy, lacks shape-change
+protection and weapon defense, and is not saved by magic negation. Infection
+reports fever, abuses Constitution, records the attacker's beast form, grants
+the matching innate drain resistance, and retests touch-sensitive equipment.
+An infected hero in base form then checks once per turn to change shape. The
+chance is one in sixty at night and one in eighty during the day.
+
 Taming magic normally checks the surrounding three by three area and expands
 to eleven by eleven while confused. While swallowed it targets only the
 engulfer, and a steed can occupy the hero-square target. Cursed magic angers

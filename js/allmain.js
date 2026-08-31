@@ -58,12 +58,13 @@ import { encumber_msg, exerchk, change_luck, ACURR,
          near_capacity } from './attrib.js';
 import { init_uhunger } from './eat.js';
 import { settrack, initrack } from './track.js';
-import { phase_of_the_moon, friday_13th } from './calendar.js';
+import { phase_of_the_moon, friday_13th, night } from './calendar.js';
 import { ask_do_tutorial, set_playmode, optfn_playmode } from './options.js';
 import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
          FULL_MOON, NEW_MOON, COLNO, A_CON, A_WIS, A_INT, MOD_ENCUMBER,
          UNENCUMBERED, SLT_ENCUMBER, HVY_ENCUMBER, EXT_ENCUMBER, A_DEX,
-         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA } from './const.js';
+         Upolyd, Is_waterlevel, Is_airlevel, FROMFORM, TT_LAVA, NON_PM }
+         from './const.js';
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
 import { lookaround, end_running, unmul, nomul,
@@ -284,6 +285,8 @@ export async function newgame() {
         // src/u_init.c:991 — u.umonnum = u.umonster = urole.mnum. find_ac()
         // starts from mons[u.umonnum].ac, so a hero without it has no base AC.
         g.u.umonnum = g.u.umonster = g.urole.mnum;
+        // src/u_init.c:992. A zero-initialized value would name a real monster.
+        g.u.ulycn = NON_PM;
         /* src/decl.c go.oldcap — zero-initialised; encumber_msg() compares
            against it and undefined breaks the first transition message. */
         g.oldcap = 0;
@@ -737,6 +740,7 @@ export async function moveloop_core() {
             if (!monscanmove && g.u.umovement < NORMAL_SPEED) {
                 /* src/allmain.c:222 — both hero and monsters are out of
                    steam this round, so set up a new turn */
+                g.were_changes = 0;
                 await mcalcdistress();
 
                 /* src/allmain.c:232 — reallocate movement rations */
@@ -808,11 +812,46 @@ export async function moveloop_core() {
                     }
                 }
 
+                /* src/allmain.c:318. A lycanthropic hero makes this roll on
+                   every new turn while in base form, even when an adjacent
+                   monster will prevent the resulting change. */
+                if (!g.u.uinvulnerable) {
+                    const polymorph = !!(g.u.intrinsic?.HPolymorph
+                                         || g.u.uprops?.POLYMORPH);
+                    if ((g.mvl_change === 1 && !polymorph)
+                        || (g.mvl_change === 2 && g.u.ulycn === NON_PM))
+                        g.mvl_change = 0;
+                    if (polymorph && !rn2(100)) {
+                        g.mvl_change = 1;
+                    } else if (g.u.ulycn !== NON_PM && !Upolyd(g.u)
+                               && !rn2(80 - 20 * night())) {
+                        g.mvl_change = 2;
+                    }
+                    const unchanging = !!(g.u.intrinsic?.HUnchanging
+                                          || g.u.uprops?.UNCHANGING);
+                    if (g.mvl_change && !unchanging && (g.multi ?? 0) >= 0) {
+                        await stop_occupation();
+                        if (g.mvl_change === 1) {
+                            const { polyself } = await import('./polyself.js');
+                            await polyself();
+                        } else {
+                            const { you_were } = await import('./were.js');
+                            await you_were();
+                        }
+                        g.mvl_change = 0;
+                    }
+                }
+
                 /* src/allmain.c:342 — intrinsic Searching autosearches
                    every turn (Archeologists have it from level 1) */
                 if ((g.u.intrinsic?.HSearching || g.u.uprops?.SEARCHING)
                     && !g.level?.flags?.noautosearch && (g.multi ?? 0) >= 0)
                     await dosearch0(1);
+
+                if (g.were_changes) {
+                    const { set_ulycn } = await import('./were.js');
+                    set_ulycn(g.u.ulycn);
+                }
 
                 await dosounds();
                 /* src/allmain.c:353 do_storms() — draws only on a stormy

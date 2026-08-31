@@ -67,6 +67,8 @@ import { steal } from './steal.js';
 import { buzzmu, castmu } from './mcastu.js';
 import { erode_obj } from './trap.js';
 import { drain_item } from './zap.js';
+import { defends, retouch_equipment } from './artifact.js';
+import { set_ulycn } from './were.js';
 
 function note_unported_mhitu(what) {
     (game.unported ||= new Set()).add(what);
@@ -1249,6 +1251,20 @@ async function hitmu(mtmp, mattk, indx) {
         await mhitm_ad_pest(mtmp, mhm);
     } else if (mattk[1] === A.AD_DETH) {
         await mhitm_ad_deth(mtmp, mhm);
+    } else if (mattk[1] === A.AD_WERE) {
+        // src/uhitm.c:4264 mhitm_ad_were(). The infection roll is made on
+        // every landed were bite, before all protection checks.
+        await hitmsg(mtmp, mattk, indx);
+        if (!rn2(4) && game.u.ulycn === NON_PM
+            && !Protection_from_shape_changers()
+            && !defends(A.AD_WERE, game.u.uwep)
+            && !await mhitm_mgc_atk_negated(
+                mtmp, game.youmonst, true)) {
+            await urgent_pline('You feel feverish.');
+            exercise(A_CON, false);
+            set_ulycn(mdat.pmidx);
+            retouch_equipment(2);
+        }
     } else if (mattk[1] === A.AD_STCK) {
         await hitmsg(mtmp, mattk, indx);
         const negated = await mhitm_mgc_atk_negated(

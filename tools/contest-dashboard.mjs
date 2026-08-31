@@ -260,8 +260,10 @@ function render(row, leaderboard) {
     lines.push(`Leaderboard snapshot: ${leaderboard.timestamp}. Fork last scored: ${row.leaderboardScoredAt}.`);
     if (leaderboard.source === 'cached') {
         lines.push(`Live JSON fetch unavailable: ${leaderboard.fetchError}. Using the last exact snapshot.`);
-        if (leaderboard.pageCheckedAt)
-            lines.push(`Leaderboard page checked: ${leaderboard.pageCheckedAt}. ${leaderboard.pageCheck}.`);
+        if (leaderboard.pageCheckedAt) {
+            const pageCheck = leaderboard.pageCheck.replace(/[.\s]+$/, '');
+            lines.push(`Leaderboard page checked: ${leaderboard.pageCheckedAt}. ${pageCheck}.`);
+        }
     }
     lines.push('');
     lines.push('## Score summary');

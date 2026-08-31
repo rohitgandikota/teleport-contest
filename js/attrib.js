@@ -39,15 +39,21 @@ function Role_if(pm) {
 
 // src/hack.c weight_cap() — how much the hero can carry before encumbrance.
 //
-// Draws nothing. Only the ordinary arm is ported; the polymorph scaling, the
-// levitation and steed overrides and the wounded-leg reductions each need
-// state we do not model, and each would change the ANSWER rather than only a
-// message, so they are recorded rather than assumed away.
+// Draws nothing. This includes polymorph scaling, levitation and steed
+// overrides, and the wounded-leg reductions which flying suppresses.
 export function weight_cap() {
     /* include/weight.h:12,14 — WT_WEIGHTCAP_STRCON, WT_WEIGHTCAP_SPARE */
     let carrcap = (25 * (acurrstr() + acurr(A_CON))) + 50;
+    const u = game.u;
+    const levitating = !!(u.intrinsic?.HLevitation || u.uprops?.LEVITATION)
+                       && !u.blocked?.LEVITATION;
+    const flying = !!(u.intrinsic?.HFlying || u.uprops?.FLYING)
+                   || !!(Upolyd(u) && game.youmonst?.data
+                         && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY))
+                   || !!(u.usteed
+                         && (u.usteed.data.mflags1 & MFLAGS.M1_FLY));
 
-    if (Upolyd(game.u)) {
+    if (Upolyd(u)) {
         const ptr = game.youmonst.data;
         if (ptr.mlet === MONSYMS.S_NYMPH) {
             carrcap = 1000;
@@ -60,18 +66,18 @@ export function weight_cap() {
 
     /* src/hack.c:4325 — levitating, on the Plane of Air, or riding a
        strong steed lifts the cap to MAX_CARR_CAP outright */
-    if (game.u.uprops?.LEVITATION || Is_airlevel(game.u.uz)
-        || (game.u.usteed && strongmonst(game.u.usteed.data))) {
+    if (levitating || Is_airlevel(u.uz)
+        || (u.usteed && strongmonst(u.usteed.data))) {
         carrcap = 1000;             /* MAX_CARR_CAP */
     } else {
         if (carrcap > 1000)         /* MAX_CARR_CAP */
             carrcap = 1000;
         /* include/weight.h WT_WOUNDEDLEG_REDUCT (100) per wounded leg; the
            side bits live in EWounded_legs (worn-ring bits). Flying negates. */
-        if (!game.u.uprops?.FLYING) {
-            if ((game.u.EWounded_legs || 0) & LEFT_SIDE)
+        if (!flying) {
+            if ((u.EWounded_legs || 0) & LEFT_SIDE)
                 carrcap -= 100;
-            if ((game.u.EWounded_legs || 0) & RIGHT_SIDE)
+            if ((u.EWounded_legs || 0) & RIGHT_SIDE)
                 carrcap -= 100;
         }
     }

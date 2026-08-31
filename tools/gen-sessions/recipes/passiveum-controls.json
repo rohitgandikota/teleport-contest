@@ -1,0 +1,123 @@
+{
+  "name": "passiveum-controls",
+  "description": "Polymorphed debug heroes exercise C passiveum counterattacks after monster melee hits, including resistance and equipment controls.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.melee",
+    "combat.resist-reflect",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "forms.polymorph",
+    "object.weapons",
+    "object.buc-enchant-erosion",
+    "survival.regen-exercise",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "combat.passiveum.acid-resistance",
+    "combat.passiveum.acid-splash",
+    "combat.passiveum.cockatrice-petrification",
+    "combat.passiveum.cockatrice-weapon-protection",
+    "combat.passiveum.cold-growth-split",
+    "combat.passiveum.cold-resistance",
+    "combat.passiveum.disenchant-weapon",
+    "combat.passiveum.electric-kill",
+    "combat.passiveum.fire-damage",
+    "combat.passiveum.fire-resistance",
+    "combat.passiveum.floating-eye-gaze",
+    "combat.passiveum.gelatinous-contact",
+    "combat.passiveum.shock-resistance-rehumanization",
+    "combat.passiveum.yellow-mold-stun",
+    "monster.escape.drop-special-objects",
+    "monster.escape.wounded-upstairs-level-one"
+  ],
+  "segments": [
+    {
+      "seed": 6940,
+      "datetime": "20000112111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\racid blob\r \u0007hostile soldier\rl m. m. m. m. m. "
+    },
+    {
+      "seed": 6941,
+      "datetime": "20000112111500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\racid blob\r \u0007hostile yellow dragon\rl m. m. m. "
+    },
+    {
+      "seed": 6942,
+      "datetime": "20000112112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rcockatrice\r \u0007hostile minotaur\rl m. "
+    },
+    {
+      "seed": 6943,
+      "datetime": "20000112112500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rcockatrice\r \u0007hostile soldier\rl m. m. m. m. "
+    },
+    {
+      "seed": 6944,
+      "datetime": "20000112113000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rdisenchanter\r \u0007hostile barrow wight\rl m. m. m. m. m. "
+    },
+    {
+      "seed": 6945,
+      "datetime": "20000112113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rfloating eye\r \u0007hostile soldier\rl m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6946,
+      "datetime": "20000112114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rgelatinous cube\r \u0007hostile soldier\rl m. m. m. m. m. "
+    },
+    {
+      "seed": 6947,
+      "datetime": "20000112114500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rblue jelly\r \u0007hostile giant ant\rl m. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6948,
+      "datetime": "20000112115000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rblue jelly\r \u0007hostile winter wolf cub\rl m. m. m. m. m. "
+    },
+    {
+      "seed": 6949,
+      "datetime": "20000112115500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\ryellow mold\r  \u0007hostile grid bug\rl m. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6950,
+      "datetime": "20000112120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rfire vortex\r\u0007hostile fire ant\rl m. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6951,
+      "datetime": "20000112120500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r\u0007hostile storm giant\rl m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6952,
+      "datetime": "20000112121000",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rfire vortex\r\u0007hostile soldier\rl m. m. m. m. m. m. "
+    },
+    {
+      "seed": 6953,
+      "datetime": "20000112121500",
+      "nethackrc": "OPTIONS=name:wizard,role:Tourist,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\renergy vortex\r\u0007hostile giant ant\rl m. m. m. m. m. m. m. m. m. m. m. m. "
+    }
+  ]
+}

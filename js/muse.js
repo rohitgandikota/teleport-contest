@@ -703,6 +703,22 @@ function m_useup_misc(mtmp, obj) {
 // src/muse.c:441 find_defensive(), healing, stairs, and create-monster-scroll
 // actions. Monsters use healing while badly hurt, and can escape by a
 // staircase or ladder when movement has no legal square.
+function m_use_healing(mtmp) {
+    for (const [otyp, action] of [
+        [ONAMES.POT_FULL_HEALING, MUSE_POT_FULL_HEALING],
+        [ONAMES.POT_EXTRA_HEALING, MUSE_POT_EXTRA_HEALING],
+        [ONAMES.POT_HEALING, MUSE_POT_HEALING],
+    ]) {
+        const obj = (mtmp.minvent || []).find(item => item.otyp === otyp);
+        if (obj) {
+            game.m.defensive = obj;
+            game.m.has_defense = action;
+            return true;
+        }
+    }
+    return false;
+}
+
 export function find_defensive(mtmp, tryescape) {
     const mdat = mtmp.data ?? game.mons[mtmp.mnum];
     const stuck = mtmp === game.u.ustuck;
@@ -726,9 +742,14 @@ export function find_defensive(mtmp, tryescape) {
         if (mtmp.mhp >= mtmp.mhpmax
             || (mtmp.mhp >= 10 && mtmp.mhp * fraction >= mtmp.mhpmax))
             return false;
+        if (mtmp.mpeaceful) {
+            if (!nohands(mdat) && m_use_healing(mtmp))
+                return true;
+            return false;
+        }
     }
 
-    if (tryescape && !stuck && !immobile && !mtmp.mtrapped) {
+    if (!stuck && !immobile && !mtmp.mtrapped) {
         const stway = stairway_at(mtmp.mx, mtmp.my);
         if (stway) {
             const sameDungeon = stway.tolev.dnum === game.u.uz.dnum;
@@ -892,6 +913,24 @@ export async function use_defensive(mtmp) {
                 import('./display.js'), import('./do_name.js'),
                 import('./trap.js'),
             ]);
+        const dgn = game.dungeons?.[game.u.uz.dnum];
+        const ledger = (dgn?.ledger_start ?? 0) + game.u.uz.dlevel;
+        if (action === MUSE_SSTAIRS && ledger === 1) {
+            const special = (mtmp.minvent || []).some(item =>
+                item.otyp === ONAMES.AMULET_OF_YENDOR
+                || item.otyp === ONAMES.BELL_OF_OPENING
+                || item.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+                || item.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD);
+            if (special
+                || (mtmp.iswiz
+                    && (game.context?.no_of_wizards ?? 0) < 2))
+                return 0;
+            if (canseemon(mtmp))
+                await pline(`${Monnam(mtmp)} escapes the dungeon!`);
+            const { mongone } = await import('./mon.js');
+            mongone(mtmp);
+            return 2;
+        }
         if (canseemon(mtmp)) {
             let route;
             if (action === MUSE_SSTAIRS)

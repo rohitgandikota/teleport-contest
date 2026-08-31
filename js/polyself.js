@@ -333,6 +333,12 @@ function set_form_intrinsics(mdat, mntmp) {
     propset('HBlnd_resistance', !!mdat
             && (dmgtype_fromattack(mdat, ATTKS.AD_BLND, ATTKS.AT_EXPL)
                 || dmgtype_fromattack(mdat, ATTKS.AD_BLND, ATTKS.AT_GAZE)));
+
+    const facewearBlinds = game.u.ublindf
+        && (game.u.ublindf.otyp === ONAMES.BLINDFOLD
+            || game.u.ublindf.otyp === ONAMES.TOWEL);
+    game.u.ublind = !game.u.blocked?.BLINDED
+        && (!!intr.HBlinded || facewearBlinds) ? 1 : 0;
 }
 
 // src/polyself.c:1077 uasmon_maxStr(): temporary maximum strength for the
@@ -465,11 +471,16 @@ export async function rehumanize() {
     const { Blind } = await import('./youprop.js');
     const was_blind = Blind();
 
+    const oldspeed = game.youmonst.data?.mmove || 0;
+    const baseform = game.mons?.[u.umonster] || mons[u.umonster];
+
     u.acurr = clone_attr(u.macurr);
     u.amax = clone_attr(u.mamax);
     u.umonnum = u.umonster;
     game.flags.female = !!u.mfemale;
-    game.youmonst.data = game.mons?.[u.umonster] || mons[u.umonster];
+    if (u.umovement && baseform.mmove < oldspeed && oldspeed > 0)
+        u.umovement = Math.trunc(u.umovement * baseform.mmove / oldspeed);
+    game.youmonst.data = baseform;
     game.youmonst.mnum = u.umonster;
     set_form_intrinsics(game.youmonst.data, u.umonster);
     u.mh = u.mhmax = 0;
@@ -480,9 +491,14 @@ export async function rehumanize() {
     find_ac();
     const { newsym, see_monsters, urgent_pline } = await import('./display.js');
     newsym(u.ux, u.uy);
+    const regainedSight = was_blind && !Blind();
+    if (regainedSight) {
+        game._deferred_status_blind = false;
+        game._deferred_status_blind_more_count = 1;
+    }
     await urgent_pline(`You return to ${game.urace.adj} form!`);
 
-    if (was_blind && !Blind()) {
+    if (regainedSight) {
         (u.intrinsic ||= {}).HBlinded = 1;
         u.ublind = 1;
         const { make_blinded } = await import('./potion.js');
@@ -533,19 +549,25 @@ export async function polymon(mntmp, options = {}) {
 
     const fixed_male = !!(mdat.mflags2 & 0x00010000);
     const fixed_female = !!(mdat.mflags2 & 0x00020000);
+    let changedNeutralSex = false;
     if (fixed_male && game.flags.female)
         game.flags.female = false;
     else if (fixed_female && !game.flags.female)
         game.flags.female = true;
     else if (allowSexChange && !fixed_male && !fixed_female
-             && !is_neuter(mdat) && !rn2(10))
+             && !is_neuter(mdat) && !rn2(10)) {
         game.flags.female = !game.flags.female;
+        changedNeutralSex = true;
+    }
 
     const monname = mdat.pmnames[game.flags.female ? 1 : 0]
                     || mdat.pmnames[2] || mdat.pmnames[0];
+    const shownName = `${changedNeutralSex
+        ? (game.flags.female ? 'female ' : 'male ') : ''}${monname}`;
     const { You } = await import('./pline.js');
     await You(`${u.umonnum !== mntmp ? 'turn into' : 'feel like'} `
-              + `${indefinite(u.umonnum !== mntmp ? monname : `new ${monname}`)}!`);
+              + `${indefinite(u.umonnum !== mntmp
+                  ? shownName : `new ${shownName}`)}!`);
 
     if (Upolyd(u) && keepAttributesForMessage) {
         u.acurr = clone_attr(u.macurr);

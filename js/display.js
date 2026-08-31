@@ -1759,7 +1759,8 @@ function _statusLine2() {
     }
     const shownHp = game._deferred_status_hp_until_more
         ?? Math.max((Upolyd(u) ? u.mh : u.uhp) | 0, 0);
-    const maxHp = Upolyd(u) ? u.mhmax : u.uhpmax;
+    const maxHp = game._deferred_status_hpmax_until_more
+        ?? (Upolyd(u) ? u.mhmax : u.uhpmax);
     let s = `${lvldesc} ${Is_rogue_level(u.uz) ? '*' : '$'}:${shownMoney}`
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
           + ` HP:${shownHp}(${maxHp || 0})`
@@ -2189,6 +2190,7 @@ export async function more() {
         game._deferred_status_hp_more_count--;
     } else {
         delete game._deferred_status_hp_until_more;
+        delete game._deferred_status_hpmax_until_more;
         delete game._deferred_status_hp_more_count;
     }
     if ((game._deferred_status_ac_more_count | 0) > 1) {
@@ -2196,6 +2198,12 @@ export async function more() {
     } else {
         delete game._deferred_status_ac_until_more;
         delete game._deferred_status_ac_more_count;
+    }
+    if ((game._deferred_status_blind_more_count | 0) > 1) {
+        game._deferred_status_blind_more_count--;
+    } else if (game._deferred_status_blind_more_count) {
+        delete game._deferred_status_blind;
+        delete game._deferred_status_blind_more_count;
     }
 
     /* win/tty/topl.c more():234 — ESC sets WIN_STOP: the player has asked to

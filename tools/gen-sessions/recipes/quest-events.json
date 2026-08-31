@@ -11,6 +11,9 @@
     "ui.map-memory-vision",
     "ui.more-paging"
   ],
+  "branches": [
+    "monster.defensive.peaceful-healing-only"
+  ],
   "segments": [
     {
       "seed": 8890,

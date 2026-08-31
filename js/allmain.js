@@ -716,6 +716,13 @@ export async function moveloop_core() {
             } while (monscanmove);
             g.context.mon_moving = false;
 
+            /* src/allmain.c:219. Capture burden after monster actions, even
+               when the hero already has enough movement to act. The saved
+               value is used by the next movement grant. A monster can force
+               rehumanization here, changing carrying capacity between the
+               action and that later grant. */
+            g.mvl_wtcap = near_capacity();
+
             if (!monscanmove && g.u.umovement < NORMAL_SPEED) {
                 /* src/allmain.c:222 — both hero and monsters are out of
                    steam this round, so set up a new turn */
@@ -732,7 +739,7 @@ export async function moveloop_core() {
                    effectively loses its first turn */
                 maybe_generate_rnd_mon();
 
-                u_calc_moveamt(near_capacity());
+                u_calc_moveamt(g.mvl_wtcap);
                 /* src/allmain.c:242 — record the square the hero just left, so
                    a monster that cannot see the hero has a trail to follow. */
                 settrack();

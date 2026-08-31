@@ -1096,7 +1096,7 @@ async function split_mon_from_heat(mon) {
 
 // src/mhitm.c attk_protection(), the armor slots which keep an aggressive
 // passive defense from touching the attacker.
-function attk_protection(aatyp) {
+export function attk_protection(aatyp) {
     switch (aatyp) {
     case ATTKS.AT_NONE:
     case ATTKS.AT_SPIT:
@@ -1123,7 +1123,7 @@ function attk_protection(aatyp) {
 
 // src/uhitm.c erode_armor(), including its retry loop. Body armor is the one
 // branch which terminates even when there is no eligible object.
-async function erode_armor(mdef, hurt) {
+export async function erode_armor(mdef, hurt) {
     for (;;) {
         let target;
         switch (rn2(5)) {
@@ -2487,7 +2487,7 @@ function on_fire(ptr, mattk) {
 
 // src/mon.c:5680 golemeffects(), elemental healing and slowing for flesh
 // and iron golems.
-async function golem_element_effects(mon, adtyp, damage) {
+export async function golem_element_effects(mon, adtyp, damage) {
     let heal = 0, slow = false;
 
     if (mon.mnum === PMNAMES.PM_FLESH_GOLEM) {

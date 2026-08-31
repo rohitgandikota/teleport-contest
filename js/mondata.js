@@ -466,6 +466,18 @@ export const resists_poison = (mon) => Resists_Elem(mon, POISON_RES);
 export const resists_acid   = (mon) => Resists_Elem(mon, ACID_RES);
 export const resists_ston   = (mon) => Resists_Elem(mon, STONE_RES);
 
+// src/mondata.c:201 resists_drli(), drain-life resistance shared by hero and
+// monsters. Unlike elemental resistance, this is based on creature families
+// plus artifact or dragon-armor defense rather than a resistance bit.
+export function resists_drli(mon) {
+    const ptr = mon.data || game.mons[mon.mnum];
+    return is_undead(ptr) || is_demon(ptr)
+        || (ptr.mflags2 & MFLAGS.M2_WERE) !== 0
+        || (mon === game.youmonst && (game.u.ulycn ?? -1) >= 0)
+        || ptr.pmidx === PMNAMES.PM_DEATH || is_vampshifter(mon)
+        || defended(mon, ATTKS.AD_DRLI);
+}
+
 function note_unported_mondata(what) {
     (game.unported ||= new Set()).add(what);
 }

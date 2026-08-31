@@ -121,7 +121,7 @@ async function mhitm_ad_deth(magr, mhm) {
 }
 
 // include/you.h:324 mhis() — possessive pronoun for a monster.
-const mhis = (mtmp) => genders[pronoun_gender(mtmp, PRONOUN_HALLU)].his;
+export const mhis = (mtmp) => genders[pronoun_gender(mtmp, PRONOUN_HALLU)].his;
 
 // include/objclass.h:79 — weapon strike directions.
 const PIERCE = 1, SLASH = 2, WHACK = 4;

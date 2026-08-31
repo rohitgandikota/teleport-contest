@@ -8,8 +8,11 @@
 import { game } from './gstate.js';
 import { is_neuter, humanoid, slithy, attacktype, name_to_monplus,
          strongmonst, sliparm, breakarm, nohands, verysmall,
-         is_whirly, num_horns, has_head } from './mondata.js';
-import { mons, PMNAMES, MONSYMS, ATTKS, MFLAGS } from './monst_data.js';
+         is_whirly, num_horns, has_head, hides_under, webmaker,
+         is_hider, lays_eggs, is_swimmer, is_unicorn,
+         regenerates } from './mondata.js';
+import { mons, PMNAMES, MONSYMS, ATTKS, MFLAGS, MSOUND } from './monst_data.js';
+import { is_vampshifter } from './monst.js';
 import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
          HEAD, LEG, TOE, HAIR, EYE, NOSE, A_STR, A_WIS, A_CON,
          ECMD_OK, ECMD_TIME, KILLED_BY_AN, Upolyd, FROMFORM } from './const.js';
@@ -245,13 +248,15 @@ const polyok = (mdat) => !!mdat && !(mdat.mflags2 & MFLAGS.M2_NOPOLY);
 const your_race = (mdat) =>
     !!mdat && !!(mdat.mflags2 & (game.urace?.selfmask || 0));
 
-// src/polyself.c:35 set_uasmon(), the form-derived stunned property.
-// Bats and stalkers are intrinsically stunned while the form lasts.
-function set_form_stun(mdat, mntmp) {
+// src/polyself.c:35 set_uasmon(), form-derived intrinsic properties.
+function set_form_intrinsics(mdat, mntmp) {
     const intr = (game.u.intrinsic ||= {});
     intr.HStun = (intr.HStun || 0) & ~FROMFORM;
     if (mntmp === PMNAMES.PM_STALKER || mdat?.mlet === MONSYMS.S_BAT)
         intr.HStun |= FROMFORM;
+    intr.HRegeneration = (intr.HRegeneration || 0) & ~FROMFORM;
+    if (mdat && regenerates(mdat))
+        intr.HRegeneration |= FROMFORM;
 }
 
 // src/polyself.c:332 newman() and :200 polyman(), the controlled return to
@@ -324,7 +329,7 @@ async function newman() {
     game.flags.female = !!u.mfemale;
     game.youmonst.data = game.mons?.[u.umonster] || mons[u.umonster];
     game.youmonst.mnum = u.umonster;
-    set_form_stun(game.youmonst.data, u.umonster);
+    set_form_intrinsics(game.youmonst.data, u.umonster);
     u.mh = u.mhmax = 0;
     u.mtimedone = 0;
     u.uundetected = 0;
@@ -367,7 +372,7 @@ export async function rehumanize() {
     game.flags.female = !!u.mfemale;
     game.youmonst.data = game.mons?.[u.umonster] || mons[u.umonster];
     game.youmonst.mnum = u.umonster;
-    set_form_stun(game.youmonst.data, u.umonster);
+    set_form_intrinsics(game.youmonst.data, u.umonster);
     u.mh = u.mhmax = 0;
     u.mtimedone = 0;
     u.uundetected = 0;
@@ -448,7 +453,7 @@ export async function polymon(mntmp) {
     u.umonnum = mntmp;
     game.youmonst.data = mdat;
     game.youmonst.mnum = mntmp;
-    set_form_stun(mdat, mntmp);
+    set_form_intrinsics(mdat, mntmp);
 
     if (strongmonst(mdat)) {
         u.acurr.a[A_STR] = 118;
@@ -667,9 +672,47 @@ export async function polymon(mntmp) {
         delete game._deferred_status_ac_more_count;
     }
 
-    if (game.flags.verbose && attacktype(mdat, ATTKS.AT_BREA)) {
+    if (game.flags.verbose) {
         const { pline } = await import('./display.js');
-        await pline('Use the command #monster to use your breath weapon.');
+        const monsterAbility = async (action) =>
+            pline(`Use the command #monster to ${action}.`);
+        const mightHide = is_hider(mdat) || hides_under(mdat);
+
+        if (attacktype(mdat, ATTKS.AT_BREA))
+            await monsterAbility('use your breath weapon');
+        if (attacktype(mdat, ATTKS.AT_SPIT))
+            await monsterAbility('spit venom');
+        if (mdat.mlet === MONSYMS.S_NYMPH)
+            await monsterAbility('remove an iron ball');
+        if (attacktype(mdat, ATTKS.AT_GAZE))
+            await monsterAbility('gaze at monsters');
+        if (mightHide && webmaker(mdat))
+            await monsterAbility('hide or to spin a web');
+        else if (mightHide)
+            await monsterAbility('hide');
+        else if (webmaker(mdat))
+            await monsterAbility('spin a web');
+        if (mdat.mflags2 & MFLAGS.M2_WERE)
+            await monsterAbility('summon help');
+        if (u.umonnum === PMNAMES.PM_GREMLIN)
+            await monsterAbility('multiply in a fountain');
+        if (is_unicorn(mdat))
+            await monsterAbility('use your horn');
+        if (mdat.pmidx === PMNAMES.PM_MIND_FLAYER
+            || mdat.pmidx === PMNAMES.PM_MASTER_MIND_FLAYER)
+            await monsterAbility('emit a mental blast');
+        if (mdat.msound === MSOUND.MS_SHRIEK)
+            await monsterAbility('shriek');
+        if (mdat.mlet === MONSYMS.S_VAMPIRE || is_vampshifter(game.youmonst))
+            await monsterAbility('change shape');
+
+        if (lays_eggs(mdat) && game.flags.female
+            && mdat.pmidx !== PMNAMES.PM_GIANT_EEL
+            && mdat.pmidx !== PMNAMES.PM_ELECTRIC_EEL) {
+            const action = mdat.mlet === MONSYMS.S_EEL && is_swimmer(mdat)
+                ? 'spawn in the water' : 'lay an egg';
+            await pline(`Use the command #sit to ${action}.`);
+        }
     }
     return 1;
 }

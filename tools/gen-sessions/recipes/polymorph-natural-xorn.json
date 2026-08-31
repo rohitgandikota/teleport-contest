@@ -1,0 +1,26 @@
+{
+  "name": "polymorph-natural-xorn",
+  "description": "A level-30 debug Wizard unwields his staff, polymorphs into a xorn, and attacks an iron golem with three claws followed by a bite.",
+  "coverage": [
+    "combat.melee",
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.movement",
+    "object.weapons",
+    "turn.speed-energy",
+    "ui.getlin"
+  ],
+  "branches": [
+    "combat.hero.polymorphed-claw-bite-chain"
+  ],
+  "segments": [
+    {
+      "seed": 6931,
+      "datetime": "20000112094500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             w-\u0007iron golem\r#polyself\rxorn\ru  "
+    }
+  ]
+}

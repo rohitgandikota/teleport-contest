@@ -430,6 +430,16 @@ async function violated_vegetarian() {
     }
 }
 
+// src/eat.c:568 eating_conducts(), shared by ordinary meals and brain eating.
+export async function eating_conducts(pd) {
+    const conduct = (game.u.uconduct ||= {});
+    conduct.food = (conduct.food | 0) + 1;
+    if (!vegan(pd))
+        conduct.unvegan = (conduct.unvegan | 0) + 1;
+    if (!vegetarian(pd))
+        await violated_vegetarian();
+}
+
 /* src/eat.c:2491 foodwords[]; indices are enum obj_material_types. */
 const foodwords = [
     'meal', 'liquid', 'wax', 'food', 'meat', 'paper', 'cloth', 'leather',

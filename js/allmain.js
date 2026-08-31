@@ -102,7 +102,9 @@ function init_sound_disp_gamewindows() {
 
 // include/you.h:441-442
 const RIGHT_HANDED = 0x00, LEFT_HANDED = 0x01;
-import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED } from './mon.js';
+import { mcalcmove, mcalcdistress, movemon, NORMAL_SPEED, is_pool } from './mon.js';
+import { breathless } from './mondata.js';
+import { MONSYMS } from './monst_data.js';
 import { m_everyturn_effect } from './monmove.js';
 import { u_wipe_engr } from './engrave.js';
 import { dosounds } from './sounds.js';
@@ -598,11 +600,33 @@ async function regen_hp(wtcap) {
     let heal = 0;
     let reached_full = false;
     const encumbrance_ok = (wtcap < MOD_ENCUMBER || !game.u.umoved);
-    const U_CAN_REGEN = () => !!(game.u.uprops?.REGENERATION
+    const U_CAN_REGEN = () => !!(game.u.intrinsic?.HRegeneration
+                                 || game.u.uprops?.REGENERATION
                                  || (game.u.uprops?.SLEEPY && game.u.usleep));
 
     if (Upolyd(game.u)) {
-        note_unported_main('regen_hp:Upolyd');
+        if (game.u.mh < 1) {
+            const { rehumanize } = await import('./polyself.js');
+            await rehumanize();
+        } else if (game.youmonst.data.mlet === MONSYMS.S_EEL
+                   && !is_pool(game.u.ux, game.u.uy)
+                   && !Is_waterlevel(game.u.uz)
+                   && !game.u.uprops?.MAGICAL_BREATHING
+                   && !breathless(game.youmonst.data)) {
+            if (game.u.mh > 1 && !U_CAN_REGEN()
+                && rn2(game.u.mh) > rn2(8)
+                && (!game.u.uprops?.HALF_PHDAM || !(game.moves % 2)))
+                heal = -1;
+        } else if (game.u.mh < game.u.mhmax
+                   && (U_CAN_REGEN()
+                       || (encumbrance_ok && !(game.moves % 20)))) {
+            heal = 1;
+        }
+        if (heal) {
+            (game.disp ||= {}).botl = true;
+            game.u.mh += heal;
+            reached_full = (game.u.mh === game.u.mhmax);
+        }
     } else {
         if (game.u.uhp < game.u.uhpmax && (encumbrance_ok || U_CAN_REGEN())) {
             heal = (game.u.ulevel + ACURR(A_CON)) > rn2(100) ? 1 : 0;

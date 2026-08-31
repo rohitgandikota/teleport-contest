@@ -1,5 +1,5 @@
 import { exercise, poisoned } from './attrib.js';
-import { A_DEX, A_STR, ERODE_NONE, ERODE_BURN, ERODE_RUST,
+import { A_DEX, A_STR, A_INT, A_WIS, ERODE_NONE, ERODE_BURN, ERODE_RUST,
          ERODE_CORRODE, EF_NONE, EF_GREASE, Upolyd } from './const.js';
 // uhitm.js — the hero attacking, or declining to attack, a monster.
 // C ref: src/uhitm.c
@@ -19,8 +19,8 @@ import { rn1 } from './rng.js';
 import { dmgtype } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor } from './worn.js';
-import { hitmsg, magic_negation } from './mhitu.js';
-import { You, Your, You_hear } from './pline.js';
+import { hitmsg, magic_negation, mpoisons_subj, mhis } from './mhitu.js';
+import { You, Your, You_hear, pline_The } from './pline.js';
 import { end_running } from './hack.js';
 import { mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam, x_monnam,
          pmname } from './do_name.js';
@@ -44,7 +44,8 @@ import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
 import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
          otense, mshot_xname, Yobjnam2 } from './objnam.js';
 import { mintrap, erode_obj } from './trap.js';
-import { clone_mon, goodpos, place_monster, remove_monster } from './makemon.js';
+import { clone_mon, goodpos, place_monster, remove_monster,
+         is_rider } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee, set_apparxy } from './monmove.js';
@@ -59,11 +60,13 @@ import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
          setmnotwielded, special_dmgval, use_skill, uwep_skill_type,
          weapon_type } from './weapon.js';
 import { find_mac } from './worn.js';
-import { greatest_erosion, worn } from './do_wear.js';
-import { is_orc, unsolid, noncorporeal, amorphous, thick_skinned, attacktype,
+import { greatest_erosion, worn, helm_simple_name } from './do_wear.js';
+import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
+         thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
-         is_whirly, mon_hates_blessings, resists_blnd,
-         resists_blnd_by_arti, noattacks } from './mondata.js';
+         is_whirly, mon_hates_blessings, resists_blnd, has_head, mindless,
+         resists_blnd_by_arti, resists_poison, resists_drli,
+         noattacks } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -82,7 +85,7 @@ import { ACURR } from './attrib.js';
 import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
+         W_ARMG, W_ARMH, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
          NEED_WEAPON, XKILL_NOMSG, STRAT_WAITMASK, engulfing_u,
          NEW_MOON } from './const.js';
 import { is_undead } from './mondata.js';
@@ -530,7 +533,8 @@ export async function find_roll_to_hit(mtmp, aatyp, weapon, out) {
 
     let tmp = 1 + abon() + find_mac(mtmp) + (game.u.uhitinc || 0)
               + (sgn(Luck) * Math.trunc((Math.abs(Luck) + 2) / 3))
-              + game.u.ulevel;              /* maybe_polyd: not polymorphed */
+              + (Upolyd(game.u) ? game.youmonst.data.mlevel
+                                 : game.u.ulevel);
 
     /* some actions should occur only once during multiple attacks */
     if (!(out.attk_count++))
@@ -543,13 +547,15 @@ export async function find_roll_to_hit(mtmp, aatyp, weapon, out) {
     if (!mtmp.mcanmove)  tmp += 4;
 
     /* role/race adjustments */
-    if (Role_if(PMNAMES.PM_MONK)) {
+    if (Role_if(PMNAMES.PM_MONK) && !Upolyd(game.u)) {
         if (worn(W_ARM))
             tmp -= (out.role_roll_penalty = game.urole.spelarmr);
         else if (!game.u.uwep && !worn(W_ARMS))
             tmp += Math.trunc(game.u.ulevel / 3) + 2;
     }
-    if (is_orc(ptr) && Race_if(PMNAMES.PM_ELF))
+    if (is_orc(ptr)
+        && (Upolyd(game.u) ? is_elf(game.youmonst.data)
+                            : Race_if(PMNAMES.PM_ELF)))
         tmp++;
 
     /* encumbrance: with a lot of luggage, your agility diminishes */
@@ -853,6 +859,7 @@ export async function hmonas(mon) {
     let odd_claw = true;
 
     game.twohits = 0;
+    game.skipdrin = false;
 
     for (let i = 0; i < NATTK; i++) {
         if (i > 0 && (m_at(game.bhitpos.x, game.bhitpos.y) !== mon
@@ -869,6 +876,9 @@ export async function hmonas(mon) {
             || aatyp === ATTKS.AT_GAZE) {
             continue;
         }
+        if (game.skipdrin && aatyp === ATTKS.AT_TENT
+            && mattk[1] === ATTKS.AD_DRIN)
+            continue;
 
         const use_weapon = aatyp === ATTKS.AT_WEAP
             || (aatyp === ATTKS.AT_CLAW && game.u.uwep
@@ -1004,7 +1014,25 @@ async function damageum(mon, mattk, specialdmg) {
                 damage = Math.max(1, damage + bonus);
         }
     } else {
-        note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
+        if (mattk[1] === ATTKS.AD_DRST || mattk[1] === ATTKS.AD_DRDX
+            || mattk[1] === ATTKS.AD_DRCO) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_drst(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_DRLI) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_drli(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_DRIN) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_drin(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else {
+            note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
+        }
     }
 
     mon.mstrategy &= ~STRAT_WAITFORU;
@@ -2174,7 +2202,25 @@ export async function mhitm_mgc_atk_negated(magr, mdef, verbosely) {
 // so most successful touches do not spend the cancellation draw.
 export async function mhitm_ad_drli(magr, mattk, mdef, mhm) {
     if (magr === game.youmonst) {
-        note_unported_uhitm('mhitm_ad_drli:uhitm');
+        if (!rn2(3) && !resists_drli(mdef)
+            && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            mhm.damage = d(2, 6);
+            await pline(`${Monnam(mdef)} becomes weaker!`);
+            if (mdef.mhpmax - mhm.damage > mdef.m_lev) {
+                mdef.mhpmax -= mhm.damage;
+            } else if (mdef.mhpmax > mdef.m_lev) {
+                mdef.mhpmax = mdef.m_lev + 1;
+            }
+            mdef.mhp -= mhm.damage;
+            if (DEADMONSTER(mdef) || !mdef.m_lev) {
+                await pline(`${Monnam(mdef)} ${
+                    nonliving(game.mons[mdef.mnum]) ? 'expires' : 'dies'}!`);
+                await xkilled(mdef, XKILL_NOMSG);
+            } else {
+                mdef.m_lev--;
+            }
+            mhm.damage = 0;
+        }
     } else if (mdef === game.youmonst) {
         await hitmsg(magr, mattk, mhm.indx);
         if (!rn2(3) && !game.u.uprops?.DRAIN_RES
@@ -2265,8 +2311,17 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
     const negated = await mhitm_mgc_atk_negated(magr, mdef, false);
 
     if (magr === game.youmonst) {
-        if (!negated && !rn2(8))
-            note_unported_uhitm('mhitm_ad_drst:uhitm_poison');
+        if (!negated && !rn2(8)) {
+            await Your(`${mpoisons_subj(magr, mattk)} was poisoned!`);
+            if (resists_poison(mdef)) {
+                await pline_The(`poison doesn't seem to affect ${mon_nam(mdef)}.`);
+            } else if (!rn2(10)) {
+                await Your('poison was deadly...');
+                mhm.damage = mdef.mhp;
+            } else {
+                mhm.damage += rn1(10, 6);
+            }
+        }
     } else if (mdef === game.youmonst) {
         await hitmsg(magr, mattk, mhm.indx);
         mhm.hitflags |= M_ATTK_HIT;
@@ -2281,6 +2336,60 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
     } else if (!negated && !rn2(8)) {
         note_unported_uhitm('mhitm_ad_drst:mhitm_really_poison');
     }
+}
+
+// src/uhitm.c:3174 mhitm_ad_drin(), mind-flayer brain drain. The hero path
+// preserves eat_brains' draw order for an ordinary intelligent target.
+export async function mhitm_ad_drin(magr, mattk, mdef, mhm) {
+    const pd = game.mons[mdef.mnum];
+
+    if (magr !== game.youmonst) {
+        note_unported_uhitm('mhitm_ad_drin:nonhero');
+        return;
+    }
+    if (game.notonhead || !has_head(pd)) {
+        await pline(`${Monnam(mdef)} doesn't seem harmed.`);
+        game.skipdrin = true;
+        mhm.damage = 0;
+        return;
+    }
+
+    const helmet = which_armor(mdef, W_ARMH);
+    if (helmet && rn2(8)) {
+        await pline(`${s_suffix(Monnam(mdef))} ${helm_simple_name(helmet)} `
+                    + `blocks your attack to ${mhis(mdef)} head.`);
+        return;
+    }
+
+    const xtraDmg = rnd(10);
+    if (noncorporeal(pd)) {
+        await pline(`${s_suffix(Monnam(mdef))} brain is unharmed.`);
+        mhm.damage = 0;
+        return;
+    }
+
+    await You(`eat ${s_suffix(mon_nam(mdef))} brain!`);
+    const { eating_conducts, morehungry } = await import('./eat.js');
+    await eating_conducts(pd);
+    if (mindless(pd)) {
+        await pline(`${Monnam(mdef)} doesn't notice.`);
+        mhm.damage = 0;
+        return;
+    }
+    if (is_rider(pd)) {
+        note_unported_uhitm('mhitm_ad_drin:rider-brain');
+        return;
+    }
+
+    await morehungry(-rnd(30));
+    const cur = game.u.acurr?.a?.[A_INT] ?? 0;
+    const max = game.u.amax?.a?.[A_INT] ?? cur;
+    if (cur < max) {
+        game.u.acurr.a[A_INT] = Math.min(max, cur + rnd(4));
+        (game.disp ||= {}).botl = true;
+    }
+    exercise(A_WIS, true);
+    mhm.damage += xtraDmg;
 }
 
 // src/mondata.c:305 can_blnd(), restricted to a monster's physical

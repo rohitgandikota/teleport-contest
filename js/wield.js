@@ -7,7 +7,7 @@
 
 import { game } from './gstate.js';
 import { pline } from './display.js';
-import { cantwield, could_twoweap } from './mondata.js';
+import { cantwield, could_twoweap, humanoid } from './mondata.js';
 import { artifact_light, arti_speak, is_art, retouch_object } from './artifact.js';
 import { dropx } from './do.js';
 import { ACURR } from './attrib.js';
@@ -234,9 +234,8 @@ export async function setuwep_with_feedback(obj) {
 // src/wield.c:158 empty_handed() — description of hands when not wielding.
 export function empty_handed() {
     return game.u.uarmg ? "empty handed" /* gloves imply hands */
-           : "bare handed"; /* humanoid(youmonst.data) is true for every
-                               un-polymorphed playable form, and polyself is
-                               not ported, so the paws arm is unreachable */
+           : humanoid(game.youmonst.data) ? "bare handed"
+             : "not wielding anything";
 }
 
 // src/wield.c:138 cant_wield_corpse() — cockatrice corpse, bare hands.

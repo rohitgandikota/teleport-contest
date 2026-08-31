@@ -14,7 +14,8 @@
 // Nothing here draws.
 
 import { game } from './gstate.js';
-import { haseyes, is_flyer, resists_cold } from './mondata.js';
+import { amphibious, breathless, haseyes, is_flyer, is_swimmer,
+         resists_cold } from './mondata.js';
 import { Upolyd } from './const.js';
 import { unconscious } from './trap.js';
 import { is_fainted } from './eat.js';
@@ -28,7 +29,8 @@ export const HHallucination = () => !!game.u?.uprops?.HALLUC;
 // :119 Halluc_resistance. The port models uprops as a flat prop -> value map
 // rather than C's {intrinsic, extrinsic, blocked} struct, so the two halves
 // collapse into the one read; when uprops grows the struct, split them here.
-export const Halluc_resistance = () => !!game.u?.uprops?.HALLUC_RES;
+export const Halluc_resistance = () =>
+    !!(game.u?.intrinsic?.HHalluc_resistance || game.u?.uprops?.HALLUC_RES);
 
 // include/youprop.h:120 Hallucination()
 export const Hallucination = () => HHallucination() && !Halluc_resistance();
@@ -48,7 +50,8 @@ export const Blind = () => !!game.u?.ublind
 
 // include/youprop.h:65 Stone_resistance — flat uprops map collapses the
 // intrinsic and extrinsic halves into one read.
-export const Stone_resistance = () => !!game.u?.uprops?.STONE_RES;
+export const Stone_resistance = () =>
+    !!(game.u?.intrinsic?.HStone_resistance || game.u?.uprops?.STONE_RES);
 
 // include/youprop.h:129 Fumbling
 export const Fumbling = () => !!game.u?.uprops?.FUMBLING;
@@ -82,12 +85,15 @@ export const Invis = () => !!(game.u?.intrinsic?.HInvis
                            && !game.u?.blocked?.INVIS;
 
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
-export const Levitation = () => !!game.u?.uprops?.LEVITATION;
+export const Levitation = () =>
+    !!(game.u?.intrinsic?.HLevitation || game.u?.uprops?.LEVITATION)
+    && !game.u?.blocked?.LEVITATION;
 
 // include/youprop.h:253 Flying — note the steed term: riding a flying mount
 // counts, which is why this cannot be a plain uprops read.
 export const Flying = () =>
-    !!game.u?.uprops?.FLYING
+    !!game.u?.intrinsic?.HFlying
+    || !!game.u?.uprops?.FLYING
     || !!(Upolyd(game.u) && is_flyer(game.youmonst.data))
     || !!(game.u?.usteed && is_flyer(game.u.usteed.data));
 
@@ -109,6 +115,16 @@ export const Shock_resistance = () => !!(game.u?.intrinsic?.HShock_resistance
                                          || game.u?.uprops?.SHOCK_RES);
 export const Poison_resistance = () =>
     !!(game.u?.intrinsic?.HPoison_resistance || game.u?.uprops?.POISON_RES);
+export const Disint_resistance = () =>
+    !!(game.u?.intrinsic?.HDisint_resistance || game.u?.uprops?.DISINT_RES);
+export const Acid_resistance = () =>
+    !!(game.u?.intrinsic?.HAcid_resistance || game.u?.uprops?.ACID_RES);
+export const Drain_resistance = () =>
+    !!(game.u?.intrinsic?.HDrain_resistance || game.u?.uprops?.DRAIN_RES);
+export const Sick_resistance = () =>
+    !!(game.u?.intrinsic?.HSick_resistance || game.u?.uprops?.SICK_RES);
+export const Antimagic = () =>
+    !!(game.u?.intrinsic?.HAntimagic || game.u?.uprops?.ANTIMAGIC);
 /* #define Stealth ((HStealth || EStealth) && !BStealth) — nothing that sets
    BStealth (riding, sunk in water) is tracked yet */
 export const Stealth = () => !!(game.u?.intrinsic?.HStealth
@@ -120,10 +136,30 @@ export const Warning = () => !!(game.u?.intrinsic?.HWarning
 export const Teleport_control = () =>
     !!(game.u?.intrinsic?.HTeleport_control
        || game.u?.uprops?.TELEPORT_CONTROL);
+export const Teleportation = () =>
+    !!(game.u?.intrinsic?.HTeleportation || game.u?.uprops?.TELEPORT);
+
+export const Swimming = () =>
+    !!game.u?.intrinsic?.HSwimming
+    || !!game.u?.uprops?.SWIMMING
+    || !!(game.u?.usteed && is_swimmer(game.u.usteed.data));
+export const Amphibious = () =>
+    !!game.u?.intrinsic?.HMagical_breathing
+    || !!game.u?.uprops?.MAGICAL_BREATHING
+    || !!(game.youmonst?.data && amphibious(game.youmonst.data));
+export const Breathless = () =>
+    !!game.u?.intrinsic?.HMagical_breathing
+    || !!game.u?.uprops?.MAGICAL_BREATHING
+    || !!(game.youmonst?.data && breathless(game.youmonst.data));
+export const Passes_walls = () =>
+    !!(game.u?.intrinsic?.HPasses_walls || game.u?.uprops?.PASSES_WALLS);
+export const Regeneration = () =>
+    !!(game.u?.intrinsic?.HRegeneration || game.u?.uprops?.REGENERATION);
 
 // include/youprop.h:113 Reflecting. The flat property value is C's
 // EReflecting slot mask, so a nonzero mask means reflection is active.
-export const Reflecting = () => !!game.u?.uprops?.REFLECTING;
+export const Reflecting = () =>
+    !!(game.u?.intrinsic?.HReflecting || game.u?.uprops?.REFLECTING);
 
 // include/youprop.h:186 Infravision — HInfravision || EInfravision.
 // The intrinsic half comes from the hero's race via set_uasmon().

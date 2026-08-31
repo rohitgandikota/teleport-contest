@@ -1,0 +1,26 @@
+{
+  "name": "polymorph-form-properties",
+  "description": "A level-30 debug Wizard cycles through fire elemental, stalker, xorn, and electric eel forms, inspecting the form-derived resistances, senses, movement abilities, and statuses after each change.",
+  "coverage": [
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "forms.polymorph.attributes-report",
+    "forms.polymorph.form-carrying-capacity",
+    "forms.polymorph.form-mobility",
+    "forms.polymorph.form-resistances",
+    "forms.polymorph.form-senses-status"
+  ],
+  "segments": [
+    {
+      "seed": 6944,
+      "datetime": "20000112103000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rfire elemental\r\u0018  \u001b#polyself\rstalker\r\u0018  \u001b#polyself\rxorn\r\u0018  \u001b#polyself\relectric eel\r\u0018  \u001b"
+    }
+  ]
+}

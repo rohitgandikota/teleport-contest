@@ -10,7 +10,10 @@ import { is_neuter, humanoid, slithy, attacktype, name_to_monplus,
          strongmonst, sliparm, breakarm, nohands, verysmall,
          is_whirly, num_horns, has_head, hides_under, webmaker,
          is_hider, lays_eggs, is_swimmer, is_unicorn,
-         regenerates } from './mondata.js';
+         regenerates, resists_drli, dmgtype, dmgtype_fromattack,
+         perceives, telepathic, infravision, pm_invisible,
+         can_teleport, control_teleport, is_floater, is_flyer,
+         passes_walls, haseyes } from './mondata.js';
 import { mons, PMNAMES, MONSYMS, ATTKS, MFLAGS, MSOUND } from './monst_data.js';
 import { is_vampshifter } from './monst.js';
 import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
@@ -251,12 +254,55 @@ const your_race = (mdat) =>
 // src/polyself.c:35 set_uasmon(), form-derived intrinsic properties.
 function set_form_intrinsics(mdat, mntmp) {
     const intr = (game.u.intrinsic ||= {});
-    intr.HStun = (intr.HStun || 0) & ~FROMFORM;
-    if (mntmp === PMNAMES.PM_STALKER || mdat?.mlet === MONSYMS.S_BAT)
-        intr.HStun |= FROMFORM;
-    intr.HRegeneration = (intr.HRegeneration || 0) & ~FROMFORM;
-    if (mdat && regenerates(mdat))
-        intr.HRegeneration |= FROMFORM;
+    const propset = (key, on) => {
+        intr[key] = (intr[key] || 0) & ~FROMFORM;
+        if (on)
+            intr[key] |= FROMFORM;
+    };
+    const resists = (mask) => !!(mdat?.mresists & mask);
+
+    propset('HFire_resistance', resists(MFLAGS.MR_FIRE));
+    propset('HCold_resistance', resists(MFLAGS.MR_COLD));
+    propset('HSleep_resistance', resists(MFLAGS.MR_SLEEP));
+    propset('HDisint_resistance', resists(MFLAGS.MR_DISINT));
+    propset('HShock_resistance', resists(MFLAGS.MR_ELEC));
+    propset('HPoison_resistance', resists(MFLAGS.MR_POISON));
+    propset('HAcid_resistance', resists(MFLAGS.MR_ACID));
+    propset('HStone_resistance', resists(MFLAGS.MR_STONE));
+
+    const savedWeapon = game.u.uwep;
+    game.u.uwep = null;
+    propset('HDrain_resistance', !!mdat && resists_drli(game.youmonst));
+    game.u.uwep = savedWeapon;
+
+    propset('HAntimagic', !!mdat && (dmgtype(mdat, ATTKS.AD_MAGM)
+             || mntmp === PMNAMES.PM_BABY_GRAY_DRAGON
+             || dmgtype(mdat, ATTKS.AD_RBRE)));
+    propset('HSick_resistance', !!mdat
+            && (mdat.mlet === MONSYMS.S_FUNGUS
+                || mntmp === PMNAMES.PM_GHOUL));
+    propset('HStun', mntmp === PMNAMES.PM_STALKER
+            || mdat?.mlet === MONSYMS.S_BAT);
+    propset('HHalluc_resistance', !!mdat && dmgtype(mdat, ATTKS.AD_HALU));
+    propset('HSee_invisible', !!mdat && perceives(mdat));
+    propset('HTelepat', !!mdat && telepathic(mdat));
+
+    const sightForm = Upolyd(game.u)
+        ? mdat : (game.mons?.[game.urace?.mnum] || mons[game.urace?.mnum]);
+    propset('HInfravision', !!sightForm && infravision(sightForm));
+    propset('HInvis', !!mdat && pm_invisible(mdat));
+    propset('HTeleportation', !!mdat && can_teleport(mdat));
+    propset('HTeleport_control', !!mdat && control_teleport(mdat));
+    propset('HLevitation', !!mdat && is_floater(mdat));
+    propset('HFlying', !!mdat && is_flyer(mdat) && !is_floater(mdat));
+    propset('HSwimming', !!mdat && is_swimmer(mdat));
+    propset('HPasses_walls', !!mdat && passes_walls(mdat));
+    propset('HRegeneration', !!mdat && regenerates(mdat));
+    propset('HReflecting', mntmp === PMNAMES.PM_SILVER_DRAGON);
+    propset('HBlinded', !!mdat && !haseyes(mdat));
+    propset('HBlnd_resistance', !!mdat
+            && (dmgtype_fromattack(mdat, ATTKS.AD_BLND, ATTKS.AT_EXPL)
+                || dmgtype_fromattack(mdat, ATTKS.AD_BLND, ATTKS.AT_GAZE)));
 }
 
 // src/polyself.c:332 newman() and :200 polyman(), the controlled return to
@@ -407,6 +453,8 @@ export async function polymon(mntmp) {
     const mdat = game.mons?.[mntmp] || mons[mntmp];
     if (!mdat)
         return 0;
+    const { Blind } = await import('./youprop.js');
+    const wasBlind = Blind();
     const oldAc = u.uac;
     let droppedCloak = false;
     let droppedWeaponMessage = null;
@@ -659,6 +707,14 @@ export async function polymon(mntmp) {
     }
     const { find_ac } = await import('./do_wear.js');
     find_ac();
+
+    if (wasBlind && !Blind()) {
+        (u.intrinsic ||= {}).HBlinded = 1;
+        u.ublind = 1;
+        const { make_blinded } = await import('./potion.js');
+        await make_blinded(0, true);
+    }
+
     const { newsym, see_monsters } = await import('./display.js');
     newsym(u.ux, u.uy);
     game.vision_full_recalc = 1;

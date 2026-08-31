@@ -21,7 +21,8 @@ import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WE
          W_ARM, W_ARMC, W_ARMH, W_ARMS,
          W_ARMG, W_ARMF, W_ARMU, W_AMUL, W_RINGL, W_RINGR,
          W_WEP, W_TOOL, W_ARMOR, W_ACCESSORY, W_ART,
-         LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd } from './const.js';
+         LEFT_SIDE, RIGHT_SIDE, BOTH_SIDES, LEG, Upolyd,
+         FROMFORM } from './const.js';
 import { makeplural, minimal_xname, simpleonames,
          suit_simple_name } from './objnam.js';
 import { weapon_descr, weapon_type, skill_name, skill_level_name, P_SKILL, can_advance } from './weapon.js';
@@ -41,17 +42,21 @@ import { costly_spot } from './shk.js';
 import { newuexp } from './exper.js';
 import { night, midnight } from './calendar.js';
 import { type_is_pname, sticks } from './mondata.js';
+import { MFLAGS } from './monst_data.js';
 import { inv_weight, near_capacity } from './attrib.js';
 import { ONAMES } from './objects_data.js';
 import { pline } from './display.js';
-import { a_monnam, x_monnam } from './do_name.js';
+import { a_monnam, x_monnam, pmname } from './do_name.js';
 import { find_mac } from './worn.js';
 import { Fast, Very_fast, from_what as innate_source } from './attrib.js';
 import { Fire_resistance, Cold_resistance, Sleep_resistance,
-         Shock_resistance, Poison_resistance, Stealth, Searching,
-         Warning, Teleport_control, See_invisible,
+         Disint_resistance, Shock_resistance, Poison_resistance,
+         Acid_resistance, Drain_resistance, Sick_resistance,
+         Stone_resistance, Antimagic, Stealth, Searching,
+         Warning, Teleportation, Teleport_control, See_invisible,
          Infravision, Deaf, Blind, Hallucination, Halluc_resistance,
-         Reflecting } from './youprop.js';
+         Invis, Levitation, Flying, Swimming, Amphibious, Breathless,
+         Passes_walls, Regeneration, Reflecting } from './youprop.js';
 import { artifact_names } from './artilist_data.js';
 import { carried_artifact_conveys } from './artifact.js';
 import { body_part } from './polyself.js';
@@ -230,13 +235,22 @@ function note_unported(what) {
 // src/insight.c:280 background_enlightenment()
 function background_enlightenment() {
     const u = game.u;
-    const female = !!game.flags.female;
+    const polymorphed = Upolyd(u);
+    const female = polymorphed ? !!u.mfemale : !!game.flags.female;
     const role_titl = (female && game.urole.name.f) ? game.urole.name.f
                                                     : game.urole.name.m;
     const rank_titl = rank_of(u.ulevel, game.urole, female);
 
     out('');
     out('Background:');
+
+    if (polymorphed) {
+        const mdat = game.youmonst.data;
+        const fixedGender = mdat.mflags2
+            & (MFLAGS.M2_MALE | MFLAGS.M2_FEMALE | MFLAGS.M2_NEUTER);
+        const gender = fixedGender ? '' : `${game.flags.female ? 'female' : 'male'} `;
+        you_are(`currently in ${gender}${pmname(mdat, game.flags.female ? 1 : 0)} form`);
+    }
 
     /* "%s, a level %d %s%s %s" — an(rank), level, gender adj, race adj, role */
     /* src/insight.c:512 — the gender word only when the role name has no
@@ -247,11 +261,11 @@ function background_enlightenment() {
         && ((game.urole.allow & ROLE_GENDMASK) === (ROLE_MALE | ROLE_FEMALE)
             || (female ? 1 : 0) !== (game.flags.initgend ?? (female ? 1 : 0))))
         tmpbuf = (female ? 'female' : 'male') + ' ';
-    let buf;
+    let buf = polymorphed ? 'actually ' : '';
     if (rank_titl.toLowerCase() === role_titl.toLowerCase())
-        buf = `${an(rank_titl)}, level ${u.ulevel} ${tmpbuf}${game.urace.noun}`;
+        buf += `${an(rank_titl)}, level ${u.ulevel} ${tmpbuf}${game.urace.noun}`;
     else
-        buf = `${an(rank_titl)}, a level ${u.ulevel} ${tmpbuf}`
+        buf += `${an(rank_titl)}, a level ${u.ulevel} ${tmpbuf}`
             + `${game.urace.adj} ${role_titl}`;
     you_are(buf);
 
@@ -277,7 +291,8 @@ function background_enlightenment() {
         opp += ` ${align_gname(-1)} (${align_str(-1)})`;
     out(opp + '.');
 
-    you_are((u.uhandedness === RIGHT_HANDED) ? 'right-handed' : 'left-handed');
+    you_are(`${polymorphed ? 'normally ' : ''}${
+        (u.uhandedness === RIGHT_HANDED) ? 'right-handed' : 'left-handed'}`);
 
     /* src/insight.c:604 — dungeon level, so that ^X really has all status
        info as claimed */
@@ -327,7 +342,7 @@ function background_enlightenment() {
             : (en_final === ENL_GAMEOVERALIVE) ? 'could have happened'
               : 'happened'} on Friday the 13th.`);
 
-    {
+    if (!polymorphed) {
         let buf = `${u.uexp | 0} experience point${plur(u.uexp | 0)}`;
         /* src/insight.c:702 — wizard mode (or final disclosure) appends the
            delta to the next level; "to attain" below 18, "for" above */
@@ -346,11 +361,13 @@ function background_enlightenment() {
 function basics_enlightenment() {
     const u = game.u;
     const Power = 'energy points (spell power)';
+    const polymorphed = Upolyd(u);
 
     out('');
     out('Basics:');
 
-    const hp = Math.max(0, u.uhp), hpmax = u.uhpmax;
+    const hp = Math.max(0, polymorphed ? u.mh : u.uhp);
+    const hpmax = polymorphed ? u.mhmax : u.uhpmax;
     you_have(hp === hpmax && hpmax > 1
              ? `all ${hpmax} hit points`
              : `${hp} out of ${hpmax} hit point${plur(hpmax)}`);
@@ -361,6 +378,13 @@ function basics_enlightenment() {
              : (pw === pwmax && pwmax > 2)
                ? `all ${pwmax} ${Power}`
                : `${pw} out of ${pwmax} ${Power}`);
+
+    if (polymorphed) {
+        const hitDice = game.youmonst.data.mlevel;
+        you_have(hitDice === 0 ? '0 hit dice (actually 1/2)'
+                 : hitDice === 1 ? '1 hit die'
+                   : `${hitDice} hit dice`);
+    }
 
     enl_msg('Your armor class ', 'is ', 'was ', `${u.uac}`, '');
 
@@ -461,18 +485,34 @@ function full_direction(dx, dy) {
 // src/insight.c:1180 status_enlightenment() — only the last-resort entries a
 // fresh hero reaches.
 function status_enlightenment() {
+    const u = game.u;
     out('');
     out(`${en_final ? 'Final ' : ''}Status:`);
 
-    if (Deaf())
-        you_are('deaf');
+    if (Upolyd(u))
+        you_are('transformed');
+    if (Levitation())
+        you_are('levitating', from_what('HLevitation'));
+    else if (Flying())
+        you_are('flying', from_what('HFlying'));
 
     /* src/insight.c:1181, restful sleep and other Sleepy sources. */
-    if ((game.u.intrinsic?.HSleepy || game.u.uprops?.SLEEPY))
+    if ((u.intrinsic?.HSleepy || u.uprops?.SLEEPY))
         enl_msg('You ', 'fall', 'fell', ' asleep uncontrollably', '');
+
+    if (u.intrinsic?.HStun || u.uprops?.STUNNED)
+        you_are('stunned');
 
     if (Hallucination())
         you_are('hallucinating');
+
+    if (Blind()) {
+        const innatelyBlind = !!(u.intrinsic?.HBlinded & FROMFORM);
+        you_are(innatelyBlind ? 'innately blind' : 'temporarily blind');
+    }
+
+    if (Deaf())
+        you_are('deaf');
 
     if (game.u.uprops?.PUNISHED) {
         const punishment = game.u.uball
@@ -768,7 +808,7 @@ function attributes_enlightenment() {
 
     /* src/insight.c:1524. Antimagic includes dragon mail and cloaks, and
        from_what() names the worn source in wizard mode. */
-    if (u.uprops?.ANTIMAGIC)
+    if (Antimagic())
         you_are('magic-protected', from_what('HAntimagic'));
 
     /* src/insight.c:1526-1541 — resistances to troubles, each with
@@ -781,7 +821,7 @@ function attributes_enlightenment() {
     item_resistance_message('COLD_RES', ' protected from cold');
     if (Sleep_resistance())
         you_are('sleep resistant', from_what('HSleep_resistance'));
-    if (u.uprops?.DISINT_RES)
+    if (Disint_resistance())
         you_are('disintegration resistant', from_what('HDisint_resistance'));
     item_resistance_message('DISINT_RES', ' protected from disintegration');
     if (Shock_resistance())
@@ -789,21 +829,21 @@ function attributes_enlightenment() {
     item_resistance_message('SHOCK_RES', ' protected from electric shocks');
     if (Poison_resistance())
         you_are('poison resistant', from_what('HPoison_resistance'));
-    if (u.uprops?.ACID_RES)
+    if (Acid_resistance())
         you_are('acid resistant', from_what('HAcid_resistance'));
     item_resistance_message('ACID_RES', ' protected from acid');
-    if (u.uprops?.DRAIN_RES)
+    if (Drain_resistance())
         you_are('level-drain resistant', from_what('HDrain_resistance'));
-    if (u.uprops?.SICK_RES)
+    if (Sick_resistance())
         you_are('immune to sickness', from_what('HSick_resistance'));
-    if (u.uprops?.STONE_RES)
+    if (Stone_resistance())
         you_are('petrification resistant', from_what('HStone_resistance'));
     if (Halluc_resistance())
         enl_msg('You ', 'resist', 'resisted', ' hallucinations',
                 from_what('HHalluc_resistance'));
 
     /*** Vision and senses (insight.c:1566) ***/
-    if (u.uprops?.BLND_RES && !Blind())
+    if ((u.intrinsic?.HBlnd_resistance || u.uprops?.BLND_RES) && !Blind())
         you_are('not subject to light-induced blindness',
                 from_what('HBlnd_resistance'));
     if (See_invisible())
@@ -819,6 +859,9 @@ function attributes_enlightenment() {
         you_have('infravision', from_what('HInfravision'));
 
     /*** Appearance and behavior (insight.c:1670) ***/
+    if (Invis())
+        you_are(See_invisible() ? 'invisible to others' : 'invisible',
+                from_what('HInvis'));
     if (u.uprops?.DISPLACED)
         you_are('displaced', from_what('HDisplaced'));
     if (Stealth())
@@ -827,10 +870,21 @@ function attributes_enlightenment() {
     /*** Transportation (insight.c:1688) ***/
     if (u.intrinsic?.HJumping || u.uprops?.JUMPING)
         you_can('jump', from_what('HJumping'));
+    if (Teleportation())
+        you_can('teleport', from_what('HTeleportation'));
     if (Teleport_control())
         you_have('teleport control', from_what('HTeleport_control'));
 
-    if (u.intrinsic?.HRegeneration || u.uprops?.REGENERATION)
+    if (Swimming())
+        you_can('swim', from_what('HSwimming'));
+    if (Breathless())
+        you_can('survive without air');
+    else if (Amphibious())
+        you_can('breathe water');
+    if (Passes_walls())
+        you_can('walk through walls', from_what('HPasses_walls'));
+
+    if (Regeneration())
         enl_msg('You regenerate', '', 'd', '', from_what('HRegeneration'));
     if (u.uprops?.SLOW_DIGESTION)
         you_have('slower digestion', from_what('HSlow_digestion'));
@@ -861,6 +915,14 @@ function attributes_enlightenment() {
             cast = ' enhanced by wearing a robe';
         if (cast)
             enl_msg('Your spell casting ', 'is', 'was', cast, '');
+    }
+
+    if (Upolyd(u)) {
+        let form = `polymorphed into ${an(pmname(game.youmonst.data,
+                                               game.flags.female ? 1 : 0))}`;
+        if (game.wizard)
+            form += ` (${u.mtimedone})`;
+        you_are(form);
     }
 
     /* src/insight.c:1898 — Fast, between the mc line and Luck */

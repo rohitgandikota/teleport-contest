@@ -14,7 +14,8 @@ import { game } from './gstate.js';
 import { You, Your } from './pline.js';
 import { pline } from './display.js';
 import { UNENCUMBERED, OVERLOADED , LEFT_SIDE, RIGHT_SIDE,
-         FROMEXPER, FROMRACE, FROMOUTSIDE, Is_airlevel, TIMEOUT } from './const.js';
+         FROMEXPER, FROMRACE, FROMOUTSIDE, FROMFORM,
+         Is_airlevel, TIMEOUT } from './const.js';
 import { strongmonst, throws_rocks } from './mondata.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
@@ -552,7 +553,8 @@ function innately(abilKey) {
     const word = game.u.intrinsic?.[abilKey] | 0;
     if (word & FROMOUTSIDE)
         return FROM_INTR;
-    /* FROMFORM — polymorphed heroes are not a thing yet */
+    if (word & FROMFORM)
+        return FROM_FORM;
     return FROM_NONE;
 }
 
@@ -577,6 +579,8 @@ export function from_what(abilKey) {
             buf = ' intrinsically';
         else if (innateness === FROM_EXP)
             buf = ' because of your experience';
+        else if (innateness === FROM_FORM)
+            buf = ' from your creature form';
         else {
             /* the property is on but not from the innate tables or an
                eaten corpse — " because of %s" needs what_gives() over
@@ -613,7 +617,7 @@ export function acurrstr() {
     if (str <= 18)
         return str;
     if (str <= 121)
-        return 19 + Math.trunc((str - 18) / 2); /* 18/01..18/99 -> 19..69 */
+        return 19 + Math.trunc(str / 50);
     return str - 100;
 }
 

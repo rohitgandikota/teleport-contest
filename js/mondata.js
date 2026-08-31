@@ -181,6 +181,18 @@ export const is_domestic = (ptr) => (ptr.mflags2 & MFLAGS.M2_DOMESTIC) !== 0;
 
 // include/mondata.h:81 perceives() — can this species see invisible?
 export const perceives = (ptr) => (ptr.mflags1 & MFLAGS.M1_SEE_INVIS) !== 0;
+export const can_teleport = (ptr) => (ptr.mflags1 & MFLAGS.M1_TPORT) !== 0;
+export const control_teleport = (ptr) =>
+    (ptr.mflags1 & MFLAGS.M1_TPORT_CNTRL) !== 0;
+export const telepathic = (ptr) =>
+    ptr.pmidx === PMNAMES.PM_FLOATING_EYE
+    || ptr.pmidx === PMNAMES.PM_MIND_FLAYER
+    || ptr.pmidx === PMNAMES.PM_MASTER_MIND_FLAYER;
+export const infravision = (ptr) =>
+    (ptr.mflags3 & MFLAGS.M3_INFRAVISION) !== 0;
+export const pm_invisible = (ptr) =>
+    ptr.pmidx === PMNAMES.PM_STALKER
+    || ptr.pmidx === PMNAMES.PM_BLACK_LIGHT;
 
 // include/mondata.h is_animal()
 export const is_animal = (ptr) => (ptr.mflags1 & MFLAGS.M1_ANIMAL) !== 0;

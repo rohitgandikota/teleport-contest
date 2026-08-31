@@ -10,7 +10,8 @@ import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR,
          A_STR, A_CON, W_BALL, W_CHAIN, W_ART, W_ARTI, TT_BURIEDBALL,
          BY_COOKIE, G_UNIQ, M_AP_TYPE, M_AP_MONSTER, M_AP_OBJECT,
          M_AP_FURNITURE, MM_FEMALE, MM_MALE, NON_PM, W_SADDLE,
-         OBJ_AT, COLNO, ROWNO, BOLT_LIM } from './const.js';
+         OBJ_AT, COLNO, ROWNO, BOLT_LIM, HAND, HEAD, NH_RED,
+         NH_PURPLE } from './const.js';
 import { sgn, distu } from './hacklib.js';
 import { valid_cloud_pos } from './region.js';
 import { cansee } from './vision.js';
@@ -20,14 +21,15 @@ import { chwepon } from './wield.js';
 import { erosion_matters } from './mkobj.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { newsym, pline, sensemon } from './display.js';
-import { rn2, rnd } from './rng.js';
+import { rn1, rn2, rnd } from './rng.js';
 import { getlin } from './cmd.js';
-import { hides_under, is_hider, name_to_monplus } from './mondata.js';
+import { has_head, hides_under, is_hider, is_silent,
+         name_to_monplus } from './mondata.js';
 import { is_female, is_male, makemon, mkclass, rndmonst,
          set_malign } from './makemon.js';
 import { canseemon } from './display.js';
-import { Amonnam, trycall, upstart } from './do_name.js';
-import { an, makesingular, simpleonames, vtense } from './objnam.js';
+import { Amonnam, hcolor, trycall, upstart } from './do_name.js';
+import { an, makeplural, makesingular, simpleonames, vtense } from './objnam.js';
 import { def_monsyms, defsyms, monexplain } from './drawing_data.js';
 import { MM_MINVIS, MM_NOEXCLAM } from './const.js';
 import { study_book } from './spell.js';
@@ -35,18 +37,32 @@ import { do_mapping } from './detect.js';
 import { do_clear_area, vision_recalc } from './vision.js';
 import { makeknown } from './o_init.js';
 import { more_experienced } from './exper.js';
-import { Norep, set_msg_xy, You, Your } from './pline.js';
+import { Norep, pline_The, set_msg_xy, You, Your, You_feel } from './pline.js';
 import { useup, identify_pack, update_inventory } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
 import { outrumor } from './rumors.js';
 import { setworn, which_armor } from './worn.js';
-import { LIMITS, MONSYMS, PMNAMES, mons_name } from './monst_data.js';
+import { LIMITS, MFLAGS, MONSYMS, PMNAMES, mons_name } from './monst_data.js';
 import { delobj, is_pool } from './mon.js';
 import { roles } from './role_data.js';
+import { body_part } from './polyself.js';
+import { Blind, Hallucination, Invisible } from './youprop.js';
+import { make_confused } from './potion.js';
 
 function note_unported_read(what) {
     (game.unported ||= new Set()).add('read:' + what);
+}
+
+// src/mondata.c:580 can_chant().
+function can_chant(mtmp) {
+    const data = mtmp?.data;
+    const strangled = mtmp === game.youmonst
+        && !!(game.u.intrinsic?.HStrangled || game.u.uprops?.STRANGLED);
+
+    return !!data && !strangled && !is_silent(data) && has_head(data)
+        && data.msound !== MFLAGS.MS_BUZZ
+        && data.msound !== MFLAGS.MS_BURBLE;
 }
 
 // src/read.c:315 read_ok() — getobj filter for 'r'; lives in js/cmd.js
@@ -121,13 +137,21 @@ export async function doread(read_ok) {
         const nodisappear = (otyp === ONAMES.SCR_FIRE
                              || (otyp === ONAMES.SCR_REMOVE_CURSE
                                  && scroll.cursed));
-        await pline(nodisappear ? 'You read the scroll.'
-                                : 'As you read the scroll, it disappears.');
+        const silently = !can_chant(game.youmonst);
+        if (Blind()) {
+            await pline(nodisappear
+                ? `You ${silently ? 'cogitate' : 'pronounce'} the formula on the scroll.`
+                : `As you ${silently ? 'cogitate' : 'pronounce'} the formula on it, the scroll disappears.`);
+        } else {
+            await pline(nodisappear ? 'You read the scroll.'
+                                    : 'As you read the scroll, it disappears.');
+        }
         if (game.u.uprops?.CONFUSION || game.u.intrinsic?.HConfusion) {
-            if (game.u.uprops?.HALLUC && !game.u.uprops?.HALLUC_RES)
+            if (Hallucination())
                 await pline('Being so trippy, you screw up...');
             else
-                await pline('Being confused, you mispronounce the magic words...');
+                await pline(`Being confused, you ${silently
+                    ? 'misunderstand' : 'mispronounce'} the magic words...`);
         }
     }
 
@@ -189,6 +213,10 @@ async function seffects(sobj) {
         return await seffect_light(sobj);
     case ONAMES.SCR_DESTROY_ARMOR:
         return await seffect_destroy_armor(sobj);
+    case ONAMES.SCR_CONFUSE_MONSTER:
+    case ONAMES.SPE_CONFUSE_MONSTER:
+        await seffect_confuse_monster(sobj);
+        break;
     case ONAMES.SCR_REMOVE_CURSE:
     case ONAMES.SPE_REMOVE_CURSE:
         await seffect_remove_curse(sobj);
@@ -204,6 +232,57 @@ async function seffects(sobj) {
         break;
     }
     return false;
+}
+
+// src/read.c:1400 seffect_confuse_monster().
+async function seffect_confuse_monster(sobj) {
+    const sblessed = !!sobj.blessed;
+    const scursed = !!sobj.cursed;
+    const confused = !!(game.u.intrinsic?.HConfusion
+                         || game.u.uprops?.CONFUSION);
+    const altfeedback = Blind() || Invisible();
+    const hands = makeplural(body_part(HAND));
+
+    if (game.youmonst.data.mlet !== MONSYMS.S_HUMAN || scursed) {
+        if (!game.u.intrinsic?.HConfusion)
+            await You_feel('confused.');
+        await make_confused((game.u.intrinsic?.HConfusion || 0) + rnd(100),
+                            false);
+    } else if (confused) {
+        if (!sblessed) {
+            await Your(`${hands} begin to ${altfeedback ? 'tingle'
+                : `glow ${hcolor(NH_PURPLE)}`}.`);
+            await make_confused((game.u.intrinsic?.HConfusion || 0)
+                                + rnd(100), false);
+        } else {
+            await pline(`A ${altfeedback ? 'faint buzz'
+                : `${hcolor(NH_RED)} glow`} surrounds your ${body_part(HEAD)}.`);
+            await make_confused(0, true);
+        }
+    } else {
+        let incr = sobj.oclass === OCLASSES.SCROLL_CLASS ? 3 : 0;
+
+        if (!sblessed) {
+            if (altfeedback)
+                await Your(`${hands} tingle${game.u.umconf ? ' even more' : ''}.`);
+            else if (!game.u.umconf)
+                await Your(`${hands} begin to glow ${hcolor(NH_RED)}.`);
+            else
+                await pline_The(`${hcolor(NH_RED)} glow of your ${hands} intensifies.`);
+            incr += rnd(2);
+        } else {
+            if (altfeedback)
+                await Your(`${hands} tingle ${game.u.umconf
+                    ? 'even more' : 'very'} sharply.`);
+            else
+                await Your(`${hands} glow ${game.u.umconf
+                    ? 'an even more' : 'a'} brilliant ${hcolor(NH_RED)}.`);
+            incr += rn1(8, 2);
+        }
+        if ((game.u.umconf || 0) >= 40)
+            incr = 1;
+        game.u.umconf = (game.u.umconf || 0) + incr;
+    }
 }
 
 // src/read.c:1976 seffect_punishment() and :3019 punish().

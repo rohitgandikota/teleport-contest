@@ -460,6 +460,16 @@ quaffed, thrown, inhaled as vapor, dipped into, mixed, boiled, diluted, or
 shattered. Scrolls have normal and confused readings, blessed and cursed
 variants, targeting prompts, and identification side effects.
 
+The confuse-monster scroll and spell charge the hero's hands when the hero is
+clear-headed and human. An ordinary scroll adds three base charges plus a small
+random increment, while a blessed reading adds a larger random increment. A
+cursed reading, or any reading in a nonhuman form, confuses the hero instead.
+A confused ordinary reading lengthens confusion, while a confused blessed
+reading cures it. Blindness and unseen invisibility replace visible glow
+messages with touch or sound feedback. A successful hand-to-hand hit spends one
+charge before checking the target's magic resistance, then confuses a target
+that fails that check. An already confused target spends no charge.
+
 Polymorph applies to the hero, monsters, and objects. It must preserve or reset
 different identity and state fields depending on the target. Genocide, wishing,
 recharging, cancellation, and artifact invocation have global constraints and

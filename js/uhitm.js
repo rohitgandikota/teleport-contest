@@ -21,11 +21,13 @@ import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.j
 import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
 import { end_running } from './hack.js';
 import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
-         x_monnam, hliquid, pmname, Some_Monnam } from './do_name.js';
-import { destroy_items, drain_item, exclam, hit, obj_resists } from './zap.js';
+         x_monnam, hliquid, hcolor, pmname, Some_Monnam } from './do_name.js';
+import { destroy_items, drain_item, exclam, hit, obj_resists,
+         resist } from './zap.js';
 import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
-         Reflecting, Shock_resistance, Stone_resistance } from './youprop.js';
+         Invisible, Reflecting, Shock_resistance,
+         Stone_resistance } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible } from './display.js';
@@ -96,6 +98,7 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
+import { NH_RED } from './const.js';
 import { body_part, mbodypart, ugolemeffects } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A, ARTICLE_YOUR,
@@ -1722,9 +1725,13 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
         if (!hmd.already_killed)
             await killed(mon);
     } else if (game.u.umconf && hmd.hand_to_hand) {
-        /* confused-touch: resist() DRAWS */
-        nohandglow(mon);
-        note_unported_uhitm('hmon_hitmon:resist_confuse');
+        await nohandglow(mon);
+        if (!mon.mconf
+            && !resist(mon, OCLASSES.SPBOOK_CLASS, 0, false)) {
+            mon.mconf = 1;
+            if (!mon.mstun && !helpless(mon) && canseemon(mon))
+                await pline(`${Monnam(mon)} appears confused.`);
+        }
     }
     if (hmd.unpoisonmsg)
         await Your(`${hmd.saved_oname} ${vtense(hmd.saved_oname, 'are')} no longer poisoned.`);
@@ -2538,11 +2545,23 @@ async function hmon_hitmon_msg_hit(hmd, mon, obj) {
 // u.umconf == 1 is the last charge and gets a different message from the
 // others ("stop glowing" versus "no longer glow so brightly"), which is why
 // the decrement happens AFTER the message rather than before.
-export function nohandglow(mon) {
+export async function nohandglow(mon) {
     if (!game.u.umconf || mon.mconf)
         return;
 
-    note_unported_uhitm('nohandglow:message');
+    const hands = makeplural(body_part(HAND));
+    const altfeedback = Blind() || Invisible();
+
+    if (game.u.umconf === 1) {
+        if (altfeedback)
+            await Your(`${hands} stop tingling.`);
+        else
+            await Your(`${hands} stop glowing ${hcolor(NH_RED)}.`);
+    } else if (altfeedback) {
+        await pline_The(`tingling in your ${hands} lessens.`);
+    } else {
+        await Your(`${hands} no longer glow so brightly ${hcolor(NH_RED)}.`);
+    }
     game.u.umconf--;
 }
 

@@ -85,6 +85,9 @@ export const Invis = () => !!(game.u?.intrinsic?.HInvis
                               || game.u?.uprops?.INVIS)
                            && !game.u?.blocked?.INVIS;
 
+// include/youprop.h:199 Invisible, invisibility the hero cannot see.
+export const Invisible = () => Invis() && !See_invisible();
+
 // include/youprop.h:240 Levitation — ((HLevitation || ELevitation) && !BLevitation).
 export const Levitation = () =>
     !!(game.u?.intrinsic?.HLevitation || game.u?.uprops?.LEVITATION)

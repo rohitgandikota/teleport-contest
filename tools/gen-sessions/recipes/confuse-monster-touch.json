@@ -1,0 +1,50 @@
+{
+  "name": "confuse-monster-touch",
+  "description": "Debug heroes read confuse-monster scroll variants and spend their charged touch on adjacent monsters, covering charge creation, resistance, successful confusion, and alternate sensory feedback.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "turn.speed-energy",
+    "level.ordinary",
+    "object.scrolls",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "combat.melee",
+    "survival.timed-status"
+  ],
+  "branches": [
+    "object.confuse-monster.uncursed-charge",
+    "object.confuse-monster.blessed-charge",
+    "object.confuse-monster.blind-feedback",
+    "object.confuse-monster.cursed-self-confusion",
+    "combat.confuse-touch.success",
+    "combat.confuse-touch.resisted",
+    "combat.confuse-touch.already-confused"
+  ],
+  "segments": [
+    {
+      "seed": 6947,
+      "datetime": "20000112100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0017scroll of confuse monster\rro \u001b\u0007hostile stone giant\rj j"
+    },
+    {
+      "seed": 6948,
+      "datetime": "20000112100500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed scroll of confuse monster\rro  \u001b\u0007sleeping hostile arch-lich\ru u"
+    },
+    {
+      "seed": 6949,
+      "datetime": "20000112101000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed blindfold\r\u0017scroll of confuse monster\r Porj \u001b"
+    },
+    {
+      "seed": 6950,
+      "datetime": "20000112101500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed scroll of confuse monster\rro \u001b"
+    }
+  ]
+}

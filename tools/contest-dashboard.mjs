@@ -15,6 +15,7 @@ const RUNNER = join(ROOT, 'frozen', 'ps_test_runner.mjs');
 const DASHBOARD = join(ROOT, 'docs', 'plan', 'contest-dashboard.md');
 const HISTORY = join(ROOT, 'docs', 'plan', 'contest-dashboard-history.tsv');
 const LEADERBOARD_CACHE = join(ROOT, 'docs', 'plan', 'leaderboard-cache.json');
+const COVERAGE_REPORT = join(ROOT, 'docs', 'plan', 'supplemental-coverage.md');
 const LEADERBOARD_URL = 'https://mazesofmenace.ai/leaderboard/data.json';
 const FORK = 'rohitgandikota/teleport-contest';
 
@@ -101,6 +102,44 @@ function runHangGate() {
     return {
         passed: child.status === 0,
         summary: `${child.stdout || ''}${child.stderr || ''}`.trim().split('\n').slice(-1)[0] || '',
+    };
+}
+
+function readCoverage() {
+    const report = readFileSync(COVERAGE_REPORT, 'utf8');
+    const mechanics = report.match(
+        /Requirements: \*\*(\d+)\*\*\. Covered: \*\*(\d+)\*\*\.\nPartial: \*\*(\d+)\*\*\. Gaps: \*\*(\d+)\*\*\./,
+    );
+    const branches = report.match(
+        /Branch requirements: \*\*(\d+)\*\*\. Covered: \*\*(\d+)\*\*\.\nPartial: \*\*(\d+)\*\*\. Gaps: \*\*(\d+)\*\*\./,
+    );
+    if (!mechanics || !branches)
+        throw new Error(`could not parse ${COVERAGE_REPORT}`);
+    const unpack = (match) => ({
+        total: Number(match[1]),
+        covered: Number(match[2]),
+        partial: Number(match[3]),
+        gaps: Number(match[4]),
+    });
+    return { mechanics: unpack(mechanics), branches: unpack(branches) };
+}
+
+function runGeneralization(gameCount = 80) {
+    const child = spawnSync(process.execPath, [
+        join(ROOT, 'tools', 'generalize.mjs'), String(gameCount),
+    ], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        maxBuffer: 16 * 1024 * 1024,
+    });
+    const output = `${child.stdout || ''}${child.stderr || ''}`;
+    const inventory = output.match(/(\d+) games over (\d+) role configs/);
+    if (child.status !== 0 || !inventory)
+        throw new Error(`generalization gate failed: ${output.slice(-2000)}`);
+    return {
+        games: Number(inventory[1]),
+        roles: Number(inventory[2]),
+        noUnportedPaths: output.includes('(none'),
     };
 }
 
@@ -244,6 +283,15 @@ function render(row, leaderboard) {
     lines.push(`- Contest phase: ${leaderboard.contestPhase}.`);
     lines.push(`- Local checkpoint \`${row.commit}\` has not been judged yet; held-out numbers are from the earlier published run.`);
     lines.push('');
+    lines.push('## C-reference coverage');
+    lines.push('');
+    lines.push('| Inventory | Covered | Partial | Gaps |');
+    lines.push('|---|---:|---:|---:|');
+    lines.push(`| Mechanics categories | ${row.coverage.mechanics.covered}/${row.coverage.mechanics.total} | ${row.coverage.mechanics.partial} | ${row.coverage.mechanics.gaps} |`);
+    lines.push(`| Explicit C branches | ${row.coverage.branches.covered}/${row.coverage.branches.total} | ${row.coverage.branches.partial} | ${row.coverage.branches.gaps} |`);
+    lines.push('');
+    lines.push(`- Fresh-seed smoke: ${row.generalization.noUnportedPaths ? 'PASS' : 'FAIL'}, ${row.generalization.games} games across ${row.generalization.roles} role configs${row.generalization.noUnportedPaths ? ', no reached unported path' : ''}.`);
+    lines.push('');
     lines.push('## Output details');
     lines.push('');
     lines.push('| Check | Public local | Supplemental |');
@@ -307,6 +355,8 @@ async function main() {
         categoryTotal: leaderboard.categoryTotal,
         playability: leaderboard.team.playability,
         hangGate,
+        coverage: readCoverage(),
+        generalization: runGeneralization(),
         publicSpeed: publicBundle.speed?.label || 'n/a',
         supplementalSpeed: supplementalBundle.speed?.label || 'n/a',
     };

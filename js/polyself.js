@@ -940,6 +940,24 @@ export async function domonability() {
         const { getdir } = await import('./cmd.js');
         return await getdir(null) ? ECMD_TIME : ECMD_OK;
     }
+    if (mdat.mflags2 & MFLAGS.M2_WERE) {
+        if (game.u.uen < 10) {
+            await You('lack the energy to send forth a call for help!');
+            return ECMD_OK;
+        }
+        game.u.uen -= 10;
+        (game.disp ||= {}).botl = true;
+        await You('call upon your brethren for help!');
+        const { exercise } = await import('./attrib.js');
+        exercise(A_WIS, true);
+        const { were_summon } = await import('./were.js');
+        const { total } = await were_summon(mdat, true);
+        if (!total) {
+            const { pline } = await import('./display.js');
+            await pline('But none arrive.');
+        }
+        return ECMD_TIME;
+    }
     if (Upolyd(game.u)) {
         const { pline } = await import('./display.js');
         await pline('Any special ability you may have is purely reflexive.');

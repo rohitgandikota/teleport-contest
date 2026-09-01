@@ -430,7 +430,10 @@ export async function potionhit(mon, obj, how) {
         await pline(`${Tobjnam(obj, 'evaporate')}.`);
 
     if (isyou) {
-        if (obj.otyp === ONAMES.POT_POLYMORPH) {
+        if (obj.otyp === ONAMES.POT_OIL && obj.lamplit) {
+            const { explode_oil } = await import('./explode.js');
+            await explode_oil(obj, game.u.ux, game.u.uy);
+        } else if (obj.otyp === ONAMES.POT_POLYMORPH) {
             await You_feel(`a little ${Hallucination() ? 'normal' : 'strange'}.`);
             const unchanging = !!(game.u.intrinsic?.HUnchanging
                                   || game.u.uprops?.UNCHANGING);
@@ -597,6 +600,12 @@ export async function potionhit(mon, obj, how) {
             }
             break;
         }
+        case ONAMES.POT_OIL:
+            if (obj.lamplit) {
+                const { explode_oil } = await import('./explode.js');
+                await explode_oil(obj, tx, ty);
+            }
+            break;
         case ONAMES.POT_POLYMORPH: {
             const { bhitm } = await import('./zap.js');
             await bhitm(mon, obj);

@@ -363,7 +363,11 @@ export async function throwit(obj, wep_mask) {
     if ((!IS_SOFT(btyp) && breaktest(obj))
         || obj.oclass === OCLASSES.VENOM_CLASS) {
         /* breakmsg + breakobj destroy the missile */
-        note_unported_dothrow('throwit:breakage');
+        if (obj.oclass === OCLASSES.POTION_CLASS) {
+            await break_potion_after_test(obj, bx, by);
+        } else {
+            note_unported_dothrow('throwit:breakage');
+        }
         game.thrownobj = null;
         return;
     }
@@ -664,9 +668,13 @@ export function breaktest(obj) {
 // potions. Vertical throws call this after breaktest() selects breakage;
 // hitfloor() calls hero_breaks_potion() so the resistance path can still
 // leave the potion intact on the floor.
-async function break_potion_after_test(obj) {
+async function break_potion_after_test(obj, impactX = null, impactY = null) {
     const wasOnFloor = obj.where === OBJ_FLOOR;
     const floorX = obj.ox, floorY = obj.oy;
+    const x = wasOnFloor ? floorX
+            : impactX === null ? game.u.ux : impactX;
+    const y = wasOnFloor ? floorY
+            : impactY === null ? game.u.uy : impactY;
 
     if (Blind())
         await You_hear('something shatter!');
@@ -675,7 +683,8 @@ async function break_potion_after_test(obj) {
 
     obj.in_use = true;
     if (obj.otyp === ONAMES.POT_OIL && obj.lamplit) {
-        note_unported_dothrow('breakobj:lit-oil');
+        const { explode_oil } = await import('./explode.js');
+        await explode_oil(obj, x, y);
     } else if (!breathless(game.youmonst.data)
                || haseyes(game.youmonst.data)) {
         const wetTowel = game.u.ublindf?.otyp === ONAMES.TOWEL

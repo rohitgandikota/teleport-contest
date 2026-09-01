@@ -96,6 +96,7 @@ import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
 import { create_gas_cloud } from './region.js';
+import { show_transient_light, transient_light_cleanup } from './light.js';
 import { boolean_option } from './options.js';
 import { finish_meating } from './dogmove.js';
 import { name_to_monplus } from './mondata.js';
@@ -2535,7 +2536,7 @@ export async function ureflects(fmt = null, str = null) {
 }
 
 // src/zap.c:5141 zap_over_floor(), the fire-over-water and poison-gas paths.
-async function zap_over_floor(x, y, type) {
+export async function zap_over_floor(x, y, type) {
     const damgtype = zaptype(type) % 10;
     const loc = game.level?.at(x, y);
     if (!loc)
@@ -2987,6 +2988,10 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
         }
 
         if ((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+            && obj?.lamplit && !Blind())
+            await show_transient_light(obj, x, y);
+
+        if ((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
             && typ === IRONBARS) {
             /* hits_bars() breaks some things, rn2(5) unless point-blank */
             note_unported_zap('bhit:ironbars');
@@ -3105,6 +3110,8 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
     endFlight();
     for (const [x, y] of flashCells)
         newsym(x, y);
+    if (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+        await transient_light_cleanup();
     return result;
 }
 

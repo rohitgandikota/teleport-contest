@@ -1935,7 +1935,7 @@ async function peacefuls_respond(mtmp) {
 // subsystem, which is not ported, so no engraving exists to stand on and the
 // branch is unreachable today -- that is the honest state, not a stub: when
 // engravings land the condition starts being true on its own.
-export async function setmangry(mtmp, via_attack) {
+export async function setmangry(mtmp, via_attack, suppress_primary_message = false) {
     if (via_attack && sengr_at("Elbereth", game.u.ux, game.u.uy, true)
         && (onscary(game.u.ux, game.u.uy, mtmp) || mtmp.mpeaceful)) {
         /* unreachable until the engraving subsystem is ported */
@@ -1957,9 +1957,9 @@ export async function setmangry(mtmp, via_attack) {
     } else
         adjalign(-1); /* attacking peaceful monsters is bad */
     if (humanoid(game.mons[mtmp.mnum]) || mtmp.isshk || mtmp.isgd) {
-        if (couldsee(mtmp.mx, mtmp.my))
+        if (!suppress_primary_message && couldsee(mtmp.mx, mtmp.my))
             await pline(`${Monnam(mtmp)} gets angry!`);
-    } else {
+    } else if (!suppress_primary_message) {
         await growl(mtmp);
     }
 

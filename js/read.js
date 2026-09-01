@@ -181,7 +181,7 @@ export function learnscroll(sobj) {
 // magic mapping is live; every other scroll records with its otyp so the
 // gap is visible per type. Returns true when the scroll was already used
 // up by its own arm.
-async function seffects(sobj) {
+export async function seffects(sobj) {
     const otyp = sobj.otyp;
 
     /* src/read.c:2199 — "just for trying": any magical scroll exercises

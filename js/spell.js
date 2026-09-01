@@ -30,6 +30,7 @@ import { getdir } from './cmd.js';
 import { update_inventory } from './invent.js';
 import { obfree } from './invent.js';
 import { use_skill } from './weapon.js';
+import { seffects } from './read.js';
 import { NODIR, NO_KILLER_PREFIX } from './const.js';
 import { A_WIS, KILLED_BY_AN } from './const.js';
 import { morehungry } from './eat.js';
@@ -705,7 +706,7 @@ export async function spelleffects(spell_otyp, atme, force) {
         /* FALLTHRU */
     case ONAMES.SPE_MAGIC_MAPPING:
     case ONAMES.SPE_CREATE_MONSTER:
-        note_unported_spell('spelleffects:seffects');
+        await seffects(pseudo);
         break;
 
     /* these are all duplicates of potion effects (peffects); not ported */

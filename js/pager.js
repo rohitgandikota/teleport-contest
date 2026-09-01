@@ -30,7 +30,7 @@ import { m_at, t_at } from './mon.js';
 import { is_obj_mappear } from './monst.js';
 import { engr_at } from './engrave.js';
 import { x_monnam, upstart, pmname, hliquid } from './do_name.js';
-import { ARTICLE_NONE } from './const.js';
+import { ARTICLE_NONE, MAXTCHARS } from './const.js';
 import { an, the, makesingular, singular, xname, doname,
          simpleonames, OBJ_NAME } from './objnam.js';
 import { mkobj, mksobj } from './mkobj.js';
@@ -654,23 +654,35 @@ function add_cmap_descr(state, found, idx, glyph, article, cc, x_str, prefix) {
 }
 
 /* include/defsym.h index-range predicates */
-function is_cmap_trap(i) {
+export function is_cmap_trap(i) {
     return i >= CM.S_arrow_trap && i <= CM.S_trapped_chest;
 }
-function is_cmap_drawbridge(i) {
+export function is_cmap_drawbridge(i) {
     return i >= CM.S_vodbridge && i <= CM.S_hcdbridge;
 }
+/* include/sym.h:98-108 — the cmap range tests, with C's bounds: is_cmap_wall
+   starts at S_stone and is_cmap_corr stops at S_litcorr (S_engrcorr is an
+   engraving, not a corridor) */
 export function is_cmap_wall(i) {
-    return i >= CM.S_vwall && i <= CM.S_trwall;
+    return i >= CM.S_stone && i <= CM.S_trwall;
 }
 export function is_cmap_room(i) {
     return i >= CM.S_room && i <= CM.S_darkroom;
 }
 export function is_cmap_corr(i) {
-    return i >= CM.S_corr && i <= CM.S_engrcorr;
+    return i >= CM.S_corr && i <= CM.S_litcorr;
 }
 export function is_cmap_door(i) {
     return i >= CM.S_vodoor && i <= CM.S_hcdoor;
+}
+export function is_cmap_furniture(i) {
+    return i >= CM.S_upstair && i <= CM.S_fountain;
+}
+export function is_cmap_water(i) {
+    return i === CM.S_pool || i === CM.S_water;
+}
+export function is_cmap_lava(i) {
+    return i === CM.S_lava || i === CM.S_lavawall;
 }
 export function is_cmap_engraving(i) {
     return i === CM.S_engroom || i === CM.S_engrcorr;

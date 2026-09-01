@@ -189,6 +189,17 @@ export function xytodir(x, y) {
     return DIR_ERR;
 }
 
+// src/cmd.c:3843 directionname() — name of a direction code.
+export function directionname(dir) {
+    const dirnames = [
+        'west',      'northwest', 'north',     'northeast', 'east',
+        'southeast', 'south',     'southwest', 'down',      'up',
+    ];
+    if (dir < 0 || dir >= N_DIRS_Z)
+        return 'invalid';
+    return dirnames[dir];
+}
+
 // src/cmd.c:3859 dirtocoord() — convert a direction code into an x,y pair.
 export function dirtocoord(cc, dd) {
     if (dd > DIR_ERR && dd < N_DIRS_Z) {

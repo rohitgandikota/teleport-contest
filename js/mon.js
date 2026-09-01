@@ -2604,8 +2604,14 @@ export async function corpse_chance(mon, magr, was_swallowed) {
 // which drops what the creature carried at the square it died on.
 export async function mondead(mdef) {
     const mx = mdef.mx, my = mdef.my;
+    const be_sad = !!game.iflags?.sad_feeling;
+
+    if (game.iflags)
+        game.iflags.sad_feeling = false;
 
     mdef.mhp = 0;
+    if (be_sad)
+        await You('have a sad feeling for a moment, then it passes.');
     /* src/mon.c:3134 — mvitals[].died doubles as the total-dead count and
        the experience factor; #vanquished reads it */
     {
@@ -2703,7 +2709,7 @@ export async function monkilled(mdef, fltxt, how) {
             nonliving(mptr) ? 'destroyed' : 'killed'}${
             fltxt ? ' by the ' + fltxt : ''}!`);
     else if (mdef.mtame)
-        note_unported_mon('monkilled:sad_feeling');
+        (game.iflags ||= {}).sad_feeling = true;
 
     await mondied(mdef);
 }

@@ -1,0 +1,45 @@
+{
+  "name": "monster-special-melee",
+  "description": "Debug-mode monster-versus-monster special melee: tame queen bees, ravens, and ochre jellies fight ordinary hostile targets. The traces cover poison, physical blindness, and active acid damage through C's shared mhitm_adtyping dispatcher.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.vs-monster",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "monster.special-effects",
+    "combat.melee",
+    "combat.resist-reflect"
+  ],
+  "branches": [
+    "combat.monster-vs-monster.poison-melee",
+    "combat.monster-vs-monster.blindness-melee",
+    "combat.monster-vs-monster.acid-engulf-melee",
+    "combat.monster-vs-monster.engulf-shared-square-death",
+    "monster.death.unseen-pet-sad-feeling"
+  ],
+  "segments": [
+    {
+      "seed": 21030,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame queen bee\r\u0007tame queen bee\r\u0007tame queen bee\r\u0007tame queen bee\r\u0007hostile hill giant\r\u0007hostile hill giant\r\u0014llllllllll.20s        20s        20s        :"
+    },
+    {
+      "seed": 21031,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame raven\r\u0007tame raven\r\u0007tame raven\r\u0007tame raven\r\u0007hostile soldier ant\r\u0007hostile soldier ant\r\u0014llllllllll.20s        20s        20s        :"
+    },
+    {
+      "seed": 21032,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame ochre jelly\r\u0007tame ochre jelly\r\u0007hostile lichen\r\u0014llllllllll.20s        20s        20s        :"
+    }
+  ]
+}

@@ -71,7 +71,7 @@ import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
          sticks, haseyes, cantwield, is_flyer, is_floater,
          is_whirly, mon_hates_blessings, resists_blnd, has_head, mindless,
          resists_blnd_by_arti, resists_fire, resists_cold, resists_elec,
-         resists_poison, resists_drli, defended, completelyburns,
+         resists_acid, resists_poison, resists_drli, defended, completelyburns,
          noattacks, poly_when_stoned } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
@@ -2970,6 +2970,52 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
     }
 }
 
+// src/uhitm.c:2742 mhitm_ad_acid(), acid carried by an engulfing or other
+// natural attack. Monster-versus-monster acid always spends its two equipment
+// erosion gates, even when the defender resists and the hit damage becomes 0.
+export async function mhitm_ad_acid(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        if (resists_acid(mdef) || defended(mdef, ATTKS.AD_ACID))
+            mhm.damage = 0;
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        if (!magr.mcan && !rn2(3)) {
+            if (Acid_resistance()) {
+                await pline(`You're covered in ${hliquid('acid')}, but it seems harmless.`);
+                monstseesu(M_SEEN_ACID);
+                mhm.damage = 0;
+            } else {
+                await pline(`You're covered in ${hliquid('acid')}!  It burns!`);
+                exercise(A_STR, false);
+                monstunseesu(M_SEEN_ACID);
+            }
+        } else {
+            mhm.damage = 0;
+        }
+    } else {
+        if (magr.mcan) {
+            mhm.damage = 0;
+            return;
+        }
+        if (resists_acid(mdef) || defended(mdef, ATTKS.AD_ACID)) {
+            if (game.vis && canseemon(mdef)) {
+                await pline(`${Monnam(mdef)} is covered in ${
+                    hliquid('acid')}, but it seems harmless.`);
+            }
+            mhm.damage = 0;
+        } else if (game.vis && canseemon(mdef)) {
+            await pline(`${Monnam(mdef)} is covered in ${hliquid('acid')}!`);
+            await pline(`It burns ${mon_nam(mdef)}!`);
+        }
+        if (!rn2(30))
+            await erode_armor(mdef, ERODE_CORRODE);
+        if (!rn2(6)) {
+            await erode_obj(MON_WEP(mdef), null, ERODE_CORRODE,
+                            EF_GREASE | EF_VERBOSE);
+        }
+    }
+}
+
 // src/uhitm.c:3122 mhitm_ad_drst(), poison carried by a natural attack.
 // Magical cancellation is checked before the one-in-eight poison gate.
 export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
@@ -2999,7 +3045,20 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
                 pmname(game.mons[magr.mnum], magr.female ? 1 : 0), 30, false);
         }
     } else if (!negated && !rn2(8)) {
-        note_unported_uhitm('mhitm_ad_drst:mhitm_really_poison');
+        if (game.vis && canspotmon(magr)) {
+            await pline(`${s_suffix(Monnam(magr))} ${
+                mpoisons_subj(magr, mattk)} was poisoned!`);
+        }
+        if (resists_poison(mdef)) {
+            if (game.vis && canspotmon(mdef) && canspotmon(magr)) {
+                await pline_The(`poison doesn't seem to affect ${
+                    mon_nam(mdef)}.`);
+            }
+        } else {
+            mhm.damage += rn1(10, 6);
+            if (mhm.damage >= mdef.mhp && game.vis && canspotmon(mdef))
+                await pline_The('poison was deadly...');
+        }
     }
 }
 
@@ -3076,24 +3135,82 @@ function can_blnd_u(magr, mattk) {
     return true;
 }
 
+// src/mondata.c:305 can_blnd(), monster-target arms. This keeps the permanent
+// blindness, raven, cancellation, light-resistance, and visor protections at
+// the same point where C decides whether a special attack can affect eyes.
+function can_blnd_m(magr, mattk, mdef) {
+    if (!haseyes(mdef.data) || (!mdef.mcansee && !mdef.mblinded))
+        return false;
+    if (magr?.mnum === PMNAMES.PM_RAVEN && mdef.mnum === PMNAMES.PM_RAVEN)
+        return false;
+
+    switch (mattk[0]) {
+    case ATTKS.AT_EXPL:
+    case ATTKS.AT_GAZE:
+    case ATTKS.AT_MAGC:
+    case ATTKS.AT_BREA:
+        return !magr?.mcan && !resists_blnd(mdef);
+    case ATTKS.AT_ENGL:
+        if (mdef.msleeping)
+            return false;
+        break;
+    case ATTKS.AT_CLAW: {
+        const visor = (mdef.minvent || []).some(obj =>
+            (obj.owornmask & W_ARMH)
+            && game.objects[obj.otyp]?.oc_descr === 'visored helmet');
+        if (visor)
+            return false;
+        break;
+    }
+    case ATTKS.AT_TUCH:
+    case ATTKS.AT_STNG:
+        if (magr?.mcan)
+            return false;
+        break;
+    default:
+        break;
+    }
+    return true;
+}
+
 // src/uhitm.c:2958 mhitm_ad_blnd(), monster against hero arm.
 export async function mhitm_ad_blnd(magr, mattk, mdef, mhm) {
-    if (mdef !== game.youmonst) {
-        note_unported_uhitm('mhitm_ad_blnd:nonhero');
+    if (magr === game.youmonst) {
+        if (can_blnd_m(magr, mattk, mdef)) {
+            if (!Blind() && mdef.mcansee)
+                await pline(`${Monnam(mdef)} is blinded.`);
+            mdef.mcansee = 0;
+            mdef.mblinded = Math.min(127,
+                mhm.damage + (mdef.mblinded | 0));
+        }
         mhm.damage = 0;
-        return;
+    } else if (mdef === game.youmonst) {
+        if (can_blnd_u(magr, mattk)) {
+            if (!game.u.ublind)
+                await pline(`${Monnam(magr)} blinds you!`);
+            const intr = (game.u.intrinsic ||= {});
+            const { make_blinded } = await import('./potion.js');
+            await make_blinded((intr.HBlinded | 0) + mhm.damage, false);
+            if (!game.u.ublind)
+                await Your('vision clears.');
+        }
+        mhm.damage = 0;
+    } else {
+        if (can_blnd_m(magr, mattk, mdef)) {
+            if (game.vis && mdef.mcansee && canspotmon(mdef)) {
+                let message = `${Monnam(mdef)} is blinded`;
+                if (mdef.mnum === PMNAMES.PM_ARCHON && canseemon(mdef))
+                    message += ` by ${s_suffix(mon_nam(magr))} radiance`;
+                await pline(`${message}.`);
+            }
+            const duration = d(mattk[2], mattk[3]);
+            mdef.mblinded = Math.min(127,
+                duration + (mdef.mblinded | 0));
+            mdef.mcansee = 0;
+            mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
+        }
+        mhm.damage = 0;
     }
-
-    if (can_blnd_u(magr, mattk)) {
-        if (!game.u.ublind)
-            await pline(`${Monnam(magr)} blinds you!`);
-        const intr = (game.u.intrinsic ||= {});
-        const { make_blinded } = await import('./potion.js');
-        await make_blinded((intr.HBlinded | 0) + mhm.damage, false);
-        if (!game.u.ublind)
-            await Your('vision clears.');
-    }
-    mhm.damage = 0;
 }
 
 // src/uhitm.c:4203 mhitm_ad_ston(), the cockatrice hiss attack.

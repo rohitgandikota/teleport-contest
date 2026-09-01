@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-09-01T03:33:00.091Z. Local commit: `89c265a`.
+Last refreshed: 2026-09-01T03:55:37.739Z. Local commit: `cc27194`.
 Leaderboard snapshot: 2026-08-31T06:22:08.448Z. Fork last scored: 2026-08-31T05:47:19.372Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 8/31/2026, 10:22:08 AM; rohitgandikota remains at 11,405 public plus 6,032 held-out screens, 44 plus 9 passing sessions, 71.9% combined PRNG, 76.9% combined screen rate, 9 animation frames, speed 256+0.9, playable yes, agentic rank 1/12, and overall held-out rank 3/19.
@@ -12,7 +12,7 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 62872/63257 | 99.39% | 296/298 | 3548616/3548616 (100.00%) | 282/2261 |
+| Supplemental C suite | 63290/63675 | 99.40% | 297/299 | 3564103/3564103 (100.00%) | 282/2261 |
 
 ## Contest position and generalization
 
@@ -22,14 +22,14 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `89c265a` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `cc27194` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## C-reference coverage
 
 | Inventory | Covered | Partial | Gaps |
 |---|---:|---:|---:|
 | Mechanics categories | 106/106 | 0 | 0 |
-| Explicit C branches | 537/537 | 0 | 0 |
+| Explicit C branches | 544/544 | 0 | 0 |
 
 - Fresh-seed smoke: PASS, 80 games across 13 role configs, no reached unported path.
 
@@ -37,9 +37,9 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 63250/63257 |
-| Cursor positions | 11405/11405 | 62872/63257 |
-| Startup and per-turn estimate | 81+0.64/turn | 98+0.21/turn |
+| Cells only | 11405/11405 | 63668/63675 |
+| Cursor positions | 11405/11405 | 63290/63675 |
+| Startup and per-turn estimate | 85+0.90/turn | 126+0.28/turn |
 
 ## Supplemental capture caveats
 
@@ -58,6 +58,7 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-09-01T03:55:37.739Z | `cc27194` | 11405/11405 | 63290/63675 | 6032/11265 | 3 |
 | 2026-09-01T03:33:00.091Z | `89c265a` | 11405/11405 | 62872/63257 | 6032/11265 | 3 |
 | 2026-09-01T03:10:43.010Z | `2c2ad4a` | 11405/11405 | 61900/62285 | 6032/11265 | 3 |
 | 2026-09-01T02:36:13.015Z | `5bd3b99` | 11405/11405 | 61078/61463 | 6032/11265 | 3 |
@@ -67,7 +68,6 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 | 2026-08-31T21:38:32.516Z | `d4098f9` | 11405/11405 | 57776/58161 | 6032/11265 | 3 |
 | 2026-08-31T21:09:04.515Z | `afa0f33` | 11405/11405 | 57151/57536 | 6032/11265 | 3 |
 | 2026-08-31T13:44:42.783Z | `9005c7c` | 11405/11405 | 56926/57311 | 6032/11265 | 3 |
-| 2026-08-31T13:17:34.700Z | `df0df67` | 11405/11405 | 56825/57210 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

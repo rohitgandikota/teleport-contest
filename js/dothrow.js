@@ -26,14 +26,14 @@ import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
 import { greatest_erosion } from './do_wear.js';
 import { rnl } from './rng.js';
 import { is_pole, is_spear } from './u_init.js';
-import { You, You_cant } from './pline.js';
+import { You, You_cant, You_hear } from './pline.js';
 import { ammo_and_launcher } from './wield.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED } from './const.js';
 import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { throws_rocks, is_orc, is_elf, is_unicorn, is_domestic, notake,
-         nohands } from './mondata.js';
+         nohands, breathless, haseyes } from './mondata.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { is_weptool } from './mkobj.js';
 import { hitval, weapon_hit_bonus } from './weapon.js';
@@ -271,17 +271,29 @@ export async function throwit(obj, wep_mask) {
     if (u.dz) {
         if (u.dz < 0) {
             const hitsroof = !!rn2(5) && !Underwater();
-            if (!hitsroof && obj.oclass === OCLASSES.POTION_CLASS) {
-                await pline(`${upstart(doname(obj))} almost hits the ${
-                    ceiling(u.ux, u.uy)}, then falls back on top of your ${
-                    body_part(HEAD)}.`);
-                const { potionhit } = await import('./potion.js');
-                await potionhit(game.youmonst, obj, POTHIT_HERO_THROW);
+            if (obj.oclass === OCLASSES.POTION_CLASS) {
+                if (hitsroof && breaktest(obj)) {
+                    await pline(`${upstart(doname(obj))} hits the ${
+                        ceiling(u.ux, u.uy)}.`);
+                    await break_potion_after_test(obj);
+                } else {
+                    await pline(`${upstart(doname(obj))} ${
+                        hitsroof ? 'hits' : 'almost hits'} the ${
+                        ceiling(u.ux, u.uy)}, then falls back on top of your ${
+                        body_part(HEAD)}.`);
+                    const { potionhit } = await import('./potion.js');
+                    await potionhit(game.youmonst, obj, POTHIT_HERO_THROW);
+                }
             } else {
                 note_unported_dothrow('throwit:vertical_throw');
             }
         } else {
-            note_unported_dothrow('throwit:vertical_throw');
+            if (obj.oclass === OCLASSES.POTION_CLASS) {
+                const { hitfloor } = await import('./do.js');
+                await hitfloor(obj, true);
+            } else {
+                note_unported_dothrow('throwit:vertical_throw');
+            }
         }
         game.thrownobj = null;
         return;
@@ -644,6 +656,46 @@ export function breaktest(obj) {
     default:
         return false;
     }
+}
+
+// src/dothrow.c:breakmsg(), breakobj(), and hero_breaks(), narrowed to
+// potions. Vertical throws call this after breaktest() selects breakage;
+// hitfloor() calls hero_breaks_potion() so the resistance path can still
+// leave the potion intact on the floor.
+async function break_potion_after_test(obj) {
+    if (Blind())
+        await You_hear('something shatter!');
+    else
+        await pline(`${upstart(doname(obj))} shatters!`);
+
+    obj.in_use = true;
+    if (obj.otyp === ONAMES.POT_OIL && obj.lamplit) {
+        note_unported_dothrow('breakobj:lit-oil');
+    } else if (!breathless(game.youmonst.data)
+               || haseyes(game.youmonst.data)) {
+        const wetTowel = game.u.ublindf?.otyp === ONAMES.TOWEL
+            && (game.u.ublindf.spe | 0) > 0;
+        const halfGasDamage = wetTowel || game.u.uprops?.HALF_GAS_DAMAGE;
+        if (obj.otyp !== ONAMES.POT_WATER && !halfGasDamage) {
+            if (!breathless(game.youmonst.data))
+                await You('smell a peculiar odor...');
+            else
+                note_unported_dothrow('breakobj:breathless-eyes-water');
+        }
+        const { potionbreathe } = await import('./potion.js');
+        await potionbreathe(obj);
+    }
+    /* delobj_core() makes one final indestructibility check before obfree(). */
+    obj_resists(obj, 0, 0);
+    const { obfree } = await import('./invent.js');
+    obfree(obj);
+}
+
+export async function hero_breaks_potion(obj) {
+    if (obj.oclass !== OCLASSES.POTION_CLASS || !breaktest(obj))
+        return false;
+    await break_potion_after_test(obj);
+    return true;
 }
 
 // src/dothrow.c:63 throwing_weapon() — a weapon meant to be thrown.

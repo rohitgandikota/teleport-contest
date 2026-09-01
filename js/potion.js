@@ -325,6 +325,11 @@ export async function potionbreathe(obj) {
             exercise(A_DEX, true);
             break;
         }
+        case ONAMES.POT_WATER:
+            if (game.u.umonnum === PMNAMES.PM_GREMLIN
+                || ismnum(game.u.ulycn))
+                note_unported_potion('potionbreathe:water-transformation');
+            break;
         case ONAMES.POT_BLINDNESS:
             if (!game.u.ublind && !Unaware()) {
                 kn++;
@@ -338,6 +343,14 @@ export async function potionbreathe(obj) {
         case ONAMES.POT_ACID:
         case ONAMES.POT_POLYMORPH:
             exercise(A_CON, false);
+            break;
+        case ONAMES.POT_GAIN_LEVEL:
+        case ONAMES.POT_GAIN_ENERGY:
+        case ONAMES.POT_LEVITATION:
+        case ONAMES.POT_FRUIT_JUICE:
+        case ONAMES.POT_MONSTER_DETECTION:
+        case ONAMES.POT_OBJECT_DETECTION:
+        case ONAMES.POT_OIL:
             break;
         default:
             note_unported_potion(`potionbreathe:otyp=${obj.otyp}`);

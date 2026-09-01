@@ -1518,6 +1518,11 @@ export async function hitfloor(obj, verbosely) {
             ]);
         await pline(`${upstart(doname(obj))} ${otense(obj, 'hit')} the ${surface(game.u.ux, game.u.uy)}.`);
     }
+    if (obj.oclass === OCLASSES.POTION_CLASS) {
+        const { hero_breaks_potion } = await import('./dothrow.js');
+        if (await hero_breaks_potion(obj))
+            return;
+    }
     if (ship_object_fn
         && ship_object_fn(obj, game.u.ux, game.u.uy, false))
         return;

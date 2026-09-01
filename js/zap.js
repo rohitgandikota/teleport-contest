@@ -16,9 +16,10 @@ import { display_cmap_at, display_object_at, flush_screen, map_invisible,
 import { closed_door } from './cmd.js';
 import { is_drawbridge_wall, is_ice } from './dbridge.js';
 
-import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB, u_at,
+import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, MOAT, WEB, u_at,
          THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, FLASHED_LIGHT, M_AP_TYPE,
-         M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE,
+         M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE, DRAWBRIDGE_UP,
+         DRAWBRIDGE_DOWN, DB_ICE, ICED_POOL,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
          ZAP_POS, W_ARM, W_ARMS, W_ARMG, W_ARMH, W_WEP, W_AMUL, HI_ZAP,
@@ -29,7 +30,8 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB, u_at,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
-         XKILL_NOCORPSE, BEAR_TRAP, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
+         XKILL_NOCORPSE, BEAR_TRAP, LANDMINE, MAGIC_PORTAL,
+         VIBRATING_SQUARE, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
          NO_TRAP_FLAGS, FORCETRAP, ENGRAVE, FACE, FOOT, LEG,
          COST_DRAIN, TIMEOUT, INTRINSIC,
          In_sokoban, Upolyd } from './const.js';
@@ -51,7 +53,8 @@ import { is_rider } from './makemon.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
          stackobj } from './invent.js';
 import { getdir } from './cmd.js';
-import { attach_egg_hatch_timeout, fall_asleep } from './timeout.js';
+import { attach_egg_hatch_timeout, fall_asleep,
+         MELT_ICE_AWAY } from './timeout.js';
 import { healup, make_stunned, potionbreathe } from './potion.js';
 import { cvt_sdoor_to_door, findit } from './detect.js';
 import { readobjnam } from './objnam.js';
@@ -71,13 +74,15 @@ import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
          OBJ_FLOOR } from './const.js';
-import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
+import { splitobj, mkobj, mksobj, mksobj_at, place_object, rnd_class,
+         set_corpsenm,
          dead_species, erosion_matters, is_weptool, unbless,
-         uncurse } from './mkobj.js';
+         uncurse, obj_ice_effects } from './mkobj.js';
 import { delobj } from './mon.js';
 import { obj_extract_self, useup, useupf, weight } from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
-         dotrap, ignite_items, openholdingtrap, trapname } from './trap.js';
+         deltrap, dotrap, ignite_items, openholdingtrap,
+         trapname } from './trap.js';
 import { Is_container, is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
@@ -2587,6 +2592,70 @@ export async function burn_floor_objects(x, y, give_feedback, u_caused) {
     }
     await ignite_items(at());
     return count;
+}
+
+// src/zap.c:5040 melt_ice(). Restore the water hidden under ice, discard or
+// convert traps that fall into it, resume ice-delayed object timers, then
+// apply the new liquid terrain to an occupant of the square.
+export async function melt_ice(x, y, msg = null) {
+    const loc = game.level?.at(x, y);
+    if (!loc || !is_ice(x, y))
+        return;
+
+    if (loc.typ === DRAWBRIDGE_UP || loc.typ === DRAWBRIDGE_DOWN) {
+        loc.drawbridgemask = (loc.drawbridgemask ?? 0) & ~DB_ICE;
+    } else {
+        loc.typ = loc.icedpool === ICED_POOL ? POOL : MOAT;
+        loc.icedpool = 0;
+    }
+
+    const packed = ((x & 0xffff) << 16) | (y & 0xffff);
+    game.timer_base = (game.timer_base || []).filter(timer => {
+        if (timer.func_index !== MELT_ICE_AWAY)
+            return true;
+        const arg = timer.arg?.a_long ?? timer.arg;
+        return arg !== packed;
+    });
+
+    const trap = t_at(x, y);
+    if (trap) {
+        const trappedMonster = m_at(x, y);
+        if (trappedMonster?.mtrapped)
+            trappedMonster.mtrapped = 0;
+        if (trap.ttyp === LANDMINE || trap.ttyp === BEAR_TRAP) {
+            const obj = mksobj(trap.ttyp === LANDMINE
+                ? ONAMES.LAND_MINE : ONAMES.BEARTRAP, true, false);
+            obj.quan = 1;
+            obj.owt = weight(obj);
+            obj.opoisoned = 0;
+            place_object(obj, x, y);
+            stackobj(obj);
+            deltrap(trap);
+        } else if (trap.ttyp !== MAGIC_PORTAL
+                   && trap.ttyp !== VIBRATING_SQUARE) {
+            deltrap(trap);
+        }
+    }
+
+    obj_ice_effects(x, y, false);
+    const { unearth_objs } = await import('./mklev.js');
+    unearth_objs(x, y);
+    if (Underwater())
+        vision_recalc(1);
+    newsym(x, y);
+    if (cansee(x, y) || u_at(x, y))
+        await Norep(msg || 'The ice crackles and melts.');
+
+    if (u_at(x, y)) {
+        const { spoteffects } = await import('./hack.js');
+        await spoteffects(true);
+    } else if (is_pool(x, y)) {
+        const monster = m_at(x, y);
+        if (monster) {
+            const { minliquid } = await import('./mon.js');
+            await minliquid(monster);
+        }
+    }
 }
 
 // src/zap.c:5141 zap_over_floor(), the fire-over-water and poison-gas paths.

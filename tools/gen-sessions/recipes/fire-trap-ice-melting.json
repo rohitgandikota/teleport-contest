@@ -1,0 +1,40 @@
+{
+  "name": "fire-trap-ice-melting",
+  "description": "Hero and monster fire traps melt their ice square, remove the submerged trap, and apply the resulting pool effects.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.movement",
+    "object.rings",
+    "object.armor",
+    "terrain.water-lava",
+    "traps.monster",
+    "traps.projectile-physical",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "dofiretrap.hero-ice-melt",
+    "trapeffect-fire-trap.monster-ice-melt",
+    "melt-ice.restore-moat",
+    "melt-ice.restore-pool",
+    "melt-ice.remove-floor-trap",
+    "melt-ice.hero-spoteffects",
+    "melt-ice.monster-minliquid",
+    "minliquid.fire-ant-drowning"
+  ],
+  "segments": [
+    {
+      "seed": 7201,
+      "datetime": "20260901094000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of fire resistance\rPor\u0017blessed fireproof water walking boots\rWp\u0017ice\r\u0017fire trap\r\u0014h.l   \u001b:"
+    },
+    {
+      "seed": 8458,
+      "datetime": "20260901094100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u0017ice\r\u0017fire trap\r\u0014k.\u0017boulder\r\u0014ljj.\u0007sleeping hostile fire ant\r#wiztelekinesis\rk.h   \u001b:"
+    }
+  ]
+}

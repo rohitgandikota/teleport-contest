@@ -1654,3 +1654,35 @@ export function peek_at_iced_corpse_age(otmp) {
     }
     return retval;
 }
+
+// src/mkobj.c:2397 obj_ice_effects(). When ice melts, corpse rot or revival
+// timers return to ordinary speed and the stored age resumes normal time.
+export function obj_ice_effects(x, y, doBuried = false) {
+    const objects = (game.level?.objects || []).filter(obj =>
+        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
+    if (doBuried) {
+        objects.push(...(game.level?.buriedobjs || []).filter(obj =>
+            obj.where === OBJ_BURIED && obj.ox === x && obj.oy === y));
+    }
+
+    for (const obj of objects) {
+        if (!obj.timed || obj.otyp !== ONAMES.CORPSE || !obj.on_ice)
+            continue;
+
+        let action = TIMEOUT_ROT_CORPSE;
+        let remaining = stop_timer(action, obj);
+        if (!remaining) {
+            action = TIMEOUT_REVIVE_MON;
+            remaining = stop_timer(action, obj);
+        }
+        if (!remaining)
+            continue;
+
+        obj.on_ice = 0;
+        remaining = Math.trunc(remaining / ROT_ICE_ADJUSTMENT);
+        const age = (game.moves ?? 0) - (obj.age ?? 0);
+        obj.age += Math.trunc(age * (ROT_ICE_ADJUSTMENT - 1)
+                              / ROT_ICE_ADJUSTMENT);
+        start_timer(remaining, TIMER_OBJECT, action, obj);
+    }
+}

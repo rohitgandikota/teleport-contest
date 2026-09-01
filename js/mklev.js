@@ -411,7 +411,7 @@ function choose_trapnote(ttmp) {
 
 // src/dig.c:2086 unearth_objs(). Pits and holes expose every object buried
 // on their square. Object timers other than ROT_ORGANIC keep running.
-function unearth_objs(x, y) {
+export function unearth_objs(x, y) {
     for (const obj of [...(game.level?.buriedobjs || [])]) {
         if (obj.ox !== x || obj.oy !== y)
             continue;

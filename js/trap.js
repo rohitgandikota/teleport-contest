@@ -25,7 +25,8 @@ import { teleds, safe_teleds, TELEDS_ALLOW_DRAG,
 import { done } from './end.js';
 import { recalc_block_point, vision_recalc } from './vision.js';
 import { useupall } from './invent.js';
-import { burn_floor_objects, destroy_items, obj_resists } from './zap.js';
+import { burn_floor_objects, destroy_items, melt_ice,
+         obj_resists } from './zap.js';
 
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
@@ -282,7 +283,8 @@ export async function ignite_items(items) {
 async function dofiretrap(box) {
     const origDmg = d(2, 4);
     let num = origDmg;
-    const source = the(box ? xname(box) : 'floor');
+    const source = the(box ? xname(box)
+                           : surface(game.u.ux, game.u.uy));
 
     await pline(`A tower of flame ${box ? 'bursts' : 'erupts'} from ${source}!`);
     if (Fire_resistance()) {
@@ -312,6 +314,9 @@ async function dofiretrap(box) {
     if (await burn_floor_objects(game.u.ux, game.u.uy, !Blind(), true)
         && Blind())
         await You('smell paper burning.');
+    const { is_ice } = await import('./dbridge.js');
+    if (is_ice(game.u.ux, game.u.uy))
+        await melt_ice(game.u.ux, game.u.uy);
 }
 
 // src/trap.c:6294 chest_trap(), the full luck and effect outcome tables.
@@ -1355,6 +1360,10 @@ async function trapeffect_fire_trap(mtmp, trap, trflags) {
     if (await burn_floor_objects(tx, ty, see_it, false)
         && !see_it && distu(tx, ty) <= 9)
         await You('smell smoke.');
+
+    const { is_ice } = await import('./dbridge.js');
+    if (is_ice(tx, ty))
+        await melt_ice(tx, ty);
 
     if (mtmp.mhp <= 0)
         trapkilled = true;

@@ -6,10 +6,11 @@ import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
          change_luck } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
-         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW } from './const.js';
+         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD } from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
-import { singular, xname, an, the, The, otense, mshot_xname } from './objnam.js';
+import { singular, xname, an, the, The, otense, mshot_xname, doname }
+    from './objnam.js';
 import { skill_name, weapon_descr, weapon_type, P_SKILL } from './weapon.js';
 import { SKILLS, MATERIALS } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
@@ -19,7 +20,7 @@ import { is_blade } from './mon.js';
 import { is_missile, is_sword } from './wield.js';
 import { cansee } from './vision.js';
 import { newsym, canseemon } from './display.js';
-import { Levitation, Blind } from './youprop.js';
+import { Levitation, Blind, Underwater } from './youprop.js';
 import { cmdq_add_ec, cmdq_add_key } from './cmd.js';
 import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
 import { greatest_erosion } from './do_wear.js';
@@ -40,9 +41,11 @@ import { getdir } from './cmd.js';
 import { find_mac } from './worn.js';
 import { distmin, sgn } from './hacklib.js';
 import { hmon, passive_obj } from './uhitm.js';
-import { Monnam, Some_Monnam } from './do_name.js';
+import { Monnam, Some_Monnam, upstart } from './do_name.js';
 import { Deaf } from './youprop.js';
 import { helpless } from './monst.js';
+import { ceiling } from './dungeon.js';
+import { body_part } from './polyself.js';
 
 // include/mondata.h:255 befriend_with_obj(). This predicate is checked before
 // dogfood(), so a domestic monster offered normal food does not spend
@@ -266,7 +269,20 @@ export async function throwit(obj, wep_mask) {
         return;
     }
     if (u.dz) {
-        note_unported_dothrow('throwit:vertical_throw');
+        if (u.dz < 0) {
+            const hitsroof = !!rn2(5) && !Underwater();
+            if (!hitsroof && obj.oclass === OCLASSES.POTION_CLASS) {
+                await pline(`${upstart(doname(obj))} almost hits the ${
+                    ceiling(u.ux, u.uy)}, then falls back on top of your ${
+                    body_part(HEAD)}.`);
+                const { potionhit } = await import('./potion.js');
+                await potionhit(game.youmonst, obj, POTHIT_HERO_THROW);
+            } else {
+                note_unported_dothrow('throwit:vertical_throw');
+            }
+        } else {
+            note_unported_dothrow('throwit:vertical_throw');
+        }
         game.thrownobj = null;
         return;
     }

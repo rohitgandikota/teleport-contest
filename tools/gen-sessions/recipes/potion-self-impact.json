@@ -1,0 +1,53 @@
+{
+  "name": "potion-self-impact",
+  "description": "Upward-thrown potions fall back onto the hero and exercise direct impact, acid damage, and previously uncovered vapor effects.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.ranged",
+    "object.potions",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "dothrow.vertical.potion-falls-back",
+    "potionbreathe.acid",
+    "potionbreathe.hallucination",
+    "potionbreathe.restore-gain-cursed",
+    "potionbreathe.sickness-nonhealer",
+    "potionbreathe.speed",
+    "potionhit.hero.acid"
+  ],
+  "segments": [
+    {
+      "seed": 7605,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of acid\rtp<   \u001b"
+    },
+    {
+      "seed": 7616,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of hallucination\rtp<   \u001b"
+    },
+    {
+      "seed": 7658,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of sickness\rtp<   \u001b"
+    },
+    {
+      "seed": 7605,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of speed\rtp<   \u001b"
+    },
+    {
+      "seed": 7605,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed potion of restore ability\rtp<   \u001b"
+    }
+  ]
+}

@@ -10,7 +10,7 @@ import { game } from './gstate.js';
 import { canseemon, canspotmon, map_invisible, newsym, pline, see_monsters }
     from './display.js';
 import { You, You_feel, pline_The } from './pline.js';
-import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
+import { exercise, adjattrib, A_MAX, ACURR, Fast } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
          POTHIT_OTHER_THROW,
@@ -218,6 +218,17 @@ export async function potionbreathe(obj) {
         await pline('Some vapor passes harmlessly around you.');
     } else {
         switch (obj.otyp) {
+        case ONAMES.POT_RESTORE_ABILITY:
+        case ONAMES.POT_GAIN_ABILITY:
+            if (obj.cursed) {
+                if (!breathless(game.youmonst.data))
+                    await pline('Ulch!  That potion smells terrible!');
+                else
+                    note_unported_potion('potionbreathe:cursed-ability-eyes');
+            } else {
+                note_unported_potion('potionbreathe:restore-gain-ability');
+            }
+            break;
         case ONAMES.POT_FULL_HEALING:
             if (game.u.uhp < game.u.uhpmax) {
                 game.u.uhp++;
@@ -245,6 +256,20 @@ export async function potionbreathe(obj) {
                 await make_deaf(0, true);
             }
             exercise(A_CON, true);
+            break;
+        case ONAMES.POT_SICKNESS:
+            if (!Role_if('PM_HEALER')) {
+                if (Upolyd(game.u)) {
+                    game.u.mh = game.u.mh <= 5 ? 1 : game.u.mh - 5;
+                } else {
+                    game.u.uhp = game.u.uhp <= 5 ? 1 : game.u.uhp - 5;
+                }
+                (game.disp ||= {}).botl = true;
+                exercise(A_CON, false);
+            }
+            break;
+        case ONAMES.POT_HALLUCINATION:
+            await You('have a momentary vision.');
             break;
         case ONAMES.POT_CONFUSION:
         case ONAMES.POT_BOOZE:
@@ -289,6 +314,17 @@ export async function potionbreathe(obj) {
                 note_unported_potion('potionbreathe:monstseesu_sleep');
             }
             break;
+        case ONAMES.POT_SPEED: {
+            if (!Fast())
+                await Your('knees seem more flexible now.');
+            const intrinsic = game.u.intrinsic ||= {};
+            const current = intrinsic.HFast | 0;
+            const timeout = Math.min(TIMEOUT,
+                (current & TIMEOUT) + rnd(5));
+            intrinsic.HFast = (current & ~TIMEOUT) | timeout;
+            exercise(A_DEX, true);
+            break;
+        }
         case ONAMES.POT_BLINDNESS:
             if (!game.u.ublind && !Unaware()) {
                 kn++;

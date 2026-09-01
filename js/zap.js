@@ -75,7 +75,7 @@ import { splitobj, mkobj, mksobj, mksobj_at, rnd_class, set_corpsenm,
          dead_species, erosion_matters, is_weptool, unbless,
          uncurse } from './mkobj.js';
 import { delobj } from './mon.js';
-import { obj_extract_self, useup, weight } from './invent.js';
+import { obj_extract_self, useup, useupf, weight } from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
          dotrap, ignite_items, openholdingtrap, trapname } from './trap.js';
 import { Is_container, is_metallic } from './obj.js';
@@ -2305,7 +2305,7 @@ async function zhitm(mon, type, nd) {
             damage += 7;
         if (await burnarmor(mon) && !rn2(3)) {
             damage += await destroy_items(mon, ATTKS.AD_FIRE, orig_damage);
-            note_unported_zap('zhitm:ignite_items');
+            await ignite_items(mon.minvent || []);
         }
         break;
     }
@@ -2419,7 +2419,7 @@ async function zhitu(type, nd, fltxt, sx, sy) {
             if (!rn2(3))
                 await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDamage);
             if (!rn2(3))
-                note_unported_zap('zhitu:ignite_items');
+                await ignite_items(game.invent);
         }
         break;
     }
@@ -2535,8 +2535,48 @@ export async function ureflects(fmt = null, str = null) {
         makeknown(identify);
 }
 
+// src/zap.c:4598 burn_floor_objects(). Fire consumes eligible paper and slime
+// stacks, then lights every exposed fuel source left on the square.
+async function burn_floor_objects(x, y, give_feedback, u_caused) {
+    const at = () => (game.level?.objects || []).filter(obj =>
+        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
+    let count = 0;
+
+    for (const obj of [...at()]) {
+        const eligible = obj.oclass === OCLASSES.SCROLL_CLASS
+            || obj.oclass === OCLASSES.SPBOOK_CLASS
+            || (obj.oclass === OCLASSES.FOOD_CLASS
+                && obj.otyp === ONAMES.GLOB_OF_GREEN_SLIME);
+        if (!eligible || obj.otyp === ONAMES.SCR_FIRE
+            || obj.otyp === ONAMES.SPE_FIREBALL || obj_resists(obj, 2, 100))
+            continue;
+
+        const quantity = obj.quan | 0;
+        let destroyed = 0;
+        for (let i = quantity; i > 0; --i)
+            if (!rn2(3))
+                ++destroyed;
+        if (!destroyed)
+            continue;
+
+        if (u_caused) {
+            useupf(obj, destroyed);
+        } else if (destroyed < quantity) {
+            obj.quan -= destroyed;
+            obj.owt = weight(obj);
+        } else {
+            delobj(obj);
+        }
+        count += destroyed;
+        if (give_feedback)
+            note_unported_zap('burn_floor_objects:feedback');
+    }
+    await ignite_items(at());
+    return count;
+}
+
 // src/zap.c:5141 zap_over_floor(), the fire-over-water and poison-gas paths.
-export async function zap_over_floor(x, y, type) {
+export async function zap_over_floor(x, y, type, ignoremon = false) {
     const damgtype = zaptype(type) % 10;
     const loc = game.level?.at(x, y);
     if (!loc)
@@ -2554,6 +2594,16 @@ export async function zap_over_floor(x, y, type) {
                && ZAP_POS(loc.typ)) {
         create_gas_cloud(x, y, 1, 8);
     }
+    if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM) {
+        if (await burn_floor_objects(x, y, false, type > 0)
+            && couldsee(x, y)) {
+            newsym(x, y);
+            await You(`${!Blind() ? 'see a puff' : 'smell a whiff'} of smoke.`);
+        }
+    }
+    const mon = m_at(x, y);
+    if (!ignoremon && mon)
+        await wakeup(mon, type >= 0);
     return 0;
 }
 
@@ -2599,7 +2649,7 @@ export async function dobuzz(type, nd, startx, starty, ddx, ddy) {
 
                 const gas_hit = damgtype === ATTKS.AD_DRST - ATTKS.AD_MAGM;
                 if (!gas_hit)
-                    range += await zap_over_floor(sx, sy, type);
+                    range += await zap_over_floor(sx, sy, type, true);
 
                 if (mon) {
                     if (type >= 0)
@@ -2652,7 +2702,7 @@ export async function dobuzz(type, nd, startx, starty, ddx, ddy) {
                     nomul(0);
                 }
                 if (gas_hit)
-                    await zap_over_floor(sx, sy, type);
+                    await zap_over_floor(sx, sy, type, true);
             }
 
             loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;

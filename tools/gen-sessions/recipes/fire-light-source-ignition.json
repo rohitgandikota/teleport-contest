@@ -1,0 +1,89 @@
+{
+  "name": "fire-light-source-ignition",
+  "description": "External fire catches exposed lamps, candles, and oil alight in hero inventory and on the floor, while spent or fire-proof light sources remain dark.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.potions",
+    "object.tools-containers",
+    "object.wands",
+    "turn.timers",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "catch-lit.inventory-visible",
+    "catch-lit.floor-oil",
+    "catch-lit.blind-message",
+    "catch-lit.cursed-lamp-success",
+    "catch-lit.cursed-lamp-failure",
+    "catch-lit.candle-stack",
+    "catch-lit.magic-lamp",
+    "catch-lit.brass-lantern-refusal",
+    "catch-lit.empty-candelabrum-refusal",
+    "burn-floor-objects.ignite-oil",
+    "zhitu.fire-ignite-inventory"
+  ],
+  "segments": [
+    {
+      "seed": 7610,
+      "datetime": "20260503030000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u0017blessed wand of fire\rzp.      \u001b"
+    },
+    {
+      "seed": 7611,
+      "datetime": "20260503030100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of oil\r dfl\u0017blessed wand of fire\rzoh      \u001b"
+    },
+    {
+      "seed": 7612,
+      "datetime": "20260503030200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed oil lamp\r\u0017blessed wand of fire\rzp.      \u001b"
+    },
+    {
+      "seed": 7619,
+      "datetime": "20260503030900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed oil lamp\r\u0017blessed wand of fire\rzq.      \u001b"
+    },
+    {
+      "seed": 7614,
+      "datetime": "20260503030400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u0017uncursed blindfold\rPq\u0017blessed wand of fire\rzr.      \u001b"
+    },
+    {
+      "seed": 7615,
+      "datetime": "20260503030500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u00173 uncursed wax candles\r\u0017blessed wand of fire\rzo.      \u001b"
+    },
+    {
+      "seed": 7616,
+      "datetime": "20260503030600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed magic lamp\r\u0017blessed wand of fire\rzq.      \u001b"
+    },
+    {
+      "seed": 7617,
+      "datetime": "20260503030700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed brass lantern\r\u0017blessed wand of fire\rzq.      \u001b"
+    },
+    {
+      "seed": 7618,
+      "datetime": "20260503030800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed Candelabrum of Invocation\r\u0017blessed wand of fire\rzp.      \u001b"
+    },
+    {
+      "seed": 7621,
+      "datetime": "20260503031100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u0017blessed wand of fire\rzph      \u001b"
+    }
+  ]
+}

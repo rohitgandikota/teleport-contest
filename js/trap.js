@@ -12,7 +12,7 @@ import { inv_cnt, crawl_destination, unmul, in_rooms,
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
          STONING, WATER, FIRE_RES, FAST, MFAST, XKILL_NOMSG,
-         NO_KILLER_PREFIX } from './const.js';
+         NO_KILLER_PREFIX, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT } from './const.js';
 import { goodpos, makemon, remove_monster } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
@@ -31,12 +31,12 @@ import { rn2, rnd } from './rng.js';
 import { mksobj, place_object, splitobj } from './mkobj.js';
 import { weight } from './invent.js';
 import { dmgval } from './weapon.js';
-import { observe_object } from './o_init.js';
+import { makeknown, observe_object } from './o_init.js';
 import { canspotmon, display_nhwindow_message, display_object_at, feel_newsym,
          newsym, pline, temporary_object_glyph, under_water,
          urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
-import { an, the, doname, mshot_xname, xname, Yname2 } from './objnam.js';
+import { an, the, doname, mshot_xname, otense, xname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { delobj, monkilled, monstone, newcham, resists_ston, vamp_stone,
@@ -199,25 +199,73 @@ export async function b_trapped(item, bodypart) {
     await make_stunned(oldStun + dmg, true);
 }
 
-// src/trap.c:7161 ignite_items(), exposed inventory light sources only.
+const relative_age_light = (obj) => obj.otyp === ONAMES.BRASS_LANTERN
+    || obj.otyp === ONAMES.OIL_LAMP
+    || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+    || obj.otyp === ONAMES.TALLOW_CANDLE
+    || obj.otyp === ONAMES.WAX_CANDLE
+    || obj.otyp === ONAMES.POT_OIL;
+
+function exposed_light_location(obj) {
+    if (obj.where === OBJ_INVENT || game.invent.includes(obj))
+        return { x: game.u.ux, y: game.u.uy };
+    if (obj.where === OBJ_FLOOR)
+        return { x: obj.ox, y: obj.oy };
+    if (obj.where === OBJ_MINVENT) {
+        const carrier = obj.ocarry || (game.level?.monsters || []).find(
+            mon => (mon.minvent || []).includes(obj));
+        if (carrier)
+            return { x: carrier.mx, y: carrier.my };
+    }
+    return null;
+}
+
+// src/apply.c:1577 catch_lit(). External fire can light every exposed fuel
+// source except a lantern, a spent source, an empty or cursed Candelabrum,
+// and half of cursed oil-lamp attempts.
+export async function catch_lit(obj) {
+    const ignitable = obj.otyp === ONAMES.BRASS_LANTERN
+        || obj.otyp === ONAMES.OIL_LAMP
+        || (obj.otyp === ONAMES.MAGIC_LAMP && (obj.spe | 0) > 0)
+        || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION
+        || obj.otyp === ONAMES.TALLOW_CANDLE
+        || obj.otyp === ONAMES.WAX_CANDLE
+        || obj.otyp === ONAMES.POT_OIL;
+    const location = exposed_light_location(obj);
+    if (obj.lamplit || !ignitable || !location)
+        return false;
+    if (((obj.otyp === ONAMES.MAGIC_LAMP
+          || obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION)
+         && !(obj.spe | 0))
+        || (relative_age_light(obj) && !(obj.age | 0))
+        || obj.otyp === ONAMES.BRASS_LANTERN
+        || (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION && obj.cursed)
+        || ((obj.otyp === ONAMES.OIL_LAMP
+             || obj.otyp === ONAMES.MAGIC_LAMP)
+            && obj.cursed && !rn2(2)))
+        return false;
+
+    if (obj.where === OBJ_INVENT || game.invent.includes(obj)
+        || cansee(location.x, location.y)) {
+        await pline(`${Yname2(obj)} ${otense(obj, Blind() ? 'feel' : 'catch')} ${
+            Blind() ? 'warm.' : 'light!'}`);
+    }
+    if (obj.otyp === ONAMES.POT_OIL)
+        makeknown(obj.otyp);
+    if ((obj.where === OBJ_INVENT || game.invent.includes(obj)) && obj.unpaid)
+        note_unported_trap('catch_lit:shop_billing');
+
+    const { begin_burn } = await import('./timeout.js');
+    await begin_burn(obj, false);
+    return true;
+}
+
+// src/trap.c:7161 ignite_items(). Only exposed objects are supplied by
+// callers; an item currently being consumed is skipped just as in C.
 export async function ignite_items(items) {
-    const ignitable = new Set([
-        ONAMES.OIL_LAMP, ONAMES.MAGIC_LAMP, ONAMES.TALLOW_CANDLE,
-        ONAMES.WAX_CANDLE, ONAMES.CANDELABRUM_OF_INVOCATION,
-    ]);
     for (const item of items || []) {
-        if (item.lamplit || item.in_use || !ignitable.has(item.otyp))
-            continue;
-        if (!item.age || ((item.otyp === ONAMES.MAGIC_LAMP
-                           || item.otyp === ONAMES.CANDELABRUM_OF_INVOCATION)
-                          && !item.spe))
-            continue;
-        await pline(`${Yname2(item)} catches light!`);
-        item.lamplit = 1;
-        const { new_light_source, LS_OBJECT } = await import('./light.js');
-        new_light_source(game.u.ux, game.u.uy, 3, LS_OBJECT, item.o_id);
-        game.vision_full_recalc = 1;
-        update_inventory();
+        if (!item.lamplit && !item.in_use)
+            await catch_lit(item);
     }
 }
 

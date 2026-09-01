@@ -55,6 +55,8 @@ import { mkobj, splitobj } from './mkobj.js';
 import { distu, s_suffix } from './hacklib.js';
 import { pluslvl } from './exper.js';
 import { heal_legs } from './do.js';
+import { speed_up } from './zap.js';
+import { INTRINSIC, FROMOUTSIDE } from './const.js';
 import { monstseesu, monstunseesu } from './mondata.js';
 import { fall_asleep } from './timeout.js';
 import { M_SEEN_SLEEP } from './const.js';
@@ -1205,6 +1207,24 @@ async function peffect_sleeping(otmp) {
     }
 }
 
+// src/potion.c peffect_speed()
+async function peffect_speed(otmp) {
+    const is_speed = (otmp.otyp === ONAMES.POT_SPEED);
+    const wounded_legs = ((game.u.intrinsic?.HWounded_legs || 0) > 0)
+                         || !!(game.u.EWounded_legs || 0);
+    /* using a potion of speed while wounded (not on a steed) heals legs */
+    if (is_speed && wounded_legs && !otmp.cursed && !game.u.usteed) {
+        await heal_legs(0);
+        return;
+    }
+    await speed_up(rn1(10, 100 + 60 * bcsign(otmp)));
+    if (is_speed && !otmp.cursed
+        && !((game.u.intrinsic?.HFast | 0) & INTRINSIC)) { /* not intrinsically fast */
+        await Your('quickness feels very natural.');
+        (game.u.intrinsic ||= {}).HFast = (game.u.intrinsic.HFast | 0) | FROMOUTSIDE;
+    }
+}
+
 async function peffects(otmp) {
     switch (otmp.otyp) {
     case ONAMES.POT_BOOZE:
@@ -1236,6 +1256,10 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_SLEEPING:
         await peffect_sleeping(otmp);
+        break;
+    case ONAMES.POT_SPEED:
+    case ONAMES.SPE_HASTE_SELF:
+        await peffect_speed(otmp);
         break;
     case ONAMES.POT_MONSTER_DETECTION:
         if (await peffect_monster_detection(otmp))

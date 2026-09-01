@@ -547,7 +547,7 @@ export async function cancel_monst(mdef, obj, youattack, allow_cancel_kill,
     return true;
 }
 
-async function speed_up(duration) {
+export async function speed_up(duration) {
     if (!Very_fast()) {
         await You(`are suddenly moving ${Fast() ? '' : 'much '}faster.`);
     } else {

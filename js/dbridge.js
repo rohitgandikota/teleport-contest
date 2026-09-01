@@ -82,3 +82,8 @@ export function db_under_typ(mask) {
         return STONE;
     }
 }
+
+// src/dbridge.c:64 is_db_wall()
+export function is_db_wall(x, y) {
+    return game.level.at(x, y)?.typ === DBWALL;
+}

@@ -1486,3 +1486,10 @@ export async function show_overview(why, reason) {
     tty_destroy_nhwindow(win);
     return 0;
 }
+
+// src/dungeon.c:2943 update_mapseen_for() — recount the whole level's
+// remembered features and report what the hero last saw at (x, y)
+export function update_mapseen_for(x, y) {
+    recalc_mapseen(); /* whole level */
+    return game.level.at(x, y)?.lastseentyp;
+}

@@ -2107,3 +2107,19 @@ export function sortloot_items(items) {
         })
         .map(e => e.obj);
 }
+
+// src/pickup.c:2024 container_at() — number of containers at a spot (or
+// just whether there is one when !countem)
+export function container_at(x, y, countem) {
+    let container_count = 0;
+    for (const cobj of (game.level?.objects || [])) {
+        if (cobj.ox !== x || cobj.oy !== y)
+            continue;
+        if (Is_container(cobj)) {
+            container_count++;
+            if (!countem)
+                break;
+        }
+    }
+    return container_count;
+}

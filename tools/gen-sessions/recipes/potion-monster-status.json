@@ -1,0 +1,74 @@
+{
+  "name": "potion-monster-status",
+  "description": "Thrown potions apply the C status and mutation effects to a peaceful ordinary monster, including resistance rolls, visibility changes, temporary helplessness, speed, blindness, illness, and polymorph.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "monster.special-effects",
+    "combat.ranged",
+    "object.potions",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "potionhit.monster.blindness",
+    "potionhit.monster.confusion",
+    "potionhit.monster.invisibility",
+    "potionhit.monster.paralysis",
+    "potionhit.monster.polymorph",
+    "potionhit.monster.sickness",
+    "potionhit.monster.sleeping",
+    "potionhit.monster.speed"
+  ],
+  "segments": [
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of confusion\r\u0007peaceful hill giant\rtol  "
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of sleeping\r\u0007peaceful hill giant\rtol  "
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of paralysis\r\u0007peaceful hill giant\rtol  "
+    },
+    {
+      "seed": 7611,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of speed\r \u0007peaceful hill giant\rthl  "
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of blindness\r\u0007peaceful hill giant\rtol  "
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of invisibility\r\u0007peaceful hill giant\rtol  "
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of sickness\r\u0007peaceful hill giant\rtol  "
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of polymorph\r\u0007peaceful hill giant\rtol  "
+    }
+  ]
+}

@@ -2256,7 +2256,7 @@ export async function destroy_items(mon, osym, dmg_in) {
 // src/zap.c:4238 zhitm(). The common missile, elemental, and sleep-ray paths
 // are complete. Other ray families stay marked until their item-destruction
 // and status effects are ported together.
-function sleep_monst(mon, amount, how) {
+export function sleep_monst(mon, amount, how) {
     const ptr = game.mons[mon.mnum];
     if (how >= 0 && !mon.msleeping && !mon.mfrozen
         && ptr.mlet === MONSYMS.S_MIMIC

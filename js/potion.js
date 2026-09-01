@@ -7,14 +7,15 @@ import { fruitname, makeplural, xname } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
-import { canseemon, pline, see_monsters } from './display.js';
+import { canseemon, canspotmon, map_invisible, newsym, pline, see_monsters }
+    from './display.js';
 import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
          POTHIT_OTHER_THROW,
          HEAD, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
-         Upolyd, ismnum } from './const.js';
+         Upolyd, ismnum, FAST, MFAST, MSLOW, STRAT_WAITFORU } from './const.js';
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
@@ -24,14 +25,15 @@ import { Unaware, Hallucination, Halluc_resistance, Blind,
          Underwater } from './youprop.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
-import { PMNAMES, MFLAGS } from './monst_data.js';
+import { PMNAMES, MFLAGS, ATTKS } from './monst_data.js';
 import { OBJ_DESCR } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { freeinv, getobj, hold_another_object, useup, useupall,
          update_inventory, ECMD_TIME, ECMD_OK, GETOBJ_PROMPT,
          obfree } from './invent.js';
-import { is_pool, wake_nearto, wakeup, killed, healmon } from './mon.js';
+import { is_pool, wake_nearto, wakeup, killed, healmon, unstuck }
+    from './mon.js';
 import { OCLASSES } from './objects_data.js';
 import { tty_yn_function } from './tty/topl.js';
 import { GETOBJ_NOFLAGS } from './const.js';
@@ -40,8 +42,8 @@ import { GETOBJ_EXCLUDE_INACCESS } from './invent.js';
 import { doname, otense, short_oname, simpleonames, thesimpleoname,
          Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
-import { breathless, haseyes, has_head, is_human, is_silent,
-         mon_hates_blessings, resists_acid, stagger }
+import { breathless, dmgtype, haseyes, has_head, is_human, is_silent,
+         mon_hates_blessings, resists_acid, resists_poison, stagger, sticks }
     from './mondata.js';
 import { cansee, vision_recalc } from './vision.js';
 import { hcolor } from './do_name.js';
@@ -52,6 +54,50 @@ const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
 
 function note_unported_potion(what) {
     (game.unported ||= new Set()).add(what);
+}
+
+// src/mhitm.c:paralyze_monst() and slept_monst(). These small helpers are
+// kept here with their only current caller, thrown potion effects.
+function paralyze_monst(mon, amount) {
+    mon.mcanmove = 0;
+    mon.mfrozen = Math.min(amount, 127);
+    mon.meating = 0;
+    mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITFORU;
+}
+
+async function slept_monst(mon) {
+    if ((mon.msleeping || !mon.mcanmove) && mon === game.u.ustuck
+        && !sticks(game.youmonst.data) && !game.u.uswallow) {
+        await pline(`${s_suffix(Monnam(mon))} grip relaxes.`);
+        await unstuck(mon);
+    }
+}
+
+// src/worn.c:mon_set_minvis() and mon_adjust_speed(), narrowed to the two
+// potionhit callers which need them.
+function mon_set_minvis(mon, cursedPotion) {
+    mon.perminvis = cursedPotion ? 0 : 1;
+    if (!mon.invis_blkd) {
+        mon.minvis = mon.perminvis;
+        newsym(mon.mx, mon.my);
+    }
+}
+
+async function mon_adjust_speed(mon, obj) {
+    const oldspeed = mon.mspeed | 0;
+    mon.permspeed = (mon.permspeed | 0) === MSLOW ? 0 : MFAST;
+    const speedArmor = (mon.minvent || []).some(item =>
+        item.owornmask && game.objects[item.otyp]?.oc_oprop === FAST);
+    mon.mspeed = speedArmor ? MFAST : mon.permspeed;
+
+    if (mon.mspeed !== oldspeed && mon.data.mmove
+        && !mon.mfrozen && !mon.msleeping && canseemon(mon)) {
+        const howmuch = mon.mspeed + oldspeed === MFAST + MSLOW
+            ? 'much ' : '';
+        await pline(`${Monnam(mon)} is suddenly moving ${howmuch}faster.`);
+        const { learnwand } = await import('./zap.js');
+        learnwand(obj);
+    }
 }
 
 // src/potion.c:137 make_sick(). Set or clear fatal illness and food
@@ -247,7 +293,10 @@ export async function potionbreathe(obj) {
                 kn++;
                 await pline('It suddenly gets dark.');
             }
-            game.u.ublind = Math.max(game.u.ublind | 0, rnd(5));
+            await make_blinded(
+                itimeout_incr(game.u.intrinsic?.HBlinded, rnd(5)), false);
+            if (!game.u.ublind && !Unaware())
+                await Your('vision clears.');
             break;
         case ONAMES.POT_ACID:
         case ONAMES.POT_POLYMORPH:
@@ -320,6 +369,75 @@ export async function potionhit(mon, obj, how) {
     } else {
         let angermon = how <= POTHIT_HERO_THROW;
         switch (obj.otyp) {
+        case ONAMES.POT_CONFUSION:
+        case ONAMES.POT_BOOZE: {
+            const { resist } = await import('./zap.js');
+            if (!resist(mon, OCLASSES.POTION_CLASS, 0, false))
+                mon.mconf = 1;
+            break;
+        }
+        case ONAMES.POT_INVISIBILITY: {
+            const sawit = canspotmon(mon);
+            const cursedPotion = !!obj.cursed;
+            angermon = !!mon.minvis && cursedPotion;
+            mon_set_minvis(mon, cursedPotion);
+            if (sawit && !canspotmon(mon)) {
+                if (cansee(mon.mx, mon.my))
+                    map_invisible(mon.mx, mon.my);
+            } else if (sawit && cursedPotion) {
+                await pline(`${Monnam(mon)} briefly seems to be transparent.`);
+            } else if (!sawit && canspotmon(mon)) {
+                await pline(`${Monnam(mon)} appears!`);
+            }
+            break;
+        }
+        case ONAMES.POT_SLEEPING: {
+            const { sleep_monst } = await import('./zap.js');
+            if (sleep_monst(mon, rnd(12), OCLASSES.POTION_CLASS)) {
+                await pline(`${Monnam(mon)} falls asleep.`);
+                await slept_monst(mon);
+            }
+            break;
+        }
+        case ONAMES.POT_PARALYSIS:
+            if (mon.mcanmove)
+                paralyze_monst(mon, rnd(25));
+            break;
+        case ONAMES.POT_SPEED:
+            angermon = false;
+            await mon_adjust_speed(mon, obj);
+            break;
+        case ONAMES.POT_BLINDNESS:
+            if (haseyes(mon.data) && (mon.mcansee || mon.mblinded)) {
+                const first = rn2(32);
+                const second = rn2(32);
+                const { resist } = await import('./zap.js');
+                const resisted = resist(mon, OCLASSES.POTION_CLASS, 0, false);
+                const duration = 64 + first + second * !resisted
+                               + (mon.mblinded | 0);
+                mon.mblinded = Math.min(duration, 127);
+                mon.mcansee = 0;
+            }
+            break;
+        case ONAMES.POT_SICKNESS:
+            if (mon.data === game.mons[PMNAMES.PM_PESTILENCE]) {
+                angermon = false;
+                if ((mon.mhp | 0) < (mon.mhpmax | 0)) {
+                    healmon(mon, mon.mhpmax, 0);
+                    if (canseemon(mon))
+                        await pline(`${Monnam(mon)} looks sound and hale again.`);
+                }
+            } else if (dmgtype(mon.data, ATTKS.AD_DISE)
+                       || dmgtype(mon.data, ATTKS.AD_PEST)
+                       || resists_poison(mon)) {
+                if (canseemon(mon))
+                    await pline(`${Monnam(mon)} looks unharmed.`);
+            } else if ((mon.mhp | 0) > 2) {
+                mon.mhp = Math.trunc(mon.mhp / 2);
+                if (canseemon(mon))
+                    await pline(`${Monnam(mon)} looks rather ill.`);
+            }
+            break;
         case ONAMES.POT_WATER: {
             const { is_were, new_were } = await import('./were.js');
             const were = is_were(mon.data);
@@ -346,6 +464,11 @@ export async function potionhit(mon, obj, how) {
                         await new_were(mon);
                 }
             }
+            break;
+        }
+        case ONAMES.POT_POLYMORPH: {
+            const { bhitm } = await import('./zap.js');
+            await bhitm(mon, obj);
             break;
         }
         case ONAMES.POT_ACID: {

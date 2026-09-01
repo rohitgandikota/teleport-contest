@@ -14,7 +14,7 @@ import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
          STONING, WATER, FIRE_RES, FAST, MFAST, XKILL_NOMSG,
          NO_KILLER_PREFIX, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT } from './const.js';
-import { goodpos, makemon, remove_monster } from './makemon.js';
+import { goodpos, makemon, remove_monster, set_malign } from './makemon.js';
 import { waterbody_name } from './pager.js';
 import { hliquid } from './do_name.js';
 import { Teleport_control, Unaware, Sleep_resistance, Fire_resistance,
@@ -40,11 +40,11 @@ import { canspotmon, display_nhwindow_message, display_object_at, feel_newsym,
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
 import { an, the, doname, mshot_xname, otense, xname, yname, Yname2,
          corpse_xname, CXN_PFX_THE } from './objnam.js';
-import { upstart } from './do_name.js';
+import { a_monnam, rndmonnam, upstart } from './do_name.js';
 import { losehp } from './hack.js';
-import { delobj, monkilled, monstone, newcham, resists_ston, vamp_stone,
-         xkilled } from './mon.js';
-import { find_mac, which_armor } from './worn.js';
+import { delobj, monkilled, monstone, newcham, resists_ston, seemimic,
+         vamp_stone, xkilled } from './mon.js';
+import { find_mac, m_dowear, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
 import { gender, passes_walls, likes_lava, throws_rocks,
@@ -66,7 +66,7 @@ import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
 import { rnl } from './rng.js';
 import { body_part, mbodypart, polymon } from './polyself.js';
 import { mon_nam } from './do_name.js';
-import { MON_WEP, DEADMONSTER, helpless } from './monst.js';
+import { MON_WEP, DEADMONSTER, helpless, is_vampshifter } from './monst.js';
 import { erosion_matters } from './mkobj.js';
 import { cxname, vtense, suit_simple_name,
          gloves_simple_name } from './objnam.js';
@@ -161,7 +161,10 @@ import { In_quest, TOOKPLUNGE, VIASITTING, HURTLING,
          VIBRATING_SQUARE, BOLT_LIM, WT_ELF, VAULT, TEMPLE, SHOPBASE,
          Is_firelevel, Is_earthlevel, IS_AIR, IS_ROOM,
          IS_WALL, IS_DOOR, SDOOR, MIGR_RANDOM, MIGR_PORTAL, MON_MIGRATING,
-         NO_MM_FLAGS, TIMEOUT } from './const.js';
+         NO_MM_FLAGS, NO_MINVENT, MM_ADJACENTOK, MM_MALE, MM_FEMALE,
+         MM_NOMSG, ANIMATE_NORMAL, ANIMATE_SHATTER, ANIMATE_SPELL,
+         CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, TIMEOUT }
+    from './const.js';
 import { just_an } from './objnam.js';
 import { Deaf, Levitation, Flying, Hallucination, Underwater, Blind,
          See_invisible, Invis } from './youprop.js';
@@ -183,7 +186,7 @@ import { metallivorous } from './mondata.js';
 import { amorphous, is_whirly, unsolid, is_clinger, is_floater, is_flyer,
          webmaker, nohands, defended, resists_fire, resists_sleep, breathless,
          resists_magm, resists_blnd, flaming, acidic, stagger,
-         attacktype } from './mondata.js';
+         attacktype, nonliving } from './mondata.js';
 import { ECMD_OK } from './const.js';
 
 // src/trap.c:6694 b_trapped(), shared by trapped doors and tins.
@@ -634,6 +637,89 @@ export function deltrap(trap) {
     if (i >= 0) list.splice(i, 1);
 }
 
+// src/trap.c:726 animate_statue(). The common path creates the depicted
+// monster without a fresh inventory, transfers the statue's stored gear, and
+// consumes the statue only after the monster and its message exist.
+export async function animate_statue(statue, x, y, cause) {
+    const mptr = game.mons?.[statue?.corpsenm];
+    if (!mptr)
+        return null;
+
+    const saved = statue.omonst || statue.oextra?.omonst;
+    if (saved)
+        note_unported_trap('animate_statue:saved_traits');
+
+    let mmflags = NO_MINVENT | MM_NOMSG;
+    const statueGender = (statue.spe | 0) & CORPSTAT_GENDER;
+    if (statueGender === CORPSTAT_MALE)
+        mmflags |= MM_MALE;
+    else if (statueGender === CORPSTAT_FEMALE)
+        mmflags |= MM_FEMALE;
+    if (cause === ANIMATE_SPELL)
+        mmflags |= MM_ADJACENTOK;
+
+    const mon = makemon(mptr, x, y, mmflags);
+    if (!mon)
+        return null;
+
+    const statueName = statue.oname || statue.oextra?.oname;
+    if (statueName) {
+        const { christen_monst } = await import('./do_name.js');
+        christen_monst(mon, statueName);
+    }
+    if (mon.m_ap_type)
+        seemimic(mon);
+    else
+        mon.mundetected = 0;
+    mon.msleeping = 0;
+
+    if (cause === ANIMATE_NORMAL || cause === ANIMATE_SHATTER) {
+        mon.mtame = 0;
+        mon.mpeaceful = 0;
+        set_malign(mon);
+    }
+
+    const comesToLife = !canspotmon(mon) ? 'disappears'
+        : (nonliving(mon.data) || is_vampshifter(mon)) ? 'moves'
+        : 'comes to life';
+    if ((game.u.ux === x && game.u.uy === y) || cause === ANIMATE_SPELL) {
+        const subject = cause === ANIMATE_SPELL
+            ? upstart(the(xname(statue))) : 'The statue';
+        await pline(`${subject} ${comesToLife}!`);
+    } else if (Hallucination()) {
+        await pline(`The ${rndmonnam()} suddenly seems more animated.`);
+    } else if (cause === ANIMATE_SHATTER) {
+        const subject = cansee(x, y) ? the(xname(statue)) : 'a statue';
+        await pline(`Instead of shattering, ${subject} suddenly ${comesToLife}!`);
+    } else {
+        const { stop_occupation } = await import('./allmain.js');
+        await stop_occupation();
+        await You(`find ${canspotmon(mon) ? a_monnam(mon) : 'something'} posing as a statue.`);
+    }
+
+    const { mpickobj } = await import('./steal.js');
+    for (const item of [...(statue.cobj || [])]) {
+        obj_extract_self(item);
+        mpickobj(mon, item);
+    }
+    m_dowear(mon, true);
+    delobj(statue);
+    return mon;
+}
+
+// src/trap.c:908 activate_statue_trap(). Removing the trap first is
+// observable when monster placement or statue animation fails.
+export async function activate_statue_trap(trap, x, y, shatter) {
+    deltrap(trap);
+    const statue = sobj_at(ONAMES.STATUE, x, y);
+    const mon = statue
+        ? await animate_statue(statue, x, y,
+                               shatter ? ANIMATE_SHATTER : ANIMATE_NORMAL)
+        : null;
+    feel_newsym(x, y);
+    return mon;
+}
+
 // src/trap.c:1018 t_missile() — the projectile a trap fires.
 function t_missile(otyp, trap) {
     const otmp = mksobj(otyp, true, false);
@@ -1030,6 +1116,10 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_magic_portal(game.youmonst, trap, trflags);
     if (ttype === WEB)
         return await trapeffect_web(game.youmonst, trap, trflags);
+    if (ttype === STATUE_TRAP) {
+        await activate_statue_trap(trap, game.u.ux, game.u.uy, false);
+        return Trap_Effect_Finished;
+    }
     if (ttype === VIBRATING_SQUARE) {
         trap.tseen = 1;                 /* feeltrap() */
         newsym(trap.tx, trap.ty);
@@ -2046,6 +2136,10 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_magic_portal(mtmp, trap, trflags);
     case WEB:
         return await trapeffect_web(mtmp, trap, trflags);
+    case STATUE_TRAP:
+        if (mtmp === game.youmonst)
+            await activate_statue_trap(trap, game.u.ux, game.u.uy, false);
+        return Trap_Effect_Finished;
     case ANTI_MAGIC:
         return await trapeffect_anti_magic(mtmp, trap, trflags);
     default:

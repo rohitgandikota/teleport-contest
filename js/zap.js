@@ -32,11 +32,11 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, MOAT, WEB, u_at,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED, D_TRAPPED,
          IS_DOOR, IS_DRAWBRIDGE, IS_FURNITURE, SCORR, SHOPBASE, NC_SHOW_MSG,
          NC_VIA_WAND_OR_SPELL, NON_PM, HEADSTONE, HEAD,
-         XKILL_NOCORPSE, BEAR_TRAP, LANDMINE, MAGIC_PORTAL,
+         XKILL_NOCORPSE, BEAR_TRAP, LANDMINE, MAGIC_PORTAL, STATUE_TRAP,
          VIBRATING_SQUARE, HOLE, TRAPDOOR, ROCKTRAP, is_pit,
          NO_TRAP_FLAGS, FORCETRAP, ENGRAVE, FACE, FOOT, LEG,
          COST_DRAIN, TIMEOUT, INTRINSIC,
-         In_sokoban, Upolyd } from './const.js';
+         ANIMATE_SPELL, In_sokoban, Upolyd } from './const.js';
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
 import { force_decor, u_safe_from_fatal_corpse } from './pickup.js';
@@ -87,8 +87,8 @@ import { delobj } from './mon.js';
 import { obj_extract_self, sobj_at, useup, useupall, useupf, weight }
     from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
-         deltrap, dotrap, ignite_items, openholdingtrap,
-         trapname } from './trap.js';
+         activate_statue_trap, animate_statue, deltrap, dotrap, ignite_items,
+         openholdingtrap, trapname } from './trap.js';
 import { Is_container, is_metallic } from './obj.js';
 import { MATERIALS } from './objects_data.js';
 import { ATTKS, MONSYMS, PMNAMES } from './monst_data.js';
@@ -1486,8 +1486,10 @@ async function stone_to_flesh_obj(obj) {
 
     if (obj.otyp === ONAMES.BOULDER) {
         replacement = ONAMES.ENORMOUS_MEATBALL;
-    } else if (obj.otyp === ONAMES.STATUE || obj.otyp === ONAMES.FIGURINE) {
-        note_unported_zap('stone_to_flesh_obj:animate');
+    } else if (obj.otyp === ONAMES.STATUE) {
+        res = await animate_statue(obj, ox, oy, ANIMATE_SPELL) ? 1 : 0;
+    } else if (obj.otyp === ONAMES.FIGURINE) {
+        note_unported_zap('stone_to_flesh_obj:figurine');
         res = 0;
     } else {
         switch (obj.oclass) {
@@ -1664,8 +1666,12 @@ export async function bhitpile(obj, fhito, tx, ty, zz) {
        hero forms are not modelled */
 
     if (obj.otyp === ONAMES.SPE_FORCE_BOLT
-        || obj.otyp === ONAMES.WAN_STRIKING)
-        note_unported_zap('bhitpile:statue_trap');
+        || obj.otyp === ONAMES.WAN_STRIKING) {
+        const trap = t_at(tx, ty);
+        if (trap?.ttyp === STATUE_TRAP
+            && await activate_statue_trap(trap, tx, ty, true))
+            learnwand(obj);
+    }
 
     poly_zapped = -1;
     for (const otmp of pile) {

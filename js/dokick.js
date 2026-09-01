@@ -392,8 +392,11 @@ async function really_kick_object(obj, x, y) {
         return true;
     }
 
-    const { breaktest } = await import('./dothrow.js');
-    if (breaktest(obj)) {
+    const { breaktest, hero_breaks_potion } = await import('./dothrow.js');
+    if (obj.oclass === OCLASSES.POTION_CLASS) {
+        if (await hero_breaks_potion(obj))
+            return true;
+    } else if (breaktest(obj)) {
         note_unported_dokick('really_kick_object:breakage');
         return true;
     }

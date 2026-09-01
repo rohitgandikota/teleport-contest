@@ -6,7 +6,8 @@ import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
          change_luck } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
-         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD, EYE } from './const.js';
+         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD, EYE, OBJ_FLOOR }
+    from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
 import { singular, xname, an, the, The, otense, mshot_xname, doname,
@@ -664,6 +665,9 @@ export function breaktest(obj) {
 // hitfloor() calls hero_breaks_potion() so the resistance path can still
 // leave the potion intact on the floor.
 async function break_potion_after_test(obj) {
+    const wasOnFloor = obj.where === OBJ_FLOOR;
+    const floorX = obj.ox, floorY = obj.oy;
+
     if (Blind())
         await You_hear('something shatter!');
     else
@@ -693,8 +697,12 @@ async function break_potion_after_test(obj) {
     }
     /* delobj_core() makes one final indestructibility check before obfree(). */
     obj_resists(obj, 0, 0);
-    const { obfree } = await import('./invent.js');
+    const { obfree, obj_extract_self } = await import('./invent.js');
+    if (wasOnFloor)
+        obj_extract_self(obj);
     obfree(obj);
+    if (wasOnFloor)
+        newsym(floorX, floorY);
 }
 
 export async function hero_breaks_potion(obj) {

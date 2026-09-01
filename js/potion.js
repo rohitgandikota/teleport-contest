@@ -341,9 +341,16 @@ export async function potionbreathe(obj) {
             break;
         }
         case ONAMES.POT_WATER:
-            if (game.u.umonnum === PMNAMES.PM_GREMLIN
-                || ismnum(game.u.ulycn))
-                note_unported_potion('potionbreathe:water-transformation');
+            if (game.u.umonnum === PMNAMES.PM_GREMLIN) {
+                const { split_you } = await import('./mhitu.js');
+                await split_you();
+            } else if (ismnum(game.u.ulycn)) {
+                const { you_unwere, you_were } = await import('./were.js');
+                if (obj.blessed && game.u.umonnum === game.u.ulycn)
+                    await you_unwere(false);
+                else if (obj.cursed && !Upolyd(game.u))
+                    await you_were();
+            }
             break;
         case ONAMES.POT_BLINDNESS:
             if (!game.u.ublind && !Unaware()) {

@@ -1549,7 +1549,8 @@ async function passiveum_mon_to_stone(mtmp) {
 }
 
 // src/mhitu.c:2613 cloneu() and src/potion.c:2873 split_mon().
-async function passiveum_split_you(attacker) {
+// A null attacker is water vapor; a monster attacker supplies the heat text.
+export async function split_you(attacker = null) {
     const u = game.u;
     const mndx = game.youmonst.mnum;
 
@@ -1574,7 +1575,9 @@ async function passiveum_split_you(attacker) {
     clone.mhpmax = Math.trunc(u.mhmax / 2);
     u.mhmax -= clone.mhpmax;
     (game.disp ||= {}).botl = true;
-    await You(`multiply from ${s_suffix(mon_nam(attacker))} heat!`);
+    await You(attacker
+        ? `multiply from ${s_suffix(mon_nam(attacker))} heat!`
+        : 'multiply!');
     return clone;
 }
 
@@ -1716,7 +1719,7 @@ async function passiveum(olduasmon, mtmp, mattk) {
                 game.u.mhmax = game.u.mh;
             (game.disp ||= {}).botl = true;
             if (game.u.mhmax > (game.youmonst.data.mlevel + 1) * 8)
-                await passiveum_split_you(mtmp);
+                await split_you(mtmp);
             break;
         case A.AD_STUN:
             if (!mtmp.mstun) {

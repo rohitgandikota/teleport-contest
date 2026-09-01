@@ -1,0 +1,254 @@
+{
+  "name": "takeoffall-filters",
+  "description": "Independent C-reference traces for every remove-all category filter, filter intersection, missing-slot refusal, empty invocation, and unpaid-item path across full, combination, and traditional menu styles.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.rings",
+    "social.shops-billing",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "equipment.takeoff.menu.buc-blessed",
+    "equipment.takeoff.menu.buc-cursed",
+    "equipment.takeoff.menu.buc-uncursed",
+    "equipment.takeoff.menu.buc-unknown",
+    "equipment.takeoff.menu.combination-unpaid-filter",
+    "equipment.takeoff.menu.filter-intersection",
+    "equipment.takeoff.menu.full-empty-filter",
+    "equipment.takeoff.menu.full-unpaid-filter",
+    "equipment.takeoff.menu.missing-amulet",
+    "equipment.takeoff.menu.missing-armor",
+    "equipment.takeoff.menu.missing-blindfold",
+    "equipment.takeoff.menu.missing-ring",
+    "equipment.takeoff.menu.missing-weapon",
+    "equipment.takeoff.menu.traditional-direct-buc",
+    "equipment.takeoff.menu.traditional-direct-class",
+    "equipment.takeoff.menu.traditional-filtered-request",
+    "equipment.takeoff.menu.unknown-symbol",
+    "ui.command.takeoffall-empty",
+    "ui.command.takeoffall-no-matching-items"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "equipment.takeoff.menu.buc-blessed",
+      "segment": [0, 4],
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= BUPai] B", "B + Items known to be Blessed", "You were wearing a blessed +0 cloak of protection."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.buc-cursed",
+      "segment": [2, 6],
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= UCPai] C", "C + Items known to be Cursed", "You can't.  It is cursed."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.buc-uncursed",
+      "segment": [1, 5],
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= BUPai] U", "U + Items known to be Uncursed", "ring of protection.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.buc-unknown",
+      "segment": 7,
+      "screenIncludes": ["X + Items of unknown Bless/Curse status", "What do you want to take off?", "You were wearing a +0 cloak of protection.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-unpaid-filter",
+      "segment": 18,
+      "screenIncludes": ["What kinds of thing do you want to take off? [)[ uBXPai] u", "scale mail (unpaid, 60 zorkmids)"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.filter-intersection",
+      "segment": [3, 17],
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= BPai] [B", "b + Armor", "You were wearing a blessed +0 cloak of protection."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.full-empty-filter",
+      "segment": 8,
+      "screenIncludes": ["b + Armor", "U + Items known to be Uncursed", "There is nothing else you can remove or unwield."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.full-unpaid-filter",
+      "segment": 19,
+      "screenIncludes": ["What type of things do you want to take off?", "scale mail (unpaid, 60 zorkmids)"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.missing-amulet",
+      "segment": 10,
+      "screenIncludes": ["You are not wearing an amulet."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.missing-armor",
+      "segment": 10,
+      "screenIncludes": ["You are not wearing any armor."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.missing-blindfold",
+      "segment": 10,
+      "screenIncludes": ["You are not wearing a blindfold."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.missing-ring",
+      "segment": 11,
+      "screenIncludes": ["You are not wearing rings."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.missing-weapon",
+      "segment": 10,
+      "screenIncludes": ["You are not wielding anything."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.traditional-direct-buc",
+      "segment": 13,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= BUPaim] B", "a - a blessed +0 cloak of protection (being worn)? [ynaq] (n)"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.traditional-direct-class",
+      "segment": 14,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= BUPaim] [", "cloak of protection (being worn)? [ynaq] (n)"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.traditional-filtered-request",
+      "segment": 9,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= BPaim] [Bm", "What do you want to take off?", "a - a blessed +0 cloak of protection (being worn)"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.unknown-symbol",
+      "segment": 10,
+      "screenIncludes": ["You don't have any z's."]
+    },
+    {
+      "branch": "ui.command.takeoffall-empty",
+      "segment": 12,
+      "screenIncludes": ["You are not wearing anything."]
+    },
+    {
+      "branch": "ui.command.takeoffall-no-matching-items",
+      "segment": 8,
+      "screenIncludes": ["There is nothing else you can remove or unwield."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7491,
+      "datetime": "20000110113100",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAB\r.\r   "
+    },
+    {
+      "seed": 7492,
+      "datetime": "20000110113200",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAU\r.\r   "
+    },
+    {
+      "seed": 7493,
+      "datetime": "20000110113300",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed helm of brilliance\rWa\u0017uncursed ring of protection\rPbrAC\r.\r"
+    },
+    {
+      "seed": 7494,
+      "datetime": "20000110113400",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017blessed ring of protection\rPbrA[B\r.\r   "
+    },
+    {
+      "seed": 7495,
+      "datetime": "20000110113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAB\r.\r   "
+    },
+    {
+      "seed": 7496,
+      "datetime": "20000110113600",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAU\r.\r   "
+    },
+    {
+      "seed": 7497,
+      "datetime": "20000110113700",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed helm of brilliance\rWa\u0017uncursed ring of protection\rPbrAC\r.\r"
+    },
+    {
+      "seed": 7498,
+      "datetime": "20000110113800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAX\r.\r    "
+    },
+    {
+      "seed": 7499,
+      "datetime": "20000110113900",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrA[U\r"
+    },
+    {
+      "seed": 7500,
+      "datetime": "20000110114000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017blessed ring of protection\rPbrA[Bm\r.\r   "
+    },
+    {
+      "seed": 7501,
+      "datetime": "20000110114100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection\rParA[\rA)\rA\"\rA(\rAz\r"
+    },
+    {
+      "seed": 7502,
+      "datetime": "20000110114200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaA=\r"
+    },
+    {
+      "seed": 7503,
+      "datetime": "20000110114300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " A"
+    },
+    {
+      "seed": 7504,
+      "datetime": "20000110114400",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAB\ry   "
+    },
+    {
+      "seed": 7505,
+      "datetime": "20000110114500",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrA[\ry   "
+    },
+    {
+      "seed": 7506,
+      "datetime": "20000110114600",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrABU\r.\r    "
+    },
+    {
+      "seed": 7507,
+      "datetime": "20000110114700",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017uncursed ring of protection\rPbrABU\r.\r    "
+    },
+    {
+      "seed": 7508,
+      "datetime": "20000110114800",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of protection\rWa\u0017blessed ring of protection\rPbrA[B\r.\r   "
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , TbnWn     Au\r.\r      "
+    },
+    {
+      "seed": 6901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  lllllllllllllllllllllllllk.  , TbnWn     Au\r.\r      "
+    }
+  ]
+}

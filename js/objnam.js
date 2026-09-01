@@ -63,7 +63,7 @@ import { is_quest_artifact } from './questpgr.js';
 import { body_part } from './polyself.js';
 import { pline } from './display.js';
 import { tty_yn_function } from './tty/topl.js';
-import { Blind, Flying, Levitation } from './youprop.js';
+import { Blind, Flying, Glib, Levitation } from './youprop.js';
 
 const {
     COIN_CLASS, POTION_CLASS, SCROLL_CLASS, WAND_CLASS, SPBOOK_CLASS,
@@ -1153,7 +1153,14 @@ export function doname(obj) {
             bp += ' (being worn)';
         break;
     case ARMOR_CLASS:
-        if (obj.owornmask & W_ARMOR) bp += ' (being worn)';
+        if (obj.owornmask & W_ARMOR) {
+            bp += ' (being worn)';
+            /* src/objnam.c:1400. Slipperiness belongs to the hero, but C
+               annotates the worn gloves so inventory and selection menus
+               expose the condition. */
+            if (obj === game.u?.uarmg && Glib())
+                bp += '; slippery)';
+        }
         /* FALLTHRU */
     case WEAPON_CLASS:
         if (known) prefix += `${obj.spe >= 0 ? '+' : ''}${obj.spe} `;
@@ -1195,11 +1202,11 @@ export function doname(obj) {
             bp += ' (lit)';
         break;
     case RING_CLASS:
-        /* src/objnam.c:1494 — "(on right hand)" / "(on left hand)" */
+        /* src/objnam.c:1494, use the current form's hand equivalent. */
         if (obj.owornmask & W_RINGR)
-            bp += ' (on right hand)';
+            bp += ` (on right ${body_part(HAND)})`;
         if (obj.owornmask & W_RINGL)
-            bp += ' (on left hand)';
+            bp += ` (on left ${body_part(HAND)})`;
         if (known && ocl.oc_charged)
             prefix += `${obj.spe >= 0 ? '+' : ''}${obj.spe} `;
         break;

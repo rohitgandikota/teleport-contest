@@ -70,6 +70,27 @@ coverage separate from branch coverage, so a category can be represented while
 important logical paths remain visible as gaps. Use `--branch-strict` when a
 subsystem's branch ledger is expected to have no remaining gap.
 
+For source paths where a label alone is too weak, set
+`"requireBranchAssertions": true` and add one `branchAssertions` entry for
+every declared branch. An assertion names one segment, or an array of segments,
+and at least one observable condition:
+
+```json
+{
+  "branch": "equipment.takeoff.boots.bear-trap",
+  "segment": 11,
+  "screenIncludes": [
+    "The bear trap prevents you from pulling your foot out."
+  ]
+}
+```
+
+The supported conditions are `screenIncludes`, `screenExcludes`, and
+`rngIncludes`. `record.mjs` rejects a recording when any condition is absent
+from the specified C trace. `coverage-report.mjs` also refuses to credit a
+generated fixture whose assertion policy, assertion metadata, or C-visible
+evidence no longer matches its recipe.
+
 `moves` is the raw key string, one char per key, exactly as in
 `sessions/*.session.json` (JSON escapes: `\r` Enter, `\u001b` ESC,
 `\u0004` ^D kick, `\u0017` ^W wish, `\u0006` ^F map, `\u0007` ^G

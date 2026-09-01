@@ -8,6 +8,7 @@ import {
 } from 'node:fs';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { branchAssertionErrors } from './assertions.mjs';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = fileURLToPath(new URL('../..', import.meta.url));
@@ -75,6 +76,13 @@ function verifyGenerated(recipe) {
     if (JSON.stringify(actualBranches) !== JSON.stringify(expectedBranches)) {
         return { present: false, reason: 'branch metadata differs' };
     }
+    if (JSON.stringify(generated.branchAssertions || [])
+        !== JSON.stringify(recipe.branchAssertions || [])) {
+        return { present: false, reason: 'branch assertion metadata differs' };
+    }
+    if (!!generated.requireBranchAssertions !== !!recipe.requireBranchAssertions) {
+        return { present: false, reason: 'branch assertion policy differs' };
+    }
     if ((generated.segments || []).length !== recipe.segments.length) {
         return { present: false, reason: 'segment count differs' };
     }
@@ -90,6 +98,9 @@ function verifyGenerated(recipe) {
             return { present: false, reason: `segment ${index} has no C steps` };
         }
     }
+    const assertionErrors = branchAssertionErrors(recipe, generated);
+    if (assertionErrors.length)
+        return { present: false, reason: assertionErrors[0] };
     return { present: true, reason: 'C trace present' };
 }
 

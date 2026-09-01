@@ -36,6 +36,7 @@ import { spawn } from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { branchAssertionErrors } from './assertions.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -50,6 +51,9 @@ function recipeToSessionInput(recipe) {
     }
     if (recipe.branches !== undefined && !Array.isArray(recipe.branches))
         throw new Error('recipe branches must be an array when present');
+    const assertionErrors = branchAssertionErrors(recipe);
+    if (assertionErrors.length)
+        throw new Error(assertionErrors.join('; '));
     const input = {
         version: 5,
         segments: recipe.segments.map((s) => ({
@@ -68,6 +72,10 @@ function recipeToSessionInput(recipe) {
     };
     if (recipe.branches?.length)
         input.branches = [...new Set(recipe.branches)].sort();
+    if (recipe.branchAssertions?.length)
+        input.branchAssertions = recipe.branchAssertions;
+    if (recipe.requireBranchAssertions)
+        input.requireBranchAssertions = true;
     return input;
 }
 
@@ -102,6 +110,11 @@ async function generateOne(recipePath) {
             if (got !== expected) ok = false;
             console.log(`  seg ${i}: seed=${seg.seed} steps=${got} rng=${rng}${note}`);
         });
+        const assertionErrors = branchAssertionErrors(recipe, out);
+        for (const error of assertionErrors)
+            console.log(`  assertion: ${error}`);
+        if (assertionErrors.length)
+            ok = false;
         console.log(`${ok ? '[ok]' : '[warn]'} ${path.relative(ROOT, outputPath)}`);
         return ok;
     } finally {

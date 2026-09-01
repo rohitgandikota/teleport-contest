@@ -1,0 +1,471 @@
+{
+  "name": "takeoffall-branches",
+  "description": "Independent C-reference traces for remove-all equipment, covering weapon-only and fully layered removal order, cursed and physical blockers, corpse safety, traps, and all three menu styles.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "object.food-corpses",
+    "object.rings",
+    "object.weapons",
+    "survival.instant-deaths",
+    "turn.occupation-interrupt",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "equipment.takeoff.boots.bear-trap",
+    "equipment.takeoff.boots.in-floor",
+    "equipment.takeoff.gloves.corpse-confirm",
+    "equipment.takeoff.gloves.corpse-decline",
+    "equipment.takeoff.gloves.slippery",
+    "equipment.takeoff.gloves.welded-weapon",
+    "equipment.takeoff.known-curse-slippery",
+    "equipment.takeoff.known-curse-standard",
+    "equipment.takeoff.menu.combination-all",
+    "equipment.takeoff.menu.combination-buc-filter",
+    "equipment.takeoff.menu.combination-class-filter",
+    "equipment.takeoff.menu.combination-empty-filter",
+    "equipment.takeoff.menu.combination-picked-filter",
+    "equipment.takeoff.menu.combination-request",
+    "equipment.takeoff.menu.full",
+    "equipment.takeoff.menu.nonremoveable-class",
+    "equipment.takeoff.menu.partial",
+    "equipment.takeoff.menu.text-cancel",
+    "equipment.takeoff.menu.text-inventory",
+    "equipment.takeoff.menu.traditional-all",
+    "equipment.takeoff.menu.traditional-answers",
+    "equipment.takeoff.menu.traditional-request",
+    "equipment.takeoff.occupation-resume",
+    "equipment.takeoff.order.layered",
+    "equipment.takeoff.order.weapons",
+    "equipment.takeoff.quiver.cursed-exception",
+    "equipment.takeoff.ring.cursed-gloves",
+    "equipment.takeoff.ring.no-limbs",
+    "equipment.takeoff.ring.slippery-gloves",
+    "equipment.takeoff.ring.welded-bimanual",
+    "equipment.takeoff.ring.welded-primary",
+    "equipment.takeoff.shirt.cursed-suit",
+    "equipment.takeoff.suit.cursed-cloak",
+    "equipment.takeoff.suit.welded-bimanual",
+    "equipment.takeoff.swap.cursed-inactive-exception",
+    "ui.command.takeoffall-cancel",
+    "ui.command.takeoffall-selected"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "equipment.takeoff.boots.bear-trap",
+      "segment": 11,
+      "screenIncludes": ["The bear trap prevents you from pulling your foot out."]
+    },
+    {
+      "branch": "equipment.takeoff.boots.in-floor",
+      "segment": 36,
+      "screenIncludes": ["You are stuck in the stairs, and cannot pull your feet out."]
+    },
+    {
+      "branch": "equipment.takeoff.gloves.corpse-confirm",
+      "segment": 10,
+      "screenIncludes": ["Take off your gloves despite carrying a dead cockatrice?", "You were wearing a +0 pair of fencing gloves.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.gloves.corpse-decline",
+      "segment": 9,
+      "screenIncludes": ["Take off your gloves despite carrying a dead cockatrice? [yes|n] (n) n"]
+    },
+    {
+      "branch": "equipment.takeoff.gloves.slippery",
+      "segment": 8,
+      "screenIncludes": ["Your gloves are too slippery to take off."]
+    },
+    {
+      "branch": "equipment.takeoff.gloves.welded-weapon",
+      "segment": 6,
+      "screenIncludes": ["You are unable to take off your gloves while wielding that sword."]
+    },
+    {
+      "branch": "equipment.takeoff.known-curse-slippery",
+      "segment": 29,
+      "screenIncludes": ["Despite your slippery fingers, you can't."]
+    },
+    {
+      "branch": "equipment.takeoff.known-curse-standard",
+      "segment": 2,
+      "screenIncludes": ["You can't.  It is cursed."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-all",
+      "segment": 16,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPai] a", "You were wearing a +0 cloak of protection.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-buc-filter",
+      "segment": 27,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= XPai] X", "What do you want to take off?"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-class-filter",
+      "segment": 26,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= XPai] [", "Armor"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-empty-filter",
+      "segment": 32,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPai] C"],
+      "screenExcludes": ["No applicable objects.", "There is nothing else you can remove or unwield."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-picked-filter",
+      "segment": 31,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= XPai] P", "What do you want to take off?"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.combination-request",
+      "segment": 17,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPai] m", "What do you want to take off?"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.full",
+      "segment": 1,
+      "screenIncludes": ["What type of things do you want to take off?", "What do you want to take off?"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.nonremoveable-class",
+      "segment": 33,
+      "screenIncludes": ["Not applicable."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.partial",
+      "segment": 21,
+      "screenIncludes": ["What do you want to take off?"],
+      "screenExcludes": ["What type of things do you want to take off?", "What kinds of thing do you want to take off?"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.text-cancel",
+      "segment": 28,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPai]"],
+      "screenExcludes": ["You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.text-inventory",
+      "segment": 30,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[= XPaim] i", "a - a -2 cloak of protection (being worn)"]
+    },
+    {
+      "branch": "equipment.takeoff.menu.traditional-all",
+      "segment": 18,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPaim] a", "You were wearing a +0 cloak of protection.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.traditional-answers",
+      "segment": [22, 23, 24, 25],
+      "screenIncludes": ["? [ynaq] (n)", "You were wearing a +0 cloak of protection.  You finish disrobing.", "You were wearing a -1 ring of protection.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.menu.traditional-request",
+      "segment": 19,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPaim] m", "What do you want to take off?"]
+    },
+    {
+      "branch": "equipment.takeoff.occupation-resume",
+      "segment": 34,
+      "screenIncludes": ["You stop disrobing.", "You continue disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.order.layered",
+      "segment": 1,
+      "screenIncludes": ["You were wearing a blindfold.  You can see again.", "You were wearing a +0 Hawaiian shirt.", "You no longer have ammunition readied.  You finish disrobing."]
+    },
+    {
+      "branch": "equipment.takeoff.order.weapons",
+      "segment": 0,
+      "screenIncludes": ["You are bare handed.  You no longer have a second weapon readied.", "You no longer have ammunition readied.  You finish disarming."]
+    },
+    {
+      "branch": "equipment.takeoff.quiver.cursed-exception",
+      "segment": 15,
+      "screenIncludes": ["You no longer have ammunition readied.  You finish disarming."]
+    },
+    {
+      "branch": "equipment.takeoff.ring.cursed-gloves",
+      "segment": 5,
+      "screenIncludes": ["You cannot take off your gloves to remove the ring."]
+    },
+    {
+      "branch": "equipment.takeoff.ring.no-limbs",
+      "segment": 20,
+      "screenIncludes": ["a - a -1 ring of protection (on right swirl)", "The ring is stuck."]
+    },
+    {
+      "branch": "equipment.takeoff.ring.slippery-gloves",
+      "segment": 7,
+      "screenIncludes": ["a +0 pair of riding gloves (being worn); slippery)", "You cannot take off your slippery gloves to remove the ring."]
+    },
+    {
+      "branch": "equipment.takeoff.ring.welded-bimanual",
+      "segment": 4,
+      "screenIncludes": ["The two-handed sword welds itself to your hands!", "You cannot free a weapon hand to remove the ring."]
+    },
+    {
+      "branch": "equipment.takeoff.ring.welded-primary",
+      "segment": 3,
+      "screenIncludes": ["The long sword welds itself to your dominant right hand!", "You cannot free a weapon hand to remove the ring."]
+    },
+    {
+      "branch": "equipment.takeoff.shirt.cursed-suit",
+      "segment": 13,
+      "screenIncludes": ["You cannot remove your suit to take off the Hawaiian shirt."]
+    },
+    {
+      "branch": "equipment.takeoff.suit.cursed-cloak",
+      "segment": 12,
+      "screenIncludes": ["You cannot remove your cloak to take off the leather armor."]
+    },
+    {
+      "branch": "equipment.takeoff.suit.welded-bimanual",
+      "segment": 14,
+      "screenIncludes": ["You cannot release your sword to take off the leather armor."]
+    },
+    {
+      "branch": "equipment.takeoff.swap.cursed-inactive-exception",
+      "segment": 35,
+      "screenIncludes": ["You no longer have a second weapon readied.", "You finish disarming."]
+    },
+    {
+      "branch": "ui.command.takeoffall-cancel",
+      "segment": 28,
+      "screenIncludes": ["What kinds of thing do you want to take off? [[ XPai]"],
+      "screenExcludes": ["You finish disrobing."]
+    },
+    {
+      "branch": "ui.command.takeoffall-selected",
+      "segment": 1,
+      "screenIncludes": ["You no longer have ammunition readied.  You finish disrobing."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7450,
+      "datetime": "20000110110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,pushweapon,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed long sword\rwa\u0017uncursed dagger\rwb\u001710 uncursed darts\rQcA.\r  "
+    },
+    {
+      "seed": 7451,
+      "datetime": "20000110110100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,pushweapon,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Hawaiian shirt\rWa\u0017uncursed leather armor\rWb\u0017uncursed cloak of protection\rWc\u0017uncursed helm of brilliance\rWd\u0017uncursed pair of low boots\rWe\u0017uncursed small shield\rWf\u0017uncursed ring of protection\rPgr\u0017uncursed ring of adornment\rPh\u0017uncursed pair of leather gloves\rWi\u0017uncursed amulet of reflection\rPj\u0017uncursed blindfold\rPk\u0017uncursed long sword\rwl\u0017uncursed dagger\rwm\u001710 uncursed darts\rQnAa\r.\r             "
+    },
+    {
+      "seed": 7452,
+      "datetime": "20000110110200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed ring of protection\rParAa\r"
+    },
+    {
+      "seed": 7453,
+      "datetime": "20000110110300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection\rPar\u0017cursed long sword\rwbAa\ra\r"
+    },
+    {
+      "seed": 7454,
+      "datetime": "20000110110400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection\rPal\u0017cursed two-handed sword\rwbAa\ra\r"
+    },
+    {
+      "seed": 7455,
+      "datetime": "20000110110500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection\rPar\u0017cursed pair of leather gloves\rWbAa\ra\r"
+    },
+    {
+      "seed": 7456,
+      "datetime": "20000110110600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed pair of leather gloves\rWa\u0017cursed long sword\rwbAa\ra\r"
+    },
+    {
+      "seed": 7457,
+      "datetime": "20000110110700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection\rPar\u0017uncursed pair of leather gloves\rWb#wizintrinsic\rl\r Aa\ra\r"
+    },
+    {
+      "seed": 7458,
+      "datetime": "20000110110800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed pair of leather gloves\rWa#wizintrinsic\rl\r Aa\r"
+    },
+    {
+      "seed": 7459,
+      "datetime": "20000110110900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed pair of leather gloves\rWa\u0017cockatrice corpse\rAa\rn\r"
+    },
+    {
+      "seed": 7460,
+      "datetime": "20000110111000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed pair of leather gloves\rWa\u0017cockatrice corpse\rAa\ryes\r "
+    },
+    {
+      "seed": 7461,
+      "datetime": "20000110111100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed pair of low boots\rWak\u0017bear trap trap\r\u0005jkyAa\r"
+    },
+    {
+      "seed": 7462,
+      "datetime": "20000110111200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed leather armor\rWa\u0017cursed cloak of protection\rWbAa\r"
+    },
+    {
+      "seed": 7463,
+      "datetime": "20000110111300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Hawaiian shirt\rWa\u0017cursed leather armor\rWbAa\r"
+    },
+    {
+      "seed": 7470,
+      "datetime": "20000110111400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed leather armor\rWa\u0017cursed two-handed sword\rwbAa\ra\r"
+    },
+    {
+      "seed": 7465,
+      "datetime": "20000110111500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001710 cursed darts\rQaAa\r"
+    },
+    {
+      "seed": 7466,
+      "datetime": "20000110111600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaAa\r"
+    },
+    {
+      "seed": 7467,
+      "datetime": "20000110111700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaAm\r.\r"
+    },
+    {
+      "seed": 7468,
+      "datetime": "20000110111800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaAa\r"
+    },
+    {
+      "seed": 7469,
+      "datetime": "20000110111900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaAm\r.\r"
+    },
+    {
+      "seed": 7471,
+      "datetime": "20000110112000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection\rPar#polyself\rfog cloud\rAa\r"
+    },
+    {
+      "seed": 7472,
+      "datetime": "20000110112100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:partial\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrA.\r   "
+    },
+    {
+      "seed": 7473,
+      "datetime": "20000110112200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAA\ryn   "
+    },
+    {
+      "seed": 7474,
+      "datetime": "20000110112300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAA\rny   "
+    },
+    {
+      "seed": 7475,
+      "datetime": "20000110112400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAA\ra    "
+    },
+    {
+      "seed": 7476,
+      "datetime": "20000110112500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAA\rq"
+    },
+    {
+      "seed": 7477,
+      "datetime": "20000110112600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrA[\ra\r   "
+    },
+    {
+      "seed": 7478,
+      "datetime": "20000110112700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAX\r.\r    "
+    },
+    {
+      "seed": 7479,
+      "datetime": "20000110112800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaA\u001b"
+    },
+    {
+      "seed": 7480,
+      "datetime": "20000110112900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed long sword\rwaAa\r#wizintrinsic\rl\r Aa\r"
+    },
+    {
+      "seed": 7481,
+      "datetime": "20000110113000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAi\ra\ra\r    "
+    },
+    {
+      "seed": 7482,
+      "datetime": "20000110113100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWa\u0017uncursed ring of protection\rPbrAP\r.\r    "
+    },
+    {
+      "seed": 7483,
+      "datetime": "20000110113200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:combination\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaAC\ri\u001b"
+    },
+    {
+      "seed": 7484,
+      "datetime": "20000110113300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:traditional\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed cloak of protection\rWaA!\r"
+    },
+    {
+      "seed": 7490,
+      "datetime": "20000110113400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed plate mail\rWa\u0017uncursed cloak of protection\rWb\u0007hostile grid bug\rAa\rA"
+    },
+    {
+      "seed": 7486,
+      "datetime": "20000110113500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,pushweapon,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed potion of water\rwa\u0017uncursed dagger\rwbAa\r.\r    "
+    },
+    {
+      "seed": 7487,
+      "datetime": "20000110113600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist,debug_mongen,menustyle:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed fireproof pair of low boots\rWa\u0017blessed ring of fire resistance\rPbr\u0017lava\r s\u0017blessed wand of cold\rzc> Aa\r.\r    "
+    }
+  ]
+}

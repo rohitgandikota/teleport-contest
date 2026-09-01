@@ -4198,3 +4198,45 @@ knowable from the corpus, so it is deliberately NOT fitted. Hour-dependent
 output (night(), midnight(), moon/Friday-13th at hour 0) will disagree with
 oracles recorded in a DST-observing zone during DST; expect it, do not fix
 it by guessing.
+
+## Fuzz divergence census (2026-09-01, second pass)
+
+`node tools/gen-sessions/fuzz.mjs` corpus is now 102 games. Running
+`tools/diverge.mjs` over all of them: **84/102 are RNG-perfect to the end.**
+The 18 that diverge cluster almost entirely in deep monster movement, and
+crucially the divergence is where it first SHOWS, not the bug:
+
+- `distfleeck` (5 games), `mcalcmove` (2), `unstuck` (1): the first mismatch
+  is a monster-move draw, but the preceding draws all match. This is a
+  monster-set/ordering/state accumulation drift — by iteration N ours and C
+  are processing a different monster. `distfleeck`, `mcalcmove`, `unstuck`,
+  `mhitm_knockback` themselves are faithfully ported (checked line-by-line);
+  the drift is upstream and needs the recorded C stream walked back further.
+- `getbones` (2 games: s3-15, s4-20): wizard `^V` level teleport. Ours runs
+  one extra `movemon`/`distfleeck` pass on the OLD level before the teleport's
+  `goto_level`→`getbones`, so ours' turn counter over-increments by one
+  (T:5→T:6 where C stays). Wizard-only path, low held-out value.
+- `place_niche` (s4-04): a normal random level whose room `doorct` differs by
+  the time `makeniche` runs (C short-circuits `doorct==1 && rn2(5)`, ours
+  evaluates the rn2). A level-gen door-count drift, deep.
+
+**s2-06 tutorial `maybe_smudge_engr`, unresolved.** First mismatch at draw
+3018: ours draws `rnd(5)` in `maybe_smudge_engr`, C draws nothing there
+(C makes ZERO smudge draws in the whole game). It is the tutorial's first
+real move (mv=1) off the "Move around with h j k l" engraving at (12,6).
+Ruled out: map offset (both render `@` at the same screen cell at step 57),
+engraving placement (both show "Something is engraved here"), engraving type
+(both ENGRAVE/nowipeout), and `can_reach_floor` (matches C line-for-line, and
+there is no trap at (12,6) so the pit/shaft arm is not taken — the earlier
+pit note does NOT explain this case). Both sides appear to have the engraving,
+`can_reach_floor` true, and a successful move, yet only ours smudges. Needs
+the C binary to confirm whether C's `engr_at(12,6)` is null or its
+`domove_succeeded` is 0 at that move. The step-60 screen miss (tutorial map
+shown in ours, blank in C) is a separate display-memory difference.
+
+**Takeaway for the next agent.** The recorded oracle stream (diverge.mjs) is
+enough to debug most divergences, but this cluster is in already-ported code
+and drifts from an earlier, invisible state difference. Higher-leverage work
+right now is PORTING stubbed C functions (read C, translate, verify on the
+full gate) rather than chasing these. The `note_unported_*` markers (908 of
+them) are the work list; filter to ones that draw RNG on a common path.

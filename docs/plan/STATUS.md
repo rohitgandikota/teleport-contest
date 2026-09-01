@@ -1,5 +1,27 @@
 # STATUS — live handoff board
 
+## 2026-09-01 (later): spelleffects + name prompt, fuzz census
+
+Two faithful ports landed and pushed this session:
+- **`spelleffects()` wand-duplicate arm** (`js/spell.js`). It only handled
+  five direction spells and dropped the rest into a `note_unported` default,
+  so casting an attack spell (force bolt) never reached `weffects()` and
+  diverged on `weffects()`'s own `exercise(A_WIS)` draw (s4-14, now RNG-perfect
+  to the end). Filled in the whole wand-duplicate case list plus the shared
+  `use_skill()`/`obfree()` tail. Scroll/potion/misc arms are laid out with
+  real case labels but still note the unported `seffects()`/`peffects()` SPE
+  cases (JS `peffects` has zero SPE_ cases; JS `seffects` has 5 of C's 8).
+- **name-prompt retry loop** in `tty_askname` (`js/plselect.js`).
+
+**Fuzz census: 84/102 games are RNG-perfect.** The 18 failures are documented
+in NOTES (second-pass census entry): a deep monster-ordering drift cluster
+(distfleeck/mcalcmove/unstuck), the wizard `^V` extra-movemon turn bug
+(getbones), a level-gen doorct drift (place_niche), and the unresolved
+tutorial `maybe_smudge_engr` case (s2-06). These are in already-ported code
+and drift from an earlier invisible state difference; the recommended next
+work is PORTING stubbed C functions, not chasing them.
+
+
 ## 2026-09-01: fuzz-driven divergence hunting and the RNG call-site census
 
 **Where we really stand.** The leaderboard (`node tools/leaderboard.mjs`) has

@@ -31,7 +31,7 @@ import { In_sokoban, surface } from './dungeon.js';
 import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
 import { u_on_newpos } from './teleport.js';
-import { doloot } from './pickup.js';
+import { doloot, query_inventory_category } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
@@ -57,12 +57,13 @@ do_wire_dokick(ship_object);
 import { dungeon_wire_stairway_at } from './dungeon.js';
 dungeon_wire_stairway_at(stairway_at);
 import { wiz_level_change, wiz_level_tele, wiz_wish } from './wizcmds.js';
-import { tty_yn_function } from './tty/topl.js';
+import { tty_yn_function, doprev_message } from './tty/topl.js';
 import { extcmdlist, EXTCMD_FLAGS } from './extcmd_data.js';
-import { dodiscovered } from './o_init.js';
+import { dodiscovered, doclassdisco } from './o_init.js';
 import { enlightenment } from './insight.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page,
-         tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+         tty_destroy_nhwindow, tty_start_menu, tty_add_menu, tty_add_menu_str,
+         tty_end_menu,
          tty_select_menu, NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
 import { MENU_ITEMFLAGS_NONE, MENU_BEHAVE_STANDARD, isok, HEADSTONE, xdir, ydir, zdir, N_DIRS, N_DIRS_Z, DIR_ERR, DIR_W, DIR_NW, DIR_N, DIR_NE, DIR_E, DIR_SE, DIR_S, DIR_SW, DOMOVE_WALK, DOMOVE_RUSH, BC_BALL, BC_CHAIN, SLT_ENCUMBER, OBJ_FLOOR, WT_ELF } from './const.js';
 import { doopen, doopen_indir, doclose } from './lock.js';
@@ -76,7 +77,8 @@ import { dochat } from './sounds.js';
 import { dothrow, dofire } from './dothrow.js';
 import { getpos, getpos_sethilite } from './getpos.js';
 import { get_valid_jump_position, is_valid_jump_pos } from './apply.js';
-import { dowear, doputon, dotakeoff, doremring, canwearobj_core } from './do_wear.js';
+import { dowear, doputon, dotakeoff, doremring, doddoremarm,
+         canwearobj_core } from './do_wear.js';
 import { boolean_option, show_menu_controls, paranoia_bits,
          PARANOID_CONFIRM, PARANOID_QUIT, PARANOID_TRAP } from './options.js';
 import { xwaitforspace } from './tty/getline.js';
@@ -90,7 +92,7 @@ import { doengrave, engr_at, wipe_engr_at } from './engrave.js';
 import { rnd, rn2 } from './rng.js';
 import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
-import { dohelp, dowhatis, doquickwhatis } from './pager.js';
+import { dohelp, dowhatis, doquickwhatis, dowhatdoes } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
 import { dovspell, docast } from './spell.js';
 import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
@@ -1254,6 +1256,31 @@ function bad_rock_at(x, y) {
     return !loc || !ACCESSIBLE(loc.typ);
 }
 
+// src/pager.c doidtrap(), the '^' command. Ordinary seen floor traps are the
+// common path; trapped-door and trapped-chest glyph overlays remain separate
+// because those traps do not live on level.traps.
+async function doidtrap() {
+    if (!await getdir('^'))
+        return ECMD_CANCEL;
+
+    const x = game.u.ux + game.u.dx;
+    const y = game.u.uy + game.u.dy;
+    const trap = t_at(x, y);
+    if (trap?.tseen) {
+        const { trapname } = await import('./trap.js');
+        let suffix = '';
+        if (trap.madeby_u) {
+            suffix = trap.ttyp === WEB ? ' woven by you'
+                : (trap.ttyp === HOLE || trap.ttyp === PIT)
+                    ? ' dug by you' : ' set by you';
+        }
+        await pline(`That is ${an(trapname(trap.ttyp, false))}${suffix}.`);
+        return ECMD_OK;
+    }
+    await pline("I can't see a trap there.");
+    return ECMD_OK;
+}
+
 export async function rhack(key) {
     /* src/cmd.c:3635 — every command begins with the menu-request and
        no-pickup markers cleared; set_move_cmd() re-raises nopick from
@@ -1524,6 +1551,9 @@ export async function rhack(key) {
     } else if (ch === '_') {
         // src/cmd.c cmdlist — '_' is dotravel.
         game.context.move = ((await dotravel()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x1f') {
+        // src/cmd.c cmdlist, C('_') resumes the cached travel destination.
+        game.context.move = ((await dotravel_target()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 's') {
         // src/cmd.c cmdlist — 's' is dosearch, which returns ECMD_TIME.
         /* src/cmd.c:3728 — a counted command whose cmdlist entry carries
@@ -1542,10 +1572,41 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — 'i' is ddoinv, which returns ECMD_OK.
         game.context.move = 0;
         await show_inventory();
+    } else if (ch === 'I') {
+        // src/invent.c dotypeinv() filters inventory by one class or BUC state.
+        game.context.move = ((await dotypeinv()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'v') {
         // src/cmd.c:1693 cmdlist, 'v' is #chronicle / do_gamelog.
         const { do_gamelog } = await import('./insight.js');
         game.context.move = ((await do_gamelog()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x0f') {
+        // src/cmd.c cmdlist, C('o') is the dungeon overview.
+        const { show_overview } = await import('./dungeon.js');
+        await show_overview();
+        game.context.move = 0;
+    } else if (ch === 'V') {
+        // src/version.c doversion() prints the build's short version string.
+        const { VERSION_BANNER_LINE } = await import('./version_data.js');
+        await pline(VERSION_BANNER_LINE);
+        game.context.move = 0;
+    } else if (ch === '&') {
+        // src/pager.c dowhatdoes() reads one key and describes its binding.
+        game.context.move = ((await dowhatdoes()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'C') {
+        // src/do_name.c docallcmd() names monsters, objects, and object types.
+        game.context.move = ((await docallcmd()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '\x12') {
+        // src/display.c doredraw() rebuilds the tty screen without time.
+        await docrt();
+        game.context.move = 0;
+    } else if (ch === '\x10') {
+        // src/cmd.c doprev_message() delegates to tty message history.
+        game.context.move = ((await doprev_message()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '|') {
+        /* src/invent.c doperminv(), tty does not advertise WC_PERM_INVENT in
+           the pinned build, so this command always follows its first arm. */
+        await pline("Persistent inventory display is not supported by 'tty'.");
+        game.context.move = 0;
     } else if (ch === '\x18') {
         // src/cmd.c cmdlist — ^X is doattributes, which returns ECMD_OK.
         game.context.move = 0;
@@ -1554,6 +1615,12 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — '\\' is dodiscovered, which returns ECMD_OK.
         game.context.move = 0;
         await show_discoveries();
+    } else if (ch === '`') {
+        // src/o_init.c doclassdisco() filters discoveries by object class.
+        game.context.move = ((await doclassdisco()) === ECMD_TIME ? 1 : 0);
+    } else if (ch === '^') {
+        // src/pager.c doidtrap() describes a seen trap in one direction.
+        game.context.move = ((await doidtrap()) === ECMD_TIME ? 1 : 0);
     } else if (ch === 'g' || ch === 'G') {
         // src/cmd.c:1588 do_rush()/do_run(): PREFIX commands. Lowercase g
         // sets context.run = 2 and uppercase G sets it to 3; the following
@@ -1622,6 +1689,8 @@ export async function rhack(key) {
         game.context.move = (await doddrop() === ECMD_TIME ? 1 : 0);
     } else if (ch === 'd') {
         game.context.move = (await dodrop() === ECMD_TIME ? 1 : 0);
+    } else if (ch === 'A') {
+        game.context.move = ((await doddoremarm()) === ECMD_TIME ? 1 : 0);
     } else if ('rwqWPRT'.includes(ch)) {
         // src/cmd.c cmdlist — read, wield, quaff, drop, wear, put on, remove.
         // Every one of them starts with getobj(), which reads the inventory
@@ -2807,19 +2876,27 @@ async function show_attributes() {
 // offx: 80 - (maxcol) - 1, and js/tty/wintty.js adds the +2 for the leading
 // and trailing space. seed8000 records the window at column 32 with the cursor
 // at [38,20].
-async function show_inventory() {
-    const items = display_inventory();
+async function show_inventory(allowed_choices = null, title = null,
+                              show_class_headings = true) {
+    const items = display_inventory(allowed_choices);
     if (!items.length) {
         await pline('Not carrying anything.');
         return;
     }
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    for (const it of items)
+    /* query_objlist() uses gt.this_title as an ordinary first menu line.
+       It is deliberately not the highlighted end_menu prompt. */
+    if (title)
+        tty_add_menu_str(win, title);
+    for (const it of items) {
+        if (it.heading && !show_class_headings)
+            continue;
         tty_add_menu(win, it.glyphinfo ?? null,
                      it.heading ? 0 : it.invlet.charCodeAt(0),
                      it.invlet || 0, 0,
                      it.attr, NO_COLOR, it.str, MENU_ITEMFLAGS_NONE);
+    }
     tty_end_menu(win, null);
     const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
     tty_destroy_nhwindow(win);
@@ -2830,6 +2907,51 @@ async function show_inventory() {
     const obj = (game.invent || []).find(o => o.invlet === invlet);
     if (obj)
         await show_item_actions(obj);
+}
+
+// src/invent.c dotypeinv(), default MENU_FULL path. The category query only
+// offers classes and BUC states which are present, then query_objlist shows
+// the matching inventory and optionally enters that item's action menu.
+async function dotypeinv() {
+    const invent = game.invent || [];
+    if (!invent.length) {
+        await You("aren't carrying anything.");
+        return ECMD_OK;
+    }
+
+    const picks = await query_inventory_category(invent);
+    if (!picks.length)
+        return ECMD_OK;
+
+    const choice = picks[0];
+    const code = typeof choice === 'string' ? choice.charCodeAt(0) : choice;
+    const marker = String.fromCharCode(code);
+    let filter, title = null;
+    if (code > 0 && code < OCLASSES.MAXOCLASSES) {
+        filter = (obj) => obj.oclass === code;
+    } else if (marker === 'B') {
+        filter = (obj) => !!obj.bknown && !!obj.blessed;
+        title = 'Items known to be blessed:';
+    } else if (marker === 'U') {
+        filter = (obj) => !!obj.bknown && !obj.blessed && !obj.cursed;
+        title = 'Items known to be uncursed:';
+    } else if (marker === 'C') {
+        filter = (obj) => !!obj.bknown && !!obj.cursed;
+        title = 'Items known to be cursed:';
+    } else if (marker === 'X') {
+        filter = (obj) => !obj.bknown;
+        title = 'Items whose blessed/uncursed/cursed status is unknown:';
+    } else if (marker === 'P') {
+        filter = (obj) => !!obj.pickup_prev;
+        title = 'Items that were just picked up:';
+    } else {
+        return ECMD_OK;
+    }
+
+    const letters = invent.filter(filter).map((obj) => obj.invlet).join('');
+    if (letters)
+        await show_inventory(letters, title);
+    return ECMD_OK;
 }
 
 function add_item_action(win, action, text) {

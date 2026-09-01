@@ -1,0 +1,131 @@
+{
+  "name": "default-command-behavior",
+  "description": "Normal heroes exercise the remaining ordinary default command families for filtered inventory, class discoveries, message recall, trap description, retravel, and remove-all equipment.",
+  "coverage": [
+    "level.ordinary",
+    "mode.normal",
+    "object.armor",
+    "object.weapons",
+    "traps.movement",
+    "ui.map-memory-vision",
+    "ui.menus"
+  ],
+  "branches": [
+    "status.title.long-name-truncation",
+    "startup.inventory.pauper-empty",
+    "ui.command.inventtype-cancel",
+    "ui.command.inventtype-class-filter",
+    "ui.command.inventtype-buc-filter",
+    "ui.command.inventtype-empty",
+    "ui.command.knownclass-cancel",
+    "ui.command.knownclass-filter",
+    "ui.command.prevmsg-history-cycle",
+    "ui.command.showtrap-unseen",
+    "ui.command.showtrap-seen",
+    "ui.command.retravel-unset",
+    "ui.command.takeoffall-cancel",
+    "ui.command.takeoffall-empty",
+    "ui.command.takeoffall-no-matching-items",
+    "ui.command.takeoffall-selected",
+    "ui.message-history.joined-topline",
+    "ui.message-history.wrapped-topline"
+  ],
+  "segments": [
+    {
+      "seed": 7406,
+      "datetime": "20000110090700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " I\u001b"
+    },
+    {
+      "seed": 7407,
+      "datetime": "20000110090800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " `\u001b"
+    },
+    {
+      "seed": 7408,
+      "datetime": "20000110090900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V|\u0010\u0010"
+    },
+    {
+      "seed": 7409,
+      "datetime": "20000110091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " ^."
+    },
+    {
+      "seed": 7410,
+      "datetime": "20000110091100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001f"
+    },
+    {
+      "seed": 7411,
+      "datetime": "20000110091200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " A\u001b"
+    },
+    {
+      "seed": 7412,
+      "datetime": "20000110091300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " A"
+    },
+    {
+      "seed": 7413,
+      "datetime": "20000110091400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Ia\u001b"
+    },
+    {
+      "seed": 7414,
+      "datetime": "20000110091500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " IB\u001b"
+    },
+    {
+      "seed": 7415,
+      "datetime": "20000110091600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " I"
+    },
+    {
+      "seed": 7416,
+      "datetime": "20000110091700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " `a\u001b"
+    },
+    {
+      "seed": 7417,
+      "datetime": "20000110091800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u0017bear trap trap\r\u0005^."
+    },
+    {
+      "seed": 7418,
+      "datetime": "20000110091900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Aa\r.\r  "
+    },
+    {
+      "seed": 7419,
+      "datetime": "20000110092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " AbU\r"
+    },
+    {
+      "seed": 7420,
+      "datetime": "20000110092100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00175 gold pieces\ra$\u0010"
+    },
+    {
+      "seed": 7421,
+      "datetime": "20000110092200",
+      "nethackrc": "OPTIONS=name:abcdefghijklmnopqrstuvwxyz1234,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "  \u0010 "
+    }
+  ]
+}

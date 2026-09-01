@@ -52,7 +52,7 @@ function wrap_topline(text, columns) {
 export async function update_topl(bp) {
     const CO = game?.nhDisplay?.cols ?? 80;
     const n0 = bp.length;
-    const toplines = game._pending_message || '';   /* gt.toplines */
+    const toplines = game._toplines || '';          /* gt.toplines */
     const cury = game._topl_cury || 0;
 
     /* C assigns notdied inside the final term of the joining condition.
@@ -69,7 +69,8 @@ export async function update_topl(bp) {
         && cury === 0
         && n0 + toplines.length + 3 < CO - 8   /* room for --More-- */
         && (notdied = bp.slice(0, 7) !== 'You die')) {
-        game._pending_message = toplines + '  ' + bp;
+        game._toplines = toplines + '  ' + bp;
+        game._pending_message = game._toplines;
         const painted = (game._topline_physical_prefix || '')
             + game._pending_message;
         game._topl_curx = painted.length;
@@ -92,14 +93,13 @@ export async function update_topl(bp) {
     }
 
     remember_topl();
-    game._toplines = bp;    /* gt.toplines: strncpy(gt.toplines, bp, TBUFSZ) */
-
     /* C wraps a message longer than CO by REPLACING a space with '\n', walking
        back from column CO - 1 to find one; a token longer than the whole line
        is split after instead. The newlines stay inside gt.toplines, which is
        how a long message ends up on two rows. */
     const out = wrap_topline(bp.slice(0, TBUFSZ - 1), CO);
 
+    game._toplines = out;   /* gt.toplines after strncpy() and wrapping */
     game._pending_message = out;
     /* "You die" is urgent and lifts an earlier ESC suppression. */
     if (!notdied) {
@@ -119,17 +119,15 @@ function addtopl(bp) {
 
 // win/tty/topl.c:96 remember_topl() — push the current line into ^P history.
 //
-// gt.toplines is game._pending_message (see update_topl). The load-bearing
-// part is not the history ring, which nothing reads yet, but the CLEAR: C
-// empties toplines after banking it, and advances maxrow/maxcol around the
-// ring. Leaving it set meant the previous message stayed live and could be
-// appended to or re-painted after it should have been retired.
+// gt.toplines is game._toplines. It is logical message text and survives a
+// physical clear of row zero, which is what lets ^P recall the current line.
+// update_topl() banks it immediately before installing a replacement.
 //
 // Draws nothing.
-function remember_topl() {
+export function remember_topl() {
     const rows = game.iflags?.msg_history || 20;
     const idx = game._msg_maxrow || 0;
-    const toplines = game._pending_message || '';
+    const toplines = game._toplines || '';
 
     /* WIN_LOCKHISTORY, or nothing to remember */
     if (game._win_lockhistory || !toplines)
@@ -138,7 +136,7 @@ function remember_topl() {
     (game._msg_history ||= [])[idx] = toplines;
 
     /* program_state.in_checkpoint is never set on this path */
-    game._pending_message = '';
+    game._toplines = '';
     game._msg_maxcol = game._msg_maxrow = (idx + 1) % rows;
 }
 
@@ -153,6 +151,7 @@ async function redotoplin(str) {
     const otoplin = game._toplin;
 
     game._topline_physical_prefix = '';
+    game._pending_message = str;
     game._toplin = str ? TOPLINE_NEED_MORE : TOPLINE_EMPTY;
     game._topl_curx = 0;
     game._topl_cury = (str.match(/\n/g) || []).length;
@@ -160,6 +159,31 @@ async function redotoplin(str) {
                            the message NOW, not at the next screen flush */
     if (game._topl_cury && otoplin !== TOPLINE_SPECIAL_PROMPT)
         await more();
+}
+
+// win/tty/topl.c tty_doprev_message(), default msg_window:single path. The
+// current logical top line is recalled first, then consecutive Ctrl-P
+// commands walk backward through the circular history and wrap to current.
+export async function doprev_message() {
+    const rows = game.iflags?.msg_history || 20;
+    const maxrow = game._msg_maxrow || 0;
+    let maxcol = game._msg_maxcol;
+    if (maxcol === undefined || maxcol === null)
+        maxcol = maxrow;
+
+    const str = maxcol === maxrow
+        ? (game._toplines || '')
+        : (game._msg_history?.[maxcol] || '');
+    if (str)
+        await redotoplin(str);
+
+    maxcol--;
+    if (maxcol < 0)
+        maxcol = rows - 1;
+    if (!game._msg_history?.[maxcol])
+        maxcol = maxrow;
+    game._msg_maxcol = maxcol;
+    return 0;
 }
 
 // tty_putstr(..., ATR_NOHISTORY) takes the show_topl() path.  The displayed

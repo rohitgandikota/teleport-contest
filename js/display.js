@@ -1702,7 +1702,7 @@ function _statusLine1() {
     /* src/botl.c:989 — the status line capitalises the first letter of the
        name; svp.plname itself is left as the player typed it. */
     const rawname = game.plname || 'Hero';
-    const name = rawname.charAt(0).toUpperCase() + rawname.slice(1);
+    let name = rawname.charAt(0).toUpperCase() + rawname.slice(1);
     /* src/botl.c rank() — the status line shows the RANK for the hero's
        experience level, not the role name. This read urole.rank.m, which only
        worked against the stub role record that used to be installed here. */
@@ -1716,6 +1716,11 @@ function _statusLine1() {
         : (shownLevel === u.ulevel
            ? rank()
            : rank_of(shownLevel, game.urole, !!game.flags.female));
+    /* src/botl.c bot_via_windowport(). Keep the title within 30 columns by
+       shortening only the hero name, while preserving at least BOTL_NSIZ
+       (16) name characters even for a long polymorph title. */
+    if (name.length + 5 + role.length > 30)
+        name = name.slice(0, Math.max(30 - 5 - role.length, 16));
     const title = `${name} the ${role}`;
     /* src/botl.c:87 — u.acurr.a[] is indexed by the include/attrib.h enum
        (A_STR, A_INT, A_WIS, A_DEX, A_CON, A_CHA), which is NOT the order the

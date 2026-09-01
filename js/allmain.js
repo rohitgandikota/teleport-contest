@@ -426,7 +426,7 @@ export async function newgame() {
     // shuffle(align). `legacy` is opt_out (initval On), so it fires unless
     // the rc says `!legacy`.
     if (g.flags.legacy !== false)
-        await com_pager(g.uroleplay?.pauper ? 'pauper_legacy' : 'legacy');
+        await com_pager(g.u.uroleplay?.pauper ? 'pauper_legacy' : 'legacy');
 
     // Remaining hardcoded player state. u_init now computes the inventory,
     // gold, attributes, alignment and handedness for real; what is left is

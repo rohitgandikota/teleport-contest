@@ -158,7 +158,17 @@ export class NethackGame {
         if ('tutorial' in rc.opts) g.tutorial_set_in_config = true;
 
         // Initialize hero struct
-        g.u = { ux: 0, uy: 0, ux0: 0, uy0: 0 };
+        /* include/you.h u.uroleplay. These startup-only options alter the
+           inventory generator itself, so they must exist before u_init()
+           rather than being copied after character creation. Pauper implies
+           nudist in options.c. */
+        g.u = {
+            ux: 0, uy: 0, ux0: 0, uy0: 0,
+            uroleplay: {
+                pauper: !!g.flags.pauper,
+                nudist: !!g.flags.nudist || !!g.flags.pauper,
+            },
+        };
         g.context = { move: 0 };
         set_fruit_name(optValue(rc, 'fruit') || 'slime mold', true);
         g.program_state = {};

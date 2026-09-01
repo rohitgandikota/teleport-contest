@@ -1,0 +1,26 @@
+{
+  "name": "default-command-sweep",
+  "description": "A normal Wizard invokes default zero-time command bindings for dungeon overview, short version, command explanation, naming, redraw, and persistent inventory, pinning direct-key dispatch and tty restoration.",
+  "coverage": [
+    "level.ordinary",
+    "mode.normal",
+    "ui.map-memory-vision",
+    "ui.menus"
+  ],
+  "branches": [
+    "ui.command.call-direct-key",
+    "ui.command.overview-direct-key",
+    "ui.command.perminv-tty-unsupported",
+    "ui.command.redraw-direct-key",
+    "ui.command.versionshort-direct-key",
+    "ui.command.whatdoes-direct-key"
+  ],
+  "segments": [
+    {
+      "seed": 7405,
+      "datetime": "20000110090600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u000f\u001bVC\u001b\u0012|& V"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ import { mons } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          W_RINGL, W_RINGR, W_AMUL, W_WEP, W_SWAPWEP, W_QUIVER, AC_MAX,
-         ECMD_TIME, TT_BEARTRAP, TT_INFLOOR, I_SPECIAL,
+         W_WEAPONS, ECMD_TIME, TT_BEARTRAP, TT_INFLOOR, I_SPECIAL,
          WORN_ARMOR, WORN_CLOAK, WORN_SHIRT, WORN_HELMET, WORN_GLOVES,
          WORN_SHIELD, WORN_BOOTS, WORN_AMUL, WORN_BLINDF,
          LEFT_RING, RIGHT_RING, TIMEOUT, A_STR, A_INT, A_WIS, A_DEX, A_CON,
@@ -17,7 +17,8 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_TOOL,
          INTRINSIC, HEAD, HAND, FINGER, CQ_CANNED,
          Is_airlevel, Is_astralevel } from './const.js';
 import { setworn } from './worn.js';
-import { welded, is_sword, setuwep, setuswapwep } from './wield.js';
+import { welded, is_sword, setuwep, setuswapwep, setuqwep, empty_handed }
+    from './wield.js';
 import { bimanual, is_metallic } from './obj.js';
 import { nolimbs, nohands, verysmall } from './mondata.js';
 import { sgn } from './hacklib.js';
@@ -28,16 +29,17 @@ import { rn1, rn2, rnd } from './rng.js';
 import { ERODE_BURN, ERODE_RUST, ERODE_CRACK, ERODE_ROT, ERODE_CORRODE,
          ERODE_NONE, EF_PAY, EF_DESTROY, ER_NOTHING,
          ER_DESTROYED } from './const.js';
-import { stop_occupation } from './allmain.js';
+import { set_occupation, stop_occupation } from './allmain.js';
 import { newsym, pline, see_monsters } from './display.js';
-import { You, You_feel, You_cant, Your } from './pline.js';
+import { There, You, You_feel, You_cant, Your } from './pline.js';
 import { an, xname, doname, the, Tobjnam, gloves_simple_name,
          boots_simple_name, suit_simple_name, Yname2, makeplural,
          makesingular, otense } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
-import { prinv, update_inventory, useup, ECMD_OK } from './invent.js';
+import { prinv, update_inventory, useup, ECMD_OK, display_inventory }
+    from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
 import { tty_yn_function } from './tty/topl.js';
 import { ACURR, adjalign, change_luck, encumber_msg, Fast,
@@ -1600,19 +1602,232 @@ async function select_off(otmp) {
             return 0;
         }
     }
-    /* basic curse check */
-    if (await cursed(otmp))
+    /* Cursed alternate and quivered items can be un-readied. A secondary
+       weapon only uses the ordinary curse check while it is actively being
+       wielded as the second half of two-weapon combat. */
+    if (otmp !== worn(W_QUIVER)
+        && !(otmp === worn(W_SWAPWEP) && !game.u.twoweap)
+        && await cursed(otmp))
         return 0;
 
-    game.context_takeoff.mask |= otmp.owornmask
-        & (W_ARM | W_ARMC | W_ARMF | W_ARMG | W_ARMH | W_ARMS | W_ARMU
-           | W_RINGL | W_RINGR | W_AMUL | W_TOOL | W_WEP);
+    for (const mask of [W_ARM, W_ARMC, W_ARMF, W_ARMG, W_ARMH, W_ARMS,
+                        W_ARMU, W_RINGL, W_RINGR, W_AMUL, W_TOOL, W_WEP,
+                        W_SWAPWEP, W_QUIVER]) {
+        if (otmp === worn(mask)) {
+            game.context_takeoff.mask |= mask;
+            break;
+        }
+    }
     return 0;
 }
 
 // src/do_wear.c:3016 reset_remarm()
 export function reset_remarm() {
-    game.context_takeoff = { mask: 0 };
+    game.context_takeoff = {
+        mask: 0, what: 0, delay: 0, disrobing: '',
+    };
+}
+
+const takeoff_order = [
+    W_TOOL, W_WEP, W_ARMS, W_ARMG, W_RINGL, W_RINGR, W_ARMC, W_ARMH,
+    W_AMUL, W_ARM, W_ARMU, W_ARMF, W_SWAPWEP, W_QUIVER,
+];
+
+// src/do_wear.c do_takeoff(), one item from the 'A' occupation. Weapon slots
+// have their own feedback; armor and rings return the removed item so the
+// occupation can print off_msg() in the same place C does.
+async function do_takeoff() {
+    const doff = game.context_takeoff;
+    const was_twoweap = !!game.u.twoweap;
+    let otmp = null;
+
+    doff.mask |= I_SPECIAL;
+    try {
+        if (doff.what === W_WEP) {
+            const uwep = worn(W_WEP);
+            if (uwep && !await cursed(uwep)) {
+                setuwep(null);
+                await You(was_twoweap
+                    ? 'are no longer wielding either weapon.'
+                    : `are ${empty_handed()}.`);
+            }
+        } else if (doff.what === W_SWAPWEP) {
+            setuswapwep(null);
+            await You(`${was_twoweap ? 'are ' : ''}no longer ${
+                was_twoweap ? 'wielding two weapons at once'
+                    : 'have a second weapon readied'}.`);
+        } else if (doff.what === W_QUIVER) {
+            setuqwep(null);
+            await You('no longer have ammunition readied.');
+        } else if (doff.what & (W_ARM | W_ARMC | W_ARMF | W_ARMG | W_ARMH
+                                | W_ARMS | W_ARMU)) {
+            otmp = worn(doff.what);
+            if (otmp && !await cursed(otmp))
+                await slot_off(otmp);
+        } else if (doff.what === W_AMUL) {
+            otmp = worn(W_AMUL);
+            if (otmp && !await cursed(otmp))
+                await Amulet_off();
+        } else if (doff.what === W_RINGL || doff.what === W_RINGR) {
+            otmp = worn(doff.what);
+            if (otmp && !await cursed(otmp))
+                await Ring_off(otmp);
+        } else if (doff.what === W_TOOL) {
+            const blindf = worn(W_TOOL);
+            if (blindf && !await cursed(blindf))
+                await Blindf_off(blindf);
+        }
+    } finally {
+        doff.mask &= ~I_SPECIAL;
+    }
+    return otmp;
+}
+
+// src/do_wear.c take_off(), occupation callback for the 'A' command.
+async function take_off() {
+    const doff = game.context_takeoff;
+
+    if (doff.what) {
+        if (doff.delay > 0) {
+            doff.delay--;
+            return 1;
+        }
+        const otmp = await do_takeoff();
+        if (otmp)
+            await off_msg(otmp);
+        doff.mask &= ~doff.what;
+        doff.what = 0;
+    }
+
+    doff.what = takeoff_order.find((mask) => (doff.mask & mask) !== 0) || 0;
+    doff.delay = 0;
+    let otmp = null;
+
+    if (!doff.what) {
+        await You(`finish ${doff.disrobing}.`);
+        return 0;
+    }
+    if (doff.what === W_WEP || doff.what === W_SWAPWEP
+        || doff.what === W_QUIVER || doff.what === W_AMUL
+        || doff.what === W_RINGL || doff.what === W_RINGR
+        || doff.what === W_TOOL) {
+        doff.delay = 1;
+    } else {
+        otmp = worn(doff.what);
+        if (doff.what === W_ARM && worn(W_ARMC))
+            doff.delay += 2 * (objects[worn(W_ARMC).otyp].oc_delay || 0) + 1;
+        if (doff.what === W_ARMU) {
+            if (worn(W_ARM))
+                doff.delay += 2 * (objects[worn(W_ARM).otyp].oc_delay || 0);
+            if (worn(W_ARMC))
+                doff.delay += 2 * (objects[worn(W_ARMC).otyp].oc_delay || 0) + 1;
+        }
+    }
+    if (otmp)
+        doff.delay += objects[otmp.otyp].oc_delay || 0;
+    if (doff.delay > 0)
+        doff.delay--;
+
+    set_occupation(take_off, doff.disrobing, 0);
+    return 1;
+}
+
+async function query_worn_items(allow) {
+    const eligible = (game.invent || []).filter((obj) =>
+        !!obj.owornmask && allow(obj));
+    if (!eligible.length)
+        return null;
+
+    const letters = eligible.map((obj) => obj.invlet).join('');
+    const entries = display_inventory(letters);
+    const {
+        tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
+        tty_select_menu, tty_destroy_nhwindow, NHW_MENU,
+    } = await import('./tty/wintty.js');
+    const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE, PICK_ANY } =
+        await import('./const.js');
+    const { NO_COLOR } = await import('./terminal.js');
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    for (const entry of entries) {
+        tty_add_menu(win, entry.glyphinfo ?? null,
+                     entry.heading ? 0 : entry.invlet.charCodeAt(0),
+                     entry.invlet || 0, 0, entry.attr, NO_COLOR, entry.str,
+                     MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, 'What do you want to take off?');
+    const picks = await tty_select_menu(win, PICK_ANY);
+    tty_destroy_nhwindow(win);
+    return picks.map((id) => (game.invent || [])
+        .find((obj) => obj.invlet.charCodeAt(0) === id)).filter(Boolean);
+}
+
+// src/do_wear.c menu_remarm(), default MENU_FULL path.
+async function menu_remarm() {
+    const {
+        query_remove_categories, add_valid_menu_class, allow_category,
+    } = await import('./pickup.js');
+    add_valid_menu_class(0);
+    try {
+        const categories = await query_remove_categories(game.invent || []);
+        if (!categories.length)
+            return;
+
+        let all_worn = false;
+        for (const category of categories) {
+            if (category === -2)
+                all_worn = true;
+            else
+                add_valid_menu_class(category);
+        }
+        if (categories.some((category) => {
+            const ch = typeof category === 'number'
+                ? String.fromCharCode(category) : category;
+            return 'uBUCX'.includes(ch);
+        }))
+            all_worn = false;
+
+        const selected = await query_worn_items(
+            all_worn ? () => true : allow_category);
+        if (selected === null) {
+            await There('is nothing else you can remove or unwield.');
+            return;
+        }
+        for (const obj of selected)
+            await select_off(obj);
+    } finally {
+        add_valid_menu_class(0);
+    }
+}
+
+// src/do_wear.c doddoremarm(), the 'A' command.
+export async function doddoremarm() {
+    const doff = game.context_takeoff ||= {
+        mask: 0, what: 0, delay: 0, disrobing: '',
+    };
+    if (doff.what || doff.mask) {
+        await You(`continue ${doff.disrobing}.`);
+        set_occupation(take_off, doff.disrobing, 0);
+        return ECMD_OK;
+    }
+
+    const any_worn = (game.invent || []).some((obj) =>
+        (obj.owornmask & (W_WEAPONS | W_ARM | W_ARMC | W_ARMH | W_ARMS
+                           | W_ARMG | W_ARMF | W_ARMU | W_RINGL | W_RINGR
+                           | W_AMUL | W_TOOL)) !== 0);
+    if (!any_worn) {
+        await You('are not wearing anything.');
+        return ECMD_OK;
+    }
+
+    await menu_remarm();
+    if (doff.mask) {
+        doff.disrobing = (doff.mask & ~W_WEAPONS)
+            ? 'disrobing' : 'disarming';
+        await take_off();
+    }
+    return ECMD_OK;
 }
 
 // src/do_wear.c:76 armoroff()

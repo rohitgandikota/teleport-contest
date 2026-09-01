@@ -1172,9 +1172,11 @@ function count_unpaid(olist) {
 }
 
 /* src/pickup.c count_buc() over a list (no worn filter needed yet) */
-function count_buc(olist, type) {
+function count_buc(olist, type, filter = null) {
     let count = 0;
     for (const otmp of olist || []) {
+        if (filter && !filter(otmp))
+            continue;
         /* coins are either uncursed or unknown based upon option setting */
         if (otmp.oclass === OCLASSES.COIN_CLASS) {
             if (type === (game.flags?.goldX ? 'X' : 'U'))
@@ -1200,10 +1202,12 @@ function count_buc(olist, type) {
 }
 
 /* src/pickup.c:1511 count_categories() */
-function count_categories(olist) {
+function count_categories(olist, filter = null) {
     let ccount = 0;
     const seen = new Set();
     for (const curr of olist || []) {
+        if (filter && !filter(curr))
+            continue;
         if (!seen.has(curr.oclass)) {
             seen.add(curr.oclass);
             ccount++;
@@ -1213,7 +1217,8 @@ function count_categories(olist) {
 }
 
 /* include/hack.h query_category qflags */
-const ALL_TYPES = 0x0020, UNPAID_TYPES = 0x0004, CHOOSE_ALL = 0x0080,
+const ALL_TYPES = 0x0020, UNPAID_TYPES = 0x0004, WORN_TYPES = 0x0010,
+      CHOOSE_ALL = 0x0080,
       BUC_BLESSED = 0x0100, BUC_CURSED = 0x0200, BUC_UNCURSED = 0x0400,
       BUC_UNKNOWN = 0x0800, BUCX_TYPES = 0x0f00, JUSTPICKED = 0x1000,
       INCLUDE_VENOM = 0x0002, INVORDER_SORT = 0x0010;
@@ -1224,34 +1229,36 @@ const ALL_TYPES_SELECTED = -2;
 // codes, ALL_TYPES_SELECTED, 'B'/'U'/'C'/'X'). Identifiers in the tty
 // menu are the codes themselves (offset by +1000 to keep them non-zero
 // is unnecessary: all are non-zero already).
-async function query_category(qstr, olist, qflags) {
+async function query_category(qstr, olist, qflags, how = null) {
     const { tty_create_nhwindow, tty_start_menu, tty_add_menu,
             tty_add_menu_str, tty_end_menu, tty_display_nhwindow,
             tty_select_menu, tty_destroy_nhwindow, ATR_NONE, ATR_INVERSE,
             NHW_MENU } = await import('./tty/wintty.js');
     const { MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
-            MENU_ITEMFLAGS_SKIPINVERT, NO_COLOR, PICK_ANY }
+            MENU_ITEMFLAGS_SKIPINVERT, NO_COLOR, PICK_ONE, PICK_ANY }
         = await import('./const.js');
     if (!olist || !olist.length)
         return [];
 
+    const do_worn = (qflags & WORN_TYPES) !== 0;
+    const ofilter = do_worn ? (obj) => !!obj.owornmask : null;
     const do_unpaid = (qflags & UNPAID_TYPES) !== 0 && count_unpaid(olist);
     let num_buc_types = 0;
     const do_blessed = (qflags & BUC_BLESSED) !== 0
-                       && count_buc(olist, 'B') && ++num_buc_types;
+                       && count_buc(olist, 'B', ofilter) && ++num_buc_types;
     const do_cursed = (qflags & BUC_CURSED) !== 0
-                      && count_buc(olist, 'C') && ++num_buc_types;
+                      && count_buc(olist, 'C', ofilter) && ++num_buc_types;
     const do_uncursed = (qflags & BUC_UNCURSED) !== 0
-                        && count_buc(olist, 'U') && ++num_buc_types;
+                        && count_buc(olist, 'U', ofilter) && ++num_buc_types;
     const do_buc_unknown = (qflags & BUC_UNKNOWN) !== 0
-                           && count_buc(olist, 'X') && ++num_buc_types;
+                           && count_buc(olist, 'X', ofilter) && ++num_buc_types;
     const num_justpicked = (qflags & JUSTPICKED) !== 0
         ? olist.filter(o => o.pickup_prev).length : 0;
 
-    const ccount = count_categories(olist);
+    const ccount = count_categories(olist, ofilter);
     /* no point in actually showing a menu for a single category */
     if (ccount === 1 && !do_unpaid && num_buc_types <= 1) {
-        const curr = olist[0];
+        const curr = olist.find((obj) => !ofilter || ofilter(obj));
         return curr ? [curr.oclass] : [];
     }
 
@@ -1263,7 +1270,9 @@ async function query_category(qstr, olist, qflags) {
 
     if ((qflags & CHOOSE_ALL) !== 0) {
         tty_add_menu(win, null, 'A'.charCodeAt(0), 'A', 0, ATR_NONE,
-                     NO_COLOR, 'Auto-select every relevant item',
+                     NO_COLOR, do_worn
+                         ? 'Auto-select every item being worn or wielded'
+                         : 'Auto-select every relevant item',
                      MENU_ITEMFLAGS_SKIPINVERT);
         /* verify_All needs paranoid_confirm:A which defaults off */
         tty_add_menu_str(win,
@@ -1276,14 +1285,16 @@ async function query_category(qstr, olist, qflags) {
     let invlet = 'a';
     if (show_a) {
         tty_add_menu(win, null, ALL_TYPES_SELECTED, invlet, 0, ATR_NONE,
-                     NO_COLOR, 'All types', MENU_ITEMFLAGS_SKIPINVERT);
+                     NO_COLOR, do_worn ? 'All worn and wielded types' : 'All types',
+                     MENU_ITEMFLAGS_SKIPINVERT);
         invlet = String.fromCharCode(invlet.charCodeAt(0) + 1);
     }
 
     /* one entry per class present, in packorder (inv_order() already
        yields class numbers) */
     for (const oclass of pack) {
-        if (!olist.some(o => o.oclass === oclass))
+        if (!olist.some(o => o.oclass === oclass
+                             && (!ofilter || ofilter(o))))
             continue;
         tty_add_menu(win, null, oclass, invlet, def_oc_syms[oclass],
                      ATR_NONE, NO_COLOR,
@@ -1324,12 +1335,30 @@ async function query_category(qstr, olist, qflags) {
     }
     tty_end_menu(win, qstr);
     await tty_display_nhwindow(win);
-    const picks = await tty_select_menu(win, PICK_ANY);
+    const picks = await tty_select_menu(win, how ?? PICK_ANY);
     tty_destroy_nhwindow(win);
     /* tty_select_menu() already dismisses the window while status output is
        suppressed. A second docrt() here would repaint status cells which C
        deliberately leaves cleared after a tall category menu. */
     return picks;
+}
+
+// src/invent.c dotypeinv(), default MENU_FULL category prompt. Unlike the
+// drop and loot callers this accepts exactly one class or BUC filter.
+export async function query_inventory_category(olist) {
+    return query_category(
+        'What type of object do you want an inventory of?', olist,
+        UNPAID_TYPES | BUC_BLESSED | BUC_CURSED | BUC_UNCURSED | BUC_UNKNOWN
+        | JUSTPICKED | INCLUDE_VENOM,
+        1 /* PICK_ONE */);
+}
+
+// src/do_wear.c menu_remarm(), default MENU_FULL category prompt.
+export async function query_remove_categories(olist) {
+    return query_category(
+        'What type of things do you want to take off?', olist,
+        WORN_TYPES | ALL_TYPES | UNPAID_TYPES | BUCX_TYPES,
+        2 /* PICK_ANY */);
 }
 
 // src/do.c:994 menu_drop() category flags for MENU_FULL.

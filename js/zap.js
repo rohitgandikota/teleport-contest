@@ -79,7 +79,7 @@ import { splitobj, mkobj, mksobj, mksobj_at, place_object, rnd_class,
          dead_species, erosion_matters, is_weptool, unbless,
          uncurse, obj_ice_effects } from './mkobj.js';
 import { delobj } from './mon.js';
-import { obj_extract_self, useup, useupf, weight } from './invent.js';
+import { obj_extract_self, sobj_at, useup, useupf, weight } from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
          deltrap, dotrap, ignite_items, openholdingtrap,
          trapname } from './trap.js';
@@ -2646,6 +2646,20 @@ export async function melt_ice(x, y, msg = null) {
     if (cansee(x, y) || u_at(x, y))
         await Norep(msg || 'The ice crackles and melts.');
 
+    let boulder = sobj_at(ONAMES.BOULDER, x, y);
+    if (boulder) {
+        if (cansee(x, y))
+            await pline(An(xname(boulder)) + ' settles...');
+        const { boulder_hits_pool } = await import('./do.js');
+        do {
+            obj_extract_self(boulder);
+            await boulder_hits_pool(boulder, x, y, false);
+            boulder = is_pool(x, y)
+                ? sobj_at(ONAMES.BOULDER, x, y) : null;
+        } while (boulder);
+        newsym(x, y);
+    }
+
     if (u_at(x, y)) {
         const { spoteffects } = await import('./hack.js');
         await spoteffects(true);
@@ -2665,7 +2679,10 @@ export async function zap_over_floor(x, y, type, ignoremon = false) {
     if (!loc)
         return 0;
 
-    if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM && is_pool(x, y)) {
+    if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM && is_ice(x, y)) {
+        await melt_ice(x, y);
+    } else if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM
+               && is_pool(x, y)) {
         if (!Is_waterlevel())
             create_gas_cloud(x, y, rnd(5), 0);
         if (loc.typ === POOL) {

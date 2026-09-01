@@ -1,0 +1,44 @@
+{
+  "name": "boulder-water-impact",
+  "description": "A boulder dropped into a pool either fills the water square or sinks, with the C-reference splash and terrain aftermath.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "terrain.water-lava",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "moverock.boulder-liquid-dispatch",
+    "boulder-hits-pool.water-fill",
+    "boulder-hits-pool.water-sink",
+    "boulder-hits-pool.fill-terrain",
+    "boulder-hits-pool.push-fill-feedback",
+    "boulder-hits-pool.push-sink-feedback",
+    "boulder-hits-pool.pushed-consumption",
+    "zap-over-floor.fire-melts-ice",
+    "melt-ice.boulder-settle-loop",
+    "boulder-hits-pool.falling-fill-feedback",
+    "boulder-hits-pool.falling-consumption"
+  ],
+  "segments": [
+    {
+      "seed": 9100,
+      "datetime": "20260901100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017boulder\r\u0014l.\u0017pool\r\u0014hh.l   \u001b:"
+    },
+    {
+      "seed": 9100,
+      "datetime": "20260901100100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017boulder\r\u0014l.\u0017pool\r\u0014hh........l   \u001b:"
+    },
+    {
+      "seed": 9100,
+      "datetime": "20260901100200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017ice\r\u0017boulder\r\u0014h.\u0017wand of fire\rzpl   \u001b:"
+    }
+  ]
+}

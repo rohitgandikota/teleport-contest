@@ -1991,10 +1991,9 @@ async function moverock_core(sx, sy) {
             }
 
             if (is_pool_or_lava(rx, ry)) {
-                /* boulder_hits_pool(otmp, rx, ry, TRUE) — rn2(10) fill
-                   roll plus the plunk/fill messages */
-                note_unported_hack('moverock:boulder_hits_pool');
-                return -1;
+                const { boulder_hits_pool } = await import('./do.js');
+                if (await boulder_hits_pool(otmp, rx, ry, true))
+                    continue;
             }
 
             await dopush(sx, sy, rx, ry, otmp, costly);

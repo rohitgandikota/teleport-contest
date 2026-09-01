@@ -1,7 +1,7 @@
 import { setuqwep, setuwep_with_feedback, setuswapwep,
          weldmsg } from './wield.js';
 import { impact_disturbs_zombies } from './hack.js';
-import { stackobj } from './invent.js';
+import { obfree, stackobj, useupf } from './invent.js';
 // do.js — commands that move the hero between levels, and the level change
 // itself.
 // C ref: src/do.c
@@ -19,16 +19,18 @@ import { freeinv, getobj, any_obj_ok, obj_extract_self, useup }
     from './invent.js';
 import { place_object, rider_revival_time, set_bknown, set_corpsenm,
          splitobj, zombie_form, obj_nexto_xy } from './mkobj.js';
-import { canseemon, cls, pline, newsym } from './display.js';
-import { pline_The, You, You_cant, You_feel, You_hear, Your }
+import { canseemon, cls, docrt, pline, newsym } from './display.js';
+import { pline_The, There, You, You_cant, You_feel, You_hear, Your }
     from './pline.js';
 import { near_capacity } from './attrib.js';
 import { u_locomotion, losehp, check_special_room } from './hack.js';
-import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_NOTAIL, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG, st_all } from './const.js';
-import { t_at, m_at, is_pool, is_lava, delobj_core, seemimic } from './mon.js';
+import { ECMD_OK, ECMD_TIME, ECMD_FAIL, LOST_DROPPED, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, W_ARMOR, W_ACCESSORY, W_SADDLE, IS_ALTAR, IS_SOFT, UNENCUMBERED, DIR_DOWN, DIR_UP, SLT_ENCUMBER, is_pit, is_hole, u_at, OBJ_FREE, OBJ_INVENT, OBJ_FLOOR, OBJ_BURIED, VIBRATING_SQUARE, MAGIC_PORTAL, PIT, ROOM, CORR, GRAVE, A_STR, A_DEX, BOTH_SIDES, KILLED_BY_AN, KILLED_BY, NO_KILLER_PREFIX, FACE, HAND, BC_BALL, BC_CHAIN, MENU_FULL, ALL_TYPES_SELECTED, Is_rogue_level, Is_waterlevel, IS_WATERWALL, DRAWBRIDGE_UP, DB_UNDER, DB_FLOOR, NH_AMBER, NH_BLACK, NO_MINVENT, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_NOMSG, MM_NOTAIL, MM_MALE, MM_FEMALE, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, NON_PM, RLOC_NOMSG, st_all } from './const.js';
+import { t_at, m_at, is_pool, is_lava, delobj_core, m_in_air, mondied,
+         seemimic, wake_nearto } from './mon.js';
 import { is_pick } from './mon.js';
-import { cansee } from './vision.js';
-import { Blind, Hallucination, Levitation } from './youprop.js';
+import { cansee, recalc_block_point } from './vision.js';
+import { Blind, Deaf, Fire_resistance, Hallucination, Levitation }
+    from './youprop.js';
 import { OCLASSES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { can_reach_floor, u_safe_from_fatal_corpse,
@@ -37,8 +39,12 @@ import { can_reach_floor, u_safe_from_fatal_corpse,
 import { body_part } from './polyself.js';
 import { dmgtype, is_displacer } from './mondata.js';
 import { ATTKS, PMNAMES, MFLAGS } from './monst_data.js';
-import { Amonnam, Monnam, upstart } from './do_name.js';
-import { corpse_xname, CXN_NOCORPSE, CXN_PFX_THE } from './objnam.js';
+import { Amonnam, hliquid, Monnam, upstart, y_monnam } from './do_name.js';
+import { corpse_xname, CXN_NOCORPSE, CXN_PFX_THE, the, vtense, xname }
+    from './objnam.js';
+import { waterbody_name } from './pager.js';
+import { is_pool_or_lava } from './dbridge.js';
+import { DEADMONSTER } from './monst.js';
 
 /* mklev() lives in js/mklev.js, which this file's callers already pull in.
    A dynamic import() here hits the same partially-initialised module the
@@ -485,6 +491,107 @@ async function ballrelease() {
     await encumber_msg();
 }
 
+async function bury_objs_at(x, y) {
+    const pile = [...(game.level?.objects || [])].filter(obj =>
+        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
+    if (pile.length) {
+        const { bury_an_obj } = await import('./sp_lev.js');
+        for (const obj of pile)
+            bury_an_obj(obj, null);
+    }
+    const { del_engr_at } = await import('./engrave.js');
+    del_engr_at(x, y);
+    newsym(x, y);
+}
+
+// src/do.c:50 boulder_hits_pool(). A boulder fills ordinary water nine times
+// in ten and lava one time in ten; otherwise it sinks. Pushed boulders use a
+// direct push message when they fill, while falling boulders always splash.
+export async function boulder_hits_pool(obj, x, y, pushing) {
+    if (!obj || obj.otyp !== ONAMES.BOULDER || !is_pool_or_lava(x, y))
+        return false;
+
+    const lava = is_lava(x, y);
+    const what = waterbody_name(x, y);
+    const loc = game.level.at(x, y);
+    const ltyp = loc.typ;
+    const chance = rn2(10);
+    const fillsUp = Is_waterlevel(game.u.uz) ? false
+        : IS_WATERWALL(ltyp) ? chance < 5
+          : lava ? chance === 0 : chance !== 0;
+
+    if (fillsUp) {
+        const trap = t_at(x, y);
+        if (ltyp === DRAWBRIDGE_UP) {
+            loc.drawbridgemask = ((loc.drawbridgemask ?? 0) & ~DB_UNDER)
+                | DB_FLOOR;
+        } else {
+            loc.typ = ROOM;
+            loc.flags = 0;
+            recalc_block_point(x, y);
+        }
+
+        const mon = m_at(x, y);
+        if (mon && !DEADMONSTER(mon) && !m_in_air(mon))
+            await mondied(mon);
+        if (trap) {
+            const { deltrap } = await import('./trap.js');
+            deltrap(trap);
+        }
+        await bury_objs_at(x, y);
+        newsym(x, y);
+
+        if (pushing) {
+            const who = game.u.usteed ? y_monnam(game.u.usteed) : 'you';
+            await pline(upstart(who) + ' ' + vtense(who, 'push') + ' '
+                + the(xname(obj)) + ' into the ' + what + '.');
+            if (game.flags?.verbose !== false && !Blind())
+                await pline('Now you can cross it!');
+        }
+    }
+
+    if (!fillsUp || !pushing) {
+        if (!game.u.uinwater) {
+            if (pushing ? !Blind() : cansee(x, y)) {
+                await There('is a large splash as ' + the(xname(obj)) + ' '
+                    + (fillsUp ? 'fills' : 'falls into') + ' the ' + what
+                    + '.');
+            } else if (!Deaf()) {
+                await You_hear('a' + (lava ? ' sizzling' : '') + ' splash.');
+            }
+            wake_nearto(x, y, 40);
+        }
+
+        if (fillsUp && game.u.uinwater
+            && game.u.ux === x && game.u.uy === y) {
+            game.u.uinwater = 0;
+            await docrt();
+            game.vision_full_recalc = 1;
+            await You('find yourself on dry land again!');
+        } else if (lava
+                   && Math.max(Math.abs(game.u.ux - x),
+                               Math.abs(game.u.uy - y)) <= 1) {
+            await You('are hit by molten ' + hliquid('lava')
+                + (Fire_resistance() ? '.' : '!'));
+            if (game.u.uprops?.SLIMED)
+                note_unported_do('boulder_hits_pool:burn_away_slime');
+            let damage = d(Fire_resistance() ? 1 : 3, 6);
+            if (game.u.uprops?.HALF_PHDAM)
+                damage = Math.trunc((damage + 1) / 2);
+            await losehp(damage, 'molten lava', KILLED_BY);
+        } else if (!fillsUp && game.flags?.verbose !== false
+                   && (pushing ? !Blind() : cansee(x, y))) {
+            await pline('It sinks without a trace!');
+        }
+    }
+
+    if (pushing)
+        await useupf(obj, obj.quan);
+    else
+        obfree(obj);
+    return true;
+}
+
 // src/do.c:162 flooreffects() — what happens to an object landing at (x,y).
 // Returns true when the object is consumed (drowned, burned, plugged a pit,
 // shattered), so the caller must not place it. The common case, plain floor,
@@ -504,7 +611,7 @@ export async function flooreffects(obj, x, y, verb) {
     game.bhitpos = { x, y };
 
     if (obj.otyp === ONAMES.BOULDER && (is_pool(x, y) || is_lava(x, y))) {
-        note_unported_do('flooreffects:boulder_hits_pool');
+        res = await boulder_hits_pool(obj, x, y, false);
     } else if (obj.otyp === ONAMES.BOULDER && (t = t_at(x, y)) != null
                && (is_pit(t.ttyp) || is_hole(t.ttyp))) {
         /* the trapped-victim damage, the plug message and delfloortrap */

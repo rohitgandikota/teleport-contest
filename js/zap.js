@@ -12,14 +12,16 @@ import { cansee, couldsee, block_point, unblock_point, recalc_block_point,
          vision_recalc } from './vision.js';
 import { display_cmap_at, display_object_at, flush_screen, map_invisible,
          newsym, shieldeff, temporary_object_glyph,
-         unmap_invisible, bot } from './display.js';
+         unmap_invisible, bot, docrt } from './display.js';
 import { closed_door } from './cmd.js';
-import { is_drawbridge_wall, is_ice } from './dbridge.js';
+import { is_drawbridge_wall, is_ice, is_moat } from './dbridge.js';
 
 import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, MOAT, WEB, u_at,
          THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, FLASHED_LIGHT, M_AP_TYPE,
          M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE, DRAWBRIDGE_UP,
-         DRAWBRIDGE_DOWN, DB_ICE, ICED_POOL,
+         DRAWBRIDGE_DOWN, DB_ICE, DB_UNDER, DB_FLOOR, ICED_POOL, ICED_MOAT,
+         ROOM, PIT, VWALL, HWALL, IS_WALL, IS_WATERWALL,
+         TT_LAVA, TT_INFLOOR,
          Is_airlevel, Is_waterlevel, st_all, plur,
          ONAME_WISH, ONAME_KNOW_ARTI, IS_ROOM, STRAT_WAITMASK,
          ZAP_POS, W_ARM, W_ARMS, W_ARMG, W_ARMH, W_WEP, W_AMUL, HI_ZAP,
@@ -54,7 +56,7 @@ import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
          stackobj } from './invent.js';
 import { getdir } from './cmd.js';
 import { attach_egg_hatch_timeout, fall_asleep,
-         MELT_ICE_AWAY } from './timeout.js';
+         MELT_ICE_AWAY, start_timer, TIMER_LEVEL } from './timeout.js';
 import { healup, make_stunned, potionbreathe } from './potion.js';
 import { cvt_sdoor_to_door, findit } from './detect.js';
 import { readobjnam } from './objnam.js';
@@ -69,7 +71,7 @@ import { Norep, pline_The, You, Your, You_feel, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { An, The, distant_name, vtense, xname, Yname2, yname, makeplural,
          Yobjnam2, otense } from './objnam.js';
-import { Monnam, mon_nam, noit_mon_nam } from './do_name.js';
+import { Monnam, mon_nam, noit_mon_nam, hliquid } from './do_name.js';
 import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
 import { nothing_happens, ECMD_OK, ECMD_TIME, ECMD_CANCEL, NODIR, IMMEDIATE,
@@ -90,13 +92,13 @@ import { breathless, defended, haseyes, resists_blnd, resists_blnd_by_arti,
          resists_cold,
          resists_elec, resists_fire, resists_magm, resists_sleep,
          nohands, nonliving, is_demon, is_undead, carnivorous, digests,
-         sticks }
+         sticks, is_swimmer }
     from './mondata.js';
 import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Blind, Deaf, Unaware, Hallucination,
          Invis, See_invisible, Teleport_control,
-         Underwater, Levitation, Antimagic } from './youprop.js';
+         Underwater, Levitation, Antimagic, Passes_walls } from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -112,6 +114,7 @@ import { body_part } from './polyself.js';
 import { find_ac, hard_helmet } from './do_wear.js';
 import { tele } from './teleport.js';
 import { ustatusline } from './insight.js';
+import { waterbody_name } from './pager.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
    predicates trap.js also carries (they are header macros in C). */
@@ -2594,6 +2597,23 @@ export async function burn_floor_objects(x, y, give_feedback, u_caused) {
     return count;
 }
 
+// src/zap.c:5088 start_melt_ice_timeout(). Newly made ice normally receives a
+// random level timer between 50 and 2000 turns; a failed search leaves it
+// permanent.
+export function start_melt_ice_timeout(x, y, minTime = 0) {
+    let when = Number(minTime) || 0;
+    if (when < 49)
+        when = 49;
+    while (++when <= 2000) {
+        if (!rn2((2000 - when) + 50))
+            break;
+    }
+    if (when <= 2000) {
+        const packed = ((x & 0xffff) << 16) | (y & 0xffff);
+        start_timer(when, TIMER_LEVEL, MELT_ICE_AWAY, packed);
+    }
+}
+
 // src/zap.c:5040 melt_ice(). Restore the water hidden under ice, discard or
 // convert traps that fall into it, resume ice-delayed object timers, then
 // apply the new liquid terrain to an occupant of the square.
@@ -2672,29 +2692,174 @@ export async function melt_ice(x, y, msg = null) {
     }
 }
 
-// src/zap.c:5141 zap_over_floor(), the fire-over-water and poison-gas paths.
+// src/zap.c:5141 zap_over_floor(). Elemental rays alter terrain before their
+// remaining range is applied to the next beam square.
 export async function zap_over_floor(x, y, type, ignoremon = false) {
     const damgtype = zaptype(type) % 10;
     const loc = game.level?.at(x, y);
     if (!loc)
         return 0;
+    const seeIt = cansee(x, y);
+    const fire = damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM;
+    const cold = damgtype === ATTKS.AD_COLD - ATTKS.AD_MAGM;
+    let rangemod = 0;
 
-    if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM && is_ice(x, y)) {
-        await melt_ice(x, y);
-    } else if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM
-               && is_pool(x, y)) {
-        if (!Is_waterlevel())
-            create_gas_cloud(x, y, rnd(5), 0);
-        if (loc.typ === POOL) {
-            note_unported_zap('zap_over_floor:evaporate_pool');
-        } else if (!Deaf()) {
-            await Norep('You hear hissing gas.');
+    if (fire) {
+        let trap = t_at(x, y);
+        if (trap?.ttyp === WEB) {
+            if (seeIt)
+                await Norep('A web bursts into flames!');
+            deltrap(trap);
+            trap = null;
+            if (seeIt)
+                newsym(x, y);
+        }
+
+        if (is_ice(x, y)) {
+            await melt_ice(x, y);
+        } else if (is_pool(x, y)) {
+            const onWaterLevel = Is_waterlevel(game.u.uz);
+            let message = !Deaf() ? 'You hear hissing gas.'
+                : type >= 0 ? 'That seemed remarkably uneventful.' : null;
+
+            if (!onWaterLevel)
+                create_gas_cloud(x, y, rnd(5), 0);
+
+            if (loc.typ !== POOL) {
+                trap = null;
+                if (onWaterLevel)
+                    message = (seeIt || !Deaf()) ? 'Some water boils.' : null;
+                else if (seeIt)
+                    message = 'Some water evaporates.';
+            } else {
+                rangemod -= 3;
+                loc.typ = ROOM;
+                loc.flags = 0;
+                const { maketrap } = await import('./mklev.js');
+                trap = maketrap(x, y, PIT);
+                if (seeIt)
+                    message = 'The water evaporates.';
+            }
+            if (message)
+                await Norep(message);
+
+            if (loc.typ === ROOM) {
+                const occupant = m_at(x, y);
+                if (occupant && is_swimmer(occupant.data)
+                    && occupant.mundetected) {
+                    occupant.mundetected = 0;
+                }
+                newsym(x, y);
+                if (trap) {
+                    if (u_at(x, y))
+                        await dotrap(trap, NO_TRAP_FLAGS);
+                    else if (occupant)
+                        await mintrap(occupant, NO_TRAP_FLAGS);
+                }
+            }
+        }
+    } else if (cold
+               && (is_pool(x, y) || is_lava(x, y)
+                   || loc.typ === LAVAWALL)) {
+        const lavawall = loc.typ === LAVAWALL;
+        const lava = is_lava(x, y) || lavawall;
+        const moat = is_moat(x, y);
+        const chance = Math.max(2,
+            5 + (game.level?.flags?.temperature ?? 0) * 10);
+
+        if (IS_WATERWALL(loc.typ) || (lavawall && rn2(chance))) {
+            if (seeIt) {
+                await pline_The(`${hliquid(lavawall ? 'lava' : 'water')} `
+                    + 'freezes for a moment.');
+            } else {
+                await You_hear('a soft crackling.');
+            }
+            rangemod -= 1000;
+        } else {
+            const waterName = waterbody_name(x, y);
+            rangemod -= 3;
+            if (loc.typ === DRAWBRIDGE_UP) {
+                loc.drawbridgemask = ((loc.drawbridgemask ?? 0) & ~DB_UNDER)
+                    | (lava ? DB_FLOOR : DB_ICE);
+            } else {
+                loc.icedpool = lava ? 0
+                    : loc.typ === POOL ? ICED_POOL : ICED_MOAT;
+                if (lavawall) {
+                    const vertical = (isok(x, y - 1)
+                                      && IS_WALL(game.level.at(x, y - 1).typ))
+                        || (isok(x, y + 1)
+                            && IS_WALL(game.level.at(x, y + 1).typ));
+                    loc.typ = vertical ? VWALL : HWALL;
+                    const { fix_wall_spines } = await import('./mklev.js');
+                    fix_wall_spines(Math.max(0, x - 1), Math.max(0, y - 1),
+                                    Math.min(79, x + 1), Math.min(20, y + 1));
+                } else {
+                    loc.typ = lava ? ROOM : ICE;
+                }
+            }
+
+            const { bury_objs } = await import('./mklev.js');
+            bury_objs(x, y);
+            if (seeIt) {
+                if (lava) {
+                    await Norep(`The ${hliquid('lava')} cools and solidifies.`);
+                } else if (moat) {
+                    await Norep(`The ${waterName} is bridged with ice!`);
+                } else {
+                    await Norep(`The ${hliquid('water')} freezes.`);
+                }
+                newsym(x, y);
+            } else if (!lava) {
+                await You_hear('a crackling sound.');
+            }
+
+            if (u_at(x, y)) {
+                if (game.u.uinwater) {
+                    game.u.uinwater = 0;
+                    game.u.uundetected = 0;
+                    await docrt();
+                    game.vision_full_recalc = 1;
+                } else if (game.u.utrap
+                           && game.u.utraptype === TT_LAVA) {
+                    if (Passes_walls()) {
+                        await You('pass through the now-solid rock.');
+                        game.u.utrap = 0;
+                        game.u.utraptype = 0;
+                    } else {
+                        game.u.utrap = rn1(50, 20);
+                        game.u.utraptype = TT_INFLOOR;
+                        await You('are firmly stuck in the cooling rock.');
+                    }
+                }
+            } else {
+                const occupant = m_at(x, y);
+                if (occupant && is_swimmer(occupant.data)
+                    && occupant.mundetected) {
+                    occupant.mundetected = 0;
+                    newsym(x, y);
+                }
+            }
+
+            if (!lava) {
+                start_melt_ice_timeout(x, y, 0);
+                obj_ice_effects(x, y, true);
+            }
+        }
+    } else if (cold && is_ice(x, y)) {
+        const packed = ((x & 0xffff) << 16) | (y & 0xffff);
+        const timer = (game.timer_base || []).find(candidate =>
+            candidate.func_index === MELT_ICE_AWAY
+            && (candidate.arg?.a_long ?? candidate.arg) === packed);
+        if (timer) {
+            const remaining = timer.timeout - (game.moves ?? 0);
+            game.timer_base.splice(game.timer_base.indexOf(timer), 1);
+            start_melt_ice_timeout(x, y, remaining);
         }
     } else if (damgtype === ATTKS.AD_DRST - ATTKS.AD_MAGM
                && ZAP_POS(loc.typ)) {
         create_gas_cloud(x, y, 1, 8);
     }
-    if (damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM) {
+    if (fire) {
         if (await burn_floor_objects(x, y, false, type > 0)
             && couldsee(x, y)) {
             newsym(x, y);
@@ -2704,7 +2869,7 @@ export async function zap_over_floor(x, y, type, ignoremon = false) {
     const mon = m_at(x, y);
     if (!ignoremon && mon)
         await wakeup(mon, type >= 0);
-    return 0;
+    return rangemod;
 }
 
 // src/zap.c:4780 dobuzz(). This ports the lateral beam walk, monster hit,

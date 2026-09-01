@@ -53,6 +53,7 @@ import { depth } from './dungeon.js';
 import { block_point } from './vision.js';
 import { obj_sheds_light, obj_split_light_source } from './light.js';
 import { splitbill } from './shk.js';
+import { is_ice } from './dbridge.js';
 
 // include/objclass.h:152 — #define SPBOOK_no_NOVEL (0 - (int) SPBOOK_CLASS)
 // A NEGATED class, not an index past the real ones. It is the one caller-facing
@@ -1655,8 +1656,8 @@ export function peek_at_iced_corpse_age(otmp) {
     return retval;
 }
 
-// src/mkobj.c:2397 obj_ice_effects(). When ice melts, corpse rot or revival
-// timers return to ordinary speed and the stored age resumes normal time.
+// src/mkobj.c:2397 obj_ice_effects(). Corpse rot and revival timers run at
+// half speed on ice, then return to ordinary speed when the ice melts.
 export function obj_ice_effects(x, y, doBuried = false) {
     const objects = (game.level?.objects || []).filter(obj =>
         obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
@@ -1666,7 +1667,11 @@ export function obj_ice_effects(x, y, doBuried = false) {
     }
 
     for (const obj of objects) {
-        if (!obj.timed || obj.otyp !== ONAMES.CORPSE || !obj.on_ice)
+        if (!obj.timed || obj.otyp !== ONAMES.CORPSE)
+            continue;
+
+        const onIce = is_ice(x, y);
+        if (onIce === !!obj.on_ice)
             continue;
 
         let action = TIMEOUT_ROT_CORPSE;
@@ -1678,11 +1683,17 @@ export function obj_ice_effects(x, y, doBuried = false) {
         if (!remaining)
             continue;
 
-        obj.on_ice = 0;
-        remaining = Math.trunc(remaining / ROT_ICE_ADJUSTMENT);
         const age = (game.moves ?? 0) - (obj.age ?? 0);
-        obj.age += Math.trunc(age * (ROT_ICE_ADJUSTMENT - 1)
-                              / ROT_ICE_ADJUSTMENT);
+        if (onIce) {
+            obj.on_ice = 1;
+            remaining *= ROT_ICE_ADJUSTMENT;
+            obj.age = (game.moves ?? 0) - age * ROT_ICE_ADJUSTMENT;
+        } else {
+            obj.on_ice = 0;
+            remaining = Math.trunc(remaining / ROT_ICE_ADJUSTMENT);
+            obj.age += Math.trunc(age * (ROT_ICE_ADJUSTMENT - 1)
+                                  / ROT_ICE_ADJUSTMENT);
+        }
         start_timer(remaining, TIMER_OBJECT, action, obj);
     }
 }

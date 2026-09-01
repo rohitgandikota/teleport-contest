@@ -73,7 +73,7 @@ import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
     docrt, cls, bot, flush_screen, pline, see_monsters, see_objects,
-    see_traps, swallowed,
+    see_traps, swallowed, newsym,
     TOPLINE_EMPTY,
 } from './display.js';
 import { Glib, Hallucination, Teleportation, Underwater } from './youprop.js';
@@ -381,6 +381,7 @@ export async function newgame() {
     // u_init_skills_discoveries() and the legacy pager, which is why the legacy
     // window is drawn over a map and a status line rather than a blank screen.
     init_vision_globals();
+    game._newsym_ref = newsym;
     vision_reset();
     vision_recalc(0);
     /* src/allmain.c:756 display_nhwindow(WIN_MESSAGE, FALSE) — the NON-blocking

@@ -367,6 +367,7 @@ export function recalc_block_point(x, y) {
    update hooks after initialization, as mon.js does for mondied(). */
 game._block_point_ref = block_point;
 game._recalc_block_point_ref = recalc_block_point;
+game._cansee_ref = cansee;
 
 // Bresenham quadrant path functions (C ref: vision.c q1-q4_path)
 function q1_path(srow, scol, y2, x2) {
@@ -859,6 +860,7 @@ export function init_vision_globals() {
        the region hooks each time along with the other vision globals. */
     game._block_point_ref = block_point;
     game._recalc_block_point_ref = recalc_block_point;
+    game._cansee_ref = cansee;
 }
 
 // src/vision.c:1612 clear_path() — is there an unobstructed straight line from

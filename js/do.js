@@ -491,19 +491,6 @@ async function ballrelease() {
     await encumber_msg();
 }
 
-async function bury_objs_at(x, y) {
-    const pile = [...(game.level?.objects || [])].filter(obj =>
-        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
-    if (pile.length) {
-        const { bury_an_obj } = await import('./sp_lev.js');
-        for (const obj of pile)
-            bury_an_obj(obj, null);
-    }
-    const { del_engr_at } = await import('./engrave.js');
-    del_engr_at(x, y);
-    newsym(x, y);
-}
-
 // src/do.c:50 boulder_hits_pool(). A boulder fills ordinary water nine times
 // in ten and lava one time in ten; otherwise it sinks. Pushed boulders use a
 // direct push message when they fill, while falling boulders always splash.
@@ -538,7 +525,8 @@ export async function boulder_hits_pool(obj, x, y, pushing) {
             const { deltrap } = await import('./trap.js');
             deltrap(trap);
         }
-        await bury_objs_at(x, y);
+        const { bury_objs } = await import('./mklev.js');
+        bury_objs(x, y);
         newsym(x, y);
 
         if (pushing) {

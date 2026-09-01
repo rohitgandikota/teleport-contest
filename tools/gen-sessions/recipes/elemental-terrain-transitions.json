@@ -1,0 +1,57 @@
+{
+  "name": "elemental-terrain-transitions",
+  "description": "Fire rays evaporate water and cold rays freeze water or solidify lava, preserving the C-reference terrain, trap, message, and range aftermath.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.wands",
+    "terrain.water-lava",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "zap-over-floor.fire-pool-evaporation",
+    "zap-over-floor.fire-pool-pit",
+    "zap-over-floor.fire-pool-range",
+    "zap-over-floor.fire-moat-steam",
+    "zap-over-floor.cold-pool-freeze",
+    "zap-over-floor.cold-moat-freeze",
+    "zap-over-floor.cold-lava-solidify",
+    "zap-over-floor.cold-liquid-range",
+    "zap-over-floor.cold-bury-objects",
+    "zap-over-floor.cold-start-melt-timer",
+    "zap-over-floor.cold-object-ice-effects"
+  ],
+  "segments": [
+    {
+      "seed": 9200,
+      "datetime": "20260901110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014l.\u0017pool\r\u0014h.\u0017blessed wand of fire\rzol   \u001b:"
+    },
+    {
+      "seed": 9200,
+      "datetime": "20260901110100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPor \u0014l.\u0017moat\r\u0014h.\u0017blessed wand of fire\rzpl   \u001b:"
+    },
+    {
+      "seed": 9200,
+      "datetime": "20260901110200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0014l.\u0017newt corpse\rdo\u0017pool\r\u0014h.\u0017blessed wand of cold\rzpl   \u001b:"
+    },
+    {
+      "seed": 9200,
+      "datetime": "20260901110300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPor \u0014l.\u0017moat\r\u0014h.\u0017blessed wand of cold\rzpl   \u001b:"
+    },
+    {
+      "seed": 9200,
+      "datetime": "20260901110400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPor \u0014l.\u0017lava\r\u0014h.\u0017blessed wand of cold\rzpl   \u001b:"
+    }
+  ]
+}

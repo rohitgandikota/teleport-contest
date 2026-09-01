@@ -18,7 +18,8 @@ import {
 import { in_rooms } from './hack.js';
 import { MM_NOCOUNTBIRTH, MM_NOMSG, SHOPBASE, COURT, LEPREHALL, ZOO, TEMPLE,
          BEEHIVE, MORGUE, ANTHOLE, BARRACKS, SWAMP, COCKNEST,
-         G_GONE, BR_NO_END1, BR_NO_END2, BR_PORTAL } from './const.js';
+         G_GONE, BR_NO_END1, BR_NO_END2, BR_PORTAL,
+         OBJ_FLOOR } from './const.js';
 import { do_mkroom, antholemon, mkroom_wire } from './mkroom.js';
 import { SPBOOK_no_NOVEL } from './mkobj.js';
 import { mongone, m_at, is_pool, minliquid, seemimic } from './mon.js';
@@ -28,7 +29,9 @@ import { set_wall_state, newsym, flush_screen,
 import { obj_extract_self, stackobj } from './invent.js';
 import { stop_timer, ROT_ORGANIC } from './timeout.js';
 import { PMNAMES, MONSYMS } from './monst_data.js';
-import { fill_special_room, sp_lev_wire_mklev, sp_lev_wire_walkfrom, sp_lev_wire_priest, sp_lev_wire_roamer, reset_xystart_size } from './sp_lev.js';
+import { bury_an_obj, fill_special_room, sp_lev_wire_mklev,
+         sp_lev_wire_walkfrom, sp_lev_wire_priest, sp_lev_wire_roamer,
+         reset_xystart_size } from './sp_lev.js';
 import { walkfrom, mkmaze_wire_mklev, mkportal } from './mkmaze.js';
 import { enexto_core } from './teleport.js';
 import { goodpos } from './makemon.js';
@@ -101,7 +104,7 @@ function mk_knox_portal(x, y) {
 
     place_branch(br, x, y);
 }
-import { random_engraving, wipeout_text } from './engrave.js';
+import { del_engr_at, random_engraving, wipeout_text } from './engrave.js';
 import { merged, weight, sobj_at } from './invent.js';
 import { mkroll_launch, mintrap, deltrap } from './trap.js';
 import { themeroom_fill_contents, post_level_generate } from './themerms.js';
@@ -407,6 +410,17 @@ function choose_trapnote(ttmp) {
         if (tavail[k] === 0)
             tpick.push(k);
     return tpick.length > 0 ? tpick[rn2(tpick.length)] : rn2(12);
+}
+
+// src/dig.c:2025 bury_objs(). Terrain changes move every floor object on the
+// square onto the buried chain, then erase any engraving there.
+export function bury_objs(x, y) {
+    const pile = [...(game.level?.objects || [])].filter(obj =>
+        obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
+    for (const obj of pile)
+        bury_an_obj(obj, null);
+    del_engr_at(x, y);
+    newsym(x, y);
 }
 
 // src/dig.c:2086 unearth_objs(). Pits and holes expose every object buried

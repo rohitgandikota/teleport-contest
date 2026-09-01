@@ -1485,6 +1485,10 @@ export function newsym(x, y) {
     }
 }
 
+/* region.js is already an input to display.js, so publish this redraw hook
+   without adding the reverse module import. */
+game._newsym_ref = newsym;
+
 
 // include/engrave.h:50 spot_shows_engravings(), include/display.h:633
 // engraving_to_glyph() -> engraving_to_defsym(), include/defsym.h:114,118.

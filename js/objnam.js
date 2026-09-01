@@ -38,9 +38,10 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
-         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL,
+         A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL, MOAT, WATER,
          LAVAPOOL, LAVAWALL, ROOM, ICE, ICED_POOL, ICED_MOAT,
-         DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, DB_UNDER, DB_ICE } from './const.js';
+         DRAWBRIDGE_DOWN, DRAWBRIDGE_UP, DB_UNDER, DB_ICE,
+         DB_MOAT } from './const.js';
 import { mons, PMNAMES } from './monst_data.js';
 import { observe_object } from './o_init.js';
 import { ordin, distu, s_suffix } from './hacklib.js';
@@ -2636,12 +2637,26 @@ async function wizterrainwish(d) {
             game.level.flags.nsinks = (game.level.flags.nsinks || 0) + 1;
         lev.looted = d.looted ? S_LPUDDING | S_LDWASHER | S_LRING : 0;
         await pline('A sink.');
-    } else if (wanted.endsWith('pool')) {
-        lev.typ = POOL;
-        lev.flags = 0;
+    } else if (wanted.endsWith('pool') || wanted.endsWith('moat')
+               || wanted.endsWith('wall of water')) {
+        const waterType = wanted.endsWith('pool') ? POOL
+            : wanted.endsWith('moat') ? MOAT : WATER;
+        if (!isDrawbridge) {
+            lev.typ = waterType;
+            lev.flags = 0;
+        } else {
+            lev.drawbridgemask = ((lev.drawbridgemask ?? 0) & ~DB_UNDER)
+                | DB_MOAT;
+        }
         const { del_engr_at } = await import('./engrave.js');
         del_engr_at(x, y);
-        await pline('A pool of water.');
+        if (isDrawbridge) {
+            await pline(`Moat ${oldtyp === DRAWBRIDGE_UP
+                ? 'in front of' : 'under'} the drawbridge.`);
+        } else {
+            const { waterbody_name } = await import('./pager.js');
+            await pline(`${An(waterbody_name(x, y))}.`);
+        }
         const { water_damage_chain } = await import('./trap.js');
         const floorObjects = (game.level.objects || [])
             .filter(obj => obj.ox === x && obj.oy === y);

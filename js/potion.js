@@ -1207,6 +1207,25 @@ async function peffect_sleeping(otmp) {
     }
 }
 
+// src/potion.c peffect_gain_ability()
+async function peffect_gain_ability(otmp) {
+    if (otmp.cursed) {
+        await pline('Ulch!  That potion tasted foul!');
+    } else if (false /* Fixed_abil: no source is modeled yet */) {
+        /* nothing */
+    } else {      /* If blessed, increase all; if not, try up to */
+        let itmp;  /* 6 times to find one which can be increased. */
+        let i = -1;   /* increment to 0 */
+        for (let ii = A_MAX; ii > 0; ii--) {
+            i = (otmp.blessed ? i + 1 : rn2(A_MAX));
+            /* only give "nothing happens" message on last try (except blessed) */
+            itmp = (otmp.blessed || ii === 1) ? 0 : -1;
+            if ((await adjattrib(i, 1, itmp)) && !otmp.blessed)
+                break;
+        }
+    }
+}
+
 // src/potion.c peffect_speed()
 async function peffect_speed(otmp) {
     const is_speed = (otmp.otyp === ONAMES.POT_SPEED);
@@ -1256,6 +1275,9 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_SLEEPING:
         await peffect_sleeping(otmp);
+        break;
+    case ONAMES.POT_GAIN_ABILITY:
+        await peffect_gain_ability(otmp);
         break;
     case ONAMES.POT_SPEED:
     case ONAMES.SPE_HASTE_SELF:

@@ -1,19 +1,17 @@
 {
-  "timestamp": "2026-08-31T06:22:08.448Z",
-  "pageCheckedAt": "2026-08-31T21:43:58Z",
-  "pageCheck": "Live rendered board last scored 8/31/2026, 10:22:08 AM; rohitgandikota remains at 11,405 public plus 6,032 held-out screens, 44 plus 9 passing sessions, 71.9% combined PRNG, 76.9% combined screen rate, 9 animation frames, speed 256+0.9, playable yes, agentic rank 1/12, and overall held-out rank 3/19.",
+  "timestamp": "2026-09-01T05:44:27.234Z",
   "contestPhase": "open",
   "teamCount": 19,
   "team": {
     "name": "rohitgandikota",
     "fork": "rohitgandikota/teleport-contest",
     "category": "agentic",
-    "lastScored": "2026-08-31T05:47:19.372Z",
+    "lastScored": "2026-09-01T05:17:01.923Z",
     "speed": {
-      "startup_ms": 423.4,
-      "per_move_ms": 1.4835,
-      "r2": 0.671,
-      "label": "423+1.48/turn",
+      "startup_ms": 272.8,
+      "per_move_ms": 1.0303,
+      "r2": 0.681,
+      "label": "273+1.03/turn",
       "sessions": 88
     },
     "playability": {
@@ -23,7 +21,7 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 1.941,
+      "ms_per_move": 1.318,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
@@ -34,9 +32,9 @@
       "timing_error": "Error: nh_terminate | at really_done (file:///home/runner/work/teleport-judge/teleport-judge/play/rohitgandikota/js/end.js:619:17)",
       "aborted_early": false,
       "total_moves": 18402,
-      "total_cumulative_ms": 35713,
+      "total_cumulative_ms": 24261,
       "total_startup_moves": 417,
-      "total_startup_ms": 4276
+      "total_startup_ms": 2910
     },
     "public": {
       "points": 11405,
@@ -999,6 +997,24 @@
       },
       {
         "ts": "2026-08-31T05:47:19.372Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-08-31T13:56:06.254Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-08-31T23:02:51.891Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T05:17:01.923Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -2244,17 +2260,17 @@
   "publicRank": 5,
   "category": "agentic",
   "categoryRank": 1,
-  "categoryTotal": 12,
+  "categoryTotal": 9,
   "leader": {
     "name": "NoahBPeterson",
     "fork": "NoahBPeterson/teleport-contest",
     "category": "transpiled",
-    "lastScored": "2026-08-31T05:44:55.371Z",
+    "lastScored": "2026-09-01T05:15:22.569Z",
     "speed": {
-      "startup_ms": 1976.4,
-      "per_move_ms": 3.3123,
-      "r2": 0.563,
-      "label": "1976+3.31/turn",
+      "startup_ms": 1287.6,
+      "per_move_ms": 2.2517,
+      "r2": 0.58,
+      "label": "1288+2.25/turn",
       "sessions": 88
     },
     "playability": {
@@ -2264,7 +2280,7 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 7.457,
+      "ms_per_move": 5.133,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
@@ -2275,9 +2291,9 @@
       "timing_error": null,
       "aborted_early": false,
       "total_moves": 19926,
-      "total_cumulative_ms": 148594,
+      "total_cumulative_ms": 102281,
       "total_startup_moves": 0,
-      "total_startup_ms": 147840
+      "total_startup_ms": 99999
     },
     "public": {
       "points": 11405,
@@ -2940,6 +2956,24 @@
       },
       {
         "ts": "2026-08-31T05:44:55.371Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-08-31T13:54:35.370Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-08-31T23:00:52.218Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T05:15:22.569Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -4181,5 +4215,5 @@
     ],
     "bitcomplexity": null
   },
-  "retrievedAt": "2026-08-31T10:09:21.518Z"
+  "retrievedAt": "2026-09-01T06:25:56.688Z"
 }

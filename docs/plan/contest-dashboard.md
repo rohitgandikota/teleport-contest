@@ -1,9 +1,7 @@
 # Contest score dashboard
 
-Last refreshed: 2026-09-01T05:31:08.528Z. Local commit: `4163f88`.
-Leaderboard snapshot: 2026-08-31T06:22:08.448Z. Fork last scored: 2026-08-31T05:47:19.372Z.
-Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
-Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 8/31/2026, 10:22:08 AM; rohitgandikota remains at 11,405 public plus 6,032 held-out screens, 44 plus 9 passing sessions, 71.9% combined PRNG, 76.9% combined screen rate, 9 animation frames, speed 256+0.9, playable yes, agentic rank 1/12, and overall held-out rank 3/19.
+Last refreshed: 2026-09-01T06:21:28.549Z. Local commit: `eec8373`.
+Leaderboard snapshot: 2026-09-01T05:44:27.234Z. Fork last scored: 2026-09-01T05:17:01.923Z.
 
 ## Score summary
 
@@ -12,24 +10,24 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 64757/65142 | 99.41% | 302/304 | 3606932/3606932 (100.00%) | 282/2261 |
+| Supplemental C suite | 65358/65743 | 99.41% | 303/305 | 3625005/3625005 (100.00%) | 284/2293 |
 
 ## Contest position and generalization
 
-- Agentic category rank: **1/12**.
+- Agentic category rank: **1/9**.
 - Overall held-out rank: **3/19**.
 - Public rank: **5/19**.
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `4163f88` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `eec8373` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## C-reference coverage
 
 | Inventory | Covered | Partial | Gaps |
 |---|---:|---:|---:|
 | Mechanics categories | 106/106 | 0 | 0 |
-| Explicit C branches | 561/561 | 0 | 0 |
+| Explicit C branches | 569/569 | 0 | 0 |
 
 - Fresh-seed smoke: PASS, 80 games across 13 role configs, no reached unported path.
 
@@ -37,9 +35,9 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 65135/65142 |
-| Cursor positions | 11405/11405 | 64757/65142 |
-| Startup and per-turn estimate | 100+0.78/turn | 116+0.26/turn |
+| Cells only | 11405/11405 | 65736/65743 |
+| Cursor positions | 11405/11405 | 65358/65743 |
+| Startup and per-turn estimate | 143+0.98/turn | 142+0.31/turn |
 
 ## Supplemental capture caveats
 
@@ -49,7 +47,7 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 ## Judge health
 
 - Playable: true. Browser: true.
-- Speed: 1.941 ms per move, limit 25 ms.
+- Speed: 1.318 ms per move, limit 25 ms.
 - Sessions skipped: 0. Sessions killed: 0.
 - Early abort: false. Total scored moves: 18402.
 - Local hang gate: PASS. OK: no session over-read (44 checked).
@@ -58,6 +56,7 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-09-01T06:21:28.549Z | `eec8373` | 11405/11405 | 65358/65743 | 6032/11265 | 3 |
 | 2026-09-01T05:31:08.528Z | `4163f88` | 11405/11405 | 64757/65142 | 6032/11265 | 3 |
 | 2026-09-01T05:11:11.393Z | `4a3a8d8` | 11405/11405 | 64579/64964 | 6032/11265 | 3 |
 | 2026-09-01T04:46:06.143Z | `d1c419b` | 11405/11405 | 64207/64592 | 6032/11265 | 3 |
@@ -67,7 +66,6 @@ Leaderboard page checked: 2026-08-31T21:43:58Z. Live rendered board last scored 
 | 2026-09-01T03:33:00.091Z | `89c265a` | 11405/11405 | 62872/63257 | 6032/11265 | 3 |
 | 2026-09-01T03:10:43.010Z | `2c2ad4a` | 11405/11405 | 61900/62285 | 6032/11265 | 3 |
 | 2026-09-01T02:36:13.015Z | `5bd3b99` | 11405/11405 | 61078/61463 | 6032/11265 | 3 |
-| 2026-08-31T23:56:04.114Z | `dd20ded` | 11405/11405 | 59861/60246 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

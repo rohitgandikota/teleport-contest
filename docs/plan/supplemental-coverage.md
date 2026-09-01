@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **106**. Covered: **106**.
 Partial: **0**. Gaps: **0**.
 
-Branch requirements: **580**. Covered: **580**.
+Branch requirements: **582**. Covered: **582**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 306 | 66777 | 3413705 | 73 | 461 |
-| Union | 350 | 78182 | 4181465 | 78 | 511 |
+| Supplemental | 306 | 66823 | 3417570 | 73 | 461 |
+| Union | 350 | 78228 | 4185330 | 78 | 511 |
 
 ## Static inventory
 
@@ -629,8 +629,10 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `catch-lit.magic-lamp` | `src/apply.c:catch_lit` | `fire-light-source-ignition` |
 | covered | `catch-lit.brass-lantern-refusal` | `src/apply.c:catch_lit` | `fire-light-source-ignition` |
 | covered | `catch-lit.empty-candelabrum-refusal` | `src/apply.c:catch_lit` | `fire-light-source-ignition` |
+| covered | `catch-lit.monster-inventory-visible` | `src/apply.c:catch_lit` | `fire-light-source-ignition` |
 | covered | `burn-floor-objects.ignite-oil` | `src/zap.c:burn_floor_objects` | `fire-light-source-ignition` |
 | covered | `zhitu.fire-ignite-inventory` | `src/zap.c:zhitu` | `fire-light-source-ignition` |
+| covered | `zhitm.fire-ignite-monster-inventory` | `src/zap.c:zhitm` | `fire-light-source-ignition` |
 
 ### Monster invisibility items
 
@@ -1198,7 +1200,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `eyewear-effects` | debug | 83 | present | `level.ordinary`, `mode.debug`, `object.tools-containers`, `survival.timed-status`, `ui.getlin`, `ui.map-memory-vision` |
 | `fatal-corpse-drop` | debug | 141 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `survival.instant-deaths`, `ui.getlin` |
 | `figurine-pet-revival` | debug | 109 | present | `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.pets`, `object.food-corpses`, `object.tools-containers`, `object.wands`, `ui.getlin`, `ui.map-memory-vision` |
-| `fire-light-source-ignition` | debug | 1024 | present | `level.ordinary`, `mode.debug`, `object.potions`, `object.tools-containers`, `object.wands`, `turn.timers`, `ui.getlin`, `ui.more-paging` |
+| `fire-light-source-ignition` | debug | 1069 | present | `level.ordinary`, `mode.debug`, `object.potions`, `object.tools-containers`, `object.wands`, `turn.timers`, `ui.getlin`, `ui.more-paging` |
 | `fixed-teleport-traps` | debug | 114 | present | `level.ordinary`, `level.themed`, `mode.debug`, `traps.movement`, `turn.speed-energy`, `ui.map-memory-vision` |
 | `floor-food-stack-billing` | debug | 100 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `social.shops-billing`, `ui.menus`, `ui.more-paging` |
 | `fountain-quaff` | normal | 85 | present | `level.ordinary`, `mode.normal`, `object.buc-enchant-erosion`, `object.gems-stones`, `object.identification`, `object.potions`, `object.weapons`, `survival.regen-exercise`, `terrain.furniture`, `ui.getpos`, `ui.map-memory-vision` |

@@ -11,12 +11,12 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
-import { carried, is_poisonable, Has_contents } from './obj.js';
+import { carried, is_poisonable, Has_contents, OBJ_MINVENT } from './obj.js';
 import { game } from './gstate.js';
 import { vegetarian, name_to_monplus, type_is_pname, verysmall,
          is_neuter, is_human } from './mondata.js';
 import { MFLAGS, MSOUND, MONSYMS } from './monst_data.js';
-import { pmname, oname } from './do_name.js';
+import { pmname, oname, y_monnam } from './do_name.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { mksobj, mkobj, rnd_class, curse, set_corpsenm, zombie_form,
          set_tin_variety,
@@ -746,9 +746,10 @@ export function Tobjnam(otmp, verb) {
 
 // The CORPSE arm redirects xname to cxname for the monster type; corpses on
 // this tree go through the same xname, so the redirect has nothing to change.
-/* src/objnam.c yname() — "your <name>" when carried, "the <name>" otherwise.
-   C routes the prefix through shk_your(), whose shop-ownership, monster-
-   ownership and unique-corpse arms are not reached by anything ported. */
+/* src/objnam.c yname() and src/shk.c shk_your(). Monster inventory uses the
+   carrier's possessive name; hero inventory uses "your" and other exposed
+   objects use "the". Shop ownership and unique-corpse overrides stay in their
+   callers until those paths are covered. */
 // src/objnam.c:2378 Yname2() — capitalized variant of yname().
 export function Yname2(obj) {
     const s = yname(obj);
@@ -756,6 +757,8 @@ export function Yname2(obj) {
 }
 
 export function yname(obj) {
+    if (obj.where === OBJ_MINVENT && obj.ocarry)
+        return `${s_suffix(y_monnam(obj.ocarry))} ${xname(obj)}`;
     return `${carried(obj) ? 'your' : 'the'} ${xname(obj)}`;
 }
 

@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises';
 import { runSegment } from '../js/jsmain.js';
 import { game } from '../js/gstate.js';
 import { ONAMES } from '../js/objects_data.js';
-import { BURN_OBJECT, OBJ_FLOOR, OBJ_INVENT } from '../js/const.js';
+import { BURN_OBJECT, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT } from '../js/const.js';
 
 const recipe = JSON.parse(await readFile(new URL(
     'gen-sessions/recipes/fire-light-source-ignition.json', import.meta.url),
@@ -44,11 +44,33 @@ function targetState() {
     return objects;
 }
 
+function monsterTargetState() {
+    return (game.level?.monsters || []).flatMap(mon =>
+        (mon.minvent || []).filter(obj => targetTypes.has(obj.otyp)).map(obj => {
+            const light = (game.light_sources || []).find(source =>
+                source.type === 1 && source.id === obj.o_id);
+            const timer = (game.timer_base || []).find(entry =>
+                entry.func_index === BURN_OBJECT && entry.arg === obj);
+            return {
+                type: obj.otyp,
+                quantity: obj.quan | 0,
+                where: obj.where,
+                lit: !!obj.lamplit,
+                carrierPosition: [mon.mx, mon.my],
+                carrierHp: mon.mhp | 0,
+                range: light?.range ?? null,
+                burnTimer: !!timer,
+                hasCarrier: obj.ocarry === mon,
+            };
+        }));
+}
+
 const states = [];
 for (const segment of recipe.segments) {
     await runSegment({ ...segment, onFrame: () => {} });
     states.push({
         objects: targetState(),
+        monsterObjects: monsterTargetState(),
         relevantUnported: [...(game.unported || [])].filter(path =>
             path.includes('catch_lit') || path.includes('ignite_items')
             || path.includes('burn_floor_objects')),
@@ -108,6 +130,11 @@ assert.deepEqual(states[8].objects, [{
 }], 'a Candelabrum with no attached candles cannot catch light');
 assert.deepEqual(states[9].objects, litLamp(),
                  'a rebounding fire ray lights hero inventory through zhitu');
+assert.deepEqual(states[10].monsterObjects, [{
+    type: ONAMES.WAX_CANDLE, quantity: 1, where: OBJ_MINVENT,
+    lit: true, carrierPosition: [51, 8], carrierHp: 4,
+    range: 2, burnTimer: true, hasCarrier: true,
+}], 'a surviving monster carries its newly lit candle and mobile light');
 
 for (const [index, state] of states.entries())
     assert.deepEqual(state.relevantUnported, [],

@@ -1,6 +1,6 @@
 {
   "name": "fire-light-source-ignition",
-  "description": "External fire catches exposed lamps, candles, and oil alight in hero inventory and on the floor, while spent or fire-proof light sources remain dark.",
+  "description": "External fire catches exposed lamps, candles, and oil alight in hero, monster, and floor inventories, while spent or fire-proof light sources remain dark.",
   "coverage": [
     "level.ordinary",
     "mode.debug",
@@ -21,8 +21,10 @@
     "catch-lit.magic-lamp",
     "catch-lit.brass-lantern-refusal",
     "catch-lit.empty-candelabrum-refusal",
+    "catch-lit.monster-inventory-visible",
     "burn-floor-objects.ignite-oil",
-    "zhitu.fire-ignite-inventory"
+    "zhitu.fire-ignite-inventory",
+    "zhitm.fire-ignite-monster-inventory"
   ],
   "segments": [
     {
@@ -84,6 +86,12 @@
       "datetime": "20260503031100",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " #levelchange\r30\r                             \u0017uncursed oil lamp\r\u0017blessed wand of fire\rzph      \u001b"
+    },
+    {
+      "seed": 8508,
+      "datetime": "20260503031200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007gnome king\r\u0017blessed wand of fire\rzob      \u001b"
     }
   ]
 }

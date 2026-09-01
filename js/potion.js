@@ -7,11 +7,12 @@ import { fruitname, makeplural, xname } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
 import { game } from './gstate.js';
-import { pline, see_monsters } from './display.js';
+import { canseemon, pline, see_monsters } from './display.js';
 import { You, You_feel, pline_The } from './pline.js';
 import { exercise, adjattrib, A_MAX, ACURR } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
-         BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_OTHER_THROW,
+         BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
+         POTHIT_OTHER_THROW,
          HEAD, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
          Upolyd, ismnum } from './const.js';
 import { Your } from './pline.js';
@@ -28,8 +29,9 @@ import { OBJ_DESCR } from './objnam.js';
 import { makeknown, observe_object } from './o_init.js';
 import { more_experienced } from './exper.js';
 import { freeinv, getobj, hold_another_object, useup, useupall,
-         update_inventory, ECMD_TIME, ECMD_OK, GETOBJ_PROMPT } from './invent.js';
-import { is_pool, wake_nearto } from './mon.js';
+         update_inventory, ECMD_TIME, ECMD_OK, GETOBJ_PROMPT,
+         obfree } from './invent.js';
+import { is_pool, wake_nearto, wakeup, killed, healmon } from './mon.js';
 import { OCLASSES } from './objects_data.js';
 import { tty_yn_function } from './tty/topl.js';
 import { GETOBJ_NOFLAGS } from './const.js';
@@ -38,11 +40,14 @@ import { GETOBJ_EXCLUDE_INACCESS } from './invent.js';
 import { doname, otense, short_oname, simpleonames, thesimpleoname,
          Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
-import { breathless, haseyes, mon_hates_blessings, stagger }
+import { breathless, haseyes, has_head, is_human, is_silent,
+         mon_hates_blessings, resists_acid, stagger }
     from './mondata.js';
 import { cansee, vision_recalc } from './vision.js';
 import { hcolor } from './do_name.js';
+import { Monnam, mon_nam } from './do_name.js';
 import { mkobj, splitobj } from './mkobj.js';
+import { distu, s_suffix } from './hacklib.js';
 const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
 
 function note_unported_potion(what) {
@@ -264,41 +269,119 @@ export async function potionbreathe(obj) {
     }
 }
 
-// src/potion.c:1618 potionhit(), hero arm. The bottle name and impact damage
-// are drawn before the evaporation and vapor effects.
+// src/potion.c:1618 potionhit(). The bottle name and impact damage are drawn
+// before the potion effect, anger, and possible adjacent vapor exposure.
 export async function potionhit(mon, obj, how) {
     const botlnam = bottlename();
     const isyou = mon === game.youmonst;
+    let tx, ty, distance;
 
-    if (!isyou) {
-        note_unported_potion('potionhit:monster');
-        return;
+    if (isyou) {
+        tx = game.u.ux;
+        ty = game.u.uy;
+        distance = 0;
+        await pline_The(`${botlnam} crashes on your ${body_part(HEAD)} and breaks into shards.`);
+        let impact = rnd(2);
+        if (game.u.uprops?.HALF_PHDAM)
+            impact = Math.trunc((impact + 1) / 2);
+        await losehp(impact,
+                     how === POTHIT_OTHER_THROW ? 'propelled potion'
+                                                : 'thrown potion',
+                     KILLED_BY_AN);
+    } else {
+        tx = mon.mx;
+        ty = mon.my;
+        distance = distu(tx, ty);
+        if (cansee(tx, ty)) {
+            const target = has_head(mon.data)
+                ? `${s_suffix(mon_nam(mon))} ${game.notonhead ? 'body'
+                                                             : 'head'}`
+                : mon_nam(mon);
+            await pline_The(`${botlnam} crashes on ${target} and breaks into shards.`);
+        } else {
+            await pline('Crash!');
+        }
+        if (rn2(5) && (mon.mhp | 0) > 1)
+            mon.mhp--;
     }
-
-    const tx = game.u.ux, ty = game.u.uy;
-    await pline_The(`${botlnam} crashes on your ${body_part(HEAD)} and breaks into shards.`);
-    let impact = rnd(2);
-    if (game.u.uprops?.HALF_PHDAM)
-        impact = Math.trunc((impact + 1) / 2);
-    await losehp(impact,
-                 how === POTHIT_OTHER_THROW ? 'propelled potion'
-                                            : 'thrown potion',
-                 KILLED_BY_AN);
 
     if (obj.otyp !== ONAMES.POT_OIL && cansee(tx, ty))
         await pline(`${Tobjnam(obj, 'evaporate')}.`);
 
-    if (obj.otyp === ONAMES.POT_ACID && !game.u.uprops?.ACID_RES) {
-        await pline(`This burns${obj.blessed ? ' a little'
-                              : obj.cursed ? ' a lot' : ''}!`);
-        let damage = d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);
-        if (game.u.uprops?.HALF_PHDAM)
-            damage = Math.trunc((damage + 1) / 2);
-        await losehp(damage, 'potion of acid', KILLED_BY_AN);
+    if (isyou) {
+        if (obj.otyp === ONAMES.POT_ACID && !game.u.uprops?.ACID_RES) {
+            await pline(`This burns${obj.blessed ? ' a little'
+                                  : obj.cursed ? ' a lot' : ''}!`);
+            let damage = d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);
+            if (game.u.uprops?.HALF_PHDAM)
+                damage = Math.trunc((damage + 1) / 2);
+            await losehp(damage, 'potion of acid', KILLED_BY_AN);
+        }
+    } else {
+        let angermon = how <= POTHIT_HERO_THROW;
+        switch (obj.otyp) {
+        case ONAMES.POT_WATER: {
+            const { is_were, new_were } = await import('./were.js');
+            const were = is_were(mon.data);
+            if (mon_hates_blessings(mon) || were) {
+                if (obj.blessed) {
+                    await pline(`${Monnam(mon)} ${
+                        is_silent(mon.data) ? 'writhes' : 'shrieks'} in pain!`);
+                    if (!is_silent(mon.data))
+                        wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
+                    mon.mhp -= d(2, 6);
+                    if ((mon.mhp | 0) <= 0)
+                        await killed(mon);
+                    else if (were && !is_human(mon.data))
+                        await new_were(mon);
+                } else if (obj.cursed) {
+                    angermon = false;
+                    if (canseemon(mon))
+                        await pline(`${Monnam(mon)} looks healthier.`);
+                    healmon(mon, d(2, 6), 0);
+                    const { Protection_from_shape_changers }
+                        = await import('./youprop.js');
+                    if (were && is_human(mon.data)
+                        && !Protection_from_shape_changers())
+                        await new_were(mon);
+                }
+            }
+            break;
+        }
+        case ONAMES.POT_ACID: {
+            const { resist } = await import('./zap.js');
+            if (!resists_acid(mon)
+                && !resist(mon, OCLASSES.POTION_CLASS, 0, false)) {
+                await pline(`${Monnam(mon)} ${
+                    is_silent(mon.data) ? 'writhes' : 'shrieks'} in pain!`);
+                if (!is_silent(mon.data))
+                    wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
+                mon.mhp -= d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);
+                if ((mon.mhp | 0) <= 0)
+                    await killed(mon);
+            }
+            break;
+        }
+        default:
+            note_unported_potion(`potionhit:monster:otyp=${obj.otyp}`);
+            break;
+        }
+        if ((mon.mhp | 0) > 0) {
+            if (angermon)
+                await wakeup(mon, true);
+            else
+                mon.msleeping = 0;
+        }
     }
 
-    if (!breathless(game.youmonst.data) || haseyes(game.youmonst.data))
+    const vaporRange = Math.trunc((1 + ACURR(A_DEX)) / 2);
+    if ((distance === 0 || (distance < 3 && !rn2(vaporRange)))
+        && (!breathless(game.youmonst.data) || haseyes(game.youmonst.data))) {
         await potionbreathe(obj);
+    } else if (obj.dknown && cansee(tx, ty)) {
+        await trycall(obj);
+    }
+    obfree(obj);
 }
 
 // src/potion.c:89 make_confused() — set or clear the confusion timeout.

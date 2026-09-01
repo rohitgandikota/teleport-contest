@@ -1,0 +1,23 @@
+{
+  "name": "were-scary-flee",
+  "description": "A hostile human werewolf transforms during its attack next to an Elbereth-protected hero square and receives the C new_were flee timer.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "monster.special-effects",
+    "terrain.engraving-elbereth",
+    "ui.getlin"
+  ],
+  "branches": [
+    "were.form.scary-square-flee"
+  ],
+  "segments": [
+    {
+      "seed": 7605,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             E- Elbereth\r\u0007human werewolf\r. ."
+    }
+  ]
+}

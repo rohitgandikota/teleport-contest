@@ -6,7 +6,7 @@ import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
          change_luck } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
-         engulfing_u, RLOC_MSG } from './const.js';
+         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW } from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
 import { singular, xname, an, the, The, otense, mshot_xname } from './objnam.js';
@@ -566,6 +566,11 @@ export async function thitmonst(mon, obj) {
                 || obj.otyp === ONAMES.ACID_VENOM)
                && (guaranteed_hit || dex > rnd(25))) {
         await hmon(mon, obj, hmode, dieroll);
+        return 1;
+    } else if (obj.oclass === OCLASSES.POTION_CLASS
+               && (guaranteed_hit || dex > rnd(25))) {
+        const { potionhit } = await import('./potion.js');
+        await potionhit(mon, obj, POTHIT_HERO_THROW);
         return 1;
     } else {
         const dog = await import('./dog.js');

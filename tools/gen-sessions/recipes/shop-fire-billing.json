@@ -1,0 +1,35 @@
+{
+  "name": "shop-fire-billing",
+  "description": "External fire lights an unpaid carried lamp and burns shop-owned floor paper, preserving the exact bill, stack quantity, and shopkeeper feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.scrolls",
+    "object.tools-containers",
+    "object.wands",
+    "social.shops-billing",
+    "turn.timers",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "catch-lit.shop-billing",
+    "shk-your.shop-owned-object",
+    "useupf.shop-floor-consumption",
+    "burn-floor-objects.shop-partial-stack"
+  ],
+  "segments": [
+    {
+      "seed": 6903,
+      "datetime": "20260901080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017uncursed oil lamp\rdo y,a\r \u0017blessed wand of fire\rzpl   "
+    },
+    {
+      "seed": 6903,
+      "datetime": "20260901080100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00162\r\u0006\u0014  llllllllllllllllllll.  \u0017blessed wand of fire\r\u00173 uncursed scrolls of amnesia\rdp yhzol "
+    }
+  ]
+}

@@ -36,7 +36,7 @@ import { canspotmon, display_nhwindow_message, display_object_at, feel_newsym,
          newsym, pline, temporary_object_glyph, under_water,
          urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
-import { an, the, doname, mshot_xname, otense, xname, Yname2 } from './objnam.js';
+import { an, the, doname, mshot_xname, otense, xname, yname, Yname2 } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { delobj, monkilled, monstone, newcham, resists_ston, vamp_stone,
@@ -252,8 +252,16 @@ export async function catch_lit(obj) {
     }
     if (obj.otyp === ONAMES.POT_OIL)
         makeknown(obj.otyp);
-    if ((obj.where === OBJ_INVENT || game.invent.includes(obj)) && obj.unpaid)
-        note_unported_trap('catch_lit:shop_billing');
+    if ((obj.where === OBJ_INVENT || game.invent.includes(obj)) && obj.unpaid) {
+        const { costly_spot, check_unpaid, bill_dummy_object } =
+            await import('./shk.js');
+        if (costly_spot(game.u.ux, game.u.uy)) {
+            await check_unpaid(obj);
+            await pline(`"That's in addition to the cost of ${yname(obj)} ${
+                obj.quan === 1 ? 'itself' : 'themselves'}, of course."`);
+            bill_dummy_object(obj);
+        }
+    }
 
     const { begin_burn } = await import('./timeout.js');
     await begin_burn(obj, false);

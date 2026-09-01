@@ -11,7 +11,7 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
-import { carried, is_poisonable, Has_contents, OBJ_MINVENT } from './obj.js';
+import { carried, is_poisonable, Has_contents, OBJ_FLOOR, OBJ_MINVENT } from './obj.js';
 import { game } from './gstate.js';
 import { vegetarian, name_to_monplus, type_is_pname, verysmall,
          is_neuter, is_human } from './mondata.js';
@@ -746,17 +746,55 @@ export function Tobjnam(otmp, verb) {
 
 // The CORPSE arm redirects xname to cxname for the monster type; corpses on
 // this tree go through the same xname, so the redirect has nothing to change.
-/* src/objnam.c yname() and src/shk.c shk_your(). Monster inventory uses the
-   carrier's possessive name; hero inventory uses "your" and other exposed
-   objects use "the". Shop ownership and unique-corpse overrides stay in their
-   callers until those paths are covered. */
+/* src/objnam.c yname() and src/shk.c shk_your(). */
 // src/objnam.c:2378 Yname2() — capitalized variant of yname().
 export function Yname2(obj) {
     const s = yname(obj);
     return s ? s[0].toUpperCase() + s.slice(1) : s;   /* *s = highc(*s) */
 }
 
+function shop_owner_prefix(obj) {
+    const floorStock = obj.where === OBJ_FLOOR && !obj.no_charge;
+    if (!obj.unpaid && !floorStock)
+        return null;
+
+    let x, y;
+    if (obj.where === OBJ_FLOOR) {
+        x = obj.ox;
+        y = obj.oy;
+    } else if (carried(obj)) {
+        x = game.u.ux;
+        y = game.u.uy;
+    } else {
+        return null;
+    }
+
+    const loc = game.level?.at(x, y);
+    const roomno = loc?.roomno ?? 0;
+    if (!loc || loc.edge || roomno < ROOMOFFSET)
+        return null;
+    const roomidx = roomno - ROOMOFFSET;
+    const room = game.level?.rooms?.[roomidx]
+        || (game.level?.subrooms || []).find(candidate =>
+            candidate.roomnoidx === roomidx);
+    const shkp = room?.resident;
+    const eshk = shkp?.eshk || shkp?.mextra?.eshk;
+    if (!shkp?.isshk || !eshk)
+        return null;
+    if (floorStock && eshk.shk?.x === x && eshk.shk?.y === y)
+        return null;
+
+    const raw = shkp.shknam || eshk.shknam;
+    if (!raw)
+        return null;
+    const name = /^[-+_|=]/.test(raw) ? raw.slice(1) : raw;
+    return s_suffix(name);
+}
+
 export function yname(obj) {
+    const shopOwner = shop_owner_prefix(obj);
+    if (shopOwner)
+        return `${shopOwner} ${xname(obj)}`;
     if (obj.where === OBJ_MINVENT && obj.ocarry)
         return `${s_suffix(y_monnam(obj.ocarry))} ${xname(obj)}`;
     return `${carried(obj) ? 'your' : 'the'} ${xname(obj)}`;

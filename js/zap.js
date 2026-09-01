@@ -2560,7 +2560,7 @@ async function burn_floor_objects(x, y, give_feedback, u_caused) {
             continue;
 
         if (u_caused) {
-            useupf(obj, destroyed);
+            await useupf(obj, destroyed);
         } else if (destroyed < quantity) {
             obj.quan -= destroyed;
             obj.owt = weight(obj);

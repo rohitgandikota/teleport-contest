@@ -571,7 +571,7 @@ export async function pickup_object(obj, count, telekinesis) {
                 telekinesis ? 'raise' : 'pick'} ${
                 obj.quan === 1 ? 'it' : 'them'} up.`);
             await trycall(obj);
-            useupf(obj, obj.quan);
+            await useupf(obj, obj.quan);
             return 1;
         }
     }
@@ -1000,7 +1000,7 @@ async function tipcontainer(box) {
                 if (targetHeld)
                     useup(targetbox);
                 else
-                    useupf(targetbox, targetbox.quan);
+                    await useupf(targetbox, targetbox.quan);
                 targetbox = null;
 
                 await losehp(d(6, 6), 'magical explosion', KILLED_BY_AN);
@@ -1553,7 +1553,7 @@ async function in_container(obj) {
 
         await do_boh_explosion(current_container, floor_container);
         if (floor_container)
-            useupf(current_container, current_container.quan);
+            await useupf(current_container, current_container.quan);
         else
             useup(current_container);
 

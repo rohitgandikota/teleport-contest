@@ -6,7 +6,7 @@ import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
 import { cmdq_pop, cmdq_clear } from './cmd.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
-import { costly_spot, doname_with_price, obfree_bill } from './shk.js';
+import { addtobill, costly_spot, doname_with_price, obfree_bill } from './shk.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
@@ -30,7 +30,7 @@ import { Fumbling } from './youprop.js';
 import { st_all, MOD_ENCUMBER, invlet_basic } from './const.js';
 import { u_safe_from_fatal_corpse, can_reach_floor } from './pickup.js';
 import { near_capacity, encumber_msg } from './attrib.js';
-import { inv_cnt } from './hack.js';
+import { in_rooms, inv_cnt } from './hack.js';
 import { place_object } from './mkobj.js';
 import { touch_artifact } from './mon.js';
 import { dropy, dropx } from './do.js';
@@ -915,7 +915,7 @@ export function sobj_at(otyp, x, y) {
 //
 // The shop-billing arm is gated on costly_spot(), which answers false on any
 // level without a shop, so the ordinary path is fully ported.
-export function useupf(obj, numused) {
+export async function useupf(obj, numused) {
     const at_u = u_at(obj.ox, obj.oy);
     let otmp;
 
@@ -927,15 +927,15 @@ export function useupf(obj, numused) {
         otmp = obj;
 
     if (!game.context?.mon_moving && costly_spot(otmp.ox, otmp.oy)) {
-        if (otmp.no_charge) {
-            /* addtobill() clears no_charge and returns without billing. */
-            otmp.no_charge = 0;
-        } else {
-            /* addtobill() / stolen_value() need the remaining shop paths. */
-            (game.unported ||= new Set()).add('useupf:shop_billing');
-        }
+        const rooms = in_rooms(otmp.ox, otmp.oy, 0);
+        if (rooms && (game.u.urooms || '').includes(rooms[0]))
+            await addtobill(otmp, false, false, false);
+        else
+            (game.unported ||= new Set()).add('useupf:stolen_value');
     }
     delobj(otmp);
+    if (otmp.where === OBJ_FREE)
+        obfree(otmp);
     if (at_u && game.u?.uundetected && hides_under(game.youmonst?.data))
         hideunder(game.youmonst);
 }

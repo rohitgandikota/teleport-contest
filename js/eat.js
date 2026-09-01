@@ -1055,11 +1055,11 @@ function tin_variety(tin) {
     return r;
 }
 
-function use_up_tin(tin) {
+async function use_up_tin(tin) {
     if (carried(tin))
         useup(tin);
     else
-        useupf(tin, 1);
+        await useupf(tin, 1);
     const tc = (game.context ||= {}).tin ||= {};
     tc.tin = null;
     tc.o_id = 0;
@@ -1108,7 +1108,7 @@ async function consume_tin(mesg) {
     if (tin.otrapped || (tin.cursed && r !== HOMEMADE_TIN && !rn2(8))) {
         await b_trapped('tin', NO_PART);
         tin = await costly_tin(tin, COST_DSTROY);
-        use_up_tin(tin);
+        await use_up_tin(tin);
         return;
     }
 
@@ -1122,7 +1122,7 @@ async function consume_tin(mesg) {
         observe_object(tin);
         tin.known = 1;
         tin = await costly_tin(tin, COST_OPEN);
-        use_up_tin(tin);
+        await use_up_tin(tin);
         if (always_eat)
             await lesshungry(5);
         return;
@@ -1163,7 +1163,7 @@ async function consume_tin(mesg) {
                     tin.known = 1;
                 }
                 tin = await costly_tin(tin, COST_OPEN);
-                use_up_tin(tin);
+                await use_up_tin(tin);
                 return;
             }
         }
@@ -1196,7 +1196,7 @@ async function consume_tin(mesg) {
                 nutrition = mdat.cnutrit;
             if (always_eat)
                 nutrition += 5;
-            use_up_tin(tin);
+            await use_up_tin(tin);
             await lesshungry(nutrition);
         }
         if (tintxts[r].greasy) {
@@ -1212,7 +1212,7 @@ async function consume_tin(mesg) {
                         + ' slippery.');
         }
         if (game.context.tin.tin)
-            use_up_tin(tin);
+            await use_up_tin(tin);
         return;
     }
 
@@ -1230,7 +1230,7 @@ async function consume_tin(mesg) {
         if (game.flags?.verbose !== false)
             await You('discard the open tin.');
         tin = await costly_tin(tin, COST_OPEN);
-        use_up_tin(tin);
+        await use_up_tin(tin);
         return;
     }
     const conduct = game.u.uconduct ||= {};
@@ -1247,7 +1247,7 @@ async function consume_tin(mesg) {
                       : 200 + rnd(400);
     if (always_eat)
         nutrition += 5;
-    use_up_tin(tin);
+    await use_up_tin(tin);
     await lesshungry(nutrition);
 }
 
@@ -1412,7 +1412,7 @@ export async function done_eating(message) {
         if (carried(piece))
             useup(piece);
         else
-            useupf(piece, 1);
+            await useupf(piece, 1);
     }
 
     game.context.victual = {};          /* zero_victual */

@@ -1070,7 +1070,7 @@ async function use_tinning_kit(obj) {
             note_unported_apply('use_tinning_kit:shop_billing');
         useup(corpse);
     } else {
-        useupf(corpse, 1);
+        await useupf(corpse, 1);
     }
     await hold_another_object(can, 'You make, but cannot pick up, %s.',
                               doname(can), null);

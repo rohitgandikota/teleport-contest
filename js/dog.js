@@ -728,7 +728,7 @@ const SQSRCHRADIUS = 5;
 //
 // Draws nothing. The size multiplier is a switch on the PET's size, not the
 // food's, and MZ_MEDIUM shares the default arm.
-function dog_nutrition(mtmp, obj) {
+export function dog_nutrition(mtmp, obj) {
     let nutrit;
     const mdat = game.mons[mtmp.mnum];
 

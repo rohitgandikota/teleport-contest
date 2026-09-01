@@ -1074,6 +1074,11 @@ async function damageum(mon, mattk, specialdmg) {
                           specialdmg, done: false };
             await mhitm_ad_drin(game.youmonst, mattk, mon, mhm);
             damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_STON) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_ston(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
         } else {
             note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
         }
@@ -3366,15 +3371,22 @@ export async function mhitm_ad_blnd(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:3945 do_stone_mon(), active monster petrification. The
-// stone-curing inventory arm remains separately visible if a generated
-// target ever carries a lizard or acidic corpse.
+// src/uhitm.c:3945 do_stone_mon(), active monster petrification.
 async function do_stone_mon(magr, mattk, mdef, mhm) {
-    const cure = (mdef.minvent || []).find(obj => obj.otyp === ONAMES.CORPSE
-        && (obj.corpsenm === PMNAMES.PM_LIZARD
-            || obj.corpsenm === PMNAMES.PM_ACID_BLOB));
-    if (cure)
-        note_unported_uhitm('do_stone_mon:munstone');
+    const { munstone } = await import('./muse.js');
+    if (await munstone(mdef, false)) {
+        if (!DEADMONSTER(mdef)) {
+            mhm.hitflags = M_ATTK_MISS;
+            mhm.done = true;
+            return;
+        }
+        if (mdef.mtame && !game.vis)
+            await You('have a peculiarly sad feeling for a moment, then it passes.');
+        mhm.hitflags = M_ATTK_DEF_DIED
+            | (grow_up(magr, mdef) ? 0 : M_ATTK_AGR_DIED);
+        mhm.done = true;
+        return;
+    }
 
     if (poly_when_stoned(game.mons[mdef.mnum])) {
         await minstapetrify(mdef, false);
@@ -3403,7 +3415,9 @@ async function do_stone_mon(magr, mattk, mdef, mhm) {
 // src/uhitm.c:4203 mhitm_ad_ston(), the cockatrice hiss attack.
 export async function mhitm_ad_ston(magr, mattk, mdef, mhm) {
     if (magr === game.youmonst) {
-        note_unported_uhitm('mhitm_ad_ston:uhitm');
+        const { munstone } = await import('./muse.js');
+        if (!await munstone(mdef, true))
+            await minstapetrify(mdef, true);
         mhm.damage = 0;
     } else if (mdef === game.youmonst) {
         await hitmsg(magr, mattk, mhm.indx);

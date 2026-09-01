@@ -11,12 +11,13 @@
 import { game } from './gstate.js';
 import { rn2, rn1, rnd, d, rn2_on_display_rng } from './rng.js';
 import { sgn, dist2, distmin, s_suffix } from './hacklib.js';
-import { ONAMES, MATERIALS } from './objects_data.js';
-import { ATTKS, PMNAMES, NUMMONS } from './monst_data.js';
+import { OCLASSES, ONAMES, MATERIALS } from './objects_data.js';
+import { ATTKS, MONSYMS, PMNAMES, NUMMONS } from './monst_data.js';
 import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
          passes_walls, noncorporeal, unsolid, haseyes, hates_light,
          resists_blnd, attacktype, verysmall, throws_rocks,
-         is_floater, locomotion, pronoun_gender } from './mondata.js';
+         is_floater, locomotion, pronoun_gender, acidic, flaming,
+         resists_acid, resists_ston } from './mondata.js';
 import { in_your_sanctuary, lined_up, monnear, onscary, mon_knows_traps,
          mon_would_take_item, accessible, monflee, mdistu } from './monmove.js';
 import { which_armor } from './worn.js';
@@ -24,22 +25,24 @@ import { hard_helmet } from './do_wear.js';
 import { noteleport_level } from './teleport.js';
 import { stairway_at } from './stairs.js';
 import { carrying, sobj_at, obj_extract_self, weight } from './invent.js';
-import { m_at, t_at, can_carry } from './mon.js';
+import { m_at, t_at, can_carry, mondead, xkilled } from './mon.js';
 import { linedup_callback, m_throw } from './mthrowu.js';
 import { Teleport_control, See_invisible } from './youprop.js';
 import { xytodir, dirtocoord } from './cmd.js';
 import { isok, W_ARMH, M_SEEN_REFL, M_SEEN_MAGR, M_SEEN_SLEEP, M_SEEN_FIRE,
          M_SEEN_COLD, M_SEEN_ELEC, M_SEEN_ACID, TELEP_TRAP, N_DIRS,
          Is_rogue_level, In_endgame, Is_earthlevel, W_ARM, W_ARMS, W_ARMF,
-         W_AMUL, MSLOW, MFAST, NON_PM,
+         W_AMUL, W_WEP, MSLOW, MFAST, NON_PM, NORMAL_SPEED, FAST,
+         P_DAGGER, P_KNIFE, XKILL_NOMSG, XKILL_NOCONDUCT,
          POLY_TRAP, u_at, KILLED_BY_AN, ZAP_POS, IS_DOOR, D_LOCKED,
          D_CLOSED, G_GONE, ARTICLE_A, SUPPRESS_INVISIBLE,
          SUPPRESS_SADDLE, SUPPRESS_IT, AUGMENT_IT, G_UNIQ,
          NC_SHOW_MSG, NC_VIA_WAND_OR_SPELL, PRONOUN_HALLU,
+         STRAT_WAITFORU,
          MIGR_STAIRS_UP, MIGR_STAIRS_DOWN, MIGR_LADDER_UP,
          MIGR_LADDER_DOWN, MIGR_SSTAIRS, MIGR_RANDOM } from './const.js';
 import { Is_container, Has_contents, bimanual, is_plural } from './obj.js';
-import { MON_WEP } from './monst.js';
+import { DEADMONSTER, helpless, MON_WEP } from './monst.js';
 import { canletgo } from './do.js';
 import { def_monsyms } from './drawing_data.js';
 import { genders as genders_tbl } from './role_data.js';
@@ -137,6 +140,156 @@ export async function mon_reflects(mon, fmt = null) {
         if (identify)
             makeknown(identify);
     }
+    return true;
+}
+
+// src/muse.c:2985 cures_stoning(), the inventory predicate shared by
+// munstone() and monster item selection. A green slime glob only helps a
+// creature that cannot itself be slimed; tins additionally need an opener.
+export function cures_stoning(mon, obj, tinok) {
+    if (obj.otyp === ONAMES.POT_ACID)
+        return true;
+    if (obj.otyp === ONAMES.GLOB_OF_GREEN_SLIME) {
+        const ptr = game.mons[mon.mnum];
+        return ptr.pmidx === PMNAMES.PM_GREEN_SLIME
+            || flaming(ptr) || noncorporeal(ptr);
+    }
+    if (obj.otyp !== ONAMES.CORPSE
+        && (obj.otyp !== ONAMES.TIN || !tinok))
+        return false;
+    if (obj.corpsenm === NON_PM)
+        return false;
+    return obj.corpsenm === PMNAMES.PM_LIZARD
+        || acidic(game.mons[obj.corpsenm]);
+}
+
+// src/muse.c:3001 mcould_eat_tin(). Unlike the hero, a monster may use an
+// unwielded opener, dagger, or knife. A cursed wielded weapon blocks access to
+// every other tool in its inventory.
+export function mcould_eat_tin(mon) {
+    if (is_animal(game.mons[mon.mnum]))
+        return false;
+
+    const mwep = MON_WEP(mon);
+    const welded = !!(mwep && mwep.cursed && (mwep.owornmask & W_WEP));
+    for (const obj of mon.minvent || []) {
+        if (welded && obj !== mwep)
+            continue;
+        if (obj.otyp === ONAMES.TIN_OPENER
+            || (obj.oclass === OCLASSES.WEAPON_CLASS
+                && (game.objects[obj.otyp]?.oc_skill === P_DAGGER
+                    || game.objects[obj.otyp]?.oc_skill === P_KNIFE)))
+            return true;
+    }
+    return false;
+}
+
+function m_useup_unstone(mon, obj) {
+    if ((obj.quan ?? 1) > 1) {
+        obj.quan--;
+        obj.owt = weight(obj);
+    } else {
+        obj_extract_self(obj);
+    }
+}
+
+async function mon_adjust_speed_for_stoning(mon) {
+    if ((mon.permspeed | 0) === MFAST)
+        mon.permspeed = 0;
+    const speedBoots = (mon.minvent || []).some(obj =>
+        obj.owornmask && game.objects[obj.otyp]?.oc_oprop === FAST);
+    mon.mspeed = speedBoots ? MFAST : (mon.permspeed | 0);
+
+    if ((mon.data || game.mons[mon.mnum]).mmove
+        && !mon.mfrozen && !mon.msleeping) {
+        const { canseemon, pline } = await import('./display.js');
+        if (canseemon(mon) && game.flags?.verbose !== false) {
+            const { Monnam } = await import('./do_name.js');
+            await pline(`${Monnam(mon)} is slowing down.`);
+        }
+    }
+}
+
+// src/muse.c:2884 munstone() and mon_consume_unstone(). Returns true once a
+// cure was consumed, even when its acid damage kills the monster.
+export async function munstone(mon, by_you) {
+    if (resists_ston(mon) || mon.meating || helpless(mon))
+        return false;
+    mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITFORU;
+
+    const tinok = mcould_eat_tin(mon);
+    const obj = (mon.minvent || []).find(item =>
+        cures_stoning(mon, item, tinok));
+    if (!obj)
+        return false;
+
+    const [{ canseemon, pline }, { Deaf, Hallucination },
+           { Monnam, mon_nam }, { distant_name, doname },
+           { dog_nutrition }] = await Promise.all([
+        import('./display.js'), import('./youprop.js'),
+        import('./do_name.js'), import('./objnam.js'), import('./dog.js'),
+    ]);
+    const visible = canseemon(mon);
+    const tinned = obj.otyp === ONAMES.TIN;
+    const food = obj.otyp === ONAMES.CORPSE || tinned;
+    const acid = obj.otyp === ONAMES.POT_ACID
+        || (food && acidic(game.mons[obj.corpsenm]));
+    const lizard = food && obj.corpsenm === PMNAMES.PM_LIZARD;
+    const nutrit = food ? dog_nutrition(mon, obj) : 0;
+
+    await mon_adjust_speed_for_stoning(mon);
+    if (visible) {
+        const saveQuan = obj.quan;
+        obj.quan = 1;
+        const verb = obj.oclass === OCLASSES.POTION_CLASS
+            ? 'quaffs'
+            : tinned ? 'opens and eats the contents of' : 'eats';
+        await pline(`${Monnam(mon)} ${verb} ${distant_name(obj, doname)}.`);
+        obj.quan = saveQuan;
+    } else if (!Deaf()) {
+        const { You_hear } = await import('./pline.js');
+        await You_hear(`${obj.oclass === OCLASSES.POTION_CLASS
+            ? 'drinking' : 'chewing'}.`);
+    }
+
+    m_useup_unstone(mon, obj);
+    if (acid && !tinned && !resists_acid(mon)) {
+        mon.mhp -= rnd(15);
+        if (visible)
+            await pline(`${Monnam(mon)} has a very bad case of stomach acid.`);
+        if (DEADMONSTER(mon)) {
+            await pline(`${Monnam(mon)} dies!`);
+            if (by_you)
+                await xkilled(mon, XKILL_NOMSG | XKILL_NOCONDUCT);
+            else
+                await mondead(mon);
+            return true;
+        }
+    }
+
+    if (visible) {
+        if (Hallucination()) {
+            await pline(`What a pity - ${mon_nam(mon)} just ruined a future piece of art!`);
+        } else {
+            await pline(`${Monnam(mon)} seems limber!`);
+        }
+    }
+    if (lizard && (mon.mconf || mon.mstun)) {
+        mon.mconf = 0;
+        mon.mstun = 0;
+        if (visible && game.mons[mon.mnum].mlet !== MONSYMS.S_BAT
+            && mon.mnum !== PMNAMES.PM_STALKER)
+            await pline(`${Monnam(mon)} seems steadier now.`);
+    }
+    if (mon.mtame && !mon.isminion && nutrit > 0) {
+        const edog = (mon.edog ||= {});
+        if ((edog.hungrytime | 0) < game.moves)
+            edog.hungrytime = game.moves;
+        edog.hungrytime = (edog.hungrytime | 0) + nutrit;
+        mon.mconf = 0;
+    }
+    mon.movement = (mon.movement | 0) - NORMAL_SPEED;
+    mon.mlstmv = game.moves;
     return true;
 }
 

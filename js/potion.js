@@ -53,6 +53,11 @@ import { hcolor } from './do_name.js';
 import { Monnam, mon_nam } from './do_name.js';
 import { mkobj, splitobj } from './mkobj.js';
 import { distu, s_suffix } from './hacklib.js';
+import { pluslvl } from './exper.js';
+import { heal_legs } from './do.js';
+import { monstseesu, monstunseesu } from './mondata.js';
+import { fall_asleep } from './timeout.js';
+import { M_SEEN_SLEEP } from './const.js';
 const G_GONE = MFLAGS.G_GENOD | MFLAGS.G_EXTINCT;
 
 function note_unported_potion(what) {
@@ -1165,6 +1170,41 @@ async function peffect_water(otmp) {
 
 // src/potion.c:1333 peffects() — dispatch one quaffed potion.
 // Returns -1 to let dopotion() finish (identify + useup), matching C.
+// src/potion.c peffect_full_healing()
+async function peffect_full_healing(otmp) {
+    await You_feel('completely healed.');
+    await healup(400, 4 + 4 * bcsign(otmp), !otmp.cursed, true);
+    /* Restore one lost level if blessed */
+    if (otmp.blessed && game.u.ulevel < game.u.ulevelmax) {
+        /* when multiple levels have been lost, drinking multiple potions
+           will only get half of them back */
+        game.u.ulevelmax -= 1;
+        await pluslvl(false);
+    }
+    await make_hallucinated(0, true, 0);
+    exercise(A_STR, true);
+    exercise(A_CON, true);
+    /* blessed potion heals wounded legs even when riding (so heals steed's
+       legs--it's magic); uncursed potion heals hero's legs unless riding */
+    const wounded_legs = ((game.u.intrinsic?.HWounded_legs || 0) > 0)
+                         || !!(game.u.EWounded_legs || 0);
+    if (wounded_legs && (otmp.blessed || (!otmp.cursed && !game.u.usteed)))
+        await heal_legs(0);
+}
+
+// src/potion.c peffect_sleeping()
+async function peffect_sleeping(otmp) {
+    if (Sleep_resistance()
+        || game.u.uprops?.FREE_ACTION || game.u.intrinsic?.HFree_action) {
+        monstseesu(M_SEEN_SLEEP);
+        await You('yawn.');
+    } else {
+        await You('suddenly fall asleep!');
+        monstunseesu(M_SEEN_SLEEP);
+        await fall_asleep(-rn1(10, 25 - 12 * bcsign(otmp)), true);
+    }
+}
+
 async function peffects(otmp) {
     switch (otmp.otyp) {
     case ONAMES.POT_BOOZE:
@@ -1175,6 +1215,9 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_EXTRA_HEALING:
         await peffect_extra_healing(otmp);
+        break;
+    case ONAMES.POT_FULL_HEALING:
+        await peffect_full_healing(otmp);
         break;
     case ONAMES.POT_GAIN_ENERGY:
         await peffect_gain_energy(otmp);
@@ -1190,6 +1233,9 @@ async function peffects(otmp) {
         break;
     case ONAMES.POT_PARALYSIS:
         await peffect_paralysis(otmp);
+        break;
+    case ONAMES.POT_SLEEPING:
+        await peffect_sleeping(otmp);
         break;
     case ONAMES.POT_MONSTER_DETECTION:
         if (await peffect_monster_detection(otmp))

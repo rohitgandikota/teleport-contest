@@ -674,6 +674,12 @@
     { "group": "Elemental terrain transitions", "id": "zap-over-floor.cold-liquid-range", "cFile": "src/zap.c", "cFunction": "zap_over_floor", "description": "Reduce the remaining cold-ray range by three after freezing or solidifying liquid terrain" },
     { "group": "Elemental terrain transitions", "id": "zap-over-floor.cold-bury-objects", "cFile": "src/dig.c", "cFunction": "bury_objs", "description": "Move floor objects onto the buried chain when cold magic creates ice or solid rock" },
     { "group": "Elemental terrain transitions", "id": "zap-over-floor.cold-start-melt-timer", "cFile": "src/zap.c", "cFunction": "start_melt_ice_timeout", "description": "Schedule the C-reference random melt timer for newly frozen water terrain" },
-    { "group": "Elemental terrain transitions", "id": "zap-over-floor.cold-object-ice-effects", "cFile": "src/mkobj.c", "cFunction": "obj_ice_effects", "description": "Mark a buried corpse as on ice, double its remaining decay time, and adjust its stored age" }
+    { "group": "Elemental terrain transitions", "id": "zap-over-floor.cold-object-ice-effects", "cFile": "src/mkobj.c", "cFunction": "obj_ice_effects", "description": "Mark a buried corpse as on ice, double its remaining decay time, and adjust its stored age" },
+    { "group": "Chronicle and conduct", "id": "ui.command.chronicle-direct-key", "cFile": "src/cmd.c", "cFunction": "do_gamelog", "description": "Open the major-event chronicle with its default direct v binding without consuming game time" },
+    { "group": "Chronicle and conduct", "id": "conduct.wish.first-chronicle", "cFile": "src/zap.c", "cFunction": "makewish", "description": "Record the first wish with the hero possessive, original request, and actual granted object" },
+    { "group": "Chronicle and conduct", "id": "conduct.wish.first-artifact-chronicle", "cFile": "src/zap.c", "cFunction": "makewish", "description": "Record the first artifact wish separately after an earlier ordinary wish" },
+    { "group": "Chronicle and conduct", "id": "conduct.wish.repeat-chronicle", "cFile": "src/zap.c", "cFunction": "makewish", "description": "Record a later ordinary wish without repeating either first-wish milestone" },
+    { "group": "Chronicle and conduct", "id": "conduct.wish.decline-chronicle", "cFile": "src/zap.c", "cFunction": "makewish", "description": "Record an explicit wish for nothing while preserving wishless conduct" },
+    { "group": "Chronicle and conduct", "id": "conduct.weapon.first-hit-chronicle", "cFile": "src/uhitm.c", "cFunction": "first_weapon_hit", "description": "Record the first damaging melee hit with a wielded weapon before a same-turn kill while excluding player-supplied object names" }
   ]
 }

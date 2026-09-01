@@ -1542,6 +1542,10 @@ export async function rhack(key) {
         // src/cmd.c cmdlist — 'i' is ddoinv, which returns ECMD_OK.
         game.context.move = 0;
         await show_inventory();
+    } else if (ch === 'v') {
+        // src/cmd.c:1693 cmdlist, 'v' is #chronicle / do_gamelog.
+        const { do_gamelog } = await import('./insight.js');
+        game.context.move = ((await do_gamelog()) === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x18') {
         // src/cmd.c cmdlist — ^X is doattributes, which returns ECMD_OK.
         game.context.move = 0;

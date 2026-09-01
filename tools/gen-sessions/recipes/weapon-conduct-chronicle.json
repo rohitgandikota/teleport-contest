@@ -1,0 +1,42 @@
+{
+  "name": "weapon-conduct-chronicle",
+  "description": "Debug heroes exercise direct chronicle access, every wish-log transition, and the first wielded-weapon hit with a known cursed custom-named dagger, pinning sanitized names and event order.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.menus",
+    "level.ordinary",
+    "monster.hero-melee",
+    "combat.melee",
+    "object.weapons",
+    "ending.conduct-achievement"
+  ],
+  "branches": [
+    "conduct.weapon.first-hit-chronicle",
+    "conduct.wish.decline-chronicle",
+    "conduct.wish.first-artifact-chronicle",
+    "conduct.wish.first-chronicle",
+    "conduct.wish.repeat-chronicle",
+    "ui.command.chronicle-direct-key"
+  ],
+  "segments": [
+    {
+      "seed": 7402,
+      "datetime": "20000110090300",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed +20 dagger named Secret\rwe\u0007sleeping hostile newt\ryv\u001b"
+    },
+    {
+      "seed": 7403,
+      "datetime": "20000110090400",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed apple\r\u0017blessed Excalibur\r\u0017uncursed pear\rv\u001b"
+    },
+    {
+      "seed": 7404,
+      "datetime": "20000110090500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017nothing\rv\u001b"
+    }
+  ]
+}

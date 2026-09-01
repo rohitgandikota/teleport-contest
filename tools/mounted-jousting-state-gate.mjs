@@ -81,6 +81,14 @@ function assertNoFormerMarker() {
     'jousting leaves no former unported marker');
 }
 
+function assertFirstWeaponLog(name) {
+    const events = (game.gamelog || []).filter(event =>
+        event.text.startsWith('hit with a wielded weapon ('));
+    assert.deepEqual(events.map(event => event.text), [
+        `hit with a wielded weapon (${name}) for the first time`,
+    ], 'a first joust records one wielded-weapon milestone before shattering');
+}
+
 let state = await setup();
 let before = { x: state.target.mx, y: state.target.my };
 let attack = await strike(state.target, state.lance);
@@ -99,6 +107,7 @@ assert.equal((game.invent || []).includes(state.lance), false,
              'a shattered primary lance leaves inventory');
 assert.equal(!!game.u.twoweap, false,
              'shattering disables two-weapon mode');
+assertFirstWeaponLog('lance');
 assert.deepEqual({ x: state.target.mx, y: state.target.my },
                  { x: before.x, y: before.y + 1 },
                  'a surviving joust target is knocked back one square');

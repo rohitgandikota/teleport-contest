@@ -40,7 +40,7 @@ import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, MOAT, WEB, u_at,
 import { mungspaces } from './hacklib.js';
 import { display_binventory, hands_obj, hold_another_object } from './invent.js';
 import { force_decor, u_safe_from_fatal_corpse } from './pickup.js';
-import { an, aobjnam } from './objnam.js';
+import { an, aobjnam, doname } from './objnam.js';
 import { artifact_origin, defends, defends_when_carried } from './artifact.js';
 import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_destroy_nhwindow, NHW_TEXT } from './tty/wintty.js';
@@ -67,7 +67,8 @@ import { losexp, more_experienced } from './exper.js';
 import { encumber_msg, exercise, Fast, Very_fast } from './attrib.js';
 import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
-import { Norep, pline_The, You, Your, You_feel, You_hear } from './pline.js';
+import { livelog_add, Norep, pline_The, You, Your, You_feel,
+         You_hear } from './pline.js';
 import { pline } from './display.js';
 import { An, The, distant_name, vtense, xname, Yname2, yname, makeplural,
          Yobjnam2, otense } from './objnam.js';
@@ -1068,6 +1069,7 @@ export async function makewish() {
     const nothing = {}; /* cg.zeroobj; only its address matters */
     let tries = 0;
     game.u.uconduct ||= {};
+    const oldwisharti = game.u.uconduct.wisharti || 0;
 
     (game.context ||= {}).resume_wish = 0;
     if (game.flags?.verbose !== false)
@@ -1119,7 +1121,8 @@ export async function makewish() {
                 return; /* for safety; should never happen */
         } else if (otmp === nothing) {
             /* explicitly wished for "nothing", presumably attempting
-               to retain wishless conduct; the livelog is out-of-band */
+               to retain wishless conduct */
+            livelog_add('declined to make a wish');
             return;
         } else if (otmp === hands_obj) {
             wish_history_add(bufcpy);
@@ -1135,9 +1138,19 @@ export async function makewish() {
         artifact_origin(otmp, ONAME_WISH | ONAME_KNOW_ARTI);
     }
 
-    /* wisharti conduct handled in readobjnam(); the livelog_printf events
-       (first wish / first artifact wish / wished for ...) are out-of-band */
-    game.u.uconduct.wishes = (game.u.uconduct.wishes || 0) + 1; /* KMH */
+    /* wisharti conduct is handled in readobjnam(). Log the request and actual
+       result before the object is placed, matching src/zap.c:6387. */
+    const wish = `"${bufcpy}", got "${doname(otmp)}"`;
+    const oldwishes = game.u.uconduct.wishes || 0;
+    const possessive = game.flags?.female ? 'her' : 'his';
+    game.u.uconduct.wishes = oldwishes + 1; /* KMH */
+    if (!oldwishes) {
+        livelog_add(`made ${possessive} first wish - ${wish}`);
+    } else if (!oldwisharti && game.u.uconduct.wisharti) {
+        livelog_add(`made ${possessive} first artifact wish - ${wish}`);
+    } else {
+        livelog_add(`wished for ${wish}`);
+    }
 
     if (otmp.otyp === ONAMES.CORPSE
         && !u_safe_from_fatal_corpse(otmp, st_all))

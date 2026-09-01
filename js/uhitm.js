@@ -18,7 +18,7 @@ import { dmgtype, monstseesu, monstunseesu } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor, extract_from_minvent } from './worn.js';
 import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.js';
-import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
+import { You, Your, You_feel, You_hear, livelog_add, pline_The } from './pline.js';
 import { end_running } from './hack.js';
 import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
          x_monnam, hliquid, hcolor, pmname, Some_Monnam } from './do_name.js';
@@ -43,9 +43,11 @@ import { is_ammo, is_missile, ammo_and_launcher, set_twoweap,
 import { obj_extract_self, update_inventory, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
+         artifact_names,
          ART_OGRESMASHER } from './artilist_data.js';
 import { an, aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
-         otense, mshot_xname, Yname2, Yobjnam2, doname } from './objnam.js';
+         obj_is_pname, otense, mshot_xname, Yname2, Yobjnam2,
+         doname } from './objnam.js';
 import { mintrap, instapetrify, minstapetrify, mselftouch, erode_obj,
          ignite_items } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
@@ -116,6 +118,27 @@ import { stop_occupation } from './allmain.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
+}
+
+// src/uhitm.c:1963 first_weapon_hit() records the first wielded-weapon hit
+// after damage has been resolved but before a possible kill is logged. Its
+// name deliberately excludes player-supplied object names from the chronicle.
+export function first_weapon_hit(weapon) {
+    let name = weapon.cursed && weapon.bknown ? 'cursed ' : '';
+
+    if (obj_is_pname(weapon)) {
+        name += weapon.oname;
+    } else {
+        name += simpleonames(weapon);
+        if (weapon.oartifact && weapon.dknown) {
+            const artifactName = artifact_names[weapon.oartifact]
+                || weapon.oname || '';
+            if (artifactName)
+                name += ` named ${artifactName.replace(/^The /, 'the ')}`;
+        }
+    }
+    livelog_add(
+        `hit with a wielded weapon (${name}) for the first time`);
 }
 
 // src/uhitm.c:6341 flash_hits_mon(), camera and wand-light flashes wake,
@@ -700,17 +723,6 @@ export async function known_hitum(mon, weapon, mhit, rollneeded, armorpenalty,
         if (weapon && (weapon.oclass === OCLASSES.WEAPON_CLASS
                        || is_weptool(weapon, game.objects))) {
             game.u.uconduct = game.u.uconduct || {};
-            if (!oldweaphit) {
-                /* src/uhitm.c:1962 first_weapon_hit() — log before the
-                   monster possibly dies; buf is [cursed ]simpleonames */
-                const { livelog_add } = await import('./pline.js');
-                const { xname } = await import('./objnam.js');
-                let wnam = xname(weapon);
-                if (weapon.cursed && weapon.bknown)
-                    wnam = `cursed ${wnam}`;
-                livelog_add(
-                    `hit with a wielded weapon (${wnam}) for the first time`);
-            }
             game.u.uconduct.weaphit = oldweaphit + 1;
         }
 
@@ -1660,7 +1672,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
             && (thrown === HMON_MELEE || thrown === HMON_APPLIED)
             && !hmd.jousting
             && hmd.dmg > 0 && (game.u.uconduct?.weaphit ?? 0) <= 1)
-            note_unported_uhitm('hmon_hitmon:first_weapon_hit');
+            first_weapon_hit(obj);
         mon.mhp -= hmd.dmg;
     }
     /* adjustments might have made tmp become less than what a level-draining
@@ -2003,6 +2015,9 @@ async function hmon_hitmon_jousting(hmd, mon, obj) {
     hmd.dmg += d(2, obj === game.u.uwep ? 10 : 2);
     await You(`joust ${mon_nam(mon)}${
         canseemon(mon) ? exclam(hmd.dmg) : '.'}`);
+
+    if ((game.u.uconduct?.weaphit ?? 0) <= 1)
+        first_weapon_hit(obj);
 
     if (hmd.jousting < 0) {
         set_twoweap(false);

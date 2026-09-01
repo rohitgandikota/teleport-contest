@@ -24,7 +24,7 @@ import { teleds, safe_teleds, TELEDS_ALLOW_DRAG,
 import { done } from './end.js';
 import { recalc_block_point, vision_recalc } from './vision.js';
 import { useupall } from './invent.js';
-import { destroy_items, obj_resists } from './zap.js';
+import { burn_floor_objects, destroy_items, obj_resists } from './zap.js';
 
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
@@ -308,6 +308,9 @@ async function dofiretrap(box) {
         await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDmg);
         await ignite_items(game.invent);
     }
+    if (await burn_floor_objects(game.u.ux, game.u.uy, !Blind(), true)
+        && Blind())
+        await You('smell paper burning.');
 }
 
 // src/trap.c:6294 chest_trap(), the full luck and effect outcome tables.
@@ -1001,6 +1004,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_slp_gas_trap(game.youmonst, trap, trflags);
     if (ttype === RUST_TRAP)
         return await trapeffect_rust_trap(game.youmonst, trap, trflags);
+    if (ttype === FIRE_TRAP)
+        return await trapeffect_fire_trap(game.youmonst, trap, trflags);
     if (ttype === ROLLING_BOULDER_TRAP)
         return await trapeffect_rolling_boulder_trap(game.youmonst, trap, trflags);
     if (ttype === PIT || ttype === SPIKED_PIT)
@@ -1281,7 +1286,8 @@ export async function drain_en(n, max_already_drained) {
 // this when their one-in-21 monster trigger fires.
 async function trapeffect_fire_trap(mtmp, trap, trflags) {
     if (mtmp === game.youmonst) {
-        note_unported_trap('trapeffect_fire_trap:hero');
+        seetrap(trap);
+        await dofiretrap(null);
         return Trap_Effect_Finished;
     }
 

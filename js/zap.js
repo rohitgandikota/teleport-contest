@@ -16,7 +16,7 @@ import { display_cmap_at, display_object_at, flush_screen, map_invisible,
 import { closed_door } from './cmd.js';
 import { is_drawbridge_wall, is_ice } from './dbridge.js';
 
-import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB,
+import { STONE, WATER, LAVAWALL, IRONBARS, IS_SINK, POOL, WEB, u_at,
          THROWN_WEAPON, KICKED_WEAPON, ZAPPED_WAND, FLASHED_LIGHT, M_AP_TYPE,
          M_AP_NOTHING, M_AP_MONSTER, M_AP_OBJECT, ICE,
          Is_airlevel, Is_waterlevel, st_all, plur,
@@ -64,7 +64,7 @@ import { A_WIS } from './const.js';
 import { rn1 } from './rng.js';
 import { Norep, pline_The, You, Your, You_feel, You_hear } from './pline.js';
 import { pline } from './display.js';
-import { The, vtense, xname, Yname2, yname, makeplural,
+import { An, The, distant_name, vtense, xname, Yname2, yname, makeplural,
          Yobjnam2, otense } from './objnam.js';
 import { Monnam, mon_nam, noit_mon_nam } from './do_name.js';
 import { canseemon, canspotmon } from './display.js';
@@ -2537,7 +2537,7 @@ export async function ureflects(fmt = null, str = null) {
 
 // src/zap.c:4598 burn_floor_objects(). Fire consumes eligible paper and slime
 // stacks, then lights every exposed fuel source left on the square.
-async function burn_floor_objects(x, y, give_feedback, u_caused) {
+export async function burn_floor_objects(x, y, give_feedback, u_caused) {
     const at = () => (game.level?.objects || []).filter(obj =>
         obj.where === OBJ_FLOOR && obj.ox === x && obj.oy === y);
     let count = 0;
@@ -2559,6 +2559,16 @@ async function burn_floor_objects(x, y, give_feedback, u_caused) {
         if (!destroyed)
             continue;
 
+        let singular = '', plural = '';
+        if (give_feedback) {
+            const originalQuantity = obj.quan;
+            obj.quan = 1;
+            singular = u_at(x, y) ? xname(obj) : distant_name(obj, xname);
+            obj.quan = 2;
+            plural = u_at(x, y) ? xname(obj) : distant_name(obj, xname);
+            obj.quan = originalQuantity;
+        }
+
         if (u_caused) {
             await useupf(obj, destroyed);
         } else if (destroyed < quantity) {
@@ -2568,8 +2578,12 @@ async function burn_floor_objects(x, y, give_feedback, u_caused) {
             delobj(obj);
         }
         count += destroyed;
-        if (give_feedback)
-            note_unported_zap('burn_floor_objects:feedback');
+        if (give_feedback) {
+            if (destroyed > 1)
+                await pline(`${destroyed} ${plural} burn.`);
+            else
+                await pline(`${An(singular)} burns.`);
+        }
     }
     await ignite_items(at());
     return count;

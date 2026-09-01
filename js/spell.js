@@ -31,6 +31,7 @@ import { update_inventory } from './invent.js';
 import { obfree } from './invent.js';
 import { use_skill } from './weapon.js';
 import { seffects } from './read.js';
+import { peffects } from './potion.js';
 import { NODIR, NO_KILLER_PREFIX } from './const.js';
 import { A_WIS, KILLED_BY_AN } from './const.js';
 import { morehungry } from './eat.js';
@@ -709,7 +710,7 @@ export async function spelleffects(spell_otyp, atme, force) {
         await seffects(pseudo);
         break;
 
-    /* these are all duplicates of potion effects (peffects); not ported */
+    /* these are all duplicates of potion effects */
     case ONAMES.SPE_HASTE_SELF:
     case ONAMES.SPE_DETECT_TREASURE:
     case ONAMES.SPE_DETECT_MONSTERS:
@@ -719,7 +720,7 @@ export async function spelleffects(spell_otyp, atme, force) {
             pseudo.blessed = 1;
         /* FALLTHRU */
     case ONAMES.SPE_INVISIBILITY:
-        note_unported_spell('spelleffects:peffects');
+        await peffects(pseudo);
         break;
 
     case ONAMES.SPE_CURE_BLINDNESS:

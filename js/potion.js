@@ -1510,7 +1510,7 @@ async function peffect_speed(otmp) {
     }
 }
 
-async function peffects(otmp) {
+export async function peffects(otmp) {
     switch (otmp.otyp) {
     case ONAMES.POT_BOOZE:
         await peffect_booze(otmp);
@@ -1574,6 +1574,7 @@ async function peffects(otmp) {
         await peffect_speed(otmp);
         break;
     case ONAMES.POT_MONSTER_DETECTION:
+    case ONAMES.SPE_DETECT_MONSTERS:
         if (await peffect_monster_detection(otmp))
             return 1;
         break;

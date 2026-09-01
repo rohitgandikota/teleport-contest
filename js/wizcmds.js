@@ -314,6 +314,8 @@ function wiz_intrinsic_timeout(key) {
         return (game.u.intrinsic?.HStun | 0) & TIMEOUT;
     if (key === 'FUMBLING')
         return (game.u.intrinsic?.HFumbling | 0) & TIMEOUT;
+    if (key === 'DETECT_MONSTERS')
+        return Number(game.u.uprops?.DETECT_MONSTERS) || 0;
     return Number(game.u.wiz_intrinsic_timeouts?.[key]) || 0;
 }
 
@@ -406,6 +408,11 @@ export async function wiz_intrinsic() {
             const intr = (game.u.intrinsic ||= {});
             const timeout = Math.min(TIMEOUT, oldtimeout + amount);
             intr.HFumbling = ((intr.HFumbling | 0) & ~TIMEOUT) | timeout;
+            (game.disp ||= {}).botl = true;
+            await pline(`Timeout for ${name} ${oldtimeout
+                ? 'increased by' : 'set to'} ${amount}.`);
+        } else if (key === 'DETECT_MONSTERS') {
+            (game.u.uprops ||= {}).DETECT_MONSTERS = oldtimeout + amount;
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
                 ? 'increased by' : 'set to'} ${amount}.`);

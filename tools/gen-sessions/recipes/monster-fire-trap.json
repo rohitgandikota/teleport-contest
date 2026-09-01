@@ -1,0 +1,48 @@
+{
+  "name": "monster-fire-trap",
+  "description": "Monster-triggered fire traps exercise direct damage, fire resistance, carried-item ignition, floor-object burning, trap discovery, and unseen smoke feedback.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.movement",
+    "object.scrolls",
+    "object.tools-containers",
+    "traps.monster",
+    "traps.projectile-physical",
+    "turn.timers",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "trapeffect-fire-trap.visible-monster",
+    "trapeffect-fire-trap.fire-resistant-monster",
+    "trapeffect-fire-trap.monster-max-hp-loss",
+    "trapeffect-fire-trap.fire-resistance-no-hp-loss",
+    "trapeffect-fire-trap.monster-inventory-ignition",
+    "trapeffect-fire-trap.monster-floor-destruction",
+    "trapeffect-fire-trap.unseen-nearby-smoke",
+    "trapeffect-fire-trap.visible-trap-discovery",
+    "trapeffect-fire-trap.unseen-trap-hidden",
+    "wiz-intrinsic.monster-detection-state"
+  ],
+  "segments": [
+    {
+      "seed": 8458,
+      "datetime": "20260901093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u00176 uncursed scrolls of amnesia\rdn\u0017fire trap\rl\u0017boulder\rj\u0007sleeping hostile gnome king\r#wiztelekinesis\ry.h   \u001b:"
+    },
+    {
+      "seed": 8458,
+      "datetime": "20260901093100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u00176 uncursed scrolls of amnesia\rdn\u0017fire trap\rl\u0017boulder\rj#wizintrinsic\rt\r #wizintrinsic\ri\r \u0007sleeping hostile gnome king\r#wiztelekinesis\ry.h \u001b:"
+    },
+    {
+      "seed": 8458,
+      "datetime": "20260901093200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u00176 uncursed scrolls of amnesia\rdn\u0017fire trap\rl\u0017boulder\rj\u0007sleeping hostile fire ant\r#wiztelekinesis\ry.h   \u001b:"
+    }
+  ]
+}

@@ -9,6 +9,7 @@
 import { m_at, t_at as t_at_mon } from './mon.js';
 import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
+import { distu } from './hacklib.js';
 import { near_capacity } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
          STONING, WATER, FIRE_RES, FAST, MFAST, XKILL_NOMSG,
@@ -1291,8 +1292,9 @@ async function trapeffect_fire_trap(mtmp, trap, trflags) {
         return Trap_Effect_Finished;
     }
 
+    const tx = trap.tx, ty = trap.ty;
     const in_sight = canseemon(mtmp) || mtmp === game.u.usteed;
-    const see_it = cansee(trap.tx, trap.ty);
+    const see_it = cansee(tx, ty);
     const orig_dmg = d(2, 4);
     let trapkilled = false;
 
@@ -1340,6 +1342,7 @@ async function trapeffect_fire_trap(mtmp, trap, trflags) {
 
     if (await burnarmor(mtmp) || rn2(3)) {
         const xtradmg = await destroy_items(mtmp, ATTKS.AD_FIRE, orig_dmg);
+        await ignite_items(mtmp.minvent || []);
         if (mtmp.mhp > 0) {
             mtmp.mhp -= xtradmg;
             if (mtmp.mhp <= 0) {
@@ -1349,10 +1352,14 @@ async function trapeffect_fire_trap(mtmp, trap, trflags) {
         }
     }
 
+    if (await burn_floor_objects(tx, ty, see_it, false)
+        && !see_it && distu(tx, ty) <= 9)
+        await You('smell smoke.');
+
     if (mtmp.mhp <= 0)
         trapkilled = true;
-    if (see_it)
-        seetrap(trap);
+    if (see_it && t_at_mon(tx, ty))
+        seetrap(t_at_mon(tx, ty));
     return trapkilled ? Trap_Killed_Mon : mtmp.mtrapped
         ? Trap_Caught_Mon : Trap_Effect_Finished;
 }

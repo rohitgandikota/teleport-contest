@@ -6,10 +6,11 @@ import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
          change_luck } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
-         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD } from './const.js';
+         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD, EYE } from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
-import { singular, xname, an, the, The, otense, mshot_xname, doname }
+import { singular, xname, an, the, The, otense, mshot_xname, doname,
+         makeplural }
     from './objnam.js';
 import { skill_name, weapon_descr, weapon_type, P_SKILL } from './weapon.js';
 import { SKILLS, MATERIALS } from './objects_data.js';
@@ -26,14 +27,14 @@ import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
 import { greatest_erosion } from './do_wear.js';
 import { rnl } from './rng.js';
 import { is_pole, is_spear } from './u_init.js';
-import { You, You_cant, You_hear } from './pline.js';
+import { You, You_cant, You_hear, Your } from './pline.js';
 import { ammo_and_launcher } from './wield.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED } from './const.js';
 import { getobj, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_DOWNPLAY,
          GETOBJ_PROMPT, GETOBJ_ALLOWCNT } from './invent.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { throws_rocks, is_orc, is_elf, is_unicorn, is_domestic, notake,
-         nohands, breathless, haseyes } from './mondata.js';
+         nohands, breathless, eyecount, haseyes } from './mondata.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { is_weptool } from './mkobj.js';
 import { hitval, weapon_hit_bonus } from './weapon.js';
@@ -679,8 +680,13 @@ async function break_potion_after_test(obj) {
         if (obj.otyp !== ONAMES.POT_WATER && !halfGasDamage) {
             if (!breathless(game.youmonst.data))
                 await You('smell a peculiar odor...');
-            else
-                note_unported_dothrow('breakobj:breathless-eyes-water');
+            else {
+                const count = eyecount(game.youmonst.data);
+                let eyes = body_part(EYE);
+                if (count !== 1)
+                    eyes = makeplural(eyes);
+                await Your(`${eyes} ${count === 1 ? 'waters' : 'water'}.`);
+            }
         }
         const { potionbreathe } = await import('./potion.js');
         await potionbreathe(obj);

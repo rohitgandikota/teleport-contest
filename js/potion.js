@@ -14,7 +14,7 @@ import { exercise, adjattrib, A_MAX, ACURR, Fast } from './attrib.js';
 import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
          BOLT_LIM, KILLED_BY_AN, KILLED_BY, POTHIT_HERO_THROW,
          POTHIT_OTHER_THROW,
-         HEAD, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
+         HEAD, EYE, SICK_ALL, TIMEOUT, A_CHAOTIC, A_LAWFUL, NON_PM,
          Upolyd, ismnum, FAST, MFAST, MSLOW, STRAT_WAITFORU } from './const.js';
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
@@ -43,7 +43,7 @@ import { GETOBJ_EXCLUDE_INACCESS } from './invent.js';
 import { doname, otense, short_oname, simpleonames, thesimpleoname,
          Tobjnam } from './objnam.js';
 import { body_part } from './polyself.js';
-import { breathless, dmgtype, haseyes, has_head, is_human, is_silent,
+import { breathless, dmgtype, eyecount, haseyes, has_head, is_human, is_silent,
          mon_hates_blessings, resists_acid, resists_poison, stagger, sticks }
     from './mondata.js';
 import { cansee, vision_recalc } from './vision.js';
@@ -223,8 +223,13 @@ export async function potionbreathe(obj) {
             if (obj.cursed) {
                 if (!breathless(game.youmonst.data))
                     await pline('Ulch!  That potion smells terrible!');
-                else
-                    note_unported_potion('potionbreathe:cursed-ability-eyes');
+                else if (haseyes(game.youmonst.data)) {
+                    const count = eyecount(game.youmonst.data);
+                    let eyes = body_part(EYE);
+                    if (count !== 1)
+                        eyes = makeplural(eyes);
+                    await Your(`${eyes} ${count === 1 ? 'stings' : 'sting'}!`);
+                }
             } else {
                 let i = rn2(A_MAX);
                 let isdone = false;

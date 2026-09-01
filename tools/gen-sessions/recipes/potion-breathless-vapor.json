@@ -1,0 +1,32 @@
+{
+  "name": "potion-breathless-vapor",
+  "description": "Level-30 debug Wizards inhale cursed ability vapor while polymorphed into a breathless vampire. An uncovered vampire's eyes water and sting, while a wet towel blocks both effects.",
+  "coverage": [
+    "combat.ranged",
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "object.potions",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "breakobj.potion-breathless-eyes-water",
+    "potionbreathe.restore-gain-cursed-breathless-eyes",
+    "potionbreathe.wet-towel"
+  ],
+  "segments": [
+    {
+      "seed": 7605,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             l#polyself\rvampire\r\u001b\u0017cursed potion of restore ability\rtp>   \u001b"
+    },
+    {
+      "seed": 7606,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             l#polyself\rvampire\r\u001b\u0017uncursed wet towel\rPp\u001b\u0017cursed potion of gain ability\rtq>   \u001b"
+    }
+  ]
+}

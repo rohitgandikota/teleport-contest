@@ -901,6 +901,11 @@ export const hates_light = (ptr) => ptr.pmidx === PMNAMES.PM_GREMLIN;
 
 // include/mondata.h:46 haseyes()
 export const haseyes = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOEYES) === 0;
+// include/mondata.h:48 eyecount(). Only Cyclops and floating-eye anatomy is
+// singular; every other form with eyes uses a plural body-part message.
+export const eyecount = (ptr) => !haseyes(ptr) ? 0
+    : (ptr.pmidx === PMNAMES.PM_CYCLOPS
+       || ptr.pmidx === PMNAMES.PM_FLOATING_EYE) ? 1 : 2;
 
 // src/mondata.c:1507 olfaction(): forms known not to have a sense of smell.
 export const olfaction = (ptr) =>

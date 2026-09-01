@@ -229,3 +229,35 @@ wand-striking-door  RNG 3137/3612  screens 34/69
   to any fixed corpus, this one included.
 - Re-record after any recorder rebuild before trusting old outputs:
   `node scripts/verify-rerecord.mjs seed0077` is the quick canary.
+
+## Random play with the oracle attached (fuzz.mjs)
+
+```bash
+node tools/gen-sessions/fuzz.mjs --games 30 --keys 300 --seed 3   # record, score, rank causes
+node tools/gen-sessions/fuzz.mjs --score-only                       # re-score everything in fuzz/
+node tools/gen-sessions/fuzz.mjs --report                           # causes over every batch
+```
+
+Key streams are sampled from a trigram model of the public sessions'
+inputs, split by chargen style, play mode and legacy intro; seeds and
+datetimes are fresh. The recorder plays them, the frozen runner scores
+them, `tools/diverge.mjs` names the first C function we diverge in. Batch
+pass rate is a local proxy for the held-out score. Output lives in
+`tools/gen-sessions/fuzz/` (gitignored); to keep a failing game as
+permanent coverage, copy its `<name>.recipe.json` into `recipes/`, add the
+coverage tags, and record it normally. `tools/jsplay.mjs <session>
+--rng-at N` prints our own stack for a draw when the divergence is ours.
+
+## Coverage from the source (rng-sites.mjs)
+
+```bash
+node tools/rng-sites.mjs              # per C file: RNG sites observed / unobserved
+node tools/rng-sites.mjs --functions  # functions with unreached sites, worst first
+node tools/rng-sites.mjs --never      # functions no oracle trace has ever entered
+node tools/rng-sites.mjs --file dig.c # every site in one file with hit counts
+```
+
+This is the census the coverage matrix cannot give: which RNG-drawing C
+branches no recorded trace has ever executed, and which of those are already
+"ported" in js/ without an oracle. Write recipes from its output, not from
+the tag list.

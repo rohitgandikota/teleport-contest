@@ -1,5 +1,102 @@
 # STATUS — live handoff board
 
+## 2026-09-01: fuzz-driven divergence hunting and the RNG call-site census
+
+**Where we really stand.** The leaderboard (`node tools/leaderboard.mjs`) has
+us third on held-out at 6,032/11,265 screens, 9/44 passes, rank 3, and that
+number has not moved since 2026-08-27 while the supplemental recipe count went
+from 75 to 326. The top fork is at 11,264/11,265 held-out. Public is 44/44.
+The hand-written coverage matrix (106 requirements, 98 covered) is therefore
+not measuring what the held-out set measures.
+
+**Two new instruments, both driven by the C, not by the public sessions.**
+
+- `node tools/rng-sites.mjs` — a census of every rn2/rnd/rnl/rne/rnz/d/rn1/
+  ROLL_FROM call site in `src/*.c` against every `@ fn(file:line)` tag in the
+  union corpus (public + generated). Result: 2,621 sites, 1,390 observed
+  (53.0%), 1,231 never reached by any oracle trace; 865 RNG-drawing C
+  functions, 346 never observed, of which 133 are defined in `js/` and were
+  ported blind. `--functions`, `--never`, `--file X.c` give the work list.
+- `node tools/gen-sessions/fuzz.mjs --games N` — random-play sessions: key
+  streams sampled from a trigram model of the public sessions' inputs (split
+  by pinned/menu chargen, debug/normal, legacy on/off), fresh seeds and
+  datetimes, recorded through the C recorder (about 5 ms per key), scored by
+  the frozen runner, first divergence named by `diverge.mjs`. Batch pass rate
+  is a local proxy for held-out: 42 games went 16/42 → 20/42 passing and
+  64% → 70% screens after this session's fixes. `--score-only` re-scores,
+  `--report` aggregates causes. Output is gitignored under
+  `tools/gen-sessions/fuzz/`; copy a `.recipe.json` into `recipes/` to keep one.
+- `node tools/jsplay.mjs <session> [--until N] [--rng-at I] [--state]` — replays
+  a session through our port and prints OUR stack at RNG draw I (js/rng.js's
+  `__rng_stack_at`), the hero/level state, feature cells. Use it whenever
+  `diverge.mjs` says "ours drew X" and there is no C line to blame.
+
+**Fixed this session (each from the C, each verified on its fuzz game and on
+public 44/44 + hang gate):** `ILLOBJ_CLASS` ReferenceError in readobjnam
+(single-char class wishes crashed the session); getobj's "anything else to"
+via `inaccess` counting; `dohelp` now goes through `select_menu(PICK_ONE)` (any
+non-matching key used to dismiss the `?` menu); item-action menu gained the
+`-` unwield entry, the whole `a` apply block from `iactions.c`, and `T` take
+off; 5.0's Archeologist scroll-label deciphering in `addinv_core2()`; fountain
+and sink counts now follow C (`sel_set_feature()` writes `levl[][].typ` directly
+and never counts, `mklev()` never recounts — themed-room fountains are silent in
+C); `can_reach_floor()` ported in full (hugs, riding, ceiling hiders, Flying,
+huge forms, teetering at a seen pit or escaped shaft); `dosounds()` beehive,
+morgue, barracks and zoo arms with `mon_in_room()`/`get_iter_mons()`.
+
+**Open, with evidence in `tools/gen-sessions/fuzz/results.tsv` (re-run
+`fuzz.mjs --score-only` after any of these):**
+
+- getpos: C's `gather_locs()`/`gather_locs_interesting()`/`cmp_coord_distu()`
+  are not ported; `d`/`m` are hand-rolled and `o x a z` are absent. Breaks
+  `o` object cycling (s2-25 step 90), `z` in controlled teleport (s2-13 step
+  87, then `safe_teleds` fires where C used the chosen spot), travel
+  autodescribe (s2-05). Port the three C functions verbatim from `getpos.c`
+  and route all six gloc keys through them.
+- scroll of destroy armor: only the plain uncursed arm exists;
+  `some_armor()` must draw its rn2(4)s, `disintegrate_arm()`,
+  `disintegrate_cursed_armor()`, `maybe_destroy_armor()`,
+  `wornarm_destroyed()`, the confused and cursed arms (s2-24; C at
+  `read.c:1294-1400`, `do_wear.c:3144-3276`).
+- monster defensive items: `find_defensive()` lacks the unicorn horn, lizard,
+  wand of digging, wand/scroll of teleportation and wand of create monster
+  arms; `m_tele()` and general `mzapwand()` are absent (s1-07: a monster read a
+  scroll of teleportation; `muse.c:441-796`, `868-940`).
+- `doopen_indir()` lacks the pre-checks and the "no door there" / drawbridge /
+  container branches (s2-00, s2-28; `lock.c` doopen_indir). Needs
+  `container_at()`, `is_db_wall()`, `update_mapseen_for()`.
+- menu chargen with stray keys: C's `tty_yn_function` lowercases and treats
+  space/return as the default; ours consumed the whole stream (s1-04).
+- wishes: "blessed mail" must resolve to the scroll of mail via
+  `rnd_otyp_by_namedesc()` (C drew rn2(1) with maxprob 1); the random-class
+  `wrpsym[rn2(13)]` arm at `objnam.c:4996` (s2-01, s2-17).
+- tutorial: after "Resetting time to move #1." the status line keeps AC:10
+  across the --More-- in C, ours shows the restored AC (s1-02 step 85).
+- `can_reach_floor(TRUE)` still returns true in the tutorial where C returns
+  false (s2-06 step 128, no pit there; check Levitation/ustuck state).
+- s2-22: ours takes a level change at step 76 (`j`) that C does not; s1-03,
+  s2-13 and others diverge at `distfleeck` after a pet interaction.
+- `askname()` prompt layout (s2-14), extended-command line space handling
+  (s2-21 `#` with autocomplete), and `^X` "nighttime" vs "midnight hour"
+  (s2-27): the last is the recording-time `tm_isdst` shift in
+  `time_from_yyyymmddhhmmss()`, TZ-dependent and unmodelled by decision (see
+  NOTES); do not fit it.
+- Both over-read failures at step 0 were sampler artifacts (a `!legacy` key
+  stream fed to a legacy game); the sampler now splits on legacy. Note that an
+  over-read during `NethackGame.start()` throws outside the move loop and
+  loses every screen of the session.
+
+**Tree hygiene.** `js/terminal.js` is frozen and shows as modified in the
+working tree; that change is not part of this session's work and was not
+committed. Another session committed the statue-trap oracle and
+`tools/rng-sites.mjs` as 57b09ac while this one ran.
+
+**Next action.** Port `gather_locs()` and friends (three fuzz games, and every
+judge session that uses `;`, `_`, or controlled teleport), then the
+destroy-armor and `find_defensive()` sets, re-running `fuzz.mjs --games 30
+--seed 3` after each to keep the proxy honest. Push after every green gate;
+the held-out number is the only score that matters now.
+
 ## 2026-08-28: Candelabrum fuel and active candle attachment
 
 The `candelabrum-burnout` C oracle uses fresh debug seed 2211. It lights a

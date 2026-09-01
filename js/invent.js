@@ -19,7 +19,7 @@ import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
 import { Blind as heroBlind, Hallucination,
          Stone_resistance } from './youprop.js';
 import { doname, an, corpse_xname, makeplural, obj_typename, CXN_PFX_THE,
-         CXN_ARTICLE } from './objnam.js';
+         CXN_ARTICLE, yname } from './objnam.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { MONSYMS, NUMMONS, PMNAMES } from './monst_data.js';
 import { erosion_matters, curse, splitobj, start_glob_timeout } from './mkobj.js';
@@ -208,9 +208,8 @@ function addinv_finish(obj, objWasThrown) {
             return null;
         const finish = () => {
             otmp.pickup_prev = 1;
-            if (confers_luck(otmp))
-                set_moreluck();
-            return otmp;
+            const side = addinv_core2(otmp);
+            return side ? side.then(() => otmp) : otmp;
         };
         return (r instanceof Promise) ? r.then(finish) : finish();
     };
@@ -251,9 +250,31 @@ export function addinv_nomerge(obj) {
     /* src/invent.c:1117 — flags.invlet_constant defaults On, so the chain
        is kept in inv_rank order (gold first). */
     reorder_invent();
+    const side = addinv_core2(obj);
+    return side ? side.then(() => obj) : obj;
+}
+
+// src/invent.c:1022 addinv_core2() — side effects of an object having
+// just been added to inventory. Returns a promise only when it prints.
+function addinv_core2(obj) {
     if (confers_luck(obj))
         set_moreluck();
-    return obj;
+    /* Archeologists can decipher the writing on a scroll label to work out
+       what they are (exception: unlabeled scrolls don't have a label to
+       decipher) */
+    if (Role_if('Archeologist') && obj.oclass === OCLASSES.SCROLL_CLASS
+        && obj.otyp !== ONAMES.SCR_BLANK_PAPER && !heroBlind()
+        && !game.objects[obj.otyp].oc_name_known) {
+        observe_object(obj);
+        return pline(`You decipher the label on ${yname(obj)}.`).then(() => {
+            makeknown(obj.otyp);
+            /* conduct: this is avoidable via not picking up / wishing for
+               scrolls */
+            game.u.uconduct ||= {};
+            game.u.uconduct.literate = (game.u.uconduct.literate || 0) + 1;
+        });
+    }
+    return null;
 }
 
 // src/invent.c:4037 dfeature_at(), in C's arm order: door, fountain,
@@ -707,11 +728,17 @@ function getobj_letters(obj_ok, ctrlflags) {
     /* the chain is kept in inv_rank order by reorder_invent(), so a plain
        walk yields the letters in prompt order, as C's gi.invent walk does */
     let suggested = 0;
+    /* src/invent.c:1860 — inaccessible items (e.g. already-worn gear for
+       'P') are removed from the suggestions, but unlike plain exclusions
+       they turn "anything to ___" into "anything else to ___" */
+    let inaccess = 0;
     for (const otmp of (game.invent || [])) {
         const v = obj_ok ? obj_ok(otmp) : GETOBJ_SUGGEST;
         if (v === GETOBJ_SUGGEST) {
             buf += otmp.invlet;
             suggested++;
+        } else if (v === GETOBJ_EXCLUDE_INACCESS) {
+            inaccess++;
         } else if (v === GETOBJ_DOWNPLAY) {
             /* src/invent.c altlets: acceptable but omitted from the likely
                choices. Their presence still forces the [*] prompt. */
@@ -730,6 +757,7 @@ function getobj_letters(obj_ok, ctrlflags) {
         altChoices: altbuf,
         prompt: suggested > 5 ? compactify(buf) : buf,
         forceprompt,
+        inaccess,
     };
 }
 
@@ -809,14 +837,13 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
        loop already read a key here; routing it through tty_yn_function adds
        the paint without changing which keys are consumed. */
     let qbuf = `What do you want to ${word}?`;
-    const { choices: lets, altChoices, prompt: promptLets, forceprompt } =
-        getobj_letters(obj_ok_func, ctrlflags | 0);
+    const { choices: lets, altChoices, prompt: promptLets, forceprompt,
+            inaccess } = getobj_letters(obj_ok_func, ctrlflags | 0);
 
     /* src/invent.c:1911 — nothing suggested, no forced prompt, no '-'
-       choice: refuse up front. The "else " variant needs the inaccessible
-       tracking and is recorded. */
+       choice: refuse up front. */
     if (!lets && obj_ok_func && !(ctrlflags & GETOBJ_PROMPT) && !forceprompt) {
-        await You(`don't have anything to ${word}.`);
+        await You(`don't have anything ${inaccess ? 'else ' : ''}to ${word}.`);
         return null;
     }
     qbuf += promptLets

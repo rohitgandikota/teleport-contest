@@ -52,9 +52,13 @@ import { flush_screen } from './display.js';
 import { look_here } from './invent.js';
 import { nomul } from './hack.js';
 import { t_at, is_pool, is_lava, m_at, touch_artifact } from './mon.js';
-import { unconscious } from './trap.js';
+import { unconscious, uteetering_at_seen_pit, uescaped_shaft } from './trap.js';
+import { sticks, attacktype, ceiling_hider } from './mondata.js';
+import { P_SKILL } from './weapon.js';
+import { P_RIDING, P_BASIC, Is_airlevel, Is_waterlevel } from './const.js';
+import { ATTKS, MFLAGS } from './monst_data.js';
 import { is_pit } from './const.js';
-import { Blind, Levitation, Stone_resistance } from './youprop.js';
+import { Blind, Levitation, Stone_resistance, Flying } from './youprop.js';
 import { st_gloves, st_corpse, st_petrifies, st_resists, W_ARMG } from './const.js';
 import { worn } from './do_wear.js';
 import { nohands, notake, poly_when_stoned, throws_rocks,
@@ -74,9 +78,28 @@ function note_unported_pickup(what) {
 // ceiling clinger, and polyform reach limits are states that cannot occur
 // yet; levitation can, via potions and rings.
 export function can_reach_floor(check_pit) {
-    if (game.u.uswallow)
+    const u = game.u;
+    const youdata = game.youmonst?.data ?? game.mons[u.umonnum ?? 0];
+
+    if (u.uswallow
+        || (u.ustuck && !sticks(youdata)
+            /* assume that arms are pinned rather than that the hero
+               has been lifted up above the floor [doesn't explain
+               how hero can attack the creature holding him or her;
+               that's life in nethack...] */
+            && attacktype(game.mons[u.ustuck.mnum] ?? u.ustuck.data, ATTKS.AT_HUGS))
+        || (Levitation() && !(Is_airlevel(u.uz) || Is_waterlevel(u.uz))))
         return false;
-    if (Levitation())
+    /* Restricted/unskilled riders can't reach the floor */
+    if (u.usteed && (P_SKILL(P_RIDING) ?? 0) < P_BASIC)
+        return false;
+    if (u.uundetected && ceiling_hider(youdata))
+        return false;
+    if (Flying() || youdata.msize >= MFLAGS.MZ_HUGE)
+        return true;
+    let t;
+    if (check_pit && (t = t_at(u.ux, u.uy)) != null
+        && (uteetering_at_seen_pit(t) || uescaped_shaft(t)))
         return false;
     return true;
 }

@@ -39,7 +39,11 @@ import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
 import { ACURR, exercise, near_capacity } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, BEAR_TRAP, LANDMINE, ROLLING_BOULDER_TRAP, PIT, SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL, WEB } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { an, cxname, simpleonames, the } from './objnam.js';
+import { an, cxname, simpleonames, the, makeplural } from './objnam.js';
+import { is_plural, Is_container } from './obj.js';
+import { carrying } from './invent.js';
+import { is_weptool } from './mkobj.js';
+import { HANDS_SYM } from './const.js';
 import { cmap_names, defsyms } from './drawing_data.js';
 import { x_monnam, y_monnam, YMonnam, docallcmd, donamelevel } from './do_name.js';
 import { You } from './pline.js';
@@ -1977,13 +1981,15 @@ export async function domove() {
 
 // src/hack.c:3020 maybe_smudge_engr()
 async function maybe_smudge_engr(x1, y1, x2, y2) {
-    /* can_reach_floor(TRUE): true for an ordinary walking hero */
-    let ep = engr_at(x1, y1);
-    if (ep && ep.engr_type !== HEADSTONE)
-        wipe_engr_at(x1, y1, rnd(5), false);
-    if ((x2 !== x1 || y2 !== y1)
-        && (ep = engr_at(x2, y2)) && ep.engr_type !== HEADSTONE)
-        wipe_engr_at(x2, y2, rnd(5), false);
+    const { can_reach_floor } = await import('./pickup.js');
+    if (can_reach_floor(true)) {
+        let ep = engr_at(x1, y1);
+        if (ep && ep.engr_type !== HEADSTONE)
+            wipe_engr_at(x1, y1, rnd(5), false);
+        if ((x2 !== x1 || y2 !== y1)
+            && (ep = engr_at(x2, y2)) && ep.engr_type !== HEADSTONE)
+            wipe_engr_at(x2, y2, rnd(5), false);
+    }
 }
 
 const BCPOS_DIFFER = 0;
@@ -3097,6 +3103,99 @@ async function show_item_actions(obj) {
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
     const wornItem = !!(obj.owornmask & (W_ARMOR | W_ACCESSORY));
     const simpleName = simpleonames(obj);
+    const light = obj.lamplit ? 'Extinguish' : 'Light';
+
+    /* src/iactions.c:290 — '-': unwield; picking current weapon offers an
+       opportunity for 'w-' to wield bare/gloved hands; likewise for 'Q-'
+       with quivered item(s) */
+    if (obj === game.u.uwep || obj === game.u.uswapwep || obj === game.u.uquiver) {
+        const verb = (obj === game.u.uquiver) ? 'Quiver' : 'Wield',
+              action = (obj === game.u.uquiver) ? 'un-ready' : 'un-wield',
+              which = is_plural(obj) ? 'these' : 'this',
+              what = ((obj.oclass === OCLASSES.WEAPON_CLASS
+                       || is_weptool(obj, game.objects)) ? 'weapon' : 'item');
+        add_item_action(win, '-', `${verb} '${HANDS_SYM}' to ${action} ${which} ${
+            is_plural(obj) ? makeplural(what) : what}`);
+    }
+
+    /* src/iactions.c:309 — a: apply */
+    if (obj.oclass === OCLASSES.COIN_CLASS)
+        add_item_action(win, 'a', 'Flip a coin');
+    else if (obj.otyp === ONAMES.CREAM_PIE)
+        add_item_action(win, 'a', 'Hit yourself with this cream pie');
+    else if (obj.otyp === ONAMES.BULLWHIP)
+        add_item_action(win, 'a', 'Lash out with this whip');
+    else if (obj.otyp === ONAMES.GRAPPLING_HOOK)
+        add_item_action(win, 'a', 'Grapple something with this hook');
+    else if (obj.otyp === ONAMES.BAG_OF_TRICKS && game.objects[obj.otyp].oc_name_known)
+        /* bag of tricks skips this unless discovered */
+        add_item_action(win, 'a', 'Reach into this bag');
+    else if (Is_container(obj))
+        /* bag of tricks gets here only if not yet discovered */
+        add_item_action(win, 'a', 'Open this container');
+    else if (obj.otyp === ONAMES.CAN_OF_GREASE)
+        add_item_action(win, 'a', 'Use the can to grease an item');
+    else if (obj.otyp === ONAMES.LOCK_PICK || obj.otyp === ONAMES.CREDIT_CARD
+             || obj.otyp === ONAMES.SKELETON_KEY)
+        add_item_action(win, 'a', 'Use this tool to pick a lock');
+    else if (obj.otyp === ONAMES.TINNING_KIT)
+        add_item_action(win, 'a', 'Use this kit to tin a corpse');
+    else if (obj.otyp === ONAMES.LEASH)
+        add_item_action(win, 'a', 'Tie a pet to this leash');
+    else if (obj.otyp === ONAMES.SADDLE)
+        add_item_action(win, 'a', 'Place this saddle on a pet');
+    else if (obj.otyp === ONAMES.MAGIC_WHISTLE || obj.otyp === ONAMES.TIN_WHISTLE)
+        add_item_action(win, 'a', 'Blow this whistle');
+    else if (obj.otyp === ONAMES.EUCALYPTUS_LEAF)
+        add_item_action(win, 'a', 'Use this leaf as a whistle');
+    else if (obj.otyp === ONAMES.STETHOSCOPE)
+        add_item_action(win, 'a', 'Listen through the stethoscope');
+    else if (obj.otyp === ONAMES.MIRROR)
+        add_item_action(win, 'a', 'Show something its reflection');
+    else if (obj.otyp === ONAMES.BELL || obj.otyp === ONAMES.BELL_OF_OPENING)
+        add_item_action(win, 'a', 'Ring the bell');
+    else if (obj.otyp === ONAMES.CANDELABRUM_OF_INVOCATION) {
+        add_item_action(win, 'a', `${light} the candelabrum`);
+    } else if (obj.otyp === ONAMES.WAX_CANDLE || obj.otyp === ONAMES.TALLOW_CANDLE) {
+        const multiple = obj.quan !== 1;
+        const s = multiple ? 'these' : 'this';
+        const o = carrying(ONAMES.CANDELABRUM_OF_INVOCATION);
+        if (o && o.spe < 7)
+            add_item_action(win, 'a', `Attach ${s} to your candelabrum, or ${
+                !obj.lamplit ? 'light' : 'extinguish'} ${multiple ? 'them' : 'it'}`);
+        else
+            add_item_action(win, 'a', `${light} ${s} ${simpleonames(obj)}`);
+    } else if (obj.otyp === ONAMES.OIL_LAMP || obj.otyp === ONAMES.MAGIC_LAMP
+               || obj.otyp === ONAMES.BRASS_LANTERN) {
+        add_item_action(win, 'a', `${light} this light source`);
+    } else if (obj.otyp === ONAMES.POT_OIL && game.objects[obj.otyp].oc_name_known) {
+        add_item_action(win, 'a', `${light} this oil`);
+    } else if (obj.oclass === OCLASSES.POTION_CLASS) {
+        /* FIXME? this should probably be moved to 'D' rather than be 'a' */
+        add_item_action(win, 'a', `Dip something into ${
+            is_plural(obj) ? 'one of these' : 'this'} potion${obj.quan !== 1 ? 's' : ''}`);
+    } else if (obj.otyp === ONAMES.EXPENSIVE_CAMERA)
+        add_item_action(win, 'a', 'Take a photograph');
+    else if (obj.otyp === ONAMES.TOWEL)
+        add_item_action(win, 'a', 'Clean yourself off with this towel');
+    else if (obj.otyp === ONAMES.CRYSTAL_BALL)
+        add_item_action(win, 'a', 'Peer into this crystal ball');
+    else if (obj.otyp === ONAMES.MAGIC_MARKER)
+        add_item_action(win, 'a', 'Write on something with this marker');
+    else if (obj.otyp === ONAMES.FIGURINE)
+        add_item_action(win, 'a', 'Make this figurine transform');
+    else if (obj.otyp === ONAMES.UNICORN_HORN)
+        add_item_action(win, 'a', 'Use this unicorn horn');
+    else if (obj.otyp === ONAMES.HORN_OF_PLENTY && game.objects[obj.otyp].oc_name_known)
+        add_item_action(win, 'a', 'Blow into the horn of plenty');
+    else if (obj.otyp >= ONAMES.WOODEN_FLUTE && obj.otyp <= ONAMES.DRUM_OF_EARTHQUAKE)
+        add_item_action(win, 'a', 'Play this musical instrument');
+    else if (obj.otyp === ONAMES.LAND_MINE || obj.otyp === ONAMES.BEARTRAP)
+        add_item_action(win, 'a', 'Arm this trap');
+    else if (obj.otyp === ONAMES.PICK_AXE || obj.otyp === ONAMES.DWARVISH_MATTOCK)
+        add_item_action(win, 'a', 'Dig with this digging tool');
+    else if (obj.oclass === OCLASSES.WAND_CLASS)
+        add_item_action(win, 'a', 'Break this wand');
 
     add_item_action(win, 'c', `Name this specific ${simpleName}`);
     if (!game.objects[obj.otyp].oc_name_known)
@@ -3122,6 +3221,9 @@ async function show_item_actions(obj) {
     if (!wornItem)
         add_item_action(win, 't', obj.quan === 1
             ? 'Throw this item' : 'Throw one of these');
+    /* src/iactions.c:590 — T: take off armor */
+    if ((obj.owornmask ?? 0) & W_ARMOR)
+        add_item_action(win, 'T', 'Take off this armor');
     if (!wornItem && obj !== game.u.uwep)
         add_item_action(win, 'w', `Wield this ${obj.quan > 1 ? 'stack' : 'item'}`
                         + ' in your hands');

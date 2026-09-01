@@ -587,7 +587,10 @@ export async function mklev() {
     if (await getbones()) return;
     g.in_mklev = true;
     await makelevel();
-    recount_level_features();
+    /* C's mklev() never recounts fountains and sinks: the counts are only
+       kept by mkfount()/mksink() and set_levltyp(), and Lua des.feature()
+       writes levl[][].typ directly without touching them. A recount here
+       made themed-room fountains audible that C never counts. */
     level_finalize_topology();
     g.in_mklev = false;
 }

@@ -52,7 +52,7 @@ import { amphibious, is_swimmer, is_flyer, is_floater, passes_walls,
 import { def_oc_syms } from './drawing_data.js';
 import { ANY_LOC, SOLID, DRY, SPACELOC, WET, HOT,
          NO_LOC_WARN } from './const.js';
-import { ACCESSIBLE } from './const.js';
+import { ACCESSIBLE, IS_FURNITURE } from './const.js';
 import { NO_TRAP, VIBRATING_SQUARE,
          MKTRAP_MAZEFLAG, MKTRAP_SEEN, MKTRAP_NOSPIDERONWEB, MKTRAP_NOVICTIM,
          ARROW_TRAP, DART_TRAP, ROCKTRAP, SQKY_BOARD, BEAR_TRAP, LANDMINE,
@@ -2512,15 +2512,14 @@ export function lspo_feature(type, x, y) {
         note_unported(`lspo_feature:${type}`);
         return;
     }
-    /* sel_set_feature() — refuses to overwrite non-floor terrain */
+    /* src/sp_lev.c sel_set_feature() — existing furniture is never
+       overwritten; the typ is written to levl[][] directly, so
+       level.flags.nfountains/nsinks are NOT updated (C only counts in
+       mkfount(), mksink() and set_levltyp(), and never recounts an
+       ordinary level), which keeps themed-room fountains silent */
     const loc = game.level.at(c.x, c.y);
-    if (loc && (loc.typ === ROOM || loc.typ === CORR)) {
+    if (loc && !IS_FURNITURE(loc.typ))
         loc.typ = typ;
-        if (typ === FOUNTAIN)
-            game.level.flags.nfountains = (game.level.flags.nfountains | 0) + 1;
-        if (typ === SINK)
-            game.level.flags.nsinks = (game.level.flags.nsinks | 0) + 1;
-    }
     /* the looted/warned flag options are absent until a level needs them */
 }
 

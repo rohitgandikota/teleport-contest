@@ -1501,13 +1501,13 @@ export async function dohelp() {
                      NO_COLOR, text, MENU_ITEMFLAGS_NONE);
     });
     tty_end_menu(win, 'Select one item:');
-    await tty_display_nhwindow(win);
-
-    const key = await nhgetch();
+    /* src/pager.c:2890 — select_menu(PICK_ONE): a key that matches no
+       entry rings the bell and leaves the menu up; only a pick, ESC,
+       space or return ends it */
+    const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
     tty_destroy_nhwindow(win);
-    await docrt();
 
-    const ch = String.fromCharCode(key);
+    const ch = picks.length ? picks[0] : '';
     switch (ch) {
     case 'a':
         return await doextversion();

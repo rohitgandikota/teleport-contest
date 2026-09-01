@@ -3584,3 +3584,17 @@ export function hide_monst(mon) {
             hideunder(mon);
     }
 }
+
+// src/mon.c:4552 get_iter_mons() — iterate all living monsters on the
+// current level, calling bfunc for each until one returns true; returns
+// that monster or null. The list is snapshotted the way C's nmon walk
+// tolerates a mid-loop removal.
+export async function get_iter_mons(bfunc) {
+    for (const mtmp of [...(game.level?.monsters || [])]) {
+        if (DEADMONSTER(mtmp) || mon_offmap(mtmp))
+            continue;
+        if (await bfunc(mtmp))
+            return mtmp;
+    }
+    return null;
+}

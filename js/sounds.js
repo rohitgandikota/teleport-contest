@@ -14,7 +14,13 @@ import { helpless, DEADMONSTER } from './monst.js';
 import { rn2 } from './rng.js';
 import { ECMD_OK, ECMD_TIME, IS_WALL, SDOOR, isok, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, STRAT_WAITMASK,
-         ANY_SHOP, ROOMOFFSET, VAULT, PLNMSG_GROWL } from './const.js';
+         ANY_SHOP, ROOMOFFSET, VAULT, PLNMSG_GROWL,
+         BEEHIVE, MORGUE, BARRACKS, ZOO, W_ARMH, HAIR, NECK, HEAD } from './const.js';
+import { is_animal, is_undead, is_flyer } from './mondata.js';
+import { is_vampshifter } from './monst.js';
+import { get_iter_mons } from './mon.js';
+import { body_part } from './polyself.js';
+import { worn } from './do_wear.js';
 import { ONAMES } from './objects_data.js';
 import { search_special } from './mkroom.js';
 import { tended_shop, noisy_shop } from './shk.js';
@@ -106,16 +112,34 @@ export async function dosounds() {
         return;
     }
     if (f.has_beehive && !rn2(200)) {
-        note_unported('dosounds beehive');
+        if (await get_iter_mons(beehive_mon_sound))
+            return;
     }
     if (f.has_morgue && !rn2(200)) {
-        note_unported('dosounds morgue');
+        if (await get_iter_mons(morgue_mon_sound))
+            return;
     }
     if (f.has_barracks && !rn2(200)) {
-        note_unported('dosounds barracks');
+        const barracks_msg = [
+            'blades being honed.', 'loud snoring.', 'dice being thrown.',
+            'General MacArthur!',
+        ];
+        let count = 0;
+        for (const mtmp of (game.level?.monsters || [])) {
+            if (DEADMONSTER(mtmp))
+                continue;
+            if (is_mercenary(game.mons[mtmp.mnum])
+                && mon_in_room(mtmp, BARRACKS)
+                /* sleeping implies not-yet-disturbed (usually) */
+                && (mtmp.msleeping || ++count > 5)) {
+                await You_hear(barracks_msg[rn2(3) + hallu]);
+                return;
+            }
+        }
     }
     if (f.has_zoo && !rn2(200)) {
-        note_unported('dosounds zoo');
+        if (await get_iter_mons(zoo_mon_sound))
+            return;
     }
     if (f.has_shop && !rn2(200)) {
         const sroom = search_special(ANY_SHOP);
@@ -612,3 +636,75 @@ const note_sounds_unported = (w) => {
     (game.unported ||= new Set()).add('sounds:' + w);
     return 0;
 };
+
+// src/sounds.c:33 mon_in_room()
+function mon_in_room(mon, rmtyp) {
+    const rno = game.level.at(mon.mx, mon.my)?.roomno ?? 0;
+    if (rno >= ROOMOFFSET)
+        return game.level?.rooms?.[rno - ROOMOFFSET]?.rtype === rmtyp;
+    return false;
+}
+
+/* include/mondata.h is_mercenary() */
+const is_mercenary = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;
+
+// src/sounds.c:73 beehive_mon_sound()
+async function beehive_mon_sound(mtmp) {
+    const ptr = game.mons[mtmp.mnum];
+    if ((ptr.mlet === MONSYMS.S_ANT && is_flyer(ptr))
+        && mon_in_room(mtmp, BEEHIVE)) {
+        const hallu = Hallucination() ? 1 : 0;
+        switch (rn2(2) + hallu) {
+        case 0:
+            await You_hear('a low buzzing.');
+            break;
+        case 1:
+            await You_hear('an angry drone.');
+            break;
+        case 2:
+            await You_hear(`bees in your ${worn(W_ARMH) ? '' : '(nonexistent) '}bonnet!`);
+            break;
+        }
+        return true;
+    }
+    return false;
+}
+
+// src/sounds.c:97 morgue_mon_sound()
+async function morgue_mon_sound(mtmp) {
+    const ptr = game.mons[mtmp.mnum];
+    if ((is_undead(ptr) || is_vampshifter(mtmp))
+        && mon_in_room(mtmp, MORGUE)) {
+        const hallu = Hallucination() ? 1 : 0;
+        const hair = body_part(HAIR); /* hair/fur/scales */
+        switch (rn2(2) + hallu) {
+        case 0:
+            await You('suddenly realize it is unnaturally quiet.');
+            break;
+        case 1:
+            await pline_The(`${hair} on the back of your ${body_part(NECK)} ${vtense(hair, 'stand')} up.`);
+            break;
+        case 2:
+            await pline_The(`${hair} on your ${body_part(HEAD)} ${vtense(hair, 'seem')} to stand up.`);
+            break;
+        }
+        return true;
+    }
+    return false;
+}
+
+// src/sounds.c:115 zoo_mon_sound()
+async function zoo_mon_sound(mtmp) {
+    const ptr = game.mons[mtmp.mnum];
+    if ((mtmp.msleeping || is_animal(ptr))
+        && mon_in_room(mtmp, ZOO)) {
+        const hallu = Hallucination() ? 1 : 0, selection = rn2(2) + hallu;
+        const zoo_msg = [
+            'a sound reminiscent of an elephant stepping on a peanut.',
+            'a sound reminiscent of a seal barking.', 'Doctor Dolittle!',
+        ];
+        await You_hear(zoo_msg[selection]);
+        return true;
+    }
+    return false;
+}

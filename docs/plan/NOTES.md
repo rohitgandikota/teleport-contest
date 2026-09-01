@@ -4107,3 +4107,94 @@ bat, raven, S_darkroom) with no distinguishing escape the serializer
 keeps — recorded cells read as uncoloured. term_start_color folds
 CLR_BLACK into the same NO_COLOR collapse as CLR_GRAY. Verified on
 seed0373's 'Y' and 'B' monsters and the S_darkroom floors.
+
+## The held-out number is the signal; the supplemental count is not (1 Sep)
+
+Between 27 Aug and 1 Sep the generated corpus went from 75 to 326 recipes
+(coverage matrix "98/106 covered, 0 gaps") and the held-out score did not
+move by a single point: 6,032/11,265, 9/44, rank 3, while the top fork sits
+at 11,264/11,265. A hand-written coverage tag says a scenario was thought
+of; it says nothing about the thousands of branches nobody thought of.
+`node tools/leaderboard.mjs` after every push, and treat a flat held-out
+number as a failed experiment regardless of the local dashboards.
+
+## rng-sites.mjs: coverage measured from the C source, not from tags
+
+Every recorded draw carries `@ fn(file:line)`. Grepping the RNG call sites
+out of `src/*.c` and subtracting the tags seen anywhere in sessions/ plus
+generated/ gives the exact set of RNG-drawing branches no oracle has ever
+exercised: 1,231 of 2,621 sites, 346 of 865 functions, 133 of them already
+defined in js/ and therefore ported with no way to check them. Traps met
+while building it: a call that spans lines is tagged with the line of its
+closing paren (clang's `__LINE__` in a macro argument), so the join walks
+back up to six lines; `rn1()`, `ROLL_FROM()` and `AC_VALUE()` are hack.h
+macros over rn2/rnd; line numbers must come from the recorder-patched tree
+(`nethack-c/recorder/src`), not upstream, or 22 sites go stray. The corpus
+scan is cached by mtime under `tools/gen-sessions/.cache/`.
+
+## fuzz.mjs: an unbiased local estimate of held-out, with an oracle attached
+
+The recorder runs a 217-key, four-segment session in under a second, so
+random-play sessions are cheap. Keys are sampled from a trigram model of
+the PUBLIC sessions' inputs (the judges' command idioms), never their
+outputs, and every game gets a fresh seed and datetime, so nothing can
+overfit. Batch pass rate tracks held-out (16/42 and 64% screens on the
+first run against 9/44 and 53% on the board); the first-divergence causes
+are the work list. Three things learned running it:
+
+  - Split the input model by rc style, including whether the legacy intro
+    is on: a stream sampled from `!legacy` sessions spends every key
+    ringing the bell at the intro's --More-- (C swallows them too, so the
+    recording is 26 identical screens), and an over-read that happens
+    inside `NethackGame.start()` throws outside runSegment's loop and
+    loses EVERY screen of the session, not just the tail.
+  - The runner's matched-RNG count moves while the head does not: s2-06
+    went 3018 -> 3084 "matched" after a fix that changed nothing at the
+    head. Only `diverge.mjs`'s first MISMATCH line is evidence (NOTES
+    already says this; the fuzz loop makes it bite every ten minutes).
+  - `tools/jsplay.mjs --rng-at N` is the missing half of diverge.mjs: when
+    ours draws something C never drew, it prints OUR stack for draw N.
+    Do not destructure `const { game } = await import(gstate)`: that copies
+    the object reference at import time, and `resetGame()` replaces the
+    object when the game starts, so every field reads undefined. Keep the
+    namespace and read `gstate.game`.
+
+## C quirks the first two fuzz batches surfaced (all verified in the C)
+
+  - `sel_set_feature()` (Lua `des.feature`) writes `levl[][].typ` directly and
+    never touches `level.flags.nfountains`; `mklev()` never recounts. Themed
+    room fountains are inaudible in C. Ours incremented on placement AND
+    recounted after makelevel, so every such level drew an extra rn2(400)
+    per turn (s1-03).
+  - `addinv_core2()` in 5.0 deciphers scroll labels for Archeologists on
+    pickup ("You decipher the label on ...", makeknown, literate conduct),
+    and makeknown's discover_object exercises Wisdom, so a wished-for scroll
+    costs an rn2(19) that ours never drew (s1-01).
+  - `dohelp()` uses `select_menu(PICK_ONE)`: an unmatched key rings the
+    bell and keeps the menu; ours dismissed on any key (s2-15).
+  - `itemactions()` lists `-` unwield, the whole `iactions.c` apply block,
+    and `T` take off before the `c`/`d`/... entries (s1-01, s2-16).
+  - `getobj()` says "anything ELSE to <verb>" when an item was excluded as
+    inaccessible (already-worn gear for `P`), tracked by `inaccess` (s1-09).
+  - `can_reach_floor(TRUE)` is false when teetering at a seen pit or over an
+    escaped shaft, when riding unskilled, when held by a hugger, when hiding
+    on the ceiling; `maybe_smudge_engr()` draws nothing then (s2-06, tutorial).
+  - `getpos()`: C gathers `m o d x a z` through one `gather_locs()` sorted by
+    Chebyshev distance then y then x (`cmp_coord_distu`, stable qsort per
+    patch 002); ours hand-rolls `d`/`m` and has no `o x a z` at all. Every
+    farlook/travel/teleport-control session is exposed (s2-05, s2-13, s2-25).
+
+## Fixed datetime and DST: C shifts winter wall-clock hours by one
+
+`time_from_yyyymmddhhmmss()` copies `localtime(now)` (the RECORDING
+moment, including `tm_isdst`) and overwrites the fields, then `mktime()`.
+A recorder running in EDT that is handed a January datetime therefore
+produces a time_t one hour earlier than the standard-time reading, and
+`getlt()` reports hour-1 (and the previous day at hour 0). A fuzz game with
+20260126002218 got "It is nighttime." from `^X` where our direct-field
+parse says "midnight hour" (s2-27). This is the same unmodelled
+recording-timezone input as ubirthday (entry above); the judge's TZ is not
+knowable from the corpus, so it is deliberately NOT fitted. Hour-dependent
+output (night(), midnight(), moon/Friday-13th at hour 0) will disagree with
+oracles recorded in a DST-observing zone during DST; expect it, do not fix
+it by guessing.

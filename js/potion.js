@@ -32,7 +32,8 @@ import { more_experienced } from './exper.js';
 import { freeinv, getobj, hold_another_object, useup, useupall,
          update_inventory, ECMD_TIME, ECMD_OK, GETOBJ_PROMPT,
          obfree } from './invent.js';
-import { is_pool, wake_nearto, wakeup, killed, healmon, unstuck }
+import { is_pool, wake_nearto, wakeup, killed, healmon, unstuck,
+         mcureblindness }
     from './mon.js';
 import { OCLASSES } from './objects_data.js';
 import { tty_yn_function } from './tty/topl.js';
@@ -369,6 +370,37 @@ export async function potionhit(mon, obj, how) {
     } else {
         let angermon = how <= POTHIT_HERO_THROW;
         switch (obj.otyp) {
+        case ONAMES.POT_FULL_HEALING:
+        case ONAMES.POT_EXTRA_HEALING:
+        case ONAMES.POT_HEALING:
+        case ONAMES.POT_RESTORE_ABILITY:
+        case ONAMES.POT_GAIN_ABILITY: {
+            const cureblind = obj.otyp === ONAMES.POT_FULL_HEALING
+                || (obj.otyp === ONAMES.POT_EXTRA_HEALING && !obj.cursed)
+                || (obj.otyp === ONAMES.POT_HEALING && obj.blessed);
+            const healingPotion = obj.otyp === ONAMES.POT_FULL_HEALING
+                || obj.otyp === ONAMES.POT_EXTRA_HEALING
+                || obj.otyp === ONAMES.POT_HEALING;
+
+            if (healingPotion
+                && mon.data === game.mons[PMNAMES.PM_PESTILENCE]) {
+                if ((mon.mhp | 0) > 2) {
+                    mon.mhp = Math.trunc(mon.mhp / 2);
+                    if (canseemon(mon))
+                        await pline(`${Monnam(mon)} looks rather ill.`);
+                }
+            } else {
+                angermon = false;
+                if ((mon.mhp | 0) < (mon.mhpmax | 0)) {
+                    healmon(mon, mon.mhpmax, 0);
+                    if (canseemon(mon))
+                        await pline(`${Monnam(mon)} looks sound and hale again.`);
+                }
+                if (cureblind)
+                    await mcureblindness(mon, canseemon(mon));
+            }
+            break;
+        }
         case ONAMES.POT_CONFUSION:
         case ONAMES.POT_BOOZE: {
             const { resist } = await import('./zap.js');
@@ -440,8 +472,9 @@ export async function potionhit(mon, obj, how) {
             break;
         case ONAMES.POT_WATER: {
             const { is_were, new_were } = await import('./were.js');
+            const { is_vampshifter } = await import('./monst.js');
             const were = is_were(mon.data);
-            if (mon_hates_blessings(mon) || were) {
+            if (mon_hates_blessings(mon) || were || is_vampshifter(mon)) {
                 if (obj.blessed) {
                     await pline(`${Monnam(mon)} ${
                         is_silent(mon.data) ? 'writhes' : 'shrieks'} in pain!`);
@@ -463,6 +496,24 @@ export async function potionhit(mon, obj, how) {
                         && !Protection_from_shape_changers())
                         await new_were(mon);
                 }
+            } else if (mon.data === game.mons[PMNAMES.PM_GREMLIN]) {
+                angermon = false;
+                if ((mon.mhp | 0) > (mon.mhpmax | 0))
+                    mon.mhp = mon.mhpmax;
+                const { clone_mon } = await import('./makemon.js');
+                const clone = (mon.mhp | 0) > 1 ? clone_mon(mon, 0, 0) : null;
+                if (clone) {
+                    clone.mhpmax = Math.trunc((mon.mhpmax | 0) / 2);
+                    mon.mhpmax -= clone.mhpmax;
+                    if (canspotmon(mon))
+                        await pline(`${Monnam(mon)} multiplies!`);
+                }
+            } else if (mon.data === game.mons[PMNAMES.PM_IRON_GOLEM]) {
+                if (canseemon(mon))
+                    await pline(`${Monnam(mon)} rusts.`);
+                mon.mhp -= d(1, 6);
+                if ((mon.mhp | 0) <= 0)
+                    await killed(mon);
             }
             break;
         }

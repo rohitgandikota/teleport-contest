@@ -3034,8 +3034,8 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
                     break;
                 }
             } else if (weapon !== ZAPPED_WAND) {
-                /* THROWN_WEAPON, KICKED_WEAPON; map_invisible when unseen
-                   is display bookkeeping */
+                if (cansee(x, y) && !canspotmon(mtmp))
+                    map_invisible(x, y);
                 result = mtmp;
                 break;
             }

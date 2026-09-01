@@ -890,7 +890,7 @@ async function monster_givit(mtmp, ptr) {
 }
 
 // src/muse.c:2872 mcureblindness(), used by monster food effects.
-async function mcureblindness(mon, verbose) {
+export async function mcureblindness(mon, verbose) {
     if (!mon.mcansee) {
         mon.mcansee = 1;
         mon.mblinded = 0;

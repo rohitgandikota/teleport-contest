@@ -378,6 +378,12 @@ function add_branch(dgn, child_entry_level, pd) {
 }
 
 // src/dungeon.c depth() — absolute depth of a d_level.
+// src/dungeon.c:1376 ledger_no() — the level's index in the whole-game
+// bookkeeping list of levels.
+export function ledger_no(lev) {
+    return lev.dlevel + (game.dungeons[lev.dnum]?.ledger_start ?? 0);
+}
+
 export function depth(dlev) {
     return game.dungeons[dlev.dnum].depth_start + dlev.dlevel - 1;
 }

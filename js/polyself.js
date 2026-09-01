@@ -20,11 +20,46 @@ import { races } from './role_data.js';
 import { is_vampshifter } from './monst.js';
 import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
          HEAD, LEG, TOE, HAIR, EYE, NOSE, A_STR, A_WIS, A_CON,
-         ECMD_OK, ECMD_TIME, KILLED_BY_AN, Upolyd, FROMFORM } from './const.js';
+         ECMD_OK, ECMD_TIME, KILLED_BY_AN, Upolyd, FROMFORM,
+         I_SPECIAL, FROMOUTSIDE, TT_PIT } from './const.js';
+import { Flying, Levitation } from './youprop.js';
 import { rn2, rn1, d, rnd } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { WrappingAllowed, is_flimsy } from './obj.js';
 import { simpleonames, vtense, yname } from './objnam.js';
+
+// src/polyself.c:131 float_vs_flight() — levitation overrides flight, and
+// being stuck in the floor (lava, solidified lava, tethered ball, bear trap,
+// web) overrides both: the floor is reachable then.
+export function float_vs_flight() {
+    const u = game.u;
+    const intr = (u.intrinsic ||= {});
+    const props = (u.uprops ||= {});
+    const blocked = (u.blocked ||= {});
+    const stuck_in_floor = !!(u.utrap && u.utraptype !== TT_PIT);
+
+    if ((intr.HLevitation || props.LEVITATION)
+        || ((intr.HFlying || props.FLYING) && stuck_in_floor))
+        blocked.FLYING = (blocked.FLYING | 0) | I_SPECIAL;
+    else
+        blocked.FLYING = (blocked.FLYING | 0) & ~I_SPECIAL;
+    if ((intr.HLevitation || props.LEVITATION) && stuck_in_floor)
+        blocked.LEVITATION = (blocked.LEVITATION | 0) | I_SPECIAL;
+    else
+        blocked.LEVITATION = (blocked.LEVITATION | 0) & ~I_SPECIAL;
+    /* riding blocks stealth unless hero is flying or levitating */
+    steed_vs_stealth();
+    (game.disp ||= {}).botl = true;
+}
+
+// src/polyself.c:163 steed_vs_stealth()
+export function steed_vs_stealth() {
+    const blocked = (game.u.blocked ||= {});
+    if (game.u.usteed && !Flying() && !Levitation())
+        blocked.STEALTH = (blocked.STEALTH | 0) | FROMOUTSIDE;
+    else
+        blocked.STEALTH = (blocked.STEALTH | 0) & ~FROMOUTSIDE;
+}
 
 /* src/polyself.c:1975 — the per-shape body-part tables, in C's order:
    ARM, EYE, FACE, FINGER, FINGERTIP, FOOT, HAND, HANDED, HEAD, LEG,

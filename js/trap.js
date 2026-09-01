@@ -64,6 +64,13 @@ import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
          EF_NONE, EF_GREASE, EF_VERBOSE, EF_PAY, EF_DESTROY,
          ER_NOTHING, ER_DAMAGED, ER_DESTROYED } from './const.js';
 import { rnl } from './rng.js';
+import { spoteffects } from './hack.js';
+import { is_animal } from './mondata.js';
+import { makeplural } from './objnam.js';
+import { flooreffects } from './do.js';
+import { dismount_steed } from './steed.js';
+import { DISMOUNT_GENERIC, I_SPECIAL, W_ARTI, TT_NONE, LEG } from './const.js';
+import { float_vs_flight } from './polyself.js';
 import { body_part, mbodypart, polymon } from './polyself.js';
 import { mon_nam } from './do_name.js';
 import { MON_WEP, DEADMONSTER, helpless, is_vampshifter } from './monst.js';
@@ -501,6 +508,31 @@ export function hole_destination(dst) {
 
 // src/trap.c:1061 floor_trigger() — is this trap one that fires by being
 // stepped ON, as opposed to one that catches anything passing through?
+// src/trap.c:1035 set_utrap() — trap the hero for tim turns (0 frees).
+export function set_utrap(tim, typ) {
+    /* if we get here through reset_utrap(), the caller of that might
+       have already set u.utrap to 0 so this check won't be sufficient
+       in that situation; caller will need to set context.botl itself */
+    if ((!game.u.utrap) !== (!tim))
+        (game.disp ||= {}).botl = true;
+    game.u.utrap = tim;
+    game.u.utraptype = tim ? typ : TT_NONE;
+    float_vs_flight(); /* maybe block Lev and/or Fly */
+}
+
+// src/trap.c:1046 reset_utrap() — free the hero; with msg, a suppressed
+// levitation or flight resumes with its message.
+export async function reset_utrap(msg) {
+    const was_Lev = Levitation(), was_Fly = Flying();
+    set_utrap(0, 0);
+    if (msg) {
+        if (!was_Lev && Levitation())
+            await float_up();
+        if (!was_Fly && Flying())
+            await You('can fly.');
+    }
+}
+
 function floor_trigger(ttyp) {
     switch (ttyp) {
     case ARROW_TRAP:
@@ -3515,6 +3547,80 @@ async function trapeffect_hole(mtmp, trap, trflags) {
 // drown/lava) belong to state the port does not carry yet and record
 // themselves; the dismount path used today runs the trap check and the
 // pickup(1) tail for real.
+/* include/youprop.h:242 Lev_at_will — levitation the hero can end on demand:
+   only the I_SPECIAL (potion/spell) or artifact source, and nothing else */
+const Lev_at_will = () => {
+    const h = game.u.intrinsic?.HLevitation | 0,
+          e = game.u.uprops?.LEVITATION | 0;
+    return ((h & I_SPECIAL) !== 0 || (e & W_ARTI) !== 0)
+           && (h & ~(I_SPECIAL | TIMEOUT)) === 0
+           && (e & ~W_ARTI) === 0;
+};
+
+// src/trap.c:3937 float_up() — the hero starts to levitate.
+export async function float_up() {
+    const u = game.u;
+    (game.disp ||= {}).botl = true;
+    if (u.utrap) {
+        if (u.utraptype === TT_PIT) {
+            await reset_utrap(false);
+            await You(`float up, out of the ${trapname(PIT, false)}!`);
+            game.vision_full_recalc = 1; /* vision limits change */
+            await fill_pit(u.ux, u.uy);
+        } else if (u.utraptype === TT_LAVA /* molten lava */
+                   || u.utraptype === TT_INFLOOR) { /* solidified lava */
+            await Your(`body pulls upward, but your ${
+                makeplural(body_part(LEG))} are still stuck.`);
+        } else if (u.utraptype === TT_BURIEDBALL) { /* tethered */
+            /* buried_ball() reads level.buriedobjlist, which is not ported;
+               nothing buries a ball yet, so this arm is unreachable */
+            note_unported_trap('float_up:buried_ball');
+        } else if (u.utraptype === TT_WEB) {
+            await You(`float up slightly, but you are still stuck in the ${
+                trapname(WEB, false)}.`);
+        } else { /* bear trap */
+            await You(`float up slightly, but your ${body_part(LEG)} is still stuck.`);
+        }
+    } else if (u.uinwater) {
+        await spoteffects(true);
+    } else if (u.uswallow) {
+        if (is_animal(u.ustuck.data ?? game.mons[u.ustuck.mnum]))
+            await You(`float away from the ${surface(u.ux, u.uy)}.`);
+        else
+            await You(`spiral up into ${mon_nam(u.ustuck)}.`);
+    } else if (Hallucination()) {
+        await pline("Up, up, and awaaaay!  You're walking on air!");
+    } else if (Is_airlevel(u.uz)) {
+        await You('gain control over your movements.');
+    } else {
+        await You('start to float in the air!');
+    }
+    if (u.usteed) {
+        const sdata = u.usteed.data ?? game.mons[u.usteed.mnum];
+        if (!is_floater(sdata) && !is_flyer(sdata)) {
+            if (Lev_at_will()) {
+                await pline(`${Monnam(u.usteed)} magically floats up!`);
+            } else {
+                await You(`cannot stay on ${mon_nam(u.usteed)}.`);
+                await dismount_steed(DISMOUNT_GENERIC);
+            }
+        }
+    }
+    if (Flying())
+        await You('are no longer able to control your flight.');
+    float_vs_flight(); /* set BFlying, also BLevitation if still trapped */
+}
+
+// src/trap.c:4010 fill_pit() — a boulder sitting on a pit or hole fills it.
+export async function fill_pit(x, y) {
+    let t, otmp;
+    if ((t = t_at_mon(x, y)) != null && (is_pit(t.ttyp) || is_hole(t.ttyp))
+        && (otmp = sobj_at(ONAMES.BOULDER, x, y)) != null) {
+        obj_extract_self(otmp);
+        await flooreffects(otmp, x, y, 'settle');
+    }
+}
+
 export async function float_down(hmask, emask) {
     let trap = null;
     let no_msg = false;

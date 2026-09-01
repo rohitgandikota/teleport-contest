@@ -68,6 +68,7 @@ import { makeknown, observe_object } from './o_init.js';
 import { Blindf_off, Blindf_on, cursed } from './do_wear.js';
 import { DEADMONSTER } from './monst.js';
 import { ACURR, change_luck, exercise } from './attrib.js';
+import { WEAK, A_STR } from './const.js';
 import { is_rider, makemon, set_malign, MM_NOMSG, NO_MM_FLAGS }
     from './makemon.js';
 import { ATTKS, PMNAMES } from './monst_data.js';
@@ -1591,6 +1592,47 @@ async function flip_coin(obj) {
 }
 
 // src/apply.c:4426 flip_through_book().
+// src/apply.c:4431 unfixable_trouble_count() — troubles that a unicorn horn
+// (is_horn) or a potion of restore ability can't fix.
+export function unfixable_trouble_count(is_horn) {
+    const u = game.u;
+    const props = u.uprops || {};
+    const intr = u.intrinsic || {};
+    let unfixable_trbl = 0;
+
+    if (props.STONED)
+        unfixable_trbl++;
+    if (props.SLIMED)
+        unfixable_trbl++;
+    if (props.STRANGLED)
+        unfixable_trbl++;
+    const wounded_legs = ((intr.HWounded_legs || 0) > 0)
+                         || !!(u.EWounded_legs || 0);
+    if ((u.atemp?.a?.[A_DEX] | 0) < 0 && wounded_legs)
+        unfixable_trbl++;
+    if ((u.atemp?.a?.[A_STR] | 0) < 0 && (u.uhs ?? 0) >= WEAK)
+        unfixable_trbl++;
+    /* for a horn, a non-timeout source of these can't be cured by it,
+       so don't count it as a trouble which can't be fixed */
+    if (props.SICK && (!is_horn || ((props.SICK | 0) & ~TIMEOUT) !== 0))
+        unfixable_trbl++;
+    if (props.STUNNED && (!is_horn || ((intr.HStun | 0) & ~TIMEOUT) !== 0))
+        unfixable_trbl++;
+    if (props.CONFUSION
+        && (!is_horn || ((intr.HConfusion | 0) & ~TIMEOUT) !== 0))
+        unfixable_trbl++;
+    if (Hallucination()
+        && (!is_horn || ((intr.HHallucination | 0) & ~TIMEOUT) !== 0))
+        unfixable_trbl++;
+    if (props.VOMITING
+        && (!is_horn || ((props.VOMITING | 0) & ~TIMEOUT) !== 0))
+        unfixable_trbl++;
+    if (Deaf() && (!is_horn || ((intr.HDeaf | 0) & ~TIMEOUT) !== 0))
+        unfixable_trbl++;
+
+    return unfixable_trbl;
+}
+
 async function flip_through_book(obj) {
     if (Underwater()) {
         await You("don't want to get the pages even more soggy, do you?");

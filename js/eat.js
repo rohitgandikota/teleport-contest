@@ -34,6 +34,8 @@ import { done } from './end.js';
 import { end_running, nomul, rounddiv, check_capacity } from './hack.js';
 import { sgn, distu } from './hacklib.js';
 import { ACURR } from './attrib.js';
+import { A_CHA } from './const.js';
+import { make_stoned } from './potion.js';
 import { bot } from './display.js';
 import { A_STR, A_DEX, STARVING, STARVED, FIRE_RES, SLEEP_RES, COLD_RES,
          DISINT_RES, SHOCK_RES, POISON_RES, ACID_RES, STONE_RES, TELEPORT,
@@ -863,6 +865,17 @@ async function fprefx(otmp) {
 // the fortune cookie's rumor and the apple/pear "core dumped" deferral. The
 // stat-gain foods (royal jelly, giant corpses via cpostfx) and the wolfsbane
 // and carrot cures are gated on state no current hero has.
+// src/eat.c:867 fix_petrification() — stop turning to stone.
+export async function fix_petrification() {
+    let buf;
+    if (Hallucination())
+        buf = `What a pity--you just ruined a future piece of ${
+            ACURR(A_CHA) > 15 ? 'fine ' : ''}art!`;
+    else
+        buf = 'You feel limber!';
+    await make_stoned(0, buf, 0, null);
+}
+
 async function fpostfx(otmp) {
     switch (otmp.otyp) {
     case ONAMES.SPRIG_OF_WOLFSBANE:

@@ -117,7 +117,9 @@ import { ceiling, surface } from './dungeon.js';
 import { body_part } from './polyself.js';
 import { find_ac, hard_helmet } from './do_wear.js';
 import { tele } from './teleport.js';
-import { ustatusline } from './insight.js';
+import { ustatusline, enlightenment } from './insight.js';
+import { MAGICENLIGHTENMENT, ENL_GAMEINPROGRESS } from './const.js';
+import { display_nhwindow_message } from './display.js';
 import { waterbody_name } from './pager.js';
 
 /* include/objclass.h:200/:201/:204 — local copies of the material
@@ -338,7 +340,7 @@ export async function zappable(wand) {
     return 1;
 }
 
-function increment_intrinsic_timeout(key, amount) {
+export function increment_intrinsic_timeout(key, amount) {
     const intrinsic = game.u.intrinsic ||= {};
     const current = intrinsic[key] | 0;
     const timeout = Math.max(0, Math.min(TIMEOUT,
@@ -971,6 +973,37 @@ async function flashburn(duration, viaLightning) {
 }
 
 // src/zap.c:2539 zapnodir() — wands that need no direction.
+// src/zap.c:2525 do_enlightenment_effect()
+export async function do_enlightenment_effect() {
+    await You_feel('self-knowledgeable...');
+    await display_nhwindow_message();
+    /* src/insight.c enlightenment(): the text goes into an NHW_MENU window
+       that pages like ^X; ours builds the lines and shows them here */
+    {
+        const { tty_start_menu, tty_add_menu, tty_end_menu, tty_next_page }
+            = await import('./tty/wintty.js');
+        const { NHW_MENU, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE }
+            = await import('./const.js');
+        const { NO_COLOR, ATR_NONE } = await import('./terminal.js');
+        const { xwaitforspace } = await import('./tty/getline.js');
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_start_menu(win, MENU_BEHAVE_STANDARD);
+        for (const line of enlightenment(MAGICENLIGHTENMENT,
+                                          ENL_GAMEINPROGRESS))
+            tty_add_menu(win, null, 0, 0, 0, ATR_NONE, NO_COLOR, line,
+                         MENU_ITEMFLAGS_NONE);
+        tty_end_menu(win, null);
+        await tty_display_nhwindow(win);
+        await xwaitforspace(' \r\n\x1b');
+        while (game.morc !== '\x1b' && tty_next_page(win))
+            await xwaitforspace(' \r\n\x1b');
+        tty_destroy_nhwindow(win);
+        await docrt();
+    }
+    await pline_The('feeling subsides.');
+    exercise(A_WIS, true);
+}
+
 export async function zapnodir(obj) {
     let known = false;
 

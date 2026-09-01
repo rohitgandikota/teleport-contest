@@ -1138,7 +1138,7 @@ async function toggle_displacement(obj, oldprop, on) {
 }
 
 // src/potion.c:471 self_invis_message().
-async function self_invis_message() {
+export async function self_invis_message() {
     await pline(`${Hallucination() ? 'Far out, man!  You'
                                   : 'Gee!  All of a sudden, you'} ${
         See_invisible() ? 'can see right through yourself'

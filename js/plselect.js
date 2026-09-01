@@ -1,3 +1,4 @@
+import { PL_NSIZ } from './const.js';
 // plselect.js — interactive character selection.
 // C ref: src/role.c genl_player_setup() (:2206) and tty_askname().
 //
@@ -81,7 +82,7 @@ async function tty_askname() {
     let name = '';
     for (;;) {
         tty_base_cursor();
-        const c = String.fromCharCode(await nhgetch());
+        let c = String.fromCharCode(await nhgetch());
         if (c === '\n' || c === '\r') break;
         if (c === '\x1b') { name = ''; break; }
         if (c === '\b' || c === '\x7f') {
@@ -95,8 +96,20 @@ async function tty_askname() {
             }
             continue;
         }
-        name += c;
-        tty_putch_base(c);
+        /* win/tty/wintty.c:740 (UNIX): anything but a letter, '-', '@', or a
+           digit after the first character becomes '_' (the name ends up in
+           a save file name); the name is capped at sizeof plname - 1 */
+        if (c !== '-' && c !== '@')
+            if (!(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z')
+                /* reject leading digit but allow digits elsewhere
+                   (avoids ambiguity when character name gets
+                   appended to uid to construct save file name) */
+                && !(c >= '0' && c <= '9' && name.length > 0))
+                c = '_';
+        if (name.length < PL_NSIZ - 1) {
+            name += c;
+            tty_putch_base(c);
+        }
     }
     tty_base_cursor();
     /* win/tty/wintty.c:754 — since the player picked an arbitrary name here,

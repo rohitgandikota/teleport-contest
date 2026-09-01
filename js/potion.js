@@ -226,7 +226,17 @@ export async function potionbreathe(obj) {
                 else
                     note_unported_potion('potionbreathe:cursed-ability-eyes');
             } else {
-                note_unported_potion('potionbreathe:restore-gain-ability');
+                let i = rn2(A_MAX);
+                let isdone = false;
+                for (let ii = 0; !isdone && ii < A_MAX; ii++) {
+                    if (game.u.acurr.a[i] < game.u.amax.a[i]) {
+                        game.u.acurr.a[i]++;
+                        isdone = !obj.blessed;
+                        (game.disp ||= {}).botl = true;
+                    }
+                    if (++i >= A_MAX)
+                        i = 0;
+                }
             }
             break;
         case ONAMES.POT_FULL_HEALING:

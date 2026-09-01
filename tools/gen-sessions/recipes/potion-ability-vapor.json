@@ -1,0 +1,30 @@
+{
+  "name": "potion-ability-vapor",
+  "description": "Debug Wizards lose attributes to sickness, then inhale uncursed and blessed restore-ability vapor from potions shattered on the floor. The uncursed vapor restores the sole deficit; the blessed vapor scans all six attributes and raises each deficit once.",
+  "coverage": [
+    "combat.ranged",
+    "level.ordinary",
+    "mode.debug",
+    "object.potions",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "potionbreathe.restore-gain-blessed",
+    "potionbreathe.restore-gain-uncursed"
+  ],
+  "segments": [
+    {
+      "seed": 7605,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             l\u0017uncursed potion of sickness\rqp\u0017uncursed potion of restore ability\rtq>   \u001b\u0018  "
+    },
+    {
+      "seed": 7608,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             l\u00172 uncursed potions of sickness\rqoqo\u0017blessed potion of restore ability\rtp>   \u001b\u0018  "
+    }
+  ]
+}

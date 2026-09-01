@@ -832,9 +832,12 @@ export function do_screen_description(cc, looked, sym) {
            memory model; the sym match alone would false-positive on typed
            'I' lookups which the monster loop already answered */
     }
+    /* src/pager.c:1420 — "the dark part of a room" is offered whenever the
+       looked-at symbol is the nothing symbol, an unexplored square
+       included; that fifth candidate is what turns an unexplored spot into
+       "can be many things" */
     if (glyph?.kind === 'nothing'
-        || (looked && sympair.ch === ' ' && !sympair.dec
-            && glyph?.kind !== 'unexplored')) {
+        || (looked && sympair.ch === ' ' && !sympair.dec)) {
         const x_str = 'the dark part of a room';
         if (!found) {
             state.out_str = prefix + x_str;

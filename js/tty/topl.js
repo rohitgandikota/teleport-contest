@@ -346,3 +346,20 @@ export async function tty_yn_function(query, resp, def, addcmdq = false) {
         }
     }
 }
+
+// win/tty/topl.c:452 tty_putmsghistory(msg, FALSE) — remember a line without
+// displaying it: the current top line moves to history and this becomes the
+// most recent one.
+export function putmsghistory(msg) {
+    if (msg) {
+        /* Caller is asking us to remember a top line that needed more.
+           Should we call more?  This can happen when the player has set
+           iflags.force_invmenu and they attempt to shoot with nothing in
+           the quiver. */
+        if (game._toplin === TOPLINE_NEED_MORE)
+            game._toplin = TOPLINE_NON_EMPTY;
+        /* move most recent message to history, make this become most recent */
+        remember_topl();
+        game._toplines = msg;
+    }
+}

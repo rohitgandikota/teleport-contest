@@ -19,7 +19,9 @@ import { A_STR, A_INT, A_DEX, A_CON, A_CHA,
 import { Your } from './pline.js';
 import { nomul, losehp } from './hack.js';
 import { surface } from './dungeon.js';
-import { A_WIS, ECMD_CANCEL, IS_FOUNTAIN, IS_SINK } from './const.js';
+import { A_WIS, ECMD_CANCEL, ECMD_FAIL, CQ_CANNED, IS_FOUNTAIN, IS_SINK } from './const.js';
+import { cmdq_peek, drink_ok } from './cmd.js';
+import { is_plural } from './obj.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
          Deaf, Poison_resistance, Sleep_resistance,
          Underwater, Antimagic } from './youprop.js';
@@ -1616,5 +1618,33 @@ export async function dodip() {
         GETOBJ_NOFLAGS);
     if (!potion)
         return ECMD_CANCEL;
+    return await potion_dip(obj, potion);
+}
+
+// src/potion.c:2379 dip_into() — #dip with the potion chosen first (the
+// item-action menu's 'a' on a potion)
+export async function dip_into() {
+    if (!cmdq_peek(CQ_CANNED)) {
+        /* impossible("dip_into: where is potion?") */
+        return ECMD_FAIL;
+    }
+
+    /* note: drink_ok() callback for quaffing is also used to validate
+       a potion to dip into */
+    /* C clears drink_ok_extra here (haven't been asked about and declined
+       to use a floor feature like a fountain); drink_ok()'s
+       EXCLUDE_NONINVENT arm that reads it is not modelled (see cmd.js) */
+    const potion = await getobj('dip', drink_ok, GETOBJ_NOFLAGS);
+    if (!potion || potion.oclass !== OCLASSES.POTION_CLASS)
+        return ECMD_CANCEL;
+
+    /* "What do you want to dip into <the potion>? [abc or ?*] " */
+    const qbuf = `dip into ${is_plural(potion) ? 'one of ' : ''}${thesimpleoname(potion)}`;
+    const obj = await getobj(qbuf, dip_ok, GETOBJ_PROMPT);
+    if (!obj)
+        return ECMD_CANCEL;
+    if (await inaccessible_equipment(obj, 'dip', false))
+        return ECMD_OK;
+
     return await potion_dip(obj, potion);
 }

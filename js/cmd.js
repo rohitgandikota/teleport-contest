@@ -39,7 +39,33 @@ import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
 import { ACURR, exercise, near_capacity } from './attrib.js';
 import { is_pit, GETOBJ_EXCLUDE, GETOBJ_SUGGEST, GETOBJ_NOFLAGS, GETOBJ_PROMPT, GETOBJ_ALLOWCNT, GETOBJ_DOWNPLAY, W_ARMOR, W_ACCESSORY, GETOBJ_EXCLUDE_INACCESS, ARTICLE_YOUR, ARTICLE_THE, CQ_CANNED, CQ_REPEAT, CMDQ_EXTCMD, CMDQ_KEY, BEAR_TRAP, LANDMINE, ROLLING_BOULDER_TRAP, PIT, SPIKED_PIT, HOLE, TRAPDOOR, TELEP_TRAP, LEVEL_TELEP, MAGIC_PORTAL, WEB } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
-import { an, cxname, simpleonames, the, makeplural } from './objnam.js';
+import { an, cxname, simpleonames, the, makeplural, singular, xname,
+         the_unique_obj, armor_simple_name } from './objnam.js';
+import { is_edible } from './eat.js';
+import { donull } from './do.js';
+import { shop_keeper, dopay } from './shk.js';
+import { in_rooms } from './hack.js';
+import { inhishop } from './monmove.js';
+import { IS_ALTAR, FINGER, HAND, SHOPBASE, W_AMUL, W_RING, W_TOOL, ONAME,
+         has_oname, GC_ECHOFIRST, GC_CONDHIST, GC_SAVEHIST } from './const.js';
+import { body_part } from './polyself.js';
+import { Has_contents, bimanual } from './obj.js';
+import { ammo_and_launcher, is_ammo, is_missile } from './wield.js';
+import { is_launcher } from './u_init.js';
+import { could_twoweap, cantwield } from './mondata.js';
+import { is_blade } from './mon.js';
+import { checkfile, chkfilIaCheck, chkfilDontAsk } from './pager.js';
+import { worn, ia_dotakeoff, remarm_swapwep } from './do_wear.js';
+import { name_ok, call_ok } from './do_name.js';
+import { wearmask_to_obj, armcat_to_wornmask } from './worn.js';
+import { doorganize, adjust_split } from './invent.js';
+import { dosacrifice } from './pray.js';
+import { dorub } from './apply.js';
+import { doinvoke } from './artifact.js';
+import { dip_into } from './potion.js';
+import { pline_nohistory } from './display.js';
+import { Norep } from './pline.js';
+import { putmsghistory } from './tty/topl.js';
 import { is_plural, Is_container } from './obj.js';
 import { carrying } from './invent.js';
 import { is_weptool } from './mkobj.js';
@@ -642,7 +668,7 @@ async function get_ext_cmd() {
    returns GETOBJ_EXCLUDE; C's EXCLUDE_NONINVENT case needs drink_ok_extra,
    which tracks whether the hero already passed up a fountain, and is not
    modelled. */
-function drink_ok(obj) {
+export function drink_ok(obj) {
     if (!obj)
         return GETOBJ_EXCLUDE;
     if (obj.oclass === OCLASSES.POTION_CLASS)
@@ -715,8 +741,9 @@ function equip_ok(obj, removing, accessory) {
 
     /* src/do_wear.c inaccessible_equipment(obj, NULL, TRUE): while choosing
        something to remove, only a covering item whose curse is already known
-       hides the equipment beneath it. */
-    if (removing) {
+       hides the equipment beneath it. An item-action pick (ia_dotakeoff)
+       skips the check, as C's gi.item_action_in_progress does. */
+    if (removing && !game.item_action_in_progress) {
         const knownCursed = (covering) => !!covering?.cursed
                                            && !!covering.bknown;
         const inaccessible = (obj === game.u.uarm
@@ -3106,30 +3133,181 @@ function add_item_action(win, action, text) {
                  ATR_NONE, NO_COLOR, text, MENU_ITEMFLAGS_NONE);
 }
 
-/* src/iactions.c itemactions(), common ordinary-object actions. More unusual
-   item-specific apply, invoke, and equipment variants stay with their command
-   implementations until those paths need them. */
+// src/cmd.c:1575 do_reqmenu() — the m-prefix as a queued command: the next
+// command sees iflags.menu_requested. The key bound to it is the default m;
+// the port has no cmd_from_func() binding table, so the message names m.
+export async function do_reqmenu() {
+    if (game.iflags?.menu_requested) {
+        await Norep(`Double ${visctrl_key('m'.charCodeAt(0))} prefix, canceled.`);
+        game.iflags.menu_requested = false;
+        return ECMD_CANCEL;
+    }
+    (game.iflags ||= {}).menu_requested = true;
+    return ECMD_OK;
+}
+
+/* include/obj.h:413 is_graystone() */
+const is_graystone = (o) => o.otyp === ONAMES.LUCKSTONE || o.otyp === ONAMES.LOADSTONE
+    || o.otyp === ONAMES.FLINT || o.otyp === ONAMES.TOUCHSTONE;
+
+/* include/obj.h:256 is_wet_towel() */
+const is_wet_towel = (o) => o.otyp === ONAMES.TOWEL && (o.spe | 0) > 0;
+
+// src/iactions.c:46 item_naming_classification() — the texts for 'c'/'C'
+function item_naming_classification(obj) {
+    const Name = 'Name', Rename = 'Rename or un-name', Call = 'Call',
+          /* "re-call" seems a bit weird, but "recall" and
+             "rename" don't fit for changing a type name */
+          Recall = 'Re-call or un-call';
+    let onamebuf = '', ocallbuf = '';
+
+    if (name_ok(obj) === GETOBJ_SUGGEST) {
+        onamebuf = `${(!has_oname(obj) || !ONAME(obj)) ? Name : Rename} ${
+            the_unique_obj(obj) ? 'the'
+            : !is_plural(obj) ? 'this specific'
+              : 'this stack of'} ${simpleonames(obj)}`;
+    }
+    if (call_ok(obj) === GETOBJ_SUGGEST) {
+        let callname = simpleonames(obj);
+        /* prefix known unique item with "the", make all other types plural */
+        if (the_unique_obj(obj)) /* treats unID'd fake amulets as if real */
+            callname = the(callname);
+        else if (!is_plural(obj))
+            callname = makeplural(callname);
+        ocallbuf = `${(!game.objects[obj.otyp].oc_uname) ? Call : Recall} the type for ${callname}`;
+    }
+    return { onamebuf, ocallbuf };
+}
+
+// src/iactions.c:86 item_reading_classification() — the text for 'r', or
+// null when the item cannot be read
+function item_reading_classification(obj) {
+    const otyp = obj.otyp;
+    if (otyp === ONAMES.FORTUNE_COOKIE)
+        return 'Read the message inside this cookie';
+    if (otyp === ONAMES.T_SHIRT)
+        return 'Read the slogan on the shirt';
+    if (otyp === ONAMES.ALCHEMY_SMOCK)
+        return 'Read the slogan on the apron';
+    if (otyp === ONAMES.HAWAIIAN_SHIRT)
+        return 'Look at the pattern on the shirt';
+    if (obj.oclass === OCLASSES.SCROLL_CLASS) {
+        const magic = ((obj.dknown
+                        && otyp !== ONAMES.SCR_MAIL
+                        && (otyp !== ONAMES.SCR_BLANK_PAPER
+                            || !game.objects[otyp].oc_name_known))
+                       ? ' to activate its magic' : '');
+        return `Read this scroll${magic}`;
+    }
+    if (obj.oclass === OCLASSES.SPBOOK_CLASS) {
+        const novel = (otyp === ONAMES.SPE_NOVEL),
+              blank = (otyp === ONAMES.SPE_BLANK_PAPER
+                       && game.objects[otyp].oc_name_known),
+              tome = (otyp === ONAMES.SPE_BOOK_OF_THE_DEAD
+                      && game.objects[otyp].oc_name_known);
+        return `${(novel || blank) ? 'Read' : tome ? 'Examine' : 'Study'} this ${
+            novel ? simpleonames(obj) /* "novel" or "paperback book" */
+                  : tome ? 'tome' : 'spellbook'}`;
+    }
+    return null;
+}
+
+// src/pager.c:807 ia_checkfile() — does the data file have an entry for
+// what "/i" would look up?
+async function ia_checkfile(otmp) {
+    /* singular() of xname() of otmp is what "/i" looks up */
+    const itemnam = singular(otmp, xname);
+    return await checkfile(itemnam, null, chkfilIaCheck | chkfilDontAsk, null);
+}
+
+// src/cmd.c:5010 get_count() — read a numeric prefix key by key
+export async function get_count(allowchars, inkey, maxcount, count, gc_flags) {
+    let key, cnt = 0;
+    const first = inkey ? (inkey.charCodeAt(0) - 48) : 0;
+    let backspaced = false, showzero = true;
+    const historicmsg = (gc_flags & GC_SAVEHIST) !== 0,
+          /* conditionalmsg: show the count as a message if it differs from the
+             [first digit] value passed in via 'inkey' */
+          conditionalmsg = (gc_flags & GC_CONDHIST) !== 0,
+          echoalways = (gc_flags & GC_ECHOFIRST) !== 0;
+    const STANDBY_erase_char = '\x7f';
+
+    for (;;) {
+        if (inkey) {
+            key = inkey;
+            inkey = '';
+        } else {
+            const c = await nhgetch();
+            key = typeof c === 'string' ? c : String.fromCharCode(c);
+        }
+
+        if (/^[0-9]$/.test(key)) {
+            const dgt = key.charCodeAt(0) - 48;
+            cnt = cnt * 10 + dgt; /* AppendLongDigit() */
+            if (cnt > 2147483647) /* LARGEST_INT: C's long overflow test */
+                cnt = 0;
+            else if (maxcount > 0 && cnt > maxcount)
+                cnt = maxcount;
+            showzero = (key === '0');
+        } else if (key === '\b' || key === STANDBY_erase_char) {
+            if (!cnt && !echoalways)
+                break;
+            showzero = false;
+            cnt = Math.trunc(cnt / 10);
+            backspaced = true;
+        } else if (key === '\x1b') {
+            break;
+        } else if (!allowchars || allowchars.includes(key)) {
+            break;
+        }
+
+        if (cnt > 9 || backspaced || echoalways) {
+            tty_clear_nhwindow_message(game._topl_cury || 0);
+            let qbuf;
+            if (backspaced && !cnt && !showzero) {
+                qbuf = 'Count: ';
+            } else {
+                qbuf = `Count: ${cnt}`;
+                backspaced = false;
+            }
+            await pline_nohistory(qbuf);
+        }
+    }
+    count.value = cnt;
+
+    if (historicmsg || (conditionalmsg && cnt !== first)) {
+        putmsghistory(`Count: ${cnt} ${key2txt(key.charCodeAt(0))}`);
+    }
+    return key;
+}
+
+/* src/iactions.c:282 itemactions() — the menu of things the hero could do
+   with one inventory item, in C's key order. */
 async function show_item_actions(obj) {
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
-    const wornItem = !!(obj.owornmask & (W_ARMOR | W_ACCESSORY));
-    const simpleName = simpleonames(obj);
+    const u = game.u;
+    const plural = obj.quan > 1;
     const light = obj.lamplit ? 'Extinguish' : 'Light';
+    const already_worn = (obj.owornmask & (W_ARMOR | W_ACCESSORY)) !== 0;
 
-    /* src/iactions.c:290 — '-': unwield; picking current weapon offers an
-       opportunity for 'w-' to wield bare/gloved hands; likewise for 'Q-'
-       with quivered item(s) */
-    if (obj === game.u.uwep || obj === game.u.uswapwep || obj === game.u.uquiver) {
-        const verb = (obj === game.u.uquiver) ? 'Quiver' : 'Wield',
-              action = (obj === game.u.uquiver) ? 'un-ready' : 'un-wield',
+    /* -: unwield; picking current weapon offers an opportunity for 'w-'
+       to wield bare/gloved hands; likewise for 'Q-' with quivered item(s) */
+    if (obj === u.uwep || obj === u.uswapwep || obj === u.uquiver) {
+        const verb = (obj === u.uquiver) ? 'Quiver' : 'Wield',
+              action = (obj === u.uquiver) ? 'un-ready' : 'un-wield',
               which = is_plural(obj) ? 'these' : 'this',
               what = ((obj.oclass === OCLASSES.WEAPON_CLASS
                        || is_weptool(obj, game.objects)) ? 'weapon' : 'item');
+        /*
+         * TODO: if uwep is ammo, tell player that to shoot instead of toss,
+         *       the corresponding launcher must be wielded;
+         */
         add_item_action(win, '-', `${verb} '${HANDS_SYM}' to ${action} ${which} ${
             is_plural(obj) ? makeplural(what) : what}`);
     }
 
-    /* src/iactions.c:309 — a: apply */
+    /* a: apply */
     if (obj.oclass === OCLASSES.COIN_CLASS)
         add_item_action(win, 'a', 'Flip a coin');
     else if (obj.otyp === ONAMES.CREAM_PIE)
@@ -3208,68 +3386,340 @@ async function show_item_actions(obj) {
     else if (obj.oclass === OCLASSES.WAND_CLASS)
         add_item_action(win, 'a', 'Break this wand');
 
-    add_item_action(win, 'c', `Name this specific ${simpleName}`);
-    if (!game.objects[obj.otyp].oc_name_known)
-        add_item_action(win, 'C', `Call the type for ${simpleName}`);
-    if (!wornItem)
-        add_item_action(win, 'd', `Drop this ${obj.quan > 1 ? 'stack' : 'item'}`);
-    if (obj.oclass === OCLASSES.RING_CLASS) {
-        const verb = game.objects[obj.otyp].oc_tough ? 'Engrave' : 'Write';
-        add_item_action(win, 'E', `${verb} on the ${surface(game.u.ux, game.u.uy)} `
-                        + `with ${obj.quan > 1 ? 'one of these items' : 'this item'}`);
+    /* 'c', 'C' - call an item or its type something */
+    const { onamebuf, ocallbuf } = item_naming_classification(obj);
+    if (onamebuf)
+        add_item_action(win, 'c', onamebuf);
+    if (ocallbuf)
+        add_item_action(win, 'C', ocallbuf);
+
+    /* d: drop item, works on everything except worn items; those will
+       always have a takeoff/remove choice so we don't have to worry
+       about the menu maybe being empty when 'd' is suppressed */
+    if (!already_worn)
+        add_item_action(win, 'd', `Drop this ${plural ? 'stack' : 'item'}`);
+
+    /* e: eat item */
+    if (obj.otyp === ONAMES.TIN) {
+        add_item_action(win, 'e', `Open ${plural ? 'one of these tins' : 'this tin'} and eat the contents${
+            (u.uwep && u.uwep.otyp === ONAMES.TIN_OPENER) ? ' with your tin opener' : ''}`);
+    } else if (is_edible(obj)) {
+        add_item_action(win, 'e', `Eat ${plural ? 'one of these' : 'this'}`);
     }
-    if (obj.oclass !== OCLASSES.COIN_CLASS)
+
+    /* E: engrave with item */
+    if (obj.otyp === ONAMES.TOWEL) {
+        add_item_action(win, 'E', 'Wipe the floor with this towel');
+    } else if (obj.otyp === ONAMES.MAGIC_MARKER) {
+        add_item_action(win, 'E', 'Scribble graffiti on the floor');
+    } else if (obj.oclass === OCLASSES.WEAPON_CLASS || obj.oclass === OCLASSES.WAND_CLASS
+               || obj.oclass === OCLASSES.GEM_CLASS || obj.oclass === OCLASSES.RING_CLASS) {
+        add_item_action(win, 'E', `${
+            (is_blade(obj) || obj.oclass === OCLASSES.WAND_CLASS
+             || ((obj.oclass === OCLASSES.GEM_CLASS || obj.oclass === OCLASSES.RING_CLASS)
+                 && game.objects[obj.otyp].oc_tough)) ? 'Engrave' : 'Write'} on the ${
+            surface(u.ux, u.uy)} with ${plural ? 'one of these items' : 'this item'}`);
+    }
+
+    /* f: fire quivered ammo */
+    if (obj === u.uquiver) {
+        const shoot = ammo_and_launcher(obj, u.uwep);
+        /* FIXME: see the multi-shot FIXME about "one of" for 't: throw' */
+        let buf = `${shoot ? 'Shoot' : 'Throw'} ${plural ? 'one of these' : 'this'}`;
+        if (shoot)
+            buf += ` with your wielded ${simpleonames(u.uwep)}`;
+        add_item_action(win, 'f', buf);
+    }
+
+    /* i: #adjust inventory letter; gold can't be adjusted unless there
+       is some in a slot other than '$' (which shouldn't be possible) */
+    if (obj.oclass !== OCLASSES.COIN_CLASS
+        || (game.invent || []).some((o) => o.oclass === OCLASSES.COIN_CLASS
+                                            && o.invlet !== '$')) /* check_invent_gold() */
         add_item_action(win, 'i', 'Adjust inventory by assigning new letter');
-    if (obj.quan > 1 && obj.oclass !== OCLASSES.COIN_CLASS)
+    /* I: #adjust inventory item by splitting its stack  */
+    if (plural && obj.oclass !== OCLASSES.COIN_CLASS)
         add_item_action(win, 'I', 'Adjust inventory by splitting this stack');
-    if (obj.oclass === OCLASSES.SPBOOK_CLASS)
-        add_item_action(win, 'r', 'Study this spellbook');
-    else if (obj.oclass === OCLASSES.SCROLL_CLASS)
-        add_item_action(win, 'r', 'Read this scroll to activate its magic');
-    if (!wornItem && obj.oclass === OCLASSES.RING_CLASS)
-        add_item_action(win, 'P', !game.u.uleft || !game.u.uright
-            ? 'Put this ring on' : '[both ring fingers in use]');
-    if (!wornItem)
-        add_item_action(win, 't', obj.quan === 1
-            ? 'Throw this item' : 'Throw one of these');
-    /* src/iactions.c:590 — T: take off armor */
-    if ((obj.owornmask ?? 0) & W_ARMOR)
+
+    /* O: offer sacrifice */
+    if (IS_ALTAR(game.level.at(u.ux, u.uy)?.typ) && !u.uswallow) {
+        /* FIXME: this doesn't match #offer's likely candidates, which don't
+           include corpses on Astral and don't include amulets off Astral */
+        if (obj.otyp === ONAMES.CORPSE)
+            add_item_action(win, 'O', 'Offer this corpse as a sacrifice at this altar');
+        else if (obj.otyp === ONAMES.AMULET_OF_YENDOR
+                 || obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR)
+            add_item_action(win, 'O', 'Offer this amulet as a sacrifice at this altar');
+    }
+
+    /* p: pay for unpaid utems */
+    let mtmp;
+    if (obj.unpaid
+        /* FIXME: should also handle player owned container (so not
+           flagged 'unpaid') holding shop owned items */
+        && (mtmp = shop_keeper((in_rooms(u.ux, u.uy, SHOPBASE) || '\0').charCodeAt(0))) != null
+        && inhishop(mtmp)) {
+        add_item_action(win, 'p', `Buy this unpaid ${plural ? 'stack' : 'item'}`);
+    }
+
+    /* P: put on accessory */
+    if (!already_worn) {
+        /* if 'otmp' is worn, we'll skip 'P' and show 'R' below;
+           if not worn, we show 'P - Put on this <simple-item>' if
+           the slot is available, or 'P - <unavailable>'; for the latter,
+           'P' will fail but we don't want to omit the choice because
+           item actions can be used to learn commands */
+        let buf = '';
+        if (obj.oclass === OCLASSES.AMULET_CLASS) {
+            buf = !u.uamul ? 'Put this amulet on' : '[already wearing an amulet]';
+        } else if (obj.oclass === OCLASSES.RING_CLASS || obj.otyp === ONAMES.MEAT_RING) {
+            if (!u.uleft || !u.uright)
+                buf = 'Put this ring on';
+            else
+                buf = `[both ring ${makeplural(body_part(FINGER))} in use]`;
+        } else if (obj.otyp === ONAMES.BLINDFOLD || obj.otyp === ONAMES.TOWEL
+                   || obj.otyp === ONAMES.LENSES) {
+            if (u.ublindf)
+                buf = '[already wearing eyewear]';
+            else if (obj.otyp === ONAMES.LENSES)
+                buf = 'Put these lenses on';
+            else
+                buf = `Put this on${(obj.otyp === ONAMES.TOWEL) ? ' to blindfold yourself' : ''}`;
+        }
+        if (buf)
+            add_item_action(win, 'P', buf);
+    }
+
+    /* q: drink item */
+    if (obj.oclass === OCLASSES.POTION_CLASS)
+        add_item_action(win, 'q', `Quaff (drink) ${plural ? 'one of these potions' : 'this potion'}`);
+
+    /* Q: quiver throwable item */
+    if ((obj.oclass === OCLASSES.GEM_CLASS || obj.oclass === OCLASSES.WEAPON_CLASS)
+        && obj !== u.uquiver)
+        add_item_action(win, 'Q', `Quiver this ${plural ? 'stack' : 'item'} for easy ${
+            ammo_and_launcher(obj, u.uwep) ? 'shooting' : 'throwing'} with 'f'ire`);
+
+    /* r: read item */
+    const readbuf = item_reading_classification(obj);
+    if (readbuf !== null)
+        add_item_action(win, 'r', readbuf);
+
+    /* R: remove accessory or rub item */
+    if (obj.owornmask & W_ACCESSORY) {
+        add_item_action(win, 'R', `Remove this ${
+            (obj.owornmask & W_AMUL) ? 'amulet'
+            : (obj.owornmask & W_RING) ? 'ring'
+              : (obj.owornmask & W_TOOL) ? 'eyewear'
+                : 'accessory'}`); /* catchall -- can't happen */
+    }
+    if (obj.otyp === ONAMES.OIL_LAMP || obj.otyp === ONAMES.MAGIC_LAMP
+        || obj.otyp === ONAMES.BRASS_LANTERN) {
+        add_item_action(win, 'R', `Rub this ${simpleonames(obj)}`);
+    } else if (obj.oclass === OCLASSES.GEM_CLASS && is_graystone(obj))
+        add_item_action(win, 'R', 'Rub something on this stone');
+
+    /* t: throw item */
+    if (!already_worn) {
+        const shoot = ammo_and_launcher(obj, u.uwep);
+        /*
+         * FIXME:
+         *  'one of these' should be changed to 'some of these' when there
+         *  is the possibility of a multi-shot volley but we don't have
+         *  any way to determine that except by actually calculating the
+         *  volley count and that could randomly yield 1 here and 2..N
+         *  while throwing or vice versa.
+         */
+        add_item_action(win, 't', `${shoot ? 'Shoot' : 'Throw'} ${
+            (obj.quan === 1) ? 'this item'
+            : (obj.otyp === ONAMES.GOLD_PIECE) ? 'them'
+              : 'one of these'}${
+            /* if otmp is quivered, we've already listed
+               'f - shoot|throw this item' as a choice;
+               if 't' is duplicating that, say so ('t' and 'f'
+               behavior differs for throwing a stack of gold) */
+            (obj === u.uquiver && (obj.otyp !== ONAMES.GOLD_PIECE
+                                   || obj.quan === 1))
+            ? " (same as 'f')" : ''}`);
+    }
+
+    /* T: take off armor, tip carried container */
+    if (obj.owornmask & W_ARMOR)
         add_item_action(win, 'T', 'Take off this armor');
-    if (!wornItem && obj !== game.u.uwep)
-        add_item_action(win, 'w', `Wield this ${obj.quan > 1 ? 'stack' : 'item'}`
-                        + ' in your hands');
-    if (!wornItem && obj.oclass === OCLASSES.ARMOR_CLASS)
-        add_item_action(win, 'W', 'Wear this armor');
+    if ((Is_container(obj) && (Has_contents(obj) || !obj.cknown))
+        || (obj.otyp === ONAMES.HORN_OF_PLENTY && (obj.spe > 0 || !obj.known)))
+        add_item_action(win, 'T', 'Tip all the contents out of this container');
+
+    /* V: invoke */
+    if ((obj.otyp === ONAMES.FAKE_AMULET_OF_YENDOR && !obj.known)
+        || obj.oartifact || game.objects[obj.otyp].oc_unique
+        /* non-artifact crystal balls don't have any unique power but
+           the #invoke command lists them as likely candidates */
+        || obj.otyp === ONAMES.CRYSTAL_BALL)
+        add_item_action(win, 'V', 'Try to invoke a unique power of this object');
+
+    /* w: wield, hold in hands, works on everything but with different
+       advice text; not mentioned for things that are already wielded */
+    if (obj === u.uwep || cantwield(game.youmonst?.data ?? game.mons[u.umonnum ?? 0])) {
+        ; /* either already wielded or can't wield anything; skip 'w' */
+    } else if (obj.oclass === OCLASSES.WEAPON_CLASS || is_weptool(obj, game.objects)
+               || is_wet_towel(obj) || obj.otyp === ONAMES.HEAVY_IRON_BALL) {
+        add_item_action(win, 'w', `Wield this ${plural ? 'stack' : 'item'} as your weapon`);
+    } else if (obj.otyp === ONAMES.TIN_OPENER) {
+        add_item_action(win, 'w', 'Wield the tin opener to easily open tins');
+    } else if (!already_worn) {
+        /* originally this was using "hold this item in your hands" but
+           there's no concept of "holding an item", plus it unwields
+           whatever item you already have wielded so use "wield this item" */
+        add_item_action(win, 'w', `Wield this ${plural ? 'stack' : 'item'} in your ${
+            /* only two-handed weapons and unicorn horns care about
+               pluralizing "hand" and they won't reach here, but plural
+               sounds better when poly'd into something with "claw" */
+            makeplural(body_part(HAND))}`);
+    }
+
+    /* W: wear armor */
+    if (!already_worn) {
+        if (obj.oclass === OCLASSES.ARMOR_CLASS) {
+            /* if 'otmp' is worn we skip 'W' (and show 'T' above instead);
+               if it isn't, we either show "W - wear this" if otmp's slot
+               isn't populated, or "W - [already wearing <simple-armor>]";
+               for the latter, picking 'W' will fail but we don't want to
+               omit 'W' in this situation */
+            const Wmask = armcat_to_wornmask(game.objects[obj.otyp].oc_subtyp);
+            const o = wearmask_to_obj(Wmask);
+            add_item_action(win, 'W', !o ? 'Wear this armor'
+                            : `[already wearing ${an(armor_simple_name(o))}]`);
+        }
+    }
+
+    /* x: Swap main and readied weapon */
+    if (obj === u.uwep && u.uswapwep)
+        add_item_action(win, 'x', 'Swap this with your alternate weapon');
+    else if (obj === u.uwep)
+        add_item_action(win, 'x', 'Ready this as an alternate weapon');
+    else if (obj === u.uswapwep)
+        add_item_action(win, 'x', 'Swap this with your main weapon');
+
+    /* this is based on TWOWEAPOK() in wield.c; we don't call can_two_weapon()
+       because it is very verbose; attempting to two-weapon might be rejected
+       but we screen out most reasons for rejection before offering it as a
+       choice */
+    const MAYBETWOWEAPON = (o) =>
+        (((o.oclass === OCLASSES.WEAPON_CLASS)
+          ? !(is_launcher(o) || is_ammo(o) || is_missile(o))
+          : is_weptool(o, game.objects))
+         && !bimanual(o));
+    /* X: Toggle two-weapon mode on or off */
+    if ((obj === u.uwep || obj === u.uswapwep)
+        /* if already two-weaponing, no special checks needed to toggle off */
+        && (u.twoweap
+        /* but if not, try to filter most "you can't do that" here */
+            || (could_twoweap(game.youmonst?.data ?? game.mons[u.umonnum ?? 0]) && !u.uarms
+                && u.uwep && MAYBETWOWEAPON(u.uwep)
+                && u.uswapwep && MAYBETWOWEAPON(u.uswapwep)))) {
+        add_item_action(win, 'X', `Toggle two-weapon combat ${u.twoweap ? 'off' : 'on'}`);
+    }
+
+    /* z: Zap wand */
     if (obj.oclass === OCLASSES.WAND_CLASS)
         add_item_action(win, 'z', 'Zap this wand to release its magic');
-    add_item_action(win, '/', `Look up information about ${obj.quan > 1
-        ? 'these' : 'this'}`);
+
+    /* ?: Look up an item in the game's database */
+    if (await ia_checkfile(obj))
+        add_item_action(win, '/', `Look up information about ${plural ? 'these' : 'this'}`);
 
     tty_end_menu(win, `Do what with ${the(cxname(obj))}?`);
     const picks = await tty_select_menu(win, 1 /* PICK_ONE */);
     tty_destroy_nhwindow(win);
     if (picks.length)
         queue_item_action(String.fromCharCode(picks[0]), obj);
+    /* finish the 'i' command:  no time elapses and cancelling without
+       selecting an action doesn't matter */
 }
 
+// src/iactions.c:138 itemactions_pushkeys() — queue the picked action as the
+// command plus the keys it would have asked for
 function queue_item_action(action, obj) {
     const push = (fn, ...keys) => {
         cmdq_add_ec(CQ_CANNED, fn);
         for (const key of keys)
             cmdq_add_key(CQ_CANNED, key);
     };
+    const u = game.u;
     switch (action) {
-    case 'c': push(docallcmd, 'i', obj.invlet); break;
+    case '-': /* IA_UNWIELD */
+        push((obj === u.uwep) ? dowield
+             : (obj === u.uswapwep) ? remarm_swapwep
+               : (obj === u.uquiver) ? dowieldquiver
+                 : donull, /* can't happen */
+             HANDS_SYM);
+        break;
+    case 'a': /* IA_APPLY_OBJ / IA_DIP_OBJ */
+        if (obj.oclass === OCLASSES.POTION_CLASS)
+            /* #dip: first prompt is for the potion, second for the item
+               to dip; using the inventory item first (the instigating
+               potion) matches C's dip_into() */
+            push(dip_into, obj.invlet);
+        else
+            push(doapply, obj.invlet);
+        break;
+    case 'c': /* IA_NAME_OBJ */
+    case 'C': /* IA_NAME_OTYP */
+        push(docallcmd, (action === 'c') ? 'i' : 'o', obj.invlet);
+        break;
     case 'd': push(dodrop, obj.invlet); break;
+    case 'e':
+        /* m-prefix to skip floor food if present and eat food from invent */
+        cmdq_add_ec(CQ_CANNED, do_reqmenu);
+        push(doeat, obj.invlet);
+        break;
     case 'E': push(doengrave, obj.invlet); break;
+    case 'f': push(dofire); break;
+    case 'i': push(doorganize, obj.invlet); break;       /* #adjust */
+    case 'I': push(adjust_split, obj.invlet); break;     /* #altadjust */
+    case 'O': push(dosacrifice, obj.invlet); break;
+    case 'p': push(dopay, obj.invlet); break;
     case 'P': push(doputon, obj.invlet); break;
+    case 'q':
+        /* m-prefix to skip fountain or sink if present and drink a potion
+           from invent */
+        cmdq_add_ec(CQ_CANNED, do_reqmenu);
+        push(() => dodrink(drink_ok), obj.invlet);
+        break;
+    case 'Q': push(dowieldquiver, obj.invlet); break;
     case 'r': push(() => doread(read_ok), obj.invlet); break;
+    case 'R':
+        if (obj.owornmask & W_ACCESSORY)
+            push(ia_dotakeoff, obj.invlet);              /* #altdotakeoff */
+        else
+            push(dorub, obj.invlet);
+        break;
     case 't': push(dothrow, obj.invlet); break;
+    case 'T':
+        if (obj.owornmask & W_ARMOR) {
+            push(ia_dotakeoff, obj.invlet);              /* #altdotakeoff */
+        } else {
+            /* start with m-prefix to skip floor containers;
+               for menustyle:Traditional when more than one floor container
+               is present, player will get a #tip menu and have to pick
+               the "tip something being carried" choice, then this item
+               will be already chosen from inventory; suboptimal but
+               possibly an acceptable tradeoff since combining item actions
+               with use of traditional ggetobj() is an unlikely scenario */
+            cmdq_add_ec(CQ_CANNED, do_reqmenu);
+            push(dotip, obj.invlet);
+        }
+        break;
+    case 'V': push(doinvoke, obj.invlet); break;
     case 'w': push(dowield, obj.invlet); break;
+    case 'W': push(dowear, obj.invlet); break;
+    case 'x': push(doswapweapon); break;
+    case 'X': push(dotwoweapon); break;
     case 'z': push(dozap, obj.invlet); break;
-    case '/': push(dowhatis, 'i', obj.invlet); break;
+    case '/': push(dowhatis, 'i', obj.invlet); break;   /* "/" command, "i" == item from inventory */
     default:
-        note_unported_cmd(`item_action:${action}`);
+        /* impossible("Unknown item action %d", act) */
         break;
     }
 }

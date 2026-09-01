@@ -6,6 +6,8 @@
 import { game } from './gstate.js';
 import { sgn, s_suffix } from './hacklib.js';
 import { MON_WEP } from './monst.js';
+import { ARM_SUIT, ARM_SHIELD, ARM_HELM, ARM_GLOVES, ARM_BOOTS, ARM_CLOAK,
+         ARM_SHIRT } from './const.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU, W_AMUL,
          W_RINGL, W_RINGR, W_WEP, W_SWAPWEP, W_QUIVER, W_TOOL, W_BALL,
          W_CHAIN, W_ARMOR, W_ART, W_SADDLE, I_SPECIAL, BOLT_LIM, BLINDED,
@@ -807,4 +809,41 @@ export function find_mac(mon) {
     if (Math.abs(base) > AC_MAX)
         base = sgn(base) * AC_MAX;
     return base;
+}
+
+// src/worn.c:206 wearmask_to_obj() — the worn item in a slot mask
+export function wearmask_to_obj(wornmask) {
+    for (const wp of worn)
+        if (wp.w_mask & wornmask)
+            return game.u[wp.w_obj] || null;
+    return null;
+}
+
+// src/worn.c:250 armcat_to_wornmask()
+export function armcat_to_wornmask(cat) {
+    let mask = 0;
+    switch (cat) {
+    case ARM_SUIT:
+        mask = W_ARM;
+        break;
+    case ARM_CLOAK:
+        mask = W_ARMC;
+        break;
+    case ARM_HELM:
+        mask = W_ARMH;
+        break;
+    case ARM_SHIELD:
+        mask = W_ARMS;
+        break;
+    case ARM_GLOVES:
+        mask = W_ARMG;
+        break;
+    case ARM_BOOTS:
+        mask = W_ARMF;
+        break;
+    case ARM_SHIRT:
+        mask = W_ARMU;
+        break;
+    }
+    return mask;
 }

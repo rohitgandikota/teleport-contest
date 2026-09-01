@@ -2155,6 +2155,17 @@ export async function pline(msg) {
 // custompline(SUPPRESS_HISTORY | OVERRIDE_MSGTYPE | NO_CURS_ON_U).
 // getpos uses this for automatic descriptions so they do not enter message
 // history and do not move the terminal cursor back onto the hero.
+// custompline(SUPPRESS_HISTORY): the message is shown but not remembered;
+// the cursor returns to the hero as for an ordinary pline.
+export async function pline_nohistory(msg) {
+    if (game.vision_full_recalc)
+        vision_recalc(0);
+    if (game.u?.ux)
+        await flush_screen(1);
+    show_topl_nohistory(msg);
+    game._prevmsg = msg;
+}
+
 export async function pline_nohistory_no_cursor(msg) {
     if (game.vision_full_recalc)
         vision_recalc(0);

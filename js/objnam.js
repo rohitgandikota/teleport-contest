@@ -48,6 +48,7 @@ import { ordin, distu, s_suffix } from './hacklib.js';
 import { cansee as cansee_o } from './vision.js';
 import { ART_ORB_OF_DETECTION, ART_EYES_OF_THE_OVERWORLD } from './artilist_data.js';
 const mons_PM_SAMURAI = PMNAMES.PM_SAMURAI;
+import { helm_simple_name, cloak_simple_name } from './do_wear.js';
 import { OCLASSES, ONAMES, MATERIALS, obj_descr,
          NUM_OBJECTS } from './objects_data.js';
 import { strstri, strsubst, fuzzymatch, mungspaces } from './hacklib.js';
@@ -846,7 +847,7 @@ export function obj_is_pname(obj) {
 // src/objnam.c:1106 the_unique_obj() — is this THE Amulet (or another
 // unique object the hero has identified)? The fake amulet lies while
 // unknown.
-function the_unique_obj(obj) {
+export function the_unique_obj(obj) {
     const known = obj.known;
 
     if (!obj.dknown)
@@ -3578,4 +3579,53 @@ export function distant_name(obj, func) {
         game.distantname--;
     }
     return str;
+}
+
+// src/objnam.c:5570 shield_simple_name()
+export function shield_simple_name(shield) {
+    if (shield) {
+        /* xname() describes unknown (unseen) reflection as smooth */
+        if (shield.otyp === ONAMES.SHIELD_OF_REFLECTION)
+            return shield.dknown ? 'silver shield' : 'smooth shield';
+    }
+    return 'shield';
+}
+
+// src/objnam.c:5600 shirt_simple_name()
+export function shirt_simple_name(shirt) {
+    return 'shirt';
+}
+
+// src/objnam.c:5435 armor_simple_name()
+export function armor_simple_name(armor) {
+    let result;
+    const armcat = game.objects[armor.otyp].oc_subtyp; /* oc_armcat */
+    switch (armcat) {
+    case ARM_SUIT:
+        result = suit_simple_name(armor);
+        break;
+    case ARM_CLOAK:
+        result = cloak_simple_name(armor);
+        break;
+    case ARM_HELM:
+        result = helm_simple_name(armor);
+        break;
+    case ARM_GLOVES:
+        result = gloves_simple_name(armor);
+        break;
+    case ARM_BOOTS:
+        result = boots_simple_name(armor);
+        break;
+    case ARM_SHIELD:
+        result = shield_simple_name(armor);
+        break;
+    case ARM_SHIRT:
+        result = shirt_simple_name(armor);
+        break;
+    default:
+        result = simpleonames(armor);
+        /* impossible("unknown armor category (%s => %u)") */
+        break;
+    }
+    return result;
 }

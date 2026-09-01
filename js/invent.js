@@ -4,7 +4,8 @@
 import { game } from './gstate.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
-import { cmdq_pop, cmdq_clear, cmdq_add_key } from './cmd.js';
+import { cmdq_pop, cmdq_clear, cmdq_add_key, get_count } from './cmd.js';
+import { GC_ECHOFIRST, GC_CONDHIST, GETOBJ_NOFLAGS, ECMD_FAIL, ECMD_CANCEL } from './const.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { addtobill, costly_spot, doname_with_price, obfree_bill } from './shk.js';
 import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
@@ -2037,12 +2038,82 @@ export function splittable(obj) {
 
 // src/invent.c:5060 doorganize()/doorganize_core() — the #adjust command.
 // The splitting (count-prefix) and gold arms are not reachable yet.
+// src/invent.c:4970 adjust_ok() — getobj callback for item to #adjust
+function adjust_ok(obj) {
+    if (!obj || obj.oclass === OCLASSES.COIN_CLASS)
+        return GETOBJ_EXCLUDE;
+    return GETOBJ_SUGGEST;
+}
+
 export async function doorganize() {
-    const { tty_yn_function } = await import('./tty/topl.js');
-    const obj = await getobj('adjust', (o) => o ? GETOBJ_SUGGEST
-                                               : GETOBJ_EXCLUDE, 0);
+    const obj = await getobj('adjust', adjust_ok, GETOBJ_NOFLAGS);
     if (!obj)
         return ECMD_OK;
+    return await doorganize_core(obj);
+}
+
+// src/invent.c:5008 adjust_split() — #altadjust: split part of a stack off
+// into its own inventory slot
+export async function adjust_split() {
+    const { tty_yn_function } = await import('./tty/topl.js');
+    let splitamount = 0, let_, dig = '\0';
+
+    /* invlet should be queued so no getobj prompting is expected */
+    const obj = await getobj('split', adjust_ok, GETOBJ_NOFLAGS);
+    if (!obj || obj.quan < 2 || obj.otyp === ONAMES.GOLD_PIECE)
+        return ECMD_FAIL; /* caller has set things up to avoid this */
+
+    if (obj.quan === 2) {
+        splitamount = 1;
+    } else {
+        /* get first digit; doesn't wait for <return> */
+        dig = await tty_yn_function('Split off how many?', null, '\0', true);
+        if (!/^[0-9]$/.test(dig)) {
+            await pline('Never mind.');
+            return ECMD_CANCEL;
+        }
+        /* got first digit, get more until next non-digit (except for
+           backspace/delete which will take away most recent digit and
+           keep going; we expect one of ' ', '\n', or '\r') */
+        const count = { value: 0 };
+        let_ = await get_count(null, dig, 0, count,
+                               /* yn_function() added the first digit to the
+                                  prompt when recording message history; have
+                                  get_count() display "Count: N" when waiting
+                                  for additional digits (ordinarily that won't be
+                                  shown until a second digit is entered) and also
+                                  add "Count: N" to message history if more than
+                                  one digit gets entered or the original N is
+                                  deleted and replaced with different digit */
+                               GC_ECHOFIRST | GC_CONDHIST);
+        splitamount = count.value;
+        /* \033 is in quitchars[] so we need to check for it separately
+           in order to treat it as cancel rather than as accept */
+        if (!let_ || let_ === '\x1b' || !' \r\n\x1b'.includes(let_)) {
+            await pline('Never mind.');
+            return ECMD_CANCEL;
+        }
+    }
+    if (splitamount < 1 || splitamount >= obj.quan) {
+        const Amount = 'Amount to split from current stack must be';
+        if (splitamount < 1)
+            await pline(`${Amount} at least 1.`);
+        else
+            await pline(`${Amount} less than ${obj.quan}.`);
+        return ECMD_CANCEL;
+    }
+
+    /* normally a split would take place in getobj() if player supplies
+       a count there, so doorganize_core() figures out 'splitamount'
+       from the object; it will undo the split if player cancels while
+       selecting the destination slot */
+    const split = splitobj(obj, splitamount);
+    return await doorganize_core(split);
+}
+
+// src/invent.c:5068 doorganize_core() — the #adjust letter move
+async function doorganize_core(obj) {
+    const { tty_yn_function } = await import('./tty/topl.js');
 
     /* initialize with every letter, then blank the ones in use by
        other (non-mergable) stacks */

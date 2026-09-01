@@ -20,7 +20,7 @@ import { game } from './gstate.js';
 import { rn1, rn2, rn2_on_display_rng } from './rng.js';
 import { Hallucination } from './youprop.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
-import { OCLASSES, ONAMES } from './objects_data.js';
+import { OCLASSES, ONAMES, obj_descr } from './objects_data.js';
 import { ARTICLE_NONE, ARTICLE_THE, ARTICLE_A, ARTICLE_YOUR,
          M_AP_TYPE, M_AP_MONSTER, PRONOUN_HALLU,
          SUPPRESS_SADDLE, SUPPRESS_IT, SUPPRESS_INVISIBLE,
@@ -498,7 +498,7 @@ export function oname(obj, name, oflgs) {
 // src/do_name.c:467 name_ok() and :290 do_oname(), select and name one
 // particular inventory object. The artifact-name restriction path is left to
 // oname(); ordinary player notes consume no gameplay RNG.
-function name_ok(obj) {
+export function name_ok(obj) {
     if (!obj || obj.oclass === OCLASSES.COIN_CLASS)
         return GETOBJ_EXCLUDE;
     if (!obj.dknown || obj.oartifact || obj.otyp === ONAMES.SPE_NOVEL)
@@ -782,4 +782,54 @@ export function noveltitle(box) {
             j = box.idx;
     }
     return sir_Terry_novels[j];
+}
+
+// src/do_name.c:445 objtyp_is_callable()
+export function objtyp_is_callable(i) {
+    if (game.objects[i].oc_uname)
+        return true;
+
+    switch (game.objects[i].oc_class) {
+    case OCLASSES.AMULET_CLASS:
+        /* 5.0: calling these used to be allowed but that enabled the
+           player to tell whether two unID'd amulets of yendor were both
+           fake or one was real by calling them distinct names and then
+           checking discoveries to see whether first name was replaced
+           by second or both names stuck; with more than two available
+           to work with, if they weren't all fake it was possible to
+           determine which one was the real one */
+        if (i === ONAMES.AMULET_OF_YENDOR || i === ONAMES.FAKE_AMULET_OF_YENDOR)
+            break; /* return FALSE */
+        /*FALLTHRU*/
+    case OCLASSES.SCROLL_CLASS:
+    case OCLASSES.POTION_CLASS:
+    case OCLASSES.WAND_CLASS:
+    case OCLASSES.RING_CLASS:
+    case OCLASSES.GEM_CLASS:
+    case OCLASSES.SPBOOK_CLASS:
+    case OCLASSES.ARMOR_CLASS:
+    case OCLASSES.TOOL_CLASS:
+    case OCLASSES.VENOM_CLASS:
+        if (obj_descr[i]?.oc_descr)
+            return true;
+        break;
+    default:
+        break;
+    }
+    return false;
+}
+
+// src/do_name.c:480 call_ok() — getobj callback for object type to name
+export function call_ok(obj) {
+    if (!obj || !objtyp_is_callable(obj.otyp))
+        return GETOBJ_EXCLUDE;
+    /* not a likely candidate if not seen yet since naming will fail,
+       or if it has been discovered and doesn't already have a name;
+       when something has been named and then becomes discovered, it
+       remains a likely candidate until player renames it to <space>
+       to remove that no longer needed name */
+    if (!obj.dknown || (game.objects[obj.otyp].oc_name_known
+                        && !game.objects[obj.otyp].oc_uname))
+        return GETOBJ_DOWNPLAY;
+    return GETOBJ_SUGGEST;
 }

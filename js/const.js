@@ -2966,3 +2966,12 @@ export const NH_BLACK = 'black', NH_AMBER = 'amber', NH_GOLDEN = 'golden',
              NH_LIGHT_BLUE = 'light blue', NH_RED = 'red', NH_GREEN = 'green',
              NH_SILVER = 'silver', NH_BLUE = 'blue', NH_PURPLE = 'purple',
              NH_WHITE = 'white', NH_ORANGE = 'orange';
+
+/* include/objclass.h:37 enum obj_armor_types — objects[].oc_subtyp for armor */
+export const ARM_SUIT = 0;
+export const ARM_SHIELD = 1;
+export const ARM_HELM = 2;
+export const ARM_GLOVES = 3;
+export const ARM_BOOTS = 4;
+export const ARM_CLOAK = 5;
+export const ARM_SHIRT = 6;

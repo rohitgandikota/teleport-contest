@@ -41,6 +41,8 @@ import { an, xname, doname, the, Tobjnam, gloves_simple_name,
 import { makeknown, observe_object } from './o_init.js';
 import { hcolor } from './do_name.js';
 import { ART_OGRESMASHER } from './artilist_data.js';
+import { cmdq_pop } from './cmd.js';
+import { CMDQ_KEY, ECMD_FAIL } from './const.js';
 import { prinv, update_inventory, useup, ECMD_OK, display_inventory, xprname }
     from './invent.js';
 import { nomul, spoteffects, unmul } from './hack.js';
@@ -2409,4 +2411,39 @@ export function hard_helmet(obj) {
     if (!obj || !is_helmet(obj))
         return false;
     return (is_metallic(obj) || is_crackable(obj)) ? true : false;
+}
+
+// src/do_wear.c:1862 ia_dotakeoff() — #altdotakeoff, the item-action
+// menu's 'T'/'R': the getobj filter skips the inaccessible-equipment test
+export async function ia_dotakeoff() {
+    game.item_action_in_progress = true;
+    const res = await dotakeoff();
+    game.item_action_in_progress = false;
+    return res;
+}
+
+// src/do_wear.c:3062 remarm_swapwep() — '-' picked for the alternate
+// weapon from the item-action menu: un-ready it through do_takeoff()
+export async function remarm_swapwep() {
+    let cq;
+    const cmdq = cmdq_pop();
+    if (cmdq) {
+        /* '-' uswapwep item-action picked from context-sensitive invent */
+        cq = cmdq;
+    } else {
+        cq = { typ: CMDQ_KEY, key: '\0' }; /* something other than '-' */
+    }
+    if (cq.typ !== CMDQ_KEY || cq.key !== '-' || !game.u.uswapwep)
+        return ECMD_FAIL;
+    const oldbknown = game.u.uswapwep.bknown; /* when deciding whether this
+                                              * command has done something that
+                                              * takes time, behave as if a
+                                              * cursed secondary weapon can't be
+                                              * unwielded even though things
+                                              * don't work that way... */
+    reset_remarm();
+    game.context.takeoff.what = game.context.takeoff.mask = W_SWAPWEP;
+    await do_takeoff();
+    return (!game.u.uswapwep || game.u.uswapwep.bknown !== oldbknown)
+           ? ECMD_TIME : ECMD_OK;
 }

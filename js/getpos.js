@@ -45,6 +45,7 @@ import { an } from './objnam.js';
 import { tty_start_menu, tty_add_menu, tty_end_menu, tty_select_menu,
          ATR_NONE } from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
+import { xwaitforspace } from './tty/getline.js';
 
 const CM = cmap_names;
 
@@ -134,12 +135,18 @@ async function getpos_help(force, goal) {
         put("Type Space or Escape when you're done.");
     put('');
 
+    /* src/getpos.c:231 display_nhwindow(tmpwin, TRUE): the tty text window
+       pages with dmore(), which only space, return or ESC dismiss; any
+       other key rings the bell and keeps waiting */
     await tty_display_nhwindow(win);
-    await nhgetch();
-    while (tty_next_page(win))
-        await nhgetch();
+    await xwaitforspace(quitchars);
+    while (game.morc !== '\x1b' && tty_next_page(win))
+        await xwaitforspace(quitchars);
     tty_destroy_nhwindow(win);
 }
+
+/* include/hack.h — quitchars */
+const quitchars = ' \r\n\x1b';
 
 // C curs(WIN_MAP, cx, cy) — park the terminal cursor on the map square.
 // _buildScreenOutput() honors game._map_cursor over the hero's position.

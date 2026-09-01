@@ -1,8 +1,9 @@
 # Contest score dashboard
 
-Last refreshed: 2026-09-01T14:13:27.900Z. Local commit: `901bb85`.
+Last refreshed: 2026-09-01T14:39:33.452Z. Local commit: `b52e2eb`.
 Leaderboard snapshot: 2026-09-01T05:44:27.234Z. Fork last scored: 2026-09-01T05:17:01.923Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
+Leaderboard page checked: 2026-09-01T14:44:46Z. The live page last scored at 9/1/2026, 8:30:38 AM and still reports rohitgandikota at 11,405 public plus 6,032 held-out screens, 71.9% PRNG, 76.9% screen match, 9 animation frames, 44 plus 9 passing sessions, playable yes, and agentic rank 1.
 
 ## Score summary
 
@@ -11,7 +12,7 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 43/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 9/1483 |
 | Held-out leaderboard | 6032/11265 | 53.55% | 9/44 | 43.37% | 0/2959 |
-| Supplemental C suite | 71484/71869 | 99.46% | 315/317 | 3824126/3824126 (100.00%) | 289/2556 |
+| Supplemental C suite | 71612/71997 | 99.47% | 316/318 | 3832116/3832116 (100.00%) | 289/2556 |
 
 ## Contest position and generalization
 
@@ -21,14 +22,14 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 - Held-out/public identical-screen ratio: **0.529**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `901bb85` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `b52e2eb` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## C-reference coverage
 
 | Inventory | Covered | Partial | Gaps |
 |---|---:|---:|---:|
 | Mechanics categories | 106/106 | 0 | 0 |
-| Explicit C branches | 659/659 | 0 | 0 |
+| Explicit C branches | 665/665 | 0 | 0 |
 
 - Fresh-seed smoke: PASS, 80 games across 13 role configs, no reached unported path.
 
@@ -36,9 +37,9 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 71862/71869 |
-| Cursor positions | 11405/11405 | 71484/71869 |
-| Startup and per-turn estimate | 98+0.78/turn | 111+0.24/turn |
+| Cells only | 11405/11405 | 71990/71997 |
+| Cursor positions | 11405/11405 | 71612/71997 |
+| Startup and per-turn estimate | 102+0.85/turn | 121+0.27/turn |
 
 ## Supplemental capture caveats
 
@@ -57,6 +58,7 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-09-01T14:39:33.452Z | `b52e2eb` | 11405/11405 | 71612/71997 | 6032/11265 | 3 |
 | 2026-09-01T14:13:27.900Z | `901bb85` | 11405/11405 | 71484/71869 | 6032/11265 | 3 |
 | 2026-09-01T14:06:58.254Z | `b315524` | 11405/11405 | 71484/71869 | 6032/11265 | 3 |
 | 2026-09-01T13:47:25.291Z | `b315524` | 11405/11405 | 71307/71692 | 6032/11265 | 3 |
@@ -66,7 +68,6 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 | 2026-09-01T10:34:08.157Z | `4cae5e8` | 11405/11405 | 68359/68744 | 6032/11265 | 3 |
 | 2026-09-01T09:55:24.471Z | `68eede2` | 11405/11405 | 68028/68413 | 6032/11265 | 3 |
 | 2026-09-01T09:27:21.985Z | `e4a62a3` | 11405/11405 | 67920/68305 | 6032/11265 | 3 |
-| 2026-09-01T08:52:58.592Z | `8626841` | 11405/11405 | 67729/68114 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

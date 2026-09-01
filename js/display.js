@@ -1272,9 +1272,16 @@ export function newsym(x, y) {
         /* _map_location: vobj_at(x,y) && !covers_objects(x,y) -- a pool or
            lava square hides what floats... sinks under it. */
         const obj = covers_objects(x, y) ? null : vobj_at(x, y);
+        const seenTrap = !obj ? t_at(x, y) : null;
+        const trapg = seenTrap?.tseen && !covers_traps(x, y)
+            ? trap_glyph(seenTrap) : null;
         const memg = obj ? floor_object_glyph(obj, x, y)
-                         : (engraving_glyph(loc, x, y)
-                            || terrain_glyph(loc, x, y));
+            : trapg ? {
+                ...trapg,
+                glyph: { kind: 'cmap', cmap: trapg.cmap },
+            }
+                : (engraving_glyph(loc, x, y)
+                   || terrain_glyph(loc, x, y));
         if (game.level?.flags?.hero_memory)
             loc.remembered_glyph = { ch: memg.ch, color: memg.color,
                                      decgfx: memg.dec,

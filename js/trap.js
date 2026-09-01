@@ -38,7 +38,8 @@ import { canspotmon, display_nhwindow_message, display_object_at, feel_newsym,
          newsym, pline, temporary_object_glyph, under_water,
          urgent_pline } from './display.js';
 import { You, You_hear, You_feel, You_see, Your, Norep } from './pline.js';
-import { an, the, doname, mshot_xname, otense, xname, yname, Yname2 } from './objnam.js';
+import { an, the, doname, mshot_xname, otense, xname, yname, Yname2,
+         corpse_xname, CXN_PFX_THE } from './objnam.js';
 import { upstart } from './do_name.js';
 import { losehp } from './hack.js';
 import { delobj, monkilled, monstone, newcham, resists_ston, vamp_stone,
@@ -47,7 +48,7 @@ import { find_mac, which_armor } from './worn.js';
 import { canseemon } from './display.js';
 import { cansee } from './vision.js';
 import { gender, passes_walls, likes_lava, throws_rocks,
-         poly_when_stoned } from './mondata.js';
+         poly_when_stoned, touch_petrifies } from './mondata.js';
 import { has_ceiling, Can_fall_thru, depth, level_difficulty } from './dungeon.js';
 import { Monnam, pmname, rndcolor } from './do_name.js';
 import { MATERIALS } from './objects_data.js';
@@ -82,6 +83,7 @@ import { count_wsegs } from './worm.js';
 import { defends_when_carried } from './artifact.js';
 import { ART_MAGICBANE } from './artilist_data.js';
 import { is_quest_artifact } from './questpgr.js';
+import { mwepgone } from './weapon.js';
 
 /* src/trap.h — trapeffect_*() return values. */
 /* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
@@ -1819,9 +1821,7 @@ async function trapeffect_pit(mtmp, trap, trflags) {
             await pline("How pitiful.  Isn't that the pits?");
         seetrap(trap);
     }
-    /* mselftouch: only bites when the monster wields a petrifying corpse */
-    if (mselftouch_would_fire(mtmp))
-        note_unported_trap('trapeffect_pit:mselftouch');
+    await mselftouch(mtmp, 'Falling, ', false);
     if (wearing_iron_shoes(mtmp))
         relevant_spikes = false;
     if (mtmp.mhp <= 0
@@ -1985,12 +1985,26 @@ function fill_pit_note(x, y) {
     note_unported_trap('mintrap:fill_pit');
 }
 
-/* src/trap.c mselftouch() fires only for a monster wielding a petrifying
-   corpse bare-handed; nothing generated yet can. The gate keeps the note
-   honest. */
-function mselftouch_would_fire(mon) {
-    const mwep = mon.mw;
-    return !!(mwep && mwep.otyp === ONAMES.CORPSE);
+// src/trap.c:3913 mselftouch(), used after a fall or after worn inventory is
+// stolen. A life-saved monster which is still unprotected drops the corpse.
+export async function mselftouch(mon, arg, byplayer) {
+    const mwep = MON_WEP(mon);
+
+    if (!mwep || mwep.otyp !== ONAMES.CORPSE
+        || !touch_petrifies(game.mons[mwep.corpsenm])
+        || resists_ston(mon)) {
+        return;
+    }
+    if (cansee(mon.mx, mon.my)) {
+        const subject = arg ? mon_nam(mon) : Monnam(mon);
+        await pline(`${arg || ''}${subject} touches ${
+            corpse_xname(mwep, null, CXN_PFX_THE)}.`);
+    }
+    await minstapetrify(mon, byplayer);
+    if (!DEADMONSTER(mon) && !which_armor(mon, W_ARMG)
+        && !resists_ston(mon)) {
+        mwepgone(mon);
+    }
 }
 
 // src/trap.c trapeffect_selector() — dispatch one trap's effect for whoever

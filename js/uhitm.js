@@ -16,7 +16,7 @@ import { helpless, MON_WEP } from './monst.js';
 import { rn1 } from './rng.js';
 import { dmgtype, monstseesu, monstunseesu } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
-import { which_armor } from './worn.js';
+import { which_armor, extract_from_minvent } from './worn.js';
 import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.js';
 import { You, Your, You_feel, You_hear, pline_The } from './pline.js';
 import { end_running } from './hack.js';
@@ -33,7 +33,7 @@ import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          unmap_invisible } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          shieldeff_mon, is_pool, m_carrying, t_at, minliquid,
-         healmon } from './mon.js';
+         healmon, monstone, mondied } from './mon.js';
 import { DEADMONSTER } from './monst.js';
 import { is_pole } from './u_init.js';
 import { bimanual, carried, is_plural, is_flimsy, is_shield,
@@ -44,18 +44,19 @@ import { obj_extract_self, update_inventory, useup } from './invent.js';
 import { rnl } from './rng.js';
 import { ART_CLEAVER, ART_SNICKERSNEE, ART_GIANTSLAYER,
          ART_OGRESMASHER } from './artilist_data.js';
-import { aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
-         otense, mshot_xname, Yname2, Yobjnam2 } from './objnam.js';
-import { mintrap, instapetrify, minstapetrify, erode_obj,
+import { an, aobjnam, yname, cxname, xname, The, makeplural, simpleonames,
+         otense, mshot_xname, Yname2, Yobjnam2, doname } from './objnam.js';
+import { mintrap, instapetrify, minstapetrify, mselftouch, erode_obj,
          ignite_items } from './trap.js';
 import { clone_mon, goodpos, place_monster, remove_monster,
-         is_rider } from './makemon.js';
+         is_rider, grow_up } from './makemon.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_safemon } from './display.js';
 import { monflee, set_apparxy } from './monmove.js';
 import { monnear } from './monmove.js';
 import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
-         M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, NATTK, MM_IGNOREWATER,
+         M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE,
+         NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
          FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET,
          TEST_MOVE, ROOM, CORR, xdir, ydir, STRAT_WAITFORU } from './const.js';
@@ -63,7 +64,7 @@ import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
          setmnotwielded, special_dmgval, use_skill, uwep_skill_type,
-         weapon_type } from './weapon.js';
+         weapon_type, possibly_unwield } from './weapon.js';
 import { find_mac } from './worn.js';
 import { greatest_erosion, worn, helm_simple_name } from './do_wear.js';
 import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
@@ -71,8 +72,9 @@ import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
          sticks, haseyes, cantwield, is_flyer, is_floater,
          is_whirly, mon_hates_blessings, resists_blnd, has_head, mindless,
          resists_blnd_by_arti, resists_fire, resists_cold, resists_elec,
-         resists_acid, resists_poison, resists_drli, defended, completelyburns,
-         noattacks, poly_when_stoned } from './mondata.js';
+         resists_acid, resists_poison, resists_drli, resists_ston,
+         defended, completelyburns,
+         noattacks, poly_when_stoned, flesh_petrifies } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -91,10 +93,12 @@ import { ACURR } from './attrib.js';
 import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          P_BARE_HANDED_COMBAT, P_BASIC,
          HMON_MELEE, HMON_APPLIED, HMON_THROWN, HMON_KICKED,
-         W_ARMG, W_ARMH, W_RINGR, W_RINGL, P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
+         W_ARMG, W_ARMH, W_RINGR, W_RINGL, W_AMUL, W_SADDLE,
+         P_NONE, P_KNIFE, P_WHIP, P_SKILLED,
          P_LANCE, P_TWO_WEAPON_COMBAT, P_ISRESTRICTED, P_UNSKILLED,
          NEED_WEAPON, XKILL_NOMSG, XKILL_NOCORPSE, STRAT_WAITMASK,
-         engulfing_u, NEW_MOON, MSLOW, MFAST } from './const.js';
+         engulfing_u, NEW_MOON, MSLOW, MFAST, ARTICLE_THE,
+         RLOC_NOMSG, DISMOUNT_POLY } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND } from './const.js';
@@ -2692,8 +2696,80 @@ export async function mhitm_ad_drli(magr, mattk, mdef, mhm) {
             await losexp('life drainage');
         }
     } else {
-        note_unported_uhitm('mhitm_ad_drli:mhitm');
+        const isDeath = mattk[1] === ATTKS.AD_DETH;
+        if (isDeath
+            || (!rn2(3)
+                && !(resists_drli(mdef) || defended(mdef, ATTKS.AD_DRLI))
+                && !(await mhitm_mgc_atk_negated(magr, mdef, true)))) {
+            if (!isDeath)
+                mhm.damage = d(2, 6);
+            if (game.vis && canspotmon(mdef))
+                await pline(`${Monnam(mdef)} becomes weaker!`);
+            if (mdef.mhpmax - mhm.damage > mdef.m_lev) {
+                mdef.mhpmax -= mhm.damage;
+            } else if (mdef.mhpmax > mdef.m_lev) {
+                mdef.mhpmax = mdef.m_lev + 1;
+            }
+            if (!mdef.m_lev)
+                mhm.damage = mdef.mhp;
+            else
+                mdef.m_lev--;
+        }
     }
+}
+
+// src/uhitm.c:4623 mhitm_ad_sedu(), monster against monster. A nymph takes
+// the first eligible object, updates the defender's worn and wielded state,
+// then teleports away. Empty inventories still turn the attack into zero
+// damage, which is the public little-dog versus water-nymph case.
+export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst || mdef === game.youmonst) {
+        note_unported_uhitm('mhitm_ad_sedu:hero');
+        return;
+    }
+    if (magr.mcan)
+        return;
+
+    const obj = (mdef.minvent || []).find(item => !magr.mtame || !item.cursed);
+    if (obj) {
+        const defenderName = x_monnam(mdef, ARTICLE_THE, null, 0, false);
+        if (game.u.usteed === mdef && obj === which_armor(mdef, W_SADDLE)) {
+            const { dismount_steed } = await import('./steed.js');
+            await dismount_steed(DISMOUNT_POLY);
+        }
+
+        extract_from_minvent(mdef, obj, true);
+        const objectName = game.vis ? doname(obj) : '';
+        const { mpickobj } = await import('./steal.js');
+        mpickobj(magr, obj);
+        const attackerName = Monnam(magr);
+        if (game.vis && canseemon(mdef)) {
+            await pline(`${attackerName} steals ${objectName} from ${
+                defenderName}!`);
+        }
+
+        await possibly_unwield(mdef, false);
+        mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
+        await mselftouch(mdef, null, false);
+        if (DEADMONSTER(mdef)) {
+            mhm.hitflags = M_ATTK_DEF_DIED
+                | (grow_up(magr, mdef) ? 0 : M_ATTK_AGR_DIED);
+            mhm.done = true;
+            return;
+        }
+
+        if (game.mons[magr.mnum].mlet === MONSYMS.S_NYMPH) {
+            const { tele_restrict, rloc } = await import('./teleport.js');
+            if (!await tele_restrict(magr)) {
+                const couldSpot = canspotmon(magr);
+                mhm.hitflags = M_ATTK_AGR_DONE;
+                await rloc(magr, RLOC_NOMSG);
+                if (game.vis && couldSpot && !canspotmon(magr))
+                    await pline(`${attackerName} suddenly disappears!`);
+            }
+        }
+    }
+    mhm.damage = 0;
 }
 
 // src/do_wear.c:2630 some_armor(), restricted to the hero target used by
@@ -3062,13 +3138,90 @@ export async function mhitm_ad_drst(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:3174 mhitm_ad_drin(), mind-flayer brain drain. The hero path
-// preserves eat_brains' draw order for an ordinary intelligent target.
+// src/eat.c:603 eat_brains(), monster against monster. rnd(10) is spent even
+// for targets without a usable brain. A tame attacker gains a separate
+// rnd(60) worth of nutrition only after an intelligent ordinary target.
+async function eat_brains_m2m(magr, mdef, visflag, mhm) {
+    const pd = game.mons[mdef.mnum];
+    const xtraDmg = rnd(10);
+    let result = M_ATTK_HIT;
+    let giveNutrition = false;
+
+    if (DEADMONSTER(magr))
+        return M_ATTK_AGR_DIED;
+    if (noncorporeal(pd)) {
+        if (visflag)
+            await pline(`${s_suffix(Monnam(mdef))} brain is unharmed.`);
+        return M_ATTK_MISS;
+    }
+    if (visflag && canspotmon(mdef))
+        await pline(`${s_suffix(Monnam(mdef))} brain is eaten!`);
+
+    if (flesh_petrifies(pd)) {
+        if (visflag && canseemon(magr))
+            await pline(`${Monnam(magr)} turns to stone!`);
+        await monstone(magr);
+        if (!DEADMONSTER(magr))
+            return M_ATTK_MISS;
+        if (magr.mtame && !visflag)
+            await You('have a sad thought for a moment, then it passes.');
+        return M_ATTK_AGR_DIED;
+    }
+
+    if (mindless(pd)) {
+        if (visflag && canspotmon(mdef))
+            await pline(`${Monnam(mdef)} doesn't notice.`);
+        return M_ATTK_MISS;
+    }
+    if (is_rider(pd)) {
+        await mondied(magr);
+        if (DEADMONSTER(magr))
+            result = M_ATTK_AGR_DIED;
+        mhm.damage += xtraDmg;
+    } else {
+        mhm.damage += xtraDmg;
+        giveNutrition = true;
+        if (mhm.damage >= mdef.mhp && visflag && canspotmon(mdef)) {
+            await pline(`${s_suffix(Monnam(mdef))} last thought fades away...`);
+        }
+    }
+
+    if (giveNutrition && magr.mtame && !magr.isminion) {
+        const edog = (magr.edog ||= {});
+        edog.hungrytime = (edog.hungrytime | 0) + rnd(60);
+        magr.mconf = 0;
+    }
+    return result;
+}
+
+// src/uhitm.c:3174 mhitm_ad_drin(), mind-flayer brain drain.
 export async function mhitm_ad_drin(magr, mattk, mdef, mhm) {
     const pd = game.mons[mdef.mnum];
 
-    if (magr !== game.youmonst) {
-        note_unported_uhitm('mhitm_ad_drin:nonhero');
+    if (magr !== game.youmonst && mdef !== game.youmonst) {
+        if (game.notonhead || !has_head(pd)) {
+            if (game.vis && canspotmon(mdef))
+                await pline(`${Monnam(mdef)} doesn't seem harmed.`);
+            mhm.damage = 0;
+            game.skipdrin = true;
+            return;
+        }
+        if (((mdef.misc_worn_check | 0) & W_ARMH) && rn2(8)) {
+            if (game.vis && canspotmon(magr) && canseemon(mdef)) {
+                await pline(`${s_suffix(Monnam(mdef))} helmet blocks ${
+                    s_suffix(mon_nam(magr))} attack to ${mhis(mdef)} head.`);
+            }
+            return;
+        }
+        const amulet = which_armor(mdef, W_AMUL);
+        const lifeSaved = amulet?.otyp === ONAMES.AMULET_OF_LIFE_SAVING;
+        mhm.hitflags = await eat_brains_m2m(magr, mdef, !!game.vis, mhm);
+        if (lifeSaved && !which_armor(mdef, W_AMUL))
+            game.skipdrin = true;
+        return;
+    }
+    if (mdef === game.youmonst) {
+        note_unported_uhitm('mhitm_ad_drin:mhitu');
         return;
     }
     if (game.notonhead || !has_head(pd)) {
@@ -3213,6 +3366,40 @@ export async function mhitm_ad_blnd(magr, mattk, mdef, mhm) {
     }
 }
 
+// src/uhitm.c:3945 do_stone_mon(), active monster petrification. The
+// stone-curing inventory arm remains separately visible if a generated
+// target ever carries a lizard or acidic corpse.
+async function do_stone_mon(magr, mattk, mdef, mhm) {
+    const cure = (mdef.minvent || []).find(obj => obj.otyp === ONAMES.CORPSE
+        && (obj.corpsenm === PMNAMES.PM_LIZARD
+            || obj.corpsenm === PMNAMES.PM_ACID_BLOB));
+    if (cure)
+        note_unported_uhitm('do_stone_mon:munstone');
+
+    if (poly_when_stoned(game.mons[mdef.mnum])) {
+        await minstapetrify(mdef, false);
+        mhm.damage = 0;
+        return;
+    }
+    if (!resists_ston(mdef)) {
+        if (game.vis && canseemon(mdef))
+            await pline(`${Monnam(mdef)} turns to stone!`);
+        await monstone(mdef);
+        if (!DEADMONSTER(mdef)) {
+            mhm.hitflags = M_ATTK_MISS;
+            mhm.done = true;
+            return;
+        }
+        if (mdef.mtame && !game.vis)
+            await You('have a peculiarly sad feeling for a moment, then it passes.');
+        mhm.hitflags = M_ATTK_DEF_DIED
+            | (grow_up(magr, mdef) ? 0 : M_ATTK_AGR_DIED);
+        mhm.done = true;
+        return;
+    }
+    mhm.damage = mattk[1] === ATTKS.AD_STON ? 0 : 1;
+}
+
 // src/uhitm.c:4203 mhitm_ad_ston(), the cockatrice hiss attack.
 export async function mhitm_ad_ston(magr, mattk, mdef, mhm) {
     if (magr === game.youmonst) {
@@ -3238,7 +3425,9 @@ export async function mhitm_ad_ston(magr, mattk, mdef, mhm) {
             }
         }
     } else {
-        note_unported_uhitm('mhitm_ad_ston:mhitm');
+        if (magr.mcan)
+            return;
+        await do_stone_mon(magr, mattk, mdef, mhm);
     }
 }
 
@@ -3424,9 +3613,8 @@ function will_hurtle(mon, x, y) {
 
 // src/dothrow.c:1078 hurtle(). Move the hero after recoil or knockback.
 //
-// The ordinary room/corridor path is complete. Punishment, traps, terrain
-// transitions, and collisions each need their own transcript because their
-// messages and damage can alter both the screen and later RNG.
+// The ordinary room/corridor and monster-collision paths are complete.
+// Punishment, traps, and unusual terrain each need their own transcript.
 async function hurtle_u(dx, dy, range) {
     if (game.u.uball) {
         note_unported_uhitm('hurtle_u:punished');
@@ -3461,8 +3649,24 @@ async function hurtle_u(dx, dy, range) {
             note_unported_uhitm('hurtle_u:terrain');
             break;
         }
-        if (m_at(x, y)) {
-            note_unported_uhitm('hurtle_u:monster_collision');
+        const blocker = m_at(x, y);
+        if (blocker) {
+            blocker.mundetected = 0;
+            await You(`bump into ${a_monnam(blocker)}.`);
+            await wakeup(blocker, false);
+            if (!canspotmon(blocker))
+                map_invisible(blocker.mx, blocker.my);
+            await setmangry(blocker, false);
+            if (touch_petrifies(blocker.data)
+                && !game.u.uarmu && !game.u.uarm && !game.u.uarmc) {
+                await instapetrify(`bumping into ${
+                    an(pmname(blocker.data, 2))}`);
+            }
+            if (touch_petrifies(game.youmonst.data)
+                && !which_armor(blocker, W_ARMU | W_ARM | W_ARMC)) {
+                await minstapetrify(blocker, true);
+            }
+            wake_nearto(x, y, 10);
             break;
         }
         if (t_at(x, y)) {

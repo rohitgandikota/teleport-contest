@@ -417,7 +417,19 @@ export async function wiz_intrinsic() {
             await pline(`Timeout for ${name} ${oldtimeout
                 ? 'increased by' : 'set to'} ${amount}.`);
         } else {
-            (game.u.wiz_intrinsic_timeouts ||= {})[key] = oldtimeout + amount;
+            const timeout = oldtimeout + amount;
+            const uprops = (game.u.uprops ||= {});
+            const bases = (game.u.wiz_intrinsic_base_props ||= {});
+            if (!oldtimeout && !Object.hasOwn(bases, key)) {
+                bases[key] = {
+                    had: Object.hasOwn(uprops, key),
+                    value: uprops[key],
+                };
+            }
+            (game.u.wiz_intrinsic_timeouts ||= {})[key] = timeout;
+            /* C stores these timers in u.uprops[p].intrinsic, so direct
+               property readers must see the timed value immediately. */
+            uprops[key] = timeout;
             (game.disp ||= {}).botl = true;
             await pline(`Timeout for ${name} ${oldtimeout
                 ? 'increased by' : 'set to'} ${amount}.`);

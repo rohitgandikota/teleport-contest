@@ -598,7 +598,7 @@ function note_unported_worn(what) {
     (game.unported ||= new Set()).add(what);
 }
 
-function extract_from_minvent(mon, obj, do_extrinsics) {
+export function extract_from_minvent(mon, obj, do_extrinsics) {
     const unwornmask = obj.owornmask || 0;
     obj_extract_self(obj);
     const at = (mon.minvent || []).indexOf(obj);

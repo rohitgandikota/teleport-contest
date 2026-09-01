@@ -848,14 +848,29 @@ export function couldsee(x, y) {
 }
 
 export function init_vision_globals() {
+    /* The judge can run several independent segments in one JS process.
+       C starts each game with empty static vision buffers, while these
+       module-scoped typed arrays otherwise retain the prior segment's sight
+       mask. A blank new terminal would then skip cells which only appeared
+       unchanged relative to that stale mask. */
+    for (let y = 0; y < ROWNO; y++) {
+        cs_buf0[y].fill(0);
+        cs_buf1[y].fill(0);
+        cs_rmin0[y] = cs_rmin1[y] = COLNO;
+        cs_rmax0[y] = cs_rmax1[y] = 0;
+    }
     game.viz_array = cs_buf0;
     game.active_buf = 0;
+    game._viz_rmin = null;
+    game._viz_rmax = null;
     game.vis_step = 0;
     game.vis_start_col = 0;
     game.vis_start_row = 0;
     game.cs_rows = null;
     game.cs_left = null;
     game.cs_right = null;
+    vis_func = null;
+    varg = null;
     /* init_game() clears the shared state object between sessions. Restore
        the region hooks each time along with the other vision globals. */
     game._block_point_ref = block_point;

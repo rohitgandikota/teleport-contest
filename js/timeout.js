@@ -917,8 +917,19 @@ export async function nh_timeout() {
         for (const key of Object.keys(wiz)) {
             if (typeof wiz[key] !== 'number' || wiz[key] <= 0)
                 continue;
-            if (--wiz[key] === 0)
+            const remaining = --wiz[key];
+            if (remaining === 0) {
                 delete wiz[key];
+                const base = game.u.wiz_intrinsic_base_props?.[key];
+                if (base?.had)
+                    (game.u.uprops ||= {})[key] = base.value;
+                else if (game.u.uprops)
+                    delete game.u.uprops[key];
+                if (game.u.wiz_intrinsic_base_props)
+                    delete game.u.wiz_intrinsic_base_props[key];
+            } else {
+                (game.u.uprops ||= {})[key] = remaining;
+            }
         }
     }
 

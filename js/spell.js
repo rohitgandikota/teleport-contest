@@ -28,7 +28,9 @@ import { fall_asleep } from './timeout.js';
 import { makeknown, observe_object } from './o_init.js';
 import { getdir } from './cmd.js';
 import { update_inventory } from './invent.js';
-import { NODIR } from './const.js';
+import { obfree } from './invent.js';
+import { use_skill } from './weapon.js';
+import { NODIR, NO_KILLER_PREFIX } from './const.js';
 import { A_WIS, KILLED_BY_AN } from './const.js';
 import { morehungry } from './eat.js';
 import { ECMD_TIME } from './const.js';
@@ -618,10 +620,41 @@ export async function spelleffects(spell_otyp, atme, force) {
     pseudo.blessed = pseudo.cursed = 0;
     pseudo.quan = 20;                   /* do not let useup get it */
     const otyp = pseudo.otyp;
-    const role_skill = P_SKILL(spell_skilltype(otyp));
+    const skill = spell_skilltype(otyp);
+    const role_skill = P_SKILL(skill);
+    let physical_damage = false;
 
     switch (otyp) {
+    /* As the hero increases in skill some spells increase in their effects
+       without additional cost. Skilled fireball/cone of cold throw an
+       explosion at a chosen spot; throwspell()/explode()/spell_damage_bonus()
+       are not ported yet, so a skilled cast is noted. Unskilled casters fall
+       through to the wand-duplicate arm below (buzz via weffects). */
+    case ONAMES.SPE_FIREBALL:
+    case ONAMES.SPE_CONE_OF_COLD:
+        if (role_skill >= SKILLS.P_SKILLED) {
+            note_unported_spell('spelleffects:skilled fireball/cold');
+            break;
+        }
+        /* FALLTHRU */
+
+    /* these spells are all duplicates of wand effects */
+    case ONAMES.SPE_FORCE_BOLT:
+        physical_damage = true;
+        /* FALLTHRU */
+    case ONAMES.SPE_SLEEP:
+    case ONAMES.SPE_MAGIC_MISSILE:
+    case ONAMES.SPE_KNOCK:
+    case ONAMES.SPE_SLOW_MONSTER:
+    case ONAMES.SPE_WIZARD_LOCK:
+    case ONAMES.SPE_DIG:
+    case ONAMES.SPE_TURN_UNDEAD:
+    case ONAMES.SPE_POLYMORPH:
     case ONAMES.SPE_TELEPORT_AWAY:
+    case ONAMES.SPE_CANCELLATION:
+    case ONAMES.SPE_FINGER_OF_DEATH:
+    case ONAMES.SPE_LIGHT:
+    case ONAMES.SPE_DETECT_UNSEEN:
     case ONAMES.SPE_HEALING:
     case ONAMES.SPE_EXTRA_HEALING:
     case ONAMES.SPE_DRAIN_LIFE:
@@ -641,24 +674,86 @@ export async function spelleffects(spell_otyp, atme, force) {
                 await pline_The('magical energy is released!');
             }
             if (!game.u.dx && !game.u.dy && !game.u.dz) {
-                const dmg = await zapyourself(pseudo, true);
-                if (dmg) {
-                    /* losehp("zapped himself with a spell") */
-                    note_unported_spell('spelleffects:losehp');
+                let damage = await zapyourself(pseudo, true);
+                if (damage) {
+                    const self = game.flags?.female ? 'herself' : 'himself';
+                    /* Maybe_Half_Phys(damage) — halved with the intrinsic */
+                    if (physical_damage && game.u.uprops?.HALF_PHDAM)
+                        damage = Math.trunc((damage + 1) / 2);
+                    const { losehp } = await import('./hack.js');
+                    await losehp(damage, `zapped ${self} with a spell`,
+                                 NO_KILLER_PREFIX);
                 }
             } else {
                 await weffects(pseudo);
             }
         } else {
-            note_unported_spell('spelleffects:weffects');
+            await weffects(pseudo);
         }
         update_inventory();     /* spell may modify inventory */
         break;
-    default:
-        /* the remaining arms need seffects/peffects/the beam engine */
-        note_unported_spell('spelleffects:per-spell dispatch');
+
+    /* these are all duplicates of scroll effects (seffects); not ported */
+    case ONAMES.SPE_REMOVE_CURSE:
+    case ONAMES.SPE_CONFUSE_MONSTER:
+    case ONAMES.SPE_DETECT_FOOD:
+    case ONAMES.SPE_CAUSE_FEAR:
+    case ONAMES.SPE_IDENTIFY:
+    case ONAMES.SPE_CHARM_MONSTER:
+        if (role_skill >= SKILLS.P_SKILLED)
+            pseudo.blessed = 1;
+        /* FALLTHRU */
+    case ONAMES.SPE_MAGIC_MAPPING:
+    case ONAMES.SPE_CREATE_MONSTER:
+        note_unported_spell('spelleffects:seffects');
         break;
+
+    /* these are all duplicates of potion effects (peffects); not ported */
+    case ONAMES.SPE_HASTE_SELF:
+    case ONAMES.SPE_DETECT_TREASURE:
+    case ONAMES.SPE_DETECT_MONSTERS:
+    case ONAMES.SPE_LEVITATION:
+    case ONAMES.SPE_RESTORE_ABILITY:
+        if (role_skill >= SKILLS.P_SKILLED)
+            pseudo.blessed = 1;
+        /* FALLTHRU */
+    case ONAMES.SPE_INVISIBILITY:
+        note_unported_spell('spelleffects:peffects');
+        break;
+
+    case ONAMES.SPE_CURE_BLINDNESS:
+        note_unported_spell('spelleffects:cure_blindness');
+        break;
+    case ONAMES.SPE_CURE_SICKNESS:
+        note_unported_spell('spelleffects:cure_sickness');
+        break;
+    case ONAMES.SPE_CREATE_FAMILIAR:
+        note_unported_spell('spelleffects:create_familiar');
+        break;
+    case ONAMES.SPE_CLAIRVOYANCE:
+        note_unported_spell('spelleffects:clairvoyance');
+        break;
+    case ONAMES.SPE_PROTECTION:
+        note_unported_spell('spelleffects:protection');
+        break;
+    case ONAMES.SPE_JUMPING:
+        note_unported_spell('spelleffects:jumping');
+        break;
+    case ONAMES.SPE_CHAIN_LIGHTNING:
+        note_unported_spell('spelleffects:chain_lightning');
+        break;
+    default:
+        /* impossible("Unknown spell %d attempted.") */
+        note_unported_spell('spelleffects:unknown');
+        obfree(pseudo);
+        return ECMD_OK;
     }
+
+    /* gain skill for successful cast */
+    if (!force)
+        use_skill(skill, spellev(spell));
+
+    obfree(pseudo);             /* now, get rid of it */
     return ECMD_TIME;
 }
 

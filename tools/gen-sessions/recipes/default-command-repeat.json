@@ -1,0 +1,151 @@
+{
+  "name": "default-command-repeat",
+  "description": "C-reference traces for Ctrl-A repeat state: empty history, zero-time and time-consuming commands, repeated preservation, saved counts, saved directions, saved inventory choices, cancellation and unknown-command invalidation, and commands deliberately excluded from repeat history.",
+  "coverage": [
+    "mode.debug",
+    "mode.normal",
+    "object.tools-containers",
+    "turn.speed-energy",
+    "ui.cancel-invalid",
+    "ui.count-repeat",
+    "ui.getlin"
+  ],
+  "branches": [
+    "ui.command.repeat-cancel-getdir-clears",
+    "ui.command.repeat-cancel-getobj-clears",
+    "ui.command.repeat-copy-preserved",
+    "ui.command.repeat-count",
+    "ui.command.repeat-direction-key",
+    "ui.command.repeat-double-prefix-clears",
+    "ui.command.repeat-empty-history",
+    "ui.command.repeat-extcmd-identity",
+    "ui.command.repeat-getlin-live",
+    "ui.command.repeat-menu-live",
+    "ui.command.repeat-movement",
+    "ui.command.repeat-object-direction-keys",
+    "ui.command.repeat-prefix-chain",
+    "ui.command.repeat-prevmsg",
+    "ui.command.repeat-rebound-command",
+    "ui.command.repeat-stale-object-key",
+    "ui.command.repeat-time",
+    "ui.command.repeat-unknown-clears",
+    "ui.command.repeat-yn-answer",
+    "ui.command.repeat-zero-time"
+  ],
+  "segments": [
+    {
+      "seed": 7430,
+      "datetime": "20000110100000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0001"
+    },
+    {
+      "seed": 7431,
+      "datetime": "20000110100100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V\u0001\u0001"
+    },
+    {
+      "seed": 7432,
+      "datetime": "20000110100200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " .\u0001"
+    },
+    {
+      "seed": 7433,
+      "datetime": "20000110100300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " 2.\u0001"
+    },
+    {
+      "seed": 7434,
+      "datetime": "20000110100400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0004h\u0001V"
+    },
+    {
+      "seed": 7435,
+      "datetime": "20000110100500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed stethoscope\raoh\u0001i\u001b"
+    },
+    {
+      "seed": 7436,
+      "datetime": "20000110100600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Va\u001b\u0001"
+    },
+    {
+      "seed": 7437,
+      "datetime": "20000110100700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V~\u0001"
+    },
+    {
+      "seed": 7438,
+      "datetime": "20000110100800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V\u0010\u0001"
+    },
+    {
+      "seed": 7439,
+      "datetime": "20000110100900",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " h\u0001"
+    },
+    {
+      "seed": 7440,
+      "datetime": "20000110101000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Fh\u0001V"
+    },
+    {
+      "seed": 7441,
+      "datetime": "20000110101100",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed apple\r\u0001uncursed pear\r"
+    },
+    {
+      "seed": 7442,
+      "datetime": "20000110101200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed potion of healing\rqo\u0001\u0001"
+    },
+    {
+      "seed": 7443,
+      "datetime": "20000110101300",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #genocided\r\u0001"
+    },
+    {
+      "seed": 7444,
+      "datetime": "20000110101400",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " i\u001b\u0001\u001b"
+    },
+    {
+      "seed": 7445,
+      "datetime": "20000110101500",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nBIND=~:versionshort\n",
+      "moves": " ~\u0001"
+    },
+    {
+      "seed": 7446,
+      "datetime": "20000110101600",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " VFF\u0001"
+    },
+    {
+      "seed": 7447,
+      "datetime": "20000110101700",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " V\u0004\u001b\u0001"
+    },
+    {
+      "seed": 7448,
+      "datetime": "20000110101800",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:normal\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Sn\u0001V"
+    }
+  ]
+}

@@ -4,10 +4,10 @@
 import { game } from './gstate.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
-import { cmdq_pop, cmdq_clear } from './cmd.js';
+import { cmdq_pop, cmdq_clear, cmdq_add_key } from './cmd.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { addtobill, costly_spot, doname_with_price, obfree_bill } from './shk.js';
-import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
+import { u_at, CMDQ_KEY, CMDQ_INT, CQ_CANNED, CQ_REPEAT, FOUNTAIN, THRONE, SINK, GRAVE, ALTAR, TREE,
          ICE, DRAWBRIDGE_DOWN, IRONBARS, Never_mind, LOST_NONE, LOST_THROWN, LOST_EXPLODING, LOOKHERE_PICKED_SOME, LOOKHERE_SKIP_DFEATURE, IS_DOOR, D_NODOOR, D_ISOPEN, D_BROKEN,
          AM_SANCTUM, AM_SHRINE, Amask2align, A_NONE, A_LAWFUL,
          A_NEUTRAL, A_CHAOTIC, OBJ_DELETED } from './const.js';
@@ -824,7 +824,7 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         : ' [*]';
 
     for (;;) {
-        let ilet = await tty_yn_function(qbuf, null, '\0');
+        let ilet = await tty_yn_function(qbuf, null, '\0', false);
 
         if (ilet >= '0' && ilet <= '9') {
             /* get_count() keeps reading digits and then a letter */
@@ -835,6 +835,11 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
             /* src/invent.c:1950 */
             if (game.flags.verbose)
                 await pline(Never_mind);
+            /* The caller returns ECMD_CANCEL, then rhack's reset_cmd_vars
+               erases the just-built do-again queue. Do it at the shared
+               cancellation point so every getobj command gets that rule. */
+            if (!game.in_doagain)
+                cmdq_clear(CQ_REPEAT);
             return null;
         }
         if (ilet === '-') {
@@ -864,6 +869,12 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
 
         const otmp = (game.invent || []).find(o => o.invlet === ilet);
         if (otmp) {
+            /* src/invent.c:2050, remember a live inventory selection after
+               the command entry and before validating its object filter.
+               Ctrl-A then selects the same letter without painting a second
+               prompt or consuming another input key. */
+            if (!game.in_doagain)
+                cmdq_add_key(CQ_REPEAT, ilet);
             const allowed = obj_ok_func ? await obj_ok_func(otmp)
                                         : GETOBJ_SUGGEST;
             if (allowed === GETOBJ_EXCLUDE) {

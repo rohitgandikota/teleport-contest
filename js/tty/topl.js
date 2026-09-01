@@ -218,7 +218,27 @@ const TBUFSZ = 300;
 //
 // Not ported: the resp filter (allowed characters, '#' for digits, an <esc>
 // hiding the tail from the prompt), yn_number, and the doprev/^P history.
-export async function tty_yn_function(query, resp, def) {
+export async function tty_yn_function(query, resp, def, addcmdq = false) {
+    /* src/cmd.c:5487 yn_function(), repeatable questions consume their
+       saved answer before invoking the window port. There is deliberately
+       no prompt frame during Ctrl-A replay. getdir(), getobj(), and a few
+       parsing-only callers pass addcmdq=false and manage input themselves. */
+    if (addcmdq) {
+        const { cmdq_pop, cmdq_clear } = await import('../cmd.js');
+        const { CMDQ_KEY, CQ_CANNED } = await import('../const.js');
+        const queued = cmdq_pop();
+        if (queued) {
+            let ch = '\x1b';
+            if (queued.typ === CMDQ_KEY)
+                ch = queued.key;
+            else
+                cmdq_clear(CQ_CANNED);
+            if (resp && !resp.includes(ch))
+                ch = (def && def !== '\0') ? def : '\x1b';
+            return ch;
+        }
+    }
+
     /* win/tty/topl.c:391-393 — the pending-message more() is SKIPPED while
        WIN_STOP is set (the player already ESCed this turn's messages), and
        the flag is lifted either way: a question needs an answer. */
@@ -309,11 +329,20 @@ export async function tty_yn_function(query, resp, def) {
     for (;;) {
         const c = await nhgetch();
         const ch = (typeof c === 'string') ? c : String.fromCharCode(c);
+        let answer = null;
         if (!resp)
-            return clean_up(ch);
-        if (resp.includes(ch))
-            return clean_up(ch);
-        if (ch === '\x1b' || ch === '\r' || ch === '\n' || ch === ' ')
-            return clean_up(def && def !== '\0' ? def : ch);
+            answer = ch;
+        else if (resp.includes(ch))
+            answer = ch;
+        else if (ch === '\x1b' || ch === '\r' || ch === '\n' || ch === ' ')
+            answer = (def && def !== '\0') ? def : ch;
+        if (answer !== null) {
+            if (addcmdq && !game.in_doagain) {
+                const { cmdq_add_key } = await import('../cmd.js');
+                const { CQ_REPEAT } = await import('../const.js');
+                cmdq_add_key(CQ_REPEAT, answer);
+            }
+            return clean_up(answer);
+        }
     }
 }

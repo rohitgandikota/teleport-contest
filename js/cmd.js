@@ -316,8 +316,28 @@ export async function getdir(s) {
        routing it through tty_yn_function paints it without changing which
        key is consumed. A caller-supplied string starting with '^' is a
        key-hint, not a prompt, and is ignored here as C ignores it. */
-    const dirsym = await tty_yn_function(
-        (s && s[0] !== '^') ? s : 'In what direction?', null, '\0');
+    let dirsym;
+    /* This port's canned action builders predate CMDQ_DIR and can leave the
+       next top-level command at the head while a live getdir prompt runs.
+       Only repetition currently supplies a saved direction key here. */
+    const queued = game.in_doagain ? cmdq_pop() : null;
+    if (queued) {
+        if (queued.typ === CMDQ_KEY) {
+            dirsym = queued.key;
+        } else {
+            /* src/cmd.c:3974, a non-direction entry is a broken canned
+               command. C discards the canned tail and treats it as NUL. */
+            cmdq_clear(CQ_CANNED);
+            dirsym = '\0';
+        }
+    } else {
+        dirsym = await tty_yn_function(
+            (s && s[0] !== '^') ? s : 'In what direction?', null, '\0', false);
+        /* src/cmd.c:4017, getdir records the literal answer itself. Its
+           yn_function call uses addcmdq=FALSE so the key appears once. */
+        if (!game.in_doagain)
+            cmdq_add_key(CQ_REPEAT, dirsym);
+    }
 
     /* src/cmd.c:4011 — "remove the prompt string so caller won't have to":
        clear_nhwindow(WIN_MESSAGE) physically blanks the topline on every
@@ -508,7 +528,7 @@ export async function getlin(query, hook) {
 export async function paranoid_ynq(beParanoid, prompt, acceptQ = false) {
     if (!beParanoid) {
         const choices = acceptQ ? 'ynq' : 'yn';
-        const answer = await tty_yn_function(prompt, choices, 'n');
+        const answer = await tty_yn_function(prompt, choices, 'n', false);
         return answer === 'y' || (acceptQ && answer === 'q') ? answer : 'n';
     }
 
@@ -776,6 +796,15 @@ export async function doextcmd() {
 
     if (name === null)
         return ECMD_OK; /* quit */
+
+    /* rhack replaces the '#' initiator with this actual function in the
+       repeat queue after execution. Keep the name as the stable command
+       identity, then replay it without asking for the extended name again. */
+    game._last_extcmd_name = name;
+    return await execute_extcmd(name);
+}
+
+async function execute_extcmd(name) {
 
     /* src/cmd.c extcmdlist — the command's own function runs here. Only the
        ones that consume further input are wired up so far, because those are
@@ -1281,13 +1310,45 @@ async function doidtrap() {
     return ECMD_OK;
 }
 
+// src/cmd.c:1638 do_repeat(), the default Ctrl-A command.
+//
+// Replay consumes a working copy of CQ_REPEAT. The saved queue is restored
+// even when the repeated command cancels or its context has changed, so a
+// second Ctrl-A attempts the same original command again.
+async function do_repeat() {
+    if (game.in_doagain)
+        return 0;
+    if (!cmdq_peek(CQ_REPEAT)) {
+        await pline('There is no command available to repeat.');
+        return ECMD_FAIL;
+    }
+
+    const repeatCopy = cmdq_copy(CQ_REPEAT);
+    game.in_doagain = true;
+    try {
+        await rhack(0);
+        /* C handles a g/G/m/F prefix by looping inside one rhack(). The JS
+           dispatcher keeps a prefix across calls, so finish that same queue
+           here before restoring its pristine copy. */
+        while (game._cmd_prefix_pending && cmdq_peek(CQ_REPEAT))
+            await rhack(0);
+    } finally {
+        game.in_doagain = false;
+        cmdq_clear(CQ_REPEAT);
+        game.command_queue[CQ_REPEAT] = repeatCopy;
+        game.iflags.menu_requested = false;
+    }
+    return game.context.move ? ECMD_TIME : 0;
+}
+
 export async function rhack(key) {
     /* src/cmd.c:3635 — every command begins with the menu-request and
        no-pickup markers cleared; set_move_cmd() re-raises nopick from
        menu_requested for the m-prefix case. C's prefixes loop inside one
        rhack() call (goto got_prefix_input) so the reset runs once per
        command; ours span two rhack() calls, so a pending prefix skips it. */
-    if (!game._cmd_prefix_pending) {
+    const continuedPrefix = !!game._cmd_prefix_pending;
+    if (!continuedPrefix) {
         game.iflags.menu_requested = false;
         game.context.nopick = 0;
     }
@@ -1295,24 +1356,43 @@ export async function rhack(key) {
     /* src/cmd.c:3642 — queued commands run before any key is read. A
        CMDQ_EXTCMD entry dispatches its function directly, exactly like the
        doextcmd arm below; a CMDQ_KEY becomes the command key as if typed. */
+    let queuedCommand = false;
     if (key === 0) {
         const cmdq = cmdq_pop();
         if (cmdq) {
             if (cmdq.typ === CMDQ_EXTCMD && cmdq.fn) {
-                game.context.move = ((await cmdq.fn()) === ECMD_TIME ? 1 : 0);
+                const result = await cmdq.fn();
+                game.context.move = ((result & ECMD_TIME) ? 1 : 0);
+                if (!game.in_doagain) {
+                    cmdq_clear(CQ_REPEAT);
+                    cmdq_add_ec(CQ_REPEAT, cmdq.fn);
+                }
+                if (result & (ECMD_CANCEL | ECMD_FAIL)) {
+                    cmdq_clear(CQ_CANNED);
+                    cmdq_clear(CQ_REPEAT);
+                }
                 return;
             }
-            if (cmdq.typ === CMDQ_KEY)
+            if (cmdq.typ === CMDQ_KEY) {
                 key = String(cmdq.key).charCodeAt(0);
+                queuedCommand = true;
+            }
         }
     }
     let live_input = false;
+    let commandResult = 0;
+    const useResult = (result) => {
+        commandResult = result ?? 0;
+        game.context.move = ((commandResult & ECMD_TIME) ? 1 : 0);
+        return commandResult;
+    };
     let clear_before_dispatch = false;
     if (key === 0) {
         // Read key from input
         live_input = true;
         await flush_screen(1);
         key = await nhgetch();
+        game.command_count = 0;
         /* NOTE: the pre-dispatch topline clear happens BELOW, after the
            count-prefix digits are collected — a digit key leaves the
            previous message visible (seed0007 step 231: "You swap places
@@ -1357,14 +1437,11 @@ export async function rhack(key) {
             game._pending_message = '';
             game._toplin = TOPLINE_EMPTY;
             game.command_count = 0;
+            game.last_command_count = 0;
             game.context.move = 0;
             return;
         }
         game.command_count = cnt;
-        /* src/cmd.c:5142 — gm.multi = count; if (multi) multi--; */
-        game.multi = cnt;
-        if (game.multi)
-            game.multi--;
         /* the count text stays on the topline in C until the command's own
            output replaces it; rhack's pre-dispatch clear already ran */
     }
@@ -1378,7 +1455,7 @@ export async function rhack(key) {
         game._toplin = TOPLINE_EMPTY;
     }
 
-    game.cmd_key = ch0;
+    const parsedKey = ch0;
 
     /* src/options.c:7669 bind_key() — a BIND=key:command line replaces the
        key's default binding. The dispatch chain below is keyed by each
@@ -1391,6 +1468,28 @@ export async function rhack(key) {
             if (e && e.key)
                 ch0 = String.fromCharCode(e.key);
         }
+    }
+
+    /* src/cmd.c:5121 parse() stores the count parsed for this input. A bare
+       Ctrl-A therefore repeats the command once, even when the original
+       command had a count. A count typed on Ctrl-A itself is still active. */
+    if (live_input) {
+        game.last_command_count = game.command_count | 0;
+        game.multi = game.command_count | 0;
+        if (game.multi)
+            game.multi--;
+        game.cmd_key = parsedKey;
+    }
+
+    /* src/cmd.c:3732, keep the executable command followed by any input
+       helpers record. Prefix commands append rather than replacing the
+       queue. Ctrl-A preserves the old queue and '#' replaces its initiator
+       later with the actual extended command. */
+    if (!game.in_doagain && (live_input || queuedCommand)
+        && ch0 !== '\x01' && ch0 !== '#') {
+        if (!continuedPrefix)
+            cmdq_clear(CQ_REPEAT);
+        cmdq_add_key(CQ_REPEAT, ch0);
     }
 
     /* src/cmd.c:1518 do_run_west() and friends — a SHIFTED direction letter
@@ -1522,7 +1621,7 @@ export async function rhack(key) {
         game.context.move = (await dotelecmd() === ECMD_TIME ? 1 : 0);
     } else if (ch === '\x04') {
         // src/cmd.c cmdlist — C('d') is dokick.
-        game.context.move = (await dokick() === ECMD_TIME ? 1 : 0);
+        useResult(await dokick());
         game._cmd_was_kick = true;
     } else if (ch === '\x07') {
         // src/cmd.c:1962 cmdlist — C('g') is wiz_genesis.
@@ -1584,6 +1683,14 @@ export async function rhack(key) {
         const { show_overview } = await import('./dungeon.js');
         await show_overview();
         game.context.move = 0;
+    } else if (ch === '\x01') {
+        // src/cmd.c cmdlist, C('a') is #repeat / do_repeat.
+        const result = await do_repeat();
+        game.context.move = ((result & ECMD_TIME) ? 1 : 0);
+        if (result & (ECMD_CANCEL | ECMD_FAIL)) {
+            cmdq_clear(CQ_CANNED);
+            cmdq_clear(CQ_REPEAT);
+        }
     } else if (ch === 'V') {
         // src/version.c doversion() prints the build's short version string.
         const { VERSION_BANNER_LINE } = await import('./version_data.js');
@@ -1627,9 +1734,10 @@ export async function rhack(key) {
         // direction then carries the hero until something interesting stops
         // the run. Neither prefix consumes game time by itself.
         if (game.domove_attempting & DOMOVE_RUSH) {
-            /* "Double rush/run prefix, canceled." */
+            await pline(`Double ${ch === 'g' ? 'rush' : 'run'} prefix, canceled.`);
             game.context.run = 0;
             game.domove_attempting = 0;
+            commandResult = ECMD_CANCEL;
         } else {
             game.context.run = (ch === 'g') ? 2 : 3;
             game.domove_attempting |= DOMOVE_RUSH;
@@ -1642,8 +1750,9 @@ export async function rhack(key) {
         // a no-op while every recorded rc sets !autopickup; for others it asks
         // for a menu. Reads no extra key.
         if (game.iflags.menu_requested) {
-            /* "Double m prefix, canceled." */
+            await pline('Double move-no-pickup or request-menu prefix, canceled.');
             game.iflags.menu_requested = false;
+            commandResult = ECMD_CANCEL;
         } else {
             game.iflags.menu_requested = true;
             game._cmd_prefix_pending = true;
@@ -1656,9 +1765,10 @@ export async function rhack(key) {
         // unhandled therefore did not misalign keys, it displaced the HERO:
         // C attacks and stays put where we walked into the square.
         if (game.context.forcefight) {
-            /* "Double fight prefix, canceled." */
+            await pline('Double fight prefix, canceled.');
             game.context.forcefight = 0;
             game.context.move = 0;
+            commandResult = ECMD_CANCEL;
         } else {
             game.context.forcefight = 1;
             game._cmd_prefix_pending = true;
@@ -1736,7 +1846,14 @@ export async function rhack(key) {
     } else if (ch === '#') {
         // src/cmd.c cmdlist — '#' is doextcmd, which reads the command name
         // off the input before doing anything.
-        game.context.move = (await doextcmd() === ECMD_TIME ? 1 : 0);
+        cmdq_clear(CQ_REPEAT);
+        game._last_extcmd_name = null;
+        useResult(await doextcmd());
+        if (game._last_extcmd_name) {
+            const name = game._last_extcmd_name;
+            cmdq_add_ec(CQ_REPEAT, () => execute_extcmd(name));
+            cmdq_shift(CQ_REPEAT);
+        }
     } else if (ch === '\x06' && game.wizard) {
         /* src/cmd.c:1982, debug-mode ^F is the default binding for
            #wizmap. It reveals the level without consuming a turn. */
@@ -1810,6 +1927,8 @@ export async function rhack(key) {
         // src/cmd.c rhack() — genuinely unrecognised key.
         game.context.move = 0;
         await pline(`Unknown command '${ch}'.`);
+        cmdq_clear(CQ_CANNED);
+        cmdq_clear(CQ_REPEAT);
     }
 
     /* src/cmd.c:3820-3825 — "hero did something else than kicking a
@@ -1819,6 +1938,10 @@ export async function rhack(key) {
     if (game.context.move && !game._cmd_was_kick)
         game.kickedloc = { x: 0, y: 0 };
     game._cmd_was_kick = false;
+    if (commandResult & (ECMD_CANCEL | ECMD_FAIL)) {
+        cmdq_clear(CQ_CANNED);
+        cmdq_clear(CQ_REPEAT);
+    }
 }
 
 // C ref: hack.c domove — execute a movement
@@ -3105,6 +3228,22 @@ export function cmdq_pop() {
 export function cmdq_peek(q) {
     const list = (game.command_queue ||= [])[q];
     return (list && list.length) ? list[0] : null;
+}
+
+// src/cmd.c:356 cmdq_copy(), duplicate the queue nodes while preserving
+// order. Function references are immutable command identities in this port;
+// copying each entry object is the JS counterpart of copying each C node.
+export function cmdq_copy(q) {
+    const list = (game.command_queue ||= [])[q];
+    return list ? list.map((entry) => ({ ...entry })) : null;
+}
+
+// src/cmd.c:352 cmdq_shift(), move the most recently appended entry to
+// the front. doextcmd uses this after prompt answers have already been saved.
+export function cmdq_shift(q) {
+    const list = (game.command_queue ||= [])[q];
+    if (list && list.length > 1)
+        list.unshift(list.pop());
 }
 
 // src/cmd.c:5299 dotravel() — the '_' command: pick a destination with

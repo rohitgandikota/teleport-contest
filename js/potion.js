@@ -22,7 +22,7 @@ import { surface } from './dungeon.js';
 import { A_WIS, ECMD_CANCEL, IS_FOUNTAIN, IS_SINK } from './const.js';
 import { Unaware, Hallucination, Halluc_resistance, Blind,
          Deaf, Poison_resistance, Sleep_resistance,
-         Underwater } from './youprop.js';
+         Underwater, Antimagic } from './youprop.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { ONAMES, MATERIALS } from './objects_data.js';
 import { PMNAMES, MFLAGS, ATTKS } from './monst_data.js';
@@ -430,7 +430,16 @@ export async function potionhit(mon, obj, how) {
         await pline(`${Tobjnam(obj, 'evaporate')}.`);
 
     if (isyou) {
-        if (obj.otyp === ONAMES.POT_ACID && !game.u.uprops?.ACID_RES) {
+        if (obj.otyp === ONAMES.POT_POLYMORPH) {
+            await You_feel(`a little ${Hallucination() ? 'normal' : 'strange'}.`);
+            const unchanging = !!(game.u.intrinsic?.HUnchanging
+                                  || game.u.uprops?.UNCHANGING);
+            if (!unchanging && !Antimagic()) {
+                const { polyself } = await import('./polyself.js');
+                await polyself();
+            }
+        } else if (obj.otyp === ONAMES.POT_ACID
+                   && !game.u.uprops?.ACID_RES) {
             await pline(`This burns${obj.blessed ? ' a little'
                                   : obj.cursed ? ' a lot' : ''}!`);
             let damage = d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);

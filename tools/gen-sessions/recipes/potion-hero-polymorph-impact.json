@@ -1,0 +1,40 @@
+{
+  "name": "potion-hero-polymorph-impact",
+  "description": "Upward-thrown polymorph potions fall back onto the hero and exercise the Antimagic, Unchanging, and unguarded transformation branches.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.ranged",
+    "forms.polymorph",
+    "object.amulets",
+    "object.armor",
+    "object.potions",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "potionhit.hero.polymorph-antimagic",
+    "potionhit.hero.polymorph-transform",
+    "potionhit.hero.polymorph-unchanging"
+  ],
+  "segments": [
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of polymorph\rto<   \u001b"
+    },
+    {
+      "seed": 7600,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " T\u0017blessed amulet of unchanging\rPo\u0017uncursed potion of polymorph\rtp<   \u001b"
+    },
+    {
+      "seed": 7601,
+      "datetime": "20260503025436",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align=neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r        T\u0017uncursed potion of polymorph\rto<      \u001b"
+    }
+  ]
+}

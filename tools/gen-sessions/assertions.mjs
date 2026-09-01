@@ -1,5 +1,7 @@
 // Validate source-branch claims against concrete C recorder output.
 
+import { decodeScreen } from './screen-decode.mjs';
+
 function stringList(value, field, branch, errors) {
     if (value === undefined)
         return [];
@@ -45,7 +47,26 @@ export function branchAssertionErrors(recipe, generated = null) {
             assertion.screenExcludes, 'screenExcludes', branch, errors);
         const rngIncludes = stringList(
             assertion.rngIncludes, 'rngIncludes', branch, errors);
-        if (!screenIncludes.length && !screenExcludes.length && !rngIncludes.length)
+        const screenCells = assertion.screenCells || [];
+        if (!Array.isArray(screenCells)) {
+            errors.push(branch + ': screenCells must be an array');
+        } else {
+            for (const cell of screenCells) {
+                const validCharacter = typeof cell?.equals === 'string'
+                    && Array.from(cell.equals).length === 1;
+                if (!Number.isInteger(cell?.step) || cell.step < 0
+                    || !Number.isInteger(cell?.x) || cell.x < 0 || cell.x >= 80
+                    || !Number.isInteger(cell?.y) || cell.y < 0 || cell.y >= 24
+                    || !validCharacter) {
+                    errors.push(branch + ': each screen cell needs non-negative '
+                                + 'step, x 0..79, y 0..23, and one equals character');
+                }
+            }
+            if (screenCells.length && segmentIndexes.length !== 1)
+                errors.push(branch + ': screenCells require exactly one segment');
+        }
+        if (!screenIncludes.length && !screenExcludes.length && !rngIncludes.length
+            && !screenCells.length)
             errors.push(branch + ': assertion has no observable condition');
 
         if (!generated)
@@ -77,6 +98,23 @@ export function branchAssertionErrors(recipe, generated = null) {
             if (!rngText.includes(text))
                 errors.push(branch + ': ' + label
                             + ' lacks RNG text ' + JSON.stringify(text));
+        }
+        if (segmentIndexes.length === 1 && Array.isArray(screenCells)) {
+            const segment = segments[0];
+            for (const cell of screenCells) {
+                const step = segment.steps?.[cell.step];
+                if (!step) {
+                    errors.push(branch + ': ' + label + ' has no step ' + cell.step);
+                    continue;
+                }
+                const actual = decodeScreen(step.screen)[cell.y]?.[cell.x];
+                if (actual !== cell.equals) {
+                    errors.push(branch + ': ' + label + ' step ' + cell.step
+                                + ` cell (${cell.x},${cell.y}) is `
+                                + JSON.stringify(actual) + ', expected '
+                                + JSON.stringify(cell.equals));
+                }
+            }
         }
     }
 

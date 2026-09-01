@@ -64,7 +64,7 @@ import { W_SADDLE, NO_TRAP_FLAGS, HEAD, ARM, W_ARMH, W_ARMS, W_ARMG,
          EF_NONE, EF_GREASE, EF_VERBOSE, EF_PAY, EF_DESTROY,
          ER_NOTHING, ER_DAMAGED, ER_DESTROYED } from './const.js';
 import { rnl } from './rng.js';
-import { body_part, polymon } from './polyself.js';
+import { body_part, mbodypart, polymon } from './polyself.js';
 import { mon_nam } from './do_name.js';
 import { MON_WEP, DEADMONSTER, helpless } from './monst.js';
 import { erosion_matters } from './mkobj.js';
@@ -3212,12 +3212,14 @@ async function trapeffect_rust_trap(mtmp, trap, trflags) {
         switch (rn2(5)) {
         case 0:
             if (in_sight)
-                await pline(`${A_gush} ${mon_nam(mtmp)} on the head!`);
+                await pline(`${A_gush} ${mon_nam(mtmp)} on the ${
+                    mbodypart(mtmp, HEAD)}!`);
             await water_damage(which_armor(mtmp, W_ARMH), 'helmet', true);
             break;
         case 1: {
             if (in_sight)
-                await pline(`${A_gush} ${mon_nam(mtmp)}'s left arm!`);
+                await pline(`${A_gush} ${mon_nam(mtmp)}'s left ${
+                    mbodypart(mtmp, ARM)}!`);
             const shield = which_armor(mtmp, W_ARMS);
             if (await water_damage(shield, 'shield', true) !== ER_NOTHING)
                 break;
@@ -3229,7 +3231,8 @@ async function trapeffect_rust_trap(mtmp, trap, trflags) {
         }
         case 2:
             if (in_sight)
-                await pline(`${A_gush} ${mon_nam(mtmp)}'s right arm!`);
+                await pline(`${A_gush} ${mon_nam(mtmp)}'s right ${
+                    mbodypart(mtmp, ARM)}!`);
             await water_damage(MON_WEP(mtmp), null, true);
             await water_damage(which_armor(mtmp, W_ARMG), 'gloves', true);
             break;

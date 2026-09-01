@@ -85,10 +85,12 @@ and at least one observable condition:
 }
 ```
 
-The supported conditions are `screenIncludes`, `screenExcludes`, and
-`rngIncludes`. `record.mjs` rejects a recording when any condition is absent
-from the specified C trace. `coverage-report.mjs` also refuses to credit a
-generated fixture whose assertion policy, assertion metadata, or C-visible
+The supported conditions are `screenIncludes`, `screenExcludes`, `rngIncludes`,
+and `screenCells`. A screen-cell assertion names a recorded `step`, `x`, `y`,
+and one decoded `equals` character. It is useful for draw-neutral map changes
+which have no message. `record.mjs` rejects a recording when any condition is
+absent from the specified C trace. `coverage-report.mjs` also refuses to credit
+a generated fixture whose assertion policy, assertion metadata, or C-visible
 evidence no longer matches its recipe.
 
 `moves` is the raw key string, one char per key, exactly as in
@@ -133,6 +135,21 @@ One knowing difference from canonical files: the recorder driver does
 not emit the per-step `depth` field. Nothing consumes it — the frozen
 loader and runner never read `depth` (`verify-rerecord.mjs` ignores it
 too), so generated sessions are drop-in equivalent.
+
+## Current robustness additions
+
+Two C-backed fixtures target hidden-test combinations absent from the public
+corpus:
+
+| session | segments | exact C parity | covers |
+|---|---:|---:|---|
+| ring-shape-protection | 6 | 16,858 RNG entries, 748 screens and cursors | chameleon, werecreature, and mimic shape protection; multiple protection sources; canceled shapechangers; named `#wizdetect`; generic and specific mimic map descriptions |
+| floor-object-cancellation | 7 | 19,365 RNG entries, 443 screens and cursors | cancellation of floor scrolls, potions, spellbooks, armor, and wands; exhausted-wand destruction; troll corpse revival control; revival-timer conversion to rot |
+
+The generated corpus currently covers all 106 tracked mechanic categories and
+all 780 explicit C branches in `branch-requirements.json`. These counts measure
+fixture coverage and asserted C-visible evidence. Exact JavaScript parity is
+checked separately by the supplemental scorer.
 
 ## The starter batch
 

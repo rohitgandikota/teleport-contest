@@ -68,7 +68,7 @@ import { hastrack } from './track.js';
 // include/trap.h:125 fixed_tele_trap()
 const fixed_tele_trap = (t) => t.ttyp === TELEP_TRAP
                             && isok(t.teledest?.x, t.teledest?.y);
-import { sobj_at, obj_extract_self, stackobj } from './invent.js';
+import { obfree, sobj_at, obj_extract_self, stackobj } from './invent.js';
 import { OBJ_FLOOR } from './obj.js';
 import { online2, isok } from './hacklib.js';
 /* onscary() and in_your_sanctuary() are src/monmove.c and src/priest.c
@@ -1010,6 +1010,7 @@ export function delobj_core(obj, force) {
     }
     if (update_map)  /* floor object's coordinates are always up to date */
         newsym(obj.ox, obj.oy);
+    obfree(obj);
 }
 
 // src/mon.c:1465 meatmetal() — a rock mole or similar eats the topmost metal
@@ -2259,6 +2260,54 @@ export function seemimic(mtmp) {
         unblock_point(mtmp.mx, mtmp.my);
 
     newsym(mtmp.mx, mtmp.my);
+}
+
+// src/mon.c:4431 normal_shape(). Shape protection acts on every monster,
+// including forms and disguises which the hero cannot currently see.
+export async function normal_shape(mon) {
+    const mcham = mon.cham ?? NON_PM;
+    if (ismnum(mcham)) {
+        const wasCancelled = mon.mcan;
+        await newcham(mon, game.mons[mcham], NC_SHOW_MSG);
+        mon.cham = NON_PM;
+        if (wasCancelled)
+            mon.mcan = 1;
+        newsym(mon.mx, mon.my);
+    }
+
+    const { is_were, new_were } = await import('./were.js');
+    if (is_were(mon.data) && mon.data.mlet !== MONSYMS.S_HUMAN)
+        await new_were(mon);
+
+    if (M_AP_TYPE(mon) !== M_AP_NOTHING) {
+        if (!mon.meating) {
+            if (M_AP_TYPE(mon) !== M_AP_MONSTER)
+                mon.msleeping = 1;
+            seemimic(mon);
+        } else {
+            finish_meating(mon);
+        }
+    }
+}
+
+// src/mon.c:4621 rescham().
+export async function rescham() {
+    for (const mon of (game.level?.monsters || []))
+        await normal_shape(mon);
+}
+
+// src/mon.c:4627 m_restartcham() and restartcham().
+export function restartcham() {
+    for (const mon of (game.level?.monsters || [])) {
+        if (!mon.mcan) {
+            mon.cham = (mon.data?.mflags2 & MFLAGS.M2_SHAPESHIFTER)
+                ? mon.mnum : NON_PM;
+        }
+        if (mon.data?.mlet === MONSYMS.S_MIMIC && mon.msleeping) {
+            set_mimic_sym(mon);
+            newsym(mon.mx, mon.my);
+        }
+    }
 }
 
 // src/mon.c:1847 mpickstuff() — a monster picks up ONE object from its square.

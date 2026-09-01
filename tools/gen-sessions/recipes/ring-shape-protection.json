@@ -1,0 +1,154 @@
+{
+  "name": "ring-shape-protection",
+  "description": "Putting on protection from shape changers normalizes an active shapeshifter, a beast-form lycanthrope, and a disguised mimic; removing it then restores eligible shape-changing state.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.movement",
+    "object.rings",
+    "forms.polymorph",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "shape.protection.ring-on-shapeshifter",
+    "shape.protection.ring-on-were",
+    "shape.protection.ring-on-mimic",
+    "shape.protection.ring-off-shapeshifter",
+    "shape.protection.ring-off-sleeping-mimic",
+    "shape.protection.ring-off-source-remains",
+    "shape.protection.ring-off-cancelled-shapeshifter",
+    "display.mimic-generic-zero-object",
+    "pager.object-from-map.mimic-generic-fake",
+    "pager.object-from-map.mimic-specific-fake",
+    "ui.command.extcmd-wizdetect"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "shape.protection.ring-on-shapeshifter",
+      "segment": 0,
+      "screenIncludes": [
+        "The horse turns into a chameleon!"
+      ]
+    },
+    {
+      "branch": "shape.protection.ring-on-were",
+      "segment": 1,
+      "screenIncludes": [
+        "The werewolf changes into a human."
+      ]
+    },
+    {
+      "branch": "shape.protection.ring-on-mimic",
+      "segment": 2,
+      "screenCells": [
+        { "step": 119, "x": 55, "y": 19, "equals": "m" }
+      ]
+    },
+    {
+      "branch": "shape.protection.ring-off-shapeshifter",
+      "segment": 0,
+      "screenIncludes": [
+        "The chameleon turns into a displacer beast!"
+      ]
+    },
+    {
+      "branch": "shape.protection.ring-off-sleeping-mimic",
+      "segment": 2,
+      "rngIncludes": [
+        "set_mimic_sym(makemon.c:2488)"
+      ],
+      "screenCells": [
+        { "step": 120, "x": 55, "y": 19, "equals": "]" }
+      ]
+    },
+    {
+      "branch": "shape.protection.ring-off-source-remains",
+      "segment": 4,
+      "screenCells": [
+        { "step": 127, "x": 34, "y": 6, "equals": "m" }
+      ]
+    },
+    {
+      "branch": "shape.protection.ring-off-cancelled-shapeshifter",
+      "segment": 5,
+      "screenIncludes": [
+        "The jaguar turns into a chameleon!",
+        "<77,16>  :  chameleon"
+      ]
+    },
+    {
+      "branch": "display.mimic-generic-zero-object",
+      "segment": 2,
+      "screenCells": [
+        { "step": 120, "x": 55, "y": 19, "equals": "]" }
+      ]
+    },
+    {
+      "branch": "pager.object-from-map.mimic-generic-fake",
+      "segment": 2,
+      "screenIncludes": [
+        "a mimic or a strange object (strange object)"
+      ],
+      "rngIncludes": [
+        "next_ident(mkobj.c:521)"
+      ]
+    },
+    {
+      "branch": "pager.object-from-map.mimic-specific-fake",
+      "segment": 3,
+      "screenIncludes": [
+        "a piece of food (a tripe ration)"
+      ],
+      "rngIncludes": [
+        "next_ident(mkobj.c:521)"
+      ]
+    },
+    {
+      "branch": "ui.command.extcmd-wizdetect",
+      "segment": 5,
+      "screenIncludes": [
+        "You don't find anything."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7701,
+      "datetime": "20260601010101",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of protection from shape changers\r\u0007peaceful chameleon\rPnrR20. "
+    },
+    {
+      "seed": 7702,
+      "datetime": "20260601010202",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of protection from shape changers\r\u0007hostile werewolf\rPor R"
+    },
+    {
+      "seed": 7703,
+      "datetime": "20260601010303",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of protection from shape changers\r\u0007hostile giant mimic\rPorR;j."
+    },
+    {
+      "seed": 7704,
+      "datetime": "20260601010404",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection from shape changers\r\u0007hostile giant mimic\rPorR;k."
+    },
+    {
+      "seed": 7705,
+      "datetime": "20260601010505",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed ring of protection from shape changers\r\u0017uncursed ring of protection from shape changers\r\u0007hostile giant mimic\rPorPpRo Rp ;k."
+    },
+    {
+      "seed": 7706,
+      "datetime": "20260601010606",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of protection from shape changers\r\u0017blessed wand of cancellation\r\u0007peaceful chameleon\rzpkPorR.#wizdetect\r/M"
+    }
+  ]
+}

@@ -49,7 +49,7 @@ import { ACURR, adjalign, change_luck, encumber_msg, Fast,
          Very_fast } from './attrib.js';
 import { paranoia_bits, PARANOID_REMOVE } from './options.js';
 import { Blind, Flying, Glib, Hallucination, Invis, Levitation,
-         See_invisible } from './youprop.js';
+         Protection_from_shape_changers, See_invisible } from './youprop.js';
 import { body_part, change_sex, poly_gender } from './polyself.js';
 import { def_oc_syms } from './drawing_data.js';
 import { surface } from './dungeon.js';
@@ -1219,7 +1219,10 @@ async function Ring_on(obj) {
             find_ac();
         break;
     case ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN:
-        note_unported_do_wear('Ring_on:rescham');
+        {
+            const { rescham } = await import('./mon.js');
+            await rescham();
+        }
         break;
     default:
         if (!PASSIVE_RING_TYPES.has(obj.otyp))
@@ -1274,8 +1277,10 @@ async function Ring_off(obj) {
     } else if (obj.otyp === ONAMES.RIN_WARNING) {
         see_monsters();
     } else if (obj.otyp === ONAMES.RIN_PROTECTION_FROM_SHAPE_CHAN) {
-        if (!game.u.uprops?.PROT_FROM_SHAPE_CHANGERS)
-            note_unported_do_wear('Ring_off:restartcham');
+        if (!Protection_from_shape_changers()) {
+            const { restartcham } = await import('./mon.js');
+            restartcham();
+        }
     } else if (PASSIVE_RING_TYPES.has(obj.otyp)) {
         /* setworn() already removed the ring's ordinary property. */
     } else {

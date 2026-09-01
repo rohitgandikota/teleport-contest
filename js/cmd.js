@@ -989,6 +989,13 @@ async function execute_extcmd(name) {
         const { wiz_map } = await import('./wizcmds.js');
         return await wiz_map();
     }
+    if (name === 'wizdetect') {
+        if (game.wizard)
+            await findit();
+        else
+            await pline("Unavailable command 'wizdetect'.");
+        return ECMD_OK;
+    }
     if (name === 'wizbury') {
         const { bury_an_obj } = await import('./sp_lev.js');
         let before = 0, after = 0;

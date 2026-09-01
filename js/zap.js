@@ -56,7 +56,9 @@ import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
          stackobj } from './invent.js';
 import { getdir } from './cmd.js';
 import { attach_egg_hatch_timeout, fall_asleep,
-         MELT_ICE_AWAY, start_timer, TIMER_LEVEL } from './timeout.js';
+         MELT_ICE_AWAY, peek_timer, start_timer, stop_timer,
+         REVIVE_MON, ROT_CORPSE, TIMER_LEVEL, TIMER_OBJECT }
+    from './timeout.js';
 import { healup, make_stunned, potionbreathe } from './potion.js';
 import { cvt_sdoor_to_door, findit } from './detect.js';
 import { readobjnam } from './objnam.js';
@@ -71,7 +73,7 @@ import { livelog_add, Norep, pline_The, You, Your, You_feel,
          You_hear } from './pline.js';
 import { pline } from './display.js';
 import { An, The, distant_name, vtense, xname, Yname2, yname, makeplural,
-         Yobjnam2, otense } from './objnam.js';
+         Tobjnam, Yobjnam2, otense } from './objnam.js';
 import { Monnam, mon_nam, noit_mon_nam, hliquid } from './do_name.js';
 import { canseemon, canspotmon } from './display.js';
 import { engulfing_u } from './const.js';
@@ -82,7 +84,8 @@ import { splitobj, mkobj, mksobj, mksobj_at, place_object, rnd_class,
          dead_species, erosion_matters, is_weptool, unbless,
          uncurse, obj_ice_effects } from './mkobj.js';
 import { delobj } from './mon.js';
-import { obj_extract_self, sobj_at, useup, useupf, weight } from './invent.js';
+import { obj_extract_self, sobj_at, useup, useupall, useupf, weight }
+    from './invent.js';
 import { closeholdingtrap, is_flammable, is_rottable, burnarmor,
          deltrap, dotrap, ignite_items, openholdingtrap,
          trapname } from './trap.js';
@@ -351,16 +354,25 @@ function cancel_item(obj) {
     const abon = (game.u.abon ||= {}).a
         ||= new Array(game.u.acurr?.a?.length || 6).fill(0);
 
-    if (game.invent.includes(obj)) {
+    if ((game.invent || []).includes(obj)) {
         switch (otyp) {
         case ONAMES.RIN_GAIN_STRENGTH:
-            if (wornmask & W_RING) abon[A_STR] -= obj.spe | 0;
+            if (wornmask & W_RING) {
+                abon[A_STR] -= obj.spe | 0;
+                (game.disp ||= {}).botl = true;
+            }
             break;
         case ONAMES.RIN_GAIN_CONSTITUTION:
-            if (wornmask & W_RING) abon[A_CON] -= obj.spe | 0;
+            if (wornmask & W_RING) {
+                abon[A_CON] -= obj.spe | 0;
+                (game.disp ||= {}).botl = true;
+            }
             break;
         case ONAMES.RIN_ADORNMENT:
-            if (wornmask & W_RING) abon[A_CHA] -= obj.spe | 0;
+            if (wornmask & W_RING) {
+                abon[A_CHA] -= obj.spe | 0;
+                (game.disp ||= {}).botl = true;
+            }
             break;
         case ONAMES.RIN_INCREASE_ACCURACY:
             if (wornmask & W_RING)
@@ -369,6 +381,10 @@ function cancel_item(obj) {
         case ONAMES.RIN_INCREASE_DAMAGE:
             if (wornmask & W_RING)
                 game.u.udaminc = (game.u.udaminc || 0) - (obj.spe | 0);
+            break;
+        case ONAMES.RIN_PROTECTION:
+            if (wornmask & W_RING)
+                (game.disp ||= {}).botl = true;
             break;
         case ONAMES.GAUNTLETS_OF_DEXTERITY:
             if (wornmask & W_ARMG) abon[A_DEX] -= obj.spe | 0;
@@ -429,6 +445,17 @@ function cancel_item(obj) {
             break;
         default:
             break;
+        }
+    }
+
+    /* src/zap.c:1327. Cancellation keeps a non-Rider corpse's remaining
+       deadline but replaces revival with ordinary rot. */
+    if (obj.otyp === ONAMES.CORPSE && obj.timed
+        && !is_rider(game.mons[obj.corpsenm])) {
+        const timeout = peek_timer(REVIVE_MON, obj);
+        if (timeout) {
+            stop_timer(REVIVE_MON, obj);
+            start_timer(timeout, TIMER_OBJECT, ROT_CORPSE, obj);
         }
     }
     unbless(obj);
@@ -1564,8 +1591,8 @@ export async function bhito(obj, otmp) {
         }
         case ONAMES.WAN_CANCELLATION:
         case ONAMES.SPE_CANCELLATION:
-            note_unported_zap('bhito:cancellation');
-            res = 0;
+            cancel_item(obj);
+            newsym(obj.ox, obj.oy);
             break;
         case ONAMES.WAN_TELEPORTATION:
         case ONAMES.SPE_TELEPORT_AWAY:
@@ -3249,7 +3276,8 @@ export async function dozap() {
         await weffects(obj);
     }
     if (obj && obj.spe < 0) {
-        note_unported_zap('dozap:turns_to_dust');
+        await pline(`${Tobjnam(obj, 'turn')} to dust.`);
+        useupall(obj);
     } else {
         update_inventory(); /* maybe used a charge */
     }

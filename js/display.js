@@ -953,20 +953,35 @@ function floor_object_glyph(obj, x, y, piletop = true) {
        generic but the hero can see the spot from nearby (same radius as
        distant_name(): r = max(u.xray_range, 2), neardist = 2r²−r), mark
        it as seen up close first; it is then drawn as the specific object. */
-    if (x !== undefined && obj_is_generic(obj) && cansee(x, y)
+    let generic = obj_is_generic(obj);
+    let glyphOtyp = generic ? (obj.oclass ?? OCLASSES.RANDOM_CLASS)
+                            : obj.otyp;
+    /* map_object() tests glyph_is_generic_object(), not obj_is_generic(),
+       before observing a nearby object.  That distinction matters for the
+       zeroed fake object used by display_monster(): a generic gem carried by
+       that fake has oclass 0, so C maps it as STRANGE_OBJECT and does not
+       identify it merely because it is nearby. */
+    const recognizedGeneric = generic
+        && glyphOtyp > ONAMES.STRANGE_OBJECT
+        && glyphOtyp < ONAMES.FIRST_OBJECT - 1;
+    if (x !== undefined && recognizedGeneric && cansee(x, y)
         && !Hallucination()) {
         const r = ((game.u?.xray_range ?? -1) > 2) ? game.u.xray_range : 2;
         const neardist = r * r * 2 - r;
         if (distu(x, y) <= neardist)
             observe_object(obj);
     }
-    const oc = game.objects?.[obj.otyp];
+    generic = obj_is_generic(obj);
+    glyphOtyp = generic ? (obj.oclass ?? OCLASSES.RANDOM_CLASS) : obj.otyp;
+    const oc = game.objects?.[glyphOtyp];
+    const glyphClass = oc?.oc_class ?? obj.oclass;
     let color = oc?.oc_color ?? NO_COLOR;
-    let sym = def_oc_syms[obj.oclass] || '?';
+    let sym = def_oc_syms[glyphClass] || '?';
     /* the glyph descriptor mirrors C's obj_to_glyph(): a statue and a corpse
        get their own glyph ranges (GLYPH_STATUE_OFF / GLYPH_BODY_OFF), which
        is what glyph_is_statue() tests in do_screen_description() */
-    const gdesc = { kind: 'obj', otyp: obj.otyp, oclass: obj.oclass,
+    const gdesc = { kind: 'obj', otyp: glyphOtyp, oclass: glyphClass,
+                    actual_otyp: obj.otyp,
                     corpsenm: obj.corpsenm,
                     statue: obj.otyp === ONAMES.STATUE && obj.corpsenm >= 0,
                     body: obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0 };
@@ -993,12 +1008,11 @@ function floor_object_glyph(obj, x, y, piletop = true) {
         color = game.objects?.[ONAMES.STATUE]?.oc_color ?? color;
     } else if (obj.otyp === ONAMES.CORPSE && obj.corpsenm >= 0) {
         color = game.mons?.[obj.corpsenm]?.mcolor ?? color;
-    } else if (obj_is_generic(obj)) {
+    } else if (generic) {
         /* include/display.h:940 generic_obj_to_glyph() — the generic glyph
            is oclass + GLYPH_OBJ_OFF, whose colour comes from the dummy
            class entry objects[oclass] (grey), not from the shuffled
            description of the specific otyp. */
-        color = game.objects?.[obj.oclass]?.oc_color ?? color;
         gdesc.generic = true;
     }
     return { ch: sym, color, dec: false, glyph: gdesc,
@@ -1295,10 +1309,11 @@ export function newsym(x, y) {
            mimics stay spottable (mundetected 0) and display_monster() draws
            the DISGUISE (display.c:533). */
         if (spotMon) {
-            if (mon.m_ap_type === M_AP_OBJECT) {
+            if (M_AP_TYPE(mon) === M_AP_OBJECT) {
                 /* display.c:564 — a fake object sent to map_object() */
                 const fake = { otyp: mon.mappearance, ox: x, oy: y,
-                               oclass: game.objects?.[mon.mappearance]?.oc_class,
+                               /* obj = zeroobj; C only fills these fields. */
+                               oclass: OCLASSES.RANDOM_CLASS,
                                corpsenm: mon.mcorpsenm ?? PMNAMES.PM_TENGU,
                                quan: 1, dknown: 0 };
                 const g = floor_object_glyph(fake, x, y, false);
@@ -1314,7 +1329,7 @@ export function newsym(x, y) {
                                 g.glyph ?? { kind: 'obj', otyp: fake.otyp });
                 return;
             }
-            if (mon.m_ap_type === M_AP_FURNITURE) {
+            if (M_AP_TYPE(mon) === M_AP_FURNITURE) {
                 /* display.c:543 — poor man's map_background of the S_ sym */
                 const s = showsym(mon.mappearance);
                 show_glyph_cell(x, y, s ? s.ch : '?',
@@ -1326,7 +1341,7 @@ export function newsym(x, y) {
             const shown = game.mons[Hallucination()
                 ? rn2_on_display_rng(NUMMONS)
                 : (wormTail ? PMNAMES.PM_LONG_WORM_TAIL
-                    : (mon.m_ap_type === M_AP_MONSTER
+                    : (M_AP_TYPE(mon) === M_AP_MONSTER
                         ? mon.mappearance : mon.mnum))];
             const attr = detectedOnly && !(mon.mtame && !Hallucination())
                          && game.flags?.use_inverse !== false

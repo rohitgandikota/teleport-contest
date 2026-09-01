@@ -1557,6 +1557,7 @@ export function start_corpse_timeout(body) {
     } else if (game.mons[body.corpsenm].mlet === MONSYMS.S_TROLL) {
         for (let a = 2; a <= TAINT_AGE; a++)
             if (!rn2(TROLL_REVIVE_CHANCE)) {
+                action = TIMEOUT_REVIVE_MON;
                 when = a;
                 break;
             }

@@ -1,0 +1,128 @@
+{
+  "name": "floor-object-cancellation",
+  "description": "Cancellation striking floor objects removes magic, enchantment, and beatitude while applying each object-class transformation.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.food-corpses",
+    "object.armor",
+    "object.potions",
+    "object.wands",
+    "object.scrolls",
+    "object.spellbooks-spells",
+    "turn.timers",
+    "ui.getlin"
+  ],
+  "branches": [
+    "object.cancellation.floor-scroll-to-blank",
+    "object.cancellation.floor-potion-to-juice",
+    "object.cancellation.floor-spellbook-to-blank",
+    "object.cancellation.floor-armor-enchantment-buc",
+    "object.cancellation.floor-wand-charge",
+    "object.corpse.troll-revival-scheduled",
+    "object.cancellation.troll-revival-to-rot",
+    "object.wand.exhausted-turns-to-dust"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "object.cancellation.floor-scroll-to-blank",
+      "segment": 0,
+      "screenIncludes": ["This scroll seems to be blank."]
+    },
+    {
+      "branch": "object.cancellation.floor-potion-to-juice",
+      "segment": 1,
+      "screenIncludes": ["This tastes like slime mold juice."]
+    },
+    {
+      "branch": "object.cancellation.floor-spellbook-to-blank",
+      "segment": 2,
+      "screenIncludes": ["This spellbook is all blank."]
+    },
+    {
+      "branch": "object.cancellation.floor-armor-enchantment-buc",
+      "segment": 3,
+      "screenIncludes": [
+        "You finish your dressing maneuver.",
+        "AC:8 Xp:1",
+        "You finish taking off your suit."
+      ]
+    },
+    {
+      "branch": "object.cancellation.floor-wand-charge",
+      "segment": 4,
+      "screenIncludes": [
+        "Nothing happens.  The iridium wand turns to dust."
+      ]
+    },
+    {
+      "branch": "object.corpse.troll-revival-scheduled",
+      "segment": 5,
+      "screenIncludes": ["The troll rises from the dead!"],
+      "rngIncludes": ["rn2(37)=0 @ start_corpse_timeout(mkobj.c:1420)"],
+      "screenCells": [
+        { "step": 31, "x": 4, "y": 12, "equals": "T" }
+      ]
+    },
+    {
+      "branch": "object.cancellation.troll-revival-to-rot",
+      "segment": 6,
+      "screenExcludes": ["The troll rises from the dead!"],
+      "screenCells": [
+        { "step": 65, "x": 4, "y": 12, "equals": "·" }
+      ]
+    },
+    {
+      "branch": "object.wand.exhausted-turns-to-dust",
+      "segment": 4,
+      "screenIncludes": [
+        "Nothing happens.  The iridium wand turns to dust."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 7710,
+      "datetime": "20260601011010",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of identify\rda\u0017blessed wand of cancellation\rzb>,ra"
+    },
+    {
+      "seed": 7711,
+      "datetime": "20260601011111",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed potion of sickness\rda\u0017blessed wand of cancellation\rzb>,qa"
+    },
+    {
+      "seed": 7712,
+      "datetime": "20260601011212",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed spellbook of force bolt\rda\u0017blessed wand of cancellation\rzb>,ra"
+    },
+    {
+      "seed": 7713,
+      "datetime": "20260601011313",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!implicit_uncursed\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed +5 leather armor\rda\u0017blessed wand of cancellation\rzb>,Wa.T."
+    },
+    {
+      "seed": 7714,
+      "datetime": "20260601011414",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed wand of fire (0:5)\rda\u0017blessed wand of cancellation\rzb>,za"
+    },
+    {
+      "seed": 7715,
+      "datetime": "20260601011515",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,debug_hunger,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed troll corpse\r da60.:"
+    },
+    {
+      "seed": 7715,
+      "datetime": "20260601011515",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,debug_hunger,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed troll corpse\r da\u0017blessed wand of cancellation\rzb>60. :"
+    }
+  ]
+}

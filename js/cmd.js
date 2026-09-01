@@ -65,6 +65,7 @@ import { doinvoke } from './artifact.js';
 import { dip_into } from './potion.js';
 import { pline_nohistory } from './display.js';
 import { Norep } from './pline.js';
+import { mungspaces } from './hacklib.js';
 import { putmsghistory } from './tty/topl.js';
 import { is_plural, Is_container } from './obj.js';
 import { carrying } from './invent.js';
@@ -466,6 +467,7 @@ export async function getlin(query, hook) {
        screen. */
     let buf = '';
     let pos = 0;
+    let shown = '';   /* the echoed text, typed characters as typed */
 
     /* win/tty/getline.c:53 — an unacknowledged message gets its --More--
        BEFORE the prompt appears:
@@ -490,7 +492,10 @@ export async function getlin(query, hook) {
          * any of that left the prompt invisible: seed0360's '#' never
          * appeared and the cursor sat out on the map.
          */
-        const promptText = `${query} ${buf}`;
+        /* what the tty has painted: typed characters as typed (the
+           completion hook rewrites the buffer in canonical case, but only
+           the remainder after the cursor is echoed from it) */
+        const promptText = `${query} ${shown}`;
         game._toplin = TOPLINE_SPECIAL_PROMPT;
         const display = game?.nhDisplay;
         const CO = display?.cols ?? 80;
@@ -531,6 +536,7 @@ export async function getlin(query, hook) {
                a key the C spends going round again. */
             if (buf !== '') {
                 buf = '';               /* obufp[0] = '\0'; bufp = obufp; */
+                shown = '';
                 pos = 0;
                 continue;
             }
@@ -545,17 +551,23 @@ export async function getlin(query, hook) {
             if (pos > 0) {
                 pos--;
                 buf = buf.slice(0, pos);
+                shown = shown.slice(0, pos); /* "\b" then blanks over the rest */
             }
             /* else tty_nhbell() */
         } else if (c >= ' ' && c !== '\x7f' && pos < COLNO) {
             /*  *bufp = c; bufp[1] = 0;  — the new character REPLACES whatever
                 the previous completion had put after the cursor. */
             buf = buf.slice(0, pos) + c;
+            shown = shown.slice(0, pos) + c; /* putsyms(bufp): c overwrites the
+                                                spot; a failed hook blanks any
+                                                earlier guess after it */
             pos++;
             if (hook) {
                 const completed = hook(buf);
-                if (completed !== null)
+                if (completed !== null) {
                     buf = completed;    /* pointer and cursor left where they were */
+                    shown += completed.slice(pos); /* putsyms(bufp): the rest */
+                }
             }
         }
     }
@@ -650,7 +662,10 @@ function ext_cmd_getlin_hook(base) {
 // match it against extcmdlist.
 async function get_ext_cmd() {
     /* C passes the completion hook unless replaying with in_doagain. */
-    const buf = (await getlin('#', ext_cmd_getlin_hook)).trim();
+    /* mungspaces(): leading and trailing blanks go, and runs of blanks
+       collapse to one before matching and before the unknown-command
+       message echoes the text */
+    const buf = mungspaces(await getlin('#', ext_cmd_getlin_hook));
 
     if (buf === '' || buf === '\x1b')
         return null;

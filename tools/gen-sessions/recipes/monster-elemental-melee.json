@@ -1,0 +1,42 @@
+{
+  "name": "monster-elemental-melee",
+  "description": "Debug-mode monster-versus-monster elemental melee: tame fire ants, ice trolls, and grid bugs fight ordinary hostile targets. The traces pin magical-cancellation rolls, elemental combat feedback, resistance handling, inventory destruction, hit-point damage, death, and pet growth scheduling for fire, cold, and electricity.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "turn.speed-energy",
+    "level.ordinary",
+    "monster.movement",
+    "monster.vs-monster",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "combat.melee",
+    "combat.resist-reflect"
+  ],
+  "branches": [
+    "combat.monster-vs-monster.fire-elemental-melee",
+    "combat.monster-vs-monster.cold-elemental-melee",
+    "combat.monster-vs-monster.electric-elemental-melee"
+  ],
+  "segments": [
+    {
+      "seed": 21020,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame fire ant\r\u0007hostile jackal\r\u0014llllllllll.20s        20s        :"
+    },
+    {
+      "seed": 21021,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame ice troll\r \u0007hostile soldier\r \u0014llllllllll.20s        20s        :"
+    },
+    {
+      "seed": 21022,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame grid bug\r\u0007tame grid bug\r\u0007tame grid bug\r\u0007tame grid bug\r\u0007hostile lichen\r\u0014llllllllll.20s        20s        :"
+    }
+  ]
+}

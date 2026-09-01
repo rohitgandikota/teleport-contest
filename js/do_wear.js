@@ -1,10 +1,8 @@
 // do_wear.js — wearing and taking off armour.
 // C ref: src/do_wear.c
 //
-// Only find_ac() so far. It matters at startup because u.uac is 0 out of the
-// zeroed `struct you` and stays 0 through newgame(): the status line under the
-// legacy window shows AC:0 for every role, armoured or not, and only
-// moveloop_preamble()'s find_ac() turns that into the real number.
+// Initial u.uac is 0 when the first startup status is drawn. u_init's later
+// find_ac() computes the real value before welcome and moveloop paging.
 
 import { game } from './gstate.js';
 import { mons } from './monst_data.js';

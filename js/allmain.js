@@ -121,6 +121,39 @@ import { find_ac } from './do_wear.js';
 import { clear_splitobjs } from './mkobj.js';
 import { pickup } from './pickup.js';
 
+// src/allmain.c moveloop_preamble(). unixmain calls this after newgame() has
+// printed welcome and wd_message() has reported explore mode. That ordering
+// is visible when pickup(1) finds an engraving on the initial square: the
+// welcome line is the one waiting at --More--, then the engraving is shown.
+export async function newgame_moveloop_preamble(resuming = false) {
+    const g = game;
+
+    /* side-effects from the real world */
+    g.flags.moonphase = phase_of_the_moon();
+    if (g.flags.moonphase === FULL_MOON) {
+        await You('are lucky!  Full moon tonight.');
+        change_luck(1);
+    } else if (g.flags.moonphase === NEW_MOON) {
+        await pline('Be careful!  New moon tonight.');
+    }
+    g.flags.friday13 = friday_13th();
+    if (g.flags.friday13) {
+        await pline('Watch out!  Bad things can happen on Friday the 13th.');
+        change_luck(-1);
+    }
+
+    if (!resuming) {
+        g.context.rndencode = rnd(9000);
+        set_wear(null);
+        for (const obj of (g.invent || []))
+            obj.pickup_prev = 0;
+        await pickup(1);
+        g.context.seer_turn = rnd(30);
+        g.u.umovement = NORMAL_SPEED;
+        initrack();
+    }
+}
+
 // C ref: allmain.c newgame()
 export async function newgame() {
     const g = game;
@@ -187,23 +220,7 @@ export async function newgame() {
                 await pline(`${Hello(null)} ${g.plname}, the ${g.urace.adj} `
                             + `${role_name}, welcome back to NetHack!`);
             }
-            /* src/allmain.c:56 moveloop_preamble() — the real-world side
-               effects fire on restore too; the restore rc pins a different
-               datetime (full moon) exactly to exercise this */
-            g.flags.moonphase = phase_of_the_moon();
-            if (g.flags.moonphase === FULL_MOON) {
-                await You('are lucky!  Full moon tonight.');
-                change_luck(1);
-            } else if (g.flags.moonphase === NEW_MOON) {
-                await pline('Be careful!  New moon tonight.');
-            }
-            g.flags.friday13 = friday_13th();
-            if (g.flags.friday13) {
-                await pline('Watch out!  Bad things can happen on '
-                            + 'Friday the 13th.');
-                change_luck(-1);
-            }
-            return;
+            return true;
         }
     }
 
@@ -399,6 +416,10 @@ export async function newgame() {
     // src/allmain.c:824 — u_init_skills_discoveries(): the hero already knows
     // what came in their own pack. This is what fills the `\\` window.
     u_init_skills_discoveries();
+    /* src/u_init.c:1413 computes initial AC here. The first bot() above has
+       already drawn the legacy window's underlying AC:0 status, but later
+       startup paging and the first command use this real value. */
+    find_ac();
 
     // src/allmain.c:831 — the legacy blurb. It draws because com_pager()
     // creates its own Lua state, and every Lua state costs nhlib.lua's
@@ -406,48 +427,6 @@ export async function newgame() {
     // the rc says `!legacy`.
     if (g.flags.legacy !== false)
         await com_pager(g.uroleplay?.pauper ? 'pauper_legacy' : 'legacy');
-
-    // src/allmain.c:71-83 moveloop_preamble(), new-game branch. This was the
-    // last thing js/fastforward.js replayed, and replaying it skipped the line
-    // that matters most here:
-    //
-    //     svc.context.rndencode = rnd(9000);
-    //     set_wear((struct obj *) 0);
-    //     reset_justpicked(gi.invent);
-    //     (void) pickup(1);
-    //     svc.context.seer_turn = (long) rnd(30);
-    //     u.umovement = NORMAL_SPEED;      <-- never happened while replayed
-    //     initrack();
-    //
-    // Without the hero's initial movement points, moveloop_core's
-    // hero-can't-move loop starts at -NORMAL_SPEED instead of 0 and runs its
-    // new-turn block twice per command, advancing the turn counter twice.
-    g.context.rndencode = rnd(9000);
-    /* src/allmain.c:73 calls set_wear((struct obj *) 0) here for the side
-       effects of starting gear. set_wear is 30 lines in src/do_wear.c but is
-       a dispatcher, not a leaf:
-       it calls Blindf_on, Ring_on, Amulet_on, Shirt_on, Armor_on, Cloak_on,
-       Boots_on, Gloves_on, Helmet_on and Shield_on, and NONE of those ten
-       exist in js/ yet. Porting it means porting whichever of them the
-       starting gear actually triggers -- for most roles that is Armor_on
-       plus one or two others, so the real unit is those functions rather
-       than set_wear itself.
-
-       tools/unported-hits.mjs has this reached by 100% of sessions, but the
-       reach figure counts the CALL, not the work behind it. */
-    set_wear(null);   /* for side-effects of starting gear */
-    /* src/allmain.c:74-75 clears the flags set while creating starting
-       inventory, then performs the initial-square autopickup. */
-    for (const obj of (g.invent || []))
-        obj.pickup_prev = 0;
-    await pickup(1);
-    g.context.seer_turn = rnd(30);
-    g.u.umovement = NORMAL_SPEED;
-
-    // src/allmain.c:453 — moveloop_preamble() calls find_ac(). Until it does,
-    // u.uac is still the 0 it was born with, which is why the status line under
-    // the legacy window reads AC:0 even for a hero already wearing armour.
-    find_ac();
 
     // Remaining hardcoded player state. u_init now computes the inventory,
     // gold, attributes, alignment and handedness for real; what is left is
@@ -495,28 +474,7 @@ export async function newgame() {
         livelog_add(`${g.plname} the${buf} entered the dungeon`);
     }
 
-    // src/allmain.c:56 moveloop_preamble() — "side-effects from the real
-    // world", and they come BEFORE the new-game branch.
-    //
-    // Neither draws, but both can pline, and a pline at this point is what
-    // pushes the greeting into needing a --More--: the greeting is 76 columns
-    // and "--More--" is 8, so the tty wraps the prompt onto row 1 rather than
-    // appending it. That is the whole difference on seed4500's first frame.
-    //
-    // The luck changes are real too: a full moon starts the hero at Luck 1 and
-    // Friday the 13th at -1, which every later luck-sensitive roll reads.
-    g.flags.moonphase = phase_of_the_moon();
-    if (g.flags.moonphase === FULL_MOON) {
-        await You('are lucky!  Full moon tonight.');
-        change_luck(1);
-    } else if (g.flags.moonphase === NEW_MOON) {
-        await pline('Be careful!  New moon tonight.');
-    }
-    g.flags.friday13 = friday_13th();
-    if (g.flags.friday13) {
-        await pline('Watch out!  Bad things can happen on Friday the 13th.');
-        change_luck(-1);
-    }
+    return false;
 }
 
 // src/allmain.c:118 u_calc_moveamt()

@@ -1,0 +1,101 @@
+{
+  "name": "normal-role-composite",
+  "description": "Thirteen fresh normal-mode games, one for every role, with legal race, gender, and alignment combinations. Each fixed-seed trace keeps the default pet and autopickup behavior and composes initial inventory, status and discovery windows, counted searches, waits, movement, ordinary map generation, monster scheduling, timers, hunger, regeneration, and prompt paging.",
+  "coverage": [
+    "mode.normal",
+    "ui.menus",
+    "ui.more-paging",
+    "ui.count-repeat",
+    "ui.map-memory-vision",
+    "turn.speed-energy",
+    "turn.occupation-interrupt",
+    "turn.timers",
+    "level.ordinary",
+    "monster.movement",
+    "monster.hero-melee",
+    "monster.pets",
+    "combat.melee",
+    "survival.hunger",
+    "survival.regen-exercise"
+  ],
+  "segments": [
+    {
+      "seed": 21000,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Ada,role:Archeologist,race:human,gender:female,align:lawful\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    hhhhkkkklllljjjjn..12s    lllljjjjhhhhkkkky..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21001,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Borin,role:Barbarian,race:orc,gender:male,align:chaotic\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    kkkklllljjjjhhhhn..12s    jjjjhhhhkkkklllly..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21002,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Cora,role:Caveman,race:gnome,gender:female,align:neutral\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    lllljjjjhhhhkkkkn..12s    hhhhkkkklllljjjjy..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21003,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Dara,role:Healer,race:gnome,gender:female,align:neutral\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    jjjjhhhhkkkklllln..12s    kkkklllljjjjhhhhy..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21004,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Edric,role:Knight,race:human,gender:male,align:lawful\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    hhkklljjhhkklljjn..12s    lljjhhkklljjhhkky..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21005,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Faye,role:Monk,race:human,gender:female,align:chaotic\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    kklljjhhkklljjhhn..12s    jjhhkklljjhhkklly..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21006,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Galen,role:Priest,race:elf,gender:male,align:chaotic\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    lljjhhkklljjhhkkn..12s    hhkklljjhhkklljjy..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21007,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Hana,role:Ranger,race:elf,gender:female,align:chaotic\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    jjhhkklljjhhkklln..12s    kklljjhhkklljjhhy..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21008,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Ivo,role:Rogue,race:orc,gender:male,align:chaotic\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    hkjlhkjlhkjlhkjln..12s    lkjhlkjhlkjhlkjhy..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21009,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Jiro,role:Samurai,race:human,gender:male,align:lawful\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    khljkhljkhljkhljn..12s    jlhkjlhkjlhkjlhky..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21010,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Kato,role:Tourist,race:human,gender:male,align:neutral\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    lkjhlkjhlkjhlkjhn..12s    hjklhjklhjklhjkly..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21011,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Lysa,role:Valkyrie,race:dwarf,gender:female,align:lawful\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    jlhkjlhkjlhkjlhkn..12s    khljkhljkhljkhljy..i\u001b\\\u001b8s:"
+    },
+    {
+      "seed": 21012,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mira,role:Wizard,race:gnome,gender:female,align:neutral\nOPTIONS=autopickup,!tutorial,!tips\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=disclose:yi ya yv yg yc yo\n",
+      "moves": " i\u001b\u0018 \u001b12s    hjklhjklhjklhjkln..12s    kljhkljhkljhkljhy..i\u001b\\\u001b8s:"
+    }
+  ]
+}

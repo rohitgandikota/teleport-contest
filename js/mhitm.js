@@ -43,7 +43,8 @@ import { m_at, monkilled } from './mon.js';
 import { touch_petrifies } from './dog.js';
 import { is_orc, unsolid, resists_ston } from './mondata.js';
 import { distmin, s_suffix } from './hacklib.js';
-import { mhitm_ad_phys, mhitm_knockback } from './uhitm.js';
+import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
+         mhitm_knockback } from './uhitm.js';
 import { grow_up } from './makemon.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
 import { spitmm } from './mthrowu.js';
@@ -441,9 +442,15 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
     if (touch_petrifies(pd) && !resists_ston(magr))
         note_unported_mhitm('mdamagem:petrify_agr');
 
-    /* mhitm_adtyping: dispatch on the damage type */
+    /* mhitm_adtyping: dispatch the shared damage-type implementations. */
     if (mattk[1] === A.AD_PHYS) {
         await mhitm_ad_phys(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_FIRE) {
+        await mhitm_ad_fire(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_COLD) {
+        await mhitm_ad_cold(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_ELEC) {
+        await mhitm_ad_elec(magr, mattk, mdef, mhm);
     } else {
         note_unported_mhitm(`mdamagem:adtyp=${mattk[1]}`);
     }

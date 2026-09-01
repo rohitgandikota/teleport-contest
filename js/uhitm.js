@@ -2825,7 +2825,35 @@ export async function mhitm_ad_fire(magr, mattk, mdef, mhm) {
             mhm.damage = 0;
         }
     } else {
-        note_unported_uhitm('mhitm_ad_fire:mhitm');
+        /* mhitm */
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            mhm.damage = 0;
+            return;
+        }
+        if (game.vis && canseemon(mdef))
+            await pline(`${Monnam(mdef)} is ${on_fire(pd, mattk)}!`);
+        if (completelyburns(pd)) {
+            if (game.vis && canseemon(mdef))
+                await pline(`${Monnam(mdef)} burns completely!`);
+            await monkilled(mdef, '', ATTKS.AD_FIRE);
+            if (!DEADMONSTER(mdef)) {
+                mhm.hitflags = M_ATTK_MISS;
+            } else {
+                mhm.hitflags = M_ATTK_DEF_DIED
+                    | (grow_up(magr, mdef) ? 0 : M_ATTK_AGR_DIED);
+            }
+            mhm.done = true;
+            return;
+        }
+        if (resists_fire(mdef) || defended(mdef, ATTKS.AD_FIRE)) {
+            if (game.vis && canseemon(mdef))
+                await pline_The(`fire doesn't seem to burn ${mon_nam(mdef)}!`);
+            await shieldeff(mdef.mx, mdef.my);
+            await golem_element_effects(mdef, ATTKS.AD_FIRE, mhm.damage);
+            mhm.damage = 0;
+        }
+        mhm.damage += await destroy_items(mdef, ATTKS.AD_FIRE, orig_dmg);
+        await ignite_items(mdef.minvent || []);
     }
 }
 
@@ -2865,7 +2893,21 @@ export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
             mhm.damage = 0;
         }
     } else {
-        note_unported_uhitm('mhitm_ad_cold:mhitm');
+        /* mhitm */
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            mhm.damage = 0;
+            return;
+        }
+        if (game.vis && canseemon(mdef))
+            await pline(`${Monnam(mdef)} is covered in frost!`);
+        if (resists_cold(mdef) || defended(mdef, ATTKS.AD_COLD)) {
+            if (game.vis && canseemon(mdef))
+                await pline_The(`frost doesn't seem to chill ${mon_nam(mdef)}!`);
+            await shieldeff(mdef.mx, mdef.my);
+            await golem_element_effects(mdef, ATTKS.AD_COLD, mhm.damage);
+            mhm.damage = 0;
+        }
+        mhm.damage += await destroy_items(mdef, ATTKS.AD_COLD, orig_dmg);
     }
 }
 
@@ -2910,7 +2952,21 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
             mhm.damage = 0;
         }
     } else {
-        note_unported_uhitm('mhitm_ad_elec:mhitm');
+        /* mhitm */
+        if (await mhitm_mgc_atk_negated(magr, mdef, true)) {
+            mhm.damage = 0;
+            return;
+        }
+        if (game.vis && canseemon(mdef))
+            await pline(`${Monnam(mdef)} gets zapped!`);
+        if (resists_elec(mdef) || defended(mdef, ATTKS.AD_ELEC)) {
+            if (game.vis && canseemon(mdef))
+                await pline_The(`zap doesn't shock ${mon_nam(mdef)}!`);
+            await shieldeff(mdef.mx, mdef.my);
+            await golem_element_effects(mdef, ATTKS.AD_ELEC, mhm.damage);
+            mhm.damage = 0;
+        }
+        mhm.damage += await destroy_items(mdef, ATTKS.AD_ELEC, orig_dmg);
     }
 }
 

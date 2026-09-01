@@ -51,7 +51,7 @@ const { WOOD, IRON, SILVER, MITHRIL } = MATERIALS;
 import { rn2, rnd, getRngLog } from './rng.js';
 import { dist2, sgn } from './hacklib.js';
 import { couldsee, clear_path, cansee } from './vision.js';
-import { doname, xname, the, The } from './objnam.js';
+import { distant_name, doname, xname, the, The } from './objnam.js';
 import { Monnam, noit_Monnam, christen_monst, x_monnam,
          y_monnam } from './do_name.js';
 import { ARTICLE_YOUR } from './const.js';
@@ -1822,7 +1822,7 @@ export async function dog_invent(mtmp, edog, udist) {
                                xname -> find_artifact wants otmp still on the
                                floor; no artifact discovery on this tree, so
                                doname supplies the printed name. */
-                            const otmpname = doname(otmp);
+                            const otmpname = distant_name(otmp, doname);
                             if (game.flags?.verbose)
                                 await pline_xy(omx, omy,
                                     `${Monnam(mtmp)} picks up ${otmpname}.`);

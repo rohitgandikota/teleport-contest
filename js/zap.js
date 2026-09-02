@@ -5,6 +5,21 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { cant_revive } from './read.js';
+import { eaten_stat, obfree } from './invent.js';
+import { christen_monst, mon_pmname, Amonnam, noname_monnam, upstart } from './do_name.js';
+import { find_mid } from './light.js';
+import { shop_keeper, shk_your, Shk_Your } from './shk.js';
+import { corpse_xname, cxname_singular } from './objnam.js';
+import { mon_adjust_speed } from './worn.js';
+import { wary_dog, tamedog } from './dog.js';
+import { enexto } from './teleport.js';
+import { cant_finish_meal } from './eat.js';
+import { restore_cham, mongone, delobj_core } from './mon.js';
+import { is_reviver, dmgtype, type_is_pname, unique_corpstat } from './mondata.js';
+import { makemon, monhp_per_lvl, MM_NOMSG, NO_MINVENT } from './makemon.js';
+import { get_mtraits, corpse_revive_type, add_to_minv } from './mkobj.js';
+import { has_omonst, has_omid, free_omid, free_omonst, OMID, ONAME, has_oname, OBJ_FREE, OBJ_ONBILL, OBJ_LUAFREE, GRAVE, IS_POOL, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, MM_NOWAIT, MM_NOCOUNTBIRTH, MM_MALE, MM_FEMALE, MM_NOTAIL, MM_ADJACENTOK, FM_FMON, PLNMSG_OBJ_GLOWS, CXN_PFX_THE, CXN_NORMAL, CXN_NO_PFX, ARTICLE_THE, NO_NC_FLAGS } from './const.js';
 import { POLY_NOFLAGS } from './const.js';
 import { Unchanging } from './youprop.js';
 import { rnd_hallublast } from './mthrowu.js';
@@ -629,31 +644,12 @@ async function openfallingtrap_hero(noticed) {
 // src/zap.c:1225 unturn_you(). Carried eggs regain their hatch timer before
 // the hero receives the form-dependent dread effect.
 export async function unturn_you() {
-    let revivedCount = 0;
-    for (const item of [...(game.invent || [])]) {
-        if (item.otyp === ONAMES.EGG && item.corpsenm !== NON_PM
-            && !dead_species(item.corpsenm, true))
-            attach_egg_hatch_timeout(item, 0);
-        else if (item.otyp === ONAMES.CORPSE) {
-            const savedNorevive = item.norevive;
-            item.norevive = 0;
-            const { revive_corpse } = await import('./do.js');
-            const revived = await revive_corpse(item, true);
-            if (revived) {
-                revivedCount++;
-                await pline(`It suddenly ${nonliving(revived.data)
-                    ? 'reanimates' : 'comes alive'}!`);
-            } else {
-                item.norevive = savedNorevive;
-            }
-        }
-    }
-    if (revivedCount)
-        await encumber_msg();
+    await unturn_dead(game.youmonst); /* hit carried corpses and eggs */
+
     if (is_undead(game.youmonst.data)) {
-        const oldStun = (game.u.intrinsic?.HStun | 0) & TIMEOUT;
-        await You_feel(`frightened and ${oldStun ? 'even more ' : ''}stunned.`);
-        await make_stunned(oldStun + rnd(30), false);
+        await You_feel(`frightened and ${
+            (game.u.intrinsic?.HStun || game.u.uprops?.STUNNED) ? 'even more ' : ''}stunned.`);
+        await make_stunned(((game.u.intrinsic?.HStun | 0) & TIMEOUT) + rnd(30), false);
     } else {
         await You('shudder in dread.');
     }
@@ -725,6 +721,496 @@ export function get_obj_location(obj, cc, locflags) {
     }
     cc.x = cc.y = 0;
     return false;
+}
+
+// src/zap.c:713 montraits(); recreate a monster from the traits saved with
+// a corpse or statue; the C makes a fresh monster then swaps the saved one
+// into its place with replmon(); this port keeps the fresh monster's
+// identity and copies the saved traits onto it, which is the same result
+async function montraits(obj, cc, adjacentok) {
+    /* adjacentok: False: at obj's spot only, True: nearby is allowed */
+    let mtmp = null;
+    const mtmp2 = has_omonst(obj) ? get_mtraits(obj, true) : null;
+
+    if (mtmp2) {
+        /* save_mtraits() validated mtmp2->mnum */
+        mtmp2.data = game.mons[mtmp2.mnum];
+
+        if (mtmp2.mhpmax > 0 || is_rider(mtmp2.data)) {
+            mtmp = makemon(mtmp2.data, cc.x, cc.y,
+                           (NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH
+                            /* in case mtmp2 is a long worm; saved traits for
+                               long worm don't include tail segments so don't
+                               give mtmp any; it will be given a new 'wormno'
+                               though (unless those are exhausted) so be able
+                               to grow new tail segments */
+                            | MM_NOTAIL | MM_NOMSG
+                            | (adjacentok ? MM_ADJACENTOK : 0)));
+        }
+        if (!mtmp) {
+            /* mtmp2 is a copy of obj's object->oextra->omonst extension
+               and is not on the map or on any monst lists */
+            return null;
+        }
+
+        /* heal the monster; lower than normal level might come from
+           adj_lev() but we assume it has come from 'mtmp' being level
+           drained before finally killed; give a chance to restore
+           some levels so that trolls and Riders can't be drained to
+           level 0 and then trivially killed repeatedly */
+        if ((mtmp.m_lev | 0) < mtmp.data.mlevel) {
+            const ltmp = rnd(mtmp.data.mlevel + 1);
+
+            if (ltmp > (mtmp.m_lev | 0)) {
+                while ((mtmp.m_lev | 0) < ltmp) {
+                    mtmp.m_lev++;
+                    mtmp.mhpmax += monhp_per_lvl(mtmp);
+                }
+                mtmp2.m_lev = mtmp.m_lev;
+            }
+        }
+        if (mtmp.mhpmax > mtmp2.mhpmax) /* &&is_rider(mtmp2->data)*/
+            mtmp2.mhpmax = mtmp.mhpmax;
+        mtmp2.mhp = mtmp2.mhpmax;
+        /* Get these ones from mtmp */
+        mtmp2.minvent = mtmp.minvent; /*redundant*/
+        /* monster ID is available if the monster died in the current
+           game, but will be zero if the corpse was in a bones level
+           (we cleared it when loading bones) */
+        if (mtmp.m_id) {
+            mtmp2.m_id = mtmp.m_id;
+            /* might be bringing quest leader back to life */
+            if (game.quest_status?.leader_is_dead
+                && mtmp2.m_id === game.quest_status.leader_m_id)
+                game.quest_status.leader_is_dead = false;
+        }
+        mtmp2.mx = mtmp.mx;
+        mtmp2.my = mtmp.my;
+        mtmp2.mux = mtmp.mux;
+        mtmp2.muy = mtmp.muy;
+        mtmp2.mw = mtmp.mw;
+        mtmp2.wormno = mtmp.wormno;
+        mtmp2.misc_worn_check = mtmp.misc_worn_check;
+        mtmp2.weapon_check = mtmp.weapon_check;
+        mtmp2.mtrapseen = mtmp.mtrapseen;
+        mtmp2.mflee = mtmp.mflee;
+        mtmp2.mburied = mtmp.mburied;
+        mtmp2.mundetected = mtmp.mundetected;
+        mtmp2.mfleetim = mtmp.mfleetim;
+        mtmp2.mlstmv = mtmp.mlstmv;
+        mtmp2.m_ap_type = mtmp.m_ap_type;
+        /* set these ones explicitly */
+        mtmp2.mrevived = 1;
+        mtmp2.mavenge = 0;
+        mtmp2.meating = 0;
+        mtmp2.mleashed = 0;
+        mtmp2.mtrapped = 0;
+        mtmp2.msleeping = 0;
+        mtmp2.mfrozen = 0;
+        mtmp2.mcanmove = 1;
+        /* most cancelled monsters return to normal,
+           but some need to stay cancelled */
+        if (!dmgtype(mtmp2.data, ATTKS.AD_SEDU)
+            && !dmgtype(mtmp2.data, ATTKS.AD_SSEX)) /* SYSOPT_SEDUCE */
+            mtmp2.mcan = 0;
+        mtmp2.mcansee = 1; /* set like in makemon */
+        mtmp2.mblinded = 0;
+        mtmp2.mstun = 0;
+        mtmp2.mconf = 0;
+        /* when traits are for a shopkeeper, dummy monster 'mtmp' won't
+           have necessary eshk data for replmon() -> replshk() */
+        if (mtmp2.isshk) {
+            mtmp.isshk = 1;
+        }
+        /* replmon(mtmp, mtmp2): the saved traits take over the new
+           monster's place in the lists; done in place here */
+        for (const key of Object.keys(mtmp))
+            if (!(key in mtmp2))
+                delete mtmp[key];
+        Object.assign(mtmp, mtmp2);
+        for (const otmp of (mtmp.minvent || []))
+            otmp.ocarry = mtmp;
+        newsym(mtmp.mx, mtmp.my); /* Might now be invisible */
+
+        /* in case Protection_from_shape_changers is different
+           now than it was when the traits were stored */
+        restore_cham(mtmp);
+        return mtmp;
+    }
+    return mtmp2;
+}
+
+// src/zap.c:841 get_container_location(); the monster carrying the
+// outermost container, with loc set to where that container is
+export function get_container_location(obj, loc, container_nesting) {
+    if (container_nesting)
+        container_nesting.v = 0;
+    while (obj && obj.where === OBJ_CONTAINED) {
+        if (container_nesting)
+            container_nesting.v += 1;
+        obj = obj.ocontainer;
+    }
+    if (obj) {
+        loc.v = obj.where; /* outermost container's location */
+        if (obj.where === OBJ_MINVENT)
+            return obj.ocarry;
+    }
+    return null;
+}
+
+// src/zap.c:869 zombie_can_dig(); can a zombie dig itself out of the
+// ground at <x,y>?
+function zombie_can_dig(x, y) {
+    if (isok(x, y)) {
+        const typ = game.level.at(x, y).typ;
+        let ttmp;
+
+        if ((ttmp = t_at(x, y)) != null)
+            return false;
+        if (typ === ROOM || typ === CORR || typ === GRAVE)
+            return true;
+    }
+    return false;
+}
+
+// src/zap.c:884 revive(); Attempts to revive the given corpse, return the
+// revived monster if successful.  Note: this does NOT use up the corpse if
+// it fails.
+export async function revive(corpse, by_hero) {
+    const u = game.u;
+    let mtmp = null;
+    let mptr;
+    let container;
+    const xy = { x: 0, y: 0 };
+    let x, y;
+    let one_of;
+    let mmflags = NO_MINVENT | MM_NOWAIT | MM_NOMSG;
+    let montype, cgend;
+    const container_nesting = { v: 0 };
+    let is_zomb;
+
+    if (corpse.otyp !== ONAMES.CORPSE) {
+        /* impossible("Attempting to revive %s?", xname(corpse)) */
+        return null;
+    }
+
+    montype = corpse.corpsenm;
+    /* treat buried auto-reviver (troll, Rider) as if already unearthed
+       so that it can dig itself out of the ground if it revives */
+    is_zomb = game.mons[montype].mlet === MONSYMS.S_ZOMBIE
+              || (corpse.where === OBJ_BURIED && is_reviver(game.mons[montype]));
+
+    /* corpse in an eating occupation's slot gets abandoned; [ought to be
+       after makemon() succeeds and skipped if it fails, but waiting until
+       we know the result for that would be too late] */
+    await cant_finish_meal(corpse);
+
+    x = y = 0;
+    if (corpse.where !== OBJ_CONTAINED) {
+        const locflags = is_zomb ? BURIED_TOO : 0;
+
+        /* only for invent, minvent, or floor, or buried (if zombie) */
+        container = null;
+        const cc = { x: 0, y: 0 };
+        get_obj_location(corpse, cc, locflags);
+        x = cc.x, y = cc.y;
+    } else {
+        /* deal with corpses in [possibly nested] containers */
+        let carrier;
+        const holder = { v: 0 }; /* OBJ_FREE */
+
+        container = corpse.ocontainer;
+        carrier =
+            get_container_location(container, holder, container_nesting);
+        switch (holder.v) {
+        case OBJ_MINVENT:
+            x = carrier.mx, y = carrier.my;
+            break;
+        case OBJ_INVENT:
+            x = u.ux, y = u.uy;
+            break;
+        case OBJ_FLOOR: {
+            const cc = { x: 0, y: 0 };
+            get_obj_location(corpse, cc, CONTAINED_TOO);
+            x = cc.x, y = cc.y;
+            break;
+        }
+        default:
+            break; /* x,y are 0 */
+        }
+    }
+    if (x) /* update corpse's location now that we're sure where it is */
+        corpse.ox = x, corpse.oy = y;
+
+    if (!x
+        /* Rules for revival from containers:
+         *  - the container cannot be locked
+         *  - the container cannot be heavily nested (>2 is arbitrary)
+         *  - the container cannot be a statue or bag of holding
+         *    (except in very rare cases for the latter)
+         */
+        || (container && (container.olocked || container_nesting.v > 2
+                          || container.otyp === ONAMES.STATUE
+                          || (container.otyp === ONAMES.BAG_OF_HOLDING && rn2(40))))
+        /* if buried zombie cannot dig itself out, it stays dead */
+        || (is_zomb && corpse.where === OBJ_BURIED && !zombie_can_dig(x, y)))
+        return null;
+
+    /* prepare for the monster */
+    mptr = game.mons[montype];
+    /* [should probably handle trapped floor spot here; also, if hero and
+       ghost are at same location, revived creature shouldn't be bumped
+       to an adjacent spot by ghost which joins with it] */
+    if (m_at(x, y)) {
+        if (enexto(xy, x, y, mptr))
+            x = xy.x, y = xy.y;
+    }
+
+    if (corpse.norevive
+        || (game.mons[montype].mlet === MONSYMS.S_EEL && !IS_POOL(game.level.at(x, y).typ))) {
+        if (cansee(x, y))
+            await pline(`${upstart(corpse_xname(corpse, null, CXN_PFX_THE))} twitches feebly.`);
+        return null;
+    }
+
+    cgend = (corpse.spe & CORPSTAT_GENDER);
+    if (cgend === CORPSTAT_MALE)
+        mmflags |= MM_MALE;
+    else if (cgend === CORPSTAT_FEMALE)
+        mmflags |= MM_FEMALE;
+
+    const montype_box = { v: montype };
+    if (cant_revive(montype_box, true, corpse)) {
+        montype = montype_box.v;
+        /* make a new monster */
+        mtmp = makemon(game.mons[montype], x, y, mmflags);
+        if (mtmp) {
+            /* [oid/omonst ghost-merge and the like shouldn't be
+               applied to a shapechanger substitute] */
+            if (has_omid(corpse))
+                free_omid(corpse);
+            if (has_omonst(corpse))
+                free_omonst(corpse);
+            if (mtmp.cham === PMNAMES.PM_DOPPELGANGER) {
+                /* change shape to match the corpse */
+                newcham(mtmp, mptr, NO_NC_FLAGS);
+            } else if (mtmp.data.mlet === MONSYMS.S_ZOMBIE) {
+                mtmp.mhp = mtmp.mhpmax = 100;
+                mon_adjust_speed(mtmp, 2, null); /* MFAST */
+            }
+        }
+    } else if (has_omonst(corpse)) {
+        /* use saved traits */
+        xy.x = x, xy.y = y;
+        mtmp = await montraits(corpse, xy, false);
+        if (mtmp && mtmp.mtame && !mtmp.isminion)
+            wary_dog(mtmp, true);
+    } else {
+        /* make a new monster */
+        mtmp = makemon(mptr, x, y, mmflags | MM_NOCOUNTBIRTH);
+    }
+    if (!mtmp)
+        return null;
+
+    /* hiding monster might be revived in a spot where it can't hide */
+    if (mtmp.mundetected) {
+        mtmp.mundetected = 0;
+        newsym(mtmp.mx, mtmp.my);
+    }
+    if (M_AP_TYPE(mtmp))
+        seemimic(mtmp);
+
+    one_of = (corpse.quan > 1);
+    if (one_of)
+        corpse = splitobj(corpse, 1);
+
+    if (by_hero) {
+        struct_shk: {
+            let shkp = null;
+
+            x = corpse.ox, y = corpse.oy;
+            if (costly_spot(x, y)
+                && ((game.invent || []).includes(corpse) ? corpse.unpaid : !corpse.no_charge))
+                shkp = shop_keeper((in_rooms(x, y, SHOPBASE) || '\0').charCodeAt(0));
+
+            if (cansee(x, y)) {
+                let buf;
+
+                buf = one_of ? 'one of ' : '';
+                /* shk_your: "the" or "your" or "Shk's".
+                   If the result is "Shk's " then it will be ambiguous:
+                   is Shk the mon carrying it, or does Shk's shop own it?
+                   Let's not worry about that... */
+                buf += shk_your(corpse);
+                if (one_of)
+                    corpse.quan++; /* force plural */
+                buf += corpse_xname(corpse, null, CXN_NO_PFX);
+                if (one_of) /* could be simplified to ''corpse->quan = 1L;'' */
+                    corpse.quan--;
+                await pline(`${upstart(buf)} glows iridescently.`);
+                (game.iflags ||= {}).last_msg = PLNMSG_OBJ_GLOWS; /* usually for BUC change */
+            } else if (shkp) {
+                /* need some prior description of the corpse since
+                   stolen_value() will refer to the object as "it" */
+                await pline('A corpse is resuscitated.');
+            }
+            /* don't charge for shopkeeper's own corpse if we just revived him */
+            if (shkp && mtmp !== shkp) {
+                /* stolen_value(corpse, x, y, shkp->mpeaceful, FALSE): the
+                   shop theft accounting is not ported yet */
+                note_unported_zap('revive:stolen_value');
+            }
+            /* [we don't give any comparable message about the corpse for
+               the !by_hero case because caller might have already done so] */
+        }
+    }
+
+    /* handle recorded ghost */
+    if (has_omid(corpse)) {
+        const m_id = OMID(corpse);
+        const ghost = find_mid(m_id, FM_FMON);
+
+        if (ghost && ghost.data === game.mons[PMNAMES.PM_GHOST]) {
+            if (canseemon(ghost))
+                await pline(`${Monnam(ghost)} is suddenly drawn into its former body!`);
+            /* transfer the ghost's inventory along with it */
+            for (const otmp of [...(ghost.minvent || [])]) {
+                obj_extract_self(otmp);
+                add_to_minv(mtmp, otmp);
+            }
+            /* tame the revived monster if its ghost was tame */
+            if (ghost.mtame && !mtmp.mtame) {
+                if (await tamedog(mtmp, null, false)) {
+                    /* ghost's edog data is ignored */
+                    mtmp.mtame = ghost.mtame;
+                }
+            }
+            /* was ghost, now alive, it's all very confusing */
+            mtmp.mconf = 1;
+            /* separate ghost monster no longer exists */
+            mongone(ghost);
+        }
+        free_omid(corpse);
+    }
+
+    /* monster retains its name */
+    if (has_oname(corpse) && !unique_corpstat(mtmp.data))
+        mtmp = christen_monst(mtmp, ONAME(corpse));
+    /* partially eaten corpse yields wounded monster */
+    if (corpse.oeaten)
+        mtmp.mhp = eaten_stat(mtmp.mhp, corpse);
+    /* track that this monster was revived at least once */
+    mtmp.mrevived = 1;
+
+    switch (corpse.where) {
+    case OBJ_INVENT:
+        useup(corpse);
+        break;
+    case OBJ_FLOOR:
+        /* in case MON_AT+enexto for invisible mon */
+        /* delobj() won't use up a Rider's corpse, delobj_core(,TRUE) will */
+        delobj_core(corpse, true); /* for floor, also calls newsym() */
+        break;
+    case OBJ_MINVENT:
+        m_useup(corpse.ocarry, corpse);
+        break;
+    case OBJ_CONTAINED:
+        obj_extract_self(corpse);
+        obfree(corpse);
+        break;
+    case OBJ_BURIED:
+        if (is_zomb) {
+            obj_extract_self(corpse);
+            obfree(corpse);
+            break;
+        }
+        /* FALLTHROUGH */
+    case OBJ_FREE:
+    case OBJ_MIGRATING:
+    case OBJ_ONBILL:
+    case OBJ_LUAFREE:
+    default:
+        throw new Error(`revive default case ${corpse.where}`); /* panic() */
+    }
+
+    return mtmp;
+}
+
+// src/zap.c:1143 revive_egg(); an egg's hatch timer is restored by undead
+// turning
+function revive_egg(obj) {
+    /*
+     * Note: generic eggs with corpsenm set to NON_PM will never hatch.
+     */
+    if (obj.otyp !== ONAMES.EGG)
+        return;
+    if (obj.corpsenm !== NON_PM && !dead_species(obj.corpsenm, true))
+        attach_egg_hatch_timeout(obj, 0);
+}
+
+// src/zap.c:1156 unturn_dead(); try to revive all corpses and eggs carried
+// by `mon'; return the number of revived monsters
+export async function unturn_dead(mon) {
+    let mtmp2;
+    let owner = '', corpse = '';
+    let save_norevive;
+    let youseeit, different_type;
+    const is_u = (mon === game.youmonst);
+    let corpsenm, res = 0;
+
+    youseeit = is_u ? true : canseemon(mon);
+    const list = [...((is_u ? game.invent : mon.minvent) || [])];
+
+    for (const otmp of list) {
+        if (otmp.otyp === ONAMES.EGG)
+            revive_egg(otmp);
+        if (otmp.otyp !== ONAMES.CORPSE)
+            continue;
+        /* save the name; the object is liable to go away */
+        if (youseeit) {
+            corpse = corpse_xname(otmp, null, CXN_NORMAL);
+            if (otmp.quan > 1) {
+                owner = 'One of ';
+                owner += shk_your(otmp);
+            } else
+                owner = Shk_Your(otmp);
+        }
+
+        /* for a stack, only one is revived; if is_u, revive() calls
+           useup() which calls update_inventory() but not encumber_msg() */
+        corpsenm = otmp.corpsenm;
+        save_norevive = otmp.norevive;
+        otmp.norevive = 0;
+        if ((mtmp2 = await revive(otmp, !game.context?.mon_moving)) != null) {
+            ++res;
+            /* might get revived as a zombie rather than corpse's monster */
+            different_type = (mtmp2.data !== game.mons[corpsenm]);
+            if (game.iflags?.last_msg === PLNMSG_OBJ_GLOWS) {
+                /* when hero is wielding this corpse (hero zapping wand at
+                   self) or wielding a non-empty wand), revive() reports
+                   "[one of] your <mon> corpse[s] glows iridescently";
+                   override saved corpse and owner names to say "It comes
+                   alive" [note: we did earlier setup because corpse gets
+                   used up but need to do the override here after revive()
+                   sets 'last_msg'] */
+                corpse = 'It';
+                owner = '';
+            }
+            if (youseeit)
+                await pline(`${owner}${corpse} suddenly ${
+                    nonliving(mtmp2.data) ? 'reanimates' : 'comes alive'}${
+                    different_type ? ' as ' : ''}${
+                    different_type ? an(mon_pmname(mtmp2)) : ''}!`);
+            else if (canseemon(mtmp2))
+                await pline(`${Amonnam(mtmp2)} suddenly appears!`);
+        } else {
+            otmp.norevive = save_norevive ? 1 : 0;
+        }
+    }
+    if (is_u && res)
+        await encumber_msg();
+
+    return res;
 }
 
 export async function zapyourself(obj, ordinary) {
@@ -1690,31 +2176,66 @@ export async function bhito(obj, otmp) {
             res = 0;
             break;
         case ONAMES.WAN_UNDEAD_TURNING:
-        case ONAMES.SPE_TURN_UNDEAD: {
+        case ONAMES.SPE_TURN_UNDEAD:
             if (obj.otyp === ONAMES.EGG) {
-                if (obj.corpsenm !== NON_PM
-                    && !dead_species(obj.corpsenm, true)) {
-                    attach_egg_hatch_timeout(obj, 0);
+                revive_egg(obj);
+            } else if (obj.otyp === ONAMES.CORPSE) {
+                let mtmp;
+                let ox, oy;
+                let save_norevive;
+                const by_u = !game.context?.mon_moving;
+                const corpsenm = corpse_revive_type(obj);
+                let corpsname = cxname_singular(obj);
+
+                /* get corpse's location before revive() uses it up */
+                const cc = { x: 0, y: 0 };
+                if (!get_obj_location(obj, cc, 0))
+                    ox = obj.ox, oy = obj.oy; /* won't happen */
+                else
+                    ox = cc.x, oy = cc.y;
+
+                /* explicit revival magic overrides timer-based no-revive */
+                save_norevive = obj.norevive;
+                obj.norevive = 0;
+                mtmp = await revive(obj, true);
+                if (!mtmp) {
+                    obj.norevive = save_norevive;
+                    res = 0; /* no monster implies corpse was left intact */
+                } else {
+                    if (cansee(ox, oy)) {
+                        if (canspotmon(mtmp)) {
+                            await pline(`${upstart(noname_monnam(mtmp, ARTICLE_THE))} is resurrected!`);
+                            learn_it = by_u ? true : game.zap_oseen;
+                        } else {
+                            /* saw corpse but don't see monster: maybe
+                               mtmp is invisible, or has been placed at
+                               a different spot than <ox,oy> */
+                            if (!type_is_pname(game.mons[corpsenm]))
+                                corpsname = The(corpsname);
+                            await pline(`${corpsname} disappears.`);
+                        }
+                    } else {
+                        if (Role_if(PMNAMES.PM_HEALER) && !Deaf()
+                            && !nonliving(game.mons[corpsenm])) {
+                            if (!type_is_pname(game.mons[corpsenm]))
+                                corpsname = an(corpsname);
+                            if (!Hallucination())
+                                await You_hear(`${corpsname} reviving.`);
+                            else
+                                await You_hear('a defibrillator.');
+                            learn_it = by_u ? true : game.zap_oseen;
+                        }
+                        if (canspotmon(mtmp))
+                            /* didn't see corpse but do see monster: it
+                               has been placed somewhere other than <ox,oy>
+                               or blind hero spots it with ESP */
+                            await pline(`${Monnam(mtmp)} appears.`);
+                    }
+                    if (learn_it)
+                        exercise(A_WIS, true);
                 }
-                break;
-            }
-            if (obj.otyp !== ONAMES.CORPSE)
-                break;
-            const ox = obj.ox, oy = obj.oy;
-            const saveNorevive = obj.norevive;
-            obj.norevive = 0;
-            const { revive_corpse } = await import('./do.js');
-            const revived = await revive_corpse(obj, true);
-            if (!revived) {
-                obj.norevive = saveNorevive;
-                res = 0;
-            } else if (cansee(ox, oy) && canspotmon(revived)) {
-                await pline(`${Monnam(revived)} is resurrected!`);
-                learn_it = true;
-                exercise(A_WIS, true);
             }
             break;
-        }
         case ONAMES.WAN_OPENING:
         case ONAMES.SPE_KNOCK:
         case ONAMES.WAN_LOCKING:

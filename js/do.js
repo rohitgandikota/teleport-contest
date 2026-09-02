@@ -1,3 +1,12 @@
+import { OBJ_MINVENT, OBJ_CONTAINED, CONTAINED_TOO, BURIED_TOO, CXN_SINGULAR } from './const.js';
+import { MONSYMS } from './monst_data.js';
+import { maketrap } from './mklev.js';
+import { mdistu } from './monmove.js';
+import { canspotmon } from './display.js';
+import { Adjmonnam, mon_nam } from './do_name.js';
+import { The, an, yname } from './objnam.js';
+import { is_reviver, locomotion } from './mondata.js';
+import { revive, get_obj_location, get_container_location } from './zap.js';
 import { set_uinwater } from './hack.js';
 import { set_ustuck } from './mon.js';
 import { reset_utrap, fill_pit } from './trap.js';
@@ -70,206 +79,134 @@ function note_unported_do(what) {
     (game.unported ||= new Set()).add(what);
 }
 
-// src/do.c:2111 revive_corpse() and :2251 revive_mon(), with zap.c revive()
-// for floor, buried, and carried corpses. Recreate the monster without
-// inventory, consume the corpse forcibly, and print the species-specific
-// rising effect.
-export async function revive_corpse(corpse, byHero = false) {
-    const buried = corpse?.where === OBJ_BURIED;
-    const carried = corpse?.where === OBJ_INVENT
-        && (game.invent || []).includes(corpse);
-    if (!corpse || corpse.otyp !== ONAMES.CORPSE
-        || (corpse.where !== OBJ_FLOOR && !buried && !carried))
-        return false;
+// src/do.c:2111 revive_corpse(); corpse comes back to life: returns true if
+// it did
+export async function revive_corpse(corpse) {
+    const u = game.u;
+    let mtmp, mcarry;
+    let is_uwep, chewed;
+    let where;
+    let cname;
+    let container = null;
+    const container_where = { v: 0 };
+    let montype;
+    let is_zomb;
+    const cc = { x: 0, y: 0 };
 
-    let x = carried ? game.u.ux : corpse.ox;
-    let y = carried ? game.u.uy : corpse.oy;
-    if (carried)
-        corpse.ox = x, corpse.oy = y;
-    if (buried) {
-        const typ = game.level?.at(x, y)?.typ;
-        if (!(game.level?.buriedobjs || []).includes(corpse)
-            || t_at(x, y)
-            || (typ !== ROOM && typ !== CORR && typ !== GRAVE))
-            return false;
+    where = corpse.where;
+    montype = corpse.corpsenm;
+    /* treat buried auto-reviver (troll, Rider) as if already unearthed
+       so that it can dig itself out of the ground if it revives */
+    is_zomb = (game.mons[montype].mlet === MONSYMS.S_ZOMBIE
+               || (where === OBJ_BURIED && is_reviver(game.mons[montype])));
+    is_uwep = (corpse === u.uwep);
+    chewed = (corpse.oeaten !== 0 && corpse.oeaten != null);
+    cname = corpse_xname(corpse, chewed ? 'bite-covered' : null, CXN_SINGULAR);
+    mcarry = (where === OBJ_MINVENT) ? corpse.ocarry : null;
+
+    get_obj_location(corpse, cc, CONTAINED_TOO | BURIED_TOO);
+    const corpsex = cc.x, corpsey = cc.y;
+
+    if (where === OBJ_CONTAINED) {
+        let mtmp2;
+
+        container = corpse.ocontainer;
+        mtmp2 = get_container_location(container, container_where, null);
+        /* container_where is the outermost container's location */
+        if (container_where.v === OBJ_MINVENT && mtmp2)
+            mcarry = mtmp2;
     }
-    const saved = corpse.omonst || corpse.oextra?.omonst || null;
-    const reviveMnum = Number.isInteger(saved?.mnum) && saved.mnum >= 0
-        ? saved.mnum : corpse.corpsenm;
-    const corpsePtr = game.mons[corpse.corpsenm];
-    const shapechangerReplacement = !saved
-        && (corpsePtr?.geno & MFLAGS.G_UNIQ) !== 0;
-    const creationMnum = shapechangerReplacement
-        ? PMNAMES.PM_DOPPELGANGER : reviveMnum;
-    const ptr = game.mons[creationMnum];
-    const { makemon, monhp_per_lvl } = await import('./makemon.js');
-    const rider = ptr.pmidx === PMNAMES.PM_DEATH
-               || ptr.pmidx === PMNAMES.PM_PESTILENCE
-               || ptr.pmidx === PMNAMES.PM_FAMINE;
-    let mmflags = NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH | MM_NOMSG;
-    if (saved)
-        mmflags |= MM_NOTAIL;
-    const cgend = (corpse.spe ?? 0) & CORPSTAT_GENDER;
-    /* Rider corpses carry the neutral marker in C and still draw gender. */
-    if (!saved && !rider && cgend === CORPSTAT_MALE)
-        mmflags |= MM_MALE;
-    else if (!saved && !rider && cgend === CORPSTAT_FEMALE)
-        mmflags |= MM_FEMALE;
-    if (m_at(x, y)) {
-        const { enexto } = await import('./teleport.js');
-        const cc = { x, y };
-        if (enexto(cc, x, y, corpsePtr)) {
-            x = cc.x;
-            y = cc.y;
-        }
-    }
-    const mtmp = makemon(ptr, x, y, mmflags);
-    if (!mtmp)
-        return false;
+    mtmp = await revive(corpse, false); /* corpse is gone if successful */
 
-    if (shapechangerReplacement) {
-        const { newcham } = await import('./mon.js');
-        newcham(mtmp, corpsePtr, 0);
-    }
+    if (mtmp) {
+        switch (where) {
+        case OBJ_INVENT:
+            if (is_uwep)
+                await pline_The(`${cname} writhes out of your grasp!`);
+            else
+                await You_feel('squirming in your backpack!');
+            break;
 
-    /* makemon.c calls dochugw() even for MM_NOMSG arrivals. A visible,
-       nearby Rider interrupts a counted wait before revive_corpse prints
-       the rising message. */
-    if (game.occupation) {
-        const { dochugw } = await import('./monmove.js');
-        await dochugw(mtmp, false);
-    }
+        case OBJ_FLOOR:
+            if (cansee(corpsex, corpsey) || canseemon(mtmp)) {
+                let effect = '';
 
-    if (saved) {
-        const restored = structuredClone(saved);
-        restored.data = ptr;
-
-        if ((mtmp.m_lev | 0) < ptr.mlevel) {
-            const ltmp = rnd(ptr.mlevel + 1);
-            if (ltmp > (mtmp.m_lev | 0)) {
-                while ((mtmp.m_lev | 0) < ltmp) {
-                    mtmp.m_lev++;
-                    mtmp.mhpmax += monhp_per_lvl(mtmp);
+                if (mtmp.data === game.mons[PMNAMES.PM_DEATH])
+                    effect = ' in a whirl of spectral skulls';
+                else if (mtmp.data === game.mons[PMNAMES.PM_PESTILENCE])
+                    effect = ' in a churning pillar of flies';
+                else if (mtmp.data === game.mons[PMNAMES.PM_FAMINE])
+                    effect = ' in a ring of withered crops';
+                if (canseemon(mtmp)) {
+                    await pline(`${chewed ? Adjmonnam(mtmp, 'bite-covered')
+                                         : Monnam(mtmp)} rises from the dead${effect}!`);
+                } else {
+                    await pline(`${The(cname)} disappears${effect}!`);
                 }
-                restored.m_lev = mtmp.m_lev;
             }
-        }
-        if ((mtmp.mhpmax | 0) > (restored.mhpmax | 0))
-            restored.mhpmax = mtmp.mhpmax;
-        restored.mhp = restored.mhpmax;
+            break;
 
-        const fresh = {
-            mx: mtmp.mx, my: mtmp.my, mux: mtmp.mux, muy: mtmp.muy,
-            m_id: mtmp.m_id, minvent: mtmp.minvent, mw: mtmp.mw,
-            wormno: mtmp.wormno,
-            misc_worn_check: mtmp.misc_worn_check,
-            weapon_check: mtmp.weapon_check,
-            mtrapseen: mtmp.mtrapseen,
-            mflee: mtmp.mflee, mburied: mtmp.mburied,
-            mundetected: mtmp.mundetected, mfleetim: mtmp.mfleetim,
-            mlstmv: mtmp.mlstmv, m_ap_type: mtmp.m_ap_type,
-        };
-        for (const key of Object.keys(mtmp))
-            delete mtmp[key];
-        Object.assign(mtmp, restored, fresh);
-        mtmp.data = ptr;
-        mtmp.mnum = reviveMnum;
-        mtmp.mrevived = 1;
-        mtmp.mavenge = 0;
-        mtmp.meating = 0;
-        mtmp.mleashed = 0;
-        mtmp.mtrapped = 0;
-        mtmp.msleeping = 0;
-        mtmp.mfrozen = 0;
-        mtmp.mcanmove = true;
-        if (!dmgtype(ptr, ATTKS.AD_SEDU) && !dmgtype(ptr, ATTKS.AD_SSEX))
-            mtmp.mcan = 0;
-        mtmp.mcansee = true;
-        mtmp.mblinded = 0;
-        mtmp.mstun = 0;
-        mtmp.mconf = 0;
-        newsym(mtmp.mx, mtmp.my);
-    } else if (rider && mtmp.m_lev < ptr.mlevel) {
-        rnd(ptr.mlevel + 1); /* Riders always carry saved traits in C */
-    }
-    mtmp.mrevived = 1;
-    mtmp.msleeping = 0;
-    mtmp.mcanmove = true;
-    mtmp.mcansee = true;
-
-    if (saved && mtmp.mtame && !mtmp.isminion) {
-        const { wary_dog } = await import('./dog.js');
-        wary_dog(mtmp, true);
-    }
-    if (mtmp.mundetected) {
-        mtmp.mundetected = 0;
-        newsym(mtmp.mx, mtmp.my);
-    }
-    if (mtmp.m_ap_type)
-        seemimic(mtmp);
-
-    const oneOf = (corpse.quan | 0) > 1;
-    const consumedCorpse = oneOf ? splitobj(corpse, 1) : corpse;
-
-    if (byHero && cansee(corpse.ox, corpse.oy)) {
-        let cname;
-        if (carried) {
-            if (oneOf) {
-                consumedCorpse.quan++;
-                cname = `One of your ${corpse_xname(consumedCorpse, null, 0)}`;
-                consumedCorpse.quan--;
-            } else {
-                cname = `Your ${corpse_xname(consumedCorpse, null, 0)}`;
+        case OBJ_MINVENT: /* probably a nymph's */
+            if (cansee(mtmp.mx, mtmp.my)) {
+                if (mcarry && canseemon(mcarry))
+                    await pline(`Startled, ${mon_nam(mcarry)} drops ${an(cname)} as it ${
+                        canspotmon(mtmp) ? 'revives' : 'disappears'}!`);
+                else if (canspotmon(mtmp))
+                    await pline(`${chewed ? Adjmonnam(mtmp, 'bite-covered')
+                                         : Monnam(mtmp)} suddenly appears!`);
             }
-        } else if ((game.mons[consumedCorpse.corpsenm]?.geno
-                    & MFLAGS.G_UNIQ) !== 0) {
-            const mname = Monnam(mtmp);
-            cname = `${mname}${mname.endsWith('s') ? "'" : "'s"} corpse`;
-        } else {
-            cname = upstart(corpse_xname(consumedCorpse, null, CXN_PFX_THE));
+            break;
+
+        case OBJ_CONTAINED: {
+            let sackname;
+            /* Since the monster's identity is unknown to the hero,
+               "Something" is used instead of "someone" or "somebody",
+               for humanoid monsters, which seems like a distinction the hero
+               doesn't have knowledge to make here. */
+            const mnam = canspotmon(mtmp) ? Amonnam(mtmp) : 'Something';
+
+            if (!container) {
+                /* impossible("reviving corpse from non-existent container") */
+            } else if (mcarry && canseemon(mcarry)) {
+                await pline(`${mnam} writhes out of ${yname(container)}!`);
+            } else if (container_where.v === OBJ_INVENT) {
+                sackname = an(xname(container));
+                await pline(`${mnam} ${locomotion(mtmp.data, 'writhes')} out of ${sackname} in your pack!`);
+            } else if (container_where.v === OBJ_FLOOR
+                       && cansee(corpsex, corpsey)) {
+                sackname = an(xname(container));
+                await pline(`${mnam} escapes from ${sackname}!`);
+            }
+            break;
         }
-        await pline(`${cname} glows iridescently.`);
-    }
+        case OBJ_BURIED:
+            if (is_zomb) {
+                maketrap(mtmp.mx, mtmp.my, PIT);
+                if (cansee(mtmp.mx, mtmp.my)) {
+                    let ttmp;
 
-    if (carried) {
-        const oldcap = near_capacity();
-        useup(consumedCorpse);
-        if (near_capacity() !== oldcap)
-            game._encumber_status_stale = true;
-    } else {
-        delobj_core(consumedCorpse, true);
-    }
-
-    if (buried) {
-        const { maketrap } = await import('./mklev.js');
-        const trap = maketrap(mtmp.mx, mtmp.my, PIT);
-        if (cansee(mtmp.mx, mtmp.my)) {
-            if (trap) trap.tseen = 1;
-            await pline(`${Amonnam(mtmp)} claws itself out of the ground!`);
-            newsym(mtmp.mx, mtmp.my);
-        } else {
-            const dx = mtmp.mx - game.u.ux;
-            const dy = mtmp.my - game.u.uy;
-            if (dx * dx + dy * dy < 25)
-                await You_hear('scratching noises.');
+                    ttmp = t_at(mtmp.mx, mtmp.my);
+                    if (ttmp)
+                        ttmp.tseen = 1;
+                    await pline(`${canspotmon(mtmp) ? Amonnam(mtmp) : 'Something'
+                                } claws itself out of the ground!`);
+                    newsym(mtmp.mx, mtmp.my);
+                } else if (mdistu(mtmp) < 5 * 5) {
+                    /* Soundeffect(se_scratching, 50) */
+                    await You_hear('scratching noises.');
+                }
+                await fill_pit(mtmp.mx, mtmp.my);
+                break;
+            }
+            /* FALLTHROUGH */
+        default:
+            /* we should be able to handle the other cases... */
+            /* impossible("revive_corpse: lost corpse @ %d", where) */
+            break;
         }
-        return mtmp;
+        return true;
     }
-
-    if (byHero)
-        return mtmp;
-
-    const risenPtr = mtmp.data;
-    let effect = '';
-    if (risenPtr.pmidx === PMNAMES.PM_DEATH)
-        effect = ' in a whirl of spectral skulls';
-    else if (risenPtr.pmidx === PMNAMES.PM_PESTILENCE)
-        effect = ' in a churning pillar of flies';
-    else if (risenPtr.pmidx === PMNAMES.PM_FAMINE)
-        effect = ' in a ring of withered crops';
-    if (cansee(x, y))
-        await pline(`${Monnam(mtmp)} rises from the dead${effect}!`);
-    return mtmp;
+    return false;
 }
 
 export async function revive_mon(body) {

@@ -6,6 +6,7 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { upstart } from './do_name.js';
 import { Shknam } from './shknam.js';
 import { add_to_minv } from './mkobj.js';
 import { setnotworn } from './worn.js';
@@ -2909,4 +2910,9 @@ export async function shopdig(fall) {
             add_to_minv(shkp, obj); /* may free obj */
         }
     }
+}
+
+// src/shk.c:5877 Shk_Your(); shk_your() capitalized
+export function Shk_Your(obj) {
+    return upstart(shk_your(obj));
 }

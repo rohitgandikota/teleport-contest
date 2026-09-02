@@ -4383,3 +4383,16 @@ hole from inside the pit) arrived on the new level with `u.utrap` still set
 to TT_PIT, and vision in a pit is limited to the adjacent squares, so the
 lit room drew as a 3x3 patch. When a screen after a level change shows too
 little, check the hero's trap and water state before the vision code.
+
+## One constant, one numbering: flag sets must come from the C header
+
+`js/objnam.js` exported its own `CXN_*` corpse_xname() flags with values
+that differed from include/hack.h (`CXN_PFX_THE` was 2 there, `CXN_NO_PFX`
+in the C), and `js/const.js` exported the C values under the same names.
+Every caller that imported from const.js and passed the result into
+corpse_xname() silently got a different flag: the revive port produced
+"Your the newt corpse glows iridescently." because CXN_NO_PFX (2) was read
+as CXN_PFX_THE. It only surfaced through a recorded probe. objnam.js now
+carries the C numbering. When a file defines a bitmask locally, check that
+const.js does not already export the same names with other values; there
+must be one numbering and it is the header's.

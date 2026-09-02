@@ -1,3 +1,4 @@
+import { has_omonst, OMONST } from './const.js';
 import { OBJ_MIGRATING } from './const.js';
 import { maybe_reset_pick } from './lock.js';
 import { Is_container } from './obj.js';
@@ -1765,4 +1766,37 @@ export function add_to_migration(obj) {
         maybe_reset_pick(obj);
     obj.where = OBJ_MIGRATING;
     (game.migrating_objs ||= []).unshift(obj);
+}
+
+// src/mkobj.c:2201 get_mtraits(); the monster traits saved with a corpse or
+// statue, either the stored copy itself or a duplicate
+export function get_mtraits(obj, copyof) {
+    let mtmp = null;
+    let mnew = null;
+
+    if (has_omonst(obj))
+        mtmp = OMONST(obj);
+    if (mtmp) {
+        if (copyof) {
+            mnew = structuredClone(mtmp);
+        } else {
+            mnew = mtmp;
+        }
+        mnew.data = game.mons[mnew.mnum];
+    }
+    return mnew;
+}
+
+// src/mkobj.c:2129 corpse_revive_type(); the type of monster a corpse would
+// revive as: a saved former monster keeps its own species
+export function corpse_revive_type(obj) {
+    let revivetype = obj.corpsenm;
+    let mtmp;
+
+    if (has_omonst(obj) && ((mtmp = get_mtraits(obj, false)) != null)) {
+        /* mtmp is a copy of the original monster's type and
+           attributes, not a real monster */
+        revivetype = mtmp.mnum;
+    }
+    return revivetype;
 }

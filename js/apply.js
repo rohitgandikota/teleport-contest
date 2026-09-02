@@ -1,6 +1,7 @@
 // apply.js — the 'a' command.
 // C ref: src/apply.c
 
+import { verbalize } from './pline.js';
 import { NO_MINVENT, TT_BURIEDBALL } from './const.js';
 import { buried_ball_to_freedom } from './dig.js';
 import { unpunish } from './read.js';
@@ -675,7 +676,7 @@ async function use_bell(obj) {
         } else if (obj.cursed) {
             const mm = { x: game.u.ux, y: game.u.uy };
 
-            mkundead(mm, false, NO_MINVENT);
+            await mkundead(mm, false, NO_MINVENT);
             wake = true;
         } else if (invoking) {
             await pline(`${Tobjnam(obj, 'issue')} an unsettling shrill sound...`);
@@ -1064,10 +1065,10 @@ async function use_tinning_kit(obj) {
 
     if (is_rider(mptr)) {
         const { revive_corpse } = await import('./do.js');
-        if (await revive_corpse(corpse, true))
-            await pline('"Yes...  But War does not preserve its enemies..."');
+        if (await revive_corpse(corpse))
+            await verbalize('Yes...  But War does not preserve its enemies...');
         else
-            await pline('The corpse evades your grasp.');
+            await pline_The('corpse evades your grasp.');
         return;
     }
     if (!mptr.cnutrit) {

@@ -1,3 +1,4 @@
+import { donull } from './do.js';
 import { POLY_NOFLAGS } from './const.js';
 import { polyself } from './polyself.js';
 import { Unchanging } from './youprop.js';
@@ -2048,5 +2049,18 @@ async function cpostfx(pm) {
         } else if (tmp > 0) {
             await givit(tmp, ptr);
         }
+    }
+}
+
+// src/eat.c:3893 cant_finish_meal(); called by revive(); sort of the opposite
+// of maybe_finished_meal()
+export async function cant_finish_meal(corpse) {
+    if (game.occupation === eatfood && game.context.victual?.piece === corpse) {
+        game.context.victual = {}; /* zero_victual: victual.piece = 0, .o_id = 0 */
+        if (!corpse.oeaten)
+            corpse.oeaten = 1; /* [see consume_oeaten()] */
+        game.occupation = donull; /* any non-Null other than eatfood() */
+        await stop_occupation();
+        await newuhs(false);
     }
 }

@@ -1,5 +1,38 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (afternoon): corpse revival (zap.c revive, undead turning)
+
+zap.c `montraits` (saved traits restored onto the fresh monster in place,
+which is what replmon() achieves), `get_container_location`,
+`zombie_can_dig`, the full `revive` (containers, buried zombies and
+revivers, eels out of water, shapechanger substitutes via `cant_revive`,
+ghost merging through `find_mid`, names, partial eating, the "glows
+iridescently" message with `PLNMSG_OBJ_GLOWS`), `revive_egg`, `unturn_dead`
+and a faithful `unturn_you`; bhito's undead-turning arm now follows the C
+(resurrection, "disappears", the Healer's "reviving" sound). do.c
+`revive_corpse` replaced the merged stand-in and prints every arm's message
+(pack, floor with Rider effects, monster inventory, containers, buried
+zombies clawing out). Supporting ports: read.c `cant_revive`, mkobj.c
+`get_mtraits` and `corpse_revive_type`, objnam.c `xname_flags` (xname is
+now xname_flags(obj, CXN_NORMAL)) and `cxname_singular`, do_name.c
+`mon_pmname`, shk.c `Shk_Your`, eat.c `cant_finish_meal`, light.c
+`find_mid`, pray.c `pray_revive`, obj.h `OMID`/`has_omid`/`has_omonst`/
+`free_omid`/`free_omonst`, mondata.h `is_reviver`/`unique_corpstat`.
+Wired: mkundead's cursed-bell revival, meatobj's Rider corpse, muse's
+monster wand of undead turning, the tinning kit's Rider refusal, and the
+coaligned prayer's pet revival (water_prayer still noted).
+- objnam.js carried a private numbering for the CXN_* corpse_xname flags
+  that disagreed with include/hack.h and js/const.js; callers passing the C
+  values got the wrong bits ("Your the newt corpse"). It now uses the C
+  numbering (NOTES).
+- verified with a new recipe, `tools/gen-sessions/recipes/undead-turning-
+  revive.json` (carried corpse revived by zapping oneself, floor corpse
+  resurrected by zapping down): RNG and every screen identical.
+- gated 44/44 + hang-gate; census 92/102.
+- next: dbridge.c (destroy_drawbridge and the entity machinery), shop theft
+  chain (stolen_value, check_shop_obj, make_angry_shk wiring), sit.c
+  throne, water_prayer.
+
 ## 2026-09-02 (midday): dig.c completed (holes, pits, caves, burial)
 
 `js/dig.js` is now the C file in C order: `rm_waslit`, `mkcavepos`,

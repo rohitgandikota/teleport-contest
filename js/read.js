@@ -4,6 +4,14 @@
 // The spellbook route is live (doread -> study_book); scroll effects need
 // seffects and stay recorded after their prompt keys are consumed.
 
+import { actualoname } from './objnam.js';
+import { TIMEOUT } from './const.js';
+import { make_stunned } from './potion.js';
+import { disintegrate_arm, any_worn_armor_ok, destroy_arm } from './do_wear.js';
+import { set_bc } from './cmd.js';
+import { dropy, placebc } from './do.js';
+import { is_whirly } from './mondata.js';
+import { WT_IRON_BALL_INCR } from './const.js';
 import { game } from './gstate.js';
 import { getobj, GETOBJ_PROMPT, ECMD_TIME, ECMD_OK } from './invent.js';
 import { ECMD_CANCEL, SPE_LIM, CORR, Is_rogue_level, W_ARMOR,
@@ -1422,30 +1430,95 @@ async function seffect_enchant_armor(sobj) {
             Blind() ? 'again' : 'unexpectedly'}.`);
 }
 
+// src/read.c:1294 disintegrate_cursed_armor(), a blessed scroll picks one
+// cursed piece of worn armor to destroy.
+async function disintegrate_cursed_armor() {
+    const armors = [];
+    const u = game.u;
+
+    if (u.uarm && u.uarm.cursed)
+        armors.push(u.uarm);
+    if (u.uarmc && u.uarmc.cursed)
+        armors.push(u.uarmc);
+    if (u.uarmh && u.uarmh.cursed)
+        armors.push(u.uarmh);
+    if (u.uarms && u.uarms.cursed)
+        armors.push(u.uarms);
+    if (u.uarmg && u.uarmg.cursed)
+        armors.push(u.uarmg);
+    if (u.uarmf && u.uarmf.cursed)
+        armors.push(u.uarmf);
+    if (u.uarmu && u.uarmu.cursed)
+        armors.push(u.uarmu);
+    if (!armors.length)
+        return false;
+    if (await disintegrate_arm(armors[rn2(armors.length)]))
+        return true;
+    return false;
+}
+
+// src/read.c:1324 seffect_destroy_armor(); returns true when the scroll
+// was already used up by strange_feeling().
 async function seffect_destroy_armor(sobj) {
-    const { destroy_arm } = await import('./do_wear.js');
-    const { strange_feeling } = await import('./potion.js');
+    let otmp = some_armor(game.youmonst);
     const scursed = !!sobj.cursed;
+    const confused = !!(game.u.intrinsic?.HConfusion
+                        || game.u.uprops?.CONFUSION);
+    let old_erodeproof, new_erodeproof;
 
-    /* some_armor(&youmonst): any worn armor piece */
-    const otmp = (game.invent || [])
-        .find(o => ((o.owornmask ?? 0) & W_ARMOR) !== 0);
-
-    if (game.u.uprops?.CONFUSION) {
-        note_unported_read('seffect_destroy_armor:confused');
+    if (confused) {
+        if (!otmp) {
+            await strange_feeling(sobj, 'Your bones itch.');
+            exercise(A_STR, false);
+            exercise(A_CON, false);
+            return true;        /* useup() done by strange_feeling() */
+        }
+        old_erodeproof = (otmp.oerodeproof != 0);
+        new_erodeproof = scursed;
+        otmp.oerodeproof = 0; /* for messages */
+        await p_glow2(otmp, NH_PURPLE);
+        if (old_erodeproof && !new_erodeproof) {
+            /* restore old_erodeproof before shop charges */
+            otmp.oerodeproof = 1;
+            await costly_alteration(otmp, COST_DEGRD);
+        }
+        otmp.oerodeproof = new_erodeproof ? 1 : 0;
         return false;
     }
-
     if (scursed) {
-        note_unported_read('seffect_destroy_armor:cursed');
-        return false;
-    } else {
-        const gets_choice = (otmp && sobj.blessed
-                             && count_worn_armor() > 1);
-        if (gets_choice || sobj.blessed) {
-            note_unported_read('seffect_destroy_armor:blessed');
+        if (otmp && otmp.cursed) {
+            await pline(`${Yobjnam2(otmp, 'vibrate')}.`);
+            if (otmp.spe >= -6) {
+                otmp.spe += -1;
+                adj_abon(otmp, -1);
+            }
+            await make_stunned(((game.u.intrinsic?.HStun || 0) & TIMEOUT)
+                               + rn1(10, 10), true);
+        } else if (await disintegrate_arm(otmp)) {
+            game.known = true;
             return false;
-        } else if (!await destroy_arm()) {
+        }
+    } else {
+        const gets_choice = (otmp && sobj && sobj.blessed
+                             && count_worn_armor() > 1);
+
+        if (gets_choice) {
+            let atmp;
+
+            if (!game.objects[sobj.otyp].oc_name_known)
+                await pline(`This is ${an(actualoname(sobj))}!`);
+            game.known = true;
+            atmp = await getobj('destroy', any_worn_armor_ok, GETOBJ_PROMPT);
+            if (any_worn_armor_ok(atmp) === GETOBJ_SUGGEST)
+                otmp = atmp;
+            if (await disintegrate_arm(otmp)) {
+                game.known = true;
+                return false;
+            }
+        } else if (sobj.blessed && await disintegrate_cursed_armor()) {
+            game.known = true;
+            return false;
+        } else if (!(await destroy_arm())) {
             await strange_feeling(sobj, 'Your skin itches.');
             exercise(A_STR, false);
             exercise(A_CON, false);
@@ -2031,4 +2104,44 @@ export async function wiz_genesis() {
         note_unported_read('wiz_genesis:unavailcmd');
     }
     return ECMD_OK;
+}
+
+// src/read.c:3019 punish(), a ball and chain (or a heavier ball).
+export async function punish(sobj) {
+    const reuse_ball = (sobj && sobj.otyp === ONAMES.HEAVY_IRON_BALL)
+                        ? sobj : null;
+    const cursed_levy = (sobj && sobj.cursed) ? 1 : 0;
+
+    /* KMH -- Punishment is still okay when you are riding */
+    if (!reuse_ball)
+        await You('are being punished for your misbehavior!');
+    if (game.u.uball) { /* Punished */
+        await Your('iron ball gets heavier.');
+        game.u.uball.owt += WT_IRON_BALL_INCR * (1 + cursed_levy);
+        return;
+    }
+
+    if (amorphous(game.youmonst.data) || is_whirly(game.youmonst.data)
+        || unsolid(game.youmonst.data)) {
+        if (!reuse_ball) {
+            await pline('A ball and chain appears, then falls away.');
+            await dropy(mkobj(OCLASSES.BALL_CLASS, true));
+        } else {
+            await dropy(reuse_ball);
+        }
+        return;
+    }
+
+    setworn(mkobj(OCLASSES.CHAIN_CLASS, true), W_CHAIN);
+    if (!reuse_ball)
+        setworn(mkobj(OCLASSES.BALL_CLASS, true), W_BALL);
+    else
+        setworn(reuse_ball, W_BALL);
+
+    if (!game.u.uswallow) {
+        await placebc();
+        if (Blind())
+            set_bc(1);      /* set up ball and chain variables */
+        newsym(game.u.ux, game.u.uy); /* see ball&chain if can't see self */
+    }
 }

@@ -1,6 +1,8 @@
 // apply.js — the 'a' command.
 // C ref: src/apply.c
 
+import { mhis } from './mhitu.js';
+import { pline_mon } from './pline.js';
 import { game } from './gstate.js';
 import { ECMD_OK, ECMD_TIME, ECMD_CANCEL, CQ_CANNED, GETOBJ_NOFLAGS,
          nothing_happens, M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
@@ -2572,4 +2574,21 @@ export function get_valid_jump_position(x, y) {
            && (ACCESSIBLE(game.level?.at(x, y)?.typ)
                || game.u.uprops?.PASSES_WALLS)
            && !jump_pos_failure(x, y, game.jumping_is_magic);
+}
+
+// src/apply.c:726 m_unleash(), release a monster from its leash.
+export async function m_unleash(mtmp, feedback) {
+    let otmp;
+
+    if (feedback) {
+        if (canseemon(mtmp))
+            await pline_mon(mtmp, `${Monnam(mtmp)} pulls free of ${mhis(mtmp)} leash!`);
+        else
+            await Your('leash falls slack.');
+    }
+    if ((otmp = get_mleash(mtmp)) != null) {
+        otmp.leashmon = 0;
+        update_inventory();
+    }
+    mtmp.mleashed = 0;
 }

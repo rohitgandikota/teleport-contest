@@ -497,7 +497,7 @@ export const CXN_NORMAL = 0, CXN_NOCORPSE = 1, CXN_PFX_THE = 2,
 
 // src/objnam.c:1121 the_unique_pm() — a unique monster that wants "the";
 // one with a personal name wants neither article.
-function the_unique_pm(ptr) {
+export function the_unique_pm(ptr) {
     if (type_is_pname(ptr))
         return false;
     return (ptr.geno & MFLAGS.G_UNIQ) !== 0;
@@ -3628,4 +3628,15 @@ export function armor_simple_name(armor) {
         break;
     }
     return result;
+}
+
+// src/objnam.c: actualoname(), the object's real name, ignoring what
+// the hero knows about it.
+export function actualoname(obj) {
+    let res;
+
+    (game.iflags ||= {}).override_ID = true;
+    res = minimal_xname(obj);
+    game.iflags.override_ID = false;
+    return res;
 }

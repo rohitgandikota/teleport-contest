@@ -992,7 +992,7 @@ export async function zapyourself(obj, ordinary) {
 
 // src/zap.c:3060 flashburn(). Lightning and camera flashes share the same
 // blindness message and timeout path.
-async function flashburn(duration, viaLightning) {
+export async function flashburn(duration, viaLightning) {
     if (!resists_blnd(null)) {
         await You('are blinded by the flash!');
         const { make_blinded } = await import('./potion.js');
@@ -3562,4 +3562,32 @@ export async function miss(str, mtmp) {
                 + `${((cansee(game.bhitpos?.x, game.bhitpos?.y)
                        || canspotmon(mtmp)) && game.flags.verbose)
                     ? mon_nam(mtmp) : 'it'}.`);
+}
+
+// src/zap.c:56 ZT_SPELL(), zap type offset for damage from a monster spell.
+export const ZT_SPELL = (x) => 10 + x;
+
+// src/zap.c:5501 mon_spell_hits_spot(), what a monster's spell does to the
+// spot it hits: clobber an engraving, then zap_over_floor().
+export async function mon_spell_hits_spot(caster, adtyp, x, y) {
+    /* a magic missile or acid spell hitting an engraved spot will
+       thoroughly clobber an engraving (unless its type makes it be
+       scuff-protected); zap_over_floor() doesn't handle this */
+    if (adtyp === ATTKS.AD_MAGM || adtyp === ATTKS.AD_ACID) {
+        const ep = engr_at(x, y);
+        const etext = ep ? ep.engr_txt : null;
+
+        if (etext)
+            wipe_engr_at(x, y, etext.length + d(6, 6), true);
+        /* the hero won't notice the damage until the engraving
+           is re-examined (lookhere or move off and back on) */
+    }
+
+    /* accept any basic damage type that zap_over_floor() might handle */
+    if (adtyp >= ATTKS.AD_MAGM && adtyp <= ATTKS.AD_ACID) {
+        const zt_typ = adtyp - 1,            /* convert AD_xxxx to ZT_xxxx */
+            zapdmgtyp = -ZT_SPELL(zt_typ); /* damage is from monster spell */
+
+        await zap_over_floor(x, y, zapdmgtyp, true);
+    } /* else impossible("Unsupported damage type (%d) for mon_spell_hits_spot.") */
 }

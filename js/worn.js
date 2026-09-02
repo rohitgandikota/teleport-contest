@@ -3,6 +3,9 @@
 //
 // Nothing here draws.
 
+import { pline_mon } from './pline.js';
+import { learnwand } from './zap.js';
+import { see_wsegs } from './worm.js';
 import { game } from './gstate.js';
 import { sgn, s_suffix } from './hacklib.js';
 import { MON_WEP } from './monst.js';
@@ -595,6 +598,7 @@ function w_blocks(o, m) {
 }
 
 const MFAST = 2;   /* include/monst.h — permspeed value */
+const MSLOW = 1;   /* include/monst.h — permspeed value */
 
 function note_unported_worn(what) {
     (game.unported ||= new Set()).add(what);
@@ -846,4 +850,88 @@ export function armcat_to_wornmask(cat) {
         break;
     }
     return mask;
+}
+
+// src/worn.c:474 mon_set_minvis(), a monster becomes permanently invisible
+// (or, from a cursed potion, permanently visible).
+export function mon_set_minvis(mon, cursed_potion) {
+    mon.perminvis = !cursed_potion ? 1 : 0;
+    if (!mon.invis_blkd) {
+        mon.minvis = mon.perminvis;
+        newsym(mon.mx, mon.my); /* make it disappear */
+        if (mon.wormno)
+            see_wsegs(mon); /* and any tail too */
+    }
+}
+
+// src/worn.c:488 mon_adjust_speed(), change a monster's intrinsic speed
+// and recompute its effective speed from worn speed boots.
+export async function mon_adjust_speed(mon, adjust, obj) {
+    let otmp;
+    let give_msg = !game.in_mklev, petrify = false;
+    const oldspeed = mon.mspeed | 0;
+
+    switch (adjust) {
+    case 2:
+        mon.permspeed = MFAST;
+        give_msg = false; /* special-case monster creation */
+        break;
+    case 1:
+        if (mon.permspeed === MSLOW)
+            mon.permspeed = 0;
+        else
+            mon.permspeed = MFAST;
+        break;
+    case 0: /* just check for worn speed boots */
+        break;
+    case -1:
+        if (mon.permspeed === MFAST)
+            mon.permspeed = 0;
+        else
+            mon.permspeed = MSLOW;
+        break;
+    case -2:
+        mon.permspeed = MSLOW;
+        give_msg = false; /* (not currently used) */
+        break;
+    case -3: /* petrification */
+        if (mon.permspeed === MFAST)
+            mon.permspeed = 0;
+        petrify = true;
+        break;
+    case -4: /* green slime */
+        if (mon.permspeed === MFAST)
+            mon.permspeed = 0;
+        give_msg = false;
+        break;
+    }
+
+    otmp = (mon.minvent || []).find(o => o.owornmask
+                                        && game.objects[o.otyp].oc_oprop === FAST);
+    if (otmp) /* speed boots */
+        mon.mspeed = MFAST;
+    else
+        mon.mspeed = mon.permspeed | 0;
+
+    /* no message if monster is immobile (temp or perm) or unseen */
+    if (give_msg && (mon.mspeed !== oldspeed || petrify) && mon.data.mmove
+        && !(mon.mfrozen || mon.msleeping) && canseemon(mon)) {
+        /* fast to slow (skipping intermediate state) or vice versa */
+        const howmuch =
+            (mon.mspeed + oldspeed === MFAST + MSLOW) ? 'much ' : '';
+
+        if (petrify) {
+            /* mimic the player's petrification countdown; "slowing down"
+               even if fast movement rate retained via worn speed boots */
+            if (game.flags?.verbose !== false)
+                await pline_mon(mon, `${Monnam(mon)} is slowing down.`);
+        } else if (adjust > 0 || mon.mspeed === MFAST)
+            await pline_mon(mon, `${Monnam(mon)} is suddenly moving ${howmuch}faster.`);
+        else
+            await pline_mon(mon, `${Monnam(mon)} seems to be moving ${howmuch}slower.`);
+
+        /* might discover an object if we see the speed change happen */
+        if (obj != null)
+            learnwand(obj);
+    }
 }

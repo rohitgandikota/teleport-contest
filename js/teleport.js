@@ -12,6 +12,18 @@
 // rn2(8) rn2(7) … rn2(2) rn2(16) rn2(15) … run the recordings show when a pet
 // is placed.
 
+import { migrate_to_level } from './dog.js';
+import { control_teleport } from './mondata.js';
+import { ledger_no } from './dungeon.js';
+import { onscary } from './monmove.js';
+import { MONSYMS } from './monst_data.js';
+import { is_home_elemental } from './makemon.js';
+import { mon_has_amulet } from './wizard.js';
+import { clamp_hole_destination, seetrap, Trap_Effect_Finished, Trap_Moved_Mon } from './trap.js';
+import { NO_TRAP, HOLE, TRAPDOOR, MAGIC_PORTAL, MIGR_RANDOM, MIGR_PORTAL, is_xport, Is_stronghold, Is_botlevel } from './const.js';
+import { Your, pline_mon } from './pline.js';
+import { yelp } from './sounds.js';
+import { get_mleash, m_unleash } from './apply.js';
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { COLNO, ROWNO, In_endgame, In_quest, In_sokoban, GP_CHECKSCARY,
@@ -1067,4 +1079,118 @@ export async function dotelecmd() {
 export function enexto(cc, xx, yy, mdat) {
     return (enexto_core(cc, xx, yy, mdat, GP_CHECKSCARY, goodpos)
             || enexto_core(cc, xx, yy, mdat, NO_MM_FLAGS, goodpos));
+}
+
+// src/teleport.c:786 teleport_pet(), may this pet be teleported away, or
+// does its leash hold it (a cursed leash refuses unless forced)?
+export async function teleport_pet(mtmp, force_it) {
+    let otmp;
+
+    if (mtmp === game.u.usteed)
+        return false;
+
+    if (mtmp.mleashed) {
+        otmp = get_mleash(mtmp);
+        if (!otmp) {
+            /* impossible("%s is leashed, without a leash.", Monnam(mtmp)); */
+            await m_unleash(mtmp, false); /* release_it: */
+            return true;
+        }
+        if (otmp.cursed && !force_it) {
+            await yelp(mtmp);
+            return false;
+        } else {
+            await Your('leash goes slack.');
+            await m_unleash(mtmp, false);
+            return true;
+        }
+    }
+    return true;
+}
+
+// src/teleport.c:2006 mlevel_tele_trap(), a monster on a level teleporter,
+// hole, trap door, or magic portal (or forced off the level: NO_TRAP).
+export async function mlevel_tele_trap(mtmp, trap, force_it, in_sight) {
+    const tt = (trap ? trap.ttyp : NO_TRAP);
+
+    if (mtmp === game.u.ustuck) /* probably a vortex */
+        return Trap_Effect_Finished; /* temporary? kludge */
+    if (await teleport_pet(mtmp, force_it)) {
+        let tolevel = { dnum: 0, dlevel: 0 };
+        let migrate_typ = MIGR_RANDOM;
+
+        if (is_hole(tt)) {
+            if (Is_stronghold(game.u.uz)) {
+                tolevel = { ...game.valley_level };
+            } else if (Is_botlevel(game.u.uz)) {
+                if (in_sight && trap.tseen)
+                    await pline_mon(mtmp, `${Monnam(mtmp)} avoids the ${
+                                   (tt === HOLE) ? 'hole' : 'trap'}.`);
+                return Trap_Effect_Finished;
+            } else {
+                tolevel = { ...trap.dst };
+                clamp_hole_destination(tolevel);
+            }
+        } else if (tt === MAGIC_PORTAL) {
+            if (In_endgame(game.u.uz) && (mon_has_amulet(mtmp)
+                                          || is_home_elemental(mtmp.data)
+                                          || rn2(7))) {
+                if (in_sight && mtmp.data.mlet !== MONSYMS.S_ELEMENTAL) {
+                    await pline_mon(mtmp,
+                                    `${Monnam(mtmp)} seems to shimmer for a moment.`);
+                    seetrap(trap);
+                }
+                return Trap_Effect_Finished;
+            } else {
+                tolevel = { ...trap.dst };
+                migrate_typ = MIGR_PORTAL;
+            }
+        } else if (tt === LEVEL_TELEP || tt === NO_TRAP) {
+            let nlev;
+
+            if (mon_has_amulet(mtmp) || In_endgame(game.u.uz)
+                /* NO_TRAP is used when forcing a monster off the level;
+                   onscary(0,0,) is true for the Wizard, Riders, lawful
+                   minions, Angels of any alignment, shopkeeper or priest
+                   currently inside his or her own special room */
+                || (tt === NO_TRAP && onscary(0, 0, mtmp))) {
+                if (in_sight)
+                    await pline_mon(mtmp,
+                                    `${Monnam(mtmp)} seems very disoriented for a moment.`);
+                return Trap_Effect_Finished;
+            }
+            if (tt === NO_TRAP) {
+                /* creature is being forced off the level to make room;
+                   it will try to return to this level (at a random spot
+                   rather than its current one) if the level is left by
+                   the hero and then revisited */
+                tolevel = { ...game.u.uz };
+            } else {
+                nlev = random_teleport_level();
+                if (nlev === depth(game.u.uz)) {
+                    if (in_sight)
+                        await pline_mon(mtmp, `${Monnam(mtmp)} shudders for a moment.`);
+                    return Trap_Effect_Finished;
+                }
+                get_level(tolevel, nlev);
+            }
+        } else {
+            /* impossible("mlevel_tele_trap: unexpected trap type (%d)", tt); */
+            return Trap_Effect_Finished;
+        }
+
+        if (in_sight) {
+            await pline_mon(mtmp, `Suddenly, ${mon_nam(mtmp)} ${
+                            (tt === HOLE) ? 'falls into a hole'
+                            : (tt === TRAPDOOR) ? 'falls through a trap door'
+                              : 'disappears out of sight'}.`);
+            if (trap)
+                seetrap(trap);
+        }
+        if (is_xport(tt) && !control_teleport(mtmp.data))
+            mtmp.mconf = 1;
+        await migrate_to_level(mtmp, ledger_no(tolevel), migrate_typ, null);
+        return Trap_Moved_Mon; /* no longer on this level */
+    }
+    return Trap_Effect_Finished;
 }

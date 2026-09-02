@@ -2344,7 +2344,7 @@ export function mon_visible(mon) {
 }
 
 // include/display.h:35 _tp_sensemon()
-function tp_sensemon(mon) {
+export function tp_sensemon(mon) {
     const u = game.u;
     if (mon.data?.mflags1 & MFLAGS.M1_MINDLESS)
         return false;

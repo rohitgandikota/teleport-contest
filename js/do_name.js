@@ -6,6 +6,7 @@
 // creates, so skipping it left two calls unspent in the middle of level
 // generation.
 
+import { ismnum, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, CORPSTAT_RANDOM, MALE, FEMALE, NEUTRAL } from './const.js';
 import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
 import { docrt, flush_screen, pline } from './display.js';
@@ -832,4 +833,54 @@ export function call_ok(obj) {
                         && !game.objects[obj.otyp].oc_uname))
         return GETOBJ_DOWNPLAY;
     return GETOBJ_SUGGEST;
+}
+
+/* src/do_name.c:1365 bogon_codes[], see dat/bonusmon.txt */
+const bogon_codes = '-_+|=';
+
+// src/do_name.c:1369 bogusmon(), a random bogus monster name; a leading
+// code character is stripped and reported through codeOut.code.
+export function bogusmon(codeOut) {
+    let mnam;
+
+    if (codeOut)
+        codeOut.code = '';
+    mnam = get_rnd_text('bogusmon', rn2_on_display_rng, MD_PAD_BOGONS);
+    if (!mnam) {
+        mnam = 'bogon';
+    } else if (bogon_codes.includes(mnam[0])) { /* strip prefix if present */
+        if (codeOut)
+            codeOut.code = mnam[0];
+        mnam = mnam.slice(1);
+    }
+    return mnam;
+}
+
+// src/do_name.c:1321 obj_pmname(), the monster name of a corpse, statue,
+// or figurine, honoring the gender recorded in obj->spe.
+export function obj_pmname(obj) {
+    if ((obj.otyp === ONAMES.CORPSE || obj.otyp === ONAMES.STATUE
+         || obj.otyp === ONAMES.FIGURINE)
+        && ismnum(obj.corpsenm)) {
+        const cgend = (obj.spe & CORPSTAT_GENDER),
+            mgend = ((cgend === CORPSTAT_MALE) ? MALE
+                     : (cgend === CORPSTAT_FEMALE) ? FEMALE
+                       : NEUTRAL);
+        let mndx = obj.corpsenm;
+
+        /* mons[].pmnames[] for monster cleric uses "priest" or "priestess"
+           or "aligned cleric"; we want to avoid "aligned cleric [corpse]"
+           unless it has been explicitly flagged as neuter rather than
+           defaulting to random (which fails male or female check above);
+           role monster cleric uses "priest" or "priestess" or "cleric"
+           without "aligned" prefix so we switch to that; [can't force
+           random gender to be chosen here because splitting a stack of
+           corpses could cause the split-off portion to change gender, so
+           settle for avoiding "aligned"] */
+        if (mndx === PMNAMES.PM_ALIGNED_CLERIC && cgend === CORPSTAT_RANDOM)
+            mndx = PMNAMES.PM_CLERIC;
+        return pmname(game.mons[mndx], mgend);
+    }
+    /* impossible("obj_pmname otyp:%i,corpsenm:%i", obj->otyp, obj->corpsenm); */
+    return 'two-legged glorkum-seeker';
 }

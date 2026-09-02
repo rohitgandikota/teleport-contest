@@ -2975,3 +2975,15 @@ export const ARM_GLOVES = 3;
 export const ARM_BOOTS = 4;
 export const ARM_CLOAK = 5;
 export const ARM_SHIRT = 6;
+
+// include/dungeon.h:110 Lassigned(), :111 Lcheck(), :124-126 Is_wiz*_level(),
+// :127 Is_sanctum()
+export function Lassigned(y) { return !!y && !!(y.dlevel || y.dnum); }
+export function Lcheck(x, z) { return Lassigned(z) && !!x && x.dnum === z.dnum && x.dlevel === z.dlevel; }
+export function Is_wiz1_level(uz) { return Lcheck(uz ?? game?.u?.uz, game?.wiz1_level); }
+export function Is_wiz2_level(uz) { return Lcheck(uz ?? game?.u?.uz, game?.wiz2_level); }
+export function Is_wiz3_level(uz) { return Lcheck(uz ?? game?.u?.uz, game?.wiz3_level); }
+export function Is_sanctum(uz) { return Lcheck(uz ?? game?.u?.uz, game?.sanctum_level); }
+
+// include/monst.h:268 Mgender()
+export function Mgender(mon) { return mon.female ? FEMALE : MALE; }

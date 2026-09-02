@@ -4,6 +4,11 @@
 // Initial u.uac is 0 when the first startup status is drawn. u_init's later
 // find_ac() computes the real value before welcome and moveloop paging.
 
+import { W_ARMOR, GETOBJ_SUGGEST, GETOBJ_EXCLUDE } from './const.js';
+import { obj_resists } from './zap.js';
+import { selftouch } from './trap.js';
+import { shirt_simple_name, shield_simple_name, vtense } from './objnam.js';
+import { urgent_pline } from './display.js';
 import { artifact_light } from './artifact.js';
 import { end_burn } from './timeout.js';
 import { setnotworn } from './worn.js';
@@ -2582,4 +2587,104 @@ export function adj_abon(otmp, delta) {
         }
         (game.disp ||= {}).botl = true;
     }
+}
+
+// src/do_wear.c:3144 wornarm_destroyed(), take a destroyed piece of worn
+// armor off and use it up.
+export async function wornarm_destroyed(wornarm) {
+    const wornoid = wornarm.o_id;
+
+    /* if the item is still being donned, stop that; this clears
+       uarmc/uarm/&c so doing this now won't interfere with the tests in
+       'if (wornarm==uarmc) ... else if (wornarm==uarm) ... else ...' */
+    if (donning(wornarm))
+        cancel_don();
+
+    if (wornarm === game.u.uarmc)
+        await Cloak_off();
+    else if (wornarm === game.u.uarm)
+        await Armor_off();
+    else if (wornarm === game.u.uarmu)
+        await Shirt_off();
+    else if (wornarm === game.u.uarmh)
+        await Helmet_off();
+    else if (wornarm === game.u.uarmg)
+        await Gloves_off();
+    else if (wornarm === game.u.uarmf)
+        await Boots_off();
+    else if (wornarm === game.u.uarms)
+        await Shield_off();
+
+    /* the armor-off routine might have already used up the item;
+       using carried() to check wornarm->where==OBJ_INVENT is not viable;
+       scan invent instead; if already freed it shouldn't be possible to
+       have re-used the stale memory for a new item yet but verify o_id
+       just in case */
+    for (const invobj of [...(game.invent || [])]) {
+        if (invobj === wornarm && invobj.o_id === wornoid) {
+            useup(wornarm);
+            break;
+        }
+    }
+}
+
+// src/do_wear.c:3184 maybe_destroy_armor(), the armor to destroy unless it
+// resists; resisted.v carries the resist so an inner layer stays safe.
+function maybe_destroy_armor(armor, atmp, resisted) {
+    if ((armor != null) && (!atmp || atmp === armor)
+        && ((resisted.v = obj_resists(armor, 0, 90)) === false)) {
+        armor.in_use = 1;
+        return armor;
+    }
+    return null;
+}
+
+// src/do_wear.c:3196 disintegrate_arm(), destroy one worn piece of armor,
+// outermost first; returns 1 when something was destroyed.
+export async function disintegrate_arm(atmp) {
+    let otmp = null;
+    let losing_gloves = false;
+    const resisted = { v: false }, resistedc = { v: false },
+        resistedsuit = { v: false };
+
+    if ((otmp = maybe_destroy_armor(game.u.uarmc, atmp, resistedc)) != null) {
+        await urgent_pline(`Your ${cloak_simple_name(otmp)} crumbles and turns to dust!`);
+    } else if (!resistedc.v
+             && (otmp = maybe_destroy_armor(game.u.uarm, atmp, resistedsuit)) != null) {
+        const suit = suit_simple_name(otmp);
+
+        /* for gold DSM, we don't want Armor_gone() to report that it
+           stops shining _after_ we've been told that it is destroyed */
+        if (otmp.lamplit)
+            await end_burn(otmp, false);
+        await urgent_pline(`Your ${suit} ${vtense(suit, 'turn')} to dust and ${
+                           vtense(suit, 'fall')} to the ${surface(game.u.ux, game.u.uy)}!`);
+    } else if (!resistedc.v && !resistedsuit.v
+             && (otmp = maybe_destroy_armor(game.u.uarmu, atmp, resisted)) != null) {
+        await urgent_pline(`Your ${shirt_simple_name(otmp)} crumbles into tiny threads and falls apart!`); /* always "shirt" */
+    } else if ((otmp = maybe_destroy_armor(game.u.uarmh, atmp, resisted)) != null) {
+        await urgent_pline(`Your ${helm_simple_name(otmp)} turns to dust and is blown away!`); /* "helm" or "hat" */
+    } else if ((otmp = maybe_destroy_armor(game.u.uarmg, atmp, resisted)) != null) {
+        await urgent_pline(`Your ${gloves_simple_name(otmp)} vanish!`);
+        losing_gloves = true;
+    } else if ((otmp = maybe_destroy_armor(game.u.uarmf, atmp, resisted)) != null) {
+        await urgent_pline(`Your ${boots_simple_name(otmp)} disintegrate!`);
+    } else if ((otmp = maybe_destroy_armor(game.u.uarms, atmp, resisted)) != null) {
+        await urgent_pline(`Your ${shield_simple_name(otmp)} crumbles away!`);
+    } else {
+        return 0; /* could not destroy anything */
+    }
+
+    await wornarm_destroyed(otmp);
+    if (losing_gloves)
+        await selftouch('You');
+    await stop_occupation();
+    return 1;
+}
+
+// src/do_wear.c:3480 any_worn_armor_ok(), getobj callback: worn armor only.
+export function any_worn_armor_ok(obj) {
+    if (obj && (obj.owornmask & W_ARMOR))
+        return GETOBJ_SUGGEST;
+    return GETOBJ_EXCLUDE;
 }

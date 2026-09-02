@@ -3,6 +3,8 @@
 //
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
+import { mon_set_minvis, mon_adjust_speed } from './worn.js';
+import { SLIMED, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
 import { fruitname, makeplural, xname } from './objnam.js';
 import { hliquid, trycall } from './do_name.js';
 import { newuhs } from './eat.js';
@@ -99,33 +101,6 @@ async function slept_monst(mon) {
         && !sticks(game.youmonst.data) && !game.u.uswallow) {
         await pline(`${s_suffix(Monnam(mon))} grip relaxes.`);
         await unstuck(mon);
-    }
-}
-
-// src/worn.c:mon_set_minvis() and mon_adjust_speed(), narrowed to the two
-// potionhit callers which need them.
-function mon_set_minvis(mon, cursedPotion) {
-    mon.perminvis = cursedPotion ? 0 : 1;
-    if (!mon.invis_blkd) {
-        mon.minvis = mon.perminvis;
-        newsym(mon.mx, mon.my);
-    }
-}
-
-async function mon_adjust_speed(mon, obj) {
-    const oldspeed = mon.mspeed | 0;
-    mon.permspeed = (mon.permspeed | 0) === MSLOW ? 0 : MFAST;
-    const speedArmor = (mon.minvent || []).some(item =>
-        item.owornmask && game.objects[item.otyp]?.oc_oprop === FAST);
-    mon.mspeed = speedArmor ? MFAST : mon.permspeed;
-
-    if (mon.mspeed !== oldspeed && mon.data.mmove
-        && !mon.mfrozen && !mon.msleeping && canseemon(mon)) {
-        const howmuch = mon.mspeed + oldspeed === MFAST + MSLOW
-            ? 'much ' : '';
-        await pline(`${Monnam(mon)} is suddenly moving ${howmuch}faster.`);
-        const { learnwand } = await import('./zap.js');
-        learnwand(obj);
     }
 }
 
@@ -548,7 +523,7 @@ export async function potionhit(mon, obj, how) {
             break;
         case ONAMES.POT_SPEED:
             angermon = false;
-            await mon_adjust_speed(mon, obj);
+            await mon_adjust_speed(mon, 1, obj);
             break;
         case ONAMES.POT_BLINDNESS:
             if (haseyes(mon.data) && (mon.mcansee || mon.mblinded)) {
@@ -2030,4 +2005,26 @@ export async function dip_into() {
         return ECMD_OK;
 
     return await potion_dip(obj, potion);
+}
+
+// src/potion.c:195 make_slimed(), set or clear the turning-to-slime timer.
+export async function make_slimed(xtime, msg) {
+    const props = (game.u.uprops ||= {});
+    const old = props.SLIMED || 0;
+
+    props.SLIMED = xtime; /* set_itimeout(&Slimed, xtime) */
+    if ((xtime !== 0) !== (old !== 0)) {
+        (game.disp ||= {}).botl = true;
+        if (msg)
+            await pline(msg);
+    }
+    if (!props.SLIMED) {
+        dealloc_killer(find_delayed_killer(SLIMED));
+        /* fake appearance is set late in turn-to-slime countdown */
+        if (game.youmonst.m_ap_type === M_AP_MONSTER
+            && game.youmonst.mappearance === PMNAMES.PM_GREEN_SLIME) {
+            game.youmonst.m_ap_type = M_AP_NOTHING;
+            game.youmonst.mappearance = 0;
+        }
+    }
 }

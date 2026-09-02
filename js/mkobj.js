@@ -1,3 +1,4 @@
+import { OBJ_FREE, OBJ_MINVENT } from './const.js';
 import { is_human, is_neuter, vegetarian, is_elf } from './mondata.js';
 import { arti_light_radius, obj_adjust_light_radius } from './light.js';
 import { get_obj_location } from './zap.js';
@@ -1733,4 +1734,21 @@ export function obj_ice_effects(x, y, doBuried = false) {
         }
         start_timer(remaining, TIMER_OBJECT, action, obj);
     }
+}
+
+// src/mkobj.c:2648 add_to_minv(), give a free object to a monster; returns
+// 1 when it merged into a stack the monster already carries.
+export function add_to_minv(mon, obj) {
+    if ((obj.where | 0) !== OBJ_FREE)
+        throw new Error(`add_to_minv: obj where=${obj.where}, not free`);
+
+    /* merge if possible */
+    for (const otmp of (mon.minvent || []))
+        if (merged({ o: otmp }, { o: obj }))
+            return 1; /* obj merged and then free'd */
+    /* else insert; don't bother forcing it to end of chain */
+    obj.where = OBJ_MINVENT;
+    obj.ocarry = mon;
+    (mon.minvent ||= []).unshift(obj);
+    return 0; /* obj on mon's inventory chain */
 }

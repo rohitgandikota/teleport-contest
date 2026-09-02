@@ -6,6 +6,8 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { uwepgone, uswapwepgone } from './wield.js';
+import { obj_pmname } from './do_name.js';
 import { m_at, t_at as t_at_mon } from './mon.js';
 import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
@@ -94,7 +96,7 @@ import { mwepgone } from './weapon.js';
 
 /* src/trap.h — trapeffect_*() return values. */
 /* include/trap.h:98-101 — Trap_Is_Gone shares 0 with Finished. */
-const Trap_Effect_Finished = 0, Trap_Is_Gone = 0,
+export const Trap_Effect_Finished = 0, Trap_Is_Gone = 0,
       Trap_Caught_Mon = 1, Trap_Killed_Mon = 2, Trap_Moved_Mon = 3;
 
 function note_unported_trap(what) {
@@ -2164,6 +2166,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return await trapeffect_rolling_boulder_trap(mtmp, trap, trflags);
     case TELEP_TRAP:
         return await trapeffect_telep_trap(mtmp, trap, trflags);
+    case LEVEL_TELEP:
+        return await trapeffect_level_telep(mtmp, trap, trflags);
     case MAGIC_PORTAL:
         return await trapeffect_magic_portal(mtmp, trap, trflags);
     case WEB:
@@ -2236,8 +2240,11 @@ async function trapeffect_telep_trap(mtmp, trap, trflags) {
 // src/teleport.c:1537 level_tele_trap(), hero branch.
 async function trapeffect_level_telep(mtmp, trap, trflags) {
     if (mtmp !== game.youmonst) {
-        note_unported_trap('trapeffect_level_telep:monster');
-        return Trap_Moved_Mon;
+        const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+        const forcetrap = ((trflags & FORCETRAP) !== 0);
+        const { mlevel_tele_trap } = await import('./teleport.js');
+
+        return await mlevel_tele_trap(mtmp, trap, forcetrap, in_sight);
     }
 
     seetrap(trap);
@@ -4056,5 +4063,48 @@ export function sokoban_guilt() {
     if (In_sokoban(game.u.uz)) {
         (game.u.uconduct ||= {}).sokocheat = (game.u.uconduct.sokocheat || 0) + 1;
         change_luck(-1);
+    }
+}
+
+// src/trap.c:593 clamp_hole_destination(), a hole can't drop past the
+// bottom of its dungeon.
+export function clamp_hole_destination(dlev) {
+    const bottom = dng_bottom(dlev);
+
+    dlev.dlevel = Math.min(dlev.dlevel, bottom);
+    return dlev;
+}
+
+// src/trap.c:3883 selftouch(), losing the gloves while wielding a
+// cockatrice corpse.
+export async function selftouch(arg) {
+    let kbuf;
+    let corpse_pmname;
+
+    if (game.u.uwep && game.u.uwep.otyp === ONAMES.CORPSE
+        && touch_petrifies(game.mons[game.u.uwep.corpsenm])
+        && !Stone_resistance()) {
+        corpse_pmname = obj_pmname(game.u.uwep);
+        await pline(`${arg} touch the ${corpse_pmname} corpse.`);
+        kbuf = `${an(corpse_pmname)} corpse`;
+        await instapetrify(kbuf);
+        /* life-saved; unwield the corpse if we can't handle it */
+        if (!game.u.uarmg && !Stone_resistance())
+            await uwepgone();
+    }
+    /* Or your secondary weapon, if wielded [hero has lost hold of it
+       during a life-saved-from-instapetrify(), so no need to
+       allow two-weapon combat when either weapon is a corpse] */
+    if (game.u.twoweap && game.u.uswapwep
+        && game.u.uswapwep.otyp === ONAMES.CORPSE
+        && touch_petrifies(game.mons[game.u.uswapwep.corpsenm])
+        && !Stone_resistance()) {
+        corpse_pmname = obj_pmname(game.u.uswapwep);
+        await pline(`${arg} touch the ${corpse_pmname} corpse.`);
+        kbuf = `${an(corpse_pmname)} corpse`;
+        await instapetrify(kbuf);
+        /* life-saved; unwield the corpse */
+        if (!game.u.uarmg && !Stone_resistance())
+            await uswapwepgone();
     }
 }

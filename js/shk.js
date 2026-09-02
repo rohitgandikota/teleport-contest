@@ -907,7 +907,7 @@ export async function check_unpaid(obj) {
 
 // src/shk.c:3085 picked_container(). Once a container leaves the floor, its
 // contents no longer use floor-only no_charge ownership markers.
-function picked_container(obj) {
+export function picked_container(obj) {
     for (const contained of obj.cobj || []) {
         if (contained.oclass === OCLASSES.COIN_CLASS)
             continue;
@@ -2638,4 +2638,23 @@ export function noisy_shop(sroom) {
     const mtmp = sroom.resident;
     if (mtmp && inhishop(mtmp))
         wake_nearto(mtmp.mx, mtmp.my, 11 * 11);
+}
+
+// include/dungeon.h:112 on_level()
+const on_level = (a, b) => !!a && !!b && a.dnum === b.dnum && a.dlevel === b.dlevel;
+
+// src/shk.c:272 set_residency(), record (or clear) a shopkeeper as the
+// resident of its shop while on the shop's level.
+export function set_residency(shkp, zero_out) {
+    const eshk = shkp.eshk || ESHK(shkp);
+
+    if (on_level(eshk.shoplevel, game.u.uz)) {
+        const roomidx = eshk.shoproom - ROOMOFFSET;
+        const room = game.level?.rooms?.[roomidx]
+            || (game.level?.subrooms || [])
+                .find(candidate => candidate.roomnoidx === roomidx);
+
+        if (room)
+            room.resident = (zero_out) ? null : shkp;
+    }
 }

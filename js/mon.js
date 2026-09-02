@@ -1,3 +1,5 @@
+import { fill_pit } from './trap.js';
+import { remove_worm } from './worm.js';
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
 import { dist2 } from './hacklib.js';
 import { m_dowear, mon_break_armor } from './worn.js';
@@ -3597,4 +3599,51 @@ export async function get_iter_mons(bfunc) {
             return mtmp;
     }
     return null;
+}
+
+// src/mon.c:2696 mon_leaving_level(), bookkeeping for a monster leaving the
+// level by migration or death: off the map, unstuck, mimicry revealed.
+export async function mon_leaving_level(mon) {
+    const mx = mon.mx, my = mon.my;
+    const onmap = (isok(mx, my) && m_at(mx, my) === mon);
+
+    /* to prevent an infinite relobj-flooreffects-hmon-killed loop */
+    mon.mtrapped = 0;
+    await unstuck(mon); /* mon is not swallowing or holding you nor held by you */
+
+    /* vault guard might be at <0,0> */
+    if (onmap || mon === m_at(0, 0)) {
+        if (mon.wormno)
+            await remove_worm(mon);
+        else
+            remove_monster(mx, my);
+    }
+    if (onmap) {
+        mon.mundetected = 0; /* for migration; doesn't matter for death */
+        /* mimic must be revealed if it is going to migrate to another level
+           or it is accompanying the hero to another level */
+        if (mon.m_ap_type !== M_AP_NOTHING && mon.m_ap_type !== M_AP_MONSTER)
+            seemimic(mon);
+        await fill_pit(mx, my);
+        newsym(mx, my);
+    }
+    if (mon === game.context?.polearm?.hitmon)
+        game.context.polearm.hitmon = null;
+}
+
+// src/mon.c:2561 relmon(), take a monster off the level's monster list,
+// prepending it to migrating_mons or mydogs when a list is given.
+export async function relmon(mon, monst_list) {
+    if (!(game.level?.monsters || []).length)
+        throw new Error('relmon: no fmon available.');
+
+    await mon_leaving_level(mon);
+
+    const idx = game.level.monsters.indexOf(mon);
+    if (idx < 0)
+        throw new Error('relmon: mon not in list.');
+    game.level.monsters.splice(idx, 1);
+
+    if (monst_list) /* put on migrating_mons or mydogs */
+        monst_list.unshift(mon);
 }

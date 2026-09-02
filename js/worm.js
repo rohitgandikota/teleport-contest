@@ -5,6 +5,8 @@
 // when makemon builds one (the tail segments and their random placement).
 // Worm movement, cutting and hp bookkeeping are recorded when reached.
 
+import { NON_PM } from './const.js';
+import { PMNAMES } from './monst_data.js';
 import { game } from './gstate.js';
 import { rn2 } from './rng.js';
 import { newsym } from './display.js';
@@ -216,4 +218,49 @@ export function flip_worm_segs_vertical(worm, miny, maxy) {
 
 export function flip_worm_segs_horizontal(worm, minx, maxx) {
     flip_worm_segs(worm, 'x', minx, maxx);
+}
+
+// src/worm.c:487 see_wsegs(), redisplay a worm's tail segments.
+export function see_wsegs(worm) {
+    const w = wstate();
+    let curr = w.wtails[worm.wormno];
+
+    while (curr !== w.wheads[worm.wormno]) {
+        newsym(curr.wx, curr.wy);
+        curr = curr.nseg;
+    }
+}
+
+// src/worm.c:308 wormgone(), the tail goes away when the worm leaves the
+// level (or dies); the worm itself is still a long worm.
+export function wormgone(worm) {
+    const w = wstate();
+    const wnum = worm.wormno;
+
+    /* if (!wnum) impossible("wormgone: wormno is 0"); [runs to completion] */
+    worm.wormno = 0; /* still a long worm but doesn't grow/shrink anymore */
+    toss_wsegs(w.wtails[wnum], true);
+    w.wheads[wnum] = w.wtails[wnum] = null;
+    w.wgrowtime[wnum] = 0;
+    /* when a long worm gets created by a polymorph zap, it gets flagged
+       with MCORPSENM()==PM_LONG_WORM so that the same zap won't trigger
+       another polymorph if it hits the new tail */
+    if (worm.data?.pmidx === PMNAMES.PM_LONG_WORM && worm.mcorpsenm != null)
+        worm.mcorpsenm = NON_PM; /* no longer polymorph-proof */
+}
+
+// src/worm.c:714 remove_worm(), take a worm's tail segments off the map.
+export async function remove_worm(worm) {
+    const { remove_monster } = await import('./makemon.js');
+    const w = wstate();
+    let curr = w.wtails[worm.wormno];
+
+    while (curr) {
+        if (curr.wx) {
+            remove_monster(curr.wx, curr.wy);
+            newsym(curr.wx, curr.wy);
+            curr.wx = 0;
+        }
+        curr = curr.nseg;
+    }
 }

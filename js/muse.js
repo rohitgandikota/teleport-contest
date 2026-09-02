@@ -20,7 +20,7 @@ import { is_animal, mindless, nohands, dmgtype, can_blow, amorphous,
          resists_acid, resists_ston } from './mondata.js';
 import { in_your_sanctuary, lined_up, monnear, onscary, mon_knows_traps,
          mon_would_take_item, accessible, monflee, mdistu } from './monmove.js';
-import { which_armor } from './worn.js';
+import { which_armor, mon_adjust_speed } from './worn.js';
 import { hard_helmet } from './do_wear.js';
 import { noteleport_level } from './teleport.js';
 import { stairway_at } from './stairs.js';
@@ -193,23 +193,6 @@ function m_useup_unstone(mon, obj) {
     }
 }
 
-async function mon_adjust_speed_for_stoning(mon) {
-    if ((mon.permspeed | 0) === MFAST)
-        mon.permspeed = 0;
-    const speedBoots = (mon.minvent || []).some(obj =>
-        obj.owornmask && game.objects[obj.otyp]?.oc_oprop === FAST);
-    mon.mspeed = speedBoots ? MFAST : (mon.permspeed | 0);
-
-    if ((mon.data || game.mons[mon.mnum]).mmove
-        && !mon.mfrozen && !mon.msleeping) {
-        const { canseemon, pline } = await import('./display.js');
-        if (canseemon(mon) && game.flags?.verbose !== false) {
-            const { Monnam } = await import('./do_name.js');
-            await pline(`${Monnam(mon)} is slowing down.`);
-        }
-    }
-}
-
 // src/muse.c:2884 munstone() and mon_consume_unstone(). Returns true once a
 // cure was consumed, even when its acid damage kills the monster.
 export async function munstone(mon, by_you) {
@@ -237,7 +220,7 @@ export async function munstone(mon, by_you) {
     const lizard = food && obj.corpsenm === PMNAMES.PM_LIZARD;
     const nutrit = food ? dog_nutrition(mon, obj) : 0;
 
-    await mon_adjust_speed_for_stoning(mon);
+    await mon_adjust_speed(mon, -3, null);
     if (visible) {
         const saveQuan = obj.quan;
         obj.quan = 1;

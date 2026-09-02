@@ -1,5 +1,40 @@
 # STATUS — live handoff board
 
+## 2026-09-02: monster spells, monster level teleport, divine armor loss, punish/minions
+
+Landed and pushed, gated 44/44 + hang-gate in an isolated HEAD worktree
+(built by re-running the edit scripts on HEAD, because another session has
+uncommitted trap.js/zap.js/detect.js work in this checkout; only my hunks
+were staged with `git apply --cached`):
+- mcastu.c: every mcast_* helper (death touch with `touch_of_death` and
+  `death_inflicted_by`, clone wiz, summon, destroy armor, weaken, disappear,
+  stun, geyser, fire pillar, lightning, psi bolt, open wounds, insects,
+  blind, paralyze, confuse) plus castmu's AD_FIRE/AD_COLD/AD_MAGM arms and
+  its "empty water" / "at a spot near you" / "displaced image" messages.
+  Helpers: `mon_spell_hits_spot` (zap.js), `burn_away_slime`/`make_slimed`,
+  `clonewiz` (+`add_to_minv`), `minuhpmax`/`adjuhploss`, `bogusmon`,
+  `obj_pmname`, `verbalize`/`pline_mon`, `is_waterwall`, `Mgender`,
+  `Is_wiz*_level`/`Is_sanctum`.
+- worn.c `mon_set_minvis`/`mon_adjust_speed` are now the real functions;
+  potion.js and muse.js used narrowed private copies.
+- monster level teleport: `mlevel_tele_trap`, `teleport_pet`, `m_unleash`,
+  `migrate_to_level`, `mon_leave`, `relmon`, `mon_leaving_level`,
+  `set_residency`, `ledger_to_dnum`/`ledger_to_dlev`, `In_W_tower`, worm
+  `wormgone`/`remove_worm`/`see_wsegs`, `clamp_hole_destination`. The
+  monster trap selector had no `case LEVEL_TELEP` at all (see NOTES).
+- do_wear.c `disintegrate_arm`/`maybe_destroy_armor`/`wornarm_destroyed`,
+  `selftouch`, `any_worn_armor_ok`; pray.c `god_zaps_you` is the C function
+  now (swallowed arm, reflection/shock messages, astral/sanctum minions) and
+  `angrygods` has its punish and summon_minion cases; read.c `punish`;
+  minion.c `summon_minion`; scroll of destroy armor's confused/cursed/blessed
+  arms (+`disintegrate_cursed_armor`, `actualoname`).
+- fuzz census: 89/102 RNG-perfect (was 87): s2-20 (monster on a level
+  teleporter) and s2-24 (blessed scroll of destroy armor) are fixed.
+- still noted: worn.js update_mon_extrinsics FAST arms (the sync m_dowear
+  path must become async before it can await mon_adjust_speed);
+  trapeffect_telep_trap's leashed/vault monster arms (teleport_pet exists
+  now; port C's `mtele_trap`).
+
 ## 2026-09-01 (later still): potion/scroll effect ports, tutorial exit
 
 Landed and pushed since the entry below, each gated on 44/44 + hang-gate in

@@ -10,6 +10,7 @@
 // The delay itself is drawn by the CALLER, before start_timer is reached
 // (bury_an_obj spends rnd(250) for ROT_ORGANIC). Only the bookkeeping is here.
 
+import { make_slimed } from './potion.js';
 import { game } from './gstate.js';
 import { rn2, rnd, d } from './rng.js';
 import { stop_occupation } from './allmain.js';
@@ -1166,5 +1167,12 @@ export async function do_storms() {
     } else {
         const { You_hear } = await import('./pline.js');
         await You_hear('a rumbling noise.');
+    }
+}
+
+// src/timeout.c:448 burn_away_slime(), fire burns off the green slime.
+export async function burn_away_slime() {
+    if (game.u.uprops?.SLIMED) {
+        await make_slimed(0, 'The slime that covers you is burned away!');
     }
 }

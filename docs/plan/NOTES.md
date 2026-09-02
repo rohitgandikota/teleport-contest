@@ -4276,3 +4276,22 @@ js/dat/tut-2.js), and the exit portal had no destination (above). The
 "2 monsters" were the main-dungeon level-1 residents the hero returned to
 through the portal, not anything on tut-2 — a blessed potion of monster
 detection quaffed there in a probe says "You feel lonely."
+
+## Monster trap selector: list every trap type
+
+`trapeffect_selector()` in js/trap.js is a hand-written switch, and it had
+no `case LEVEL_TELEP`, so a monster stepping on a level teleporter fell to
+the default (noted, Trap_Effect_Finished) and stayed on the trap with its
+mtrapseen bit set. Census symptom: C draws rn2(5) then rn2(7) inside
+`random_teleport_level` right after `m_move`, ours goes straight to the next
+monster's `distfleeck`. When a trap effect gets ported for monsters, check
+the selector too; C's switch is at trap.c:2836.
+
+## Blessed scroll of destroy armor with no cursed armor still destroys
+
+C: `else if (sobj->blessed && disintegrate_cursed_armor()) ... else if
+(!destroy_arm())`. A blessed scroll whose wearer has no cursed armor falls
+through to `destroy_arm()` and its rn2(4). The old JS returned early for any
+blessed scroll (noted), so s2-24 lost the rn2(4)+rn2(idx) draws.
+`some_armor()` draws rn2(4)s of its own as well; the old JS picked the first
+worn piece with a plain `find` over invent.

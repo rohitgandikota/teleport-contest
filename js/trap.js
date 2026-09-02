@@ -1605,7 +1605,7 @@ function mon_knows_traps(mtmp, ttyp) {
 }
 
 // src/mondata.c:1629 mon_learns_traps()
-function mon_learns_traps(mtmp, ttyp) {
+export function mon_learns_traps(mtmp, ttyp) {
     mtmp.mtrapseen = (mtmp.mtrapseen | 0) | (1 << (ttyp - 1));
 }
 

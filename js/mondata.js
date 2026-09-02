@@ -942,6 +942,11 @@ export const is_mplayer = (ptr) =>
     ptr.pmidx >= PMNAMES.PM_ARCHEOLOGIST && ptr.pmidx <= PMNAMES.PM_WIZARD;
 
 // include/you.h:323 mhim() — object-case pronoun for a monster.
+// include/you.h:322 mhe()
+export function mhe(mtmp) {
+    return genders_tbl[pronoun_gender(mtmp, PRONOUN_HALLU)].he;
+}
+
 export function mhim(mtmp) {
     return genders_tbl[pronoun_gender(mtmp, PRONOUN_HALLU)].him;
 }

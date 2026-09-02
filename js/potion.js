@@ -90,7 +90,7 @@ function note_unported_potion(what) {
 
 // src/mhitm.c:paralyze_monst() and slept_monst(). These small helpers are
 // kept here with their only current caller, thrown potion effects.
-function paralyze_monst(mon, amount) {
+export function paralyze_monst(mon, amount) {
     mon.mcanmove = 0;
     mon.mfrozen = Math.min(amount, 127);
     mon.meating = 0;

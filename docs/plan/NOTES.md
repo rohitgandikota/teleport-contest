@@ -4317,3 +4317,16 @@ every flag name it saw, which hid both commands and shifted every later
 page of the six-page list. It now evaluates those blocks against the
 defines the recorder has. When a screen diff in a long menu shows entries
 missing or shifted, check the generator's define set before the menu code.
+
+## A module can load and still be broken: scan for unimported callees
+
+ESM import errors surface at load time, but a function that *calls* a name
+that was never imported only fails when that path runs. The muse.c batch
+loaded fine and passed 43/44: seed0030 threw "Half_spell_damage is not
+defined" inside a monster's wand zap. `tools/`-less check that catches this:
+strip comments/strings, collect every `name(` callee, subtract everything
+imported (static, `await import` destructuring, Promise.all destructuring),
+declared, or a parameter, and look at what is left (a scratch script did
+this: `undef_scan2.py`). Run it on every file a batch rewrites, before the
+gate. Also beware helper loops that `continue` past an import statement:
+one skipped statement silently dropped four trap.js imports.

@@ -11,6 +11,7 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
+import { get_artifact } from './artifact.js';
 import { QBUFSZ } from './const.js';
 import { shk_your } from './shk.js';
 import { carried, is_poisonable, Has_contents, OBJ_FLOOR, OBJ_MINVENT } from './obj.js';
@@ -3690,4 +3691,19 @@ export function safe_qbuf(qprefix, qsuffix, obj, func, altfunc, lastR) {
             qbuf += qsuffix;
     }
     return qbuf;
+}
+
+// src/objnam.c bare_artifactname(), the artifact's name without any
+// object type or known/dknown/&c feedback.
+export function bare_artifactname(obj) {
+    let outbuf;
+
+    if (obj.oartifact) {
+        outbuf = get_artifact(obj)?.name ?? xname(obj);
+        if (outbuf.startsWith('The '))
+            outbuf = outbuf[0].toLowerCase() + outbuf.slice(1);
+    } else {
+        outbuf = xname(obj);
+    }
+    return outbuf;
 }

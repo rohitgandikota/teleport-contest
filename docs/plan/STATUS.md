@@ -1,5 +1,28 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (late night): muse.c completed (monster item use)
+
+`js/muse.js` now carries the whole of muse.c's defensive and offensive
+paths as the C functions: `precheck` (milky/smoky potion occupants, cursed
+wand backfire), `mzapwand`, `mplayhorn`, `m_sees_sleepy_soldier`, `m_tele`,
+`m_next2m`, `reveal_trap`, `mon_escape`, the full `find_defensive` (unicorn
+horn, lizard corpse/tin, undead turning vs a wielded cockatrice corpse,
+trap doors and teleport traps, bugle, digging, self/other teleportation,
+scroll of teleportation, create monster) and `use_defensive`, `mbhit`/
+`mbhitm`/`fhito_loc`, `buzz_force_miss`, the full `use_offensive` (attack
+wands and horns through buzz(), striking/teleportation/undead turning
+beams, scroll of earth, camera, thrown potions), `mon_consume_unstone`
+(munstone delegates to it), `munslime`/`muse_unslime`/`cures_sliming`/
+`green_mon`. Supporting ports: zap.c `lightdamage`, `buzz()`, and dobuzz's
+sayhit/saymiss/forcemiss parameters; do_name.c `monverbself`; music.c
+`awaken_soldiers`; uhitm.c `disguised_as_non_mon`; objnam.c
+`bare_artifactname`; you.h `mhe` in mondata.js.
+- still noted: zap.c `unturn_dead`/`revive` (undead turning of carried
+  corpses), worm.c `worm_move` (unreachable from muse: worms are animals),
+  dbridge.c destroy_drawbridge for a striking beam.
+- gated 44/44 + hang-gate (seed0030 caught an unimported callee on the
+  way, see NOTES); census 92/102.
+
 ## 2026-09-02 (late): bell of opening, magical box locking
 
 lock.c `boxlock` (wand/spell of locking and opening on boxes, wired into

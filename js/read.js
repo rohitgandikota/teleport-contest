@@ -707,7 +707,7 @@ async function seffect_amnesia(sobj) {
 
 // src/read.c:2294 drop_boulder_on_player() — a scroll of earth drops a
 // boulder (rocks when confused) on the hero.
-async function drop_boulder_on_player(confused, helmet_protects, byu,
+export async function drop_boulder_on_player(confused, helmet_protects, byu,
                                       skip_uswallow) {
     const u = game.u;
     let dmg;
@@ -754,7 +754,7 @@ async function drop_boulder_on_player(confused, helmet_protects, byu,
 }
 
 // src/read.c:2341 drop_boulder_on_monster()
-async function drop_boulder_on_monster(x, y, confused, byu) {
+export async function drop_boulder_on_monster(x, y, confused, byu) {
     const otmp2 = mksobj(confused ? ONAMES.ROCK : ONAMES.BOULDER, false, false);
     if (!otmp2)
         return false; /* Shouldn't happen */

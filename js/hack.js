@@ -1337,7 +1337,7 @@ export function avoid_moving_on_liquid(x, y, msg) {
 }
 
 // include/hack.h:1414 NODIAG() — only grid bugs cannot move diagonally.
-const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
+export const NODIAG = (monnum) => monnum === PMNAMES.PM_GRID_BUG;
 
 // src/hack.c:3898 lookaround() — decide whether a run/rush should stop here,
 // and if it is following a corridor, which way to turn next.

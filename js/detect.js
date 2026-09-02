@@ -227,7 +227,7 @@ export async function find_trap(trap) {
 }
 
 /* src/drawing.c trapname() — defsyms explanation for the trap's cmap */
-function trapname(ttyp) {
+export function trapname(ttyp) {
     const base = defsyms.findIndex(d => d.name === 'S_arrow_trap');
     return defsyms[base + ttyp - 1]?.explain ?? 'trap';
 }

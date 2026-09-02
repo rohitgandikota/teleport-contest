@@ -433,7 +433,7 @@ import { fightm } from './mhitm.js';
 // include/you.h:560 m_next2u() — distu((m)->mx, (m)->my) <= 2.
 // Its C home is you.h; kept here because restrap() below is its only user so
 // far and js/mon.js already exports mdistu's twin.
-const m_next2u = (mtmp) => mdistu(mtmp) <= 2;
+export const m_next2u = (mtmp) => mdistu(mtmp) <= 2;
 
 // src/mon.c:961 restrap() — a hider that is not being watched hides again.
 //

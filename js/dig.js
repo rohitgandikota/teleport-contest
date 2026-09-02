@@ -90,7 +90,7 @@ function digging_context() {
     };
 }
 
-function stairway_at(x, y) {
+export function stairway_at(x, y) {
     for (let stway = game.stairs; stway; stway = stway.next)
         if (stway.sx === x && stway.sy === y)
             return stway;

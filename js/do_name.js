@@ -6,6 +6,8 @@
 // creates, so skipping it left two calls unspent in the middle of level
 // generation.
 
+import { genders } from './role_data.js';
+import { vtense, makeplural } from './objnam.js';
 import { ismnum, CORPSTAT_GENDER, CORPSTAT_MALE, CORPSTAT_FEMALE, CORPSTAT_RANDOM, MALE, FEMALE, NEUTRAL } from './const.js';
 import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow } from './tty/wintty.js';
@@ -884,3 +886,30 @@ export function obj_pmname(obj) {
     /* impossible("obj_pmname otyp:%i,corpsenm:%i", obj->otyp, obj->corpsenm); */
     return 'two-legged glorkum-seeker';
 }
+
+// src/do_name.c:1221 monverbself(), "<mon> <verb>s [othertext] <self>";
+// a plural subject keeps the plural verb and "themselves".
+export function monverbself(mon, monnamtext, verb, othertext) {
+    let verbs;
+    let selfbuf; /* sizeof "themselves" suffices */
+
+    selfbuf = mon_nam_too(mon, mon);
+    verbs = vtense(selfbuf, verb);
+    if (verb === verbs) { /* a match indicates that it stayed plural */
+        monnamtext = makeplural(monnamtext);
+        if (monnamtext.toLowerCase() === genders[3].he) {
+            const capitaliz = (monnamtext[0] === monnamtext[0].toUpperCase());
+
+            monnamtext = genders[3].him;
+            if (capitaliz)
+                monnamtext = monnamtext[0].toUpperCase() + monnamtext.slice(1);
+        }
+    }
+    monnamtext += ' ' + verbs;
+    if (othertext)
+        monnamtext += ' ' + othertext;
+    monnamtext += ' ' + selfbuf;
+    return monnamtext;
+}
+
+export { mhe } from './mondata.js';

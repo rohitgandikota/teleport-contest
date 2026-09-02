@@ -109,7 +109,7 @@ export const {
 
 // include/mondata.h predicates, one line each as in C.
 const is_golem = (ptr) => ptr.mlet === S_GOLEM;
-const is_bat = (ptr) => ptr.pmidx === PMNAMES.PM_BAT
+export const is_bat = (ptr) => ptr.pmidx === PMNAMES.PM_BAT
                      || ptr.pmidx === PMNAMES.PM_GIANT_BAT
                      || ptr.pmidx === PMNAMES.PM_VAMPIRE_BAT;
 export const is_male = (ptr) => (ptr.mflags2 & M2_MALE) !== 0;
@@ -1594,7 +1594,7 @@ function m_initlgrp(mtmp, x, y, mmf) { m_initgrp(mtmp, x, y, 10, mmf); }
 const humanoid = (ptr) => (ptr.mflags1 & MFLAGS.M1_HUMANOID) !== 0;
 const is_elf = (ptr) => (ptr.mflags2 & MFLAGS.M2_ELF) !== 0;
 const is_dwarf = (ptr) => (ptr.mflags2 & MFLAGS.M2_DWARF) !== 0;
-const is_mercenary = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;
+export const is_mercenary = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;
 const extra_nasty = (ptr) => (ptr.mflags2 & MFLAGS.M2_NASTY) !== 0;
 const strongmonst = (ptr) => (ptr.mflags2 & M2_STRONG) !== 0;
 const is_lord = (ptr) => (ptr.mflags2 & MFLAGS.M2_LORD) !== 0;

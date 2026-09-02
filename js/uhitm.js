@@ -3912,3 +3912,11 @@ export async function mhitm_knockback(magr, mdef, mattk, mhm, weapon_used) {
         mhm.hitflags |= M_ATTK_AGR_DIED;
     return true;
 }
+
+// src/uhitm.c:6300 disguised_as_non_mon(), a mimic posing as something
+// that isn't a monster and not sensed through the disguise.
+export function disguised_as_non_mon(mtmp) {
+    return (!sensemon(mtmp)
+            && M_AP_TYPE(mtmp)
+            && M_AP_TYPE(mtmp) !== M_AP_MONSTER);
+}

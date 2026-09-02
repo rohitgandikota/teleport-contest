@@ -5,6 +5,9 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { disguised_as_non_mon } from './uhitm.js';
+import { uhim } from './mhitu.js';
+import { ansimpleoname, bare_artifactname } from './objnam.js';
 import { Is_box } from './obj.js';
 import { boxlock } from './lock.js';
 import { in_rooms } from './hack.js';
@@ -622,7 +625,7 @@ async function openfallingtrap_hero(noticed) {
 
 // src/zap.c:1225 unturn_you(). Carried eggs regain their hatch timer before
 // the hero receives the form-dependent dread effect.
-async function unturn_you() {
+export async function unturn_you() {
     let revivedCount = 0;
     for (const item of [...(game.invent || [])]) {
         if (item.otyp === ONAMES.EGG && item.corpsenm !== NON_PM
@@ -2202,7 +2205,7 @@ function inventory_resistance_check(dmgtyp) {
     return probability ? rn2(100) < probability : false;
 }
 
-function m_useup(mon, obj) {
+export function m_useup(mon, obj) {
     if (obj.quan > 1) {
         obj.quan--;
         obj.owt = weight(obj);
@@ -2418,7 +2421,7 @@ export function sleep_monst(mon, amount, how) {
     return false;
 }
 
-async function zhitm(mon, type, nd) {
+export async function zhitm(mon, type, nd) {
     const damgtype = zaptype(type) % 10;
     let damage = 0;
 
@@ -3002,7 +3005,10 @@ export async function zap_over_floor(x, y, type, ignoremon = false) {
 
 // src/zap.c:4780 dobuzz(). This ports the lateral beam walk, monster hit,
 // death, and ordinary terrain bounce spine used by wand and spell rays.
-export async function dobuzz(type, nd, startx, starty, ddx, ddy) {
+// sayhit/saymiss: report out of sight hit/miss events; forcemiss: an
+// inexperienced monster wand user always misses (src/zap.c:4780).
+export async function dobuzz(type, nd, startx, starty, ddx, ddy,
+                             sayhit = true, saymiss = false, forcemiss = false) {
     if (game.u.uswallow) {
         note_unported_zap('dobuzz:swallowed');
         return;
@@ -3047,7 +3053,7 @@ export async function dobuzz(type, nd, startx, starty, ddx, ddy) {
                 if (mon) {
                     if (type >= 0)
                         mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITMASK;
-                    if (zap_hit(find_mac(mon), type >= 10 && type < 20 ? type : 0)) {
+                    if (!forcemiss && zap_hit(find_mac(mon), type >= 10 && type < 20 ? type : 0)) {
                         const damage = await zhitm(mon, type, nd);
                         if (DEADMONSTER(mon)) {
                             if (type < 0)
@@ -3056,20 +3062,22 @@ export async function dobuzz(type, nd, startx, starty, ddx, ddy) {
                             else
                                 await killed(mon);
                         } else {
-                            /* buzz() supplies sayhit=true, so an out-of-sight
-                               target still produces the generic "it" hit
-                               message. */
-                            await pline_The(`${flash_str(type)} hits ${
-                                mon_nam(mon)}${exclam(damage)}`);
+                            if (sayhit || canseemon(mon))
+                                await pline_The(`${flash_str(type)} hits ${
+                                    mon_nam(mon)}${exclam(damage)}`);
                             if (damgtype !== 3)
                                 await wakeup(mon, type >= 0);
                         }
                         range -= 2;
+                    } else {
+                        if (saymiss
+                            || (canseemon(mon) && !disguised_as_non_mon(mon)))
+                            await miss(flash_str(type), mon);
                     }
                 } else if (game.u.ux === sx && game.u.uy === sy && range >= 0) {
                     const { nomul } = await import('./hack.js');
                     nomul(0);
-                    if (zap_hit(game.u.uac | 0, 0)) {
+                    if (!forcemiss && zap_hit(game.u.uac | 0, 0)) {
                         range -= 2;
                         const fltxt = flash_str(type);
                         await pline(`${The(fltxt)} hits you!`);
@@ -3673,4 +3681,42 @@ export async function break_statue(obj) {
     obj.spe = 0;
     await fracture_rock(obj);
     return true;
+}
+
+// src/zap.c:3026 lightdamage(), a light-hating hero (gremlin) is hurt by a
+// flash; returns the damage (0 when unaffected).
+export async function lightdamage(obj, ordinary, amt) {
+    let buf;
+    let how;
+    let dmg = amt;
+
+    if (dmg && game.youmonst.data.pmidx === PMNAMES.PM_GREMLIN) {
+        /* reduce high values (from destruction of wand with many charges) */
+        dmg = rnd(dmg);
+        if (dmg > 10)
+            dmg = 10 + rnd(dmg - 10);
+        if (dmg > 20)
+            dmg = 20;
+        await pline(`Ow, that light hurts${(dmg > 2 || game.u.mh <= 5) ? '!' : '.'}`);
+        /* [composing killer/reason is superfluous here; if fatal, cause
+           of death will always be "killed while stuck in creature form"] */
+        if (obj.oclass === OCLASSES.SCROLL_CLASS || obj.oclass === OCLASSES.SPBOOK_CLASS)
+            ordinary = false; /* say blasted rather than zapped */
+        how = (obj.oclass === OCLASSES.SPBOOK_CLASS) ? 'spell of light'
+              : (!obj.oartifact) ? ansimpleoname(obj)
+                : bare_artifactname(obj);
+        buf = `${ordinary ? 'zapped' : 'blasted'} ${uhim()}self with ${how}`;
+        await losehp(Maybe_Half_Phys_zap(dmg), buf, NO_KILLER_PREFIX);
+    }
+    return dmg;
+}
+/* include/hack.h:1236 Maybe_Half_Phys() */
+const Maybe_Half_Phys_zap = (dmg) =>
+    (!!(game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
+     ? Math.trunc((dmg + 1) / 2) : dmg);
+
+// src/zap.c:4765 buzz(), a ray that reports hits but not misses and
+// never forces a miss.
+export async function buzz(type, nd, sx, sy, dx, dy) {
+    await dobuzz(type, nd, sx, sy, dx, dy, true, false, false);
 }

@@ -1,5 +1,14 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (night): the extended command list
+
+cmd.c `doextlist` (the `#?` / help-menu list with its 'a'/':'/'s'/'z'
+toggles and search), `doc_extcmd_flagstr`, `accept_menu_prefix`, and a
+name-based `cmd_from_func`; `doextcmd` repeats after the list the way C
+does; dohelp's 'k' entry uses it. hacklib.c `pmatchi` and `visctrl`.
+Gated 44/44 + hang-gate; census unchanged at 91/102 (s4-02 still diverges
+at the same draw, so its cause is elsewhere; see the next investigation).
+
 ## 2026-09-02 (evening): detect.c pass, scroll of mail
 
 - detect.c is now nearly complete: `gold_detect`, `food_detect`,

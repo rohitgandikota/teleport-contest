@@ -1,3 +1,6 @@
+import { PICK_ONE, CMD_M_PREFIX, AUTOCOMPLETE, CMD_NOT_AVAILABLE, INTERNALCMD, WIZMODECMD, GENERALCMD, QBUFSZ } from './const.js';
+import { add_menu_heading } from './options.js';
+import { pmatchi, visctrl, strstri, strsubst } from './hacklib.js';
 import { seemimic } from './mon.js';
 // cmd.js — Command dispatch and movement.
 // C ref: cmd.c rhack(), hack.c domove().
@@ -849,16 +852,21 @@ async function enter_explore_mode() {
 }
 
 export async function doextcmd() {
-    const name = await get_ext_cmd();
+    let name, retval;
 
-    if (name === null)
-        return ECMD_OK; /* quit */
-
-    /* rhack replaces the '#' initiator with this actual function in the
-       repeat queue after execution. Keep the name as the stable command
-       identity, then replay it without asking for the extended name again. */
-    game._last_extcmd_name = name;
-    return await execute_extcmd(name);
+    /* keep repeating until we don't run help or quit */
+    do {
+        name = await get_ext_cmd();
+        if (name === null)
+            return ECMD_OK; /* quit */
+        /* rhack replaces the '#' initiator with this actual function in the
+           repeat queue after execution. Keep the name as the stable command
+           identity, then replay it without asking for the extended name
+           again. */
+        game._last_extcmd_name = name;
+        retval = await execute_extcmd(name);
+    } while (name === '?'); /* func == doextlist */
+    return retval;
 }
 
 async function execute_extcmd(name) {
@@ -1080,6 +1088,9 @@ async function execute_extcmd(name) {
             await pline(`${buried} object${buried === 1 ? '' : 's'} buried.`);
         return ECMD_OK;
     }
+
+    if (name === '?')
+        return await doextlist();
 
     note_unported_cmd(`extcmd:${name}`);
     return ECMD_OK;
@@ -4137,4 +4148,209 @@ export function key2extcmddesc(key) {
 // src/cmd.c:5655 paranoid_query(), a yes/no paranoid_ynq().
 export async function paranoid_query(be_paranoid, prompt) {
     return (await paranoid_ynq(be_paranoid, prompt, false)) === 'y';
+}
+
+// src/cmd.c cmd_from_func(), the key a command is bound to.  The JS
+// dispatch is by command name, so this takes the name: a BIND line in the
+// rc file wins, else the command's default key.
+export function cmd_from_func(name) {
+    for (const [key, bound] of Object.entries(game.rc_key_bindings || {}))
+        if (bound === name)
+            return key;
+    const e = extcmdlist.find((x) => x.ef_txt === name);
+    return (e && e.key) ? String.fromCharCode(e.key) : '\0';
+}
+
+// src/cmd.c accept_menu_prefix(), does the command take the 'm' prefix?
+export function accept_menu_prefix(ec) {
+    return !!(ec && ((ec.flags & CMD_M_PREFIX) !== 0));
+}
+
+// src/cmd.c doc_extcmd_flagstr(), the "[mA]" column of the extended
+// command list; with a null efp, the menu's footnote.
+function doc_extcmd_flagstr(menuwin, efp) {
+    if (!efp) {
+        tty_add_menu_str(menuwin, '[A] Command autocompletes');
+        tty_add_menu_str(menuwin, `[m] Command accepts '${
+                         visctrl(cmd_from_func('reqmenu'))}' prefix`);
+        return null;
+    } else {
+        const mprefix = accept_menu_prefix(efp),
+              autocomplete = (efp.flags & AUTOCOMPLETE) !== 0;
+        let Abuf = '';
+
+        /* "" or "[m]" or "[A]" or "[mA]" */
+        if (mprefix || autocomplete) {
+            Abuf += '[';
+            if (mprefix)
+                Abuf += 'm';
+            if (autocomplete)
+                Abuf += 'A';
+            Abuf += ']';
+        }
+        return Abuf;
+    }
+}
+
+// src/cmd.c:562 doextlist(), the "#?" list of extended commands.
+export async function doextlist() {
+    let buf, searchbuf = '', descbuf;
+    let cmd_desc;
+    let menuwin;
+    let n, pass;
+    let menumode = 0;
+    const menushown = [0, 0];
+    let onelist = 0;
+    let redisplay = true, search = false;
+    const headings = ['Extended commands', 'Debugging Extended Commands'];
+    const clr = NO_COLOR;
+
+    menuwin = tty_create_nhwindow(NHW_MENU);
+
+    while (redisplay) {
+        redisplay = false;
+        tty_start_menu(menuwin, MENU_BEHAVE_STANDARD);
+        tty_add_menu_str(menuwin, 'Extended Commands List');
+        tty_add_menu_str(menuwin, '');
+
+        buf = `Switch to ${menumode ? 'including' : 'excluding'} commands that don't autocomplete`;
+        tty_add_menu(menuwin, null, 1, 'a', 0, ATR_NONE, clr, buf,
+                     MENU_ITEMFLAGS_NONE);
+
+        if (!searchbuf) {
+            /* [when searching, the ':' menu command doesn't work well
+               because it applies to selectable entries, and this menu
+               would only examine the two or three meta entries, not the
+               actual list of extended commands shown via separator lines;
+               having ':' as an explicit selector overrides the default
+               menu behavior for it; we retain 's' as a group accelerator] */
+            tty_add_menu(menuwin, null, 2, ':', 's', ATR_NONE,
+                         clr, 'Search extended commands',
+                         MENU_ITEMFLAGS_NONE);
+        } else {
+            buf = 'Switch back from search';
+            if (buf.length + searchbuf.length + ' ("")'.length < QBUFSZ)
+                buf += ` ("${searchbuf}")`;
+            /* specifying ':' as a group accelerator here is mostly a
+               statement of intent (we'd like to accept it as a synonym but
+               also want to hide it from general menu use) because it won't
+               work for interfaces which support ':' to search; use as a
+               general menu command takes precedence over group accelerator */
+            tty_add_menu(menuwin, null, 3, 's', ':', ATR_NONE,
+                         clr, buf, MENU_ITEMFLAGS_NONE);
+        }
+        if (game.wizard) {
+            tty_add_menu(menuwin, null, 4, 'z', 0, ATR_NONE, clr,
+          onelist ? 'Switch to showing debugging commands in separate section'
+       : 'Switch to showing all alphabetically, including debugging commands',
+                         MENU_ITEMFLAGS_NONE);
+        }
+        tty_add_menu_str(menuwin, '');
+        menushown[0] = menushown[1] = 0;
+        n = 0;
+        for (pass = 0; pass <= 1; ++pass) {
+            /* skip second pass if not in wizard mode or wizard mode
+               commands are being integrated into a single list */
+            if (pass === 1 && (onelist || !game.wizard))
+                break;
+            for (const efp of extcmdlist) {
+                let wizc;
+
+                if ((efp.flags & (CMD_NOT_AVAILABLE | INTERNALCMD)) !== 0)
+                    continue;
+                /* if hiding non-autocomplete commands, skip such */
+                if (menumode === 1 && (efp.flags & AUTOCOMPLETE) === 0)
+                    continue;
+                /* if not in wizard mode, skip wizard mode commands;
+                   when showing two sections, skip wizard mode commands
+                   in pass==0 and skip other commands in pass==1 */
+                wizc = (efp.flags & WIZMODECMD) !== 0;
+                if (wizc && !game.wizard)
+                    continue;
+                if (!onelist && pass !== wizc)
+                    continue;
+                cmd_desc = efp.ef_desc;
+                /* reduce "become extinct or been genocided" if "extinct"
+                   doesn't apply during the current game */
+                if (!game.wizard && !game.discover
+                    && (efp.flags & GENERALCMD) !== 0 /* minor optimization */
+                    && strstri(cmd_desc, 'extinct') >= 0)
+                    cmd_desc = (descbuf = strsubst(cmd_desc,
+                                        ' been genocided or become extinct',
+                                        ' been genocided'));
+
+                /* skip if not matching search string */
+                if (searchbuf
+                    && strstri(efp.ef_txt, searchbuf) < 0
+                    && strstri(cmd_desc, searchbuf) < 0
+                    /* [these next two are cheap and improve coverage; use
+                       pmatch rather than regexp for menu searching] */
+                    && !pmatchi(searchbuf, efp.ef_txt)
+                    && !pmatchi(searchbuf, cmd_desc))
+                    continue;
+
+                /* We're about to show an item, so show heading if needed.
+                   Doing menu in inner loop like this on demand avoids a
+                   heading with no subordinate entries on the search
+                   results menu. */
+                if (!menushown[pass]) {
+                    buf = headings[pass];
+                    add_menu_heading(menuwin, buf);
+                    menushown[pass] = 1;
+                }
+                /* fmt: "%-14s %4s %s" -> "spell autocomplete description";
+                   2nd field will be "    " or " [A]" or " [m]" or "[mA]" */
+                buf = ` ${efp.ef_txt.padEnd(14)} ${
+                      doc_extcmd_flagstr(menuwin, efp).padStart(4)} ${cmd_desc}`;
+                tty_add_menu_str(menuwin, buf);
+                ++n;
+            }
+            if (n)
+                tty_add_menu_str(menuwin, '');
+        }
+        if (searchbuf && !n)
+            tty_add_menu_str(menuwin, 'no matches');
+        else
+            doc_extcmd_flagstr(menuwin, null);
+
+        tty_end_menu(menuwin, null);
+        const selected = await tty_select_menu(menuwin, PICK_ONE);
+        n = selected.length;
+        if (n > 0) {
+            switch (selected[0]) {
+            case 1: /* 'a': toggle show/hide non-autocomplete */
+                menumode = 1 - menumode;  /* toggle 0 -> 1, 1 -> 0 */
+                redisplay = true;
+                break;
+            case 2: /* ':' when not searching yet: enable search */
+                search = true;
+                break;
+            case 3: /* 's' when already searching: disable search */
+                search = false;
+                searchbuf = '';
+                redisplay = true;
+                break;
+            case 4: /* 'z': toggle showing wizard mode commands separately */
+                search = false;
+                searchbuf = '';
+                onelist = 1 - onelist;  /* toggle 0 -> 1, 1 -> 0 */
+                redisplay = true;
+                break;
+            }
+        } else { /* n==0: ESC or 'q' or Return with nothing selected */
+            search = false;
+            searchbuf = '';
+        }
+        if (search) {
+            searchbuf = await getlin('Extended command list search phrase?');
+            searchbuf = mungspaces(searchbuf);
+            if (searchbuf[0] === '\x1b')
+                searchbuf = '';
+            if (searchbuf)
+                redisplay = true;
+            search = false;
+        }
+    }
+    tty_destroy_nhwindow(menuwin);
+    return ECMD_OK;
 }

@@ -9,6 +9,7 @@
 // Functions appear in src/pager.c order. dohelp()/doextversion() at the
 // bottom predate this port of the rest of the file.
 
+import { doextlist } from './cmd.js';
 import { game } from './gstate.js';
 import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          D_TRAPPED, D_BROKEN, IS_WALL,
@@ -1562,9 +1563,8 @@ export async function dohelp() {
     case 'l':
         await domenucontrols();
         return ECMD_OK;
-    case 'k':   /* doextlist — its interactive menu is not ported yet */
-        note_unported_pager(`dohelp:item_${ch}`);
-        return ECMD_OK;
+    case 'k':
+        return await doextlist();
     default:
         /* ESC/space — menu dismissed with no pick */
         return ECMD_OK;

@@ -52,6 +52,7 @@ import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
 import { is_rider, create_critters } from './makemon.js';
+import { OBJ_INVENT, OBJ_MINVENT, OBJ_BURIED, OBJ_CONTAINED, BURIED_TOO, CONTAINED_TOO } from './const.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
          stackobj } from './invent.js';
 import { getdir } from './cmd.js';
@@ -675,6 +676,41 @@ export async function release_hold() {
 //
 // Returns the retributive damage. dozap() applies it after wand discovery and
 // inventory damage have finished, matching the C caller.
+// src/zap.c:654 get_obj_location() — where an object is; fills cc and
+// returns true when it has a map position.
+export function get_obj_location(obj, cc, locflags) {
+    switch (obj.where) {
+    case OBJ_INVENT:
+        cc.x = game.u.ux;
+        cc.y = game.u.uy;
+        return true;
+    case OBJ_FLOOR:
+        cc.x = obj.ox;
+        cc.y = obj.oy;
+        return true;
+    case OBJ_MINVENT:
+        if (obj.ocarry?.mx) {
+            cc.x = obj.ocarry.mx;
+            cc.y = obj.ocarry.my;
+            return true;
+        }
+        break; /* !mx => migrating monster */
+    case OBJ_BURIED:
+        if (locflags & BURIED_TOO) {
+            cc.x = obj.ox;
+            cc.y = obj.oy;
+            return true;
+        }
+        break;
+    case OBJ_CONTAINED:
+        if (locflags & CONTAINED_TOO)
+            return get_obj_location(obj.ocontainer, cc, locflags);
+        break;
+    }
+    cc.x = cc.y = 0;
+    return false;
+}
+
 export async function zapyourself(obj, ordinary) {
     let damage = 0;
     let learn_it = false;

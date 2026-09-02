@@ -4,6 +4,9 @@
 // Initial u.uac is 0 when the first startup status is drawn. u_init's later
 // find_ac() computes the real value before welcome and moveloop paging.
 
+import { artifact_light } from './artifact.js';
+import { end_burn } from './timeout.js';
+import { setnotworn } from './worn.js';
 import { game } from './gstate.js';
 import { mons } from './monst_data.js';
 import { objects, ONAMES, OCLASSES } from './objects_data.js';
@@ -387,7 +390,7 @@ async function Cloak_on() {
     return reveal_worn_armor(W_ARMC);
 }
 
-async function Cloak_off(otmp) {
+export async function Cloak_off(otmp) {
     const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
     const oldprop = prop
         ? (game.u.uprops?.[prop] || 0) & ~WORN_CLOAK : 0;
@@ -498,7 +501,7 @@ function adjust_helmet_brilliance(obj, delta) {
     (game.disp ||= {}).botl = true;
 }
 
-async function Helmet_off(otmp) {
+export async function Helmet_off(otmp) {
     (game.context_takeoff ||= {}).mask &= ~W_ARMH;
     switch (otmp.otyp) {
     case ONAMES.FEDORA:
@@ -865,7 +868,7 @@ export async function Boots_on() {
 }
 
 // src/do_wear.c:239 Boots_off()
-async function Boots_off(otmp) {
+export async function Boots_off(otmp) {
     const prop = PROP_KEYS[objects[otmp.otyp].oc_oprop];
     const oldprop = prop
         ? (game.u.uprops?.[prop] || 0) & ~WORN_BOOTS : 0;
@@ -983,6 +986,72 @@ export async function Amulet_on(amul) {
 }
 
 // src/do_wear.c:1030 Amulet_off() — does its own off_msg.
+// src/do_wear.c:733 Shield_off()
+export async function Shield_off() {
+    const uarms = worn(W_ARMS);
+    (game.context_takeoff ||= {}).mask &= ~W_ARMS;
+    /* no shield currently requires special handling when taken off, but
+       keep this uncommented in case somebody adds a new one which does */
+    switch (uarms?.otyp) {
+    case ONAMES.SMALL_SHIELD:
+    case ONAMES.SHIELD_OF_DRAIN_RESISTANCE:
+    case ONAMES.SHIELD_OF_SHOCK_RESISTANCE:
+    case ONAMES.ELVEN_SHIELD:
+    case ONAMES.URUK_HAI_SHIELD:
+    case ONAMES.ORCISH_SHIELD:
+    case ONAMES.DWARVISH_ROUNDSHIELD:
+    case ONAMES.LARGE_SHIELD:
+    case ONAMES.SHIELD_OF_REFLECTION:
+        break;
+    default:
+        /* impossible(unknown_type, c_shield, uarms->otyp) */
+        break;
+    }
+    setworn(null, W_ARMS);
+    return 0;
+}
+
+// src/do_wear.c:778 Shirt_off()
+export async function Shirt_off() {
+    const uarmu = worn(W_ARMU);
+    (game.context_takeoff ||= {}).mask &= ~W_ARMU;
+    /* no shirt currently requires special handling when taken off, but
+       keep this uncommented in case somebody adds a new one which does */
+    switch (uarmu?.otyp) {
+    case ONAMES.HAWAIIAN_SHIRT:
+    case ONAMES.T_SHIRT:
+        break;
+    default:
+        /* impossible(unknown_type, c_shirt, uarmu->otyp) */
+        break;
+    }
+    setworn(null, W_ARMU);
+    return 0;
+}
+
+// src/do_wear.c:909 Armor_off() — the body armor comes off; a lit artifact
+// stops shining and dragon armor's secondary property is withdrawn.
+export async function Armor_off() {
+    const otmp = worn(W_ARM);
+    const was_arti_light = !!(otmp && otmp.lamplit && artifact_light(otmp));
+
+    (game.context_takeoff ||= {}).mask &= ~W_ARM;
+    setworn(null, W_ARM);
+    game.context_takeoff.cancelled_don = false;
+
+    /* taking off yellow dragon scales/mail might be fatal; arti_light
+       comes from gold dragon scales/mail so they don't overlap, but
+       conceptually the non-fatal change should be done before the
+       potentially fatal change in case the latter results in bones */
+    if (was_arti_light && !artifact_light(otmp)) {
+        await end_burn(otmp, false);
+        if (!Blind())
+            await pline(`${Tobjnam(otmp, 'stop')} shining.`);
+    }
+    await dragon_armor_handling(otmp, false);
+    return 0;
+}
+
 export async function Amulet_off() {
     const uamul = worn(W_AMUL);
     if (!uamul) return;
@@ -1233,11 +1302,17 @@ async function Ring_on(obj) {
     }
 }
 
-async function Ring_off(obj) {
+// src/do_wear.c:1300 Ring_off_or_gone() — the ring leaves its finger: taken
+// off (setworn) or gone entirely (setnotworn, e.g. destroyed or stolen).
+async function Ring_off_or_gone(obj, gone) {
     const mask = obj.owornmask & (W_RINGL | W_RINGR);
     const oldprop = (game.u.uprops?.STEALTH || 0) & ~mask;
     const observable = obj.otyp === ONAMES.RIN_PROTECTION && obj.spe !== 0;
-    setworn(null, mask);
+    (game.context_takeoff ||= {}).mask &= ~mask;
+    if (gone)
+        setnotworn(obj);
+    else
+        setworn(null, obj.owornmask);
     if (obj.otyp === ONAMES.RIN_PROTECTION) {
         learnring(obj, observable);
         if (obj.spe)
@@ -1288,6 +1363,16 @@ async function Ring_off(obj) {
     } else {
         note_unported_do_wear(`Ring_off:otyp=${obj.otyp}`);
     }
+}
+
+// src/do_wear.c:1449 Ring_off()
+async function Ring_off(obj) {
+    await Ring_off_or_gone(obj, false);
+}
+
+// src/do_wear.c:1455 Ring_gone()
+export async function Ring_gone(obj) {
+    await Ring_off_or_gone(obj, true);
 }
 
 // src/do_wear.c:2030 canwearobj() — find the slot; refuse with C's message
@@ -2158,7 +2243,7 @@ async function slot_off(otmp) {
     }
 }
 
-async function Gloves_off(otmp) {
+export async function Gloves_off(otmp) {
     switch (otmp.otyp) {
     case ONAMES.GAUNTLETS_OF_POWER:
         makeknown(otmp.otyp);
@@ -2446,4 +2531,55 @@ export async function remarm_swapwep() {
     await do_takeoff();
     return (!game.u.uswapwep || game.u.uswapwep.bknown !== oldbknown)
            ? ECMD_TIME : ECMD_OK;
+}
+
+// src/do_wear.c:2630 some_armor() — pick a worn armor piece at random,
+// weighted toward the body slot (cloak, else suit, else shirt), then a 1/4
+// chance each for helmet, gloves, boots and shield.
+export function some_armor(victim) {
+    const isyou = (victim === game.youmonst);
+    let otmph, otmp;
+
+    otmph = isyou ? worn(W_ARMC) : which_armor(victim, W_ARMC);
+    if (!otmph)
+        otmph = isyou ? worn(W_ARM) : which_armor(victim, W_ARM);
+    if (!otmph)
+        otmph = isyou ? worn(W_ARMU) : which_armor(victim, W_ARMU);
+
+    otmp = isyou ? worn(W_ARMH) : which_armor(victim, W_ARMH);
+    if (otmp && (!otmph || !rn2(4)))
+        otmph = otmp;
+    otmp = isyou ? worn(W_ARMG) : which_armor(victim, W_ARMG);
+    if (otmp && (!otmph || !rn2(4)))
+        otmph = otmp;
+    otmp = isyou ? worn(W_ARMF) : which_armor(victim, W_ARMF);
+    if (otmp && (!otmph || !rn2(4)))
+        otmph = otmp;
+    otmp = isyou ? worn(W_ARMS) : which_armor(victim, W_ARMS);
+    if (otmp && (!otmph || !rn2(4)))
+        otmph = otmp;
+    return otmph || null;
+}
+
+// src/do_wear.c:3319 adj_abon() — gauntlets of dexterity and helm of
+// brilliance move the attribute bonus with their enchantment.
+export function adj_abon(otmp, delta) {
+    const uarmg = worn(W_ARMG), uarmh = worn(W_ARMH);
+    const abon = ((game.u.abon ||= {}).a ||= new Array(A_MAX).fill(0));
+
+    if (uarmg && uarmg === otmp && otmp.otyp === ONAMES.GAUNTLETS_OF_DEXTERITY) {
+        if (delta) {
+            makeknown(uarmg.otyp);
+            abon[A_DEX] += delta;
+        }
+        (game.disp ||= {}).botl = true;
+    }
+    if (uarmh && uarmh === otmp && otmp.otyp === ONAMES.HELM_OF_BRILLIANCE) {
+        if (delta) {
+            makeknown(uarmh.otyp);
+            abon[A_INT] += delta;
+            abon[A_WIS] += delta;
+        }
+        (game.disp ||= {}).botl = true;
+    }
 }

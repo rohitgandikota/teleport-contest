@@ -6,6 +6,7 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { update_inventory } from './invent.js';
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
          HUNGRY, PICK_ANY, MENU_BEHAVE_STANDARD, MENU_ITEMFLAGS_NONE,
@@ -96,6 +97,67 @@ export function hot_pursuit(shkp) {
 function note_unported_shk(what) {
     (game.unported ||= new Set()).add('shk:' + what);
     return false;
+}
+
+// src/shk.c:215 next_shkp() — the next shopkeeper on the monster list,
+// optionally only one with a bill; an angry one without a surcharge gets
+// riled.
+export function next_shkp(shkp, withbill) {
+    const mons = game.level?.monsters || [];
+    let i = shkp ? mons.indexOf(shkp) : -1;
+    let found = null;
+    for (; i >= 0 && i < mons.length; i++) {
+        const m = mons[i];
+        if (DEADMONSTER(m))
+            continue;
+        const eshk = m.isshk ? (m.eshk || ESHK(m)) : null;
+        if (m.isshk && ((eshk?.bill_p?.length || 0) || !withbill)) {
+            found = m;
+            break;
+        }
+    }
+    if (found) {
+        if (!found.mpeaceful) {                         /* ANGRY(shkp) */
+            const eshk = found.eshk || ESHK(found);
+            if (!eshk.surcharge)
+                rile_shk(found);
+        }
+    }
+    return found;
+}
+
+// src/shk.c:1136 onbill() — the bill entry for obj on this shopkeeper's bill.
+export function onbill(obj, shkp, silent) {
+    if (shkp) {
+        const eshk = shkp.eshk || ESHK(shkp);
+        for (const bp of eshk.bill_p || []) {
+            if (bp.bo_id === obj.o_id) {
+                /* if (!obj->unpaid) impossible("onbill: paid obj on bill?") */
+                return bp;
+            }
+        }
+    }
+    /* if (obj->unpaid && !silent) impossible("onbill: unpaid obj %s?", ...) */
+    return null;
+}
+
+// src/shk.c:3237 alter_cost() — an unpaid object was changed (enchanted,
+// eroded, ...); re-price it on the bill, never lowering the price unless
+// amt is negative.
+export function alter_cost(obj, amt) {
+    let bp = null;
+
+    for (let shkp = next_shkp(game.level?.monsters?.[0] ?? null, true); shkp;
+         shkp = next_shkp(game.level?.monsters?.[game.level.monsters.indexOf(shkp) + 1] ?? null, true)) {
+        if ((bp = onbill(obj, shkp, true)) != null) {
+            const new_price = !amt ? get_cost(obj, shkp) : (amt < 0) ? -amt : amt;
+            if (new_price > bp.price || amt < 0) {
+                bp.price = new_price;
+                update_inventory();
+            }
+            break; /* done */
+        }
+    }
 }
 
 // src/shk.c:439 record_price_quote()
@@ -629,7 +691,7 @@ function getprice(obj, shk_buying = false) {
 }
 
 // src/shk.c:2877 get_cost(), what the shopkeeper charges for one item.
-function get_cost(obj, shkp) {
+export function get_cost(obj, shkp) {
     let tmp = getprice(obj);
     let multiplier = 1, divisor = 1;
     const ocl = game.objects[obj.otyp];

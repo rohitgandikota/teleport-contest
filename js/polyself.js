@@ -23,6 +23,10 @@ import { NO_PART, ARM, FINGER, FINGERTIP, FOOT, HAND, HANDED,
          ECMD_OK, ECMD_TIME, KILLED_BY_AN, Upolyd, FROMFORM,
          I_SPECIAL, FROMOUTSIDE, TT_PIT } from './const.js';
 import { Flying, Levitation } from './youprop.js';
+import { arti_light_radius } from './light.js';
+import { maybe_adjust_light } from './mkobj.js';
+import { artifact_light } from './artifact.js';
+import { Your } from './pline.js';
 import { rn2, rn1, d, rnd } from './rng.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
 import { WrappingAllowed, is_flimsy } from './obj.js';
@@ -940,6 +944,24 @@ export async function polyself() {
 }
 
 // src/wizcmds.c:568 wiz_polyself() and polyself(POLY_CONTROLLED).
+// src/polyself.c:1954 skinback() — embedded dragon scales return to being
+// worn armor.
+export async function skinback(silently) {
+    const u = game.u;
+    if (u.uskin) {
+        const old_light = arti_light_radius(u.uskin);
+
+        if (!silently)
+            await Your('skin returns to its original form.');
+        u.uarm = u.uskin;
+        u.uskin = null;
+        /* undo save/restore hack */
+        u.uarm.owornmask &= ~I_SPECIAL;
+        if (artifact_light(u.uarm))
+            await maybe_adjust_light(u.uarm, old_light);
+    }
+}
+
 export async function wiz_polyself() {
     const { getlin } = await import('./cmd.js');
     const name = await getlin('Become what kind of monster? [type the name]');

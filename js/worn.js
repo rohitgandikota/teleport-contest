@@ -475,7 +475,7 @@ function racial_exception(mon, obj) {
 }
 
 // include/obj.h:299 is_elven_armor()
-const is_elven_armor = (o) =>
+export const is_elven_armor = (o) =>
     o.otyp === ONAMES.ELVEN_LEATHER_HELM || o.otyp === ONAMES.ELVEN_MITHRIL_COAT
     || o.otyp === ONAMES.ELVEN_CLOAK || o.otyp === ONAMES.ELVEN_SHIELD
     || o.otyp === ONAMES.ELVEN_BOOTS;

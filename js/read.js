@@ -44,6 +44,18 @@ import { NOTELL } from './const.js';
 import { monflee } from './monmove.js';
 import { resist } from './zap.js';
 import { create_critters } from './makemon.js';
+import { some_armor, adj_abon } from './do_wear.js';
+import { remove_worn_item } from './steal.js';
+import { alter_cost, costly_alteration } from './shk.js';
+import { arti_light_radius } from './light.js';
+import { maybe_adjust_light, curse, bless } from './mkobj.js';
+import { artifact_light } from './artifact.js';
+import { is_elven_armor } from './worn.js';
+import { Is_dragon_scales } from './mondata.js';
+import { is_shield } from './obj.js';
+import { Yobjnam2, Yname2, otense } from './objnam.js';
+import { strange_feeling } from './potion.js';
+import { NH_BLACK, NH_GOLDEN, NH_SILVER, COST_DEGRD, COST_DECHNT } from './const.js';
 import { useup, identify_pack, update_inventory } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
@@ -222,6 +234,9 @@ export async function seffects(sobj) {
         break;
     case ONAMES.SCR_LIGHT:
         return await seffect_light(sobj);
+    case ONAMES.SCR_ENCHANT_ARMOR:
+        await seffect_enchant_armor(sobj);
+        break;
     case ONAMES.SCR_DESTROY_ARMOR:
         return await seffect_destroy_armor(sobj);
     case ONAMES.SCR_CONFUSE_MONSTER:
@@ -571,6 +586,172 @@ async function seffect_stinking_cloud(sobj) {
         await You('have found a scroll of stinking cloud!');
     game.known = true;
     await do_stinking_cloud(sobj, already_known);
+}
+
+// src/read.c:1115 seffect_enchant_armor()
+async function seffect_enchant_armor(sobj) {
+    let s;
+    let special_armor;
+    let same_color;
+    const otmp = some_armor(game.youmonst);
+    const sblessed = !!sobj.blessed;
+    const scursed = !!sobj.cursed;
+    const confused = !!game.u.uprops?.CONFUSION;
+    let old_erodeproof, new_erodeproof;
+
+    if (!otmp) {
+        await strange_feeling(sobj, !Blind()
+                              ? 'Your skin glows then fades.'
+                              : 'Your skin feels warm for a moment.');
+        exercise(A_CON, !scursed);
+        exercise(A_STR, !scursed);
+        return;
+    }
+    if (confused) {
+        old_erodeproof = (otmp.oerodeproof != 0);
+        new_erodeproof = !scursed;
+        otmp.oerodeproof = 0; /* for messages */
+        if (Blind()) {
+            otmp.rknown = false;
+            await pline(`${Yobjnam2(otmp, 'feel')} warm for a moment.`);
+        } else {
+            otmp.rknown = true;
+            await pline(`${Yobjnam2(otmp, 'are')} covered by a ${
+                scursed ? 'mottled' : 'shimmering'} ${
+                hcolor(scursed ? NH_BLACK : NH_GOLDEN)} ${
+                scursed ? 'glow' : (is_shield(otmp) ? 'layer' : 'shield')}!`);
+        }
+        if (new_erodeproof && (otmp.oeroded || otmp.oeroded2)) {
+            otmp.oeroded = otmp.oeroded2 = 0;
+            await pline(`${Yobjnam2(otmp, Blind() ? 'feel' : 'look')} as good as new!`);
+        }
+        if (old_erodeproof && !new_erodeproof) {
+            /* restore erodeproof before shop charges */
+            otmp.oerodeproof = 1;
+            await costly_alteration(otmp, COST_DEGRD);
+        }
+        otmp.oerodeproof = new_erodeproof ? 1 : 0;
+        return;
+    }
+    /* elven armor vibrates warningly when enchanted beyond a limit */
+    special_armor = is_elven_armor(otmp)
+        || (game.urole?.mnum === PMNAMES.PM_WIZARD && otmp.otyp === ONAMES.CORNUTHAUM);
+    if (scursed)
+        same_color = (otmp.otyp === ONAMES.BLACK_DRAGON_SCALE_MAIL
+                      || otmp.otyp === ONAMES.BLACK_DRAGON_SCALES);
+    else
+        same_color = (otmp.otyp === ONAMES.SILVER_DRAGON_SCALE_MAIL
+                      || otmp.otyp === ONAMES.SILVER_DRAGON_SCALES
+                      || otmp.otyp === ONAMES.SHIELD_OF_REFLECTION);
+    if (Blind())
+        same_color = false;
+
+    /* KMH -- catch underflow */
+    s = scursed ? -otmp.spe : otmp.spe;
+    if (s > (special_armor ? 5 : 3) && rn2(s)) {
+        otmp.in_use = true;
+        await pline(`${Yname2(otmp)} violently ${
+            otense(otmp, Blind() ? 'vibrate' : 'glow')}${
+            (!Blind() && !same_color) ? ' ' : ''}${
+            (Blind() || same_color) ? '' : hcolor(scursed ? NH_BLACK : NH_SILVER)
+            } for a while, then ${otense(otmp, 'evaporate')}.`);
+        await remove_worn_item(otmp, false);
+        useup(otmp);
+        return;
+    }
+
+    if (s < -100)
+        s = -100; /* avoid integer overflow with very negative armor */
+    /* set s to how many points the armor will be enchanted by:
+       3 for -3 or worse armor;
+       2 for -1 to +0 armor;
+       1 for +1 to +2 armor;
+       0 for +3 to +4 armor, etc.
+       When disenchanting, everything is done with reversed signs. */
+    s = Math.trunc((4 - s) / 2);
+    /* special armor, non-magical armor with low/no enchantment, and
+       blessed scrolls are more effective. */
+    if (special_armor)
+        ++s;
+    if (!game.objects[otmp.otyp].oc_magic)
+        ++s;
+    if (sblessed)
+        ++s;
+    if (s <= 0) {
+        s = 0;
+        if (otmp.spe > 0 && !rn2(otmp.spe))
+            s = 1;
+    } else {
+        s = rnd(s);
+    }
+    if (s > 11)
+        s = 11;    /* unlikely but possible: avoids an overflow later */
+    if (scursed)
+        s = -s;
+
+    if (s >= 0 && Is_dragon_scales(otmp)) {
+        const was_lit = otmp.lamplit;
+        const old_light = artifact_light(otmp) ? arti_light_radius(otmp) : 0;
+
+        /* dragon scales get turned into dragon scale mail */
+        await pline(`${Yname2(otmp)} merges and hardens!`);
+        setworn(null, W_ARM);
+        /* assumes same order */
+        otmp.otyp += ONAMES.GRAY_DRAGON_SCALE_MAIL - ONAMES.GRAY_DRAGON_SCALES;
+        otmp.lamplit = 0; /* don't want bless() or uncurse() to adjust
+                           * light source's radius; this is a real hack */
+        if (sblessed) {
+            otmp.spe++;
+            cap_spe(otmp);
+            if (!otmp.blessed)
+                bless(otmp);
+        } else if (otmp.cursed)
+            uncurse(otmp);
+        otmp.known = 1;
+        setworn(otmp, W_ARM);
+        if (otmp.unpaid)
+            alter_cost(otmp, 0); /* shop bill */
+        otmp.lamplit = was_lit;
+        if (old_light)
+            await maybe_adjust_light(otmp, old_light);
+        return;
+    }
+
+    await pline(`${Yname2(otmp)} ${(s === 0) ? 'violently ' : ''}${
+        otense(otmp, Blind() ? 'vibrate' : 'glow')}${
+        (!Blind() && !same_color) ? ' ' : ''}${
+        (Blind() || same_color) ? '' : hcolor(scursed ? NH_BLACK : NH_SILVER)
+        } for a ${(s * s > 1) ? 'while' : 'moment'}.`);
+    /* [this cost handling will need updating if shop pricing is
+       ever changed to care about curse/bless status of armor] */
+    if (s < 0)
+        await costly_alteration(otmp, COST_DECHNT);
+    if (scursed && !otmp.cursed)
+        curse(otmp);
+    else if (sblessed && !otmp.blessed)
+        bless(otmp);
+    else if (!scursed && otmp.cursed)
+        uncurse(otmp);
+    if (s) {
+        const oldspe = otmp.spe;
+
+        /* not necessary to use adj_abon() or cap_spe() when adjusting
+           here because it has been capped at 99 and s is quite small;
+           however, might need to change s if it takes spe past 99 */
+        otmp.spe += s;
+        cap_spe(otmp); /* make sure that it doesn't exceed SPE_LIM */
+        s = otmp.spe - oldspe; /* cap_spe() might have throttled 's' */
+        if (s) /* skip if it got changed to 0 */
+            adj_abon(otmp, s); /* adjust armor bonus for Dex or Int+Wis */
+        game.known = !!otmp.known;
+        if (s > 0 && otmp.unpaid)
+            alter_cost(otmp, 0);
+    }
+
+    if ((otmp.spe > (special_armor ? 5 : 3))
+        && (special_armor || !rn2(7)))
+        await pline(`${Yobjnam2(otmp, 'suddenly vibrate')} ${
+            Blind() ? 'again' : 'unexpectedly'}.`);
 }
 
 async function seffect_destroy_armor(sobj) {

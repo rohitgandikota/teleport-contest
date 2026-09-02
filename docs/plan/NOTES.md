@@ -4497,3 +4497,42 @@ effect getlin, "Analyze throne?", a --More--, "Die?"), send Return after
 the command: xwaitforspace accepts it for --More--, getlin returns an
 empty string (atoi 0, random effect), and yn prompts take their default.
 A bare Return at the command prompt is only "Unknown command", no turn.
+
+## A file's own locals collide with faithful imports; scan before loading
+
+Several JS files define private copies of C macros and helpers
+(trap.js: m_in_air, m_easy_escape_pit, dunlev, the FORCETRAP flag set;
+teleport.js: next_to_u, Stunned). Adding `import { name }` for a symbol
+that already exists as a top-level const or function is a SyntaxError that
+node reports one name at a time. Before the load test, list every
+top-level declaration and every imported name in the edited file and drop
+the imports that clash; a duplicate `function` definition is the same
+class of error. The scan is ten lines of Python and saves a round trip
+per collision.
+
+## m prefix enters water silently; the moat has eels
+
+domove() in 5.0: without paranoid_confirmation:swim the hero simply does
+not step into known water or lava, and only says so when mention_walls is
+set; with the m prefix (context.nopick) the move goes through with no
+message and drown() runs. The Castle moat is the reachable deep water for
+a probe, but giant eels sit in it: a hero at the moat edge is bitten
+before the m-move keys arrive and the --More-- swallows them. #wizkill
+the three moat squares beside the target (the kills also give experience
+levels, so expect "Welcome to experience level N") before walking up.
+
+## surface() and waterbody_name() read SURFACE_AT, not typ
+
+Both look through a raised drawbridge to the terrain under it
+(db_under_typ of the drawbridgemask), so the span of a raised castle
+drawbridge is "moat" and the levitation landing message names "the
+stairs" via On_stairs(). The port's surface() used a stairway wire that
+was not connected on the arrival path and answered "ground".
+
+## ELevitation lives in game.u.uprops.LEVITATION as the C slot mask
+
+worn.js stores C's u.uprops[p].extrinsic slot mask under each uprops key
+and deletes the key when the mask empties; blocked masks live in
+game.u.blocked. float_down(hmask, emask) therefore clears bits in
+intrinsic.HLevitation and in uprops.LEVITATION and deletes the key at
+zero, and BLevitation == I_SPECIAL is `u.blocked.LEVITATION === I_SPECIAL`.

@@ -1,3 +1,7 @@
+import { BRK_KNOWN2NOTBREAK } from './const.js';
+import { BRK_KNOWN2BREAK } from './const.js';
+import { BRK_KNOWN_OUTCOME } from './const.js';
+import { BRK_FROM_INV } from './const.js';
 import { ship_object, container_impact_dmg } from './dokick.js';
 import { snuff_candle } from './apply.js';
 import { is_flammable } from './mkobj.js';
@@ -293,6 +297,36 @@ async function check_shop_obj(obj, x, y, broken) {
             }
         }
     }
+}
+
+// src/dothrow.c:1220 harmless_missile()
+export function harmless_missile(obj) {
+    const otyp = obj.otyp;
+
+    /* this list is fairly arbitrary */
+    switch (otyp) {
+    case ONAMES.SLING:
+    case ONAMES.EUCALYPTUS_LEAF:
+    case ONAMES.KELP_FROND:
+    case ONAMES.SPRIG_OF_WOLFSBANE:
+    case ONAMES.FORTUNE_COOKIE:
+    case ONAMES.PANCAKE:
+        return true;
+    case ONAMES.RUBBER_HOSE:
+    case ONAMES.BAG_OF_TRICKS:
+        return (obj.spe < 1);
+    case ONAMES.SACK:
+    case ONAMES.OILSKIN_SACK:
+    case ONAMES.BAG_OF_HOLDING:
+        return !Has_contents(obj);
+    default:
+        if (obj.oclass === OCLASSES.SCROLL_CLASS) /* scrolls but not all paper objs */
+            return true;
+        if (game.objects[otyp].oc_material === MATERIALS.CLOTH)
+            return true;
+        break;
+    }
+    return false;
 }
 
 // src/dothrow.c:1460 throwit_return()
@@ -1180,6 +1214,24 @@ export async function breaks(obj, x, y) {
         return 0;
     await breakmsg(obj, in_view);
     return await breakobj(obj, x, y, false, false);
+}
+
+// src/dothrow.c:2417 hero_breaks()
+export async function hero_breaks(obj, x, y, breakflags) {
+    /* from_invent: thrown or dropped by player; maybe on shop bill;
+       by-hero is implicit so callers don't need to specify BRK_BY_HERO */
+    const from_invent = (breakflags & BRK_FROM_INV) !== 0,
+          in_view = Blind() ? false : (from_invent || cansee(x, y));
+    let brk = (breakflags & BRK_KNOWN_OUTCOME);
+
+    /* only call breaktest if caller hasn't already specified the outcome */
+    if (!brk)
+        brk = breaktest(obj) ? BRK_KNOWN2BREAK : BRK_KNOWN2NOTBREAK;
+    if (brk === BRK_KNOWN2NOTBREAK)
+        return 0;
+
+    await breakmsg(obj, in_view);
+    return await breakobj(obj, x, y, true, from_invent);
 }
 
 // src/dothrow.c:2457 release_camera_demon(), a broken expensive camera

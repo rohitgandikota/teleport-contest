@@ -1,5 +1,48 @@
 # STATUS — live handoff board
 
+## 2026-09-03 (afternoon): trap.c hero arms, drown, lava, float_down
+
+trap.js's 49 notes are down to 2. Ported in C form: `drown` (gremlin and
+iron golem forms, unleash_all, the Punished ball, the teleport-spell
+escape through dotele, dismount, reset_faint, the crawl-out with
+emergency_disrobe's remove_worn_item and welded checks, the two-pass
+drowning loop, rescued_from_terrain), `lava_effects` (protected item,
+boots first, the survivor and non-survivor paths, life-save countermeasures,
+sink-into-lava with monstseesu), `float_down` (the HLevitation/ELevitation
+masks, blocked levitation and flight, the ball drag with movobj, ustuck
+release, the Sokoban fall with selftouch), `float_up`'s buried ball arm
+and encumber_msg, `climb_pit`, `fall_through` (candig, next_to_u's pet jerk,
+impact_drop, shopdig, the Castle's find_hell, controlled flight),
+`trapeffect_landmine` for hero and monsters with `blow_up_landmine` and
+`keep_saddle_with_steedcorpse`, the magic trap explosion, the bear trap,
+web and pit hero arms with their steed messages, `openholdingtrap`'s
+steed release, the rust trap's iron golem and gremlin forms, the dart
+trap's poison, count_wsegs for long worms in pits and holes,
+`trapname`'s hallucinatory names (rn2_on_display_rng plus a real rn2 for
+the role trap), `find_random_launch_coord`'s launchplace with `linedup`,
+`launch_obj`'s iron bars with `hits_bars`, `back_on_ground` and
+`rescued_from_terrain`, `launch_drop_spot`. Elsewhere: apply.c
+`unleash_all`, `maybe_dunk_boulders`; eat.c `unfaint`, `reset_faint` and
+the faint wiring (HDeaf timeout, afternmv, selftouch); teleport.c
+`domagicportal`, `dotele` exported; hack.c `movobj`; mthrowu.c `hit_bars`,
+`hits_bars`, `linedup`; dothrow.c `hero_breaks`, `harmless_missile`;
+monmove.c `dissolve_bars`; pager.c `ice_descr`; dungeon.c `surface` in
+its 5.0 form (SURFACE_AT, air bubble and cloud, On_stairs, husk);
+pager.c `waterbody_name` now reads SURFACE_AT (a raised drawbridge
+describes as "moat", not "water") and names the water level's walls.
+detect.js's private trapname now re-exports trap.js's.
+- verified with two new recipes: `castle-moat-drowning.json` (wizkill the
+  eels flanking the raised drawbridge, m-prefix into the moat: fall in,
+  scrolls and spellbooks fade, crawl out, "Pheew!") and
+  `ring-levitation-float-down.json` (ring on: float up; ring off: "You
+  float gently to the stairs."): RNG and every screen identical.
+- gated 44/44 + hang-gate; census 93/102.
+- still noted in trap.js: animate_statue's saved-traits arm (montraits)
+  and the monster portal's no-destination check.
+- next: animate_statue saved traits, uhitm.js (44 notes), zap.js (41),
+  eat.js (31), dokick.js and apply.js (27 each), ball.c, polyuse and
+  create_polymon.
+
 ## 2026-09-03: sit.c complete, water_prayer, the castle passtune, mongets
 
 `js/sit.js` is the C file in C order: `take_gold`, `throne_sit_effect`

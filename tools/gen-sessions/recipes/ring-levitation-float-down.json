@@ -1,0 +1,15 @@
+{
+  "name": "ring-levitation-float-down",
+  "description": "Wish for a ring of levitation, put it on (float up) and remove it (float_down onto the up stairs).",
+  "coverage": [
+    "mode.debug"
+  ],
+  "segments": [
+    {
+      "seed": 7102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017ring of levitation\rPnr    R    "
+    }
+  ]
+}

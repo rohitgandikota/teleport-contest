@@ -1,3 +1,4 @@
+import { maybe_unhide_at } from './mon.js';
 import { is_rider } from './mondata.js';
 import { goodpos } from './makemon.js';
 import { rloc_to, enexto } from './teleport.js';
@@ -128,6 +129,16 @@ export async function invocation_message() {
         await pline(`${The(xname(candelabrum))} ${
             u.ublind ? 'throbs palpably' : 'glows with a strange light'}!`);
     }
+}
+
+// src/hack.c:825 movobj()
+export function movobj(obj, ox, oy) {
+    /* optimize by leaving on the fobj chain? */
+    obj_extract_self(obj); /* remove_object(obj) */
+    maybe_unhide_at(obj.ox, obj.oy);
+    newsym(obj.ox, obj.oy);
+    place_object(obj, ox, oy);
+    newsym(ox, oy);
 }
 
 // src/hack.c:922 may_dig() — intended to be called only on ROCKs or TREEs. A

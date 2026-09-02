@@ -1,6 +1,7 @@
 // detect.js — searching and detection.
 // C ref: src/detect.c
 
+import { trapname } from './trap.js';
 import { find_drawbridge, open_drawbridge } from './dbridge.js';
 import { expels } from './mhitu.js';
 import { is_drawbridge_wall } from './dbridge.js';
@@ -227,11 +228,8 @@ export async function find_trap(trap) {
     }
 }
 
-/* src/drawing.c trapname() — defsyms explanation for the trap's cmap */
-export function trapname(ttyp) {
-    const base = defsyms.findIndex(d => d.name === 'S_arrow_trap');
-    return defsyms[base + ttyp - 1]?.explain ?? 'trap';
-}
+/* src/trap.c:7100 trapname() lives in js/trap.js; re-exported for callers */
+export { trapname };
 
 // src/detect.c:1964 mfind0() — reveal a hidden/mimicking/unseen monster
 // found by searching. Returns -1 skip, 0 nothing, 1 found (uses the turn).

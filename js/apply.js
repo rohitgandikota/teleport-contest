@@ -1,6 +1,8 @@
 // apply.js — the 'a' command.
 // C ref: src/apply.c
 
+import { boulder_hits_pool } from './do.js';
+import { is_pool_or_lava } from './dbridge.js';
 import { OBJ_INVENT, OBJ_MINVENT } from './const.js';
 import { Wwalking } from './youprop.js';
 import { humanoid, is_flyer, is_floater } from './mondata.js';
@@ -147,6 +149,15 @@ const APPLIED_CONTAINERS = [ONAMES.LARGE_BOX, ONAMES.CHEST, ONAMES.ICE_BOX,
 export function number_leashed() {
     return (game.invent || []).filter((obj) =>
         obj.otyp === ONAMES.LEASH && obj.leashmon).length;
+}
+
+// src/apply.c:746 unleash_all()
+export function unleash_all() {
+    for (const otmp of game.invent || [])
+        if (otmp.otyp === ONAMES.LEASH)
+            otmp.leashmon = 0;
+    for (const mtmp of game.level?.monsters || [])
+        mtmp.mleashed = 0;
 }
 
 // src/apply.c:761 leashable().
@@ -2947,4 +2958,14 @@ export function o_unleash(otmp) {
         }
     otmp.leashmon = 0;
     update_inventory();
+}
+
+// src/apply.c:3897 maybe_dunk_boulders()
+export async function maybe_dunk_boulders(x, y) {
+    let otmp;
+
+    while (is_pool_or_lava(x, y) && (otmp = sobj_at(ONAMES.BOULDER, x, y)) != null) {
+        obj_extract_self(otmp);
+        await boulder_hits_pool(otmp, x, y, false);
+    }
 }

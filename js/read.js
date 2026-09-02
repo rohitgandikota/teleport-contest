@@ -37,7 +37,13 @@ import { do_mapping } from './detect.js';
 import { do_clear_area, vision_recalc } from './vision.js';
 import { makeknown } from './o_init.js';
 import { more_experienced } from './exper.js';
-import { Norep, pline_The, set_msg_xy, You, Your, You_feel } from './pline.js';
+import { Norep, pline_The, set_msg_xy, You, Your, You_feel,
+         You_hear } from './pline.js';
+import { DEADMONSTER } from './monst.js';
+import { NOTELL } from './const.js';
+import { monflee } from './monmove.js';
+import { resist } from './zap.js';
+import { create_critters } from './makemon.js';
 import { useup, identify_pack, update_inventory } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
@@ -199,6 +205,7 @@ export async function seffects(sobj) {
         await seffect_teleportation(sobj);
         break;
     case ONAMES.SCR_IDENTIFY:
+    case ONAMES.SPE_IDENTIFY:
         return await seffect_identify(sobj);
     case ONAMES.SCR_BLANK_PAPER:
         if (game.u.ublind)
@@ -221,9 +228,17 @@ export async function seffects(sobj) {
     case ONAMES.SPE_CONFUSE_MONSTER:
         await seffect_confuse_monster(sobj);
         break;
+    case ONAMES.SCR_SCARE_MONSTER:
+    case ONAMES.SPE_CAUSE_FEAR:
+        await seffect_scare_monster(sobj);
+        break;
     case ONAMES.SCR_REMOVE_CURSE:
     case ONAMES.SPE_REMOVE_CURSE:
         await seffect_remove_curse(sobj);
+        break;
+    case ONAMES.SCR_CREATE_MONSTER:
+    case ONAMES.SPE_CREATE_MONSTER:
+        await seffect_create_monster(sobj);
         break;
     case ONAMES.SCR_STINKING_CLOUD:
         await seffect_stinking_cloud(sobj);
@@ -239,6 +254,49 @@ export async function seffects(sobj) {
 }
 
 // src/read.c:1044 maybe_tame(), apply one taming effect to one monster.
+// src/read.c:1454 seffect_scare_monster() — also the spell of cause fear.
+async function seffect_scare_monster(sobj) {
+    const otyp = sobj.otyp;
+    const scursed = !!sobj.cursed;
+    const confused = !!game.u.uprops?.CONFUSION;
+    let ct = 0;
+
+    for (const mtmp of game.level?.monsters || []) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        if (cansee(mtmp.mx, mtmp.my)) {
+            if (confused || scursed) {
+                mtmp.mflee = mtmp.mfrozen = mtmp.msleeping = 0;
+                mtmp.mcanmove = 1;
+            } else if (!resist(mtmp, sobj.oclass, 0, NOTELL))
+                await monflee(mtmp, 0, false, false);
+            if (!mtmp.mtame)
+                ct++; /* pets don't laugh at you */
+        }
+    }
+    if (otyp === ONAMES.SCR_SCARE_MONSTER || !ct) {
+        /* Soundeffect(se_sad_wailing / se_maniacal_laughter, 50) */
+        await You_hear(`${(confused || scursed) ? 'sad wailing'
+                                                : 'maniacal laughter'} ${
+                       !ct ? 'in the distance' : 'close by'}.`);
+    }
+}
+
+// src/read.c:1608 seffect_create_monster() — also the spell of create
+// monster.
+async function seffect_create_monster(sobj) {
+    const sblessed = !!sobj.blessed;
+    const scursed = !!sobj.cursed;
+    const confused = !!game.u.uprops?.CONFUSION;
+
+    if (await create_critters(1 + ((confused || scursed) ? 12 : 0)
+                              + ((sblessed || rn2(73)) ? 0 : rnd(4)),
+                              confused ? game.mons[PMNAMES.PM_ACID_BLOB]
+                                       : null,
+                              false))
+        game.known = true;
+}
+
 async function maybe_tame(mtmp, sobj) {
     const was_tame = mtmp.mtame | 0;
     const was_peaceful = !!mtmp.mpeaceful;

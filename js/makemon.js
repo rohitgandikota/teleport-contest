@@ -35,6 +35,9 @@ import { next_ident, mksobj, mkobj, place_object, curse, rnd_class, can_be_hatch
 import { sgn, isok } from './hacklib.js';
 import { get_shop_item } from './shknam.js';
 import { canseemon, canspotmon, newsym } from './display.js';
+import { sensemon } from './display.js';
+import { M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER } from './const.js';
+import { create_particular } from './read.js';
 import { cansee, does_block, block_point } from './vision.js';
 import { COLNO, ROWNO, MFAST } from './const.js';
 import { attacktype, is_neuter, is_floater, emits_light, likes_lava,
@@ -1659,6 +1662,40 @@ export function rnd_offensive_item(mtmp) {
 /* worn helm lookup + hard_helmet (do_wear.c:568), local slice for
    rnd_offensive_item; the noncorporeal test is folded into UNSOLID above
    (C checks both, and every noncorporeal permonst is also unsolid). */
+// src/makemon.c:1556 create_critters() — make cnt monsters next to the hero;
+// returns True iff the hero sees a new monster appear.
+export async function create_critters(cnt, mptr, neverask) {
+    const u = game.u;
+    let known = false;
+    let ask = (game.wizard && !neverask);
+
+    while (cnt--) {
+        if (ask) {
+            if (await create_particular()) {
+                known = true;
+                continue;
+            } else
+                ask = false; /* ESC will shut off prompting */
+        }
+        let x = u.ux, y = u.uy;
+        /* if in water, try to encourage an aquatic monster
+           by finding and then specifying another wet location */
+        const c = { x: 0, y: 0 };
+        if (!mptr && u.uinwater
+            && enexto(c, x, y, game.mons[PMNAMES.PM_GIANT_EEL]))
+            x = c.x, y = c.y;
+
+        const mon = makemon(mptr, x, y, NO_MM_FLAGS);
+        if (!mon)
+            continue; /* try again [should probably stop instead] */
+        if ((canseemon(mon) && (M_AP_TYPE(mon) === M_AP_NOTHING
+                                || M_AP_TYPE(mon) === M_AP_MONSTER))
+            || sensemon(mon))
+            known = true;
+    }
+    return known;
+}
+
 function which_armor_mm(mtmp) {
     for (const o of (mtmp.minvent || []))
         if ((o.owornmask ?? 0) & W_ARMH_MM)

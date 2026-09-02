@@ -51,7 +51,7 @@ import { killed, monkilled, seemimic, shieldeff_mon, wakeup,
          set_ustuck, unstuck } from './mon.js';
 import { ONAMES } from './objects_data.js';
 import { rn2, rnd, d } from './rng.js';
-import { is_rider } from './makemon.js';
+import { is_rider, create_critters } from './makemon.js';
 import { getobj, GETOBJ_SUGGEST, GETOBJ_EXCLUDE, update_inventory,
          stackobj } from './invent.js';
 import { getdir } from './cmd.js';
@@ -1022,9 +1022,9 @@ export async function zapnodir(obj) {
         break;
     }
     case ONAMES.WAN_CREATE_MONSTER:
-        /* create_critters draws rn2(23) for the count first */
-        note_unported_zap('zapnodir:create_monster');
-        rn2(23);
+        /* create_critters() returns True iff hero sees a new monster appear */
+        if (await create_critters(rn2(23) ? 1 : rn1(7, 2), null, false))
+            known = !!obj.dknown;
         break;
     case ONAMES.WAN_WISHING:
         /* src/zap.c:2585 — Luck + rn2(5) gate, then the wish */

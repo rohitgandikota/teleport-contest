@@ -5,6 +5,12 @@
 // when makemon builds one (the tail segments and their random placement).
 // Worm movement, cutting and hp bookkeeping are recorded when reached.
 
+import { NO_COLOR, ATR_INVERSE as TERM_INVERSE } from './terminal.js';
+import { def_monsyms } from './drawing_data.js';
+import { show_glyph_cell } from './display.js';
+import { NUMMONS } from './monst_data.js';
+import { rn2_on_display_rng } from './rng.js';
+import { Hallucination } from './youprop.js';
 import { NON_PM } from './const.js';
 import { PMNAMES } from './monst_data.js';
 import { game } from './gstate.js';
@@ -261,6 +267,26 @@ export async function remove_worm(worm) {
             newsym(curr.wx, curr.wy);
             curr.wx = 0;
         }
+        curr = curr.nseg;
+    }
+}
+
+// src/worm.c:503 detect_wsegs(), show a long worm's tail segments, with the
+// detection glyph when asked for.
+export function detect_wsegs(worm, use_detection_glyph) {
+    const w = wstate();
+    let curr = w.wtails[worm.wormno];
+    /* what_mon(PM_LONG_WORM_TAIL, newsym_rn2) */
+    const what_tail = Hallucination() ? rn2_on_display_rng(NUMMONS)
+                                      : PMNAMES.PM_LONG_WORM_TAIL;
+    const shown = game.mons[what_tail];
+    const attr = (use_detection_glyph && game.flags?.use_inverse !== false)
+                 ? TERM_INVERSE : 0;
+
+    while (curr !== w.wheads[worm.wormno]) {
+        show_glyph_cell(curr.wx, curr.wy, def_monsyms[shown.mlet] || '?',
+                        shown.mcolor ?? NO_COLOR, false, attr,
+                        { kind: 'mon', mon: worm });
         curr = curr.nseg;
     }
 }

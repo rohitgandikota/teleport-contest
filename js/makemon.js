@@ -1053,7 +1053,7 @@ const nonliving_mm = (ptr) =>
     || ptr.mlet === MONSYMS.S_GOLEM
     || ptr.mlet === MONSYMS.S_VORTEX;
 
-function findgold(minvent) {
+export function findgold(minvent) {
     return (minvent || []).some(o => o.oclass === OCLASSES.COIN_CLASS);
 }
 

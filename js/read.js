@@ -4,6 +4,8 @@
 // The spellbook route is live (doread -> study_book); scroll effects need
 // seffects and stay recorded after their prompt keys are consumed.
 
+import { readmail } from './mail.js';
+import { trap_detect, gold_detect, food_detect } from './detect.js';
 import { actualoname } from './objnam.js';
 import { TIMEOUT } from './const.js';
 import { make_stunned } from './potion.js';
@@ -937,6 +939,15 @@ export async function seffects(sobj) {
     case ONAMES.SCR_PUNISHMENT:
         await seffect_punishment(sobj);
         break;
+    case ONAMES.SCR_GOLD_DETECTION:
+    case ONAMES.SPE_DETECT_TREASURE:
+        return await seffect_gold_detection(sobj);
+    case ONAMES.SCR_FOOD_DETECTION:
+    case ONAMES.SPE_DETECT_FOOD:
+        return await seffect_food_detection(sobj);
+    case ONAMES.SCR_MAIL:
+        await seffect_mail(sobj);
+        break;
     default:
         note_unported_read(`seffects:otyp=${otyp}`);
         break;
@@ -1756,7 +1767,7 @@ async function seffect_magic_mapping(sobj) {
         note_unported_read('seffect_magic_mapping:cursed_confusion');
     /* notice_mon_off/_on wrap the mapping so newly drawn monsters are not
        announced */
-    do_mapping();
+    await do_mapping();
 }
 
 
@@ -2143,5 +2154,46 @@ export async function punish(sobj) {
         if (Blind())
             set_bc(1);      /* set up ball and chain variables */
         newsym(game.u.ux, game.u.uy); /* see ball&chain if can't see self */
+    }
+}
+
+// src/read.c:2035 seffect_gold_detection(); returns true when the scroll
+// was already used up by strange_feeling().
+async function seffect_gold_detection(sobj) {
+    const scursed = !!sobj.cursed;
+    const confused = !!(game.u.intrinsic?.HConfusion || game.u.uprops?.CONFUSION);
+
+    if ((confused || scursed) ? await trap_detect(sobj) : await gold_detect(sobj))
+        return true; /* failure: strange_feeling() -> useup() */
+    return false;
+}
+
+// src/read.c:2046 seffect_food_detection(); returns true when the scroll
+// was already used up by strange_feeling().
+async function seffect_food_detection(sobj) {
+    if (await food_detect(sobj))
+        return true; /* nothing detected: strange_feeling -> useup */
+    return false;
+}
+
+// src/read.c:2056 seffect_mail(), the scroll of mail.
+async function seffect_mail(sobj) {
+    const odd = (sobj.o_id % 2) === 1;
+
+    game.known = true;
+    switch (sobj.spe) {
+    case 2:
+        await pline(`This scroll is marked "${odd ? 'Postage Due' : 'Return to Sender'}".`);
+        break;
+    case 1:
+        /* note to the puzzled: the game Larn actually sends you junk
+           mail if you win! */
+        await pline(`This seems to be ${
+                    odd ? 'a chain letter threatening your luck'
+                        : 'junk mail addressed to the finder of the Eye of Larn'}.`);
+        break;
+    default:
+        await readmail(sobj);
+        break;
     }
 }

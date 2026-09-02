@@ -1,5 +1,30 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (evening): detect.c pass, scroll of mail
+
+- detect.c is now nearly complete: `gold_detect`, `food_detect`,
+  `object_detect`, `monster_detect` (the real one: wakes helpless monsters
+  for a cursed potion, `display_self`, the I_SPECIAL browse), `sense_trap`,
+  `detect_obj_traps`, `display_trap_map`, `trap_detect`,
+  `furniture_detect`, `level_distance`, `use_crystal_ball`,
+  `do_vicinity_map` (clairvoyance spell and the random farsight in
+  allmain), `do_mapping` (browses when unconstrained), `findone`/`foundone`
+  with the flash effect and trapped-container/door detection, `openone`/
+  `openit`, plus the helpers `map_monst`, `trapped_chest_at`,
+  `trapped_door_at`, `o_in`, `o_material`, `check_map_spot`,
+  `clear_stale_map`. display.c gained `unmap_object`, `map_engraving`,
+  `flash_glyph_at`, `display_self`; worm.c `detect_wsegs`; trap.c
+  `openfallingtrap`; drawing.c (`js/drawing.js`, new) `def_char_to_monclass`
+  and `def_char_is_furniture`. Wired: scrolls of gold/food detection (and
+  SPE_DETECT_TREASURE/FOOD), potion of object detection, the crystal ball
+  in doapply, SPE_CLAIRVOYANCE.
+- mail.c (`js/mail.js`, new) `readmail` and read.c `seffect_mail`; the
+  recorder build defines MAIL, so a scroll of mail prints junk mail.
+- still noted: `openone`'s drawbridge arm (dbridge.c's find/open_drawbridge
+  machinery), the boulder symbol option in object_detect (unset), and
+  `openit` is not yet called by the wand/spell of opening (zap.js).
+- gated 44/44 + hang-gate; census unchanged at 91/102.
+
 ## 2026-09-02 (later still): breaking wands, monster teleport traps
 
 - apply.c `do_break_wand` (+`discard_broken_wand`, `broken_wand_explode`)

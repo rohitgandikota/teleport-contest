@@ -2693,3 +2693,121 @@ export function mon_warning(mon) {
         return false;
     return (((mon.m_lev ?? 0) / 4) | 0) >= (game.context?.warnlevel ?? 1);
 }
+
+/* include/engrave.h:50 spot_shows_engravings() */
+const spot_shows_engravings = (x, y) => {
+    const typ = game.level?.at(x, y)?.typ;
+    return typ === CORR || typ === ICE || typ === ROOM;
+};
+
+// src/display.c:313 map_engraving(), remember (and optionally show) an
+// engraving.
+export function map_engraving(ep, show) {
+    const x = ep.x, y = ep.y;
+    const loc = game.level?.at(x, y);
+    if (!loc) return;
+    const eg = engraving_glyph(loc, x, y);
+    if (!eg) return;
+    const cell = { ch: eg.ch, color: eg.color, decgfx: !!(eg.decgfx ?? eg.dec),
+                   glyph: eg.glyph ?? { kind: 'cmap', cmap: eg.cmap } };
+
+    if (game.level?.flags?.hero_memory)
+        loc.remembered_glyph = cell;
+    if (show)
+        show_glyph_cell(x, y, cell.ch, cell.color, cell.decgfx, 0, cell.glyph);
+}
+
+// src/display.c:409 unmap_object(), the hero no longer remembers an object
+// at <x,y>; remember what is under it instead.
+export function unmap_object(x, y) {
+    let trap, ep;
+    const loc = game.level?.at(x, y);
+
+    if (!game.level?.flags?.hero_memory || !loc)
+        return;
+
+    if ((trap = t_at(x, y)) != null && trap.tseen && !covers_traps(x, y)) {
+        map_trap(trap, 0);
+    } else if (loc.seenv) {
+        if (spot_shows_engravings(x, y)
+            && (ep = engr_at(x, y)) != null && !covers_traps(x, y)) {
+            if (cansee(x, y))
+                ep.erevealed = 1;
+            map_engraving(ep, 0);
+        } else {
+            map_background(x, y, 0);
+        }
+        /* turn remembered dark room squares dark */
+        if (!loc.waslit && loc.remembered_glyph?.glyph?.kind === 'cmap'
+            && loc.remembered_glyph.glyph.cmap === cmap_names.S_room
+            && loc.typ === ROOM)
+            loc.remembered_glyph = null; /* cmap_to_glyph(S_stone) */
+    } else {
+        loc.remembered_glyph = null; /* cmap_to_glyph(S_stone): default val */
+    }
+}
+
+// src/display.c:1305 flash_glyph_at(), alternate a glyph with what is
+// remembered at <x,y>, rpt times.
+export async function flash_glyph_at(x, y, tg, rpt) {
+    const loc = game.level?.at(x, y);
+    let back;
+
+    rpt *= 2; /* two loop iterations per 'count' */
+    if (game.level?.flags?.hero_memory && loc?.remembered_glyph) {
+        back = loc.remembered_glyph;
+    } else {
+        const b = back_to_glyph(loc, x, y);
+        back = { ch: b.ch, color: b.color, decgfx: !!b.dec,
+                 glyph: b.glyph ?? { kind: 'cmap', cmap: b.cmap } };
+    }
+    const cells = [tg, back];
+    /* even iterations gave the target glyph, odd ones the remembered one;
+       caller might want to override that, but no newsym() calls here
+       in case caller has tinkered with location visibility */
+    for (let i = 0; i < rpt; i++) {
+        const c = cells[i % 2];
+        show_glyph_cell(x, y, c.ch, c.color, !!c.decgfx, c.attr ?? 0, c.glyph);
+        await flush_screen(1);
+        if (game.animationFrame)
+            await game.animationFrame(); /* nh_delay_output() */
+    }
+}
+
+// include/display.h:251 display_self(), draw the hero (or the steed the
+// hero is riding, or the hero's disguise) without touching map memory.
+export function display_self() {
+    const x = game.u.ux, y = game.u.uy;
+    const steed = game.u.usteed;
+    const aptype = M_AP_TYPE(game.youmonst);
+
+    /* maybe_display_usteed(): the steed's glyph while riding */
+    if (steed && mon_visible(steed)) {
+        show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
+                        steed.data.mcolor ?? NO_COLOR, false, 0,
+                        { kind: 'hero', mon: steed });
+    } else if (aptype === M_AP_FURNITURE) {
+        const s = showsym(game.youmonst.mappearance);
+        show_glyph_cell(x, y, s ? s.ch : '?',
+                        defsyms[game.youmonst.mappearance]?.color ?? NO_COLOR,
+                        s ? s.dec : false, 0,
+                        { kind: 'cmap', cmap: game.youmonst.mappearance });
+    } else if (aptype === M_AP_OBJECT) {
+        const fake = { otyp: game.youmonst.mappearance, ox: x, oy: y,
+                       oclass: OCLASSES.RANDOM_CLASS, quan: 1, dknown: 0,
+                       corpsenm: PMNAMES.PM_TENGU };
+        const g = floor_object_glyph(fake, x, y, false);
+        show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, g.attr,
+                        g.glyph ?? { kind: 'obj', otyp: fake.otyp });
+    } else if (aptype === M_AP_MONSTER) {
+        const shown = game.mons[game.youmonst.mappearance];
+        show_glyph_cell(x, y, def_monsyms[shown.mlet] || '?',
+                        shown.mcolor ?? NO_COLOR, false, 0, { kind: 'hero' });
+    } else {
+        const self = game.youmonst?.data;
+        show_glyph_cell(x, y,
+                        Upolyd(game.u) ? (def_monsyms[self.mlet] || '?') : '@',
+                        Upolyd(game.u) ? self.mcolor : CLR_WHITE,
+                        false, 0, { kind: 'hero' });
+    }
+}

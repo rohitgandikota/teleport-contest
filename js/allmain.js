@@ -3,6 +3,7 @@
 //
 // Real mklev.js handles level generation for screen parity.
 
+import { do_vicinity_map } from './detect.js';
 import { game } from './gstate.js';
 import { glibr, set_wear } from './do_wear.js';
 import { maybe_finished_meal } from './eat.js';
@@ -883,7 +884,7 @@ export async function moveloop_core() {
             if ((g.u.uhave?.amulet || g.u.uprops?.CLAIRVOYANT)
                 && !In_endgame(g.u.uz)
                 && !g.u.uprops?.BLOCKED_CLAIRVOYANT)
-                note_unported_main('do_vicinity_map');
+                await do_vicinity_map(null);
             /* we maintain this counter even when clairvoyance isn't
                taking place; on average, go again 30 turns from now */
             g.context.seer_turn = g.moves + rn1(31, 15); /*15..45*/

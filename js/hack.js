@@ -664,7 +664,7 @@ function furniture_present(furniture, room) {
     return false;
 }
 
-function room_discovered(roomno) {
+export function room_discovered(roomno) {
     const seen = (game.level._mapseen_rooms ||= []);
     if (!seen.includes(roomno)) {
         seen.push(roomno);

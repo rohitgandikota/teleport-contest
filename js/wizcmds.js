@@ -134,7 +134,7 @@ export async function wiz_telekinesis() {
 }
 
 // src/wizcmds.c:176 wiz_map(): reveal the level, traps, and engravings.
-export function wiz_map() {
+export async function wiz_map() {
     if (!game.wizard) {
         note_unported_wizcmds('wiz_map:unavailcmd');
         return ECMD_OK;
@@ -159,7 +159,7 @@ export function wiz_map() {
         map_trap(trap, true);
     }
     /* show_map_spot() maps engravings while do_mapping() scans the level. */
-    do_mapping();
+    await do_mapping();
 
     if (saved.hconf !== undefined) intrinsic.HConfusion = saved.hconf;
     if (saved.hhallu !== undefined) intrinsic.HHallucination = saved.hhallu;

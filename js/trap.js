@@ -6,6 +6,7 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { wakeup } from './mon.js';
 import { uwepgone, uswapwepgone } from './wield.js';
 import { obj_pmname } from './do_name.js';
 import { m_at, t_at as t_at_mon } from './mon.js';
@@ -4084,4 +4085,40 @@ export async function selftouch(arg) {
         if (!game.u.uarmg && !Stone_resistance())
             await uswapwepgone();
     }
+}
+
+// src/trap.c:6252 openfallingtrap(), a trap door (or, when not
+// trapdoor_only, any hole or pit) at mon's spot is sprung; returns true
+// when mon gets caught in it.
+export async function openfallingtrap(mon, trapdoor_only, noticed) {
+    let t;
+    let ishero = (mon === game.youmonst), result;
+
+    if (!mon)
+        return false;
+    if (mon === game.u.usteed)
+        ishero = true;
+    t = t_at(ishero ? game.u.ux : mon.mx, ishero ? game.u.uy : mon.my);
+    /* if no trap here or it's not a falling trap, we're done
+       (note: falling rock traps have a trapdoor in the ceiling) */
+    if (!t || ((t.ttyp !== TRAPDOOR && t.ttyp !== ROCKTRAP)
+               && (trapdoor_only || (t.ttyp !== HOLE && !is_pit(t.ttyp)))))
+        return false;
+
+    if (ishero) {
+        if (game.u.utrap)
+            return false; /* already trapped */
+        noticed.value = true;
+        await dotrap(t, FORCETRAP);
+        result = (game.u.utrap !== 0);
+    } else {
+        if (mon.mtrapped)
+            return false; /* already trapped */
+        /* you notice it if you see the trap close/tremble/whatever
+           or if you sense the monster who becomes trapped */
+        noticed.value = cansee(t.tx, t.ty) || canspotmon(mon);
+        await wakeup(mon, true);
+        result = ((await mintrap(mon, FORCETRAP)) !== Trap_Effect_Finished);
+    }
+    return result;
 }

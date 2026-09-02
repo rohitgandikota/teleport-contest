@@ -1,6 +1,10 @@
 // spell.js — spellcasting.
 // C ref: src/spell.c
 
+import { HEAD } from './const.js';
+import { body_part } from './polyself.js';
+import { helm_simple_name } from './do_wear.js';
+import { do_vicinity_map } from './detect.js';
 import { game } from './gstate.js';
 import { pline } from './display.js';
 import { ECMD_OK, weight } from './invent.js';
@@ -733,7 +737,13 @@ export async function spelleffects(spell_otyp, atme, force) {
         note_unported_spell('spelleffects:create_familiar');
         break;
     case ONAMES.SPE_CLAIRVOYANCE:
-        note_unported_spell('spelleffects:clairvoyance');
+        if (!game.u.blocked?.CLAIRVOYANT) {
+            if (role_skill >= SKILLS.P_SKILLED)
+                pseudo.blessed = 1; /* detect monsters as well as map */
+            await do_vicinity_map(pseudo);
+        /* at present, only one thing blocks clairvoyance */
+        } else if (game.u.uarmh && game.u.uarmh.otyp === ONAMES.CORNUTHAUM)
+            await You(`sense a pointy hat on top of your ${body_part(HEAD)}.`);
         break;
     case ONAMES.SPE_PROTECTION:
         note_unported_spell('spelleffects:protection');

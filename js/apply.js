@@ -1,6 +1,7 @@
 // apply.js — the 'a' command.
 // C ref: src/apply.c
 
+import { use_crystal_ball } from './detect.js';
 import { litroom } from './read.js';
 import { uhim } from './mhitu.js';
 import { nomul } from './hack.js';
@@ -2391,6 +2392,11 @@ export async function doapply() {
         }
         await pline("Sorry, I don't know how to use that.");
         return ECMD_FAIL;
+    }
+
+    if (obj.otyp === ONAMES.CRYSTAL_BALL) {
+        await use_crystal_ball(obj);
+        return ECMD_TIME;
     }
 
     if (obj.otyp === ONAMES.MAGIC_MARKER) {

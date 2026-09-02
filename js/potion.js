@@ -3,6 +3,7 @@
 //
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
+import { object_detect } from './detect.js';
 import { mon_set_minvis, mon_adjust_speed } from './worn.js';
 import { SLIMED, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
 import { fruitname, makeplural, xname } from './objnam.js';
@@ -1563,6 +1564,11 @@ export async function peffects(otmp) {
     case ONAMES.POT_WATER:
         await peffect_water(otmp);
         break;
+    case ONAMES.POT_OBJECT_DETECTION:
+    case ONAMES.SPE_DETECT_TREASURE:
+        if (await peffect_object_detection(otmp))
+            return 1;
+        break;
     default:
         /* every other arm draws through its own subsystem */
         note_unported_potion(`peffects:otyp=${otmp.otyp}`);
@@ -2027,4 +2033,12 @@ export async function make_slimed(xtime, msg) {
             game.youmonst.mappearance = 0;
         }
     }
+}
+
+// src/potion.c:955 peffect_object_detection(); 1 when nothing was detected.
+async function peffect_object_detection(otmp) {
+    if (await object_detect(otmp, 0))
+        return 1; /* nothing detected */
+    exercise(A_WIS, true);
+    return 0;
 }

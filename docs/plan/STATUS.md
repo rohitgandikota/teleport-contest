@@ -1,5 +1,14 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (late): bell of opening, magical box locking
+
+lock.c `boxlock` (wand/spell of locking and opening on boxes, wired into
+zap.c bhito's arm), mkroom.c `mkundead` (the cursed bell; the corpse-reviving
+arm notes zap.c's unported `revive`), dig.c `buried_ball` and
+`buried_ball_to_freedom`, and apply.c `use_bell`'s charged arms (swallowed,
+cursed, blessed with `openit`, uncursed with `findit`). Gated 44/44 +
+hang-gate; census 92/102.
+
 ## 2026-09-02 (night): the extended command list
 
 cmd.c `doextlist` (the `#?` / help-menu list with its 'a'/':'/'s'/'z'

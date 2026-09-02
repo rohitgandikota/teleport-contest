@@ -5,6 +5,8 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { Is_box } from './obj.js';
+import { boxlock } from './lock.js';
 import { in_rooms } from './hack.js';
 import { CORPSTAT_HISTORIC } from './const.js';
 import { Role_if, adjalign } from './attrib.js';
@@ -1711,9 +1713,12 @@ export async function bhito(obj, otmp) {
         case ONAMES.SPE_KNOCK:
         case ONAMES.WAN_LOCKING:
         case ONAMES.SPE_WIZARD_LOCK:
-            if (obj.otyp === ONAMES.LARGE_BOX || obj.otyp === ONAMES.CHEST)
-                note_unported_zap('bhito:locking');
-            res = 0;
+            if (Is_box(obj))
+                res = await boxlock(obj, otmp);
+            else
+                res = 0;
+            if (res)
+                learn_it = true;
             break;
         case ONAMES.SPE_STONE_TO_FLESH:
             res = await stone_to_flesh_obj(obj);

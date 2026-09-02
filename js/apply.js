@@ -1,6 +1,11 @@
 // apply.js — the 'a' command.
 // C ref: src/apply.c
 
+import { NO_MINVENT, TT_BURIEDBALL } from './const.js';
+import { buried_ball_to_freedom } from './dig.js';
+import { unpunish } from './read.js';
+import { mkundead } from './mkroom.js';
+import { openit, findit } from './detect.js';
 import { use_crystal_ball } from './detect.js';
 import { litroom } from './read.js';
 import { uhim } from './mhitu.js';
@@ -698,18 +703,49 @@ async function use_bell(obj) {
     } else {
         obj.spe--;
         if (game.u.uswallow) {
-            note_unported_apply('use_bell:swallowed_opening');
+            if (!obj.cursed)
+                await openit();
+            else
+                await pline('Nothing happens.');
         } else if (obj.cursed) {
-            note_unported_apply('use_bell:summon_undead');
+            const mm = { x: game.u.ux, y: game.u.uy };
+
+            mkundead(mm, false, NO_MINVENT);
             wake = true;
         } else if (invoking) {
             await pline(`${Tobjnam(obj, 'issue')} an unsettling shrill sound...`);
             obj.age = game.moves;
             learn = true;
             wake = true;
-        } else {
-            note_unported_apply(obj.blessed ? 'use_bell:openit'
-                                            : 'use_bell:findit');
+        } else if (obj.blessed) {
+            let res = 0;
+
+            if (game.u.uchain) {
+                unpunish();
+                res = 1;
+            } else if (game.u.utrap && game.u.utraptype === TT_BURIEDBALL) {
+                await buried_ball_to_freedom();
+                res = 1;
+            }
+            res += await openit();
+            switch (res) {
+            case 0:
+                await pline('Nothing happens.');
+                break;
+            case 1:
+                await pline('Something opens...');
+                learn = true;
+                break;
+            default:
+                await pline('Things open around you...');
+                learn = true;
+                break;
+            }
+        } else { /* uncursed */
+            if ((await findit()) !== 0)
+                learn = true;
+            else
+                await pline('Nothing happens.');
         }
     }
 

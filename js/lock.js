@@ -6,6 +6,7 @@
 // Dexterity and Constitution, and a session that opens a door runs one call
 // short of C without it.
 
+import { Role_if } from './attrib.js';
 import { game } from './gstate.js';
 import { pline_xy } from './pline.js';
 import { rnl } from './rng.js';
@@ -931,4 +932,47 @@ export async function doforce() {
 /* include/hack.h:1330 ynq() */
 async function ynq(query) {
     return await tty_yn_function(query, 'ynq', 'q');
+}
+
+// src/lock.c:1056 boxlock(), magical locking/unlocking of a box.
+export async function boxlock(obj, otmp) /* obj *is* a box */
+{
+    let res = 0;
+
+    switch (otmp.otyp) {
+    case ONAMES.WAN_LOCKING:
+    case ONAMES.SPE_WIZARD_LOCK:
+        if (!obj.olocked) { /* lock it; fix if broken */
+            await pline('Klunk!');
+            obj.olocked = 1;
+            obj.obroken = 0;
+            if (Role_if(PMNAMES.PM_WIZARD))
+                obj.lknown = 1;
+            else
+                obj.lknown = 0;
+            res = 1;
+        } /* else already closed and locked */
+        break;
+    case ONAMES.WAN_OPENING:
+    case ONAMES.SPE_KNOCK:
+        if (obj.olocked) { /* unlock; isn't broken so doesn't need fixing */
+            await pline('Klick!');
+            obj.olocked = 0;
+            res = 1;
+            if (Role_if(PMNAMES.PM_WIZARD))
+                obj.lknown = 1;
+            else
+                obj.lknown = 0;
+        } else /* silently fix if broken */
+            obj.obroken = 0;
+        break;
+    case ONAMES.WAN_POLYMORPH:
+    case ONAMES.SPE_POLYMORPH:
+        /* maybe start unlocking chest, get interrupted, then zap it;
+           we must avoid any attempt to resume unlocking it */
+        if (game.xlock?.box === obj)
+            reset_pick();
+        break;
+    }
+    return res;
 }

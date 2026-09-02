@@ -1,3 +1,5 @@
+import { LOW_PM } from './const.js';
+import { is_vampire, is_shapeshifter } from './mondata.js';
 import { can_hide_under_obj } from './monmove.js';
 import { u_at, OBJ_AT } from './const.js';
 import { mon_explodes } from './explode.js';
@@ -3620,4 +3622,50 @@ export function maybe_unhide_at(x, y) {
                                         .find(o => o.ox === x && o.oy === y))))
             || (mtmp.data.mlet === MONSYMS.S_EEL && !is_pool(x, y))))
         hideunder(mtmp);
+}
+
+// src/mon.c pm_to_cham(); return the shapeshifter type for a monster index
+export function pm_to_cham(mndx) {
+    let mcham = NON_PM;
+
+    /* the shapeshifters are the only monsters who use 'cham' field */
+    if (ismnum(mndx) && is_shapeshifter(game.mons[mndx]))
+        mcham = mndx;
+    return mcham;
+}
+
+// src/mon.c:4527 iter_mons(); iterate all monsters on the level, calling
+// vfunc for each
+export function iter_mons(vfunc) {
+    for (const mtmp of [...(game.level.monsters || [])]) {
+        if (DEADMONSTER(mtmp) || mon_offmap(mtmp))
+            continue;
+        vfunc(mtmp);
+    }
+}
+
+// src/mon.c:5015 valid_vampshiftform(); Is this a valid shapeshift form for
+// a vampire?
+export function valid_vampshiftform(base, form) {
+    if (base >= LOW_PM && is_vampire(game.mons[base])) {
+        if (form === PMNAMES.PM_VAMPIRE_BAT || form === PMNAMES.PM_FOG_CLOUD
+            || (form === PMNAMES.PM_WOLF && base !== PMNAMES.PM_VAMPIRE))
+            return true;
+    }
+    return false;
+}
+
+// src/mon.c:5538 BREEDER_EGG
+const BREEDER_EGG = () => !rn2(77);
+
+// src/mon.c:5569 egg_type_from_parent(); the type of egg a monster lays;
+// caller must handle lays_eggs() check
+export function egg_type_from_parent(mnum, force_ordinary) {
+    if (force_ordinary || !BREEDER_EGG()) {
+        if (mnum === PMNAMES.PM_QUEEN_BEE)
+            mnum = PMNAMES.PM_KILLER_BEE;
+        else if (mnum === PMNAMES.PM_WINGED_GARGOYLE)
+            mnum = PMNAMES.PM_GARGOYLE;
+    }
+    return mnum;
 }

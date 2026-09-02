@@ -851,7 +851,7 @@ export function mksobj(otyp, init, artif) {
 }
 
 // src/mondata.c:1305 little_to_big() / :1318 big_to_little()
-function little_to_big(montype) {
+export function little_to_big(montype) {
     const p = GROWNUPS.find(([baby]) => baby === montype);
     return p ? p[1] : montype;
 }

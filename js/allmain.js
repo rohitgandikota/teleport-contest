@@ -3,6 +3,8 @@
 //
 // Real mklev.js handles level generation for screen parity.
 
+import { POLY_NOFLAGS } from './const.js';
+import { set_uasmon } from './polyself.js';
 import { do_vicinity_map } from './detect.js';
 import { game } from './gstate.js';
 import { glibr, set_wear } from './do_wear.js';
@@ -318,16 +320,8 @@ export async function newgame() {
         // functions that take a real monster (dmgval, mhitm_ad_phys,
         // could_seduce), which read .data and .mnum.
         g.youmonst = { data: g.mons[g.u.umonnum], mnum: g.u.umonnum };
-        /* set_uasmon()'s PROPSET(INFRAVISION) - infravision is a property
-           of the hero's physical race (mondata.c:838): orcs, elves,
-           dwarves and gnomes see warm monsters in the dark. C stores the
-           source as FROMFORM, outside the low TIMEOUT bits. */
-        {
-            const racemon = g.mons[g.urace?.mnum];
-            (g.u.intrinsic ||= {}).HInfravision =
-                (racemon && (racemon.mflags3 & 256 /* M3_INFRAVISION */))
-                    ? FROMFORM : 0;
-        }
+        // src/u_init.c:993 set_uasmon()
+        set_uasmon();
         g.u.ulevel = g.u.ulevelmax = 1;
         /* type and record were filled by newhp() above, where C sets them. */
         // src/u_init.c:1006 — ualignbase[A_CURRENT] and [A_ORIGINAL] track the
@@ -793,7 +787,7 @@ export async function moveloop_core() {
                         await stop_occupation();
                         if (g.mvl_change === 1) {
                             const { polyself } = await import('./polyself.js');
-                            await polyself();
+                            await polyself(POLY_NOFLAGS);
                         } else {
                             const { you_were } = await import('./were.js');
                             await you_were();

@@ -7,6 +7,9 @@
 // that are absent and are recorded through note_unported_mhitu() at the
 // exact C decision point, so game.unported names what a divergence wanted.
 
+import { mhitm_ad_poly } from './uhitm.js';
+import { monsndx } from './makemon.js';
+import { split_mon } from './potion.js';
 import { Your } from './pline.js';
 import { ugolemeffects } from './polyself.js';
 import { make_blinded, make_hallucinated } from './potion.js';
@@ -488,8 +491,7 @@ export async function gazemu(mtmp, mattk) {
             await You(`meet ${s_suffix(mon_nam(mtmp))} gaze.`);
             await stop_occupation();
             if (poly_when_stoned(game.youmonst.data)
-                && await polymon(PMNAMES.PM_STONE_GOLEM,
-                                 { allowSexChange: false }))
+                && await polymon(PMNAMES.PM_STONE_GOLEM))
                 return M_ATTK_MISS;
             await urgent_pline('You turn to stone...');
             game.killer = {
@@ -1170,6 +1172,8 @@ async function hitmu(mtmp, mattk, indx) {
         await mhitm_ad_blnd(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_STON) {
         await mhitm_ad_ston(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_POLY) {
+        await mhitm_ad_poly(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_DRLI) {
         await mhitm_ad_drli(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_ENCH) {
@@ -1479,37 +1483,29 @@ async function passiveum_mon_to_stone(mtmp) {
     }
 }
 
-// src/mhitu.c:2613 cloneu() and src/potion.c:2873 split_mon().
-// A null attacker is water vapor; a monster attacker supplies the heat text.
-export async function split_you(attacker = null) {
+// src/mhitu.c:2616 cloneu()
+export function cloneu() {
     const u = game.u;
-    const mndx = game.youmonst.mnum;
+    let mon;
+    const mndx = monsndx(game.youmonst.data);
 
-    if (u.mh > u.mhmax)
-        u.mh = u.mhmax;
-    if (u.mh <= 1
-        || ((game.mvitals?.[mndx]?.mvflags ?? 0) & MFLAGS.G_EXTINCT) !== 0)
+    if (u.mh <= 1)
         return null;
-
-    const clone = makemon(game.youmonst.data, u.ux, u.uy,
-                          NO_MINVENT | MM_EDOG | MM_NOMSG);
-    if (!clone)
+    if (game.mvitals[mndx].mvflags & MFLAGS.G_EXTINCT)
         return null;
-
-    clone.mcloned = 1;
-    christen_monst(clone, game.plname);
-    initedog(clone, true);
-    clone.m_lev = game.youmonst.data.mlevel;
-    clone.mhpmax = u.mhmax;
-    clone.mhp = Math.trunc(u.mh / 2);
-    u.mh -= clone.mhp;
-    clone.mhpmax = Math.trunc(u.mhmax / 2);
-    u.mhmax -= clone.mhpmax;
+    mon = makemon(game.youmonst.data, u.ux, u.uy,
+                  NO_MINVENT | MM_EDOG | MM_NOMSG);
+    if (!mon)
+        return null;
+    mon.mcloned = 1;
+    mon = christen_monst(mon, game.plname);
+    initedog(mon, true);
+    mon.m_lev = game.youmonst.data.mlevel;
+    mon.mhpmax = u.mhmax;
+    mon.mhp = Math.trunc(u.mh / 2);
+    u.mh -= mon.mhp;
     (game.disp ||= {}).botl = true;
-    await You(attacker
-        ? `multiply from ${s_suffix(mon_nam(attacker))} heat!`
-        : 'multiply!');
-    return clone;
+    return mon;
 }
 
 async function passiveum(olduasmon, mtmp, mattk) {
@@ -1650,7 +1646,7 @@ async function passiveum(olduasmon, mtmp, mattk) {
                 game.u.mhmax = game.u.mh;
             (game.disp ||= {}).botl = true;
             if (game.u.mhmax > (game.youmonst.data.mlevel + 1) * 8)
-                await split_you(mtmp);
+                await split_mon(game.youmonst, mtmp);
             break;
         case A.AD_STUN:
             if (!mtmp.mstun) {

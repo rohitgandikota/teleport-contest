@@ -2207,7 +2207,7 @@ export async function hornoplenty(horn, tipping = false) {
 // src/apply.c:2259 use_unicorn_horn(). A cursed horn adds one random timed
 // ailment. A noncursed horn shuffles the timed ailments and cures a random
 // prefix, with a blessed horn able to cure more of them.
-async function use_unicorn_horn(obj) {
+export async function use_unicorn_horn(obj) {
     const u = game.u;
     const intr = (u.intrinsic ||= {});
     const props = (u.uprops ||= {});

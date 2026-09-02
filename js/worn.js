@@ -470,7 +470,7 @@ function extra_pref(mon, obj) {
 }
 
 // src/worn.c racial_exception() — hobbits may wear elven armour (LoTR).
-function racial_exception(mon, obj) {
+export function racial_exception(mon, obj) {
     /* raceptr(mon) is the monster's own permonst unless it is the hero */
     if (game.mons[mon.mnum].pmidx === PMNAMES.PM_HOBBIT && is_elven_armor(obj))
         return 1;
@@ -490,7 +490,7 @@ export const is_elven_armor = (o) =>
 // orders FIRE_RES..STONE_RES to match MR_FIRE..MR_STONE.
 //
 // No draws.
-function update_mon_extrinsics(mon, obj, on, silently) {
+export function update_mon_extrinsics(mon, obj, on, silently) {
     let which = game.objects[obj.otyp].oc_oprop;
     const altwhich = altprop(obj);
     const unseen = !canseemon(mon);

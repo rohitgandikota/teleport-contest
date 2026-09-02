@@ -10,6 +10,8 @@
 // The delay itself is drawn by the CALLER, before start_timer is reached
 // (bury_an_obj spends rnd(250) for ROT_ORGANIC). Only the bookkeeping is here.
 
+import { update_inventory } from './invent.js';
+import { little_to_big } from './mkobj.js';
 import { make_slimed } from './potion.js';
 import { game } from './gstate.js';
 import { rn2, rnd, d } from './rng.js';
@@ -595,6 +597,15 @@ export async function fall_asleep(how_long, wakeup_msg) {
     /* early wakeup from combat won't be possible until next monster turn */
     game.u.usleep = game.moves;
     game.nomovemsg = wakeup_msg ? "You wake up." : "You can move again.";
+}
+
+// src/timeout.c:1193 learn_egg_type(); note whether egg is a hatchable one
+export function learn_egg_type(mnum) {
+    /* baby monsters hatch from grown-up eggs */
+    mnum = little_to_big(mnum);
+    game.mvitals[mnum].mvflags |= MV_KNOWS_EGG;
+    /* we might have just learned about other eggs being carried */
+    update_inventory();
 }
 
 // src/timeout.c:1221 slip_or_trip() — feedback when FUMBLING expires after a

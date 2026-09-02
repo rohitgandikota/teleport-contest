@@ -3,6 +3,11 @@
 //
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
+import { POLY_NOFLAGS, POLY_CONTROLLED, POLY_LOW_CTRL } from './const.js';
+import { polyself } from './polyself.js';
+import { Unchanging } from './youprop.js';
+import { clone_mon } from './makemon.js';
+import { cloneu } from './mhitu.js';
 import { object_detect } from './detect.js';
 import { mon_set_minvis, mon_adjust_speed } from './worn.js';
 import { SLIMED, M_AP_MONSTER, M_AP_NOTHING } from './const.js';
@@ -346,8 +351,7 @@ export async function potionbreathe(obj) {
         }
         case ONAMES.POT_WATER:
             if (game.u.umonnum === PMNAMES.PM_GREMLIN) {
-                const { split_you } = await import('./mhitu.js');
-                await split_you();
+                await split_mon(game.youmonst, null);
             } else if (ismnum(game.u.ulycn)) {
                 const { you_unwere, you_were } = await import('./were.js');
                 if (obj.blessed && game.u.umonnum === game.u.ulycn)
@@ -439,12 +443,8 @@ export async function potionhit(mon, obj, how) {
             await explode_oil(obj, game.u.ux, game.u.uy);
         } else if (obj.otyp === ONAMES.POT_POLYMORPH) {
             await You_feel(`a little ${Hallucination() ? 'normal' : 'strange'}.`);
-            const unchanging = !!(game.u.intrinsic?.HUnchanging
-                                  || game.u.uprops?.UNCHANGING);
-            if (!unchanging && !Antimagic()) {
-                const { polyself } = await import('./polyself.js');
-                await polyself();
-            }
+            if (!Unchanging() && !Antimagic())
+                await polyself(POLY_NOFLAGS);
         } else if (obj.otyp === ONAMES.POT_ACID
                    && !game.u.uprops?.ACID_RES) {
             await pline(`This burns${obj.blessed ? ' a little'
@@ -878,6 +878,21 @@ const itimeout_incr = (old, incr) => Math.max(0, (old || 0) + incr);
 
 // include/obj.h bcsign()
 const bcsign = (o) => (o.blessed ? 1 : 0) - (o.cursed ? 1 : 0);
+
+// src/potion.c:1317 peffect_polymorph()
+async function peffect_polymorph(otmp) {
+    const u = game.u;
+    await You_feel(`a little ${Hallucination() ? 'normal' : 'strange'}.`);
+    if (!Unchanging()) {
+        if (!otmp.blessed || (u.umonnum !== u.umonster))
+            await polyself(POLY_NOFLAGS);
+        else {
+            await polyself(POLY_CONTROLLED | POLY_LOW_CTRL);
+            if (u.mtimedone && u.umonnum !== u.umonster)
+                u.mtimedone = Math.min(u.mtimedone, rn2(15) + 10);
+        }
+    }
+}
 
 // src/potion.c:1014 peffect_confusion()
 async function peffect_confusion(otmp) {
@@ -1506,6 +1521,9 @@ export async function peffects(otmp) {
     case ONAMES.POT_CONFUSION:
         await peffect_confusion(otmp);
         break;
+    case ONAMES.POT_POLYMORPH:
+        await peffect_polymorph(otmp);
+        break;
     case ONAMES.POT_SICKNESS:
         await peffect_sickness(otmp);
         break;
@@ -2041,4 +2059,45 @@ async function peffect_object_detection(otmp) {
         return 1; /* nothing detected */
     exercise(A_WIS, true);
     return 0;
+}
+
+// src/potion.c:2873 split_mon(); split a monster (or the hero) whose heat has
+// been raised, or who touched water as a gremlin
+export async function split_mon(mon, mtmp) {
+    /* mtmp: optional attacker whose heat triggered it */
+    let mtmp2;
+    let reason = '';
+
+    if (mtmp)
+        reason = ` from ${(mtmp === game.youmonst) ? 'your'
+                                                   : s_suffix(mon_nam(mtmp))} heat`;
+
+    if (mon === game.youmonst) {
+        if (game.u.mh > game.u.mhmax) /* sanity precaution */
+            game.u.mh = game.u.mhmax;
+        mtmp2 = (game.u.mh > 1) ? cloneu() : null;
+        if (mtmp2) {
+            /* cloneu() has done mtmp2->mhpmax = u.mhmax, mtmp2->mhp = u.mh / 2,
+               and u.mh -= mtmp2->mhp; these reductions for both max hp
+               can't make either of them exceed corresponding current hp */
+            mtmp2.mhpmax = Math.trunc(game.u.mhmax / 2);
+            game.u.mhmax -= mtmp2.mhpmax;
+            (game.disp ||= {}).botl = true;
+            await You(`multiply${reason}!`);
+        }
+    } else {
+        if (mon.mhp > mon.mhpmax) /* sanity precaution */
+            mon.mhp = mon.mhpmax;
+        mtmp2 = (mon.mhp > 1) ? clone_mon(mon, 0, 0) : null;
+        if (mtmp2) {
+            /* clone_mon() has done mtmp2->mhpmax = mon->mhpmax, mtmp2->mhp =
+               mhp = mon->mhp / 2, and mon->mh -= mtmp2->mhp;
+               dividing max by 2 can't result in it exceeding current */
+            mtmp2.mhpmax = Math.trunc(mon.mhpmax / 2);
+            mon.mhpmax -= mtmp2.mhpmax;
+            if (canspotmon(mon))
+                await pline(`${Monnam(mon)} multiplies${reason}!`);
+        }
+    }
+    return mtmp2;
 }

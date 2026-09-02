@@ -6,6 +6,17 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { sleep_monst } from './mhitm.js';
+import { shieldeff_mon } from './mon.js';
+import { mpickobj } from './steal.js';
+import { extract_from_minvent, update_mon_extrinsics } from './worn.js';
+import { polyself } from './polyself.js';
+import { shieldeff } from './display.js';
+import { prinv } from './invent.js';
+import { poly_obj, resist } from './zap.js';
+import { x_monnam } from './do_name.js';
+import { Antimagic, Unchanging } from './youprop.js';
+import { has_mgivenname, ARTICLE_THE, ARTICLE_NONE, SUPPRESS_SADDLE, NOTELL, NC_SHOW_MSG, DISMOUNT_POLY, POLY_NOFLAGS } from './const.js';
 import { wakeup } from './mon.js';
 import { uwepgone, uswapwepgone } from './wield.js';
 import { obj_pmname } from './do_name.js';
@@ -109,8 +120,7 @@ export async function instapetrify(str) {
     if (Stone_resistance())
         return;
     if (poly_when_stoned(game.youmonst.data)
-        && await polymon(PMNAMES.PM_STONE_GOLEM,
-                         { allowSexChange: false }))
+        && await polymon(PMNAMES.PM_STONE_GOLEM))
         return;
     await urgent_pline('You turn to stone...');
     game.killer = { format: KILLED_BY, name: str || '' };
@@ -785,8 +795,9 @@ async function trapeffect_arrow_trap(mtmp, trap, trflags) {
         await pline('An arrow shoots out at you!');
         const otmp = t_missile(ONAMES.ARROW, trap);
         const dam = dmgval(otmp, game.youmonst);
-        /* u.usteed && !rn2(2) && steedintrap: no steeds in the traps yet */
-        if (await thitu(8, dam, { obj: otmp }, 'arrow')) {
+        if (game.u.usteed && !rn2(2) && await steedintrap(trap, otmp)) {
+            ; /* nothing */
+        } else if (await thitu(8, dam, { obj: otmp }, 'arrow')) {
             /* obfree(otmp) — the arrow is destroyed */
         } else {
             place_object(otmp, game.u.ux, game.u.uy);
@@ -861,7 +872,9 @@ async function trapeffect_dart_trap(mtmp, trap, trflags) {
     if (!rn2(6))
         otmp.opoisoned = 1;
     const dam = dmgval(otmp, game.youmonst);
-    if (await thitu(7, dam, { obj: otmp }, 'little dart')) {
+    if (game.u.usteed && !rn2(2) && await steedintrap(trap, otmp)) {
+        ; /* nothing */
+    } else if (await thitu(7, dam, { obj: otmp }, 'little dart')) {
         if (otmp.opoisoned)
             note_unported_trap('trapeffect_dart_trap:poisoned');
         /* obfree(otmp) — the dart is destroyed */
@@ -1415,6 +1428,78 @@ export async function drain_en(n, max_already_drained) {
     await You_feel(`${mesg}${punct}`);
 }
 
+// src/trap.c:2464 trapeffect_poly_trap()
+async function trapeffect_poly_trap(mtmp, trap, trflags) {
+    const u = game.u;
+    if (mtmp === game.youmonst) {
+        const viasitting = (trflags & VIASITTING) !== 0;
+        let steed_article = ARTICLE_THE;
+        let verbbuf;
+
+        /* suppress article for the steed's name when it has a personal
+           name (which won't occur when hallucinating) */
+        if (u.usteed && has_mgivenname(u.usteed) && !Hallucination())
+            steed_article = ARTICLE_NONE;
+
+        seetrap(trap);
+        if (viasitting)
+            verbbuf = 'trigger'; /* follows "You sit down." */
+        else if (u.usteed)
+            verbbuf = `lead ${x_monnam(u.usteed, steed_article, null,
+                                       SUPPRESS_SADDLE, false)} onto`;
+        else
+            verbbuf = `${u_locomotion('step')} onto`;
+        await You(`${verbbuf} a polymorph trap!`);
+        if (wearing_iron_shoes(mtmp)) {
+            deltrap(trap);
+            await pline(`${Yname2(u.uarmf)} warps strangely.`);
+            await poly_obj(
+                u.uarmf, u.uarmf.otyp === ONAMES.IRON_SHOES ? ONAMES.KICKING_BOOTS
+                                                            : ONAMES.IRON_SHOES);
+            update_inventory();
+            if (u.uarmf)
+                await prinv(null, u.uarmf, 0);
+        } else if (Antimagic() || Unchanging()) {
+            await shieldeff(u.ux, u.uy);
+            await You_feel('momentarily different.');
+            /* Trap did nothing; don't remove it --KAA */
+        } else {
+            await steedintrap(trap, null);
+            deltrap(trap);      /* delete trap before polymorph */
+            newsym(u.ux, u.uy); /* get rid of trap symbol */
+            await You_feel('a change coming over you.');
+            await polyself(POLY_NOFLAGS);
+        }
+    } else {
+        const in_sight = canseemon(mtmp) || (mtmp === u.usteed);
+
+        if (wearing_iron_shoes(mtmp)) {
+            let shoes = which_armor(mtmp, W_ARMF);
+
+            extract_from_minvent(mtmp, shoes, true, true);
+            if (mpickobj(mtmp, shoes)) {
+                /* impossible("re-equipping iron shoes destroyed them?") */
+                return Trap_Effect_Finished;
+            }
+            shoes = await poly_obj(
+                shoes, shoes.otyp === ONAMES.IRON_SHOES ? ONAMES.KICKING_BOOTS
+                                                        : ONAMES.IRON_SHOES);
+            if (shoes) {
+                mtmp.misc_worn_check |= W_ARMF;
+                shoes.owornmask = W_ARMF;
+                await update_mon_extrinsics(mtmp, shoes, true, true);
+            }
+        } else if (resists_magm(mtmp)) {
+            shieldeff_mon(mtmp);
+        } else if (!resist(mtmp, OCLASSES.WAND_CLASS, 0, NOTELL)) {
+            newcham(mtmp, null, NC_SHOW_MSG);
+            if (in_sight)
+                seetrap(trap);
+        }
+    }
+    return Trap_Effect_Finished;
+}
+
 // src/trap.c:1730 trapeffect_fire_trap(), monster path. Magic traps use
 // this when their one-in-21 monster trigger fires.
 async function trapeffect_fire_trap(mtmp, trap, trflags) {
@@ -1588,7 +1673,7 @@ async function trapeffect_magic_trap(mtmp, trap, trflags) {
         return Trap_Effect_Finished;
     }
     await domagictrap();
-    /* steedintrap() — no steed on this tree */
+    await steedintrap(trap, null);
     return Trap_Effect_Finished;
 }
 
@@ -1795,8 +1880,7 @@ async function trapeffect_slp_gas_trap(mtmp, trap, trflags) {
             const { fall_asleep } = await import('./timeout.js');
             await fall_asleep(-rnd(25), true);
         }
-        if (game.u.usteed)
-            note_unported_trap('trapeffect_slp_gas_trap:steed');
+        await steedintrap(trap, null);
         return Trap_Effect_Finished;
     }
 
@@ -1875,43 +1959,40 @@ async function trapeffect_pit(mtmp, trap, trflags) {
 
         game.u.utrap = rn1(6, 2);
         game.u.utraptype = TT_PIT;
-        if (game.u.usteed) {
-            note_unported_trap('trapeffect_pit:steed');
-            return Trap_Effect_Finished;
-        }
-
-        if (relevant_spikes) {
-            let damage = rnd(conj_pit ? 4 : adj_pit ? 6 : 10);
-            if (game.u.uprops?.HALF_PHDAM)
-                damage = Math.trunc((damage + 1) / 2);
-            await losehp(damage,
-                         plunged ? 'deliberately plunged into a pit of iron spikes'
-                         : (conj_pit || deliberate)
-                           ? 'stepped into a pit of iron spikes'
-                           : adj_pit ? 'stumbled into a pit of iron spikes'
-                           : 'fell into a pit of iron spikes',
-                         NO_KILLER_PREFIX);
-            if (!rn2(6)) {
-                await poisoned('spikes', A_STR,
-                               (conj_pit || adj_pit || deliberate)
-                                 ? 'stepping on poison spikes'
-                                 : 'fall onto poison spikes',
-                               8, false);
+        if (!(await steedintrap(trap, null))) {
+            if (relevant_spikes) {
+                let damage = rnd(conj_pit ? 4 : adj_pit ? 6 : 10);
+                if (game.u.uprops?.HALF_PHDAM)
+                    damage = Math.trunc((damage + 1) / 2);
+                await losehp(damage,
+                             plunged ? 'deliberately plunged into a pit of iron spikes'
+                             : (conj_pit || deliberate)
+                               ? 'stepped into a pit of iron spikes'
+                               : adj_pit ? 'stumbled into a pit of iron spikes'
+                               : 'fell into a pit of iron spikes',
+                             NO_KILLER_PREFIX);
+                if (!rn2(6)) {
+                    await poisoned('spikes', A_STR,
+                                   (conj_pit || adj_pit || deliberate)
+                                     ? 'stepping on poison spikes'
+                                     : 'fall onto poison spikes',
+                                   8, false);
+                }
+            } else if (!conj_pit && !deliberate
+                       && !(plunged && (Flying() || is_clinger(mtmp.data)))) {
+                let damage = rnd(adj_pit ? 3 : 6);
+                if (game.u.uprops?.HALF_PHDAM)
+                    damage = Math.trunc((damage + 1) / 2);
+                await losehp(damage,
+                             plunged ? 'deliberately plunged into a pit'
+                                     : 'fell into a pit',
+                             NO_KILLER_PREFIX);
             }
-        } else if (!conj_pit && !deliberate
-                   && !(plunged && (Flying() || is_clinger(mtmp.data)))) {
-            let damage = rnd(adj_pit ? 3 : 6);
-            if (game.u.uprops?.HALF_PHDAM)
-                damage = Math.trunc((damage + 1) / 2);
-            await losehp(damage,
-                         plunged ? 'deliberately plunged into a pit'
-                                 : 'fell into a pit',
-                         NO_KILLER_PREFIX);
+            game.vision_full_recalc = 1;
+            vision_recalc(0);
+            exercise(A_STR, false);
+            exercise(A_DEX, false);
         }
-        game.vision_full_recalc = 1;
-        vision_recalc(0);
-        exercise(A_STR, false);
-        exercise(A_DEX, false);
         return Trap_Effect_Finished;
     }
 
@@ -2179,6 +2260,8 @@ async function trapeffect_selector(mtmp, trap, trflags) {
         return Trap_Effect_Finished;
     case ANTI_MAGIC:
         return await trapeffect_anti_magic(mtmp, trap, trflags);
+    case POLY_TRAP:
+        return await trapeffect_poly_trap(mtmp, trap, trflags);
     default:
         note_unported_trap(`trapeffect_selector:ttyp=${trap.ttyp}`);
         return Trap_Effect_Finished;
@@ -4121,4 +4204,72 @@ export async function openfallingtrap(mon, trapdoor_only, noticed) {
         result = ((await mintrap(mon, FORCETRAP)) !== Trap_Effect_Finished);
     }
     return result;
+}
+
+// src/trap.c:3102 steedintrap(); the hero's steed encounters a trap; returns
+// 1 if the steed was hit, Trap_Killed_Mon if the trap killed it
+export async function steedintrap(trap, otmp) {
+    const u = game.u;
+    const steed = u.usteed;
+    let tt;
+    let trapkilled, steedhit;
+
+    if (!steed || !trap)
+        return Trap_Effect_Finished;
+    tt = trap.ttyp;
+    steed.mx = u.ux;
+    steed.my = u.uy;
+    trapkilled = steedhit = false;
+
+    switch (tt) {
+    case ARROW_TRAP:
+        if (!otmp) {
+            /* impossible("steed hit by non-existent arrow?") */
+            return Trap_Effect_Finished;
+        }
+        trapkilled = await thitm(8, steed, otmp, 0, false);
+        steedhit = true;
+        break;
+    case DART_TRAP:
+        if (!otmp) {
+            /* impossible("steed hit by non-existent dart?") */
+            return Trap_Effect_Finished;
+        }
+        trapkilled = await thitm(7, steed, otmp, 0, false);
+        steedhit = true;
+        break;
+    case SLP_GAS_TRAP:
+        if (!resists_sleep(steed) && !breathless(steed.data)
+            && !helpless(steed)) {
+            if (await sleep_monst(steed, rnd(25), -1))
+                await pline(`${Monnam(steed)} suddenly falls asleep!`);
+        }
+        steedhit = true;
+        break;
+    case LANDMINE:
+        trapkilled = await thitm(0, steed, null, rnd(16), false);
+        steedhit = true;
+        break;
+    case PIT:
+    case SPIKED_PIT:
+        trapkilled = (DEADMONSTER(steed)
+                      || await thitm(0, steed, null,
+                                     rnd((tt === PIT) ? 6 : 10), false));
+        steedhit = true;
+        break;
+    case POLY_TRAP:
+        if (!resists_magm(steed) && !resist(steed, OCLASSES.WAND_CLASS, 0, NOTELL)) {
+            newcham(steed, null, NC_SHOW_MSG);
+        }
+        steedhit = true;
+        break;
+    default:
+        break;
+    }
+
+    if (trapkilled) {
+        await dismount_steed(DISMOUNT_POLY);
+        return Trap_Killed_Mon;
+    }
+    return steedhit ? 1 : 0;
 }

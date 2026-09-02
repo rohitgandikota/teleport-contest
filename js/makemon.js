@@ -108,7 +108,7 @@ export const {
 } = MMFLAGS;
 
 // include/mondata.h predicates, one line each as in C.
-const is_golem = (ptr) => ptr.mlet === S_GOLEM;
+export const is_golem = (ptr) => ptr.mlet === S_GOLEM;
 export const is_bat = (ptr) => ptr.pmidx === PMNAMES.PM_BAT
                      || ptr.pmidx === PMNAMES.PM_GIANT_BAT
                      || ptr.pmidx === PMNAMES.PM_VAMPIRE_BAT;
@@ -337,7 +337,7 @@ function mk_gen_ok(mndx, mvflagsmask, genomask) {
 }
 
 // include/mondata.h:147 — corpses of zombies and mummies use these as stand-ins.
-const is_placeholder = (ptr) =>
+export const is_placeholder = (ptr) =>
     ptr.pmidx === PMNAMES.PM_ORC || ptr.pmidx === PMNAMES.PM_GIANT
     || ptr.pmidx === PMNAMES.PM_ELF || ptr.pmidx === PMNAMES.PM_HUMAN;
 
@@ -413,6 +413,39 @@ export function mkclass_aligned(klass, spc, atyp) {
 // src/makemon.c:1872 mkclass()
 export function mkclass(klass, spc) {
     return mkclass_aligned(klass, spc, A_NONE);
+}
+
+// src/makemon.c:1983 mkclass_poly(); like mkclass(), but excludes several
+// monster types from polymorph selection
+export function mkclass_poly(klass) {
+    let first, last, num = 0;
+    let gmask;
+
+    for (first = LOW_PM; first < SPECIAL_PM; first++)
+        if (game.mons[first].mlet === klass)
+            break;
+    if (first === SPECIAL_PM)
+        return NON_PM;
+
+    gmask = (G_NOGEN | G_UNIQ);
+    /* the "usually" part of "hell and no-hell are usually excluded";
+       [it applies to every candidate here instead of to each one because
+       that would make the two loops inconsistent with each other for non L] */
+    if (rn2(9) || klass === S_LICH)
+        gmask |= (Inhell() ? G_NOHELL : G_HELL);
+
+    for (last = first; last < SPECIAL_PM && game.mons[last].mlet === klass; last++)
+        if (mk_gen_ok(last, G_GENOD, gmask))
+            num += game.mons[last].geno & G_FREQ;
+    if (!num)
+        return NON_PM;
+
+    for (num = rnd(num); num > 0; first++)
+        if (mk_gen_ok(first, G_GENOD, gmask))
+            num -= game.mons[first].geno & G_FREQ;
+    first--; /* correct an off-by-one error */
+
+    return first;
 }
 
 // src/mkobj.c:395 rndmonnum_adj() — Plan A is a level-appropriate common

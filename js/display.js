@@ -1,6 +1,9 @@
 // display.js — Map rendering and terminal output.
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
+import { iter_mons } from './mon.js';
+import { block_point, unblock_point } from './vision.js';
+import { is_lightblocker_mappear } from './monst.js';
 import { game } from './gstate.js';
 import { rn2_on_display_rng } from './rng.js';
 import { money_cnt } from './invent.js';
@@ -2357,7 +2360,7 @@ export function tp_sensemon(mon) {
 
 // include/hack.h:1135 MATCH_WARN_OF_MON()
 function match_warn_of_mon(mon) {
-    if (!game.u.uprops?.WARN_OF_MON)
+    if (!(game.u.intrinsic?.HWarn_of_mon || game.u.uprops?.WARN_OF_MON))
         return false;
     const wt = game.context?.warntype || {};
     return !!(((wt.obj || 0) & (mon.data?.mflags2 || 0))
@@ -2413,6 +2416,23 @@ export function see_monsters() {
     }
     if (!game.u?.usteed)
         newsym(game.u.ux, game.u.uy);
+}
+
+// src/display.c:1537 mimic_light_blocking()
+function mimic_light_blocking(mtmp) {
+    if (mtmp.minvis && is_lightblocker_mappear(mtmp)) {
+        if (See_invisible())
+            block_point(mtmp.mx, mtmp.my);
+        else
+            unblock_point(mtmp.mx, mtmp.my);
+    }
+}
+
+// src/display.c:1548 set_mimic_blocking(); Block/unblock light depending on
+// what a mimic is mimicking and if it's invisible or not.  Should be called
+// only when the state of See_invisible changes.
+export function set_mimic_blocking() {
+    iter_mons(mimic_light_blocking);
 }
 
 // src/display.c:1558 see_objects() redraws the top object at every occupied

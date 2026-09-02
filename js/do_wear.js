@@ -1057,6 +1057,29 @@ export async function Armor_off() {
     return 0;
 }
 
+// src/do_wear.c:939 Armor_gone(); used for destroying armor (and by
+// break_armor())
+export async function Armor_gone() {
+    const otmp = game.u.uarm;
+    const was_arti_light = !!(otmp && otmp.lamplit && artifact_light(otmp));
+
+    (game.context_takeoff ||= {}).mask &= ~W_ARM;
+    setnotworn(game.u.uarm);
+    game.context_takeoff.cancelled_don = false;
+
+    /* taking off yellow dragon scales/mail might be fatal; arti_light
+       comes from gold dragon scales/mail so they don't overlap, but
+       conceptually the non-fatal change should be done before the
+       potentially fatal change in case the latter results in bones */
+    if (was_arti_light && !artifact_light(otmp)) {
+        await end_burn(otmp, false);
+        if (!Blind())
+            await pline(`${Tobjnam(otmp, 'stop')} shining.`);
+    }
+    await dragon_armor_handling(otmp, false);
+    return 0;
+}
+
 export async function Amulet_off() {
     const uamul = worn(W_AMUL);
     if (!uamul) return;

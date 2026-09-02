@@ -10,6 +10,9 @@
 // exception is pronoun_gender() at the bottom, which rolls rn2(4) when the
 // hero is hallucinating.
 
+import { W_AMUL } from './const.js';
+import { Breathless } from './youprop.js';
+import { monsndx } from './makemon.js';
 import { M_SEEN_MAGR, M_SEEN_FIRE, M_SEEN_COLD, M_SEEN_SLEEP, M_SEEN_DISINT, M_SEEN_ELEC, M_SEEN_POISON, M_SEEN_ACID } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, GROWNUPS } from './monst_data.js';
 import { game } from './gstate.js';
@@ -31,6 +34,33 @@ import { which_armor } from './worn.js';
 import { W_ARM, FIRE_RES, COLD_RES, SLEEP_RES, DISINT_RES, SHOCK_RES,
          POISON_RES, ACID_RES, STONE_RES, ANTIMAGIC, DRAIN_RES,
          BLND_RES } from './const.js';
+
+// src/mondata.c:13 set_mon_data(); set up an individual monster's base type
+// (initial creation, shapechange)
+export function set_mon_data(mon, ptr) {
+    const old_speed = mon.data ? mon.data.mmove : 0;
+    const is_you = (mon === game.youmonst);
+    let movement = is_you ? game.u.umovement : mon.movement;
+
+    mon.data = ptr;
+    mon.mnum = monsndx(ptr);
+
+    if (movement) { /* used to adjust poly'd hero as well as monsters */
+        const new_speed = ptr.mmove;
+        /* prorate unused movement if new form is slower so that
+           it doesn't get extra moves leftover from previous form;
+           if new form is faster, leave unused movement as is */
+        if (new_speed < old_speed) {
+            movement *= new_speed;
+            if (old_speed > 0) /* old > new and new >= 0, so always True */
+                movement = Math.trunc(movement / old_speed);
+        }
+        if (is_you)
+            game.u.umovement = movement;
+        else
+            mon.movement = movement;
+    }
+}
 
 export const bigmonst     = (d) => d.msize >= MFLAGS.MZ_LARGE;
 export const amorphous    = (d) => (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0;
@@ -157,6 +187,16 @@ export function num_horns(ptr) {
 }
 
 export const has_horns = (ptr) => num_horns(ptr) > 0;
+// include/mondata.h:213 is_vampire(), :210 is_mind_flayer(), :122 can_breathe(),
+// :78 eggs_in_water(), :140 is_shapeshifter()
+export const is_vampire = (ptr) => ptr.mlet === MONSYMS.S_VAMPIRE;
+export const is_mind_flayer = (ptr) => ptr.pmidx === PMNAMES.PM_MIND_FLAYER
+    || ptr.pmidx === PMNAMES.PM_MASTER_MIND_FLAYER;
+export const can_breathe = (ptr) => attacktype(ptr, ATTKS.AT_BREA);
+export const eggs_in_water = (ptr) =>
+    lays_eggs(ptr) && ptr.mlet === MONSYMS.S_EEL && is_swimmer(ptr);
+export const is_shapeshifter = (ptr) =>
+    (ptr.mflags2 & MFLAGS.M2_SHAPESHIFTER) !== 0;
 
 // include/mondata.h:63 unsolid()
 export const unsolid = (ptr) => (ptr.mflags1 & MFLAGS.M1_UNSOLID) !== 0;
@@ -721,6 +761,37 @@ export function max_passive_dmg(mdef, magr) {
 }
 
 // src/mondata.c:654 sticks() — grabs and holds its victim.
+// src/mondata.c:591 can_be_strangled(); returns True if monster can be
+// strangled
+export function can_be_strangled(mon) {
+    let mamul;
+    let nonbreathing, nobrainer;
+
+    /* For amulet of strangulation support:  here we're considering
+       strangulation to be loss of blood flow to the brain due to
+       constriction of the arteries in the neck, so all headless
+       creatures are immune (no neck) as are mindless creatures
+       who don't need to breathe (brain, if any, doesn't care).
+       Mindless creatures who do need to breath are vulnerable, as
+       are non-breathing creatures which have higher brain function. */
+    if (!has_head(mon.data))
+        return false;
+    if (mon === game.youmonst) {
+        /* hero can't be mindless but poly'ing into mindless form can
+           confer strangulation protection */
+        nobrainer = mindless(game.youmonst.data);
+        nonbreathing = Breathless();
+    } else {
+        nobrainer = mindless(mon.data);
+        /* monsters don't wear amulets of magical breathing,
+           so second part doesn't achieve anything useful... */
+        nonbreathing = (breathless(mon.data)
+                        || ((mamul = which_armor(mon, W_AMUL)) != null
+                            && (mamul.otyp === ONAMES.AMULET_OF_MAGICAL_BREATHING)));
+    }
+    return (!nobrainer || !nonbreathing);
+}
+
 export const sticks = (ptr) =>
     (dmgtype(ptr, ATTKS.AD_STCK)
      || (dmgtype(ptr, ATTKS.AD_WRAP) && !attacktype(ptr, ATTKS.AT_ENGL))
@@ -782,6 +853,12 @@ const NAME_TO_MON_ALTS = [
     ['watchmen', 'PM_WATCHMAN'], ['djinn', 'PM_DJINNI'],
     ['mumakil', 'PM_MUMAK'], ['erinyes', 'PM_ERINYS'],
 ];
+
+// src/mondata.c:883 name_to_mon(); return monster index if str is a
+// monster name, else NON_PM
+export function name_to_mon(in_str, gender_name_var) {
+    return name_to_monplus(in_str, null, gender_name_var);
+}
 
 export function name_to_monplus(in_str, rest_box, gender_name_var) {
     const NON_PM = -1, LOW_PM = 0;

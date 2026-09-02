@@ -1786,7 +1786,7 @@ function title_to_mon(str) {
     return NON_PM;
 }
 
-function name_to_monclass(str) {
+export function name_to_monclass(str) {
     if (!str)
         return { monclass: 0, which: NON_PM };
 

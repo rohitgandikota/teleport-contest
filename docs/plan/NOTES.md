@@ -4330,3 +4330,26 @@ declared, or a parameter, and look at what is left (a scratch script did
 this: `undef_scan2.py`). Run it on every file a batch rewrites, before the
 gate. Also beware helper loops that `continue` past an import statement:
 one skipped statement silently dropped four trap.js imports.
+
+## An un-awaited async call is a latent ordering bug
+
+`js/do.js dropz()` called `encumber_msg()` without `await`. C runs it before
+dropz returns. The JS async function computed the old/new capacity at once
+but printed and updated `game.oldcap` only after its first `await`, so any
+caller that reached its own `encumber_msg()` without yielding printed the
+same "Your movements are slowed..." transition twice. This stayed hidden
+for as long as the old polymon() used `await import()` between the drop
+and its final encumber_msg(): each dynamic import yielded to the event loop
+and let the first call finish. Rewriting polyself.js with static imports
+removed the yields and seed0108 failed. Rule: every async C-side call is
+awaited, even when its result is unused; grep a rewritten file for
+`^\s+[a-z_]+\(.*\);$` calls to async functions before gating.
+
+## `if (!counter++)` on a JS field that may be undefined
+
+C's `if (!u.uconduct.polyselfs++)` relies on zero-initialized memory. In JS
+`undefined++` yields NaN, the test still passes (so the livelog line
+appears) and the field is then NaN; #conduct later said "You have never
+changed form." (seed4500, step 1573). Write such counters as
+`x = (x | 0) + 1; if (x === 1) ...`, or initialize the struct where C
+zero-fills it.

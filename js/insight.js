@@ -13,6 +13,14 @@
 // else records itself through note_unported() rather than guessing, because a
 // spurious line shifts every row below it and costs the whole frame.
 
+import { MONSYMS } from './monst_data.js';
+import { You } from './pline.js';
+import { ceiling, surface } from './dungeon.js';
+import { hides_under, is_clinger } from './mondata.js';
+import { waterbody_name } from './pager.js';
+import { is_pool, t_at } from './mon.js';
+import { simple_typename, ansimpleoname } from './objnam.js';
+import { M_AP_TYPE, M_AP_NOTHING, M_AP_OBJECT, M_AP_FURNITURE, M_AP_MONSTER, TT_PIT, SPIKED_PIT } from './const.js';
 import { game } from './gstate.js';
 import { P_NONE, P_UNSKILLED, P_SKILLED, P_ISRESTRICTED, FULL_MOON, NEW_MOON, WEAK,
          P_TWO_WEAPON_COMBAT, ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE,
@@ -1148,6 +1156,64 @@ export async function ustatusline() {
     await pline(`Status of ${game.plname} (${piousness(false, align_str(game.u.ualign?.type ?? 0))}):  Level ${game.u.ulevel}  HP ${game.u.uhp}(${game.u.uhpmax})  AC ${game.u.uac}${info}.`);
 }
 
+
+// src/insight.c:2022 youhiding(); the hero is hiding (or mimicking)
+export async function youhiding(via_enlghtmt, msgflag) {
+    /* via_enlghtmt: enlightenment line vs topl message;
+       msgflag: for variant message phrasing */
+    const u = game.u;
+    const youmonst = game.youmonst;
+    let buf = 'hiding';
+
+    if (M_AP_TYPE(youmonst) !== M_AP_NOTHING) {
+        /* mimic; hero is only able to mimic a strange object or gold
+           or hallucinatory alternative to gold, so we skip the details
+           for the hypothetical furniture and monster cases */
+        buf = 'mimicking';
+        if (M_AP_TYPE(youmonst) === M_AP_OBJECT) {
+            buf += ` ${an(simple_typename(youmonst.mappearance))}`;
+        } else if (M_AP_TYPE(youmonst) === M_AP_FURNITURE) {
+            buf += ' something';
+        } else if (M_AP_TYPE(youmonst) === M_AP_MONSTER) {
+            buf += ' someone';
+        } else {
+            ; /* something unexpected; leave 'buf' as-is */
+        }
+    } else if (u.uundetected) {
+        /* points past "hiding" */
+        if (youmonst.data.mlet === MONSYMS.S_EEL) {
+            if (is_pool(u.ux, u.uy))
+                buf += ` in the ${waterbody_name(u.ux, u.uy)}`;
+        } else if (hides_under(youmonst.data)) {
+            const o = (game.level.objects || [])
+                .find((obj) => obj.ox === u.ux && obj.oy === u.uy);
+
+            if (o)
+                buf += ` underneath ${ansimpleoname(o)}`;
+        } else if (is_clinger(youmonst.data) || Flying()) {
+            buf += ` on the ${ceiling(u.ux, u.uy)}`;
+        } else {
+            if (u.utrap && u.utraptype === TT_PIT) {
+                const t = t_at(u.ux, u.uy);
+
+                buf += ` in a ${(t && t.ttyp === SPIKED_PIT) ? 'spiked ' : ''}pit`;
+            } else
+                buf += ` on the ${surface(u.ux, u.uy)}`;
+        }
+    } else {
+        ; /* shouldn't happen; will result in generic "you are hiding" */
+    }
+
+    if (via_enlghtmt) {
+        const save_final = en_final;
+        en_final = msgflag; /* 'final' is used by you_are() macro */
+        you_are(buf, '');
+        en_final = save_final;
+    } else {
+        /* #monster: "you are now hiding" */
+        await You(`are ${msgflag ? 'already' : 'now'} ${buf}.`);
+    }
+}
 
 // src/insight.c:2560 show_gamelog() / :2532 do_gamelog() — the #chronicle
 // window.

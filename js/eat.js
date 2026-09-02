@@ -1,3 +1,6 @@
+import { POLY_NOFLAGS } from './const.js';
+import { polyself } from './polyself.js';
+import { Unchanging } from './youprop.js';
 import { exercise, near_capacity, adjalign, poison_strdmg, adjattrib,
          acurrstr, change_luck }
     from './attrib.js';
@@ -1972,6 +1975,25 @@ async function cpostfx(pm) {
         return;
 
     switch (pm) {
+    case PMNAMES.PM_CHAMELEON:
+    case PMNAMES.PM_DOPPELGANGER:
+    case PMNAMES.PM_SANDESTIN: /* moot--they don't leave corpses */
+    case PMNAMES.PM_GENETIC_ENGINEER:
+        if (Unchanging()) {
+            await You_feel('momentarily different.'); /* same as poly trap */
+        } else {
+            /* use up the rest of the tin, if any, and its nutrition
+               early to keep it out of bones */
+            if (game.context.tin?.tin) {
+                await use_up_tin(game.context.tin.tin);
+                await lesshungry(200 + (metallivorous(game.youmonst.data) ? 5 : 0));
+            }
+            await You(`${(pm === PMNAMES.PM_GENETIC_ENGINEER)
+                          ? 'undergo a freakish metamorphosis'
+                          : 'feel a change coming over you'}.`);
+            await polyself(POLY_NOFLAGS);
+        }
+        break;
     case PMNAMES.PM_WRAITH:
     case PMNAMES.PM_HUMAN_WERERAT:
     case PMNAMES.PM_HUMAN_WEREJACKAL:
@@ -1986,9 +2008,6 @@ async function cpostfx(pm) {
     case PMNAMES.PM_SMALL_MIMIC:
     case PMNAMES.PM_QUANTUM_MECHANIC:
     case PMNAMES.PM_LIZARD:
-    case PMNAMES.PM_CHAMELEON:
-    case PMNAMES.PM_DOPPELGANGER:
-    case PMNAMES.PM_GENETIC_ENGINEER:
     case PMNAMES.PM_DISPLACER_BEAST:
     case PMNAMES.PM_DISENCHANTER:
     case PMNAMES.PM_MIND_FLAYER:

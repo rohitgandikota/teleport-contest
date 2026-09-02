@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (early morning): polyself.c completed (hero polymorph)
+
+`js/polyself.js` is now the C file function for function: `set_uasmon`
+(replaces the JS-only set_form_intrinsics; allmain's newgame and were.c
+`set_ulycn` call it), `check_strangling`, `polyman`, `change_sex`,
+`livelog_newform`, `newman` (with the unsuccessful-polymorph death),
+`polyself(psflags)` with the controlled "Become what kind of monster?"
+loop, class prefixes via `mkclass_poly`, placeholder substitution, dragon
+armor merging (`do_merge`), lycanthrope and vampire shifting, and the
+light-source bookkeeping; `polymon` with every arm (system shock is in
+polyself, sex change, stone golem, strength via `character_race`, hit dice,
+`break_armor`/`drop_weapon`/`dropp`, egg learning, engulfer expulsion,
+grabber release, steed petrification, terrain and trap escapes, the
+verbose #monster hints); `rehumanize` (Unchanging deaths, light source,
+polyman); the #monster commands `dobreathe`, `dospit`, `doremove`,
+`dospinweb`, `dosummon`, `dogaze`, `dohide`, `dopoly`, `domindblast`;
+`uunstick`, `skinback`, `armor_to_dragon`, `polysense`, `ugenocided`,
+`udeadinside`. cmd.c `domonability` moved to js/cmd.js and wizcmds.c
+`wiz_polyself` to js/wizcmds.js as the C has them.
+- supporting ports: mondata.c `set_mon_data`, `can_be_strangled`,
+  `name_to_mon`; mon.c `pm_to_cham`, `iter_mons`, `valid_vampshiftform`,
+  `egg_type_from_parent`; makemon.c `mkclass_poly`; display.c
+  `set_mimic_blocking`; timeout.c `learn_egg_type`; botl.c `max_rank_sz`;
+  role.c `character_race`; zap.c `ubreatheu`, faithful `flash_str(typ,
+  nohallu)` with mthrowu.c `rnd_hallublast`; pline.c `gamelog_add`/
+  `livelog_printf`; insight.c `youhiding`; objnam.c `simple_typename`;
+  potion.c `split_mon` and `peffect_polymorph`; mhitu.c `cloneu`; mhitm.c
+  `mon_poly`, `sleep_monst`; uhitm.c `mhitm_ad_poly` (wired into all three
+  AD_ dispatches); do_wear.c `Armor_gone`; trap.c `trapeffect_poly_trap`
+  and `steedintrap` (wired into arrow, dart, sleep gas, magic trap, pit
+  and the selector); eat.c cpostfx's chameleon/doppelganger/genetic
+  engineer arm; youprop.h `Unchanging`, `Polymorph_control`. Every
+  `polyself()` caller passes the C flags.
+- two gate catches worth knowing (NOTES): js/do.js `dropz` did not await
+  `encumber_msg()`, and `if (!counter++)` on an undefined JS field.
+- still noted: sit.c throne polymorph (whole throne block unported),
+  read.c genocide (`do_genocide`/`do_class_genocide`, POLY_REVERT), trap.c
+  landmine hero arm, dragon_armor_handling's `wielding_corpse` arm,
+  `Maybe_Half_Phys` in the arrow/dart thitu calls, dokick/steed/zap
+  polymorph notes listed by the census.
+- gated 44/44 + hang-gate; census 92/102 (same ten drift sessions).
+- next: read.c genocide, then dig.c completion (digactualhole,
+  liquid_flow, fillholetyp), zap.c revive/unturn_dead, shop theft chain.
+
 ## 2026-09-02 (late night): muse.c completed (monster item use)
 
 `js/muse.js` now carries the whole of muse.c's defensive and offensive

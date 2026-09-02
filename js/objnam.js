@@ -166,6 +166,19 @@ export function obj_typename(otyp) {
 // xname / doname
 // ---------------------------------------------------------------------------
 
+// src/objnam.c:245 simple_typename(); less verbose result than obj_typename()
+export function simple_typename(otyp) {
+    const save_uname = game.objects[otyp].oc_uname;
+
+    game.objects[otyp].oc_uname = null; /* suppress any name given by user */
+    let bufp = obj_typename(otyp);
+    game.objects[otyp].oc_uname = save_uname;
+    const pp = strstri(bufp, ' (');
+    if (pp >= 0)
+        bufp = bufp.slice(0, pp); /* strip the appended description */
+    return bufp;
+}
+
 // src/objnam.c:437 just_an() — "", "a " or "an ".
 //
 // Chosen from the string that FOLLOWS it, which is why doname_base() sets

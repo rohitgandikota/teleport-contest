@@ -5,6 +5,9 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { POLY_NOFLAGS } from './const.js';
+import { Unchanging } from './youprop.js';
+import { rnd_hallublast } from './mthrowu.js';
 import { disguised_as_non_mon } from './uhitm.js';
 import { uhim } from './mhitu.js';
 import { ansimpleoname, bare_artifactname } from './objnam.js';
@@ -929,10 +932,10 @@ export async function zapyourself(obj, ordinary) {
     }
     case ONAMES.WAN_POLYMORPH:
     case ONAMES.SPE_POLYMORPH:
-        if (!game.u.uprops?.UNCHANGING) {
+        if (!Unchanging()) {
             learn_it = true;
             const { polyself } = await import('./polyself.js');
-            await polyself();
+            await polyself(POLY_NOFLAGS);
         }
         break;
     case ONAMES.SPE_HEALING:
@@ -2134,13 +2137,16 @@ function zaptype(type) {
     return Math.abs(type);
 }
 
-export function flash_str(type) {
-    const fltyp = zaptype(type);
-    if (game.u.uprops?.HALLUC) {
-        note_unported_zap('flash_str:hallucination');
-        return flash_types[fltyp] || 'ray';
+export function flash_str(typ, nohallu = false) {
+    /* nohallu: suppress hallucination (for death reasons) */
+    typ = zaptype(typ);
+    if (Hallucination() && !nohallu) {
+        /* always return "blast of <something>";
+           this could be extended with hallucinatory rays, but probably
+           not worth it at this time */
+        return `blast of ${rnd_hallublast()}`;
     }
-    return flash_types[fltyp] || 'ray';
+    return flash_types[typ];
 }
 
 // src/zap.c:4705 zap_hit(). Hero spell bonuses remain an explicit gap.
@@ -3121,7 +3127,7 @@ export async function dobuzz(type, nd, startx, starty, ddx, ddy,
     }
 }
 
-async function ubuzz(type, nd) {
+export async function ubuzz(type, nd) {
     await dobuzz(type, nd, game.u.ux, game.u.uy, game.u.dx, game.u.dy);
 }
 
@@ -3681,6 +3687,14 @@ export async function break_statue(obj) {
     obj.spe = 0;
     await fracture_rock(obj);
     return true;
+}
+
+// src/zap.c:3017 ubreatheu(); hero breathes at own location (can't hit
+// anyone else)
+export async function ubreatheu(mattk) {
+    const dtyp = 20 + mattk[1] - 1;      /* breath by hero */
+
+    await zhitu(dtyp, mattk[2], flash_str(dtyp, true), game.u.ux, game.u.uy);
 }
 
 // src/zap.c:3026 lightdamage(), a light-hating hero (gremlin) is hurt by a

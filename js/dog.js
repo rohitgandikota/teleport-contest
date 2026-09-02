@@ -1280,7 +1280,7 @@ function best_target(mtmp, forced) {
 // dog_move calls this AFTER its position loop and BEFORE committing the move
 // (src/dogmove.c:1273). We were not calling it at all, which is why seed0102
 // and seed0105 both stop at score_targ's rnd(5).
-async function pet_ranged_attk(mtmp, forced) {
+export async function pet_ranged_attk(mtmp, forced) {
     let hungry = false;
 
     /* How hungry is the pet? */

@@ -126,10 +126,7 @@ async function fatal_corpse_mistake(obj, remotely) {
 
     if (poly_when_stoned(game.youmonst.data)) {
         const { polymon } = await import('./polyself.js');
-        if (await polymon(PMNAMES.PM_STONE_GOLEM, {
-            allowSexChange: false,
-            keepAttributesForMessage: true,
-        })) {
+        if (await polymon(PMNAMES.PM_STONE_GOLEM)) {
             await display_nhwindow_message();
             return false;
         }

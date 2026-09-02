@@ -6,6 +6,8 @@
 // issue any of them, and each one that prompts spends keys. A '#' command whose
 // body is skipped leaves its prompt's keystrokes to be read as commands.
 
+import { POLY_CONTROLLED } from './const.js';
+import { polyself } from './polyself.js';
 import { game } from './gstate.js';
 import { makewish } from './zap.js';
 import { encumber_msg } from './attrib.js';
@@ -454,5 +456,11 @@ export async function wiz_level_tele() {
         await level_tele();
     else
         await pline('Unavailable command.');   /* unavailcmd */
+    return ECMD_OK;
+}
+
+// src/wizcmds.c:568 wiz_polyself(); #polyself command - change hero's form
+export async function wiz_polyself() {
+    await polyself(POLY_CONTROLLED);
     return ECMD_OK;
 }

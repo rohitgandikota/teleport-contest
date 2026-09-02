@@ -1,3 +1,15 @@
+import { dobreathe, dospit, doremove, dogaze, dosummon, dohide, dospinweb, domindblast, dopoly } from './polyself.js';
+import { pet_ranged_attk } from './dog.js';
+import { is_vampshifter } from './monst.js';
+import { aggravate } from './wizard.js';
+import { use_unicorn_horn } from './apply.js';
+import { There } from './pline.js';
+import { dryup } from './fountain.js';
+import { split_mon } from './potion.js';
+import { IS_FOUNTAIN } from './const.js';
+import { ATTKS, MSOUND } from './monst_data.js';
+import { is_were } from './were.js';
+import { webmaker, can_breathe, attacktype, is_mind_flayer, is_unicorn, is_vampire } from './mondata.js';
 import { PICK_ONE, CMD_M_PREFIX, AUTOCOMPLETE, CMD_NOT_AVAILABLE, INTERNALCMD, WIZMODECMD, GENERALCMD, QBUFSZ } from './const.js';
 import { add_menu_heading } from './options.js';
 import { pmatchi, visctrl, strstri, strsubst } from './hacklib.js';
@@ -825,6 +837,73 @@ async function docmd_getobj(ch) {
 
 // src/cmd.c:495 doextcmd() — dispatch an extended command.
 //
+/* src/decl.c:118 hidespinchars[] */
+const hidespinchars = 'hsq';
+
+// src/cmd.c:890 domonability(); #monster command - use special monster
+// ability while polymorphed
+export async function domonability() {
+    const u = game.u;
+    const uptr = game.youmonst.data;
+    const might_hide = (is_hider(uptr) || hides_under(uptr));
+    let c = '\0';
+
+    if (might_hide && webmaker(uptr)) {
+        c = await tty_yn_function('Hide [h] or spin a web [s]?',
+                                  hidespinchars, 'q', true);
+        if (c === 'q' || c === '\x1b')
+            return ECMD_OK;
+    }
+
+    if (can_breathe(uptr))
+        return await dobreathe();
+    else if (attacktype(uptr, ATTKS.AT_SPIT))
+        return await dospit();
+    else if (uptr.mlet === MONSYMS.S_NYMPH)
+        return await doremove();
+    else if (attacktype(uptr, ATTKS.AT_GAZE))
+        return await dogaze();
+    else if (is_were(uptr))
+        return await dosummon();
+    else if (c !== '\0' ? c === 'h' : might_hide)
+        return await dohide();
+    else if (c !== '\0' ? c === 's' : webmaker(uptr))
+        return await dospinweb();
+    else if (is_mind_flayer(uptr))
+        return await domindblast();
+    else if (u.umonnum === PMNAMES.PM_GREMLIN) {
+        if (IS_FOUNTAIN(game.level.at(u.ux, u.uy).typ)) {
+            if (await split_mon(game.youmonst, null))
+                await dryup(u.ux, u.uy, true);
+        } else if (is_pool(u.ux, u.uy)) {
+            /* hero is either water walking or flying or has
+               magical breathing */
+            await split_mon(game.youmonst, null);
+        } else {
+            await There('is no fountain here.');
+        }
+    } else if (is_unicorn(uptr)) {
+        await use_unicorn_horn(null);
+        return ECMD_TIME;
+    } else if (uptr.msound === MSOUND.MS_SHRIEK) {
+        await You('shriek.');
+        if (u.uburied)
+            await pline('Unfortunately sound does not carry well through rock.');
+        else
+            aggravate();
+    } else if (is_vampire(uptr) || is_vampshifter(game.youmonst)) {
+        return await dopoly();
+    } else if (u.usteed && can_breathe(u.usteed.data)) {
+        await pet_ranged_attk(u.usteed, true);
+        return ECMD_TIME;
+    } else if (Upolyd(u)) {
+        await pline('Any special ability you may have is purely reflexive.');
+    } else {
+        await You("don't have a special ability in your normal form!");
+    }
+    return ECMD_OK;
+}
+
 // The individual commands are not ported. What IS ported is reading the whole
 // name off the input, because a session that issues one and does not have it
 // consumed runs every later keystroke against the wrong command.
@@ -977,11 +1056,10 @@ async function execute_extcmd(name) {
         return await dowipe();
     }
     if (name === 'polyself') {
-        const { wiz_polyself } = await import('./polyself.js');
+        const { wiz_polyself } = await import('./wizcmds.js');
         return await wiz_polyself();
     }
     if (name === 'monster') {
-        const { domonability } = await import('./polyself.js');
         return await domonability();
     }
     if (name === 'invoke') {

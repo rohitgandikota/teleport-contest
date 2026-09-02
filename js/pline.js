@@ -106,6 +106,18 @@ export function livelog_add(text) {
     (game.gamelog ||= []).push({ turn: game.moves | 0, text });
 }
 
+// src/pline.c:531 gamelog_add()
+export function gamelog_add(glflags, gltime, msg) {
+    (game.gamelog ||= []).push({ flags: glflags, turn: gltime, text: msg });
+}
+
+// src/pline.c:514 livelog_printf(); the #chronicle entry and the LIVELOG
+// file line
+export function livelog_printf(ll_type, line) {
+    gamelog_add(ll_type, game.moves | 0, line);
+    /* livelog_add(ll_type, line) writes the livelog file; no screen effect */
+}
+
 // src/pline.c:138 pline_mon(), pline() with the message located at a monster.
 export async function pline_mon(mtmp, line) {
     if (mtmp === game.youmonst)

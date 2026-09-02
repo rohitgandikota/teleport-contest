@@ -1,6 +1,7 @@
 // display.js — Map rendering and terminal output.
 // C ref: display.c — newsym, show_glyph, docrt, cls, flush_screen.
 
+import { PLNMSG_UNKNOWN } from './const.js';
 import { iter_mons } from './mon.js';
 import { block_point, unblock_point } from './vision.js';
 import { is_lightblocker_mappear } from './monst.js';
@@ -2149,6 +2150,8 @@ export async function pline(msg) {
        the state machine entirely: a second message overwrote the first instead
        of either joining it or raising --More-- and waiting for a key. */
     await update_topl(msg);
+    /* this gets cleared after every pline message */
+    (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     /* src/pline.c vpline() records the most recent individual message after
        the tty has accepted it. Norep compares against this, not against the
        combined top line that update_topl may have built. */
@@ -2166,6 +2169,7 @@ export async function pline_nohistory(msg) {
     if (game.u?.ux)
         await flush_screen(1);
     show_topl_nohistory(msg);
+    (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     game._prevmsg = msg;
 }
 
@@ -2175,6 +2179,7 @@ export async function pline_nohistory_no_cursor(msg) {
     if (game.u?.ux)
         await flush_screen(0);
     show_topl_nohistory(msg);
+    (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     game._prevmsg = msg;
 }
 
@@ -2188,6 +2193,7 @@ export async function urgent_pline(msg) {
         game._win_stop = false;
     }
     await update_topl(msg);
+    (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     game._prevmsg = msg;
 }
 

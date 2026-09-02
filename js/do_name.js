@@ -456,6 +456,13 @@ export function new_oname(obj, lth) {
     }
 }
 
+// src/do_name.c:81 free_oname()
+export function free_oname(obj) {
+    if (obj.oname != null) { /* has_oname(obj) */
+        delete obj.oname; /* ONAME(obj) = (char *) 0 */
+    }
+}
+
 // include/global.h:404 PL_PSIZ
 const PL_PSIZ = 63;
 

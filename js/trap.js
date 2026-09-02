@@ -6,6 +6,21 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { COST_BURN, COST_RUST, COST_ROT, COST_CORRODE, COST_CRACK } from './const.js';
+import { mcarried } from './obj.js';
+import { costly_alteration } from './shk.js';
+import { s_suffix } from './hacklib.js';
+import { Yobjnam2 } from './objnam.js';
+import { plur } from './const.js';
+import { ER_GREASED, CONTAINED_TOO, BURIED_TOO } from './const.js';
+import { setnotworn } from './worn.js';
+import { simpleonames } from './objnam.js';
+import { carried, Has_contents, is_plural } from './obj.js';
+import { remove_worn_item } from './steal.js';
+import { pline_The } from './pline.js';
+import { blank_novel, get_obj_location } from './zap.js';
+import { wet_a_towel } from './weapon.js';
+import { splash_lit } from './apply.js';
 import { set_uinwater } from './hack.js';
 import { sellobj } from './shk.js';
 import { bury_an_obj } from './dig.js';
@@ -2548,13 +2563,6 @@ export function uescaped_shaft(trap) {
 // out. No light-source timers exist in the port yet, so a lamplit object
 // records; an unlit one returns false without drawing, which is the whole
 // path today.
-function splash_lit(obj) {
-    if (!obj || !obj.lamplit)
-        return false;
-    note_unported_trap('splash_lit:lamplit');
-    return false;
-}
-
 // src/mkobj.c:2270 is_flammable()
 export function is_flammable(otmp) {
     const otyp = otmp.otyp;
@@ -2608,27 +2616,36 @@ function inventory_resistance_check(dmgtyp) {
     return probability ? rn2(100) < probability : false;
 }
 
-// src/trap.c:171 erode_obj() — generic erode-item function. Draws only the
-// rnl(4) blessed-protection roll. The shop-billing (EF_PAY) and destroy-arm
-// unwearing paths sit on unported subsystems and record themselves.
+// include/hack.h next2u()
+const next2u = (px, py) => distu(px, py) <= 2;
+
+// src/trap.c:171 erode_obj()
 export async function erode_obj(otmp, ostr, type, ef_flags) {
-    const action = ['smoulder', 'rust', 'rot', 'corrode', 'crack'];
-    const msg = ['burnt', 'rusted', 'rotten', 'corroded', 'cracked'];
-    const bythe = ['heat', 'oxidation', 'decay', 'corrosion', 'impact'];
+    const action = ['smoulder', 'rust', 'rot', 'corrode', 'crack'],
+          msg = ['burnt', 'rusted', 'rotten', 'corroded', 'cracked'],
+          bythe = ['heat', 'oxidation', 'decay', 'corrosion',
+                   'impact']; /* this could use improvement... */
+    let vulnerable = false, is_primary = true,
+        check_grease = (ef_flags & EF_GREASE) ? true : false,
+        print = (ef_flags & EF_VERBOSE) ? true : false,
+        crackers = false, /* True: different feedback if otmp destroyed */
+        uvictim, vismon, visobj;
+    let erosion, cost_type;
+    let victim;
 
     if (!otmp)
         return ER_NOTHING;
 
-    let check_grease = (ef_flags & EF_GREASE) !== 0;
-    const print = (ef_flags & EF_VERBOSE) !== 0;
-    let vulnerable = false, is_primary = true, crackers = false;
-
-    const victim = carried_tr(otmp) ? game.youmonst
-                   : otmp.ocarry ? otmp.ocarry : null;
-    const uvictim = victim === game.youmonst;
-    const vismon = victim && !uvictim && canseemon(victim);
-    const visobj = !victim && cansee(game.bhitpos?.x ?? 0,
-                                     game.bhitpos?.y ?? 0);
+    victim = carried(otmp) ? game.youmonst
+             : mcarried(otmp) ? otmp.ocarry
+               : null;
+    uvictim = (victim === game.youmonst);
+    vismon = victim && (victim !== game.youmonst) && canseemon(victim);
+    /* Is gb.bhitpos correct here? Ugh. */
+    visobj = (!victim && cansee(game.bhitpos?.x ?? 0, game.bhitpos?.y ?? 0)
+              && (!is_pool(game.bhitpos?.x ?? 0, game.bhitpos?.y ?? 0)
+                  || (next2u(game.bhitpos?.x ?? 0, game.bhitpos?.y ?? 0)
+                      && Underwater())));
 
     switch (type) {
     case ERODE_BURN:
@@ -2636,80 +2653,157 @@ export async function erode_obj(otmp, ostr, type, ef_flags) {
             return ER_NOTHING;
         vulnerable = is_flammable(otmp);
         check_grease = false;
+        cost_type = COST_BURN;
         break;
     case ERODE_RUST:
         vulnerable = is_rustprone(otmp);
+        cost_type = COST_RUST;
         break;
     case ERODE_ROT:
         vulnerable = is_rottable(otmp);
         check_grease = false;
         is_primary = false;
+        cost_type = COST_ROT;
         break;
     case ERODE_CORRODE:
         if (uvictim && inventory_resistance_check(ATTKS.AD_ACID))
             return ER_NOTHING;
         vulnerable = is_corrodeable(otmp);
         is_primary = false;
+        cost_type = COST_CORRODE;
         break;
-    case ERODE_CRACK:
+    case ERODE_CRACK: /* crystal armor */
         vulnerable = is_crackable(otmp);
         is_primary = true;
         crackers = true;
+        cost_type = COST_CRACK;
         break;
     default:
+        /* impossible("Invalid erosion type in erode_obj") */
         return ER_NOTHING;
     }
-    const erosion = is_primary ? (otmp.oeroded || 0) : (otmp.oeroded2 || 0);
+    erosion = is_primary ? (otmp.oeroded | 0) : (otmp.oeroded2 | 0);
 
     if (!ostr)
         ostr = cxname(otmp);
+    /* 'visobj' messages insert "the"; probably ought to switch to the() */
+    if (visobj && !(uvictim || vismon) && ostr.slice(0, 4).toLowerCase() === 'the ')
+        ostr = ostr.slice(4);
 
     if (check_grease && otmp.greased) {
-        note_unported_trap('erode_obj:grease_protect');
-        return 1 /* ER_GREASED */;
+        await grease_protect(otmp, ostr, victim);
+        return ER_GREASED;
     } else if (!erosion_matters(otmp, game.objects)) {
         return ER_NOTHING;
     } else if (!vulnerable || (otmp.oerodeproof && otmp.rknown)) {
         if (game.flags?.verbose && print && (uvictim || vismon))
-            await pline(`${uvictim ? 'Your' : "The"} ${ostr} ${vtense(ostr, 'are')} not affected by ${bythe[type]}.`);
+            await pline(`${uvictim ? 'Your' : s_suffix(Monnam(victim))} ${ostr} ${vtense(ostr, 'are')} not affected by ${bythe[type]}.`);
         return ER_NOTHING;
     } else if (otmp.oerodeproof || (otmp.blessed && !rnl(4))) {
         if (game.flags?.verbose && (print || otmp.oerodeproof)
             && (uvictim || vismon || visobj))
-            await pline(`Somehow, ${uvictim ? 'your' : 'the'} ${ostr} ${vtense(ostr, 'are')} not affected by the ${bythe[type]}.`);
+            await pline(`Somehow, ${uvictim ? 'your' : !vismon ? 'the' /* visobj */ : s_suffix(mon_nam(victim))} ${ostr} ${vtense(ostr, 'are')} not affected by the ${bythe[type]}.`);
+        /* We assume here that if the object is protected because it
+         * is blessed, it still shows some minor signs of wear, and
+         * the hero can distinguish this from an object that is
+         * actually proof against damage.
+         */
         if (otmp.oerodeproof) {
             otmp.rknown = 1;
-            if (uvictim)
+            if (victim === game.youmonst)
                 update_inventory();
         }
+
         return ER_NOTHING;
     } else if (erosion < MAX_ERODE) {
         const adverb = (erosion + 1 === MAX_ERODE) ? ' completely'
-                       : erosion ? ' further' : '';
+                       : erosion ? ' further'
+                         : '';
+
         if (uvictim || vismon || visobj)
-            await pline(`${uvictim ? 'Your' : vismon ? Monnam(victim) + "'s" : 'The'} ${ostr} ${vtense(ostr, action[type])}${adverb}!`);
+            await pline(`${uvictim ? 'Your' : !vismon ? 'The' /* visobj */ : s_suffix(Monnam(victim))} ${ostr} ${vtense(ostr, action[type])}${adverb}!`);
+
         if (ef_flags & EF_PAY)
-            note_unported_trap('erode_obj:costly_alteration');
+            await costly_alteration(otmp, cost_type);
+
         if (is_primary)
-            otmp.oeroded = (otmp.oeroded || 0) + 1;
+            otmp.oeroded = (otmp.oeroded | 0) + 1;
         else
-            otmp.oeroded2 = (otmp.oeroded2 || 0) + 1;
-        if (uvictim)
+            otmp.oeroded2 = (otmp.oeroded2 | 0) + 1;
+
+        if (victim === game.youmonst)
             update_inventory();
+
         return ER_DAMAGED;
     } else if (ef_flags & EF_DESTROY) {
-        note_unported_trap('erode_obj:destroy');
-        return ER_NOTHING;
+        otmp.in_use = 1; /* in case of hangup during message w/ --More-- */
+        if (uvictim || vismon || visobj) {
+            let actbuf;
+
+            if (!crackers)
+                actbuf = `${vtense(ostr, action[type])} away`;
+            else
+                actbuf = 'shatters';
+            await pline(`${uvictim ? 'Your' : !vismon ? 'The' /* visobj */ : s_suffix(Monnam(victim))} ${ostr} ${actbuf}!`);
+        }
+        if (ef_flags & EF_PAY)
+            await costly_alteration(otmp, cost_type);
+
+        if (otmp.owornmask) {
+            /* unwear otmp before deleting it */
+            if (carried(otmp)) {
+                /* otmp remains in hero's invent; if we get here because
+                   it is being burned up by lava, we don't need to worry
+                   about unwearing levitation boots and having that
+                   trigger float_down to then fall in again; if such
+                   were being worn, they wouldn't be in the lava now */
+                await remove_worn_item(otmp, true); /* calls Cloak_off(),&c */
+            } else if (mcarried(otmp)) {
+                /* results in otmp->where==OBJ_FREE; delobj() doesn't care */
+                extract_from_minvent(otmp.ocarry, otmp, true, false);
+            } else { /* worn but not in hero invent or monster minvent ? */
+                /* impossible("erode_obj(%d): destroying strangely worn item [%d, 0x%08lx: %s]", ...) */
+                otmp.owornmask = 0; /* otherwise a second complaint (about
+                                     * deleting a worn item) will ensue */
+            }
+        }
+        delobj(otmp);
+        return ER_DESTROYED;
     } else {
         if (game.flags?.verbose && print) {
             if (uvictim)
-                await Your(`${ostr} ${vtense(ostr, game.u.ublind ? 'feel' : 'look')} completely ${msg[type]}.`);
+                await Your(`${ostr} ${vtense(ostr, Blind() ? 'feel' : 'look')} completely ${msg[type]}.`);
             else if (vismon || visobj)
-                await pline(`The ${ostr} ${vtense(ostr, game.u.ublind ? 'feel' : 'look')} completely ${msg[type]}.`);
+                await pline(`${!vismon ? 'The' : s_suffix(Monnam(victim))} ${ostr} ${vtense(ostr, 'look')} completely ${msg[type]}.`);
         }
         return ER_NOTHING;
     }
 }
+
+// src/trap.c:360 grease_protect()
+async function grease_protect(otmp, ostr, victim) {
+    const txt = 'protected by the layer of grease!';
+    const vismon = victim && (victim !== game.youmonst) && canseemon(victim);
+
+    if (ostr) {
+        if (victim === game.youmonst)
+            await Your(`${ostr} ${vtense(ostr, 'are')} ${txt}`);
+        else if (vismon)
+            await pline(`${Monnam(victim)}'s ${ostr} ${vtense(ostr, 'are')} ${txt}`);
+    } else if (victim === game.youmonst || vismon) {
+        await pline(`${Yobjnam2(otmp, 'are')} ${txt}`);
+    }
+    if (!rn2(2)) {
+        otmp.greased = 0;
+        if (carried(otmp)) {
+            await pline_The('grease dissolves.');
+            update_inventory();
+        }
+        return true;
+    }
+    return false;
+}
+
 
 // src/trap.c:85 burnarmor(). Fire chooses one armor slot repeatedly until it
 // either finds something it can affect or reaches the torso arm, which always
@@ -2797,18 +2891,100 @@ function carried_tr(obj) {
     return obj.where === 3 /* OBJ_INVENT */ || game.invent.includes(obj);
 }
 
-// src/trap.c:4712 water_damage() — get an object wet and damage it.
-// Draws: greased rn2(2), cursed-container rn2(3), the (Luck+5) > rn2(20)
-// protection roll when force is FALSE, spestudied rn2. The towel and
-// acid-potion arms sit on unported subsystems and record.
+// src/trap.c:4576 lava_damage()
+export async function lava_damage(obj, x, y) {
+    const otyp = obj.otyp, ocls = obj.oclass;
+
+    /* the Amulet, invocation items, and Rider corpses are never destroyed
+       (let Book of the Dead fall through to fire_damage() to get feedback) */
+    if (obj_resists(obj, 0, 0) && otyp !== ONAMES.SPE_BOOK_OF_THE_DEAD)
+        return false;
+    /* destroy liquid (venom), wax, veggy, flesh, paper (except for scrolls
+       and books--let fire damage deal with them), cloth, leather, wood, bone
+       unless it's inherently or explicitly fireproof or contains something;
+       note: potions are glass so fall through to fire_damage() and boil */
+    if (game.objects[otyp].oc_material < MATERIALS.DRAGON_HIDE
+        && ocls !== OCLASSES.SCROLL_CLASS && ocls !== OCLASSES.SPBOOK_CLASS
+        && game.objects[otyp].oc_oprop !== FIRE_RES
+        && otyp !== ONAMES.WAN_FIRE && otyp !== ONAMES.FIRE_HORN
+        /* assumes oerodeproof isn't overloaded for some other purpose on
+           non-eroding items */
+        && !obj.oerodeproof
+        /* fire_damage() knows how to deal with containers and contents */
+        && !Has_contents(obj)) {
+        if (cansee(x, y)) {
+            /* this feedback is pretty clunky and can become very verbose
+               when former contents of a burned container get here via
+               flooreffects() */
+            if (obj === game.thrownobj || obj === game.kickedobj)
+                await pline(`${is_plural(obj) ? 'They' : 'It'} ${otense(obj, 'burn')} up!`);
+            else
+                await You_see(`${doname(obj)} hit lava and burn up!`);
+        }
+        if (carried(obj)) { /* shouldn't happen */
+            await remove_worn_item(obj, true);
+            useupall(obj);
+        } else
+            delobj(obj);
+        return true;
+    }
+    return await fire_damage(obj, true, x, y);
+}
+
+// src/trap.c:4657 pot_acid_damage()
+async function pot_acid_damage(obj, in_invent, described) {
+    let bufp;
+    let one, exploded;
+
+    one = (obj.quan === 1);
+    exploded = false;
+
+    if (Blind() && !in_invent)
+        obj.dknown = 0;
+    if (game.acid_ctx?.ctx_valid)
+        exploded = ((obj.dknown ? game.acid_ctx.dkn_boom
+                                : game.acid_ctx.unk_boom) > 0);
+    if (described) {
+        /* just gave "The grease washes off your potion of acid."
+            or "...your <color> potion." (or just "...your potion.");
+            don't re-describe potion here; if we used "It explodes!"
+            then "it" might be misconstrued as applying to "grease" */
+        await pline_The(`potion${plur(obj.quan)} ${otense(obj, 'explode')}!`);
+    } else {
+        /* First message is
+            * "a [potion|<color> potion|potion of acid] explodes"
+            * depending on obj->dknown (potion has been seen) and
+            * objects[POT_ACID].oc_name_known (fully discovered),
+            * or "some {plural version} explode" when relevant.
+            * Second and subsequent messages for same chain and
+            * matching dknown status are
+            * "another [potion|<color> &c] explodes" or plural
+            * variant.
+            */
+        bufp = simpleonames(obj);
+        await pline(`${!exploded ? (one ? 'A ' : 'Some ') : (one ? 'Another ' : 'More ')}${bufp} ${vtense(bufp, 'explode')}!`); /* "A potion explodes!" */
+    }
+    if (game.acid_ctx?.ctx_valid) {
+        if (obj.dknown)
+            game.acid_ctx.dkn_boom++;
+        else
+            game.acid_ctx.unk_boom++;
+    }
+    setnotworn(obj);
+    delobj(obj);
+    if (in_invent)
+        update_inventory();
+}
+
+// src/trap.c:4712 water_damage()
 export async function water_damage(obj, ostr, force) {
-    const in_invent = obj && carried_tr(obj);
+    const in_invent = obj && carried(obj);
     let described = false;
 
     if (!obj)
         return ER_NOTHING;
 
-    if (splash_lit(obj))
+    if (await splash_lit(obj))
         return ER_DAMAGED;
 
     if (!ostr)
@@ -2817,42 +2993,60 @@ export async function water_damage(obj, ostr, force) {
     if (obj.otyp === ONAMES.CAN_OF_GREASE && obj.spe > 0) {
         return ER_NOTHING;
     } else if (obj.otyp === ONAMES.TOWEL && obj.spe < 7) {
-        note_unported_trap('water_damage:wet_a_towel');
-        /* wet_a_towel(obj, -rnd(7 - obj->spe), TRUE) — the draw is real */
-        rnd(7 - obj.spe);
+        /* a negative change induces a reverse increment, adding abs(change);
+           spe starts 0..6, arg passed to rnd() is 1..7, change is -7..-1,
+           final spe is 1..7 and always greater than its starting value */
+        await wet_a_towel(obj, -rnd(7 - obj.spe), true);
         return ER_NOTHING;
     } else if (obj.greased) {
         if (!rn2(2)) {
             obj.greased = 0;
             if (in_invent) {
-                await pline_The(`grease on ${xname(obj)} washes off.`);
-                described = true;
+                await pline_The(`grease on ${yname(obj)} washes off.`);
+                described = true; /* used to modify potion feedback */
                 update_inventory();
             }
+            /* ungreased potions of acid will always be destroyed by water */
             if (obj.otyp === ONAMES.POT_ACID) {
-                note_unported_trap('water_damage:pot_acid');
+                await pot_acid_damage(obj, in_invent, described);
                 return ER_DESTROYED;
             }
         }
-        return 1 /* ER_GREASED */;
+        return ER_GREASED;
     } else if (Is_container_tr(obj)
-               && (!Waterproof_container_tr(obj)
-                   || (obj.cursed && !rn2(3)))) {
-        if (in_invent)
-            await pline(`Some water gets into your ${ostr}!`);
-        await water_damage_chain(obj.cobj || [], false);
-        return ER_DAMAGED;
+               && (!Waterproof_container_tr(obj) || (obj.cursed && !rn2(3)))) {
+        if (in_invent) {
+            await pline(`Some ${hliquid('water')} gets into your ${ostr}!`);
+            game.mentioned_water = !Hallucination();
+        }
+        await water_damage_chain(obj.cobj, false);
+        return ER_DAMAGED; /* contents were damaged */
     } else if (Waterproof_container_tr(obj)) {
-        if (in_invent && !game.u.ublind && !Underwater_tr())
-            await pline_The(`water cannot get into your ${ostr}.`);
+        if (in_invent && !Blind() && !Underwater()) {
+            await pline_The(`${hliquid('water')} cannot get into your ${ostr}.`);
+            game.mentioned_water = !Hallucination();
+            makeknown(obj.otyp); /* if an oilskin sack, discover it; doesn't
+                                  * matter for chest, large box, ice box */
+        }
+        /* not actually damaged, but because we /didn't/ get the "water
+           gets into!" message, the player now has more information and
+           thus we need to waste any potion they may have used (also,
+           flavourwise the water is now on the floor) */
         return ER_DAMAGED;
-    } else if (!force && ((game.u.uluck || 0) + 5) > rn2(20)) {
+    } else if (!force && (((game.u.uluck | 0) + (game.u.moreluck | 0)) + 5) > rn2(20)) {
+        /*  chance per item of sustaining damage:
+            *   max luck:               10%
+            *   avg luck (Luck==0):     75%
+            *   awful luck (Luck<-4):  100%
+            */
         return ER_NOTHING;
     } else if (obj.oclass === OCLASSES.SCROLL_CLASS) {
-        if (obj.otyp === ONAMES.SCR_BLANK_PAPER)
-            return 0;
+        if (obj.otyp === ONAMES.SCR_BLANK_PAPER
+            || obj.otyp === ONAMES.SCR_MAIL /* MAIL_STRUCTURES */
+           ) return 0;
         if (in_invent)
             await Your(`${ostr} ${vtense(ostr, 'fade')}.`);
+
         obj.otyp = ONAMES.SCR_BLANK_PAPER;
         obj.dknown = 0;
         obj.spe = 0;
@@ -2860,26 +3054,44 @@ export async function water_damage(obj, ostr, force) {
             update_inventory();
         return ER_DAMAGED;
     } else if (obj.oclass === OCLASSES.SPBOOK_CLASS) {
-        if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
-            await pline('Steam rises from the Book of the Dead.');
-            return ER_NOTHING;
+        const otyp = obj.otyp;
+
+        if (otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
+            const cc = { x: 0, y: 0 };
+
+            /* note: The Book of the Dead can't be contained or buried */
+            if (get_obj_location(obj, cc, CONTAINED_TOO | BURIED_TOO))
+                obj.ox = cc.x, obj.oy = cc.y;
+            if (isok(cc.x, cc.y) && cansee(cc.x, cc.y))
+                await pline(`Steam rises from ${the(xname(obj))}.`);
+            return 0;
+        } else if (otyp === ONAMES.SPE_BLANK_PAPER) {
+            return 0;
         }
         if (in_invent)
             await Your(`${ostr} ${vtense(ostr, 'fade')}.`);
+
+        obj.otyp = ONAMES.SPE_BLANK_PAPER;
+        /* same re-init as over-reading or polymorph; matters if it gets
+           polymorphed into non-blank; doesn't matter if eventually written
+           on since that replaces it with new book and studied count of 0 */
         if (obj.spestudied)
             obj.spestudied = rn2(obj.spestudied);
-        obj.otyp = ONAMES.SPE_BLANK_PAPER;
         obj.dknown = 0;
+        /* blanking a novel is more involved than blanking a spellbook */
+        if (otyp === ONAMES.SPE_NOVEL) /* old type */
+            blank_novel(obj);
         if (in_invent)
             update_inventory();
         return ER_DAMAGED;
     } else if (obj.oclass === OCLASSES.POTION_CLASS) {
         if (obj.otyp === ONAMES.POT_ACID) {
-            note_unported_trap('water_damage:pot_acid');
+            await pot_acid_damage(obj, in_invent, described);
             return ER_DESTROYED;
         } else if (obj.odiluted) {
             if (in_invent)
                 await Your(`${ostr} ${vtense(ostr, 'dilute')} further.`);
+
             obj.otyp = ONAMES.POT_WATER;
             obj.dknown = 0;
             obj.blessed = obj.cursed = 0;
@@ -2890,7 +3102,8 @@ export async function water_damage(obj, ostr, force) {
         } else if (obj.otyp !== ONAMES.POT_WATER) {
             if (in_invent)
                 await Your(`${ostr} ${vtense(ostr, 'dilute')}.`);
-            obj.odiluted = (obj.odiluted || 0) + 1;
+
+            obj.odiluted = (obj.odiluted | 0) + 1;
             if (in_invent)
                 update_inventory();
             return ER_DAMAGED;
@@ -2916,11 +3129,34 @@ function Underwater_tr() {
     return !!game.u?.uinwater;
 }
 
-// src/trap.c:4855 water_damage_chain() — apply water damage down a
-// container's contents chain.
-export async function water_damage_chain(objs, here) {
-    for (const obj of (objs || []))
-        await water_damage(obj, null, false);
+// src/trap.c:4855 water_damage_chain()
+export async function water_damage_chain(obj, here) {
+    const cc = { x: 0, y: 0 };
+
+    if (!obj || !obj.length)
+        return;
+
+    /* initialize acid context: so far, neither seen (dknown) potions of
+       acid nor unseen have exploded during this water damage sequence */
+    game.acid_ctx = { dkn_boom: 0, unk_boom: 0, ctx_valid: true };
+    /* we don't want to permanently overwrite bhitpos below, since we can get
+       here from scenarios where it was in use up the call stack (e.g. thrown
+       item hurtling the levitating hero into a wall of water) */
+    const save_bhitpos = game.bhitpos;
+    /* erode_obj() relies on bhitpos if target objects aren't carried by
+       the hero or a monster, to check visibility controlling feedback */
+    if (get_obj_location(obj[0], cc, CONTAINED_TOO))
+        game.bhitpos = { x: cc.x, y: cc.y };
+
+    /* C walks the chain fetching each next link before damaging the current
+       object; the snapshot copy gives the same sequence when an object is
+       deleted from the list part way through */
+    for (const otmp of [...obj])
+        await water_damage(otmp, null, false);
+
+    /* reset acid context and bhitpos */
+    game.acid_ctx = { dkn_boom: 0, unk_boom: 0, ctx_valid: false };
+    game.bhitpos = save_bhitpos;
 }
 
 // src/trap.c:4455 fire_damage() and :4550 fire_damage_chain().

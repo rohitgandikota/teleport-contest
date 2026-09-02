@@ -11,6 +11,7 @@
 // reads 0. js/cmd.js does the wiring instead, exactly as it already does for
 // mklev and sp_lev.
 
+import { find_drawbridge } from './dbridge.js';
 import { angry_guards } from './mon.js';
 import { Shknam } from './shknam.js';
 import { You_hear } from './pline.js';
@@ -617,7 +618,10 @@ async function kick_ouch(x, y, maploc, kickobjnam) {
             note_unported_dokick('kick_ouch:feel_location');
         if (is_drawbridge_wall(x, y) >= 0) {
             await pline_The('drawbridge is unaffected.');
-            note_unported_dokick('kick_ouch:find_drawbridge');
+            /* update maploc to refer to the drawbridge */
+            const cc = { x, y };
+            find_drawbridge(cc);
+            maploc = game.level.at(cc.x, cc.y);
         }
         wake_nearto(x, y, 5 * 5);
     }

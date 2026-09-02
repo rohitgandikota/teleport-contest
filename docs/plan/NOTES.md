@@ -4396,3 +4396,42 @@ as CXN_PFX_THE. It only surfaced through a recorded probe. objnam.js now
 carries the C numbering. When a file defines a bitmask locally, check that
 const.js does not already export the same names with other values; there
 must be one numbering and it is the header's.
+
+## erode_obj in 5.0 hides erosion inside a pool
+
+`visobj` in trap.c erode_obj() is not just cansee(bhitpos). 5.0 adds
+`&& (!is_pool(bhitpos) || (next2u(bhitpos) && Underwater))`, so an object
+that lands in a moat and rusts (drawbridge debris, anything thrown into
+water) is silent unless the hero is underwater beside it. The port printed
+"The iron chain rusts!" and the extra --More-- ate the next key. C also
+strips a leading "the " from ostr for visobj messages.
+
+## pline must clear iflags.last_msg, or message-conditional code misfires
+
+vpline() ends with `iflags.last_msg = PLNMSG_UNKNOWN` after every message.
+Callers set last_msg to a sentinel before a sequence (muse.c sets
+PLNMSG_enum before a monster reads a scroll of teleportation) and test it
+afterwards to learn whether anything was printed; trycall() and the
+"Call a scroll labeled ...:" prompt hang on that test. The port only set
+last_msg at the special sites (PLNMSG_GROWL, PLNMSG_OBJ_GLOWS, ...) and
+never reset it, so the prompt never appeared. display.js pline,
+urgent_pline and both nohistory variants reset it now.
+
+## Castle: ^T into the outer strip is refused by the teleport region
+
+castle.lua's teleport_region excludes {1,1,61,15} in map coordinates, which
+covers the whole fortress including the floor strip just outside the west
+moat (screen columns 9..12). tele_jump_ok() refuses a controlled teleport
+from outside that region into it; the answer is "Sorry..." and a random
+destination. To probe the drawbridge, land at screen column 8 (level x 9)
+on the drawbridge row; a wand zapped east from there reaches the span and
+the portcullis (zap range rn1(8,6) is at least 6).
+
+## game.killer is not always allocated
+
+C's gk.killer is a static struct. The port creates game.killer lazily
+(attrib, end, exper and mcastu assign fresh objects), so code that writes
+killer.format and killer.name ahead of a possible death must guard: clear
+only `if (game.killer)`, and create `{ format: 0, name: '' }` before
+setting. dbridge's e_died and nokiller threw a TypeError inside
+open_drawbridge on the first castle probe.

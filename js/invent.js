@@ -1,6 +1,7 @@
 // invent.js — inventory and the look-here command.
 // C ref: src/invent.c
 
+import { unpunish } from './read.js';
 import { game } from './gstate.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
@@ -2247,4 +2248,17 @@ function merged_test(a, b) {
     return a.otyp === b.otyp && (game.objects[a.otyp]?.oc_merge ?? 0)
         && a.cursed === b.cursed && a.blessed === b.blessed
         && (a.spe | 0) === (b.spe | 0);
+}
+
+// src/invent.c:1413 delallobj(); destroy every object at <x,y> except the
+// hero's chain; the ball is unpunished first
+export function delallobj(x, y) {
+    for (const otmp of (game.level?.objects || []).filter(
+             (o) => o.ox === x && o.oy === y)) {
+        if (otmp === game.u.uball)
+            unpunish();
+        if (otmp === game.u.uchain)
+            continue;
+        delobj(otmp);
+    }
 }

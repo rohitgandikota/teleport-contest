@@ -5,6 +5,15 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { container_weight } from './mkobj.js';
+import { free_oname } from './do_name.js';
+import { OBJ_AT } from './const.js';
+import { openfallingtrap } from './trap.js';
+import { losehp } from './hack.js';
+import { hides_under } from './mondata.js';
+import { hideunder } from './makemon.js';
+import { ok_to_quest } from './quest.js';
+import { find_drawbridge, open_drawbridge, close_drawbridge, destroy_drawbridge, is_db_wall } from './dbridge.js';
 import { cant_revive } from './read.js';
 import { eaten_stat, obfree } from './invent.js';
 import { christen_monst, mon_pmname, Amonnam, noname_monnam, upstart } from './do_name.js';
@@ -186,6 +195,16 @@ export function obj_resists(obj, ochance, achance) {
 
         return chance < (obj.oartifact ? achance : ochance);
     }
+}
+
+// src/zap.c:1367 blank_novel()
+export function blank_novel(obj) {
+    /* novelidx overloads corpsenm, not used for spellbooks */
+    obj.novelidx = 0;
+    free_oname(obj); /* get rid of [former] novel's title */
+    /* a blank spellbook weighs more than a novel; update obj's weight and
+       recursively the weight of any container holding it */
+    container_weight(obj);
 }
 
 // src/zap.c:1382 drain_item(). Remove one positive charge or enchantment and
@@ -2594,16 +2613,39 @@ export async function zap_map(x, y, obj) {
         }
     }
     const terrainType = game.level.at(x, y)?.typ;
-    const drawbridge = IS_DRAWBRIDGE(terrainType)
-        || is_drawbridge_wall(x, y) >= 0;
-    if (drawbridge
-        && (obj.otyp === ONAMES.WAN_STRIKING
-            || obj.otyp === ONAMES.SPE_FORCE_BOLT
-            || obj.otyp === ONAMES.WAN_OPENING
-            || obj.otyp === ONAMES.SPE_KNOCK
-            || obj.otyp === ONAMES.WAN_LOCKING
-            || obj.otyp === ONAMES.SPE_WIZARD_LOCK))
-        note_unported_zap('zap_map:drawbridge');
+    if (!game.u.dz) {
+        const ltyp = terrainType;
+        const db = { x, y }; /* might be changed by drawbridge handling */
+
+        if (find_drawbridge(db)) {
+            switch (obj.otyp) {
+            case ONAMES.WAN_OPENING:
+            case ONAMES.SPE_KNOCK:
+                if (is_db_wall(x, y)) {
+                    if (cansee(db.x, db.y) || cansee(x, y))
+                        learn_it = true;
+                    await open_drawbridge(db.x, db.y);
+                }
+                break;
+            case ONAMES.WAN_LOCKING:
+            case ONAMES.SPE_WIZARD_LOCK:
+                if ((cansee(db.x, db.y) || cansee(x, y))
+                    && game.level.at(db.x, db.y).typ === DRAWBRIDGE_DOWN)
+                    learn_it = true;
+                await close_drawbridge(db.x, db.y);
+                break;
+            case ONAMES.WAN_STRIKING:
+            case ONAMES.SPE_FORCE_BOLT:
+                /* !u.dz: not zapping up or down, so hit only in the plane,
+                   so either span of lowered bridge or portcullis */
+                if (ltyp !== DRAWBRIDGE_UP) {
+                    learn_it = true;
+                    await destroy_drawbridge(db.x, db.y);
+                }
+                break;
+            }
+        } /* find_drawbridge */
+    } /* !u.uz */
     if (obj.otyp === ONAMES.WAN_PROBING && ttmp) {
         const already_seen = !!ttmp.tseen;
         const hallu = !!Hallucination();
@@ -3652,157 +3694,211 @@ export async function ubuzz(type, nd) {
     await dobuzz(type, nd, game.u.ux, game.u.uy, game.u.dx, game.u.dy);
 }
 
-// src/zap.c:3219 zap_updown(). The ordinary downward path applies an
-// immediate wand to every object under the hero, then applies map effects.
-// Terrain and trap special cases remain explicit until a C trace reaches one.
+/* include/hack.h:1236 Maybe_Half_Phys() */
+const Maybe_Half_Phys = (dmg) =>
+    (game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
+        ? Math.trunc((dmg + 1) / 2) : dmg;
+
+// src/zap.c:3219 zap_updown(); zapping a wand or spell up or down; returns
+// True if the wand's identity should be disclosed
 async function zap_updown(obj) {
-    let disclose = false;
-    const x = game.u.ux, y = game.u.uy;
-    const ttmp = t_at(x, y);
-    const striking = obj.otyp === ONAMES.WAN_STRIKING
-        || obj.otyp === ONAMES.SPE_FORCE_BOLT;
-    const opening = obj.otyp === ONAMES.WAN_OPENING
-        || obj.otyp === ONAMES.SPE_KNOCK;
-    const locking = obj.otyp === ONAMES.WAN_LOCKING
-        || obj.otyp === ONAMES.SPE_WIZARD_LOCK;
-    const handles_trap_conversion = game.u.dz > 0 && ttmp
-        && ((striking && ttmp.ttyp === TRAPDOOR)
-            || (locking && ttmp.ttyp === HOLE));
-    const releases_holding_trap = game.u.dz > 0 && opening
-        && game.u.utrap;
-    const opens_falling_trap = game.u.dz > 0 && opening && !game.u.utrap
-        && ttmp && (ttmp.ttyp === TRAPDOOR || ttmp.ttyp === ROCKTRAP
-                    || ttmp.ttyp === HOLE || is_pit(ttmp.ttyp));
-    const closes_holding_trap = game.u.dz > 0 && locking && ttmp
-        && (ttmp.ttyp === BEAR_TRAP || ttmp.ttyp === WEB)
-        && !game.u.utrap;
-    const handles_special = handles_trap_conversion
-        || releases_holding_trap || opens_falling_trap
-        || closes_holding_trap;
+    const u = game.u;
+    let striking = false, disclose = false;
+    let x, y, xx, yy;
+    let ptmp;
+    let otmp;
+    let e;
+    let ttmp;
+    let stway = game.stairs;
+    const Is_qstart = (uz) => {
+        const q = game.special_levels?.qstart_level;
+        return !!q && uz.dnum === q.dnum && uz.dlevel === q.dlevel;
+    };
+
+    /* some wands have special effects other than normal bhitpile */
+    /* drawbridge might change <u.ux,u.uy> */
+    x = xx = u.ux;     /* <x,y> is zap location */
+    y = yy = u.uy;     /* <xx,yy> is drawbridge (portcullis) position */
+    ttmp = t_at(x, y); /* trap if there is one */
 
     switch (obj.otyp) {
     case ONAMES.WAN_PROBING: {
-        let revealed = 0;
-        if (game.u.dz < 0) {
+        ptmp = 0;
+        if (u.dz < 0) {
             await You(`probe towards the ${ceiling(x, y)}.`);
-        } else {
+        } else { /* down */
             const terrain = game.level.at(x, y)?.typ;
-            revealed += await bhitpile(obj, bhito, x, y, game.u.dz);
+            ptmp += await bhitpile(obj, bhito, x, y, u.dz);
+            /* zap_map() updates lastseentyp[x][y] as a side-effect so
+               we need to call it before probing for buried objects */
             await zap_map(x, y, obj);
             const surf = terrain === ICE || IS_FURNITURE(terrain)
                 ? 'it' : `the ${surface(x, y)}`;
             await You(`probe beneath ${surf}.`);
-            revealed += await display_binventory(x, y, true);
+            ptmp += await display_binventory(x, y, true);
         }
-        if (!revealed)
+        if (!ptmp)
             await Your('probe reveals nothing.');
-        return true;
+        return true; /* we've done our own bhitpile */
     }
     case ONAMES.WAN_OPENING:
-    case ONAMES.SPE_KNOCK:
-    case ONAMES.WAN_LOCKING:
-    case ONAMES.SPE_WIZARD_LOCK:
-        if (!handles_special)
-            note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
-        break;
-    case ONAMES.SPE_STONE_TO_FLESH: {
-        const qstart = game.special_levels?.qstart_level;
-        const isQstart = qstart && game.u.uz.dnum === qstart.dnum
-            && game.u.uz.dlevel === qstart.dlevel;
-        const hasFloorObject = (game.level.objects || []).some(otmp =>
-            otmp.where === OBJ_FLOOR && otmp.ox === x && otmp.oy === y);
-        if (Is_airlevel(game.u.uz) || Is_waterlevel(game.u.uz)
-            || Underwater() || (isQstart && game.u.dz < 0)) {
-            await pline(nothing_happens);
-        } else if (game.u.dz < 0) {
-            await pline(`Blood drips on your ${body_part(FACE)}.`);
-        } else if (game.u.dz > 0 && !hasFloorObject) {
-            const engraving = engr_at(x, y);
-            if (!(engraving && engraving.engr_type === ENGRAVE)) {
-                if (is_pool(x, y) || is_ice(x, y)) {
-                    await pline(nothing_happens);
-                } else {
-                    await pline(`Blood ${is_lava(x, y) ? 'boils' : 'pools'} ${
-                        Levitation() ? 'beneath' : 'at'} your ${
-                        makeplural(body_part(FOOT))}.`);
-                }
-            }
+    case ONAMES.SPE_KNOCK: {
+        while (stway) {
+            if (!stway.isladder && !stway.up
+                && stway.tolev.dnum === u.uz.dnum)
+                break;
+            stway = stway.next;
+        }
+        /* up or down, but at closed portcullis only */
+        const cc = { x: xx, y: yy };
+        if (is_db_wall(x, y) && find_drawbridge(cc)) {
+            xx = cc.x, yy = cc.y;
+            await open_drawbridge(xx, yy);
+            disclose = true;
+        } else if (u.dz > 0 && stway && stway.sx === x && stway.sy === y
+                   /* can't use the stairs down to quest level 2 until
+                      leader "unlocks" them; give feedback if you try */
+                   && Is_qstart(u.uz) && !ok_to_quest()) {
+            await pline_The('stairs seem to ripple momentarily.');
+            disclose = true;
+        }
+        /* down will release you from bear trap or web */
+        if (u.dz > 0 && u.utrap) {
+            const noticed = { v: disclose };
+            await openholdingtrap(game.youmonst, noticed);
+            disclose = noticed.v;
+            /* down will trigger trapdoor, hole, or [spiked-] pit */
+        } else if (u.dz > 0 && !u.utrap) {
+            const noticed = { v: disclose };
+            await openfallingtrap(game.youmonst, false, noticed);
+            disclose = noticed.v;
         }
         break;
     }
     case ONAMES.WAN_STRIKING:
     case ONAMES.SPE_FORCE_BOLT:
-        if (game.u.dz > 0 && !handles_trap_conversion)
-            note_unported_zap(`zap_updown:special otyp=${obj.otyp}`);
+        striking = true;
+        /* FALLTHROUGH */
+    case ONAMES.WAN_LOCKING:
+    case ONAMES.SPE_WIZARD_LOCK: {
+        /* down at open bridge or up or down at open portcullis */
+        const cc = { x: xx, y: yy };
+        if (((game.level.at(x, y).typ === DRAWBRIDGE_DOWN)
+                 ? (u.dz > 0)
+                 : (is_drawbridge_wall(x, y) >= 0 && !is_db_wall(x, y)))
+            && find_drawbridge(cc)) {
+            xx = cc.x, yy = cc.y;
+            if (!striking)
+                await close_drawbridge(xx, yy);
+            else
+                await destroy_drawbridge(xx, yy);
+            disclose = true;
+        } else if (striking && u.dz < 0 && rn2(3) && !Is_airlevel(u.uz)
+                   && !Is_waterlevel(u.uz) && !Underwater()
+                   && !Is_qstart(u.uz)) {
+            let dmg;
+            /* similar to zap_dig() */
+            await pline(`A rock is dislodged from the ${ceiling(x, y)
+                        } and falls on your ${body_part(HEAD)}.`);
+            dmg = rnd(hard_helmet(u.uarmh) ? 2 : 6);
+            await losehp(Maybe_Half_Phys(dmg), 'falling rock', KILLED_BY_AN);
+            if ((otmp = mksobj_at(ONAMES.ROCK, x, y, false, false)) != null) {
+                xname(otmp); /* set dknown, maybe bknown */
+                stackobj(otmp);
+            }
+            newsym(x, y);
+        } else if (u.dz > 0 && ttmp) {
+            const noticed = { v: disclose };
+            if (!striking && await closeholdingtrap(game.youmonst, noticed)) {
+                disclose = noticed.v;
+                ; /* now stuck in web or bear trap */
+            } else if (striking && ttmp.ttyp === TRAPDOOR) {
+                disclose = noticed.v;
+                /* striking transforms trapdoor into hole */
+                if (Blind() && !ttmp.tseen) {
+                    await pline('Something beneath you shatters.');
+                } else if (!ttmp.tseen) { /* => !Blind */
+                    await pline("There's a trapdoor beneath you; it shatters.");
+                } else {
+                    await pline('The trapdoor beneath you shatters.');
+                    disclose = true;
+                }
+                ttmp.ttyp = HOLE;
+                ttmp.tseen = 1;
+                newsym(x, y);
+                /* might fall down hole */
+                await dotrap(ttmp, NO_TRAP_FLAGS);
+            } else if (!striking && ttmp.ttyp === HOLE) {
+                disclose = noticed.v;
+                /* locking transforms hole into trapdoor */
+                ttmp.ttyp = TRAPDOOR;
+                if (Blind() || !ttmp.tseen) {
+                    await pline(`Some ${is_ice(x, y) ? 'frost' : 'dust'} swirls beneath you.`);
+                } else {
+                    ttmp.tseen = 1;
+                    newsym(x, y);
+                    await pline('A trapdoor appears beneath you.');
+                    disclose = true;
+                }
+                /* hadn't fallen down hole; won't fall through trapdoor */
+            } else {
+                disclose = noticed.v;
+            }
+        }
         break;
+    }
+    case ONAMES.SPE_STONE_TO_FLESH: {
+        if (Is_airlevel(u.uz) || Is_waterlevel(u.uz) || Underwater()
+            || (Is_qstart(u.uz) && u.dz < 0)) {
+            await pline(nothing_happens);
+        } else if (u.dz < 0) { /* we should do more... */
+            await pline(`Blood drips on your ${body_part(FACE)}.`);
+        } else if (u.dz > 0 && !OBJ_AT(u.ux, u.uy)) {
+            /*
+            Print this message only if there wasn't an engraving
+            affected here.  If water or ice, act like waterlevel case.
+            */
+            e = engr_at(u.ux, u.uy);
+            if (!(e && e.engr_type === ENGRAVE)) {
+                if (is_pool(u.ux, u.uy) || is_ice(u.ux, u.uy))
+                    await pline(nothing_happens);
+                else
+                    await pline(`Blood ${is_lava(u.ux, u.uy) ? 'boils' : 'pools'} ${
+                        Levitation() ? 'beneath' : 'at'} your ${
+                        makeplural(body_part(FOOT))}.`);
+            }
+        }
+        break;
+    }
     default:
         break;
     }
 
-    if (game.u.dz > 0) {
-        if (releases_holding_trap) {
-            const noticed = { v: disclose };
-            await openholdingtrap(game.youmonst, noticed);
-            disclose = noticed.v;
-        } else if (opens_falling_trap) {
-            disclose = true;
-            const { dotrap } = await import('./trap.js');
-            await dotrap(ttmp, FORCETRAP);
-        } else if (closes_holding_trap) {
-            const noticed = { v: disclose };
-            await closeholdingtrap(game.youmonst, noticed);
-            disclose = noticed.v;
-        } else if (ttmp && striking && ttmp.ttyp === TRAPDOOR) {
-            if (Blind() && !ttmp.tseen) {
-                await pline('Something beneath you shatters.');
-            } else if (!ttmp.tseen) {
-                await pline("There's a trapdoor beneath you; it shatters.");
-            } else {
-                await pline('The trapdoor beneath you shatters.');
-                disclose = true;
-            }
-            ttmp.ttyp = HOLE;
-            ttmp.tseen = 1;
-            newsym(x, y);
-            const { dotrap } = await import('./trap.js');
-            await dotrap(ttmp, NO_TRAP_FLAGS);
-        } else if (ttmp && locking && ttmp.ttyp === HOLE) {
-            ttmp.ttyp = TRAPDOOR;
-            if (Blind() || !ttmp.tseen) {
-                await pline(`Some ${is_ice(x, y) ? 'frost' : 'dust'} swirls beneath you.`);
-            } else {
-                ttmp.tseen = 1;
-                newsym(x, y);
-                await pline('A trapdoor appears beneath you.');
-                disclose = true;
-            }
-        }
-        await bhitpile(obj, bhito, x, y, game.u.dz);
+    if (u.dz > 0) {
+        /* zapping downward */
+        await bhitpile(obj, bhito, x, y, u.dz);
+
+        /* zap_map might have been called by bhitpile(); if so,
+           don't call it again (map_zapped is always False in the C) */
         await zap_map(x, y, obj);
-    } else if (game.u.dz < 0) {
-        if (striking
-            && rn2(3)
-            && !Is_airlevel(game.u.uz)
-            && !Is_waterlevel(game.u.uz)
-            && !Underwater()
-            && !(game.special_levels?.qstart_level
-                 && game.u.uz.dnum === game.special_levels.qstart_level.dnum
-                 && game.u.uz.dlevel === game.special_levels.qstart_level.dlevel)) {
-            await pline(`A rock is dislodged from the ${
-                ceiling(game.u.ux, game.u.uy)} and falls on your ${
-                body_part(HEAD)}.`);
-            let damage = rnd(hard_helmet(game.u.uarmh) ? 2 : 6);
-            if (game.u.uprops?.HALF_PHDAM)
-                damage = Math.trunc((damage + 1) / 2);
-            const { losehp } = await import('./hack.js');
-            await losehp(damage, 'falling rock', KILLED_BY_AN);
-            const rock = mksobj_at(ONAMES.ROCK, x, y, false, false);
-            xname(rock);
-            stackobj(rock);
-            newsym(x, y);
+    } else if (u.dz < 0) {
+        /* zapping upward */
+
+        /* game flavor: if you're hiding under "something"
+         * a zap upward should hit that "something".
+         */
+        if (u.uundetected && hides_under(game.youmonst.data)) {
+            let hitit = 0;
+
+            otmp = (game.level.objects || []).find(
+                (o) => o.ox === u.ux && o.oy === u.uy) || null;
+            if (otmp)
+                hitit = await bhito(otmp, obj);
+            if (hitit) {
+                hideunder(game.youmonst);
+                disclose = true;
+            }
         }
-        if (game.u.uundetected)
-            note_unported_zap('zap_updown:hiding-under');
     }
 
     return disclose;

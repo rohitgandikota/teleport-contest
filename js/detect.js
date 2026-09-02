@@ -1,6 +1,7 @@
 // detect.js — searching and detection.
 // C ref: src/detect.c
 
+import { find_drawbridge, open_drawbridge } from './dbridge.js';
 import { expels } from './mhitu.js';
 import { is_drawbridge_wall } from './dbridge.js';
 import { b_trapped, openholdingtrap, openfallingtrap } from './trap.js';
@@ -2207,10 +2208,14 @@ async function openone(zx, zy, num_p) {
         if ((await openholdingtrap(mon, dummy))
             || (await openfallingtrap(mon, true, dummy)))
             num_p.value++;
-    } else if (is_drawbridge_wall(zx, zy) >= 0 || lev.typ === DRAWBRIDGE_UP) {
-        /* find_drawbridge()/open_drawbridge(): dbridge.c's drawbridge
-           machinery is not ported */
-        note_unported_detect('openone:drawbridge');
+    } else {
+        const cc = { x: zx, y: zy };
+
+        if (find_drawbridge(cc)) {
+            /* make sure it isn't an open drawbridge */
+            await open_drawbridge(cc.x, cc.y);
+            num_p.value++;
+        }
     }
 }
 

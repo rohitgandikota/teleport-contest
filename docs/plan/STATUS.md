@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (evening): dbridge.c entities, flooreffects, water/lava/erode
+
+dbridge.c is complete: `get_wall_for_db`, `create_drawbridge` (sp_lev's
+`lspo_drawbridge` uses it), the entity machinery (`occupants`, `e_at`,
+`m_to_e`, `u_to_e`, `set_entity`, `is_u`, `e_canseemon`, `e_nam`,
+`E_phrase`, `e_survives_at`, `e_died`, `automiss`, `e_missed`, `e_jumps`,
+`do_entity`, `nokiller`), `close_drawbridge`, `open_drawbridge`,
+`destroy_drawbridge`. Wired: zap.c `zap_map`'s lateral arm (opening,
+locking, striking and their spells against a drawbridge), a faithful
+`zap_updown`, detect.c `openone`, dokick.c `kick_ouch`, dig.c's notes.
+Also region.c `mon_in_region`/`add_mon_to_reg`/`remove_mon_from_reg`/
+`update_monster_region`, invent.c `delallobj`, hack.c `revive_nasty`,
+youprop.h `Wwalking`.
+The castle probe then exposed do.c `flooreffects`, which was a skeleton.
+Every arm is ported: boulder into a pit or hole (trapped victim damage,
+plug messages, delfloortrap, burial), lava, water with the splash and plop
+feedback, the teetering-pit tumble, glob melding, altars, hot-ground
+potions. With it: trap.c `lava_damage`, `pot_acid_damage` (acid context in
+`game.acid_ctx`), faithful `water_damage` (towels, grease, `mentioned_water`,
+Book of the Dead steam, novels, mail scrolls) and `water_damage_chain`,
+faithful `erode_obj` and `grease_protect` (EF_DESTROY arm,
+costly_alteration, the 5.0 pool clause, see NOTES); apply.c `snuff_candle`,
+`snuff_lit`, `splash_lit` (trap.js's stub removed); weapon.c
+`finish_towel_change`, `wet_a_towel`; zap.c `blank_novel`; do_name.c
+`free_oname`; mkobj.c `container_weight`, `obj_absorb`, `obj_meld`,
+`pudding_merge_message`; shk.c `clear_unpaid` (C signature),
+`clear_unpaid_obj`, `setpaid`'s full list, `globby_bill_fixup`.
+- pline now clears `iflags.last_msg` after every message as vpline does.
+  muse.c's "was anything said" test before the naming prompt (trycall after
+  a heard scroll of teleportation) depends on it (NOTES).
+- `game.killer` is not always allocated; dbridge's writes guard it the way
+  mcastu and end do (NOTES).
+- verified with `tools/gen-sessions/recipes/castle-drawbridge-wands.json`
+  (Dlvl 26 by wizard level teleport, ^T to the strip west of the moat,
+  wands of opening, locking, striking: down, up, portcullis into the moat,
+  iron chain debris rusting silently, a soldier's scroll heard through the
+  gap and the "Call a scroll" prompt): RNG and all 96 screens identical.
+- gated 44/44 + hang-gate; census 93/102 (was 92).
+- next: shop theft chain (stolen_value, check_shop_obj, make_angry_shk
+  wiring in bury_objs, impact_drop, revive), sit.c throne effects, pray.c
+  water_prayer, music.c play_tune (the drawbridge tune), trap.c landmine
+  hero arm, dragon_armor_handling's wielding_corpse arm, Maybe_Half_Phys in
+  the arrow and dart thitu calls, remaining zap.js notes.
+
 ## 2026-09-02 (afternoon): corpse revival (zap.c revive, undead turning)
 
 zap.c `montraits` (saved traits restored onto the fresh monster in place,

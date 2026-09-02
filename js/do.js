@@ -1,3 +1,19 @@
+import { distu } from './hacklib.js';
+import { Tobjnam } from './objnam.js';
+import { breakobj } from './dothrow.js';
+import { obj_resists } from './zap.js';
+import { is_plural } from './obj.js';
+import { pudding_merge_message, obj_meld } from './mkobj.js';
+import { WT_SPLASH_THRESHOLD, ER_DESTROYED, HMON_THROWN, TRAPDOOR, HOLE, NO_TRAP } from './const.js';
+import { weight } from './invent.js';
+import { map_background } from './display.js';
+import { bury_objs } from './dig.js';
+import { Passes_walls, Underwater, Flying } from './youprop.js';
+import { is_vampshifter } from './monst.js';
+import { nonliving, passes_walls, throws_rocks, is_whirly } from './mondata.js';
+import { dmgval } from './weapon.js';
+import { hmon } from './uhitm.js';
+import { lava_damage, water_damage, delfloortrap, uteetering_at_seen_pit, uescaped_shaft } from './trap.js';
 import { OBJ_MINVENT, OBJ_CONTAINED, CONTAINED_TOO, BURIED_TOO, CXN_SINGULAR } from './const.js';
 import { MONSYMS } from './monst_data.js';
 import { maketrap } from './mklev.js';
@@ -526,48 +542,188 @@ export async function boulder_hits_pool(obj, x, y, pushing) {
 // shattered), so the caller must not place it. The common case, plain floor,
 // takes no arm, draws nothing, and returns false.
 //
-// The deep arms record, each gated on the terrain or object that would need
-// it: boulder_hits_pool and the pit-plugging boulder block, lava_damage,
-// water_damage, the teetering-hero tumble, glob merging, doaltarobj, and the
-// 5.0 hot-ground potion shatter (level.flags.temperature > 0, Gehennom).
+// include/hack.h Maybe_Half_Phys()
+const Maybe_Half_Phys = (dmg) =>
+    (game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
+        ? Math.trunc((dmg + 1) / 2) : dmg;
+const the_your = ['the', 'your'];
+
+// src/do.c:162 flooreffects()
 export async function flooreffects(obj, x, y, verb) {
-    let t, res = false;
+    let t, mtmp, otmp;
+    let tseen;
+    let ttyp = NO_TRAP, res = false;
 
     /* C: panic("flooreffects: obj not free") */
     /* make sure things like water_damage() have no pointers to follow;
        this port's objects have no nobj/nexthere chain links to clear */
+    /* erode_obj() (called from water_damage() or lava_damage()) needs
+       bhitpos, but that was screwing up wand zapping that called us from
+       rloco(), so we now restore bhitpos before we return */
     const save_bhitpos = game.bhitpos;
     game.bhitpos = { x, y };
 
-    if (obj.otyp === ONAMES.BOULDER && (is_pool(x, y) || is_lava(x, y))) {
-        res = await boulder_hits_pool(obj, x, y, false);
+    if (obj.otyp === ONAMES.BOULDER && await boulder_hits_pool(obj, x, y, false)) {
+        res = true;
     } else if (obj.otyp === ONAMES.BOULDER && (t = t_at(x, y)) != null
                && (is_pit(t.ttyp) || is_hole(t.ttyp))) {
-        /* the trapped-victim damage, the plug message and delfloortrap */
-        note_unported_do('flooreffects:boulder_plug');
+        let deletedwithboulder = false;
+
+        ttyp = t.ttyp;
+        tseen = t.tseen ? true : false;
+        if (((mtmp = m_at(x, y)) && mtmp.mtrapped)
+            || (game.u.utrap && u_at(x, y))) {
+            if (verb && (cansee(x, y) || distu(x, y) === 0))
+                await pline(`${Blind() ? 'A' : 'The'} boulder ${vtense(null, verb)} into the pit${mtmp ? '' : ' with you'}.`);
+            if (mtmp) {
+                if (!passes_walls(mtmp.data) && !throws_rocks(mtmp.data)) {
+                    /* dieroll was rnd(20); 1: maximum chance to hit
+                       since trapped target is a sitting duck */
+                    let damage;
+                    const dieroll = 1;
+
+                    /* As of 3.6.2: this was calling hmon() unconditionally
+                       so always credited/blamed the hero but the boulder
+                       might have been thrown by a giant or launched by
+                       a rolling boulder trap triggered by a monster or
+                       dropped by a scroll of earth read by a monster */
+                    if (game.context?.mon_moving) {
+                        /* normally we'd use ohitmon() but it can call
+                           drop_throw() which calls flooreffects() */
+                        damage = dmgval(obj, mtmp);
+                        mtmp.mhp -= damage;
+                        if (DEADMONSTER(mtmp)) {
+                            if (canspotmon(mtmp))
+                                await pline(`${Monnam(mtmp)} is ${(nonliving(mtmp.data) || is_vampshifter(mtmp)) ? 'destroyed' : 'killed'}!`);
+                            await mondied(mtmp);
+                        }
+                    } else {
+                        await hmon(mtmp, obj, HMON_THROWN, dieroll);
+                    }
+                    if (!DEADMONSTER(mtmp) && !is_whirly(mtmp.data))
+                        res = false; /* still alive, boulder still intact */
+                }
+                mtmp.mtrapped = 0;
+            } else {
+                if (!Passes_walls() && !throws_rocks(game.youmonst.data)) {
+                    await losehp(Maybe_Half_Phys(rnd(15)),
+                                 'squished under a boulder', NO_KILLER_PREFIX);
+                    deletedwithboulder = true; /* goto deletedwithboulder */
+                } else
+                    await reset_utrap(true);
+            }
+        }
+        if (!deletedwithboulder && verb) {
+            if (Blind() && u_at(x, y)) {
+                /* Soundeffect(se_crashing_boulder, 100) */
+                await You_hear('a CRASH! beneath you.');
+            } else if (!Blind() && cansee(x, y)) {
+                await pline_The(`boulder ${(ttyp === TRAPDOOR && !tseen) ? 'triggers and ' : ''}${(ttyp === TRAPDOOR) ? 'plugs a trap door' : (ttyp === HOLE) ? 'plugs a hole' : 'fills a pit'}.`);
+            } else {
+                /* Soundeffect(se_boulder_drop, 100) */
+                await You_hear(`a boulder ${verb}.`);
+            }
+        }
+        /*
+         * Note:  trap might have gone away via ((hmon -> killed -> xkilled)
+         *  || mondied) -> mondead -> m_detach -> fill_pit.
+         */
+ /* deletedwithboulder: */
+        /* creating a pit in ice results in that ice being turned into
+           floor so we shouldn't need any special ice handing here */
+        if ((t = t_at(x, y)) != null) {
+            await delfloortrap(t);
+            if (game.u.utrap && u_at(x, y))
+                await reset_utrap(false);
+        }
+        useupf(obj, 1);
+        await bury_objs(x, y);
+        newsym(x, y);
+        res = true;
     } else if (is_lava(x, y)) {
-        note_unported_do('flooreffects:lava_damage');
+        res = await lava_damage(obj, x, y);
     } else if (is_pool(x, y)) {
-        note_unported_do('flooreffects:water_damage');
+        /* Reasonably bulky objects (arbitrary) splash when dropped.
+         * If you're floating above the water even small things make
+         * noise.  Stuff dropped near fountains always misses */
+        if ((Blind() || (Levitation() || Flying())) && !Deaf() && u_at(x, y)) {
+            if (!Underwater()) {
+                if (weight(obj) > WT_SPLASH_THRESHOLD) {
+                    await pline('Splash!');
+                } else if (Levitation() || Flying()) {
+                    await pline('Plop!');
+                }
+            }
+            map_background(x, y, 0);
+            newsym(x, y);
+        }
+        res = (await water_damage(obj, null, false)) === ER_DESTROYED;
     } else if (u_at(x, y) && (t = t_at(x, y)) != null
-               && (is_pit(t.ttyp) || is_hole(t.ttyp))) {
-        /* C gates on uteetering_at_seen_pit(t) || uescaped_shaft(t) */
+               && (uteetering_at_seen_pit(t) || uescaped_shaft(t))) {
         if (is_pit(t.ttyp)) {
-            note_unported_do('flooreffects:pit_tumble_msg');
+            if (Blind() && !Deaf()) {
+                /* Soundeffect(se_item_tumble_downwards, 50) */
+                await You_hear(`${the(xname(obj))} tumble downwards.`);
+            } else {
+                await pline(`${Tobjnam(obj, 'tumble')} into ${the_your[t.madeby_u ? 1 : 0]} pit.`);
+            }
         } else if (ship_object_fn && ship_object_fn(obj, x, y, false)) {
-            /* ship_object prints "the item falls through the hole" */
+            /* ship_object will print an appropriate "the item falls
+             * through the hole" message, so no need to do it here. */
             res = true;
         }
     } else if (obj.globby) {
-        const nearby = obj_nexto_xy(obj, x, y, true);
-        if (nearby)
-            note_unported_do('flooreffects:obj_meld');
-    } else if (game.context?.mon_moving
-               && IS_ALTAR(game.level.at(x, y)?.typ) && cansee(x, y)) {
-        note_unported_do('flooreffects:doaltarobj');
+        const globbyobj = { v: obj }; /* allow obj to be nonnull arg */
+
+        /* Globby things like puddings might stick together */
+        while (globbyobj.v
+               && (otmp = obj_nexto_xy(globbyobj.v, x, y, true)) != null) {
+            await pudding_merge_message(globbyobj.v, otmp);
+            /* intentionally not getting the melded object; obj_meld may set
+             * obj to null. */
+            await obj_meld(globbyobj, { v: otmp });
+        }
+        res = !globbyobj.v;
+    } else if (game.context?.mon_moving && IS_ALTAR(game.level.at(x, y)?.typ)
+               && cansee(x, y)) {
+        await doaltarobj(obj);
     } else if (obj.oclass === OCLASSES.POTION_CLASS
-               && (game.level?.flags?.temperature ?? 0) > 0) {
-        note_unported_do('flooreffects:hot_ground_potion');
+               && (game.level?.flags?.temperature ?? 0) > 0
+               && (game.level.at(x, y).typ === ROOM || game.level.at(x, y).typ === CORR)) {
+        /* Potions are sometimes destroyed when landing on very hot
+           ground. The basic odds are 50% for nonblessed potions and
+           30% for blessed potions; if you have handled the object
+           (i.e. it is or was yours), these odds are adjusted by Luck
+           (each Luck point affects them by 2%). Artifact potions
+           would not be affected, if any existed.
+
+           Oil is not affected because its boiling point (and flash
+           point) are higher than that of water. For example, whale
+           oil, one of the substances traditionally used in oil lamps,
+           can survive over 100 degrees Centigrade more heat than
+           water can.*/
+        if (cansee(x, y)) {
+            /* unconditional "ground" is safe as this only runs for
+               room and corridor tiles */
+            await pline(`${Tobjnam(obj, 'heat')} up as ${is_plural(obj) ? 'they hit' : 'it hits'} the hot ground.`);
+        }
+
+        const Luck = (game.u.uluck | 0) + (game.u.moreluck | 0);
+        let survival_chance = obj.blessed ? 70 : 50;
+        if (obj.invlet)
+            survival_chance += Luck * 2;
+        if (obj.otyp === ONAMES.POT_OIL)
+            survival_chance = 100;
+
+        if (!obj_resists(obj, survival_chance, 100)) {
+            if (cansee(x, y)) {
+                await pline(`${is_plural(obj) ? 'They shatter' : 'It shatters'} from the heat!`);
+            } else {
+                await You_hear('a shattering noise.');
+            }
+            await breakobj(obj, x, y, false, false);
+            res = true;
+        }
     }
 
     game.bhitpos = save_bhitpos;

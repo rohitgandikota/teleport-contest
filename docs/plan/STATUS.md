@@ -1,5 +1,46 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (midday): dig.c completed (holes, pits, caves, burial)
+
+`js/dig.js` is now the C file in C order: `rm_waslit`, `mkcavepos`,
+`mkcavearea`, faithful `pick_can_reach` (conjoined pits), `dig_typ`,
+`is_digging`, `dig_check`, `digcheck_fail_message`, the full `dig`
+occupation (fumbling, bear traps and settable traps under the pick, the
+altar wrath arm, statues and boulders, earth-level caves and elementals,
+trapped doors), `furniture_handled`, `holetime`, `fillholetyp`,
+`digactualhole` (pits, holes, falling through, pets and shopkeepers
+migrating), `liquid_flow`, `dighole`, `dig_up_grave`, `use_pick_axe`
+(moved here from apply.js, direction list from the bindings via new cmd.c
+`cmd_from_dir`/`movecmd`/`dxdy_moveok`), faithful `use_pick_axe2`,
+`watchman_canseeu`, `watch_dig`, faithful `mdig_tunnel` and `zap_dig`
+(swallowed, vertical, pit-to-pit digging and `pit_flow`), `adj_pit_checks`,
+`buried_ball_to_punishment`, `bury_an_obj`/`bury_objs`/`unearth_objs`
+(moved here from mklev.js and sp_lev.js), `rot_organic`, `rot_corpse`.
+- supporting ports: hack.c `switch_terrain`, `spot_checks`,
+  `set_uinwater` (trap.js's noted local replaced); timeout.c
+  `spot_stop_timers`, `spot_time_expires`, `spot_time_left`; dokick.c
+  `drop_to`, `impact_drop`; shk.c `shopdig`; trap.c `delfloortrap`,
+  `cnv_trap_obj`; engrave.c `cant_reach_floor`; apply.c `o_unleash`;
+  pray.c `altarmask_at`, `altar_wrath`; stairs.c `On_ladder`; dbridge.c
+  `find_drawbridge`; mkobj.c `add_to_migration`; lock.c `maybe_reset_pick`;
+  shknam.c `Shknam`; mkobj.c `add_to_buried` now sets OBJ_BURIED.
+- do.c `goto_level` gained the C arrival resets it lacked: `impact_drop`
+  when falling, `reset_utrap`, `fill_pit`, `set_ustuck(NULL)`,
+  `set_uinwater(0)`, `u.uundetected = 0`. Without `reset_utrap` a hero who
+  fell through a hole dug from a pit arrived "still in a pit" and saw only
+  the adjacent squares.
+- verified with a new recipe, `tools/gen-sessions/recipes/dig-pick-axe-and-
+  wand.json` (pit, hole and fall, wand of digging down and fall, sideways
+  swing): RNG and every screen identical.
+- still noted: dbridge.c `destroy_drawbridge` (the entity machinery, a
+  batch of its own; furniture_handled/dighole note it), the shop theft
+  accounting (`stolen_value`) in bury_objs and impact_drop, the landmine
+  hero arm in trap.js, `mkcavearea`'s Soundeffects (no sound in the port).
+- gated 44/44 + hang-gate; census 92/102 (s2-08 regressed on the way when
+  `is_organic` used the wrong material bound, fixed).
+- next: zap.c revive/unturn_dead, dbridge.c, shop theft chain
+  (stolen_value, check_shop_obj, make_angry_shk wiring), sit.c throne.
+
 ## 2026-09-02 (morning): genocide (read.c) and the genocided/vanquished lists
 
 read.c `seffect_genocide` (wired into the scroll switch), `do_class_genocide`

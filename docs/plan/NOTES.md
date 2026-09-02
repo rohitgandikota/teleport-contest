@@ -4371,3 +4371,15 @@ tracked, so once the recording is right, save the recipe under
 tools/gen-sessions/recipes/ and commit the fixture: it is the regression
 guard for that subsystem. The genocide probe's first cut caught a #conduct
 line that had been hardwired to "never genocided".
+
+## Level arrival must run C's reset list, not just the map swap
+
+`goto_level()` in C (do.c:1612-1622) does more than change `u.uz`: when
+falling it drops the floor pile after the hero (`impact_drop`), then
+`reset_utrap`, `fill_pit`, `set_ustuck(NULL)`, `set_uinwater(0)` and
+`u.uundetected = 0`. The JS port had skipped that block, which was invisible
+while every recorded arrival came by stairs. The first dig probe (pit, then
+hole from inside the pit) arrived on the new level with `u.utrap` still set
+to TT_PIT, and vision in a pit is limited to the adjacent squares, so the
+lit room drew as a 3x3 patch. When a screen after a level change shows too
+little, check the hero's trap and water state before the vision code.

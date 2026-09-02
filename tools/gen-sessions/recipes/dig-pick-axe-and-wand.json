@@ -1,0 +1,18 @@
+{
+  "name": "dig-pick-axe-and-wand",
+  "description": "Debug Wizard steps off the up stairs, digs a pit and then a hole with a pick-axe and falls through, zaps a wand of digging downward and falls again, then swings the pick-axe sideways at open floor.",
+  "coverage": [
+    "mode.debug",
+    "object.wands",
+    "object.tools-containers",
+    "ui.more-paging"
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " k\u0017pick-axe\ran >  an>   \u0017wand of digging\rzo>   anh   "
+    }
+  ]
+}

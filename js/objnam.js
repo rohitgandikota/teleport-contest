@@ -3630,7 +3630,7 @@ export function armor_simple_name(armor) {
     return result;
 }
 
-// src/objnam.c: actualoname(), the object's real name, ignoring what
+// src/objnam.c:2490 actualoname(), the object's real name, ignoring what
 // the hero knows about it.
 export function actualoname(obj) {
     let res;
@@ -3639,4 +3639,11 @@ export function actualoname(obj) {
     res = minimal_xname(obj);
     game.iflags.override_ID = false;
     return res;
+}
+
+// src/objnam.c:2303 Doname2(), doname() with a capital letter.
+export function Doname2(obj) {
+    const s = doname(obj);
+
+    return s ? s[0].toUpperCase() + s.slice(1) : s;
 }

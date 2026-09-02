@@ -10,6 +10,7 @@
 // exception is pronoun_gender() at the bottom, which rolls rn2(4) when the
 // hero is hallucinating.
 
+import { M_SEEN_MAGR, M_SEEN_FIRE, M_SEEN_COLD, M_SEEN_SLEEP, M_SEEN_DISINT, M_SEEN_ELEC, M_SEEN_POISON, M_SEEN_ACID } from './const.js';
 import { PMNAMES, MONSYMS, MFLAGS, ATTKS, GROWNUPS } from './monst_data.js';
 import { game } from './gstate.js';
 import { rn2, rnd } from './rng.js';
@@ -949,3 +950,19 @@ import { genders as genders_tbl } from './role_data.js';
 // include/mondata.h:71 digests() — swallow-and-digest engulfer (purple worm).
 export const digests = (ptr) =>
     dmgtype_fromattack(ptr, ATTKS.AD_DGST, ATTKS.AT_ENGL) != null;
+
+// src/mondata.c:1522 cvt_adtyp_to_mseenres(), damage type to the
+// "monster has seen hero resist this" bit.
+export function cvt_adtyp_to_mseenres(adtyp) {
+    switch (adtyp) {
+    case ATTKS.AD_MAGM: return M_SEEN_MAGR;
+    case ATTKS.AD_FIRE: return M_SEEN_FIRE;
+    case ATTKS.AD_COLD: return M_SEEN_COLD;
+    case ATTKS.AD_SLEE: return M_SEEN_SLEEP;
+    case ATTKS.AD_DISN: return M_SEEN_DISINT;
+    case ATTKS.AD_ELEC: return M_SEEN_ELEC;
+    case ATTKS.AD_DRST: return M_SEEN_POISON;
+    case ATTKS.AD_ACID: return M_SEEN_ACID;
+    default: return M_SEEN_NOTHING;
+    }
+}

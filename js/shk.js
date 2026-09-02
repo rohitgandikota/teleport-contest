@@ -6,6 +6,8 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { Your } from './pline.js';
+import { get_obj_location } from './zap.js';
 import { update_inventory } from './invent.js';
 import { game } from './gstate.js';
 import { ESHK, SHOPBASE, IS_DOOR, ROOMOFFSET, NO_ROOM, A_CHA, MAXULEV,
@@ -546,7 +548,7 @@ export async function u_left_shop(leavestring, newlev) {
 
 // src/shk.c:2846 get_pricing_units(). Ordinary stacks price by quantity;
 // globs price by their current weight.
-function get_pricing_units(obj) {
+export function get_pricing_units(obj) {
     let units = obj.quan || 1;
     if (obj.globby) {
         const unitWeight = game.objects[obj.otyp]?.oc_weight || 0;
@@ -2657,4 +2659,114 @@ export function set_residency(shkp, zero_out) {
         if (room)
             room.resident = (zero_out) ? null : shkp;
     }
+}
+
+/* src/shk.c:632 credit_report()'s static credit_snap[][] */
+const credit_snap = [[0, 0, 0], [0, 0, 0]];
+const BEFORE = 0, NOW = 1;
+
+// src/shk.c:628 credit_report(), remember (idx 0) or report (idx 1) how
+// the hero's credit, debt, and loan changed.
+export async function credit_report(shkp, idx, silent) {
+    const eshkp = shkp.eshk || ESHK(shkp);
+
+    if (!idx) {
+        credit_snap[BEFORE][0] = credit_snap[NOW][0] = 0;
+        credit_snap[BEFORE][1] = credit_snap[NOW][1] = 0;
+        credit_snap[BEFORE][2] = credit_snap[NOW][2] = 0;
+    } else {
+        idx = 1;
+    }
+    credit_snap[idx][0] = eshkp.credit | 0;
+    credit_snap[idx][1] = eshkp.debit | 0;
+    credit_snap[idx][2] = eshkp.loan | 0;
+
+    if (idx && !silent) {
+        let amt = 0;
+        let msg = 'debt has increased';
+
+        if (credit_snap[NOW][0] < credit_snap[BEFORE][0]) {
+            amt = credit_snap[BEFORE][0] - credit_snap[NOW][0];
+            msg = 'credit has been reduced';
+        } else if (credit_snap[NOW][1] > credit_snap[BEFORE][1]) {
+            amt = credit_snap[NOW][1] - credit_snap[BEFORE][1];
+        } else if (credit_snap[NOW][2] > credit_snap[BEFORE][2]) {
+            amt = credit_snap[NOW][2] - credit_snap[BEFORE][2];
+        }
+        if (amt)
+            await Your(`${msg} by ${amt} ${currency(amt)}.`);
+    }
+}
+
+// src/shk.c:2995 contained_cost(), the price of a container's contents
+// (usell: what the shopkeeper would pay; else what the hero owes).
+export function contained_cost(obj, shkp, price, usell, unpaid_only) {
+    let top;
+    const cc = { x: 0, y: 0 };
+    let on_floor, freespot;
+
+    for (top = obj; top.where === OBJ_CONTAINED; top = top.ocontainer)
+        continue;
+    /* pick_obj() removes item from floor, adds it to shop bill, then
+       puts it in inventory; behave as if it is still on the floor
+       during the add-to-bill portion of that situation */
+    on_floor = (top.where === OBJ_FLOOR || top.where === OBJ_FREE);
+    if (top.where === OBJ_FREE || !get_obj_location(top, cc, 0))
+        cc.x = game.u.ux, cc.y = game.u.uy;
+    const eshkp = shkp.eshk || ESHK(shkp);
+    freespot = (on_floor && cc.x === eshkp.shk.x && cc.y === eshkp.shk.y);
+
+    /* price of contained objects; "top" container handled by caller */
+    for (const otmp of (obj.cobj || [])) {
+        if (otmp.oclass === OCLASSES.COIN_CLASS)
+            continue;
+
+        if (usell) {
+            /* saleable() and set_cost(), the selling side, are not ported */
+            note_unported_shk('contained_cost:usell');
+        } else {
+            /* the hero is asked to pay for unpaid items (contents of
+               floor containers) inside shop proper;
+               items on freespot are implicitly 'no charge' */
+            if (on_floor ? (!otmp.no_charge && !freespot)
+                         : (otmp.unpaid || !unpaid_only))
+                price += get_cost(otmp, shkp) * get_pricing_units(otmp);
+        }
+        if (Has_contents(otmp))
+            price = contained_cost(otmp, shkp, price, usell, unpaid_only);
+    }
+    return price;
+}
+
+// src/shk.c:3451 billable(), is obj something a shopkeeper would bill?
+// shkpp.shkp is the shopkeeper in (non-null if already validated) and out.
+export function billable(shkpp, obj, roomno, reset_nocharge) {
+    let shkp = shkpp.shkp;
+
+    if (!shkp) {
+        if (!roomno)
+            return false;
+        shkp = shop_keeper(roomno);
+        if (!shkp || !inhishop(shkp))
+            return false;
+    }
+    /* perhaps we threw it away earlier */
+    if (onbill(obj, shkp, false)
+        || (obj.oclass === OCLASSES.FOOD_CLASS && obj.oeaten))
+        return false;
+    /* outer container might be marked no_charge but still have contents
+       which should be charged for; clear no_charge when picking things up */
+    if (obj.no_charge) {
+        if (!Has_contents(obj) || (contained_gold(obj, true) === 0
+                                   && contained_cost(obj, shkp, 0, false,
+                                                     !reset_nocharge) === 0))
+            shkp = null; /* not billable */
+        if (reset_nocharge && !shkp && obj.oclass !== OCLASSES.COIN_CLASS) {
+            obj.no_charge = 0;
+            if (Has_contents(obj))
+                picked_container(obj); /* clear no_charge */
+        }
+    }
+    shkpp.shkp = shkp;
+    return shkp ? true : false;
 }

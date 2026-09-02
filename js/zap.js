@@ -5,6 +5,14 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { in_rooms } from './hack.js';
+import { CORPSTAT_HISTORIC } from './const.js';
+import { Role_if, adjalign } from './attrib.js';
+import { does_block } from './vision.js';
+import { sokoban_guilt } from './trap.js';
+import { breakobj } from './dothrow.js';
+import { shkname } from './shknam.js';
+import { costly_spot, billable } from './shk.js';
 import { game } from './gstate.js';
 import { isok, s_suffix } from './hacklib.js';
 import { is_lava, is_pool, m_at, t_at } from './mon.js';
@@ -3590,4 +3598,74 @@ export async function mon_spell_hits_spot(caster, adtyp, x, y) {
 
         await zap_over_floor(x, y, zapdmgtyp, true);
     } /* else impossible("Unsupported damage type (%d) for mon_spell_hits_spot.") */
+}
+
+// src/zap.c:5537 fracture_rock(), a boulder or statue turns into rocks.
+export async function fracture_rock(obj) /* no texts here! */
+{
+    const cc = { x: 0, y: 0 };
+    const by_you = !game.context?.mon_moving;
+
+    if (by_you && get_obj_location(obj, cc, 0) && costly_spot(cc.x, cc.y)) {
+        const shkpp = { shkp: null };
+        const objroom = (in_rooms(cc.x, cc.y, SHOPBASE) || '\0').charCodeAt(0);
+
+        if (billable(shkpp, obj, objroom, false)) {
+            /* shop message says "you owe <shk> <$> for it!" so we need
+               to precede that with a message explaining what "it" is */
+            await You(`fracture ${s_suffix(shkname(shkpp.shkp))} ${xname(obj)}.`);
+            /* breakobj() calls stolen_value(), which handles shop charges */
+            await breakobj(obj, cc.x, cc.y, true, false);
+        }
+    }
+
+    if (by_you && obj.otyp === ONAMES.BOULDER)
+        await sokoban_guilt();
+
+    obj.otyp = ONAMES.ROCK;
+    obj.oclass = OCLASSES.GEM_CLASS;
+    obj.quan = rn1(60, 7);
+    obj.owt = weight(obj);
+    obj.dknown = obj.bknown = obj.rknown = 0;
+    obj.known = game.objects[obj.otyp].oc_uses_known ? 0 : 1;
+    obj.oextra = null; /* dealloc_oextra(obj) */
+
+    if (obj.where === OBJ_FLOOR) {
+        obj_extract_self(obj); /* move rocks back on top */
+        place_object(obj, obj.ox, obj.oy);
+        if (!does_block(obj.ox, obj.oy, game.level.at(obj.ox, obj.oy))) {
+            unblock_point(obj.ox, obj.oy);
+            /* immediately update the display, in case this fracturing was
+               caused by a zap that is about hit more things */
+            vision_recalc(0);
+        }
+        if (cansee(obj.ox, obj.oy))
+            newsym(obj.ox, obj.oy);
+    }
+}
+
+// src/zap.c:5582 break_statue(), a statue shatters; false when a statue
+// trap animated it instead.
+export async function break_statue(obj) {
+    /* [obj is assumed to be on floor, so no get_obj_location() needed] */
+    const trap = t_at(obj.ox, obj.oy);
+    let item;
+    const by_you = !game.context?.mon_moving;
+
+    if (trap && trap.ttyp === STATUE_TRAP
+        && await activate_statue_trap(trap, obj.ox, obj.oy, true))
+        return false;
+    /* drop any objects contained inside the statue */
+    while ((item = (obj.cobj || [])[0]) != null) {
+        obj_extract_self(item);
+        place_object(item, obj.ox, obj.oy);
+    }
+    if (by_you && Role_if(PMNAMES.PM_ARCHEOLOGIST)
+        && (obj.spe & CORPSTAT_HISTORIC)) {
+        await You_feel('guilty about damaging such a historic statue.');
+        adjalign(-1);
+    }
+    obj.spe = 0;
+    await fracture_rock(obj);
+    return true;
 }

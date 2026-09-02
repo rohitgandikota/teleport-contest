@@ -32,7 +32,7 @@ import { ATTKS, MFLAGS, PMNAMES, MONSYMS } from './monst_data.js';
 import { Upolyd } from './const.js';
 
 // include/you.h:247 Role_if()
-function Role_if(pm) {
+export function Role_if(pm) {
     const m = game.urole?.mnum;
     return m === pm || m === PMNAMES[pm];
 }

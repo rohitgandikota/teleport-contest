@@ -1,3 +1,6 @@
+import { can_hide_under_obj } from './monmove.js';
+import { u_at, OBJ_AT } from './const.js';
+import { mon_explodes } from './explode.js';
 import { fill_pit } from './trap.js';
 import { remove_worm } from './worm.js';
 import { mon_offmap, is_lightblocker_mappear } from './monst.js';
@@ -2554,60 +2557,6 @@ export function make_corpse(mtmp, corpseflags) {
     return obj;
 }
 
-// src/mon.c:3181 corpse_chance() — does the kill leave a corpse at all?
-//
-// A visible, uncontained physical death explosion applies its effects in
-// map order: nearby monsters first, then the hero.  Elemental explosions and
-// swallowed explosions still remain outside this slice.
-async function mon_explodes(mon, mattk) {
-    const dam = mattk[2] ? d(mattk[2], mattk[3])
-              : mattk[3] ? d(game.mons[mon.mnum].mlevel + 1, mattk[3])
-                : 0;
-    const name = game.mons[mon.mnum].pmnames?.[2] || 'monster';
-    const possessive = name.endsWith('s') ? `${name}'` : `${name}'s`;
-    const blast = `${possessive} explosion`;
-    const x = mon.mx, y = mon.my;
-
-    /* tmp_at(DISP_END) restores every blast square before the messages and
-       damage are processed. */
-    for (let xx = x - 1; xx <= x + 1; xx++)
-        for (let yy = y - 1; yy <= y + 1; yy++)
-            if (isok(xx, yy))
-                newsym(xx, yy);
-
-    await pline('Boom!');
-
-    if (dam) {
-        for (let xx = x - 1; xx <= x + 1; xx++) {
-            for (let yy = y - 1; yy <= y + 1; yy++) {
-                if (!isok(xx, yy))
-                    continue;
-                const mtmp = m_at(xx, yy);
-                if (!mtmp || DEADMONSTER(mtmp))
-                    continue;
-                if (cansee(xx, yy))
-                    await pline(`${Monnam(mtmp)} is caught in the ${blast}!`);
-                const itemdmg = await destroy_items(mtmp, ATTKS.AD_PHYS, dam);
-                let mdam = dam;
-                if (resist(mtmp, MON_EXPLODE, 0, false))
-                    mdam = Math.trunc((dam + 1) / 2);
-                mtmp.mhp -= mdam + itemdmg;
-                if (DEADMONSTER(mtmp))
-                    await xkilled(mtmp, XKILL_GIVEMSG);
-                else
-                    await setmangry(mtmp, true);
-            }
-        }
-
-        if (Math.abs(game.u.ux - x) <= 1 && Math.abs(game.u.uy - y) <= 1) {
-            await You(`are caught in the ${blast}!`);
-            await destroy_items(game.youmonst, ATTKS.AD_PHYS, dam);
-            game.u.uhp -= dam;
-            (game.disp ||= {}).botl = true;
-            exercise(A_STR, false);
-        }
-    }
-}
 
 // src/mon.c:3181 corpse_chance() -- does the kill leave a corpse at all?
 // The ordinary tail is the draw: !rn2(2 + rare + verysmall).
@@ -3646,4 +3595,29 @@ export async function relmon(mon, monst_list) {
 
     if (monst_list) /* put on migrating_mons or mydogs */
         monst_list.unshift(mon);
+}
+
+// src/mon.c:4698 maybe_unhide_at(), a hider at <x,y> that lost its cover
+// stops hiding.
+export function maybe_unhide_at(x, y) {
+    let mtmp;
+    let undetected = false, trapped = false;
+
+    if ((mtmp = m_at(x, y)) != null) {
+        undetected = !!mtmp.mundetected;
+        trapped = !!mtmp.mtrapped;
+    } else if (u_at(x, y)) {
+        mtmp = game.youmonst;
+        undetected = !!game.u.uundetected;
+        trapped = !!game.u.utrap;
+    } else {
+        return;
+    }
+    if (undetected
+        && ((hides_under(mtmp.data)
+             && (!OBJ_AT(x, y) || trapped
+                 || !can_hide_under_obj((game.level.objects || [])
+                                        .find(o => o.ox === x && o.oy === y))))
+            || (mtmp.data.mlet === MONSYMS.S_EEL && !is_pool(x, y))))
+        hideunder(mtmp);
 }

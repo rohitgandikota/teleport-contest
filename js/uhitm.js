@@ -2650,7 +2650,7 @@ function on_fire(ptr, mattk) {
 
 // src/mon.c:5680 golemeffects(), elemental healing and slowing for flesh
 // and iron golems.
-export async function golem_element_effects(mon, adtyp, damage) {
+export async function golemeffects(mon, adtyp, damage) {
     let heal = 0, slow = false;
 
     if (mon.mnum === PMNAMES.PM_FLESH_GOLEM) {
@@ -2887,7 +2887,7 @@ export async function mhitm_ad_fire(magr, mattk, mdef, mhm) {
         if (resists_fire(mdef) || defended(mdef, ATTKS.AD_FIRE)) {
             if (!Blind())
                 await pline_The(`fire doesn't heat ${mon_nam(mdef)}!`);
-            await golem_element_effects(mdef, ATTKS.AD_FIRE, mhm.damage);
+            await golemeffects(mdef, ATTKS.AD_FIRE, mhm.damage);
             await shieldeff(mdef.mx, mdef.my);
             mhm.damage = 0;
         }
@@ -2945,7 +2945,7 @@ export async function mhitm_ad_fire(magr, mattk, mdef, mhm) {
             if (game.vis && canseemon(mdef))
                 await pline_The(`fire doesn't seem to burn ${mon_nam(mdef)}!`);
             await shieldeff(mdef.mx, mdef.my);
-            await golem_element_effects(mdef, ATTKS.AD_FIRE, mhm.damage);
+            await golemeffects(mdef, ATTKS.AD_FIRE, mhm.damage);
             mhm.damage = 0;
         }
         mhm.damage += await destroy_items(mdef, ATTKS.AD_FIRE, orig_dmg);
@@ -2968,7 +2968,7 @@ export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
             await shieldeff(mdef.mx, mdef.my);
             if (!Blind())
                 await pline_The(`frost doesn't chill ${mon_nam(mdef)}!`);
-            await golem_element_effects(mdef, ATTKS.AD_COLD, mhm.damage);
+            await golemeffects(mdef, ATTKS.AD_COLD, mhm.damage);
             mhm.damage = 0;
         }
         mhm.damage += await destroy_items(mdef, ATTKS.AD_COLD, orig_dmg);
@@ -3000,7 +3000,7 @@ export async function mhitm_ad_cold(magr, mattk, mdef, mhm) {
             if (game.vis && canseemon(mdef))
                 await pline_The(`frost doesn't seem to chill ${mon_nam(mdef)}!`);
             await shieldeff(mdef.mx, mdef.my);
-            await golem_element_effects(mdef, ATTKS.AD_COLD, mhm.damage);
+            await golemeffects(mdef, ATTKS.AD_COLD, mhm.damage);
             mhm.damage = 0;
         }
         mhm.damage += await destroy_items(mdef, ATTKS.AD_COLD, orig_dmg);
@@ -3025,7 +3025,7 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
         if (resists_elec(mdef) || defended(mdef, ATTKS.AD_ELEC)) {
             if (!Blind())
                 await pline_The(`zap doesn't shock ${mon_nam(mdef)}!`);
-            await golem_element_effects(mdef, ATTKS.AD_ELEC, mhm.damage);
+            await golemeffects(mdef, ATTKS.AD_ELEC, mhm.damage);
             await shieldeff(mdef.mx, mdef.my);
             mhm.damage = 0;
         }
@@ -3059,7 +3059,7 @@ export async function mhitm_ad_elec(magr, mattk, mdef, mhm) {
             if (game.vis && canseemon(mdef))
                 await pline_The(`zap doesn't shock ${mon_nam(mdef)}!`);
             await shieldeff(mdef.mx, mdef.my);
-            await golem_element_effects(mdef, ATTKS.AD_ELEC, mhm.damage);
+            await golemeffects(mdef, ATTKS.AD_ELEC, mhm.damage);
             mhm.damage = 0;
         }
         mhm.damage += await destroy_items(mdef, ATTKS.AD_ELEC, orig_dmg);

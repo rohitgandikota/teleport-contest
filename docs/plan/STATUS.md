@@ -1,5 +1,29 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (later): explode.c ported file-for-file
+
+`js/explode.js` now mirrors src/explode.c: `explosionmask`,
+`engulfer_explosion_msg`, `explode()` (all damage types, wand retributive
+strikes, engulfed/grabbed cases, hallucinated names, killer bookkeeping),
+`scatter()`, `splatter_burning_oil`, `explode_oil`, `adtyp_to_expltype`,
+`mon_explodes`. The invented `explode_burning_oil` narrowing (with its
+"preannounced anger" ordering hack) is gone: the anger line comes first in
+C because `zap_over_floor()` calls `wakeup()` -> `setmangry()` before the
+"caught in" message, and the faithful order falls out of that. mhitu.js's
+`explmu` is the C function (blinding/hallucination arms too) and mon.js's
+`corpse_chance` calls the real `mon_explodes`; pickup.js's bag-of-holding
+blast uses `scatter()`. Supporting ports: dothrow.c `breaks`/`breakmsg`/
+`breakobj`/`release_camera_demon`, zap.c `fracture_rock`/`break_statue`,
+mon.c `maybe_unhide_at`, shk.c `credit_report`/`billable`/`contained_cost`,
+shknam.c `shkname`, objnam.c `Doname2`, mondata.c `cvt_adtyp_to_mseenres`;
+uhitm.js's `golem_element_effects` is renamed to its C name `golemeffects`.
+Gated 44/44 + hang-gate; census unchanged at 89/102 (explosions are rare in
+the corpus).
+- still noted: the shop-theft accounting behind breakage (`stolen_value`,
+  `check_shop_obj`, `make_angry_shk` wiring) and `zap_over_floor`'s
+  shopdamage out-parameter (so `explode()`'s `pay_for_damage` arm cannot
+  fire yet); `contained_cost`'s selling side (`saleable`/`set_cost`).
+
 ## 2026-09-02: monster spells, monster level teleport, divine armor loss, punish/minions
 
 Landed and pushed, gated 44/44 + hang-gate in an isolated HEAD worktree

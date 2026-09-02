@@ -4295,3 +4295,13 @@ through to `destroy_arm()` and its rn2(4). The old JS returned early for any
 blessed scroll (noted), so s2-24 lost the rn2(4)+rn2(idx) draws.
 `some_armor()` draws rn2(4)s of its own as well; the old JS picked the first
 worn piece with a plain `find` over invent.
+
+## Explosion message order: the anger line comes from zap_over_floor()
+
+In `explode()` C prints "<mon> is caught in the <blast>!" after calling
+`zap_over_floor(xx, yy, ...)` for that square, and zap_over_floor ends with
+`wakeup(mon, type >= 0)` -> `setmangry()` -> "<mon> gets angry!". So a
+peaceful humanoid caught in a hero-caused blast is announced angry BEFORE it
+is announced caught. An earlier narrowed port had "pre-announced" the anger
+line to match; the faithful explode() gets the order for free. Do not add
+message-ordering hacks; find the C call that produces the message.

@@ -5,6 +5,7 @@
 // the tested sacrifice paths. Some punishment, conversion, and artifact-gift
 // paths remain partial.
 
+import { uhim } from './mhitu.js';
 import { Disint_resistance } from './youprop.js';
 import { genders } from './role_data.js';
 import { Monnam } from './do_name.js';
@@ -1622,8 +1623,6 @@ export async function dopray() {
 // src/pray.c:104 ugod_is_angry()
 const ugod_is_angry = () => game.u.ualign.record < 0;
 
-// include/you.h:315 uhim()
-const uhim = () => genders[game.flags?.female ? 1 : 0].him;
 
 // src/pray.c: a_align(), the alignment of the altar at <x,y>.
 function a_align(x, y) {

@@ -4240,3 +4240,39 @@ and drifts from an earlier, invisible state difference. Higher-leverage work
 right now is PORTING stubbed C functions (read C, translate, verify on the
 full gate) rather than chasing these. The `note_unported_*` markers (908 of
 them) are the work list; filter to ones that draw RNG on a common path.
+
+## Recording semantics: screen[N] and rng[N] describe the processing of key N-1
+
+Verified with two probe recordings (tools/gen-sessions/record.mjs, wizard
+`^V` `13` RET then `i`): the recorder snapshots the screen when a key is
+REQUESTED, so `steps[N].screen` is the state after key N-1 was fully
+processed and before key N is consumed, and `steps[N].rng` holds the draws
+made while processing key N-1. `render.mjs msgs` already shifts by one
+(it prints key N beside screen N+1), `diverge.mjs` and the frozen runner use
+the same convention on our side, so nothing is misaligned — but when you
+read the raw JSON you will see, e.g., the level-teleport draws under the
+step of the key AFTER the RET. Do not conclude from that that C defers
+`deferred_goto()` to the next command; it runs right after `rhack()`
+returns (allmain.c:538), same as ours. (The `#if 0` around the immediate
+deferred_goto() call in level_tele() is a red herring for the same reason.)
+
+## Tutorial exit portal: mktrap() gives it u.ucamefrom
+
+A magic portal made while `u.ucamefrom` is set (mklev.c:2108, i.e. the
+tutorial levels' portals) gets `dst = u.ucamefrom`. Ours never set `dst`,
+so stepping into the tutorial's portal noted `no_destination` and the hero
+stayed put; every tutorial game diverges the moment it is left. Fixed in
+js/mklev.js mktrap(). Leaving still shows one screen difference: at the
+"You activated a magic portal!  Resuming regular play.--More--" prompt C's
+status line says AC:10 while ours already says AC:9 (the restored cloak),
+the same status-timing gap as the earlier "tutorial AC:10" note. RNG is
+identical through it.
+
+## Level-teleport sanity: C still had monsters, ours had none — until tut-2
+
+s4-06 diverged after `^V 13` from the tutorial with `mcalcmove` draws we did
+not make. Two separate causes: tut-2 was not in the des registry (now
+js/dat/tut-2.js), and the exit portal had no destination (above). The
+"2 monsters" were the main-dungeon level-1 residents the hero returned to
+through the portal, not anything on tut-2 — a blessed potion of monster
+detection quaffed there in a probe says "You feel lonely."

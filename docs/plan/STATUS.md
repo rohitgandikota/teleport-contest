@@ -1,5 +1,29 @@
 # STATUS — live handoff board
 
+## 2026-09-01 (later still): potion/scroll effect ports, tutorial exit
+
+Landed and pushed since the entry below, each gated on 44/44 + hang-gate in
+an isolated worktree:
+- potions: full healing, sleeping, speed (+SPE_HASTE_SELF), gain ability,
+  restore ability (+SPE), hallucination, enlightenment, invisibility (+SPE),
+  gain level, levitation (+SPE), acid; `make_stoned`, `fix_petrification`,
+  `unfixable_trouble_count`, `do_enlightenment_effect`, `float_up`,
+  `fill_pit`, `set_utrap`/`reset_utrap`, `float_vs_flight`,
+  `steed_vs_stealth`, `ledger_no`, end.c delayed killers; spelleffects' potion
+  arm now calls peffects().
+- scrolls: scare monster (+cause fear), create monster (+`create_critters`,
+  also wired into zapnodir's wand arm), enchant armor with its whole helper
+  stack (`some_armor`, `adj_abon`, `remove_worn_item`, `Armor_off`/
+  `Shield_off`/`Shirt_off`/`Ring_gone`, `alter_cost`/`next_shkp`/`onbill`,
+  light radius helpers), earth (+`drop_boulder_on_*`, `sokoban_guilt`,
+  `avoid_ceiling`), amnesia (+`forget`, `losespells`, `drain_weapon_skill`);
+  SPE_IDENTIFY label.
+- tutorial: dat/tut-2.lua ported (js/dat/tut-2.js); tutorial portals get
+  their destination in mktrap(). s4-06 is RNG-perfect now.
+- fuzz census: 85/102 RNG-perfect (was 84). Remaining scroll gaps: charging,
+  fire, genocide, gold/food detection, mail; potions: polymorph, object
+  detection (needs detect.c's object_detect).
+
 ## 2026-09-01 (later): spelleffects + name prompt, fuzz census
 
 Two faithful ports landed and pushed this session:

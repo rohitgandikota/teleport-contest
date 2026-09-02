@@ -1,6 +1,8 @@
 // invent.js — inventory and the look-here command.
 // C ref: src/invent.c
 
+import { Has_contents } from './obj.js';
+import { get_obj_location } from './zap.js';
 import { unpunish } from './read.js';
 import { game } from './gstate.js';
 import { read_engr_at } from './engrave.js';
@@ -278,6 +280,44 @@ function addinv_core2(obj) {
         });
     }
     return null;
+}
+
+// src/invent.c:3526 count_unpaid()
+export function count_unpaid(list) {
+    let count = 0;
+
+    for (const obj of list || []) {
+        if (obj.unpaid)
+            count++;
+        if (Has_contents(obj))
+            count += count_unpaid(obj.cobj);
+    }
+    return count;
+}
+
+// src/invent.c:3620 count_contents()
+export function count_contents(container, nested, quantity, everything, newdrop) {
+    let topc;
+    let shoppy = false;
+    let count = 0;
+
+    if (!everything && !newdrop) {
+        const cc = { x: 0, y: 0 };
+
+        for (topc = container; topc.where === OBJ_CONTAINED;
+             topc = topc.ocontainer)
+            continue;
+        if (topc.where === OBJ_FLOOR && get_obj_location(topc, cc, 0))
+            shoppy = costly_spot(cc.x, cc.y);
+    }
+    for (const otmp of container.cobj || []) {
+        if (nested && Has_contents(otmp))
+            count += count_contents(otmp, nested, quantity, everything,
+                                    newdrop);
+        if (everything || otmp.unpaid || (shoppy && !otmp.no_charge))
+            count += quantity ? otmp.quan : 1;
+    }
+    return count;
 }
 
 // src/invent.c:4037 dfeature_at(), in C's arm order: door, fountain,

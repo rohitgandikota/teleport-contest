@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (night): shop theft chain (stolen_value, check_shop_obj)
+
+shk.c `find_objowner`, `onshopbill`, `is_unpaid`, `check_credit`,
+`pacify_shk`, `rouse_shk`, `hot_pursuit` in C form (rile_shk plus the
+no_charge networking), `clear_no_charge`, `clear_no_charge_obj`,
+`clear_no_charge_pets` (setpaid's tail included), `stolen_container`,
+`stolen_value`; invent.c `count_unpaid`, `count_contents`; dothrow.c
+`check_shop_obj`, `throwit_return`, and the throwit landing tail ported from
+the C (breakage flash and messages through breakmsg/breakobj, the splash
+or plop, flooreffects, `obj_no_longer_held` (do.c), the shopkeeper's
+pick-axe snatch, snuff_candle, ship_object, container_impact_dmg,
+check_shop_obj; drop_ball for a thrown ball is still noted); dokick.c
+`container_impact_dmg`. Callers wired: impact_drop, bury_objs, revive,
+do_osshock (now async), gem_accept, the quest leader's gift, mulched
+missiles (obfree), breakobj's shop breakage with `break_seq`/`seq_peaceful`.
+- shk.c `billable` writes the resolved shopkeeper back before the on-bill
+  test and never overwrites it with null; the port did the opposite, so an
+  item already on the bill left stolen_value with no shopkeeper (NOTES).
+- the shopkeeper record was two objects (an empty mextra.eshk for ESHK()
+  beside the real shk.eshk); one object now carries both names (NOTES).
+- globby_bill_fixup and find_objowner walk shopkeepers with the list
+  convention next_shkp(mons[i+1]) (NOTES).
+- verified with `tools/gen-sessions/recipes/shop-theft-broken-potion.json`
+  (Inuvik's general store, unpaid black potion thrown into the wall: the
+  shatter, the vapors and their naming prompt, "You owe Inuvik 267
+  zorkmids for it!", then paying with no gold): RNG and all 49 screens
+  identical.
+- gated 44/44 + hang-gate; census 93/102.
+- still noted: polyuse/create_polymon (zap.c:1505-1636) including its
+  stolen_value site, throwit's drop_ball arm (ball.c), the throwit spine's
+  swallow, vertical, boomerang and throw-and-return arms.
+- next: sit.c throne effects, pray.c water_prayer, music.c play_tune (the
+  drawbridge tune), trap.c landmine hero arm, dragon_armor_handling's
+  wielding_corpse arm, Maybe_Half_Phys in the arrow and dart thitu calls,
+  remaining zap.js notes, polyuse/create_polymon, ball.c.
+
 ## 2026-09-02 (evening): dbridge.c entities, flooreffects, water/lava/erode
 
 dbridge.c is complete: `get_wall_for_db`, `create_drawbridge` (sp_lev's

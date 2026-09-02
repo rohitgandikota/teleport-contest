@@ -1,6 +1,7 @@
 // dig.js — digging.
 // C ref: src/dig.c
 
+import { stolen_value } from './shk.js';
 import { destroy_drawbridge } from './dbridge.js';
 import { del_engr_at, cant_reach_floor, u_wipe_engr } from './engrave.js';
 import { reset_utrap, set_utrap, deltrap, dotrap, seetrap, feeltrap,
@@ -2103,9 +2104,7 @@ export async function bury_objs(x, y) {
 
     for (const otmp of level_objects_pile(x, y)) {
         if (costly && !game.context?.mon_moving) {
-            /* loss += stolen_value(otmp, x, y, shkp->mpeaceful, TRUE):
-               the shop theft accounting is not ported yet */
-            note_unported_dig('bury_objs:stolen_value');
+            loss += await stolen_value(otmp, x, y, !!shkp.mpeaceful, true);
             if (otmp.oclass !== OCLASSES.COIN_CLASS)
                 otmp.no_charge = 1;
         }

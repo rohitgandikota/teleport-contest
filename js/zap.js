@@ -5,6 +5,7 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { stolen_value, addtobill } from './shk.js';
 import { container_weight } from './mkobj.js';
 import { free_oname } from './do_name.js';
 import { OBJ_AT } from './const.js';
@@ -1074,11 +1075,9 @@ export async function revive(corpse, by_hero) {
                 await pline('A corpse is resuscitated.');
             }
             /* don't charge for shopkeeper's own corpse if we just revived him */
-            if (shkp && mtmp !== shkp) {
-                /* stolen_value(corpse, x, y, shkp->mpeaceful, FALSE): the
-                   shop theft accounting is not ported yet */
-                note_unported_zap('revive:stolen_value');
-            }
+            if (shkp && mtmp !== shkp)
+                await stolen_value(corpse, x, y, !!shkp.mpeaceful,
+                                   false);
             /* [we don't give any comparable message about the corpse for
                the !by_hero case because caller might have already done so] */
         }
@@ -1840,7 +1839,7 @@ let poly_zapped = -1;
 // src/zap.c:1637 do_osshock() — object is deleted by the polymorph shock;
 // some of a stack may survive via splitobj, and some material may
 // metamorphose into a golem later (create_polymon via poly_zapped).
-export function do_osshock(obj) {
+export async function do_osshock(obj) {
     obj_zapped = true;
 
     if (poly_zapped < 0) {
@@ -1858,7 +1857,15 @@ export function do_osshock(obj) {
         obj = splitobj(obj, rnd(obj.quan - 1));
     }
 
-    /* costly_spot billing — shops unported, recorded in delobj path */
+    /* appropriately add damage to bill */
+    if (costly_spot(obj.ox, obj.oy)) {
+        if (game.u.ushops)
+            await addtobill(obj, false, false, false);
+        else
+            await stolen_value(obj, obj.ox, obj.oy, false, false);
+    }
+
+    /* zap the object */
     delobj(obj);
 }
 
@@ -2157,7 +2164,7 @@ export async function bhito(obj, otmp) {
             if (obj_shudders(obj)) {
                 if (cansee(obj.ox, obj.oy))
                     learn_it = true;
-                do_osshock(obj);
+                await do_osshock(obj);
                 break;
             }
             obj = await poly_obj(obj, ONAMES.STRANGE_OBJECT);

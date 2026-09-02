@@ -4435,3 +4435,33 @@ killer.format and killer.name ahead of a possible death must guard: clear
 only `if (game.killer)`, and create `{ format: 0, name: '' }` before
 setting. dbridge's e_died and nokiller threw a TypeError inside
 open_drawbridge on the first castle probe.
+
+## billable() hands the shopkeeper back before the on-bill test
+
+shk.c billable(&shkp, obj, roomno, reset) stores the resolved shopkeeper in
+*shkpp as soon as shop_keeper()/inhishop() succeed, then returns FALSE for
+an object that is already on the bill. stolen_value() relies on that: it
+calls billable with a null shopkeeper, gets FALSE for billed goods, and
+then uses the written-back shopkeeper to find the bill entry. The port
+wrote shkpp.shkp only at the end (and wrote null when the object was not
+billable), so a stolen unpaid potion produced no "You owe" and no debit.
+When a C function takes an in/out pointer, copy the write timing, not just
+the value.
+
+## The shopkeeper record must be ONE object
+
+makemon(MM_ESHK) created an empty mextra.eshk (what const.js ESHK() reads)
+and shknam.js then built the real record on shk.eshk. Code using ESHK()
+saw no shoproom, credit or bill; code using shkp.eshk saw everything, and
+46 sites hedged with `shkp.eshk || ESHK(shkp)`. shknam.js now assigns the
+same object to both names. Anything that creates a shopkeeper elsewhere
+(restore, polymorph recovery) must keep that invariant.
+
+## next_shkp() in the port is inclusive and list-based
+
+C's next_shkp(shkp, withbill) starts at its argument and callers advance
+with shkp->nmon. The port's next_shkp(shkp, withbill) is the same
+(inclusive), but there is no nmon: advance with
+`next_shkp(mons[mons.indexOf(shkp) + 1] ?? null, true)` and start with
+`next_shkp(mons[0] ?? null, true)`. `next_shkp(null, ...)` returns null,
+so a C-style `for (shkp = next_shkp(NULL...` never iterates.

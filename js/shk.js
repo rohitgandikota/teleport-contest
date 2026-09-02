@@ -6,6 +6,10 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { OBJ_BURIED } from './const.js';
+import { You } from './pline.js';
+import { angry_guards } from './mon.js';
+import { count_unpaid, count_contents } from './invent.js';
 import { pline_The } from './pline.js';
 import { obj_typename } from './objnam.js';
 import { upstart } from './do_name.js';
@@ -91,29 +95,15 @@ export function hot_pursuit(shkp) {
     if (!shkp.isshk)
         return;
 
-    const eshk = shkp.eshk || ESHK(shkp);
-    if (eshk) {
-        shkp.mpeaceful = 0;
-        if (!eshk.surcharge) {
-            eshk.surcharge = true;
-            for (const bp of eshk.bill_p || [])
-                bp.price += Math.trunc((bp.price + 2) / 3);
-        }
-        eshk.customer = game.plname || '';
-        eshk.following = 1;
-    }
+    rile_shk(shkp);
+    ESHK(shkp).customer = game.plname || '';
+    ESHK(shkp).following = 1;
 
-    const clear = (objects) => {
-        for (const obj of objects || []) {
-            obj.no_charge = 0;
-            clear(obj.cobj);
-        }
-    };
-    clear(game.level?.objects);
-    for (const mon of game.level?.monsters || []) {
-        if (mon.mtame)
-            clear(mon.minvent);
-    }
+    /* shopkeeper networking:  clear obj->no_charge for all obj on the
+       floor of this level (including inside containers on floor), even
+       those that are in other shopkeepers' shops */
+    clear_no_charge(null, game.level?.objects);
+    clear_no_charge_pets(shkp);
 }
 
 function note_unported_shk(what) {
@@ -231,6 +221,46 @@ export function shop_keeper(roomno) {
     if (!shkp.mpeaceful && !(shkp.eshk || ESHK(shkp)).surcharge)
         note_unported_shk('shop_keeper:rile_shk');
     return shkp;
+}
+
+// src/shk.c:1084 find_objowner()
+export function find_objowner(obj, x, y) {
+    let shkp, deflt_shkp = null;
+
+    if (obj.where === OBJ_ONBILL) {
+        /* used up item; bill obj coordinates are useless and so are x,y */
+        const mons = game.level?.monsters || [];
+        for (shkp = next_shkp(mons[0] ?? null, true); shkp;
+             shkp = next_shkp(mons[mons.indexOf(shkp) + 1] ?? null, true))
+            if (onshopbill(obj, shkp, true))
+                return shkp;
+    } else {
+        const where = in_rooms(x, y, SHOPBASE) || '';
+
+        /* conceptually object could be inside up to 4 rooms simultaneously;
+           in practice it will usually be one room but can sometimes be two;
+           check shk and bill for each room rather than just the first;
+           fallback to the first shk if obj isn't on the relevant bill(s) */
+        for (const roomindx of where)
+            if ((shkp = shop_keeper(roomindx.charCodeAt(0))) != null) {
+                if (onshopbill(obj, shkp, true))
+                    return shkp;
+                if (!deflt_shkp)
+                    deflt_shkp = shkp;
+            }
+    }
+    return deflt_shkp;
+}
+
+// src/shk.c:1160 onshopbill()
+export function onshopbill(obj, shkp, silent) {
+    return onbill(obj, shkp, silent) ? true : false;
+}
+
+// src/shk.c:1167 is_unpaid()
+export function is_unpaid(obj) {
+    return (obj.unpaid
+            || (Has_contents(obj) && count_unpaid(obj.cobj))) ? true : false;
 }
 
 // src/shk.c:723 deserted_shop(): report an absent shopkeeper, distinguishing
@@ -381,6 +411,69 @@ export function clear_unpaid_obj(shkp, otmp) {
         otmp.unpaid = 0;
 }
 
+// src/shk.c:329 clear_no_charge_obj()
+function clear_no_charge_obj(shkp, otmp) {
+    if (Has_contents(otmp))
+        clear_no_charge(shkp, otmp.cobj);
+    if (otmp.no_charge) {
+        let rm_shkp;
+        let rno;
+        const cc = { x: 0, y: 0 };
+
+        /*
+         * Clear no_charge if
+         *  shkp is Null (clear all items on specified list)
+         *  or not located somewhere that we expect no_charge (which is
+         *    floor [of shop] or inside container [on shop floor])
+         *  or can't find object's map coordinates (should never happen
+         *    for floor or contained; conceivable if on shop bill somehow
+         *    but would have failed the floor-or-contained test since
+         *    containers get emptied before going onto bill)
+         *  or fails location sanity check (should always be good when
+         *    location successfully found)
+         *  or not inside any room
+         *  or the room isn't a shop
+         *  or the shop has no shopkeeper (deserted)
+         *  or shopkeeper is the current one (to avoid clearing no_charge
+         *    for items located in some rival's shop).
+         *
+         * no_charge items in a shop which is only temporarily deserted
+         * become owned by the shop now and will be for-sale once the shk
+         * returns.
+         */
+        if (!shkp
+            || (otmp.where !== OBJ_FLOOR
+                && otmp.where !== OBJ_CONTAINED
+                && otmp.where !== OBJ_BURIED)
+            /* C passes the OBJ_* location values as CONTAINED_TOO|BURIED_TOO
+               flag bits; the port keeps that quirk */
+            || !get_obj_location(otmp, cc, OBJ_CONTAINED | OBJ_BURIED)
+            || !isok(cc.x, cc.y)
+            || (rno = game.level.at(cc.x, cc.y).roomno) < ROOMOFFSET
+            || !IS_SHOP(rno - ROOMOFFSET)
+            || (rm_shkp = (game.level?.rooms?.[rno - ROOMOFFSET]
+                           || (game.level?.subrooms || [])
+                               .find(r => r.roomnoidx === rno - ROOMOFFSET))
+                          ?.resident) == null
+            || rm_shkp === shkp)
+            otmp.no_charge = 0;
+    }
+}
+
+// src/shk.c:377 clear_no_charge()
+function clear_no_charge(shkp, list) {
+    for (const otmp of list || [])
+        /* handle first element of list and any contents it may have */
+        clear_no_charge_obj(shkp, otmp);
+}
+
+// src/shk.c:389 clear_no_charge_pets()
+function clear_no_charge_pets(shkp) {
+    for (const mtmp of game.level?.monsters || [])
+        if (mtmp.mtame && mtmp.minvent)
+            clear_no_charge(shkp, mtmp.minvent);
+}
+
 // src/shk.c:400 setpaid()
 function setpaid(shkp) {
     clear_unpaid(shkp, game.invent);
@@ -398,6 +491,10 @@ function setpaid(shkp) {
         if (mtmp.minvent)
             clear_unpaid(shkp, mtmp.minvent);
 
+    /* clear obj->no_charge for all obj in shkp's shop */
+    clear_no_charge(shkp, game.level?.objects);
+    clear_no_charge(shkp, game.level?.buriedobjs);
+
     const eshk = shkp.eshk || ESHK(shkp);
     eshk.bill_p = [];
     eshk.billct = 0;
@@ -406,9 +503,27 @@ function setpaid(shkp) {
     eshk.loan = 0;
 }
 
-// src/shk.c:1461 make_angry_shk(). Pending transactions become robbery
+// src/shk.c:1278 check_credit()
+async function check_credit(tmp, shkp) {
+    const credit = ESHK(shkp).credit;
+
+    if (credit === 0) {
+        ; /* nothing to do; just 'return tmp;' */
+    } else if (credit >= tmp) {
+        await pline_The('price is deducted from your credit.');
+        ESHK(shkp).credit -= tmp;
+        tmp = 0;
+    } else {
+        await pline_The('price is partially covered by your credit.');
+        ESHK(shkp).credit = 0;
+        tmp -= credit;
+    }
+    return tmp;
+}
+
+// src/shk.c:1470 make_angry_shk(). Pending transactions become robbery
 // before the keeper starts pursuing the customer.
-export async function make_angry_shk(shkp) {
+export async function make_angry_shk(shkp, ox, oy) {
     const eshk = shkp.eshk || ESHK(shkp);
     if (eshk.billct || eshk.debit || eshk.loan || eshk.credit) {
         eshk.robbed = (eshk.robbed || 0) + add_up_bill(shkp)
@@ -1354,12 +1469,156 @@ function sub_one_frombill(obj, shkp) {
     eshk.billct = bill.length;
 }
 
-function subfrombill(obj, shkp) {
+export function subfrombill(obj, shkp) {
     sub_one_frombill(obj, shkp);
     for (const contained of obj.cobj || []) {
         if (contained.oclass !== OCLASSES.COIN_CLASS)
             subfrombill(contained, shkp);
     }
+}
+
+// src/shk.c:3713 stolen_container()
+function stolen_container(obj, shkp, price, ininv) {
+    let bp;
+    let billamt;
+
+    /* the price of contained objects; caller handles top container */
+    for (const otmp of obj.cobj || []) {
+        if (otmp.oclass === OCLASSES.COIN_CLASS)
+            continue;
+        billamt = 0;
+        if (!billable({ shkp }, otmp, ESHK(shkp).shoproom, true)) {
+            /* billable() returns false for objects already on bill */
+            if ((bp = onbill(otmp, shkp, false)) == null)
+                continue;
+            /* this assumes that we're being called by stolen_value()
+               (or by a recursive call to self on behalf of it) where
+               the cost of this object is about to be added to shop
+               debt in place of having it remain on the current bill */
+            billamt = bp.bquan * bp.price;
+            sub_one_frombill(otmp, shkp); /* avoid double billing */
+        }
+
+        if (billamt)
+            price += billamt;
+        else if (ininv ? otmp.unpaid : !otmp.no_charge)
+            price += get_pricing_units(otmp) * get_cost(otmp, shkp);
+
+        if (Has_contents(otmp))
+            price = stolen_container(otmp, shkp, price, ininv);
+    }
+
+    return price;
+}
+
+// src/shk.c:3754 stolen_value()
+export async function stolen_value(obj, x, y, peaceful, silent) {
+    let value = 0, gvalue = 0, billamt = 0;
+    let roomno;
+    let bp = null;
+    let shkp;
+    let was_unpaid;
+    let c_count = 0, u_count = 0;
+
+    if ((shkp = find_objowner(obj, x, y)) != null) {
+        roomno = ESHK(shkp).shoproom;
+    } else {
+        roomno = (in_rooms(x, y, SHOPBASE) || '\0').charCodeAt(0);
+    }
+
+    /* gather information for message(s) prior to manipulating bill */
+    was_unpaid = obj.unpaid ? true : false;
+    if (Has_contents(obj)) {
+        c_count = count_contents(obj, true, false, true, false);
+        u_count = count_contents(obj, true, false, false, false);
+    }
+
+    const shkpp = { shkp: null };
+    if (!billable(shkpp, obj, roomno, true)) {
+        shkp = shkpp.shkp;
+        /* things already on the bill yield a not-billable result, so
+           we need to check bill before deciding that shk doesn't care */
+        if ((bp = onbill(obj, shkp, false)) != null) {
+            /* shk does care; take obj off bill to avoid double billing */
+            billamt = bp.bquan * bp.price;
+            sub_one_frombill(obj, shkp);
+        }
+        if (!bp && !u_count)
+            return 0;
+    }
+    shkp = shkpp.shkp;
+
+    if (obj.oclass === OCLASSES.COIN_CLASS) {
+        gvalue += obj.quan;
+    } else {
+        if (billamt)
+            value += billamt;
+        else if (!obj.no_charge)
+            value += get_pricing_units(obj) * get_cost(obj, shkp);
+
+        if (Has_contents(obj)) {
+            const ininv =
+                (obj.where === OBJ_INVENT || obj.where === OBJ_FREE);
+
+            value += stolen_container(obj, shkp, 0, ininv);
+            if (!ininv)
+                gvalue += contained_gold(obj, true);
+        }
+    }
+
+    if (gvalue + value === 0)
+        return 0;
+
+    value += gvalue;
+
+    if (peaceful) {
+        const credit_use = !!ESHK(shkp).credit;
+
+        value = await check_credit(value, shkp);
+        /* 'peaceful' affects general treatment, but doesn't affect
+         * the fact that other code expects that all charges after the
+         * shopkeeper is angry are included in robbed, not debit */
+        if (!shkp.mpeaceful /* ANGRY(shkp) */)
+            ESHK(shkp).robbed += value;
+        else
+            ESHK(shkp).debit += value;
+
+        if (!silent) {
+            let buf;
+            let still = '';
+
+            if (credit_use) {
+                if (ESHK(shkp).credit) {
+                    await You(`have ${ESHK(shkp).credit} ${currency(ESHK(shkp).credit)} credit remaining.`);
+                    return value;
+                } else if (!value) {
+                    await You('have no credit remaining.');
+                    return 0;
+                }
+                still = 'still ';
+            }
+            buf = `${still}owe ${shkname(shkp)} ${value} ${currency(value)}`;
+            if (u_count) /* u_count > 0 implies Has_contents(obj) */
+                buf += ` for ${was_unpaid ? 'it and ' : ''}${(c_count > u_count) ? 'some of ' : ''}its contents`;
+            else if (obj.oclass !== OCLASSES.COIN_CLASS)
+                buf += ` for ${(obj.quan > 1) ? 'them' : 'it'}`;
+
+            await You(`${buf}!`); /* "You owe <shk> N zorkmids for it!" */
+        }
+    } else {
+        ESHK(shkp).robbed += value;
+
+        if (!silent) {
+            if (canseemon(shkp)) {
+                await Norep(`${Shknam(shkp)} booms: "${game.plname}, you are a thief!"`);
+            } else if (!Deaf()) {
+                await Norep('You hear a scream, "Thief!"');  /* Deaf-aware */
+            }
+        }
+        hot_pursuit(shkp);
+        await angry_guards(false);
+    }
+    return value;
 }
 
 // src/shk.c:3623 splitbill() -- give the split child its own bill entry while
@@ -1549,7 +1808,7 @@ async function money2u(mon, amount) {
     return amount;
 }
 
-async function donate_gold(amount, shkp, selling) {
+export async function donate_gold(amount, shkp, selling) {
     const eshk = shkp.eshk || ESHK(shkp);
     if ((eshk.debit || 0) >= amount) {
         if (eshk.loan)
@@ -1859,6 +2118,19 @@ async function pay_shk(amount, shkp) {
     (game.disp ||= {}).botl = true;
 }
 
+// src/shk.c:1344 pacify_shk()
+export function pacify_shk(shkp, clear_surcharge) {
+    shkp.mpeaceful = 1; /* make peaceful */
+    if (clear_surcharge && ESHK(shkp).surcharge) {
+        ESHK(shkp).surcharge = false;
+        for (const bp of ESHK(shkp).bill_p || []) {
+            const reduction = Math.trunc((bp.price + 3) / 4);
+            bp.price -= reduction; /* undo 33% increase */
+        }
+    }
+}
+
+// src/shk.c:1362 rile_shk()
 function rile_shk(shkp) {
     const eshk = shkp.eshk || ESHK(shkp);
     shkp.mpeaceful = 0;
@@ -1866,6 +2138,18 @@ function rile_shk(shkp) {
         eshk.surcharge = true;
         for (const bp of eshk.bill_p || [])
             bp.price += Math.trunc((bp.price + 2) / 3);
+    }
+}
+
+// src/shk.c:1381 rouse_shk()
+export async function rouse_shk(shkp, verbosely) {
+    if (helpless(shkp)) {
+        /* greed induced recovery... */
+        if (verbosely && canspotmon(shkp))
+            await pline(`${Shknam(shkp)} ${shkp.msleeping ? 'wakes up' : 'can move again'}.`);
+        shkp.msleeping = 0;
+        shkp.mfrozen = 0;
+        shkp.mcanmove = 1;
     }
 }
 
@@ -2787,6 +3071,7 @@ export function billable(shkpp, obj, roomno, reset_nocharge) {
         shkp = shop_keeper(roomno);
         if (!shkp || !inhishop(shkp))
             return false;
+        shkpp.shkp = shkp;
     }
     /* perhaps we threw it away earlier */
     if (onbill(obj, shkp, false)
@@ -2805,7 +3090,6 @@ export function billable(shkpp, obj, roomno, reset_nocharge) {
                 picked_container(obj); /* clear no_charge */
         }
     }
-    shkpp.shkp = shkp;
     return shkp ? true : false;
 }
 
@@ -2955,8 +3239,9 @@ export async function globby_bill_fixup(obj_absorber, obj_absorbed) {
     }
     if (obj_absorber.unpaid) {
         /* look for a shopkeeper who owns this object */
-        for (shkp = next_shkp(null, true); shkp;
-             shkp = next_shkp(shkp, true))
+        const mons = game.level?.monsters || [];
+        for (shkp = next_shkp(mons[0] ?? null, true); shkp;
+             shkp = next_shkp(mons[mons.indexOf(shkp) + 1] ?? null, true))
             if (onbill(obj_absorber, shkp, true))
                 break;
     } else if (obj_absorbed.unpaid) {

@@ -1,3 +1,6 @@
+import { Has_contents } from './obj.js';
+import { COST_DEGRD } from './const.js';
+import { costly_alteration } from './shk.js';
 import { distu } from './hacklib.js';
 import { Tobjnam } from './objnam.js';
 import { breakobj } from './dothrow.js';
@@ -1845,6 +1848,33 @@ export async function dodrop() {
         reset_occupations();
 
     return result;
+}
+
+// src/do.c:893 obj_no_longer_held()
+export async function obj_no_longer_held(obj) {
+    if (!obj) {
+        return;
+    } else if (Has_contents(obj)) {
+        for (const contents of obj.cobj || [])
+            await obj_no_longer_held(contents);
+    }
+    switch (obj.otyp) {
+    case ONAMES.CRYSKNIFE:
+        /* Normal crysknife reverts to worm tooth when not held by hero
+         * or monster; fixed crysknife has only 10% chance of reverting.
+         * When a stack of the latter is involved, it could be worthwhile
+         * to give each individual crysknife its own separate 10% chance,
+         * but we aren't in any position to handle stack splitting here.
+         */
+        if (!obj.oerodeproof || !rn2(10)) {
+            /* if monsters aren't moving, assume player is responsible */
+            if (!game.context?.mon_moving && !game.program_state_gameover)
+                await costly_alteration(obj, COST_DEGRD);
+            obj.otyp = ONAMES.WORM_TOOTH;
+            obj.oerodeproof = 0;
+        }
+        break;
+    }
 }
 
 // src/do.c:924 doddrop() and :980 menu_drop(), the 'D' command.

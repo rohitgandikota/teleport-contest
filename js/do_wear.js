@@ -1227,7 +1227,7 @@ const PASSIVE_RING_TYPES = new Set([
     ONAMES.MEAT_RING,
 ]);
 
-async function Ring_on(obj) {
+export async function Ring_on(obj) {
     const ringmask = W_RINGL | W_RINGR;
     const prop = PROP_KEYS[objects[obj.otyp].oc_oprop];
     let oldprop = prop ? (game.u.uprops?.[prop] || 0) : 0;
@@ -1366,7 +1366,7 @@ async function Ring_off_or_gone(obj, gone) {
 }
 
 // src/do_wear.c:1449 Ring_off()
-async function Ring_off(obj) {
+export async function Ring_off(obj) {
     await Ring_off_or_gone(obj, false);
 }
 

@@ -74,6 +74,13 @@ import { mon_nam, Monnam } from './do_name.js';
 import { closed_door } from './cmd.js';
 import { has_ceiling, ceiling, avoid_ceiling } from './dungeon.js';
 import { sokoban_guilt } from './trap.js';
+import { d } from './rng.js';
+import { end_burn } from './timeout.js';
+import { Tobjnam } from './objnam.js';
+import { is_weptool } from './mkobj.js';
+import { GETOBJ_ALLOWCNT } from './invent.js';
+import { GETOBJ_SUGGEST, GETOBJ_DOWNPLAY, GETOBJ_EXCLUDE, GETOBJ_EXCLUDE_SELECTABLE, LEFT_RING, RIGHT_RING, COST_UNCHRG, NH_BLUE, NH_WHITE, NH_AMBER, NH_LIGHT_BLUE, nothing_happens } from './const.js';
+import { Ring_on, Ring_off, Ring_gone } from './do_wear.js';
 import { useup, identify_pack, update_inventory } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
@@ -217,6 +224,430 @@ export function learnscroll(sobj) {
 // magic mapping is live; every other scroll records with its otyp so the
 // gap is visible per type. Returns true when the scroll was already used
 // up by its own arm.
+// src/read.c:652 stripspe() — a cursed recharge drains the charges.
+async function stripspe(obj) {
+    if (obj.blessed || obj.spe <= 0) {
+        await pline(nothing_happens);
+    } else {
+        /* order matters: message, shop handling, actual transformation */
+        await pline(`${Yobjnam2(obj, 'vibrate')} briefly.`);
+        await costly_alteration(obj, COST_UNCHRG);
+        obj.spe = 0;
+        if (obj.otyp === ONAMES.OIL_LAMP || obj.otyp === ONAMES.BRASS_LANTERN)
+            obj.age = 0;
+    }
+}
+
+// src/read.c:667 p_glow1()
+async function p_glow1(otmp) {
+    await pline(`${Yobjnam2(otmp, Blind() ? 'vibrate' : 'glow')} briefly.`);
+}
+
+// src/read.c:673 p_glow2()
+async function p_glow2(otmp, color) {
+    await pline(`${Yobjnam2(otmp, Blind() ? 'vibrate' : 'glow')}${
+        Blind() ? '' : ' '}${Blind() ? '' : hcolor(color)} for a moment.`);
+}
+
+// src/read.c:680 p_glow3()
+async function p_glow3(otmp, color) {
+    await pline(`${Yobjnam2(otmp, Blind() ? 'vibrate' : 'glow')} feebly${
+        Blind() ? '' : ' '}${Blind() ? '' : hcolor(color)} for a moment.`);
+}
+
+// src/read.c:689 charge_ok() — getobj callback for charging.
+function charge_ok(obj) {
+    if (!obj)
+        return GETOBJ_EXCLUDE;
+
+    if (obj.oclass === OCLASSES.WAND_CLASS)
+        return GETOBJ_SUGGEST;
+    /* known charged rings */
+    if (obj.oclass === OCLASSES.RING_CLASS && game.objects[obj.otyp].oc_charged
+        && obj.dknown && game.objects[obj.otyp].oc_name_known)
+        return GETOBJ_SUGGEST;
+
+    if (is_weptool(obj, game.objects)) /* specific check before general tools */
+        return GETOBJ_EXCLUDE;
+    if (obj.oclass === OCLASSES.TOOL_CLASS) {
+        /* suggest tools that aren't oc_charged but can be recharged */
+        if (obj.otyp === ONAMES.BRASS_LANTERN
+            || (obj.otyp === ONAMES.OIL_LAMP)
+            || (obj.otyp === ONAMES.MAGIC_LAMP
+                && !game.objects[ONAMES.MAGIC_LAMP].oc_name_known)) {
+            return GETOBJ_SUGGEST;
+        }
+        /* suggest known charged tools; downplay unknown ones so that a
+           player can't use the charging prompt to glean information
+           (e.g. revealing if an unidentified 'flute' is magic or not) */
+        if (game.objects[obj.otyp].oc_charged) {
+            return (obj.dknown && game.objects[obj.otyp].oc_name_known)
+                     ? GETOBJ_SUGGEST : GETOBJ_DOWNPLAY;
+        }
+        return GETOBJ_EXCLUDE;
+    }
+    /* why are weapons/armor considered charged anyway?
+       make them selectable even so for "feeling of loss" message */
+    return GETOBJ_EXCLUDE_SELECTABLE;
+}
+
+// src/read.c:2414 wand_explode() — a wand blows up in the hero's hands.
+async function wand_explode(obj, chg /* recharging */) {
+    const expl = !chg ? 'suddenly' : 'vibrates violently and';
+    let dmg, n, k;
+
+    /* number of damage dice */
+    if (!chg)
+        chg = 2; /* zap/engrave adjustment */
+    n = obj.spe + chg;
+    if (n < 2)
+        n = 2; /* arbitrary minimum */
+    /* size of damage dice */
+    switch (obj.otyp) {
+    case ONAMES.WAN_WISHING:
+        k = 12;
+        break;
+    case ONAMES.WAN_CANCELLATION:
+    case ONAMES.WAN_DEATH:
+    case ONAMES.WAN_POLYMORPH:
+    case ONAMES.WAN_UNDEAD_TURNING:
+        k = 10;
+        break;
+    case ONAMES.WAN_COLD:
+    case ONAMES.WAN_FIRE:
+    case ONAMES.WAN_LIGHTNING:
+    case ONAMES.WAN_MAGIC_MISSILE:
+        k = 8;
+        break;
+    case ONAMES.WAN_NOTHING:
+        k = 4;
+        break;
+    default:
+        k = 6;
+        break;
+    }
+    /* inflict damage and destroy the wand */
+    dmg = d(n, k);
+    obj.in_use = true; /* in case losehp() is fatal (or --More--^C) */
+    await pline(`${Yname2(obj)} ${expl} explodes!`);
+    if (game.u.uprops?.HALF_PHDAM)
+        dmg = Math.trunc((dmg + 1) / 2);   /* Maybe_Half_Phys */
+    await losehp(dmg, 'exploding wand', KILLED_BY_AN);
+    useup(obj);
+    /* obscure side-effect */
+    exercise(A_STR, false);
+}
+
+// src/read.c:729 recharge() — apply a scroll of charging to obj.
+async function recharge(obj, curse_bless) {
+    const u = game.u;
+    let n;
+    const is_cursed = curse_bless < 0;
+    const is_blessed = curse_bless > 0;
+
+    if (obj.oclass === OCLASSES.WAND_CLASS) {
+        const lim = (obj.otyp === ONAMES.WAN_WISHING)
+                      ? 1
+                      : (game.objects[obj.otyp].oc_dir !== NODIR) ? 8 : 15;
+
+        /* undo any prior cancellation, even when is_cursed */
+        if (obj.spe === -1)
+            obj.spe = 0;
+
+        /*
+         * Recharging might cause wands to explode.
+         *      v = number of previous recharges
+         *            v = percentage chance to explode on this attempt
+         *                    v = cumulative odds for exploding
+         *      0 :   0       0
+         *      1 :   0.29    0.29
+         *      2 :   2.33    2.62
+         *      3 :   7.87   10.28
+         *      4 :  18.66   27.02
+         *      5 :  36.44   53.62
+         *      6 :  62.97   82.83
+         *      7 : 100     100
+         */
+        n = obj.recharged | 0;
+        if (n > 0 && (obj.otyp === ONAMES.WAN_WISHING
+                      || (n * n * n > rn2(7 * 7 * 7)))) { /* recharge_limit */
+            await wand_explode(obj, rnd(lim));
+            return;
+        }
+        /* didn't explode, so increment the recharge count */
+        obj.recharged = n + 1;
+
+        /* now handle the actual recharging */
+        if (is_cursed) {
+            await stripspe(obj);
+        } else {
+            n = (lim === 1) ? 1 : rn1(5, lim + 1 - 5);
+            if (!is_blessed)
+                n = rnd(n);
+
+            if (obj.spe < n)
+                obj.spe = n;
+            else
+                obj.spe++;
+            if (obj.otyp === ONAMES.WAN_WISHING && obj.spe > 3) {
+                /* wand of wishing exploding with too many charges is
+                   currently unreachable but left in case the rules for
+                   wands of wishing change in future */
+                await wand_explode(obj, 1);
+                return;
+            }
+            if (lim === 1)
+                await p_glow3(obj, NH_BLUE);
+            else if (obj.spe >= lim)
+                await p_glow2(obj, NH_BLUE);
+            else
+                await p_glow1(obj);
+            /* [shop price doesn't vary by charge count] */
+        }
+
+    } else if (obj.oclass === OCLASSES.RING_CLASS
+               && game.objects[obj.otyp].oc_charged) {
+        /* charging does not affect ring's curse/bless status */
+        let s = is_blessed ? rnd(3) : is_cursed ? -rnd(2) : 1;
+        const is_on = (obj === u.uleft || obj === u.uright);
+
+        /* destruction depends on current state, not adjustment */
+        if (obj.spe > rn2(7) || obj.spe <= -5) {
+            await pline(`${Yobjnam2(obj, 'pulsate')} momentarily, then ${
+                otense(obj, 'explode')}!`);
+            if (is_on)
+                await Ring_gone(obj);
+            s = rnd(3 * Math.abs(obj.spe)); /* amount of damage */
+            useup(obj), obj = null;
+            if (u.uprops?.HALF_PHDAM)
+                s = Math.trunc((s + 1) / 2);   /* Maybe_Half_Phys */
+            await losehp(s, 'exploding ring', KILLED_BY_AN);
+        } else {
+            const mask = is_on ? (obj === u.uleft ? LEFT_RING : RIGHT_RING) : 0;
+
+            await pline(`${Yname2(obj)} spins ${s < 0 ? 'counter' : ''}clockwise for a moment.`);
+            if (s < 0)
+                await costly_alteration(obj, COST_DECHNT);
+            /* cause attributes and/or properties to be updated */
+            if (is_on)
+                await Ring_off(obj);
+            obj.spe += s; /* update the ring while it's off */
+            if (is_on)
+                setworn(obj, mask), await Ring_on(obj);
+            /* oartifact: if a touch-sensitive artifact ring is
+               ever created the above will need to be revised  */
+            if (s > 0 && obj.unpaid)
+                alter_cost(obj, 0);
+        }
+
+    } else if (obj.oclass === OCLASSES.TOOL_CLASS) {
+        const rechrg = obj.recharged | 0;
+
+        if (game.objects[obj.otyp].oc_charged) {
+            /* tools don't have a limit, but the counter used does */
+            if (rechrg < 7) /* recharge_limit */
+                obj.recharged++;
+        }
+        let not_chargable = false;
+        switch (obj.otyp) {
+        case ONAMES.BELL_OF_OPENING:
+            if (is_cursed)
+                await stripspe(obj);
+            else if (is_blessed)
+                obj.spe += rnd(3);
+            else
+                obj.spe += 1;
+            if (obj.spe > 5)
+                obj.spe = 5;
+            break;
+        case ONAMES.MAGIC_MARKER:
+        case ONAMES.TINNING_KIT:
+        case ONAMES.EXPENSIVE_CAMERA:
+            if (is_cursed) {
+                await stripspe(obj);
+            } else if (rechrg && obj.otyp === ONAMES.MAGIC_MARKER) {
+                /* previously recharged */
+                obj.recharged = 1; /* override increment done above */
+                if (obj.spe < 3)
+                    await Your('marker seems permanently dried out.');
+                else
+                    await pline(nothing_happens);
+            } else if (is_blessed) {
+                n = rn1(16, 15); /* 15..30 */
+                if (obj.spe + n <= 50)
+                    obj.spe = 50;
+                else if (obj.spe + n <= 75)
+                    obj.spe = 75;
+                else {
+                    const chrg = obj.spe;
+                    if ((chrg + n) > 127)
+                        obj.spe = 127;
+                    else
+                        obj.spe += n;
+                }
+                await p_glow2(obj, NH_BLUE);
+            } else {
+                n = rn1(11, 10); /* 10..20 */
+                if (obj.spe + n <= 50)
+                    obj.spe = 50;
+                else {
+                    const chrg = obj.spe;
+                    if (chrg + n > SPE_LIM)
+                        obj.spe = SPE_LIM;
+                    else
+                        obj.spe += n;
+                }
+                await p_glow2(obj, NH_WHITE);
+            }
+            break;
+        case ONAMES.OIL_LAMP:
+        case ONAMES.BRASS_LANTERN:
+            if (is_cursed) {
+                await stripspe(obj);
+                if (obj.lamplit) {
+                    if (!Blind())
+                        await pline(`${Tobjnam(obj, 'go')} out!`);
+                    await end_burn(obj, true);
+                }
+            } else if (is_blessed) {
+                obj.spe = 1;
+                obj.age = 1500;
+                await p_glow2(obj, NH_BLUE);
+            } else {
+                obj.spe = 1;
+                obj.age += 750;
+                if (obj.age > 1500)
+                    obj.age = 1500;
+                await p_glow1(obj);
+            }
+            break;
+        case ONAMES.CRYSTAL_BALL:
+            if (obj.spe === -1) /* like wands, first uncancel */
+                obj.spe = 0;
+            if (is_cursed) {
+                if (!obj.cursed) {
+                    await p_glow2(obj, NH_BLACK);
+                    curse(obj);
+                } else {
+                    await pline(`${Yobjnam2(obj, 'vibrate')} briefly.`);
+                }
+                if (obj.spe > 0)
+                    await costly_alteration(obj, COST_UNCHRG);
+                obj.spe = 0;
+            } else if (is_blessed) {
+                obj.spe = 7;
+                await p_glow2(obj, !obj.blessed ? NH_LIGHT_BLUE : NH_BLUE);
+                if (!obj.blessed)
+                    bless(obj);
+            } else {
+                if (obj.spe < 7 || obj.cursed) {
+                    n = rnd(2);
+                    obj.spe = Math.min(obj.spe + n, 7);
+                    if (!obj.cursed) {
+                        await p_glow1(obj);
+                    } else {
+                        await p_glow2(obj, NH_AMBER);
+                        uncurse(obj);
+                    }
+                } else {
+                    await pline(nothing_happens);
+                }
+            }
+            break;
+        case ONAMES.HORN_OF_PLENTY:
+        case ONAMES.BAG_OF_TRICKS:
+        case ONAMES.CAN_OF_GREASE:
+            if (is_cursed) {
+                await stripspe(obj);
+            } else if (is_blessed) {
+                if (obj.spe <= 10)
+                    obj.spe += rn1(10, 6);
+                else
+                    obj.spe += rn1(5, 6);
+                if (obj.spe > 50)
+                    obj.spe = 50;
+                await p_glow2(obj, NH_BLUE);
+            } else {
+                obj.spe += rn1(5, 2);
+                if (obj.spe > 50)
+                    obj.spe = 50;
+                await p_glow1(obj);
+            }
+            break;
+        case ONAMES.MAGIC_FLUTE:
+        case ONAMES.MAGIC_HARP:
+        case ONAMES.FROST_HORN:
+        case ONAMES.FIRE_HORN:
+        case ONAMES.DRUM_OF_EARTHQUAKE:
+            if (is_cursed) {
+                await stripspe(obj);
+            } else if (is_blessed) {
+                obj.spe += d(2, 4);
+                if (obj.spe > 20)
+                    obj.spe = 20;
+                await p_glow2(obj, NH_BLUE);
+            } else {
+                obj.spe += rnd(4);
+                if (obj.spe > 20)
+                    obj.spe = 20;
+                await p_glow1(obj);
+            }
+            break;
+        default:
+            not_chargable = true;   /* goto not_chargable */
+            break;
+        } /* switch */
+        if (not_chargable)
+            await You('have a feeling of loss.');
+
+    } else {
+        await You('have a feeling of loss.');
+    }
+    if (obj)
+        cap_spe(obj);
+}
+
+// src/read.c:1788 seffect_charging()
+async function seffect_charging(sobj) {
+    const u = game.u;
+    const otyp = sobj.otyp;
+    const sblessed = !!sobj.blessed;
+    const scursed = !!sobj.cursed;
+    const confused = !!u.uprops?.CONFUSION;
+    const already_known = (sobj.oclass === OCLASSES.SPBOOK_CLASS /* spell */
+                           || !!game.objects[otyp].oc_name_known);
+
+    if (confused) {
+        if (scursed) {
+            await You_feel('discharged.');
+            u.uen = 0;
+        } else {
+            await You_feel('charged up!');
+            u.uen += d(sblessed ? 6 : 4, 4);
+            if (u.uen > u.uenmax) /* if current energy is already at   */
+                u.uenmax = u.uen; /* or near maximum, increase maximum */
+            else
+                u.uen = u.uenmax; /* otherwise restore current to max  */
+        }
+        (game.disp ||= {}).botl = true;
+        return false;
+    }
+    /* known = TRUE; -- handled inline here */
+    if (!already_known) {
+        await pline('This is a charging scroll.');
+        learnscroll(sobj);
+    }
+    /* use it up now to prevent it from showing in the
+       getobj picklist because the "disappears" message
+       was already delivered */
+    useup(sobj);
+    /* *sobjp = 0; -- it's gone */
+    const otmp = await getobj('charge', charge_ok, GETOBJ_PROMPT | GETOBJ_ALLOWCNT);
+    if (otmp)
+        await recharge(otmp, scursed ? -1 : sblessed ? 1 : 0);
+    return true;
+}
+
 // src/read.c:1020 forget() — amnesia: lose spells, weapon skills and every
 // monster's remembered appearance.
 async function forget(howmuch) {
@@ -487,6 +918,8 @@ export async function seffects(sobj) {
     case ONAMES.SCR_STINKING_CLOUD:
         await seffect_stinking_cloud(sobj);
         break;
+    case ONAMES.SCR_CHARGING:
+        return await seffect_charging(sobj);
     case ONAMES.SCR_AMNESIA:
         await seffect_amnesia(sobj);
         break;

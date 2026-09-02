@@ -10,7 +10,7 @@ import { m_at, t_at as t_at_mon } from './mon.js';
 import { inv_cnt, crawl_destination, unmul, in_rooms,
          u_locomotion } from './hack.js';
 import { distu } from './hacklib.js';
-import { near_capacity } from './attrib.js';
+import { near_capacity, change_luck } from './attrib.js';
 import { UNENCUMBERED, SLT_ENCUMBER, KILLED_BY, DROWNING, BURNING, DISSOLVED,
          STONING, WATER, FIRE_RES, FAST, MFAST, XKILL_NOMSG,
          NO_KILLER_PREFIX, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT } from './const.js';
@@ -4049,4 +4049,12 @@ async function trapeffect_rolling_boulder_trap(mtmp, trap, trflags) {
             return Trap_Killed_Mon;
     }
     return mtmp.mtrapped ? Trap_Caught_Mon : Trap_Effect_Finished;
+}
+
+// src/trap.c:7039 sokoban_guilt() — cheating in Sokoban costs Luck.
+export function sokoban_guilt() {
+    if (In_sokoban(game.u.uz)) {
+        (game.u.uconduct ||= {}).sokocheat = (game.u.uconduct.sokocheat || 0) + 1;
+        change_luck(-1);
+    }
 }

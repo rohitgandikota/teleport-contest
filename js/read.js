@@ -56,6 +56,24 @@ import { is_shield } from './obj.js';
 import { Yobjnam2, Yname2, otense } from './objnam.js';
 import { strange_feeling } from './potion.js';
 import { NH_BLACK, NH_GOLDEN, NH_SILVER, COST_DEGRD, COST_DECHNT } from './const.js';
+import { losespells } from './spell.js';
+import { drain_weapon_skill, dmgval } from './weapon.js';
+import { ALL_SPELLS, W_ARMH, STOMACH, KILLED_BY_AN, IS_OBSTRUCTED, IS_AIR, engulfing_u, In_endgame, Is_earthlevel } from './const.js';
+import { weight, stackobj, obfree } from './invent.js';
+import { worn, hard_helmet } from './do_wear.js';
+import { wake_nearto, wakeup, killed, mondied } from './mon.js';
+import { flooreffects } from './do.js';
+import { losehp } from './hack.js';
+import { amorphous, passes_walls, noncorporeal, unsolid, mhim } from './mondata.js';
+import { Passes_walls, Deaf } from './youprop.js';
+import { map_invisible } from './display.js';
+import { mbodypart } from './polyself.js';
+import { doname, xname } from './objnam.js';
+import { s_suffix } from './hacklib.js';
+import { mon_nam, Monnam } from './do_name.js';
+import { closed_door } from './cmd.js';
+import { has_ceiling, ceiling, avoid_ceiling } from './dungeon.js';
+import { sokoban_guilt } from './trap.js';
 import { useup, identify_pack, update_inventory } from './invent.js';
 import { exercise } from './attrib.js';
 import { A_WIS } from './const.js';
@@ -199,6 +217,217 @@ export function learnscroll(sobj) {
 // magic mapping is live; every other scroll records with its otyp so the
 // gap is visible per type. Returns true when the scroll was already used
 // up by its own arm.
+// src/read.c:1020 forget() — amnesia: lose spells, weapon skills and every
+// monster's remembered appearance.
+async function forget(howmuch) {
+    const u = game.u;
+
+    if (u.uball)   /* Punished */
+        u.bc_felt = 0; /* forget felt ball&chain */
+
+    /*
+     * Forgetting spells is done in a separate section, so that the
+     * player can be told which spells are forgotten.
+     */
+    if (howmuch & ALL_SPELLS)
+        losespells();
+
+    /* Forget some skills. */
+    await drain_weapon_skill(rnd(howmuch ? 5 : 3));
+
+    /*
+     * Forgetting the map is done in a separate section since it
+     * is redone each level, and the player can see the results.
+     */
+    /* forget that any monster has ever been seen */
+    for (const mtmp of game.level?.monsters || [])
+        if (mtmp !== u.usteed && mtmp !== u.ustuck)
+            mtmp.meverseen = 0;
+    for (const mtmp of game.migrating_mons || [])
+        mtmp.meverseen = 0;
+}
+
+// src/read.c:1830 seffect_amnesia()
+async function seffect_amnesia(sobj) {
+    const sblessed = !!sobj.blessed;
+
+    game.known = true;
+    await forget((!sblessed ? ALL_SPELLS : 0));
+    if (Hallucination()) /* Ommmmmm! */
+        await Your('mind releases itself from mundane concerns.');
+    else if (String(game.plname || '').slice(0, 4).toLowerCase() === 'maud')
+        await pline('As your mind turns inward on itself, you forget everything else.');
+    else if (rn2(2))
+        await pline('Who was that Maud person anyway?');
+    else
+        await pline('Thinking of Maud you forget everything else.');
+    exercise(A_WIS, false);
+}
+
+// src/read.c:2294 drop_boulder_on_player() — a scroll of earth drops a
+// boulder (rocks when confused) on the hero.
+async function drop_boulder_on_player(confused, helmet_protects, byu,
+                                      skip_uswallow) {
+    const u = game.u;
+    let dmg;
+
+    /* hit monster if swallowed */
+    if (u.uswallow && !skip_uswallow) {
+        await drop_boulder_on_monster(u.ux, u.uy, confused, byu);
+        return;
+    }
+
+    const otmp2 = mksobj(confused ? ONAMES.ROCK : ONAMES.BOULDER, false, false);
+    if (!otmp2)
+        return;
+    otmp2.quan = confused ? rn1(5, 2) : 1;
+    otmp2.owt = weight(otmp2);
+    if (!amorphous(game.youmonst.data) && !Passes_walls()
+        && !noncorporeal(game.youmonst.data) && !unsolid(game.youmonst.data)) {
+        await You(`are hit by ${doname(otmp2)}!`);
+        dmg = Math.trunc(dmgval(otmp2, game.youmonst) * otmp2.quan);
+        const uarmh = worn(W_ARMH);
+        if (uarmh && helmet_protects) {
+            if (hard_helmet(uarmh)) {
+                await pline('Fortunately, you are wearing a hard helmet.');
+                if (dmg > 2)
+                    dmg = 2;
+            } else if (game.flags.verbose) {
+                await pline(`${Yname2(uarmh)} does not protect you.`);
+            }
+        }
+    } else
+        dmg = 0;
+    /* Must be before the losehp(), for bones files */
+    wake_nearto(u.ux, u.uy, 4 * 4);
+    if (!(await flooreffects(otmp2, u.ux, u.uy, 'fall'))) {
+        place_object(otmp2, u.ux, u.uy);
+        stackobj(otmp2);
+        newsym(u.ux, u.uy);
+    }
+    if (dmg) {
+        if (u.uprops?.HALF_PHDAM)
+            dmg = Math.trunc((dmg + 1) / 2);   /* Maybe_Half_Phys */
+        await losehp(dmg, 'scroll of earth', KILLED_BY_AN);
+    }
+}
+
+// src/read.c:2341 drop_boulder_on_monster()
+async function drop_boulder_on_monster(x, y, confused, byu) {
+    const otmp2 = mksobj(confused ? ONAMES.ROCK : ONAMES.BOULDER, false, false);
+    if (!otmp2)
+        return false; /* Shouldn't happen */
+    otmp2.quan = confused ? rn1(5, 2) : 1;
+    otmp2.owt = weight(otmp2);
+
+    /* Find the monster here (won't be player) */
+    const mtmp = m_at(x, y);
+    if (mtmp && !amorphous(mtmp.data) && !passes_walls(mtmp.data)
+        && !noncorporeal(mtmp.data) && !unsolid(mtmp.data)) {
+        const helmet = which_armor(mtmp, W_ARMH);
+        let mdmg;
+
+        if (cansee(mtmp.mx, mtmp.my)) {
+            await pline(`${Monnam(mtmp)} is hit by ${doname(otmp2)}!`);
+            if (mtmp.minvis && !canspotmon(mtmp))
+                map_invisible(mtmp.mx, mtmp.my);
+        } else if (engulfing_u(mtmp))
+            await You_hear(`something hit ${s_suffix(mon_nam(mtmp))} ${
+                mbodypart(mtmp, STOMACH)} over your ${body_part(HEAD)}!`);
+        mdmg = dmgval(otmp2, mtmp) * otmp2.quan;
+        if (helmet) {
+            if (hard_helmet(helmet)) {
+                if (canspotmon(mtmp))
+                    await pline(`Fortunately, ${mon_nam(mtmp)} is wearing a hard helmet.`);
+                else if (!Deaf())
+                    await You_hear('a clanging sound.');
+                if (mdmg > 2)
+                    mdmg = 2;
+            } else {
+                if (canspotmon(mtmp))
+                    await pline(`${Monnam(mtmp)}'s ${xname(helmet)} does not protect ${mhim(mtmp)}.`);
+            }
+        }
+        mtmp.mhp -= mdmg;
+        if (DEADMONSTER(mtmp)) {
+            if (byu) {
+                await killed(mtmp);
+            } else {
+                await pline(`${Monnam(mtmp)} is killed.`);
+                await mondied(mtmp);
+            }
+        } else {
+            await wakeup(mtmp, byu);
+        }
+        wake_nearto(x, y, 4 * 4);
+    } else if (engulfing_u(mtmp)) {
+        obfree(otmp2);
+        /* fall through to player */
+        await drop_boulder_on_player(confused, true, false, true);
+        return 1;
+    }
+    /* Drop the rock/boulder to the floor */
+    if (!(await flooreffects(otmp2, x, y, 'fall'))) {
+        place_object(otmp2, x, y);
+        stackobj(otmp2);
+        newsym(x, y); /* map the rock */
+    }
+    return true;
+}
+
+// src/read.c:1919 seffect_earth()
+async function seffect_earth(sobj) {
+    const u = game.u;
+    const sblessed = !!sobj.blessed;
+    const scursed = !!sobj.cursed;
+    const confused = !!u.uprops?.CONFUSION;
+
+    /* TODO: handle steeds */
+    if (!Is_rogue_level(u.uz) && has_ceiling(u.uz)
+        && (!In_endgame(u.uz) || Is_earthlevel(u.uz))) {
+        let x, y;
+        let nboulders = 0;
+
+        /* Identify the scroll */
+        if (u.uswallow) {
+            await You_hear('rumbling.');
+        } else {
+            if (!avoid_ceiling(u.uz)) {
+                await pline_The(`${ceiling(u.ux, u.uy)} rumbles ${
+                    sblessed ? 'around' : 'above'} you!`);
+            } else {
+                const avalanche = 'avalanche';
+                const matbuf = sblessed ? makeplural(avalanche) : an(avalanche);
+                await pline(`${upstart(matbuf)} of boulders ${
+                    vtense(matbuf, 'materialize')} ${
+                    sblessed ? 'around' : 'above'} you!`);
+            }
+        }
+        game.known = true;
+        sokoban_guilt();
+
+        /* Loop through the surrounding squares */
+        if (!scursed)
+            for (x = u.ux - 1; x <= u.ux + 1; x++) {
+                for (y = u.uy - 1; y <= u.uy + 1; y++) {
+                    /* Is this a suitable spot? */
+                    if (isok(x, y) && !closed_door(x, y)
+                        && !IS_OBSTRUCTED(game.level.at(x, y).typ)
+                        && !IS_AIR(game.level.at(x, y).typ)
+                        && (x !== u.ux || y !== u.uy)) {
+                        nboulders +=
+                            (await drop_boulder_on_monster(x, y, confused, true)) ? 1 : 0;
+                    }
+                }
+            }
+        /* Attack the player */
+        if (!sblessed) {
+            await drop_boulder_on_player(confused, !scursed, true, false);
+        } else if (!nboulders)
+            await pline('But nothing else happens.');
+    }
+}
+
 export async function seffects(sobj) {
     const otyp = sobj.otyp;
 
@@ -257,6 +486,12 @@ export async function seffects(sobj) {
         break;
     case ONAMES.SCR_STINKING_CLOUD:
         await seffect_stinking_cloud(sobj);
+        break;
+    case ONAMES.SCR_AMNESIA:
+        await seffect_amnesia(sobj);
+        break;
+    case ONAMES.SCR_EARTH:
+        await seffect_earth(sobj);
         break;
     case ONAMES.SCR_PUNISHMENT:
         await seffect_punishment(sobj);

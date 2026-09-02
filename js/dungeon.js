@@ -775,6 +775,18 @@ export function has_ceiling(lev) {
     return true;
 }
 
+// src/dungeon.c:1701 avoid_ceiling() — some levels (the quest, and levels
+// without a ceiling) should not be described as having one.
+export function avoid_ceiling(lev) {
+    /* the quest home level and its filler levels may have ceilings in
+       some parts and not others; avoid the ambiguity there by testing
+       with avoid_ceiling() and using alternative messaging that avoids
+       the term ceiling altogether there */
+    if (In_quest(lev) || !has_ceiling(lev))
+        return true;
+    return false;
+}
+
 // src/dungeon.c get_level() — turn a LOGICAL depth into a d_level.
 //
 // The player thinks in absolute depths ("level 12"); a d_level is a dungeon

@@ -10,7 +10,7 @@ import { isqrt } from './hacklib.js';
 import { is_metallic } from './obj.js';
 import { ONAMES, OCLASSES, SKILLS } from './objects_data.js';
 import { PMNAMES } from './monst_data.js';
-import { rnd, rn2, rn1, d } from './rng.js';
+import { rnd, rn2, rn1, d, rnl } from './rng.js';
 import { tty_yn_function } from './tty/topl.js';
 import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow, ATR_NONE,
@@ -1243,4 +1243,52 @@ export async function dovspell() {
         }
     }
     return ECMD_OK;
+}
+
+// src/spell.c:1763 losespells() — amnesia: forget some of the known spells.
+export function losespells() {
+    let n, nzap, i;
+
+    /* in case reading has been interrupted earlier, discard context */
+    (game.context ||= {}).spbook ||= {};
+    game.context.spbook.book = null;
+    game.context.spbook.o_id = 0;
+    /* count the number of known spells */
+    for (n = 0; n < MAXSPELL; ++n)
+        if (spellid(n) === NO_SPELL)
+            break;
+
+    /* lose anywhere from zero to all known spells;
+       if confused, use the worse of two die rolls */
+    nzap = rn2(n + 1);
+    if (game.u.uprops?.CONFUSION) {
+        i = rn2(n + 1);
+        if (i > nzap)
+            nzap = i;
+    }
+    /* good Luck might ameliorate spell loss */
+    if (nzap > 1 && !rnl(7))
+        nzap = rnd(nzap);
+
+    /*
+     * Forget 'nzap' out of 'n' known spells by setting their memory
+     * retention to zero.  Every spell has the same probability to be
+     * forgotten, even if its retention is already zero.
+     *
+     * Perhaps we should forget the corresponding book too?
+     *
+     * (3.4.3 removed spells entirely from the list, but that was
+     * unfair to the player.)
+     */
+    for (i = 0; nzap > 0; ++i) {
+        /* when nzap is small relative to the number of spells left,
+           the chance to lose spell [i] is small; as the number of
+           remaining candidates shrinks, the chance per candidate
+           gets bigger; overall, exactly nzap entries are affected */
+        if (rn2(n - i) < nzap) {
+            game.spl_book[i].sp_know = 0;   /* spellknow(i) = 0 */
+            exercise(A_WIS, false);
+            --nzap;
+        }
+    }
 }

@@ -2988,3 +2988,4 @@ export function Is_sanctum(uz) { return Lcheck(uz ?? game?.u?.uz, game?.sanctum_
 
 // include/monst.h:268 Mgender()
 export function Mgender(mon) { return mon.female ? FEMALE : MALE; }
+

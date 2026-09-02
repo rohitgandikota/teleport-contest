@@ -1,3 +1,7 @@
+import { monsndx } from './makemon.js';
+import { kill_egg } from './timeout.js';
+import { Has_contents } from './obj.js';
+import { dead_species } from './mkobj.js';
 import { LOW_PM } from './const.js';
 import { is_vampire, is_shapeshifter } from './mondata.js';
 import { can_hide_under_obj } from './monmove.js';
@@ -3668,4 +3672,59 @@ export function egg_type_from_parent(mnum, force_ordinary) {
             mnum = PMNAMES.PM_GARGOYLE;
     }
     return mnum;
+}
+
+// src/mon.c:5609 kill_eggs(); kill off any eggs of genocided monsters
+export function kill_eggs(obj_list) {
+    for (const otmp of (obj_list || [])) {
+        if (otmp.otyp === ONAMES.EGG) {
+            if (dead_species(otmp.corpsenm, true)) {
+                /*
+                 * It seems we could also just catch this when
+                 * it attempted to hatch, so we wouldn't have to
+                 * search all of the objlists.. or stop all
+                 * hatch timers based on a corpsenm.
+                 */
+                kill_egg(otmp);
+            }
+        } else if (Has_contents(otmp)) {
+            kill_eggs(otmp.cobj);
+        }
+    }
+}
+
+// src/mon.c:5639 kill_genocided_monsters(); kill all monsters of a genocided
+// species (and their eggs, everywhere)
+export async function kill_genocided_monsters() {
+    let kill_cham;
+    let mndx;
+
+    /*
+     * Called during genocide, and again upon level change.  The latter
+     * catches up with any migrating monsters as they finally arrive at
+     * their intended destinations, so possessions get deposited there.
+     *
+     * The initial genocide is what removes any level-resident monsters
+     * of the genocided species.
+     */
+    for (const mtmp of [...(game.level.monsters || [])]) {
+        if (DEADMONSTER(mtmp))
+            continue;
+        mndx = monsndx(mtmp.data);
+        kill_cham = (ismnum(mtmp.cham ?? NON_PM)
+                     && (game.mvitals[mtmp.cham].mvflags & G_GENOD));
+        if ((game.mvitals[mndx].mvflags & G_GENOD) || kill_cham) {
+            if (ismnum(mtmp.cham ?? NON_PM) && !kill_cham)
+                newcham(mtmp, null, NC_SHOW_MSG);
+            else
+                await mondead(mtmp);
+        }
+        if (mtmp.minvent)
+            kill_eggs(mtmp.minvent);
+    }
+
+    kill_eggs(game.invent);
+    kill_eggs(game.level.objects);
+    kill_eggs(game.migrating_objs);
+    kill_eggs(game.level.buriedobjs);
 }

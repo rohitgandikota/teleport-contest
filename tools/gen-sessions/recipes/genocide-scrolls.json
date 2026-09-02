@@ -1,0 +1,19 @@
+{
+  "name": "genocide-scrolls",
+  "description": "Debug Wizard reads a blessed scroll of genocide (class a, after listing the empty genocide list), an uncursed one (newts) and a cursed one (jackals arrive), then #genocided and #conduct.",
+  "coverage": [
+    "mode.debug",
+    "object.scrolls",
+    "ui.getlin",
+    "ui.more-paging",
+    "ui.menus"
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed scroll of genocide\rrn  ?\r a\r  \u0017uncursed scroll of genocide\rro newt\r \u0017cursed scroll of genocide\rrp jackal\r  #genocided\n  #conduct\n   "
+    }
+  ]
+}

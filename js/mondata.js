@@ -187,6 +187,9 @@ export function num_horns(ptr) {
 }
 
 export const has_horns = (ptr) => num_horns(ptr) > 0;
+// include/mondata.h:161 is_rider()
+export const is_rider = (ptr) => ptr.pmidx === PMNAMES.PM_DEATH
+    || ptr.pmidx === PMNAMES.PM_FAMINE || ptr.pmidx === PMNAMES.PM_PESTILENCE;
 // include/mondata.h:213 is_vampire(), :210 is_mind_flayer(), :122 can_breathe(),
 // :78 eggs_in_water(), :140 is_shapeshifter()
 export const is_vampire = (ptr) => ptr.mlet === MONSYMS.S_VAMPIRE;

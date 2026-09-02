@@ -969,6 +969,11 @@ export function attach_egg_hatch_timeout(egg, when = 0) {
         start_timer(when, TIMER_OBJECT, HATCH_EGG, egg);
 }
 
+// src/timeout.c:1009 kill_egg(); prevent an egg from hatching
+export function kill_egg(egg) {
+    stop_timer(HATCH_EGG, egg);
+}
+
 // src/timeout.c:1017 hatch_egg() -- turn a fertile egg stack into one or more
 // adjacent baby monsters, report what the hero can perceive, and consume the
 // eggs which actually hatched.

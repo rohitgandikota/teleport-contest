@@ -1,5 +1,33 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (morning): genocide (read.c) and the genocided/vanquished lists
+
+read.c `seffect_genocide` (wired into the scroll switch), `do_class_genocide`
+(the class prompt with its retry hints, '?' listing, wizard '*', the
+per-species wipe with self-genocide, vampshifter reversion and the quest
+leader/nemesis/guardian feedback filter) and `do_genocide` (REALLY/PLAYER/
+ONTHRONE arms: the type prompt, alignment adjustments, the divine refusal,
+killer and delayed killer, and the cursed "Sent in some ..." arm). mon.c
+`kill_genocided_monsters` and `kill_eggs`, timeout.c `kill_egg`, questpgr.c
+`quest_info`, monst.h `vampshifted`, mondata.h `is_rider`. insight.c
+`num_genocides`, `num_extinct`, `num_gone`, `list_genocided`, `dogenocided`,
+`vanqsort_cmp`, `set_vanq_order`, `dovanquished`, `N_times`, `vanqorders`,
+and a faithful `list_vanquished` (sort orders, class and unique headers,
+forced sort via `m #vanquished`); show_conduct now reports genocide counts.
+cmd.js dispatches #genocided/#vanquished through the C entry points.
+`flags.vanq_sortmode` starts at VANQ_MLVL_MNDX as initoptions sets it.
+- verified against the C recorder with a new recipe,
+  `tools/gen-sessions/recipes/genocide-scrolls.json` (blessed class
+  genocide of 'a' after listing the empty genocide list, uncursed genocide
+  of newts, cursed genocide sending in jackals, then #genocided and
+  #conduct): RNG and every screen identical. Its first cut caught the
+  conduct line, which had been hardwired to "never genocided".
+- still noted: sit.c throne genocide (whole throne block), the DUMPLOG
+  `putstr(0,...)` arms only matter at game end.
+- gated 44/44 + hang-gate; census 92/102.
+- next: dig.c completion (digactualhole, liquid_flow, fillholetyp), zap.c
+  revive/unturn_dead, shop theft chain, sit.c throne effects.
+
 ## 2026-09-02 (early morning): polyself.c completed (hero polymorph)
 
 `js/polyself.js` is now the C file function for function: `set_uasmon`

@@ -976,16 +976,12 @@ async function execute_extcmd(name) {
     if (name === 'wizidentify')
         return await show_wiz_identify();
     if (name === 'genocided') {
-        /* src/insight.c list_genocided() — nothing is ever genocided in a
-           recorded session, so only the empty-list line is live */
-        const { pline } = await import('./display.js');
-        await pline('No creatures have been genocided.');
-        return ECMD_OK;
+        const { dogenocided } = await import('./insight.js');
+        return await dogenocided();
     }
     if (name === 'vanquished') {
-        const { list_vanquished } = await import('./insight.js');
-        await list_vanquished('y', false);
-        return ECMD_OK;
+        const { dovanquished } = await import('./insight.js');
+        return await dovanquished();
     }
     if (name === 'conduct') {
         const { show_conduct } = await import('./insight.js');

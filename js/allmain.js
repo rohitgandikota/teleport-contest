@@ -3,6 +3,7 @@
 //
 // Real mklev.js handles level generation for screen parity.
 
+import { VANQ_MLVL_MNDX } from './const.js';
 import { POLY_NOFLAGS } from './const.js';
 import { set_uasmon } from './polyself.js';
 import { do_vicinity_map } from './detect.js';
@@ -353,6 +354,8 @@ export async function newgame() {
        level; onquest()'s Not_firsttime reads it. */
     g.u.uz0 = { dnum: 0, dlevel: 1 };
     g.flags = g.flags || {};
+    // src/options.c:3967 initoptions: flags.vanq_sortmode = VANQ_MLVL_MNDX
+    g.flags.vanq_sortmode ??= VANQ_MLVL_MNDX;
 
     // Real mklev generates the level with correct room positions
     // Structural phase consumes RNG for rooms/corridors/doors/stairs

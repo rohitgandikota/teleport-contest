@@ -4353,3 +4353,21 @@ appears) and the field is then NaN; #conduct later said "You have never
 changed form." (seed4500, step 1573). Write such counters as
 `x = (x | 0) + 1; if (x === 1) ...`, or initialize the struct where C
 zero-fills it.
+
+## Verify an unexercised subsystem with a recorded probe, then keep it
+
+When a batch ports code that no public or fuzz session reaches (genocide,
+polymorph prompts), write a recipe and run the C recorder:
+`node tools/gen-sessions/record.mjs <recipe.json>` (see
+tools/gen-sessions/README.md). Build the key string in node with
+`String.fromCharCode(0x17)` for control keys; a literal control byte in a
+heredoc is rejected before the shell sees it. Two things bit the first
+attempts: every message that ends with --More-- needs its own space in the
+key string (count them from `render.mjs <session> msgs` of a first cut), and
+a wished-for item takes the next letter after the last one assigned
+(`lastinvnr`), not the lowest free letter, so three wishes in a row landed on
+n, o, p even though n had been used up in between. Generated sessions are
+tracked, so once the recording is right, save the recipe under
+tools/gen-sessions/recipes/ and commit the fixture: it is the regression
+guard for that subsystem. The genocide probe's first cut caught a #conduct
+line that had been hardwired to "never genocided".

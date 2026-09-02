@@ -4305,3 +4305,15 @@ peaceful humanoid caught in a hero-caused blast is announced angry BEFORE it
 is announced caught. An earlier narrowed port had "pre-announced" the anger
 line to match; the faithful explode() gets the order for free. Do not add
 message-ordering hacks; find the C call that produces the message.
+
+## The extended command table must match the recorder's build defines
+
+`js/extcmd_data.js` is generated from src/cmd.c's extcmdlist[] by
+`tools/gen-extcmd.mjs`. Two entries (`shell`, `suspend`) carry
+`#ifndef SHELL | CMD_NOT_AVAILABLE #endif` inside the initializer; the
+recorder is a UNIX build with SHELL and SUSPEND defined (include/unixconf.h),
+so C lists both commands in `#?` and dokeylist. The generator used to OR in
+every flag name it saw, which hid both commands and shifted every later
+page of the six-page list. It now evaluates those blocks against the
+defines the recorder has. When a screen diff in a long menu shows entries
+missing or shifted, check the generator's define set before the menu code.

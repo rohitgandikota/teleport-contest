@@ -6,8 +6,11 @@ cmd.c `doextlist` (the `#?` / help-menu list with its 'a'/':'/'s'/'z'
 toggles and search), `doc_extcmd_flagstr`, `accept_menu_prefix`, and a
 name-based `cmd_from_func`; `doextcmd` repeats after the list the way C
 does; dohelp's 'k' entry uses it. hacklib.c `pmatchi` and `visctrl`.
-Gated 44/44 + hang-gate; census unchanged at 91/102 (s4-02 still diverges
-at the same draw, so its cause is elsewhere; see the next investigation).
+Two follow-up fixes made s4-02 RNG- and screen-identical: the wizard-pass
+comparison in doextlist compared a boolean with an int (JS `0 !== false`),
+and `tools/gen-extcmd.mjs` had folded the `#ifndef SHELL`/`#ifndef SUSPEND`
+`CMD_NOT_AVAILABLE` bits into the table although the recorder (a UNIX
+build) defines both; it now honors those defines. Census: 92/102.
 
 ## 2026-09-02 (evening): detect.c pass, scroll of mail
 

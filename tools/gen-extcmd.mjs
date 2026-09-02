@@ -107,7 +107,17 @@ for (const eRaw of entries) {
     // flags is the field after the function pointer; collect the ALL_CAPS
     // identifiers that name known bits.
     let flags = 0;
-    for (const m of e.matchAll(/\b([A-Z][A-Z0-9_]{2,})\b/g))
+    /* the recorder is a UNIX build with SHELL and SUSPEND defined
+       (include/unixconf.h), so an entry's "#ifndef SHELL | CMD_NOT_AVAILABLE
+       #endif" block is not compiled in; drop such blocks before collecting
+       flag names, and keep "#ifdef X" blocks only for defined X */
+    const DEFINED = new Set(['SHELL', 'SUSPEND', 'UNIX', 'MAIL', 'MAIL_STRUCTURES']);
+    const flagsrc = e
+        .replace(/#ifndef\s+(\w+)[\s\S]*?#endif[^\n]*/g,
+                 (m, name) => DEFINED.has(name) ? '' : m)
+        .replace(/#ifdef\s+(\w+)[\s\S]*?#endif[^\n]*/g,
+                 (m, name) => DEFINED.has(name) ? m : '');
+    for (const m of flagsrc.matchAll(/\b([A-Z][A-Z0-9_]{2,})\b/g))
         if (FLAGS[m[1]] !== undefined) flags |= FLAGS[m[1]];
 
     /* ef_desc is the third field, the human description dowhatdoes,

@@ -4264,7 +4264,7 @@ export async function doextlist() {
                 /* if not in wizard mode, skip wizard mode commands;
                    when showing two sections, skip wizard mode commands
                    in pass==0 and skip other commands in pass==1 */
-                wizc = (efp.flags & WIZMODECMD) !== 0;
+                wizc = ((efp.flags & WIZMODECMD) !== 0) ? 1 : 0;
                 if (wizc && !game.wizard)
                     continue;
                 if (!onelist && pass !== wizc)

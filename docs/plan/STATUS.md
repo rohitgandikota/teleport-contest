@@ -1,5 +1,23 @@
 # STATUS — live handoff board
 
+## 2026-09-02 (later still): breaking wands, monster teleport traps
+
+- apply.c `do_break_wand` (+`discard_broken_wand`, `broken_wand_explode`)
+  is ported and wired into `doapply` (which also gained C's
+  `retouch_object` check). The WAN_DIGGING arm notes `dig.c`'s
+  `dig_check`/`digactualhole`/`liquid_flow`/`fillholetyp`, which are still
+  absent. Helpers: cmd.c `paranoid_query`, objnam.c `safe_qbuf` and
+  `ysimple_name`, shk.c `shk_your`/`shk_owns`/`mon_owns`, o_init.c
+  `objdescr_is`.
+- teleport.c `mtele_trap`, `mvault_tele`, `rloc_to`; trap.js's monster
+  teleport-trap arm is the C function now (the leashed/vault/fixed-target
+  notes are gone).
+- fuzz census: 91/102 RNG-perfect (was 89): s3-15 (breaking a wand) and
+  s1-03 (a monster on a teleport trap) are fixed. Remaining 11: the
+  distfleeck/mcalcmove/unstuck ordering-drift cluster (s2-22, s3-10,
+  s3-16, s3-21, s4-00, s4-01, s4-20), s1-07 (rloc), s2-06 (tutorial
+  smudge), s4-02 (`doextlist` menu), s4-04 (place_niche).
+
 ## 2026-09-02 (later): explode.c ported file-for-file
 
 `js/explode.js` now mirrors src/explode.c: `explosionmask`,

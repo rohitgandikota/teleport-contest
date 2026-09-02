@@ -1,6 +1,20 @@
 // apply.js — the 'a' command.
 // C ref: src/apply.c
 
+import { litroom } from './read.js';
+import { uhim } from './mhitu.js';
+import { nomul } from './hack.js';
+import { bot } from './display.js';
+import { explode } from './explode.js';
+import { zappable, release_hold, zapsetup, zapwrapup, bhitm, bhitpile, bhito } from './zap.js';
+import { setnotworn } from './worn.js';
+import { check_unpaid, costly_alteration, pay_for_damage } from './shk.js';
+import { safe_qbuf, ysimple_name } from './objnam.js';
+import { paranoia_bits } from './options.js';
+import { paranoid_query } from './cmd.js';
+import { HEAD, PARANOID_BREAKWAND, COST_DSTROY, EXPL_MAGICAL, EXPL_FIERY, EXPL_FROSTY, N_DIRS, OBJ_AT } from './const.js';
+import { objdescr_is } from './o_init.js';
+import { retouch_object } from './artifact.js';
 import { mhis } from './mhitu.js';
 import { pline_mon } from './pline.js';
 import { game } from './gstate.js';
@@ -2296,11 +2310,18 @@ export async function doapply() {
     if (!obj)
         return ECMD_OK; /* ECMD_CANCEL */
 
-    if (obj.oclass === OCLASSES.COIN_CLASS)
-        return await flip_coin(obj);
+    if (!retouch_object(obj, false))
+        return ECMD_TIME; /* evading your grasp costs a turn; just be
+                             grateful that you don't drop it as well */
+
+    if (obj.oclass === OCLASSES.WAND_CLASS)
+        return await do_break_wand(obj);
 
     if (obj.oclass === OCLASSES.SPBOOK_CLASS)
         return await flip_through_book(obj);
+
+    if (obj.oclass === OCLASSES.COIN_CLASS)
+        return await flip_coin(obj);
 
     if (LOCK_TOOLS.includes(obj.otyp)) {
         /* src/apply.c:4288 — ECMD_TIME when pick_lock() did anything at all
@@ -2591,4 +2612,223 @@ export async function m_unleash(mtmp, feedback) {
         update_inventory();
     }
     mtmp.mleashed = 0;
+}
+
+/* include/hack.h:1236 Maybe_Half_Phys() */
+const Maybe_Half_Phys = (dmg) =>
+    (!!(game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
+     ? Math.trunc((dmg + 1) / 2) : dmg);
+
+// src/apply.c:3876 discard_broken_wand(), the broken wand is gone.
+function discard_broken_wand() {
+    let obj;
+
+    obj = game.current_wand; /* [see dozap() and destroy_items()] */
+    game.current_wand = null;
+    if (obj)
+        delobj(obj);
+    nomul(0);
+}
+
+// src/apply.c:3888 broken_wand_explode(), the attack-wand explosion.
+async function broken_wand_explode(obj, dmg, expltype) {
+    await explode(game.u.ux, game.u.uy, -(obj.otyp), dmg, OCLASSES.WAND_CLASS,
+                  expltype);
+    makeknown(obj.otyp); /* explode describes the effect */
+    discard_broken_wand();
+}
+
+// src/apply.c:3909 do_break_wand(), #force applied to a wand: snap it and
+// release its charges around the hero.
+async function do_break_wand(obj) {
+    const BY_OBJECT = null;
+    const nothing_else_happens = 'But nothing else happens...';
+    let i;
+    let x, y;
+    let mon;
+    let dmg, damage;
+    let affects_objects;
+    let shop_damage = false;
+    const is_fragile = (objdescr_is(obj, 'balsa')
+                        || objdescr_is(obj, 'glass'));
+
+    if (nohands(game.youmonst.data)) {
+        await You_cant(`break ${yname(obj)} without hands!`);
+        return ECMD_OK;
+    } else if (!freehand()) {
+        await Your(`${makeplural(body_part(HAND))} are occupied!`);
+        return ECMD_OK;
+    } else if (ACURR(A_STR) < (is_fragile ? 5 : 10)) {
+        await You(`don't have the strength to break ${yname(obj)}!`);
+        return ECMD_OK;
+    }
+    if (!(await paranoid_query((paranoia_bits() & PARANOID_BREAKWAND) !== 0,
+                               safe_qbuf('Are you really sure you want to break ',
+                                         '?', obj, yname, ysimple_name,
+                                         'the wand'))))
+        return ECMD_OK;
+
+    await pline(`Raising ${yname(obj)} high above your ${body_part(HEAD)}, you ${
+                is_fragile ? 'snap' : 'break'} it in two!`);
+    if (obj.unpaid) {
+        await check_unpaid(obj); /* Extra charge for use */
+        await costly_alteration(obj, COST_DSTROY);
+    }
+    game.current_wand = obj; /* destroy_items might reset this */
+    freeinv(obj);       /* hide it from destroy_items instead... */
+    setnotworn(obj);    /* so we need to do this ourselves */
+
+    if (!(await zappable(obj))) {
+        await pline(nothing_else_happens);
+        discard_broken_wand();
+        return ECMD_TIME;
+    }
+    /* successful call to zappable() consumes a charge; put it back */
+    obj.spe++;
+    /* might have "wrested" a final charge, taking it from 0 to -1;
+       if so, we just brought it back up to 0, which wouldn't do much
+       below so give it 1..3 charges now, usually making it stronger
+       than an ordinary last charge (the wand is already gone from
+       inventory, so perm_invent can't accidentally reveal this) */
+    if (!obj.spe)
+        obj.spe = rnd(3);
+
+    obj.ox = game.u.ux;
+    obj.oy = game.u.uy;
+    dmg = obj.spe * 4;
+    affects_objects = false;
+
+    switch (obj.otyp) {
+    case ONAMES.WAN_OPENING:
+        if (game.u.ustuck) {
+            await release_hold();
+            if (obj.dknown)
+                makeknown(ONAMES.WAN_OPENING);
+            discard_broken_wand();
+            return ECMD_TIME;
+        }
+        /* FALLTHROUGH */
+    case ONAMES.WAN_WISHING:
+    case ONAMES.WAN_NOTHING:
+    case ONAMES.WAN_LOCKING:
+    case ONAMES.WAN_PROBING:
+    case ONAMES.WAN_ENLIGHTENMENT:
+    case ONAMES.WAN_SECRET_DOOR_DETECTION:
+    case ONAMES.WAN_STASIS:
+        await pline(nothing_else_happens);
+        discard_broken_wand();
+        return ECMD_TIME;
+    case ONAMES.WAN_DEATH:
+    case ONAMES.WAN_LIGHTNING:
+        await broken_wand_explode(obj, dmg * 4, EXPL_MAGICAL);
+        return ECMD_TIME;
+    case ONAMES.WAN_FIRE:
+        await broken_wand_explode(obj, dmg * 2, EXPL_FIERY);
+        return ECMD_TIME;
+    case ONAMES.WAN_COLD:
+        await broken_wand_explode(obj, dmg * 2, EXPL_FROSTY);
+        return ECMD_TIME;
+    case ONAMES.WAN_MAGIC_MISSILE:
+        await broken_wand_explode(obj, dmg, EXPL_MAGICAL);
+        return ECMD_TIME;
+    case ONAMES.WAN_STRIKING:
+        await pline('A wall of force smashes down around you!');
+        dmg = d(1 + obj.spe, 6); /* normally 2d12 */
+        /* FALLTHROUGH */
+    case ONAMES.WAN_CANCELLATION:
+    case ONAMES.WAN_POLYMORPH:
+    case ONAMES.WAN_TELEPORTATION:
+    case ONAMES.WAN_UNDEAD_TURNING:
+        affects_objects = true;
+        break;
+    default:
+        break;
+    }
+
+    /* magical explosion and its visual effect occur before specific effects
+       [note: this explosion is generic magic and won't be
+       fatal so that we never leave a bones file where none of the
+       surrounding targets (or underlying objects) got affected yet.] */
+    await explode(obj.ox, obj.oy, -(obj.otyp), rnd(dmg), OCLASSES.WAND_CLASS,
+                  EXPL_MAGICAL);
+
+    /* prepare for potential feedback from polymorph... */
+    zapsetup();
+
+    /* this makes it hit us last, so that we can see the action first */
+    for (i = 0; i <= N_DIRS; i++) {
+        x = obj.ox + xdir[i];
+        y = obj.oy + ydir[i];
+        game.bhitpos = { x, y };
+        if (!isok(x, y))
+            continue;
+
+        if (obj.otyp === ONAMES.WAN_DIGGING) {
+            /* dig.c's dig_check/digactualhole/liquid_flow/fillholetyp are
+               not ported; the digging wand's ring of holes is absent */
+            note_unported_apply('do_break_wand:WAN_DIGGING');
+            continue;
+        } else if (obj.otyp === ONAMES.WAN_CREATE_MONSTER) {
+            /* u.ux,u.uy creates it near you--x,y might create it in rock */
+            makemon(null, game.u.ux, game.u.uy, NO_MM_FLAGS);
+            continue;
+        } else if (x !== game.u.ux || y !== game.u.uy) {
+            /*
+             * Wand breakage is targeting a square adjacent to the hero,
+             * which might contain a monster or a pile of objects or both.
+             * Handle objects last; avoids having undead turning raise an
+             * undead's corpse and then attack resulting undead monster.
+             * obj->bypass in bhitm() prevents the polymorphing of items
+             * dropped due to monster's polymorph and prevents undead
+             * turning that kills an undead from raising resulting corpse.
+             */
+            if ((mon = m_at(x, y)) != null) {
+                await bhitm(mon, obj);
+                /* if (disp.botl) bot(); */
+            }
+            if (affects_objects && OBJ_AT(x, y)) {
+                await bhitpile(obj, bhito, x, y, 0);
+                if (game.disp?.botl)
+                    await bot(); /* potion effects */
+            }
+        } else {
+            /*
+             * Wand breakage is targeting the hero.  Using xdir[]+ydir[]
+             * deltas for location selection causes this case to happen
+             * after all the adjacent targets have been processed.
+             * Handle objects first, in case damage is fatal and leaves
+             * bones, or teleportation sends one or more of the objects to
+             * same destination as hero (lookhere/autopickup);
+             * we don't want to be hit by an obj which is about to be
+             * polymorphed or teleported or destroyed.
+             */
+            if (affects_objects && OBJ_AT(x, y)) {
+                await bhitpile(obj, bhito, x, y, 0);
+                if (game.disp?.botl)
+                    await bot(); /* potion effects */
+            }
+            damage = await zapyourself(obj, false);
+            if (damage) {
+                await losehp(Maybe_Half_Phys(damage),
+                             `killed ${uhim()}self by breaking a wand`,
+                             NO_KILLER_PREFIX);
+            }
+            if (game.disp?.botl)
+                await bot(); /* blindness */
+        }
+    }
+
+    /* potentially give post zap/break feedback */
+    await zapwrapup();
+
+    /* Note: if player fell thru, this call is a no-op.
+       Damage is handled in digactualhole in that case */
+    if (shop_damage)
+        await pay_for_damage('dig into', false);
+
+    if (obj.otyp === ONAMES.WAN_LIGHT)
+        await litroom(true, obj); /* only needs to be done once */
+
+    discard_broken_wand();
+    return ECMD_TIME;
 }

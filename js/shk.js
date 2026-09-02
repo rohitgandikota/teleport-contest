@@ -6,6 +6,12 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { ismnum, OBJ_MINVENT } from './const.js';
+import { carried } from './obj.js';
+import { the_unique_pm } from './objnam.js';
+import { type_is_pname } from './mondata.js';
+import { y_monnam } from './do_name.js';
+import { shkname } from './shknam.js';
 import { Your } from './pline.js';
 import { get_obj_location } from './zap.js';
 import { update_inventory } from './invent.js';
@@ -2769,4 +2775,42 @@ export function billable(shkpp, obj, roomno, reset_nocharge) {
     }
     shkpp.shkp = shkp;
     return shkp ? true : false;
+}
+
+/* src/decl.c c_common_strings.c_the_your[] */
+const the_your = ['the', 'your'];
+
+// src/shk.c:5885 shk_owns(), "<shk>'s" when a shopkeeper owns obj.
+function shk_owns(obj) {
+    let shkp;
+    const cc = { x: 0, y: 0 };
+
+    if (get_obj_location(obj, cc, 0)
+        && (obj.unpaid || (obj.where === OBJ_FLOOR && !obj.no_charge
+                            && costly_spot(cc.x, cc.y)))) {
+        shkp = shop_keeper(inside_shop(cc.x, cc.y));
+        return shkp ? s_suffix(shkname(shkp)) : the_your[0];
+    }
+    return null;
+}
+
+// src/shk.c:5900 mon_owns(), "<monster>'s" when a monster carries obj.
+function mon_owns(obj) {
+    if (obj.where === OBJ_MINVENT)
+        return s_suffix(y_monnam(obj.ocarry));
+    return null;
+}
+
+// src/shk.c:5862 shk_your(), the ownership prefix for an object name.
+export function shk_your(obj) {
+    const chk_pm = obj.otyp === ONAMES.CORPSE && ismnum(obj.corpsenm);
+    let buf = '';
+
+    if (chk_pm && type_is_pname(game.mons[obj.corpsenm]))
+        return buf; /* skip ownership prefix and space: "Medusa's corpse" */
+    else if (chk_pm && the_unique_pm(game.mons[obj.corpsenm]))
+        buf = 'the'; /* override ownership: "the Oracle's corpse" */
+    else if ((buf = shk_owns(obj)) == null && (buf = mon_owns(obj)) == null)
+        buf = the_your[carried(obj) ? 1 : 0];
+    return buf + ' ';
 }

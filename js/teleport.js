@@ -12,6 +12,9 @@
 // rn2(8) rn2(7) … rn2(2) rn2(16) rn2(15) … run the recordings show when a pet
 // is placed.
 
+import { RLOC_NONE, u_at } from './const.js';
+import { somexyspace } from './mklev.js';
+import { search_special } from './mkroom.js';
 import { migrate_to_level } from './dog.js';
 import { control_teleport } from './mondata.js';
 import { ledger_no } from './dungeon.js';
@@ -556,7 +559,7 @@ function rloc_pos_ok(x, y, mtmp) {
 }
 
 // src/teleport.c:1648 rloc_to_core(), ordinary non-worm relocation path.
-async function rloc_to_core(mtmp, x, y, rlocflags) {
+export async function rloc_to_core(mtmp, x, y, rlocflags) {
     const oldx = mtmp.mx, oldy = mtmp.my;
     const preventmsg = (rlocflags & RLOC_NOMSG) !== 0;
     const vanishmsg = (rlocflags & RLOC_MSG) !== 0;
@@ -1193,4 +1196,56 @@ export async function mlevel_tele_trap(mtmp, trap, force_it, in_sight) {
         return Trap_Moved_Mon; /* no longer on this level */
     }
     return Trap_Effect_Finished;
+}
+
+// src/teleport.c:1771 rloc_to(), place a monster at <x,y> without a message.
+export async function rloc_to(mtmp, x, y) {
+    await rloc_to_core(mtmp, x, y, RLOC_NOMSG);
+}
+
+// src/teleport.c:1937 mvault_tele(), a monster on the vault's one-shot
+// teleporter goes into the vault (or anywhere, if that fails).
+export async function mvault_tele(mtmp) {
+    const croom = search_special(VAULT);
+    const c = { x: 0, y: 0 };
+
+    if (croom && somexyspace(croom, c) && goodpos(c.x, c.y, mtmp, 0)) {
+        await rloc_to(mtmp, c.x, c.y);
+        return;
+    }
+    await rloc(mtmp, RLOC_NONE);
+}
+
+// src/teleport.c:1962 mtele_trap(), a monster steps on a teleport trap.
+export async function mtele_trap(mtmp, trap, in_sight) {
+    let monname;
+
+    /* [note: this method doesn't consider a monster which is on a spot
+       which is not visible to the hero but which the hero can see that
+       teleporting from it isn't visible] */
+    if (noteleport_level(mtmp))
+        return;
+
+    if (await teleport_pet(mtmp, false)) {
+        /* Note: don't remove the trap here as the monster might be
+           holding some other object */
+        monname = Monnam(mtmp);
+        if (trap.once)
+            await mvault_tele(mtmp);
+        else if (isok(trap.teledest?.x ?? 0, trap.teledest?.y ?? 0)) {
+            if (!(m_at(trap.teledest.x, trap.teledest.y)
+                  || u_at(trap.teledest.x, trap.teledest.y))) {
+                await rloc_to_core(mtmp, trap.teledest.x, trap.teledest.y,
+                                   RLOC_MSG);
+            }
+        } else
+            await rloc(mtmp, RLOC_NONE);
+        if (in_sight) {
+            if (canseemon(mtmp))
+                await pline(`${monname} seems disoriented.`);
+            else
+                await pline(`${monname} suddenly disappears!`);
+            seetrap(trap);
+        }
+    }
 }

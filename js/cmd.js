@@ -4133,3 +4133,8 @@ export function key2extcmddesc(key) {
     }
     return null;
 }
+
+// src/cmd.c:5655 paranoid_query(), a yes/no paranoid_ynq().
+export async function paranoid_query(be_paranoid, prompt) {
+    return (await paranoid_ynq(be_paranoid, prompt, false)) === 'y';
+}

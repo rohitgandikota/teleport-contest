@@ -2189,33 +2189,10 @@ async function trapeffect_selector(mtmp, trap, trflags) {
 // monster branch covers unmounted, unleashed monsters on ordinary traps.
 async function trapeffect_telep_trap(mtmp, trap, trflags) {
     if (mtmp !== game.youmonst) {
-        const in_sight = canseemon(mtmp) || mtmp === game.u.usteed;
-        const { noteleport_level, rloc } = await import('./teleport.js');
+        const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
+        const { mtele_trap } = await import('./teleport.js');
 
-        if (noteleport_level(mtmp) || mtmp === game.u.usteed)
-            return Trap_Moved_Mon;
-        if (mtmp.mleashed) {
-            note_unported_trap('trapeffect_telep_trap:leashed_monster');
-            return Trap_Moved_Mon;
-        }
-        if (trap.once) {
-            note_unported_trap('trapeffect_telep_trap:vault_monster');
-            return Trap_Moved_Mon;
-        }
-        if (isok(trap.teledest?.x ?? 0, trap.teledest?.y ?? 0)) {
-            note_unported_trap('trapeffect_telep_trap:fixed_monster');
-            return Trap_Moved_Mon;
-        }
-
-        const monname = Monnam(mtmp);
-        await rloc(mtmp);
-        if (in_sight) {
-            if (canseemon(mtmp))
-                await pline(`${monname} seems disoriented.`);
-            else
-                await pline(`${monname} suddenly disappears!`);
-            seetrap(trap);
-        }
+        await mtele_trap(mtmp, trap, in_sight);
         return Trap_Moved_Mon;
     }
 

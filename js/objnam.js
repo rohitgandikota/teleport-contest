@@ -11,6 +11,8 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
+import { QBUFSZ } from './const.js';
+import { shk_your } from './shk.js';
 import { carried, is_poisonable, Has_contents, OBJ_FLOOR, OBJ_MINVENT } from './obj.js';
 import { game } from './gstate.js';
 import { vegetarian, name_to_monplus, type_is_pname, verysmall,
@@ -3646,4 +3648,46 @@ export function Doname2(obj) {
     const s = doname(obj);
 
     return s ? s[0].toUpperCase() + s.slice(1) : s;
+}
+
+// src/objnam.c:2391 ysimple_name(), "your <simple name>" (or "the", or the
+// owner's).
+export function ysimple_name(obj) {
+    const s = shk_your(obj);
+
+    return s + minimal_xname(obj);
+}
+
+// src/objnam.c:5624 safe_qbuf(), build "<qprefix><object name><qsuffix>"
+// within QBUFSZ, shortening the name (func, then altfunc) and falling back
+// to lastR when even that will not fit.
+export function safe_qbuf(qprefix, qsuffix, obj, func, altfunc, lastR) {
+    let qbuf, bufp;
+    let len;
+    const len_qsfx = qsuffix ? qsuffix.length : 0;
+    const len_lastR = lastR.length;
+    const lenlimit = QBUFSZ - 1;
+
+    qbuf = qprefix ? qprefix.slice(0, lenlimit) : '';
+    len = qbuf.length;
+    if (len + len_lastR + len_qsfx > lenlimit) {
+        /* too long even with last resort; we're going to lose part of it */
+        if (len < lenlimit) {
+            qbuf += lastR.slice(0, lenlimit - len);
+            len = qbuf.length;
+            if (qsuffix && len < lenlimit) {
+                qbuf += qsuffix.slice(0, lenlimit - len);
+            }
+        }
+    } else {
+        len += len_qsfx; /* include the pending suffix */
+        bufp = short_oname(obj, func, altfunc, lenlimit - len);
+        if (len + bufp.length <= lenlimit)
+            qbuf += bufp; /* formatted name fits */
+        else
+            qbuf += lastR; /* use last resort */
+        if (qsuffix)
+            qbuf += qsuffix;
+    }
+    return qbuf;
 }

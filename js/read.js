@@ -1337,7 +1337,7 @@ const ONTHRONE = 4;
 // src/read.c:2826 do_genocide(); how: 0 = no genocide; create monsters
 // (cursed scroll), 1 = normal genocide, 3 = forced genocide of player
 // monster, 5 (4 | 1) = normal genocide from throne
-async function do_genocide(how) {
+export async function do_genocide(how) {
     const u = game.u;
     const youmonst = game.youmonst;
     const mons = game.mons;

@@ -1,0 +1,15 @@
+{
+  "name": "throne-sit-effects",
+  "description": "Dlvl 5 throne room: wizkill the ruler from afar, teleport onto the throne, pick up the death drop, sit fourteen times (out of place, Analyze throne? prompts, the wizard-mode effect prompt with effect 13, a Die? prompt).",
+  "coverage": [
+    "mode.debug"
+  ],
+  "segments": [
+    {
+      "seed": 7101,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00165\r \u0006 \u0014  llllllllllllllllllljjj.  #wizkill\rllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllljj. \u001b \u0014  llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllljj.   ,,\r   #sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r13\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r#sit\r\r\r\r   "
+    }
+  ]
+}

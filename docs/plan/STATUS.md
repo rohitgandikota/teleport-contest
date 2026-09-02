@@ -1,5 +1,37 @@
 # STATUS — live handoff board
 
+## 2026-09-03: sit.c complete, water_prayer, the castle passtune, mongets
+
+`js/sit.js` is the C file in C order: `take_gold`, `throne_sit_effect`
+(all 13 effects, the wizard-mode "Throne sit effect" prompt, the
+"Analyze throne?" confirmation and the puff of logic), `special_throne_effect`
+(Vlad's tower), `lay_an_egg`, a faithful `dosit` (the object, trap, lava,
+water and water-damage arms; the C bug that damages uarm for wet boots is
+kept), `rndcurse` in C form (Magicbane, shieldeff, the steed's saddle),
+`attrcurse` returning the property removed. pray.c `water_prayer` and its
+three prayer_done sites (the cross-aligned arm now follows the C: gods_upset
+or pleased). music.c `do_play_instrument`'s tune arm: the passtune prompt,
+the note entry, the drawbridge search, the Mastermind tumblers and gears,
+"Never mind." on q/ESC. Helpers: display.c `newsym_force`, artifact.c
+`spec_ability`, obj.h `u_wield_art`, hacklib.c `highc`; read.c `do_genocide`
+exported.
+- makemon.c `mongets` was a stub; the C applies the demon, lawful-minion and
+  player-monster rules, resets the invocation items, and gives a prince a
+  weapon of at least +1. The throne probe caught it: the gnome queen's
+  cursed mace showed as -2 instead of +1 after identify_pack (NOTES).
+- verified with `tools/gen-sessions/recipes/throne-sit-effects.json` (a
+  seed-7101 Dlvl 5 court: wizkill on the unseen ruler, ^T onto the throne,
+  the pickup menu, 14 sits with the out-of-place message, the Analyze
+  prompts, effect 13 chosen at the wizard prompt, a Die? refusal): RNG
+  and all 314 screens identical. A second pass with effect 12
+  (identify_pack) also matched.
+- gated 44/44 + hang-gate; census 93/102.
+- next: trap.c landmine hero arm, dragon_armor_handling's wielding_corpse
+  arm, Maybe_Half_Phys in the arrow and dart thitu calls, remaining zap.js
+  notes (polyuse/create_polymon), ball.c, the throwit spine's swallow,
+  vertical, boomerang and return arms, remaining note_unported sites by
+  count.
+
 ## 2026-09-02 (night): shop theft chain (stolen_value, check_shop_obj)
 
 shk.c `find_objowner`, `onshopbill`, `is_unpaid`, `check_credit`,

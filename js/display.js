@@ -1511,6 +1511,15 @@ export function newsym(x, y) {
     }
 }
 
+// src/display.c newsym_force(); the port's flush scans every gnew cell,
+// so there are no gbuf_start/gbuf_stop bounds to widen
+export function newsym_force(x, y) {
+    newsym(x, y);
+    const g = game.gbuf?.[y]?.[x];
+    if (g)
+        g.gnew = 1;
+}
+
 /* region.js is already an input to display.js, so publish this redraw hook
    without adding the reverse module import. */
 game._newsym_ref = newsym;

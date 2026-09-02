@@ -4465,3 +4465,35 @@ with shkp->nmon. The port's next_shkp(shkp, withbill) is the same
 `next_shkp(mons[mons.indexOf(shkp) + 1] ?? null, true)` and start with
 `next_shkp(mons[0] ?? null, true)`. `next_shkp(null, ...)` returns null,
 so a C-style `for (shkp = next_shkp(NULL...` never iterates.
+
+## mongets() is not "mksobj + mpickobj"
+
+makemon.c mongets() adjusts the object before the monster takes it:
+demons never keep blessed items, lawful minions get uncursed erodeproof
+gear with spe >= 0, player monsters get +3..+6 swords, the invocation
+items are reset (candelabrum unlit, bell uncursed, Book of the Dead
+cursed), and a prince (M2_PRINCE: throne room rulers, lords) gets a
+weapon of at least +1 and armor of at least +0. None of that draws RNG
+(except the sword bonus), so a stub port matches the RNG stream and
+still shows the wrong enchantment the first time the item is identified.
+Silent, non-RNG fixups are the ones the fuzz census cannot see; only a
+recorded probe that prints the item finds them.
+
+## Throne rooms refuse ^T because every square is occupied
+
+A court is packed with sleeping monsters, so a controlled teleport to any
+square in it fails goodpos() and lands "Sorry..." somewhere random. To
+reach the throne: #wizkill, move the getpos cursor onto the throne from
+wherever the hero is (65 l and 2 j in the probe), '.', dismiss the kill
+message, ESC out of wizkill's "Next monster:" loop, then ^T onto the now
+empty throne. The ruler's death drop lands on the throne and dosit's
+object arm wins over the throne arm, so pick it up (the menu takes ',' to
+select all, then Return) before sitting.
+
+## Answer unknown prompts with Return in a probe
+
+When a sequence may or may not raise a prompt (the wizard-mode throne
+effect getlin, "Analyze throne?", a --More--, "Die?"), send Return after
+the command: xwaitforspace accepts it for --More--, getlin returns an
+empty string (atoi 0, random effect), and yn prompts take their default.
+A bare Return at the command prompt is only "Unknown command", no turn.

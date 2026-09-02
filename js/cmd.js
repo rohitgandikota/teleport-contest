@@ -3799,6 +3799,11 @@ export function cmdq_add_key(q, key) {
     ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_KEY, key });
 }
 
+// src/cmd.c:283 cmdq_add_int() — add an integer (a count) to the command queue.
+export function cmdq_add_int(q, intval) {
+    ((game.command_queue ||= [])[q] ||= []).push({ typ: CMDQ_INT, intval });
+}
+
 // src/cmd.c:410 cmdq_pop() — pop the topmost command. The queue popped
 // depends on whether a do-again (^A) replay is in progress.
 export function cmdq_pop() {

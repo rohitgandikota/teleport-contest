@@ -4,7 +4,8 @@
 import { game } from './gstate.js';
 import { read_engr_at } from './engrave.js';
 import { stairway_at, stairs_description } from './stairs.js';
-import { cmdq_pop, cmdq_clear, cmdq_add_key, get_count } from './cmd.js';
+import { cmdq_pop, cmdq_clear, cmdq_add_key, cmdq_add_int, get_count } from './cmd.js';
+import { GC_SAVEHIST } from './const.js';
 import { GC_ECHOFIRST, GC_CONDHIST, GETOBJ_NOFLAGS, ECMD_FAIL, ECMD_CANCEL } from './const.js';
 import { delobj, t_at, is_pool, is_lava } from './mon.js';
 import { addtobill, costly_spot, doname_with_price, obfree_bill } from './shk.js';
@@ -806,32 +807,67 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
        broken script cannot run its tail against the wrong object. The
        CMDQ_INT partial-stack arm and the HANDS_SYM choice have no producer
        in this port yet and are recorded when reached. */
-    {
-        const cmdq = cmdq_pop();
-        if (cmdq) {
-            let otmp = null;
-            if (cmdq.typ === CMDQ_KEY) {
-                if (cmdq.key === HANDS_SYM) {
-                    note_unported_invent('getobj:cmdq_hands');
-                } else {
-                    /* there could be more than one match if key is '#';
-                       take first one which passes the obj_ok callback */
-                    for (const o of (game.invent || []))
-                        if (o.invlet === cmdq.key) {
-                            const v = await obj_ok_func(o);
-                            if (v === GETOBJ_SUGGEST || v === GETOBJ_DOWNPLAY) {
-                                otmp = o;
-                                break;
-                            }
-                        }
-                }
-            } else if (cmdq.typ === CMDQ_INT) {
-                note_unported_invent('getobj:cmdq_int');
+    const allowcnt = !!(ctrlflags & GETOBJ_ALLOWCNT);
+    let cnt = 0;
+    let cntgiven = false;
+    /* src/invent.c:2073 split_otmp: — a count smaller than the stack splits
+       off that many (cursed loadstones excepted) */
+    const split_otmp = (otmp) => {
+        if (cntgiven) {
+            if (cnt === 0)
+                return null;
+            if (cnt !== otmp.quan) {
+                /* don't split a stack of cursed loadstones */
+                if (splittable(otmp))
+                    otmp = splitobj(otmp, cnt);
+                else if (otmp.otyp === ONAMES.LOADSTONE && otmp.cursed)
+                    /* kludge for canletgo()'s can't-drop-this message */
+                    otmp.corpsenm = cnt;
             }
-            if (!otmp)              /* didn't find what we were looking for, */
-                cmdq_clear(CQ_CANNED); /* so discard any other queued cmnds */
-            return otmp;
         }
+        return otmp;
+    };
+    for (;;) {   /* need_more_cq: */
+        const cmdq = cmdq_pop();
+        if (!cmdq)
+            break;
+        let otmp = null;
+        if (cmdq.typ === CMDQ_KEY) {
+            if (cmdq.key === HANDS_SYM) {
+                note_unported_invent('getobj:cmdq_hands');
+            } else {
+                /* there could be more than one match if key is '#';
+                   take first one which passes the obj_ok callback */
+                for (const o of (game.invent || []))
+                    if (o.invlet === cmdq.key) {
+                        const v = await obj_ok_func(o);
+                        if (v === GETOBJ_SUGGEST || v === GETOBJ_DOWNPLAY) {
+                            otmp = o;
+                            break;
+                        }
+                    }
+            }
+        } else if (cmdq.typ === CMDQ_INT) {
+            /* getting a partial stack */
+            if (!cntgiven && allowcnt) {
+                cnt = cmdq.intval | 0;
+                cntgiven = true;
+                continue; /* now, get CMDQ_KEY */
+            } else {
+                cmdq_clear(CQ_CANNED);
+                /* should maybe clear the CQ_REPEAT too? */
+                return null;
+            }
+        }
+        if (!otmp) {               /* didn't find what we were looking for, */
+            cmdq_clear(CQ_CANNED); /* so discard any other queued cmnds */
+        } else if (cntgiven) {
+            /* if stack is smaller than count, drop the whole stack */
+            if (cnt < 1 || otmp.quan <= cnt)
+                cntgiven = false;
+            return split_otmp(otmp);
+        }
+        return otmp;
     }
 
     /* src/invent.c:1919 — the prompt, then yn_function reads the key. Our
@@ -852,12 +888,22 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
         : ' [*]';
 
     for (;;) {
+        cnt = 0;
+        cntgiven = false;
         let ilet = await tty_yn_function(qbuf, null, '\0', false);
 
         if (ilet >= '0' && ilet <= '9') {
-            /* get_count() keeps reading digits and then a letter */
-            note_unported_invent('getobj:count');
-            return null;
+            const tmpcnt = { value: 0 };
+
+            if (!allowcnt) {
+                await pline('No count allowed with this command.');
+                continue;
+            }
+            ilet = await get_count(null, ilet, LARGEST_INT, tmpcnt, GC_SAVEHIST);
+            if (tmpcnt.value) {
+                cnt = tmpcnt.value;
+                cntgiven = true;
+            }
         }
         if (quitchars.includes(ilet)) {
             /* src/invent.c:1950 */
@@ -895,26 +941,57 @@ export async function getobj(word, obj_ok_func, ctrlflags) {
             /* '*'/'?' inside the menu would redo it; not reachable here */
         }
 
-        const otmp = (game.invent || []).find(o => o.invlet === ilet);
-        if (otmp) {
-            /* src/invent.c:2050, remember a live inventory selection after
-               the command entry and before validating its object filter.
-               Ctrl-A then selects the same letter without painting a second
-               prompt or consuming another input key. */
-            if (!game.in_doagain)
-                cmdq_add_key(CQ_REPEAT, ilet);
-            const allowed = obj_ok_func ? await obj_ok_func(otmp)
-                                        : GETOBJ_SUGGEST;
-            if (allowed === GETOBJ_EXCLUDE) {
-                await pline(`That is a silly thing to ${word}.`);
+        let otmp = (game.invent || []).find(o => o.invlet === ilet) || null;
+        if (cntgiven && word === 'throw') {
+            const only_one = 'can only throw one at a time';
+            /* permit counts for throwing gold, but don't accept counts
+               for other things since the throw code will split off a
+               single item anyway; if populating quiver, 'word' will be
+               "ready" or "fire" and this restriction doesn't apply */
+            if (cnt === 0 || !otmp)
                 return null;
+            const coins = (otmp.oclass === OCLASSES.COIN_CLASS);
+            if (cnt > 1 && (!coins || cnt > otmp.quan)) {
+                if (cnt > otmp.quan)
+                    await You(`only have ${otmp.quan}${
+                        (!coins && otmp.quan > 1) ? ' and ' : ''}${
+                        (!coins && otmp.quan > 1) ? only_one : ''}.`);
+                else
+                    await You(`${only_one}.`);
+                continue;
             }
-            return otmp;
         }
-
-        /* src/invent.c:2059 — an unrecognised letter says so, then the
-           re-issued prompt forces --More-- on the message. */
-        await You("don't have that object.");
+        (game.disp ||= {}).botl = true; /* May have changed the amount of money */
+        /* src/invent.c:2050, remember a live inventory selection after
+           the command entry and before validating its object filter.
+           Ctrl-A then selects the same letter without painting a second
+           prompt or consuming another input key. */
+        if (otmp && !game.in_doagain) {
+            if (cntgiven && cnt > 0)
+                cmdq_add_int(CQ_REPEAT, cnt);
+            cmdq_add_key(CQ_REPEAT, ilet);
+        }
+        /* verify the chosen object */
+        if (!otmp) {
+            /* src/invent.c:2059 — an unrecognised letter says so, then the
+               re-issued prompt forces --More-- on the message. */
+            await You("don't have that object.");
+            if (game.in_doagain)
+                return null;
+            continue;
+        } else if (cnt < 0 || otmp.quan < cnt) {
+            await You(`don't have that many!  You have only ${otmp.quan}.`);
+            if (game.in_doagain)
+                return null;
+            continue;
+        }
+        const allowed = obj_ok_func ? await obj_ok_func(otmp)
+                                    : GETOBJ_SUGGEST;
+        if (allowed === GETOBJ_EXCLUDE) {
+            await pline(`That is a silly thing to ${word}.`);
+            return null;
+        }
+        return split_otmp(otmp);
     }
 }
 

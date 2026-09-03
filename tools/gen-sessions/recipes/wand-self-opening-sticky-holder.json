@@ -22,6 +22,35 @@
     "combat.hero.polymorphed-hug",
     "wand.self.opening-release-sticky-holder"
   ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "forms.polymorph.break-cloak",
+      "segment": 0,
+      "screenIncludes": ["The clasp on your cloak breaks open!"]
+    },
+    {
+      "branch": "combat.hero.polymorphed-to-hit",
+      "segment": 0,
+      "rngIncludes": ["rnd(20)=11 @ hmonas(uhitm.c:5521)"]
+    },
+    {
+      "branch": "combat.hero.polymorphed-natural-attacks",
+      "segment": 0,
+      "screenIncludes": ["You hit the iron golem.  You hit the iron golem."]
+    },
+    {
+      "branch": "combat.hero.polymorphed-hug",
+      "segment": 0,
+      "screenIncludes": ["You grab the iron golem!"],
+      "rngIncludes": ["d(2,8)=10 @ damageum(uhitm.c:4842)"]
+    },
+    {
+      "branch": "wand.self.opening-release-sticky-holder",
+      "segment": 0,
+      "screenIncludes": ["You release the iron golem."]
+    }
+  ],
   "segments": [
     {
       "seed": 6931,

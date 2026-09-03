@@ -1643,6 +1643,14 @@ function a_align(x, y) {
     return Amask2align(game.level.at(x, y).altarmask & AM_MASK);
 }
 
+// src/pray.c:2514 a_gname_at()
+export function a_gname_at(x, y) {
+    if (!IS_ALTAR(game.level.at(x, y).typ))
+        return null;
+
+    return align_gname(a_align(x, y));
+}
+
 // src/pray.c:2490 altarmask_at(); the altar mask at <x,y>, allowing for a
 // mimic posing as an altar
 export function altarmask_at(x, y) {

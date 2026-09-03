@@ -4536,3 +4536,40 @@ and deletes the key when the mask empties; blocked masks live in
 game.u.blocked. float_down(hmask, emask) therefore clears bits in
 intrinsic.HLevitation and in uprops.LEVITATION and deletes the key at
 zero, and BLevitation == I_SPECIAL is `u.blocked.LEVITATION === I_SPECIAL`.
+
+## walk_path is async; a sync caller treats its promise as "no obstacle"
+
+The jump validator called `walk_path` synchronously and tested the result.
+Once walk_path became async (hurtle_step prints), the promise was truthy and
+every jump passed the obstacle check, which showed up only as an RNG
+divergence in seed4500 (we jumped where the C printed "There is an obstacle
+preventing that jump."). After making a C callback path async, grep its
+call sites for un-awaited uses: `grep -n "walk_path(" js/*.js | grep -v await`.
+Validators handed to `getpos_sethilite` may now be async, so getpos awaits
+them.
+
+## Artifact attack records are strings
+
+`artilist_data.js` stores `attk` as the C macro text (`"STUN(3, 4)"`,
+`"PHYS(5, 10)"`). Read it through `arti_adtyp()` / `arti_attack()` in
+artifact.js. `weap.attk.adtyp` is always undefined; that made `attacks()`
+false for every artifact and skipped `Mb_hit` entirely while spec_dbon still
+matched, so the divergence looked like a missing rn2(11) inside Mb_hit.
+
+## decl.c common strings: fakename is { "mon", "you" }
+
+`fakename[]`, `the_your[]` and the rest of `c_common_strings` are
+initialized in `src/decl.c`; decl.h only names them and hack.h declares the
+struct. `noit_mhe/mhim/mhis` are `you.h` macros over
+`pronoun_gender(..., PRONOUN_NO_IT | PRONOUN_HALLU)` and live next to
+`mhim()` in mondata.js. `mon_hates_light()` is mondata.c:547.
+
+## The runner reports 0 matched calls when the JS throws
+
+`ps_test_runner` and `diverge.mjs` print "RNG diverges at call 0" and
+"ours —" for every draw when the JS threw mid-session, whatever the real
+position. Run `node tools/jsplay.mjs <session> --rows 0` first: its
+"stopped: threw" line carries the stack. `--rng-at N` prints the JS stack
+at draw N of the segment, which is the fastest way to name the JS function
+that drew when the C did not.
+

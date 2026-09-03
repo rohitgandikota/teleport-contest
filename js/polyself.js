@@ -378,7 +378,7 @@ const Ugender = () => ((Upolyd(game.u) ? game.u.mfemale
                                        : game.flags.female) ? 1 : 0);
 /* include/mondata.h polyok(), include/you.h your_race() */
 const polyok = (mdat) => (mdat.mflags2 & MFLAGS.M2_NOPOLY) === 0;
-const your_race = (mdat) =>
+export const your_race = (mdat) =>
     (mdat.mflags2 & (game.urace?.selfmask || 0)) !== 0;
 /* src/decl.c c_common_strings.c_the_your[] */
 const the_your = ['the', 'your'];
@@ -631,6 +631,7 @@ export function livelog_newform(viapoly, oldgend, newgend) {
 
 // src/polyself.c:336 newman()
 async function newman() {
+    let oldgend;
     const u = game.u;
     const oldlvl = u.ulevel;
     let newlvl = oldlvl + rn1(5, -2);     /* new = old + {-2,-1,0,+1,+2} */
@@ -653,7 +654,7 @@ async function newman() {
             u.ulevelmax = newlvl;
         u.ulevel = newlvl;
 
-        const oldgend = poly_gender();
+        oldgend = poly_gender();
         if (game.sex_change_ok && !rn2(10))
             change_sex();
 

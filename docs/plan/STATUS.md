@@ -1,5 +1,49 @@
 # STATUS — live handoff board
 
+## 2026-09-03 (evening): uhitm.c arms, hurtle machinery, artifact_hit and Mb_hit
+
+uhitm.js's 44 notes are down to 3 (repo total 726 to 685).
+Ported in C form: `do_attack` (twoweapon and the leprechaun MMOVE_DIED arm),
+`attack_checks` (the unseen-monster stop), `known_hitum` (bloodthirsty,
+`cutworm`), `hmonas` AT_HUGS with `failed_grab` and `silver_sears`, `hmon`'s
+tail (`ghod_hitsu`, `angry_guards`), `hmon_hitmon_weapon_melee` now calls the
+real `artifact_hit` (the old `artifact_hit_u` slice is gone),
+`hmon_hitmon_potion`, the light-object and silver messages, the stagger
+with `mhurtle_to_doom`, `mhitm_ad_phys` in full, `mhitm_ad_drin` with
+`eat_brains` (the m2m copy deleted), `mhitm_ad_sedu` hero arms,
+`mhitm_ad_ston` with `do_stone_u`, `rustm` through `erode_obj`, `knockback`
+with dismount and `hurtle`, `steal_it`, `theft_petrifies`,
+`light_hits_gremlin`, `flash_hits_mon` mimic text, `stumble_onto_mimic`,
+`hit_no_harm`. artifact.c: `artifact_hit` (all arms), `Mb_hit`, `attacks`,
+`found_artifact`, `find_artifact`, `bare_artifactname`. dothrow.c:
+`walk_path` (now async), `hurtle_step`, `hurtle_jump`, `hurtle`,
+`mhurtle_step`, `mhurtle`, `will_hurtle`, `endmultishot`; cmd.js's private
+copies and uhitm.js's `hurtle_u`/`mhurtle` are deleted. apply.c:
+`check_jump`, `is_valid_jump_pos`, `get_valid_jump_position` in C form (the
+sync `jump_pos_failure` helper is gone) and getpos.c `getpos_sethilite`
+awaits its validators. region.c `in_out_region`, `m_in_out_region`. pray.c
+`a_gname_at`; priest.c `ghod_hitsu`; mhitu.c `u_slip_free`; mhitm.c
+`failed_grab` (C form, replaces `failed_grab_mm`); weapon.c `silver_sears`;
+eat.c `maybe_cannibal`, `eat_brains`; pager.c `mhidden_description`;
+worm.c `shrink_worm`, `place_wsegs`, `cutworm`; zap.c `probe_objchain`,
+`probe_monster`; mondata.c `mon_hates_light`; you.h `mhis`,
+`noit_mhe`/`noit_mhim`/`noit_mhis`; polyself.c `newman`'s `oldgend` is
+function-scoped as in the C (it threw at `livelog_newform` before).
+
+Probe `knight-jump-magicbane` (C recording, 3594 RNG calls, 185 screens):
+wish for Magicbane, wield it, create a lichen and a gnome lord, fight in
+every direction (probe and stun messages, two kills), three #jump attempts
+(legal knight move, "Illegal move!", onto the branch stairs). Byte-identical.
+Gate: 44/44, hang gate OK, fuzz census 93/102 (the same 9 drift sessions
+as before). seed4500 caught a real regression on the way (see NOTES:
+async walk_path).
+
+Next, by note count: zap.js 42, eat.js 30, dokick.js 27, apply.js 27, mon.js 26, mhitu.js 24, hack.js 23, spell.js 22. `dojump`/`jump` still live in cmd.js though
+the C has them in apply.c (move them; `display_jump_positions` needs
+`tmp_at`, which is not ported). `display_minventory` for `probe_monster`.
+Remaining uhitm notes: only the `hmonas` and `damageum` default arms, which
+fire for attack and damage types the C switch has no case for.
+
 ## 2026-09-03 (afternoon): trap.c hero arms, drown, lava, float_down
 
 trap.js's 49 notes are down to 2. Ported in C form: `drown` (gremlin and

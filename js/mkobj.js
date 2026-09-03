@@ -1,3 +1,4 @@
+import { HATCH_EGG } from './const.js';
 import { carried } from './obj.js';
 import { makeplural, obj_typename } from './objnam.js';
 import { You_see, Your, You_hear } from './pline.js';

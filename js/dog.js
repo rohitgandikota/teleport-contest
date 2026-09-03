@@ -365,7 +365,7 @@ function polyfood(obj) {
               || dmgtype(ptr, ATTKS.AD_POLY));
 }
 
-function same_race(pm1, pm2) {
+export function same_race(pm1, pm2) {
     note_unported('same_race');
     return pm1 === pm2;
 }

@@ -5,6 +5,9 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { mintrap } from './trap.js';
+import { noit_Monnam } from './do_name.js';
+import { mstatusline } from './insight.js';
 import { stolen_value, addtobill } from './shk.js';
 import { container_weight } from './mkobj.js';
 import { free_oname } from './do_name.js';
@@ -4357,4 +4360,34 @@ const Maybe_Half_Phys_zap = (dmg) =>
 // never forces a miss.
 export async function buzz(type, nd, sx, sy, dx, dy) {
     await dobuzz(type, nd, sx, sy, dx, dy, true, false, false);
+}
+/* include/obj.h:340 SchroedingersBox() */
+const SchroedingersBox = (o) => (o.otyp === ONAMES.LARGE_BOX && o.spe === 1);
+
+// src/zap.c:612 probe_objchain()
+export function probe_objchain(otmp) {
+    for (const o of otmp || []) {
+        observe_object(o); /* treat as "seen" */
+        if (Is_container(o) || o.otyp === ONAMES.STATUE) {
+            o.lknown = 1;
+            if (!SchroedingersBox(o))
+                o.cknown = 1;
+        } else if (o.otyp === ONAMES.TIN)
+            o.known = 1;
+    }
+}
+
+// src/zap.c:626 probe_monster()
+export async function probe_monster(mtmp) {
+    await mstatusline(mtmp);
+    if (game.notonhead)
+        return; /* don't show minvent for long worm tail */
+
+    if (mtmp.minvent && mtmp.minvent.length) {
+        probe_objchain(mtmp.minvent);
+        note_unported_zap('probe_monster:display_minventory');
+    } else {
+        await pline(`${noit_Monnam(mtmp)} is not carrying anything${
+            engulfing_u(mtmp) ? ' besides you' : ''}.`);
+    }
 }

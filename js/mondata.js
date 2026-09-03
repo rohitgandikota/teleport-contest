@@ -1034,6 +1034,25 @@ export function mhe(mtmp) {
 export function mhim(mtmp) {
     return genders_tbl[pronoun_gender(mtmp, PRONOUN_HALLU)].him;
 }
+
+// include/you.h:324 mhis()
+export function mhis(mtmp) {
+    return genders_tbl[pronoun_gender(mtmp, PRONOUN_HALLU)].his;
+}
+
+/* include/you.h:326 noit_mhe() / :328 noit_mhim() / :330 noit_mhis();
+   override "it" if reason is lack of visibility rather than neuter species */
+export function noit_mhe(mtmp) {
+    return genders_tbl[pronoun_gender(mtmp, (PRONOUN_NO_IT | PRONOUN_HALLU))].he;
+}
+
+export function noit_mhim(mtmp) {
+    return genders_tbl[pronoun_gender(mtmp, (PRONOUN_NO_IT | PRONOUN_HALLU))].him;
+}
+
+export function noit_mhis(mtmp) {
+    return genders_tbl[pronoun_gender(mtmp, (PRONOUN_NO_IT | PRONOUN_HALLU))].his;
+}
 import { genders as genders_tbl } from './role_data.js';
 
 // include/mondata.h:71 digests() — swallow-and-digest engulfer (purple worm).
@@ -1054,4 +1073,9 @@ export function cvt_adtyp_to_mseenres(adtyp) {
     case ATTKS.AD_ACID: return M_SEEN_ACID;
     default: return M_SEEN_NOTHING;
     }
+}
+
+// src/mondata.c:547 mon_hates_light()
+export function mon_hates_light(mon) {
+    return hates_light(mon.data);
 }

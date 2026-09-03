@@ -7,6 +7,9 @@
 // that are absent and are recorded through note_unported_mhitu() at the
 // exact C decision point, so game.unported names what a divergence wanted.
 
+import { pline_The } from './pline.js';
+import { update_inventory } from './invent.js';
+import { cloak_simple_name } from './do_wear.js';
 import { mhitm_ad_poly } from './uhitm.js';
 import { monsndx } from './makemon.js';
 import { split_mon } from './potion.js';
@@ -1936,4 +1939,43 @@ function set_ustuck_mh(mtmp) {
     /* routed through mon.js at call time to avoid deepening the cycle */
     (game.disp ||= {}).botl = true;
     game.u.ustuck = mtmp;
+}
+
+// src/mhitu.c u_slip_free(); greased or slippery armor lets the hero slip
+// out of a grab
+export async function u_slip_free(mtmp, mattk) {
+    let obj;
+
+    /* greased armor does not protect against AT_ENGL+AD_WRAP */
+    if (mattk[0] === ATTKS.AT_ENGL)
+        return false;
+
+    obj = (game.u.uarmc ? game.u.uarmc : game.u.uarm);
+    if (!obj)
+        obj = game.u.uarmu;
+    if (mattk[1] === ATTKS.AD_DRIN)
+        obj = game.u.uarmh;
+
+    /* if your cloak/armor is greased, monster slips off; this
+       protection might fail (33% chance) when the armor is cursed */
+    if (obj && (obj.greased || obj.otyp === ONAMES.OILSKIN_CLOAK)
+        && (!obj.cursed || rn2(3))) {
+        await pline(`${Monnam(mtmp)} ${
+              (mattk[1] === ATTKS.AD_WRAP) ? 'slips off of'
+                                           : 'grabs you, but cannot hold onto'} your ${
+              obj.greased ? 'greased' : 'slippery'} ${
+              /* avoid "slippery slippery cloak"
+                 for undiscovered oilskin cloak */
+              (obj.greased || game.objects[obj.otyp].oc_name_known)
+                  ? xname(obj)
+                  : cloak_simple_name(obj)}!`);
+
+        if (obj.greased && !rn2(2)) {
+            await pline_The('grease wears off.');
+            obj.greased = 0;
+            update_inventory();
+        }
+        return true;
+    }
+    return false;
 }

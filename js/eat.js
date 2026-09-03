@@ -1,3 +1,30 @@
+import { EDOG } from './const.js';
+import { Mgender } from './const.js';
+import { ismnum } from './const.js';
+import { Upolyd } from './const.js';
+import { A_INT } from './const.js';
+import { A_WIS } from './const.js';
+import { DIED } from './const.js';
+import { NO_KILLER_PREFIX } from './const.js';
+import { M_ATTK_AGR_DIED } from './const.js';
+import { M_ATTK_MISS } from './const.js';
+import { M_ATTK_HIT } from './const.js';
+import { monsndx } from './makemon.js';
+import { DEADMONSTER } from './monst.js';
+import { canseemon } from './display.js';
+import { canspotmon } from './display.js';
+import { pmname } from './do_name.js';
+import { mon_nam } from './do_name.js';
+import { Monnam } from './do_name.js';
+import { s_suffix } from './hacklib.js';
+import { mondied } from './mon.js';
+import { monstone } from './mon.js';
+import { your_race } from './polyself.js';
+import { same_race } from './dog.js';
+import { is_rider } from './mondata.js';
+import { mindless } from './mondata.js';
+import { noncorporeal } from './mondata.js';
+import { Role_if } from './attrib.js';
 import { selftouch } from './trap.js';
 import { Levitation } from './youprop.js';
 import { unmul } from './hack.js';
@@ -167,6 +194,196 @@ export async function unfaint() {
     await stop_occupation();
     (game.disp ||= {}).botl = true;
     return 0;
+}
+
+/* include/attrib.h ABASE(), AMAX(), ATTRMIN() */
+const ABASE = (i) => game.u.acurr.a[i];
+const AMAX = (i) => game.u.amax.a[i];
+const ATTRMIN = (i) => game.urace.attrmin[i];
+/* src/eat.c:51 CANNIBAL_ALLOWED() */
+const CANNIBAL_ALLOWED = () => (Role_if(PMNAMES.PM_CAVE_DWELLER) || Race_if(PMNAMES.PM_ORC));
+/* include/youprop.h */
+const Lifesaved = () => !!game.u.uprops?.LIFESAVED;
+const Stoned = () => !!game.u.uprops?.STONED;
+/* src/eat.c maybe_cannibal()'s static */
+let ate_brains = 0;
+
+// src/eat.c:758 maybe_cannibal()
+export async function maybe_cannibal(pm, allowmsg) {
+    const fptr = game.mons[pm]; /* food type */
+
+    /* when poly'd into a mind flayer, multiple tentacle hits in one
+       turn cause multiple digestion checks to occur; avoid giving
+       multiple luck penalties for the same attack */
+    if (game.moves === ate_brains)
+        return false;
+    ate_brains = game.moves; /* ate_anything, not just brains... */
+
+    if (!CANNIBAL_ALLOWED()
+        /* non-cannibalistic heroes shouldn't eat own species ever
+           and also shouldn't eat current species when polymorphed
+           (even if having the form of something which doesn't care
+           about cannibalism--hero's innate traits aren't altered) */
+        && (your_race(fptr)
+            || (Upolyd(game.u) && same_race(game.youmonst.data, fptr))
+            || (ismnum(game.u.ulycn) && were_beastie(pm) === game.u.ulycn))) {
+        if (allowmsg) {
+            if (Upolyd(game.u) && your_race(fptr))
+                await You('have a bad feeling deep inside.');
+            await You('cannibal!  You will regret this!');
+        }
+        (game.u.intrinsic ||= {}).HAggravate_monster = (game.u.intrinsic.HAggravate_monster | 0) | FROMOUTSIDE;
+        change_luck(-rn1(4, 2)); /* -5..-2 */
+        return true;
+    }
+    return false;
+}
+
+// src/eat.c:603 eat_brains(); dmg_p is a {v} box for the extra damage
+export async function eat_brains(magr, mdef, visflag, dmg_p) {
+    const pd = mdef.data;
+    let give_nutrit = false;
+    let result = M_ATTK_HIT;
+    const xtra_dmg = rnd(10);
+
+    /* previous tentacle attack might have triggered fatal passive
+       counterattack [callers ought to be updated to avoid this situation] */
+    if (magr !== game.youmonst && DEADMONSTER(magr)) {
+        return M_ATTK_AGR_DIED;
+    }
+
+    if (noncorporeal(pd)) {
+        if (visflag)
+            await pline(`${(mdef === game.youmonst) ? 'Your' : s_suffix(Monnam(mdef))} brain is unharmed.`);
+        return M_ATTK_MISS; /* side-effects can't occur */
+    } else if (magr === game.youmonst) {
+        await You(`eat ${s_suffix(mon_nam(mdef))} brain!`);
+    } else if (mdef === game.youmonst) {
+        await Your('brain is eaten!');
+    } else { /* monster against monster */
+        if (visflag && canspotmon(mdef))
+            await pline(`${s_suffix(Monnam(mdef))} brain is eaten!`);
+    }
+
+    if (flesh_petrifies(pd)) {
+        /* mind flayer has attempted to eat the brains of a petrification
+           inducing critter (most likely Medusa; attacking a cockatrice via
+           tentacle-touch should have been caught before reaching this far) */
+        if (magr === game.youmonst) {
+            if (!Stone_resistance() && !Stoned())
+                await make_stoned(5, null, KILLED_BY_AN,
+                                  pmname(pd, Mgender(mdef)));
+        } else {
+            /* no need to check for poly_when_stoned or Stone_resistance;
+               mind flayers don't have those capabilities */
+            if (visflag && canseemon(magr))
+                await pline(`${Monnam(magr)} turns to stone!`);
+            await monstone(magr);
+            if (!DEADMONSTER(magr)) {
+                /* life-saved; don't continue eating the brains */
+                return M_ATTK_MISS;
+            } else {
+                if (magr.mtame && !visflag)
+                    /* parallels mhitm.c's brief_feeling */
+                    await You('have a sad thought for a moment, then it passes.');
+                return M_ATTK_AGR_DIED;
+            }
+        }
+    }
+
+    if (magr === game.youmonst) {
+        /*
+         * player mind flayer is eating something's brain
+         */
+        await eating_conducts(pd);
+        if (mindless(pd)) { /* (cannibalism not possible here) */
+            await pline(`${Monnam(mdef)} doesn't notice.`);
+            /* all done; no extra harm inflicted upon target */
+            return M_ATTK_MISS;
+        } else if (is_rider(pd)) {
+            await pline('Ingesting that is fatal.');
+            game.killer = { format: NO_KILLER_PREFIX,
+                            name: `unwisely ate the brain of ${pmname(pd, Mgender(mdef))}` };
+            await done(DIED);
+            /* life-saving needed to reach here */
+            exercise(A_WIS, false);
+            dmg_p.v += xtra_dmg; /* Rider takes extra damage */
+        } else {
+            await morehungry(-rnd(30)); /* cannot choke */
+            if (ABASE(A_INT) < AMAX(A_INT)) {
+                /* recover lost Int; won't increase current max */
+                game.u.acurr.a[A_INT] += rnd(4);
+                if (ABASE(A_INT) > AMAX(A_INT))
+                    game.u.acurr.a[A_INT] = AMAX(A_INT);
+                (game.disp ||= {}).botl = true;
+            }
+            exercise(A_WIS, true);
+            dmg_p.v += xtra_dmg;
+        }
+        /* targeting another mind flayer or your own underlying species
+           is cannibalism */
+        await maybe_cannibal(monsndx(pd), true);
+
+    } else if (mdef === game.youmonst) {
+        /*
+         * monster mind flayer is eating hero's brain
+         */
+        /* no such thing as mindless players */
+        if (ABASE(A_INT) <= ATTRMIN(A_INT)) {
+            const brainlessness = 'brainlessness';
+
+            if (Lifesaved()) {
+                game.killer = { format: KILLED_BY, name: brainlessness };
+                await done(DIED);
+                /* amulet of life saving has now been used up */
+                await pline('Unfortunately your brain is still gone.');
+                /* sanity check against adding other forms of life-saving */
+                if (game.u.uprops)
+                    delete game.u.uprops.LIFESAVED;
+                if (game.u.intrinsic)
+                    game.u.intrinsic.HLifesaved = 0;
+            } else {
+                await Your('last thought fades away.');
+            }
+            game.killer = { format: KILLED_BY, name: brainlessness };
+            await done(DIED);
+            /* can only get here when in wizard or explore mode and user has
+               explicitly chosen not to die; arbitrarily boost intelligence */
+            game.u.acurr.a[A_INT] = ATTRMIN(A_INT) + 2;
+            await You_feel('like a scarecrow.');
+        }
+        give_nutrit = true; /* in case a conflicted pet is doing this */
+        exercise(A_WIS, false);
+        /* caller handles Int and memory loss */
+
+    } else { /* mhitm */
+        /*
+         * monster mind flayer is eating another monster's brain
+         */
+        if (mindless(pd)) {
+            if (visflag && canspotmon(mdef))
+                await pline(`${Monnam(mdef)} doesn't notice.`);
+            return M_ATTK_MISS;
+        } else if (is_rider(pd)) {
+            await mondied(magr);
+            if (DEADMONSTER(magr))
+                result = M_ATTK_AGR_DIED;
+            /* Rider takes extra damage regardless of whether attacker dies */
+            dmg_p.v += xtra_dmg;
+        } else {
+            dmg_p.v += xtra_dmg;
+            give_nutrit = true;
+            if (dmg_p.v >= mdef.mhp && visflag && canspotmon(mdef))
+                await pline(`${s_suffix(Monnam(mdef))} last thought fades away...`);
+        }
+    }
+
+    if (give_nutrit && magr.mtame && !magr.isminion) {
+        EDOG(magr).hungrytime += rnd(60);
+        magr.mconf = 0;
+    }
+
+    return result;
 }
 
 // src/eat.c:3347 is_fainted()

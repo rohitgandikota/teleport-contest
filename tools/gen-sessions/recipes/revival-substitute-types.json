@@ -1,0 +1,68 @@
+{
+  "name": "revival-substitute-types",
+  "description": "C cant_revive substitutes a human zombie for special NPC corpses without saved traits, and a shapechanger for a wished unique corpse.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.death-corpse-revival",
+    "object.food-corpses",
+    "object.wands",
+    "ui.getlin"
+  ],
+  "branches": [
+    "object.revival.guard-substitute",
+    "object.revival.aligned-cleric-substitute",
+    "object.revival.high-cleric-substitute",
+    "object.revival.unique-shapechanger"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "object.revival.guard-substitute",
+      "segment": 0,
+      "screenIncludes": ["The guard corpse glows iridescently.", "The human zombie is resurrected!"]
+    },
+    {
+      "branch": "object.revival.aligned-cleric-substitute",
+      "segment": 1,
+      "screenIncludes": ["Your priest corpse glows iridescently.", "It suddenly reanimates as a human zombie!"]
+    },
+    {
+      "branch": "object.revival.high-cleric-substitute",
+      "segment": 2,
+      "screenIncludes": ["The high priest corpse glows iridescently.", "The human zombie is resurrected!"]
+    },
+    {
+      "branch": "object.revival.unique-shapechanger",
+      "segment": 3,
+      "screenIncludes": ["Medusa's corpse glows iridescently.", "Medusa is resurrected!"],
+      "rngIncludes": ["rn2(7)=0 @ select_newcham_form(mon.c:5167)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99411,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of undead turning\r\u0017uncursed guard corpse\rza.za>   "
+    },
+    {
+      "seed": 99412,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of undead turning\r\u0017uncursed aligned cleric corpse\rza.za>   "
+    },
+    {
+      "seed": 99413,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of undead turning\r\u0017uncursed high cleric corpse\rza.za>   "
+    },
+    {
+      "seed": 99414,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of undead turning\r\u0017uncursed Medusa corpse\rza.za>   "
+    }
+  ]
+}

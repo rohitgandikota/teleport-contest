@@ -1,0 +1,43 @@
+{
+  "name": "polymorph-level-gain",
+  "description": "C pluslvl updates monster HP before human HP and energy while the hero is polymorphed, then handles another level gain after returning to human form.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "forms.polymorph",
+    "ui.getlin"
+  ],
+  "branches": [
+    "forms.polymorph.level-gain",
+    "forms.polymorph.rndexp-large-range"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "forms.polymorph.level-gain",
+      "segment": [0, 1],
+      "screenIncludes": ["You turn into a xorn!", "You turn into a brown mold!", "Welcome to experience level 12."],
+      "rngIncludes": ["monhp_per_lvl(makemon.c:989)", "monhp_per_lvl(makemon.c:1004)"]
+    },
+    {
+      "branch": "forms.polymorph.rndexp-large-range",
+      "segment": 1,
+      "screenIncludes": ["You feel like a new man!"],
+      "rngIncludes": ["rn2(20000)=2952 @ rndexp(exper.c:388)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99421,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r         #polyself\rxorn\r  #levelchange\r12\r   #polyself\rhuman\r   #levelchange\r13\r   "
+    },
+    {
+      "seed": 99422,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r         #polyself\rbrown mold\r  #levelchange\r12\r   #polyself\rhuman\r   #levelchange\r13\r   "
+    }
+  ]
+}

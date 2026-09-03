@@ -13,6 +13,29 @@ Newest first within each section.
 
 ## Scoring: what the runner actually does
 
+**A status redraw is not always harmless.** C only calls `bot` from
+`flush_screen` when `disp.botl` or `disp.botlx` is set, then clears the
+flags. Removing a corpse or restoring pre-polymorph attributes can change
+live values before a message is acknowledged. Repainting on every `pline`
+exposes those values too soon. Keep the flags on `game.disp`, including
+encumbrance; set them at the same C sites. `timebot` must change only the
+time field, not the other saved status fields. The revival and
+`status-dirty-state-gate` tests catch these distinctions.
+
+**C's portable integer bound is 32767.** `rndexp` halves a range at or
+above `LARGEST_INT` before drawing and scales the result back up. Replacing
+that macro with the native signed-int maximum changes both the RNG log and
+the actual experience total. The polymorphed level-gain recording reaches
+this at level 13; the original wrong bound happened to draw the same raw
+number, hiding the changed experience total from a status line without XP.
+
+**A boolean return does not replace a C output pointer.** `cant_revive`
+must write the substituted monster type as well as return true.
+`openfallingtrap` must write the caller's `.v` noticed flag, not a separate
+`.value` property, so opening-wand identification and exercise can run.
+The new revival source-state matrix and trap-identification gate pin both
+outputs independently of screen comparisons.
+
 **September 3 regression audit: run the whole supplemental corpus.** A clean
 44/44 public score and a 94/102 RNG-only fuzz census hid four supplemental
 runtime errors after the large source ports. The live judge also exposed

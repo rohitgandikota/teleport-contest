@@ -1,5 +1,63 @@
 # STATUS — live handoff board
 
+## 2026-09-03: revival outputs, status timing, and polymorph XP verified
+
+Crash checkpoint `f61f728` and the starting safety branch are committed and
+pushed. The published held-out result is still 7,959; no new judge result
+has appeared. The second batch restores the three missing
+`cant_revive` output-type assignments and makes `openfallingtrap` write
+the `.v` field its callers read. The ignored ref in `detect.openone` uses
+the same field.
+
+Targeted checks: `wand-opening-falling-traps` now has **233/233 screens**
+and **24,363/24,363 RNG**. `corpse-pickup-safety` has **329/329 screens**
+and **27,674/27,674 RNG**. Its state gate and the new trap-identification
+gate pass. New `revival-substitute-types` uses actual C recordings of
+guard, aligned cleric, high cleric, and Medusa corpse revival. The source
+state gate checks all substitute decisions, the substitute zombie's HP
+and speed, and the unique corpse's shapechanger state. All four segments
+now match **284/284 screens**, **10,990/10,990 RNG**, with four asserted
+branches. `the_unique_pm` now handles high clerics and worm tails as C
+does, fixing the high priest corpse's incorrect possessive name.
+
+`display.flush_screen` now honors C's status dirty flags; `bot` clears
+them. `cls` and both redraw paths set `botlx`. Encumbrance and experience
+gain set the right flag. `timebot` updates only the displayed time field,
+preserving the remaining painted status. This fixes the revival and
+polymorph message frames without adding another deferred-status override.
+The port still calls `bot` every player-input cycle, and the broader tty
+status-field layout machinery remains incomplete.
+
+`setuhpmax` now has both the human and monster branches. `pluslvl` draws
+monster HP first when polymorphed. Newgame initializes peak HP and energy.
+New `polymorph-level-gain` records two forms, gains levels, and returns to
+human form: **208/208 screens**, **5,410/5,410 RNG**. This probe found
+`rndexp` using 2,147,483,647 instead of C's `LARGEST_INT = 32767`. It now
+uses the existing constant and scales the draw as C does. Two branch
+assertions and `status-dirty-state-gate` pin these paths and the resulting
+45,904 experience total in the level-13 example.
+
+Full combined verification: public **44/44**, **11,405/11,405 screens**,
+**792,838/792,838 RNG**; supplemental **337/345**, **81,826/82,252 screens**,
+**4,284,002/4,298,642 RNG**, eight failures and zero runtime errors.
+Four existing sessions become fully identical, recovering 14 existing
+screens plus 492 new oracle screens. Hang gate: 44 clean. Fresh-seed
+smoke: 80/80 across 13 roles. Frozen files are unchanged. Fuzz re-score:
+**76/102 fully passing**, **94/102 RNG-perfect**, **13,046/14,262 screens**,
+**459,215/491,759 RNG**. No individual fuzz session regressed from the
+previous checkpoint. Dashboard and coverage are current: 99/106 categories,
+seven partial, and 798 declared asserted or scenario-backed branch cases.
+
+The saved goal is active again. Next: add a real parser-based source audit.
+A temporary Acorn/ESLint Scope scan finds 36 unresolved references at exact
+locations, while the old lexical check prints 116 noisy names and misses
+some of those errors. Temporary development packages are under
+`/private/tmp/contest-scope-audit.jUI3Hq`; nothing was added to the game
+runtime. Check both lexical bindings and literal dynamic-import exports,
+then add C-backed reproducers for the reachable failures. Do not commit
+an import merely because a similarly named helper exists: verify its C
+signature and behavior.
+
 ## 2026-09-03: resumed from the 7,959 held-out checkpoint
 
 The starting tree was clean at `85203f6` on `main`. It is preserved on
@@ -8,7 +66,7 @@ sink experiment or replace the newer subsystem ports.
 
 Objective remains full C behavior, measured by fresh C recordings and
 first divergences, not by the number of removed gap notes. The saved app
-goal is paused; the user was asked to resume it. Work in this turn continues.
+goal was initially paused and is now active again.
 
 Live leaderboard snapshot `2026-09-03T12:06:14.352Z`, fork scored
 `2026-09-03T11:29:19.411Z`: public **11,405/11,405**, **44/44**;
@@ -62,7 +120,7 @@ have screen-only differences. Do not call the 94/102 figure a full pass rate.
 `tools/diverge.mjs` now cancels its deadline timer after a completed replay;
 otherwise each successful bounded diagnosis idled until its timeout expired.
 Success, divergence, and an injected blocked replay verify exit codes 0, 1,
-and 3 respectively. The checkpoint is ready to commit and push.
+and 3 respectively. Committed and pushed as `f61f728`.
 
 Coverage audit caveat: `kick-nondoor-terrain`'s checked-in recipe has seeds
 9841 through 9850, while its C recording has 9831 through 9840. Both are

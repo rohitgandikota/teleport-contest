@@ -26,6 +26,14 @@ See STATUS.md for measured baselines and the current validation state.
 The combined crash-fix checkpoint passes 331/343 supplemental sessions,
 81,320/81,760 screens, public 44/44, the hang gate, and 80 fresh-seed smoke
 games. The separate fuzz corpus is 76/102 fully passing and 94/102 RNG-perfect.
+That checkpoint is committed and pushed as `f61f728`. The next validated
+batch restores C revival outputs, status dirty flags, polymorphed level gain,
+and the portable RNG bound used for experience. Public remains 44/44;
+supplemental is 337/345, 81,826/82,252 screens, with no runtime errors.
+Fuzz remains 76/102 fully passing and 94/102 RNG-perfect, with three more
+identical screens and no individual regression. Next focus is a parser-based
+scope and import audit for code paths the current recordings do not reach.
+The saved goal is active. See STATUS.md for exact evidence and next steps.
 
 ## Historical milestone checklist, July 2026
 

@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-09-03T15:46:13.842Z. Local commit: `85203f6-dirty`.
+Last refreshed: 2026-09-03T16:18:43.726Z. Local commit: `f61f728-dirty`.
 Leaderboard snapshot: 2026-09-03T12:06:14.352Z. Fork last scored: 2026-09-03T11:29:19.411Z.
 
 ## Score summary
@@ -10,7 +10,7 @@ Leaderboard snapshot: 2026-09-03T12:06:14.352Z. Fork last scored: 2026-09-03T11:
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 90/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 90/1483 |
 | Held-out leaderboard | 7959/11265 | 70.65% | 15/44 | 67.94% | 89/2959 |
-| Supplemental C suite | 81320/81760 | 99.46% | 331/343 | 4241290/4282242 (99.04%) | 594/2700 |
+| Supplemental C suite | 81826/82252 | 99.48% | 337/345 | 4284002/4298642 (99.66%) | 594/2700 |
 
 ## Contest position and generalization
 
@@ -20,14 +20,14 @@ Leaderboard snapshot: 2026-09-03T12:06:14.352Z. Fork last scored: 2026-09-03T11:
 - Held-out/public identical-screen ratio: **0.698**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `85203f6-dirty` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `f61f728-dirty` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## C-reference coverage
 
 | Inventory | Covered | Partial | Gaps |
 |---|---:|---:|---:|
 | Mechanics categories | 99/106 | 7 | 0 |
-| Explicit C branches | 792/792 | 0 | 0 |
+| Explicit C branches | 798/798 | 0 | 0 |
 
 Coverage counts describe declared scenarios, not proof that every C branch is ported or passing.
 
@@ -37,28 +37,24 @@ Coverage counts describe declared scenarios, not proof that every C branch is po
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 81698/81760 |
-| Cursor positions | 11405/11405 | 81361/81760 |
-| Startup and per-turn estimate | 60+0.59/turn | 77+0.18/turn |
+| Cells only | 11405/11405 | 82204/82252 |
+| Cursor positions | 11405/11405 | 81858/82252 |
+| Startup and per-turn estimate | 68+0.45/turn | 70+0.15/turn |
 
 ## Supplemental failures
 
-12 failing sessions, 0 with runtime errors.
+8 failing sessions, 0 with runtime errors.
 
 | Session | Identical screens | RNG calls | Failure |
 |---|---:|---:|---|
 | `bones-persistence.session.json` | 719/721 | 36988/36988 | Output mismatch |
-| `corpse-pickup-safety.session.json` | 327/329 | 23030/27674 | Output mismatch |
 | `floor-object-cancellation.session.json` | 442/443 | 16441/19365 | Output mismatch |
 | `gehennom-tour.session.json` | 107/490 | 366071/366071 | Output mismatch |
 | `mhurtle-hero-collision.session.json` | 311/316 | 5659/8262 | Output mismatch |
-| `passiveum-controls.session.json` | 1519/1521 | 55468/55468 | Output mismatch |
 | `rider-behavior.session.json` | 395/399 | 16657/20676 | Output mismatch |
 | `vamp-stone-reversion.session.json` | 359/381 | 4523/9589 | Output mismatch |
 | `variant-world-tour.session.json` | 827/833 | 123614/123614 | Output mismatch |
-| `wand-opening-falling-traps.session.json` | 226/233 | 2695/24363 | Output mismatch |
 | `wand-self-opening-sticky-holder.session.json` | 107/110 | 2858/2886 | Output mismatch |
-| `wand-self-revival.session.json` | 114/117 | 4883/4883 | Output mismatch |
 
 ## Supplemental capture caveats
 
@@ -79,6 +75,7 @@ Coverage counts describe declared scenarios, not proof that every C branch is po
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-09-03T16:18:43.726Z | `f61f728-dirty` | 11405/11405 | 81826/82252 | 7959/11265 | 3 |
 | 2026-09-03T15:46:13.842Z | `85203f6-dirty` | 11405/11405 | 81320/81760 | 7959/11265 | 3 |
 | 2026-09-03T15:39:19.297Z | `85203f6` | 11405/11405 | 79324/81760 | 7959/11265 | 3 |
 | 2026-09-01T19:30:31.080Z | `a85b128` | 11405/11405 | 77222/77607 | 6032/11265 | 3 |
@@ -88,7 +85,6 @@ Coverage counts describe declared scenarios, not proof that every C branch is po
 | 2026-09-01T15:44:44.013Z | `fbf6bb9` | 11405/11405 | 71732/72117 | 6032/11265 | 3 |
 | 2026-09-01T14:39:33.452Z | `b52e2eb` | 11405/11405 | 71612/71997 | 6032/11265 | 3 |
 | 2026-09-01T14:13:27.900Z | `901bb85` | 11405/11405 | 71484/71869 | 6032/11265 | 3 |
-| 2026-09-01T14:06:58.254Z | `b315524` | 11405/11405 | 71484/71869 | 6032/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

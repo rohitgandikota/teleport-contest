@@ -1,0 +1,81 @@
+{
+  "name": "tool-use-display",
+  "description": "C-backed tool display checks distinguish armor from worn, lit, wielded, and attached tools.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.pets",
+    "object.armor",
+    "object.tools-containers",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "inventory.doprtool.ignore-nontools",
+    "inventory.doprtool.worn-eyewear",
+    "inventory.doprtool.lit-tool",
+    "inventory.doprtool.wielded-tool",
+    "inventory.doprtool.attached-leash"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "inventory.doprtool.ignore-nontools",
+      "segment": 0,
+      "screenIncludes": ["You are not using any tools."]
+    },
+    {
+      "branch": "inventory.doprtool.worn-eyewear",
+      "segment": 1,
+      "screenIncludes": ["(being worn)"]
+    },
+    {
+      "branch": "inventory.doprtool.lit-tool",
+      "segment": 2,
+      "screenIncludes": ["(lit)"]
+    },
+    {
+      "branch": "inventory.doprtool.wielded-tool",
+      "segment": 3,
+      "screenIncludes": ["(weapon in left hand)"]
+    },
+    {
+      "branch": "inventory.doprtool.attached-leash",
+      "segment": 4,
+      "screenIncludes": ["(attached to your mastodon)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99439,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017plate mail\rWe      (  "
+    },
+    {
+      "seed": 99444,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blindfold\rPe (  "
+    },
+    {
+      "seed": 99445,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017magic lamp\rae(  "
+    },
+    {
+      "seed": 99446,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017pick-axe\rwf(  "
+    },
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame mastodon\r\u0017uncursed leash\r\u0006aek(  "
+    }
+  ]
+}

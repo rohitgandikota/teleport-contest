@@ -6,6 +6,8 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { obfree } from './invent.js';
+import { obj_extract_self } from './invent.js';
 import { mpickobj } from './steal.js';
 import { flush_screen } from './display.js';
 import { map_invisible } from './display.js';
@@ -539,38 +541,6 @@ export async function make_angry_shk(shkp, ox, oy) {
     await pline(`${shopkeeper_name(shkp)} ${shkp.mpeaceful
         ? 'gets angry' : 'is furious'}!`);
     hot_pursuit(shkp);
-}
-
-// src/zap.c:1970 poly_obj() shop tail. Transforming merchandise angers its
-// resident even though the replacement object itself is not on the bill.
-export async function shop_object_transformed(obj, replacement, x, y) {
-    if ((!replacement || replacement.where === OBJ_INVENT) && !obj.unpaid)
-        return;
-    if (!costly_spot(x, y))
-        return;
-
-    const rooms = in_rooms(x, y, SHOPBASE);
-    const shkp = shop_keeper(rooms ? rooms.charCodeAt(0) : NO_ROOM);
-    if (!shkp || !inhishop(shkp))
-        return;
-    if (obj.no_charge
-        && (!Has_contents(obj) || !contained_purchase_cost(obj, shkp)))
-        return;
-
-    if (!shkp.mpeaceful) {
-        await Norep(`${shopkeeper_name(shkp)} is furious!`);
-        return;
-    }
-
-    const heroRoom = in_rooms(game.u.ux, game.u.uy, 0)?.[0] || '';
-    const keeperRoom = in_rooms(shkp.mx, shkp.my, 0)?.[0] || '';
-    if ((game.u.ushops || '').length && heroRoom === keeperRoom
-        && !costly_spot(game.u.ux, game.u.uy)) {
-        await make_angry_shk(shkp);
-    } else {
-        await pline(`${shopkeeper_name(shkp)} gets angry!`);
-        hot_pursuit(shkp);
-    }
 }
 
 // src/shk.c:235 shkgone(): remove a dead shopkeeper's room residency and
@@ -3377,4 +3347,27 @@ export async function shkcatch(obj, x, y) {
         return shkp;
     }
     return null;
+}
+
+// src/shk.c delete_contents(); empty a container
+export function delete_contents(obj) {
+    let curr;
+
+    while ((curr = (obj.cobj && obj.cobj[0])) != null) {
+        obj_extract_self(curr);
+        obfree(curr, null);
+    }
+}
+
+// src/shk.c costly_adjacent(); is <x,y> on the shop's wall or door, or the
+// free spot one step inside the door
+export function costly_adjacent(shkp, x, y) {
+    let eshkp;
+
+    if (!shkp || !inhishop(shkp) || !isok(x, y))
+        return false;
+    eshkp = shkp.eshk;
+    /* adjacent if <x,y> is a shop wall spot, including door;
+       also treat "free spot" one step inside the door as adjacent */
+    return (!!game.level.at(x, y).edge || (x === eshkp.shk.x && y === eshkp.shk.y));
 }

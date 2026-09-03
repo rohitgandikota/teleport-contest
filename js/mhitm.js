@@ -781,7 +781,7 @@ export async function mon_poly(magr, mdef, dmg) {
         if (resists_magm(mdef)) {
             if (game.vis)
                 shieldeff_mon(mdef);
-        } else if (resist(mdef, OCLASSES.WAND_CLASS, 0, TELL)) {
+        } else if (await resist(mdef, OCLASSES.WAND_CLASS, 0, TELL)) {
             ;
         } else if (!rn2(25) && (mdef.cham ?? NON_PM) === NON_PM
                    && (mdef.mcan
@@ -843,7 +843,7 @@ export async function sleep_monst(mon, amt, how) {
         seemimic(mon);
 
     if (resists_sleep(mon) || defended(mon, ATTKS.AD_SLEE)
-        || (how >= 0 && resist(mon, how, 0, NOTELL))) {
+        || (how >= 0 && await resist(mon, how, 0, NOTELL))) {
         await shieldeff(mon.mx, mon.my);
     } else if (mon.mcanmove) {
         finish_meating(mon); /* terminate any meal-in-progress */

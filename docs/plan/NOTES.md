@@ -4597,3 +4597,36 @@ ray port 90.
 There is no `impossible` export. The convention in the tree is a comment
 (`/* impossible("...") */`) at the same spot; do not add a helper.
 
+## resist() is async; a call without await always "resists"
+
+`resist()` awaits `shieldeff_mon()` (21 animation frames) when told to
+show the effect, so it returns a promise. A caller written the C way,
+`if (!resist(...))`, sees a truthy promise and takes the resisted branch
+every time, silently. Every call site is awaited now; grep for a bare
+`resist(` after porting anything that calls it. The same applies to
+`sleep_monst()`, which lives in mhitm.js (its C file), not zap.js.
+
+## query_objlist() has the C signature
+
+`query_objlist(qstr, olist, qflags, how, allow)` returns the picks array
+(with a `counts` map) instead of C's count plus out-list. INVORDER_SORT,
+USE_INVLET, AUTOSELECT_SINGLE and INCLUDE_HERO are honored; PICK_NONE
+menus (probing a monster or a container) go through it exactly like C.
+The class grouping still uses the JS `sortloot_items` approximation of
+sortloot(), so a flags.sortloot change is not modeled.
+
+## replace_object() leaves the old object OBJ_FREE
+
+C's extract_nobj() sets `obj->where = OBJ_FREE` while unlinking, so
+poly_obj()'s closing `delobj(obj)` finds a free object and skips the
+newsym. The JS twin sets `obj.where = OBJ_FREE` after the array splice
+for the same reason; without it delobj would splice the replacement out
+of the floor list.
+
+## The invisible hero's square shows the engraving
+
+newsym()'s hero branch draws what map_location() would when the hero
+cannot see himself: an object if one is there, else the engraving glyph,
+else the background. Before, it drew the plain floor over an engraving,
+which showed up after a make-invisible self-zap on an engraved square.
+

@@ -346,12 +346,12 @@ async function maybe_turn_mon(mtmp, range) {
         mtmp.mcanmove = 1;
         return true;
     }
-    if (resist(mtmp, 0, 0, true))
+    if (await resist(mtmp, 0, 0, true))
         return false;
 
     const destroy_level = turn_destroy_levels.get(data.mlet);
     if (destroy_level !== undefined && game.u.ulevel >= destroy_level
-        && !resist(mtmp, 0, 0, false)) {
+        && !await resist(mtmp, 0, 0, false)) {
         if (game.u.ualign.type === A_CHAOTIC) {
             mtmp.mpeaceful = 1;
             set_malign(mtmp);

@@ -1,0 +1,15 @@
+{
+  "name": "wizard-object-zaps",
+  "description": "Debug-mode Wizard: wish for polymorph, striking, opening, locking, probing, teleportation, make invisible, speed and slow wands plus two chests; drop a chest and zap it (probing menu, lock, unlock, polymorph, striking, teleport), engrave and zap polymorph and striking downward, then zap probing, speed, slow, make invisible, locking and opening at yourself (bhito, poly_obj, doorlock, zap_updown, zapyourself, boxlock_invent).",
+  "coverage": [
+    "mode.debug"
+  ],
+  "segments": [
+    {
+      "seed": 7401,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r                \u0017wand of polymorph\r  \u0017wand of striking\r  \u0017wand of opening\r  \u0017wand of locking\r  \u0017wand of probing\r  \u0017wand of teleportation\r  \u0017wand of make invisible\r  \u0017wand of speed monster\r  \u0017wand of slow monster\r  \u0017chest\r  \u0017chest\r  dx  l  zsh  \r  zrh  zqh  zoh  zph  zth  E-\rElbereth\r  zo>  zp>  zs.  zv.  zw.  zu.  zr.  zq.  10s      "
+    }
+  ]
+}

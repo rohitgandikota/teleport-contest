@@ -1218,8 +1218,10 @@ export function newsym(x, y) {
            include/display.h:246 maybe_display_usteed() — while riding, the
            hero's square shows the STEED's glyph, not '@'. */
         const under = covers_objects(x, y) ? null : vobj_at(x, y);
+        /* src/display.c:422 map_location(): objects, then the engraving,
+           then the background */
         const tg = under ? floor_object_glyph(under, x, y)
-                         : terrain_glyph(loc, x, y);
+                         : (engraving_glyph(loc, x, y) ?? terrain_glyph(loc, x, y));
         const steed = game.u.usteed;
         if (canspotself() && steed && mon_visible(steed))
             show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',

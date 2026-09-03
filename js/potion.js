@@ -485,7 +485,7 @@ export async function potionhit(mon, obj, how) {
         case ONAMES.POT_CONFUSION:
         case ONAMES.POT_BOOZE: {
             const { resist } = await import('./zap.js');
-            if (!resist(mon, OCLASSES.POTION_CLASS, 0, false))
+            if (!await resist(mon, OCLASSES.POTION_CLASS, 0, false))
                 mon.mconf = 1;
             break;
         }
@@ -505,8 +505,8 @@ export async function potionhit(mon, obj, how) {
             break;
         }
         case ONAMES.POT_SLEEPING: {
-            const { sleep_monst } = await import('./zap.js');
-            if (sleep_monst(mon, rnd(12), OCLASSES.POTION_CLASS)) {
+            const { sleep_monst } = await import('./mhitm.js');
+            if (await sleep_monst(mon, rnd(12), OCLASSES.POTION_CLASS)) {
                 await pline(`${Monnam(mon)} falls asleep.`);
                 await slept_monst(mon);
             }
@@ -525,7 +525,7 @@ export async function potionhit(mon, obj, how) {
                 const first = rn2(32);
                 const second = rn2(32);
                 const { resist } = await import('./zap.js');
-                const resisted = resist(mon, OCLASSES.POTION_CLASS, 0, false);
+                const resisted = await resist(mon, OCLASSES.POTION_CLASS, 0, false);
                 const duration = 64 + first + second * !resisted
                                + (mon.mblinded | 0);
                 mon.mblinded = Math.min(duration, 127);
@@ -612,7 +612,7 @@ export async function potionhit(mon, obj, how) {
         case ONAMES.POT_ACID: {
             const { resist } = await import('./zap.js');
             if (!resists_acid(mon)
-                && !resist(mon, OCLASSES.POTION_CLASS, 0, false)) {
+                && !await resist(mon, OCLASSES.POTION_CLASS, 0, false)) {
                 await pline(`${Monnam(mon)} ${
                     is_silent(mon.data) ? 'writhes' : 'shrieks'} in pain!`);
                 if (!is_silent(mon.data))

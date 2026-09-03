@@ -6,6 +6,7 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { t_at } from './mon.js';
 import { aobjnam } from './objnam.js';
 import { has_omonst } from './const.js';
 import { OMONST } from './const.js';
@@ -1657,7 +1658,7 @@ async function trapeffect_poly_trap(mtmp, trap, trflags) {
             }
         } else if (resists_magm(mtmp)) {
             shieldeff_mon(mtmp);
-        } else if (!resist(mtmp, OCLASSES.WAND_CLASS, 0, NOTELL)) {
+        } else if (!await resist(mtmp, OCLASSES.WAND_CLASS, 0, NOTELL)) {
             newcham(mtmp, null, NC_SHOW_MSG);
             if (in_sight)
                 seetrap(trap);
@@ -5137,7 +5138,7 @@ export async function steedintrap(trap, otmp) {
         steedhit = true;
         break;
     case POLY_TRAP:
-        if (!resists_magm(steed) && !resist(steed, OCLASSES.WAND_CLASS, 0, NOTELL)) {
+        if (!resists_magm(steed) && !await resist(steed, OCLASSES.WAND_CLASS, 0, NOTELL)) {
             newcham(steed, null, NC_SHOW_MSG);
         }
         steedhit = true;

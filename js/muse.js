@@ -8,6 +8,7 @@
 // gm.m (the muse selection struct) is game.m here; find_offensive() resets
 // the offensive slice at its head exactly as C does.
 
+import { doorlock } from './lock.js';
 import { unturn_dead } from './zap.js';
 import { is_bat } from './makemon.js';
 import { mon_learns_traps, fill_pit, mintrap } from './trap.js';
@@ -45,7 +46,7 @@ import { monstseesu, monstunseesu, resists_magm, is_undead, nonliving, is_flyer,
 import { mon_offmap, is_vampshifter } from './monst.js';
 import { mongone, monkilled, healmon, mcureblindness, m_next2u, m_carrying, seemimic, wakeup, is_pool, is_lava, maybe_unhide_at } from './mon.js';
 import { paralyze_monst, make_blinded } from './potion.js';
-import { m_useup, unturn_you, bhito, dobuzz, buzz, cancel_monst, lightdamage, resist, exclam, hit, miss, zhitm, doorlock } from './zap.js';
+import { m_useup, unturn_you, bhito, dobuzz, buzz, cancel_monst, lightdamage, resist, exclam, hit, miss, zhitm } from './zap.js';
 import { makemon, is_mercenary, place_monster, remove_monster, set_malign } from './makemon.js';
 import { enexto, tele_restrict, random_teleport_level, rloc, tele } from './teleport.js';
 import { objdescr_is, observe_object, makeknown } from './o_init.js';
@@ -2471,7 +2472,7 @@ export async function mbhitm(mtmp, otmp) {
         } else if (rnd(20) < 10 + find_mac(mtmp)) {
             tmp = d(2, 12);
             await hit('wand', mtmp, exclam(tmp));
-            resist(mtmp, otmp.oclass, tmp, TELL);
+            await resist(mtmp, otmp.oclass, tmp, TELL);
             learnit = true;
         } else {
             await miss('wand', mtmp);
@@ -2515,7 +2516,7 @@ export async function mbhitm(mtmp, otmp) {
                    make_corpse() will set obj->bypass on the new corpse
                    so that mbhito() will skip it instead of reviving it */
                 (game.context ||= {}).bypasses = true; /* for make_corpse() */
-                resist(mtmp, OCLASSES.WAND_CLASS, rnd(8), NOTELL);
+                await resist(mtmp, OCLASSES.WAND_CLASS, rnd(8), NOTELL);
             }
             if (wake) {
                 if (!DEADMONSTER(mtmp))

@@ -624,11 +624,17 @@ export async function do_attack(mtmp) {
 
 const mdat_of = (mtmp) => game.mons[mtmp.mnum];
 
+// src/uhitm.c disguised_as_mon(); a mimic posing as a monster
+export function disguised_as_mon(mtmp) {
+    return (M_AP_TYPE(mtmp)
+            && M_AP_TYPE(mtmp) === M_AP_MONSTER);
+}
+
 // src/uhitm.c:6201 that_is_a_mimic() and :6282 stumble_onto_mimic().
 // Naming an object-shaped mimic manufactures the temporary object which the
 // map glyph claims is present. Even with init=false, mksobj() allocates an
 // object id, so this visible message spends one rnd(2) before revealing it.
-async function that_is_a_mimic(mtmp, mimic_flags) {
+export async function that_is_a_mimic(mtmp, mimic_flags) {
     let fmt = "Wait!  That's %s!";
     let what = null;
     const reveal_it = (mimic_flags & MIM_REVEAL) !== 0;
@@ -2064,7 +2070,7 @@ export async function hmon_hitmon(mon, obj, thrown, dieroll) {
     } else if (game.u.umconf && hmd.hand_to_hand) {
         await nohandglow(mon);
         if (!mon.mconf
-            && !resist(mon, OCLASSES.SPBOOK_CLASS, 0, false)) {
+            && !await resist(mon, OCLASSES.SPBOOK_CLASS, 0, false)) {
             mon.mconf = 1;
             if (!mon.mstun && !helpless(mon) && canseemon(mon))
                 await pline(`${Monnam(mon)} appears confused.`);
@@ -4139,7 +4145,7 @@ async function rustm(mdef, obj) {
 
 // src/uhitm.c:5218 m_is_steadfast(). Grounded Giantslayer wielders and
 // loadstone carriers resist knockback.
-function m_is_steadfast(mtmp) {
+export function m_is_steadfast(mtmp) {
     const is_u = mtmp === game.youmonst;
     const mdat = mtmp.data || game.mons[mtmp.mnum];
     const wep = is_u ? game.u.uwep : MON_WEP(mtmp);

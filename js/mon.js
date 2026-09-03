@@ -1,3 +1,19 @@
+import { migrate_monster } from './trap.js';
+import { um_dist } from './apply.js';
+import { gazemu } from './mhitu.js';
+import { aggravate } from './wizard.js';
+import { stop_occupation } from './allmain.js';
+import { ledger_no } from './dungeon.js';
+import { level_difficulty } from './dungeon.js';
+import { montoostrong } from './makemon.js';
+import { monmax_difficulty } from './makemon.js';
+import { simple_typename } from './objnam.js';
+import { The } from './objnam.js';
+import { pline_mon } from './pline.js';
+import { MON_LIMBO } from './const.js';
+import { MIGR_APPROX_XY } from './const.js';
+import { NATTK } from './const.js';
+import { c_obj_colors } from './const.js';
 import { W_AMUL } from './const.js';
 import { is_vampshifter } from './monst.js';
 import { revive_corpse } from './do.js';
@@ -3750,4 +3766,73 @@ export function mlifesaver(mon) {
             return otmp;
     }
     return null;
+}
+
+// src/mon.c mimic_hit_msg(); a disguised mimic hit by healing magic
+export async function mimic_hit_msg(mtmp, otyp) {
+    const ap = mtmp.mappearance;
+
+    switch (M_AP_TYPE(mtmp)) {
+    case M_AP_NOTHING:
+    case M_AP_FURNITURE:
+    case M_AP_MONSTER:
+        break;
+    case M_AP_OBJECT:
+        if (otyp === ONAMES.SPE_HEALING || otyp === ONAMES.SPE_EXTRA_HEALING) {
+            await pline_mon(mtmp, `${The(simple_typename(ap))} seems a more vivid ${
+                c_obj_colors[game.objects[ap].oc_color]} than before.`);
+        }
+        break;
+    }
+}
+
+/* include/monst.h:261 monmax_difficulty_lev() */
+const monmax_difficulty_lev = () => monmax_difficulty(level_difficulty());
+
+// src/mon.c m_respond_shrieker(); a shrieker shrieks and may call a purple worm
+async function m_respond_shrieker(mtmp) {
+    if (!Deaf()) {
+        await pline(`${Monnam(mtmp)} shrieks.`);
+        await stop_occupation();
+    }
+    if (!rn2(10)) { /* 1/10 chance per shriek to create a monster */
+        /* new monster has a 1/13 chance to be a purple worm, random
+           otherwise; baby purple worm if adult is too difficult */
+        await makemon(rn2(13) ? null
+                      : game.mons[montoostrong(PMNAMES.PM_PURPLE_WORM,
+                                               monmax_difficulty_lev())
+                                  ? PMNAMES.PM_BABY_PURPLE_WORM : PMNAMES.PM_PURPLE_WORM],
+                      0, 0, NO_MM_FLAGS);
+    }
+    aggravate();
+}
+
+// src/mon.c m_respond_medusa(); Medusa gazes back
+async function m_respond_medusa(mtmp) {
+    let i;
+
+    for (i = 0; i < NATTK; i++)
+        if (mtmp.data.mattk[i][0] === ATTKS.AT_GAZE) {
+            await gazemu(mtmp, mtmp.data.mattk[i]);
+            break;
+        }
+}
+
+// src/mon.c m_respond(); a monster reacts to being disturbed
+export async function m_respond(mtmp) {
+    if (mtmp.data.msound === MSOUND.MS_SHRIEK && !um_dist(mtmp.mx, mtmp.my, 1))
+        await m_respond_shrieker(mtmp);
+    if (mtmp.data === game.mons[PMNAMES.PM_MEDUSA] && couldsee(mtmp.mx, mtmp.my))
+        await m_respond_medusa(mtmp);
+    /* Erinyes will inform surrounding monsters of your crimes */
+    if (mtmp.data === game.mons[PMNAMES.PM_ERINYS] && !mtmp.mpeaceful && m_canseeu(mtmp))
+        aggravate();
+}
+
+// src/mon.c m_into_limbo(); send mtmp off the level with no destination
+export function m_into_limbo(mtmp) {
+    const target_lev = ledger_no(game.u.uz), xyloc = MIGR_APPROX_XY;
+
+    mtmp.mstate |= MON_LIMBO;
+    migrate_monster(mtmp, target_lev, xyloc);
 }

@@ -2998,3 +2998,22 @@ export function Is_sanctum(uz) { return Lcheck(uz ?? game?.u?.uz, game?.sanctum_
 // include/monst.h:268 Mgender()
 export function Mgender(mon) { return mon.female ? FEMALE : MALE; }
 
+/* src/decl.c:20 c_obj_colors[] */
+export const c_obj_colors = [
+    'black',          /* CLR_BLACK */
+    'red',            /* CLR_RED */
+    'green',          /* CLR_GREEN */
+    'brown',          /* CLR_BROWN */
+    'blue',           /* CLR_BLUE */
+    'magenta',        /* CLR_MAGENTA */
+    'cyan',           /* CLR_CYAN */
+    'gray',           /* CLR_GRAY */
+    'transparent',    /* no_color */
+    'orange',         /* CLR_ORANGE */
+    'bright green',   /* CLR_BRIGHT_GREEN */
+    'yellow',         /* CLR_YELLOW */
+    'bright blue',    /* CLR_BRIGHT_BLUE */
+    'bright magenta', /* CLR_BRIGHT_MAGENTA */
+    'bright cyan',    /* CLR_BRIGHT_CYAN */
+    'white',          /* CLR_WHITE */
+];

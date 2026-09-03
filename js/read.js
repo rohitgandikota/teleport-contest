@@ -994,7 +994,7 @@ async function seffect_scare_monster(sobj) {
             if (confused || scursed) {
                 mtmp.mflee = mtmp.mfrozen = mtmp.msleeping = 0;
                 mtmp.mcanmove = 1;
-            } else if (!resist(mtmp, sobj.oclass, 0, NOTELL))
+            } else if (!await resist(mtmp, sobj.oclass, 0, NOTELL))
                 await monflee(mtmp, 0, false, false);
             if (!mtmp.mtame)
                 ct++; /* pets don't laugh at you */
@@ -1033,7 +1033,7 @@ async function maybe_tame(mtmp, sobj) {
     }
 
     const { resist } = await import('./zap.js');
-    if (!resist(mtmp, sobj.oclass, 0, false) || mtmp.isshk) {
+    if (!await resist(mtmp, sobj.oclass, 0, false) || mtmp.isshk) {
         const { tamedog } = await import('./dog.js');
         await tamedog(mtmp, sobj, false);
     }

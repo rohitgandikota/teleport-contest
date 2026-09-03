@@ -1243,7 +1243,7 @@ async function Mb_hit(magr, mdef, mb, dmgptr, dieroll, vis, hittee) {
                 }
             }
         } else {
-            if (rn2(2) && resist(mdef, OCLASSES.WEAPON_CLASS, 0, NOTELL))
+            if (rn2(2) && await resist(mdef, OCLASSES.WEAPON_CLASS, 0, NOTELL))
                 resisted = true;
             else
                 await monflee(mdef, 3, false, (mdef.mhp > dmgptr.v));

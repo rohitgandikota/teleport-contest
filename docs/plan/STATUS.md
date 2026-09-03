@@ -1,5 +1,56 @@
 # STATUS — live handoff board
 
+## 2026-09-04: zap.c objects, monsters and self-zaps in C form
+
+zap.js's 21 notes are down to 1 (repo total 664 to 644).
+Ported in C form: `bhitm` (every wand and spell arm: striking, slow and
+speed, undead turning, polymorph with system shock and the long worm
+mcorpsenm tag, cancellation, teleportation through `u_teleport_mon`, make
+invisible with `knowninvisible`, locking and opening with the holding and
+falling trap helpers and the knock-back through `mhurtle`, saddle drop,
+healing with `mimic_hit_msg` and Healer experience, the broken-wand light
+and sleep arms, stone to flesh on golems and mimics, drain life, and the
+`m_respond` and shopkeeper pursuit tail), `bhito` (bypass handling, the
+polypile conduct, `boxlock`, `do_osshock` cover, the full probing arm with
+`display_cinventory`, striking through `breaks`/`hero_breaks` and
+`break_statue`, teleportation through `rloco`), `poly_obj` (eggs laid by
+the hero, crocodile shoes, leashes, `delete_contents`, `fixup_oil`,
+`replace_object` and the inventory swap with worn-slot handling through
+`wearslot`, the floor boulder blocking, the shop tail), `polyuse` and
+`create_polymon`, `stone_to_flesh_obj` (figurines and statue contents),
+`zapyourself` (all arms: fireball, death, light and camera, opening and
+locking with `boxlock_invent`, probing, stone to flesh with the paranoid
+merge), `zapnodir`, `resist` (async now: `shieldeff_mon` animates, and
+`is_mplayer`), `probe_monster` with `display_minventory`, and
+`wish_history_menu` as the DEBUG no-op it is. Moved to their C files:
+`doorlock` (lock.c, with the Rogue level arm, `obstructed`, shop damage and
+`picking_at`), `sleep_monst` (mhitm.c; the zap.js copy is gone). New:
+invent.c `display_minventory`, `display_cinventory`, `invdisp_nothing`,
+`worn_wield_only`, `cinv_doname`, `cinv_ansimpleoname`,
+`set_cknown_lknown`; pickup.c `query_objlist` now takes the C signature
+(qflags, how, allow) with `allow_all` and the engulfer entry; mkobj.c
+`fixup_oil`, `replace_object`, `stone_furniture_type`,
+`stone_object_type`; worn.c `wearslot`, `bypass_obj`; shk.c
+`delete_contents`, `costly_adjacent`; mon.c `mimic_hit_msg`, `m_respond`
+(shrieker and Medusa), `m_into_limbo`; makemon.c `newmcorpsenm`;
+teleport.c `rloco`, `u_teleport_mon`; apply.c `um_dist`; uhitm.c
+`disguised_as_mon`; decl.c `c_obj_colors`. display.c: the invisible hero's
+square shows the engraving under him (map_location order).
+
+Probe `wizard-object-zaps` (C recording, 2824 RNG calls, 353 screens): a
+level 14 Wizard wishes for nine wands and two chests, drops a chest and
+zaps it with probing (the contents menu), locking, opening, polymorph,
+striking and teleportation, engraves and zaps polymorph and striking
+downward, then zaps probing, speed, slow, make invisible, locking and
+opening at himself. Byte-identical, as are the two earlier probes. Gate:
+44/44, animFrames 90 of 1483.
+
+Next, by note count: eat.js 30, dokick.js 27, apply.js 27, mon.js 26, mhitu.js 24, hack.js 23, spell.js 22, invent.js 20. zap.js has no notes left.
+Follow-ups: `controlled_newcham` in zap.js is the JS home of the
+wizard-mode polymorph prompt that C keeps in mon.c `newcham` (JS `newcham`
+is sync); `sortloot` is still the JS approximation inside `query_objlist`;
+`tmp_at` is not ported.
+
 ## 2026-09-03 (night): zap.c rays and beams in C form
 
 zap.js's 42 notes are down to 21 (repo total 685 to 664).

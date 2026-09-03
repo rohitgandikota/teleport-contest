@@ -549,7 +549,7 @@ export async function explode(x, y, type, dam, olet, expltype) {
                 } else {
                     let mdam = dam;
 
-                    if (resist(mtmp, olet, 0, false)) {
+                    if (await resist(mtmp, olet, 0, false)) {
                         /* inside_engulfer: <xx,yy> == <u.ux,u.uy> */
                         if (cansee(xx, yy) || inside_engulfer)
                             await pline(`${Monnam(mtmp)} resists the ${str}!`);

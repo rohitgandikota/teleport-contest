@@ -1,3 +1,7 @@
+import { allow_all } from './pickup.js';
+import { PICK_ANY } from './const.js';
+import { USE_INVLET } from './const.js';
+import { INVORDER_SORT } from './const.js';
 import { Has_contents } from './obj.js';
 import { COST_DEGRD } from './const.js';
 import { costly_alteration } from './shk.js';
@@ -1932,7 +1936,8 @@ export async function doddrop() {
             const eligible = game.invent.filter(
                 (obj) => all_categories || allow_category(obj));
             const objects = await query_objlist(
-                'What would you like to drop?', eligible, true);
+                'What would you like to drop?', eligible,
+                INVORDER_SORT | USE_INVLET, PICK_ANY, allow_all);
             for (const obj of objects) {
                 if (game.invent.includes(obj)) {
                     const count = objects.counts?.get(obj) ?? obj.quan;

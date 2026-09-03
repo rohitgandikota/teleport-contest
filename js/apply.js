@@ -2987,3 +2987,8 @@ export async function maybe_dunk_boulders(x, y) {
         await boulder_hits_pool(otmp, x, y, false);
     }
 }
+
+// src/apply.c um_dist(); is <x,y> more than n squares from the hero?
+export function um_dist(x, y, n) {
+    return (Math.abs(game.u.ux - x) > n || Math.abs(game.u.uy - y) > n);
+}

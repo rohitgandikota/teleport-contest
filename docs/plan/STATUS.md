@@ -1,5 +1,39 @@
 # STATUS — live handoff board
 
+## 2026-09-03: counted non-time command cleanup verified
+
+Runtime checkpoint `a80b4d7` is committed and pushed. C's `rhack` calls
+`reset_cmd_vars` after a command returns `ECMD_OK` without `ECMD_TIME`. JS
+kept the parsed count alive. In `fuzz-s4-00`, `30)` therefore showed the
+wielded weapon repeatedly, raised an extra `--More--`, consumed the following
+newline as acknowledgement, and never reached the later monster turns whose
+missing RNG was mislabeled as `distfleeck`. The port now clears the same run,
+no-pickup, force-fight, movement, repeat-count, menu-request, and travel state
+as C, while preserving the repeat queue after an ordinary successful command.
+
+`fuzz-s4-00` is now fully byte-identical at **301/301 screens** and
+**2,953/2,953 RNG**. A second fuzz game gains two screens. Across all random
+play, the port improves from **78/102 to 79/102 fully passing**, from **96/102
+to 97/102 RNG-perfect**, from **13,426/14,262 to 13,439/14,262 screens**, and
+from **466,575/491,759 to 466,732/491,759 RNG**. New independent C recording
+`counted-command-reset` is byte-identical at **8/8 screens** and **2,635/2,635
+RNG**, with a concrete assertion that the counted non-time command does not
+repeat into a `--More--` prompt.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **343/350**, **82,568/82,991 screens**,
+and **4,339,347/4,353,959 RNG**, with the same seven failures and zero runtime
+errors. The hang gate is clean, fresh-seed smoke is 80/80, the source audit
+has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **823/823 explicit branches**.
+
+The dashboard refreshed at 2026-09-03T18:17:38Z. Held-out remains
+**8,498/11,265**, **16/44**, rank 3 overall and rank 1/9 among agentic entries.
+The published judge timestamp still predates `a80b4d7`, so its hidden effect is
+unknown. Next: re-rank the remaining 23 fuzz failures by earliest reproducible
+cause. Prefer a shared early state divergence over a late screen-only cosmetic
+miss, and keep `distfleeck` behind any earlier differing monster state.
+
 ## 2026-09-03: throw guards and active-tool display verified
 
 Runtime checkpoints `1c20413` and `5593394` are committed and pushed. The

@@ -12,12 +12,13 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-09-03
 
-Continue from pushed checkpoint `5593394`. The protected starting baseline is
+Continue from pushed checkpoint `a80b4d7`. The protected starting baseline is
 `85203f6` on `codex/last-working-heldout-7959-2026-09-03`. The latest published
 score is 11,405 public plus 8,498 held-out screens, with 44 plus 16 passing
 sessions. The live measurements and failures are in
 [contest-dashboard.md](contest-dashboard.md). The judge run predates
-`97bcf38`, `1c20413`, and `5593394`, so their hidden effect is still unknown.
+`97bcf38`, `1c20413`, `5593394`, and `a80b4d7`, so their hidden effect is still
+unknown.
 
 Work is in M12 differential hardening across the already ported subsystems.
 Prioritize a reproduced runtime error or first C divergence, add a C oracle or
@@ -37,15 +38,16 @@ held-out result has been published. Its clean-commit dashboard is current.
 Checkpoint `7e6587e` then fixes the C switch-to-JavaScript loop control error in
 polymorphed hug attacks. Checkpoint `97bcf38` adds C's command-table validation
 for the `m` prefix. Checkpoint `1c20413` ports C's throw release guards, and
-`5593394` ports C's active-tool predicate plus attached-leash naming. The
-supplemental corpus is now **342/349**, **82,560/82,983 screens**, and
-**4,336,712/4,351,324 RNG**. Fuzz is **78/102 fully passing**, **96/102
-RNG-perfect**, and **13,426/14,262 screens**. Public, hang, fresh-seed,
-source-audit, and frozen-file gates are green. Declared coverage is **99/106
-categories**, seven partial, and **822/822 explicit branch cases**. Next,
-diagnose the counted `)` equipment-display mismatch now exposed in
-`fuzz-s4-00` before changing its later `distfleeck` path. The saved goal is
-active. See STATUS.md for exact evidence and caveats.
+`5593394` ports C's active-tool predicate plus attached-leash naming.
+Checkpoint `a80b4d7` ports C's successful non-time command cleanup, making one
+additional fuzz game fully byte-identical. The supplemental corpus is now
+**343/350**, **82,568/82,991 screens**, and **4,339,347/4,353,959 RNG**. Fuzz
+is **79/102 fully passing**, **97/102 RNG-perfect**, and **13,439/14,262
+screens**. Public, hang, fresh-seed, source-audit, and frozen-file gates are
+green. Declared coverage is **99/106 categories**, seven partial, and
+**823/823 explicit branch cases**. Next, re-rank the remaining fuzz failures
+from their earliest C/JS state divergence. The saved goal is active. See
+STATUS.md for exact evidence and caveats.
 
 ## Historical milestone checklist, July 2026
 

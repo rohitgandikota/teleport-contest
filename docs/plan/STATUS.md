@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-09-03: monster iron-bar eligibility verified
+
+`fuzz-s3-10` appeared to diverge at `src/monmove.c:distfleeck`, but the
+preceding pet move exposed the real cause. Pinned C `src/mondata.c:passes_bars`
+uses `verysmall`, whose size boundary excludes `MZ_SMALL`. The JS helper used
+`msize <= MZ_SMALL`, so a kitten treated two iron-bar squares as valid movement
+candidates. That changed `dog_move` from six candidates to eight and shifted
+all later RNG calls. The helper also lacked the C arms for whirly monsters,
+rust and corrosion attacks, metallivores, and non-large slithy monsters. The
+port now implements the complete pinned predicate.
+
+The new debug-mode C recording `pet-iron-bars-small-size` wishes iron bars
+beneath the hero and pins the kitten's next square. It fails at **27/28
+screens** before the fix, while all **2,868/2,868 RNG** calls already match.
+After the fix it is byte-identical at **28/28 screens** and **2,868/2,868
+RNG**. The `jsplay` debugger now has a `--dogtrace` switch so future pet
+candidate-order failures can be inspected without editing runtime code.
+
+`fuzz-s3-10` improves from **291/301 to 301/301 screens** and becomes exact at
+**16,743/16,743 RNG**. Across all random play, fully passing games improve from
+**99/102 to 100/102**, screens from **14,131/14,262 to 14,141/14,262**, and RNG
+from **481,096/491,759 to 491,477/491,759**, with **101/102** games RNG-exact.
+One real failure remains, `fuzz-s3-21`; the other is the known recorder-time
+DST screen artifact.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **362/369**, **82,911/83,334 screens**,
+and **4,420,204/4,434,816 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **852/852 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next:
+diagnose the earliest causal state mismatch in `fuzz-s3-21` before changing
+the `mcalcmove` site named by its later RNG divergence.
+
 ## 2026-09-03: distant farlook object names verified
 
 After the jump-input fix, `fuzz-s2-22` had exact RNG and one remaining screen

@@ -761,7 +761,7 @@ export async function drop_boulder_on_player(confused, helmet_protects, byu,
     } else
         dmg = 0;
     /* Must be before the losehp(), for bones files */
-    wake_nearto(u.ux, u.uy, 4 * 4);
+    await wake_nearto(u.ux, u.uy, 4 * 4);
     if (!(await flooreffects(otmp2, u.ux, u.uy, 'fall'))) {
         place_object(otmp2, u.ux, u.uy);
         stackobj(otmp2);
@@ -821,7 +821,7 @@ export async function drop_boulder_on_monster(x, y, confused, byu) {
         } else {
             await wakeup(mtmp, byu);
         }
-        wake_nearto(x, y, 4 * 4);
+        await wake_nearto(x, y, 4 * 4);
     } else if (engulfing_u(mtmp)) {
         obfree(otmp2);
         /* fall through to player */

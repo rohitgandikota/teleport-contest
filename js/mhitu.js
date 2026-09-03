@@ -439,7 +439,7 @@ async function explmu(mtmp, mattk, ufound, indx) {
     }
     if (kill_agr && !DEADMONSTER(mtmp))
         await mondead(mtmp);
-    wake_nearto(mtmp.mx, mtmp.my, 7 * 7);
+    await wake_nearto(mtmp.mx, mtmp.my, 7 * 7);
     return (!DEADMONSTER(mtmp)) ? M_ATTK_MISS : M_ATTK_AGR_DIED;
 }
 

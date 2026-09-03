@@ -740,7 +740,7 @@ async function use_bell(obj) {
         obj.known = 1;
     }
     if (wake)
-        wake_nearby(true);
+        await wake_nearby(true);
     update_inventory();
 }
 
@@ -2011,7 +2011,7 @@ async function use_whistle(obj) {
             await You_feel(`rushing air tickle your ${body_part(NOSE)}.`);
         else
             await You(`produce a ${obj.cursed ? 'shrill' : 'high'} whistling sound.`);
-        wake_nearby(true);
+        await wake_nearby(true);
         if (obj.cursed)
             note_unported_apply('use_whistle:vault_summon_gd');
     }
@@ -2115,7 +2115,7 @@ async function use_magic_whistle(obj) {
     } else if (obj.cursed && !rn2(2)) {
         await You(`produce a ${Underwater() ? 'very ' : ''}high-${Deaf()
             ? 'frequency vibration' : 'pitched humming noise'}.`);
-        wake_nearby(true);
+        await wake_nearby(true);
         if (!rn2(2))
             note_unported_apply('use_magic_whistle:tele_to_rnd_pet');
     } else {

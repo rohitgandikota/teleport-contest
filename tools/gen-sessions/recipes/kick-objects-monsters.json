@@ -1,0 +1,27 @@
+{
+  "name": "kick-objects-monsters",
+  "description": "Debug Wizard drops wished objects (gold, large box, locked chest, dagger, potion, boulder) and kicks them, then kicks created monsters (lichen, acid blob) in every direction.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.unarmed-kick",
+    "objects.kick",
+    "objects.containers",
+    "combat.passive",
+    "ui.getlin"
+  ],
+  "segments": [
+    {
+      "seed": 7601,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017500 gold pieces\r  d$  l  \u0004h  \u0017large box\r  do  l  \u0004h  \u0004h  \u0017locked chest\r  dp  l  \u0004h  \u0004h  \u0017dagger\r  dq  l  \u0004h  \u0017potion of water\r  dr  l  \u0004h  \u0017boulder\r  l  \u0004h  \u0004h  "
+    },
+    {
+      "seed": 7602,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007lichen\r  \u0004h  \u0004j  \u0004k  \u0004l  \u0004y  \u0004u  \u0004b  \u0004n  \u0004h  \u0004j  \u0004k  \u0004l  \u0004y  \u0004u  \u0004b  \u0004n  \u0007acid blob\r  \u0004h  \u0004j  \u0004k  \u0004l  \u0004y  \u0004u  \u0004b  \u0004n  "
+    }
+  ]
+}

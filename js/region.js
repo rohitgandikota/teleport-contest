@@ -231,7 +231,7 @@ async function inside_gas_cloud(reg) {
         await pline(`Something is burning your ${makeplural(body_part(LUNG))}!`);
         await You('cough and spit blood!');
         const { wake_nearto } = await import('./mon.js');
-        wake_nearto(game.u.ux, game.u.uy, 2);
+        await wake_nearto(game.u.ux, game.u.uy, 2);
         damage = rnd(damage) + 5;
         if (game.u.uprops?.HALF_PHDAM)
             damage = Math.trunc((damage + 1) / 2);
@@ -242,7 +242,7 @@ async function inside_gas_cloud(reg) {
     } else {
         await You('cough!');
         const { wake_nearto } = await import('./mon.js');
-        wake_nearto(game.u.ux, game.u.uy, 2);
+        await wake_nearto(game.u.ux, game.u.uy, 2);
     }
 }
 

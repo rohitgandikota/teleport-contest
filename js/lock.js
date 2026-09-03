@@ -64,6 +64,46 @@ import { There } from './pline.js';
 import { block_point, recalc_block_point } from './vision.js';
 import { tty_yn_function } from './tty/topl.js';
 import { is_drawbridge_wall } from './dbridge.js';
+import { an } from './objnam.js';
+import { breathless } from './mondata.js';
+import { haseyes } from './mondata.js';
+import { bottlename } from './potion.js';
+import { potionbreathe } from './potion.js';
+import { MATERIALS } from './objects_data.js';
+import { costly_alteration } from './shk.js';
+import { costly_spot } from './shk.js';
+import { shop_keeper } from './shk.js';
+import { stolen_value } from './shk.js';
+import { COST_BRKLCK } from './const.js';
+import { obfree } from './invent.js';
+import { currency } from './invent.js';
+import { start_corpse_timeout } from './mkobj.js';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function note_unported_lock(what) {
     (game.unported ||= new Set()).add(what);
@@ -770,67 +810,102 @@ function greatest_erosion(otmp) {
     return (e1 > e2) ? e1 : e2;
 }
 
-// src/mkobj.c chest_shatter_msg() — one item destroyed inside a smashed box.
+// src/lock.c:129 chest_shatter_msg(); a container item was destroyed
 async function chest_shatter_msg(otmp) {
     let disposition;
+    let thing;
+    let save_HBlinded, save_BBlinded;
 
     if (otmp.oclass === OCLASSES.POTION_CLASS) {
-        /* bottlename() picks a random flavour word for an unidentified
-           potion, and potionbreathe() applies the vapours */
-        note_unported_lock('chest_shatter_msg:potion');
+        await You(`${Blind() ? 'hear' : 'see'} ${an(bottlename())} shatter!`);
+        if (!breathless(game.youmonst.data) || haseyes(game.youmonst.data))
+            await potionbreathe(otmp);
         return;
     }
-    /* C sets HBlinded=1 / BBlinded=0 across singular() so the name comes out
-       as the plain object type rather than its unidentified appearance --
-       "a spellbook", not "a white spellbook". */
-    const save_ublind = game.u.ublind;
+    /* We have functions for distant and singular names, but not one */
+    /* which does _both_... */
+    /* u.ublind is the JS twin of HBlinded; the BBlinded half has no twin */
+    save_HBlinded = game.u.ublind,  save_BBlinded = 0;
     game.u.ublind = 1;
-    const thing = singular(otmp, xname);
-    game.u.ublind = save_ublind;
+    thing = singular(otmp, xname);
+    game.u.ublind = save_HBlinded;
     switch (game.objects[otmp.otyp].oc_material) {
-    case PAPER:  disposition = 'is torn to shreds'; break;
-    case WAX:    disposition = 'is crushed'; break;
-    case VEGGY:  disposition = 'is pulped'; break;
-    case FLESH:  disposition = 'is mashed'; break;
-    case GLASS:  disposition = 'shatters'; break;
-    case WOOD:   disposition = 'splinters to fragments'; break;
-    default:     disposition = 'is destroyed'; break;
+    case MATERIALS.PAPER:
+        disposition = 'is torn to shreds';
+        break;
+    case MATERIALS.WAX:
+        disposition = 'is crushed';
+        break;
+    case MATERIALS.VEGGY:
+        disposition = 'is pulped';
+        break;
+    case MATERIALS.FLESH:
+        disposition = 'is mashed';
+        break;
+    case MATERIALS.GLASS:
+        disposition = 'shatters';
+        break;
+    case MATERIALS.WOOD:
+        disposition = 'splinters to fragments';
+        break;
+    default:
+        disposition = 'is destroyed';
+        break;
     }
     await pline(`${An(thing)} ${disposition}!`);
 }
 
-// src/lock.c:162 breakchestlock()
-async function breakchestlock(box, destroyit) {
+// src/lock.c:162 breakchestlock(); the lock is broken (kick, #force) or the box
+// itself is destroyed (#force with a blunt weapon)
+export async function breakchestlock(box, destroyit) {
     if (!destroyit) { /* bill for the box but not for its contents */
-        if (game.u.ushops)
-            note_unported_lock('breakchestlock:costly_alteration');
+        const hide_contents = box.cobj;
+
+        box.cobj = [];
+        await costly_alteration(box, COST_BRKLCK);
+        box.cobj = hide_contents;
         box.olocked = 0;
         box.obroken = 1;
         box.lknown = 1;
-        return;
-    }
-    /* #force has destroyed this box (at <u.ux,u.uy>) */
-    if (game.u.ushops)
-        note_unported_lock('breakchestlock:shop_loss');
+    } else { /* #force has destroyed this box (at <u.ux,u.uy>) */
+        let otmp;
+        const shkp = (game.u.ushops && costly_spot(game.u.ux, game.u.uy))
+                     ? shop_keeper(game.u.ushops.charCodeAt(0))
+                     : null;
+        const costly = (shkp != null),
+              peaceful_shk = costly && !!shkp.mpeaceful;
+        let loss = 0;
 
-    await pline(`In fact, you've totally destroyed ${the(xname(box))}.`);
-    /* Put the contents on ground at the hero's feet. */
-    let otmp;
-    while ((otmp = (box.cobj && box.cobj[0]) || null) !== null) {
-        obj_extract_self(otmp);
-        if (!rn2(3) || otmp.oclass === OCLASSES.POTION_CLASS) {
-            await chest_shatter_msg(otmp);
-            if (otmp.quan === 1)
-                continue;       /* obfree(): the object is simply gone */
-            /* this works because we're sure to have at least 1 left */
-            useup(otmp);
+        await pline(`In fact, you've totally destroyed ${the(xname(box))}.`);
+        /* Put the contents on ground at the hero's feet. */
+        while ((otmp = (box.cobj && box.cobj[0])) != null) {
+            obj_extract_self(otmp);
+            if (!rn2(3) || otmp.oclass === OCLASSES.POTION_CLASS) {
+                await chest_shatter_msg(otmp);
+                if (costly)
+                    loss += await stolen_value(otmp, game.u.ux, game.u.uy, peaceful_shk,
+                                               true);
+                if (otmp.quan === 1) {
+                    obfree(otmp, null);
+                    continue;
+                }
+                /* this works because we're sure to have at least 1 left;
+                   otherwise it would fail since otmp is not in inventory */
+                useup(otmp);
+            }
+            if (box.otyp === ONAMES.ICE_BOX && otmp.otyp === ONAMES.CORPSE) {
+                otmp.age = game.moves - otmp.age; /* actual age */
+                start_corpse_timeout(otmp);
+            }
+            place_object(otmp, game.u.ux, game.u.uy);
+            stackobj(otmp);
         }
-        if (box.otyp === ONAMES.ICE_BOX && otmp.otyp === ONAMES.CORPSE)
-            note_unported_lock('breakchestlock:ice_box_corpse');
-        place_object(otmp, game.u.ux, game.u.uy);
-        stackobj(otmp);
+        if (costly)
+            loss += await stolen_value(box, game.u.ux, game.u.uy, peaceful_shk, true);
+        if (loss)
+            await You(`owe ${loss} ${currency(loss)} for objects destroyed.`);
+        await delobj(box);
     }
-    delobj(box);
 }
 
 
@@ -864,7 +939,7 @@ export async function forcelock() {
             return (xl.usedtime = 0);
         }
     } else {            /* blunt */
-        wake_nearby(false); /* due to hammering on the container */
+        await wake_nearby(false); /* due to hammering on the container */
     }
 
     if (rn2(100) >= xl.chance)
@@ -1170,7 +1245,7 @@ export async function doorlock(otmp, x, y) {
         await pline(msg);
     if (loudness > 0) {
         /* door was destroyed */
-        wake_nearto(x, y, loudness);
+        await wake_nearto(x, y, loudness);
         if (in_rooms(x, y, SHOPBASE).length)
             add_damage(x, y, 0);
     }

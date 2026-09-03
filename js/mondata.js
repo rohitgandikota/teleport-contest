@@ -1055,6 +1055,7 @@ export function noit_mhis(mtmp) {
 }
 import { genders as genders_tbl } from './role_data.js';
 
+
 // include/mondata.h:71 digests() — swallow-and-digest engulfer (purple worm).
 export const digests = (ptr) =>
     dmgtype_fromattack(ptr, ATTKS.AD_DGST, ATTKS.AT_ENGL) != null;
@@ -1082,3 +1083,7 @@ export function mon_hates_light(mon) {
 
 /* include/mondata.h likes_gold() */
 export const likes_gold = (ptr) => ((ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0);
+
+/* include/mondata.h:159 is_watch() */
+export const is_watch = (ptr) =>
+    (ptr === game.mons[PMNAMES.PM_WATCHMAN] || ptr === game.mons[PMNAMES.PM_WATCH_CAPTAIN]);

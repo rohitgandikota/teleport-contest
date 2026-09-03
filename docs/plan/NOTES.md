@@ -4652,3 +4652,52 @@ newsym()'s hero branch used to paint '@' itself, so `youmonst.m_ap_type`
 (a mimic corpse's gold disguise, #monster mimicry) never showed. It now
 calls display_self(), which has the furniture, object and monster arms.
 
+## New imports go after the last import statement
+
+The edit-script helper `add_import` used to insert a new `import` line at
+the top of the import block. ESM evaluates a module's dependencies in
+import order, so a new edge placed first changes the evaluation order of
+everything below it. The kick batch added `mon.js -> teleport.js` that
+way and coloratt.js then evaluated while tty/wintty.js was still in
+progress: "Cannot access 'ATR_NONE' before initialization". Appending
+the new statement after the last existing import keeps the old order for
+existing edges and only walks the new edge last. The helper now appends;
+keep it that way.
+
+## Recipes start with a space
+
+The welcome message ends in --More--, and the first key of a recipe
+dismisses it. A recipe whose moves start with ^W loses the wish key to
+that prompt; the wish text then runs as commands and an inventory letter
+opens the 5.0 item-action menu. Every recipe's moves start with a space.
+
+## wake_nearto() and wake_nearby() are async
+
+mon.c `wake_nearto_core` prints through `wake_msg` ("The newt wakes up"
+style messages), so `wake_nearto`, `wake_nearby` and shk.c `noisy_shop`
+are async and every caller awaits them. A sync caller silently skips
+the wake (and its message) and the next monster move diverges. The old
+`wake_nearto_with_messages` split is gone.
+
+## costly_gold() takes (x, y, amount, silent)
+
+The C finds the shopkeeper from the square (`in_rooms`/`shop_keeper`),
+so the JS signature is the C one. addtobill passes `obj.ox, obj.oy` and
+really_kick_object passes the kicked square.
+
+## Door wishes need a door or wall square
+
+objnam.c `wizterrainwish` only turns an existing door, secret door, wall
+or iron bars square into a door ("Door requires door or wall location").
+A probe cannot conjure a door where the hero stands, so kick_door has no
+dedicated probe yet; the seed0060 kick-search session covers the plain
+"WHAMM!!" arm.
+
+## Empty-direction kicks strain the leg one time in three
+
+kick_dumb rolls `rn2(3)` for "Dumb move!  You strain a muscle." unless the
+hero has martial arts or Dex 16+. After that every kick refuses with
+"Your right leg is in no shape for kicking" (plus a forced --More--) for
+5+rnd(5) turns. A kick probe that sweeps all eight directions to find a
+created monster loses most of its coverage that way; put the kicks that
+matter first, or create the monster and kick into it with fewer misses.

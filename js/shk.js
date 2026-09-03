@@ -84,6 +84,8 @@ import { block_point, cansee } from './vision.js';
 import { del_engr_at } from './engrave.js';
 import { Norep, You_feel, You_hear } from './pline.js';
 
+
+
 // src/shk.c:1449 hot_pursuit() — the shopkeeper starts following you.
 //
 // The isshk guard is not redundant: wakeup() calls this for any peaceful
@@ -1073,29 +1075,43 @@ function count_unpaid_contents(obj) {
 
 // src/shk.c:5745 costly_gold(). Picking shop-floor gold back up first consumes
 // credit, then becomes debt and a loan if the credit is insufficient.
-async function costly_gold(amount, shkp, silent) {
-    const eshk = shkp.eshk || ESHK(shkp);
-    if ((eshk.credit || 0) >= amount) {
-        if (!silent) {
-            await pline(eshk.credit > amount
-                ? `Your credit is reduced by ${amount} ${currency(amount)}.`
-                : 'Your credit is erased.');
-        }
-        eshk.credit -= amount;
-        return;
-    }
+export async function costly_gold(x, y, amount, silent) {
+    let delta;
+    let shkp;
+    let eshkp;
 
-    const delta = amount - (eshk.credit || 0);
-    if (!silent) {
-        if (eshk.credit)
-            await pline('Your credit is erased.');
-        await pline(eshk.debit
-            ? `Your debt increases by ${delta} ${currency(delta)}.`
-            : `You owe ${shopkeeper_name(shkp)} ${delta} ${currency(delta)}.`);
+    if (!costly_spot(x, y))
+        return;
+    /* shkp is guaranteed to exist after successful costly_spot(), but
+       the static analyzer isn't smart enough to realize that, so follow
+       the shkp assignment with a redundant test that will always fail */
+    shkp = shop_keeper(in_rooms(x, y, SHOPBASE).charCodeAt(0));
+    if (!shkp)
+        return;
+
+    eshkp = shkp.eshk;
+    if (eshkp.credit >= amount) {
+        if (!silent) {
+            if (eshkp.credit > amount)
+                await Your(`credit is reduced by ${amount} ${currency(amount)}.`);
+            else
+                await Your('credit is erased.');
+        }
+        eshkp.credit -= amount;
+    } else {
+        delta = amount - eshkp.credit;
+        if (!silent) {
+            if (eshkp.credit)
+                await Your('credit is erased.');
+            if (eshkp.debit)
+                await Your(`debt increases by ${delta} ${currency(delta)}.`);
+            else
+                await You(`owe ${shkname(shkp)} ${delta} ${currency(delta)}.`);
+        }
+        eshkp.debit += delta;
+        eshkp.loan += delta;
+        eshkp.credit = 0;
     }
-    eshk.debit = (eshk.debit || 0) + delta;
-    eshk.loan = (eshk.loan || 0) + delta;
-    eshk.credit = 0;
 }
 
 // src/shk.c:3490 addtobill(), including container contents and gold.
@@ -1119,7 +1135,7 @@ export async function addtobill(obj, ininv, dummy, silent) {
         return;
     }
     if (obj.oclass === OCLASSES.COIN_CLASS) {
-        await costly_gold(obj.quan || 1, shkp, silent);
+        await costly_gold(obj.ox, obj.oy, obj.quan, silent);
         return;
     }
 
@@ -1143,7 +1159,7 @@ export async function addtobill(obj, ininv, dummy, silent) {
         price += contentsPrice;
 
         if (containedGold) {
-            await costly_gold(containedGold, shkp, silent);
+            await costly_gold(obj.ox, obj.oy, containedGold, silent);
             if (!price)
                 return;
         }
@@ -2933,10 +2949,10 @@ export function tended_shop(sroom) {
 }
 
 // src/shk.c:1126 noisy_shop() — shop sounds wake the neighborhood.
-export function noisy_shop(sroom) {
+export async function noisy_shop(sroom) {
     const mtmp = sroom.resident;
     if (mtmp && inhishop(mtmp))
-        wake_nearto(mtmp.mx, mtmp.my, 11 * 11);
+        await wake_nearto(mtmp.mx, mtmp.my, 11 * 11);
 }
 
 // include/dungeon.h:112 on_level()

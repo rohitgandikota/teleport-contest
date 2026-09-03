@@ -326,7 +326,7 @@ export async function b_trapped(item, bodypart) {
     const lvl = level_difficulty();
     let dmg = rnd(5 + (lvl < 5 ? lvl : 2 + Math.trunc(lvl / 2)));
     await pline(`KABOOM!!  The ${item} was booby-trapped!`);
-    wake_nearby(false);
+    await wake_nearby(false);
     if (game.u.uprops?.HALF_PHYS)
         dmg = Math.trunc((dmg + 1) / 2);
     await losehp(dmg, 'explosion', KILLED_BY_AN);
@@ -490,7 +490,7 @@ export async function chest_trap(obj, bodypart, disarm) {
                     delobj(floorObj);
                 }
             }
-            wake_nearby(false);
+            await wake_nearby(false);
             let damage = d(6, 6);
             if (game.u.uprops?.HALF_PHYS)
                 damage = Math.trunc((damage + 1) / 2);
@@ -1443,7 +1443,7 @@ async function trapeffect_sqky_board(mtmp, trap, trflags) {
                 Deaf() ? 'vibrates' : 'squeaks '}${
                 Deaf() ? '' : trapnote(trap, false)}${
                 Deaf() ? '' : ' loudly'}.`);
-            wake_nearby(false);
+            await wake_nearby(false);
         }
     } else {
         const in_sight = canseemon(mtmp) || (mtmp === game.u.usteed);
@@ -1470,7 +1470,7 @@ async function trapeffect_sqky_board(mtmp, trap, trflags) {
                     ? 'nearby' : 'in the distance'}.`);
         }
         /* wake up nearby monsters */
-        wake_nearto(mtmp.mx, mtmp.my, 40);
+        await wake_nearto(mtmp.mx, mtmp.my, 40);
     }
     return Trap_Effect_Finished;
 }
@@ -1787,7 +1787,7 @@ async function domagictrap() {
 
         while (cnt--)
             makemon(null, game.u.ux, game.u.uy, NO_MM_FLAGS);
-        wake_nearto(game.u.ux, game.u.uy, 7 * 7);
+        await wake_nearto(game.u.ux, game.u.uy, 7 * 7);
         return;
     }
 
@@ -1926,7 +1926,7 @@ export async function blow_up_landmine(trap) {
                   MAY_DESTROY | MAY_HIT | MAY_FRACTURE | VIS_EFFECTS,
                   null);
     del_engr_at(x, y);
-    wake_nearto(x, y, 400);
+    await wake_nearto(x, y, 400);
     if (IS_DOOR(lev.typ))
         lev.doormask = D_BROKEN;
     /* destroy drawbridge if present */
@@ -4913,7 +4913,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
                 singleobj.otrapped = 0;
                 place_object(singleobj, x, y);
                 singleobj = otmp2;
-                wake_nearto(x, y, 100);
+                await wake_nearto(x, y, 100);
             }
         }
 
@@ -4944,7 +4944,7 @@ export async function launch_obj(otyp, x1, y1, x2, y2, style) {
                 finaly = y;
                 if (!Deaf())
                     await pline('Thump!');
-                wake_nearto(x, y, 16);
+                await wake_nearto(x, y, 16);
                 break;
             }
         }

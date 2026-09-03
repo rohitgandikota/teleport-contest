@@ -1367,7 +1367,7 @@ export async function hmonas(mon) {
 // The physical arm covers claws, kicks, touches, and hugs. Other damage types
 // retain their base dice while their special side effects remain explicit in
 // the unported ledger.
-async function damageum(mon, mattk, specialdmg) {
+export async function damageum(mon, mattk, specialdmg) {
     let damage = d(mattk[2], mattk[3]);
     const aatyp = mattk[0];
 

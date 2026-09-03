@@ -560,7 +560,7 @@ export async function potionhit(mon, obj, how) {
                     await pline(`${Monnam(mon)} ${
                         is_silent(mon.data) ? 'writhes' : 'shrieks'} in pain!`);
                     if (!is_silent(mon.data))
-                        wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
+                        await wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
                     mon.mhp -= d(2, 6);
                     if ((mon.mhp | 0) <= 0)
                         await killed(mon);
@@ -616,7 +616,7 @@ export async function potionhit(mon, obj, how) {
                 await pline(`${Monnam(mon)} ${
                     is_silent(mon.data) ? 'writhes' : 'shrieks'} in pain!`);
                 if (!is_silent(mon.data))
-                    wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
+                    await wake_nearto(tx, ty, (mon.data.mlevel | 0) * 10);
                 mon.mhp -= d(obj.cursed ? 2 : 1, obj.blessed ? 4 : 8);
                 if ((mon.mhp | 0) <= 0)
                     await killed(mon);
@@ -1846,7 +1846,7 @@ async function dip_potion_explosion(obj, damage) {
 
     obj.in_use = true;
     await pline(`${game.u.uprops?.DEAF ? '' : 'BOOM!  '}They explode!`);
-    wake_nearto(game.u.ux, game.u.uy, (BOLT_LIM + 1) * (BOLT_LIM + 1));
+    await wake_nearto(game.u.ux, game.u.uy, (BOLT_LIM + 1) * (BOLT_LIM + 1));
     exercise(A_STR, false);
     if (!breathless(game.youmonst.data) || haseyes(game.youmonst.data))
         await potionbreathe(obj);

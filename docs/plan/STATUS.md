@@ -1,5 +1,57 @@
 # STATUS — live handoff board
 
+## 2026-09-04 (later still): dokick.c in C form
+
+dokick.js's 27 notes are down to 0 (repo total 613 to 583).
+Ported in C form: `kickdmg` (the shade arm, `check_caitiff`, the pet
+`abuse_dog`/`monflee`, martial arts damage and the reeling monster
+through `goodpos`/`m_in_out_region`/`mintrap`, `passive`, `use_skill`),
+`kick_monster` (the hidden and mimicking target reveal, the polymorphed
+hero's own AT_KICK attacks through `find_roll_to_hit`/`damageum`/
+`missum`, the encumbrance clumsiness table, the block/evade arm through
+`maybe_mnexto`), `ghitm` (gold caught by shopkeepers, priests, the vault
+guard and mercenaries with the bribe threshold), `kick_object` and
+`really_kick_object` (pits, webs and statue traps, the barefoot
+cockatrice corpse, the range formula from `weight()` of one item, ice and
+grease sliding, Mjollnir, the loose-object arm with shop billing, box
+lock breaking through `breakchestlock` and `chest_trap`, `hero_breaks`,
+the coin scatter, the `bhit` flight with `game.kickedobj`, `thitmonst`,
+`costly_gold`/`stolen_value` for objects leaving a shop, contained-gold
+refunds), `kickstr` (killer name through `game.maploc`, with the decl.c
+`nowhere` sentinel), `watchman_thief_arrest` and `watchman_door_damage`
+(`mon_yells`, `angry_guards`, D_WARNED), `kick_dumb`, `kick_ouch` (the
+drawbridge relocation, `set_wounded_legs`, `hurtle` recoil), `kick_door`
+(the giant door buster, trapped doors, shop door damage, the town watch),
+`kick_nondoor` (secret doors and corridors, thrones with the luck-gated
+gold and gems and the trap door, altars, fountains rusting boots, graves
+through `disturb_grave`, iron bars, trees with fruit and killer bees,
+sinks with the pudding, the dish washer and `sink_backs_up`, stairs and
+ladders), `dokick` (every refusal arm with the forced --More--, the steed
+kick, the swallowed and pit arms, levitation bracing, the invisible-marker
+restore around `kick_monster`, the recoil range, the water splash).
+New elsewhere: mon.c `wake_nearto_core` now prints through `wake_msg`
+and `wake_nearto`/`wake_nearby` are async (every caller awaits; shk.c
+`noisy_shop` is async), `get_iter_mons_xy`, `maybe_mnexto`; monmove.c
+`mon_yells`; mondata.h `is_watch`; lock.c `chest_shatter_msg` and
+`breakchestlock` in C form (potion vapours, shop losses, ice box corpse
+ages); shk.c `costly_gold(x, y, amount, silent)`; do.c
+`legs_in_no_shape`; fountain.c `sink_backs_up`; engrave.c
+`disturb_grave`; `damageum` exported. Deleted the JS-only
+`wound_kicking_leg`, dokick.js's private `wake_nearby` and mon.js's
+`wake_nearto_with_messages`.
+Probes: `kick-nondoor-terrain` (10 segments: sink, throne, fountain,
+altar, grave, tree, iron bars, stairs, wall, boulder square) and
+`kick-objects-monsters` (gold scatter, large box THUD, locked chest,
+dagger flight, potion, boulder ouch, lichen and acid blob kicks with the
+strained leg refusals) both replay byte-identically. 44/44, hang gate
+clean, fuzz census unchanged (93 perfect, same 9 drift).
+Follow-ups: door kicks have no probe (a terrain wish for a door needs a
+door or wall square, see NOTES); `add_import` in the edit scripts now
+appends after the last import so module evaluation order is preserved
+(inserting at the top surfaced a TDZ on `ATR_NONE` in coloratt.js).
+Next by note count: apply.js (27), mon.js (26), hack.js (23), mhitu.js
+(22), spell.js (22).
+
 ## 2026-09-04 (later): eat.c in C form
 
 eat.js's 30 notes are down to 1 (repo total 644 to 613).

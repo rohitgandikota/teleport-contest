@@ -701,7 +701,7 @@ export async function explode(x, y, type, dam, olet, expltype) {
         i = 50; /* in case random damage is very small */
     if (inside_engulfer)
         i = Math.trunc((i + 3) / 4);
-    wake_nearto(x, y, i);
+    await wake_nearto(x, y, i);
 }
 
 // src/explode.c:721 scatter(), fling the objects at <sx,sy> (or just obj)

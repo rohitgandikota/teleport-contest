@@ -1375,7 +1375,7 @@ export async function artifact_hit(magr, mdef, otmp, dmgptr, dieroll) {
                       !game.spec_dbon_applies ? '' : '!  Lightning strikes'} ${hittee.v}${
                       !game.spec_dbon_applies ? '.' : '!'}`);
         if (game.spec_dbon_applies)
-            wake_nearto(mdef.mx, mdef.my, 4 * 4);
+            await wake_nearto(mdef.mx, mdef.my, 4 * 4);
         if (!rn2(5)) {
             const itemdmg = await destroy_items(mdef, ATTKS.AD_ELEC, dmgptr.v);
             if (!youdefend)

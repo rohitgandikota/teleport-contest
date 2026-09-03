@@ -98,6 +98,27 @@ import { noattacks } from './mondata.js';
 import { helpless } from './monst.js';
 import { is_axe, is_pick } from './mon.js';
 import { MSOUND } from './monst_data.js';
+import { pline_mon } from './pline.js';
+import { verbalize } from './pline.js';
+import { Amonnam } from './do_name.js';
+import { nolimbs } from './mondata.js';
+import { mhis } from './mondata.js';
+import { mbodypart } from './polyself.js';
+import { HEAD } from './const.js';
+import { ARM } from './const.js';
+import { makeplural } from './objnam.js';
+
+
+
+
+
+
+
+
+
+
+
+
 
 function note_unported_monmove(what) {
     (game.unported ||= new Set()).add('monmove:' + what);
@@ -138,7 +159,7 @@ export async function mb_trapped(mtmp, canseeit) {
             await You_hear(`a ${distu(mtmp.mx, mtmp.my) > 7 * 7
                                 ? 'distant' : 'nearby'} explosion.`);
     }
-    wake_nearto(mtmp.mx, mtmp.my, 7 * 7);
+    await wake_nearto(mtmp.mx, mtmp.my, 7 * 7);
     mtmp.mstun = 1;
     mtmp.mhp -= rnd(15);
     if (DEADMONSTER(mtmp)) {
@@ -2395,4 +2416,27 @@ export function m_postmove_effect(mtmp) {
         create_gas_cloud(x, y, 1, 8);
     else if (mtmp.mnum === PMNAMES.PM_STEAM_VORTEX && !mtmp.mcan)
         create_gas_cloud(x, y, 1, 0);           /* harmless vapor */
+}
+
+// src/monmove.c mon_yells(); a monster shouts (a watchman's warning)
+export async function mon_yells(mon, shout) {
+    if (Deaf()) {
+        if (canspotmon(mon))
+            /* Sidenote on "A watchman angrily waves her arms!"
+             * Female being called watchman is correct (career name).
+             */
+            await pline_mon(mon, `${Amonnam(mon)} angrily ${
+                nolimbs(mon.data) ? 'shakes' : 'waves'} ${mhis(mon)} ${
+                nolimbs(mon.data) ? mbodypart(mon, HEAD)
+                                  : makeplural(mbodypart(mon, ARM))}!`);
+    } else {
+        if (canspotmon(mon)) {
+            await pline_mon(mon, `${Amonnam(mon)} yells:`);
+        } else {
+            /* Soundeffect(se_someone_yells, 75); */
+            await You_hear('someone yell:');
+        }
+        /* SetVoice(mon, 0, 80, 0); */
+        await verbalize(shout);
+    }
 }

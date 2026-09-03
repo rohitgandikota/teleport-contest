@@ -604,7 +604,7 @@ export async function tamedog(mtmp, obj, givemsg) {
     if (mtmp.mfrozen)
         mtmp.mfrozen = Math.trunc((mtmp.mfrozen + 1) / 2);
     if (mtmp.msleeping)
-        wake_nearto(mtmp.mx, mtmp.my, 1);
+        await wake_nearto(mtmp.mx, mtmp.my, 1);
 
     if (mtmp.iswiz || mtmp.mnum === PMNAMES.PM_MEDUSA
         || (mtmp.data.mflags3 & MFLAGS.M3_WANTSARTI))

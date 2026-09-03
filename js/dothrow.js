@@ -1221,7 +1221,7 @@ export async function hurtle_step(arg, x, y) {
         if (why) {
             dmg = rnd(2 + range.range);
             await losehp(Maybe_Half_Phys(dmg), why, KILLED_BY);
-            wake_nearto(x, y, 10);
+            await wake_nearto(x, y, 10);
             return false;
         }
     }
@@ -1255,7 +1255,7 @@ export async function hurtle_step(arg, x, y) {
             && !which_armor(mon, W_ARMU | W_ARM | W_ARMC)) {
             await minstapetrify(mon, true);
         }
-        wake_nearto(x, y, 10);
+        await wake_nearto(x, y, 10);
         return false;
     }
 

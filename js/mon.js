@@ -1210,6 +1210,11 @@ import { touch_artifact } from './artifact.js';
 export { touch_artifact };
 import { pick_nasty, mon_has_amulet } from './wizard.js';
 import { tt_doppel } from './topten.js';
+import { rloc_to } from './teleport.js';
+
+
+
+
 /* include/mondata.h:93 polyok() */
 const polyok = (ptr) => (ptr.mflags2 & MFLAGS.M2_NOPOLY) === 0;
 /* gu.urole.guardnum — role table carries it as a PM index */
@@ -3483,11 +3488,11 @@ export function newcham(mtmp, mdat, ncflags) {
 // src/mon.c:4367 wake_nearby() / wake_nearto_core() — noise wakes monsters
 // within u.ulevel*20 squared distance. Draw-neutral, but the waking matters:
 // a monster left asleep moves differently on every later turn.
-export function wake_nearby(petcall) {
-    wake_nearto_core(game.u.ux, game.u.uy, game.u.ulevel * 20, petcall);
+export async function wake_nearby(petcall) {
+    await wake_nearto_core(game.u.ux, game.u.uy, game.u.ulevel * 20, petcall);
 }
 
-function wake_nearto_core(x, y, distance, petcall) {
+export async function wake_nearto_core(x, y, distance, petcall) {
     /* C walks the fmon chain; this port keeps it as game.level.monsters,
        newest-first (see makemon.js's unshift). There is no game.fmon. */
     for (const mtmp of (game.level?.monsters || [])) {
@@ -3496,6 +3501,7 @@ function wake_nearto_core(x, y, distance, petcall) {
         if (distance === 0 || dist2(mtmp.mx, mtmp.my, x, y) < distance) {
             /* sleep for N turns uses mtmp->mfrozen, but so does paralysis
                so we leave mfrozen monsters alone */
+            await wake_msg(mtmp, false);
             mtmp.msleeping = 0; /* wake indeterminate sleep */
             if (!(game.mons[mtmp.mnum].geno & G_UNIQ))
                 mtmp.mstrategy &= ~STRAT_WAITMASK; /* wake 'meditation' */
@@ -3517,23 +3523,8 @@ function wake_nearto_core(x, y, distance, petcall) {
 }
 
 // src/mon.c:4402 wake_nearto()
-export function wake_nearto(x, y, distance) {
-    wake_nearto_core(x, y, distance, false);
-}
-
-// src/mon.c:4402 wake_nearto(), including visible wake-up messages. Async
-// callers use this form because wake_msg can fill the tty topline and block.
-export async function wake_nearto_with_messages(x, y, distance) {
-    for (const mtmp of (game.level?.monsters || [])) {
-        if (DEADMONSTER(mtmp))
-            continue;
-        if (distance === 0 || dist2(mtmp.mx, mtmp.my, x, y) < distance) {
-            await wake_msg(mtmp, false);
-            mtmp.msleeping = 0;
-            if (!(game.mons[mtmp.mnum].geno & G_UNIQ))
-                mtmp.mstrategy &= ~STRAT_WAITMASK;
-        }
-    }
+export async function wake_nearto(x, y, distance) {
+    await wake_nearto_core(x, y, distance, false);
 }
 
 // src/mon.c:4649 restore_cham() — reloaded shapechanger bookkeeping.
@@ -3835,4 +3826,37 @@ export function m_into_limbo(mtmp) {
 
     mtmp.mstate |= MON_LIMBO;
     migrate_monster(mtmp, target_lev, xyloc);
+}
+
+// src/mon.c get_iter_mons_xy(); call bfunc(mon, x, y) for every monster on
+// the level until it returns True; returns that monster
+export async function get_iter_mons_xy(bfunc, x, y) {
+    for (const mtmp of [...(game.level?.monsters || [])]) {
+        if (DEADMONSTER(mtmp) || mon_offmap(mtmp))
+            continue;
+        if (await bfunc(mtmp, x, y))
+            return mtmp;
+    }
+    return null;
+}
+
+// src/mon.c maybe_mnexto(); move mtmp next to the hero if a visible spot can
+// be found (evading a kick)
+export async function maybe_mnexto(mtmp) {
+    const mm = { x: 0, y: 0 };
+    const ptr = mtmp.data;
+    const diagok = !NODIAG(monsndx(ptr));
+    let tryct = 20;
+
+    do {
+        if (!enexto(mm, game.u.ux, game.u.uy, ptr))
+            return;
+        if (couldsee(mm.x, mm.y)
+            /* don't move grid bugs diagonally */
+            && (diagok || mm.x === mtmp.mx || mm.y === mtmp.my)) {
+            /* [this doesn't honor the 'montelecontrol' option] */
+            await rloc_to(mtmp, mm.x, mm.y);
+            return;
+        }
+    } while (--tryct > 0);
 }

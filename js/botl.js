@@ -58,6 +58,14 @@ export function xlev_to_rank(xlev) {
     return (xlev <= 2) ? 0 : (xlev <= 30) ? Math.trunc((xlev + 2) / 4) : 8;
 }
 
+// src/botl.c:313 rank_to_xlev()
+//
+// Return the first experience level belonging to rank 0..8.
+export function rank_to_xlev(rank) {
+    return (rank < 1) ? 1 : (rank < 2) ? 3
+           : (rank < 8) ? rank * 4 - 2 : 30;
+}
+
 // src/botl.c:332 rank_of()
 export function rank_of(lev, role, female) {
     const r = role || game.urole;

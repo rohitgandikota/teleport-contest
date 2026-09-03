@@ -1,0 +1,84 @@
+{
+  "name": "achievement-chronicle",
+  "description": "Debug Knight enters the Bigroom, Gnomish Mines, and Mine Town, then opens the chronicle to verify achievement logging and ordering.",
+  "coverage": [
+    "mode.debug",
+    "level.mines",
+    "level.special-variants",
+    "ending.conduct-achievement",
+    "ui.menus"
+  ],
+  "branches": [
+    "achievement.record.fixed-message-log",
+    "achievement.record.rank-message",
+    "experience.level-up.nonrank-log",
+    "achievement.arrival.bigroom",
+    "achievement.arrival.mines",
+    "achievement.arrival.minetown"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "achievement.record.fixed-message-log",
+      "segment": 0,
+      "screenIncludes": [
+        "entered the Bigroom",
+        "entered the Gnomish Mines",
+        "reached Mine Town"
+      ]
+    },
+    {
+      "branch": "achievement.record.rank-message",
+      "segment": 1,
+      "screenIncludes": [
+        "attained the rank of Esquire (level 3)",
+        "attained the rank of Chevaliere (level 22)"
+      ]
+    },
+    {
+      "branch": "experience.level-up.nonrank-log",
+      "segment": 1,
+      "screenIncludes": [
+        "gained experience level 2",
+        "gained experience level 21"
+      ]
+    },
+    {
+      "branch": "achievement.arrival.bigroom",
+      "segment": 0,
+      "screenIncludes": [
+        "entered the Bigroom",
+        "entered level 11, the Dungeons of Doom"
+      ]
+    },
+    {
+      "branch": "achievement.arrival.mines",
+      "segment": 0,
+      "screenIncludes": [
+        "entered the Gnomish Mines",
+        "entered level 8, the Gnomish Mines"
+      ]
+    },
+    {
+      "branch": "achievement.arrival.minetown",
+      "segment": 0,
+      "screenIncludes": [
+        "reached Mine Town"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 499290,
+      "datetime": "20260804151630",
+      "nethackrc": "OPTIONS=name:Coverage,role:Knight,race:human,gender:male,align:lawful\nOPTIONS=!autopickup,!verbose,!legacy,!tutorial,!splash_screen\nOPTIONS=pettype:none,mention_walls\nOPTIONS=horsename:Shadowfax\nOPTIONS=pushweapon,showexp,time,color\nOPTIONS=symset:DECgraphics\nOPTIONS=playmode:debug\n",
+      "moves": "\u00162\n\u0016?\ne\u0016?\n wyyybhh\u001b\nv "
+    },
+    {
+      "seed": 499291,
+      "datetime": "20260804151630",
+      "nethackrc": "OPTIONS=name:Coverage,role:Knight,race:human,gender:female,align:lawful\nOPTIONS=!autopickup,!verbose,!legacy,!tutorial,!splash_screen\nOPTIONS=pettype:none\nOPTIONS=showexp,time,color\nOPTIONS=symset:DECgraphics\nOPTIONS=playmode:debug\n",
+      "moves": "#levelchange\r22\r                     v "
+    }
+  ]
+}

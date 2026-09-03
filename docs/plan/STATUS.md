@@ -1,5 +1,43 @@
 # STATUS — live handoff board
 
+## 2026-09-03: achievement chronicle and level logging verified
+
+`fuzz-s1-07` reached the Bigroom, the Gnomish Mines, and Mine Town with exact
+RNG and game state, but its direct chronicle command omitted all three
+achievement lines. Pinned C `src/insight.c:record_achievement` both appends the
+achievement id and writes its livelog event. JS only appended the id. The port
+now carries C's complete 31-entry achievement message and flag table, range and
+duplicate checks, final-disclosure suppression, prize-name suffixes, and
+role-specific rank messages. `src/do.c:goto_level` now records first entry to
+the Bigroom, and `src/exper.c:pluslvl` now records every non-rank level gain
+while leaving new ranks to their own achievement entry.
+
+The new two-segment C recording `achievement-chronicle` covers the three
+arrival achievements plus level 2 through female Knight rank 6. It is
+byte-identical at **63/63 screens** and **14,026/14,026 RNG**, including the
+two-page chronicle ending in `Chevaliere (level 22)`. Six new branch assertions
+pin the fixed-message, signed-rank, non-rank level, Bigroom, Mines, and Mine
+Town paths.
+
+`fuzz-s1-07` improves from **200/201 to 201/201 screens** and is fully passing
+at **14,743/14,743 RNG**. The same chronicle work advances `fuzz-s4-06` by one
+additional frame. Across all random play, fully passing games improve from
+**91/102 to 92/102** and screens from **13,780/14,262 to
+13,782/14,262**. RNG remains **468,764/491,759**, with **98/102** games
+RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **356/363**, **82,831/83,254 screens**,
+and **4,401,927/4,416,539 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **846/846 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+the earliest isolated screen-only failure in `fuzz-s4-28`, then continue the
+remaining screen-only cases before changing shared monster movement RNG.
+
 ## 2026-09-03: inset-menu corner restoration verified
 
 `fuzz-s3-15` differed by one status cell when selecting a wand from a tall

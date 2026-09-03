@@ -1,0 +1,31 @@
+{
+  "name": "inventory-adjust-swap",
+  "description": "A debug Wizard assigns one carried tool to an occupied inventory letter, swapping the two incompatible stacks.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.tools-containers",
+    "ui.getlin"
+  ],
+  "branches": [
+    "inventory.adjust.swap"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "inventory.adjust.swap",
+      "segment": 0,
+      "screenIncludes": [
+        "Swapping: o - a tin opener."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 909424,
+      "datetime": "20260724112119",
+      "nethackrc": "OPTIONS=name:Polly,role:Wizard,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!verbose,!legacy,!tutorial,!tips,!splash_screen\nOPTIONS=pettype:none\nOPTIONS=symset:DECgraphics\nOPTIONS=playmode:debug\n",
+      "moves": " \u0017uncursed tin opener\r\u0017uncursed towel\r#adjust\nno"
+    }
+  ]
+}

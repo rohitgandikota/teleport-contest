@@ -1,5 +1,36 @@
 # STATUS — live handoff board
 
+## 2026-09-03: occupied inventory-slot swap verified
+
+`fuzz-s2-01` first differed after `#adjust` assigned a carried scroll to an
+occupied incompatible inventory slot. Pinned C
+`src/invent.c:doorganize_core` changes the operation label from `Moving:` to
+`Swapping:` when it exchanges the destination object's letter with the source
+letter. JS already performed that exchange but always printed the moving
+label. The port now chooses the label from the same occupied-slot condition.
+
+The new debug-mode C recording `inventory-adjust-swap` is byte-identical at
+**49/49 screens** and **2,974/2,974 RNG**, with a branch assertion on the exact
+swap result. `fuzz-s2-01` improves from **217/219 to 218/219 screens** while
+remaining exact at **11,125/11,125 RNG**. Its only remaining difference is an
+unrelated cursor position 30 steps later during counted input. Across all
+random play, fully passing games remain **84/102**, screens improve from
+**13,753/14,262 to 13,754/14,262**, and RNG remains
+**468,764/491,759**, with **98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **350/357**, **82,701/83,124 screens**,
+and **4,363,203/4,377,815 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **831/831 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, from a run older than this checkpoint.
+Next: trace `fuzz-s2-01` step 84, where both grids say `Count: 15` but C leaves
+the cursor on the input line and JS restores it to the map. Then continue the
+remaining C-backed screen-only failures.
+
 ## 2026-09-03: terrain-sensitive engraving reading verified
 
 `fuzz-s2-20` first differed when the hero stepped onto a grave. Pinned C

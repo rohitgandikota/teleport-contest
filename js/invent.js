@@ -2309,11 +2309,12 @@ async function doorganize_core(obj) {
         /* the adjust itself: collect mergable stacks along the way, then
            swap letters with whatever sits in the destination */
         const other = (game.invent || []).find((o) => o.invlet === let_);
-        if (other && other !== obj)
+        const swapping = !!(other && other !== obj);
+        if (swapping)
             other.invlet = obj.invlet;
         obj.invlet = let_;
         reorder_invent();
-        await prinv('Moving:', obj, 0);
+        await prinv(swapping ? 'Swapping:' : 'Moving:', obj, 0);
         return ECMD_OK;
     }
 }

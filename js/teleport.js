@@ -97,6 +97,13 @@ import { tty_create_nhwindow, tty_start_menu, tty_add_menu, tty_end_menu,
          tty_select_menu, tty_destroy_nhwindow, ATR_NONE }
     from './tty/wintty.js';
 import { NO_COLOR } from './terminal.js';
+import { mon_offmap } from './monst.js';
+import { m_next2u } from './mon.js';
+import { DEADMONSTER } from './monst.js';
+
+
+
+
 
 // include/hack.h:1204-1210
 
@@ -1437,4 +1444,30 @@ export async function u_teleport_mon(mtmp, give_feedback) {
             return false;
     }
     return true;
+}
+
+// src/teleport.c:814 tele_to_rnd_pet(); a cursed magic whistle sends the
+// hero next to a random pet
+export async function tele_to_rnd_pet() {
+    let pet = null;
+    let cnt = 0;
+
+    if (noteleport_level(game.youmonst)) {
+        /* impossible("attempt to teleport hero to be near a pet on no-teleport level") */
+        return;
+    }
+
+    for (const mtmp of [...(game.level?.monsters || [])])
+        if (!DEADMONSTER(mtmp) && mtmp.mtame && !mon_offmap(mtmp)) {
+            cnt++;
+            if (!rn2(cnt))
+                pet = mtmp;
+        }
+    if (pet && !m_next2u(pet)) {
+        const tx = pet.mx + rn2(3) - 1,
+              ty = pet.my + rn2(3) - 1;
+
+        if (isok(tx, ty) && teleok(tx, ty, false))
+            await teleds(tx, ty, TELEDS_TELEPORT);
+    }
 }

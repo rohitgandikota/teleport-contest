@@ -4701,3 +4701,37 @@ hero has martial arts or Dex 16+. After that every kick refuses with
 5+rnd(5) turns. A kick probe that sweeps all eight directions to find a
 created monster loses most of its coverage that way; put the kicks that
 matter first, or create the monster and kick into it with fewer misses.
+
+## maketrap() converts the terrain of a dug square
+
+trap.c `maketrap()` does more than record the trap: for a pit or hole it
+calls `set_levltyp()`, so a wall or secret door that gets dug (breaking a
+wand of digging next to a wall, or digging down while phasing) becomes a
+doorway (room floor on a maze level, corridor on a cavernous one), stone
+or a secret corridor becomes corridor, and the square's flags are
+cleared. The JS used to leave the wall type in place under the trap. The
+screen looked right (the trap glyph draws over the wall) but
+`goodpos()` still rejected the square, so a monster created next to the
+hero landed elsewhere than in the C while the RNG stream stayed
+identical. A screen-only miss with a perfect RNG stream is the signature
+of a terrain or occupancy difference, not a draw.
+
+## consume_obj_charge() takes (obj, maybe_unpaid)
+
+The C signature has the shop-billing flag; every caller now passes it
+(`true` everywhere except `bagotricks(bag, !tipping)`). A one-argument
+call would silently skip `check_unpaid()`.
+
+## dowrite() lives in js/write.js
+
+src/write.c has its own JS file now; apply.js imports `dowrite` from it.
+The C-form match loops (name, description, then user-assigned names with
+the `rn2(++deferralchance)` draw) replace the earlier name-only loop.
+
+## getpos highlight callbacks are inert
+
+`getpos_sethilite(hilitefunc, validfunc)` in getpos.js marks the valid
+squares from the validator and ignores the highlight function (C draws
+them with `tmp_at(DISP_BEAM, S_goodpos)`). The apply.c callbacks are
+ported for the call sites but draw nothing; the screens match because the
+validator produces the same set of squares.

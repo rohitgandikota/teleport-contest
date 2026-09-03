@@ -86,6 +86,7 @@ import { Norep, You_feel, You_hear } from './pline.js';
 
 
 
+
 // src/shk.c:1449 hot_pursuit() — the shopkeeper starts following you.
 //
 // The isshk guard is not redundant: wakeup() calls this for any peaceful
@@ -3386,4 +3387,19 @@ export function costly_adjacent(shkp, x, y) {
     /* adjacent if <x,y> is a shop wall spot, including door;
        also treat "free spot" one step inside the door as adjacent */
     return (!!game.level.at(x, y).edge || (x === eshkp.shk.x && y === eshkp.shk.y));
+}
+
+// src/shk.c:6101 use_unpaid_trapobj(); setting an unpaid trap buys it
+export async function use_unpaid_trapobj(otmp, x, y) {
+    if (otmp.unpaid) {
+        if (!Deaf()) {
+            const shkp = find_objowner(otmp, x, y);
+
+            if (shkp && !muteshk(shkp)) {
+                /* SetVoice(shkp, 0, 80, 0); */
+                await verbalize('You set it, you buy it!');
+            }
+        }
+        bill_dummy_object(otmp);
+    }
 }

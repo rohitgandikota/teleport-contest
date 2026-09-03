@@ -1,0 +1,29 @@
+{
+  "name": "apply-tools",
+  "description": "Debug Wizard wishes for tools and applies them: stethoscope in every direction and at a lichen, mirror, cursed towel, cursed oil lamp, cursed bell, whistles, magic marker, grappling hook, halberd, land mine, saddle on a pony, bag of tricks, breaking a wand of digging, camera, bullwhip, leash, tinning kit.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "objects.apply",
+    "objects.tools",
+    "ui.getpos",
+    "ui.getlin",
+    "ui.getdir",
+    "combat.whip",
+    "combat.polearm"
+  ],
+  "segments": [
+    {
+      "seed": 7701,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Tooler,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017stethoscope\r  ao.  ao<  ao>  aoh  aoj  aok  aol  \u0007lichen\r  aoh  aoj  aok  aol  aoy  aou  aob  aon  \u0017mirror\r  ap.  aph  apj  apk  apl  \u0017cursed towel\r  aq  aq  aq  aq  \u0017cursed oil lamp\r  ar  ar  ar  \u0017cursed bell\r  as  as  as  \u0017tin whistle\r  at  \u0017cursed magic whistle\r  au  au  \u0017magic marker\r  \u0017scroll of blank paper\r  avwidentify\r    \u0017grappling hook\r  ax  ll.    \u0017halberd\r  ay  ll.    \u0017land mine\r  az      \u0017saddle\r  \u0007pony\r  aAh  aAj  aAk  aAl  "
+    },
+    {
+      "seed": 7702,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Tooler,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017bag of tricks\r  ao  ao  ao  \u0017wand of digging\r  apy      \u0017expensive camera\r  aqh  \u0017bullwhip\r  ar  h  \u0007newt\r  arh  arj  ark  arl  \u0017leash\r  ash  asj  \u0017tinning kit\r  at  "
+    }
+  ]
+}

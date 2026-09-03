@@ -1,5 +1,69 @@
 # STATUS — live handoff board
 
+## 2026-09-04 (apply): apply.c in C form, write.c, and the maketrap() wall fix
+
+apply.js's 27 notes are down to 0 (repo total 583 to 556).
+Ported in C form: `next_to_u` through `mleashed_next2u`; `use_whip` (lava
+splash through `fire_damage`, the pit escape through `teleds`, the unseen
+target reveal, the welded weapon through `mwelded`, `stumble_onto_mimic`,
+`force_attack`); `use_lamp` (oil spill through `make_glib`, `Shk_Your`,
+the candle shop bill); `use_bell` (the cursed nymph summoning, an optr box
+so a shattered bell drops out of doapply); `use_candle` (the safe_qbuf
+attach query, `obj_merge_light_sources`); `consume_obj_charge(obj,
+maybe_unpaid)`; `use_tinning_kit` (shop bills, `useupf`); `dorub`
+(royal jelly); `use_towel` (the C blindness timers through
+`incr_itimeout`/`set_itimeout`, `gulp_blnd_check`); `its_dead` and
+`use_stethoscope` (steed, floor and ceiling arms, `confdir`, hidden
+monsters, secret doors and corridors); `use_whistle`
+(`vault_summon_gd`), `use_magic_whistle` (`tele_to_rnd_pet`),
+`magic_whistled` (`fill_pit`); the bag of tricks arrival message with
+the mimic arm through `mhidden_description`; `beautiful` and
+`use_mirror`; `use_pole` with `find_poleable_mon`,
+`get_valid_polearm_position`, `calc_pole_range`, `could_pole_mon`,
+`snickersnee_used_dist_attk`; `use_grapple` with the skilled "Aim for
+what?" menu; `use_trap`/`set_trap`; `doapply` as the C switch
+(blindfold arm inline, containers, saddles, mirrors, land mines, poles,
+`arti_speak`); `do_break_wand`'s wand of digging arm through dig.js.
+New file js/write.js (src/write.c): `cost`, `write_ok`, `dowrite` (both
+match loops, the deferred by-name match, novel fan-fiction, ink cost and
+drying, the knowledge and luck checks, blind writing),
+`new_book_description`.
+New elsewhere: wield.c `freehand`, `mwelded`; mhitu.c `gulp_blnd_check`;
+mondata.c `can_blnd`; teleport.c `tele_to_rnd_pet`; vault.c
+`vault_summon_gd`; invent.c `nxtobj`; timeout.c `obj_has_timer`; mkobj.c
+`init_dummyobj`; shk.c `use_unpaid_trapobj`; light.c
+`candle_light_range`, `obj_merge_light_sources`; pickup.c `u_handsy`;
+steed.c `use_saddle`, `maybewakesteed` exported; vision.c `howmonseen`;
+worm.c `worm_known`; do_wear.c `fingers_or_gloves`; uhitm.c
+`force_attack`, `stumble_onto_mimic` exported; display.c
+`unmap_invisible` returns whether it removed a marker,
+`match_warn_of_mon` exported; dungeon.c `single_level_branch`; mklev.c
+`count_level_features`; mkmaze.c `set_levltyp`; trap.c
+`maybe_finish_sokoban` and `maketrap` in C form (still in mklev.js): the
+hero's trap retyping, the shop damage schedule, the drawbridge arm, and
+the terrain conversion of a dug square (room floor stays, stone or a
+secret corridor becomes corridor, a wall or secret door becomes a
+doorway). That last arm was the one real bug the probe found: breaking a
+wand of digging next to a wall left the wall's type in place, so a
+monster created next to the hero picked a different square than the C.
+Deleted the JS-only `shop_owned_prefix`, `on_stairs_at_u`,
+`use_blindfold`, `whistle_count_name`, the doapply otyp tables and
+`APPLY_CASED_OTYPS`, and apply.js's local `freehand`,
+`fingers_or_gloves`, `write_ok`, `dowrite`.
+Probe `apply-tools` (two segments: stethoscope in every direction and at a
+lichen, mirror, cursed towel, cursed oil lamp, cursed bell, whistles,
+magic marker, grappling hook, halberd, land mine, saddle on a pony; bag of
+tricks, breaking a wand of digging, camera, bullwhip at a newt, leash,
+tinning kit) replays byte-identically, as do the two kick probes. 44/44,
+hang gate clean, fuzz census unchanged (93 perfect, same 9 drift).
+Follow-ups: `maketrap` belongs in trap.js (it stays in mklev.js to avoid
+a wiring cycle); the getpos highlight callbacks (`display_polearm_positions`,
+`display_grapple_positions`) are ported but inert because getpos.js marks
+valid squares from the validator; `bagotricks_arrival` remains the JS
+twin of makemon()'s arrival message because makemon() is synchronous.
+Next by note count: mon.js (26), hack.js (23), spell.js (22), mhitu.js
+(22), invent.js (20), dothrow.js (20).
+
 ## 2026-09-04 (later still): dokick.c in C form
 
 dokick.js's 27 notes are down to 0 (repo total 613 to 583).

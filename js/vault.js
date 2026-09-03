@@ -34,6 +34,7 @@ import {
     BRCORNER, RLOC_MSG, TLCORNER, TRCORNER,
 } from './const.js';
 
+
 export function vault_occupied(urooms) {
     for (const ch of urooms || '') {
         const roomno = ch.charCodeAt(0);
@@ -674,4 +675,11 @@ export async function invault() {
         guard.mextra.egd.dropgoldcnt++;
     }
     finish_guard_corridor(guard, roomidx, goal, entry);
+}
+
+// src/vault.c:237 vault_summon_gd(); a cursed whistle blown in a vault
+// brings the guard early
+export function vault_summon_gd() {
+    if (vault_occupied(game.u.urooms || '') && !findgd())
+        game.u.uinvault = (VAULT_GUARD_TIME - 1);
 }

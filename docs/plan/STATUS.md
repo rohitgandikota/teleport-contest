@@ -1,5 +1,36 @@
 # STATUS — live handoff board
 
+## 2026-09-03: wounded-leg run interruption verified
+
+After the themed-room fix, `fuzz-s4-04` first differed when a wounded leg
+recovered during an uppercase-direction run. C's `nh_timeout` calls
+`heal_legs(0)` and then `stop_occupation()` in the `WOUNDED_LEGS` arm. JS
+omitted the second call, so C moved one square and stopped while JS continued
+five squares into a wall. The port now executes that missing C statement.
+
+The independent normal-mode C recording `wounded-leg-run-stop` is
+byte-identical at **47/47 screens** and **3,209/3,209 RNG**. Its branch
+assertion pins the recovery message and the hero's one-square endpoint.
+`fuzz-s4-04` advances from **216/301 to 300/301 screens**, becomes
+RNG-identical at **3,431/3,431**, and now differs only in the final chronicle
+window. Across all random play, screens improve from **13,629/14,262 to
+13,713/14,262**, RNG from **468,735/491,759 to 468,764/491,759**, and
+RNG-perfect games from **97/102 to 98/102**. Fully passing games remain 79/102
+because the one chronicle row still fails.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **345/352**, **82,625/83,048 screens**,
+and **4,345,522/4,360,134 RNG**, with the same seven failures and zero runtime
+errors. The hang gate is clean, fresh-seed smoke is 80/80, the source audit has
+zero findings, frozen files are unchanged, and declared coverage is **99/106
+categories** with seven partial plus **825/825 explicit branches**.
+
+The last published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: compare
+C's `livelog_start()` and JS game-start logging. The only remaining
+`fuzz-s4-04` difference is the final `v` chronicle screen, where C includes
+`entered level 1, the Tutorial` and JS omits it.
+
 ## 2026-09-03: themed subroom door registration verified
 
 Pinned C source and a one-run recorder diagnostic showed that the first

@@ -1,0 +1,33 @@
+{
+  "name": "wounded-leg-run-stop",
+  "description": "A normal Tourist recovers from a wounded leg during a shift-run, which stops after one square.",
+  "coverage": [
+    "level.themed",
+    "mode.normal",
+    "survival.timed-status",
+    "turn.timers",
+    "ui.count-repeat"
+  ],
+  "branches": [
+    "timeout.wounded-legs.stop-run"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "timeout.wounded-legs.stop-run",
+      "segment": 0,
+      "screenIncludes": ["Your leg feels better."],
+      "screenCells": [
+        { "step": 46, "x": 10, "y": 8, "equals": "@" }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 659352,
+      "datetime": "20260525144414",
+      "nethackrc": "OPTIONS=symset:DECgraphics\n",
+      "moves": "Tetra\ri  ykhkkY y#d\rhyH rm nthn \u0004hhhh>  neyJuL"
+    }
+  ]
+}

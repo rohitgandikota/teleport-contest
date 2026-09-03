@@ -1467,6 +1467,28 @@ async function do_repeat() {
     return game.context.move ? ECMD_TIME : 0;
 }
 
+// src/cmd.c:3584 reset_cmd_vars(). Commands which finish without using time
+// discard a parsed repeat count and every transient movement-prefix field.
+// The repeat queue survives ordinary ECMD_OK results so Ctrl-A can replay the
+// command later; cancellation and failure clear both command queues.
+function reset_cmd_vars(reset_cmdq) {
+    game.context.run = 0;
+    game.context.nopick = 0;
+    game.context.forcefight = false;
+    game.context.move = 0;
+    game.context.mv = false;
+    game.domove_attempting = 0;
+    game.multi = 0;
+    game.iflags.menu_requested = false;
+    game.context.travel = game.context.travel1 = 0;
+    game.travelmap = null;
+    game._cmd_prefix_pending = false;
+    if (reset_cmdq) {
+        cmdq_clear(CQ_CANNED);
+        cmdq_clear(CQ_REPEAT);
+    }
+}
+
 export async function rhack(key) {
     /* src/cmd.c:3635 — every command begins with the menu-request and
        no-pickup markers cleared; set_move_cmd() re-raises nopick from
@@ -1676,18 +1698,7 @@ export async function rhack(key) {
         const command = cmdbind_table().get(ch0.charCodeAt(0));
         if (command && !accept_menu_prefix(command)) {
             await pline_nohistory(`The ${command.ef_txt} command does not accept 'm' prefix.`);
-            game.context.run = 0;
-            game.context.nopick = 0;
-            game.context.forcefight = false;
-            game.context.move = 0;
-            game.context.mv = false;
-            game.context.travel = game.context.travel1 = 0;
-            game.domove_attempting = 0;
-            game.multi = 0;
-            game.iflags.menu_requested = false;
-            game.travelmap?.clear?.();
-            cmdq_clear(CQ_CANNED);
-            cmdq_clear(CQ_REPEAT);
+            reset_cmd_vars(true);
             return;
         }
     }
@@ -2088,10 +2099,16 @@ export async function rhack(key) {
     if (game.context.move && !game._cmd_was_kick)
         game.kickedloc = { x: 0, y: 0 };
     game._cmd_was_kick = false;
-    if (commandResult & (ECMD_CANCEL | ECMD_FAIL)) {
-        cmdq_clear(CQ_CANNED);
-        cmdq_clear(CQ_REPEAT);
-    }
+    const commandTookTime = !!game.context.move
+        || !!(commandResult & ECMD_TIME);
+    if (commandResult & (ECMD_CANCEL | ECMD_FAIL))
+        reset_cmd_vars(true);
+    else if (!commandTookTime && !game._cmd_prefix_pending
+             && !isMovementKey(ch))
+        reset_cmd_vars(game.multi < 0);
+    /* C reasserts context.move after reset_cmd_vars for TIME|CANCEL. */
+    if (commandTookTime)
+        game.context.move = 1;
 }
 
 // C ref: hack.c domove — execute a movement

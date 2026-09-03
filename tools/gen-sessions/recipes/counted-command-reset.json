@@ -1,0 +1,37 @@
+{
+  "name": "counted-command-reset",
+  "description": "C-backed check that a non-time command discards its parsed repeat count.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.weapons",
+    "turn.speed-energy",
+    "ui.cancel-invalid"
+  ],
+  "branches": [
+    "command.result.ok-reset-count"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "command.result.ok-reset-count",
+      "segment": 0,
+      "screenIncludes": [
+        "Count: 30",
+        "long sword (weapon in"
+      ],
+      "screenExcludes": [
+        "long sword (weapon in right hand).--More--",
+        "long sword (weapon in left hand).--More--"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99447,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " 30).  "
+    }
+  ]
+}

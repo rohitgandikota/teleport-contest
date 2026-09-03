@@ -721,6 +721,12 @@ export function reset_pick() {
     xl.box = null;
 }
 
+// src/lock.c picking_at(); is the hero currently picking the lock at <x,y>?
+export function picking_at(x, y) {
+    return (game.occupation === picklock
+            && game.xlock?.door === game.level.at(x, y));
+}
+
 /* include/obj.h is_weptool() */
 function is_weptool(o) {
     return o.oclass === OCLASSES.TOOL_CLASS

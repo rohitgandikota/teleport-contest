@@ -2490,6 +2490,8 @@ export function IS_SOFT(typ)       { return typ === AIR || typ === CLOUD || IS_P
 
 
 // Trap utility macros (from include/trap.h)
+/* include/trap.h:116 undestroyable_trap() */
+export const undestroyable_trap = (ttyp) => (ttyp === MAGIC_PORTAL || ttyp === VIBRATING_SQUARE);
 export function is_magical_trap(ttyp) {
     return ttyp === TELEP_TRAP || ttyp === LEVEL_TELEP
         || ttyp === MAGIC_TRAP || ttyp === ANTI_MAGIC

@@ -370,7 +370,7 @@ async function wand_explode(obj, chg /* recharging */) {
 }
 
 // src/read.c:729 recharge() — apply a scroll of charging to obj.
-async function recharge(obj, curse_bless) {
+export async function recharge(obj, curse_bless) {
     const u = game.u;
     let n;
     const is_cursed = curse_bless < 0;

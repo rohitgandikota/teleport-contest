@@ -1,5 +1,43 @@
 # STATUS — live handoff board
 
+## 2026-09-03 (night): zap.c rays and beams in C form
+
+zap.js's 42 notes are down to 21 (repo total 685 to 664).
+Ported in C form: `dobuzz` (the uswallow arm, the steed arm via the
+buzzmonst target, rider and Death arms, disintegration, reflection with
+`ureflects` and the shield animation, fireballs, the mines bounce chance,
+`pay_for_damage`), `zhitm` (all eight damage types, the disintegration
+armor rules through the `ootmp` box, Knight questart doubling, the wand
+saving throw), `zhitu` (shield effects, golem effects, `burn_away_slime`,
+disintegration breath, `poisoned`, acid on both weapons, the 5.0
+"zapped/cast/exhaled by" killer via `death_inflicted_by`), `zap_over_floor`
+(fountain steam and `dryup`, `PHYS_EXPL_TYPE`, the iron bars arm, the
+secret door and closed door section with shop damage, `picking_at`,
+`spot_time_left`), `bhit` (tethered weapons, `shkcatch`, rock skipping with
+`skiprange`, `hits_bars`, the web message, `shade_miss`, the INVIS_BEAM arm,
+`ship_object`, shop door damage, the heavy iron ball limit), `zap_map`
+(`maybe_explode_trap`, the full probing section), `weffects` with
+`zap_steed`, `dozap` with `backfire` and `killer_xname`, `zap_hit` with
+`spell_hit_bonus` and `spell_damage_bonus`, `disintegrate_mon`,
+`maybe_destroy_item` with `recharge`. Moved to their C files: `ureflects`
+(muse.c, now with the silver dragon scales arm), `slept_monst` (mhitm.c).
+New: shk.c `shkcatch`, trap.c `acid_damage`, objnam.c `killer_xname`,
+mon.c `mlifesaver`, lock.c `picking_at`, pline.c `set_msg_dir` and
+`pline_dir`, trap.h `undestroyable_trap`. explode.js passes the
+`shopdamage` box and `exploding_wand_typ` like the C.
+
+Probe `wizard-ray-wands` (C recording, 3656 RNG calls, 265 screens): a
+level 14 Wizard wishes for six attack wands, creates gnome lords, engraves,
+and zaps magic missile, sleep, fire, cold, striking and lightning in
+several directions; rays bounce, hit the fountain, put the hero to sleep
+and blind him. Byte-identical. Gate: 44/44; the animFrames census rose from
+48 to 90 of 1483 (it is not part of pass/fail; see NOTES).
+
+Next, by note count: eat.js 30, dokick.js 27, apply.js 27, mon.js 26, mhitu.js 24, hack.js 23, spell.js 22, zap.js 21. zap.js still has: bhito:boxlock, bhito:probing_contents, bhito:striking_breakage, bhito:teleport, create_polymon:okind=, doorlock:trapped_door, makewish:wish_history_menu, poly_obj:crocodile_shoes, poly_obj:fixup_oil, poly_obj:hero_laid_egg, poly_obj:leash, poly_obj:luck_mirror, poly_obj:non_floor_swap, poly_obj:sokoban_guilt, probe_monster:display_minventory, stone_to_flesh_obj:figurine, zapyourself:camera_shieldeff.
+`tmp_at` itself is not ported (the beam painting is display_cmap_at plus a
+restore list); `display_minventory` for `probe_monster`; `doorlock` lives
+in zap.js though the C has it in lock.c.
+
 ## 2026-09-03 (evening): uhitm.c arms, hurtle machinery, artifact_hit and Mb_hit
 
 uhitm.js's 44 notes are down to 3 (repo total 726 to 685).

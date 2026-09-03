@@ -2286,7 +2286,7 @@ const shade_aware = (obj) => !!obj && (
 );
 
 // src/uhitm.c:2000 shade_miss(), report an attack that cannot touch a shade.
-async function shade_miss(magr, mdef, obj, thrown, verbose) {
+export async function shade_miss(magr, mdef, obj, thrown, verbose) {
     const youagr = magr === game.youmonst;
     const youdef = mdef === game.youmonst;
 

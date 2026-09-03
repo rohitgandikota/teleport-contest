@@ -1,3 +1,5 @@
+import { W_AMUL } from './const.js';
+import { is_vampshifter } from './monst.js';
 import { revive_corpse } from './do.js';
 import { monsndx } from './makemon.js';
 import { kill_egg } from './timeout.js';
@@ -3737,4 +3739,15 @@ export async function kill_genocided_monsters() {
     kill_eggs(game.level.objects);
     kill_eggs(game.migrating_objs);
     kill_eggs(game.level.buriedobjs);
+}
+
+// src/mon.c:2827 mlifesaver(); the worn amulet of life saving that would fire
+export function mlifesaver(mon) {
+    if (!nonliving(mon.data) || is_vampshifter(mon)) {
+        const otmp = which_armor(mon, W_AMUL);
+
+        if (otmp && otmp.otyp === ONAMES.AMULET_OF_LIFE_SAVING)
+            return otmp;
+    }
+    return null;
 }

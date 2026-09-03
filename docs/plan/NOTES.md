@@ -4573,3 +4573,27 @@ position. Run `node tools/jsplay.mjs <session> --rows 0` first: its
 at draw N of the segment, which is the fastest way to name the JS function
 that drew when the C did not.
 
+## shieldeff is async; every C shieldeff(x, y) needs an await
+
+The JS shield animation yields 21 times (one game.animationFrame per shield
+glyph). Called without await it interleaves with the caller's own beam
+frames and the last glyph painted wins, which left a shield `#` on the
+hero's square in seed0002 after a reflected sleep ray. The C is sync, so a
+port copied line by line drops the await; grep new code for bare
+`shieldeff(` before running the gate.
+
+## Beam display: no tmp_at, and hdmgtype is a real draw
+
+dobuzz paints each beam square with display_cmap_at and restores the list
+in a finally block; that is the JS twin of tmp_at(DISP_BEAM)/DISP_END.
+Under hallucination the C computes `hdmgtype = rn2(6)` in the declarations,
+before the uswallow check, so that draw must come first even though the
+JS only uses it for the beam color. The animFrames metric (frames captured
+at nh_delay_output) is not part of pass/fail: main scored 48 of 1483, the
+ray port 90.
+
+## C impossible() calls become comments
+
+There is no `impossible` export. The convention in the tree is a comment
+(`/* impossible("...") */`) at the same spot; do not add a helper.
+

@@ -11,6 +11,9 @@
 // ported below. Gaze, explosion, breath, and spell branches remain recorded in
 // the coverage ledger until their C behavior is implemented.
 
+import { unstuck } from './mon.js';
+import { pline_mon } from './pline.js';
+import { sticks } from './mondata.js';
 import { some_mon_nam } from './do_name.js';
 import { mhitm_ad_poly } from './uhitm.js';
 import { MONSYMS } from './monst_data.js';
@@ -890,4 +893,13 @@ export async function failed_grab(magr, mdef, mattk) {
         return true;
     }
     return false;
+}
+
+// src/mhitm.c slept_monst(); a sleeping or paralyzed holder loses its grip
+export async function slept_monst(mon) {
+    if (helpless(mon) && mon === game.u.ustuck
+        && !sticks(game.youmonst.data) && !game.u.uswallow) {
+        await pline_mon(mon, `${s_suffix(Monnam(mon))} grip relaxes.`);
+        await unstuck(mon);
+    }
 }

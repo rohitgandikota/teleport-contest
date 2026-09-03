@@ -3,6 +3,7 @@
 //
 // Only healup() so far, reached by the healing spells' zapyourself route.
 
+import { slept_monst } from './mhitm.js';
 import { POLY_NOFLAGS, POLY_CONTROLLED, POLY_LOW_CTRL } from './const.js';
 import { polyself } from './polyself.js';
 import { Unchanging } from './youprop.js';
@@ -102,13 +103,6 @@ export function paralyze_monst(mon, amount) {
     mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITFORU;
 }
 
-async function slept_monst(mon) {
-    if ((mon.msleeping || !mon.mcanmove) && mon === game.u.ustuck
-        && !sticks(game.youmonst.data) && !game.u.uswallow) {
-        await pline(`${s_suffix(Monnam(mon))} grip relaxes.`);
-        await unstuck(mon);
-    }
-}
 
 // src/potion.c:137 make_sick(). Set or clear fatal illness and food
 // poisoning. The delayed-killer record is retained in JS state for the

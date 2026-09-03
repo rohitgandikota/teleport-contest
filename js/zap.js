@@ -5,6 +5,122 @@
 // file because meatmetal() calls it before eating anything, which puts its
 // rn2(100) into the stream ahead of the next monster's turn.
 
+import { reset_pick } from './lock.js';
+import { picking_at } from './lock.js';
+import { defsyms } from './drawing_data.js';
+import { dissolve_bars } from './monmove.js';
+import { dryup } from './fountain.js';
+import { is_pool_or_lava } from './dbridge.js';
+import { ship_object } from './dokick.js';
+import { hits_bars } from './mthrowu.js';
+import { MON_WEP } from './monst.js';
+import { shkcatch } from './shk.js';
+import { inside_shop } from './shk.js';
+import { add_damage } from './shk.js';
+import { pay_for_damage } from './shk.js';
+import { stop_occupation } from './allmain.js';
+import { set_uinwater } from './hack.js';
+import { test_move } from './hack.js';
+import { nomul } from './hack.js';
+import { xytodir } from './cmd.js';
+import { slept_monst } from './mhitm.js';
+import { mon_reflects } from './muse.js';
+import { death_inflicted_by } from './mcastu.js';
+import { done } from './end.js';
+import { spot_stop_timers } from './timeout.js';
+import { spot_time_left } from './timeout.js';
+import { burn_away_slime } from './timeout.js';
+import { ugolemeffects } from './polyself.js';
+import { shade_miss } from './uhitm.js';
+import { erode_armor } from './uhitm.js';
+import { disintegrate_arm } from './do_wear.js';
+import { Ring_gone } from './do_wear.js';
+import { recharge } from './read.js';
+import { distu } from './hacklib.js';
+import { strsubst } from './hacklib.js';
+import { hcolor } from './do_name.js';
+import { killer_xname } from './objnam.js';
+import { the } from './objnam.js';
+import { Invocation_lev } from './dungeon.js';
+import { draft_message } from './dig.js';
+import { show_map_spot } from './detect.js';
+import { set_utrap } from './trap.js';
+import { reset_utrap } from './trap.js';
+import { acid_damage } from './trap.js';
+import { delfloortrap } from './trap.js';
+import { explode } from './explode.js';
+import { setnotworn } from './worn.js';
+import { which_armor } from './worn.js';
+import { extract_from_minvent } from './worn.js';
+import { is_quest_artifact } from './questpgr.js';
+import { mnearto } from './mon.js';
+import { is_pick } from './mon.js';
+import { mlifesaver } from './mon.js';
+import { P_SKILL } from './weapon.js';
+import { spell_skilltype } from './spell.js';
+import { poisoned } from './attrib.js';
+import { ACURR } from './attrib.js';
+import { Disint_resistance } from './youprop.js';
+import { Acid_resistance } from './youprop.js';
+import { pline_dir } from './pline.js';
+import { unmap_object } from './display.js';
+import { glyph_is_invisible_at } from './display.js';
+import { glyph_at } from './display.js';
+import { P_EXPERT } from './const.js';
+import { P_SKILLED } from './const.js';
+import { P_BASIC } from './const.js';
+import { P_UNSKILLED } from './const.js';
+import { P_ISRESTRICTED } from './const.js';
+import { ERODE_CORRODE } from './const.js';
+import { ARM } from './const.js';
+import { EYE } from './const.js';
+import { ROWNO } from './const.js';
+import { COLNO } from './const.js';
+import { NOTELL } from './const.js';
+import { DIED } from './const.js';
+import { CORR } from './const.js';
+import { W_ARMU } from './const.js';
+import { W_ARMC } from './const.js';
+import { IS_FOUNTAIN } from './const.js';
+import { In_mines } from './const.js';
+import { Is_rogue_level } from './const.js';
+import { is_hole } from './const.js';
+import { TEST_MOVE } from './const.js';
+import { WAND_BACKFIRE_CHANCE } from './const.js';
+import { GETOBJ_NOFLAGS } from './const.js';
+import { DISINT_RES } from './const.js';
+import { M_SEEN_REFL } from './const.js';
+import { M_SEEN_ACID } from './const.js';
+import { M_SEEN_ELEC } from './const.js';
+import { M_SEEN_DISINT } from './const.js';
+import { M_SEEN_SLEEP } from './const.js';
+import { M_SEEN_COLD } from './const.js';
+import { M_SEEN_FIRE } from './const.js';
+import { XKILL_NOMSG } from './const.js';
+import { XKILL_GIVEMSG } from './const.js';
+import { PLNMSG_ENVELOPED_IN_GAS } from './const.js';
+import { PHYS_EXPL_TYPE } from './const.js';
+import { SHOP_DOOR_COST } from './const.js';
+import { SHOP_BARS_COST } from './const.js';
+import { W_NONDIGGABLE } from './const.js';
+import { INVIS_BEAM } from './const.js';
+import { THROWN_TETHERED_WEAPON } from './const.js';
+import { EXPL_FIERY } from './const.js';
+import { EXPL_MAGICAL } from './const.js';
+import { TRAP_EXPLODE } from './const.js';
+import { is_magical_trap } from './const.js';
+import { undestroyable_trap } from './const.js';
+import { db_under_typ } from './dbridge.js';
+import { resists_acid } from './mondata.js';
+import { resists_poison } from './mondata.js';
+import { monstunseesu } from './mondata.js';
+import { monstseesu } from './mondata.js';
+import { resists_disint } from './mondata.js';
+import { perceives } from './mondata.js';
+import { eyecount } from './mondata.js';
+import { completelyburns } from './mondata.js';
+import { amphibious } from './mondata.js';
+import { ureflects } from './muse.js';
 import { mintrap } from './trap.js';
 import { noit_Monnam } from './do_name.js';
 import { mstatusline } from './insight.js';
@@ -2574,42 +2690,130 @@ export async function doorlock(otmp, x, y) {
     return true;
 }
 
+/* src/zap.c:13 MAGIC_COOKIE; :45 ZT_*; :55 ZT_WAND()/ZT_BREATH(); :59 is_hero_spell();
+   :61 M_IN_WATER() */
+const MAGIC_COOKIE = 1000;
+const ZT_MAGIC_MISSILE = (ATTKS.AD_MAGM - 1),
+      ZT_FIRE = (ATTKS.AD_FIRE - 1),
+      ZT_COLD = (ATTKS.AD_COLD - 1),
+      ZT_SLEEP = (ATTKS.AD_SLEE - 1),
+      ZT_DEATH = (ATTKS.AD_DISN - 1), /* or disintegration */
+      ZT_LIGHTNING = (ATTKS.AD_ELEC - 1),
+      ZT_POISON_GAS = (ATTKS.AD_DRST - 1),
+      ZT_ACID = (ATTKS.AD_ACID - 1);
+const ZT_WAND = (x) => x;
+const ZT_BREATH = (x) => (20 + x);
+const is_hero_spell = (type) => (type >= 10 && type < 20);
+/* include/mondata.h:28 cant_drown() */
+const cant_drown = (ptr) => (is_swimmer(ptr) || amphibious(ptr) || breathless(ptr));
+const M_IN_WATER = (ptr) => (ptr.mlet === MONSYMS.S_EEL || cant_drown(ptr));
+/* include/hack.h:1538 AC_VALUE() */
+const AC_VALUE = (AC) => ((AC >= 0) ? AC : -rnd(-AC));
+/* include/hack.h:1476 BZ_OFS_WAN(), :1478 BZ_OFS_SPE(), :1480 BZ_U_WAND(), :1482 BZ_U_SPELL() */
+const BZ_OFS_WAN = (otyp) => (Math.abs(otyp - ONAMES.WAN_MAGIC_MISSILE) % 10);
+const BZ_OFS_SPE = (otyp) => (Math.abs(otyp - ONAMES.SPE_MAGIC_MISSILE) % 10);
+const BZ_U_WAND = (bztyp) => (0 + bztyp);
+const BZ_U_SPELL = (bztyp) => (10 + bztyp);
+/* include/youprop.h Half_spell_damage, Stunned */
+const Half_spell_damage = () => !!(game.u.intrinsic?.HHalf_spell_damage || game.u.uprops?.HALF_SPDAM);
+const Stunned = () => !!(game.u.intrinsic?.HStun || game.u.uprops?.STUNNED);
+/* include/rm.h:146 SURFACE_AT() */
+const SURFACE_AT = (x, y) => {
+    const lev = game.level.at(x, y);
+    return (lev.typ === DRAWBRIDGE_UP) ? db_under_typ(lev.drawbridgemask) : lev.typ;
+};
+/* the C compares glyph integers; our glyph_at() returns descriptors */
+const same_glyph = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+
+// src/zap.c:3579 skiprange(); where a thrown rock skips over water
+function skiprange(range, skip) /* skip = { start, end } */
+{
+    const tr = Math.trunc(range / 4);
+    const tmp = range - ((tr > 0) ? rnd(tr) : 0);
+
+    skip.start = tmp;
+    skip.end = tmp - (Math.trunc(tmp / 4) * rnd(3));
+    if (skip.end >= tmp)
+        skip.end = tmp - 1;
+}
+
+// src/zap.c:3594 maybe_explode_trap(); a cancellation beam hitting a magical
+// trap causes an explosion.  Might delete the trap; won't destroy otmp.
+async function maybe_explode_trap(ttmp, otmp, learn_it) /* learn_it = { v } */
+{
+    if (!ttmp || !otmp)
+        return;
+    if (otmp.otyp === ONAMES.WAN_CANCELLATION || otmp.otyp === ONAMES.SPE_CANCELLATION) {
+        const x = ttmp.tx, y = ttmp.ty;
+
+        if (undestroyable_trap(ttmp.ttyp)) {
+            await shieldeff(x, y);
+            if (cansee(x, y)) {
+                ttmp.tseen = 1;
+                newsym(x, y);
+                learn_it.v = true;
+            }
+        } else if (is_magical_trap(ttmp.ttyp)) {
+            const seeit = cansee(x, y);
+
+            /* note: this explosion mustn't destroy otmp */
+            await explode(x, y, -ONAMES.WAN_CANCELLATION,
+                          20 + d(3, 6), TRAP_EXPLODE, EXPL_MAGICAL);
+            deltrap(ttmp);
+            newsym(x, y);
+            if (seeit)
+                learn_it.v = true;
+        }
+    }
+}
+
 // src/zap.c:3628 zap_map() — per-square terrain effects of a lateral zap.
 // Trap explosion applies to cancellation only; the engraving arm fires for
 // down zaps only; secret-door reveals belong to striking/opening/locking.
 // A lateral polymorph over plain floor does nothing here.
-export async function zap_map(x, y, obj) {
-    const ttmp = t_at(x, y);
-    let learn_it = false;
-    if (ttmp && (obj.otyp === ONAMES.WAN_CANCELLATION
-                 || obj.otyp === ONAMES.SPE_CANCELLATION))
-        note_unported_zap('zap_map:maybe_explode_trap');
-    if (game.u.dz > 0) {
-        const engraving = engr_at(x, y);
-        if (engraving && engraving.engr_type !== HEADSTONE) {
+export async function zap_map(x, y, obj) /* zapped wand, or book for cast spell */
+{
+    let ttmp = t_at(x, y);
+    const db = { x, y }; /* might be changed by drawbridge handling */
+    const learn_it = { v: false };
+
+    /*
+     * We handle drawbridge for lateral zaps; zap_updown() handles up/down.
+     * Engravings only get hit by down zaps and we handle that here.
+     */
+
+    /* cancellation */
+    await maybe_explode_trap(ttmp, obj, learn_it);
+    ttmp = t_at(x, y); /* refresh in case trap was altered or is gone */
+
+    if (game.u.dz > 0) { /* zapping down */
+        const e = engr_at(x, y);
+
+        /* subset of engraving effects; none sets `disclose' */
+        if (e && e.engr_type !== HEADSTONE) {
             switch (obj.otyp) {
             case ONAMES.WAN_POLYMORPH:
             case ONAMES.SPE_POLYMORPH: {
-                del_engr(engraving);
-                const replacement = random_engraving();
-                make_engr_at(x, y, replacement.text, replacement.pristine,
-                             game.moves, 0);
+                del_engr(e);
+                const etxt = random_engraving();
+                make_engr_at(x, y, etxt.text, etxt.pristine, game.moves, 0);
                 break;
             }
             case ONAMES.WAN_CANCELLATION:
             case ONAMES.SPE_CANCELLATION:
             case ONAMES.WAN_MAKE_INVISIBLE:
-                del_engr(engraving);
+                del_engr(e);
                 break;
             case ONAMES.WAN_TELEPORTATION:
             case ONAMES.SPE_TELEPORT_AWAY:
-                await rloc_engr(engraving);
+                await rloc_engr(e);
                 break;
             case ONAMES.SPE_STONE_TO_FLESH:
-                if (engraving.engr_type === ENGRAVE) {
+                if (e.engr_type === ENGRAVE) {
+                    /* only affects things in stone */
                     await pline_The(Hallucination()
-                        ? 'floor runs like butter!'
-                        : 'edges on the floor get smoother.');
+                                    ? 'floor runs like butter!'
+                                    : 'edges on the floor get smoother.');
                     wipe_engr_at(x, y, d(2, 4), true);
                 }
                 break;
@@ -2621,76 +2825,124 @@ export async function zap_map(x, y, obj) {
                 break;
             }
         }
-    }
-    const terrainType = game.level.at(x, y)?.typ;
-    if (!game.u.dz) {
-        const ltyp = terrainType;
-        const db = { x, y }; /* might be changed by drawbridge handling */
+
+    } else if (!game.u.dz) {
+        const ltyp = game.level.at(x, y).typ;
 
         if (find_drawbridge(db)) {
             switch (obj.otyp) {
             case ONAMES.WAN_OPENING:
             case ONAMES.SPE_KNOCK:
+                /* dbwall: 'closed door' of raised drawbridge */
                 if (is_db_wall(x, y)) {
                     if (cansee(db.x, db.y) || cansee(x, y))
-                        learn_it = true;
+                        learn_it.v = true;
                     await open_drawbridge(db.x, db.y);
                 }
                 break;
             case ONAMES.WAN_LOCKING:
             case ONAMES.SPE_WIZARD_LOCK:
+                /* drawbridge_down: span of lowered drawbridge */
                 if ((cansee(db.x, db.y) || cansee(x, y))
                     && game.level.at(db.x, db.y).typ === DRAWBRIDGE_DOWN)
-                    learn_it = true;
+                    learn_it.v = true;
                 await close_drawbridge(db.x, db.y);
                 break;
             case ONAMES.WAN_STRIKING:
             case ONAMES.SPE_FORCE_BOLT:
-                /* !u.dz: not zapping up or down, so hit only in the plane,
+                /* !drawbridge_up: not spot in front of raised bridge,
                    so either span of lowered bridge or portcullis */
                 if (ltyp !== DRAWBRIDGE_UP) {
-                    learn_it = true;
+                    learn_it.v = true;
                     await destroy_drawbridge(db.x, db.y);
                 }
                 break;
             }
         } /* find_drawbridge */
     } /* !u.uz */
-    if (obj.otyp === ONAMES.WAN_PROBING && ttmp) {
-        const already_seen = !!ttmp.tseen;
-        const hallu = !!Hallucination();
-        ttmp.tseen = 1;
-        newsym(x, y);
-        if (!already_seen || hallu) {
-            const name = trapname(ttmp.ttyp, false);
-            const use_the = hallu && !rn2(4);
-            await You(`find ${use_the ? `the ${name}` : an(name)}${
-                use_the ? '!' : '.'}`);
-            learn_it = !hallu;
+
+    if (obj.otyp === ONAMES.WAN_PROBING) {
+        /*
+         * Probing, either up/down or lateral.
+         */
+        let ltyp;
+        let oldtyp, oldglyph;
+        const lev = game.level.at(x, y);
+
+        /* map terrain; might reveal a special room which is already within
+           view that hasn't been entered yet */
+        oldtyp = lev.lastseentyp;
+        oldglyph = glyph_at(x, y);
+        show_map_spot(x, y, false);
+        if (oldtyp !== lev.lastseentyp || !same_glyph(oldglyph, glyph_at(x, y))) {
+            /* TODO: ought to give some message */
+            learn_it.v = true;
         }
-    }
-    if (obj.otyp === ONAMES.WAN_PROBING && terrainType === SDOOR) {
-        const door = game.level.at(x, y);
-        cvt_sdoor_to_door(door);
-        recalc_block_point(x, y);
-        newsym(x, y);
-        if (cansee(x, y)) {
-            await pline('Probing reveals a secret door.');
-            learn_it = true;
-        } else {
-            note_unported_zap('zap_map:probing_unseen_secret_door');
+        ltyp = SURFACE_AT(x, y);
+        /* secret door gets revealed, converted into regular door */
+        if (ltyp === SDOOR) {
+            cvt_sdoor_to_door(lev); /* .typ = DOOR */
+            recalc_block_point(x, y);
+            newsym(x, y);
+            if (cansee(x, y)) {
+                await pline('Probing reveals a secret door.');
+                learn_it.v = true;
+            } else if (Is_rogue_level(game.u.uz)) { /* from zap_over_floor() */
+                await draft_message(false); /* "You feel a draft." (open doorway) */
+            }
+
+        /* secret corridor likewise, although only ones within view will
+           still be secret; for the !cansee(x,y) case, show_map_spot()
+           above has already converted the spot to regular corridor */
+        } else if (ltyp === SCORR) {
+            lev.typ = CORR;
+            unblock_point(x, y);
+            newsym(x, y);
+            await pline('Probing exposes a secret corridor.');
+            learn_it.v = true;
+
+        /* if on or over ice, describe it ("solid ice", "thin ice", &c);
+           likewise for furniture in case hero is levitating while blind */
+        } else if (ltyp === ICE || IS_FURNITURE(ltyp)) {
+            if (game.u.dz > 0) { /* down, which also means x,y == u.ux,u.uy */
+                await force_decor(true);
+                learn_it.v = true;
+            }
         }
-    }
-    if (obj.otyp === ONAMES.WAN_PROBING && game.u.dz > 0
-        && (terrainType === ICE || IS_FURNITURE(terrainType))) {
-        await force_decor(true);
-        learn_it = true;
-    }
-    if (obj.otyp === ONAMES.WAN_PROBING
-        && (!cansee(x, y) || terrainType === SCORR))
-        note_unported_zap('zap_map:probing');
-    if (learn_it)
+        /*
+         * Probing reveals undiscovered traps.
+         *
+         * FIXME?  This finds floor traps even when zapping up and
+         * ceiling traps even when zapping down.
+         */
+        if (ttmp) {
+            let ttmpname;
+            const t_already_seen = ttmp.tseen;
+            let use_the;
+            const hallu = !!Hallucination();
+
+            /* should probably be changed to use sense_trap(detect.c)
+               so that trap can temporarily be forced to be shown and
+               map browsing can take place before it reverts to being
+               covered by monster or object(s) */
+            ttmp.tseen = 1;
+            newsym(x, y);
+
+            if (!t_already_seen || hallu) {
+                ttmpname = trapname(ttmp.ttyp, false);
+                use_the = !hallu ? (ttmp.ttyp === VIBRATING_SQUARE
+                                    && Invocation_lev(game.u.uz))
+                                 : !rn2(4);
+                await You(`find ${use_the ? the(ttmpname) : an(ttmpname)}${
+                    use_the ? '!' : '.'}`);
+                learn_it.v = !hallu;
+            }
+        } /* t_at() */
+    } /* probing */
+
+    if (learn_it.v)
         learnwand(obj);
+    return;
 }
 
 const flash_types = [
@@ -2722,16 +2974,50 @@ export function flash_str(typ, nohallu = false) {
     return flash_types[typ];
 }
 
-// src/zap.c:4705 zap_hit(). Hero spell bonuses remain an explicit gap.
-function zap_hit(ac, spell_type) {
+// src/zap.c:4705 zap_hit()
+function zap_hit(ac, type) /* either hero cast spell type or 0 */
+{
     const chance = rn2(20);
-    if (spell_type)
-        note_unported_zap('zap_hit:spell_bonus');
+    const spell_bonus = type ? spell_hit_bonus(type) : 0;
+
+    /* small chance for naked target to avoid being hit */
     if (!chance)
-        return rnd(10) < ac;
-    if (ac < 0)
-        ac = -rnd(-ac);
-    return 3 - chance < ac;
+        return rnd(10) < ac + spell_bonus;
+
+    /* very high armor protection does not achieve invulnerability */
+    ac = AC_VALUE(ac);
+
+    return (3 - chance < ac + spell_bonus);
+}
+
+// src/zap.c:4723 disintegrate_mon(); a monster hit by disintegration
+async function disintegrate_mon(mon, type, fltxt) /* type: hero vs other */
+{
+    const m_amulet = mlifesaver(mon);
+
+    if (canseemon(mon)) {
+        if (!m_amulet)
+            await pline(`${Monnam(mon)} is disintegrated!`);
+        else
+            await hit(fltxt, mon, '!');
+    }
+
+    /* note: worn amulet of life saving must be preserved in order to operate */
+    const oresist_disintegration = (obj) =>
+        (game.objects[obj.otyp].oc_oprop === DISINT_RES || obj_resists(obj, 5, 50)
+         || is_quest_artifact(obj) || obj === m_amulet);
+
+    for (const otmp of [...(mon.minvent || [])]) {
+        if (!oresist_disintegration(otmp)) {
+            extract_from_minvent(mon, otmp, true, true);
+            obfree(otmp, null);
+        }
+    }
+
+    if (type < 0)
+        await monkilled(mon, null, -ATTKS.AD_RBRE);
+    else
+        await xkilled(mon, XKILL_NOMSG | XKILL_NOCORPSE);
 }
 
 const DMG_DESTROY_SCALE = 5;
@@ -2770,7 +3056,7 @@ function destroyable(obj, dmgtyp) {
     return false;
 }
 
-function inventory_resistance_check(dmgtyp) {
+export function inventory_resistance_check(dmgtyp) {
     const prop = dmgtyp === ATTKS.AD_COLD ? 'COLD_RES'
                : dmgtyp === ATTKS.AD_FIRE ? 'FIRE_RES'
                  : dmgtyp === ATTKS.AD_ELEC ? 'SHOCK_RES' : null;
@@ -2796,132 +3082,154 @@ export function m_useup(mon, obj) {
     }
 }
 
-async function recharge_ring_neutral(obj) {
-    if ((obj.spe | 0) > rn2(7) || (obj.spe | 0) <= -5) {
-        await pline(`${Yobjnam2(obj, 'pulsate')} momentarily, then ${
-            otense(obj, 'explode')}!`);
-        const amount = rnd(3 * Math.abs(obj.spe | 0));
-        useup(obj);
-        const damage = game.u.uprops?.HALF_PHDAM
-            ? Math.trunc((amount + 1) / 2) : amount;
-        const { losehp } = await import('./hack.js');
-        await losehp(damage, 'exploding ring', KILLED_BY_AN);
-    } else {
-        await pline(`${Yname2(obj)} spins clockwise for a moment.`);
-        obj.spe = (obj.spe | 0) + 1;
-    }
-}
 
 async function maybe_destroy_item(carrier, obj, dmgtyp) {
-    const u_carry = carrier === game.youmonst;
+    let i, cnt, quan;
+    let dmg, xresist, skip, dindx;
+    let mult;
+    const u_carry = (carrier === game.youmonst);
     const vis = !u_carry && canseemon(carrier);
-    let dmg = 0, dindx = 0, quan = 0;
-    let xresist = false, skip = false, chargeit = false;
+    let chargeit = false;
 
+    xresist = skip = 0;
+    /* lint suppression */
+    dmg = dindx = 0;
+    quan = 0;
+
+    /* external worn item protects inventory? */
     if (u_carry && inventory_resistance_check(dmgtyp))
         return 0;
 
     switch (dmgtyp) {
     case ATTKS.AD_COLD:
         quan = obj.quan;
+        dindx = 0;
         dmg = rnd(4);
         break;
     case ATTKS.AD_FIRE:
-        xresist = obj.oclass !== OCLASSES.POTION_CLASS
-            && obj.otyp !== ONAMES.GLOB_OF_GREEN_SLIME
-            && (u_carry ? Fire_resistance() : resists_fire(carrier));
+        xresist = (obj.oclass !== OCLASSES.POTION_CLASS
+                   && obj.otyp !== ONAMES.GLOB_OF_GREEN_SLIME
+                   && (u_carry ? Fire_resistance() : resists_fire(carrier)));
         if (obj.otyp === ONAMES.SPE_BOOK_OF_THE_DEAD) {
-            skip = true;
-            if (u_carry ? !game.u.ublind : vis)
-                await pline(`${The(xname(obj))} glows a strange dark red, but remains intact.`);
+            skip = 1;
+            if (u_carry ? !Blind() : vis) {
+                await pline(`${The(u_carry ? xname(obj) : distant_name(obj, xname))
+                    } glows a strange ${hcolor('dark red')}, but remains intact.`);
+            }
             break;
         }
         quan = obj.quan;
-        if (obj.oclass === OCLASSES.POTION_CLASS) {
-            dindx = obj.otyp === ONAMES.POT_OIL ? 2 : 1;
+        switch (obj.oclass) {
+        case OCLASSES.POTION_CLASS:
+            dindx = (obj.otyp !== ONAMES.POT_OIL) ? 1 : 2;
             dmg = rnd(6);
-        } else if (obj.oclass === OCLASSES.SCROLL_CLASS) {
+            break;
+        case OCLASSES.SCROLL_CLASS:
             dindx = 3;
             dmg = 1;
-        } else if (obj.oclass === OCLASSES.SPBOOK_CLASS) {
+            break;
+        case OCLASSES.SPBOOK_CLASS:
             dindx = 4;
             dmg = 1;
-        } else {
-            dindx = 1;
-            dmg = Math.trunc(((obj.owt | 0) + 19) / 20);
+            break;
+        case OCLASSES.FOOD_CLASS: /* only GLOB_OF_GREEN_SLIME */
+            dindx = 1; /* boil and explode */
+            dmg = Math.trunc((obj.owt + 19) / 20);
+            break;
         }
         break;
     case ATTKS.AD_ELEC:
-        xresist = obj.oclass !== OCLASSES.RING_CLASS
-            && (u_carry ? Shock_resistance() : resists_elec(carrier));
+        xresist = (obj.oclass !== OCLASSES.RING_CLASS
+                   && (u_carry ? Shock_resistance() : resists_elec(carrier)));
         quan = obj.quan;
-        if (obj.oclass === OCLASSES.RING_CLASS) {
-            if ((((obj.owornmask | 0) & W_RING) && game.u.uarmg
-                 && !is_metallic(game.u.uarmg))
+        switch (obj.oclass) {
+        case OCLASSES.RING_CLASS:
+            if (((obj.owornmask & W_RING) && game.u.uarmg && !is_metallic(game.u.uarmg))
                 || obj.otyp === ONAMES.RIN_SHOCK_RESISTANCE) {
-                skip = true;
+                skip++;
+                break;
             } else if (game.objects[obj.otyp].oc_charged && rn2(3)) {
                 chargeit = true;
-            } else {
-                dindx = 5;
+                break;
             }
-        } else {
+            dindx = 5;
+            dmg = 0;
+            break;
+        case OCLASSES.WAND_CLASS:
             dindx = 6;
             dmg = rnd(10);
+            break;
         }
         break;
     default:
-        skip = true;
-        note_unported_zap(`maybe_destroy_item:dmgtyp=${dmgtyp}`);
+        skip = 1; /* just in case ineligible damage type gets through... */
+        /* impossible("maybe_destroy_item with unexpected dmgtyp %d", dmgtyp) */
         break;
     }
 
     if (chargeit) {
+        /* FIXME: recharge only handles items in hero's inventory */
         if (u_carry)
-            await recharge_ring_neutral(obj);
+            await recharge(obj, 0);
     } else if (!skip) {
-        const osym = obj.oclass;
+        const osym = obj.oclass; /* for checking glob of slime after it's
+                                       destroyed */
         if (obj.in_use)
-            --quan;
-        let cnt = 0;
-        for (let i = 0; i < quan; ++i)
+            --quan; /* one will be used up elsewhere */
+        for (i = cnt = 0; i < quan; i++)
             if (!rn2(3))
-                ++cnt;
+                cnt++;
+
         if (!cnt)
             return 0;
 
         if (u_carry || vis) {
-            const mult = cnt === 1 ? (quan === 1 ? '' : 'One of ')
-                       : cnt < quan ? 'Some of '
-                         : quan === 2 ? 'Both of ' : 'All of ';
-            const name = cnt === 1 && quan === 1 ? Yname2(obj) : yname(obj);
-            await pline(`${mult}${name} ${destroy_strings[dindx][cnt > 1 ? 1 : 0]}!`);
+            mult = (cnt === 1) ? ((quan === 1) ? '' /* 1 of 1 */
+                                  : 'One of ')      /* 1 of N */
+                   : ((cnt < quan) ? 'Some of '     /* n of N */
+                      : (quan === 2) ? 'Both of '   /* 2 of 2 */
+                        : 'All of ');               /* N of N */
+            await pline(`${mult}${
+                (cnt === 1 && quan === 1) ? Yname2(obj) : yname(obj)} ${
+                destroy_strings[dindx][(cnt > 1) ? 1 : 0]}!`);
         }
-        if (u_carry && osym === OCLASSES.POTION_CLASS
-            && dmgtyp !== ATTKS.AD_COLD
-            && (!breathless(game.youmonst.data)
-                || haseyes(game.youmonst.data)))
-            await potionbreathe(obj);
-
-        for (let i = 0; i < cnt; ++i) {
+        if (u_carry) { /* effects that happen only to the player */
+            if (osym === OCLASSES.POTION_CLASS && dmgtyp !== ATTKS.AD_COLD
+                && (!breathless(game.youmonst.data)
+                    || haseyes(game.youmonst.data))) {
+                await potionbreathe(obj);
+            }
+            if (obj.owornmask) { /* m_useup handles these for monster */
+                if (obj.owornmask & W_RING) /* ring being worn */
+                    await Ring_gone(obj);
+                else
+                    setnotworn(obj);
+            }
+            if (obj === game.current_wand) {
+                game.current_wand = null; /* destroyed */
+            }
+        }
+        for (i = 0; i < cnt; i++) {
             if (u_carry)
                 useup(obj);
             else
                 m_useup(carrier, obj);
         }
         if (dmg) {
-            if (!u_carry)
+            if (!u_carry) {
                 return xresist ? 0 : dmg;
+            }
             if (xresist) {
                 await You("aren't hurt!");
             } else {
                 let how = destroy_strings[dindx][2];
-                if (dmgtyp === ATTKS.AD_FIRE
-                    && osym === OCLASSES.FOOD_CLASS)
+                const one = (cnt === 1);
+
+                if (dmgtyp === ATTKS.AD_FIRE && osym === OCLASSES.FOOD_CLASS)
                     how = 'exploding glob of slime';
                 const { losehp } = await import('./hack.js');
-                await losehp(dmg, cnt === 1 ? how : makeplural(how),
-                             cnt === 1 ? KILLED_BY_AN : KILLED_BY);
+                await losehp(dmg, one ? how : makeplural(how),
+                             one ? KILLED_BY_AN : KILLED_BY);
                 exercise(A_STR, false);
             }
         }
@@ -3000,171 +3308,348 @@ export function sleep_monst(mon, amount, how) {
     return false;
 }
 
-export async function zhitm(mon, type, nd) {
+export async function zhitm(mon, type, nd, ootmp = { v: null }) /* ootmp: worn armor for caller to disintegrate */
+{
+    let tmp = 0, orig_dmg = 0; /* damage amount */
     const damgtype = zaptype(type) % 10;
-    let damage = 0;
+    let sho_shieldeff = false;
+    const spellcaster = is_hero_spell(type); /* maybe get a bonus! */
 
+    ootmp.v = null;
     switch (damgtype) {
-    case 0:
+    case ZT_MAGIC_MISSILE:
         if (resists_magm(mon) || defended(mon, ATTKS.AD_MAGM)) {
-            shieldeff_mon(mon);
+            sho_shieldeff = true;
             break;
         }
-        damage = d(nd, 6);
+        tmp = d(nd, 6);
+        if (spellcaster)
+            tmp = spell_damage_bonus(tmp);
         break;
-    case 1: {
+    case ZT_FIRE:
         if (resists_fire(mon) || defended(mon, ATTKS.AD_FIRE)) {
-            shieldeff_mon(mon);
+            sho_shieldeff = true;
             break;
         }
-        damage = d(nd, 6);
-        const orig_damage = damage;
+        tmp = d(nd, 6);
+        if (spellcaster)
+            tmp = spell_damage_bonus(tmp);
+        orig_dmg = tmp; /* includes spell bonus but not monster vuln to fire */
         if (resists_cold(mon))
-            damage += 7;
-        if (await burnarmor(mon) && !rn2(3)) {
-            damage += await destroy_items(mon, ATTKS.AD_FIRE, orig_damage);
-            await ignite_items(mon.minvent || []);
+            tmp += 7;
+        if (await burnarmor(mon)) {
+            if (!rn2(3)) {
+                tmp += await destroy_items(mon, ATTKS.AD_FIRE, orig_dmg);
+                await ignite_items(mon.minvent);
+            }
         }
         break;
-    }
-    case 2:
+    case ZT_COLD:
         if (resists_cold(mon) || defended(mon, ATTKS.AD_COLD)) {
-            shieldeff_mon(mon);
+            sho_shieldeff = true;
             break;
         }
-        damage = d(nd, 6);
-        {
-            const orig_damage = damage;
-            if (resists_fire(mon))
-                damage += d(nd, 3);
-            if (!rn2(3))
-                damage += await destroy_items(mon, ATTKS.AD_COLD, orig_damage);
-        }
+        tmp = d(nd, 6);
+        if (spellcaster)
+            tmp = spell_damage_bonus(tmp);
+        orig_dmg = tmp; /* includes spell bonus but not monster vuln to cold */
+        if (resists_fire(mon))
+            tmp += d(nd, 3);
+        if (!rn2(3))
+            tmp += await destroy_items(mon, ATTKS.AD_COLD, orig_dmg);
         break;
-    case 3:
-        sleep_monst(mon, d(nd, 25),
-                    type === 3 ? OCLASSES.WAND_CLASS : 0);
+    case ZT_SLEEP:
+        /* resistance and shield effect and revealing concealed mimic are
+           handled by sleep_monst() */
+        tmp = 0;
+        await sleep_monst(mon, d(nd, 25),
+                          type === ZT_WAND(ZT_SLEEP) ? OCLASSES.WAND_CLASS : 0);
         break;
-    case 4: {
-        /* src/zap.c:4299 ZT_DEATH. Disintegration breath shares this zap
-           number but has armor-destruction rules which remain separate. */
-        if (Math.abs(type) === 24) {
-            note_unported_zap('zhitm:disintegration');
-            return 0;
+    case ZT_DEATH:                              /* death/disintegration */
+        if (Math.abs(type) !== ZT_BREATH(ZT_DEATH)) { /* death */
+            if (mon.data === game.mons[PMNAMES.PM_DEATH]) {
+                healmon(mon, Math.trunc(mon.mhpmax * 3 / 2), Math.trunc(mon.mhpmax / 2));
+                if (mon.mhpmax >= MAGIC_COOKIE)
+                    mon.mhpmax = MAGIC_COOKIE - 1;
+                tmp = 0;
+                break;
+            }
+            if (nonliving(mon.data) || is_demon(mon.data)
+                || is_vampshifter(mon) || resists_magm(mon)) {
+                /* similar to player */
+                sho_shieldeff = true;
+                break;
+            }
+            type = -1; /* so they don't get saving throws */
+        } else {
+            let otmp2;
+
+            if (resists_disint(mon) || defended(mon, ATTKS.AD_DISN)) {
+                sho_shieldeff = true;
+            } else if (mon.misc_worn_check & W_ARMS) {
+                /* destroy shield; victim survives */
+                ootmp.v = which_armor(mon, W_ARMS);
+            } else if (mon.misc_worn_check & W_ARM) {
+                /* destroy suit, also cloak if present */
+                ootmp.v = which_armor(mon, W_ARM);
+                if ((otmp2 = which_armor(mon, W_ARMC)) != null)
+                    m_useup(mon, otmp2);
+            } else {
+                /* no suit, victim dies; destroy cloak
+                   and shirt now in case target gets life-saved */
+                tmp = MAGIC_COOKIE;
+                if ((otmp2 = which_armor(mon, W_ARMC)) != null)
+                    m_useup(mon, otmp2);
+                if ((otmp2 = which_armor(mon, W_ARMU)) != null)
+                    m_useup(mon, otmp2);
+            }
+            type = -1; /* no saving throw wanted */
+            break;     /* not ordinary damage */
         }
-        const ptr = game.mons[mon.mnum];
-        if (mon.mnum === PMNAMES.PM_DEATH) {
-            healmon(mon, Math.trunc(mon.mhpmax * 3 / 2),
-                    Math.trunc(mon.mhpmax / 2));
-            if (mon.mhpmax >= 1000)
-                mon.mhpmax = 999;
-            break;
-        }
-        if (nonliving(ptr) || is_demon(ptr) || is_vampshifter(mon)
-            || resists_magm(mon)) {
-            shieldeff_mon(mon);
-            break;
-        }
-        type = -1; /* death rays do not permit a saving throw */
-        damage = mon.mhp + 1;
+        tmp = mon.mhp + 1;
         break;
-    }
-    case 5: {
-        damage = d(nd, 6);
-        const orig_damage = damage;
+    case ZT_LIGHTNING:
+        tmp = d(nd, 6);
+        if (spellcaster)
+            tmp = spell_damage_bonus(tmp);
+        orig_dmg = tmp;
         if (resists_elec(mon) || defended(mon, ATTKS.AD_ELEC)) {
-            shieldeff_mon(mon);
-            damage = 0;
+            sho_shieldeff = true;
+            tmp = 0;
+            /* can still blind the monster */
         }
         if (!resists_blnd(mon)
-            && !(type > 0 && engulfing_u(mon)) && nd > 2) {
-            const blind = rnd(50);
+            && !(type > 0 && engulfing_u(mon))
+            && nd > 2) {
+            /* sufficiently powerful lightning blinds monsters */
+            const rnd_tmp = rnd(50);
             mon.mcansee = 0;
-            mon.mblinded = Math.min(127, (mon.mblinded | 0) + blind);
+            if ((mon.mblinded + rnd_tmp) > 127)
+                mon.mblinded = 127;
+            else
+                mon.mblinded += rnd_tmp;
         }
         if (!rn2(3))
-            damage += await destroy_items(mon, ATTKS.AD_ELEC, orig_damage);
+            tmp += await destroy_items(mon, ATTKS.AD_ELEC, orig_dmg);
+        break;
+    case ZT_POISON_GAS:
+        if (resists_poison(mon) || defended(mon, ATTKS.AD_DRST)) {
+            sho_shieldeff = true;
+            break;
+        }
+        tmp = d(nd, 6);
+        break;
+    case ZT_ACID:
+        if (resists_acid(mon) || defended(mon, ATTKS.AD_ACID)) {
+            sho_shieldeff = true;
+            break;
+        }
+        tmp = d(nd, 6);
+        if (!rn2(6))
+            await acid_damage(MON_WEP(mon));
+        if (!rn2(6))
+            await erode_armor(mon, ERODE_CORRODE);
         break;
     }
-    default:
-        note_unported_zap(`zhitm:type=${damgtype}`);
-        return 0;
-    }
-
-    if (damage > 0 && type >= 0
-        && resist(mon, type < 10 ? OCLASSES.WAND_CLASS : 0, 0, false))
-        damage = Math.trunc(damage / 2);
-    mon.mhp -= damage;
-    return damage;
+    if (sho_shieldeff)
+        await shieldeff(mon.mx, mon.my);
+    if (is_hero_spell(type) && (Role_if(PMNAMES.PM_KNIGHT) && game.u.uhave.questart))
+        tmp *= 2;
+    if (tmp > 0 && type >= 0
+        && await resist(mon, type < ZT_SPELL(0) ? OCLASSES.WAND_CLASS : 0, 0, NOTELL))
+        tmp = Math.trunc(tmp / 2);
+    if (tmp < 0)
+        tmp = 0; /* don't allow negative damage */
+    mon.mhp -= tmp;
+    return tmp;
 }
 
 // src/zap.c:4401 zhitu(), a ray striking the hero. The fire arm is shared by
 // wands, spells, breath, and rebounding beams.
 async function zhitu(type, nd, fltxt, sx, sy) {
+    let dam = 0;
     const abstyp = zaptype(type);
-    let damage = 0;
+    let orig_dam = 0;
 
     switch (abstyp % 10) {
-    case 0: { /* ZT_MAGIC_MISSILE */
-        const antimagic = !!(game.u.intrinsic?.HAntimagic
-                             || game.u.uprops?.ANTIMAGIC
-                             || game.u.uprops?.MAGIC_RES);
-        if (antimagic) {
-            note_unported_zap('zhitu:magic_missile_shieldeff');
+    case ZT_MAGIC_MISSILE:
+        if (Antimagic()) {
+            await shieldeff(sx, sy);
             await pline_The('missiles bounce off!');
-            if (game.buzzer)
-                game.buzzer.seen_resistance =
-                    (game.buzzer.seen_resistance ?? 0) | M_SEEN_MAGR;
+            monstseesu(M_SEEN_MAGR);
         } else {
-            damage = d(nd, 6);
+            dam = d(nd, 6);
             exercise(A_STR, false);
-            if (game.buzzer)
-                game.buzzer.seen_resistance =
-                    (game.buzzer.seen_resistance ?? 0) & ~M_SEEN_MAGR;
+            monstunseesu(M_SEEN_MAGR);
         }
         break;
-    }
-    case 1: { /* ZT_FIRE */
-        const origDamage = d(nd, 6);
+    case ZT_FIRE:
+        orig_dam = d(nd, 6);
         if (Fire_resistance()) {
-            note_unported_zap('zhitu:fire_shieldeff');
+            await shieldeff(sx, sy);
             await You("don't feel hot!");
+            monstseesu(M_SEEN_FIRE);
+            await ugolemeffects(ATTKS.AD_FIRE, orig_dam);
         } else {
-            damage = origDamage;
+            dam = orig_dam;
+            monstunseesu(M_SEEN_FIRE);
         }
-        /* burn_away_slime() has no effect without an active slime timeout. */
-        if (await burnarmor(game.youmonst)) {
+        await burn_away_slime();
+        if (await burnarmor(game.youmonst)) { /* "body hit" */
             if (!rn2(3))
-                await destroy_items(game.youmonst, ATTKS.AD_FIRE, origDamage);
+                await destroy_items(game.youmonst, ATTKS.AD_FIRE, orig_dam);
             if (!rn2(3))
                 await ignite_items(game.invent);
         }
         break;
-    }
-    case 2: { /* ZT_COLD */
-        const origDamage = d(nd, 6);
+    case ZT_COLD:
+        orig_dam = d(nd, 6);
         if (Cold_resistance()) {
-            note_unported_zap('zhitu:cold_shieldeff_golem');
+            await shieldeff(sx, sy);
             await You("don't feel cold.");
+            monstseesu(M_SEEN_COLD);
+            await ugolemeffects(ATTKS.AD_COLD, orig_dam);
         } else {
-            damage = origDamage;
+            dam = orig_dam;
+            monstunseesu(M_SEEN_COLD);
         }
         if (!rn2(3))
-            await destroy_items(game.youmonst, ATTKS.AD_COLD, origDamage);
+            await destroy_items(game.youmonst, ATTKS.AD_COLD, orig_dam);
+        break;
+    case ZT_SLEEP:
+        if (Sleep_resistance()) {
+            await shieldeff(game.u.ux, game.u.uy);
+            await You("don't feel sleepy.");
+            monstseesu(M_SEEN_SLEEP);
+        } else {
+            monstunseesu(M_SEEN_SLEEP);
+            await fall_asleep(-d(nd, 25), true); /* sleep ray */
+        }
+        break;
+    case ZT_DEATH:
+        if (abstyp === ZT_BREATH(ZT_DEATH)) {
+            const disn_prot = inventory_resistance_check(ATTKS.AD_DISN);
+
+            if (Disint_resistance()) {
+                await You('are not disintegrated.');
+                monstseesu(M_SEEN_DISINT);
+                break;
+            } else if (disn_prot) {
+                break;
+            }
+            monstunseesu(M_SEEN_DISINT);
+            if (game.u.uarms) {
+                /* destroy shield; other possessions are safe */
+                await disintegrate_arm(game.u.uarms);
+                break;
+            } else if (game.u.uarm) {
+                /* destroy suit; if present, cloak goes too */
+                if (game.u.uarmc)
+                    await disintegrate_arm(game.u.uarmc);
+                await disintegrate_arm(game.u.uarm);
+                break;
+            }
+            /* no shield or suit, you're dead; wipe out cloak
+               and/or shirt in case of life-saving or bones */
+            if (game.u.uarmc)
+                await disintegrate_arm(game.u.uarmc);
+            if (game.u.uarmu)
+                await disintegrate_arm(game.u.uarmu);
+        } else if (nonliving(game.youmonst.data) || is_demon(game.youmonst.data)) {
+            await shieldeff(sx, sy);
+            await You('seem unaffected.');
+            break;
+        } else if (Antimagic()) {
+            await shieldeff(sx, sy);
+            monstseesu(M_SEEN_MAGR);
+            await You("aren't affected.");
+            break;
+        }
+        monstunseesu(M_SEEN_MAGR);
+        (game.killer ||= {}).format = KILLED_BY_AN;
+        game.killer.name = fltxt ? fltxt : '';
+        /* when killed by disintegration breath, don't leave corpse */
+        game.u.ugrave_arise = (type === -ZT_BREATH(ZT_DEATH)) ? -3 : NON_PM;
+        await done(DIED);
+        return; /* lifesaved */
+    case ZT_LIGHTNING:
+        orig_dam = d(nd, 6);
+        if (Shock_resistance()) {
+            await shieldeff(sx, sy);
+            await You("aren't affected.");
+            monstseesu(M_SEEN_ELEC);
+            await ugolemeffects(ATTKS.AD_ELEC, orig_dam);
+        } else {
+            dam = orig_dam;
+            exercise(A_CON, false);
+            monstunseesu(M_SEEN_ELEC);
+        }
+        if (!rn2(3))
+            await destroy_items(game.youmonst, ATTKS.AD_ELEC, orig_dam);
+        break;
+    case ZT_POISON_GAS:
+        await poisoned('blast', A_DEX, 'poisoned blast', 15, false);
+        break;
+    case ZT_ACID:
+        if (Acid_resistance()) {
+            await pline_The(`${hliquid('acid')} doesn't hurt.`);
+            monstseesu(M_SEEN_ACID);
+            dam = 0;
+        } else {
+            await pline_The(`${hliquid('acid')} burns!`);
+            dam = d(nd, 6);
+            exercise(A_STR, false);
+            monstunseesu(M_SEEN_ACID);
+        }
+        /* using two weapons at once makes both of them more vulnerable */
+        if (!rn2(game.u.twoweap ? 3 : 6))
+            await acid_damage(game.u.uwep);
+        if (game.u.twoweap && !rn2(3))
+            await acid_damage(game.u.uswapwep);
+        if (!rn2(6))
+            await erode_armor(game.youmonst, ERODE_CORRODE);
         break;
     }
-    default:
-        note_unported_zap(`zhitu:type=${abstyp % 10}`);
-        return;
-    }
 
-    if (damage && game.u.uprops?.HALF_SPDAM && abstyp < 20)
-        damage = Math.trunc((damage + 1) / 2);
-    const self = game.flags?.female ? 'herself' : 'himself';
-    const killer = type < 0 ? fltxt : `${fltxt} ${
-        abstyp < 10 ? 'zapped' : abstyp < 20 ? 'cast' : 'exhaled'} by ${self}`;
-    const { losehp } = await import('./hack.js');
-    await losehp(damage, killer, KILLED_BY_AN);
+    /*
+     * 5.0: when fatal, this used to yield "Killed by <fltxt>." without any
+     * information about who was responsible.  Now 'buzzer' is used to try
+     * to supply "zapped/cast/breathed by <mon> [imitating <other_mon>]."
+     *
+     * Wand of death, spell of finger of death, and disintegration breath
+     * don't use this routine so don't include 'inflicted by'.
+     */
+    {
+        let kbuf;
+        const otmp = game.current_wand;
+        /* fire horn and frost horn get handled as wands by caller */
+        const verb = (abstyp < 10) /* wand */
+                     ? ((otmp && otmp.oclass === OCLASSES.TOOL_CLASS) ? 'played'
+                        : 'zapped')
+                     : (abstyp < 20) ? 'cast'
+                       : (abstyp < 30) ? 'exhaled'
+                         : 'imagined'; /* should never happen */
+
+        if (type < 0 || (type === 0 && game.buzzer)) {
+            /* if gb.buzzer is Null, kbuf[] will end up with just <fltxt> */
+            kbuf = death_inflicted_by(fltxt, game.buzzer);
+            /* change "death inflicted by mon" to "death <verb> by mon" */
+            if (game.buzzer)
+                kbuf = strsubst(kbuf, 'inflicted', verb);
+        } else {
+            /* FIXME: "zapped by herself" is suitable for a rebound;
+               "zapped at herself" would be better if player explicitly
+               targeted hero */
+            kbuf = `${fltxt} ${verb} by ${uhim()}self`;
+        }
+        /* Half_spell_damage protection yields half-damage for wands & spells,
+           including hero's own ricochets; breath attacks do full damage */
+        if (dam && Half_spell_damage() && abstyp < 20)
+            dam = Math.trunc((dam + 1) / 2);
+        const { losehp } = await import('./hack.js');
+        await losehp(dam, kbuf, KILLED_BY_AN);
+    }
+    return;
 }
 
 // src/zap.c:4664 bounce_dir().
@@ -3220,37 +3705,6 @@ function zapdir_cmap(dx, dy) {
     if (dx && dy)
         return cmap_names.S_rslant;
     return dx ? cmap_names.S_hbeam : cmap_names.S_vbeam;
-}
-
-// src/muse.c:2836 ureflects(), outermost equipment first.
-export async function ureflects(fmt = null, str = null) {
-    const mask = game.u.uprops?.REFLECTING | 0;
-    let source = null;
-    let identify = 0;
-
-    if (mask & W_ARMS) {
-        source = 'shield';
-        identify = ONAMES.SHIELD_OF_REFLECTION;
-    } else if (mask & W_WEP) {
-        source = 'weapon';
-    } else if (mask & W_AMUL) {
-        source = 'medallion';
-        identify = ONAMES.AMULET_OF_REFLECTION;
-    } else if (mask & W_ARM) {
-        source = game.u.uskin ? 'luster' : 'armor';
-    }
-    if (!source) {
-        note_unported_zap('ureflects:source');
-        source = 'body';
-    }
-    if (fmt !== null && str !== null) {
-        const message = fmt.replace('%s', str).replace('%s', source);
-        await pline(message);
-    } else {
-        await pline(`But it reflects from your ${source}!`);
-    }
-    if (identify)
-        makeknown(identify);
 }
 
 // src/zap.c:4598 burn_floor_objects(). Fire consumes eligible paper and slime
@@ -3402,302 +3856,647 @@ export async function melt_ice(x, y, msg = null) {
     }
 }
 
-// src/zap.c:5141 zap_over_floor(). Elemental rays alter terrain before their
-// remaining range is applied to the next beam square.
-export async function zap_over_floor(x, y, type, ignoremon = false) {
-    const damgtype = zaptype(type) % 10;
-    const loc = game.level?.at(x, y);
-    if (!loc)
-        return 0;
-    const seeIt = cansee(x, y);
-    const fire = damgtype === ATTKS.AD_FIRE - ATTKS.AD_MAGM;
-    const cold = damgtype === ATTKS.AD_COLD - ATTKS.AD_MAGM;
+// src/zap.c:5141 zap_over_floor(); terrain effects of a ray at <x,y>
+export async function zap_over_floor(
+    x, y,                /* location */
+    type,                /* damage type plus {wand|spell|breath} info */
+    shopdamage,          /* { v }: extra output if shop door is destroyed */
+    ignoremon,           /* ignore any monster here */
+    exploding_wand_typ)  /* supplied when breaking a wand; or POT_OIL
+                          * when a lit potion of oil explodes */
+{
+    let zapverb;
+    let mon;
+    let t;
+    const lev = game.level.at(x, y);
+    const see_it = cansee(x, y);
+    let yourzap;
     let rangemod = 0;
+    const damgtype = zaptype(type) % 10;
+    const lavawall = (lev.typ === LAVAWALL);
 
-    if (fire) {
-        let trap = t_at(x, y);
-        if (trap?.ttyp === WEB) {
-            if (seeIt)
+    if (type === PHYS_EXPL_TYPE) {
+        /* this won't have any effect on the floor */
+        return -1000; /* not a zap anyway, shouldn't matter */
+    }
+
+    switch (damgtype) {
+    case ZT_FIRE:
+        t = t_at(x, y);
+        if (t && t.ttyp === WEB) {
+            /* a burning web is too flimsy to notice if you can't see it */
+            if (see_it)
                 await Norep('A web bursts into flames!');
-            deltrap(trap);
-            trap = null;
-            if (seeIt)
+            await delfloortrap(t), t = null;
+            if (see_it)
                 newsym(x, y);
         }
-
         if (is_ice(x, y)) {
-            await melt_ice(x, y);
+            await melt_ice(x, y, null);
         } else if (is_pool(x, y)) {
-            const onWaterLevel = Is_waterlevel(game.u.uz);
-            let message = !Deaf() ? 'You hear hissing gas.'
-                : type >= 0 ? 'That seemed remarkably uneventful.' : null;
+            const on_water_level = Is_waterlevel(game.u.uz);
+            let msggiven = false;
+            let msgtxt = (!Deaf())
+                         ? 'You hear hissing gas.' /* Deaf-aware */
+                         : (type >= 0)
+                           ? 'That seemed remarkably uneventful.'
+                           : null;
 
-            if (!onWaterLevel)
-                create_gas_cloud(x, y, rnd(5), 0);
+            /* don't create steam clouds on Plane of Water; air bubble
+               movement and gas regions don't understand each other */
+            if (!on_water_level) {
+                create_gas_cloud(x, y, rnd(5), 0); /* 1..5, no damg */
+                if (game.iflags.last_msg === PLNMSG_ENVELOPED_IN_GAS)
+                    msggiven = true;
+            }
 
-            if (loc.typ !== POOL) {
-                trap = null;
-                if (onWaterLevel)
-                    message = (seeIt || !Deaf()) ? 'Some water boils.' : null;
-                else if (seeIt)
-                    message = 'Some water evaporates.';
+            if (lev.typ !== POOL) { /* MOAT or DRAWBRIDGE_UP or WATER */
+                t = null;
+                if (on_water_level)
+                    msgtxt = (see_it || !Deaf()) ? 'Some water boils.' : null;
+                else if (see_it)
+                    msgtxt = 'Some water evaporates.';
             } else {
                 rangemod -= 3;
-                loc.typ = ROOM;
-                loc.flags = 0;
+                lev.typ = ROOM, lev.flags = 0;
                 const { maketrap } = await import('./mklev.js');
-                trap = maketrap(x, y, PIT);
-                if (seeIt)
-                    message = 'The water evaporates.';
+                t = maketrap(x, y, PIT);
+                /*if (t) -- this was before the vapor cloud was added --
+                      t->tseen = 1;*/
+                if (see_it)
+                    msgtxt = 'The water evaporates.';
             }
-            if (message)
-                await Norep(message);
+            if (msgtxt && !msggiven)
+                await Norep(msgtxt);
 
-            if (loc.typ === ROOM) {
-                const occupant = m_at(x, y);
-                if (occupant && is_swimmer(occupant.data)
-                    && occupant.mundetected) {
-                    occupant.mundetected = 0;
-                }
-                newsym(x, y);
-                if (trap) {
-                    if (u_at(x, y))
-                        await dotrap(trap, NO_TRAP_FLAGS);
-                    else if (occupant)
-                        await mintrap(occupant, NO_TRAP_FLAGS);
-                }
-            }
-        }
-    } else if (cold
-               && (is_pool(x, y) || is_lava(x, y)
-                   || loc.typ === LAVAWALL)) {
-        const lavawall = loc.typ === LAVAWALL;
-        const lava = is_lava(x, y) || lavawall;
-        const moat = is_moat(x, y);
-        const chance = Math.max(2,
-            5 + (game.level?.flags?.temperature ?? 0) * 10);
-
-        if (IS_WATERWALL(loc.typ) || (lavawall && rn2(chance))) {
-            if (seeIt) {
-                await pline_The(`${hliquid(lavawall ? 'lava' : 'water')} `
-                    + 'freezes for a moment.');
-            } else {
-                await You_hear('a soft crackling.');
-            }
-            rangemod -= 1000;
-        } else {
-            const waterName = waterbody_name(x, y);
-            rangemod -= 3;
-            if (loc.typ === DRAWBRIDGE_UP) {
-                loc.drawbridgemask = ((loc.drawbridgemask ?? 0) & ~DB_UNDER)
-                    | (lava ? DB_FLOOR : DB_ICE);
-            } else {
-                loc.icedpool = lava ? 0
-                    : loc.typ === POOL ? ICED_POOL : ICED_MOAT;
-                if (lavawall) {
-                    const vertical = (isok(x, y - 1)
-                                      && IS_WALL(game.level.at(x, y - 1).typ))
-                        || (isok(x, y + 1)
-                            && IS_WALL(game.level.at(x, y + 1).typ));
-                    loc.typ = vertical ? VWALL : HWALL;
-                    const { fix_wall_spines } = await import('./mklev.js');
-                    fix_wall_spines(Math.max(0, x - 1), Math.max(0, y - 1),
-                                    Math.min(79, x + 1), Math.min(20, y + 1));
-                } else {
-                    loc.typ = lava ? ROOM : ICE;
-                }
-            }
-
-            const { bury_objs } = await import('./mklev.js');
-            bury_objs(x, y);
-            if (seeIt) {
-                if (lava) {
-                    await Norep(`The ${hliquid('lava')} cools and solidifies.`);
-                } else if (moat) {
-                    await Norep(`The ${waterName} is bridged with ice!`);
-                } else {
-                    await Norep(`The ${hliquid('water')} freezes.`);
-                }
-                newsym(x, y);
-            } else if (!lava) {
-                await You_hear('a crackling sound.');
-            }
-
-            if (u_at(x, y)) {
-                if (game.u.uinwater) {
-                    game.u.uinwater = 0;
-                    game.u.uundetected = 0;
-                    await docrt();
-                    game.vision_full_recalc = 1;
-                } else if (game.u.utrap
-                           && game.u.utraptype === TT_LAVA) {
-                    if (Passes_walls()) {
-                        await You('pass through the now-solid rock.');
-                        game.u.utrap = 0;
-                        game.u.utraptype = 0;
-                    } else {
-                        game.u.utrap = rn1(50, 20);
-                        game.u.utraptype = TT_INFLOOR;
-                        await You('are firmly stuck in the cooling rock.');
+            if (lev.typ === ROOM) { /* POOL changed to ROOM above */
+                if ((mon = m_at(x, y)) != null) {
+                    /* probably ought to do some hefty damage to any
+                       creature caught in boiling water;
+                       at a minimum, eels are forced out of hiding */
+                    if (is_swimmer(mon.data) && mon.mundetected) {
+                        mon.mundetected = 0;
                     }
                 }
-            } else {
-                const occupant = m_at(x, y);
-                if (occupant && is_swimmer(occupant.data)
-                    && occupant.mundetected) {
-                    occupant.mundetected = 0;
-                    newsym(x, y);
+                newsym(x, y);
+                if (t) {
+                    /* if water walking/swimming/magical breathing, maybe fall
+                       into the new pit (after the water evaporation message);
+                       if flying or levitating, nothing will happen */
+                    if (u_at(x, y))
+                        await dotrap(t, NO_TRAP_FLAGS);
+                    else if (mon)
+                        await mintrap(mon, NO_TRAP_FLAGS);
                 }
             }
+        } else if (IS_FOUNTAIN(lev.typ)) {
+            create_gas_cloud(x, y, rnd(3), 0); /* 1..3, no damage */
+            if (see_it)
+                await pline('Steam billows from the fountain.');
+            rangemod -= 1;
+            await dryup(x, y, type > 0);
+        }
+        break; /* ZT_FIRE */
 
-            if (!lava) {
-                start_melt_ice_timeout(x, y, 0);
-                obj_ice_effects(x, y, true);
+    case ZT_COLD:
+        if (is_pool(x, y) || is_lava(x, y) || lavawall) {
+            const lava = (is_lava(x, y) || lavawall),
+                  moat = is_moat(x, y);
+            const chance = Math.max(2, 5 + game.level.flags.temperature * 10);
+
+            if (IS_WATERWALL(lev.typ) || (lavawall && rn2(chance))) {
+                /* For now, don't let WATER freeze. */
+                /* Soundeffect(se_soft_crackling, 100); */
+                if (see_it)
+                    await pline_The(`${hliquid(lavawall ? 'lava' : 'water')} freezes for a moment.`);
+                else
+                    await You_hear('a soft crackling.');
+                rangemod -= 1000; /* stop */
+            } else {
+                const buf = waterbody_name(x, y); /* for MOAT */
+                rangemod -= 3;
+                if (lev.typ === DRAWBRIDGE_UP) {
+                    lev.drawbridgemask &= ~DB_UNDER; /* clear lava */
+                    lev.drawbridgemask |= (lava ? DB_FLOOR : DB_ICE);
+                } else {
+                    lev.icedpool = lava ? 0
+                                        : (lev.typ === POOL) ? ICED_POOL
+                                                             : ICED_MOAT;
+                    if (lavawall) {
+                        if ((isok(x, y - 1) && IS_WALL(game.level.at(x, y - 1).typ))
+                            || (isok(x, y + 1) && IS_WALL(game.level.at(x, y + 1).typ)))
+                            lev.typ = VWALL;
+                        else
+                            lev.typ = HWALL;
+                        const { fix_wall_spines } = await import('./mklev.js');
+                        fix_wall_spines(Math.max(0, x - 1), Math.max(0, y - 1),
+                                        Math.min(COLNO - 1, x + 1), Math.min(ROWNO - 1, y + 1));
+                    } else {
+                        lev.typ = lava ? ROOM : ICE;
+                    }
+                }
+                const { bury_objs } = await import('./mklev.js');
+                bury_objs(x, y);
+                if (!lava) {
+                    /* Soundeffect(se_soft_crackling, 30); */
+                }
+                if (see_it) {
+                    if (lava)
+                        await Norep(`The ${hliquid('lava')} cools and solidifies.`);
+                    else if (moat)
+                        await Norep(`The ${buf} is bridged with ice!`);
+                    else
+                        await Norep(`The ${hliquid('water')} freezes.`);
+                    newsym(x, y);
+                } else if (!lava) {
+                    await You_hear('a crackling sound.');
+                }
+                if (u_at(x, y)) {
+                    if (game.u.uinwater) { /* not just `if (Underwater)' */
+                        /* leave the no longer existent water */
+                        await set_uinwater(0); /* u.uinwater = 0 */
+                        game.u.uundetected = 0;
+                        await docrt();
+                        game.vision_full_recalc = 1;
+                    } else if (game.u.utrap && game.u.utraptype === TT_LAVA) {
+                        if (Passes_walls()) {
+                            await You('pass through the now-solid rock.');
+                            await reset_utrap(true);
+                        } else {
+                            set_utrap(rn1(50, 20), TT_INFLOOR);
+                            await You('are firmly stuck in the cooling rock.');
+                        }
+                    }
+                } else if ((mon = m_at(x, y)) != null) {
+                    /* probably ought to do some hefty damage to any
+                       non-ice creature caught in freezing water;
+                       at a minimum, eels are forced out of hiding */
+                    if (is_swimmer(mon.data) && mon.mundetected) {
+                        mon.mundetected = 0;
+                        newsym(x, y);
+                    }
+                }
+                if (!lava) {
+                    start_melt_ice_timeout(x, y, 0);
+                    obj_ice_effects(x, y, true);
+                }
+            } /* ?WATER */
+
+        } else if (is_ice(x, y)) {
+            let melt_time;
+
+            /* Already ice here, so just firm it up. */
+            /* Now ensure that only ice that is already timed is affected */
+            if ((melt_time = spot_time_left(x, y, MELT_ICE_AWAY)) !== 0) {
+                spot_stop_timers(x, y, MELT_ICE_AWAY);
+                start_melt_ice_timeout(x, y, melt_time);
             }
         }
-    } else if (cold && is_ice(x, y)) {
-        const packed = ((x & 0xffff) << 16) | (y & 0xffff);
-        const timer = (game.timer_base || []).find(candidate =>
-            candidate.func_index === MELT_ICE_AWAY
-            && (candidate.arg?.a_long ?? candidate.arg) === packed);
-        if (timer) {
-            const remaining = timer.timeout - (game.moves ?? 0);
-            game.timer_base.splice(game.timer_base.indexOf(timer), 1);
-            start_melt_ice_timeout(x, y, remaining);
+        break; /* ZT_COLD */
+
+    case ZT_POISON_GAS:
+        /* poison gas with range 1: green dragon/iron golem breath (AD_DRST);
+           caller is placing a series of 1x1 clouds along the zap's path;
+           <x,y> for wall locations might be included--reject those */
+        if (ZAP_POS(lev.typ))
+            create_gas_cloud(x, y, 1, 8);
+        break;
+
+    case ZT_LIGHTNING:
+        /*FALLTHRU*/
+    case ZT_ACID:
+        if (lev.typ === IRONBARS) {
+            if (damgtype === ZT_LIGHTNING && rn2(10))
+                break;
+            if ((lev.wall_info & W_NONDIGGABLE) !== 0) {
+                if (see_it)
+                    await Norep(`The ${defsyms[cmap_names.S_bars].explain} ${
+                        (damgtype === ZT_ACID) ? 'corrode' : 'melt'} somewhat but remain intact.`);
+                /* but nothing actually happens... */
+            } else {
+                rangemod -= 3;
+                if (see_it)
+                    await Norep(`The ${defsyms[cmap_names.S_bars].explain} ${
+                        (damgtype === ZT_ACID) ? 'corrode away' : 'melt'}.`);
+                await dissolve_bars(x, y);
+                if (in_rooms(x, y, SHOPBASE).length) {
+                    add_damage(x, y, (type >= 0) ? SHOP_BARS_COST : 0);
+                    if (type >= 0)
+                        shopdamage.v = true;
+                }
+            }
         }
-    } else if (damgtype === ATTKS.AD_DRST - ATTKS.AD_MAGM
-               && ZAP_POS(loc.typ)) {
-        create_gas_cloud(x, y, 1, 8);
+        break; /* ZT_ACID */
+
+    default:
+        break;
     }
-    if (fire) {
-        if (await burn_floor_objects(x, y, false, type > 0)
-            && couldsee(x, y)) {
+
+    /* set up zap text for possible door feedback; for exploding wand, we
+       want "the blast" rather than "your blast" even if hero caused it */
+    yourzap = (type >= 0 && !exploding_wand_typ);
+    zapverb = 'blast'; /* breath attack or wand explosion */
+    if (!exploding_wand_typ) {
+        const ztype = zaptype(type); /* 0..29 for both hero and monsters */
+
+        if (ztype < ZT_SPELL(0))
+            zapverb = 'bolt'; /* wand zap */
+        else if (ztype < ZT_BREATH(0))
+            zapverb = 'spell';
+    } else if (exploding_wand_typ === ONAMES.POT_OIL
+               || exploding_wand_typ === ONAMES.SCR_FIRE) {
+        /* breakobj() -> explode_oil() -> splatter_burning_oil()
+           -> explode(ZT_SPELL(ZT_FIRE), BURNING_OIL)
+           -> zap_over_floor(ZT_SPELL(ZT_FIRE), POT_OIL) */
+        /* leave zapverb as "blast"; exploding_wand_typ was nonzero, so
+           'yourzap' is FALSE and the result will be "the blast" */
+        exploding_wand_typ = 0; /* not actually an exploding wand */
+    }
+
+    /* secret door gets revealed, converted into regular door */
+    if (game.level.at(x, y).typ === SDOOR) {
+        cvt_sdoor_to_door(game.level.at(x, y)); /* .typ = DOOR */
+        recalc_block_point(x, y);
+        /* target spot will now pass closed_door() test below
+           (except on rogue level) */
+        newsym(x, y);
+        if (see_it)
+            await pline(`${yourzap ? 'Your' : 'The'} ${zapverb} reveals a secret door.`);
+        else if (Is_rogue_level(game.u.uz))
+            await draft_message(false); /* "You feel a draft." (open doorway) */
+    }
+
+    /* regular door absorbs remaining zap range, possibly gets destroyed */
+    if (closed_door(x, y)) {
+        let new_doormask = -1;
+        let see_txt = null, sense_txt = null, hear_txt = null;
+
+        rangemod = -1000;
+        let def_case = false;
+        switch (damgtype) {
+        case ZT_FIRE:
+            new_doormask = D_NODOOR;
+            see_txt = 'The door is consumed in flames!';
+            sense_txt = 'smell smoke.';
+            break;
+        case ZT_COLD:
+            new_doormask = D_NODOOR;
+            see_txt = 'The door freezes and shatters!';
+            hear_txt = 'a deep cracking sound.';
+            break;
+        case ZT_DEATH:
+            /* death spells/wands don't disintegrate */
+            if (Math.abs(type) !== ZT_BREATH(ZT_DEATH)) {
+                def_case = true;
+                break;
+            }
+            new_doormask = D_NODOOR;
+            see_txt = 'The door disintegrates!';
+            hear_txt = 'crashing wood.';
+            break;
+        case ZT_LIGHTNING:
+            new_doormask = D_BROKEN;
+            see_txt = 'The door splinters!';
+            hear_txt = 'crackling.';
+            break;
+        default:
+            def_case = true;
+            break;
+        }
+        if (def_case) {
+ /* def_case: */
+            let handled = false;
+            if (exploding_wand_typ > 0) {
+                /* Magical explosion from misc exploding wand */
+                if (exploding_wand_typ === ONAMES.WAN_STRIKING) {
+                    new_doormask = D_BROKEN;
+                    see_txt = 'The door crashes open!';
+                    sense_txt = 'feel a burst of cool air.';
+                    handled = true;
+                }
+            }
+            if (!handled) {
+                if (see_it) {
+                    /* "the door absorbs the blast" would be
+                       inaccurate for an exploding wand since
+                       other adjacent locations still get hit */
+                    if (exploding_wand_typ)
+                        await pline_The('door remains intact.');
+                    else
+                        await pline_The(`door absorbs ${yourzap ? 'your' : 'the'} ${zapverb}!`);
+                } else
+                    await You_feel('vibrations.');
+            }
+        }
+        if (new_doormask >= 0) { /* door gets broken */
+            if (in_rooms(x, y, SHOPBASE).length) {
+                if (type >= 0) {
+                    add_damage(x, y, SHOP_DOOR_COST);
+                    shopdamage.v = true;
+                } else /* caused by monster */
+                    add_damage(x, y, 0);
+            }
+            lev.doormask = new_doormask;
+            recalc_block_point(x, y); /* vision */
+            if (see_it) {
+                await pline(see_txt);
+                newsym(x, y);
+            } else if (sense_txt) {
+                await You(sense_txt);
+            } else if (hear_txt)
+                await You_hear(hear_txt);
+            if (picking_at(x, y)) {
+                await stop_occupation();
+                reset_pick();
+            }
+        }
+    }
+
+    if (OBJ_AT(x, y) && damgtype === ZT_FIRE)
+        if (await burn_floor_objects(x, y, false, type > 0) && couldsee(x, y)) {
             newsym(x, y);
             await You(`${!Blind() ? 'see a puff' : 'smell a whiff'} of smoke.`);
         }
-    }
-    const mon = m_at(x, y);
-    if (!ignoremon && mon)
-        await wakeup(mon, type >= 0);
+    if (!ignoremon && (mon = m_at(x, y)) != null)
+        await wakeup(mon, (type >= 0) ? true : false);
     return rangemod;
 }
 
-// src/zap.c:4780 dobuzz(). This ports the lateral beam walk, monster hit,
-// death, and ordinary terrain bounce spine used by wand and spell rays.
-// sayhit/saymiss: report out of sight hit/miss events; forcemiss: an
-// inexperienced monster wand user always misses (src/zap.c:4780).
-export async function dobuzz(type, nd, startx, starty, ddx, ddy,
+// src/zap.c:4780 dobuzz(); sayhit/saymiss: report out of sight hit/miss
+// events; forcemiss: an inexperienced monster wand user always misses.
+// tmp_at(DISP_BEAM...) is the display_cmap_at/beam_cells pair below.
+export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monster) */
+                             nd,       /* damage strength ('number of dice') */
+                             sx, sy,   /* starting point */
+                             dx, dy,   /* direction delta */
                              sayhit = true, saymiss = false, forcemiss = false) {
+    let range;
+    const fltyp = zaptype(type), damgtype = fltyp % 10;
+    let lsx, lsy;
+    let mon;
+    let save_bhitpos;
+    const shopdamage = { v: false };
+    const fireball = (type === ZT_SPELL(ZT_FIRE)); /* set once */
+    let gas_hit = false; /* will be set during each iteration */
+    const otmp = { v: null };
+    let spell_type;
+    const hdmgtype = Hallucination() ? rn2(6) : damgtype;
+    const beam_cells = [];
+
+    /* if it's a hero spell then get its SPE_TYPE */
+    spell_type = is_hero_spell(type) ? ONAMES.SPE_MAGIC_MISSILE + damgtype : 0;
+
     if (game.u.uswallow) {
-        note_unported_zap('dobuzz:swallowed');
+        let tmp;
+
+        if (type < 0)
+            return;
+        tmp = await zhitm(game.u.ustuck, type, nd, otmp);
+        if (!game.u.ustuck) {
+            game.u.uswallow = 0;
+        } else {
+            await pline(`${The(flash_str(fltyp, false))} rips into ${
+                mon_nam(game.u.ustuck)}${exclam(tmp)}`);
+            /* Using disintegration from the inside only makes a hole... */
+            if (tmp === MAGIC_COOKIE)
+                game.u.ustuck.mhp = 0;
+            if (DEADMONSTER(game.u.ustuck))
+                await killed(game.u.ustuck);
+        }
         return;
     }
-
-    let range = rn1(7, 7);
-    if (!ddx && !ddy)
+    if (type < 0)
+        newsym(game.u.ux, game.u.uy);
+    range = rn1(7, 7);
+    if (dx === 0 && dy === 0)
         range = 1;
-    let sx = startx, sy = starty;
-    const delta = { dx: ddx, dy: ddy };
-    const beam_cells = [];
-    const damgtype = zaptype(type) % 10;
+    save_bhitpos = { ...game.bhitpos };
+
+    /* the C `goto buzzmonst` target: hit resolution against 'mon'; returns
+       'break' when the C breaks out of the while loop */
+    const buzzmonst = async () => {
+        game.notonhead = (mon.mx !== game.bhitpos.x
+                          || mon.my !== game.bhitpos.y);
+        if (!forcemiss && zap_hit(find_mac(mon), spell_type)) {
+            if (await mon_reflects(mon, null)) {
+                if (cansee(mon.mx, mon.my)) {
+                    await hit(flash_str(fltyp, false), mon, exclam(0));
+                    await shieldeff(mon.mx, mon.my);
+                    await mon_reflects(mon, 'But it reflects from %s %s!');
+                    gas_hit = false;
+                }
+                dx = -dx;
+                dy = -dy;
+            } else {
+                const mon_could_move = mon.mcanmove;
+                const tmp = await zhitm(mon, type, nd, otmp);
+
+                if (is_rider(mon.data)
+                    && Math.abs(type) === ZT_BREATH(ZT_DEATH)) {
+                    if (canseemon(mon)) {
+                        await hit(flash_str(fltyp, false), mon, '.');
+                        await pline(`${Monnam(mon)} disintegrates.`);
+                        await pline(`${s_suffix(Monnam(mon))} body reintegrates before your ${
+                            (eyecount(game.youmonst.data) === 1)
+                                ? body_part(EYE)
+                                : makeplural(body_part(EYE))}!`);
+                        await pline(`${Monnam(mon)} resurrects!`);
+                    }
+                    mon.mhp = mon.mhpmax;
+                    return 'break'; /* Out of while loop */
+                }
+                if (mon.data === game.mons[PMNAMES.PM_DEATH] && damgtype === ZT_DEATH) {
+                    if (canseemon(mon)) {
+                        await hit(flash_str(fltyp, false), mon, '.');
+                        await pline(`${Monnam(mon)} absorbs the deadly ${
+                            type === ZT_BREATH(ZT_DEATH) ? 'blast' : 'ray'}!`);
+                        await pline('It seems even stronger than before.');
+                    }
+                    return 'break'; /* Out of while loop */
+                }
+
+                if (tmp === MAGIC_COOKIE) { /* disintegration */
+                    await disintegrate_mon(mon, type, flash_str(fltyp, false));
+                } else if (DEADMONSTER(mon)) {
+                    if (type < 0) {
+                        /* mon has just been killed by another monster */
+                        await monkilled(mon, flash_str(fltyp, false), ATTKS.AD_RBRE);
+                    } else {
+                        let xkflags = XKILL_GIVEMSG; /* killed(mon); */
+
+                        /* killed by hero; we know 'type' isn't negative;
+                           if it's fire, highly flammable monsters leave
+                           no corpse; don't bother reporting that they
+                           "burn completely" -- unnecessary verbosity */
+                        if (damgtype === ZT_FIRE
+                            /* paper golem or straw golem */
+                            && completelyburns(mon.data))
+                            xkflags |= XKILL_NOCORPSE;
+                        await xkilled(mon, xkflags);
+                    }
+                } else {
+                    if (!otmp.v) {
+                        /* normal non-fatal hit */
+                        if (sayhit || canseemon(mon))
+                            await hit(flash_str(fltyp, false), mon, exclam(tmp));
+                    } else {
+                        /* some armor was destroyed; no damage done */
+                        if (canseemon(mon))
+                            await pline(`${s_suffix(Monnam(mon))} ${
+                                distant_name(otmp.v, xname)} is disintegrated!`);
+                        m_useup(mon, otmp.v);
+                    }
+                    if (mon_could_move && !mon.mcanmove) /* ZT_SLEEP */
+                        await slept_monst(mon);
+                    if (damgtype !== ZT_SLEEP)
+                        await wakeup(mon, (type >= 0) ? true : false);
+                }
+            }
+            range -= 2;
+        } else {
+            if (saymiss
+                || (canseemon(mon) && !disguised_as_non_mon(mon)))
+                await miss(flash_str(fltyp, false), mon);
+        }
+        return null;
+    };
 
     try {
         while (range-- > 0) {
-            const lsx = sx, lsy = sy;
-            sx += delta.dx;
-            sy += delta.dy;
-            let loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;
-
-            if (loc && loc.typ !== STONE) {
-                let mon = m_at(sx, sy);
+            lsx = sx;
+            sx += dx;
+            lsy = sy;
+            sy += dy;
+            let make_bounce = false;
+            if (!isok(sx, sy) || game.level.at(sx, sy).typ === STONE) {
+                make_bounce = true;
+            } else {
+                mon = m_at(sx, sy);
                 if (cansee(sx, sy)) {
+                    /* reveal/unreveal invisible monsters before tmp_at() */
                     if (mon && !canspotmon(mon))
                         map_invisible(sx, sy);
                     else if (!mon)
                         unmap_invisible(sx, sy);
-                    if (ZAP_POS(loc.typ)
+                    if (ZAP_POS(game.level.at(sx, sy).typ)
                         || (isok(lsx, lsy) && cansee(lsx, lsy))) {
-                        display_cmap_at(zapdir_cmap(delta.dx, delta.dy),
-                                        sx, sy,
-                                        zap_colors[damgtype] ?? HI_ZAP, 'zap');
+                        display_cmap_at(zapdir_cmap(dx, dy), sx, sy,
+                                        zap_colors[hdmgtype] ?? HI_ZAP, 'zap');
                         beam_cells.push([sx, sy]);
                     }
-                    await game.animationFrame();
+                    await game.animationFrame(); /* wait a little */
                 }
 
-                const gas_hit = damgtype === ATTKS.AD_DRST - ATTKS.AD_MAGM;
-                if (!gas_hit)
-                    range += await zap_over_floor(sx, sy, type, true);
+                /* hit() and miss() need gb.bhitpos to match the target */
+                game.bhitpos = { x: sx, y: sy };
+                gas_hit = (damgtype === ZT_POISON_GAS);
+                /* fireballs only damage when they explode; poison gas leaves
+                   a trail of 1x1 clouds via zap_over_floor(), but that gets
+                   skipped for a hit that is reflected so is deferred until we
+                   know whether reflection is happening */
+                if (!fireball && !gas_hit) {
+                    range += await zap_over_floor(sx, sy, type, shopdamage, true, 0);
+                    /* zap with fire -> melt ice -> drown monster, so monster
+                       found and cached above might not be here any more */
+                    mon = m_at(sx, sy);
+                }
 
                 if (mon) {
+                    if (fireball)
+                        break;
                     if (type >= 0)
-                        mon.mstrategy = (mon.mstrategy | 0) & ~STRAT_WAITMASK;
-                    if (!forcemiss && zap_hit(find_mac(mon), type >= 10 && type < 20 ? type : 0)) {
-                        const damage = await zhitm(mon, type, nd);
-                        if (DEADMONSTER(mon)) {
-                            if (type < 0)
-                                await monkilled(mon, flash_str(type),
-                                                ATTKS.AD_RBRE);
-                            else
-                                await killed(mon);
-                        } else {
-                            if (sayhit || canseemon(mon))
-                                await pline_The(`${flash_str(type)} hits ${
-                                    mon_nam(mon)}${exclam(damage)}`);
-                            if (damgtype !== 3)
-                                await wakeup(mon, type >= 0);
-                        }
-                        range -= 2;
-                    } else {
-                        if (saymiss
-                            || (canseemon(mon) && !disguised_as_non_mon(mon)))
-                            await miss(flash_str(type), mon);
-                    }
-                } else if (game.u.ux === sx && game.u.uy === sy && range >= 0) {
-                    const { nomul } = await import('./hack.js');
+                        mon.mstrategy &= ~STRAT_WAITMASK;
+                    if (await buzzmonst() === 'break')
+                        break;
+                } else if (u_at(sx, sy) && range >= 0) {
                     nomul(0);
-                    if (!forcemiss && zap_hit(game.u.uac | 0, 0)) {
+                    if (game.u.usteed && !rn2(3) && !(await mon_reflects(game.u.usteed, null))) {
+                        mon = game.u.usteed;
+                        if (await buzzmonst() === 'break')
+                            break;
+                    } else if (!forcemiss && zap_hit(game.u.uac, 0)) {
                         range -= 2;
-                        const fltxt = flash_str(type);
-                        await pline(`${The(fltxt)} hits you!`);
+                        await pline_dir(xytodir(-dx, -dy),
+                                        `${The(flash_str(fltyp, false))} hits you!`);
                         if (Reflecting()) {
-                            await ureflects();
-                            delta.dx = -delta.dx;
-                            delta.dy = -delta.dy;
-                        } else if (damgtype === 3) {
-                            if (Sleep_resistance())
-                                await You("don't feel sleepy.");
-                            else
-                                await fall_asleep(-d(nd, 25), true);
+                            if (!Blind()) {
+                                await ureflects('But %s reflects from your %s!', 'it');
+                            } else
+                                await pline('For some reason you are not affected.');
+                            monstseesu(M_SEEN_REFL);
+                            dx = -dx;
+                            dy = -dy;
+                            await shieldeff(sx, sy);
+                            gas_hit = false;
                         } else {
-                            await zhitu(type, nd, fltxt, sx, sy);
+                            /* flash_str here only used for killer; suppress
+                             * hallucination */
+                            await zhitu(type, nd, flash_str(fltyp, true), sx, sy);
+                            monstunseesu(M_SEEN_REFL);
                         }
-                    } else if (!game.u.uprops?.BLINDED) {
-                        await pline(`${The(flash_str(type))} whizzes by you!`);
+                    } else if (!Blind()) {
+                        await pline(`${The(flash_str(fltyp, false))} whizzes by you!`);
+                    } else if (damgtype === ZT_LIGHTNING) {
+                        await Your(`${body_part(ARM)} tingles.`);
                     }
-                    if (game.occupation) {
-                        const { stop_occupation } = await import('./allmain.js');
-                        await stop_occupation();
-                    }
+                    if (damgtype === ZT_LIGHTNING)
+                        await flashburn(d(nd, 50), true);
+                    await stop_occupation();
                     nomul(0);
                 }
+                /* gas that missed or that hit without being reflected will leave
+                   a 1x1 cloud here; the earlier zap_over_floor() was deferred */
                 if (gas_hit)
-                    await zap_over_floor(sx, sy, type, true);
+                    await zap_over_floor(sx, sy, type, shopdamage, true, 0);
+
+                if (!ZAP_POS(game.level.at(sx, sy).typ)
+                    || (closed_door(sx, sy) && range >= 0))
+                    make_bounce = true;
             }
 
-            loc = isok(sx, sy) ? game.level?.at(sx, sy) : null;
-            if (!loc || loc.typ === STONE || !ZAP_POS(loc.typ)
-                || (closed_door(sx, sy) && range >= 0)) {
-                const bchance = (!loc || loc.typ === STONE) ? 10 : 75;
-                if (--range > 0 && isok(lsx, lsy) && cansee(lsx, lsy))
-                    await pline_The(`${flash_str(type)} bounces!`);
+            if (make_bounce) {
+                let bchance;
+
+                bchance = (!isok(sx, sy) || game.level.at(sx, sy).typ === STONE) ? 10
+                          : (In_mines(game.u.uz) && IS_WALL(game.level.at(sx, sy).typ)) ? 20
+                            : 75;
+                if ((--range > 0 && isok(lsx, lsy) && cansee(lsx, lsy))
+                    || fireball) {
+                    if (Is_airlevel(game.u.uz)) { /* nothing to bounce off of */
+                        await pline_The(`${flash_str(fltyp, false)} vanishes into the aether!`);
+                        if (fireball)
+                            type = ZT_WAND(ZT_FIRE); /* skip pending fireball */
+                        break;
+                    } else if (fireball) {
+                        sx = lsx;
+                        sy = lsy;
+                        break; /* fireballs explode before the obstacle */
+                    } else
+                        await pline_The(`${flash_str(fltyp, false)} bounces!`);
+                }
+                const delta = { dx, dy };
                 bounce_dir(sx, sy, delta, bchance);
+                dx = delta.dx;
+                dy = delta.dy;
+                /* tmp_at(DISP_CHANGE, zapdir_to_glyph(dx, dy, hdmgtype)) */
             }
         }
     } finally {
+        /* tmp_at(DISP_END, 0) */
         for (const [x, y] of beam_cells)
             newsym(x, y);
     }
+    if (fireball)
+        await explode(sx, sy, type, d(12, 6), 0, EXPL_FIERY);
+    if (shopdamage.v)
+        await pay_for_damage(damgtype === ZT_FIRE ? 'burn away'
+                             : damgtype === ZT_COLD ? 'shatter'
+                               /* "damage" indicates wall rather than door */
+                               : damgtype === ZT_ACID ? 'damage'
+                                 : damgtype === ZT_DEATH ? 'disintegrate'
+                                   : 'destroy',
+                             false);
+    game.bhitpos = save_bhitpos;
 }
 
 export async function ubuzz(type, nd) {
@@ -3708,6 +4507,63 @@ export async function ubuzz(type, nd) {
 const Maybe_Half_Phys = (dmg) =>
     (game.u.intrinsic?.HHalf_physical_damage || game.u.uprops?.HALF_PHDAM)
         ? Math.trunc((dmg + 1) / 2) : dmg;
+
+// src/zap.c:3087 zap_steed(); returns True if the steed was hit
+async function zap_steed(obj) /* wand or spell */
+{
+    let steedhit = false;
+
+    game.bhitpos = { x: game.u.usteed.mx, y: game.u.usteed.my };
+    game.notonhead = false;
+    switch (obj.otyp) {
+    /*
+     * Wands that are allowed to hit the steed
+     * Carefully test the results of any that are
+     * moved here from the bottom section.
+     */
+    case ONAMES.WAN_PROBING:
+        await probe_monster(game.u.usteed);
+        learnwand(obj);
+        steedhit = true;
+        break;
+    case ONAMES.WAN_TELEPORTATION:
+    case ONAMES.SPE_TELEPORT_AWAY:
+        /* you go together */
+        await tele();
+        /* same criteria as when unmounted (zapyourself) */
+        if ((Teleport_control() && !Stunned()) || !couldsee(game.u.ux0, game.u.uy0)
+            || distu(game.u.ux0, game.u.uy0) >= 16)
+            learnwand(obj);
+        steedhit = true;
+        break;
+
+    /* Default processing via bhitm() for these */
+    case ONAMES.SPE_CURE_SICKNESS:
+    case ONAMES.WAN_MAKE_INVISIBLE:
+    case ONAMES.WAN_CANCELLATION:
+    case ONAMES.SPE_CANCELLATION:
+    case ONAMES.WAN_POLYMORPH:
+    case ONAMES.SPE_POLYMORPH:
+    case ONAMES.WAN_STRIKING:
+    case ONAMES.SPE_FORCE_BOLT:
+    case ONAMES.WAN_SLOW_MONSTER:
+    case ONAMES.SPE_SLOW_MONSTER:
+    case ONAMES.WAN_SPEED_MONSTER:
+    case ONAMES.SPE_HEALING:
+    case ONAMES.SPE_EXTRA_HEALING:
+    case ONAMES.SPE_DRAIN_LIFE:
+    case ONAMES.WAN_OPENING:
+    case ONAMES.SPE_KNOCK:
+        await bhitm(game.u.usteed, obj);
+        steedhit = true;
+        break;
+
+    default:
+        steedhit = false;
+        break;
+    }
+    return steedhit;
+}
 
 // src/zap.c:3219 zap_updown(); zapping a wand or spell up or down; returns
 // True if the wand's identity should be disclosed
@@ -3914,44 +4770,45 @@ async function zap_updown(obj) {
     return disclose;
 }
 
-// src/zap.c:3431 weffects() — dispatch a zap's effect. The IMMEDIATE
-// lateral arm uses bhit; directional rays use dobuzz.
+// src/zap.c:3431 weffects()
 export async function weffects(obj) {
     const otyp = obj.otyp;
-    const dirprop = game.objects[otyp].oc_dir;
-    const was_unkn = !game.objects[otyp].oc_name_known;
     let disclose = false;
+    const was_unkn = !game.objects[otyp].oc_name_known;
 
     exercise(A_WIS, true);
-
-    if (dirprop === IMMEDIATE) {
+    if (game.u.usteed && (game.objects[otyp].oc_dir !== NODIR) && !game.u.dx && !game.u.dy
+        && (game.u.dz > 0) && await zap_steed(obj)) {
+        disclose = true;
+    } else if (game.objects[otyp].oc_dir === IMMEDIATE) {
         zapsetup(); /* reset obj_zapped */
         if (game.u.uswallow) {
-            note_unported_zap('weffects:uswallow');
+            await bhitm(game.u.ustuck, obj);
+            /* [how about `bhitpile(u.ustuck->minvent)' effect?] */
         } else if (game.u.dz) {
             disclose = await zap_updown(obj);
         } else {
-            await bhit(game.u.dx, game.u.dy, rn1(8, 6), ZAPPED_WAND,
-                       bhitm, bhito, { obj });
+            await bhit(game.u.dx, game.u.dy, rn1(8, 6), ZAPPED_WAND, bhitm, bhito,
+                       { obj });
         }
         await zapwrapup(); /* give feedback for obj_zapped */
-    } else if (dirprop === NODIR) {
+
+    } else if (game.objects[otyp].oc_dir === NODIR) {
         await zapnodir(obj);
+
     } else {
+        /* neither immediate nor directionless */
+
         if (otyp === ONAMES.WAN_DIGGING || otyp === ONAMES.SPE_DIG) {
             const { zap_dig } = await import('./dig.js');
             await zap_dig();
-        } else if (otyp >= ONAMES.SPE_MAGIC_MISSILE
-                   && otyp <= ONAMES.SPE_FINGER_OF_DEATH) {
-            await ubuzz(10 + (otyp - ONAMES.SPE_MAGIC_MISSILE),
-                        Math.trunc(game.u.ulevel / 2) + 1);
-        } else if (otyp >= ONAMES.WAN_MAGIC_MISSILE
-                   && otyp <= ONAMES.WAN_LIGHTNING) {
-            await ubuzz(otyp - ONAMES.WAN_MAGIC_MISSILE,
-                        otyp === ONAMES.WAN_MAGIC_MISSILE ? 2 : 6);
-        } else {
-            note_unported_zap(`weffects:ray otyp=${otyp}`);
-        }
+        } else if (otyp >= ONAMES.SPE_MAGIC_MISSILE && otyp <= ONAMES.SPE_FINGER_OF_DEATH)
+            await ubuzz(BZ_U_SPELL(BZ_OFS_SPE(otyp)), Math.trunc(game.u.ulevel / 2) + 1);
+        else if (otyp >= ONAMES.WAN_MAGIC_MISSILE && otyp <= ONAMES.WAN_LIGHTNING)
+            await ubuzz(BZ_U_WAND(BZ_OFS_WAN(otyp)),
+                        (otyp === ONAMES.WAN_MAGIC_MISSILE) ? 2 : 6);
+        else
+            ; /* impossible("weffects: unexpected spell or wand") */
         disclose = true;
     }
     if (disclose) {
@@ -3959,10 +4816,89 @@ export async function weffects(obj) {
         if (was_unkn)
             more_experienced(0, 10);
     }
+    return;
+}
+
+// src/zap.c:3480 spell_damage_bonus(); augment damage for a spell based on
+// the hero's intelligence (and level)
+function spell_damage_bonus(dmg) /* base amount to be adjusted by bonus or penalty */
+{
+    const intell = ACURR(A_INT);
+
+    /* Punish low intelligence before low level else low intelligence
+       gets punished only when high level */
+    if (intell <= 9) {
+        /* -3 penalty, but never reduce combined amount below 1
+           (if dmg is 0 for some reason, we're careful to leave it there) */
+        if (dmg > 1)
+            dmg = (dmg <= 3) ? 1 : dmg - 3;
+    } else if (intell <= 13 || game.u.ulevel < 5)
+        ; /* no bonus or penalty; dmg remains same */
+    else if (intell <= 18)
+        dmg += 1;
+    else if (intell <= 24 || game.u.ulevel < 14)
+        dmg += 2;
+    else
+        dmg += 3; /* Int 25 */
+
+    return dmg;
+}
+
+// src/zap.c:3509 spell_hit_bonus(); the to-hit bonus for a spell, based on
+// the hero's skill in spell class and dexterity
+function spell_hit_bonus(skill) {
+    let hit_bon = 0;
+    const dex = ACURR(A_DEX);
+
+    switch (P_SKILL(spell_skilltype(skill))) {
+    case P_ISRESTRICTED:
+    case P_UNSKILLED:
+        hit_bon = -4;
+        break;
+    case P_BASIC:
+        hit_bon = 0;
+        break;
+    case P_SKILLED:
+        hit_bon = 2;
+        break;
+    case P_EXPERT:
+        hit_bon = 3;
+        break;
+    }
+
+    if (dex < 4)
+        hit_bon -= 3;
+    else if (dex < 6)
+        hit_bon -= 2;
+    else if (dex < 8)
+        hit_bon -= 1;
+    else if (dex < 14)
+        /* Will change when print stuff below removed */
+        hit_bon -= 0;
+    else
+        /* Even increment for dexterous heroes (see weapon.c abon) */
+        hit_bon += dex - 14;
+
+    return hit_bon;
+}
+
+// src/zap.c:2605 backfire(); a cursed wand explodes in the hero's face
+async function backfire(otmp) {
+    let dmg;
+
+    otmp.in_use = true; /* in case losehp() is fatal */
+    await pline(`${The(xname(otmp))} suddenly explodes!`);
+    dmg = d(otmp.spe + 2, 6);
+    const { losehp } = await import('./hack.js');
+    await losehp(Maybe_Half_Phys(dmg), 'exploding wand', KILLED_BY_AN);
+    useupall(otmp);
 }
 
 // src/zap.c:2627 dozap() — the 'z' command.
 export async function dozap() {
+    let obj;
+    let damage, need_dir;
+
     if (nohands(game.youmonst.data)) {
         await You("aren't able to zap anything in your current form.");
         return ECMD_OK;
@@ -3970,82 +4906,99 @@ export async function dozap() {
     const { check_capacity } = await import('./hack.js');
     if (await check_capacity(null))
         return ECMD_OK;
-    const obj = await getobj("zap", zap_ok, 0);
+    obj = await getobj('zap', zap_ok, GETOBJ_NOFLAGS);
     if (!obj)
         return ECMD_CANCEL;
 
-    if (obj.unpaid) {
-        const { check_unpaid } = await import('./shk.js');
-        await check_unpaid(obj);
-    }
+    const { check_unpaid } = await import('./shk.js');
+    await check_unpaid(obj);
 
-    const need_dir = game.objects[obj.otyp].oc_dir !== NODIR;
+    need_dir = game.objects[obj.otyp].oc_dir !== NODIR;
     if (!(await zappable(obj))) {
         await pline(nothing_happens);
-    } else if (obj.cursed && !rn2(100)) {   /* WAND_BACKFIRE_CHANCE */
-        note_unported_zap('dozap:backfire');
+    } else if (obj.cursed && !rn2(WAND_BACKFIRE_CHANCE)) {
+        await backfire(obj); /* the wand blows up in your face! */
+        exercise(A_STR, false);
+        /* 'obj' is gone; skip update_inventory() because
+           backfire() -> useupall() -> freeinv() did it */
         return ECMD_TIME;
-    } else if (!need_dir) {
-        await weffects(obj);
     } else if (need_dir && !(await getdir(null))) {
-        if (!game.u?.ublind)
-            note_unported_zap('dozap:glows_and_fades');
+        if (!Blind())
+            await pline(`${The(xname(obj))} glows and fades.`);
         /* make him pay for knowing !NODIR */
     } else if (need_dir && !game.u.dx && !game.u.dy && !game.u.dz) {
-        const damage = await zapyourself(obj, true);
-        if (damage) {
-            const self = game.flags?.female ? 'herself' : 'himself';
-            const finalDamage = game.u.uprops?.HALF_PHDAM
-                ? Math.trunc((damage + 1) / 2) : damage;
+        if ((damage = await zapyourself(obj, true)) !== 0) {
+            const buf = `zapped ${uhim()}self with ${killer_xname(obj)}`;
             const { losehp } = await import('./hack.js');
-            await losehp(finalDamage, `zapped ${self} with ${xname(obj)}`,
-                         NO_KILLER_PREFIX);
+            await losehp(Maybe_Half_Phys(damage), buf, NO_KILLER_PREFIX);
         }
     } else {
+        /*      Are we having fun yet?
+         * weffects -> buzz(obj->otyp) -> zhitm (temple priest) ->
+         * attack -> hitum -> known_hitum -> ghod_hitsu ->
+         * buzz(AD_ELEC) -> destroy_items(AD_ELEC) ->
+         * useup -> obfree -> dealloc_obj -> free(obj)
+         */
+        game.current_wand = obj;
         await weffects(obj);
+        obj = game.current_wand;
+        game.current_wand = null;
     }
     if (obj && obj.spe < 0) {
         await pline(`${Tobjnam(obj, 'turn')} to dust.`);
-        useupall(obj);
-    } else {
+        useupall(obj); /* calls freeinv() -> update_inventory() */
+    } else
         update_inventory(); /* maybe used a charge */
-    }
     return ECMD_TIME;
 }
 
-// src/zap.c:3827 bhit() — walk a missile (or beam) along a line.
-//
-// The physical-object, immediate-wand, and camera-flash spines share this
-// walk. Camera flashes retain each `!` until the ray ends, matching tmp_at's
-// DISP_BEAM mode, and pass through invisible monsters after flashing them.
-export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
-    const obj = pobjRef.obj;
-    let result = null;
+// src/zap.c:3827 bhit(); walk a missile, beam or flash along a line.
+export async function bhit(ddx, ddy, range,  /* direction and range */
+                           weapon,          /* defined in hack.h */
+                           fhitm, fhito,    /* fns called when mon/obj hit */
+                           pobj)            /* { obj } tossed/used; obj set to
+                                             * null if object is destroyed */
+{
+    let mtmp, result = null;
+    let obj = pobj.obj;
+    let ttmp;
+    let typ;
+    let shopdoor = false, point_blank = true;
+    let in_skip = false, allow_skip = false;
+    let tethered_weapon = false;
+    const skip = { start: 0, end: 0 };
+    let skipcount = 0;
+    const was_returning = (game.iflags?.returning_missile === obj) ? obj : null;
+    let bhit_done = false;
 
     if (weapon === KICKED_WEAPON) {
+        /* object starts one square in front of player */
         game.bhitpos = { x: game.u.ux + ddx, y: game.u.uy + ddy };
         range--;
     } else {
         game.bhitpos = { x: game.u.ux, y: game.u.uy };
     }
 
-    let skiprange_start = 0, allow_skip = false;
     if (weapon === THROWN_WEAPON && obj && obj.otyp === ONAMES.ROCK) {
-        /* skiprange(range, ...) computes bounce points without drawing */
-        skiprange_start = 1;
+        skiprange(range, skip);
         allow_skip = !rn2(3);
-        if (allow_skip)
-            note_unported_zap('bhit:rock_skip');
     }
 
-    /* src/zap.c:3868 tmp_at(DISP_FLASH, obj_to_glyph(...)). Capture the
-       glyph once even when the hero cannot see the flight. Hallucination
-       therefore consumes one display-RNG draw before the first square. */
-    const flightGlyph = (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
-        && obj ? temporary_object_glyph(obj) : null;
+    /* tmp_at(DISP_BEAM|DISP_TETHER|DISP_FLASH, ...): the flash beam retains
+       each '!' until the walk ends; a thrown object is painted at its current
+       square.  obj_to_glyph() with rn2_on_display_rng happens once, here. */
+    let flightGlyph = null;
+    if (weapon === FLASHED_LIGHT) {
+        ;
+    } else if (weapon === THROWN_TETHERED_WEAPON && obj) {
+        tethered_weapon = true;
+        weapon = THROWN_WEAPON; /* simplify 'if's that follow below */
+        flightGlyph = temporary_object_glyph(obj);
+    } else if (weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM)
+        flightGlyph = obj ? temporary_object_glyph(obj) : null;
     let flightPos = null;
     const flashCells = [];
-    const endFlight = () => {
+    const endFlight = () => { /* tmp_at(DISP_END, 0) for the flight glyph */
         if (flightPos) {
             newsym(flightPos.x, flightPos.y);
             flightPos = null;
@@ -4053,9 +5006,13 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
     };
 
     while (range-- > 0) {
+        let x, y;
+        let xyglyph;
+
         game.bhitpos.x += ddx;
         game.bhitpos.y += ddy;
-        const x = game.bhitpos.x, y = game.bhitpos.y;
+        x = game.bhitpos.x;
+        y = game.bhitpos.y;
 
         if (!isok(x, y)) {
             game.bhitpos.x -= ddx;
@@ -4063,85 +5020,182 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
             break;
         }
 
-        const loc = game.level.at(x, y);
-        const typ = loc?.typ ?? STONE;
+        if (is_pick(obj) && inside_shop(x, y)
+            && (mtmp = await shkcatch(obj, x, y)) != null) {
+            endFlight();
+            result = mtmp;
+            bhit_done = true;
+            break;
+        }
+
+        typ = game.level.at(x, y).typ;
 
         /* WATER aka "wall of water" stops items */
-        if (typ === WATER || typ === LAVAWALL) {
+        if (IS_WATERWALL(typ) || typ === LAVAWALL) {
             if (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
                 break;
         }
 
-        if ((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
-            && obj?.lamplit && !Blind())
-            await show_transient_light(obj, x, y);
-
-        if ((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
-            && typ === IRONBARS) {
-            /* hits_bars() breaks some things, rn2(5) unless point-blank */
-            note_unported_zap('bhit:ironbars');
-            game.bhitpos.x -= ddx;
-            game.bhitpos.y -= ddy;
-            break;
+        /* iron bars will block anything big enough and break some things */
+        if (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON) {
+            if (obj.lamplit && !Blind())
+                await show_transient_light(obj, x, y);
+            if (typ === IRONBARS
+                && await hits_bars(pobj, x - ddx, y - ddy, x, y,
+                                   point_blank ? 0 : !rn2(5), 1)) {
+                /* caveat: obj might now be null... */
+                obj = pobj.obj;  /* not currently needed due to 'break'; keep */
+                game.bhitpos.x -= ddx;
+                game.bhitpos.y -= ddy;
+                break;
+            }
+        } else if (weapon === FLASHED_LIGHT) {
+            if (!Blind())
+                await show_transient_light(null, x, y);
         }
 
         if (weapon === ZAPPED_WAND) {
             /* cancellation/opening/locking/striking/probing */
             await zap_map(x, y, obj);
+            /* terrain might have changed (exposed secret door|corridor) */
+            typ = game.level.at(x, y).typ;
         }
 
-        let mtmp = m_at(x, y);
-        const ttmp = t_at(x, y);
-        if (!mtmp && ttmp && ttmp.ttyp === WEB
+        mtmp = m_at(x, y);
+        ttmp = t_at(x, y);
+        if (!mtmp && ttmp && (ttmp.ttyp === WEB)
             && (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
             && !rn2(3)) {
             if (cansee(x, y)) {
-                note_unported_zap('bhit:web_message');
+                await pline(`${Yname2(obj)} gets stuck in a web!`);
                 ttmp.tseen = true;
                 newsym(x, y);
             }
+            if (was_returning)
+                game.iflags.returning_missile = null;
             break;
         }
 
-        /* a mimic pretending to be an object is not hit by thrown things */
-        if (mtmp
-            && (((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
-                 && M_AP_TYPE(mtmp) === M_AP_OBJECT)
-                || (weapon === FLASHED_LIGHT
-                    && M_AP_TYPE(mtmp) === M_AP_OBJECT)))
+        /*
+         * skipping rocks
+         *
+         * skiprange_start is only set if this is a thrown rock
+         */
+        if (skip.start && (range === skip.start) && allow_skip) {
+            if (is_pool(x, y) && !mtmp) {
+                in_skip = true;
+                if (!Blind())
+                    await pline(`${Yname2(obj)} ${otense(obj, 'skip')}${
+                        skipcount ? ' again' : ''}.`);
+                else
+                    await You_hear(`${yname(obj)} skip.`);
+                skipcount++;
+            } else if (skip.start > skip.end + 1) {
+                --skip.start;
+            }
+        }
+        if (in_skip) {
+            if (range <= skip.end) {
+                in_skip = false;
+                if (range > 3) /* another bounce? */
+                    skiprange(range, skip);
+            } else if (mtmp && M_IN_WATER(mtmp.data)) {
+                if (!Blind() && canspotmon(mtmp))
+                    await pline(`${Yname2(obj)} ${otense(obj, 'pass')} over ${
+                        mon_nam(mtmp)}.`);
+                mtmp = null;
+            }
+        }
+
+        /* if mtmp is a shade and missile passes harmlessly through it,
+           give message and skip it in order to keep going;
+           if attack is light and mtmp is a mimic pretending to be an
+           object, behave as if there is no monster here (if pretending
+           to be furniture, it will be revealed by flash_hits_mon());
+           thrown objects don't hit mimics pretending to be objects (both
+           because the hero is likely aiming to throw over what seems to
+           be an object rather than at it, and for balance because
+           otherwise mimics are too easy to identify by throwing gold at
+           them); exception: if the hero knows there is a monster there,
+           they will be aiming at the monster */
+        xyglyph = glyph_at(x, y);
+        if (mtmp && (((weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
+                      && (await shade_miss(game.youmonst, mtmp, obj, true, true)
+                          || (M_AP_TYPE(mtmp) === M_AP_OBJECT
+                              && xyglyph.kind !== 'mon'
+                              && xyglyph.kind !== 'warn'
+                              && xyglyph.kind !== 'invis')))
+                     || (weapon === FLASHED_LIGHT
+                         && M_AP_TYPE(mtmp) === M_AP_OBJECT)))
             mtmp = null;
 
         if (mtmp) {
             game.notonhead = (x !== mtmp.mx || y !== mtmp.my);
             if (weapon === FLASHED_LIGHT) {
+                /* FLASHED_LIGHT hitting invisible monster should pass
+                   through instead of stop so we call flash_hits_mon()
+                   directly rather than returning mtmp back to caller.
+                   That allows the flash to keep on going.  Note that we
+                   use mtmp->minvis, not canspotmon(), because it makes no
+                   difference whether hero can see the monster or not. */
                 if (mtmp.minvis) {
-                    obj.ox = game.u.ux;
-                    obj.oy = game.u.uy;
+                    obj.ox = game.u.ux, obj.oy = game.u.uy;
                     const { flash_hits_mon } = await import('./uhitm.js');
                     await flash_hits_mon(mtmp, obj);
                 } else {
+                    result = mtmp; /* caller will call flash_hits_mon() */
+                    bhit_done = true;
+                    break;
+                }
+            } else if (weapon === INVIS_BEAM) {
+                /* Like FLASHED_LIGHT, INVIS_BEAM should continue
+                   through invisible targets; unlike it, we aren't
+                   prepared for multiple hits so just get first one
+                   that's either visible or could see its invisible
+                   self.  [No tmp_at() cleanup is needed here.] */
+                if (!mtmp.minvis || perceives(mtmp.data)) {
                     result = mtmp;
+                    bhit_done = true;
                     break;
                 }
             } else if (weapon !== ZAPPED_WAND) {
+                /* THROWN_WEAPON, KICKED_WEAPON */
+                if (!tethered_weapon)
+                    endFlight();
+
                 if (cansee(x, y) && !canspotmon(mtmp))
                     map_invisible(x, y);
                 result = mtmp;
+                bhit_done = true;
                 break;
+            } else {
+                /* ZAPPED_WAND */
+                if (await fhitm(mtmp, obj)) {
+                    result = mtmp;
+                    bhit_done = true;
+                    break;
+                }
+                range -= 3;
             }
-            /* ZAPPED_WAND */
-            if (await fhitm(mtmp, obj)) {
-                result = mtmp;
-                break;
+        } else {
+            if (weapon === ZAPPED_WAND && obj.otyp === ONAMES.WAN_PROBING
+                && glyph_is_invisible_at(x, y)) {
+                unmap_object(x, y);
+                newsym(x, y);
             }
-            range -= 3;
         }
-        /* C runs the pile hit on every square, monster or not */
         if (fhito) {
             if (await bhitpile(obj, fhito, x, y, 0))
                 range--;
+        } else {
+            if (weapon === KICKED_WEAPON
+                && ((obj.oclass === OCLASSES.COIN_CLASS && OBJ_AT(x, y))
+                    || await ship_object(obj, x, y, costly_spot(x, y)))) {
+                endFlight();
+                bhit_done = true;
+                break; /* result == (struct monst *) 0 */
+            }
         }
-
         if (weapon === ZAPPED_WAND && (IS_DOOR(typ) || typ === SDOOR)) {
             switch (obj.otyp) {
             case ONAMES.WAN_OPENING:
@@ -4151,52 +5205,99 @@ export async function bhit(ddx, ddy, range, weapon, fhitm, fhito, pobjRef) {
             case ONAMES.SPE_WIZARD_LOCK:
             case ONAMES.SPE_FORCE_BOLT:
                 if (await doorlock(obj, x, y)) {
-                    if (cansee(x, y)
-                        || (obj.otyp === ONAMES.WAN_STRIKING && !Deaf()))
+                    if (cansee(x, y) || (obj.otyp === ONAMES.WAN_STRIKING && !Deaf()))
                         learnwand(obj);
                     if (game.level.at(x, y).doormask === D_BROKEN
-                        && (game.in_rooms?.(x, y, SHOPBASE) ?? '').length)
-                        note_unported_zap('bhit:shop_door_damage');
+                        && in_rooms(x, y, SHOPBASE).length) {
+                        shopdoor = true;
+                        add_damage(x, y, SHOP_DOOR_COST);
+                    }
                 }
-                break;
-            default:
                 break;
             }
         }
-
-        if (!(typ >= POOL) /* !ZAP_POS(typ) */ || closed_door(x, y)) {
+        if (!ZAP_POS(typ) || closed_door(x, y)) {
             game.bhitpos.x -= ddx;
             game.bhitpos.y -= ddy;
             break;
         }
+        if (weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM) {
+            /* 'I' present but no monster: erase; do this before tmp_at() */
+            if (glyph_is_invisible_at(x, y) && cansee(x, y)) {
+                unmap_object(x, y);
+                newsym(x, y);
+            }
+            /* tmp_at(x, y); nh_delay_output(); */
+            if (weapon === FLASHED_LIGHT) {
+                display_cmap_at(cmap_names.S_flashbeam, x, y, CLR_WHITE,
+                                'camera-flash');
+                flashCells.push([x, y]);
+                if (game.animationFrame) {
+                    await flush_screen(0);
+                    await game.animationFrame();
+                }
+            } else if (flightGlyph) {
+                endFlight();
+                if (cansee(x, y)) {
+                    display_object_at(obj, x, y, flightGlyph);
+                    flightPos = { x, y };
+                }
+                if (game.animationFrame)
+                    await game.animationFrame();
+            }
+            /* kicked objects fall in pools */
+            if ((weapon === KICKED_WEAPON) && is_pool_or_lava(x, y))
+                break;
+            if (IS_SINK(typ) && weapon !== FLASHED_LIGHT)
+                break; /* physical objects fall onto sink */
+        }
+        /* limit range of ball so hero won't make an invalid move */
+        if (weapon === THROWN_WEAPON && range > 0
+            && obj.otyp === ONAMES.HEAVY_IRON_BALL) {
+            let bobj;
+            let t;
 
-        if (weapon === FLASHED_LIGHT) {
-            display_cmap_at(cmap_names.S_flashbeam, x, y, CLR_WHITE,
-                            'camera-flash');
-            flashCells.push([x, y]);
-            if (game.animationFrame) {
-                await flush_screen(0);
-                await game.animationFrame();
+            if ((bobj = sobj_at(ONAMES.BOULDER, x, y)) != null) {
+                if (cansee(x, y))
+                    await pline(`${The(distant_name(obj, xname))} hits ${
+                        an(xname(bobj))}.`);
+                range = 0;
+            } else if (obj === game.u.uball) {
+                if (!(await test_move(x - ddx, y - ddy, ddx, ddy, TEST_MOVE))) {
+                    /* nb: it didn't hit anything directly */
+                    if (cansee(x, y))
+                        await pline(`${The(distant_name(obj, xname))} jerks to an abrupt halt.`); /* lame */
+                    range = 0;
+                } else if (Sokoban() && (t = t_at(x, y)) != null
+                           && (is_pit(t.ttyp) || is_hole(t.ttyp))) {
+                    /* hero falls into the trap, so ball stops */
+                    range = 0;
+                }
             }
-        } else if (flightGlyph) {
-            endFlight();
-            if (cansee(x, y)) {
-                display_object_at(obj, x, y, flightGlyph);
-                flightPos = { x, y };
-            }
-            if (game.animationFrame)
-                await game.animationFrame();
         }
 
-        if (IS_SINK(typ) && weapon !== FLASHED_LIGHT)
-            break;               /* physical objects fall onto sink */
+        /* thrown/kicked missile has moved away from its starting spot */
+        point_blank = false; /* affects passing through iron bars */
     }
 
+    if (!bhit_done) {
+        if ((weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM && !tethered_weapon)
+            || (was_returning && was_returning !== game.iflags?.returning_missile))
+            endFlight();
+
+        if (shopdoor)
+            await pay_for_damage('destroy', false);
+    }
+
+ /* bhit_done: */
     endFlight();
-    for (const [x, y] of flashCells)
-        newsym(x, y);
+    for (const [fx, fy] of flashCells)
+        newsym(fx, fy);
+    /* note: for FLASHED_LIGHT, _caller_ must call transient_light_cleanup()
+       after possibly calling flash_hits_mon() */
     if (weapon === THROWN_WEAPON || weapon === KICKED_WEAPON)
         await transient_light_cleanup();
+
     return result;
 }
 

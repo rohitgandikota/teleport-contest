@@ -6,6 +6,11 @@
 // own combat are not ported. js/shknam.js holds the naming and stocking half
 // (shtypes, nameshk, stock_room), which is src/shknam.c.
 
+import { mpickobj } from './steal.js';
+import { flush_screen } from './display.js';
+import { map_invisible } from './display.js';
+import { the } from './objnam.js';
+import { mnearto } from './mon.js';
 import { OBJ_BURIED } from './const.js';
 import { You } from './pline.js';
 import { angry_guards } from './mon.js';
@@ -3336,4 +3341,40 @@ export async function globby_bill_fixup(obj_absorber, obj_absorbed) {
      **************************************************************/
 
     return;
+}
+
+// src/shk.c shkcatch(); a shopkeeper snatches a thrown pick-axe
+export async function shkcatch(obj, x, y) {
+    let shkp;
+
+    shkp = shop_keeper(inside_shop(x, y));
+    if (!shkp || !inhishop(shkp))
+        return null;
+
+    if (!helpless(shkp)
+        && (game.u.ushops[0] !== shkp.eshk.shoproom || !inside_shop(game.u.ux, game.u.uy))
+        && dist2(shkp.mx, shkp.my, x, y) < 3
+        /* if it is the shk's pos, you hit and anger him */
+        && (shkp.mx !== x || shkp.my !== y)) {
+        if (await mnearto(shkp, x, y, true, RLOC_NOMSG) === 2
+            && !Deaf() && !muteshk(shkp)) {
+            /* SetVoice(shkp, 0, 80, 0) */
+            await verbalize('Out of my way, scum!');
+        }
+        if (cansee(x, y)) {
+            await pline(`${Shknam(shkp)} nimbly${
+                (x === shkp.mx && y === shkp.my) ? '' : ' reaches over and'} catches ${the(xname(obj))}.`);
+            if (!canspotmon(shkp))
+                map_invisible(x, y);
+            /* nh_delay_output(); mark_synch(); */
+            if (game.animationFrame) {
+                await flush_screen(0);
+                await game.animationFrame();
+            }
+        }
+        subfrombill(obj, shkp);
+        await mpickobj(shkp, obj);
+        return shkp;
+    }
+    return null;
 }

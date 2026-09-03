@@ -6,6 +6,7 @@
 // holds the pieces of src/trap.c it calls into, so that a grep for a C symbol
 // finds it in the file its C twin lives in.
 
+import { aobjnam } from './objnam.js';
 import { has_omonst } from './const.js';
 import { OMONST } from './const.js';
 import { FOOT } from './const.js';
@@ -5205,4 +5206,37 @@ export async function delfloortrap(ttmp) {
         return true;
     }
     return false;
+}
+
+// src/trap.c acid_damage(); scrolls but not spellbooks can be erased by acid
+export async function acid_damage(obj) {
+    let victim;
+    let vismon;
+
+    if (!obj)
+        return;
+
+    victim = carried(obj) ? game.youmonst : mcarried(obj) ? obj.ocarry : null;
+    vismon = victim && (victim !== game.youmonst) && canseemon(victim);
+
+    if (victim === game.youmonst && inventory_resistance_check(ATTKS.AD_ACID))
+        return;
+
+    if (obj.greased) {
+        await grease_protect(obj, null, victim);
+    } else if (obj.oclass === OCLASSES.SCROLL_CLASS && obj.otyp !== ONAMES.SCR_BLANK_PAPER) {
+        if (obj.otyp !== ONAMES.SCR_BLANK_PAPER
+            && obj.otyp !== ONAMES.SCR_MAIL) {
+            if (!Blind()) {
+                if (victim === game.youmonst)
+                    await Your(`${aobjnam(obj, 'fade')}.`);
+                else if (vismon)
+                    await pline(`${s_suffix(Monnam(victim))} ${aobjnam(obj, 'fade')}.`);
+            }
+        }
+        obj.otyp = ONAMES.SCR_BLANK_PAPER;
+        obj.spe = 0;
+        obj.dknown = 0;
+    } else
+        await erode_obj(obj, null, ERODE_CORRODE, EF_GREASE | EF_VERBOSE);
 }

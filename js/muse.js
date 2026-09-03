@@ -2861,3 +2861,38 @@ function green_mon(mon) {
 function note_unported_muse(what) {
     (game.unported ||= new Set()).add('muse:' + what);
 }
+
+// src/muse.c ureflects(); does the hero reflect, and which item does it
+export async function ureflects(fmt, str) {
+    const EReflecting = game.u.uprops?.REFLECTING | 0;
+    const say = async (what) => { await pline(fmt.replace('%s', str).replace('%s', what)); };
+
+    /* Check from outermost to innermost objects */
+    if (EReflecting & W_ARMS) {
+        if (fmt && str !== null && str !== undefined) {
+            await say('shield');
+            makeknown(ONAMES.SHIELD_OF_REFLECTION);
+        }
+        return true;
+    } else if (EReflecting & W_WEP) {
+        /* Due to wielded artifact weapon */
+        if (fmt && str !== null && str !== undefined)
+            await say('weapon');
+        return true;
+    } else if (EReflecting & W_AMUL) {
+        if (fmt && str !== null && str !== undefined) {
+            await say('medallion');
+            makeknown(ONAMES.AMULET_OF_REFLECTION);
+        }
+        return true;
+    } else if (EReflecting & W_ARM) {
+        if (fmt && str !== null && str !== undefined)
+            await say(game.u.uskin ? 'luster' : 'armor');
+        return true;
+    } else if (game.youmonst.data === game.mons[PMNAMES.PM_SILVER_DRAGON]) {
+        if (fmt && str !== null && str !== undefined)
+            await say('scales');
+        return true;
+    }
+    return false;
+}

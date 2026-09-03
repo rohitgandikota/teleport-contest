@@ -5,6 +5,7 @@
 // the tested sacrifice paths. Some punishment, conversion, and artifact-gift
 // paths remain partial.
 
+import { ureflects } from './muse.js';
 import { has_omonst, OMONST, ANIMATE_SPELL } from './const.js';
 import { animate_statue } from './trap.js';
 import { revive } from './zap.js';
@@ -19,7 +20,7 @@ import { Monnam } from './do_name.js';
 import { punish } from './read.js';
 import { verbalize } from './pline.js';
 import { summon_minion } from './minion.js';
-import { ureflects } from './zap.js';
+
 import { shieldeff } from './display.js';
 import { XKILL_NOMSG, XKILL_NOCORPSE, XKILL_NOCONDUCT, M_SEEN_REFL, M_SEEN_ELEC, M_SEEN_DISINT, Is_astralevel, Is_sanctum } from './const.js';
 import { xkilled } from './mon.js';

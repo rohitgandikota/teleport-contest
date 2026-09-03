@@ -459,7 +459,7 @@ export async function gazemu(mtmp, mattk) {
         if (reflectable) {
             const useeit = canseemon(mtmp);
             if (useeit) {
-                const { ureflects } = await import('./zap.js');
+                const { ureflects } = await import('./muse.js');
                 await ureflects('%s gaze is reflected by your %s.',
                                 s_suffix(Monnam(mtmp)));
             }

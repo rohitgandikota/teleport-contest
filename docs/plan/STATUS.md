@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-09-03: throw guards and active-tool display verified
+
+Runtime checkpoints `1c20413` and `5593394` are committed and pushed. The
+first ports C's `canletgo` rejection path into throwing, including worn armor
+and accessories, welded one-handed and bimanual weapons, cursed loadstone
+stacks, and attached leashes. New C recording `throw-release-guards` is
+byte-identical at **193/193 screens** and **16,157/16,157 RNG**, with six
+explicit branch assertions. In `fuzz-s4-00`, this moves the boundary from 278
+to 288 matching screens and from 2,785 to 2,796 matching RNG positions.
+
+The second checkpoint ports C's `tool_being_used` predicate for the `(`
+command and the matching `doname` suffix for a leash attached to a live pet.
+It no longer mistakes worn armor for a tool. It includes worn eyewear and
+saddles, lit tools, wielded tools, and attached leashes. New C recording
+`tool-use-display` covers five branches and is byte-identical at **120/120
+screens** and **12,881/12,881 RNG**. `fuzz-s4-00` advances again to **290/301
+screens**, while preserving its 2,796 matching RNG positions.
+
+Full verification at `5593394`: public **44/44**, **11,405/11,405 screens**,
+and **792,838/792,838 RNG**; supplemental **342/349**, **82,560/82,983
+screens**, and **4,336,712/4,351,324 RNG**, with the same seven failures and
+zero runtime errors. Fuzz is **78/102 fully passing**, **96/102 RNG-perfect**,
+**13,426/14,262 screens**, and **466,575/491,759 RNG**. The hang gate is clean,
+fresh-seed smoke is 80/80, the source audit has zero findings, frozen files are
+unchanged, and declared coverage is **99/106 categories** with seven partial
+plus **822/822 explicit branch cases**.
+
+The live dashboard refreshed at 2026-09-03T18:03:36Z. Held-out remains
+**8,498/11,265**, **16/44**, with **70.09% RNG**, **75.44% screens**, rank 3
+overall, and rank 1/9 among agentic entries. The fork was last scored at
+2026-09-03T16:41:33Z, before these checkpoints, so their hidden effect is not
+known yet.
+
+Next: diagnose the next `fuzz-s4-00` boundary around counted `)` equipment
+display. C shows the wielded long sword as a one-line message, while JS adds a
+`--More--` prompt and then reaches a later `distfleeck` RNG mismatch. Establish
+whether the count-prefix state, message history, or `dispinv_with_action` path
+is the earliest cause before editing monster flee logic.
+
 ## 2026-09-03: command-prefix checkpoint and held-out gain
 
 Runtime checkpoint `97bcf38` is committed and pushed. C's `rhack` rejects a

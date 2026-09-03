@@ -2188,7 +2188,11 @@ export async function pline_nohistory(msg) {
         vision_recalc(0);
     if (game.u?.ux)
         await flush_screen(1);
+    const stopped = game._win_stop;
     show_topl_nohistory(msg);
+    if (!stopped)
+        game.nhDisplay?.setCursor(game._topl_curx || 0,
+                                  game._topl_cury || 0);
     (game.iflags ||= {}).last_msg = PLNMSG_UNKNOWN;
     game._prevmsg = msg;
 }

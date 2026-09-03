@@ -1,5 +1,38 @@
 # STATUS — live handoff board
 
+## 2026-09-03: no-history count cursor verified
+
+After the inventory-swap output was fixed, `fuzz-s2-01` had one remaining
+difference at a two-digit count inside an object prompt. Both implementations
+painted `Count: 15`, but pinned C `src/cmd.c:get_count` sends that no-history
+message through tty `show_topl`, which homes the cursor and leaves it after
+the text. JS flushed the cursor onto the hero before painting the same cells
+and never moved it back to the message line. The ordinary no-history display
+path now parks the cursor at its tracked top-line position while preserving
+the separate no-cursor path used by map-position descriptions.
+
+The new normal-mode C recording `counted-object-prompt-cursor` is
+byte-identical at **5/5 screens** and **2,614/2,614 RNG**. Its branch assertion
+pins the two-digit no-history count, and the frozen runner independently pins
+the cursor at column 9. `fuzz-s2-01` improves from **218/219 to 219/219
+screens** and is now fully passing at **11,125/11,125 RNG**. The shared fix
+also advances `fuzz-s4-20` from **299/301 to 300/301 screens**. Across all
+random play, fully passing games improve from **84/102 to 85/102** and screens
+from **13,754/14,262 to 13,756/14,262**. RNG remains
+**468,764/491,759**, with **98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **351/358**, **82,706/83,129 screens**,
+and **4,365,817/4,380,429 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **832/832 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+the sole remaining `fuzz-s4-20` difference at step 122, then continue the
+one-screen C-backed failures before touching shared monster RNG sites.
+
 ## 2026-09-03: occupied inventory-slot swap verified
 
 `fuzz-s2-01` first differed after `#adjust` assigned a carried scroll to an

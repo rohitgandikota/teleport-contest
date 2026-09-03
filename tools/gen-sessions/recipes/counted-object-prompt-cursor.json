@@ -1,0 +1,31 @@
+{
+  "name": "counted-object-prompt-cursor",
+  "description": "A normal Wizard enters a two-digit count at an object prompt and leaves the tty cursor after the no-history count text.",
+  "coverage": [
+    "level.ordinary",
+    "mode.normal",
+    "object.weapons",
+    "ui.count-repeat"
+  ],
+  "branches": [
+    "ui.get-count.nohistory-cursor"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "ui.get-count.nohistory-cursor",
+      "segment": 0,
+      "screenIncludes": [
+        "Count: 15"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 909425,
+      "datetime": "20260724112219",
+      "nethackrc": "OPTIONS=name:Polly,role:Wizard,race:human,gender:female,align:neutral\nOPTIONS=!autopickup,!verbose,!legacy,!tutorial,!tips,!splash_screen\nOPTIONS=pettype:none\nOPTIONS=symset:DECgraphics\nOPTIONS=playmode:normal\n",
+      "moves": "f\n15"
+    }
+  ]
+}

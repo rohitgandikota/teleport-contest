@@ -1,5 +1,37 @@
 # STATUS — live handoff board
 
+## 2026-09-03: startup menu search verified
+
+Two independent fuzz games first differed when `:` was pressed in the
+single-choice tutorial menu. C routes `ask_do_tutorial` through
+`select_menu(PICK_ONE)`, so the tty window handles `MENU_SEARCH` and opens a
+`Search for:` line editor. JS had duplicated only the `y`, `n`, space, Enter,
+and Escape cases in a private loop, silently ignoring every standard menu
+command. The startup menu now uses the common tty selection path, matching the
+pinned source and inheriting its complete menu behavior.
+
+The reduced normal-mode C recording `tutorial-menu-search` is byte-identical
+at **4/4 screens** and **2,872/2,872 RNG**, with an assertion on both the
+tutorial menu and its search prompt. `fuzz-s3-07` improves from **22/30 to
+30/30 screens**, and `fuzz-s3-04` improves from **255/267 to 267/267**. Both
+are now fully passing. Across all random play, fully passing games improve
+from **80/102 to 82/102** and screens from **13,714/14,262 to
+13,734/14,262**. RNG remains **468,764/491,759**, with **98/102** games
+RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **347/354**, **82,636/83,059 screens**,
+and **4,351,732/4,366,344 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **827/827 explicit branches**.
+
+The latest published judge still reports **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries, from a commit older than this
+change. Next: port C's exact unavailable-command path for keys that have a
+real command-table entry but are disabled in this build, then continue through
+the remaining screen-only fuzz failures before changing shared monster RNG.
+
 ## 2026-09-03: first-visit chronicle ordering verified
 
 The final `fuzz-s4-04` mismatch was a missing chronicle row after entering the

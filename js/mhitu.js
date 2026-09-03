@@ -1761,7 +1761,7 @@ export async function expels(mtmp, mdat, message) {
     }
     const { unstuck, mnexto } = await import('./mon.js');
     await unstuck(mtmp);    /* clears uswallow, moves hero, docrt */
-    mnexto(mtmp, 0 /* RLOC_NOMSG */);
+    await mnexto(mtmp, 0 /* RLOC_NOMSG */);
     newsym(game.u.ux, game.u.uy);
     if (Math.max(Math.abs(mtmp.mx - game.u.ux),
                  Math.abs(mtmp.my - game.u.uy)) > 1)

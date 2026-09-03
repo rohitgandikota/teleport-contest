@@ -1,0 +1,28 @@
+{
+  "name": "kill-special-monsters",
+  "description": "Debug Knight at experience level 14 zaps wands of striking in every direction at a peaceful watchman (murder), a tame kitten (pet death), a paper golem and a gold golem (special corpses) and a lich (crumbles to dust).",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "combat.wand-striking",
+    "monsters.death-drops",
+    "alignment.murder",
+    "alignment.pet-death",
+    "monsters.golem-corpses",
+    "monsters.lich"
+  ],
+  "segments": [
+    {
+      "seed": 7801,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Slayer,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r                \u0017wand of striking\r  \u0017wand of striking\r  \u0007peaceful watchman\r  zih  zij  zik  zil  ziy  ziu  zib  zin  zjh  zjj  zjk  zjl  zjy  zju  zjb  zjn  \u0007tame kitten\r  zih  zij  zik  zil  ziy  ziu  zib  zin  "
+    },
+    {
+      "seed": 7802,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Slayer,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r                \u0017wand of striking\r  \u0017wand of striking\r  \u0017wand of striking\r  \u0007paper golem\r  zih  zij  zik  zil  ziy  ziu  zib  zin  \u0007gold golem\r  zjh  zjj  zjk  zjl  zjy  zju  zjb  zjn  \u0007lich\r  zkh  zkj  zkk  zkl  zky  zku  zkb  zkn  zih  zij  zik  zil  ziy  ziu  zib  zin  "
+    }
+  ]
+}

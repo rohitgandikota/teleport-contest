@@ -54,6 +54,12 @@ import { nohands } from './mondata.js';
 import { dropx } from './do.js';
 import { fingers_or_gloves } from './do_wear.js';
 import { PMNAMES } from './monst_data.js';
+import { livelog_printf } from './pline.js';
+import { LL_CONDUCT } from './const.js';
+import { an } from './objnam.js';
+
+
+
 
 
 
@@ -336,9 +342,10 @@ export async function dowrite(pen) {
 
     /* KMH, conduct */
     game.u.uconduct ||= {};
-    if (!game.u.uconduct.literate++) {
-        /* livelog_printf(LL_CONDUCT, "became literate by writing %s", an(typeword)) */
-    }
+    /* if (!u.uconduct.literate++): an unset counter is 0 here, not NaN */
+    game.u.uconduct.literate = (game.u.uconduct.literate | 0) + 1;
+    if (game.u.uconduct.literate === 1)
+        livelog_printf(LL_CONDUCT, `became literate by writing ${an(typeword)}`);
 
     new_obj = mksobj(i, false, false);
     new_obj.bknown = !!(paper.bknown && pen.bknown);

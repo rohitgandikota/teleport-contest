@@ -1657,7 +1657,7 @@ async function trapeffect_poly_trap(mtmp, trap, trflags) {
                 await update_mon_extrinsics(mtmp, shoes, true, true);
             }
         } else if (resists_magm(mtmp)) {
-            shieldeff_mon(mtmp);
+            await shieldeff_mon(mtmp);
         } else if (!await resist(mtmp, OCLASSES.WAND_CLASS, 0, NOTELL)) {
             newcham(mtmp, null, NC_SHOW_MSG);
             if (in_sight)

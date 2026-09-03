@@ -1,5 +1,53 @@
 # STATUS — live handoff board
 
+## 2026-09-04 (mon): mon.c in C form, with two display fixes the probe found
+
+mon.js's 26 notes are down to 0 (repo total 556 to 530).
+Ported in C form: `make_corpse` (the full species switch, the regrown
+unicorn horn, the glob merge through `obj_nexto`/`pudding_merge_message`
+/`obj_meld`, burial through `bury_an_obj`, `oname` for named monsters,
+and the `stackobj` tail), `corpse_chance` (the lich and Vlad crumble,
+the swallowed gas spore, `LEVEL_SPECIFIC_NOCORPSE` with its graveyard
+draw), `minliquid`/`minliquid_core` (the gremlin split, the rusting iron
+golem, lava through `on_fire`, water through `cant_drown`,
+`fire_damage_chain`, `deal_with_overcrowding`), `meatbox` and
+`m_consume_obj` (the `polyfood`/`mlevelgain`/`mhealup`/`mstoning`
+macros, `mon_to_stone`, `quickmimic`, the pyrolisk egg, `mon_givit`),
+`mon_givit`/`mon_give_prop` under their C names (the stalker
+invisibility arm) using eat.c `corpse_intrinsic`/`should_givit`,
+`wakeup` (`ghod_hitsu`), `setmangry` (the Elbereth hypocrite arm with
+`del_engr_at`, `qst_guardians_respond`, `peacefuls_respond` with the
+PLNMSG_GROWL check), `xkilled` (the engulfer's thrown missile, the
+lifesaved "Maybe not...", the mail daemon, the artifact un-create,
+`flooreffects` for the treasure drop, `zombie_maker`, the buried corpse
+message, `spoteffects` when killed from inside, the quest leader and
+guardian arms through `anger_quest_guardians`, the pet murder livelog),
+`shieldeff_mon` (async, awaited everywhere), `migrate_mon`,
+`m_into_limbo` (async), `deal_with_overcrowding`, `elemental_clog`,
+`mnexto` (async, `control_mon_tele`, every caller awaits), `mnearto`.
+New elsewhere: mondata.c `on_fire`; do_name.c `safe_oname`,
+`free_mgivenname`; mkobj.c `obj_nexto`; dogmove.c `qm[]`,
+`mnum_leashable`, `quickmimic`; teleport.c `control_mon_tele`; eat.c
+`corpse_intrinsic` and `should_givit` exported; allmain.c zeroes
+`u.uconduct` the way struct you is zeroed in C (an unset counter used to
+turn into NaN on `++` and the end-of-game conduct list said "pacifist").
+Two fixes the new probe surfaced: `mondead` now goes through
+`mon_leaving_level` (C's m_detach), and `mon_leaving_level` reads the
+raw monster grid because `m_at()` hides monsters whose mhp is already 0;
+without that a dead monster's grid entry stayed behind, a warning glyph
+never cleared, and a later pet swap onto that square was refused.
+Probe `kill-special-monsters` (Knight at level 14 zaps striking at a
+peaceful watchman, a tame kitten, a paper golem, a gold golem and a
+lich) replays byte-identically; so do the apply and kick probes. 44/44,
+hang gate clean, fuzz census 94 perfect and 8 drift (one better than the
+93/9 baseline: a drift session now replays RNG-perfect).
+Follow-ups: end.c's "Your body rises from the dead as a zombie" arm when
+a zombie maker kills the hero is not ported; `mondead` is still a slice
+of C's mondead/m_detach; the JS-only `bagotricks_arrival` stays because
+makemon() is synchronous.
+Next by note count: hack.js (23), spell.js (22), mhitu.js (22),
+invent.js (20), dothrow.js (20), shk.js (19).
+
 ## 2026-09-04 (apply): apply.c in C form, write.c, and the maketrap() wall fix
 
 apply.js's 27 notes are down to 0 (repo total 583 to 556).

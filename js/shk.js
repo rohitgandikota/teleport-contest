@@ -2636,7 +2636,7 @@ export async function pay_for_damage(dmgstr, cant_mollify = false) {
         if (distance > 1 && distance <= 3) {
             await pline(`${shopkeeper_name(shkp)} leaps towards you!`);
             const { mnexto } = await import('./mon.js');
-            mnexto(shkp, RLOC_NOMSG);
+            await mnexto(shkp, RLOC_NOMSG);
         }
         pursue = distmin(game.u.ux, game.u.uy, shkp.mx, shkp.my) > 1;
         if (pursue) {
@@ -3178,7 +3178,7 @@ export async function shopdig(fall) {
             grabs = 'knocks off';
         }
         if (!m_next2u(shkp)) {
-            mnexto(shkp, RLOC_MSG);
+            await mnexto(shkp, RLOC_MSG);
             /* for some reason the shopkeeper can't come next to you */
             if (!m_next2u(shkp)) {
                 if (lang === 2)

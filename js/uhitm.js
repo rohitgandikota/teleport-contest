@@ -462,7 +462,7 @@ export async function flash_hits_mon(mtmp, otmp) {
             }
         } else if (useeit) {
             if (resists_blnd_by_arti(mtmp))
-                shieldeff_mon(mtmp);
+                await shieldeff_mon(mtmp);
             if (game.flags.verbose) {
                 const lit = !!game.level?.at(mx, my)?.lit;
                 await pline(lit

@@ -4735,3 +4735,30 @@ squares from the validator and ignores the highlight function (C draws
 them with `tmp_at(DISP_BEAM, S_goodpos)`). The apply.c callbacks are
 ported for the call sites but draw nothing; the screens match because the
 validator produces the same set of squares.
+
+## m_at() hides dead monsters; C reads the grid
+
+mon.js `m_at()` returns null for a monster whose mhp is 0, which is a
+convenience C does not have: `svl.level.monsters[x][y]` still holds the
+monster until `remove_monster()`. Code that ports a C grid read on a
+monster that is already dead (`mon_leaving_level()` inside `mondead()`)
+must read `game.level.monAt` directly, or it never removes the entry.
+The stale entry then makes `goodpos()` refuse the square and leaves a
+warning glyph on screen, with a perfect RNG stream right up to the
+moment something bumps into it.
+
+## make_corpse() ends with stackobj()
+
+The C stacks the last created object with a mergeable neighbour and
+newsyms the square. Two of a paper golem's blank scrolls merge into one
+stack, so a striking wand that sweeps the pile draws one breaktest
+fewer. A screen-perfect probe with an extra `rn2(100)` from breaktest is
+this tail missing.
+
+## Conduct counters start at zero
+
+C zeroes `struct you`, so `u.uconduct.killer++` and friends start from 0.
+The JS built `u.uconduct` lazily and an unset counter went NaN on `++`,
+which reads as "never" in the end-of-game conducts ("You were a
+pacifist"). allmain.js now creates every counter at 0 next to
+`u.ualign`.

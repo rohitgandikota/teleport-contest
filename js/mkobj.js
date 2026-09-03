@@ -2087,3 +2087,12 @@ export function init_dummyobj(obj, otyp, oquan) {
     }
     return obj;
 }
+
+// src/mkobj.c:3643 obj_nexto(); a mergeable object next to (or under) otmp
+export function obj_nexto(otmp) {
+    if (!otmp) {
+        /* impossible("obj_nexto: wasn't given an object to check") */
+        return null;
+    }
+    return obj_nexto_xy(otmp, otmp.ox, otmp.oy, true);
+}

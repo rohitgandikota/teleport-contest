@@ -408,7 +408,7 @@ export async function gd_move(guard) {
                 const x = guard.mx, y = guard.my;
                 await pline('"You\'ve been warned, knave!"');
                 guard.mpeaceful = 0;
-                mnexto(guard, 0);
+                await mnexto(guard, 0);
                 const entry = game.level.at(x, y);
                 entry.typ = egd.fakecorr[0].ftyp;
                 entry.flags = egd.fakecorr[0].flags || 0;

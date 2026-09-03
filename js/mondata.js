@@ -1064,6 +1064,8 @@ import { objdescr_is } from './o_init.js';
 
 
 
+
+
 // include/mondata.h:71 digests() — swallow-and-digest engulfer (purple worm).
 export const digests = (ptr) =>
     dmgtype_fromattack(ptr, ATTKS.AD_DGST, ATTKS.AT_ENGL) != null;
@@ -1193,4 +1195,40 @@ export function can_blnd(magr, /* NULL == no specific aggressor */
     }
 
     return true;
+}
+
+// src/mondata.c:1411 on_fire(); how a monster of this type reacts to fire
+export function on_fire(mptr, mattk) {
+    let what;
+
+    switch (monsndx(mptr)) {
+    case PMNAMES.PM_FLAMING_SPHERE:
+    case PMNAMES.PM_FIRE_VORTEX:
+    case PMNAMES.PM_FIRE_ELEMENTAL:
+    case PMNAMES.PM_SALAMANDER:
+        what = 'already on fire';
+        break;
+    case PMNAMES.PM_WATER_ELEMENTAL:
+    case PMNAMES.PM_FOG_CLOUD:
+    case PMNAMES.PM_STEAM_VORTEX:
+        what = 'boiling';
+        break;
+    case PMNAMES.PM_ICE_VORTEX:
+    case PMNAMES.PM_GLASS_GOLEM:
+        what = 'melting';
+        break;
+    case PMNAMES.PM_STONE_GOLEM:
+    case PMNAMES.PM_CLAY_GOLEM:
+    case PMNAMES.PM_GOLD_GOLEM:
+    case PMNAMES.PM_AIR_ELEMENTAL:
+    case PMNAMES.PM_EARTH_ELEMENTAL:
+    case PMNAMES.PM_DUST_VORTEX:
+    case PMNAMES.PM_ENERGY_VORTEX:
+        what = 'heating up';
+        break;
+    default:
+        what = (mattk[0] === ATTKS.AT_HUGS) ? 'being roasted' : 'on fire';
+        break;
+    }
+    return what;
 }

@@ -1419,7 +1419,7 @@ async function mv_bubble(b, dx, dy, ini) {
                 await newsym(ux0, uy0); /* clean up old position */
 
                 if (mtmp) {
-                    mnexto(mtmp, RLOC_NOMSG);
+                    await mnexto(mtmp, RLOC_NOMSG);
                 }
                 break;
             }

@@ -100,6 +100,10 @@ import { NO_COLOR } from './terminal.js';
 import { mon_offmap } from './monst.js';
 import { m_next2u } from './mon.js';
 import { DEADMONSTER } from './monst.js';
+import { noit_mon_nam } from './do_name.js';
+
+
+
 
 
 
@@ -1435,7 +1439,7 @@ export async function u_teleport_mon(mtmp, give_feedback) {
             await You(`are no longer inside ${mon_nam(mtmp)}!`);
         await unstuck(mtmp);
         if (!(await rloc(mtmp, RLOC_MSG)))
-            m_into_limbo(mtmp);
+            await m_into_limbo(mtmp);
     } else if ((is_rider(mtmp.data) || control_teleport(mtmp.data))
                && rn2(13) && enexto(cc, game.u.ux, game.u.uy, mtmp.data)) {
         await rloc_to(mtmp, cc.x, cc.y);
@@ -1470,4 +1474,40 @@ export async function tele_to_rnd_pet() {
         if (isok(tx, ty) && teleok(tx, ty, false))
             await teleds(tx, ty, TELEDS_TELEPORT);
     }
+}
+
+// src/teleport.c:1899 control_mon_tele(); wizard-mode 'montelecontrol':
+// the player chooses where a monster teleports to
+export async function control_mon_tele(mon, cc_p, /* input: default spot; output: player selected spot */
+                                       rlocflags, via_rloc) {
+    let tcbuf;
+
+    if (!isok(cc_p.x, cc_p.y)) {
+        cc_p.x = mon.mx, cc_p.y = mon.my;
+        if (!isok(cc_p.x, cc_p.y))
+            cc_p.x = game.u.ux, cc_p.y = game.u.uy;
+    }
+
+    if (!game.wizard || !game.iflags?.mon_telecontrol)
+        return false;
+
+    await pline(`Teleport ${noit_mon_nam(mon)} @ <${mon.mx},${mon.my}> where?`);
+    /* getpos '?' will show "Move the cursor to <where to teleport Foo>:" */
+    tcbuf = `where to teleport ${noit_mon_nam(mon)}`;
+    const { getpos } = await import('./getpos.js');
+    const { goodpos } = await import('./makemon.js');
+    if (await getpos(cc_p, false, tcbuf) >= 0 && !u_at(cc_p.x, cc_p.y)) {
+        if (via_rloc
+              ? rloc_pos_ok(cc_p.x, cc_p.y, mon)
+              : goodpos(cc_p.x, cc_p.y, mon, rlocflags))
+            return true;
+        if (!game.iflags?.debug_fuzzer) {
+            const { tty_yn_function } = await import('./tty/topl.js');
+            tcbuf = `<${mon.mx},${mon.my}> is not considered viable; force anyway?`;
+            if (await tty_yn_function(tcbuf, 'yn', 'n') === 'y')
+                return true;
+        }
+    }
+    await pline(`${via_rloc ? 'Picking random' : 'Using derived'} destination.`);
+    return false;
 }

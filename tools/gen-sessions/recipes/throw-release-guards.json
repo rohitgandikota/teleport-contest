@@ -1,0 +1,96 @@
+{
+  "name": "throw-release-guards",
+  "description": "C-backed throw attempts for worn armor and accessories, welded weapons, cursed loadstones, and an attached leash.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.pets",
+    "object.armor",
+    "object.gems-stones",
+    "object.rings",
+    "object.tools-containers",
+    "object.weapons",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "dothrow.canletgo.worn-armor",
+    "dothrow.canletgo.worn-accessory",
+    "dothrow.canletgo.welded-one-handed",
+    "dothrow.canletgo.welded-bimanual",
+    "dothrow.canletgo.cursed-loadstone",
+    "dothrow.canletgo.attached-leash"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "dothrow.canletgo.worn-armor",
+      "segment": 0,
+      "screenIncludes": ["You cannot throw something you are wearing."]
+    },
+    {
+      "branch": "dothrow.canletgo.worn-accessory",
+      "segment": 1,
+      "screenIncludes": ["You cannot throw something you are wearing."]
+    },
+    {
+      "branch": "dothrow.canletgo.welded-one-handed",
+      "segment": 2,
+      "screenIncludes": ["You cannot throw something welded to your hand."]
+    },
+    {
+      "branch": "dothrow.canletgo.welded-bimanual",
+      "segment": 3,
+      "screenIncludes": ["You cannot throw something welded to your hands."]
+    },
+    {
+      "branch": "dothrow.canletgo.cursed-loadstone",
+      "segment": 4,
+      "screenIncludes": ["For some reason, you cannot throw any of the stones!"]
+    },
+    {
+      "branch": "dothrow.canletgo.attached-leash",
+      "segment": 5,
+      "screenIncludes": ["The leash is tied around your hand."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99439,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017plate mail\rWe      teh  "
+    },
+    {
+      "seed": 99440,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017ring of protection\rPel teh  "
+    },
+    {
+      "seed": 99441,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed dagger\rwf tfh  "
+    },
+    {
+      "seed": 99442,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " Tc  \u0017cursed two-handed sword\rwe teh  "
+    },
+    {
+      "seed": 99443,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00172 cursed loadstones\r teh  "
+    },
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame mastodon\r\u0017uncursed leash\r\u0006aekteh  "
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "inventory-action-overlay-restore",
+  "description": "A debug Wizard selects the wand from a status-height inventory menu, opens its nested item-action menu, then dismisses it.",
+  "coverage": [
+    "mode.debug",
+    "ui.menus",
+    "object.wands"
+  ],
+  "branches": [
+    "tty.docorner.one-based-xmin"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tty.docorner.one-based-xmin",
+      "segment": 0,
+      "screenIncludes": [
+        "Do what with the wand of secret door detection?"
+      ],
+      "screenCells": [
+        {
+          "step": 28,
+          "x": 19,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 541889,
+      "datetime": "20261019200638",
+      "nethackrc": "OPTIONS=name:Binder,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=showexp,time,color,lit_corridor\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": "\u0017uncursed scroll of light\ric\r"
+    }
+  ]
+}

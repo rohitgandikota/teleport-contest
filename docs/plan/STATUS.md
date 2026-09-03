@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-09-03: inset-menu corner restoration verified
+
+`fuzz-s3-15` differed by one status cell when selecting a wand from a tall
+inventory menu opened its nested item-action menu. Pinned C
+`win/tty/wintty.c:docorner` passes `xmin` to `tty_curs(BASE_WINDOW, ...)`, whose
+column argument is 1-based, then passes that same value as the first map column
+to `row_refresh`. JS treated `xmin` as a 0-based screen column in both places,
+so it preserved one cell that C clears and restored the map one column late.
+The port now converts only the screen coordinate and starts both operations at
+the same cell as C.
+
+This boundary is visible because `src/windows.c:select_menu` suppresses status
+painting while the first menu is dismissed, so a status-height inventory
+leaves C's cleared suffix in place behind the next menu. The new compact C
+recording `inventory-action-overlay-restore` fails at **29/30 screens** before
+the fix and is byte-identical at **30/30 screens** and **2,620/2,620 RNG**
+after it. Its cell assertion pins the 1-based erasure boundary on the second
+status line.
+
+`fuzz-s3-15` improves from **300/301 to 301/301 screens** and is fully passing
+at **17,790/17,790 RNG**. The shared restoration correction also advances
+`fuzz-s3-21` from **175/301 to 181/301 screens** before its unrelated
+`mcalcmove` divergence. Across all random play, fully passing games improve
+from **90/102 to 91/102** and screens from **13,773/14,262 to
+13,780/14,262**. RNG remains **468,764/491,759**, with **98/102** games
+RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **355/362**, **82,768/83,191 screens**,
+and **4,387,901/4,402,513 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **840/840 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+`fuzz-s1-07`'s single chronicle screen difference, then continue the remaining
+isolated screen-only failures before changing shared monster movement RNG.
+
 ## 2026-09-03: version text-window dismissal verified
 
 `fuzz-s4-10` first differed on the second page of the About NetHack report.

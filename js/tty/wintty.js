@@ -974,19 +974,20 @@ export function tty_next_page(window) {
 // and redraw the status rows if the window overlapped them.
 function docorner(xmin, ymax, display) {
     let y = 0;
+    const screenX = Math.max(0, xmin - 1);
     for (; y < Math.min(ymax, ROWS); y++) {
         /* the C moves the BASE_WINDOW cursor once per row, and the position it
            is left in is what the NEXT tty_putstr(BASE_WINDOW) writes over. A
            second "Who are you?" after 'a' on the confirmation menu lands on the
            row below the dismissed menu because of exactly this. */
         tty_curs_base(xmin, y);
-        for (let x = xmin; x < COLS; x++)
+        for (let x = screenX; x < COLS; x++)
             display.setCell(x, y, ' ', NO_COLOR, 0);
         /* row_refresh(xmin - offx, COLNO-1, y - offy): terminal row y maps to
-           map row y-1; the first map column whose cell sits at or right of
-           terminal column xmin is x = xmin + 1 */
+           map row y-1. xmin is already the first 1-based map column whose
+           screen cell was cleared by tty_curs(BASE_WINDOW, xmin, y). */
         if (y >= 1 && y - 1 < ROWNO)
-            row_refresh(Math.max(1, xmin + 1), COLNO - 1, y - 1);
+            row_refresh(Math.max(1, xmin), COLNO - 1, y - 1);
     }
     /* "we scribbled over the status line; redraw it" */
     if (ymax >= 22)

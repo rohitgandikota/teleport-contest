@@ -96,10 +96,14 @@ export const type_is_pname = (ptr) => (ptr.mflags2 & MFLAGS.M2_PNAME) !== 0;
 export const tunnels    = (d) => (d.mflags1 & MFLAGS.M1_TUNNEL) !== 0;
 export const passes_walls = (d) => (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0;
 export const throws_rocks = (d) => (d.mflags2 & MFLAGS.M2_ROCKTHROW) !== 0;
-export const passes_bars  = (d) => (d.mflags1 & MFLAGS.M1_UNSOLID) !== 0
-                         || (d.mflags1 & MFLAGS.M1_AMORPHOUS) !== 0
-                         || (d.mflags1 & MFLAGS.M1_WALLWALK) !== 0
-                         || d.msize <= MFLAGS.MZ_SMALL;
+// src/mondata.c:554 passes_bars(). MZ_SMALL does not satisfy verysmall;
+// kittens cannot enter bars, while tiny monsters and these special forms can.
+export const passes_bars = (d) => passes_walls(d) || amorphous(d) || unsolid(d)
+                         || is_whirly(d) || verysmall(d)
+                         || dmgtype(d, ATTKS.AD_RUST)
+                         || dmgtype(d, ATTKS.AD_CORR)
+                         || metallivorous(d)
+                         || (slithy(d) && !bigmonst(d));
 
 export const is_displacer = (d) => (d.mflags3 & MFLAGS.M3_DISPLACES) !== 0;
 export const notake = (ptr) => (ptr.mflags1 & MFLAGS.M1_NOTAKE) !== 0;

@@ -11,7 +11,7 @@
 // exactly where you want to look.
 //
 //   node tools/jsplay.mjs <session.json> [--seg N] [--until STEP]
-//                          [--rng-at INDEX] [--screen] [--state]
+//                          [--rng-at INDEX] [--screen] [--state] [--dogtrace]
 //
 // --rng-at counts draws within the chosen segment, 0-based, the same index
 // diverge.mjs prints for a single-segment session.
@@ -58,6 +58,7 @@ for (let i = 0; i < segIdx; i++) {
 
 if (flag('--rng-at')) globalThis.__rng_stack_at = Number(opt('--rng-at'));
 if (flag('--log-around')) globalThis.__rng_trace_sites = true;
+if (flag('--dogtrace')) globalThis.__dog_trace = true;
 if (flag('--snap')) {
     const at = Number(opt('--snap'));
     globalThis.__step_snapshot = { step: at, cb: (g, step) => {

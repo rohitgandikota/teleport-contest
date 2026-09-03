@@ -14,7 +14,8 @@
     "command.prefix.m-reject-nonaccepting",
     "command.prefix.m-accept-flagged",
     "command.prefix.m-movement-no-pickup",
-    "command.prefix.m-double-cancel"
+    "command.prefix.m-double-cancel",
+    "command.prefix.run-unbound-key"
   ],
   "requireBranchAssertions": true,
   "branchAssertions": [
@@ -42,6 +43,12 @@
       "branch": "command.prefix.m-double-cancel",
       "segment": 2,
       "screenIncludes": ["Double m prefix, canceled."]
+    },
+    {
+      "branch": "command.prefix.run-unbound-key",
+      "segment": 3,
+      "screenIncludes": ["Unknown command ' '."],
+      "screenExcludes": ["prefix should be followed by a movement command"]
     }
   ],
   "segments": [
@@ -62,6 +69,12 @@
       "datetime": "20260601120000",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " mlmm   "
+    },
+    {
+      "seed": 99439,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " G "
     }
   ]
 }

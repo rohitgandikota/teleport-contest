@@ -1,5 +1,35 @@
 # STATUS — live handoff board
 
+## 2026-09-03: unbound movement-prefix keys verified
+
+The sole remaining `fuzz-s4-20` difference followed `G` with an unbound space.
+Pinned C `src/cmd.c:rhack` emits the movement-prefix diagnostic only after the
+second key resolves to a command-table entry (`tlist != 0`). An unbound key
+instead reaches `bad_command`, so C prints `Unknown command ' '.` JS rejected
+every nonmovement key before checking whether it was bound. The port now keeps
+the prefix diagnostic for bound nonmovement commands and lets unbound keys
+follow C's unknown-command path.
+
+The expanded four-segment normal-mode C recording `command-prefix-validation`
+is byte-identical at **57/57 screens** and **9,662/9,662 RNG**, with a new
+assertion for the unbound-key arm. `fuzz-s4-20` improves from **300/301 to
+301/301 screens** and is now fully passing at **19,222/19,222 RNG**. Across all
+random play, fully passing games improve from **85/102 to 86/102** and screens
+from **13,756/14,262 to 13,757/14,262**. RNG remains
+**468,764/491,759**, with **98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **351/358**, **82,710/83,133 screens**,
+and **4,367,829/4,382,441 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **833/833 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+`fuzz-s4-18`, where C opens the Logged events view after `#chron` but JS stays
+on the map, then continue through the remaining screen-only C-backed failures.
+
 ## 2026-09-03: no-history count cursor verified
 
 After the inventory-swap output was fixed, `fuzz-s2-01` had one remaining

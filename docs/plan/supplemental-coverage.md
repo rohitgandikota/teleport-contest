@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **106**. Covered: **99**.
 Partial: **7**. Gaps: **0**.
 
-Branch requirements: **832**. Covered: **832**.
+Branch requirements: **833**. Covered: **833**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 358 | 83129 | 4077787 | 75 | 497 |
-| Union | 402 | 94534 | 4845547 | 79 | 536 |
+| Supplemental | 358 | 83133 | 4079583 | 75 | 497 |
+| Union | 402 | 94538 | 4847343 | 79 | 536 |
 
 ## Static inventory
 
@@ -213,6 +213,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `command.prefix.m-accept-flagged` | `src/cmd.c:rhack` | `command-prefix-validation` |
 | covered | `command.prefix.m-movement-no-pickup` | `src/cmd.c:do_reqmenu` | `command-prefix-validation` |
 | covered | `command.prefix.m-double-cancel` | `src/cmd.c:do_reqmenu` | `command-prefix-validation` |
+| covered | `command.prefix.run-unbound-key` | `src/cmd.c:rhack` | `command-prefix-validation` |
 | covered | `input.prefix.move-without-pickup-atomic` | `src/cmd.c:rhack` | `monster-invisibility-use` |
 
 ### Throw release guards
@@ -1598,7 +1599,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `cloak-effects` | debug | 189 | present | `level.ordinary`, `mode.debug`, `object.armor`, `object.identification`, `turn.occupation-interrupt`, `ui.getlin`, `ui.map-memory-vision` |
 | `cockatrice-touch` | debug | 240 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `survival.instant-deaths`, `survival.timed-status`, `ui.getlin`, `ui.more-paging` |
 | `coin-flips-banana` | debug | 97 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `object.tools-containers`, `turn.timers`, `ui.getlin`, `ui.hallucination` |
-| `command-prefix-validation` | debug | 50 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `turn.speed-energy`, `ui.cancel-invalid`, `ui.getlin`, `ui.menus` |
+| `command-prefix-validation` | debug | 53 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `turn.speed-energy`, `ui.cancel-invalid`, `ui.getlin`, `ui.menus` |
 | `conduct-achievements` | normal | 116 | present | `ending.conduct-achievement`, `level.ordinary`, `mode.normal`, `social.shops-billing` |
 | `confuse-monster-touch` | debug | 302 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `monster.hero-melee`, `monster.special-effects`, `object.scrolls`, `survival.timed-status`, `turn.speed-energy`, `ui.getlin` |
 | `container-bag-holding` | debug | 40 | present | `level.ordinary`, `mode.debug`, `object.tools-containers`, `ui.getlin`, `ui.menus` |

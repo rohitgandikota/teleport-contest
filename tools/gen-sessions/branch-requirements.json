@@ -5,6 +5,7 @@
     { "group": "Command prefixes", "id": "command.prefix.m-accept-flagged", "cFile": "src/cmd.c", "cFunction": "rhack", "description": "Dispatch a nonmovement command carrying CMD_M_PREFIX with menu_requested still active" },
     { "group": "Command prefixes", "id": "command.prefix.m-movement-no-pickup", "cFile": "src/cmd.c", "cFunction": "do_reqmenu", "description": "Accept m before a movement key and perform move-without-autopickup" },
     { "group": "Command prefixes", "id": "command.prefix.m-double-cancel", "cFile": "src/cmd.c", "cFunction": "do_reqmenu", "description": "Cancel two consecutive m prefix commands without dispatching a following action" },
+    { "group": "Command prefixes", "id": "command.prefix.run-unbound-key", "cFile": "src/cmd.c", "cFunction": "rhack", "description": "Discard a run prefix followed by an unbound key and report the key as an unknown command" },
     { "group": "Throw release guards", "id": "dothrow.canletgo.worn-armor", "cFile": "src/do.c", "cFunction": "canletgo", "description": "Refuse to throw armor which the hero is wearing" },
     { "group": "Throw release guards", "id": "dothrow.canletgo.worn-accessory", "cFile": "src/do.c", "cFunction": "canletgo", "description": "Refuse to throw an accessory which the hero is wearing" },
     { "group": "Throw release guards", "id": "dothrow.canletgo.welded-one-handed", "cFile": "src/do.c", "cFunction": "canletgo", "description": "Refuse to throw a cursed one-handed weapon welded to the hero's hand" },

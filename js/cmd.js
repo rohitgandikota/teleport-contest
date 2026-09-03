@@ -1667,13 +1667,15 @@ export async function rhack(key) {
         ch = CTRL_DIR[ch0];
         movemode = 3;
     }
+    const prefixCommand = cmdbind_table().get(ch0.charCodeAt(0));
 
     /* src/cmd.c:3693-3723 -- g/G only modify movement commands.  C loops
        for the second key inside one rhack() call; this port spans two calls,
-       so reject a nonmovement command before its normal dispatch.  Another
-       prefix is allowed through, matching PREFIXCMD. */
+       so reject a known nonmovement command before its normal dispatch. An
+       unbound key falls through to bad_command, and another prefix is allowed
+       through, matching PREFIXCMD. */
     if ((game.domove_attempting & DOMOVE_RUSH) && !isMovementKey(ch)
-            && !'gGmF'.includes(ch)) {
+            && !'gGmF'.includes(ch) && prefixCommand) {
         const prefix = game.context.run === 3 ? 'G' : 'g';
         const vertical = ch === '<' || ch === '>';
         game.context.run = 0;
@@ -1687,7 +1689,7 @@ export async function rhack(key) {
        A nonmovement key is consumed by the rejected F command rather than
        dispatched as its ordinary command. */
     if (game.context.forcefight && !isMovementKey(ch)
-            && !'gGmF'.includes(ch)) {
+            && !'gGmF'.includes(ch) && prefixCommand) {
         const vertical = ch === '<' || ch === '>';
         game.context.forcefight = 0;
         game.context.move = 0;
@@ -1701,9 +1703,8 @@ export async function rhack(key) {
        entry lacks CMD_M_PREFIX instead of dispatching it normally. */
     if (continuedPrefix && game.iflags.menu_requested
         && !isMovementKey(ch) && !'gGmF'.includes(ch)) {
-        const command = cmdbind_table().get(ch0.charCodeAt(0));
-        if (command && !accept_menu_prefix(command)) {
-            await pline_nohistory(`The ${command.ef_txt} command does not accept 'm' prefix.`);
+        if (prefixCommand && !accept_menu_prefix(prefixCommand)) {
+            await pline_nohistory(`The ${prefixCommand.ef_txt} command does not accept 'm' prefix.`);
             reset_cmd_vars(true);
             return;
         }

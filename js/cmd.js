@@ -90,7 +90,7 @@ import { is_weptool } from './mkobj.js';
 import { HANDS_SYM } from './const.js';
 import { cmap_names, defsyms } from './drawing_data.js';
 import { x_monnam, y_monnam, YMonnam, docallcmd, donamelevel } from './do_name.js';
-import { You } from './pline.js';
+import { You, You_cant } from './pline.js';
 
 /* js/do.js needs mklev(), and js/sp_lev.js needs mon.js's terrain tests; both
    are cycles when imported directly, so cmd.js -- which already pulls in every
@@ -142,7 +142,7 @@ import { ACCESSIBLE } from './const.js';
 import { morehungry } from './eat.js';
 import { dohelp, dowhatis, doquickwhatis, dowhatdoes } from './pager.js';
 import { dolook, ECMD_TIME, display_inventory } from './invent.js';
-import { dovspell, docast } from './spell.js';
+import { dovspell, docast, known_spell, spe_Fresh, spelleffects } from './spell.js';
 import { dowieldquiver, dowield, doswapweapon, dotwoweapon } from './wield.js';
 import { dozap } from './zap.js';
 import { dist2, distmin } from './hacklib.js';
@@ -1364,6 +1364,21 @@ export async function doterrain() {
 // trap plumbing; what is ported is the getpos() call at src/apply.c:2063, which
 // is where a session's cursor keys and pick go.
 async function dojump() {
+    const has_jumping = !!game.u.intrinsic?.HJumping
+                        || !!game.u.uprops?.JUMPING;
+
+    /* src/apply.c:1979. Physical #jump casts a fresh jumping spell when the
+       hero lacks the ability, then rejects the command before getpos when no
+       such spell is available. */
+    if (!has_jumping
+        && known_spell(ONAMES.SPE_JUMPING) >= spe_Fresh)
+        return await spelleffects(ONAMES.SPE_JUMPING, false, false);
+
+    if (!has_jumping) {
+        await You_cant('jump very far.');
+        return ECMD_OK;
+    }
+
     await pline('Where do you want to jump?');
 
     const cc = { x: game.u.ux, y: game.u.uy };

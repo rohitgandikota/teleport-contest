@@ -1,0 +1,32 @@
+{
+  "name": "jump-no-ability",
+  "description": "A debug Barbarian tries the physical jump command without intrinsic or extrinsic jumping and is rejected before the position picker opens.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin"
+  ],
+  "branches": [
+    "jump.physical.no-ability"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "jump.physical.no-ability",
+      "segment": 0,
+      "screenIncludes": [
+        "You can't jump very far."
+      ],
+      "screenExcludes": [
+        "Where do you want to jump?"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 399876,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #jump\r  "
+    }
+  ]
+}

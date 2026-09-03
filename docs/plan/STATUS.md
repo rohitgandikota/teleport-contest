@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-03: physical jump ability guard verified
+
+`fuzz-s2-22` appeared to diverge at `src/monmove.c:distfleeck`, but its first
+screen difference occurred 54 steps earlier. Pinned C `src/apply.c:jump`
+rejects a physical jump before opening the position picker when the hero has
+neither jumping ability nor a fresh jumping spell. JS opened `getpos`, so all
+later keys controlled the wrong interface and eventually sent JS to another
+level while C was still moving monsters on level 1. The port now preserves
+C's fresh-spell fallback and otherwise prints `You can't jump very far.`
+before any position input.
+
+The new debug-mode C recording `jump-no-ability` fails at **7/10 screens**
+before the fix and is byte-identical at **10/10 screens** and **4,472/4,472
+RNG** after it. Its branch assertion proves both the refusal and the absence
+of the position-picker prompt.
+
+`fuzz-s2-22` improves from **27/301 to 300/301 screens** and from
+**2,284/14,461 to 14,461/14,461 RNG**. Across all random play, fully passing
+games remain **98/102**, while screens improve from **13,857/14,262 to
+14,130/14,262**, RNG improves from **468,919/491,759 to 481,096/491,759**,
+and RNG-identical games improve to **100/102**. Its one remaining difference
+is a distant farlook name at step 180: C prints `a cursed scroll`, while JS
+incorrectly observes and reveals the scroll label.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **360/367**, **82,877/83,300 screens**,
+and **4,415,146/4,429,758 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **850/850 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: port
+`pager.c:look_at_object`'s `distant_name` boundary to close the last
+`fuzz-s2-22` screen without disturbing its now-exact RNG.
+
 ## 2026-09-03: pet abuse sound classes verified
 
 Three random-play games reached `src/sounds.c:yelp` with exact RNG but omitted

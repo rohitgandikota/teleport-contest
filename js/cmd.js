@@ -959,6 +959,12 @@ async function execute_extcmd(name) {
     /* src/cmd.c extcmdlist — the command's own function runs here. Only the
        ones that consume further input are wired up so far, because those are
        the ones whose absence puts the whole session out of step. */
+    if (name === 'shell') {
+        /* sys/unix/unixunix.c:dosh — the contest sysconf has no permitted
+           shell users, so both '!' and #shell are rejected here. */
+        await Norep("Unavailable command '!'.");
+        return ECMD_OK;
+    }
     if (name === 'quit') {
         const { done2 } = await import('./end.js');
         return await done2();
@@ -2015,6 +2021,9 @@ export async function rhack(key) {
             cmdq_add_ec(CQ_REPEAT, () => execute_extcmd(name));
             cmdq_shift(CQ_REPEAT);
         }
+    } else if (ch === '!') {
+        game.context.move = ((await execute_extcmd('shell')) === ECMD_TIME
+                             ? 1 : 0);
     } else if (ch === '\x06' && game.wizard) {
         /* src/cmd.c:1982, debug-mode ^F is the default binding for
            #wizmap. It reveals the level without consuming a turn. */

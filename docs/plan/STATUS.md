@@ -1,5 +1,36 @@
 # STATUS — live handoff board
 
+## 2026-09-03: restricted shell command verified
+
+The contest C binary is built with shell support, but its sysconf grants shell
+access to no player. Direct `!` and `#shell` therefore both reach
+`sys/unix/unixunix.c:dosh`, which uses `Norep` to print `Unavailable command
+'!'.` JS had no shell dispatch and fell through to the genuinely unknown-key
+message. Both command paths now execute the same restricted behavior as the
+contest binary.
+
+The new two-segment normal-mode C recording `restricted-shell-command` is
+byte-identical at **12/12 screens** and **5,857/5,857 RNG**. It independently
+pins direct `!` and `#shell`. `fuzz-s4-09` improves from **300/301 to 301/301
+screens** and is now fully passing. An earlier `!` frame in `fuzz-s2-06` also
+becomes identical before that game's later `mcalcmove` boundary. Across all
+random play, fully passing games improve from **82/102 to 83/102** and screens
+from **13,734/14,262 to 13,736/14,262**. RNG remains
+**468,764/491,759**, with **98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **348/355**, **82,648/83,071 screens**,
+and **4,357,589/4,372,201 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **829/829 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and still predates this checkpoint. Next:
+inspect the remaining screen-only failures by exact C output and state,
+starting with the early startup and extended-command cases. Keep the shared
+`mcalcmove` and `distfleeck` RNG sites behind any earlier state mismatch.
+
 ## 2026-09-03: startup menu search verified
 
 Two independent fuzz games first differed when `:` was pressed in the

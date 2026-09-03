@@ -1,0 +1,45 @@
+{
+  "name": "restricted-shell-command",
+  "description": "Normal games invoke the shell through its direct key and extended command while the contest sysconf denies shell access.",
+  "coverage": [
+    "level.ordinary",
+    "mode.normal",
+    "ui.cancel-invalid",
+    "ui.getlin"
+  ],
+  "branches": [
+    "command.shell.direct-restricted",
+    "command.shell.extended-restricted"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "command.shell.direct-restricted",
+      "segment": 0,
+      "screenIncludes": [
+        "Unavailable command '!'."
+      ]
+    },
+    {
+      "branch": "command.shell.extended-restricted",
+      "segment": 1,
+      "screenIncludes": [
+        "Unavailable command '!'."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 636699,
+      "datetime": "20260525084907",
+      "nethackrc": "OPTIONS=name:Robin,role:Rogue,race:human,gender:male,align:chaotic,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " !"
+    },
+    {
+      "seed": 636700,
+      "datetime": "20260525084907",
+      "nethackrc": "OPTIONS=name:Robin,role:Rogue,race:human,gender:male,align:chaotic,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #shell\n"
+    }
+  ]
+}

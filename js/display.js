@@ -2075,8 +2075,12 @@ export async function cls() {
     game._in_cls = true;
 
     /* display_nhwindow(WIN_MESSAGE, FALSE) — the more() comes FIRST, while
-       the previous map is still painted; only then is the map cleared. */
-    if (game._toplin === TOPLINE_NEED_MORE) {
+       the previous map is still painted; only then is the map cleared.
+       WIN_STOP shares WIN_CANCELLED's bit for the message window, so an ESC
+       at the preceding --More-- makes display_nhwindow return before trying
+       to acknowledge a newly queued line. clear_nhwindow(WIN_MAP) below then
+       clears that line along with the rest of the terminal. */
+    if (game._toplin === TOPLINE_NEED_MORE && !game._win_stop) {
         await more();
         game._toplin = TOPLINE_NEED_MORE;   /* more() reset it; force the erase */
         tty_clear_nhwindow_message(game._topl_cury || 0);
@@ -2321,6 +2325,10 @@ export async function more() {
 // already-seen message is only marked empty, leaving its terminal pixels in
 // place until later output overwrites them.
 export async function display_nhwindow_message() {
+    /* WIN_STOP and WIN_CANCELLED are the same window-flag bit. The generic
+       tty_display_nhwindow() guard returns before its NHW_MESSAGE switch. */
+    if (game._win_stop)
+        return;
     if (game._toplin === TOPLINE_NEED_MORE)
         await more();
     else

@@ -1,5 +1,43 @@
 # STATUS — live handoff board
 
+## 2026-09-03: WIN_STOP redraw cancellation verified
+
+`fuzz-s4-28` reached the tutorial with exact RNG, dismissed the first of two
+engraving messages with Escape, then diverged when the tutorial performed a
+full redraw. Pinned C gives `WIN_STOP` and `WIN_CANCELLED` the same message
+window flag bit. Consequently, `tty_display_nhwindow(WIN_MESSAGE, FALSE)`
+returns before acknowledging the second buffered message, and the following
+`docrt()` clears it. JS instead opened another `--More--`, consumed the next
+command, and left the game two frames behind. The message-window display and
+full-screen clear now honor `WIN_STOP`, while the topline layer keeps C's
+logical message history separate from text that was physically painted.
+
+The new normal-mode C recording `tutorial-more-escape` captures this boundary
+in nine frames. It is byte-identical at **9/9 screens** and **2,701/2,701
+RNG**, including the blank topline and tutorial AC 10 immediately after Escape
+and the next `+` command reaching spell handling without an extra prompt. Its
+new branch assertion pins `ui.more.win-stop-before-docrt`.
+
+`fuzz-s4-28` improves from **26/28 to 28/28 screens** and is fully passing at
+**2,701/2,701 RNG**. The same fix makes `fuzz-s4-06` fully pass at **301/301
+screens** and brings `fuzz-s2-06` from 251/301 to **300/301 screens**. Across
+all random play, fully passing games improve from **92/102 to 94/102**, screens
+from **13,782/14,262 to 13,834/14,262**, and RNG from **468,764/491,759 to
+468,919/491,759**. The next smallest failure is now the single screen at step
+261 in `fuzz-s2-06`.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **357/364**, **82,840/83,263 screens**,
+and **4,404,628/4,419,240 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **847/847 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: resolve
+`fuzz-s2-06`'s one remaining screen-only miss, then continue the other isolated
+screen failures before changing shared monster movement RNG.
+
 ## 2026-09-03: achievement chronicle and level logging verified
 
 `fuzz-s1-07` reached the Bigroom, the Gnomish Mines, and Mine Town with exact

@@ -70,13 +70,18 @@ export async function update_topl(bp) {
         && n0 + toplines.length + 3 < CO - 8   /* room for --More-- */
         && (notdied = bp.slice(0, 7) !== 'You die')) {
         game._toplines = toplines + '  ' + bp;
-        game._pending_message = game._toplines;
-        const painted = (game._topline_physical_prefix || '')
-            + game._pending_message;
-        game._topl_curx = painted.length;
         if (!skip) {
+            game._pending_message = game._toplines;
+            const painted = (game._topline_physical_prefix || '')
+                + game._pending_message;
+            game._topl_curx = painted.length;
             game._toplin = TOPLINE_NEED_MORE;
             paint_topline();    /* same physical append that addtopl paints */
+        } else {
+            /* C still advances cw->curx by the two separating spaces, but
+               addtopl() is not called, so none of the buffered text becomes
+               terminal output while WIN_STOP is set. */
+            game._topl_curx = (game._topl_curx || 0) + 2;
         }
         return;
     }
@@ -100,14 +105,20 @@ export async function update_topl(bp) {
     const out = wrap_topline(bp.slice(0, TBUFSZ - 1), CO);
 
     game._toplines = out;   /* gt.toplines after strncpy() and wrapping */
-    game._pending_message = out;
     /* "You die" is urgent and lifts an earlier ESC suppression. */
     if (!notdied) {
         game._win_stop = false;
         skip = false;
     }
-    if (!skip)
+    if (!skip) {
+        game._pending_message = out;
         await redotoplin(out);
+    } else {
+        /* gt.toplines retains suppressed text for ^P history, but C does not
+           call redotoplin(), so the physical message window stays empty. */
+        game._pending_message = '';
+        game._topline_physical_prefix = '';
+    }
 }
 
 // win/tty/topl.c:194 addtopl(), physical text without changing history.

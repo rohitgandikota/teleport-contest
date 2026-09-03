@@ -1,0 +1,32 @@
+{
+  "name": "themed-subroom-doors",
+  "description": "A normal game generates a themed room with a nested subroom whose fixed doors affect later corridor and niche decisions.",
+  "coverage": [
+    "level.ordinary",
+    "level.themed",
+    "mode.normal",
+    "ui.menus"
+  ],
+  "branches": [
+    "level.themed.register-subroom-doors"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "level.themed.register-subroom-doors",
+      "segment": 0,
+      "rngIncludes": [
+        "rn2(2)=0 @ place_niche(mklev.c:708)",
+        "rn2(17)=2 @ finddpos(mklev.c:185)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 659352,
+      "datetime": "20260525144414",
+      "nethackrc": "OPTIONS=symset:DECgraphics\n",
+      "moves": "Tetra\ri  "
+    }
+  ]
+}

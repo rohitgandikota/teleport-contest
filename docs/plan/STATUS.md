@@ -1,5 +1,46 @@
 # STATUS — live handoff board
 
+## 2026-09-03: themed subroom door registration verified
+
+Pinned C source and a one-run recorder diagnostic showed that the first
+`fuzz-s4-04` divergence was upstream level state, not the later monster-speed
+RNG label. Before `makeniche`, C had registered 20 doors and gave ordinary room
+0 three entries. JS had registered 18 doors and gave that room one entry. The
+missing shared entries were the two fixed doors around a nested themed
+subroom. C's `lspo_room` calls recursive `add_doors_to_room` after room
+contents, while the JS themed-room paths omitted that step and used a weaker
+door-membership predicate.
+
+The port now follows C in both themed-room construction paths, recurses through
+nested subrooms, and uses one exact `maybe_add_door` predicate for initial map
+scans and final door linking. New C recording `themed-subroom-doors` is
+byte-identical at **10/10 screens** and **2,966/2,966 RNG**. Its state gate pins
+the outer and nested room bounds, both rooms' door spans, all 21 shared-table
+entries, and the duplicated ownership of doors `(5,16)` and `(4,17)`.
+
+`fuzz-s4-04` advances from **26/301 to 216/301 screens** and from its first RNG
+mismatch at call 1,382 to call 3,251. Across all random play, screens improve
+from **13,439/14,262 to 13,629/14,262** and RNG from
+**466,732/491,759 to 468,735/491,759**, with no individual regression. Pass
+counts remain **79/102 fully passing** and **97/102 RNG-perfect** because this
+long game still has a later divergence.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **344/351**, **82,578/83,001 screens**,
+and **4,342,313/4,356,925 RNG**, with the same seven failures and zero runtime
+errors. `mines-tour`, which exposed an over-broad first draft of the predicate,
+is restored to **98/98 screens** and **49,155/49,155 RNG**. The hang gate is
+clean, fresh-seed smoke is 80/80, the source audit has zero findings, frozen
+files are unchanged, and declared coverage is **99/106 categories** with seven
+partial plus **824/824 explicit branches**.
+
+The last published judge still reports **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries, and predates this checkpoint. Its
+hidden effect is therefore unknown. Next: inspect `fuzz-s4-04`'s first remaining
+screen-only miss at step 46, then the later call-3,251 `mcalcmove` boundary.
+Establish the earliest differing state before changing either `mcalcmove` or
+the JS call that currently reaches `maybe_smudge_engr`.
+
 ## 2026-09-03: counted non-time command cleanup verified
 
 Runtime checkpoint `a80b4d7` is committed and pushed. C's `rhack` calls

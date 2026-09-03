@@ -1,6 +1,6 @@
 # Contest score dashboard
 
-Last refreshed: 2026-09-03T20:45:41.610Z. Local commit: `94592c2`.
+Last refreshed: 2026-09-03T21:42:32.773Z. Local commit: `6742816`.
 Leaderboard snapshot: 2026-09-03T17:17:32.745Z. Fork last scored: 2026-09-03T16:41:33.829Z.
 Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 
@@ -11,7 +11,7 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 | Public local | 11405/11405 | 100.00% | 44/44 | 792838/792838 (100.00%) | 90/1483 |
 | Public leaderboard | 11405/11405 | 100.00% | 44/44 | 100.00% | 90/1483 |
 | Held-out leaderboard | 8498/11265 | 75.44% | 16/44 | 70.09% | 89/2959 |
-| Supplemental C suite | 82731/83154 | 99.49% | 353/360 | 4382633/4397245 (99.67%) | 594/2701 |
+| Supplemental C suite | 82738/83161 | 99.49% | 354/361 | 4385281/4399893 (99.67%) | 594/2701 |
 
 ## Contest position and generalization
 
@@ -21,14 +21,14 @@ Live JSON fetch unavailable: fetch failed. Using the last exact snapshot.
 - Held-out/public identical-screen ratio: **0.745**.
 - Current held-out leader: `NoahBPeterson/teleport-contest`, 11264/11265.
 - Contest phase: open.
-- Local checkpoint `94592c2` has not been judged yet; held-out numbers are from the earlier published run.
+- Local checkpoint `6742816` has not been judged yet; held-out numbers are from the earlier published run.
 
 ## C-reference coverage
 
 | Inventory | Covered | Partial | Gaps |
 |---|---:|---:|---:|
 | Mechanics categories | 99/106 | 7 | 0 |
-| Explicit C branches | 838/838 | 0 | 0 |
+| Explicit C branches | 839/839 | 0 | 0 |
 
 Coverage counts describe declared scenarios, not proof that every C branch is ported or passing.
 
@@ -38,9 +38,9 @@ Coverage counts describe declared scenarios, not proof that every C branch is po
 
 | Check | Public local | Supplemental |
 |---|---:|---:|
-| Cells only | 11405/11405 | 83109/83154 |
-| Cursor positions | 11405/11405 | 82761/83154 |
-| Startup and per-turn estimate | 62+0.43/turn | 66+0.14/turn |
+| Cells only | 11405/11405 | 83116/83161 |
+| Cursor positions | 11405/11405 | 82768/83161 |
+| Startup and per-turn estimate | 66+0.45/turn | 70+0.15/turn |
 
 ## Supplemental failures
 
@@ -75,6 +75,7 @@ Coverage counts describe declared scenarios, not proof that every C branch is po
 
 | Refreshed | Commit | Public local | Supplemental | Held-out | Rank |
 |---|---|---:|---:|---:|---:|
+| 2026-09-03T21:42:32.773Z | `6742816` | 11405/11405 | 82738/83161 | 8498/11265 | 3 |
 | 2026-09-03T20:45:41.610Z | `94592c2` | 11405/11405 | 82731/83154 | 8498/11265 | 3 |
 | 2026-09-03T19:37:05.473Z | `88f0b19` | 11405/11405 | 82652/83075 | 8498/11265 | 3 |
 | 2026-09-03T19:25:20.592Z | `61a8fe3` | 11405/11405 | 82648/83071 | 8498/11265 | 3 |
@@ -84,7 +85,6 @@ Coverage counts describe declared scenarios, not proof that every C branch is po
 | 2026-09-03T18:17:38.154Z | `a80b4d7` | 11405/11405 | 82568/82991 | 8498/11265 | 3 |
 | 2026-09-03T18:03:36.092Z | `5593394` | 11405/11405 | 82560/82983 | 8498/11265 | 3 |
 | 2026-09-03T17:38:05.276Z | `97bcf38` | 11405/11405 | 82247/82670 | 8498/11265 | 3 |
-| 2026-09-03T17:23:13.282Z | `7e6587e` | 11405/11405 | 82194/82617 | 7959/11265 | 3 |
 
 Refresh with `node tools/contest-dashboard.mjs`. The command runs both local
 corpora, the hang gate, and a live leaderboard fetch. A push can take up to

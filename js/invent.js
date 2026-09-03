@@ -42,7 +42,8 @@ import { hides_under, touch_petrifies, poly_when_stoned } from './mondata.js';
 import { worn } from './do_wear.js';
 import { empty_handed } from './wield.js';
 import { W_ARM, W_ARMC, W_ARMH, W_ARMS, W_ARMG, W_ARMF, W_ARMU,
-         W_RINGL, W_RINGR, W_AMUL, W_ART, W_TOOL, W_SADDLE }
+         W_ARMOR, W_WEP, W_QUIVER, W_SWAPWEP, W_WEAPONS,
+         W_RINGL, W_RINGR, W_AMUL, W_ART, W_TOOL, W_ACCESSORY, W_SADDLE }
     from './const.js';
 import { Blind as heroBlind, Hallucination,
          Stone_resistance } from './youprop.js';
@@ -63,7 +64,9 @@ import { place_object } from './mkobj.js';
 import { touch_artifact } from './mon.js';
 import { dropy, dropx } from './do.js';
 import { is_ammo, is_missile, ammo_and_launcher, setuqwep } from './wield.js';
-import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr, tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow, NHW_MENU } from './tty/wintty.js';
+import { ATR_NONE, ATR_INVERSE, tty_create_nhwindow, tty_putstr,
+         tty_display_nhwindow, tty_next_page, tty_destroy_nhwindow,
+         tty_add_menu, NHW_MENU } from './tty/wintty.js';
 import { nhgetch } from './input.js';
 import { xwaitforspace } from './tty/getline.js';
 import { pline, display_nhwindow_message, temporary_object_glyph,
@@ -1992,21 +1995,135 @@ export function update_inventory() {
 export async function doprwep() {
     if (!game.u.uwep) {
         await You(`are ${empty_handed()}.`);
-    } else {
+    } else if (!game.iflags?.menu_requested) {
         await prinv(null, game.u.uwep, 0);
         if (game.u.twoweap)
             await prinv(null, game.u.uswapwep, 0);
+    } else {
+        return await dispinv_with_action(
+            [game.u.uwep, game.u.uswapwep, game.u.uquiver].filter(Boolean),
+            true);
     }
     return ECMD_OK;
 }
 
 
-// src/invent.c:2963 dispinv_with_action() — one item prints as a pline
-// ("c - an uncursed +1 leather armor (being worn)."), more open the menu.
-async function dispinv_with_action(objs) {
-    if (objs.length === 1) {
+/* src/invent.c:62 inuse_headers[]. The in-use sort uses these categories
+   instead of object classes, and displays the highest-rated category first. */
+const inuse_headers = [
+    '', 'Miscellaneous', 'Worn Armor',
+    'Wielded/Readied Weapons', 'Accessories',
+];
+
+// src/invent.c:70 inuse_classify().
+function inuse_classify(obj) {
+    const wmask = (obj.owornmask || 0) & (W_ACCESSORY | W_WEAPONS | W_ARMOR);
+    const ratings = [
+        [1, !wmask && obj.otyp === ONAMES.LEASH && obj.leashmon],
+        [1, !wmask && obj.oclass === OCLASSES.TOOL_CLASS && obj.lamplit],
+        [2, wmask & W_ARMU],
+        [2, wmask & W_ARMF],
+        [2, wmask & W_ARMG],
+        [2, wmask & W_ARMH],
+        [2, wmask & W_ARMS],
+        [2, wmask & W_ARMC],
+        [2, wmask & W_ARM],
+        [3, wmask & W_QUIVER],
+        [3, wmask & W_SWAPWEP],
+        [3, wmask & W_WEP],
+        [4, wmask & W_TOOL],
+    ];
+    const urighty = (game.u.uhandedness ?? 0) === 0;
+    ratings.push(
+        [4, wmask & (urighty ? W_RINGL : W_RINGR)],
+        [4, wmask & (urighty ? W_RINGR : W_RINGL)],
+        [4, wmask & W_AMUL],
+    );
+    const found = ratings.findIndex(([, used]) => used);
+    return found < 0 ? { rating: 0, orderclass: -1 }
+                     : { rating: found + 1, orderclass: ratings[found][0] };
+}
+
+// src/invent.c:2159 is_worn(), 2167 is_inuse().
+function is_inuse(obj) {
+    const wornmask = W_ARMOR | W_ACCESSORY | W_SADDLE | W_WEAPONS;
+    return carried(obj)
+        && (!!((obj.owornmask || 0) & wornmask) || tool_being_used(obj));
+}
+
+/* src/invent.c:3060 display_pickinv(), SORTLOOT_INUSE arm. This is also the
+   path that inserts bare or gloved hands into a full in-use listing when the
+   hero has armor or another active item but no primary weapon. */
+async function display_inuse_inventory(objs, altLabel) {
+    const { MENU_ITEMFLAGS_NONE, PICK_ONE } = await import('./const.js');
+    const { NO_COLOR } = await import('./terminal.js');
+    const allowed = objs ? new Set(objs) : null;
+    const entries = (game.invent || [])
+        .filter(is_inuse)
+        .filter(obj => !allowed || allowed.has(obj))
+        .map((obj, index) => ({ obj, index, ...inuse_classify(obj) }));
+
+    if (!game.u.uwep && !allowed) {
+        entries.push({
+            obj: null,
+            index: -1,
+            rating: 12,
+            orderclass: 3,
+        });
+    }
+    entries.sort((a, b) => b.rating - a.rating || a.index - b.index);
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    add_menu_heading(win, 'Inventory in use');
+    let previousClass = 0;
+    for (const entry of entries) {
+        if (entry.orderclass !== previousClass) {
+            const heading = entry.orderclass === 4 && altLabel
+                ? altLabel : inuse_headers[entry.orderclass];
+            add_menu_heading(win, heading);
+            previousClass = entry.orderclass;
+        }
+
+        if (!entry.obj) {
+            const hands = makeplural(body_part(HAND));
+            tty_add_menu(win, null, '-'.charCodeAt(0), '-', 0,
+                         ATR_NONE, NO_COLOR,
+                         `${game.u.uarmg ? 'gloved' : 'bare'} ${hands} (no weapon)`,
+                         MENU_ITEMFLAGS_NONE);
+            continue;
+        }
+        if (!Blind())
+            observe_object(entry.obj);
+        const glyphinfo = temporary_object_glyph(entry.obj);
+        tty_add_menu(win, glyphinfo, entry.obj.invlet.charCodeAt(0),
+                     entry.obj.invlet, 0, ATR_NONE, NO_COLOR,
+                     doname(entry.obj), MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(win, null);
+    const picks = await tty_select_menu(win, PICK_ONE);
+    tty_destroy_nhwindow(win);
+
+    if (picks.length) {
+        const invlet = String.fromCharCode(picks[0]);
+        const obj = (game.invent || []).find(o => o.invlet === invlet);
+        if (obj) {
+            const { itemactions } = await import('./cmd.js');
+            await itemactions(obj);
+        }
+    }
+}
+
+// src/invent.c:2963 dispinv_with_action().
+async function dispinv_with_action(objs, useInuseOrdering = false,
+                                   altLabel = null) {
+    const len = objs?.length ?? 0;
+    const menumode = len !== 1 || !!game.iflags?.menu_requested;
+    if (!menumode) {
         const o = objs[0];
         await pline(`${o.invlet} - ${doname(o)}.`);
+    } else if (useInuseOrdering) {
+        await display_inuse_inventory(objs, altLabel);
     } else {
         note_unported_invent('dispinv_with_action:menu');
     }
@@ -2022,7 +2139,7 @@ export async function doprarm() {
         /* noarmor(TRUE) */
         await You('are not wearing any armor.');
     } else {
-        return await dispinv_with_action(lets);
+        return await dispinv_with_action(lets, true);
     }
     return ECMD_OK;
 }
@@ -2031,9 +2148,14 @@ export async function doprarm() {
 export async function doprring() {
     if (!worn(W_RINGL) && !worn(W_RINGR))
         await You('are not wearing any rings.');
-    else
-        return await dispinv_with_action(
-            [worn(W_RINGL), worn(W_RINGR)].filter(Boolean));
+    else {
+        const rings = [worn(W_RINGR), worn(W_RINGL)].filter(Boolean);
+        const useInuseOrdering = rings.length > 1
+            || !!game.iflags?.menu_requested
+            || rings.some(obj => obj.oclass !== OCLASSES.RING_CLASS);
+        return await dispinv_with_action(rings, useInuseOrdering,
+                                         rings.length === 1 ? 'Ring' : 'Rings');
+    }
     return ECMD_OK;
 }
 
@@ -2042,7 +2164,7 @@ export async function dopramulet() {
     if (!worn(W_AMUL))
         await You('are not wearing an amulet.');
     else
-        return await dispinv_with_action([worn(W_AMUL)]);
+        return await dispinv_with_action([worn(W_AMUL)], true, 'Amulet');
     return ECMD_OK;
 }
 
@@ -2062,19 +2184,16 @@ export async function doprtool() {
     if (!tools.length)
         await You('are not using any tools.');
     else
-        return await dispinv_with_action(tools);
+        return await dispinv_with_action(tools, true);
     return ECMD_OK;
 }
 
 // src/invent.c:4740 doprinuse() — the '*' command: everything in use.
 export async function doprinuse() {
-    const ct = (game.invent || []).filter(o => o.owornmask
-                                               || o === game.u.uwep
-                                               || o.lamplit).length;
-    if (!ct)
+    if (!(game.invent || []).some(is_inuse))
         await You('are not wearing or wielding anything.');
     else
-        note_unported_invent('doprinuse:dispinv_with_action');
+        return await dispinv_with_action(null, true);
     return ECMD_OK;
 }
 

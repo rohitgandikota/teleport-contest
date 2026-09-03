@@ -925,9 +925,9 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         if (newdungeon) {
             const { tutorial } = await import('./nhlua.js');
             if (newlevel.dnum === game.tutorial_dnum) {
-                tutorial(true); /* entering tutorial */
+                await tutorial(true); /* entering tutorial */
             } else if (game.u.uz.dnum === game.tutorial_dnum) {
-                tutorial(false); /* leaving tutorial */
+                await tutorial(false); /* leaving tutorial */
                 up = false; /* re-enter level 1 as if starting new game */
             }
         }

@@ -3208,7 +3208,7 @@ async function show_inventory(allowed_choices = null, title = null,
     const invlet = String.fromCharCode(picks[0]);
     const obj = (game.invent || []).find(o => o.invlet === invlet);
     if (obj)
-        await show_item_actions(obj);
+        await itemactions(obj);
 }
 
 // src/invent.c dotypeinv(), default MENU_FULL path. The category query only
@@ -3411,7 +3411,7 @@ export async function get_count(allowchars, inkey, maxcount, count, gc_flags) {
 
 /* src/iactions.c:282 itemactions() — the menu of things the hero could do
    with one inventory item, in C's key order. */
-async function show_item_actions(obj) {
+export async function itemactions(obj) {
     const win = tty_create_nhwindow(NHW_MENU);
     tty_start_menu(win, MENU_BEHAVE_STANDARD);
     const u = game.u;

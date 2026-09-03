@@ -1,0 +1,52 @@
+{
+  "name": "tutorial-state-roundtrip",
+  "description": "A debug Wizard enters and leaves the Tutorial, then checks restored equipment and the independently copied hero-property snapshot.",
+  "coverage": [
+    "mode.debug",
+    "level.themed",
+    "ui.menus",
+    "object.armor"
+  ],
+  "branches": [
+    "tutorial.gamestate.restore-message-order",
+    "tutorial.gamestate.restore-worn-globals",
+    "tutorial.gamestate.independent-u-backup",
+    "inventory.inuse.sorted-sections"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tutorial.gamestate.restore-message-order",
+      "segment": 0,
+      "screenIncludes": ["Resetting time to move #1."]
+    },
+    {
+      "branch": "tutorial.gamestate.restore-worn-globals",
+      "segment": 0,
+      "screenIncludes": ["cloak of magic resistance"]
+    },
+    {
+      "branch": "tutorial.gamestate.independent-u-backup",
+      "segment": 0,
+      "screenIncludes": ["You are warded."],
+      "screenExcludes": ["You are magic-protected"]
+    },
+    {
+      "branch": "inventory.inuse.sorted-sections",
+      "segment": 0,
+      "screenIncludes": [
+        "Inventory in use",
+        "Wielded/Readied Weapons",
+        "Worn Armor"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99441,
+      "datetime": "20260525144414",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " y   \u0016?\ni\n* \u0018  "
+    }
+  ]
+}

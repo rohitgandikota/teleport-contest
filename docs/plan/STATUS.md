@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-09-03: tutorial round-trip and in-use inventory menu verified
+
+Two fuzz games exposed the same tutorial restore fault. Pinned C
+`src/nhlua.c:nhl_gamestate` prints the reset-time message while the tutorial
+hero is still active, restores sequestered inventory and its global worn
+pointers, then copies an independent `struct u` backup. JS did those operations
+out of order, copied the worn pointers as if they lived inside `struct u`, and
+kept a shallow backup whose nested properties were mutated during restore. The
+port now awaits the transition, preserves C's message order, excludes JS-only
+worn globals from the hero snapshot, and independently copies value fields
+while retaining the three monster pointers.
+
+The new C fixture also exposed the previously missing `*` display. The port now
+implements `is_inuse`, C's full `inuse_classify` rating table, its Accessories,
+Weapons, Armor, and Miscellaneous headings, bare or gloved hands insertion,
+selection, and dispatch into the context-sensitive item action menu. The same
+path now serves menu-prefixed weapon, armor, ring, amulet, and tool displays.
+
+The new `tutorial-state-roundtrip` C recording is byte-identical at **16/16
+screens** and **11,979/11,979 RNG**. `fuzz-s1-02` improves from **121/124 to
+124/124 screens**, and `fuzz-s2-17` improves from **299/301 to 301/301**.
+Across all random play, fully passing games improve from **87/102 to 89/102**
+and screens from **13,765/14,262 to 13,770/14,262**. RNG remains
+**468,764/491,759**, with **98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **353/360**, **82,731/83,154 screens**,
+and **4,382,633/4,397,245 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **838/838 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+`fuzz-s4-10`, whose final three screen differences begin inside a pager after
+the `/` command, then continue the remaining isolated screen-only boundaries.
+
 ## 2026-09-03: chronicle text-window dismissal verified
 
 `fuzz-s4-18` first differed while `#chron` was open and the next command's

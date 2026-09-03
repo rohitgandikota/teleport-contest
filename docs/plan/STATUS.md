@@ -1,5 +1,34 @@
 # STATUS — live handoff board
 
+## 2026-09-03: polymorphed hug common tail verified
+
+Runtime checkpoint `7e6587e` is committed and pushed. A C `switch` break in
+`hmonas` had been translated as a JavaScript loop break in the `AT_HUGS` arm.
+After an owlbear grabbed its target, JS skipped the defender's `passive()`
+response and the shared `mhitm_knockback` gate. The first mismatch was exactly
+C's `rn2(3)` in `passive` at call 2,858. The hug arm now leaves only its own
+logical block for shade and failed-grab cases, then reaches the common tail.
+The mutable alternate attack used by throttling hugs is also legal JS now, and
+the post-passive loop includes C's rehumanized and paralyzed stop checks.
+
+`wand-self-opening-sticky-holder` improves from **107/110 screens** and
+**2,858/2,886 RNG** to **110/110 screens** and **2,886/2,886 RNG**. Its five
+declared branches now all have concrete C-output assertions. Six adjacent
+sticky, opening, polymorph, and passive fixtures remain byte-identical. Full
+supplemental improves to **339/346**, **82,194/82,617 screens**, and
+**4,300,024/4,314,636 RNG**, with seven failures and zero runtime errors.
+Public remains **44/44**, **11,405/11,405 screens**, and **792,838/792,838
+RNG**. The hang gate is clean, fresh-seed smoke is 80/80 across 13 roles, the
+source audit has zero findings, and all 102 fuzz sessions are unchanged:
+**76/102 fully passing**, **94/102 RNG-perfect**, **13,046/14,262 screens**,
+and **459,215/491,759 RNG**.
+
+The clean dashboard is current at `7e6587e`. No new judge run has been
+published, so held-out remains the earlier **7,959/11,265**, **15/44**, rank 3
+overall and rank 1/9 in the agentic category. Next: diagnose the common
+`distfleeck` first divergence across five fuzz sessions against `monmove.c`.
+Do not alter flee RNG until the earliest state predicate that differs is known.
+
 ## 2026-09-03: source binding and rare action-path checkpoint verified
 
 This checkpoint is committed and pushed as `6a0b6c7`. No newer judge run has

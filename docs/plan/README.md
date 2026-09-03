@@ -32,9 +32,13 @@ runtime errors. The separate fuzz corpus remains **76/102 fully passing** and
 **94/102 RNG-perfect**, with no changed session. Coverage is **99/106
 categories**, seven partial, and **807/807 declared branch cases**. No newer
 held-out result has been published. Its clean-commit dashboard is current.
-Next, diagnose the sticky-holder premature rehumanization, with the common
-`distfleeck` first divergence as the following candidate. The saved goal is
-active. See STATUS.md for exact evidence and caveats.
+Checkpoint `7e6587e` then fixes the C switch-to-JavaScript loop control error in
+polymorphed hug attacks. Supplemental rises to **339/346**,
+**82,194/82,617 screens**, and **4,300,024/4,314,636 RNG**. Public, hang,
+fresh-seed, source-audit, and fuzz gates remain unchanged and green. Its clean
+dashboard is current. Next, diagnose the common `distfleeck` first divergence
+across five fuzz sessions. The saved goal is active. See STATUS.md for exact
+evidence and caveats.
 
 ## Historical milestone checklist, July 2026
 

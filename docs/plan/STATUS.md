@@ -1,5 +1,38 @@
 # STATUS — live handoff board
 
+## 2026-09-03: first-visit chronicle ordering verified
+
+The final `fuzz-s4-04` mismatch was a missing chronicle row after entering the
+Tutorial. Pinned C `goto_level` calls `describe_level`, records `entered %s`
+with the correct major or debug livelog flag, and only then awards Tourist
+sightseeing experience. JS handled the experience but omitted the preceding
+first-visit event. The port now follows that ordering for ordinary levels,
+Fort Ludios, every Quest level, and the Endgame, including C's branch-name
+capitalization rule.
+
+New normal-mode C recording `tutorial-entry-chronicle` is byte-identical at
+**7/7 screens** and **3,338/3,338 RNG**. Its assertion pins both the initial
+`entered the dungeon` event and the later `entered level 1, the Tutorial`
+event. `fuzz-s4-04` is now completely identical at **301/301 screens** and
+**3,431/3,431 RNG**. Across all random play, fully passing games improve from
+**79/102 to 80/102** and screens from **13,713/14,262 to 13,714/14,262**.
+RNG remains **468,764/491,759**, with **98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **346/353**, **82,632/83,055 screens**,
+and **4,348,860/4,363,472 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **826/826 explicit branches**.
+
+The last published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries. It predates this checkpoint, so the hidden
+effect is unknown. Next: rank the 22 remaining fuzz failures by their earliest
+C-backed state or output difference. Prefer an early screen-only source
+omission with a concrete oracle, then revisit the two shared `mcalcmove` and
+two shared `distfleeck` RNG boundaries only after ruling out earlier state
+drift.
+
 ## 2026-09-03: wounded-leg run interruption verified
 
 After the themed-room fix, `fuzz-s4-04` first differed when a wounded leg

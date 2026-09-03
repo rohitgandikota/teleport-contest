@@ -1,0 +1,32 @@
+{
+  "name": "tutorial-entry-chronicle",
+  "description": "A normal Tourist enters the Tutorial and immediately opens the chronicle to show its first-visit level event.",
+  "coverage": [
+    "ending.conduct-achievement",
+    "level.themed",
+    "mode.normal",
+    "ui.menus"
+  ],
+  "branches": [
+    "chronicle.level-entry.tutorial"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "chronicle.level-entry.tutorial",
+      "segment": 0,
+      "screenIncludes": [
+        "entered the dungeon",
+        "entered level 1, the Tutorial"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 659352,
+      "datetime": "20260525144414",
+      "nethackrc": "OPTIONS=name:Tetra,role:Tourist,race:human,gender:female,align:neutral,playmode:normal\nOPTIONS=!autopickup,!legacy,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " y   v"
+    }
+  ]
+}

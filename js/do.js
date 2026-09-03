@@ -1458,14 +1458,43 @@ export async function goto_level(newlevel, at_stairs, falling, portal) {
         }
     }
 
-    /* src/do.c:1942 — first visit to a level: the livelog entry itself is
-       invisible, but a TOURIST gains sightseeing experience for it, and
-       that can level the hero up (newhp/newpw draws). */
-    if (!familiar_level && game.urole?.name?.m === 'Tourist') {
-        const { more_experienced, newexplevel } = await import('./exper.js');
-        const { level_difficulty } = await import('./dungeon.js');
-        more_experienced(level_difficulty(), 0);
-        await newexplevel();
+    /* src/do.c:1942 — log every first visit before Tourist sightseeing
+       experience, since gaining a level can append another event. */
+    if (!familiar_level) {
+        const { LL_ACHIEVE, LL_DEBUG, In_quest, In_endgame,
+                Is_astralevel, Is_knox_level } = await import('./const.js');
+        const { endgamelevelname } = await import('./dungeon.js');
+        const uz = game.u.uz;
+        let dloc, addbranch = true;
+
+        /* src/botl.c describe_level(dloc, 2) */
+        if (Is_knox_level(uz)) {
+            dloc = game.dungeons[uz.dnum].dname;
+            addbranch = false;
+        } else if (In_quest(uz)) {
+            dloc = `Home ${uz.dlevel}`;
+        } else if (In_endgame(uz)) {
+            dloc = endgamelevelname(depth_do(uz));
+            addbranch = false;
+        } else {
+            dloc = `level ${depth_do(uz)}`;
+        }
+        if (addbranch) {
+            dloc += `, ${game.dungeons[uz.dnum].dname}`;
+            dloc = dloc.replace('The ', 'the ');
+        }
+
+        const major = ((In_endgame(uz) && !Is_astralevel(uz))
+                       || In_quest(uz));
+        const { livelog_printf } = await import('./pline.js');
+        livelog_printf(major ? LL_ACHIEVE : LL_DEBUG, `entered ${dloc}`);
+
+        if (game.urole?.name?.m === 'Tourist') {
+            const { more_experienced, newexplevel } = await import('./exper.js');
+            const { level_difficulty } = await import('./dungeon.js');
+            more_experienced(level_difficulty(), 0);
+            await newexplevel();
+        }
     }
 
     /* src/do.c:1967 — reset u.uz0 */

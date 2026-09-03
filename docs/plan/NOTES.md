@@ -13,6 +13,22 @@ Newest first within each section.
 
 ## Scoring: what the runner actually does
 
+**September 3 regression audit: run the whole supplemental corpus.** A clean
+44/44 public score and a 94/102 RNG-only fuzz census hid four supplemental
+runtime errors after the large source ports. The live judge also exposed
+`altar_wrath` calling an undefined `Luck`. The lexical undefined-reference
+checker missed that name because a different function in pray.js declares a
+local `Luck`. It is not a scope checker. Actual crash reproducers recovered
+1,996 existing supplemental screens; the new altar oracle adds another 399.
+The dashboard now retains the failing-session list and judge error text.
+
+**Keep the initialized pet record authoritative.** Pet AI and save/revival
+paths store state on `mon.edog`. `MM_EDOG` can also allocate an empty
+`mon.mextra.edog`. The C `EDOG` accessor must read the initialized top-level
+record first, or newer ports such as `eat_brains` either throw or add
+nutrition to an uninitialized, disconnected record. The brain-drain state
+gate checks accessor identity as well as the two pets' C-derived nutrition.
+
 Read from `frozen/ps_test_runner.mjs`, which is the same runner the judge uses.
 
 **Cursor position is part of the screen score, not a tiebreaker.**

@@ -4,13 +4,11 @@
   "coverage": [
     "mode.debug",
     "level.ordinary",
-    "objects.apply",
-    "objects.tools",
+    "object.tools-containers",
+    "object.weapons",
     "ui.getpos",
     "ui.getlin",
-    "ui.getdir",
-    "combat.whip",
-    "combat.polearm"
+    "combat.ranged"
   ],
   "segments": [
     {

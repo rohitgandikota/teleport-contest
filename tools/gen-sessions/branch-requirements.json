@@ -1,6 +1,14 @@
 {
   "version": 1,
   "requirements": [
+    { "group": "Altar wrath", "id": "religion.altar.wrath.luck-loss-one", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Desecrate another alignment's altar and lose one point of base luck" },
+    { "group": "Altar wrath", "id": "religion.altar.wrath.luck-loss-two", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Take the one-in-twenty double luck penalty" },
+    { "group": "Altar wrath", "id": "religion.altar.wrath.luck-unchanged", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Roll zero on the luck-dependent check and leave base luck unchanged" },
+    { "group": "Altar wrath", "id": "religion.altar.wrath.positive-luckstone", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Include a blessed luckstone's positive bonus in the wrath probability" },
+    { "group": "Altar wrath", "id": "religion.altar.wrath.negative-luckstone", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Include a cursed luckstone's negative bonus in the wrath probability" },
+    { "group": "Altar wrath", "id": "religion.altar.wrath.coaligned", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Desecrate a same-aligned altar and lose wisdom plus alignment record" },
+    { "group": "Altar wrath", "id": "religion.altar.wrath.deaf", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Receive the deity's warning despite deafness" },
+
     { "group": "Shop entry and robbery", "id": "shop.entry.tended-welcome", "cFile": "src/shk.c", "cFunction": "u_entered_shop", "description": "Enter a tended shop and receive its ordinary welcome" },
     { "group": "Shop entry and robbery", "id": "shop.entry.untended", "cFile": "src/shk.c", "cFunction": "u_entered_shop", "description": "Enter a shop whose shopkeeper is absent or unavailable" },
     { "group": "Shop entry and robbery", "id": "shop.entry.special-dialogue", "cFile": "src/shk.c", "cFunction": "u_entered_shop", "description": "Reach the special shop entry dialogue variants" },

@@ -1,0 +1,95 @@
+{
+  "name": "altar-wrath-luck",
+  "description": "C altar_wrath through sitting: cross-aligned luck loss, blessed and cursed luckstone modifiers, the low-luck cutoff, same-aligned wrath, and deaf messages.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "terrain.furniture",
+    "object.gems-stones",
+    "religion.altars-crowning",
+    "religion.luck-calendar",
+    "survival.timed-status",
+    "ui.getlin"
+  ],
+  "branches": [
+    "religion.altar.wrath.luck-loss-one",
+    "religion.altar.wrath.luck-loss-two",
+    "religion.altar.wrath.luck-unchanged",
+    "religion.altar.wrath.positive-luckstone",
+    "religion.altar.wrath.negative-luckstone",
+    "religion.altar.wrath.coaligned",
+    "religion.altar.wrath.deaf"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "religion.altar.wrath.luck-loss-one",
+      "segment": 0,
+      "screenIncludes": ["Thou shalt pay, infidel!"],
+      "rngIncludes": ["rn2(20)=9 @ altar_wrath(pray.c:2671)"]
+    },
+    {
+      "branch": "religion.altar.wrath.luck-loss-two",
+      "segment": 0,
+      "rngIncludes": ["rn2(20)=0 @ altar_wrath(pray.c:2671)"]
+    },
+    {
+      "branch": "religion.altar.wrath.luck-unchanged",
+      "segment": 0,
+      "rngIncludes": ["rn2(5)=0 @ altar_wrath(pray.c:2670)"]
+    },
+    {
+      "branch": "religion.altar.wrath.positive-luckstone",
+      "segment": 1,
+      "rngIncludes": ["rn2(10)=7 @ altar_wrath(pray.c:2670)"]
+    },
+    {
+      "branch": "religion.altar.wrath.negative-luckstone",
+      "segment": 2,
+      "rngIncludes": ["rn2(4)=1 @ altar_wrath(pray.c:2670)"]
+    },
+    {
+      "branch": "religion.altar.wrath.coaligned",
+      "segment": 3,
+      "screenIncludes": ["How darest thou desecrate my altar!", "You feel foolish!"],
+      "rngIncludes": ["altar_wrath(pray.c:2656)"]
+    },
+    {
+      "branch": "religion.altar.wrath.deaf",
+      "segment": 4,
+      "screenIncludes": ["Despite your deafness, you seem to hear Ptah say:", "Thou shalt pay, infidel!"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99401,
+      "datetime": "20260601080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017lawful altar\r#sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   "
+    },
+    {
+      "seed": 99402,
+      "datetime": "20260601080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed luckstone\r\u0017lawful altar\r#sit\r   #sit\r   #sit\r   "
+    },
+    {
+      "seed": 99403,
+      "datetime": "20260601080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed luckstone\r\u0017lawful altar\r#sit\r   #sit\r   #sit\r   #sit\r   #sit\r   #sit\r   "
+    },
+    {
+      "seed": 99404,
+      "datetime": "20260601080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017neutral altar\r#sit\r   #sit\r   #sit\r   "
+    },
+    {
+      "seed": 99405,
+      "datetime": "20260601080000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #wizintrinsic\rj\r \u0017lawful altar\r#sit\r   "
+    }
+  ]
+}

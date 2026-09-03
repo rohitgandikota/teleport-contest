@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-09-01T05:44:27.234Z",
+  "timestamp": "2026-09-03T12:06:14.352Z",
   "contestPhase": "open",
   "teamCount": 19,
   "team": {
     "name": "rohitgandikota",
     "fork": "rohitgandikota/teleport-contest",
     "category": "agentic",
-    "lastScored": "2026-09-01T05:17:01.923Z",
+    "lastScored": "2026-09-03T11:29:19.411Z",
     "speed": {
-      "startup_ms": 272.8,
-      "per_move_ms": 1.0303,
-      "r2": 0.681,
-      "label": "273+1.03/turn",
+      "startup_ms": 531.2,
+      "per_move_ms": 1.5695,
+      "r2": 0.668,
+      "label": "531+1.57/turn",
       "sessions": 88
     },
     "playability": {
@@ -21,20 +21,20 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 1.318,
+      "ms_per_move": 2.13,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
       "sessions_killed": 0,
-      "sessions_failed": 9,
-      "session_failure_rate": 0.1023,
+      "sessions_failed": 13,
+      "session_failure_rate": 0.1477,
       "max_session_failure_rate": 0.25,
-      "timing_error": "Error: nh_terminate | at really_done (file:///home/runner/work/teleport-judge/teleport-judge/play/rohitgandikota/js/end.js:619:17)",
+      "timing_error": "ReferenceError: Luck is not defined | at altar_wrath (file:///home/runner/work/teleport-judge/teleport-judge/play/rohitgandikota/js/pray.js:1691:9)",
       "aborted_early": false,
-      "total_moves": 18402,
-      "total_cumulative_ms": 24261,
-      "total_startup_moves": 417,
-      "total_startup_ms": 2910
+      "total_moves": 16901,
+      "total_cumulative_ms": 36004,
+      "total_startup_moves": 383,
+      "total_startup_ms": 5198
     },
     "public": {
       "points": 11405,
@@ -44,18 +44,18 @@
       "rngPct": 100,
       "rngStepsPct": 100,
       "screenPct": 100,
-      "animMatched": 9,
+      "animMatched": 90,
       "animTotal": 1483
     },
     "heldOut": {
-      "points": 6032,
+      "points": 7959,
       "maxPoints": 11265,
-      "passing": 9,
+      "passing": 15,
       "total": 44,
-      "rngPct": 43.372115019684315,
-      "rngStepsPct": 82.60560880369187,
-      "screenPct": 53.54638260097647,
-      "animMatched": 0,
+      "rngPct": 67.94270669123884,
+      "rngStepsPct": 88.84451544195953,
+      "screenPct": 70.65246338215712,
+      "animMatched": 89,
       "animTotal": 2959
     },
     "history": [
@@ -1018,6 +1018,60 @@
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
+      },
+      {
+        "ts": "2026-09-01T11:54:22.930Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T16:49:46.720Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T21:17:39.929Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T04:47:23.547Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T11:29:49.928Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T16:52:02.536Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T21:15:43.092Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-03T04:34:25.572Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-03T11:29:19.411Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
       }
     ],
     "sessions": [
@@ -1045,7 +1099,7 @@
           "total": 595
         },
         "animFrames": {
-          "matched": 3,
+          "matched": 45,
           "total": 128
         }
       },
@@ -1381,7 +1435,7 @@
           "total": 1953
         },
         "animFrames": {
-          "matched": 0,
+          "matched": 23,
           "total": 40
         }
       },
@@ -1689,7 +1743,7 @@
           "total": 127
         },
         "animFrames": {
-          "matched": 0,
+          "matched": 7,
           "total": 8
         }
       },
@@ -2165,7 +2219,7 @@
           "total": 1814
         },
         "animFrames": {
-          "matched": 2,
+          "matched": 11,
           "total": 37
         }
       },
@@ -2265,12 +2319,12 @@
     "name": "NoahBPeterson",
     "fork": "NoahBPeterson/teleport-contest",
     "category": "transpiled",
-    "lastScored": "2026-09-01T05:15:22.569Z",
+    "lastScored": "2026-09-03T11:26:31.207Z",
     "speed": {
-      "startup_ms": 1287.6,
-      "per_move_ms": 2.2517,
-      "r2": 0.58,
-      "label": "1288+2.25/turn",
+      "startup_ms": 2067.4,
+      "per_move_ms": 3.6154,
+      "r2": 0.584,
+      "label": "2067+3.62/turn",
       "sessions": 88
     },
     "playability": {
@@ -2280,7 +2334,7 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 5.133,
+      "ms_per_move": 8.123,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
@@ -2291,9 +2345,9 @@
       "timing_error": null,
       "aborted_early": false,
       "total_moves": 19926,
-      "total_cumulative_ms": 102281,
+      "total_cumulative_ms": 161851,
       "total_startup_moves": 0,
-      "total_startup_ms": 99999
+      "total_startup_ms": 160855
     },
     "public": {
       "points": 11405,
@@ -2974,6 +3028,60 @@
       },
       {
         "ts": "2026-09-01T05:15:22.569Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T11:51:46.200Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T16:48:05.480Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-01T21:15:00.993Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T04:44:42.800Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T11:27:37.409Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T16:48:59.797Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-02T21:13:32.225Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-03T04:32:18.699Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-03T11:26:31.207Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -4215,7 +4323,5 @@
     ],
     "bitcomplexity": null
   },
-  "retrievedAt": "2026-09-01T06:25:56.688Z",
-  "pageCheckedAt": "2026-09-01T14:44:46Z",
-  "pageCheck": "The live page last scored at 9/1/2026, 8:30:38 AM and still reports rohitgandikota at 11,405 public plus 6,032 held-out screens, 71.9% PRNG, 76.9% screen match, 9 animation frames, 44 plus 9 passing sessions, playable yes, and agentic rank 1."
+  "retrievedAt": "2026-09-03T15:49:08.341Z"
 }

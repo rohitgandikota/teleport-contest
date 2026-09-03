@@ -5,9 +5,8 @@
     "mode.debug",
     "level.ordinary",
     "combat.unarmed-kick",
-    "objects.kick",
-    "objects.containers",
-    "combat.passive",
+    "object.tools-containers",
+    "combat.melee",
     "ui.getlin"
   ],
   "segments": [

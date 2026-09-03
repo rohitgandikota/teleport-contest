@@ -321,6 +321,9 @@ export async function newgame() {
            so undefined turns the whole luck system into NaN. */
         g.u.uluck = 0;
         g.u.moreluck = 0;
+        // include/you.h:384-390, zero-initialized room and shop strings.
+        g.u.urooms = g.u.urooms0 = g.u.uentered = '';
+        g.u.ushops = g.u.ushops0 = g.u.ushops_entered = g.u.ushops_left = '';
         // src/mondata.c set_uasmon() — gy.youmonst.data = &mons[u.umonnum].
         // The hero-as-monster struct: combat code passes it to the same
         // functions that take a real monster (dmgval, mhitm_ad_phys,

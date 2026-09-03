@@ -137,8 +137,11 @@ async function runOurPort(segments, maxSeconds = 0) {
        stuck inside it. */
     const maxMs = maxSeconds > 0 ? maxSeconds * 1000 : 0;
     let timedOut = false;
+    let deadlineTimer;
     const deadline = maxMs
-        ? new Promise((res) => setTimeout(() => { timedOut = true; res('TIMEOUT'); }, maxMs))
+        ? new Promise((res) => {
+            deadlineTimer = setTimeout(() => { timedOut = true; res('TIMEOUT'); }, maxMs);
+        })
         : null;
 
     const replay = (async () => {
@@ -186,6 +189,8 @@ async function runOurPort(segments, maxSeconds = 0) {
         }
     } catch (e) {
         error = e;
+    } finally {
+        clearTimeout(deadlineTimer);
     }
     return { rng, screens, cursors, error };
 }

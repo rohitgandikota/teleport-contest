@@ -10,7 +10,24 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ---
 
-## Status board
+## Current focus, 2026-09-03
+
+Continue from the clean `85203f6` checkpoint, preserved on
+`codex/last-working-heldout-7959-2026-09-03`. The published score is
+11,405 public plus 7,959 held-out screens, with 44 plus 15 passing sessions.
+The live measurements and failures are in [contest-dashboard.md](contest-dashboard.md).
+
+Work is in M12 differential hardening across the already ported subsystems.
+Prioritize a reproduced runtime error or first C divergence, add a C oracle
+or source-state check, then run public, supplemental, hang, and fresh-seed
+checks before committing. The current batch repairs altar luck, reflection,
+pet nutrition state, initial shop strings, and object-polymorph predicates.
+See STATUS.md for measured baselines and the current validation state.
+The combined crash-fix checkpoint passes 331/343 supplemental sessions,
+81,320/81,760 screens, public 44/44, the hang gate, and 80 fresh-seed smoke
+games. The separate fuzz corpus is 76/102 fully passing and 94/102 RNG-perfect.
+
+## Historical milestone checklist, July 2026
 
 Update this table at the end of every working session, before compacting or
 handing off. `Local` is the public-session screen score from `bash frozen/score.sh`.
@@ -36,7 +53,7 @@ The milestone numbering is nominal now. Work is driven by the first-mismatch
 aggregate (see STATUS.md), not by walking M2 to M12 in order, because the
 sessions diverge wherever they diverge.
 
-**Current, 2026-07-26:**
+**Historical snapshot, 2026-07-26:**
 
 | | |
 |---|---|
@@ -58,7 +75,7 @@ blank.
 Reproduce with `node tools/scoreboard.mjs`; history in
 [score-history.tsv](score-history.tsv).
 
-**Current milestone:** M2, then M9a.
+**Milestone at that historical snapshot:** M2, then M9a.
 
 ---
 

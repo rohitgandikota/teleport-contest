@@ -11,6 +11,7 @@ import { game } from '../js/gstate.js';
 import { nh_timeout } from '../js/timeout.js';
 import { PMNAMES } from '../js/monst_data.js';
 import { ONAMES } from '../js/objects_data.js';
+import { EDOG, has_edog } from '../js/const.js';
 
 const recipe = JSON.parse(await readFile(new URL(
     'gen-sessions/recipes/monster-special-status-melee.json',
@@ -134,6 +135,11 @@ assert.deepEqual(liveMonsters(PMNAMES.PM_MIND_FLAYER).map(mon =>
     mon.edog?.hungrytime | 0).sort((a, b) => a - b),
 [1001, 1102],
 'brain eating applies the C pet nutrition changes');
+for (const pet of liveMonsters(PMNAMES.PM_MIND_FLAYER)) {
+    assert.equal(EDOG(pet), pet.edog,
+                 'C macro and pet AI read the same initialized nutrition state');
+    assert.equal(has_edog(pet), true, 'tamed mind flayer has pet state');
+}
 
 await runSegment({ ...recipe.segments[4] });
 assert.ok(cLines(4).some(line =>

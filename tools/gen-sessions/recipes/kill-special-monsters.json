@@ -4,12 +4,10 @@
   "coverage": [
     "mode.debug",
     "level.ordinary",
-    "combat.wand-striking",
-    "monsters.death-drops",
-    "alignment.murder",
-    "alignment.pet-death",
-    "monsters.golem-corpses",
-    "monsters.lich"
+    "object.wands",
+    "monster.death-corpse-revival",
+    "monster.pets",
+    "ending.conduct-achievement"
   ],
   "segments": [
     {

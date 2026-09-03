@@ -292,6 +292,8 @@ function render(row, leaderboard) {
     lines.push(`| Mechanics categories | ${row.coverage.mechanics.covered}/${row.coverage.mechanics.total} | ${row.coverage.mechanics.partial} | ${row.coverage.mechanics.gaps} |`);
     lines.push(`| Explicit C branches | ${row.coverage.branches.covered}/${row.coverage.branches.total} | ${row.coverage.branches.partial} | ${row.coverage.branches.gaps} |`);
     lines.push('');
+    lines.push('Coverage counts describe declared scenarios, not proof that every C branch is ported or passing.');
+    lines.push('');
     lines.push(`- Fresh-seed smoke: ${row.generalization.noUnportedPaths ? 'PASS' : 'FAIL'}, ${row.generalization.games} games across ${row.generalization.roles} role configs${row.generalization.noUnportedPaths ? ', no reached unported path' : ''}.`);
     lines.push('');
     lines.push('## Output details');
@@ -301,6 +303,21 @@ function render(row, leaderboard) {
     lines.push(`| Cells only | ${publicLocal.cellsMatched}/${publicLocal.cellsTotal} | ${supplemental.cellsMatched}/${supplemental.cellsTotal} |`);
     lines.push(`| Cursor positions | ${publicLocal.cursorsMatched}/${publicLocal.cursorsTotal} | ${supplemental.cursorsMatched}/${supplemental.cursorsTotal} |`);
     lines.push(`| Startup and per-turn estimate | ${row.publicSpeed} | ${row.supplementalSpeed} |`);
+    lines.push('');
+    lines.push('## Supplemental failures');
+    lines.push('');
+    lines.push(`${row.supplementalFailures.length} failing sessions, ${row.supplementalFailures.filter(result => result.error).length} with runtime errors.`);
+    if (row.supplementalFailures.length) {
+        lines.push('');
+        lines.push('| Session | Identical screens | RNG calls | Failure |');
+        lines.push('|---|---:|---:|---|');
+        for (const result of row.supplementalFailures) {
+            const screens = result.metrics.screens;
+            const rng = result.metrics.rngCalls;
+            const failure = (result.error || 'Output mismatch').replaceAll('|', '\\|').replaceAll('\n', ' ');
+            lines.push(`| \`${result.session}\` | ${screens.matched}/${screens.total} | ${rng.matched}/${rng.total} | ${failure} |`);
+        }
+    }
     lines.push('');
     lines.push('## Supplemental capture caveats');
     lines.push('');
@@ -312,6 +329,9 @@ function render(row, leaderboard) {
     lines.push(`- Playable: ${playability.playable}. Browser: ${playability.browser_ok}.`);
     lines.push(`- Speed: ${playability.ms_per_move} ms per move, limit ${playability.threshold_ms_per_move} ms.`);
     lines.push(`- Sessions skipped: ${playability.sessions_skipped}. Sessions killed: ${playability.sessions_killed}.`);
+    lines.push(`- Sessions failed: ${playability.sessions_failed ?? 'unavailable'}. Failure rate: ${playability.session_failure_rate == null ? 'unavailable' : percent(playability.session_failure_rate, 1)}.`);
+    if (playability.timing_error)
+        lines.push(`- Reported runtime error: \`${playability.timing_error.replaceAll('`', "'").replaceAll('\n', ' ')}\`.`);
     lines.push(`- Early abort: ${playability.aborted_early}. Total scored moves: ${playability.total_moves}.`);
     lines.push(`- Local hang gate: ${row.hangGate.passed ? 'PASS' : 'FAIL'}. ${row.hangGate.summary}`);
     lines.push('');
@@ -332,7 +352,7 @@ function render(row, leaderboard) {
 
 async function main() {
     const refreshedAt = new Date().toISOString();
-    const commit = execFileSync('git', ['rev-parse', '--short', 'HEAD'], {
+    const commit = execFileSync('git', ['describe', '--always', '--dirty'], {
         cwd: ROOT,
         encoding: 'utf8',
     }).trim();
@@ -348,6 +368,7 @@ async function main() {
         leaderboardScoredAt: leaderboard.team.lastScored,
         publicLocal,
         supplemental,
+        supplementalFailures: supplementalBundle.results.filter(result => !result.passed),
         publicLive: leaderboard.team.public,
         held: leaderboard.team.heldOut,
         heldRank: leaderboard.heldRank,

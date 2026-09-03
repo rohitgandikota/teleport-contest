@@ -1,5 +1,82 @@
 # STATUS — live handoff board
 
+## 2026-09-03: resumed from the 7,959 held-out checkpoint
+
+The starting tree was clean at `85203f6` on `main`. It is preserved on
+`codex/last-working-heldout-7959-2026-09-03`. Do not revert to the earlier
+sink experiment or replace the newer subsystem ports.
+
+Objective remains full C behavior, measured by fresh C recordings and
+first divergences, not by the number of removed gap notes. The saved app
+goal is paused; the user was asked to resume it. Work in this turn continues.
+
+Live leaderboard snapshot `2026-09-03T12:06:14.352Z`, fork scored
+`2026-09-03T11:29:19.411Z`: public **11,405/11,405**, **44/44**;
+held-out **7,959/11,265**, **15/44**, RNG **67.9427%**, animation
+**89/2,959**. Agentic rank **1/9**, overall held-out **3/19**.
+The judge reported `ReferenceError: Luck is not defined` in `altar_wrath`.
+These are published results, not a claim that the new fixes have been judged.
+
+Measured starting baseline: public **44/44**, RNG **792,838/792,838**.
+Supplemental **325/342**, screens **78,925/81,361**, RNG
+**4,172,641/4,266,638**, with 17 failing sessions and four runtime errors.
+The old dashboard's 324/326, 100% supplemental RNG, and 6,032 held-out
+numbers were stale.
+
+Current patch, full regression check passed:
+
+- `altar_wrath`: use C's `Luck = uluck + moreluck`. New five-segment
+  `altar-wrath-luck` recording reproduces the original crash and now matches
+  **399/399 screens**, **15,604/15,604 RNG**. Seven asserted branches cover
+  one-point and two-point loss, zero loss, both luckstone signs, same-aligned
+  wrath, and deaf speech. The state gate also checks the -5 total-luck cutoff.
+- `passive`: call `muse.c`'s `ureflects` and use its return value as C does.
+  `passive-controls` recovers **1,090/1,090 screens**.
+- `EDOG`: read the initialized `mon.edog` used by pet AI before the optional
+  `mextra.edog` allocation. `eat_brains` now updates the same nutrition state.
+  `monster-special-status-melee` recovers **902/902 screens**; its state gate
+  checks both nutrition totals and accessor identity. The same fix restores
+  `figurine-pet-revival` to **110/110** with all RNG calls identical.
+- Initialize all seven room/shop strings like C's zeroed `struct you`.
+  `globby_bill_fixup` no longer throws before the hero has moved;
+  `glob-lifecycle` recovers **462/462 screens**.
+- `poly_obj`: pass the object table to the three imported material predicates.
+  `shop-following-nag` recovers **173/173 screens**.
+- Correct unrecognized coverage labels in `apply-tools`,
+  `kick-objects-monsters`, and `kill-special-monsters`. The generated files'
+  segment hashes are unchanged. No C screen, cursor, RNG entry, or input was
+  edited. The dashboard tool now lists failed sessions and runtime errors,
+  includes judge failure counts, and labels a dirty measured checkout.
+
+Altar-only full run was **326/343**, **79,324/81,760 screens**,
+**4,188,245/4,282,242 RNG**, with public 44/44, hang gate clean, and
+80 fresh-seed smoke games clean. Full combined run: **331/343**, screens
+**81,320/81,760**, RNG **4,241,290/4,282,242**, with public **44/44**,
+hang gate clean, and 80/80 fresh-seed smoke games clean. All four original
+runtime errors are gone. Five existing supplemental sessions become fully
+identical, recovering 1,996 existing screens in addition to the new 399.
+The remaining 12 failures are listed in the dashboard. Fuzz re-score:
+**76/102 fully passing**, **94/102 RNG-perfect**, **13,043/14,262 screens**,
+**459,215/491,759 RNG positions**. Eight streams still drift and 18 more
+have screen-only differences. Do not call the 94/102 figure a full pass rate.
+`tools/diverge.mjs` now cancels its deadline timer after a completed replay;
+otherwise each successful bounded diagnosis idled until its timeout expired.
+Success, divergence, and an injected blocked replay verify exit codes 0, 1,
+and 3 respectively. The checkpoint is ready to commit and push.
+
+Coverage audit caveat: `kick-nondoor-terrain`'s checked-in recipe has seeds
+9841 through 9850, while its C recording has 9831 through 9840. Both are
+sink-only input streams, despite the older handoff's ten-terrain claim.
+Neither has been overwritten. The report correctly marks seven affected
+categories partial: **99/106**, with **792/792 declared branch cases**.
+Neither count is proof of whole-game coverage. Rebuild the terrain matrix
+with asserted C effects after preserving these two input sets.
+
+Next evidence-backed failures after the crash checkpoint:
+`corpse-pickup-safety` first differs at a revived monster's `newmonhp`
+(`d(8,8)` in C, `d(10,8)` here); `wand-opening-falling-traps` misses a
+second `exercise` draw before generating the destination level.
+
 ## 2026-09-04 (mon): mon.c in C form, with two display fixes the probe found
 
 mon.js's 26 notes are down to 0 (repo total 556 to 530).

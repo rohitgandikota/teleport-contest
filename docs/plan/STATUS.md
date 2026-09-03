@@ -1,5 +1,36 @@
 # STATUS — live handoff board
 
+## 2026-09-03: terrain-sensitive engraving reading verified
+
+`fuzz-s2-20` first differed when the hero stepped onto a grave. Pinned C
+`src/engrave.c:read_engr_at` describes permanent writing with `surface(x,y)`,
+so a grave says that the text is engraved on the headstone. JS hardcoded every
+surface as `floor`. The same incomplete switch also hardcoded non-ice wording
+for dust and burns, and denied blind heroes the C path that senses permanent
+engravings and burns when they can reach the floor. The port now follows all
+four terrain and reachability decisions from C.
+
+The new debug-mode C recording `headstone-engraving-read` is byte-identical at
+**4/4 screens** and **2,640/2,640 RNG**, with a branch assertion on the exact
+headstone message. `fuzz-s2-20` improves from **284/301 to 301/301 screens**
+and is fully passing at **5,328/5,328 RNG**. Across all random play, fully
+passing games improve from **83/102 to 84/102** and screens from
+**13,736/14,262 to 13,753/14,262**. RNG remains **468,764/491,759**, with
+**98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **349/356**, **82,652/83,075 screens**,
+and **4,360,229/4,374,841 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **830/830 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Its hidden
+effect is unknown. Next: diagnose `fuzz-s2-01`, where C says `Swapping:` while
+JS says `Moving:` during inventory adjustment. Then continue through the
+remaining screen-only failures before changing shared monster RNG sites.
+
 ## 2026-09-03: restricted shell command verified
 
 The contest C binary is built with shell support, but its sysconf grants shell

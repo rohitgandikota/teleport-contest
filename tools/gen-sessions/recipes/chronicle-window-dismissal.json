@@ -1,0 +1,30 @@
+{
+  "name": "chronicle-window-dismissal",
+  "description": "A normal hero opens the chronicle, sends an invalid dismissal key, then closes the text window with space.",
+  "coverage": [
+    "mode.normal",
+    "ui.menus"
+  ],
+  "branches": [
+    "ui.chronicle.reject-non-quitchar"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "ui.chronicle.reject-non-quitchar",
+      "segment": 0,
+      "screenIncludes": [
+        "Logged events:",
+        "entered the dungeon"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99440,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:robin,role:Rogue,race:human,gender:male,align:chaotic,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " v# "
+    }
+  ]
+}

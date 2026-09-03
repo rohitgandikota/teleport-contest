@@ -1233,7 +1233,6 @@ export async function do_gamelog() {
             tty_create_nhwindow, tty_destroy_nhwindow, tty_putstr,
             tty_display_nhwindow, tty_next_page, NHW_TEXT,
         } = await import('./tty/wintty.js');
-        const { nhgetch } = await import('./input.js');
         const { docrt } = await import('./display.js');
         const win = tty_create_nhwindow(NHW_TEXT);
         tty_putstr(win, 0, 'Logged events:');
@@ -1244,9 +1243,9 @@ export async function do_gamelog() {
             tty_putstr(win, 0, `${String(e.turn).padStart(5)}: ${e.text}`);
         }
         await tty_display_nhwindow(win);
-        await nhgetch();
-        while (tty_next_page(win))
-            await nhgetch();
+        await xwaitforspace(' \r\n\x1b');
+        while (game.morc !== '\x1b' && tty_next_page(win))
+            await xwaitforspace(' \r\n\x1b');
         tty_destroy_nhwindow(win);
         await docrt();
     } else {

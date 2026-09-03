@@ -1,5 +1,36 @@
 # STATUS — live handoff board
 
+## 2026-09-03: chronicle text-window dismissal verified
+
+`fuzz-s4-18` first differed while `#chron` was open and the next command's
+`#` reached the chronicle page prompt. Pinned C
+`win/tty/wintty.c:process_text_window` calls `dmore(cw, quitchars)`, so a key
+outside space, Enter, carriage return, and Escape rings the bell and leaves
+the text window open. JS waited with raw `nhgetch()`, accepted every key, and
+dismissed the window. The chronicle now waits through the same `quitchars`
+filter on every page and honors Escape cancellation.
+
+The new normal-mode C recording `chronicle-window-dismissal` fails at **3/5
+screens** before the fix and is byte-identical at **5/5 screens** and
+**2,825/2,825 RNG** after it. `fuzz-s4-18` improves from **28/36 to 36/36
+screens** and is now fully passing at **2,276/2,276 RNG**. Across all random
+play, fully passing games improve from **86/102 to 87/102** and screens from
+**13,757/14,262 to 13,765/14,262**. RNG remains **468,764/491,759**, with
+**98/102** games RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **352/359**, **82,715/83,138 screens**,
+and **4,370,654/4,385,266 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **834/834 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+the remaining early screen-only fuzz differences, starting with the startup
+armor-state split in `fuzz-s2-17` and the pager split in `fuzz-s4-10`, before
+changing shared monster RNG sites.
+
 ## 2026-09-03: unbound movement-prefix keys verified
 
 The sole remaining `fuzz-s4-20` difference followed `G` with an unbound space.

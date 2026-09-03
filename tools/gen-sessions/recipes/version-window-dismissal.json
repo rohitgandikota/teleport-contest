@@ -1,0 +1,31 @@
+{
+  "name": "version-window-dismissal",
+  "description": "A normal hero opens the multi-page version report, sends an invalid dismissal key, then closes it with space.",
+  "coverage": [
+    "mode.normal",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "ui.version.reject-non-quitchar"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "ui.version.reject-non-quitchar",
+      "segment": 0,
+      "screenIncludes": [
+        "Permission is hereby granted",
+        "--More--"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99442,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:robin,role:Rogue,race:human,gender:male,align:chaotic,playmode:normal\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " ?a / "
+    }
+  ]
+}

@@ -70,7 +70,6 @@ import { tty_create_nhwindow, tty_putstr, tty_display_nhwindow,
          tty_next_page, tty_destroy_nhwindow, tty_start_menu, tty_add_menu,
          tty_add_menu_str, tty_end_menu, tty_select_menu, tty_dismiss_nhwindow,
          NHW_TEXT, NHW_MENU, ATR_NONE } from './tty/wintty.js';
-import { nhgetch } from './input.js';
 import { ok_to_quest } from './quest.js';
 import { costly_spot, doname_with_price } from './shk.js';
 
@@ -1542,9 +1541,9 @@ export async function doextversion() {
     for (const line of ABOUT_RUNTIME_INFO)
         tty_putstr(win, 0, line);
     await tty_display_nhwindow(win);
-    await nhgetch();
-    while (tty_next_page(win))
-        await nhgetch();
+    await xwaitforspace(quitchars);
+    while (game.morc !== '\x1b' && tty_next_page(win))
+        await xwaitforspace(quitchars);
     tty_destroy_nhwindow(win);
     await docrt();
     return ECMD_OK;

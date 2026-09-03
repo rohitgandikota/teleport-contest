@@ -1,5 +1,37 @@
 # STATUS — live handoff board
 
+## 2026-09-03: version text-window dismissal verified
+
+`fuzz-s4-10` first differed on the second page of the About NetHack report.
+Pinned C `src/version.c:doextversion` displays that report through an
+`NHW_TEXT` window, and `win/tty/wintty.c:process_text_window` waits with
+`dmore(cw, quitchars)`. Keys outside space, Enter, carriage return, and Escape
+therefore leave the page open. JS waited with raw `nhgetch()`, so the first `/`
+dismissed the page and the following keys reached ordinary command handling.
+The version report now uses the same filtered wait on every page and preserves
+C's Escape cancellation.
+
+The new normal-mode C recording `version-window-dismissal` is byte-identical
+at **7/7 screens** and **2,648/2,648 RNG**. Its branch assertion proves that an
+invalid `/` leaves the license page and `--More--` prompt visible.
+`fuzz-s4-10` improves from **37/40 to 40/40 screens** and is now fully passing
+at **2,704/2,704 RNG**. Across all random play, fully passing games improve
+from **89/102 to 90/102** and screens from **13,770/14,262 to
+13,773/14,262**. RNG remains **468,764/491,759**, with **98/102** games
+RNG-identical.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **354/361**, **82,738/83,161 screens**,
+and **4,385,281/4,399,893 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **839/839 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+the one-cell status difference in `fuzz-s3-15`, then the remaining isolated
+screen-only failures before changing shared monster movement RNG paths.
+
 ## 2026-09-03: tutorial round-trip and in-use inventory menu verified
 
 Two fuzz games exposed the same tutorial restore fault. Pinned C

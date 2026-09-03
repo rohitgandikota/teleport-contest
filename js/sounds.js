@@ -597,7 +597,7 @@ export async function growl(mtmp) {
 export async function yelp(mtmp) {
     let yelp_verb = 0;
 
-    if (helpless(mtmp) || game.mons[mtmp.mnum].msound === MFLAGS.MS_SILENT)
+    if (helpless(mtmp) || game.mons[mtmp.mnum].msound === MSOUND.MS_SILENT)
         return;
 
     /* presumably nearness and soundok checks have already been made */
@@ -605,23 +605,23 @@ export async function yelp(mtmp) {
         yelp_verb = h_sounds[rn2(h_sounds.length)];
     else
         switch (game.mons[mtmp.mnum].msound) {
-        case MFLAGS.MS_MEW:
+        case MSOUND.MS_MEW:
             yelp_verb = !Deaf() ? "yowl" : "arch";
             break;
-        case MFLAGS.MS_BARK:
-        case MFLAGS.MS_GROWL:
+        case MSOUND.MS_BARK:
+        case MSOUND.MS_GROWL:
             yelp_verb = !Deaf() ? "yelp" : "recoil";
             break;
-        case MFLAGS.MS_ROAR:
+        case MSOUND.MS_ROAR:
             yelp_verb = !Deaf() ? "snarl" : "bluff";
             break;
-        case MFLAGS.MS_SQEEK:
+        case MSOUND.MS_SQEEK:
             yelp_verb = !Deaf() ? "squeal" : "quiver";
             break;
-        case MFLAGS.MS_SQAWK:
+        case MSOUND.MS_SQAWK:
             yelp_verb = !Deaf() ? "screak" : "thrash";
             break;
-        case MFLAGS.MS_WAIL:
+        case MSOUND.MS_WAIL:
             yelp_verb = !Deaf() ? "wail" : "cringe";
             break;
         }

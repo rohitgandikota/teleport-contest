@@ -1,5 +1,39 @@
 # STATUS — live handoff board
 
+## 2026-09-03: pet abuse sound classes verified
+
+Three random-play games reached `src/sounds.c:yelp` with exact RNG but omitted
+the pet's pain cry before the hit or death message. The JS port compared
+`mons[].msound` against `MFLAGS.MS_*`, whose properties do not exist. Pinned C
+switches on the monster sound enum. The port now uses `MSOUND.MS_*` for the
+silent guard and every yelp verb arm, preserving the C order and deafness
+alternatives.
+
+The new debug-mode C recording `pet-abuse-yelp` creates a tame little dog and
+force-attacks it. It fails at **21/22 screens** before the fix and is
+byte-identical at **22/22 screens** and **3,010/3,010 RNG** after it. Its branch
+assertion pins the visible `The little dog yelps!` feedback.
+
+The shared correction makes `fuzz-s3-20`, `fuzz-s3-28`, and `fuzz-s4-05`
+fully pass at **236/236**, **236/236**, and **98/98 screens**, respectively,
+with exact RNG in all three. Across all random play, fully passing games
+improve from **95/102 to 98/102** and screens from **13,835/14,262 to
+13,857/14,262**. RNG remains **468,919/491,759**. The four remaining failures
+are two `distfleeck` divergences, one `mcalcmove` divergence, and one known
+recording-time DST screen artifact which should not be fitted in runtime code.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **359/366**, **82,867/83,290 screens**,
+and **4,410,674/4,425,286 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **849/849 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: diagnose
+the shared `distfleeck` divergence from pinned C with the two independent fuzz
+traces before changing monster movement RNG.
+
 ## 2026-09-03: dwarf racial object knowledge verified
 
 `fuzz-s2-06` remained RNG-identical for all 3,239 calls and differed only in

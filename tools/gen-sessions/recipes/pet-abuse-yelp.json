@@ -1,0 +1,33 @@
+{
+  "name": "pet-abuse-yelp",
+  "description": "A debug Barbarian creates a tame little dog and force-attacks it, isolating the canine pain cry emitted by the pet abuse path.",
+  "coverage": [
+    "combat.melee",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.pets",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "pet.abuse.yelp-sound-class"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "pet.abuse.yelp-sound-class",
+      "segment": 0,
+      "screenIncludes": [
+        "The little dog yelps!"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 8943,
+      "datetime": "20000112105000",
+      "nethackrc": "OPTIONS=name:wizard,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame little dog\rFk\u001b"
+    }
+  ]
+}

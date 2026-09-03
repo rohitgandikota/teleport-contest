@@ -1,0 +1,13 @@
+{
+  "name": "teleport-contest-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "audit:source": "node source-audit.mjs",
+    "test:source-audit": "node --test source-audit.test.mjs"
+  },
+  "devDependencies": {
+    "acorn": "8.18.0",
+    "eslint-scope": "9.1.2"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "name": "source-audit-actions",
+  "description": "Fresh C recordings for gameplay paths exposed by the lexical scope and import audit: mirror use, charging wands, enchanting dragon scales, inventory tipping, land mines, and iron bars.",
+  "coverage": ["mode.debug", "level.ordinary", "ui.getlin", "ui.menus", "object.tools-containers", "object.wands", "terrain.doors-locks"],
+  "branches": ["tool.mirror.self-appearance-charisma", "wand.charge.directional-limit", "wand.charge.nondirectional-limit", "object.armor.enchant-dragon-scales", "inventory.action.tip-dispatch", "inventory.tip.cancel-selection", "traps.landmine.hero-recursive-pit", "debug.terrain-wish.iron-bars", "movement.iron-bars.block-normal"],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    { "branch": "tool.mirror.self-appearance-charisma", "segment": 0, "screenIncludes": ["You look as homely as ever."] },
+    { "branch": "wand.charge.directional-limit", "segment": 1, "screenIncludes": ["Your runed wand glows blue for a moment."], "rngIncludes": ["rn2(5)=4 @ recharge(read.c:773)"] },
+    { "branch": "wand.charge.nondirectional-limit", "segment": 1, "screenIncludes": ["Your long wand glows briefly."], "rngIncludes": ["rn2(5)=1 @ recharge(read.c:773)"] },
+    { "branch": "object.armor.enchant-dragon-scales", "segment": 2, "screenIncludes": ["Your set of gray dragon scales merges and hardens!"] },
+    { "branch": "inventory.action.tip-dispatch", "segment": 3, "screenIncludes": ["Where to tip the contents of a bag", "The bag is empty."] },
+    { "branch": "inventory.tip.cancel-selection", "segment": 3, "screenIncludes": ["What do you want to tip?", "Never mind."] },
+    { "branch": "traps.landmine.hero-recursive-pit", "segment": 4, "screenIncludes": ["KAABLAMM!!!  You triggered a land mine!", "You fall into a pit!"], "rngIncludes": ["rnd(16)=9 @ trapeffect_landmine(trap.c:2533)", "rn2(6)=5 @ trapeffect_pit(trap.c:1920)"] },
+    { "branch": "debug.terrain-wish.iron-bars", "segment": 5, "screenIncludes": ["Iron bars."], "screenCells": [{ "step": 13, "x": 51, "y": 12, "equals": "≠" }] },
+    { "branch": "movement.iron-bars.block-normal", "segment": 5, "screenCells": [{ "step": 14, "x": 51, "y": 12, "equals": "≠" }, { "step": 14, "x": 52, "y": 12, "equals": "@" }] }
+  ],
+  "segments": [
+    {
+      "seed": 99431,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed mirror\raa.   "
+    },
+    {
+      "seed": 99432,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of digging (0:0)\r\u0017blessed scroll of charging\rrb a   \u0017uncursed wand of light (0:0)\r\u0017blessed scroll of charging\rrd c   "
+    },
+    {
+      "seed": 99433,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed gray dragon scales\rWa      \u0017blessed scroll of enchant armor\rrb  \u001b   "
+    },
+    {
+      "seed": 99434,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed sack\riaT\r   #tip\r\u001b  "
+    },
+    {
+      "seed": 99435,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r10\r                l\u0017land mine trap\r#sit\r            "
+    },
+    {
+      "seed": 99436,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017iron bars\rlhFj    "
+    }
+  ]
+}

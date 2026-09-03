@@ -42,6 +42,7 @@ import { W_ARMOR, W_TOOL, W_RINGR, W_RINGL, W_AMUL, W_QUIVER, W_WEP,
          HAND, ROOMOFFSET, NO_TRAP, TRAPNUM, ROCKTRAP, MAGIC_PORTAL,
          BURN_OBJECT,
          is_hole, DOOR, SDOOR, IRONBARS, HWALL, VWALL, IS_WALL,
+         W_NONDIGGABLE, W_NONPASSWALL,
          D_NODOOR, D_BROKEN, D_ISOPEN, D_CLOSED, D_LOCKED,
          D_TRAPPED, ALTAR, Align2amask, A_NONE, A_CHAOTIC, A_NEUTRAL,
          A_LAWFUL, SINK, S_LPUDDING, S_LDWASHER, S_LRING, POOL, MOAT, WATER,
@@ -2663,7 +2664,18 @@ async function wiztrapwish(d) {
     return null;
 }
 
-// src/objnam.c:3554 wizterrainwish(), sink, altar, wall, and regular-door arms.
+// src/objnam.c:3539 set_wallprop_from_str()
+function set_wallprop_from_str(bp) {
+    let wall_prop = 0;
+    if (bp.includes('undiggable ') || bp.includes('nondiggable '))
+        wall_prop |= W_NONDIGGABLE;
+    if (bp.includes('unphaseable ') || bp.includes('nonpasswall '))
+        wall_prop |= W_NONPASSWALL;
+    if (wall_prop)
+        game.level.at(game.u.ux, game.u.uy).wall_info |= wall_prop;
+}
+
+// src/objnam.c:3554 wizterrainwish(), supported terrain arms.
 async function wizterrainwish(d) {
     const x = game.u.ux, y = game.u.uy;
     const lev = game.level?.at(x, y);
@@ -2746,6 +2758,11 @@ async function wizterrainwish(d) {
         lev.typ = ALTAR;
         lev.altarmask = Align2amask(alignment);
         await pline(`${An(label)} altar.`);
+    } else if (wanted.endsWith('bars')) {
+        lev.typ = IRONBARS;
+        lev.flags = 0;
+        set_wallprop_from_str(d.bp);
+        await pline('Iron bars.');
     } else if (wanted === 'wall') {
         const north = game.level.at(x, y - 1);
         const south = game.level.at(x, y + 1);

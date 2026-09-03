@@ -12,28 +12,29 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-09-03
 
-Continue from the clean `85203f6` checkpoint, preserved on
+Continue from the protected `85203f6` baseline on
 `codex/last-working-heldout-7959-2026-09-03`. The published score is
 11,405 public plus 7,959 held-out screens, with 44 plus 15 passing sessions.
 The live measurements and failures are in [contest-dashboard.md](contest-dashboard.md).
 
 Work is in M12 differential hardening across the already ported subsystems.
-Prioritize a reproduced runtime error or first C divergence, add a C oracle
-or source-state check, then run public, supplemental, hang, and fresh-seed
-checks before committing. The current batch repairs altar luck, reflection,
-pet nutrition state, initial shop strings, and object-polymorph predicates.
-See STATUS.md for measured baselines and the current validation state.
-The combined crash-fix checkpoint passes 331/343 supplemental sessions,
-81,320/81,760 screens, public 44/44, the hang gate, and 80 fresh-seed smoke
-games. The separate fuzz corpus is 76/102 fully passing and 94/102 RNG-perfect.
-That checkpoint is committed and pushed as `f61f728`. The next validated
-batch restores C revival outputs, status dirty flags, polymorphed level gain,
-and the portable RNG bound used for experience. Public remains 44/44;
-supplemental is 337/345, 81,826/82,252 screens, with no runtime errors.
-Fuzz remains 76/102 fully passing and 94/102 RNG-perfect, with three more
-identical screens and no individual regression. Next focus is a parser-based
-scope and import audit for code paths the current recordings do not reach.
-The saved goal is active. See STATUS.md for exact evidence and next steps.
+Prioritize a reproduced runtime error or first C divergence, add a C oracle or
+source-state check, then run public, supplemental, hang, fresh-seed, and fuzz
+checks before committing. The first two resumed checkpoints are pushed as
+`f61f728` and `4b4f5de`.
+
+The current verified checkpoint adds a parser-based source audit, eliminates
+all 40 binding and literal-import findings across 268 non-frozen modules, and
+uses a new C action recording plus a source-state gate to cover behavior found
+during that audit. Public remains **44/44** and byte-identical. Supplemental is
+**338/346**, **82,191/82,617 screens**, **4,299,996/4,314,636 RNG**, with zero
+runtime errors. The separate fuzz corpus remains **76/102 fully passing** and
+**94/102 RNG-perfect**, with no changed session. Coverage is **99/106
+categories**, seven partial, and **807/807 declared branch cases**. No newer
+held-out result has been published. Commit this checkpoint, refresh the clean
+dashboard, then diagnose either the sticky-holder premature rehumanization or
+the common `distfleeck` first divergence. The saved goal is active. See
+STATUS.md for exact evidence and caveats.
 
 ## Historical milestone checklist, July 2026
 

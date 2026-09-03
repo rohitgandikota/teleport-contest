@@ -1,5 +1,5 @@
 import { NODIAG } from './hack.js';
-import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK } from './const.js';
+import { MV_ANY, MV_RUN, MV_RUSH, MV_WALK, CMDQ_INT, IRONBARS, DO_MOVE } from './const.js';
 import { dobreathe, dospit, doremove, dogaze, dosummon, dohide, dospinweb, domindblast, dopoly } from './polyself.js';
 import { pet_ranged_attk } from './dog.js';
 import { is_vampshifter } from './monst.js';
@@ -48,7 +48,7 @@ import { In_sokoban, surface } from './dungeon.js';
 import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
 import { u_on_newpos } from './teleport.js';
-import { doloot, query_inventory_category } from './pickup.js';
+import { doloot, dotip, query_inventory_category } from './pickup.js';
 import { curr_mon_load } from './mon.js';
 import { ECMD_FAIL, ECMD_CANCEL, Never_mind, A_DEX, A_CON, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, OVERLOADED, Is_airlevel,
@@ -203,6 +203,10 @@ async function blocksMove(x, y, dx, dy) {
     game.context.door_opened = false;
     const loc = game.level?.at(x, y);
     if (!loc) return true;
+    if (loc.typ === IRONBARS) {
+        const { test_move } = await import('./hack.js');
+        return !(await test_move(game.u.ux, game.u.uy, dx, dy, DO_MOVE));
+    }
     if (IS_OBSTRUCTED(loc.typ)
         && !(Passes_walls() && may_passwall(x, y))) return true;
     if (loc.typ === DOOR && (loc.doormask & (D_CLOSED | D_LOCKED))

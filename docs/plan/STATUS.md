@@ -1,6 +1,64 @@
 # STATUS — live handoff board
 
+## 2026-09-03: source binding and rare action-path checkpoint verified
+
+This checkpoint follows pushed runtime `4b4f5de`. It is fully verified and
+awaiting its source commit. No newer judge run has been published, so the
+held-out result remains **7,959/11,265**, **15/44**. This is not a claim that
+the new changes improved the hidden score.
+
+New development-only `tools/source-audit.mjs` parses every module with pinned
+Acorn and ESLint Scope packages under `tools/`; the game runtime remains
+dependency-free. It checks lexical references, static imports and re-exports,
+literal dynamic imports, awaited destructuring, namespaces, export-star chains,
+and cycles. Its eight unit tests pass. The initial scan found 36 unresolved
+references and four imports of `NO_COLOR` from a module that does not export it.
+The final scan reports **zero findings across 268 non-frozen modules**. This is
+a binding and import-integrity result, not proof of gameplay completeness.
+
+Every binding repair was resolved against its C declaration and the existing
+JS module boundaries. The batch also restores behavior exposed while testing
+those paths: known water and lava walking now inspect the hero's equipment;
+door-mimic discovery calls C's `stumble_onto_mimic`; obstruction messages use
+the C monster naming and map-invisible path; `wizterrainwish` creates iron bars
+with their wall properties; ordinary movement asks `test_move` whether those
+bars are passable; `dotrap` dispatches land mines to the already ported
+recursive pit effect; `impossible` has the C message and state-reset path;
+partial regular-room overlap is reported instead of silently deleting the
+room; the tty numeric prompt now appends and erases digits physically and saves
+count history as C's `#N`; and C's `Sokoban` predicate uses the active level
+rule flag. Native panic-log file writing and crash-report submission remain
+outside the `impossible` message-path port. The JS count parser also still uses
+the 32-bit limit and needs a dedicated `LONG_MAX` UI probe before widening.
+
+New C recording `source-audit-actions` covers mirror self-use, directional and
+nondirectional wand charging limits, dragon-scale enchantment, the inventory
+Tip action and cancellation, land-mine recursion into a pit, iron-bar terrain
+wishing, blocked iron-bar movement, and force-fighting empty terrain. It is
+byte-identical at **365/365 screens** and **15,994/15,994 RNG**. Nine declared
+branch requirements pin these paths. `source-audit-state-gate.mjs` independently
+checks resulting charges, command-queue integers, nonhero armor lookup, known
+water walking, tty backspace state, `impossible`, room retention, land-mine
+state, and the final iron-bar position.
+
+Full combined verification: public **44/44**, **11,405/11,405 screens**,
+**792,838/792,838 RNG**; supplemental **338/346**, **82,191/82,617 screens**,
+**4,299,996/4,314,636 RNG**, eight failures and zero runtime errors. Hang gate:
+44 clean. Fresh-seed smoke: 80/80 across 13 roles. Frozen files are unchanged.
+Fuzz is exactly unchanged from the preceding checkpoint: **76/102 fully
+passing**, **94/102 RNG-perfect**, **13,046/14,262 screens**, and
+**459,215/491,759 RNG**; no individual session changed. Coverage is **99/106
+categories**, seven partial, and **807/807 declared branch cases**.
+
+Next: commit and push this checkpoint, refresh the clean-commit dashboard, then
+return to an oracle-backed remaining failure. The best bounded candidates are
+the sticky-holder premature rehumanization path and the five `distfleeck`
+fuzz divergences. Diagnose the earliest shared C/JS control-flow difference
+before editing. The live goal remains active.
+
 ## 2026-09-03: revival outputs, status timing, and polymorph XP verified
+
+This second checkpoint is committed and pushed as `4b4f5de`.
 
 Crash checkpoint `f61f728` and the starting safety branch are committed and
 pushed. The published held-out result is still 7,959; no new judge result

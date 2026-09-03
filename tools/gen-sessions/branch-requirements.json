@@ -1,6 +1,15 @@
 {
   "version": 1,
   "requirements": [
+    { "group": "Scope-audit action paths", "id": "tool.mirror.self-appearance-charisma", "cFile": "src/apply.c", "cFunction": "use_mirror", "description": "Use a mirror on the hero and choose the self-description from current charisma" },
+    { "group": "Scope-audit action paths", "id": "wand.charge.directional-limit", "cFile": "src/read.c", "cFunction": "recharge", "description": "Bless-charge an empty directional wand using the eight-charge limit" },
+    { "group": "Scope-audit action paths", "id": "wand.charge.nondirectional-limit", "cFile": "src/read.c", "cFunction": "recharge", "description": "Bless-charge an empty nondirectional wand using the fifteen-charge limit" },
+    { "group": "Scope-audit action paths", "id": "object.armor.enchant-dragon-scales", "cFile": "src/read.c", "cFunction": "seffect_enchant_armor", "description": "Read blessed enchant armor while wearing dragon scales and convert them into blessed dragon scale mail" },
+    { "group": "Scope-audit action paths", "id": "inventory.action.tip-dispatch", "cFile": "src/iactions.c", "cFunction": "itemactions_pushkeys", "description": "Choose Tip from an inventory item's action menu and queue the matching object letter" },
+    { "group": "Scope-audit action paths", "id": "inventory.tip.cancel-selection", "cFile": "src/pickup.c", "cFunction": "dotip", "description": "Cancel the ordinary tip-object prompt and return without spending a turn" },
+    { "group": "Scope-audit action paths", "id": "traps.landmine.hero-recursive-pit", "cFile": "src/trap.c", "cFunction": "trapeffect_landmine", "description": "Trigger a land mine as the hero, replace it with a visible pit, and recursively enter the pit" },
+    { "group": "Scope-audit action paths", "id": "debug.terrain-wish.iron-bars", "cFile": "src/objnam.c", "cFunction": "wizterrainwish", "description": "Wish for iron bars under the hero and leave them as blocking terrain after stepping away" },
+    { "group": "Scope-audit action paths", "id": "movement.iron-bars.block-normal", "cFile": "src/hack.c", "cFunction": "test_move", "description": "Prevent an ordinary human from stepping back through iron bars" },
     { "group": "Polymorphed hero", "id": "forms.polymorph.level-gain", "cFile": "src/exper.c", "cFunction": "pluslvl", "description": "Gain experience levels while polymorphed, drawing monster HP before human HP and energy and keeping the monster maximum unchanged" },
     { "group": "Polymorphed hero", "id": "forms.polymorph.rndexp-large-range", "cFile": "src/exper.c", "cFunction": "rndexp", "description": "Randomize a new human form's experience with a range above LARGEST_INT, halve the draw bound, and multiply the result back" },
     { "group": "Corpse revival", "id": "object.revival.guard-substitute", "cFile": "src/read.c", "cFunction": "cant_revive", "description": "Revive a wished guard corpse as a fast human zombie with 100 maximum HP" },

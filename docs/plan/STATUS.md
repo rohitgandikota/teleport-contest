@@ -1,5 +1,38 @@
 # STATUS — live handoff board
 
+## 2026-09-03: dwarf racial object knowledge verified
+
+`fuzz-s2-06` remained RNG-identical for all 3,239 calls and differed only in
+its discovery report. Pinned C `src/u_init.c:u_init_race` pre-discovers seven
+dwarvish object types for every dwarf hero, independently of role knowledge.
+The JS race switch implemented elf and orc knowledge but omitted the complete
+`PM_DWARF` arm, so a dwarf Cavewoman knew only her starting flint stone. The
+port now calls `knows_object` for the dwarvish spear, short sword, mattock,
+iron helm, mithril coat, cloak, and roundshield in the same C order.
+
+The new normal-mode C recording `dwarf-racial-discoveries` isolates a dwarf
+Cavewoman whose role does not pre-identify weapons or armor. It fails at 4/5
+screens before the fix and is byte-identical at **5/5 screens** and
+**3,036/3,036 RNG** after it. Its branch assertion pins the six
+appearance-bearing dwarvish types printed by the discovery report.
+
+`fuzz-s2-06` improves from **300/301 to 301/301 screens** and becomes fully
+passing at **3,239/3,239 RNG**. Across all random play, fully passing games
+improve from **94/102 to 95/102** and screens from **13,834/14,262 to
+13,835/14,262**. RNG remains **468,919/491,759**.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **358/365**, **82,845/83,268 screens**,
+and **4,407,664/4,422,276 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **848/848 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next: inspect
+the single screen-only miss at step 90 in `fuzz-s2-27`, then the other isolated
+screen failures before changing shared monster movement RNG.
+
 ## 2026-09-03: WIN_STOP redraw cancellation verified
 
 `fuzz-s4-28` reached the tutorial with exact RNG, dismissed the first of two

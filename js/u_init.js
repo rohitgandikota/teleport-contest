@@ -549,6 +549,16 @@ export function u_init_race() {
         knows_object(ONAMES.ELVEN_BOOTS);
         knows_object(ONAMES.ELVEN_CLOAK);
     }
+    if (race === PMNAMES.PM_DWARF) {
+        /* Dwarves can recognize all dwarvish objects */
+        knows_object(ONAMES.DWARVISH_SPEAR);
+        knows_object(ONAMES.DWARVISH_SHORT_SWORD);
+        knows_object(ONAMES.DWARVISH_MATTOCK);
+        knows_object(ONAMES.DWARVISH_IRON_HELM);
+        knows_object(ONAMES.DWARVISH_MITHRIL_COAT);
+        knows_object(ONAMES.DWARVISH_CLOAK);
+        knows_object(ONAMES.DWARVISH_ROUNDSHIELD);
+    }
     if (race === PMNAMES.PM_ORC) {
         if (roleMnum() !== PMNAMES.PM_WIZARD)
             ini_inv(TROBJ.Xtra_food);

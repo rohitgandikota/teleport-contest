@@ -865,6 +865,7 @@
     { "group": "Message history", "id": "ui.message-history.joined-topline", "cFile": "win/tty/topl.c", "cFunction": "update_topl", "description": "Join two short messages from one command on the top line and recall the complete combined text with Ctrl-P" },
     { "group": "Message history", "id": "ui.message-history.wrapped-topline", "cFile": "win/tty/topl.c", "cFunction": "tty_doprev_message", "description": "Wrap a long top-line message, dismiss it, and recall the same wrapped text and paging boundary with Ctrl-P" },
     { "group": "Starting inventory", "id": "startup.inventory.pauper-empty", "cFile": "src/u_init.c", "cFunction": "ini_inv", "description": "Start in pauper mode with no role inventory and preserve the C startup random stream" },
+    { "group": "Starting inventory", "id": "startup.race.dwarf-object-knowledge", "cFile": "src/u_init.c", "cFunction": "u_init_race", "description": "Pre-discover every appearance-bearing dwarvish weapon and armor type for a dwarf hero without relying on role knowledge" },
     { "group": "Status display", "id": "status.title.long-name-truncation", "cFile": "src/botl.c", "cFunction": "bot_via_windowport", "description": "Truncate a long hero name in the 30-column status title while preserving the full name in ordinary messages" }
   ]
 }

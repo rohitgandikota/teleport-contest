@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-09-03T12:06:14.352Z",
+  "timestamp": "2026-09-03T17:17:32.745Z",
   "contestPhase": "open",
   "teamCount": 19,
   "team": {
     "name": "rohitgandikota",
     "fork": "rohitgandikota/teleport-contest",
     "category": "agentic",
-    "lastScored": "2026-09-03T11:29:19.411Z",
+    "lastScored": "2026-09-03T16:41:33.829Z",
     "speed": {
-      "startup_ms": 531.2,
-      "per_move_ms": 1.5695,
-      "r2": 0.668,
-      "label": "531+1.57/turn",
+      "startup_ms": 523,
+      "per_move_ms": 1.6221,
+      "r2": 0.672,
+      "label": "523+1.62/turn",
       "sessions": 88
     },
     "playability": {
@@ -21,20 +21,20 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 2.13,
+      "ms_per_move": 2.106,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
       "sessions_killed": 0,
-      "sessions_failed": 13,
-      "session_failure_rate": 0.1477,
+      "sessions_failed": 12,
+      "session_failure_rate": 0.1364,
       "max_session_failure_rate": 0.25,
-      "timing_error": "ReferenceError: Luck is not defined | at altar_wrath (file:///home/runner/work/teleport-judge/teleport-judge/play/rohitgandikota/js/pray.js:1691:9)",
+      "timing_error": "Error: nh_terminate | at really_done (file:///home/runner/work/teleport-judge/teleport-judge/play/rohitgandikota/js/end.js:660:17)",
       "aborted_early": false,
-      "total_moves": 16901,
-      "total_cumulative_ms": 36004,
-      "total_startup_moves": 383,
-      "total_startup_ms": 5198
+      "total_moves": 17657,
+      "total_cumulative_ms": 37183,
+      "total_startup_moves": 402,
+      "total_startup_ms": 5176
     },
     "public": {
       "points": 11405,
@@ -48,13 +48,13 @@
       "animTotal": 1483
     },
     "heldOut": {
-      "points": 7959,
+      "points": 8498,
       "maxPoints": 11265,
-      "passing": 15,
+      "passing": 16,
       "total": 44,
-      "rngPct": 67.94270669123884,
-      "rngStepsPct": 88.84451544195953,
-      "screenPct": 70.65246338215712,
+      "rngPct": 70.0905514106199,
+      "rngStepsPct": 91.79091231806886,
+      "screenPct": 75.43719485130936,
       "animMatched": 89,
       "animTotal": 2959
     },
@@ -1069,6 +1069,12 @@
       },
       {
         "ts": "2026-09-03T11:29:19.411Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-03T16:41:33.829Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -2319,12 +2325,12 @@
     "name": "NoahBPeterson",
     "fork": "NoahBPeterson/teleport-contest",
     "category": "transpiled",
-    "lastScored": "2026-09-03T11:26:31.207Z",
+    "lastScored": "2026-09-03T16:38:45.391Z",
     "speed": {
-      "startup_ms": 2067.4,
-      "per_move_ms": 3.6154,
-      "r2": 0.584,
-      "label": "2067+3.62/turn",
+      "startup_ms": 2093.1,
+      "per_move_ms": 3.5838,
+      "r2": 0.563,
+      "label": "2093+3.58/turn",
       "sessions": 88
     },
     "playability": {
@@ -2334,7 +2340,7 @@
       "interaction_checked": true,
       "error_class": null,
       "error_message": null,
-      "ms_per_move": 8.123,
+      "ms_per_move": 8.212,
       "threshold_ms_per_move": 25,
       "sessions": 88,
       "sessions_skipped": 0,
@@ -2345,9 +2351,9 @@
       "timing_error": null,
       "aborted_early": false,
       "total_moves": 19926,
-      "total_cumulative_ms": 161851,
+      "total_cumulative_ms": 163634,
       "total_startup_moves": 0,
-      "total_startup_ms": 160855
+      "total_startup_ms": 160664
     },
     "public": {
       "points": 11405,
@@ -3082,6 +3088,12 @@
       },
       {
         "ts": "2026-09-03T11:26:31.207Z",
+        "points": 11405,
+        "maxPoints": 11405,
+        "passing": 44
+      },
+      {
+        "ts": "2026-09-03T16:38:45.391Z",
         "points": 11405,
         "maxPoints": 11405,
         "passing": 44
@@ -4323,5 +4335,5 @@
     ],
     "bitcomplexity": null
   },
-  "retrievedAt": "2026-09-03T17:00:46.137Z"
+  "retrievedAt": "2026-09-03T17:40:44.048Z"
 }

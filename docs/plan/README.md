@@ -12,10 +12,12 @@ Ground rules are in `/CLAUDE.md`. Read that first if you have not.
 
 ## Current focus, 2026-09-03
 
-Continue from the protected `85203f6` baseline on
-`codex/last-working-heldout-7959-2026-09-03`. The published score is
-11,405 public plus 7,959 held-out screens, with 44 plus 15 passing sessions.
-The live measurements and failures are in [contest-dashboard.md](contest-dashboard.md).
+Continue from pushed checkpoint `97bcf38`. The protected starting baseline is
+`85203f6` on `codex/last-working-heldout-7959-2026-09-03`. The latest published
+score is 11,405 public plus 8,498 held-out screens, with 44 plus 16 passing
+sessions. The live measurements and failures are in
+[contest-dashboard.md](contest-dashboard.md). The judge run predates
+`97bcf38`, so that checkpoint's hidden effect is still unknown.
 
 Work is in M12 differential hardening across the already ported subsystems.
 Prioritize a reproduced runtime error or first C divergence, add a C oracle or
@@ -33,12 +35,15 @@ runtime errors. The separate fuzz corpus remains **76/102 fully passing** and
 categories**, seven partial, and **807/807 declared branch cases**. No newer
 held-out result has been published. Its clean-commit dashboard is current.
 Checkpoint `7e6587e` then fixes the C switch-to-JavaScript loop control error in
-polymorphed hug attacks. Supplemental rises to **339/346**,
-**82,194/82,617 screens**, and **4,300,024/4,314,636 RNG**. Public, hang,
-fresh-seed, source-audit, and fuzz gates remain unchanged and green. Its clean
-dashboard is current. Next, diagnose the common `distfleeck` first divergence
-across five fuzz sessions. The saved goal is active. See STATUS.md for exact
-evidence and caveats.
+polymorphed hug attacks. Checkpoint `97bcf38` adds C's command-table validation
+for the `m` prefix and a four-branch C recording. Supplemental is now
+**340/347**, **82,247/82,670 screens**, and **4,307,674/4,322,286 RNG**. Fuzz is
+**78/102 fully passing** and **96/102 RNG-perfect**, improving two complete
+games. Public, hang, fresh-seed, and source-audit gates are green. Declared
+coverage is **99/106 categories**, seven partial, and **811/811 explicit branch
+cases**. Next, fix the now-exposed worn-item throw divergence in `fuzz-s4-00`
+before investigating its later `distfleeck` label. The saved goal is active.
+See STATUS.md for exact evidence and caveats.
 
 ## Historical milestone checklist, July 2026
 

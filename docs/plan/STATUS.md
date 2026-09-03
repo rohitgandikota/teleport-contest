@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-09-03: command-prefix checkpoint and held-out gain
+
+Runtime checkpoint `97bcf38` is committed and pushed. C's `rhack` rejects a
+known nonmovement command after the `m` prefix unless its command-table entry
+has `CMD_M_PREFIX`. JS previously dispatched the command normally, which
+opened inventory in two fuzz games and changed all later input interpretation.
+The port now validates the resolved command before dispatch, clears the same
+prefix and command-queue state as C's rejection path, and uses C's exact
+double-prefix message.
+
+New C recording `command-prefix-validation` covers rejection of `mi`, accepted
+`mea`, movement without pickup, and doubled `mm`. It is byte-identical at
+**53/53 screens** and **7,650/7,650 RNG**, with four concrete branch
+assertions. Fuzz improves from **76/102 to 78/102 fully passing**, from
+**94/102 to 96/102 RNG-perfect**, from **13,046/14,262 to 13,414/14,262
+screens**, and from **459,215/491,759 to 466,564/491,759 RNG**. The complete
+supplemental corpus is now **340/347**, **82,247/82,670 screens**, and
+**4,307,674/4,322,286 RNG**, with the same seven failures and zero runtime
+errors. Public remains **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**. The hang gate is clean, fresh-seed smoke is 80/80,
+the source audit has zero findings, and declared coverage is **99/106
+categories** with seven partial plus **811/811 explicit branch cases**.
+
+A newer judge result has raised held-out from **7,959/11,265, 15/44** to
+**8,498/11,265, 16/44**, with **70.09% RNG**, **75.44% screens**, zero skipped
+or killed sessions, and rank 3 overall. Agentic rank remains 1/9. The fork was
+last scored at 2026-09-03T16:41:33Z, before `97bcf38` was pushed, so this
+published gain belongs to an earlier resumed checkpoint and must not be
+attributed specifically to the command-prefix fix. The current checkpoint has
+not been judged yet.
+
+Next: `fuzz-s4-00` now reaches a clean local boundary where C rejects throwing
+worn armor with `You cannot throw something you are wearing.` while JS removes
+or throws it. Port the pinned C worn-object guard, add a focused C oracle, then
+rerun the same gates. Do not change the later `distfleeck` RNG until this
+earlier throw-state divergence is removed.
+
 ## 2026-09-03: polymorphed hug common tail verified
 
 Runtime checkpoint `7e6587e` is committed and pushed. A C `switch` break in

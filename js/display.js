@@ -1222,19 +1222,8 @@ export function newsym(x, y) {
            then the background */
         const tg = under ? floor_object_glyph(under, x, y)
                          : (engraving_glyph(loc, x, y) ?? terrain_glyph(loc, x, y));
-        const steed = game.u.usteed;
-        if (canspotself() && steed && mon_visible(steed))
-            show_glyph_cell(x, y, def_monsyms[steed.data.mlet] || '?',
-                            steed.data.mcolor ?? NO_COLOR, false, 0,
-                            { kind: 'hero', mon: steed });
-        else if (canspotself()) {
-            const self = game.youmonst?.data;
-            show_glyph_cell(x, y,
-                            Upolyd(game.u)
-                                ? (def_monsyms[self.mlet] || '?') : '@',
-                            Upolyd(game.u) ? self.mcolor : CLR_WHITE,
-                            false, 0, { kind: 'hero' });
-        }
+        if (canspotself())
+            display_self(); /* the steed, the disguise, or the hero */
         else
             show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, pile_attr(tg.glyph),
                             tg.glyph ?? { kind: 'cmap', cmap: tg.cmap });

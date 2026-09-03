@@ -11,6 +11,8 @@
 // js/o_init.js shuffles at game start — so a correct label here is also a
 // direct check that the o_init port is right.
 
+import { M_AP_OBJECT } from './const.js';
+import { M_AP_TYPE } from './const.js';
 import { ONAME } from './const.js';
 import { get_artifact } from './artifact.js';
 import { QBUFSZ } from './const.js';
@@ -3803,4 +3805,15 @@ export function killer_xname(obj) {
         obj.oextra.oname = save_oname;
 
     return buf;
+}
+
+// src/objnam.c mimic_obj_name(); what a mimic (or mimicking hero) looks like
+export function mimic_obj_name(mtmp) {
+    if (M_AP_TYPE(mtmp) === M_AP_OBJECT) {
+        if (mtmp.mappearance === ONAMES.GOLD_PIECE)
+            return 'gold';
+        if (mtmp.mappearance !== ONAMES.STRANGE_OBJECT)
+            return simple_typename(mtmp.mappearance);
+    }
+    return 'whatcha-may-callit';
 }

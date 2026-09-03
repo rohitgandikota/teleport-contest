@@ -4630,3 +4630,25 @@ cannot see himself: an object if one is there, else the engraving glyph,
 else the background. Before, it drew the plain floor over an engraving,
 which showed up after a make-invisible self-zap on an engraved square.
 
+## display_nhwindow(WIN_MAP, TRUE) is a flush plus a forced --More--
+
+wintty.c's NHW_MAP arm with blocking set does end_glyphout(), marks a
+non-empty top line TOPLINE_NEED_MORE and displays the message window, so
+the pending message gets a --More-- with the freshly drawn map behind it.
+The JS twin is `await flush_screen(0)`, then the two toplin lines, then
+`more()`. Without the flush the --More-- screen shows the map from before
+the newsym (the hero instead of the gold pile he just became).
+
+## Option flags default to "on" when the JS never parsed them
+
+`game.flags.acoustics` is undefined unless the rc set it, and the C default
+is on. Test `game.flags?.acoustics === false`, never `!game.flags.acoustics`;
+pline.js and sounds.js already follow that rule. The same applies to every
+opt_out boolean in optlist.js.
+
+## The hero's disguise draws through display_self()
+
+newsym()'s hero branch used to paint '@' itself, so `youmonst.m_ap_type`
+(a mimic corpse's gold disguise, #monster mimicry) never showed. It now
+calls display_self(), which has the furniture, object and monster arms.
+

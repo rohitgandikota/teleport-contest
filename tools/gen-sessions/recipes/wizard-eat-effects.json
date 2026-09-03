@@ -1,0 +1,21 @@
+{
+  "name": "wizard-eat-effects",
+  "description": "Debug-mode Wizard at level 14 eats wished-for food: a fortune cookie, a cursed apple (sleep), garlic, a eucalyptus leaf, wolfsbane, a carrot, then newt, lizard, floating eye, bat, giant bat, wraith, acid blob and kobold corpses; a second game eats a tripe ration, royal jelly, a small mimic corpse and a violet fungus corpse (fprefx, fpostfx, eatcorpse, cpostfx, givit, vomit, the gold mimicry --More--).",
+  "coverage": [
+    "mode.debug"
+  ],
+  "segments": [
+    {
+      "seed": 7501,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r               \u0017fortune cookie\r  \u0017cursed apple\r  \u0017clove of garlic\r  \u0017eucalyptus leaf\r  \u0017sprig of wolfsbane\r  \u0017carrot\r  \u0017newt corpse\r  \u0017lizard corpse\r  \u0017floating eye corpse\r  \u0017bat corpse\r  \u0017giant bat corpse\r  \u0017wraith corpse\r  \u0017acid blob corpse\r  \u0017kobold corpse\r  eo    ep    eq    er    es    et    eu    ev    ew    ex    ey    ez    eA    eB    20s     "
+    },
+    {
+      "seed": 7502,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r14\r               \u0017tripe ration\r  \u0017lump of royal jelly\r  \u0017small mimic corpse\r  \u0017violet fungus corpse\r  eo    ep    eq    er    30s          "
+    }
+  ]
+}

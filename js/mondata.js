@@ -1079,3 +1079,6 @@ export function cvt_adtyp_to_mseenres(adtyp) {
 export function mon_hates_light(mon) {
     return hates_light(mon.data);
 }
+
+/* include/mondata.h likes_gold() */
+export const likes_gold = (ptr) => ((ptr.mflags2 & MFLAGS.M2_GREEDY) !== 0);

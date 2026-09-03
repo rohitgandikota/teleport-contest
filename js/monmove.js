@@ -5,6 +5,9 @@
 // roll), once per monster that acts, so it is the first thing a turn with
 // awake monsters spends after the movement allotment.
 
+import { monsndx } from './makemon.js';
+import { is_obj_mappear } from './monst.js';
+import { Invis } from './youprop.js';
 import { CORR } from './const.js';
 import { ROOM } from './const.js';
 import { switch_terrain } from './hack.js';
@@ -1647,7 +1650,7 @@ export async function m_move(mtmp, after) {
     const prange = { min: 0, max: 0 };
     let appr = mtmp.mflee ? -1 : 1;
 
-    if (mtmp.mconf) {
+    if (mtmp.mconf || engulfing_u(mtmp)) {
         appr = 0;
     } else {
         /* src/monmove.c:1861 — all three terms matter. Ours had only the
@@ -1661,11 +1664,11 @@ export async function m_move(mtmp, after) {
                             && (dist2(omx, omy, ggx, ggy) <= 36));
 
         if (!mtmp.mcansee
-            || (should_see && game.u.uprops?.INVIS
-                && !perceives(ptr) && rn2(11))
+            || (should_see && Invis() && !perceives(ptr) && rn2(11))
+            || is_obj_mappear(game.youmonst, ONAMES.STRANGE_OBJECT) || game.u.uundetected
+            || (is_obj_mappear(game.youmonst, ONAMES.GOLD_PIECE) && !likes_gold(ptr))
             || (mtmp.mpeaceful && !mtmp.isshk) /* allow shks to follow */
-            || ((mtmp.mnum === PMNAMES.PM_STALKER
-                 || ptr.mlet === MONSYMS.S_BAT
+            || ((monsndx(ptr) === PMNAMES.PM_STALKER || ptr.mlet === MONSYMS.S_BAT
                  || ptr.mlet === MONSYMS.S_LIGHT) && !rn2(3)))
             appr = 0;
 

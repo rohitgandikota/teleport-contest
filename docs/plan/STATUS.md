@@ -1,5 +1,48 @@
 # STATUS — live handoff board
 
+## 2026-09-04 (later): eat.c in C form
+
+eat.js's 30 notes are down to 1 (repo total 644 to 613).
+Ported in C form: `is_edible` (fire elemental, metallivore, ghoul and
+gelatinous cube forms), `choke` (the Knight's gluttony, Breathless, Hunger
+and Strangled arms, the killer names through `killer_xname`), `recalc_wt`,
+`adj_victual_nutrition` (maybe_polyd), `touchfood` (the inventory-full drop
+through `sellobj_state` and `dropy`), `do_reset_eat` (async now, through
+`touchfood`), `reset_eat`, `eatmdone`, `eatmupdate`, `garlic_breath`,
+`eatcorpse` (stoneable and slimeable, the tainted meal with
+`maybe_cannibal` and `make_sick`, acidic and poisonous corpses, the corpse
+that rots away, the 5.0 palatable messages), `fprefx` (the pyrolisk egg
+explosion, stale eggs, the carnivore tripe arm), `fpostfx` (wolfsbane,
+carrot, royal jelly with `gainstr`, petrifying eggs, eucalyptus, the
+cursed apple sleep), `gethungry`'s +0 ring of protection arms (EProtection
+masks), `lesshungry` (`reset_eat`, the tin's choke, `paranoid_query`),
+`givit` (telepathy's `see_monsters`, timed acid and stoning resistance
+through `incr_itimeout`), `cpostfx` (every special corpse: wraith,
+lycanthropes, nurse, stalker, lights and bats, the three mimics with the
+gold disguise and its forced --More--, quantum mechanic, lizard,
+chameleons, displacer beast, disenchanter, mind flayers, hallucination
+timer, giant strength), `floorfood` (the metallivore bear trap, iron bars
+and gold prompts, `feel_cockatrice`, `safe_qbuf`, `getobj_else`), `vomit`
+(food poisoning cure, acid breath, altar wrath, acidic ice melting).
+New elsewhere: potion.c `itimeout`, `set_itimeout`, `incr_itimeout`;
+attrib.c `gainstr`; invent.c `g_at`; dungeon.c `on_level`; objnam.c
+`mimic_obj_name`; do_name.c `m_monnam`; mondata.h `likes_gold`; decl.c
+`something`/`Something`; exports for `uasmon_maxStr` and
+`toggle_displacement`. mhitu.c `mattacku` reveals a mimicking hero (both
+the #monster mimic and the gold disguise after a mimic corpse), monmove.c
+`m_move` has the full approach test (engulfed, Invis, the hero disguised
+as a strange object or as gold, undetected), and display.c `newsym` draws
+the hero's square through `display_self` so disguises show.
+
+Probe `wizard-eat-effects` (two C-recorded games, 8895 RNG calls, 527
+screens): a level 14 Wizard eats a fortune cookie, a cursed apple, garlic,
+eucalyptus, wolfsbane, a carrot and newt, lizard, floating eye, bat, giant
+bat, wraith, acid blob and kobold corpses; then royal jelly, a small mimic
+corpse (gold disguise, "Wait, goblin!") and a violet fungus corpse.
+Byte-identical. Gate: 44/44.
+
+Next, by note count: dokick.js 27, apply.js 27, mon.js 26, hack.js 23, spell.js 22, mhitu.js 22, invent.js 20, dothrow.js 20.
+
 ## 2026-09-04: zap.c objects, monsters and self-zaps in C form
 
 zap.js's 21 notes are down to 1 (repo total 664 to 644).

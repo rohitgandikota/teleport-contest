@@ -1355,7 +1355,7 @@ export async function polymon(mntmp) {
 // src/polyself.c:1077 uasmon_maxStr(); hero poly'd into M2_STRONG monster
 // usually gets 18/100 strength but there are exceptions; non-M2_STRONG get
 // maximum strength set to 18
-function uasmon_maxStr() {
+export function uasmon_maxStr() {
     let newMaxStr;
     let mndx = game.u.umonnum;
     const ptr = mons[mndx];

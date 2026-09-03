@@ -2095,3 +2095,24 @@ export async function split_mon(mon, mtmp) {
     }
     return mtmp2;
 }
+
+// src/potion.c itimeout(); clamp a timeout value to the TIMEOUT field
+export function itimeout(val) {
+    if (val < 0)
+        val = 0;
+    else if (val > TIMEOUT)
+        val = TIMEOUT;
+    return val;
+}
+
+// src/potion.c set_itimeout(); which = { key } into game.u.intrinsic
+export function set_itimeout(which, val) {
+    const intr = (game.u.intrinsic ||= {});
+    intr[which] = ((intr[which] | 0) & ~TIMEOUT) | itimeout(val);
+}
+
+// src/potion.c incr_itimeout()
+export function incr_itimeout(which, incr) {
+    const intr = (game.u.intrinsic ||= {});
+    set_itimeout(which, itimeout_incr(intr[which] | 0, incr));
+}

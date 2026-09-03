@@ -7,6 +7,15 @@
 // that are absent and are recorded through note_unported_mhitu() at the
 // exact C decision point, so game.unported names what a divergence wanted.
 
+import { unmul } from './hack.js';
+import { mimic_obj_name } from './objnam.js';
+import { set_ustuck } from './mon.js';
+import { m_monnam } from './do_name.js';
+import { likes_gold } from './mondata.js';
+import { Something } from './const.js';
+import { M_AP_OBJECT } from './const.js';
+import { M_AP_NOTHING } from './const.js';
+import { M_AP_TYPMASK } from './const.js';
 import { pline_The } from './pline.js';
 import { update_inventory } from './invent.js';
 import { cloak_simple_name } from './do_wear.js';
@@ -86,6 +95,10 @@ import { set_ulycn } from './were.js';
 function note_unported_mhitu(what) {
     (game.unported ||= new Set()).add(what);
 }
+
+/* include/monst.h:71 U_AP_TYPE; include/you.h:555 Ugender */
+const U_AP_TYPE = () => (game.youmonst.m_ap_type & M_AP_TYPMASK);
+const Ugender = () => ((Upolyd(game.u) ? game.u.mfemale : game.flags.female) ? 1 : 0);
 
 // src/mhitu.c:1033 diseasemu(). Pestilence gives a fatal illness unless
 // sickness resistance blocks it.
@@ -758,16 +771,44 @@ export async function mattacku(mtmp) {
     }
 
     /* hero might be a mimic, concealed via #monster */
-    if (game.youmonst.data.mlet === MONSYMS.S_MIMIC && game.youmonst.m_ap_type
-        && !v.range2 && v.foundyou && !game.u.uswallow) {
-        note_unported_mhitu('mattacku:hero_mimic');
+    if (game.youmonst.data.mlet === MONSYMS.S_MIMIC && U_AP_TYPE() && !v.range2
+        && v.foundyou && !game.u.uswallow) {
+        const sticky = sticks(game.youmonst.data);
+
+        if (!canspotmon(mtmp))
+            map_invisible(mtmp.mx, mtmp.my);
+        if (sticky && !v.youseeit)
+            await pline('It gets stuck on you.');
+        else /* see note about m_monnam() above */
+            await pline(`Wait, ${m_monnam(mtmp)}!  That's a ${
+                pmname(game.youmonst.data, Ugender())} named ${game.plname}!`);
+        if (sticky)
+            set_ustuck(mtmp);
+        game.youmonst.m_ap_type = M_AP_NOTHING;
+        game.youmonst.mappearance = 0;
+        newsym(game.u.ux, game.u.uy);
         return 0;
     }
 
     /* non-mimic hero might be mimicking an object after eating m corpse */
-    if (game.youmonst.m_ap_type === 2 /* M_AP_OBJECT */ && !v.range2
-        && v.foundyou && !game.u.uswallow) {
-        note_unported_mhitu('mattacku:hero_ap_object');
+    if (U_AP_TYPE() === M_AP_OBJECT && !v.range2 && v.foundyou && !game.u.uswallow) {
+        if (!canspotmon(mtmp))
+            map_invisible(mtmp.mx, mtmp.my);
+        if (!v.youseeit)
+            await pline(`${Something} ${
+                (likes_gold(mtmp.data)
+                 && game.youmonst.mappearance === ONAMES.GOLD_PIECE)
+                ? 'tries to pick you up'
+                : 'disturbs you'}!`);
+        else /* see note about m_monnam() above */
+            await pline(`Wait, ${m_monnam(mtmp)}!  That ${mimic_obj_name(game.youmonst)} is really ${
+                an(pmname(game.mons[game.u.umonnum], Ugender()))} named ${game.plname}!`);
+        if (game.multi < 0) { /* this should always be the case */
+            const buf = `You appear to be ${
+                Upolyd(game.u) ? an(pmname(game.youmonst.data, game.flags.female ? 1 : 0))
+                               : 'yourself'} again.`;
+            await unmul(buf); /* immediately stop mimicking */
+        }
         return 0;
     }
 

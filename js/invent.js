@@ -2478,3 +2478,14 @@ export async function display_minventory(mon,    /* monster whose minvent we're 
         ret = null;
     return ret;
 }
+
+// src/invent.c g_at(); the gold on the floor at <x,y>, if any
+export function g_at(x, y) {
+    for (const obj of game.level.objects) {
+        if (obj.where !== OBJ_FLOOR || obj.ox !== x || obj.oy !== y)
+            continue;
+        if (obj.oclass === OCLASSES.COIN_CLASS)
+            return obj;
+    }
+    return null;
+}

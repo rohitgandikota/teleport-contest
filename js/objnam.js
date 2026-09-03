@@ -1090,7 +1090,7 @@ function billed_cost(obj) {
     return { price, found };
 }
 
-export function doname(obj) {
+export function doname(obj, vague_quan = false) {
     const ocl = game.objects[obj.otyp];
     let bp = xname(obj);
     /* xname() can update the object's observed and Priest-known flags. */
@@ -1098,7 +1098,7 @@ export function doname(obj) {
     let prefix = '';
 
     if (obj.quan !== 1)
-        prefix = `${obj.quan} `;
+        prefix = vague_quan && !obj.dknown ? 'some ' : `${obj.quan} `;
     else if (obj.otyp === ONAMES.CORPSE)
         ;                              /* corpse_xname supplies the article */
     else if (obj_is_pname(obj) || the_unique_obj(obj))
@@ -1355,6 +1355,12 @@ export function doname(obj) {
         prefix = just_an(rest || bp) + rest;
     }
     return prefix + bp;
+}
+
+// src/objnam.c:1768 doname_vague_quan(). Farlook uses "some" instead of a
+// precise quantity when the object has not been seen up close.
+export function doname_vague_quan(obj) {
+    return doname(obj, true);
 }
 
 // include/prop.h

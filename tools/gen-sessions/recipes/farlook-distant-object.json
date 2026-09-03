@@ -1,0 +1,33 @@
+{
+  "name": "farlook-distant-object",
+  "description": "A debug Priest cycles the position picker from nearby gold to a faraway unidentified scroll without learning its appearance from the distant look.",
+  "coverage": [
+    "mode.debug",
+    "object.scrolls",
+    "ui.getpos"
+  ],
+  "branches": [
+    "farlook.object.distant-name"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "farlook.object.distant-name",
+      "segment": 0,
+      "screenIncludes": [
+        "a cursed scroll"
+      ],
+      "screenExcludes": [
+        "labeled ABRA KA DABRA"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 989700,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Priest,race:human,gender:female,align:chaotic,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,debug_hunger\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " ;oo\u001b"
+    }
+  ]
+}

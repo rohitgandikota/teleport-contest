@@ -51,8 +51,8 @@ import { is_obj_mappear } from './monst.js';
 import { engr_at } from './engrave.js';
 import { x_monnam, upstart, pmname, hliquid } from './do_name.js';
 import { ARTICLE_NONE, MAXTCHARS } from './const.js';
-import { an, the, makesingular, singular, xname, doname,
-         simpleonames, OBJ_NAME } from './objnam.js';
+import { an, the, makesingular, singular, xname, distant_name,
+         doname_vague_quan, simpleonames, OBJ_NAME } from './objnam.js';
 import { mkobj, mksobj } from './mkobj.js';
 import { observe_object } from './o_init.js';
 import { Blind, Hallucination } from './youprop.js';
@@ -215,7 +215,8 @@ function look_at_object(x, y, glyph) {
     let buf;
     if (otmp) {
         buf = otmp.otyp !== ONAMES.STRANGE_OBJECT
-            ? (otmp.dknown ? doname_with_price(otmp) : doname(otmp))
+            ? distant_name(otmp, otmp.dknown
+                ? doname_with_price : doname_vague_quan)
             : (OBJ_NAME(game.objects[ONAMES.STRANGE_OBJECT])
                || 'strange object');
     } else {

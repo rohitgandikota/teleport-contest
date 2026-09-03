@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-03: distant farlook object names verified
+
+After the jump-input fix, `fuzz-s2-22` had exact RNG and one remaining screen
+difference. Pinned C `src/pager.c:look_at_object` formats a mapped object
+through `distant_name`. Beyond the touch-distance boundary, that wrapper
+prevents `xname` from observing the object. If its appearance is still
+unknown, C also uses `doname_vague_quan`, which prints `some` instead of an
+exact stack count. JS called `doname_with_price` directly, so merely cycling
+the farlook cursor marked the object `dknown`, exposed its randomized scroll
+label, and reported an exact distant gold quantity.
+
+The port now wraps the same C callbacks in `distant_name` and implements the
+vague-quantity flag in `doname`. The new debug-mode C recording
+`farlook-distant-object` fails at **4/6 screens** before the fix and is
+byte-identical at **6/6 screens** and **2,190/2,190 RNG** after it. It pins
+both `some gold pieces` and the unlabeled `a cursed scroll` description.
+
+`fuzz-s2-22` improves from **300/301 to 301/301 screens** and remains exact at
+**14,461/14,461 RNG**. Across all random play, fully passing games improve
+from **98/102 to 99/102** and screens from **14,130/14,262 to
+14,131/14,262**. RNG remains **481,096/491,759**, with **100/102** games
+RNG-identical. The three remaining failures are the known recorder DST screen
+artifact, one `distfleeck` divergence, and one `mcalcmove` divergence.
+
+Full verification: public **44/44**, **11,405/11,405 screens**, and
+**792,838/792,838 RNG**; supplemental **361/368**, **82,883/83,306 screens**,
+and **4,417,336/4,431,948 RNG**, with the same seven known failures and zero
+runtime errors. The hang gate is clean, fresh-seed smoke is 80/80, the source
+audit has zero findings, frozen files are unchanged, and declared coverage is
+**99/106 categories** with seven partial plus **851/851 explicit branches**.
+
+The latest published judge remains **8,498/11,265**, **16/44**, rank 3 overall
+and rank 1/9 among agentic entries, and predates this checkpoint. Next:
+diagnose the genuine `fuzz-s3-10` monster-order divergence at step 287, using
+the C and JS pet candidate counts rather than assuming `distfleeck` is wrong.
+
 ## 2026-09-03: physical jump ability guard verified
 
 `fuzz-s2-22` appeared to diverge at `src/monmove.c:distfleeck`, but its first

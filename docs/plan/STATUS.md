@@ -2,9 +2,9 @@
 
 ## 2026-09-03: source binding and rare action-path checkpoint verified
 
-This checkpoint follows pushed runtime `4b4f5de`. It is fully verified and
-awaiting its source commit. No newer judge run has been published, so the
-held-out result remains **7,959/11,265**, **15/44**. This is not a claim that
+This checkpoint is committed and pushed as `6a0b6c7`. No newer judge run has
+been published, so the held-out result remains **7,959/11,265**, **15/44**.
+This is not a claim that
 the new changes improved the hidden score.
 
 New development-only `tools/source-audit.mjs` parses every module with pinned
@@ -50,11 +50,12 @@ passing**, **94/102 RNG-perfect**, **13,046/14,262 screens**, and
 **459,215/491,759 RNG**; no individual session changed. Coverage is **99/106
 categories**, seven partial, and **807/807 declared branch cases**.
 
-Next: commit and push this checkpoint, refresh the clean-commit dashboard, then
-return to an oracle-backed remaining failure. The best bounded candidates are
-the sticky-holder premature rehumanization path and the five `distfleeck`
-fuzz divergences. Diagnose the earliest shared C/JS control-flow difference
-before editing. The live goal remains active.
+The clean-commit dashboard is current at `6a0b6c7`; all local gates remain
+green and the published score is still from the earlier judge run. The next
+oracle-backed failure is the sticky-holder premature rehumanization path. The
+five `distfleeck` fuzz divergences are the second candidate. Diagnose the
+earliest shared C/JS control-flow difference before editing. The live goal
+remains active.
 
 ## 2026-09-03: revival outputs, status timing, and polymorph XP verified
 

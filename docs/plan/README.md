@@ -23,7 +23,7 @@ source-state check, then run public, supplemental, hang, fresh-seed, and fuzz
 checks before committing. The first two resumed checkpoints are pushed as
 `f61f728` and `4b4f5de`.
 
-The current verified checkpoint adds a parser-based source audit, eliminates
+Checkpoint `6a0b6c7` adds a parser-based source audit, eliminates
 all 40 binding and literal-import findings across 268 non-frozen modules, and
 uses a new C action recording plus a source-state gate to cover behavior found
 during that audit. Public remains **44/44** and byte-identical. Supplemental is
@@ -31,10 +31,10 @@ during that audit. Public remains **44/44** and byte-identical. Supplemental is
 runtime errors. The separate fuzz corpus remains **76/102 fully passing** and
 **94/102 RNG-perfect**, with no changed session. Coverage is **99/106
 categories**, seven partial, and **807/807 declared branch cases**. No newer
-held-out result has been published. Commit this checkpoint, refresh the clean
-dashboard, then diagnose either the sticky-holder premature rehumanization or
-the common `distfleeck` first divergence. The saved goal is active. See
-STATUS.md for exact evidence and caveats.
+held-out result has been published. Its clean-commit dashboard is current.
+Next, diagnose the sticky-holder premature rehumanization, with the common
+`distfleeck` first divergence as the following candidate. The saved goal is
+active. See STATUS.md for exact evidence and caveats.
 
 ## Historical milestone checklist, July 2026
 

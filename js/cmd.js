@@ -1668,6 +1668,30 @@ export async function rhack(key) {
         return;
     }
 
+    /* src/cmd.c:3693-3723: unlike g/G/F, the m prefix can also modify
+       selected nonmovement commands. Reject a known command whose cmdlist
+       entry lacks CMD_M_PREFIX instead of dispatching it normally. */
+    if (continuedPrefix && game.iflags.menu_requested
+        && !isMovementKey(ch) && !'gGmF'.includes(ch)) {
+        const command = cmdbind_table().get(ch0.charCodeAt(0));
+        if (command && !accept_menu_prefix(command)) {
+            await pline_nohistory(`The ${command.ef_txt} command does not accept 'm' prefix.`);
+            game.context.run = 0;
+            game.context.nopick = 0;
+            game.context.forcefight = false;
+            game.context.move = 0;
+            game.context.mv = false;
+            game.context.travel = game.context.travel1 = 0;
+            game.domove_attempting = 0;
+            game.multi = 0;
+            game.iflags.menu_requested = false;
+            game.travelmap?.clear?.();
+            cmdq_clear(CQ_CANNED);
+            cmdq_clear(CQ_REPEAT);
+            return;
+        }
+    }
+
     if (isMovementKey(ch)) {
         /* src/cmd.c:1386 set_move_cmd() — sets u.dx/u.dy and, when no g/G
            prefix is pending, context.run. Keeping the direction on `u` is
@@ -1876,7 +1900,7 @@ export async function rhack(key) {
         // a no-op while every recorded rc sets !autopickup; for others it asks
         // for a menu. Reads no extra key.
         if (game.iflags.menu_requested) {
-            await pline('Double move-no-pickup or request-menu prefix, canceled.');
+            await pline('Double m prefix, canceled.');
             game.iflags.menu_requested = false;
             commandResult = ECMD_CANCEL;
         } else {

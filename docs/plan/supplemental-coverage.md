@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 374 | 83379 | 4143484 | 75 | 499 |
-| Union | 418 | 94784 | 4911244 | 79 | 536 |
+| Supplemental | 374 | 83378 | 4143484 | 75 | 499 |
+| Union | 418 | 94783 | 4911244 | 79 | 536 |
 
 ## Static inventory
 
@@ -1669,7 +1669,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `bag-of-tricks` | debug | 79 | present | `level.ordinary`, `mode.debug`, `monster.hero-melee`, `monster.movement`, `object.buc-enchant-erosion`, `object.identification`, `object.tools-containers`, `ui.getlin`, `ui.map-memory-vision`, `ui.more-paging` |
 | `barb-chargen` | normal | 96 | present | `chargen.restricted-path`, `combat.melee`, `combat.unarmed-kick`, `level.ordinary`, `mode.normal`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.food-corpses`, `object.weapons`, `survival.hunger`, `survival.regen-exercise`, `survival.timed-status`, `terrain.doors-locks`, `traps.projectile-physical`, `turn.occupation-interrupt`, `turn.speed-energy`, `turn.timers`, `ui.count-repeat`, `ui.map-memory-vision`, `ui.menus` |
 | `barehand-special-damage` | debug | 96 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `monster.hero-melee`, `object.armor`, `object.rings`, `ui.getlin` |
-| `bones-persistence` | normal | 719 | present | `level.mines`, `mode.normal`, `monster.death-corpse-revival`, `persistence.bones` |
+| `bones-persistence` | normal | 718 | present | `level.mines`, `mode.normal`, `monster.death-corpse-revival`, `persistence.bones` |
 | `boots-effects` | debug | 57 | present | `level.ordinary`, `mode.debug`, `object.armor`, `turn.occupation-interrupt`, `ui.getlin`, `ui.map-memory-vision` |
 | `boulder-water-impact` | debug | 105 | present | `level.ordinary`, `mode.debug`, `terrain.water-lava`, `ui.getlin`, `ui.more-paging` |
 | `bullwhip-application` | debug+normal | 268 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `mode.normal`, `object.buc-enchant-erosion`, `object.weapons`, `ui.cancel-invalid`, `ui.map-memory-vision` |

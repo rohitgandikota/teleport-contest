@@ -36,7 +36,7 @@ import { spawn } from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { branchAssertionErrors } from './assertions.mjs';
+import { branchAssertionErrors, recordingIntegrityErrors } from './assertions.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -110,6 +110,11 @@ async function generateOne(recipePath) {
             if (got !== expected) ok = false;
             console.log(`  seg ${i}: seed=${seg.seed} steps=${got} rng=${rng}${note}`);
         });
+        const integrityErrors = recordingIntegrityErrors(out);
+        for (const error of integrityErrors)
+            console.log(`  integrity: ${error}`);
+        if (integrityErrors.length)
+            ok = false;
         const assertionErrors = branchAssertionErrors(recipe, out);
         for (const error of assertionErrors)
             console.log(`  assertion: ${error}`);

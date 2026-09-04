@@ -126,3 +126,21 @@ export function branchAssertionErrors(recipe, generated = null) {
     }
     return errors;
 }
+
+export function recordingIntegrityErrors(session) {
+    const errors = [];
+    for (const [segIdx, seg] of (session.segments || []).entries()) {
+        for (const [stepIdx, step] of (seg.steps || []).entries()) {
+            const cursor = step.cursor;
+            if (!Array.isArray(cursor)
+                || !Number.isInteger(cursor[0]) || cursor[0] < 0 || cursor[0] >= 80
+                || !Number.isInteger(cursor[1]) || cursor[1] < 0 || cursor[1] >= 24) {
+                errors.push(`segment ${segIdx} step ${stepIdx} has invalid cursor ${JSON.stringify(cursor)}`);
+            }
+            if (String(step.screen || '').includes('\x1b]7777;')) {
+                errors.push(`segment ${segIdx} step ${stepIdx} contains a leaked recorder marker`);
+            }
+        }
+    }
+    return errors;
+}

@@ -251,7 +251,10 @@ diff -urN -x *.bak a/win/tty/termcap.c b/win/tty/termcap.c
 +    return 37;
 +}
 +
-+static char nomux_out[24 * 256];
++/* A cell can need attribute, color, DEC-mode, and glyph bytes. Dense maps
++ * can exceed 256 serialized bytes per row, so reserve the conservative
++ * per-cell upper bound instead of overflowing into capture state. */
++static char nomux_out[24 * 80 * 32 + 1];
 +char *nomux_capture_screen(void) {
 +    char *p = nomux_out;
 +    int row, col, end, cur_fg, cur_attr;

@@ -522,6 +522,15 @@ async function recordSegment({
     // preserving order and step-attribution without any in-stream events.
     let pendingAnimFrames = [];
     const onMarker = async (m) => {
+        if (!Number.isInteger(m.cx) || m.cx < 0 || m.cx >= 80
+            || !Number.isInteger(m.cy) || m.cy < 0 || m.cy >= 24) {
+            rejectDone(new Error(`invalid recorder cursor [${m.cx},${m.cy}] at sequence ${m.seq}`));
+            return;
+        }
+        if (m.payload.includes('\x1b]7777;')) {
+            rejectDone(new Error(`recorder marker leaked into screen at sequence ${m.seq}`));
+            return;
+        }
         if (m.kind === 'anim') {
             pendingAnimFrames.push({
                 screen: encodeScreenAnsiRle(payloadToLines(m.payload)),

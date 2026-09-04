@@ -14,7 +14,8 @@ VARDIR=$(HACKDIR)
 # timed_delay is irrelevant for HTML (we use JS timers) and its presence
 # in the options menu breaks session parity with Linux builds.
 CFLAGS=-g -I../include -DNOTPARMDECL -DNO_TIMED_DELAY
-NHCFLAGS+=-DCOMPRESS=\"/usr/bin/gzip\" -DCOMPRESS_EXTENSION=\".gz\"
+NHCFLAGS+=-DCOMPRESS=\"/usr/bin/gzip\" -DCOMPRESS_EXTENSION=\".gz\" -DCOMPRESS_OPTIONS=\"-c\"
+CFLAGS+= $(NHCFLAGS)
 
 # when building liblua.a, avoid warning that use of tmpnam() should be
 # replaced by mkstemp(); the lua code doesn't use nethack's config.h so

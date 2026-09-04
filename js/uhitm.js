@@ -88,16 +88,17 @@ import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.j
 import { You, Your, You_feel, You_hear, livelog_add, pline_The } from './pline.js';
 import { end_running } from './hack.js';
 import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
-         x_monnam, hliquid, hcolor, pmname, Some_Monnam } from './do_name.js';
+         x_monnam, hliquid, hcolor, pmname, Some_Monnam,
+         some_mon_nam } from './do_name.js';
 import { destroy_items, drain_item, exclam, hit, obj_resists,
          resist } from './zap.js';
 import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
-         Invisible, Shock_resistance,
+         Invisible, Shock_resistance, Swimming, Amphibious, Breathless,
          Stone_resistance } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
-         unmap_invisible } from './display.js';
+         unmap_invisible, urgent_pline } from './display.js';
 import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
          shieldeff_mon, is_pool, m_carrying, t_at, minliquid,
          healmon, monstone, mondied } from './mon.js';
@@ -135,7 +136,8 @@ import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
          setmnotwielded, special_dmgval, use_skill, uwep_skill_type,
          weapon_type, possibly_unwield } from './weapon.js';
 import { find_mac } from './worn.js';
-import { greatest_erosion, worn, helm_simple_name } from './do_wear.js';
+import { greatest_erosion, worn, helm_simple_name,
+         cloak_simple_name } from './do_wear.js';
 import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
          thick_skinned, attacktype,
          sticks, haseyes, cantwield, is_flyer, is_floater,
@@ -143,7 +145,8 @@ import { is_orc, is_elf, unsolid, noncorporeal, nonliving, amorphous,
          resists_blnd_by_arti, resists_fire, resists_cold, resists_elec,
          resists_acid, resists_poison, resists_drli, resists_ston,
          defended, completelyburns,
-         noattacks, poly_when_stoned, flesh_petrifies } from './mondata.js';
+         noattacks, poly_when_stoned, flesh_petrifies, slithy,
+         is_swimmer, amphibious, breathless } from './mondata.js';
 import { mon_hates_silver } from './dog.js';
 import { s_suffix } from './hacklib.js';
 import { vtense } from './objnam.js';
@@ -170,7 +173,7 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          RLOC_NOMSG, DISMOUNT_POLY } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
-import { FACE, HAND } from './const.js';
+import { FACE, HAND, LEG, POOL } from './const.js';
 import { NH_RED } from './const.js';
 import { body_part, mbodypart, ugolemeffects } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
@@ -1436,6 +1439,11 @@ export async function damageum(mon, mattk, specialdmg) {
             const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
                           specialdmg, done: false };
             await mhitm_ad_ston(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_WRAP) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_wrap(game.youmonst, mattk, mon, mhm);
             damage = mhm.damage;
         } else if (mattk[1] === ATTKS.AD_POLY) {
             const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
@@ -3905,6 +3913,135 @@ export async function mhitm_ad_ston(magr, mattk, mdef, mhm) {
         if (magr.mcan)
             return;
         await do_stone_mon(magr, mattk, mdef, mhm);
+    }
+}
+
+// src/uhitm.c:2056 m_slips_free(). Greased or oilskin body armor can
+// protect a monster from the hero's wrap attack.
+async function m_slips_free(mdef, mattk) {
+    let obj;
+
+    if (mattk[1] === ATTKS.AD_DRIN) {
+        obj = which_armor(mdef, W_ARMH);
+    } else {
+        obj = which_armor(mdef, W_ARMC);
+        if (!obj)
+            obj = which_armor(mdef, W_ARM);
+        if (!obj)
+            obj = which_armor(mdef, W_ARMU);
+    }
+
+    if (obj && (obj.greased || obj.otyp === ONAMES.OILSKIN_CLOAK)
+        && (!obj.cursed || rn2(3))) {
+        await You(`${mattk[1] === ATTKS.AD_WRAP
+                    ? 'slip off of' : 'grab, but cannot hold onto'} ${
+                  s_suffix(mon_nam(mdef))} ${obj.greased
+                    ? 'greased' : 'slippery'} ${
+                  (obj.greased || game.objects[obj.otyp].oc_name_known)
+                    ? xname(obj) : cloak_simple_name(obj)}!`);
+        if (obj.greased && !rn2(2)) {
+            await pline_The('grease wears off.');
+            obj.greased = 0;
+        }
+        return true;
+    }
+    return false;
+}
+
+// src/uhitm.c:3337 mhitm_ad_wrap(). Shared wrap handling for a polymorphed
+// hero, a monster attacking the hero, and one monster attacking another.
+export async function mhitm_ad_wrap(magr, mattk, mdef, mhm) {
+    const pd = mdef.data;
+    const pa = magr.data;
+    const coil = slithy(pa)
+        && (pa.mlet === MONSYMS.S_SNAKE || pa.mlet === MONSYMS.S_NAGA);
+
+    if (magr === game.youmonst) {
+        if (!sticks(pd)) {
+            const tailmiss = !game.notonhead;
+
+            if (!game.u.ustuck && !tailmiss && !rn2(10)) {
+                if (await m_slips_free(mdef, mattk)) {
+                    mhm.damage = 0;
+                } else {
+                    await You(`${coil ? 'coil' : 'swing'} yourself around ${
+                              mon_nam(mdef)}!`);
+                    set_ustuck(mdef);
+                }
+            } else if (game.u.ustuck === mdef && !tailmiss) {
+                const cant_drown = is_swimmer(pd) || amphibious(pd)
+                    || breathless(pd);
+                if (is_pool(game.u.ux, game.u.uy) && !cant_drown) {
+                    await You(`drown ${mon_nam(mdef)}...`);
+                    mhm.damage = mdef.mhp;
+                } else if (mattk[0] === ATTKS.AT_HUGS) {
+                    await pline(`${Monnam(mdef)} is being crushed.`);
+                }
+            } else {
+                mhm.damage = 0;
+                if (game.flags?.verbose) {
+                    if (coil && !tailmiss)
+                        await You(`brush against ${mon_nam(mdef)}.`);
+                    else
+                        await You(`brush against ${s_suffix(mon_nam(mdef))} ${
+                                  tailmiss ? 'tail' : mbodypart(mdef, LEG)}.`);
+                }
+            }
+        } else {
+            mhm.damage = 0;
+        }
+    } else if (mdef === game.youmonst) {
+        if ((!magr.mcan || game.u.ustuck === magr) && !sticks(pd)) {
+            if (!game.u.ustuck && !rn2(10)) {
+                if (await u_slip_free(magr, mattk)) {
+                    mhm.damage = 0;
+                } else {
+                    set_ustuck(magr);
+                    await urgent_pline(`${Some_Monnam(magr)} ${
+                        coil ? 'coils' : 'swings'} itself around you!`);
+                }
+            } else if (game.u.ustuck === magr) {
+                if (is_pool(magr.mx, magr.my) && !Swimming()
+                    && !Amphibious() && !Breathless()) {
+                    const [{ is_waterwall }, { on_level }, { done, DROWNING }]
+                        = await Promise.all([
+                            import('./dbridge.js'), import('./dungeon.js'),
+                            import('./end.js'),
+                        ]);
+                    const moat = game.level.at(magr.mx, magr.my).typ !== POOL
+                        && !is_waterwall(magr.mx, magr.my)
+                        && !on_level(game.u.uz, game.medusa_level)
+                        && !Is_waterlevel(game.u.uz);
+                    await urgent_pline(`${Monnam(magr)} drowns you...`);
+                    game.killer = {
+                        format: KILLED_BY_AN,
+                        name: `${moat ? 'moat' : 'pool of water'} by ${
+                              an(pmname(pa, Mgender(magr)))}`,
+                    };
+                    await done(DROWNING);
+                } else if (mattk[0] === ATTKS.AT_HUGS) {
+                    await You('are being crushed.');
+                }
+            } else {
+                mhm.damage = 0;
+                if (game.flags?.verbose) {
+                    if (coil)
+                        await pline(`${Monnam(magr)} brushes against you.`);
+                    else
+                        await pline(`${Monnam(magr)} brushes against your ${
+                                    body_part(LEG)}.`);
+                }
+            }
+        } else {
+            mhm.damage = 0;
+        }
+    } else {
+        if (magr.mcan)
+            mhm.damage = 0;
+        if (!mhm.damage && (canseemon(magr) || canseemon(mdef))) {
+            await pline(`${Some_Monnam(magr)} brushes against ${
+                        some_mon_nam(mdef)}.`);
+        }
     }
 }
 

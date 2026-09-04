@@ -1011,6 +1011,14 @@
     {"group":"Ambient room sounds","id":"sound.ambient.oracle-hallucination","cFile":"src/sounds.c","cFunction":"oracle_sound","description":"Choose a hallucinating Oracle-level sound"},
     {"group":"Ambient room sounds","id":"sound.ambient.temple-hallucination-deity","cFile":"src/sounds.c","cFunction":"temple_priest_sound","description":"Name a hallucinated deity in the temple plea"},
     {"group":"Ambient room sounds","id":"sound.ambient.temple-hallucination-donations","cFile":"src/sounds.c","cFunction":"temple_priest_sound","description":"Choose the hallucinating temple donations plea"},
-    {"group":"Ambient room sounds","id":"sound.ambient.barracks-hallucination","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose a hallucinating barracks sound"}
+    {"group":"Ambient room sounds","id":"sound.ambient.barracks-hallucination","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose a hallucinating barracks sound"},
+    {"group":"Wrap attacks","id":"combat.wrap.monster-hero-brush","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Fail a monster's initial wrap roll and brush against the hero"},
+    {"group":"Wrap attacks","id":"combat.wrap.monster-hero-coil","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Pass a snake-form monster's initial wrap roll and coil around the hero"},
+    {"group":"Wrap attacks","id":"combat.wrap.monster-hero-crush","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Apply crushing damage while the wrap attacker already holds the hero"},
+    {"group":"Wrap attacks","id":"combat.wrap.monster-hero-greased-slip","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Let the hero's greased body armor defeat an initial wrap"},
+    {"group":"Wrap attacks","id":"combat.wrap.grease-wears-off","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Consume the grease-wear-off roll after it protects the hero from a grab"},
+    {"group":"Wrap attacks","id":"combat.wrap.hero-monster-tail","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Preserve the pinned hero-wrap tail-miss message and zero damage"},
+    {"group":"Wrap attacks","id":"combat.wrap.hero-monster-crush","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Crush a monster already held by the polymorphed hero"},
+    {"group":"Wrap attacks","id":"combat.wrap.monster-monster-zero-damage","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Report a zero-damage giant-eel wrap against another visible monster"}
   ]
 }

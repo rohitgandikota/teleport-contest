@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-04: shared wrap attacks match C
+
+The swamp probe's first mismatch was initially classified as a
+monster-versus-monster attack. Exact trace and source review corrected that:
+the observed `rn2(10)` at `uhitm.c:3379` was the monster-versus-hero arm of
+`mhitm_ad_wrap()`. JavaScript had no `AD_WRAP` dispatch in any combat context.
+The shared helper and its monster armor-slip helper now follow pinned C for a
+polymorphed hero attacking a monster, a monster attacking the hero, and one
+monster attacking another. This includes the initial one-in-ten grip, coils
+and swings, ongoing crushing, greased and oilskin slips, grease wear-off,
+tail and leg brush messages, cancelled attacks, zero-damage monster combat,
+and the source drowning path.
+
+The first focused segment matched only **97/184 screens** and
+**2,650/2,931 RNG calls** before the port. The permanent five-segment
+`monster-wrap-attacks` C fixture now has eight explicit branch assertions and
+is byte-identical at **960/960 screens** and **16,480/16,480 RNG calls**.
+Declared evidence remains **99/106 mechanics categories**, with seven
+partial, and rises to **1,001/1,001 explicit C branches**. The source RNG
+census now observes **1,500/2,621 call sites (57.2%)** overall and
+**72/158 in uhitm.c**.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**386/386**, **95,174/95,174 screens**, and **4,918,236/4,918,236 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80 across 13 roles, source and state audits pass, all ten audit and
+recorder tests pass, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This wrap batch is local and
+unjudged, so no hidden gain is claimed. Next, use the source census and a
+fresh swamp trace to expose the next reached divergence before selecting
+another missing combat damage arm.
+
 ## 2026-09-04: ambient special-room sounds match C
 
 The periodic room-sound dispatcher now follows pinned C for throne rooms,
@@ -32,9 +68,9 @@ unchanged.
 A normal swamp-sound probe exposed a more valuable pre-existing divergence
 before it could reach the sound selector. At its first mismatch, C called
 `rn2(10)` from `mhitm_ad_wrap(uhitm.c:3379)`, while JavaScript called
-`rn2(3)`. The contaminated probe was not retained. The next target is a
-minimal C fixture for that monster-versus-monster wrap attack, followed by a
-line-by-line port of the missing arm. The latest judged hidden result remains
+`rn2(3)`. The contaminated probe was not retained. Exact source review later
+identified that call as the monster-versus-hero arm. The latest judged hidden
+result remains
 **8,498/11,265**, **16/44**, rank 3 overall and rank 1/9 among agentic
 entries. This ambient batch is local and unjudged, so no hidden gain is
 claimed.

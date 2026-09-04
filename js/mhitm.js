@@ -69,7 +69,8 @@ import { distmin, s_suffix } from './hacklib.js';
 import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_acid, mhitm_ad_drst, mhitm_ad_blnd,
          mhitm_ad_sedu, mhitm_ad_drli, mhitm_ad_drin,
-         mhitm_ad_ston, attk_protection, mhitm_knockback } from './uhitm.js';
+         mhitm_ad_ston, mhitm_ad_wrap, attk_protection,
+         mhitm_knockback } from './uhitm.js';
 import { grow_up, goodpos, remove_monster, place_monster } from './makemon.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
 import { spitmm } from './mthrowu.js';
@@ -646,6 +647,8 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
         await mhitm_ad_drin(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_STON) {
         await mhitm_ad_ston(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_WRAP) {
+        await mhitm_ad_wrap(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_POLY) {
         await mhitm_ad_poly(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_SITM

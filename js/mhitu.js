@@ -49,7 +49,6 @@ import { ATTKS, MONSYMS, PMNAMES, MFLAGS } from './monst_data.js';
 import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          M_ATTK_MISS, M_ATTK_HIT, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE,
          M_ATTK_DEF_DIED,
-         RLOC_MSG,
          TT_PIT, WATER, P_WHIP, P_POLEARMS, NEED_WEAPON,
          NEED_HTH_WEAPON, LEFT_SIDE, RIGHT_SIDE, LEG,
          MON_EXPLODE, XKILL_NOMSG, SICK_NONVOMITABLE, STONING,
@@ -79,13 +78,12 @@ import { hitval, mon_wield_item } from './weapon.js';
 import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_drst,
          mhitm_ad_blnd, mhitm_ad_ston, mhitm_ad_drli,
-         mhitm_ad_ench, mhitm_ad_samu, mhitm_knockback,
+         mhitm_ad_ench, mhitm_ad_samu, mhitm_ad_sedu, mhitm_knockback,
          mhitm_mgc_atk_negated, attk_protection, erode_armor,
          golemeffects } from './uhitm.js';
 import { is_pool, t_at, newcham } from './mon.js';
 import { touch_petrifies, initedog } from './dog.js';
 import { find_offensive, use_offensive, mon_reflects } from './muse.js';
-import { steal } from './steal.js';
 import { buzzmu, castmu } from './mcastu.js';
 import { erode_obj } from './trap.js';
 import { drain_item } from './zap.js';
@@ -1300,34 +1298,7 @@ async function hitmu(mtmp, mattk, indx) {
             exercise(A_DEX, false);
         }
     } else if (mattk[1] === A.AD_SITM || mattk[1] === A.AD_SEDU) {
-        mhm.damage = 0;
-        if (is_animal(mtmp.data)) {
-            await hitmsg(mtmp, mattk, indx);
-            if (mtmp.mcan)
-                return mhm.hitflags;
-        } else if (mtmp.mcan) {
-            note_unported_mhitu('hitmu:cancelled_seduction');
-            return mhm.hitflags;
-        }
-
-        const stolenName = {};
-        const stolen = await steal(mtmp, stolenName);
-        if (stolen < 0) {
-            mhm.hitflags = M_ATTK_AGR_DIED;
-            mhm.done = true;
-        } else if (stolen > 0) {
-            if (!is_animal(mtmp.data)) {
-                const { tele_restrict, rloc } = await import('./teleport.js');
-                if (!await tele_restrict(mtmp))
-                    await rloc(mtmp, RLOC_MSG);
-            } else if (stolenName.value && canseemon(mtmp)) {
-                note_unported_mhitu('hitmu:animal_theft_message');
-            }
-            const { monflee } = await import('./monmove.js');
-            monflee(mtmp, 0, false, false);
-            mhm.hitflags = M_ATTK_AGR_DONE;
-            mhm.done = true;
-        }
+        await mhitm_ad_sedu(mtmp, mattk, game.youmonst, mhm);
     } else {
         note_unported_mhitu(`hitmu:adtyp=${mattk[1]}`);
         /* the generic arms still print the plain hit message */

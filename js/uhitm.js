@@ -3139,10 +3139,9 @@ export async function mhitm_ad_drli(magr, mattk, mdef, mhm) {
     }
 }
 
-// src/uhitm.c:4623 mhitm_ad_sedu(), monster against monster. A nymph takes
-// the first eligible object, updates the defender's worn and wielded state,
-// then teleports away. Empty inventories still turn the attack into zero
-// damage, which is the public little-dog versus water-nymph case.
+// src/uhitm.c:4623 mhitm_ad_sedu(), shared hero and monster seduction and
+// theft handling. Against another monster, a nymph takes the first eligible
+// object, updates worn and wielded state, then teleports away.
 export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
     const pa = magr.data;
 
@@ -3170,7 +3169,7 @@ export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
                   : (magr.minvent && magr.minvent.length)
                     ? 'brags about the goods some dungeon explorer provided'
                   : 'makes some remarks about how difficult theft is lately'}.`);
-            if (!tele_restrict(magr))
+            if (!(await tele_restrict(magr)))
                 await rloc(magr, RLOC_MSG);
             mhm.hitflags = M_ATTK_AGR_DONE; /* return 3??? */
             mhm.done = true;
@@ -3181,7 +3180,7 @@ export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
                       game.flags.female ? 'charm' : 'seduce'} you, but you seem ${
                       game.flags.female ? 'unaffected' : 'uninterested'}.`);
             if (rn2(3)) {
-                if (!tele_restrict(magr))
+                if (!(await tele_restrict(magr)))
                     await rloc(magr, RLOC_MSG);
                 mhm.hitflags = M_ATTK_AGR_DONE; /* return 3??? */
                 mhm.done = true;
@@ -3197,12 +3196,12 @@ export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
         case 0:
             return;
         default:
-            if (!is_animal(magr.data) && !tele_restrict(magr))
+            if (!is_animal(magr.data) && !(await tele_restrict(magr)))
                 await rloc(magr, RLOC_MSG);
-            if (is_animal(magr.data) && buf.v) {
+            if (is_animal(magr.data) && buf.value) {
                 if (canseemon(magr))
                     await pline(`${Monnam(magr)} tries to ${
-                                  locomotion(magr.data, 'run')} away with ${buf.v}.`);
+                                  locomotion(magr.data, 'run')} away with ${buf.value}.`);
             }
             await monflee(magr, 0, false, false);
             mhm.hitflags = M_ATTK_AGR_DONE; /* return 3??? */

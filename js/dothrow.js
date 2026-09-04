@@ -459,6 +459,17 @@ function throwit_return(clear_thrownobj) {
         game.thrownobj = null;
 }
 
+// src/dothrow.c:1468 swallowit() -- give a missile to the engulfing monster.
+async function swallowit(obj) {
+    if (obj !== game.u.uball) {
+        const { mpickobj } = await import('./steal.js');
+        mpickobj(game.u.ustuck, obj); /* clears game.thrownobj */
+        throwit_return(false);
+    } else {
+        throwit_return(true);
+    }
+}
+
 // src/dothrow.c:1855 return_throw_to_inv() -- put a caught missile back in
 // its original stack or inventory slot, then restore its weapon slot.
 async function return_throw_to_inv(obj, wep_mask, twoweap, oldslot) {
@@ -517,8 +528,10 @@ async function sho_obj_return_to_u(obj) {
             newsym(flightPos.x, flightPos.y);
         display_object_at(obj, x, y, glyph);
         flightPos = { x, y };
-        if (game.animationFrame)
+        if (game.animationFrame) {
+            await flush_screen(0);
             await game.animationFrame();
+        }
         x -= u.dx;
         y -= u.dy;
     }
@@ -595,12 +608,26 @@ export async function throwit(obj, wep_mask, twoweap = false,
 
     /* the low-stamina drop arm reads encumbrance; calc_capacity stays 0
        for every current session so the gate is the hp test alone */
+    let mon = null;
+    let endTether = null;
     if (u.uswallow) {
-        note_unported_dothrow('throwit:uswallow');
-        throwit_return(true);
-        return;
-    }
-    if (u.dz) {
+        if (obj === u.uball) {
+            u.uball.ox = u.ux;
+            u.uball.oy = u.uy;
+            if (u.uchain) {
+                u.uchain.ox = u.ux;
+                u.uchain.oy = u.uy;
+            }
+        }
+        mon = u.ustuck;
+        game.bhitpos = { x: mon.mx, y: mon.my };
+        if (tethered_weapon) {
+            /* tmp_at(DISP_TETHER, obj_to_glyph(...)) opens an empty tether.
+               Capturing the glyph preserves its display-RNG behavior. */
+            temporary_object_glyph(obj);
+            endTether = async () => {};
+        }
+    } else if (u.dz) {
         if (u.dz < 0 && game.iflags.returning_missile && !impaired) {
             await pline(`${Tobjnam(obj, 'hit')} the ${
                 ceiling(u.ux, u.uy)} and returns to your hand!`);
@@ -633,10 +660,7 @@ export async function throwit(obj, wep_mask, twoweap = false,
         }
         throwit_return(true);
         return;
-    }
-    let mon = null;
-    let endTether = null;
-    if (obj.otyp === ONAMES.BOOMERANG && !Underwater()) {
+    } else if (obj.otyp === ONAMES.BOOMERANG && !Underwater()) {
         if (Is_airlevel(u.uz) || Levitation())
             await hurtle(-u.dx, -u.dy, 1, true);
         mon = await boomhit(obj, u.dx, u.dy);
@@ -720,6 +744,10 @@ export async function throwit(obj, wep_mask, twoweap = false,
         throwit_return(false);
         return;
     }
+    if (u.uswallow && !game.iflags.returning_missile) {
+        await swallowit(obj);
+        return;
+    }
 
     const bx = game.bhitpos.x, by = game.bhitpos.y;
     if (game.iflags.returning_missile) {
@@ -758,6 +786,10 @@ export async function throwit(obj, wep_mask, twoweap = false,
                     await losehp(Maybe_Half_Phys(dmg), killer_xname(obj),
                                  KILLED_BY);
                 }
+                if (u.uswallow) {
+                    await swallowit(obj);
+                    return;
+                }
                 if (!await ship_object(obj, u.ux, u.uy, false)) {
                     const { dropy } = await import('./do.js');
                     await dropy(obj);
@@ -769,6 +801,10 @@ export async function throwit(obj, wep_mask, twoweap = false,
         if (tethered_weapon)
             await endTether(false);
         await pline(`${Tobjnam(obj, 'fail')} to return!`);
+        if (u.uswallow) {
+            await swallowit(obj);
+            return;
+        }
     }
 
     /* src/dothrow.c:1780 */

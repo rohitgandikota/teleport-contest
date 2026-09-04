@@ -9,6 +9,7 @@
 //   node tools/screendiff.mjs <session> <step>   # a specific boundary
 //   node tools/screendiff.mjs <session> --first  # first mismatching boundary
 //   node tools/screendiff.mjs <session>          # same as --first
+//   node tools/screendiff.mjs <session> --anim   # first animation mismatch
 //
 // Exit status: 0 when the frame matches, 1 when it does not, 2 on error.
 
@@ -59,6 +60,7 @@ async function runOurPort(segments) {
     };
     const screens = [];
     const cursors = [];
+    const animations = [];
     let error = null;
     try {
         for (const seg of segments) {
@@ -68,9 +70,11 @@ async function runOurPort(segments) {
             });
             for (const s of game.getScreens?.() || []) screens.push(s);
             for (const c of game.getCursors?.() || []) cursors.push(c);
+            for (const frames of game.getAnimationFramesByStep?.() || [])
+                animations.push(frames);
         }
     } catch (e) { error = e; }
-    return { screens, cursors, error };
+    return { screens, cursors, animations, error };
 }
 
 // Render one decoded grid as 24 lines of visible text, with a left gutter.
@@ -103,6 +107,7 @@ function describeCell(cell, renderCell) {
 async function main() {
     const argv = process.argv.slice(2);
     const targets = argv.filter(a => !a.startsWith('-'));
+    const wantAnim = argv.includes('--anim');
     const wantFirst = argv.includes('--first') || targets.length < 2;
     if (targets.length === 0) {
         console.error('usage: node tools/screendiff.mjs <session> [step|--first]');
@@ -118,13 +123,16 @@ async function main() {
     const segments = normalizeSession(raw).segments;
 
     // Flatten the recorded boundaries, keeping provenance for the header.
-    const cScreens = [], cCursors = [], origin = [];
+    let cScreens = [], cCursors = [], origin = [];
+    const cAnimations = [];
     segments.forEach((seg, segIdx) => {
         (seg.steps || []).forEach((step, stepIdx) => {
             if (!step.screen) return;
             cScreens.push(step.screen);
             cCursors.push(Array.isArray(step.cursor) ? step.cursor : null);
             origin.push({ seg: segIdx, step: stepIdx, key: step.key });
+            cAnimations.push(Array.isArray(step.animation_frames)
+                ? step.animation_frames : []);
         });
     });
 
@@ -132,6 +140,27 @@ async function main() {
     if (ours.error) {
         console.log(`${T.red}Our port threw:${T.off} ${ours.error.message}`);
         console.log(`${T.dim}${(ours.error.stack || '').split('\n').slice(1, 6).join('\n')}${T.off}`);
+    }
+
+    if (wantAnim) {
+        const animScreens = [], animCursors = [], animOrigin = [];
+        const ourAnimScreens = [], ourAnimCursors = [];
+        for (let i = 0; i < cAnimations.length; i++) {
+            const canonical = cAnimations[i] || [];
+            const actual = ours.animations[i] || [];
+            for (let frame = 0; frame < canonical.length; frame++) {
+                animScreens.push(canonical[frame].screen || '');
+                animCursors.push(canonical[frame].cursor || null);
+                animOrigin.push({ ...origin[i], frame });
+                ourAnimScreens.push(actual[frame]?.screen || '');
+                ourAnimCursors.push(actual[frame]?.cursor || null);
+            }
+        }
+        cScreens = animScreens;
+        cCursors = animCursors;
+        origin = animOrigin;
+        ours.screens = ourAnimScreens;
+        ours.cursors = ourAnimCursors;
     }
 
     const cellsDiffer = (i) => {
@@ -147,6 +176,8 @@ async function main() {
         return { bad, a, b };
     };
     const cursorOk = (i) => {
+        if (wantAnim)
+            return true; /* the contest animation metric compares cells only */
         const c = cCursors[i], j = ours.cursors[i];
         if (!Array.isArray(c)) return true;
         if (!Array.isArray(j)) return false;
@@ -197,7 +228,9 @@ async function main() {
         : `after key ${JSON.stringify(o.key)}`;
 
     console.log(`${T.bold}${basename(sessionPath).replace('.session.json', '')}${T.off}` +
-        `  step ${index} of ${cScreens.length - 1}  (seg ${o.seg + 1}, ${keyLabel})`);
+        `  ${wantAnim ? 'animation' : 'step'} ${index} of ${cScreens.length - 1}`
+        + `  (seg ${o.seg + 1}, ${keyLabel}${
+            wantAnim ? `, frame ${o.frame}` : ''})`);
 
     const rows = new Set(bad.map(d => d.r));
     console.log(`\n${T.cyan}C reference${T.off}   ${T.dim}(row gutter: * = cursor row, > = has differences)${T.off}`);

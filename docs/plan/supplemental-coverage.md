@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **106**. Covered: **99**.
 Partial: **7**. Gaps: **0**.
 
-Branch requirements: **1088**. Covered: **1088**.
+Branch requirements: **1103**. Covered: **1103**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 396 | 102254 | 4766795 | 77 | 529 |
-| Union | 440 | 113659 | 5534555 | 80 | 561 |
+| Supplemental | 396 | 103012 | 4803561 | 77 | 529 |
+| Union | 440 | 114417 | 5571321 | 80 | 561 |
 
 ## Static inventory
 
@@ -258,6 +258,21 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `dofire.return.mjollnir` | `src/dothrow.c:dofire` | `return-weapons` |
 | covered | `display.tether.backtrack` | `src/display.c:tmp_at` | `return-weapons` |
 | covered | `objnam.aklys.tethered-label` | `src/objnam.c:doname_base` | `return-weapons` |
+| covered | `dothrow.return.aklys-impaired-feet` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.aklys-after-monster` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.aklys-swallowed` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.mjollnir-too-heavy` | `src/dothrow.c:throw_obj` | `return-weapons` |
+| covered | `dothrow.return.mjollnir-nonvalkyrie` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dofire.return.quivered-ammo-precedence` | `src/dothrow.c:dofire` | `return-weapons` |
+| covered | `dofire.return.quivered-missile-precedence` | `src/dothrow.c:dofire` | `return-weapons` |
+| covered | `dothrow.return.vertical-aklys` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.vertical-mjollnir` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.aklys-failure` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.aklys-feet` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.aklys-arm` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.mjollnir-failure` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.mjollnir-feet` | `src/dothrow.c:throwit` | `return-weapons` |
+| covered | `dothrow.return.mjollnir-artifact-arm` | `src/dothrow.c:throwit` | `return-weapons` |
 
 ### Underwater vision
 
@@ -2214,7 +2229,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `ranger-chargen` | normal | 90 | present | `chargen.full-menu`, `combat.melee`, `combat.ranged`, `level.ordinary`, `mode.normal`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.food-corpses`, `object.weapons`, `survival.hunger`, `turn.occupation-interrupt`, `turn.speed-energy`, `ui.count-repeat`, `ui.map-memory-vision`, `ui.menus` |
 | `reflection-gaze` | debug | 39 | present | `combat.resist-reflect`, `level.ordinary`, `mode.debug`, `monster.special-effects` |
 | `restricted-shell-command` | normal | 10 | present | `level.ordinary`, `mode.normal`, `ui.cancel-invalid`, `ui.getlin` |
-| `return-weapons` | debug | 206 | present | `combat.ranged`, `level.ordinary`, `mode.debug`, `object.weapons`, `ui.animation`, `ui.getlin` |
+| `return-weapons` | debug | 949 | present | `combat.ranged`, `level.ordinary`, `mode.debug`, `object.weapons`, `ui.animation`, `ui.getlin` |
 | `revival-bag-of-holding` | debug | 132 | present | `level.ordinary`, `mode.debug`, `object.food-corpses`, `object.tools-containers`, `turn.timers`, `ui.getlin`, `ui.menus` |
 | `revival-substitute-types` | debug | 280 | present | `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `object.food-corpses`, `object.wands`, `ui.getlin` |
 | `rider-behavior` | debug | 393 | present | `endgame.riders`, `level.ordinary`, `mode.debug`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `ui.getlin`, `ui.getpos`, `ui.more-paging` |

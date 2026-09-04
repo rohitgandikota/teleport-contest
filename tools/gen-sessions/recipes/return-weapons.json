@@ -1,6 +1,6 @@
 {
   "name": "return-weapons",
-  "description": "Wielded aklys and Valkyrie Mjollnir exercise throw and fire selection, tether animation and backtracking, hand restoration, artifact range handling, and direct upward return.",
+  "description": "Returning aklys and Valkyrie Mjollnir exercise throw and fire selection, tether and projectile animation, monster and swallowed contact, impairment and role guards, hand restoration, vertical throws, and every return-failure outcome.",
   "coverage": [
     "combat.ranged",
     "level.ordinary",
@@ -16,7 +16,22 @@
     "dofire.return.aklys",
     "dofire.return.mjollnir",
     "display.tether.backtrack",
-    "objnam.aklys.tethered-label"
+    "objnam.aklys.tethered-label",
+    "dothrow.return.aklys-impaired-feet",
+    "dothrow.return.aklys-after-monster",
+    "dothrow.return.aklys-swallowed",
+    "dothrow.return.mjollnir-too-heavy",
+    "dothrow.return.mjollnir-nonvalkyrie",
+    "dofire.return.quivered-ammo-precedence",
+    "dofire.return.quivered-missile-precedence",
+    "dothrow.return.vertical-aklys",
+    "dothrow.return.vertical-mjollnir",
+    "dothrow.return.aklys-failure",
+    "dothrow.return.aklys-feet",
+    "dothrow.return.aklys-arm",
+    "dothrow.return.mjollnir-failure",
+    "dothrow.return.mjollnir-feet",
+    "dothrow.return.mjollnir-artifact-arm"
   ],
   "requireBranchAssertions": true,
   "branchAssertions": [
@@ -63,6 +78,130 @@
       "branch": "objnam.aklys.tethered-label",
       "segment": 0,
       "screenIncludes": ["a - a thonged club (tethered to left hand)."]
+    },
+    {
+      "branch": "dothrow.return.aklys-impaired-feet",
+      "segment": 5,
+      "screenIncludes": ["The thonged club returns back to you, landing at your feet."],
+      "rngIncludes": [
+        "rn2(100)=52 @ throwit(dothrow.c:1711)",
+        "rn2(2)=0 @ throwit(dothrow.c:1730)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.aklys-after-monster",
+      "segment": 6,
+      "screenIncludes": [
+        "An iron golem appears next to you.",
+        "The thonged club returns to your hand!"
+      ],
+      "rngIncludes": [
+        "rn2(100)=51 @ throwit(dothrow.c:1711)",
+        "rn2(100)=27 @ throwit(dothrow.c:1717)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.aklys-swallowed",
+      "segment": 7,
+      "screenIncludes": [
+        "The thonged club hits the purple worm.",
+        "The thonged club returns to your hand!"
+      ],
+      "rngIncludes": [
+        "rn2(100)=40 @ throwit(dothrow.c:1711)",
+        "rn2(100)=49 @ throwit(dothrow.c:1717)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.mjollnir-too-heavy",
+      "segment": 8,
+      "screenIncludes": ["It's too heavy."]
+    },
+    {
+      "branch": "dothrow.return.mjollnir-nonvalkyrie",
+      "segment": 9,
+      "screenExcludes": ["The war hammer named Mjollnir returns"]
+    },
+    {
+      "branch": "dofire.return.quivered-ammo-precedence",
+      "segment": 10,
+      "screenIncludes": [
+        "b - 5 arrows (in quiver).",
+        "The thonged club returns to your hand!"
+      ]
+    },
+    {
+      "branch": "dofire.return.quivered-missile-precedence",
+      "segment": 11,
+      "screenExcludes": ["The thonged club returns"]
+    },
+    {
+      "branch": "dothrow.return.vertical-aklys",
+      "segment": 12,
+      "screenIncludes": ["The thonged club hits the ceiling and returns to your hand!"]
+    },
+    {
+      "branch": "dothrow.return.vertical-mjollnir",
+      "segment": 13,
+      "screenIncludes": ["The war hammer named Mjollnir hits the ceiling and returns to your hand!"]
+    },
+    {
+      "branch": "dothrow.return.aklys-failure",
+      "segment": 14,
+      "screenIncludes": ["The thonged club fails to return!"],
+      "rngIncludes": ["rn2(100)=0 @ throwit(dothrow.c:1711)"]
+    },
+    {
+      "branch": "dothrow.return.aklys-feet",
+      "segment": 15,
+      "screenIncludes": ["The thonged club returns back to you, landing at your feet."],
+      "rngIncludes": [
+        "rn2(100)=68 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=0 @ throwit(dothrow.c:1730)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.aklys-arm",
+      "segment": 16,
+      "screenIncludes": ["The thonged club flies back toward you, hitting your arm!"],
+      "rngIncludes": [
+        "rn2(100)=74 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=1 @ throwit(dothrow.c:1730)",
+        "rnd(3)=1 @ throwit(dothrow.c:1739)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.mjollnir-failure",
+      "segment": 17,
+      "screenIncludes": ["The war hammer named Mjollnir fails to return!"],
+      "rngIncludes": ["rn2(100)=0 @ throwit(dothrow.c:1711)"]
+    },
+    {
+      "branch": "dothrow.return.mjollnir-feet",
+      "segment": 18,
+      "screenIncludes": ["The war hammer named Mjollnir returns back to you, landing at your feet."],
+      "rngIncludes": [
+        "rn2(100)=6 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=0 @ throwit(dothrow.c:1730)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.mjollnir-artifact-arm",
+      "segment": 19,
+      "screenIncludes": [
+        "The war hammer named Mjollnir flies back toward you, hitting your arm!",
+        "The massive hammer hits!  Lightning strikes you!"
+      ],
+      "rngIncludes": [
+        "rn2(100)=11 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=1 @ throwit(dothrow.c:1730)",
+        "rnd(3)=2 @ throwit(dothrow.c:1739)",
+        "rn2(5)=2 @ artifact_hit(artifact.c:1520)"
+      ]
     }
   ],
   "segments": [
@@ -95,6 +234,96 @@
       "datetime": "20000118120000",
       "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbfl  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwa\u0017blessed fumble boots\rWbtal  i\u001b"
+    },
+    {
+      "seed": 100500,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +20 aklys\rwa\u0007sleeping peaceful iron golem\rtau  i\u001b"
+    },
+    {
+      "seed": 6930,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007purple worm\rmsms \u0017blessed +5 aklys\rwa tal  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Mjollnir\rwatal  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbtbl  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwa\u00175 blessed arrows\rQbfl  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwa\u0017blessed +5 dagger\rQbfl  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwata<  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbtb<  i\u001b"
+    },
+    {
+      "seed": 106,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwatal  i\u001b"
+    },
+    {
+      "seed": 261,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwatal  i\u001b"
+    },
+    {
+      "seed": 1010,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwatal  i\u001b"
+    },
+    {
+      "seed": 68,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbtbl  i\u001b"
+    },
+    {
+      "seed": 36,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbtbl  i\u001b"
+    },
+    {
+      "seed": 905,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbtbl  i\u001b"
     }
   ]
 }

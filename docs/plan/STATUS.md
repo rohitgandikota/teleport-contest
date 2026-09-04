@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-04: return-weapon edge table and swallowed contact match C
+
+The return-weapon path now handles a throw made while swallowed by targeting
+the engulfing monster, preserving C's thrown-object state, and returning a
+successful aklys to the hero's hand. Ordinary projectile flight now flushes
+the glyph buffer before each captured animation frame, matching the timing
+already used by tether backtracking. `tools/screendiff.mjs --anim` can now
+locate and render the first animation-frame difference directly.
+
+The permanent `return-weapons` oracle grew from five to 20 C-recorded
+segments. It covers Fumbling, monster contact, swallowed contact, Mjollnir's
+strength and role guards, both fire-command precedence rules, upward aklys
+and Mjollnir throws, and every initial-failure, feet-landing, and arm-hit
+outcome for both weapons. All 20 segments are byte-identical at
+**52,719/52,719 RNG calls**, **969/969 screens**, **969/969 cursors**, and
+**41/41 animation frames**. Fifteen asserted branches raise the declared
+ledger from **1,088/1,088 to 1,103/1,103** with no gaps. The source RNG
+census remains **1,547/2,621 observed call sites (59.0%)**. The combined
+public and supplemental corpus remains 440 sessions and now contains
+5,964,016 tagged RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**396/396**, **103,012/103,012 screens**, and
+**5,171,178/5,171,178 RNG**; random play **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles,
+all ten audit and recorder tests pass, source and state audits are clean, and
+frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The next adjacent C-backed gaps are the two swallowed-object transfer arms:
+a nonreturning missile and a return weapon that fails or misses its catch.
+The dashboard heartbeat remains active on its six-hour schedule.
+
 ## 2026-09-04: wielded return weapons and tether flight match C
 
 The `AutoReturn` decision now matches the pinned C macro for boomerangs,

@@ -490,13 +490,19 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
     /* display.c tmp_at() restores the preceding temporary cell whenever the
        missile advances, then leaves the new one painted during messages. */
     const show_missile = async () => {
-        if (tempMissile)
+        if (tempMissile) {
             newsym(tempMissile.x, tempMissile.y);
-        display_object_at(singleobj, game.bhitpos.x, game.bhitpos.y,
-                          missileGlyph);
-        tempMissile = { x: game.bhitpos.x, y: game.bhitpos.y };
-        if (game.animationFrame) {
+            tempMissile = null;
+        }
+        /* tmp_at(DISP_FLASH) skips the glyph outside the hero's view, but
+           m_throw() still performs the following delay. */
+        if (cansee(game.bhitpos.x, game.bhitpos.y)) {
+            display_object_at(singleobj, game.bhitpos.x, game.bhitpos.y,
+                              missileGlyph);
+            tempMissile = { x: game.bhitpos.x, y: game.bhitpos.y };
             await flush_screen(0);
+        }
+        if (game.animationFrame) {
             await game.animationFrame();
         }
     };
@@ -537,6 +543,9 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
         return;
     }
     game.mesg_given = 0; /* a 'missile misses' message not yet shown */
+    /* tmp_at(DISP_FLASH, glyph) flushes map updates before the first flight
+       delay, including restoration left buffered by a preceding shot. */
+    await flush_screen(0);
 
     while (range-- > 0) { /* loop is always exited by break */
         game.bhitpos.x += dx;

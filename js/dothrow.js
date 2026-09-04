@@ -1043,6 +1043,8 @@ export async function thitmonst(mon, obj) {
                 await finish_quest(obj);
                 const next2u = distmin(mon.mx, mon.my, u.ux, u.uy) <= 1;
                 await pline(`${Some_Monnam(mon)} ${next2u ? 'hands' : 'tosses'} ${the(xname(obj))} back to you.`);
+                if (!next2u)
+                    await sho_obj_return_to_u(obj);
                 await addinv(obj);
                 await encumber_msg();
             }

@@ -119,7 +119,7 @@ export function bot_conditions() {
     let cond = '';
     if (props.STONED) cond += ' Stone';
     if (props.SLIMED) cond += ' Slime';
-    if (props.STRANGLED) cond += ' Strngl';
+    if (intr.HStrangled) cond += ' Strngl';
     const sick_type = game._deferred_status_sick_type ?? u.usick_type;
     if (sick_type & SICK_VOMITABLE) cond += ' FoodPois';
     if (sick_type & SICK_NONVOMITABLE) cond += ' TermIll';

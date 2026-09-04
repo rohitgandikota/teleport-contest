@@ -1,5 +1,39 @@
 # STATUS — live handoff board
 
+## 2026-09-04: supplemental animation corpus is fully byte-identical
+
+Five pinned C display rules close the final 19 supplemental animation misses.
+Monster missiles now preserve `tmp_at(DISP_FLASH)` visibility, restoration,
+flush, and unconditional-delay ordering. Explosion beams skip individual cells
+outside sight. A quest leader visibly returns the artifact through
+`sho_obj_return_to_u()`. Save restore preserves the process-local animation
+callback. The `Strngl` status field reads the intrinsic strangulation timeout,
+not the worn amulet property bit.
+
+The shared missile correction adds 14 matching frames: nine in
+`ambient-special-room-sounds`, four in `variant-world-tour`, and one in
+`wizard-eat-effects`. Explosion visibility adds two burning-oil frames. The
+quest return, restored callback, and strangulation status rule add one frame
+each. Supplemental animation matching therefore rises by exactly 19, from
+**3,160/3,179 to 3,179/3,179**.
+The existing C fixtures already exercise every affected behavior, so the
+branch ledger remains **1,111/1,111**.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,451/1,483 animations**; supplemental **398/398**,
+**103,842/103,842 screens**, **5,194,865/5,194,865 RNG**, and
+**3,179/3,179 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles,
+all ten audit and recorder tests pass, source and focused state audits are
+clean, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The six-hour dashboard heartbeat remains active. The next work returns to
+uncovered C behavior and the evidence-ranked port backlog.
+
 ## 2026-09-04: sensed-monster flash animation matches C
 
 `flash_mon()` now matches the pinned `mon.c` visibility override, display-RNG

@@ -1,0 +1,32 @@
+{
+  "name": "options-bind-keys-menu",
+  "description": "A normal-mode hero selects bind keys from the full options menu, opens its action picker, and exits without changing a binding.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.menus"
+  ],
+  "branches": [
+    "options.bind-keys.action-menu"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "options.bind-keys.action-menu",
+      "segment": 0,
+      "screenIncludes": [
+        "Do what?",
+        "bind key to a command",
+        "bind command to a key"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 465842,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Bindings,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|h  "
+    }
+  ]
+}

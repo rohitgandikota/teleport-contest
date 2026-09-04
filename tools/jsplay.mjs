@@ -34,6 +34,7 @@ const { moveloop_core } = await import(pathToFileURL(join(ROOT, 'js/allmain.js')
    and resetGame() replaces the object when the game starts */
 const gstate = await import(pathToFileURL(join(ROOT, 'js/gstate.js')).href);
 const C = await import(pathToFileURL(join(ROOT, 'js/const.js')).href);
+const symbols = await import(pathToFileURL(join(ROOT, 'js/symbols.js')).href);
 const { decodeScreen } = await import(pathToFileURL(join(ROOT, 'tools/gen-sessions/screen-decode.mjs')).href);
 
 const session = JSON.parse(readFileSync(sessionPath, 'utf8'));
@@ -134,7 +135,8 @@ if (flag('--evalasync')) {
 if (flag('--eval')) {
     const game = gstate.game;
     const dungeon = await import(pathToFileURL(join(ROOT, 'js/dungeon.js')).href);
-    console.log('EVAL', new Function('game', 'dungeon', 'C', `return (${opt('--eval')});`)(game, dungeon, C));
+    console.log('EVAL', new Function('game', 'dungeon', 'C', 'symbols',
+        `return (${opt('--eval')});`)(game, dungeon, C, symbols));
 }
 if (flag('--dumptrap')) {
     const game=gstate.game; for (const t of (game.level?.traps||[])) console.log(`TRAP (${t.tx},${t.ty}) ttyp=${t.ttyp} tseen=${t.tseen}`); console.log(`hero ${game.u.ux},${game.u.uy}`);

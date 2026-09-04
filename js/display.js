@@ -1535,9 +1535,10 @@ function engraving_glyph(loc, x, y) {
     if (cansee(x, y))
         ep.erevealed = 1;
 
-    return typ === CORR
-        ? { ch: '#', color: CLR_BRIGHT_BLUE, dec: false, cmap: CM.S_engrcorr }
-        : { ch: '`', color: CLR_BRIGHT_BLUE, dec: false, cmap: CM.S_engroom };
+    const cmap = typ === CORR ? CM.S_engrcorr : CM.S_engroom;
+    const sym = showsym(cmap) || defsyms[cmap];
+    return { ch: sym?.ch ?? sym?.sym ?? (typ === CORR ? '#' : '`'),
+             color: CLR_BRIGHT_BLUE, dec: !!sym?.dec, cmap };
 }
 
 // ── docrt ──
@@ -1869,6 +1870,14 @@ const CMP_DEC_MAP = {
 function _paint_map_cell(display, x, y) {
     const g = gbuf_at(x, y);
     if (!g) return;
+    /* tty_print_glyph() sends a UTF-8 override through g_pututf8(), which
+       bypasses the recorder's nomux screen buffer. The physical recorder
+       cell therefore stays unchanged. This is observable when a hero moves
+       off a Unicode floor: the old '@' remains until some ordinary glyph or
+       screen clear overwrites it. */
+    const cmap = g.disp_glyph?.cmap;
+    if (cmap !== undefined && showsym(cmap)?.utf8)
+        return;
     const raw = g.disp_ch || ' ';
     const ch = g.disp_decgfx ? (CMP_DEC_MAP[raw] || raw) : raw;
     const attr = (g.disp_attr ?? 0) | pet_terminal_attr(g.disp_glyph?.mon);

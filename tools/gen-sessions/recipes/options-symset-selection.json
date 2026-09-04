@@ -1,0 +1,51 @@
+{
+  "name": "options-symset-selection",
+  "description": "A normal-mode hero switches from DECgraphics to Enhanced2, moves across a Unicode floor, and opens a text window under the UTF-8 handler.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.menus",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "options.symset.selection-menu",
+    "tty.utf8-map.recorder-bypass",
+    "tty.text-window.utf8-first-byte"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "options.symset.selection-menu",
+      "segment": 0,
+      "screenIncludes": [
+        "Select symbol set:",
+        "Enhanced with more Unicode glyphs and 24-bit color"
+      ]
+    },
+    {
+      "branch": "tty.utf8-map.recorder-bypass",
+      "segment": 0,
+      "screenCells": [
+        { "step": 9, "x": 67, "y": 16, "equals": "@" },
+        { "step": 9, "x": 68, "y": 16, "equals": "@" }
+      ]
+    },
+    {
+      "branch": "tty.text-window.utf8-first-byte",
+      "segment": 0,
+      "screenIncludes": [
+        "iscoveries, by order of discovery within each class",
+        "eapons",
+        "pellbooks"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 465841,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Symbols,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|b jll\u0018\u001b\\"
+    }
+  ]
+}

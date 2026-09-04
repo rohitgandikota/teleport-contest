@@ -1,0 +1,32 @@
+{
+  "name": "options-status-highlight-rules",
+  "description": "A normal-mode hero opens status highlight rules and selects the visible terrain row, exercising the pinned field-ID quirk that opens armor behavior.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.menus"
+  ],
+  "branches": [
+    "options.status-highlight-rules.menu"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "options.status-highlight-rules.menu",
+      "segment": 0,
+      "screenIncludes": [
+        "Status hilites:",
+        "e - terrain",
+        "Select armor field hilite behavior:"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 465844,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Hilites,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|l  e"
+    }
+  ]
+}

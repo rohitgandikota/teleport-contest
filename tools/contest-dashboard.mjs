@@ -174,7 +174,9 @@ function summarizeLeaderboard(data) {
 
 async function fetchLeaderboard() {
     try {
-        const response = await fetch(`${LEADERBOARD_URL}?t=${Date.now()}`);
+        const response = await fetch(`${LEADERBOARD_URL}?t=${Date.now()}`, {
+            signal: AbortSignal.timeout(10000),
+        });
         if (!response.ok)
             throw new Error(`leaderboard fetch failed: ${response.status}`);
         const snapshot = summarizeLeaderboard(await response.json());

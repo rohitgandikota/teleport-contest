@@ -1,0 +1,31 @@
+{
+  "name": "empty-inventory-selection",
+  "description": "An unequipped normal-mode hero requests the full inventory from an object prompt, exercising display_pickinv's empty-list message and return path.",
+  "coverage": [
+    "mode.normal",
+    "ui.cancel-invalid",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "inventory.display-pickinv.empty"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "inventory.display-pickinv.empty",
+      "segment": 0,
+      "screenIncludes": [
+        "Not carrying anything.--More--"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 465840,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Empty,role:Wizard,race:human,gender:male,align:neutral,pauper,nudist,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " t* \u001b"
+    }
+  ]
+}

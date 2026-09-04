@@ -27,6 +27,7 @@ import { MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED,
          MENU_ITEMFLAGS_SKIPINVERT, MENU_NEXT_PAGE, MENU_PREVIOUS_PAGE,
          MENU_SEARCH, PICK_ONE, PICK_ANY, GOLD_SYM, ROWNO, COLNO } from './../const.js';
 import { pmatch } from './../hacklib.js';
+import { gc_currentgraphics, gs_symset, H_UTF8 } from './../symbols.js';
 
 // include/wintype.h:128-137 — NetHack's attribute numbers. These are NOT the
 // frozen terminal's bit flags; win/tty/wintty.c term_start_attr() translates
@@ -404,7 +405,19 @@ function render_page(cw, page, display) {
         for (let c = cw.offx; c < col; c++)
             display.setCell(c, row, ' ', NO_COLOR, 0);
         const attr = term_attr((cw.attrs || [])[start + n] | 0);
-        for (let i = 0; i < line.length && col < COLS; i++, col++)
+        let first = 0;
+        /* wintty.c:1808 pre-increments ttyDisplay->curx, then sends the
+           first byte of each data line through g_putch() under H_UTF8. The
+           recorder's g_putch hook therefore writes it one cell late and the
+           ordinary second byte overwrites it. Preserve that observable
+           one-byte loss for data-backed text windows. */
+        if (line.length
+            && gs_symset[gc_currentgraphics.set]?.handling === H_UTF8) {
+            display.setCell(col, row, ' ', NO_COLOR, 0);
+            col++;
+            first = 1;
+        }
+        for (let i = first; i < line.length && col < COLS; i++, col++)
             display.setCell(col, row, line[i], NO_COLOR, attr);
         /* win/tty/wintty.c calls cl_end() on every window row, so a short
            menu line blanks the rest of the row rather than letting the map

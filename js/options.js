@@ -10,7 +10,8 @@ import {
     tty_add_menu_str, tty_end_menu, tty_display_nhwindow, tty_select_menu,
 } from './tty/wintty.js';
 import {
-    MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SKIPINVERT, MENU_BEHAVE_STANDARD,
+    MENU_ITEMFLAGS_NONE, MENU_ITEMFLAGS_SELECTED, MENU_ITEMFLAGS_SKIPINVERT,
+    MENU_BEHAVE_STANDARD,
     PICK_ONE, PICK_ANY, ECMD_OK,
     AUTOUNLOCK_APPLY_KEY,
 } from './const.js';
@@ -18,7 +19,8 @@ import { NO_COLOR } from './terminal.js';
 import { allopt, findOption } from './optlist.js';
 import { condtests } from './botl.js';
 import {
-    gs_symset, gc_currentgraphics, known_handling, PRIMARYSET,
+    assign_graphics, gs_symset, gc_currentgraphics, known_handling,
+    primary_symsets, PRIMARYSET,
 } from './symbols.js';
 import { def_char_to_objclass } from './sp_lev.js';
 import { OCLASSES } from './objects_data.js';
@@ -1245,6 +1247,262 @@ function doset_add_menu(tmpwin, o, fmtstr, indexoffset) {
                  fmtstr(indent, o.name, value), MENU_ITEMFLAGS_SKIPINVERT);
 }
 
+// src/symbols.c:909 do_symset(), primary-set path for the pinned tty build.
+async function do_symset() {
+    const current = gs_symset[PRIMARYSET]?.name || null;
+    const tmpwin = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(tmpwin, MENU_BEHAVE_STANDARD);
+
+    let defindx = current ? 0 : 1;
+    tty_add_menu(tmpwin, null, 1, 0, 0, ATR_NONE, NO_COLOR,
+                 'Default Symbols', defindx === 1
+                     ? MENU_ITEMFLAGS_SELECTED : MENU_ITEMFLAGS_NONE);
+
+    const width = Math.max('Default Symbols'.length,
+                           ...primary_symsets.filter(s => s.name)
+                               .map(s => s.name.length)) + 2;
+    for (const entry of primary_symsets) {
+        if (!entry.name)
+            continue;
+        const id = entry.index + 2;
+        if (entry.name.toLowerCase() === current?.toLowerCase())
+            defindx = id;
+        const text = `${entry.name.padEnd(width)} ${entry.description}`;
+        tty_add_menu(tmpwin, null, id, 0, 0, ATR_NONE, NO_COLOR, text,
+                     id === defindx ? MENU_ITEMFLAGS_SELECTED
+                                    : MENU_ITEMFLAGS_NONE);
+    }
+    tty_end_menu(tmpwin, 'Select symbol set:');
+    const picks = await tty_select_menu(tmpwin, PICK_ONE);
+
+    let chosen = -2;
+    if (picks.length) {
+        chosen = picks[0];
+        if (picks.length === 2 && chosen === defindx)
+            chosen = picks[1];
+        chosen -= 2;
+    } else if (!picks.cancelled && defindx > 0) {
+        chosen = defindx - 2;
+    }
+    tty_destroy_nhwindow(tmpwin);
+
+    if (chosen >= -1) {
+        const entry = primary_symsets.find(s => s.index === chosen);
+        assign_graphics(entry?.name || false);
+    }
+    game.opt_need_redraw = true;
+}
+
+// src/cmd.c:2408 handler_rebind_keys(), the outer action picker.
+async function handler_rebind_keys() {
+    for (;;) {
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_start_menu(win, MENU_BEHAVE_STANDARD);
+        tty_add_menu(win, null, 1, 0, 0, ATR_NONE, NO_COLOR,
+                     'bind key to a command', MENU_ITEMFLAGS_NONE);
+        tty_add_menu(win, null, 2, 0, 0, ATR_NONE, NO_COLOR,
+                     'bind command to a key', MENU_ITEMFLAGS_NONE);
+        if ((game.rc?.bindings || []).length)
+            tty_add_menu(win, null, 3, 0, 0, ATR_NONE, NO_COLOR,
+                         'view changed key binds', MENU_ITEMFLAGS_NONE);
+        tty_end_menu(win, 'Do what?');
+        const picks = await tty_select_menu(win, PICK_ONE);
+        tty_destroy_nhwindow(win);
+        if (!picks.length)
+            return;
+
+        /* The nested add, remove, and changed-bind views are independent
+           input paths. Keep the outer C loop live while those are ported. */
+        note_unported_options(`bind-keys:action-${picks[0]}`);
+        return;
+    }
+}
+
+// src/botl.c:1376 cond_menu(), the interactive status-condition picker.
+async function cond_menu() {
+    const menutitle = ['alphabetically', 'by ranking'];
+    game.gc ||= {};
+    let sortorder = game.gc.condmenu_sortorder | 0;
+
+    for (;;) {
+        const sequence = condtests.map((_, i) => i);
+        sequence.sort((a, b) => {
+            if (sortorder && condtests[a].rank !== condtests[b].rank)
+                return condtests[a].rank - condtests[b].rank;
+            const aa = condtests[a].useropt.toLowerCase();
+            const bb = condtests[b].useropt.toLowerCase();
+            return aa < bb ? -1 : aa > bb ? 1 : 0;
+        });
+
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_start_menu(win, MENU_BEHAVE_STANDARD);
+        tty_add_menu(win, null, 1, 'S', 0, ATR_NONE, NO_COLOR,
+                     `change sort order from "${menutitle[sortorder]}" to "${
+                         menutitle[1 - sortorder]}"`,
+                     MENU_ITEMFLAGS_SKIPINVERT);
+        add_menu_heading(win, `sorted ${menutitle[sortorder]}`);
+        for (const idx of sequence) {
+            const condition = condtests[idx];
+            tty_add_menu(win, null, idx + 2, 0, 0, ATR_NONE, NO_COLOR,
+                         `cond_${condition.useropt.padEnd(14)}`,
+                         condition.enabled ? MENU_ITEMFLAGS_SELECTED
+                                           : MENU_ITEMFLAGS_NONE);
+        }
+        tty_end_menu(win, 'Choose status conditions to toggle');
+        const picks = await tty_select_menu(win, PICK_ANY);
+        tty_destroy_nhwindow(win);
+
+        if (picks.includes(1)) {
+            sortorder = 1 - sortorder;
+            game.gc.condmenu_sortorder = sortorder;
+            continue;
+        }
+        if (picks.cancelled)
+            return false;
+
+        const enabled = new Set(picks.map(id => id - 2));
+        let changed = false;
+        for (let i = 0; i < condtests.length; i++) {
+            if (condtests[i].enabled !== enabled.has(i)) {
+                condtests[i].enabled = enabled.has(i);
+                condtests[i].test = false;
+                changed = true;
+            }
+        }
+        if (changed)
+            (game.disp ||= {}).botl = true;
+        return changed;
+    }
+}
+
+/* src/botl.c:703 initblstats[]. Most array indices match BL_* values. The
+   final version, weapon, armor, and terrain entries do not, so `fld` keeps
+   the enum identifier that status_hilite_menu() stores in its menu item. */
+const status_fields = [
+    { name: 'title', type: 'str' },
+    { name: 'strength', type: 'int' },
+    { name: 'dexterity', type: 'int' },
+    { name: 'constitution', type: 'int' },
+    { name: 'intelligence', type: 'int' },
+    { name: 'wisdom', type: 'int' },
+    { name: 'charisma', type: 'int' },
+    { name: 'alignment', type: 'str' },
+    { name: 'score', type: 'long', score: true },
+    { name: 'carrying-capacity', type: 'int', enumerated: true },
+    { name: 'gold', type: 'long' },
+    { name: 'power', type: 'int', percentage: true },
+    { name: 'power-max', type: 'int' },
+    { name: 'experience-level', type: 'int', percentage: true },
+    { name: 'armor-class', type: 'int' },
+    { name: 'HD', type: 'int' },
+    { name: 'time', type: 'long' },
+    { name: 'hunger', type: 'int', enumerated: true },
+    { name: 'hitpoints', type: 'int', percentage: true, critical: true },
+    { name: 'hitpoints-max', type: 'int' },
+    { name: 'dungeon-level', type: 'str' },
+    { name: 'experience', type: 'long', percentage: true },
+    { name: 'condition', type: 'mask' },
+    { name: 'version', type: 'str', fld: 26 },
+    { name: 'weapon', type: 'str', fld: 23 },
+    { name: 'armor', type: 'str', fld: 24 },
+    { name: 'terrain', type: 'str', fld: 25 },
+];
+
+const BL_TH_NONE = 0, BL_TH_VAL_PERCENTAGE = 1,
+      BL_TH_UPDOWN = 2, BL_TH_VAL_ABSOLUTE = 3,
+      BL_TH_TEXTMATCH = 4, BL_TH_CONDITION = 5,
+      BL_TH_ALWAYS_HILITE = 6, BL_TH_CRITICALHP = 7;
+
+// src/botl.c:3707 status_hilite_menu_choose_behavior().
+async function status_hilite_menu_choose_behavior(fld) {
+    const field = status_fields[fld];
+    if (!field)
+        return BL_TH_NONE;
+
+    const win = tty_create_nhwindow(NHW_MENU);
+    tty_start_menu(win, MENU_BEHAVE_STANDARD);
+    const add = (id, selector, text) => tty_add_menu(
+        win, null, id, selector, 0, ATR_NONE, NO_COLOR, text,
+        MENU_ITEMFLAGS_NONE);
+
+    let only = BL_TH_NONE, count = 0;
+    if (field.type !== 'mask') {
+        add(only = BL_TH_ALWAYS_HILITE, 'a',
+            `Always highlight ${field.name}`);
+        count++;
+    } else {
+        add(only = BL_TH_CONDITION, 'b', 'Bitmask of conditions');
+        count++;
+    }
+    if (field.type !== 'mask' && field.name !== 'version') {
+        add(only = BL_TH_UPDOWN, 'c', `${field.name} value changes`);
+        count++;
+    }
+    if (!field.enumerated && (field.type === 'int' || field.type === 'long')) {
+        add(only = BL_TH_VAL_ABSOLUTE, 'n', 'Number threshold');
+        count++;
+    }
+    if (field.percentage) {
+        add(only = BL_TH_VAL_PERCENTAGE, 'p', 'Percentage threshold');
+        count++;
+    }
+    if (field.critical) {
+        add(only = BL_TH_CRITICALHP, 'C',
+            `Highlight critically low ${field.name}`);
+        count++;
+    }
+    if (field.type === 'str' || field.enumerated) {
+        add(only = BL_TH_TEXTMATCH, 't', `${field.name} text match`);
+        count++;
+    }
+
+    tty_end_menu(win, `Select ${field.name} field hilite behavior:`);
+    let behavior = only;
+    if (count > 1) {
+        const picks = await tty_select_menu(win, PICK_ONE);
+        behavior = picks.length ? picks[0]
+                   : picks.cancelled ? BL_TH_NONE - 1 : BL_TH_NONE;
+    }
+    tty_destroy_nhwindow(win);
+    return behavior;
+}
+
+// src/botl.c:4498 status_hilite_menu(), including its retry loop after a
+// field was opened. Rule creation beyond the behavior picker is kept visible
+// as pending until its value, color, and attribute dialogs are ported.
+async function status_hilite_menu() {
+    for (;;) {
+        const win = tty_create_nhwindow(NHW_MENU);
+        tty_start_menu(win, MENU_BEHAVE_STANDARD);
+        for (let fld = 0; fld < status_fields.length; fld++) {
+            const field = status_fields[fld];
+            if (field.score)
+                continue;
+            const fieldId = field.fld ?? fld;
+            const count = (game.status_hilites || [])
+                .filter(rule => rule.fld === fieldId).length;
+            let text = field.name.padEnd(18);
+            if (count)
+                text += ` (${count} defined)`;
+            tty_add_menu(win, null, fieldId + 1, 0, 0, ATR_NONE, NO_COLOR,
+                         text, MENU_ITEMFLAGS_NONE);
+        }
+        tty_end_menu(win, 'Status hilites:');
+        const picks = await tty_select_menu(win, PICK_ONE);
+        tty_destroy_nhwindow(win);
+        if (!picks.length)
+            return true;
+
+        const fld = picks[0] - 1;
+        const behavior = await status_hilite_menu_choose_behavior(fld);
+        if (behavior > BL_TH_NONE)
+            note_unported_options(`status-hilite:${status_fields[fld].name}`);
+        /* With no existing rule, status_hilite_menu_fld() attempts one add
+           and then the outer menu is shown again whether it succeeds or is
+           cancelled. */
+    }
+}
+
 /* src/windows.c:1816 add_menu_heading() — non-selectable line in
    iflags.menu_headings style (ATR_INVERSE + NO_COLOR by default). */
 export function add_menu_heading(tmpwin, buf) {
@@ -1447,6 +1705,14 @@ export async function doset() {
             } else if (o.hasHandler === 'Yes' && o.name === 'pickup_types') {
                 /* compound option with a handler: optfn's do_handler arm */
                 await optfn_pickup_types_do_set();
+            } else if (o.hasHandler === 'Yes' && o.name === 'symset') {
+                await do_symset();
+            } else if (o.name === 'bind keys') {
+                await handler_rebind_keys();
+            } else if (o.name === 'status condition fields') {
+                await cond_menu();
+            } else if (o.name === 'status highlight rules') {
+                await status_hilite_menu();
             } else if (o.hasHandler === 'Yes') {
                 note_unported_options(`doset:handler=${o.name}`);
             } else {

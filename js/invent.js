@@ -696,6 +696,10 @@ export async function display_pickinv(allowed_choices, handsbuf, menuquery,
     {
         const n = allowed_choices ? allowed_choices.length
                   : !game.invent?.length ? 0 : game.invent.length === 1 ? 1 : 2;
+        if (n === 0) {
+            await pline('Not carrying anything.');
+            return 0;
+        }
         if (n === 1 && allowed_choices) {
             const otmp = (game.invent || [])
                 .find(o => o.invlet === allowed_choices[0]);

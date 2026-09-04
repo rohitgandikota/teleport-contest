@@ -1,0 +1,32 @@
+{
+  "name": "options-status-condition-fields",
+  "description": "A normal-mode hero opens the status-condition picker from the full options menu and switches its ordering from alphabetical to ranked.",
+  "coverage": [
+    "mode.normal",
+    "options.rc-bindings",
+    "ui.menus"
+  ],
+  "branches": [
+    "options.status-condition-fields.menu"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "options.status-condition-fields.menu",
+      "segment": 0,
+      "screenIncludes": [
+        "Choose status conditions to toggle",
+        "change sort order from \"alphabetically\" to \"by ranking\"",
+        "change sort order from \"by ranking\" to \"alphabetically\""
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 465843,
+      "datetime": "20260426003002",
+      "nethackrc": "OPTIONS=name:Conditions,role:Wizard,race:human,gender:male,align:neutral,pettype:none\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " mO|k S\r"
+    }
+  ]
+}

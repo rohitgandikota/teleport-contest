@@ -2346,7 +2346,7 @@ async function parse_create_particular(str) {
     return { valid: false, text: bufp, data: null };
 }
 
-async function announce_created_monster(mtmp, mmflags) {
+export async function announce_created_monster(mtmp, mmflags) {
     const appearance = M_AP_TYPE(mtmp);
     let exclaim = !(mmflags & MM_NOEXCLAM);
     let what = null;

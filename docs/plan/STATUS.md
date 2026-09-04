@@ -1,5 +1,59 @@
 # STATUS — live handoff board
 
+## 2026-09-04: thrones, random mazes, and sitting source gaps reach exact C parity
+
+Six permanent C oracles add 46 focused segments across ordinary and Vlad's
+special thrones, proto-free random maze generation, themed water vaults,
+sitting on traps and hazardous terrain, and the remaining `rndcurse()` arms.
+Together they match **153,369/153,369 RNG calls**, **1,922/1,922 screens**,
+and **2/2 animations**. Forty-seven new C-backed requirements raise the
+explicit branch ledger from **1,205/1,205 to 1,252/1,252**. The source census
+rises from 1,618 to **1,661/2,621 observed RNG sites (63.4%)**. Every RNG site
+in `sit.c`, including all 14 ordinary throne effects and all special throne
+effects, is now exercised by an exact trace.
+
+The throne probes found two output and ordering defects. Audience monsters are
+now announced one at a time through the same creation-message path as C. A
+mounted curse now names a monster-owned saddle as C does, for example `Your
+pony's saddle`, by using the existing ownership-aware prefix in `yobjnam()`.
+The source traces also pin Magicbane's early curse absorption, intelligent
+artifact resistance, saddle selection, both pool armor gates, trapped lava,
+pit and web extension, and C's second-boots-gate quirk that damages the suit
+again.
+
+The random-maze fallback now ports pinned `mkmaze.c` generation rather than
+requiring a special-level prototype. It covers corridor and wall mazes,
+scaled and unit grids, both dead-end policies, wallification, stairs, branch
+placement, and maze stocking. The new six-segment oracle is exact at
+**29,944/29,944 RNG calls** and **48/48 screens**. The themed-water-vault
+oracle separately exposed C's short-circuit in mergeable object quantity
+generation under wizard mode; that one-segment trace is exact at
+**8,999/8,999 RNG calls** and **1/1 screen**.
+
+Vlad's special-throne lighting exposed a wider special-level defect: table-form
+terrain directives did not pass their `lit` value through `lspo_terrain()`.
+That path now honors the value, and hellfill style 7 explicitly creates its
+grown floor and border unlit, preventing 496 incorrect visible cells when
+traveling between Vlad's Tower and the Vibrating Square.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,462/1,483 animations**; supplemental **411/411**,
+**110,842/110,842 screens**, **5,704,473/5,704,473 RNG**, and
+**3,206/3,206 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44 with no over-read. Fresh-seed smoke is 80/80
+across 13 roles with no reached-but-unported path. All ten audit and recorder
+tests pass, source and focused state audits are clean, syntax checks pass, and
+frozen files are unchanged.
+
+The latest judged hidden result remains the cached **8,498/11,265**,
+**16/44**, rank 3 overall and rank 1/9 among agentic entries. This local
+extension is unjudged and unpushed. The six-hour dashboard heartbeat remains
+active. The next target will be selected from the remaining function-level C
+gaps by oracle feasibility and likely gameplay reach, rather than raw file
+size alone.
+
 ## 2026-09-04: endgame player monsters and occupied arrivals reach exact C parity
 
 Two permanent C oracles close the remaining RNG-site gaps in `mplayer.c` and

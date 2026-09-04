@@ -1,0 +1,248 @@
+{
+  "name": "throne-sit-source-gaps",
+  "description": "C oracle for every ordinary throne-sitting effect, including wish, genocide, curse, teleport, and positive-luck variants.",
+  "coverage": [
+    "mode.debug",
+    "level.gehennom",
+    "level.ordinary",
+    "terrain.furniture",
+    "religion.luck-calendar",
+    "object.gems-stones",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "terrain.throne.sit-attribute-loss",
+    "terrain.throne.sit-attribute-gain",
+    "terrain.throne.sit-electric-shock",
+    "terrain.throne.sit-full-heal",
+    "terrain.throne.sit-empty-treasury",
+    "terrain.throne.sit-wish",
+    "terrain.throne.sit-summon-audience",
+    "terrain.throne.sit-genocide",
+    "terrain.throne.sit-curse-inventory",
+    "terrain.throne.sit-positive-luck-curse",
+    "terrain.throne.sit-see-invisible",
+    "terrain.throne.sit-nommap-confusion",
+    "terrain.throne.sit-teleport",
+    "terrain.throne.sit-identify",
+    "terrain.throne.sit-confusion",
+    "terrain.throne.sit-no-effect",
+    "terrain.throne.sit-remove"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "terrain.throne.sit-attribute-loss",
+      "segment": 0,
+      "screenIncludes": ["You feel very stupid!"],
+      "rngIncludes": [
+        "rn2(6)=1 @ throne_sit_effect(sit.c:70)",
+        "rn2(4)=1 @ throne_sit_effect(sit.c:70)",
+        "rnd(10)=9 @ throne_sit_effect(sit.c:71)"
+      ]
+    },
+    {
+      "branch": "terrain.throne.sit-attribute-gain",
+      "segment": 1,
+      "screenIncludes": ["You feel smart!"],
+      "rngIncludes": ["rn2(6)=1 @ throne_sit_effect(sit.c:74)"]
+    },
+    {
+      "branch": "terrain.throne.sit-electric-shock",
+      "segment": 2,
+      "screenIncludes": ["A massive electric shock shoots through your body!"],
+      "rngIncludes": ["rnd(30)=20 @ throne_sit_effect(sit.c:79)"]
+    },
+    {
+      "branch": "terrain.throne.sit-full-heal",
+      "segment": 3,
+      "screenIncludes": ["You feel much, much better!"]
+    },
+    {
+      "branch": "terrain.throne.sit-empty-treasury",
+      "segment": 4,
+      "screenIncludes": ["You feel a strange sensation."]
+    },
+    {
+      "branch": "terrain.throne.sit-wish",
+      "segment": 5,
+      "screenIncludes": ["You may wish for an object.", "a - a rock."],
+      "rngIncludes": ["rn2(5)=4 @ throne_sit_effect(sit.c:106)"]
+    },
+    {
+      "branch": "terrain.throne.sit-summon-audience",
+      "segment": 6,
+      "screenIncludes": [
+        "Thine audience hath been summoned, Sire!",
+        "A bugbear suddenly appears next to you!"
+      ],
+      "rngIncludes": ["rnd(10)=10 @ throne_sit_effect(sit.c:114)"]
+    },
+    {
+      "branch": "terrain.throne.sit-genocide",
+      "segment": 7,
+      "screenIncludes": [
+        "By thine Imperious order, Sire...",
+        "Wiped out all newts."
+      ]
+    },
+    {
+      "branch": "terrain.throne.sit-curse-inventory",
+      "segment": 8,
+      "screenIncludes": ["You feel a malignant aura surround you."],
+      "rngIncludes": ["rnd(6)=2 @ rndcurse(sit.c:593)"]
+    },
+    {
+      "branch": "terrain.throne.sit-positive-luck-curse",
+      "segment": 9,
+      "screenIncludes": ["A cloud of darkness falls upon you."],
+      "rngIncludes": [
+        "rn2(100)=55 @ throne_sit_effect(sit.c:140)",
+        "rnd(2)=2 @ throne_sit_effect(sit.c:141)"
+      ]
+    },
+    {
+      "branch": "terrain.throne.sit-see-invisible",
+      "segment": 10,
+      "screenIncludes": ["Your vision becomes clear."]
+    },
+    {
+      "branch": "terrain.throne.sit-nommap-confusion",
+      "segment": 15,
+      "screenIncludes": ["Your vision becomes clear.", "A terrible drone fills your head!"],
+      "rngIncludes": ["rnd(30)=21 @ throne_sit_effect(sit.c:149)"]
+    },
+    {
+      "branch": "terrain.throne.sit-teleport",
+      "segment": 11,
+      "screenIncludes": [
+        "You feel a wrenching sensation.",
+        "Where do you want to be teleported?"
+      ]
+    },
+    {
+      "branch": "terrain.throne.sit-identify",
+      "segment": 12,
+      "screenIncludes": ["You are granted an insight!", "an uncursed rock"],
+      "rngIncludes": ["rn2(5)=2 @ throne_sit_effect(sit.c:198)"]
+    },
+    {
+      "branch": "terrain.throne.sit-confusion",
+      "segment": 13,
+      "screenIncludes": ["Your mind turns into a pretzel!"],
+      "rngIncludes": ["rn2(7)=5 @ throne_sit_effect(sit.c:203)"]
+    },
+    {
+      "branch": "terrain.throne.sit-no-effect",
+      "segment": 14,
+      "screenIncludes": ["You feel somehow out of place..."],
+      "rngIncludes": ["rnd(6)=2 @ throne_sit_effect(sit.c:45)"]
+    },
+    {
+      "branch": "terrain.throne.sit-remove",
+      "segment": 14,
+      "screenIncludes": ["The throne vanishes in a puff of logic."],
+      "rngIncludes": ["rn2(3)=0 @ throne_sit_effect(sit.c:225)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 1\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 2\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 3\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 4\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 5\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 6\r rock\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 7\r "
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 8\r newt\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 9\r  "
+    },
+    {
+      "seed": 99702,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed luckstone\r\u0017throne\r#sit\r 9\r  "
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 10\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 11\r \u001b"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017rock\r\u0017throne\r#sit\r 12\r"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 13\r"
+    },
+    {
+      "seed": 99700,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r y"
+    },
+    {
+      "seed": 99723,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017throne\r#sit\r 10\r\u0016?\r v\u001b\u0017throne\r#sit\r 10\r"
+    }
+  ]
+}

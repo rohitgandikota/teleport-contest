@@ -1,0 +1,125 @@
+{
+  "name": "sit-trap-terrain-source-gaps",
+  "description": "C oracle for sitting while trapped in pits, webs, and lava, plus water-walking sits in pools and on lava.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.armor",
+    "survival.timed-status",
+    "terrain.water-lava",
+    "traps.movement",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "terrain.sit.spiked-pit-half-physical",
+    "terrain.sit.ordinary-pit-extension",
+    "terrain.sit.web-extension",
+    "terrain.sit.trapped-lava",
+    "terrain.sit.pool-armor-damage",
+    "terrain.sit.surface-lava-resistant",
+    "terrain.sit.pool-boots-gate-armor-damage"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "terrain.sit.spiked-pit-half-physical",
+      "segment": 0,
+      "screenIncludes": ["You sit down on a spike.  Ouch!"],
+      "rngIncludes": [
+        "rn2(2)=0 @ dosit(sit.c:476)",
+        "rn2(5)=1 @ dosit(sit.c:481)"
+      ]
+    },
+    {
+      "branch": "terrain.sit.ordinary-pit-extension",
+      "segment": 1,
+      "screenIncludes": ["You sit down in the pit."],
+      "rngIncludes": ["rn2(5)=1 @ dosit(sit.c:481)"]
+    },
+    {
+      "branch": "terrain.sit.web-extension",
+      "segment": 2,
+      "screenIncludes": ["You sit in the spider web and get entangled further!"],
+      "rngIncludes": ["rn2(10)=3 @ dosit(sit.c:484)"]
+    },
+    {
+      "branch": "terrain.sit.trapped-lava",
+      "segment": 3,
+      "screenIncludes": ["You sit in the lava!", "You sink deeper into the lava."],
+      "rngIncludes": [
+        "rnd(4)=2 @ dosit(sit.c:490)",
+        "d(2,10)=10 @ dosit(sit.c:491)"
+      ]
+    },
+    {
+      "branch": "terrain.sit.pool-armor-damage",
+      "segment": 4,
+      "screenIncludes": ["You sit in the water.", "Your armor rusts!"],
+      "rngIncludes": [
+        "rn2(10)=0 @ dosit(sit.c:521)",
+        "rn2(10)=7 @ dosit(sit.c:523)"
+      ]
+    },
+    {
+      "branch": "terrain.sit.surface-lava-resistant",
+      "segment": 5,
+      "screenIncludes": ["You sit on the lava.", "The lava burns you!"],
+      "rngIncludes": ["d(2,10)=10 @ dosit(sit.c:548)"]
+    },
+    {
+      "branch": "terrain.sit.pool-boots-gate-armor-damage",
+      "segment": 6,
+      "screenIncludes": ["You sit in the water.", "Your armor rusts!"],
+      "rngIncludes": [
+        "rn2(10)=4 @ dosit(sit.c:521)",
+        "rn2(10)=0 @ dosit(sit.c:523)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99920,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:SpikeSit,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k#wizintrinsic\r  o\r \u0017spiked pit trap\rjk#sit\r  "
+    },
+    {
+      "seed": 99920,
+      "datetime": "20000110090100",
+      "nethackrc": "OPTIONS=name:PitSit,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017pit trap\rjk#sit\r  "
+    },
+    {
+      "seed": 99922,
+      "datetime": "20000110090200",
+      "nethackrc": "OPTIONS=name:WebSit,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k\u0017web trap\rjk#sit\r  "
+    },
+    {
+      "seed": 99923,
+      "datetime": "20000110090300",
+      "nethackrc": "OPTIONS=name:LavaSink,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r i\r \u0017lava\r    #sit\r   "
+    },
+    {
+      "seed": 99901,
+      "datetime": "20000110090400",
+      "nethackrc": "OPTIONS=name:PoolSit,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k#wizintrinsic\r h\r \u0017uncursed plate mail\rWa\u0017uncursed pair of low boots\rWb\u0017pool\r#sit\r  "
+    },
+    {
+      "seed": 99925,
+      "datetime": "20000110090500",
+      "nethackrc": "OPTIONS=name:LavaWalk,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r hi\r  \u0017lava\r #sit\r   "
+    },
+    {
+      "seed": 99902,
+      "datetime": "20000110090600",
+      "nethackrc": "OPTIONS=name:PoolBoot,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0006k#wizintrinsic\r h\r \u0017uncursed plate mail\rWa\u0017uncursed pair of low boots\rWb\u0017pool\r#sit\r  "
+    }
+  ]
+}

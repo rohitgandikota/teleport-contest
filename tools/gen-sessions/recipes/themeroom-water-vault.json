@@ -1,0 +1,38 @@
+{
+  "name": "themeroom-water-vault",
+  "description": "C oracle for the water-surrounded themed vault and its wizard-mode escape-item construction short-circuit.",
+  "coverage": [
+    "level.ordinary",
+    "level.special-variants",
+    "mode.debug",
+    "object.tools-containers",
+    "object.scrolls",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "level.themeroom.water-vault-wizard-quantity-short-circuit"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "level.themeroom.water-vault-wizard-quantity-short-circuit",
+      "segment": 0,
+      "screenIncludes": [
+        "Hello wizard, welcome to NetHack!"
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ random src=nhlib.lua:8 parent=lua(themerms.lua:793)",
+        "rn2(56)=54 @ rnd_otyp_by_namedesc(objnam.c:3522)",
+        "rnd(2)=1 @ next_ident(mkobj.c:521)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99810,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Vault,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": ""
+    }
+  ]
+}

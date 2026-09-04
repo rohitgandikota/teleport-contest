@@ -759,9 +759,6 @@ export function aobjnam(otmp, verb) {
 
 // src/objnam.c:2262 yobjnam() — yname + aobjnam, "your <count> <name> <verb>".
 //
-// C routes the prefix through shk_your(), whose shop-ownership, monster-
-// ownership and unique-corpse arms are not reached by anything ported; the
-// remaining arm is the_your[carried(obj)], which is what yname() already uses.
 export function yobjnam(obj, verb) {
     const s = aobjnam(obj, verb);
 
@@ -769,7 +766,7 @@ export function yobjnam(obj, verb) {
        unique objects and "foo of bar" quest artifacts */
     if (!carried(obj) || !obj_is_pname(obj)
         || obj.oartifact >= ART_ORB_OF_DETECTION)
-        return `${carried(obj) ? 'your' : 'the'} ` + s;
+        return shk_your(obj) + s;
     return s;
 }
 

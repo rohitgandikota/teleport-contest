@@ -1,0 +1,61 @@
+{
+  "name": "rndcurse-source-gaps",
+  "description": "C oracle for Magicbane, intelligent-artifact, and mounted-saddle resistance paths through random inventory curses.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.steeds",
+    "object.armor",
+    "object.artifacts",
+    "object.weapons",
+    "religion.prayer",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "inventory.rndcurse.magicbane-absorb",
+    "inventory.rndcurse.intelligent-artifact-resist",
+    "inventory.rndcurse.steed-saddle"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "inventory.rndcurse.magicbane-absorb",
+      "segment": 0,
+      "screenIncludes": ["You feel a malignant aura surround the magic-absorbing blade."],
+      "rngIncludes": ["rn2(20)=3 @ rndcurse(sit.c:576)"]
+    },
+    {
+      "branch": "inventory.rndcurse.intelligent-artifact-resist",
+      "segment": 1,
+      "screenIncludes": ["The spherical amulet named the Eye of the Aethiopica resists!"],
+      "rngIncludes": ["rn2(10)=6 @ rndcurse(sit.c:610)"]
+    },
+    {
+      "branch": "inventory.rndcurse.steed-saddle",
+      "segment": 2,
+      "screenIncludes": ["Your pony's saddle glows black."],
+      "rngIncludes": ["rn2(4)=0 @ rndcurse(sit.c:624)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99933,
+      "datetime": "20000110091000",
+      "nethackrc": "OPTIONS=name:BladeCurse,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +3 Magicbane\rwa\u0017throne\r#sit\r 9\r  "
+    },
+    {
+      "seed": 99934,
+      "datetime": "20000110091100",
+      "nethackrc": "OPTIONS=name:ArtifactCurse,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Eye of the Aethiopica\r\u001b\u0017throne\r#sit\r 9\r   "
+    },
+    {
+      "seed": 99932,
+      "datetime": "20000110091200",
+      "nethackrc": "OPTIONS=name:SaddleCurse,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame saddled pony\r#ride\rjy#pray\ry n          "
+    }
+  ]
+}

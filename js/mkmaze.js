@@ -9,15 +9,16 @@
 import { game } from './gstate.js';
 import { rn2, rnd, rn1 } from './rng.js';
 import { Is_special, depth, find_level, get_level,
-         dunlevs_in_dungeon } from './dungeon.js';
-import { load_special, sp_lev_wire_create_maze } from './sp_lev.js';
+         dunlevs_in_dungeon, Invocation_lev } from './dungeon.js';
+import { load_special, sp_lev_wire_create_maze, create_trap } from './sp_lev.js';
 import { COLNO, ROWNO, ROOM, CORR, AIR, STONE, HWALL, IS_DOOR,
          ACCESSIBLE, W_NONDIGGABLE, POOL, IRONBARS, TLWALL, TRWALL,
          TUWALL, TDWALL, BLCORNER, BRCORNER, TLCORNER,
          TRCORNER, WATER, CLOUD, LAVAPOOL, MAGIC_PORTAL, MOAT,
          Is_waterlevel, Is_airlevel, Is_firelevel, u_at,
          MON_BUBBLEMOVE, MIGR_RANDOM, MIGR_LEFTOVERS, MIGR_TO_SPECIES,
-         OBJ_MIGRATING, has_mgivenname } from './const.js';
+         OBJ_MIGRATING, has_mgivenname, MKTRAP_MAZEFLAG,
+         VIBRATING_SQUARE, NO_MM_FLAGS } from './const.js';
 import { isok, distu, sgn } from './hacklib.js';
 import { occupied, somex, somey } from './mklev.js';
 import { t_at, m_at, mnexto, mnearto, elemental_clog, m_into_limbo }
@@ -25,7 +26,7 @@ import { t_at, m_at, mnexto, mnearto, elemental_clog, m_into_limbo }
 import { goodpos, rndmonnum, remove_monster, makemon, set_malign,
          mpickobj, MM_NONAME } from './makemon.js';
 import { mk_tt_object, mkcorpstat, set_corpsenm, place_object, mksobj,
-         mkobj } from './mkobj.js';
+         mkobj, mkobj_at, mksobj_at, mkgold } from './mkobj.js';
 import { poly_when_stoned, is_orc } from './mondata.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -82,8 +83,8 @@ export const LR_TELE = 0, LR_UPTELE = 1, LR_DOWNTELE = 2, LR_PORTAL = 3,
              LR_BRANCH = 4, LR_UPSTAIR = 5, LR_DOWNSTAIR = 6;
 
 // src/mkmaze.c:1127 makemaz() — build a special (or proto-filled) level.
-// Returns true when a registered level script ran; false means the caller
-// has no faithful generator for this level and must record the gap.
+// Returns true after either a registered level script or the random-maze
+// fallback has generated the level.
 export async function makemaz(s) {
     const sp = Is_special(game.u.uz);
     let protofile;
@@ -119,12 +120,33 @@ export async function makemaz(s) {
         if (await load_special(protofile))
             return true;
         note_unported_mkmaze(`makemaz:${protofile}`);
-        return false;
     }
 
-    /* protofile-less makemaz builds a random maze; absent */
-    note_unported_mkmaze('makemaz:random_maze');
-    return false;
+    game.level.flags.is_maze_lev = 1;
+    game.level.flags.corrmaze = !rn2(3);
+
+    if (!Invocation_lev(game.u.uz) && rn2(2))
+        create_maze(-1, -1, !rn2(5));
+    else
+        create_maze(1, 1, false);
+
+    if (!game.level.flags.corrmaze)
+        mkmaze_mklev_fns?.wallification?.(
+            2, 2, game.x_maze_max ?? 78, game.y_maze_max ?? 20);
+
+    const mm = { x: 0, y: 0 };
+    mazexy(mm);
+    mkmaze_mklev_fns?.mkstairs?.(mm.x, mm.y, 1, null);
+    if (!Invocation_lev(game.u.uz)) {
+        mazexy(mm);
+        mkmaze_mklev_fns?.mkstairs?.(mm.x, mm.y, 0, null);
+    } else {
+        create_trap({ type: VIBRATING_SQUARE }, null);
+    }
+
+    mkmaze_mklev_fns?.place_branch?.(Is_branchlev_here(), 0, 0);
+    populate_maze();
+    return true;
 }
 
 // src/mkmaze.c:311 within_bounded_area()
@@ -687,6 +709,62 @@ function okay(x, y, dir) {
 function maze0xy(cc) {
     cc.x = 3 + 2 * rn2(((game.x_maze_max ?? 78) >> 1) - 1);
     cc.y = 3 + 2 * rn2(((game.y_maze_max ?? 20) >> 1) - 1);
+}
+
+// src/mkmaze.c:1318 mazexy(); find a random corridor square.
+export function mazexy(cc) {
+    const allowedtyp = game.level.flags?.corrmaze ? CORR : ROOM;
+    let cpt = 0;
+
+    do {
+        const x = rnd(game.x_maze_max ?? 78);
+        const y = rnd(game.y_maze_max ?? 20);
+        if (game.level.at(x, y)?.typ === allowedtyp) {
+            cc.x = x;
+            cc.y = y;
+            return;
+        }
+    } while (++cpt < 100);
+
+    for (let x = 1; x <= (game.x_maze_max ?? 78); x++)
+        for (let y = 1; y <= (game.y_maze_max ?? 20); y++)
+            if (game.level.at(x, y)?.typ === allowedtyp) {
+                cc.x = x;
+                cc.y = y;
+                return;
+            }
+
+    throw new Error("mazexy: can't find a place");
+}
+
+// src/mkmaze.c:1092 populate_maze(); stock a generated random maze.
+function populate_maze() {
+    const mm = { x: 0, y: 0 };
+    let i;
+
+    for (i = rn1(8, 11); i; i--) {
+        mazexy(mm);
+        mkobj_at(rn2(2) ? OCLASSES.GEM_CLASS : OCLASSES.RANDOM_CLASS,
+                 mm.x, mm.y, true);
+    }
+    for (i = rn1(10, 2); i; i--) {
+        mazexy(mm);
+        mksobj_at(ONAMES.BOULDER, mm.x, mm.y, true, false);
+    }
+    for (i = rn2(3); i; i--) {
+        mazexy(mm);
+        makemon(game.mons[PMNAMES.PM_MINOTAUR], mm.x, mm.y, NO_MM_FLAGS);
+    }
+    for (i = rn1(5, 7); i; i--) {
+        mazexy(mm);
+        makemon(null, mm.x, mm.y, NO_MM_FLAGS);
+    }
+    for (i = rn1(6, 7); i; i--) {
+        mazexy(mm);
+        mkgold(0, mm.x, mm.y);
+    }
+    for (i = rn1(6, 7); i; i--)
+        mkmaze_mklev_fns?.mktrap?.(0, MKTRAP_MAZEFLAG, null, null);
 }
 
 // src/mkmaze.c:892 maze_inbounds()

@@ -1,0 +1,61 @@
+{
+  "name": "throne-sit-special",
+  "description": "C oracle for all thirteen special throne outcomes in Vlad's Tower, including its four wish rolls, level drain, grease, intrinsic loss, level teleport, demon summons, remove curse, polymorph, acid, and ability shuffle.",
+  "coverage": [
+    "forms.polymorph",
+    "level.gehennom",
+    "level.special-variants",
+    "mode.debug",
+    "object.gems-stones",
+    "terrain.furniture",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "terrain.throne.special-wish-1",
+    "terrain.throne.special-wish-2",
+    "terrain.throne.special-wish-3",
+    "terrain.throne.special-wish-4",
+    "terrain.throne.special-level-drain",
+    "terrain.throne.special-grease",
+    "terrain.throne.special-intrinsic-loss",
+    "terrain.throne.special-vibrating-square",
+    "terrain.throne.special-summon-demons",
+    "terrain.throne.special-remove-curse",
+    "terrain.throne.special-polymorph",
+    "terrain.throne.special-acid",
+    "terrain.throne.special-ability-shuffle"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch":"terrain.throne.special-wish-1","segment":0,"screenIncludes":["You may wish for an object.","The throne disintegrates, having spent its power."]},
+    {"branch":"terrain.throne.special-wish-2","segment":1,"screenIncludes":["You may wish for an object.","The throne disintegrates, having spent its power."]},
+    {"branch":"terrain.throne.special-wish-3","segment":2,"screenIncludes":["You may wish for an object.","The throne disintegrates, having spent its power."]},
+    {"branch":"terrain.throne.special-wish-4","segment":3,"screenIncludes":["You may wish for an object.","The throne disintegrates, having spent its power."]},
+    {"branch":"terrain.throne.special-level-drain","segment":4,"screenIncludes":["Sitting on the throne was a terrible experience.","Goodbye level 30."]},
+    {"branch":"terrain.throne.special-grease","segment":5,"screenIncludes":["A greasy liquid sprays all over you!"]},
+    {"branch":"terrain.throne.special-intrinsic-loss","segment":6,"screenIncludes":["The throne somehow seems to be amused."]},
+    {"branch":"terrain.throne.special-vibrating-square","segment":7,"screenIncludes":["You feel extremely out of place."]},
+    {"branch":"terrain.throne.special-summon-demons","segment":8,"screenIncludes":["The throne seeems to be calling for help!","appears in a cloud of smoke!"]},
+    {"branch":"terrain.throne.special-remove-curse","segment":9,"screenIncludes":["You feel like you need some help."]},
+    {"branch":"terrain.throne.special-polymorph","segment":10,"screenIncludes":["This throne was not meant for those such as you!","You feel a change coming over you."]},
+    {"branch":"terrain.throne.special-acid","segment":11,"screenIncludes":["The throne is covered in acid!"]},
+    {"branch":"terrain.throne.special-ability-shuffle","segment":12,"screenIncludes":["As you sit on the throne, your body and mind start to warp."]}
+  ],
+  "segments": [
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 1\r rock\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 2\r rock\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 3\r rock\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 4\r rock\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 5\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 6\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 7\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 8\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 9\r "},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 10\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 11\r "},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 12\r"},
+    {"seed":99802,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Sitter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" #levelchange\r30\r                             \u0016?\r G\u001b\u0017throne\r#sit\r 13\r  "}
+  ]
+}

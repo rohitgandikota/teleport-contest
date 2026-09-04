@@ -1,0 +1,122 @@
+{
+  "name": "random-maze-generation",
+  "description": "C oracle for a proto-free maze below Medusa, including scaled maze carving, stairs, stock, random traps, and a full debug map.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.gems-stones",
+    "traps.projectile-physical",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "level.random-maze.corridor-unit",
+    "level.random-maze.wall-unit",
+    "level.random-maze.corridor-scaled-remove-deadends",
+    "level.random-maze.corridor-scaled-keep-deadends",
+    "level.random-maze.wall-scaled-remove-deadends",
+    "level.random-maze.wall-scaled-keep-deadends"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "level.random-maze.corridor-unit",
+      "segment": 0,
+      "rngIncludes": [
+        "rn2(3)=0 @ makemaz(mkmaze.c:1198)",
+        "rn2(2)=0 @ makemaz(mkmaze.c:1200)"
+      ]
+    },
+    {
+      "branch": "level.random-maze.wall-unit",
+      "segment": 1,
+      "rngIncludes": [
+        "rn2(3)=2 @ makemaz(mkmaze.c:1198)",
+        "rn2(2)=0 @ makemaz(mkmaze.c:1200)"
+      ]
+    },
+    {
+      "branch": "level.random-maze.corridor-scaled-remove-deadends",
+      "segment": 2,
+      "rngIncludes": [
+        "rn2(3)=0 @ makemaz(mkmaze.c:1198)",
+        "rn2(2)=1 @ makemaz(mkmaze.c:1200)",
+        "rn2(5)=0 @ makemaz(mkmaze.c:1201)",
+        "rnd(4)=1 @ create_maze(mkmaze.c:961)",
+        "rnd(4)=4 @ create_maze(mkmaze.c:964)",
+        "rn2(2)=0 @ maze_remove_deadends(mkmaze.c:939)"
+      ]
+    },
+    {
+      "branch": "level.random-maze.corridor-scaled-keep-deadends",
+      "segment": 3,
+      "rngIncludes": [
+        "rn2(3)=0 @ makemaz(mkmaze.c:1198)",
+        "rn2(2)=1 @ makemaz(mkmaze.c:1200)",
+        "rn2(5)=4 @ makemaz(mkmaze.c:1201)",
+        "rnd(4)=2 @ create_maze(mkmaze.c:961)",
+        "rnd(4)=1 @ create_maze(mkmaze.c:964)"
+      ]
+    },
+    {
+      "branch": "level.random-maze.wall-scaled-remove-deadends",
+      "segment": 4,
+      "rngIncludes": [
+        "rn2(3)=2 @ makemaz(mkmaze.c:1198)",
+        "rn2(2)=1 @ makemaz(mkmaze.c:1200)",
+        "rn2(5)=0 @ makemaz(mkmaze.c:1201)",
+        "rnd(4)=3 @ create_maze(mkmaze.c:961)",
+        "rnd(4)=3 @ create_maze(mkmaze.c:964)",
+        "rn2(1)=0 @ maze_remove_deadends(mkmaze.c:939)"
+      ]
+    },
+    {
+      "branch": "level.random-maze.wall-scaled-keep-deadends",
+      "segment": 5,
+      "rngIncludes": [
+        "rn2(3)=1 @ makemaz(mkmaze.c:1198)",
+        "rn2(2)=1 @ makemaz(mkmaze.c:1200)",
+        "rn2(5)=3 @ makemaz(mkmaze.c:1201)",
+        "rnd(4)=2 @ create_maze(mkmaze.c:961)",
+        "rnd(4)=3 @ create_maze(mkmaze.c:964)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99802,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:MazeA,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001626\r\u001b\u0006"
+    },
+    {
+      "seed": 99811,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:MazeB,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001626\r\u001b\u0006"
+    },
+    {
+      "seed": 99830,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:MazeC,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001626\r\u001b\u0006"
+    },
+    {
+      "seed": 99831,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:MazeD,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001626\r\u001b\u0006"
+    },
+    {
+      "seed": 99896,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:MazeE,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001626\r\u001b\u0006"
+    },
+    {
+      "seed": 99841,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:MazeF,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001626\r\u001b\u0006"
+    }
+  ]
+}

@@ -290,7 +290,7 @@ export async function dochat() {
 }
 
 // src/sounds.c:679 domonnoise(), what an adjacent monster says. Specialized
-// shopkeeper, oracle, demon-bribe, and endgame player conversations remain
+// Shopkeeper, oracle, and demon-bribe conversations remain
 // separate subsystems; ordinary sound classes and their state branches live
 // here and preserve C's RNG order. A successful conversation costs the turn.
 export async function domonnoise(mtmp) {
@@ -537,10 +537,12 @@ export async function domonnoise(mtmp) {
         /* FALLTHRU */
     case MSOUND.MS_HUMANOID:
         if (!mtmp.mpeaceful) {
-            if (In_endgame(game.u.uz) && is_mplayer(ptr))
-                note_unported_sounds('domonnoise:mplayer_talk');
-            else
+            if (In_endgame(game.u.uz) && is_mplayer(ptr)) {
+                const { mplayer_talk } = await import('./mplayer.js');
+                await mplayer_talk(mtmp);
+            } else {
                 pline_msg = 'threatens you.';
+            }
             break;
         }
         if (mtmp.mflee)

@@ -1,0 +1,142 @@
+{
+  "name": "mplayer-source-gaps",
+  "description": "C oracle seed sweep for the role-specific equipment arms of endgame player monsters.",
+  "coverage": [
+    "mode.debug",
+    "level.astral",
+    "level.special-variants"
+  ],
+  "branches": [
+    "endgame.mplayer.name-female-alternate",
+    "endgame.mplayer.archeologist-weapon-roll",
+    "endgame.mplayer.barbarian-weapon-choice",
+    "endgame.mplayer.barbarian-armor-roll",
+    "endgame.mplayer.caveman-mace-roll",
+    "endgame.mplayer.caveman-club-fallback",
+    "endgame.mplayer.monk-weapon-roll",
+    "endgame.mplayer.monk-shield-roll",
+    "endgame.mplayer.cleric-helm-choice",
+    "endgame.mplayer.valkyrie-weapon-roll",
+    "endgame.mplayer.valkyrie-armor-roll",
+    "level.arrival.occupied-random-spot-relocate"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "endgame.mplayer.name-female-alternate",
+      "segment": 7,
+      "rngIncludes": ["@ get_mplname(mplayer.c:81)"]
+    },
+    {
+      "branch": "endgame.mplayer.archeologist-weapon-roll",
+      "segment": 7,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:161)"]
+    },
+    {
+      "branch": "endgame.mplayer.barbarian-weapon-choice",
+      "segment": 1,
+      "rngIncludes": [
+        "@ mk_mplayer(mplayer.c:165)",
+        "@ mk_mplayer(mplayer.c:166)"
+      ]
+    },
+    {
+      "branch": "endgame.mplayer.barbarian-armor-roll",
+      "segment": 1,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:169)"]
+    },
+    {
+      "branch": "endgame.mplayer.caveman-mace-roll",
+      "segment": 2,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:175)"]
+    },
+    {
+      "branch": "endgame.mplayer.caveman-club-fallback",
+      "segment": 2,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:177)"]
+    },
+    {
+      "branch": "endgame.mplayer.monk-weapon-roll",
+      "segment": 4,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:199)"]
+    },
+    {
+      "branch": "endgame.mplayer.monk-shield-roll",
+      "segment": 4,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:202)"]
+    },
+    {
+      "branch": "endgame.mplayer.cleric-helm-choice",
+      "segment": 0,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:213)"]
+    },
+    {
+      "branch": "endgame.mplayer.valkyrie-weapon-roll",
+      "segment": 7,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:233)"]
+    },
+    {
+      "branch": "endgame.mplayer.valkyrie-armor-roll",
+      "segment": 7,
+      "rngIncludes": ["@ mk_mplayer(mplayer.c:235)"]
+    },
+    {
+      "branch": "level.arrival.occupied-random-spot-relocate",
+      "segment": 3,
+      "rngIncludes": [
+        "rnd(79)=11 @ rloc(teleport.c:1850)",
+        "rn2(21)=9 @ rloc(teleport.c:1851)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99931,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99932,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99933,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99934,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99935,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99936,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99937,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    },
+    {
+      "seed": 99938,
+      "datetime": "20000116090000",
+      "nethackrc": "OPTIONS=name:Conan,role:Barbarian,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r20\r                   \u0016?\r  N       \u001b  \u0016-2\r      \u0016-3\r      \u0016-4\r      \u0016-5\r  "
+    }
+  ]
+}

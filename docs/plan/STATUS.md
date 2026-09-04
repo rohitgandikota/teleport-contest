@@ -1,5 +1,52 @@
 # STATUS — live handoff board
 
+## 2026-09-04: endgame player monsters and occupied arrivals reach exact C parity
+
+Two permanent C oracles close the remaining RNG-site gaps in `mplayer.c` and
+pin a newly exposed endgame arrival rule. The eight-segment
+`mplayer-source-gaps` sweep covers the female alternate-name arm and the
+previously unseen Archeologist, Barbarian, Cave Dweller, Monk, Cleric, and
+Valkyrie equipment rolls. It matches at **120,081/120,081 RNG calls** and
+**712/712 screens**. The two-segment `mplayer-talk` oracle separately covers
+same-role and other-role hostile dialogue. It matches at **29,624/29,624 RNG
+calls** and **249/249 screens**.
+
+The first sweep found a real defect before `mk_mplayer()` ran. When the only
+chosen hero-arrival square on a new endgame plane was occupied, C relocated
+that monster immediately through `rloc()` before placing the hero and
+delivering companions. JS deferred the collision cleanup, which changed both
+state and RNG order. `put_lregion_here()` and its callers now await the exact
+C relocation path and send the monster to limbo if relocation fails. The
+source-backed trace that originally failed now matches at the two missing
+`rloc()` draws and every later boundary.
+
+Hostile endgame player-monsters now use the pinned same-role and other-role
+taunt tables through `mplayer_talk()`. The development divergence tool also
+accepts `--seg N`, so a multi-segment oracle can be isolated without changing
+its recording. Fourteen new C-backed requirements raise the explicit branch
+ledger from **1,191/1,191 to 1,205/1,205**. The source census rises from 1,604
+to **1,618/2,621 observed RNG sites (61.7%)**. All **67/67** RNG call sites in
+`mplayer.c`, across all six RNG-drawing functions, are now observed by exact
+C traces.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,462/1,483 animations**; supplemental **405/405**,
+**108,920/108,920 screens**, **5,551,104/5,551,104 RNG**, and
+**3,204/3,204 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44 with no over-read. Fresh-seed smoke is 80/80
+across 13 roles with no reached-but-unported path. All ten audit and recorder
+tests pass, source and focused state audits are clean, syntax checks pass, and
+frozen files are unchanged.
+
+The latest judged hidden result remains the cached **8,498/11,265**,
+**16/44**, rank 3 overall and rank 1/9 among agentic entries. This local
+extension is unjudged and unpushed. The six-hour dashboard heartbeat remains
+active. The next source-ranked files are `trap.c`, `uhitm.c`, and `zap.c`; the
+next implementation target should be selected by a feasible C oracle rather
+than raw file size alone.
+
 ## 2026-09-04: corpse drops and floor-loot sorting reach exact C parity
 
 The permanent `make-corpse-source-gaps` C oracle now exercises all **19/19**

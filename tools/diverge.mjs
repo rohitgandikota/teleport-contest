@@ -9,6 +9,7 @@
 //
 // Usage:
 //   node tools/diverge.mjs <session>            # name, prefix, or path
+//   node tools/diverge.mjs <session> --seg 4    # one segment independently
 //   node tools/diverge.mjs <session> -w 20      # wider context window
 //   node tools/diverge.mjs <session> --screens  # also report screen misses
 //   node tools/diverge.mjs --all                # first divergence per session
@@ -308,7 +309,12 @@ function printNextTarget(cRng, at) {
 async function analyseSession(sessionPath, opts) {
     const raw = JSON.parse(readFileSync(sessionPath, 'utf8'));
     const { normalizeSession } = await import(join(PROJECT_ROOT, 'frozen/session_loader.mjs'));
-    const segments = normalizeSession(raw).segments;
+    let segments = normalizeSession(raw).segments;
+    if (opts?.segment != null) {
+        if (!Number.isInteger(opts.segment) || !segments[opts.segment])
+            throw new Error(`no segment ${opts.segment} in ${sessionPath}`);
+        segments = [segments[opts.segment]];
+    }
 
     const canon = loadCanonical(segments);
     const ours = await runOurPort(segments, opts?.maxSeconds || 0);
@@ -373,12 +379,15 @@ async function reportOne(r) {
 
 async function main() {
     const argv = process.argv.slice(2);
-    const opts = { window: 8, screens: false, all: false, maxSeconds: 0 };
+    const opts = {
+        window: 8, screens: false, all: false, maxSeconds: 0, segment: null,
+    };
     const targets = [];
 
     for (let i = 0; i < argv.length; i++) {
         const a = argv[i];
         if (a === '-w' || a === '--window') opts.window = Number(argv[++i]);
+        else if (a === '--seg') opts.segment = Number(argv[++i]);
         else if (a === '--max-seconds') opts.maxSeconds = Number(argv[++i]);
         else if (a === '--screens') opts.screens = true;
         else if (a === '--all') opts.all = true;
@@ -387,7 +396,7 @@ async function main() {
     }
 
     if (!opts.all && targets.length === 0) {
-        console.error('usage: node tools/diverge.mjs <session> [-w N] [--screens]');
+        console.error('usage: node tools/diverge.mjs <session> [--seg N] [-w N] [--screens]');
         console.error('       node tools/diverge.mjs --all');
         process.exit(2);
     }

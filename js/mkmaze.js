@@ -20,7 +20,8 @@ import { COLNO, ROWNO, ROOM, CORR, AIR, STONE, HWALL, IS_DOOR,
          OBJ_MIGRATING, has_mgivenname } from './const.js';
 import { isok, distu, sgn } from './hacklib.js';
 import { occupied, somex, somey } from './mklev.js';
-import { t_at, m_at, mnexto, mnearto, elemental_clog } from './mon.js';
+import { t_at, m_at, mnexto, mnearto, elemental_clog, m_into_limbo }
+    from './mon.js';
 import { goodpos, rndmonnum, remove_monster, makemon, set_malign,
          mpickobj, MM_NONAME } from './makemon.js';
 import { mk_tt_object, mkcorpstat, set_corpsenm, place_object, mksobj,
@@ -142,7 +143,7 @@ function bad_location(x, y, nlx, nly, nhx, nhy) {
 
 // src/mkmaze.c:413 put_lregion_here() — one attempt at placing the region
 // object (or the hero) at x,y.
-function put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev) {
+async function put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev) {
     /* is_exclusion_zone(): no exclusion regions exist in this port */
     if (bad_location(x, y, nlx, nly, nhx, nhy)) {
         if (!oneshot) {
@@ -167,10 +168,13 @@ function put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev) {
         const mtmp = m_at(x, y);
         if (mtmp) {
             /* move the monster if no choice, or just try again */
-            if (oneshot)
-                note_unported_mkmaze('put_lregion_here:rloc_mon');
-            else
+            if (oneshot) {
+                const { rloc } = await import('./teleport.js');
+                if (!(await rloc(mtmp, RLOC_NOMSG)))
+                    await m_into_limbo(mtmp);
+            } else {
                 return false;
+            }
         }
         game.u.ux = x;
         game.u.uy = y; /* u_on_newpos */
@@ -195,7 +199,7 @@ function put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev) {
 
 // src/mkmaze.c:356 place_lregion() — 200 probabilistic tries (two rn1 draws
 // each), then an exhaustive scan.
-export function place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev) {
+export async function place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev) {
     if (!lx) { /* default to whole level */
         if (rtype === LR_BRANCH && game.level.nroom) {
             /* let place_branch choose, avoiding corridors */
@@ -219,14 +223,16 @@ export function place_lregion(lx, ly, hx, hy, nlx, nly, nhx, nhy, rtype, lev) {
     for (let trycnt = 0; trycnt < 200; trycnt++) {
         const x = rn1((hx - lx) + 1, lx);
         const y = rn1((hy - ly) + 1, ly);
-        if (put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev))
+        if (await put_lregion_here(x, y, nlx, nly, nhx, nhy,
+                                   rtype, oneshot, lev))
             return;
     }
 
     /* then a deterministic one */
     for (let x = lx; x <= hx; x++)
         for (let y = ly; y <= hy; y++)
-            if (put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, true, lev))
+            if (await put_lregion_here(x, y, nlx, nly, nhx, nhy,
+                                       rtype, true, lev))
                 return;
 
     note_unported_mkmaze('place_lregion:failed');
@@ -438,9 +444,10 @@ export async function fixup_special() {
                         note_unported_mkmaze('fixup_special:portal_dest');
                 }
             }
-            place_lregion(r.inarea.x1, r.inarea.y1, r.inarea.x2, r.inarea.y2,
-                          r.delarea.x1, r.delarea.y1, r.delarea.x2,
-                          r.delarea.y2, r.rtype, lev);
+            await place_lregion(r.inarea.x1, r.inarea.y1,
+                                r.inarea.x2, r.inarea.y2,
+                                r.delarea.x1, r.delarea.y1,
+                                r.delarea.x2, r.delarea.y2, r.rtype, lev);
             break;
         default:
             /* save the region outlines for goto_level() */
@@ -460,7 +467,7 @@ export async function fixup_special() {
 
     /* place dungeon branch if not placed above */
     if (!added_branch && Is_branchlev_here())
-        place_lregion(0, 0, 0, 0, 0, 0, 0, 0, LR_BRANCH, null);
+        await place_lregion(0, 0, 0, 0, 0, 0, 0, 0, LR_BRANCH, null);
 
     /* src/mkmaze.c:649 — still need to add some stuff to level file */
     const on_lev = (key) => {

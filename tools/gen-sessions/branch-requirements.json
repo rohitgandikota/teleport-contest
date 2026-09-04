@@ -1019,6 +1019,11 @@
     {"group":"Wrap attacks","id":"combat.wrap.grease-wears-off","cFile":"src/mhitu.c","cFunction":"u_slip_free","description":"Consume the grease-wear-off roll after it protects the hero from a grab"},
     {"group":"Wrap attacks","id":"combat.wrap.hero-monster-tail","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Preserve the pinned hero-wrap tail-miss message and zero damage"},
     {"group":"Wrap attacks","id":"combat.wrap.hero-monster-crush","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Crush a monster already held by the polymorphed hero"},
-    {"group":"Wrap attacks","id":"combat.wrap.monster-monster-zero-damage","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Report a zero-damage giant-eel wrap against another visible monster"}
+    {"group":"Wrap attacks","id":"combat.wrap.monster-monster-zero-damage","cFile":"src/uhitm.c","cFunction":"mhitm_ad_wrap","description":"Report a zero-damage giant-eel wrap against another visible monster"},
+    {"group":"Warning and unseen display","id":"display.warning.level-grant-redraw","cFile":"src/attrib.c","cFunction":"postadjabil","description":"Redraw previously unseen monsters as warning symbols immediately when level gain grants warning"},
+    {"group":"Warning and unseen display","id":"display.warning.getpos-description","cFile":"src/pager.c","cFunction":"do_screen_description","description":"Describe a warning glyph by its anxiety level while selecting a map position"},
+    {"group":"Warning and unseen display","id":"display.invisible.getpos-description","cFile":"src/pager.c","cFunction":"do_screen_description","description":"Describe a remembered unseen-creature marker while selecting a map position"},
+    {"group":"Warning and unseen display","id":"display.invisible.unmap-dark-memory","cFile":"src/display.c","cFunction":"show_mon_or_warn","description":"Clear an unseen-creature marker through unmap_object without revealing an unseen dark floor"},
+    {"group":"Ambient room sounds","id":"sound.ambient.swamp","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose both ordinary swamp ambient messages during one sound check"}
   ]
 }

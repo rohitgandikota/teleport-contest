@@ -1,0 +1,66 @@
+{
+  "name": "warning-unseen-swamp-display",
+  "description": "A generated swamp level proves immediate warning redraws, warning and unseen getpos descriptions, dark unseen-square memory clearing, and both ordinary swamp ambient messages.",
+  "coverage": [
+    "level.ordinary",
+    "level.special-variants",
+    "mode.debug",
+    "monster.special-effects",
+    "terrain.furniture",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "display.warning.level-grant-redraw",
+    "display.warning.getpos-description",
+    "display.invisible.getpos-description",
+    "display.invisible.unmap-dark-memory",
+    "sound.ambient.swamp"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "display.warning.level-grant-redraw",
+      "segment": 0,
+      "screenIncludes": ["You feel sensitive!"],
+      "screenCells": [
+        { "step": 38, "x": 12, "y": 17, "equals": "2" },
+        { "step": 38, "x": 9, "y": 18, "equals": "1" }
+      ]
+    },
+    {
+      "branch": "display.warning.getpos-description",
+      "segment": 0,
+      "screenIncludes": ["unknown creature causing you anxiety"]
+    },
+    {
+      "branch": "display.invisible.getpos-description",
+      "segment": 0,
+      "screenIncludes": ["remembered, unseen, creature"]
+    },
+    {
+      "branch": "display.invisible.unmap-dark-memory",
+      "segment": 0,
+      "screenIncludes": ["You kill an unseen red mold!"],
+      "screenCells": [
+        { "step": 76, "x": 8, "y": 18, "equals": " " }
+      ]
+    },
+    {
+      "branch": "sound.ambient.swamp",
+      "segment": 0,
+      "screenIncludes": ["You smell marsh gas!", "You hear mosquitoes!"],
+      "rngIncludes": [
+        "rn2(200)=0 @ dosounds(sounds.c:230)",
+        "rn2(2)=1 @ dosounds(sounds.c:235)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 8038,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_hunger,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r \u0006\u0005#levelchange\r30\r                             #wizkill\rllllll.b.hh.h.b.lllllll.\u001b\u00059999.#wizkill\rl.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999.#wizkill\rk.\u001b9999."
+    }
+  ]
+}

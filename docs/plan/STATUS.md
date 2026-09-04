@@ -1,5 +1,45 @@
 # STATUS — live handoff board
 
+## 2026-09-04: warning and unseen map markers match C
+
+The continued seed-8038 swamp trace exposed three linked display rules before
+reaching its ambient sound selector. First, C's `postadjabil()` redraws every
+monster immediately when level gain changes warning or see-invisible, while
+JavaScript left stale unseen `I` markers on the map. Second, the getpos pager
+did not recognize warning or unseen glyphs, so it described the underlying
+terrain instead of C's anxiety and remembered-creature text. Third, clearing
+an unseen marker mapped the real terrain directly. C routes that transition
+through `unmap_object()`, which preserves a blank cell when the floor is still
+unseen and dark.
+
+`adjabil()` now performs the same property-sensitive redraw. The pager handles
+all five warning strengths, remembered unseen markers, the detection and
+blindness wording, and a boulder under a warning glyph. Invisible-marker
+clearing now uses the existing C-faithful unmapping path. The permanent
+`warning-unseen-swamp-display` C fixture also reaches both ordinary swamp
+messages. Before these changes, the trace matched only **57/264 screens** even
+though its **21,681/21,681 RNG calls** were aligned. It is now byte-identical
+at **264/264 screens**, **21,681/21,681 RNG calls**, and **264/264 cursors**.
+Five concrete assertions pin the redraw cells, both getpos descriptions, the
+dark-memory cell, and the exact swamp selector draws.
+
+Declared evidence remains **99/106 mechanics categories**, with seven
+partial, and rises from **1,001/1,001 to 1,006/1,006 explicit C branches**.
+The source RNG census now observes **1,501/2,621 call sites (57.3%)**, up from
+1,500. Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**387/387**, **95,438/95,438 screens**, and **4,939,917/4,939,917 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80 across 13 roles, source and state audits pass, all ten audit and
+recorder tests pass, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This display batch is local and
+unjudged, so no hidden gain is claimed. Next, rank a fresh source-census target
+against any remaining reached divergence, then record the smallest C oracle
+before changing another runtime path.
+
 ## 2026-09-04: shared wrap attacks match C
 
 The swamp probe's first mismatch was initially classified as a

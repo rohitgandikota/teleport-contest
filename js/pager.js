@@ -37,7 +37,8 @@ import { COLNO, ROWNO, BOLT_LIM, STONE, SCORR, SDOOR, GRAVE, CORR,
          TER_DETECT, TER_MAP, M_AP_TYPE, M_AP_FURNITURE,
          M_AP_OBJECT, M_AP_FLAG, M_AP_F_DKNOWN, OBJ_FLOOR,
          AM_MASK, AM_SANCTUM, Amask2align, Is_astralevel,
-         A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK } from './const.js';
+         A_LAWFUL, A_NEUTRAL, A_CHAOTIC, STRAT_WAITMASK,
+         WARNCOUNT, def_warnsyms, I_SPECIAL } from './const.js';
 import { defsyms, monexplain, oc_explain, def_monsyms, def_oc_syms,
          cmap_names } from './drawing_data.js';
 import { OCLASSES, ONAMES } from './objects_data.js';
@@ -473,6 +474,10 @@ function lookat(x, y) {
     } else if (glyph.kind === 'trap') {
         note_unported_pager('lookat:trap');
         buf = 'trap';
+    } else if (glyph.kind === 'warn') {
+        buf = def_warnsyms[glyph.wl]?.desc || 'warning';
+    } else if (glyph.kind === 'invis') {
+        buf = invisexplain;
     } else if (glyph.kind === 'nothing') {
         buf = 'dark part of a room';
     } else if (glyph.kind === 'unexplored') {
@@ -990,10 +995,21 @@ export function do_screen_description(cc, looked, sym) {
         }
     }
 
-    if (sympair.ch === 'I' && !sympair.dec && false) {
-        /* DEF_INVISIBLE: displayed 'I' cells need the invisible-monster
-           memory model; the sym match alone would false-positive on typed
-           'I' lookups which the monster loop already answered */
+    if ((looked && glyph?.kind === 'invis')
+        || (!looked && sympair.ch === 'I' && !sympair.dec)) {
+        /* src/pager.c:1407 DEF_INVISIBLE. Clairvoyance and blindness use
+           the shorter wording; ordinary remembered markers keep C's
+           comma-separated explanation. */
+        const usealt = !!((game.u.uprops?.DETECT_MONSTERS | 0) & I_SPECIAL);
+        const unseen_explain = (usealt || Blind())
+            ? 'unseen creature' : invisexplain;
+        if (!found) {
+            state.out_str = prefix + an(unseen_explain);
+            state.firstmatch = unseen_explain;
+            found++;
+        } else {
+            found += append_str(state, an(unseen_explain));
+        }
     }
     /* src/pager.c:1420 — "the dark part of a room" is offered whenever the
        looked-at symbol is the nothing symbol, an unexplored square
@@ -1052,8 +1068,28 @@ export function do_screen_description(cc, looked, sym) {
         }
     }
 
-    /* warning symbols (def_warnsyms: '0'..'5' by number) draw only from
-       the warning property, which no session has */
+    /* src/pager.c:1511. Warning symbols are descriptions in their own
+       right. A warning glyph also hides a boulder at the same location. */
+    for (let i = 1; i < WARNCOUNT; i++) {
+        const matched = looked
+            ? (glyph?.kind === 'warn' && glyph.wl === i)
+            : (sympair.ch === def_warnsyms[i].ch && !sympair.dec);
+        if (!matched)
+            continue;
+        const x_str = def_warnsyms[i].desc;
+        if (!found) {
+            state.out_str = prefix + x_str;
+            state.firstmatch = x_str;
+            found++;
+        } else {
+            found += append_str(state, x_str);
+        }
+        if (looked && (game.level?.objects || []).some(
+                obj => obj.ox === cc.x && obj.oy === cc.y
+                       && obj.otyp === ONAMES.BOULDER))
+            state.out_str += ' co-located with a boulder';
+        break;
+    }
 
     /* if we ignored venom and the list turned out short, put it back */
     if (skipped_venom && found < 2) {

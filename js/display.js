@@ -2590,10 +2590,10 @@ export function glyph_is_invisible_at(x, y) {
 function clear_invisible_memory(x, y) {
     if (!isok(x, y) || !glyph_is_invisible_at(x, y))
         return false;
-    const loc = game.level.at(x, y);
-    const tg = terrain_glyph(loc, x, y);
-    loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
-                             glyph: { kind: 'cmap', cmap: tg.cmap } };
+    /* src/display.c:486 show_mon_or_warn() uses unmap_object(), whose
+       seenv and waslit handling can deliberately leave an unseen dark
+       square blank instead of revealing its real floor. */
+    unmap_object(x, y);
     return true;
 }
 

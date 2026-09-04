@@ -3227,9 +3227,13 @@ export async function readobjnam(bp, no_wish) {
     if (d.islit && (d.typ === ONAMES.OIL_LAMP || d.typ === ONAMES.MAGIC_LAMP
                     || d.typ === ONAMES.BRASS_LANTERN
                     || Is_candle(d.otmp) || d.typ === ONAMES.POT_OIL)) {
-        /* place_object + begin_burn + obj_extract_self make it a viable
-           light source; burn timers are not ported yet */
-        note_unported_objnam('readobjnam:begin_burn');
+        const { place_object } = await import('./mkobj.js');
+        const { begin_burn } = await import('./timeout.js');
+        const { obj_extract_self } = await import('./invent.js');
+
+        place_object(d.otmp, game.u.ux, game.u.uy); /* viable light source */
+        await begin_burn(d.otmp, false);
+        obj_extract_self(d.otmp); /* release it for caller's use */
     }
 
     if (d.spesgn === 0) {

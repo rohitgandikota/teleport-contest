@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-09-04: object recharge reaches full source-site coverage
+
+The permanent `recharge-source-gaps` C oracle exercises all 16 RNG call sites
+in `read.c:recharge()`, up from 1/16 previously observed. Its 26 asserted
+segments cover repeated and ordinary wand charging, both wand-of-wishing
+limits, blessed and cursed rings, worn-ring property recomputation, the Bell
+of Opening, magic markers, crystal balls, bags of tricks, horns of plenty,
+magical instruments, oil lamps, magic lamps, and brass lanterns. The recording
+is byte-identical at **70,047/70,047 RNG calls**, **1,873/1,873 screens**,
+**1,873/1,873 cursors**, and zero animation frames.
+
+The matrix exposed one real port omission outside `recharge()` itself. C
+temporarily places a wished lit lamp, candle, or oil potion on the map, starts
+its burn timer, then extracts it for the caller. `readobjnam()` now performs
+the same sequence. This makes the object a viable light source and lets cursed
+recharging extinguish it at the same point as C. The new assertions raise the
+branch ledger from **1,129/1,129 to 1,155/1,155**. The source census rises to
+**1,585/2,621 observed RNG sites (60.5%)**, and `recharge()` leaves the ranked
+source-gap backlog.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,462/1,483 animations**; supplemental **401/401**,
+**106,521/106,521 screens**, **5,314,123/5,314,123 RNG**, and
+**3,204/3,204 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44 with no over-read. Fresh-seed smoke is 80/80
+across 13 roles with no reached-but-unported path. All ten audit and recorder
+tests pass, source and focused state audits are clean, and frozen files are
+unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged
+and unpushed. The six-hour dashboard heartbeat remains active. The next
+evidence-ranked target is `make_corpse()`, currently observed at only 1/19 RNG
+sites.
+
 ## 2026-09-04: non-door terrain kicks reach full source-site coverage
 
 The debug terrain-wish helper now follows the complete pinned

@@ -1,0 +1,351 @@
+{
+  "name": "recharge-source-gaps",
+  "description": "C oracle for every RNG site in read.c recharge across wands, rings, and rechargeable tool families.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.wands",
+    "object.rings",
+    "object.tools-containers",
+    "object.scrolls",
+    "object.buc-enchant-erosion",
+    "survival.regen-exercise",
+    "ui.getlin",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "recharge.wand.repeated-explosion",
+    "recharge.wand.ordinary-random-charge",
+    "recharge.wand.wishing-repeated-explosion",
+    "recharge.ring.blessed-increase",
+    "recharge.ring.overcharge-explosion",
+    "recharge.ring.cursed-decrease",
+    "recharge.bell.blessed",
+    "recharge.marker.blessed",
+    "recharge.marker.uncursed",
+    "recharge.crystal-ball.uncursed-random",
+    "recharge.expendable-tool.blessed-low",
+    "recharge.expendable-tool.blessed-high",
+    "recharge.expendable-tool.uncursed",
+    "recharge.instrument.blessed",
+    "recharge.instrument.uncursed",
+    "recharge.wand.cursed-strip",
+    "recharge.wand.wishing-fresh",
+    "recharge.ring.worn-recompute",
+    "recharge.lamp.cursed-lit",
+    "recharge.crystal-ball.cursed",
+    "recharge.crystal-ball.blessed",
+    "recharge.crystal-ball.max-unchanged",
+    "recharge.unchargeable.loss",
+    "recharge.magic-lamp.loss",
+    "recharge.oil-lamp.blessed",
+    "recharge.brass-lantern.uncursed"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "recharge.wand.repeated-explosion",
+      "segment": 0,
+      "screenIncludes": ["Your curved wand vibrates violently and explodes!"],
+      "rngIncludes": ["rn2(343)=23 @ recharge(read.c:762)", "rnd(8)=8 @ recharge(read.c:763)"]
+    },
+    {
+      "branch": "recharge.wand.ordinary-random-charge",
+      "segment": 1,
+      "screenIncludes": ["Your hexagonal wand glows briefly."],
+      "rngIncludes": ["rn2(5)=2 @ recharge(read.c:773)", "rnd(6)=4 @ recharge(read.c:775)"]
+    },
+    {
+      "branch": "recharge.wand.wishing-repeated-explosion",
+      "segment": 2,
+      "screenIncludes": ["Your balsa wand vibrates violently and explodes!"],
+      "rngIncludes": ["rnd(1)=1 @ recharge(read.c:763)"]
+    },
+    {
+      "branch": "recharge.ring.blessed-increase",
+      "segment": 3,
+      "screenIncludes": ["Your tiger eye ring spins clockwise for a moment."],
+      "rngIncludes": ["rnd(3)=1 @ recharge(read.c:803)", "rn2(7)=5 @ recharge(read.c:807)"]
+    },
+    {
+      "branch": "recharge.ring.overcharge-explosion",
+      "segment": 4,
+      "screenIncludes": ["Your jade ring pulsates momentarily, then explodes!"],
+      "rngIncludes": ["rnd(3)=3 @ recharge(read.c:803)", "rn2(7)=4 @ recharge(read.c:807)", "rnd(21)=16 @ recharge(read.c:812)"]
+    },
+    {
+      "branch": "recharge.ring.cursed-decrease",
+      "segment": 5,
+      "screenIncludes": ["Your clay ring spins counterclockwise for a moment."],
+      "rngIncludes": ["rnd(2)=2 @ recharge(read.c:803)", "rn2(7)=0 @ recharge(read.c:807)"]
+    },
+    {
+      "branch": "recharge.bell.blessed",
+      "segment": 6,
+      "screenIncludes": ["a - a silver bell"],
+      "rngIncludes": ["rnd(3)=3 @ recharge(read.c:848)"]
+    },
+    {
+      "branch": "recharge.marker.blessed",
+      "segment": 7,
+      "screenIncludes": ["Your magic marker glows blue for a moment."],
+      "rngIncludes": ["rn2(16)=7 @ recharge(read.c:867)"]
+    },
+    {
+      "branch": "recharge.marker.uncursed",
+      "segment": 8,
+      "screenIncludes": ["Your magic marker glows white for a moment."],
+      "rngIncludes": ["rn2(11)=7 @ recharge(read.c:881)"]
+    },
+    {
+      "branch": "recharge.crystal-ball.uncursed-random",
+      "segment": 9,
+      "screenIncludes": ["Your glass orb glows briefly."],
+      "rngIncludes": ["rnd(2)=1 @ recharge(read.c:942)"]
+    },
+    {
+      "branch": "recharge.expendable-tool.blessed-low",
+      "segment": 10,
+      "screenIncludes": ["Your bag glows blue for a moment."],
+      "rngIncludes": ["rn2(10)=1 @ recharge(read.c:963)"]
+    },
+    {
+      "branch": "recharge.expendable-tool.blessed-high",
+      "segment": 11,
+      "screenIncludes": ["Your bag glows blue for a moment."],
+      "rngIncludes": ["rn2(5)=4 @ recharge(read.c:965)"]
+    },
+    {
+      "branch": "recharge.expendable-tool.uncursed",
+      "segment": 12,
+      "screenIncludes": ["Your bag glows briefly."],
+      "rngIncludes": ["rn2(5)=2 @ recharge(read.c:970)"]
+    },
+    {
+      "branch": "recharge.instrument.blessed",
+      "segment": 13,
+      "screenIncludes": ["Your flute glows blue for a moment."],
+      "rngIncludes": ["d(2,4)=5 @ recharge(read.c:984)"]
+    },
+    {
+      "branch": "recharge.instrument.uncursed",
+      "segment": 14,
+      "screenIncludes": ["Your flute glows briefly."],
+      "rngIncludes": ["rnd(4)=3 @ recharge(read.c:989)"]
+    },
+    {
+      "branch": "recharge.wand.cursed-strip",
+      "segment": 15,
+      "screenIncludes": ["Your ebony wand vibrates briefly."]
+    },
+    {
+      "branch": "recharge.wand.wishing-fresh",
+      "segment": 16,
+      "screenIncludes": ["Your spiked wand glows feebly blue for a moment."]
+    },
+    {
+      "branch": "recharge.ring.worn-recompute",
+      "segment": 17,
+      "screenIncludes": ["Your twisted ring spins clockwise for a moment.", "a - a +3 ring of protection (on right hand)"]
+    },
+    {
+      "branch": "recharge.lamp.cursed-lit",
+      "segment": 18,
+      "screenIncludes": ["a - a lamp (lit).", "Your lamp vibrates briefly.  The lamp goes out!"]
+    },
+    {
+      "branch": "recharge.crystal-ball.cursed",
+      "segment": 19,
+      "screenIncludes": ["Your glass orb glows black for a moment."]
+    },
+    {
+      "branch": "recharge.crystal-ball.blessed",
+      "segment": 20,
+      "screenIncludes": ["Your glass orb glows light blue for a moment."]
+    },
+    {
+      "branch": "recharge.crystal-ball.max-unchanged",
+      "segment": 21,
+      "screenIncludes": ["Nothing happens."]
+    },
+    {
+      "branch": "recharge.unchargeable.loss",
+      "segment": 22,
+      "screenIncludes": ["You have a feeling of loss.", "a - a long sword"]
+    },
+    {
+      "branch": "recharge.magic-lamp.loss",
+      "segment": 23,
+      "screenIncludes": ["You have a feeling of loss.", "a - a lamp"]
+    },
+    {
+      "branch": "recharge.oil-lamp.blessed",
+      "segment": 24,
+      "screenIncludes": ["Your lamp glows blue for a moment."]
+    },
+    {
+      "branch": "recharge.brass-lantern.uncursed",
+      "segment": 25,
+      "screenIncludes": ["Your brass lantern glows briefly."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99701,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed wand of digging (7:7)\r\u0017blessed scroll of charging\rrb a    i\u001b"
+    },
+    {
+      "seed": 99702,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of digging (0:0)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99703,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed wand of wishing (1:0)\r\u0017blessed scroll of charging\rrb a    i\u001b"
+    },
+    {
+      "seed": 99704,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 ring of protection\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99705,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed +7 ring of protection\r\u0017blessed scroll of charging\rrb a    i\u001b"
+    },
+    {
+      "seed": 99706,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 ring of protection\r\u0017cursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99707,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed Bell of Opening (0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99708,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed magic marker (0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99709,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed magic marker (0)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99710,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball (0)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99711,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed bag of tricks (0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99712,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed bag of tricks (20)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99713,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed bag of tricks (0)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99714,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed magic flute (0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99715,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed magic flute (0)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99716,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of digging (0:5)\r\u0017cursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99717,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed wand of wishing (0:0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99718,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed +0 ring of protection\rPar\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99720,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed oil lamp (lit)\r\u0017cursed scroll of charging\rrb a   i\u001b"
+    },
+    {
+      "seed": 99721,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball (5)\r\u0017cursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99722,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball (0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99723,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball (7)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99724,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed long sword\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99725,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed magic lamp\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99726,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed oil lamp (0)\r\u0017blessed scroll of charging\rrb a  i\u001b"
+    },
+    {
+      "seed": 99727,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name=Charger,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed brass lantern (0)\r\u0017uncursed scroll of charging\rrb a  i\u001b"
+    }
+  ]
+}

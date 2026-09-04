@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-04: fire and teleport resistance shields match C
+
+Four omitted `shieldeff()` calls are restored in `trap.js`: resistant heroes
+and monsters hit by fire traps, heroes blocked by magic resistance on teleport
+traps, and nonintentional level teleports blocked by magic resistance. Fire
+traps also update the monster resistance memory in both directions, and
+ordinary teleport traps now retain C's endgame block.
+
+This closes every animation frame in the five largest residual sessions.
+`fire-trap-floor-objects` rises from **0/84 to 84/84**,
+`fire-trap-ice-melting` from **1/43 to 43/43**, `monster-fire-trap` from
+**0/21 to 21/21**, `fixed-teleport-traps` from **0/21 to 21/21**, and
+`vault-teleport-trap` from **36/78 to 78/78**. Supplemental animation
+matching rises by exactly 210 frames, from **2,886/3,179 to 3,096/3,179**.
+Only 83 supplemental animation misses remain. Public animation matching stays
+at **1,451/1,483** because none of the public traces reaches these resistance
+arms.
+
+The affected branches were already asserted in the existing fire-trap,
+monster-fire-trap, fixed-teleport, and vault-teleport C fixtures, so the branch
+ledger remains **1,111/1,111** with no synthetic coverage increase. Full
+verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**398/398**, **103,842/103,842 screens**, and
+**5,194,865/5,194,865 RNG**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles,
+all ten audit and recorder tests pass, source and state audits are clean, and
+frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The next residual tier is four independent 16-frame misses in wizard creation,
+were-creature visibility, potion effects, and monster conversation, followed
+by nine ambient-room frames. The six-hour dashboard heartbeat remains active.
+
 ## 2026-09-04: multi-turn runmode display timing matches C
 
 `runmode_delay_output()` now matches the pinned `hack.c` policy and all four

@@ -1,0 +1,253 @@
+{
+  "name": "amorous-demon-equipment",
+  "description": "Debug Wizards exercise armor and adornment-ring handling during amorous-demon seduction.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "level.ordinary",
+    "monster.movement",
+    "monster.special-effects",
+    "combat.melee",
+    "object.armor",
+    "object.rings"
+  ],
+  "branches": [
+    "combat.monster-vs-hero.amorous-demon-armor-auto-remove",
+    "combat.monster-vs-hero.amorous-demon-armor-prompt-accept",
+    "combat.monster-vs-hero.amorous-demon-ring-auto-theft",
+    "combat.monster-vs-hero.amorous-demon-ring-theft-refused",
+    "combat.monster-vs-hero.amorous-demon-ring-auto-wear",
+    "combat.monster-vs-hero.amorous-demon-ring-replacement",
+    "combat.monster-vs-hero.amorous-demon-glove-removal-ring-theft",
+    "combat.monster-vs-hero.amorous-demon-armor-refusal-regret",
+    "combat.monster-vs-hero.amorous-demon-ring-wear-refused",
+    "combat.monster-vs-hero.amorous-demon-ring-wear-accepted",
+    "combat.monster-vs-hero.amorous-demon-welded-glove-ring-guard",
+    "combat.monster-vs-hero.amorous-demon-leap-day-regret"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-armor-auto-remove",
+      "segment": 0,
+      "screenIncludes": [
+        "\"Take off your suit; let's get a little closer.\"",
+        "Time stands still while you and the succubus lie in each other's arms..."
+      ],
+      "rngIncludes": [
+        "rn2(20)=10 @ mayberem(mhitu.c:2325)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-armor-prompt-accept",
+      "segment": 1,
+      "screenIncludes": [
+        "\"Shall I remove your suit, lover?\" [yn] (n)",
+        "Time stands still while you and the succubus lie in each other's arms..."
+      ],
+      "rngIncludes": [
+        "rn2(20)=2 @ mayberem(mhitu.c:2325)",
+        "rn2(2)=0 @ mayberem(mhitu.c:2328)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-ring-auto-theft",
+      "segment": 2,
+      "screenIncludes": [
+        "decides she'd like",
+        "and takes it."
+      ],
+      "rngIncludes": [
+        "rn2(20)=16 @ doseduce(mhitu.c:2032)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-ring-theft-refused",
+      "segment": 3,
+      "screenIncludes": [
+        "looks pretty.  May I have it?\" [yn] (n)",
+        "Time stands still while you and the succubus lie in each other's arms..."
+      ],
+      "screenExcludes": [
+        "decides she'd like"
+      ],
+      "rngIncludes": [
+        "rn2(20)=4 @ doseduce(mhitu.c:2032)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-ring-auto-wear",
+      "segment": 4,
+      "screenIncludes": [
+        "decides you'd look prettier wearing",
+        "and puts it on your finger.",
+        "puts the ring of adornment on your right hand."
+      ],
+      "rngIncludes": [
+        "rn2(20)=12 @ doseduce(mhitu.c:2063)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-ring-replacement",
+      "segment": 5,
+      "screenIncludes": [
+        "replaces your ring of protection with your ring of adornment."
+      ],
+      "rngIncludes": [
+        "rn2(20)=19 @ doseduce(mhitu.c:2063)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-glove-removal-ring-theft",
+      "segment": 6,
+      "screenIncludes": [
+        "\"Shall I remove your gloves, sweetheart?\" [yn] (n)",
+        "looks pretty.  May I have it?\" [yn] (n)",
+        "The succubus murmurs sweet nothings into your ear."
+      ],
+      "rngIncludes": [
+        "rn2(20)=5 @ mayberem(mhitu.c:2325)",
+        "rn2(20)=7 @ doseduce(mhitu.c:2032)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-armor-refusal-regret",
+      "segment": 7,
+      "screenIncludes": [
+        "\"Shall I remove your suit, lover?\" [yn] (n)",
+        "\"You're such a nice guy; I wish...\""
+      ],
+      "screenExcludes": [
+        "Time stands still"
+      ],
+      "rngIncludes": [
+        "rn2(20)=2 @ mayberem(mhitu.c:2325)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-ring-wear-refused",
+      "segment": 8,
+      "screenIncludes": [
+        "looks pretty.  Would you wear it for me?\" [yn] (n)"
+      ],
+      "screenExcludes": [
+        "puts the ring of adornment on your right hand."
+      ],
+      "rngIncludes": [
+        "rn2(20)=4 @ doseduce(mhitu.c:2063)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-ring-wear-accepted",
+      "segment": 9,
+      "screenIncludes": [
+        "looks pretty.  Would you wear it for me?\" [yn] (n)",
+        "puts the ring of adornment on your right hand."
+      ],
+      "rngIncludes": [
+        "rn2(20)=4 @ doseduce(mhitu.c:2063)"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-welded-glove-ring-guard",
+      "segment": 10,
+      "screenIncludes": [
+        "The long sword welds itself to your dominant right hand!",
+        "The succubus murmurs in your ear, while helping you undress.",
+        "Time stands still while you and the succubus lie in each other's arms..."
+      ],
+      "screenExcludes": [
+        "Shall I remove your gloves",
+        "May I have it?"
+      ]
+    },
+    {
+      "branch": "combat.monster-vs-hero.amorous-demon-leap-day-regret",
+      "segment": 11,
+      "screenIncludes": [
+        "\"Well, then you owe me twelve pairs of gloves!\""
+      ],
+      "screenExcludes": [
+        "\"You're such a nice guy; I wish...\""
+      ],
+      "rngIncludes": [
+        "rn2(20)=2 @ mayberem(mhitu.c:2325)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99201,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed leather armor\rWa\u0007female hostile amorous demon\r20s  n          "
+    },
+    {
+      "seed": 99202,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed leather armor\rWa\u0007female hostile amorous demon\r20s  y  \r          "
+    },
+    {
+      "seed": 99203,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\r\u0007female hostile amorous demon\r20s y  \r          "
+    },
+    {
+      "seed": 99210,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\r\u0007female hostile amorous demon\r20s n  \r          "
+    },
+    {
+      "seed": 99205,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\r\u0007male hostile amorous demon\r20s y  \r          "
+    },
+    {
+      "seed": 99206,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\r\u0017uncursed ring of protection\r\u0017uncursed ring of searching\rPbrPcl\u0007male hostile amorous demon\r20s y  \r          "
+    },
+    {
+      "seed": 99207,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\rPar\u0017uncursed pair of leather gloves\rWb\u0007female hostile amorous demon\r20s yy  \r          "
+    },
+    {
+      "seed": 99202,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed leather armor\rWa\u0007female hostile amorous demon\r20s  n          "
+    },
+    {
+      "seed": 99210,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\r\u0007male hostile amorous demon\r20s n  \r      "
+    },
+    {
+      "seed": 99210,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\r\u0007male hostile amorous demon\r20s y  \r      "
+    },
+    {
+      "seed": 99211,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed ring of adornment\rPar\u0017uncursed pair of leather gloves\rWb\u0017cursed long sword\rwc\u0007female hostile amorous demon\r20s 20s          "
+    },
+    {
+      "seed": 99202,
+      "datetime": "20280229120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed leather armor\rWa\u0007female hostile amorous demon\r20s  n          "
+    }
+  ]
+}

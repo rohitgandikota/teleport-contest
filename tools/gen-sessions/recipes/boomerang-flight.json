@@ -1,0 +1,234 @@
+{
+  "name": "boomerang-flight",
+  "description": "Debug heroes exercise curved boomerang flight, catch and self-hit outcomes, terrain and monster collisions, inventory restoration, underwater return, and levitation recoil.",
+  "coverage": [
+    "combat.ranged",
+    "combat.knockback",
+    "forms.polymorph",
+    "level.ordinary",
+    "mode.debug",
+    "object.weapons",
+    "object.rings",
+    "terrain.water-lava",
+    "turn.speed-energy",
+    "ui.animation",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "dothrow.boomerang.self-hit",
+    "dothrow.boomerang.catch",
+    "dothrow.boomerang.stack-unsplit",
+    "dothrow.boomerang.wield-restore",
+    "dothrow.boomerang.wall-stop",
+    "dothrow.boomerang.sink-stop",
+    "dothrow.boomerang.monster-contact",
+    "dothrow.boomerang.left-handed-clockwise",
+    "dothrow.boomerang.fumbling-self-hit",
+    "dothrow.boomerang.underwater-return",
+    "dothrow.boomerang.levitation-recoil",
+    "vision.underwater.pool-only",
+    "sounds.underwater.suppressed"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "dothrow.boomerang.self-hit",
+      "segment": 0,
+      "screenIncludes": ["You are hit by a boomerang!"],
+      "rngIncludes": ["rn2(20)=15 @ boomhit(zap.c:4203)"]
+    },
+    {
+      "branch": "dothrow.boomerang.catch",
+      "segment": 1,
+      "screenIncludes": ["You skillfully catch the boomerang."],
+      "rngIncludes": ["rn2(20)=6 @ boomhit(zap.c:4203)"]
+    },
+    {
+      "branch": "dothrow.boomerang.stack-unsplit",
+      "segment": 2,
+      "screenIncludes": [
+        "You skillfully catch the boomerang.",
+        "a - 3 boomerangs"
+      ],
+      "rngIncludes": ["rn2(20)=3 @ boomhit(zap.c:4203)"]
+    },
+    {
+      "branch": "dothrow.boomerang.wield-restore",
+      "segment": 3,
+      "screenIncludes": [
+        "You skillfully catch the boomerang.",
+        "a - a boomerang (wielded)"
+      ],
+      "rngIncludes": ["rn2(20)=16 @ boomhit(zap.c:4203)"]
+    },
+    {
+      "branch": "dothrow.boomerang.wall-stop",
+      "segment": 4,
+      "screenIncludes": ["Not carrying anything."],
+      "screenExcludes": [
+        "You skillfully catch the boomerang.",
+        "You are hit by a boomerang!"
+      ],
+      "screenCells": [
+        { "step": 29, "x": 47, "y": 17, "equals": "/" }
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.sink-stop",
+      "segment": 5,
+      "screenIncludes": ["Klonk!", "Not carrying anything."],
+      "screenExcludes": [
+        "You skillfully catch the boomerang.",
+        "You are hit by a boomerang!"
+      ],
+      "screenCells": [
+        { "step": 39, "x": 10, "y": 9, "equals": ")" }
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.monster-contact",
+      "segment": 6,
+      "screenIncludes": [
+        "The boomerang hits the iron golem!",
+        "The iron golem wakes up!",
+        "The iron golem gets angry!",
+        "Not carrying anything."
+      ],
+      "rngIncludes": [
+        "rnd(20)=17 @ thitmonst(dothrow.c:2152)",
+        "rnd(9)=5 @ dmgval(weapon.c:227)"
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.left-handed-clockwise",
+      "segment": 7,
+      "screenIncludes": ["Not carrying anything."],
+      "screenExcludes": [
+        "You skillfully catch the boomerang.",
+        "You are hit by a boomerang!"
+      ],
+      "rngIncludes": ["rn2(10)=0 @ u_init_misc(u_init.c:1028)"],
+      "screenCells": [
+        { "step": 29, "x": 67, "y": 8, "equals": ")" }
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.fumbling-self-hit",
+      "segment": 8,
+      "screenIncludes": [
+        "You finish your dressing maneuver.",
+        "You are hit by a boomerang!"
+      ],
+      "screenExcludes": ["You skillfully catch the boomerang."],
+      "rngIncludes": ["rnd(9)=6 @ dmgval(weapon.c:265)"]
+    },
+    {
+      "branch": "dothrow.boomerang.underwater-return",
+      "segment": 9,
+      "screenIncludes": [
+        "The boomerang returns to your hand!",
+        "o - a boomerang (wielded)"
+      ],
+      "screenExcludes": ["You skillfully catch the boomerang."],
+      "rngIncludes": [
+        "rn2(100)=98 @ throwit(dothrow.c:1711)",
+        "rn2(100)=8 @ throwit(dothrow.c:1717)"
+      ]
+    },
+    {
+      "branch": "vision.underwater.pool-only",
+      "segment": 9,
+      "screenIncludes": ["You fall into the pool of water."],
+      "screenCells": [
+        { "step": 88, "x": 50, "y": 4, "equals": " " },
+        { "step": 88, "x": 55, "y": 6, "equals": "n" }
+      ]
+    },
+    {
+      "branch": "sounds.underwater.suppressed",
+      "segment": 9,
+      "screenIncludes": [
+        "You fall into the pool of water.",
+        "The boomerang returns to your hand!"
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.levitation-recoil",
+      "segment": 10,
+      "screenIncludes": [
+        "You start to float in the air!",
+        "You float in the opposite direction."
+      ],
+      "screenExcludes": ["You skillfully catch the boomerang."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99968,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rtal  i\u001b"
+    },
+    {
+      "seed": 99988,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rtal  i\u001b"
+    },
+    {
+      "seed": 100157,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u00173 blessed +5 boomerangs\rtal  i\u001b"
+    },
+    {
+      "seed": 100321,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rwa tal  i\u001b"
+    },
+    {
+      "seed": 99960,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rtal  i\u001b"
+    },
+    {
+      "seed": 99968,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rll\u0017sink\rhhtal  i\u001b"
+    },
+    {
+      "seed": 100500,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +20 boomerang\r\u0007sleeping peaceful iron golem\rtau  i\u001b"
+    },
+    {
+      "seed": 99401,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rtal  i\u001b"
+    },
+    {
+      "seed": 99968,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\r\u0017blessed fumble boots\rWbtal  i\u001b"
+    },
+    {
+      "seed": 6947,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b\u0017pool\rlmh\u001b\u0017blessed +5 boomerang\rtol  i\u001b"
+    },
+    {
+      "seed": 99968,
+      "datetime": "20000118092000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of levitation\rPar\u001b\u0017blessed +5 boomerang\rtbl  i\u001b"
+    }
+  ]
+}

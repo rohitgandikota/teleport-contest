@@ -237,6 +237,45 @@ export function splitobj(obj, num) {
     return otmp;
 }
 
+// src/mkobj.c:556 unsplitobj() -- find the other half of the most recent
+// split and merge the pair back together.
+export async function unsplitobj(obj) {
+    let list;
+    switch (obj.where) {
+    case OBJ_INVENT:
+        list = game.invent || [];
+        break;
+    case OBJ_MINVENT:
+        list = obj.ocarry?.minvent || [];
+        break;
+    case OBJ_CONTAINED:
+        list = obj.ocontainer?.cobj || [];
+        break;
+    default:
+        return null;
+    }
+
+    const split = game.context?.objsplit || {};
+    let parent = null, child = null, target = 0;
+    if (obj.o_id === split.child_oid) {
+        child = obj;
+        target = split.parent_oid;
+    } else if (obj.o_id === split.parent_oid) {
+        parent = obj;
+        target = split.child_oid;
+    }
+    if (!target)
+        return null;
+    if (!parent)
+        parent = list.find(candidate => candidate.o_id === target) || null;
+    if (!child)
+        child = list.find(candidate => candidate.o_id === target) || null;
+    if (!parent || !child)
+        return null;
+
+    return await merged({ o: parent }, { o: child }) ? parent : null;
+}
+
 export function next_ident() {
     const ctx = game.context;
     const id = ctx.ident || 1;

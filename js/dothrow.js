@@ -10,6 +10,7 @@ import { MM_IGNORELAVA } from './const.js';
 import { MM_IGNOREWATER } from './const.js';
 import { FORCEBUNGLE } from './const.js';
 import { HURTLING } from './const.js';
+import { Is_airlevel } from './const.js';
 import { Is_waterlevel } from './const.js';
 import { is_hole } from './const.js';
 import { is_pit } from './const.js';
@@ -104,7 +105,7 @@ import { Has_contents } from './obj.js';
 import { contained_gold, weight, obfree } from './invent.js';
 import { impact_disturbs_zombies } from './hack.js';
 import { in_rooms } from './hack.js';
-import { shop_keeper, is_unpaid, stolen_value, subfrombill, donate_gold, sellobj, make_angry_shk, inside_shop } from './shk.js';
+import { shop_keeper, is_unpaid, stolen_value, subfrombill, donate_gold, sellobj, make_angry_shk, inside_shop, hot_pursuit } from './shk.js';
 import { rndmonnam } from './do_name.js';
 import { d } from './rng.js';
 import { delobj } from './mon.js';
@@ -120,31 +121,34 @@ import { Hallucination } from './youprop.js';
 import { distu } from './hacklib.js';
 import { game } from './gstate.js';
 import { pline } from './display.js';
-import { splitobj, place_object } from './mkobj.js';
-import { addinv, freeinv, fully_identify_obj, stackobj } from './invent.js';
+import { splitobj, unsplitobj, place_object } from './mkobj.js';
+import { addinv, addinv_before, freeinv, fully_identify_obj, stackobj } from './invent.js';
 import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
          change_luck } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
-         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD, EYE, OBJ_FLOOR }
+         engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD, EYE, OBJ_FLOOR,
+         OBJ_FREE, OBJ_INVENT, OBJ_MINVENT, W_WEP, W_SWAPWEP, W_QUIVER,
+         ARM, FOOT, Something }
     from './const.js';
 /* include/objclass.h:79 — oc_dir bits for weapons */
 const PIERCE = 1;
 import { singular, xname, an, the, The, otense, mshot_xname, doname,
-         makeplural }
+         makeplural, Tobjnam, killer_xname }
     from './objnam.js';
 import { skill_name, weapon_descr, weapon_type, P_SKILL } from './weapon.js';
 import { SKILLS, MATERIALS } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
-import { bhit, obj_resists, miss } from './zap.js';
+import { bhit, boomhit, obj_resists, miss } from './zap.js';
 import { is_pool, is_lava, wakeup } from './mon.js';
 import { is_blade } from './mon.js';
 import { is_missile, is_sword } from './wield.js';
 import { cansee } from './vision.js';
 import { newsym, canseemon } from './display.js';
-import { Levitation, Blind, Underwater } from './youprop.js';
+import { Levitation, Blind, Underwater, Fumbling } from './youprop.js';
 import { cmdq_add_ec, cmdq_add_key } from './cmd.js';
-import { doswapweapon, dowield, doquiver_core, is_ammo } from './wield.js';
+import { doswapweapon, dowield, doquiver_core, is_ammo, setuwep,
+         setuswapwep, setuqwep, set_twoweap } from './wield.js';
 import { greatest_erosion } from './do_wear.js';
 import { rnl } from './rng.js';
 import { is_pole, is_spear } from './u_init.js';
@@ -327,14 +331,24 @@ export async function throw_obj(obj, shotlimit) {
     }
 
     const wep_mask = obj.owornmask || 0;
-    for (let i = 1; i <= multishot; i++) {
+    const m_shot = (game.m_shot ||= {});
+    m_shot.s = m_shot_s;
+    m_shot.o = obj.otyp;
+    m_shot.n = multishot;
+    let oldslot = null;
+    for (m_shot.i = 1; m_shot.i <= m_shot.n; m_shot.i++) {
+        const twoweap = !!u.twoweap;
         let otmp;
         if (obj && obj.quan > 1) {
             otmp = splitobj(obj, 1);
         } else {
             otmp = obj;
-            if (otmp.owornmask)
-                note_unported_dothrow('throw_obj:remove_worn_item');
+            const index = game.invent.indexOf(otmp);
+            oldslot = index >= 0 ? (game.invent[index + 1] || null) : null;
+            if (otmp.owornmask) {
+                const { remove_worn_item } = await import('./steal.js');
+                await remove_worn_item(otmp, false);
+            }
             obj = null;
         }
         const old_encumbr = near_capacity();
@@ -345,9 +359,12 @@ export async function throw_obj(obj, shotlimit) {
             game._encumber_status_stale = true;
             game._deferred_status_capacity = old_encumbr;
         }
-        await throwit(otmp, wep_mask);
+        await throwit(otmp, wep_mask, twoweap, oldslot);
         await encumber_msg();
     }
+    m_shot.n = m_shot.i = 0;
+    m_shot.o = 0;
+    m_shot.s = false;
 
     /* src/dothrow.c:290 — undo a pre-existing object split if the leftover
        stack is one of its halves; unsplitobj is not ported and no current
@@ -433,14 +450,112 @@ function throwit_return(clear_thrownobj) {
         game.thrownobj = null;
 }
 
+// src/dothrow.c:1855 return_throw_to_inv() -- put a caught missile back in
+// its original stack or inventory slot, then restore its weapon slot.
+async function return_throw_to_inv(obj, wep_mask, twoweap, oldslot) {
+    const split = game.context?.objsplit || {};
+    let combined = null;
+
+    if (obj.o_id === split.parent_oid || obj.o_id === split.child_oid) {
+        game.invent.unshift(obj);
+        obj.where = OBJ_INVENT;
+        combined = await unsplitobj(obj);
+        if (combined) {
+            obj = combined;
+        } else {
+            const index = game.invent.indexOf(obj);
+            if (index >= 0)
+                game.invent.splice(index, 1);
+            obj.where = OBJ_FREE;
+        }
+    }
+
+    if (!combined) {
+        obj.nomerge = 1;
+        obj = await addinv_before(obj, oldslot);
+        obj.nomerge = 0;
+
+        if ((obj.owornmask & W_QUIVER)
+            && ((obj.owornmask | wep_mask) & (W_WEP | W_SWAPWEP)))
+            setuqwep(null);
+        if ((wep_mask & W_WEP) && !game.u.uwep)
+            setuwep(obj);
+        else if ((wep_mask & W_SWAPWEP) && !game.u.uswapwep)
+            setuswapwep(obj);
+        else if ((wep_mask & W_QUIVER) && !game.u.uquiver)
+            setuqwep(obj);
+        if (twoweap && !game.u.twoweap)
+            set_twoweap(true);
+    }
+
+    return obj;
+}
+
+// src/dothrow.c:1441 sho_obj_return_to_u() -- display the straight return
+// path used after a boomerang has been thrown underwater.
+async function sho_obj_return_to_u(obj) {
+    const u = game.u;
+    if (!(u.dx || u.dy)
+        || (game.bhitpos.x === u.ux && game.bhitpos.y === u.uy))
+        return;
+
+    let x = game.bhitpos.x - u.dx;
+    let y = game.bhitpos.y - u.dy;
+    let flightPos = null;
+    const glyph = temporary_object_glyph(obj);
+    while (isok(x, y) && (x !== u.ux || y !== u.uy)) {
+        if (flightPos)
+            newsym(flightPos.x, flightPos.y);
+        display_object_at(obj, x, y, glyph);
+        flightPos = { x, y };
+        if (game.animationFrame)
+            await game.animationFrame();
+        x -= u.dx;
+        y -= u.dy;
+    }
+    if (flightPos)
+        newsym(flightPos.x, flightPos.y);
+}
+
+// src/dothrow.c:1482 throwit_mon_hit() -- resolve one contact between the
+// in-flight object and a monster.
+export async function throwit_mon_hit(obj, mon) {
+    if (!mon)
+        return false;
+    if (mon.isshk && obj.where === OBJ_MINVENT && obj.ocarry === mon)
+        return true;
+
+    await snuff_candle(obj);
+    game.notonhead = (game.bhitpos.x !== mon.mx
+                      || game.bhitpos.y !== mon.my);
+    const objGone = await thitmonst(mon, obj);
+    mon = m_at(game.bhitpos.x, game.bhitpos.y);
+
+    const heroShop = (game.u.ushops || '').charAt(0);
+    const monsterShops = mon ? (in_rooms(mon.mx, mon.my, SHOPBASE) || '') : '';
+    if (mon?.isshk
+        && (!inside_shop(game.u.ux, game.u.uy)
+            || (heroShop && !monsterShops.includes(heroShop))))
+        hot_pursuit(mon);
+
+    if (objGone)
+        game.thrownobj = null;
+    return false;
+}
+
 // src/dothrow.c:1510 throwit() — fly the missile and land it.
 //
-// The reachable spine: a horizontal hand-thrown or launched missile that
-// crosses open floor and lands. The swallow, straight-up/down, boomerang
-// and throw-and-return arms are gated on state no session reaches yet.
-export async function throwit(obj, wep_mask) {
+// The reachable spine includes horizontal hand-thrown or launched missiles,
+// boomerang curves and catches, and their ordinary landing paths. Swallow,
+// straight-up/down, and artifact throw-and-return arms remain separately gated.
+export async function throwit(obj, wep_mask, twoweap = false,
+                              oldslot = null) {
     const u = game.u;
+    let impaired = !!(u.intrinsic?.HConfusion || u.uprops?.CONFUSION
+                       || u.intrinsic?.HStun || u.uprops?.STUNNED
+                       || Blind() || Hallucination() || Fumbling());
 
+    game.notonhead = false;
     game.thrownobj = obj;
     obj.how_lost = LOST_THROWN;
 
@@ -460,6 +575,7 @@ export async function throwit(obj, wep_mask) {
             u.dy = rn2(3) - 1;
             if (!u.dx && !u.dy)
                 u.dz = 1;
+            impaired = true;
         }
     }
 
@@ -500,65 +616,119 @@ export async function throwit(obj, wep_mask) {
         game.thrownobj = null;
         return;
     }
-    if (obj.otyp === ONAMES.BOOMERANG) {
-        note_unported_dothrow('throwit:boomerang');
-        game.thrownobj = null;
-        return;
-    }
-
-    /* src/dothrow.c:1615 — range from strength and weight */
-    const crossbowing = (ammo_and_launcher(obj, game.u.uwep)
-                         && weapon_type(game.u.uwep) === SKILLS.P_CROSSBOW);
-    let urange = Math.trunc((crossbowing ? 18 : acurrstr()) / 2);
-    let range;
-    if (obj.otyp === ONAMES.HEAVY_IRON_BALL)
-        range = urange - Math.trunc(obj.owt / 100);
-    else
-        range = urange - Math.trunc(obj.owt / 40);
-    if (range < 1)
-        range = 1;
-
-    if (is_ammo(obj)) {
-        if (ammo_and_launcher(obj, game.u.uwep)) {
-            if (crossbowing)
-                range = BOLT_LIM;
-            else
-                range++;
-        } else if (obj.oclass !== OCLASSES.GEM_CLASS) {
-            range = Math.trunc(range / 2);
-            /* body_part(HAND) is "hand" for every un-polymorphed form */
-            await pline(`You aren't wielding ${
-                an(skill_name(weapon_type(obj)))}, so you throw your ${
-                weapon_descr(obj)} by hand.`);
+    (game.iflags ||= {}).returning_missile =
+        obj.otyp === ONAMES.BOOMERANG ? obj : null;
+    let mon = null;
+    if (obj.otyp === ONAMES.BOOMERANG && !Underwater()) {
+        if (Is_airlevel(u.uz) || Levitation())
+            await hurtle(-u.dx, -u.dy, 1, true);
+        mon = await boomhit(obj, u.dx, u.dy);
+        (game.iflags ||= {}).returning_missile = null;
+        if (mon === game.youmonst) {
+            exercise(A_DEX, true);
+            obj = await return_throw_to_inv(obj, wep_mask, twoweap, oldslot);
+            throwit_return(true);
+            return;
         }
-    }
+    } else {
+        /* src/dothrow.c:1615 -- range from strength and weight */
+        const crossbowing = (ammo_and_launcher(obj, game.u.uwep)
+                             && weapon_type(game.u.uwep) === SKILLS.P_CROSSBOW);
+        let urange = Math.trunc((crossbowing ? 18 : acurrstr()) / 2);
+        let range;
+        if (obj.otyp === ONAMES.HEAVY_IRON_BALL)
+            range = urange - Math.trunc(obj.owt / 100);
+        else
+            range = urange - Math.trunc(obj.owt / 40);
+        if (range < 1)
+            range = 1;
 
-    if (Levitation()) {
-        urange -= range;
-        if (urange < 1) urange = 1;
-        range -= urange;
-        if (range < 1) range = 1;
-    }
-    if (obj.otyp === ONAMES.BOULDER)
-        range = 20;
+        if (is_ammo(obj)) {
+            if (ammo_and_launcher(obj, game.u.uwep)) {
+                if (crossbowing)
+                    range = BOLT_LIM;
+                else
+                    range++;
+            } else if (obj.oclass !== OCLASSES.GEM_CLASS) {
+                range = Math.trunc(range / 2);
+                /* body_part(HAND) is "hand" for every un-polymorphed form */
+                await pline(`You aren't wielding ${
+                    an(skill_name(weapon_type(obj)))}, so you throw your ${
+                    weapon_descr(obj)} by hand.`);
+            }
+        }
 
-    const pobjRef = { obj };
-    const mon = await bhit(u.dx, u.dy, range, THROWN_WEAPON, null, null, pobjRef);
+        if (Levitation()) {
+            urange -= range;
+            if (urange < 1) urange = 1;
+            range -= urange;
+            if (range < 1) range = 1;
+        }
+        if (obj.otyp === ONAMES.BOULDER)
+            range = 20;
+        if (Underwater())
+            range = 1;
 
-    if (!pobjRef.obj) {
-        game.thrownobj = null;
-        return;
-    }
+        const pobjRef = { obj };
+        mon = await bhit(u.dx, u.dy, range, THROWN_WEAPON, null, null,
+                         pobjRef);
+        game.thrownobj = pobjRef.obj;
 
-    if (mon) {
-        if (await thitmonst(mon, obj)) {
-            game.thrownobj = null;
+        if (!pobjRef.obj) {
+            throwit_return(false);
             return;
         }
     }
 
-    /* src/dothrow.c:1780 */
+    if (await throwit_mon_hit(obj, mon)) {
+        throwit_return(true);
+        return;
+    }
+    if (!game.thrownobj) {
+        throwit_return(false);
+        return;
+    }
+
     const bx = game.bhitpos.x, by = game.bhitpos.y;
+    if (game.iflags.returning_missile) {
+        if (rn2(100)) {
+            await sho_obj_return_to_u(obj);
+            if (!impaired && rn2(100)) {
+                await pline(`${Tobjnam(obj, 'return')} to your hand!`);
+                obj = await addinv_before(obj, oldslot);
+                await encumber_msg();
+                if (obj.owornmask & W_QUIVER)
+                    setuqwep(null);
+                setuwep(obj);
+                set_twoweap(twoweap);
+                if (cansee(bx, by))
+                    newsym(bx, by);
+            } else {
+                let dmg = rn2(2);
+                if (!dmg) {
+                    await pline(Blind()
+                        ? `${Something} lands ${Levitation() ? 'beneath' : 'at'} your ${body_part(FOOT)}.`
+                        : `${Tobjnam(obj, 'return')} back to you, landing ${Levitation() ? 'beneath' : 'at'} your ${body_part(FOOT)}.`);
+                } else {
+                    dmg += rnd(3);
+                    await pline(Blind()
+                        ? `${Tobjnam(obj, 'hit')} your ${body_part(ARM)}!`
+                        : `${Tobjnam(obj, 'fly')} back toward you, hitting your ${body_part(ARM)}!`);
+                    await losehp(Maybe_Half_Phys(dmg), killer_xname(obj),
+                                 KILLED_BY);
+                }
+                if (!await ship_object(obj, u.ux, u.uy, false)) {
+                    const { dropy } = await import('./do.js');
+                    await dropy(obj);
+                }
+            }
+            throwit_return(true);
+            return;
+        }
+        await pline(`${Tobjnam(obj, 'fail')} to return!`);
+    }
+
+    /* src/dothrow.c:1780 */
     if ((!IS_SOFT(game.level.at(bx, by).typ) && breaktest(obj))
         /* venom [via #monster to spit while poly'd] fails breaktest()
            but we want to force breakage even when location IS_SOFT() */
@@ -1005,7 +1175,11 @@ function throw_ok(obj) {
     if (!obj)
         return GETOBJ_EXCLUDE;
 
-    /* welded/AutoReturn/Mjollnir need the wield and artifact code */
+    /* AutoReturn() always recognizes boomerangs, wielded or not. */
+    if (obj.otyp === ONAMES.BOOMERANG)
+        return GETOBJ_SUGGEST;
+
+    /* welded/other AutoReturn/Mjollnir need the artifact code */
     if (obj.quan === 1
         && (obj === game.u.uwep || (obj === game.u.uswapwep && game.u.twoweap)))
         return GETOBJ_DOWNPLAY;

@@ -30,6 +30,7 @@ import { urgent_pline } from './display.js';
 import { newsym_force } from './display.js';
 import { hero_breaks } from './dothrow.js';
 import { breaks } from './dothrow.js';
+import { endmultishot, throwit_mon_hit } from './dothrow.js';
 import { unpunish } from './read.js';
 import { obj_stop_timers } from './timeout.js';
 import { rndmonnam } from './do_name.js';
@@ -129,6 +130,7 @@ import { set_uinwater } from './hack.js';
 import { test_move } from './hack.js';
 import { nomul } from './hack.js';
 import { xytodir } from './cmd.js';
+import { xdir, ydir, DIR_LEFT, DIR_RIGHT, RIGHT_HANDED } from './const.js';
 import { slept_monst } from './mhitm.js';
 import { mon_reflects } from './muse.js';
 import { death_inflicted_by } from './mcastu.js';
@@ -162,7 +164,7 @@ import { is_quest_artifact } from './questpgr.js';
 import { mnearto } from './mon.js';
 import { is_pick } from './mon.js';
 import { mlifesaver } from './mon.js';
-import { P_SKILL } from './weapon.js';
+import { P_SKILL, dmgval } from './weapon.js';
 import { spell_skilltype } from './spell.js';
 import { poisoned } from './attrib.js';
 import { ACURR } from './attrib.js';
@@ -228,6 +230,7 @@ import { completelyburns } from './mondata.js';
 import { amphibious } from './mondata.js';
 import { ureflects } from './muse.js';
 import { mintrap } from './trap.js';
+import { thitu } from './trap.js';
 import { noit_Monnam } from './do_name.js';
 import { mstatusline } from './insight.js';
 import { stolen_value, addtobill } from './shk.js';
@@ -369,7 +372,8 @@ import { find_mac } from './worn.js';
 import { Reflecting, Sleep_resistance, Fire_resistance, Cold_resistance,
          Shock_resistance, Blind, Deaf, Unaware, Hallucination,
          Invis, See_invisible, Teleport_control,
-         Underwater, Levitation, Antimagic, Passes_walls } from './youprop.js';
+         Underwater, Levitation, Antimagic, Passes_walls, Fumbling }
+    from './youprop.js';
 import { cmap_names } from './drawing_data.js';
 import { CLR_ORANGE, CLR_WHITE, CLR_BLACK, CLR_GREEN,
          CLR_YELLOW } from './terminal.js';
@@ -6083,6 +6087,98 @@ export async function bhit(ddx, ddy, range,  /* direction and range */
         await transient_light_cleanup();
 
     return result;
+}
+
+// src/zap.c:4148 boomhit() -- fly a boomerang along its ten-cell curve.
+export async function boomhit(obj, dx, dy) {
+    const counterclockwise = (game.u.uhandedness ?? RIGHT_HANDED)
+                             === RIGHT_HANDED;
+    let direction = xytodir(dx, dy);
+    let boom = counterclockwise ? cmap_names.S_boomleft
+                                : cmap_names.S_boomright;
+    let flightPos = null;
+    let nhits = Math.max(1, (obj.spe | 0) + 1);
+
+    game.bhitpos = { x: game.u.ux, y: game.u.uy };
+    const endFlight = () => {
+        if (flightPos) {
+            newsym(flightPos.x, flightPos.y);
+            flightPos = null;
+        }
+    };
+    const showFlight = async () => {
+        if (cansee(game.bhitpos.x, game.bhitpos.y)) {
+            endFlight();
+            display_cmap_at(boom, game.bhitpos.x, game.bhitpos.y,
+                            defsyms[boom].color, 'boomerang');
+            flightPos = { ...game.bhitpos };
+        }
+        if (game.animationFrame) {
+            await flush_screen(0);
+            await game.animationFrame();
+        }
+    };
+
+    for (let ct = 0; ct < 10; ct++) {
+        direction = ((direction % 8) + 8) % 8;
+        boom = cmap_names.S_boomleft + cmap_names.S_boomright - boom;
+        dx = xdir[direction];
+        dy = ydir[direction];
+        game.bhitpos.x += dx;
+        game.bhitpos.y += dy;
+
+        if (!isok(game.bhitpos.x, game.bhitpos.y)) {
+            game.bhitpos.x -= dx;
+            game.bhitpos.y -= dy;
+            break;
+        }
+
+        const mtmp = m_at(game.bhitpos.x, game.bhitpos.y);
+        if (mtmp) {
+            await m_respond(mtmp);
+            if (nhits-- < 0) {
+                endFlight();
+                return mtmp;
+            }
+            if (await throwit_mon_hit(obj, mtmp) || !game.thrownobj)
+                break;
+        }
+
+        const typ = game.level.at(game.bhitpos.x, game.bhitpos.y).typ;
+        if (!ZAP_POS(typ)
+            || closed_door(game.bhitpos.x, game.bhitpos.y)) {
+            game.bhitpos.x -= dx;
+            game.bhitpos.y -= dy;
+            break;
+        }
+
+        if (u_at(game.bhitpos.x, game.bhitpos.y)) {
+            if (Fumbling() || rn2(20) >= ACURR(A_DEX)) {
+                const dam = dmgval(obj, game.youmonst);
+                await thitu(10 + (obj.spe | 0), Maybe_Half_Phys(dam),
+                            { obj }, 'boomerang');
+                await endmultishot(true);
+                break;
+            }
+            endFlight();
+            await You('skillfully catch the boomerang.');
+            return game.youmonst;
+        }
+
+        await showFlight();
+        if (IS_SINK(typ)) {
+            if (!Deaf())
+                await pline('Klonk!');
+            await wake_nearto(game.bhitpos.x, game.bhitpos.y, 20);
+            break;
+        }
+        if (ct % 5 !== 0)
+            direction = counterclockwise ? DIR_LEFT(direction)
+                                         : DIR_RIGHT(direction);
+    }
+
+    endFlight();
+    return null;
 }
 
 // src/zap.c:3556 hit() / :3571 miss() — the missile/zap contact messages.

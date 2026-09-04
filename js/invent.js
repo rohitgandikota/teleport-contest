@@ -206,6 +206,16 @@ export function addinv_core1(obj) {
 // src/invent.c:600 addinv() — merge into an existing stack if possible,
 // otherwise take the next inventory letter.
 export function addinv(obj) {
+    return addinv_core0(obj, null);
+}
+
+// src/invent.c:1160 addinv_before() -- restore a returning weapon ahead of
+// the inventory item which followed it before the throw.
+export function addinv_before(obj, otherObj) {
+    return addinv_core0(obj, otherObj);
+}
+
+function addinv_core0(obj, otherObj) {
     game.invent ||= [];
     if (obj.how_lost === LOST_EXPLODING)
         return null;
@@ -224,11 +234,23 @@ export function addinv(obj) {
     }
 
     const pending = addinv_core1(obj);
-    return pending ? pending.then(() => addinv_finish(obj, objWasThrown))
-                   : addinv_finish(obj, objWasThrown);
+    return pending ? pending.then(() => addinv_finish(obj, objWasThrown,
+                                                       otherObj))
+                   : addinv_finish(obj, objWasThrown, otherObj);
 }
 
-function addinv_finish(obj, objWasThrown) {
+function addinv_finish(obj, objWasThrown, otherObj) {
+    if (otherObj) {
+        const index = game.invent.indexOf(otherObj);
+        if (index > 0) {
+            obj.where = OBJ_INVENT;
+            obj.pickup_prev = 1;
+            game.invent.splice(index, 0, obj);
+            const side = addinv_core2(obj);
+            return side ? side.then(() => obj) : obj;
+        }
+    }
+
     /* src/invent.c addinv_core0 — merging goes through merged(), which
        recomputes the stack's owt. The old inline quan += left every
        merged stack carrying a single item's weight, which under-read

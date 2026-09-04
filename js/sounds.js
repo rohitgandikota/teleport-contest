@@ -31,7 +31,7 @@ import { tended_shop, noisy_shop } from './shk.js';
 import { MSOUND } from './monst_data.js';
 import { canspotmon } from './display.js';
 import { getdir } from './cmd.js';
-import { Deaf, Hallucination } from './youprop.js';
+import { Deaf, Hallucination, Underwater } from './youprop.js';
 import { pline_The, You, You_hear } from './pline.js';
 import { pline } from './display.js';
 import { Monnam, noveltitle, pmname } from './do_name.js';
@@ -45,7 +45,7 @@ import { cansee } from './vision.js';
 // src/sounds.c:202 dosounds()
 export async function dosounds() {
     const u = game.u;
-    if (Deaf() || u.uswallow || u.Underwater)
+    if (Deaf() || u.uswallow || Underwater())
         return;
     if (game.flags?.acoustics === false)
         return;

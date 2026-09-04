@@ -1,5 +1,45 @@
 # STATUS — live handoff board
 
+## 2026-09-04: boomerang flight and underwater return match C
+
+`boomhit()` now follows the pinned C ten-square curve, including the hero's
+handedness, alternating display glyphs, visibility transitions, walls and
+closed doors, sinks, repeated monster contacts, the Dexterity catch check,
+Fumbling, self-damage, and early multishot termination. `throwit()` now
+connects that path to ordinary thrown-object combat and landing, restores a
+caught weapon to its original inventory stack or slot, and preserves wielded
+and two-weapon state. The straight one-square underwater path now covers
+successful return-to-hand behavior. Two adjacent discrepancies exposed by
+that trace are also fixed: ordinary underwater vision is restricted to nearby
+pool squares, and ambient room sounds make no probability draws underwater.
+
+The eleven-segment `boomerang-flight` C fixture is byte-identical at
+**31,535/31,535 RNG calls**, **531/531 screens**, **531/531 cursors**, and
+**60/60 animation frames**. It asserts 13 concrete branches: failed catch,
+successful catch, stack unsplitting, weapon-slot restoration, wall and sink
+stops, monster contact, the left-handed clockwise curve, Fumbling self-hit,
+underwater return, levitation recoil, underwater vision, and underwater sound
+suppression. Declared evidence remains **99/106 mechanics categories**, with
+seven partial, and rises from **1,064/1,064 to 1,077/1,077 explicit C
+branches**. The source RNG census rises from **1,542/2,621 to 1,545/2,621
+observed call sites (58.9%)**. The combined corpus now has 439 sessions and
+5,900,065 tagged RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**395/395**, **101,543/101,543 screens**, and **5,107,227/5,107,227 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST screen artifact. The hang gate is 44/44, fresh-seed smoke
+is 80/80 across 13 roles, all ten audit and recorder tests pass, source and
+state audits are clean, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This batch is local and unjudged,
+so no hidden gain is claimed. The next adjacent C-backed target is the
+remaining throw-and-return decision table in `dothrow.c`, starting with the
+failed and impaired return outcomes before the tethered aklys and Mjollnir
+arms.
+
 ## 2026-09-04: revival container and undead-self branches pinned to C
 
 Two new deterministic C fixtures close the remaining RNG sites in the

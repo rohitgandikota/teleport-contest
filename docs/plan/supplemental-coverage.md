@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **106**. Covered: **99**.
 Partial: **7**. Gaps: **0**.
 
-Branch requirements: **860**. Covered: **860**.
+Branch requirements: **861**. Covered: **861**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -1087,6 +1087,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `combat.knockback.monster-bumps-hero` | `src/dothrow.c:mhurtle_step` | `mhurtle-hero-collision` |
 | covered | `combat.knockback.collision-petrifies-hurtler-on-hero` | `src/dothrow.c:mhurtle_step` | `mhurtle-hero-collision` |
 | covered | `combat.knockback.collision-petrifies-hero` | `src/dothrow.c:mhurtle_step` | `mhurtle-hero-collision` |
+| covered | `display.warning.hurtle-intermediate-clear` | `src/display.c:newsym` | `variant-world-tour` |
 
 ### Object lifecycle
 

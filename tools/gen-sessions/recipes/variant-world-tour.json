@@ -1,11 +1,28 @@
 {
   "name": "variant-world-tour",
-  "description": "Independent-seed replay of the wizard world-tour command plan. Feature tags are intentionally conservative until the generated trace is audited.",
+  "description": "Independent-seed replay of the wizard world-tour command plan, including warning-glyph cleanup during multi-square monster knockback.",
   "coverage": [
     "mode.debug",
     "level.special-variants",
     "ui.getlin",
     "ui.map-memory-vision"
+  ],
+  "branches": [
+    "display.warning.hurtle-intermediate-clear"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "display.warning.hurtle-intermediate-clear",
+      "segment": 0,
+      "screenIncludes": [
+        "You knock the imp backward with a powerful strike!"
+      ],
+      "screenCells": [
+        { "step": 778, "x": 23, "y": 13, "equals": "1" },
+        { "step": 778, "x": 24, "y": 13, "equals": " " }
+      ]
+    }
   ],
   "segments": [
     {

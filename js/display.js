@@ -1355,9 +1355,7 @@ export function newsym(x, y) {
     } else {
         /* src/display.c newsym(), the can't-see branch: a monster the hero
            senses, or sees with infravision, is still displayed */
-        const mon = (game.level?.monsters || [])
-                        .find(m => m.mx === x && m.my === y && m.mhp > 0
-                                   && !m.msleeping_hidden);
+        const mon = m_at(x, y);
         const spotMon = !!(mon && (sensemon(mon)
                     || (see_with_infrared(mon) && mon_visible(mon))));
         const detectedOnly = !!(spotMon && game.u.uprops?.DETECT_MONSTERS
@@ -1424,8 +1422,7 @@ export function newsym(x, y) {
        display_warning() -> warning_of(): level/4 clamped to 1..5; colors from
        drawing.c def_warnsyms (1-3 red, 4 magenta, 5 bright magenta). */
     if (!cansee(x, y)) {
-        const wmon = (game.level?.monsters || [])
-            .find(m => m.mx === x && m.my === y && m.mhp > 0);
+        const wmon = m_at(x, y);
         if (wmon && mon_warning(wmon)) {
             let wl = Hallucination()
                 ? rn2_on_display_rng(5) + 1

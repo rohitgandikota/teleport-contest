@@ -1,0 +1,105 @@
+{
+  "name": "artifact-retouch",
+  "description": "Retouching equipment after polymorph exercises silver hatred, artifact bane damage, touch-blast suppression, and forced weapon drops.",
+  "coverage": [
+    "forms.polymorph",
+    "mode.debug",
+    "object.artifacts",
+    "survival.regen-exercise",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "artifact.retouch.bane-damage",
+    "artifact.retouch.silver-bane-damage",
+    "artifact.retouch.silver-damage",
+    "artifact.retouch.touch-blast-suppression",
+    "artifact.retouch.weapon-drop",
+    "artifact.touch.silver-bonus"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "artifact.retouch.silver-damage",
+      "segment": 0,
+      "screenIncludes": ["You can't handle your silver saber anymore!"],
+      "rngIncludes": ["rnd(10)=5 @ retouch_object(artifact.c:2552)"]
+    },
+    {
+      "branch": "artifact.retouch.bane-damage",
+      "segment": 1,
+      "screenIncludes": ["You can't handle your war hammer named Ogresmasher anymore!"],
+      "rngIncludes": ["rnd(10)=1 @ retouch_object(artifact.c:2554)"]
+    },
+    {
+      "branch": "artifact.retouch.silver-bane-damage",
+      "segment": 2,
+      "screenIncludes": ["You can't handle your silver mace named Demonbane anymore!"],
+      "rngIncludes": [
+        "rnd(10)=8 @ retouch_object(artifact.c:2552)",
+        "rnd(10)=2 @ retouch_object(artifact.c:2554)"
+      ]
+    },
+    {
+      "branch": "artifact.retouch.weapon-drop",
+      "segment": [0, 1, 2, 4],
+      "screenIncludes": ["falls to the stairs."]
+    },
+    {
+      "branch": "artifact.touch.silver-bonus",
+      "segment": 3,
+      "screenIncludes": ["You are blasted by the silver mace named Demonbane's power!"],
+      "rngIncludes": [
+        "rn2(4)=0 @ touch_artifact(artifact.c:945)",
+        "d(4,4)=10 @ touch_artifact(artifact.c:953)",
+        "rnd(10)=6 @ touch_artifact(artifact.c:956)"
+      ]
+    },
+    {
+      "branch": "artifact.retouch.touch-blast-suppression",
+      "segment": 4,
+      "screenIncludes": [
+        "You are blasted by the silver mace named Demonbane's power!",
+        "You can't handle your silver mace named Demonbane anymore!",
+        "The silver mace named Demonbane falls to the stairs."
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ touch_artifact(artifact.c:945)",
+        "d(4,4)=9 @ touch_artifact(artifact.c:953)",
+        "rnd(10)=9 @ touch_artifact(artifact.c:956)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99901,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed silver saber\rwa#polyself\rvampire\r      :"
+    },
+    {
+      "seed": 99902,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed Ogresmasher\rwa#polyself\rogre\r      :"
+    },
+    {
+      "seed": 99903,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed Demonbane\rwa#polyself\rhorned devil\r      :"
+    },
+    {
+      "seed": 99908,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rhorned devil\r \u0017blessed Demonbane\r      :"
+    },
+    {
+      "seed": 99915,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Knight,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed Demonbane\rwa#polyself\rhorned devil\r      :"
+    }
+  ]
+}

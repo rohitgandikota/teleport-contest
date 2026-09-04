@@ -1,5 +1,48 @@
 # STATUS — live handoff board
 
+## 2026-09-04: artifact retouch damage and forced drops match C
+
+`retouch_object()` now follows pinned C when a form or alignment change makes
+active equipment harmful. Ordinary silver hurts silver-hating forms, bane
+artifacts hurt forms they target, and a silver bane artifact applies both
+independent damage rolls. A preceding artifact touch blast suppresses the
+second handling-damage pair. Failed retouches remove worn or wielded state,
+preserve the invocation-square Bell exception, and either retain or drop the
+object according to the caller. Non-altar drops print the C terrain message,
+while levitating drops use `hitfloor()`.
+
+`retouch_equipment()` now keeps C's secondary-then-primary weapon order,
+rescans inventory after mutations, includes active tools and carried or
+invoked artifacts, handles an untouchable saddle, reverses a retained invoked
+property, preserves the cursed-glove ring-removal hack, and checks petrifying
+self-touch after gloves come off. Shared recursion state prevents an object
+from being processed twice during nested retouch calls.
+
+The five-segment `artifact-retouch` C fixture is byte-identical at
+**12,436/12,436 RNG calls**, **481/481 screens**, and **481/481 cursors**. It
+asserts six concrete branches: ordinary silver damage, non-silver bane
+damage, combined silver and bane damage, forced weapon removal and dropping,
+the silver bonus on an artifact's own touch blast, and suppression of duplicate
+retouch damage after that blast. Declared evidence remains **99/106 mechanics
+categories**, with seven partial, and rises from **1,053/1,053 to
+1,059/1,059 explicit C branches**. The source RNG census now observes
+**1,540/2,621 call sites (58.8%)**, including **21/35 in `artifact.c`**, with
+5,856,947 tagged RNG calls across 436 public and supplemental sessions.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**392/392**, **100,692/100,692 screens**, and **5,064,109/5,064,109 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST screen artifact. The hang gate is 44/44, fresh-seed smoke
+is 80/80 across 13 roles, source and state audits pass, all ten audit and
+recorder tests pass, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This retouch batch is local and
+unjudged, so no hidden gain is claimed. Next, resume the C-backed
+`revive()`/`unturn_dead()` work in `zap.c`, starting with the smallest oracle
+that distinguishes saved corpse traits, ordinary revival, and failed revival.
+
 ## 2026-09-04: artifact touch blasts and refusal match C
 
 Hero artifact contact now follows pinned `touch_artifact()` for role, race,

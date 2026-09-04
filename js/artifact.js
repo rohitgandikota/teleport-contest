@@ -53,13 +53,13 @@ import { hcolor } from './do_name.js';
 import { Monnam } from './do_name.js';
 import { mon_nam } from './do_name.js';
 import { Hallucination } from './youprop.js';
-import { Blind } from './youprop.js';
+import { Blind, Levitation } from './youprop.js';
 import { cansee } from './vision.js';
 import { ART_STORMBRINGER } from './artilist_data.js';
 import { ART_VORPAL_BLADE } from './artilist_data.js';
 import { ART_TSURUGI_OF_MURAMASA } from './artilist_data.js';
 import { The, the, Tobjnam } from './objnam.js';
-import { xname } from './objnam.js';
+import { xname, yname, killer_xname } from './objnam.js';
 import { distant_name } from './objnam.js';
 import { vtense } from './objnam.js';
 import { bare_artifactname } from './objnam.js';
@@ -86,9 +86,10 @@ import { rn2, rnd, rnz, d } from './rng.js';
 import { ONAME_VIA_NAMING, ONAME_WISH, ONAME_GIFT, ONAME_VIA_DIP,
          ONAME_LEVEL_DEF, ONAME_BONES, ONAME_RANDOM,
          ONAME_KNOW_ARTI, ECMD_OK, ECMD_TIME, ECMD_CANCEL, GETOBJ_PROMPT,
-         nothing_happens, A_WIS, KILLED_BY, W_ARM, W_WEP, W_ART, W_ARTI,
+         nothing_happens, A_CON, A_WIS, KILLED_BY, W_ARM, W_WEP, W_ART, W_ARTI,
          SICK_ALL,
-         TIMEOUT, W_SWAPWEP, W_QUIVER, W_BALL } from './const.js';
+         TIMEOUT, W_SWAPWEP, W_QUIVER, W_BALL, W_SADDLE,
+         DISMOUNT_THROWN, IS_ALTAR } from './const.js';
 
 /* include/artilist.h — artilist[i].otyp, resolved from the generated
    ONAMES-key table. Index 0 is the dummy (STRANGE_OBJECT == 0). */
@@ -772,59 +773,155 @@ function note_unported_art(what) {
     (game.unported ||= new Set()).add(what);
 }
 
-// src/artifact.c:2508 retouch_object() — check whether the hero can (still)
-// handle an object at wield/wear time. The artifact touch check and clean
-// handling exit are live; the separate silver/bane handling and forced-drop
-// arms remain recorded below.
+// src/artifact.c:2508 retouch_object(), check whether the hero can still
+// handle an object after a form or alignment change.
 export async function retouch_object(obj, loseit) {
+    if (obj.otyp === ONAMES.BELL_OF_OPENING) {
+        const [{ invocation_pos }, { On_stairs }] = await Promise.all([
+            import('./hack.js'), import('./stairs.js'),
+        ]);
+        if (invocation_pos(game.u.ux, game.u.uy)
+            && !On_stairs(game.u.ux, game.u.uy))
+            return 1;
+    }
+
     if (await touch_artifact(obj, game.youmonst)) {
-        const ag = false;   /* Hate_silver needs lycanthrope/demon/vampire
-                               hero forms, not yet reachable */
+        const ag = game.objects[obj.otyp].oc_material === MATERIALS.SILVER
+                   && hates_silver_you();
         const bane = bane_applies(get_artifact(obj), game.youmonst);
 
-        /* nothing else to do if hero can successfully handle this object */
         if (!ag && !bane)
             return 1;
 
-        note_unported_art('retouch_object:handling_damage');
-        return 1;
+        const { You_cant } = await import('./pline.js');
+        await You_cant(`handle ${yname(obj)}${obj.owornmask
+            ? ' anymore' : ''}!`);
+        if (!touch_blasted) {
+            let what = killer_xname(obj);
+            let dmg = 0;
+
+            if (ag && !obj.oartifact && !bane) {
+                if (obj.oclass === OCLASSES.RING_CLASS)
+                    what = 'a silver ring';
+                else if (obj.oclass === OCLASSES.WAND_CLASS)
+                    what = 'a silver wand';
+            }
+            if (ag)
+                dmg += maybe_half_phys(rnd(10));
+            if (bane)
+                dmg += rnd(10);
+            await losehp(dmg, `handling ${what}`, KILLED_BY);
+            exercise(A_CON, false);
+        }
     }
 
-    if (obj.owornmask || loseit)
-        note_unported_art('retouch_object:drop');
+    if (obj.owornmask) {
+        const { remove_worn_item } = await import('./steal.js');
+        await remove_worn_item(obj, false);
+        if (!(game.invent || []).includes(obj))
+            obj = null;
+    }
+
+    if (loseit && obj) {
+        if (Levitation()) {
+            const [{ freeinv }, { hitfloor }] = await Promise.all([
+                import('./invent.js'), import('./do.js'),
+            ]);
+            freeinv(obj);
+            await hitfloor(obj, true);
+        } else {
+            if (!IS_ALTAR(game.level.at(game.u.ux, game.u.uy).typ)) {
+                const { surface } = await import('./dungeon.js');
+                await pline(`${Tobjnam(obj, 'fall')} to the ${
+                    surface(game.u.ux, game.u.uy)}.`);
+            }
+            const { dropx } = await import('./do.js');
+            await dropx(obj);
+        }
+    }
     return 0;
 }
 
-// src/artifact.c:2640 retouch_equipment(). The common path only retests
-// equipment and carried artifacts; ordinary safe gear has no side effects.
-// retouch_object records the remaining harmful silver and bane branches.
+let retouch_nesting = 0;
+let retouch_checked = null;
+
+// src/artifact.c:2640 retouch_equipment(), retest every active object while
+// rescanning inventory after each removal or drop.
 export async function retouch_equipment(dropflag) {
     const u = game.u;
-    const checked = new Set();
     const wearmask = ~(W_QUIVER | (u.twoweap ? 0 : W_SWAPWEP) | W_BALL);
+    const had_gloves = !!u.uarmg;
+    const had_rings = Number(!!u.uleft) + Number(!!u.uright);
+
+    if (retouch_nesting++ === 0)
+        retouch_checked = new Set();
 
     const active = (obj) => {
         const art = get_artifact(obj);
-        const beingworn = !!((obj.owornmask || 0) & wearmask);
+        const container = obj.otyp >= ONAMES.LARGE_BOX
+                          && obj.otyp <= ONAMES.BAG_OF_TRICKS;
+        const beingworn = !!((obj.owornmask || 0) & wearmask)
+            || (obj.oclass === OCLASSES.TOOL_CLASS
+                && (obj.lamplit || (obj.otyp === ONAMES.LEASH && obj.leashmon)
+                    || (container && obj.cobj?.length)));
         const carryeffect = art !== artifact_records[0]
                             && (!!arti_adtyp(art.cary) || !!art.cspfx);
         const invoked = art !== artifact_records[0] && !!art.inv_prop
                         && !!((u.uprops?.[art.inv_prop] || 0) & W_ARTI);
-        return beingworn || carryeffect || invoked;
+        return { art, beingworn, carryeffect, invoked };
+    };
+    const untouchable = async (obj, dropit) => {
+        const state = active(obj);
+        if (!(state.beingworn || state.carryeffect || state.invoked))
+            return false;
+        if (await retouch_object(obj, dropit))
+            return false;
+        if (state.invoked && (game.invent || []).includes(obj))
+            await invoke_property(obj, state.art.inv_prop);
+        return true;
     };
     const check = async (obj, dropit) => {
-        if (!obj || checked.has(obj))
-            return;
-        checked.add(obj);
-        if (active(obj))
-            await retouch_object(obj, dropit);
+        if (!obj || retouch_checked.has(obj))
+            return false;
+        retouch_checked.add(obj);
+        return untouchable(obj, dropit);
     };
 
-    if (u.twoweap)
-        await check(u.uswapwep, dropflag > 0);
-    await check(u.uwep, dropflag > 0);
-    for (const obj of game.invent || [])
-        await check(obj, dropflag === 1);
+    try {
+        if (u.twoweap)
+            await check(u.uswapwep, dropflag > 0);
+        await check(u.uwep, dropflag > 0);
+
+        if (u.usteed) {
+            const { which_armor } = await import('./worn.js');
+            const saddle = which_armor(u.usteed, W_SADDLE);
+            if (saddle && await check(saddle, false)) {
+                const { dismount_steed } = await import('./steed.js');
+                await dismount_steed(DISMOUNT_THROWN);
+            }
+        }
+
+        for (;;) {
+            const obj = (game.invent || []).find(item =>
+                !retouch_checked.has(item));
+            if (!obj)
+                break;
+            await check(obj, dropflag === 1);
+        }
+
+        const rings = Number(!!u.uleft) + Number(!!u.uright);
+        if (had_rings !== rings && u.uarmg?.cursed) {
+            const { uncurse } = await import('./mkobj.js');
+            uncurse(u.uarmg);
+        }
+        if (had_gloves && !u.uarmg) {
+            const { selftouch } = await import('./trap.js');
+            await selftouch('After losing your gloves, you');
+        }
+    } finally {
+        if (--retouch_nesting === 0)
+            retouch_checked = null;
+    }
 }
 
 async function nothing_special(obj) {

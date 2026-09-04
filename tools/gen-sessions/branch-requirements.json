@@ -1071,6 +1071,12 @@
     {"group":"Artifact touch","id":"artifact.touch.antimagic","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Reduce a self-willed artifact touch blast from four damage dice to two under antimagic"},
     {"group":"Artifact touch","id":"artifact.touch.self-willed-fatal","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Let a foreign self-willed quest artifact's four-die blast kill an unprotected low-level hero"},
     {"group":"Artifact touch","id":"artifact.touch.self-willed-evade","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Make a foreign self-willed quest artifact evade when both role and alignment reject its holder"},
-    {"group":"Artifact touch","id":"artifact.touch.rightful-owner","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Let the matching quest role take its artifact without blast damage or refusal"}
+    {"group":"Artifact touch","id":"artifact.touch.rightful-owner","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Let the matching quest role take its artifact without blast damage or refusal"},
+    {"group":"Artifact retouch","id":"artifact.retouch.silver-damage","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Damage a silver-hating polymorphed hero for continuing to handle an ordinary silver weapon"},
+    {"group":"Artifact retouch","id":"artifact.retouch.bane-damage","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Damage a polymorphed hero with a non-silver artifact whose bane applies to the new form"},
+    {"group":"Artifact retouch","id":"artifact.retouch.silver-bane-damage","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Apply both independent damage rolls when an artifact is silver and its bane applies"},
+    {"group":"Artifact retouch","id":"artifact.retouch.weapon-drop","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Unwield an untouchable weapon and drop it onto the hero's terrain"},
+    {"group":"Artifact touch","id":"artifact.touch.silver-bonus","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Add the silver damage bonus when a silver-hating hero is blasted by a silver artifact"},
+    {"group":"Artifact retouch","id":"artifact.retouch.touch-blast-suppression","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Avoid a second handling-damage roll after touch_artifact already blasted the hero"}
   ]
 }

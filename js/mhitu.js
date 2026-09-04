@@ -85,6 +85,7 @@ import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_drst,
          mhitm_ad_blnd, mhitm_ad_ston, mhitm_ad_drli,
          mhitm_ad_ench, mhitm_ad_samu, mhitm_ad_sedu, mhitm_ad_wrap,
+         mhitm_ad_heal,
          mhitm_knockback,
          mhitm_mgc_atk_negated, attk_protection, erode_armor,
          golemeffects } from './uhitm.js';
@@ -1220,6 +1221,8 @@ async function hitmu(mtmp, mattk, indx) {
     /* mhitm_adtyping: dispatch on the damage type */
     if (mattk[1] === A.AD_PHYS) {
         await mhitm_ad_phys(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_HEAL) {
+        await mhitm_ad_heal(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_FIRE) {
         await mhitm_ad_fire(mtmp, mattk, game.youmonst, mhm);
     } else if (mattk[1] === A.AD_COLD) {

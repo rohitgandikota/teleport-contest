@@ -85,7 +85,8 @@ import { dmgtype, monstseesu, monstunseesu } from './mondata.js';
 import { touch_petrifies, abuse_dog } from './dog.js';
 import { which_armor, extract_from_minvent } from './worn.js';
 import { hitmsg, magic_negation, mdamageu, mpoisons_subj, mhis } from './mhitu.js';
-import { You, Your, You_feel, You_hear, livelog_add, pline_The } from './pline.js';
+import { You, Your, You_feel, You_hear, livelog_add, pline_The,
+         pline_mon, verbalize } from './pline.js';
 import { end_running } from './hack.js';
 import { Adjmonnam, mon_nam, Monnam, y_monnam, m_monnam, upstart, a_monnam,
          x_monnam, hliquid, hcolor, pmname, Some_Monnam,
@@ -99,7 +100,7 @@ import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible, urgent_pline } from './display.js';
-import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry,
+import { wakeup, wake_nearto, killed, xkilled, seemimic, setmangry, mongone,
          shieldeff_mon, is_pool, m_carrying, t_at, minliquid,
          healmon, monstone, mondied } from './mon.js';
 import { DEADMONSTER } from './monst.js';
@@ -170,7 +171,7 @@ import { W_ARM, W_ARMS, W_ARMC, W_ARMF, W_ARMU,
          P_LANCE, P_TWO_WEAPON_COMBAT, P_ISRESTRICTED, P_UNSKILLED,
          NEED_WEAPON, XKILL_NOMSG, XKILL_NOCORPSE, STRAT_WAITMASK,
          engulfing_u, NEW_MOON, MSLOW, MFAST, ARTICLE_THE,
-         RLOC_NOMSG, DISMOUNT_POLY } from './const.js';
+         RLOC_NOMSG, DISMOUNT_POLY, SICK_ALL } from './const.js';
 import { is_undead } from './mondata.js';
 import { A_LAWFUL } from './const.js';
 import { FACE, HAND, LEG, POOL } from './const.js';
@@ -1449,6 +1450,13 @@ export async function damageum(mon, mattk, specialdmg) {
             const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
                           specialdmg, done: false };
             await mhitm_ad_poly(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+            if (mhm.done)
+                return mhm.hitflags;
+        } else if (mattk[1] === ATTKS.AD_HEAL) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_heal(game.youmonst, mattk, mon, mhm);
             damage = mhm.damage;
             if (mhm.done)
                 return mhm.hitflags;
@@ -4292,6 +4300,96 @@ async function rustm(mdef, obj) {
 
     if (dmgtyp !== ERODE_NONE && !rn2(chance))
         await erode_obj(obj, null, dmgtyp, EF_GREASE | EF_VERBOSE);
+}
+
+// src/uhitm.c:4296 mhitm_ad_heal(), nurse attacks. A nurse treats an
+// unequipped hero, but attacks normally when cancelled, when touching the
+// hero's current form would petrify it, or when the defender is a monster.
+export async function mhitm_ad_heal(magr, mattk, mdef, mhm) {
+    const pd = mdef.data;
+
+    if (magr === game.youmonst) {
+        await mhitm_ad_phys(magr, mattk, mdef, mhm);
+        return;
+    }
+    if (mdef !== game.youmonst) {
+        await mhitm_ad_phys(magr, mattk, mdef, mhm);
+        return;
+    }
+
+    if (magr.mcan || (Upolyd(game.u) && touch_petrifies(pd))) {
+        await hitmsg(magr, mattk, mhm.indx);
+        return;
+    }
+
+    const uwep = game.u.uwep;
+    const equipped = (uwep
+                      && (uwep.oclass === OCLASSES.WEAPON_CLASS
+                          || is_weptool(uwep, game.objects)))
+        || game.u.uarmu || game.u.uarm || game.u.uarmc
+        || game.u.uarms || game.u.uarmg || game.u.uarmf || game.u.uarmh;
+
+    if (!equipped) {
+        let goaway = false;
+
+        await pline_mon(magr,
+                        `${Monnam(magr)} hits!  (I hope you don't mind.)`);
+        if (Upolyd(game.u)) {
+            game.u.mh += rnd(7);
+            if (!rn2(7)) {
+                game.u.mhmax++;
+                if (!rn2(13))
+                    goaway = true;
+            }
+            if (game.u.mh > game.u.mhmax)
+                game.u.mh = game.u.mhmax;
+        } else {
+            game.u.uhp += rnd(7);
+            if (!rn2(7)) {
+                if (game.u.uhpmax < 5 * game.u.ulevel
+                                      + d(2 * game.u.ulevel, 10)) {
+                    game.u.uhpmax++;
+                    if (game.u.uhpmax > (game.u.uhppeak | 0))
+                        game.u.uhppeak = game.u.uhpmax;
+                }
+                if (!rn2(13))
+                    goaway = true;
+            }
+            if (game.u.uhp > game.u.uhpmax)
+                game.u.uhp = game.u.uhpmax;
+        }
+        if (!rn2(3))
+            exercise(A_STR, true);
+        if (!rn2(3))
+            exercise(A_CON, true);
+        if (game.u.uprops?.SICK) {
+            const { make_sick } = await import('./potion.js');
+            await make_sick(0, null, false, SICK_ALL);
+        }
+        (game.disp ||= {}).botl = true;
+
+        if (goaway) {
+            mongone(magr);
+            mhm.done = true;
+            mhm.hitflags = M_ATTK_DEF_DIED;
+            return;
+        }
+        if (!rn2(33)) {
+            if (!await tele_restrict(magr))
+                await rloc(magr, RLOC_MSG);
+            await monflee(magr, d(3, 6), true, false);
+            mhm.done = true;
+            mhm.hitflags = M_ATTK_HIT | M_ATTK_DEF_DIED;
+            return;
+        }
+        mhm.damage = 0;
+    } else if (Role_if(PMNAMES.PM_HEALER)) {
+        if (!Deaf() && !(game.moves % 5))
+            await verbalize("Doc, I can't help you unless you cooperate.");
+        mhm.damage = 0;
+    } else {
+        await hitmsg(magr, mattk, mhm.indx);
+    }
 }
 
 // src/uhitm.c:5218 m_is_steadfast(). Grounded Giantslayer wielders and

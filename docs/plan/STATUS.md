@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-09-04: nurse healing attacks match C
+
+The shared `AD_HEAL` handler now follows pinned C for nurse attacks in all
+three combat contexts. An unequipped hero receives restorative care, including
+human and polymorphed hit-point paths, maximum and peak hit-point growth,
+strength and constitution exercise, sickness removal, silent nurse departure,
+and relocation followed by flight. Equipped non-Healers are attacked normally,
+equipped Healers receive the five-turn refusal dialogue, cancelled nurses use
+ordinary damage, contact with a petrifying hero can stone the nurse, and a
+nurse attacking another monster uses the physical attack path. Exact oracle
+expansion also caught a JavaScript async defect: the `tele_restrict()` promise
+was previously tested without `await`, which suppressed the relocation branch.
+
+The first focused C segment matched only **2,092/2,180 RNG calls** and
+**64/107 screens** before the port. The permanent ten-segment
+`nurse-healing-attacks` fixture now asserts 13 concrete branches and is
+byte-identical at **28,078/28,078 RNG calls**, **1,071/1,071 screens**, and
+**1,071/1,071 cursors**. Declared evidence remains **99/106 mechanics
+categories**, with seven partial, and rises from **1,006/1,006 to
+1,019/1,019 explicit C branches**. The source RNG census now observes
+**1,511/2,621 call sites (57.6%)**, with 5,760,833 tagged RNG calls across all
+432 public and supplemental sessions.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**388/388**, **96,509/96,509 screens**, and **4,967,995/4,967,995 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80 across 13 roles, source and state audits pass, all ten audit and
+recorder tests pass, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This nurse batch is local and
+unjudged, so no hidden gain is claimed. Next, use the updated source census to
+record the smallest C oracle for another missing shared combat arm, with
+`mhitm_ad_plys()` and `mhitm_ad_slee()` as the leading candidates.
+
 ## 2026-09-04: warning and unseen map markers match C
 
 The continued seed-8038 swamp trace exposed three linked display rules before

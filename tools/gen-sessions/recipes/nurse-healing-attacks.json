@@ -1,0 +1,173 @@
+{
+  "name": "nurse-healing-attacks",
+  "description": "Nurse attacks exercise ordinary restorative care, max-HP growth, disappearance, teleport and flight, equipped hero handling, cancellation, polymorphed patients, and monster combat.",
+  "coverage": [
+    "monster.hero-melee",
+    "monster.special-effects",
+    "monster.vs-monster",
+    "survival.timed-status",
+    "combat.melee"
+  ],
+  "branches": [
+    "combat.nurse.hero-restorative-hit",
+    "combat.nurse.hero-strength-exercise",
+    "combat.nurse.hero-constitution-exercise",
+    "combat.nurse.hero-max-hp",
+    "combat.nurse.hero-disappearance",
+    "combat.nurse.hero-teleport-flee",
+    "combat.nurse.equipped-nonhealer-hit",
+    "combat.nurse.equipped-healer-refusal",
+    "combat.nurse.cancelled-normal-hit",
+    "combat.nurse.polymorphed-patient",
+    "combat.nurse.petrifying-patient",
+    "combat.nurse.cure-sickness",
+    "combat.nurse.monster-physical-hit"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "combat.nurse.hero-restorative-hit",
+      "segment": 0,
+      "screenIncludes": ["The nurse hits!  (I hope you don't mind.)"],
+      "rngIncludes": ["rnd(7)=5 @ mhitm_ad_heal(uhitm.c:4334)"]
+    },
+    {
+      "branch": "combat.nurse.hero-strength-exercise",
+      "segment": 0,
+      "rngIncludes": ["rn2(3)=0 @ mhitm_ad_heal(uhitm.c:4348)"]
+    },
+    {
+      "branch": "combat.nurse.hero-constitution-exercise",
+      "segment": 0,
+      "rngIncludes": ["rn2(3)=0 @ mhitm_ad_heal(uhitm.c:4350)"]
+    },
+    {
+      "branch": "combat.nurse.hero-max-hp",
+      "segment": 1,
+      "rngIncludes": [
+        "rn2(7)=0 @ mhitm_ad_heal(uhitm.c:4335)",
+        "d(60,10)=330 @ mhitm_ad_heal(uhitm.c:4337)"
+      ]
+    },
+    {
+      "branch": "combat.nurse.hero-disappearance",
+      "segment": 1,
+      "rngIncludes": ["rn2(13)=0 @ mhitm_ad_heal(uhitm.c:4342)"]
+    },
+    {
+      "branch": "combat.nurse.hero-teleport-flee",
+      "segment": 2,
+      "screenIncludes": ["The nurse vanishes!"],
+      "rngIncludes": [
+        "rn2(33)=0 @ mhitm_ad_heal(uhitm.c:4360)",
+        "d(3,6)=14 @ mhitm_ad_heal(uhitm.c:4363)"
+      ]
+    },
+    {
+      "branch": "combat.nurse.equipped-nonhealer-hit",
+      "segment": 3,
+      "screenIncludes": ["The nurse hits!"],
+      "screenExcludes": ["(I hope you don't mind.)"]
+    },
+    {
+      "branch": "combat.nurse.equipped-healer-refusal",
+      "segment": 4,
+      "screenIncludes": ["\"Doc, I can't help you unless you cooperate.\""],
+      "screenExcludes": ["(I hope you don't mind.)"]
+    },
+    {
+      "branch": "combat.nurse.cancelled-normal-hit",
+      "segment": 5,
+      "screenIncludes": ["The nurse screams!", "The nurse hits!"],
+      "screenExcludes": ["(I hope you don't mind.)"]
+    },
+    {
+      "branch": "combat.nurse.polymorphed-patient",
+      "segment": 6,
+      "screenIncludes": ["The nurse hits!  (I hope you don't mind.)"],
+      "rngIncludes": ["rnd(7)=4 @ mhitm_ad_heal(uhitm.c:4324)"]
+    },
+    {
+      "branch": "combat.nurse.petrifying-patient",
+      "segment": 7,
+      "screenIncludes": ["The nurse hits!  The nurse turns to stone!"],
+      "screenExcludes": ["(I hope you don't mind.)"]
+    },
+    {
+      "branch": "combat.nurse.monster-physical-hit",
+      "segment": 8,
+      "screenIncludes": ["The nurse hits the hill giant."]
+    },
+    {
+      "branch": "combat.nurse.cure-sickness",
+      "segment": 9,
+      "screenIncludes": ["You feel deathly sick.", "The nurse hits!  (I hope you don't mind.)"],
+      "screenCells": [
+        {"step": 84, "x": 51, "y": 23, "equals": "I"},
+        {"step": 87, "x": 51, "y": 23, "equals": " "}
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99600,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile nurse\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99607,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile nurse\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99626,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile nurse\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99641,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed dagger\rwa\u0007hostile nurse\rFh.Fh.Fh."
+    },
+    {
+      "seed": 99642,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Healer,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed scalpel\rwa\u0007hostile nurse\rFj.Fj.Fj.Fj.Fj."
+    },
+    {
+      "seed": 99643,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cancellation\r\u0007sleeping hostile nurse\rzak........"
+    },
+    {
+      "seed": 99644,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rhill giant\r \u0007hostile nurse\r20s        20s        20s        :"
+    },
+    {
+      "seed": 99645,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #polyself\rcockatrice\r \u0007hostile nurse\r20s        20s        :"
+    },
+    {
+      "seed": 99646,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of conflict\rPar\u0007peaceful nurse\r\u0007hostile hill giant\r. . . "
+    },
+    {
+      "seed": 99702,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed unicorn horn\raa#levelchange\r30\r                             \u0007hostile nurse\r20s        20s        :"
+    }
+  ]
+}

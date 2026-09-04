@@ -69,7 +69,7 @@ import { distmin, s_suffix } from './hacklib.js';
 import { mhitm_ad_phys, mhitm_ad_fire, mhitm_ad_cold, mhitm_ad_elec,
          mhitm_ad_acid, mhitm_ad_drst, mhitm_ad_blnd,
          mhitm_ad_sedu, mhitm_ad_drli, mhitm_ad_drin,
-         mhitm_ad_ston, mhitm_ad_wrap, attk_protection,
+         mhitm_ad_ston, mhitm_ad_wrap, mhitm_ad_heal, attk_protection,
          mhitm_knockback } from './uhitm.js';
 import { grow_up, goodpos, remove_monster, place_monster } from './makemon.js';
 import { M_ATTK_MISS, M_ATTK_HIT, M_ATTK_DEF_DIED, M_ATTK_AGR_DIED, M_ATTK_AGR_DONE } from './const.js';
@@ -627,6 +627,8 @@ export async function mdamagem(magr, mdef, mattk, mwep, dieroll) {
     /* mhitm_adtyping: dispatch the shared damage-type implementations. */
     if (mattk[1] === A.AD_PHYS) {
         await mhitm_ad_phys(magr, mattk, mdef, mhm);
+    } else if (mattk[1] === A.AD_HEAL) {
+        await mhitm_ad_heal(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_FIRE) {
         await mhitm_ad_fire(magr, mattk, mdef, mhm);
     } else if (mattk[1] === A.AD_COLD) {

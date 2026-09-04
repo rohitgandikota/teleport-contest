@@ -1024,6 +1024,19 @@
     {"group":"Warning and unseen display","id":"display.warning.getpos-description","cFile":"src/pager.c","cFunction":"do_screen_description","description":"Describe a warning glyph by its anxiety level while selecting a map position"},
     {"group":"Warning and unseen display","id":"display.invisible.getpos-description","cFile":"src/pager.c","cFunction":"do_screen_description","description":"Describe a remembered unseen-creature marker while selecting a map position"},
     {"group":"Warning and unseen display","id":"display.invisible.unmap-dark-memory","cFile":"src/display.c","cFunction":"show_mon_or_warn","description":"Clear an unseen-creature marker through unmap_object without revealing an unseen dark floor"},
-    {"group":"Ambient room sounds","id":"sound.ambient.swamp","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose both ordinary swamp ambient messages during one sound check"}
+    {"group":"Ambient room sounds","id":"sound.ambient.swamp","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose both ordinary swamp ambient messages during one sound check"},
+    {"group":"Nurse attacks","id":"combat.nurse.hero-restorative-hit","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Heal an unequipped human hero with a nurse's landed claw instead of applying its base damage"},
+    {"group":"Nurse attacks","id":"combat.nurse.hero-strength-exercise","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Take the independent one-in-three strength exercise after nurse care"},
+    {"group":"Nurse attacks","id":"combat.nurse.hero-constitution-exercise","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Take the independent one-in-three constitution exercise after nurse care"},
+    {"group":"Nurse attacks","id":"combat.nurse.hero-max-hp","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Increase a human patient's maximum and peak hit points after the one-in-seven nurse roll"},
+    {"group":"Nurse attacks","id":"combat.nurse.hero-disappearance","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Remove the nurse silently after the nested one-in-thirteen completion roll"},
+    {"group":"Nurse attacks","id":"combat.nurse.hero-teleport-flee","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Relocate an unrestricted nurse and make it flee after the one-in-thirty-three completion roll"},
+    {"group":"Nurse attacks","id":"combat.nurse.equipped-nonhealer-hit","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Apply ordinary claw damage when a non-Healer patient wields a weapon"},
+    {"group":"Nurse attacks","id":"combat.nurse.equipped-healer-refusal","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Deal no damage and ask an equipped Healer to cooperate on a five-turn boundary"},
+    {"group":"Nurse attacks","id":"combat.nurse.cancelled-normal-hit","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Treat a cancelled nurse as an ordinary damaging attacker"},
+    {"group":"Nurse attacks","id":"combat.nurse.polymorphed-patient","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Heal a non-petrifying polymorphed patient's monster-form hit points"},
+    {"group":"Nurse attacks","id":"combat.nurse.petrifying-patient","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Attack a petrifying polymorphed patient normally and petrify the nurse through contact"},
+    {"group":"Nurse attacks","id":"combat.nurse.cure-sickness","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Clear every active fatal-sickness type during restorative nurse care"},
+    {"group":"Nurse attacks","id":"combat.nurse.monster-physical-hit","cFile":"src/uhitm.c","cFunction":"mhitm_ad_heal","description":"Resolve a nurse claw against another monster as an ordinary physical attack"}
   ]
 }

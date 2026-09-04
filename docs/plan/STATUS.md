@@ -1,5 +1,47 @@
 # STATUS — live handoff board
 
+## 2026-09-04: ordinary monster conversations match C
+
+The main `domonnoise()` table now follows pinned C for the ordinary animal,
+undead, humanoid, vampire, lycanthrope, giant, nymph, watch, soldier, nurse,
+djinni, Rider, and non-Wizard cursing paths. It also preserves C's leader and
+foreign-guardian sound rewrites, invisible-speaker map marker, wake radii,
+paralysis state, full-moon and wall-clock checks, Death quotation reservoir,
+and one-time carried-novel notice. Specialized shopkeeper, Oracle,
+demon-bribe, and endgame player conversations remain separate port targets.
+
+Line-by-line source review found two defects beyond the initial probes. The
+trapped-humanoid arm imported `t_at()` from the wrong module, which the source
+audit caught before commit. A new C trace then showed that hostile vampire
+speech named a female polymorph as the first species name, `dwarf lord`,
+instead of C's gender-selected `dwarf lady`. Both are corrected without
+seed-specific runtime behavior.
+
+The permanent 43-segment `monster-conversations` fixture has 43 explicit C
+assertions and is byte-identical at **1,318/1,318 screens** and
+**115,656/115,656 RNG calls**. Declared evidence is now **99/106 mechanics
+categories**, with seven partial, and **977/977 explicit C branches**. The
+source RNG census now observes **1,487/2,621 call sites (56.7%)** overall,
+including **28/46 in sounds.c** and **12/15 in domonnoise()**.
+
+Full verification at local commit `5d6b496b`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**383/383**, **90,875/90,875 screens**, and **4,756,732/4,756,732 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is 80/80
+across 13 roles, source and state audits pass, all ten audit and recorder tests
+pass, and frozen files are unchanged.
+
+The dashboard refreshed at 2026-09-04T04:40:58.426Z. Its live fetch failed,
+so the latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. That snapshot was captured
+at 2026-09-03T17:17:32.745Z, and the fork was last scored at
+2026-09-03T16:41:33.829Z. Commit `5d6b496b` is local and unjudged, so no hidden
+gain is claimed. Next, use the source census and reached-unported markers to
+record the smallest C fixture for the highest-value remaining subsystem,
+starting with shopkeeper, Oracle, demon-bribe, endgame player, or ambient room
+speech rather than fitting the public sessions.
+
 ## 2026-09-03: crystal-ball effects and hallucinated display RNG match C
 
 A focused C oracle exposed three parity classes that broad mechanics counts had

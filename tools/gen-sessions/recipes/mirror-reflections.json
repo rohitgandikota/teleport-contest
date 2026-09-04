@@ -1,0 +1,120 @@
+{
+  "name": "mirror-reflections",
+  "description": "Debug Wizards exercise cursed and polymorphed self-reflections plus mirror reactions from a floating eye, ordinary animal, Medusa, and nymph.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.tools-containers",
+    "monster.special-effects",
+    "ui.getlin"
+  ],
+  "branches": [
+    "tool.mirror.cursed-fog",
+    "tool.mirror.floating-eye-reflection",
+    "tool.mirror.frighten-animal",
+    "tool.mirror.medusa-petrification",
+    "tool.mirror.nymph-theft-teleport",
+    "tool.mirror.self-vampire",
+    "tool.mirror.self-umber-hulk"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tool.mirror.cursed-fog",
+      "segment": 0,
+      "screenIncludes": ["The looking glass fogs up and doesn't reflect!"],
+      "rngIncludes": ["rn2(2)=0 @ use_mirror(apply.c:1032)"]
+    },
+    {
+      "branch": "tool.mirror.floating-eye-reflection",
+      "segment": 1,
+      "screenIncludes": ["The floating eye is frozen by its reflection."],
+      "rngIncludes": [
+        "d(3,70)=146 @ use_mirror(apply.c:1140)",
+        "rn2(4)=0 @ use_mirror(apply.c:1141)"
+      ]
+    },
+    {
+      "branch": "tool.mirror.frighten-animal",
+      "segment": 2,
+      "screenIncludes": ["The newt is frightened by its reflection."],
+      "rngIncludes": [
+        "rn2(5)=3 @ use_mirror(apply.c:1170)",
+        "d(2,4)=4 @ use_mirror(apply.c:1184)"
+      ]
+    },
+    {
+      "branch": "tool.mirror.medusa-petrification",
+      "segment": 3,
+      "screenIncludes": ["Medusa is turned to stone!", "You kill Medusa!"]
+    },
+    {
+      "branch": "tool.mirror.nymph-theft-teleport",
+      "segment": 4,
+      "screenIncludes": [
+        "The water nymph admires herself in your looking glass.",
+        "She takes it!",
+        "The water nymph vanishes!"
+      ],
+      "rngIncludes": [
+        "rnd(79)=50 @ rloc(teleport.c:1850)",
+        "rn2(21)=4 @ rloc(teleport.c:1851)"
+      ]
+    },
+    {
+      "branch": "tool.mirror.self-vampire",
+      "segment": 5,
+      "screenIncludes": ["You don't have a reflection."]
+    },
+    {
+      "branch": "tool.mirror.self-umber-hulk",
+      "segment": 6,
+      "screenIncludes": ["Huh?  That doesn't look like you!"],
+      "rngIncludes": ["d(3,4)=8 @ use_mirror(apply.c:1062)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99701,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed mirror\raa.  aa.  aa.  aa.  aa.  aa.  "
+    },
+    {
+      "seed": 99702,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed mirror\r\u0007tame floating eye\raak  "
+    },
+    {
+      "seed": 99703,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed mirror\r\u0007peaceful newt\raan  "
+    },
+    {
+      "seed": 99704,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed mirror\r\u0007tame Medusa\ryaaj  "
+    },
+    {
+      "seed": 99705,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed mirror\r\u0007tame water nymph\raak  "
+    },
+    {
+      "seed": 99706,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed mirror\r#polyself\rvampire\r aa.  "
+    },
+    {
+      "seed": 99707,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Reflector,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed mirror\r#polyself\rumber hulk\r aa.  "
+    }
+  ]
+}

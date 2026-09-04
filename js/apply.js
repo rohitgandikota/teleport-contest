@@ -2632,7 +2632,7 @@ async function use_mirror(obj) {
         setnotworn(obj); /* in case mirror was wielded */
         freeinv(obj);
         await mpickobj(mtmp, obj);
-        if (!tele_restrict(mtmp))
+        if (!(await tele_restrict(mtmp)))
             await rloc(mtmp, RLOC_MSG);
     } else if (!is_unicorn(mtmp.data) && !humanoid(mtmp.data)
                && !is_demon(mtmp.data)

@@ -1,0 +1,179 @@
+{
+  "name": "kick-furniture-branches",
+  "description": "C oracle for secret doors and the throne, altar, fountain, grave, tree, and iron-bar arms of kick_nondoor.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "terrain.furniture",
+    "terrain.doors-locks",
+    "combat.unarmed-kick",
+    "survival.regen-exercise",
+    "religion.luck-calendar",
+    "object.armor",
+    "ui.getlin"
+  ],
+  "branches": [
+    "kick.secret-door.discover",
+    "kick.throne.collapse-looted",
+    "kick.throne.loot-positive-luck",
+    "kick.throne.collapse-negative-luck",
+    "kick.altar.wrath",
+    "kick.fountain.barefoot",
+    "kick.fountain.boot-rust",
+    "terrain.grave.reject-stair",
+    "kick.tree.warning",
+    "kick.tree.fruit",
+    "kick.tree.swarm",
+    "kick.tree.prelooted-no-harvest",
+    "kick.iron-bars.injury"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "kick.secret-door.discover",
+      "segment": 0,
+      "screenIncludes": ["Crash!  You kick open a secret door!"],
+      "rngIncludes": ["rn2(30)=4 @ kick_nondoor(dokick.c:977)"]
+    },
+    {
+      "branch": "kick.throne.collapse-looted",
+      "segment": 1,
+      "screenIncludes": ["The floor opens up under you!"],
+      "rngIncludes": ["rn2(4)=0 @ kick_nondoor(dokick.c:1053)"]
+    },
+    {
+      "branch": "kick.throne.loot-positive-luck",
+      "segment": 2,
+      "screenIncludes": ["You kick loose some ornamental coins and gems!"],
+      "rngIncludes": ["rn2(201)=127 @ kick_nondoor(dokick.c:1036)"]
+    },
+    {
+      "branch": "kick.throne.collapse-negative-luck",
+      "segment": 3,
+      "screenIncludes": ["The floor opens up under you!"],
+      "rngIncludes": ["rn2(3)=1 @ kick_nondoor(dokick.c:1022)"]
+    },
+    {
+      "branch": "kick.altar.wrath",
+      "segment": 4,
+      "screenIncludes": ["You kick the altar.", "Thou shalt pay, infidel!"],
+      "rngIncludes": ["rn2(3)=1 @ kick_nondoor(dokick.c:1072)"]
+    },
+    {
+      "branch": "kick.fountain.barefoot",
+      "segment": 5,
+      "screenIncludes": ["You kick the fountain."],
+      "screenExcludes": ["Your metal boots"],
+      "rngIncludes": ["rn2(3)=1 @ kick_nondoor(dokick.c:1085)"]
+    },
+    {
+      "branch": "kick.fountain.boot-rust",
+      "segment": 6,
+      "screenIncludes": ["Your metal boots rust completely!"],
+      "rngIncludes": ["rn2(3)=1 @ kick_nondoor(dokick.c:1090)"]
+    },
+    {
+      "branch": "terrain.grave.reject-stair",
+      "segment": 7,
+      "screenIncludes": ["Can't place a grave here."]
+    },
+    {
+      "branch": "kick.tree.warning",
+      "segment": 8,
+      "screenIncludes": ["You hear a low buzzing."],
+      "rngIncludes": ["rn2(6)=0 @ kick_nondoor(dokick.c:1140)"]
+    },
+    {
+      "branch": "kick.tree.fruit",
+      "segment": 8,
+      "screenIncludes": ["Some oranges fall from the tree!"],
+      "rngIncludes": ["rnl(7)=2 @ kick_nondoor(dokick.c:1147)"]
+    },
+    {
+      "branch": "kick.tree.swarm",
+      "segment": 8,
+      "screenIncludes": ["You've attracted the tree's former occupants!"],
+      "rngIncludes": ["rnl(4)=0 @ kick_nondoor(dokick.c:1172)"]
+    },
+    {
+      "branch": "kick.tree.prelooted-no-harvest",
+      "segment": 9,
+      "screenIncludes": ["A tree.", "Ouch!"],
+      "screenExcludes": ["fall from the tree", "former occupants"],
+      "rngIncludes": ["rn2(3)=1 @ kick_nondoor(dokick.c:1139)"]
+    },
+    {
+      "branch": "kick.iron-bars.injury",
+      "segment": 10,
+      "screenIncludes": ["Iron bars.", "Ouch!"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99501,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017iron bars\r\u0017secret door\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99502,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017looted throne\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99503,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed luckstone\r\u0017throne\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99504,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017cursed luckstone\r\u0017throne\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99506,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017lawful altar\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99507,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017fountain\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99508,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed iron shoes\rWa  \u0017fountain\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99509,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017grave\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99511,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017tree\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99512,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017looted tree\rl\u0004h   \u0004h   \u0004h   \u0004h   \u0004h   \u0004h   "
+    },
+    {
+      "seed": 99513,
+      "datetime": "20260601130000",
+      "nethackrc": "OPTIONS=name:Kicker,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017iron bars\rl\u0004h"
+    }
+  ]
+}

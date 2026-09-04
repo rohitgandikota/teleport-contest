@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-09-04: non-door terrain kicks reach full source-site coverage
+
+The debug terrain-wish helper now follows the complete pinned
+`objnam.c:wizterrainwish()` terrain table and its final map, trap, feature-count,
+ice-timer, and terrain-transition fixups. This makes direct C probes possible
+for fountains, thrones, sinks, pools, lava, ice, altars, graves, trees, bars,
+clouds, doors, walls, corridors, and room floors. Grave disturbance also shows
+C's sensed-ghoul arrival message. A narrow death-status timing correction keeps
+both the new tree-kick death trace and the existing object-kick death trace
+byte-identical.
+
+Two new permanent C oracles contain 16 asserted segments. They cover secret
+doors and corridors; every throne kick outcome; altar wrath; barefoot and
+armored fountain kicks; invalid and ordinary graves; headstone destruction;
+grave undead; tree warning, fruit, swarm, and prelooted states; iron bars; and
+the genderless sink dishwasher arm. Together they match **49,211/49,211 RNG
+calls**, **806/806 screens**, **806/806 cursors**, and **25/25 animation
+frames**. Eighteen C-backed requirements raise the branch ledger from
+**1,111/1,111 to 1,129/1,129**. `kick_nondoor()` rises from 4/22 to **22/22
+observed source RNG sites** and leaves the evidence-ranked source backlog.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,462/1,483 animations**; supplemental **400/400**,
+**104,648/104,648 screens**, **5,244,076/5,244,076 RNG**, and
+**3,204/3,204 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44 with no over-read. Fresh-seed smoke is 80/80
+across 13 roles with no reached-but-unported path. All ten audit and recorder
+tests pass, source and focused state audits are clean, and frozen files are
+unchanged. The separate game-inventory diagnostic retains its pre-existing
+34-versus-33 artifact-count expectation mismatch; neither file is changed by
+this batch.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged
+and unpushed. The six-hour dashboard heartbeat remains active. The next work
+returns to the largest C RNG-site gaps, led by `make_corpse()` and `recharge()`.
+
 ## 2026-09-04: supplemental animation corpus is fully byte-identical
 
 Five pinned C display rules close the final 19 supplemental animation misses.

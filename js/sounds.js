@@ -381,9 +381,11 @@ export async function domonnoise(mtmp) {
         break;
     case MSOUND.MS_SEDUCE:
         if (ptr.mlet !== MONSYMS.S_NYMPH) {
-            /* Succubi and incubi can enter the full seduction interaction. */
-            note_unported_sounds('domonnoise:doseduce');
-            break;
+            const { could_seduce, doseduce } = await import('./mhitu.js');
+            if (could_seduce(mtmp, game.youmonst, null) === 1) {
+                await doseduce(mtmp);
+                break;
+            }
         }
         switch (poly_gender() !== (mtmp.female | 0) ? rn2(3) : 0) {
         case 2:

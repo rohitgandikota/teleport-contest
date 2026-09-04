@@ -7,18 +7,19 @@
 // that are absent and are recorded through note_unported_mhitu() at the
 // exact C decision point, so game.unported names what a divergence wanted.
 
-import { unmul } from './hack.js';
+import { unmul, losehp } from './hack.js';
 import { mimic_obj_name } from './objnam.js';
-import { set_ustuck } from './mon.js';
+import { set_ustuck, m_next2u } from './mon.js';
 import { m_monnam } from './do_name.js';
 import { likes_gold } from './mondata.js';
 import { Something } from './const.js';
 import { M_AP_OBJECT } from './const.js';
 import { M_AP_NOTHING } from './const.js';
 import { M_AP_TYPMASK } from './const.js';
-import { pline_The } from './pline.js';
+import { pline_The, pline_mon, verbalize } from './pline.js';
 import { update_inventory } from './invent.js';
-import { cloak_simple_name } from './do_wear.js';
+import { cloak_simple_name, helm_simple_name, Ring_gone, Ring_on,
+         stop_donning } from './do_wear.js';
 import { mhitm_ad_poly } from './uhitm.js';
 import { monsndx } from './makemon.js';
 import { split_mon } from './potion.js';
@@ -30,14 +31,15 @@ import { resists_blnd } from './mondata.js';
 import { is_waterwall } from './dbridge.js';
 import { mon_explodes } from './explode.js';
 import { game } from './gstate.js';
-import { midnight, night } from './calendar.js';
+import { getyear, midnight, night, yyyymmdd } from './calendar.js';
 import { breamm, thrwmu, spitmm } from './mthrowu.js';
 import { rn2, rn1, rnd, d } from './rng.js';
 import { is_animal, is_human, perceives, dmgtype, gender, pronoun_gender,
          is_swimmer, thick_skinned, unsolid, hides_under, is_hider, is_demon,
          nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer,
          defended, resists_acid, resists_cold, resists_elec, resists_fire,
-         resists_ston, sticks, haseyes, stagger, poly_when_stoned }
+         resists_ston, resists_drli, sticks, haseyes, stagger,
+         poly_when_stoned, mhe, noit_mhim }
          from './mondata.js';
 import { is_vampshifter, DEADMONSTER, MON_WEP } from './monst.js';
 import { poly_gender, body_part, polymon } from './polyself.js';
@@ -53,13 +55,16 @@ import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          NEED_HTH_WEAPON, LEFT_SIDE, RIGHT_SIDE, LEG,
          MON_EXPLODE, XKILL_NOMSG, SICK_NONVOMITABLE, STONING,
          KILLED_BY, W_ARMG, ERODE_CORRODE, EF_GREASE, EF_VERBOSE,
-         STRAT_WAITFORU, NO_MINVENT, MM_EDOG, MM_NOMSG } from './const.js';
+         STRAT_WAITFORU, NO_MINVENT, MM_EDOG, MM_NOMSG, A_CHAOTIC,
+         A_INT, A_WIS, A_CHA, HAND, HAIR, LEFT_RING, RIGHT_RING,
+         RLOC_MSG, OBJ_FREE, LARGEST_INT } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { genders } from './role_data.js';
 import { pline, canspotmon, canseemon, mon_visible, sensemon, bot,
          map_invisible, newsym, urgent_pline, shieldeff } from './display.js';
 import { cansee, couldsee } from './vision.js';
-import { Amonnam, Monnam, pmname, rndmonnam, hliquid, christen_monst, upstart }
+import { Amonnam, Monnam, pmname, rndmonnam, hliquid, christen_monst,
+         upstart, noit_mon_nam, noit_Monnam }
          from './do_name.js';
 import { You, You_feel, You_hear } from './pline.js';
 import { attacktype_fordmg, dmgtype_fromattack } from './mondata.js';
@@ -67,11 +72,12 @@ import { mon_nam } from './do_name.js';
 import { Inhell, remove_monster, place_monster, makemon } from './makemon.js';
 import { swallowed } from './display.js';
 import { vision_recalc } from './vision.js';
-import { ACURR, exercise } from './attrib.js';
+import { ACURR, adjalign, adjattrib, exercise } from './attrib.js';
 import { A_CON, A_STR, A_DEX } from './const.js';
 import { sobj_at } from './invent.js';
 import { s_suffix } from './hacklib.js';
-import { an, doname, makeplural, xname } from './objnam.js';
+import { an, doname, makeplural, safe_qbuf, simpleonames,
+         suit_simple_name, the, xname, yname } from './objnam.js';
 import { nomul } from './hack.js';
 import { stop_occupation } from './allmain.js';
 import { hitval, mon_wield_item } from './weapon.js';
@@ -90,6 +96,14 @@ import { drain_item } from './zap.js';
 import { defends, retouch_equipment } from './artifact.js';
 import { set_ulycn } from './were.js';
 import { can_blnd } from './mondata.js';
+import { currency, freeinv, money_cnt, prinv } from './invent.js';
+import { mpickobj, remove_worn_item } from './steal.js';
+import { setworn } from './worn.js';
+import { welded } from './wield.js';
+import { tty_yn_function } from './tty/topl.js';
+import { makeknown, observe_object } from './o_init.js';
+import { losexp, pluslvl } from './exper.js';
+import { splitobj } from './mkobj.js';
 
 
 
@@ -1299,6 +1313,16 @@ async function hitmu(mtmp, mattk, indx) {
         }
     } else if (mattk[1] === A.AD_SITM || mattk[1] === A.AD_SEDU) {
         await mhitm_ad_sedu(mtmp, mattk, game.youmonst, mhm);
+    } else if (mattk[1] === A.AD_SSEX) {
+        if (SYSOPT_SEDUCE) {
+            if (could_seduce(mtmp, game.youmonst, mattk) === 1
+                && !mtmp.mcan && await doseduce(mtmp)) {
+                mhm.hitflags = M_ATTK_AGR_DONE;
+                mhm.done = true;
+            }
+        } else {
+            await mhitm_ad_sedu(mtmp, mattk, game.youmonst, mhm);
+        }
     } else {
         note_unported_mhitu(`hitmu:adtyp=${mattk[1]}`);
         /* the generic arms still print the plain hit message */
@@ -1462,6 +1486,356 @@ export function could_seduce(magr, mdef, mattk) {
 
     return (genagr === 1 - gendef) ? 1
          : (pagr.mlet === MONSYMS.S_NYMPH) ? 2 : 0;
+}
+
+// src/steal.c:132 unresponsive() -- paralysis counts alongside sleep and
+// fainting for seduction, but ordinary multi-turn commands do not.
+function unresponsive_to_seduction() {
+    if ((game.multi ?? 0) >= 0)
+        return false;
+    const why = game.multi_reason || '';
+    return Unaware() || why.startsWith('frozen') || why.startsWith('paralyzed');
+}
+
+function carried_gloves() {
+    if (game.u.uarmg)
+        return game.u.uarmg;
+    return (game.invent || []).find(obj =>
+        obj.oclass === OCLASSES.ARMOR_CLASS
+        && game.objects[obj.otyp].oc_subtyp === 3) || null;
+}
+
+async function relocate_seducer(mon) {
+    const { rloc, tele_restrict } = await import('./teleport.js');
+    if (!await tele_restrict(mon))
+        await rloc(mon, RLOC_MSG);
+}
+
+async function money2mon_seduction(mon, amount) {
+    const gold = (game.invent || []).find(
+        obj => obj.oclass === OCLASSES.COIN_CLASS);
+    if (!gold || amount <= 0 || gold.quan < amount)
+        return 0;
+
+    const paid = gold.quan > amount ? splitobj(gold, amount) : gold;
+    freeinv(paid);
+    paid.where = OBJ_FREE;
+    paid.ocarry = null;
+    mpickobj(mon, paid);
+    (game.disp ||= {}).botl = true;
+    return amount;
+}
+
+// src/mhitu.c:2309 mayberem() -- a seducer tries to remove one worn armor
+// item. The two rn2(2) draws in the pet-name prompt short-circuit exactly as
+// the nested C conditional does.
+async function mayberem(mon, seducer, obj, str) {
+    if (!obj || !obj.owornmask)
+        return;
+    if (game.u.utotype || !m_next2u(mon))
+        return;
+
+    if (Deaf()) {
+        await pline(`${seducer} takes off your ${str}.`);
+    } else if (rn2(20) < ACURR(A_CHA)) {
+        const endearment = !rn2(2) ? 'lover' : !rn2(2) ? 'dear' : 'sweetheart';
+        const qbuf = `"Shall I remove your ${str}, ${endearment}?"`;
+        if (await tty_yn_function(qbuf, 'yn', 'n', true) === 'n')
+            return;
+    } else {
+        const u = game.u;
+        const invitation = obj === u.uarm
+            ? "let's get a little closer"
+            : (obj === u.uarmc || obj === u.uarms)
+                ? "it's in the way"
+                : obj === u.uarmf
+                    ? 'let me rub your feet'
+                    : obj === u.uarmg
+                        ? "they're too clumsy"
+                        : obj === u.uarmu
+                            ? 'let me massage you'
+                            : `let me run my fingers through your ${
+                                body_part(HAIR)}`;
+        await verbalize(`Take off your ${str}; ${invitation}.`);
+    }
+    await remove_worn_item(obj, true);
+}
+
+// src/mhitu.c:1985 doseduce() -- the complete succubus/incubus interaction:
+// adornment rings, armor removal, all ten outcomes, payment, exhaustion, and
+// relocation. It returns 1 on the same paths where C ends the aggressor's
+// attack sequence.
+export async function doseduce(mon) {
+    const u = game.u;
+    const fem = mon.data?.pmidx === PMNAMES.PM_AMOROUS_DEMON && !!mon.female;
+    let tried_gloves = 0;
+
+    if (mon.mcan || mon.mspec_used) {
+        await pline_mon(mon, `${Monnam(mon)} acts as though ${mhe(mon)} has got a ${
+            mon.mcan ? 'severe ' : ''}headache.`);
+        return 0;
+    }
+    if (unresponsive_to_seduction()) {
+        await pline_mon(mon, `${Monnam(mon)} seems dismayed at your lack of response.`);
+        return 0;
+    }
+
+    const seewho = canseemon(mon);
+    if (!seewho)
+        await pline('Someone caresses you...');
+    else
+        await You_feel(`very attracted to ${mon_nam(mon)}.`);
+    const Who = !seewho ? (fem ? 'She' : 'He') : Monnam(mon);
+
+    await stop_donning(null);
+    if (welded(u.uwep))
+        tried_gloves = 1;
+
+    for (const ring of [...(game.invent || [])]) {
+        if (ring.otyp !== ONAMES.RIN_ADORNMENT)
+            continue;
+        if (fem) {
+            if (ring.owornmask && u.uarmg) {
+                if (!tried_gloves++)
+                    await mayberem(mon, Who, u.uarmg, 'gloves');
+                if (u.uarmg)
+                    continue;
+            }
+            if (!Deaf() && rn2(20) < ACURR(A_CHA)) {
+                const qbuf = safe_qbuf('"That ',
+                    ' looks pretty.  May I have it?"', ring,
+                    xname, simpleonames, 'ring');
+                makeknown(ONAMES.RIN_ADORNMENT);
+                if (await tty_yn_function(qbuf, 'yn', 'n', true) === 'n')
+                    continue;
+            } else {
+                await pline(`${Who} decides she'd like ${yname(ring)}, and takes it.`);
+            }
+            makeknown(ONAMES.RIN_ADORNMENT);
+            if (ring.owornmask)
+                await remove_worn_item(ring, false);
+            freeinv(ring);
+            mpickobj(mon, ring);
+        } else {
+            if (u.uleft && u.uright
+                && u.uleft.otyp === ONAMES.RIN_ADORNMENT
+                && u.uright.otyp === ONAMES.RIN_ADORNMENT)
+                break;
+            if (ring === u.uleft || ring === u.uright)
+                continue;
+            if (u.uarmg) {
+                if (!tried_gloves++)
+                    await mayberem(mon, Who, u.uarmg, 'gloves');
+                if (u.uarmg)
+                    break;
+            }
+            if (!Deaf() && rn2(20) < ACURR(A_CHA)) {
+                const qbuf = safe_qbuf('"That ',
+                    ' looks pretty.  Would you wear it for me?"', ring,
+                    xname, simpleonames, 'ring');
+                makeknown(ONAMES.RIN_ADORNMENT);
+                if (await tty_yn_function(qbuf, 'yn', 'n', true) === 'n')
+                    continue;
+            } else {
+                await pline(`${Who} decides you'd look prettier wearing ${yname(ring)},`);
+                await pline('and puts it on your finger.');
+            }
+            makeknown(ONAMES.RIN_ADORNMENT);
+            if (!u.uright) {
+                await pline(`${Who} puts ${the(xname(ring))} on your right ${
+                    body_part(HAND)}.`);
+                setworn(ring, RIGHT_RING);
+            } else if (!u.uleft) {
+                await pline(`${Who} puts ${the(xname(ring))} on your left ${
+                    body_part(HAND)}.`);
+                setworn(ring, LEFT_RING);
+            } else if (u.uright.otyp !== ONAMES.RIN_ADORNMENT) {
+                await pline(`${Who} replaces ${yname(u.uright)} with ${yname(ring)}.`);
+                await Ring_gone(u.uright);
+                if (u.utotype || !m_next2u(mon))
+                    return 1;
+                setworn(ring, RIGHT_RING);
+            } else if (u.uleft.otyp !== ONAMES.RIN_ADORNMENT) {
+                await pline(`${Who} replaces ${yname(u.uleft)} with ${yname(ring)}.`);
+                await Ring_gone(u.uleft);
+                if (u.utotype || !m_next2u(mon))
+                    return 1;
+                setworn(ring, LEFT_RING);
+            }
+            await Ring_on(ring);
+            await prinv(null, ring, 0);
+        }
+    }
+
+    const naked = !u.uarmc && !u.uarmf && !u.uarmg && !u.uarms
+        && !u.uarmh && !u.uarmu;
+    const murmur = Deaf()
+        ? 'seems to murmur into your ear'
+        : naked ? 'murmurs sweet nothings into your ear'
+                : 'murmurs in your ear';
+    await urgent_pline(`${Who} ${murmur}${
+        naked ? '' : ', while helping you undress'}.`);
+    await mayberem(mon, Who, u.uarmc, cloak_simple_name(u.uarmc));
+    if (!u.uarmc)
+        await mayberem(mon, Who, u.uarm, suit_simple_name(u.uarm));
+    await mayberem(mon, Who, u.uarmf, 'boots');
+    if (!tried_gloves)
+        await mayberem(mon, Who, u.uarmg, 'gloves');
+    await mayberem(mon, Who, u.uarms, 'shield');
+    await mayberem(mon, Who, u.uarmh, helm_simple_name(u.uarmh));
+    if (!u.uarmc && !u.uarm)
+        await mayberem(mon, Who, u.uarmu, 'shirt');
+
+    if (u.utotype || !m_next2u(mon))
+        return 1;
+
+    if (u.uarm || u.uarmc) {
+        if (!Deaf()) {
+            const leapDay = yyyymmdd() - getyear() * 10000 === 0xe5;
+            if (!(leapDay && mon.female)) {
+                await verbalize(`You're such a ${
+                    game.flags.female ? 'sweet lady' : 'nice guy'}; I wish...`);
+            } else {
+                const gloves = carried_gloves();
+                if (gloves)
+                    observe_object(gloves);
+                await verbalize(`Well, then you owe me ${
+                    gloves ? yname(gloves) : 'twelve pairs of gloves'}${
+                    gloves ? ' and eleven more pairs of gloves' : ''}!`);
+            }
+        } else if (seewho) {
+            await pline_mon(mon, `${Monnam(mon)} appears to sigh.`);
+        }
+        await relocate_seducer(mon);
+        return 1;
+    }
+
+    if (u.ualign.type === A_CHAOTIC)
+        adjalign(1);
+    await urgent_pline(`Time stands still while you and ${
+        noit_mon_nam(mon)} lie in each other's arms...`);
+
+    const attr_tot = ACURR(A_CHA) + ACURR(A_INT);
+    if (rn2(35) > Math.min(attr_tot, 32)) {
+        await pline(`${noit_Monnam(mon)} seems to have enjoyed it more than you...`);
+        switch (rn2(5)) {
+        case 0:
+            await You_feel('drained of energy.');
+            u.uen = 0;
+            u.uenmax -= rnd((game.u.intrinsic?.HHalf_physical_damage
+                             || game.u.uprops?.HALF_PHDAM) ? 5 : 10);
+            exercise(A_CON, false);
+            if (u.uenmax < 0)
+                u.uenmax = 0;
+            break;
+        case 1:
+            await You('are down in the dumps.');
+            await adjattrib(A_CON, -1, true);
+            exercise(A_CON, false);
+            (game.disp ||= {}).botl = true;
+            break;
+        case 2:
+            await Your('senses are dulled.');
+            await adjattrib(A_WIS, -1, true);
+            exercise(A_WIS, false);
+            (game.disp ||= {}).botl = true;
+            break;
+        case 3:
+            if (!resists_drli(game.youmonst)) {
+                await You_feel('out of shape.');
+                await losexp('overexertion');
+            } else {
+                await You('have a curious feeling...');
+            }
+            exercise(A_CON, false);
+            exercise(A_DEX, false);
+            exercise(A_WIS, false);
+            break;
+        case 4: {
+            await You_feel('exhausted.');
+            exercise(A_STR, false);
+            let damage = rn1(10, 6);
+            if (game.u.intrinsic?.HHalf_physical_damage
+                || game.u.uprops?.HALF_PHDAM)
+                damage = Math.trunc((damage + 1) / 2);
+            await losehp(damage, 'exhaustion', KILLED_BY);
+            break;
+        }
+        }
+    } else {
+        mon.mspec_used = rnd(100);
+        await You(`seem to have enjoyed it more than ${noit_mon_nam(mon)}...`);
+        switch (rn2(5)) {
+        case 0:
+            await You_feel('raised to your full potential.');
+            exercise(A_CON, true);
+            u.uenmax += rnd(5);
+            u.uen = u.uenmax;
+            if (u.uenmax > (u.uenpeak ?? 0))
+                u.uenpeak = u.uenmax;
+            break;
+        case 1:
+            await You_feel('good enough to do it again.');
+            await adjattrib(A_CON, 1, true);
+            exercise(A_CON, true);
+            (game.disp ||= {}).botl = true;
+            break;
+        case 2:
+            await You(`will always remember ${noit_mon_nam(mon)}...`);
+            await adjattrib(A_WIS, 1, true);
+            exercise(A_WIS, true);
+            (game.disp ||= {}).botl = true;
+            break;
+        case 3:
+            await pline('That was a very educational experience.');
+            await pluslvl(false);
+            exercise(A_WIS, true);
+            break;
+        case 4:
+            await You_feel('restored to health!');
+            u.uhp = u.uhpmax;
+            if (Upolyd(u))
+                u.mh = u.mhmax;
+            exercise(A_STR, true);
+            (game.disp ||= {}).botl = true;
+            break;
+        }
+    }
+
+    if (mon.mtame) {
+        // Tame seducers do not charge.
+    } else if (rn2(20) < ACURR(A_CHA)) {
+        await pline(`${noit_Monnam(mon)} demands that you pay ${
+            noit_mhim(mon)}, but you refuse...`);
+    } else if (u.umonnum === PMNAMES.PM_LEPRECHAUN) {
+        await pline_mon(mon, `${noit_Monnam(mon)} tries to take your gold, but fails...`);
+    } else {
+        const umoney = money_cnt(game.invent);
+        let cost = umoney > LARGEST_INT - 10
+            ? rnd(LARGEST_INT) + 500 : rnd(umoney + 10) + 500;
+        if (mon.mpeaceful) {
+            cost = Math.trunc(cost / 5);
+            if (!cost)
+                cost = 1;
+        }
+        if (cost > umoney)
+            cost = umoney;
+        if (!cost) {
+            if (!Deaf())
+                await verbalize("It's on the house!");
+            else
+                await pline('No charge.');
+        } else {
+            await pline_mon(mon, `${noit_Monnam(mon)} takes ${cost} ${
+                currency(cost)} for services rendered!`);
+            await money2mon_seduction(mon, cost);
+            (game.disp ||= {}).botl = true;
+        }
+    }
+    if (!rn2(25))
+        mon.mcan = 1;
+    await relocate_seducer(mon);
+    return 1;
 }
 
 // src/mhitu.c:2435 passiveum() — the hero's passive counterattack.

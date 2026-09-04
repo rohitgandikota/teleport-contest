@@ -1,0 +1,46 @@
+{
+  "name": "grapple-source-gaps",
+  "description": "C oracle for all basic grappling-hook target rolls, skilled and expert aim selection, object retrieval, tiny-monster pulling, large-monster striking, surface movement, and self injury.",
+  "coverage": [
+    "mode.debug",
+    "object.tools-containers",
+    "ui.getlin",
+    "ui.getpos",
+    "ui.menus",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "tool.grapple.basic-trap-roll",
+    "tool.grapple.basic-object-empty",
+    "tool.grapple.basic-monster-empty",
+    "tool.grapple.basic-surface-yank",
+    "tool.grapple.basic-self-hook",
+    "tool.grapple.expert-choice-failed",
+    "tool.grapple.expert-tiny-monster-pull",
+    "tool.grapple.expert-large-monster-hit",
+    "tool.grapple.skilled-object-snag"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {"branch":"tool.grapple.basic-trap-roll","segment":0,"screenIncludes":["Nothing happens."],"rngIncludes":["rn2(5)=0 @ use_grapple(apply.c:3776)"]},
+    {"branch":"tool.grapple.basic-object-empty","segment":1,"screenIncludes":["Nothing happens."],"rngIncludes":["rn2(5)=1 @ use_grapple(apply.c:3776)"]},
+    {"branch":"tool.grapple.basic-monster-empty","segment":2,"screenIncludes":["Nothing happens."],"rngIncludes":["rn2(5)=2 @ use_grapple(apply.c:3776)"]},
+    {"branch":"tool.grapple.basic-surface-yank","segment":3,"screenIncludes":["You are yanked toward the stairs!"],"rngIncludes":["rn2(5)=3 @ use_grapple(apply.c:3776)"]},
+    {"branch":"tool.grapple.basic-self-hook","segment":4,"screenIncludes":["You hook yourself!"],"rngIncludes":["rn2(5)=4 @ use_grapple(apply.c:3776)","@ use_grapple(apply.c:3865)"]},
+    {"branch":"tool.grapple.expert-choice-failed","segment":5,"screenIncludes":["Nothing happens."],"rngIncludes":["rn2(20)=0 @ use_grapple(apply.c:3801)"]},
+    {"branch":"tool.grapple.expert-tiny-monster-pull","segment":6,"screenIncludes":["You pull in the newt!"],"rngIncludes":["rn2(4)=0 @ use_grapple(apply.c:3832)"]},
+    {"branch":"tool.grapple.expert-large-monster-hit","segment":7,"screenIncludes":["The grappling hook hits the stone giant."],"rngIncludes":["rn2(4)=3 @ use_grapple(apply.c:3843)"]},
+    {"branch":"tool.grapple.skilled-object-snag","segment":8,"screenIncludes":["You snag an object from the stairs!"],"rngIncludes":["rn2(2)=1 @ use_grapple(apply.c:3801)"]}
+  ],
+  "segments": [
+    {"seed":100001,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwaaa.  "},
+    {"seed":100004,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwaaa.  "},
+    {"seed":100006,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwaaa.  "},
+    {"seed":100007,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwaaa.  "},
+    {"seed":100002,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwaaa.  n "},
+    {"seed":100013,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwa#enhance\rye e e \u001baa.c  "},
+    {"seed":100014,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwa#enhance\rye e e \u001b\u0007sleeping hostile newt\raam.b  "},
+    {"seed":100015,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwa#enhance\rye e e \u001b\u0007sleeping hostile stone giant\raam.b  "},
+    {"seed":100016,"datetime":"20000110090000","nethackrc":"OPTIONS=name:Hooker,role:Priest,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n","moves":" \u0017uncursed grappling hook\rwa#enhance\rye e \u001b\u0017uncursed rock\rdb aa.a  "}
+  ]
+}

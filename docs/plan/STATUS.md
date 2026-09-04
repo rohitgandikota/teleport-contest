@@ -1,5 +1,52 @@
 # STATUS — live handoff board
 
+## 2026-09-04: grappling and cursed applied tools reach exact C parity
+
+Two permanent C oracles add 23 focused segments across grappling hooks and
+the remaining RNG-bearing applied-tool paths. The nine-segment
+`grapple-source-gaps` fixture covers all basic grappling outcomes, skilled and
+expert targeting, pulling a tiny monster, striking a large monster, and
+snagging a floor object. It matches **25,048/25,048 RNG calls** and
+**451/451 screens**, and exercises all **8/8** RNG sites in `use_grapple()`.
+
+The fourteen-segment `apply-tool-source-gaps` fixture covers cursed cameras,
+stethoscopes, magic whistles, bells, lamps, land mines, and bear traps. It
+also pins the distant-pet teleport path and successful theft while the hero
+is immobilized. It matches **37,679/37,679 RNG calls**, **704/704 screens**,
+and **21/21 animations**. The fixture closes every RNG site in
+`use_camera()`, `use_stethoscope()`, `use_magic_whistle()`,
+`tele_to_rnd_pet()`, `use_bell()`, `use_lamp()`, `use_trap()`, and
+`set_trap()`.
+
+The source traces found two real C divergences. A successful theft while the
+hero is immobilized now returns zero as `steal.c` does, so that attack does
+not make the thief flee before later attacks. A saddle created by wizard
+setup is now fully identified before it is given to a monster, matching
+`steed.c` and preserving the exact object name and `--More--` sequence when a
+mounted trap kills the steed.
+
+Twenty-seven new C-backed requirements raise the explicit branch ledger from
+**1,252/1,252 to 1,279/1,279**. The source census rises by 26 sites, from
+1,661 to **1,687/2,621 observed RNG sites (64.4%)**. The supplemental coverage
+matrix now has **99 covered, 7 partial, and 0 gap** dimensions.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,462/1,483 animations**; supplemental **413/413**,
+**111,997/111,997 screens**, **5,767,200/5,767,200 RNG**, and
+**3,227/3,227 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44 with no over-read. Fresh-seed smoke is 80/80
+across 13 roles with no reached-but-unported path. All ten audit and recorder
+tests pass, source and focused state audits are clean, syntax checks pass, and
+frozen files are unchanged.
+
+The latest judged hidden result remains the cached **8,498/11,265**,
+**16/44**, rank 3 overall and rank 1/9 among agentic entries. This local
+extension is unjudged and unpushed. The six-hour dashboard heartbeat remains
+active. The next target will be selected from the remaining function-level C
+gaps by oracle feasibility and likely gameplay reach.
+
 ## 2026-09-04: thrones, random mazes, and sitting source gaps reach exact C parity
 
 Six permanent C oracles add 46 focused segments across ordinary and Vlad's

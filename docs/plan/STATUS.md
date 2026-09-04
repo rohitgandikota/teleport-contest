@@ -1,5 +1,42 @@
 # STATUS — live handoff board
 
+## 2026-09-03: canonical petrifying-touch identity closes all logical supplemental failures
+
+The first `mhurtle-hero-collision` screen mismatch showed that C petrified a
+minotaur after it hit the hero's cockatrice form, while JS only printed the
+collision. The branch body was already present. The failed guard compared
+`game.youmonst.data` by object identity with `game.mons[PM_COCKATRICE]`.
+`set_uasmon()` uses the static monster table while each game owns a cloned
+table, so both records had canonical `pmidx = 10` but were different JS
+objects. C has one `&mons[PM_*]` identity. The port now uses `pmidx`, matching
+the representation already used by the other monster-identity predicates.
+
+The `mhurtle-hero-collision` recipe now requires concrete assertions for all
+three C outcomes: an ordinary collision, a hurtling monster petrified by the
+hero's form with the resulting object-ID draw, and the hero petrified by a
+hurtling cockatrice. It improves from **311/316 screens** and **5,659/8,262
+RNG** to **316/316 screens** and **8,262/8,262 RNG**. The same canonical
+identity correction closes `vamp-stone-reversion`, from **359/381 screens**
+and **4,523/9,589 RNG** to **381/381 screens** and **9,589/9,589 RNG**.
+
+Full verification at local commit `d6e69b1c`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**371/374**, **82,988/83,379 screens**, and all **4,450,946/4,450,946 RNG**;
+random play **101/102**, **14,261/14,262 screens**, and all **491,759/491,759
+RNG**. The fuzz miss is still the fixed-datetime recorder DST artifact. The
+hang gate is 44/44, fresh-seed smoke is 80/80, source audit has zero findings,
+all eight audit tests pass, and declared coverage remains **99/106 categories**
+with seven partial plus **860/860 explicit C branches**.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It predates this checkpoint.
+Only three supplemental screen-only mismatches remain, all with exact RNG:
+`bones-persistence` at 719/721, `gehennom-tour` at 107/490 but 485/490 cells,
+and `variant-world-tour` at 827/833. Next, determine whether each residual is
+a recorder artifact or a real tty capture mismatch, starting from the six
+variant-world-tour frames because they have exact cursors and the smallest
+clean difference set.
+
 ## 2026-09-03: revived threats now interrupt active occupations
 
 Pinned C `src/makemon.c:makemon` calls `dochugw(mtmp, FALSE)` after every

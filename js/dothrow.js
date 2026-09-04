@@ -124,8 +124,9 @@ import { pline } from './display.js';
 import { splitobj, unsplitobj, place_object } from './mkobj.js';
 import { addinv, addinv_before, freeinv, fully_identify_obj, stackobj } from './invent.js';
 import { encumber_msg, near_capacity, ACURR, acurrstr, exercise,
-         change_luck } from './attrib.js';
+         change_luck, Role_if } from './attrib.js';
 import { A_DEX, A_STR, BOLT_LIM, IS_SOFT, LOST_THROWN, THROWN_WEAPON,
+         THROWN_TETHERED_WEAPON, STR19,
          HMON_THROWN, HMON_KICKED, HMON_APPLIED, STRAT_WAITMASK,
          engulfing_u, RLOC_MSG, POTHIT_HERO_THROW, HEAD, EYE, OBJ_FLOOR,
          OBJ_FREE, OBJ_INVENT, OBJ_MINVENT, W_WEP, W_SWAPWEP, W_QUIVER,
@@ -136,7 +137,9 @@ const PIERCE = 1;
 import { singular, xname, an, the, The, otense, mshot_xname, doname,
          makeplural, Tobjnam, killer_xname }
     from './objnam.js';
-import { skill_name, weapon_descr, weapon_type, P_SKILL } from './weapon.js';
+import { autoreturn_weapon, skill_name, weapon_descr, weapon_type, P_SKILL }
+    from './weapon.js';
+import { ART_MJOLLNIR } from './artilist_data.js';
 import { SKILLS, MATERIALS } from './objects_data.js';
 import { rn2, rnd } from './rng.js';
 import { bhit, boomhit, obj_resists, miss } from './zap.js';
@@ -165,7 +168,7 @@ import { is_weptool } from './mkobj.js';
 import { hitval, weapon_hit_bonus } from './weapon.js';
 import { getdir } from './cmd.js';
 import { find_mac } from './worn.js';
-import { distmin, sgn } from './hacklib.js';
+import { distmin, isqrt, sgn } from './hacklib.js';
 import { hmon, passive_obj } from './uhitm.js';
 import { Monnam, Some_Monnam, upstart } from './do_name.js';
 import { Deaf } from './youprop.js';
@@ -255,7 +258,13 @@ export async function throw_obj(obj, shotlimit) {
     if (!await canletgo_with_feedback(obj, 'throw'))
         return ECMD_OK;
 
-    if (obj.otyp === ONAMES.BOULDER && !throws_rocks(game.mons?.[u.umonnum])) {
+    if (obj.oartifact === ART_MJOLLNIR && obj !== u.uwep) {
+        await pline(`${The(xname(obj))} must be wielded before it can be thrown.`);
+        return ECMD_OK;
+    }
+    if ((obj.oartifact === ART_MJOLLNIR && ACURR(A_STR) < STR19(25))
+        || (obj.otyp === ONAMES.BOULDER
+            && !throws_rocks(game.mons?.[u.umonnum]))) {
         await pline("It's too heavy.");
         return ECMD_TIME;
     }
@@ -551,13 +560,13 @@ export async function throwit_mon_hit(obj, mon) {
 export async function throwit(obj, wep_mask, twoweap = false,
                               oldslot = null) {
     const u = game.u;
+    const arw = autoreturn_weapon(obj);
     let impaired = !!(u.intrinsic?.HConfusion || u.uprops?.CONFUSION
                        || u.intrinsic?.HStun || u.uprops?.STUNNED
                        || Blind() || Hallucination() || Fumbling());
+    const tethered_weapon = !!(arw?.tethered && (wep_mask & W_WEP));
 
     game.notonhead = false;
-    game.thrownobj = obj;
-    obj.how_lost = LOST_THROWN;
 
     /* src/dothrow.c:1526 — a cursed or greased missile can slip */
     if ((obj.cursed || obj.greased) && (u.dx || u.dy) && !rn2(7)) {
@@ -579,15 +588,24 @@ export async function throwit(obj, wep_mask, twoweap = false,
         }
     }
 
+    game.thrownobj = obj;
+    obj.how_lost = LOST_THROWN;
+    (game.iflags ||= {}).returning_missile = AutoReturn(obj, wep_mask)
+                                                ? obj : null;
+
     /* the low-stamina drop arm reads encumbrance; calc_capacity stays 0
        for every current session so the gate is the hp test alone */
     if (u.uswallow) {
         note_unported_dothrow('throwit:uswallow');
-        game.thrownobj = null;
+        throwit_return(true);
         return;
     }
     if (u.dz) {
-        if (u.dz < 0) {
+        if (u.dz < 0 && game.iflags.returning_missile && !impaired) {
+            await pline(`${Tobjnam(obj, 'hit')} the ${
+                ceiling(u.ux, u.uy)} and returns to your hand!`);
+            obj = await return_throw_to_inv(obj, wep_mask, twoweap, oldslot);
+        } else if (u.dz < 0) {
             const hitsroof = !!rn2(5) && !Underwater();
             if (obj.oclass === OCLASSES.POTION_CLASS) {
                 if (hitsroof && breaktest(obj)) {
@@ -613,12 +631,11 @@ export async function throwit(obj, wep_mask, twoweap = false,
                 note_unported_dothrow('throwit:vertical_throw');
             }
         }
-        game.thrownobj = null;
+        throwit_return(true);
         return;
     }
-    (game.iflags ||= {}).returning_missile =
-        obj.otyp === ONAMES.BOOMERANG ? obj : null;
     let mon = null;
+    let endTether = null;
     if (obj.otyp === ONAMES.BOOMERANG && !Underwater()) {
         if (Is_airlevel(u.uz) || Levitation())
             await hurtle(-u.dx, -u.dy, 1, true);
@@ -658,7 +675,7 @@ export async function throwit(obj, wep_mask, twoweap = false,
             }
         }
 
-        if (Levitation()) {
+        if (Is_airlevel(u.uz) || Levitation()) {
             urange -= range;
             if (urange < 1) urange = 1;
             range -= urange;
@@ -666,15 +683,28 @@ export async function throwit(obj, wep_mask, twoweap = false,
         }
         if (obj.otyp === ONAMES.BOULDER)
             range = 20;
+        else if (obj.oartifact === ART_MJOLLNIR)
+            range = Math.trunc((range + 1) / 2);
+        else if (tethered_weapon)
+            range = Math.min(range, isqrt(arw.range));
         if (Underwater())
             range = 1;
 
         const pobjRef = { obj };
-        mon = await bhit(u.dx, u.dy, range, THROWN_WEAPON, null, null,
-                         pobjRef);
-        game.thrownobj = pobjRef.obj;
+        mon = await bhit(u.dx, u.dy, range,
+                         tethered_weapon ? THROWN_TETHERED_WEAPON
+                                         : THROWN_WEAPON,
+                         null, null, pobjRef);
+        endTether = pobjRef.endTether || null;
+        obj = pobjRef.obj;
+        game.thrownobj = obj;
 
-        if (!pobjRef.obj) {
+        if (Is_airlevel(u.uz) || Levitation())
+            await hurtle(-u.dx, -u.dy, urange, true);
+
+        if (!obj) {
+            if (tethered_weapon && endTether)
+                await endTether(false);
             throwit_return(false);
             return;
         }
@@ -685,6 +715,8 @@ export async function throwit(obj, wep_mask, twoweap = false,
         return;
     }
     if (!game.thrownobj) {
+        if (tethered_weapon && endTether)
+            await endTether(false);
         throwit_return(false);
         return;
     }
@@ -692,7 +724,10 @@ export async function throwit(obj, wep_mask, twoweap = false,
     const bx = game.bhitpos.x, by = game.bhitpos.y;
     if (game.iflags.returning_missile) {
         if (rn2(100)) {
-            await sho_obj_return_to_u(obj);
+            if (tethered_weapon)
+                await endTether(true);
+            else
+                await sho_obj_return_to_u(obj);
             if (!impaired && rn2(100)) {
                 await pline(`${Tobjnam(obj, 'return')} to your hand!`);
                 obj = await addinv_before(obj, oldslot);
@@ -714,6 +749,12 @@ export async function throwit(obj, wep_mask, twoweap = false,
                     await pline(Blind()
                         ? `${Tobjnam(obj, 'hit')} your ${body_part(ARM)}!`
                         : `${Tobjnam(obj, 'fly')} back toward you, hitting your ${body_part(ARM)}!`);
+                    if (obj.oartifact) {
+                        const { artifact_hit } = await import('./artifact.js');
+                        const dmgptr = { v: dmg };
+                        await artifact_hit(null, game.youmonst, obj, dmgptr, 0);
+                        dmg = dmgptr.v;
+                    }
                     await losehp(Maybe_Half_Phys(dmg), killer_xname(obj),
                                  KILLED_BY);
                 }
@@ -725,6 +766,8 @@ export async function throwit(obj, wep_mask, twoweap = false,
             throwit_return(true);
             return;
         }
+        if (tethered_weapon)
+            await endTether(false);
         await pline(`${Tobjnam(obj, 'fail')} to return!`);
     }
 
@@ -1160,6 +1203,16 @@ function throwing_weapon(obj) {
             || obj.otyp === ONAMES.WAR_HAMMER || obj.otyp === ONAMES.AKLYS);
 }
 
+// src/dothrow.c AutoReturn() macro. Aklys and Mjollnir return only when
+// thrown from the primary weapon slot. Boomerangs return from any slot.
+function AutoReturn(obj, wep_mask) {
+    return !!obj && (((wep_mask & W_WEP)
+                      && (obj.otyp === ONAMES.AKLYS
+                          || (obj.oartifact === ART_MJOLLNIR
+                              && Role_if(PMNAMES.PM_VALKYRIE))))
+                     || obj.otyp === ONAMES.BOOMERANG);
+}
+
 // src/dothrow.c dothrow() — the 't' command.
 //
 // ok_to_throw() reads nothing (it only fails for notake, nohands or being
@@ -1175,11 +1228,10 @@ function throw_ok(obj) {
     if (!obj)
         return GETOBJ_EXCLUDE;
 
-    /* AutoReturn() always recognizes boomerangs, wielded or not. */
-    if (obj.otyp === ONAMES.BOOMERANG)
+    if (AutoReturn(obj, obj.owornmask || 0)
+        && (obj.oartifact !== ART_MJOLLNIR
+            || ACURR(A_STR) >= STR19(25)))
         return GETOBJ_SUGGEST;
-
-    /* welded/other AutoReturn/Mjollnir need the artifact code */
     if (obj.quan === 1
         && (obj === game.u.uwep || (obj === game.u.uswapwep && game.u.twoweap)))
         return GETOBJ_DOWNPLAY;
@@ -1749,15 +1801,20 @@ export async function dofire() {
     let obj;
     let skip_fireassist = false;
     let res = ECMD_OK;
+    const uwep = game.u.uwep;
+    const uwep_Throw_and_Return = !!(uwep
+        && AutoReturn(uwep, uwep.owornmask || 0)
+        && (uwep.oartifact !== ART_MJOLLNIR
+            || ACURR(A_STR) >= STR19(25)));
 
     if (!await ok_to_throw())
         return ECMD_OK;
 
-    if (game.u.uwep && game.u.uwep.oartifact)
-        note_unported_dothrow('dofire:AutoReturn');
-
     obj = game.u.uquiver;
-    if (!obj) {
+    if (uwep_Throw_and_Return && (!obj || is_ammo(obj))) {
+        obj = uwep;
+        skip_fireassist = true;
+    } else if (!obj) {
         if (!game.flags.autoquiver) {
             /* if we're wielding a polearm, apply it */
             if (game.u.uwep && is_pole(game.u.uwep)) {

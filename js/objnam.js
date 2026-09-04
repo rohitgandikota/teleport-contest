@@ -1287,25 +1287,25 @@ export function doname(obj, vague_quan = false) {
         break;
     }
 
-    /* src/objnam.c:1560-1646 — the wield/swap/quiver suffixes. twoweap and
-       the tether/Sting-glow/artifact-light decorations need state this tree
-       does not track; u.twoweap stays falsy throughout. body_part(HAND) is
-       "hand" for every un-polymorphed form and polyself is not ported. */
+    /* src/objnam.c:1560-1646 — the wield/swap/quiver suffixes. */
     if (obj.owornmask & W_WEP) {
+        const twoweap_primary = obj === game.u.uwep && !!game.u.twoweap;
         /* use alternate phrasing for non-weapons and for wielded ammo
            (arrows, bolts), or missiles (darts, shuriken, boomerangs) */
         if (obj.quan !== 1
             || ((obj.oclass === OCLASSES.WEAPON_CLASS)
                 ? (is_ammo(obj) || is_missile(obj))
-                : !is_weptool(obj, game.objects))) {
+                : !is_weptool(obj, game.objects))
+            && !twoweap_primary) {
             bp += ' (wielded)';
         } else {
             const hand_s = bimanual(obj) ? 'hands'
                 : `${((game.u.uhandedness ?? 0) === 0) ? 'right' : 'left'} hand`; /* URIGHTY; RIGHT_HANDED == 0 */
             /* src/objnam.c:1593 — while twoweaponing the primary reads
                "wielded in", matching the secondary's phrasing */
-            const twoweap_primary = !!game.u.twoweap;
-            bp += ` (${twoweap_primary ? 'wielded in' : 'weapon in'} ${hand_s})`;
+            const relation = obj.otyp === ONAMES.AKLYS ? 'tethered to'
+                           : twoweap_primary ? 'wielded in' : 'weapon in';
+            bp += ` (${relation} ${hand_s})`;
         }
     }
     if (obj.owornmask & W_SWAPWEP) {

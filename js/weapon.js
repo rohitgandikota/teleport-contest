@@ -219,7 +219,8 @@ function note_unported_weapon(what) {
 /* src/weapon.c:514 arwep[] — the throw-and-return weapons. BOOMERANG is
    commented out in the C and is left out here for the same reason. */
 const arwep = [
-    { otyp: ONAMES.AKLYS, range: AKLYS_LIM * AKLYS_LIM, retmult: 1 },
+    { otyp: ONAMES.AKLYS, range: AKLYS_LIM * AKLYS_LIM,
+      retmult: 1, tethered: true },
 ];
 
 // src/weapon.c:520 autoreturn_weapon()

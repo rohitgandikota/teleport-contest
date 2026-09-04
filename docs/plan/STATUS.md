@@ -1,5 +1,39 @@
 # STATUS — live handoff board
 
+## 2026-09-04: wielded return weapons and tether flight match C
+
+The `AutoReturn` decision now matches the pinned C macro for boomerangs,
+wielded aklyses, and sufficiently strong Valkyries wielding Mjollnir. The
+fire command gives a wielded return weapon precedence when the quiver is
+empty or holds launcher ammunition. The ordinary throw path applies the
+aklys tether limit, Mjollnir's shortened range, direct upward return, weapon
+slot restoration, and artifact damage on a failed catch. `bhit()` now retains
+the tether glyphs during outbound flight and replays the saved path backward
+on return. Wielded aklyses also use C's `tethered to left hand` inventory
+label instead of the generic weapon label.
+
+The new five-segment `return-weapons` C fixture is byte-identical at
+**12,231/12,231 RNG calls**, **211/211 screens**, **211/211 cursors**, and
+**6/6 animation frames**. It independently covers throw and fire with an
+aklys, an upward boomerang, and throw and fire with Mjollnir. Seven asserted
+branches raise the declared ledger from **1,081/1,081 to 1,088/1,088** with
+no gaps. The source RNG census remains **1,547/2,621 observed call sites
+(59.0%)**, including 14/31 sites in `dothrow.c`. The combined corpus now has
+440 public and supplemental sessions with 5,923,528 tagged RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**396/396**, **102,254/102,254 screens**, and **5,130,690/5,130,690 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST screen artifact. The hang gate is 44/44, fresh-seed smoke
+is 80/80 across 13 roles, all ten audit and recorder tests pass, source and
+state audits are clean, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The next adjacent return-weapon gaps are swallowed throws, failed and impaired
+aklys and Mjollnir returns, and monster contact while a tether is displayed.
+
 ## 2026-09-04: boomerang return failures and mishaps match C
 
 The underwater boomerang probe now covers every random outcome in the generic

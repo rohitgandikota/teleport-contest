@@ -5785,6 +5785,8 @@ export async function bhit(ddx, ddy, range,  /* direction and range */
     } else if (weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM)
         flightGlyph = obj ? temporary_object_glyph(obj) : null;
     let flightPos = null;
+    const tetherCells = [];
+    let tetherEnded = false;
     const flashCells = [];
     const endFlight = () => { /* tmp_at(DISP_END, 0) for the flight glyph */
         if (flightPos) {
@@ -5792,6 +5794,27 @@ export async function bhit(ddx, ddy, range,  /* direction and range */
             flightPos = null;
         }
     };
+    const endTether = async (backtrack) => {
+        if (tetherEnded)
+            return;
+        if (backtrack && tetherCells.length > 1) {
+            for (let i = tetherCells.length - 1; i > 0; --i) {
+                newsym(tetherCells[i].x, tetherCells[i].y);
+                display_object_at(obj, tetherCells[i - 1].x,
+                                  tetherCells[i - 1].y, flightGlyph);
+                await flush_screen(0);
+                if (game.animationFrame)
+                    await game.animationFrame();
+            }
+            tetherCells.length = 1;
+        }
+        for (const cell of tetherCells)
+            newsym(cell.x, cell.y);
+        tetherCells.length = 0;
+        tetherEnded = true;
+    };
+    if (tethered_weapon)
+        pobj.endTether = endTether;
 
     while (range-- > 0) {
         let x, y;
@@ -6024,6 +6047,18 @@ export async function bhit(ddx, ddy, range,  /* direction and range */
                     await flush_screen(0);
                     await game.animationFrame();
                 }
+            } else if (tethered_weapon) {
+                if (tetherCells.length) {
+                    const prev = tetherCells[tetherCells.length - 1];
+                    display_cmap_at(zapdir_cmap(sgn(game.u.ux - prev.x),
+                                                sgn(game.u.uy - prev.y)),
+                                    prev.x, prev.y, CLR_WHITE, 'tether');
+                }
+                tetherCells.push({ x, y });
+                display_object_at(obj, x, y, flightGlyph);
+                await flush_screen(0);
+                if (game.animationFrame)
+                    await game.animationFrame();
             } else if (flightGlyph) {
                 endFlight();
                 if (cansee(x, y)) {
@@ -6069,16 +6104,20 @@ export async function bhit(ddx, ddy, range,  /* direction and range */
     }
 
     if (!bhit_done) {
-        if ((weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM && !tethered_weapon)
-            || (was_returning && was_returning !== game.iflags?.returning_missile))
+        if (weapon !== ZAPPED_WAND && weapon !== INVIS_BEAM
+            && !tethered_weapon)
             endFlight();
+        else if (was_returning
+                 && was_returning !== game.iflags?.returning_missile)
+            await endTether(false);
 
         if (shopdoor)
             await pay_for_damage('destroy', false);
     }
 
  /* bhit_done: */
-    endFlight();
+    if (!tethered_weapon)
+        endFlight();
     for (const [fx, fy] of flashCells)
         newsym(fx, fy);
     /* note: for FLASHED_LIGHT, _caller_ must call transient_light_cleanup()

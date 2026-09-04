@@ -1,0 +1,100 @@
+{
+  "name": "return-weapons",
+  "description": "Wielded aklys and Valkyrie Mjollnir exercise throw and fire selection, tether animation and backtracking, hand restoration, artifact range handling, and direct upward return.",
+  "coverage": [
+    "combat.ranged",
+    "level.ordinary",
+    "mode.debug",
+    "object.weapons",
+    "ui.animation",
+    "ui.getlin"
+  ],
+  "branches": [
+    "dothrow.return.aklys",
+    "dothrow.return.mjollnir",
+    "dothrow.return.vertical-up",
+    "dofire.return.aklys",
+    "dofire.return.mjollnir",
+    "display.tether.backtrack",
+    "objnam.aklys.tethered-label"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "dothrow.return.aklys",
+      "segment": 0,
+      "screenIncludes": ["The thonged club returns to your hand!"],
+      "rngIncludes": [
+        "rn2(100)=7 @ throwit(dothrow.c:1711)",
+        "rn2(100)=57 @ throwit(dothrow.c:1717)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.mjollnir",
+      "segment": 3,
+      "screenIncludes": ["The war hammer named Mjollnir returns to your hand!"],
+      "rngIncludes": [
+        "rn2(100)=75 @ throwit(dothrow.c:1711)",
+        "rn2(100)=27 @ throwit(dothrow.c:1717)"
+      ]
+    },
+    {
+      "branch": "dothrow.return.vertical-up",
+      "segment": 2,
+      "screenIncludes": ["The boomerang hits the ceiling and returns to your hand!"]
+    },
+    {
+      "branch": "dofire.return.aklys",
+      "segment": 1,
+      "screenIncludes": ["The thonged club returns to your hand!"]
+    },
+    {
+      "branch": "dofire.return.mjollnir",
+      "segment": 4,
+      "screenIncludes": ["The war hammer named Mjollnir returns to your hand!"]
+    },
+    {
+      "branch": "display.tether.backtrack",
+      "segment": [0, 1],
+      "screenIncludes": ["The thonged club returns to your hand!"],
+      "rngIncludes": ["rn2(100)=57 @ throwit(dothrow.c:1717)"]
+    },
+    {
+      "branch": "objnam.aklys.tethered-label",
+      "segment": 0,
+      "screenIncludes": ["a - a thonged club (tethered to left hand)."]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwatal  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 aklys\rwafl  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 boomerang\rta<  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbtbl  i\u001b"
+    },
+    {
+      "seed": 90001,
+      "datetime": "20000118120000",
+      "nethackrc": "OPTIONS=name:valkyrie,role:Valkyrie,race:human,gender=female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017blessed +5 Mjollnir\rwbfl  i\u001b"
+    }
+  ]
+}

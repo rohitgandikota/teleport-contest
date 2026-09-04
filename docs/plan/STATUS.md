@@ -16,12 +16,14 @@ The shared missile correction adds 14 matching frames: nine in
 quest return, restored callback, and strangulation status rule add one frame
 each. Supplemental animation matching therefore rises by exactly 19, from
 **3,160/3,179 to 3,179/3,179**.
+The same display corrections raise public animation matching by 11, from
+**1,451/1,483 to 1,462/1,483**.
 The existing C fixtures already exercise every affected behavior, so the
 branch ledger remains **1,111/1,111**.
 
 Full verification on the working tree: public **44/44**,
 **11,405/11,405 screens**, **792,838/792,838 RNG**, and
-**1,451/1,483 animations**; supplemental **398/398**,
+**1,462/1,483 animations**; supplemental **398/398**,
 **103,842/103,842 screens**, **5,194,865/5,194,865 RNG**, and
 **3,179/3,179 animations**. Random play remains **101/102** and
 **14,261/14,262 screens**, with only the known fixed-datetime DST screen

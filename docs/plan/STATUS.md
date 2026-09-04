@@ -1,5 +1,59 @@
 # STATUS — live handoff board
 
+## 2026-09-03: runtime option menus and UTF-8 tty behavior verified
+
+The last genuine random-play failure was not monster movement. It entered four
+previously stubbed runtime-option paths: symbol-set selection, key-binding
+actions, status-condition selection, and status-highlight selection. The port
+now implements the symbol-set picker, the bind-key outer menu, the complete
+condition picker with alphabetical and severity ordering, and the status field
+and behavior pickers. The status-highlight path preserves the pinned C
+`initblstats[]` field-ID mismatch, including the visible terrain row opening
+the armor behavior editor. Empty-inventory object prompts now also take C's
+`display_pickinv()` message path.
+
+Switching to Enhanced2 exposed two recorder-visible tty rules. UTF-8 map
+glyphs pass through `g_pututf8()` and bypass the recorder screen buffer, so a
+Unicode floor redraw leaves the prior physical cell unchanged. Data-backed
+text windows route their first byte through `g_putch()` after pre-incrementing
+the tty cursor, so the next byte overwrites it in the recorder. Map painting
+and text-window rendering now reproduce both behaviors. Engraving backgrounds
+also resolve through the active symbol set instead of hardcoded ASCII.
+
+Five new C recordings cover these paths. All are byte-identical:
+`empty-inventory-selection` **6/6**, `options-bind-keys-menu` **8/8**,
+`options-status-condition-fields` **9/9**,
+`options-status-highlight-rules` **9/9**, and the expanded
+`options-symset-selection` **13/13**. Their RNG streams are exact. Seven new
+branch assertions pin the menus, the Enhanced2 stale-map cells, and the
+UTF-8 text-window byte loss.
+
+`fuzz-s3-21` improves from **301/301 RNG but 181/301 screens** at the prior
+checkpoint to **4,614/4,614 RNG and 301/301 screens**. Across all random play,
+fully passing games improve from **100/102 to 101/102**, screens from
+**14,141/14,262 to 14,261/14,262**, and RNG from **491,477/491,759 to
+491,759/491,759**. Every one of the 102 games is now RNG-exact. The sole screen
+miss is the known fixed-datetime recorder DST artifact and is not fitted in
+runtime code.
+
+Full verification at local commit `61b0d977`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**367/374**, **82,956/83,379 screens**, and **4,436,334/4,450,946 RNG**, with
+the same seven known failures and zero runtime errors. The hang gate is clean,
+fresh-seed smoke is 80/80, all source audits pass, frozen files are unchanged,
+and declared coverage is **99/106 categories** with seven partial plus
+**859/859 explicit branches**. The dashboard now times out a stalled live
+fetch and safely retains its exact cached snapshot.
+
+The latest available judge snapshot remains **8,498/11,265**, **16/44**, rank
+3 overall and rank 1/9 among agentic entries. It was recorded at
+2026-09-03T16:41:33.829Z, predates commit `61b0d977`, and must not be treated as
+a score for this checkpoint. Next: use the remaining real supplemental
+failures as oracle-backed work, starting with the earliest divergence in
+`floor-object-cancellation`, then the hero-hurtle, Rider, and vampire
+reversion paths. Nested bind-key editing and status-highlight rule creation
+also remain explicitly unported.
+
 ## 2026-09-03: monster iron-bar eligibility verified
 
 `fuzz-s3-10` appeared to diverge at `src/monmove.c:distfleeck`, but the

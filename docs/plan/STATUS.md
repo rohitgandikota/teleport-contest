@@ -1,5 +1,45 @@
 # STATUS — live handoff board
 
+## 2026-09-03: supplemental C oracle suite is fully byte-identical
+
+The final two supplemental failures were damaged C recordings, not JavaScript
+gameplay divergences. `gehennom-tour` contained impossible cursor coordinates
+and five literal OSC 7777 recorder markers inside screen cells. The patched C
+recorder reserved only 6,144 bytes for a serialized terminal frame. A dense
+DEC-graphics map exceeded that space and overwrote adjacent capture state. The
+buffer now uses a conservative per-cell upper bound, and recording generation
+rejects out-of-range cursors or leaked marker text before accepting a fixture.
+
+`bones-persistence` exposed a separate build fault. The macOS hints declared
+gzip flags in `NHCFLAGS` but never added them to `CFLAGS`, so the recorder used
+the pinned configuration's `/usr/bin/compress` default and printed an external
+compression error. The hints now compile in `/usr/bin/gzip`, `.gz`, and `-c`.
+With the spurious error removed, C terminates one input earlier on death, so the
+recipe drops the trailing space that existed only to dismiss that error.
+
+Fresh C captures are exact: `gehennom-tour` is **490/490 screens** and
+**366,071/366,071 RNG**; `bones-persistence` is **720/720 screens** and
+**36,988/36,988 RNG**. The dense public `seed0360-wizard-world-tour` also
+re-records exactly, confirming that the larger capture buffer preserves the
+canonical public oracle.
+
+Full verification at local commit `97c25a48`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**374/374**, **83,378/83,378 screens**, and **4,450,946/4,450,946 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is 80/80,
+source and state audits pass, all ten audit and recorder-integrity tests pass,
+and frozen files are unchanged. Declared coverage is **99/106 categories**
+with seven partial plus **861/861 explicit C branches**.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It was scored at
+2026-09-03T16:41:33.829Z and predates this checkpoint. The live fetch failed,
+so no newer judge result is claimed. With all known supplemental divergences
+closed, the next work should expand source-backed scenarios around the seven
+partial mechanics categories and still-unobserved RNG call sites, then port
+the first newly exposed divergence rather than fitting the hidden score.
+
 ## 2026-09-03: monster movement clears warning glyphs through the positional grid
 
 The six remaining `variant-world-tour` screen differences were one stale map

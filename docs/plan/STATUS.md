@@ -1,5 +1,45 @@
 # STATUS — live handoff board
 
+## 2026-09-03: nymphs relocate after stealing a mirror
+
+The source RNG census showed that `use_mirror()` had no oracle coverage at any
+of its eight draw sites. The older broad `apply-tools` recipe did not reach the
+claimed mirror branches because it selected nonexistent inventory letters. A
+new seven-segment C fixture now isolates cursed fogging, floating-eye
+paralysis, animal fear, Medusa petrification, nymph theft, vampire reflection,
+and umber-hulk self-confusion. Seven concrete branch assertions pin their
+messages and all six reachable mirror draw sites.
+
+The focused nymph case exposed a real control-flow error. JS made
+`tele_restrict()` asynchronous because it can print a message, but the mirror
+theft arm tested its returned Promise without `await`. The truthy Promise made
+every nymph skip C's `rloc(mtmp, RLOC_MSG)` call after taking the mirror. The
+port now awaits the restriction check. The missing `--More--` frame and
+`The water nymph vanishes!` frame return, along with C's `rnd(79)` and
+`rn2(21)` relocation draws.
+
+`mirror-reflections` is now exact at **568/568 screens** and
+**18,775/18,775 RNG**. Before the fix, its isolated theft sequence had three
+screen mismatches and diverged at the first `rloc()` draw. The full
+supplemental suite grows to **375/375**, **83,946/83,946 screens**, and
+**4,469,721/4,469,721 RNG**. Explicit C branch evidence grows from
+**861/861 to 868/868**.
+
+Full verification at local commit `666cdf8c`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**375/375** with the totals above; random play **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST artifact.
+The hang gate is 44/44, fresh-seed smoke is 80/80, source and state audits
+pass, all ten audit and recorder-integrity tests pass, and frozen files are
+unchanged.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It predates this local
+checkpoint, and the live fetch failed, so no hidden gain is claimed yet. The
+same missing-`await` pattern remains visible in three untested
+`mhitm_ad_sedu()` hero-defense arms. Next, build C fixtures for those arms and
+only then repair any confirmed divergence.
+
 ## 2026-09-03: supplemental C oracle suite is fully byte-identical
 
 The final two supplemental failures were damaged C recordings, not JavaScript

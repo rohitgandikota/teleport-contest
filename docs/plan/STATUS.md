@@ -1,5 +1,39 @@
 # STATUS — live handoff board
 
+## 2026-09-04: boomerang return failures and mishaps match C
+
+The underwater boomerang probe now covers every random outcome in the generic
+return block: the initial return failure, successful return, second-roll
+failure with a harmless landing, second-roll failure with arm damage, and the
+impaired path which skips the second roll. The C trace exposed one real output
+bug. The harmless path names the hero's plural `feet`, while the JS port used
+the singular body part. The shared message path now applies C's
+`makeplural(body_part(FOOT))` rule.
+
+Four new segments extend `boomerang-flight` to 15 byte-identical C segments at
+**42,767/42,767 RNG calls**, **1,031/1,031 screens**, **1,031/1,031 cursors**,
+and **64/64 animation frames**. They assert initial return failure, a harmless
+feet landing, the arm-hit damage draw, and Fumbling's direct mishap path.
+Declared evidence remains **99/106 mechanics categories**, with seven partial,
+and rises from **1,077/1,077 to 1,081/1,081 explicit C branches**. The source
+RNG census rises from **1,545/2,621 to 1,547/2,621 observed call sites
+(59.0%)**, including 14/31 sites in `dothrow.c`. The combined corpus remains
+439 sessions and now contains 5,911,297 tagged RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**395/395**, **102,043/102,043 screens**, and **5,118,459/5,118,459 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST screen artifact. The hang gate is 44/44, fresh-seed smoke
+is 80/80 across 13 roles, all ten audit and recorder tests pass, source and
+state audits are clean, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The next adjacent runtime gap is `dothrow.c`'s wielded throw-and-return table:
+the tethered aklys flight, Valkyrie Mjollnir return, and their vertical,
+swallowed, and impaired outcomes.
+
 ## 2026-09-04: boomerang flight and underwater return match C
 
 `boomhit()` now follows the pinned C ten-square curve, including the hero's

@@ -26,6 +26,10 @@
     "dothrow.boomerang.left-handed-clockwise",
     "dothrow.boomerang.fumbling-self-hit",
     "dothrow.boomerang.underwater-return",
+    "dothrow.boomerang.underwater-return-failure",
+    "dothrow.boomerang.underwater-return-feet",
+    "dothrow.boomerang.underwater-return-arm",
+    "dothrow.boomerang.underwater-impaired-return",
     "dothrow.boomerang.levitation-recoil",
     "vision.underwater.pool-only",
     "sounds.underwater.suppressed"
@@ -161,6 +165,46 @@
         "You float in the opposite direction."
       ],
       "screenExcludes": ["You skillfully catch the boomerang."]
+    },
+    {
+      "branch": "dothrow.boomerang.underwater-return-failure",
+      "segment": 11,
+      "screenIncludes": ["The boomerang fails to return!"],
+      "screenExcludes": ["The boomerang returns to your hand!"],
+      "rngIncludes": ["rn2(100)=0 @ throwit(dothrow.c:1711)"]
+    },
+    {
+      "branch": "dothrow.boomerang.underwater-return-feet",
+      "segment": 12,
+      "screenIncludes": ["The boomerang returns back to you, landing at your feet."],
+      "rngIncludes": [
+        "rn2(100)=25 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=0 @ throwit(dothrow.c:1730)"
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.underwater-return-arm",
+      "segment": 13,
+      "screenIncludes": ["The boomerang flies back toward you, hitting your arm!"],
+      "rngIncludes": [
+        "rn2(100)=77 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=1 @ throwit(dothrow.c:1730)",
+        "rnd(3)=3 @ throwit(dothrow.c:1739)"
+      ]
+    },
+    {
+      "branch": "dothrow.boomerang.underwater-impaired-return",
+      "segment": 14,
+      "screenIncludes": [
+        "You finish your dressing maneuver.",
+        "The boomerang returns back to you, landing at your feet."
+      ],
+      "rngIncludes": [
+        "rn2(100)=80 @ throwit(dothrow.c:1711)",
+        "rn2(2)=0 @ throwit(dothrow.c:1730)"
+      ]
     }
   ],
   "segments": [
@@ -229,6 +273,30 @@
       "datetime": "20000118092000",
       "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
       "moves": " \u0017blessed ring of levitation\rPar\u001b\u0017blessed +5 boomerang\rtbl  i\u001b"
+    },
+    {
+      "seed": 64,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b\u001b\u0017pool\rlmh\u001b\u0017blessed +5 boomerang\rtol  i\u001b"
+    },
+    {
+      "seed": 13,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b\u001b\u0017pool\rlmh\u001b\u0017blessed +5 boomerang\rtol  i\u001b"
+    },
+    {
+      "seed": 727,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b\u001b\u0017pool\rlmh\u001b\u0017blessed +5 boomerang\rtol  i\u001b"
+    },
+    {
+      "seed": 6947,
+      "datetime": "20000112110000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             Tbw-DaA\r\u001b#polyself\rwater nymph\r\u001b\u001b\u0017pool\rlmh\u001b\u0017blessed +5 boomerang\r\u0017blessed fumble boots\rWptol  i\u001b"
     }
   ]
 }

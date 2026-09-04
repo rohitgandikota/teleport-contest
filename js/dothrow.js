@@ -707,8 +707,8 @@ export async function throwit(obj, wep_mask, twoweap = false,
                 let dmg = rn2(2);
                 if (!dmg) {
                     await pline(Blind()
-                        ? `${Something} lands ${Levitation() ? 'beneath' : 'at'} your ${body_part(FOOT)}.`
-                        : `${Tobjnam(obj, 'return')} back to you, landing ${Levitation() ? 'beneath' : 'at'} your ${body_part(FOOT)}.`);
+                        ? `${Something} lands ${Levitation() ? 'beneath' : 'at'} your ${makeplural(body_part(FOOT))}.`
+                        : `${Tobjnam(obj, 'return')} back to you, landing ${Levitation() ? 'beneath' : 'at'} your ${makeplural(body_part(FOOT))}.`);
                 } else {
                     dmg += rnd(3);
                     await pline(Blind()

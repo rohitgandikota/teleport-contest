@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **106**. Covered: **99**.
 Partial: **7**. Gaps: **0**.
 
-Branch requirements: **1077**. Covered: **1077**.
+Branch requirements: **1081**. Covered: **1081**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -19,8 +19,8 @@ Partial: **0**. Gaps: **0**.
 | Corpus | Sessions | Steps | Annotated RNG calls | C files observed | C functions observed |
 |---|---:|---:|---:|---:|---:|
 | Public | 44 | 11405 | 767760 | 73 | 359 |
-| Supplemental | 395 | 101543 | 4745540 | 77 | 529 |
-| Union | 439 | 112948 | 5513300 | 80 | 561 |
+| Supplemental | 395 | 102043 | 4755674 | 77 | 529 |
+| Union | 439 | 113448 | 5523434 | 80 | 561 |
 
 ## Static inventory
 
@@ -241,6 +241,10 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `dothrow.boomerang.left-handed-clockwise` | `src/zap.c:boomhit` | `boomerang-flight` |
 | covered | `dothrow.boomerang.fumbling-self-hit` | `src/zap.c:boomhit` | `boomerang-flight` |
 | covered | `dothrow.boomerang.underwater-return` | `src/dothrow.c:throwit` | `boomerang-flight` |
+| covered | `dothrow.boomerang.underwater-return-failure` | `src/dothrow.c:throwit` | `boomerang-flight` |
+| covered | `dothrow.boomerang.underwater-return-feet` | `src/dothrow.c:throwit` | `boomerang-flight` |
+| covered | `dothrow.boomerang.underwater-return-arm` | `src/dothrow.c:throwit` | `boomerang-flight` |
+| covered | `dothrow.boomerang.underwater-impaired-return` | `src/dothrow.c:throwit` | `boomerang-flight` |
 | covered | `dothrow.boomerang.levitation-recoil` | `src/dothrow.c:throwit` | `boomerang-flight` |
 
 ### Underwater vision
@@ -1980,7 +1984,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | `barb-chargen` | normal | 96 | present | `chargen.restricted-path`, `combat.melee`, `combat.unarmed-kick`, `level.ordinary`, `mode.normal`, `monster.death-corpse-revival`, `monster.hero-melee`, `monster.movement`, `monster.pets`, `object.food-corpses`, `object.weapons`, `survival.hunger`, `survival.regen-exercise`, `survival.timed-status`, `terrain.doors-locks`, `traps.projectile-physical`, `turn.occupation-interrupt`, `turn.speed-energy`, `turn.timers`, `ui.count-repeat`, `ui.map-memory-vision`, `ui.menus` |
 | `barehand-special-damage` | debug | 96 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `monster.hero-melee`, `object.armor`, `object.rings`, `ui.getlin` |
 | `bones-persistence` | normal | 718 | present | `level.mines`, `mode.normal`, `monster.death-corpse-revival`, `persistence.bones` |
-| `boomerang-flight` | debug | 520 | present | `combat.knockback`, `combat.ranged`, `forms.polymorph`, `level.ordinary`, `mode.debug`, `object.rings`, `object.weapons`, `terrain.water-lava`, `turn.speed-energy`, `ui.animation`, `ui.getlin`, `ui.map-memory-vision` |
+| `boomerang-flight` | debug | 1016 | present | `combat.knockback`, `combat.ranged`, `forms.polymorph`, `level.ordinary`, `mode.debug`, `object.rings`, `object.weapons`, `terrain.water-lava`, `turn.speed-energy`, `ui.animation`, `ui.getlin`, `ui.map-memory-vision` |
 | `boots-effects` | debug | 57 | present | `level.ordinary`, `mode.debug`, `object.armor`, `turn.occupation-interrupt`, `ui.getlin`, `ui.map-memory-vision` |
 | `boulder-water-impact` | debug | 105 | present | `level.ordinary`, `mode.debug`, `terrain.water-lava`, `ui.getlin`, `ui.more-paging` |
 | `bullwhip-application` | debug+normal | 268 | present | `combat.melee`, `level.ordinary`, `mode.debug`, `mode.normal`, `object.buc-enchant-erosion`, `object.weapons`, `ui.cancel-invalid`, `ui.map-memory-vision` |

@@ -1804,10 +1804,11 @@ function _statusLine2() {
         ?? Math.max((Upolyd(u) ? u.mh : u.uhp) | 0, 0);
     const maxHp = game._deferred_status_hpmax_until_more
         ?? (Upolyd(u) ? u.mhmax : u.uhpmax);
+    const shownPower = game._deferred_status_power_until_dirty;
     let s = `${lvldesc} ${Is_rogue_level(u.uz) ? '*' : '$'}:${shownMoney}`
           /* src/botl.c:120 — hp = max(hp, 0): the dying frame shows 0 */
           + ` HP:${shownHp}(${maxHp || 0})`
-          + ` Pw:${u.uen || 0}(${u.uenmax || 0})`
+          + ` Pw:${shownPower?.current ?? u.uen ?? 0}(${shownPower?.max ?? u.uenmax ?? 0})`
           + ` AC:${game._deferred_status_ac_until_more ?? u.uac ?? 0}`;
     if (Upolyd(u))
         s += ` HD:${mons[u.umonnum].mlevel}`;
@@ -2114,6 +2115,13 @@ export async function bot() {
     const display = game?.nhDisplay;
     if (!display) return;
     const CO = display.cols ?? 80;
+
+    /* doseduce() changes maximum energy without setting disp.botl. Preserve
+       the already painted values through clean repaint calls, then expose the
+       live values as soon as C would process a real status-dirty event. */
+    if (game._deferred_status_power_until_dirty
+        && (game.disp?.botl || game.disp?.botlx))
+        delete game._deferred_status_power_until_dirty;
 
     const s1 = _statusLine1().replace(/\x1b\[[0-9;]*[A-Za-z]/g, m =>
         m.match(/\x1b\[\d+C/) ? ' '.repeat(parseInt(m.slice(2))) : '');

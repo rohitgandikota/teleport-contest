@@ -1721,6 +1721,12 @@ export async function doseduce(mon) {
         switch (rn2(5)) {
         case 0:
             await You_feel('drained of energy.');
+            if (!game.disp?.botl && !game.disp?.botlx) {
+                game._deferred_status_power_until_dirty = {
+                    current: u.uen,
+                    max: u.uenmax,
+                };
+            }
             u.uen = 0;
             u.uenmax -= rnd((game.u.intrinsic?.HHalf_physical_damage
                              || game.u.uprops?.HALF_PHDAM) ? 5 : 10);
@@ -1769,6 +1775,12 @@ export async function doseduce(mon) {
         case 0:
             await You_feel('raised to your full potential.');
             exercise(A_CON, true);
+            if (!game.disp?.botl && !game.disp?.botlx) {
+                game._deferred_status_power_until_dirty = {
+                    current: u.uen,
+                    max: u.uenmax,
+                };
+            }
             u.uenmax += rnd(5);
             u.uen = u.uenmax;
             if (u.uenmax > (u.uenpeak ?? 0))

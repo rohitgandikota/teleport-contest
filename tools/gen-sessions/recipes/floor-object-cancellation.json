@@ -20,6 +20,7 @@
     "object.cancellation.floor-armor-enchantment-buc",
     "object.cancellation.floor-wand-charge",
     "object.corpse.troll-revival-scheduled",
+    "monster.creation.interrupt-occupation",
     "object.cancellation.troll-revival-to-rot",
     "object.wand.exhausted-turns-to-dust"
   ],
@@ -63,6 +64,13 @@
       "rngIncludes": ["rn2(37)=0 @ start_corpse_timeout(mkobj.c:1420)"],
       "screenCells": [
         { "step": 31, "x": 4, "y": 12, "equals": "T" }
+      ]
+    },
+    {
+      "branch": "monster.creation.interrupt-occupation",
+      "segment": 5,
+      "screenIncludes": [
+        "You stop waiting.  The troll rises from the dead!"
       ]
     },
     {

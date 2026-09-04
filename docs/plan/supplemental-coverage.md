@@ -11,7 +11,7 @@ runner. RNG annotations only observe C functions that draw randomness.
 Requirements: **106**. Covered: **99**.
 Partial: **7**. Gaps: **0**.
 
-Branch requirements: **859**. Covered: **859**.
+Branch requirements: **860**. Covered: **860**.
 Partial: **0**. Gaps: **0**.
 
 ## Corpus inventory
@@ -404,6 +404,7 @@ target, not evidence that the JavaScript behavior is wrong.
 | covered | `object.revival.aligned-cleric-substitute` | `src/read.c:cant_revive` | `revival-substitute-types` |
 | covered | `object.revival.high-cleric-substitute` | `src/read.c:cant_revive` | `revival-substitute-types` |
 | covered | `object.revival.unique-shapechanger` | `src/read.c:cant_revive` | `revival-substitute-types` |
+| covered | `monster.creation.interrupt-occupation` | `src/makemon.c:makemon` | `floor-object-cancellation` |
 
 ### Altar wrath
 

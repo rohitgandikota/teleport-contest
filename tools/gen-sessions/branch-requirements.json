@@ -50,6 +50,7 @@
     { "group": "Corpse revival", "id": "object.revival.aligned-cleric-substitute", "cFile": "src/read.c", "cFunction": "cant_revive", "description": "Revive a carried aligned cleric corpse as a human zombie and update encumbrance after its messages" },
     { "group": "Corpse revival", "id": "object.revival.high-cleric-substitute", "cFile": "src/read.c", "cFunction": "cant_revive", "description": "Name a high cleric corpse without a unique-monster possessive and revive it as a human zombie" },
     { "group": "Corpse revival", "id": "object.revival.unique-shapechanger", "cFile": "src/read.c", "cFunction": "cant_revive", "description": "Revive a unique corpse without saved traits as a shapechanger in the original form" },
+    { "group": "Corpse revival", "id": "monster.creation.interrupt-occupation", "cFile": "src/makemon.c", "cFunction": "makemon", "description": "Interrupt an active waiting occupation when a newly revived visible hostile monster is close enough to threaten the hero" },
 
     { "group": "Altar wrath", "id": "religion.altar.wrath.luck-loss-one", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Desecrate another alignment's altar and lose one point of base luck" },
     { "group": "Altar wrath", "id": "religion.altar.wrath.luck-loss-two", "cFile": "src/pray.c", "cFunction": "altar_wrath", "description": "Take the one-in-twenty double luck penalty" },

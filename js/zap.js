@@ -10,7 +10,7 @@ import { M_AP_FURNITURE } from './const.js';
 import { fix_petrification } from './eat.js';
 import { polymon } from './polyself.js';
 import { Drain_resistance } from './youprop.js';
-import { mdistu } from './monmove.js';
+import { mdistu, dochugw } from './monmove.js';
 import { set_msg_xy } from './pline.js';
 import { sgn } from './hacklib.js';
 import { newexplevel } from './exper.js';
@@ -991,6 +991,8 @@ async function montraits(obj, cc, adjacentok) {
                                to grow new tail segments */
                             | MM_NOTAIL | MM_NOMSG
                             | (adjacentok ? MM_ADJACENTOK : 0)));
+            if (mtmp && !game.in_mklev && game.occupation)
+                await dochugw(mtmp, false);
         }
         if (!mtmp) {
             /* mtmp2 is a copy of obj's object->oextra->omonst extension
@@ -1229,6 +1231,8 @@ export async function revive(corpse, by_hero) {
         montype = montype_box.v;
         /* make a new monster */
         mtmp = makemon(game.mons[montype], x, y, mmflags);
+        if (mtmp && !game.in_mklev && game.occupation)
+            await dochugw(mtmp, false);
         if (mtmp) {
             /* [oid/omonst ghost-merge and the like shouldn't be
                applied to a shapechanger substitute] */
@@ -1253,6 +1257,8 @@ export async function revive(corpse, by_hero) {
     } else {
         /* make a new monster */
         mtmp = makemon(mptr, x, y, mmflags | MM_NOCOUNTBIRTH);
+        if (mtmp && !game.in_mklev && game.occupation)
+            await dochugw(mtmp, false);
     }
     if (!mtmp)
         return null;

@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-09-03: monster movement clears warning glyphs through the positional grid
+
+The six remaining `variant-world-tour` screen differences were one stale map
+cell each. An imp hurtled from x26 through x25 to x24 while the hero stood at
+x27. C cleared the warning glyph at the intermediate square before drawing the
+new warning glyph at the destination. JS left both glyphs visible until a
+later level redraw.
+
+Pinned C `src/display.c:newsym` asks `m_at(x, y)` whether the square still
+contains a monster. JS instead searched the monster chain by each monster's
+stored coordinates. During `remove_monster(old); newsym(old);
+place_monster(new)`, the positional grid is already clear but the moving
+monster still owns its old coordinates. The non-visible sensing and warning
+arms now use the existing positional-grid lookup, matching the C boundary.
+
+The new `display.warning.hurtle-intermediate-clear` assertion pins the strike
+message, the final warning glyph, and the cleared intermediate cell.
+`variant-world-tour` improves from **827/833 to 833/833 screens** and remains
+exact at **123,614/123,614 RNG**.
+
+Full verification at local commit `2b554b3f`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**372/374**, **82,994/83,379 screens**, **83,372/83,379 cells**, and all
+**4,450,946/4,450,946 RNG**; random play **101/102** and
+**14,261/14,262 screens**. The sole fuzz miss remains the fixed-datetime
+recorder DST artifact. The hang gate is 44/44, fresh-seed smoke is 80/80,
+source audit has zero findings, all eight audit tests pass, and declared
+coverage is **99/106 categories** with seven partial plus **861/861 explicit
+C branches**.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It was scored at
+2026-09-03T16:41:33.829Z and predates this checkpoint. The dashboard's live
+fetch failed, so no newer judge result is claimed. Only `bones-persistence`
+and `gehennom-tour` remain non-identical in the supplemental suite, both with
+exact RNG and strong evidence of damaged C-recorder frames. Next, inspect and
+document every differing frame and either repair the oracle capture or expose
+a real tty behavior without fitting production code to corrupt output.
+
 ## 2026-09-03: canonical petrifying-touch identity closes all logical supplemental failures
 
 The first `mhurtle-hero-collision` screen mismatch showed that C petrified a

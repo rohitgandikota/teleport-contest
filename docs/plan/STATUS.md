@@ -1,5 +1,37 @@
 # STATUS — live handoff board
 
+## 2026-09-03: amorous-demon seduction is byte-identical to C
+
+The monster-against-hero dispatcher now handles `AD_SSEX` through the pinned
+C `doseduce()` path instead of its generic hit fallback. The port includes
+adornment-ring theft and placement, armor removal prompts, interrupted armor
+wear and removal, all five harmful and all five beneficial outcomes, payment,
+exhaustion, teleport restriction, and relocation. Talking to a compatible
+succubus or incubus now enters the same interaction through `domonnoise()`.
+
+The new four-segment `amorous-demon-seduction` C fixture pins opposite-gender
+succubus and incubus interactions, same-gender rejection, health restoration,
+Constitution gain, level gain, payment refusal, relocation, and the later
+`mspec_used` headache. Before the port it matched **388/487 screens** and
+**2,959/11,947 RNG**. It is now byte-identical at **487/487 screens** and
+**11,947/11,947 RNG**. Six concrete assertions raise explicit C branch
+evidence from **872/872 to 878/878**.
+
+Full verification at local commit `25f79c3c`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**377/377**, **84,839/84,839 screens**, and **4,491,674/4,491,674 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80, source and state audits pass, all ten audit and recorder-integrity
+tests pass, and frozen files are unchanged.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It predates this local
+checkpoint, so no hidden gain is claimed. The first fixture reaches only
+three of the ten outcome arms and only the high-Charisma payment refusal.
+Next, expand it with C-backed armor, ring, unresponsive, bad-outcome, tame,
+cash-payment, and no-charge branches before moving to the next source gap.
+
 ## 2026-09-03: hero-side nymph seduction uses the shared C handler
 
 A source comparison corrected the initial diagnosis for the three suspicious

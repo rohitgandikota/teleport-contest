@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-09-04: active paralysis and sleep attacks match C
+
+The shared `AD_PLYS` and `AD_SLEE` handlers now follow pinned C in all three
+combat directions. A polymorphed hero can paralyze or put a monster to sleep,
+a monster can freeze or put the hero to sleep, and one monster can paralyze or
+try to put another monster to sleep. The hero paths preserve activation rolls,
+damage and mobility guards, blindness-sensitive messages, free action, sleep
+resistance memory, armor-based magical cancellation, attacker cancellation,
+helpless durations, recovery text, attribute exercise, and the dynamic
+monster-specific paralysis reason. The monster sleep path also preserves C's
+two consecutive `sleep_monst()` calls. The first call freezes the defender, so
+the second call fails and the enclosing success message remains unreachable.
+
+The initial eight-segment probe matched only **3,071/28,245 RNG calls** and
+**1,072/1,293 screens** before these handlers were connected. The permanent
+13-segment `monster-paralysis-sleep-attacks` fixture now asserts 15 concrete C
+branches and is byte-identical at **41,500/41,500 RNG calls**,
+**2,117/2,117 screens**, and **2,117/2,117 cursors**. It separately pins roll
+misses, active effects, free action, sleep resistance, magical cancellation,
+cancelled attackers, polymorphed-hero attacks, and monster combat. Declared
+evidence remains **99/106 mechanics categories**, with seven partial, and
+rises from **1,019/1,019 to 1,034/1,034 explicit C branches**. The source RNG
+census now observes **1,522/2,621 call sites (58.1%)**, with 5,802,333 tagged
+RNG calls across 433 public and supplemental sessions.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**389/389**, **98,626/98,626 screens**, and **5,009,495/5,009,495 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80 across 13 roles, source and state audits pass, all ten audit and
+recorder tests pass, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This paralysis and sleep batch is
+local and unjudged, so no hidden gain is claimed. Next, use the updated source
+census and fresh random-play traces to select another high-reach missing combat
+or trap arm, then record its smallest C oracle before changing runtime logic.
+
 ## 2026-09-04: nurse healing attacks match C
 
 The shared `AD_HEAL` handler now follows pinned C for nurse attacks in all

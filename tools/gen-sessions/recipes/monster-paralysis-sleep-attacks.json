@@ -1,0 +1,235 @@
+{
+  "name": "monster-paralysis-sleep-attacks",
+  "description": "Shared paralysis and sleep attacks across polymorphed-hero, monster-versus-hero, and monster-versus-monster combat, including resistance controls.",
+  "coverage": [
+    "combat.melee",
+    "combat.resist-reflect",
+    "forms.polymorph",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "monster.vs-monster",
+    "object.armor",
+    "object.rings",
+    "survival.timed-status",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "combat.paralysis.monster-hero-roll-miss",
+    "combat.paralysis.monster-hero-freeze",
+    "combat.paralysis.monster-hero-free-action",
+    "combat.paralysis.hero-monster-roll-miss",
+    "combat.paralysis.hero-monster-freeze",
+    "combat.paralysis.monster-monster-freeze",
+    "combat.paralysis.hero-magic-negation",
+    "combat.paralysis.cancelled-attacker",
+    "combat.sleep.monster-hero-roll-miss",
+    "combat.sleep.monster-hero-fall-asleep",
+    "combat.sleep.monster-hero-resistance",
+    "combat.sleep.hero-monster",
+    "combat.sleep.monster-monster-double-call",
+    "combat.sleep.hero-magic-negation",
+    "combat.sleep.cancelled-attacker"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "combat.paralysis.monster-hero-roll-miss",
+      "segment": 0,
+      "rngIncludes": ["rn2(3)=1 @ mhitm_ad_plys(uhitm.c:3446)"]
+    },
+    {
+      "branch": "combat.paralysis.monster-hero-freeze",
+      "segment": 0,
+      "screenIncludes": ["You are frozen by the gelatinous cube!"],
+      "rngIncludes": [
+        "rn2(3)=0 @ mhitm_ad_plys(uhitm.c:3446)",
+        "rnd(10)=10 @ mhitm_ad_plys(uhitm.c:3456)"
+      ]
+    },
+    {
+      "branch": "combat.paralysis.monster-hero-free-action",
+      "segment": 1,
+      "screenIncludes": ["You momentarily stiffen."],
+      "rngIncludes": [
+        "rn2(3)=0 @ mhitm_ad_plys(uhitm.c:3446)",
+        "rn2(10)=5 @ mhitm_mgc_atk_negated(uhitm.c:87)"
+      ]
+    },
+    {
+      "branch": "combat.paralysis.hero-monster-roll-miss",
+      "segment": 2,
+      "rngIncludes": ["rn2(3)=1 @ mhitm_ad_plys(uhitm.c:3437)"]
+    },
+    {
+      "branch": "combat.paralysis.monster-monster-freeze",
+      "segment": 3,
+      "screenIncludes": ["The hill giant is frozen by the gelatinous cube."],
+      "rngIncludes": [
+        "rn2(3)=0 @ mhitm_ad_plys(uhitm.c:3465)",
+        "rnd(10)=1 @ mhitm_ad_plys(uhitm.c:3473)"
+      ]
+    },
+    {
+      "branch": "combat.sleep.monster-hero-roll-miss",
+      "segment": 4,
+      "rngIncludes": ["rn2(5)=4 @ mhitm_ad_slee(uhitm.c:3495)"]
+    },
+    {
+      "branch": "combat.sleep.monster-hero-fall-asleep",
+      "segment": 4,
+      "screenIncludes": ["You are put to sleep by the homunculus!"],
+      "rngIncludes": [
+        "rn2(5)=0 @ mhitm_ad_slee(uhitm.c:3495)",
+        "rnd(10)=7 @ mhitm_ad_slee(uhitm.c:3502)"
+      ]
+    },
+    {
+      "branch": "combat.sleep.monster-hero-resistance",
+      "segment": 5,
+      "screenExcludes": ["You are put to sleep"],
+      "rngIncludes": [
+        "rn2(5)=0 @ mhitm_ad_slee(uhitm.c:3495)",
+        "rn2(10)=7 @ mhitm_mgc_atk_negated(uhitm.c:87)"
+      ]
+    },
+    {
+      "branch": "combat.sleep.hero-monster",
+      "segment": 6,
+      "screenIncludes": ["The hill giant is put to sleep by you!"],
+      "rngIncludes": ["rnd(10)=4 @ mhitm_ad_slee(uhitm.c:3487)"]
+    },
+    {
+      "branch": "combat.sleep.monster-monster-double-call",
+      "segment": 7,
+      "screenExcludes": ["is put to sleep by the homunculus."],
+      "rngIncludes": [
+        "rnd(10)=10 @ mhitm_ad_slee(uhitm.c:3510)",
+        "rnd(10)=10 @ mhitm_ad_slee(uhitm.c:3511)"
+      ]
+    },
+    {
+      "branch": "combat.paralysis.hero-monster-freeze",
+      "segment": 8,
+      "screenIncludes": ["The hill giant is frozen by you!"],
+      "rngIncludes": [
+        "rn2(3)=0 @ mhitm_ad_plys(uhitm.c:3437)",
+        "rnd(10)=5 @ mhitm_ad_plys(uhitm.c:3441)"
+      ]
+    },
+    {
+      "branch": "combat.paralysis.hero-magic-negation",
+      "segment": 9,
+      "screenIncludes": ["You avoid harm."],
+      "rngIncludes": [
+        "rn2(3)=0 @ mhitm_ad_plys(uhitm.c:3446)",
+        "rn2(10)=8 @ mhitm_mgc_atk_negated(uhitm.c:87)"
+      ]
+    },
+    {
+      "branch": "combat.sleep.hero-magic-negation",
+      "segment": 10,
+      "screenIncludes": ["You avoid harm."],
+      "rngIncludes": [
+        "rn2(5)=0 @ mhitm_ad_slee(uhitm.c:3495)",
+        "rn2(10)=7 @ mhitm_mgc_atk_negated(uhitm.c:87)"
+      ]
+    },
+    {
+      "branch": "combat.paralysis.cancelled-attacker",
+      "segment": 11,
+      "screenIncludes": ["The gelatinous cube touches you!"],
+      "screenExcludes": ["You avoid harm.", "You are frozen"],
+      "rngIncludes": ["rn2(3)=0 @ mhitm_ad_plys(uhitm.c:3446)"]
+    },
+    {
+      "branch": "combat.sleep.cancelled-attacker",
+      "segment": 12,
+      "screenIncludes": ["The homunculus bites!"],
+      "screenExcludes": ["You avoid harm.", "You are put to sleep"],
+      "rngIncludes": ["rn2(5)=0 @ mhitm_ad_slee(uhitm.c:3495)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99710,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile gelatinous cube\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99711,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of free action\rPar\u0007hostile gelatinous cube\r20s        20s        20s        20s        20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99712,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +10 ring of increase accuracy\rPar#polyself\rgelatinous cube\r \u0007sleeping hostile hill giant\rFy    :"
+    },
+    {
+      "seed": 99713,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r300a>>300h\r  \u0007tame gelatinous cube\r\u0007tame gelatinous cube\r\u0007tame gelatinous cube\r\u0007tame gelatinous cube\r\u0007hostile hill giant\r\u0007hostile hill giant\r20s "
+    },
+    {
+      "seed": 99714,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile homunculus\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99715,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed orange dragon scales\rWa\u0007hostile homunculus\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99716,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +10 ring of increase accuracy\rPar#polyself\rhomunculus\r \u0007sleeping hostile hill giant\rFk    :"
+    },
+    {
+      "seed": 99717,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             #wizintrinsic\r300a>>300h\r  \u0007tame homunculus\r\u0007tame homunculus\r\u0007tame homunculus\r\u0007tame homunculus\r\u0007hostile hill giant\r\u0007hostile hill giant\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99721,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +10 ring of increase accuracy\rPar#polyself\rghoul\r \u0007sleeping hostile hill giant\rFj    :"
+    },
+    {
+      "seed": 99722,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +10 cloak of protection\rWa\u0007hostile gelatinous cube\r20s        20s        20s        20s        20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99723,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +10 cloak of protection\rWa\u0007hostile homunculus\r20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99724,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cancellation\r\u0007sleeping hostile gelatinous cube\rzay20s        20s        20s        20s        20s"
+    },
+    {
+      "seed": 99725,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cancellation\r\u0007sleeping hostile homunculus\rzabzabzab20s        20s        20s        20s        20s        20s"
+    }
+  ]
+}

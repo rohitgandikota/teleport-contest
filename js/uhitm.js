@@ -28,7 +28,7 @@ import { rloc } from './teleport.js';
 import { tele_restrict } from './teleport.js';
 import { could_seduce } from './mhitu.js';
 import { u_slip_free } from './mhitu.js';
-import { failed_grab } from './mhitm.js';
+import { failed_grab, sleep_monst, slept_monst } from './mhitm.js';
 import { drain_weapon_skill } from './weapon.js';
 import { silver_sears } from './weapon.js';
 import { polymon } from './polyself.js';
@@ -96,7 +96,7 @@ import { destroy_items, drain_item, exclam, hit, obj_resists,
 import { Acid_resistance, Antimagic, Blind, Cold_resistance, Deaf,
          Fire_resistance, Free_action, Fumbling, Hallucination, Flying, Levitation,
          Invisible, Shock_resistance, Swimming, Amphibious, Breathless,
-         Stone_resistance } from './youprop.js';
+         Sleep_resistance, Stone_resistance } from './youprop.js';
 import { canseemon, canspotmon, glyph_at, sensemon, newsym, pline, shieldeff,
          flush_screen, glyph_is_invisible_at, map_invisible,
          unmap_invisible, urgent_pline } from './display.js';
@@ -130,7 +130,8 @@ import { IS_OBSTRUCTED, MON_POLE_DIST, M_ATTK_HIT, M_ATTK_MISS,
          NATTK, MM_IGNOREWATER,
          MM_IGNORELAVA, Is_airlevel, Is_waterlevel, isok,
          FORCEBUNGLE, HURTLING, IS_DOOR, SHOPBASE, ROOMOFFSET,
-         TEST_MOVE, ROOM, CORR, xdir, ydir, STRAT_WAITFORU } from './const.js';
+         TEST_MOVE, ROOM, CORR, xdir, ydir, STRAT_WAITFORU,
+         M_SEEN_SLEEP } from './const.js';
 import { PMNAMES, MFLAGS } from './monst_data.js';
 import { adjalign, near_capacity } from './attrib.js';
 import { abon, hitval, weapon_hit_bonus, dmgval, weapon_dam_bonus, P_SKILL,
@@ -179,13 +180,15 @@ import { NH_RED } from './const.js';
 import { body_part, mbodypart, ugolemeffects } from './polyself.js';
 import { M_AP_TYPE, M_AP_NOTHING, M_AP_FURNITURE, M_AP_OBJECT,
          M_AP_MONSTER, MIM_REVEAL, MIM_OMIT_WAIT, ARTICLE_A, ARTICLE_YOUR,
-         EXACT_NAME, SUPPRESS_NAME } from './const.js';
+         EXACT_NAME, SUPPRESS_NAME, SUPPRESS_IT, SUPPRESS_INVISIBLE,
+         SUPPRESS_HALLUCINATION, SUPPRESS_SADDLE } from './const.js';
 import { defsyms } from './drawing_data.js';
 import { defends, get_artifact, permapoisoned,
          spec_dbon } from './artifact.js';
 import { cansee, vision_recalc } from './vision.js';
-import { make_stunned } from './potion.js';
+import { make_stunned, paralyze_monst } from './potion.js';
 import { stop_occupation } from './allmain.js';
+import { fall_asleep } from './timeout.js';
 
 function note_unported_uhitm(what) {
     (game.unported ||= new Set()).add(`uhitm:${what}`);
@@ -1460,6 +1463,16 @@ export async function damageum(mon, mattk, specialdmg) {
             damage = mhm.damage;
             if (mhm.done)
                 return mhm.hitflags;
+        } else if (mattk[1] === ATTKS.AD_PLYS) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_plys(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
+        } else if (mattk[1] === ATTKS.AD_SLEE) {
+            const mhm = { damage, hitflags: M_ATTK_MISS, permdmg: 0,
+                          specialdmg, done: false };
+            await mhitm_ad_slee(game.youmonst, mattk, mon, mhm);
+            damage = mhm.damage;
         } else {
             note_unported_uhitm(`damageum:adtyp=${mattk[1]}`);
         }
@@ -4051,6 +4064,95 @@ export async function mhitm_ad_wrap(magr, mattk, mdef, mhm) {
                         some_mon_nam(mdef)}.`);
         }
     }
+}
+
+// src/uhitm.c:3431 mhitm_ad_plys(). Active paralysis attacks share their
+// damage but not their status rules across the three combat directions.
+export async function mhitm_ad_plys(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        if (!rn2(3) && mhm.damage < mdef.mhp
+            && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            if (!Blind())
+                await pline(`${Monnam(mdef)} is frozen by you!`);
+            paralyze_monst(mdef, rnd(10));
+        }
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        if ((game.multi ?? 0) >= 0 && !rn2(3)
+            && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            if (Free_action()) {
+                await You('momentarily stiffen.');
+            } else {
+                if (Blind())
+                    await You('are frozen!');
+                else
+                    await You(`are frozen by ${mon_nam(magr)}!`);
+                game.nomovemsg = 'You can move again.';
+                nomul(-rnd(10));
+                dynamic_multi_reason(magr, 'paralyzed', false);
+                exercise(A_DEX, false);
+            }
+        }
+    } else if (mdef.mcanmove && !rn2(3)
+               && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+        if (game.vis && canspotmon(mdef)) {
+            const defender = Monnam(mdef);
+            await pline(`${defender} is frozen by ${mon_nam(magr)}.`);
+        }
+        paralyze_monst(mdef, rnd(10));
+    }
+}
+
+// src/uhitm.c:3479 mhitm_ad_slee(). The monster-versus-monster arm contains
+// two consecutive sleep_monst() calls in C. The first successful timed sleep
+// makes the defender unable to move, so the second call fails. Keep both calls
+// and both possible draws in that order.
+export async function mhitm_ad_slee(magr, mattk, mdef, mhm) {
+    if (magr === game.youmonst) {
+        if (!mdef.msleeping
+            && !(await mhitm_mgc_atk_negated(magr, mdef, false))
+            && await sleep_monst(mdef, rnd(10), -1)) {
+            if (!Blind())
+                await pline(`${Monnam(mdef)} is put to sleep by you!`);
+            await slept_monst(mdef);
+        }
+    } else if (mdef === game.youmonst) {
+        await hitmsg(magr, mattk, mhm.indx);
+        if ((game.multi ?? 0) >= 0 && !rn2(5)
+            && !(await mhitm_mgc_atk_negated(magr, mdef, true))) {
+            if (Sleep_resistance()) {
+                monstseesu(M_SEEN_SLEEP);
+                return;
+            }
+            monstunseesu(M_SEEN_SLEEP);
+            await fall_asleep(-rnd(10), true);
+            if (Blind())
+                await You('are put to sleep!');
+            else
+                await You(`are put to sleep by ${mon_nam(magr)}!`);
+        }
+    } else if (!mdef.msleeping
+               && await sleep_monst(mdef, rnd(10), -1)
+               && await sleep_monst(mdef, rnd(10), -1)) {
+        if (game.vis && canspotmon(mdef)) {
+            const defender = Monnam(mdef);
+            await pline(`${defender} is put to sleep by ${mon_nam(magr)}.`);
+        }
+        mdef.mstrategy = (mdef.mstrategy | 0) & ~STRAT_WAITFORU;
+        await slept_monst(mdef);
+    }
+}
+
+// src/uhitm.c:105 dynamic_multi_reason(). Keep the monster-id prefix for
+// death attribution while exposing the reason text used by normal messages.
+function dynamic_multi_reason(mon, verb, byGaze) {
+    const who = x_monnam(mon, ARTICLE_A, null,
+                         SUPPRESS_IT | SUPPRESS_INVISIBLE
+                         | SUPPRESS_HALLUCINATION | SUPPRESS_SADDLE
+                         | SUPPRESS_NAME, false);
+    const reason = `${verb} by ${byGaze ? `${s_suffix(who)} gaze` : who}`;
+    game.multireasonbuf = `${mon.m_id}:${reason}`;
+    game.multi_reason = reason;
 }
 
 export async function mhitm_ad_phys(magr, mattk, mdef, mhm) {

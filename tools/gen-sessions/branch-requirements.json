@@ -1125,6 +1125,10 @@
     {"group":"Artifact retouch","id":"artifact.retouch.silver-bane-damage","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Apply both independent damage rolls when an artifact is silver and its bane applies"},
     {"group":"Artifact retouch","id":"artifact.retouch.weapon-drop","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Unwield an untouchable weapon and drop it onto the hero's terrain"},
     {"group":"Artifact touch","id":"artifact.touch.silver-bonus","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Add the silver damage bonus when a silver-hating hero is blasted by a silver artifact"},
-    {"group":"Artifact retouch","id":"artifact.retouch.touch-blast-suppression","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Avoid a second handling-damage roll after touch_artifact already blasted the hero"}
+    {"group":"Artifact retouch","id":"artifact.retouch.touch-blast-suppression","cFile":"src/artifact.c","cFunction":"retouch_object","description":"Avoid a second handling-damage roll after touch_artifact already blasted the hero"},
+    {"group":"Runmode delays","id":"turn.runmode.teleport","cFile":"src/hack.c","cFunction":"runmode_delay_output","description":"Suppress intermediate display updates in teleport mode during a multi-turn action"},
+    {"group":"Runmode delays","id":"turn.runmode.run","cFile":"src/hack.c","cFunction":"runmode_delay_output","description":"Update and delay every seventh move in the default run mode"},
+    {"group":"Runmode delays","id":"turn.runmode.walk","cFile":"src/hack.c","cFunction":"runmode_delay_output","description":"Update and delay after every multi-turn action step in walk mode"},
+    {"group":"Runmode delays","id":"turn.runmode.crawl","cFile":"src/hack.c","cFunction":"runmode_delay_output","description":"Add four extra delays after every multi-turn action step in crawl mode"}
   ]
 }

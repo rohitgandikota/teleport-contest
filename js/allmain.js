@@ -72,7 +72,7 @@ import { ROLE_GENDMASK, ROLE_MALE, ROLE_FEMALE, A_CURRENT, In_endgame,
 import { mklev, l_nhcore_init, u_on_upstairs } from './mklev.js';
 import { rhack, domove } from './cmd.js';
 import { lookaround, end_running, unmul, nomul,
-         monster_nearby, in_rooms } from './hack.js';
+         monster_nearby, in_rooms, runmode_delay_output } from './hack.js';
 import { deferred_goto } from './do.js';
 import { You } from './pline.js';
 import {
@@ -868,6 +868,7 @@ export async function moveloop_core() {
 
                 /* src/allmain.c:380 — when immobile, count is in turns */
                 if ((g.multi ?? 0) < 0) {
+                    await runmode_delay_output();
                     if (++g.multi === 0) { /* finished yet? */
                         await unmul(null);
                     }
@@ -992,6 +993,7 @@ export async function moveloop_core() {
                 note_unported_main('moveloop:reset_eat');
         }
         g.context.move = 1;             /* the occupation took this turn */
+        await runmode_delay_output();
         return;
     }
 
@@ -1028,6 +1030,7 @@ export async function moveloop_core() {
      * door, and in an open room those are the only things that stop it. */
     if ((g.multi ?? 0) > 0) {
         await lookaround();
+        await runmode_delay_output();
         if (!g.multi) {
             /* lookaround may clear multi */
             g.context.move = 0;

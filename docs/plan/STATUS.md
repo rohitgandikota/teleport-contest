@@ -1,5 +1,47 @@
 # STATUS — live handoff board
 
+## 2026-09-04: multi-turn runmode display timing matches C
+
+`runmode_delay_output()` now matches the pinned `hack.c` policy and all four
+of its call sites. Teleport mode suppresses intermediate output, run mode
+updates every seventh move, walk mode updates every move, and crawl mode adds
+four more delays per update. The helper now runs during helpless turns,
+occupations, repeated commands, and successful movement, including the status
+line refresh and cursor placement that precede C's delay.
+
+This closes a shared engine omission rather than one isolated recipe. Public
+animation matching rises from **143/1,483 to 1,451/1,483**, a gain of 1,308
+frames. On the previous 397-session supplemental corpus it rises from
+**1,117/3,105 to 2,812/3,105**, a gain of 1,695 frames. The former largest
+misses now match completely: glob lifecycle is **433/433**, lamp and candle
+burnout is **219/219**, and green-slime consumption is **214/214**.
+
+The new four-segment `runmode-delays` C fixture independently exercises every
+mode during a fourteen-turn counted rest. It is byte-identical at
+**12,160/12,160 RNG calls**, **184/184 screens**, **184/184 cursors**, and
+**74/74 animation frames**, with C animation totals of 0, 2, 12, and 60 by
+mode. Four asserted branches raise the declared ledger from **1,107/1,107 to
+1,111/1,111** with no gaps. The source RNG census remains **1,548/2,621
+observed call sites (59.1%)**. The combined public and supplemental corpus now
+has 442 sessions and 5,987,703 exact RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,451/1,483 animations**; supplemental **398/398**,
+**103,842/103,842 screens**, **5,194,865/5,194,865 RNG**, and
+**2,886/3,179 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles,
+all ten audit and recorder tests pass, source and state audits are clean, and
+frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The remaining animation deficit is now only 32 public and 293 supplemental
+frames, so the next evidence task is to rank those residual sites and probe
+the corresponding C display calls. The six-hour dashboard heartbeat remains
+active.
+
 ## 2026-09-04: swallowed projectile ownership and flight animation match C
 
 `throwit()` now follows `swallowit()` for ordinary missiles and both failed

@@ -1,0 +1,42 @@
+{
+  "name": "runmode-delays",
+  "description": "C-reference traces for the four runmode display policies during one fourteen-turn counted rest: teleport suppresses intermediate output, run updates every seventh move, walk updates every move, and crawl adds four extra delays to each update.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "turn.speed-energy",
+    "ui.count-repeat"
+  ],
+  "branches": [
+    "turn.runmode.teleport",
+    "turn.runmode.run",
+    "turn.runmode.walk",
+    "turn.runmode.crawl"
+  ],
+  "segments": [
+    {
+      "seed": 9410,
+      "datetime": "20000110141000",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=runmode:teleport\n",
+      "moves": " mO qr\r\u0017blessed scroll of scare monster\rde14."
+    },
+    {
+      "seed": 9410,
+      "datetime": "20000110141100",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=runmode:run\n",
+      "moves": " mO qr\r\u0017blessed scroll of scare monster\rde14."
+    },
+    {
+      "seed": 9410,
+      "datetime": "20000110141200",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=runmode:walk\n",
+      "moves": " mO qr\r\u0017blessed scroll of scare monster\rde14."
+    },
+    {
+      "seed": 9410,
+      "datetime": "20000110141300",
+      "nethackrc": "OPTIONS=name:wizard,role:Valkyrie,race:human,gender:female,align:lawful,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,!safe_wait\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=runmode:crawl\n",
+      "moves": " mO qr\r\u0017blessed scroll of scare monster\rde14."
+    }
+  ]
+}

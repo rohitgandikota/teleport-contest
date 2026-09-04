@@ -43,7 +43,8 @@ import { hides_under, is_hider, verysmall, sticks } from './mondata.js';
 import { bad_rock, cant_squeeze_thru, nomul, domove_attackmon_at, spoteffects,
          domove_bump_mon, dopickup, trapmove, doorless_door,
          could_move_onto_boulder, u_locomotion,
-         disturb_buried_zombies, may_passwall } from './hack.js';
+         disturb_buried_zombies, may_passwall,
+         runmode_delay_output } from './hack.js';
 import { In_sokoban, surface } from './dungeon.js';
 import { Blind, Flying, Hallucination, Levitation, Passes_walls, Stealth }
     from './youprop.js';
@@ -3017,6 +3018,8 @@ async function domove_core() {
         game.multi_reason = 'dragging an iron ball';
         game.nomovemsg = '';
     }
+
+    await runmode_delay_output();
 }
 
 // src/hack.c:2098 domove_swap_with_pet() — returns TRUE if places were

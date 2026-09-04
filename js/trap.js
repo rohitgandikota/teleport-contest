@@ -1324,6 +1324,8 @@ export async function dotrap(trap, trflags) {
         return await trapeffect_level_telep(game.youmonst, trap, trflags);
     if (ttype === TELEP_TRAP)
         return await trapeffect_telep_trap(game.youmonst, trap, trflags);
+    if (ttype === POLY_TRAP)
+        return await trapeffect_poly_trap(game.youmonst, trap, trflags);
     if (ttype === MAGIC_PORTAL)
         return await trapeffect_magic_portal(game.youmonst, trap, trflags);
     if (ttype === WEB)

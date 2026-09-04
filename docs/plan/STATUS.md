@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-03: revived threats now interrupt active occupations
+
+Pinned C `src/makemon.c:makemon` calls `dochugw(mtmp, FALSE)` after every
+mid-game monster creation while an occupation is active. The synchronous JS
+`makemon()` omitted that hook. A troll could therefore revive beside a waiting
+hero without stopping the wait first. Besides reversing the two messages, the
+continued occupation consumed later turns and shifted the RNG at the next
+recorded segment.
+
+The three creation paths inside async corpse revival now call the existing
+faithful `dochugw(mtmp, false)` at the same C boundary. That includes the
+temporary fresh monster created before saved corpse traits replace it. The new
+`monster.creation.interrupt-occupation` branch assertion pins the exact message
+order: `You stop waiting.  The troll rises from the dead!`.
+
+`floor-object-cancellation` improves from **442/443 screens** and
+**16,441/19,365 RNG** to **443/443 screens** and **19,365/19,365 RNG**.
+The same hook closes `rider-behavior`, which improves from **395/399 screens**
+and **16,657/20,676 RNG** to **399/399 screens** and **20,676/20,676 RNG**.
+
+Full verification at local commit `8ee9f882`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**369/374**, **82,961/83,379 screens**, and **4,443,277/4,450,946 RNG**;
+random play **101/102**, **14,261/14,262 screens**, with all **491,759/491,759
+RNG** calls exact. The sole fuzz miss remains the fixed-datetime recorder DST
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80, source audit has
+zero findings, all eight audit tests pass, and declared coverage is **99/106
+categories** with seven partial plus **860/860 explicit C branches**.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It was scored at
+2026-09-03T16:41:33.829Z and predates this checkpoint. Five supplemental
+sessions remain: three capture-focused mismatches with exact RNG, plus the real
+`mhurtle-hero-collision` and `vamp-stone-reversion` divergences. Next, trace the
+first hero-hurtle state mismatch against pinned `src/uhitm.c` and `src/hack.c`.
+
 ## 2026-09-03: runtime option menus and UTF-8 tty behavior verified
 
 The last genuine random-play failure was not monster movement. It entered four

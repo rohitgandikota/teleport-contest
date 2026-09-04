@@ -19,7 +19,7 @@ import { newcham, mon_wire_cham } from './mon.js';
 import { weight as weight_fn, sobj_at } from './invent.js';
 import { In_mines, Is_rogue_level, MIGR_TO_SPECIES, OBJ_FREE,
          W_SADDLE, has_mgivenname, A_LAWFUL, ONAME_RANDOM } from './const.js';
-import { Levitation, Flying } from './youprop.js';
+import { Levitation, Flying, Protection_from_shape_changers } from './youprop.js';
 import { closed_door } from './cmd.js';
 import { may_passwall } from './hack.js';
 import { sengr_at } from './engrave.js';
@@ -2406,7 +2406,7 @@ export function makemon(ptr, x, y, mmflags) {
        chain as the mitem assignments, so it is exclusive with them. */
     else if (mndx === PMNAMES.PM_GHOST && !(mmflags & MMFLAGS.MM_NONAME)) {
         /* christen_monst() copies the name onto the monster; no draw */
-        mtmp.mname = rndghostname();
+        christen_monst(mtmp, rndghostname());
     }
     else if (mndx === PMNAMES.PM_CROESUS)
         mitem = ONAMES.TWO_HANDED_SWORD;
@@ -2421,7 +2421,7 @@ export function makemon(ptr, x, y, mmflags) {
     /* src/makemon.c:1355 — a shapechanger takes a starting form via
        newcham(); Vlad keeps his own shape for the Candelabrum */
     mtmp.cham = -1;
-    if (is_shapeshifter(ptr)) {
+    if (!Protection_from_shape_changers() && is_shapeshifter(ptr)) {
         const mcham = mndx;    /* pm_to_cham: M2_SHAPESHIFTER means itself */
         mtmp.cham = mcham;
         if (mndx !== PMNAMES.PM_VLAD_THE_IMPALER

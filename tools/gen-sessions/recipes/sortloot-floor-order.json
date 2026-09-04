@@ -1,0 +1,65 @@
+{
+  "name": "sortloot-floor-order",
+  "description": "C oracle for none, loot, and full sortloot ordering within one floor-object class.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "object.weapons",
+    "ui.menus"
+  ],
+  "branches": [
+    "ui.sortloot.none-floor-stable",
+    "ui.sortloot.loot-floor-name",
+    "ui.sortloot.full-floor-name"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "ui.sortloot.none-floor-stable",
+      "segment": 0,
+      "screenIncludes": ["a - a mace", "b - a club"],
+      "screenCells": [
+        { "step": 36, "x": 47, "y": 3, "equals": "m" },
+        { "step": 36, "x": 47, "y": 4, "equals": "c" }
+      ]
+    },
+    {
+      "branch": "ui.sortloot.loot-floor-name",
+      "segment": 1,
+      "screenIncludes": ["a - a club", "b - a mace"],
+      "screenCells": [
+        { "step": 36, "x": 47, "y": 3, "equals": "c" },
+        { "step": 36, "x": 47, "y": 4, "equals": "m" }
+      ]
+    },
+    {
+      "branch": "ui.sortloot.full-floor-name",
+      "segment": 2,
+      "screenIncludes": ["a - a club", "b - a mace"],
+      "screenCells": [
+        { "step": 36, "x": 47, "y": 3, "equals": "c" },
+        { "step": 36, "x": 47, "y": 4, "equals": "m" }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99804,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,sortloot:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed mace\r\u0017uncursed club\rdbda,\u001b"
+    },
+    {
+      "seed": 99804,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,sortloot:loot\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed mace\r\u0017uncursed club\rdbda,\u001b"
+    },
+    {
+      "seed": 99804,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Sorter,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist,sortloot:full\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed mace\r\u0017uncursed club\rdbda,\u001b"
+    }
+  ]
+}

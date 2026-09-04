@@ -1,5 +1,53 @@
 # STATUS — live handoff board
 
+## 2026-09-04: corpse drops and floor-loot sorting reach exact C parity
+
+The permanent `make-corpse-source-gaps` C oracle now exercises all **19/19**
+RNG call sites in `mon.c:make_corpse()`, up from 1/19. Its 27 segments and 33
+explicit branch assertions cover fresh and revived dragon scales; ordinary,
+degraded, and crumbling unicorn horns; worm teeth; vampire and mummy base
+corpses; every iron, glass, clay, stone, wood, rope, leather, gold, and paper
+golem drop arm; glob creation and coalescence; no-corpse monsters; protected
+shapechanger creation; and named ghosts. The focused oracle is byte-identical
+at **80,772/80,772 RNG calls**, **1,324/1,324 screens**, and **1,324/1,324
+cursors**.
+
+The new `sortloot-floor-order` oracle separately pins floor-menu order for all
+three relevant option modes. `sortloot:none` retains stable pile-chain order,
+while `sortloot:loot` and `sortloot:full` sort by loot name. All three asserted
+segments match C at **6,504/6,504 RNG calls**, **114/114 screens**, and
+**114/114 cursors**. This output oracle found a defect that RNG comparison
+could not: JS classified unseen objects before C's `observe_object()` step and
+therefore leaked alphabetical order into a visible pickup menu.
+
+The port now awaits glob melding and uses the reference-box convention that
+`obj_meld()` expects. Monster creation honors protection from shape changers
+and christens ghosts through the normal naming machinery. Loot sorting uses
+the pinned skill and material constants, recognizes Snickersnee as a pole
+weapon, derives discovery state from the real object description, observes
+visible objects before classification, and respects the configured sort mode.
+The 36 new C-backed requirements raise the explicit branch ledger from
+**1,155/1,155 to 1,191/1,191**. The source census rises from 1,585 to
+**1,604/2,621 observed RNG sites (61.2%)**.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, **792,838/792,838 RNG**, and
+**1,462/1,483 animations**; supplemental **403/403**,
+**107,959/107,959 screens**, **5,401,399/5,401,399 RNG**, and
+**3,204/3,204 animations**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44 with no over-read. Fresh-seed smoke is 80/80
+across 13 roles with no reached-but-unported path. All ten audit and recorder
+tests pass, source and focused state audits are clean, syntax checks pass, and
+frozen files are unchanged.
+
+The latest judged hidden result remains the cached **8,498/11,265**,
+**16/44**, rank 3 overall and rank 1/9 among agentic entries. This local
+extension is unjudged and unpushed. The six-hour dashboard heartbeat remains
+active. The fresh source ranking is led by the remaining `mk_mplayer()` arms
+at 45/56 sites, followed by `dig()` and `msummon()` at 1/11 each. The next
+batch will start with a C oracle for the highest feasible source-backed gap.
+
 ## 2026-09-04: object recharge reaches full source-site coverage
 
 The permanent `recharge-source-gaps` C oracle exercises all 16 RNG call sites

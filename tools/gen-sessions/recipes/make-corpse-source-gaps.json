@@ -1,0 +1,408 @@
+{
+  "name": "make-corpse-source-gaps",
+  "description": "C oracle for the special death-drop RNG table in mon.c make_corpse.",
+  "coverage": [
+    "mode.debug",
+    "level.ordinary",
+    "monster.death-corpse-revival",
+    "object.food-corpses",
+    "object.weapons",
+    "object.armor",
+    "object.tools-containers"
+  ],
+  "branches": [
+    "monster.corpse.dragon-normal-miss",
+    "monster.corpse.dragon-normal-scales",
+    "monster.corpse.dragon-revived-miss",
+    "monster.corpse.dragon-revived-scales",
+    "monster.corpse.unicorn-normal-horn",
+    "monster.corpse.unicorn-revived-degraded-horn",
+    "monster.corpse.unicorn-revived-crumble",
+    "monster.corpse.long-worm-tooth",
+    "monster.corpse.vampire-base-corpse",
+    "monster.corpse.mummy-base-corpse",
+    "monster.corpse.golem-iron-chains",
+    "monster.corpse.golem-glass-gems",
+    "monster.corpse.golem-clay-rocks",
+    "monster.corpse.golem-stone-statue",
+    "monster.corpse.golem-wood-quarterstaff",
+    "monster.corpse.golem-wood-shield",
+    "monster.corpse.golem-wood-club",
+    "monster.corpse.golem-wood-spear",
+    "monster.corpse.golem-wood-boomerang",
+    "monster.corpse.golem-rope-empty",
+    "monster.corpse.golem-rope-leash",
+    "monster.corpse.golem-rope-bullwhip",
+    "monster.corpse.golem-rope-grappling-hook",
+    "monster.corpse.golem-leather-armor",
+    "monster.corpse.golem-leather-cloak",
+    "monster.corpse.golem-leather-saddle",
+    "monster.corpse.golem-gold-coins",
+    "monster.corpse.golem-paper-scrolls",
+    "monster.corpse.glob-create",
+    "monster.corpse.glob-coalesce",
+    "monster.corpse.no-corpse",
+    "monster.creation.shape-protection",
+    "monster.creation.named-ghost"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster.corpse.dragon-normal-miss",
+      "segment": 13,
+      "screenIncludes": ["You see here a gray dragon corpse."],
+      "screenExcludes": ["a set of gray dragon scales"],
+      "rngIncludes": ["rn2(3)=1 @ make_corpse(mon.c:597)"]
+    },
+    {
+      "branch": "monster.corpse.dragon-normal-scales",
+      "segment": 14,
+      "screenIncludes": ["a gray dragon corpse", "a set of gray dragon scales"],
+      "rngIncludes": ["rn2(3)=0 @ make_corpse(mon.c:597)"]
+    },
+    {
+      "branch": "monster.corpse.dragon-revived-miss",
+      "segment": 10,
+      "screenIncludes": ["The gray dragon is resurrected!", "You kill the gray dragon!"],
+      "screenExcludes": ["a set of gray dragon scales"],
+      "rngIncludes": ["rn2(20)=3 @ make_corpse(mon.c:597)"]
+    },
+    {
+      "branch": "monster.corpse.dragon-revived-scales",
+      "segment": 22,
+      "screenIncludes": ["The gray dragon is resurrected!", "You kill the gray dragon!"],
+      "rngIncludes": ["rn2(20)=0 @ make_corpse(mon.c:597)"]
+    },
+    {
+      "branch": "monster.corpse.unicorn-normal-horn",
+      "segment": 15,
+      "screenIncludes": ["a white unicorn corpse", "a unicorn horn"]
+    },
+    {
+      "branch": "monster.corpse.unicorn-revived-degraded-horn",
+      "segment": 9,
+      "screenIncludes": ["Your white unicorn corpse glows iridescently.", "a unicorn horn"],
+      "rngIncludes": ["rn2(2)=0 @ make_corpse(mon.c:607)"]
+    },
+    {
+      "branch": "monster.corpse.unicorn-revived-crumble",
+      "segment": 16,
+      "screenIncludes": ["The white unicorn's recently regrown horn crumbles to dust.", "You see here a white unicorn corpse."],
+      "screenExcludes": ["a unicorn horn"],
+      "rngIncludes": ["rn2(2)=1 @ make_corpse(mon.c:607)"]
+    },
+    {
+      "branch": "monster.corpse.long-worm-tooth",
+      "segment": 17,
+      "screenIncludes": ["a long worm corpse", "a worm tooth"]
+    },
+    {
+      "branch": "monster.corpse.vampire-base-corpse",
+      "segment": 18,
+      "screenIncludes": ["You destroy the vampire!", "a human corpse"]
+    },
+    {
+      "branch": "monster.corpse.mummy-base-corpse",
+      "segment": 19,
+      "screenIncludes": ["You destroy the human mummy!", "a human corpse", "a mummy wrapping"]
+    },
+    {
+      "branch": "monster.corpse.golem-iron-chains",
+      "segment": 0,
+      "screenIncludes": ["Pick up what?", "a - an iron chain", "f - an iron chain"],
+      "rngIncludes": ["d(2,6)=6 @ make_corpse(mon.c:651)"]
+    },
+    {
+      "branch": "monster.corpse.golem-glass-gems",
+      "segment": 1,
+      "screenIncludes": ["2 red gems", "2 blue gems"],
+      "rngIncludes": ["d(2,4)=4 @ make_corpse(mon.c:657)", "rn2(9)=7 @ make_corpse(mon.c:659)"]
+    },
+    {
+      "branch": "monster.corpse.golem-clay-rocks",
+      "segment": 2,
+      "screenIncludes": ["You see here 53 rocks."],
+      "rngIncludes": ["rn2(20)=3 @ make_corpse(mon.c:665)"]
+    },
+    {
+      "branch": "monster.corpse.golem-stone-statue",
+      "segment": 20,
+      "screenIncludes": ["You see here a statue of a stone golem."]
+    },
+    {
+      "branch": "monster.corpse.golem-wood-quarterstaff",
+      "segment": 3,
+      "screenIncludes": ["Pick up what?", "a - a staff"],
+      "rngIncludes": ["rn2(2)=1 @ make_corpse(mon.c:678)"]
+    },
+    {
+      "branch": "monster.corpse.golem-wood-shield",
+      "segment": 3,
+      "screenIncludes": ["e - a wooden shield"],
+      "rngIncludes": ["rn2(2)=0 @ make_corpse(mon.c:678)", "rn2(3)=1 @ make_corpse(mon.c:679)"]
+    },
+    {
+      "branch": "monster.corpse.golem-wood-club",
+      "segment": 3,
+      "screenIncludes": ["d - a club"],
+      "rngIncludes": ["rn2(3)=0 @ make_corpse(mon.c:679)", "rn2(3)=2 @ make_corpse(mon.c:680)"]
+    },
+    {
+      "branch": "monster.corpse.golem-wood-spear",
+      "segment": 23,
+      "screenIncludes": ["a - a runed spear"],
+      "rngIncludes": ["rn2(3)=0 @ make_corpse(mon.c:680)", "rn2(3)=1 @ make_corpse(mon.c:681)"]
+    },
+    {
+      "branch": "monster.corpse.golem-wood-boomerang",
+      "segment": 11,
+      "screenIncludes": ["a - a boomerang"],
+      "rngIncludes": ["rn2(3)=0 @ make_corpse(mon.c:680)", "rn2(3)=0 @ make_corpse(mon.c:681)"]
+    },
+    {
+      "branch": "monster.corpse.golem-rope-empty",
+      "segment": 25,
+      "screenIncludes": ["You destroy the rope golem!"],
+      "screenExcludes": ["a leash", "a bullwhip", "a grappling hook"],
+      "rngIncludes": ["rn2(3)=0 @ make_corpse(mon.c:687)"]
+    },
+    {
+      "branch": "monster.corpse.golem-rope-leash",
+      "segment": 24,
+      "screenIncludes": ["a leash"],
+      "rngIncludes": ["rn2(2)=1 @ make_corpse(mon.c:689)"]
+    },
+    {
+      "branch": "monster.corpse.golem-rope-bullwhip",
+      "segment": 4,
+      "screenIncludes": ["a bullwhip"],
+      "rngIncludes": ["rn2(2)=0 @ make_corpse(mon.c:689)", "rn2(3)=1 @ make_corpse(mon.c:690)"]
+    },
+    {
+      "branch": "monster.corpse.golem-rope-grappling-hook",
+      "segment": 4,
+      "screenIncludes": ["a grappling hook"],
+      "rngIncludes": ["rn2(2)=0 @ make_corpse(mon.c:689)", "rn2(3)=0 @ make_corpse(mon.c:690)"]
+    },
+    {
+      "branch": "monster.corpse.golem-leather-armor",
+      "segment": 5,
+      "screenIncludes": ["a leather armor"],
+      "rngIncludes": ["rn2(4)=3 @ make_corpse(mon.c:698)"]
+    },
+    {
+      "branch": "monster.corpse.golem-leather-cloak",
+      "segment": 5,
+      "screenIncludes": ["a leather cloak"],
+      "rngIncludes": ["rn2(4)=0 @ make_corpse(mon.c:698)", "rn2(3)=1 @ make_corpse(mon.c:699)"]
+    },
+    {
+      "branch": "monster.corpse.golem-leather-saddle",
+      "segment": 26,
+      "screenIncludes": ["a - a leather cloak", "d - a saddle"],
+      "rngIncludes": ["rn2(4)=0 @ make_corpse(mon.c:698)", "rn2(3)=0 @ make_corpse(mon.c:699)"]
+    },
+    {
+      "branch": "monster.corpse.golem-gold-coins",
+      "segment": 6,
+      "screenIncludes": ["You see here 181 gold pieces."],
+      "rngIncludes": ["rnl(101)=19 @ make_corpse(mon.c:705)"]
+    },
+    {
+      "branch": "monster.corpse.golem-paper-scrolls",
+      "segment": 7,
+      "screenIncludes": ["2 unlabeled scrolls"],
+      "rngIncludes": ["rnd(4)=4 @ make_corpse(mon.c:709)"]
+    },
+    {
+      "branch": "monster.corpse.glob-create",
+      "segment": 12,
+      "screenIncludes": ["You kill the green slime!", "a small glob of green slime"]
+    },
+    {
+      "branch": "monster.corpse.glob-coalesce",
+      "segment": 12,
+      "screenIncludes": ["The adjacent globs of green slime coalesce."]
+    },
+    {
+      "branch": "monster.corpse.no-corpse",
+      "segment": 21,
+      "screenIncludes": ["You destroy David's ghost!"],
+      "screenExcludes": ["a ghost corpse"]
+    },
+    {
+      "branch": "monster.creation.shape-protection",
+      "segment": 18,
+      "screenIncludes": ["A vampire appears next to you.", "a human corpse"]
+    },
+    {
+      "branch": "monster.creation.named-ghost",
+      "segment": 21,
+      "screenIncludes": ["David's ghost appears next to you.", "You destroy David's ghost!"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99801,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile iron golem\r#wizkill\rj. \u001bj,\u001b"
+    },
+    {
+      "seed": 99802,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile glass golem\r#wizkill\rl. \u001bl"
+    },
+    {
+      "seed": 99803,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile clay golem\r#wizkill\ru. \u001bu"
+    },
+    {
+      "seed": 99804,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile wood golem\r#wizkill\rk. \u001bk,\u001b"
+    },
+    {
+      "seed": 99805,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile rope golem\r#wizkill\rk. \u001bk"
+    },
+    {
+      "seed": 99806,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile leather golem\r#wizkill\ry. \u001by"
+    },
+    {
+      "seed": 99807,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gold golem\r#wizkill\ru. \u001bu"
+    },
+    {
+      "seed": 99808,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile paper golem\r#wizkill\rn. \u001bn"
+    },
+    {
+      "seed": 99809,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gray dragon\r#wizkill\ry. \u001by"
+    },
+    {
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017white unicorn corpse\r \u0017wand of undead turning\rzc.  #wizkill\rk. \u001bk"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017gray dragon corpse\r \u0017wand of undead turning\rzc>  #wizkill\rm.\u001b:"
+    },
+    {
+      "seed": 99811,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile wood golem\r#wizkill\rn. \u001bn,\u001b"
+    },
+    {
+      "seed": 99814,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile green slime\r#wizkill\rm. \u001b\u0007hostile green slime\r#wizkill\rm. \u001b;oooooo\u001b"
+    },
+    {
+      "seed": 99822,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gray dragon\r#wizkill\rk. \u001bk"
+    },
+    {
+      "seed": 99832,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gray dragon\r#wizkill\ru. \u001bu"
+    },
+    {
+      "seed": 99824,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile white unicorn\r#wizkill\ry. \u001by"
+    },
+    {
+      "seed": 99825,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017white unicorn corpse\r \u0017wand of undead turning\rzc.  #wizkill\ru.  \u001bu"
+    },
+    {
+      "seed": 99826,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile long worm\r#wizkill\rj.\u001bj"
+    },
+    {
+      "seed": 99834,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed ring of protection from shape changers\rPar\u0007hostile vampire\r#wizkill\rn. \u001bn"
+    },
+    {
+      "seed": 99837,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile human mummy\r#wizkill\rj. \u001bj"
+    },
+    {
+      "seed": 99829,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile stone golem\r#wizkill\rl. \u001bl"
+    },
+    {
+      "seed": 99841,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile ghost\r#wizkill\rh. \u001bh"
+    },
+    {
+      "seed": 99916,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed gauntlets of power\rWa\u0017gray dragon corpse\r \u0017wand of undead turning\rzc>  #wizkill\rm.\u001b:"
+    },
+    {
+      "seed": 100105,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile wood golem\r#wizkill\ry. \u001by,\u001b"
+    },
+    {
+      "seed": 101100,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile rope golem\r#wizkill\rn. \u001bn"
+    },
+    {
+      "seed": 101102,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile rope golem\r#wizkill\rb. \u001bb"
+    },
+    {
+      "seed": 102107,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Mortician,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile leather golem\r#wizkill\rh. \u001bh,\u001b"
+    }
+  ]
+}

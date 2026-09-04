@@ -3163,8 +3163,8 @@ export async function make_corpse(mtmp, corpseflags) {
 
         while (obj && (otmp = obj_nexto(obj)) != null) {
             await pudding_merge_message(obj, otmp);
-            const box1 = { obj }, box2 = { obj: otmp };
-            obj = obj_meld(box1, box2);
+            const box1 = { v: obj }, box2 = { v: otmp };
+            obj = await obj_meld(box1, box2);
         }
         free_mgivenname(mtmp);
         newsym(x, y);

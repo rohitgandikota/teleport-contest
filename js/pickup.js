@@ -26,7 +26,7 @@ import { addinv, prinv, obj_extract_self, inv_order, let_to_name,
     from './invent.js';
 import { observe_object } from './o_init.js';
 import { doname, xname, cxname, the, yname, singular, an, corpse_xname,
-         CXN_ARTICLE, CXN_SINGULAR, otense, vtense } from './objnam.js';
+         OBJ_DESCR, CXN_ARTICLE, CXN_SINGULAR, otense, vtense } from './objnam.js';
 import { Is_container, Has_contents, carried } from './obj.js';
 import { AUTOUNLOCK_UNTRAP, AUTOUNLOCK_APPLY_KEY,
          AUTOUNLOCK_FORCE } from './const.js';
@@ -37,7 +37,8 @@ import { upstart, trycall } from './do_name.js';
 
 /* src/hacklib.c The() — the() with the first letter capitalised. */
 const The = (s2) => upstart(the(s2));
-import { ONAMES, OCLASSES, MATERIALS } from './objects_data.js';
+import { ONAMES, OCLASSES, MATERIALS, SKILLS } from './objects_data.js';
+import { ART_SNICKERSNEE } from './artilist_data.js';
 import { newsym, pline, bot, display_nhwindow_message,
          tty_clear_nhwindow_message, urgent_pline }
     from './display.js';
@@ -444,13 +445,17 @@ export async function query_objlist(qstr,   /* query string */
     let let_ = 'a';
     let id = 1;
     const byid = new Map();
+    const sortlootMode = String(game.flags?.sortloot ?? 'loot')
+        .charAt(0).toLowerCase();
+    const sortByLootName = sortlootMode === 'l' || sortlootMode === 'f';
     for (const oclass of inv_order()) {
         const items = olist.filter(o => o.oclass === oclass);
         if (use_invlet) {
             items.sort((a, b) => ((a.invlet.charCodeAt(0) ^ 0o40)
                                   - (b.invlet.charCodeAt(0) ^ 0o40)));
         } else {
-            items.splice(0, items.length, ...sortloot_items(items));
+            items.splice(0, items.length,
+                         ...sortloot_items(items, sortByLootName));
         }
         if (!items.length)
             continue;
@@ -2007,14 +2012,14 @@ function loot_subclass(obj) {
     }
     case OCLASSES.WEAPON_CLASS: {
         const k = od.oc_skill | 0;
-        /* P_BOW..P_CROSSBOW are 24..28ish; mirror the C banding */
-        const P_BOW = 24, P_CROSSBOW = 28, P_SPEAR = 6, P_DAGGER = 1,
-              P_KNIFE = 2;
-        return (k < 0) ? ((k >= -P_CROSSBOW && k <= -P_BOW) ? 1 : 3)
-               : ((k >= P_BOW && k <= P_CROSSBOW) ? 2
-                  : (k === P_SPEAR || k === P_DAGGER || k === P_KNIFE) ? 4
-                    : (od.oc_skill !== 20 /* !is_pole approximation via
-                         P_POLEARMS/P_LANCE families */) ? 5 : 6);
+        const isPole = k === SKILLS.P_POLEARMS || k === SKILLS.P_LANCE
+                       || obj.oartifact === ART_SNICKERSNEE;
+        return (k < 0)
+               ? ((k >= -SKILLS.P_CROSSBOW && k <= -SKILLS.P_BOW) ? 1 : 3)
+               : ((k >= SKILLS.P_BOW && k <= SKILLS.P_CROSSBOW) ? 2
+                  : (k === SKILLS.P_SPEAR || k === SKILLS.P_DAGGER
+                     || k === SKILLS.P_KNIFE) ? 4
+                    : !isPole ? 5 : 6);
     }
     case OCLASSES.TOOL_CLASS: {
         const seen = !!obj.dknown, discovered = !!od.oc_name_known;
@@ -2045,10 +2050,9 @@ function loot_subclass(obj) {
         }
     case OCLASSES.GEM_CLASS: {
         const seen = !!obj.dknown, discovered = !!od.oc_name_known;
-        const GEMSTONE = 18, GLASS = 16; /* objclass.h materials */
         switch (od.oc_material) {
-        case GEMSTONE: return !seen ? 1 : !discovered ? 2 : 3;
-        case GLASS:    return !seen ? 1 : !discovered ? 2 : 4;
+        case MATERIALS.GEMSTONE: return !seen ? 1 : !discovered ? 2 : 3;
+        case MATERIALS.GLASS:    return !seen ? 1 : !discovered ? 2 : 4;
         default:       return !seen ? 5
                               : (otyp !== ONAMES.ROCK)
                                 ? (!discovered ? 6 : 7) : 8;
@@ -2065,7 +2069,7 @@ function loot_disco(obj) {
     const seen = !!obj.dknown;
     const discovered = !!od.oc_name_known;
     return !seen ? 1
-           : (discovered || !od.oc_descr) ? 4
+           : (discovered || !OBJ_DESCR(od)) ? 4
              : od.oc_uname ? 3 : 2;
 }
 
@@ -2073,15 +2077,23 @@ function loot_disco(obj) {
 // pile menus (SORTLOOT_LOOT|SORTLOOT_PACK, class already grouped by the
 // caller): subclass, then discovery, then case-insensitive name, then
 // BUCX descending.
-export function sortloot_items(items) {
+export function sortloot_items(items, sortByLootName = true) {
     return items
-        .map((obj, idx) => ({ obj, idx,
-                              sub: loot_subclass(obj),
-                              disco: loot_disco(obj),
-                              nam: singular(obj, cxname).toLowerCase() }))
+        .map((obj, idx) => {
+            /* loot_classify() observes visible objects before deriving its
+               discovery rank. Doing this after sorting makes every unseen
+               item tie, then leaks alphabetical order into the menu. */
+            if (!Blind())
+                observe_object(obj);
+            return { obj, idx,
+                     sub: loot_subclass(obj),
+                     disco: loot_disco(obj),
+                     nam: singular(obj, cxname).toLowerCase() };
+        })
         .sort((a, b) => {
             if (a.sub !== b.sub) return a.sub - b.sub;
             if (a.disco !== b.disco) return a.disco - b.disco;
+            if (!sortByLootName) return a.idx - b.idx;
             const nc = a.nam < b.nam ? -1 : a.nam > b.nam ? 1 : 0;
             if (nc) return nc;
             const v1 = a.obj.bknown ? (a.obj.blessed ? 3

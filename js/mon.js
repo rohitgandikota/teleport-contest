@@ -49,7 +49,8 @@ import { game } from './gstate.js';
 import { get_wormno, initworm, place_worm_tail_randomly,
          worm_cross, worm_wire } from './worm.js';
 import { adjalign, change_luck, exercise } from './attrib.js';
-import { couldsee, cansee, does_block, unblock_point, vision_recalc } from './vision.js';
+import { couldsee, cansee, does_block, unblock_point, vision_recalc,
+         COULD_SEE, IN_SIGHT } from './vision.js';
 import { finish_meating } from './dogmove.js';
 import { growl, maybe_gasp } from './sounds.js';
 import { sengr_at } from './engrave.js';
@@ -66,8 +67,8 @@ import { mksobj_at, splitobj, mkobj, place_object, clear_splitobjs, mkgold,
          add_to_container } from './mkobj.js';
 import { weight, update_inventory } from './invent.js';
 import { newsym, canseemon, canspotmon, display_nhwindow_message, pline,
-         see_monsters, unmap_invisible } from './display.js';
-import { rn1, rn2, rnd, rnl, d } from './rng.js';
+         see_monsters, unmap_invisible, flash_glyph_at } from './display.js';
+import { rn1, rn2, rnd, rnl, d, rn2_on_display_rng } from './rng.js';
 import { DEADMONSTER, MON_WEP } from './monst.js';
 import { remove_monster, place_monster, goodpos, grow_up, makemon } from './makemon.js';
 import { enexto_core, enexto, noteleport_level, rloc, tele_restrict,
@@ -86,8 +87,9 @@ import { MON_DETACH, P_DAGGER, P_SABER, M_AP_TYPE, M_AP_NOTHING, M_AP_MONSTER, S
          XKILL_NOMSG, XKILL_NOCORPSE, MON_EXPLODE,
          PLNMSG_UNKNOWN, PLNMSG_GROWL } from './const.js';
 import { NO_MM_FLAGS } from './const.js';
-import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND } from './monst_data.js';
+import { PMNAMES, MONSYMS, MFLAGS, ATTKS, MSOUND, NUMMONS } from './monst_data.js';
 import { def_monsyms } from './drawing_data.js';
+import { NO_COLOR } from './terminal.js';
 
 import { has_ceiling, surface } from './dungeon.js';
 import { in_rooms } from './hack.js';
@@ -2790,6 +2792,32 @@ export async function shieldeff_mon(mtmp) {
     /* does not depend on seeing the monster; the shield effect is visible */
     if (cansee(mtmp.mx, mtmp.my))
         await pline_mon(mtmp, `${Monnam(mtmp)} resists!`);
+}
+
+// src/mon.c:6067 flash_mon(), briefly reveal a monster which is sensed but
+// cannot otherwise be seen. Visibility is forced only for the animation and
+// hallucination draws from the separate display RNG.
+export async function flash_mon(mtmp) {
+    const mx = mtmp.mx, my = mtmp.my;
+    let count = couldsee(mx, my) ? 8 : 4;
+    const row = (game.viz_array ||= [])[my] ||= [];
+    const saveviz = row[mx] ?? 0;
+
+    if (game.flags?.sparkle === false)
+        count = Math.trunc(count / 2);
+    row[mx] = saveviz | IN_SIGHT | COULD_SEE;
+    const mnum = Hallucination()
+        ? rn2_on_display_rng(NUMMONS)
+        : (mtmp.data?.pmidx ?? mtmp.mnum);
+    const shown = game.mons[mnum];
+    await flash_glyph_at(mx, my, {
+        ch: def_monsyms[shown.mlet] || '?',
+        color: shown.mcolor ?? NO_COLOR,
+        decgfx: false,
+        glyph: { kind: 'mon', mon: mtmp },
+    }, count);
+    row[mx] = saveviz;
+    newsym(mx, my);
 }
 
 // src/mon.c:4322 wake_msg() — "%s wakes up!" when you see it happen.

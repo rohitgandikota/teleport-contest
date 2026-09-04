@@ -1,5 +1,37 @@
 # STATUS — live handoff board
 
+## 2026-09-04: sensed-monster flash animation matches C
+
+`flash_mon()` now matches the pinned `mon.c` visibility override, display-RNG
+monster glyph selection, sparkle count, alternating glyph animation, and final
+map restoration. Both original C call sites are connected: wizard creation of
+a requested hidden or invisible monster, and an unseen monster reading a scroll
+while the hero senses it.
+
+This closes the four shared 16-frame deficits. `wizard-create-modifiers` rises
+from **36/52 to 52/52 animations**, while `were-unseen-visible-helper`,
+`potion-monster-special`, and `monster-conversations` each rise from **0/16 to
+16/16**. Supplemental animation matching gains exactly 64 frames, from
+**3,096/3,179 to 3,160/3,179**. Public animation matching remains
+**1,451/1,483** because no public trace reaches this display path. The existing
+C fixtures already assert the affected wizard creation branches, so the branch
+ledger remains **1,111/1,111** with no synthetic coverage increase.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**398/398**, **103,842/103,842 screens**, and
+**5,194,865/5,194,865 RNG**. Random play remains **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles,
+all ten audit and recorder tests pass, the source and focused state audits are
+clean, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+Only 19 supplemental animation misses remain: nine ambient-room frames, four
+world-tour frames, two burning-oil frames, and four isolated single frames.
+The six-hour dashboard heartbeat remains active.
+
 ## 2026-09-04: fire and teleport resistance shields match C
 
 Four omitted `shieldeff()` calls are restored in `trap.js`: resistant heroes

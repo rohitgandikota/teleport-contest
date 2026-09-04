@@ -1,0 +1,138 @@
+{
+  "name": "ambient-special-room-sounds",
+  "description": "Generated special rooms exercise C ambient sound selection for a throne room, beehive, morgue, barracks, treasure zoo, temple, and the Oracle level while timed debug invulnerability keeps long waits deterministic.",
+  "coverage": [
+    "level.ordinary",
+    "level.special-variants",
+    "mode.debug",
+    "monster.special-effects",
+    "terrain.furniture",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "sound.ambient.throne-room",
+    "sound.ambient.beehive",
+    "sound.ambient.zoo",
+    "sound.ambient.temple",
+    "sound.ambient.oracle",
+    "sound.ambient.morgue",
+    "sound.ambient.barracks"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "sound.ambient.throne-room",
+      "segment": 0,
+      "screenIncludes": [
+        "Someone shouts \"Off with his head!\""
+      ],
+      "rngIncludes": [
+        "rn2(3)=2 @ throne_mon_sound(sounds.c:41)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.beehive",
+      "segment": 1,
+      "screenIncludes": [
+        "You hear an angry drone."
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ beehive_mon_sound(sounds.c:68)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.zoo",
+      "segment": 2,
+      "screenIncludes": [
+        "You hear a sound reminiscent of an elephant stepping on a peanut."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ zoo_mon_sound(sounds.c:119)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.temple",
+      "segment": 3,
+      "screenIncludes": [
+        "You hear someone beseeching Ptah."
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ temple_priest_sound(sounds.c:160)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.oracle",
+      "segment": 4,
+      "screenIncludes": [
+        "You hear snoring snakes."
+      ],
+      "rngIncludes": [
+        "rn2(3)=2 @ oracle_sound(sounds.c:196)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.morgue",
+      "segment": 5,
+      "screenIncludes": [
+        "You suddenly realize it is unnaturally quiet."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ morgue_mon_sound(sounds.c:96)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.barracks",
+      "segment": 6,
+      "screenIncludes": [
+        "You hear blades being honed."
+      ],
+      "rngIncludes": [
+        "rn2(3)=0 @ dosounds(sounds.c:304)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 8000,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#levelchange\r30\r                             #polyself\riron golem\r m.m.m."
+    },
+    {
+      "seed": 8035,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a\r m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8008,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a\r m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 8010,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a\r m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8000,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rc#wizintrinsic\r1000a\r m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. "
+    },
+    {
+      "seed": 8416,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a\r m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8014,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a\r m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    }
+  ]
+}

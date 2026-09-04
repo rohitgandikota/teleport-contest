@@ -1,0 +1,180 @@
+{
+  "name": "ambient-special-room-sounds-hallucination",
+  "description": "Hallucinating debug Wizards exercise the alternate C ambient sound selections for a throne room, beehive, morgue, barracks, treasure zoo, temple, and Oracle level.",
+  "coverage": [
+    "level.ordinary",
+    "level.special-variants",
+    "mode.debug",
+    "monster.special-effects",
+    "terrain.furniture",
+    "ui.hallucination",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "sound.ambient.throne-room-hallucination",
+    "sound.ambient.beehive-hallucination",
+    "sound.ambient.morgue-hallucination",
+    "sound.ambient.zoo-hallucination",
+    "sound.ambient.temple-hallucination",
+    "sound.ambient.oracle-hallucination",
+    "sound.ambient.temple-hallucination-deity",
+    "sound.ambient.temple-hallucination-donations",
+    "sound.ambient.barracks-hallucination"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "sound.ambient.throne-room-hallucination",
+      "segment": 0,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "You hear Queen Beruthiel's cats!"
+      ],
+      "rngIncludes": [
+        "rn2(3)=2 @ throne_mon_sound(sounds.c:41)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.beehive-hallucination",
+      "segment": 1,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "You hear an angry drone."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ beehive_mon_sound(sounds.c:68)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.morgue-hallucination",
+      "segment": 2,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "The hair on the back of your neck stands up."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ morgue_mon_sound(sounds.c:96)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.zoo-hallucination",
+      "segment": 3,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "You hear a sound reminiscent of a seal barking."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ zoo_mon_sound(sounds.c:119)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.temple-hallucination",
+      "segment": 4,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "You hear an animal carcass being offered in sacrifice."
+      ],
+      "rngIncludes": [
+        "rn2(4)=2 @ temple_priest_sound(sounds.c:160)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.oracle-hallucination",
+      "segment": 5,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "You hear someone say \"No more woodchucks!\""
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ oracle_sound(sounds.c:196)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.temple-hallucination-deity",
+      "segment": 6,
+      "screenIncludes": [
+        "You hear someone beseeching Moloch."
+      ],
+      "rngIncludes": [
+        "rn2(4)=1 @ temple_priest_sound(sounds.c:160)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.temple-hallucination-donations",
+      "segment": 7,
+      "screenIncludes": [
+        "You hear a strident plea for donations."
+      ],
+      "rngIncludes": [
+        "rn2(4)=3 @ temple_priest_sound(sounds.c:160)"
+      ]
+    },
+    {
+      "branch": "sound.ambient.barracks-hallucination",
+      "segment": 8,
+      "screenIncludes": [
+        "Oh wow!  Everything looks so cosmic!",
+        "You hear loud snoring."
+      ],
+      "rngIncludes": [
+        "rn2(3)=0 @ dosounds(sounds.c:304)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 8269,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m."
+    },
+    {
+      "seed": 8437,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m."
+    },
+    {
+      "seed": 8416,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m."
+    },
+    {
+      "seed": 8008,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8010,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8000,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0016?\rc#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8473,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8620,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m. m. m. m. m. m."
+    },
+    {
+      "seed": 8014,
+      "datetime": "20000115090000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u001620\r#wizintrinsic\r1000a1000h\r  m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m. m."
+    }
+  ]
+}

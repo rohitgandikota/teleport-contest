@@ -1,5 +1,44 @@
 # STATUS — live handoff board
 
+## 2026-09-04: ambient special-room sounds match C
+
+The periodic room-sound dispatcher now follows pinned C for throne rooms,
+temples, and the Oracle level. Throne speakers use C's sleeping, rank, animal,
+room-membership, hallucination, and hero-pronoun rules. Temple sounds use the
+priest's shrine record, temple occupancy, helplessness, speech and visibility
+filters, hallucinated deity naming, and C's Astral and Sanctum exclusion. The
+Oracle path now preserves both unseen normal speech and its two hallucinated
+messages. Existing beehive, morgue, zoo, and barracks paths were captured in
+the same oracle batch.
+
+Two permanent C fixtures contain 16 independently asserted segments. The
+normal fixture is exact at **1,905/1,905 screens** and **71,124/71,124 RNG
+calls**. The hallucination fixture is exact at **1,434/1,434 screens** and
+**73,900/73,900 RNG calls**. Together they add **3,339 screens** and **145,024
+RNG calls**, all byte-identical. Declared evidence remains **99/106 mechanics
+categories**, with seven partial, and rises to **993/993 explicit C
+branches**. The source RNG census now observes **1,497/2,621 call sites
+(57.1%)** overall and **36/46 in sounds.c**.
+
+Full verification on the working tree based on local commit `03d6f058`:
+public **44/44**, **11,405/11,405 screens**, and **792,838/792,838 RNG**;
+supplemental **385/385**, **94,214/94,214 screens**, and
+**4,901,756/4,901,756 RNG**; random play **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST artifact.
+The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles, source and
+state audits pass, all ten audit and recorder tests pass, and frozen files are
+unchanged.
+
+A normal swamp-sound probe exposed a more valuable pre-existing divergence
+before it could reach the sound selector. At its first mismatch, C called
+`rn2(10)` from `mhitm_ad_wrap(uhitm.c:3379)`, while JavaScript called
+`rn2(3)`. The contaminated probe was not retained. The next target is a
+minimal C fixture for that monster-versus-monster wrap attack, followed by a
+line-by-line port of the missing arm. The latest judged hidden result remains
+**8,498/11,265**, **16/44**, rank 3 overall and rank 1/9 among agentic
+entries. This ambient batch is local and unjudged, so no hidden gain is
+claimed.
+
 ## 2026-09-04: ordinary monster conversations match C
 
 The main `domonnoise()` table now follows pinned C for the ordinary animal,

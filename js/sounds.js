@@ -14,11 +14,12 @@ import { helpless, DEADMONSTER } from './monst.js';
 import { rn2 } from './rng.js';
 import { ECMD_OK, ECMD_TIME, IS_WALL, SDOOR, isok, M_AP_TYPE,
          M_AP_FURNITURE, M_AP_OBJECT, STRAT_WAITMASK,
-         ANY_SHOP, ROOMOFFSET, VAULT, PLNMSG_GROWL,
-         BEEHIVE, MORGUE, BARRACKS, ZOO, W_ARMH, HAIR, NECK, HEAD,
-         BLOOD, Upolyd, In_endgame, A_LAWFUL } from './const.js';
+         ANY_SHOP, ROOMOFFSET, VAULT, COURT, PLNMSG_GROWL,
+         BEEHIVE, MORGUE, BARRACKS, ZOO, TEMPLE, W_ARMH, HAIR, NECK, HEAD,
+         BLOOD, Upolyd, In_endgame, Is_astralevel, Is_sanctum,
+         A_LAWFUL } from './const.js';
 import { is_animal, is_undead, is_flyer, is_elf, is_dwarf, is_gnome,
-         is_mplayer, mhis } from './mondata.js';
+         is_lord, is_prince, is_mplayer, mhis } from './mondata.js';
 import { is_vampshifter } from './monst.js';
 import { get_iter_mons, m_at, t_at, wake_nearto } from './mon.js';
 import { body_part } from './polyself.js';
@@ -38,6 +39,7 @@ import { an, vtense } from './objnam.js';
 import { nomul } from './hack.js';
 import { poly_gender } from './polyself.js';
 import { midnight, night } from './calendar.js';
+import { cansee } from './vision.js';
 
 
 // src/sounds.c:202 dosounds()
@@ -65,7 +67,8 @@ export async function dosounds() {
         await You_hear(sink_msg[rn2(2) + hallu]);
     }
     if (f.has_court && !rn2(200)) {
-        note_unported('dosounds throne room');
+        if (await get_iter_mons(throne_mon_sound))
+            return;
     }
     if (f.has_swamp && !rn2(200)) {
         const swamp_msg = [
@@ -164,28 +167,14 @@ export async function dosounds() {
         }
         return;
     }
-    if (f.has_temple && !rn2(200)) {
-        /* temple_priest_sound needs the priest records (EPRI shrine
-           position); with no priest on the list, C's get_iter_mons finds
-           nothing and falls through without drawing */
-        note_unported('dosounds temple');
+    if (f.has_temple && !rn2(200)
+        && !(Is_astralevel(game.u.uz) || Is_sanctum(game.u.uz))) {
+        if (await get_iter_mons(temple_priest_sound))
+            return;
     }
     if (Is_oracle_level() && !rn2(400)) {
-        /* src/sounds.c:180 oracle_sound() via get_iter_mons */
-        for (let mtmp = game.fmon; mtmp; mtmp = mtmp.nmon) {
-            if (DEADMONSTER(mtmp) || mtmp.mnum !== PMNAMES.PM_ORACLE)
-                continue;
-            /* don't produce silly effects when she's clearly visible */
-            if (!canseemon(mtmp)) {
-                const ora_msg = [
-                    'a strange wind.',     /* Jupiter at Dodona */
-                    'convulsive ravings.', /* Apollo at Delphi */
-                    'snoring snakes.',     /* AEsculapius at Epidaurus */
-                ];
-                await You_hear(ora_msg[rn2(3)]);
-            }
-            break;
-        }
+        if (await get_iter_mons(oracle_sound))
+            return;
     }
 }
 
@@ -208,10 +197,6 @@ function vault_occupied(urooms) {
 function findgd() {
     return (game.level?.monsters || []).find(
         mon => mon.isgd && !DEADMONSTER(mon)) || null;
-}
-
-function note_unported(what) {
-    (game.unported ||= new Set()).add(what);
 }
 
 // src/sounds.c:1257 dochat() — the 'c' command.
@@ -1090,6 +1075,28 @@ function mon_in_room(mon, rmtyp) {
     return false;
 }
 
+// src/sounds.c:42 throne_mon_sound()
+async function throne_mon_sound(mtmp) {
+    const ptr = game.mons[mtmp.mnum];
+    if ((mtmp.msleeping || is_lord(ptr) || is_prince(ptr))
+        && !is_animal(ptr) && mon_in_room(mtmp, COURT)) {
+        const throne_msg = [
+            'the tones of courtly conversation.',
+            'a sceptre pounded in judgment.',
+            null,
+            "Queen Beruthiel's cats!",
+        ];
+        const which = rn2(3) + (Hallucination() ? 1 : 0);
+
+        if (which !== 2)
+            await You_hear(throne_msg[which]);
+        else
+            await pline(`Someone shouts "Off with ${game.flags?.female ? 'her' : 'his'} head!"`);
+        return true;
+    }
+    return false;
+}
+
 /* include/mondata.h is_mercenary() */
 const is_mercenary = (ptr) => (ptr.mflags2 & MFLAGS.M2_MERC) !== 0;
 
@@ -1152,4 +1159,73 @@ async function zoo_mon_sound(mtmp) {
         return true;
     }
     return false;
+}
+
+// src/sounds.c:130 temple_priest_sound()
+async function temple_priest_sound(mtmp) {
+    const epri = mtmp.epri ?? mtmp.mextra?.epri;
+    if (!mtmp.ispriest || !epri)
+        return false;
+    const { inhistemple } = await import('./monmove.js');
+    if (inhistemple(mtmp) && !helpless(mtmp)
+        && temple_occupied(game.u.urooms) !== epri.shroom) {
+        const temple_msg = [
+            '*someone praising %s.', '*someone beseeching %s.',
+            '#an animal carcass being offered in sacrifice.',
+            '*a strident plea for donations.',
+        ];
+        const hallu = Hallucination() ? 1 : 0;
+        const speechless = game.mons[mtmp.mnum].msound <= MSOUND.MS_ANIMAL;
+        const in_sight = canseemon(mtmp)
+            || cansee(epri.shrpos.x, epri.shrpos.y);
+        let msg;
+        let trycount = 0;
+        do {
+            msg = temple_msg[rn2(3 + hallu)];
+            if (msg.includes('*') && speechless)
+                continue;
+            if (msg.includes('#') && in_sight)
+                continue;
+            break;
+        } while (++trycount < 50);
+
+        msg = msg.replace(/^[^A-Za-z]*/, '');
+        if (msg.includes('%')) {
+            const { halu_gname } = await import('./pray.js');
+            await You_hear(msg.replace('%s', halu_gname(epri.shralign)));
+        } else {
+            await You_hear(msg);
+        }
+        return true;
+    }
+    return false;
+}
+
+// src/priest.c:142 temple_occupied()
+function temple_occupied(urooms) {
+    for (const ch of urooms || '') {
+        if (game.level?.rooms?.[ch.charCodeAt(0) - ROOMOFFSET]?.rtype
+            === TEMPLE)
+            return ch.charCodeAt(0);
+    }
+    return 0;
+}
+
+// src/sounds.c:180 oracle_sound()
+async function oracle_sound(mtmp) {
+    if (mtmp.mnum !== PMNAMES.PM_ORACLE)
+        return false;
+
+    if (Hallucination() || !canseemon(mtmp)) {
+        const hallu = Hallucination() ? 1 : 0;
+        const ora_msg = [
+            'a strange wind.',
+            'convulsive ravings.',
+            'snoring snakes.',
+            'someone say "No more woodchucks!"',
+            'a loud ZOT!',
+        ];
+        await You_hear(ora_msg[rn2(3) + hallu * 2]);
+    }
+    return true;
 }

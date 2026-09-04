@@ -995,6 +995,22 @@
     {"group":"Monster conversations","id":"monster.chat.death-novel","cFile":"src/sounds.c","cFunction":"domonnoise","description":"Have Death notice the carried novel once and comment on its title"},
     {"group":"Monster conversations","id":"monster.chat.invisible-marker","cFile":"src/sounds.c","cFunction":"domonnoise","description":"Mark the square of an unseen speaker before it talks"},
     {"group":"Monster conversations","id":"monster.chat.hostile-cuss","cFile":"src/wizard.c","cFunction":"cuss","description":"Route a hostile non-Wizard cursing monster through its demon taunt page"},
-    {"group":"Monster conversations","id":"monster.chat.peaceful-cuss","cFile":"src/sounds.c","cFunction":"domonnoise","description":"Give a peaceful non-lawful cursing monster the doomed line"}
+    {"group":"Monster conversations","id":"monster.chat.peaceful-cuss","cFile":"src/sounds.c","cFunction":"domonnoise","description":"Give a peaceful non-lawful cursing monster the doomed line"},
+    {"group":"Ambient room sounds","id":"sound.ambient.throne-room","cFile":"src/sounds.c","cFunction":"throne_mon_sound","description":"Choose a normal throne-room sound from an eligible court monster"},
+    {"group":"Ambient room sounds","id":"sound.ambient.beehive","cFile":"src/sounds.c","cFunction":"beehive_mon_sound","description":"Choose a normal beehive sound from an eligible bee"},
+    {"group":"Ambient room sounds","id":"sound.ambient.morgue","cFile":"src/sounds.c","cFunction":"morgue_mon_sound","description":"Choose a normal morgue sound from an eligible undead monster"},
+    {"group":"Ambient room sounds","id":"sound.ambient.zoo","cFile":"src/sounds.c","cFunction":"zoo_mon_sound","description":"Choose a normal treasure-zoo sound from an eligible animal"},
+    {"group":"Ambient room sounds","id":"sound.ambient.temple","cFile":"src/sounds.c","cFunction":"temple_priest_sound","description":"Choose a normal temple sound from its attending priest"},
+    {"group":"Ambient room sounds","id":"sound.ambient.oracle","cFile":"src/sounds.c","cFunction":"oracle_sound","description":"Choose a normal Oracle-level sound while the Oracle is present"},
+    {"group":"Ambient room sounds","id":"sound.ambient.barracks","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose a normal barracks sound while enough mercenaries remain"},
+    {"group":"Ambient room sounds","id":"sound.ambient.throne-room-hallucination","cFile":"src/sounds.c","cFunction":"throne_mon_sound","description":"Choose a hallucinating throne-room sound"},
+    {"group":"Ambient room sounds","id":"sound.ambient.beehive-hallucination","cFile":"src/sounds.c","cFunction":"beehive_mon_sound","description":"Choose a hallucinating beehive sound"},
+    {"group":"Ambient room sounds","id":"sound.ambient.morgue-hallucination","cFile":"src/sounds.c","cFunction":"morgue_mon_sound","description":"Choose a hallucinating morgue sound"},
+    {"group":"Ambient room sounds","id":"sound.ambient.zoo-hallucination","cFile":"src/sounds.c","cFunction":"zoo_mon_sound","description":"Choose a hallucinating treasure-zoo sound"},
+    {"group":"Ambient room sounds","id":"sound.ambient.temple-hallucination","cFile":"src/sounds.c","cFunction":"temple_priest_sound","description":"Choose the hallucinating temple sacrifice sound"},
+    {"group":"Ambient room sounds","id":"sound.ambient.oracle-hallucination","cFile":"src/sounds.c","cFunction":"oracle_sound","description":"Choose a hallucinating Oracle-level sound"},
+    {"group":"Ambient room sounds","id":"sound.ambient.temple-hallucination-deity","cFile":"src/sounds.c","cFunction":"temple_priest_sound","description":"Name a hallucinated deity in the temple plea"},
+    {"group":"Ambient room sounds","id":"sound.ambient.temple-hallucination-donations","cFile":"src/sounds.c","cFunction":"temple_priest_sound","description":"Choose the hallucinating temple donations plea"},
+    {"group":"Ambient room sounds","id":"sound.ambient.barracks-hallucination","cFile":"src/sounds.c","cFunction":"dosounds","description":"Choose a hallucinating barracks sound"}
   ]
 }

@@ -880,7 +880,7 @@ async function use_whip(obj) {
             if (gotit) {
                 obj_extract_self(otmp);
                 await possibly_unwield(mtmp, false);
-                setmnotwielded(mtmp, otmp);
+                await setmnotwielded(mtmp, otmp);
 
                 switch (rn2(proficient + 1)) {
                 case 2:

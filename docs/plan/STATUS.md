@@ -1,5 +1,54 @@
 # STATUS — live handoff board
 
+## 2026-09-04: active monster gazes and monster artifact light match C
+
+The complete compiled `gazemu()` table now follows pinned C for Medusa
+stoning, umber-hulk confusion, Baalzebub stun, Archon blindness, and pyrolisk
+fire. The shared gates preserve previously seen resistances, visibility,
+hallucination, unconsciousness, reflection, cancellation, gaze cooldowns,
+status durations, occupation interruption, fire resistance learning, golem
+effects, slime removal, armor burning, inventory destruction, and C's random
+reaction wording. The status line now also uses C's Blind, Conf, Deaf, Hallu
+condition order. A missing hero inventory is treated as an empty inventory
+when fire tries to destroy carried objects.
+
+The same trace exposed the monster side of permanent artifact light.
+`mon_wield_item()` now starts Sunsword's object-owned light source, uses its
+beatitude-dependent radius and description, and prints the visible or unseen
+message from C. `setmnotwielded()` removes that source before clearing the
+weapon slot and prints the ordered stop message. All callers now await this
+message path. A dedicated bullwhip disarm trace verifies both light startup
+and shutdown against the C binary.
+
+The initial exploratory ten-segment probe matched only **2,548/28,561 RNG
+calls** and **1,011/1,400 screens** before the active gaze table was connected.
+The permanent nine-segment `monster-gaze-attacks` fixture now asserts 12
+concrete C branches and is byte-identical at **25,339/25,339 RNG calls**,
+**1,312/1,312 screens**, **1,312/1,312 cursors**, and **42/42 animation
+frames**. It separately pins active stun, blindness, fire, fire resistance,
+activation failure, cancelled fire and confusion reactions, both
+hallucination outcomes, the Eyes of the Overworld clearing Archon blindness,
+and monster Sunsword light startup and shutdown. Declared evidence remains
+**99/106 mechanics categories**, with seven partial, and rises from
+**1,034/1,034 to 1,046/1,046 explicit C branches**. The source RNG census now
+observes **1,536/2,621 call sites (58.6%)**, including **17/25 in `gazemu()`**,
+with 5,827,672 tagged RNG calls across 434 public and supplemental sessions.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**390/390**, **99,938/99,938 screens**, and **5,034,834/5,034,834 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80 across 13 roles, source and state audits pass, all ten audit and
+recorder tests pass, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This gaze batch is local and
+unjudged, so no hidden gain is claimed. The disarm trace's next screen exposes
+a separate cross-role quest-artifact touch blast mismatch. Preserve that as
+the first concrete candidate after committing this exact batch, then compare
+it with the highest-reach source-census gaps.
+
 ## 2026-09-04: active paralysis and sleep attacks match C
 
 The shared `AD_PLYS` and `AD_SLEE` handlers now follow pinned C in all three

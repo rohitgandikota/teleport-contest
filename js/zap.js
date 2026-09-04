@@ -4060,7 +4060,7 @@ export async function destroy_items(mon, osym, dmg_in) {
         return 0;
 
     const u_carry = mon === game.youmonst;
-    const invent = u_carry ? game.invent : (mon.minvent || []);
+    const invent = u_carry ? (game.invent || []) : (mon.minvent || []);
     const selected = [];
     let eligible = 0;
 

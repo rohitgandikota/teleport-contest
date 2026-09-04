@@ -1,0 +1,194 @@
+{
+  "name": "monster-gaze-attacks",
+  "description": "Active monster gaze attacks and their cancellation, resistance, and hallucination controls.",
+  "coverage": [
+    "combat.resist-reflect",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.special-effects",
+    "object.artifacts",
+    "object.rings",
+    "survival.timed-status",
+    "turn.speed-energy",
+    "ui.getlin",
+    "ui.hallucination",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "combat.gaze.stun-active",
+    "combat.gaze.blind-active",
+    "combat.gaze.fire-active",
+    "combat.gaze.fire-resistant",
+    "combat.gaze.cancelled-fire-feedback",
+    "combat.gaze.fire-activation-roll-miss",
+    "combat.gaze.cancelled-confusion-feedback",
+    "combat.gaze.hallucination-effect",
+    "combat.gaze.hallucination-suppressed",
+    "combat.gaze.eyes-clear-blindness",
+    "monster.weapon.artifact-light-start",
+    "monster.weapon.artifact-light-stop"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "combat.gaze.stun-active",
+      "segment": 0,
+      "screenIncludes": ["Baalzebub stares piercingly at you!"],
+      "rngIncludes": [
+        "rn2(5)=4 @ gazemu(mhitu.c:1779)",
+        "d(2,6)=12 @ gazemu(mhitu.c:1784)",
+        "rn2(6)=1 @ gazemu(mhitu.c:1786)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.blind-active",
+      "segment": 1,
+      "screenIncludes": ["You are blinded by the Archon's radiance!"],
+      "rngIncludes": [
+        "d(2,6)=6 @ gazemu(mhitu.c:1804)",
+        "rnd(3)=2 @ gazemu(mhitu.c:1815)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.fire-active",
+      "segment": 2,
+      "screenIncludes": ["The pyrolisk attacks you with a fiery gaze!"],
+      "rngIncludes": [
+        "rn2(5)=3 @ gazemu(mhitu.c:1825)",
+        "d(2,6)=10 @ gazemu(mhitu.c:1829)",
+        "rn2(20)=19 @ gazemu(mhitu.c:1844)",
+        "rn2(20)=2 @ gazemu(mhitu.c:1846)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.fire-resistant",
+      "segment": 3,
+      "screenIncludes": ["The fire doesn't feel hot!"],
+      "rngIncludes": [
+        "d(2,6)=8 @ gazemu(mhitu.c:1829)",
+        "d(12,6)=39 @ gazemu(mhitu.c:1838)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.cancelled-fire-feedback",
+      "segment": 4,
+      "screenIncludes": [
+        "The pyrolisk looks a bit irritated.",
+        "The pyrolisk looks somewhat inflamed."
+      ],
+      "rngIncludes": [
+        "rn2(2)=0 @ gazemu(mhitu.c:1827)",
+        "rn2(2)=1 @ gazemu(mhitu.c:1827)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.fire-activation-roll-miss",
+      "segment": 4,
+      "rngIncludes": ["rn2(5)=0 @ gazemu(mhitu.c:1825)"]
+    },
+    {
+      "branch": "combat.gaze.cancelled-confusion-feedback",
+      "segment": 5,
+      "screenIncludes": [
+        "The umber hulk looks confused.",
+        "The umber hulk looks a bit confused."
+      ],
+      "rngIncludes": [
+        "rn2(99)=81 @ resist(zap.c:6141)",
+        "rn2(5)=2 @ gazemu(mhitu.c:1760)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.hallucination-effect",
+      "segment": 6,
+      "screenIncludes": ["The big dumb object's gaze confuses you!"],
+      "rngIncludes": [
+        "rn2(4)=0 @ gazemu(mhitu.c:1698)",
+        "d(3,4)=11 @ gazemu(mhitu.c:1765)"
+      ]
+    },
+    {
+      "branch": "combat.gaze.hallucination-suppressed",
+      "segment": 6,
+      "rngIncludes": ["rn2(4)=1 @ gazemu(mhitu.c:1698)"]
+    },
+    {
+      "branch": "combat.gaze.eyes-clear-blindness",
+      "segment": 7,
+      "screenIncludes": [
+        "You are blinded by the Archon's radiance!  Your vision quickly clears."
+      ],
+      "rngIncludes": ["d(2,6)=6 @ gazemu(mhitu.c:1804)"]
+    },
+    {
+      "branch": "monster.weapon.artifact-light-start",
+      "segment": 7,
+      "screenIncludes": [
+        "The long sword named Sunsword shines brilliantly in the Archon's hand!"
+      ]
+    },
+    {
+      "branch": "monster.weapon.artifact-light-stop",
+      "segment": 8,
+      "screenIncludes": [
+        "The long sword named Sunsword in the Archon's hand stops shining."
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99800,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile Baalzebub\r20s        20s        :"
+    },
+    {
+      "seed": 99802,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile Archon\r20s        20s        :"
+    },
+    {
+      "seed": 99804,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007hostile pyrolisk\r20s        20s        :"
+    },
+    {
+      "seed": 99805,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed ring of fire resistance\rPar\u0007hostile pyrolisk\r20s        20s        20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99806,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cancellation\r\u0007sleeping hostile pyrolisk\rzak20s        20s        20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99807,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed wand of cancellation\r\u0007sleeping hostile umber hulk\rzauzau20s        20s        20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99808,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017uncursed potion of hallucination\rqa\u0007hostile umber hulk\r20s        20s        20s        20s        20s        20s        :"
+    },
+    {
+      "seed": 99809,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Eyes of the Overworld\r Pa #levelchange\r30\r                                                            \u0007hostile Archon\r20s    "
+    },
+    {
+      "seed": 99811,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Eyes of the Overworld\r Pa \u0017blessed bullwhip\rwb\u0017blessed +5 gauntlets of dexterity\rWc #levelchange\r30\r                                                            \u0007hostile Archon\r20s        20s        abn  "
+    }
+  ]
+}

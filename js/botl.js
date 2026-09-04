@@ -137,10 +137,10 @@ export function bot_conditions() {
         ? game._deferred_status_blind : Blind();
     if (blind)
         cond += ' Blind';
+    if (intr.HConfusion || props.CONFUSION) cond += ' Conf';
     if (intr.HDeaf || props.DEAF) cond += ' Deaf';
     if ((intr.HHallucination || props.HALLUC) && !props.HALLUC_RES)
         cond += ' Hallu';
-    if (intr.HConfusion || props.CONFUSION) cond += ' Conf';
     if (props.LEVITATION || intr.HLevitation) cond += ' Lev';
     else if (props.FLYING || intr.HFlying
              || (Upolyd(u) && (game.youmonst.data.mflags1 & MFLAGS.M1_FLY)))

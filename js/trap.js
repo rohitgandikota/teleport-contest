@@ -2604,7 +2604,7 @@ export async function mselftouch(mon, arg, byplayer) {
     await minstapetrify(mon, byplayer);
     if (!DEADMONSTER(mon) && !which_armor(mon, W_ARMG)
         && !resists_ston(mon)) {
-        mwepgone(mon);
+        await mwepgone(mon);
     }
 }
 

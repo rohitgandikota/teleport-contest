@@ -105,6 +105,23 @@ export function arti_light_radius(obj) {
     return res;
 }
 
+// src/light.c:916 arti_light_description(), adverb for an artifact's
+// beatitude-dependent light radius.
+export function arti_light_description(obj) {
+    switch (arti_light_radius(obj)) {
+    case 4:
+        return 'radiantly';
+    case 3:
+        return 'brilliantly';
+    case 2:
+        return 'brightly';
+    case 1:
+        return 'dimly';
+    default:
+        return 'strangely';
+    }
+}
+
 // src/mon.c:377 get_mon_location() (the ls resolution arm) — a monster still
 // on the map. Resolves the id against the current level.
 function light_mon_location(id) {

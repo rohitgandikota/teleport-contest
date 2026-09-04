@@ -477,7 +477,7 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
         /* Remove object from minvent; cannot be done later (the infamous
            2^32-1 orcish dagger bug) */
         if (MON_WEP(mon) === obj)
-            setmnotwielded(mon, obj);
+            await setmnotwielded(mon, obj);
         obj_extract_self(obj);
         singleobj = obj;
         obj = null;
@@ -1157,4 +1157,3 @@ export async function hits_bars(obj_p, x, y, barsx, barsy, always_hit, whodidit)
 
     return hits;
 }
-

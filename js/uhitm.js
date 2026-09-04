@@ -2659,7 +2659,7 @@ async function hmon_hitmon_weapon_melee(hmd, mon, obj) {
                                    50 + 15 * (greatest_erosion(obj)
                                               - greatest_erosion(monwep)),
                                    100))) {
-        setmnotwielded(mon, monwep);
+        await setmnotwielded(mon, monwep);
         mon.weapon_check = NEED_WEAPON;
 
         const owner = s_suffix(Monnam(mon));

@@ -25,7 +25,7 @@ import { monsndx } from './makemon.js';
 import { split_mon } from './potion.js';
 import { Your } from './pline.js';
 import { ugolemeffects } from './polyself.js';
-import { make_blinded, make_hallucinated } from './potion.js';
+import { make_blinded, make_hallucinated, make_stunned } from './potion.js';
 import { mondead, wake_nearto } from './mon.js';
 import { resists_blnd } from './mondata.js';
 import { is_waterwall } from './dbridge.js';
@@ -39,7 +39,8 @@ import { is_animal, is_human, perceives, dmgtype, gender, pronoun_gender,
          nolimbs, is_undead, is_orc, is_whirly, digests, is_flyer,
          defended, resists_acid, resists_cold, resists_elec, resists_fire,
          resists_ston, resists_drli, sticks, haseyes, stagger,
-         poly_when_stoned, mhe, noit_mhim }
+         poly_when_stoned, mhe, noit_mhim, cvt_adtyp_to_mseenres,
+         monstseesu, monstunseesu }
          from './mondata.js';
 import { is_vampshifter, DEADMONSTER, MON_WEP } from './monst.js';
 import { poly_gender, body_part, polymon } from './polyself.js';
@@ -57,7 +58,8 @@ import { W_ARMOR, W_AMUL, NON_PM, u_at, is_pit, Upolyd, PRONOUN_HALLU,
          KILLED_BY, W_ARMG, ERODE_CORRODE, EF_GREASE, EF_VERBOSE,
          STRAT_WAITFORU, NO_MINVENT, MM_EDOG, MM_NOMSG, A_CHAOTIC,
          A_INT, A_WIS, A_CHA, HAND, HAIR, LEFT_RING, RIGHT_RING,
-         RLOC_MSG, OBJ_FREE, LARGEST_INT } from './const.js';
+         RLOC_MSG, OBJ_FREE, LARGEST_INT, BOLT_LIM, TIMEOUT,
+         M_SEEN_FIRE } from './const.js';
 import { ONAMES, OCLASSES } from './objects_data.js';
 import { genders } from './role_data.js';
 import { pline, canspotmon, canseemon, mon_visible, sensemon, bot,
@@ -93,8 +95,8 @@ import { is_pool, t_at, newcham } from './mon.js';
 import { touch_petrifies, initedog } from './dog.js';
 import { find_offensive, use_offensive, mon_reflects } from './muse.js';
 import { buzzmu, castmu } from './mcastu.js';
-import { erode_obj } from './trap.js';
-import { drain_item } from './zap.js';
+import { burnarmor, erode_obj, ignite_items } from './trap.js';
+import { destroy_items, drain_item } from './zap.js';
 import { defends, retouch_equipment } from './artifact.js';
 import { set_ulycn } from './were.js';
 import { can_blnd } from './mondata.js';
@@ -106,6 +108,7 @@ import { tty_yn_function } from './tty/topl.js';
 import { makeknown, observe_object } from './o_init.js';
 import { losexp, pluslvl } from './exper.js';
 import { splitobj } from './mkobj.js';
+import { burn_away_slime } from './timeout.js';
 
 
 
@@ -462,30 +465,45 @@ async function explmu(mtmp, mattk, ufound, indx) {
     return (!DEADMONSTER(mtmp)) ? M_ATTK_MISS : M_ATTK_AGR_DIED;
 }
 
-// src/mhitu.c:1680 gazemu(), common visibility and hallucination gates,
-// Medusa's stoning gaze, and the umber hulk's confusion gaze.
+// src/mhitu.c:1680 gazemu(), active monster gaze attacks.
 export async function gazemu(mtmp, mattk) {
+    const reactions = [
+        'confused', 'stunned', 'puzzled', 'dazzled',
+        'irritated', 'inflamed', 'tired', 'dulled',
+    ];
     const is_medusa = mtmp.mnum === PMNAMES.PM_MEDUSA;
     const reflectable = Reflecting() && couldsee(mtmp.mx, mtmp.my)
                         && is_medusa;
     const mcanseeu = canseemon(mtmp) && couldsee(mtmp.mx, mtmp.my)
                      && !!mtmp.mcansee;
     let cancelled = !!mtmp.mcan;
+    let react = -1;
+    let already = false;
+
+    const seenres = cvt_adtyp_to_mseenres(mattk[1]);
+    if (((mtmp.seen_resistance ?? 0) & seenres) !== 0)
+        return M_ATTK_MISS;
 
     if ((Hallucination() && rn2(4)) || (Unaware() && !reflectable))
         cancelled = true;
 
-    if (mattk[1] === ATTKS.AD_STON) {
+    switch (mattk[1]) {
+    case ATTKS.AD_STON:
         if (cancelled || !mtmp.mcansee) {
             if (!canseemon(mtmp))
-                return M_ATTK_MISS;
+                break;
+            if (Unaware()) {
+                react = is_medusa ? 4 : 2;
+                break;
+            }
             if (is_medusa && Hallucination() && !rn2(3))
                 await pline('Someone seems overdue for a serpent cut.');
             else
                 await pline(`${Monnam(mtmp)} ${
-                    is_medusa && mtmp.mcan ? "doesn't look all that ugly"
-                                          : 'gazes ineffectually'}.`);
-            return M_ATTK_MISS;
+                    is_medusa && mtmp.mcan && !react
+                        ? "doesn't look all that ugly"
+                        : 'gazes ineffectually'}.`);
+            break;
         }
 
         if (reflectable) {
@@ -497,19 +515,16 @@ export async function gazemu(mtmp, mattk) {
             }
             if (await mon_reflects(mtmp, useeit
                 ? 'The gaze is reflected away by %s %s!' : null))
-                return M_ATTK_MISS;
+                break;
 
             const monCanSeeHero = (!Invis() || perceives(mtmp.data))
                                   && !Underwater()
                                   && couldsee(mtmp.mx, mtmp.my);
             if (!monCanSeeHero) {
-                if (useeit) {
-                    const possessive = ['his', 'her', 'its', 'their'][
-                        gender(mtmp)] || 'its';
+                if (useeit)
                     await pline(`${Monnam(mtmp)} doesn't seem to notice that ${
-                        possessive} gaze was reflected.`);
-                }
-                return M_ATTK_MISS;
+                        mhis(mtmp)} gaze was reflected.`);
+                break;
             }
             if (useeit)
                 await pline(`${Monnam(mtmp)} is turned to stone!`);
@@ -518,7 +533,7 @@ export async function gazemu(mtmp, mattk) {
             await killed(mtmp);
             if (DEADMONSTER(mtmp))
                 return M_ATTK_AGR_DIED;
-            return M_ATTK_MISS;
+            break;
         }
 
         if (canseemon(mtmp) && couldsee(mtmp.mx, mtmp.my)
@@ -536,23 +551,16 @@ export async function gazemu(mtmp, mattk) {
             const { done } = await import('./end.js');
             await done(STONING);
         }
-        return M_ATTK_MISS;
-    }
+        break;
 
-    /* A blind or otherwise unsensing hero cannot register these gazes. The
-       C still spent the hallucination draw above, which is the important
-       state transition for this path. */
-    if (!mcanseeu
-        && !(mattk[1] === ATTKS.AD_BLND && canseemon(mtmp)))
-        return M_ATTK_MISS;
-
-    if (mattk[1] === ATTKS.AD_CONF) {
-        if (!mtmp.mspec_used && rn2(5)) {
+    case ATTKS.AD_CONF:
+        if (mcanseeu && !mtmp.mspec_used && rn2(5)) {
             if (cancelled) {
-                note_unported_mhitu('gazemu:adtyp=25 cancelled=1');
+                react = 0;
+                already = !!mtmp.mconf;
             } else {
                 const conf = d(3, 4);
-                mtmp.mspec_used += conf + rn2(6);
+                mtmp.mspec_used = (mtmp.mspec_used || 0) + conf + rn2(6);
                 if (!(game.u.intrinsic?.HConfusion
                       || game.u.uprops?.CONFUSION)) {
                     await pline(`${s_suffix(Monnam(mtmp))} gaze confuses you!`);
@@ -565,10 +573,98 @@ export async function gazemu(mtmp, mattk) {
                 await stop_occupation();
             }
         }
-        return M_ATTK_MISS;
+        break;
+
+    case ATTKS.AD_STUN:
+        if (mcanseeu && !mtmp.mspec_used && rn2(5)) {
+            if (cancelled) {
+                react = 1;
+                already = !!mtmp.mstun;
+            } else {
+                const stun = d(2, 6);
+                mtmp.mspec_used = (mtmp.mspec_used || 0) + stun + rn2(6);
+                await pline(`${Monnam(mtmp)} stares piercingly at you!`);
+                await make_stunned(((game.u.intrinsic?.HStun || 0) & TIMEOUT)
+                                   + stun, true);
+                await stop_occupation();
+            }
+        }
+        break;
+
+    case ATTKS.AD_BLND:
+        if (canseemon(mtmp) && !resists_blnd(game.youmonst)
+            && mhitu_monmove.mdistu(mtmp) <= BOLT_LIM * BOLT_LIM) {
+            if (cancelled) {
+                react = rn1(2, 2);
+                already = !mtmp.mcansee;
+                if (mtmp.mcan && mtmp.mnum === PMNAMES.PM_ARCHON && rn2(5))
+                    react = -1;
+            } else {
+                const blnd = d(mattk[2], mattk[3]);
+                await You(`are blinded by ${s_suffix(mon_nam(mtmp))} radiance!`);
+                await make_blinded(blnd, false);
+                await stop_occupation();
+                if (!Blind()) {
+                    await Your('vision quickly clears.');
+                } else {
+                    const oldstun = (game.u.intrinsic?.HStun || 0) & TIMEOUT;
+                    const newstun = rnd(3);
+                    await make_stunned(Math.max(oldstun, newstun), true);
+                }
+            }
+        }
+        break;
+
+    case ATTKS.AD_FIRE:
+        if (mcanseeu && !mtmp.mspec_used && rn2(5)) {
+            if (cancelled) {
+                react = rn1(2, 4);
+            } else {
+                let dmg = d(2, 6);
+                const orig_dmg = dmg;
+                const lev = mtmp.m_lev | 0;
+
+                await pline(`${Monnam(mtmp)} attacks you with a fiery gaze!`);
+                await stop_occupation();
+                if (Fire_resistance()) {
+                    await shieldeff(game.u.ux, game.u.uy);
+                    await pline_The("fire doesn't feel hot!");
+                    monstseesu(M_SEEN_FIRE);
+                    await ugolemeffects(ATTKS.AD_FIRE, d(12, 6));
+                    dmg = 0;
+                } else {
+                    monstunseesu(M_SEEN_FIRE);
+                }
+                await burn_away_slime();
+                if (lev > rn2(20))
+                    await burnarmor(game.youmonst);
+                if (lev > rn2(20)) {
+                    await destroy_items(game.youmonst, ATTKS.AD_FIRE, orig_dmg);
+                    await ignite_items(game.invent || []);
+                }
+                if (dmg)
+                    await mdamageu(mtmp, dmg);
+            }
+        }
+        break;
+
+    default:
+        break;
     }
 
-    note_unported_mhitu(`gazemu:adtyp=${mattk[1]} cancelled=${cancelled ? 1 : 0}`);
+    if (react >= 0) {
+        if (Hallucination() && rn2(3))
+            react = rn2(reactions.length);
+        let modifier;
+        if (!rn2(3)) {
+            modifier = '';
+        } else if (already) {
+            modifier = 'quite ';
+        } else {
+            modifier = !rn2(2) ? 'a bit ' : 'somewhat ';
+        }
+        await pline(`${Monnam(mtmp)} looks ${modifier}${reactions[react]}.`);
+    }
     return M_ATTK_MISS;
 }
 

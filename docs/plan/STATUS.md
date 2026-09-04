@@ -1,5 +1,39 @@
 # STATUS — live handoff board
 
+## 2026-09-03: hero polymorph traps dispatch through `dotrap`
+
+A source-backed amorous-demon payment fixture exposed a shared trap dispatcher
+gap. During seduction, an incubus replaced the hero's ring of levitation while
+the hero stood over a polymorph trap. C landed the hero, activated the trap,
+accepted the controlled leprechaun form, and then took the special payment
+guard. JavaScript landed the hero but never called its already complete
+`trapeffect_poly_trap()` implementation. The targeted segment therefore matched
+only **200/224 screens** and **5,291/5,316 RNG**. `dotrap()` now dispatches
+`POLY_TRAP` through that existing helper, making the segment exact at
+**224/224 screens** and **5,316/5,316 RNG**.
+
+Two permanent C fixtures cover hostile full payment, the peaceful one-fifth
+discount, a truly tame demon's payment waiver, direct conversation, the
+mid-seduction leprechaun guard, controlled hero polymorph, paralysis, deaf
+wording, and an unseen introduction. Together they add **918 screens** and
+**20,936 RNG calls**, all byte-identical. Explicit C branch evidence grows from
+**898/898 to 907/907**.
+
+Full verification at local commit `5b669251`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**381/381**, **88,022/88,022 screens**, and **4,568,037/4,568,037 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is 80/80,
+source and state audits pass, all ten audit and recorder-integrity tests pass,
+and frozen files are unchanged.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It was scored at
+2026-09-03T16:41:33.829Z and predates this unpushed checkpoint. No hidden gain
+is claimed. Next, rerun the source RNG and reached-unported censuses, then build
+the smallest C oracle that can expose the highest-value uncovered path before
+editing runtime code.
+
 ## 2026-09-03: amorous-demon seduction is byte-identical to C
 
 The monster-against-hero dispatcher now handles `AD_SSEX` through the pinned

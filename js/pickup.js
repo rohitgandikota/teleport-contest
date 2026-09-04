@@ -647,7 +647,7 @@ export async function pickup_object(obj, count, telekinesis) {
 
     if (obj === game.uchain)
         return 0;                       /* do not pick up attached chain */
-    if (obj.oartifact && !touch_artifact(obj, game.youmonst))
+    if (obj.oartifact && !await touch_artifact(obj, game.youmonst))
         return 0;
     if (obj.otyp === ONAMES.SCR_SCARE_MONSTER) {
         const carried = await carry_count_floor(

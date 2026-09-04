@@ -279,7 +279,7 @@ export async function ready_weapon(wep) {
         await You(`cannot wield a two-handed ${is_sword(wep) ? "sword"
                   : wep.otyp === ONAMES.BATTLE_AXE ? "axe" : "weapon"} while wearing a shield.`);
         res = ECMD_FAIL;
-    } else if (!retouch_object(wep, false)) {
+    } else if (!await retouch_object(wep, false)) {
         /* src/wield.c:191 — an artifact that resists handling still costs
            the turn */
         res = ECMD_TIME;

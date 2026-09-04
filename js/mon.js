@@ -1225,7 +1225,7 @@ export function meatmetal(mtmp) {
             || (otmp.opoisoned && !resists_poison(mtmp)))
             continue;
         if (is_metallic(otmp) && !obj_resists(otmp, 5, 95)
-            && touch_artifact(otmp, mtmp)) {
+            && touch_artifact_mon(otmp, mtmp)) {
             if (game.mons[mtmp.mnum].pmidx === PMNAMES.PM_RUST_MONSTER
                 && otmp.oerodeproof) {
                 /* The object's rustproofing is gone now */
@@ -1302,7 +1302,7 @@ export async function meatobj(mtmp) {
         let engulf = !is_organic;
         if (!engulf && obj_resists(otmp, 5, 95))
             engulf = true;
-        if (!engulf && !touch_artifact(otmp, mtmp))
+        if (!engulf && !touch_artifact_mon(otmp, mtmp))
             engulf = true;
         if (!engulf && (otmp.otyp === ONAMES.AMULET_OF_STRANGULATION
                         || otmp.otyp === ONAMES.RIN_SLOW_DIGESTION))
@@ -1367,8 +1367,8 @@ function resists_poison(mon) {
 /* src/artifact.c:907 touch_artifact() — the real check lives in
    js/artifact.js; imported and re-exported to keep the established path
    while this file's own callers still see a local binding. */
-import { touch_artifact } from './artifact.js';
-export { touch_artifact };
+import { touch_artifact, touch_artifact_mon } from './artifact.js';
+export { touch_artifact, touch_artifact_mon };
 import { pick_nasty, mon_has_amulet } from './wizard.js';
 import { tt_doppel } from './topten.js';
 import { rloc_to } from './teleport.js';
@@ -1978,12 +1978,10 @@ export function can_touch_safely(mtmp, otmp) {
         && mon_hates_silver(mtmp)
         && (otyp !== ONAMES.BELL_OF_OPENING || !is_covetous(mdat)))
         return false;
-    /* touch_artifact() is ported above: it answers TRUE for anything that is
-       not an artifact, which is every object on an early level, and records
-       its own gap for a real artifact. Calling it is strictly better than
-       recording a second gap here, which was hiding the fact that the common
-       path was already answerable. */
-    if (!touch_artifact(otmp, mtmp))
+    /* Monster artifact contact uses the same role, alignment, and bane
+       predicates as the full hero path, but stays synchronous because C
+       rejects the monster without printing or applying damage. */
+    if (!touch_artifact_mon(otmp, mtmp))
         return false;
     return true;
 }

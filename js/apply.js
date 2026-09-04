@@ -3515,7 +3515,7 @@ export async function doapply() {
     if (!obj)
         return ECMD_CANCEL;
 
-    if (!retouch_object(obj, false))
+    if (!await retouch_object(obj, false))
         return ECMD_TIME; /* evading your grasp costs a turn; just be
                              grateful that you don't drop it as well */
 

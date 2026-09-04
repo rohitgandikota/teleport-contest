@@ -1365,7 +1365,7 @@ async function hitmu(mtmp, mattk, indx) {
             await urgent_pline('You feel feverish.');
             exercise(A_CON, false);
             set_ulycn(mdat.pmidx);
-            retouch_equipment(2);
+            await retouch_equipment(2);
         }
     } else if (mattk[1] === A.AD_STCK) {
         await hitmsg(mtmp, mattk, indx);

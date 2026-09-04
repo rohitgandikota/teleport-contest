@@ -1064,6 +1064,13 @@
     {"group":"Active monster gaze attacks","id":"combat.gaze.hallucination-suppressed","cFile":"src/mhitu.c","cFunction":"gazemu","description":"Fail the hallucination gate and suppress the gaze effect"},
     {"group":"Active monster gaze attacks","id":"combat.gaze.eyes-clear-blindness","cFile":"src/mhitu.c","cFunction":"gazemu","description":"Let the Eyes of the Overworld immediately clear Archon blindness and skip its stun roll"},
     {"group":"Monster artifact light","id":"monster.weapon.artifact-light-start","cFile":"src/weapon.c","cFunction":"mon_wield_item","description":"Start Sunsword's permanent light source and describe it when a visible monster wields the artifact"},
-    {"group":"Monster artifact light","id":"monster.weapon.artifact-light-stop","cFile":"src/weapon.c","cFunction":"setmnotwielded","description":"Remove Sunsword's light source and describe it stopping when a visible monster is disarmed"}
+    {"group":"Monster artifact light","id":"monster.weapon.artifact-light-stop","cFile":"src/weapon.c","cFunction":"setmnotwielded","description":"Remove Sunsword's light source and describe it stopping when a visible monster is disarmed"},
+    {"group":"Artifact touch","id":"artifact.touch.restricted-roll-miss","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Pass the one-in-four blast gate for a misaligned restricted non-intelligent artifact and keep the item"},
+    {"group":"Artifact touch","id":"artifact.touch.restricted-blast","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Fail the one-in-four gate, take four four-sided dice of damage from a restricted non-intelligent artifact, and keep the item"},
+    {"group":"Artifact touch","id":"artifact.touch.self-willed-class-only","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Take a self-willed blast from another role's same-aligned quest artifact without making it evade"},
+    {"group":"Artifact touch","id":"artifact.touch.antimagic","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Reduce a self-willed artifact touch blast from four damage dice to two under antimagic"},
+    {"group":"Artifact touch","id":"artifact.touch.self-willed-fatal","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Let a foreign self-willed quest artifact's four-die blast kill an unprotected low-level hero"},
+    {"group":"Artifact touch","id":"artifact.touch.self-willed-evade","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Make a foreign self-willed quest artifact evade when both role and alignment reject its holder"},
+    {"group":"Artifact touch","id":"artifact.touch.rightful-owner","cFile":"src/artifact.c","cFunction":"touch_artifact","description":"Let the matching quest role take its artifact without blast damage or refusal"}
   ]
 }

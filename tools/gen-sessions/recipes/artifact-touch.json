@@ -1,0 +1,122 @@
+{
+  "name": "artifact-touch",
+  "description": "Hero artifact-touch acceptance, blast damage, antimagic mitigation, and self-willed refusal.",
+  "coverage": [
+    "mode.debug",
+    "object.artifacts",
+    "survival.instant-deaths",
+    "survival.regen-exercise",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "artifact.touch.antimagic",
+    "artifact.touch.restricted-blast",
+    "artifact.touch.restricted-roll-miss",
+    "artifact.touch.rightful-owner",
+    "artifact.touch.self-willed-class-only",
+    "artifact.touch.self-willed-evade",
+    "artifact.touch.self-willed-fatal"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "artifact.touch.restricted-roll-miss",
+      "segment": 0,
+      "screenIncludes": ["a - a long sword named Sunsword."],
+      "screenExcludes": ["You are blasted by"],
+      "rngIncludes": ["rn2(4)=1 @ touch_artifact(artifact.c:945)"]
+    },
+    {
+      "branch": "artifact.touch.restricted-blast",
+      "segment": 1,
+      "screenIncludes": [
+        "You are blasted by the long sword named Sunsword's power!",
+        "a - a long sword named Sunsword."
+      ],
+      "rngIncludes": [
+        "rn2(4)=0 @ touch_artifact(artifact.c:945)",
+        "d(4,4)=9 @ touch_artifact(artifact.c:953)"
+      ]
+    },
+    {
+      "branch": "artifact.touch.self-willed-class-only",
+      "segment": 2,
+      "screenIncludes": [
+        "You are blasted by the pair of lenses named the Eyes of the Overworld's power!",
+        "b - a pair of lenses named the Eyes of the Overworld."
+      ],
+      "screenExcludes": ["evades your grasp"]
+    },
+    {
+      "branch": "artifact.touch.antimagic",
+      "segment": 2,
+      "rngIncludes": ["d(2,10)=10 @ touch_artifact(artifact.c:953)"]
+    },
+    {
+      "branch": "artifact.touch.self-willed-fatal",
+      "segment": 3,
+      "screenIncludes": [
+        "You are blasted by the glass orb named the Orb of Detection's power!",
+        "You die..."
+      ],
+      "rngIncludes": ["d(4,10)=21 @ touch_artifact(artifact.c:953)"]
+    },
+    {
+      "branch": "artifact.touch.self-willed-evade",
+      "segment": 4,
+      "screenIncludes": [
+        "You are blasted by the glass orb named the Orb of Detection's power!",
+        "The glass orb named the Orb of Detection evades your grasp!"
+      ],
+      "rngIncludes": ["d(2,10)=10 @ touch_artifact(artifact.c:953)"]
+    },
+    {
+      "branch": "artifact.touch.rightful-owner",
+      "segment": 5,
+      "screenIncludes": [
+        "The power of the Orb of Detection flows through your body!",
+        "a - a glass orb named the Orb of Detection."
+      ],
+      "screenExcludes": ["You are blasted by", "evades your grasp"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99811,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Sunsword\r   :"
+    },
+    {
+      "seed": 99815,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Monk,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed Sunsword\r   :"
+    },
+    {
+      "seed": 99818,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of magic resistance\rWa \u0017blessed The Eyes of the Overworld\r   :"
+    },
+    {
+      "seed": 99812,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r   :"
+    },
+    {
+      "seed": 99813,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed cloak of magic resistance\rWa \u0017blessed The Orb of Detection\r   :"
+    },
+    {
+      "seed": 99814,
+      "datetime": "20000110090000",
+      "nethackrc": "OPTIONS=name:Desired,role:Archeologist,race:human,gender:male,align:lawful,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed The Orb of Detection\r   :"
+    }
+  ]
+}

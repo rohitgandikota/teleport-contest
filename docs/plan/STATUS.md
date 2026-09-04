@@ -1,5 +1,46 @@
 # STATUS — live handoff board
 
+## 2026-09-04: artifact touch blasts and refusal match C
+
+Hero artifact contact now follows pinned `touch_artifact()` for role, race,
+alignment, self-will, monster bane, and monster eligibility checks. Restricted
+non-intelligent artifacts preserve the one-in-four blast gate. Self-willed
+artifacts always blast an incompatible hero. Antimagic changes the damage
+from four dice to two, the die size follows artifact intelligence, silver
+adds its form-sensitive damage bonus, fatal damage uses the artifact name as
+the killer, and wisdom abuse occurs after damage. An artifact rejected by
+both class and alignment now evades a floor pickup or moves beyond the
+holder's control. Monster-only decisions use the same predicates through a
+synchronous wrapper because C never prints or damages the monster in this
+path.
+
+The initial four-segment probe matched only **6,084/11,377 RNG calls** and
+**160/170 screens** before the marker-only blast path was replaced. The
+permanent six-segment `artifact-touch` fixture now asserts seven concrete C
+branches and is byte-identical at **16,839/16,839 RNG calls**,
+**273/273 screens**, and **273/273 cursors**. It pins both outcomes of the
+restricted-artifact roll, a same-aligned foreign quest artifact that blasts
+but stays held, an unprotected fatal quest-artifact blast, antimagic damage,
+self-willed refusal, and the rightful-owner control. Declared evidence remains
+**99/106 mechanics categories**, with seven partial, and rises from
+**1,046/1,046 to 1,053/1,053 explicit C branches**. The source RNG census now
+observes **1,537/2,621 call sites (58.6%)**, with 5,844,511 tagged RNG calls
+across 435 public and supplemental sessions.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**391/391**, **100,211/100,211 screens**, and **5,051,673/5,051,673 RNG**;
+random play **101/102** with only the known fixed-datetime DST screen miss.
+The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles, source and
+state audits pass, all ten audit and recorder tests pass, and frozen files are
+unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This artifact-touch batch is local
+and unjudged, so no hidden gain is claimed. The adjacent evidence-backed
+target is `retouch_object()`: its silver and bane damage sites remain
+unobserved, as does the silver bonus inside `touch_artifact()`.
+
 ## 2026-09-04: active monster gazes and monster artifact light match C
 
 The complete compiled `gazemu()` table now follows pinned C for Medusa

@@ -1,0 +1,53 @@
+{
+  "name": "revival-bag-of-holding",
+  "description": "A debug Wizard puts an auto-reviving troll corpse into a bag of holding before its timer fires, covering the rare-container revival check and the ordinary failed-revival timeout path.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "object.food-corpses",
+    "object.tools-containers",
+    "turn.timers",
+    "ui.getlin",
+    "ui.menus"
+  ],
+  "branches": [
+    "object.revival.bag-of-holding-allow",
+    "object.revival.bag-of-holding-reject",
+    "object.revival.failed-timer-to-rot"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "object.revival.bag-of-holding-reject",
+      "segment": 0,
+      "screenIncludes": ["You feel less hassled."],
+      "rngIncludes": ["rn2(40)=35 @ revive(zap.c:952)"]
+    },
+    {
+      "branch": "object.revival.failed-timer-to-rot",
+      "segment": 0,
+      "screenIncludes": ["You feel less hassled."],
+      "rngIncludes": ["d(5,50)=141 @ revive_mon(do.c:2288)"]
+    },
+    {
+      "branch": "object.revival.bag-of-holding-allow",
+      "segment": 1,
+      "screenIncludes": ["A troll writhes out of a bag in your pack!"],
+      "rngIncludes": ["rn2(40)=0 @ revive(zap.c:952)"]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99923,
+      "datetime": "20000118091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,debug_hunger,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017uncursed troll corpse\r aasb 60. :"
+    },
+    {
+      "seed": 99952,
+      "datetime": "20000118091000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,debug_hunger,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017empty uncursed bag of holding\r\u0017uncursed troll corpse\r aasb 60. :"
+    }
+  ]
+}

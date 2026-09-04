@@ -1,5 +1,38 @@
 # STATUS — live handoff board
 
+## 2026-09-04: revival container and undead-self branches pinned to C
+
+Two new deterministic C fixtures close the remaining RNG sites in the
+`revive()` and `unturn_you()` family without changing already-correct runtime
+code. `wand-self-undead-dread` distinguishes a living hero's dread response
+from a vampire form's rolled stun. `revival-bag-of-holding` pins both outcomes
+of the container's one-in-forty check: the common rejection followed by the
+five-die rot timeout, and the rare zero result where a troll writhes out of the
+carried bag.
+
+The four new segments are byte-identical at **11,583/11,583 RNG calls**,
+**320/320 screens**, and **320/320 cursors**. Five asserted branches were
+added: living dread, undead stun, bag rejection, failed-revival conversion to
+rot, and rare bag revival. Declared evidence remains **99/106 mechanics
+categories**, with seven partial, and rises from **1,059/1,059 to
+1,064/1,064 explicit C branches**. The source RNG census rises from
+**1,540/2,621 to 1,542/2,621 observed call sites (58.8%)**. The corpus now has
+438 public and supplemental sessions with 5,868,530 tagged RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**394/394**, **101,012/101,012 screens**, and **5,075,692/5,075,692 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST screen artifact. The hang gate is 44/44, fresh-seed smoke
+is 80/80 across 13 roles, all ten audit and recorder tests pass, the source
+audit is clean, and frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. These fixtures are local and
+unjudged, so no hidden gain is claimed. The next evidence-backed runtime gap
+is `zap.c`'s `boomhit()`, which is absent from `js/` and is currently replaced
+by a marker-only boomerang throw path.
+
 ## 2026-09-04: artifact retouch damage and forced drops match C
 
 `retouch_object()` now follows pinned C when a form or alignment change makes

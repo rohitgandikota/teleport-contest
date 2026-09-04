@@ -5172,6 +5172,7 @@ export async function dobuzz(type,     /* 0..29 (by hero) or -39..-10 (by monste
                                         zap_colors[hdmgtype] ?? HI_ZAP, 'zap');
                         beam_cells.push([sx, sy]);
                     }
+                    await flush_screen(0);
                     await game.animationFrame(); /* wait a little */
                 }
 

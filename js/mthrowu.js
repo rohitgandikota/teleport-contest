@@ -47,7 +47,7 @@ import { omon_adj } from './dothrow.js';
 import { dobuzz, hit, miss, exclam } from './zap.js';
 import { distant_name, mshot_xname, simpleonames, xname, an, the } from './objnam.js';
 import { pline, canspotmon, display_object_at, temporary_object_glyph,
-         newsym } from './display.js';
+         newsym, flush_screen } from './display.js';
 import { pline_The, You } from './pline.js';
 import { seemimic, setmangry, xkilled, mondied } from './mon.js';
 import { dmgval } from './weapon.js';
@@ -495,8 +495,10 @@ export async function m_throw(mon, x, y, dx, dy, range, obj) {
         display_object_at(singleobj, game.bhitpos.x, game.bhitpos.y,
                           missileGlyph);
         tempMissile = { x: game.bhitpos.x, y: game.bhitpos.y };
-        if (game.animationFrame)
+        if (game.animationFrame) {
+            await flush_screen(0);
             await game.animationFrame();
+        }
     };
     const end_missile = () => {
         if (tempMissile) {

@@ -1,0 +1,105 @@
+{
+  "name": "swallowed-projectile-transfer",
+  "description": "Thrown daggers and failed-return aklyses enter an engulfing purple worm's inventory, fall with its death drop, and can be recovered after regurgitation.",
+  "coverage": [
+    "combat.ranged",
+    "level.ordinary",
+    "mode.debug",
+    "monster.hero-melee",
+    "monster.movement",
+    "monster.special-effects",
+    "object.wands",
+    "object.weapons",
+    "ui.animation",
+    "ui.getlin",
+    "ui.map-memory-vision"
+  ],
+  "branches": [
+    "dothrow.swallowit.nonreturning",
+    "dothrow.swallowit.initial-return-failure",
+    "dothrow.swallowit.return-feet",
+    "dothrow.swallowit.return-arm"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "dothrow.swallowit.nonreturning",
+      "segment": 0,
+      "screenIncludes": [
+        "The dagger hits the purple worm.",
+        "Things that are here:",
+        "a purple worm corpse",
+        "a - a dagger"
+      ],
+      "rngIncludes": ["rnd(20)=19 @ thitmonst(dothrow.c:2152)"]
+    },
+    {
+      "branch": "dothrow.swallowit.initial-return-failure",
+      "segment": 1,
+      "screenIncludes": [
+        "The thonged club fails to return!",
+        "Things that are here:",
+        "a purple worm corpse",
+        "a - a thonged club"
+      ],
+      "rngIncludes": ["rn2(100)=0 @ throwit(dothrow.c:1711)"]
+    },
+    {
+      "branch": "dothrow.swallowit.return-feet",
+      "segment": 2,
+      "screenIncludes": [
+        "The thonged club returns back to you, landing at your feet.",
+        "Things that are here:",
+        "a purple worm corpse",
+        "a - a thonged club"
+      ],
+      "rngIncludes": [
+        "rn2(100)=51 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=0 @ throwit(dothrow.c:1730)"
+      ]
+    },
+    {
+      "branch": "dothrow.swallowit.return-arm",
+      "segment": 3,
+      "screenIncludes": [
+        "The thonged club flies back toward you, hitting your arm!",
+        "Things that are here:",
+        "a purple worm corpse",
+        "a - a thonged club"
+      ],
+      "rngIncludes": [
+        "rn2(100)=7 @ throwit(dothrow.c:1711)",
+        "rn2(100)=0 @ throwit(dothrow.c:1717)",
+        "rn2(2)=1 @ throwit(dothrow.c:1730)",
+        "rnd(3)=1 @ throwit(dothrow.c:1739)"
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 6930,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed +5 dagger\r\u0017blessed wand of opening\r\u0017blessed wand of death (0:3)\r\u0007purple worm\rmsms tal  zb.  zch  h ,a\ri\u001b"
+    },
+    {
+      "seed": 31,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007purple worm\rmsms \u0017blessed +5 aklys\rwa tal  \u0017blessed wand of opening\r\u0017blessed wand of death (0:3)\rzb.  zck  k ,a\ri\u001b"
+    },
+    {
+      "seed": 11,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007purple worm\rmsms \u0017blessed +5 aklys\rwa tal  \u0017blessed wand of opening\r\u0017blessed wand of death (0:3)\rzb.  zcj  j ,a\ri\u001b"
+    },
+    {
+      "seed": 49,
+      "datetime": "20000112093000",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender=male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none,debug_mongen,pauper,nudist,!autoquiver\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0007purple worm\rmsms \u0017blessed +5 aklys\rwa tal  \u0017blessed wand of opening\r\u0017blessed wand of death (0:3)\rzb.  zcb  b ,a\ri\u001b"
+    }
+  ]
+}

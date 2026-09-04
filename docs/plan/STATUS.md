@@ -1,5 +1,46 @@
 # STATUS — live handoff board
 
+## 2026-09-04: swallowed projectile ownership and flight animation match C
+
+`throwit()` now follows `swallowit()` for ordinary missiles and both failed
+aklys return paths. The object enters the engulfing monster's inventory
+instead of appearing on the floor or disappearing. The new oracle forces the
+worm to regurgitate the hero, kills it, walks onto its death drop, picks up the
+original projectile, and verifies the recovered inventory. This tests object
+ownership after the throw rather than inferring it from a hit message.
+
+The same probe exposed two shared display-order bugs. Hero beam flight in
+`dobuzz()` and monster missile flight in `m_throw()` now flush the glyph buffer
+before recording each animation frame, as the C tty does before
+`nh_delay_output()`. Public animation matching rises from **96/1,483 to
+143/1,483**, and supplemental animation matching rises from **920/3,084 to
+1,117/3,105**, so the improvement extends well beyond the new fixture.
+
+The four-segment `swallowed-projectile-transfer` fixture is byte-identical at
+**11,527/11,527 RNG calls**, **646/646 screens**, **646/646 cursors**, and
+**21/21 animation frames**. It covers a nonreturning dagger, initial aklys
+return failure, failed catch at the feet, and failed catch against the arm.
+Four asserted branches raise the declared ledger from **1,103/1,103 to
+1,107/1,107** with no gaps. The source RNG census rises from 1,547 to
+**1,548/2,621 observed call sites (59.1%)**. The combined public and
+supplemental corpus now has 441 sessions and 5,975,543 tagged RNG calls.
+
+Full verification on the working tree: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**397/397**, **103,658/103,658 screens**, and
+**5,182,705/5,182,705 RNG**; random play **101/102** and
+**14,261/14,262 screens**, with only the known fixed-datetime DST screen
+artifact. The hang gate is 44/44, fresh-seed smoke is 80/80 across 13 roles,
+all ten audit and recorder tests pass, source and state audits are clean, and
+frozen files are unchanged.
+
+The latest judged hidden result remains **8,498/11,265**, **16/44**, rank 3
+overall and rank 1/9 among agentic entries. This local extension is unjudged.
+The broad animation gain makes the next evidence-backed task a census of the
+remaining animation capture sites, followed by direct C-frame probes for any
+path that paints without flushing. The six-hour dashboard heartbeat remains
+active.
+
 ## 2026-09-04: return-weapon edge table and swallowed contact match C
 
 The return-weapon path now handles a throw made while swallowed by targeting

@@ -856,9 +856,7 @@ function get_option_value(o) {
     case 'soundlib':                /* src/options.c:3824 optfn_soundlib */
         return 'nosound';           /* get_soundlib_name(): no soundlib built */
     case 'boulder':                 /* src/options.c optfn_boulder */
-        /* ov_primary_syms override, else showsyms[ROCK_CLASS]; nothing
-           ported writes either, so the default boulder symbol stands */
-        return '`';
+        return game.boulder_symbol || '`';
     case 'crash_urlmax':            /* src/options.c optfn_crash_urlmax */
         return String(game.crash_urlmax ?? -1);     /* decl.c:261 default */
     case 'disclose': {              /* src/options.c optfn_disclose */

@@ -457,7 +457,7 @@ export function defended(mon, adtyp) {
 // src/mondata.c:278 resists_blnd_by_arti() — light-blindness resistance from
 // worn or wielded magical equipment.
 export function resists_blnd_by_arti(mon) {
-    const is_you = (mon === game.u || mon === null);
+    const is_you = (mon === game.youmonst || mon === game.u || mon === null);
 
     let o = is_you ? game.u.uwep : MON_WEP(mon);
     if (o && o.oartifact && defends(ATTKS.AD_BLND, o))
@@ -470,9 +470,10 @@ export function resists_blnd_by_arti(mon) {
 }
 
 // src/mondata.c:248 resists_blnd() — resistant to light-induced blindness.
-// Pass game.u (or null) for the hero, mirroring C's &gy.youmonst.
+// game.youmonst mirrors C's &gy.youmonst. Existing callers may also pass
+// game.u or null for the hero.
 export function resists_blnd(mon) {
-    const is_you = (mon === game.u || mon === null);
+    const is_you = (mon === game.youmonst || mon === game.u || mon === null);
     const ptr = is_you ? game.mons[game.u.umonnum] : mon.data;
 
     if (is_you ? (!!game.u.ublind || Unaware())

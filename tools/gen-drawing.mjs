@@ -26,6 +26,17 @@ const OUT = join(ROOT, 'js/drawing_data.js');
 
 const src = readFileSync(SRC, 'utf8');
 
+/* include/color.h values used by defsym.h. Keep the aliases here because
+   generated drawing data is consumed without importing terminal.js. */
+const COLORS = {
+    CLR_BLACK: 0, CLR_RED: 1, CLR_GREEN: 2, CLR_BROWN: 3,
+    CLR_BLUE: 4, CLR_MAGENTA: 5, CLR_CYAN: 6, CLR_GRAY: 7,
+    NO_COLOR: 8, CLR_ORANGE: 9, CLR_BRIGHT_GREEN: 10, CLR_YELLOW: 11,
+    CLR_BRIGHT_BLUE: 12, CLR_BRIGHT_MAGENTA: 13,
+    CLR_BRIGHT_CYAN: 14, CLR_WHITE: 15,
+    HI_METAL: 6, HI_GOLD: 11, HI_WOOD: 3, HI_ZAP: 12,
+};
+
 /* A C character literal: 'a', ']', '\\' or '\''. */
 const CH = String.raw`'(\\.|[^'\\])'`;
 
@@ -65,30 +76,30 @@ const oclasses = [
         String.raw`^\s+OBJCLASS2\(\s*(\d+),\s*(${CH}),\s*(\w+),\s*\w+,\s*(\w+)`, 'gm')),
 ].sort((a, b) => a.idx - b.idx);
 
-/* the OBJCLASS explanation strings ("weapon", "boulder or statue") — the
-   LAST quoted string of each invocation, which may sit on a wrapped line */
+/* OBJCLASS names ("weapons") and explanations ("weapon"), indexed by the C
+   class number. The quoted fields may sit on a wrapped line. */
+const oc_names = [];
 const oc_explain = [];
 {
-    const re = new RegExp(
-        String.raw`OBJCLASS2?\(\s*(\d+),\s*${CH}[\s\S]*?"([^"]*)"\s*,?\s*"?([^")]*)"?\s*\)`, 'g');
-    /* simpler and safer: join wrapped lines, then match per entry */
     const joined = src.replace(/,\s*\n\s+/g, ', ');
     const re2 = new RegExp(
-        String.raw`OBJCLASS2?\(\s*(\d+),\s*${CH},\s*\w+,(?:\s*\w+,)?\s*S_\w+,\s*"[^"]*",\s*"([^"]*)"\s*\)`, 'g');
+        String.raw`OBJCLASS2?\(\s*(\d+),\s*${CH},\s*\w+,(?:\s*\w+,)?\s*S_\w+,\s*"([^"]*)",\s*"([^"]*)"\s*\)`, 'g');
     let m;
-    while ((m = re2.exec(joined)) !== null)
+    while ((m = re2.exec(joined)) !== null) {
+        oc_names[Number(m[1])] = m[m.length - 2];
         oc_explain[Number(m[1])] = m[m.length - 1];
+    }
 }
 
-/* include/defsym.h PCHAR/PCHAR2 — the cmap: index, default ASCII symbol, and
-   explanation ("staircase up"). PCHAR2's explanation is its FIFTH argument
-   (the fourth is the tile name); PCHAR's is its fourth. Wrapped invocations
-   are joined first. */
+/* include/defsym.h PCHAR/PCHAR2: cmap index, default ASCII symbol,
+   explanation ("staircase up"), and color. PCHAR2's explanation is its fifth
+   argument (the fourth is the tile name); PCHAR's is its fourth. Wrapped
+   invocations are joined first. */
 const defsyms = [];
 {
     const joined = src.replace(/,\s*\n\s+/g, ', ');
     const re = new RegExp(
-        String.raw`PCHAR(2?)\(\s*(\d+),\s*(${CH}),\s*(S_\w+),\s*"([^"]*)"(?:,\s*"([^"]*)")?`, 'g');
+        String.raw`PCHAR(2?)\(\s*(\d+),\s*(${CH}),\s*(S_\w+),\s*"([^"]*)"(?:,\s*"([^"]*)")?,\s*(\w+)\s*\)`, 'g');
     let m;
     while ((m = re.exec(joined)) !== null) {
         const two = m[1] === '2';
@@ -97,9 +108,12 @@ const defsyms = [];
         if (ch.startsWith('\\')) ch = ({ '\\\\': '\\', "\\'": "'" })[ch] ?? ch[1];
         const name = m[5];
         const explain = two ? (m[7] ?? '') : m[6];
+        const color = COLORS[m[8]];
+        if (color === undefined)
+            throw new Error(`unknown defsym color ${m[8]}`);
         /* sym: defsym.h's default ASCII character (what a user types to ask
            about a feature); ch/dec: the DECgraphics showsym actually drawn */
-        defsyms[idx] = { name, sym: ch, ch, dec: false, explain };
+        defsyms[idx] = { name, sym: ch, ch, dec: false, explain, color };
     }
 }
 
@@ -166,10 +180,13 @@ export const monexplain = ${JSON.stringify(monexplain)};
 // OBJCLASS explanation strings, indexed like def_oc_syms ("weapon")
 export const oc_explain = ${JSON.stringify(oc_explain)};
 
+// OBJCLASS names, indexed like def_oc_syms ("weapons")
+export const oc_names = ${JSON.stringify(oc_names)};
+
 // include/defsym.h PCHAR entries with dat/symbols DECgraphics overrides
-// applied: the displayed { ch, dec } pair and the explanation string for
-// each cmap index. This IS gs.showsyms[] plus defsyms[].explanation for the
-// symset the reference build records with.
+// applied: the displayed { ch, dec } pair, explanation, and pinned C color
+// for each cmap index. This is gs.showsyms[] plus the relevant defsyms[]
+// fields for the symset the reference build records with.
 export const defsyms = ${JSON.stringify(defsyms)};
 
 // S_* name -> cmap index

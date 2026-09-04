@@ -959,14 +959,16 @@ export function do_screen_description(cc, looked, sym) {
     }
 
     /* Now check for objects */
+    const boulderSym = game.boulder_symbol
+                       || def_oc_syms[OCLASSES.ROCK_CLASS];
     for (let i = 1; i < def_oc_syms.length; i++) {
         const matched = (i !== OCLASSES.ROCK_CLASS)
             ? (sympair.ch === def_oc_syms[i] && !sympair.dec)
-            : (!!glyph?.statue || (sympair.ch === def_oc_syms[OCLASSES.ROCK_CLASS] && !sympair.dec));
+            : (!!glyph?.statue || (sympair.ch === boulderSym && !sympair.dec));
         if (matched) {
             let oc_ptr = oc_explain[i];
             if (i === OCLASSES.ROCK_CLASS && oc_ptr === 'boulder or statue') {
-                if (sympair.ch === def_oc_syms[OCLASSES.ROCK_CLASS] && !sympair.dec)
+                if (sympair.ch === boulderSym && !sympair.dec)
                     oc_ptr = 'boulder';
                 else if (glyph?.statue)
                     oc_ptr = 'statue';

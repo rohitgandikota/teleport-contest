@@ -936,22 +936,26 @@ function vobj_at(x, y) {
            || null;
 }
 
-function floor_object_glyph(obj, x, y, piletop = true) {
-    /* include/display.h random_obj_to_glyph(): every object is shown as a
-       random object while hallucinating. CORPSE is the one random type that
-       needs another display-RNG draw to choose the body species. */
-    if (Hallucination()) {
-        const otyp = rn2_on_display_rng(
-            ONAMES.NUM_OBJECTS - ONAMES.FIRST_OBJECT) + ONAMES.FIRST_OBJECT;
-        obj = {
-            otyp,
-            oclass: game.objects?.[otyp]?.oc_class,
-            corpsenm: otyp === ONAMES.CORPSE
-                ? rn2_on_display_rng(NUMMONS) : -1,
-            quan: 1,
-            dknown: 1,
-        };
-        piletop = false;
+function floor_object_glyph(obj, x, y, piletop = true,
+                            suppressHallucination = false) {
+    if (!suppressHallucination && Hallucination()) {
+        /* include/display.h statue_to_glyph(): hallucinated statues look
+           like random monsters. C consumes a second display-RNG draw for
+           the monster glyph's gender even though tty symbol and color do
+           not distinguish the two glyph ranges. */
+        if (obj.otyp === ONAMES.STATUE) {
+            const mnum = rn2_on_display_rng(NUMMONS);
+            rn2_on_display_rng(2);
+            const mptr = game.mons?.[mnum];
+            return {
+                ch: mptr ? (def_monsyms[mptr.mlet] || '?') : '?',
+                color: mptr?.mcolor ?? NO_COLOR,
+                dec: false,
+                glyph: { kind: 'mon', hallucinated_statue: true, mnum },
+                attr: 0,
+            };
+        }
+        return random_object_glyph(x, y);
     }
     /* src/display.c:340 _map_location() — if the object would display as
        generic but the hero can see the spot from nearby (same radius as
@@ -981,6 +985,10 @@ function floor_object_glyph(obj, x, y, piletop = true) {
     const glyphClass = oc?.oc_class ?? obj.oclass;
     let color = oc?.oc_color ?? NO_COLOR;
     let sym = def_oc_syms[glyphClass] || '?';
+    /* src/display.c:2806 map_glyphinfo(). A configured boulder symbol
+       replaces the ordinary rock-class symbol for boulders only. */
+    if (obj.otyp === ONAMES.BOULDER)
+        sym = game.boulder_symbol || sym;
     /* the glyph descriptor mirrors C's obj_to_glyph(): a statue and a corpse
        get their own glyph ranges (GLYPH_STATUE_OFF / GLYPH_BODY_OFF), which
        is what glyph_is_statue() tests in do_screen_description() */
@@ -1021,6 +1029,33 @@ function floor_object_glyph(obj, x, y, piletop = true) {
     }
     return { ch: sym, color, dec: false, glyph: gdesc,
              attr: pile_attr(gdesc) };
+}
+
+/* include/display.h random_obj_to_glyph(). This deliberately bypasses the
+   hallucination dispatch in floor_object_glyph(): a random CORPSE needs one
+   additional display-RNG draw for its body species. */
+function random_object_glyph(x, y) {
+    const otyp = rn2_on_display_rng(
+        ONAMES.NUM_OBJECTS - ONAMES.FIRST_OBJECT) + ONAMES.FIRST_OBJECT;
+    const obj = {
+        otyp,
+        oclass: game.objects?.[otyp]?.oc_class,
+        corpsenm: otyp === ONAMES.CORPSE
+            ? rn2_on_display_rng(NUMMONS) : -1,
+        quan: 1,
+        dknown: 1,
+    };
+    return floor_object_glyph(obj, x, y, false, true);
+}
+
+/* src/display.c map_object(). A hallucinated statue's visible monster glyph
+   and remembered random-object glyph are intentionally different. */
+function mapped_object_glyphs(obj, x, y, piletop = true) {
+    const shown = floor_object_glyph(obj, x, y, piletop);
+    const remembered = game.level?.flags?.hero_memory
+        && Hallucination() && obj.otyp === ONAMES.STATUE
+        ? random_object_glyph(x, y) : shown;
+    return { shown, remembered };
 }
 
 /* swallowed() state: last drawn position (C statics) */
@@ -1220,16 +1255,20 @@ export function newsym(x, y) {
         const under = covers_objects(x, y) ? null : vobj_at(x, y);
         /* src/display.c:422 map_location(): objects, then the engraving,
            then the background */
-        const tg = under ? floor_object_glyph(under, x, y)
-                         : (engraving_glyph(loc, x, y) ?? terrain_glyph(loc, x, y));
+        const mapped = under ? mapped_object_glyphs(under, x, y) : null;
+        const tg = mapped?.shown
+                   ?? (engraving_glyph(loc, x, y) ?? terrain_glyph(loc, x, y));
+        const memg = mapped?.remembered ?? tg;
         if (canspotself())
             display_self(); /* the steed, the disguise, or the hero */
         else
             show_glyph_cell(x, y, tg.ch, tg.color, tg.dec, pile_attr(tg.glyph),
                             tg.glyph ?? { kind: 'cmap', cmap: tg.cmap });
-        loc.remembered_glyph = { ch: tg.ch, color: tg.color, decgfx: tg.dec,
-                                 glyph: tg.glyph
-                                     ?? { kind: 'cmap', cmap: tg.cmap } };
+        if (game.level?.flags?.hero_memory)
+            loc.remembered_glyph = { ch: memg.ch, color: memg.color,
+                                     decgfx: memg.dec,
+                                     glyph: memg.glyph
+                                         ?? { kind: 'cmap', cmap: memg.cmap } };
         update_lastseentyp(x, y);   /* _map_location(x, y, !see_self) */
         return;
     }
@@ -1284,13 +1323,13 @@ export function newsym(x, y) {
         const seenTrap = !obj ? t_at(x, y) : null;
         const trapg = seenTrap?.tseen && !covers_traps(x, y)
             ? trap_glyph(seenTrap) : null;
-        const memg = obj ? floor_object_glyph(obj, x, y)
-            : trapg ? {
+        const mapped = obj ? mapped_object_glyphs(obj, x, y) : null;
+        const memg = mapped?.remembered ?? (trapg ? {
                 ...trapg,
                 glyph: { kind: 'cmap', cmap: trapg.cmap },
             }
                 : (engraving_glyph(loc, x, y)
-                   || terrain_glyph(loc, x, y));
+                   || terrain_glyph(loc, x, y)));
         if (game.level?.flags?.hero_memory)
             loc.remembered_glyph = { ch: memg.ch, color: memg.color,
                                      decgfx: memg.dec,
@@ -1311,14 +1350,17 @@ export function newsym(x, y) {
                                oclass: OCLASSES.RANDOM_CLASS,
                                corpsenm: mon.mcorpsenm ?? PMNAMES.PM_TENGU,
                                quan: 1, dknown: 0 };
-                const g = floor_object_glyph(fake, x, y, false);
+                const mappedFake = mapped_object_glyphs(fake, x, y, false);
+                const g = mappedFake.shown;
                 /* display_monster() maps a mimic's fake object into hero
                    memory before drawing it. That memory survives a level
                    change even when the terminal still holds an older cell. */
                 if (game.level?.flags?.hero_memory)
                     loc.remembered_glyph = {
-                        ch: g.ch, color: g.color, decgfx: g.dec,
-                        glyph: g.glyph,
+                        ch: mappedFake.remembered.ch,
+                        color: mappedFake.remembered.color,
+                        decgfx: mappedFake.remembered.dec,
+                        glyph: mappedFake.remembered.glyph,
                     };
                 show_glyph_cell(x, y, g.ch, g.color, g.dec ?? false, g.attr,
                                 g.glyph ?? { kind: 'obj', otyp: fake.otyp });
@@ -1348,8 +1390,9 @@ export function newsym(x, y) {
         }
 
         if (obj) {
-            show_glyph_cell(x, y, memg.ch, memg.color, memg.dec,
-                            memg.attr, memg.glyph);
+            const shown = mapped.shown;
+            show_glyph_cell(x, y, shown.ch, shown.color, shown.dec,
+                            shown.attr, shown.glyph);
             return;
         }
     } else {
@@ -1922,9 +1965,10 @@ export function feel_location(x, y) {
     /* _map_location(x, y, 1) */
     const obj = covers_objects(x, y) ? null : vobj_at(x, y);
     const trap = t_at(x, y);
-    const memg = obj ? floor_object_glyph(obj, x, y)
-        : (trap && trap.tseen) ? trap_glyph(trap)
-        : (engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y));
+    const mapped = obj ? mapped_object_glyphs(obj, x, y) : null;
+    const memg = mapped?.remembered
+        ?? ((trap && trap.tseen) ? trap_glyph(trap)
+            : (engraving_glyph(loc, x, y) || terrain_glyph(loc, x, y)));
     if (game.level?.flags?.hero_memory)
         loc.remembered_glyph = { ch: memg.ch, color: memg.color,
                                  decgfx: memg.dec,
@@ -1940,8 +1984,9 @@ export function feel_location(x, y) {
     if (sensed) {
         newsym(x, y);
     } else {
-        show_glyph_cell(x, y, memg.ch, memg.color, memg.dec ?? false,
-                        pile_attr(memg.glyph), memg.glyph
+        const shown = mapped?.shown ?? memg;
+        show_glyph_cell(x, y, shown.ch, shown.color, shown.dec ?? false,
+                        pile_attr(shown.glyph), shown.glyph
                             ?? { kind: 'cmap', cmap: memg.cmap });
     }
 
@@ -2599,14 +2644,18 @@ export function map_object(obj, show) {
     const x = obj.ox, y = obj.oy;
     const loc = game.level?.at(x, y);
     if (!loc) return;
-    const og = floor_object_glyph(obj, x, y);
+    const mapped = mapped_object_glyphs(obj, x, y);
+    const og = mapped.remembered;
     if (game.level?.flags?.hero_memory)
         loc.remembered_glyph = { ch: og.ch, color: og.color, decgfx: og.dec,
                                  glyph: og.glyph
                                      ?? { kind: 'cmap', cmap: og.cmap } };
-    if (show)
-        show_glyph_cell(x, y, og.ch, og.color, og.dec, og.attr,
-                        og.glyph ?? { kind: 'cmap', cmap: og.cmap });
+    if (show) {
+        const shown = mapped.shown;
+        show_glyph_cell(x, y, shown.ch, shown.color, shown.dec, shown.attr,
+                        shown.glyph
+                            ?? { kind: 'cmap', cmap: shown.cmap });
+    }
 }
 
 // include/display.h obj_to_glyph(). Capture the glyph tmp_at() will retain

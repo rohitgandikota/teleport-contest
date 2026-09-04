@@ -1,0 +1,366 @@
+{
+  "name": "crystal-ball-effects",
+  "description": "Debug Wizards exercise every crystal-ball mishap, symbol-dispatch arm, hallucination message, artifact resistance, and the one-in-one-hundred Wizard warning.",
+  "coverage": [
+    "mode.debug",
+    "ui.getlin",
+    "ui.more-paging",
+    "ui.map-memory-vision",
+    "ui.hallucination",
+    "terrain.furniture",
+    "traps.projectile-physical",
+    "object.tools-containers",
+    "object.artifacts",
+    "survival.timed-status",
+    "monster.special-effects"
+  ],
+  "branches": [
+    "tool.crystal-ball.cursed-vision-damage",
+    "tool.crystal-ball.cursed-explosion",
+    "tool.crystal-ball.cursed-comprehension",
+    "tool.crystal-ball.cursed-hallucination",
+    "tool.crystal-ball.cursed-confusion",
+    "tool.crystal-ball.artifact-blindness-resistance",
+    "tool.crystal-ball.detect-object-empty",
+    "tool.crystal-ball.detect-monster",
+    "tool.crystal-ball.detect-furniture",
+    "tool.crystal-ball.detect-trap",
+    "tool.crystal-ball.mimic-synonym",
+    "tool.crystal-ball.distant-level",
+    "tool.crystal-ball.custom-boulder-symbol",
+    "tool.crystal-ball.normal-cancel",
+    "tool.crystal-ball.blind-rejection",
+    "tool.crystal-ball.uncharged-unclear",
+    "tool.crystal-ball.cancelled-implode",
+    "tool.crystal-ball.hallucination-snowflakes",
+    "tool.crystal-ball.hallucination-kaleidoscope",
+    "tool.crystal-ball.hallucination-sinister-light",
+    "tool.crystal-ball.hallucination-psychedelic",
+    "tool.crystal-ball.hallucination-goldfish",
+    "tool.crystal-ball.hallucination-lava",
+    "tool.crystal-ball.hallucination-uncharged-haze",
+    "tool.crystal-ball.hallucination-cancelled-implode",
+    "tool.crystal-ball.nervous-wizard",
+    "display.hallucinated-statue-split-memory"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "tool.crystal-ball.cursed-vision-damage",
+      "segment": 0,
+      "screenIncludes": ["The glass orb damages your vision!"],
+      "rngIncludes": ["rnd(5)=3 @ use_crystal_ball(detect.c:1221)"]
+    },
+    {
+      "branch": "tool.crystal-ball.cursed-explosion",
+      "segment": 1,
+      "screenIncludes": ["The glass orb explodes!"],
+      "rngIncludes": ["rnd(5)=5 @ use_crystal_ball(detect.c:1221)"]
+    },
+    {
+      "branch": "tool.crystal-ball.cursed-comprehension",
+      "segment": 2,
+      "screenIncludes": ["The glass orb is too much to comprehend!"],
+      "rngIncludes": ["rnd(5)=1 @ use_crystal_ball(detect.c:1221)"]
+    },
+    {
+      "branch": "tool.crystal-ball.cursed-hallucination",
+      "segment": 3,
+      "screenIncludes": ["The glass orb zaps your mind!"],
+      "rngIncludes": ["rnd(5)=4 @ use_crystal_ball(detect.c:1221)"]
+    },
+    {
+      "branch": "tool.crystal-ball.cursed-confusion",
+      "segment": 4,
+      "screenIncludes": ["The glass orb confuses you!"],
+      "rngIncludes": ["rnd(5)=2 @ use_crystal_ball(detect.c:1221)"]
+    },
+    {
+      "branch": "tool.crystal-ball.artifact-blindness-resistance",
+      "segment": 5,
+      "screenIncludes": ["The glass orb assaults your vision.  You are unaffected!"],
+      "rngIncludes": ["rnd(5)=3 @ use_crystal_ball(detect.c:1221)"]
+    },
+    {
+      "branch": "tool.crystal-ball.detect-object-empty",
+      "segment": 6,
+      "screenIncludes": ["You peer into the glass orb...  The vision is unclear."]
+    },
+    {
+      "branch": "tool.crystal-ball.detect-monster",
+      "segment": 7,
+      "screenIncludes": ["You sense the presence of monsters."]
+    },
+    {
+      "branch": "tool.crystal-ball.detect-furniture",
+      "segment": 8,
+      "screenIncludes": ["A lawful altar.", "You peer into the glass orb...", "Done.--More--"]
+    },
+    {
+      "branch": "tool.crystal-ball.detect-trap",
+      "segment": 9,
+      "screenIncludes": ["You feel entrapped.", "Done.--More--"]
+    },
+    {
+      "branch": "tool.crystal-ball.mimic-synonym",
+      "segment": 10,
+      "screenIncludes": ["A grave appears next to you.", "You sense the presence of monsters."]
+    },
+    {
+      "branch": "tool.crystal-ball.distant-level",
+      "segment": 11,
+      "screenIncludes": ["You see a castle, far below."],
+      "rngIncludes": [
+        "rn2(4)=2 @ use_crystal_ball(detect.c:1354)",
+        "rn2(3)=0 @ level_distance(detect.c:1149)"
+      ]
+    },
+    {
+      "branch": "tool.crystal-ball.custom-boulder-symbol",
+      "segment": 12,
+      "screenIncludes": ["You detect the presence of iron balls and/or large stones."]
+    },
+    {
+      "branch": "tool.crystal-ball.normal-cancel",
+      "segment": 13,
+      "screenIncludes": ["Never mind."],
+      "screenExcludes": ["You peer into the glass orb..."]
+    },
+    {
+      "branch": "tool.crystal-ball.blind-rejection",
+      "segment": 14,
+      "screenIncludes": ["Too bad you can't see the glass orb."],
+      "screenExcludes": ["You may look for an object, monster, or special map symbol."]
+    },
+    {
+      "branch": "tool.crystal-ball.uncharged-unclear",
+      "segment": 15,
+      "screenIncludes": ["You peer into the glass orb...  The vision is unclear."],
+      "screenExcludes": ["The glass orb implodes!"]
+    },
+    {
+      "branch": "tool.crystal-ball.cancelled-implode",
+      "segment": 16,
+      "screenIncludes": ["The glass orb implodes!"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-snowflakes",
+      "segment": 17,
+      "screenIncludes": ["You see tiny snowflakes spinning around a miniature farmhouse."],
+      "rngIncludes": ["rnd(6)=5 @ use_crystal_ball(detect.c:1269)"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-kaleidoscope",
+      "segment": 18,
+      "screenIncludes": ["Oh wow... like a kaleidoscope!"],
+      "rngIncludes": ["rnd(6)=6 @ use_crystal_ball(detect.c:1269)"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-sinister-light",
+      "segment": 19,
+      "screenIncludes": ["The crystal pulses with sinister silent light!"],
+      "rngIncludes": ["rnd(6)=3 @ use_crystal_ball(detect.c:1269)"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-psychedelic",
+      "segment": 20,
+      "screenIncludes": ["Whoa!  Psychedelic colors, dude!"],
+      "rngIncludes": ["rnd(6)=2 @ use_crystal_ball(detect.c:1269)"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-goldfish",
+      "segment": 21,
+      "screenIncludes": ["You see goldfish swimming above fluorescent rocks."],
+      "rngIncludes": ["rnd(6)=4 @ use_crystal_ball(detect.c:1269)"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-lava",
+      "segment": 22,
+      "screenIncludes": ["You grok some groovy globs of incandescent lava."],
+      "rngIncludes": ["rnd(6)=1 @ use_crystal_ball(detect.c:1269)"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-uncharged-haze",
+      "segment": 23,
+      "screenIncludes": ["All you see is funky bistre haze."],
+      "screenExcludes": ["The glass orb implodes!"]
+    },
+    {
+      "branch": "tool.crystal-ball.hallucination-cancelled-implode",
+      "segment": 24,
+      "screenIncludes": ["All you see is funky indigo-chartreuse haze.  The glass orb implodes!"]
+    },
+    {
+      "branch": "tool.crystal-ball.nervous-wizard",
+      "segment": 25,
+      "screenIncludes": ["You see the Wizard of Yendor gazing out at you."],
+      "rngIncludes": ["rn2(100)=0 @ use_crystal_ball(detect.c:1361)"]
+    },
+    {
+      "branch": "display.hallucinated-statue-split-memory",
+      "segment": 24,
+      "screenCells": [
+        { "step": 43, "x": 3, "y": 9, "equals": "M" },
+        { "step": 43, "x": 8, "y": 10, "equals": ")" }
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99500,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed crystal ball\raa          "
+    },
+    {
+      "seed": 99501,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed crystal ball\raa          "
+    },
+    {
+      "seed": 99502,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed crystal ball\raa          "
+    },
+    {
+      "seed": 99503,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed crystal ball\raa          "
+    },
+    {
+      "seed": 99504,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017cursed crystal ball\raa          "
+    },
+    {
+      "seed": 99824,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #levelchange\r30\r                             \u0017blessed Sunsword\rwa \u0017cursed crystal ball\rab     "
+    },
+    {
+      "seed": 99520,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\raa )          "
+    },
+    {
+      "seed": 99521,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007sleeping hostile jackal\r\u0017blessed +5 crystal ball\raa d          "
+    },
+    {
+      "seed": 99522,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017lawful altar\r\u0017blessed +5 crystal ball\raa _          "
+    },
+    {
+      "seed": 99523,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017fire trap\r\u0017blessed +5 crystal ball\raa ^          "
+    },
+    {
+      "seed": 99524,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007sleeping hostile giant mimic\r\u0017blessed +5 crystal ball\raa ]          "
+    },
+    {
+      "seed": 99525,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\raa 1          "
+    },
+    {
+      "seed": 99526,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\nOPTIONS=boulder:0\n",
+      "moves": " \u0017boulder\r\u0017blessed +5 crystal ball\rab 0          "
+    },
+    {
+      "seed": 99527,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\raa \u001b          "
+    },
+    {
+      "seed": 99528,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed blindfold\r\u0017blessed +5 crystal ball\rPaab          "
+    },
+    {
+      "seed": 99529,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball (0:0)\raa ?          "
+    },
+    {
+      "seed": 99530,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed -1 crystal ball\raa ?          "
+    },
+    {
+      "seed": 99600,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\r#wizintrinsic\rh\r aa          "
+    },
+    {
+      "seed": 99601,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\r#wizintrinsic\rh\r aa          "
+    },
+    {
+      "seed": 99602,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\r#wizintrinsic\rh\r aa          "
+    },
+    {
+      "seed": 99603,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\r#wizintrinsic\rh\r aa          "
+    },
+    {
+      "seed": 99605,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\r#wizintrinsic\rh\r aa          "
+    },
+    {
+      "seed": 99611,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\r#wizintrinsic\rh\r aa          "
+    },
+    {
+      "seed": 99840,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed crystal ball (0:0)\r#wizintrinsic\rh\r aa     "
+    },
+    {
+      "seed": 99841,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed -1 crystal ball\r#wizintrinsic\rh\r aa     "
+    },
+    {
+      "seed": 99751,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017blessed +5 crystal ball\raa ) "
+    }
+  ]
+}

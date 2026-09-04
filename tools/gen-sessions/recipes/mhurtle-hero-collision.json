@@ -17,6 +17,34 @@
     "combat.knockback.collision-petrifies-hurtler-on-hero",
     "combat.knockback.collision-petrifies-hero"
   ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "combat.knockback.monster-bumps-hero",
+      "segment": 0,
+      "screenIncludes": ["The minotaur bumps into you."],
+      "screenExcludes": [
+        "The minotaur is slowing down.",
+        "The minotaur turns to stone."
+      ]
+    },
+    {
+      "branch": "combat.knockback.collision-petrifies-hurtler-on-hero",
+      "segment": 1,
+      "screenIncludes": [
+        "The minotaur bumps into you.  The minotaur is slowing down.",
+        "The minotaur turns to stone."
+      ],
+      "rngIncludes": ["rnd(2)=1 @ next_ident(mkobj.c:521)"]
+    },
+    {
+      "branch": "combat.knockback.collision-petrifies-hero",
+      "segment": 2,
+      "screenIncludes": [
+        "The cockatrice bumps into you.  You turn to stone..."
+      ]
+    }
+  ],
   "segments": [
     {
       "seed": 6970,

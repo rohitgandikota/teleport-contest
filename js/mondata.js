@@ -974,12 +974,12 @@ export function cantvomit(ptr) {
         || ptr === game.mons?.[PMNAMES.PM_PONY];
 }
 
-// include/mondata.h:200 touch_petrifies() — the two identities C names, not
-// a flag; Medusa is added by flesh_petrifies() at :203 because she petrifies
-// when eaten but not when touched.
+// include/mondata.h:200 touch_petrifies(). pmidx is the canonical identity
+// shared by the static and per-game monster tables. Medusa is added by
+// flesh_petrifies() at :203 because she petrifies when eaten but not touched.
 export const touch_petrifies = (d) =>
-    d === game.mons?.[PMNAMES.PM_COCKATRICE]
-    || d === game.mons?.[PMNAMES.PM_CHICKATRICE];
+    d?.pmidx === PMNAMES.PM_COCKATRICE
+    || d?.pmidx === PMNAMES.PM_CHICKATRICE;
 export const flesh_petrifies = (d) =>
     touch_petrifies(d) || d === game.mons?.[PMNAMES.PM_MEDUSA];
 

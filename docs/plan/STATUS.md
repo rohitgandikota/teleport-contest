@@ -1,5 +1,43 @@
 # STATUS — live handoff board
 
+## 2026-09-03: crystal-ball effects and hallucinated display RNG match C
+
+A focused C oracle exposed three parity classes that broad mechanics counts had
+missed. Hero blindness resistance compared against a stale monster identity,
+generated drawing data omitted C colors and object-class names, and hallucinated
+statues consumed and displayed the wrong sequence of display-only RNG draws.
+The port now recognizes `youmonst` in blindness checks, generates all `defsym`
+colors and C-indexed object-class names, honors the configured boulder symbol,
+and follows C's separate monster-display and remembered-object draws for
+hallucinated statues. Object detection now also reports the correct iron-ball
+and boulder class names.
+
+The permanent 26-segment `crystal-ball-effects` fixture covers all five cursed
+mishaps, artifact blindness resistance, every symbol-query dispatch family,
+custom boulder symbols, rejection and exhaustion paths, all six charged
+hallucination messages, hallucinating empty and cancelled balls, the Wizard
+warning, and the incidental statue display and memory split. Its 27 explicit
+C assertions are byte-identical at **1,535/1,535 screens** and
+**73,039/73,039 RNG calls**. Declared evidence is now **99/106 mechanics
+categories**, with seven partial, and **934/934 explicit C branches**.
+
+Full verification at local commit `b3482fcf`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**382/382**, **89,557/89,557 screens**, and **4,641,076/4,641,076 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is 80/80
+across 13 roles, source and state audits pass, all ten audit and recorder tests
+pass, and frozen files are unchanged.
+
+The dashboard refreshed at 2026-09-04T03:40:21.134Z. Its live fetch failed, so
+the latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. That snapshot was captured
+at 2026-09-03T17:17:32.745Z, the fork was last scored at
+2026-09-03T16:41:33.829Z, and it predates this unpushed checkpoint. No hidden
+gain is claimed. Next, rerun the source RNG and reached-unported censuses, then
+record the smallest C oracle for the highest-value unobserved path before
+changing runtime code.
+
 ## 2026-09-03: hero polymorph traps dispatch through `dotrap`
 
 A source-backed amorous-demon payment fixture exposed a shared trap dispatcher

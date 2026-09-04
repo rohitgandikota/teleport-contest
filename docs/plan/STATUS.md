@@ -1,5 +1,41 @@
 # STATUS — live handoff board
 
+## 2026-09-03: hero-side nymph seduction uses the shared C handler
+
+A source comparison corrected the initial diagnosis for the three suspicious
+`tele_restrict()` calls. They were real missing awaits, but the ordinary JS
+monster-against-hero path did not call that helper. `mhitu.js` carried a
+partial duplicate that handled ordinary theft while omitting the C branches
+for a polymorphed seducing defender and a cancelled attacker. The live path
+now delegates `AD_SITM` and `AD_SEDU` to the shared `mhitm_ad_sedu()` port,
+and all three asynchronous teleport-restriction checks are awaited. The
+animal-theft name buffer now also uses the field written by `steal()`.
+
+The new three-segment `nymph-hero-seduction` C fixture independently pins an
+ordinary apple theft and relocation, a nymph attacking a polymorphed nymph
+hero, and both outcomes of the cancelled-seduction `rn2(3)` gate. Before the
+fix it matched **346/406 screens** and **6,445/10,006 RNG**. The first failure
+was C's goods remark versus JS attempting an empty-inventory theft, followed
+by the missing relocation draws. It is now byte-identical at **406/406
+screens** and **10,006/10,006 RNG**. Explicit C branch evidence grows from
+**868/868 to 872/872**.
+
+Full verification at local commit `9b78fe06`: public **44/44**,
+**11,405/11,405 screens**, and **792,838/792,838 RNG**; supplemental
+**376/376**, **84,352/84,352 screens**, and **4,479,727/4,479,727 RNG**;
+random play **101/102** and **14,261/14,262 screens**, with only the known
+fixed-datetime DST artifact. The hang gate is 44/44, fresh-seed smoke is
+80/80, source and state audits pass, all ten audit and recorder-integrity
+tests pass, and frozen files are unchanged.
+
+The latest exact leaderboard snapshot remains **8,498/11,265**, **16/44**,
+rank 3 overall and rank 1/9 among agentic entries. It predates this local
+checkpoint, and the live fetch failed, so no hidden gain is claimed. The next
+high-value neighbor is `AD_SSEX`: pinned C routes it through `doseduce()`,
+while the JS hit dispatcher still falls through to an unported generic arm.
+Build focused opposite-gender, same-gender, cancelled, and exhausted-seducer
+oracles before deciding the smallest faithful port batch.
+
 ## 2026-09-03: nymphs relocate after stealing a mirror
 
 The source RNG census showed that `use_mirror()` had no oracle coverage at any

@@ -1,0 +1,678 @@
+{
+  "name": "monster-conversations",
+  "description": "Debug Wizards exercise ordinary monster sound classes, disposition and state branches, humanoid special cases, Rider speech, invisible memory, and non-Wizard cursing through direct chat.",
+  "coverage": [
+    "level.ordinary",
+    "mode.debug",
+    "monster.movement",
+    "monster.special-effects",
+    "social.chat",
+    "survival.timed-status",
+    "ui.getlin",
+    "ui.hallucination",
+    "ui.map-memory-vision",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "monster.chat.giant-boast",
+    "monster.chat.random-laugh",
+    "monster.chat.groan-silent-roll",
+    "monster.chat.hostile-arrest",
+    "monster.chat.hostile-soldier",
+    "monster.chat.peaceful-soldier",
+    "monster.chat.vampire-bat-squeak",
+    "monster.chat.full-moon-beast-howl",
+    "monster.chat.hostile-roar",
+    "monster.chat.sewer-rat-squeak",
+    "monster.chat.raven-nevermore",
+    "monster.chat.hostile-hiss",
+    "monster.chat.hostile-buzz",
+    "monster.chat.grunt",
+    "monster.chat.hostile-moo-bellow",
+    "monster.chat.tame-moo",
+    "monster.chat.chirp",
+    "monster.chat.wail",
+    "monster.chat.burble",
+    "monster.chat.trumpet-wake",
+    "monster.chat.shriek-aggravate",
+    "monster.chat.bones-paralysis",
+    "monster.chat.mumble",
+    "monster.chat.imitate",
+    "monster.chat.spell-mutter",
+    "monster.chat.nurse-relaxed",
+    "monster.chat.tame-djinni",
+    "monster.chat.peaceful-djinni",
+    "monster.chat.hostile-djinni",
+    "monster.chat.sleeping-refusal",
+    "monster.chat.hostile-vampire",
+    "monster.chat.vampire-gendered-polyform",
+    "monster.chat.full-moon-human-were",
+    "monster.chat.hallucinating-gnome",
+    "monster.chat.nymph-banter",
+    "monster.chat.death-quote",
+    "monster.chat.death-fallback",
+    "monster.chat.foreign-guardian",
+    "monster.chat.nurse-nonweapon",
+    "monster.chat.death-novel",
+    "monster.chat.invisible-marker",
+    "monster.chat.hostile-cuss",
+    "monster.chat.peaceful-cuss"
+  ],
+  "requireBranchAssertions": true,
+  "branchAssertions": [
+    {
+      "branch": "monster.chat.giant-boast",
+      "segment": 0,
+      "screenIncludes": [
+        "The giant shouts \"Fee Fie Foe Foo!\" and guffaws."
+      ],
+      "rngIncludes": [
+        "rn2(4)=3 @ domonnoise(sounds.c:1008)"
+      ]
+    },
+    {
+      "branch": "monster.chat.random-laugh",
+      "segment": 1,
+      "screenIncludes": [
+        "The gremlin snickers."
+      ],
+      "rngIncludes": [
+        "rn2(4)=2 @ domonnoise(sounds.c:981)"
+      ]
+    },
+    {
+      "branch": "monster.chat.groan-silent-roll",
+      "segment": 2,
+      "screenExcludes": [
+        "The kobold zombie groans."
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ domonnoise(sounds.c:942)"
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-arrest",
+      "segment": 3,
+      "screenIncludes": [
+        "\"You're under arrest!\""
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ domonnoise(sounds.c:1138)"
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-soldier",
+      "segment": 4,
+      "screenIncludes": [
+        "\"You're dog meat!\""
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ domonnoise(sounds.c:1190)"
+      ]
+    },
+    {
+      "branch": "monster.chat.peaceful-soldier",
+      "segment": 5,
+      "screenIncludes": [
+        "\"The food's not fit for Orcs!\""
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ domonnoise(sounds.c:1189)"
+      ]
+    },
+    {
+      "branch": "monster.chat.vampire-bat-squeak",
+      "segment": 6,
+      "screenIncludes": [
+        "The vampire bat squeaks."
+      ]
+    },
+    {
+      "branch": "monster.chat.full-moon-beast-howl",
+      "segment": 7,
+      "screenIncludes": [
+        "The werewolf howls."
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-roar",
+      "segment": 8,
+      "screenIncludes": [
+        "The gray dragon roars!"
+      ]
+    },
+    {
+      "branch": "monster.chat.sewer-rat-squeak",
+      "segment": 9,
+      "screenIncludes": [
+        "The sewer rat squeaks."
+      ]
+    },
+    {
+      "branch": "monster.chat.raven-nevermore",
+      "segment": 10,
+      "screenIncludes": [
+        "\"Nevermore!\""
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-hiss",
+      "segment": 11,
+      "screenIncludes": [
+        "The cockatrice hisses!"
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-buzz",
+      "segment": 12,
+      "screenIncludes": [
+        "The killer bee buzzes angrily."
+      ]
+    },
+    {
+      "branch": "monster.chat.grunt",
+      "segment": 13,
+      "screenIncludes": [
+        "The gargoyle grunts."
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-moo-bellow",
+      "segment": 14,
+      "screenIncludes": [
+        "The rothe bellows!"
+      ]
+    },
+    {
+      "branch": "monster.chat.tame-moo",
+      "segment": 15,
+      "screenIncludes": [
+        "The rothe moos."
+      ]
+    },
+    {
+      "branch": "monster.chat.chirp",
+      "segment": 16,
+      "screenIncludes": [
+        "The baby crocodile chirps."
+      ]
+    },
+    {
+      "branch": "monster.chat.wail",
+      "segment": 17,
+      "screenIncludes": [
+        "The shade wails mournfully."
+      ]
+    },
+    {
+      "branch": "monster.chat.burble",
+      "segment": 18,
+      "screenIncludes": [
+        "The jabberwock burbles."
+      ]
+    },
+    {
+      "branch": "monster.chat.trumpet-wake",
+      "segment": 19,
+      "screenIncludes": [
+        "The mastodon trumpets!"
+      ]
+    },
+    {
+      "branch": "monster.chat.shriek-aggravate",
+      "segment": 20,
+      "screenIncludes": [
+        "The shrieker shrieks."
+      ]
+    },
+    {
+      "branch": "monster.chat.bones-paralysis",
+      "segment": 21,
+      "screenIncludes": [
+        "The skeleton rattles noisily."
+      ]
+    },
+    {
+      "branch": "monster.chat.mumble",
+      "segment": 22,
+      "screenIncludes": [
+        "The arch-lich mumbles incomprehensibly."
+      ]
+    },
+    {
+      "branch": "monster.chat.imitate",
+      "segment": 23,
+      "screenIncludes": [
+        "The leocrotta imitates you."
+      ]
+    },
+    {
+      "branch": "monster.chat.spell-mutter",
+      "segment": 24,
+      "screenIncludes": [
+        "The nalfeshnee seems to mutter a cantrip."
+      ]
+    },
+    {
+      "branch": "monster.chat.nurse-relaxed",
+      "segment": 25,
+      "screenIncludes": [
+        "\"Relax, this won't hurt a bit.\""
+      ]
+    },
+    {
+      "branch": "monster.chat.tame-djinni",
+      "segment": 26,
+      "screenIncludes": [
+        "\"Sorry, I'm all out of wishes.\""
+      ]
+    },
+    {
+      "branch": "monster.chat.peaceful-djinni",
+      "segment": 27,
+      "screenIncludes": [
+        "\"I'm free!\""
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-djinni",
+      "segment": 28,
+      "screenIncludes": [
+        "\"This will teach you not to disturb me!\""
+      ]
+    },
+    {
+      "branch": "monster.chat.sleeping-refusal",
+      "segment": 29,
+      "screenIncludes": [
+        "The wood nymph seems not to notice you."
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-vampire",
+      "segment": 30,
+      "screenIncludes": [
+        "\"I vill come after a man without regret!\""
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ domonnoise(sounds.c:807)"
+      ]
+    },
+    {
+      "branch": "monster.chat.vampire-gendered-polyform",
+      "segment": 42,
+      "screenIncludes": [
+        "\"I vill come after a dwarf lady without regret!\""
+      ],
+      "rngIncludes": [
+        "rn2(2)=1 @ domonnoise(sounds.c:807)"
+      ]
+    },
+    {
+      "branch": "monster.chat.full-moon-human-were",
+      "segment": 31,
+      "screenIncludes": [
+        "The werewolf throws back his head and lets out a blood curdling howl!"
+      ],
+      "rngIncludes": [
+        "rn2(13)=11 @ domonnoise(sounds.c:824)"
+      ]
+    },
+    {
+      "branch": "monster.chat.hallucinating-gnome",
+      "segment": 32,
+      "screenIncludes": [
+        "Phase one, collect underpants."
+      ],
+      "rngIncludes": [
+        "rn2(4)=1 @ domonnoise(sounds.c:1063)"
+      ]
+    },
+    {
+      "branch": "monster.chat.nymph-banter",
+      "segment": 33,
+      "screenIncludes": [
+        "\"Hello, sailor.\""
+      ],
+      "rngIncludes": [
+        "rn2(3)=2 @ domonnoise(sounds.c:1115)"
+      ]
+    },
+    {
+      "branch": "monster.chat.death-quote",
+      "segment": 34,
+      "screenIncludes": [
+        "THINK OF IT MORE AS BEING ... DIMENSIONALLY DISADVANTAGED."
+      ],
+      "rngIncludes": [
+        "rn2(3)=1 @ domonnoise(sounds.c:1210)"
+      ]
+    },
+    {
+      "branch": "monster.chat.death-fallback",
+      "segment": 35,
+      "screenIncludes": [
+        "WHO DO YOU THINK YOU ARE, WAR?"
+      ],
+      "rngIncludes": [
+        "rn2(3)=0 @ domonnoise(sounds.c:1210)",
+        "rn2(10)=1 @ domonnoise(sounds.c:1214)"
+      ]
+    },
+    {
+      "branch": "monster.chat.foreign-guardian",
+      "segment": 36,
+      "screenIncludes": [
+        "The student discusses dungeon exploration."
+      ]
+    },
+    {
+      "branch": "monster.chat.nurse-nonweapon",
+      "segment": 37,
+      "screenIncludes": [
+        "\"Relax, this won't hurt a bit.\""
+      ]
+    },
+    {
+      "branch": "monster.chat.death-novel",
+      "segment": 38,
+      "screenIncludes": [
+        "AH, SO YOU HAVE A COPY OF /WITCHES ABROAD/.  I MAY HAVE BEEN MISQUOTED THERE."
+      ],
+      "rngIncludes": [
+        "rn2(41)=11 @ noveltitle(do_name.c:1615)",
+        "rn2(41)=40 @ noveltitle(do_name.c:1615)"
+      ]
+    },
+    {
+      "branch": "monster.chat.invisible-marker",
+      "segment": 39,
+      "screenIncludes": [
+        "It shouts \"Fee Fie Foe Foo!\" and guffaws."
+      ],
+      "screenCells": [
+        { "step": 33, "x": 13, "y": 6, "equals": "I" }
+      ],
+      "rngIncludes": [
+        "rn2(4)=3 @ domonnoise(sounds.c:1008)"
+      ]
+    },
+    {
+      "branch": "monster.chat.hostile-cuss",
+      "segment": 40,
+      "screenIncludes": [
+        "\"Hold! Thy face is a most exquisite torture!\""
+      ],
+      "rngIncludes": [
+        "rn2(5)=2 @ cuss(wizard.c:877)"
+      ]
+    },
+    {
+      "branch": "monster.chat.peaceful-cuss",
+      "segment": 41,
+      "screenIncludes": [
+        "\"We're all doomed.\""
+      ]
+    }
+  ],
+  "segments": [
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile giant\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gremlin\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile kobold zombie\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile Keystone Kop\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile soldier\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful soldier\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile vampire\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601230000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile werewolf\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gray dragon\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile sewer rat\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile raven\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile cockatrice\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile killer bee\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile gargoyle\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile rothe\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame rothe\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile baby crocodile\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile shade\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile jabberwock\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile mastodon\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile shrieker\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile skeleton\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile arch-lich\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile leocrotta\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile nalfeshnee\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile nurse\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007tame djinni\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful djinni\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile djinni\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile wood nymph\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile Vlad the Impaler\ry#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601230000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile human werewolf\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of hallucination\rqa\u0007peaceful gnome\r#chat\ry#chat\rk#chat\ru#chat\rh#chat\rl#chat\rb#chat\rj#chat\rn"
+    },
+    {
+      "seed": 99551,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile wood nymph\rFu #chat\ru"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile Death\ry#chat\rh"
+    },
+    {
+      "seed": 99551,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile Death\ry#chat\ru"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful student\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed potion of water\rwa\u0007hostile nurse\r#chat\rn"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017novel\r\u0007hostile Death\ry#chat\ru"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007invisible hostile giant\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007hostile imp\r#chat\rh"
+    },
+    {
+      "seed": 99550,
+      "datetime": "20260601120000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0007peaceful imp\r#chat\rh"
+    },
+    {
+      "seed": 99552,
+      "datetime": "20260601230000",
+      "nethackrc": "OPTIONS=name:Desired,role:Wizard,race:human,gender:female,align:neutral,playmode:debug\nOPTIONS=!autopickup,!legacy,!tutorial,!tips,pettype:none,!safe_wait,!debug_mongen,pauper,nudist\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " #polyself\rdwarf lady\r \u0007hostile Vlad the Impaler\ry#chat\ru"
+    }
+  ]
+}

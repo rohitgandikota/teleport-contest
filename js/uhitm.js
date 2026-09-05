@@ -330,7 +330,7 @@ async function steal_it(mdef, mattk) {
         if (otmp.oartifact && !Blind())
             find_artifact(otmp);
         /* take the object away from the monster */
-        extract_from_minvent(mdef, otmp, true, false);
+        await extract_from_minvent(mdef, otmp, true, false);
         /* special message for final item; no need to check owornmask because
          * ustealo is only set on objects with (owornmask & W_ARM) */
         if (otmp === ustealo)
@@ -3249,7 +3249,7 @@ export async function mhitm_ad_sedu(magr, mattk, mdef, mhm) {
             await dismount_steed(DISMOUNT_POLY);
         }
 
-        extract_from_minvent(mdef, obj, true);
+        await extract_from_minvent(mdef, obj, true);
         const objectName = game.vis ? doname(obj) : '';
         const { mpickobj } = await import('./steal.js');
         await mpickobj(magr, obj);

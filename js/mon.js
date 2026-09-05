@@ -14,6 +14,12 @@ import { MIGR_APPROX_XY } from './const.js';
 import { NATTK } from './const.js';
 import { c_obj_colors } from './const.js';
 import { W_AMUL } from './const.js';
+import { end_burn } from './timeout.js';
+import { extract_from_minvent } from './worn.js';
+import { m_useup } from './mthrowu.js';
+import { wary_dog } from './dog.js';
+import { makeknown } from './o_init.js';
+import { unmap_object, glyph_is_invisible_at } from './display.js';
 import { is_vampshifter } from './monst.js';
 import { revive_corpse } from './do.js';
 import { monsndx } from './makemon.js';
@@ -2091,7 +2097,12 @@ export async function monstone(mdef) {
     const x = mdef.mx, y = mdef.my;
     let remains;
 
+    if (!await vamp_stone(mdef))
+        return;
     mdef.mhp = 0;
+    await lifesaved_monster(mdef);
+    if (!DEADMONSTER(mdef))
+        return;
     mdef.mtrapped = 0;
 
     const statueChance = 2
@@ -2100,11 +2111,14 @@ export async function monstone(mdef) {
         const held = [];
         while ((mdef.minvent || []).length) {
             const obj = mdef.minvent[0];
-            obj.owornmask = 0;
-            obj_extract_self(obj);
+            await extract_from_minvent(mdef, obj, true, true);
             if (obj.otyp === ONAMES.BOULDER || obj_resists(obj, 0, 0)) {
+                if (await flooreffects(obj, x, y, 'fall'))
+                    continue;
                 place_object(obj, x, y);
             } else {
+                if (obj.lamplit)
+                    end_burn(obj, true);
                 held.unshift(obj);
             }
         }
@@ -2117,10 +2131,10 @@ export async function monstone(mdef) {
         if (mdef.data.geno & G_UNIQ)
             flags |= CORPSTAT_HISTORIC;
 
-        remains = mkcorpstat(ONAMES.STATUE, mdef, mdef.mnum,
+        remains = mkcorpstat(ONAMES.STATUE, mdef, mdef.data,
                              x, y, flags);
         if (mdef.mgivenname)
-            remains.oname = mdef.mgivenname;
+            remains = oname(remains, mdef.mgivenname, ONAME_NO_FLAGS);
         for (const obj of held)
             add_to_container(remains, obj);
         remains.owt = weight(remains);
@@ -2129,13 +2143,14 @@ export async function monstone(mdef) {
     }
 
     stackobj(remains);
+    if (glyph_is_invisible_at(x, y))
+        unmap_object(x, y);
     if (cansee(x, y))
         newsym(x, y);
     const wasinside = engulfing_u(mdef);
     await mondead(mdef);
     if (wasinside && digests(mdef.data))
         await You(`${u_locomotion('jump')} through an opening in the new ${xname(remains)}.`);
-    return remains;
 }
 
 /* mon_resistancebits lives in js/mondata.js, its C home. */
@@ -3318,6 +3333,9 @@ export async function mondead(mdef) {
         game.iflags.sad_feeling = false;
 
     mdef.mhp = 0;
+    await lifesaved_monster(mdef);
+    if (!DEADMONSTER(mdef))
+        return;
     if (be_sad)
         await You('have a sad feeling for a moment, then it passes.');
     /* src/mon.c:3134 — mvitals[].died doubles as the total-dead count and
@@ -4461,6 +4479,45 @@ export function mlifesaver(mon) {
             return otmp;
     }
     return null;
+}
+
+// src/mon.c:2808 set_mon_min_mhpmax()
+function set_mon_min_mhpmax(mon, minimum_mhpmax) {
+    if (mon.mhpmax < mon.m_lev + 1)
+        mon.mhpmax = mon.m_lev + 1;
+    if (mon.mhpmax < minimum_mhpmax)
+        mon.mhpmax = minimum_mhpmax;
+}
+
+// src/mon.c:2839 lifesaved_monster()
+async function lifesaved_monster(mtmp) {
+    const lifesave = mlifesaver(mtmp);
+    if (!lifesave)
+        return;
+    if (cansee(mtmp.mx, mtmp.my)) {
+        await pline('But wait...');
+        await pline(`${s_suffix(Monnam(mtmp))} medallion begins to glow!`);
+        makeknown(ONAMES.AMULET_OF_LIFE_SAVING);
+        if (canseemon(mtmp)) {
+            await pline(`${Monnam(mtmp)} ${attacktype(mtmp.data, ATTKS.AT_EXPL)
+                || attacktype(mtmp.data, ATTKS.AT_BOOM) ? 'reconstitutes' : 'looks much better'}!`);
+        }
+        await pline_The('medallion crumbles to dust!');
+    }
+    await m_useup(mtmp, lifesave);
+    check_gear_next_turn(mtmp);
+    const surviver = !(game.mvitals[monsndx(mtmp.data)].mvflags & G_GENOD);
+    mtmp.mcanmove = 1;
+    mtmp.mfrozen = 0;
+    if (mtmp.mtame && !mtmp.isminion)
+        await wary_dog(mtmp, !surviver);
+    set_mon_min_mhpmax(mtmp, 10);
+    mtmp.mhp = mtmp.mhpmax;
+    if (!surviver) {
+        if (cansee(mtmp.mx, mtmp.my))
+            await pline(`Unfortunately, ${mon_nam(mtmp)} is still genocided...`);
+        mtmp.mhp = 0;
+    }
 }
 
 // src/mon.c mimic_hit_msg(); a disguised mimic hit by healing magic

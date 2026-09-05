@@ -12,9 +12,60 @@ Continue the authorized work; do not mark it complete or recreate it.
 Current-corpus success is not the stopping criterion. Track unreviewed,
 untested, missing, and unreachable source paths explicitly.
 
-### Current work: verified monster pickup; remaining engulfing next
+### Current work: monster statues and life saving verified, local commit next
 
-The local pickup pass is verified but not yet committed. It ports the full
+Uncommitted runtime after 66fa5d8c now ports the full monstone body and shared
+lifesaved_monster/set_mon_min_mhpmax, m_useup/m_useupall, m_lose_armor and
+extract_from_minvent behavior. wary_dog includes revival feedback and cleanup.
+The statue probes also exposed dochug ignoring use_misc/use_defensive's zero
+return (it must continue acting), worn gold armor never lighting, missing speed
+boot updates, and timer cancellation skipping C cleanup_burn. Those are fixed.
+begin_burn now finishes valid construction synchronously and resolves nested
+and buried locations. end_burn, stop_timer and obj_stop_timers share cleanup.
+The full m_dowear_type/update_mon_extrinsics and burn bodies were reviewed.
+
+Three new recipes have ten C intent-validated cases: monster-statue-containers
+(four), monster-lifesaving-petrification (two), and monster-stone-equipment
+(four). Goblin and gnome-lord amulets are visibly worn, consumed on stoning,
+and followed by loss of tameness. Gold armor shines before becoming a statue
+or resisting collision petrification. Worn boots alter later movement.
+Container amulets and lamps stay nested; boots and armor are removed before
+stoning, with C selection draws recorded. These distinctions are checked by
+tools/monster-statue-state-gate.mjs (ten replays plus source controls), now
+passing. The first state attempt incorrectly assumed all four items stayed in
+their sacks; C RNG and source trace disprove that for boots and armor.
+
+All 511 fixtures pass on the current runtime, 44 public and 467 supplemental.
+Supplemental matches 166,907 screens/cursors, 7,865,757 RNG and 21,333 animations.
+Public remains 11,405 screens/cursors, 792,838 RNG and 1,462/1,483 animations.
+Fuzz is 101/102 with its known fixed-date miss (14,261/14,262 screens). All
+47 hang checks, 80 role controls, 16 tool tests, source audit (0/268), statue
+state and ten related state gates pass. The equipment gate now expects the
+shared curse function's numeric C flag, 1, rather than local JavaScript true.
+The assertion ledger is 1,847/1,847, with 99 covered and seven partial categories.
+
+The new fixtures match 2,290 screens/cursors, 28,857 RNG and seven animations.
+Exact 66fa5d8c baseline modules fail all three: 2,045 screens, 2,278 cursors,
+13,779 RNG. The retain-knife mutation still passes all new visible metrics,
+but the state gate rejects a retained crysknife (43 versus worm tooth 42).
+All three native recordings are exact and add 49 outcomes, no new entered
+records: union 54,050/108,268 and 4,315/5,491. monstone reaches 20/28,
+lifesaved_monster 8/14, extract_from_minvent 13/16, m_dowear_type 108/138,
+begin_burn 45/52 and end_burn 10/12. Native inputs are unchanged by the final
+assertion-only edits. See [monster-statue-audit.md](monster-statue-audit.md).
+
+Logs and rejected exploratory inputs are under .cache/monster-statue:
+regression-final, permanent-score, state-final, equipment-state-final, fuzz,
+hang, roles, tool-tests-final, source-final, ledger-final, native, union,
+baseline-permanent, negative-replay, negative-state, and totals.json.
+Related gates use their full tool names as log names. No implementation or
+fixture commit has been made for this pass yet. Finish the local commit, then
+continue gulpmu. Its full C body (mhitu.c:1289-1590) has been read again;
+no engulfing edits have started in this pass.
+
+### Previous verified checkpoint: monster pickup
+
+The pickup pass is committed locally as 66fa5d8c. It ports the full
 mpickobj C body, including null and attached-punishment diagnostics, billing
 through nested containers, transient projectile references, knowledge loss,
 ownership flags, carrying effects and shared add_to_minv insertion. Runtime
@@ -69,6 +120,10 @@ Theft is committed locally as 669b8416. Its push was rejected by automatic
 approval review for lack of explicit publishing authorization. The async push
 question is still pending. Do not retry or publish later checkpoints without
 that authorization. Local source work and the full-port goal continue.
+
+After verifying the current statue pass, continue the larger gulpmu body.
+Full mondead, mon_break_armor and the surrounding modules remain incomplete;
+this checkpoint does not certify them.
 
 ### Verified theft and shared creation checkpoints
 

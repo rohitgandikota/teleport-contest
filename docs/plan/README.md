@@ -17,16 +17,16 @@ and persistent gameplay state. Continue source review, measured C branches,
 independent oracles, implementation, and regression checks until that goal is
 met. Current corpus success is not the stopping criterion.
 
-The latest verified pass adds 17 C cases for monster pickup, swallowed light,
-blindness and corpse transfer. All 44 public and 464 supplemental fixtures
-pass. The measured C union has 54,001/108,268 direct outcomes and 4,315/5,491
-entered function records. The assertion ledger is 1,837/1,837. A mutation
-preserving an acquired object's old shop exemption passes all visible new
-replays but fails the state gate. The published held-out result
+The latest verified pass adds ten C cases for monster statues, life saving,
+equipment and container handling. All 44 public and 467 supplemental fixtures
+pass. The measured C union has 54,050/108,268 direct outcomes and 4,315/5,491
+entered function records. The assertion ledger is 1,847/1,847. A mutation
+preserving an unheld crysknife passes all visible new replays but fails the
+state gate. The published held-out result
 recorded during the audit is 78.39%, distinct from the local result.
 
 See [STATUS.md](STATUS.md) for checkpoint and next-action details,
-[monster-pickup-audit.md](monster-pickup-audit.md) for the current review, and
+[monster-statue-audit.md](monster-statue-audit.md) for the current review, and
 [gameplay-gap-audit.md](gameplay-gap-audit.md) for measurement limits.
 Shop billing and used-up inventory are pushed as `9ceac165`; their review is
 [shop-billing-copy-audit.md](shop-billing-copy-audit.md). The

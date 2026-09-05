@@ -19,12 +19,17 @@ import { nomul } from './hack.js';
 import { TIMEOUT, FROMOUTSIDE, I_SPECIAL, WT_NOISY_INV, FOOT, NECK,
          A_STR, A_DEX, A_CON, DIED, KILLED_BY,
          PLNMSG_ONE_ITEM_HERE, FULL_MOON, FAINTING, MV_KNOWS_EGG,
-         NO_MINVENT, MM_NOMSG, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT }
+         NO_MINVENT, MM_NOMSG, OBJ_FLOOR, OBJ_INVENT, OBJ_MINVENT,
+         CONTAINED_TOO, BURIED_TOO }
     from './const.js';
 import { ONAMES } from './objects_data.js';
 import { PMNAMES, MFLAGS, MONSYMS } from './monst_data.js';
 import { pline } from './display.js';
-import { del_light_source, LS_OBJECT } from './light.js';
+import { del_light_source, new_light_source, arti_light_radius, LS_OBJECT } from './light.js';
+import { artifact_light } from './artifact.js';
+import { get_obj_location } from './zap.js';
+import { impossible } from './pline.js';
+import { xname } from './objnam.js';
 
 // src/timeout.c:187 vomiting_dialogue(). It runs before the property timer is
 // decremented, so every switch value uses the pending timeout minus one.
@@ -173,6 +178,8 @@ export function stop_timer(func_index, arg) {
     const [timer] = base.splice(index, 1);
     if (timer.kind === TIMER_OBJECT)
         arg.timed = Math.max(0, (arg.timed ?? 1) - 1);
+    if (func_index === BURN_OBJECT)
+        cleanup_burn(arg, timer.timeout);
     return timer.timeout - (game.moves ?? 0);
 }
 
@@ -187,15 +194,17 @@ export function peek_timer(func_index, arg) {
 // object before changing the object type or corpse species.
 export function obj_stop_timers(obj) {
     const base = (game.timer_base ||= []);
-    let removed = 0;
-    for (let i = base.length - 1; i >= 0; --i) {
+    for (let i = 0; i < base.length;) {
         const timer = base[i];
         if (timer.kind === TIMER_OBJECT && timer.arg === obj) {
             base.splice(i, 1);
-            removed++;
+            if (timer.func_index === BURN_OBJECT)
+                cleanup_burn(obj, timer.timeout);
+        } else {
+            i++;
         }
     }
-    obj.timed = Math.max(0, (obj.timed || 0) - removed);
+    obj.timed = 0;
 }
 
 // src/timeout.c:2359 obj_split_timers(). Duplicate every object timer onto
@@ -226,12 +235,13 @@ const ordinary_candle = (obj) => obj.otyp === ONAMES.TALLOW_CANDLE
 // does. The synchronous core lets special-level generation finish a floor
 // object's timer before the first screen is drawn.
 function begin_burn_core(obj) {
-    if (!obj || (!obj.age && obj.otyp !== ONAMES.MAGIC_LAMP))
+    if (!obj || (!obj.age && obj.otyp !== ONAMES.MAGIC_LAMP && !artifact_light(obj)))
         return null;
 
     let radius = 3;
     let turns = 0;
     let do_timer = true;
+    let diagnostic;
 
     if (obj.otyp === ONAMES.MAGIC_LAMP) {
         obj.lamplit = 1;
@@ -252,90 +262,94 @@ function begin_burn_core(obj) {
         turns = obj.age > 75 ? obj.age - 75
               : obj.age > 15 ? obj.age - 15 : obj.age;
         radius = candle_light_range(obj);
+    } else if (artifact_light(obj)) {
+        obj.lamplit = 1;
+        do_timer = false;
+        radius = arti_light_radius(obj);
     } else {
-        note_unported_timeout('begin_burn:otyp=' + obj.otyp);
-        return null;
+        diagnostic = impossible(`begin burn: unexpected ${xname(obj)}`);
+        turns = obj.age;
     }
 
-    if (do_timer) {
-        if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, obj)) {
-            obj.lamplit = 1;
-            obj.age -= turns;
-        } else {
-            obj.lamplit = 0;
+    const finish = () => {
+        if (do_timer) {
+            if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, obj)) {
+                obj.lamplit = 1;
+                obj.age -= turns;
+            } else {
+                obj.lamplit = 0;
+            }
         }
-    }
-
-    return { radius };
+        return { radius };
+    };
+    return diagnostic ? diagnostic.then(finish) : finish();
 }
 
 function burn_location(obj) {
-    if (obj.where === OBJ_INVENT)
-        return { x: game.u.ux, y: game.u.uy };
-    if (obj.where === OBJ_FLOOR)
-        return { x: obj.ox, y: obj.oy };
-    if (obj.where === OBJ_MINVENT && obj.ocarry)
-        return { x: obj.ocarry.mx, y: obj.ocarry.my };
-    return null;
+    const loc = {};
+    return get_obj_location(obj, loc, CONTAINED_TOO | BURIED_TOO) ? loc : null;
 }
 
 // Level descriptions execute synchronously. Supply their already-loaded light
 // hook so a lit floor object has both its timer and light source immediately.
 export function begin_burn_level_object(obj, add_light_source) {
     const state = begin_burn_core(obj);
-    if (!state || !obj.lamplit)
-        return;
-
-    const loc = burn_location(obj);
-    if (!loc) {
-        note_unported_timeout('begin_burn:object_location');
-        return;
-    }
-    add_light_source(loc.x, loc.y, state.radius, obj.o_id);
-    game.vision_full_recalc = 1;
+    const finish = result => {
+        if (!result || !obj.lamplit)
+            return;
+        const loc = burn_location(obj);
+        if (!loc)
+            return impossible("begin_burn: can't get obj position");
+        add_light_source(loc.x, loc.y, result.radius, obj.o_id);
+        game.vision_full_recalc = 1;
+    };
+    return state?.then ? state.then(finish) : finish(state);
 }
 
-export async function begin_burn(obj, already_lit) {
+// Valid object construction completes synchronously; only diagnostics wait.
+export function begin_burn(obj, already_lit) {
     const state = begin_burn_core(obj);
-    if (!state)
-        return;
-
-    if (obj.lamplit && obj.where === OBJ_INVENT && !already_lit) {
-        const { update_inventory } = await import('./invent.js');
-        update_inventory();
-    }
-
-    if (obj.lamplit && !already_lit) {
-        const loc = burn_location(obj);
-        if (!loc) {
-            note_unported_timeout('begin_burn:object_location');
-        } else {
-            const { new_light_source, LS_OBJECT } = await import('./light.js');
-            new_light_source(loc.x, loc.y, state.radius, LS_OBJECT, obj.o_id);
-            game.vision_full_recalc = 1;
+    const finish = result => {
+        if (!result)
+            return;
+        if (obj.lamplit && obj.where === OBJ_INVENT && !already_lit)
+            update_inventory();
+        if (obj.lamplit && !already_lit) {
+            const loc = burn_location(obj);
+            if (!loc)
+                return impossible("begin_burn: can't get obj position");
+            return new_light_source(loc.x, loc.y, result.radius, LS_OBJECT, obj.o_id);
         }
-    }
+    };
+    return state?.then ? state.then(finish) : finish(state);
 }
 
 // src/timeout.c:1804 end_burn() plus cleanup_burn(). stop_timer() returns the
 // remaining delay, which is the unused fuel cleanup_burn restores to age.
 export function end_burn(obj, timer_attached) {
     if (!obj?.lamplit)
-        return;
+        return impossible(`end_burn: obj ${xname(obj)} not lit`);
 
-    if (obj.otyp === ONAMES.MAGIC_LAMP)
+    if (obj.otyp === ONAMES.MAGIC_LAMP || artifact_light(obj))
         timer_attached = false;
 
-    if (timer_attached) {
-        const remaining = stop_timer(BURN_OBJECT, obj);
-        if (!remaining)
-            note_unported_timeout('end_burn:missing_timer');
-        obj.age = (obj.age || 0) + remaining;
+    if (!timer_attached) {
+        del_light_source(LS_OBJECT, obj.o_id);
+        obj.lamplit = 0;
+        if (obj.where === OBJ_INVENT)
+            update_inventory();
+    } else if (!stop_timer(BURN_OBJECT, obj)) {
+        return impossible(`end_burn: obj ${xname(obj)} not timed!`);
     }
+}
 
+// src/timeout.c:1829 cleanup_burn(), also used by direct stop_timer callers.
+function cleanup_burn(obj, expire_time) {
+    if (!obj.lamplit)
+        return impossible(`cleanup_burn: obj ${xname(obj)} not lit`);
     del_light_source(LS_OBJECT, obj.o_id);
+    obj.age += expire_time - game.moves;
     obj.lamplit = 0;
-    game.vision_full_recalc = 1;
     if (obj.where === OBJ_INVENT)
         update_inventory();
 }

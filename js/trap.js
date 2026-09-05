@@ -1650,7 +1650,7 @@ async function trapeffect_poly_trap(mtmp, trap, trflags) {
         if (wearing_iron_shoes(mtmp)) {
             let shoes = which_armor(mtmp, W_ARMF);
 
-            extract_from_minvent(mtmp, shoes, true, true);
+            await extract_from_minvent(mtmp, shoes, true, true);
             if (await mpickobj(mtmp, shoes)) {
                 /* impossible("re-equipping iron shoes destroyed them?") */
                 return Trap_Effect_Finished;
@@ -3109,7 +3109,7 @@ export async function erode_obj(otmp, ostr, type, ef_flags) {
                 await remove_worn_item(otmp, true); /* calls Cloak_off(),&c */
             } else if (mcarried(otmp)) {
                 /* results in otmp->where==OBJ_FREE; delobj() doesn't care */
-                extract_from_minvent(otmp.ocarry, otmp, true, false);
+                await extract_from_minvent(otmp.ocarry, otmp, true, false);
             } else { /* worn but not in hero invent or monster minvent ? */
                 /* impossible("erode_obj(%d): destroying strangely worn item [%d, 0x%08lx: %s]", ...) */
                 otmp.owornmask = 0; /* otherwise a second complaint (about

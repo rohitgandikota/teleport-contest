@@ -50,7 +50,7 @@ const cap = carried(mon, ONAMES.DUNCE_CAP)[0];
 assert.ok(cap, 'the bugbear retains the dunce cap');
 assert.equal(cap.owornmask & W_ARMH, W_ARMH,
              'the dunce cap occupies the monster head slot');
-assert.equal(cap.cursed, true,
+assert.equal(cap.cursed, 1,
              'putting on a dunce cap automatically curses it');
 assert.ok(mon.misc_worn_check & W_ARMH,
           'autocursing does not clear the occupied head slot');

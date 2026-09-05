@@ -1310,11 +1310,11 @@ export async function dochug(mtmp) {
 
     /* src/monmove.c:794, defensive actions take priority over utility. */
     if (find_defensive(mtmp, false)) {
-        await use_defensive(mtmp);
-        return 0;
+        if (await use_defensive(mtmp) !== 0)
+            return 1;
     } else if (find_misc(mtmp)) {
-        await use_misc(mtmp);
-        return 0;
+        if (await use_misc(mtmp) !== 0)
+            return 1;
     }
 
     if (is_watch(mdat)) {

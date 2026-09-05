@@ -1229,6 +1229,19 @@ Cheap check before starting any port:
 Zero means the function is a *state* fix. Its effect shows up in screens or in
 some later function's behaviour, never in `diverge.mjs` directly.
 
+The 2026-09-05 statue pass provides a concrete example. Missing speed-boot
+updates in `update_mon_extrinsics` first changed the RNG stream in a later
+monster move, even though equipment selection itself has no draws. Gold armor
+also needs its worn mask intact when deciding whether to stop its light.
+Shared `curse` clears a former blessing; assigning only the cursed flag is not
+equivalent. See [monster-statue-audit.md](monster-statue-audit.md).
+
+An amulet pickup is not evidence that life saving was tested. In
+`movemon_single`, hostile monsters defer equipment changes while they think
+the hero is within three squares. The successful C probes tame the carrier
+after pickup, verify the wear message, and only then cause petrification.
+Body armor separately prevents petrification from hurtling into a cockatrice.
+
 ## dat/nhlib.lua replaces math.random; the nhlua.c warning is about the built-in
 
 `src/nhlua.c:2946` carries a warning that looks alarming for a byte-exact port:

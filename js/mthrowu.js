@@ -6,6 +6,8 @@
 // the flight itself — are the remaining consumers and arrive with thrwmu.
 
 import { sobj_at } from './invent.js';
+import { obfree, weight } from './invent.js';
+import { extract_from_minvent } from './worn.js';
 import { MFLAGS } from './monst_data.js';
 import { ARM_GLOVES } from './const.js';
 import { WT_IRON_BALL_INCR } from './const.js';
@@ -20,6 +22,7 @@ import { harmless_missile } from './dothrow.js';
 import { breaks } from './dothrow.js';
 import { hero_breaks } from './dothrow.js';
 import { game } from './gstate.js';
+
 import { rnd } from './rng.js';
 import { rounddiv } from './hack.js';
 import { is_ammo, matching_launcher, ammo_and_launcher, welded } from './wield.js';
@@ -879,6 +882,22 @@ export async function breamm(mtmp, mattk, mtarg) {
         return M_ATTK_MISS;
     }
     return M_ATTK_HIT;
+}
+
+// src/mthrowu.c:1154 m_useupall()
+export async function m_useupall(mon, obj) {
+    await extract_from_minvent(mon, obj, true, false);
+    obfree(obj, null);
+}
+
+// src/mthrowu.c:1162 m_useup()
+export async function m_useup(mon, obj) {
+    if (obj.quan > 1) {
+        obj.quan--;
+        obj.owt = weight(obj);
+    } else {
+        await m_useupall(mon, obj);
+    }
 }
 
 // src/mthrowu.c:1174 thrwmu() — monster attempts ranged attack on the hero.

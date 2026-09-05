@@ -1,6 +1,16 @@
 {
   "version": 1,
   "requirements": [
+    {"group":"Monster statues and life saving","id":"monster-statue-containers.amulet-in-sack","cFile":"src/mon.c","cFunction":"monstone","description":"amulet in sack"},
+    {"group":"Monster statues and life saving","id":"monster-statue-containers.lamp-in-sack","cFile":"src/mon.c","cFunction":"monstone","description":"lamp in sack"},
+    {"group":"Monster statues and life saving","id":"monster-statue-containers.boots-looted-from-sack","cFile":"src/mon.c","cFunction":"monstone","description":"boots looted from sack"},
+    {"group":"Monster statues and life saving","id":"monster-statue-containers.armor-looted-from-sack","cFile":"src/mon.c","cFunction":"monstone","description":"armor looted from sack"},
+    {"group":"Monster statues and life saving","id":"monster-lifesaving-petrification.goblin","cFile":"src/mon.c","cFunction":"lifesaved_monster","description":"goblin"},
+    {"group":"Monster statues and life saving","id":"monster-lifesaving-petrification.gnome-lord","cFile":"src/mon.c","cFunction":"lifesaved_monster","description":"gnome lord"},
+    {"group":"Monster statues and life saving","id":"monster-stone-equipment.gold-armor-statue","cFile":"src/mon.c","cFunction":"monstone","description":"gold armor statue"},
+    {"group":"Monster statues and life saving","id":"monster-stone-equipment.amulet-armor-protection","cFile":"src/dothrow.c","cFunction":"mhurtle_step","description":"amulet armor protection"},
+    {"group":"Monster statues and life saving","id":"monster-stone-equipment.speed-boots-movement","cFile":"src/mon.c","cFunction":"mcalcmove","description":"speed boots movement"},
+    {"group":"Monster statues and life saving","id":"monster-stone-equipment.gold-armor-protection","cFile":"src/dothrow.c","cFunction":"mhurtle_step","description":"gold armor protection"},
     {"group":"Monster pickup and engulfed light","id":"monster-pickup-light.lamp-lit","cFile":"src/steal.c","cFunction":"mpickobj","description":"lamp lit"},
     {"group":"Monster pickup and engulfed light","id":"monster-pickup-light.lamp-unlit","cFile":"src/steal.c","cFunction":"mpickobj","description":"lamp unlit"},
     {"group":"Monster pickup and engulfed light","id":"monster-pickup-light.lantern-lit","cFile":"src/steal.c","cFunction":"mpickobj","description":"lantern lit"},

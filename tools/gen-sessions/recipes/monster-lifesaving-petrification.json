@@ -1,0 +1,1025 @@
+{
+  "name": "monster-lifesaving-petrification",
+  "description": "A goblin and gnome lord wear life-saving amulets, then survive contact with a polymorphed cockatrice hero. The amulets crumble and both creatures lose tameness.",
+  "coverage": [
+    "mode.debug",
+    "monster.movement",
+    "monster.special-effects",
+    "monster.pets",
+    "object.tools-containers",
+    "object.armor",
+    "forms.polymorph",
+    "combat.melee",
+    "ui.getlin",
+    "ui.more-paging"
+  ],
+  "branches": [
+    "monster-lifesaving-petrification.goblin",
+    "monster-lifesaving-petrification.gnome-lord"
+  ],
+  "requireBranchAssertions": true,
+  "segments": [
+    {
+      "name": "goblin",
+      "seed": 7401,
+      "datetime": "20000110090200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of life saving\r#levelchange\r30\r                             \u0007hostile goblin\rldo    lllm.m.m.m.m.m.\u001bm.m.m.\u0017blessed scroll of taming\rrp  \u001b\u001b\u001b\u001b\u001b\u001bm.m.m.   \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rcockatrice\r  \u001b\u001b\u001b\u001b\u001b\u001bDa\r.\r\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b#wiztelekinesis\rj.k    \u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b"
+    },
+    {
+      "name": "gnome-lord",
+      "seed": 7401,
+      "datetime": "20000110090200",
+      "nethackrc": "OPTIONS=name:wizard,role:Wizard,race:human,gender:male,align:neutral,playmode:debug\nOPTIONS=!autopickup,!tutorial,!tips,pettype:none\nOPTIONS=suppress_alert:3.4.3\nOPTIONS=symset:DECgraphics\n",
+      "moves": " \u0017uncursed amulet of life saving\r#levelchange\r30\r                             \u0007hostile gnome lord\rldo    lllm.m.m.m.m.m.\u001bm.m.m.\u0017blessed scroll of taming\rrp  \u001b\u001b\u001b\u001b\u001b\u001bm.m.m.   \u001b\u001b\u001b\u001b\u001b\u001b#polyself\rcockatrice\r  \u001b\u001b\u001b\u001b\u001b\u001bDa\r.\r\u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b#wiztelekinesis\rlk.b    \u001b\u001b\u001b\u001b\u001b\u001b\u001b\u001b"
+    }
+  ],
+  "branchAssertions": [
+    {
+      "branch": "monster-lifesaving-petrification.goblin",
+      "segment": 0,
+      "screenIncludes": [
+        "The goblin puts on a hexagonal amulet.",
+        "The goblin turns to stone.  But wait...--More--",
+        "The goblin's medallion begins to glow!  The goblin looks much better!--More--",
+        "The medallion crumbles to dust!--More--",
+        "The goblin is no longer tame."
+      ],
+      "screenCells": [
+        {
+          "step": 247,
+          "x": 0,
+          "y": 23,
+          "equals": "D"
+        },
+        {
+          "step": 247,
+          "x": 1,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 247,
+          "x": 2,
+          "y": 23,
+          "equals": "v"
+        },
+        {
+          "step": 247,
+          "x": 3,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 247,
+          "x": 4,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 247,
+          "x": 5,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 247,
+          "x": 6,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 7,
+          "y": 23,
+          "equals": "$"
+        },
+        {
+          "step": 247,
+          "x": 8,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 247,
+          "x": 9,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 247,
+          "x": 10,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 247,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 247,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 247,
+          "x": 14,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 247,
+          "x": 15,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 247,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 247,
+          "x": 17,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 247,
+          "x": 18,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 247,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        },
+        {
+          "step": 247,
+          "x": 20,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 21,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 247,
+          "x": 22,
+          "y": 23,
+          "equals": "w"
+        },
+        {
+          "step": 247,
+          "x": 23,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 247,
+          "x": 24,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 247,
+          "x": 25,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 247,
+          "x": 26,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 247,
+          "x": 27,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 247,
+          "x": 28,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 247,
+          "x": 29,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 247,
+          "x": 30,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 247,
+          "x": 31,
+          "y": 23,
+          "equals": ")"
+        },
+        {
+          "step": 247,
+          "x": 32,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 33,
+          "y": 23,
+          "equals": "A"
+        },
+        {
+          "step": 247,
+          "x": 34,
+          "y": 23,
+          "equals": "C"
+        },
+        {
+          "step": 247,
+          "x": 35,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 247,
+          "x": 36,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 247,
+          "x": 37,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 38,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 247,
+          "x": 39,
+          "y": 23,
+          "equals": "D"
+        },
+        {
+          "step": 247,
+          "x": 40,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 247,
+          "x": 41,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 247,
+          "x": 42,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 43,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 44,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 45,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 46,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 47,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 48,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 49,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 50,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 51,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 52,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 53,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 54,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 55,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 56,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 57,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 58,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 59,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 60,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 61,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 62,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 63,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 64,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 65,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 66,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 67,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 68,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 69,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 70,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 71,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 72,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 73,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 74,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 75,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 76,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 77,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 78,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 247,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    },
+    {
+      "branch": "monster-lifesaving-petrification.gnome-lord",
+      "segment": 1,
+      "screenIncludes": [
+        "The gnome lord puts on a hexagonal amulet.",
+        "The gnome lord turns to stone.  But wait...--More--",
+        "The gnome lord's medallion begins to glow!--More--",
+        "The gnome lord looks much better!  The medallion crumbles to dust!--More--",
+        "The gnome lord is no longer tame."
+      ],
+      "screenCells": [
+        {
+          "step": 252,
+          "x": 0,
+          "y": 23,
+          "equals": "D"
+        },
+        {
+          "step": 252,
+          "x": 1,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 252,
+          "x": 2,
+          "y": 23,
+          "equals": "v"
+        },
+        {
+          "step": 252,
+          "x": 3,
+          "y": 23,
+          "equals": "l"
+        },
+        {
+          "step": 252,
+          "x": 4,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 252,
+          "x": 5,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 252,
+          "x": 6,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 7,
+          "y": 23,
+          "equals": "$"
+        },
+        {
+          "step": 252,
+          "x": 8,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 252,
+          "x": 9,
+          "y": 23,
+          "equals": "0"
+        },
+        {
+          "step": 252,
+          "x": 10,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 11,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 252,
+          "x": 12,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 252,
+          "x": 13,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 252,
+          "x": 14,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 252,
+          "x": 15,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 252,
+          "x": 16,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 252,
+          "x": 17,
+          "y": 23,
+          "equals": "1"
+        },
+        {
+          "step": 252,
+          "x": 18,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 252,
+          "x": 19,
+          "y": 23,
+          "equals": ")"
+        },
+        {
+          "step": 252,
+          "x": 20,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 21,
+          "y": 23,
+          "equals": "P"
+        },
+        {
+          "step": 252,
+          "x": 22,
+          "y": 23,
+          "equals": "w"
+        },
+        {
+          "step": 252,
+          "x": 23,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 252,
+          "x": 24,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 252,
+          "x": 25,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 252,
+          "x": 26,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 252,
+          "x": 27,
+          "y": 23,
+          "equals": "("
+        },
+        {
+          "step": 252,
+          "x": 28,
+          "y": 23,
+          "equals": "2"
+        },
+        {
+          "step": 252,
+          "x": 29,
+          "y": 23,
+          "equals": "9"
+        },
+        {
+          "step": 252,
+          "x": 30,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 252,
+          "x": 31,
+          "y": 23,
+          "equals": ")"
+        },
+        {
+          "step": 252,
+          "x": 32,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 33,
+          "y": 23,
+          "equals": "A"
+        },
+        {
+          "step": 252,
+          "x": 34,
+          "y": 23,
+          "equals": "C"
+        },
+        {
+          "step": 252,
+          "x": 35,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 252,
+          "x": 36,
+          "y": 23,
+          "equals": "6"
+        },
+        {
+          "step": 252,
+          "x": 37,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 38,
+          "y": 23,
+          "equals": "H"
+        },
+        {
+          "step": 252,
+          "x": 39,
+          "y": 23,
+          "equals": "D"
+        },
+        {
+          "step": 252,
+          "x": 40,
+          "y": 23,
+          "equals": ":"
+        },
+        {
+          "step": 252,
+          "x": 41,
+          "y": 23,
+          "equals": "5"
+        },
+        {
+          "step": 252,
+          "x": 42,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 43,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 44,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 45,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 46,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 47,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 48,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 49,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 50,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 51,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 52,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 53,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 54,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 55,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 56,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 57,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 58,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 59,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 60,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 61,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 62,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 63,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 64,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 65,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 66,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 67,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 68,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 69,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 70,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 71,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 72,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 73,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 74,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 75,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 76,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 77,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 78,
+          "y": 23,
+          "equals": " "
+        },
+        {
+          "step": 252,
+          "x": 79,
+          "y": 23,
+          "equals": " "
+        }
+      ]
+    }
+  ]
+}
